@@ -55,9 +55,38 @@ SHA-256 `222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
 現在只有 `storyBG` 場景背景才交給正規化管線；戰場對白保留原生整幀，對白框
 照舊畫在上面。這與原版的層次相同：地圖層不動，對白是上面的一層。
 
+## 2026-09-14 storyBG 同狀態補證
+
+王座廳第一句已由目前 dosgolem `apps/fd2/cmd/oracle`（commit
+`5c607a70bbd8843a5b63d9a92ebef63aeea6512e`）從未修改的 normal START 路徑
+重生。原版 control boundary 12（165,473,882 steps）與重製決定性 frame 362
+同為鏡頭格 `(3,20)`、焦點 `(8,21)`；21 筆角色的 slot／FIG／格座標全部一致，
+重製端另固定為 `story_ch00_handler` beat 4、來源 `0x32382`、
+`FDTXT_033#0` utterance 0。輸入腳本、每個 control boundary 的 PNG／狀態雜湊、
+runner 與比較結果見
+[`storybg-dialogue-original-vs-remake-e1.json`](../data/ui-traces/storybg-dialogue-original-vs-remake-e1.json)。
+
+dosgolem `parity` 將重製 `640×400` 以明示的 `nearest_2x` 正規化至
+`320×200`；同相位全畫面為 63,518／64,000 像素相同（99.246875%，RGB 平均
+絕對誤差 0.63049）。`y=112..199` 的對白 overlay 28,160 個像素完全一致，
+上、左、右邊界也各自完全一致；482 個差異像素全落在 `y=21..111` 的人物
+sprite。原版兩個穩定 control boundary 與重製三個 `frame/8 % 3` sprite 相位
+另做六組交叉比較，六張差異遮罩的 SHA-256 完全相同，排除把不同動畫時點硬湊
+成 `same-state`。這關閉第一句 lower／left storyBG 對白框、文字與視窗邊界的
+同狀態 `RUNTIME-E1`，但不把上半部人物 sprite 差異說成逐像素一致。
+
+同一原版正常讀鍵鏈在第二次 Enter 後由一筆 BIOS read 推進，焦點由 `(8,21)`
+移至國王 `(7,5)`、鏡頭格移至 `(3,4)`；重製端回歸
+`TestStoryBGFirstDialogueEnterAdvancesToKing` 從完整戰役 runtime 起點重播，並由
+production `handleNativeStoryInput` 到達相同的下一位說話者。原版雖是未修改
+normal START 玩家路徑，重製端仍使用決定性截圖鉤子，故本切片不冒稱完整
+`PLAYER-E2`。
+
 ## 尚未涵蓋
 
 - 對白框本身的繪製位址與版面。本輪只量地圖層與幾何。
-- 故事場景（`storyBG`）的對白。本輪只取戰場對白；那條路徑仍走正規化管線。
+- 其他 `storyBG` 說話者、upper／right 版面、控制碼與完整戰役逐場對拍。第一句
+  lower／left 已由上述 2026-09-14 收據關閉為同狀態 `RUNTIME-E1`；不能外推成
+  所有故事對白已完成。
 - `0x1AD72`（HUD）在這一段為 0，是因為該時點 HUD 尚未啟用，**不代表對白會
   關掉 HUD**。

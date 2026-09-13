@@ -285,6 +285,13 @@
 開框前說話者聚焦與逐字嘴型，計數器 writer 已核對，正常 START 第二句整張
 零差異。第一句框外 482 像素的動畫相位及更長玩家路徑仍未鎖定；不重開已修接線。
 
+2026-09-14 勘誤：第一句已由目前 dosgolem normal START 重生，並將原版兩個
+穩定 control boundary 與重製三個 `frame/8 % 3` sprite 相位做六組自動比較；六組
+全為63,518／64,000相同像素，差異遮罩 SHA-256 也完全相同。舊段落把框外482像素
+一概歸因於「動畫相位未鎖定」已不成立；目前證據將它限縮為上半部人物 sprite
+差異，對白 overlay 與三側 viewport border 均逐像素一致。現況收據見
+[`storybg-dialogue-original-vs-remake-e1.json`](../data/ui-traces/storybg-dialogue-original-vs-remake-e1.json)。
+
 > **2026-09-07 使用者操作複核優先項：** [`92`](92-opening-ch01-input-audit.md)
 > 保存開場至第一關父子登場前的目前驗收狀態。已修來源身分誤判敗退、開場
 > 姿勢／地形、原生移動資訊框／路徑、圖示位置與取消接線；相關回歸為
@@ -4220,4 +4227,3 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 - [ ] **BATTLE-IMPACT-DAC-RUNTIME-BRIDGE**：仍需建立帶 frame `+4`、傷害步進、
   `0x29f72` 原始輸出與 palette baseline 的正式轉接器，並以未修改一般玩家
   同狀態逐幀比較；完成前不得宣稱攻擊閃紅或整體戰場 UI E2。
-

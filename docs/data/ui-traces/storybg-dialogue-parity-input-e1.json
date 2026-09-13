@@ -1,0 +1,17 @@
+{
+  "schema": 2,
+  "game": "fd2",
+  "scenario": "storybg-audience-first-dialogue",
+  "state": "same-state",
+  "original_runner": "dosgolem",
+  "cycles": "first Return 3000000; idle 12 x 10000000; second Return 3000000; idle 2 x 10000000",
+  "timeline": "normal START -> audience storyBG -> first dialogue stable phase -> Return -> next speaker focus",
+  "expected_capture": "checkpoint-0012.png",
+  "regions": [
+    {"name": "background_world", "x": 0, "y": 0, "width": 320, "height": 112},
+    {"name": "dialogue_overlay", "x": 0, "y": 112, "width": 320, "height": 88},
+    {"name": "viewport_top_border", "x": 0, "y": 0, "width": 320, "height": 4},
+    {"name": "viewport_left_border", "x": 0, "y": 0, "width": 4, "height": 200},
+    {"name": "viewport_right_border", "x": 316, "y": 0, "width": 4, "height": 200}
+  ]
+}

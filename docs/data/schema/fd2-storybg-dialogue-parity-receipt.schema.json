@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fd2-remake.invalid/schema/fd2-storybg-dialogue-parity-receipt-v1.json",
+  "title": "FD2 storyBG 對白原版／重製對拍收據",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "original_runner", "scenario", "generated_date", "evidence_level", "executable", "provenance", "state_alignment", "frame_sequence", "phase_crosscheck", "image_comparison", "post_input_lifecycle", "conclusions", "limitations"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "fd2_storybg_dialogue_parity_receipt"},
+    "original_runner": {"const": "dosgolem"},
+    "scenario": {"const": "storybg-audience-first-dialogue"},
+    "generated_date": {"type": "string", "format": "date"},
+    "evidence_level": {"const": "RUNTIME-E1"},
+    "executable": {
+      "type": "object",
+      "required": ["path", "size", "md5", "sha256"],
+      "properties": {
+        "path": {"const": "FD2.EXE"},
+        "size": {"const": 357074},
+        "md5": {"const": "b97caf2239a27a896069d03549d96e1e"},
+        "sha256": {"const": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["original_runner", "dosgolem_commit", "dosgolem_tracked_dirty_files", "remake_commit", "oracle_plan_sha256", "parity_scenario_sha256", "state_injections", "remake_capture_environment", "comparison_tool"],
+      "properties": {
+        "original_runner": {"const": "dosgolem apps/fd2/cmd/oracle"},
+        "dosgolem_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "dosgolem_tracked_dirty_files": {"const": 0},
+        "remake_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "oracle_plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "parity_scenario_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "state_injections": {"type": "array", "maxItems": 0},
+        "comparison_tool": {"const": "dosgolem apps/fd2/cmd/parity"},
+        "remake_capture_environment": {
+          "type": "object",
+          "required": ["docker_image", "shot_deterministic", "shot_frame", "sprite_phase", "output_canvas", "canonical_canvas", "normalization"],
+          "properties": {
+            "docker_image": {"const": "fd2-go-test-local:20260909"},
+            "shot_deterministic": {"const": true},
+            "shot_frame": {"const": 362},
+            "sprite_phase": {"const": 0},
+            "output_canvas": {"const": [640, 400]},
+            "canonical_canvas": {"const": [320, 200]},
+            "normalization": {"const": "nearest_2x"}
+          }
+        }
+      }
+    },
+    "state_alignment": {
+      "type": "object",
+      "required": ["classification", "original", "remake", "actor_count", "actor_mismatches"],
+      "properties": {
+        "classification": {"const": "same-state"},
+        "actor_count": {"const": 21},
+        "actor_mismatches": {"type": "array", "maxItems": 0}
+      }
+    },
+    "frame_sequence": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["control_seq", "steps", "input_kind", "keyboard_reads", "camera_grid", "cursor", "png_sha256", "state_sha256"],
+        "properties": {
+          "input_kind": {"const": "normal BIOS keys"},
+          "png_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "state_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "phase_crosscheck": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["original_control_seq", "remake_frame", "remake_sprite_phase", "equal_pixels", "total_pixels", "mean_abs_rgb", "diff_sha256"],
+        "properties": {
+          "original_control_seq": {"enum": [12, 13]},
+          "remake_frame": {"enum": [362, 370, 378]},
+          "remake_sprite_phase": {"type": "integer", "minimum": 0, "maximum": 2},
+          "equal_pixels": {"const": 63518},
+          "total_pixels": {"const": 64000},
+          "diff_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "image_comparison": {
+      "type": "object",
+      "required": ["original_capture_sha256", "remake_capture_sha256", "remake_normalization", "equal_pixels", "total_pixels", "equal_ratio", "regions"],
+      "properties": {
+        "original_capture_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "remake_capture_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "remake_normalization": {"const": "nearest_2x"},
+        "equal_pixels": {"const": 63518},
+        "total_pixels": {"const": 64000},
+        "equal_ratio": {"const": 0.99246875},
+        "regions": {
+          "type": "object",
+          "required": ["background_world", "dialogue_overlay", "viewport_top_border", "viewport_left_border", "viewport_right_border"]
+        }
+      }
+    },
+    "post_input_lifecycle": {
+      "type": "object",
+      "required": ["input", "original", "remake"],
+      "properties": {"input": {"const": "Enter"}}
+    },
+    "conclusions": {
+      "type": "object",
+      "required": ["confirmed", "known_difference"],
+      "properties": {"confirmed": {"type": "array", "minItems": 3}, "known_difference": {"type": "string", "minLength": 1}}
+    },
+    "limitations": {
+      "type": "object",
+      "required": ["player_e2_claimed", "reason", "not_claimed"],
+      "properties": {"player_e2_claimed": {"const": false}, "reason": {"type": "string", "minLength": 1}, "not_claimed": {"type": "array", "minItems": 1}}
+    }
+  }
+}

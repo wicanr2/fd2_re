@@ -177,6 +177,15 @@
 
 ## 工具鏈與主機衛生
 
+### GitHub Issue 主機控制面
+
+- GitHub Issue 的列舉、搜尋、全文／留言讀取、狀態核對及已獲授權的寫入，一律
+  使用真正的 host `/home/anr2/.local/bin/gh`；不得放進 Docker，也不得在受限
+  sandbox 內直接呼叫後把結果當成主機狀態。第一次存取先以 host／unsandboxed
+  執行權限（Codex 工具中即 `require_escalated`）執行 `gh auth status`。只有該
+  主機檢查仍失敗才可判定憑證受阻；不得因 sandbox 看不到 keyring 或網路而誤報
+  登入失效，也不得改用本地 worklist 快照取代遠端 Issue 現況。
+
 ### 私人素材保存庫
 
 - `https://github.com/wicanr2/fd2-assets-private.git` 是本專案原版分離素材與現代

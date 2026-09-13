@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_storybg_dialogue_parity_receipt",
+  "original_runner": "dosgolem",
+  "scenario": "storybg-audience-first-dialogue",
+  "generated_date": "2026-09-14",
+  "evidence_level": "RUNTIME-E1",
+  "executable": {
+    "path": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "provenance": {
+    "original_runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "5c607a70bbd8843a5b63d9a92ebef63aeea6512e",
+    "dosgolem_tracked_dirty_files": 0,
+    "remake_commit": "ffd591a6c6d4e7c0611090bab5c414fc99896965",
+    "oracle_plan": "docs/data/ui-traces/storybg-dialogue-original-input-e1.jsonl",
+    "oracle_plan_sha256": "73f60759b81fad5cf1b588a98d1f69adb291ae79f7f649d8f587bc7db2c16a29",
+    "parity_scenario": "docs/data/ui-traces/storybg-dialogue-parity-input-e1.json",
+    "parity_scenario_sha256": "ce5c01dd04e50667861eb97029d7a0b427a2573d1d83e535d7ff5bbca0eff16a",
+    "state_injections": [],
+    "original_control_boundary": 12,
+    "remake_frame": 362,
+    "remake_capture_environment": {
+      "docker_image": "fd2-go-test-local:20260909",
+      "campaign": "assets/scenarios/campaign_full.json",
+      "asset_pack": "remake/generated-assets/fd2-original-b97caf22",
+      "shot_deterministic": true,
+      "shot_frame": 362,
+      "sprite_phase_formula": "(frame / 8) % 3",
+      "sprite_phase": 0,
+      "output_canvas": [
+        640,
+        400
+      ],
+      "canonical_canvas": [
+        320,
+        200
+      ],
+      "normalization": "nearest_2x"
+    },
+    "comparison_tool": "dosgolem apps/fd2/cmd/parity"
+  },
+  "state_alignment": {
+    "classification": "same-state",
+    "original": {
+      "control_seq": 12,
+      "steps": 165473882,
+      "camera_grid": [
+        3,
+        20
+      ],
+      "cursor": [
+        8,
+        21
+      ],
+      "keyboard_reads": 1
+    },
+    "remake": {
+      "frame": 362,
+      "campaign_node": "story_ch00_handler",
+      "camera_grid": [
+        3,
+        20
+      ],
+      "cursor": [
+        8,
+        21
+      ],
+      "beat_index": 4,
+      "beat_op": "dialog",
+      "beat_source": "0x32382",
+      "dialogue": {
+        "speaker": 0,
+        "upper": false,
+        "native": true,
+        "source_dat": "FDTXT_033",
+        "string_index": 0,
+        "utterance": 0
+      }
+    },
+    "actor_count": 21,
+    "actor_mismatches": []
+  },
+  "frame_sequence": [
+    {
+      "control_seq": 12,
+      "steps": 165473882,
+      "input_kind": "normal BIOS keys",
+      "keyboard_reads": 1,
+      "camera_grid": [
+        3,
+        20
+      ],
+      "cursor": [
+        8,
+        21
+      ],
+      "png_sha256": "bebf787cba4c6529bb590822de0e9e631d96edaa2681f87bcaa011372c845d68",
+      "state_sha256": "41ea9f64aaeb722e66d64d9653314b0561be3ba4e7046ea89cdf030f7d9017d3"
+    },
+    {
+      "control_seq": 13,
+      "steps": 175473882,
+      "input_kind": "normal BIOS keys",
+      "keyboard_reads": 1,
+      "camera_grid": [
+        3,
+        20
+      ],
+      "cursor": [
+        8,
+        21
+      ],
+      "png_sha256": "de094f852dc5dcfd422ec681b36e79d0adee652b401a73065707691743bd4158",
+      "state_sha256": "4de669681c3d6b4305f2cf418366034200e4b14fdfea6c39c8c832d3286938a2"
+    },
+    {
+      "control_seq": 14,
+      "steps": 178473882,
+      "input_kind": "normal BIOS keys",
+      "keyboard_reads": 2,
+      "camera_grid": [
+        3,
+        4
+      ],
+      "cursor": [
+        7,
+        5
+      ],
+      "png_sha256": "5d3b6f3e4781fc78c1e10ab6bd3dcb6bb0ba25125660036dad0837c4cc372fd5",
+      "state_sha256": "9c5a5e32a5f6ee7476e8e80e61a3c3629bc76d96a49bd5028650066955143a0d"
+    },
+    {
+      "control_seq": 15,
+      "steps": 188473882,
+      "input_kind": "normal BIOS keys",
+      "keyboard_reads": 2,
+      "camera_grid": [
+        3,
+        4
+      ],
+      "cursor": [
+        7,
+        5
+      ],
+      "png_sha256": "7fee16c43cd95409c66ebf0ab47903de64b4324219e420b3a5910db8643d48b7",
+      "state_sha256": "31debe360c33dfca7312657c07b79d8ef4aae0de1e09d9915af26e8903b80cc2"
+    },
+    {
+      "control_seq": 16,
+      "steps": 198473882,
+      "input_kind": "normal BIOS keys",
+      "keyboard_reads": 2,
+      "camera_grid": [
+        3,
+        4
+      ],
+      "cursor": [
+        7,
+        5
+      ],
+      "png_sha256": "45c495ba93bc00328854da5fe8a09e15622bf8b8705833a83b892f7107ba573b",
+      "state_sha256": "82dd0d751e6c27ac31db4372754b91ccaa5efe022f8e5cd526c2e571cbde72ca"
+    }
+  ],
+  "phase_crosscheck": [
+    {
+      "original_control_seq": 12,
+      "remake_frame": 362,
+      "remake_sprite_phase": 0,
+      "equal_pixels": 63518,
+      "total_pixels": 64000,
+      "mean_abs_rgb": 0.6304895833333334,
+      "diff_sha256": "d8fdac87321db322540ffd0767ba5985327e4d919da637f8cdedc6084c840714"
+    },
+    {
+      "original_control_seq": 12,
+      "remake_frame": 370,
+      "remake_sprite_phase": 1,
+      "equal_pixels": 63518,
+      "total_pixels": 64000,
+      "mean_abs_rgb": 0.6304895833333334,
+      "diff_sha256": "d8fdac87321db322540ffd0767ba5985327e4d919da637f8cdedc6084c840714"
+    },
+    {
+      "original_control_seq": 12,
+      "remake_frame": 378,
+      "remake_sprite_phase": 2,
+      "equal_pixels": 63518,
+      "total_pixels": 64000,
+      "mean_abs_rgb": 0.6304895833333334,
+      "diff_sha256": "d8fdac87321db322540ffd0767ba5985327e4d919da637f8cdedc6084c840714"
+    },
+    {
+      "original_control_seq": 13,
+      "remake_frame": 362,
+      "remake_sprite_phase": 0,
+      "equal_pixels": 63518,
+      "total_pixels": 64000,
+      "mean_abs_rgb": 0.6304895833333334,
+      "diff_sha256": "d8fdac87321db322540ffd0767ba5985327e4d919da637f8cdedc6084c840714"
+    },
+    {
+      "original_control_seq": 13,
+      "remake_frame": 370,
+      "remake_sprite_phase": 1,
+      "equal_pixels": 63518,
+      "total_pixels": 64000,
+      "mean_abs_rgb": 0.6304895833333334,
+      "diff_sha256": "d8fdac87321db322540ffd0767ba5985327e4d919da637f8cdedc6084c840714"
+    },
+    {
+      "original_control_seq": 13,
+      "remake_frame": 378,
+      "remake_sprite_phase": 2,
+      "equal_pixels": 63518,
+      "total_pixels": 64000,
+      "mean_abs_rgb": 0.6304895833333334,
+      "diff_sha256": "d8fdac87321db322540ffd0767ba5985327e4d919da637f8cdedc6084c840714"
+    }
+  ],
+  "image_comparison": {
+    "original_capture": "checkpoint-0012.png",
+    "original_capture_sha256": "bebf787cba4c6529bb590822de0e9e631d96edaa2681f87bcaa011372c845d68",
+    "remake_capture": "remake-frame-0362.png",
+    "remake_capture_sha256": "4450230581df621965292ba9054a220fc73ce0261f7ea70277339968d8e8621e",
+    "remake_normalization": "nearest_2x",
+    "equal_pixels": 63518,
+    "total_pixels": 64000,
+    "equal_ratio": 0.99246875,
+    "mean_abs_rgb": 0.6304895833333334,
+    "diff_box": {
+      "min_x": 39,
+      "min_y": 21,
+      "max_x": 267,
+      "max_y": 111
+    },
+    "regions": {
+      "background_world": {
+        "equal_pixels": 35358,
+        "total_pixels": 35840,
+        "equal_ratio": 0.9865513392857143,
+        "mean_abs_rgb": 1.1258742559523809,
+        "diff_box": {
+          "min_x": 39,
+          "min_y": 21,
+          "max_x": 267,
+          "max_y": 111
+        }
+      },
+      "dialogue_overlay": {
+        "equal_pixels": 28160,
+        "total_pixels": 28160,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      },
+      "viewport_left_border": {
+        "equal_pixels": 800,
+        "total_pixels": 800,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      },
+      "viewport_right_border": {
+        "equal_pixels": 800,
+        "total_pixels": 800,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      },
+      "viewport_top_border": {
+        "equal_pixels": 1280,
+        "total_pixels": 1280,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      }
+    }
+  },
+  "post_input_lifecycle": {
+    "input": "Enter",
+    "original": {
+      "control_seq": 14,
+      "steps": 178473882,
+      "keyboard_reads_before": 1,
+      "keyboard_reads_after": 2,
+      "camera_grid_after": [
+        3,
+        4
+      ],
+      "cursor_after": [
+        7,
+        5
+      ]
+    },
+    "remake": {
+      "input_owner": "handleNativeStoryInput(nativeStoryInput{enter: true})",
+      "regression_test": "TestStoryBGFirstDialogueEnterAdvancesToKing",
+      "expected_next_camera_grid": [
+        3,
+        4
+      ],
+      "expected_next_cursor": [
+        7,
+        5
+      ]
+    }
+  },
+  "conclusions": {
+    "confirmed": [
+      "storyBG 第一段對白與重製端位於相同節點、角色配置、鏡頭、焦點、對白來源及動畫相位。",
+      "對白框與上、左、右視窗邊界逐像素一致。",
+      "Enter 經正常讀鍵邊界將原版焦點推進至下一位說話者；重製端由 production 輸入 owner 的回歸測試固定同一生命週期。"
+    ],
+    "known_difference": "全畫面差異只落在 y=21..111 的上半部人物 sprite，未進入 y=112..199 的對白 overlay；原版兩個穩定邊界乘重製三個 sprite 相位的六組差異遮罩完全相同，因此不是以不同動畫時點硬湊出的差異。"
+  },
+  "limitations": {
+    "player_e2_claimed": false,
+    "reason": "原版是未修改 normal START 玩家路徑；重製證據使用決定性截圖鉤子並由 runtime 回歸補上輸入後生命週期，因此只宣告 RUNTIME-E1，不外推完整 PLAYER-E2。",
+    "not_claimed": [
+      "全戰役 storyBG 逐幀一致",
+      "所有說話者與上下框分支已逐場對拍",
+      "上半部人物動畫逐像素一致"
+    ]
+  }
+}

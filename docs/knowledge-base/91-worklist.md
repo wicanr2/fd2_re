@@ -37,7 +37,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ### storyBG 對白待自動原版／重製對拍
 
-`storybg-dialogue-receipt` · RE待解 · [#1](https://github.com/wicanr2/fd2_re/issues/1) · 仍未完成 · 還沒出現
+`storybg-dialogue-receipt` · RE待解 · [#1](https://github.com/wicanr2/fd2_re/issues/1) · **可能已完成，回去確認** · 已經出現在 docs/data/ui-traces/storybg-dialogue-original-vs-remake-e1.json
 
 戰場對白已確認原版不為對白換世界層，重製端已照改。故事場景（`storyBG`）的對白仍走正規化管線，目前缺少同一狀態的原版／重製逐幀收據。
 
