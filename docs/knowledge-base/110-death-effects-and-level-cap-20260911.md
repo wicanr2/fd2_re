@@ -163,7 +163,44 @@ map31 的事件 4／5 在劇情地圖上，不打仗，不轉進劇本。
 
 | 項目 | 原因 | issue |
 |---|---|---|
-| 第 27 關事件 64 | FDTXT_027 與故事腳本對不齊，產生不了對白參照；執行期遇到會停下 | [#20](https://github.com/wicanr2/fd2_re/issues/20) `ch27-death-event64-text-alignment` |
 | 背包滿時的轉交提示 | `0x1AA56..0x1AB77` 還沒接，重製端直接放進隊伍空格 | [#21](https://github.com/wicanr2/fd2_re/issues/21) `death-reward-item-full-transfer` |
 | 狀態致死的分派時機 | 收集端只在行動結算呼叫；狀態扣血致死是否設 `+5` bit0 未查 | [#22](https://github.com/wicanr2/fd2_re/issues/22) `status-death-effect-dispatch` |
 | 事件 30 的外觀 | 復活後 `+7`／`+8` 改成身分 6，名字與頭像是否跟著重建未逐幀比對 | — |
+
+## 6. 第 27 關事件 64 的對白對齊契約（2026-09-13）
+
+### 證據審查
+
+- `FDTXT_027.bin` 固定原始資料共有 24 個 offset-table 字串；依
+  `tools/export_story_index_map.py::count_logical_utterances` 的受版控結構規則計為
+  68 句。修正前 `remake/assets/story/ch27.json` 有 69 行，因此
+  `count-aligned.json` 正確地失敗即關閉。
+- 唯一多出的故事行是附錄場景開頭再次手工登記「悠妮!悠妮!......」。原始字串 16
+  只含一次具 speaker control 的「悠妮!悠妮!..」，已對應前一場景最後一行；原始
+  字串 17–23 則正好是附錄剩餘七句無肖像文字。刪除重複行後是 68:68 的原始順序映射，
+  不需要模糊比對、劇情推測或改寫任何原文。
+- 事件 64 的既有轉寫仍以 `0x358EA` 為 handler：狀態 16 等於 1 時顯示文字索引 1、
+  以 `0x35822` 生成群組 3／4／5；等於 2 時顯示文字索引 2，之後從記錄 16 起清 HP。
+  本次只修復對白 provenance，沒有更動這些已核對的動作。
+
+### READY 規格
+
+1. `ch27.json` 的可編輯故事只保留原始資料存在的 68 行；原始字串 16 不跨場景重複。
+2. 重新產生 `count-aligned.json` 後，`FDTXT_027/ch27.json` 必須成為唯一
+   `count_aligned` mapping，且不得再有該組 `utterance_count_mismatch`。
+3. `tools/sync_native_death_programs.py --write` 必須產生 `2:64`，並把事件生成的群組
+   3／4／5 從 `initial_groups` 移除；canonical 編輯器文件與摘要須由同一工具同步。
+4. 對齊索引、死亡程式同步契約及第 27 關逐章死亡程式測試全部通過後，才把本節標為
+   `CONFORMED` 並關閉 issue #20。
+
+### CONFORMED（2026-09-13）
+
+- 從乾淨暫存輸出重生 `count-aligned.json` 後逐 byte 比對相同；FDTXT_027 唯一映射為
+  68:68，該資源沒有診斷。
+- `tools/sync_native_death_programs.py --check` 通過；`ch27.json` 的 `initial_groups`
+  只剩 `[0]`，`2:64` 的兩個對白索引為 1／2、staging 群組為 3／4／5、
+  `clear_hp_from.first` 為 16。
+- `TestNativeDeathProgramsCoverEveryBattleMap` 與
+  `TestNativeDeathProgramsRunInEveryChapter/ch27` 均在 `fd2-go-test-local:20260909`
+  的無網路 Docker 容器通過。這些結果證明資料與正式執行期接線，不宣稱逐幀或一般
+  玩家路徑 `PLAYER-E2`。

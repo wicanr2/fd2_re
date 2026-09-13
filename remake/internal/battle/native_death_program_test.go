@@ -197,8 +197,7 @@ func TestKillWithExpCancelAwardsNoExperience(t *testing.T) {
 	}
 }
 
-// 全部戰場的死亡效果都有程式可跑；唯一的例外是第 27 關事件 64（FDTXT_027 與
-// 故事腳本對不齊，登記在 worklist）。死亡事件生成的群組不能在開局就在場。
+// 全部戰場的死亡效果都有程式可跑；死亡事件生成的群組不能在開局就在場。
 func TestNativeDeathProgramsCoverEveryBattleMap(t *testing.T) {
 	known := map[string]bool{"native_death_op": true, "dialogue": true, "pan": true,
 		"native_acting": true, "reset_pose": true, "spawn_group": true, "delay": true}
@@ -206,7 +205,7 @@ func TestNativeDeathProgramsCoverEveryBattleMap(t *testing.T) {
 		"record_bytes": true, "control_turn": true, "state_set": true, "state_inc": true,
 		"mark_inactive": true, "range_one": true, "exp_cancel": true, "staging": true,
 		"clear_hp_from": true, "reward": true}
-	gaps := map[string]bool{"ch27.json 2:64": true}
+	gaps := map[string]bool{}
 	paths, _ := filepath.Glob("../../assets/scenarios/ch[0-9][0-9].json")
 	if len(paths) != 30 {
 		t.Fatalf("劇本 %d 份，應為 30", len(paths))

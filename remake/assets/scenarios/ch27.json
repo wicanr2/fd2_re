@@ -4,10 +4,7 @@
   "map": 26,
   "runtime_append_groups": true,
   "initial_groups": [
-    0,
-    3,
-    4,
-    5
+    0
   ],
   "party": [
     {
@@ -1236,5 +1233,196 @@
         ]
       }
     }
-  ]
+  ],
+  "native_death_programs": {
+    "2:64": [
+      {
+        "type": "dialogue",
+        "native_source": "0x35902",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch27.json",
+          "scene_index": 0,
+          "line": 2,
+          "source_dat": "FDTXT_027",
+          "string_index": 1,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 116,
+          "pages": [
+            [
+              "『嗶！緊集狀況，請求支援！",
+              "　』"
+            ]
+          ]
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            1
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35927",
+        "native_death_op": {
+          "op": "staging",
+          "x": 9,
+          "y": 44,
+          "group": 3
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            1
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35935",
+        "native_death_op": {
+          "op": "staging",
+          "x": 0,
+          "y": 9,
+          "group": 4
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            1
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35943",
+        "native_death_op": {
+          "op": "staging",
+          "x": 17,
+          "y": 9,
+          "group": 5
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            1
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35951",
+        "native_death_op": {
+          "op": "range_one"
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            1
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x35962",
+        "native_text_index": 2,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch27.json",
+          "scene_index": 0,
+          "line": 3,
+          "source_dat": "FDTXT_027",
+          "string_index": 2,
+          "utterance": 0,
+          "control": "FFEF",
+          "operand": 116,
+          "pages": [
+            [
+              "『．警告，任務中止．ASR-07",
+              "　出現異常現象，原因無法解",
+              "　析．．』"
+            ]
+          ],
+          "glyph_pages": [
+            [
+              [
+                "『",
+                "．",
+                "警",
+                "告",
+                "，",
+                "任",
+                "務",
+                "中",
+                "止",
+                "．",
+                "AS",
+                "R-",
+                "07"
+              ],
+              [
+                "　",
+                "出",
+                "現",
+                "異",
+                "常",
+                "現",
+                "象",
+                "，",
+                "原",
+                "因",
+                "無",
+                "法",
+                "解"
+              ],
+              [
+                "　",
+                "析",
+                "．",
+                "．",
+                "』"
+              ]
+            ]
+          ]
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            2
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35988",
+        "native_death_op": {
+          "op": "clear_hp_from",
+          "first": 16
+        },
+        "native_event_id": 64,
+        "native_when": {
+          "state_eq": [
+            16,
+            2
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x35992",
+        "native_death_op": {
+          "op": "state_inc",
+          "index": 16
+        },
+        "native_event_id": 64
+      }
+    ]
+  }
 }
