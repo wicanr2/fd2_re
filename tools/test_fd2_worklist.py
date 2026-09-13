@@ -82,9 +82,15 @@ class RealWorklistBothDirections(unittest.TestCase):
         items = [i for i in self.data["items"] if i["verify"]["kind"] == "absent"]
         self.assertTrue(items, "worklist 裡沒有 absent 條目，這個測試就沒有意義")
         samples = {
-            "wasm-web-release": "GOOS=js GOARCH=wasm go build ./cmd/fd2\n",
+            "storybg-dialogue-receipt": '"original_runner": "dosgolem fd2 oracle"\n',
+            "battle-dialogue-esc-receipt": '"original_runner": "dosgolem fd2 oracle"\n',
+            "reinforcement-eax-source": '"status": "RE-CLOSED"\n',
+            "wasm-web-release": '"status": "passed"\n',
             "android-package": "ebitenmobile bind -target android ./mobile\n",
-            "parity-ch02-ch04-original-side": "# 第四關：從第三關的續跑點起跑\n",
+            "battlefield-editor-mvp": '"status": "passed"\n',
+            "campaign-editor-ui": '"status": "passed"\n',
+            "town-shop-ui-e2-sampling": '"status": "passed"\n',
+            "parity-ch02-ch04-original-side": '{"town_save": true}\n',
             "ch27-death-event64-text-alignment": "\"2:64\": []\n",
         }
         for item in items:
@@ -92,7 +98,9 @@ class RealWorklistBothDirections(unittest.TestCase):
                 self.assertIn(item["id"], samples, "新增 absent 條目時要一起補樣本")
                 with tempfile.TemporaryDirectory() as raw:
                     root = Path(raw)
-                    target = Path(item["verify"]["paths"][0]) / "sample.sh"
+                    target = Path(item["verify"]["paths"][0])
+                    if not target.suffix:
+                        target /= "sample.json"
                     write(root / target, samples[item["id"]])
                     tool = load_tool(root)
                     open_, why = tool.still_open(item)

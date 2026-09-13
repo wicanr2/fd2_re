@@ -35,33 +35,41 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ## re — 原版證據還沒閉合
 
-### 故事場景對白的原版收據還沒取
+### storyBG 對白待自動原版／重製對拍
 
-`storybg-dialogue-receipt` · RE待解 · [#1](https://github.com/wicanr2/fd2_re/issues/1) · 仍未完成 · 要人判
+`storybg-dialogue-receipt` · RE待解 · [#1](https://github.com/wicanr2/fd2_re/issues/1) · 仍未完成 · 還沒出現
 
-戰場對白已確認原版不為對白換世界層，重製端照改。故事場景（`storyBG`）的對白仍走正規化管線，那條路徑沒有取過原版收據，所以不知道它與戰場對白是不是同一個契約。
+戰場對白已確認原版不為對白換世界層，重製端已照改。故事場景（`storyBG`）的對白仍走正規化管線，目前缺少同一狀態的原版／重製逐幀收據。
 
-怎樣算做完：取一段 storyBG 對白的原版逐幀收據，判定它是否也共用地圖層的重繪集合。
+2026-09-14 決議：不再等待人工判讀。由代理程式使用 dosgolem `apps/fd2/cmd/oracle` 產生固定雜湊原版收據，並以重製端同狀態、同輸入、同畫格邊界自動比較；若 dosgolem 尚缺必要能力，先補回 dosgolem 再重生正式收據，DOSBox 只能作輔助診斷。
+
+怎樣算做完：以 dosgolem 原版 oracle 與重製端建立一段 storyBG 對白的同狀態逐幀收據；自動比較地圖／背景層、對白框疊放、viewport 邊界與輸入後生命週期，將結果、已知差異、固定 EXE 雜湊、兩側版本、輸入與畫格記入 docs/data/ui-traces/storybg-dialogue-original-vs-remake-e1.json，並由測試驗證 receipt schema 與比較結果。不得以人工目視、DOSBox 單側截圖或鄰近狀態代替。
 
 證據：`docs/knowledge-base/100-dialogue-viewport-20260909.md`
 
-### 戰鬥中的對白接不接受 ESC 還沒量
+### 戰鬥對白 ESC 待 dosgolem 三臂自動對拍
 
-`battle-dialogue-esc-receipt` · RE待解 · [#2](https://github.com/wicanr2/fd2_re/issues/2) · 仍未完成 · 要人判
+`battle-dialogue-esc-receipt` · RE待解 · [#2](https://github.com/wicanr2/fd2_re/issues/2) · 仍未完成 · 還沒出現
 
-故事對白已量到 ESC 與 Enter 完全同義（三臂逐格 sha256 相同），重製端已接。戰鬥事件對白與回合起手對白只取過 Enter／Space 的樣本。
+故事對白已量到 ESC 與 Enter 完全同義（三臂逐格 SHA-256 相同），重製端已接。戰鬥事件對白與回合起手對白仍缺各自的 ESC／Enter 原版對照收據。
 
-怎樣算做完：對這兩處各取一次 ESC 與 Enter 的對照收據，相同就接線，不同就記錄差異。
+2026-09-14 決議：不再等待人工操作。由代理程式用 dosgolem 對兩個正式入口各跑 ESC、Enter 與無輸入反對照，依收據直接決定是否共用輸入契約；若不同則保留各自 typed 規則，不可猜接。
+
+怎樣算做完：以 dosgolem 對戰鬥事件對白與回合起手對白各產生 ESC、Enter、none 三臂收據，固定起點、步數、鍵盤閘門與 EXE 雜湊；自動比較每臂的畫面 SHA-256、輸入消耗、控制邊界與後續狀態。相同就接線並測試，差異就分開實作並記錄；結果寫入 docs/data/ui-traces/battle-dialogue-esc-vs-enter.json，且 receipt 測試通過。
 
 證據：`docs/knowledge-base/98-opening-esc-and-length-20260909.md`
 
-### ch21／ch22 增援的 eax 來源還沒追
+### ch21／ch22 六筆增援來源待 RE 證據閉合
 
-`reinforcement-eax-source` · RE待解 · [#3](https://github.com/wicanr2/fd2_re/issues/3) · 仍未完成 · 要人判
+`reinforcement-eax-source` · RE待解 · [#3](https://github.com/wicanr2/fd2_re/issues/3) · 仍未完成 · 還沒出現
 
-六筆增援的來源運算元是暫存器或間接記憶體，靜態掃描停在 `$reg_or_mem`，沒有追到寫入端。
+ch21／ch22 六筆增援的來源運算元是暫存器或間接記憶體，舊靜態掃描停在 `$reg_or_mem`，尚未追到 writer。
 
-怎樣算做完：六筆各自找到寫入端與消費端，或明確記錄它們是同一個 producer 的不同分支。
+2026-09-14 決議：由代理程式以攻略只定位玩家可見觸發情境，再以既有 RE 文件、固定雜湊 IDA 9.4 資料庫的交叉參照與資料流閉合六筆來源；攻略不得單獨當 ABI 或欄位語意證據，也不再要求人工複核。
+
+怎樣算做完：先由攻略與既有 battle event／chapter handler 文件列出 ch21、ch22 六筆增援的觸發情境，再用 IDA Pro 9.4 逐筆追到 eax 或間接來源的 writer、呼叫者與 consumer；高影響分支核對 raw bytes／jump table，間接 writer 不得只靠直接 xref。產出 docs/data/ida/fd2_reinforcement_eax_sources.json，逐筆保存原始名稱、線性位址、bytes、推論等級、證據出處與固定 EXE 雜湊；同步 58 與相關事件文件。六筆全閉合或誠實分級後由 schema／coverage 測試裁決，不需人工。
+
+證據：`docs/data/ida/fd2_reinforcement_eax_sources.json`
 
 ## data — 可編輯資料還沒就緒
 
@@ -99,13 +107,15 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 怎樣算做完：挑代表性的玩家與敵方回合，以未修改路徑取得同狀態逐幀與音訊對照。
 
-### ch02 以外的戰間介面還沒抽樣
+### 戰間介面待早中晚期自動原版對拍
 
-`town-shop-ui-e2-sampling` · 工作 · [#13](https://github.com/wicanr2/fd2_re/issues/13) · 仍未完成 · 要人判
+`town-shop-ui-e2-sampling` · 工作 · [#13](https://github.com/wicanr2/fd2_re/issues/13) · 仍未完成 · 還沒出現
 
-城鎮、商店、教會、整備與祕密商店的原版 E2 目前只覆蓋 ch02。早、中、晚期章節都還沒以正常輸入抽樣。
+城鎮、商店、教會、整備與祕密商店的原版 E2 目前只覆蓋 ch02；早、中、晚期還缺同狀態抽樣。
 
-怎樣算做完：早、中、晚期各挑一章，以正常輸入取得原版與重製端的同狀態對照。
+2026-09-14 決議：不再等待人工操作。由代理程式以 dosgolem 作原版權威執行器，對早、中、晚期代表章節各取得正常玩家路徑收據，再由重製端重播等價輸入並自動比較。不得用 direct-entry、修改 HP 或鄰近畫面冒充 E2；若 dosgolem 缺能力，先補能力再重生收據。
+
+怎樣算做完：選早期、中期、晚期各一章，以未修改正常玩家路徑進入城鎮，對商店、教會、整備與該章可達的祕密商店做風險導向抽樣；dosgolem 原版與重製端固定存檔／狀態、輸入、畫格、版本與素材雜湊，自動比較節點、交易、存檔邊界及代表畫面。結果寫入 docs/data/ui-traces/town-shop-early-mid-late-e2.json，三章 coverage 與 receipt schema／差異 gate 測試全通過才完成。
 
 ### 戰後節點缺完整玩家路徑驗收
 
@@ -123,23 +133,31 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 怎樣算做完：逐項聽辨後修正曲號對映與音效語意記錄。
 
-### 原版側對拍只走到第二關入口
+### 原版側已到第四關續跑點，待第四關閉環收據
 
 `parity-ch02-ch04-original-side` · 工作 · [#16](https://github.com/wicanr2/fd2_re/issues/16) · 仍未完成 · 還沒出現
 
-第一至三關都通關並在城鎮存了檔（work/parity-state/chNN-cleared/）；第四關用同一份 ch02-clear.jsonl 從第三關的續跑點起跑中。這條路徑上的每一輪都開著 FD2_ORACLE_LOCK_ALLY_HP（修改路徑），取得的收據不得當成 PLAYER-E2。
+既有 `work/parity-state/` 已保存 ch01、ch02、ch03 cleared 的原版 `FD2.SAV`；這證明原版側已完成第三關並至少到達第四關前的續跑點，舊標題「只走到第二關入口」已失效。受版控計畫目前仍只有 `ch01-clear.jsonl` 與 `ch02-clear.jsonl`，第四關的可重跑閉環序列與正式收據尚未登錄。
 
-怎樣算做完：第二至四關各有一份可重跑的閉環序列與收據，並在 96 記錄命令、輸入與日期。
+2026-09-14 決議：先稽核上次錄影／checkpoint 是否已涵蓋第四關；不足時允許 `FD2_ORACLE_LOCK_ALLY_HP=1` 鎖定原版所有我方 HP，並允許驅動器強制清場以完成通關。這是修改路徑，只能證明關卡節點、畫面、介面與存檔閉環，不得用來宣稱傷害、生存、戰鬥結果或一般玩家 `PLAYER-E2`。
+
+怎樣算做完：先稽核 work/ 的既有錄影、runner、checkpoint 與 ch03-cleared/FD2.SAV；若已有第四關完整收據就驗證並登錄，否則以該存檔的可寫複本續跑。允許鎖定 camp 2 全體 HP 與強制清場，但 runner／每個 checkpoint 必須記錄 state_injections、強制清場方式、輸入、版本、原始素材雜湊與證據降級。完成 docs/data/parity-plans/ch04-clear.jsonl、第四關戰場→戰後→城鎮存檔的可重生收據，並在 96 記錄命令、輸入、日期及不可主張的範圍。
+
+證據：`docs/knowledge-base/96-parity-toolchain-20260909.md`
 
 ## release — 發行、平台與封包
 
-### 網頁版還沒在前景瀏覽器由人確認可玩
+### 網頁版前景玩家路徑待最終自動驗收
 
-`wasm-web-release` · 工作 · [#7](https://github.com/wicanr2/fd2_re/issues/7) · 仍未完成 · 要人判
+`wasm-web-release` · 工作 · [#7](https://github.com/wicanr2/fd2_re/issues/7) · 仍未完成 · 還沒出現
 
-建置、資產與存檔都通了：`tools/build_wasm.sh` 產出 `fd2.wasm`、資產打包檔（43047 個檔案、124 MB）與索引；`index.html` 的檔案系統轉接層讀走資產包、寫走 localStorage，實測跑完 Go 的存檔流程（建立暫存檔→寫→關→rename→讀回），而且寫過的檔案會蓋過資產包。瀏覽器實測跑到漢堂國際的開場 logo。剩下的是**互動驗證**：自動化分頁的 `visibilityState` 是 hidden，瀏覽器會暫停 requestAnimationFrame，Ebiten 主迴圈因此不推進，所以「開場走到第一關可操作」只能在前景視窗由人確認。
+建置、資產與存檔都已通過；剩餘缺口是前景瀏覽器中的開場至第一關操作，以及重新載入後的存檔讀回。
 
-怎樣算做完：在前景瀏覽器開 tools/build_wasm.sh 的產物，確認開場走到第一關可操作，存檔能寫入並在重新載入後讀回。
+2026-09-14 決議：本項延到其餘非「最後處理」worklist 完成後才做。屆時由代理程式在 Docker／Xvfb 啟動非 headless 瀏覽器，以 CDP 將頁面帶到前景並自動送正常輸入、截圖與檢查 localStorage；不再要求使用者人工確認。若 Chromium 仍把頁面標成 hidden，先修正可重現的前景瀏覽器工具鏈，不得把 hidden 分頁結果冒充通過。
+
+卡在：依使用者 2026-09-14 裁定，排在所有非「優先級:最後」worklist 完成之後。
+
+怎樣算做完：其餘非最後處理 worklist 完成後，在 Docker／Xvfb 的非 headless Chromium 中由 CDP `Page.bringToFront` 確認 `visibilityState=visible`，從目前 WASM 產物正常走到第一關可操作，完成一次存檔、重新載入與讀回；保存輸入、畫格、console、localStorage 前後值與截圖到 docs/data/ui-traces/wasm-browser-player-path-e1.json，並由自動測試驗證。
 
 ### Android 封包沒有建置
 
@@ -159,20 +177,28 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ## tooling — 工具、編輯器與工作流程
 
-### 戰場編輯器還沒有
+### 戰場編輯器待最終自動端到端驗收
 
-`battlefield-editor-mvp` · 工作 · [#10](https://github.com/wicanr2/fd2_re/issues/10) · 仍未完成 · 要人判
+`battlefield-editor-mvp` · 工作 · [#10](https://github.com/wicanr2/fd2_re/issues/10) · 仍未完成 · 還沒出現
 
-tools/editor/battlefield.html 已可用：圖塊筆刷／矩形／填充／橡皮擦、單位擺放與表單、部署格、波次總覽、復原，存回 map.json 與 mapN_units.json。移動成本換算與匯出管線一致（tools/test_editor_terrain_cost.py 逐格對照所有受版控地圖），存回的格式保真也有測試（tools/test_editor_server.py）。缺的是人實際畫一張地圖並在引擎裡載入——那是美術與關卡設計判斷。
+戰場編輯器已具備地圖與單位編輯、部署格、波次總覽、復原及格式保真測試；缺的是由瀏覽器編輯正式複本、存回、重生 canonical，再由正式 runtime 載入的端到端收據。
 
-怎樣算做完：人用編輯器開一張原版地圖、改動後存回，並由正式 runtime 讀得起來。
+2026-09-14 決議：本項延到其餘非「最後處理」worklist 完成後才做，屆時由代理程式以瀏覽器自動化操作可丟棄複本並驗證，不再要求使用者人工畫圖或授權目錄。
 
-### 劇情編輯器缺人實際編一章玩過
+卡在：依使用者 2026-09-14 裁定，排在所有非「優先級:最後」worklist 完成之後。
 
-`campaign-editor-ui` · 工作 · [#11](https://github.com/wicanr2/fd2_re/issues/11) · 仍未完成 · 要人判
+怎樣算做完：其餘非最後處理 worklist 完成後，在 Docker 中啟動 editor server 與非 headless 瀏覽器，對一張原版地圖的可丟棄複本執行圖塊、單位與部署格各一項編輯，經正式 save API 存回並重生 canonical；正式 runtime 載入後核對地形成本、單位、部署格與畫面，最後還原來源零差異。保存 docs/data/ui-traces/battlefield-editor-roundtrip-e1.json 並由自動測試驗證。
 
-五個分頁都已可用：對白、戰場事件、商店品項、節點轉場，以及 doc 38 Phase 3 的節點圖（依章節分層、改轉場、旗標管理、敗北路線紅虛線、choice 選項的旗標條件）。32 個章節都畫得出來、零失敗。編輯來回已由 tools/editor/serve.py 走完並驗過：改 battle_ch01.on_win → 存回 → 重生 canonical → 引擎讀到新值 → 還原零 diff。缺的是**人實際做出一條原版沒有的路線並玩過**——那是設計判斷，不是機器驗得掉的。
+### 劇情編輯器待最終自動端到端驗收
 
-怎樣算做完：人用編輯器做出一條非原版路線（至少含一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支），存回並重生 canonical 後在引擎裡跑通首尾。
+`campaign-editor-ui` · 工作 · [#11](https://github.com/wicanr2/fd2_re/issues/11) · 仍未完成 · 還沒出現
+
+劇情編輯器五個分頁與節點圖均已可用，現有原版路線 round-trip 已通過；缺的是建立一條原版沒有的敗北／choice 路線，再由正式引擎走通首尾的端到端收據。
+
+2026-09-14 決議：本項延到其餘非「最後處理」worklist 完成後才做。屆時由代理程式以瀏覽器自動化建立可丟棄測試路線並驅動引擎驗收，不再要求使用者人工設計或試玩。
+
+卡在：依使用者 2026-09-14 裁定，排在所有非「優先級:最後」worklist 完成之後。
+
+怎樣算做完：其餘非最後處理 worklist 完成後，在 Docker／非 headless 瀏覽器中用編輯器對可丟棄複本新增一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支，透過正式 save API 存回、重生 canonical，並由正式引擎以決定性輸入分別走通兩個分支首尾；還原來源零差異。保存 docs/data/ui-traces/campaign-editor-custom-route-e1.json 並由自動測試驗證。
 
 <!-- END fd2_worklist.py render -->
