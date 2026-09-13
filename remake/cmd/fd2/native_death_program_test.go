@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"sort"
 	"strings"
 	"testing"
@@ -187,16 +188,35 @@ func TestNativeDeathProgramMissingFailsClosed(t *testing.T) {
 // 物品與金錢只給原版陣營 2 的擊殺者（0x1AC7B、0x1AB95 `cmp byte [esi+6], 2`）。
 func TestNativeDeathRewardOnlyForPlayerKiller(t *testing.T) {
 	g := &Game{}
-	ally := &battle.Unit{Camp: battle.Ally, NativeRecordByte6: 1, HasNativeRecordByte6: true}
+	ally := &battle.Unit{
+		Camp: battle.Ally, NativeRecordByte6: 1, HasNativeRecordByte6: true,
+		InventorySlots:       []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+		NativeInventoryFlags: []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80},
+	}
 	g.grantNativeDeathReward(1, 1000, ally)
 	g.grantNativeDeathReward(1, 1000, nil)
+	g.grantNativeDeathReward(0, 0xd3, ally)
+	g.grantNativeDeathReward(0, 0xd3, nil)
 	if g.gold != 0 {
 		t.Fatalf("友軍或狀態致死不該拿到金錢：%d", g.gold)
 	}
-	own := &battle.Unit{Camp: battle.Own, NativeRecordByte6: 2, HasNativeRecordByte6: true}
+	if len(ally.Inventory) != 0 || len(g.pendingNativeDeathRewards) != 0 {
+		t.Fatalf("友軍或狀態致死不該拿到物品：ally=%v pending=%d", ally.Inventory, len(g.pendingNativeDeathRewards))
+	}
+	own := &battle.Unit{
+		Camp: battle.Own, NativeRecordByte6: 2, HasNativeRecordByte6: true,
+		InventorySlots:       []int{0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+		NativeInventoryFlags: []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80},
+	}
 	g.grantNativeDeathReward(1, 1000, own)
 	if g.gold != 1000 {
 		t.Fatalf("我方擊殺應拿到 1000，現在 %d", g.gold)
+	}
+	g.grantNativeDeathReward(0, 0xd3, own)
+	if !slices.Equal(own.Inventory, []int{0xd3}) || own.InventorySlots[0] != 0xd3 ||
+		own.NativeInventoryFlags[0] != 0 || len(g.pendingNativeDeathRewards) != 0 {
+		t.Fatalf("我方有空格時應直接取得物品：inventory=%v slots=%v flags=%v pending=%d",
+			own.Inventory, own.InventorySlots, own.NativeInventoryFlags, len(g.pendingNativeDeathRewards))
 	}
 }
 

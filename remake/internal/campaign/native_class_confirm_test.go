@@ -97,6 +97,50 @@ func TestNativeBattleEndTurnResponsePublishesOneFramePerGlyph(t *testing.T) {
 	}
 }
 
+func TestNativeDeathRewardUsesDiscardAndAbandonIndices(t *testing.T) {
+	dialogue := make([]byte, 320*200)
+	portrait := dato.Frame{Width: 1, Height: 1, Pixels: []byte{9}}
+	strings, font := nativeClassListStrings(t), nativeClassListFont(t)
+	question, err := ComposeNativeDeathRewardDiscardQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	endQuestion, err := ComposeNativeBattleEndTurnQuestion(dialogue, portrait, strings, font)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(question, endQuestion) {
+		t.Fatal("death reward question did not use FDTXT#0x1B1")
+	}
+	response, err := NativeDeathRewardAbandonResponseFrames(question, strings, font, 0xd3)
+	if err != nil || len(response) == 0 {
+		t.Fatalf("FDTXT#0x1B2 response frames=%d err=%v", len(response), err)
+	}
+	fresh, err := ComposeNativeDeathRewardSelectorCancel(dialogue, portrait, strings, font, 0xd3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(fresh, dialogue) {
+		t.Fatal("selector cancel did not compose FDTXT#0x1B2")
+	}
+	words, err := nativeDeathRewardAbandonWords(strings, 0xd3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	visible := 0
+	for _, word := range words {
+		if word < fdtxt.ControlMin {
+			visible++
+		}
+	}
+	if len(response) != visible {
+		t.Fatalf("FDTXT#0x1B2 frames=%d visible glyphs=%d", len(response), visible)
+	}
+	if !bytes.Equal(dialogue, make([]byte, 320*200)) {
+		t.Fatal("death reward compositors mutated source dialogue")
+	}
+}
+
 func TestNativeBattleExitUsesSelector3TextIndices(t *testing.T) {
 	dialogue := make([]byte, 320*200)
 	portrait := dato.Frame{Width: 1, Height: 1, Pixels: []byte{9}}

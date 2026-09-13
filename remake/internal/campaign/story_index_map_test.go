@@ -7,7 +7,7 @@ func TestLoadCountAlignedStoryIndexMap(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 6 {
+	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 5 {
 		t.Fatalf("manifest identity = %#v", index)
 	}
 

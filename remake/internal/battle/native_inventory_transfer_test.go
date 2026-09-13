@@ -1,6 +1,9 @@
 package battle
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestTransferNativeInventoryItemUsesFirstDestinationHole(t *testing.T) {
 	source := &Unit{Inventory: []int{0x44, 0x55}, Equipped: []bool{false, true}, InventorySlots: []int{0x44, 0x55, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}, NativeInventoryFlags: []int{0, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}}
@@ -78,5 +81,58 @@ func TestTransferNativeInventoryItemAllowsNativeSelfReorder(t *testing.T) {
 	if got := unit.NativeInventoryFlags; got[0] != 0 ||
 		got[1] != 0x40 || got[2] != 0 || got[3] != 0x80 {
 		t.Fatalf("self transfer flags=%#v", got)
+	}
+}
+
+func fullNativeRewardInventory() *Unit {
+	return &Unit{
+		Inventory:            []int{0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17},
+		Equipped:             []bool{true, false, true, false, false, true, false, true},
+		InventorySlots:       []int{0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17},
+		NativeInventoryFlags: []int{0x40, 0, 0x40, 0, 0, 0x40, 0, 0x40},
+	}
+}
+
+func TestReplaceNativeFullInventoryRewardMatchesRemoveThenAppend(t *testing.T) {
+	for _, selected := range []int{0, 3, 7} {
+		t.Run(string(rune('0'+selected)), func(t *testing.T) {
+			u := fullNativeRewardInventory()
+			if err := ReplaceNativeFullInventoryReward(u, selected, 0xd3); err != nil {
+				t.Fatal(err)
+			}
+			want := []int{0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17}
+			want = append(append([]int(nil), want[:selected]...), want[selected+1:]...)
+			want = append(want, 0xd3)
+			for i := range want {
+				if u.Inventory[i] != want[i] || u.InventorySlots[i] != want[i] {
+					t.Fatalf("selected=%d inventory=%#v slots=%#v", selected, u.Inventory, u.InventorySlots)
+				}
+			}
+			if len(u.Inventory) != 8 || len(u.Equipped) != 8 || u.Equipped[7] || u.NativeInventoryFlags[7] != 0 {
+				t.Fatalf("selected=%d equipped=%v flags=%#v", selected, u.Equipped, u.NativeInventoryFlags)
+			}
+		})
+	}
+}
+
+func TestReplaceNativeFullInventoryRewardRejectsInvalidStateAtomically(t *testing.T) {
+	for _, mutate := range []func(*Unit){
+		func(u *Unit) { u.Inventory = u.Inventory[:7] },
+		func(u *Unit) { u.NativeInventoryFlags[4] = 0x80 },
+		func(u *Unit) { u.InventorySlots[2] = 0x77 },
+	} {
+		u := fullNativeRewardInventory()
+		mutate(u)
+		beforeInventory := append([]int(nil), u.Inventory...)
+		beforeSlots := append([]int(nil), u.InventorySlots...)
+		beforeFlags := append([]int(nil), u.NativeInventoryFlags...)
+		if err := ReplaceNativeFullInventoryReward(u, 2, 0xd3); err == nil {
+			t.Fatal("invalid full inventory unexpectedly accepted replacement")
+		}
+		if fmt.Sprint(u.Inventory) != fmt.Sprint(beforeInventory) ||
+			fmt.Sprint(u.InventorySlots) != fmt.Sprint(beforeSlots) ||
+			fmt.Sprint(u.NativeInventoryFlags) != fmt.Sprint(beforeFlags) {
+			t.Fatalf("rejected replacement mutated unit: inventory=%v slots=%v flags=%v", u.Inventory, u.InventorySlots, u.NativeInventoryFlags)
+		}
 	}
 }

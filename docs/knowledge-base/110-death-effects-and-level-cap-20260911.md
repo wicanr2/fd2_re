@@ -163,7 +163,6 @@ map31 的事件 4／5 在劇情地圖上，不打仗，不轉進劇本。
 
 | 項目 | 原因 | issue |
 |---|---|---|
-| 背包滿時的轉交提示 | `0x1AA56..0x1AB77` 還沒接，重製端直接放進隊伍空格 | [#21](https://github.com/wicanr2/fd2_re/issues/21) `death-reward-item-full-transfer` |
 | 狀態致死的分派時機 | 收集端只在行動結算呼叫；狀態扣血致死是否設 `+5` bit0 未查 | [#22](https://github.com/wicanr2/fd2_re/issues/22) `status-death-effect-dispatch` |
 | 事件 30 的外觀 | 復活後 `+7`／`+8` 改成身分 6，名字與頭像是否跟著重建未逐幀比對 | — |
 
@@ -204,3 +203,75 @@ map31 的事件 4／5 在劇情地圖上，不打仗，不轉進劇本。
   `TestNativeDeathProgramsRunInEveryChapter/ch27` 均在 `fd2-go-test-local:20260909`
   的無網路 Docker 容器通過。這些結果證明資料與正式執行期接線，不宣稱逐幀或一般
   玩家路徑 `PLAYER-E2`。
+
+## 7. 死亡掉落物品的滿欄丟棄流程（issue #21）
+
+### DRAFT（2026-09-13）
+
+原工作項稱為「轉交提示」，但固定雜湊原版的局部 IDA 重查顯示，`0x1B932`
+選的是擊殺者自己的物品格，不是隊友；FDTXT `0x1B1` 原文也是「道具滿了，
+要丟棄嗎？」。DRAFT 因此把玩家選擇定義為：是否丟棄擊殺者的一件舊物品，
+以空出一格保留新的死亡掉落物品。
+
+### 證據審查
+
+主證據為 [`fd2_death_reward_full_inventory_ida.txt`](../data/ida/fd2_death_reward_full_inventory_ida.txt)：
+
+- `0x1ACCC..0x1ACD7` 只有 `sub_1BB8C(killer,reward)==-1` 才進滿欄分支。
+- `0x1AA9D..0x1AAD8` 固定 FDTXT `0x1B1`、YES＝確認輸入且 choice 0；NO 與
+  Escape 共用 `0x1B2`。
+- `0x1AAE6..0x1AB17` 固定 `sub_1B932(killer,0) → sub_1B722 →
+  sub_1B8E7 → sub_1BB8C`，沒有隊友候選或隊友 writer。
+- `sub_1B9DE` 以 raw slot 順序選八個已佔用格；Up／Down 循環、Left／Right
+  跨四格，Enter／Space 確認，Escape 取消。第二參數 0 使所有佔用物品可選，
+  不檢查 effect row。
+- FDTXT_000 `0x1B0..0x1B3` 的原文、固定資源雜湊與兩個 caller 座標已直接解碼。
+
+這些直接指令同時否定「選隊友、無隊友、所有隊友滿欄」三個舊驗收分支；它們
+不得被做成 production 行為。與實際原版相符的失敗分支是 NO、問句 Escape、
+物品 selector Escape，以及缺少 raw 八格／原版 renderer 資產的失敗即關閉。
+
+### READY 規格
+
+1. 擊殺者不是原版陣營 2、沒有擊殺者，以及型態 1 金錢的行為不變；issue #22
+   的狀態致死分派時機不在本切片。
+2. 型態 0 且擊殺者有空格時，仍直接把新物品寫入第一個空格，不開 modal。
+3. 擊殺者八格已滿時不再掃其他隊員。先排入阻塞式死亡獎勵工作，等攻擊呈現
+   結束、行動收尾開始時，才以原版 DATO／FDTXT／indexed compositor 顯示
+   `0x1B1` 與 YES／NO；缺任一 raw inventory、portrait、FDTXT、font、palette、
+   dialogue cell 或 item panel 資產時不改 inventory、不結束行動並回報錯誤。
+4. YES 關閉問句後，開啟 `0x1B932` 同一個原版八格 item panel。候選依 raw
+   slot 0..7 的佔用順序；Up／Down 循環，Left／Right 跨四格，Enter／Space
+   確認，Escape／Backspace 取消。這個 owner 不得呼叫物品 effect transaction。
+5. 確認某格後，以單一原子操作完成 `0x1B8E7 → 0x1BB8C`：選中舊物品移除、
+   後續格左移、新獎勵附加到尾格且未裝備。交易前後擊殺者與全隊物品總數相同；
+   其餘角色、金錢、型態 1 與死亡程式狀態不變。
+6. 問句 NO／Escape 顯示 FDTXT `0x1B2` 後返回；selector Escape 先完整收掉
+   item panel，再重新開原版對話框於 `(99,127)` 顯示同一句。兩者都丟失新獎勵，
+   但八格內容、flags、裝備狀態與全隊物品總數完全不變。
+7. `Game.Update` 的正式鍵盤入口必須擁有 prompt 與 item selector；`Draw` 必須
+   實際消費原版 indexed 問句、選項及 item panel。helper-only 測試不能替代此
+   production owner。
+8. 回歸至少涵蓋直接有空格、YES 丟棄 slot0／中間／slot7、方向鍵順序與循環、
+   問句 NO／Escape、selector Escape、缺 raw provenance／renderer 資產零交易、
+   多筆 pending reward 的依序處理、型態 1、非玩家擊殺者與無擊殺者。
+9. 全部資料、本地化、battle／cmd/fd2 測試在 `fd2-go-test-local:20260909`
+   無網路容器通過，並由實際 Draw acknowledgement 驗證開合／選擇生命週期後，
+   才可標記 `CONFORMED`。這只宣稱 `RUNTIME-E1`，不宣稱逐幀或一般玩家
+   `PLAYER-E2`。
+
+### CONFORMED（2026-09-13）
+
+- `grantNativeDeathReward` 有空格時仍直接加入擊殺者；滿八格時只排入阻塞工作，
+  不再呼叫隊伍掃描。非玩家／無擊殺者與型態 1 金錢回歸維持不變。
+- 正式 `Game.Update` 的提示 owner、八格 item selector 與實際 indexed `Draw`
+  renderer 已接線。NO／問句 Escape、selector Escape 都零交易；後者重新開框並把
+  `0x1B2` 的 `FFFC` 展開為放棄的獎勵物品名。
+- YES 的交易先在私有投影預檢，只有 item panel 十二步收合完成後才原子執行
+  `remove＋shift＋append`；slot 0／中間／7、方向鍵、多筆 pending reward、缺來源
+  失敗即關閉及完整裝備／flags rollback 都有回歸。
+- Docker 窄回歸 `go test ./internal/battle ./internal/campaign ./cmd/fd2
+  -run 'TestReplaceNativeFullInventoryReward|TestNativeDeathReward' -count=1` 通過。
+  同一 `fd2-go-test-local:20260909` 無網路容器的 `go test ./... -count=1` 亦全套通過。
+  本切片達 `RE-CLOSED`／`RUNTIME-E1`，尚未宣稱原版同狀態逐幀、精確音訊或一般
+  玩家 `PLAYER-E2`。

@@ -343,6 +343,9 @@ type Game struct {
 	itemSel                   int
 	itemAnimStep              int
 	itemClosing               bool
+	pendingNativeDeathRewards []pendingNativeDeathReward
+	nativeDeathRewardUI       *nativeDeathRewardUIState
+	nativeDeathRewardThen     func()
 	nativeItemTargeting       bool
 	nativeItemTargetID        int
 	nativeItemTargetRawSlot   int
@@ -5243,6 +5246,16 @@ func (g *Game) ringInput() bool {
 		if g.stepNativeItemPanelAnimation() {
 			return true
 		}
+		if g.nativeDeathRewardUI != nil {
+			return g.handleNativeDeathRewardItemInput(nativeDeathRewardInput{
+				up:      inpututil.IsKeyJustPressed(ebiten.KeyArrowUp),
+				down:    inpututil.IsKeyJustPressed(ebiten.KeyArrowDown),
+				left:    inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft),
+				right:   inpututil.IsKeyJustPressed(ebiten.KeyArrowRight),
+				confirm: enter,
+				cancel:  esc,
+			})
+		}
 		if esc {
 			g.beginNativeItemPanelClose()
 			return true
@@ -5689,6 +5702,12 @@ func (g *Game) finishSelectedWait() {
 // 不合法及 executor 錯誤不得抵達此處。after 保留各動作自己的介面清理。
 func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	if actor == nil {
+		return
+	}
+	if g.runPendingNativeDeathRewards(func() {
+		g.finishSuccessfulUnitAction(actor, after)
+		g.checkResult()
+	}) {
 		return
 	}
 	// 死亡程式在攻擊演出之後、行動收尾之前執行（0x1CFF0 → 0x1B6B7／0x1AA1D）。

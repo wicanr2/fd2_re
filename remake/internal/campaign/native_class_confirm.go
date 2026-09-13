@@ -31,6 +31,8 @@ const (
 	nativeBattleLoadAcceptedIndex  = 0x19e
 	nativeBattleMarchQuestionIndex = 0x1a1
 	nativeBattleMarchAcceptedIndex = 0x1a2
+	nativeDeathRewardDiscardIndex  = 0x1b1
+	nativeDeathRewardAbandonIndex  = 0x1b2
 	nativeBattleEndQuestionX       = 99
 	nativeBattleEndQuestionY       = 127
 	nativeBattleEndResponseY       = 146
@@ -85,6 +87,78 @@ func ComposeNativeBattleGroupMarchQuestion(
 	return composeNativeBattleSystemQuestion(
 		dialogue, portrait, strings, font, nativeBattleMarchQuestionIndex,
 	)
+}
+
+// ComposeNativeDeathRewardDiscardQuestion reproduces sub_1AA1D's full
+// inventory FDTXT#0x1B1 question at (99,127). Despite the historical
+// worklist wording, the original text and following selector ask which item
+// on the killer should be discarded; no companion selector is involved.
+func ComposeNativeDeathRewardDiscardQuestion(
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font,
+) ([]byte, error) {
+	return composeNativeBattleSystemQuestion(
+		dialogue, portrait, strings, font, nativeDeathRewardDiscardIndex,
+	)
+}
+
+// NativeDeathRewardAbandonResponseFrames reproduces the NO/Escape branch
+// that writes FDTXT#0x1B2 below the still-visible question at (99,146).
+func NativeDeathRewardAbandonResponseFrames(
+	question []byte, strings *fdtxt.Strings, font *fdtxt.Font, item int,
+) ([][]byte, error) {
+	words, err := nativeDeathRewardAbandonWords(strings, item)
+	if err != nil {
+		return nil, err
+	}
+	return nativeBattleResponseWordFrames(question, font, words)
+}
+
+// ComposeNativeDeathRewardSelectorCancel reproduces 0x1AB1F: after the item
+// selector closes, the original opens a fresh dialogue and writes the same
+// FDTXT#0x1B2 at the question position (99,127).
+func ComposeNativeDeathRewardSelectorCancel(
+	dialogue []byte, portrait dato.Frame, strings *fdtxt.Strings, font *fdtxt.Font, item int,
+) ([]byte, error) {
+	words, err := nativeDeathRewardAbandonWords(strings, item)
+	if err != nil {
+		return nil, err
+	}
+	frame, err := composeNativeChurchWordsAt(
+		append([]byte(nil), dialogue...), font, words,
+		nativeBattleEndQuestionY*320+nativeBattleEndQuestionX,
+	)
+	if err != nil {
+		return nil, err
+	}
+	if err := blitNativeDialoguePortraitAt(frame, portrait, nativeFacilityPortraitOffset(0x4b)); err != nil {
+		return nil, err
+	}
+	return frame, nil
+}
+
+// nativeDeathRewardAbandonWords reproduces the caller-owned [0x53AD9]
+// substitution before FDTXT#0x1B2: FFFC is the reward item name, not spacing.
+func nativeDeathRewardAbandonWords(strings *fdtxt.Strings, item int) ([]uint16, error) {
+	if strings == nil || item < 0 || item > 0xff {
+		return nil, errors.New("campaign: invalid death-reward abandon source")
+	}
+	words, err := strings.Words(nativeDeathRewardAbandonIndex)
+	if err != nil {
+		return nil, err
+	}
+	name, err := strings.Words(item + 0xb5)
+	if err != nil {
+		return nil, err
+	}
+	expanded := make([]uint16, 0, len(words)+len(name))
+	for _, word := range words {
+		if word == 0xfffc {
+			expanded = append(expanded, name...)
+			continue
+		}
+		expanded = append(expanded, word)
+	}
+	return expanded, nil
 }
 
 func composeNativeBattleSystemQuestion(

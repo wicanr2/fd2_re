@@ -1,0 +1,112 @@
+# FD2 死亡掉落物品滿欄流程：IDA Pro 9.4 主證據
+
+## 輸入、工具與位址空間
+
+- 輸入：`FD2.EXE`，357074 bytes。
+- MD5：`b97caf2239a27a896069d03549d96e1e`。
+- SHA-256：`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。
+- 第一工具：合法授權 Docker 映像 `ida-pro-9.4-idapython:locked-v1` 內的
+  IDA Pro／Hex-Rays 9.4；Linear Executable loader，IDA 線性位址。
+- 原始檔以唯讀目錄掛載；一次性 `.i64`、log 與完整匯出只寫入 `/tmp`，沒有
+  改名任何 IDA 函式，也沒有修改原版檔或既有資料庫。
+- 下列位址都是 IDA LE 線性位址，不是檔案偏移。Hex-Rays 只協助導覽；結論以
+  直接指令、raw bytes 與 caller／consumer 為準。
+
+## `sub_1AA1D` 滿欄分支（已證實）
+
+物品型態 0 先在 `0x1AC7B` 要求擊殺者 raw `+6 == 2`，以 `sub_1BB8C`
+嘗試把獎勵寫入擊殺者第一個 bit7-set 空格。回傳 `-1` 才跳到滿欄流程：
+
+```text
+0x1accc  e8 bb 0e 00 00  call sub_1BB8C
+0x1acd4  83 f8 ff        cmp eax,-1
+0x1acd7  0f 84 79 fd ff ff  jz 0x1AA56
+
+0x1ac88  8d 83 b5 00 00 00  lea eax,[ebx+0B5h]
+0x1ac8e  a3 d9 3a 05 00     mov dword_53AD9,eax
+
+0x1aa9d  68 b1 01 00 00  push 0x1B1
+0x1aaa8  e8 d7 b4 ff ff  call sub_15F84
+0x1aaba  e8 94 ee ff ff  call sub_19953
+0x1aac2  e8 1e ed ff ff  call sub_197E5
+0x1aac7  83 3c 24 01     cmp [result],1
+0x1aad1  83 3d 57 3c 05 00 00  cmp [0x53C57],0
+0x1aae6  e8 47 0e 00 00  call sub_1B932
+0x1aaf9  e8 24 0c 00 00  call sub_1B722
+0x1ab08  e8 da 0d 00 00  call sub_1B8E7
+0x1ab12  e8 75 10 00 00  call sub_1BB8C
+```
+
+- `sub_19953` 的 Left／Right 分別寫 `[0x53C57]=0/1`；Enter／Space 回傳 1，
+  Escape 回傳 -1。只有「回傳 1 且 choice 0」進 `sub_1B932`。其餘分支顯示
+  FDTXT `0x1B2`。
+- `sub_1B932(killer,0)` 不是隊友選擇器。它先把 `[0x53C57]` 設為 0，再重複
+  呼叫 `sub_1B9DE`，最後只回傳該函式是否不是 -1。
+- `sub_1B722(killer,selection)` 讀 `record + 0x0B + 2*selection` 的物品 byte；
+  `sub_1B8E7` 隨後移除同一 raw slot；`sub_1BB8C(killer,reward)` 再把新獎勵
+  放進擊殺者第一個空格。沒有任何隊友索引或隊友 inventory writer。
+
+因此這條流程的附加語意是「擊殺者滿欄時，詢問是否丟棄一件現有道具來保留新
+獎勵」，證據等級為**已證實**。舊稱「轉交給隊友」被直接指令與原文共同否定。
+
+## `sub_1B9DE` 八格選擇器（已證實）
+
+`0x1BA1A..0x1BA30` 由 raw slot 0 掃到 7，只計算 `record+0x0A+2*slot`
+bit7-clear 的佔用格；此滿欄 caller 因八格皆佔用，所以可選索引固定為 0..7，
+順序就是原始 inventory slot 順序。
+
+```text
+0x1ba3d  cmp eax,0x48  ; Up：0→last，否則 -1
+0x1ba86  cmp eax,0x50  ; Down：last→0，否則 +1
+0x1bad2  cmp eax,0x4B  ; Left：selection>=4 時 -4
+0x1bb03  cmp eax,0x4D  ; Right：selection<=3 且有下一列時 +4
+0x1bb3f  cmp eax,0x1C  ; Enter
+0x1bb44  cmp eax,0x39  ; Space
+0x1bb78  cmp eax,1     ; Escape → -1
+```
+
+第二參數為 0 時，Enter／Space 無條件回傳 1；不套用物品 effect row `+0x0D`
+可使用性閘門。這是丟棄選擇，不是戰鬥中的「使用物品」。
+
+## 原子 inventory writer（已證實）
+
+- `sub_1B8E7(unit,slot)`：
+  `memmove(record+0x0A+2*slot, record+0x0C+2*slot, 2*(7-slot))`，再寫
+  `record+0x18=0x80`。也就是移除後左移，尾格標成空格。
+- `sub_1BB8C(unit,item)`：由 slot 0 掃到 7，第一個 bit7-set 格清成 flag 0、
+  寫入 item byte並回傳 1；無空格回傳 -1。
+- 滿欄 YES 的可見結果是：被選中的舊物品消失，後續物品依 raw 順序左移，
+  新獎勵成為最後一個未裝備物品。擊殺者與全隊的 inventory 項目總數維持不變。
+- NO、Escape、selector Escape 或任何 preflight／renderer 失敗都不得先移除舊物品，
+  也不得插入新獎勵；這是重製端的原子失敗邊界。
+
+## FDTXT 原文與位置（已證實）
+
+固定 `FDTXT_000.bin`：7636 bytes，MD5
+`26cd1957080013e9aebbce7b9a326b18`，SHA-256
+`08699c562210d1f569bd57ec5311a0c38a0de285e5337d2469457cd75b6972d1`。
+以受版控 `glyph_map.json` 唯讀解碼：
+
+| index | 原文 | caller 位置 |
+|---:|---|---|
+| `0x1B0` | 從敵人身上，得到〔FFFC 物品名〕！ | `(99,127)` |
+| `0x1B1` | 道具滿了，要丟棄嗎？ | `(99,127)` |
+| `0x1B2` | 那麼就放棄〔FFFC 獎勵物品名〕吧！ | 問句 NO 為 `(99,146)`；selector Escape 重新開框後為 `(99,127)` |
+| `0x1B3` | 從敵人身上，得到〔FFFA 金額〕元！ | `(99,127)` |
+
+`0x1B1` 的 caller 目的地是 `0xA9F23 = 0xA0000 + 127*320 + 99`；問句
+NO 由 `0x1AB77` 改用 `0xAB6E3 = 0xA0000 + 146*320 + 99`。selector Escape
+分支在 `0x1AB1F` 重新開框後，以 `0xA9F23` 顯示同一 `0x1B2`。
+`0x1AC88..0x1AC8E` 已先令 `[0x53AD9]` 指向 `reward+0xB5` 的 FDTXT 物品名字串，故
+`0x1B2` 內的 `FFFC` 由 `sub_15F84` 展開為這次放棄的新獎勵名稱；不可略過控制碼。
+
+## 證據分級與重開條件
+
+- `RE-CLOSED`：上述 caller gate、FDTXT indices／原文、YES／NO／Escape、八格
+  候選順序與方向鍵、移除後左移及新獎勵尾端插入。
+- `STRONG INFERENCE`：現代引擎以每個已 Draw acknowledgement 的 Ebiten frame
+  近似原版無明示 delay 的開合步驟；不宣稱 DOS wall-clock 一致。
+- `UNKNOWN`：這個窄流程的逐音訊、逐毫秒與未修改一般玩家同狀態畫面 E2。
+
+只有輸入雜湊不同、上述直接指令／FDTXT 原文反證，或同一 raw 狀態的動態結果
+顯示不同候選／交易順序時才可重開；不可再因 issue 舊標題寫「轉交」而重做。

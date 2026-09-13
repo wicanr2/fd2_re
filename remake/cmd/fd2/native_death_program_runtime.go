@@ -33,6 +33,7 @@ func (g *Game) bindNativeDeathPrograms() {
 		return
 	}
 	g.pendingDeathPrograms, g.deathProgramKiller, g.deathProgramRunning, g.deathProgramDead = nil, nil, false, nil
+	g.pendingNativeDeathRewards, g.nativeDeathRewardUI, g.nativeDeathRewardThen = nil, nil, nil
 	sc := g.sc
 	if sc == nil || len(sc.NativeDeathPrograms) == 0 {
 		g.st.NativeDeathExpCancel = nil
@@ -56,7 +57,8 @@ func (g *Game) queueNativeDeathProgram(dead, killer *battle.Unit) {
 
 // nativeDeathProgramsPending 讓勝敗判定知道還有死亡程式要跑。
 func (g *Game) nativeDeathProgramsPending() bool {
-	return len(g.pendingDeathPrograms) > 0 || g.deathProgramRunning
+	return len(g.pendingDeathPrograms) > 0 || g.deathProgramRunning ||
+		len(g.pendingNativeDeathRewards) > 0 || g.nativeDeathRewardUI != nil
 }
 
 // runPendingDeathPrograms 依記錄順序逐一執行，全部跑完才呼叫 then。沒有待跑的
@@ -223,27 +225,22 @@ func nativeKillerIsPlayer(killer *battle.Unit) bool {
 	return killer.Camp == battle.Own
 }
 
-// grantNativeDeathReward 是 0x1AA1D 的型態 0／1。物品優先放進擊殺者，滿了才交給
-// 隊伍空格（原版的轉交提示尚未接）。
+// grantNativeDeathReward 是 0x1AA1D 的型態 0／1。物品先嘗試放進擊殺者；滿欄時
+// 排入 0x1AA56 的阻塞式丟棄流程，絕不掃描或寫入隊友物品欄。
 func (g *Game) grantNativeDeathReward(kind, value int, killer *battle.Unit) {
 	if !nativeKillerIsPlayer(killer) {
 		return
 	}
 	switch kind {
 	case 0:
-		awarded := false
-		if len(killer.Inventory) < 8 {
-			awarded = killer.AddInventoryItem(value, false)
-		} else {
-			awarded = g.grantItemToParty(value)
+		if killer.AddInventoryItem(value, false) {
+			if message, ok := g.localeMessage("battle.reward.item", value); ok {
+				g.msg = message
+			}
+			return
 		}
-		key := "battle.reward.item_full"
-		if awarded {
-			key = "battle.reward.item"
-		}
-		if message, ok := g.localeMessage(key, value); ok {
-			g.msg = message
-		}
+		g.pendingNativeDeathRewards = append(g.pendingNativeDeathRewards,
+			pendingNativeDeathReward{killer: killer, item: value})
 	case 1:
 		g.gold += value
 		if message, ok := g.localeMessage("battle.reward.gold", value); ok {

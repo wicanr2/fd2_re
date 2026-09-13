@@ -154,6 +154,12 @@ func (g *Game) stepNativeItemPanelAnimation() bool {
 			g.itemAnimStep++
 			return true
 		}
+		if g.nativeDeathRewardUI != nil {
+			g.itemOpen = false
+			g.clearNativeItemPanel()
+			g.finishNativeDeathRewardItemClose()
+			return true
+		}
 		g.itemOpen = false
 		g.beginActionOverlayOpen(g.ringSel)
 		g.clearNativeItemPanel()

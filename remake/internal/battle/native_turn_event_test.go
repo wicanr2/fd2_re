@@ -81,12 +81,12 @@ func TestNativeTurnEventsAtPreservesRawRowOrderAndFailsClosed(t *testing.T) {
 	}
 }
 
-func TestChapter27KeepsEvent63GroupsOutOfInitialRoster(t *testing.T) {
+func TestChapter27KeepsDeferredGroupsOutOfInitialRoster(t *testing.T) {
 	sc, err := LoadScenario("../../assets/scenarios/ch27.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !sc.RuntimeAppendGroups || !reflect.DeepEqual(sc.InitialGroups, []int{0, 3, 4, 5}) || len(sc.NativeTurnEvents) != 1 {
+	if !sc.RuntimeAppendGroups || !reflect.DeepEqual(sc.InitialGroups, []int{0}) || len(sc.NativeTurnEvents) != 1 {
 		t.Fatalf("chapter27 staging boundary=%#v", sc)
 	}
 	st := &State{}

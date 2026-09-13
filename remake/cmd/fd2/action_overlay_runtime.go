@@ -25,6 +25,7 @@ type nativeSystemEndTurnUIState struct {
 	loadCurrent                bool
 	loadCandidate              *Game
 	treasure                   *nativeTreasurePrompt
+	deathReward                *nativeDeathRewardUIState
 }
 
 const (
@@ -148,6 +149,9 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.nativeSystemExitRequested = false
 	g.nativeSystemGroupMarch = nil
 	g.nativeSystemGroupMarchStep = 0
+	g.pendingNativeDeathRewards = nil
+	g.nativeDeathRewardUI = nil
+	g.nativeDeathRewardThen = nil
 	if g.nativeSystemEndTurnUI != nil {
 		g.nativeClassUIJob = nil
 	}
@@ -586,6 +590,24 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 		if state == nil {
 			return
 		}
+		if state.deathReward != nil && accepted {
+			closing, closeErr := campaign.NativeClassListClosingFrames(state.source, state.dialogue)
+			if closeErr != nil || len(closing) != 5 {
+				g.loadErr = "native death reward: dialogue close frames unavailable"
+				return
+			}
+			prompt := state.deathReward
+			g.nativeClassUIJob = &nativeClassUIJob{frames: closing, restore: state.source, after: func() {
+				g.nativeSystemEndTurnUI = nil
+				g.nativeSystemEndTurnDelay = 0
+				g.sel = prompt.killer
+				g.itemSel = 0
+				g.itemAnimStep = 0
+				g.itemClosing = false
+				g.itemOpen = true
+			}}
+			return
+		}
 		if accepted && state.saveCurrent {
 			if err := replaceNativeCurrentSaveAtomic(state.savePath, state.saveStored); err != nil {
 				g.loadErr = err.Error()
@@ -638,6 +660,10 @@ func (g *Game) stepNativeSystemEndTurn() {
 			g.nativeSystemEndTurnUI = nil
 			if state.treasure != nil {
 				g.finishNativeTreasurePrompt(state.treasure)
+				return
+			}
+			if state.deathReward != nil {
+				g.finishNativeDeathRewardUI()
 				return
 			}
 			if accepted {

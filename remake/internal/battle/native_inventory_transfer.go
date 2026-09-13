@@ -89,6 +89,40 @@ func TransferNativeInventoryItem(source *Unit, sourceIndex int, destination *Uni
 	return nil
 }
 
+// ReplaceNativeFullInventoryReward 對應已證實的死亡獎勵路徑
+// 0x1B722 -> 0x1B8E7 -> 0x1BB8C：丟棄選定舊物品、後續格左移，再把新獎勵
+// 以未裝備狀態附加到尾端。原版 caller 沒有隊友或目的角色，因此此操作刻意與
+// TransferNativeInventoryItem 分開。
+func ReplaceNativeFullInventoryReward(unit *Unit, selectedIndex, rewardItem int) error {
+	if unit == nil || rewardItem < 0 || rewardItem > 0xff {
+		return fmt.Errorf("native death reward replacement: invalid unit/item")
+	}
+	if err := ValidateNativeInventoryProjection(unit); err != nil {
+		return fmt.Errorf("native death reward replacement: %w", err)
+	}
+	if len(unit.Inventory) != nativeInventoryCells || selectedIndex < 0 || selectedIndex >= nativeInventoryCells {
+		return fmt.Errorf(
+			"native death reward replacement: full selection %d/%d is invalid",
+			selectedIndex, len(unit.Inventory),
+		)
+	}
+	for slot, flag := range unit.NativeInventoryFlags {
+		if flag&0x80 != 0 {
+			return fmt.Errorf("native death reward replacement: raw slot %d is not occupied", slot)
+		}
+	}
+	inventory := append([]int(nil), unit.Inventory...)
+	equipped := append([]bool(nil), unit.Equipped...)
+	slots := append([]int(nil), unit.InventorySlots...)
+	flags := append([]int(nil), unit.NativeInventoryFlags...)
+	if !removeNativeCompactInventory(unit, selectedIndex) || !unit.AddInventoryItem(rewardItem, false) {
+		unit.Inventory, unit.Equipped = inventory, equipped
+		unit.InventorySlots, unit.NativeInventoryFlags = slots, flags
+		return fmt.Errorf("native death reward replacement: mutation failed")
+	}
+	return nil
+}
+
 func firstInventoryHole(slots []int) int {
 	for i, item := range slots {
 		if item == 0xff {

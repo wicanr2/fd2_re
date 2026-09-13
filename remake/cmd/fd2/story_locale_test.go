@@ -919,8 +919,8 @@ func TestAllRuntimeStoriesMatchCanonicalLineIdentities(t *testing.T) {
 		}
 		allLines = append(allLines, lines...)
 	}
-	if len(allLines) != 1564 {
-		t.Fatalf("canonical runtime story lines=%d, want 1564", len(allLines))
+	if len(allLines) != 1563 {
+		t.Fatalf("canonical runtime story lines=%d, want 1563", len(allLines))
 	}
 	for _, localeID := range localeIDs {
 		content, err := loadOfficialLocaleContent(localeID)

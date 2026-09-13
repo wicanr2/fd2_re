@@ -10,7 +10,12 @@
 台詞，FDTXT_027 與可編輯故事成為 68:68 順序映射；事件 64 的 `2:64` 程式及延後生成
 群組 3／4／5 已通過資料覆蓋與正式執行期聚焦測試，達 `DATA-READY`／`RUNTIME-E1`，
 未提升為一般玩家路徑 `PLAYER-E2`。
-主紀錄見 [110](110-death-effects-and-level-cap-20260911.md)。
+同日另以 IDA 9.4 閉合 `0x1AA56..0x1AB77`：死亡掉落物品滿欄時，原版不是轉交
+隊友，而是詢問是否丟棄擊殺者自己的一件舊物品；YES 走
+`0x1B932→0x1B722→0x1B8E7→0x1BB8C`，NO／Escape 以 FDTXT `0x1B2` 顯示含
+獎勵物品名的放棄訊息。正式 indexed 提示、八格選擇器、原子交易與逐 Draw 生命週期
+已達 `RUNTIME-E1`；主證據與 CONFORMED 規格見
+[110](110-death-effects-and-level-cap-20260911.md)。
 
 2026-09-11 第一關整段（`RUNTIME-E1`）：重製端自己從標題 START 走完序章、第一關與戰後過場，
 進入羅德鎮；固定種子跑兩次逐位元相同。序章 19 次呼叫／97 句、第 1 回合 12 筆 runtime、
@@ -593,6 +598,7 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 | 位址／家族 | 現有主證據 | 已閉合範圍 | 仍可做的工作 |
 |---|---|---|---|
+| `0x1AA56..0x1AB77`、`0x1B932`、`0x1B722`、`0x1B8E7`、`0x1BB8C`（死亡物品滿欄） | [`fd2_death_reward_full_inventory_ida.txt`](../data/ida/fd2_death_reward_full_inventory_ida.txt)、[`110`](110-death-effects-and-level-cap-20260911.md) | `RE-CLOSED`／`RUNTIME-E1`：FDTXT `0x1B1/0x1B2`、YES／NO／Escape、擊殺者 raw 八格 selector、方向鍵、選中舊物左移及新獎勵尾端插入已由正式阻塞 UI 與原子 writer 消費；直接指令否定隊友轉交 | 只補未修改原版同狀態逐幀／音訊與一般玩家 E2；不再因 issue 舊標題重做隊友 recipient 分支，也不重解上述 selector／writer |
 | `0x15F84`、`0x16B43`、`0x16C57`、`0x16559` | [`29`](29-remake-extensible-event-system.md)、[`fd2_story_dialogue_layout_ida.txt`](../data/ida/fd2_story_dialogue_layout_ida.txt)、各 handler 直接指令 | 基本 renderer、四種故事開框碼、`FFFE/FFFD`、`sub_165AC`五階段opening、逐raw glyph寫入、`sub_16C57→sub_16559`等待期嘴型、`sub_16B43`五張snapshot restore／可選游標尾段已`RE-CLOSED`。多rune Unicode映射另以`glyph_pages`保留一個raw word一個16px token，避免13格`ASR-07`被誤算16格；資料模型與compositor測試已通過 | 只開其他 caller-specific binding與E2；不重解基本函式角色、opening、逐字、嘴型或closing順序 |
 | `0x1366A` | [`50`](50-cutscene-script-system-design.md)、`chapter_beats` | acting 呼叫原語 | 個別資源、場景時序與畫面；不重解原語本身 |
 | `0x11DF2` | [`fd2_11df2_palette_disasm.txt`](../data/fd2_11df2_palette_disasm.txt) | palette range/delta helper | caller 時序與畫面；應回填 exporter |
