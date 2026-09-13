@@ -8,9 +8,11 @@ import (
 )
 
 // applyNativeTransientPhases owns one or more ordered sub_1A866(selector)
-// sweeps as a single publication. It decrements raw +0x22..+0x27 and, when
-// any byte expires, runs the proven 0x1B750 equipment/derived-stat
-// recalculation before publishing the state.
+// sweeps as a single publication. Each sweep applies the proven +0x25 HP
+// writer, sub_1DB65 inactive mark and raw +0x22..+0x27 countdown. When any
+// byte expires, it runs the proven 0x1B750 equipment/derived-stat
+// recalculation before publishing the state. This path deliberately has no
+// killer and never enters the action-only 0x1B6B7/0x1AA1D dispatch.
 func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []battle.NativeTransientExpiry, error) {
 	if g == nil || g.st == nil || !g.st.HasNativeRuntimeUnitProjection ||
 		len(g.st.Units) != len(g.st.NativeRuntimeRecords) || len(selectors) == 0 {
@@ -35,7 +37,11 @@ func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []b
 			return nil, nil, fmt.Errorf("native transient phase: duplicate selector %d", selector)
 		}
 		selected[selector] = struct{}{}
-		expired = append(expired, candidate.TickNativeTransientsRaw(selector)...)
+		result, err := candidate.AdvanceNativeTransientPhaseRaw(selector)
+		if err != nil {
+			return nil, nil, err
+		}
+		expired = append(expired, result.Expired...)
 	}
 	expiredUnits := make(map[*battle.Unit]struct{}, len(expired))
 	for _, event := range expired {

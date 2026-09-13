@@ -9,7 +9,9 @@ import (
 
 // beginNativeTransientPhases preflights every indexed expiry frame before it
 // publishes the private raw/typed transaction. Missing original assets keep
-// both the countdown and its player-visible feedback unchanged.
+// the HP/status transaction and its player-visible feedback unchanged. The
+// exact sub_1A866 FDTXT 0x1E7 damage text and sub_1DB65 death animation are not
+// yet claimed by this expiry-only presentation owner.
 func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 	if g == nil || g.nativeClassUIJob != nil || g.transientUI {
 		return errors.New("native transient presentation: another indexed owner is active")

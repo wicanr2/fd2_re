@@ -50,7 +50,7 @@
 | 某關**玩家可見事件候選**(第幾回合/增援/加入/勝敗) | **青衫攻略 `references/text/fd2-walkthrough-index.md`**(E3 authored reference)+ 全文 `references/text/fd2.md`；忠實 chNN 仍須 handler/FDFIELD/DOSBox 證據 |
 | 某句對白**第幾回合/什麼事件**觸發(哈諾/海盜頭目/海防隊) | 青衫索引(時機)+ **`ch01.json` events**(Fable5 RE 範本)+ `26` + `battle_events.json` + `52` §1.2 |
 | 草地幕走位逐幀量測(原始數據) | `55`(機制見 **`50` §1.1**) |
-| 單位倒下時的死亡效果(掉落、金錢、全域事件、死亡台詞)與升級上限、30 級歸零 | **`110`**(轉寫 `remake/assets/data/native_death_events.json`) |
+| 單位倒下時的死亡效果（掉落、金錢、全域事件、死亡台詞）、狀態致死無分派，以及升級上限、30 級歸零 | **`110`**（轉寫 `remake/assets/data/native_death_events.json`；狀態 phase 主證據 `fd2_status_death_ida.txt`） |
 | 重製端從標題 START 走到第一關後的城鎮,逐項對原版證據(序章對白、第 1 回合單位、戰場事件、戰後、進城) | **`109`**(收據 `docs/data/ui-traces/title-to-town-ch01-e1.json`) |
 | 索爾四人**怎麼進戰場**(進場動畫/站位) | `52` §1.1 + `46` §4(⚠ 進場動畫細節待 dosbox 定稿) |
 | acting 機制(正常 frame 逐格移動；特殊 frame 原地姿態) | **`50` §1.2**(`54` 僅存 dosbox 實測原始記錄) |

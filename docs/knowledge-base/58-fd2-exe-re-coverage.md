@@ -17,6 +17,15 @@
 已達 `RUNTIME-E1`；主證據與 CONFORMED 規格見
 [110](110-death-effects-and-level-cap-20260911.md)。
 
+2026-09-13 狀態致死分派（`RE-CLOSED`／`RUNTIME-E1`）：IDA 9.4 證實
+`sub_1A866` 的 `+0x25` writer 先做 `HP=max(0,HP-MaxHP/10)`，接著無條件呼叫
+`sub_1DB65`，由後者把所有 HP 0 記錄的整個 `+5` 覆寫為 1。這條 phase 沒有
+killer ABI，也不呼叫行動專屬的 `0x1B6B7→0x1AA1D`；所以不發物品／金錢、型態 2
+事件或型態 3 台詞，也不會延遲借用下一位行動者。重製端已依同一 writer 順序完成
+raw／typed 原子 transaction；FDTXT `0x1E7`、狀態 phase 死亡動畫、逐幀／音訊與
+一般玩家 `PLAYER-E2` 仍未提升。主證據見
+[`fd2_status_death_ida.txt`](../data/ida/fd2_status_death_ida.txt) 與 [110 §8](110-death-effects-and-level-cap-20260911.md)。
+
 2026-09-11 第一關整段（`RUNTIME-E1`）：重製端自己從標題 START 走完序章、第一關與戰後過場，
 進入羅德鎮；固定種子跑兩次逐位元相同。序章 19 次呼叫／97 句、第 1 回合 12 筆 runtime、
 戰場事件（回合, 字串）、戰後 13 句、進城節點／金幣 1000／隊伍順序／未升級者 MaxHP
@@ -624,7 +633,7 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 | `0x27FC9..0x286BD`（玩家 commands32–35 共用演出） | [`fd2_command32_35_presentation_ida.txt`](../data/ida/fd2_command32_35_presentation_ida.txt)、[`fd2_command34_tail_presentation_ida.txt`](../data/ida/fd2_command34_tail_presentation_ida.txt)、[`fd2_command35_tail_presentation_ida.txt`](../data/ida/fd2_command35_tail_presentation_ida.txt) | `RE-CLOSED`／`DATA-READY`／受限class19玩家`RUNTIME-E1`：唯一caller、#65..68效果、#91..94按ID音效、兩段滑入、main／11張可選tail、raw RGB插值、steady restore及四條command-specific tail已閉合。四個正式owner逐Draw消費共用段、0..40 map ramp及專用tail；ID34／35另逐段發布三個writer，中途失敗回復raw／HP／RNG／indexed buffers | IDs32–35一般玩家同狀態逐幀／逐音訊E2另列；score／EXP、AI與其他visual group仍失敗即關閉，不重做正式玩家owner |
 | `0x2111A..0x211A4`／`0x1CAC7..0x1CD17`（ID32 command-specific tail） | [`fd2_command32_tail_presentation_ida.txt`](../data/ida/fd2_command32_tail_presentation_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：ID32 #6 `0x40..0x49`、#80 sample9、`0x4A/0x4B`四組90 ms切換、傷害後queue分流、bias `0x5E`與22張數字段均由正式玩家owner消費；HP／RNG只在切換後發布，尾停後才發布`Acted`。非靜音原始資產端到端及晚期rollback回歸已通過 | 精確同狀態逐幀／逐音訊與一般玩家E2另列；不重解tail函式 |
 | `0x211A4..0x21206`（ID33 command-specific tail） | [`fd2_command33_tail_presentation_ida.txt`](../data/ida/fd2_command33_tail_presentation_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：函式硬編碼command13，正式玩家owner依序消費#66／#92共用段、#6 `0x39..0x3F`、#80 sample12／1、五組raw mask `0xC0`、`0x1C916(...,0x320)`、bias `0x69`及22張結果；不包含`0x21EB1`。mask後才發布HP／raw／RNG，尾停後才發布`Acted`，晚期錯誤可回復 | 精確逐幀／逐音訊、score／EXP、敵方owner與一般玩家E2另列；不重解tail函式 |
-| `0x1A866`／`0x1B750`（transient 到期呈現） | [`fd2_transient_expiry_presentation_ida.txt`](../data/ida/fd2_transient_expiry_presentation_ida.txt) | `RE-CLOSED`：selector `1/0/2` 三個 caller；raw `+0x22..+0x27` 倒數／歸零；`sub_12D7B` 重畫、`sub_1956B(raw +7)` DATO 來源、`sub_15F84` FDTXT `0x1E1..0x1E6`（481..486）文字、`0x4E031` present／input、delay10、`sub_196CB` 關閉與 `sub_1B750` derived recalc 順序 | 正式 UI 已以目前 indexed map、raw +7 DATO、FDTXT 481..486 建立並在完整預建後原子發布；下一步只補精確 tick／音訊、狀態高階名稱與一般玩家 E2；status colors／icons另由 `0x17FC0` 主證據關閉，不猜六個 raw 欄位名稱、不重解 `sub_1A866` 函式本體 |
+| `0x1A866→0x1DB65`／`0x1B750`（transient phase 與到期呈現） | [`fd2_status_death_ida.txt`](../data/ida/fd2_status_death_ida.txt)、[`fd2_transient_expiry_presentation_ida.txt`](../data/ida/fd2_transient_expiry_presentation_ida.txt) | `RE-CLOSED`／`RUNTIME-E1`：selector `1/0/2` 三個 caller；`+0x25` 先扣 `floor(MaxHP/10)`、全記錄 HP 0 後由 `sub_1DB65` 整 byte 寫 `+5=1`，再由存活者做 raw `+0x22..+0x27` 倒數／歸零；狀態致死無 killer、無 `0x1B6B7→0x1AA1D` 分派。到期端的重畫、DATO、FDTXT `0x1E1..0x1E6`、present／input、delay10、關閉與 derived recalc 順序亦已閉合 | 正式 raw／typed phase transaction 與 indexed 到期 UI 已接；只補 FDTXT `0x1E7` 扣血回覆、狀態 phase 的 `sub_1DB65` 動畫、精確 tick／音訊、狀態高階名稱與一般玩家 E2；status colors／icons另由 `0x17FC0` 關閉，不重解已證實的 writer、caller 或無分派結論 |
 | `0x17FC0`（角色 status colors／icons） | [`fd2_status_panel_transient_indicators_ida.txt`](../data/ida/fd2_status_panel_transient_indicators_ida.txt) | `RE-CLOSED`／`RUNTIME-E1`：`+0x22..+0x24` 切換 digit base `0x2A/0x77`；`+0x25..+0x27` 非零時消費 FDOTHER #5 entries `0x37..0x39`；typed plan、indexed renderer、church status 正式 owner 與原始資產 regression 均已接 | 只補高階名稱、精確 tick／音訊與一般玩家 E2；不另造六個圖示、不重解函式 |
 | `0x24618` | chapter-specific IDA 證據；例如 [`ch22`](../data/ida/fd2_ch22_pre_ida.txt)、[`ch27/28`](../data/ida/fd2_ch27_ch28_pre_owner_ida.txt) | indexed transition 核心與部分 caller payload | 新 caller 必須另證參數／view；不得把已知 callee 當全新未知 |
 | `0x22253` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`fd2_ch28_post_ida.txt`](../data/ida/fd2_ch28_post_ida.txt) | 共用11＋6＋10、18／24-row bridge、五參數 ABI；battle-state Ebiten presenter已由raw ch28 post及command23兩次離場／入場正式路徑消費，均達`RUNTIME-E1` | 其他 caller-specific focus／story-array adapter與同狀態E2；command23只補camera／逐幀驗收；callee及已閉合caller payload不重解 |

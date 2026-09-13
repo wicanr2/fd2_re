@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
 func TestNativeTransientPhaseExpiresAndRecomputesAtomically(t *testing.T) {
@@ -115,6 +117,59 @@ func TestNativeTransientPhasesRejectDuplicateSelectorAtomically(t *testing.T) {
 	}
 	if !reflect.DeepEqual(*g.st.Units[0], before) {
 		t.Fatal("duplicate selector mutated live unit")
+	}
+}
+
+func TestNativeTransientStatusDeathsNeverDispatchDeathEffectsOrBorrowNextActor(t *testing.T) {
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	g.gold = 77
+	base := g.st.Units[0]
+	base.NativeRecordByte6 = 2
+	g.st.NativeRuntimeRecords[0].Raw[6] = 2
+	g.st.Units = nil
+	g.st.NativeRuntimeRecords = nil
+	for kind := 0; kind <= 3; kind++ {
+		clone := *base
+		clone.HP, clone.MaxHP = 10, 100
+		clone.NativeRecordByte5 = 0
+		clone.NativeTransient = [6]byte{0, 0, 0, 2}
+		clone.NativeRecordDeathEffect = [3]byte{byte(kind), byte(40 + kind), 0}
+		clone.HasNativeRecordDeathEffect = true
+		record := battle.NativeRuntimeRecordState{}
+		record.Raw[5], record.Raw[6], record.Raw[0x25] = 0, 2, 2
+		binary.LittleEndian.PutUint16(record.Raw[0x40:0x42], 10)
+		binary.LittleEndian.PutUint16(record.Raw[0x42:0x44], 100)
+		g.st.Units = append(g.st.Units, &clone)
+		g.st.NativeRuntimeRecords = append(g.st.NativeRuntimeRecords, record)
+	}
+
+	if _, err := g.applyNativeTransientPhase(2); err != nil {
+		t.Fatal(err)
+	}
+	for slot, unit := range g.st.Units {
+		if unit.HP != 0 || unit.NativeRecordByte5 != 1 ||
+			g.st.NativeRuntimeRecords[slot].Raw[5] != 1 || unit.NativeTransient[3] != 2 {
+			t.Fatalf("slot %d did not finish through sub_1DB65 semantics: HP=%d byte5=%d duration=%d",
+				slot, unit.HP, unit.NativeRecordByte5, unit.NativeTransient[3])
+		}
+	}
+	if len(g.pendingDeathPrograms) != 0 || len(g.pendingNativeDeathRewards) != 0 ||
+		g.deathProgramKiller != nil || g.gold != 77 {
+		t.Fatalf("status death entered action dispatch: programs=%d rewards=%d killer=%v gold=%d",
+			len(g.pendingDeathPrograms), len(g.pendingNativeDeathRewards), g.deathProgramKiller, g.gold)
+	}
+
+	// 下一位行動者到來前再掃一次也不得重收集或補派；死亡單位已由 +5 bit0 擋住。
+	if _, err := g.applyNativeTransientPhase(2); err != nil {
+		t.Fatal(err)
+	}
+	for _, dead := range g.st.Units {
+		g.queueNativeDeathProgram(dead, nil)
+		g.grantNativeDeathReward(1, 999, nil)
+	}
+	if len(g.pendingDeathPrograms) != 0 || len(g.pendingNativeDeathRewards) != 0 || g.gold != 77 {
+		t.Fatalf("next actor inherited status kills: programs=%d rewards=%d gold=%d",
+			len(g.pendingDeathPrograms), len(g.pendingNativeDeathRewards), g.gold)
 	}
 }
 

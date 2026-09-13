@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/binary"
 	"os"
 	"path/filepath"
 	"testing"
@@ -30,6 +31,8 @@ func nativeCurrentSaveTestGame(t *testing.T) (*Game, string, []byte) {
 	baseline.Raw[0x20] = 2
 	baseline.Raw[0x21] = 12
 	baseline.Raw[0x3b] = 5
+	binary.LittleEndian.PutUint16(baseline.Raw[0x40:0x42], 20)
+	binary.LittleEndian.PutUint16(baseline.Raw[0x42:0x44], 30)
 	for slot := 0; slot < 8; slot++ {
 		baseline.Raw[0x0a+slot*2] = 0x80
 		baseline.Raw[0x0b+slot*2] = 0xff

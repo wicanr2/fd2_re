@@ -1,0 +1,465 @@
+FD2 狀態扣血致死／死亡效果收集：IDA Pro 9.4 非破壞性匯出
+input_file=FD2.EXE
+input_size=357074
+input_md5=b97caf2239a27a896069d03549d96e1e
+input_sha256=222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f
+ida_version=9.4
+imagebase=0x0
+address_space=DOS LE loader linear address
+inference_contract=raw_name/address/bytes preserved; semantics graded in doc 110
+
+=== xrefs to 0x1a866; function=0x1a866..0x1aa1d raw_name=sub_1A866 ===
+0x1a4d1 caller=0x1a30b..0x1a7bd raw_name=sub_1A30B instruction=call    sub_1A866
+0x1a55e caller=0x1a30b..0x1a7bd raw_name=sub_1A30B instruction=call    sub_1A866
+0x1a797 caller=0x1a30b..0x1a7bd raw_name=sub_1A30B instruction=call    sub_1A866
+
+=== xrefs to 0x1db65; function=0x1db65..0x1debe raw_name=sub_1DB65 ===
+0x15447 caller=0x15311..0x1548e raw_name=sub_15311 instruction=call    sub_1DB65
+0x15643 caller=0x1548e..0x1567e raw_name=sub_1548E instruction=call    sub_1DB65
+0x18fe0 caller=0x18d8c..0x190ac raw_name=sub_18D8C instruction=call    sub_1DB65
+0x1a941 caller=0x1a866..0x1aa1d raw_name=sub_1A866 instruction=call    sub_1DB65
+0x1d497 caller=0x1cff0..0x1d4cb raw_name=sub_1CFF0 instruction=call    sub_1DB65
+0x21062 caller=0x20c6f..0x21082 raw_name=sub_20C6F instruction=call    sub_1DB65
+0x3543d caller=0x353da..0x35487 raw_name=sub_353DA instruction=call    sub_1DB65
+0x35beb caller=0x35bba..0x35bf2 raw_name=sub_35BBA instruction=call    sub_1DB65
+
+=== xrefs to 0x1b6b7; function=0x1b6b7..0x1b722 raw_name=sub_1B6B7 ===
+0x1562f caller=0x1548e..0x1567e raw_name=sub_1548E instruction=call    sub_1B6B7
+0x18fd6 caller=0x18d8c..0x190ac raw_name=sub_18D8C instruction=call    sub_1B6B7
+0x1d48d caller=0x1cff0..0x1d4cb raw_name=sub_1CFF0 instruction=call    sub_1B6B7
+0x21058 caller=0x20c6f..0x21082 raw_name=sub_20C6F instruction=call    sub_1B6B7
+
+=== xrefs to 0x1aa1d; function=0x1aa1d..0x1acf3 raw_name=sub_1AA1D ===
+0x15458 caller=0x15311..0x1548e raw_name=sub_15311 instruction=call    sub_1AA1D
+0x15652 caller=0x1548e..0x1567e raw_name=sub_1548E instruction=call    sub_1AA1D
+0x18fea caller=0x18d8c..0x190ac raw_name=sub_18D8C instruction=call    sub_1AA1D
+0x1d4a9 caller=0x1cff0..0x1d4cb raw_name=sub_1CFF0 instruction=call    sub_1AA1D
+0x21072 caller=0x20c6f..0x21082 raw_name=sub_20C6F instruction=call    sub_1AA1D
+0x34f96 caller=0x34f74..0x34fcb raw_name=sub_34F74 instruction=call    sub_1AA1D
+0x35039 caller=0x34ff0..0x3505f raw_name=sub_34FF0 instruction=call    sub_1AA1D
+0x352bc caller=0x3529a..0x352e2 raw_name=sub_3529A instruction=call    sub_1AA1D
+0x35470 caller=0x353da..0x35487 raw_name=sub_353DA instruction=call    sub_1AA1D
+
+=== sub_1A866 +0x25 HP writer、death presenter 與 chapter hook [0x1a874..0x1a957) ===
+0x1a874  31 ed                                xor     ebp, ebp
+0x1a876  eb 01                                jmp     short loc_1A879
+0x1a878  45                                   inc     ebp
+0x1a879  3b 2d eb 3b 05 00                    cmp     ebp, dword_53BEB
+0x1a87f  0f 8d bc 00 00 00                    jge     loc_1A941
+0x1a885  89 e8                                mov     eax, ebp
+0x1a887  c1 e0 02                             shl     eax, 2
+0x1a88a  01 e8                                add     eax, ebp
+0x1a88c  c1 e0 04                             shl     eax, 4
+0x1a88f  8b 35 45 3a 05 00                    mov     esi, dword_53A45
+0x1a895  01 c6                                add     esi, eax
+0x1a897  0f b6 46 25                          movzx   eax, byte ptr [esi+25h]
+0x1a89b  85 c0                                test    eax, eax
+0x1a89d  74 d9                                jz      short loc_1A878
+0x1a89f  0f b6 46 06                          movzx   eax, byte ptr [esi+6]
+0x1a8a3  3b 44 24 14                          cmp     eax, [esp+10h+arg_0]
+0x1a8a7  75 cf                                jnz     short loc_1A878
+0x1a8a9  f6 46 05 01                          test    byte ptr [esi+5], 1
+0x1a8ad  75 c9                                jnz     short loc_1A878
+0x1a8af  0f b7 7e 40                          movzx   edi, word ptr [esi+40h]
+0x1a8b3  0f b7 56 42                          movzx   edx, word ptr [esi+42h]
+0x1a8b7  bb 0a 00 00 00                       mov     ebx, 0Ah
+0x1a8bc  89 d0                                mov     eax, edx
+0x1a8be  c1 fa 1f                             sar     edx, 1Fh
+0x1a8c1  f7 fb                                idiv    ebx
+0x1a8c3  a3 e1 3a 05 00                       mov     dword_53AE1, eax
+0x1a8c8  29 c7                                sub     edi, eax
+0x1a8ca  85 ff                                test    edi, edi
+0x1a8cc  7d 02                                jge     short loc_1A8D0
+0x1a8ce  31 ff                                xor     edi, edi
+0x1a8d0  66 89 7e 40                          mov     [esi+40h], di
+0x1a8d4  c7 05 83 1a 05 00 00 00 00 00        mov     dword_51A83, 0
+0x1a8de  55                                   push    ebp
+0x1a8df  e8 97 84 ff ff                       call    sub_12D7B
+0x1a8e4  83 c4 04                             add     esp, 4
+0x1a8e7  c7 05 83 1a 05 00 01 00 00 00        mov     dword_51A83, 1
+0x1a8f1  0f b6 46 07                          movzx   eax, byte ptr [esi+7]
+0x1a8f5  50                                   push    eax
+0x1a8f6  e8 70 ec ff ff                       call    sub_1956B
+0x1a8fb  83 c4 04                             add     esp, 4
+0x1a8fe  6a 01                                push    1
+0x1a900  6a 13                                push    13h
+0x1a902  6a 4a                                push    4Ah ; 'J'
+0x1a904  6a 4c                                push    4Ch ; 'L'
+0x1a906  68 cd 00 00 00                       push    0CDh
+0x1a90b  68 40 01 00 00                       push    140h
+0x1a910  68 23 9f 0a 00                       push    0A9F23h
+0x1a915  68 e7 01 00 00                       push    1E7h
+0x1a91a  ff 35 7d 3a 05 00                    push    dword_53A7D
+0x1a920  e8 5f b6 ff ff                       call    sub_15F84
+0x1a925  83 c4 24                             add     esp, 24h
+0x1a928  e8 04 37 03 00                       call    sub_4E031
+0x1a92d  6a 0a                                push    0Ah
+0x1a92f  e8 8c 3c 00 00                       call    sub_1E5C0
+0x1a934  83 c4 04                             add     esp, 4
+0x1a937  e8 8f ed ff ff                       call    sub_196CB
+0x1a93c  e9 37 ff ff ff                       jmp     loc_1A878
+0x1a941  e8 1f 32 00 00                       call    sub_1DB65
+0x1a946  a1 03 3c 05 00                       mov     eax, dword_53C03
+0x1a94b  6a 00                                push    0
+0x1a94d  ff 14 85 19 1b 05 00                 call    funcs_1197B[eax*4]
+0x1a954  83 c4 04                             add     esp, 4
+
+=== sub_1A866 六個狀態倒數；inactive gate 在扣減前 [0x1a959..0x1aa1d) ===
+0x1a959  eb 01                                jmp     short loc_1A95C
+0x1a95b  45                                   inc     ebp
+0x1a95c  3b 2d eb 3b 05 00                    cmp     ebp, dword_53BEB
+0x1a962  0f 8d 3f e7 ff ff                    jge     loc_190A7
+0x1a968  89 e8                                mov     eax, ebp
+0x1a96a  c1 e0 02                             shl     eax, 2
+0x1a96d  01 e8                                add     eax, ebp
+0x1a96f  c1 e0 04                             shl     eax, 4
+0x1a972  8b 35 45 3a 05 00                    mov     esi, dword_53A45
+0x1a978  01 c6                                add     esi, eax
+0x1a97a  31 ff                                xor     edi, edi
+0x1a97c  eb 01                                jmp     short loc_1A97F
+0x1a97e  47                                   inc     edi
+0x1a97f  83 ff 06                             cmp     edi, 6
+0x1a982  7d d7                                jge     short loc_1A95B
+0x1a984  0f b6 46 06                          movzx   eax, byte ptr [esi+6]
+0x1a988  3b 44 24 14                          cmp     eax, [esp+arg_10]
+0x1a98c  75 f0                                jnz     short loc_1A97E
+0x1a98e  f6 46 05 01                          test    byte ptr [esi+5], 1
+0x1a992  75 ea                                jnz     short loc_1A97E
+0x1a994  8d 04 3e                             lea     eax, [esi+edi]
+0x1a997  0f b6 50 22                          movzx   edx, byte ptr [eax+22h]
+0x1a99b  85 d2                                test    edx, edx
+0x1a99d  74 df                                jz      short loc_1A97E
+0x1a99f  fe 48 22                             dec     byte ptr [eax+22h]
+0x1a9a2  0f b6 40 22                          movzx   eax, byte ptr [eax+22h]
+0x1a9a6  85 c0                                test    eax, eax
+0x1a9a8  75 d4                                jnz     short loc_1A97E
+0x1a9aa  a3 83 1a 05 00                       mov     dword_51A83, eax
+0x1a9af  55                                   push    ebp
+0x1a9b0  e8 c6 83 ff ff                       call    sub_12D7B
+0x1a9b5  83 c4 04                             add     esp, 4
+0x1a9b8  c7 05 83 1a 05 00 01 00 00 00        mov     dword_51A83, 1
+0x1a9c2  0f b6 46 07                          movzx   eax, byte ptr [esi+7]
+0x1a9c6  50                                   push    eax
+0x1a9c7  e8 9f eb ff ff                       call    sub_1956B
+0x1a9cc  83 c4 04                             add     esp, 4
+0x1a9cf  6a 01                                push    1
+0x1a9d1  6a 13                                push    13h
+0x1a9d3  6a 4a                                push    4Ah ; 'J'
+0x1a9d5  6a 4c                                push    4Ch ; 'L'
+0x1a9d7  68 cd 00 00 00                       push    0CDh
+0x1a9dc  68 40 01 00 00                       push    140h
+0x1a9e1  68 23 9f 0a 00                       push    0A9F23h
+0x1a9e6  8d 87 e1 01 00 00                    lea     eax, [edi+1E1h]
+0x1a9ec  50                                   push    eax
+0x1a9ed  ff 35 7d 3a 05 00                    push    dword_53A7D
+0x1a9f3  e8 8c b5 ff ff                       call    sub_15F84
+0x1a9f8  83 c4 24                             add     esp, 24h
+0x1a9fb  e8 31 36 03 00                       call    sub_4E031
+0x1aa00  6a 0a                                push    0Ah
+0x1aa02  e8 b9 3b 00 00                       call    sub_1E5C0
+0x1aa07  83 c4 04                             add     esp, 4
+0x1aa0a  e8 bc ec ff ff                       call    sub_196CB
+0x1aa0f  55                                   push    ebp
+0x1aa10  e8 3b 0d 00 00                       call    sub_1B750
+0x1aa15  83 c4 04                             add     esp, 4
+0x1aa18  e9 61 ff ff ff                       jmp     loc_1A97E
+
+=== sub_1DB65 無可見死亡單位時的 +5 writer [0x1db76..0x1dc67) ===
+0x1db76  31 ed                                xor     ebp, ebp
+0x1db78  31 f6                                xor     esi, esi
+0x1db7a  eb 01                                jmp     short loc_1DB7D
+0x1db7c  46                                   inc     esi
+0x1db7d  3b 35 eb 3b 05 00                    cmp     esi, dword_53BEB
+0x1db83  0f 8d a9 00 00 00                    jge     loc_1DC32
+0x1db89  89 f2                                mov     edx, esi
+0x1db8b  c1 e2 02                             shl     edx, 2
+0x1db8e  01 f2                                add     edx, esi
+0x1db90  c1 e2 04                             shl     edx, 4
+0x1db93  8b 1d 45 3a 05 00                    mov     ebx, dword_53A45
+0x1db99  01 d3                                add     ebx, edx
+0x1db9b  0f b6 0b                             movzx   ecx, byte ptr [ebx]
+0x1db9e  0f b6 7b 01                          movzx   edi, byte ptr [ebx+1]
+0x1dba2  f6 43 05 01                          test    byte ptr [ebx+5], 1
+0x1dba6  75 d4                                jnz     short loc_1DB7C
+0x1dba8  0f b7 53 40                          movzx   edx, word ptr [ebx+40h]
+0x1dbac  85 d2                                test    edx, edx
+0x1dbae  75 cc                                jnz     short loc_1DB7C
+0x1dbb0  8b 15 a9 3a 05 00                    mov     edx, dword_53AA9
+0x1dbb6  4a                                   dec     edx
+0x1dbb7  39 d1                                cmp     ecx, edx
+0x1dbb9  7c c1                                jl      short loc_1DB7C
+0x1dbbb  8b 15 a9 3a 05 00                    mov     edx, dword_53AA9
+0x1dbc1  03 15 87 1a 05 00                    add     edx, dword_51A87
+0x1dbc7  39 d1                                cmp     ecx, edx
+0x1dbc9  7f b1                                jg      short loc_1DB7C
+0x1dbcb  8b 15 ad 3a 05 00                    mov     edx, dword_53AAD
+0x1dbd1  4a                                   dec     edx
+0x1dbd2  39 d7                                cmp     edi, edx
+0x1dbd4  7c a6                                jl      short loc_1DB7C
+0x1dbd6  8b 15 ad 3a 05 00                    mov     edx, dword_53AAD
+0x1dbdc  03 15 8b 1a 05 00                    add     edx, dword_51A8B
+0x1dbe2  42                                   inc     edx
+0x1dbe3  39 d7                                cmp     edi, edx
+0x1dbe5  7f 95                                jg      short loc_1DB7C
+0x1dbe7  8d 51 ff                             lea     edx, [ecx-1]
+0x1dbea  2b 15 a9 3a 05 00                    sub     edx, dword_53AA9
+0x1dbf0  6b da 18                             imul    ebx, edx, 18h
+0x1dbf3  8b 15 49 3a 05 00                    mov     edx, dword_53A49
+0x1dbf9  81 c2 88 80 00 00                    add     edx, 8088h
+0x1dbff  8d 0c 1a                             lea     ecx, [edx+ebx]
+0x1dc02  8d 5f ff                             lea     ebx, [edi-1]
+0x1dc05  2b 1d ad 3a 05 00                    sub     ebx, dword_53AAD
+0x1dc0b  89 da                                mov     edx, ebx
+0x1dc0d  c1 e2 02                             shl     edx, 2
+0x1dc10  01 da                                add     edx, ebx
+0x1dc12  c1 e2 02                             shl     edx, 2
+0x1dc15  29 da                                sub     edx, ebx
+0x1dc17  c1 e2 06                             shl     edx, 6
+0x1dc1a  89 d3                                mov     ebx, edx
+0x1dc1c  c1 e2 03                             shl     edx, 3
+0x1dc1f  01 da                                add     edx, ebx
+0x1dc21  01 d1                                add     ecx, edx
+0x1dc23  81 e9 b0 0a 00 00                    sub     ecx, 0AB0h
+0x1dc29  89 0c ac                             mov     [esp+ebp*4+8Ch+var_8C], ecx
+0x1dc2c  45                                   inc     ebp
+0x1dc2d  e9 4a ff ff ff                       jmp     loc_1DB7C
+0x1dc32  85 ed                                test    ebp, ebp
+0x1dc34  75 31                                jnz     short loc_1DC67
+0x1dc36  31 f6                                xor     esi, esi
+0x1dc38  eb 01                                jmp     short loc_1DC3B
+0x1dc3a  46                                   inc     esi
+0x1dc3b  3b 35 eb 3b 05 00                    cmp     esi, dword_53BEB
+0x1dc41  0f 8d 6f 02 00 00                    jge     loc_1DEB6
+0x1dc47  89 f2                                mov     edx, esi
+0x1dc49  c1 e2 02                             shl     edx, 2
+0x1dc4c  01 f2                                add     edx, esi
+0x1dc4e  c1 e2 04                             shl     edx, 4
+0x1dc51  8b 1d 45 3a 05 00                    mov     ebx, dword_53A45
+0x1dc57  01 d3                                add     ebx, edx
+0x1dc59  0f b7 53 40                          movzx   edx, word ptr [ebx+40h]
+0x1dc5d  85 d2                                test    edx, edx
+0x1dc5f  75 d9                                jnz     short loc_1DC3A
+0x1dc61  c6 43 05 01                          mov     byte ptr [ebx+5], 1
+0x1dc65  eb d3                                jmp     short loc_1DC3A
+
+=== sub_1DB65 有可見死亡演出後的 +5 writer [0x1dcde..0x1dd52) ===
+0x1dcde  eb 01                                jmp     short loc_1DCE1
+0x1dce0  46                                   inc     esi
+0x1dce1  3b 35 eb 3b 05 00                    cmp     esi, dword_53BEB
+0x1dce7  7d 82                                jge     short loc_1DC6B
+0x1dce9  89 f3                                mov     ebx, esi
+0x1dceb  c1 e3 02                             shl     ebx, 2
+0x1dcee  01 f3                                add     ebx, esi
+0x1dcf0  c1 e3 04                             shl     ebx, 4
+0x1dcf3  8b 15 45 3a 05 00                    mov     edx, dword_53A45
+0x1dcf9  01 d3                                add     ebx, edx
+0x1dcfb  f6 43 05 01                          test    byte ptr [ebx+5], 1
+0x1dcff  75 df                                jnz     short loc_1DCE0
+0x1dd01  0f b7 53 40                          movzx   edx, word ptr [ebx+40h]
+0x1dd05  85 d2                                test    edx, edx
+0x1dd07  75 11                                jnz     short loc_1DD1A
+0x1dd09  b9 04 00 00 00                       mov     ecx, 4
+0x1dd0e  89 f8                                mov     eax, edi
+0x1dd10  89 fa                                mov     edx, edi
+0x1dd12  c1 fa 1f                             sar     edx, 1Fh
+0x1dd15  f7 f9                                idiv    ecx
+0x1dd17  88 53 03                             mov     [ebx+3], dl
+0x1dd1a  56                                   push    esi
+0x1dd1b  e8 c0 4a ff ff                       call    sub_127E0
+0x1dd20  83 c4 04                             add     esp, 4
+0x1dd23  eb bb                                jmp     short loc_1DCE0
+0x1dd25  31 f6                                xor     esi, esi
+0x1dd27  eb 01                                jmp     short loc_1DD2A
+0x1dd29  46                                   inc     esi
+0x1dd2a  3b 35 eb 3b 05 00                    cmp     esi, dword_53BEB
+0x1dd30  7d 20                                jge     short loc_1DD52
+0x1dd32  89 f2                                mov     edx, esi
+0x1dd34  c1 e2 02                             shl     edx, 2
+0x1dd37  01 f2                                add     edx, esi
+0x1dd39  c1 e2 04                             shl     edx, 4
+0x1dd3c  8b 1d 45 3a 05 00                    mov     ebx, dword_53A45
+0x1dd42  01 d3                                add     ebx, edx
+0x1dd44  0f b7 53 40                          movzx   edx, word ptr [ebx+40h]
+0x1dd48  85 d2                                test    edx, edx
+0x1dd4a  75 dd                                jnz     short loc_1DD29
+0x1dd4c  c6 43 05 01                          mov     byte ptr [ebx+5], 1
+0x1dd50  eb d7                                jmp     short loc_1DD29
+
+=== sub_1B6B7 死亡效果收集 gate [0x1b6c4..0x1b722) ===
+0x1b6c4  8b 7c 24 10                          mov     edi, [esp+0Ch+arg_0]
+0x1b6c8  31 f6                                xor     esi, esi
+0x1b6ca  31 db                                xor     ebx, ebx
+0x1b6cc  eb 01                                jmp     short loc_1B6CF
+0x1b6ce  43                                   inc     ebx
+0x1b6cf  3b 1d eb 3b 05 00                    cmp     ebx, dword_53BEB
+0x1b6d5  0f 8d 72 ff ff ff                    jge     loc_1B64D
+0x1b6db  89 d8                                mov     eax, ebx
+0x1b6dd  c1 e0 02                             shl     eax, 2
+0x1b6e0  01 d8                                add     eax, ebx
+0x1b6e2  c1 e0 04                             shl     eax, 4
+0x1b6e5  8b 15 45 3a 05 00                    mov     edx, dword_53A45
+0x1b6eb  01 d0                                add     eax, edx
+0x1b6ed  f6 40 05 01                          test    byte ptr [eax+5], 1
+0x1b6f1  75 db                                jnz     short loc_1B6CE
+0x1b6f3  0f b6 50 31                          movzx   edx, byte ptr [eax+31h]
+0x1b6f7  81 fa ff 00 00 00                    cmp     edx, 0FFh
+0x1b6fd  74 cf                                jz      short loc_1B6CE
+0x1b6ff  0f b7 50 40                          movzx   edx, word ptr [eax+40h]
+0x1b703  85 d2                                test    edx, edx
+0x1b705  7f c7                                jg      short loc_1B6CE
+0x1b707  6a 03                                push    3
+0x1b709  83 c0 31                             add     eax, 31h ; '1'
+0x1b70c  50                                   push    eax
+0x1b70d  89 f0                                mov     eax, esi
+0x1b70f  c1 e0 02                             shl     eax, 2
+0x1b712  29 f0                                sub     eax, esi
+0x1b714  01 f8                                add     eax, edi
+0x1b716  50                                   push    eax
+0x1b717  e8 a8 bc 01 00                       call    memmove
+0x1b71c  83 c4 0c                             add     esp, 0Ch
+0x1b71f  46                                   inc     esi
+0x1b720  eb ac                                jmp     short loc_1B6CE
+
+=== selector 1 phase caller [0x1a4c5..0x1a4e6) ===
+0x1a4c5  6a 01                                push    1
+0x1a4c7  e8 47 03 00 00                       call    sub_1A813
+0x1a4cc  83 c4 04                             add     esp, 4
+0x1a4cf  6a 01                                push    1
+0x1a4d1  e8 90 03 00 00                       call    sub_1A866
+0x1a4d6  83 c4 04                             add     esp, 4
+0x1a4d9  83 3d cc 3e 05 00 00                 cmp     dword_53ECC, 0
+0x1a4e0  0f 85 60 66 ff ff                    jnz     loc_10B46
+
+=== selector 0 phase caller [0x1a552..0x1a573) ===
+0x1a552  6a 00                                push    0
+0x1a554  e8 ba 02 00 00                       call    sub_1A813
+0x1a559  83 c4 04                             add     esp, 4
+0x1a55c  6a 00                                push    0
+0x1a55e  e8 03 03 00 00                       call    sub_1A866
+0x1a563  83 c4 04                             add     esp, 4
+0x1a566  83 3d cc 3e 05 00 00                 cmp     dword_53ECC, 0
+0x1a56d  0f 85 d3 65 ff ff                    jnz     loc_10B46
+
+=== selector 2 phase caller [0x1a78b..0x1a7a9) ===
+0x1a78b  6a 02                                push    2
+0x1a78d  e8 81 00 00 00                       call    sub_1A813
+0x1a792  83 c4 04                             add     esp, 4
+0x1a795  6a 02                                push    2
+0x1a797  e8 ca 00 00 00                       call    sub_1A866
+0x1a79c  83 c4 04                             add     esp, 4
+0x1a79f  c7 05 83 1a 05 00 01 00 00 00        mov     dword_51A83, 1
+
+=== AI mode 11 行動結算收集順序 [0x15610..0x15670) ===
+0x15613  83 c4 0c                             add     esp, 0Ch
+0x15616  eb 0f                                jmp     short loc_15627
+0x15618  ff 35 4b 3c 05 00                    push    dword_53C4B
+0x1561e  53                                   push    ebx
+0x1561f  e8 48 34 01 00                       call    sub_28A6C
+0x15624  83 c4 08                             add     esp, 8
+0x15627  e8 b8 de ff ff                       call    sub_134E4
+0x1562c  89 e0                                mov     eax, esp
+0x1562e  50                                   push    eax
+0x1562f  e8 83 60 00 00                       call    sub_1B6B7
+0x15634  89 c3                                mov     ebx, eax
+0x15636  83 c4 04                             add     esp, 4
+0x15639  6a 00                                push    0
+0x1563b  e8 6c c6 ff ff                       call    sub_11CAC
+0x15640  83 c4 04                             add     esp, 4
+0x15643  e8 1d 85 00 00                       call    sub_1DB65
+0x15648  89 e0                                mov     eax, esp
+0x1564a  50                                   push    eax
+0x1564b  53                                   push    ebx
+0x1564c  ff 35 4b 3c 05 00                    push    dword_53C4B
+0x15652  e8 c6 53 00 00                       call    sub_1AA1D
+0x15657  83 c4 0c                             add     esp, 0Ch
+0x1565a  6a 00                                push    0
+0x1565c  e8 4b c6 ff ff                       call    sub_11CAC
+0x15661  83 c4 04                             add     esp, 4
+0x15664  ff 35 4b 3c 05 00                    push    dword_53C4B
+0x1566a  e8 23 8c 00 00                       call    sub_1E292
+0x1566f  83 c4 04                             add     esp, 4
+
+=== 玩家行動結算收集順序 [0x18fbd..0x19020) ===
+0x18fc1  83 c4 08                             add     esp, 8
+0x18fc4  53                                   push    ebx
+0x18fc5  55                                   push    ebp
+0x18fc6  e8 a1 fa 00 00                       call    sub_28A6C
+0x18fcb  83 c4 08                             add     esp, 8
+0x18fce  e8 11 a5 ff ff                       call    sub_134E4
+0x18fd3  89 e0                                mov     eax, esp
+0x18fd5  50                                   push    eax
+0x18fd6  e8 dc 26 00 00                       call    sub_1B6B7
+0x18fdb  89 c3                                mov     ebx, eax
+0x18fdd  83 c4 04                             add     esp, 4
+0x18fe0  e8 80 4b 00 00                       call    sub_1DB65
+0x18fe5  89 e0                                mov     eax, esp
+0x18fe7  50                                   push    eax
+0x18fe8  53                                   push    ebx
+0x18fe9  55                                   push    ebp
+0x18fea  e8 2e 1a 00 00                       call    sub_1AA1D
+0x18fef  83 c4 0c                             add     esp, 0Ch
+0x18ff2  55                                   push    ebp
+0x18ff3  e8 1a a5 ff ff                       call    sub_13512
+0x18ff8  83 c4 04                             add     esp, 4
+0x18ffb  e8 31 50 03 00                       call    sub_4E031
+0x19000  e9 97 00 00 00                       jmp     loc_1909C
+0x19005  83 3d 57 3c 05 00 01                 cmp     dword_53C57, 1
+0x1900c  75 3e                                jnz     short loc_1904C
+0x1900e  55                                   push    ebp
+0x1900f  e8 dc 3f 00 00                       call    sub_1CFF0
+0x19014  83 c4 04                             add     esp, 4
+0x19017  85 c0                                test    eax, eax
+0x19019  74 f3                                jz      short loc_1900E
+0x1901b  83 f8 ff                             cmp     eax, 0FFFFFFFFh
+0x1901e  74 8c                                jz      short loc_18FAC
+
+=== 一般 command 行動結算收集順序 [0x1d470..0x1d4cb) ===
+0x1d470  53                                   push    ebx
+0x1d471  56                                   push    esi
+0x1d472  ff b4 24 f4 00 00 00                 push    [esp+0F0h+arg_0]
+0x1d479  ff 14 85 01 1d 05 00                 call    funcs_1541F[eax*4]
+0x1d480  83 c4 0c                             add     esp, 0Ch
+0x1d483  e8 6e 00 00 00                       call    sub_1D4F6
+0x1d488  8d 44 24 64                          lea     eax, [esp+0E8h+var_84]
+0x1d48c  50                                   push    eax
+0x1d48d  e8 25 e2 ff ff                       call    sub_1B6B7
+0x1d492  89 c3                                mov     ebx, eax
+0x1d494  83 c4 04                             add     esp, 4
+0x1d497  e8 c9 06 00 00                       call    sub_1DB65
+0x1d49c  8d 44 24 64                          lea     eax, [esp+0E8h+var_84]
+0x1d4a0  50                                   push    eax
+0x1d4a1  53                                   push    ebx
+0x1d4a2  ff b4 24 f4 00 00 00                 push    [esp+0F0h+arg_0]
+0x1d4a9  e8 6f d5 ff ff                       call    sub_1AA1D
+0x1d4ae  83 c4 0c                             add     esp, 0Ch
+0x1d4b1  c7 05 83 1a 05 00 01 00 00 00        mov     dword_51A83, 1
+0x1d4bb  b8 01 00 00 00                       mov     eax, 1
+0x1d4c0  81 c4 d8 00 00 00                    add     esp, 0D8h
+0x1d4c6  5d                                   pop     ebp
+0x1d4c7  5f                                   pop     edi
+0x1d4c8  5e                                   pop     esi
+0x1d4c9  5b                                   pop     ebx
+0x1d4ca  c3                                   retn
+
+=== AI item 行動結算收集順序 [0x21040..0x21082) ===
+0x21043  83 c4 0c                             add     esp, 0Ch
+0x21046  c7 05 c8 3e 05 00 00 00 00 00        mov     dword_53EC8, 0
+0x21050  e8 a1 c4 ff ff                       call    sub_1D4F6
+0x21055  89 e0                                mov     eax, esp
+0x21057  50                                   push    eax
+0x21058  e8 5a a6 ff ff                       call    sub_1B6B7
+0x2105d  89 c3                                mov     ebx, eax
+0x2105f  83 c4 04                             add     esp, 4
+0x21062  e8 fe ca ff ff                       call    sub_1DB65
+0x21067  89 e0                                mov     eax, esp
+0x21069  50                                   push    eax
+0x2106a  53                                   push    ebx
+0x2106b  ff b4 24 88 00 00 00                 push    [esp+84h+arg_0]
+0x21072  e8 a6 99 ff ff                       call    sub_1AA1D
+0x21077  83 c4 0c                             add     esp, 0Ch
+0x2107a  83 c4 6c                             add     esp, 6Ch
+0x2107d  5d                                   pop     ebp
+0x2107e  5f                                   pop     edi
+0x2107f  5e                                   pop     esi
+0x21080  5b                                   pop     ebx
+0x21081  c3                                   retn

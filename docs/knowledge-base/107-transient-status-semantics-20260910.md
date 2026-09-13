@@ -17,7 +17,7 @@
 | `+0x22` | 34 | command 17 | — | 攻擊力 × 1.15 | `sub_1B750` `0x1B7E7` |
 | `+0x23` | 35 | command 18 | — | 防禦力 × 1.15 | `sub_1B750` `0x1B802` |
 | `+0x24` | 36 | command 19 | — | 命中與迴避各 ＋15 | `sub_1B750` `0x1B78E` |
-| `+0x25` | 37 | command 26、物理武器 record `+9` ＝ 2 | command 20 | 擋掉回合開始的自動回復與反擊 | `sub_1A30B`、`sub_1F0DC` |
+| `+0x25` | 37 | command 26、物理武器 record `+9` ＝ 2 | command 20 | 每次所屬 selector phase 開始扣 `floor(MaxHP/10)`（最低 0）；另擋掉自動回復與反擊 | `sub_1A866`、`sub_1A30B`、`sub_1F0DC` |
 | `+0x26` | 38 | command 27 | command 21 | 同上 | 同上 |
 | `+0x27` | 39 | command 22 | — | 指令環的法術方向停用 | `sub_18D8C` `0x18EB9` |
 
@@ -59,13 +59,13 @@ if (unit[0x23]) v9 = v9 * 1.15;   // 魔鎧
 
 ## 重製端現況
 
-原版這條路整條都接了，分成兩端：
+原版已證實的狀態交易主線已接入；精確 FDTXT／動畫與一般玩家 E2 仍依下節保留：
 
 | 時機 | 原版 | 重製端 |
 |---|---|---|
 | 施加 | command 17／18／19 的 handler 直接改 `+0x48`／`+0x4A`（加 `trunc(值 × 0.15 + 1)`），並把剩餘回合數寫成 `RNG % 4 + 2` | `ApplyNativeRawWordStepAtOffsets` |
 | 重算 | `sub_1B750` 依 `+0x22`／`+0x23` 非零重新套 1.15、`+0x24` 加 15 | `nativeEquipmentTotals`（`runtimeModifiers` 為真那條） |
-| 遞減與到期 | `0x1A866` 逐一遞減，歸零重算 | `TickNativeTransientsRaw` ＋ `applyNativeTransientPhase` |
+| phase 扣血、死亡標記、遞減與到期 | `0x1A866` 先依記錄順序讓 `+0x25` 非零者扣 `MaxHP/10`，再由 `sub_1DB65` 將全部 HP 0 記錄的整個 `+5` 覆寫為 1；只有存活者繼續遞減，歸零後重算 | `AdvanceNativeTransientPhaseRaw` ＋ `applyNativeTransientPhase`；狀態致死不建立 killer，也不進行動專屬的 `0x1B6B7→0x1AA1D` |
 
 倍率在重製端是精確有理數 `2589569785738035 / 2251799813685248`（`nativeScale115TowardZero`），
 不是浮點乘法——那是為了重現 x87 的向零截斷，`int(100 × 1.15)` 會得到 114 而不是 115。
@@ -83,6 +83,9 @@ if (unit[0x23]) v9 = v9 * 1.15;   // 魔鎧
 - 六個狀態的玩家可見名稱。本檔只到「哪個 command 施加、效果是什麼」，沒有把它們
   對到遊戲內顯示的狀態名。
 - `sub_15DA2` 的第四個參數（3 或 4）差在哪。
-- `+0x25`／`+0x26` 除了擋回復與反擊之外還有沒有別的消費端；本輪掃到的讀取點都在
-  已列出的函式裡，但沒有逐一展開 `0x180F5`／`0x18122`／`0x1816C` 那一組。
-- 到期訊息的文字與呈現（`0x1A866` 的 expiry feedback 另有既有結論）。
+- `+0x26` 除了擋回復與反擊之外還有沒有別的消費端；`+0x25` 的 phase 扣血已由
+  [`110`](110-death-effects-and-level-cap-20260911.md) 與
+  [`fd2_status_death_ida.txt`](../data/ida/fd2_status_death_ida.txt) 閉合，但
+  `0x180F5`／`0x18122`／`0x1816C` 那一組尚未逐一展開。
+- `+0x25` 扣血時 FDTXT `0x1E7` 的精確呈現、`sub_1DB65` phase 動畫，以及到期
+  回覆的精確 tick／音訊與一般玩家 E2；目前狀態交易只列 `RUNTIME-E1`。

@@ -163,7 +163,7 @@ map31 的事件 4／5 在劇情地圖上，不打仗，不轉進劇本。
 
 | 項目 | 原因 | issue |
 |---|---|---|
-| 狀態致死的分派時機 | 收集端只在行動結算呼叫；狀態扣血致死是否設 `+5` bit0 未查 | [#22](https://github.com/wicanr2/fd2_re/issues/22) `status-death-effect-dispatch` |
+| 狀態致死的分派時機 | **已閉合：**`sub_1A866` 扣血後由 `sub_1DB65` 把 HP 0 記錄的整個 `+5` 覆寫為 1；沒有 killer，也不進 `0x1B6B7→0x1AA1D` | [#22](https://github.com/wicanr2/fd2_re/issues/22)；本文件 §8 |
 | 事件 30 的外觀 | 復活後 `+7`／`+8` 改成身分 6，名字與頭像是否跟著重建未逐幀比對 | — |
 
 ## 6. 第 27 關事件 64 的對白對齊契約（2026-09-13）
@@ -275,3 +275,83 @@ map31 的事件 4／5 在劇情地圖上，不打仗，不轉進劇本。
   同一 `fd2-go-test-local:20260909` 無網路容器的 `go test ./... -count=1` 亦全套通過。
   本切片達 `RE-CLOSED`／`RUNTIME-E1`，尚未宣稱原版同狀態逐幀、精確音訊或一般
   玩家 `PLAYER-E2`。
+
+## 8. `+0x25` 狀態扣血致死的分派（issue #22）
+
+### DRAFT（2026-09-13）
+
+待解問題不是一般攻擊怎麼收集死亡效果，而是 `sub_1A866(selector)` 第一段對
+`unit+0x25 != 0` 的單位扣 HP 後，是否會設定 `unit+5 bit0`、呼叫
+`sub_1B6B7`，或把某個之後行動的角色誤當擊殺者。DRAFT 只追這條 phase 路徑；
+不重解 issue #21 已閉合的滿欄物品 UI，也不把六個 raw 狀態 byte 全部重新命名。
+
+### 證據審查
+
+主證據為 [`fd2_status_death_ida.txt`](../data/ida/fd2_status_death_ida.txt)，由
+[`ida_export_status_death.py`](../../tools/ida_export_status_death.py) 在
+`ida-pro-9.4-idapython:locked-v1` 產生。輸入是本檔開頭的固定雜湊 `FD2.EXE`，
+IDA 9.4、imagebase 0，位址均為 DOS LE loader linear：
+
+- **已證實：**`0x1A897..0x1A8D0` 只對 `+0x25 != 0`、`+6 == selector`、
+  `+5 bit0 == 0` 的記錄執行 `HP = max(0, HP - MaxHP/10)`；`0x1A8D0` 是直接
+  `word [unit+0x40]` writer。每筆之後以 FDTXT `0x1E7` 顯示回覆。
+- **已證實：**全部記錄扣完後，`0x1A941` 無條件呼叫 `sub_1DB65`。無可見死亡
+  演出的分支在 `0x1DC36..0x1DC65`，有演出的分支在 `0x1DD25..0x1DD50`；兩者都
+  對每一筆 `HP == 0` 記錄把整個 `byte [unit+5]` 寫成 `1`，包含離開 viewport 的單位。
+- **已證實：**`sub_1A866` 只有 `0x1A4D1`、`0x1A55E`、`0x1A797` 三個 caller，
+  selector 依序屬 `1`、`0`、`2` phase。該函式沒有 `sub_1B6B7` 或
+  `sub_1AA1D` call，也沒有擊殺者參數；`0x1A94D` 只呼叫該章 handler table 的
+  selector 0 hook，不能充當死亡效果分派。
+- **已證實：**`sub_1B6B7` 的直接 caller 仍只有四個行動結算點
+  `0x1562F`、`0x18FD6`、`0x1D48D`、`0x21058`。它在讀 `+0x31` 死亡效果與
+  `+0x40` HP 前，先於 `0x1B6ED` 測 `+5 bit0`；狀態致死已被 `sub_1DB65`
+  寫成 1，之後任何行動結算都會跳過，沒有延後分派。
+- **已證實：**四個一般行動 caller 都先 `sub_1B6B7` 收集，再 `sub_1DB65`
+  標 inactive，最後才把原行動者索引傳給 `sub_1AA1D`。這個 killer ABI 只存在於
+  一般行動結算；狀態 phase 沒有對應實參，所以狀態致死不發物品、金錢、型態 2
+  事件或型態 3 台詞。
+
+高影響指令另以 `fd2-cap-local` 對 `0x1A874..0x1A957`、
+`0x1DB76..0x1DC67`、`0x1DCDE..0x1DD52`、`0x1B6C4..0x1B722` 直接解碼；
+指令、fixup 目標與固定雜湊均和 IDA 匯出一致。這推翻 issue 內「可能延到下一次
+行動並沿用那次行動者」的假說，但保留其成因與上述反證。
+
+### READY 規格
+
+1. `sub_1A866(selector)` 的正式重製 owner 依 runtime record 順序處理：只有
+   raw `+0x25 != 0`、`+6 == selector`、`+5 bit0 == 0` 才扣
+   `floor(MaxHP/10)`，最低夾到 0；typed HP 與 raw `+0x40` 必須原子同步。
+2. 同一 selector 的全部 HP writer 完成後，才模擬 `sub_1DB65`：所有 HP 0 記錄
+   的 raw `+5` 整個覆寫為 1，typed 投影同步；致死記錄不得再進同 phase 的六 byte
+   倒數或到期回覆。非致死記錄才依原有 raw 順序遞減 `+0x22..+0x27`。
+3. phase 路徑不建立 killer、不呼叫 `awardDeathReward`、不排入
+   `pendingDeathPrograms`／`pendingNativeDeathRewards`，也不寫金錢或背包。
+   下一次任何角色行動不得補分派先前的狀態死亡效果。
+4. 一般攻擊／法術／物品的既有死亡 transition 繼續以該次 actor 為 killer；型態
+   0／1、型態 2／3、多筆按 record 順序與每筆只分派一次的契約不變。
+5. 缺完整 raw runtime projection、typed/raw `+5`／`+6`／HP／MaxHP 不一致、
+   selector 重複或值超界時，整批 selector phase 在任何 live mutation 前失敗。
+6. 回歸至少涵蓋非致死扣血、剛好致死、低於傷害夾零、`MaxHP < 10` 的零傷害、
+   selector／inactive gate、同 phase 致死後不倒數、多筆狀態死亡、型態 0／1／2／3
+   均不分派、下一個普通行動不接手、一般攻擊仍正常分派，以及 issue #21 的滿欄流程。
+7. 純規則與正式 phase owner 測試、死亡程式窄回歸及 `go test ./... -count=1`
+   全部在維護中的無網路 Docker image 通過後才標 `CONFORMED`。這只證明
+   `RE-CLOSED`／`RUNTIME-E1`；FDTXT `0x1E7` 精確呈現、`sub_1DB65` phase 動畫、
+   原版同狀態逐幀／音訊與一般玩家 `PLAYER-E2` 必須依實際完成範圍另行陳述，
+   不得由狀態交易測試外推。
+
+### CONFORMED（2026-09-13）
+
+- `battle.State.AdvanceNativeTransientPhaseRaw` 在私有 state 先驗證完整 raw／typed
+  projection，再依原版順序完成 `+0x25` 扣血、`sub_1DB65` 全記錄 inactive writer
+  與存活者六 byte 倒數；任何 HP、MaxHP、`+5`、`+6` 或 transient 矛盾都在 live
+  mutation 前拒絕。
+- 正式 `buildNativeTransientPhases` 已改用上述 transaction；它不呼叫
+  `awardDeathReward`、`queueNativeDeathProgram` 或 `grantNativeDeathReward`。
+  型態 0／1／2／3 的多筆狀態死亡都只標 inactive，第二次 phase 與下一位行動者
+  不會補派；一般行動的四個 caller 與 issue #21 滿欄流程維持原契約。
+- Docker 聚焦回歸涵蓋非致死、剛好／超額致死、`MaxHP < 10`、selector／inactive
+  gate、複數死亡、四種死亡效果、無 killer、不重複分派、一般行動與 issue #21；
+  完整 `go test ./... -count=1` 的最終結果記於本次 issue 收尾留言。
+- 因本切片沒有新增 FDTXT `0x1E7` 扣血回覆或狀態 phase 的 `sub_1DB65` 動畫，完成
+  等級限於 `RE-CLOSED`／`RUNTIME-E1`，不宣稱新的玩家可見畫面或 `PLAYER-E2`。

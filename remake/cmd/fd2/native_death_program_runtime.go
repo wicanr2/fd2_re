@@ -42,8 +42,10 @@ func (g *Game) bindNativeDeathPrograms() {
 	g.st.NativeDeathExpCancel = sc.NativeDeathCancelsExp
 }
 
-// queueNativeDeathProgram 在擊倒當下登記。沒有擊殺者（中毒等狀態致死）不登記：
-// 原版只有 0x1548E、0x18D8C、0x1CFF0、0x20C6F 四個行動結算點呼叫 0x1B6B7。
+// queueNativeDeathProgram 在行動擊倒當下登記。沒有擊殺者就不登記：原版只有
+// 0x1548E、0x18D8C、0x1CFF0、0x20C6F 四個行動結算點呼叫 0x1B6B7；狀態階段
+// sub_1A866 會先由 sub_1DB65 把 HP=0 單位標成 +5=1，沒有 killer ABI，也不會
+// 延遲借用下一位行動者分派 0x1AA1D。
 func (g *Game) queueNativeDeathProgram(dead, killer *battle.Unit) {
 	if dead == nil || killer == nil {
 		return
