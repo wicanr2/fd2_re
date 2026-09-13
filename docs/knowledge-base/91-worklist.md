@@ -28,24 +28,12 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
 
 ## re — 原版證據還沒閉合
-
-### storyBG 對白待自動原版／重製對拍
-
-`storybg-dialogue-receipt` · RE待解 · [#1](https://github.com/wicanr2/fd2_re/issues/1) · **可能已完成，回去確認** · 已經出現在 docs/data/ui-traces/storybg-dialogue-original-vs-remake-e1.json
-
-戰場對白已確認原版不為對白換世界層，重製端已照改。故事場景（`storyBG`）的對白仍走正規化管線，目前缺少同一狀態的原版／重製逐幀收據。
-
-2026-09-14 決議：不再等待人工判讀。由代理程式使用 dosgolem `apps/fd2/cmd/oracle` 產生固定雜湊原版收據，並以重製端同狀態、同輸入、同畫格邊界自動比較；若 dosgolem 尚缺必要能力，先補回 dosgolem 再重生正式收據，DOSBox 只能作輔助診斷。
-
-怎樣算做完：以 dosgolem 原版 oracle 與重製端建立一段 storyBG 對白的同狀態逐幀收據；自動比較地圖／背景層、對白框疊放、viewport 邊界與輸入後生命週期，將結果、已知差異、固定 EXE 雜湊、兩側版本、輸入與畫格記入 docs/data/ui-traces/storybg-dialogue-original-vs-remake-e1.json，並由測試驗證 receipt schema 與比較結果。不得以人工目視、DOSBox 單側截圖或鄰近狀態代替。
-
-證據：`docs/knowledge-base/100-dialogue-viewport-20260909.md`
 
 ### 戰鬥對白 ESC 待 dosgolem 三臂自動對拍
 

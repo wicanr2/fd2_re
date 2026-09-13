@@ -22,24 +22,6 @@
   },
   "items": [
     {
-      "id": "storybg-dialogue-receipt",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "storyBG 對白待自動原版／重製對拍",
-      "body": "戰場對白已確認原版不為對白換世界層，重製端已照改。故事場景（`storyBG`）的對白仍走正規化管線，目前缺少同一狀態的原版／重製逐幀收據。\n\n2026-09-14 決議：不再等待人工判讀。由代理程式使用 dosgolem `apps/fd2/cmd/oracle` 產生固定雜湊原版收據，並以重製端同狀態、同輸入、同畫格邊界自動比較；若 dosgolem 尚缺必要能力，先補回 dosgolem 再重生正式收據，DOSBox 只能作輔助診斷。",
-      "acceptance": "以 dosgolem 原版 oracle 與重製端建立一段 storyBG 對白的同狀態逐幀收據；自動比較地圖／背景層、對白框疊放、viewport 邊界與輸入後生命週期，將結果、已知差異、固定 EXE 雜湊、兩側版本、輸入與畫格記入 docs/data/ui-traces/storybg-dialogue-original-vs-remake-e1.json，並由測試驗證 receipt schema 與比較結果。不得以人工目視、DOSBox 單側截圖或鄰近狀態代替。",
-      "evidence": "docs/knowledge-base/100-dialogue-viewport-20260909.md",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/data/ui-traces/storybg-dialogue-original-vs-remake-e1.json"
-        ],
-        "pattern": "\"original_runner\"\\s*:\\s*\"dosgolem",
-        "note": "正式 dosgolem 對拍收據尚未出現；出現後由 receipt 測試裁決內容，不再要人判。"
-      },
-      "issue": 1
-    },
-    {
       "id": "battle-dialogue-esc-receipt",
       "layer": "re",
       "category": "RE待解",
