@@ -251,24 +251,6 @@
         "note": "第四關的序列檔出現才代表這條推進完了。"
       },
       "issue": 16
-    },
-    {
-      "id": "status-death-effect-dispatch",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "中毒等狀態致死時死亡效果何時分派還沒查清",
-      "body": "0x1B6B7 只由 0x1548E、0x18D8C、0x1CFF0、0x20C6F 四個行動結算點呼叫，收集條件是 +5 bit0 未設且 HP <= 0。狀態扣血致死若沒有同時設 +5 bit0，死亡效果可能延到下一次行動結算才被收集、以那次的行動者當擊殺者。重製端目前對沒有擊殺者的死亡一律不分派、也不給物品金錢。",
-      "acceptance": "追到狀態扣血致死的 writer 是否設 +5 bit0，決定分派時機與擊殺者，照結論實作並加測試。",
-      "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/native_death_program_runtime.go"
-        ],
-        "pattern": "沒有擊殺者（中毒等狀態致死）不登記",
-        "note": "重製端目前的保守處理。"
-      },
-      "issue": 22
     }
   ]
 }
