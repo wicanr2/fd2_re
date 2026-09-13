@@ -253,24 +253,6 @@
       "issue": 16
     },
     {
-      "id": "ch27-death-event64-text-alignment",
-      "layer": "data",
-      "category": "缺陷",
-      "title": "第 27 關的事件 64 因故事腳本對不齊而不能執行",
-      "body": "第 27 關三名敵人（map26 單位 8／9／10）帶死亡效果 `[2, 64]`：第二名倒下時播第 1 句並以 0x35822 放出群組 3／4／5，第三名倒下時播第 2 句並從索引 16 起全員倒下。處理器已轉寫並核對，但 FDTXT_027 與 `assets/story/ch27.json` 在 `count-aligned.json` 裡句數對不上，無法產生原生對白參照，所以劇本沒有這個程式；執行期遇到時停下並指出 `2:64`，群組 3／4／5 也暫時維持開局在場。",
-      "acceptance": "逐句校對 ch27 故事腳本與 FDTXT_027，讓 count-aligned 對齊；重跑 `tools/sync_native_death_programs.py --write`，ch27 出現 `2:64` 程式、群組 3／4／5 移出開局，逐章死亡程式測試通過。",
-      "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "remake/assets/scenarios/ch27.json"
-        ],
-        "pattern": "\"2:64\"",
-        "note": "同步工具產生程式後，劇本裡就會出現這個鍵。"
-      },
-      "issue": 20
-    },
-    {
       "id": "death-reward-item-full-transfer",
       "layer": "runtime",
       "category": "缺陷",

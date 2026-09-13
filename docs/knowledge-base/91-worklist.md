@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -98,16 +98,6 @@ manifest v2 的 source_resources 有 1,005 筆，disposition 為 unknown 的 93 
 native-0／native-1／native-7／native-96 的多個候選名稱已由資料本身分成兩類：章節互不重疊的是同一身份在不同段落的稱呼（索爾／索爾(少年)、刺客／蘭斯洛特），同章且共同前綴加單一編號的是多個雜兵共用一個 sprite（強盜 B/C/L/M/N）。診斷都帶著章節依據，severity 從 error 降為 note，canonical 已無未分類衝突。剩下的是人複核那個分類對不對——判準是從資料算的，不是從劇情知識來的。
 
 怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
-
-### 第 27 關的事件 64 因故事腳本對不齊而不能執行
-
-`ch27-death-event64-text-alignment` · 缺陷 · [#20](https://github.com/wicanr2/fd2_re/issues/20) · 仍未完成 · 還沒出現
-
-第 27 關三名敵人（map26 單位 8／9／10）帶死亡效果 `[2, 64]`：第二名倒下時播第 1 句並以 0x35822 放出群組 3／4／5，第三名倒下時播第 2 句並從索引 16 起全員倒下。處理器已轉寫並核對，但 FDTXT_027 與 `assets/story/ch27.json` 在 `count-aligned.json` 裡句數對不上，無法產生原生對白參照，所以劇本沒有這個程式；執行期遇到時停下並指出 `2:64`，群組 3／4／5 也暫時維持開局在場。
-
-怎樣算做完：逐句校對 ch27 故事腳本與 FDTXT_027，讓 count-aligned 對齊；重跑 `tools/sync_native_death_programs.py --write`，ch27 出現 `2:64` 程式、群組 3／4／5 移出開局，逐章死亡程式測試通過。
-
-證據：`docs/knowledge-base/110-death-effects-and-level-cap-20260911.md`
 
 ## runtime — 還沒接進正式執行期
 
