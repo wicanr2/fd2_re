@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -98,18 +98,6 @@ manifest v2 的 source_resources 有 1,005 筆，disposition 為 unknown 的 93 
 native-0／native-1／native-7／native-96 的多個候選名稱已由資料本身分成兩類：章節互不重疊的是同一身份在不同段落的稱呼（索爾／索爾(少年)、刺客／蘭斯洛特），同章且共同前綴加單一編號的是多個雜兵共用一個 sprite（強盜 B/C/L/M/N）。診斷都帶著章節依據，severity 從 error 降為 note，canonical 已無未分類衝突。剩下的是人複核那個分類對不對——判準是從資料算的，不是從劇情知識來的。
 
 怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
-
-## runtime — 還沒接進正式執行期
-
-### 死亡掉落物品時擊殺者背包已滿，沒有原版的轉交提示
-
-`death-reward-item-full-transfer` · 缺陷 · [#21](https://github.com/wicanr2/fd2_re/issues/21) · 仍未完成 · 自承還在 remake/cmd/fd2/native_death_program_runtime.go
-
-0x1AA1D 型態 0 在 0x1BB8C 回 -1（背包滿）時走 0x1AA56：顯示 FDTXT `0x1B1` 詢問是否交給同伴，選 YES 經 0x1B932／0x1B722／0x1B8E7 轉交，選 NO 或無人可收時顯示 `0x1B2`。重製端直接塞進隊伍空格。
-
-怎樣算做完：照 0x1AA56..0x1AB77 的問句、選擇與轉交順序接上正式介面，並加測試。
-
-證據：`docs/knowledge-base/110-death-effects-and-level-cap-20260911.md`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

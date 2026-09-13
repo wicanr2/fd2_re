@@ -253,24 +253,6 @@
       "issue": 16
     },
     {
-      "id": "death-reward-item-full-transfer",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "死亡掉落物品時擊殺者背包已滿，沒有原版的轉交提示",
-      "body": "0x1AA1D 型態 0 在 0x1BB8C 回 -1（背包滿）時走 0x1AA56：顯示 FDTXT `0x1B1` 詢問是否交給同伴，選 YES 經 0x1B932／0x1B722／0x1B8E7 轉交，選 NO 或無人可收時顯示 `0x1B2`。重製端直接塞進隊伍空格。",
-      "acceptance": "照 0x1AA56..0x1AB77 的問句、選擇與轉交順序接上正式介面，並加測試。",
-      "evidence": "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/native_death_program_runtime.go"
-        ],
-        "pattern": "原版的轉交提示尚未接",
-        "note": "重製端的自承註解。"
-      },
-      "issue": 21
-    },
-    {
       "id": "status-death-effect-dispatch",
       "layer": "re",
       "category": "RE待解",
