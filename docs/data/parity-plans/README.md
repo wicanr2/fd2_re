@@ -16,6 +16,7 @@
 | `ch02-town-load.jsonl` | 從存檔載入第二章羅德鎮，走出口進第二關戰場 | 待補 |
 | `ch02-clear.jsonl` | 同上，接著打第二關到敵方全滅（閉環）| 待補 |
 | `ch02-turn-start-dialogue-{esc,enter,none}.jsonl` | 從同一份第一關後存檔進第二關，對第一個回合起手對白做 ESC／Enter／無輸入三臂試驗 | `battle-dialogue-esc-vs-enter.json` |
+| `ch04-clear.jsonl` | 從第三關通關存檔進第四關，以明示修改路徑清場、結束回合、推完戰後對白並在城鎮存檔 | [`ch04-clear-receipt-20260914.json`](../ch04-clear-receipt-20260914.json)；不得作為戰鬥規則或 PLAYER-E2 證據 |
 
 ## 續跑點
 

@@ -89,7 +89,7 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ### 原版側已到第四關續跑點，待第四關閉環收據
 
-`parity-ch02-ch04-original-side` · 工作 · [#16](https://github.com/wicanr2/fd2_re/issues/16) · 仍未完成 · 還沒出現
+`parity-ch02-ch04-original-side` · 工作 · [#16](https://github.com/wicanr2/fd2_re/issues/16) · **可能已完成，回去確認** · 已經出現在 docs/data/parity-plans/ch04-clear.jsonl
 
 既有 `work/parity-state/` 已保存 ch01、ch02、ch03 cleared 的原版 `FD2.SAV`；這證明原版側已完成第三關並至少到達第四關前的續跑點，舊標題「只走到第二關入口」已失效。受版控計畫目前仍只有 `ch01-clear.jsonl` 與 `ch02-clear.jsonl`，第四關的可重跑閉環序列與正式收據尚未登錄。
 

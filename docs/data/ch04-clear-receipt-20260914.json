@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch04_modified_path_closure_receipt",
+  "date": "2026-09-14",
+  "runner": {
+    "name": "dosgolem apps/fd2/cmd/oracle",
+    "branch": "feat/fd2-oracle-input-chain",
+    "commit": "1a7f38f48e960ccd771ce51184aaebcb24d4027e",
+    "tracked_dirty_files": 0,
+    "untracked_files": 0,
+    "sha256": "3461b915207a31b4d1a0b65cf026fbb9e53bf91175edc606ac12ac661eed9fd7"
+  },
+  "inputs": {
+    "plan": "docs/data/parity-plans/ch04-clear.jsonl",
+    "plan_sha256": "7d9c7fb4267285f701a3f51ebe81e23f49e12374b643883b906e87b6c74f4fa3",
+    "source_state": "work/parity-state/ch03-cleared",
+    "source_fd2_sav_sha256": "559cb9097493285d6fb5fd773afb67ba43a3042d75fefdd6945b021697d7cde1",
+    "source_fd2_tmp_sha256": "887df5ddb799cee70ada5debeabdb759b41d4decfbfd0dbd20cecef1f9428326",
+    "fd2_exe_size": 357074,
+    "fd2_exe_md5": "b97caf2239a27a896069d03549d96e1e",
+    "fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "reference_manifest": "docs/data/fd2-reference-files.json"
+  },
+  "execution": {
+    "command": "FD2_DOSGOLEM_ROOT=<dosgolem-fd2-oracle> FD2_ORACLE_STATE=<writable-copy-of-ch03-cleared> FD2_ORACLE_LOCK_ALLY_HP=1 FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_STEPS=10000000000 tools/dosgolem_oracle.sh <run-dir> docs/data/parity-plans/ch04-clear.jsonl",
+    "exit_code": 0,
+    "control_history_sha256": "89ef3d97693f9325cb83d44cfa0bbc04232d9cee42ed2fda2f46e56d150095d2",
+    "driver_log_sha256": "edd47a20e26e8a8e73862b0c4e7a81397fda61eec76912fd6ecf596390d36bf9",
+    "final_control_seq": 113,
+    "final_steps": 1575352187
+  },
+  "state_injections": [
+    {
+      "name": "lock-ally-hp",
+      "method": "每 2000 指令把 camp 2 record +0x40 HP 壓回該 identity 已觀測最高值",
+      "writes_observed": 0
+    },
+    {
+      "name": "force-enemy-clear",
+      "method": "在控制邊界依 0x53A45 單位陣列基底與 0x53BEB 筆數，將所有存活 camp 0 record +0x40 HP 寫為 0",
+      "commands_observed": 1,
+      "writes_observed": 17
+    }
+  ],
+  "checkpoints": [
+    {
+      "seq": 52,
+      "sha256": "ed1469816a67168badf0f227e8e0860df541cce6a184466359989277845b321f",
+      "observation": "第四關開場完成，camp 0 存活 17、camp 2 存活 6"
+    },
+    {
+      "seq": 53,
+      "sha256": "22cce366b23e8ed68857aa2bb1bd14f524a8d9c4cd30e0e432156e04dc56b123",
+      "observation": "受控清場後 camp 0 存活 0；checkpoint 揭露 force-enemy-clear 1 次、17 筆"
+    },
+    {
+      "seq": 81,
+      "sha256": "ed8bc83c0c7c6d3db4aa5d695352085b7c46e155715728e2c8040e121c930deb",
+      "observation": "戰後對白結束，await_ui=town 命中城鎮"
+    },
+    {
+      "seq": 97,
+      "sha256": "3473bfe4aae487ac1e3be2bc277d4603481b50796bf49057e5ddd9bbdc3ea3e2",
+      "observation": "酒店存檔確認輸入已送出"
+    }
+  ],
+  "outputs": {
+    "local_receipt_root": "work/ch04-clear-20260914",
+    "result_fd2_sav_size": 22987,
+    "result_fd2_sav_sha256": "d69d72c60d14a40836b6cc5f393a470575d52ea5f67432e84a8b09a52b60f69c",
+    "result_fd2_tmp_sha256": "33fa60b953f8d4d3ced639c5de59846f399315e8d756e9d438bc31cf449fc2fe",
+    "current_checkpoint_sha256": "859c4eca827c77df0d9d30de58e00e41d78e1d89c7b1ebcd98830a9eca1d0af5",
+    "town_save_changed": true
+  },
+  "evidence": {
+    "level": "MODIFIED-PATH",
+    "proves": [
+      "從第三關通關存檔載入並到達第四關戰場",
+      "受控清場可觸發第四關戰後對白與城鎮節點",
+      "城鎮酒店可寫出內容雜湊不同的新 FD2.SAV"
+    ],
+    "does_not_prove": [
+      "傷害公式",
+      "我方或敵方正常存活結果",
+      "未修改的戰鬥勝利條件",
+      "一般玩家路徑 PLAYER-E2",
+      "逐像素一致"
+    ]
+  }
+}

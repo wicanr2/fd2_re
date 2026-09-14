@@ -342,6 +342,61 @@ class Conditions(unittest.TestCase):
             drive.measure(self.current, "morale")
 
 
+class ModifiedPathControls(unittest.TestCase):
+    def snapshot(self, mode, enemies=0, injections=None):
+        chains = {
+            "dialogue": ["0x16039"],
+            "town": ["0x2CE08"],
+            "unknown": [],
+        }
+        units = [unit(i, 1, drive.ENEMY_CAMP) for i in range(enemies)]
+        return {"input_chain": chains[mode], "kbd_pending": 0,
+                "eip": "0x10000", "steps": 1, "view": {}, "units": units,
+                "state_injections": injections or []}
+
+    def test_await_ui_only_confirms_dialogue_and_stops_before_town_input(self):
+        states = iter([self.snapshot("unknown"), self.snapshot("dialogue"),
+                       self.snapshot("town")])
+        sent = []
+
+        def fake_send(key, steps, **control):
+            sent.append((key, steps, control))
+            return len(sent), self.snapshot("unknown")
+
+        with mock.patch.object(drive, "state", side_effect=lambda: next(states)), \
+                mock.patch.object(drive, "send", side_effect=fake_send), \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_await_ui(
+                {"await_ui": "town", "steps": 123, "max": 3}))
+        self.assertEqual(sent, [("", 123, {}), ("enter", 123, {})])
+
+    def test_force_clear_requires_oracle_disclosure(self):
+        before = self.snapshot("unknown", enemies=2)
+        after = self.snapshot(
+            "unknown", injections=["force-enemy-clear：執行 1 次、寫入 2 筆"])
+        sent = []
+
+        def fake_send(key, steps, **control):
+            sent.append((key, steps, control))
+            return 1, after
+
+        with mock.patch.object(drive, "state", return_value=before), \
+                mock.patch.object(drive, "send", side_effect=fake_send), \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_force_enemy_clear(
+                {"force_enemy_clear": True, "steps": 456, "end_turn": False}))
+        self.assertEqual(sent, [("", 456, {"force_enemy_clear": True})])
+
+    def test_force_clear_fails_closed_without_disclosure(self):
+        before = self.snapshot("unknown", enemies=1)
+        after = self.snapshot("unknown")
+        with mock.patch.object(drive, "state", return_value=before), \
+                mock.patch.object(drive, "send", return_value=(1, after)), \
+                mock.patch.object(drive, "report"):
+            self.assertFalse(drive.do_force_enemy_clear(
+                {"force_enemy_clear": True, "end_turn": False}))
+
+
 class DialogueProbe(unittest.TestCase):
     def dialogue(self, pending=0):
         return {"input_chain": ["0x16039"], "kbd_pending": pending,

@@ -4237,3 +4237,19 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 - [ ] **BATTLE-IMPACT-DAC-RUNTIME-BRIDGE**：仍需建立帶 frame `+4`、傷害步進、
   `0x29f72` 原始輸出與 palette baseline 的正式轉接器，並以未修改一般玩家
   同狀態逐幀比較；完成前不得宣稱攻擊閃紅或整體戰場 UI E2。
+
+## 2026-09-14：第四關原版修改路徑閉環
+
+- [x] 以 `work/parity-state/ch03-cleared` 的可寫複本，使用 dosgolem
+  `1a7f38f48e960ccd771ce51184aaebcb24d4027e` 與受版控
+  `docs/data/parity-plans/ch04-clear.jsonl` 重生第四關戰場至城鎮存檔閉環。
+  原版開場實測 camp 0 為 17；`force-enemy-clear` 寫入 17 筆後為 0，正常 BIOS
+  鍵結束回合並推完戰後對白，`await_ui=town` 命中城鎮，酒店另寫出 SHA-256
+  `d69d72c60d14a40836b6cc5f393a470575d52ea5f67432e84a8b09a52b60f69c` 的
+  `FD2.SAV`。正式索引為 `docs/data/ch04-clear-receipt-20260914.json`，原始收據
+  留在未版控 `work/ch04-clear-20260914/`。
+- [x] runner、每個 checkpoint 與 `driver.log` 現在共同保留控制計畫、dosgolem
+  commit、固定版 FD2.EXE 雜湊、正常 BIOS 輸入、狀態注入方法／筆數與證據降級；
+  `tools/verify_ch04_clear_receipt.py` 已核對所有雜湊及語意閘門。
+- [ ] 這不是一般玩家 E2：鎖 HP 與清空 camp 0 HP 都是修改路徑，只能證明節點、
+  介面與存檔閉環；傷害、存活、正常戰鬥勝利條件與逐像素一致仍未驗證。

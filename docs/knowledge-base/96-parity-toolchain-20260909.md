@@ -321,13 +321,50 @@ chooser `0x18D8C` 同一段——與既有反組譯結論一致。三個細節�
 
 - 每一份 checkpoint 的 `state_injections` 寫明注入了什麼、至此寫了幾次；沒開旗標
   時仍是空陣列。
-- `runner.json` 多一個 `lock_ally_hp` 與一行 `evidence_note`。
+- `runner.json` 記錄 `lock_ally_hp`、控制計畫、原版 EXE 雜湊、注入契約與
+  `evidence_note`；控制計畫若會清場，另以
+  `FD2_ORACLE_FORCE_ENEMY_CLEAR=1` 明示。
 
 這種收據可以用來取畫面、版面、節點順序與介面行為，**不能**用來談傷害、存活、
 戰鬥結果或任何與我方 HP 有關的結論。
 
 實測：開了它之後第一關打得完——七個回合、六波增援全部清掉，進到戰後城鎮，
 共 73 億指令。
+
+### 第四關受控清場閉環（2026-09-14，修改路徑）
+
+第三關通關續跑點的 `FD2.SAV` SHA-256 是
+`559cb9097493285d6fb5fd773afb67ba43a3042d75fefdd6945b021697d7cde1`。以可寫複本
+從標題 LOAD，經羅德鎮出口進第四關後，受版控序列
+[`ch04-clear.jsonl`](../data/parity-plans/ch04-clear.jsonl) 在開場完成時實測 camp 0
+存活 17、camp 2 存活 6。`force_enemy_clear` 由 oracle 在控制邊界依 `0x53A45`
+單位陣列基底與 `0x53BEB` 筆數，把 17 筆 camp 0 record `+0x40` HP 寫為 0；驅動器
+隨後以正常 BIOS 鍵結束回合、只在對白等待點送 Enter，並以 `await_ui=town` 停在
+戰後城鎮，再由 `town_save` 寫出新存檔。
+
+正式重生命令（狀態目錄必須是 `ch03-cleared` 的新複本）：
+
+```bash
+FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle \
+FD2_ORACLE_STATE=<ch03-cleared-可寫複本> \
+FD2_ORACLE_LOCK_ALLY_HP=1 FD2_ORACLE_FORCE_ENEMY_CLEAR=1 \
+FD2_ORACLE_STEPS=10000000000 \
+tools/dosgolem_oracle.sh <收據目錄> docs/data/parity-plans/ch04-clear.jsonl
+```
+
+本輪使用 dosgolem `feat/fd2-oracle-input-chain` 提交
+`1a7f38f48e960ccd771ce51184aaebcb24d4027e`，固定版 `FD2.EXE` SHA-256 為
+`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`。驅動紀錄
+明示 `17→0`、命中城鎮與 `FD2.SAV 已更新`；結果存檔大小仍為 22987，但內容
+SHA-256 已變為 `d69d72c60d14a40836b6cc5f393a470575d52ea5f67432e84a8b09a52b60f69c`。
+完整小型索引與各產物雜湊見
+[`ch04-clear-receipt-20260914.json`](../data/ch04-clear-receipt-20260914.json)，本機原始
+checkpoint、畫面與覆蓋層保存在 `work/ch04-clear-20260914/`；可用
+`tools/verify_ch04_clear_receipt.py` 重新核對。
+
+這份證據只閉合「第四關戰場 → 戰後對白 → 城鎮 → 酒店存檔」節點與存檔邊界。
+鎖 HP 與強制清場都是修改路徑；不得據此宣稱傷害、存活、正常戰鬥結果、未修改
+勝利條件、逐像素一致或一般玩家 `PLAYER-E2`。
 
 ### 續跑點：在酒店存檔，之後從標題 LOAD
 

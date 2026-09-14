@@ -26,6 +26,10 @@
 #                         什麼、寫了幾次，runner.json 也會記一筆。這種收據不得
 #                         當成一般玩家路徑（PLAYER-E2）證據，也不能用來談傷害、
 #                         存活或任何與我方 HP 有關的結論。
+#   FD2_ORACLE_FORCE_ENEMY_CLEAR=1
+#                         宣告控制序列會使用 force_enemy_clear。runner.json 會記錄
+#                         清場方法與證據限制；實際寫入筆數仍由各 checkpoint 的
+#                         state_injections 記錄。只設定本旗標不會自行修改原版狀態。
 #
 # 逐幀擷取（判斷畫面時比狀態可靠，狀態層看不出「多畫了什麼」）：
 #   FD2_ORACLE_FRAMES=1   啟用，輸出到 <輸出目錄>/frames/
@@ -62,6 +66,8 @@ budget=${FD2_ORACLE_STEPS:-20000000000}
 state_dir=${FD2_ORACLE_STATE:-}
 lock_ally_hp=${FD2_ORACLE_LOCK_ALLY_HP:-}
 if [ -n "$lock_ally_hp" ]; then lock_ally_hp_json=true; else lock_ally_hp_json=false; fi
+force_enemy_clear=${FD2_ORACLE_FORCE_ENEMY_CLEAR:-}
+if [ -n "$force_enemy_clear" ]; then force_enemy_clear_json=true; else force_enemy_clear_json=false; fi
 frames=${FD2_ORACLE_FRAMES:-}
 frame_stride=${FD2_ORACLE_FRAME_STRIDE:-20000}
 frame_settle=${FD2_ORACLE_FRAME_SETTLE:-0}
@@ -96,9 +102,17 @@ cat > "$out/runner.json" <<JSON
   "dosgolem_untracked_files": $dos_untracked,
   "original_root": "$orig",
   "generated_at": "$(date -Iseconds)",
+  "control_plan": "$plan",
   "lock_ally_hp": $lock_ally_hp_json,
+  "force_enemy_clear_declared": $force_enemy_clear_json,
+  "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "original_reference_manifest": "docs/data/fd2-reference-files.json",
   "state_directory": "${state_dir}",
-  "evidence_note": "lock_ally_hp 為 true 時本輪是修改路徑，不得作為一般玩家路徑（PLAYER-E2）證據"
+  "state_injections": [
+    "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+    "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+  ],
+  "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
 }
 JSON
 if [ "$dos_dirty" -ne 0 ]; then
@@ -176,6 +190,6 @@ for _ in $(seq 1 900); do
   sleep 1
 done
 test -f /out/current.json || { echo "等待第一個控制邊界逾時" >&2; exit 4; }
-python3 /drive.py
+python3 /drive.py | tee /out/driver.log
 '
 echo "$out"

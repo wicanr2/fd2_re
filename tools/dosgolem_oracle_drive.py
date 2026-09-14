@@ -32,9 +32,14 @@
   ``FD2.SAV`` 的內容雜湊變了沒，不是畫面。
 * ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。
 * ``{"sweep_battle": true, "rounds": 30}``：一路打到敵方全滅。
+* ``{"force_enemy_clear": true}``：要求 oracle 把當下 camp 0 單位的 HP 寫成 0。
+  這是明示的修改路徑，只能用來驗證戰後節點／介面／存檔閉環；oracle 會把
+  寫入方式與筆數留在每個後續 checkpoint 的 ``state_injections``。
 * ``{"await": "round>=2"}``：反覆只前進不送鍵，直到條件成立。可用變數：
   ``round``（`view.round`）、``enemy_alive``／``ally_alive``（依 camp 數存活
   單位）、``cursor_x``／``cursor_y``、``steps``。比較運算子 ``>= <= == != > <``。
+* ``{"await_ui": "town"}``：等待指定介面；遇到對白才送 enter，其餘只前進。
+  這可在戰後精確停於城鎮，不會因預排過多 enter 又誤闖商店。
 
 兩者都吃 ``steps``（每一格的指令數）與 ``max``（最多幾格，逾時即失敗）。
 失敗一律非零離開；盲目繼續會產生「看起來跑完了但走錯路」的收據。
@@ -126,11 +131,11 @@ def reached(name, current):
     raise SystemExit(f"未知的 until 條件：{name}")
 
 
-def send(key, steps):
+def send(key, steps, **control):
     """送一格控制並等它被消化完，回傳消化後的狀態。"""
     current = state()
     seq = current["control_seq"] + 1
-    body = json.dumps({"seq": seq, "key": key, "steps": int(steps)})
+    body = json.dumps({"seq": seq, "key": key, "steps": int(steps), **control})
     tmp = os.path.join(RUN, "control.tmp")
     with open(tmp, "w", encoding="utf-8") as handle:
         handle.write(body)
@@ -165,6 +170,65 @@ def report(seq, key, current, note=""):
         f"enemy={alive(current, ENEMY_CAMP)}{note}",
         flush=True,
     )
+
+
+def do_force_enemy_clear(command):
+    """請 oracle 在控制邊界把目前 camp 0 HP 清成 0，並核對快照。
+
+    實際寫入只能由 oracle 完成，驅動器不直接碰原版記憶體；因此每份後續
+    checkpoint 都能由 oracle 自己揭露注入紀錄。這個命令絕不代表正常戰鬥勝利。
+    """
+    before = state()
+    count = alive(before, ENEMY_CAMP)
+    if count < 1:
+        print("force_enemy_clear：目前沒有存活 camp 0 單位", flush=True)
+        return True
+    seq, current = send("", int(command.get("steps", 5_000_000)),
+                        force_enemy_clear=True)
+    remaining = alive(current, ENEMY_CAMP)
+    report(seq, "", current,
+           f" force-enemy-clear={count}->{remaining}（修改路徑）")
+    if remaining:
+        print(f"force_enemy_clear：仍有 {remaining} 個 camp 0 單位存活",
+              file=sys.stderr)
+        return False
+    injections = current.get("state_injections", [])
+    if not any("force-enemy-clear" in item for item in injections):
+        print("force_enemy_clear：oracle checkpoint 未揭露注入紀錄",
+              file=sys.stderr)
+        return False
+    if command.get("end_turn", True) and in_battle(current):
+        if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
+                             int(command.get("cutscene_max", 40))):
+            print("force_enemy_clear：清場後無法回到戰場游標",
+                  file=sys.stderr)
+            return False
+        if in_battle(state()) and not end_turn(command):
+            print("force_enemy_clear：清場後無法結束回合",
+                  file=sys.stderr)
+            return False
+    return True
+
+
+def do_await_ui(command):
+    """以可觀測輸入鏈等待介面，僅在對白狀態送 enter。"""
+    want = command["await_ui"]
+    allowed = {"cursor", "dialogue", "grid", "ring", "shop", "status",
+               "system", "target", "town", "unknown"}
+    if want not in allowed:
+        raise SystemExit(f"await_ui 不支援介面：{want!r}")
+    steps = int(command.get("steps", 10_000_000))
+    for _ in range(int(command.get("max", 100))):
+        current = state()
+        mode = ui_mode(current)
+        if mode == want:
+            print(f"await_ui={want} 成立", flush=True)
+            return True
+        key = "enter" if mode == "dialogue" else ""
+        seq, current = send(key, steps)
+        report(seq, key, current, f" await-ui={want}")
+    print(f"await_ui={want} 等待逾時", file=sys.stderr)
+    return False
 
 
 def do_dialogue_probe(command):
@@ -1179,6 +1243,10 @@ def main():
             if not do_await(command):
                 return 7
             continue
+        if "await_ui" in command:
+            if not do_await_ui(command):
+                return 15
+            continue
         if "engage" in command:
             if not do_engage(command):
                 return 8
@@ -1205,6 +1273,10 @@ def main():
                     return 10
             except DialogueProbeComplete:
                 return 0
+            continue
+        if "force_enemy_clear" in command:
+            if not do_force_enemy_clear(command):
+                return 14
             continue
         key = command.get("key", "")
         if command.get("gate") == "kbd_empty" and current.get("kbd_pending", 0) > 0:

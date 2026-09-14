@@ -1,0 +1,20 @@
+# 第四關修改路徑閉環；起點為 work/parity-state/ch03-cleared/FD2.SAV 的可寫複本。
+# 必須搭配 dosgolem feat/fd2-oracle-input-chain@1a7f38f 與 FD2_ORACLE_LOCK_ALLY_HP=1。
+# force_enemy_clear 將 camp 0 HP 歸零並結束回合；本計畫不得作為戰鬥規則或 PLAYER-E2 證據。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":8}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":120}
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"town_save":true,"steps":10000000}
