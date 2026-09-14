@@ -8060,7 +8060,9 @@ func (g *Game) Update() error {
 		g.loadGame()
 	}
 	if g.battleEvent != nil || g.nativeTurnStaging != nil {
-		g.handleBattleEventDialogueInput(inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace))
+		g.handleBattleEventDialogueInput(nativeBattleDialogueAdvanceInput(
+			inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace),
+			inpututil.IsKeyJustPressed(ebiten.KeyEscape)))
 		return nil // PAN/delay/dialogue sequence blocks battle input and repeated end-turn
 	}
 	if g.campInput() { // campaign 節點(story/choice/ending/勝敗轉場)攔截輸入
@@ -8079,8 +8081,10 @@ func (g *Game) Update() error {
 	if g.ringInput() { // radial 指令環 / 法術選單
 		return nil
 	}
-	if len(g.dialog) > 0 { // 戰鬥起手對白(g.camp==nil 直接開局,或 campaign battle 節點無 story 攔截):Enter/Space 逐句清除
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+	if len(g.dialog) > 0 { // 戰鬥起手對白(g.camp==nil 直接開局,或 campaign battle 節點無 story 攔截):Enter/Space/Esc 逐句清除
+		if nativeBattleDialogueAdvanceInput(
+			inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace),
+			inpututil.IsKeyJustPressed(ebiten.KeyEscape)) {
 			g.dlgAdvance() // 翻頁優先,翻完換句(長對白分頁,不截斷)
 		}
 		return nil

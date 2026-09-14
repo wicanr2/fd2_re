@@ -12,8 +12,10 @@
 | `ch01-move-attack.jsonl` | 第一關第 1 回合：選 (8,16) 的亞雷斯、移動到 (6,19)、攻擊 (5,19) 的盜賊 | `TestDumpChapterOneMoveAttackFrames`（`FD2_ATTACK_DUMP`） |
 | `ch01-phase-banner.jsonl` | 第一關第 1 回合：開系統面板、選 END、確認 YES，進敵方回合橫幅 | `phase_banner_glyph_test.go`（比的是字樣落點，不是整幀） |
 | `ch01-clear.jsonl` | 第一關打到敵方全滅，再到城鎮存檔（閉環，見下）| 待補 |
+| `ch01-battle-event-dialogue-{esc,enter,none}.jsonl` | 第一關閉環走到第一個戰鬥事件對白，固定等待後做 ESC／Enter／無輸入三臂試驗並停止 | `battle-dialogue-esc-vs-enter.json` |
 | `ch02-town-load.jsonl` | 從存檔載入第二章羅德鎮，走出口進第二關戰場 | 待補 |
 | `ch02-clear.jsonl` | 同上，接著打第二關到敵方全滅（閉環）| 待補 |
+| `ch02-turn-start-dialogue-{esc,enter,none}.jsonl` | 從同一份第一關後存檔進第二關，對第一個回合起手對白做 ESC／Enter／無輸入三臂試驗 | `battle-dialogue-esc-vs-enter.json` |
 
 ## 續跑點
 

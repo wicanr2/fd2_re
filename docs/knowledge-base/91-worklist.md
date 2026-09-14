@@ -28,24 +28,12 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
 
 ## re — 原版證據還沒閉合
-
-### 戰鬥對白 ESC 待 dosgolem 三臂自動對拍
-
-`battle-dialogue-esc-receipt` · RE待解 · [#2](https://github.com/wicanr2/fd2_re/issues/2) · 仍未完成 · 還沒出現
-
-故事對白已量到 ESC 與 Enter 完全同義（三臂逐格 SHA-256 相同），重製端已接。戰鬥事件對白與回合起手對白仍缺各自的 ESC／Enter 原版對照收據。
-
-2026-09-14 決議：不再等待人工操作。由代理程式用 dosgolem 對兩個正式入口各跑 ESC、Enter 與無輸入反對照，依收據直接決定是否共用輸入契約；若不同則保留各自 typed 規則，不可猜接。
-
-怎樣算做完：以 dosgolem 對戰鬥事件對白與回合起手對白各產生 ESC、Enter、none 三臂收據，固定起點、步數、鍵盤閘門與 EXE 雜湊；自動比較每臂的畫面 SHA-256、輸入消耗、控制邊界與後續狀態。相同就接線並測試，差異就分開實作並記錄；結果寫入 docs/data/ui-traces/battle-dialogue-esc-vs-enter.json，且 receipt 測試通過。
-
-證據：`docs/knowledge-base/98-opening-esc-and-length-20260909.md`
 
 ### ch21／ch22 六筆增援來源待 RE 證據閉合
 

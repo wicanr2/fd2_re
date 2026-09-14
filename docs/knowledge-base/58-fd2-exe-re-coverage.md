@@ -2,6 +2,16 @@
 
 > 2026-09-08 最新交接：使用者要求暫停自動對拍，其餘人工測試；v.1.0.19 完整包與本輪修正／未通過項目以 [94](94-ch01-town-parity-20260908.md) 為準，不宣稱開場至城鎮雙側驗收完成。
 
+2026-09-14 戰鬥對白輸入（`RE-CLOSED`／`RUNTIME-E1`）：dosgolem 三臂在第一關
+第 3 回合事件分派呼叫鏈 `0x342AB`，以及第二關回合起手呼叫鏈 `0x32D6B`，分別
+固定空鍵盤等待點後只替換 `Esc`／`Enter`／無輸入。兩個案例的 `Esc` 與 `Enter`
+都各消耗一次 BIOS 鍵盤讀取，後續四個控制邊界逐項相同；無輸入不增加讀取計數，
+並在 EIP／畫面分流。正式戰鬥事件與起手對白已共用 typed 推進 gate；完整計畫、
+runner commit、EXE 雜湊、畫面與狀態雜湊見
+[`battle-dialogue-esc-vs-enter.json`](../data/ui-traces/battle-dialogue-esc-vs-enter.json)。
+第二關案例的起始存檔祖先使用鎖 HP 修改路徑，只支持窄輸入語意；不宣稱整段一般
+玩家 `PLAYER-E2` 或其他選單也接受 `Esc`。
+
 2026-09-11 死亡效果與升級上限（`RE-CLOSED`／`RUNTIME-E1`）：`0x1B6B7` 收集、`0x1AA1D`
 分派的四種型態都已接進重製端；型態 2 用到的 23 個全域事件處理器（`0x51B91` 表）
 由 `tools/extract_native_death_events.py` 逐指令轉寫並做覆蓋檢查，型態 3 是章節戰場

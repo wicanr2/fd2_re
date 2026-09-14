@@ -7,6 +7,13 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+// nativeBattleDialogueAdvanceInput 回報這次鍵盤事件是否推進戰鬥對白。
+// 原版戰鬥事件與回合起手對白的 dosgolem 三臂收據都證實 ESC 與 Enter 同義；
+// Space 沿用既有桌面便利鍵，呼叫端把 Enter／Space 合併成 enterOrSpace。
+func nativeBattleDialogueAdvanceInput(enterOrSpace, escape bool) bool {
+	return enterOrSpace || escape
+}
+
 func (g *Game) startNativeEventDialogue(action battle.Action) error {
 	ref := action.NativeDialogueRef
 	if ref == nil || action.NativeSource == "" || action.NativeTextIndex == nil ||
@@ -49,8 +56,8 @@ func (g *Game) startNativeEventDialogue(action battle.Action) error {
 }
 
 // handleBattleEventDialogueInput 與故事對話共用逐字／收框閘門，續行仍歸戰鬥事件。
-func (g *Game) handleBattleEventDialogueInput(enter bool) {
-	if !enter || len(g.dialog) == 0 || g.nativeDialogueClosingLive {
+func (g *Game) handleBattleEventDialogueInput(advance bool) {
+	if !advance || len(g.dialog) == 0 || g.nativeDialogueClosingLive {
 		return
 	}
 	current := g.dialog[len(g.dialog)-1]

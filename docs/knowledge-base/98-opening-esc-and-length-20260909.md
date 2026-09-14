@@ -68,6 +68,24 @@ oracle 的時間模型是每條指令 1 微秒，虛擬秒即指令數除以一�
 回歸 `TestNativeStoryAdvanceAcceptsEscapeLikeEnter` 對三種輸入各驗一次：
 Enter 與 ESC 的狀態轉移完全相同，不送鍵則停在原句——對應收據的三臂。
 
+## 2026-09-14 戰鬥對白補證與修正
+
+後續以同一固定 `FD2.EXE`、dosgolem commit
+`5c607a70bbd8843a5b63d9a92ebef63aeea6512e` 再做兩組三臂實驗；完整控制邊界、
+計畫雜湊與限制見
+[`battle-dialogue-esc-vs-enter.json`](../data/ui-traces/battle-dialogue-esc-vs-enter.json)。
+
+- 第一關第 3 回合哈諾／哈瓦特加入的戰鬥事件對白，以呼叫鏈 `0x342AB` 鎖定
+  輸入等待點。`Esc` 與 `Enter` 各消耗一次鍵盤讀取，接續四個控制邊界的 EIP、
+  PNG、單位陣列與視角雜湊完全相同；無輸入臂不消耗按鍵並分流。
+- 第二關回合起手對白也得到相同結果：`Esc`／`Enter` 接續四個邊界逐項相同，
+  無輸入臂停留。這一臂的起始存檔祖先曾使用鎖 HP 修改路徑，因此只支持窄輸入
+  語意，不提升為一般玩家 `PLAYER-E2`。
+
+因此戰鬥事件與回合起手對白都已證實把 `Esc` 當作一次推進，不是略過整段。
+重製端兩個正式鍵盤分支現在共用 `nativeBattleDialogueAdvanceInput`，保留既有
+`Enter`／`Space` 並加入 `Escape`；無輸入仍不推進。
+
 ## 對拍工具的兩項擴充
 
 - oracle 的 checkpoint 與 current 加上 `kbd_pending`（BIOS 環形緩衝
@@ -82,8 +100,5 @@ Enter 與 ESC 的狀態轉移完全相同，不送鍵則停在原句——對應
 
 ## 尚未涵蓋
 
-- 戰鬥中的對白（battle event、回合起手）是否同樣接受 ESC。本輪只取了故事
-  對白的樣本，`handleBattleEventDialogueInput` 與戰鬥起手對白仍只收
-  Enter／Space。
 - 標題選單與各式選單對 ESC 的反應。
 - ESC 之外的鍵是否也推進。本輪只比對 ESC 與 Enter 兩個。

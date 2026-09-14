@@ -14,6 +14,7 @@ import pathlib
 import shutil
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
@@ -339,6 +340,55 @@ class Conditions(unittest.TestCase):
             drive.holds(self.current, "round ~ 3")
         with self.assertRaises(SystemExit):
             drive.measure(self.current, "morale")
+
+
+class DialogueProbe(unittest.TestCase):
+    def dialogue(self, pending=0):
+        return {"input_chain": ["0x16039"], "kbd_pending": pending,
+                "eip": "0x16039", "steps": 1, "view": {}, "units": []}
+
+    def test_probe_uses_fixed_empty_prefix_one_trial_and_fixed_suffix(self):
+        sent = []
+
+        def fake_send(key, steps):
+            sent.append((key, steps))
+            return len(sent), self.dialogue()
+
+        with mock.patch.object(drive, "state", return_value=self.dialogue()), \
+                mock.patch.object(drive, "send", side_effect=fake_send), \
+                mock.patch.object(drive, "report"):
+            with self.assertRaises(drive.DialogueProbeComplete):
+                drive.do_dialogue_probe(
+                    {"key": "esc", "steps": 123, "before": 2, "after": 3})
+        self.assertEqual(sent, [("", 123), ("", 123), ("esc", 123),
+                                ("", 123), ("", 123), ("", 123)])
+
+    def test_probe_rejects_non_dialogue_or_pending_keyboard(self):
+        for current in ({"input_chain": [], "kbd_pending": 0}, self.dialogue(1)):
+            with self.subTest(current=current), \
+                    mock.patch.object(drive, "state", return_value=current):
+                with self.assertRaises(SystemExit):
+                    drive.do_dialogue_probe({"key": "enter", "before": 0})
+
+    def test_probe_chain_filter_distinguishes_event_from_attack_dialogue(self):
+        command = {"dialogue_probe": {"chain_contains": ["0x342AB"]}}
+        attack = self.dialogue()
+        attack["input_chain"] = ["0x16039", "0x1E44E"]
+        event = self.dialogue()
+        event["input_chain"] = ["0x16CF8", "0x16161", "0x342AB", "0x1A4CC",
+                                "0x135CA", "0x1198A", "0x25DD3",
+                                "0x45D91", "0x3CB91"]
+        with mock.patch.object(drive, "do_dialogue_probe") as probe:
+            self.assertFalse(drive.maybe_dialogue_probe(attack, command))
+            probe.assert_not_called()
+            self.assertTrue(drive.maybe_dialogue_probe(event, command))
+            probe.assert_called_once_with(command["dialogue_probe"])
+
+    def test_probe_chain_filter_rejects_invalid_shape(self):
+        current = self.dialogue()
+        with self.assertRaises(SystemExit):
+            drive.maybe_dialogue_probe(
+                current, {"dialogue_probe": {"chain_contains": [123]}})
 
 
 class CampEncoding(unittest.TestCase):

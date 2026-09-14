@@ -51,6 +51,10 @@ RUN = "/out"
 PLAN = "/plan.jsonl"
 STEP_TIMEOUT = float(os.environ.get("FD2_ORACLE_STEP_TIMEOUT", "180"))
 
+
+class DialogueProbeComplete(Exception):
+    """三臂對白探針完成；由最外層把它當成成功停止，不再繼續戰鬥。"""
+
 # 陣營編碼共三種，取自重製端 `native_continue_runtime_units.go` 對 raw `+6` 的
 # 分派，與實際收據一致：0 敵方、1 友軍、2 我方。
 #
@@ -163,6 +167,59 @@ def report(seq, key, current, note=""):
     )
 
 
+def do_dialogue_probe(command):
+    """在同一個對白等待點送單一試驗鍵，保留前後控制邊界後停止。
+
+    `before` 只送空鍵，讓逐字、嘴型與框動畫走過固定長度；三臂因此有完全相同的
+    起點與步數。試驗鍵只允許 enter／esc／空字串，空字串就是 none 反對照。
+    """
+    key = command.get("key", "")
+    if key not in {"", "enter", "esc"}:
+        raise SystemExit(f"dialogue_probe 不支援按鍵：{key!r}")
+    steps = int(command.get("steps", 20_000_000))
+    before = int(command.get("before", 20))
+    after = int(command.get("after", 3))
+    if steps < 1 or before < 0 or after < 0:
+        raise SystemExit("dialogue_probe 的 steps／before／after 無效")
+    for _ in range(before):
+        current = state()
+        if ui_mode(current) != "dialogue":
+            raise SystemExit("dialogue_probe 前置等待期間離開了對白")
+        seq, current = send("", steps)
+        report(seq, "", current, " dialogue-probe=before")
+    current = state()
+    if ui_mode(current) != "dialogue" or current.get("kbd_pending", 0) != 0:
+        raise SystemExit("dialogue_probe 起點不是空鍵盤的對白等待")
+    seq, current = send(key, steps)
+    report(seq, key, current, f" dialogue-probe=trial-{key or 'none'}")
+    for _ in range(after):
+        seq, current = send("", steps)
+        report(seq, "", current, " dialogue-probe=after")
+    raise DialogueProbeComplete
+
+
+def maybe_dialogue_probe(current, command):
+    """命中指定呼叫鏈時啟動對白探針；未命中就讓既有驅動流程繼續。
+
+    戰鬥單位收尾會同時遇到攻擊／升級對白與戰場事件對白，不能看到
+    ``dialogue`` 就一律攔截。計畫可用 ``chain_contains`` 指定必須同時存在的
+    原版線性位址；空清單維持一般「下一個對白」探針的行為。
+    """
+    probe = command.get("dialogue_probe")
+    if not probe or ui_mode(current) != "dialogue":
+        return False
+    required = probe.get("chain_contains", [])
+    if isinstance(required, str):
+        required = [required]
+    if not isinstance(required, list) or any(not isinstance(item, str) for item in required):
+        raise SystemExit("dialogue_probe.chain_contains 必須是位址字串陣列")
+    chain = current.get("input_chain", [])
+    if not all(item in chain for item in required):
+        return False
+    do_dialogue_probe(probe)
+    return True
+
+
 def settle(steps, count):
     """只前進不送鍵，讓動畫或演出跑完。"""
     for _ in range(count):
@@ -246,6 +303,7 @@ def do_await(command):
         send_key = "" if (key and current.get("kbd_pending", 0) > 0) else key
         # 對白不會自己走完。等回合推進的時候中間常常插一段升級訊息或事件台詞，
         # 只送空鍵會等到預算用完——實測第一關第 3 回合就卡在這裡 300 格。
+        maybe_dialogue_probe(current, command)
         if ui_mode(current) == "dialogue" and current.get("kbd_pending", 0) == 0:
             send_key = "enter"
         seq, current = send(send_key, steps)
@@ -751,6 +809,7 @@ def do_engage(command):
             print(f"engage {moved_to} 之後已經進到戰後城鎮，這一場結束", flush=True)
             return True
         if mode == "dialogue":
+            maybe_dialogue_probe(current, command)
             key = "" if current.get("kbd_pending", 0) > 0 else "enter"
             seq, current = send(key, max(steps, 3_000_000))
             report(seq, key, current, " engage=finish-dialogue")
@@ -1084,10 +1143,13 @@ def do_sweep_battle(command):
         if not do_sweep_round(inner):
             return False
         print(f"sweep_battle：第 {before} 回合我方行動完畢，等換手", flush=True)
-        if not do_await({"await": f"round>={before + 1}",
+        await_command = {"await": f"round>={before + 1}",
                          "abort_if": "ally_alive<=0",
                          "steps": int(command.get("turn_steps", 10_000_000)),
-                         "max": int(command.get("turn_max", 200))}):
+                         "max": int(command.get("turn_max", 200))}
+        if command.get("dialogue_probe"):
+            await_command["dialogue_probe"] = command["dialogue_probe"]
+        if not do_await(await_command):
             return False
     print(f"sweep_battle：{rounds} 回合內未打完", file=sys.stderr)
     return False
@@ -1138,8 +1200,11 @@ def main():
                 return 9
             continue
         if "sweep_battle" in command:
-            if not do_sweep_battle(command):
-                return 10
+            try:
+                if not do_sweep_battle(command):
+                    return 10
+            except DialogueProbeComplete:
+                return 0
             continue
         key = command.get("key", "")
         if command.get("gate") == "kbd_empty" and current.get("kbd_pending", 0) > 0:

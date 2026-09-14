@@ -22,24 +22,6 @@
   },
   "items": [
     {
-      "id": "battle-dialogue-esc-receipt",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "戰鬥對白 ESC 待 dosgolem 三臂自動對拍",
-      "body": "故事對白已量到 ESC 與 Enter 完全同義（三臂逐格 SHA-256 相同），重製端已接。戰鬥事件對白與回合起手對白仍缺各自的 ESC／Enter 原版對照收據。\n\n2026-09-14 決議：不再等待人工操作。由代理程式用 dosgolem 對兩個正式入口各跑 ESC、Enter 與無輸入反對照，依收據直接決定是否共用輸入契約；若不同則保留各自 typed 規則，不可猜接。",
-      "acceptance": "以 dosgolem 對戰鬥事件對白與回合起手對白各產生 ESC、Enter、none 三臂收據，固定起點、步數、鍵盤閘門與 EXE 雜湊；自動比較每臂的畫面 SHA-256、輸入消耗、控制邊界與後續狀態。相同就接線並測試，差異就分開實作並記錄；結果寫入 docs/data/ui-traces/battle-dialogue-esc-vs-enter.json，且 receipt 測試通過。",
-      "evidence": "docs/knowledge-base/98-opening-esc-and-length-20260909.md",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/data/ui-traces/battle-dialogue-esc-vs-enter.json"
-        ],
-        "pattern": "\"original_runner\"\\s*:\\s*\"dosgolem",
-        "note": "兩個入口的正式 dosgolem 三臂收據尚未出現；完成後由測試裁決，不再要人判。"
-      },
-      "issue": 2
-    },
-    {
       "id": "reinforcement-eax-source",
       "layer": "re",
       "category": "RE待解",

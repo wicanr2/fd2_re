@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_original_runtime_receipt",
+  "topic": "戰鬥事件與回合起手對白的 ESC／Enter／無輸入三臂比較",
+  "date": "2026-09-14",
+  "original_runner": "dosgolem apps/fd2/cmd/oracle",
+  "dosgolem_commit": "5c607a70bbd8843a5b63d9a92ebef63aeea6512e",
+  "driver": "tools/dosgolem_oracle.sh + tools/dosgolem_oracle_drive.py",
+  "runner_clean": true,
+  "executable": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "method": {
+    "input_kind": "normal BIOS keys",
+    "trial_steps": 20000000,
+    "after_steps": 20000000,
+    "after_count": 3,
+    "keyboard_gate": "trial 前 kbd_pending=0；ESC／Enter 臂各只送一鍵，none 臂送空字串",
+    "comparison": "同一案例三臂起點一致；逐邊界比較 EIP、kbd_reads、PNG SHA-256、單位陣列與視角狀態 SHA-256",
+    "state_injections": []
+  },
+  "cases": [
+    {
+      "name": "battle_event_dialogue",
+      "entry": "原版標題 CONTINUE 進入第一關，未鎖 HP；閉環驅動正常鍵盤操作至第 3 回合哈諾／哈瓦特加入事件",
+      "evidence_grade": "RUNTIME 觀測；一般玩家輸入路徑，事件前的戰鬥操作由閉環驅動完成",
+      "probe_gate": {
+        "chain_contains": "0x342AB",
+        "seq": 507,
+        "steps": 2030483500,
+        "eip": "0x1064E",
+        "kbd_reads": 174,
+        "kbd_pending": 0,
+        "input_chain": ["0x16CF8", "0x16161", "0x342AB", "0x1A4CC", "0x135CA", "0x1198A", "0x25DD3", "0x45D91", "0x3CB91"],
+        "png_sha256": "0cb7e31843a2a886aeaa38b277c244925b673bf9cbc2ece924bc95c682e780ff",
+        "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487",
+        "view_sha256": "507b4d741978d6f34f1606d58faf1f9eaabab39a4c6b790b5ca9d13ba69390bc"
+      },
+      "plans": {
+        "esc": {"file": "docs/data/parity-plans/ch01-battle-event-dialogue-esc.jsonl", "sha256": "7d462bb087f2ea1374714dbbc43b498305740769f22c26824eca6a92eaeaa611"},
+        "enter": {"file": "docs/data/parity-plans/ch01-battle-event-dialogue-enter.jsonl", "sha256": "18145fe82b3f92dbbbef09d571293efa740a621ed5cd09ccf2beda4b2565fd72"},
+        "none": {"file": "docs/data/parity-plans/ch01-battle-event-dialogue-none.jsonl", "sha256": "354c396d71edb5a94141fc4ebbce8ee8f10de81c2b1d787b4f56b506967996f4"}
+      },
+      "esc": [
+        {"seq": 508, "eip": "0x36CDB", "kbd_reads": 175, "png_sha256": "5f237ee5b48f523fb3bb8a80d631854933a5df725ca75b51e761b49201dcaf1e", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"},
+        {"seq": 509, "eip": "0x4E8CF", "kbd_reads": 175, "png_sha256": "b1a98315c3a29164813d7b4a5fc93820490b5a980f36a7268942db85ebb2be34", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"},
+        {"seq": 510, "eip": "0x4E916", "kbd_reads": 175, "png_sha256": "e7b8fc5163c936e95d409c30bcc3a6dba70e195483f76e95d647a9bd06930dfd", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"},
+        {"seq": 511, "eip": "0x1062D", "kbd_reads": 175, "png_sha256": "fe7f9e4c7b75d372384800290c33dd16b711a2e51dabc0b83bb6306e0bd86f7d", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"}
+      ],
+      "enter": [
+        {"seq": 508, "eip": "0x36CDB", "kbd_reads": 175, "png_sha256": "5f237ee5b48f523fb3bb8a80d631854933a5df725ca75b51e761b49201dcaf1e", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"},
+        {"seq": 509, "eip": "0x4E8CF", "kbd_reads": 175, "png_sha256": "b1a98315c3a29164813d7b4a5fc93820490b5a980f36a7268942db85ebb2be34", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"},
+        {"seq": 510, "eip": "0x4E916", "kbd_reads": 175, "png_sha256": "e7b8fc5163c936e95d409c30bcc3a6dba70e195483f76e95d647a9bd06930dfd", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"},
+        {"seq": 511, "eip": "0x1062D", "kbd_reads": 175, "png_sha256": "fe7f9e4c7b75d372384800290c33dd16b711a2e51dabc0b83bb6306e0bd86f7d", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "42cd05a4e2871a1bf94cf97b50aa7f1664ad5790df2f60f52a576bd1e28bc64c"}
+      ],
+      "none": [
+        {"seq": 508, "eip": "0x16D00", "kbd_reads": 174, "png_sha256": "92ebf0d2b72955ed6e76a823c671ded3cb4d9d4fe6550e3d60d01fa7350e8bda", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "507b4d741978d6f34f1606d58faf1f9eaabab39a4c6b790b5ca9d13ba69390bc"},
+        {"seq": 509, "eip": "0x4E8D5", "kbd_reads": 174, "png_sha256": "01acdacdb455cd067f3652cebd4419ed7e4f67c0edb058ebfcf36841f456253d", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "507b4d741978d6f34f1606d58faf1f9eaabab39a4c6b790b5ca9d13ba69390bc"},
+        {"seq": 510, "eip": "0x1062D", "kbd_reads": 174, "png_sha256": "0cb7e31843a2a886aeaa38b277c244925b673bf9cbc2ece924bc95c682e780ff", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "507b4d741978d6f34f1606d58faf1f9eaabab39a4c6b790b5ca9d13ba69390bc"},
+        {"seq": 511, "eip": "0x4E8D4", "kbd_reads": 174, "png_sha256": "a7e52d6fdc81eca080aae662e5d2cc72f57fab4c378e8ae9d9f14d4ce0fd5778", "units_sha256": "b7b68b06f342b85565a835aaa8b42882c941468cd59cf0424b482ac0a464f487", "view_sha256": "507b4d741978d6f34f1606d58faf1f9eaabab39a4c6b790b5ca9d13ba69390bc"}
+      ],
+      "result": "ESC 與 Enter 從試驗邊界起四個控制點逐項相同；none 未增加 kbd_reads，且畫面、EIP 與視角分流。"
+    },
+    {
+      "name": "turn_start_dialogue",
+      "entry": "以 ch01-cleared 的 FD2.SAV／FD2.TMP 載入第二關，沿城鎮出口與整備進入回合起手對白",
+      "evidence_grade": "RUNTIME 窄輸入語意觀測；起始存檔的第一關祖先使用鎖 HP 修改路徑，不提升為 PLAYER-E2",
+      "start_state": {
+        "FD2.SAV_sha256": "d6960ee1608ecb5ed8bab7cce0734a9d92cc3aec139857a3d1fc0ada4100b43d",
+        "FD2.TMP_sha256": "03858009e2c81a1613bbbe0bfba26694da491442b730ff7365ca00b43843f376"
+      },
+      "probe_gate": {
+        "seq": 67,
+        "steps": 1015350580,
+        "eip": "0x16D0E",
+        "kbd_reads": 7,
+        "kbd_pending": 0,
+        "input_chain": ["0x16039", "0x32D6B", "0x25DC2", "0x45D91", "0x3CB91"],
+        "png_sha256": "fd98ba4b4378cf5bad6312a702530e65e4626f59978e4c285e15843434cec640",
+        "units_sha256": "0d498a7ebe646e20da900a16eb8d2c1a84790a0e4c1106f6c59493b0965e2dc7",
+        "view_sha256": "0b8f9b4769db0bb5ed4eb144868cf015b01e95b2aaab971921b45ee1d6628202"
+      },
+      "plans": {
+        "esc": {"file": "docs/data/parity-plans/ch02-turn-start-dialogue-esc.jsonl", "sha256": "3952674742483e6397453da318496ee524962281b6f7ed193bf2f85b52d8d800"},
+        "enter": {"file": "docs/data/parity-plans/ch02-turn-start-dialogue-enter.jsonl", "sha256": "65b04904018629fcd8a3e0e74cd54db254f255963ecd9637c8bbdb6526b045d1"},
+        "none": {"file": "docs/data/parity-plans/ch02-turn-start-dialogue-none.jsonl", "sha256": "6b57845e159ce100789d27b63a2fa2b07b387f9ce0f9c6d8c6b798436eeb19d1"}
+      },
+      "esc": [
+        {"seq": 68, "eip": "0x1062F", "kbd_reads": 8, "png_sha256": "f5403139569d560f3b3ebaed7214b1ae24653891da90b7868a04c3b2530de663"},
+        {"seq": 69, "eip": "0x4E01E", "kbd_reads": 8, "png_sha256": "4138f434450da8471d9b4d5c7e5d36bc43bd39d7d50f92751cf8313c3bc620ec"},
+        {"seq": 70, "eip": "0x36CDB", "kbd_reads": 8, "png_sha256": "8dbd1360ad74b1564d3b56a5d35eccc8fbab55ebf8a6627d0453edfe34ed0c2a"},
+        {"seq": 71, "eip": "0x16D15", "kbd_reads": 8, "png_sha256": "f5403139569d560f3b3ebaed7214b1ae24653891da90b7868a04c3b2530de663"}
+      ],
+      "enter": [
+        {"seq": 68, "eip": "0x1062F", "kbd_reads": 8, "png_sha256": "f5403139569d560f3b3ebaed7214b1ae24653891da90b7868a04c3b2530de663"},
+        {"seq": 69, "eip": "0x4E01E", "kbd_reads": 8, "png_sha256": "4138f434450da8471d9b4d5c7e5d36bc43bd39d7d50f92751cf8313c3bc620ec"},
+        {"seq": 70, "eip": "0x36CDB", "kbd_reads": 8, "png_sha256": "8dbd1360ad74b1564d3b56a5d35eccc8fbab55ebf8a6627d0453edfe34ed0c2a"},
+        {"seq": 71, "eip": "0x16D15", "kbd_reads": 8, "png_sha256": "f5403139569d560f3b3ebaed7214b1ae24653891da90b7868a04c3b2530de663"}
+      ],
+      "none": [
+        {"seq": 68, "eip": "0x4E91E", "kbd_reads": 7, "png_sha256": "463a14f074b00f07bcc65dc84814c1ba3f950e4995fccd6b86d02bc4b4bb8b22"},
+        {"seq": 69, "eip": "0x4E9DF", "kbd_reads": 7, "png_sha256": "7c09cb602dba261e66d849b7f7bf7abf13ee179f1564fa8ef0d4c2a465794b64"},
+        {"seq": 70, "eip": "0x4E91C", "kbd_reads": 7, "png_sha256": "a03aaf8e9b0418392080fadfe97561c9ef3b3b8044022f6e95cf81a33f2b4203"},
+        {"seq": 71, "eip": "0x4E927", "kbd_reads": 7, "png_sha256": "a03aaf8e9b0418392080fadfe97561c9ef3b3b8044022f6e95cf81a33f2b4203"}
+      ],
+      "shared_state_after_trial": {
+        "units_sha256": "0d498a7ebe646e20da900a16eb8d2c1a84790a0e4c1106f6c59493b0965e2dc7",
+        "view_sha256": "0b8f9b4769db0bb5ed4eb144868cf015b01e95b2aaab971921b45ee1d6628202"
+      },
+      "result": "ESC 與 Enter 從試驗邊界起四個控制點逐項相同；none 未增加 kbd_reads，且畫面與 EIP 分流。"
+    }
+  ],
+  "conclusion": "已證實：原版第一關戰鬥事件對白與第二關回合起手對白都把 ESC 當作單次推進鍵，語意與 Enter 相同；沒有證據支持 ESC 跳過整段。"
+}
