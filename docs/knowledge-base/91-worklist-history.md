@@ -12,6 +12,16 @@
 
 保留這份記錄是為了證據可追溯：每一輪的結論、勘誤與位址出處都在這裡，翻得回去。
 
+## 2026-09-14 素材清冊 unknown consumer review
+
+- `asset-manifest-unknown-dispositions`：新增可重生的
+  [`asset-consumer-review.json`](../data/asset-consumer-review.json)，逐筆核對原 manifest
+  的 93 筆 raw 身分。79 筆 FDFIELD 均對到 map 0..32 的現行玩家資料投影與正式
+  consumer；5 筆 FDMUS 為 `20 0d 0a` 非播放哨兵；9 筆 FDOTHER 目前無登記玩家
+  consumer，其中五筆 PCM bank 形狀仍只標強推論。manifest 的 disposition 不改，摘要
+  分開保存 `manifest_unknown_total=93` 與 `unknown_remaining=0`，避免把 consumer review
+  冒充完整標準輸出 admission。新 caller、raw 身分或集合漂移會由工具失敗即關閉。
+
 ## 每一輪核實抓到的過期斷言
 
 同一處記錄，不要散回條目裡。

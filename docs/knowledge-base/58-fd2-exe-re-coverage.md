@@ -241,6 +241,14 @@ writer／consumer 分類高 fan-in helper，不用 unknown 總數驅動無限 RE
 |---|---|---|---|---|---|
 | 檔案版本、容器與主要資產格式 | 閉合 | 部分 | 部分 E1 | 部分 | `.DAT`、圖像、FDTXT／字型、AFM／FIGANI、XMIDI、地圖與多張 EXE 表已有雜湊與重生工具，不應重解容器格式。2026-08-29 清冊現為39,825筆（38,801 exported、1,005 intentionally raw、19 blocked）；manifest v2另把1,005個raw resource分為901 standardized、11 confirmed-empty、0 blocked、93 unknown，摘要見[`fd2-source-resource-coverage-summary.json`](../data/fd2-source-resource-coverage-summary.json)。unknown只是尚缺標準輸出關聯，不自動等於decoder或玩家功能缺口。除既有FIGANI、FDOTHER動畫、BG／TAI、FDTXT／字型、頭像與33張地圖外，FDICON已分離1,680張三層sprite；FDSHAP全33銀行另分離8,256張indexed frame、8,256張source mask、8,256張remap mask及33份controls metadata，全部與固定原檔逐層一致。ANI#0..#8亦完整分離為289張indexed frame、289份六位元DAC snapshot及9份metadata，#9空尾項不輸出假動畫；標題、第20戰與結局的production ANI archive caller已歸零。正式FDTXT、FDICON、FDSHAP、`figani.DecodeResource`與TAI direct archive production caller亦歸零；這只證明不再直接讀archive。普通玩家與敵方物理攻擊現已在任何方向、RNG、HP、EXP或acted狀態修改前，由同一分離FIGANI provider原子補載完整attack／idle pair；缺pair零狀態修改，主證據見[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)。戰場與第23戰重載在沒有FDSHAP archive時通過。FDFIELD#69現由受控runtime catalog回連`map23/map.json`並逐byte重建；終局selector30的FDFIELD#90..92亦由單一具型別JSON逐byte重建。天空之鑰FDOTHER#34完整101格、終局前綴FDOTHER#54完整111格、FDOTHER#56..#60及其FDOTHER#5對話格、商店FDOTHER#12／#29／#63的113筆素材、城鎮FDOTHER#10／#11／#61／#62的11筆素材、標題發行商FDOTHER#74／#76的4筆素材、標題捲動／主選單／靜態幕的46筆素材、LOAD四槽FDOTHER#13 entry16、教會／轉職FDOTHER#14的21筆mixed-codec素材、整備FDOTHER#1的20張range overlay，以及完整#2 action-cell bank／補齊的#5 dialogue grid／panel均已分離。戰場初始化另已將#1 range overlay、#3完整23×256 LUT、#5 HUD與138-entry LMI1、#6完整230-entry LMI1、#9完整12-entry增援演出及map 28／29的#55表面改成嚴格分離loader；一般地圖與map 28／29在原版FDOTHER不可讀時通過。#1與#6的292份既有標準檔現亦由manifest精確記錄；標題FDOTHER#77四筆選單音效、#78一筆ANI #1 companion音效與FDOTHER#102短暫調色盤均由正式標題路徑消費。#79兩幀raw pending-code呈現只達`DATA-READY`，尚未接入正式`Game`；前三者的正式consumer不再回讀archive資源。production runtime仍有其他`.DAT`、其他FDFIELD selector與UI用途未全量閉合，故整體仍是部分。契約與完整數字見[`60`](60-editor-separated-assets-spec.md)。 |
 
+> **2026-09-14 素材 unknown consumer review：**
+> [`asset-consumer-review.json`](../data/asset-consumer-review.json) 已逐筆綁定原 manifest
+> 的 93 筆 raw 身分：79 筆 FDFIELD 有正式玩家資料投影與 consumer、5 筆 FDMUS 是
+> `20 0d 0a` 非播放哨兵、9 筆 FDOTHER 目前沒有登記玩家 consumer。新版
+> [`asset-disposition-summary.json`](../data/asset-disposition-summary.json) 因而保留
+> `manifest_unknown_total=93`，但 `reviewed_unknown_total=93`、`unknown_remaining=0`。
+> 這不把局部投影升格成完整標準輸出；新 caller 或 raw 身分變更會失敗即關閉並重開切片。
+
 > **2026-08-29 一般物理攻擊 consumer 勘誤：** 上表保留了本批開始時發現的缺口；
 > 現況已依[`fd2_physical_attack_separated_provider_20260829.txt`](../data/ida/fd2_physical_attack_separated_provider_20260829.txt)
 > 讓普通玩家與敵方在方向／亂數／HP之前共用分離FIGANI provider。完整attack／idle

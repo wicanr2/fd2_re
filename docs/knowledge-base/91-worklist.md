@@ -45,7 +45,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ### 素材清冊還有 93 筆 unknown 沒有交叉核對
 
-`asset-manifest-unknown-dispositions` · 工作 · [#5](https://github.com/wicanr2/fd2_re/issues/5) · 仍未完成 · 自承還在 docs/data/asset-disposition-summary.json
+`asset-manifest-unknown-dispositions` · 工作 · [#5](https://github.com/wicanr2/fd2_re/issues/5) · **可能已完成，回去確認** · 找不到 "unknown_remaining": [1-9]
 
 manifest v2 的 source_resources 有 1,005 筆，disposition 為 unknown 的 93 筆（FDFIELD.DAT 79、FDOTHER.DAT 9、FDMUS.DAT 5，reason_code 都是 no_standard_output）。正式 Game caller 稽核沒有發現它們有直接 archive consumer，所以不阻擋第一版；要確認的是有沒有尚未登記的玩家 consumer。清單與定位資訊在 docs/data/asset-disposition-summary.json，由 tools/summarize_asset_dispositions.py 從 pack 的 manifest 重生。
 

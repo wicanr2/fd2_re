@@ -72,9 +72,12 @@ def enabled_turn_events(controls):
 
 def parse_map(raw, m):
     fld = sorted(glob.glob(os.path.join(raw, "FDFIELD", "*.bin")))
-    comp = open(fld[m * 3], "rb").read()
-    ctl = open(fld[m * 3 + 1], "rb").read()
-    spw = open(fld[m * 3 + 2], "rb").read()
+    with open(fld[m * 3], "rb") as stream:
+        comp = stream.read()
+    with open(fld[m * 3 + 1], "rb") as stream:
+        ctl = stream.read()
+    with open(fld[m * 3 + 2], "rb") as stream:
+        spw = stream.read()
     w, h = struct.unpack_from("<HH", comp, 0)
     info = {"map": m, "w": w, "h": h,
             "own_deploy": ctl[1], "enemy_ally_total": ctl[2]}

@@ -137,6 +137,31 @@ standard output、偽造複合 metadata 關聯、不存在的音樂 catalog trac
 93 個玩家功能缺口。下一批須先用 production consumer 清冊交叉比對；FDFIELD #69
 已由受控 runtime catalog 回連，不再列入 unknown，也不重做已閉合 decoder。
 
+#### 2026-09-14：93 筆 unknown 的逐資源 consumer review
+
+[`asset-consumer-review.json`](../data/asset-consumer-review.json) 是不含原始位元組的
+受版控審查帳本，由 `tools/review_unknown_asset_consumers.py` 讀取固定私人 pack 的
+manifest 與 raw resource 重生。它逐筆綁定來源檔、resource、raw 大小與 SHA-256，並
+拒絕集合、身分或必要入口漂移。93 筆結果為：
+
+- FDFIELD 79 筆都有現行玩家資料 consumer。每筆依 `resource / 3` 對到 map 0..32 的
+  composition／control／positions；composition 由 `map.json` 逐位元重建，control 核對
+  回合事件、格子事件、寶箱與 roster 的全部現行玩家欄位，positions 核對 unit raw record
+  與原版實際會讀取的部署座標。帳本同時列出 producer、資料檔與正式 loader 路徑。
+- FDMUS #0／#2／#5／#7／#9 都是完全相同的 `20 0d 0a` 三位元組；已確認為非播放
+  payload 的哨兵，不捏造 MIDI、XMI 或 OGG consumer。
+- FDOTHER #47／#48／#49／#51／#52／#64／#81／#89／#96 在目前正式 `Game` caller
+  與分離素材清冊都沒有登記的玩家 consumer。#48／#49／#51／#52／#64 仍只保留
+  PCM bank 形狀的強推論；此結論不宣稱原版資料永不可達。未來若發現 caller，必須重開
+  獨立證據／素材切片，不可從本帳本直接猜接播放或呈現。
+
+manifest 的 93 筆 `disposition=unknown` 刻意保持不變，因為 consumer review 不是完整
+標準輸出 admission。`tools/summarize_asset_dispositions.py --consumer-review ...` 現把
+manifest 原值記為 `manifest_unknown_total=93`，另以審查帳本計算
+`reviewed_unknown_total=93` 與 `unknown_remaining=0`；因此工作清單可以閉合，又不會
+把部分投影冒充完整 raw 標準化。若 manifest unknown 集合或 raw 身分改變，摘要拒絕
+沿用舊帳本。
+
 ### 三之二、FDFIELD runtime catalog bridge
 
 > 狀態：**CONFORMED／DATA-READY**（2026-08-29）
