@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 12 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 11 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -86,18 +86,6 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 開場配樂曲號、戰鬥曲與勝利曲的對應、以及 UI 音效 index 2..0xb 的語意畫面，都要實際聽辨才能定案。容器內無音訊裝置，驗不了。
 
 怎樣算做完：逐項聽辨後修正曲號對映與音效語意記錄。
-
-### 原版側已到第四關續跑點，待第四關閉環收據
-
-`parity-ch02-ch04-original-side` · 工作 · [#16](https://github.com/wicanr2/fd2_re/issues/16) · **可能已完成，回去確認** · 已經出現在 docs/data/parity-plans/ch04-clear.jsonl
-
-既有 `work/parity-state/` 已保存 ch01、ch02、ch03 cleared 的原版 `FD2.SAV`；這證明原版側已完成第三關並至少到達第四關前的續跑點，舊標題「只走到第二關入口」已失效。受版控計畫目前仍只有 `ch01-clear.jsonl` 與 `ch02-clear.jsonl`，第四關的可重跑閉環序列與正式收據尚未登錄。
-
-2026-09-14 決議：先稽核上次錄影／checkpoint 是否已涵蓋第四關；不足時允許 `FD2_ORACLE_LOCK_ALLY_HP=1` 鎖定原版所有我方 HP，並允許驅動器強制清場以完成通關。這是修改路徑，只能證明關卡節點、畫面、介面與存檔閉環，不得用來宣稱傷害、生存、戰鬥結果或一般玩家 `PLAYER-E2`。
-
-怎樣算做完：先稽核 work/ 的既有錄影、runner、checkpoint 與 ch03-cleared/FD2.SAV；若已有第四關完整收據就驗證並登錄，否則以該存檔的可寫複本續跑。允許鎖定 camp 2 全體 HP 與強制清場，但 runner／每個 checkpoint 必須記錄 state_injections、強制清場方式、輸入、版本、原始素材雜湊與證據降級。完成 docs/data/parity-plans/ch04-clear.jsonl、第四關戰場→戰後→城鎮存檔的可重生收據，並在 96 記錄命令、輸入、日期及不可主張的範圍。
-
-證據：`docs/knowledge-base/96-parity-toolchain-20260909.md`
 
 ## release — 發行、平台與封包
 
