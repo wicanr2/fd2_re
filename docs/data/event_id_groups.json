@@ -380,10 +380,12 @@
   "handler": "0x35112",
   "spawns": [
    {
-    "group": "$reg_or_mem(eax)",
+    "group": "$round_counter_div2[0x53bef]",
     "via": "spawn_group",
     "source": "0x3512b",
-    "raw_placement_gate": 0
+    "raw_placement_gate": 0,
+    "group_formula": "signed_trunc_toward_zero(round_counter/2)",
+    "evidence": "docs/data/ida/fd2_reinforcement_eax_sources.json#handlers.47"
    }
   ]
  },
@@ -395,10 +397,12 @@
   "handler": "0x351e9",
   "spawns": [
    {
-    "group": "$reg_or_mem(eax)",
+    "group": "$round_counter_div2[0x53bef]",
     "via": "spawn_group",
     "source": "0x35202",
-    "raw_placement_gate": 0
+    "raw_placement_gate": 0,
+    "group_formula": "signed_trunc_toward_zero(round_counter/2)",
+    "evidence": "docs/data/ida/fd2_reinforcement_eax_sources.json#handlers.49"
    }
   ]
  },

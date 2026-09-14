@@ -307,9 +307,15 @@ event_id 49(0x351e9)同一段位移量(handler+0x0a..0x12)逐位元組相同,同
 
 map20 實際 group 集合 `{0,1,2,3,4,255}`、map21 `{0,1,2,3,255}`——`turn/2` 算出的 1/2/3/4 與 1/3 恰好全部落在
 存在的 group 內,且 map21 的 group2 對應另一筆已解出的字面事件(event_id50,turn5,camp=special,groups=[2],
-own 陣營)不衝突,6/6 全部吻合。**已用 `tools/extract_event_id_groups.py` 的同款 basic-block walk 手動核對兩
-handler 反組譯,非猜測**;`docs/data/turn_events.json` 對應 6 筆已把 `groups` 從 `$reg_or_mem(eax)` 換成算出的
-整數,並補 `group_formula` 欄位記錄機制。
+own 陣營)不衝突,6/6 全部吻合。2026-09-14 已由合法 IDA Pro 9.4 重新輸出
+[`fd2_reinforcement_eax_sources.json`](../data/ida/fd2_reinforcement_eax_sources.json)：
+保留兩個 handler 的原始函式名、線性位址、七條連續指令與 bytes，並核對
+`0x51B91` 的 event47／49 raw jump-table slots、`0x1A85A` 間接 dispatcher、
+`[0x53BEF]` 完整直接讀寫集合及 `0x10B4E` group consumer。這取代舊的手動
+basic-block 敘述作為主證據；攻略只定位六個玩家可見觸發情境，不參與 ABI
+裁決。`docs/data/turn_events.json` 的六筆整數 group 與公式全部通過獨立
+schema／coverage 測試；`docs/data/event_id_groups.json` 也已由可重跑 extractor
+改記 `$round_counter_div2[0x53bef]`，不再把 event47／49留作 `$reg_or_mem(eax)`。
 
 > 與 §6.1「5 個解出動態(`$turn_counter`,即 group=回合數本身)」是**不同公式**:event27/54/57 是 `group=turn`,
 > event47/49 是 `group=turn÷2`——同樣的「回合數驅動遞增 group」設計母題,但除以 2 是因為這兩章每 2 回合才觸發

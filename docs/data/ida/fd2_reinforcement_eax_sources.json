@@ -1,0 +1,3941 @@
+{
+  "schema_version": 1,
+  "status": "RE-CLOSED",
+  "scope": "ch21/ch22 六筆由 event 47/49 計算 eax 的回合增援來源",
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE flat-loader linear address",
+    "annotation_policy": "只讀匯出；不改名、不改型別、不加註解、不保存資料庫"
+  },
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "evidence_levels": {
+    "binary_control_and_data_flow": "已證實",
+    "six_schedule_rows": "已證實（固定 FDFIELD 擷取資料與公式交叉核對）",
+    "player_visible_context": "攻略旁證；不作 ABI 或欄位語意證據"
+  },
+  "dispatcher": {
+    "entry": "0x1a813",
+    "function": {
+      "start": "0x1a813",
+      "end": "0x1a866",
+      "original_name": "sub_1A813",
+      "instructions": [
+        {
+          "address": "0x1a813",
+          "bytes": "68 10 00 00 00",
+          "original": "push    10h",
+          "mnemonic": "push",
+          "operands": [
+            "10h"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a813"
+        },
+        {
+          "address": "0x1a818",
+          "bytes": "e8 ba c4 01 00",
+          "original": "call    sub_36CD7",
+          "mnemonic": "call",
+          "operands": [
+            "sub_36CD7"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a818"
+        },
+        {
+          "address": "0x1a81d",
+          "bytes": "53",
+          "original": "push    ebx",
+          "mnemonic": "push",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a81d"
+        },
+        {
+          "address": "0x1a81e",
+          "bytes": "56",
+          "original": "push    esi",
+          "mnemonic": "push",
+          "operands": [
+            "esi"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a81e"
+        },
+        {
+          "address": "0x1a81f",
+          "bytes": "8b 74 24 0c",
+          "original": "mov     esi, [esp+8+arg_0]",
+          "mnemonic": "mov",
+          "operands": [
+            "esi",
+            "[esp+8+arg_0]"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a81f"
+        },
+        {
+          "address": "0x1a823",
+          "bytes": "31 db",
+          "original": "xor     ebx, ebx",
+          "mnemonic": "xor",
+          "operands": [
+            "ebx",
+            "ebx"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a823"
+        },
+        {
+          "address": "0x1a825",
+          "bytes": "eb 01",
+          "original": "jmp     short loc_1A828",
+          "mnemonic": "jmp",
+          "operands": [
+            "loc_1A828"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a825"
+        },
+        {
+          "address": "0x1a827",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "mnemonic": "inc",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a827"
+        },
+        {
+          "address": "0x1a828",
+          "bytes": "83 fb 10",
+          "original": "cmp     ebx, 10h",
+          "mnemonic": "cmp",
+          "operands": [
+            "ebx",
+            "10h"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a828"
+        },
+        {
+          "address": "0x1a82b",
+          "bytes": "0f 8d 78 e8 ff ff",
+          "original": "jge     loc_190A9",
+          "mnemonic": "jge",
+          "operands": [
+            "loc_190A9"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a82b"
+        },
+        {
+          "address": "0x1a831",
+          "bytes": "8b 0d 55 3a 05 00",
+          "original": "mov     ecx, dword_53A55",
+          "mnemonic": "mov",
+          "operands": [
+            "ecx",
+            "dword_53A55"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a831"
+        },
+        {
+          "address": "0x1a837",
+          "bytes": "89 d8",
+          "original": "mov     eax, ebx",
+          "mnemonic": "mov",
+          "operands": [
+            "eax",
+            "ebx"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a837"
+        },
+        {
+          "address": "0x1a839",
+          "bytes": "c1 e0 02",
+          "original": "shl     eax, 2",
+          "mnemonic": "shl",
+          "operands": [
+            "eax",
+            "2"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a839"
+        },
+        {
+          "address": "0x1a83c",
+          "bytes": "29 d8",
+          "original": "sub     eax, ebx",
+          "mnemonic": "sub",
+          "operands": [
+            "eax",
+            "ebx"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a83c"
+        },
+        {
+          "address": "0x1a83e",
+          "bytes": "01 c8",
+          "original": "add     eax, ecx",
+          "mnemonic": "add",
+          "operands": [
+            "eax",
+            "ecx"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a83e"
+        },
+        {
+          "address": "0x1a840",
+          "bytes": "0f b6 50 03",
+          "original": "movzx   edx, byte ptr [eax+3]",
+          "mnemonic": "movzx",
+          "operands": [
+            "edx",
+            "byte ptr [eax+3]"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a840"
+        },
+        {
+          "address": "0x1a844",
+          "bytes": "3b 15 ef 3b 05 00",
+          "original": "cmp     edx, dword_53BEF",
+          "mnemonic": "cmp",
+          "operands": [
+            "edx",
+            "dword_53BEF"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a844"
+        },
+        {
+          "address": "0x1a84a",
+          "bytes": "75 db",
+          "original": "jnz     short loc_1A827",
+          "mnemonic": "jnz",
+          "operands": [
+            "loc_1A827"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a84a"
+        },
+        {
+          "address": "0x1a84c",
+          "bytes": "0f b6 50 05",
+          "original": "movzx   edx, byte ptr [eax+5]",
+          "mnemonic": "movzx",
+          "operands": [
+            "edx",
+            "byte ptr [eax+5]"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a84c"
+        },
+        {
+          "address": "0x1a850",
+          "bytes": "39 f2",
+          "original": "cmp     edx, esi",
+          "mnemonic": "cmp",
+          "operands": [
+            "edx",
+            "esi"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a850"
+        },
+        {
+          "address": "0x1a852",
+          "bytes": "75 d3",
+          "original": "jnz     short loc_1A827",
+          "mnemonic": "jnz",
+          "operands": [
+            "loc_1A827"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a852"
+        },
+        {
+          "address": "0x1a854",
+          "bytes": "0f b6 40 04",
+          "original": "movzx   eax, byte ptr [eax+4]",
+          "mnemonic": "movzx",
+          "operands": [
+            "eax",
+            "byte ptr [eax+4]"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a854"
+        },
+        {
+          "address": "0x1a858",
+          "bytes": "6a 00",
+          "original": "push    0",
+          "mnemonic": "push",
+          "operands": [
+            "0"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a858"
+        },
+        {
+          "address": "0x1a85a",
+          "bytes": "ff 14 85 91 1b 05 00",
+          "original": "call    funcs_1199C[eax*4]",
+          "mnemonic": "call",
+          "operands": [
+            "funcs_1199C[eax*4]"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a85a"
+        },
+        {
+          "address": "0x1a861",
+          "bytes": "83 c4 04",
+          "original": "add     esp, 4",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "4"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a861"
+        },
+        {
+          "address": "0x1a864",
+          "bytes": "eb c1",
+          "original": "jmp     short loc_1A827",
+          "mnemonic": "jmp",
+          "operands": [
+            "loc_1A827"
+          ],
+          "function": {
+            "start": "0x1a813",
+            "end": "0x1a866",
+            "original_name": "sub_1A813"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a864"
+        }
+      ],
+      "code_xrefs_to_start": [
+        {
+          "address": "0x1a4c7",
+          "bytes": "e8 47 03 00 00",
+          "original": "call    sub_1A813",
+          "mnemonic": "call",
+          "operands": [
+            "sub_1A813"
+          ],
+          "function": {
+            "start": "0x1a30b",
+            "end": "0x1a7bd",
+            "original_name": "sub_1A30B"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a4c7"
+        },
+        {
+          "address": "0x1a554",
+          "bytes": "e8 ba 02 00 00",
+          "original": "call    sub_1A813",
+          "mnemonic": "call",
+          "operands": [
+            "sub_1A813"
+          ],
+          "function": {
+            "start": "0x1a30b",
+            "end": "0x1a7bd",
+            "original_name": "sub_1A30B"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a554"
+        },
+        {
+          "address": "0x1a78d",
+          "bytes": "e8 81 00 00 00",
+          "original": "call    sub_1A813",
+          "mnemonic": "call",
+          "operands": [
+            "sub_1A813"
+          ],
+          "function": {
+            "start": "0x1a30b",
+            "end": "0x1a7bd",
+            "original_name": "sub_1A30B"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x1a78d"
+        }
+      ]
+    },
+    "event_table": "0x51b91",
+    "indirect_calls": [
+      {
+        "address": "0x1a85a",
+        "bytes": "ff 14 85 91 1b 05 00",
+        "original": "call    funcs_1199C[eax*4]",
+        "mnemonic": "call",
+        "operands": [
+          "funcs_1199C[eax*4]"
+        ],
+        "function": {
+          "start": "0x1a813",
+          "end": "0x1a866",
+          "original_name": "sub_1A813"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1a85a"
+      }
+    ],
+    "level": "已證實",
+    "note": "依 turn 與 raw camp 篩選後，以 event_id 索引 90-entry 跳表；間接 call 不能由 handler 的直接 code xref 取代。"
+  },
+  "round_counter": {
+    "address": "0x53bef",
+    "data_xrefs": [
+      {
+        "address": "0x103df",
+        "bytes": "a3 ef 3b 05 00",
+        "original": "mov     dword_53BEF, eax",
+        "mnemonic": "mov",
+        "operands": [
+          "dword_53BEF",
+          "eax"
+        ],
+        "function": {
+          "start": "0x10010",
+          "end": "0x10620",
+          "original_name": "sub_10010"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x103df"
+      },
+      {
+        "address": "0x104e9",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x10010",
+          "end": "0x10620",
+          "original_name": "sub_10010"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x104e9"
+      },
+      {
+        "address": "0x1055a",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x10010",
+          "end": "0x10620",
+          "original_name": "sub_10010"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1055a"
+      },
+      {
+        "address": "0x1a05a",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x19df7",
+          "end": "0x1a30b",
+          "original_name": "sub_19DF7"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1a05a"
+      },
+      {
+        "address": "0x1a5b9",
+        "bytes": "ff 05 ef 3b 05 00",
+        "original": "inc     dword_53BEF",
+        "mnemonic": "inc",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x1a30b",
+          "end": "0x1a7bd",
+          "original_name": "sub_1A30B"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1a5b9"
+      },
+      {
+        "address": "0x1a668",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x1a30b",
+          "end": "0x1a7bd",
+          "original_name": "sub_1A30B"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1a668"
+      },
+      {
+        "address": "0x1a6d9",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x1a30b",
+          "end": "0x1a7bd",
+          "original_name": "sub_1A30B"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1a6d9"
+      },
+      {
+        "address": "0x1a844",
+        "bytes": "3b 15 ef 3b 05 00",
+        "original": "cmp     edx, dword_53BEF",
+        "mnemonic": "cmp",
+        "operands": [
+          "edx",
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x1a813",
+          "end": "0x1a866",
+          "original_name": "sub_1A813"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1a844"
+      },
+      {
+        "address": "0x1b4d8",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x1b41d",
+          "end": "0x1b5f1",
+          "original_name": "sub_1B41D"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x1b4d8"
+      },
+      {
+        "address": "0x2066e",
+        "bytes": "c7 05 ef 3b 05 00 01 00 00 00",
+        "original": "mov     dword_53BEF, 1",
+        "mnemonic": "mov",
+        "operands": [
+          "dword_53BEF",
+          "1"
+        ],
+        "function": {
+          "start": "0x205da",
+          "end": "0x2067d",
+          "original_name": "sub_205DA"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x2066e"
+      },
+      {
+        "address": "0x207d5",
+        "bytes": "83 3d ef 3b 05 00 05",
+        "original": "cmp     dword_53BEF, 5",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "5"
+        ],
+        "function": {
+          "start": "0x20765",
+          "end": "0x20822",
+          "original_name": "sub_20765"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x207d5"
+      },
+      {
+        "address": "0x20935",
+        "bytes": "83 3d ef 3b 05 00 06",
+        "original": "cmp     dword_53BEF, 6",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "6"
+        ],
+        "function": {
+          "start": "0x20926",
+          "end": "0x20957",
+          "original_name": "sub_20926"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x20935"
+      },
+      {
+        "address": "0x23a9a",
+        "bytes": "83 3d ef 3b 05 00 12",
+        "original": "cmp     dword_53BEF, 12h",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "12h"
+        ],
+        "function": {
+          "start": "0x23a0a",
+          "end": "0x23b5f",
+          "original_name": "sub_23A0A"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x23a9a"
+      },
+      {
+        "address": "0x23ffe",
+        "bytes": "83 3d ef 3b 05 00 0f",
+        "original": "cmp     dword_53BEF, 0Fh",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "0Fh"
+        ],
+        "function": {
+          "start": "0x23e74",
+          "end": "0x240fa",
+          "original_name": "sub_23E74"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x23ffe"
+      },
+      {
+        "address": "0x248b5",
+        "bytes": "83 3d ef 3b 05 00 0f",
+        "original": "cmp     dword_53BEF, 0Fh",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "0Fh"
+        ],
+        "function": {
+          "start": "0x24754",
+          "end": "0x24b14",
+          "original_name": "sub_24754"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x248b5"
+      },
+      {
+        "address": "0x34883",
+        "bytes": "83 3d ef 3b 05 00 0f",
+        "original": "cmp     dword_53BEF, 0Fh",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "0Fh"
+        ],
+        "function": {
+          "start": "0x34819",
+          "end": "0x34924",
+          "original_name": "sub_34819"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x34883"
+      },
+      {
+        "address": "0x349f9",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x349d9",
+          "end": "0x34a0e",
+          "original_name": "sub_349D9"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x349f9"
+      },
+      {
+        "address": "0x34aa7",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x34a7a",
+          "end": "0x34b5d",
+          "original_name": "sub_34A7A"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x34aa7"
+      },
+      {
+        "address": "0x34ab7",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x34a7a",
+          "end": "0x34b5d",
+          "original_name": "sub_34A7A"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x34ab7"
+      },
+      {
+        "address": "0x3511c",
+        "bytes": "a1 ef 3b 05 00",
+        "original": "mov     eax, dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "eax",
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35112",
+          "end": "0x351c6",
+          "original_name": "sub_35112"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x3511c"
+      },
+      {
+        "address": "0x35195",
+        "bytes": "83 3d ef 3b 05 00 02",
+        "original": "cmp     dword_53BEF, 2",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "2"
+        ],
+        "function": {
+          "start": "0x35112",
+          "end": "0x351c6",
+          "original_name": "sub_35112"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35195"
+      },
+      {
+        "address": "0x351f3",
+        "bytes": "a1 ef 3b 05 00",
+        "original": "mov     eax, dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "eax",
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x351e9",
+          "end": "0x35261",
+          "original_name": "sub_351E9"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x351f3"
+      },
+      {
+        "address": "0x35236",
+        "bytes": "83 3d ef 3b 05 00 03",
+        "original": "cmp     dword_53BEF, 3",
+        "mnemonic": "cmp",
+        "operands": [
+          "dword_53BEF",
+          "3"
+        ],
+        "function": {
+          "start": "0x351e9",
+          "end": "0x35261",
+          "original_name": "sub_351E9"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35236"
+      },
+      {
+        "address": "0x352ec",
+        "bytes": "a0 ef 3b 05 00",
+        "original": "mov     al, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "al",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x352e2",
+          "end": "0x35321",
+          "original_name": "sub_352E2"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x352ec"
+      },
+      {
+        "address": "0x35305",
+        "bytes": "a0 ef 3b 05 00",
+        "original": "mov     al, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "al",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x352e2",
+          "end": "0x35321",
+          "original_name": "sub_352E2"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35305"
+      },
+      {
+        "address": "0x35367",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x3535d",
+          "end": "0x353cc",
+          "original_name": "sub_3535D"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35367"
+      },
+      {
+        "address": "0x354e7",
+        "bytes": "ff 35 ef 3b 05 00",
+        "original": "push    dword_53BEF",
+        "mnemonic": "push",
+        "operands": [
+          "dword_53BEF"
+        ],
+        "function": {
+          "start": "0x354dd",
+          "end": "0x354fe",
+          "original_name": "sub_354DD"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x354e7"
+      },
+      {
+        "address": "0x358ad",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35898",
+          "end": "0x358c7",
+          "original_name": "sub_35898"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x358ad"
+      },
+      {
+        "address": "0x359b5",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x3599b",
+          "end": "0x359c8",
+          "original_name": "sub_3599B"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x359b5"
+      },
+      {
+        "address": "0x35a3e",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35a2f",
+          "end": "0x35a48",
+          "original_name": "sub_35A2F"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35a3e"
+      },
+      {
+        "address": "0x35af2",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35ab8",
+          "end": "0x35b05",
+          "original_name": "sub_35AB8"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35af2"
+      },
+      {
+        "address": "0x35c64",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35c32",
+          "end": "0x35c79",
+          "original_name": "sub_35C32"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35c64"
+      },
+      {
+        "address": "0x35d38",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35c79",
+          "end": "0x35d60",
+          "original_name": "sub_35C79"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35d38"
+      },
+      {
+        "address": "0x35d56",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35c79",
+          "end": "0x35d60",
+          "original_name": "sub_35C79"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35d56"
+      },
+      {
+        "address": "0x35d90",
+        "bytes": "a0 ef 3b 05 00",
+        "original": "mov     al, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "al",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35d60",
+          "end": "0x35e5a",
+          "original_name": "sub_35D60"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35d90"
+      },
+      {
+        "address": "0x35dec",
+        "bytes": "a0 ef 3b 05 00",
+        "original": "mov     al, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "al",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35d60",
+          "end": "0x35e5a",
+          "original_name": "sub_35D60"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35dec"
+      },
+      {
+        "address": "0x35ef4",
+        "bytes": "8a 1d ef 3b 05 00",
+        "original": "mov     bl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "bl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35ee6",
+          "end": "0x35f5a",
+          "original_name": "sub_35EE6"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35ef4"
+      },
+      {
+        "address": "0x35f81",
+        "bytes": "8a 15 ef 3b 05 00",
+        "original": "mov     dl, byte ptr dword_53BEF",
+        "mnemonic": "mov",
+        "operands": [
+          "dl",
+          "byte ptr dword_53BEF"
+        ],
+        "function": {
+          "start": "0x35f6f",
+          "end": "0x35f92",
+          "original_name": "sub_35F6F"
+        },
+        "semantic": "未附加推測語意",
+        "level": "未知",
+        "source": "FD2.EXE / IDA LE linear 0x35f81"
+      }
+    ],
+    "level": "已證實（原始讀寫集合）；個別 writer 語意須由各呼叫路徑判讀"
+  },
+  "spawn_group_consumer": {
+    "entry": "0x10b4e",
+    "function": {
+      "start": "0x10b4e",
+      "end": "0x10c50",
+      "original_name": "sub_10B4E",
+      "instructions": [
+        {
+          "address": "0x10b4e",
+          "bytes": "68 20 00 00 00",
+          "original": "push    20h ; ' '",
+          "mnemonic": "push",
+          "operands": [
+            "20h"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b4e"
+        },
+        {
+          "address": "0x10b53",
+          "bytes": "e8 7f 61 02 00",
+          "original": "call    sub_36CD7",
+          "mnemonic": "call",
+          "operands": [
+            "sub_36CD7"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b53"
+        },
+        {
+          "address": "0x10b58",
+          "bytes": "53",
+          "original": "push    ebx",
+          "mnemonic": "push",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b58"
+        },
+        {
+          "address": "0x10b59",
+          "bytes": "56",
+          "original": "push    esi",
+          "mnemonic": "push",
+          "operands": [
+            "esi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b59"
+        },
+        {
+          "address": "0x10b5a",
+          "bytes": "57",
+          "original": "push    edi",
+          "mnemonic": "push",
+          "operands": [
+            "edi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b5a"
+        },
+        {
+          "address": "0x10b5b",
+          "bytes": "8b 7c 24 10",
+          "original": "mov     edi, [esp+0Ch+arg_0]",
+          "mnemonic": "mov",
+          "operands": [
+            "edi",
+            "[esp+0Ch+arg_0]"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b5b"
+        },
+        {
+          "address": "0x10b5f",
+          "bytes": "68 a9 00 05 00",
+          "original": "push    offset aRb_12; \"rb\"",
+          "mnemonic": "push",
+          "operands": [
+            "offset aRb_12"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b5f"
+        },
+        {
+          "address": "0x10b64",
+          "bytes": "68 ac 00 05 00",
+          "original": "push    offset aFdiconB24_6; \"FDICON.B24\"",
+          "mnemonic": "push",
+          "operands": [
+            "offset aFdiconB24_6"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b64"
+        },
+        {
+          "address": "0x10b69",
+          "bytes": "e8 5e 64 02 00",
+          "original": "call    fopen",
+          "mnemonic": "call",
+          "operands": [
+            "fopen"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b69"
+        },
+        {
+          "address": "0x10b6e",
+          "bytes": "83 c4 08",
+          "original": "add     esp, 8",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "8"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b6e"
+        },
+        {
+          "address": "0x10b71",
+          "bytes": "89 c6",
+          "original": "mov     esi, eax",
+          "mnemonic": "mov",
+          "operands": [
+            "esi",
+            "eax"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b71"
+        },
+        {
+          "address": "0x10b73",
+          "bytes": "85 c0",
+          "original": "test    eax, eax",
+          "mnemonic": "test",
+          "operands": [
+            "eax",
+            "eax"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b73"
+        },
+        {
+          "address": "0x10b75",
+          "bytes": "75 27",
+          "original": "jnz     short loc_10B9E",
+          "mnemonic": "jnz",
+          "operands": [
+            "loc_10B9E"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b75"
+        },
+        {
+          "address": "0x10b77",
+          "bytes": "66 c7 05 8d 3a 05 00 03 00",
+          "original": "mov     word_53A8D, 3",
+          "mnemonic": "mov",
+          "operands": [
+            "word_53A8D",
+            "3"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b77"
+        },
+        {
+          "address": "0x10b80",
+          "bytes": "68 8d 3a 05 00",
+          "original": "push    offset word_53A8D",
+          "mnemonic": "push",
+          "operands": [
+            "offset word_53A8D"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b80"
+        },
+        {
+          "address": "0x10b85",
+          "bytes": "68 8d 3a 05 00",
+          "original": "push    offset word_53A8D",
+          "mnemonic": "push",
+          "operands": [
+            "offset word_53A8D"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b85"
+        },
+        {
+          "address": "0x10b8a",
+          "bytes": "6a 10",
+          "original": "push    10h",
+          "mnemonic": "push",
+          "operands": [
+            "10h"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b8a"
+        },
+        {
+          "address": "0x10b8c",
+          "bytes": "e8 07 62 02 00",
+          "original": "call    int386",
+          "mnemonic": "call",
+          "operands": [
+            "int386"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b8c"
+        },
+        {
+          "address": "0x10b91",
+          "bytes": "83 c4 0c",
+          "original": "add     esp, 0Ch",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "0Ch"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b91"
+        },
+        {
+          "address": "0x10b94",
+          "bytes": "68 b7 00 05 00",
+          "original": "push    offset aFileFdiconB24E; \"File 'FDICON.B24' error !!\\n\"",
+          "mnemonic": "push",
+          "operands": [
+            "offset aFileFdiconB24E"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b94"
+        },
+        {
+          "address": "0x10b99",
+          "bytes": "e9 b8 f4 ff ff",
+          "original": "jmp     loc_10056",
+          "mnemonic": "jmp",
+          "operands": [
+            "loc_10056"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b99"
+        },
+        {
+          "address": "0x10b9e",
+          "bytes": "8b 15 03 3c 05 00",
+          "original": "mov     edx, dword_53C03",
+          "mnemonic": "mov",
+          "operands": [
+            "edx",
+            "dword_53C03"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b9e"
+        },
+        {
+          "address": "0x10ba4",
+          "bytes": "89 d0",
+          "original": "mov     eax, edx",
+          "mnemonic": "mov",
+          "operands": [
+            "eax",
+            "edx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10ba4"
+        },
+        {
+          "address": "0x10ba6",
+          "bytes": "c1 e0 02",
+          "original": "shl     eax, 2",
+          "mnemonic": "shl",
+          "operands": [
+            "eax",
+            "2"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10ba6"
+        },
+        {
+          "address": "0x10ba9",
+          "bytes": "29 d0",
+          "original": "sub     eax, edx",
+          "mnemonic": "sub",
+          "operands": [
+            "eax",
+            "edx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10ba9"
+        },
+        {
+          "address": "0x10bab",
+          "bytes": "83 c0 02",
+          "original": "add     eax, 2",
+          "mnemonic": "add",
+          "operands": [
+            "eax",
+            "2"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bab"
+        },
+        {
+          "address": "0x10bae",
+          "bytes": "50",
+          "original": "push    eax",
+          "mnemonic": "push",
+          "operands": [
+            "eax"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bae"
+        },
+        {
+          "address": "0x10baf",
+          "bytes": "ff 35 59 3a 05 00",
+          "original": "push    dword_53A59",
+          "mnemonic": "push",
+          "operands": [
+            "dword_53A59"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10baf"
+        },
+        {
+          "address": "0x10bb5",
+          "bytes": "68 59 1a 05 00",
+          "original": "push    offset aFdfieldDat; \"FDFIELD.DAT\"",
+          "mnemonic": "push",
+          "operands": [
+            "offset aFdfieldDat"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bb5"
+        },
+        {
+          "address": "0x10bba",
+          "bytes": "e8 fb 05 00 00",
+          "original": "call    sub_111BA",
+          "mnemonic": "call",
+          "operands": [
+            "sub_111BA"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bba"
+        },
+        {
+          "address": "0x10bbf",
+          "bytes": "83 c4 0c",
+          "original": "add     esp, 0Ch",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "0Ch"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bbf"
+        },
+        {
+          "address": "0x10bc2",
+          "bytes": "a3 59 3a 05 00",
+          "original": "mov     dword_53A59, eax",
+          "mnemonic": "mov",
+          "operands": [
+            "dword_53A59",
+            "eax"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bc2"
+        },
+        {
+          "address": "0x10bc7",
+          "bytes": "31 db",
+          "original": "xor     ebx, ebx",
+          "mnemonic": "xor",
+          "operands": [
+            "ebx",
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bc7"
+        },
+        {
+          "address": "0x10bc9",
+          "bytes": "eb 01",
+          "original": "jmp     short loc_10BCC",
+          "mnemonic": "jmp",
+          "operands": [
+            "loc_10BCC"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bc9"
+        },
+        {
+          "address": "0x10bcb",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "mnemonic": "inc",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bcb"
+        },
+        {
+          "address": "0x10bcc",
+          "bytes": "3b 1d e3 3b 05 00",
+          "original": "cmp     ebx, dword_53BE3",
+          "mnemonic": "cmp",
+          "operands": [
+            "ebx",
+            "dword_53BE3"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bcc"
+        },
+        {
+          "address": "0x10bd2",
+          "bytes": "7d 24",
+          "original": "jge     short loc_10BF8",
+          "mnemonic": "jge",
+          "operands": [
+            "loc_10BF8"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bd2"
+        },
+        {
+          "address": "0x10bd4",
+          "bytes": "6b c3 1a",
+          "original": "imul    eax, ebx, 1Ah",
+          "mnemonic": "imul",
+          "operands": [
+            "eax",
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bd4"
+        },
+        {
+          "address": "0x10bd7",
+          "bytes": "8b 15 55 3a 05 00",
+          "original": "mov     edx, dword_53A55",
+          "mnemonic": "mov",
+          "operands": [
+            "edx",
+            "dword_53A55"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bd7"
+        },
+        {
+          "address": "0x10bdd",
+          "bytes": "01 d0",
+          "original": "add     eax, edx",
+          "mnemonic": "add",
+          "operands": [
+            "eax",
+            "edx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bdd"
+        },
+        {
+          "address": "0x10bdf",
+          "bytes": "05 83 00 00 00",
+          "original": "add     eax, 83h",
+          "mnemonic": "add",
+          "operands": [
+            "eax",
+            "83h"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bdf"
+        },
+        {
+          "address": "0x10be4",
+          "bytes": "0f b6 40 15",
+          "original": "movzx   eax, byte ptr [eax+15h]",
+          "mnemonic": "movzx",
+          "operands": [
+            "eax",
+            "byte ptr [eax+15h]"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10be4"
+        },
+        {
+          "address": "0x10be8",
+          "bytes": "39 f8",
+          "original": "cmp     eax, edi",
+          "mnemonic": "cmp",
+          "operands": [
+            "eax",
+            "edi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10be8"
+        },
+        {
+          "address": "0x10bea",
+          "bytes": "75 df",
+          "original": "jnz     short loc_10BCB",
+          "mnemonic": "jnz",
+          "operands": [
+            "loc_10BCB"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bea"
+        },
+        {
+          "address": "0x10bec",
+          "bytes": "56",
+          "original": "push    esi",
+          "mnemonic": "push",
+          "operands": [
+            "esi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bec"
+        },
+        {
+          "address": "0x10bed",
+          "bytes": "53",
+          "original": "push    ebx",
+          "mnemonic": "push",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bed"
+        },
+        {
+          "address": "0x10bee",
+          "bytes": "e8 5d 00 00 00",
+          "original": "call    sub_10C50",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10C50"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bee"
+        },
+        {
+          "address": "0x10bf3",
+          "bytes": "83 c4 08",
+          "original": "add     esp, 8",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "8"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bf3"
+        },
+        {
+          "address": "0x10bf6",
+          "bytes": "eb d3",
+          "original": "jmp     short loc_10BCB",
+          "mnemonic": "jmp",
+          "operands": [
+            "loc_10BCB"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bf6"
+        },
+        {
+          "address": "0x10bf8",
+          "bytes": "56",
+          "original": "push    esi",
+          "mnemonic": "push",
+          "operands": [
+            "esi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bf8"
+        },
+        {
+          "address": "0x10bf9",
+          "bytes": "e8 46 66 02 00",
+          "original": "call    fclose",
+          "mnemonic": "call",
+          "operands": [
+            "fclose"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bf9"
+        },
+        {
+          "address": "0x10bfe",
+          "bytes": "83 c4 04",
+          "original": "add     esp, 4",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "4"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10bfe"
+        },
+        {
+          "address": "0x10c01",
+          "bytes": "ff 35 59 3a 05 00",
+          "original": "push    dword_53A59",
+          "mnemonic": "push",
+          "operands": [
+            "dword_53A59"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c01"
+        },
+        {
+          "address": "0x10c07",
+          "bytes": "e8 0a 68 02 00",
+          "original": "call    free",
+          "mnemonic": "call",
+          "operands": [
+            "free"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c07"
+        },
+        {
+          "address": "0x10c0c",
+          "bytes": "83 c4 04",
+          "original": "add     esp, 4",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "4"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c0c"
+        },
+        {
+          "address": "0x10c0f",
+          "bytes": "c7 05 59 3a 05 00 00 00 00 00",
+          "original": "mov     dword_53A59, 0",
+          "mnemonic": "mov",
+          "operands": [
+            "dword_53A59",
+            "0"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c0f"
+        },
+        {
+          "address": "0x10c19",
+          "bytes": "68 d3 00 05 00",
+          "original": "push    offset aWb_2; \"wb\"",
+          "mnemonic": "push",
+          "operands": [
+            "offset aWb_2"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c19"
+        },
+        {
+          "address": "0x10c1e",
+          "bytes": "68 d6 00 05 00",
+          "original": "push    offset aFd2Tmp_1; \"FD2.TMP\"",
+          "mnemonic": "push",
+          "operands": [
+            "offset aFd2Tmp_1"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c1e"
+        },
+        {
+          "address": "0x10c23",
+          "bytes": "e8 a4 63 02 00",
+          "original": "call    fopen",
+          "mnemonic": "call",
+          "operands": [
+            "fopen"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c23"
+        },
+        {
+          "address": "0x10c28",
+          "bytes": "89 c3",
+          "original": "mov     ebx, eax",
+          "mnemonic": "mov",
+          "operands": [
+            "ebx",
+            "eax"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c28"
+        },
+        {
+          "address": "0x10c2a",
+          "bytes": "83 c4 08",
+          "original": "add     esp, 8",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "8"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c2a"
+        },
+        {
+          "address": "0x10c2d",
+          "bytes": "50",
+          "original": "push    eax",
+          "mnemonic": "push",
+          "operands": [
+            "eax"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c2d"
+        },
+        {
+          "address": "0x10c2e",
+          "bytes": "68 00 2a 03 00",
+          "original": "push    (offset loc_329FE+2)",
+          "mnemonic": "push",
+          "operands": [
+            "(offset loc_329FE+2)"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c2e"
+        },
+        {
+          "address": "0x10c33",
+          "bytes": "6a 01",
+          "original": "push    1",
+          "mnemonic": "push",
+          "operands": [
+            "1"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c33"
+        },
+        {
+          "address": "0x10c35",
+          "bytes": "ff 35 61 3a 05 00",
+          "original": "push    dword_53A61",
+          "mnemonic": "push",
+          "operands": [
+            "dword_53A61"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c35"
+        },
+        {
+          "address": "0x10c3b",
+          "bytes": "e8 0b 68 02 00",
+          "original": "call    fwrite",
+          "mnemonic": "call",
+          "operands": [
+            "fwrite"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c3b"
+        },
+        {
+          "address": "0x10c40",
+          "bytes": "83 c4 10",
+          "original": "add     esp, 10h",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "10h"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c40"
+        },
+        {
+          "address": "0x10c43",
+          "bytes": "53",
+          "original": "push    ebx",
+          "mnemonic": "push",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c43"
+        },
+        {
+          "address": "0x10c44",
+          "bytes": "e8 fb 65 02 00",
+          "original": "call    fclose",
+          "mnemonic": "call",
+          "operands": [
+            "fclose"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c44"
+        },
+        {
+          "address": "0x10c49",
+          "bytes": "83 c4 04",
+          "original": "add     esp, 4",
+          "mnemonic": "add",
+          "operands": [
+            "esp",
+            "4"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c49"
+        },
+        {
+          "address": "0x10c4c",
+          "bytes": "5f",
+          "original": "pop     edi",
+          "mnemonic": "pop",
+          "operands": [
+            "edi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c4c"
+        },
+        {
+          "address": "0x10c4d",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "mnemonic": "pop",
+          "operands": [
+            "esi"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c4d"
+        },
+        {
+          "address": "0x10c4e",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "mnemonic": "pop",
+          "operands": [
+            "ebx"
+          ],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c4e"
+        },
+        {
+          "address": "0x10c4f",
+          "bytes": "c3",
+          "original": "retn",
+          "mnemonic": "retn",
+          "operands": [],
+          "function": {
+            "start": "0x10b4e",
+            "end": "0x10c50",
+            "original_name": "sub_10B4E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10c4f"
+        }
+      ],
+      "code_xrefs_to_start": [
+        {
+          "address": "0x10b3e",
+          "bytes": "e8 0b 00 00 00",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x1088d",
+            "end": "0x10b4e",
+            "original_name": "sub_1088D"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x10b3e"
+        },
+        {
+          "address": "0x22fde",
+          "bytes": "e8 6b db fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x22f37",
+            "end": "0x230f2",
+            "original_name": "sub_22F37"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x22fde"
+        },
+        {
+          "address": "0x232ac",
+          "bytes": "e8 9d d8 fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x23296",
+            "end": "0x232e8",
+            "original_name": "sub_23296"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x232ac"
+        },
+        {
+          "address": "0x235e2",
+          "bytes": "e8 67 d5 fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x235bc",
+            "end": "0x235f9",
+            "original_name": "sub_235BC"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x235e2"
+        },
+        {
+          "address": "0x2391b",
+          "bytes": "e8 2e d2 fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x237d5",
+            "end": "0x239bd",
+            "original_name": "sub_237D5"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x2391b"
+        },
+        {
+          "address": "0x23bde",
+          "bytes": "e8 6b cf fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x23b5f",
+            "end": "0x23cd5",
+            "original_name": "sub_23B5F"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x23bde"
+        },
+        {
+          "address": "0x23c55",
+          "bytes": "e8 f4 ce fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x23b5f",
+            "end": "0x23cd5",
+            "original_name": "sub_23B5F"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x23c55"
+        },
+        {
+          "address": "0x2400d",
+          "bytes": "e8 3c cb fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x23e74",
+            "end": "0x240fa",
+            "original_name": "sub_23E74"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x2400d"
+        },
+        {
+          "address": "0x24e31",
+          "bytes": "e8 18 bd fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x24df2",
+            "end": "0x24e80",
+            "original_name": "sub_24DF2"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x24e31"
+        },
+        {
+          "address": "0x25505",
+          "bytes": "e8 44 b6 fe ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x2548c",
+            "end": "0x25757",
+            "original_name": "sub_2548C"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x25505"
+        },
+        {
+          "address": "0x32555",
+          "bytes": "e8 f4 e5 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x3231b",
+            "end": "0x32975",
+            "original_name": "sub_3231B"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x32555"
+        },
+        {
+          "address": "0x32610",
+          "bytes": "e8 39 e5 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x3231b",
+            "end": "0x32975",
+            "original_name": "sub_3231B"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x32610"
+        },
+        {
+          "address": "0x3269c",
+          "bytes": "e8 ad e4 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x3231b",
+            "end": "0x32975",
+            "original_name": "sub_3231B"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3269c"
+        },
+        {
+          "address": "0x32a02",
+          "bytes": "e8 47 e1 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32999",
+            "end": "0x32d18",
+            "original_name": "sub_32999"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x32a02"
+        },
+        {
+          "address": "0x32ddc",
+          "bytes": "e8 6d dd fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32d18",
+            "end": "0x33219",
+            "original_name": "sub_32D18"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x32ddc"
+        },
+        {
+          "address": "0x32e50",
+          "bytes": "e8 f9 dc fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32d18",
+            "end": "0x33219",
+            "original_name": "sub_32D18"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x32e50"
+        },
+        {
+          "address": "0x32ef1",
+          "bytes": "e8 58 dc fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32d18",
+            "end": "0x33219",
+            "original_name": "sub_32D18"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x32ef1"
+        },
+        {
+          "address": "0x3300a",
+          "bytes": "e8 3f db fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32d18",
+            "end": "0x33219",
+            "original_name": "sub_32D18"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3300a"
+        },
+        {
+          "address": "0x330a4",
+          "bytes": "e8 a5 da fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32d18",
+            "end": "0x33219",
+            "original_name": "sub_32D18"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x330a4"
+        },
+        {
+          "address": "0x331b2",
+          "bytes": "e8 97 d9 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x32d18",
+            "end": "0x33219",
+            "original_name": "sub_32D18"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x331b2"
+        },
+        {
+          "address": "0x333b5",
+          "bytes": "e8 94 d7 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x33367",
+            "end": "0x333f5",
+            "original_name": "sub_33367"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x333b5"
+        },
+        {
+          "address": "0x33419",
+          "bytes": "e8 30 d7 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x333f5",
+            "end": "0x3344d",
+            "original_name": "sub_333F5"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x33419"
+        },
+        {
+          "address": "0x335cd",
+          "bytes": "e8 7c d5 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x335aa",
+            "end": "0x335da",
+            "original_name": "sub_335AA"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x335cd"
+        },
+        {
+          "address": "0x33820",
+          "bytes": "e8 29 d3 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x336a0",
+            "end": "0x338c4",
+            "original_name": "sub_336A0"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x33820"
+        },
+        {
+          "address": "0x338fc",
+          "bytes": "e8 4d d2 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x338c4",
+            "end": "0x3396a",
+            "original_name": "sub_338C4"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x338fc"
+        },
+        {
+          "address": "0x341f2",
+          "bytes": "e8 57 c9 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x341db",
+            "end": "0x342b5",
+            "original_name": "sub_341DB"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x341f2"
+        },
+        {
+          "address": "0x3425c",
+          "bytes": "e8 ed c8 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x341db",
+            "end": "0x342b5",
+            "original_name": "sub_341DB"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3425c"
+        },
+        {
+          "address": "0x34397",
+          "bytes": "e8 b2 c7 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34377",
+            "end": "0x343e2",
+            "original_name": "sub_34377"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34397"
+        },
+        {
+          "address": "0x3444c",
+          "bytes": "e8 fd c6 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34422",
+            "end": "0x344c2",
+            "original_name": "sub_34422"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3444c"
+        },
+        {
+          "address": "0x344dc",
+          "bytes": "e8 6d c6 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x344c2",
+            "end": "0x3453e",
+            "original_name": "sub_344C2"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x344dc"
+        },
+        {
+          "address": "0x34571",
+          "bytes": "e8 d8 c5 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34565",
+            "end": "0x34594",
+            "original_name": "sub_34565"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34571"
+        },
+        {
+          "address": "0x3464b",
+          "bytes": "e8 fe c4 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x3462e",
+            "end": "0x34696",
+            "original_name": "sub_3462E"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3464b"
+        },
+        {
+          "address": "0x346a2",
+          "bytes": "e8 a7 c4 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34696",
+            "end": "0x346c8",
+            "original_name": "sub_34696"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x346a2"
+        },
+        {
+          "address": "0x34837",
+          "bytes": "e8 12 c3 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34819",
+            "end": "0x34924",
+            "original_name": "sub_34819"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34837"
+        },
+        {
+          "address": "0x34892",
+          "bytes": "e8 b7 c2 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34819",
+            "end": "0x34924",
+            "original_name": "sub_34819"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34892"
+        },
+        {
+          "address": "0x34945",
+          "bytes": "e8 04 c2 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34924",
+            "end": "0x3499b",
+            "original_name": "sub_34924"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34945"
+        },
+        {
+          "address": "0x349ff",
+          "bytes": "e8 4a c1 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x349d9",
+            "end": "0x34a0e",
+            "original_name": "sub_349D9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x349ff"
+        },
+        {
+          "address": "0x34b19",
+          "bytes": "e8 30 c0 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34a7a",
+            "end": "0x34b5d",
+            "original_name": "sub_34A7A"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34b19"
+        },
+        {
+          "address": "0x34b71",
+          "bytes": "e8 d8 bf fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34b5d",
+            "end": "0x34be2",
+            "original_name": "sub_34B5D"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34b71"
+        },
+        {
+          "address": "0x34bee",
+          "bytes": "e8 5b bf fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34d68",
+            "end": "0x34d72",
+            "original_name": "sub_34D68"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34bee"
+        },
+        {
+          "address": "0x34c95",
+          "bytes": "e8 b4 be fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34c76",
+            "end": "0x34cb3",
+            "original_name": "sub_34C76"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34c95"
+        },
+        {
+          "address": "0x34d12",
+          "bytes": "e8 37 be fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34ccc",
+            "end": "0x34d68",
+            "original_name": "sub_34CCC"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34d12"
+        },
+        {
+          "address": "0x34d45",
+          "bytes": "e8 04 be fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34ccc",
+            "end": "0x34d68",
+            "original_name": "sub_34CCC"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34d45"
+        },
+        {
+          "address": "0x34d91",
+          "bytes": "e8 b8 bd fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34d72",
+            "end": "0x34dcd",
+            "original_name": "sub_34D72"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34d91"
+        },
+        {
+          "address": "0x34f4e",
+          "bytes": "e8 fb bb fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34f42",
+            "end": "0x34f74",
+            "original_name": "sub_34F42"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34f4e"
+        },
+        {
+          "address": "0x34fd7",
+          "bytes": "e8 72 bb fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x34fcb",
+            "end": "0x34ff0",
+            "original_name": "sub_34FCB"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x34fd7"
+        },
+        {
+          "address": "0x3506b",
+          "bytes": "e8 de ba fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x3505f",
+            "end": "0x35091",
+            "original_name": "sub_3505F"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3506b"
+        },
+        {
+          "address": "0x350d8",
+          "bytes": "e8 71 ba fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x350cc",
+            "end": "0x35112",
+            "original_name": "sub_350CC"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x350d8"
+        },
+        {
+          "address": "0x3512b",
+          "bytes": "e8 1e ba fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3512b"
+        },
+        {
+          "address": "0x35202",
+          "bytes": "e8 47 b9 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35202"
+        },
+        {
+          "address": "0x3526d",
+          "bytes": "e8 dc b8 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35261",
+            "end": "0x3529a",
+            "original_name": "sub_35261"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3526d"
+        },
+        {
+          "address": "0x3536d",
+          "bytes": "e8 dc b7 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x3535d",
+            "end": "0x353cc",
+            "original_name": "sub_3535D"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3536d"
+        },
+        {
+          "address": "0x3549f",
+          "bytes": "e8 aa b6 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35487",
+            "end": "0x354dd",
+            "original_name": "sub_35487"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3549f"
+        },
+        {
+          "address": "0x354ed",
+          "bytes": "e8 5c b6 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x354dd",
+            "end": "0x354fe",
+            "original_name": "sub_354DD"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x354ed"
+        },
+        {
+          "address": "0x357e6",
+          "bytes": "e8 63 b3 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x356b7",
+            "end": "0x35822",
+            "original_name": "sub_356B7"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x357e6"
+        },
+        {
+          "address": "0x35842",
+          "bytes": "e8 07 b3 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35822",
+            "end": "0x35898",
+            "original_name": "sub_35822"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35842"
+        },
+        {
+          "address": "0x35dce",
+          "bytes": "e8 7b ad fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35d60",
+            "end": "0x35e5a",
+            "original_name": "sub_35D60"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35dce"
+        },
+        {
+          "address": "0x3601c",
+          "bytes": "e8 2d ab fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35f92",
+            "end": "0x36088",
+            "original_name": "sub_35F92"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3601c"
+        }
+      ]
+    },
+    "level": "已證實",
+    "note": "handler 將計算後 eax push 為唯一參數；consumer 以原始 FDFIELD group byte 篩選並 materialize unit。"
+  },
+  "handlers": {
+    "47": {
+      "event_id": 47,
+      "jump_table_slot": {
+        "address": "0x51c4d",
+        "bytes": "12 51 03 00",
+        "decoded_target": "0x35112",
+        "level": "已證實",
+        "source": "FD2.EXE / IDA LE linear 0x51c4d"
+      },
+      "function": {
+        "start": "0x35112",
+        "end": "0x351c6",
+        "original_name": "sub_35112"
+      },
+      "eax_source_flow": [
+        {
+          "address": "0x3511c",
+          "bytes": "a1 ef 3b 05 00",
+          "original": "mov     eax, dword_53BEF",
+          "mnemonic": "mov",
+          "operands": [
+            "eax",
+            "dword_53BEF"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3511c"
+        },
+        {
+          "address": "0x35121",
+          "bytes": "89 c2",
+          "original": "mov     edx, eax",
+          "mnemonic": "mov",
+          "operands": [
+            "edx",
+            "eax"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35121"
+        },
+        {
+          "address": "0x35123",
+          "bytes": "c1 fa 1f",
+          "original": "sar     edx, 1Fh",
+          "mnemonic": "sar",
+          "operands": [
+            "edx",
+            "1Fh"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35123"
+        },
+        {
+          "address": "0x35126",
+          "bytes": "2b c2",
+          "original": "sub     eax, edx",
+          "mnemonic": "sub",
+          "operands": [
+            "eax",
+            "edx"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35126"
+        },
+        {
+          "address": "0x35128",
+          "bytes": "d1 f8",
+          "original": "sar     eax, 1",
+          "mnemonic": "sar",
+          "operands": [
+            "eax",
+            "1"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35128"
+        },
+        {
+          "address": "0x3512a",
+          "bytes": "50",
+          "original": "push    eax",
+          "mnemonic": "push",
+          "operands": [
+            "eax"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3512a"
+        },
+        {
+          "address": "0x3512b",
+          "bytes": "e8 1e ba fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x35112",
+            "end": "0x351c6",
+            "original_name": "sub_35112"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x3512b"
+        }
+      ],
+      "formula": {
+        "expression": "signed_trunc_toward_zero(round_counter / 2)",
+        "positive_runtime_equivalent": "floor(round_counter / 2)",
+        "source_global": "0x53bef",
+        "source_load": "0x3511c",
+        "consumer_call": "0x3512b",
+        "consumer": "0x10b4e",
+        "level": "已證實",
+        "evidence": "七條連續 IDA 指令與原始 bytes；語意不依賴偽代碼"
+      }
+    },
+    "49": {
+      "event_id": 49,
+      "jump_table_slot": {
+        "address": "0x51c55",
+        "bytes": "e9 51 03 00",
+        "decoded_target": "0x351e9",
+        "level": "已證實",
+        "source": "FD2.EXE / IDA LE linear 0x51c55"
+      },
+      "function": {
+        "start": "0x351e9",
+        "end": "0x35261",
+        "original_name": "sub_351E9"
+      },
+      "eax_source_flow": [
+        {
+          "address": "0x351f3",
+          "bytes": "a1 ef 3b 05 00",
+          "original": "mov     eax, dword_53BEF",
+          "mnemonic": "mov",
+          "operands": [
+            "eax",
+            "dword_53BEF"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x351f3"
+        },
+        {
+          "address": "0x351f8",
+          "bytes": "89 c2",
+          "original": "mov     edx, eax",
+          "mnemonic": "mov",
+          "operands": [
+            "edx",
+            "eax"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x351f8"
+        },
+        {
+          "address": "0x351fa",
+          "bytes": "c1 fa 1f",
+          "original": "sar     edx, 1Fh",
+          "mnemonic": "sar",
+          "operands": [
+            "edx",
+            "1Fh"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x351fa"
+        },
+        {
+          "address": "0x351fd",
+          "bytes": "2b c2",
+          "original": "sub     eax, edx",
+          "mnemonic": "sub",
+          "operands": [
+            "eax",
+            "edx"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x351fd"
+        },
+        {
+          "address": "0x351ff",
+          "bytes": "d1 f8",
+          "original": "sar     eax, 1",
+          "mnemonic": "sar",
+          "operands": [
+            "eax",
+            "1"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x351ff"
+        },
+        {
+          "address": "0x35201",
+          "bytes": "50",
+          "original": "push    eax",
+          "mnemonic": "push",
+          "operands": [
+            "eax"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35201"
+        },
+        {
+          "address": "0x35202",
+          "bytes": "e8 47 b9 fd ff",
+          "original": "call    sub_10B4E",
+          "mnemonic": "call",
+          "operands": [
+            "sub_10B4E"
+          ],
+          "function": {
+            "start": "0x351e9",
+            "end": "0x35261",
+            "original_name": "sub_351E9"
+          },
+          "semantic": "未附加推測語意",
+          "level": "未知",
+          "source": "FD2.EXE / IDA LE linear 0x35202"
+        }
+      ],
+      "formula": {
+        "expression": "signed_trunc_toward_zero(round_counter / 2)",
+        "positive_runtime_equivalent": "floor(round_counter / 2)",
+        "source_global": "0x53bef",
+        "source_load": "0x351f3",
+        "consumer_call": "0x35202",
+        "consumer": "0x10b4e",
+        "level": "已證實",
+        "evidence": "七條連續 IDA 指令與原始 bytes；語意不依賴偽代碼"
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "ch21-turn-2-event-47",
+      "chapter": 21,
+      "map": 20,
+      "turn": 2,
+      "raw_camp": 0,
+      "event_id": 47,
+      "handler": "0x35112",
+      "computed_group": 1,
+      "player_visible_context": "四個角落各一隻魔鬼",
+      "context_level": "攻略旁證",
+      "context_source": "references/text/fd2-walkthrough-index.md（第21／22章事件列）",
+      "schedule_source": "docs/data/turn_events.json",
+      "binary_evidence_ref": "handlers.47",
+      "result": "RE-CLOSED"
+    },
+    {
+      "id": "ch21-turn-4-event-47",
+      "chapter": 21,
+      "map": 20,
+      "turn": 4,
+      "raw_camp": 0,
+      "event_id": 47,
+      "handler": "0x35112",
+      "computed_group": 2,
+      "player_visible_context": "四個角落各一隻魔鬼",
+      "context_level": "攻略旁證",
+      "context_source": "references/text/fd2-walkthrough-index.md（第21／22章事件列）",
+      "schedule_source": "docs/data/turn_events.json",
+      "binary_evidence_ref": "handlers.47",
+      "result": "RE-CLOSED"
+    },
+    {
+      "id": "ch21-turn-6-event-47",
+      "chapter": 21,
+      "map": 20,
+      "turn": 6,
+      "raw_camp": 0,
+      "event_id": 47,
+      "handler": "0x35112",
+      "computed_group": 3,
+      "player_visible_context": "四個角落各一隻魔鬼",
+      "context_level": "攻略旁證",
+      "context_source": "references/text/fd2-walkthrough-index.md（第21／22章事件列）",
+      "schedule_source": "docs/data/turn_events.json",
+      "binary_evidence_ref": "handlers.47",
+      "result": "RE-CLOSED"
+    },
+    {
+      "id": "ch21-turn-8-event-47",
+      "chapter": 21,
+      "map": 20,
+      "turn": 8,
+      "raw_camp": 0,
+      "event_id": 47,
+      "handler": "0x35112",
+      "computed_group": 4,
+      "player_visible_context": "四個角落各一隻魔鬼",
+      "context_level": "攻略旁證",
+      "context_source": "references/text/fd2-walkthrough-index.md（第21／22章事件列）",
+      "schedule_source": "docs/data/turn_events.json",
+      "binary_evidence_ref": "handlers.47",
+      "result": "RE-CLOSED"
+    },
+    {
+      "id": "ch22-turn-3-event-49",
+      "chapter": 22,
+      "map": 21,
+      "turn": 3,
+      "raw_camp": 0,
+      "event_id": 49,
+      "handler": "0x351e9",
+      "computed_group": 1,
+      "player_visible_context": "左下角與右下角各三隻魔鬼",
+      "context_level": "攻略旁證",
+      "context_source": "references/text/fd2-walkthrough-index.md（第21／22章事件列）",
+      "schedule_source": "docs/data/turn_events.json",
+      "binary_evidence_ref": "handlers.49",
+      "result": "RE-CLOSED"
+    },
+    {
+      "id": "ch22-turn-7-event-49",
+      "chapter": 22,
+      "map": 21,
+      "turn": 7,
+      "raw_camp": 0,
+      "event_id": 49,
+      "handler": "0x351e9",
+      "computed_group": 3,
+      "player_visible_context": "左下角與右下角各三隻魔鬼",
+      "context_level": "攻略旁證",
+      "context_source": "references/text/fd2-walkthrough-index.md（第21／22章事件列）",
+      "schedule_source": "docs/data/turn_events.json",
+      "binary_evidence_ref": "handlers.49",
+      "result": "RE-CLOSED"
+    }
+  ],
+  "coverage": {
+    "expected": 6,
+    "closed": 6,
+    "unresolved": 0
+  },
+  "limitations": [
+    "本證據閉合 event_id→handler→eax 來源公式→spawn consumer，不宣稱完整章節 PLAYER-E2。",
+    "攻略只定位玩家可見觸發情境；二進位語意由 IDA 指令、bytes、跳表與資料流裁決。",
+    "raw camp 0 保留原值；陣營名稱不由本證據升格。"
+  ]
+}

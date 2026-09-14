@@ -28,24 +28,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 13 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
-
-## re — 原版證據還沒閉合
-
-### ch21／ch22 六筆增援來源待 RE 證據閉合
-
-`reinforcement-eax-source` · RE待解 · [#3](https://github.com/wicanr2/fd2_re/issues/3) · 仍未完成 · 還沒出現
-
-ch21／ch22 六筆增援的來源運算元是暫存器或間接記憶體，舊靜態掃描停在 `$reg_or_mem`，尚未追到 writer。
-
-2026-09-14 決議：由代理程式以攻略只定位玩家可見觸發情境，再以既有 RE 文件、固定雜湊 IDA 9.4 資料庫的交叉參照與資料流閉合六筆來源；攻略不得單獨當 ABI 或欄位語意證據，也不再要求人工複核。
-
-怎樣算做完：先由攻略與既有 battle event／chapter handler 文件列出 ch21、ch22 六筆增援的觸發情境，再用 IDA Pro 9.4 逐筆追到 eax 或間接來源的 writer、呼叫者與 consumer；高影響分支核對 raw bytes／jump table，間接 writer 不得只靠直接 xref。產出 docs/data/ida/fd2_reinforcement_eax_sources.json，逐筆保存原始名稱、線性位址、bytes、推論等級、證據出處與固定 EXE 雜湊；同步 58 與相關事件文件。六筆全閉合或誠實分級後由 schema／coverage 測試裁決，不需人工。
-
-證據：`docs/data/ida/fd2_reinforcement_eax_sources.json`
 
 ## data — 可編輯資料還沒就緒
 

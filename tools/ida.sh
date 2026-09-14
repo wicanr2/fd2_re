@@ -20,7 +20,7 @@ script=${1:?需要 IDAPython 腳本（tools/ 底下的檔名）}
 output=${2:?需要輸出檔路徑}
 shift 2
 
-image=${FD2_IDA_IMAGE:-fd2-ida-authorized-local:latest}
+image=${FD2_IDA_IMAGE:-ida-pro-9.4-idapython:locked-v1}
 original=${FD2_ORIG_EXE:-$repo_root/org_game/炎龍騎士團/FLAME2/FD2.EXE}
 [ -f "$original" ] || { echo "找不到原版執行檔：$original" >&2; exit 2; }
 
@@ -34,7 +34,7 @@ docker run --rm --network none --memory 8g --cpus "${FD2_IDA_CPUS:-2}" \
     --pids-limit 512 --log-opt max-size=10m --log-opt max-file=3 \
     -u "$(id -u):$(id -g)" \
     -v "$work:/work" -v "$repo_root/tools:/work/tools:ro" \
-    -e HOME=/work -e FD2_IDA_ADDRESSES="$*" -e FD2_IDA_BYTE_RANGES="${FD2_IDA_BYTE_RANGES:-}" \
+    -e FD2_IDA_ADDRESSES="$*" -e FD2_IDA_BYTE_RANGES="${FD2_IDA_BYTE_RANGES:-}" \
     -e FD2_IDA_RECORD_OFFSETS="${FD2_IDA_RECORD_OFFSETS:-}" \
     -e FD2_IDA_OUTPUT=/work/out.txt \
     -w /work "$image" \

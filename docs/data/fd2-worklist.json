@@ -22,24 +22,6 @@
   },
   "items": [
     {
-      "id": "reinforcement-eax-source",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "ch21／ch22 六筆增援來源待 RE 證據閉合",
-      "body": "ch21／ch22 六筆增援的來源運算元是暫存器或間接記憶體，舊靜態掃描停在 `$reg_or_mem`，尚未追到 writer。\n\n2026-09-14 決議：由代理程式以攻略只定位玩家可見觸發情境，再以既有 RE 文件、固定雜湊 IDA 9.4 資料庫的交叉參照與資料流閉合六筆來源；攻略不得單獨當 ABI 或欄位語意證據，也不再要求人工複核。",
-      "acceptance": "先由攻略與既有 battle event／chapter handler 文件列出 ch21、ch22 六筆增援的觸發情境，再用 IDA Pro 9.4 逐筆追到 eax 或間接來源的 writer、呼叫者與 consumer；高影響分支核對 raw bytes／jump table，間接 writer 不得只靠直接 xref。產出 docs/data/ida/fd2_reinforcement_eax_sources.json，逐筆保存原始名稱、線性位址、bytes、推論等級、證據出處與固定 EXE 雜湊；同步 58 與相關事件文件。六筆全閉合或誠實分級後由 schema／coverage 測試裁決，不需人工。",
-      "evidence": "docs/data/ida/fd2_reinforcement_eax_sources.json",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/data/ida/fd2_reinforcement_eax_sources.json"
-        ],
-        "pattern": "\"status\"\\s*:\\s*\"RE-CLOSED\"",
-        "note": "六筆固定雜湊 RE coverage 檔尚未出現；出現後由 schema 與 coverage 測試裁決。"
-      },
-      "issue": 3
-    },
-    {
       "id": "modern-theme-prototype-status",
       "layer": "data",
       "category": "工作",

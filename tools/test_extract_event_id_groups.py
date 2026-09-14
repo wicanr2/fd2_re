@@ -10,6 +10,26 @@ import extract_event_id_groups as extractor
 
 
 class EventIDGroupExtractorTest(unittest.TestCase):
+    def test_ch21_ch22_dynamic_groups_use_ida_closed_formula(self):
+        for handler, source, evidence in (
+            (0x35112, "0x3512b", "handlers.47"),
+            (0x351E9, "0x35202", "handlers.49"),
+        ):
+            self.assertEqual(
+                extractor.walk_handler(handler),
+                [{
+                    "group": "$round_counter_div2[0x53bef]",
+                    "via": "spawn_group",
+                    "source": source,
+                    "raw_placement_gate": 0,
+                    "group_formula": "signed_trunc_toward_zero(round_counter/2)",
+                    "evidence": (
+                        "docs/data/ida/fd2_reinforcement_eax_sources.json#"
+                        + evidence
+                    ),
+                }],
+            )
+
     def test_event63_preserves_both_staging_calls(self):
         self.assertEqual(
             extractor.walk_handler(0x358C7),

@@ -116,6 +116,23 @@ RAW_PLACEMENT_GATE_ONE_CALLS = {
     0x34C95, 0x34D12, 0x34D45, 0x34D91,
 }
 
+# event47／49 的 EAX 來源已由固定雜湊 IDA Pro 9.4 主證據閉合。這兩個
+# call-site 都使用 `mov eax,[0x53bef]; mov edx,eax; sar edx,31;
+# sub eax,edx; sar eax,1; push eax`，亦即有號除以二、向零截斷。
+# 保留 symbolic formula，不能在 per-handler 清冊中假造單一常數 group。
+DYNAMIC_GROUP_CALLS = {
+    0x3512B: {
+        'group': '$round_counter_div2[0x53bef]',
+        'group_formula': 'signed_trunc_toward_zero(round_counter/2)',
+        'evidence': 'docs/data/ida/fd2_reinforcement_eax_sources.json#handlers.47',
+    },
+    0x35202: {
+        'group': '$round_counter_div2[0x53bef]',
+        'group_formula': 'signed_trunc_toward_zero(round_counter/2)',
+        'evidence': 'docs/data/ida/fd2_reinforcement_eax_sources.json#handlers.49',
+    },
+}
+
 
 def staging_spawn(pushes, invoker):
     """把 0x35822 的來源 PUSH (group,y,x) 保留成不可直接降階的 staging call。"""
@@ -177,14 +194,22 @@ def walk_handler(start, max_insns=4000):
                     t = int(op, 16)
                     pending_push = pending_pushes[-1] if pending_pushes else None
                     if t in SPAWN_FNS and pending_push is not None:
+                        dynamic_group = DYNAMIC_GROUP_CALLS.get(ins.address)
                         spawn = {
-                            'group': pending_push,
+                            'group': (
+                                dynamic_group['group']
+                                if dynamic_group is not None
+                                else pending_push
+                            ),
                             'via': SPAWN_FNS[t],
                             'source': hex(ins.address),
                             'raw_placement_gate': (
                                 1 if ins.address in RAW_PLACEMENT_GATE_ONE_CALLS else 0
                             ),
                         }
+                        if dynamic_group is not None:
+                            spawn['group_formula'] = dynamic_group['group_formula']
+                            spawn['evidence'] = dynamic_group['evidence']
                         spawns.append(spawn)
                         awaiting_intro = spawn if t == 0x32999 else None
                     elif t == STAGING_HELPER:
