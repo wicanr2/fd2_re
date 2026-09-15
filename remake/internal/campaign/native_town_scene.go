@@ -40,9 +40,11 @@ var nativeTownSelectionY = [nativeTownVariantCount][6]int{
 	{26, 144, 163, 150, 31, 20},
 }
 
-// NativeTownAssets are the exact resources consumed by
-// 0x2cd46..0x2d05a: three full-screen backgrounds, FDOTHER#10's opaque
-// current-label panel, and FDICON's first three pulse sprites.
+// NativeTownAssets are the resources consumed by 0x2cd46..0x2d05a: three
+// full-screen backgrounds, FDOTHER#10's opaque current-label panel, and three
+// cursor cycles. Pulse initially carries FDICON group 0 for provenance-free
+// editor fixtures; the production owner replaces it from the first persistent
+// party raw selector key, matching dword_53A61's first cache slot.
 type NativeTownAssets struct {
 	Backgrounds [nativeTownVariantCount][]byte
 	Label       fdother.LMI1Entry

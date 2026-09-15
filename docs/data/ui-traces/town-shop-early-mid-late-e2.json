@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_town_shop_early_mid_late_e2_receipt",
+  "status": "passed",
+  "generated_at": "2026-09-14",
+  "acceptance": "早／中／晚期各一份外部原版槽，正常標題 LOAD、城鎮設施抽樣、出售交易、酒店存檔、可達祕密商店，固定 dosgolem／輸入／畫格／資產雜湊並自動比較。",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "0f107aab8e96cb77026a462f65996598c38ab49e",
+    "dosgolem_branch": "feat/fd2-oracle-input-chain",
+    "tracked_dirty_files": 0,
+    "untracked_files": 0,
+    "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "reference_manifest": "docs/data/fd2-reference-files.json",
+    "reference_manifest_sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e",
+    "input_kind": "normal BIOS keys",
+    "lock_ally_hp": false,
+    "force_enemy_clear_declared": false,
+    "state_injections_enabled": [],
+    "successful_save_write_bytes": [
+      22528,
+      459
+    ],
+    "control_plan_hashes": {
+      "town-shop-ch06-e2.jsonl": "691f6d17aeb8a8c598385ffa798db1221f06466694cd0d939f2e212f80c213e6",
+      "town-shop-ch13-e2.jsonl": "ab9c4e3a79c855006349a57e973a52f7c5d268332d5efc0d812339c845a5a526",
+      "town-shop-ch27-e2.jsonl": "d9d71712be89d34a6a58e001c411fb67f04ded235ca1e8ed33511dc90a1cbca7"
+    }
+  },
+  "asset_pack": {
+    "path": "remake/generated-assets/fd2-original-b97caf22",
+    "manifest_sha256": "94d90aee84f316dd7cbfcce21416a5aaf327a42a75342f9e531299ee35e06c38"
+  },
+  "remake": {
+    "tested_base_commit": "a38326e31db5f66716bdb0698ba6a3ae28042450",
+    "production_input_owner": "title LOAD -> native town -> typed shop/church/preparation owners",
+    "image_compare": "exact indexed 320x200 frame; RGBA fallback is diagnostic only",
+    "test_command": "DISPLAY=:99 go test ./cmd/fd2 -run TestTownShopEarlyMidLateE2Receipt -count=1 -v",
+    "tested_at": "2026-09-15",
+    "test_image": "fd2-go-test-local:latest",
+    "test_result": "PASS 3/3（early／mid／late）；六張原版 indexed 幀（town／secret）逐 index 相符，雜湊同各 fixture 的 original_images.*.indexed_sha256",
+    "test_fixture_env": [
+      "FD2_TOWN_SHOP_E2_{EARLY,MID,LATE}_SAVE=外部存檔（雜湊同 fixtures[].source.save_sha256）",
+      "FD2_TOWN_SHOP_E2_{EARLY,MID,LATE}_RUN=對應 dosgolem run 目錄（runner.json 的 dosgolem_commit 與 control_plan 同本收據）"
+    ]
+  },
+  "fixtures": [
+    {
+      "name": "early",
+      "period": "early",
+      "source": {
+        "page": "https://playerlin.orgfree.com/fdps/fd2save.htm",
+        "archive": "fd2015.zip",
+        "archive_sha256": "39d8fcc338a29ee578baa4bf664d243a28ecc378f9ab1453f3f2db6083dfb15e",
+        "save_sha256": "57a61d958830827e9485cdbe5d72b9de1eed88b9af5bb5473d465c4c1d5d8c54",
+        "provenance": "外部作者提供、下載後原始 bytes；來源頁明示未修改。此收據只證明 LOAD 後的節點邊界，不外推完整戰役歷程。"
+      },
+      "slot": 0,
+      "raw_save_chapter": 5,
+      "town_node": "town_ch06",
+      "first_map_selector_key": 0,
+      "facilities": [
+        "preparation_ch06",
+        "shop_ch06_item",
+        "church_ch06",
+        "hotel_save",
+        "shop_ch06_secret"
+      ],
+      "transaction": {
+        "gold_before": 38766,
+        "gold_after": 38803,
+        "gold_delta": 37,
+        "sold_item_id": 0,
+        "inventory_count_delta": -1
+      },
+      "save_boundary": {
+        "output_sha256": "88f97162fba72c0ca023c15bc924afbaafde10ce4993b710f08f7538fd6367c5",
+        "changed": true
+      },
+      "original_images": {
+        "town": {
+          "checkpoint": "checkpoint-0160.png",
+          "png_sha256": "254ed66850ab59697b4f6866b132dc40281b82a73e0c6e6e8f63b2f27913031c",
+          "indexed_sha256": "882172180c56b9c0ae9b557aa5c464624fc4d664a26dc1b38d12f3c9402b9f62"
+        },
+        "secret": {
+          "checkpoint": "checkpoint-0168.png",
+          "png_sha256": "71264c77df3ad3088a30ef4195ed345ace5a1e380ae7b459054b1ad322261616",
+          "indexed_sha256": "5b857c5ea16ba24a579059482244ab29b5dd0f7021577ef7bccb113a03976727"
+        }
+      },
+      "original_runner_state": "/tmp/fd2-ch06-formal3-state-AhkUih"
+    },
+    {
+      "name": "mid",
+      "period": "mid",
+      "source": {
+        "page": "https://playerlin.orgfree.com/fdps/fd2save.htm",
+        "archive": "fd2017.zip",
+        "archive_sha256": "d1439c2b163f4814cd08b4a1a6a0570c286962c0dc1d508def709f8e7629f6a4",
+        "save_sha256": "84c608a3431c2e21295cc8bba631b085271da11c871edf39242fb4b3852945c7",
+        "provenance": "外部作者提供、下載後原始 bytes；來源頁描述練功存檔但未明示修改狀態，故不宣稱完整長程 PLAYER-E2。"
+      },
+      "slot": 3,
+      "raw_save_chapter": 12,
+      "town_node": "town_ch13",
+      "first_map_selector_key": 0,
+      "facilities": [
+        "preparation_ch13",
+        "shop_ch13_item",
+        "church_ch13",
+        "hotel_save",
+        "shop_ch13_secret"
+      ],
+      "transaction": {
+        "gold_before": 143962,
+        "gold_after": 143999,
+        "gold_delta": 37,
+        "sold_item_id": 0,
+        "inventory_count_delta": -1
+      },
+      "save_boundary": {
+        "output_sha256": "f1ef179b4b9196a1808634c0541b1469579e28dabaabc84f53b26e642b909390",
+        "changed": true
+      },
+      "original_images": {
+        "town": {
+          "checkpoint": "checkpoint-0124.png",
+          "png_sha256": "025e5f6201dc1bec48c257737400dfabeaf0cf62052a2861a3d3ee7d2bbe24a8",
+          "indexed_sha256": "3e9844a52cfa79735bc5a87f3d803044848a692c80dbc43b2423f4f638b660be"
+        },
+        "secret": {
+          "checkpoint": "checkpoint-0169.png",
+          "png_sha256": "58fcdf9f93fe8d398520ef4195ed345ace5a1e380ae7b459054b1ad322261616",
+          "indexed_sha256": "efb4a89b5d953f9c5df2ddfbb674a115f4a5c1ace2fb65248944c8a93bf72ed7"
+        }
+      },
+      "original_runner_state": "/tmp/fd2-ch13-formal2-state-SOM5Dn"
+    },
+    {
+      "name": "late",
+      "period": "late",
+      "source": {
+        "page": "https://playerlin.orgfree.com/fdps/fd2save.htm",
+        "archive": "fd2002.zip",
+        "archive_sha256": "1b713af443539913919f37617c92286c634a62020d0c7e534f051f6d5101fcd5",
+        "save_sha256": "a0e5519c49b52bbeab9c3bb1cf36957c42f02877a4c218ad54611952f74d6780",
+        "provenance": "外部作者提供、下載後原始 bytes；來源頁描述正常晚期存檔。此收據只證明 LOAD 後的節點邊界。"
+      },
+      "slot": 1,
+      "raw_save_chapter": 26,
+      "town_node": "town_ch27",
+      "first_map_selector_key": 50,
+      "facilities": [
+        "preparation_ch27",
+        "shop_ch27_item",
+        "church_ch27",
+        "hotel_save",
+        "shop_ch27_secret"
+      ],
+      "transaction": {
+        "gold_before": 364226,
+        "gold_after": 364227,
+        "gold_delta": 1,
+        "sold_item_id": 100,
+        "inventory_count_delta": -1
+      },
+      "save_boundary": {
+        "output_sha256": "145d46c1051bffe333a596a82607bc4ca227192fb04ce9f7d9b6a747a3bf72fc",
+        "changed": true
+      },
+      "original_images": {
+        "town": {
+          "checkpoint": "checkpoint-0186.png",
+          "png_sha256": "c94b0feed55ac155db45c04802e1ae86db7d4fe8b3d57d2780d11f951ebea20c",
+          "indexed_sha256": "0bad6f34d903e6ccc527ae0c9230dc83c94e393f5b22a2a742c074d45f849ff1"
+        },
+        "secret": {
+          "checkpoint": "checkpoint-0190.png",
+          "png_sha256": "27f64fd3abf652ca5781caddd1fb98ac3c48c22cbc43114b2388eabd849c0680",
+          "indexed_sha256": "8caef4495a0067ff976776d8a5cb4035054f7d0bd3fb57957d68f8d5655463d8"
+        }
+      },
+      "original_runner_state": "/tmp/fd2-ch27-formal2-state-4hjjAY"
+    }
+  ],
+  "limitations": [
+    "外部中期存檔的建立歷程無法獨立證明未修改；來源與原始 bytes 均保留，故只宣稱 LOAD 後節點／交易／存檔／畫面閉環。",
+    "dosgolem runner 位於本機未推送分支；在該 commit 可公開重建前不可宣稱遠端可重生。"
+  ]
+}

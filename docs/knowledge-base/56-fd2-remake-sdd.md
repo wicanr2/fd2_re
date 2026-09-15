@@ -1980,10 +1980,21 @@ The town scene owner is now closed at E1/production level. `0x2cd16` reads
 record byte 0 and indexes the three-entry resource table at `0x526d7`,
 selecting FDOTHER resources `11`, `61`, or `62`. `0x2cf71` redraws
 FDOTHER#10 (62×26) at scene `(244,162)`, FDTXT indices
-`0x1ef+selection` from `(252,168)`, and FDICON sprites `0,1,2,1` at the
+`0x1ef+selection` from `(252,168)`, and FDICON cycle pointers `0,1,2,1`
+from the current selector-cache first slot at the
 variant/selection coordinate tables rooted at `0x52635/0x52647`. The scene
 then copies only 312×192 to VGA `(4,4)` through `0x11eb0`; it is not a
 320×200 top-left present.
+
+**城鎮游標 selector 規格（READY，2026-09-14）：** `0x1088D` 依 persistent
+party 順序複製 80-byte records，第一筆 `+7` raw key 經 `0x11019` 物化為
+`dword_53A61` 首個十二指標 cache slot；`0x2D010` 再從該首槽取 pose 0 的
+三個 cycle，而不是固定取 FDICON archive group 0。重製正式路徑若首位
+`party_join_order` 角色帶有已驗證 `map_selector_key`，必須以該 key 選 pose 0
+與 cycle `0,1,2,1`；key 存在但超出完整分離 bank 時失敗即關閉。只有沒有
+native provenance 的舊 synthetic／editor fixture 才保留 group-0 相容 fallback，
+且不得用該 fallback 宣稱原版 parity。直接證據與舊結論勘誤見
+[`fd2_fdicon_selector_constructor_ida.txt`](../data/ida/fd2_fdicon_selector_constructor_ida.txt)。
 
 All 23 editable town nodes now carry the raw `native_town_variant` value
 0/1/2. `ComposeNativeTownFrame` consumes the original indexed resources and

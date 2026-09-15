@@ -23,6 +23,13 @@ func TestAuditRejectsMalformedSave(t *testing.T) {
 
 func TestAuditReportsProvenCurrentProjection(t *testing.T) {
 	plain := make([]byte, fdsave.FileSize)
+	for slot := 0; slot < fdsave.SlotCount; slot++ {
+		start, _, err := fdsave.SlotBounds(slot)
+		if err != nil {
+			t.Fatal(err)
+		}
+		plain[start+fdsave.RosterSize] = 0xff
+	}
 	plain[fdsave.CurrentRuntimeHeaderOffset+1] = 1
 	plain[fdsave.CurrentRuntimeHeaderOffset+2] = 7
 	plain[fdsave.CurrentRuntimeHeaderOffset+9] = 1
@@ -58,5 +65,45 @@ func TestAuditReportsProvenCurrentProjection(t *testing.T) {
 		got.Runtime[0].View.MP != 5 || got.Runtime[0].View.MaxMP != 8 {
 		encoded, _ := json.Marshal(got)
 		t.Fatalf("audit projection=%s", encoded)
+	}
+}
+
+func TestAuditReportsNonEmptyChapterSlotsAndRawInventory(t *testing.T) {
+	plain := make([]byte, fdsave.FileSize)
+	for slot := 0; slot < fdsave.SlotCount; slot++ {
+		start, _, err := fdsave.SlotBounds(slot)
+		if err != nil {
+			t.Fatal(err)
+		}
+		plain[start+fdsave.RosterSize] = 0xff
+	}
+	start, _, err := fdsave.SlotBounds(2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	plain[start+fdsave.RosterSize] = 16
+	plain[start+fdsave.RosterSize+1] = 1
+	plain[start+8] = 9
+	plain[start+0x0a] = 0x40
+	plain[start+0x0b] = 37
+	stored, err := fdsave.Encode(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(t.TempDir(), "FD2.SAV")
+	if err := os.WriteFile(path, stored, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	got, err := audit(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got.Slots) != 1 || got.Slots[0].Slot != 2 ||
+		got.Slots[0].Verified.Chapter != 16 || len(got.Slots[0].Records) != 1 ||
+		got.Slots[0].Records[0].View.RawIdentity != 9 ||
+		got.Slots[0].Records[0].View.Inventory[0].Flags != 0x40 ||
+		got.Slots[0].Records[0].View.Inventory[0].ItemID != 37 {
+		encoded, _ := json.Marshal(got.Slots)
+		t.Fatalf("slot projection=%s", encoded)
 	}
 }

@@ -28,8 +28,10 @@
 * ``{"town_probe": {"moves": [...]}}``：在戰間城鎮沿方向序列切建築，每步 enter 看
   進到哪裡，進了選單就 esc 退回。城鎮是五格循環而不是走動畫面：left 遞增、
   right 遞減，up 與 down 不動。
-* ``{"town_save": true}``：在 0 號酒店存檔，建立下一關的續跑點。判準是覆蓋層裡
-  ``FD2.SAV`` 的內容雜湊變了沒，不是畫面。
+* ``{"town_save": true, "slot": 0}``：在 0 號酒店存到指定四槽，建立下一關的
+  續跑點。判準是覆蓋層裡
+  ``FD2.SAV`` 的內容雜湊變更，或 dosgolem 直接記到對該檔的成功 DOS 寫入；後者
+  涵蓋「載入後立刻以相同狀態覆寫同一槽」而內容逐位元組不變的合法情況。
 * ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。
 * ``{"sweep_battle": true, "rounds": 30}``：一路打到敵方全滅。
 * ``{"force_enemy_clear": true}``：要求 oracle 把當下 camp 0 單位的 HP 寫成 0。
@@ -953,6 +955,20 @@ def end_turn(command):
     return True
 
 
+def command_options(command, name):
+    """合併閉環命令的巢狀選項，巢狀值優先、頂層值維持相容。
+
+    文件中的 JSONL 契約是 ``{"town_probe": {"moves": [...]}}``；早期實作卻只
+    讀頂層欄位，導致合法計畫靜默退回預設方向。集中正規化後，舊式頂層 steps 與
+    新式巢狀選項都能使用，且不再把 dict 本身誤當布林旗標。
+    """
+    options = dict(command)
+    nested = command.get(name)
+    if isinstance(nested, dict):
+        options.update(nested)
+    return options
+
+
 
 
 def do_town_probe(command):
@@ -969,6 +985,7 @@ def do_town_probe(command):
 
     這是探索用的：一次執行問出周圍有什麼，免得為了找一個入口重跑七十幾億指令。
     """
+    command = command_options(command, "town_probe")
     moves = command.get("moves") or ["down", "right", "up", "left"]
     steps = int(command.get("steps", 8_000_000))
     found = []
@@ -987,6 +1004,7 @@ def do_town_probe(command):
                     break
                 seq, current = send("esc", max(steps, 5_000_000))
                 report(seq, "esc", current, f" town-probe[{index}]=leave")
+                current = settle(steps, 3)
                 settle(steps, 3)
     print(f"town_probe 完成：{found or '每一步都還在城鎮的建築選擇上'}", flush=True)
     return True
@@ -1025,6 +1043,23 @@ def save_fingerprint():
     return marks
 
 
+def successful_save_writes(current, name="FD2.SAV"):
+    """計數 oracle 已觀測到、且 DOS 回報成功的指定檔案寫入。
+
+    只看 checkpoint 內由原版 DOS ``AH=40h`` 產生的事件；mtime 與畫面文字都不算。
+    path 只比 DOS basename 且忽略大小寫，避免原版路徑前綴或 FAT 大小寫造成假差異。
+    """
+    want = name.replace("\\", "/").rsplit("/", 1)[-1].upper()
+    count = 0
+    for call in current.get("dos_file_calls", []):
+        path = str(call.get("path", "")).replace("\\", "/").rsplit("/", 1)[-1]
+        if (call.get("op") == "write" and path.upper() == want and
+                call.get("handled") is True and not call.get("carry") and
+                int(call.get("written_bytes", 0)) > 0):
+            count += 1
+    return count
+
+
 def do_town_save(command):
     """在城鎮的酒店存檔，建立下一關的續跑點。
 
@@ -1036,20 +1071,37 @@ def do_town_save(command):
     存不成功就失敗收場。默默往下走會讓下一輪從舊存檔起跑，而 log 看起來完全正常。
     """
     steps = int(command.get("steps", 10_000_000))
+    slot = int(command.get("slot", 0))
+    if slot < 0 or slot > 3:
+        raise SystemExit(f"town_save 槽號超出 0..3：{slot}")
     before = save_fingerprint()
+    before_writes = successful_save_writes(state())
     print(f"town_save：存檔前 {sorted(before) or '（空）'}", flush=True)
-    for note, key in (("open", "enter"), ("slot", "right"),
-                      ("pick", "enter"), ("confirm", "enter")):
+    for note, key in (("open", "enter"), ("service", "right"),
+                      ("pick", "enter")):
         seq, current = send(key, max(steps, 20_000_000))
         report(seq, key, current, f" town-save={note}")
         settle(steps, int(command.get("settle", 4)))
+    for index in range(slot):
+        seq, current = send("down", max(steps, 5_000_000))
+        report(seq, "down", current, f" town-save=slot-{index + 1}")
+        settle(steps, int(command.get("slot_settle", 2)))
+    seq, current = send("enter", max(steps, 20_000_000))
+    report(seq, "enter", current, f" town-save=confirm-slot-{slot}")
+    settle(steps, int(command.get("settle", 4)))
     after = save_fingerprint()
     changed = [name for name, mark in after.items() if before.get(name) != mark]
-    if "FD2.SAV" not in changed:
-        print(f"town_save：FD2.SAV 沒有變（變的是 {changed or '（沒有）'}）",
-              file=sys.stderr)
+    after_writes = successful_save_writes(state())
+    if "FD2.SAV" not in changed and after_writes <= before_writes:
+        print(f"town_save：FD2.SAV 沒有變，且沒有成功 DOS 寫入收據"
+              f"（變的是 {changed or '（沒有）'}）", file=sys.stderr)
         return False
-    print(f"town_save：FD2.SAV 已更新，大小 {after['FD2.SAV'][0]}", flush=True)
+    if "FD2.SAV" in changed:
+        proof = "內容雜湊已更新"
+    else:
+        proof = f"內容相同；成功 DOS 寫入 {after_writes - before_writes} 次"
+    print(f"town_save：FD2.SAV 已寫入，大小 {after['FD2.SAV'][0]}（{proof}）",
+          flush=True)
     # 退回城鎮，讓後面的建築切換從已知狀態開始。
     for _ in range(int(command.get("escape_max", 4))):
         if ui_mode(state()) == "town":
@@ -1067,6 +1119,7 @@ def do_shop_probe(command):
     哪一個從狀態層看不出來——所以逐項試，用「可寫覆蓋層多了什麼檔」當判準：那是
     檔案系統層的事實，比讀畫面可靠。
     """
+    command = command_options(command, "shop_probe")
     steps = int(command.get("steps", 8_000_000))
     move = command.get("move", "right")
     before = saved_files()

@@ -72,6 +72,27 @@ class ModuleIntegrity(unittest.TestCase):
         self.assertEqual(missing, [], f"呼叫了不存在的名稱：{missing}")
 
 
+class NestedCommandOptions(unittest.TestCase):
+    """文件化的閉環命令參數位於命令名稱之下，不能靜默退回預設值。"""
+
+    def test_nested_probe_options_override_and_keep_top_level_defaults(self):
+        options = drive.command_options({
+            "town_probe": {"moves": ["left", "left"], "probe_settle": 7},
+            "steps": 123,
+            "probe_settle": 4,
+        }, "town_probe")
+        self.assertEqual(options["moves"], ["left", "left"])
+        self.assertEqual(options["probe_settle"], 7)
+        self.assertEqual(options["steps"], 123)
+
+    def test_boolean_command_preserves_legacy_top_level_options(self):
+        options = drive.command_options({
+            "shop_probe": True, "move": "left", "slots": 3,
+        }, "shop_probe")
+        self.assertEqual(options["move"], "left")
+        self.assertEqual(options["slots"], 3)
+
+
 class ActedFlag(unittest.TestCase):
     """record `+5` bit7 是「本回合已行動」。只看它，不看別的 byte。"""
 
@@ -504,6 +525,75 @@ class SaveFingerprint(unittest.TestCase):
     def test_missing_state_dir_is_empty_not_an_error(self):
         drive.STATE_DIR = os.path.join(self.dir, "nope")
         self.assertEqual(drive.save_fingerprint(), {})
+
+    def test_successful_save_writes_accepts_only_observed_fd2_save_writes(self):
+        current = {"dos_file_calls": [
+            {"op": "write", "path": r"C:\\FLAME2\\fd2.sav", "handled": True,
+             "carry": False, "written_bytes": 22987},
+            {"op": "write", "path": "FD2.TMP", "handled": True,
+             "carry": False, "written_bytes": 22987},
+            {"op": "write", "path": "FD2.SAV", "handled": True,
+             "carry": True, "written_bytes": 0},
+            {"op": "open", "path": "FD2.SAV", "handled": True,
+             "carry": False},
+        ]}
+        self.assertEqual(drive.successful_save_writes(current), 1)
+
+    def test_town_save_accepts_identical_bytes_only_with_new_dos_write(self):
+        self.write("FD2.SAV", b"same")
+        calls = [0]
+
+        def snapshot():
+            events = [{"op": "write", "path": "FD2.SAV", "handled": True,
+                       "carry": False, "written_bytes": 4}] * calls[0]
+            return {"dos_file_calls": events, "input_chain": ["0x2CE08"],
+                    "eip": "0x10000", "steps": 1, "view": {}, "units": []}
+
+        def fake_send(key, steps):
+            if key == "enter" and calls[0] == 0:
+                calls[0] = 1
+            return calls[0], snapshot()
+
+        with mock.patch.object(drive, "state", side_effect=snapshot), \
+                mock.patch.object(drive, "send", side_effect=fake_send), \
+                mock.patch.object(drive, "settle", side_effect=lambda *_: snapshot()), \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_town_save({"town_save": True}))
+
+    def test_town_save_fails_when_identical_bytes_have_no_write_receipt(self):
+        self.write("FD2.SAV", b"same")
+        snapshot = {"dos_file_calls": [], "input_chain": ["0x2CE08"],
+                    "eip": "0x10000", "steps": 1, "view": {}, "units": []}
+        with mock.patch.object(drive, "state", return_value=snapshot), \
+                mock.patch.object(drive, "send", return_value=(1, snapshot)), \
+                mock.patch.object(drive, "settle", return_value=snapshot), \
+                mock.patch.object(drive, "report"):
+            self.assertFalse(drive.do_town_save({"town_save": True}))
+
+    def test_town_save_moves_to_the_explicit_slot_before_confirming(self):
+        self.write("FD2.SAV", b"same")
+        keys = []
+        writes = [0]
+
+        def snapshot():
+            events = [{"op": "write", "path": "FD2.SAV", "handled": True,
+                       "carry": False, "written_bytes": 4}] * writes[0]
+            return {"dos_file_calls": events, "input_chain": ["0x2CE08"],
+                    "eip": "0x10000", "steps": 1, "view": {}, "units": []}
+
+        def fake_send(key, steps):
+            keys.append(key)
+            if keys == ["enter", "right", "enter", "down", "down", "enter"]:
+                writes[0] = 1
+            return len(keys), snapshot()
+
+        with mock.patch.object(drive, "state", side_effect=snapshot), \
+                mock.patch.object(drive, "send", side_effect=fake_send), \
+                mock.patch.object(drive, "settle", side_effect=lambda *_: snapshot()), \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_town_save({"town_save": True, "slot": 2}))
+        self.assertEqual(keys[:6],
+                         ["enter", "right", "enter", "down", "down", "enter"])
 
 
 class UnitIdentityKey(unittest.TestCase):

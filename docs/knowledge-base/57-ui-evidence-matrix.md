@@ -952,6 +952,16 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 命中同段，因此動態並排仍為 READY，不提升成 E2。證據與可重播驗收見
 [`action-overlay-and-ch01-march-20260830.json`](../data/ui-traces/action-overlay-and-ch01-march-20260830.json)。
 
+# 2026-09-14 早中晚戰間收據入口
+
+早／中／晚三份 dosgolem 原版收據、交易／存檔邊界、設施節點與祕密商店的聚合
+資料見
+[`town-shop-early-mid-late-e2.json`](../data/ui-traces/town-shop-early-mid-late-e2.json)，
+2026-09-15 在 `fd2-go-test-local` 重跑 `TestTownShopEarlyMidLateE2Receipt` 三章全過，
+六張原版 town／secret 幀逐 index 相符，狀態 `passed`。本輪 IDA 9.4 勘誤也確認
+城鎮游標取 selector-cache 首槽，不是固定 FDICON archive group 0。外部存檔的
+建立歷程與 dosgolem 未推送分支仍是收據內的證據限制。
+
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 
 全螢幕戰鬥演出的左右是資料決定的：FIGANI 幀標頭內嵌的絕對螢幕座標按陣營分邊

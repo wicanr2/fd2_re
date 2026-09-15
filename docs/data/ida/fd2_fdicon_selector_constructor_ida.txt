@@ -71,3 +71,52 @@ scripted FDFIELD 的 b1 路徑相容，但不授權由 legacy `Fig` 推導。
 
 這是靜態證據到重製資料的橋接修正，不等同逐像素完成；仍須以相同戰場狀態
 重新抓取原版與重製畫面，逐層檢查地形、單位、前景、游標與抬頭資訊。
+
+## 2026-09-14 城鎮游標 consumer 勘誤
+
+狀態：**已證實**（同一固定執行檔、IDA 直接指令、既有 selector constructor
+證據，以及早／中／晚期普通標題 LOAD 執行期畫面交叉核對）。
+
+本輪使用 `ida-pro-9.4-idapython:locked-v1`（image ID
+`sha256:6f6d59af49d0008c4109a5295b5f374bdc007e2d1ab28cb9de08779584de2780`）
+以 UID/GID `1000:1000`、無網路的一次性容器，從上述固定雜湊 `FD2.EXE`
+建立一次性 `.i64`。輸出檔為非空且由 `1000:1000` 擁有；位址仍是 IDA 載入的
+LE 線性位址。
+
+城鎮 redraw `sub_2CF71` 的直接指令是：
+
+```text
+0x2d001 mov eax, dword_54133
+0x2d006 cmp eax, 3
+0x2d009 jnz short loc_2D010
+0x2d00b mov eax, 1
+0x2d010 mov edx, dword_53A61
+0x2d016 mov eax, [edx+eax*4]
+...
+0x2d05a call sub_4DEDA
+```
+
+因此 `0,1,2,1` 是 `dword_53A61` **目前快取首槽**的三個 cycle 指標，並非
+永遠指向 FDICON archive group 0。`sub_1088D` 在 persistent party loop 依序
+複製每筆 80-byte record，然後以該筆 `+7` 呼叫 `sub_11019`：
+
+```text
+0x10a77 call memmove
+0x10a92 movzx eax, byte ptr [ebx+7]
+0x10a96 push eax
+0x10a9a call sub_11019
+0x10aa2 mov [ebx+2], al
+```
+
+第一次呼叫 `sub_11019` 時，`0x1109D` 把 raw key 寫入首個 cache-key，
+`0x110B0` 建立 `dword_53A61`，`0x110E5..0x110F9` 再把該 key 的十二個
+FDICON 指標寫入首槽。這與本檔先前已證實的 persistent `+7` raw-key 契約
+相接；城鎮游標因此使用 persistent party 第一筆的 pose 0、cycle
+`0,1,2,1`。
+
+執行期反證為：未注入狀態的晚期普通標題 LOAD 槽，其第一筆 raw key 是
+`50`；原版與舊重製畫面只有城鎮游標 `(34,50)..(56,73)` 的 339 個 RGBA
+像素不同。早期第一筆 key 是 `0`，舊固定 group-0 合成則恰好相符。這推翻
+「城鎮永遠使用 archive sprites 0/1/2」的舊解釋，但不改變四相位時序、
+座標、背景、文字或 viewport 結論。早／中／晚完整收據與外部存檔來源限制
+統一由 `docs/data/ui-traces/town-shop-early-mid-late-e2.json` 承載。

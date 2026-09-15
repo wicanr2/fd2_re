@@ -920,3 +920,12 @@ READY，不能由 runtime 測試提升為原版 E2。權威收據見
 `sub_1E292` byte 寫回的主證據與 READY 規格見
 [94：首關至城鎮對拍](94-ch01-town-parity-20260908.md)。
 本列為 RE-CLOSED／READY，尚未表示新版 AppImage 通關或 PLAYER-E2。
+
+### 2026-09-14 城鎮 selector 與早中晚收據
+
+`0x1088D`／`0x11019`／`0x2CF71` 的 IDA 9.4 直接指令已閉合城鎮游標的
+selector-cache 首槽資料流；正式重製端改以首位 persistent party 的
+`MapSelectorKey` 選擇三個 cycle。早／中／晚原版交易、成功酒店寫槽與祕密商店
+收據集中於[`town-shop-early-mid-late-e2.json`](../data/ui-traces/town-shop-early-mid-late-e2.json)，
+2026-09-15 三章設施擴充測試於 Docker 全過，狀態 `passed`（issue #13 關閉）；
+外部存檔建立歷程限制與 dosgolem 分支未推送限制均保留在收據內。

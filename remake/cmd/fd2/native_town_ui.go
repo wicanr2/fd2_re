@@ -137,8 +137,35 @@ func (g *Game) composeNativeTownFrame() ([]byte, bool) {
 	if n == nil || n.Type != "town" || n.NativeTownVariant == nil {
 		return nil, false
 	}
+	scene := g.nativeTownUI.scene
+	if len(g.partyJoinOrder) > 0 {
+		unit, ok := g.partyRoster[g.partyJoinOrder[0]]
+		if !ok {
+			return nil, false
+		}
+		// 0x1088D materializes persistent records in order. Its first +7 raw
+		// key therefore owns dword_53A61's first twelve-pointer cache slot,
+		// which 0x2D010 consumes for the town cursor. This is not a fixed
+		// reference to FDICON archive group 0.
+		if unit.HasMapSelectorKey {
+			if g.nativeClassUI.units == nil {
+				return nil, false
+			}
+			selected := *scene
+			for cycle := range selected.Pulse {
+				sprite, err := g.nativeClassUI.units.SpriteFor(
+					unit.MapSelectorKey, 0, cycle,
+				)
+				if err != nil {
+					return nil, false
+				}
+				selected.Pulse[cycle] = sprite
+			}
+			scene = &selected
+		}
+	}
 	frame, err := campaign.ComposeNativeTownFrame(
-		g.nativeTownUI.scene,
+		scene,
 		g.nativeClassUI.strings,
 		g.nativeClassUI.font,
 		*n.NativeTownVariant,

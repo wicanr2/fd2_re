@@ -17,6 +17,9 @@
 | `ch02-clear.jsonl` | 同上，接著打第二關到敵方全滅（閉環）| 待補 |
 | `ch02-turn-start-dialogue-{esc,enter,none}.jsonl` | 從同一份第一關後存檔進第二關，對第一個回合起手對白做 ESC／Enter／無輸入三臂試驗 | `battle-dialogue-esc-vs-enter.json` |
 | `ch04-clear.jsonl` | 從第三關通關存檔進第四關，以明示修改路徑清場、結束回合、推完戰後對白並在城鎮存檔 | [`ch04-clear-receipt-20260914.json`](../ch04-clear-receipt-20260914.json)；不得作為戰鬥規則或 PLAYER-E2 證據 |
+| `town-shop-ch06-e2.jsonl` | 外部未修改第六章槽由標題正常 LOAD 進城，走武器店出售、整備／道具店／教會、Ctrl+F5 神祕商店與酒店存檔 | `town-shop-early-mid-late-e2.json` 的 early 樣本 |
+| `town-shop-ch13-e2.jsonl` | 外部第十三章槽由標題正常 LOAD 進城，走同一組服務、Alt+F2 神祕商店與酒店存檔 | 同上 mid 樣本；來源只證明玩家存檔，不宣稱完整長戰役 E2 |
+| `town-shop-ch27-e2.jsonl` | 外部第二十七章槽由標題正常 LOAD 進城，走同一組服務、Ctrl+F6 神祕商店與酒店存檔 | 同上 late 樣本；來源只證明玩家存檔，不宣稱完整長戰役 E2 |
 
 ## 續跑點
 

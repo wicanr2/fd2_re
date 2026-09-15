@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
@@ -25,6 +26,13 @@ type auditResult struct {
 	Header      fdsave.CurrentRuntimeHeader `json:"header"`
 	Persistent  []auditedRecord             `json:"persistent"`
 	Runtime     []auditedRecord             `json:"runtime"`
+	Slots       []auditedSlot               `json:"slots"`
+}
+
+type auditedSlot struct {
+	Slot     int                     `json:"slot"`
+	Verified fdsave.VerifiedMetadata `json:"verified"`
+	Records  []auditedRecord         `json:"records"`
 }
 
 func audit(path string) (auditResult, error) {
@@ -55,6 +63,24 @@ func audit(path string) (auditResult, error) {
 		result.Runtime[index] = auditedRecord{
 			Index: index, RuntimeX: &x, RuntimeY: &y, View: record.View(),
 		}
+	}
+	for slot := 0; slot < fdsave.SlotCount; slot++ {
+		chapter, slotErr := fdsave.InspectChapterSlot(plain, slot)
+		if errors.Is(slotErr, fdsave.ErrEmptyChapterSlot) {
+			continue
+		}
+		if slotErr != nil {
+			return auditResult{}, slotErr
+		}
+		records := chapter.ActiveRecords()
+		audited := auditedSlot{
+			Slot: slot, Verified: chapter.Verified,
+			Records: make([]auditedRecord, len(records)),
+		}
+		for index, record := range records {
+			audited.Records[index] = auditedRecord{Index: index, View: record.View()}
+		}
+		result.Slots = append(result.Slots, audited)
 	}
 	return result, nil
 }

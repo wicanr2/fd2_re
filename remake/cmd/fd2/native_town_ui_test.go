@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
@@ -33,6 +34,11 @@ func TestNativeTownProductionOwnerUsesEditableVariantAndHiddenSelection(t *testi
 	if _, err := os.Stat(filepath.Join(base, "FDOTHER.DAT")); err != nil {
 		t.Skip("player-provided original resources are absent")
 	}
+	pack, err := filepath.Abs("../../generated-assets/fd2-original-b97caf22")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_ASSET_PACK", pack)
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
@@ -68,6 +74,33 @@ func TestNativeTownProductionOwnerUsesEditableVariantAndHiddenSelection(t *testi
 	if !ok || len(visible) != 320*200 {
 		t.Fatalf("visible native town frame=%d ok=%v", len(visible), ok)
 	}
+	g.partyJoinOrder = []int{7}
+	g.partyRoster = map[int]battle.Unit{
+		7: {MapSelectorKey: 50, HasMapSelectorKey: true},
+	}
+	selectedScene := *town.scene
+	for cycle := range selectedScene.Pulse {
+		sprite, err := shared.units.SpriteFor(50, 0, cycle)
+		if err != nil {
+			t.Fatal(err)
+		}
+		selectedScene.Pulse[cycle] = sprite
+	}
+	wantSelected, err := campaign.ComposeNativeTownFrame(
+		&selectedScene, shared.strings, shared.font, variant, g.campSel, g.nativeTownUIPulse,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	selected, ok := g.composeNativeTownFrame()
+	if !ok || !bytes.Equal(selected, wantSelected) || bytes.Equal(selected, visible) {
+		t.Fatal("town cursor did not follow the first persistent map selector key")
+	}
+	g.partyRoster[7] = battle.Unit{MapSelectorKey: 999, HasMapSelectorKey: true}
+	if _, ok := g.composeNativeTownFrame(); ok {
+		t.Fatal("out-of-bank persistent map selector key did not fail closed")
+	}
+	g.partyRoster[7] = battle.Unit{MapSelectorKey: 50, HasMapSelectorKey: true}
 	if !g.camp.MatchNativeTownSecret(g.campSel, 0x5f) ||
 		g.camp.NodeID() != "town" {
 		t.Fatal("native secret chord did not remain in the town owner")
