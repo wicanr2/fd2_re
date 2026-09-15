@@ -108,7 +108,7 @@ func TestNativeAICommandModifierLateCancelRollsBack(t *testing.T) {
 	book[18] = battle.NativeCommandRecord{ID: 18, MPCost: 4}
 	st := &battle.State{W: 2, H: 1, Units: []*battle.Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
 	actor.NativeMapPresentation.X, target.NativeMapPresentation.X = 0, 1
-	plan, err := st.PlanNativeAICommandModifier(actor, 17, 0)
+	plan, err := st.PlanNativeAICommandModifier(actor, battle.Cell{}, 17, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

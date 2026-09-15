@@ -30,7 +30,38 @@ func NativeAIPhysicalDestinations(
 }
 
 // nativeMovementDestinationField 保留 0x4E040 的剩餘預算，供玩家地形繪圖與 AI 共用。
+// 它是 0x145CD→0x4E040→0x146D1 的組合：預算場之後再把同組占位清成 0xff。
 func nativeMovementDestinationField(
+	w, h int, records []byte, count, actor, selector, initialBudget int,
+	baseFlags, terrainMoveCodes, costRow []byte,
+) ([]byte, error) {
+	field, err := nativeMovementBudgetField(w, h, records, count, actor, selector, initialBudget, baseFlags, terrainMoveCodes, costRow)
+	if err != nil {
+		return nil, err
+	}
+	// 0x146d1 removes occupied cells in the selector's own group after the
+	// flood-fill.  The actor itself is explicitly skipped.
+	for unit := 0; unit < count; unit++ {
+		if unit == actor {
+			continue
+		}
+		record := records[unit*nativeRecordSize:]
+		if record[5]&1 != 0 || !nativeAISameSelectorGroup(record[6], selector) {
+			continue
+		}
+		x, y := int(record[0]), int(record[1])
+		if x < 0 || y < 0 || x >= w || y >= h {
+			return nil, fmt.Errorf("native AI destination unit %d is outside the grid", unit)
+		}
+		field[y*w+x] = 0xff
+	}
+	return field, nil
+}
+
+// nativeMovementBudgetField 是 0x145CD（對方群組 0x40／鄰格 0x80）加 0x4E040
+// 預算傳播的結果，不含 0x146D1 的同組占位清除；0x14B78 沿長路徑找「走得到的
+// 最遠一格」用的就是這一版（同組占位格在那一步仍算走得到）。
+func nativeMovementBudgetField(
 	w, h int, records []byte, count, actor, selector, initialBudget int,
 	baseFlags, terrainMoveCodes, costRow []byte,
 ) ([]byte, error) {
@@ -81,24 +112,6 @@ func nativeMovementDestinationField(
 	nativeAIPropagateDestinationBudget(
 		w, h, origin, byte(initialBudget), flags, terrainMoveCodes, costRow, field,
 	)
-
-	// 0x146d1 removes occupied cells in the selector's own group after the
-	// flood-fill.  The actor itself is explicitly skipped.
-	for unit := 0; unit < count; unit++ {
-		if unit == actor {
-			continue
-		}
-		record := records[unit*nativeRecordSize:]
-		if record[5]&1 != 0 || !nativeAISameSelectorGroup(record[6], selector) {
-			continue
-		}
-		x, y := int(record[0]), int(record[1])
-		if x < 0 || y < 0 || x >= w || y >= h {
-			return nil, fmt.Errorf("native AI destination unit %d is outside the grid", unit)
-		}
-		field[y*w+x] = 0xff
-	}
-
 	return field, nil
 }
 

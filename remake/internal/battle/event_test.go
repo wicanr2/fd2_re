@@ -532,8 +532,11 @@ func TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots(t *testing.T) {
 	if len(st.Units) != 27 {
 		t.Fatalf("turn3 exact event6 runtime units=%d, want 27", len(st.Units))
 	}
+	// turn_events 的第三個 byte 是 0x1A813 的 phase selector，不是陣營；登場單位
+	// 的陣營跟著 FDFIELD record +6（這批是 0＝敵軍）。第四章 event 11 的原版收據
+	// （parity-ch04.json，turn_events 同樣標 ally）登場的就是 camp 0。
 	for _, unit := range st.Units[21:] {
-		if unit.Group != 3 || unit.Camp != Ally || !unit.Acted {
+		if unit.Group != 3 || unit.Camp != Enemy || unit.NativeRecordByte6 != 0 || unit.Acted {
 			t.Fatalf("turn3 exact event6 unit=%#v", unit)
 		}
 		if unit.X != int(byte(unit.NativePositionRecord.XWord)) ||

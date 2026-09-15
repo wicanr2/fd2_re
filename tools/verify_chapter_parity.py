@@ -89,6 +89,16 @@ def frame_diff(oracle_png: Path, remake_png: Path) -> tuple[int, list[int]]:
     return diff, [minx, miny, maxx, maxy] if diff else []
 
 
+def oracle_gold_for(actions: list[dict], seq: int, kind: str, view: dict) -> int | None:
+    """原版側這一點該比的金額。重製側的 shop_menu 是出售前的店內畫面，而原版側同一個
+    seq 的 checkpoint 在出售之後，出售前的金額記在動作的 gold_before。"""
+    if kind == "shop_menu":
+        action = next((a for a in actions if a.get("seq") == seq), None)
+        if action and "gold_before" in action:
+            return action["gold_before"]
+    return view.get("gold")
+
+
 def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     seq = remake_cp.get("oracle_seq") or 0
     if seq <= 0:
@@ -158,8 +168,9 @@ def main() -> int:
                 entry["status"] = "round_differ"
                 entry["round"] = [view.get("round"), cp.get("round")]
         if "gold" in view:
-            transactions.append({"seq": seq, "kind": cp["kind"], "oracle": view.get("gold"), "remake": cp.get("gold"),
-                                 "ok": view.get("gold") == cp.get("gold")})
+            oracle_gold = oracle_gold_for(actions, seq, cp["kind"], view)
+            transactions.append({"seq": seq, "kind": cp["kind"], "oracle": oracle_gold, "remake": cp.get("gold"),
+                                 "ok": oracle_gold == cp.get("gold")})
         if cp.get("frame"):
             opng = args.oracle / f"checkpoint-{seq:04d}.png"
             # 重製側每點寫出全部動畫相位的變體（remake-NNNN-pK.png）；取差異最小的一張。

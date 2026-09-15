@@ -17,13 +17,19 @@ func TestNativeGrowthRowFollowsRecordPlus7(t *testing.T) {
 		t.Fatalf("成長表 %d 列，應為 68", len(rows))
 	}
 	// idx 4：ap [6,9) dp [4,5) dx [2,2] hp [8,11) mp [0,0]，即手寫表的亞雷斯 騎士。
-	want := GrowthRow{AP: StatRange{6, 8}, DP: StatRange{4, 4}, DX: StatRange{2, 2},
-		HP: StatRange{8, 10}, MP: StatRange{0, 0}}
+	// dp 跨距 1 仍會擲（Native 且非 Fixed），dx／mp 跨距 0 才是 Fixed。
+	want := GrowthRow{AP: StatRange{Min: 6, Max: 8, Native: true}, DP: StatRange{Min: 4, Max: 4, Native: true},
+		DX: StatRange{Min: 2, Max: 2, Native: true, Fixed: true}, HP: StatRange{Min: 8, Max: 10, Native: true},
+		MP: StatRange{Min: 0, Max: 0, Native: true, Fixed: true}}
 	if rows[4] != want {
 		t.Fatalf("row4=%+v，應為 %+v", rows[4], want)
 	}
-	if rows[4] != growthTable["亞雷斯"]["騎士"] {
-		t.Fatalf("EXE row4 與手寫表的亞雷斯 騎士不一致：%+v vs %+v", rows[4], growthTable["亞雷斯"]["騎士"])
+	legacyRow := growthTable["亞雷斯"]["騎士"]
+	for _, pair := range [][2]StatRange{{rows[4].AP, legacyRow.AP}, {rows[4].DP, legacyRow.DP},
+		{rows[4].DX, legacyRow.DX}, {rows[4].HP, legacyRow.HP}, {rows[4].MP, legacyRow.MP}} {
+		if pair[0].Min != pair[1].Min || pair[0].Max != pair[1].Max {
+			t.Fatalf("EXE row4 與手寫表的亞雷斯 騎士不一致：%+v vs %+v", rows[4], legacyRow)
+		}
 	}
 
 	st := &State{NativeGrowthRows: rows}

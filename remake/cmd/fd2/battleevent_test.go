@@ -198,7 +198,10 @@ func TestChapter3Turn3BattleEventBlocksTurnUntilOriginalSequenceCompletes(t *tes
 		t.Fatal(err)
 	}
 	sc.Setup(st)
-	st.Turn = 3
+	// FDFIELD 的這筆 turn_events 是 turn 3、selector 2（camp "special"）：原版在
+	// 0x1A5B9 `inc [0x53BEF]` 之後才呼叫 0x1A78D `0x1A813(2)`，所以它在回合數剛變成
+	// 3 的時候、也就是第 2 回合敵方回合結束、第 3 回合玩家輸入之前觸發。
+	st.Turn = 2
 	st.Units[0].Poisoned, st.Units[0].PoisonTurns = true, 2
 
 	g := &Game{m: &MapData{W: 40, H: 40, TileW: 24, TileH: 24}, st: st, sc: sc}
@@ -209,8 +212,8 @@ func TestChapter3Turn3BattleEventBlocksTurnUntilOriginalSequenceCompletes(t *tes
 	if len(st.Units) != 27 || g.battleEvent == nil || g.camPan == nil {
 		t.Fatalf("event did not execute SPAWN then block on first PAN: units=%d run=%#v pan=%#v", len(st.Units), g.battleEvent, g.camPan)
 	}
-	if st.Turn != 3 || st.Units[0].PoisonTurns != 2 {
-		t.Fatalf("turn/status advanced before staging: turn=%d poison=%d", st.Turn, st.Units[0].PoisonTurns)
+	if st.Turn != 3 || st.Units[0].PoisonTurns != 1 {
+		t.Fatalf("round counter/status must already be advanced when the selector-2 event runs: turn=%d poison=%d", st.Turn, st.Units[0].PoisonTurns)
 	}
 	g.finishTurn() // re-entry while blocked must be a no-op
 	if st.Turn != 3 || len(st.Units) != 27 {
@@ -245,8 +248,8 @@ func TestChapter3Turn3BattleEventBlocksTurnUntilOriginalSequenceCompletes(t *tes
 	if len(g.dialog) != 1 || g.dialog[0].Speaker != 77 || g.dialog[0].Text != "鐵諾,你果然很耐命!怪不得頭子一定要我親自來看看....不過,你的好運也到此為止了!" {
 		t.Fatalf("first authored dialogue played out of order: %#v", g.dialog)
 	}
-	if st.Turn != 3 || st.Units[0].PoisonTurns != 2 {
-		t.Fatalf("turn/status advanced before dialogue completion: turn=%d poison=%d", st.Turn, st.Units[0].PoisonTurns)
+	if st.Turn != 3 || st.Units[0].PoisonTurns != 1 {
+		t.Fatalf("turn/status changed during the dialogue: turn=%d poison=%d", st.Turn, st.Units[0].PoisonTurns)
 	}
 
 	wantSpeakers := []int{77, 2, 77, 8, 2, 8, 77}
@@ -257,8 +260,8 @@ func TestChapter3Turn3BattleEventBlocksTurnUntilOriginalSequenceCompletes(t *tes
 		g.dialog = nil
 		g.advanceBattleEvent()
 	}
-	if g.battleEvent != nil || st.Turn != 4 || st.Units[0].PoisonTurns != 1 {
-		t.Fatalf("sequence completion = run=%#v turn=%d poison=%d, want nil/4/1", g.battleEvent, st.Turn, st.Units[0].PoisonTurns)
+	if g.battleEvent != nil || st.Turn != 3 || st.Units[0].PoisonTurns != 1 {
+		t.Fatalf("sequence completion = run=%#v turn=%d poison=%d, want nil/3/1", g.battleEvent, st.Turn, st.Units[0].PoisonTurns)
 	}
 }
 

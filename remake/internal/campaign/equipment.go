@@ -80,6 +80,36 @@ func RecomputeEquipment(u *battle.Unit, stats map[int]ItemStats) {
 	}
 }
 
+// ApplyEquippedAttackRange sets only the normalized attack range from the
+// equipped weapon's item.json range (doc32 weapon_range.json), the same rule
+// RecomputeEquipment applies after a shop purchase. Persistent 0x50-byte
+// records carry no range field, so a roster restored from FD2.SAV (LOAD or
+// CONTINUE) would otherwise fall back to the default 1 and a spear/bow unit
+// could not attack at distance 2 as it does in the original. AP/DP/HIT/EV stay
+// as the raw record wrote them; only AtkMin/AtkMax and their base are touched.
+func ApplyEquippedAttackRange(u *battle.Unit, stats map[int]ItemStats) {
+	if u == nil {
+		return
+	}
+	u.AtkMin, u.AtkMax = 0, 0
+	for i, equipped := range u.Equipped {
+		if !equipped || i >= len(u.Inventory) {
+			continue
+		}
+		item, ok := stats[u.Inventory[i]]
+		if !ok {
+			continue
+		}
+		if item.Min > 0 {
+			u.AtkMin = item.Min
+		}
+		if item.Max > 0 {
+			u.AtkMax = item.Max
+		}
+	}
+	u.BaseAtkMin, u.BaseAtkMax = u.AtkMin, u.AtkMax
+}
+
 // RecomputeAfterClassChange is the normalized counterpart of the proven
 // 0x31602 -> 0x1b750 handoff. It preserves editable campaign fields and avoids
 // double-counting gear, but it is not evidence for the raw transient modifiers

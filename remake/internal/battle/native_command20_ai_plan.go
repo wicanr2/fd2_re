@@ -37,7 +37,10 @@ type NativeAICommand2022TargetState struct {
 	NativeTransient   [6]byte
 }
 
-func (s *State) NativeAICommand2022Targets(actor *Unit, commandID int) ([]*Unit, error) {
+// NativeAICommand2022Targets rebuilds the 0x15311 target array at the selected
+// winner cell (AIPlan.NativeActionDestination); the actor stays put on this
+// route.
+func (s *State) NativeAICommand2022Targets(actor *Unit, origin Cell, commandID int) ([]*Unit, error) {
 	if s == nil || actor == nil || !actor.HasNativeRecordByte6 ||
 		(commandID < 20 || commandID > 27 || commandID == 23 || commandID == 24 || commandID == 25) || len(s.NativeCommandBook) != NativeCommandRecordCount ||
 		s.NativeCommandBook[commandID].ID != commandID {
@@ -46,6 +49,9 @@ func (s *State) NativeAICommand2022Targets(actor *Unit, commandID int) ([]*Unit,
 	selector := int(actor.NativeRecordByte6)
 	if selector != 0 && selector != 1 {
 		return nil, fmt.Errorf("native AI command tail selector=%d is outside 0/1", selector)
+	}
+	if err := s.nativeAICommandOriginInGrid(origin); err != nil {
+		return nil, err
 	}
 	records, err := NativeAIScoringRecords(s.Units)
 	if err != nil {
@@ -63,8 +69,7 @@ func (s *State) NativeAICommand2022Targets(actor *Unit, commandID int) ([]*Unit,
 		return nil, err
 	}
 	indices, err := nativeAIScoredCommandTargetIndices(s.W, s.H, records, len(s.Units),
-		Cell{X: int(actor.NativeMapPresentation.X), Y: int(actor.NativeMapPresentation.Y)},
-		s.NativeCommandBook[commandID].EffectMode, targetCode, flags)
+		origin, s.NativeCommandBook[commandID].EffectMode, targetCode, flags)
 	if err != nil || len(indices) == 0 {
 		if err != nil {
 			return nil, err
@@ -104,8 +109,8 @@ func nativeAICommand2022Publish(states []NativeAICommand2022TargetState) {
 	}
 }
 
-func (s *State) PlanNativeAICommand2022(actor *Unit, commandID int, rngState uint16) (*NativeAICommand2022Plan, error) {
-	targets, err := s.NativeAICommand2022Targets(actor, commandID)
+func (s *State) PlanNativeAICommand2022(actor *Unit, origin Cell, commandID int, rngState uint16) (*NativeAICommand2022Plan, error) {
+	targets, err := s.NativeAICommand2022Targets(actor, origin, commandID)
 	if err != nil {
 		return nil, err
 	}

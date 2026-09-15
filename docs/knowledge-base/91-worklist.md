@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -42,6 +42,14 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 重製端 `campaign.MaterializePersistentRecord`（sub_112A5 轉寫）對物品格 6／7 只寫旗標 `+0x16`／`+0x18`＝0x80，item byte `+0x17`／`+0x19` 留 0；真實原版存檔（ch01-cleared 剛加入的 id 8、ch02-cleared 同一筆）這兩格是 `80 ff`。四格 defaults 那邊，defaults 為 0xff 時旗標寫 0x80、item 寫 0xff，與觀察一致；只有固定的兩格不同。消費端只看旗標 bit7，所以玩法不受影響，但建槽工具的輸出與原版 bytes 差這兩個 byte。要回 IDA 看 0x112A5 是否另有寫 `+0x17`／`+0x19`＝0xff 的指令，或紀錄區在 JOIN 前被 0xff 填過。
 
 怎樣算做完：IDA 9.4 直接指令證實 +0x17／+0x19 的來源（明寫 0xff 或前置填充），轉寫與建槽工具同步修正，正對照這兩個 byte 歸零。
+
+### 敵方回合（含增援登場）之後的鏡頭位置與原版不同
+
+`enemy-phase-camera-drift-ch04` · RE待解 · [#30](https://github.com/wicanr2/fd2_re/issues/30) · 仍未完成 · 要人判
+
+第四章 r9 收據：第 1～3 回合每個玩家動作點的 camera 都與原版相同（4,10..4,12），第 4 回合敵方回合含四組增援登場後，原版在 seq 720 的 camera 是 (0,11)、重製端是 (4,11)；之後第 5 回合所有 select／stay／wait 幀都因此差 3 萬 8 千像素。原版 seq 671（按 END 當下）camera (0,6)、cursor (0,8) 是增援 staging 停在第一組 (0,8) 的位置；整個敵方回合走完 camera_x 仍是 0，儘管其間有單位在 x=15 走動，表示原版 AI 走行的鏡頭規則（0x135DD 定位與 0x13185 安全帶的適用條件）與重製端 aiStep 的 camPan／walk 跟隨不同。要做：用 FD2_ORACLE_FRAME_EIP=0x11CAC 取第 4 回合敵方回合逐幀，定出每個 AI 行動前後 [0x53AB1]/[0x53AB5] 的寫入端與條件，再把 aiStep 的鏡頭規則改成同一套。
+
+怎樣算做完：第四章收據 seq 720 起的 camera 與原版逐點相同，round 5 的 stay／wait 幀差異只剩覆蓋（#28）那一類。
 
 ## data — 可編輯資料還沒就緒
 
@@ -73,7 +81,7 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ### 第四章敵方回合 mode 0 移動終點與原版分岔（17 個中 11 個）
 
-`enemy-mode0-destination-divergence-ch04` · 缺陷 · [#25](https://github.com/wicanr2/fd2_re/issues/25) · 仍未完成 · 還沒出現
+`enemy-mode0-destination-divergence-ch04` · 缺陷 · [#25](https://github.com/wicanr2/fd2_re/issues/25) · **可能已完成，回去確認** · 已經出現在 docs/data/ui-traces/parity-ch04.json
 
 111 第四章對拍：同一份建構槽、同一回合（第 1 回合我方全員不動、END），原版 17 個 group 1 敵人的第 1 回合終點與重製端只有 6 個相同。修正 MV（見同批提交：Load 時以 0x10C50 建構器 record 的移動力覆寫 authored `mv`）之後仍差 11 個，型態像是同分候選的掃描順序或先動單位佔格後的連鎖：例如 index 8 (9,1) 原版到 (8,3)、重製端到 (9,4)；index 9 (10,2) 原版到 (9,4)、重製端到 (8,3)，兩者對調。所有敵人 +0x34=0（mode 0）、+0x3b=4/3。原版逐單位終點在 `docs/data/ui-traces/parity-ch04.json` 的 behavior gate 點（after_enemy_phase）與 `work/parity-slot-ch04/sample-r*/checkpoint-*.json`。要回 `0x14121`／`0x13E9C`／`0x4E1A6` 對照 native_ai_destination.go 的候選排序與佔格更新順序。
 
@@ -81,11 +89,35 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ### 敵方施法時 native AI command damage target array is empty 失敗即關閉
 
-`ai-command-damage-empty-target-array` · 缺陷 · [#26](https://github.com/wicanr2/fd2_re/issues/26) · 仍未完成 · 自承還在 docs/data/ui-traces/parity-ch04.json
+`ai-command-damage-empty-target-array` · 缺陷 · [#26](https://github.com/wicanr2/fd2_re/issues/26) · **可能已完成，回去確認** · 找不到 command damage target array is empty
 
 111 第四章重播：第 3 回合敵方回合（法師 fig 90／93 在場）重製端執行期錯誤 `native AI action: native AI command damage target array is empty`（remake/internal/battle/native_command0.go PlanNativeAICommandDamage）。0x14EF0 路由已選定 command 與目的地，但執行時以 actor 的 NativeMapPresentation 座標重建目標陣列得到空集合；懷疑移動與施法之間 presentation 座標未更新，或目的地選擇與目標判定用了不同座標。原版同一回合正常施法（第四章 r2 收據悠妮被火炎術打中的畫面）。重現：`tools/chapter_parity.sh 4 work/parity-slot-ch04 <sample-run> <out>`，replay.log 最後一筆 runtime_error。
 
 怎樣算做完：第四章重播能走完敵方回合不出 loadErr；收據不再出現 runtime_error 點。
+
+### 酒店原生介面（0x2FC85）未實作，選項只有 raw selector 路由
+
+`hotel-native-ui-0x2fc85` · 缺陷 · [#27](https://github.com/wicanr2/fd2_re/issues/27) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
+
+原版酒店 `0x2FC85` 以資源 13 畫框、列四個圖示，第二個圖示進存檔槽列表（四槽、寫 `FD2.SAV` 後顯示「記錄儲存完畢」）。重製端 `applyHotelServiceSelection` 只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「待 UI callee」訊息，沒有畫面、沒有槽列表；重播測試在 `town_save` 那一格只能拿城鎮畫面當代替，111 的畫面 gate 對第四章（以及之後每一章）的酒店存檔幀永遠不會過。要做：以 0x2FC85 的 indexed 資源與圖示位置畫酒店介面、存檔槽列表與完成訊息，存檔本體另見 #24。
+
+怎樣算做完：第四章收據 `parity-ch04.json` 的 `town_save` 幀在 640 像素預算內，且 hotel 節點的四個圖示、槽列表與「記錄儲存完畢」都由 indexed 資源畫出。
+
+### 戰場覆蓋（移動範圍、狀態面板、指令環）不在 indexed composer 裡
+
+`battle-overlays-not-in-indexed-composer` · 缺陷 · [#28](https://github.com/wicanr2/fd2_re/issues/28) · 仍未完成 · 要人判
+
+111 的畫面 gate 用 `composeNativeMapFrame` 的 indexed 幀與原版 checkpoint 逐像素比。選中單位後的移動範圍著色、右側單位狀態面板與指令環圖示目前只在 Ebiten Draw 路徑畫，indexed 幀裡沒有，所以第四章每一個 `select`／`attack_armed` 幀都差 3.6 萬～6 萬像素（`parity-ch04.json` frames）。要做：把這三種覆蓋改成從原版 indexed 資源（0x1F882 範圍著色、狀態面板資源、指令環 FIGANI 圖示）畫進 composer，Draw 路徑改用同一份結果。
+
+怎樣算做完：第四章收據的 `select`／`attack_armed`／`stay` 幀差異落在 640 像素預算內。
+
+### 升級五行訊息與 END 回復圖示／音效只有數值沒有演出
+
+`levelup-and-end-recovery-presentation` · 缺陷 · [#29](https://github.com/wicanr2/fd2_re/issues/29) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
+
+原版 `0x1E292` 升級時以 `0x15F84` 逐行顯示「升級！」與 AP／DP／DX／HP／MP 增量（FDTXT #0x1E8..#0x1EE），每行之間 `0x16559`／`0x16E24` 等待按鍵；`0x1A30B` 開頭的我方回復在每個回復的單位上畫 `0x1DA16` 圖示並播音效 4。重製端 `AwardExpNative` 與 `ApplyNativeEndTurnRecovery` 只改數值（第四章對拍已靠這兩條把回合 4 的行為 gate 推到只剩 RNG 時序差），畫面與等待節奏沒有接，所以原版側這幾格的幀在重製側對不到同狀態。要做：升級訊息用 indexed 資源逐行顯示與等待；END 回復加圖示與音效；重播測試的 `ackPresents` 收進這兩種工作。
+
+怎樣算做完：第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

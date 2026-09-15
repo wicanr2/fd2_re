@@ -649,19 +649,49 @@ func (sc *Scenario) Fire(st *State, trigger, ctxUnit string) []DialogLine {
 // uses this to preserve blocking PAN/delay/dialogue order; Fire remains the
 // synchronous compatibility path for setup, tests and triggers without staging.
 func (sc *Scenario) TriggerActions(st *State, trigger, ctxUnit string) []Action {
+	return sc.TriggerActionsWhere(st, trigger, ctxUnit, nil)
+}
+
+// TriggerActionsWhere 與 TriggerActions 相同，但只收 accept 回 true 的事件；
+// 沒被收的事件不標 fired，留給下一個觸發點。
+func (sc *Scenario) TriggerActionsWhere(st *State, trigger, ctxUnit string, accept func(*Event) bool) []Action {
 	var actions []Action
 	for i := range sc.Events {
 		e := &sc.Events[i]
 		if e.Trigger != trigger || (e.Once && e.fired) {
 			continue
 		}
-		if !e.When.match(st, ctxUnit) {
+		if !e.When.match(st, ctxUnit) || (accept != nil && !accept(e)) {
 			continue
 		}
 		e.fired = true
 		actions = append(actions, e.Do...)
 	}
 	return actions
+}
+
+// NativeTurnPhaseSelector 回報由 FDFIELD turn_events 轉出的回合事件對應的 0x1A813
+// phase selector（該列第三個 byte，gen_campaign 以 camp 字串保存）：1 在 END 之後、
+// 友軍 AI 之前；0 在敵方 AI 之前；2 在下一回合的玩家輸入之前（那時 [0x53BEF]
+// 已經加一）。手寫、沒有 native_event_id 的事件回 -1，維持舊的回合末時機。
+func (e *Event) NativeTurnPhaseSelector() int {
+	if e == nil {
+		return -1
+	}
+	for _, a := range e.Do {
+		if a.NativeEventID == nil {
+			continue
+		}
+		switch a.Camp {
+		case "ally":
+			return 1
+		case "enemy":
+			return 0
+		case "special":
+			return 2
+		}
+	}
+	return -1
 }
 
 // match 條件判斷(可擴充)。nil = 無條件,恆真。
@@ -739,11 +769,15 @@ func (sc *Scenario) ExecuteActionChecked(st *State, a Action) (DialogLine, bool,
 				); err != nil {
 					return DialogLine{}, false, fmt.Errorf("native spawn %s: %w", call.Source, err)
 				}
+				// FDFIELD 回合事件列的第三個 byte 是 0x1A813 的 phase selector
+				// （1＝END 之後友軍 AI 前、0＝敵方 AI 前），不是登場單位的陣營；
+				// 陣營由該 group 的 FDFIELD record +6 決定。第四章 event 11
+				// （turn_events 標 ally）原版登場的是 camp 0 敵軍，收據見
+				// docs/data/ui-traces/parity-ch04.json。原生路徑因此不覆寫 camp。
+				// 0x32999 建構的 record +5 是 0：登場當下就能行動（第四章 event 11
+				// 的四名敵軍在同一個敵方回合就走了）。act_immediately 只屬正規化路徑。
 				for _, unit := range st.Units[before:] {
-					if a.Camp != "" {
-						unit.Camp = camp
-					}
-					unit.Acted = !a.ActImmediately
+					unit.Acted = false
 				}
 			}
 		} else {

@@ -52,17 +52,17 @@
     },
     {
       "chapter": 4,
-      "status": "oracle-done",
+      "status": "blocked",
       "receipt": "docs/data/ui-traces/parity-ch04.json",
       "slot_manifest": "docs/data/parity-slots/ch04-manifest.json",
       "slot_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
       "dosgolem_commit": "36f0389493eb3dd22f0961abea35db5f1d42cb7a",
       "date": "2026-09-15",
-      "verify": "FD2_PARITY_SAVE_ISSUE=24 tools/chapter_parity.sh 4 work/parity-slot-ch04 <dosgolem run> <out>；原版側：tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch04-sample.jsonl（FD2_ORACLE_FORCE_ENEMY_CLEAR=1）",
+      "verify": "FD2_PARITY_SAVE_ISSUE=24 tools/chapter_parity.sh 4 work/parity-slot-ch04 <dosgolem run> <out>；原版側：FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch04-sample.jsonl",
       "limitations": [
-        "原版側整章計畫跑完（LOAD→出口→4 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店）",
-        "重製側重播在第 3 回合敵方回合以 loadErr 中止（#26 施法空目標陣列）；第 1 回合敵方終點 17 個中 11 個分岔（#25）；酒店存檔無原版槽 bytes 可比（#24）",
-        "town_loaded 11 px、departure_prompt 0 px、battle_start 362 px 已在 1% 內；其餘畫面差異源自單位分岔"
+        "原版側整章計畫跑完（LOAD→出口→5 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店），收據帶 0x13A9F／0x1E54A eip-trace",
+        "行為與節點 gate 通過：單位、HP、回合、金額逐點相同（反擊經驗／原生升級擲骰／END 回復／0x1DB65 死亡標記／回合事件 selector 修正後）",
+        "交易 gate 只剩酒店存檔的原版槽 bytes（#24）；畫面 gate 46／59 未過：戰場覆蓋（#28）、敵方回合後鏡頭（#30）、升級與 END 回復演出（#29）、酒店介面（#27）"
       ],
       "prior_receipts": [
         "docs/data/ch04-clear-receipt-20260914.json"

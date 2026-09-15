@@ -393,6 +393,38 @@
       "why": "2026-09-15 建槽工具正對照：ch03-cleared 沒有鐵諾（ch02_post 的 any_unit_inactive[6] 分支），但攻略與 handler 的 else 分支都說他會入隊；那份存檔是修改路徑跑出來的，鐵諾在戰場上倒了。",
       "date": "2026-09-15",
       "evidence": "remake/cmd/fd2-chapter-slot 正對照（tools/fd2_chapter_slot.py compare）與 docs/knowledge-base/111 §起點存檔"
+    },
+    {
+      "id": "turn-events-third-byte-is-phase-selector",
+      "area": "資料",
+      "rule": "FDFIELD turn_events 的第三個 byte 是回合階段選擇器（1 友軍 AI 前、0 敵方 AI 前、2 玩家輸入前），不是生成陣營；生成的記錄陣營看它自己的 +6，+5 為 0 所以當回合就會行動。",
+      "why": "2026-09-15 第四章對拍：第 4 回合增援被寫成友軍陣營且已行動，原版收據裡它們是敵人、當回合就打過來（0x1A813 的 selector 引數與 0x1A30B 的呼叫順序）。",
+      "date": "2026-09-15",
+      "evidence": "docs/knowledge-base/56 §第四章章工作單元；remake/internal/battle/event.go NativeTurnPhaseSelector"
+    },
+    {
+      "id": "counter-attack-awards-defender-exp",
+      "area": "逆向",
+      "rule": "經驗給誰要看誰呼叫升級函式（0x1E292）而不是誰算經驗：sub_29F72 每一擊以揮擊者 +6==2 覆寫 [0x53EC8]，敵方行動路徑 0x1566A 把它發給被打的單位。我方反擊有經驗、當場升級；擲骰用原版 RNG。",
+      "why": "2026-09-15 第四章第 4 回合：原版 id 4 反擊兩次擊倒各得 9／8 經驗升到 12 級（AP 91→98），反擊傷害從此差 1～4，敵人該死的沒死；106 原本寫「反擊不給守方經驗」是把戰後掉落鏈當成經驗鏈。",
+      "date": "2026-09-15",
+      "evidence": "docs/knowledge-base/106 §傷害公式的路徑表；TestNativeCounterKillAwardsDefenderExperienceAndLevelsUpNatively"
+    },
+    {
+      "id": "end-turn-recovers-one-fifth-for-unacted-own",
+      "area": "逆向",
+      "rule": "0x1A30B 進入就先讓沒行動（+5 bit7 為 0）、沒暫時狀態的我方單位回 MaxHP/5。全員行動完自動換手的那一回合沒有人回血；玩家直接按 END 的回合全員回兩成。",
+      "why": "2026-09-15 第四章第 4 回合按 END 後原版三個單位各回 20% HP，重製端沒接（fdother.NativeBattleEntryStep 早就釘住數值卻沒有消費端）。",
+      "date": "2026-09-15",
+      "evidence": "remake/internal/battle/native_end_turn_recovery.go；work/parity-slot-ch04/sample-r8 seq 665→671"
+    },
+    {
+      "id": "use-eip-trace-for-args-and-rng",
+      "area": "對拍",
+      "rule": "要知道原版某個函式被誰、用什麼引數、在什麼 RNG 狀態下呼叫，用 FD2_ORACLE_EIP_TRACE 在入口記暫存器、堆疊與 rng_word，不要從 checkpoint 之間的數字反推。訊息等待會依時序吃亂數，決策點（AI 行動入口 0x13A9F、成長擲骰 0x1E54A）逐筆對齊，其餘只比結果。",
+      "why": "2026-09-15 第四章對拍：升級五行訊息之間各吃 6～19 步亂數，整回合逐次對上做不到；改成在決策點抄 rng_word 之後才分得清是規則錯還是時序。",
+      "date": "2026-09-15",
+      "evidence": "tools/dosgolem_oracle.sh FD2_ORACLE_EIP_TRACE；chapter_parity_replay_test.go observeAIPlan／observeGrowthRoll"
     }
   ]
 }

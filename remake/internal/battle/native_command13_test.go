@@ -51,7 +51,7 @@ func TestExecuteNativeAICommandHealRebuildsTargetsFromRawSelector(t *testing.T) 
 		NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book,
 	}
 
-	got, err := st.ExecuteNativeAICommandHeal(actor, 13, rand.New(rand.NewSource(2)))
+	got, err := st.ExecuteNativeAICommandHeal(actor, Cell{}, 13, rand.New(rand.NewSource(2)))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func TestExecuteNativeAICommandHealRejectsMissingSelectorBeforeMutation(t *testi
 	actor.HasNativeRecordByte6 = false
 	actor.MP = 5
 	st := &State{NativeCommandBook: nativeCommandHealBook(13), Units: []*Unit{actor}}
-	if _, err := st.ExecuteNativeAICommandHeal(actor, 13, rand.New(rand.NewSource(1))); err == nil || actor.MP != 5 || actor.Acted {
+	if _, err := st.ExecuteNativeAICommandHeal(actor, Cell{}, 13, rand.New(rand.NewSource(1))); err == nil || actor.MP != 5 || actor.Acted {
 		t.Fatalf("missing selector crossed AI heal gate: actor=%#v err=%v", actor, err)
 	}
 }

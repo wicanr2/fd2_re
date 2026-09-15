@@ -8,6 +8,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -61,6 +62,9 @@ type parityUnit struct {
 	HP       int `json:"hp"`
 	Identity int `json:"identity"`
 	Acted    int `json:"acted"`
+	// PX／PY 是原版 record +0／+1（NativeMapPresentation），AI 用的是這一組座標。
+	PX int `json:"px"`
+	PY int `json:"py"`
 }
 
 type parityCheckpoint struct {
@@ -74,6 +78,7 @@ type parityCheckpoint struct {
 	RNGWord   int          `json:"rng_word"`
 	RNGSynced bool         `json:"rng_synced"`
 	Cursor    []int        `json:"cursor"`
+	Camera    []int        `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
 	Units     []parityUnit `json:"units"`
 	Frame     string       `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
 	FrameHash string       `json:"indexed_sha256,omitempty"`
@@ -90,6 +95,99 @@ type parityReplay struct {
 	town       string // LOAD 進的城鎮（本章戰前）
 	townAfter  string // 戰後城鎮（原版 chapter 已推進，城鎮記錄是下一章的）
 	battleDone bool
+	// aiEntries 是原版側 eip-trace 的 0x13A9F 入口（每個 AI 單位行動一筆，含 rng_word）；
+	// 重播在每個 AI 計畫產生後、執行前依序對齊 RNG。等待迴圈（死亡訊息、對白）會依
+	// 虛擬時間消耗 0x4E893，回合內的 RNG 沒有辦法逐次對上，所以以「決策點」對齊。
+	aiEntries          []parityAIEntry
+	aiCursor           int
+	aiOrderDivergences int
+	// growthEntries 是 eip-trace 的 0x1E54A 入口（升級成長每一次會擲骰的欄位一筆）。
+	// 升級訊息的等待迴圈同樣依時序吃亂數，所以每一次成長擲骰前都對齊一次。
+	growthEntries []parityAIEntry
+	growthCursor  int
+}
+
+// parityAIEntry 是 eip-trace.jsonl 裡一筆 0x13A9F 入口：unit 是 record 索引（堆疊第一個引數）。
+type parityAIEntry struct {
+	ControlSeq int
+	Unit       int
+	RNGWord    int
+}
+
+// readParityAIEntries 讀 oracle 輸出目錄的 eip-trace.jsonl（沒有就回空）。
+func readParityAIEntries(t *testing.T, path, eip string) []parityAIEntry {
+	t.Helper()
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	var out []parityAIEntry
+	for _, line := range strings.Split(string(raw), "\n") {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		var row struct {
+			ControlSeq int      `json:"control_seq"`
+			EIP        string   `json:"eip"`
+			RNGWord    *int     `json:"rng_word"`
+			Stack      []string `json:"stack"`
+		}
+		if err := json.Unmarshal([]byte(line), &row); err != nil {
+			t.Fatalf("eip-trace.jsonl：%v：%s", err, line)
+		}
+		if row.EIP != eip || row.RNGWord == nil || len(row.Stack) < 2 {
+			continue
+		}
+		unit, err := strconv.ParseInt(strings.TrimPrefix(row.Stack[1], "0x"), 16, 32)
+		if err != nil {
+			t.Fatalf("eip-trace.jsonl 堆疊引數：%v：%s", err, line)
+		}
+		out = append(out, parityAIEntry{ControlSeq: row.ControlSeq, Unit: int(unit), RNGWord: *row.RNGWord})
+	}
+	return out
+}
+
+// observeGrowthRoll 在重製端每一次升級成長擲骰前把原版側下一筆 0x1E54A 的 rng_word
+// 抄過來；原版側沒有更多收據就照重製端目前的狀態擲。
+func (r *parityReplay) observeGrowthRoll(u *battle.Unit, state uint16) uint16 {
+	if r.growthCursor >= len(r.growthEntries) {
+		return state
+	}
+	entry := r.growthEntries[r.growthCursor]
+	r.growthCursor++
+	return uint16(entry.RNGWord)
+}
+
+// observeAIPlan 在重製端每個 AI 單位計畫產生後對齊 RNG：原版側同一順序的 0x13A9F
+// 入口若是同一個 record 索引就把 rng_word 抄過來；不是就記一筆 ai_order 分岔並
+// 往後找同一單位的入口（找到才對齊）。
+func (r *parityReplay) observeAIPlan(plan *battle.AIPlan) {
+	if plan == nil || plan.U == nil || r.aiCursor >= len(r.aiEntries) {
+		return
+	}
+	index := -1
+	for i, u := range r.g.st.Units {
+		if u == plan.U {
+			index = i
+			break
+		}
+	}
+	entry := r.aiEntries[r.aiCursor]
+	if entry.Unit == index {
+		r.aiCursor++
+		r.g.nativeRNGState = uint16(entry.RNGWord)
+		return
+	}
+	r.aiOrderDivergences++
+	r.checkpoint("ai_order", entry.ControlSeq, r.ui(), false,
+		fmt.Sprintf("divergence: 原版第 %d 個 AI 行動是 record %d，重製端是 record %d", r.aiCursor, entry.Unit, index))
+	for j := r.aiCursor + 1; j < len(r.aiEntries) && j < r.aiCursor+8; j++ {
+		if r.aiEntries[j].Unit == index {
+			r.aiCursor = j + 1
+			r.g.nativeRNGState = uint16(r.aiEntries[j].RNGWord)
+			return
+		}
+	}
 }
 
 func TestChapterParityReplay(t *testing.T) {
@@ -116,6 +214,8 @@ func TestChapterParityReplay(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	t.Setenv("FD2_CAMPAIGN", defaultPlayerCampaign)
 	t.Setenv("FD2_SHOT_AI", "1")
+	battle.DebugAI = log.Printf
+	defer func() { battle.DebugAI = nil }()
 	t.Setenv("FD2_NATIVE_SAVE", slot)
 	t.Setenv("FD2_CUTSCENE_LOG", "1")
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
@@ -127,9 +227,13 @@ func TestChapterParityReplay(t *testing.T) {
 		t.Fatal(g.loadErr)
 	}
 	r := &parityReplay{t: t, g: g, out: out,
-		battle:    fmt.Sprintf("battle_ch%02d", chapter),
-		town:      fmt.Sprintf("town_ch%02d", chapter),
-		townAfter: fmt.Sprintf("town_ch%02d", chapter+1)}
+		battle:        fmt.Sprintf("battle_ch%02d", chapter),
+		town:          fmt.Sprintf("town_ch%02d", chapter),
+		townAfter:     fmt.Sprintf("town_ch%02d", chapter+1),
+		aiEntries:     readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x13A9F"),
+		growthEntries: readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x1E54A")}
+	g.aiPlanObserver = r.observeAIPlan
+	g.growthRollObserver = r.observeGrowthRoll
 	logFile, err := os.Create(filepath.Join(out, "checkpoints.jsonl"))
 	if err != nil {
 		t.Fatal(err)
@@ -168,7 +272,7 @@ func TestChapterParityReplay(t *testing.T) {
 	var actor, target *battle.Unit
 	var moveTo [2]int
 	skipUnit := false
-	for _, action := range actions {
+	for i, action := range actions {
 		if skipUnit {
 			switch action.Kind {
 			case "move", "stay", "attack", "attack_result", "wait", "cancel":
@@ -205,7 +309,8 @@ func TestChapterParityReplay(t *testing.T) {
 		case "cancel":
 			r.cancelUnit(action, actor)
 		case "end_turn":
-			r.endTurn(action)
+			nextIsForceClear := i+1 < len(actions) && actions[i+1].Kind == "force_enemy_clear"
+			r.endTurn(action, nextIsForceClear)
 		case "force_enemy_clear":
 			r.forceEnemyClear(action)
 		case "town_enter":
@@ -389,7 +494,8 @@ func (r *parityReplay) units() []parityUnit {
 		if u.HasNativeIdentity {
 			identity = u.NativeIdentity
 		}
-		out = append(out, parityUnit{Camp: nativeCampCode(u.Camp), X: u.X, Y: u.Y, HP: u.HP, Identity: identity, Acted: acted})
+		out = append(out, parityUnit{Camp: nativeCampCode(u.Camp), X: u.X, Y: u.Y, HP: u.HP, Identity: identity, Acted: acted,
+			PX: int(u.NativeMapPresentation.X), PY: int(u.NativeMapPresentation.Y)})
 	}
 	return out
 }
@@ -506,6 +612,9 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 	g := r.g
 	cp := parityCheckpoint{Index: r.index, Kind: kind, OracleSeq: seq, Node: g.camp.NodeID(), UI: ui,
 		Gold: g.gold, RNGWord: int(g.nativeRNGState), Cursor: []int{g.curX, g.curY}, Units: r.units()}
+	if g.st != nil && g.st.HasNativeMapViewState {
+		cp.Camera = []int{g.st.NativeMapViewState.CameraX, g.st.NativeMapViewState.CameraY}
+	}
 	for _, e := range extra {
 		if e == "rng_synced" {
 			cp.RNGSynced = true
@@ -556,6 +665,11 @@ func (r *parityReplay) selectUnit(action parityAction) *battle.Unit {
 			fmt.Sprintf("divergence: 原版在 (%d,%d) 選到單位，重製端沒有（err=%q）", action.At[0], action.At[1], g.loadErr))
 		if g.sel != nil {
 			r.releaseSelection()
+		}
+		if g.nativeSystemCursorOverlay || g.ring {
+			// 空格上的 enter 開的是系統選單（0x117E7→0x16F55）；等同原版側送 esc 退回地圖游標。
+			pump(t, g, 240, func() bool { return !g.actionOverlayBlocksInput() })
+			g.resetActionOverlayLifecycle()
 		}
 		return nil
 	}
@@ -637,7 +751,13 @@ func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.U
 	}
 	available := g.actionOverlayAvailability()
 	if !nativeActionSelectable(available, 0) {
-		t.Fatalf("attack(seq %d)：原版可攻擊、重製端指令環攻擊不可選 availability=%v", action.Seq, available)
+		// 位置早已分岔時，原版打得到的格在重製端可能沒有敵人；這是行為 gate
+		// 的分岔點，不是重播的執行期錯誤。記下來、改待機，讓後面的節點繼續對。
+		r.checkpoint("attack_armed", action.Seq, r.ui(), true,
+			fmt.Sprintf("divergence: 原版可攻擊 (%d,%d)→(%d,%d)，重製端指令環攻擊不可選 availability=%v",
+				actor.X, actor.Y, action.Target[0], action.Target[1], available))
+		r.waitInsteadOfAttack(actor)
+		return nil
 	}
 	g.ringSel = 0
 	if !closeRing(t, g, func() {}) {
@@ -660,11 +780,7 @@ func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.U
 			g.confirm()
 			pump(t, g, 240, func() bool { return g.ring })
 		}
-		if g.ring && nativeActionSelectable(g.actionOverlayAvailability(), 3) {
-			g.ringSel = 3
-			closeRing(t, g, g.finishSelectedWait)
-			pump(t, g, ch01FrameBudget, func() bool { return actor.Acted || actor.HP <= 0 })
-		}
+		r.waitInsteadOfAttack(actor)
 		return nil
 	}
 	extra := []string{}
@@ -681,6 +797,16 @@ func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.U
 		t.Fatalf("attack(seq %d)：攻擊之後沒有行動完畢\n阻塞：%s", action.Seq, ch01Blockers(g))
 	}
 	return target
+}
+
+// waitInsteadOfAttack 在攻擊已分岔時讓單位待機，維持「每個單位都行動完」的回合結構。
+func (r *parityReplay) waitInsteadOfAttack(actor *battle.Unit) {
+	t, g := r.t, r.g
+	if g.ring && nativeActionSelectable(g.actionOverlayAvailability(), 3) {
+		g.ringSel = 3
+		closeRing(t, g, g.finishSelectedWait)
+		pump(t, g, ch01FrameBudget, func() bool { return actor.Acted || actor.HP <= 0 })
+	}
 }
 
 func (r *parityReplay) checkpointAttackResult(action parityAction, _ *battle.Unit, _ *battle.Unit, _ [2]int) {
@@ -731,10 +857,21 @@ func (r *parityReplay) cancelUnit(action parityAction, actor *battle.Unit) {
 	r.checkpoint("cancel", action.Seq, r.ui(), true)
 }
 
-func (r *parityReplay) endTurn(action parityAction) {
+// endTurn 送 END。stopBeforeAI 為真時只推到敵方回合開始（0x1A30B 的回復與 selector 1
+// 事件之後、第一個 AI 行動之前）就停：原版側的 force_enemy_clear 是在 END 之後 20M
+// 指令注入的，那時敵方還沒有任何一個單位行動（r9 收據 seq 934→935 之間沒有 0x13A9F
+// 入口），所以那一回合的敵方 AI 在原版根本沒跑。
+func (r *parityReplay) endTurn(action parityAction, stopBeforeAI bool) {
 	t, g := r.t, r.g
 	if g.camp.NodeID() != r.battle || g.result != "" {
 		r.note(action, "end_turn 時已不在戰場")
+		return
+	}
+	// 全員行動完原版會自己換手（0x13565）：那時敵方回合可能還在跑，原版側的 END
+	// 是在下一回合才按下去的。先等到玩家重新拿到操作權，再照原版送 END。
+	pump(t, g, ch01FrameBudget*6, func() bool { return g.result != "" || r.playerHasControl() })
+	if g.result != "" {
+		r.note(action, "end_turn 前戰鬥已分出勝負")
 		return
 	}
 	extra := []string{}
@@ -743,6 +880,13 @@ func (r *parityReplay) endTurn(action parityAction) {
 	}
 	before := g.st.Turn
 	g.endTurn()
+	if stopBeforeAI {
+		if !pump(t, g, ch01FrameBudget*6, func() bool { return g.result != "" || g.aiBusy }) {
+			t.Fatalf("end_turn(seq %d)：敵方回合沒有開始\n阻塞：%s", action.Seq, ch01Blockers(g))
+		}
+		r.checkpoint("enemy_phase_start", action.Seq, r.ui(), true, extra...)
+		return
+	}
 	if !pump(t, g, ch01FrameBudget*6, func() bool {
 		return g.result != "" || (!g.aiBusy && g.nativeTurnStaging == nil && g.st.Turn > before && r.playerHasControl())
 	}) {
@@ -764,7 +908,16 @@ func (r *parityReplay) forceEnemyClear(action parityAction) {
 		}
 	}
 	r.checkpoint("force_enemy_clear", action.Seq, r.ui(), false, fmt.Sprintf("cleared=%d（修改路徑）", cleared))
-	// 原版側接著送 END（會另有 end_turn 動作）；清場後勝負判定在回合結束時發生。
+	// 原版在下一個勝負檢查點（單位行動收尾／回合邊界）發現敵方全滅就直接進戰後；
+	// 重製端的同一檢查是 checkResult，這裡沒有行動可掛，所以直接呼叫。敵方回合
+	// 正要開始時（見 endTurn 的 stopBeforeAI），先把 HP 歸零的記錄標成 +5＝1，
+	// AI 掃描才不會讓屍體行動；沒有存活敵人的回合會自己收掉。
+	g.st.MarkNativeDeadRecords()
+	g.checkResult()
+	if g.aiBusy && g.result == "" {
+		pump(r.t, g, ch01FrameBudget*6, func() bool { return g.result != "" || r.playerHasControl() })
+		g.checkResult()
+	}
 }
 
 // currentTown 回報現在該在哪個城鎮節點：戰鬥還沒打就是本章城鎮，打完就是下一章的。
@@ -829,12 +982,16 @@ func (r *parityReplay) townProbe(action parityAction) {
 		g.leaveShop()
 	case n.Type == "church":
 		g.leaveChurch()
+	case n.Type == "hotel":
+		g.leaveHotel()
 	case n.Type == "preparation":
-		g.camp.Advance("cancel")
-		g.enterNode()
+		// 出口提示答 NO：走正式輸入 owner（esc），與原版側送的鍵相同。
+		g.handleNativePreparationInput(nativePreparationInput{escape: true})
+		pump(t, g, 240, func() bool { return g.camp.NodeID() == r.currentTown() })
 	case n.Type == "town":
 	default:
 		g.camp.Advance("cancel")
+		g.nativeTownHubReturn = true
 		g.enterNode()
 	}
 	pump(t, g, 120, func() bool { return g.camp.NodeID() == r.currentTown() })

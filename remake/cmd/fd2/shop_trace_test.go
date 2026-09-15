@@ -85,15 +85,26 @@ func TestNativeShopReturnRestoresDispatchingTownSelection(t *testing.T) {
 			"town": {Type: "town"},
 		},
 	}
+	// 沒有原版 variant 的自訂商店也是城鎮 hub 的子場景：原版 0x2CAD7 的 hub
+	// 迴圈回到城鎮時不重設 [0x5412B]（第四章原版收據：教會回來 left 落在酒店），
+	// 所以派出它的選擇 4 要保留，不歸零。
 	g := &Game{
 		camp:    campaign.NewRunner(c),
 		campSel: 4,
 	}
 	g.leaveShop()
-	if g.camp.NodeID() != "town" || g.campSel != 0 {
+	if g.camp.NodeID() != "town" || g.campSel != 4 {
 		t.Fatalf(
-			"custom shop return=(node %q selection %d), want town/0",
+			"custom shop return=(node %q selection %d), want town/4",
 			g.camp.NodeID(), g.campSel,
 		)
+	}
+	// 從外面（戰後劇情）進城鎮才歸零。
+	g.campSel = 3
+	g.camp.Cur = "shop"
+	g.camp.Advance("")
+	g.enterNode()
+	if g.campSel != 0 {
+		t.Fatalf("entering town from outside the hub keeps selection %d, want 0", g.campSel)
 	}
 }

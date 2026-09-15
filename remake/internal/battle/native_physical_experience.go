@@ -53,18 +53,20 @@ func planNativePhysicalExperience(actor, target *Unit) (nativePhysicalExperience
 	}, nil
 }
 
+// award 是 `0x2A209..0x2A27A` 的一擊經驗：守方倒下（`[esp+0x28]` 剩餘 HP 為 0）
+// 就是整份 base，否則乘上「這一擊的傷害／守方最大 HP」——打空時傷害 0 就是 0。
+// 99 的上限不在這裡：那是玩家路徑 `0x11959` 才有的，敵方路徑 `0x1566A` 沒有。
 func (p nativePhysicalExperiencePlan) award(damage int, killed bool) int {
-	if p.base == 0 || damage <= 0 {
+	if p.base == 0 {
 		return 0
 	}
-	exp := p.base
-	if !killed {
-		exp = damage * exp / p.targetMaxHP
+	if killed {
+		return p.base
 	}
-	if exp > 99 {
-		exp = 99
+	if damage <= 0 {
+		return 0
 	}
-	return exp
+	return damage * p.base / p.targetMaxHP
 }
 
 // AttackWithNativeExperience 先預檢所有 EXP 來源，再消耗 RNG 與提交攻擊。

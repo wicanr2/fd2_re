@@ -104,11 +104,14 @@ type Unit struct {
 	// NativeConstructor preserves the proven EXE static-table provenance for
 	// unit+0x1f/+0x20 without assigning any gameplay meaning to raw bytes.
 	NativeConstructor *NativeConstructorTable `json:"native_constructor,omitempty"`
-	X, Y              int
-	Acted             bool  // engine projection; native bit7 is raw provenance only
-	Group             int   // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
-	OnField           bool  // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
-	Spells            []int // normalized/editable spell IDs; not a raw unit+0x22 bitfield
+	// nativeConstructorPending 標記由 Load 建出、尚未經 0x10C50＋0x1B750 完整
+	// 物化的 FDFIELD 單位；BindNativeFutureItemRows 會補齊並清掉。
+	nativeConstructorPending bool
+	X, Y                     int
+	Acted                    bool  // engine projection; native bit7 is raw provenance only
+	Group                    int   // 出場波次(原版 FDFIELD b21;事件按 group 放出,doc 25/29)
+	OnField                  bool  // 是否已登場(事件進場機制:false=待命,尚未出現在戰場,doc 25)
+	Spells                   []int // normalized/editable spell IDs; not a raw unit+0x22 bitfield
 	// NativeCommandMask is the runtime 40-bit command inventory enumerated by
 	// 0x1c269.  FDFIELD b13..b16 initializes bytes 0..3; byte 4 begins zero and
 	// can be OR-mutated by 0x1d7fb.  It is deliberately separate from Spells:
@@ -524,8 +527,10 @@ type State struct {
 	// prefix used by 0x10c50→0x1b750. It is bound by the application layer and
 	// never inferred from normalized item statistics.
 	nativeFutureItemRows []byte
-	OwnDeploy            []Cell // 我方可部署格
-	Turn                 int    // 回合數(無上限,doc 27;只由劇本事件限制)
+	// nativeAIScan 是敵方階段 0x1D80B／0x1D8BA／0x1D988 三遍掃描的游標（combat.go）。
+	nativeAIScan nativeAIScanState
+	OwnDeploy    []Cell // 我方可部署格
+	Turn         int    // 回合數(無上限,doc 27;只由劇本事件限制)
 	// NativeRoundCounter preserves executable global [0x53bef], incremented at
 	// the native turn-advance boundary (0x1a5b9), apart from normalized Turn.
 	NativeRoundCounter          int             `json:"native_round_counter,omitempty"`
@@ -580,6 +585,10 @@ type State struct {
 	CommandLearn             map[int][]CommandLearnEntry // growth-row byte10 learn_idx -> native level-up command pairs
 	CommandLearnSelectors    map[int]int                 // native unit+7 selector -> growth-row byte10 learn_idx
 	NativeGrowthRows         map[int]GrowthRow           // native unit+7 selector -> 0x4E4D1 升級成長列
+	// NativeGrowthRollObserver 在每一次會消耗原版 RNG 的升級成長擲骰（0x1E54A）之前
+	// 被呼叫，回傳要用的 RNG 狀態。原版的升級訊息等待會依時序吃掉不定數量的亂數，
+	// 對拍重播用它把 eip-trace 的 0x1E54A 收據抄過來；nil 就照目前狀態擲。
+	NativeGrowthRollObserver func(u *Unit, state uint16) uint16
 	// NativeDeathExpCancel 回答擊倒這個單位會不會把本次行動的經驗清零（事件 30 的
 	// [0x53EC8]=0）。由持有劇本的介面層綁定；nil 表示沒有這種死亡程式。
 	NativeDeathExpCancel     func(*Unit) bool  `json:"-"`
@@ -605,6 +614,25 @@ func (s *State) BindNativeFutureItemRows(rows []byte) error {
 		return fmt.Errorf("native future item rows: invalid byte length %d", len(rows))
 	}
 	s.nativeFutureItemRows = append([]byte(nil), rows...)
+	// 開局在場的 FDFIELD 單位在原版也是由 0x10C50 建構器加 0x1B750 裝備重算寫出
+	// +0x48..+0x4E 與 HP／MP；Load 沒有物品表，所以延到這裡補齊。第四章原版收據
+	// （work/parity-slot-ch04/sample-r7 checkpoint-0636 的 raw record）劍士 lv5 是
+	// AP 55／DP 13，authored JSON 只有 20／12，敵方 AI 的 0x14237 評分
+	// （actor+0x48 − target+0x4A > 2）因此永遠不接戰。
+	for index, unit := range s.Units {
+		if unit == nil || !unit.nativeConstructorPending {
+			continue
+		}
+		if err := MaterializeNativeFutureConstructor(unit, s.nativeFutureItemRows); err != nil {
+			return fmt.Errorf("native constructor unit %d: %w", index, err)
+		}
+		unit.nativeConstructorPending = false
+	}
+	for _, unit := range s.Roster {
+		if unit != nil {
+			unit.nativeConstructorPending = false
+		}
+	}
 	return nil
 }
 
@@ -1129,6 +1157,9 @@ func Load(path string) (*State, error) {
 				return nil, fmt.Errorf("battle: unit %d native_constructor: %w", len(st.Units), err)
 			}
 			nu.MV, nu.BaseMV = int(base.Mobility), int(base.Mobility)
+			// 其餘數值（AP／DP／HIT／EV／HP／MP）要物品表才能重算，
+			// BindNativeFutureItemRows 時再由建構器整批補齊。
+			nu.nativeConstructorPending = true
 		}
 		if err := nu.SetInitialCommandMask(u.InitialCommandMask); err != nil {
 			return nil, fmt.Errorf("battle: unit %d initial_command_mask: %w", len(st.Units), err)

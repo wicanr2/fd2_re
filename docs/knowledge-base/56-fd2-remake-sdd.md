@@ -7563,3 +7563,78 @@ phase、目前 segment、來源交易總數與 ready；另輸出是否正在呈�
 `tail_segment_count` 取自已通過 admission 的 `MontageTailPlayer.Entries`，不是以常數
 補值；tail 尚未建立時相關欄位省略。正常 X11 輸入樣本必須另記錄標題 LOAD、按鍵
 時間線與存檔 provenance，才能把這些欄位用作 `RUNTIME-E1` 終局／平台證據。
+
+## 第四章章工作單元：敵方回合與經驗鏈（2026-09-15）
+
+依 [111](111-goal-original-parity-campaign-20260915.md) 用 dosgolem 整章收據
+（`docs/data/ui-traces/parity-ch04.json`，原版側 `ch04-sample.jsonl` 加
+`FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A`）逐一修掉的分歧。位址皆為固定雜湊
+`FD2.EXE`（capstone 線性位址，`tools/disasm_le.py`），每條都有 r8／r9 收據可回查。
+
+- **敵方 mode 0 目的地（`0x14EF0 → 0x14121 → 0x14B78`，已證實）。** `0x14121` 先以
+  `0x4E1A6` mode 2、預算 28 找「有擋格」的最近目標格（`0x13E9C`），與目前格不同
+  才進 `0x14B78`。`0x14B78` 四段：（1）MV 預算的 mode 0 直達路徑；（2）重設格網後
+  以 `0x1C` 預算走 mode 1 長路徑（不看單位）；（3）`0x4E040` 以 MV 沿長路徑逐格
+  走到最後一個可達格，該格成為新的 intended；（4）`0x146D1` 移除同組後由 `0x14B16`
+  列出候選格，依「與 intended 的曼哈頓距離 → 兩軸不平衡 → 列優先」排序，最後再算
+  一次正式路徑。重製端 `nativeAIMovementApproachPoint` 與 `nativeMovementBudgetField`
+  ／`nativeMovementDestinationField` 對應四段；`AIPlan` 的 `NativeModeIntended`／
+  `NativeModeCandidates`／`NativeModeBlocked*` 只是診斷欄位。
+- **敵方回合掃描三遍（`0x1D80B`／`0x1D8BA`／`0x1D988`，已證實）。** 先掃 camp1
+  （`+6==1`），再對 camp0 預選 `ScoreNativeAI1598A ≥ 6 || ScoreNativeAI1567E ≥ 6`
+  （有號比較）的單位，最後第二遍掃其餘 camp0；閘門 `(+5&0x81)==0`、`+0x26==0`。
+  重製端 `nextNativeScannedAIPlan` 保存三遍與 `ResetNativeAIScan`。
+- **玩家全員行動完自動換手（`0x13565`，已證實）。** 每個玩家單位行動收尾
+  （`0x11985`）後掃描：沒有任何 `+6==2`、`(+5&0x81)==0`、`+0x26==0` 的記錄就進
+  `0x1A30B`，與系統選單 END 同一條路。重製端 `autoEndPlayerPhase`。
+- **`0x1A30B` 的順序（已證實）。** 進入先做我方回復：`+6==2`、`(+5&0x81)==0`、
+  `+0x25==0`、`+0x26==0`、HP≠MaxHP 的記錄 `HP += MaxHP/5`（上限 MaxHP；每個回復
+  單位畫 `0x1DA16` 圖示、有人回復就 `0x25A96(…,4,1)`）；接著 `0x1A813(1)` 回合
+  事件 → `0x1A866(1)` 暫時狀態 → 友軍 AI → 橫幅 → `0x13536` 清已行動 →
+  `0x1A813(0)` → `0x1A866(0)` → 敵方 AI → 回合加一 → 玩家輸入前 `0x1A78B` 以
+  selector 2 跑事件。已行動（`+5` bit7）的單位不回復，所以自動換手那一回合沒有
+  人回血，按 END 那一回合全員回兩成。重製端 `ApplyNativeEndTurnRecovery`（數值）
+  ＋ `endTurn`／`runEditableTurnEvents(selector)`；圖示與音效未接。
+- **FDFIELD `turn_events` 第三個 byte 是 phase selector（1 友軍／0 敵方／2 特殊），
+  不是生成陣營（已證實）。** 生成的記錄 `+5` 為 0（當回合立刻行動）。重製端
+  `Event.NativeTurnPhaseSelector`；`spawn_group` 不再覆寫陣營、不設 `Acted`。
+- **開場單位由 `0x10C50` 建構、`0x1B750` 重算（已證實）。** 第四章 lv5 劍士的
+  AP 55／DP 13 來自建構列，`fields/*.json` 手寫的 20／12 不是原版；
+  `BindNativeFutureItemRows` 對 `NativeConstructor` 待決單位一律重建。
+  職業暴擊率 `0x5239B` 由 `nativeClassCritPct` 以 `+0x20−1` 直接索引。
+- **反擊經驗與升級（已證實，取代 106 的舊斷言）。** `sub_29F72` 每一擊以
+  「揮擊者 `+6==2`」決定是否覆寫 `[0x53EC8]`；敵方行動路徑 `0x1546A` 先清 0，
+  `0x1566A` 對被打的單位呼叫 `0x1E292`。我方反擊擊倒敵人得到全額 base、當場
+  升級。守方 HP 歸零就結束揮擊迴圈（`0x29B4C`）。重製端
+  `NativePhysicalAttackResult.CounterExpGained／CounterLevelUps`、
+  `nativeLastStrikeExperience`；99 上限只在玩家路徑 `0x11959`。
+- **升級成長擲原版 RNG（`0x1E529`，已證實）。** 每欄 `min + 0x4E893 % (max−min)`，
+  範圍為零不擲；順序 AP、DP、DX、MaxHP、MaxMP。`AwardExpNative` 取代 Go RNG；
+  五行訊息之間的等待依時序消耗 6–19 步亂數，對拍以 `0x1E54A` 收據逐次對齊
+  （`State.NativeGrowthRollObserver`）。
+- **行動結算後的死亡標記（`0x1DB65`，已證實）。** 玩家路徑與敵方路徑（`0x15643`）
+  在每次行動結算後都呼叫 `0x1DB65`：掃全部記錄，`+0x40` 為 0 的把 `+5` 整個 byte
+  寫成 1（`0x1DC61`／`0x1DD4C`）。指令傷害擊倒的單位若沒有這個 bit，AI 目標掃描
+  仍會把屍體當目標（r9 收據第 5 回合 record 0x13 的選擇），END 回復也會把它救活。
+  重製端 `MarkNativeDeadRecords` 在 `finishSuccessfulUnitAction` 入口執行（數值）。
+- **對拍的 RNG 政策。** 指令 0 每次施放 7 次 `0x2AF45` 演出擲骰＋命中＋傷害；死亡／
+  升級訊息等待依虛擬時間吃亂數，整回合逐次對上做不到。重播在每個 AI 行動入口
+  `0x13A9F`、玩家攻擊確認／END、每次成長擲骰前以 eip-trace 對齊，其餘區段只比
+  結果。
+- **城鎮 hub 選擇器（`0x2CAD7`，已證實）。** 子場景（出口 NO、教會、酒店、商店）
+  返回時 `[0x5412B]` 保留，從外面進城才歸零；重製端 `nativeTownHubReturn`。
+
+重播端另有兩條與原版側驅動對齊的規則：`force_enemy_clear` 緊接在 END 之後時，
+原版側是在敵方任何一個單位行動之前注入（r9 收據 seq 934→935 之間沒有 `0x13A9F`
+入口），重製端也只推到敵方回合開始就清場；武器店 `shop_menu` 這一點比的是出售前
+的金額（動作的 `gold_before`）。
+
+第四章 r9／r36 的結果：行為與節點兩個 gate 通過（LOAD → 出口 → 五回合 → 增援 →
+清場 → 戰後城鎮出售／四棟建築／酒店存檔／祕密商店，單位、HP、回合、金額逐點相同）；
+交易 gate 只剩酒店存檔的原版槽 bytes（#24）；畫面 gate 46／59 張未過，分成戰場
+覆蓋（#28）、敵方回合後鏡頭位置（#30）、升級與 END 回復演出（#29）、酒店介面（#27）
+四類。
+
+尚未閉合：酒店 `0x2FC85` 原生介面（資源 13、四圖示、存檔槽列表、「記錄儲存完畢」）
+未實作，選項 0 目前是重製端自創的傳聞；戰場覆蓋（移動範圍、狀態面板、指令環）
+不在 indexed composer，select／ring 幀不比；`#24` 原版槽 bytes。各開一條 issue。

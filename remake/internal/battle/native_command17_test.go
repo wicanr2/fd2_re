@@ -113,7 +113,7 @@ func TestExecuteNativeAICommandModifierUsesRawSelectorTargets(t *testing.T) {
 		NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book,
 	}
 
-	got, err := st.ExecuteNativeAICommandModifier(actor, 17, 0)
+	got, err := st.ExecuteNativeAICommandModifier(actor, Cell{}, 17, 0)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -136,7 +136,7 @@ func TestNativeAICommandModifierPlanPublishesAndRollsBackAtTailBoundary(t *testi
 	book := nativeCommandModifierBook(17)
 	book[17].EffectMode = 1
 	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2), NativeCommandBook: book}
-	plan, err := st.PlanNativeAICommandModifier(actor, 17, 0)
+	plan, err := st.PlanNativeAICommandModifier(actor, Cell{}, 17, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

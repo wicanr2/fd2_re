@@ -238,10 +238,10 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 			return false, err
 		}
 		g.nativeRNGState = nextRNG
-		g.beginEnemyPhase()
+		g.beginEnemyPhaseAfterTurnEvents()
 		return true, nil
 	}
-	if err := g.beginNativeStagingJob(events[0], g.beginEnemyPhase); err != nil {
+	if err := g.beginNativeStagingJob(events[0], g.beginEnemyPhaseAfterTurnEvents); err != nil {
 		return false, err
 	}
 	return true, nil

@@ -5,6 +5,9 @@ import (
 	"fmt"
 )
 
+// DebugAI 是對拍診斷用的可選記錄器；nil 時不輸出。由測試端設定。
+var DebugAI func(format string, args ...any)
+
 // nextNativeAI14EF0Plan is the first runtime consumer of the three raw
 // producers called by 0x14ef0.  It is intentionally limited to records whose
 // mode reaches that helper and to a complete command/item/movement export.
@@ -72,6 +75,9 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 	)
 	if err != nil {
 		return nil, true, err
+	}
+	if DebugAI != nil {
+		DebugAI("0x14ef0 actor=%d at (%d,%d) physicalOK=%v candidate=%+v priority=%d", actor, actorRecord[0], actorRecord[1], physicalOK, physical.Candidate, physical.Ranking.Priority)
 	}
 	command, err := ScoreNativeAI1598A(
 		s.W, s.H, records, len(s.Units), actor, selector, u,
@@ -211,6 +217,9 @@ func (s *State) nativeAI14EF0PhysicalSelection(
 		return NativePhysicalAttackSelection{}, false, err
 	}
 	if !found {
+		if DebugAI != nil {
+			DebugAI("0x14237 actor=%d: no equipped low item (inventory=%x)", actor, actorRecord[0x0a:0x1a])
+		}
 		return NativePhysicalAttackSelection{}, false, nil
 	}
 	geometry := NativeAIPhysicalAttackGeometry{
@@ -233,6 +242,12 @@ func (s *State) nativeAI14EF0PhysicalSelection(
 	)
 	if err != nil {
 		return NativePhysicalAttackSelection{}, false, err
+	}
+	if DebugAI != nil {
+		DebugAI("0x14237 actor=%d item=%+v geometry=%+v candidates=%d", actor, item, geometry, len(candidates))
+		for _, c := range candidates {
+			DebugAI("  candidate dest=(%d,%d) target=%d inputs=%+v", c.DestinationX, c.DestinationY, c.TargetIndex, c.Inputs)
+		}
 	}
 	selection, ok, err := SelectNativePhysicalAttackCandidate(candidates)
 	return selection, ok, err
@@ -455,8 +470,70 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 	}
 	plan.NativeModeFallbackActive = true
 	plan.NativeModeFallback = byte(mode)
+	plan.NativeModeBlockedCell, plan.NativeModeBlockedFound = blocked, found
+	for index := 0; index < len(s.Units); index++ {
+		record := records[index*nativeRecordSize:]
+		if nativeAIOppositeSelectorGroup(record[6], selector) {
+			plan.NativeModeOpposite = append(plan.NativeModeOpposite, Cell{X: int(record[0]), Y: int(record[1])})
+		}
+	}
 	plan.Target = nil
 	return plan, true, nil
+}
+
+// nativeAIMovementApproachPoint 是 0x14B78 的第 1～3 段（0x14C16..0x14D43）：
+// intended 直接走得到就原樣回傳；否則沿不看單位的長路徑（預算 0x1C、mode 1）
+// 找 MV 預算場內走得到的最後一格。長路徑也找不到時同樣原樣回傳。
+func (s *State) nativeAIMovementApproachPoint(
+	origin, intended Cell, mv, actor, selector int,
+	records, baseFlags, runtimeFlags, costRow []byte,
+) (Cell, error) {
+	_, direct, err := NativePathDirections(
+		s.W, s.H, origin, intended, mv, 0, runtimeFlags, s.NativeTerrainMoveCodes, costRow,
+	)
+	if err != nil {
+		return Cell{}, err
+	}
+	if direct {
+		return intended, nil
+	}
+	// 0x4DBFC 之後只剩 FDFIELD 基底旗標：長路徑可以穿過任何單位。
+	long, found, err := NativePathDirections(
+		s.W, s.H, origin, intended, 0x1c, 1, baseFlags, s.NativeTerrainMoveCodes, costRow,
+	)
+	if err != nil {
+		return Cell{}, err
+	}
+	if !found {
+		return intended, nil
+	}
+	field, err := nativeMovementBudgetField(
+		s.W, s.H, records, len(s.Units), actor, selector, mv,
+		baseFlags, s.NativeTerrainMoveCodes, costRow,
+	)
+	if err != nil {
+		return Cell{}, err
+	}
+	cell, last := origin, intended
+	for _, direction := range long {
+		switch direction {
+		case NativePathLeft:
+			cell.X--
+		case NativePathUp:
+			cell.Y--
+		case NativePathDown:
+			cell.Y++
+		default:
+			cell.X++
+		}
+		if cell.X < 0 || cell.Y < 0 || cell.X >= s.W || cell.Y >= s.H {
+			return Cell{}, fmt.Errorf("native AI long path leaves the grid at (%d,%d)", cell.X, cell.Y)
+		}
+		if field[cell.Y*s.W+cell.X] != 0xff {
+			last = cell
+		}
+	}
+	return last, nil
 }
 
 // nativeAIRawRecord8Index mirrors 0x12c60's first-match scan.  The caller
@@ -552,14 +629,40 @@ func nativeAIActiveUnitAtRawCell(records []byte, count, selector int, cell Cell)
 	return -1, false
 }
 
+// nativeAIPlanTowardRawDestination 重現 0x14B78 的四段：
+//
+//  1. 0x145CD 標記後以 MV 預算、mode 0 直接找到 intended 的路徑；找到就跳到第 4 段。
+//  2. 找不到就 0x4DBFC 清掉單位標記（只剩 FDFIELD 基底旗標），以預算 0x1C、mode 1
+//     找一條穿過單位的長路徑；找不到也跳到第 4 段。
+//  3. 重新標記、0x4E040 建 MV 預算場（不做 0x146D1 同組清除），沿長路徑逐格走，
+//     取「預算場走得到的最後一格」當新的 intended。
+//  4. 0x14B16 候選（含 0x146D1）依 距離→XY 軸差→列優先 選實際落點，再以 MV、mode 0
+//     取最終路徑。
+//
+// 第四章原版 eip-trace（work/parity-slot-ch04/ai-trace-r1）證實每個敵人都是
+// 0x4E1A6(MV,mode0)→0x4E1A6(0x1C,mode1)→0x4E040×2→0x14B16→0x4E1A6(MV,mode0) 這個序列。
 func (s *State) nativeAIPlanTowardRawDestination(
 	u *Unit, actor, selector int, records, actorRecord, baseFlags, costRow []byte, intended Cell,
 ) (*AIPlan, error) {
 	if s == nil || u == nil || len(actorRecord) != nativeRecordSize {
 		return nil, fmt.Errorf("native AI mode destination context is malformed")
 	}
+	origin := Cell{X: int(actorRecord[0]), Y: int(actorRecord[1])}
+	mv := int(actorRecord[0x3b])
+	runtimeFlags, err := NativeCommandRuntimeFlags(
+		s.W, s.H, s.NativeCompositionEventBytes, s.Units, byte(selector),
+	)
+	if err != nil {
+		return nil, err
+	}
+	intended, err = s.nativeAIMovementApproachPoint(
+		origin, intended, mv, actor, selector, records, baseFlags, runtimeFlags, costRow,
+	)
+	if err != nil {
+		return nil, err
+	}
 	candidates, err := NativeAIPhysicalDestinations(
-		s.W, s.H, records, len(s.Units), actor, selector, int(actorRecord[0x3b]),
+		s.W, s.H, records, len(s.Units), actor, selector, mv,
 		baseFlags, s.NativeTerrainMoveCodes, costRow,
 	)
 	if err != nil {
@@ -568,12 +671,6 @@ func (s *State) nativeAIPlanTowardRawDestination(
 	destination, ok := SelectNativeMovementDestination(candidates, intended)
 	if !ok {
 		return nil, fmt.Errorf("native AI mode destination has no reachable cell")
-	}
-	runtimeFlags, err := NativeCommandRuntimeFlags(
-		s.W, s.H, s.NativeCompositionEventBytes, s.Units, byte(selector),
-	)
-	if err != nil {
-		return nil, err
 	}
 	directions, reachable, err := NativePathDirections(
 		s.W, s.H, Cell{X: int(actorRecord[0]), Y: int(actorRecord[1])}, destination,
@@ -592,5 +689,6 @@ func (s *State) nativeAIPlanTowardRawDestination(
 	return &AIPlan{
 		U: u, Path: path, SpellID: -1, NativeActionDestination: destination,
 		NativeScoredCommands: s.nativeAIPlanScoredCommands(u),
+		NativeModeIntended:   intended, NativeModeCandidates: candidates,
 	}, nil
 }

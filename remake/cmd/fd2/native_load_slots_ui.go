@@ -199,6 +199,10 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 	// Every fallible decode/validation step has completed. Apply the complete
 	// transaction at once so malformed native data cannot leave mixed state.
 	g.captureNativeMapHUDPersistence()
+	for id, unit := range plan.PartyRoster {
+		campaign.ApplyEquippedAttackRange(&unit, g.shopItemStats)
+		plan.PartyRoster[id] = unit
+	}
 	runner := campaign.NewRunner(g.camp.C)
 	runner.Cur = plan.EntryNode
 	g.camp = runner

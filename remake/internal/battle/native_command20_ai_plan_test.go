@@ -27,7 +27,7 @@ func nativeAI2022State(id int) (*State, *Unit, *Unit) {
 func TestPlanNativeAICommand20UsesRawSelectorAndRollback(t *testing.T) {
 	st, actor, target := nativeAI2022State(20)
 	target.NativeTransient[3] = 3
-	plan, err := st.PlanNativeAICommand2022(actor, 20, 0)
+	plan, err := st.PlanNativeAICommand2022(actor, Cell{}, 20, 0)
 	if err != nil || len(plan.Targets) != 2 || len(plan.Results) != 2 || plan.Results[1].Restore == nil {
 		t.Fatalf("plan=%#v err=%v", plan, err)
 	}
@@ -50,7 +50,7 @@ func TestPlanNativeAICommand20UsesRawSelectorAndRollback(t *testing.T) {
 
 func TestPlanNativeAICommand22UsesNativeApplicationAndCompletes(t *testing.T) {
 	st, actor, target := nativeAI2022State(22)
-	plan, err := st.PlanNativeAICommand2022(actor, 22, 0)
+	plan, err := st.PlanNativeAICommand2022(actor, Cell{}, 22, 0)
 	if err != nil || len(plan.Results) == 0 || plan.Results[0].Apply == nil {
 		t.Fatalf("plan=%#v err=%v", plan, err)
 	}
@@ -150,7 +150,7 @@ func TestPlanNativePlayerCommand25ClearsOnlyRawByte5AndRollsBack(t *testing.T) {
 func TestPlanNativeAICommand26UsesRawSelectorApplication(t *testing.T) {
 	st, actor, target := nativeAI2022State(26)
 	actor.NativeTransient[3], target.NativeTransient[3] = 0, 0
-	plan, err := st.PlanNativeAICommand2022(actor, 26, 0)
+	plan, err := st.PlanNativeAICommand2022(actor, Cell{}, 26, 0)
 	if err != nil || len(plan.Results) == 0 {
 		t.Fatalf("plan=%#v err=%v", plan, err)
 	}

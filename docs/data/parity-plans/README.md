@@ -21,6 +21,7 @@
 | `town-shop-ch13-e2.jsonl` | 外部第十三章槽由標題正常 LOAD 進城，走同一組服務、Alt+F2 神祕商店與酒店存檔 | 同上 mid 樣本；來源只證明玩家存檔，不宣稱完整長戰役 E2 |
 | `ch04-slot-load.jsonl` | 第四章建構槽的合法性檢查：標題 LOAD 槽 0 → 城鎮 → 五棟建築各探一次 | `work/parity-slot-ch04/load-check/`（111 第 1 步） |
 | `ch04-sample.jsonl` | 111 章工作單元：LOAD → 出口 YES → 戰前對白 → 第 1～2 回合守位、第 3～4 回合接戰 → 第 4 回合結束增援 → `force_enemy_clear` → 戰後對白 → 城鎮出售／五棟建築／酒店存檔／Alt+F3 祕密商店 | `TestChapterParityReplay`＋`tools/verify_chapter_parity.py` → `parity-ch04.json` |
+| `ch04-ai-trace.jsonl` | `ch04-sample.jsonl` 到 `await round>=5` 為止的前綴：配 `FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A` 取敵方行動入口與升級成長擲骰的 RNG 收據，用來定位敵方回合分歧 | `chapter_parity_replay_test.go` 的 `observeAIPlan`／`observeGrowthRoll`（同一份 trace 也由 `ch04-sample` 整跑產生） |
 | `town-shop-ch27-e2.jsonl` | 外部第二十七章槽由標題正常 LOAD 進城，走同一組服務、Ctrl+F6 神祕商店與酒店存檔 | 同上 late 樣本；來源只證明玩家存檔，不宣稱完整長戰役 E2 |
 
 ## 續跑點

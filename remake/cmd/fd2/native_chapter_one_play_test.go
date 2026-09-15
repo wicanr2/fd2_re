@@ -547,6 +547,77 @@ func ackPresents(g *Game) {
 	if g.nativeCh28PostPresent != nil {
 		g.nativeCh28PostPresent.drawn = true
 	}
+	// 指令／道具演出（玩家與敵方 0x15311 路線共用的 owner）也逐 Draw 推進；
+	// 第四章起敵方會施法，沒承認就停在 aiBusy。
+	if g.nativeCmd0Presentation != nil {
+		g.nativeCmd0Presentation.drawn = true
+	}
+	if g.nativeCmd1Presentation != nil {
+		g.nativeCmd1Presentation.drawn = true
+	}
+	if g.nativeCmd2Presentation != nil {
+		g.nativeCmd2Presentation.drawn = true
+	}
+	if g.nativeCmd3Presentation != nil {
+		g.nativeCmd3Presentation.drawn = true
+	}
+	if g.nativeCmd5Presentation != nil {
+		g.nativeCmd5Presentation.drawn = true
+	}
+	if g.nativeCmd6Presentation != nil {
+		g.nativeCmd6Presentation.drawn = true
+	}
+	if g.nativeCmd7Presentation != nil {
+		g.nativeCmd7Presentation.drawn = true
+	}
+	if g.nativeCmd8Presentation != nil {
+		g.nativeCmd8Presentation.drawn = true
+	}
+	if g.nativeCmd9Player != nil {
+		g.nativeCmd9Player.drawn = true
+	}
+	if g.nativeCmd9AIPresentation != nil {
+		g.nativeCmd9AIPresentation.drawn = true
+	}
+	if g.nativeCmd1012 != nil {
+		g.nativeCmd1012.drawn = true
+	}
+	if g.nativeCmd24Presentation != nil {
+		g.nativeCmd24Presentation.drawn = true
+	}
+	if g.nativeCmd29Presentation != nil {
+		g.nativeCmd29Presentation.drawn = true
+	}
+	if g.nativeCmd32Presentation != nil {
+		g.nativeCmd32Presentation.drawn = true
+	}
+	if g.nativeCmd33Presentation != nil {
+		g.nativeCmd33Presentation.drawn = true
+	}
+	if g.nativeCmd34Presentation != nil {
+		g.nativeCmd34Presentation.drawn = true
+	}
+	if g.nativeCmd35Presentation != nil {
+		g.nativeCmd35Presentation.drawn = true
+	}
+	if g.nativeHealPresentation != nil {
+		g.nativeHealPresentation.drawn = true
+	}
+	if g.nativeModifierPresentation != nil {
+		g.nativeModifierPresentation.drawn = true
+	}
+	if g.nativeAICommandModifier != nil {
+		g.nativeAICommandModifier.drawn = true
+	}
+	if g.nativeAIItemPresentation != nil {
+		g.nativeAIItemPresentation.drawn = true
+	}
+	if g.nativeAIIdleRecovery != nil {
+		g.nativeAIIdleRecovery.drawn = true
+	}
+	if g.nativeFieldEvent61 != nil {
+		g.nativeFieldEvent61.drawn = true
+	}
 }
 
 // answerNativeTreasurePrompt 回答踩到寶物時跳出的取得提示。單位待機在寶物格
@@ -575,11 +646,14 @@ func answerNativeTreasurePrompt(g *Game) {
 // 單位，結束回合，等敵方回合與回合末事件全部收掉。
 func playChapterOneRounds(t *testing.T, g *Game, rec *ch01Recorder) {
 	t.Helper()
+	roundTurn := map[int]int{}
+	turnBefore := func(g *Game, round int) int { return roundTurn[round] }
 	for round := 1; round <= ch01MaxRounds; round++ {
 		rec.round = round
 		if g.result != "" {
 			break
 		}
+		roundTurn[round] = g.st.Turn
 		handled := map[*battle.Unit]bool{}
 		for step := 0; step < ch01MaxUnitsTurn; step++ {
 			if g.result != "" || len(livingEnemies(g)) == 0 {
@@ -603,7 +677,11 @@ func playChapterOneRounds(t *testing.T, g *Game, rec *ch01Recorder) {
 			break
 		}
 
-		g.endTurn()
+		// 全員行動完原版會自己換手（0x13565）；那時敵方回合已經在跑或跑完，
+		// 再送 END 會把下一回合也結束掉。只有還有人沒行動時才走系統選單 END。
+		if !g.aiBusy && g.nativeTurnStaging == nil && len(pendingOwn(g)) > 0 && g.st.Turn == turnBefore(g, round) {
+			g.endTurn()
+		}
 		if !pump(t, g, ch01FrameBudget*4, func() bool {
 			return g.result != "" || (!g.aiBusy && g.nativeTurnStaging == nil && len(pendingOwn(g)) > 0)
 		}) {

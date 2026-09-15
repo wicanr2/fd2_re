@@ -178,12 +178,18 @@ func (s *State) PlanNativeAICommandDamageSingleTarget(actor, target *Unit, comma
 }
 
 // PlanNativeAICommandDamage rebuilds the exact final target array selected by
-// 0x1598A/0x15311 from the actor's raw +6 selector and selected destination.
-// It intentionally bypasses the player-only confirmed-cursor admission.
-func (s *State) PlanNativeAICommandDamage(actor *Unit, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
+// 0x1598A/0x15311 from the actor's raw +6 selector and the selected winner
+// cell. 0x15311 keeps the actor at its current cell and feeds the winner
+// coordinates [0x53C27]/[0x53C2B] to the 0x14818 target geometry, so origin
+// must be AIPlan.NativeActionDestination, never the actor's presentation
+// cell. It intentionally bypasses the player-only confirmed-cursor admission.
+func (s *State) PlanNativeAICommandDamage(actor *Unit, origin Cell, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
 	if s == nil || actor == nil || actor.Camp != Enemy || !actor.HasNativeRecordByte6 || !actor.HasNativeMapPresentation ||
 		commandID < 0 || commandID > 9 || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
 		return nil, fmt.Errorf("native AI command damage selector unavailable id=%d", commandID)
+	}
+	if err := s.nativeAICommandOriginInGrid(origin); err != nil {
+		return nil, err
 	}
 	selector := int(actor.NativeRecordByte6)
 	if selector != 0 && selector != 1 {
@@ -203,12 +209,13 @@ func (s *State) PlanNativeAICommandDamage(actor *Unit, commandID int, resistByCl
 		return nil, err
 	}
 	indices, err := nativeAIScoredCommandTargetIndices(s.W, s.H, records, len(s.Units),
-		Cell{X: int(actor.NativeMapPresentation.X), Y: int(actor.NativeMapPresentation.Y)}, record.EffectMode, targetCode, flags)
+		origin, record.EffectMode, targetCode, flags)
 	if err != nil {
 		return nil, err
 	}
 	if len(indices) == 0 {
-		return nil, fmt.Errorf("native AI command damage target array is empty")
+		return nil, fmt.Errorf("native AI command damage target array is empty（actor (%d,%d) origin (%d,%d) selector=%d command=%d effect_mode=%d target_code=%d）",
+			actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y, origin.X, origin.Y, selector, commandID, record.EffectMode, targetCode)
 	}
 	if actor.Acted || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
 		return nil, fmt.Errorf("native AI command damage insufficient MP")
@@ -241,7 +248,21 @@ func (s *State) PlanNativeAICommandDamage(actor *Unit, commandID int, resistByCl
 		plan.Results = append(plan.Results, NativeCommandDamageResult{Target: target, NativeCommandDamage: resolved, HPBefore: target.HP, HPAfter: hpAfter})
 	}
 	plan.RNGAfter = rngState
+	if DebugAI != nil {
+		DebugAI("AI command %d actor (%d,%d) origin (%d,%d) targets=%d rng %d→%d results=%+v",
+			commandID, actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y, origin.X, origin.Y, len(indices), plan.RNGBefore, plan.RNGAfter, plan.Results)
+	}
 	return plan, nil
+}
+
+// nativeAICommandOriginInGrid rejects a winner cell that the 0x15311 route
+// could never have produced; the presentation owners pass
+// AIPlan.NativeActionDestination here.
+func (s *State) nativeAICommandOriginInGrid(origin Cell) error {
+	if origin.X < 0 || origin.Y < 0 || origin.X >= s.W || origin.Y >= s.H {
+		return fmt.Errorf("native AI command origin (%d,%d) is outside the %dx%d grid", origin.X, origin.Y, s.W, s.H)
+	}
+	return nil
 }
 
 // nativeCommandDamageStages preserves the 0x525AF command0..9 table consumed

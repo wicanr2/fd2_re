@@ -65,3 +65,17 @@ func TestRecomputeAfterClassChangeDoesNotDoubleCountExistingEquipment(t *testing
 		t.Fatalf("existing equipment double-counted: base=%d/%d effective=%d/%d", u.BaseAP, u.BaseDP, u.AP, u.DP)
 	}
 }
+
+func TestApplyEquippedAttackRangeUsesEquippedWeaponOnly(t *testing.T) {
+	stats := map[int]ItemStats{0x14: {Type: 3, Min: 1, Max: 2}, 0x80: {Type: 5}}
+	u := &battle.Unit{Inventory: []int{0x14, 0x80}, Equipped: []bool{true, true}, AP: 91}
+	ApplyEquippedAttackRange(u, stats)
+	if u.AtkMin != 1 || u.AtkMax != 2 || u.BaseAtkMin != 1 || u.BaseAtkMax != 2 || u.AP != 91 {
+		t.Fatalf("equipped spear range = [%d,%d] base [%d,%d] AP=%d", u.AtkMin, u.AtkMax, u.BaseAtkMin, u.BaseAtkMax, u.AP)
+	}
+	u.Equipped[0] = false
+	ApplyEquippedAttackRange(u, stats)
+	if u.AtkMin != 0 || u.AtkMax != 0 {
+		t.Fatalf("unequipped weapon must fall back to the default range, got [%d,%d]", u.AtkMin, u.AtkMax)
+	}
+}

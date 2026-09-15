@@ -32,6 +32,12 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 	}
 	actor := plan.U
 	target := plan.Target
+	// The command presentation owners rebuild the 0x14818 target array at the
+	// winner cell, which lives on the plan rather than on the actor (the
+	// 0x15311 route never moves the actor). Keep the plan visible only while
+	// the owner is being started.
+	g.nativeAIActionPlan = plan
+	defer func() { g.nativeAIActionPlan = nil }()
 	switch plan.NativeActionKind {
 	case battle.NativeAIActionCommand:
 		if target == nil {
@@ -203,12 +209,16 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				g.checkResult()
 			})
 		case id >= 13 && id <= 16:
-			targets, err := g.st.NativeAICommandHealTargets(actor, id)
+			origin, err := g.nativeAIActionOrigin(actor)
+			if err != nil {
+				return err
+			}
+			targets, err := g.st.NativeAICommandHealTargets(actor, origin, id)
 			if err != nil {
 				return err
 			}
 			return g.startNativeCommandHealPresentation(id, targets, func() ([]battle.NativeCommandHealResult, error) {
-				return g.st.ExecuteNativeAICommandHeal(actor, id, g.rng)
+				return g.st.ExecuteNativeAICommandHeal(actor, origin, id, g.rng)
 			}, func(results []battle.NativeCommandHealResult) {
 				total := 0
 				for _, result := range results {
@@ -297,4 +307,16 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 	default:
 		return fmt.Errorf("native AI action kind %d is not executable", plan.NativeActionKind)
 	}
+}
+
+// nativeAIActionOrigin returns the winner cell of the 0x15311 route currently
+// being dispatched for actor. The command effect/target geometry is built at
+// [0x53C27]/[0x53C2B] (AIPlan.NativeActionDestination), not at the actor's
+// presentation cell; without a matching plan the owner fails closed.
+func (g *Game) nativeAIActionOrigin(actor *battle.Unit) (battle.Cell, error) {
+	if g == nil || g.nativeAIActionPlan == nil || g.nativeAIActionPlan.U != actor ||
+		g.nativeAIActionPlan.NativeActionKind != battle.NativeAIActionCommand {
+		return battle.Cell{}, fmt.Errorf("native AI command origin unavailable: no 0x15311 plan is being dispatched for this actor")
+	}
+	return g.nativeAIActionPlan.NativeActionDestination, nil
 }

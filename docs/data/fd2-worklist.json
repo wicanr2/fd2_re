@@ -250,6 +250,66 @@
         "note": "第四章收據裡的 runtime_error 註記；修掉重跑收據就消失。"
       },
       "issue": 26
+    },
+    {
+      "id": "hotel-native-ui-0x2fc85",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "酒店原生介面（0x2FC85）未實作，選項只有 raw selector 路由",
+      "body": "原版酒店 `0x2FC85` 以資源 13 畫框、列四個圖示，第二個圖示進存檔槽列表（四槽、寫 `FD2.SAV` 後顯示「記錄儲存完畢」）。重製端 `applyHotelServiceSelection` 只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「待 UI callee」訊息，沒有畫面、沒有槽列表；重播測試在 `town_save` 那一格只能拿城鎮畫面當代替，111 的畫面 gate 對第四章（以及之後每一章）的酒店存檔幀永遠不會過。要做：以 0x2FC85 的 indexed 資源與圖示位置畫酒店介面、存檔槽列表與完成訊息，存檔本體另見 #24。",
+      "acceptance": "第四章收據 `parity-ch04.json` 的 `town_save` 幀在 640 像素預算內，且 hotel 節點的四個圖示、槽列表與「記錄儲存完畢」都由 indexed 資源畫出。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "待 UI callee",
+        "note": "applyHotelServiceSelection 目前回給玩家的自承訊息；接上原生介面後這句會消失。"
+      },
+      "issue": 27
+    },
+    {
+      "id": "battle-overlays-not-in-indexed-composer",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "戰場覆蓋（移動範圍、狀態面板、指令環）不在 indexed composer 裡",
+      "body": "111 的畫面 gate 用 `composeNativeMapFrame` 的 indexed 幀與原版 checkpoint 逐像素比。選中單位後的移動範圍著色、右側單位狀態面板與指令環圖示目前只在 Ebiten Draw 路徑畫，indexed 幀裡沒有，所以第四章每一個 `select`／`attack_armed` 幀都差 3.6 萬～6 萬像素（`parity-ch04.json` frames）。要做：把這三種覆蓋改成從原版 indexed 資源（0x1F882 範圍著色、狀態面板資源、指令環 FIGANI 圖示）畫進 composer，Draw 路徑改用同一份結果。",
+      "acceptance": "第四章收據的 `select`／`attack_armed`／`stay` 幀差異落在 640 像素預算內。",
+      "verify": {
+        "kind": "manual",
+        "note": "沒有單一識別字可綁：覆蓋接進 composer 後以 parity-ch04.json 的 frames gate 判定。"
+      },
+      "issue": 28
+    },
+    {
+      "id": "levelup-and-end-recovery-presentation",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "升級五行訊息與 END 回復圖示／音效只有數值沒有演出",
+      "body": "原版 `0x1E292` 升級時以 `0x15F84` 逐行顯示「升級！」與 AP／DP／DX／HP／MP 增量（FDTXT #0x1E8..#0x1EE），每行之間 `0x16559`／`0x16E24` 等待按鍵；`0x1A30B` 開頭的我方回復在每個回復的單位上畫 `0x1DA16` 圖示並播音效 4。重製端 `AwardExpNative` 與 `ApplyNativeEndTurnRecovery` 只改數值（第四章對拍已靠這兩條把回合 4 的行為 gate 推到只剩 RNG 時序差），畫面與等待節奏沒有接，所以原版側這幾格的幀在重製側對不到同狀態。要做：升級訊息用 indexed 資源逐行顯示與等待；END 回復加圖示與音效；重播測試的 `ackPresents` 收進這兩種工作。",
+      "acceptance": "第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "那段演出尚未接（只有數值）",
+        "note": "endTurn 裡的自承註解；接上演出後拿掉。"
+      },
+      "issue": 29
+    },
+    {
+      "id": "enemy-phase-camera-drift-ch04",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "敵方回合（含增援登場）之後的鏡頭位置與原版不同",
+      "body": "第四章 r9 收據：第 1～3 回合每個玩家動作點的 camera 都與原版相同（4,10..4,12），第 4 回合敵方回合含四組增援登場後，原版在 seq 720 的 camera 是 (0,11)、重製端是 (4,11)；之後第 5 回合所有 select／stay／wait 幀都因此差 3 萬 8 千像素。原版 seq 671（按 END 當下）camera (0,6)、cursor (0,8) 是增援 staging 停在第一組 (0,8) 的位置；整個敵方回合走完 camera_x 仍是 0，儘管其間有單位在 x=15 走動，表示原版 AI 走行的鏡頭規則（0x135DD 定位與 0x13185 安全帶的適用條件）與重製端 aiStep 的 camPan／walk 跟隨不同。要做：用 FD2_ORACLE_FRAME_EIP=0x11CAC 取第 4 回合敵方回合逐幀，定出每個 AI 行動前後 [0x53AB1]/[0x53AB5] 的寫入端與條件，再把 aiStep 的鏡頭規則改成同一套。",
+      "acceptance": "第四章收據 seq 720 起的 camera 與原版逐點相同，round 5 的 stay／wait 幀差異只剩覆蓋（#28）那一類。",
+      "verify": {
+        "kind": "manual",
+        "note": "以 parity-ch04.json 各點 checkpoint 的 camera 欄位（重製側 checkpoints.jsonl 已寫出）逐點比對原版 view.camera_x/y。"
+      },
+      "issue": 30
     }
   ]
 }

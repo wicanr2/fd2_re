@@ -103,7 +103,10 @@ func (g *Game) startNativeCommand1Presentation(actor, confirmed *battle.Unit, th
 	var plan *battle.NativeCommandDamagePlan
 	var err error
 	if actor.Camp == battle.Enemy {
-		plan, err = g.st.PlanNativeAICommandDamage(actor, 1, g.st.NativeCommandResistances, g.nativeRNGState)
+		var origin battle.Cell
+		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
+			plan, err = g.st.PlanNativeAICommandDamage(actor, origin, 1, g.st.NativeCommandResistances, g.nativeRNGState)
+		}
 	} else {
 		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, 1, g.st.NativeCommandResistances, g.nativeRNGState)
 	}

@@ -95,7 +95,10 @@ func (g *Game) startNativeCommand2022Presentation(actor, confirmed *battle.Unit,
 	if player {
 		plan, err = g.st.PlanNativePlayerCommand2022(actor, confirmed, commandID, g.nativeRNGState)
 	} else {
-		plan, err = g.st.PlanNativeAICommand2022(actor, commandID, g.nativeRNGState)
+		var origin battle.Cell
+		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
+			plan, err = g.st.PlanNativeAICommand2022(actor, origin, commandID, g.nativeRNGState)
+		}
 	}
 	if err != nil {
 		return err
@@ -294,7 +297,11 @@ func (g *Game) startNativeAICommandModifierPresentation(actor *battle.Unit, comm
 		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize || !nativeMapAssetsAvailable(g.nativeMapAssets) {
 		return errors.New("native AI command modifier indexed map state unavailable")
 	}
-	plan, err := g.st.PlanNativeAICommandModifier(actor, commandID, g.nativeRNGState)
+	origin, err := g.nativeAIActionOrigin(actor)
+	if err != nil {
+		return err
+	}
+	plan, err := g.st.PlanNativeAICommandModifier(actor, origin, commandID, g.nativeRNGState)
 	if err != nil {
 		return err
 	}

@@ -101,7 +101,7 @@ func (s *State) attackWithExperience(a, d *Unit, rng *rand.Rand, nativeEXP *nati
 		}
 		exp = AttackExp(a.Lv, d.Lv, dmgForExp, d.MaxHP, d.ExpPerLevel)
 		if nativeEXP != nil {
-			exp = float64(nativeEXP.award(dmg, d.HP == 0))
+			exp = float64(min(nativeEXP.award(dmg, d.HP == 0), 99))
 		}
 		if s.killCancelsExp(d) {
 			exp = 0
@@ -300,8 +300,15 @@ type AIPlan struct {
 	// movement; Target is only the first target used by the movement planner.
 	NativeItemTargetIndices []byte
 	NativeActionDestination Cell
-	NativeAI14EF0Route      NativeAI14EF0Tail
-	NativeActionScore       int
+	// NativeModeIntended／NativeModeCandidates 只作對拍診斷：mode 備援的
+	// 0x14121／0x13E9C 目標格與 0x14B16 候選（列優先順序）。不參與執行。
+	NativeModeIntended     Cell
+	NativeModeCandidates   []Cell
+	NativeModeBlockedCell  Cell
+	NativeModeBlockedFound bool
+	NativeModeOpposite     []Cell
+	NativeAI14EF0Route     NativeAI14EF0Tail
+	NativeActionScore      int
 	// NativeModeFallbackActive distinguishes a raw dispatcher fallback from a
 	// normalized plan. NativeModeFallback is meaningful only when this flag is
 	// true; its value is the original low nibble, not a gameplay name.
@@ -664,10 +671,133 @@ func (s *State) nextAISpellPlan(u *Unit) *AIPlan {
 // NextAIPlan 找下一個未行動的 AI 單位並產生重製端近似計畫
 // （不執行、不設 Acted）；它不是原版 0x14237/0x1548e 的替代實作。
 func (s *State) NextAIPlan() *AIPlan {
+	if plan, handled := s.nextNativeScannedAIPlan(); handled {
+		return plan
+	}
 	for _, u := range s.Units {
 		if !u.OnField || !u.Alive() || u.Camp == Own || u.Acted || u.Paralyzed {
 			continue
 		}
+		if plan := s.nextAIPlanForUnit(u); plan != nil {
+			return plan
+		}
+	}
+	return nil
+}
+
+// nativeAIScanState 是 0x1D80B／0x1D8BA／0x1D988 三遍掃描的游標：pass 0 是友軍
+// （raw +6==1）單遍；pass 1 是敵軍（+6==0）預選遍，只有 0x1598A 的 [0x53C23]
+// 或 0x1567E 的 [0x53C33] 有號 >= 6 的單位才在這一遍行動；pass 2 是敵軍第二遍。
+// 每一遍都依 record 順序走一次，被跳過的單位不會在同一遍回頭。
+type nativeAIScanState struct {
+	active bool
+	pass   int
+	index  int
+}
+
+// ResetNativeAIScan 在敵方階段開始時重設掃描游標。
+func (s *State) ResetNativeAIScan() {
+	if s != nil {
+		s.nativeAIScan = nativeAIScanState{}
+	}
+}
+
+// nextNativeScannedAIPlan 依原版三遍順序挑下一個行動單位。沒有 raw +6 provenance
+// 的名冊回 handled=false，交回舊的單遍迴圈。
+func (s *State) nextNativeScannedAIPlan() (*AIPlan, bool) {
+	if s == nil || len(s.Units) == 0 {
+		return nil, false
+	}
+	for _, u := range s.Units {
+		if u != nil && u.OnField && u.Alive() && !u.HasNativeRecordByte6 {
+			return nil, false
+		}
+	}
+	if !s.nativeAIScan.active {
+		s.nativeAIScan = nativeAIScanState{active: true}
+	}
+	for pass := s.nativeAIScan.pass; pass < 3; pass++ {
+		start := 0
+		if pass == s.nativeAIScan.pass {
+			start = s.nativeAIScan.index
+		}
+		for i := start; i < len(s.Units); i++ {
+			s.nativeAIScan = nativeAIScanState{active: true, pass: pass, index: i + 1}
+			u := s.Units[i]
+			if !s.nativeAIScanEligible(u, pass) {
+				continue
+			}
+			if pass == 1 && !s.nativeAIPreselected(u) {
+				continue
+			}
+			if plan := s.nextAIPlanForUnit(u); plan != nil {
+				if plan.NativeError != nil {
+					// 失敗即關閉會中止這個階段；下一次呼叫從頭掃。
+					s.nativeAIScan = nativeAIScanState{}
+				}
+				return plan, true
+			}
+		}
+		s.nativeAIScan = nativeAIScanState{active: true, pass: pass + 1}
+	}
+	s.nativeAIScan = nativeAIScanState{}
+	return nil, true
+}
+
+// nativeAIScanEligible 是 0x1D80B（pass 0，+6==1）與 0x1D8BA／0x1D988
+// （pass 1／2，+6==0）共用的入場條件：`(+5 & 0x81)==0` 且 `+0x26==0`。
+func (s *State) nativeAIScanEligible(u *Unit, pass int) bool {
+	if u == nil || !u.OnField || !u.Alive() || u.Acted || u.Paralyzed || u.Camp == Own {
+		return false
+	}
+	want := byte(0)
+	if pass == 0 {
+		want = 1
+	}
+	if u.NativeRecordByte6 != want {
+		return false
+	}
+	if u.HasNativeRecordByte5 && u.NativeRecordByte5&0x81 != 0 {
+		return false
+	}
+	if transient, ok := u.NativeTransientDuration(0x26); ok && transient != 0 {
+		return false
+	}
+	return true
+}
+
+// nativeAIPreselected 重現 0x1D8BA 預選遍的門檻：0x1598A(unit,0) 與 0x1567E(unit,0)
+// 之後，[0x53C23] >= 6 或 [0x53C33] >= 6（有號比較）才在第一遍行動。評分來源
+// 不齊時視為未入選，留到第二遍由既有失敗即關閉路徑處理。
+func (s *State) nativeAIPreselected(u *Unit) bool {
+	actor, selector, records, _, baseFlags, costRow, err := s.nativeAIModeRuntimeContext(u)
+	if err != nil || selector != 0 {
+		return false
+	}
+	command, err := ScoreNativeAI1598A(
+		s.W, s.H, records, len(s.Units), actor, selector, u,
+		s.NativeCommandBook, baseFlags, s.NativeTerrainMoveCodes, costRow, nil,
+	)
+	if err != nil {
+		return false
+	}
+	if command.MaxScore >= 6 {
+		return true
+	}
+	item, err := ScoreNativeAI1567E(
+		s.W, s.H, records, len(s.Units), actor, selector,
+		s.nativeFutureItemRows, s.NativeCommandBook, baseFlags,
+	)
+	if err != nil {
+		return false
+	}
+	return item.MaxScore >= 6
+}
+
+// nextAIPlanForUnit 是原本 NextAIPlan 迴圈本體：依 mode 11 → 0x14EF0 → mode 2
+// 物理 → mode 備援 → 法術 → 正規化規劃器的順序替一個單位產生計畫。
+func (s *State) nextAIPlanForUnit(u *Unit) *AIPlan {
+	{
 		// Mode 11 has its own direct 0x1598A→0x15311→0x14237 dispatcher;
 		// it must be consumed before the separate 0x14EF0 bridge is considered.
 		if nativePlan, handled, err := s.nextNativeAIMode11Plan(u); handled {
@@ -772,5 +902,4 @@ func (s *State) NextAIPlan() *AIPlan {
 		}
 		return p
 	}
-	return nil
 }

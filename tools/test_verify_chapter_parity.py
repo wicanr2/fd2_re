@@ -20,6 +20,12 @@ class PairingAndUnits(unittest.TestCase):
         self.assertEqual(vp.oracle_units(cp), {(2, 3, 4)})
         self.assertEqual(vp.oracle_hp(cp), {(2, 3, 4): 9})
 
+    def test_shop_menu_compares_gold_before_the_sale(self):
+        actions = [{"kind": "shop_sell", "seq": 1097, "gold_before": 2000, "gold_after": 2037}]
+        self.assertEqual(vp.oracle_gold_for(actions, 1097, "shop_menu", {"gold": 2037}), 2000)
+        self.assertEqual(vp.oracle_gold_for(actions, 1097, "shop_sell", {"gold": 2037}), 2037)
+        self.assertEqual(vp.oracle_gold_for([], 1097, "shop_menu", {"gold": 2037}), 2037)
+
     def test_remake_units_keep_camp_code(self):
         cp = {"units": [{"camp": 2, "x": 3, "y": 4, "hp": 9, "identity": 0, "acted": 0}]}
         self.assertEqual(vp.remake_units(cp), {(2, 3, 4)})

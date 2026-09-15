@@ -21,14 +21,19 @@ type NativePhysicalStrike struct {
 
 // NativePhysicalAttackResult 是一次物理攻擊指令的完整結果。
 type NativePhysicalAttackResult struct {
-	Attack        AttackResult // 主攻：經驗與升級只算在攻方身上
+	Attack        AttackResult // 主攻：ExpGained／LevelUps 是攻方拿到的
 	AttackStrikes []NativePhysicalStrike
 
-	// Counter 為 nil 表示沒有反擊。反擊不給守方經驗——原版的經驗處理
-	// （`sub_1B6B7`→`sub_1AA1D`）在 `sub_28A6C` 之外，而且只對攻方跑一次。
-	Counter        *AttackResult
-	CounterStrikes []NativePhysicalStrike
+	// Counter 為 nil 表示沒有反擊。反擊的經驗給守方：`sub_29F72` 每一擊都以「揮擊
+	// 者 `+6` ＝ 2」決定要不要把經驗寫進 `[0x53EC8]`，敵方行動結束時 `0x1566A`
+	// 對被打的那個單位呼叫 `0x1E292`，所以我方單位反擊敵人一樣有經驗、一樣會
+	// 當場升級。CounterExpGained／CounterLevelUps 就是那一份。
+	Counter          *AttackResult
+	CounterStrikes   []NativePhysicalStrike
+	CounterExpGained int
+	CounterLevelUps  []LevelUpEvent
 
+	// RNGState 是整次結算（含升級成長擲骰）之後的原版全域 RNG。
 	RNGState uint16
 }
 
@@ -110,7 +115,7 @@ func (s *State) buildNativePhysicalRoll(a, d *Unit, rngState uint16) NativePhysi
 	return NativePhysicalRoll{
 		AttackerAP: a.EffectiveAP(), DefenderDP: d.EffectiveDP(),
 		AttackerHit: a.EffectiveHIT(), DefenderEV: d.EffectiveEV(),
-		AttackerCritPct:      a.CritPct,
+		AttackerCritPct:      nativeClassCritPct(a),
 		AttackerTerrainAPPct: apPct, DefenderTerrainDPPct: dpPct,
 		Weapon:   weapon,
 		RNGState: rngState,
@@ -143,6 +148,10 @@ func (s *State) nativePhysicalExchange(a, d *Unit, rngState uint16) ([]NativePhy
 		}
 		strike.DefenderHP = d.HP
 		strikes = append(strikes, strike)
+		if d.HP == 0 {
+			// 0x29B4C cmp [esp+0x58],0 → 把次數歸零：守方倒下就不再揮。
+			break
+		}
 		if !extraUsed && roll.Extra {
 			extraUsed = true
 			budget++
@@ -188,22 +197,66 @@ func (s *State) attackNativePhysical(
 	}
 	result := NativePhysicalAttackResult{AttackStrikes: strikes, RNGState: next}
 	result.Attack = summarizeNativeStrikes(strikes)
-	result.Attack.ExpGained, result.Attack.LevelUps = s.awardNativePhysicalExperience(
-		a, d, result.Attack.Amount, rng, nativeEXP)
 
-	if !NativeCounterattackEligible(a.X, a.Y, s.counterattackDefender(d)) {
+	// 反擊的經驗計畫要在改動任何經驗之前備妥：守方是我方時它和主攻一樣走
+	// planNativePhysicalExperience，缺 raw 資料就整筆拒絕。
+	var counterEXP *nativePhysicalExperiencePlan
+	if nativeEXP != nil && d.HasNativeRecordByte6 {
+		plan, err := planNativePhysicalExperience(d, a)
+		if err != nil {
+			return NativePhysicalAttackResult{}, fmt.Errorf("counterattack EXP: %w", err)
+		}
+		counterEXP = &plan
+	}
+
+	if NativeCounterattackEligible(a.X, a.Y, s.counterattackDefender(d)) {
+		counterStrikes, next, err := s.nativePhysicalExchange(d, a, result.RNGState)
+		if err != nil {
+			return NativePhysicalAttackResult{}, err
+		}
+		counter := summarizeNativeStrikes(counterStrikes)
+		result.Counter = &counter
+		result.CounterStrikes = counterStrikes
+		result.Attack.Counter = &counter
+		result.RNGState = next
+	}
+
+	// 經驗與升級在兩段交鋒都結束之後才發（玩家路徑 0x1196D、敵方路徑 0x1566A 都在
+	// `sub_28A6C` 返回之後才呼叫 `0x1E292`），升級成長的擲骰接在反擊之後的 RNG 上。
+	if nativeEXP == nil {
+		result.Attack.ExpGained, result.Attack.LevelUps = s.awardNativePhysicalExperience(
+			a, d, result.Attack.Amount, rng, nil)
 		return result, nil
 	}
-	counterStrikes, next, err := s.nativePhysicalExchange(d, a, result.RNGState)
-	if err != nil {
-		return NativePhysicalAttackResult{}, err
+	exp := nativeLastStrikeExperience(nativeEXP, strikes)
+	if exp > 99 {
+		exp = 99 // 0x11959：玩家路徑把 [0x53EC8] 壓到 99 再呼叫 0x1E292
 	}
-	counter := summarizeNativeStrikes(counterStrikes)
-	result.Counter = &counter
-	result.CounterStrikes = counterStrikes
-	result.Attack.Counter = &counter
-	result.RNGState = next
+	if s.killCancelsExp(d) {
+		exp = 0
+	}
+	got, ups, next := s.AwardExpNative(a, exp, result.RNGState)
+	result.Attack.ExpGained, result.Attack.LevelUps, result.RNGState = float64(got), ups, next
+	if result.Counter != nil {
+		exp := nativeLastStrikeExperience(counterEXP, result.CounterStrikes)
+		if s.killCancelsExp(a) {
+			exp = 0
+		}
+		got, ups, next := s.AwardExpNative(d, exp, result.RNGState)
+		result.CounterExpGained, result.CounterLevelUps, result.RNGState = got, ups, next
+	}
 	return result, nil
+}
+
+// nativeLastStrikeExperience 重現 `[0x53EC8]` 的寫法：`sub_29F72` 每一擊都整個覆寫，
+// 不累加，所以留下來的是最後一擊算出的值——最後一擊打空就是 0，最後一擊把守方
+// 打倒就是整份 base。
+func nativeLastStrikeExperience(plan *nativePhysicalExperiencePlan, strikes []NativePhysicalStrike) int {
+	if plan == nil || len(strikes) == 0 {
+		return 0
+	}
+	last := strikes[len(strikes)-1]
+	return plan.award(last.Damage, last.DefenderHP == 0)
 }
 
 // summarizeNativeStrikes 把一次交鋒的每一擊併成既有的 AttackResult 形狀：傷害相加，
@@ -222,8 +275,9 @@ func summarizeNativeStrikes(strikes []NativePhysicalStrike) AttackResult {
 	return out
 }
 
-// awardNativePhysicalExperience 沿用重製端既有的經驗值規則；原版的經驗鏈
-// （`sub_1B6B7`→`sub_1AA1D`）在 `sub_28A6C` 之外，本輪未解，所以不動它。
+// awardNativePhysicalExperience 是沒有原版 `+6` 來源的舊可編輯單位走的經驗規則
+// （重製端既有公式、Go RNG 升級）。原生單位改走 nativeLastStrikeExperience 加
+// AwardExpNative。
 func (s *State) awardNativePhysicalExperience(
 	a, d *Unit, damage int, rng *rand.Rand, nativeEXP *nativePhysicalExperiencePlan,
 ) (float64, []LevelUpEvent) {
@@ -236,7 +290,7 @@ func (s *State) awardNativePhysicalExperience(
 	}
 	exp := AttackExp(a.Lv, d.Lv, forExp, d.MaxHP, d.ExpPerLevel)
 	if nativeEXP != nil {
-		exp = float64(nativeEXP.award(damage, d.HP == 0))
+		exp = float64(min(nativeEXP.award(damage, d.HP == 0), 99))
 	}
 	if s.killCancelsExp(d) {
 		exp = 0
@@ -267,4 +321,28 @@ func (s *State) AttackNativePhysicalWithExperience(
 		return NativePhysicalAttackResult{}, err
 	}
 	return s.attackNativePhysical(actor, target, rngState, rng, &plan)
+}
+
+// nativeClassCritPctTable 是 FD2.EXE 0x5239B 的 24 個職業暴擊率（索引 = record
+// +0x20 職業減一；docs/data/exe_tables/native_combat_tables.json 釘住同一組位元組）。
+// `sub_29F72` 以 `[ebp+0x20]-1` 直接索引這張表，不讀 unit 記錄裡的任何欄位。
+var nativeClassCritPctTable = [24]int{5, 3, 3, 5, 3, 3, 0, 18, 5, 3, 3, 12, 3, 3, 12, 10, 6, 3, 3, 7, 3, 3, 30, 18}
+
+// nativeClassCritPct 依原版以職業查暴擊率；沒有 raw +0x20 的舊可編輯單位沿用
+// authored CritPct。
+func nativeClassCritPct(u *Unit) int {
+	if u == nil {
+		return 0
+	}
+	class := -1
+	switch {
+	case u.HasNativeRecordClass:
+		class = int(u.NativeRecordClass)
+	case u.ClassID > 0:
+		class = u.ClassID
+	}
+	if class >= 1 && class <= len(nativeClassCritPctTable) {
+		return nativeClassCritPctTable[class-1]
+	}
+	return u.CritPct
 }

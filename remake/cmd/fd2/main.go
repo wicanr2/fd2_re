@@ -204,6 +204,10 @@ type Game struct {
 	nativeHealPresentation      *nativeCommandHealPresentationJob
 	nativeModifierPresentation  *nativeCommandModifierPresentationJob
 	nativeAICommandModifier     *nativeAICommandModifierPresentationJob
+	nativeAIActionPlan          *battle.AIPlan                    // 0x15311 route being dispatched; owns the winner cell [0x53C27]/[0x53C2B]
+	nativeTownHubReturn         bool                              // 下一次 enterNode 進城鎮是 hub 子場景返回：保留 [0x5412B] 選擇器
+	aiPlanObserver              func(*battle.AIPlan)              // 對拍測試用：每個 AI 單位計畫產生後、執行前呼叫（可對齊 RNG）
+	growthRollObserver          func(*battle.Unit, uint16) uint16 // 對拍測試用：每次升級成長擲骰（0x1E54A）前對齊 RNG
 	nativeCmd0Presentation      *nativeCommand0PresentationJob
 	nativeCmd1Presentation      *nativeCommand1PresentationJob
 	nativeCmd2Presentation      *nativeCommand2PresentationJob
@@ -2823,6 +2827,11 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	if err != nil {
 		return fmt.Errorf("roster %q: %w", state.Roster, err)
 	}
+	// 原版 LOADCH 建構的 runtime record 已經走過 0x10C50＋0x1B750；這裡綁物品表
+	// 讓 FDFIELD 單位的 AP／DP／HIT／EV／HP／MP 由建構器補齊（見 BindNativeFutureItemRows）。
+	if err := g.bindNativeFutureItemRows(roster); err != nil {
+		return fmt.Errorf("roster %q native constructor item rows: %w", state.Roster, err)
+	}
 	if len(roster.Units) != state.SlotCount {
 		return fmt.Errorf("roster %q has %d slots, binding declares %d", state.Roster, len(roster.Units), state.SlotCount)
 	}
@@ -3304,7 +3313,14 @@ func (g *Game) enterNode() {
 		g.enterNode()
 	case "choice", "town":
 		g.dialog, g.st, g.sel = nil, nil, nil // 戰間 hub 不可殘留上一戰的單位或勝利對白
-		g.campSel = 0
+		// 城鎮 hub 從自己的子場景（酒店／商店／教會／出口提示答 NO）回來時，
+		// 原版在 0x2CAD7 內重複 hub 迴圈、不重設 [0x5412B]：第四章原版收據
+		// （docs/data/ui-traces/parity-ch04.json）出口答 NO 之後 left 落在道具店、
+		// 教會之後 left 落在酒店。只有從外面（戰後劇情／讀檔）進城鎮才歸零。
+		if n.Type != "town" || !g.nativeTownHubReturn {
+			g.campSel = 0
+		}
+		g.nativeTownHubReturn = false
 		if n.Type == "town" {
 			g.resetNativeTownUIPulse()
 		}
@@ -3657,6 +3673,9 @@ func (g *Game) bindCommandLearn(st *battle.State) {
 	}
 	if st != nil && g.nativeGrowthRows != nil {
 		st.NativeGrowthRows = g.nativeGrowthRows
+	}
+	if st != nil {
+		st.NativeGrowthRollObserver = g.growthRollObserver
 	}
 }
 
@@ -4960,6 +4979,7 @@ func (g *Game) leaveChurch() {
 		return
 	}
 	g.camp.Advance("")
+	g.nativeTownHubReturn = true
 	g.enterNode()
 }
 
@@ -5012,6 +5032,7 @@ func (g *Game) leaveShop() {
 	g.nativeShopMode = ""
 	g.nativeShopVariant = 0
 	g.camp.Advance("")
+	g.nativeTownHubReturn = true
 	g.enterNode()
 	if n := g.camp.Node(); n != nil && n.Type == "town" &&
 		(returnSelection == 1 || returnSelection == 3 ||
@@ -5049,6 +5070,7 @@ func (g *Game) leaveHotel() {
 		return
 	}
 	g.camp.Advance("")
+	g.nativeTownHubReturn = true
 	g.enterNode()
 }
 
@@ -5708,6 +5730,11 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	if actor == nil {
 		return
 	}
+	if g.st != nil {
+		// 0x1DB65：行動結算後把 HP 歸零的記錄標成 +5＝1，指令傷害的擊殺才會從
+		// AI 目標掃描與回合回復裡消失（第四章 r9 收據第 5 回合 0x13 的目標選擇）。
+		g.st.MarkNativeDeadRecords()
+	}
 	if g.runPendingNativeDeathRewards(func() {
 		g.finishSuccessfulUnitAction(actor, after)
 		g.checkResult()
@@ -5732,6 +5759,7 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 		if after != nil {
 			after()
 		}
+		g.autoEndPlayerPhase(actor)
 	}
 	if g.beginNativeFieldEvent61(actor, finish) {
 		return
@@ -5740,6 +5768,32 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 		return
 	}
 	finish()
+}
+
+// autoEndPlayerPhase 是玩家控制器 0x117E7 在每個單位行動收尾（0x1E292 升級與
+// 章節函式表之後、0x11985）呼叫的 0x13565：掃全部 record，只要還有一筆
+// `(+5 & 0x81)==0`、`+6==2`、`+0x26==0` 的單位就什麼都不做；一筆都沒有就直接
+// 走 0x1A30B（與系統選單 END／YES 同一條路）換手。第四章原版收據
+// （docs/data/ui-traces/parity-ch04.json）第 3 回合最後一個單位待機之後沒有送 END
+// 就進了敵方回合，就是這一條。只有玩家自己的行動會觸發；AI 行動不在那個控制器裡。
+func (g *Game) autoEndPlayerPhase(actor *battle.Unit) {
+	if g == nil || g.st == nil || actor == nil || actor.Camp != battle.Own || g.aiBusy ||
+		g.result != "" || g.nativeTurnStaging != nil || g.battleEvent != nil {
+		return
+	}
+	for _, u := range g.st.Units {
+		if u == nil || u.Camp != battle.Own || !u.OnField || !u.Alive() || u.Acted {
+			continue
+		}
+		if u.HasNativeRecordByte5 && u.NativeRecordByte5&0x81 != 0 {
+			continue
+		}
+		if transient, ok := u.NativeTransientDuration(0x26); ok && transient != 0 {
+			continue
+		}
+		return
+	}
+	g.endTurn()
 }
 
 // awardDeathReward 在擊倒當下處理死亡效果：型態 0／1 直接給（只給原版陣營 2 的
@@ -6550,22 +6604,30 @@ func absInt(v int) int {
 // missing game RNG is an input failure: do not mutate the battle state through
 // an implicit fallback source.
 func (g *Game) resolvePhysicalAttack(actor, target *battle.Unit) (battle.AttackResult, error) {
-	if g == nil || g.st == nil || actor == nil || target == nil {
-		return battle.AttackResult{}, errors.New("physical attack context unavailable")
-	}
-	if g.rng == nil {
-		return battle.AttackResult{}, errors.New("physical attack RNG unavailable")
-	}
-	// 傷害與反擊走原版：`sub_28A6C` 的兩次 `sub_2939D`，擲骰用原版的全域
-	// `0x627B8`（g.nativeRNGState），不是 Go 的 RNG。經驗值那條仍是重製端既有
-	// 的規則，所以 g.rng 還是要傳進去。
-	result, err := g.st.AttackNativePhysicalWithExperience(
-		actor, target, g.nativeRNGState, g.rng)
+	result, err := g.resolvePhysicalAttackFull(actor, target)
 	if err != nil {
 		return battle.AttackResult{}, err
 	}
-	g.nativeRNGState = result.RNGState
 	return result.Attack, nil
+}
+
+// resolvePhysicalAttackFull 回傳完整結算，含守方反擊拿到的經驗與升級。
+func (g *Game) resolvePhysicalAttackFull(actor, target *battle.Unit) (battle.NativePhysicalAttackResult, error) {
+	if g == nil || g.st == nil || actor == nil || target == nil {
+		return battle.NativePhysicalAttackResult{}, errors.New("physical attack context unavailable")
+	}
+	if g.rng == nil {
+		return battle.NativePhysicalAttackResult{}, errors.New("physical attack RNG unavailable")
+	}
+	// 傷害、反擊與原生單位的經驗／升級成長都走原版的全域 `0x627B8`
+	// （g.nativeRNGState）；g.rng 只剩沒有原版 `+6` 的舊可編輯單位在用。
+	result, err := g.st.AttackNativePhysicalWithExperience(
+		actor, target, g.nativeRNGState, g.rng)
+	if err != nil {
+		return battle.NativePhysicalAttackResult{}, err
+	}
+	g.nativeRNGState = result.RNGState
+	return result, nil
 }
 
 func (g *Game) resolvePlayerPhysicalAttack(actor, target *battle.Unit) (battle.AttackResult, error) {
@@ -11404,10 +11466,27 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	return nil
 }
 
+// endTurn 是 0x1A30B 的入口（系統選單 END／YES、全員行動完的 0x13565、全軍移動收尾
+// 都走這裡）。原版順序：selector 1 回合事件（0x1A813(1)）→ selector 1 暫時狀態
+// → 友軍 AI → selector 0 回合事件 → selector 0 暫時狀態 → 敵方 AI → 回合數加一。
+// 可編輯的回合事件依 NativeTurnPhaseSelector 插在對應位置；沒有 selector 的手寫
+// 事件仍留在敵方回合之後（finishTurn）。
 func (g *Game) endTurn() {
-	if g.st == nil || g.result != "" || g.aiBusy || g.nativeTurnStaging != nil {
+	if g.st == nil || g.result != "" || g.aiBusy || g.nativeTurnStaging != nil || g.battleEvent != nil {
 		return
 	}
+	// 0x1A332..0x1A484：進 0x1A30B 先讓沒行動、沒狀態的我方單位回 MaxHP/5，
+	// 之後才跑 selector 1 的回合事件。原版還會在每個回復的單位上畫圖示並播音效 4，
+	// 那段演出尚未接（只有數值）。
+	for _, rec := range g.st.ApplyNativeEndTurnRecovery() {
+		if os.Getenv("FD2_SHOT_AI") != "" {
+			log.Printf("END recovery: %s(%d,%d) hp %d→%d", rec.Unit.ClsName, rec.Unit.X, rec.Unit.Y, rec.Before, rec.After)
+		}
+	}
+	g.runEditableTurnEvents(1, g.endTurnAfterSelector1Events)
+}
+
+func (g *Game) endTurnAfterSelector1Events() {
 	started, err := g.startNativeRawCamp0TurnEvents()
 	if err != nil {
 		g.loadErr = "native raw camp0 phase: " + err.Error()
@@ -11420,15 +11499,40 @@ func (g *Game) endTurn() {
 	// 0x1D8BA. This controller merges those two non-player unit scans, so keep
 	// the proven sweep order as one atomic pre-AI transaction.
 	if g.st.HasNativeRuntimeUnitProjection {
-		if err := g.beginNativeTransientPhases([]byte{1, 0}, g.beginEnemyPhase); err != nil {
+		if err := g.beginNativeTransientPhases([]byte{1, 0}, g.beginEnemyPhaseAfterTurnEvents); err != nil {
 			g.loadErr = err.Error()
 		}
 		return
 	}
-	g.beginEnemyPhase()
+	g.beginEnemyPhaseAfterTurnEvents()
+}
+
+// beginEnemyPhaseAfterTurnEvents 先跑 selector 0 的可編輯回合事件（0x1A813(0)，
+// 在 0x1D8BA 敵方 AI 之前），再進敵方回合。
+func (g *Game) beginEnemyPhaseAfterTurnEvents() {
+	g.runEditableTurnEvents(0, g.beginEnemyPhase)
+}
+
+// runEditableTurnEvents 觸發 on_turn_end 裡 phase selector 相符的事件，跑完再 then。
+func (g *Game) runEditableTurnEvents(selector int, then func()) {
+	if g.sc == nil || g.st == nil {
+		then()
+		return
+	}
+	actions := g.sc.TriggerActionsWhere(g.st, "on_turn_end", "", func(e *battle.Event) bool {
+		return e.NativeTurnPhaseSelector() == selector
+	})
+	if len(actions) == 0 {
+		then()
+		return
+	}
+	g.startBattleEvent(actions, then)
 }
 
 func (g *Game) beginEnemyPhase() {
+	if g.st != nil {
+		g.st.ResetNativeAIScan()
+	}
 	if g.shotPath == "" || os.Getenv("FD2_SHOT_AI") != "" { // 截圖模式預設跳 AI;FD2_SHOT_AI=1 強制驗證 AI 行走
 		g.aiBusy = true // AI 階段:逐單位行走動畫(Update 內 aiStep 驅動),播完 finishTurn
 		g.showBanner("ENEMY PHASE")
@@ -11598,7 +11702,11 @@ func (g *Game) finishTurn() {
 		return
 	}
 	if g.sc != nil {
-		actions := g.sc.TriggerActions(g.st, "on_turn_end", "")
+		// 帶 phase selector 的事件已在 endTurn／敵方 AI 前／下一回合玩家輸入前
+		// 各自觸發；這裡只剩沒有 selector 的手寫事件。
+		actions := g.sc.TriggerActionsWhere(g.st, "on_turn_end", "", func(e *battle.Event) bool {
+			return e.NativeTurnPhaseSelector() == -1
+		})
 		if len(actions) > 0 {
 			g.startBattleEvent(actions, g.completeTurn)
 			return
@@ -11651,6 +11759,12 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 	if g.result == "" {
 		g.showBanner("PLAYER PHASE")
 	}
+	// 0x1A78B→0x1A797：phase 演出之後、玩家輸入之前的 selector 2 回合事件，
+	// 此時回合數已加一，所以 when.turn 對的是新回合。
+	g.runEditableTurnEvents(2, g.finishNativeTransientPlayerPhaseInput)
+}
+
+func (g *Game) finishNativeTransientPlayerPhaseInput() {
 	g.sel, g.reach, g.moved = nil, nil, false
 	if g.st != nil && g.st.HasNativeMapViewState && len(g.st.Units) > 0 {
 		g.nativeNextPlayerIndex = 0
@@ -11673,6 +11787,9 @@ func (g *Game) aiStep() {
 		g.aiBusy = false
 		g.finishTurn()
 		return
+	}
+	if g.aiPlanObserver != nil && plan.NativeError == nil {
+		g.aiPlanObserver(plan)
 	}
 	if plan.NativeError != nil {
 		// Native mode 2 有明確的原始來源閘門；閘門失敗時不可消耗行動，也不可
@@ -11773,13 +11890,25 @@ func (g *Game) aiStep() {
 			}
 			u.SetMapPose(dirToward(u.X, u.Y, tgt.X, tgt.Y))
 			hp0 := tgt.HP
-			attackResult, err := g.resolvePhysicalAttack(u, tgt)
+			rngBefore := g.nativeRNGState
+			fullResult, err := g.resolvePhysicalAttackFull(u, tgt)
 			if err != nil {
 				// The normalized planner must not consume an action when the
 				// production RNG boundary is unavailable.
 				g.loadErr = "AI physical attack: " + err.Error()
 				g.aiBusy = false
 				return
+			}
+			attackResult := fullResult.Attack
+			if os.Getenv("FD2_SHOT_AI") != "" {
+				counter := "none"
+				if attackResult.Counter != nil {
+					counter = fmt.Sprintf("dmg=%d miss=%v exp=%d lvups=%+v", attackResult.Counter.Amount,
+						attackResult.Counter.Missed, fullResult.CounterExpGained, fullResult.CounterLevelUps)
+				}
+				log.Printf("AI attack: %s(%d,%d) hp=%d → (%d,%d) id=%d hp %d→%d dmg=%d miss=%v counter=%s rng %d→%d",
+					u.ClsName, u.X, u.Y, u.HP, tgt.X, tgt.Y, tgt.NativeIdentity, hp0, tgt.HP,
+					attackResult.Amount, attackResult.Missed, counter, rngBefore, g.nativeRNGState)
 			}
 			g.awardDeathReward(tgt, u)
 			message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, u, tgt, attackResult)
@@ -11807,8 +11936,10 @@ func (g *Game) aiStep() {
 	}
 	if len(plan.Path) >= 2 {
 		if os.Getenv("FD2_SHOT_AI") != "" {
-			log.Printf("AI walk: %s(%d,%d)→(%d,%d) 段數%d 目標=%v", u.ClsName, plan.Path[0].X, plan.Path[0].Y,
-				plan.Path[len(plan.Path)-1].X, plan.Path[len(plan.Path)-1].Y, len(plan.Path)-1, plan.Target != nil)
+			log.Printf("AI walk: %s(%d,%d)→(%d,%d) 段數%d 目標=%v mode=%d intended=(%d,%d) blocked=(%d,%d,%v) opposite=%v candidates=%v", u.ClsName, plan.Path[0].X, plan.Path[0].Y,
+				plan.Path[len(plan.Path)-1].X, plan.Path[len(plan.Path)-1].Y, len(plan.Path)-1, plan.Target != nil,
+				plan.NativeModeFallback, plan.NativeModeIntended.X, plan.NativeModeIntended.Y,
+				plan.NativeModeBlockedCell.X, plan.NativeModeBlockedCell.Y, plan.NativeModeBlockedFound, plan.NativeModeOpposite, plan.NativeModeCandidates)
 		}
 		g.walk = &walkAnim{u: u, path: plan.Path, then: act}
 	} else {

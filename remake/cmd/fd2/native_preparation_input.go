@@ -28,6 +28,7 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 	townBacked := n.Cancel != ""
 	leavePreparation := func(outcome string) {
 		if g.camp.Advance(outcome) != "" {
+			g.nativeTownHubReturn = outcome == "cancel"
 			g.enterNode()
 		}
 	}

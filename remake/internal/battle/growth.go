@@ -24,16 +24,46 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 // StatRange 升級時單一屬性的擲骰範圍(含端點)。
-type StatRange struct{ Min, Max int }
+//
+// Native 為真表示這一欄來自 EXE 的 [min, max_exclusive) 列：原版 `0x1E529` 只在
+// `max_exclusive − min` 為 0 時跳過擲骰，`[4,5)` 這種跨距 1 的欄位仍呼叫一次
+// `0x4E893`（結果恆為 0）。Fixed 就是「跨距 0」。手寫的舊表沒有這個區別，
+// Max == Min 時直接當固定值。
+type StatRange struct {
+	Min, Max int
+	Native   bool
+	Fixed    bool
+}
 
-func (r StatRange) roll(rng *rand.Rand) int {
-	if r.Max <= r.Min {
+// statRoll 回傳 [0, span) 的一個整數。升級成長有兩種擲法：重製端自訂資料走 Go 的
+// RNG（goStatRoll），原生單位走原版的全域 `0x627B8`（nativeStatRoll），兩者只差
+// 亂數來源，套用範圍的方式相同。
+type statRoll func(span int) int
+
+func goStatRoll(rng *rand.Rand) statRoll {
+	return func(span int) int { return rng.Intn(span) }
+}
+
+// nativeStatRoll 重現 `0x1E529`：`0x1E54A call 0x4E893` 後 `idiv (max − min)` 取餘數。
+// 回傳的閉包會一路推進 *state，呼叫者用完要把它存回去。
+func nativeStatRoll(state *uint16) statRoll {
+	return func(span int) int {
+		*state = fdother.NativeRNGStep(*state)
+		return int(*state) % span
+	}
+}
+
+func (r StatRange) roll(roll statRoll) int {
+	if r.Fixed || r.Max < r.Min || (r.Max == r.Min && !r.Native) {
+		// 0x1E546 sub esi,ebp; je：原版跨距為零就不擲，也不消耗亂數。
 		return r.Min
 	}
-	return r.Min + rng.Intn(r.Max-r.Min+1)
+	return r.Min + roll(r.Max-r.Min+1)
 }
 
 // GrowthRow 一個(角色,職業)每級成長範圍。原生第 11 byte 的 learn_idx 已另由
@@ -54,131 +84,131 @@ type GrowthRow struct{ AP, DP, DX, HP, MP StatRange }
 // 不代表教會畫面、轉職條件或持久化已由 battle package 擁有。
 var growthTable = map[string]map[string]GrowthRow{
 	"索爾": {
-		"劍士": {AP: StatRange{6, 7}, DP: StatRange{4, 5}, DX: StatRange{2, 2}, HP: StatRange{8, 11}, MP: StatRange{0, 0}},
-		"劍聖": {AP: StatRange{8, 11}, DP: StatRange{5, 7}, DX: StatRange{3, 4}, HP: StatRange{10, 12}, MP: StatRange{7, 8}},
-		"英雄": {AP: StatRange{10, 14}, DP: StatRange{7, 9}, DX: StatRange{2, 3}, HP: StatRange{12, 14}, MP: StatRange{8, 11}},
+		"劍士": {AP: StatRange{Min: 6, Max: 7}, DP: StatRange{Min: 4, Max: 5}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 8, Max: 11}, MP: StatRange{Min: 0, Max: 0}},
+		"劍聖": {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 5, Max: 7}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 10, Max: 12}, MP: StatRange{Min: 7, Max: 8}},
+		"英雄": {AP: StatRange{Min: 10, Max: 14}, DP: StatRange{Min: 7, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 14}, MP: StatRange{Min: 8, Max: 11}},
 	},
 	"鐵諾": {
-		"劍士": {AP: StatRange{6, 8}, DP: StatRange{4, 5}, DX: StatRange{2, 2}, HP: StatRange{7, 11}, MP: StatRange{0, 0}},
-		"劍聖": {AP: StatRange{8, 9}, DP: StatRange{6, 8}, DX: StatRange{2, 3}, HP: StatRange{10, 14}, MP: StatRange{5, 6}},
+		"劍士": {AP: StatRange{Min: 6, Max: 8}, DP: StatRange{Min: 4, Max: 5}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 7, Max: 11}, MP: StatRange{Min: 0, Max: 0}},
+		"劍聖": {AP: StatRange{Min: 8, Max: 9}, DP: StatRange{Min: 6, Max: 8}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 10, Max: 14}, MP: StatRange{Min: 5, Max: 6}},
 	},
 	"蜜蒂": {
-		"劍聖": {AP: StatRange{9, 14}, DP: StatRange{7, 10}, DX: StatRange{2, 3}, HP: StatRange{12, 15}, MP: StatRange{6, 7}},
+		"劍聖": {AP: StatRange{Min: 9, Max: 14}, DP: StatRange{Min: 7, Max: 10}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 15}, MP: StatRange{Min: 6, Max: 7}},
 	},
 	"羅德曼": {
-		"劍聖": {AP: StatRange{10, 14}, DP: StatRange{7, 9}, DX: StatRange{2, 2}, HP: StatRange{12, 15}, MP: StatRange{6, 7}},
+		"劍聖": {AP: StatRange{Min: 10, Max: 14}, DP: StatRange{Min: 7, Max: 9}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 12, Max: 15}, MP: StatRange{Min: 6, Max: 7}},
 	},
 	"亞雷斯": {
-		"騎士":  {AP: StatRange{6, 8}, DP: StatRange{4, 4}, DX: StatRange{2, 2}, HP: StatRange{8, 10}, MP: StatRange{0, 0}},
-		"聖騎士": {AP: StatRange{9, 12}, DP: StatRange{7, 8}, DX: StatRange{2, 3}, HP: StatRange{12, 15}, MP: StatRange{0, 0}},
-		"龍騎士": {AP: StatRange{9, 12}, DP: StatRange{7, 8}, DX: StatRange{2, 3}, HP: StatRange{12, 15}, MP: StatRange{0, 0}},
+		"騎士":  {AP: StatRange{Min: 6, Max: 8}, DP: StatRange{Min: 4, Max: 4}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 8, Max: 10}, MP: StatRange{Min: 0, Max: 0}},
+		"聖騎士": {AP: StatRange{Min: 9, Max: 12}, DP: StatRange{Min: 7, Max: 8}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 15}, MP: StatRange{Min: 0, Max: 0}},
+		"龍騎士": {AP: StatRange{Min: 9, Max: 12}, DP: StatRange{Min: 7, Max: 8}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 15}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"洛娜": {
-		"騎士":  {AP: StatRange{6, 7}, DP: StatRange{5, 6}, DX: StatRange{2, 2}, HP: StatRange{6, 7}, MP: StatRange{0, 0}},
-		"聖騎士": {AP: StatRange{9, 12}, DP: StatRange{8, 9}, DX: StatRange{2, 3}, HP: StatRange{11, 14}, MP: StatRange{0, 0}},
-		"龍騎士": {AP: StatRange{9, 13}, DP: StatRange{8, 9}, DX: StatRange{2, 3}, HP: StatRange{11, 14}, MP: StatRange{0, 0}},
+		"騎士":  {AP: StatRange{Min: 6, Max: 7}, DP: StatRange{Min: 5, Max: 6}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 6, Max: 7}, MP: StatRange{Min: 0, Max: 0}},
+		"聖騎士": {AP: StatRange{Min: 9, Max: 12}, DP: StatRange{Min: 8, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 11, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
+		"龍騎士": {AP: StatRange{Min: 9, Max: 13}, DP: StatRange{Min: 8, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 11, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"萊汀": {
-		"騎士":  {AP: StatRange{7, 9}, DP: StatRange{5, 7}, DX: StatRange{2, 2}, HP: StatRange{10, 12}, MP: StatRange{0, 0}},
-		"聖騎士": {AP: StatRange{10, 13}, DP: StatRange{8, 9}, DX: StatRange{2, 3}, HP: StatRange{12, 15}, MP: StatRange{0, 0}},
-		"龍騎士": {AP: StatRange{10, 13}, DP: StatRange{7, 8}, DX: StatRange{2, 3}, HP: StatRange{11, 14}, MP: StatRange{0, 0}},
+		"騎士":  {AP: StatRange{Min: 7, Max: 9}, DP: StatRange{Min: 5, Max: 7}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 10, Max: 12}, MP: StatRange{Min: 0, Max: 0}},
+		"聖騎士": {AP: StatRange{Min: 10, Max: 13}, DP: StatRange{Min: 8, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 15}, MP: StatRange{Min: 0, Max: 0}},
+		"龍騎士": {AP: StatRange{Min: 10, Max: 13}, DP: StatRange{Min: 7, Max: 8}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 11, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"蘭斯洛特": {
-		"聖騎士": {AP: StatRange{13, 16}, DP: StatRange{9, 11}, DX: StatRange{3, 4}, HP: StatRange{13, 17}, MP: StatRange{0, 0}},
+		"聖騎士": {AP: StatRange{Min: 13, Max: 16}, DP: StatRange{Min: 9, Max: 11}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 13, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"莎拉": {
-		"龍騎士": {AP: StatRange{9, 14}, DP: StatRange{5, 6}, DX: StatRange{2, 2}, HP: StatRange{11, 16}, MP: StatRange{0, 0}},
+		"龍騎士": {AP: StatRange{Min: 9, Max: 14}, DP: StatRange{Min: 5, Max: 6}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 11, Max: 16}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"悠妮": {
-		"法師":  {AP: StatRange{3, 5}, DP: StatRange{2, 4}, DX: StatRange{1, 2}, HP: StatRange{5, 8}, MP: StatRange{4, 7}},
-		"大法師": {AP: StatRange{8, 11}, DP: StatRange{4, 6}, DX: StatRange{2, 4}, HP: StatRange{9, 12}, MP: StatRange{15, 19}},
-		"聖者":  {AP: StatRange{8, 11}, DP: StatRange{5, 7}, DX: StatRange{2, 4}, HP: StatRange{12, 14}, MP: StatRange{11, 15}},
-		"召喚師": {AP: StatRange{9, 11}, DP: StatRange{6, 8}, DX: StatRange{3, 4}, HP: StatRange{12, 17}, MP: StatRange{20, 29}},
+		"法師":  {AP: StatRange{Min: 3, Max: 5}, DP: StatRange{Min: 2, Max: 4}, DX: StatRange{Min: 1, Max: 2}, HP: StatRange{Min: 5, Max: 8}, MP: StatRange{Min: 4, Max: 7}},
+		"大法師": {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 4, Max: 6}, DX: StatRange{Min: 2, Max: 4}, HP: StatRange{Min: 9, Max: 12}, MP: StatRange{Min: 15, Max: 19}},
+		"聖者":  {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 5, Max: 7}, DX: StatRange{Min: 2, Max: 4}, HP: StatRange{Min: 12, Max: 14}, MP: StatRange{Min: 11, Max: 15}},
+		"召喚師": {AP: StatRange{Min: 9, Max: 11}, DP: StatRange{Min: 6, Max: 8}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 12, Max: 17}, MP: StatRange{Min: 20, Max: 29}},
 	},
 	"珊": {
-		"法師":  {AP: StatRange{3, 4}, DP: StatRange{2, 2}, DX: StatRange{1, 2}, HP: StatRange{6, 7}, MP: StatRange{4, 7}},
-		"大法師": {AP: StatRange{8, 13}, DP: StatRange{6, 8}, DX: StatRange{3, 3}, HP: StatRange{8, 10}, MP: StatRange{18, 21}},
-		"聖者":  {AP: StatRange{8, 9}, DP: StatRange{7, 8}, DX: StatRange{3, 4}, HP: StatRange{8, 10}, MP: StatRange{14, 17}},
+		"法師":  {AP: StatRange{Min: 3, Max: 4}, DP: StatRange{Min: 2, Max: 2}, DX: StatRange{Min: 1, Max: 2}, HP: StatRange{Min: 6, Max: 7}, MP: StatRange{Min: 4, Max: 7}},
+		"大法師": {AP: StatRange{Min: 8, Max: 13}, DP: StatRange{Min: 6, Max: 8}, DX: StatRange{Min: 3, Max: 3}, HP: StatRange{Min: 8, Max: 10}, MP: StatRange{Min: 18, Max: 21}},
+		"聖者":  {AP: StatRange{Min: 8, Max: 9}, DP: StatRange{Min: 7, Max: 8}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 8, Max: 10}, MP: StatRange{Min: 14, Max: 17}},
 	},
 	"亞奇梅吉": {
-		"大法師": {AP: StatRange{8, 13}, DP: StatRange{8, 11}, DX: StatRange{3, 5}, HP: StatRange{14, 21}, MP: StatRange{12, 15}},
+		"大法師": {AP: StatRange{Min: 8, Max: 13}, DP: StatRange{Min: 8, Max: 11}, DX: StatRange{Min: 3, Max: 5}, HP: StatRange{Min: 14, Max: 21}, MP: StatRange{Min: 12, Max: 15}},
 	},
 	"瑪琳": {
-		"僧侶": {AP: StatRange{3, 4}, DP: StatRange{2, 5}, DX: StatRange{1, 1}, HP: StatRange{4, 7}, MP: StatRange{4, 6}},
-		"祭師": {AP: StatRange{8, 11}, DP: StatRange{5, 8}, DX: StatRange{3, 4}, HP: StatRange{11, 12}, MP: StatRange{12, 15}},
-		"聖者": {AP: StatRange{9, 12}, DP: StatRange{5, 7}, DX: StatRange{3, 4}, HP: StatRange{11, 12}, MP: StatRange{14, 17}},
+		"僧侶": {AP: StatRange{Min: 3, Max: 4}, DP: StatRange{Min: 2, Max: 5}, DX: StatRange{Min: 1, Max: 1}, HP: StatRange{Min: 4, Max: 7}, MP: StatRange{Min: 4, Max: 6}},
+		"祭師": {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 5, Max: 8}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 11, Max: 12}, MP: StatRange{Min: 12, Max: 15}},
+		"聖者": {AP: StatRange{Min: 9, Max: 12}, DP: StatRange{Min: 5, Max: 7}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 11, Max: 12}, MP: StatRange{Min: 14, Max: 17}},
 	},
 	"索菲亞": {
-		"僧侶": {AP: StatRange{2, 3}, DP: StatRange{3, 6}, DX: StatRange{1, 1}, HP: StatRange{6, 8}, MP: StatRange{3, 5}},
-		"祭師": {AP: StatRange{7, 10}, DP: StatRange{6, 10}, DX: StatRange{3, 4}, HP: StatRange{12, 13}, MP: StatRange{10, 13}},
-		"聖者": {AP: StatRange{8, 12}, DP: StatRange{5, 9}, DX: StatRange{3, 4}, HP: StatRange{13, 15}, MP: StatRange{10, 13}},
+		"僧侶": {AP: StatRange{Min: 2, Max: 3}, DP: StatRange{Min: 3, Max: 6}, DX: StatRange{Min: 1, Max: 1}, HP: StatRange{Min: 6, Max: 8}, MP: StatRange{Min: 3, Max: 5}},
+		"祭師": {AP: StatRange{Min: 7, Max: 10}, DP: StatRange{Min: 6, Max: 10}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 12, Max: 13}, MP: StatRange{Min: 10, Max: 13}},
+		"聖者": {AP: StatRange{Min: 8, Max: 12}, DP: StatRange{Min: 5, Max: 9}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 13, Max: 15}, MP: StatRange{Min: 10, Max: 13}},
 	},
 	"希爾法": {
-		"祭師": {AP: StatRange{6, 7}, DP: StatRange{4, 6}, DX: StatRange{2, 4}, HP: StatRange{9, 10}, MP: StatRange{18, 23}},
+		"祭師": {AP: StatRange{Min: 6, Max: 7}, DP: StatRange{Min: 4, Max: 6}, DX: StatRange{Min: 2, Max: 4}, HP: StatRange{Min: 9, Max: 10}, MP: StatRange{Min: 18, Max: 23}},
 	},
 	"約拿": {
-		"聖者": {AP: StatRange{8, 11}, DP: StatRange{7, 10}, DX: StatRange{2, 2}, HP: StatRange{10, 11}, MP: StatRange{12, 14}},
+		"聖者": {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 7, Max: 10}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 10, Max: 11}, MP: StatRange{Min: 12, Max: 14}},
 	},
 	"哈諾": {
-		"戰士":  {AP: StatRange{7, 9}, DP: StatRange{4, 5}, DX: StatRange{1, 2}, HP: StatRange{10, 14}, MP: StatRange{0, 0}},
-		"聖戰士": {AP: StatRange{13, 16}, DP: StatRange{9, 10}, DX: StatRange{2, 3}, HP: StatRange{15, 19}, MP: StatRange{0, 0}},
-		"魔戰士": {AP: StatRange{13, 15}, DP: StatRange{10, 11}, DX: StatRange{2, 2}, HP: StatRange{15, 19}, MP: StatRange{8, 11}},
+		"戰士":  {AP: StatRange{Min: 7, Max: 9}, DP: StatRange{Min: 4, Max: 5}, DX: StatRange{Min: 1, Max: 2}, HP: StatRange{Min: 10, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
+		"聖戰士": {AP: StatRange{Min: 13, Max: 16}, DP: StatRange{Min: 9, Max: 10}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 15, Max: 19}, MP: StatRange{Min: 0, Max: 0}},
+		"魔戰士": {AP: StatRange{Min: 13, Max: 15}, DP: StatRange{Min: 10, Max: 11}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 15, Max: 19}, MP: StatRange{Min: 8, Max: 11}},
 	},
 	"哈瓦特": {
-		"戰士":  {AP: StatRange{6, 7}, DP: StatRange{5, 6}, DX: StatRange{1, 1}, HP: StatRange{12, 15}, MP: StatRange{0, 0}},
-		"聖戰士": {AP: StatRange{13, 17}, DP: StatRange{11, 14}, DX: StatRange{2, 3}, HP: StatRange{16, 21}, MP: StatRange{0, 0}},
-		"魔戰士": {AP: StatRange{13, 15}, DP: StatRange{11, 14}, DX: StatRange{2, 2}, HP: StatRange{16, 21}, MP: StatRange{8, 11}},
+		"戰士":  {AP: StatRange{Min: 6, Max: 7}, DP: StatRange{Min: 5, Max: 6}, DX: StatRange{Min: 1, Max: 1}, HP: StatRange{Min: 12, Max: 15}, MP: StatRange{Min: 0, Max: 0}},
+		"聖戰士": {AP: StatRange{Min: 13, Max: 17}, DP: StatRange{Min: 11, Max: 14}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 16, Max: 21}, MP: StatRange{Min: 0, Max: 0}},
+		"魔戰士": {AP: StatRange{Min: 13, Max: 15}, DP: StatRange{Min: 11, Max: 14}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 16, Max: 21}, MP: StatRange{Min: 8, Max: 11}},
 	},
 	"希莉亞": {
-		"弓兵":  {AP: StatRange{5, 7}, DP: StatRange{2, 3}, DX: StatRange{2, 2}, HP: StatRange{6, 8}, MP: StatRange{0, 0}},
-		"狙擊手": {AP: StatRange{9, 10}, DP: StatRange{7, 9}, DX: StatRange{2, 3}, HP: StatRange{9, 12}, MP: StatRange{0, 0}},
-		"神射手": {AP: StatRange{12, 13}, DP: StatRange{7, 9}, DX: StatRange{2, 3}, HP: StatRange{10, 14}, MP: StatRange{0, 0}},
+		"弓兵":  {AP: StatRange{Min: 5, Max: 7}, DP: StatRange{Min: 2, Max: 3}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 6, Max: 8}, MP: StatRange{Min: 0, Max: 0}},
+		"狙擊手": {AP: StatRange{Min: 9, Max: 10}, DP: StatRange{Min: 7, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 9, Max: 12}, MP: StatRange{Min: 0, Max: 0}},
+		"神射手": {AP: StatRange{Min: 12, Max: 13}, DP: StatRange{Min: 7, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 10, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"貝克威": {
-		"弓兵":  {AP: StatRange{5, 6}, DP: StatRange{3, 3}, DX: StatRange{2, 2}, HP: StatRange{6, 8}, MP: StatRange{0, 0}},
-		"狙擊手": {AP: StatRange{8, 11}, DP: StatRange{4, 6}, DX: StatRange{2, 3}, HP: StatRange{8, 11}, MP: StatRange{0, 0}},
-		"神射手": {AP: StatRange{9, 12}, DP: StatRange{4, 6}, DX: StatRange{2, 3}, HP: StatRange{9, 12}, MP: StatRange{0, 0}},
+		"弓兵":  {AP: StatRange{Min: 5, Max: 6}, DP: StatRange{Min: 3, Max: 3}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 6, Max: 8}, MP: StatRange{Min: 0, Max: 0}},
+		"狙擊手": {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 4, Max: 6}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 8, Max: 11}, MP: StatRange{Min: 0, Max: 0}},
+		"神射手": {AP: StatRange{Min: 9, Max: 12}, DP: StatRange{Min: 4, Max: 6}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 9, Max: 12}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"羅蘭": {
-		"神射手": {AP: StatRange{9, 13}, DP: StatRange{4, 6}, DX: StatRange{2, 4}, HP: StatRange{8, 11}, MP: StatRange{0, 0}},
+		"神射手": {AP: StatRange{Min: 9, Max: 13}, DP: StatRange{Min: 4, Max: 6}, DX: StatRange{Min: 2, Max: 4}, HP: StatRange{Min: 8, Max: 11}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"凱麗": {
-		"武者": {AP: StatRange{8, 9}, DP: StatRange{5, 5}, DX: StatRange{1, 3}, HP: StatRange{11, 13}, MP: StatRange{0, 0}},
-		"鬥士": {AP: StatRange{10, 13}, DP: StatRange{6, 8}, DX: StatRange{3, 4}, HP: StatRange{13, 17}, MP: StatRange{0, 0}},
-		"武聖": {AP: StatRange{12, 14}, DP: StatRange{7, 8}, DX: StatRange{3, 5}, HP: StatRange{14, 17}, MP: StatRange{0, 0}},
+		"武者": {AP: StatRange{Min: 8, Max: 9}, DP: StatRange{Min: 5, Max: 5}, DX: StatRange{Min: 1, Max: 3}, HP: StatRange{Min: 11, Max: 13}, MP: StatRange{Min: 0, Max: 0}},
+		"鬥士": {AP: StatRange{Min: 10, Max: 13}, DP: StatRange{Min: 6, Max: 8}, DX: StatRange{Min: 3, Max: 4}, HP: StatRange{Min: 13, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
+		"武聖": {AP: StatRange{Min: 12, Max: 14}, DP: StatRange{Min: 7, Max: 8}, DX: StatRange{Min: 3, Max: 5}, HP: StatRange{Min: 14, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"賽可邦勒": {
-		"武者": {AP: StatRange{8, 11}, DP: StatRange{4, 5}, DX: StatRange{1, 2}, HP: StatRange{10, 11}, MP: StatRange{0, 0}},
-		"鬥士": {AP: StatRange{9, 12}, DP: StatRange{7, 9}, DX: StatRange{2, 3}, HP: StatRange{14, 17}, MP: StatRange{0, 0}},
-		"武聖": {AP: StatRange{10, 14}, DP: StatRange{7, 8}, DX: StatRange{2, 4}, HP: StatRange{14, 17}, MP: StatRange{0, 0}},
+		"武者": {AP: StatRange{Min: 8, Max: 11}, DP: StatRange{Min: 4, Max: 5}, DX: StatRange{Min: 1, Max: 2}, HP: StatRange{Min: 10, Max: 11}, MP: StatRange{Min: 0, Max: 0}},
+		"鬥士": {AP: StatRange{Min: 9, Max: 12}, DP: StatRange{Min: 7, Max: 9}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 14, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
+		"武聖": {AP: StatRange{Min: 10, Max: 14}, DP: StatRange{Min: 7, Max: 8}, DX: StatRange{Min: 2, Max: 4}, HP: StatRange{Min: 14, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"卡里斯": {
-		"武聖": {AP: StatRange{11, 13}, DP: StatRange{6, 7}, DX: StatRange{2, 3}, HP: StatRange{16, 19}, MP: StatRange{0, 0}},
+		"武聖": {AP: StatRange{Min: 11, Max: 13}, DP: StatRange{Min: 6, Max: 7}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 16, Max: 19}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"達克賽": {
-		"？？？": {AP: StatRange{12, 14}, DP: StatRange{8, 11}, DX: StatRange{2, 2}, HP: StatRange{15, 21}, MP: StatRange{4, 5}},
+		"？？？": {AP: StatRange{Min: 12, Max: 14}, DP: StatRange{Min: 8, Max: 11}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 15, Max: 21}, MP: StatRange{Min: 4, Max: 5}},
 	},
 	"米亞斯多德": {
-		"劍士":  {AP: StatRange{7, 10}, DP: StatRange{5, 7}, DX: StatRange{2, 2}, HP: StatRange{9, 12}, MP: StatRange{0, 0}},
-		"龍劍士": {AP: StatRange{11, 13}, DP: StatRange{8, 10}, DX: StatRange{2, 3}, HP: StatRange{12, 17}, MP: StatRange{0, 0}},
+		"劍士":  {AP: StatRange{Min: 7, Max: 10}, DP: StatRange{Min: 5, Max: 7}, DX: StatRange{Min: 2, Max: 2}, HP: StatRange{Min: 9, Max: 12}, MP: StatRange{Min: 0, Max: 0}},
+		"龍劍士": {AP: StatRange{Min: 11, Max: 13}, DP: StatRange{Min: 8, Max: 10}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"凱拉斯": {
-		"龍劍士": {AP: StatRange{10, 14}, DP: StatRange{8, 12}, DX: StatRange{2, 3}, HP: StatRange{13, 16}, MP: StatRange{0, 0}},
+		"龍劍士": {AP: StatRange{Min: 10, Max: 14}, DP: StatRange{Min: 8, Max: 12}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 13, Max: 16}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"巴拿羅西亞": {
-		"龍劍士": {AP: StatRange{10, 14}, DP: StatRange{9, 12}, DX: StatRange{2, 3}, HP: StatRange{14, 17}, MP: StatRange{0, 0}},
+		"龍劍士": {AP: StatRange{Min: 10, Max: 14}, DP: StatRange{Min: 9, Max: 12}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 14, Max: 17}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"聖寇拉斯": {
-		"龍劍士": {AP: StatRange{12, 16}, DP: StatRange{10, 11}, DX: StatRange{2, 3}, HP: StatRange{18, 24}, MP: StatRange{0, 0}},
+		"龍劍士": {AP: StatRange{Min: 12, Max: 16}, DP: StatRange{Min: 10, Max: 11}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 18, Max: 24}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"謝多": {
-		"忍者": {AP: StatRange{10, 12}, DP: StatRange{6, 8}, DX: StatRange{3, 5}, HP: StatRange{12, 14}, MP: StatRange{4, 6}},
+		"忍者": {AP: StatRange{Min: 10, Max: 12}, DP: StatRange{Min: 6, Max: 8}, DX: StatRange{Min: 3, Max: 5}, HP: StatRange{Min: 12, Max: 14}, MP: StatRange{Min: 4, Max: 6}},
 	},
 	"蓋亞": {
-		"機兵": {AP: StatRange{7, 13}, DP: StatRange{6, 12}, DX: StatRange{2, 3}, HP: StatRange{8, 14}, MP: StatRange{0, 0}},
+		"機兵": {AP: StatRange{Min: 7, Max: 13}, DP: StatRange{Min: 6, Max: 12}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 8, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
 	},
 	"渥德": {
-		"機兵": {AP: StatRange{8, 13}, DP: StatRange{7, 13}, DX: StatRange{2, 3}, HP: StatRange{12, 14}, MP: StatRange{0, 0}},
+		"機兵": {AP: StatRange{Min: 8, Max: 13}, DP: StatRange{Min: 7, Max: 13}, DX: StatRange{Min: 2, Max: 3}, HP: StatRange{Min: 12, Max: 14}, MP: StatRange{Min: 0, Max: 0}},
 	},
 }
 
@@ -202,7 +232,7 @@ func (u *Unit) applyLevelUpGrowth(rng *rand.Rand) (LevelUpEvent, bool) {
 	if !ok {
 		return LevelUpEvent{}, false
 	}
-	return u.applyGrowthRow(row, rng), true
+	return u.applyGrowthRow(row, goStatRoll(rng)), true
 }
 
 // legacyGrowthRow 是舊的「角色名×職業名」查法。原生戰場的單位不帶名字（身分走
@@ -217,15 +247,17 @@ func legacyGrowthRow(u *Unit) (GrowthRow, bool) {
 	return row, ok
 }
 
-func (u *Unit) applyGrowthRow(row GrowthRow, rng *rand.Rand) LevelUpEvent {
+// applyGrowthRow 依 `0x1E292` 的順序擲五次：AP（+0x37）、DP（+0x39）、DX（+0x3E）、
+// MaxHP（+0x42）、MaxMP（+0x46），每一欄各一次 `0x1E529`。
+func (u *Unit) applyGrowthRow(row GrowthRow, roll statRoll) LevelUpEvent {
 	u.Lv++
 	ev := LevelUpEvent{
 		NewLv:  u.Lv,
-		ApGain: row.AP.roll(rng),
-		DpGain: row.DP.roll(rng),
-		DxGain: row.DX.roll(rng),
-		HpGain: row.HP.roll(rng),
-		MpGain: row.MP.roll(rng),
+		ApGain: row.AP.roll(roll),
+		DpGain: row.DP.roll(roll),
+		DxGain: row.DX.roll(roll),
+		HpGain: row.HP.roll(roll),
+		MpGain: row.MP.roll(roll),
 	}
 	u.AP += ev.ApGain
 	u.DP += ev.DpGain
@@ -255,13 +287,13 @@ func (u *Unit) applyGrowthRow(row GrowthRow, rng *rand.Rand) LevelUpEvent {
 // 決定」)。只對 Own/Ally 生效(見檔頭說明);Enemy 呼叫此函式一律 no-op、回 nil。
 // amount<=0 也直接回 nil(miss、或 growthTable 查無資料等情形上游已算出 0,不必進來擲骰)。
 func GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent {
-	_, events := gainExp(u, amount, rng, nil, legacyGrowthRow)
+	_, events := gainExp(u, amount, goStatRoll(rng), nil, legacyGrowthRow)
 	return events
 }
 
 // gainExp 重現 0x1E292 的經驗與升級流程，回傳實際收下的經驗值與升級事件。
 // 套件層的 GainExp 走舊名字表；State.AwardExp 另外套原版的 +7 成長列與指令學習。
-func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int,
+func gainExp(u *Unit, amount float64, roll statRoll, learn func(*Unit) []int,
 	rowFor func(*Unit) (GrowthRow, bool)) (float64, []LevelUpEvent) {
 	if u == nil || (u.Camp != Own && u.Camp != Ally) || amount <= 0 {
 		return 0, nil
@@ -282,7 +314,7 @@ func gainExp(u *Unit, amount float64, rng *rand.Rand, learn func(*Unit) []int,
 	for u.Exp >= expThreshold {
 		u.Exp -= expThreshold
 		if row, ok := rowFor(u); ok {
-			ev := u.applyGrowthRow(row, rng)
+			ev := u.applyGrowthRow(row, roll)
 			if learn != nil {
 				ev.LearnedCommandIDs = learn(u)
 			}
@@ -328,7 +360,24 @@ func (s *State) GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent 
 // AwardExp 與 GainExp 相同，另外回傳實際收下的經驗值：上限、陣營不符或單位已陣亡
 // 時是 0。攻擊與法術的結果要用這個值顯示「得到經驗值」，原版在這些情況下整段不顯示。
 func (s *State) AwardExp(u *Unit, amount float64, rng *rand.Rand) (float64, []LevelUpEvent) {
-	return gainExp(u, amount, rng, s.learnNativeCommandsAtLevel, s.NativeGrowthRowFor)
+	return gainExp(u, amount, goStatRoll(rng), s.learnNativeCommandsAtLevel, s.NativeGrowthRowFor)
+}
+
+// AwardExpNative 與 AwardExp 相同，但升級成長改擲原版的全域 RNG（`0x1E529` 每一欄
+// 一次 `0x4E893`），回傳推進後的狀態。原生戰場的物理攻擊與反擊經驗走這條，否則
+// 升級當下的亂數消耗量會與原版不同，之後每一次結算都偏掉。
+func (s *State) AwardExpNative(u *Unit, amount int, rngState uint16) (int, []LevelUpEvent, uint16) {
+	state := rngState
+	roll := nativeStatRoll(&state)
+	if s.NativeGrowthRollObserver != nil {
+		inner := roll
+		roll = func(span int) int {
+			state = s.NativeGrowthRollObserver(u, state)
+			return inner(span)
+		}
+	}
+	got, events := gainExp(u, float64(amount), roll, s.learnNativeCommandsAtLevel, s.NativeGrowthRowFor)
+	return int(got), events, state
 }
 
 // NativeGrowthRowFor 重現 0x1E292 的成長列選擇：`0x1E2F8 movzx eax,[esi+7]`、
@@ -380,7 +429,7 @@ func LoadNativeGrowthRows(path string) (map[int]GrowthRow, error) {
 			if hi < r[0] {
 				hi = r[0]
 			}
-			ranges[k] = StatRange{Min: r[0], Max: hi}
+			ranges[k] = StatRange{Min: r[0], Max: hi, Native: true, Fixed: r[1] == r[0]}
 		}
 		out[i] = GrowthRow{AP: ranges[0], DP: ranges[1], DX: ranges[2], HP: ranges[3], MP: ranges[4]}
 	}

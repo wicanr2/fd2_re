@@ -196,6 +196,10 @@ func (g *Game) prepareNativeContinueFromCurrentSnapshot(path string, timer int) 
 	if err != nil {
 		return Game{}, err
 	}
+	for id, unit := range roster {
+		campaign.ApplyEquippedAttackRange(&unit, candidate.shopItemStats)
+		roster[id] = unit
+	}
 	candidate.partyMembers = members
 	candidate.partyJoinOrder = order
 	candidate.partyDeploy = deploy

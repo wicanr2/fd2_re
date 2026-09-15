@@ -37,6 +37,8 @@
 #   FD2_ORACLE_FRAME_SETTLE  內容連續相同幾次才寫出，用來濾掉畫到一半的畫面
 #   FD2_ORACLE_FRAME_MAX     張數上限（預設 4000）
 #   FD2_ORACLE_FRAME_EIP     改以遊戲自己的繪圖進入點為邊界，如 0x11CAC
+#   FD2_ORACLE_EIP_TRACE     逗號分隔的位址：每次進入就把暫存器與堆疊頂寫進 <out>/eip-trace.jsonl
+#                            （Watcom 暫存器呼叫慣例，前四個引數在 EAX/EDX/EBX/ECX）
 #   FD2_ORACLE_FRAME_FROM／FD2_ORACLE_FRAME_TO
 #                            只在這段指令區間取樣，用來把輸出限在要看的那一段
 #   FD2_ORACLE_EIP_WATCH     逗號分隔的十六進位位址（最多 16 個），每一幀記錄
@@ -76,6 +78,7 @@ frame_eip=${FD2_ORACLE_FRAME_EIP:-}
 frame_from=${FD2_ORACLE_FRAME_FROM:-0}
 frame_to=${FD2_ORACLE_FRAME_TO:-0}
 eip_watch=${FD2_ORACLE_EIP_WATCH:-}
+eip_trace=${FD2_ORACLE_EIP_TRACE:-}
 
 test -d "$dos/apps/fd2/cmd/oracle" || { echo "找不到 dosgolem oracle：$dos" >&2; exit 2; }
 test -f "$orig/FD2.EXE" || { echo "找不到固定版本 FD2.EXE：$orig" >&2; exit 2; }
@@ -149,6 +152,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_FRAME_FROM="$frame_from" \
   -e FD2_ORACLE_FRAME_TO="$frame_to" \
   -e FD2_ORACLE_EIP_WATCH="$eip_watch" \
+  -e FD2_ORACLE_EIP_TRACE="$eip_trace" \
   -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
   -e FD2_ORACLE_STATE="${state_dir:+/state}" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
@@ -168,6 +172,9 @@ if [ -n "$FD2_ORACLE_FRAMES" ]; then
   if [ -n "$FD2_ORACLE_EIP_WATCH" ]; then
     frameargs+=(-eip-watch "$FD2_ORACLE_EIP_WATCH")
   fi
+fi
+if [ -n "$FD2_ORACLE_EIP_TRACE" ]; then
+  frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE")
 fi
 cheatargs=()
 if [ -n "$FD2_ORACLE_LOCK_ALLY_HP" ]; then

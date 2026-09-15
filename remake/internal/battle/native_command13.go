@@ -38,13 +38,18 @@ func (s *State) NativeCommandHealTargets(actor, confirmed *Unit, commandID int) 
 	return targets, nil
 }
 
-// NativeAICommandHealTargets reproduces the 0x15311 consumer after movement:
-// it rebuilds the 0x14818 target array at the actor's selected destination,
-// using the raw +6 selector transform recovered for the 0x1598A/0x15311 path.
-// It does not reuse the player's confirmed-cursor predicate.
-func (s *State) NativeAICommandHealTargets(actor *Unit, commandID int) ([]*Unit, error) {
+// NativeAICommandHealTargets reproduces the 0x15311 consumer: it rebuilds the
+// 0x14818 target array at the selected winner cell (AIPlan.NativeActionDestination,
+// the raw [0x53C27]/[0x53C2B] pair), using the raw +6 selector transform
+// recovered for the 0x1598A/0x15311 path. The actor does not move on this
+// route, so its presentation cell is not the geometry origin. It does not
+// reuse the player's confirmed-cursor predicate.
+func (s *State) NativeAICommandHealTargets(actor *Unit, origin Cell, commandID int) ([]*Unit, error) {
 	if s == nil || actor == nil || !actor.HasNativeRecordByte6 {
 		return nil, fmt.Errorf("native AI command heal selector unavailable")
+	}
+	if err := s.nativeAICommandOriginInGrid(origin); err != nil {
+		return nil, err
 	}
 	if commandID < 13 || commandID > 16 || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
 		return nil, fmt.Errorf("native AI command heal record unavailable id=%d", commandID)
@@ -66,9 +71,7 @@ func (s *State) NativeAICommandHealTargets(actor *Unit, commandID int) ([]*Unit,
 		return nil, err
 	}
 	indices, err := nativeAIScoredCommandTargetIndices(
-		s.W, s.H, records, len(s.Units), Cell{
-			X: int(actor.NativeMapPresentation.X), Y: int(actor.NativeMapPresentation.Y),
-		},
+		s.W, s.H, records, len(s.Units), origin,
 		s.NativeCommandBook[commandID].EffectMode, targetCode, flags,
 	)
 	if err != nil {
@@ -108,11 +111,11 @@ func (s *State) ExecuteNativeCommandHeal(actor, confirmed *Unit, commandID int, 
 
 // ExecuteNativeAICommandHeal consumes only the target array rebuilt by the
 // recovered 0x15311 AI owner. Presentation remains owned by the caller.
-func (s *State) ExecuteNativeAICommandHeal(actor *Unit, commandID int, rng *rand.Rand) ([]NativeCommandHealResult, error) {
+func (s *State) ExecuteNativeAICommandHeal(actor *Unit, origin Cell, commandID int, rng *rand.Rand) ([]NativeCommandHealResult, error) {
 	if s == nil || rng == nil {
 		return nil, fmt.Errorf("missing native AI command heal state/rng")
 	}
-	targets, err := s.NativeAICommandHealTargets(actor, commandID)
+	targets, err := s.NativeAICommandHealTargets(actor, origin, commandID)
 	if err != nil {
 		return nil, err
 	}

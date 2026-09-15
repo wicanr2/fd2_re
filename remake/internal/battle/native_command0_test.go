@@ -177,11 +177,44 @@ func TestPlanNativeAICommand4UsesRawSelectorTargetArray(t *testing.T) {
 	}
 	book[4] = NativeCommandRecord{ID: 4, Damage: 40, Hit: 100, SelectionMode: 4, EffectMode: 1, MPCost: 4, TargetCode: 0}
 	st := &State{W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: []byte{0, 0}, NativeCommandBook: book}
-	plan, err := st.PlanNativeAICommandDamage(actor, 4, map[int]int{5: 10}, 3)
+	plan, err := st.PlanNativeAICommandDamage(actor, Cell{}, 4, map[int]int{5: 10}, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(plan.Results) != 1 || plan.Results[0].Target != target || plan.DamageStages != 6 || actor.MP != 10 || target.HP != 100 {
 		t.Fatalf("AI command4 plan=%+v actorMP=%d targetHP=%d", plan, actor.MP, target.HP)
+	}
+}
+
+// 0x15311 keeps the actor on its cell and builds the 0x14818 geometry at the
+// winner pair [0x53C27]/[0x53C2B]; a single-cell (effect_mode 0) command
+// therefore hits the unit standing on the winner cell, not on the actor's.
+func TestPlanNativeAICommandDamageUsesWinnerCellNotActorCell(t *testing.T) {
+	actor := completeNativeAIScoringUnit()
+	actor.Camp, actor.OnField, actor.Acted = Enemy, true, false
+	actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y = 0, 0
+	actor.NativeRecordByte6, actor.MP = 0, 10
+	target := completeNativeAIScoringUnit()
+	target.Camp, target.OnField, target.ClassID = Own, true, 5
+	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 2, 0
+	target.NativeRecordByte6, target.HP = 1, 100
+	book := make([]NativeCommandRecord, NativeCommandRecordCount)
+	for id := range book {
+		book[id] = NativeCommandRecord{ID: id}
+	}
+	book[0] = NativeCommandRecord{ID: 0, Damage: 40, Hit: 100, SelectionMode: 3, EffectMode: 0, MPCost: 0, TargetCode: 0}
+	st := &State{W: 3, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: []byte{0, 0, 0}, NativeCommandBook: book}
+	if _, err := st.PlanNativeAICommandDamage(actor, Cell{X: 0, Y: 0}, 0, map[int]int{5: 10}, 3); err == nil {
+		t.Fatal("actor cell as origin must not find the target on the winner cell")
+	}
+	plan, err := st.PlanNativeAICommandDamage(actor, Cell{X: 2, Y: 0}, 0, map[int]int{5: 10}, 3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Results) != 1 || plan.Results[0].Target != target {
+		t.Fatalf("winner-cell plan=%+v", plan)
+	}
+	if _, err := st.PlanNativeAICommandDamage(actor, Cell{X: 3, Y: 0}, 0, map[int]int{5: 10}, 3); err == nil {
+		t.Fatal("origin outside the grid must fail closed")
 	}
 }

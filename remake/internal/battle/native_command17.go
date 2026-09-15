@@ -35,9 +35,12 @@ func (s *State) NativeCommandModifierTargets(actor, confirmed *Unit, commandID i
 // NativeAICommandModifierTargets rebuilds the final target array through the
 // recovered 0x15311 raw-selector owner. It does not reuse the player's
 // confirmed-cursor predicate.
-func (s *State) NativeAICommandModifierTargets(actor *Unit, commandID int) ([]*Unit, error) {
+func (s *State) NativeAICommandModifierTargets(actor *Unit, origin Cell, commandID int) ([]*Unit, error) {
 	if s == nil || actor == nil || !actor.HasNativeRecordByte6 {
 		return nil, fmt.Errorf("native AI command modifier selector unavailable")
+	}
+	if err := s.nativeAICommandOriginInGrid(origin); err != nil {
+		return nil, err
 	}
 	if commandID < 17 || commandID > 19 || len(s.NativeCommandBook) != NativeCommandRecordCount ||
 		s.NativeCommandBook[commandID].ID != commandID {
@@ -61,8 +64,7 @@ func (s *State) NativeAICommandModifierTargets(actor *Unit, commandID int) ([]*U
 		return nil, err
 	}
 	indices, err := nativeAIScoredCommandTargetIndices(
-		s.W, s.H, records, len(s.Units),
-		Cell{X: int(actor.NativeMapPresentation.X), Y: int(actor.NativeMapPresentation.Y)},
+		s.W, s.H, records, len(s.Units), origin,
 		record.EffectMode, targetCode, flags,
 	)
 	if err != nil {
@@ -93,8 +95,8 @@ func (s *State) ExecuteNativeCommandModifier(actor, confirmed *Unit, commandID i
 
 // ExecuteNativeAICommandModifier consumes only the raw target array rebuilt
 // for the recovered mode-11 owner.
-func (s *State) ExecuteNativeAICommandModifier(actor *Unit, commandID int, rngState uint16) (NativeCommandModifierResult, error) {
-	plan, err := s.PlanNativeAICommandModifier(actor, commandID, rngState)
+func (s *State) ExecuteNativeAICommandModifier(actor *Unit, origin Cell, commandID int, rngState uint16) (NativeCommandModifierResult, error) {
+	plan, err := s.PlanNativeAICommandModifier(actor, origin, commandID, rngState)
 	if err != nil {
 		return NativeCommandModifierResult{}, err
 	}
@@ -124,11 +126,11 @@ type NativeAICommandModifierPlan struct {
 	completed bool
 }
 
-func (s *State) PlanNativeAICommandModifier(actor *Unit, commandID int, rngState uint16) (*NativeAICommandModifierPlan, error) {
+func (s *State) PlanNativeAICommandModifier(actor *Unit, origin Cell, commandID int, rngState uint16) (*NativeAICommandModifierPlan, error) {
 	if actor == nil || actor.Acted {
 		return nil, fmt.Errorf("native AI command modifier actor unavailable")
 	}
-	targets, err := s.NativeAICommandModifierTargets(actor, commandID)
+	targets, err := s.NativeAICommandModifierTargets(actor, origin, commandID)
 	if err != nil {
 		return nil, err
 	}
