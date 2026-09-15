@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-> 2026-09-08 最新交接：使用者要求暫停自動對拍，其餘人工測試；v.1.0.19 完整包與本輪修正／未通過項目以 [94](94-ch01-town-parity-20260908.md) 為準，不宣稱開場至城鎮雙側驗收完成。
+> 2026-09-15 起，全戰役原版一致依 [111](111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
 
 2026-09-08 最新長鏈勘誤：正常 START 實跑揭露普通物理 EXP 資料邊界與
 JOIN 先於登場的來源要求兩個阻塞，依既有／補齊的原版證據修正於 v.1.0.14／15。
@@ -282,6 +282,13 @@ map0＋item79 交叉 fixture 固定 score8、`(19,15)`、slot0，屬靜態 E0，
 | E1 | deterministic parser、pixel/byte regression、資產 round-trip | 可以，需能重跑且輸出穩定 |
 | E2 | DOSBox/Xvfb 實機操作、逐幀截圖／輸入差分 | 可以，需保存 command、frame、artifact |
 | E3 | 攻略、影片、視覺推論或 UX 慣例 | 只能列為假設，不得解除 native/handler gate |
+
+**E2 的建構槽例外（使用者 2026-09-15 定案）**：依
+[`111`](111-goal-original-parity-campaign-20260915.md)取得的章收據——受版控
+工具依攻略校準的存檔槽、原版 LOAD 合法性檢查通過、章內全程正常鍵盤輸入、
+抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點——視同該章 `PLAYER-E2`。
+收據記錄槽來源與 `state_injections` 是出處要求，不構成降級。這條例外只
+適用於 `111` 的章收據，不回溯改寫更早的 E2 判定，也不放寬其他修改路徑。
 
 本輪重新核對的已知更正：`0x16559` 是 DATO mouth-frame／glyph blit caller，`0x4ea2a` 才是 native glyph renderer；`0x2c435 push 0x1e`、`0x2c437 call 0x1088d` 會在 loader 內選 FDTXT archive resource #31，不能把 raw selector `0x1e` 或實體欄位直接命名成 ch30；`0x2c548` 有 `i=0→slot1、i=1→slot0` swap；`0x29164` 第一參數是 party unit index，TAI#3 是 7-byte transparent aux，不是可見台座。這些結論不可再由名稱外推 renderer 語意。
 

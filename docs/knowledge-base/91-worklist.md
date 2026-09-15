@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 11 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 10 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -61,23 +61,15 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 怎樣算做完：挑代表性的玩家與敵方回合，以未修改路徑取得同狀態逐幀與音訊對照。
 
-### 戰間介面待早中晚期自動原版對拍
-
-`town-shop-ui-e2-sampling` · 工作 · [#13](https://github.com/wicanr2/fd2_re/issues/13) · 仍未完成 · 還沒出現
-
-城鎮、商店、教會、整備與祕密商店的原版 E2 目前只覆蓋 ch02；早、中、晚期還缺同狀態抽樣。
-
-2026-09-14 決議：不再等待人工操作。由代理程式以 dosgolem 作原版權威執行器，對早、中、晚期代表章節各取得正常玩家路徑收據，再由重製端重播等價輸入並自動比較。不得用 direct-entry、修改 HP 或鄰近畫面冒充 E2；若 dosgolem 缺能力，先補能力再重生收據。
-
-怎樣算做完：選早期、中期、晚期各一章，以未修改正常玩家路徑進入城鎮，對商店、教會、整備與該章可達的祕密商店做風險導向抽樣；dosgolem 原版與重製端固定存檔／狀態、輸入、畫格、版本與素材雜湊，自動比較節點、交易、存檔邊界及代表畫面。結果寫入 docs/data/ui-traces/town-shop-early-mid-late-e2.json，三章 coverage 與 receipt schema／差異 gate 測試全通過才完成。
-
 ### 戰後節點缺完整玩家路徑驗收
 
-`campaign-postbattle-e2-full` · 工作 · [#14](https://github.com/wicanr2/fd2_re/issues/14) · 仍未完成 · 要人判
+`campaign-postbattle-e2-full` · 工作 · [#14](https://github.com/wicanr2/fd2_re/issues/14) · 仍未完成 · 還沒出現
 
-已綁定的章節各自有窄 `RUNTIME-E1`，但沒有每一章都以未修改一般玩家路徑走過戰後節點、城鎮與存檔邊界。長程漂移依 2026-08-23 的決定改由人工遊玩後回報。
+已綁定的章節各自有窄 `RUNTIME-E1`，但沒有每一章都以同狀態走過戰前對白、戰鬥節拍、戰後節點、城鎮與存檔邊界並與原版比較。
 
-怎樣算做完：人工遊玩回報的缺陷各自建立窄重現案例並修掉。
+2026-09-15 決議（取代 2026-08-23 的「交人工遊玩回報」）：由代理程式依 [`111` 目標提示詞](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/111-goal-original-parity-campaign-20260915.md) 用 dosgolem 逐章推進 30 章。起點用受版控工具依攻略校準的建構槽跳關，章內全程正常鍵盤輸入，抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點；這條路徑視同該章 `PLAYER-E2`。四個 gate（行為、節點、交易零容忍；代表畫面 ≤1% 差異像素）都過才算一章完成，進度台帳是 `docs/data/parity-campaign-progress.json`。
+
+怎樣算做完：30 章各自依 111 的章工作單元取得原版／重製收據，四個 gate 全過；parity-campaign-progress.json 的 all_chapters_passed 為 true。
 
 ### 曲號與音效還需要人耳確認
 
