@@ -1,0 +1,29 @@
+import json
+import sys
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import verify_chapter_parity as vp  # noqa: E402
+
+
+class PairingAndUnits(unittest.TestCase):
+    def test_after_enemy_phase_pairs_with_the_next_action(self):
+        actions = [{"kind": "end_turn", "seq": 50}, {"kind": "select", "seq": 80}, {"kind": "move", "seq": 95}]
+        self.assertEqual(vp.pair_oracle_seq(actions, {"kind": "after_enemy_phase", "oracle_seq": 50}), 80)
+        self.assertEqual(vp.pair_oracle_seq(actions, {"kind": "move", "oracle_seq": 95}), 95)
+        self.assertIsNone(vp.pair_oracle_seq(actions, {"kind": "after_enemy_phase", "oracle_seq": 95}))
+        self.assertIsNone(vp.pair_oracle_seq(actions, {"kind": "town_loaded", "oracle_seq": 0}))
+
+    def test_dead_oracle_units_are_dropped(self):
+        cp = {"units": [{"camp": 0, "x": 1, "y": 2, "hp": 0}, {"camp": 2, "x": 3, "y": 4, "hp": 9}]}
+        self.assertEqual(vp.oracle_units(cp), {(2, 3, 4)})
+        self.assertEqual(vp.oracle_hp(cp), {(2, 3, 4): 9})
+
+    def test_remake_units_keep_camp_code(self):
+        cp = {"units": [{"camp": 2, "x": 3, "y": 4, "hp": 9, "identity": 0, "acted": 0}]}
+        self.assertEqual(vp.remake_units(cp), {(2, 3, 4)})
+
+
+if __name__ == "__main__":
+    unittest.main()

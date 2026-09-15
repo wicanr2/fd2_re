@@ -177,7 +177,7 @@ def main() -> int:
     p.add_argument("--out-dir", required=True)
     p.add_argument("--out-slot", type=int, default=-1)
     p.add_argument("--gold", type=int, default=-1)
-    p.add_argument("--levels-per-chapter", type=int, default=1)
+    p.add_argument("--levels-per-chapter", type=int, default=0)
     p.add_argument("--level-overrides", default="")
     p.add_argument("--seed", type=int, default=0)
     p.set_defaults(func=cmd_build)

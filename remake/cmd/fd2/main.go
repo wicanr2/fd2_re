@@ -3476,6 +3476,10 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	adoptHandlerState := len(g.storyActors) > 0 &&
 		g.storyRosterPath == unitsPath &&
 		g.storyPartyScenario == scnPath
+	if g.cutsceneLog {
+		fmt.Fprintf(os.Stderr, "[cutscene] battle adopt=%v actors=%d roster=%q/%q scenario=%q/%q\n",
+			adoptHandlerState, len(g.storyActors), g.storyRosterPath, unitsPath, g.storyPartyScenario, scnPath)
+	}
 	handlerActors := g.storyActors
 	handlerRoster := g.storyRoster
 	g.storyActors, g.storyRoster, g.storySpawned = nil, nil, nil

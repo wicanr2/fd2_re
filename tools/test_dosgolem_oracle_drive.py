@@ -9,6 +9,7 @@
 """
 
 import importlib.util
+import json
 import os
 import pathlib
 import shutil
@@ -663,3 +664,35 @@ class ApproachWhenNothingIsInRange(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ActionLog(unittest.TestCase):
+    """語意動作紀錄：重製端重播讀的是這份，不是方向鍵次數。"""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.old_run = drive.RUN
+        drive.RUN = self.tmp
+        self.addCleanup(setattr, drive, "RUN", self.old_run)
+
+    def test_records_seq_round_rng_and_fields(self):
+        current = {"control_seq": 42, "view": {"round": 3, "rng_word": 0x1234, "gold": 2000}}
+        made = drive.log_action("attack", current, frm=[8, 17], target=[8, 16])
+        self.assertEqual(made["seq"], 42)
+        self.assertEqual(made["round"], 3)
+        self.assertEqual(made["rng_word"], 0x1234)
+        self.assertEqual(made["gold"], 2000)
+        with open(os.path.join(self.tmp, "actions.jsonl"), encoding="utf-8") as handle:
+            lines = [json.loads(l) for l in handle]
+        self.assertEqual(len(lines), 1)
+        self.assertEqual(lines[0]["kind"], "attack")
+        self.assertEqual(lines[0]["target"], [8, 16])
+
+    def test_appends_in_order(self):
+        current = {"control_seq": 1, "view": {}}
+        drive.log_action("select", current, at=[1, 1])
+        drive.log_action("end_turn", dict(current, control_seq=2))
+        with open(os.path.join(self.tmp, "actions.jsonl"), encoding="utf-8") as handle:
+            kinds = [json.loads(l)["kind"] for l in handle]
+        self.assertEqual(kinds, ["select", "end_turn"])

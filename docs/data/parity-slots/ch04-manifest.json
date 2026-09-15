@@ -1,0 +1,749 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_slot_manifest",
+  "tool": "remake/cmd/fd2-chapter-slot",
+  "base_save": "/base/FD2.SAV",
+  "base_sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
+  "base_slot": 0,
+  "base_chapter": 2,
+  "target_chapter": 3,
+  "out_slot": 0,
+  "output_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+  "evidence_sources": {
+    "command_learn": "assets/data/command_learn.json（升級學指令，learn_idx 來自成長列）",
+    "growth": "assets/data/class_change_growth.json（0x55EA1，68 列，+7 選列）",
+    "handler_ch01": "assets/cutscenes/handlers/ch00_post.json @0x22ef6",
+    "handler_ch02": "assets/cutscenes/handlers/ch01_post.json @0x22f37",
+    "handler_ch03": "assets/cutscenes/handlers/ch02_post.json @0x230f2",
+    "handler_ch04": "assets/cutscenes/handlers/ch03_post.json @0x231bc",
+    "handler_ch05": "assets/cutscenes/handlers/ch04_post.json @0x231f9",
+    "handler_ch06": "assets/cutscenes/handlers/ch05_post.json @0x23296",
+    "handler_ch07": "assets/cutscenes/handlers/ch06_post.json @0x232e8",
+    "handler_ch08": "assets/cutscenes/handlers/ch07_post.json @0x234bb",
+    "handler_ch09": "assets/cutscenes/handlers/ch08_post.json @0x235bc",
+    "handler_ch10": "assets/cutscenes/handlers/ch09_post.json @0x235f9",
+    "handler_ch11": "assets/cutscenes/handlers/ch10_post.json @0x23790",
+    "handler_ch12": "assets/cutscenes/handlers/ch11_post.json @0x237d5",
+    "handler_ch13": "assets/cutscenes/handlers/ch12_post.json @0x2389f",
+    "handler_ch14": "assets/cutscenes/handlers/ch13_post.json @0x238dc",
+    "handler_ch15": "assets/cutscenes/handlers/ch14_post.json @0x239bd",
+    "handler_ch16": "assets/cutscenes/handlers/ch15_post.json @0x23a0a",
+    "handler_ch17": "assets/cutscenes/handlers/ch16_post.json @0x23b5f",
+    "handler_ch18": "assets/cutscenes/handlers/ch17_post.json @0x23cd5",
+    "handler_ch19": "assets/cutscenes/handlers/ch18_post.json @0x23e39",
+    "handler_ch20": "assets/cutscenes/handlers/ch19_post.json @0x23e74",
+    "handler_ch21": "assets/cutscenes/handlers/ch20_post.json @0x240fa",
+    "handler_ch22": "assets/cutscenes/handlers/ch21_post.json @0x244b6",
+    "handler_ch23": "assets/cutscenes/handlers/ch22_post.json @0x24754",
+    "handler_ch24": "assets/cutscenes/handlers/ch23_post.json @0x24c1e",
+    "handler_ch25": "assets/cutscenes/handlers/ch24_post.json @0x24df2",
+    "handler_ch26": "assets/cutscenes/handlers/ch25_post.json @0x24e80",
+    "handler_ch27": "assets/cutscenes/handlers/ch26_post.json @0x250cc",
+    "handler_ch28": "assets/cutscenes/handlers/ch27_post.json @0x25464",
+    "handler_ch29": "assets/cutscenes/handlers/ch28_post.json @0x2548c",
+    "handler_ch30": "assets/cutscenes/handlers/ch29_post.json @0x25757",
+    "item_rows": "assets/data/native_item_effect_rows.json（0x602ad 列表，0x1145a／0x1B750 重算）",
+    "join_constructor": "assets/data/native_join_constructor.json（sub_112A5，0x55ba1／0x55ea1）"
+  },
+  "applied": [
+    {
+      "chapter": 3,
+      "op": "join",
+      "char_id": 2,
+      "source": {
+        "addr": "0x231af",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 6
+    }
+  ],
+  "level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+  "seed": 3,
+  "level_steps": [
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 1,
+      "to_level": 2,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        8,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        2,
+        8,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        3,
+        1,
+        8,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        1,
+        6,
+        5
+      ],
+      "learned_command_ids": [
+        17
+      ]
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        5,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        1,
+        7,
+        7
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        8,
+        3,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        12,
+        3,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        8,
+        3,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        11,
+        6,
+        3,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        6,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        12,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 1,
+      "to_level": 2,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        1,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    }
+  ],
+  "assumptions": [
+    {
+      "chapter": 3,
+      "kind": "if",
+      "detail": "any_unit_inactive→false（假設無人陣亡）"
+    }
+  ],
+  "roster": [
+    {
+      "roster_slot": 0,
+      "key7": 0,
+      "identity8": 0,
+      "race": 1,
+      "class": 1,
+      "level": 8,
+      "exp": 44,
+      "hp": 109,
+      "max_hp": 109,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 61,
+      "dp": 44,
+      "hit": 111,
+      "ev": 16,
+      "inventory_cells_hex": "4000408400c080ff80ff80ff800080c9"
+    },
+    {
+      "roster_slot": 1,
+      "key7": 9,
+      "identity8": 9,
+      "race": 1,
+      "class": 5,
+      "level": 7,
+      "exp": 78,
+      "hp": 70,
+      "max_hp": 70,
+      "mp": 42,
+      "max_mp": 42,
+      "ap": 38,
+      "dp": 25,
+      "hit": 95,
+      "ev": 10,
+      "inventory_cells_hex": "403440a480ff80ff80ff80ff80c380c1"
+    },
+    {
+      "roster_slot": 2,
+      "key7": 4,
+      "identity8": 4,
+      "race": 1,
+      "class": 3,
+      "level": 11,
+      "exp": 78,
+      "hp": 137,
+      "max_hp": 137,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 91,
+      "dp": 46,
+      "hit": 112,
+      "ev": 22,
+      "inventory_cells_hex": "4014408000c000c000c080ff803f803f"
+    },
+    {
+      "roster_slot": 3,
+      "key7": 30,
+      "identity8": 30,
+      "race": 6,
+      "class": 25,
+      "level": 8,
+      "exp": 29,
+      "hp": 121,
+      "max_hp": 121,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 102,
+      "dp": 77,
+      "hit": 111,
+      "ev": 21,
+      "inventory_cells_hex": "404840b280ff80ff80ff80ff80f180ed"
+    },
+    {
+      "roster_slot": 4,
+      "key7": 1,
+      "identity8": 1,
+      "race": 1,
+      "class": 2,
+      "level": 7,
+      "exp": 84,
+      "hp": 110,
+      "max_hp": 110,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 73,
+      "dp": 34,
+      "hit": 104,
+      "ev": 9,
+      "inventory_cells_hex": "4020408080ff80ff80ff80ff80ff80ff"
+    },
+    {
+      "roster_slot": 5,
+      "key7": 8,
+      "identity8": 8,
+      "race": 1,
+      "class": 4,
+      "level": 9,
+      "exp": 0,
+      "hp": 86,
+      "max_hp": 86,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 71,
+      "dp": 33,
+      "hit": 113,
+      "ev": 18,
+      "inventory_cells_hex": "402c408180ff80ff80ff80ff80ff80ff"
+    },
+    {
+      "roster_slot": 6,
+      "key7": 2,
+      "identity8": 2,
+      "race": 1,
+      "class": 1,
+      "level": 4,
+      "exp": 0,
+      "hp": 61,
+      "max_hp": 61,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 34,
+      "dp": 18,
+      "hit": 103,
+      "ev": 8,
+      "inventory_cells_hex": "4000408080ff80ff80ff80ff80008000"
+    }
+  ],
+  "roster_count": 7,
+  "recalc_check": "基底 6 筆隊員套 0x1B750 重算皆恆等",
+  "known_deviations": [
+    "經驗值、擊殺帶來的升級、金幣與掉落物品（死亡獎勵、寶箱）全部依實際遊玩而定，本工具不模擬；等級與金幣只能靠 -levels-per-chapter／-level-overrides／-gold 明示。",
+    "紀錄 +0x00..+0x04（戰場座標等）與 +0x28..+0x36 隨遊玩漂移，保留基底值。",
+    "JOIN 建構器輸出的物品格 6／7 是 80 00，真實原版存檔是 80 ff（旗標 bit7 置位時 item byte 不被消費）；差異已登記待解。"
+  ]
+}

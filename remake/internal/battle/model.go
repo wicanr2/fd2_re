@@ -1118,6 +1118,18 @@ func Load(path string) (*State, error) {
 			nu.NativeRecordWord46, nu.HasNativeRecordWord46 = *u.NativeRecordWord46, true
 			nu.MP, nu.MaxMP = int(*u.NativeRecordWord46), int(*u.NativeRecordWord46)
 		}
+		if u.NativeConstructor != nil {
+			// 0x10C50 建構器把表列的移動力寫進 runtime +0x3b（high_class record[8]、
+			// lower_class record[7]）。authored `mv` 是早期由職業表猜的值；第四章
+			// dosgolem 收據證實 map3 劍士 +0x3b=4、弓兵／法師=3，JSON 卻全是 6，敵方
+			// 回合一走就分岔。增援已由 AppendGroupWithNativePlacement 走同一份表，
+			// 開局群組在這裡補齊。
+			base, err := DecodeNativeFutureConstructorBase(u.NativeConstructor, byte(u.Lv))
+			if err != nil {
+				return nil, fmt.Errorf("battle: unit %d native_constructor: %w", len(st.Units), err)
+			}
+			nu.MV, nu.BaseMV = int(base.Mobility), int(base.Mobility)
+		}
 		if err := nu.SetInitialCommandMask(u.InitialCommandMask); err != nil {
 			return nil, fmt.Errorf("battle: unit %d initial_command_mask: %w", len(st.Units), err)
 		}

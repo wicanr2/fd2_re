@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 11 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -60,6 +60,32 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 native-0／native-1／native-7／native-96 的多個候選名稱已由資料本身分成兩類：章節互不重疊的是同一身份在不同段落的稱呼（索爾／索爾(少年)、刺客／蘭斯洛特），同章且共同前綴加單一編號的是多個雜兵共用一個 sprite（強盜 B/C/L/M/N）。診斷都帶著章節依據，severity 從 error 降為 note，canonical 已無未分類衝突。剩下的是人複核那個分類對不對——判準是從資料算的，不是從劇情知識來的。
 
 怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
+
+## runtime — 還沒接進正式執行期
+
+### 酒店存檔沒有寫原版 FD2.SAV 章節槽 bytes
+
+`hotel-save-native-slot-bytes` · 缺陷 · [#24](https://github.com/wicanr2/fd2_re/issues/24) · 仍未完成 · 自承還在 docs/data/ui-traces/parity-ch04.json
+
+原版酒店存檔（0x30012）把 32 筆 0x50 持續紀錄與 +0..+9 metadata 寫進 FD2.SAV 的四槽區（0x312B + slot×0xA28），標題 LOAD 讀回同一區。重製端 `saveGameToSlot` 只寫自有 JSON；只有戰場系統選單 SAVE 走 `buildNativeCurrentSaveStored` 寫 current 區。111 的交易 gate 要比兩側酒店寫出的槽 bytes，目前重製側沒有可比的輸出，第四章起每章收據的存檔項都會 blocked。要做：以 `campaign.BuildNativeCurrentPersistentRecords` 同一套紀錄投影＋`fdsave.WriteSlot`／`Encode` 在酒店存檔時同步寫原版四槽（FD2_NATIVE_SAVE 有指定時），metadata +0 chapter、+1 count、+2..+5 gold、+6..+9 依 0x30012 的 writer。
+
+怎樣算做完：酒店存檔後 FD2_NATIVE_SAVE 的對應槽 bytes 與原版同狀態存檔相同（第四章收據交易 gate 的 save 項由 blocked 轉 ok）。
+
+### 第四章敵方回合 mode 0 移動終點與原版分岔（17 個中 11 個）
+
+`enemy-mode0-destination-divergence-ch04` · 缺陷 · [#25](https://github.com/wicanr2/fd2_re/issues/25) · 仍未完成 · 還沒出現
+
+111 第四章對拍：同一份建構槽、同一回合（第 1 回合我方全員不動、END），原版 17 個 group 1 敵人的第 1 回合終點與重製端只有 6 個相同。修正 MV（見同批提交：Load 時以 0x10C50 建構器 record 的移動力覆寫 authored `mv`）之後仍差 11 個，型態像是同分候選的掃描順序或先動單位佔格後的連鎖：例如 index 8 (9,1) 原版到 (8,3)、重製端到 (9,4)；index 9 (10,2) 原版到 (9,4)、重製端到 (8,3)，兩者對調。所有敵人 +0x34=0（mode 0）、+0x3b=4/3。原版逐單位終點在 `docs/data/ui-traces/parity-ch04.json` 的 behavior gate 點（after_enemy_phase）與 `work/parity-slot-ch04/sample-r*/checkpoint-*.json`。要回 `0x14121`／`0x13E9C`／`0x4E1A6` 對照 native_ai_destination.go 的候選排序與佔格更新順序。
+
+怎樣算做完：第四章收據 after_enemy_phase 第 1 回合 17 個敵人終點全部相同（behavior gate 該點 ok）。
+
+### 敵方施法時 native AI command damage target array is empty 失敗即關閉
+
+`ai-command-damage-empty-target-array` · 缺陷 · [#26](https://github.com/wicanr2/fd2_re/issues/26) · 仍未完成 · 自承還在 docs/data/ui-traces/parity-ch04.json
+
+111 第四章重播：第 3 回合敵方回合（法師 fig 90／93 在場）重製端執行期錯誤 `native AI action: native AI command damage target array is empty`（remake/internal/battle/native_command0.go PlanNativeAICommandDamage）。0x14EF0 路由已選定 command 與目的地，但執行時以 actor 的 NativeMapPresentation 座標重建目標陣列得到空集合；懷疑移動與施法之間 presentation 座標未更新，或目的地選擇與目標判定用了不同座標。原版同一回合正常施法（第四章 r2 收據悠妮被火炎術打中的畫面）。重現：`tools/chapter_parity.sh 4 work/parity-slot-ch04 <sample-run> <out>`，replay.log 最後一筆 runtime_error。
+
+怎樣算做完：第四章重播能走完敵方回合不出 loadErr；收據不再出現 runtime_error 點。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

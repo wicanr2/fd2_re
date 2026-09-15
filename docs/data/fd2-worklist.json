@@ -199,6 +199,57 @@
         "note": "建槽工具 known_deviations 裡自承的那一句；解掉就拿掉。"
       },
       "issue": 23
+    },
+    {
+      "id": "hotel-save-native-slot-bytes",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "酒店存檔沒有寫原版 FD2.SAV 章節槽 bytes",
+      "body": "原版酒店存檔（0x30012）把 32 筆 0x50 持續紀錄與 +0..+9 metadata 寫進 FD2.SAV 的四槽區（0x312B + slot×0xA28），標題 LOAD 讀回同一區。重製端 `saveGameToSlot` 只寫自有 JSON；只有戰場系統選單 SAVE 走 `buildNativeCurrentSaveStored` 寫 current 區。111 的交易 gate 要比兩側酒店寫出的槽 bytes，目前重製側沒有可比的輸出，第四章起每章收據的存檔項都會 blocked。要做：以 `campaign.BuildNativeCurrentPersistentRecords` 同一套紀錄投影＋`fdsave.WriteSlot`／`Encode` 在酒店存檔時同步寫原版四槽（FD2_NATIVE_SAVE 有指定時），metadata +0 chapter、+1 count、+2..+5 gold、+6..+9 依 0x30012 的 writer。",
+      "acceptance": "酒店存檔後 FD2_NATIVE_SAVE 的對應槽 bytes 與原版同狀態存檔相同（第四章收據交易 gate 的 save 項由 blocked 轉 ok）。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ui-traces/parity-ch04.json"
+        ],
+        "pattern": "\"blocked_by\": \"24\"",
+        "note": "第四章收據交易 gate 的 save 項仍標 blocked_by 24；接上原版槽寫入、收據重生後這個標記就消失。"
+      },
+      "issue": 24
+    },
+    {
+      "id": "enemy-mode0-destination-divergence-ch04",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第四章敵方回合 mode 0 移動終點與原版分岔（17 個中 11 個）",
+      "body": "111 第四章對拍：同一份建構槽、同一回合（第 1 回合我方全員不動、END），原版 17 個 group 1 敵人的第 1 回合終點與重製端只有 6 個相同。修正 MV（見同批提交：Load 時以 0x10C50 建構器 record 的移動力覆寫 authored `mv`）之後仍差 11 個，型態像是同分候選的掃描順序或先動單位佔格後的連鎖：例如 index 8 (9,1) 原版到 (8,3)、重製端到 (9,4)；index 9 (10,2) 原版到 (9,4)、重製端到 (8,3)，兩者對調。所有敵人 +0x34=0（mode 0）、+0x3b=4/3。原版逐單位終點在 `docs/data/ui-traces/parity-ch04.json` 的 behavior gate 點（after_enemy_phase）與 `work/parity-slot-ch04/sample-r*/checkpoint-*.json`。要回 `0x14121`／`0x13E9C`／`0x4E1A6` 對照 native_ai_destination.go 的候選排序與佔格更新順序。",
+      "acceptance": "第四章收據 after_enemy_phase 第 1 回合 17 個敵人終點全部相同（behavior gate 該點 ok）。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/data/ui-traces/parity-ch04.json"
+        ],
+        "pattern": "\"kind\": \"after_enemy_phase\",\\s*\"status\": \"ok\"",
+        "note": "第四章收據第一個敵方回合點還沒 ok。"
+      },
+      "issue": 25
+    },
+    {
+      "id": "ai-command-damage-empty-target-array",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "敵方施法時 native AI command damage target array is empty 失敗即關閉",
+      "body": "111 第四章重播：第 3 回合敵方回合（法師 fig 90／93 在場）重製端執行期錯誤 `native AI action: native AI command damage target array is empty`（remake/internal/battle/native_command0.go PlanNativeAICommandDamage）。0x14EF0 路由已選定 command 與目的地，但執行時以 actor 的 NativeMapPresentation 座標重建目標陣列得到空集合；懷疑移動與施法之間 presentation 座標未更新，或目的地選擇與目標判定用了不同座標。原版同一回合正常施法（第四章 r2 收據悠妮被火炎術打中的畫面）。重現：`tools/chapter_parity.sh 4 work/parity-slot-ch04 <sample-run> <out>`，replay.log 最後一筆 runtime_error。",
+      "acceptance": "第四章重播能走完敵方回合不出 loadErr；收據不再出現 runtime_error 點。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ui-traces/parity-ch04.json"
+        ],
+        "pattern": "command damage target array is empty",
+        "note": "第四章收據裡的 runtime_error 註記；修掉重跑收據就消失。"
+      },
+      "issue": 26
     }
   ]
 }

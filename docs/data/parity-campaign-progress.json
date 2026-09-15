@@ -52,15 +52,17 @@
     },
     {
       "chapter": 4,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
+      "status": "oracle-done",
+      "receipt": "docs/data/ui-traces/parity-ch04.json",
+      "slot_manifest": "docs/data/parity-slots/ch04-manifest.json",
+      "slot_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+      "dosgolem_commit": "36f0389493eb3dd22f0961abea35db5f1d42cb7a",
       "date": "2026-09-15",
-      "verify": null,
+      "verify": "FD2_PARITY_SAVE_ISSUE=24 tools/chapter_parity.sh 4 work/parity-slot-ch04 <dosgolem run> <out>；原版側：tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch04-sample.jsonl（FD2_ORACLE_FORCE_ENEMY_CLEAR=1）",
       "limitations": [
-        "既有收據是受控清場的節點閉環（無戰鬥抽樣、無畫面 gate）；未依 111 四 gate 重生"
+        "原版側整章計畫跑完（LOAD→出口→4 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店）",
+        "重製側重播在第 3 回合敵方回合以 loadErr 中止（#26 施法空目標陣列）；第 1 回合敵方終點 17 個中 11 個分岔（#25）；酒店存檔無原版槽 bytes 可比（#24）",
+        "town_loaded 11 px、departure_prompt 0 px、battle_start 362 px 已在 1% 內；其餘畫面差異源自單位分岔"
       ],
       "prior_receipts": [
         "docs/data/ch04-clear-receipt-20260914.json"

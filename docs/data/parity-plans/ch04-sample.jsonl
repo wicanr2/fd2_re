@@ -1,0 +1,41 @@
+# 第四章抽樣（111 章工作單元）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 3 章」槽（--levels-per-chapter 6：存活政策，第一輪 +1 級時索爾在第 3 回合敵方回合被法術打死、整場戰敗）。
+# 可抽項目（remake/assets/scenarios/ch04.json）：塞拉村前 map3、開局 group 1（17 敵）、第 4 回合結束 event 11 增援 group 2（4 敵）、死亡程式 2:12／3:6；戰後 handler ch03_post 只有對白＋sync_party＋set_chapter 4。
+# 章內全程正常 BIOS 鍵；只有抽完第 4 回合增援之後的 force_enemy_clear 是注入（收據 state_injections 記錄）。
+# --- 標題 LOAD 槽 0 → 城鎮 ---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前對白 → 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":120}
+{"await_ui":"cursor","steps":10000000,"max":60}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～2 回合：守在出發格（打得到才打，不推進），END 換手；第 3～4 回合全員接戰 ---
+{"sweep_round":true,"advance":false,"steps":2000000}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"steps":2000000}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"steps":2000000}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"steps":2000000}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":260}
+# --- 第 4 回合結束的增援已登場：清場（修改路徑）→ END → 戰後對白 → 城鎮 ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（原版 chapter 已是 4，城鎮記錄 index 3＝重製端 town_ch05）：武器店出售一件（選項 1）→ 四棟建築各探一次 → 酒店存檔 → 道具店（選項 3）上 Shift+F4 進祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"town_probe":{"moves":["left","left","left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":["left","left","left"],"key":"shift-f4"},"steps":10000000}

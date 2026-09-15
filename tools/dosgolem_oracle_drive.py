@@ -174,6 +174,41 @@ def report(seq, key, current, note=""):
     )
 
 
+def log_action(kind, current=None, **fields):
+    """把驅動端做的**語意決定**（選哪個單位、走到哪、打誰、待機、結束回合、進哪棟
+    建築）追加到 ``actions.jsonl``。重製端重播讀這份，不是讀方向鍵次數：兩側游標
+    走的路可以不同，決定必須相同。每筆帶當下的 control_seq、回合與亂數字組。"""
+    current = current or state()
+    view = current.get("view", {}) or {}
+    record = {"kind": kind, "seq": current.get("control_seq"),
+              "round": view.get("round"), "rng_word": view.get("rng_word"),
+              "gold": view.get("gold"), **fields}
+    if os.path.isdir(RUN):  # 單元測試把 state() 換掉、沒有輸出目錄；正式跑時 /out 一定在
+        with open(os.path.join(RUN, "actions.jsonl"), "a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+    return record
+
+
+def town_seen(steps, count=6):
+    """戰後城鎮畫面的輸入鏈每格會在 town／unknown 之間閃（第四章 r3／r4 實測），
+    單次取樣不可靠；連續前進幾格，有一格是 town 就算在城鎮。"""
+    for _ in range(count):
+        if ui_mode(state()) == "town":
+            return True
+        send("", steps)
+    return ui_mode(state()) == "town"
+
+
+def do_mark(command):
+    """語意標記：不送鍵，只把當下的 control_seq 記成 ``mark``，讓重製端在同一個
+    節點（例如剛進城鎮、出口提示、戰場交出操作權）取畫面對照。"""
+    label = str(command.get("mark"))
+    current = state()
+    log_action("mark", current, label=label, ui=ui_mode(current))
+    print(f"mark={label} seq={current.get('control_seq')} ui={ui_mode(current)}", flush=True)
+    return True
+
+
 def do_force_enemy_clear(command):
     """請 oracle 在控制邊界把目前 camp 0 HP 清成 0，並核對快照。
 
@@ -199,13 +234,25 @@ def do_force_enemy_clear(command):
         print("force_enemy_clear：oracle checkpoint 未揭露注入紀錄",
               file=sys.stderr)
         return False
+    log_action("force_enemy_clear", current, cleared=count, modified_path=True)
     if command.get("end_turn", True) and in_battle(current):
         if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
                              int(command.get("cutscene_max", 40))):
+            # 清場在回合邊界生效時，原版會直接判勝利、播戰後對白進城鎮；那不是
+            # 「回不到游標」，是這一場已經結束（第四章 r3 實測）。
+            if town_seen(int(command.get("cutscene_steps", 5_000_000))):
+                print("force_enemy_clear：清場後原版直接進入戰後城鎮", flush=True)
+                return True
             print("force_enemy_clear：清場後無法回到戰場游標",
                   file=sys.stderr)
             return False
+        if town_seen(int(command.get("cutscene_steps", 5_000_000))):
+            print("force_enemy_clear：清場後原版直接進入戰後城鎮", flush=True)
+            return True
         if in_battle(state()) and not end_turn(command):
+            if town_seen(int(command.get("cutscene_steps", 5_000_000))):
+                print("force_enemy_clear：清場後原版直接進入戰後城鎮", flush=True)
+                return True
             print("force_enemy_clear：清場後無法結束回合",
                   file=sys.stderr)
             return False
@@ -475,6 +522,7 @@ UI_MODES = (
                               # up 與 down 無效，enter 進入目前那一棟
     ("grid", "0x1BC8E"),      # 指令 grid（六格圖示，`0x1BBDC` 那組 chooser）
     ("status", "0x1BA37"),    # 單位狀態面板（能力值與裝備）：esc 退得掉
+    ("spell", "0x1D0D4"),     # 指令環 ← 開的法術清單（第四章 r2 悠妮實測一筆；只用來 esc 退回）
     ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
     ("system", "0x16FAE"),    # 空地上按 enter 開的系統選單（含 END）
     ("target", "0x117AE"),    # 選取之後的移動格／攻擊目標選擇
@@ -499,7 +547,7 @@ CURSOR_MODES = {"cursor", "target"}
 # esc 退得掉的介面。指令環也在裡面：回合改用系統選單的 END 結束之後，指令環不再
 # 需要「選一項」——打不到人的單位就退出來，讓它這一回合停在原地。退出會取消這次
 # 移動，單位回到原位；這一回合本來就不動它，沒有損失。
-ESCAPABLE = {"system", "status", "grid", "target", "ring", "shop"}
+ESCAPABLE = {"system", "status", "grid", "target", "ring", "shop", "spell"}
 
 
 def ui_mode(current):
@@ -769,6 +817,8 @@ def do_engage(command):
 
     seq, current = send("enter", steps)
     report(seq, "enter", current, " engage=select")
+    log_action("select", current, at=[ux, uy], fig=unit.get("fig"),
+               identity=unit.get("identity"), index=unit.get("index"), hp=unit.get("hp"))
     mode = wait_mode({"target", "ring", "system"}, steps)
     if mode == "system":
         # 這一格沒有可選單位（走到之後被打死、或本來就選不了），enter 開了系統
@@ -792,6 +842,7 @@ def do_engage(command):
         # 已經站在射程內就原地確認，不必再走。
         seq, current = send("enter", max(steps, 5_000_000))
         report(seq, "enter", current, " engage=stay-in-reach")
+        log_action("stay", current, at=[ux, uy])
     for cell in candidates:
         if not do_goto({"goto": list(cell), "steps": steps, "max": 80}):
             continue
@@ -800,6 +851,7 @@ def do_engage(command):
         if wait_mode({"ring"}, steps) == "ring":
             moved_to = cell
             MOVE_SPAN[unit_key(unit)] = distance(cell, (ux, uy))
+            log_action("move", state(), frm=[ux, uy], to=list(cell))
             break
         print(f"  移動到 {cell} 被拒絕（介面沒進指令環），換下一個候選格", flush=True)
     mode = wait_mode({"ring"}, steps)
@@ -814,6 +866,7 @@ def do_engage(command):
             if mode == "ring":
                 print(f"engage ({ux},{uy}) 走不到任何落腳格，原地行動", flush=True)
                 moved_to = (ux, uy)
+                log_action("stay", state(), at=[ux, uy])
     if mode != "ring":
         print(f"engage ({ux},{uy}) 走完之後介面是 {mode}，指令環沒開", file=sys.stderr)
         return False
@@ -823,11 +876,36 @@ def do_engage(command):
     if in_reach:
         before_hp = sum(e.get("hp", 0) for e in side(state(), ENEMY_CAMP))
         before_count = len(side(state(), ENEMY_CAMP))
+        # 指令環的目前選項不一定是攻擊（第四章 r2：悠妮的環直接 enter 開的是法術清單）。
+        # 先送 up 把攻擊選明，enter 之後不是進 target 就 esc 退回指令環改待機。
+        seq, current = send("up", steps)
+        report(seq, "up", current, " engage=ring-pick-attack")
         seq, current = send("enter", max(steps, 5_000_000))
         report(seq, "enter", current, " engage=ring-attack")
-        wait_mode({"target"}, steps)
+        if wait_mode({"target"}, steps) != "target":
+            mode = ui_mode(state())
+            print(f"engage {moved_to} 指令環 enter 之後是 {mode} 不是攻擊目標，退回後改待機",
+                  flush=True)
+            if mode in ESCAPABLE - {"ring", "target"}:
+                seq, current = send("esc", max(steps, 3_000_000))
+                report(seq, "esc", current, f" engage=not-attack({mode})")
+            current = stand_by(steps, f"={moved_to}")
+            if ui_mode(current) == "ring":
+                print(f"engage {moved_to} 待機失敗，指令環上找不到待機那一項", file=sys.stderr)
+                return False
+            log_action("wait", current, at=list(moved_to))
+            in_reach = None
+    if in_reach:
+        # 攻擊確認前的那一格：游標停在原版自動挑的目標上，亂數字組也還沒被這一擊消耗。
+        armed = state()
+        armed_view = armed.get("view", {}) or {}
+        target_cell = [int(armed_view.get("cursor_x", -1)), int(armed_view.get("cursor_y", -1))]
+        target_unit = unit_at(armed, *target_cell)
         seq, current = send("enter", max(steps, 10_000_000))
         report(seq, "enter", current, " engage=strike")
+        log_action("attack", armed, frm=list(moved_to), target=target_cell,
+                   target_hp_before=(target_unit or {}).get("hp"),
+                   actor_hp_before=(unit_at(armed, *moved_to) or {}).get("hp"))
         current = settle(int(command.get("strike_steps", 10_000_000)),
                          int(command.get("strike_settle", 14)))
         if not in_battle(current):
@@ -838,7 +916,13 @@ def do_engage(command):
         print(f"engage：{moved_to} 敵方總 HP {before_hp}→"
               f"{sum(e.get('hp', 0) for e in after)}、存活 {before_count}→{len(after)}",
               flush=True)
-    else:
+        log_action("attack_result", current, frm=list(moved_to), target=target_cell,
+                   target_hp_after=(unit_at(current, *target_cell) or {}).get("hp", 0),
+                   actor_hp_after=(unit_at(current, *moved_to) or {}).get("hp", 0),
+                   enemy_total_hp_before=before_hp,
+                   enemy_total_hp_after=sum(e.get("hp", 0) for e in after),
+                   enemy_alive_before=before_count, enemy_alive_after=len(after))
+    elif in_reach is not None:
         # 打不到人就待機。**不能用 esc**：esc 在指令環上是「取消這次行動」，原版
         # 會把單位送回移動前那一格——實測走到 (17,15) 開了指令環，送 esc 之後單位
         # 回到 (20,14)，推進整個作廢。第一關看不出來，因為那裡每個單位走一步就
@@ -850,6 +934,7 @@ def do_engage(command):
             print(f"engage {moved_to} 待機失敗，指令環上找不到待機那一項",
                   file=sys.stderr)
             return False
+        log_action("wait", current, at=list(moved_to))
 
     # 收尾只做清理：把介面退回地圖游標，讓下一個單位從已知狀態開始。
     #
@@ -891,6 +976,7 @@ def do_engage(command):
             print(f"engage {moved_to} 待機選不中，取消這個單位的行動", flush=True)
             seq, current = send("esc", max(steps, 3_000_000))
             report(seq, "esc", current, " engage=give-up")
+            log_action("cancel", current, at=list(moved_to))
             settle(steps, 3)
             continue
         if mode in ESCAPABLE:
@@ -952,6 +1038,7 @@ def end_turn(command):
     settle(steps, 4)
     seq, current = send("enter", max(steps, 5_000_000))
     report(seq, "enter", current, " end-turn=yes")
+    log_action("end_turn", current, at=list(cell))
     return True
 
 
@@ -996,6 +1083,7 @@ def do_town_probe(command):
         report(seq, "enter", current, f" town-probe[{index}]")
         current = settle(steps, int(command.get("probe_settle", 5)))
         mode = ui_mode(current)
+        log_action("town_enter", current, probe_index=index, move=move, ui=mode)
         if mode != "town":
             found.append((index, move, mode))
             print(f"town_probe[{index}] 往 {move} 之後 enter → {mode}", flush=True)
@@ -1102,6 +1190,8 @@ def do_town_save(command):
         proof = f"內容相同；成功 DOS 寫入 {after_writes - before_writes} 次"
     print(f"town_save：FD2.SAV 已寫入，大小 {after['FD2.SAV'][0]}（{proof}）",
           flush=True)
+    log_action("town_save", state(), slot=int(command.get("slot", 0)),
+               save_sha256=after["FD2.SAV"][1], proof=proof)
     # 退回城鎮，讓後面的建築切換從已知狀態開始。
     for _ in range(int(command.get("escape_max", 4))):
         if ui_mode(state()) == "town":
@@ -1157,6 +1247,63 @@ def do_shop_probe(command):
     return True
 
 
+
+
+def do_shop_sell(command):
+    """在戰間城鎮走進武器店賣掉第一位隊員的第一件物品，記成語意動作 ``shop_sell``。
+
+    鍵序與 town-shop-ch06/13/27-e2 三份收據相同：left 到武器店（選項 1）、enter、
+    right 切到出售、enter、enter 選第一位、enter 選第一件、enter YES、esc、esc 回城鎮。
+    金幣前後值從 ``view.gold`` 讀，不解析存檔。
+    """
+    command = command_options(command, "shop_sell")
+    steps = int(command.get("steps", 10_000_000))
+    settle_count = int(command.get("settle", 6))
+    if not town_seen(steps):
+        print("shop_sell：目前不在城鎮", file=sys.stderr)
+        return False
+    before = state()
+    gold_before = (before.get("view") or {}).get("gold")
+    for key, note in (("left", "to-weapon-shop"), ("enter", "enter-shop"), ("right", "pick-sell"),
+                      ("enter", "confirm-sell"), ("enter", "first-member"), ("enter", "first-item"),
+                      ("enter", "yes")):
+        seq, current = send(key, max(steps, 10_000_000))
+        report(seq, key, current, f" shop-sell={note}")
+        current = settle(steps, settle_count)
+    current = settle(steps, int(command.get("after_settle", 10)))
+    gold_after = (current.get("view") or {}).get("gold")
+    for _ in range(int(command.get("escape_max", 4))):
+        if ui_mode(state()) == "town":
+            break
+        seq, current = send("esc", max(steps, 10_000_000))
+        report(seq, "esc", current, " shop-sell=leave")
+        current = settle(steps, 4)
+    log_action("shop_sell", state(), building=1, gold_before=gold_before, gold_after=gold_after,
+               sold=(gold_after is not None and gold_before is not None and gold_after != gold_before))
+    print(f"shop_sell：金幣 {gold_before}→{gold_after}", flush=True)
+    return town_seen(steps)
+
+
+def do_secret_shop(command):
+    """在城鎮切到指定建築後送祕密商店的功能鍵 chord，enter 進店，記成 ``secret_shop``。"""
+    command = command_options(command, "secret_shop")
+    steps = int(command.get("steps", 10_000_000))
+    if not town_seen(steps):
+        print("secret_shop：目前不在城鎮", file=sys.stderr)
+        return False
+    for move in command.get("moves") or []:
+        seq, current = send(move, steps)
+        report(seq, move, current, " secret-shop=move")
+    chord = command.get("key", "ctrl-f5")
+    seq, current = send(chord, steps)
+    report(seq, chord, current, " secret-shop=chord")
+    seq, current = send("enter", max(steps, 20_000_000))
+    report(seq, "enter", current, " secret-shop=enter")
+    current = settle(steps, int(command.get("settle", 8)))
+    mode = ui_mode(current)
+    log_action("secret_shop", current, moves=command.get("moves") or [], key=chord, ui=mode)
+    print(f"secret_shop：{chord} 之後介面 {mode}", flush=True)
+    return True
 
 
 def do_sweep_round(command):
@@ -1307,6 +1454,17 @@ def main():
         if "shop_probe" in command:
             if not do_shop_probe(command):
                 return 12
+            continue
+        if "mark" in command:
+            do_mark(command)
+            continue
+        if "secret_shop" in command:
+            if not do_secret_shop(command):
+                return 17
+            continue
+        if "shop_sell" in command:
+            if not do_shop_sell(command):
+                return 16
             continue
         if "town_probe" in command:
             if not do_town_probe(command):
