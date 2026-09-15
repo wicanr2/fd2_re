@@ -116,13 +116,17 @@ issue #14 的 `verify` 就盯這個欄位。
 
 ## 開工順序
 
-- **第 0 步（本次工作樹）**：先把未提交的「戰間介面早／中／晚」那包收尾——
-  Docker 已能跑，重跑三章設施擴充測試，把
-  `town-shop-early-mid-late-e2.json` 從 `candidate` 升 `passed`，
-  關 #13，提交。這包的計畫與驗證工具就是後面每章工作單元的範本。
-- **第 1 步**：寫 `fd2_chapter_slot.py`，用 ch01–03 真實狀態做正對照校準。
-- **第 2 步**：從第 4 章起逐章推進（ch01–03 已有真實通關狀態，先用現成的補齊
-  收據）。每章一個工作階段，做完就提交；同一階段不要跨章。
+- **第 0 步（已完成，2026-09-15，提交 `682d6359`）**：戰間介面早／中／晚
+  三章收據升 `passed`，issue #13 關閉。它的控制計畫
+  （`town-shop-ch{06,13,27}-e2.jsonl`）、重製端重播測試
+  （`town_shop_early_mid_late_e2_test.go`）與驗證工具
+  （`verify_town_shop_early_mid_late_e2.py`）是後面每章工作單元的範本。
+- **第 1 步**：寫 `tools/fd2_chapter_slot.py`，用 ch01–03 真實狀態
+  （`work/parity-state/ch0N-cleared`）做正對照校準；同時建立
+  `docs/data/parity-campaign-progress.json` 台帳（30 筆 `todo`，
+  ch01–03 可先用現成通關狀態補收據）。
+- **第 2 步**：從第 4 章起逐章推進。每章一個工作階段，做完就提交；
+  同一階段不要跨章。
 - 每五章回頭看一次累積的畫面差異分類，決定哪些要開 `缺陷` issue。
 
 ## 紀律（本目標特別容易踩的）
