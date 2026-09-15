@@ -60,11 +60,24 @@ dosgolem 為此需要補的能力。
 
 規則：
 
-- 建構槽由受版控工具 `tools/fd2_chapter_slot.py`（擴充現有 `tools/fd2save.py`
-  的封裝層）從「攻略的章節初值 ＋ 已證實的存檔欄位語意」產生。攻略
-  （`02-game-data-reference.md`，青衫）只當數值旁證；欄位偏移與語意必須來自
-  `58`／`fd2save.py` 已證實的項目。沒有證實語意的欄位保持上一章真實存檔的
-  raw bytes，不猜。
+- 建構槽由受版控工具產生：`remake/cmd/fd2-chapter-slot`（Go，在容器內跑）
+  從基底存檔套用後續各章戰後 handler 已證實的持續隊伍寫入——`join` 走
+  `campaign.MaterializePersistentRecord`（sub_112A5 轉寫）、`grant_item` 走
+  0x1c220 語意、`set_chapter` 寫槽 chapter byte；升級走 0x1E292 成長列＋0x1B750
+  重算。`tools/fd2_chapter_slot.py build／compare／inspect` 是主機端封裝與
+  正對照工具。攻略（`02-game-data-reference.md`，青衫）只當數值旁證；
+  沒有證實語意的欄位保持基底存檔的 raw bytes，不猜。
+- 每章升幾級、金幣多少不是原版證據，工具預設不升級、不改金幣；要給就用
+  `--levels-per-chapter`／`--level-overrides`／`--gold` 明示，manifest 逐項記成
+  assumption。正對照（ch01→ch02、ch02→ch03 對真實通關槽）證實：工具寫的
+  欄位全部對上，剩餘差異都是遊玩決定的（擊殺經驗與升級、掉落物品、
+  戰場座標、`+0x28..+0x36` 殘值）與一個條件式加入。
+- 基底一律用 `work/parity-state/ch02-cleared`（最後一份隊伍組成符合一般玩家
+  路徑的真實存檔）往前建。`ch03-cleared` 缺鐵諾——它是修改路徑跑出來的，
+  鐵諾在第三關倒下，走了 `ch02_post` 的 `any_unit_inactive[6]` 分支；攻略與
+  handler 的 else 分支都說一般玩家路徑會讓他入隊。
+- `if` 分支用「一般玩家最佳情況」決定：無人陣亡、回合數未超限；能從已建
+  隊伍判定的（`roster_has`、物品在不在）照實判定。每個決定寫進 manifest。
 - 建構槽必須先通過原版本身的合法性檢查：由 dosgolem 走標題 LOAD 進城鎮或
   戰前對白，原版不拒絕、不出現異常畫面、隊伍名冊與攻略所述相符，才算合法槽。
   原版拒絕就是槽錯，不是原版錯。
@@ -83,9 +96,10 @@ dosgolem 為此需要補的能力。
 
 一章就是一個垂直切片，順序固定，做完再做下一章；不要同時開多章。
 
-1. **建槽**：`fd2_chapter_slot.py build --chapter N` 產生 `docs/data/parity-slots/chNN.sav.json`
-   （只存可版控的欄位值與來源，不存原版 bytes；bytes 由工具在 `work/` 重生）。
-   跑合法性檢查，收據存 `work/parity-slot-chNN/`。
+1. **建槽**：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV
+   --target N-1 --out-dir work/parity-slot-chNN/`，manifest 複製到
+   `docs/data/parity-slots/chNN-manifest.json`（版控的是 manifest 與雜湊，不是
+   原版 bytes；bytes 由同一命令重生）。跑合法性檢查，收據存 `work/parity-slot-chNN/`。
 2. **寫控制計畫** `docs/data/parity-plans/chNN-sample.jsonl`。動手前先 grep
    重製端 `internal/campaign` 的該章資料（handler、事件回合、增援回合、
    死亡事件、對白數），把「這一章有什麼可抽」列進計畫開頭的註解。每章至少涵蓋：

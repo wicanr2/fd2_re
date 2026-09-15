@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "fd2_string_review",
-  "inventory_sha256": "4d92cadfbf7293fb77a137e30d6c155f645d0bfd3aebe25d809dc4a054273dda",
+  "inventory_sha256": "c1957226d313a432e36d80b6d606d0c83df3e0d65d05c679165618ffd2c006f4",
   "reviewed_role": "go_review",
   "dispositions": {
     "player_visible": {
@@ -12,10 +12,10 @@
         "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
         "legacy.go.remake.cmd.fd2.ending_preview.l788-c10",
         "legacy.go.remake.cmd.fd2.ending_preview.l791-c10",
-        "legacy.go.remake.cmd.fd2.main.l10857-c30",
-        "legacy.go.remake.cmd.fd2.main.l10857-c49",
-        "legacy.go.remake.cmd.fd2.main.l11700-c17",
-        "legacy.go.remake.cmd.fd2.main.l11821-c36",
+        "legacy.go.remake.cmd.fd2.main.l10861-c30",
+        "legacy.go.remake.cmd.fd2.main.l10861-c49",
+        "legacy.go.remake.cmd.fd2.main.l11704-c17",
+        "legacy.go.remake.cmd.fd2.main.l11825-c36",
         "legacy.go.remake.cmd.fd2.main.l1650-c10",
         "legacy.go.remake.cmd.fd2.main.l1652-c10",
         "legacy.go.remake.cmd.fd2.main.l1654-c10",
@@ -34,12 +34,12 @@
     "internal_diagnostic": {
       "rationale": "只供 loadErr、資料契約拒絕或內部一致性診斷，不進正式語言包。",
       "string_ids": [
-        "legacy.go.remake.cmd.fd2.main.l11167-c31",
-        "legacy.go.remake.cmd.fd2.main.l11192-c5",
-        "legacy.go.remake.cmd.fd2.main.l11488-c34",
-        "legacy.go.remake.cmd.fd2.main.l11508-c34",
-        "legacy.go.remake.cmd.fd2.main.l11514-c34",
-        "legacy.go.remake.cmd.fd2.main.l11533-c34",
+        "legacy.go.remake.cmd.fd2.main.l11171-c31",
+        "legacy.go.remake.cmd.fd2.main.l11196-c5",
+        "legacy.go.remake.cmd.fd2.main.l11492-c34",
+        "legacy.go.remake.cmd.fd2.main.l11512-c34",
+        "legacy.go.remake.cmd.fd2.main.l11518-c34",
+        "legacy.go.remake.cmd.fd2.main.l11537-c34",
         "legacy.go.remake.cmd.fd2.main.l1686-c16",
         "legacy.go.remake.cmd.fd2.main.l1715-c16",
         "legacy.go.remake.cmd.fd2.main.l1718-c15",
@@ -87,19 +87,19 @@
         "legacy.go.remake.cmd.fd2.main.l937-c5",
         "legacy.go.remake.cmd.fd2.native_death_program_runtime.l114-c28",
         "legacy.go.remake.cmd.fd2.native_death_program_runtime.l135-c32",
-        "legacy.go.remake.cmd.fd2.native_event_dialogue.l62-c33"
+        "legacy.go.remake.cmd.fd2.native_event_dialogue.l69-c33"
       ]
     },
     "development": {
       "rationale": "只供除錯、自我檢查或截圖追蹤，不進正式語言包。",
       "string_ids": [
-        "legacy.go.remake.cmd.fd2.main.l11802-c15",
-        "legacy.go.remake.cmd.fd2.main.l11816-c14",
+        "legacy.go.remake.cmd.fd2.main.l11806-c15",
+        "legacy.go.remake.cmd.fd2.main.l11820-c14",
         "legacy.go.remake.cmd.fd2.main.l7923-c25",
         "legacy.go.remake.cmd.fd2.main.l7923-c38",
         "legacy.go.remake.cmd.fd2.main.l7929-c25",
         "legacy.go.remake.cmd.fd2.main.l7929-c35",
-        "legacy.go.remake.cmd.fd2.main.l9132-c16"
+        "legacy.go.remake.cmd.fd2.main.l9136-c16"
       ]
     },
     "unknown": {

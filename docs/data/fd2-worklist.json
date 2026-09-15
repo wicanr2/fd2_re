@@ -182,6 +182,23 @@
         "note": "要人耳。容器 nosound 驗不了。"
       },
       "issue": 15
+    },
+    {
+      "id": "join-constructor-empty-cell-item-byte",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "sub_112A5 加入紀錄的空物品格 item byte 原版是 0xff，轉寫是 0x00",
+      "body": "重製端 `campaign.MaterializePersistentRecord`（sub_112A5 轉寫）對物品格 6／7 只寫旗標 `+0x16`／`+0x18`＝0x80，item byte `+0x17`／`+0x19` 留 0；真實原版存檔（ch01-cleared 剛加入的 id 8、ch02-cleared 同一筆）這兩格是 `80 ff`。四格 defaults 那邊，defaults 為 0xff 時旗標寫 0x80、item 寫 0xff，與觀察一致；只有固定的兩格不同。消費端只看旗標 bit7，所以玩法不受影響，但建槽工具的輸出與原版 bytes 差這兩個 byte。要回 IDA 看 0x112A5 是否另有寫 `+0x17`／`+0x19`＝0xff 的指令，或紀錄區在 JOIN 前被 0xff 填過。",
+      "acceptance": "IDA 9.4 直接指令證實 +0x17／+0x19 的來源（明寫 0xff 或前置填充），轉寫與建槽工具同步修正，正對照這兩個 byte 歸零。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2-chapter-slot/main.go"
+        ],
+        "pattern": "物品格 6／7 是 80 00",
+        "note": "建槽工具 known_deviations 裡自承的那一句；解掉就拿掉。"
+      },
+      "issue": 23
     }
   ]
 }
