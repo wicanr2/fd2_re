@@ -923,6 +923,11 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 		default:
 			continue
 		}
+		if os.Getenv("FD2_PARITY_TRACE_KEYS") != "" && g.st != nil && g.st.HasNativeMapViewState {
+			v := g.st.NativeMapViewState
+			t.Logf("key seq=%d %s cursor=(%d,%d) camera=(%d,%d) visible=(%d,%d)", seq, r.keys[seq],
+				v.CursorX, v.CursorY, v.CameraX, v.CameraY, v.VisibleCursorX, v.VisibleCursorY)
+		}
 		walked = true
 	}
 	return walked
@@ -959,6 +964,10 @@ func (r *parityReplay) stayUnit(action parityAction, actor *battle.Unit) {
 	if actor == nil {
 		t.Fatalf("stay(seq %d)：沒有先 select", action.Seq)
 	}
+	// 驅動端在選取之後常先試幾個走不到的格（enter 被拒絕）再把游標移回單位原地：
+	// 那些方向鍵會動鏡頭（第六章 r3 seq 1275–1442 讓鏡頭從 y=18 捲到 17），原地待機
+	// 的畫面要跟著同一段鍵才會一樣。
+	r.replayCursorKeys(action)
 	g.confirm()
 	if !pump(t, g, 240, func() bool { return g.ring }) {
 		t.Fatalf("stay(seq %d)：原地確認之後沒有開指令環", action.Seq)
@@ -1325,6 +1334,22 @@ func (r *parityReplay) shopSell(action parityAction) {
 	r.checkpoint("shop_sell", action.Seq, "town", true)
 }
 
+// secretChordScanCode 把 dosgolem 鍵表的 F 鍵 chord 名稱換成 BIOS 掃描碼：
+// shift-f1..f10 是 0x54..0x5D、ctrl 是 0x5E..0x67、alt 是 0x68..0x71。
+func secretChordScanCode(chord string) (int, bool) {
+	bases := map[string]int{"shift-f": 0x54, "ctrl-f": 0x5E, "alt-f": 0x68}
+	for prefix, base := range bases {
+		if strings.HasPrefix(chord, prefix) {
+			n, err := strconv.Atoi(strings.TrimPrefix(chord, prefix))
+			if err != nil || n < 1 || n > 10 {
+				return 0, false
+			}
+			return base + n - 1, true
+		}
+	}
+	return 0, false
+}
+
 // secretShop 對應驅動端的 secret_shop：切到指定建築、送功能鍵 chord、enter 進店。
 func (r *parityReplay) secretShop(action parityAction) {
 	t, g := r.t, r.g
@@ -1339,6 +1364,12 @@ func (r *parityReplay) secretShop(action parityAction) {
 	n := g.camp.Node()
 	if n == nil || n.NativeSecretGate == nil {
 		t.Fatalf("secret_shop(seq %d)：節點沒有祕密商店 gate", action.Seq)
+	}
+	// 原版側送的是驅動端計畫裡的 chord；重製端的 gate 是戰役資料的 scan code。兩者要
+	// 對得上，不然重製端用自己的資料開門，原版按錯鍵也看不出來。
+	if scan, ok := secretChordScanCode(action.Key); !ok || scan != n.NativeSecretGate.ScanCode {
+		t.Fatalf("secret_shop(seq %d)：原版側 chord %q（scan %02X）與節點 gate scan %02X 不同",
+			action.Seq, action.Key, scan, n.NativeSecretGate.ScanCode)
 	}
 	if !g.revealNativeTownSecret(n.NativeSecretGate.ScanCode) || !g.camp.ConfirmNativeTownSecret(g.campSel) {
 		r.checkpoint("secret_shop", action.Seq, "town", true, fmt.Sprintf("gate 未開：selection=%d scan=%02X", g.campSel, n.NativeSecretGate.ScanCode))

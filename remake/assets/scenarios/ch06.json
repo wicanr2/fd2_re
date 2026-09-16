@@ -2,9 +2,9 @@
   "chapter": 6,
   "name": "普里茲港",
   "map": 5,
+  "runtime_append_groups": true,
   "initial_groups": [
-    0,
-    3
+    0
   ],
   "party": [
     {
@@ -340,6 +340,180 @@
       ]
     },
     {
+      "id": "turn_ch06_e20_t5",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 5
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "dialogue",
+          "native_source": "0x347bb",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 0,
+            "source_dat": "FDTXT_006",
+            "string_index": 1,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 8,
+            "pages": [
+              [
+                "『看你們的身手不像是普通人",
+                "　，你們到底是誰？』"
+              ]
+            ]
+          },
+          "native_event_id": 20,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347bb",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 1,
+            "source_dat": "FDTXT_006",
+            "string_index": 1,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『剛剛說過了，我們只是普通",
+                "　了旅行者罷了』"
+              ]
+            ]
+          },
+          "native_event_id": 20,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347bb",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 2,
+            "source_dat": "FDTXT_006",
+            "string_index": 1,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 8,
+            "pages": [
+              [
+                "『不可能！你們絕對不是普通",
+                "　的旅行者！』"
+              ]
+            ]
+          },
+          "native_event_id": 20,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347bb",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 3,
+            "source_dat": "FDTXT_006",
+            "string_index": 1,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『信不信由你了！』"
+              ]
+            ]
+          },
+          "native_event_id": 20,
+          "camp": "special"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch06_e21_t10",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 10
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 4,
+            "source_dat": "FDTXT_006",
+            "string_index": 2,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 8,
+            "pages": [
+              [
+                "『可恨！這些人還真強！",
+                "　，弟兄們再撐一會兒萊汀",
+                "　大人就來了，"
+              ],
+              [
+                "　再撐一會兒！』"
+              ]
+            ]
+          },
+          "native_event_id": 21,
+          "native_when": {
+            "any_active": [
+              8,
+              8
+            ]
+          },
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 5,
+            "source_dat": "FDTXT_006",
+            "string_index": 2,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『看他們的樣子似乎還有援軍",
+                "　！大家，先把小隊長打倒吧",
+                "　！』"
+              ]
+            ]
+          },
+          "native_event_id": 21,
+          "native_when": {
+            "any_active": [
+              8,
+              8
+            ]
+          },
+          "camp": "special"
+        }
+      ]
+    },
+    {
       "id": "reinforce_ch06_e22_t15",
       "trigger": "on_turn_end",
       "when": {
@@ -352,7 +526,6 @@
           "groups": [
             1
           ],
-          "camp": "special",
           "native_spawns": [
             {
               "group": 1,
@@ -361,7 +534,105 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 22
+          "native_event_id": 22,
+          "native_when": {
+            "any_active": [
+              8,
+              8
+            ]
+          },
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34906",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 6,
+            "source_dat": "FDTXT_006",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 118,
+            "pages": [
+              [
+                "『小隊長，這是怎麼一回事？",
+                "　』"
+              ]
+            ]
+          },
+          "native_event_id": 22,
+          "native_when": {
+            "any_active": [
+              8,
+              8
+            ]
+          },
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34906",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 7,
+            "source_dat": "FDTXT_006",
+            "string_index": 3,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 8,
+            "pages": [
+              [
+                "『萊．萊汀大人！",
+                "　這一群匪徒公然拒捕，",
+                "　他們戰技高超，"
+              ],
+              [
+                "　我們正營試要拿下他．』"
+              ]
+            ]
+          },
+          "native_event_id": 22,
+          "native_when": {
+            "any_active": [
+              8,
+              8
+            ]
+          },
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34906",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch06.json",
+            "scene_index": 4,
+            "line": 8,
+            "source_dat": "FDTXT_006",
+            "string_index": 3,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 118,
+            "pages": [
+              [
+                "『原來不過是些匪徒而已，",
+                "　通通給我抓起來！』"
+              ]
+            ]
+          },
+          "native_event_id": 22,
+          "native_when": {
+            "any_active": [
+              8,
+              8
+            ]
+          },
+          "camp": "special"
         }
       ]
     }

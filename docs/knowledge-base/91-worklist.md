@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -86,6 +86,22 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 酒店 `0x2FC85` 的原生介面（資源 13 框與四圖示、DATO 0x81 店主、存檔槽列表 `0x30550`、「記錄儲存完畢」）已在 `remake/cmd/fd2/native_hotel_ui.go` 接上（#27），第四章收據 seq 1198 逐像素相同。還缺兩項：服務 2 讀檔（`0x301F4`，四槽列表載入後直接進該存檔的城鎮）目前仍只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「原生介面尚未接這一項」；服務 0 打聽消息的 story 播完，原版回到酒店選單，重製端經 `hotel_chNN.rumor` 播完回城鎮。要做：讀檔走標題 LOAD 同一條載入路徑但回城鎮節點；傳聞 story 結束後回酒店選單（戰役資料的 story `next` 指回 `hotel_chNN`，或酒店節點自己接 story）。
 
 怎樣算做完：酒店選服務 2 能列四槽並載入存檔進該章城鎮；傳聞播完回酒店選單；`applyHotelServiceSelection` 的自承訊息拿掉。
+
+### 出口／整備確認提示：原版停在 YES 上畫的是 action cell 49，重製端畫 cell 48（每章 departure_prompt／town_enter 固定差 60 像素）
+
+`parity-departure-prompt-yes-pulse-phase` · 缺陷 · [#35](https://github.com/wicanr2/fd2_re/issues/35) · 仍未完成 · 要人判
+
+ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像素、同一個框 [235,173,252,179]。把原版 checkpoint-0038 的 YES 區域（24×16，座標 232,168）逐格對 ui/action_cells 的 78 個 cell：cell_049 差 0、cell_048 差 60。重製端 ComposeNativeConfirmationChoices 對選中項畫 base+pulse（YES 48／49），checkpoint 當下 nativeClassUIPulse/2 是 0，原版是 1。要查的是 0x19953 選中閃爍的起始相位（提示一開就是 cell 49？還是相位由 BIOS tick 決定而 checkpoint 剛好落在 1），確定後改重製端的起始相位或讓重播對這個點出 pulse 0／1 兩個變體。NO（cell 51／52）在這四個點沒差。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json frames.points kind=departure_prompt／town_enter。
+
+怎樣算做完：parity-ch04.json 與 parity-ch05.json 的 departure_prompt／town_enter 點 diff_pixels 為 0，且 56 記下 0x19953 起始相位的證據（哪一條指令、哪個全域）。
+
+### 敵方法師 AI 的指令選擇（17 強化／0／4 攻擊）與原版不同：第六章 r3 第 11 回合我方 HP 98 對 40
+
+`enemy-mage-ai-command-selection-parity` · 缺陷 · [#36](https://github.com/wicanr2/fd2_re/issues/36) · 仍未完成 · 要人判
+
+第六章對拍（work/parity-slot-ch06/sample-r3、remake-r8）四個 gate 只剩行為 gate 在 seq 1457 失敗：第 11 回合敵方回合後 (10,17) 鐵諾原版 HP 98、重製端 40。逐筆對 eip-trace（0x13A9F 入口的 rng_word）與 replay.log：原版法師 19（記錄 19，cls 5，指令遮罩 0x01＋byte2 0x02＝指令 0 與 17）第 1 回合就在 pass 1（0x1D947）消耗亂數、MP 35→30，對 18 施指令 17（18 的 +0x22 變 5、AP 39→45），之後第 3、5、6、7、9 回合各 −5（強化）、第 2、10 回合各 −2（指令 0），第 11 回合 MP 只剩 1 所以沒行動；法師 18 直到第 11 回合才用指令 4（MP 35→31）。重製端的 19 第 1 回合走 0x14EF0 物理路線（physicalOK=true、priority 8）然後什麼都沒做，第 2 回合指令 0（與原版同、rng 19233 對得上），其餘回合沒有記到強化，第 11 回合 MP 仍夠再放指令 0（49 傷害），18 的指令 4 打 36（原版 39），16 的 AP 是 93（原版 80，強化對象不同）。三個 score producer（0x14237／0x1598A／0x1567E）對指令 17（target code 1，對友軍）的評分與 0x15311 的目標選擇要對原版逐條核對；亂數在每次攻擊確認重新同步，所以這個分歧要到強化過的單位打到我方時才看得見。收據 docs/data/ui-traces/parity-ch06.json；原版側 r3 的 eip-trace.jsonl、checkpoint-1449～1453；重製側 work/parity-slot-ch06/remake-r8/replay.log。
+
+怎樣算做完：tools/chapter_parity.sh 6 work/parity-slot-ch06 work/parity-slot-ch06/sample-r3 <out> 四個 gate 全過（seq 1457 的 HP 相同），且 56 記下 0x1598A／0x15311 對指令 17 的評分與目標規則。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -170,5 +186,13 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 卡在：依使用者 2026-09-14 裁定，排在所有非「優先級:最後」worklist 完成之後。
 
 怎樣算做完：其餘非最後處理 worklist 完成後，在 Docker／非 headless 瀏覽器中用編輯器對可丟棄複本新增一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支，透過正式 save API 存回、重生 canonical，並由正式引擎以決定性輸入分別走通兩個分支首尾；還原來源零差異。保存 docs/data/ui-traces/campaign-editor-custom-route-e1.json 並由自動測試驗證。
+
+### 章對拍：指令環四步開啟中途的原版 checkpoint 沒有對應的重播變體（每個 move／stay 點殘留 66–628 像素）
+
+`parity-replay-ring-open-step-variants` · 缺陷 · [#34](https://github.com/wicanr2/fd2_re/issues/34) · 仍未完成 · 要人判
+
+ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
+
+怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
 
 <!-- END fd2_worklist.py render -->

@@ -5,7 +5,7 @@
     "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
   },
   "evidence_level": "強推論",
-  "notes": "sub_112A5 直接從角色資料表建構 persistent record；這些 map17 ally records 只提供可見／裝備 base 欄位，不取代 native_join_constructor 的原始表格。",
+  "notes": "sub_112A5 直接從角色資料表建構 persistent record；這些 map17 ally records 只提供可見／裝備 base 欄位，不取代 native_join_constructor 的原始表格。 第六章 ch05_post 的 join(13) 在 spawn(3) 之前執行，角色 13 當時還不在 runtime 陣列；base 取 map5 FDFIELD group 3 的那一筆（原版戰後 0x10B4E(3) 追加的就是它，0x11506 再抄回 persistent）。",
   "rows": [
     {
       "id": 7,
@@ -18,6 +18,12 @@
       "roster": "../maps/map17/map17_units.json",
       "unit_index": 0,
       "raw_byte8": 21
+    },
+    {
+      "id": 13,
+      "roster": "../maps/map5/map5_units.json",
+      "unit_index": 39,
+      "raw_byte8": 13
     }
   ]
 }

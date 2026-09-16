@@ -74,15 +74,59 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
 		return errors.New("native command5 raw actor provenance unavailable")
 	}
+	effectResource := 24
+	if commandID == 4 {
+		effectResource = 22
+	}
+	if actor.NativeRecordByte6 == 0 {
+		if commandID == 4 {
+			effectResource = 23
+		} else {
+			effectResource = 25
+		}
+	}
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
+	if err != nil {
+		return err
+	}
+	var schedule figani.NativeCommand5PresentationSchedule
+	if commandID == 4 {
+		schedule, err = figani.BuildNativeCommand4PresentationSchedule(actor.NativeRecordByte6, effect)
+	} else {
+		schedule, err = figani.BuildNativeCommand5PresentationSchedule(actor.NativeRecordByte6, effect)
+	}
+	if err != nil {
+		return err
+	}
+	// 命中／傷害擲骰與 0x269D3 六槽 handler 共用同一條全域亂數：mode 0 先吃六步，
+	// 每個目標在 mode 3 之後才擲 0x1C75E，目標畫格再依重置與 marker 抖動往下走
+	// （r4 收據 seq 1451）。先走一遍純亂數序列把每個目標的擲骰點記下來，畫格
+	// 合成時照同一序列重放。
+	rngBefore := g.nativeRNGState
+	type resolvedRoll struct {
+		before, after uint16
+		hit           bool
+	}
+	resolvedRNG := make(map[int]resolvedRoll)
+	walk := func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+		return figani.WalkNativeCommand5RNG(rngBefore, schedule, actor.NativeRecordByte6, targetCount,
+			func(index int, rng uint16) (uint16, bool, error) {
+				next, hit, err := resolve(index, rng)
+				if err != nil {
+					return rng, false, err
+				}
+				resolvedRNG[index] = resolvedRoll{before: rng, after: next, hit: hit}
+				return next, hit, nil
+			})
+	}
 	var plan *battle.NativeCommandDamagePlan
-	var err error
 	if actor.Camp == battle.Enemy {
 		var origin battle.Cell
 		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
-			plan, err = g.st.PlanNativeAICommandDamage(actor, origin, commandID, g.st.NativeCommandResistances, g.nativeRNGState)
+			plan, err = g.st.PlanNativeAICommandDamageWalk(actor, origin, commandID, g.st.NativeCommandResistances, rngBefore, walk)
 		}
 	} else {
-		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, commandID, g.st.NativeCommandResistances, g.nativeRNGState)
+		plan, err = g.st.PlanNativeCommandDamageWalk(actor, confirmed, commandID, g.st.NativeCommandResistances, rngBefore, walk)
 	}
 	if err != nil {
 		return err
@@ -90,6 +134,13 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 	if len(plan.Results) == 0 || plan.DamageStages != figani.NativeCommand5DamageStages ||
 		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[commandID].EffectMode != 1 {
 		return errors.New("native command5 final targets unavailable")
+	}
+	replayResolve := func(index int, rng uint16) (uint16, bool, error) {
+		recorded, ok := resolvedRNG[index]
+		if !ok || recorded.before != rng {
+			return rng, false, fmt.Errorf("native command%d target %d RNG replay disagrees (walk %d, sequence %d)", commandID, index, recorded.before, rng)
+		}
+		return recorded.after, recorded.hit, nil
 	}
 	for _, result := range plan.Results {
 		if result.Target == nil || !result.Target.HasBattleFig || !result.Target.HasNativeRecordByte6 {
@@ -152,30 +203,6 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 		if err != nil {
 			return err
 		}
-	}
-	effectResource := 24
-	if commandID == 4 {
-		effectResource = 22
-	}
-	if actor.NativeRecordByte6 == 0 {
-		if commandID == 4 {
-			effectResource = 23
-		} else {
-			effectResource = 25
-		}
-	}
-	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
-	if err != nil {
-		return err
-	}
-	var schedule figani.NativeCommand5PresentationSchedule
-	if commandID == 4 {
-		schedule, err = figani.BuildNativeCommand4PresentationSchedule(actor.NativeRecordByte6, effect)
-	} else {
-		schedule, err = figani.BuildNativeCommand5PresentationSchedule(actor.NativeRecordByte6, effect)
-	}
-	if err != nil {
-		return err
 	}
 	if err := g.requireSeparatedCommandSounds(schedule.SoundResource, 0, 1); err != nil {
 		return fmt.Errorf("native command%d sounds: %w", commandID, err)
@@ -293,10 +320,13 @@ func (g *Game) startNativeCommand45Presentation(actor, confirmed *battle.Unit, c
 		FrontBase: targetBases[0][0], TailBase: targetBases[len(targetBases)-1][figani.NativeCommand5DamageStages],
 		TargetBases: targetBases, TransitionBases: transitionBases, ActorEffect: actorEffect,
 		TargetIdle: targetIdle, Effect: effect, Schedule: schedule, RawSide: actor.NativeRecordByte6,
-		VisualRNG: g.nativeRNGState,
+		VisualRNG: rngBefore, ResolveTarget: replayResolve,
 	})
 	if err != nil {
 		return err
+	}
+	if effectSequence.VisualRNG != plan.RNGAfter {
+		return fmt.Errorf("native command%d RNG walk %d disagrees with rendered sequence %d", commandID, plan.RNGAfter, effectSequence.VisualRNG)
 	}
 	handler := make([]nativeCommand5HandlerFrame, 0)
 	appendFrames := func(frames []battlepresent.NativeCommand5RenderedFrame, targetIndex int) error {
@@ -435,12 +465,22 @@ func (g *Game) stepNativeCommand5Presentation() {
 		if j.frame < len(j.tail) {
 			return
 		}
+		// 未命中的目標走 0x2AF61 分支，沒有 HP 分段畫格；數值上 HP 不變，直接收到終段。
+		for index, result := range j.plan.Results {
+			if result.Hit {
+				continue
+			}
+			if err := battle.ApplyNativeCommandDamageStage(j.plan, index, j.plan.DamageStages); err != nil {
+				g.failNativeCommand5Presentation(err)
+				return
+			}
+		}
 		if err := battle.CompleteNativeCommandDamage(j.plan); err != nil {
 			g.failNativeCommand5Presentation(err)
 			return
 		}
-		// 數值計畫仍發布自身 RNGAfter；handler 的 VisualRNG 是明示畫面近似，
-		// 不可覆寫跨 target 傷害 RNG。
+		// plan.RNGAfter 已含 handler 的 mode 0／重置／marker 抖動與每個目標的
+		// 0x1C75E 擲骰（r4 收據 seq 1451：18 步），是整段演出結束時的全域亂數。
 		g.nativeRNGState = j.plan.RNGAfter
 		then, results := j.then, append([]battle.NativeCommandDamageResult(nil), j.plan.Results...)
 		g.nativeCmd5Presentation = nil

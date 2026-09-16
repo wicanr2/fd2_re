@@ -1,6 +1,10 @@
 package figani
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+)
 
 const (
 	NativeCommand0PresentationFrames = 28
@@ -79,4 +83,46 @@ func NativeCommand0EffectFrame(step, layer int) (frame int, ok bool) {
 func NativeCommand0Impact(step, layer int) bool {
 	frame, ok := NativeCommand0EffectFrame(step, layer)
 	return ok && frame == 3
+}
+
+// NativeCommand0MarkerStep 重現 sub_26152 mode 5 的回傳值：七個 counter 由
+// mode 3 寫成 0,-2,…,-12，每一步各加 1，任一 counter 加完等於 9 就回傳 1。
+// 0x2A6BD 只在回傳 1 的那一步做 HP 分段與 `0x2AF40 call 0x4E893` 抖動擲骰。
+func NativeCommand0MarkerStep(step int) bool {
+	if step < 0 || step >= NativeCommand0PresentationFrames {
+		return false
+	}
+	for layer := 0; layer < len(nativeCommand0LayerFlags); layer++ {
+		if step+1-2*layer == 9 {
+			return true
+		}
+	}
+	return false
+}
+
+// WalkNativeCommand0RNG 走 command 0 單一目標的全域亂數序列：mode 0..3 不擲骰，
+// 0x2B114 先對目標呼叫 0x1C75E（命中、傷害各一步），之後 28 步裡 mode 5 回傳 1
+// 的七步各吃一次 0x2AF40 抖動亂數（r4 收據 seq 114：0x1C7F2、0x1C86E、七次
+// 0x2AF45）；未命中只有 0x1C7F2 一步（r4 收據 seq 1013）。
+func WalkNativeCommand0RNG(rng uint16, schedule NativeCommand0PresentationSchedule, targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+	if targetCount <= 0 || resolve == nil || schedule.Frames != NativeCommand0PresentationFrames {
+		return rng, fmt.Errorf("figani: command0 RNG walk needs targets and the 28-step schedule")
+	}
+	for target := 0; target < targetCount; target++ {
+		next, hit, err := resolve(target, rng)
+		if err != nil {
+			return rng, err
+		}
+		rng = next
+		if !hit {
+			// 0x2ADFE：未命中走 0x2AF61，不看 mode 5 回傳，沒有抖動擲骰（r4 seq 1013）。
+			continue
+		}
+		for step := 0; step < schedule.Frames; step++ {
+			if NativeCommand0MarkerStep(step) {
+				rng = fdother.NativeRNGStep(rng)
+			}
+		}
+	}
+	return rng, nil
 }

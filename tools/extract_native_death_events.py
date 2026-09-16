@@ -116,6 +116,23 @@ EVENTS = [
         op("dialogue", [(0x34786, 0x347AC)], text=0xB, style_register=True,
            when={"any_active": [7, 0x24]}),
     ]},
+    # 20–22 是第六章（map 5）第 5／10／15 回合的回合事件（selector 2，玩家輸入前）。
+    # 21／22 先查記錄 8（0x3453e，+5 bit0）：那一筆不在場就整個處理器跳過。
+    {"id": 20, "handler": 0x347B1, "ops": [
+        op("dialogue", [(0x347BB, 0x347D9), (0x3452F, 0x3453D)], text=1),
+    ]},
+    {"id": 21, "handler": 0x347D9, "guards": [
+        op("guard_active", [(0x347E3, 0x347F1)], unit=8),
+    ], "ops": [
+        op("dialogue", [(0x347F1, 0x34818)], text=2, when={"any_active": [8, 8]}),
+    ]},
+    {"id": 22, "handler": 0x34819, "guards": [
+        op("guard_active", [(0x34823, 0x34835)], unit=8),
+    ], "ops": [
+        op("spawn_group", [(0x34835, 0x3483F)], group=1, gate=0, when={"any_active": [8, 8]}),
+        op("dialogue", [(0x34906, 0x34924), (0x34C0F, 0x34C1D)], text=3,
+           when={"any_active": [8, 8]}),
+    ]},
     {"id": 23, "handler": 0x34844, "guards": [
         op("guard_round", [(0x34883, 0x34890)], below=0xF),
     ], "ops": [
@@ -405,6 +422,9 @@ def check_op(image, event_id, o):
     elif kind == "guard_round":
         expect_seq(insns, [(f"cmp dword ptr [0x3bef], {imm(o['below'])}", ROUND),
                            lambda i: i[1] == "jge"], where)
+    elif kind == "guard_active":
+        expect_seq(insns, [f"push {imm(o['unit'])}", "call 0x3453e", "add esp, 4",
+                           "test eax, eax", lambda i: i[1] == "jne"], where)
     elif kind == "guard_any_active":
         expect_seq(insns, [
             "mov byte ptr [esp], 0", f"mov ebx, {imm(o['first'])}", "inc ebx",

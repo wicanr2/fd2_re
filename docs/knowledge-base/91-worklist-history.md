@@ -4283,3 +4283,26 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
   checkpoint 改成不比）。
 - [ ] 未抽到：第 7、8 回合 event 16／17、法術／物品／買入（驅動端沒有）、升級幀（#29）；
   酒店讀檔（#32）。
+
+## 2026-09-16：第六章 111 四 gate 全過
+
+- [x] 五章回顧（56 §111 五章回顧）：ch01–05 收據裡 `diff_pixels>0`／非 ok 的點分類成表，
+  開 #34（ch01–03 舊收據的殘差）與 #35（ch01 重製端可修的差異）。
+- [x] 回合事件 20／21／22（`0x347B1`／`0x347D9`／`0x34819`）轉寫進
+  `extract_native_death_events.py`（新守衛 `guard_active`），`sync_native_turn_events.py
+  --write --chapters 4,5,6` 降成 selector 2 事件，`finishNativeTransientPlayerPhase` 消費。
+- [x] 建構槽 `ch06-manifest.json`（sha `bb658c94…`，ch02-cleared → target 5），合法性檢查
+  `ch06-slot-load.jsonl`；瑪琳的建構偏差記在收據 limitations。
+- [x] 原版側 r3／r4（dosgolem `50a3b47`，補 `add/sub/xor al, imm8`；r4 加 `0x4E893` 入口
+  追蹤，與 r3 的 232 個 AI 入口及酒店存檔逐 byte 相同）：LOAD → 出口 → 戰前對白 →
+  第 1～9 回合守位 → 第 5 回合 event 20 對白 → 第 10～11 回合接戰 → `force_enemy_clear`
+  → 戰後 → 往王城的途中出售／五棟建築／酒店存檔／酒店前 alt-f6 祕密商店。
+- [x] 重製側 remake-r11：佈陣格跟槽位、`native_map_view` 抄 battle_start、JOIN 13 基底列、
+  ACTING 未登場槽 no-op、待機前重播游標鍵、HUD anchor 兩個閘與游標重繪條件（r1–r8 逐一
+  修掉）；最後一個行為 gate（#36）是兩件事：從城鎮進戰場時 `sub_1A866` 的暫時狀態掃描整段
+  被跳過（`AdvanceNativeTransientPhaseTyped`＋到期重算），與指令 0／4 的演出擲骰沒接在同一條
+  `0x4E893` 序列上（`WalkNativeCommand5RNG`／`WalkNativeCommand0RNG`，未命中不抖動）。收據
+  `parity-ch06.json` 狀態 `passed`，58 張逐像素相同、存檔 sha256 相同、`ai_order` 分岔 0；
+  台帳第六章 `passed`。第四章 remake-r60、第五章 remake-r7 重跑仍 `passed`。
+- [ ] 未抽到：第 15 回合 event 22（group 1 登場）、法術／物品／買入（驅動端沒有）、升級幀
+  （#29）；酒店讀檔（#32）；指令 1／2／3／6／7／8 的演出亂數還沒有收據。

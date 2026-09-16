@@ -189,6 +189,14 @@ func PlanNativeCommand5DrawFrame(state NativeCommand5State, schedule NativeComma
 }
 
 func BuildNativeCommand5TargetSequence(state NativeCommand5State, schedule NativeCommand5PresentationSchedule, rawSide byte) ([]NativeCommand5Frame, NativeCommand5State, error) {
+	return BuildNativeCommand5TargetSequenceHit(state, schedule, rawSide, true)
+}
+
+// BuildNativeCommand5TargetSequenceHit 是目標畫格序列加上 0x2A6BD 的命中分支：
+// 0x1C75E 回 0（未命中）時 0x2ADFE 走 0x2AF61，mode 5 照樣呼叫（六槽重置照樣吃
+// 亂數）但不看回傳值，沒有 HP 分段也沒有 0x2AF40 抖動；命中才走 0x2AEB6 的
+// marker 分支（r4 收據 seq 1013：指令 0 未命中只吃 0x1C7F2 一步）。
+func BuildNativeCommand5TargetSequenceHit(state NativeCommand5State, schedule NativeCommand5PresentationSchedule, rawSide byte, hit bool) ([]NativeCommand5Frame, NativeCommand5State, error) {
 	frames := make([]NativeCommand5Frame, 0, schedule.TargetFrames)
 	hpStage := 0
 	for index := 0; index < schedule.TargetFrames; index++ {
@@ -196,14 +204,18 @@ func BuildNativeCommand5TargetSequence(state NativeCommand5State, schedule Nativ
 		if err != nil {
 			return nil, state, err
 		}
-		if frame.NumericMarker && hpStage < NativeCommand5DamageStages {
-			hpStage++
-			frame.HPStage = hpStage
+		if hit {
+			if frame.NumericMarker && hpStage < NativeCommand5DamageStages {
+				hpStage++
+				frame.HPStage = hpStage
+			}
+			// 0x2AF40：mode 5 回傳 1 的每一張目標畫格都在 handler 之後再吃一次亂數。
+			frame = NativeCommand5MarkerShake(frame)
 		}
 		frames = append(frames, frame)
 		state = frame.Next
 	}
-	if hpStage != NativeCommand5DamageStages {
+	if hit && hpStage != NativeCommand5DamageStages {
 		return nil, state, fmt.Errorf("figani: command5 HP marker count incomplete: %d", hpStage)
 	}
 	return frames, state, nil
@@ -249,4 +261,60 @@ func BuildNativeCommand5TailSequence(state NativeCommand5State, schedule NativeC
 		state = frame.Next
 	}
 	return frames, state, nil
+}
+
+// NativeCommand5MarkerShake 重現 0x2A6BD 目標迴圈在 mode 5 回傳 1 之後的
+// `0x2AF40 call 0x4E893`：每個回傳 numeric marker 的目標畫格都再吃一次全域
+// 亂數（餘數只用於畫面抖動位移 `1 - rng%3`）。前段 mode 2 與尾段 mode 8 的
+// 呼叫端（0x2AC8E／0x2B1B6）不看回傳值，所以那兩段沒有這一步。
+func NativeCommand5MarkerShake(frame NativeCommand5Frame) NativeCommand5Frame {
+	if frame.NumericMarker {
+		frame.Next.RNG = fdother.NativeRNGStep(frame.Next.RNG)
+	}
+	return frame
+}
+
+// WalkNativeCommand5RNG 只走 0x269D3 六槽狀態機與 0x2A6BD 目標迴圈的亂數
+// 序列，不合成任何畫格：mode 0 初始化（六次）→ 前段畫格（可能的重置）→
+// 每個目標：`resolve` 在 mode 3 之後、第一張目標畫格之前擲命中／傷害
+// （0x2B114 call 0x1C75E），接著目標畫格裡 mode 5 的重置與 marker 抖動，
+// 目標之間是過場畫格 → 尾段畫格（stop=1，沒有重置與抖動）。回傳整段結束時
+// 的亂數，與 BuildNativeCommand5EffectSequence 走同一條序列（r4 收據
+// seq 1451：6 次 0x26A5A、0x1C7F2、0x1C86E、0x2AF45／0x26BCD 交錯共 18 步）。
+func WalkNativeCommand5RNG(rng uint16, schedule NativeCommand5PresentationSchedule, rawSide byte, targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+	if targetCount <= 0 || resolve == nil {
+		return rng, fmt.Errorf("figani: command5 RNG walk needs targets and a resolver")
+	}
+	state := NewNativeCommand5StateForSchedule(rng, schedule)
+	for index := 0; index < schedule.FrontFrames; index++ {
+		frame, err := PlanNativeCommand5DrawFrame(state, schedule, rawSide)
+		if err != nil {
+			return rng, err
+		}
+		state = frame.Next
+	}
+	for target := 0; target < targetCount; target++ {
+		next, hit, err := resolve(target, state.RNG)
+		if err != nil {
+			return rng, err
+		}
+		state.RNG = next
+		_, after, err := BuildNativeCommand5TargetSequenceHit(state, schedule, rawSide, hit)
+		if err != nil {
+			return rng, err
+		}
+		state = after
+		if target+1 < targetCount {
+			_, after, err := BuildNativeCommand5TransitionSequence(state, schedule, rawSide)
+			if err != nil {
+				return rng, err
+			}
+			state = after
+		}
+	}
+	_, final, err := BuildNativeCommand5TailSequence(state, schedule, rawSide)
+	if err != nil {
+		return rng, err
+	}
+	return final.RNG, nil
 }

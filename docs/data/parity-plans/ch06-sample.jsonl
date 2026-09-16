@@ -1,0 +1,67 @@
+# 第六章抽樣（111 章工作單元）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 5 章」槽（--levels-per-chapter 6 --seed 4，與第四、五章同一政策；ch02_post join 2、ch04_post join 10 已套用，名冊 8 人；瑪琳由 join 建構器的靜態表建立、存活，見 manifest 與收據 limitations）。
+# 可抽項目（remake/assets/scenarios/ch06.json、docs/data/turn_events.json map 5）：普里茲港 map5（W,H 見 FDFIELD）、開局 group 0（21 敵＋4 友軍 NPC，record 8 是敵方小隊長 portrait 77）、group 3（1 own NPC portrait 13）；第 5 回合開頭 event 20（selector 2，對白 text 1）、第 10 回合開頭 event 21（selector 2，record 8 存活才播對白 text 2）、第 15 回合開頭 event 22（record 8 存活才登場敵軍 group 1 十三筆＋對白 text 3）；死亡程式 1 個；戰後 handler ch05_post：join＋spawn＋pan＋act 27＋對白＋sync_party＋set_chapter 6，城鎮是往王城的途中（town_ch07，祕密商店在酒店 Alt+F6）。
+# 章內全程正常 BIOS 鍵；只有抽完第 10 回合 event 21 之後的 force_enemy_clear 是注入（收據 state_injections 記錄）。驅動端沒有法術／物品／買入指令，這三項不在本章樣本內（limitations）；第 15 回合 event 22 不推到（limitations）。
+# --- 標題 LOAD 槽 0 → 城鎮 ---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前對白（ch05_pre：loadch、對白、focus_unit）→ 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":120}
+{"await_ui":"cursor","steps":10000000,"max":60}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～9 回合：守在出發格（typical_move 1：只打三格內的敵人、最多挪一格，不推進），END 換手；每回合之後先等玩家回合的地圖游標回來（第 5 回合開頭的 event 20 對白由 await_ui 推過），再看回合數。守位是為了讓 record 8（敵方小隊長）活到第 10 回合開頭的 event 21，也讓索爾不會單獨衝進敵陣（r2 用預設 typical_move 6 在第 8 回合被圍死，戰敗回標題） ---
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=8","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=9","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":1,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=10","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+# --- 第 10～11 回合：全員接戰（event 21 已在第 10 回合開頭播過）---
+{"sweep_round":true,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=11","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=12","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+# --- 清場（修改路徑）→ END → 戰後（ch05_post：join、spawn、pan、act 27、對白）→ 城鎮。第 15 回合的 event 22 不在本次樣本（limitations） ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（原版 chapter 已是 6，城鎮記錄 index 5＝重製端 town_ch07 往王城的途中）：武器店出售一件（選項 1）→ 四棟建築各探一次 → 酒店存檔 → 酒店（選項 0，存檔後游標就在這）上 Alt+F6 進祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"town_probe":{"moves":["left","left","left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":[],"key":"alt-f6"},"steps":10000000}

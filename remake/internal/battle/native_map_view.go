@@ -250,6 +250,13 @@ func AdvanceNativeMapWalkStepViewState(
 // `0x149F8..0x14B16` 是沿直線收集單位的 helper，`0x14AFE` 結尾會把游標復原，
 // 淨效果是零。那個誤讀會讓可見游標每移動一次就累積一格偏差。
 func (s *State) FocusNativeMapCursor(x, y int) bool {
+	return s.FocusNativeMapCursorSteps(x, y, nil)
+}
+
+// FocusNativeMapCursorSteps 是 FocusNativeMapCursor 的逐步版本：每走一格呼叫一次
+// onStep（走之前、走之後的視圖），讓呼叫端照 0x11C59 家族的重繪規則決定要不要
+// 更新 HUD anchor。
+func (s *State) FocusNativeMapCursorSteps(x, y int, onStep func(before, after NativeMapViewState)) bool {
 	if s == nil || !s.HasNativeMapViewState {
 		return false
 	}
@@ -257,12 +264,22 @@ func (s *State) FocusNativeMapCursor(x, y int) bool {
 		x < 0 || x >= s.W || y < 0 || y >= s.H {
 		return false
 	}
+	move := func(dx, dy int) bool {
+		before := s.NativeMapViewState
+		if _, ok := s.MoveNativeMapCursor(dx, dy); !ok {
+			return false
+		}
+		if onStep != nil {
+			onStep(before, s.NativeMapViewState)
+		}
+		return true
+	}
 	for s.NativeMapViewState.CursorX != x {
 		step := 1
 		if s.NativeMapViewState.CursorX > x {
 			step = -1
 		}
-		if _, ok := s.MoveNativeMapCursor(step, 0); !ok {
+		if !move(step, 0) {
 			return false
 		}
 	}
@@ -271,9 +288,23 @@ func (s *State) FocusNativeMapCursor(x, y int) bool {
 		if s.NativeMapViewState.CursorY > y {
 			step = -1
 		}
-		if _, ok := s.MoveNativeMapCursor(0, step); !ok {
+		if !move(0, step) {
 			return false
 		}
 	}
 	return true
+}
+
+// NativeMapCursorStepRedraws 是四個游標鍵處理器（0x11B48／0x11B9B／0x11BFA／0x11C59）
+// 收尾的重繪規則：捲了鏡頭一定重繪；只動可見游標時要 [0x51A83] 非 0 才 `0x11CAC(0)`。
+// 沒重繪就沒有 0x1ACF3，HUD anchor（0x1AD2A）不會被評估。移動確認後的游標走回單位
+// （0x18A14 先把 [0x51A83] 寫 0 再 0x18A26→0x12CEA）就是靠這條不翻小窗。
+func (s *State) NativeMapCursorStepRedraws(before, after NativeMapViewState) bool {
+	if s == nil {
+		return false
+	}
+	if before.CameraX != after.CameraX || before.CameraY != after.CameraY {
+		return true
+	}
+	return s.NativeMapRangeMode != 0
 }

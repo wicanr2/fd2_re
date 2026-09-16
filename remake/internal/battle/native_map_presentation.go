@@ -105,6 +105,13 @@ func (s *State) AdvanceNativeMapHUDAnchor(rawVisibleX, rawVisibleY int) bool {
 	if s == nil || !s.HasNativeMapHUDState {
 		return false
 	}
+	// 0x1ACF3 先查兩個顯示閘門 [0x51AAB]／[0x51AAC]，任一為 0 就直接返回，0x1AD2A 的
+	// anchor 分支根本不會跑。移動確認後游標走回單位（0x18A26→0x12CEA，每格 0x11CAC
+	// 重繪）時閘門是關的，所以原版不會因為那幾格落在左下角而把小窗翻到右邊
+	//（第六章 r3 seq 817：悠妮從 (7,23) 走到 (8,23)，可見游標 (2,6) 沒有翻）。
+	if s.NativeMapHUDState.DisplayGateA == 0 || s.NativeMapHUDState.DisplayGateB == 0 {
+		return false
+	}
 	next := s.NativeMapHUDState.AnchorX
 	if rawVisibleY > 5 {
 		if rawVisibleX < 3 {

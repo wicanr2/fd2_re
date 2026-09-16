@@ -40,12 +40,39 @@ func TestNativeTransientPhaseExpiresAndRecomputesAtomically(t *testing.T) {
 	}
 }
 
-func TestNativeTransientPhaseFailsClosedWithoutRawProjection(t *testing.T) {
+// 從城鎮正常進戰場沒有 saved runtime raw 投影：名冊每筆都有 raw +5／+6 出處時走 typed
+// 掃描（第六章 r4：敵方法師的 +0x22 每回合 −1，歸零時 AP 從 1.15 倍回到基礎值）；
+// 缺任何一筆的 raw 出處就整段拒絕、不動任何單位。
+func TestNativeTransientPhaseTypedSweepWithoutRawProjection(t *testing.T) {
 	g, _, _ := nativeCurrentSaveTestGame(t)
 	g.st.HasNativeRuntimeUnitProjection = false
+	unit := g.st.Units[0]
+	unit.NativeRecordByte6 = 0
+	unit.NativeTransient[0] = 1
+	unit.BaseAP = 100
+	unit.BaseDP = 60
+	unit.EquipmentBaseSet = true
+	unit.DX = 20
+	unit.AP = 114
+	unit.DP = 60
+	unit.HIT = 20
+	unit.EV = 20
+	expired, err := g.applyNativeTransientPhase(0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit = g.st.Units[0]
+	if len(expired) != 1 || expired[0].Offset != 0x22 || unit.NativeTransient[0] != 0 || unit.AP != 100 {
+		t.Fatalf("expiry=%+v transient=%v AP=%d", expired, unit.NativeTransient, unit.AP)
+	}
+
+	g, _, _ = nativeCurrentSaveTestGame(t)
+	g.st.HasNativeRuntimeUnitProjection = false
+	g.st.Units[0].HasNativeRecordByte5 = false
+	g.st.Units[0].NativeTransient[0] = 2
 	before := g.st.Units[0].NativeTransient
 	if _, err := g.applyNativeTransientPhase(0); err == nil {
-		t.Fatal("missing raw projection was accepted")
+		t.Fatal("roster without raw +5 provenance was accepted")
 	}
 	if g.st.Units[0].NativeTransient != before {
 		t.Fatal("failed transient phase mutated live unit")

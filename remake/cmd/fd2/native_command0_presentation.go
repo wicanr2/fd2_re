@@ -183,15 +183,35 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 		!target.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
 		return errors.New("native command0 raw scene provenance unavailable")
 	}
+	effectResource := 18
+	if actor.NativeRecordByte6 == 0 {
+		effectResource = 20
+	}
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
+	if err != nil {
+		return err
+	}
+	schedule, err := figani.BuildNativeCommand0PresentationSchedule(actor.NativeRecordByte6, effect)
+	if err != nil {
+		return err
+	}
+	// 0x1C75E 的命中／傷害擲骰之後，sub_26152 mode 5 回傳 1 的七步各再吃一次
+	// 0x2AF40 抖動亂數（r4 收據 seq 114：0x1C7F2、0x1C86E、七次 0x2AF45），
+	// 演出結束時的全域亂數是 plan.RNGAfter。
+	walk := func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+		return figani.WalkNativeCommand0RNG(g.nativeRNGState, schedule, targetCount, resolve)
+	}
 	var plan *battle.NativeCommandDamagePlan
-	var err error
 	if actor.Camp == battle.Enemy {
 		var origin battle.Cell
 		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
-			plan, err = g.st.PlanNativeAICommandDamage(actor, origin, 0, g.st.NativeCommandResistances, g.nativeRNGState)
+			plan, err = g.st.PlanNativeAICommandDamageWalk(actor, origin, 0, g.st.NativeCommandResistances, g.nativeRNGState, walk)
 		}
 	} else {
-		plan, err = g.st.PlanBoundNativeCommand0(actor, target, g.nativeRNGState)
+		if len(g.st.NativeCommandResistances) == 0 {
+			return errors.New("native command 0 resistances unavailable")
+		}
+		plan, err = g.st.PlanNativeCommandDamageWalk(actor, target, 0, g.st.NativeCommandResistances, g.nativeRNGState, walk)
 	}
 	if err != nil {
 		return err
@@ -246,18 +266,6 @@ func (g *Game) startNativeCommand0Presentation(actor, target *battle.Unit, then 
 		return err
 	}
 	targetIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3)
-	if err != nil {
-		return err
-	}
-	effectResource := 18
-	if actor.NativeRecordByte6 == 0 {
-		effectResource = 20
-	}
-	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
-	if err != nil {
-		return err
-	}
-	schedule, err := figani.BuildNativeCommand0PresentationSchedule(actor.NativeRecordByte6, effect)
 	if err != nil {
 		return err
 	}

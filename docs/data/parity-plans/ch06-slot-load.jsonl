@@ -1,0 +1,9 @@
+# 第六章建構槽合法性檢查：標題 LOAD 槽 0 → 停在戰間城鎮（普里茲港，variant 2）→ 五棟建築各探一次（進了就 esc 退回）。
+# 起點是 tools/fd2_chapter_slot.py build（ch02-cleared → 已通關第 5 章）的 FD2.SAV 可寫複本。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"town_probe":{"moves":["left","left","left","left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}

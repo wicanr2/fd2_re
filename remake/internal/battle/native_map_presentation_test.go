@@ -215,6 +215,11 @@ func TestNativeMapHUDStatePreservesRawGatesAndPersistentAnchor(t *testing.T) {
 	}) {
 		t.Fatalf("HUD state=%+v", st.NativeMapHUDState)
 	}
+	// 0x1ACF3 閘門 A 為 0 時提早返回，0x1AD2A 不跑：anchor 不變。
+	if st.AdvanceNativeMapHUDAnchor(2, 6) || st.NativeMapHUDState.AnchorX != 1 {
+		t.Fatalf("gated anchor=%+v", st.NativeMapHUDState)
+	}
+	st.NativeMapHUDState.DisplayGateA = 1
 	if !st.AdvanceNativeMapHUDAnchor(2, 6) || st.NativeMapHUDState.AnchorX != 0xf2 {
 		t.Fatalf("left anchor=%+v", st.NativeMapHUDState)
 	}

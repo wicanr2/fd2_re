@@ -1266,6 +1266,10 @@ func (g *Game) actingActor(target campaign.ActingUnit) *battle.Unit {
 	return nil
 }
 
+// nativeRuntimeRecordCapacity 是原版 runtime 記錄表的配置筆數（[0x53A45] 之後 96×0x50
+// bytes）；[0x53BEB] 是已物化筆數，兩者不同。
+const nativeRuntimeRecordCapacity = 96
+
 func (g *Game) handlerUnitCount() int {
 	if g.st != nil {
 		return len(g.st.Units)
@@ -2016,14 +2020,20 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 	case "act":
 		if len(b.Acting) > 0 {
-			// Decoded acting refers to the current materialized unit array. Never
-			// turn an unavailable original slot into a silent no-op: the source may
-			// be a different load-context resource or require an unmodelled spawn.
+			// Decoded acting refers to the current materialized unit array. A slot
+			// beyond the materialized count but inside the native 96-record
+			// allocation is what the original also hits: 0x1366A writes the pose
+			// into a record nothing draws. 第六章 ch05_post 的 ACTING 27 指 slot 34，
+			// 原版當時只有 34 筆（r3 seq 1508–1528，記錄 33 的 +3 全程是 0），畫面沒有
+			// 任何單位動——重製端同樣略過那一筆，不當成錯誤。超出 96 筆才是資料錯。
 			for _, frame := range b.Acting {
 				for _, target := range frame.Units {
-					if target.Slot != nil && (*target.Slot < 0 || *target.Slot >= g.handlerUnitCount()) {
-						g.loadErr = fmt.Sprintf("beat act %s: original runtime slot %d unavailable (materialized=%d)", b.Source, *target.Slot, g.handlerUnitCount())
+					if target.Slot != nil && (*target.Slot < 0 || *target.Slot >= nativeRuntimeRecordCapacity) {
+						g.loadErr = fmt.Sprintf("beat act %s: original runtime slot %d outside the %d-record allocation", b.Source, *target.Slot, nativeRuntimeRecordCapacity)
 						return
+					}
+					if target.Slot != nil && *target.Slot >= g.handlerUnitCount() && g.cutsceneLog {
+						log.Printf("[cutscene] act %s slot %d beyond materialized %d: original writes an unmaterialized record, no visible effect", b.Source, *target.Slot, g.handlerUnitCount())
 					}
 				}
 			}
@@ -4131,23 +4141,15 @@ func filterScenarioParty(sc *battle.Scenario, members map[int]bool) {
 	if sc == nil || len(members) == 0 {
 		return
 	}
+	// 部署格跟槽位不跟角色：0x1088D 把出戰的持續記錄依序建成 runtime 記錄，第 i 筆
+	// 站 FDFIELD 出場位置的第 i 格。這裡只把沒出戰的人拿掉，格子清單原封不動。
 	party := sc.Party[:0]
-	var deploy [][2]int
-	if len(sc.DeployCells) != 0 {
-		deploy = sc.DeployCells[:0]
-	}
-	for i, member := range sc.Party {
+	for _, member := range sc.Party {
 		if members[member.Fig] {
 			party = append(party, member)
-			if i < len(sc.DeployCells) {
-				deploy = append(deploy, sc.DeployCells[i])
-			}
 		}
 	}
 	sc.Party = party
-	if len(sc.DeployCells) != 0 {
-		sc.DeployCells = deploy
-	}
 }
 
 // battlePartyMembers returns the temporary roster selected by the original
@@ -4421,10 +4423,14 @@ func (g *Game) churchCandidates(mode string) []int {
 }
 
 // reorderScenarioParty applies the original JOIN chronology before either a
-// battle or handler cutscene constructs its runtime unit array. Deployment
-// cells stay attached to their characters; only slot construction changes.
-// Chapter 0 proves the order 0,9,4,30 rather than the authored battle-UI order
-// 0,4,9,30, and later acting/post handlers address those construction slots.
+// battle or handler cutscene constructs its runtime unit array. Chapter 0
+// proves the order 0,9,4,30 rather than the authored battle-UI order 0,4,9,30,
+// and later acting/post handlers address those construction slots.
+//
+// 部署格不跟著角色走：0x1088D 讓第 i 筆 runtime 記錄站 FDFIELD 出場位置的第 i 格，
+// 所以 DeployCells 維持劇本（FDFIELD）順序，只有隊員順序改成 JOIN 順序。第六章
+// 收據（parity-ch06 r3）：slot 1 悠妮站第 2 格 (7,23)、slot 2 亞雷斯站第 3 格 (10,25)，
+// 而劇本裡亞雷斯排在悠妮前面。
 func reorderScenarioParty(sc *battle.Scenario, joinOrder []int) error {
 	if sc == nil || len(joinOrder) == 0 {
 		return nil
@@ -4432,26 +4438,14 @@ func reorderScenarioParty(sc *battle.Scenario, joinOrder []int) error {
 	if len(sc.DeployCells) != 0 && len(sc.DeployCells) < len(sc.Party) {
 		return fmt.Errorf("JOIN reordering requires complete deploy cells, got %d for %d party members", len(sc.DeployCells), len(sc.Party))
 	}
-	type partyEntry struct {
-		member battle.PartyMember
-		cell   [2]int
-	}
-	byID := make(map[int]partyEntry, len(sc.Party))
-	for i, member := range sc.Party {
-		entry := partyEntry{member: member}
-		if i < len(sc.DeployCells) {
-			entry.cell = sc.DeployCells[i]
-		}
-		byID[member.Fig] = entry
+	byID := make(map[int]battle.PartyMember, len(sc.Party))
+	for _, member := range sc.Party {
+		byID[member.Fig] = member
 	}
 	ordered := make([]battle.PartyMember, 0, len(sc.Party))
-	orderedCells := make([][2]int, 0, len(sc.DeployCells))
 	for _, id := range joinOrder {
-		if entry, ok := byID[id]; ok {
-			ordered = append(ordered, entry.member)
-			if len(sc.DeployCells) != 0 {
-				orderedCells = append(orderedCells, entry.cell)
-			}
+		if member, ok := byID[id]; ok {
+			ordered = append(ordered, member)
 			delete(byID, id)
 		}
 	}
@@ -4459,7 +4453,6 @@ func reorderScenarioParty(sc *battle.Scenario, joinOrder []int) error {
 		return fmt.Errorf("JOIN order covers %d of %d scenario party members", len(ordered), len(sc.Party))
 	}
 	sc.Party = ordered
-	sc.DeployCells = orderedCells
 	return nil
 }
 
@@ -7447,12 +7440,19 @@ func (g *Game) confirm() {
 			if len(p) >= 2 {
 				g.walk = &walkAnim{u: g.sel, path: p}
 				// 原版確認之後游標回到單位所在格：0x18960 先存下游標，
-				// 0x18A26 以那個值呼叫 0x12CEA，逐格走回去（每格一次
-				// 0x11CAC(0) 重繪）。走的是鍵盤處理器，所以可見游標與鏡頭
-				// 一起動——收據 fd2-move-confirm-cursor-20260909 的 cp0071
+				// 0x18A26 以那個值呼叫 0x12CEA，逐格走回去。走的是鍵盤處理器，所以
+				// 可見游標與鏡頭一起動——收據 fd2-move-confirm-cursor-20260909 的 cp0071
 				// 量到游標 14→16 的同時可見游標 1→2（第三格由接著開始的走行
-				// 步進先扣掉），正是「成對搬動」的形狀。
+				// 步進先扣掉），正是「成對搬動」的形狀。0x18A14 先把 [0x51A83] 寫 0，
+				// 0x18A2E 才寫回 1：走回去的每一格只動可見游標時不重繪，HUD anchor
+				// 不評估（第六章 r3 seq 817：走回 (7,23) 可見 (2,6) 沒把小窗翻到右邊）。
+				if g.st != nil {
+					g.st.MaterializeNativeMapRangeMode(0)
+				}
 				g.focusNativeMapCursorOnUnit(g.sel)
+				if g.st != nil {
+					g.st.MaterializeNativeMapRangeMode(1)
+				}
 			} else { // 理論上不會(reach 內必可達),保底瞬移
 				g.sel.SetMapPlacement(g.curX, g.curY, g.sel.Dir)
 				g.moved = true
@@ -8335,13 +8335,20 @@ func (g *Game) syncNativeMapView() bool {
 	return true
 }
 
+// nativeCursorStepHUD 在一格游標步之後照 0x11C59 家族的重繪規則更新 HUD anchor：
+// 沒重繪（只動可見游標且 [0x51A83]==0）就不評估 0x1AD2A。
+func (g *Game) nativeCursorStepHUD(before, after battle.NativeMapViewState) {
+	if g == nil || g.st == nil || !g.st.HasNativeMapHUDState || !g.st.NativeMapCursorStepRedraws(before, after) {
+		return
+	}
+	g.st.AdvanceNativeMapHUDAnchor(after.VisibleCursorX, after.VisibleCursorY)
+}
+
 func (g *Game) moveMapCursor(dx, dy int) {
 	if g.st != nil && g.st.HasNativeMapViewState {
+		before := g.st.NativeMapViewState
 		if _, ok := g.st.MoveNativeMapCursor(dx, dy); ok {
-			view := g.st.NativeMapViewState
-			if g.st.HasNativeMapHUDState {
-				g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
-			}
+			g.nativeCursorStepHUD(before, g.st.NativeMapViewState)
 			g.syncNativeMapView()
 		}
 		return
@@ -8357,12 +8364,8 @@ func (g *Game) focusNativeMapCursorOnUnit(u *battle.Unit) {
 	if g == nil || u == nil || g.st == nil || !g.st.HasNativeMapViewState {
 		return
 	}
-	if !g.st.FocusNativeMapCursor(u.X, u.Y) {
+	if !g.st.FocusNativeMapCursorSteps(u.X, u.Y, g.nativeCursorStepHUD) {
 		return
-	}
-	if g.st.HasNativeMapHUDState {
-		view := g.st.NativeMapViewState
-		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
 	}
 	g.syncNativeMapView()
 }
@@ -8377,12 +8380,8 @@ func (g *Game) aiFocusCursor(x, y int) {
 	if g == nil || g.st == nil || !g.st.HasNativeMapViewState {
 		return
 	}
-	if !g.st.FocusNativeMapCursor(x, y) {
+	if !g.st.FocusNativeMapCursorSteps(x, y, g.nativeCursorStepHUD) {
 		return
-	}
-	if g.st.HasNativeMapHUDState {
-		view := g.st.NativeMapViewState
-		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
 	}
 	g.syncNativeMapView()
 }
@@ -11586,6 +11585,12 @@ func (g *Game) endTurn() {
 	if g.st == nil || g.result != "" || g.aiBusy || g.nativeTurnStaging != nil || g.battleEvent != nil {
 		return
 	}
+	// 兩條 END 路徑（系統選單 0x1726B、全員行動完 0x135B4）進 0x1A30B 之前都把 HUD
+	// 顯示閘門 B [0x51AAC] 寫 0，返回後寫 1：整個換手、敵方回合到 PLAYER PHASE 橫幅
+	// 都不畫小窗，0x1ACF3 的 anchor 分支也不跑。
+	if g.st.HasNativeMapHUDState {
+		g.st.NativeMapHUDState.DisplayGateB = 0
+	}
 	// 0x1A332..0x1A484：進 0x1A30B 先讓沒行動、沒狀態的我方單位回 MaxHP/5，
 	// 之後才跑 selector 1 的回合事件。原版還會在每個回復的單位上畫圖示並播音效 4，
 	// 那段演出尚未接（只有數值）。
@@ -11609,13 +11614,32 @@ func (g *Game) endTurnAfterSelector1Events() {
 	// The original runs selector 1 before 0x1D80B, then selector 0 before
 	// 0x1D8BA. This controller merges those two non-player unit scans, so keep
 	// the proven sweep order as one atomic pre-AI transaction.
-	if g.st.HasNativeRuntimeUnitProjection {
+	if g.nativeTransientSweepAvailable() {
 		if err := g.beginNativeTransientPhases([]byte{1, 0}, g.beginEnemyPhaseAfterTurnEvents); err != nil {
 			g.loadErr = err.Error()
 		}
 		return
 	}
 	g.beginEnemyPhaseAfterTurnEvents()
+}
+
+// nativeTransientSweepAvailable：sub_1A866 的掃描只在名冊每筆都有 raw +5／+6 出處時
+// 跑（原版名冊或 saved runtime 投影）；沒有 raw 出處的舊可編輯劇本沒有 +0x22..+0x27，
+// 跳過。第六章 r4 收據：敵方法師的強化 +0x22 每回合 −1、歸零後才會再被 0x1598A
+// 的指令 17 評分選中，不遞減就永遠不再施放。
+func (g *Game) nativeTransientSweepAvailable() bool {
+	if g == nil || g.st == nil || len(g.st.Units) == 0 {
+		return false
+	}
+	if g.st.HasNativeRuntimeUnitProjection {
+		return true
+	}
+	for _, unit := range g.st.Units {
+		if unit == nil || !unit.HasNativeRecordByte5 || !unit.HasNativeRecordByte6 {
+			return false
+		}
+	}
+	return true
 }
 
 // beginEnemyPhaseAfterTurnEvents 進敵方回合。0x1A30B 的順序是橫幅（0x1A3A2）→
@@ -11865,7 +11889,7 @@ func (g *Game) completeTurnPlayerPhase() {
 	// 0x1A78B→0x1A797 passes selector 2 after the phase presentation and
 	// immediately before range mode 1/player input. Keep the raw selector;
 	// do not substitute normalized Camp.
-	if g.st != nil && g.st.HasNativeRuntimeUnitProjection {
+	if g.nativeTransientSweepAvailable() {
 		if err := g.beginNativeTransientPhases([]byte{2}, g.finishNativeTransientPlayerPhase); err != nil {
 			g.loadErr = err.Error()
 		}
@@ -11885,6 +11909,10 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 
 func (g *Game) finishNativeTransientPlayerPhaseInput() {
 	g.sel, g.reach, g.moved = nil, nil, false
+	// 0x1A30B 返回：0x135D4／0x17277 把閘門 B 寫回 1。
+	if g.st != nil && g.st.HasNativeMapHUDState {
+		g.st.NativeMapHUDState.DisplayGateB = 1
+	}
 	if g.st != nil && g.st.HasNativeMapViewState && len(g.st.Units) > 0 {
 		g.nativeNextPlayerIndex = 0
 		g.beginNativePlayerFocus(g.st.Units[0])

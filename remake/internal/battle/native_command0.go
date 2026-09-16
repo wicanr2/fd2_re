@@ -76,6 +76,11 @@ func (s *State) ExecuteNativeCommandDamage(actor, confirmed *Unit, commandID int
 // Unit fields unchanged.  The result captures exact pre/post HP for atomic
 // command-indexed publication denominator for atomic presentation admission.
 func (s *State) PlanNativeCommandDamage(actor, confirmed *Unit, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
+	return s.PlanNativeCommandDamageWalk(actor, confirmed, commandID, resistByClass, rngState, nil)
+}
+
+// PlanNativeCommandDamageWalk 是 PlanNativeCommandDamage 加上演出亂數交錯的版本。
+func (s *State) PlanNativeCommandDamageWalk(actor, confirmed *Unit, commandID int, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {
 	if s == nil {
 		return nil, fmt.Errorf("missing native command state")
 	}
@@ -110,27 +115,74 @@ func (s *State) PlanNativeCommandDamage(actor, confirmed *Unit, commandID int, r
 		Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
 		ActorActedBefore: actor.Acted, RNGBefore: rngState,
 		DamageStages: damageStages,
-		Results:      make([]NativeCommandDamageResult, 0, len(targets)), publishedTargetStages: make([]int, len(targets)),
 	}
-	for _, target := range targets {
-		resolved, nextRNG, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistByClass[target.ClassID], rngState)
-		if err != nil {
-			return nil, err
+	if err := resolveNativeCommandDamagePlan(plan, record, targets, resistByClass, rngState, walk); err != nil {
+		return nil, err
+	}
+	return plan, nil
+}
+
+// NativeCommandDamageRNGWalk 讓演出 owner 決定 0x2A6BD 目標迴圈裡每個目標的
+// 0x1C75E 擲骰落在整條 0x4E893 序列的哪一點：handler 的 mode 0 初始化、mode 5
+// 重置與 0x2AF40 的畫面抖動都吃同一個全域亂數。walk 必須對 0..targetCount-1
+// 各呼叫 resolve 恰好一次（依目標順序），並回傳整段演出結束時的亂數狀態。
+// nil 表示沒有演出亂數，逐目標依序擲骰。
+type NativeCommandDamageRNGWalk func(targetCount int, resolve func(index int, rng uint16) (next uint16, hit bool, err error)) (uint16, error)
+
+// resolveNativeCommandDamagePlan 依 walk 指定的順序對每個目標跑 0x1C75E→0x1C81F
+// 的命中／傷害擲骰，並把演出結束時的亂數寫進 plan.RNGAfter。
+func resolveNativeCommandDamagePlan(plan *NativeCommandDamagePlan, record NativeCommandRecord, targets []*Unit, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) error {
+	plan.Results = make([]NativeCommandDamageResult, len(targets))
+	plan.publishedTargetStages = make([]int, len(targets))
+	resolved := make([]bool, len(targets))
+	for index, target := range targets {
+		plan.Results[index] = NativeCommandDamageResult{Target: target, HPBefore: target.HP, HPAfter: target.HP}
+	}
+	resolve := func(index int, rng uint16) (uint16, bool, error) {
+		if index < 0 || index >= len(targets) || resolved[index] {
+			return rng, false, fmt.Errorf("native command damage walk resolved target %d out of order", index)
 		}
-		rngState = nextRNG
+		target := targets[index]
+		result, next, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistByClass[target.ClassID], rng)
+		if err != nil {
+			return rng, false, err
+		}
 		hpAfter := target.HP
-		if resolved.Hit {
-			hpAfter -= resolved.Damage
+		if result.Hit {
+			hpAfter -= result.Damage
 			if hpAfter < 0 {
 				hpAfter = 0
 			}
 		}
-		plan.Results = append(plan.Results, NativeCommandDamageResult{
-			Target: target, NativeCommandDamage: resolved, HPBefore: target.HP, HPAfter: hpAfter,
-		})
+		plan.Results[index].NativeCommandDamage = result
+		plan.Results[index].HPAfter = hpAfter
+		resolved[index] = true
+		return next, result.Hit, nil
 	}
-	plan.RNGAfter = rngState
-	return plan, nil
+	if walk == nil {
+		walk = func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+			rng := rngState
+			for index := 0; index < targetCount; index++ {
+				next, _, err := resolve(index, rng)
+				if err != nil {
+					return rng, err
+				}
+				rng = next
+			}
+			return rng, nil
+		}
+	}
+	after, err := walk(len(targets), resolve)
+	if err != nil {
+		return err
+	}
+	for index, done := range resolved {
+		if !done {
+			return fmt.Errorf("native command damage walk left target %d unresolved", index)
+		}
+	}
+	plan.RNGAfter = after
+	return nil
 }
 
 // PlanNativeAICommandDamageSingleTarget consumes the explicit target array
@@ -184,6 +236,11 @@ func (s *State) PlanNativeAICommandDamageSingleTarget(actor, target *Unit, comma
 // must be AIPlan.NativeActionDestination, never the actor's presentation
 // cell. It intentionally bypasses the player-only confirmed-cursor admission.
 func (s *State) PlanNativeAICommandDamage(actor *Unit, origin Cell, commandID int, resistByClass map[int]int, rngState uint16) (*NativeCommandDamagePlan, error) {
+	return s.PlanNativeAICommandDamageWalk(actor, origin, commandID, resistByClass, rngState, nil)
+}
+
+// PlanNativeAICommandDamageWalk 是 PlanNativeAICommandDamage 加上演出亂數交錯的版本。
+func (s *State) PlanNativeAICommandDamageWalk(actor *Unit, origin Cell, commandID int, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {
 	if s == nil || actor == nil || actor.Camp != Enemy || !actor.HasNativeRecordByte6 || !actor.HasNativeMapPresentation ||
 		commandID < 0 || commandID > 9 || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
 		return nil, fmt.Errorf("native AI command damage selector unavailable id=%d", commandID)
@@ -224,30 +281,20 @@ func (s *State) PlanNativeAICommandDamage(actor *Unit, origin Cell, commandID in
 	if err != nil {
 		return nil, err
 	}
-	plan := &NativeCommandDamagePlan{Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
-		ActorActedBefore: actor.Acted, RNGBefore: rngState, DamageStages: stages,
-		Results: make([]NativeCommandDamageResult, 0, len(indices)), publishedTargetStages: make([]int, len(indices))}
+	targets := make([]*Unit, 0, len(indices))
 	for _, index := range indices {
 		target := s.Units[int(index)]
 		resistance, ok := resistByClass[target.ClassID]
 		if !ok || resistance < 0 || resistance > 10 {
 			return nil, fmt.Errorf("native AI command damage missing resistance class=%d", target.ClassID)
 		}
-		resolved, next, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistance, rngState)
-		if err != nil {
-			return nil, err
-		}
-		rngState = next
-		hpAfter := target.HP
-		if resolved.Hit {
-			hpAfter -= resolved.Damage
-			if hpAfter < 0 {
-				hpAfter = 0
-			}
-		}
-		plan.Results = append(plan.Results, NativeCommandDamageResult{Target: target, NativeCommandDamage: resolved, HPBefore: target.HP, HPAfter: hpAfter})
+		targets = append(targets, target)
 	}
-	plan.RNGAfter = rngState
+	plan := &NativeCommandDamagePlan{Actor: actor, CommandID: commandID, MPBefore: actor.MP, MPAfter: actor.MP - record.MPCost,
+		ActorActedBefore: actor.Acted, RNGBefore: rngState, DamageStages: stages}
+	if err := resolveNativeCommandDamagePlan(plan, record, targets, resistByClass, rngState, walk); err != nil {
+		return nil, err
+	}
 	if DebugAI != nil {
 		DebugAI("AI command %d actor (%d,%d) origin (%d,%d) targets=%d rng %d→%d results=%+v",
 			commandID, actor.NativeMapPresentation.X, actor.NativeMapPresentation.Y, origin.X, origin.Y, len(indices), plan.RNGBefore, plan.RNGAfter, plan.Results)

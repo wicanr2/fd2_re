@@ -33,11 +33,17 @@ type NativeCommand5EffectInput struct {
 	Schedule            figani.NativeCommand5PresentationSchedule
 	RawSide             byte
 	VisualRNG           uint16
+	// ResolveTarget 在每個目標的 mode 3 之後、第一張目標畫格之前被呼叫，對應
+	// 0x2B114 的 0x1C75E 擲骰；回傳值成為該目標畫格序列起點的亂數。nil 表示
+	// 呼叫端已另行擲骰（六槽相位仍沿 VisualRNG 走）。
+	ResolveTarget func(index int, rng uint16) (next uint16, hit bool, err error)
 }
 
 // BuildNativeCommand5EffectSequence 先建立完整 handler-owned batch，並讓
 // 六通道 state 依 front→targets→boundaries→tail 原順序持續；任何晚期缺件
-// 都不回傳部分畫格。VisualRNG 只屬演出近似，不取代戰鬥數值 RNG。
+// 都不回傳部分畫格。VisualRNG 是全域 0x4E893 的同一條序列：mode 0 初始化、
+// 目標畫格的 mode 5 重置、0x2AF40 marker 抖動與 ResolveTarget 的命中／傷害
+// 擲骰依原版順序交錯，最後的 VisualRNG 就是整段演出結束時的全域亂數。
 func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeCommand5EffectSequence, error) {
 	if len(in.FrontBase) != nativeCommand0SurfaceSize || len(in.TailBase) != nativeCommand0SurfaceSize ||
 		in.ActorEffect == nil || len(in.ActorEffect.Frames) == 0 || in.Effect == nil ||
@@ -78,7 +84,15 @@ func BuildNativeCommand5EffectSequence(in NativeCommand5EffectInput) (NativeComm
 
 	lastIdleFrame, lastIdleRepeat := 0, 0
 	for targetIndex, idle := range in.TargetIdle {
-		planned, next, err := figani.BuildNativeCommand5TargetSequence(state, in.Schedule, in.RawSide)
+		hit := true
+		if in.ResolveTarget != nil {
+			next, resolvedHit, err := in.ResolveTarget(targetIndex, state.RNG)
+			if err != nil {
+				return NativeCommand5EffectSequence{}, err
+			}
+			state.RNG, hit = next, resolvedHit
+		}
+		planned, next, err := figani.BuildNativeCommand5TargetSequenceHit(state, in.Schedule, in.RawSide, hit)
 		if err != nil {
 			return NativeCommand5EffectSequence{}, err
 		}

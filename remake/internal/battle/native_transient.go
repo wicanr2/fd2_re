@@ -170,3 +170,61 @@ func (s *State) AdvanceNativeTransientPhaseRaw(selector byte) (NativeTransientPh
 // mapping one to the other would reintroduce the withdrawn assertion. Callers
 // must provide the recovered raw selector through TickNativeTransientsRaw.
 func (s *State) TickNativeTransients(_ Camp) []NativeTransientExpiry { return nil }
+
+// AdvanceNativeTransientPhaseTyped 是 AdvanceNativeTransientPhaseRaw 在沒有 saved
+// runtime raw 投影（從城鎮正常進戰場）時的版本：同一個 sub_1A866(selector) 的三段
+// 順序（+0x25 扣 MaxHP/10 → sub_1DB65 標記 HP==0 → 遞減 +0x22..+0x27），只寫 typed
+// 欄位。每個單位都要有 raw +5／+6 出處，缺了整段拒絕，不做部分掃描。
+func (s *State) AdvanceNativeTransientPhaseTyped(selector byte) (NativeTransientPhaseResult, error) {
+	if s == nil || len(s.Units) == 0 {
+		return NativeTransientPhaseResult{}, fmt.Errorf("native transient phase: roster is empty")
+	}
+	for slot, unit := range s.Units {
+		if unit == nil || !unit.HasNativeRecordByte5 || !unit.HasNativeRecordByte6 ||
+			unit.HP < 0 || unit.HP > 0xffff || unit.MaxHP < 0 || unit.MaxHP > 0xffff {
+			return NativeTransientPhaseResult{}, fmt.Errorf("native transient phase: unit %d lacks consumed raw fields", slot)
+		}
+	}
+	result := NativeTransientPhaseResult{}
+	for slot, unit := range s.Units {
+		if unit.NativeTransient[0x25-NativeTransientOffset] == 0 ||
+			unit.NativeRecordByte6 != selector || unit.NativeRecordByte5&1 != 0 {
+			continue
+		}
+		amount, before := unit.MaxHP/10, unit.HP
+		after := before - amount
+		if after < 0 {
+			after = 0
+		}
+		unit.HP = after
+		result.Damage = append(result.Damage, NativeTransientDamage{
+			Unit: unit, Slot: slot, Amount: amount, Before: before, After: after,
+		})
+	}
+	for slot, unit := range s.Units {
+		if unit.HP != 0 {
+			continue
+		}
+		if unit.NativeRecordByte5&1 == 0 {
+			result.InactiveSlots = append(result.InactiveSlots, slot)
+		}
+		unit.NativeRecordByte5 = 1
+	}
+	for _, unit := range s.Units {
+		if unit.NativeRecordByte6 != selector || unit.NativeRecordByte5&1 != 0 {
+			continue
+		}
+		for index, duration := range unit.NativeTransient {
+			if duration == 0 {
+				continue
+			}
+			unit.NativeTransient[index]--
+			if unit.NativeTransient[index] == 0 {
+				result.Expired = append(result.Expired, NativeTransientExpiry{
+					Unit: unit, Offset: NativeTransientOffset + index,
+				})
+			}
+		}
+	}
+	return result, nil
+}

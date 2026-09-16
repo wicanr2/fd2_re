@@ -160,6 +160,10 @@ func (s *State) PlanNativeAICommandModifier(actor *Unit, origin Cell, commandID 
 	for index := range after {
 		after[index].Target = targets[index]
 	}
+	if DebugAI != nil {
+		DebugAI("AI command %d actor (%d,%d) origin (%d,%d) targets=%d rng %d→%d mp %d→%d",
+			commandID, actor.X, actor.Y, origin.X, origin.Y, len(targets), rngState, result.RNGState, actor.MP, actor.MP-cost)
+	}
 	return &NativeAICommandModifierPlan{
 		Actor: actor, CommandID: commandID, Targets: append([]*Unit(nil), targets...), Result: result,
 		After: after, mpBefore: actor.MP, mpAfter: actor.MP - cost, before: nativeCommand34States(targets),

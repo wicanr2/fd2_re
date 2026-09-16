@@ -537,6 +537,54 @@
       "why": "2026-09-16 ch04_post 寫 50（FDFIELD map4 的 50 筆），實跑第 5 回合清場時記錄表是 48（42＋group 2 六筆），第 7 回合 group 3 登場後才 52；重製端另外還用 PendingCount 擋住勝利，原版沒有這條。",
       "date": "2026-09-16",
       "evidence": "remake/assets/cutscenes/bindings/ch04_post.json slot_counts；remake/internal/battle/combat.go Result"
+    },
+    {
+      "id": "deploy-cells-follow-runtime-slots",
+      "area": "資料",
+      "rule": "LOADCH 之後 FDFIELD 佈陣格 i 對到 runtime 槽 i（隊伍依持續記錄順序），格子不跟著角色走。重排或壓縮隊伍時只動隊伍陣列，不要跟著搬 DeployCells。",
+      "why": "2026-09-16 第六章 r1 重製端把佈陣格綁在角色上，reorderScenarioParty 一重排，悠妮和亞雷斯就對調了格子（原版 r3 seq 77 槽 1 悠妮站 (7,23)）。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/main.go reorderScenarioParty／filterScenarioParty；docs/data/ui-traces/parity-ch06.json battle_start"
+    },
+    {
+      "id": "hud-anchor-advances-only-when-drawn",
+      "area": "對拍",
+      "rule": "HUD 小窗的 anchor 只在 0x1AD2A 真的被畫到時前進：受 [0x51AAB]／[0x51AAC] 兩個閘，游標處理器只在鏡頭捲動或 [0x51A83]!=0 時重繪，移動確認前後 0x18A14／0x18A2E 清又設 [0x51A83]，0x1A30B 前後把閘 B 清 0。不要拿「送了幾個方向鍵」推 anchor 走了幾步，要用 eip 探針證明哪些呼叫真的到了 0x1AD2A。",
+      "why": "2026-09-16 第六章 r5–r7 幾張 HUD 小窗差一格：重製端每個游標步都推進 anchor，原版在移動確認的走回段與換手處理裡不畫；hud-probe 證明 0x1AD3C 在這條路徑根本不觸發。",
+      "date": "2026-09-16",
+      "evidence": "remake/internal/battle/native_map_presentation.go AdvanceNativeMapHUDAnchor；remake/internal/battle/native_map_view.go NativeMapCursorStepRedraws"
+    },
+    {
+      "id": "native-map-view-from-battle-start-checkpoint",
+      "area": "對拍",
+      "rule": "campaign_full 的 battle_N native_map_view（camera／cursor／visible／range_mode）要抄那一章 battle_start 那張 checkpoint，不是任何戰中 checkpoint；抄錯第一張就差整個畫面。",
+      "why": "2026-09-16 第六章 r1 抄了戰中 checkpoint 的 view，battle_start 差 3.5 萬像素。",
+      "date": "2026-09-16",
+      "evidence": "remake/assets/scenarios/campaign_full.json battle_ch06 native_map_view；docs/data/ui-traces/parity-ch06.json seq 77"
+    },
+    {
+      "id": "transient-sweep-runs-without-saved-projection",
+      "area": "重製端",
+      "rule": "sub_1A866 的暫時狀態掃描（+0x25 扣血、死亡標記、+0x22..+0x27 遞減、到期重算攻防）在每個回合階段都要跑，只要名冊有 raw +5／+6 出處就跑，不能綁在「有 saved runtime raw 投影」上。強化類指令的 AI 評分看的是 +0x22==0 的目標數，不遞減就永遠不再施放，MP 也不會用掉；這種分歧要到好幾回合後才會以 HP 差出現。",
+      "why": "2026-09-16 第六章 r8：從城鎮正常進戰場沒有投影，整段掃描被跳過，敵方法師第 4 回合起沒再放強化，第 11 回合 MP 還夠多放一發指令 0，(10,17) HP 98 對 40；原版 r4 每回合 +0x22 −1、MP 35→1。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/native_transient_phase.go buildNativeTransientPhasesTyped；remake/cmd/fd2/main.go nativeTransientSweepAvailable"
+    },
+    {
+      "id": "command-presentation-rng-shares-the-global-stream",
+      "area": "對拍",
+      "rule": "指令演出的擲骰（0x269D3 六槽相位、0x2AF40 marker 抖動）和 0x1C75E 的命中／傷害走同一條 0x4E893 序列，順序是 handler mode 0 → 每個目標 mode 3 之後擲命中／傷害 → 目標畫格裡重置與抖動交錯；未命中走 0x2AF61 不抖動。演出亂數不能用「局部視覺 RNG」近似，也不能只在 plan 之後補固定步數：要用 FD2_ORACLE_EIP_TRACE=0x4E893 拿到呼叫端序列，照序列走。",
+      "why": "2026-09-16 第六章 r9：同一個入口亂數 28590，原版指令 4 的傷害擲骰在第 8 步（39），重製端在第 2 步（36）；r4 的 0x4E893 追蹤一次就看出 6 次 0x26A5A 在 0x1C7F2 之前。",
+      "date": "2026-09-16",
+      "evidence": "remake/internal/figani/native_command_rng_walk_test.go；remake/internal/figani/native_command5.go WalkNativeCommand5RNG"
+    },
+    {
+      "id": "typical-move-hold-until-the-event",
+      "area": "對拍",
+      "rule": "要讓某個回合事件（守衛看某筆記錄存活）在原版側真的觸發，前面的回合用 typical_move 1 守位、打得到才打，不要讓主角衝上去；主角在第 8 回合陣亡就是 game over，整份收據作廢。",
+      "why": "2026-09-16 第六章 r2 用 typical_move 6，索爾衝進敵陣第 8 回合陣亡。",
+      "date": "2026-09-16",
+      "evidence": "docs/data/parity-plans/ch06-sample.jsonl 第 1～9 回合"
     }
   ]
 }

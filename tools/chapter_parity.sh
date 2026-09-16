@@ -13,6 +13,7 @@
 #   FD2_PARITY_SAVE_ISSUE  重製側尚未寫原版槽 bytes 時引用的 issue 編號（交易 gate 標 blocked）
 #   FD2_GO_TEST_IMAGE      預設 fd2-go-test-local:latest
 #   FD2_ASSETS_IMAGE       預設 fd2-assets-local:20260829-sfx（有 Pillow）
+#   FD2_PARITY_TRACE_KEYS  非空時重播端把每個游標鍵之後的游標／鏡頭寫進 replay.log（找鏡頭分歧用）
 set -euo pipefail
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
@@ -48,6 +49,7 @@ docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 \
   -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack \
   -e FD2_PARITY_CHAPTER="$chapter" -e FD2_PARITY_SLOT=/slot/FD2.SAV \
   -e FD2_PARITY_ORACLE_RUN=/oracle -e FD2_PARITY_OUT=/parity-out \
+  -e FD2_PARITY_TRACE_KEYS="${FD2_PARITY_TRACE_KEYS:-}" \
   -v "$repo_root:/src" -v "$pack:/pack:ro" -v "$cache:/gocache" \
   -v "$slot_dir:/slot:ro" -v "$oracle_run:/oracle:ro" -v "$out_dir:/parity-out" \
   -w /src/remake "$go_image" \

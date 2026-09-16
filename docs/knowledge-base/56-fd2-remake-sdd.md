@@ -7617,10 +7617,10 @@ phase、目前 segment、來源交易總數與 ready；另輸出是否正在呈�
   寫成 1（`0x1DC61`／`0x1DD4C`）。指令傷害擊倒的單位若沒有這個 bit，AI 目標掃描
   仍會把屍體當目標（r9 收據第 5 回合 record 0x13 的選擇），END 回復也會把它救活。
   重製端 `MarkNativeDeadRecords` 在 `finishSuccessfulUnitAction` 入口執行（數值）。
-- **對拍的 RNG 政策。** 指令 0 每次施放 7 次 `0x2AF45` 演出擲骰＋命中＋傷害；死亡／
-  升級訊息等待依虛擬時間吃亂數，整回合逐次對上做不到。重播在每個 AI 行動入口
-  `0x13A9F`、玩家攻擊確認／END、每次成長擲骰前以 eip-trace 對齊，其餘區段只比
-  結果。
+- **對拍的 RNG 政策。** 指令 0／4 的演出擲骰（`0x2AF45` 抖動、`0x269D3` 六槽相位）與命中
+  ／傷害的交錯已照原版接進重製端（見第六章章工作單元）；死亡／升級訊息等待依虛擬時間吃
+  亂數，整回合逐次對上做不到。重播在每個 AI 行動入口 `0x13A9F`、玩家攻擊確認／END、每次
+  成長擲骰前以 eip-trace 對齊，其餘區段只比結果。
 - **城鎮 hub 選擇器（`0x2CAD7`，已證實）。** 子場景（出口 NO、教會、酒店、商店）
   返回時 `[0x5412B]` 保留，從外面進城才歸零；重製端 `nativeTownHubReturn`。
 
@@ -7769,3 +7769,110 @@ group 2 登場、鏡頭、演出、四句對白、兩次攻擊（亂數字組同
 `docs/data/ui-traces/parity-ch05.json`，台帳 `docs/data/parity-campaign-progress.json`
 第五章 `passed`。未抽到：第 7、8 回合的 event 16／17（group 3 登場與 text 5–7 對白）、
 法術與物品指令、商店買入（驅動端沒有這三種指令）；升級幀同第四章（#29）。
+
+## 第六章章工作單元：selector 2 回合事件、記錄 8 守衛與戰後 spawn（2026-09-16）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 5
+--levels-per-chapter 6 --seed 4`（manifest `docs/data/parity-slots/ch06-manifest.json`，名冊 8 人，
+ch02_post join 2 與 ch04_post join 10 已套用）。正對照：與第五章對拍寫出的酒店存檔
+（`work/parity-slot-ch05/remake-r5/FD2.SAV`，與原版逐 byte 相同）比 103 處差異，其中七人是
+升級政策（每章 +6 級）、實際擊殺經驗與出售；瑪琳（char 10）是另一種形狀：原版的持續記錄
+來自第五章戰場的 FDFIELD NPC 記錄（Lv6、物品 0x35／0x25）經 `0x11506` 抄回，r5 實跑中她還
+陣亡了（`+5=1`、HP 0）；建構槽用 join 建構器的靜態表建她（Lv8、物品 0／1）且存活。這是槽
+工具對「先以 NPC 登場、戰後才 join」的角色的已知偏差，記在收據 limitations，不影響原版與
+重製同槽對拍。合法性檢查 `docs/data/parity-plans/ch06-slot-load.jsonl`：LOAD 進普里茲港、
+五棟建築探法與第五章相同。
+
+這一章原版側新踩到、重製側因此改掉的東西：
+
+- **第六章的回合事件全是 selector 2（玩家輸入前），且兩個帶守衛（已證實；#33）。**
+  map 5 的三筆回合事件：第 5 回合 event 20 `0x347B1` ＝ 對白 text 1；第 10 回合 event 21
+  `0x347D9` ＝ `0x3453E(8)` 記錄 8 的 `+5 bit0` 清才播對白 text 2；第 15 回合 event 22
+  `0x34819` ＝ 同一守衛，`0x10B4E(1)` 登場敵軍 group 1（13 筆）＋對白 text 3。記錄 8 是
+  名冊 8 人之後的第一筆 FDFIELD 單位：敵方小隊長（portrait 77，`(9,8)`）。轉寫進
+  `extract_native_death_events.py`（新守衛 `guard_active`，when 降成 `any_active [8, 8]`），
+  `sync_native_turn_events.py --chapters 4,5,6` 降成 `turn_ch06_e20_t5`／`turn_ch06_e21_t10`／
+  `reinforce_ch06_e22_t15`，每個動作帶 `native_when`；重製端 `finishNativeTransientPlayerPhase`
+  在 PLAYER PHASE 橫幅後、玩家輸入前跑 selector 2 事件，`startBattleEvent` 對每個動作判
+  `NativeWhen`。
+- **group 3 不在開局（已證實）。** `ch05_post` handler 的 `0x10B4E(3)` 在戰後才登場 group 3
+  （own portrait 13，之後 join char 13）；r1 的 battle_start checkpoint 記錄表是 33 筆
+  （8＋21 敵＋4 友軍），gen_campaign 只扣回合事件的群組，沒扣戰後 handler 的。`ch06.json`
+  `initial_groups` 改成 `[0]`，加 `runtime_append_groups`；`ch05_post.json` 的
+  `runtime_context` 從 FDFIELD 筆數 40 改成實跑 frontier `slot_counts [33, 46]`（第 15 回合
+  group 1 登場後 46），`spawn_groups {3: 1}` 不變。`battle_ch06` 補 `native_map_view`
+  （r3 seq 77 battle_start：camera `(5,18)`、cursor `(14,22)`、visible `(9,4)`、range_mode 1）與 HUD
+  `display_gate_b 1`。
+- **dosgolem 指令缺口：`add al, imm8`（`50a3b47`）。** r1 在第 2 回合敵方回合停在
+  `0x1E282 add al, 2`（升級成長列 `0x1E249` 迴圈的另一分支）。用 capstone 線性掃 code 段
+  盤點 AL／eAX 對立即數的 ALU 家族：只缺 `04` ADD（5 處）、`2C` SUB（4 處）、`34` XOR
+  （2 處），都沒有 prefix；ADC／SBB 沒出現，不接。
+- **重播端核對祕密商店的 chord。** `secretShop` 把驅動端的 chord 名稱換成掃描碼
+  （shift `0x54`、ctrl `0x5E`、alt `0x68` 起）與節點 `native_secret_gate.scan_code` 比對，
+  原版側按錯鍵重製端不再用自己的資料開門。往王城的途中是酒店前 Alt+F6（`0x6D`）。
+- **佈陣格跟著槽位，不跟著角色（已證實）。** LOADCH 之後 FDFIELD 佈陣格 i 對到 runtime 槽 i
+  （隊伍依持續記錄順序），r3 seq 77 槽 1 悠妮站 `(7,23)`。`filterScenarioParty` 只壓縮隊伍，
+  `reorderScenarioParty` 只重排隊伍，`DeployCells` 不動。
+- **HUD 小窗只在 0x1AD2A 真的畫時前進（已證實）。** anchor 在 `0x1ACF3` 內，受 `[0x51AAB]`
+  閘 A 與 `[0x51AAC]` 閘 B 守；游標處理器 `0x11B48`／`0x11B9B`／`0x11BFA`／`0x11C59` 只在鏡頭捲動
+  或 `[0x51A83]!=0` 時重繪；移動確認 `0x18A14` 把 `[0x51A83]` 清 0 → `0x12CEA` 走回 → `0x18A2E`
+  設回 1；`0x1A30B` 前後把閘 B 清 0（`0x135B4`／`0x135D4`、`0x1726B`／`0x17277`）。重製端
+  `NativeMapCursorStepRedraws`、`AdvanceNativeMapHUDAnchor` 兩個閘、`endTurn` 清閘 B、
+  `finishNativeTransientPlayerPhaseInput` 設回。hud-probe 證實 `0x1AD3C` 在這條路徑不觸發。
+- **ACTING 槽超出已登場筆數但在 96 筆配置內是原版 no-op（已證實）。** `0x232c2` 的
+  act 27 在記錄表只有 34 筆時對槽 34 動作，原版對未登場的記錄改 byte 沒有可見結果；重製端
+  `nativeRuntimeRecordCapacity = 96`，超過才失敗即關閉，未登場只留 log。
+- **待機也要先重播游標鍵。** r3 seq 1443 的待機把游標移了幾格才按下，`stayUnit` 先
+  `replayCursorKeys` 再確認，否則鏡頭在待機後差一格。
+- **`battle_start` 的 `native_map_view` 要抄 battle_start 那張 checkpoint。** 抄到戰中
+  checkpoint 會讓第一張差 3.5 萬像素。
+- **敵方法師的強化 `+0x22` 每回合遞減，歸零才會再施放（已證實；#36）。** 原版 `0x1A866(0)`
+  在敵方 AI 前把 +0x22..+0x27 各減 1；指令 17 在 `0x15B77` 每個 `+0x22==0` 的目標加 3 分，
+  `0x1D8BA` 預選遍要 `[0x53C23]>=6`（至少兩個未強化的友軍）才在第一遍施放。原版 r4：
+  記錄 19／20 第 1 回合各對 7／9 個目標施放（`0x227C1` 每目標一次擲骰決定持續 2..5），之後
+  第 3、5、6、7、9 回合再放，MP 35→1；第 5 回合記錄 15 的 +0x22 歸零、AP 93→80。重製端從
+  城鎮正常進戰場時沒有 saved runtime raw 投影，`beginNativeTransientPhases` 整段被跳過，
+  +0x22 永遠不減，第 4 回合起 19／20 沒再施放、第 11 回合 MP 還夠多放一發指令 0
+  （r8：18 個 `ai_order` 分岔、(10,17) HP 98 對 40）。修法：`AdvanceNativeTransientPhaseTyped`
+  走同一個 `sub_1A866` 三段順序只寫 typed 欄位，到期的單位用
+  `NativeShopEquipmentRecordForUnit`＋`ApplyNativeRuntimeEquipmentRecalc` 從基礎攻防＋裝備重算
+  `+0x48..+0x4E`；`nativeTransientSweepAvailable` 在名冊每筆都有 raw +5／+6 時就跑。
+  重製端仍把 selector 1／0 合併在友軍 AI 之前掃（原版 selector 0 在橫幅後），敵方單位的
+  +0x22 不受影響。
+- **指令 0／4 的命中、傷害與演出亂數是同一條 `0x4E893` 序列（已證實；#36）。** r4 用
+  `FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893` 拿到每次擲骰的呼叫端：指令 4（seq 1451）
+  是 `0x269D3` mode 0 六次 `0x26A5A` → `0x1C7F2` 命中 → `0x1C86E` 傷害 → 目標 12 張畫格裡
+  mode 5 的六槽重置 `0x26BCD` 與 marker 抖動 `0x2AF45` 交錯，共 18 步；指令 0（seq 114）是
+  `0x1C7F2`、`0x1C86E`、七次 `0x2AF45`（mode 5 在 counter 到 9 的七步各回傳 1）；未命中
+  （seq 1013）走 `0x2ADFE→0x2AF61` 分支，mode 5 照叫但不看回傳，只有 `0x1C7F2` 一步。
+  `0x2AF40` 的餘數是畫面抖動 `1 - rng%3`。前段 `0x2AC8E` 與尾段 `0x2B1B6` 不看回傳，
+  沒有抖動。重製端 `figani.WalkNativeCommand5RNG`／`WalkNativeCommand0RNG` 先走一遍純亂數序列
+  在正確的位置擲 `0x1C75E`（`PlanNativeCommandDamageWalk`／`PlanNativeAICommandDamageWalk`
+  的 `NativeCommandDamageRNGWalk`），畫格合成用同一序列重放並核對，`plan.RNGAfter` 是整段
+  演出結束時的全域亂數。同一份收據的傷害從 36 變 39（原版 39）。多目標時每個目標在自己的
+  mode 3 之後才擲（`0x2B114`），過場畫格只有 handler 重置，還沒有多目標樣本。指令 1、2、3、
+  5（同 handler 家族，已接）、6、7、8 的 marker 抖動與 handler 內部亂數還沒逐一用收據核過。
+
+結果：原版側 `work/parity-slot-ch06/sample-r4`（dosgolem `50a3b47`，1713 個 checkpoint，與
+sample-r3 的 232 個 AI 入口與酒店存檔逐 byte 相同），重製側 `remake-r11`，收據
+`docs/data/ui-traces/parity-ch06.json`：行為、節點、交易（酒店存檔 sha256 相同）、畫面
+（58 張）四個 gate 全過，`ai_order` 分岔 0。第四章 remake-r60、第五章 remake-r7 用同一份
+程式重跑仍過。限制：瑪琳的建構槽偏差（上述）；event 22（第 15 回合）沒抽到；玩家沒放法術／
+沒用物品／沒買；第 1–9 回合守位不攻擊。
+
+## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
+
+111 規定每五章回頭看一次累積的畫面差異。ch01–03 在台帳裡還是 `todo`（只有早／中／晚
+戰間介面收據，沒有整章收據），所以這一輪的材料是 `parity-ch04.json`（r58，55 點）與
+`parity-ch05.json`（remake-r5，58 點）裡 `diff_pixels > 0` 的 35 個畫面點與 5 個非 `ok`
+的行為點。逐點裁圖看過（不是只看數字），分成四類：
+
+| 類別 | 點數（ch04／ch05） | 像素 | 成因 | 處置 |
+|---|---|---|---|---|
+| 指令環四步開啟動畫中途：原版 checkpoint 拍在 `0x1741c` 圖示逐列揭示到一半，重播端只出開完的幀 | 14（7 move＋7 stay）／16（15 move＋1 stay） | 66–628 | checkpoint 時機；重製端 `beginActionOverlayOpen` 有這四步，重播沒出這些變體 | #34：重播端 ring 點加開啟步 0–3 變體（seq 859 已到 628，預算 640） |
+| 出口／整備確認提示的 YES：原版畫 action cell 49（選中、pulse 1），重製畫 cell 48 | 2／2（departure_prompt、town_enter） | 60（四點相同） | 逐格對 78 個 cell：cell 49 差 0、cell 48 差 60；`nativeClassUIPulse/2` 在 checkpoint 當下是 0 | #35：查 `0x19953` 起始相位再改 |
+| ENEMY PHASE 橫幅期間馬賽克取樣的兩個 8×8 塊 | 1／0（ch04 seq 934 enemy_phase_start） | 162 | 兩格取樣色不同，其餘 154 個相位變體都一樣 | 記錄；第六章再出現才開 issue |
+| 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 3／2（wait、force_enemy_clear） | — | verifier 規則 `oracle_mid_end_turn`，不比單位、回合與畫面 | 無（規則已寫在 verifier） |
+
+沒有出現的類別：地圖、單位 idle 相位、狀態小窗、對白、城鎮、商店、酒店、祕密商店在兩章
+全部 0 像素差；交易 gate 的金額與存檔 sha256 兩章都相同。

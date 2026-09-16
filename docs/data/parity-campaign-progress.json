@@ -89,15 +89,19 @@
     },
     {
       "chapter": 6,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": "2026-09-15",
-      "verify": null,
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch06.json",
+      "slot_manifest": "docs/data/parity-slots/ch06-manifest.json",
+      "slot_sha256": "bb658c94da6576730029842608af85e4540af017c2117663e27c47b48255e49a",
+      "dosgolem_commit": "50a3b476e8ac5d9b4d241e2e28bccfd0a59a8432",
+      "date": "2026-09-16",
+      "verify": "tools/chapter_parity.sh 6 work/parity-slot-ch06 <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893 tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch06-sample.jsonl",
       "limitations": [
-        "既有收據只覆蓋戰間介面（early 樣本）"
+        "槽由 ch02-cleared 基底建到 target 5（每章 +6 級政策）；瑪琳（char 10）在原版是第五章 FDFIELD NPC 記錄經 0x11506 抄回（Lv6、物品 0x35／0x25，r5 實跑中陣亡），建構槽用 join 靜態表建她（Lv8、物品 0／1、存活）——槽工具對「先以 NPC 登場、戰後才 join」角色的已知偏差；合法性檢查 docs/data/parity-plans/ch06-slot-load.jsonl（LOAD 進普里茲港、五棟建築）",
+        "原版側 r4 收據由 dosgolem feat/fd2-oracle-input-chain 50a3b47（dirty=0，補 add/sub/xor al,imm8）重生；整章計畫跑完（LOAD→出口→戰前對白→第 1～9 回合守位（typical_move 1，打得到才打）→第 5 回合 event 20 對白→第 10～11 回合接戰→force_enemy_clear→戰後（join／group 3 登場／pan／act 27／對白）→往王城的途中出售／五棟建築／酒店存檔／alt-f6 祕密商店）；r4 與 r3 的 232 個 AI 入口與酒店存檔逐 byte 相同",
+        "四個 gate 全過（remake-r11）：單位、HP、回合、金額、鏡頭逐點相同，ai_order 分岔 0，酒店存檔整檔 sha256 與原版相同，58 個畫面比較點逐像素相同（after_enemy_phase 與落在 0x1A30B 換手處理裡的 ai_order／wait 依 oracle_mid_end_turn 規則只比行為）",
+        "未抽樣到：第 10 回合 event 21 的守衛對白只在記錄 8 存活時播（守位讓它活到第 10 回合，收據裡有）、第 15 回合 event 22（group 1 登場）沒跑到；玩家法術與物品、商店買入（驅動端沒有這三種指令）；第 1～9 回合守位不攻擊",
+        "亂數字組只在每個 AI 行動入口 0x13A9F、攻擊確認與 END 同步；同步之間指令 0／4 的演出擲骰已照原版交錯，指令 1／2／3／6／7／8 的 marker 抖動與 handler 內部亂數還沒有收據核過（#36 關閉時記在 56）"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/town-shop-early-mid-late-e2.json"

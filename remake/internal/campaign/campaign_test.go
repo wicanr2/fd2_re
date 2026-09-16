@@ -1403,7 +1403,7 @@ func TestCh05PostBindingMaterializesSpawnPanActAndDialogue(t *testing.T) {
 	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch05 post compile err=%v issues=%#v", err, issues)
 	}
-	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || beats[0].RuntimeContext.SlotCount != 40 || beats[0].RuntimeContext.SpawnGroups[3] != 1 {
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || !reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{33, 46}) || beats[0].RuntimeContext.SpawnGroups[3] != 1 {
 		t.Fatalf("ch05 runtime context=%#v", beats[:min(len(beats), 1)])
 	}
 	var pan, act *Beat

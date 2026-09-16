@@ -799,6 +799,12 @@ func (s *State) nativeAIPreselected(u *Unit) bool {
 	if err != nil {
 		return false
 	}
+	if DebugAI != nil {
+		actorRecord := records[actor*nativeRecordSize : (actor+1)*nativeRecordSize]
+		DebugAI("0x1d8ba preselect actor=%d at (%d,%d) mp=%d +22..27=%x +48=%d c23=%d cmd=%d targets=%v",
+			actor, actorRecord[0], actorRecord[1], u.MP, actorRecord[0x22:0x28], int(actorRecord[0x48])|int(actorRecord[0x49])<<8,
+			command.MaxScore, command.PositiveWinner.CommandID, command.PositiveWinner.TargetIndices)
+	}
 	if command.MaxScore >= 6 {
 		return true
 	}

@@ -663,15 +663,26 @@ func TestBeatFocusUnitSynchronizesNativeStoryView(t *testing.T) {
 	}
 }
 
-func TestBeatActingFailsClosedWhenRuntimeSlotWasNotMaterialized(t *testing.T) {
+// 原版 0x1366A 對未登場但仍在 96 筆配置內的記錄寫姿勢，沒有可見結果（第六章 ch05_post
+// 的 ACTING 27 指 slot 34，r3 當時只有 34 筆）；重製端同樣略過，超出配置才失敗即關閉。
+func TestBeatActingSkipsUnmaterializedSlotWithinAllocation(t *testing.T) {
 	slot8 := 8
 	g := newBeatTestGame(t, []campaign.Beat{{Op: "act", Source: "0x32657", Acting: []campaign.ActingFrame{{
 		Beats: 1, Special: true, Units: []campaign.ActingUnit{{Slot: &slot8, Pose: 2}},
 	}}}})
 	g.storyActors = make([]battle.Unit, 5) // map31 after groups 1+3+5
 	g.beatAdvance()
+	if g.loadErr != "" {
+		t.Fatalf("act on an unmaterialized slot inside the 96-record allocation must be a no-op, got %q", g.loadErr)
+	}
+	slot96 := nativeRuntimeRecordCapacity
+	g = newBeatTestGame(t, []campaign.Beat{{Op: "act", Source: "0x32657", Acting: []campaign.ActingFrame{{
+		Beats: 1, Special: true, Units: []campaign.ActingUnit{{Slot: &slot96, Pose: 2}},
+	}}}})
+	g.storyActors = make([]battle.Unit, 5)
+	g.beatAdvance()
 	if g.loadErr == "" {
-		t.Fatal("decoded act targeting an unmaterialized runtime slot must fail closed")
+		t.Fatal("act targeting a slot outside the 96-record allocation must fail closed")
 	}
 }
 
@@ -1260,8 +1271,9 @@ func TestBeatNativeAnyOfCombinesOnlyRawPredicates(t *testing.T) {
 
 func TestReorderScenarioPartyUsesOriginalJoinSlots(t *testing.T) {
 	sc := &battle.Scenario{
-		Party:       []battle.PartyMember{{Fig: 0}, {Fig: 4}, {Fig: 9}, {Fig: 30}},
-		DeployCells: [][2]int{{7, 20}, {8, 22}, {10, 21}, {11, 23}},
+		Party: []battle.PartyMember{{Fig: 0}, {Fig: 4}, {Fig: 9}, {Fig: 30}},
+		// FDFIELD map0 出場位置順序；格子跟槽位，slot 1 悠妮站第 2 格。
+		DeployCells: [][2]int{{7, 20}, {10, 21}, {8, 22}, {11, 23}},
 	}
 	if err := reorderScenarioParty(sc, []int{0, 9, 4, 30}); err != nil {
 		t.Fatal(err)
@@ -2038,7 +2050,8 @@ func TestFilterScenarioPartyUsesJoinMembership(t *testing.T) {
 	if len(sc.Party) != 2 || sc.Party[0].Fig != 0 || sc.Party[1].Fig != 9 {
 		t.Fatalf("party filter ignored JOIN membership: %#v", sc.Party)
 	}
-	if len(sc.DeployCells) != 2 || sc.DeployCells[0] != [2]int{1, 10} || sc.DeployCells[1] != [2]int{2, 20} {
+	// 格子跟槽位：清單不動，出戰的第 i 人站第 i 格。
+	if len(sc.DeployCells) != 4 || sc.DeployCells[0] != [2]int{1, 10} || sc.DeployCells[1] != [2]int{2, 20} {
 		t.Fatalf("party deploy cells drifted after membership filter: %#v", sc.DeployCells)
 	}
 

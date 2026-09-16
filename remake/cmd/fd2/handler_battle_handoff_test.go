@@ -69,7 +69,9 @@ func TestDirectBattleStartStillUsesDeploymentState(t *testing.T) {
 	if g.loadErr != "" {
 		t.Fatal(g.loadErr)
 	}
-	for slot, wantY := range []int{20, 22, 21, 23} {
+	// LOADCH 之後 FDFIELD 佈陣格 i 對到 runtime 槽 i（第六章 r3 seq 77），
+	// ch01.json 的 deploy_cells 依 FDFIELD 順序 (7,20)(10,21)(8,22)(11,23)。
+	for slot, wantY := range []int{20, 21, 22, 23} {
 		if got := g.st.Units[slot].Y; got != wantY {
 			t.Fatalf("direct slot%d y=%d want deploy y%d", slot, got, wantY)
 		}
