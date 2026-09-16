@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 13 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -42,14 +42,6 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 重製端 `campaign.MaterializePersistentRecord`（sub_112A5 轉寫）對物品格 6／7 只寫旗標 `+0x16`／`+0x18`＝0x80，item byte `+0x17`／`+0x19` 留 0；真實原版存檔（ch01-cleared 剛加入的 id 8、ch02-cleared 同一筆）這兩格是 `80 ff`。四格 defaults 那邊，defaults 為 0xff 時旗標寫 0x80、item 寫 0xff，與觀察一致；只有固定的兩格不同。消費端只看旗標 bit7，所以玩法不受影響，但建槽工具的輸出與原版 bytes 差這兩個 byte。要回 IDA 看 0x112A5 是否另有寫 `+0x17`／`+0x19`＝0xff 的指令，或紀錄區在 JOIN 前被 0xff 填過。
 
 怎樣算做完：IDA 9.4 直接指令證實 +0x17／+0x19 的來源（明寫 0xff 或前置填充），轉寫與建槽工具同步修正，正對照這兩個 byte 歸零。
-
-### 敵方回合（含增援登場）之後的鏡頭位置與原版不同
-
-`enemy-phase-camera-drift-ch04` · RE待解 · [#30](https://github.com/wicanr2/fd2_re/issues/30) · 仍未完成 · 要人判
-
-第四章 r9 收據：第 1～3 回合每個玩家動作點的 camera 都與原版相同（4,10..4,12），第 4 回合敵方回合含四組增援登場後，原版在 seq 720 的 camera 是 (0,11)、重製端是 (4,11)；之後第 5 回合所有 select／stay／wait 幀都因此差 3 萬 8 千像素。原版 seq 671（按 END 當下）camera (0,6)、cursor (0,8) 是增援 staging 停在第一組 (0,8) 的位置；整個敵方回合走完 camera_x 仍是 0，儘管其間有單位在 x=15 走動，表示原版 AI 走行的鏡頭規則（0x135DD 定位與 0x13185 安全帶的適用條件）與重製端 aiStep 的 camPan／walk 跟隨不同。要做：用 FD2_ORACLE_FRAME_EIP=0x11CAC 取第 4 回合敵方回合逐幀，定出每個 AI 行動前後 [0x53AB1]/[0x53AB5] 的寫入端與條件，再把 aiStep 的鏡頭規則改成同一套。
-
-怎樣算做完：第四章收據 seq 720 起的 camera 與原版逐點相同，round 5 的 stay／wait 幀差異只剩覆蓋（#28）那一類。
 
 ## data — 可編輯資料還沒就緒
 
