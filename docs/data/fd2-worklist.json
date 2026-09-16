@@ -272,6 +272,19 @@
         "note": "看 docs/data/ui-traces/parity-ch05.json frames.points 裡 kind=departure_prompt 的 diff_pixels；仍是 60 就未完成。"
       },
       "issue": 35
+    },
+    {
+      "id": "town-to-battle-fade-and-transient-phase-order",
+      "layer": "runtime",
+      "category": "RE待解",
+      "title": "從城鎮進戰場的淡出動畫：確認它在原版控制流裡的位置，以及與 sub_1A866 暫時狀態掃描的先後",
+      "body": "第六章對拍（73853d2b）把 sub_1A866(selector) 的暫時狀態掃描接回「從城鎮正常進戰場」的路徑（nativeTransientSweepAvailable → beginNativeTransientPhases），但只比了數值：+0x25 扣血、sub_1DB65 標記、+0x22..+0x27 遞減與到期重算。使用者記得從城鎮出發進戰場時原版有一段淡出動畫；目前的證據（58 §0x1A866→0x1DB65／0x1B750、docs/data/ida/fd2_transient_expiry_presentation_ida.txt）只閉合到期端的 DATO＋FDTXT 0x1E1..0x1E6 提示、present／input 與 delay10，沒有淡出；淡出也可能屬於出口→LOADCH 那段（0x11d40 DAC 寫入迴圈、0x24618 indexed transition 家族）而不是暫時狀態階段本身。要用原版證據定下來：(1) 出口 YES 之後到 battle_start 之間原版畫了什麼（第六章 r4 seq 39→77 的 checkpoint 只有兩端，中間用 FD2_ORACLE_FRAMES 抽幀），淡出是哪一支函式、由誰呼叫、在 LOADCH／佈陣之前還是之後；(2) 三個 selector 的 0x1A866 呼叫點相對於淡出、橫幅、佈陣的順序；(3) 重製端 beginNativeTransientPhases 現在在 endTurnAfterSelector1Events（selector 1、0 合併在友軍 AI 之前）與 completeTurnPlayerPhase（selector 2）跑，原版 selector 0 在橫幅之後，這個合併對有友軍 AI 的章是不是可見差異。做完把順序寫進 56 的 0x1A30B 段落，淡出接進重製端或明寫不在這條路徑。",
+      "acceptance": "56 記下淡出函式的位址、caller 與在出口→LOADCH→佈陣→第一回合裡的位置，並記下三個 0x1A866 呼叫點相對它的順序；重製端要嘛接上同狀態的淡出（原版側抽幀對照），要嘛在 58 明寫它不在這條路徑。第七章對拍的 town→battle 抽幀不出現這段差異。",
+      "verify": {
+        "kind": "manual",
+        "note": "看 56 有沒有「城鎮進戰場淡出」段落與 0x1A866 三個呼叫點的順序；沒有就未完成。"
+      },
+      "issue": 37
     }
   ]
 }

@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -94,6 +94,14 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像素、同一個框 [235,173,252,179]。把原版 checkpoint-0038 的 YES 區域（24×16，座標 232,168）逐格對 ui/action_cells 的 78 個 cell：cell_049 差 0、cell_048 差 60。重製端 ComposeNativeConfirmationChoices 對選中項畫 base+pulse（YES 48／49），checkpoint 當下 nativeClassUIPulse/2 是 0，原版是 1。要查的是 0x19953 選中閃爍的起始相位（提示一開就是 cell 49？還是相位由 BIOS tick 決定而 checkpoint 剛好落在 1），確定後改重製端的起始相位或讓重播對這個點出 pulse 0／1 兩個變體。NO（cell 51／52）在這四個點沒差。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json frames.points kind=departure_prompt／town_enter。
 
 怎樣算做完：parity-ch04.json 與 parity-ch05.json 的 departure_prompt／town_enter 點 diff_pixels 為 0，且 56 記下 0x19953 起始相位的證據（哪一條指令、哪個全域）。
+
+### 從城鎮進戰場的淡出動畫：確認它在原版控制流裡的位置，以及與 sub_1A866 暫時狀態掃描的先後
+
+`town-to-battle-fade-and-transient-phase-order` · RE待解 · [#37](https://github.com/wicanr2/fd2_re/issues/37) · 仍未完成 · 要人判
+
+第六章對拍（73853d2b）把 sub_1A866(selector) 的暫時狀態掃描接回「從城鎮正常進戰場」的路徑（nativeTransientSweepAvailable → beginNativeTransientPhases），但只比了數值：+0x25 扣血、sub_1DB65 標記、+0x22..+0x27 遞減與到期重算。使用者記得從城鎮出發進戰場時原版有一段淡出動畫；目前的證據（58 §0x1A866→0x1DB65／0x1B750、docs/data/ida/fd2_transient_expiry_presentation_ida.txt）只閉合到期端的 DATO＋FDTXT 0x1E1..0x1E6 提示、present／input 與 delay10，沒有淡出；淡出也可能屬於出口→LOADCH 那段（0x11d40 DAC 寫入迴圈、0x24618 indexed transition 家族）而不是暫時狀態階段本身。要用原版證據定下來：(1) 出口 YES 之後到 battle_start 之間原版畫了什麼（第六章 r4 seq 39→77 的 checkpoint 只有兩端，中間用 FD2_ORACLE_FRAMES 抽幀），淡出是哪一支函式、由誰呼叫、在 LOADCH／佈陣之前還是之後；(2) 三個 selector 的 0x1A866 呼叫點相對於淡出、橫幅、佈陣的順序；(3) 重製端 beginNativeTransientPhases 現在在 endTurnAfterSelector1Events（selector 1、0 合併在友軍 AI 之前）與 completeTurnPlayerPhase（selector 2）跑，原版 selector 0 在橫幅之後，這個合併對有友軍 AI 的章是不是可見差異。做完把順序寫進 56 的 0x1A30B 段落，淡出接進重製端或明寫不在這條路徑。
+
+怎樣算做完：56 記下淡出函式的位址、caller 與在出口→LOADCH→佈陣→第一回合裡的位置，並記下三個 0x1A866 呼叫點相對它的順序；重製端要嘛接上同狀態的淡出（原版側抽幀對照），要嘛在 58 明寫它不在這條路徑。第七章對拍的 town→battle 抽幀不出現這段差異。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
