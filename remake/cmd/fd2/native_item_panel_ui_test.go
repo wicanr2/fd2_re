@@ -311,9 +311,15 @@ func TestNativeRetainedStatItemsSyncDerivedWordsAndMarkers(t *testing.T) {
 		unit.InventorySlots = []int{tc.itemID, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
 		unit.NativeInventoryFlags = []int{0, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
 		unit.NativeTransient[tc.marker] = 0
+		// 另留一個沒行動的我方單位：只剩這一個行動完就自動換手，0x1A30B 的
+		// sub_1A866(1) 掃描會把剛擲出的標記先減一，這裡只驗物品本身的擲骰。
+		idle := nativeItemPanelTestUnit()
+		idle.X, idle.Y, idle.OnField, idle.Camp = 0, 0, true, battle.Own
+		idle.NativeRecordByte5, idle.HasNativeRecordByte5 = 0, true
+		idle.NativeIdentity = 2
 		g := &Game{
 			st: &battle.State{
-				W: 3, H: 3, Units: []*battle.Unit{unit},
+				W: 3, H: 3, Units: []*battle.Unit{unit, idle},
 				NativeCompositionEventBytes: make([]byte, 9),
 				NativeTileBlitModes:         make([]byte, 9),
 			},
@@ -354,10 +360,15 @@ func TestNativeRetainedMarkerApplicationSyncsDamageAndThreeRNGSteps(t *testing.T
 	target.NativeRecordByte5, target.HasNativeRecordByte5 = 0, true
 	target.HP, target.MaxHP = 50, 100
 	target.NativeTransient[4] = 0 // type-14 raw marker +0x26
+	// 同上：留一個沒行動的我方單位，避免自動換手的 sub_1A866(1) 掃描把標記減一。
+	idle := nativeItemPanelTestUnit()
+	idle.X, idle.Y, idle.OnField, idle.Camp = 0, 0, true, battle.Own
+	idle.NativeRecordByte5, idle.HasNativeRecordByte5 = 0, true
+	idle.NativeIdentity = 2
 
 	g := &Game{
 		st: &battle.State{
-			W: 3, H: 3, Units: []*battle.Unit{actor, target},
+			W: 3, H: 3, Units: []*battle.Unit{actor, target, idle},
 			NativeCompositionEventBytes: make([]byte, 9),
 			NativeTileBlitModes:         make([]byte, 9),
 		},

@@ -153,8 +153,9 @@ func TestNativeEvent61ImmediateItemRunsAfterSuccessfulMutation(t *testing.T) {
 	if err != nil || !applied {
 		t.Fatalf("immediate item applied=%v err=%v", applied, err)
 	}
+	// 0x13512 在 handler 成功返回就設 +5 bit7，0x1198A 的格子事件對話在它之後。
 	if len(trigger.Inventory) != 0 ||
-		trigger.Acted || g.battleEvent == nil || len(g.dialog) != 1 {
+		!trigger.Acted || g.sel != nil || g.battleEvent == nil || len(g.dialog) != 1 {
 		t.Fatalf(
 			"post-item inventory=%v acted=%v event=%#v dialog=%#v",
 			trigger.Inventory, trigger.Acted, g.battleEvent, g.dialog,
@@ -162,7 +163,7 @@ func TestNativeEvent61ImmediateItemRunsAfterSuccessfulMutation(t *testing.T) {
 	}
 	g.dialog = nil
 	g.advanceBattleEvent()
-	if g.battleEvent != nil || !trigger.Acted || g.sel != nil {
+	if g.battleEvent != nil || !trigger.Acted {
 		t.Fatal("immediate item action did not finish after selector1 dialogue")
 	}
 }

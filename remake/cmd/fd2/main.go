@@ -359,6 +359,9 @@ type Game struct {
 	itemAnimStep              int
 	itemClosing               bool
 	pendingNativeDeathRewards []pendingNativeDeathReward
+	pendingNativeRewardMsgs   []pendingNativeDeathRewardMessage // 0x1AA1D 物品／金錢成功訊息，行動收尾時逐則播
+	pendingNativeLevelUps     []pendingNativeLevelUp            // 0x1E292 經驗／升級對話，行動收尾時逐則播
+	nativeLevelUpDialogue     *nativeLevelUpDialogueState
 	nativeDeathRewardUI       *nativeDeathRewardUIState
 	nativeDeathRewardThen     func()
 	nativeItemTargeting       bool
@@ -367,7 +370,8 @@ type Game struct {
 	nativeItemRelocating      bool
 	nativeItemRelocationUnit  int
 	nativeMovementCostRows    [][]byte
-	nativeRNGState            uint16 // original 0x627b8: initialized to zero, process-lifetime only
+	nativeRNGState            uint16                   // original 0x627b8: initialized to zero, process-lifetime only
+	nativeFieldEventPending   *nativeFieldEventPending // original [0x51A8F]: selector 0 field event noted during the walk, dispatched at action end
 	nativeItemPanel           *ebiten.Image
 	nativeItemPanelBase       []byte
 	nativeItemPanelRecord     []byte
@@ -442,6 +446,7 @@ type Game struct {
 	aiBusy                    bool                   // AI 回合進行中(逐單位行走動畫)
 	aiPhaseClearBit7Pending   bool                   // 橫幅播完後第一次 aiStep 要跑 0x13536（全記錄 +5 bit7 清零）
 	aiPhaseSelector0Pending   bool                   // 0x13536 之後、敵方 AI 之前要跑 0x1A813(0) 的 selector 0 回合事件
+	aiPhaseSelector0SweepPend bool                   // selector 0 回合事件之後、敵方 AI 之前要跑 sub_1A866(0)
 	aiAllyPhasePending        bool                   // 橫幅之前先跑 0x1D80B 友軍 AI（pass 0）
 	deathRewarded             map[*battle.Unit]bool  // 每個死亡 transition 的 reward 只執行一次
 	pendingDeathPrograms      []pendingDeathProgram  // 本次行動擊倒、帶型態 2／3 死亡效果的單位
@@ -3473,6 +3478,11 @@ func (g *Game) materializeNativeMapRuntime(n *campaign.Node) bool {
 	g.st.NativeMapHUDState = candidate.NativeMapHUDState
 	g.st.HasNativeMapHUDState = candidate.HasNativeMapHUDState
 	g.nativeMapHUDPersistent = persistentCandidate
+	// 戰前 handler 把游標聚焦到記錄 0 之後，第一次重繪就走 0x1ACF3→0x1AD2A：兩個閘門都開
+	// 時 anchor 依可見游標決定。第七章 battle_start（可見游標 (2,7)）的原版 checkpoint
+	// 小窗已經在右側；只靠繼承的 anchor 1 會畫在左側（r3 seq 60 差 4617 px）。
+	g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
+	g.nativeMapHUDPersistent.CaptureNativeMapHUD(g.st.NativeMapHUDState)
 	g.syncNativeMapView()
 	return true
 }
@@ -3792,9 +3802,40 @@ func (g *Game) materializeNativeJoinPersistentUnit(id int, base battle.Unit) (ba
 		}
 		g.nativeJoinItemEffectRows = rows
 	}
-	return g.nativeJoinConstructor.MaterializePersistentUnit(
-		id, base, g.nativeJoinItemEffectRows,
+	return g.nativeJoinConstructor.MaterializePersistentUnitOn(
+		g.nativeJoinResidualRecord(), id, base, g.nativeJoinItemEffectRows,
 	)
+}
+
+// nativeJoinResidualRecord 回 sub_112A5 這次要寫的那一格在寫入前的內容：持續名冊是
+// 0x10010 從 LOAD 的槽整批還原的，count 之後的格子就是槽裡的 bytes；沒有 LOAD 基底
+// （新開局）就是全 0。索引 = 基底筆數 + 基底之後已加入的人數。
+func (g *Game) nativeJoinResidualRecord() fdsave.PersistentRecord {
+	if g == nil || g.nativeChapterSlotBaseline == nil {
+		return fdsave.PersistentRecord{}
+	}
+	baseline := g.nativeChapterSlotBaseline
+	count := int(baseline.Verified.RosterCount)
+	if count < 0 || count > len(baseline.Records) {
+		return fdsave.PersistentRecord{}
+	}
+	known := make(map[int]bool, count)
+	for index := 0; index < count; index++ {
+		known[int(baseline.Records[index].Raw[8])] = true
+	}
+	index := count
+	for _, id := range g.partyJoinOrder {
+		unit, ok := g.partyRoster[id]
+		if !ok || !unit.HasNativeIdentity || known[unit.NativeIdentity] {
+			continue
+		}
+		known[unit.NativeIdentity] = true
+		index++
+	}
+	if index >= len(baseline.Records) {
+		return fdsave.PersistentRecord{}
+	}
+	return baseline.Records[index]
 }
 
 func applyPersistentStats(dst, src *battle.Unit) {
@@ -4019,6 +4060,8 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 		snapshot.MP = snapshot.MaxMP
 		snapshot.Acted = false
 		snapshot.OffX, snapshot.OffY = 0, 0
+		// 0x11506 整筆抄回之後，JOIN 建構留下的殘值就被場上記錄取代。
+		snapshot.NativeJoinPersistentPending = false
 		// 0x11506 把 runtime 紀錄整筆抄回持續槽，+2／+3／+4 照抄當下的值：+2 是
 		// 0x11019 的 FDICON 選擇器快取槽（第五章戰前事件登場的角色 10 是第 14 個
 		// 鍵，存檔裡 +2=13，不是 runtime 索引 41）；+3 是戰後 layout（0x233c6）寫下的
@@ -5753,6 +5796,19 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 		// AI 目標掃描與回合回復裡消失（第四章 r9 收據第 5 回合 0x13 的目標選擇）。
 		g.st.MarkNativeDeadRecords()
 	}
+	// 0x134E4：每個行動收尾（0x13E77 的 AI 合流、0x1566A 攻擊路徑、玩家 0x18890）都把
+	// **全部**記錄的 raw +3 歸零，不只行動者。掉落訊息（r6 seq 633）與升級對話（r4 seq
+	// 968、r6 seq 1836）的底圖上攻擊者已是 pose 0；第十回合 event 25 的 ACTING 30 讓凱麗
+	// 停在 pose 3，敵方第一個行動收尾就把她歸零（r6 seq 1962→1963）。冪等。
+	g.resetAllNativeMapPoses()
+	// 0x1AA1D 成功臂（在 0x18890 的 handler 裡、bit7 之前：r4 seq 279 攻擊者還沒變灰）：
+	// 先播「得到 X」訊息（等鍵、關框），再回來收尾。
+	if g.runPendingNativeDeathRewardMessages(actor, func() {
+		g.finishSuccessfulUnitAction(actor, after)
+		g.checkResult()
+	}) {
+		return
+	}
 	if g.runPendingNativeDeathRewards(func() {
 		g.finishSuccessfulUnitAction(actor, after)
 		g.checkResult()
@@ -5766,43 +5822,64 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	}) {
 		return
 	}
-	finish := func() {
-		actor.Acted = true
-		// 行動收尾後 raw +3 回靜止值：玩家攻擊（r9 seq 132）與敵方攻擊（r9 seq 920→921）
-		// 之後的每個檢查點都是 pose 0，面向目標只存在於演出期間。
-		if actor.HasNativeMapPresentation {
-			actor.SetMapPose(nativeMapRestPose)
-		}
-		if actor == g.sel && g.st != nil && g.st.HasNativeMapViewState && actor.HasNativeRecordByte5 {
-			actor.NativeRecordByte5 |= 0x80
-		}
-		if actor == g.sel {
-			g.clearNativePlayerMovement()
-		}
-		if after != nil {
-			after()
-		}
-		g.autoEndPlayerPhase(actor)
+	// handler 成功返回臂（0x13512）：Acted、靜止姿態、+5 bit7。這些是冪等的，對話回來
+	// 再進一次也不會變。
+	actor.Acted = true
+	if actor == g.sel && g.st != nil && g.st.HasNativeMapViewState && actor.HasNativeRecordByte5 {
+		actor.NativeRecordByte5 |= 0x80
 	}
-	if g.beginNativeFieldEvent61(actor, finish) {
+	// 0x11951 0x11CAC 重繪之後才 0x1196D 0x1E292：經驗／升級對話看到的是攻擊者已變灰、
+	// 屍體已移除、姿勢已靜止的地圖（r4 seq 968、r6 seq 1836）；章節函式表、0x13565 自動
+	// 換手與 0x1198A 格子事件都在它之後。
+	if g.runPendingNativeLevelUpDialogues(func() {
+		g.finishSuccessfulUnitAction(actor, after)
+		g.checkResult()
+	}) {
 		return
 	}
-	if g.beginNativeFieldEvent75(actor, finish) {
+	if actor == g.sel {
+		g.clearNativePlayerMovement()
+	}
+	if after != nil {
+		after()
+	}
+	// 0x11985 的 0x13565 在 0x1198A 之前：最後一個我方單位收尾就直接進 0x1A30B 換手，
+	// [0x51A8F] 在友軍 AI 迴圈第一筆（0x1D853）就被寫回 0xff，這次踏到的格子事件不會分派。
+	if g.autoEndPlayerPhase(actor) {
+		g.nativeFieldEventPending = nil
 		return
 	}
-	finish()
+	// 0x1198A（玩家）／0x1D855 等（AI）：分派走行時記下的 selector 0 格子事件，或收尾格
+	// 以 selector 1 查到的 event 61／75（0x18B0C／0x18B66 同樣寫 [0x51A8F]）。
+	g.dispatchNativeFieldEventPending(actor)
+	if g.beginNativeFieldEvent61(actor, nil) {
+		return
+	}
+	g.beginNativeFieldEvent75(actor, nil)
+}
+
+// resetAllNativeMapPoses 是 0x134E4：對 [0x53BEB] 筆記錄逐筆 `+3 = 0`，再 delay(0x14) 毫秒。
+func (g *Game) resetAllNativeMapPoses() {
+	if g == nil || g.st == nil {
+		return
+	}
+	for _, u := range g.st.Units {
+		if u != nil && u.HasNativeMapPresentation {
+			u.SetMapPose(nativeMapRestPose)
+		}
+	}
 }
 
 // autoEndPlayerPhase 是玩家控制器 0x117E7 在每個單位行動收尾（0x1E292 升級與
-// 章節函式表之後、0x11985）呼叫的 0x13565：掃全部 record，只要還有一筆
+// 章節函式表之後、0x1198A 格子事件分派之前、0x11985）呼叫的 0x13565：掃全部 record，只要還有一筆
 // `(+5 & 0x81)==0`、`+6==2`、`+0x26==0` 的單位就什麼都不做；一筆都沒有就直接
 // 走 0x1A30B（與系統選單 END／YES 同一條路）換手。第四章原版收據
 // （docs/data/ui-traces/parity-ch04.json）第 3 回合最後一個單位待機之後沒有送 END
 // 就進了敵方回合，就是這一條。只有玩家自己的行動會觸發；AI 行動不在那個控制器裡。
-func (g *Game) autoEndPlayerPhase(actor *battle.Unit) {
+func (g *Game) autoEndPlayerPhase(actor *battle.Unit) bool {
 	if g == nil || g.st == nil || actor == nil || actor.Camp != battle.Own || g.aiBusy ||
 		g.result != "" || g.nativeTurnStaging != nil || g.battleEvent != nil {
-		return
+		return false
 	}
 	for _, u := range g.st.Units {
 		if u == nil || u.Camp != battle.Own || !u.OnField || !u.Alive() || u.Acted {
@@ -5814,9 +5891,10 @@ func (g *Game) autoEndPlayerPhase(actor *battle.Unit) {
 		if transient, ok := u.NativeTransientDuration(0x26); ok && transient != 0 {
 			continue
 		}
-		return
+		return false
 	}
 	g.endTurn()
+	return true
 }
 
 // awardDeathReward 在擊倒當下處理死亡效果：型態 0／1 直接給（只給原版陣營 2 的
@@ -5928,46 +6006,37 @@ func (g *Game) stepBattleWalkSegment(w *walkAnim, finish func(pose int)) bool {
 	if w.then == nil || w.followView {
 		g.followNativeMapCursorStep(a.X, a.Y, b.X-a.X, b.Y-a.Y)
 	}
-	// 原版 0x13488 只有 path byte 1 進 0x1300D；該函式在第七拍
-	// 提交 x-1 後，才以新座標呼叫 0x13A44(..., selector0)。
-	// 其餘方向及整條路徑完成都不得泛化成 selector0。
-	if b.X == a.X-1 && b.Y == a.Y {
-		selector := byte(0)
-		if w.nativeEventSelector != nil {
-			selector = *w.nativeEventSelector
+	// 0x1300D 每提交一格就以新座標呼叫 0x13A44(x, y, selector0)，把格子事件 id 記進
+	// [0x51A8F]，行動收尾才分派（第七章 r2：直線向上走進 (12,15) 也觸發 event 26）。
+	// 全軍移動（selector 1）另有預演過的 owner，走原本的分段路徑。
+	selector := byte(0)
+	if w.nativeEventSelector != nil {
+		selector = *w.nativeEventSelector
+	}
+	if selector == 0 {
+		g.noteNativeFieldEventStep(w.u, b.X, b.Y)
+	} else if b.X == a.X-1 && b.Y == a.Y {
+		eventID, bound := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector)
+		planned := w.nativeGroupMarchEvent < len(w.nativeGroupMarchEvents) &&
+			w.nativeGroupMarchEvents[w.nativeGroupMarchEvent].PathIndex == w.seg+1
+		if bound != planned || (planned &&
+			w.nativeGroupMarchEvents[w.nativeGroupMarchEvent].EventID != eventID) {
+			g.loadErr = "native system group-march event changed after atomic preflight"
+			g.walk = nil
+			g.nativeSystemGroupMarch = nil
+			return false
 		}
-		if eventID, ok := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector); ok &&
-			selector == 0 && eventID == 62 {
-			if _, err := battle.ApplyNativeFieldTurnActivationEvent(g.st, b.X, b.Y, 0); err != nil {
-				g.loadErr = "battle field event62: " + err.Error()
-				g.walk = nil
-				return false
-			}
-		} else if selector == 0 {
-			battle.ApplyNativeFieldModeEvent(g.st, w.u, b.X, b.Y, 0)
-		} else {
-			eventID, bound := battle.NativeFieldEventIDAt(g.st, b.X, b.Y, selector)
-			planned := w.nativeGroupMarchEvent < len(w.nativeGroupMarchEvents) &&
-				w.nativeGroupMarchEvents[w.nativeGroupMarchEvent].PathIndex == w.seg+1
-			if bound != planned || (planned &&
-				w.nativeGroupMarchEvents[w.nativeGroupMarchEvent].EventID != eventID) {
-				g.loadErr = "native system group-march event changed after atomic preflight"
+		if planned {
+			event := w.nativeGroupMarchEvents[w.nativeGroupMarchEvent]
+			w.seg++
+			w.tick = 0
+			w.nativeGroupMarchPaused = true
+			if !g.beginNativeSystemGroupMarchFieldEvent(w, event) {
+				g.loadErr = "native system group-march field event owner rejected runtime state"
 				g.walk = nil
 				g.nativeSystemGroupMarch = nil
-				return false
 			}
-			if planned {
-				event := w.nativeGroupMarchEvents[w.nativeGroupMarchEvent]
-				w.seg++
-				w.tick = 0
-				w.nativeGroupMarchPaused = true
-				if !g.beginNativeSystemGroupMarchFieldEvent(w, event) {
-					g.loadErr = "native system group-march field event owner rejected runtime state"
-					g.walk = nil
-					g.nativeSystemGroupMarch = nil
-				}
-				return false
-			}
+			return false
 		}
 	}
 	w.seg++
@@ -6653,6 +6722,11 @@ func (g *Game) resolvePhysicalAttackFull(actor, target *battle.Unit) (battle.Nat
 		return battle.NativePhysicalAttackResult{}, err
 	}
 	g.nativeRNGState = result.RNGState
+	// 0x1196D／0x1566A：兩段交鋒結束後才 0x1E292；經驗非零就有對話（行動收尾時播）。
+	g.queueNativeLevelUpDialogue(actor, int(result.Attack.ExpGained), result.Attack.LevelUps)
+	if result.Counter != nil {
+		g.queueNativeLevelUpDialogue(target, result.CounterExpGained, result.CounterLevelUps)
+	}
 	return result, nil
 }
 
@@ -6768,6 +6842,7 @@ func (g *Game) confirm() {
 		}
 		if u != nil && u.Camp == battle.Own && !u.Acted {
 			g.sel = u
+			g.nativeFieldEventPending = nil   // 0x188BF：[0x51A8F] = 0xff
 			g.selOrigX, g.selOrigY = u.X, u.Y // 記移動前位置(ESC 取消退回,playfix #4)
 			g.moved = false
 			g.reach = g.st.Reachable(u)
@@ -6993,7 +7068,12 @@ func (g *Game) confirm() {
 				return
 			}
 			err = g.startNativeCommandHealPresentation(id, targets, func() ([]battle.NativeCommandHealResult, error) {
-				return g.st.ExecuteNativeCommandHeal(actor, tgt, id, g.rng)
+				// 0x1C916 每個目標走一步 0x4E893，玩家與 AI 同一條序列。
+				results, next, err := g.st.ExecuteNativeCommandHealNative(actor, tgt, id, g.nativeRNGState)
+				if err == nil {
+					g.nativeRNGState = next
+				}
+				return results, err
 			}, func(results []battle.NativeCommandHealResult) {
 				total := 0
 				for _, result := range results {
@@ -7596,6 +7676,14 @@ func (g *Game) Update() error {
 	if g.transientUI {
 		return nil
 	}
+	if state := g.nativeSystemEndTurnUI; state != nil && state.rewardMessage != nil {
+		// 0x1AA1D 的訊息是同步的：開框、0x16C57(0) 等任一鍵、關框期間 AI 與玩家輸入都不動。
+		if state.rewardMessage.awaitAck && g.nativeClassUIJob == nil &&
+			len(inpututil.AppendJustPressedKeys(nil)) != 0 {
+			g.acknowledgeNativeDeathRewardMessage()
+		}
+		return nil
+	}
 	if g.nativeSystemExitRequested {
 		return ebiten.Termination
 	}
@@ -8160,6 +8248,12 @@ func (g *Game) Update() error {
 	}
 	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF9) { // 快速讀檔
 		g.loadGame()
+	}
+	if g.nativeLevelUpDialogue != nil {
+		g.stepNativeLevelUpDialogue(nativeBattleDialogueAdvanceInput(
+			inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsKeyJustPressed(ebiten.KeySpace),
+			inpututil.IsKeyJustPressed(ebiten.KeyEscape)))
+		return nil // 0x1E292 同步：對話期間不進 AI 與其他輸入
 	}
 	if g.battleEvent != nil || g.nativeTurnStaging != nil {
 		g.handleBattleEventDialogueInput(nativeBattleDialogueAdvanceInput(
@@ -11611,11 +11705,11 @@ func (g *Game) endTurnAfterSelector1Events() {
 	if started {
 		return
 	}
-	// The original runs selector 1 before 0x1D80B, then selector 0 before
-	// 0x1D8BA. This controller merges those two non-player unit scans, so keep
-	// the proven sweep order as one atomic pre-AI transaction.
+	// 0x1A30B：selector 1 回合事件 → sub_1A866(1) → 友軍 AI（0x1D80B）→ 橫幅 → 0x13536 →
+	// selector 0 回合事件 → sub_1A866(0) → 敵軍兩遍。selector 0 的掃描在 aiStep 的橫幅之後
+	// 才跑（aiPhaseSelector0SweepPending），不和 selector 1 併在友軍 AI 之前。
 	if g.nativeTransientSweepAvailable() {
-		if err := g.beginNativeTransientPhases([]byte{1, 0}, g.beginEnemyPhaseAfterTurnEvents); err != nil {
+		if err := g.beginNativeTransientPhases([]byte{1}, g.beginEnemyPhaseAfterTurnEvents); err != nil {
 			g.loadErr = err.Error()
 		}
 		return
@@ -11942,7 +12036,8 @@ func (g *Game) aiStep() {
 		g.aiPhaseClearBit7Pending = false
 	}
 	// 回合事件（對白、鏡頭、演出）進行中 AI 不動；0x1A813(0) 是同步呼叫，回來才進 AI。
-	if g.battleEvent != nil || g.camPan != nil || g.actJob != nil || g.nativeTurnStaging != nil {
+	if g.battleEvent != nil || g.camPan != nil || g.actJob != nil || g.nativeTurnStaging != nil ||
+		g.nativeLevelUpDialogue != nil || g.nativeSystemEndTurnUI != nil {
 		return
 	}
 	if g.aiPhaseSelector0Pending && g.aiBusy && g.st != nil {
@@ -11950,6 +12045,20 @@ func (g *Game) aiStep() {
 		g.runEditableTurnEvents(0, func() {})
 		if g.battleEvent != nil {
 			return
+		}
+	}
+	if g.aiPhaseSelector0SweepPend && g.aiBusy && g.st != nil {
+		// sub_1A866(0)：selector 0 回合事件之後、敵方 AI 之前掃 camp 0 的暫時狀態。
+		g.aiPhaseSelector0SweepPend = false
+		if g.nativeTransientSweepAvailable() {
+			if err := g.beginNativeTransientPhases([]byte{0}, nil); err != nil {
+				g.loadErr = err.Error()
+				g.aiBusy = false
+				return
+			}
+			if g.transientUI {
+				return
+			}
 		}
 	}
 	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeAIIdleRecovery != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
@@ -11967,6 +12076,7 @@ func (g *Game) aiStep() {
 			g.showBanner("ENEMY PHASE")
 			g.aiPhaseClearBit7Pending = true
 			g.aiPhaseSelector0Pending = true
+			g.aiPhaseSelector0SweepPend = true
 			return
 		}
 		plan = allyPlan
@@ -11981,6 +12091,7 @@ func (g *Game) aiStep() {
 	if g.aiPlanObserver != nil && plan.NativeError == nil {
 		g.aiPlanObserver(plan)
 	}
+	g.nativeFieldEventPending = nil // 0x1D855 等：每個 AI 單位行動前 [0x51A8F] = 0xff
 	if plan.NativeError != nil {
 		// Native mode 2 有明確的原始來源閘門；閘門失敗時不可消耗行動，也不可
 		// 靜默替換成正規化 AI。

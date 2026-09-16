@@ -106,7 +106,9 @@ func (s *State) ExecuteNativeCommandHeal(actor, confirmed *Unit, commandID int, 
 	if err != nil {
 		return nil, err
 	}
-	return s.executeNativeCommandHealTargets(actor, targets, commandID, rng)
+	return s.executeNativeCommandHealTargets(actor, targets, commandID, func(target *Unit, amount int) (NativeCommandRestore, error) {
+		return ApplyNativeCommandRestore(target, amount, rng)
+	})
 }
 
 // ExecuteNativeAICommandHeal consumes only the target array rebuilt by the
@@ -119,11 +121,58 @@ func (s *State) ExecuteNativeAICommandHeal(actor *Unit, origin Cell, commandID i
 	if err != nil {
 		return nil, err
 	}
-	return s.executeNativeCommandHealTargets(actor, targets, commandID, rng)
+	return s.executeNativeCommandHealTargets(actor, targets, commandID, func(target *Unit, amount int) (NativeCommandRestore, error) {
+		return ApplyNativeCommandRestore(target, amount, rng)
+	})
 }
 
-func (s *State) executeNativeCommandHealTargets(actor *Unit, targets []*Unit, commandID int, rng *rand.Rand) ([]NativeCommandHealResult, error) {
-	if s == nil || rng == nil || commandID < 13 || commandID > 16 ||
+// ExecuteNativeCommandHealNative 是 ExecuteNativeCommandHeal 的原版亂數版：每個目標的
+// 0x1C916 只走一步 0x4E893（第七章 r4 追蹤：0x1C965 一次，eax=amount*9/10），回傳
+// 走完的亂數字組。有原版 `+6` 出處的隊伍一律用這一版。
+func (s *State) ExecuteNativeCommandHealNative(actor, confirmed *Unit, commandID int, rngState uint16) ([]NativeCommandHealResult, uint16, error) {
+	if s == nil {
+		return nil, rngState, fmt.Errorf("missing native command heal state")
+	}
+	if commandID < 13 || commandID > 16 || len(s.NativeCommandBook) != 36 || s.NativeCommandBook[commandID].ID != commandID {
+		return nil, rngState, fmt.Errorf("native command heal record unavailable id=%d", commandID)
+	}
+	targets, err := s.NativeCommandHealTargets(actor, confirmed, commandID)
+	if err != nil {
+		return nil, rngState, err
+	}
+	return s.executeNativeCommandHealTargetsNative(actor, targets, commandID, rngState)
+}
+
+// ExecuteNativeAICommandHealNative 是 ExecuteNativeAICommandHeal 的原版亂數版。
+func (s *State) ExecuteNativeAICommandHealNative(actor *Unit, origin Cell, commandID int, rngState uint16) ([]NativeCommandHealResult, uint16, error) {
+	if s == nil {
+		return nil, rngState, fmt.Errorf("missing native AI command heal state")
+	}
+	targets, err := s.NativeAICommandHealTargets(actor, origin, commandID)
+	if err != nil {
+		return nil, rngState, err
+	}
+	return s.executeNativeCommandHealTargetsNative(actor, targets, commandID, rngState)
+}
+
+func (s *State) executeNativeCommandHealTargetsNative(actor *Unit, targets []*Unit, commandID int, rngState uint16) ([]NativeCommandHealResult, uint16, error) {
+	state := rngState
+	results, err := s.executeNativeCommandHealTargets(actor, targets, commandID, func(target *Unit, amount int) (NativeCommandRestore, error) {
+		restore, next, err := ApplyNativeCommandRestoreNative(target, amount, state)
+		if err != nil {
+			return NativeCommandRestore{}, err
+		}
+		state = next
+		return restore, nil
+	})
+	if err != nil {
+		return nil, rngState, err
+	}
+	return results, state, nil
+}
+
+func (s *State) executeNativeCommandHealTargets(actor *Unit, targets []*Unit, commandID int, restoreFn func(target *Unit, amount int) (NativeCommandRestore, error)) ([]NativeCommandHealResult, error) {
+	if s == nil || restoreFn == nil || commandID < 13 || commandID > 16 ||
 		len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[commandID].ID != commandID {
 		return nil, fmt.Errorf("native command heal target transaction unavailable id=%d", commandID)
 	}
@@ -133,7 +182,7 @@ func (s *State) executeNativeCommandHealTargets(actor *Unit, targets []*Unit, co
 	}
 	results := make([]NativeCommandHealResult, 0, len(targets))
 	for _, target := range targets {
-		restore, err := ApplyNativeCommandRestore(target, record.Damage, rng)
+		restore, err := restoreFn(target, record.Damage)
 		if err != nil {
 			return nil, err
 		}

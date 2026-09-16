@@ -95,14 +95,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：parity-ch04.json 與 parity-ch05.json 的 departure_prompt／town_enter 點 diff_pixels 為 0，且 56 記下 0x19953 起始相位的證據（哪一條指令、哪個全域）。
 
-### 從城鎮進戰場的淡出動畫：確認它在原版控制流裡的位置，以及與 sub_1A866 暫時狀態掃描的先後
-
-`town-to-battle-fade-and-transient-phase-order` · RE待解 · [#37](https://github.com/wicanr2/fd2_re/issues/37) · 仍未完成 · 要人判
-
-第六章對拍（73853d2b）把 sub_1A866(selector) 的暫時狀態掃描接回「從城鎮正常進戰場」的路徑（nativeTransientSweepAvailable → beginNativeTransientPhases），但只比了數值：+0x25 扣血、sub_1DB65 標記、+0x22..+0x27 遞減與到期重算。使用者記得從城鎮出發進戰場時原版有一段淡出動畫；目前的證據（58 §0x1A866→0x1DB65／0x1B750、docs/data/ida/fd2_transient_expiry_presentation_ida.txt）只閉合到期端的 DATO＋FDTXT 0x1E1..0x1E6 提示、present／input 與 delay10，沒有淡出；淡出也可能屬於出口→LOADCH 那段（0x11d40 DAC 寫入迴圈、0x24618 indexed transition 家族）而不是暫時狀態階段本身。要用原版證據定下來：(1) 出口 YES 之後到 battle_start 之間原版畫了什麼（第六章 r4 seq 39→77 的 checkpoint 只有兩端，中間用 FD2_ORACLE_FRAMES 抽幀），淡出是哪一支函式、由誰呼叫、在 LOADCH／佈陣之前還是之後；(2) 三個 selector 的 0x1A866 呼叫點相對於淡出、橫幅、佈陣的順序；(3) 重製端 beginNativeTransientPhases 現在在 endTurnAfterSelector1Events（selector 1、0 合併在友軍 AI 之前）與 completeTurnPlayerPhase（selector 2）跑，原版 selector 0 在橫幅之後，這個合併對有友軍 AI 的章是不是可見差異。做完把順序寫進 56 的 0x1A30B 段落，淡出接進重製端或明寫不在這條路徑。
-
-怎樣算做完：56 記下淡出函式的位址、caller 與在出口→LOADCH→佈陣→第一回合裡的位置，並記下三個 0x1A866 呼叫點相對它的順序；重製端要嘛接上同狀態的淡出（原版側抽幀對照），要嘛在 58 明寫它不在這條路徑。第七章對拍的 town→battle 抽幀不出現這段差異。
-
 ### 重播端在 town_enter／attack_armed 沒出 DATO 嘴型相位與 DAC 循環色相位的變體（ch06 seq 1603 335 px、seq 1053 8 px）
 
 `parity-replay-dato-mouth-and-dac-cycle-variants` · 缺陷 · [#38](https://github.com/wicanr2/fd2_re/issues/38) · 仍未完成 · 要人判
@@ -110,6 +102,14 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 第六章收據 parity-ch06.json 的 18 個 diff_pixels>0 點裡有兩個新形狀，不屬於 #34（指令環開啟步）與 #35（YES pulse）：(1) seq 1603 town_enter（酒店入口對白）335 px，框 [25,146,252,179]：左側 x 24–47、y 146–158 是店主 DATO 頭像的嘴型／眼部幀不同（原版 sub_16C57 的嘴型倒數吃 rand()%30，r4 eip-trace 在對白期間 0x16C9E 呼叫 0x4E893 21 次），右側 x 240–252 是 YES 的 pulse（#35 同一形狀）；重播端 town_enter 只出一張（phases 1）。(2) seq 1053 attack_armed 8 px，框 [106,110,115,115]：8 個像素都是調色盤 index 225，原版 DAC (44,73,142)、重製 (48,77,146)，是循環色差一步（0x11d40 DAC 寫入的相位），44 個 idle 變體都取不到；ch04／ch05 沒出現這個形狀。兩個都是「原版沒記錄的時間相位，重播端沒出對應變體」，和 #34 同一類處置：重播端在這兩種點多出變體（嘴型倒數 0..N／閉合、DAC 循環相位），verifier 取最小；或證明原版在 checkpoint 當下的相位由什麼決定（rand%30 的序列、BIOS tick）直接算出來。
 
 怎樣算做完：重跑 ch06 remake 側後 parity-ch06.json 的 seq 1603 只剩 #35 的 60 px、seq 1053 為 0；56 記下嘴型倒數與 index 225 循環色在 checkpoint 當下的相位規則。
+
+### 重製端沒接城鎮出發的十步縮放暗化（0x2D190..0x2D275）與進戰場的 64 步淡入（0x1F544）
+
+`town-departure-zoom-and-battle-fade-in-not-in-remake` · 缺陷 · [#39](https://github.com/wicanr2/fd2_re/issues/39) · 仍未完成 · 要人判
+
+#37 用原版側探針（work/parity-slot-ch07/probe-fade，FD2_ORACLE_FRAME_EIP=0x11D40 抽幀、FD2_ORACLE_EIP_TRACE=0x1F882,0x11D40）把出口 YES 之後到 battle_start 之間的兩段過場閉合了（56 §城鎮進戰場的過場、輔助基準 docs/figures/parity-ch07-town-fade-probe.png）：(1) 0x2D190..0x2D275 城鎮出發：ebx=1..10 十步，每步依 [0x5412B] 城鎮變體的 0x52635／0x52647 表內插座標呼叫 0x2FB9F 重畫（建築往中心放大），0x373C4 搬到 VGA，0x11D40(0,0xFF,4k) 把 DAC 壓暗，迴圈後 0x11D40(0,0xFF,0x40) 全黑、0x375C0 清 VGA；(2) 0x1F42D 進戰場：LOADCH 之後 0x1F544 呼叫 0x11D40(0,0xFF,level) 64 次、level 0x40→0 從黑淡入地圖，之後才是戰前 handler 的對白與 battle_start 游標。正式重製端從城鎮出發直接進戰場，兩段都沒接；章收據的 departure_prompt／battle_start 都在這段之外，gate 看不到。做法：把 0x2FB9F 的縮放重畫與 0x11D40 的 DAC 等級寫成 indexed composer 的兩個過場工作（城鎮側十步、戰場側 64 步），用探針幀（每步一幀，index parity-ch07-town-fade-probe.json）做同狀態對照；0x2FB9F 的內插表 0x52635／0x52647 與「建築往中心放大」目前是強推論，接之前先把它反組譯成規則。
+
+怎樣算做完：重製端從城鎮出口 YES 到戰場第一幀之間播出十步縮放暗化與 64 步淡入；用 FD2_ORACLE_FRAME_EIP=0x11D40 的探針幀逐步對照（每步 diff 在 640 px 預算內）並記進 57；56 的 0x2FB9F 內插表升為已證實。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

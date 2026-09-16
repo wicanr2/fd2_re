@@ -963,24 +963,37 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 建立歷程與 dosgolem 未推送分支仍是收據內的證據限制。
 
 第四章整章收據 [`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（2026-09-16，
-r58，原版側 r13、dosgolem `caa9ee8`）：狀態 `passed`，55 個畫面比較點全部逐像素相同——
+r58，原版側 r13、dosgolem `caa9ee8`；2026-09-17 以第七章之後的重製端重跑 remake-r14，差異
+像素數逐點相同）：狀態 `passed`，55 個畫面比較點全部在 640 px 預算內、38 點逐像素相同，17 點的差
+（66–201 px）全是指令環開啟動畫中途那一類（56 §五章回顧、#34）——
 城鎮、出發、戰鬥開始，五個回合全部的 select／move／attack_armed／attack_result／stay／
 wait、換手橫幅（狀態小窗、指令環、攻擊射程染色、橫幅都在 indexed composer 內，#28
 關閉）、敵方回合的鏡頭（游標協定，#30 關閉）、酒店四圖示／存檔槽列表／「記錄儲存
 完畢」（`native_hotel_ui.go`，#27 關閉）；`after_enemy_phase` 點只比行為。這一輪修掉
 的兩個假差異：原版側 checkpoint 落在整幀 memcpy 中間的撕裂（dosgolem 延後 PNG，#31），
-與重播端 idle 相位被 `0x1297D` 推進而少一張變體。
+與重播端 idle 相位被 `0x1297D` 推進而少一張變體。抽樣對照表分兩張
+[`parity-ch04-samples-p1.png`](../figures/parity-ch04-samples-p1.png)、
+[`p2`](../figures/parity-ch04-samples-p2.png)（27 列：每種 kind 第一點加
+全部 `diff_pixels>0` 的點，三格「原版｜重製｜差異遮罩」，每張 ≤1.5 MB，index
+[`parity-ch04-samples.json`](../data/ui-traces/parity-ch04-samples.json)；`tools/parity_sample_sheet.py`）。
 
 第五章整章收據 [`parity-ch05.json`](../data/ui-traces/parity-ch05.json)（2026-09-16，
-remake-r5，原版側 r5、dosgolem `caa9ee8`）：狀態 `passed`，58 個畫面比較點全部逐像素相同——
+remake-r5，原版側 r5、dosgolem `caa9ee8`；2026-09-17 重跑 remake-r10，差異像素數逐點相同）：狀態
+`passed`，58 個畫面比較點全部在預算內、40 點逐像素相同，18 點的差（60–628 px）是指令環開啟
+中途與 YES pulse 兩類（#34、#35）——
 城鎮、出發、戰鬥開始、第 3 回合八個單位移動待機、第 4 回合友軍 group 2 登場（鏡頭、演出、
 四句對白，回合事件處理器整筆轉寫，#33）與兩次攻擊、第 5 回合清場、戰後對白、城鎮出售、
 五棟建築、酒店存檔（整檔 sha256 相同：`+3` 朝向與 `+2` FDICON 快取槽照原版抄）、祕密商店；
 `after_enemy_phase` 與落在 `0x1A30B` 換手處理裡的兩個 wait 只比行為。細節見
 [56 §第五章章工作單元](56-fd2-remake-sdd.md#第五章章工作單元回合事件處理器與敵方回合順序2026-09-16)。
+抽樣對照表 [`parity-ch05-samples.png`](../figures/parity-ch05-samples.png)（28 列，index
+[`parity-ch05-samples.json`](../data/ui-traces/parity-ch05-samples.json)）。
 
 第六章整章收據 [`parity-ch06.json`](../data/ui-traces/parity-ch06.json)（2026-09-16，
-remake-r11，原版側 r4、dosgolem `50a3b47`）：狀態 `passed`，58 個畫面比較點全部逐像素相同——
+remake-r11，原版側 r4、dosgolem `50a3b47`；2026-09-17 重跑 remake-r10，seq 619 attack_armed
+由 0 變 8 px：同一個 DAC 循環色相位差一步的形狀，重製端的循環相位每次重跑不一定相同，#38）：狀態
+`passed`，58 個畫面比較點全部在預算內、39 點逐像素相同，19 點的差（8–618 px）分屬指令環開啟
+中途、YES pulse、DATO 嘴型、DAC 循環色四類（56 §五章回顧、#34／#35／#38）——
 普里茲港城鎮、出發、戰鬥開始、第 1～9 回合守位（移動、待機、三次攻擊）、第 5 回合 event 20
 對白（selector 2 回合事件）、第 10～11 回合接戰、清場、戰後對白與 group 3 登場、往王城的
 途中出售、五棟建築、酒店存檔（整檔 sha256 相同）、酒店前 Alt+F6 祕密商店；`after_enemy_phase`
@@ -989,6 +1002,35 @@ remake-r11，原版側 r4、dosgolem `50a3b47`）：狀態 `passed`，58 個畫�
 太多）、指令 0／4 的演出擲骰沒有接在同一條 `0x4E893` 序列上（傷害 36 對 39）；畫面差異：
 佈陣格跟槽位、HUD 小窗只在真的畫時前進、待機前先重播游標鍵。細節見
 [56 §第六章章工作單元](56-fd2-remake-sdd.md#第六章章工作單元selector-2-回合事件記錄-8-守衛與戰後-spawn2026-09-16)。
+抽樣對照表 [`parity-ch06-samples.png`](../figures/parity-ch06-samples.png)（29 列，index
+[`parity-ch06-samples.json`](../data/ui-traces/parity-ch06-samples.json)）。
+
+第七章整章收據 [`parity-ch07.json`](../data/ui-traces/parity-ch07.json)（2026-09-17，
+remake-r8，原版側 sample-r6、dosgolem `f57c23d`；槽由 `fd2_chapter_slot.py` 從 ch02-cleared 建到
+「已通關第 6 章」、9 人）：狀態 `passed`，241 個原版動作、228 個畫面比較點全部在預算內、164 點
+逐像素相同，64 點的差（52–255 px）是指令環開啟中途 63 點（#34）與祕密商店店主眨眼 1 點（#38）——
+往王城的途中城鎮、出發、戰鬥開始（HUD 小窗 anchor 依初始可見游標翻到右側）、第 1～10 回合
+全隊北上接戰（63 次選取、43 次移動、24 次攻擊：掉落訊息、經驗與升級對話、指令 4／13 的敵方
+施放）、第 7～10 回合 step_into 踏事件格 26（記錄 9..27 AI 模式清 0）、第 10 回合 event 25
+（group 2 登場、鏡頭、ACTING 30、四句對白，`after_event25` 356→0 px：0x134E4 全員姿勢歸零）、
+清場、戰後 JOIN12 凱麗、出售、五棟建築、酒店存檔（整檔 sha256 相同：JOIN 記錄沒寫到的 byte
+是 LOAD 時槽的殘值）、武器店前 Shift+F7 祕密商店；`after_enemy_phase` 與 `ai_order` 只比行為，
+`ai_order` 分岔 0，金幣 2000→5500（seq 1304 掉落 3500：關框後才加）→5537。這一輪修掉的行為
+差異：mode 0 敵人 0x14121 落點在原格時沒改走 0x13E9C（第 7 回合記錄 23）；畫面差異：掉落訊息
+底圖攻擊者變灰與面向目標、升級對話底圖的 idle 相位、升級後 HUD HP 的綠字（+0x42 沒同步）、
+ACTING 之後凱麗的朝向、暫時狀態掃描換掉 Unit 指標；收尾順序照 `0x11985`：`0x13565` 自動換手在
+`0x1198A` 格子事件分派之前。細節見
+[56 §第七章章工作單元](56-fd2-remake-sdd.md#第七章章工作單元格子事件分派掉落訊息與-step_into2026-09-16)。
+抽樣對照表分五張 [`parity-ch07-samples-p1.png`](../figures/parity-ch07-samples-p1.png)、
+[`p2`](../figures/parity-ch07-samples-p2.png)、[`p3`](../figures/parity-ch07-samples-p3.png)、
+[`p4`](../figures/parity-ch07-samples-p4.png)、[`p5`](../figures/parity-ch07-samples-p5.png)
+（81 列：每種 kind 第一點、全部 `diff_pixels>0`、指定的 1926／1955／1973／2011／2209，每張
+≤1.5 MB，index [`parity-ch07-samples.json`](../data/ui-traces/parity-ch07-samples.json) 記每列
+在哪一張）。城鎮進戰場的淡出另有輔助基準
+[`parity-ch07-town-fade-probe.png`](../figures/parity-ch07-town-fade-probe.png)（非 gate：出口 YES
+之後 `0x2D1CB..0x2D275` 十步縮放＋DAC 暗化到全黑，再由 `0x1F544` 淡入戰場；index
+[`parity-ch07-town-fade-probe.json`](../data/ui-traces/parity-ch07-town-fade-probe.json)；
+重製端尚未接這段過場，見 #37 的後續 issue）。
 
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 

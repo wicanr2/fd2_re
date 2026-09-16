@@ -585,6 +585,110 @@
       "why": "2026-09-16 第六章 r2 用 typical_move 6，索爾衝進敵陣第 8 回合陣亡。",
       "date": "2026-09-16",
       "evidence": "docs/data/parity-plans/ch06-sample.jsonl 第 1～9 回合"
+    },
+    {
+      "id": "field-event-noted-every-step-dispatched-at-action-end",
+      "area": "逆向",
+      "rule": "格子事件（selector 0）是走行每一步都記（0x1300D→0x13175 用新座標呼叫 0x13A44 寫 [0x51A8F]），行動收尾（玩家 0x1198A、AI 0x1D855 等）才以行動單位為引數分派；玩家選取單位時（0x188BF）先清成 0xff。方向不是條件，「只有向左踏入那一拍」是錯的。",
+      "why": "2026-09-16 第七章 r2：騎士直線向上走進 (12,15)，指令環開著時（seq 179）記錄 9..27 的 +0x34 沒變，待機收尾之後（seq 181）低四位全清 0。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/native_field_event_pending.go；docs/data/native_field_event_rules.json event 26"
+    },
+    {
+      "id": "step-into-event-cell-with-the-party-not-a-lone-runner",
+      "area": "對拍",
+      "rule": "要在原版側踏某個格子事件格，不要派一個單位單獨衝：敵格四鄰（0x80）進了預算歸零，一被兩三個敵人貼上就走不出去，事件格永遠踏不到。全隊一起推進把來的敵人打掉，再用 step_into 讓任何走得到的單位踏格；移動力讀記錄 +0x3b（範本 mv 6，實際多數是 4）。",
+      "why": "2026-09-16 第七章 r2 騎士先衝、第 6 回合陣亡；r3 守到第 7 回合走廊被 10 個 mode 0 敵人塞滿；r4 騎士在 (13,22) 被三個敵人的鄰格圍住四回合走不到 (13,15)。",
+      "date": "2026-09-16",
+      "evidence": "tools/dosgolem_oracle_drive.py do_step_into／reachable_cells；docs/data/parity-plans/ch07-sample.jsonl"
+    },
+    {
+      "id": "death-reward-message-is-a-synchronous-dialogue",
+      "area": "重製端",
+      "rule": "擊倒掉落（0x1AA1D 型態 0／1）不是文字條：0x1956B(killer+7) 開對話格、0x15F84 寫 FDTXT_000 0x1B0／0x1B3（FFFC 物品名 item+0xB5、FFFA 金額）、0x16C57(0) 等任一鍵、0x196CB 關框，這期間 AI 與輸入都不動。原版側 attack_result 的檢查點就停在等鍵處（ui=dialogue），重製端要在同一處拍再按鍵。",
+      "why": "2026-09-16 第七章 r3 seq 389：原版畫面是「從敵人身上，得到回復劑！」對話，重製端用 g.msg 文字條、檢查點在游標模式，差 26786 px。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/native_death_reward_message.go；remake/internal/campaign/native_transient_expiry.go ComposeNativeDeathRewardMessageFrame"
+    },
+    {
+      "id": "hud-anchor-rule-runs-on-the-first-battle-draw",
+      "area": "對拍",
+      "rule": "戰鬥開始（戰前 handler 聚焦記錄 0 之後）第一次重繪就走 0x1ACF3→0x1AD2A：兩個閘門都開時 anchor 依可見游標決定（row>5 且 column<3 → 0xf2，column>9 → 1）。battle_N 的 native_map_view 可見游標落在這種格時，只靠上一場繼承的 anchor 會把小窗畫錯邊。",
+      "why": "2026-09-16 第七章 battle_start 可見游標 (2,7)：原版 seq 60 小窗在右側，重製端繼承 anchor 1 畫在左側，差 4617 px。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/main.go materializeNativeMapRuntime 末尾 AdvanceNativeMapHUDAnchor"
+    },
+    {
+      "id": "a-plan-that-stays-put-is-not-an-action-check-the-callers-return-path",
+      "area": "逆向",
+      "rule": "轉寫原版的多層後備（0x14121 → 0x13E9C 這種）時，要看每一層的**回傳值**怎麼被呼叫端消費：0x14B78 只在真的走了才回 1，落點是原格就回 0，mode 0 的分派接著走下一個後備。把「規劃出來但不動」的計畫直接當成行動，分岔要好幾回合後才以單位位置差出現。",
+      "why": "2026-09-17 第七章 r6 第 7 回合記錄 23：0x14121 的阻擋格是 (14,32)，長路徑第一步被零預算格截住而留在原地；原版改以最近的索爾為目標走到 (12,11)，重製端不動，之後每一點 units_differ。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/battle/native_ai_action_runtime.go nextNativeAIModeFallbackPlan；docs/knowledge-base/56 §第七章"
+    },
+    {
+      "id": "state-written-around-a-key-wait-goes-on-the-side-the-original-wrote-it",
+      "area": "對拍",
+      "rule": "訊息或對話會等鍵時，每一個伴隨的狀態改寫都要對回原版在等鍵的前面還是後面（0x1AA1D 型態 1 的金錢在 0x196CB 關框之後才 add，型態 0 的物品在開框之前就放進去）。原版側 attack_result 的 checkpoint 就拍在等鍵處，寫早了交易 gate 會紅。",
+      "why": "2026-09-17 第七章 r6 seq 1304：原版等鍵處金幣 2000，重製端結算時就加成 5500。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/native_death_reward_message.go acknowledgeNativeDeathRewardMessage；0x1ABF8..0x1ABFD"
+    },
+    {
+      "id": "read-the-raw-pose-byte-before-calling-a-sprite-facing",
+      "area": "對拍",
+      "rule": "要說原版某個時點單位「面向目標」或「靜止」，看 checkpoint 的 raw +3，不要從截圖認方向。0x134E4 在每個行動收尾（AI 合流 0x13E77、攻擊路徑 0x1566A、玩家 0x18890）把**全部**記錄的 +3 歸零，掉落訊息與升級對話的底圖上攻擊者已經是 pose 0，ACTING 留下的朝向也在下一個行動收尾被清掉。",
+      "why": "2026-09-17 第七章 r6 seq 633／1836／1973：三張的差都是重製端多畫了一個面向；r4 seq 968 當初從截圖認成「仍面向目標」，raw +3 其實一直是 0。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/main.go resetAllNativeMapPoses；0x134E4"
+    },
+    {
+      "id": "join-record-bytes-the-constructor-does-not-write-are-load-time-residue",
+      "area": "資料",
+      "rule": "sub_112A5 建構持續記錄只寫特定欄位；沒寫到的 byte 是那一格在 JOIN 之前的記憶體內容，而 0x10010 是整槽還原的，所以就是 LOAD 時槽裡的 bytes（新開局全 0）。JOIN 之後以我方身分打過仗的，0x11506 會整筆抄回場上記錄把殘值蓋掉；沒打過仗的（戰後 handler 的 JOIN、場上是友軍）殘值原封留到存檔。寫回槽時不能從 Unit「整理」這些 byte。",
+      "why": "2026-09-17 第七章 r6：凱麗 rec9 的 +0..+4、+0x17／+0x19、+0x28..+0x30、+0x32..+0x36、+0x3d 全是殘值；改成殘值基底後第五／六章的瑪琳／貝克威反而紅，因為他們打過仗，才分出 NativeJoinPersistentPending。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/campaign/native_join_constructor.go MaterializePersistentRecordOn；native_chapter_slot_save.go EncodeNativePersistentRecord"
+    },
+    {
+      "id": "adopting-a-cloned-state-must-keep-the-unit-pointers",
+      "area": "重製端",
+      "rule": "以「整份複製的候選狀態」做原子預演（暫時狀態掃描、event 76 登場）之後寫回 g.st 時，只抄值、保留原本的 Unit 指標。直接 `*g.st = *candidate` 會把 Units 換成一批 clone，握著舊指標的（g.sel、AI 計畫、deathRewarded、選擇器快取、重播端的 actor）全指到過期副本，症狀是整回合的畫格或行為對不上而看不出是誰改的。",
+      "why": "2026-09-17 第七章 r6 seq 1763：selector 0 的掃描搬到橫幅之後才跑，換了指標，整張單位畫格 1294 px 對不上。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/native_transient_phase.go adoptNativeStateCandidate"
+    },
+    {
+      "id": "level-up-writes-the-record-words-not-only-the-engine-fields",
+      "area": "重製端",
+      "rule": "原版的成長直接加在記錄的 word 上（0x1E529 傳 +0x42／+0x46），HUD 小窗（0x1AE8E 比 +0x40 與 +0x42 選數字底色）、存檔與 AI 評分讀的都是那個 word。引擎欄位（MaxHP／MaxMP）改了，對應的 NativeRecordWord42／46 要一起改，否則升級之後的畫面與評分才開始偏。",
+      "why": "2026-09-17 第七章 r6 seq 1152：蓋亞升級後 HP 314/328，原版用「不等」的綠字，重製端 Word42 還是 314 畫成藍字。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/battle/growth.go 升級套用"
+    },
+    {
+      "id": "a-sample-sheet-over-budget-gets-split-not-quantized",
+      "area": "對拍",
+      "rule": "抽樣截圖表的抽樣規則是固定的（每種 kind 一點＋全部 diff>0＋指定點），列數多到一張超過 1.5 MB 就依列數平均切成幾張、各自受上限；不要縮圖也不要 256 色量化——各章表都超過 550 色，量化會把差異遮罩以外的像素也改掉。",
+      "why": "2026-09-17 第七章 81 列一張要 4 MB 以上，切五張各 0.9–1.25 MB。",
+      "date": "2026-09-17",
+      "evidence": "tools/parity_sample_sheet.py"
+    },
+    {
+      "id": "player-action-end-auto-phase-end-precedes-field-event-dispatch",
+      "area": "逆向",
+      "rule": "轉寫「行動收尾」這種一串同步呼叫時，要把每一個呼叫的先後照原版排，包含會跑掉整個階段的那一個：玩家收尾 0x11985 的 0x13565（沒人可動就 call 0x1A30B 跑完整個敵方階段）在 0x1198A 格子事件分派之前，而 AI 迴圈每筆記錄開頭都把 [0x51A8F] 寫回 0xff，所以最後一個我方單位踏格再行動，那個事件就沒了。先分派再換手的順序在收據裡看不出來，只有踏格的單位剛好是最後一個時才會分岔。",
+      "why": "2026-09-17 第七章收尾：重製端原本先分派 selector 0／1 格子事件再 autoEndPlayerPhase，對回 0x11951..0x1198A 的指令才發現順序反了；r6 沒露出來是因為踏格的單位從來不是那回合最後一個。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/main.go finishSuccessfulUnitAction"
+    },
+    {
+      "id": "single-own-unit-tests-hit-auto-phase-end-sweep",
+      "area": "重製端",
+      "rule": "測試裡只放一個我方單位時，它行動完就自動換手，0x1A30B 的 sub_1A866(1) 掃描會把剛寫進去的暫時狀態標記先減一；要驗的是物品或指令本身的擲骰就留一個沒行動的我方單位，不要把「減一之後」的值寫進期望。",
+      "why": "2026-09-17 兩個標記測試在 HEAD 上綠是因為掃描改的是 clone 指標、測試握的舊指標沒被減；修好指標採用之後才紅，值是 1 不是 2..5。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/native_item_panel_ui_test.go TestNativeRetainedStatItemsSyncDerivedWordsAndMarkers"
     }
   ]
 }

@@ -3,6 +3,8 @@ package battle
 import (
 	"fmt"
 	"math/rand"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 // NativeCommandRestore is the recovered 0x1C916 HP mutation. Display code in
@@ -27,6 +29,23 @@ func ApplyNativeCommandRestore(target *Unit, amount int, rng *rand.Rand) (Native
 		target.HP = target.MaxHP
 	}
 	return NativeCommandRestore{Rolled: rolled, Actual: target.HP - before}, nil
+}
+
+// ApplyNativeCommandRestoreNative 是 ApplyNativeCommandRestore 的原版亂數版：0x1C916 先
+// 走一步 0x4E893，再 `amount*9/10 + (rng%100)*amount/1000`、上限 MaxHP。回傳走完的
+// 亂數字組（原版 r4 seq 603：指令 13 amount 70，rng 45295%100=95 → 63+6=69）。
+func ApplyNativeCommandRestoreNative(target *Unit, amount int, rngState uint16) (NativeCommandRestore, uint16, error) {
+	if target == nil || amount < 0 || target.MaxHP < 0 || target.HP < 0 || target.HP > target.MaxHP {
+		return NativeCommandRestore{}, rngState, fmt.Errorf("invalid native command restore state")
+	}
+	next := fdother.NativeRNGStep(rngState)
+	rolled := amount*9/10 + int(next%100)*amount/1000
+	before := target.HP
+	target.HP += rolled
+	if target.HP > target.MaxHP {
+		target.HP = target.MaxHP
+	}
+	return NativeCommandRestore{Rolled: rolled, Actual: target.HP - before}, next, nil
 }
 
 // NativeCommandClearRestoreResult records one final target in the common

@@ -447,7 +447,14 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 			// 0x14121/0x13e9c are movement-only callers; target is retained
 			// only as raw provenance for tests and is not executed as an attack.
 			plan.Target = nil
-			return plan, true, nil
+			// 0x14121 只在 0x14B78 真的走了（0x4E1A6 回傳的路徑長度非 0，0x14EC4 呼叫
+			// 0x13488）才回 1；落點就是原格時回 0，mode 0 的 0x13A9F 分派（0x13B0F）
+			// 接著走 0x13E9C 以最近的對立單位再規劃一次。第七章 r6 第 7 回合記錄 23
+			// 在 (13,11)：0x14121 的阻擋格是 (14,32)、長路徑第一步就被 (13,12) 的
+			// 零預算格截住而留在原地，原版改以索爾 (12,12) 為目標走到 (12,11)。
+			if mode == 1 || len(plan.Path) > 1 {
+				return plan, true, nil
+			}
 		}
 	}
 	if mode == 1 {

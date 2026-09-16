@@ -486,6 +486,61 @@ func TestNextAIPlanMode0UsesRawBlockedCoordinateBeforeNearestFallback(t *testing
 	}
 }
 
+// 0x14121 只在 0x14B78 真的走了才回 1；阻擋格的規劃落在原格時，0x13A9F 的 mode 0
+// 分派（0x13B0F）接著走 0x13E9C 以最近的對立單位再規劃。第七章 r6 第 7 回合記錄 23
+// 的形狀：mode 2 搜尋最後接受的阻擋格是遠處的 T2，往它的長路徑第一步就被同組單位
+// 佔住的零預算格截住；最近的 T1 才走得到。
+func TestNextAIPlanMode0FallsBackToNearestWhenBlockedPlanStays(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 1, 0)
+	actor.MV = 1
+	ally := nativeAIRuntimeUnit(0, 1, 1, 0)
+	ally.MV = 1
+	near := nativeAIRuntimeUnit(2, 0, 0, 0)
+	near.Camp = Own
+	far := nativeAIRuntimeUnit(0, 3, 0, 0)
+	far.Camp = Own
+	state := &State{
+		W: 4, H: 4, Units: []*Unit{actor, ally, near, far},
+		NativeCompositionEventBytes: make([]byte, 16),
+		NativeTerrainMoveCodes:      make([]byte, 16),
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	blocked, found, err := NativePathBlockedCoordinate(
+		4, 4, Cell{}, 28, mustNativeAIModeBlockedSearchFlags(t, state, 1), state.NativeTerrainMoveCodes,
+		nativeAIRuntimeCostRows()[0],
+	)
+	if err != nil || !found || blocked != (Cell{X: 0, Y: 3}) {
+		t.Fatalf("0x14121 blocked cell=%v found=%v err=%v want (0,3)", blocked, found, err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil || plan.NativeModeFallback != 0 || plan.Target != nil {
+		t.Fatalf("mode0 plan=%+v", plan)
+	}
+	if len(plan.Path) != 2 || plan.Path[1] != (Cell{X: 1, Y: 0}) {
+		t.Fatalf("mode0 path=%v want the 0x13E9C route toward (2,0) stopping at (1,0)", plan.Path)
+	}
+	if !plan.NativeModeBlockedFound || plan.NativeModeBlockedCell != (Cell{X: 0, Y: 3}) {
+		t.Fatalf("mode0 plan should record the abandoned 0x14121 cell: %+v", plan)
+	}
+}
+
+func mustNativeAIModeBlockedSearchFlags(t *testing.T, state *State, selector int) []byte {
+	t.Helper()
+	records, err := NativeAIScoringRecords(state.Units)
+	if err != nil {
+		t.Fatal(err)
+	}
+	flags, err := nativeAIModeBlockedSearchFlags(
+		state.W, state.H, records, len(state.Units), selector, state.NativeCompositionEventBytes,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return flags
+}
+
 func TestNextAIPlanMode3Uses12C60RawRecord8Lookup(t *testing.T) {
 	actor := nativeAIRuntimeUnit(0, 0, 1, 3)
 	actor.NativeRecordByte35 = 7

@@ -23,6 +23,15 @@
   `cursor_y` 確認有動；連續不動視為撞邊界或該方向走不了，直接放棄並回報，
   不會無聲地把後面的按鍵送到錯的地方。
 * ``{"engage": [x, y]}``：選取該格的我方單位，推進到貼著敵人的格，貼上就攻擊。
+* ``{"move_unit": {"from": [x, y], "to": [x, y]}}``：選取該格的我方單位，走到指定格
+  後待機；目的格走不到就失敗，不換格。``to_any`` 給候選格清單依序試，
+  ``stay_if_blocked`` 為真時全都走不到就原地待機而不是中止；``from_index`` 用記錄索引
+  代替座標指定單位。``toward: [x, y]`` 配 ``map``／``mv``／``stop_distance``／``max_tries``
+  時，候選格由地圖成本格與當下敵我位置估出的可達集合依「離目標最近」排序（分回合
+  逼近某格用；估錯仍由原版裁決）。
+* ``{"step_into": {"cells": [[x, y], ...], "map": N, "indices": [...]}}``：還沒行動的我方
+  單位裡第一個估得到走進 cells 之一的就踏進去待機；誰都走不到就不動（回 True）。
+* ``sweep_round`` 的 ``skip_indices`` 讓指定記錄索引的單位這一回合不被挑（留在後方）。
   候選格由「與某敵人相鄰且未被佔用」產生，離單位近的先試；移動有沒有生效看
   單位座標變了沒，不看送了幾個鍵。
 * ``{"town_probe": {"moves": [...]}}``：在戰間城鎮沿方向序列切建築，每步 enter 看
@@ -58,6 +67,7 @@ import time
 
 RUN = "/out"
 PLAN = "/plan.jsonl"
+MAPS = "/maps"
 STEP_TIMEOUT = float(os.environ.get("FD2_ORACLE_STEP_TIMEOUT", "180"))
 
 
@@ -265,6 +275,72 @@ def do_force_enemy_clear(command):
             print("force_enemy_clear：清場後無法結束回合",
                   file=sys.stderr)
             return False
+    return True
+
+
+def record_mv(unit, default=6):
+    """記錄 +0x3b 是移動力（native_item_panel_record.go：record[0x3b] = MV）。"""
+    raw = unit.get("raw_hex")
+    if isinstance(raw, str) and len(raw) >= 0x3c * 2:
+        try:
+            return int(raw[0x3b * 2:0x3b * 2 + 2], 16)
+        except ValueError:
+            pass
+    return default
+
+
+def do_step_into(command):
+    """讓「走得到指定格之一」的任一個還沒行動的我方單位踏進去，然後待機。
+
+    ``{"step_into": {"cells": [[x, y], ...], "map": 6, "indices": [2, 3, ...]}}``：依
+    indices 順序（省略就是全部我方單位，索引小的先）用地圖成本格與當下敵我位置估每個
+    單位的可達集合，第一個估得到某格的就去試；試不成換下一格、下一個單位。誰都走不到
+    就什麼都不做回 True——這不是錯誤，下一回合再試（第七章的格子事件掛在六格上，
+    誰踏都算）。移動力讀記錄 +0x3b。
+    """
+    spec = command["step_into"]
+    cells = [tuple(c) for c in spec["cells"]]
+    steps = int(command.get("steps", 2_000_000))
+    if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
+                         int(command.get("cutscene_max", 30))):
+        print("step_into：目前不在戰場（過場推不回來）", file=sys.stderr)
+        return False
+    if not ensure_cursor_mode(max(steps, int(command.get("cursor_steps", 5_000_000))),
+                              int(command.get("cursor_wait", 80))):
+        print(f"step_into：介面退不回地圖游標（目前 {ui_mode(state())}）", file=sys.stderr)
+        return False
+    current = state()
+    grid = load_map_cost_grid(spec["map"]) if "map" in spec else None
+    if grid is None:
+        print("step_into：找不到地圖成本格", file=sys.stderr)
+        return False
+    units = [u for u in side(current, ALLY_CAMP) if not acted(u)]
+    if "indices" in spec:
+        order = [int(i) for i in spec["indices"]]
+        units = sorted((u for u in units if u.get("index") in order), key=lambda u: order.index(u["index"]))
+    else:
+        units.sort(key=lambda u: u.get("index", 0))
+    for unit in units:
+        origin = (int(unit["x"]), int(unit["y"]))
+        if origin in cells:
+            # 已經站在其中一格（上一回合踏過）：不再換格，留給 sweep 正常接戰。
+            continue
+        reach = reachable_cells(grid, current, origin, record_mv(unit, int(spec.get("mv", 6))))
+        goals = [c for c in cells if c in reach]
+        if not goals:
+            continue
+        goals.sort(key=lambda c: (-reach[c], c))
+        print(f"step_into：記錄 {unit['index']} 在 {origin} 估走得到 {goals}", flush=True)
+        inner = {"move_unit": {"from_index": unit["index"], "to_any": [list(c) for c in goals],
+                               "stay_if_blocked": False}, "steps": steps}
+        if do_move_unit(inner):
+            return True
+        # 估錯（原版拒絕）：介面留在 target，退回游標讓下一個單位試。
+        if not ensure_cursor_mode(max(steps, 5_000_000), 40):
+            print("step_into：移動被拒絕後退不回地圖游標", file=sys.stderr)
+            return False
+        current = state()
+    print(f"step_into：這一回合沒有單位走得到 {cells}，不動", flush=True)
     return True
 
 
@@ -786,6 +862,217 @@ def ensure_cursor_mode(steps, budget=60):
         seq, current = send("", steps)
         report(seq, "", current, f" back-to-cursor(from {mode})")
     return ui_mode(state()) == "cursor"
+
+
+def load_map_cost_grid(map_index):
+    """讀重製端 `remake/assets/maps/map{N}/map.json` 的移動成本格（99 不可通行）。
+
+    只拿來排候選格的順序，走不走得到仍由原版裁決（送 enter 看介面）。
+    """
+    # dosgolem_oracle.sh 把 remake/assets/maps 唯讀掛在 /maps；主機上直接跑就用 repo 路徑。
+    for path in (os.path.join(MAPS, f"map{int(map_index)}", "map.json"),
+                 os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "remake", "assets", "maps",
+                              f"map{int(map_index)}", "map.json")):
+        if os.path.isfile(path):
+            break
+    else:
+        return None
+    with open(path, encoding="utf-8") as handle:
+        data = json.load(handle)
+    w, h, cost = int(data["w"]), int(data["h"]), data["cost"]
+    if len(cost) != w * h:
+        return None
+    return w, h, cost
+
+
+def reachable_cells(grid, current, origin, budget):
+    """依 0x145CD／0x4E040 的規則估可走到的格：敵格不可進（0x40）、敵格的四鄰
+    進了預算歸零（0x80，可停）、同組占位格可穿不可停、地形成本逐格扣。
+
+    回 {格: 剩餘預算}。這是驅動器自己的模型，不是原版的可達集合；用它排序候選格，
+    每一格仍要送 enter 由原版裁決。
+    """
+    w, h, cost = grid
+    enemies = {(u["x"], u["y"]) for u in side(current, ENEMY_CAMP)}
+    corpses = occupied_cells(current) - {(u["x"], u["y"]) for u in current.get("units", [])
+                                         if u.get("hp", 0) > 0}
+    blocked = enemies | corpses
+    zoc = set()
+    for ex, ey in enemies:
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            zoc.add((ex + dx, ey + dy))
+    allies = {(u["x"], u["y"]) for u in side(current, ALLY_CAMP)} - {origin}
+    best = {origin: budget}
+    frontier = [(origin, budget)]
+    while frontier:
+        (x, y), remain = frontier.pop()
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            if nx < 0 or ny < 0 or nx >= w or ny >= h or (nx, ny) in blocked:
+                continue
+            step = int(cost[ny * w + nx])
+            if step >= 99 or step > remain:
+                continue
+            left = remain - step
+            if (nx, ny) in zoc:
+                left = 0
+            if left <= best.get((nx, ny), -1):
+                continue
+            best[(nx, ny)] = left
+            frontier.append(((nx, ny), left))
+    return {cell: left for cell, left in best.items() if cell != origin and cell not in allies}
+
+
+def toward_candidates(spec, current, origin):
+    """`toward` 模式的候選格：移動力內、依「到目標的距離」排序，最多 max_tries 個。
+
+    有地圖成本格就用 reachable_cells 過濾；沒有就退回曼哈頓距離環（和 engage 一樣猜）。
+    `stop_distance` 讓單位停在離目標至少這麼遠的格（分兩回合踏格用）。
+    """
+    goal = tuple(spec["toward"])
+    mv = int(spec.get("mv", 6))
+    stop = int(spec.get("stop_distance", 0))
+    tries = int(spec.get("max_tries", 6))
+    grid = load_map_cost_grid(spec["map"]) if "map" in spec else None
+    if grid is not None:
+        cells = reachable_cells(grid, current, origin, mv)
+        ranked = sorted(cells, key=lambda c: (distance(c, goal), -cells[c], c))
+    else:
+        occupied = occupied_cells(current)
+        ranked = sorted(
+            (c for c in ((origin[0] + dx, origin[1] + dy)
+                         for dx in range(-mv, mv + 1) for dy in range(-mv, mv + 1))
+             if c[0] >= 0 and c[1] >= 0 and c != origin and c not in occupied
+             and distance(c, origin) <= mv),
+            key=lambda c: (distance(c, goal), distance(c, origin), c))
+    ranked = [c for c in ranked if distance(c, goal) >= stop]
+    here = distance(origin, goal)
+    ranked = [c for c in ranked if distance(c, goal) < here]
+    return ranked[:tries]
+
+
+def do_move_unit(command):
+    """把一個我方單位走到指定格，然後待機。
+
+    ``{"move_unit": {"from": [x, y], "to": [x, y]}}``。和 `engage` 走同一套介面
+    模式門檻：選取後介面要是 target（選移動格）、確認後要進 ring（原版走完就開
+    指令環）；目的格走不到（超出移動力、被佔、地形不通）時介面留在 target，這裡
+    直接回報失敗、不換格——呼叫者要的是「這一格」，不是「附近某一格」（第七章
+    格子事件只掛在六個特定格上）。到了之後只待機不攻擊，也不看射程。
+
+    `to_any` 依序試多個格；`toward` 給一個目標格，由 toward_candidates 依地圖成本格
+    與當下敵我位置挑「最靠近目標又走得到」的格來試（分回合逼近事件格用）。
+    """
+    spec = command["move_unit"]
+    if "from_index" in spec:
+        # 依記錄索引找單位（前一回合走到哪一格不一定，索引不變）。
+        found = [u for u in (state().get("units") or [])
+                 if u.get("index") == int(spec["from_index"]) and u.get("hp", 0) > 0]
+        if not found:
+            print(f"move_unit：記錄 {spec['from_index']} 沒有存活單位", file=sys.stderr)
+            return False
+        ux, uy = int(found[0]["x"]), int(found[0]["y"])
+    else:
+        ux, uy = spec["from"]
+    targets = [tuple(spec["to"])] if "to" in spec else [tuple(cell) for cell in spec.get("to_any", [])]
+    if "toward" in spec:
+        targets = toward_candidates(spec, state(), (ux, uy))
+        print(f"move_unit ({ux},{uy}) toward {tuple(spec['toward'])}：候選 {targets}", flush=True)
+        if not targets and not spec.get("stay_if_blocked", False):
+            print("move_unit：toward 找不到比原地更靠近目標的候選格", file=sys.stderr)
+            return False
+    if not targets and not spec.get("stay_if_blocked", False):
+        print("move_unit：要有 to、to_any 或 toward", file=sys.stderr)
+        return False
+    stay_if_blocked = bool(spec.get("stay_if_blocked", False))
+    steps = int(command.get("steps", 2_000_000))
+    if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
+                         int(command.get("cutscene_max", 30))):
+        print("move_unit：目前不在戰場（過場推不回來）", file=sys.stderr)
+        return False
+    if not ensure_cursor_mode(max(steps, int(command.get("cursor_steps", 5_000_000))),
+                              int(command.get("cursor_wait", 80))):
+        print(f"move_unit ({ux},{uy})：介面退不回地圖游標（目前 {ui_mode(state())}）",
+              file=sys.stderr)
+        return False
+    current = state()
+    unit = unit_at(current, ux, uy)
+    if unit is None or unit.get("camp") != ALLY_CAMP:
+        print(f"move_unit ({ux},{uy}) 沒有我方存活單位", file=sys.stderr)
+        return False
+    if acted(unit):
+        print(f"move_unit ({ux},{uy}) 本回合已行動，跳過", flush=True)
+        return True
+    started_round = measure(current, "round")
+    if not do_goto({"goto": [ux, uy], "steps": steps, "max": command.get("max", 80)}):
+        return False
+    seq, current = send("enter", steps)
+    report(seq, "enter", current, " move_unit=select")
+    log_action("select", current, at=[ux, uy], fig=unit.get("fig"),
+               identity=unit.get("identity"), index=unit.get("index"), hp=unit.get("hp"))
+    mode = wait_mode({"target", "ring", "system"}, steps)
+    if mode != "target":
+        if mode == "system":
+            seq, current = send("esc", max(steps, 3_000_000))
+            report(seq, "esc", current, " move_unit=select-missed")
+        print(f"move_unit ({ux},{uy}) 選取之後介面是 {mode}，不是移動格選擇", file=sys.stderr)
+        return False
+    tx = ty = None
+    for cell in targets:
+        cx, cy = cell
+        if not do_goto({"goto": [cx, cy], "steps": steps, "max": command.get("max", 80)}):
+            return False
+        seq, current = send("enter", max(steps, 5_000_000))
+        report(seq, "enter", current, f" move_unit=move->({cx},{cy})")
+        if wait_mode({"ring"}, steps) == "ring":
+            tx, ty = cx, cy
+            break
+            print(f"move_unit ({ux},{uy})→({cx},{cy}) 移動被拒絕（介面 {ui_mode(state())}，沒進指令環）"
+              + ("，換下一個候選格" if cell is not targets[-1] else ""), flush=True)
+    if tx is None:
+        if not stay_if_blocked:
+            print(f"move_unit ({ux},{uy}) 候選格 {targets} 全被拒絕", file=sys.stderr)
+            return False
+        # 候選格都走不到：回自己那一格原地待機，讓回合推得動（和 engage 的 stay-put 一樣）。
+        if not do_goto({"goto": [ux, uy], "steps": steps, "max": 40}):
+            return False
+        seq, current = send("enter", max(steps, 5_000_000))
+        report(seq, "enter", current, " move_unit=stay-put")
+        if wait_mode({"ring"}, steps) != "ring":
+            print(f"move_unit ({ux},{uy}) 原地確認也沒進指令環（介面 {ui_mode(state())}）", file=sys.stderr)
+            return False
+        tx, ty = ux, uy
+        print(f"move_unit ({ux},{uy}) 候選格 {targets} 全被拒絕，原地待機", flush=True)
+        log_action("stay", state(), at=[ux, uy])
+    else:
+        moved = unit_at(state(), tx, ty)
+        if moved is None or moved.get("index") != unit.get("index"):
+            print(f"move_unit ({ux},{uy})→({tx},{ty}) 指令環開了但單位陣列裡 ({tx},{ty}) 不是這個單位",
+                  file=sys.stderr)
+            return False
+        log_action("move", state(), frm=[ux, uy], to=[tx, ty])
+    current = stand_by(steps, f"=({tx},{ty})")
+    if ui_mode(current) == "ring":
+        print(f"move_unit ({tx},{ty}) 待機失敗，指令環上找不到待機那一項", file=sys.stderr)
+        return False
+    log_action("wait", current, at=[tx, ty])
+    for _ in range(int(command.get("finish_wait", 90))):
+        current = state()
+        if measure(current, "round") > started_round:
+            return True
+        mode = ui_mode(current)
+        if mode == "cursor":
+            return True
+        if mode == "dialogue":
+            maybe_dialogue_probe(current, command)
+            key = "" if current.get("kbd_pending", 0) > 0 else "enter"
+            seq, current = send(key, max(steps, 3_000_000))
+            report(seq, "enter", current, " move_unit=finish-dialogue")
+            continue
+        seq, current = send("", max(steps, 3_000_000))
+        report(seq, "", current, " move_unit=finish-wait")
+    print(f"move_unit ({tx},{ty}) 收尾之後介面停在 {ui_mode(state())}", file=sys.stderr)
+    return False
 
 
 def do_engage(command):
@@ -1359,8 +1646,9 @@ def do_sweep_round(command):
         if not enemies:
             print("sweep_round：敵方已全滅", flush=True)
             return True
+        skip = {int(i) for i in command.get("skip_indices", [])}
         pending = [u for u in side(current, ALLY_CAMP)
-                   if not acted(u) and unit_key(u) not in handled]
+                   if not acted(u) and unit_key(u) not in handled and u.get("index") not in skip]
         # 只挑走得到敵人旁邊的：貼敵格離它不超過一般移動力加射程。
         reachable = [u for u in pending
                      if min(distance((u["x"], u["y"]), e) for e in enemies) <= span + reach]
@@ -1475,6 +1763,14 @@ def main():
             continue
         if "engage" in command:
             if not do_engage(command):
+                return 8
+            continue
+        if "move_unit" in command:
+            if not do_move_unit(command):
+                return 8
+            continue
+        if "step_into" in command:
+            if not do_step_into(command):
                 return 8
             continue
         if "shop_probe" in command:

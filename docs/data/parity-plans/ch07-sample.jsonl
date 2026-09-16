@@ -1,0 +1,75 @@
+# 第七章抽樣（111 章工作單元，docs/goal/112）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 6 章」槽（--levels-per-chapter 6 --seed 4；ch02_post join 2、ch05_post join 10、ch06 JOIN13 已套用，9 人），manifest docs/data/parity-slots/ch07-manifest.json。
+# 可抽項目（remake/assets/scenarios/ch07.json、docs/data/turn_events.json map 6）：往王城途中 map6（30×33）、開局 group 1（25 敵：王國軍護衛隊在 y 1..8）、格子事件 26（我方單位踏入 (9,13)(10,14)(11,14)(12,15)(13,15)(14,15) 之一 → 記錄 9..27 AI 模式清 0、state16=1）、第 10 回合 event 25（state16 成立才登場 group 2：9 敵＋凱麗 slot 43，鏡頭 (16,10)、ACTING 30、對白 text 2、state17=1）、戰後 ch06_post（slot 43 存活且 state17 才 JOIN12）。
+# 章內全程正常 BIOS 鍵；只有第 11 回合開頭的 force_enemy_clear 是注入（收據 state_injections 記錄）。驅動端沒有法術／物品／買入指令，這三項不在本章樣本（limitations）。
+# --- 標題 LOAD 槽 0 → 城鎮（往王城的途中，variant 2）---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前（ch06_pre：loadch、對白、group 1 登場、ACTING 28／29 護衛隊進場、對白、focus_unit）→ 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":160}
+{"await_ui":"cursor","steps":10000000,"max":80}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～3 回合：全隊北上（advance true、typical_move 4：記錄 +0x3b 的移動力除騎士 7、瑪琳 3 外都是 4）。瑪琳（記錄 7）與貝克威（記錄 8）留在出發格不動（skip_indices）。r3／r4 的教訓：10 個 mode 0 敵人第 2 回合起沿 x=12/13 每回合南下 3～4 格，守在出發格等它們到第 7 回合才接戰，走廊在第 10 回合前清不掉；騎士一個人先衝則被 0x80 鄰格圍死。全隊在 y≈16..20 迎擊，第 4～6 回合打完這 10 個，再由任何走得到的單位踏事件格。 ---
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+# --- 第 4～6 回合：接戰（advance false：六格內有敵人才動）。 ---
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+# --- 第 7～10 回合：先讓任一個估得到走進六個事件格 (12,15)(13,15)(14,15)(11,14)(10,14)(9,13) 的未行動單位踏進去（step_into；誰都走不到就不動，下一回合再試），其餘接戰。r2 證實：直線向上走進 (12,15)，待機收尾後記錄 9..27 的 +0x34 低四位全清 0（0x1300D 每一步都呼叫 0x13A44 寫 [0x51A8F]，行動收尾 0x1198A 才分派），不是只有向左踏入。event 25 在第 10 回合敵方階段 selector 0 才查 state16，所以第 10 回合玩家階段踏進也來得及。 ---
+{"step_into":{"cells":[[12,15],[13,15],[14,15],[11,14],[10,14],[9,13]],"map":6,"indices":[2,3,4,5,6,0,1]},"steps":2000000}
+{"mark":"step_round7","steps":1000000}
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=8","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"step_into":{"cells":[[12,15],[13,15],[14,15],[11,14],[10,14],[9,13]],"map":6,"indices":[2,3,4,5,6,0,1]},"steps":2000000}
+{"mark":"step_round8","steps":1000000}
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=9","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"step_into":{"cells":[[12,15],[13,15],[14,15],[11,14],[10,14],[9,13]],"map":6,"indices":[2,3,4,5,6,0,1]},"steps":2000000}
+{"mark":"step_round9","steps":1000000}
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":240}
+{"await":"round>=10","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+# --- 第 10 回合：再踏一次（若還沒到）→ 接戰 → END → event 25（group 2 登場、鏡頭 (16,10)、ACTING 30、四句對白，await_ui 推過）→ 敵方回合（凱麗在 x=29 邊上最多三個鄰格，Lv10 HP 151 撐得住一回合）→ 第 11 回合游標 ---
+{"step_into":{"cells":[[12,15],[13,15],[14,15],[11,14],[10,14],[9,13]],"map":6,"indices":[2,3,4,5,6,0,1]},"steps":2000000}
+{"mark":"step_round10","steps":1000000}
+{"sweep_round":true,"advance":false,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=11","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_event25","steps":1000000}
+# --- 清場（修改路徑；凱麗 slot 43 是 camp 1 不受影響）→ END → 戰後（ch06_post：0x233C6 佈局、text 4、JOIN12 凱麗）→ 城鎮 ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（town_ch08 王城前的戰鬥，variant 0）：武器店出售一件（選項 1）→ 四棟建築各探一次 → 酒店存檔 → 武器店前 Shift+F7（scan 0x5A）祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"town_probe":{"moves":["left","left","left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":["left"],"key":"shift-f7"},"steps":10000000}

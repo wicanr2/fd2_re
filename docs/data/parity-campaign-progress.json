@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-09-16",
+  "updated": "2026-09-17",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -62,7 +62,7 @@
       "limitations": [
         "原版側 r13 收據由 dosgolem feat/fd2-oracle-input-chain caa9ee8（dirty=0）重生，逐點與 r10 相同；checkpoint 落在 0x373C4／0x11EB0／0x4E809 中間時只延後 PNG（不撕裂），其餘狀態照舊拍",
         "原版側整章計畫跑完（LOAD→出口→5 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店）",
-        "四個 gate 全過（r58）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，55 個畫面比較點逐像素相同（after_enemy_phase 只比行為；seq 636／913／935 落在 0x1A30B 換手處理裡，依 oracle_mid_end_turn 規則不比）",
+        "四個 gate 全過（r58，2026-09-17 重跑 remake-r14 仍全過）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，55 個畫面比較點全在 640 px 預算內、38 點逐像素相同，其餘 17 點是指令環開啟中途（#34）（after_enemy_phase 只比行為；seq 636／913／935 落在 0x1A30B 換手處理裡，依 oracle_mid_end_turn 規則不比）",
         "未抽樣到的演出：升級、END 回復圖示（#29）；酒店服務 2 讀檔未接，傳聞後回城鎮而非酒店選單"
       ],
       "prior_receipts": [
@@ -81,7 +81,7 @@
       "limitations": [
         "槽由 ch02-cleared 基底建到 target 4（每章 +6 級政策，假設第三章無人陣亡）；合法性檢查 docs/data/parity-plans/ch05-slot-load.jsonl（LOAD 進城鎮、五棟建築）",
         "原版側 r5 收據由 dosgolem feat/fd2-oracle-input-chain caa9ee8（dirty=0）重生；整章計畫跑完（LOAD→出口→第 1、2 回合 END→第 3 回合八個單位移動待機→第 4 回合友軍 group 2 登場與兩次攻擊→第 5 回合 force_enemy_clear 27→0→END→戰後對白→城鎮出售 2000→2037／五棟建築／酒店存檔／ctrl-f5 祕密商店）",
-        "四個 gate 全過（remake-r5）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，58 個畫面比較點逐像素相同（after_enemy_phase 只比行為；seq 789／1156 落在 0x1A30B 換手處理裡，依 oracle_mid_end_turn 規則不比）",
+        "四個 gate 全過（remake-r5，2026-09-17 重跑 remake-r10 仍全過）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，58 個畫面比較點全在預算內、40 點逐像素相同，其餘 18 點是指令環開啟中途與 YES pulse（#34／#35）（after_enemy_phase 只比行為；seq 789／1156 落在 0x1A30B 換手處理裡，依 oracle_mid_end_turn 規則不比）",
         "未抽樣到：第 7、8 回合的 event 16／17（敵軍 group 3 登場與 text 5–7 對白，已轉寫進劇本但沒有原版收據）、法術與物品指令、商店買入（驅動端沒有這三種指令）、升級與 END 回復圖示（#29）",
         "其餘 57 筆回合事件仍是 gen_campaign 的 spawn 版本，逐章轉寫（#33）"
       ],
@@ -99,7 +99,7 @@
       "limitations": [
         "槽由 ch02-cleared 基底建到 target 5（每章 +6 級政策）；瑪琳（char 10）在原版是第五章 FDFIELD NPC 記錄經 0x11506 抄回（Lv6、物品 0x35／0x25，r5 實跑中陣亡），建構槽用 join 靜態表建她（Lv8、物品 0／1、存活）——槽工具對「先以 NPC 登場、戰後才 join」角色的已知偏差；合法性檢查 docs/data/parity-plans/ch06-slot-load.jsonl（LOAD 進普里茲港、五棟建築）",
         "原版側 r4 收據由 dosgolem feat/fd2-oracle-input-chain 50a3b47（dirty=0，補 add/sub/xor al,imm8）重生；整章計畫跑完（LOAD→出口→戰前對白→第 1～9 回合守位（typical_move 1，打得到才打）→第 5 回合 event 20 對白→第 10～11 回合接戰→force_enemy_clear→戰後（join／group 3 登場／pan／act 27／對白）→往王城的途中出售／五棟建築／酒店存檔／alt-f6 祕密商店）；r4 與 r3 的 232 個 AI 入口與酒店存檔逐 byte 相同",
-        "四個 gate 全過（remake-r11）：單位、HP、回合、金額、鏡頭逐點相同，ai_order 分岔 0，酒店存檔整檔 sha256 與原版相同，58 個畫面比較點逐像素相同（after_enemy_phase 與落在 0x1A30B 換手處理裡的 ai_order／wait 依 oracle_mid_end_turn 規則只比行為）",
+        "四個 gate 全過（remake-r11，2026-09-17 以第七章之後的重製端重跑 remake-r10 仍全過）：單位、HP、回合、金額、鏡頭逐點相同，ai_order 分岔 0，酒店存檔整檔 sha256 與原版相同，58 個畫面比較點全在預算內、39 點逐像素相同，其餘 19 點是指令環開啟中途、YES pulse、DATO 嘴型、DAC 循環色（#34／#35／#38；DAC 相位每次重跑不一定同步）（after_enemy_phase 與落在 0x1A30B 換手處理裡的 ai_order／wait 依 oracle_mid_end_turn 規則只比行為）",
         "未抽樣到：第 10 回合 event 21 的守衛對白只在記錄 8 存活時播（守位讓它活到第 10 回合，收據裡有）、第 15 回合 event 22（group 1 登場）沒跑到；玩家法術與物品、商店買入（驅動端沒有這三種指令）；第 1～9 回合守位不攻擊",
         "亂數字組只在每個 AI 行動入口 0x13A9F、攻擊確認與 END 同步；同步之間指令 0／4 的演出擲骰已照原版交錯，指令 1／2／3／6／7／8 的 marker 抖動與 handler 內部亂數還沒有收據核過（#36 關閉時記在 56）"
       ],
@@ -109,14 +109,21 @@
     },
     {
       "chapter": 7,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch07.json",
+      "slot_manifest": "docs/data/parity-slots/ch07-manifest.json",
+      "slot_sha256": "85b080cb71d69add3cf404e881836e511a546876873a8b43e8dc4d6a77e0f348",
+      "dosgolem_commit": "f57c23df2fa712224b9a54d9f910e5bcaf07067a",
+      "date": "2026-09-17",
+      "verify": "tools/chapter_parity.sh 7 work/parity-slot-ch07 <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893 tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch07-sample.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch07.json --oracle <run> --remake <out> --include-seq 1926 1955 1973 2011 2209",
+      "limitations": [
+        "槽由 ch02-cleared 基底建到 target 6（每章 +6 級政策）、9 人；貝克威（第六章先以 NPC 登場、戰後 join）在建構槽是 join 靜態表版本（Lv8、物品 0／1），與真實通關存檔（Lv9、物品 2d／87／c1）不同——槽工具對這類角色的已知偏差；合法性檢查 docs/data/parity-plans/ch07-slot-load.jsonl（LOAD 進往王城的途中、五棟建築）",
+        "原版側 sample-r6 收據由 dosgolem feat/fd2-oracle-input-chain f57c23d（dirty=0，補 0A／32 r8,r/m8 的 SIB 記憶體形式）重生；整章計畫跑完（LOAD→出口→戰前對白→第 1～10 回合全隊北上接戰（瑪琳、貝克威留守）→第 7～10 回合 step_into 踏事件格 26→第 10 回合 event 25（group 2 登場）→force_enemy_clear→戰後 JOIN12 凱麗→往王城的途中出售／五棟建築／酒店存檔／Shift+F7 祕密商店）；241 動作、2233 個 checkpoint、34 個亂數同步點",
+        "四個 gate 全過（remake-r8）：單位、HP、回合、金額（2000→5500→5537）、鏡頭逐點相同，ai_order 分岔 0，ch06_post runtime_context.slot_counts=[34,44] 由收據核過，酒店存檔整檔 sha256 與原版相同（10 人），228 個畫面比較點全在 640 px 預算內、164 點逐像素相同，其餘 64 點是指令環開啟中途 63 點（#34）與祕密商店店主眨眼 1 點（#38）；after_enemy_phase 與 ai_order 依 oracle_mid_end_turn 規則只比行為。抽樣截圖 docs/figures/parity-ch07-samples-p1..p5.png（81 列）",
+        "城鎮出發的十步縮放暗化（0x2D190..0x2D275）與進戰場 64 步淡入（0x1F544）已由探針幀閉合（parity-ch07-town-fade-probe.png，輔助基準非 gate），重製端沒接這兩段（#39）；章收據兩端都在這段之外",
+        "未抽樣到：玩家法術與物品、商店買入（驅動端沒有這三種指令）；event 26 只以 step_into 踏格觸發一次（記錄 9..27 AI 模式清 0），沒有第二次踏格的收據；升級對話與掉落訊息只在 attack_result 等鍵處拍",
+        "重製端由建構槽 LOAD 進下一章時，JOIN 記錄殘值（x=0xe8 之類）能否容忍還沒驗；fd2-chapter-slot 建槽工具仍整筆覆寫 JOIN 記錄"
+      ],
       "prior_receipts": []
     },
     {

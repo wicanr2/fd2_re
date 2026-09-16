@@ -14,6 +14,7 @@
 #   FD2_GO_TEST_IMAGE      預設 fd2-go-test-local:latest
 #   FD2_ASSETS_IMAGE       預設 fd2-assets-local:20260829-sfx（有 Pillow）
 #   FD2_PARITY_TRACE_KEYS  非空時重播端把每個游標鍵之後的游標／鏡頭寫進 replay.log（找鏡頭分歧用）
+#   FD2_PARITY_CPUS        重播與判定容器的 --cpus（預設 4；原版側 oracle 同時在跑時調小）
 set -euo pipefail
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
@@ -29,6 +30,7 @@ plan=${FD2_PARITY_PLAN:-$repo_root/docs/data/parity-plans/ch$padded-sample.jsonl
 go_image=${FD2_GO_TEST_IMAGE:-fd2-go-test-local:latest}
 assets_image=${FD2_ASSETS_IMAGE:-fd2-assets-local:20260829-sfx}
 cache=${FD2_GO_TEST_CACHE:-$repo_root/work/gocache}
+cpus=${FD2_PARITY_CPUS:-4}
 mkdir -p "$cache"
 
 for f in "$slot_dir/FD2.SAV" "$slot_dir/manifest.json" "$oracle_run/actions.jsonl" "$oracle_run/runner.json" "$plan"; do
@@ -44,7 +46,7 @@ done
 ln -s /src/remake/assets/locales "$pack/locales"
 
 echo "== 重製側重播（第 $chapter 章）"
-docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 \
+docker run --rm --network none --memory 8g --cpus "$cpus" --pids-limit 512 \
   --log-opt max-size=10m --log-opt max-file=3 -u "$(id -u):$(id -g)" \
   -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack \
   -e FD2_PARITY_CHAPTER="$chapter" -e FD2_PARITY_SLOT=/slot/FD2.SAV \

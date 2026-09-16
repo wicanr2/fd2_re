@@ -7,10 +7,10 @@
         "column": 15,
         "file": "remake/cmd/fd2/action_overlay_runtime.go",
         "function": "beginNativeNestedCurrentLoad",
-        "line": 398
+        "line": 400
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l398-c15",
+      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l400-c15",
       "text": "Original battle-state load: the current battlefield clock has not been materialized",
       "variables": []
     },
@@ -21,10 +21,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/action_overlay_runtime.go",
         "function": "activateNativeSystemDirectionOne",
-        "line": 517
+        "line": 519
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l517-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l519-c12",
       "text": "Original battle-state save source or assets are incomplete; no file was written",
       "variables": []
     },
@@ -35,10 +35,10 @@
         "column": 11,
         "file": "remake/cmd/fd2/action_overlay_runtime.go",
         "function": "activateNativeSystemDirectionOne",
-        "line": 522
+        "line": 524
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l522-c11",
+      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l524-c11",
       "text": "Original full-party movement source or event is incomplete; action not executed",
       "variables": []
     },
@@ -49,10 +49,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/action_overlay_runtime.go",
         "function": "finishNativeSystemEndTurnChoice",
-        "line": 616
+        "line": 618
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l616-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l618-c17",
       "text": "Original battle-state save: failed to decode the baseline after writing:",
       "variables": []
     },
@@ -160,13 +160,181 @@
       "id_status": "provisional_source_location",
       "role": "runtime_ui",
       "source": {
+        "column": 17,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10001
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10001-c17",
+      "text": "Church",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 22,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10038
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10038-c22",
+      "text": "Menu",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 15,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10053
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10053-c15",
+      "text": "　",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 15,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10055
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10055-c15",
+      "text": "▶",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 101,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10064
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10064-c101",
+      "text": "Recipient",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 29,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10064
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10064-c29",
+      "text": "Owner",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 66,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10064
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10064-c66",
+      "text": "Item to Transfer",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 23,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10067
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10067-c23",
+      "text": "Item to Transfer",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 30,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10069
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10069-c30",
+      "text": "Recipient",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 23,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10078
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10078-c23",
+      "text": "Item to Transfer",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 15,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10089
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10089-c15",
+      "text": "　",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 15,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "drawCampaignUI",
+        "line": 10091
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10091-c15",
+      "text": "▶",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10000
+        "line": 10094
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10000-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10094-c24",
       "text": "Item to Transfer",
       "variables": []
     },
@@ -177,10 +345,10 @@
         "column": 37,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10019
+        "line": 10113
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10019-c37",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10113-c37",
       "text": "%s%s",
       "variables": [
         "%s",
@@ -194,10 +362,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10028
+        "line": 10122
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10028-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10122-c23",
       "text": "Confirm Class Change",
       "variables": []
     },
@@ -208,10 +376,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10032
+        "line": 10126
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10032-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10126-c23",
       "text": "Class",
       "variables": []
     },
@@ -222,10 +390,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10041
+        "line": 10135
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10041-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10135-c23",
       "text": "Class",
       "variables": []
     },
@@ -236,10 +404,10 @@
         "column": 30,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10046
+        "line": 10140
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10046-c30",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10140-c30",
       "text": "Confirm Class Change",
       "variables": []
     },
@@ -250,10 +418,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10055
+        "line": 10149
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10055-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10149-c24",
       "text": "Class",
       "variables": []
     },
@@ -264,10 +432,10 @@
         "column": 30,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10063
+        "line": 10157
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10063-c30",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10157-c30",
       "text": "Confirm Class Change",
       "variables": []
     },
@@ -278,10 +446,10 @@
         "column": 18,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10069
+        "line": 10163
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10069-c18",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10163-c18",
       "text": "church class confirmation: locale entities unavailable",
       "variables": []
     },
@@ -292,10 +460,10 @@
         "column": 18,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10074
+        "line": 10168
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10074-c18",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10168-c18",
       "text": "church class confirmation: ",
       "variables": []
     },
@@ -306,10 +474,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10088
+        "line": 10182
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10088-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10182-c16",
       "text": "　",
       "variables": []
     },
@@ -320,10 +488,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10090
+        "line": 10184
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10090-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10184-c16",
       "text": "▶",
       "variables": []
     },
@@ -334,10 +502,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10096
+        "line": 10190
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10096-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10190-c24",
       "text": "Class",
       "variables": []
     },
@@ -348,10 +516,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10102
+        "line": 10196
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10102-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10196-c16",
       "text": "　",
       "variables": []
     },
@@ -362,10 +530,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10104
+        "line": 10198
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10104-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10198-c16",
       "text": "▶",
       "variables": []
     },
@@ -376,10 +544,10 @@
         "column": 38,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10107
+        "line": 10201
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10107-c38",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10201-c38",
       "text": "%s%s Lv%d",
       "variables": [
         "%s",
@@ -394,10 +562,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 10116
+        "line": 10210
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10116-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10210-c17",
       "text": "Ending",
       "variables": []
     },
@@ -408,10 +576,10 @@
         "column": 32,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawBattleScene",
-        "line": 10386
+        "line": 10480
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10386-c32",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10480-c32",
       "text": "%s/frame_%02d.png",
       "variables": [
         "%s",
@@ -425,10 +593,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawBattlePanel",
-        "line": 10484
+        "line": 10578
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10484-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10578-c23",
       "text": "%02d",
       "variables": [
         "%02d"
@@ -441,10 +609,10 @@
         "column": 22,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawBattlePanel",
-        "line": 10486
+        "line": 10580
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10486-c22",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10580-c22",
       "text": "%03d",
       "variables": [
         "%03d"
@@ -457,10 +625,10 @@
         "column": 22,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawBattlePanel",
-        "line": 10487
+        "line": 10581
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l10487-c22",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l10581-c22",
       "text": "%03d",
       "variables": [
         "%03d"
@@ -473,10 +641,10 @@
         "column": 30,
         "file": "remake/cmd/fd2/main.go",
         "function": "loadGame",
-        "line": 11009
+        "line": 11103
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l11009-c30",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l11103-c30",
       "text": "Yuni",
       "variables": []
     },
@@ -487,10 +655,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "loadGame",
-        "line": 11009
+        "line": 11103
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l11009-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l11103-c49",
       "text": "Mage",
       "variables": []
     },
@@ -501,10 +669,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawUnitHUD",
-        "line": 11306
+        "line": 11400
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l11306-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l11400-c34",
       "text": "AP %d  DP %d  MV %d",
       "variables": [
         "%d",
@@ -519,10 +687,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/main.go",
         "function": "aiStep",
-        "line": 12015
+        "line": 12126
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l12015-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l12126-c17",
       "text": "Enemy AI spell:",
       "variables": []
     },
@@ -533,10 +701,10 @@
         "column": 36,
         "file": "remake/cmd/fd2/main.go",
         "function": "main",
-        "line": 12158
+        "line": 12269
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l12158-c36",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l12269-c36",
       "text": "Flame Dragon 2 Remake (fd2_re %s)",
       "variables": [
         "%s"
@@ -549,10 +717,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1672
+        "line": 1677
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1672-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1677-c10",
       "text": "Sol",
       "variables": []
     },
@@ -563,10 +731,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1674
+        "line": 1679
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1674-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1679-c10",
       "text": "Ares",
       "variables": []
     },
@@ -577,10 +745,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1676
+        "line": 1681
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1676-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1681-c10",
       "text": "Yuni",
       "variables": []
     },
@@ -591,10 +759,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1678
+        "line": 1683
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1678-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1683-c10",
       "text": "Gaia",
       "variables": []
     },
@@ -605,10 +773,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1680
+        "line": 1685
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1680-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1685-c10",
       "text": "King",
       "variables": []
     },
@@ -619,10 +787,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1682
+        "line": 1687
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1682-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1687-c10",
       "text": "Queen",
       "variables": []
     },
@@ -633,10 +801,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "figName",
-        "line": 1684
+        "line": 1689
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l1684-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l1689-c10",
       "text": "Guard",
       "variables": []
     },
@@ -647,10 +815,10 @@
         "column": 14,
         "file": "remake/cmd/fd2/main.go",
         "function": "enterNode",
-        "line": 3291
+        "line": 3296
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l3291-c14",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l3296-c14",
       "text": "Post-battle processing (approximation; original handler unverified). Press Enter to continue",
       "variables": []
     },
@@ -661,10 +829,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "enterNode",
-        "line": 3295
+        "line": 3300
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l3295-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l3300-c13",
       "text": "Post-battle handler is not connected; progression stopped",
       "variables": []
     },
@@ -675,10 +843,10 @@
         "column": 22,
         "file": "remake/cmd/fd2/main.go",
         "function": "enterNode",
-        "line": 3399
+        "line": 3404
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l3399-c22",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l3404-c22",
       "text": "Original ending assets are incomplete. Showing the editable epilogue:",
       "variables": []
     },
@@ -689,10 +857,10 @@
         "column": 27,
         "file": "remake/cmd/fd2/main.go",
         "function": "campInput",
-        "line": 4787
+        "line": 4830
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l4787-c27",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l4830-c27",
       "text": "No price data for item %02Xh",
       "variables": [
         "%02X"
@@ -705,10 +873,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirmBattleResult",
-        "line": 4928
+        "line": 4971
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l4928-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l4971-c12",
       "text": "Final-battle result has not been saved; progression stopped",
       "variables": []
     },
@@ -719,10 +887,10 @@
         "column": 11,
         "file": "remake/cmd/fd2/main.go",
         "function": "applyChurchClassChange",
-        "line": 4950
+        "line": 4993
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l4950-c11",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l4993-c11",
       "text": "No valid promotion target",
       "variables": []
     },
@@ -733,10 +901,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "applyChurchClassChange",
-        "line": 4956
+        "line": 4999
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l4956-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l4999-c23",
       "text": "Character to promote does not exist: id=%d",
       "variables": [
         "%d"
@@ -749,10 +917,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "applyChurchClassChange",
-        "line": 4962
+        "line": 5005
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l4962-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5005-c23",
       "text": "Missing promotion growth row: portrait=%02Xh",
       "variables": [
         "%02X"
@@ -765,10 +933,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "reviveChurchUnit",
-        "line": 5012
+        "line": 5055
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5012-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5055-c23",
       "text": "The revive target does not exist id=%d",
       "variables": [
         "%d"
@@ -781,10 +949,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "reviveChurchUnit",
-        "line": 5016
+        "line": 5059
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5016-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5059-c23",
       "text": "The revive fee table is missing raw class=%d",
       "variables": [
         "%d"
@@ -797,10 +965,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "reviveChurchUnit",
-        "line": 5021
+        "line": 5064
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5021-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5064-c23",
       "text": "The revive fee table is missing raw class=%d",
       "variables": [
         "%d"
@@ -813,10 +981,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "reviveChurchUnit",
-        "line": 5032
+        "line": 5075
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5032-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5075-c23",
       "text": "Revival costs %d G: %v",
       "variables": [
         "%d",
@@ -830,10 +998,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "applyHotelServiceSelection",
-        "line": 5075
+        "line": 5118
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5075-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5118-c23",
       "text": "Inn raw selector %d is invalid",
       "variables": [
         "%d"
@@ -846,10 +1014,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "applyHotelServiceSelection",
-        "line": 5080
+        "line": 5123
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5080-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5123-c23",
       "text": "Hotel raw selector %d: %05X→%05X (native interface not wired for this item)",
       "variables": [
         "%d",
@@ -864,10 +1032,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "applyHotelServiceSelection",
-        "line": 5082
+        "line": 5125
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5082-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5125-c23",
       "text": "Hotel raw selector %d: %05X (native interface not wired for this item)",
       "variables": [
         "%d",
@@ -881,10 +1049,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5179
+        "line": 5222
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5179-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5222-c13",
       "text": "The original system setting value is invalid; nothing was changed",
       "variables": []
     },
@@ -895,53 +1063,11 @@
         "column": 14,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5211
+        "line": 5254
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5211-c14",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5254-c14",
       "text": "The original battlefield information source is incomplete; the screen did not open",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 14,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "ringInput",
-        "line": 5223
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5223-c14",
-      "text": "Original exit confirmation assets are incomplete; the game was not left",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 14,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "ringInput",
-        "line": 5229
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5229-c14",
-      "text": "The original current-battle load source or assets are incomplete; keeping the current battlefield",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 14,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "ringInput",
-        "line": 5255
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5255-c14",
-      "text": "Original nested system menu cells or state are incomplete",
       "variables": []
     },
     {
@@ -955,7 +1081,7 @@
       },
       "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5266-c14",
-      "text": "Original END confirmation assets are incomplete; the turn did not end",
+      "text": "Original exit confirmation assets are incomplete; the game was not left",
       "variables": []
     },
     {
@@ -969,6 +1095,48 @@
       },
       "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l5272-c14",
+      "text": "The original current-battle load source or assets are incomplete; keeping the current battlefield",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 14,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "ringInput",
+        "line": 5298
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5298-c14",
+      "text": "Original nested system menu cells or state are incomplete",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 14,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "ringInput",
+        "line": 5309
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5309-c14",
+      "text": "Original END confirmation assets are incomplete; the turn did not end",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 14,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "ringInput",
+        "line": 5315
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5315-c14",
       "text": "Original system setting cells are incomplete; the menu did not open",
       "variables": []
     },
@@ -979,10 +1147,10 @@
         "column": 26,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5364
+        "line": 5407
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5364-c26",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5407-c26",
       "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
@@ -996,10 +1164,10 @@
         "column": 26,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5373
+        "line": 5416
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5373-c26",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5416-c26",
       "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
@@ -1013,10 +1181,10 @@
         "column": 14,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5438
+        "line": 5481
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5438-c14",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5481-c14",
       "text": "Original command 0: resistance data is not verified",
       "variables": []
     },
@@ -1027,10 +1195,10 @@
         "column": 27,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5449
+        "line": 5492
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5449-c27",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5492-c27",
       "text": "Original command %d: target grid cannot be materialized",
       "variables": [
         "%d"
@@ -1043,10 +1211,10 @@
         "column": 26,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5454
+        "line": 5497
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5454-c26",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5497-c26",
       "text": "Original command %d: choose a target",
       "variables": [
         "%d"
@@ -1059,10 +1227,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "ringInput",
-        "line": 5465
+        "line": 5508
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l5465-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l5508-c24",
       "text": "Original command %d: target/effect not verified",
       "variables": [
         "%d"
@@ -1075,10 +1243,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6848
+        "line": 6923
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6848-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l6923-c24",
       "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
@@ -1092,10 +1260,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6873
+        "line": 6948
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6873-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l6948-c24",
       "text": "Item %02Xh: %v",
       "variables": [
         "%02X",
@@ -1109,10 +1277,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6895
+        "line": 6970
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6895-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l6970-c24",
       "text": "Original command %d: cursor-confirm raw state is incomplete",
       "variables": [
         "%d"
@@ -1125,10 +1293,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6905
+        "line": 6980
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6905-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l6980-c24",
       "text": "Original command %d: cursor confirmation is not legal",
       "variables": [
         "%d"
@@ -1141,10 +1309,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6913
+        "line": 6988
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6913-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l6988-c13",
       "text": "Original command 32: indexed command damage completed",
       "variables": []
     },
@@ -1155,10 +1323,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6922
+        "line": 6997
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6922-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l6997-c25",
       "text": "Original command 32: select a valid target (%v)",
       "variables": [
         "%v"
@@ -1171,10 +1339,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6925
+        "line": 7000
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6925-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7000-c12",
       "text": "Original command 32: indexed presentation in progress",
       "variables": []
     },
@@ -1185,10 +1353,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6933
+        "line": 7008
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6933-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7008-c13",
       "text": "Original command 33: indexed clearing and restoration completed",
       "variables": []
     },
@@ -1199,10 +1367,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6942
+        "line": 7017
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6942-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7017-c25",
       "text": "Original command 33: select a valid target (%v)",
       "variables": [
         "%v"
@@ -1215,10 +1383,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6945
+        "line": 7020
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6945-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7020-c12",
       "text": "Original command 33: indexed presentation in progress",
       "variables": []
     },
@@ -1229,10 +1397,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6953
+        "line": 7028
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6953-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7028-c13",
       "text": "Original command 34: three-stage indexed modifier completed",
       "variables": []
     },
@@ -1243,10 +1411,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6962
+        "line": 7037
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6962-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7037-c25",
       "text": "Original command 34: select a valid target (%v)",
       "variables": [
         "%v"
@@ -1259,10 +1427,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6965
+        "line": 7040
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6965-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7040-c12",
       "text": "Original command 34: indexed presentation in progress",
       "variables": []
     },
@@ -1273,10 +1441,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6973
+        "line": 7048
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6973-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7048-c13",
       "text": "Original command 35: three-stage indexed application completed",
       "variables": []
     },
@@ -1287,10 +1455,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6982
+        "line": 7057
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6982-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7057-c25",
       "text": "Original command 35: select a valid target (%v)",
       "variables": [
         "%v"
@@ -1303,10 +1471,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6985
+        "line": 7060
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6985-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7060-c12",
       "text": "Original command 35: indexed presentation in progress",
       "variables": []
     },
@@ -1317,10 +1485,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 6992
+        "line": 7067
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l6992-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7067-c25",
       "text": "Original command %d: select a valid target (%v)",
       "variables": [
         "%d",
@@ -1334,10 +1502,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7003
+        "line": 7083
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7003-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7083-c25",
       "text": "Original command %d: restored %d",
       "variables": [
         "%d",
@@ -1351,10 +1519,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7012
+        "line": 7092
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7012-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7092-c25",
       "text": "Original command %d: indexed presentation unavailable (%v)",
       "variables": [
         "%d",
@@ -1368,10 +1536,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7020
+        "line": 7100
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7020-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7100-c25",
       "text": "Original command %d: select a valid target (%v)",
       "variables": [
         "%d",
@@ -1385,10 +1553,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7039
+        "line": 7119
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7039-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7119-c25",
       "text": "Original command %d: raw modifier completed (%d targets)",
       "variables": [
         "%d",
@@ -1402,10 +1570,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7048
+        "line": 7128
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7048-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7128-c25",
       "text": "Original command %d: palette presentation unavailable (%v)",
       "variables": [
         "%d",
@@ -1419,10 +1587,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7060
+        "line": 7140
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7060-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7140-c25",
       "text": "Original command %d: palette and indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
@@ -1436,10 +1604,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7070
+        "line": 7150
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7070-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7150-c25",
       "text": "Original command %d: full presentation unavailable (%v)",
       "variables": [
         "%d",
@@ -1453,10 +1621,10 @@
         "column": 26,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7078
+        "line": 7158
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7078-c26",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7158-c26",
       "text": "Original command 25: palette and indexed tail stage completed (%d targets)",
       "variables": [
         "%d"
@@ -1469,10 +1637,10 @@
         "column": 26,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7085
+        "line": 7165
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7085-c26",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7165-c26",
       "text": "Original command %d: palette and indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
@@ -1486,10 +1654,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7096
+        "line": 7176
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7096-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7176-c25",
       "text": "Original command %d: full presentation unavailable (%v)",
       "variables": [
         "%d",
@@ -1503,10 +1671,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7111
+        "line": 7191
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7111-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7191-c25",
       "text": "Original command 24: %d damage",
       "variables": [
         "%d"
@@ -1519,10 +1687,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7120
+        "line": 7200
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7120-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7200-c13",
       "text": "Original command 24: indexed presentation unavailable (",
       "variables": []
     },
@@ -1533,10 +1701,10 @@
         "column": 75,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7120
+        "line": 7200
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7120-c75",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7200-c75",
       "text": ")",
       "variables": []
     },
@@ -1547,10 +1715,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7140
+        "line": 7220
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7140-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7220-c25",
       "text": "Original command 0: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1564,10 +1732,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7149
+        "line": 7229
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7149-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7229-c13",
       "text": "Original command 0: indexed presentation unavailable (",
       "variables": []
     },
@@ -1578,10 +1746,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7149
+        "line": 7229
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7149-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7229-c74",
       "text": ")",
       "variables": []
     },
@@ -1592,10 +1760,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7164
+        "line": 7244
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7164-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7244-c25",
       "text": "Original command 1: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1609,10 +1777,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7173
+        "line": 7253
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7173-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7253-c13",
       "text": "Original command 1: indexed presentation unavailable (",
       "variables": []
     },
@@ -1623,10 +1791,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7173
+        "line": 7253
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7173-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7253-c74",
       "text": ")",
       "variables": []
     },
@@ -1637,10 +1805,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7188
+        "line": 7268
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7188-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7268-c25",
       "text": "Original command 2: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1654,10 +1822,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7197
+        "line": 7277
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7197-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7277-c13",
       "text": "Original command 2: indexed presentation unavailable (",
       "variables": []
     },
@@ -1668,10 +1836,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7197
+        "line": 7277
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7197-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7277-c74",
       "text": ")",
       "variables": []
     },
@@ -1682,10 +1850,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7212
+        "line": 7292
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7212-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7292-c25",
       "text": "Original command 3: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1699,10 +1867,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7221
+        "line": 7301
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7221-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7301-c13",
       "text": "Original command 3: indexed presentation unavailable (",
       "variables": []
     },
@@ -1713,10 +1881,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7221
+        "line": 7301
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7221-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7301-c74",
       "text": ")",
       "variables": []
     },
@@ -1727,10 +1895,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7236
+        "line": 7316
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7236-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7316-c25",
       "text": "Original command 5: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1744,10 +1912,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7245
+        "line": 7325
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7245-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7325-c13",
       "text": "Original command 5: indexed presentation unavailable (",
       "variables": []
     },
@@ -1758,10 +1926,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7245
+        "line": 7325
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7245-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7325-c74",
       "text": ")",
       "variables": []
     },
@@ -1772,10 +1940,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7260
+        "line": 7340
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7260-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7340-c25",
       "text": "Original command 7: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1789,10 +1957,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7269
+        "line": 7349
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7269-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7349-c13",
       "text": "Original command 7: indexed presentation unavailable (",
       "variables": []
     },
@@ -1803,10 +1971,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7269
+        "line": 7349
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7269-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7349-c74",
       "text": ")",
       "variables": []
     },
@@ -1817,10 +1985,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7284
+        "line": 7364
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7284-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7364-c25",
       "text": "Original command 8: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1834,10 +2002,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7293
+        "line": 7373
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7293-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7373-c13",
       "text": "Original command 8: indexed presentation unavailable (",
       "variables": []
     },
@@ -1848,10 +2016,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7293
+        "line": 7373
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7293-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7373-c74",
       "text": ")",
       "variables": []
     },
@@ -1862,10 +2030,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7308
+        "line": 7388
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7308-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7388-c25",
       "text": "Original command 9: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1879,10 +2047,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7317
+        "line": 7397
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7317-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7397-c13",
       "text": "Original command 9: indexed presentation unavailable (",
       "variables": []
     },
@@ -1893,10 +2061,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7317
+        "line": 7397
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7317-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7397-c74",
       "text": ")",
       "variables": []
     },
@@ -1907,10 +2075,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7332
+        "line": 7412
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7332-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7412-c25",
       "text": "Original command %d: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1925,10 +2093,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7341
+        "line": 7421
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7341-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7421-c25",
       "text": "Original command %d: indexed presentation unavailable (%v)",
       "variables": [
         "%d",
@@ -1942,10 +2110,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7356
+        "line": 7436
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7356-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7436-c25",
       "text": "Original command 6: %d hits, %d damage",
       "variables": [
         "%d",
@@ -1959,10 +2127,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7365
+        "line": 7445
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7365-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7445-c13",
       "text": "Original command 6: indexed presentation unavailable (",
       "variables": []
     },
@@ -1973,10 +2141,10 @@
         "column": 74,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7365
+        "line": 7445
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7365-c74",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7445-c74",
       "text": ")",
       "variables": []
     },
@@ -1987,10 +2155,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7379
+        "line": 7459
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7379-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7459-c25",
       "text": "Original command 29: %d damage",
       "variables": [
         "%d"
@@ -2003,10 +2171,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7388
+        "line": 7468
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7388-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7468-c13",
       "text": "Original command 29: indexed presentation unavailable (",
       "variables": []
     },
@@ -2017,10 +2185,10 @@
         "column": 75,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7388
+        "line": 7468
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7388-c75",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7468-c75",
       "text": ")",
       "variables": []
     },
@@ -2031,10 +2199,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7404
+        "line": 7484
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7404-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7484-c24",
       "text": "Original command %d: select a valid target (%v)",
       "variables": [
         "%d",
@@ -2048,10 +2216,10 @@
         "column": 12,
         "file": "remake/cmd/fd2/main.go",
         "function": "confirm",
-        "line": 7491
+        "line": 7571
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7491-c12",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7571-c12",
       "text": "Attack:",
       "variables": []
     },
@@ -2062,10 +2230,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "checkResult",
-        "line": 7536
+        "line": 7616
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7536-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7616-c13",
       "text": "Sol",
       "variables": []
     },
@@ -2076,10 +2244,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "Update",
-        "line": 7621
+        "line": 7709
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7621-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7709-c13",
       "text": "Music: on",
       "variables": []
     },
@@ -2090,10 +2258,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "Update",
-        "line": 7623
+        "line": 7711
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l7623-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l7711-c13",
       "text": "Music: off",
       "variables": []
     },
@@ -2104,10 +2272,10 @@
         "column": 4,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8501
+        "line": 8595
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8501-c4",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8595-c4",
       "text": "FD2 remake cannot start\nRequired original assets are missing or invalid.\nImport a legal FD2 asset pack, then restart.\n\n",
       "variables": []
     },
@@ -2118,10 +2286,10 @@
         "column": 38,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8519
+        "line": 8613
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8519-c38",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8613-c38",
       "text": "presentation unavailable",
       "variables": []
     },
@@ -2132,10 +2300,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8520
+        "line": 8614
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8520-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8614-c34",
       "text": "native 0x24336 presentation unavailable",
       "variables": []
     },
@@ -2146,10 +2314,10 @@
         "column": 36,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8530
+        "line": 8624
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8530-c36",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8624-c36",
       "text": "presentation unavailable",
       "variables": []
     },
@@ -2160,10 +2328,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8531
+        "line": 8625
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8531-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8625-c34",
       "text": "native ch23 presentation unavailable",
       "variables": []
     },
@@ -2174,10 +2342,10 @@
         "column": 33,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8541
+        "line": 8635
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8541-c33",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8635-c33",
       "text": "presentation unavailable",
       "variables": []
     },
@@ -2188,10 +2356,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8542
+        "line": 8636
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8542-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8636-c34",
       "text": "native 0x2189A presentation unavailable",
       "variables": []
     },
@@ -2202,10 +2370,10 @@
         "column": 39,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8552
+        "line": 8646
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8552-c39",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8646-c39",
       "text": "presentation unavailable",
       "variables": []
     },
@@ -2216,10 +2384,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8553
+        "line": 8647
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8553-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8647-c34",
       "text": "native 0x22253 presentation unavailable",
       "variables": []
     },
@@ -2230,10 +2398,10 @@
         "column": 43,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8563
+        "line": 8657
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8563-c43",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8657-c43",
       "text": "presentation unavailable",
       "variables": []
     },
@@ -2244,10 +2412,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8564
+        "line": 8658
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8564-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8658-c34",
       "text": "native 0x1DB65 presentation unavailable",
       "variables": []
     },
@@ -2258,10 +2426,10 @@
         "column": 33,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8574
+        "line": 8668
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8574-c33",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8668-c33",
       "text": "presentation unavailable",
       "variables": []
     },
@@ -2272,10 +2440,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8575
+        "line": 8669
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8575-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8669-c34",
       "text": "native 0x24B4D presentation unavailable",
       "variables": []
     },
@@ -2286,235 +2454,11 @@
         "column": 33,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8583
+        "line": 8677
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8583-c33",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8677-c33",
       "text": "FD2 remake MVP\nMissing assets/ (tileset.png + map.json)\nGenerate them with tools/export_engine_assets.py\n",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8592
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8592-c34",
-      "text": "native 0x24618 transition unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8602
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8602-c34",
-      "text": "native 0x21EB1 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8612
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8612-c34",
-      "text": "native 0x1D6C8 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 57,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8622
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8622-c57",
-      "text": "draw unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8623
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8623-c34",
-      "text": "native AI modifier presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 48,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8630
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8630-c48",
-      "text": "draw unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8631
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8631-c34",
-      "text": "native command0 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 48,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8641
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8641-c48",
-      "text": "draw unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8642
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8642-c34",
-      "text": "native command6 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 48,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8652
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8652-c48",
-      "text": "draw unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8653
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8653-c34",
-      "text": "native command1 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 48,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8663
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8663-c48",
-      "text": "draw unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8664
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8664-c34",
-      "text": "native command2 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 48,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8674
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8674-c48",
-      "text": "draw unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 34,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8675
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8675-c34",
-      "text": "native command3 presentation unavailable",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 48,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "Draw",
-        "line": 8685
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8685-c48",
-      "text": "draw unavailable",
       "variables": []
     },
     {
@@ -2528,6 +2472,230 @@
       },
       "status": "reviewed",
       "string_id": "legacy.go.remake.cmd.fd2.main.l8686-c34",
+      "text": "native 0x24618 transition unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8696
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8696-c34",
+      "text": "native 0x21EB1 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8706
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8706-c34",
+      "text": "native 0x1D6C8 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 57,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8716
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8716-c57",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8717
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8717-c34",
+      "text": "native AI modifier presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 48,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8724
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8724-c48",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8725
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8725-c34",
+      "text": "native command0 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 48,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8735
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8735-c48",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8736
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8736-c34",
+      "text": "native command6 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 48,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8746
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8746-c48",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8747
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8747-c34",
+      "text": "native command1 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 48,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8757
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8757-c48",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8758
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8758-c34",
+      "text": "native command2 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 48,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8768
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8768-c48",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8769
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8769-c34",
+      "text": "native command3 presentation unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 48,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8779
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8779-c48",
+      "text": "draw unavailable",
+      "variables": []
+    },
+    {
+      "id_status": "provisional_source_location",
+      "role": "runtime_ui",
+      "source": {
+        "column": 34,
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Draw",
+        "line": 8780
+      },
+      "status": "reviewed",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8780-c34",
       "text": "native command5 presentation unavailable",
       "variables": []
     },
@@ -2538,10 +2706,10 @@
         "column": 48,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8696
+        "line": 8790
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8696-c48",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8790-c48",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2552,10 +2720,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8697
+        "line": 8791
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8697-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8791-c34",
       "text": "native command7 presentation unavailable",
       "variables": []
     },
@@ -2566,10 +2734,10 @@
         "column": 48,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8707
+        "line": 8801
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8707-c48",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8801-c48",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2580,10 +2748,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8708
+        "line": 8802
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8708-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8802-c34",
       "text": "native command8 presentation unavailable",
       "variables": []
     },
@@ -2594,10 +2762,10 @@
         "column": 54,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8718
+        "line": 8812
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8718-c54",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8812-c54",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2608,10 +2776,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8719
+        "line": 8813
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8719-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8813-c34",
       "text": "native command9 player presentation unavailable",
       "variables": []
     },
@@ -2622,10 +2790,10 @@
         "column": 50,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8729
+        "line": 8823
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8729-c50",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8823-c50",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2636,10 +2804,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8730
+        "line": 8824
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8730-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8824-c34",
       "text": "native command9 AI presentation unavailable",
       "variables": []
     },
@@ -2650,10 +2818,10 @@
         "column": 51,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8740
+        "line": 8834
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8740-c51",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8834-c51",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2664,10 +2832,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8741
+        "line": 8835
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8741-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8835-c34",
       "text": "native command10-12 presentation unavailable",
       "variables": []
     },
@@ -2678,10 +2846,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8751
+        "line": 8845
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8751-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8845-c49",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2692,10 +2860,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8752
+        "line": 8846
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8752-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8846-c34",
       "text": "native 0x276EC presentation unavailable",
       "variables": []
     },
@@ -2706,10 +2874,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8762
+        "line": 8856
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8762-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8856-c49",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2720,10 +2888,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8763
+        "line": 8857
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8763-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8857-c34",
       "text": "native command29 presentation unavailable",
       "variables": []
     },
@@ -2734,10 +2902,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8773
+        "line": 8867
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8773-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8867-c49",
       "text": "draw unavailable",
       "variables": []
     },
@@ -2748,10 +2916,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8774
+        "line": 8868
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8774-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8868-c34",
       "text": "native command32 presentation unavailable",
       "variables": []
     },
@@ -2762,10 +2930,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8784
+        "line": 8878
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8784-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8878-c49",
       "text": "draw input unavailable",
       "variables": []
     },
@@ -2776,10 +2944,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8791
+        "line": 8885
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8791-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8885-c49",
       "text": "draw input unavailable",
       "variables": []
     },
@@ -2790,10 +2958,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8798
+        "line": 8892
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8798-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8892-c49",
       "text": "draw input unavailable",
       "variables": []
     },
@@ -2804,10 +2972,10 @@
         "column": 46,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8805
+        "line": 8899
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8805-c46",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8899-c46",
       "text": "draw input unavailable",
       "variables": []
     },
@@ -2818,10 +2986,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8812
+        "line": 8906
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8812-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8906-c34",
       "text": "native palette ramp unavailable",
       "variables": []
     },
@@ -2832,10 +3000,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8822
+        "line": 8916
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8822-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8916-c34",
       "text": "native 0x35E5A palette pulse unavailable",
       "variables": []
     },
@@ -2846,10 +3014,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8832
+        "line": 8926
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8832-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8926-c34",
       "text": "native 0x32999 spawn-intro unavailable",
       "variables": []
     },
@@ -2860,10 +3028,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8842
+        "line": 8936
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8842-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8936-c34",
       "text": "native turn staging unavailable",
       "variables": []
     },
@@ -2874,10 +3042,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8852
+        "line": 8946
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8852-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8946-c34",
       "text": "native event61 presentation unavailable",
       "variables": []
     },
@@ -2888,10 +3056,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8865
+        "line": 8959
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8865-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8959-c16",
       "text": "native AI 0x13fd4 presentation unavailable",
       "variables": []
     },
@@ -2902,10 +3070,10 @@
         "column": 34,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8867
+        "line": 8961
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8867-c34",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l8961-c34",
       "text": "native AI 0x13fd4 presentation unavailable",
       "variables": []
     },
@@ -2916,10 +3084,10 @@
         "column": 49,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 8995
+        "line": 9089
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l8995-c49",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9089-c49",
       "text": "[%d]f%d(%d,%d)d%d",
       "variables": [
         "%d",
@@ -2936,10 +3104,10 @@
         "column": 88,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 9003
+        "line": 9097
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9003-c88",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9097-c88",
       "text": "Battle",
       "variables": []
     },
@@ -2950,10 +3118,10 @@
         "column": 48,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 9015
+        "line": 9109
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9015-c48",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9109-c48",
       "text": "T%d own%d ally%d enemy%d cur(%d,%d)",
       "variables": [
         "%d",
@@ -2971,10 +3139,10 @@
         "column": 19,
         "file": "remake/cmd/fd2/main.go",
         "function": "Draw",
-        "line": 9185
+        "line": 9279
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9185-c19",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9279-c19",
       "text": "Defeat",
       "variables": []
     },
@@ -2985,10 +3153,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawSpellMenu",
-        "line": 9580
+        "line": 9674
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9580-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9674-c10",
       "text": "　",
       "variables": []
     },
@@ -2999,10 +3167,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawSpellMenu",
-        "line": 9583
+        "line": 9677
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9583-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9677-c10",
       "text": "▶",
       "variables": []
     },
@@ -3013,10 +3181,10 @@
         "column": 35,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawSpellMenu",
-        "line": 9588
+        "line": 9682
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9588-c35",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9682-c35",
       "text": "%s%s  MP%d",
       "variables": [
         "%s",
@@ -3031,10 +3199,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawItemMenu",
-        "line": 9622
+        "line": 9716
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9622-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9716-c24",
       "text": "%02Xh",
       "variables": [
         "%02X"
@@ -3047,10 +3215,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawItemMenu",
-        "line": 9624
+        "line": 9718
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9624-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9718-c10",
       "text": "　",
       "variables": []
     },
@@ -3061,10 +3229,10 @@
         "column": 10,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawItemMenu",
-        "line": 9626
+        "line": 9720
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9626-c10",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9720-c10",
       "text": "▶",
       "variables": []
     },
@@ -3075,10 +3243,10 @@
         "column": 35,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawItemMenu",
-        "line": 9629
+        "line": 9723
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9629-c35",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9723-c35",
       "text": "%s[%d] %s",
       "variables": [
         "%s",
@@ -3093,10 +3261,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawNativeCommandGrid",
-        "line": 9642
+        "line": 9736
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9642-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9736-c16",
       "text": "native command locale: ",
       "variables": []
     },
@@ -3107,10 +3275,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9671
+        "line": 9765
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9671-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9765-c23",
       "text": "GAME OVER",
       "variables": []
     },
@@ -3121,10 +3289,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9673
+        "line": 9767
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9673-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9767-c17",
       "text": "Choice",
       "variables": []
     },
@@ -3135,10 +3303,10 @@
         "column": 39,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9673
+        "line": 9767
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9673-c39",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9767-c39",
       "text": "Town",
       "variables": []
     },
@@ -3149,10 +3317,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9674
+        "line": 9768
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9674-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9768-c16",
       "text": "Town",
       "variables": []
     },
@@ -3163,10 +3331,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9681
+        "line": 9775
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9681-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9775-c16",
       "text": "Town",
       "variables": []
     },
@@ -3177,10 +3345,10 @@
         "column": 11,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9691
+        "line": 9785
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9691-c11",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9785-c11",
       "text": "　",
       "variables": []
     },
@@ -3191,10 +3359,10 @@
         "column": 11,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9694
+        "line": 9788
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9694-c11",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9788-c11",
       "text": "▶",
       "variables": []
     },
@@ -3205,10 +3373,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9698
+        "line": 9792
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9698-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9792-c17",
       "text": "Shop",
       "variables": []
     },
@@ -3219,10 +3387,10 @@
         "column": 20,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9711
+        "line": 9805
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9711-c20",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9805-c20",
       "text": "Sell",
       "variables": []
     },
@@ -3233,10 +3401,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9720
+        "line": 9814
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9720-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9814-c16",
       "text": "　",
       "variables": []
     },
@@ -3247,10 +3415,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9722
+        "line": 9816
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9722-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9816-c16",
       "text": "▶",
       "variables": []
     },
@@ -3261,10 +3429,10 @@
         "column": 38,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9729
+        "line": 9823
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9729-c38",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9823-c38",
       "text": "%s%02Xh%s  +%d G",
       "variables": [
         "%s",
@@ -3280,10 +3448,10 @@
         "column": 15,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9739
+        "line": 9833
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9739-c15",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9833-c15",
       "text": "　",
       "variables": []
     },
@@ -3294,10 +3462,10 @@
         "column": 15,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9741
+        "line": 9835
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9741-c15",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9835-c15",
       "text": "▶",
       "variables": []
     },
@@ -3308,10 +3476,10 @@
         "column": 15,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9755
+        "line": 9849
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9755-c15",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9849-c15",
       "text": "　",
       "variables": []
     },
@@ -3322,10 +3490,10 @@
         "column": 15,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9757
+        "line": 9851
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9757-c15",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9851-c15",
       "text": "▶",
       "variables": []
     },
@@ -3336,10 +3504,10 @@
         "column": 11,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9772
+        "line": 9866
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9772-c11",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9866-c11",
       "text": "　",
       "variables": []
     },
@@ -3350,10 +3518,10 @@
         "column": 11,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9775
+        "line": 9869
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9775-c11",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9869-c11",
       "text": "▶",
       "variables": []
     },
@@ -3364,10 +3532,10 @@
         "column": 36,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9780
+        "line": 9874
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9780-c36",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9874-c36",
       "text": "%s%s  %d G",
       "variables": [
         "%s",
@@ -3382,10 +3550,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9782
+        "line": 9876
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9782-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9876-c17",
       "text": "Inn",
       "variables": []
     },
@@ -3396,10 +3564,10 @@
         "column": 14,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9797
+        "line": 9891
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9797-c14",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9891-c14",
       "text": "　",
       "variables": []
     },
@@ -3410,10 +3578,10 @@
         "column": 14,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9799
+        "line": 9893
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9799-c14",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9893-c14",
       "text": "▶",
       "variables": []
     },
@@ -3424,10 +3592,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9801
+        "line": 9895
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9801-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9895-c25",
       "text": "raw selector %d",
       "variables": [
         "%d"
@@ -3440,10 +3608,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9803
+        "line": 9897
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9803-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9897-c25",
       "text": "raw selector %d → %05X",
       "variables": [
         "%d",
@@ -3457,10 +3625,10 @@
         "column": 17,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9812
+        "line": 9906
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9812-c17",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9906-c17",
       "text": "Preparation",
       "variables": []
     },
@@ -3471,10 +3639,10 @@
         "column": 15,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9861
+        "line": 9955
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9861-c15",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9955-c15",
       "text": "　",
       "variables": []
     },
@@ -3485,10 +3653,10 @@
         "column": 18,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9864
+        "line": 9958
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9864-c18",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9958-c18",
       "text": "▶",
       "variables": []
     },
@@ -3499,10 +3667,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9866
+        "line": 9960
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9866-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9960-c13",
       "text": "□",
       "variables": []
     },
@@ -3513,10 +3681,10 @@
         "column": 13,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9868
+        "line": 9962
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9868-c13",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9962-c13",
       "text": "■",
       "variables": []
     },
@@ -3527,184 +3695,16 @@
         "column": 37,
         "file": "remake/cmd/fd2/main.go",
         "function": "drawCampaignUI",
-        "line": 9877
+        "line": 9971
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9877-c37",
+      "string_id": "legacy.go.remake.cmd.fd2.main.l9971-c37",
       "text": "%s%s %s",
       "variables": [
         "%s",
         "%s",
         "%s"
       ]
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 17,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9907
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9907-c17",
-      "text": "Church",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 22,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9944
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9944-c22",
-      "text": "Menu",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 15,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9959
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9959-c15",
-      "text": "　",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 15,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9961
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9961-c15",
-      "text": "▶",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 101,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9970
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9970-c101",
-      "text": "Recipient",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 29,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9970
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9970-c29",
-      "text": "Owner",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 66,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9970
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9970-c66",
-      "text": "Item to Transfer",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 23,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9973
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9973-c23",
-      "text": "Item to Transfer",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 30,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9975
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9975-c30",
-      "text": "Recipient",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 23,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9984
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9984-c23",
-      "text": "Item to Transfer",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 15,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9995
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9995-c15",
-      "text": "　",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_source_location",
-      "role": "runtime_ui",
-      "source": {
-        "column": 15,
-        "file": "remake/cmd/fd2/main.go",
-        "function": "drawCampaignUI",
-        "line": 9997
-      },
-      "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.main.l9997-c15",
-      "text": "▶",
-      "variables": []
     },
     {
       "id_status": "provisional_source_location",
@@ -3848,10 +3848,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 232
+        "line": 237
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l232-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l237-c25",
       "text": "Original command %d: restored %d",
       "variables": [
         "%d",
@@ -3865,10 +3865,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 243
+        "line": 248
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l243-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l248-c25",
       "text": "Original command %d: enemy indexed modifier completed (%d targets)",
       "variables": [
         "%d",
@@ -3882,10 +3882,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 250
+        "line": 255
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l250-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l255-c25",
       "text": "Original command %d: enemy indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
@@ -3899,10 +3899,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 262
+        "line": 267
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l262-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l267-c25",
       "text": "Original command 22: enemy indexed tail stage completed (%d targets)",
       "variables": [
         "%d"
@@ -3915,10 +3915,10 @@
         "column": 25,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 274
+        "line": 279
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l274-c25",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l279-c25",
       "text": "Original command %d: enemy indexed tail stage completed (%d targets)",
       "variables": [
         "%d",
@@ -3932,10 +3932,10 @@
         "column": 24,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 294
+        "line": 299
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l294-c24",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l299-c24",
       "text": "Original item %02Xh: full target-list effect completed",
       "variables": [
         "%02X"
@@ -3948,10 +3948,10 @@
         "column": 23,
         "file": "remake/cmd/fd2/native_ai_execute.go",
         "function": "executeNativeAIActionWithContinuation",
-        "line": 307
+        "line": 312
       },
       "status": "reviewed",
-      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l307-c23",
+      "string_id": "legacy.go.remake.cmd.fd2.native_ai_execute.l312-c23",
       "text": "Original item %02Xh: full target-list effect completed",
       "variables": [
         "%02X"
@@ -5175,10 +5175,10 @@
         "column": 19,
         "file": "remake/cmd/fd2/native_story_dialogue.go",
         "function": "drawNativeStoryDialogue",
-        "line": 484
+        "line": 488
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.native_story_dialogue.l484-c19",
+      "string_id": "legacy.go.remake.cmd.fd2.native_story_dialogue.l488-c19",
       "text": "zh-Hant",
       "variables": []
     },
@@ -5189,10 +5189,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/native_story_dialogue.go",
         "function": "drawNativeStoryDialogue",
-        "line": 491
+        "line": 495
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.native_story_dialogue.l491-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.native_story_dialogue.l495-c16",
       "text": "native story dialogue: ",
       "variables": []
     },
@@ -5203,10 +5203,10 @@
         "column": 16,
         "file": "remake/cmd/fd2/native_story_dialogue.go",
         "function": "drawNativeStoryDialogue",
-        "line": 503
+        "line": 510
       },
       "status": "machine_draft",
-      "string_id": "legacy.go.remake.cmd.fd2.native_story_dialogue.l503-c16",
+      "string_id": "legacy.go.remake.cmd.fd2.native_story_dialogue.l510-c16",
       "text": "native story dialogue: ",
       "variables": []
     },
@@ -16087,114 +16087,6 @@
       "status": "reviewed",
       "string_id": "legacy.json.remake.assets.scenarios.ch06.party.7.name",
       "text": "Marlin",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/10/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.10.text",
-      "text": "All right, all right, I will go with you. A few more people will make no difference…",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/11/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.11.text",
-      "text": "All right, let's go!",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/3/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.3.text",
-      "text": "It's embarrassing that a bunch of men are after a little girl.",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/4/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.4.text",
-      "text": "One punch from you put my men out of action for three months. Assaulting the kingdom’s garrison is a grave crime; come with me and explain yourself!",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/5/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.5.text",
-      "text": "He should not have been staring at me! Are all the kingdom’s soldiers like this?",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/6/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.6.text",
-      "text": "Hmph… I will not argue with you. Seize her!",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/7/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.7.text",
-      "text": "Hey! Kingdom soldiers are surrounding a little girl over there. What is going on?",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/8/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.8.text",
-      "text": "Hey, we can barely look after ourselves. Do not go looking for more trouble…",
-      "variables": []
-    },
-    {
-      "id_status": "provisional_legacy_path",
-      "role": "dialogue_or_system",
-      "source": {
-        "file": "remake/assets/scenarios/ch07.json",
-        "json_pointer": "/events/1/do/9/text"
-      },
-      "status": "reviewed",
-      "string_id": "legacy.json.remake.assets.scenarios.ch07.events.1.do.9.text",
-      "text": "What? You can stand by while a troop of kingdom soldiers bully a little girl? Fine—I will deal with them myself.",
       "variables": []
     },
     {
@@ -62254,9 +62146,9 @@
       "variables": []
     }
   ],
-  "entry_count": 5099,
+  "entry_count": 5090,
   "glossary_sha256": "9d3a5cb3e4be58aa23e47f0ff3cdb09ddbf2ceab30ba909cc4fb908a45e43e1b",
-  "inventory_sha256": "b3b723f34f54c132bae9d2b04dac9106c0379426e076f12d6c1ce84cd3e388a7",
+  "inventory_sha256": "ee244d8ad459456a5ca4c77edfa75ea3c661a0b9ae89e8605ae4f9d5badd8ece",
   "kind": "fd2_full_locale_content",
   "locale": "en",
   "pivot_content_sha256": null,

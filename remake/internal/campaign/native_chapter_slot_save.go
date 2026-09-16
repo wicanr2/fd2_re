@@ -36,19 +36,25 @@ func EncodeNativePersistentRecord(baseline fdsave.PersistentRecord, unit *battle
 		return baseline, fmt.Errorf("native chapter slot save: identity %d does not match baseline %d", panel[8], baseline.Raw[8])
 	}
 	record := baseline
-	record.Raw[0] = byte(unit.X)
-	record.Raw[1] = byte(unit.Y)
-	if unit.HasMapSelectorSlot && unit.MapSelectorSlot >= 0 && unit.MapSelectorSlot <= 0xff {
-		record.Raw[2] = byte(unit.MapSelectorSlot)
+	// JOIN 之後還沒打過仗的記錄：+0..+4、+0x34..+0x36、+0x3d 是建構器沒碰的殘值，
+	// 要等 0x11506 整筆抄回才會有場上的值（第七章 r6 凱麗）。
+	pending := unit.NativeJoinPersistentPending
+	if !pending {
+		record.Raw[0] = byte(unit.X)
+		record.Raw[1] = byte(unit.Y)
+		if unit.HasMapSelectorSlot && unit.MapSelectorSlot >= 0 && unit.MapSelectorSlot <= 0xff {
+			record.Raw[2] = byte(unit.MapSelectorSlot)
+		}
+		// +3／+4 是戰後同步時歸零的姿勢／動作（見 syncPartyFromBattle），沒有地圖
+		// 呈現來源的單位本來就是 0。
+		record.Raw[3] = unit.NativeMapPresentation.Pose
+		record.Raw[4] = unit.NativeMapPresentation.Motion
 	}
-	// +3／+4 是戰後同步時歸零的姿勢／動作（見 syncPartyFromBattle），沒有地圖
-	// 呈現來源的單位本來就是 0。
-	record.Raw[3] = unit.NativeMapPresentation.Pose
-	record.Raw[4] = unit.NativeMapPresentation.Motion
 	record.Raw[5] = unit.NativeRecordByte5
 	copy(record.Raw[6:9], panel[6:9])
 	copy(record.Raw[0x0a:0x28], panel[0x0a:0x28])
-	if unit.HasNativeRecordDeathEffect {
+	if unit.HasNativeRecordDeathEffect && !pending {
+		// 建構器只寫 +0x31=0xff，+0x32／+0x33 留殘值。
 		copy(record.Raw[0x31:0x34], unit.NativeRecordDeathEffect[:])
 	}
 	for offset, present := range map[int]struct {
@@ -60,7 +66,7 @@ func EncodeNativePersistentRecord(baseline fdsave.PersistentRecord, unit *battle
 		0x36: {unit.NativeRecordByte36, unit.HasNativeRecordByte36},
 		0x3d: {unit.NativeRecordByte3D, unit.HasNativeRecordByte3D},
 	} {
-		if present.has {
+		if present.has && !pending {
 			record.Raw[offset] = present.value
 		}
 	}
@@ -123,7 +129,15 @@ func BuildNativeChapterSlot(
 		if count >= fdsave.RosterUnits {
 			return fdsave.Slot{}, errors.New("native chapter slot save: persistent roster exceeds 32 records")
 		}
-		constructed, err := table.MaterializePersistentRecord(unit.NativeIdentity, itemRows)
+		// sub_112A5 寫進 count 那一格，沒寫到的 byte 是那一格 LOAD 時的殘值（第七章
+		// 凱麗：戰後 handler 的 JOIN12，場上是 +6==1 的友軍，0x11506 不抄）。JOIN 之後
+		// 以我方身分打過仗的（第五章瑪琳、第六章貝克威），戰後 0x11506 把場上記錄整筆
+		// 抄回，殘值被場上記錄（FDFIELD 登場時零初始＋建構器）蓋掉：基底用零記錄。
+		residual := fdsave.PersistentRecord{}
+		if unit.NativeJoinPersistentPending {
+			residual = records[count]
+		}
+		constructed, err := table.MaterializePersistentRecordOn(residual, unit.NativeIdentity, itemRows)
 		if err != nil {
 			return fdsave.Slot{}, err
 		}

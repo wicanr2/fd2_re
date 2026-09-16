@@ -133,6 +133,17 @@ EVENTS = [
         op("dialogue", [(0x34906, 0x34924), (0x34C0F, 0x34C1D)], text=3,
            when={"any_active": [8, 8]}),
     ]},
+    # 25 是第七章（map 6）第 10 回合的回合事件：state16（格子事件 26 由我方單位向左踏入
+    # 六格之一時寫 1）成立才登場 group 2、鏡頭到 (16,10)、演出 30、對白 text 2，最後寫 state17。
+    {"id": 25, "handler": 0x34924, "guards": [
+        op("guard_state", [(0x3492E, 0x3493C)], index=0x10, equals=1),
+    ], "ops": [
+        op("spawn_group", [(0x3493C, 0x34954)], group=2, gate=1, when={"state_eq": [0x10, 1]}),
+        op("pan", [(0x34954, 0x34960)], x=0x10, y=0xA, when={"state_eq": [0x10, 1]}),
+        op("acting", [(0x34960, 0x3496A)], resource=0x1E, when={"state_eq": [0x10, 1]}),
+        op("dialogue", [(0x3496A, 0x34991)], text=2, when={"state_eq": [0x10, 1]}),
+        op("state_set", [(0x34991, 0x3499A)], index=0x11, value=1, when={"state_eq": [0x10, 1]}),
+    ]},
     {"id": 23, "handler": 0x34844, "guards": [
         op("guard_round", [(0x34883, 0x34890)], below=0xF),
     ], "ops": [

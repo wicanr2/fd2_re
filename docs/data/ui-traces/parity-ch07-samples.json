@@ -1,0 +1,1495 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_parity_sample_sheet",
+  "chapter": 7,
+  "generated_at": "2026-09-16T18:11:05+00:00",
+  "receipt": "docs/data/ui-traces/parity-ch07.json",
+  "receipt_sha256": "b28a0b132257e5f5e4bd4a4465092851c7da9ffa52fc94f410cbb9b98b5115fc",
+  "sheet": [
+    "docs/figures/parity-ch07-samples-p1.png",
+    "docs/figures/parity-ch07-samples-p2.png",
+    "docs/figures/parity-ch07-samples-p3.png",
+    "docs/figures/parity-ch07-samples-p4.png",
+    "docs/figures/parity-ch07-samples-p5.png"
+  ],
+  "sheet_sha256": [
+    "e64da8d4f6492dddebbd9cb773191c086f6d7d34d7fb703c30fbaf9e38934627",
+    "6e5deee039a9c9a3f13bd0e864af3f9cf3968f22a95b0ff4a8121b9259562bd0",
+    "30574c04147484a83945ab2209601611c7de5c474ac78e9ea5791b327f1717c2",
+    "d0d756ea5af59d985cad1628c258fc1169fa4f164c37208200b0c6491dbcef93",
+    "e3ecc8e29bd7884464db371e69ba5e9e798415e3a0533afc8d4e55be56404758"
+  ],
+  "sheet_bytes": [
+    1174825,
+    1181256,
+    1245127,
+    1249853,
+    859149
+  ],
+  "oracle_run": "sample-r6",
+  "remake_run": "remake-r8",
+  "selection_rule": "每種 kind 第一點、所有 diff_pixels>0、--include-seq 指定；依 seq 排序",
+  "include_seq": [
+    1926,
+    1955,
+    1973,
+    2011,
+    2209
+  ],
+  "rows": [
+    {
+      "row": 0,
+      "seq": 18,
+      "kind": "town_loaded",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0018.png",
+      "oracle_sha256": "8d12e2fc6ae1360f1b025e74758696c99a446e04793a15b0ca444163446043dd",
+      "remake": "remake-0000-p2.png",
+      "remake_sha256": "8d12e2fc6ae1360f1b025e74758696c99a446e04793a15b0ca444163446043dd",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 1,
+      "seq": 39,
+      "kind": "departure_prompt",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 1,
+      "oracle": "checkpoint-0039.png",
+      "oracle_sha256": "d9751b6845af8394078b4355325d1879cf872a502f13f301b399cf82594b3a7f",
+      "remake": "remake-0001-p0.png",
+      "remake_sha256": "ab96d01f464cc5514405b38fee697ad69740782bb991a407eede47dc58cf2d22",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 2,
+      "seq": 60,
+      "kind": "battle_start",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0060.png",
+      "oracle_sha256": "a8d8b17019824a8d66f0196eca445081a326d48af5c4c4750c9aa6ae22d82a40",
+      "remake": "remake-0002-p2.png",
+      "remake_sha256": "c52a90aa8f7fb3610aa278cb9c911a7738b281b1f77f22354559420c571aa039",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 3,
+      "seq": 70,
+      "kind": "select",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 44,
+      "oracle": "checkpoint-0070.png",
+      "oracle_sha256": "4aee90ffae0444ef2608acf752e985a3b34f7694cc4a632a19688d26eebcd45b",
+      "remake": "remake-0003-p21.png",
+      "remake_sha256": "a454746b091f414e09262d74defaeb7f135fcbdf54331ffbbbc3e15ae95e59f4",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 4,
+      "seq": 75,
+      "kind": "move",
+      "diff_pixels": 165,
+      "box": [
+        79,
+        23,
+        118,
+        47
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0075.png",
+      "oracle_sha256": "63dbf659b5acee993e5dbbaaf6a662bb33aa0febb4f0e9e95d5ff001a2d64971",
+      "remake": "remake-0004-p1.png",
+      "remake_sha256": "2c5d7b040e7fd6dee3043c62e00832f6e9398b29f0c608c23844e6f10ce2d4ba",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 5,
+      "seq": 81,
+      "kind": "wait",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0081.png",
+      "oracle_sha256": "0c3fe9163929f1a164e55e8f542eb82bfbb72d7f5ed2787100d915419336376c",
+      "remake": "remake-0005-p1.png",
+      "remake_sha256": "d7cebbb76dd4b3bdbb68e52904478920205d0b7bf7da48aa12ed86589fa16fd6",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 6,
+      "seq": 98,
+      "kind": "move",
+      "diff_pixels": 88,
+      "box": [
+        127,
+        46,
+        144,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0098.png",
+      "oracle_sha256": "93eb7738fe8b9774f21d39acb204764a7273dee96d139ae3ba476a5c39d78888",
+      "remake": "remake-0007-p0.png",
+      "remake_sha256": "568560c255314d7f089260bb12e6101974a369536eb2786ea5e327a27e180764",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 7,
+      "seq": 121,
+      "kind": "move",
+      "diff_pixels": 210,
+      "box": [
+        102,
+        46,
+        142,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0121.png",
+      "oracle_sha256": "0ed580e2d88363feb33a62d6ae5e4944eec02ac80b50ed452f74438682131e1f",
+      "remake": "remake-0010-p2.png",
+      "remake_sha256": "4b2bd179722085a471a064ab23b1659fb912fdf12c27b951f989432d4bf96d1f",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 8,
+      "seq": 143,
+      "kind": "move",
+      "diff_pixels": 81,
+      "box": [
+        175,
+        22,
+        192,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0143.png",
+      "oracle_sha256": "85d4cb85769cbf12cafb8a8eeeff2ad9443ca35f44e9ad3e7836ae02a204fad2",
+      "remake": "remake-0013-p2.png",
+      "remake_sha256": "4a83f27fc518467eb75c0c56bdd87528b817bab1c5aba0df106235caa97b4143",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 9,
+      "seq": 168,
+      "kind": "move",
+      "diff_pixels": 105,
+      "box": [
+        29,
+        22,
+        48,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0168.png",
+      "oracle_sha256": "9c1a16d76f44f29af4135e23aff84c30e2fc0a77b72bd68c9654398a7e535310",
+      "remake": "remake-0016-p0.png",
+      "remake_sha256": "c09dbaa9aa2dd7cb8ee5050bd9b6dbf8ac7dd65c47aef24dd9031dd5b51b8af0",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 10,
+      "seq": 190,
+      "kind": "move",
+      "diff_pixels": 165,
+      "box": [
+        54,
+        47,
+        94,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0190.png",
+      "oracle_sha256": "16720aa5010241b9be7e19d60f0222f29aa122a6e68fadb71b921fc7ed80b589",
+      "remake": "remake-0019-p1.png",
+      "remake_sha256": "4dcedea63d45c6749e14830a43698718ffde8312f9a3acda85b58233a97a04a6",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 11,
+      "seq": 212,
+      "kind": "move",
+      "diff_pixels": 88,
+      "box": [
+        53,
+        71,
+        74,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0212.png",
+      "oracle_sha256": "86155987ffd45a96041a19953f57450c636115fca7ca66c2af1dca57f9f1eeac",
+      "remake": "remake-0022-p1.png",
+      "remake_sha256": "28cafcb86d91a87e31a3d4e33a33f09f83727b09bb7fed7137a960782ccd73b2",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 12,
+      "seq": 256,
+      "kind": "move",
+      "diff_pixels": 185,
+      "box": [
+        78,
+        22,
+        118,
+        47
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0256.png",
+      "oracle_sha256": "cd1e40b82a702c6eb2938076430b4f71f6ea8d37238e050cef45d7f6c676a16b",
+      "remake": "remake-0026-p0.png",
+      "remake_sha256": "4af15826504032110bcfbe95ef2b6d1b6957451a2bd5fdc5c84d361bd8fd2b38",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 13,
+      "seq": 279,
+      "kind": "move",
+      "diff_pixels": 179,
+      "box": [
+        127,
+        46,
+        166,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0279.png",
+      "oracle_sha256": "2934154600e4e8ee6b6446b438d8bb7b1effa6d61e7b370b22f18385b9b166ae",
+      "remake": "remake-0029-p0.png",
+      "remake_sha256": "46ccdb791d2ce541dd8d437244e1afbe3bf4a41eb105f94f07ec6c9cc730aa1d",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 14,
+      "seq": 302,
+      "kind": "move",
+      "diff_pixels": 188,
+      "box": [
+        102,
+        47,
+        142,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0302.png",
+      "oracle_sha256": "e6c24f29353da3cb6b5bdaf53c0fc249a842c65f65d1abfe6ad587d18dba6f22",
+      "remake": "remake-0032-p1.png",
+      "remake_sha256": "31804018935e4160b1063113d34b78eff992e4ac3630af0de29c5efad44ead07",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 15,
+      "seq": 323,
+      "kind": "move",
+      "diff_pixels": 109,
+      "box": [
+        29,
+        22,
+        48,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0323.png",
+      "oracle_sha256": "d65e0c7d799fb0f208f864fc9c7800164529f585e5c029bb12130e8d834ea6cc",
+      "remake": "remake-0035-p2.png",
+      "remake_sha256": "09397a763819b46b4c6ef70b18058fb6b8350817a15eba75f79edb516a46ab95",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 16,
+      "seq": 345,
+      "kind": "move",
+      "diff_pixels": 165,
+      "box": [
+        54,
+        47,
+        94,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0345.png",
+      "oracle_sha256": "8f627f55b5c0527d5957d470356153d3d56f18719067314c16ece54442484704",
+      "remake": "remake-0038-p1.png",
+      "remake_sha256": "e904d0250d17f829d976bea285057dc08ead9a020345b8f6626725be2d78511f",
+      "sheet": "docs/figures/parity-ch07-samples-p1.png"
+    },
+    {
+      "row": 17,
+      "seq": 370,
+      "kind": "move",
+      "diff_pixels": 66,
+      "box": [
+        128,
+        95,
+        143,
+        99
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0370.png",
+      "oracle_sha256": "4d00bd473870a684fed96bda4ea0be9ebd93c7f9554b560d8560ef46ab810471",
+      "remake": "remake-0041-p1.png",
+      "remake_sha256": "56ffd23b513f2ac12f9c9bdbdab38c61a8fe4ec15a10d2359449e5149cb7f70c",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 18,
+      "seq": 393,
+      "kind": "move",
+      "diff_pixels": 88,
+      "box": [
+        53,
+        47,
+        74,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0393.png",
+      "oracle_sha256": "9e1837fbfc8b6319dc473df9555809d51317837fa141684e8de8a51901316b6d",
+      "remake": "remake-0044-p1.png",
+      "remake_sha256": "dd08fd5c407560f3d93a8447de2f24923ff4b70ba4196106f13470e49fdcb5d1",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 19,
+      "seq": 438,
+      "kind": "move",
+      "diff_pixels": 118,
+      "box": [
+        79,
+        10,
+        97,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0438.png",
+      "oracle_sha256": "b886c2cad910f3232a71febbb655027a957e3dcd4869f994752a2798f1582f87",
+      "remake": "remake-0048-p1.png",
+      "remake_sha256": "796148d45a577278351454d4d69452dc480d56b4648fcd5bc1837728ca230a06",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 20,
+      "seq": 461,
+      "kind": "move",
+      "diff_pixels": 70,
+      "box": [
+        127,
+        47,
+        144,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0461.png",
+      "oracle_sha256": "31afdab72c31bb95d90a9ba5b738a4c12b8918c359725993fce85664f0effc08",
+      "remake": "remake-0051-p1.png",
+      "remake_sha256": "901d6c498096e422db783916a3fde9f07c46cab82bcadd968096fc687b0f1d6e",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 21,
+      "seq": 484,
+      "kind": "move",
+      "diff_pixels": 188,
+      "box": [
+        102,
+        47,
+        142,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0484.png",
+      "oracle_sha256": "3c4019ae34d9b7abd36cccb704b729dad755ce2c6d98a2443079e5d6d59187af",
+      "remake": "remake-0054-p1.png",
+      "remake_sha256": "52651bd32aa46db93c86b9f8cc73f51c290bc97bcab96b7e852a969179dcd34e",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 22,
+      "seq": 505,
+      "kind": "move",
+      "diff_pixels": 196,
+      "box": [
+        29,
+        22,
+        70,
+        47
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0505.png",
+      "oracle_sha256": "73cacd000b9ef29e64b116b250e660a5048b65e28e8a2dd0001a10d4fd9053b5",
+      "remake": "remake-0057-p0.png",
+      "remake_sha256": "e6b9796dec6f7bfb66217c7deabd8f1d576ca1e9a668180f04e7795ffd7ba139",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 23,
+      "seq": 527,
+      "kind": "move",
+      "diff_pixels": 165,
+      "box": [
+        54,
+        47,
+        94,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0527.png",
+      "oracle_sha256": "4458da63df5856e3d9e78baa14a35958d8bf7ae335f704d47141dfc2f4bddc4a",
+      "remake": "remake-0060-p1.png",
+      "remake_sha256": "489fb962ab2caafd1c66d6ab66a99943e7b69e2613d1fa4eb572c58f5cf21eb4",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 24,
+      "seq": 552,
+      "kind": "move",
+      "diff_pixels": 81,
+      "box": [
+        127,
+        46,
+        144,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0552.png",
+      "oracle_sha256": "456cb673fa10ae4c43fa63a1d6b856376595a285b07137bbe51bab9883eac56a",
+      "remake": "remake-0063-p0.png",
+      "remake_sha256": "531c00a4c082f795432b4c952602ce40d3461d736f1b515a04966e818efd3e20",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 25,
+      "seq": 575,
+      "kind": "move",
+      "diff_pixels": 201,
+      "box": [
+        53,
+        46,
+        94,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0575.png",
+      "oracle_sha256": "1307f8ed807c325a47a2438418b64a0d663392d95e7e1b098c315143e0be3481",
+      "remake": "remake-0066-p0.png",
+      "remake_sha256": "ba7af9ef6617e55846ce6c9f85038b5010fadace5531fa8ac6ad72e9574539f9",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 26,
+      "seq": 616,
+      "kind": "stay",
+      "diff_pixels": 134,
+      "box": [
+        78,
+        34,
+        97,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0616.png",
+      "oracle_sha256": "c31cd9877e1679f288744d226fb589f8842195fe3d15b79b869c37dcea5d14e1",
+      "remake": "remake-0070-p2.png",
+      "remake_sha256": "ff0238fa34601ba4ba0bbcd0e2e6f92bafb6b667c48475997f062029fc444208",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 27,
+      "seq": 618,
+      "kind": "attack_armed",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 44,
+      "oracle": "checkpoint-0618.png",
+      "oracle_sha256": "e16c34f6dae10ee99c56c5cd59435d7bc7f9d319f168a51f6e4c1061add15649",
+      "remake": "remake-0071-p13.png",
+      "remake_sha256": "9ce94168d3f4f5126a5b43ce3b12a30b5740715828979e26cc84b8d525b2fec0",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 28,
+      "seq": 633,
+      "kind": "attack_result",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0633.png",
+      "oracle_sha256": "932124473659ca16b8493dbe9329b626eda8c6cc79271fd67f2be959b2cb380f",
+      "remake": "remake-0072-p3.png",
+      "remake_sha256": "fc6039e784ef6c630835c3d6dea9245d293502e644bd80a0351038f5bc2047b2",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 29,
+      "seq": 647,
+      "kind": "stay",
+      "diff_pixels": 70,
+      "box": [
+        127,
+        71,
+        144,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0647.png",
+      "oracle_sha256": "6b47f5e48e43287535bad5c27c5eef859ab4a20b0287062dd3fe78f905bc8ac6",
+      "remake": "remake-0074-p1.png",
+      "remake_sha256": "254a61a6bf86b5cbad5fc371644e766d375b39d2609354bee66950ecd1daa75c",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 30,
+      "seq": 679,
+      "kind": "move",
+      "diff_pixels": 151,
+      "box": [
+        102,
+        58,
+        121,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0679.png",
+      "oracle_sha256": "90b904a2d20f041b7cae61ab7e8a8fde0fc05d28529583212fcab14503a24091",
+      "remake": "remake-0077-p2.png",
+      "remake_sha256": "0fe0c6bdb5e41d14617d79dc17c5235b0ea681a10bbf4fd2cad55059ae4f7bea",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 31,
+      "seq": 709,
+      "kind": "move",
+      "diff_pixels": 109,
+      "box": [
+        53,
+        22,
+        72,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0709.png",
+      "oracle_sha256": "32c401db00d0e18c7cd5c989db0cab268501fbeb06eb2ec5f5f327f638a58095",
+      "remake": "remake-0081-p2.png",
+      "remake_sha256": "a138beac9cd5bba21f43ae6f33e17241fbbfff27352f4e8d266733cb99d0a35a",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 32,
+      "seq": 740,
+      "kind": "move",
+      "diff_pixels": 165,
+      "box": [
+        30,
+        23,
+        70,
+        47
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0740.png",
+      "oracle_sha256": "f4799c8a3c8809af5ab1df169274d69c9f3c4eadcf0db36995ba69d3dff8294a",
+      "remake": "remake-0085-p1.png",
+      "remake_sha256": "9620a899aa35700548d70958fc485b78be55566dd95cba04e92eb7a54aa5e1d7",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 33,
+      "seq": 777,
+      "kind": "move",
+      "diff_pixels": 110,
+      "box": [
+        53,
+        46,
+        74,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0777.png",
+      "oracle_sha256": "4e82d6b46e6c5f19e1ed0b5b38b543bd9f11992c7b18344a2242126b727c6a57",
+      "remake": "remake-0088-p0.png",
+      "remake_sha256": "1ca7f0f2988cea3c3944a5b3181285a2c2f466655a0c4b5a922b7df0750aab15",
+      "sheet": "docs/figures/parity-ch07-samples-p2.png"
+    },
+    {
+      "row": 34,
+      "seq": 815,
+      "kind": "move",
+      "diff_pixels": 172,
+      "box": [
+        127,
+        46,
+        166,
+        71
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0815.png",
+      "oracle_sha256": "c5b90e39f79ab266c3fa97bc6ddcb2b93296f304e3e85571bf87ac3c3e56ca46",
+      "remake": "remake-0091-p0.png",
+      "remake_sha256": "c75d309002e200669cfad5271ab7c1688d32132ddef6e3ce66f2e5f46f152dc6",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 35,
+      "seq": 865,
+      "kind": "stay",
+      "diff_pixels": 129,
+      "box": [
+        53,
+        106,
+        73,
+        123
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0865.png",
+      "oracle_sha256": "ba74bb262c323e346154e0cc6803cfa647c715068362aa39f73078bda2ffeeec",
+      "remake": "remake-0095-p1.png",
+      "remake_sha256": "c3f6089a1796087d5164c8231cff8fae8acee8a234d33ee7816e068898098daf",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 36,
+      "seq": 889,
+      "kind": "stay",
+      "diff_pixels": 134,
+      "box": [
+        78,
+        130,
+        97,
+        147
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0889.png",
+      "oracle_sha256": "cba94e54563b98cbba5ed5fe156114ee3596bd1702f9e0d7721a05df662b7afc",
+      "remake": "remake-0099-p2.png",
+      "remake_sha256": "5540852f5d8257653b7ba18386ef427359efe85852e4b62c89ea0b463f804de1",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 37,
+      "seq": 915,
+      "kind": "stay",
+      "diff_pixels": 139,
+      "box": [
+        102,
+        130,
+        121,
+        147
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0915.png",
+      "oracle_sha256": "315a2e2409c46d0bea7f369c2b0b9ee3258cf969876b6b6dd30373d5ea653efa",
+      "remake": "remake-0103-p1.png",
+      "remake_sha256": "3b9a0a326c20a92c6bdfef829221342c07b5deeb89dc80222aaa9945beeb321d",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 38,
+      "seq": 944,
+      "kind": "stay",
+      "diff_pixels": 255,
+      "box": [
+        101,
+        118,
+        144,
+        144
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0944.png",
+      "oracle_sha256": "83e51b976fce74373c531505f70a5181b84c0f4d2fc539a6de9fa23834487004",
+      "remake": "remake-0107-p2.png",
+      "remake_sha256": "f7efdb47a83d0e44a005531c9164a7c4c5d70c2ef78d0d69b61826b076e26fa8",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 39,
+      "seq": 974,
+      "kind": "move",
+      "diff_pixels": 130,
+      "box": [
+        127,
+        82,
+        145,
+        99
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0974.png",
+      "oracle_sha256": "35b11362c32f84618761c136e2eb298e90df734c54840aaf0cbf0365b051bed4",
+      "remake": "remake-0110-p0.png",
+      "remake_sha256": "b7ee8d29018bb6c0b06513c3c6a22b03979373271e9a5c7ee9615f9d2bf5f99e",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 40,
+      "seq": 1005,
+      "kind": "move",
+      "diff_pixels": 94,
+      "box": [
+        54,
+        46,
+        73,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1005.png",
+      "oracle_sha256": "dabd975a5f02fcbade17dad4e3900c547add545322012ab0d4edc3a96ffbaea5",
+      "remake": "remake-0114-p0.png",
+      "remake_sha256": "b65bce7f774c7ea37e034493c61224921a76a331c1de0a7665d5b2c393c2eeb0",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 41,
+      "seq": 1041,
+      "kind": "move",
+      "diff_pixels": 81,
+      "box": [
+        53,
+        23,
+        74,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1041.png",
+      "oracle_sha256": "83d87e64d53f84848de932538a0af99e082e1b503e6b0d6840ebdfd4f3a89e3b",
+      "remake": "remake-0118-p1.png",
+      "remake_sha256": "34ab4b0c734a86cfc4b8a29d2d16081765a149e114f30c7aa18b5d050b115ffe",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 42,
+      "seq": 1088,
+      "kind": "stay",
+      "diff_pixels": 110,
+      "box": [
+        53,
+        142,
+        74,
+        147
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1088.png",
+      "oracle_sha256": "d672f49f14ba690741871691be89077dcfabb68201359a186b267493a059a0f9",
+      "remake": "remake-0123-p0.png",
+      "remake_sha256": "cc5626306966f363cd69dbf8f903c60504295b2e6bf63028860e75a31de9253b",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 43,
+      "seq": 1121,
+      "kind": "stay",
+      "diff_pixels": 88,
+      "box": [
+        127,
+        142,
+        144,
+        147
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1121.png",
+      "oracle_sha256": "4a0dd4f3a778354083336b251435959282512a3f4c585e6092c9806dba4e4624",
+      "remake": "remake-0126-p0.png",
+      "remake_sha256": "1a1cfe32824b2c6da7f74396308c3b5b442d081cdfe1ddbda972c4dee51ea47d",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 44,
+      "seq": 1155,
+      "kind": "move",
+      "diff_pixels": 74,
+      "box": [
+        78,
+        71,
+        97,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1155.png",
+      "oracle_sha256": "619cd0cb73dff757b21b79bda2d0f7ccdac766c6c35a6df5334446716e85d509",
+      "remake": "remake-0129-p1.png",
+      "remake_sha256": "2bd65a9ac8ee0c1ed117f05d53bb4593559a2f8032c52205c31d837c5ca93918",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 45,
+      "seq": 1185,
+      "kind": "move",
+      "diff_pixels": 111,
+      "box": [
+        128,
+        82,
+        145,
+        99
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1185.png",
+      "oracle_sha256": "e84b3859a1424266f24382517fb89026ee44c0de2f634541b95ea1d19754a0c7",
+      "remake": "remake-0133-p1.png",
+      "remake_sha256": "72b025866872752ae240b8795d7067983f7e886f3ed10df1b81f2f9b25ee7c90",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 46,
+      "seq": 1217,
+      "kind": "move",
+      "diff_pixels": 149,
+      "box": [
+        101,
+        58,
+        121,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1217.png",
+      "oracle_sha256": "c34d8e5e3c6c1ea2c6866c87a1f806b7c6a9be8f9410a85d82394145d3b4e22b",
+      "remake": "remake-0137-p2.png",
+      "remake_sha256": "01196f0f7b9813c8dedffe7819c7af20ada7d652a3ad9f3458c187e3919b4145",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 47,
+      "seq": 1271,
+      "kind": "move",
+      "diff_pixels": 208,
+      "box": [
+        102,
+        94,
+        142,
+        119
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1271.png",
+      "oracle_sha256": "a04d1491dd3f49d26eb0d3885887ad66240e35e3c6c383f0dafbf61bdc12ea12",
+      "remake": "remake-0142-p0.png",
+      "remake_sha256": "79033917707f438c2fb83177cd89e0a12517487095ad3923d6571d125ffd6ea0",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 48,
+      "seq": 1277,
+      "kind": "mark:step_round7",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1277.png",
+      "oracle_sha256": "4633634476e47828d94410aeb936ceff4c8e67f9d553e7ee9b882201d2627479",
+      "remake": "remake-0144-p2.png",
+      "remake_sha256": "57c623b63020fb5566040cd83a52d9ec3e3874fb73949fb4225db438fe147eb9",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 49,
+      "seq": 1287,
+      "kind": "stay",
+      "diff_pixels": 94,
+      "box": [
+        78,
+        22,
+        97,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1287.png",
+      "oracle_sha256": "860c1e7f2b8eff7db3f8ddcb6373340406317045ef643954618840dc85ad454b",
+      "remake": "remake-0146-p2.png",
+      "remake_sha256": "9c2f55014d24436394c579e7eb4592bbbd497e91d01d88f4112e9e70a9d579bc",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 50,
+      "seq": 1315,
+      "kind": "stay",
+      "diff_pixels": 105,
+      "box": [
+        101,
+        46,
+        120,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1315.png",
+      "oracle_sha256": "72363fe8daec78a818077a4838e6b005afee381940cb6d0f01e4c5928c413386",
+      "remake": "remake-0150-p0.png",
+      "remake_sha256": "33b82d45c814a9a9df142004f909cd481d8ab1ad8ffb5185f696f252aed33b00",
+      "sheet": "docs/figures/parity-ch07-samples-p3.png"
+    },
+    {
+      "row": 51,
+      "seq": 1339,
+      "kind": "stay",
+      "diff_pixels": 81,
+      "box": [
+        127,
+        70,
+        144,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1339.png",
+      "oracle_sha256": "cc6659858be4e3973392d46b0a489f34a946446d46ce2ff45cef55508d231140",
+      "remake": "remake-0154-p2.png",
+      "remake_sha256": "41522375cf511db9865059db8267fbdc592d360844f44cc46cee6c0f87024b34",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 52,
+      "seq": 1373,
+      "kind": "move",
+      "diff_pixels": 124,
+      "box": [
+        101,
+        10,
+        122,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1373.png",
+      "oracle_sha256": "52cb49d7c7bc540dccc8c97c543861b728ccea7e260f8a99c64aa6fea347f863",
+      "remake": "remake-0157-p1.png",
+      "remake_sha256": "960510628bbfa41598fae29f38b1d633b8403ead8447a437a76bfc8bd18ac854",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 53,
+      "seq": 1401,
+      "kind": "move",
+      "diff_pixels": 130,
+      "box": [
+        127,
+        34,
+        145,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1401.png",
+      "oracle_sha256": "c11675bd02961b86d436ffffb157c9ae6321a4d9d99186f93e0d4fd0fdd6c619",
+      "remake": "remake-0161-p0.png",
+      "remake_sha256": "9b38ba79288cb479fa9ea3a711c4f8ea9269535aeb1ac78e0556dc321031d11b",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 54,
+      "seq": 1449,
+      "kind": "move",
+      "diff_pixels": 161,
+      "box": [
+        127,
+        143,
+        166,
+        167
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1449.png",
+      "oracle_sha256": "6c903b43fe05c26db02d4bc85fb31a6b2796ef72ea2e7ee36325e94999f52df3",
+      "remake": "remake-0166-p1.png",
+      "remake_sha256": "413abcd1ada746c79f1ac23082a5c37c96589843d7a4a3910abf6003b083d145",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 55,
+      "seq": 1455,
+      "kind": "mark:step_round8",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1455.png",
+      "oracle_sha256": "d0a8d0e63abddcf40156d90e8f690fad9e335865b570a10aafa9cc8720b0c733",
+      "remake": "remake-0168-p1.png",
+      "remake_sha256": "8d7f0bca1ed881b2f4410716342d34e7751187bc1d45a27e03e0edc1e18b26f6",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 56,
+      "seq": 1465,
+      "kind": "stay",
+      "diff_pixels": 141,
+      "box": [
+        101,
+        58,
+        122,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1465.png",
+      "oracle_sha256": "8398e139d8619b807831dc71e6a7b87f8dc588759a3f2f62d07b9953b1e940fb",
+      "remake": "remake-0170-p0.png",
+      "remake_sha256": "79a39d5c6f004d63eb75b8d245755a40d80a703016e8e154d5d15db9c3953a0c",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 57,
+      "seq": 1490,
+      "kind": "stay",
+      "diff_pixels": 165,
+      "box": [
+        78,
+        71,
+        118,
+        95
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1490.png",
+      "oracle_sha256": "e3c302a6ebcfeb7d1fb32ccc139c3e9f13ddf677dd5dd9d6d78a8af52753b2ab",
+      "remake": "remake-0174-p1.png",
+      "remake_sha256": "99bcdcb3d10e91400c40c2cff59ab5c4513da3635f5cf59c1745e52543402ee5",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 58,
+      "seq": 1519,
+      "kind": "stay",
+      "diff_pixels": 176,
+      "box": [
+        101,
+        95,
+        142,
+        119
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1519.png",
+      "oracle_sha256": "0f3527f26515f3f79c826f7b1ca1e4ab49666f7392515ec79dc2909181f8e047",
+      "remake": "remake-0177-p1.png",
+      "remake_sha256": "85e730a11a976e2dc3dcb5767b43f0884c027ae2c888a6ca5ebc793e40dc57a3",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 59,
+      "seq": 1548,
+      "kind": "stay",
+      "diff_pixels": 81,
+      "box": [
+        127,
+        118,
+        144,
+        123
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1548.png",
+      "oracle_sha256": "85b9b7efce16a3d633e2e5775919fe582480a44a488852eacd3cabc18cb99e80",
+      "remake": "remake-0180-p2.png",
+      "remake_sha256": "2dadb43cf8600c81976cf558576b0a5116dac1274fc080596528de117cb249a0",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 60,
+      "seq": 1580,
+      "kind": "move",
+      "diff_pixels": 151,
+      "box": [
+        126,
+        82,
+        145,
+        99
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1580.png",
+      "oracle_sha256": "1f84880531da98d41bc3195f46319c7b6443d2ac3237486c3deb5d5cf8e3cf07",
+      "remake": "remake-0183-p2.png",
+      "remake_sha256": "1bdb89b3a3c52eb7544c69f241563259eaaefca334547748316ab0bc2d9851f9",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 61,
+      "seq": 1628,
+      "kind": "move",
+      "diff_pixels": 117,
+      "box": [
+        78,
+        142,
+        97,
+        147
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1628.png",
+      "oracle_sha256": "8d498995725a57d918b0a46b1d1d78c1ca17380c13a235f95b9580d00633d9ea",
+      "remake": "remake-0188-p0.png",
+      "remake_sha256": "c891d487adf1862decb045c5ea6f51f68d55efd91aba6227d8ccc2e22d1927b3",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 62,
+      "seq": 1634,
+      "kind": "mark:step_round9",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1634.png",
+      "oracle_sha256": "37e377b00a7bdc2573d5cda9addee7648ec2dc0adad1680c3999b3c9147e1c70",
+      "remake": "remake-0190-p2.png",
+      "remake_sha256": "a58b95a4e2c5ea90a5dba478ab181cdfed94dace78da2121f45270fef2ca98ec",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 63,
+      "seq": 1643,
+      "kind": "stay",
+      "diff_pixels": 141,
+      "box": [
+        101,
+        82,
+        122,
+        99
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1643.png",
+      "oracle_sha256": "33cd5c401db41efc44bbe2fdca43b290729fddeb874928867d2dff551ab43c0b",
+      "remake": "remake-0192-p0.png",
+      "remake_sha256": "9230cf7f72a07e8544f93211887e137c0ea25317b31ab78f65c8a77bb8c302af",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 64,
+      "seq": 1669,
+      "kind": "stay",
+      "diff_pixels": 185,
+      "box": [
+        78,
+        94,
+        118,
+        119
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1669.png",
+      "oracle_sha256": "d26dc0b7c6c4ddfe2aaff0412922e0c9d9e3e11819c851fec213f31b75cc4e96",
+      "remake": "remake-0196-p0.png",
+      "remake_sha256": "d10e63ffa1b145c2f4e1f2c9e37499d223c16412f644a96c519d3cb4aab401ab",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 65,
+      "seq": 1698,
+      "kind": "stay",
+      "diff_pixels": 85,
+      "box": [
+        101,
+        119,
+        120,
+        123
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1698.png",
+      "oracle_sha256": "8c150f98c64f726a74e91abac4f3d3be9157d7b864a4b23c99094c79f40b2101",
+      "remake": "remake-0199-p1.png",
+      "remake_sha256": "92fddd6cada1d7699a19caf932c8ddf90501549b33412586b2b25532e63523c1",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 66,
+      "seq": 1730,
+      "kind": "move",
+      "diff_pixels": 126,
+      "box": [
+        127,
+        58,
+        145,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1730.png",
+      "oracle_sha256": "53bf03eaa0ae25c1962c4ac453a4f5e45846d6b5bf1ccb5f93709d0070c48a81",
+      "remake": "remake-0202-p0.png",
+      "remake_sha256": "5a2561da45fdda61b1c3248ad4e856b219ab1fc17b280d13c43d560f17d21b4a",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 67,
+      "seq": 1766,
+      "kind": "move",
+      "diff_pixels": 70,
+      "box": [
+        127,
+        95,
+        144,
+        99
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1766.png",
+      "oracle_sha256": "ddbf7cde278d77a1a1a8416755f85b031c19d5809bf0c7100bcd69aaa2c021cb",
+      "remake": "remake-0206-p1.png",
+      "remake_sha256": "f920375f626399e5cf87c9046d2f90c9d750b7c503a7a339d756542fa7113109",
+      "sheet": "docs/figures/parity-ch07-samples-p4.png"
+    },
+    {
+      "row": 68,
+      "seq": 1803,
+      "kind": "move",
+      "diff_pixels": 179,
+      "box": [
+        127,
+        142,
+        166,
+        167
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1803.png",
+      "oracle_sha256": "3465f642a313361e9104b5a1b687e070390a885ec8ecda44a630ad936a4f4bff",
+      "remake": "remake-0210-p0.png",
+      "remake_sha256": "314c355f196056f08b48d29b544f76facd4636ef36a7ba320469da02f2b3e878",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 69,
+      "seq": 1809,
+      "kind": "mark:step_round10",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1809.png",
+      "oracle_sha256": "dbdbc0ec7907730e147ce80439d1c4d970a8cf6f0001d85b1af83afb68021966",
+      "remake": "remake-0212-p2.png",
+      "remake_sha256": "5316f583c4fa5c64c82c6640289b99f4a54337473c037693b439090ccb8210df",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 70,
+      "seq": 1819,
+      "kind": "stay",
+      "diff_pixels": 81,
+      "box": [
+        101,
+        71,
+        122,
+        75
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1819.png",
+      "oracle_sha256": "81985d2b55c846b65363f0a46103c78ced341df9afde60947d1fa41401981dd8",
+      "remake": "remake-0214-p1.png",
+      "remake_sha256": "59b916509de6b2a35a15f1666992638fa73584f08b0245d9b80b960fe97fc474",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 71,
+      "seq": 1848,
+      "kind": "stay",
+      "diff_pixels": 84,
+      "box": [
+        127,
+        46,
+        144,
+        51
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1848.png",
+      "oracle_sha256": "a39917fd37d5f43b574a8479ce20977ddeb58e38bee20198dd8afad0d1914ab4",
+      "remake": "remake-0218-p2.png",
+      "remake_sha256": "65b3debb17995e0c4788834fa9a422ae2edf13cb3c14003695e9f683fb9942b9",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 72,
+      "seq": 1877,
+      "kind": "move",
+      "diff_pixels": 135,
+      "box": [
+        78,
+        10,
+        97,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1877.png",
+      "oracle_sha256": "b4c811d95b0ba3f5dce6c32ffb7e5e90c39ae0d40cf677cfda1407c7a1aaf723",
+      "remake": "remake-0222-p0.png",
+      "remake_sha256": "0d6c99a090c95bca72f6c60fc94f38b086ff64da1253d7108be03bf2540c77ad",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 73,
+      "seq": 1909,
+      "kind": "move",
+      "diff_pixels": 145,
+      "box": [
+        101,
+        10,
+        121,
+        27
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1909.png",
+      "oracle_sha256": "e4e097ea4109a589ca3138d2c4e009828da7ba11526618afd0623a493fb5fa8a",
+      "remake": "remake-0226-p0.png",
+      "remake_sha256": "ec0d220a978472cc83abd9fbd13e2cb1c4366f6eb7446ffb2343f34de45e28f8",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 74,
+      "seq": 1926,
+      "kind": "attack_result",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1926.png",
+      "oracle_sha256": "78f5901b3be3c2c46360ac105ab6267e741730579dad00278a35ea916eb9f6f1",
+      "remake": "remake-0228-p2.png",
+      "remake_sha256": "b85ffbddf701f526f4c46d1c6524239041253fea80cce5d5eba35167a9e76f8b",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 75,
+      "seq": 1973,
+      "kind": "mark:after_event25",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-1973.png",
+      "oracle_sha256": "bf2e4adbf45aa2e2abd165b47a89269391e718723c74527cb2a113e15ffde62e",
+      "remake": "remake-0230-p1.png",
+      "remake_sha256": "79a61f2d1bccf1ef970291ef095d80ae2580020a18073909d923a346e367a436",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 76,
+      "seq": 2011,
+      "kind": "town_after_battle",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-2011.png",
+      "oracle_sha256": "9cd9c722f2bb079cd9e54c8e8b92a5790c135a27546c8af030dfcfbdc50f3849",
+      "remake": "remake-0234-p1.png",
+      "remake_sha256": "9cd9c722f2bb079cd9e54c8e8b92a5790c135a27546c8af030dfcfbdc50f3849",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 77,
+      "seq": 2080,
+      "kind": "shop_sell",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-2080.png",
+      "oracle_sha256": "88334c6159170be9a2f8444ea6dd32129771a2ea2da2229fff217b2fc0294618",
+      "remake": "remake-0236-p1.png",
+      "remake_sha256": "88334c6159170be9a2f8444ea6dd32129771a2ea2da2229fff217b2fc0294618",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 78,
+      "seq": 2088,
+      "kind": "town_enter",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 1,
+      "oracle": "checkpoint-2088.png",
+      "oracle_sha256": "9c4f2a59973c0e51a087836edf9413876b6fadb0d245164854b621188aedbb85",
+      "remake": "remake-0237-p0.png",
+      "remake_sha256": "7388e21461c84123a14d853dedae468f6498c4a5aaf054a4b86e4018db4f6508",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 79,
+      "seq": 2209,
+      "kind": "town_save",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-2209.png",
+      "oracle_sha256": "fc2b6ea07234395fbdaca756901437794942f6301ac26ef96f2ae485d91bc0e0",
+      "remake": "remake-0241-p0.png",
+      "remake_sha256": "cdabab5c19e09e29b02a295a1c69b9bd12fa1a82c68124279647d270f63b8b65",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    },
+    {
+      "row": 80,
+      "seq": 2232,
+      "kind": "secret_shop",
+      "diff_pixels": 69,
+      "box": [
+        150,
+        48,
+        180,
+        53
+      ],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-2232.png",
+      "oracle_sha256": "1931c348adcaafd24da6ee4f991c143bdfb9b99d1dc79d872f3c8af70366fb68",
+      "remake": "remake-0242-p2.png",
+      "remake_sha256": "1ccf614a2056dde2867d25329f271a53c4693b114bbcd08dc4cdf2bfe8cd8028",
+      "sheet": "docs/figures/parity-ch07-samples-p5.png"
+    }
+  ]
+}

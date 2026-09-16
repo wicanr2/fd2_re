@@ -419,6 +419,172 @@ class ModifiedPathControls(unittest.TestCase):
                 {"force_enemy_clear": True, "end_turn": False}))
 
 
+class MoveUnit(unittest.TestCase):
+    """move_unit：候選格依序試，被拒絕就換下一格；全被拒絕且 stay_if_blocked 才原地待機。"""
+
+    def snapshot(self, x, y, round_=3):
+        unit = {"index": 2, "camp": drive.ALLY_CAMP, "x": x, "y": y, "hp": 289,
+                "raw_hex": "00" * 5 + "00" + "02" + "00" * 0x49}
+        return {"input_chain": ["0x1a4e2"], "kbd_pending": 0, "eip": "0x1a4e2", "steps": 1,
+                "view": {"round": round_, "cursor_x": x, "cursor_y": y}, "units": [unit]}
+
+    def run_move(self, spec, modes, positions):
+        """modes：wait_mode 依序回傳的介面；positions：state() 依序回傳的單位座標。"""
+        # state() 的呼叫次數依路徑不同，最後一個快照重複給到結束（回合已推進）。
+        def next_state(seq=iter(positions), last=[None]):
+            try:
+                last[0] = next(seq)
+            except StopIteration:
+                pass
+            return last[0]
+        logged = []
+        modes = iter(modes)
+        with mock.patch.object(drive, "resume_battle", return_value=True), \
+                mock.patch.object(drive, "ensure_cursor_mode", return_value=True), \
+                mock.patch.object(drive, "do_goto", return_value=True), \
+                mock.patch.object(drive, "send", return_value=(1, self.snapshot(12, 17))), \
+                mock.patch.object(drive, "report"), \
+                mock.patch.object(drive, "wait_mode", side_effect=lambda wanted, steps, budget=12: next(modes)), \
+                mock.patch.object(drive, "stand_by", return_value=self.snapshot(0, 0, round_=4)), \
+                mock.patch.object(drive, "log_action", side_effect=lambda kind, current=None, **f: logged.append((kind, f))), \
+                mock.patch.object(drive, "state", side_effect=next_state):
+            ok = drive.do_move_unit({"move_unit": spec, "steps": 1})
+        return ok, logged
+
+    def test_second_candidate_is_taken_when_the_first_is_rejected(self):
+        ok, logged = self.run_move(
+            {"from_index": 2, "to_any": [[12, 15], [13, 15]]},
+            modes=["target", "target", "ring"],
+            positions=[self.snapshot(12, 17), self.snapshot(12, 17), self.snapshot(13, 15),
+                       self.snapshot(13, 15), self.snapshot(13, 15, round_=4)])
+        self.assertTrue(ok)
+        kinds = [k for k, _ in logged]
+        self.assertEqual(kinds, ["select", "move", "wait"])
+        self.assertEqual(logged[1][1]["to"], [13, 15])
+
+    def test_all_candidates_rejected_fails_unless_stay_if_blocked(self):
+        ok, logged = self.run_move(
+            {"from": [12, 17], "to_any": [[12, 15]]},
+            modes=["target", "target"],
+            positions=[self.snapshot(12, 17), self.snapshot(12, 17), self.snapshot(12, 17)])
+        self.assertFalse(ok)
+        ok, logged = self.run_move(
+            {"from": [12, 17], "to_any": [[12, 15]], "stay_if_blocked": True},
+            modes=["target", "target", "ring"],
+            positions=[self.snapshot(12, 17), self.snapshot(12, 17), self.snapshot(12, 17),
+                       self.snapshot(12, 17), self.snapshot(12, 17, round_=4)])
+        self.assertTrue(ok)
+        self.assertEqual([k for k, _ in logged], ["select", "stay", "wait"])
+
+
+class TowardCandidates(unittest.TestCase):
+    """toward：候選格由地圖成本格與敵我位置估可達集合，依「離目標最近」排序。"""
+
+    def grid(self):
+        # 6×8，x=3 的 y=2..4 是牆；其餘成本 1。
+        w, h = 6, 8
+        cost = [1] * (w * h)
+        for y in (2, 3, 4):
+            cost[y * w + 3] = 99
+        return w, h, cost
+
+    def unit(self, index, x, y, camp, hp=100):
+        return {"index": index, "camp": camp, "x": x, "y": y, "hp": hp, "byte5": 0}
+
+    def test_enemy_cells_block_and_their_neighbours_zero_the_budget(self):
+        current = {"units": [self.unit(0, 2, 7, drive.ALLY_CAMP), self.unit(9, 2, 4, drive.ENEMY_CAMP)]}
+        cells = drive.reachable_cells(self.grid(), current, (2, 7), 4)
+        self.assertNotIn((2, 4), cells)          # 敵格不可進
+        self.assertEqual(cells[(2, 5)], 0)       # 敵格鄰格：進了預算歸零，可停
+        self.assertNotIn((2, 3), cells)          # 穿不過去
+        self.assertEqual(cells[(1, 5)], 1)       # 繞旁邊走不受影響
+        self.assertEqual(cells[(1, 4)], 0)       # 敵格的左鄰：四步到、預算歸零
+        self.assertNotIn((1, 3), cells)          # 五步走不到
+
+    def test_ally_cells_are_passable_but_not_destinations(self):
+        current = {"units": [self.unit(0, 2, 7, drive.ALLY_CAMP), self.unit(1, 2, 6, drive.ALLY_CAMP),
+                             self.unit(9, 5, 0, drive.ENEMY_CAMP)]}
+        cells = drive.reachable_cells(self.grid(), current, (2, 7), 3)
+        self.assertNotIn((2, 6), cells)
+        self.assertEqual(cells[(2, 5)], 1)
+
+    def test_walls_and_goal_distance_order_the_candidates(self):
+        current = {"units": [self.unit(0, 4, 7, drive.ALLY_CAMP), self.unit(9, 5, 0, drive.ENEMY_CAMP)]}
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=self.grid()):
+            ranked = drive.toward_candidates(
+                {"toward": [3, 0], "map": 6, "mv": 3, "max_tries": 3}, current, (4, 7))
+        self.assertEqual(ranked, [(3, 5), (4, 4), (3, 6)])
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=self.grid()):
+            staged = drive.toward_candidates(
+                {"toward": [4, 5], "map": 6, "mv": 3, "max_tries": 3, "stop_distance": 1}, current, (4, 7))
+        self.assertNotIn((4, 5), staged)
+        self.assertEqual(staged[0], (4, 6))
+
+    def test_no_candidate_closer_than_here_when_already_on_goal(self):
+        current = {"units": [self.unit(0, 4, 7, drive.ALLY_CAMP), self.unit(9, 5, 0, drive.ENEMY_CAMP)]}
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=self.grid()):
+            self.assertEqual(drive.toward_candidates({"toward": [4, 7], "map": 6, "mv": 3}, current, (4, 7)), [])
+
+
+class StepInto(unittest.TestCase):
+    """step_into：第一個估得到走進指定格的未行動單位踏進去；誰都走不到就不動。"""
+
+    def grid(self):
+        w, h = 8, 12
+        return w, h, [1] * (w * h)
+
+    def unit(self, index, x, y, camp, mv=4, acted=False):
+        raw = bytearray(0x50)
+        raw[5] = 0x80 if acted else 0
+        raw[0x3b] = mv
+        return {"index": index, "camp": camp, "x": x, "y": y, "hp": 100, "byte5": raw[5],
+                "raw_hex": raw.hex()}
+
+    def run_step(self, spec, units):
+        current = {"input_chain": ["0x1a4e2"], "kbd_pending": 0, "units": units, "view": {"round": 7}}
+        moves = []
+        with mock.patch.object(drive, "resume_battle", return_value=True), \
+                mock.patch.object(drive, "ensure_cursor_mode", return_value=True), \
+                mock.patch.object(drive, "load_map_cost_grid", return_value=self.grid()), \
+                mock.patch.object(drive, "state", return_value=current), \
+                mock.patch.object(drive, "do_move_unit", side_effect=lambda cmd: moves.append(cmd) or True):
+            ok = drive.do_step_into({"step_into": spec, "steps": 1})
+        return ok, moves
+
+    def test_first_unit_in_reach_steps_in(self):
+        units = [self.unit(0, 4, 11, drive.ALLY_CAMP), self.unit(2, 4, 8, drive.ALLY_CAMP, mv=7),
+                 self.unit(9, 0, 0, drive.ENEMY_CAMP)]
+        ok, moves = self.run_step({"cells": [[4, 2], [3, 2]], "map": 6, "indices": [0, 2]}, units)
+        self.assertTrue(ok)
+        self.assertEqual(len(moves), 1)
+        self.assertEqual(moves[0]["move_unit"]["from_index"], 2)
+        self.assertEqual(moves[0]["move_unit"]["to_any"], [[4, 2], [3, 2]])
+
+    def test_acted_units_and_unreachable_cells_are_skipped(self):
+        units = [self.unit(2, 4, 8, drive.ALLY_CAMP, mv=7, acted=True), self.unit(0, 4, 11, drive.ALLY_CAMP),
+                 self.unit(9, 0, 0, drive.ENEMY_CAMP)]
+        ok, moves = self.run_step({"cells": [[4, 2]], "map": 6}, units)
+        self.assertTrue(ok)
+        self.assertEqual(moves, [])
+
+    def test_unit_already_on_a_cell_is_left_alone(self):
+        units = [self.unit(2, 4, 2, drive.ALLY_CAMP, mv=7), self.unit(9, 7, 0, drive.ENEMY_CAMP)]
+        ok, moves = self.run_step({"cells": [[4, 2], [3, 2]], "map": 6}, units)
+        self.assertTrue(ok)
+        self.assertEqual(moves, [])
+
+    def test_enemy_block_and_zoc_are_respected(self):
+        # 敵人站在 (4,5)：(4,8) 的單位（MV 7）到 (4,2) 要繞，繞不過鄰格預算歸零。
+        units = [self.unit(2, 4, 8, drive.ALLY_CAMP, mv=7), self.unit(9, 4, 5, drive.ENEMY_CAMP)]
+        ok, moves = self.run_step({"cells": [[4, 2]], "map": 6}, units)
+        self.assertTrue(ok)
+        self.assertEqual(moves, [])
+        # 敵人在 (7,0)，離路徑遠：走得到。
+        units = [self.unit(2, 4, 8, drive.ALLY_CAMP, mv=7), self.unit(9, 7, 0, drive.ENEMY_CAMP)]
+        ok, moves = self.run_step({"cells": [[4, 2]], "map": 6}, units)
+        self.assertEqual(len(moves), 1)
+
+
 class DialogueProbe(unittest.TestCase):
     def dialogue(self, pending=0):
         return {"input_chain": ["0x16039"], "kbd_pending": pending,

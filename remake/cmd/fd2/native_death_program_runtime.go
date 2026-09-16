@@ -236,17 +236,19 @@ func (g *Game) grantNativeDeathReward(kind, value int, killer *battle.Unit) {
 	switch kind {
 	case 0:
 		if killer.AddInventoryItem(value, false) {
-			if message, ok := g.localeMessage("battle.reward.item", value); ok {
-				g.msg = message
-			}
+			// 0x1AC88..0x1ACC2：訊息 0x1B0 在 0x1BB8C 放進物品之前就寫好；成功才
+			// 走 0x16559(0)／0x16C57(0) 等鍵。訊息在行動收尾播，不用 g.msg 文字條。
+			g.pendingNativeRewardMsgs = append(g.pendingNativeRewardMsgs,
+				pendingNativeDeathRewardMessage{killer: killer, kind: 0, value: value})
 			return
 		}
 		g.pendingNativeDeathRewards = append(g.pendingNativeDeathRewards,
 			pendingNativeDeathReward{killer: killer, item: value})
 	case 1:
-		g.gold += value
-		if message, ok := g.localeMessage("battle.reward.gold", value); ok {
-			g.msg = message
-		}
+		// 0x1ABAF 先把金額存進 [0x53AE1] 給 FFFA 用；0x1ABF3 的 0x196CB 關框之後
+		// 0x1ABFD 才 `add [0x53BF3], eax`。第七章 r6 seq 1304 的原版 attack_result
+		// 停在等鍵處時 gold 仍是 2000，關框後才變 5500；金額由訊息關框時加。
+		g.pendingNativeRewardMsgs = append(g.pendingNativeRewardMsgs,
+			pendingNativeDeathRewardMessage{killer: killer, kind: 1, value: value})
 	}
 }

@@ -24,6 +24,7 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/0",
           "extensions": {
             "legacy": {
+              "camp": "enemy",
               "groups": [
                 2
               ],
@@ -35,7 +36,13 @@
                   "source": "0x34945",
                   "via": "spawn_group"
                 }
-              ]
+              ],
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "spawn_group"
@@ -44,11 +51,19 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/1",
           "extensions": {
             "legacy": {
+              "camp": "enemy",
               "grid": [
                 16,
                 10
               ],
-              "native_source": "0x34958"
+              "native_event_id": 25,
+              "native_source": "0x34954",
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "pan"
@@ -57,11 +72,19 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/2",
           "extensions": {
             "legacy": {
+              "camp": "enemy",
               "native_acting": {
                 "resource": 30,
-                "source": "0x34962"
+                "source": "0x34960"
               },
-              "native_event_id": 25
+              "native_event_id": 25,
+              "native_source": "0x34960",
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "native_acting"
@@ -70,10 +93,32 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/3",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 0,
+                "operand": 12,
+                "pages": [
+                  [
+                    "『哎呀！一大群男人追殺一個",
+                    "　小姑娘，不覺得丟臉嗎？』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 0
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 12,
-              "text": "哎呀!一大群男人追殺一個小姑娘,不覺得丟臉嗎?"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -82,10 +127,36 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/4",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 1,
+                "operand": 34,
+                "pages": [
+                  [
+                    "『妳的一拳讓我的部下得療義",
+                    "　三個月，無故毆打王國駐軍",
+                    "　可是重罪，乖乖的跟我回去"
+                  ],
+                  [
+                    "　說個明白吧！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 1
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": -1,
-              "text": "妳的一拳讓我的部下得療養三個月,無故毆打王國駐軍可是重罪,乖乖的跟我回去說個明白吧!"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -94,10 +165,32 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/5",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 2,
+                "operand": 12,
+                "pages": [
+                  [
+                    "『誰教他對我亂瞄！你們王國",
+                    "　軍都是這個樣子的嗎？』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 2
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 12,
-              "text": "誰教他對我亂瞄!你們王國軍都是這個樣子的嗎?"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -106,10 +199,32 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/6",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 3,
+                "operand": 34,
+                "pages": [
+                  [
+                    "『哼．．不和妳吵了，",
+                    "　給我抓起來！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 3
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": -1,
-              "text": "哼....不和妳吵了,給我抓起來!"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -118,10 +233,33 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/7",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 4,
+                "operand": 1,
+                "pages": [
+                  [
+                    "『咦！那邊有王國軍在圍攻一",
+                    "　個小女孩，這是怎麼一回",
+                    "　事？』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 4
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 1,
-              "text": "咦!那邊有王國軍在圍攻一個小女孩,這是怎麼一回事?"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -130,10 +268,32 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/8",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 5,
+                "operand": 13,
+                "pages": [
+                  [
+                    "『喂，我們自己都顧不了了，",
+                    "　不要再去湊熱鬧．．』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 5
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 13,
-              "text": "喂,我們自己都顧不了了,不要再去湊熱鬧..."
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -142,10 +302,33 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/9",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 6,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『什麼！你能眼睜睜的看著一",
+                    "　群王國軍欺負一個小女孩？",
+                    "　我自己去收拾他們好了。』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 6
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 0,
-              "text": "什麼!你能眼睜睜的看著一群王國軍欺負一個小女孩?我自己去收拾他們好了。"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -154,10 +337,33 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/10",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 7,
+                "operand": 4,
+                "pages": [
+                  [
+                    "『好啦好啦，",
+                    "　我陪你去就是了，",
+                    "　反正不差這幾個．．』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 7
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 4,
-              "text": "好啦好啦,我陪你去就是了,反正不差這幾個..."
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -166,10 +372,31 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/11",
           "extensions": {
             "legacy": {
-              "native_source": "0x34989",
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 8,
+                "operand": 13,
+                "pages": [
+                  [
+                    "『好吧，那就上吧！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch07.json",
+                "source_dat": "FDTXT_007",
+                "string_index": 2,
+                "utterance": 8
+              },
+              "native_event_id": 25,
+              "native_source": "0x3496a",
               "native_text_index": 2,
-              "speaker": 13,
-              "text": "好吧,那就上吧!"
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
           "type": "dialogue"
@@ -178,13 +405,23 @@
           "action_id": "legacy/action/60b92dc1691c/events/1/12",
           "extensions": {
             "legacy": {
-              "event_state_index": 17,
-              "event_state_value": 1,
+              "camp": "enemy",
+              "native_death_op": {
+                "index": 17,
+                "op": "state_set",
+                "value": 1
+              },
               "native_event_id": 25,
-              "native_source": "0x34996"
+              "native_source": "0x34991",
+              "native_when": {
+                "state_eq": [
+                  16,
+                  1
+                ]
+              }
             }
           },
-          "type": "set_native_event_state"
+          "type": "native_death_op"
         }
       ],
       "event_id": "legacy/event/60b92dc1691c/events/1",
@@ -196,8 +433,6 @@
       },
       "trigger": "on_turn_end",
       "when": {
-        "native_event_state_index": 16,
-        "native_event_state_value": 1,
         "turn": 10
       }
     }

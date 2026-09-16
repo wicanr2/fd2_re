@@ -139,6 +139,10 @@ type Unit struct {
 	HasNativeRecordByte35 bool `json:"has_native_record_byte35,omitempty"`
 	NativeRecordByte36    byte `json:"native_record_byte36,omitempty"`
 	HasNativeRecordByte36 bool `json:"has_native_record_byte36,omitempty"`
+	// NativeJoinPersistentPending：sub_112A5 建構之後、還沒經過戰後 0x11506 整筆抄回的
+	// 持續記錄。這期間持續槽裡 +0..+4、+0x34..+0x36、+0x3d 仍是建構前的殘值，寫回槽時
+	// 不從 Unit 覆蓋；戰後同步（syncPartyFromBattle）清掉。
+	NativeJoinPersistentPending bool `json:"native_join_persistent_pending,omitempty"`
 	// NativeRecordByte3D is copied from FDFIELD b2 by 0x10fc8. It is distinct
 	// from constructor-table race at runtime +0x1f.
 	NativeRecordByte3D    byte

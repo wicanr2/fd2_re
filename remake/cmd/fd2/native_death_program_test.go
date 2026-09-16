@@ -209,8 +209,10 @@ func TestNativeDeathRewardOnlyForPlayerKiller(t *testing.T) {
 		NativeInventoryFlags: []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80},
 	}
 	g.grantNativeDeathReward(1, 1000, own)
-	if g.gold != 1000 {
-		t.Fatalf("我方擊殺應拿到 1000，現在 %d", g.gold)
+	// 0x1ABFD：金額在訊息關框之後才加，grant 只排訊息。
+	if g.gold != 0 || len(g.pendingNativeRewardMsgs) != 1 ||
+		g.pendingNativeRewardMsgs[0].kind != 1 || g.pendingNativeRewardMsgs[0].value != 1000 {
+		t.Fatalf("我方擊殺應排一則 1000 的金錢訊息、關框前不加：gold=%d msgs=%+v", g.gold, g.pendingNativeRewardMsgs)
 	}
 	g.grantNativeDeathReward(0, 0xd3, own)
 	if !slices.Equal(own.Inventory, []int{0xd3}) || own.InventorySlots[0] != 0xd3 ||

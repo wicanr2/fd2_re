@@ -128,8 +128,10 @@ if [ -n "$state_dir" ]; then
   mkdir -p "$state_dir"
   state_dir=$(cd "$state_dir" && pwd)
 fi
+test -d "$repo/remake/assets/maps" || { echo "找不到地圖成本格目錄：$repo/remake/assets/maps" >&2; exit 2; }
 mounts=(-v "$dos:/dos:ro" -v "$orig:/orig:ro" -v "$out:/out:rw"
         -v "$repo/tools/dosgolem_oracle_drive.py:/drive.py:ro"
+        -v "$repo/remake/assets/maps:/maps:ro"
         -v "$cache/gocache:/gocache" -v "$cache/gomodcache:/gomodcache")
 if [ -n "$state_dir" ]; then
   mounts+=(-v "$state_dir:/state:rw")

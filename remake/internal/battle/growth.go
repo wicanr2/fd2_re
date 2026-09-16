@@ -286,6 +286,15 @@ func (u *Unit) applyGrowthRow(row GrowthRow, roll statRoll) LevelUpEvent {
 	// +0x40 與目前 MP +0x44，所以升級當下的 HP／MP 不變。
 	u.MaxHP += ev.HpGain
 	u.MaxMP += ev.MpGain
+	// 原版就是直接加在記錄的 +0x42／+0x46 上；HUD 小窗（0x1AE8E 比 +0x40 與 +0x42 選數字
+	// 底色）與存檔讀的是這兩個 word，不是引擎欄位（第七章 r6 seq 1152：蓋亞升級後
+	// 314/328 要用「不等」的綠字）。
+	if u.HasNativeRecordWord42 {
+		u.NativeRecordWord42 = uint16(u.MaxHP)
+	}
+	if u.HasNativeRecordWord46 {
+		u.NativeRecordWord46 = uint16(u.MaxMP)
+	}
 	return ev
 }
 

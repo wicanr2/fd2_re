@@ -274,19 +274,6 @@
       "issue": 35
     },
     {
-      "id": "town-to-battle-fade-and-transient-phase-order",
-      "layer": "runtime",
-      "category": "RE待解",
-      "title": "從城鎮進戰場的淡出動畫：確認它在原版控制流裡的位置，以及與 sub_1A866 暫時狀態掃描的先後",
-      "body": "第六章對拍（73853d2b）把 sub_1A866(selector) 的暫時狀態掃描接回「從城鎮正常進戰場」的路徑（nativeTransientSweepAvailable → beginNativeTransientPhases），但只比了數值：+0x25 扣血、sub_1DB65 標記、+0x22..+0x27 遞減與到期重算。使用者記得從城鎮出發進戰場時原版有一段淡出動畫；目前的證據（58 §0x1A866→0x1DB65／0x1B750、docs/data/ida/fd2_transient_expiry_presentation_ida.txt）只閉合到期端的 DATO＋FDTXT 0x1E1..0x1E6 提示、present／input 與 delay10，沒有淡出；淡出也可能屬於出口→LOADCH 那段（0x11d40 DAC 寫入迴圈、0x24618 indexed transition 家族）而不是暫時狀態階段本身。要用原版證據定下來：(1) 出口 YES 之後到 battle_start 之間原版畫了什麼（第六章 r4 seq 39→77 的 checkpoint 只有兩端，中間用 FD2_ORACLE_FRAMES 抽幀），淡出是哪一支函式、由誰呼叫、在 LOADCH／佈陣之前還是之後；(2) 三個 selector 的 0x1A866 呼叫點相對於淡出、橫幅、佈陣的順序；(3) 重製端 beginNativeTransientPhases 現在在 endTurnAfterSelector1Events（selector 1、0 合併在友軍 AI 之前）與 completeTurnPlayerPhase（selector 2）跑，原版 selector 0 在橫幅之後，這個合併對有友軍 AI 的章是不是可見差異。做完把順序寫進 56 的 0x1A30B 段落，淡出接進重製端或明寫不在這條路徑。",
-      "acceptance": "56 記下淡出函式的位址、caller 與在出口→LOADCH→佈陣→第一回合裡的位置，並記下三個 0x1A866 呼叫點相對它的順序；重製端要嘛接上同狀態的淡出（原版側抽幀對照），要嘛在 58 明寫它不在這條路徑。第七章對拍的 town→battle 抽幀不出現這段差異。",
-      "verify": {
-        "kind": "manual",
-        "note": "看 56 有沒有「城鎮進戰場淡出」段落與 0x1A866 三個呼叫點的順序；沒有就未完成。"
-      },
-      "issue": 37
-    },
-    {
       "id": "parity-replay-dato-mouth-and-dac-cycle-variants",
       "layer": "runtime",
       "category": "缺陷",
@@ -298,6 +285,19 @@
         "note": "看 parity-ch06.json frames.points seq 1053 的 diff_pixels 是否為 0；不是就未完成。"
       },
       "issue": 38
+    },
+    {
+      "id": "town-departure-zoom-and-battle-fade-in-not-in-remake",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "重製端沒接城鎮出發的十步縮放暗化（0x2D190..0x2D275）與進戰場的 64 步淡入（0x1F544）",
+      "body": "#37 用原版側探針（work/parity-slot-ch07/probe-fade，FD2_ORACLE_FRAME_EIP=0x11D40 抽幀、FD2_ORACLE_EIP_TRACE=0x1F882,0x11D40）把出口 YES 之後到 battle_start 之間的兩段過場閉合了（56 §城鎮進戰場的過場、輔助基準 docs/figures/parity-ch07-town-fade-probe.png）：(1) 0x2D190..0x2D275 城鎮出發：ebx=1..10 十步，每步依 [0x5412B] 城鎮變體的 0x52635／0x52647 表內插座標呼叫 0x2FB9F 重畫（建築往中心放大），0x373C4 搬到 VGA，0x11D40(0,0xFF,4k) 把 DAC 壓暗，迴圈後 0x11D40(0,0xFF,0x40) 全黑、0x375C0 清 VGA；(2) 0x1F42D 進戰場：LOADCH 之後 0x1F544 呼叫 0x11D40(0,0xFF,level) 64 次、level 0x40→0 從黑淡入地圖，之後才是戰前 handler 的對白與 battle_start 游標。正式重製端從城鎮出發直接進戰場，兩段都沒接；章收據的 departure_prompt／battle_start 都在這段之外，gate 看不到。做法：把 0x2FB9F 的縮放重畫與 0x11D40 的 DAC 等級寫成 indexed composer 的兩個過場工作（城鎮側十步、戰場側 64 步），用探針幀（每步一幀，index parity-ch07-town-fade-probe.json）做同狀態對照；0x2FB9F 的內插表 0x52635／0x52647 與「建築往中心放大」目前是強推論，接之前先把它反組譯成規則。",
+      "acceptance": "重製端從城鎮出口 YES 到戰場第一幀之間播出十步縮放暗化與 64 步淡入；用 FD2_ORACLE_FRAME_EIP=0x11D40 的探針幀逐步對照（每步 diff 在 640 px 預算內）並記進 57；56 的 0x2FB9F 內插表升為已證實。",
+      "verify": {
+        "kind": "manual",
+        "note": "看 57 有沒有 town→battle 過場的逐步對照收據（探針幀對重製幀）；沒有就未完成。"
+      },
+      "issue": 39
     }
   ]
 }

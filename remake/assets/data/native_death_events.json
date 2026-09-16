@@ -389,6 +389,71 @@
       ]
     },
     {
+      "id": 25,
+      "handler": "0x34924",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 1,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x3493c"
+        },
+        {
+          "op": "pan",
+          "x": 16,
+          "y": 10,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x34954"
+        },
+        {
+          "op": "acting",
+          "resource": 30,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x34960"
+        },
+        {
+          "op": "dialogue",
+          "text": 2,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x3496a"
+        },
+        {
+          "op": "state_set",
+          "index": 17,
+          "value": 1,
+          "when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "source": "0x34991"
+        }
+      ]
+    },
+    {
       "id": 23,
       "handler": "0x34844",
       "battle_units": [

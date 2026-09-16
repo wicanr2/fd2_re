@@ -502,7 +502,7 @@ func (r *parityReplay) ui() string {
 		return "preparation"
 	case "battle":
 		switch {
-		case len(g.dialog) > 0:
+		case len(g.dialog) > 0, g.nativeDeathRewardMessageAwaitingKey():
 			return "dialogue"
 		case g.ring:
 			return "ring"
@@ -592,7 +592,13 @@ func (r *parityReplay) frame(kind string) (string, string) {
 			for idle := 0; idle < 4; idle++ {
 				g.st.NativeMapCycleState.Idle = idle
 				g.st.NativeTerrainPhaseState.Phase = phase
-				err := g.composeNativeMapFrame()
+				compose := g.composeNativeMapFrame
+				if g.nativeDeathRewardMessageAwaitingKey() {
+					// 0x1AA1D 的訊息在 0x13512 設 bit7 之前：底圖上行動單位沒變灰。
+					rewardActor := g.nativeSystemEndTurnUI.rewardMessage.actor
+					compose = func() error { return g.composeNativeMapFrameBeforeActed(rewardActor) }
+				}
+				err := compose()
 				if err == nil && g.st.NativeMapCycleState.Idle != idle {
 					// 0x1297D 在每次重繪開頭依 BIOS tick 推進 idle 相位；上一次重繪
 					// 之後若已過四個 tick，這一張會先 +1 再畫，設定的相位就少一張
@@ -600,7 +606,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 					// 重設相位再畫一次就不會再推進。
 					g.st.NativeMapCycleState.Idle = idle
 					g.st.NativeTerrainPhaseState.Phase = phase
-					err = g.composeNativeMapFrame()
+					err = compose()
 				}
 				if err != nil {
 					restore()
@@ -723,6 +729,36 @@ func (r *parityReplay) bannerVariants() []frameVariant {
 		if !ok {
 			return out
 		}
+		if g.nativeDeathRewardMessageAwaitingKey() {
+			// 0x1AA1D 的訊息：0x1956B 把當下畫面抄走再開對話格，底圖跟著這一張
+			// idle／LUT 相位變體走。
+			count := len(g.nativeSystemEndTurnUI.rewardMessage.portraits)
+			if count == 0 {
+				count = 1
+			}
+			for frame := 0; frame < count; frame++ {
+				pix, err := g.composeNativeDeathRewardMessageOn(img.Pix, frame)
+				if err != nil {
+					r.t.Fatalf("掉落訊息疊不上戰場整幀：%v", err)
+				}
+				out = append(out, frameVariant{pix: pix, palette: img.Palette})
+			}
+			return out
+		}
+		if g.nativeLevelUpDialogueAtWait() {
+			// 0x1E292 的對話停在等鍵處：嘴型與箭頭各出變體。底圖是 0x11CAC 開框前那一次
+			// 重繪，單位 idle 相位跟著那一拍的 BIOS tick 走，原版 checkpoint 沒記；框外
+			// 的部分改抄這一張 idle／LUT 相位變體的整幀（r6 seq 932／1022／1747 只差
+			// 框上方敵人的 idle 幀）。
+			variants, err := g.nativeStoryDialogueWaitVariants()
+			if err != nil {
+				r.t.Fatalf("升級對話等鍵畫面：%v", err)
+			}
+			for _, pix := range variants {
+				out = append(out, frameVariant{pix: rebaseNativeLowerDialogueFrame(pix, img.Pix), palette: img.Palette})
+			}
+			return out
+		}
 		return append(out, frameVariant{pix: append([]byte(nil), img.Pix...), palette: img.Palette})
 	}
 	savedT, savedFrame := g.bannerT, g.bannerFrame
@@ -745,6 +781,19 @@ func (r *parityReplay) bannerVariants() []frameVariant {
 			continue
 		}
 		out = append(out, frameVariant{pix: append([]byte(nil), img.Pix...), palette: img.Palette})
+	}
+	return out
+}
+
+// rebaseNativeLowerDialogueFrame 把下框對話幀（0x1956B 的 19×5 格框：x 5..314、y 112..197，
+// 見 campaign.ComposeNativeStoryDialogueBaseFrame）框外的像素換成另一張戰場整幀。
+func rebaseNativeLowerDialogueFrame(variant, base []byte) []byte {
+	if len(variant) != 320*200 || len(base) != 320*200 {
+		return variant
+	}
+	out := append([]byte(nil), base...)
+	for y := 112; y < 198; y++ {
+		copy(out[y*320+5:y*320+315], variant[y*320+5:y*320+315])
 	}
 	return out
 }
@@ -1025,10 +1074,27 @@ func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.U
 	pump(t, g, ch01FrameBudget, func() bool {
 		return g.atk == nil && g.walk == nil && !g.ring && (target.HP != hp || target.HP <= 0 || actor.Acted)
 	})
-	if !pump(t, g, ch01FrameBudget, func() bool { return actor.Acted || actor.HP <= 0 }) {
+	// 擊倒有掉落時，原版在行動收尾前停在 0x1AA1D 的訊息等鍵處（第七章 r3 seq 389），
+	// 原版側的 attack_result 就是在那裡拍的；先停在那裡讓檢查點拍到，之後再按鍵。
+	if !pump(t, g, ch01FrameBudget, func() bool {
+		return actor.Acted || actor.HP <= 0 || g.nativeDeathRewardMessageAwaitingKey() || g.nativeLevelUpDialogueAtWait()
+	}) {
 		t.Fatalf("attack(seq %d)：攻擊之後沒有行動完畢\n阻塞：%s", action.Seq, ch01Blockers(g))
 	}
 	return target
+}
+
+// dismissNativeLevelUpDialogue 逐頁按鍵推完 0x1E292 的對話，直到關框。
+func (r *parityReplay) dismissNativeLevelUpDialogue() {
+	t, g := r.t, r.g
+	if !pump(t, g, ch01FrameBudget*4, func() bool {
+		if g.nativeLevelUpDialogue != nil {
+			g.stepNativeLevelUpDialogue(true)
+		}
+		return g.nativeLevelUpDialogue == nil
+	}) {
+		t.Fatalf("升級對話推不完\n阻塞：%s", ch01Blockers(g))
+	}
 }
 
 // waitInsteadOfAttack 在攻擊已分岔時讓單位待機，維持「每個單位都行動完」的回合結構。
@@ -1043,9 +1109,32 @@ func (r *parityReplay) waitInsteadOfAttack(actor *battle.Unit) {
 
 func (r *parityReplay) checkpointAttackResult(action parityAction, _ *battle.Unit, _ *battle.Unit, _ [2]int) {
 	g := r.g
-	// 攻擊收尾之後可能接死亡對白、升級訊息；推到玩家再度有操作權或戰鬥結束。
-	pump(r.t, g, ch01FrameBudget, func() bool { return r.playerHasControl() || g.result != "" || g.camp.NodeID() != r.battle })
+	// 攻擊收尾之後可能接 0x1AA1D 的掉落訊息（等鍵）、0x1E292 的經驗／升級對話（每個 FFFD
+	// 等鍵；只有經驗那一頁走 0x1E5C0 計時自己關）、死亡對白；推到玩家再度有操作權、停在
+	// 等鍵處或戰鬥結束。原版側的 attack_result 就是在第一個等鍵處拍的。
+	settled := func() bool {
+		return r.playerHasControl() || g.nativeDeathRewardMessageAwaitingKey() || g.nativeLevelUpDialogueAtWait() ||
+			g.result != "" || g.camp.NodeID() != r.battle
+	}
+	pump(r.t, g, ch01FrameBudget, settled)
 	r.checkpoint("attack_result", action.Seq, r.ui(), true)
+	// 原版側驅動端在 attack_result 之後對每個等鍵處送 enter（finish-dialogue），直到回到
+	// 游標才做下一個動作：掉落訊息一鍵、升級對話每頁一鍵（r4 seq 969..973、r6 seq
+	// 1837..1841）。同一次行動可能先掉落再升級（0x18890 handler 裡的 0x1AA1D 在 0x1196D 的
+	// 0x1E292 之前），照同樣順序按完。
+	for step := 0; step < 8; step++ {
+		switch {
+		case g.nativeLevelUpDialogue != nil:
+			r.dismissNativeLevelUpDialogue()
+		case g.nativeDeathRewardMessageAwaitingKey():
+			g.acknowledgeNativeDeathRewardMessage()
+			pump(r.t, g, ch01FrameBudget, func() bool { return g.nativeSystemEndTurnUI == nil })
+		default:
+			return
+		}
+		pump(r.t, g, ch01FrameBudget, settled)
+	}
+	r.t.Fatalf("attack_result(seq %d)：攻擊之後的等鍵訊息按不完\n阻塞：%s", action.Seq, ch01Blockers(g))
 }
 
 func (r *parityReplay) waitUnit(action parityAction, actor *battle.Unit) {

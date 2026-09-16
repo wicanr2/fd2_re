@@ -93,8 +93,42 @@ func (g *Game) applyNativeTransientPhases(selectors ...byte) ([]battle.NativeTra
 	if err != nil {
 		return nil, err
 	}
-	*g.st = *candidate
+	remap := g.adoptNativeStateCandidate(candidate)
+	remapNativeTransientExpiries(expired, remap)
 	return expired, nil
+}
+
+// remapNativeTransientExpiries 把到期事件裡指向候選副本的 Unit 換成 g.st 保留的原指標。
+func remapNativeTransientExpiries(expired []battle.NativeTransientExpiry, remap map[*battle.Unit]*battle.Unit) {
+	for index := range expired {
+		if original, ok := remap[expired[index].Unit]; ok {
+			expired[index].Unit = original
+		}
+	}
+}
+
+// adoptNativeStateCandidate 把候選狀態寫回 g.st，但保留原本的 Unit 指標：候選是整份
+// 複製出來的（buildNativeTransientPhases 逐筆 clone），直接 `*g.st = *candidate` 會把
+// Units 換成一批新指標，凡是握著舊指標的（g.sel、AI 計畫、deathRewarded、選擇器快取、
+// 重播端的 actor）都會指到過期的副本。第七章 r6 seq 1763：selector 0 掃描搬到橫幅之後
+// 才跑，換指標讓整回合的單位畫格都對不上。
+func (g *Game) adoptNativeStateCandidate(candidate *battle.State) map[*battle.Unit]*battle.Unit {
+	if g == nil || g.st == nil || candidate == nil {
+		return nil
+	}
+	// 候選可能比現況多出登場的群組（event 76）：共同前綴保留舊指標，多出來的才是新指標。
+	remap := make(map[*battle.Unit]*battle.Unit)
+	for index := 0; index < len(g.st.Units) && index < len(candidate.Units); index++ {
+		current, clone := g.st.Units[index], candidate.Units[index]
+		if current == nil || clone == nil || current == clone {
+			continue
+		}
+		*current = *clone
+		candidate.Units[index] = current
+		remap[clone] = current
+	}
+	*g.st = *candidate
+	return remap
 }
 
 func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransientExpiry, error) {

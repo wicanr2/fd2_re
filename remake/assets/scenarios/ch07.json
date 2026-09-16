@@ -383,9 +383,7 @@
       "id": "reinforce_ch07_e25_t10",
       "trigger": "on_turn_end",
       "when": {
-        "turn": 10,
-        "native_event_state_index": 16,
-        "native_event_state_value": 1
+        "turn": 10
       },
       "once": true,
       "do": [
@@ -402,93 +400,330 @@
               "raw_placement_gate": 1
             }
           ],
-          "native_event_id": 25
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
         },
         {
           "type": "pan",
+          "native_source": "0x34954",
           "grid": [
             16,
             10
           ],
-          "native_source": "0x34958"
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
         },
         {
           "type": "native_acting",
-          "native_event_id": 25,
+          "native_source": "0x34960",
           "native_acting": {
             "resource": 30,
-            "source": "0x34962"
-          }
-        },
-        {
-          "type": "dialogue",
-          "speaker": 12,
-          "text": "哎呀!一大群男人追殺一個小姑娘,不覺得丟臉嗎?",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": -1,
-          "text": "妳的一拳讓我的部下得療養三個月,無故毆打王國駐軍可是重罪,乖乖的跟我回去說個明白吧!",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": 12,
-          "text": "誰教他對我亂瞄!你們王國軍都是這個樣子的嗎?",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": -1,
-          "text": "哼....不和妳吵了,給我抓起來!",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": 1,
-          "text": "咦!那邊有王國軍在圍攻一個小女孩,這是怎麼一回事?",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": 13,
-          "text": "喂,我們自己都顧不了了,不要再去湊熱鬧...",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": 0,
-          "text": "什麼!你能眼睜睜的看著一群王國軍欺負一個小女孩?我自己去收拾他們好了。",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": 4,
-          "text": "好啦好啦,我陪你去就是了,反正不差這幾個...",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "dialogue",
-          "speaker": 13,
-          "text": "好吧,那就上吧!",
-          "native_source": "0x34989",
-          "native_text_index": 2
-        },
-        {
-          "type": "set_native_event_state",
+            "source": "0x34960"
+          },
           "native_event_id": 25,
-          "event_state_index": 17,
-          "event_state_value": 1,
-          "native_source": "0x34996"
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 0,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 12,
+            "pages": [
+              [
+                "『哎呀！一大群男人追殺一個",
+                "　小姑娘，不覺得丟臉嗎？』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 1,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 34,
+            "pages": [
+              [
+                "『妳的一拳讓我的部下得療義",
+                "　三個月，無故毆打王國駐軍",
+                "　可是重罪，乖乖的跟我回去"
+              ],
+              [
+                "　說個明白吧！』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 2,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 12,
+            "pages": [
+              [
+                "『誰教他對我亂瞄！你們王國",
+                "　軍都是這個樣子的嗎？』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 3,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 34,
+            "pages": [
+              [
+                "『哼．．不和妳吵了，",
+                "　給我抓起來！』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 4,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 1,
+            "pages": [
+              [
+                "『咦！那邊有王國軍在圍攻一",
+                "　個小女孩，這是怎麼一回",
+                "　事？』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 5,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『喂，我們自己都顧不了了，",
+                "　不要再去湊熱鬧．．』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 6,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『什麼！你能眼睜睜的看著一",
+                "　群王國軍欺負一個小女孩？",
+                "　我自己去收拾他們好了。』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 7,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『好啦好啦，",
+                "　我陪你去就是了，",
+                "　反正不差這幾個．．』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x3496a",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch07.json",
+            "scene_index": 2,
+            "line": 8,
+            "source_dat": "FDTXT_007",
+            "string_index": 2,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 13,
+            "pages": [
+              [
+                "『好吧，那就上吧！』"
+              ]
+            ]
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34991",
+          "native_death_op": {
+            "op": "state_set",
+            "index": 17,
+            "value": 1
+          },
+          "native_event_id": 25,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
         }
       ]
     }

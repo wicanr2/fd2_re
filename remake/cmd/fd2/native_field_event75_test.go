@@ -27,7 +27,8 @@ func TestEvent75SuccessfulActionCommitsOnlyAfterEditableDialogue(t *testing.T) {
 	g := &Game{st: st, sc: sc}
 	attachOfficialTestLocale(t, g, "zh-Hant")
 	g.finishSuccessfulUnitAction(actor, nil)
-	if g.battleEvent == nil || len(g.dialog) != 1 || actor.Acted ||
+	// 0x13512 先設 bit7（Acted），0x1198A 的事件對話期間 state／rows 都還沒提交。
+	if g.battleEvent == nil || len(g.dialog) != 1 || !actor.Acted ||
 		st.NativeEventState[16] != 0 || st.NativeTurnEventControls[0].Turn != 0xff {
 		t.Fatalf("event75 started job=%v dialogue=%d acted=%v state16=%d row0=%#v", g.battleEvent != nil, len(g.dialog), actor.Acted, st.NativeEventState[16], st.NativeTurnEventControls[0])
 	}
@@ -63,7 +64,7 @@ func TestEvent75MismatchUsesTriggerRawByte7AndDoesNotActivate(t *testing.T) {
 	g := &Game{st: st, sc: sc}
 	attachOfficialTestLocale(t, g, "zh-Hant")
 	g.finishSuccessfulUnitAction(actor, nil)
-	if len(g.dialog) != 1 || g.dialog[0].Speaker != 23 || actor.Acted {
+	if len(g.dialog) != 1 || g.dialog[0].Speaker != 23 || !actor.Acted {
 		t.Fatalf("event75 mismatch dialogue=%#v acted=%v", g.dialog, actor.Acted)
 	}
 	g.dialog = nil

@@ -309,6 +309,14 @@ func pump(t *testing.T, g *Game, budget int, done func() bool) bool {
 		}
 		ackPresents(g)
 		answerNativeTreasurePrompt(g)
+		// 敵方回合裡我方反擊擊倒有掉落時，0x1AA1D 的訊息會等鍵（原版側驅動端在 await
+		// 裡看到 dialogue 就送 enter）；玩家回合的訊息由攻擊步驟自己在檢查點之後按。
+		if g.aiBusy && g.nativeDeathRewardMessageAwaitingKey() {
+			g.acknowledgeNativeDeathRewardMessage()
+		}
+		if g.aiBusy && g.nativeLevelUpDialogue != nil {
+			g.stepNativeLevelUpDialogue(true)
+		}
 		// 戰場事件的對白要玩家按 enter 才會往下走（正式路徑是
 		// handleBattleEventDialogueInput）。第一關中途就有這種事件，沒人按就停在
 		// 那裡，看起來像敵方回合收不掉。逐字與收框各自有閘門，逐幀按等同玩家連按。

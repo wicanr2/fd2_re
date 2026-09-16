@@ -222,7 +222,12 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 				return err
 			}
 			return g.startNativeCommandHealPresentation(id, targets, func() ([]battle.NativeCommandHealResult, error) {
-				return g.st.ExecuteNativeAICommandHeal(actor, origin, id, g.rng)
+				// 0x1C916 每個目標走一步 0x4E893（第七章 r4 seq 603 追蹤），不是重製端的 g.rng。
+				results, next, err := g.st.ExecuteNativeAICommandHealNative(actor, origin, id, g.nativeRNGState)
+				if err == nil {
+					g.nativeRNGState = next
+				}
+				return results, err
 			}, func(results []battle.NativeCommandHealResult) {
 				total := 0
 				for _, result := range results {

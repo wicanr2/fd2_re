@@ -431,6 +431,10 @@ func (g *Game) finishNativeStoryDialogueClosing() {
 	}
 	g.dlgPage, g.dlgScrollT, g.dlgScrollFrom, g.nativeDialogueProgress = 0, 0, 0, -1
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
+	if g.nativeLevelUpDialogue != nil {
+		g.finishNativeLevelUpDialogue()
+		return
+	}
 	if g.battleEvent != nil {
 		g.advanceBattleEvent()
 		return
@@ -495,7 +499,10 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	if g.mouthOpen && progress == len(frames)-1 && g.dlgPage < len(g.nativeDialogueMouthOpen) {
 		frame = g.nativeDialogueMouthOpen[g.dlgPage]
 	}
-	if g.nativeStoryDialogueAtInputWait() && g.dlgPage+1 < len(g.nativeDialogueProgressive) {
+	// 最後一頁的箭頭：0x1E292 最後一欄的 FFFD 也等鍵（第七章 r4 seq 972 MHP 那一頁有箭頭）。
+	lastPageArrow := g.nativeLevelUpDialogue != nil && g.nativeLevelUpDialogue.awaitLastKey &&
+		g.nativeLevelUpDialogue.closeTimer == 0
+	if g.nativeStoryDialogueAtInputWait() && (g.dlgPage+1 < len(g.nativeDialogueProgressive) || lastPageArrow) {
 		var err error
 		frame, err = campaign.ComposeNativeStoryDialogueWaitArrow(frame, g.nativeClassUI.dialogue,
 			g.nativeDialogueLayout, (g.nativeDialogueArrowTicks/6)%2)

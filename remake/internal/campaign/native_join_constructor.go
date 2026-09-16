@@ -111,6 +111,18 @@ func (table NativeJoinConstructorTable) MaterializePersistentUnit(
 	base battle.Unit,
 	itemTable []byte,
 ) (battle.Unit, error) {
+	return table.MaterializePersistentUnitOn(fdsave.PersistentRecord{}, id, base, itemTable)
+}
+
+// MaterializePersistentUnitOn 同 MaterializePersistentUnit，但建構器沒寫到的 byte 照
+// residual（sub_112A5 寫進去的那一格在寫入前的內容）；空物品格的 item byte 也跟著
+// residual 走，之後寫回槽時才會和原版逐 byte 相同。
+func (table NativeJoinConstructorTable) MaterializePersistentUnitOn(
+	residual fdsave.PersistentRecord,
+	id int,
+	base battle.Unit,
+	itemTable []byte,
+) (battle.Unit, error) {
 	row, ok := table.rows[id]
 	if !ok || id < 0 || id > 0xff {
 		return battle.Unit{}, fmt.Errorf("native JOIN character %d has no proven constructor row", id)
@@ -125,13 +137,21 @@ func (table NativeJoinConstructorTable) MaterializePersistentUnit(
 		return battle.Unit{}, fmt.Errorf("native JOIN character %d HP/MP exceeds raw word", id)
 	}
 
-	persistent, err := table.MaterializePersistentRecord(id, itemTable)
+	persistent, err := table.MaterializePersistentRecordOn(residual, id, itemTable)
 	if err != nil {
 		return battle.Unit{}, err
 	}
 	record := persistent.Raw
 
 	unit := base
+	// 建構器只寫 +5..+0x16、+0x18、+0x1a..+0x21、+0x31、+0x37.. 與裝備重算的欄位；
+	// +0x34..+0x36、+0x3d 等留 residual。下一次戰後同步（0x11506 整筆抄回）之前，
+	// 持續記錄裡就是這些 byte，不是場上記錄帶來的值。
+	unit.NativeRecordByte34, unit.HasNativeRecordByte34 = record[0x34], true
+	unit.NativeRecordByte35, unit.HasNativeRecordByte35 = record[0x35], true
+	unit.NativeRecordByte36, unit.HasNativeRecordByte36 = record[0x36], true
+	unit.NativeRecordByte3D, unit.HasNativeRecordByte3D = record[0x3d], true
+	unit.NativeJoinPersistentPending = true
 	unit.Camp = battle.Own
 	unit.Lv = level
 	unit.HP, unit.MaxHP = maxHP, maxHP
@@ -189,6 +209,18 @@ func (table NativeJoinConstructorTable) MaterializePersistentRecord(
 	id int,
 	itemTable []byte,
 ) (fdsave.PersistentRecord, error) {
+	return table.MaterializePersistentRecordOn(fdsave.PersistentRecord{}, id, itemTable)
+}
+
+// MaterializePersistentRecordOn 把 sub_112A5 的寫入疊在 residual 上：持續名冊記憶體是
+// 0x10010 從槽整批還原的，count 之後那一格在 JOIN 之前就是 LOAD 時槽裡的 bytes（新開局
+// 全 0），建構器沒寫到的 byte 原封不動留在存檔裡（第七章 r6 凱麗：+0..+4、+0x17、
+// +0x19、+0x28..+0x30、+0x32..+0x36、+0x3d 都是 LOAD 進來的殘值）。
+func (table NativeJoinConstructorTable) MaterializePersistentRecordOn(
+	residual fdsave.PersistentRecord,
+	id int,
+	itemTable []byte,
+) (fdsave.PersistentRecord, error) {
 	row, ok := table.rows[id]
 	if !ok || id < 0 || id > 0xff {
 		return fdsave.PersistentRecord{}, fmt.Errorf("native JOIN character %d has no proven constructor row", id)
@@ -203,7 +235,7 @@ func (table NativeJoinConstructorTable) MaterializePersistentRecord(
 		return fdsave.PersistentRecord{}, fmt.Errorf("native JOIN character %d HP/MP exceeds raw word", id)
 	}
 
-	var record fdsave.PersistentRecord
+	record := residual
 	raw := record.Raw[:]
 	raw[5] = 0
 	raw[6] = 2

@@ -26,6 +26,7 @@ type nativeSystemEndTurnUIState struct {
 	loadCandidate              *Game
 	treasure                   *nativeTreasurePrompt
 	deathReward                *nativeDeathRewardUIState
+	rewardMessage              *nativeDeathRewardMessageState
 }
 
 const (
@@ -150,6 +151,7 @@ func (g *Game) resetActionOverlayLifecycle() {
 	g.nativeSystemGroupMarch = nil
 	g.nativeSystemGroupMarchStep = 0
 	g.pendingNativeDeathRewards = nil
+	g.pendingNativeRewardMsgs = nil
 	g.nativeDeathRewardUI = nil
 	g.nativeDeathRewardThen = nil
 	if g.nativeSystemEndTurnUI != nil {
@@ -775,6 +777,11 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 		if err != nil {
 			return false
 		}
+	} else if state.rewardMessage != nil {
+		if !state.rewardMessage.awaitAck {
+			return false
+		}
+		frame = state.rewardMessage.final
 	} else if g.nativeSystemEndTurnDelay > 0 || (state.treasure != nil && state.treasure.awaitAck) {
 		frames := state.canceled
 		if state.acceptedOutcome {

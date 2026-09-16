@@ -21,7 +21,7 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 		return err
 	}
 	if len(expired) == 0 {
-		*g.st = *candidate
+		g.adoptNativeStateCandidate(candidate)
 		if then != nil {
 			then()
 		}
@@ -59,7 +59,7 @@ func (g *Game) beginNativeTransientPhases(selectors []byte, then func()) error {
 		frames = append(frames, opening...)
 		frames = append(frames, closing...)
 	}
-	*g.st = *candidate
+	g.adoptNativeStateCandidate(candidate)
 	g.msg = ""
 	g.transientUI = true
 	g.nativeClassUIJob = &nativeClassUIJob{

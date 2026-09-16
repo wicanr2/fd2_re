@@ -44,7 +44,9 @@ func TestBattleWalkPreservesNativeSevenTickRecordLifecycle(t *testing.T) {
 	}
 }
 
-func TestBattleWalkAppliesMap25Selector0OnlyAfterLeftStepCommit(t *testing.T) {
+// 走行每一步只把 selector 0 的格子事件記進 [0x51A8F]（0x13175），行動收尾（0x1198A）才
+// 分派；第七章 r2 收據：直線向上走進 (12,15) 也觸發 event 26，方向不是條件。
+func TestBattleWalkNotesSelector0DuringWalkAndDispatchesAtActionEnd(t *testing.T) {
 	st, err := battle.Load("../../assets/maps/map25/map25_units.json")
 	if err != nil {
 		t.Fatal(err)
@@ -78,13 +80,25 @@ func TestBattleWalkAppliesMap25Selector0OnlyAfterLeftStepCommit(t *testing.T) {
 	}
 	g.stepBattleWalk()
 	for index := 39; index <= 44; index++ {
-		if got := st.Units[index].NativeRecordByte34; got != 0xA0 {
-			t.Fatalf("unit%d byte34=%#x, want 0xa0 after left-step selector0", index, got)
+		if got := st.Units[index].NativeRecordByte34; got != 0xA7 {
+			t.Fatalf("unit%d byte34=%#x, selector0 ran before the action ended", index, got)
 		}
+	}
+	if g.nativeFieldEventPending == nil || g.nativeFieldEventPending.x != 10 || g.nativeFieldEventPending.y != 36 {
+		t.Fatalf("pending=%+v, want the event at (10,36) noted", g.nativeFieldEventPending)
+	}
+	g.dispatchNativeFieldEventPending(trigger)
+	for index := 39; index <= 44; index++ {
+		if got := st.Units[index].NativeRecordByte34; got != 0xA0 {
+			t.Fatalf("unit%d byte34=%#x, want 0xa0 after the action-end dispatch", index, got)
+		}
+	}
+	if g.nativeFieldEventPending != nil {
+		t.Fatal("dispatch must reset [0x51A8F] to 0xff")
 	}
 }
 
-func TestBattleWalkDoesNotGeneralizeSelector0ToRightStep(t *testing.T) {
+func TestBattleWalkRightStepAlsoNotesSelector0(t *testing.T) {
 	st, err := battle.Load("../../assets/maps/map25/map25_units.json")
 	if err != nil {
 		t.Fatal(err)
@@ -111,14 +125,15 @@ func TestBattleWalkDoesNotGeneralizeSelector0ToRightStep(t *testing.T) {
 	for tick := 1; tick <= 7; tick++ {
 		g.stepBattleWalk()
 	}
+	g.dispatchNativeFieldEventPending(trigger)
 	for index := 39; index <= 44; index++ {
-		if got := st.Units[index].NativeRecordByte34; got != 0xA7 {
-			t.Fatalf("unit%d byte34=%#x, right step incorrectly ran selector0", index, got)
+		if got := st.Units[index].NativeRecordByte34; got != 0xA0 {
+			t.Fatalf("unit%d byte34=%#x, a right step into the cell must note selector0 too", index, got)
 		}
 	}
 }
 
-func TestBattleWalkActivatesMap26Event63OnlyAfterLeftStepCommit(t *testing.T) {
+func TestBattleWalkActivatesMap26Event63AtActionEnd(t *testing.T) {
 	st, err := battle.Load("../../assets/maps/map26/map26_units.json")
 	if err != nil {
 		t.Fatal(err)
@@ -158,10 +173,14 @@ func TestBattleWalkActivatesMap26Event63OnlyAfterLeftStepCommit(t *testing.T) {
 		}
 	}
 	g.stepBattleWalk()
-	if g.loadErr != "" || g.walk != nil ||
+	if g.loadErr != "" || g.walk != nil || st.NativeTurnEventControls[0].Turn != 0xff || st.NativeEventState[17] != 0 {
+		t.Fatalf("event62 ran during the walk: err=%q row=%#v state17=%d", g.loadErr, st.NativeTurnEventControls[0], st.NativeEventState[17])
+	}
+	g.dispatchNativeFieldEventPending(trigger)
+	if g.loadErr != "" ||
 		st.NativeTurnEventControls[0] != (battle.NativeTurnEventControl{Turn: 9, EventID: 63, RawCamp: 0}) ||
 		st.NativeEventState[17] != 1 {
-		t.Fatalf("event62 player path err=%q walk=%v row=%#v state17=%d", g.loadErr, g.walk, st.NativeTurnEventControls[0], st.NativeEventState[17])
+		t.Fatalf("event62 player path err=%q row=%#v state17=%d", g.loadErr, st.NativeTurnEventControls[0], st.NativeEventState[17])
 	}
 }
 

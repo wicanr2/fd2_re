@@ -930,26 +930,46 @@ selector-cache 首槽資料流；正式重製端改以首位 persistent party �
 2026-09-15 三章設施擴充測試於 Docker 全過，狀態 `passed`（issue #13 關閉）；
 外部存檔建立歷程限制與 dosgolem 分支未推送限制均保留在收據內。
 111 第四章章工作單元的整章收據見
-[`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（r58／原版側 r13，四個 gate 全過：
-酒店存檔整檔 sha256 與原版相同，55 個畫面比較點逐像素相同，狀態 `passed`）；
+[`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（remake-r14／原版側 r13，四個 gate 全過：
+酒店存檔整檔 sha256 與原版相同，55 個畫面比較點全在 640 px 預算內、38 點逐像素相同，其餘是
+56 §五章回顧分類過的指令環開啟中途，狀態 `passed`）；
 本輪閉合的原版語意（反擊經驗 `0x1566A`、`0x1E529` 成長擲骰、`0x1A30B` 回復、
 `0x1DB65` 死亡標記、`0x14B78` 四段目的地、三遍敵方掃描、`turn_events` selector
 byte、`0x18F6A` 玩家攻擊射程標記、`0x18A72` 移動後指令閘、`0x1A3A2` 橫幅前視窗搬運、
 敵方回合 `0x12D7B`／`0x12CEA` 游標協定、`0x1A477` 回復標記與 `0x13536` 清除、酒店
 `0x2FC85` 資源 13／DATO `0x81`／存檔槽 `0x30550`／文字 `0x249`、`0x294`）記在
 [56 §第四章章工作單元](56-fd2-remake-sdd.md#第四章章工作單元敵方回合與經驗鏈2026-09-15)。
-第五章的整章收據見 [`parity-ch05.json`](../data/ui-traces/parity-ch05.json)（remake-r5／原版側
-r5，四個 gate 全過：58 個畫面比較點逐像素相同、酒店存檔整檔 sha256 相同，狀態 `passed`）；
+第五章的整章收據見 [`parity-ch05.json`](../data/ui-traces/parity-ch05.json)（remake-r10／原版側
+r5，四個 gate 全過：58 個畫面比較點全在預算內、40 點逐像素相同，其餘見 56 §五章回顧、酒店存檔
+整檔 sha256 相同，狀態 `passed`）；
 本輪閉合的原版語意（全域事件表 `0x51B91` 的回合事件處理器 `0x345EA`／`0x3462E`／`0x34696`／
 `0x346C8`／`0x34565` 整筆轉寫、`0x1A30B` 友軍 AI 在橫幅之前與 selector 0 事件在橫幅之後的
 順序、default handler `0x205b4` 只掃已登場記錄的勝負判定、`0x11506` 照抄 `+2` FDICON
 快取槽與 `+3` 朝向）記在
 [56 §第五章章工作單元](56-fd2-remake-sdd.md#第五章章工作單元回合事件處理器與敵方回合順序2026-09-16)。
-第六章的整章收據見 [`parity-ch06.json`](../data/ui-traces/parity-ch06.json)（remake-r11／原版側
-r4、dosgolem `50a3b47`，四個 gate 全過：58 個畫面比較點逐像素相同、酒店存檔整檔 sha256 相同，
-狀態 `passed`）；本輪閉合的原版語意（selector 2 回合事件處理器 `0x347B1`／`0x347D9`／`0x34819`
+第六章的整章收據見 [`parity-ch06.json`](../data/ui-traces/parity-ch06.json)（remake-r10／原版側
+r4、dosgolem `50a3b47`，四個 gate 全過：58 個畫面比較點全在預算內、39 點逐像素相同，其餘見
+56 §五章回顧、酒店存檔整檔 sha256 相同，狀態 `passed`）；本輪閉合的原版語意（selector 2 回合事件處理器 `0x347B1`／`0x347D9`／`0x34819`
 與守衛 `0x3453E(8)`、佈陣格依槽位、HUD anchor `0x1AD2A` 的兩個閘與游標重繪條件、ACTING 對
 未登場記錄是 no-op、`0x1A866` 對敵方 +0x22..+0x27 的每回合遞減與指令 17 在 `0x15B77` 的
 「`+0x22==0` 才加 3 分」、指令 0／4 命中／傷害與 `0x2AF40` 抖動／`0x269D3` 六槽相位共用同一條
 `0x4E893` 序列且未命中走 `0x2AF61` 不抖動、dosgolem 補 `add/sub/xor al, imm8`）記在
 [56 §第六章章工作單元](56-fd2-remake-sdd.md#第六章章工作單元selector-2-回合事件記錄-8-守衛與戰後-spawn2026-09-16)。
+第七章的整章收據見 [`parity-ch07.json`](../data/ui-traces/parity-ch07.json)（remake-r8／原版側
+sample-r6、dosgolem `f57c23d`，四個 gate 全過：228 個畫面比較點全在預算內、酒店存檔整檔 sha256
+相同、`ai_order` 分岔 0，狀態 `passed`；抽樣截圖 `docs/figures/parity-ch07-samples-p1..p5.png`）；
+本輪閉合的原版語意（selector 0 格子事件每一步 `0x13175→0x13A44` 記、行動收尾 `0x1198A`／
+`0x1D855` 才分派、event 25 `0x34924` 與 event 26 `0x3499B` 整筆轉寫、`0x1AA1D` 型態 0／1 的同步
+訊息與型態 1 在 `0x196CB` 關框後才 `add [0x53BF3]`、`0x1C916` 回復量的一步 `0x4E893`、`0x14121`
+只在 `0x14B78` 真的走了才回 1 而 mode 0 的 `0x13B0F` 接著走 `0x13E9C`、`0x134E4` 在每個行動收尾
+把全部記錄 `+3` 歸零、`0x1E529` 直接改記錄 `+0x42`／`+0x46`、`sub_112A5` 只寫特定欄位而其餘
+byte 是 `0x10010` 整槽還原的殘值、`0x1A30B` 裡 `sub_1A866(0)` 在橫幅與 selector 0 事件之後、
+玩家收尾 `0x11985 0x13565` 自動換手在 `0x1198A` 分派之前且 AI 迴圈每筆記錄開頭 `0x1D853`／
+`0x1D8F8` 都把 `[0x51A8F]` 寫回 0xff、selector 1 格子事件由 handler 收尾格 `0x18B0C`／`0x18B66`
+呼叫 `0x13A44(x, y, 1)` 記進同一個 `[0x51A8F]`、
+dosgolem 補 `0A`／`32` 的 SIB 記憶體形式）記在
+[56 §第七章章工作單元](56-fd2-remake-sdd.md#第七章章工作單元格子事件分派掉落訊息與-step_into2026-09-16)。
+城鎮進戰場的過場（`0x2D190..0x2D275` 十步縮放＋DAC 暗化、`0x1F544` 64 步淡入）由探針幀與
+`0x11D40` 呼叫序列閉合為 RE-CLOSED，但**不在重製端路徑上**：正式重製端從城鎮出發直接進戰場，
+兩段動畫都還沒接（`BLOCKED`，issue 見 91 worklist）；章收據的 departure_prompt／battle_start
+兩端都在這段之外，不受影響。

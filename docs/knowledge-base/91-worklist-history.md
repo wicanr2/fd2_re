@@ -4306,3 +4306,42 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
   台帳第六章 `passed`。第四章 remake-r60、第五章 remake-r7 重跑仍 `passed`。
 - [ ] 未抽到：第 15 回合 event 22（group 1 登場）、法術／物品／買入（驅動端沒有）、升級幀
   （#29）；酒店讀檔（#32）；指令 1／2／3／6／7／8 的演出亂數還沒有收據。
+
+## 2026-09-17：第七章 111 四 gate 全過與抽樣截圖表
+
+- [x] 回顧（112 §0）：第六章 18 個 diff 點分類進 56 五章回顧表，開 #38（DATO 嘴型／DAC 循環色
+  相位）；#37（城鎮進戰場淡出與 `sub_1A866` 三個呼叫點的順序）以原版側探針幀閉合並關閉，
+  重製端沒接的兩段過場另開 #39（缺陷）。
+- [x] event 25 `0x34924`／event 26 `0x3499B` 轉寫（`extract_native_death_events.py` 帶
+  `when={"state_eq":[16,1]}`，`sync_native_turn_events.py` 降成 `reinforce_ch07_e25_t10`，
+  `native_field_event_rules.json` 加 map6 event 26）；selector 0 格子事件改成走行每步記、行動收尾
+  才分派（推翻「只有向左踏入」）。
+- [x] 建構槽 `ch07-manifest.json`（sha `85b080cb…`，ch02-cleared → target 6，9 人），合法性檢查
+  `ch07-slot-load.jsonl`；貝克威的建構偏差記在收據 limitations。
+- [x] 原版側 sample-r1～r6（dosgolem `f57c23d`，補 `0A`／`32` 的 SIB 記憶體形式；驅動端新增
+  `move_unit`／`step_into`／`sweep_round.skip_indices`）：LOAD → 出口 → 戰前對白 → 第 1～10 回合
+  全隊北上接戰、第 7～10 回合 step_into 踏事件格 26 → 第 10 回合 event 25 → `force_enemy_clear`
+  → 戰後 JOIN12 → 往王城的途中出售／五棟建築／酒店存檔／武器店前 Shift+F7 祕密商店；另跑
+  `probe-fade`（`FD2_ORACLE_FRAME_EIP=0x11D40`）抽城鎮出發十步縮放暗化與 `0x1F544` 64 步淡入。
+- [x] 重製側 remake-r3～r8：掉落訊息改成同步對話（型態 1 關框後才加金）、指令 13～16 回復量走
+  原版亂數、HUD anchor 在戰鬥第一次重繪套規則、mode 0 `0x14121` 不動就走 `0x13E9C`、`0x134E4`
+  全員姿勢歸零、升級對話底圖的 idle 相位、`+0x42`／`+0x46` 隨升級同步、JOIN 記錄殘值疊底、
+  selector 0 掃描搬到橫幅之後（`adoptNativeStateCandidate` 保留 Unit 指標）、玩家收尾照
+  `0x11985`：`0x13565` 自動換手在 `0x1198A` 格子事件分派之前。收據 `parity-ch07.json` 狀態
+  `passed`（228 點全在預算內、164 點逐像素相同、64 點是 #34／#38 的形狀、存檔 sha256 相同、
+  `ai_order` 分岔 0、`slot_counts=[34,44]` 核過）；台帳第七章 `passed`。第四／五／六章重跑
+  remake-r14／r10／r10 仍 `passed`（第六章 seq 619 由 0 變 8 px：DAC 循環相位每次重跑不一定同步，
+  記在 #38）。
+- [x] 抽樣截圖表 `tools/parity_sample_sheet.py`（每種 kind 一點＋全部 diff>0＋指定點，
+  超過 1.5 MB 依列數切 `-p1..pN`）：第七章五張 81 列、第四章兩張 27 列、第五章 28 列、
+  第六章 29 列；淡出探針另出 `parity-ch07-town-fade-probe.png`（輔助基準、非 gate）。
+- [x] 全套 Go 回歸只剩基線；語言包：`rebind_string_review.sh`（89 個 id 一致）→ 清冊 5157 筆
+  （少 9 筆：ch07 event 25 對白改走 `native_dialogue_ref`）→ `migrate_full_locale_content.py`
+  （by_id 4836、by_signature 254、new 0）→ 三個驗證通過。
+- [ ] 未抽到：玩家法術／物品／買入（驅動端沒有）、第二次踏格、升級幀（#29）；酒店讀檔（#32）；
+  重製端由建構槽 LOAD 進下一章對 JOIN 殘值的容忍；`fd2-chapter-slot` 仍整筆覆寫 JOIN 記錄。
+
+> **2026-09-17 勘誤：** 上面 2026-09-16 三段與 57／58 先前寫的「55／58 個畫面比較點逐像素相同」
+> 是把「全在 640 px 預算內」寫成了「逐像素相同」；實際是第四章 38／55、第五章 40／58、第六章
+> 40／58（重跑後 39／58）點逐像素相同，其餘是 56 五章回顧分類過的 #34／#35／#38 形狀。57、58
+> 與台帳已改成正確措辭；三章的 `passed` 判定不受影響（gate 本來就是預算而不是 0 px）。

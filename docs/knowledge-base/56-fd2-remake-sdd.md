@@ -474,8 +474,9 @@ event25 group2 10 人（slots34..43）。更早的 map6 event26 只在六個原�
 保留 slots9..27 的 `+0x34` 高四位並清低四位，才寫 state16=1。`0x34924`
 在 enemy turn10 先要求 state16==1，通過後依序 spawn2、pan `(16,10)`、
 ACTING30、FDTXT index2，最後才寫 state17=1；ACTING30 本身直接引用
-slots34..43。重製現於向左一步第七拍的既有 selector0 owner 執行 event26，
-event25 同時要求 turn10／state16==1；未踏格反例不增援。戰後再以精確
+slots34..43。重製現於行動收尾分派走行時記下的 selector0 事件執行 event26
+（任何方向踏入都算，見 §第七章章工作單元），event25 同時要求 turn10／state16==1；
+未踏格反例不增援。戰後再以精確
 34／44 frontier、state17==1 的 44-slot 細化與 raw byte5 bit0 接通
 `postbattle_ch07_persist→town_ch08`，缺任一產生端即失敗關閉。直接證據見
 [`fd2_ch06_post_event25_ida.txt`](../data/ida/fd2_ch06_post_event25_ida.txt)；
@@ -1863,8 +1864,10 @@ The same failure exposed a repository-wide renderer-input omission: only map0 ha
 byte34 provenance，全部成立後才原子式保留高四位並寫低四位 0。
 合法 IDA 9.4 固定 `0x13488→0x1300D→0x13A44`：path byte1 的七拍
 格步驟提交 runtime `x-1` 後才呼叫 selector0；`0x12E38` 以
-`x + mapWidth*y` 交叉確認座標順序。`stepBattleWalk` 因此只在向左格
-步驟提交後執行 event59/60，向右與其他方向不會泛化觸發。執行器仍拒絕
+`x + mapWidth*y` 交叉確認座標順序。`0x13175` 在每一格提交後都呼叫 selector0
+（第七章 r2 收據：向上踏入也觸發），事件 id 記進 `[0x51A8F]`，行動收尾 `0x1198A`
+才分派；`stepBattleWalk` 只記不派（`noteNativeFieldEventStep`），
+`finishSuccessfulUnitAction` 才執行 event59/60/26（§第七章章工作單元）。執行器仍拒絕
 event61；後者只由上述 action handler 成功返回後的 selector1 共用閘門擁有。
 
 Inventory gates are distinct from item-consuming event commands. Native `0x24b14(item)` scans only runtime slots `0..15` through `0x31860` and returns found/not-found; it neither filters camp/activity nor removes an item. In ch26 post, `0x24b14(0x64)` selects the sky-key success arm; that arm contains no `0x1b8e7` call and only later performs sync/chapter increment/persistent cleanup. The missing arm is a separate ending presentation path. Therefore an editable `inventory_gate` must preserve item `0x64`; it may not be lowered to a recipe, reward, or consume action.
@@ -4501,10 +4504,11 @@ provenance 從可編輯資產消失。現在 `native_turn_event_controls.json` �
 `ApplyNativeFieldTurnActivationEvent` 只有在地圖 selector、可編輯規則、完整
 原始列、once-state 與可選的 CONTINUE raw image 全部一致時才原子提交。
 缺列、重複目錄項、raw/typed 不一致與重複觸發都失敗即關閉。
-正式 `Game.stepBattleWalk` 現在只在原版已證實的向左一步第七拍座標提交後，
-由 selector0 辨識 event62 並呼叫這個 transaction；其他方向不泛化，規則錯誤
-則寫入既有 `loadErr` 並停止動作。Xvfb 回歸證實前六拍不改 row/state，第七拍
-才把 round8 的 row0 改成 turn9。這是重製端 E1 玩家操作路徑，不是 DOSBox E2。
+正式 `Game.stepBattleWalk` 在每一格座標提交後由 selector0 辨識 event62 並記進
+`[0x51A8F]`，行動收尾 `dispatchNativeFieldEventPending` 才呼叫這個 transaction（方向
+不是條件；§第七章章工作單元），規則錯誤則寫入既有 `loadErr` 並停止動作。Xvfb 回歸
+證實走行中不改 row/state，收尾才把 round8 的 row0 改成 turn9。這是重製端 E1 玩家操作
+路徑，不是 DOSBox E2。
 
 **已證實**：合法 IDA Pro 9.4 將戰鬥初始化函式固定為
 `sub_205DA`（`0x205DA..0x2067D`），29個章節開場呼叫者共用 `0x2066E`
@@ -7859,6 +7863,188 @@ sample-r3 的 232 個 AI 入口與酒店存檔逐 byte 相同），重製側 `re
 （58 張）四個 gate 全過，`ai_order` 分岔 0。第四章 remake-r60、第五章 remake-r7 用同一份
 程式重跑仍過。限制：瑪琳的建構槽偏差（上述）；event 22（第 15 回合）沒抽到；玩家沒放法術／
 沒用物品／沒買；第 1–9 回合守位不攻擊。
+
+## 第七章章工作單元：格子事件分派、掉落訊息與 step_into（2026-09-16）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 6
+--levels-per-chapter 6`（manifest `docs/data/parity-slots/ch07-manifest.json`，名冊 9 人）。正對照：
+與第六章 remake-r11 寫出的酒店存檔比，差異全在已知類別——升級政策（每章 +6 級，含指令位元）、
+座標 +0..+2、索爾出售後的物品欄位移、金幣 2000 對 2037、瑪琳 Lv14／HP100 對 Lv8／陣亡、貝克威
+Lv8 物品 00／81 對 Lv9 物品 2d／87／c1（後兩位都是 join 建構器靜態表對「先以 NPC 登場」角色的
+已知偏差）、檢查碼。合法性檢查 `docs/data/parity-plans/ch07-slot-load.jsonl`（LOAD 進往王城的途中、
+五棟建築）。
+
+這一章原版側新踩到、重製側因此改掉的東西：
+
+- **格子事件（selector 0）每一步都記、行動收尾才分派（已證實；推翻「只有向左踏入」）。**
+  `0x13488→0x1300D` 每提交一格就在 `0x13175` 以新座標呼叫 `0x13A44(x, y, 0)`，事件 id 記進
+  `[0x51A8F]`；玩家行動收尾 `0x1198A`（在章節處理器 `[0x51B19]` 與 `0x13565` 之後）、AI 三遍
+  `0x1D855`／`0x1D94C`／`0x1D9DC`、自動行軍 `0x1712D` 才以行動單位為引數呼叫全域事件表
+  `0x51B91` 的那一項並寫回 0xff；玩家選取單位開始行動（`0x188BF`）先清成 0xff。r2 收據：騎士
+  直線向上走進 (12,15)，指令環開著時（seq 179）記錄 9..27 的 `+0x34` 沒變，待機收尾後（seq 181）
+  低四位全清 0；r5 再證一次：蓋亞從 (13,17) 向上走進 (13,15) 後攻擊，攻擊收尾（seq 990）才清。
+  重製端 `noteNativeFieldEventStep`（走行每一步只記）＋ `dispatchNativeFieldEventPending`
+  （`finishSuccessfulUnitAction` 分派 mode-range 家族與 event62；有規則但閘門沒過就回，沒有
+  owner 的 id 失敗即關閉）；`native_field_event_rules.json` 加 map6 event 26
+  （`0x3499B`：觸發單位 `+6 != 0` → `0x3419C(9,27,0)` → state16=1）。
+- **event 25 轉寫（已證實）。** `0x34924`：`state16==1` 守衛 → `0x10B4E(2,1)` 登場 group 2
+  （slots 34..43，最後一筆是凱麗 identity 12、`+6=1`）→ pan (16,10) → ACTING 30 → text 2 →
+  state17=1；`extract_native_death_events.py` 逐動作帶 `when={"state_eq":[16,1]}`，
+  `sync_native_turn_events.py` 降成 `reinforce_ch07_e25_t10`。第 10 回合的回合事件列第三個 byte
+  是 selector 0（敵方 AI 前），所以第 10 回合玩家階段踏格也來得及。
+- **擊倒掉落是同步對話，不是文字條（已證實）。** `0x1AA1D` 物品型態 0：`0x1AC88` 把 item+0xB5
+  寫進 `[0x53AD9]`（FFFC 名稱來源）→ `0x1956B(killer+7)` 開對話格 → `0x15F84(buf, 0x1B0,
+  0xA9F23, 320, 205, 76, 74, 19, 1)` 寫「從敵人身上，得到 FFFC！」→ `0x1BB8C` 放進第一個空格
+  （-1 才走 `0x1AA56` 滿欄流程）→ `0x16559(0)` DATO 第 0 幀 → `0x16C57(0)` 等任一鍵 → `0x1AB6A`
+  `0x196CB` 五幀關框並復原；金錢型態 1 同路走 0x1B3（FFFA 金額）。原版側 attack_result 的
+  checkpoint 就停在等鍵處（r3 seq 389、r4 seq 279／968，ui=dialogue），驅動端接著送 enter
+  才回游標。重製端 `native_death_reward_message.go`：`grantNativeDeathReward` 只排訊息，
+  `finishSuccessfulUnitAction` 先播（`ComposeNativeDeathRewardMessageFrame` 在
+  `ComposeNativePreparationConfirmationDialogue` 上寫 0x1B0／0x1B3，開框
+  `NativeClassListOpeningFrames`、等鍵、關框 `NativeClassListClosingFrames`）再回來收尾；訊息
+  期間 `Update` 不進 AI 與玩家輸入；重播端在等鍵處拍 attack_result 再按鍵，AI 回合裡的反擊
+  擊倒由 pump 代按。`g.msg` 的 `battle.reward.*` 文字條不再用。
+- **指令 13～16 的回復量走原版亂數（已證實）。** r4 seq 603 追蹤：敵人 21 對敵人 12 放指令 13，
+  整個行動只有一次 `0x4E893`，呼叫端 `0x1C965`（`0x1C916` 內）、eax=63=70*9/10；rng 45295%100=95
+  → 63+6=69。重製端原本用 Go `rand`（+67，差 2 HP 一路帶到清場），改成
+  `ExecuteNative(AI)CommandHealNative`／`ApplyNativeCommandRestoreNative`：每個目標走一步
+  `fdother.NativeRNGStep`，玩家與 AI 同一條序列。
+- **戰鬥開始第一次重繪就套 HUD anchor 規則（強推論）。** battle_ch07 的 `native_map_view` 可見游標
+  (2,7)：row>5 且 column<3，原版 seq 60 小窗在右側；重製端只靠上一場繼承的 anchor 1 畫在左側
+  （4617 px）。`materializeNativeMapRuntime` 末尾對初始可見游標跑一次
+  `AdvanceNativeMapHUDAnchor`（閘門都開才動）。前六章的初始可見游標都不落在會翻邊的格，所以沒
+  露出來；直接的 `0x1AD2A` 進入追蹤還沒拿（記在 limitations）。
+- **dosgolem：`0A`／`32` r8, r/m8 的記憶體形式（f57c23d）。** `0x1D7FF or bl,[esp+edx]`（升級學指令
+  時把 record+0x1a+idx 的位元設起來）帶 SIB；舊 0A 只手寫 mod=01 非 ESP 基底一種形狀。r5 第 8 回合
+  升級停在這裡；0A／32 改走 `decodeAddress32`，和 02／22／2A／3A 同路。
+
+原版側驅動端（`tools/dosgolem_oracle_drive.py`）新指令：`move_unit`（`to`／`to_any`／`toward`：
+`toward` 用重製端 `remake/assets/maps/mapN/map.json` 成本格加當下敵我位置估可達集合——敵格不可進、
+敵格四鄰進了預算歸零（0x80）、同組占位格可穿不可停——依「離目標最近」排候選，估錯仍由原版裁決）、
+`step_into`（還沒行動的單位裡第一個估得到走進指定格之一的踏進去待機，誰都走不到就不動）、
+`sweep_round` 的 `skip_indices`；移動力讀記錄 `+0x3b`（範本 mv 6，實際多數 4）。四輪計畫：
+r2 騎士第 3 回合先衝踏格、第 6 回合陣亡；r3 守到第 7 回合，走廊被 10 個 mode 0 敵人塞滿，騎士到第
+10 回合都走不到 y=24；r4 第 6 回合起接戰、騎士 toward，在 (13,22) 被三個敵人的鄰格圍住四回合；r5／r6
+全隊北上、瑪琳與貝克威留守、第 4 回合起接戰、第 7 回合起 step_into——蓋亞第 5 回合接戰時就踏進
+(13,15)。
+
+這一章重製側重播（remake-r7）對 r6 收據逐點看過之後又改掉的東西：
+
+- **mode 0 的 `0x14121` 只在真的走了才算數（已證實）。** `0x14121` 以 mode 2、預算 0x1C 從行動者
+  出發做阻擋格搜尋（`0x145CD` 標對立單位 0x40／四鄰 0x80，最後一次被接受的阻擋格勝出），有結果就
+  `0x14B78` 往那一格規劃；`0x14B78` 只在 `0x4E1A6` 回傳的路徑長度非 0 時才 `0x13488` 走行並回 1，
+  `0x14121` 也只在那時回 1；回 0 時 `0x13A9F` 的 mode 0 分派（`0x13B0F`）接著呼叫 `0x13E9C`（最近
+  的對立單位，嚴格較小、同距離取先出現的記錄）再規劃一次。r6 第 7 回合記錄 23 在 (13,11)：阻擋格
+  是 (14,32) 的貝克威，長路徑第一步 (13,12) 是零預算格（鄰索爾與記錄 3），落點回到原格，原版改以
+  索爾 (12,12) 為目標走到 (12,11)；重製端原本把「不動的計畫」直接回傳，記錄 24／27 跟著錯位，
+  第 7 回合起所有點 `units_differ`。`nextNativeAIModeFallbackPlan` 改為落點在原格就走最近對立單位
+  （mode 1 沒有這條後備，維持不動）。原版側之後跑 `FD2_ORACLE_EIP_TRACE=0x4E1A6,0x14B16` 可以
+  直接對 `(start, budget, dest)` 序列，這一輪是用 r6 的前後 checkpoint 與 Python 重跑 DFS 定的。
+- **掉落金錢在關框之後才加（已證實）。** `0x1AB95` 型態 1：`[0x53AE1]=金額` → `0x15F84(0x1B3)` →
+  `0x16559(0)` → `0x16C57(0)` 等鍵 → `0x196CB` 關框 → `0x1ABF8` `add [0x53BF3], eax`。r6 seq 1304
+  的 attack_result 停在等鍵處時金幣還是 2000，重製端在結算時就加成 5500，交易 gate 紅。
+  `grantNativeDeathReward` 型態 1 只排訊息，`acknowledgeNativeDeathRewardMessage` 關框的 after 才加。
+- **掉落訊息的底圖上攻擊者還沒變灰、姿勢已靜止（已證實）。** `0x18890` 的 handler 裡 `0x1AA1D` 在
+  `0x13512` 設 bit7 之前；`0x134E4` 則在每個行動收尾（`0x13E77` 的 AI 合流、`0x1566A` 攻擊路徑、
+  玩家 `0x18890`）對全部記錄逐筆 `+3 = 0`（r6 seq 633 攻擊者未灰、正面；seq 1836 升級對話底圖
+  攻擊者已灰、正面；seq 1962→1963 凱麗 ACTING 30 留下的 pose 3 被敵方第一個行動收尾歸零）。重製端
+  的結算一開始就設 bit7，訊息底圖以 `composeNativeMapFrameBeforeActed(actor)` 暫時拿掉；
+  `finishSuccessfulUnitAction` 開頭 `resetAllNativeMapPoses`。「升級對話底圖仍面向目標」是 r4 seq
+  968 看錯，checkpoint 的 raw +3 一直是 0。
+- **升級對話底圖的 idle 相位（重播端）。** `0x1E292` 的對話框底圖是 `0x11CAC` 開框前那一次重繪，
+  單位 idle 相位跟那一拍的 BIOS tick 走；重播端原本只出嘴型×箭頭變體，框上方敵人的 idle 幀對不上
+  （seq 932／1022／1747，1600–1900 px）。`rebaseNativeLowerDialogueFrame` 把框外（x 5..314、
+  y 112..197 之外）換成 idle／LUT 相位變體的整幀。
+- **升級把 +0x42／+0x46 一起改（已證實）。** `0x1E529` 直接加在記錄的 word 上，HUD 小窗 `0x1AE8E`
+  比 `+0x40` 與 `+0x42` 選數字底色（不等用 #0x2A 綠字），重製端 `MaxHP` 升了 `NativeRecordWord42`
+  沒跟（蓋亞 314/328 畫成藍字，seq 1152／1286／1511／1690／1874）；AI 評分記錄的 `+0x42` 也是它。
+- **JOIN 記錄沒寫到的 byte 是那一格 LOAD 時的殘值（已證實）。** `sub_112A5` 只寫 +5..+0x16、+0x18、
+  +0x1a..+0x21、+0x31=0xff、+0x37.. 與裝備重算欄位；+0..+4、+0x17／+0x19（空物品格的 item byte）、
+  +0x28..+0x30、+0x32..+0x36、+0x3d 留在持續名冊記憶體裡原本的值，而 `0x10010` 是整槽還原的，
+  count 之後那一格就是槽裡的 bytes（新開局全 0）。凱麗（ch06_post JOIN12，場上是 `+6==1` 的友軍，
+  `0x11506` 不抄）存檔裡這些 byte 全是 LOAD 進來的殘值；瑪琳（第五章）與貝克威（第六章）JOIN 之後
+  以我方身分打過仗，`0x11506` 把場上記錄整筆抄回，殘值被 FDFIELD 登場的零初始記錄蓋掉。重製端
+  `MaterializePersistentRecordOn(residual)` 疊在殘值上、`Unit.NativeJoinPersistentPending` 在戰後
+  同步前擋掉 x／y／+0x34..+0x36／+0x3d／死亡效果 +0x32..+0x33 的覆寫；三章酒店存檔 sha256 全同。
+  `fd2-chapter-slot` 建槽工具仍整筆覆寫（真實 ch01→ch02 存檔那一格是 0，結果相同）；由建構槽
+  LOAD 的實跑，重製端下一章讀到 x=0xe8 這種殘值要能容忍，還沒驗。
+- **selector 0 的暫時狀態掃描搬到橫幅之後（已證實的順序）。** `0x1A30B`：selector 1 回合事件 →
+  `sub_1A866(1)` → 友軍 AI → 橫幅 → `0x13536` → selector 0 回合事件 → `sub_1A866(0)` → 敵軍兩遍；
+  重製端原本把 1、0 併在友軍 AI 之前。拆開之後 seq 1763 整張單位畫格對不上（1294 px）：
+  `beginNativeTransientPhases` 採用候選狀態時 `*g.st = *candidate` 把 Units 換成一批 clone 指標，
+  握著舊指標的（`g.sel`、AI 計畫、`deathRewarded`、重播端 actor）全指到過期副本。
+  `adoptNativeStateCandidate` 保留原指標、只抄值；到期事件的 Unit 對應回原指標。
+- **重播端的 attack_result 之後逐則按鍵。** 掉落訊息（一鍵）與升級對話（每個 FFFD 一鍵）可以接在
+  同一次行動上（0x18890 裡的 0x1AA1D 在 0x1196D 的 0x1E292 之前），`checkpointAttackResult` 改成
+  迴圈：停在等鍵處拍檢查點 → 升級對話推完 → 掉落訊息按鍵 → 再推到有操作權。r6 原本停在
+  seq 1847「玩家沒有操作權」就是第二則沒按。
+- **玩家行動收尾的順序：`0x13565` 自動換手在 `0x1198A` 格子事件分派之前（已證實）。**
+  `0x117E7` 的收尾是 `0x11951 0x11CAC` 重繪 → `0x1196D 0x1E292`（經驗／升級）→ `0x1197B` 章節函式表
+  `[0x51B19]` → `0x11985 0x13565`（沒有 `(+5&0x81)==0、+6==2、+0x26==0` 的記錄就直接 `call 0x1A30B`
+  跑完整個敵方階段才回來）→ `0x1198A cmp [0x51A8F],0xff`／`call [0x51B91+id*4]`。selector 1 的格子
+  事件（event 61／75）也是同一個 `[0x51A8F]`：handler 收尾格 `0x18B0C`／`0x18B66` 呼叫
+  `0x13A44(x, y, 1)`，一樣在 `0x1198A` 分派。而友軍與敵軍 AI 迴圈（`0x1D853`、`0x1D8F8`、`0x1D9B2`
+  ……）對**每一筆**記錄迭代開頭都 `mov [0x51A8F], 0xff`，所以最後一個我方單位踏進事件格再行動，
+  換手一跑那個事件就沒了。重製端 `finishSuccessfulUnitAction` 改成 bit7 → 升級對話 → `after`
+  清選取 → `autoEndPlayerPhase`（回 true 就丟掉 pending）→ 才 `dispatchNativeFieldEventPending`
+  與 event 61／75。原本的順序（先分派再自動換手）在 r6 沒露出來——踏格的單位從來不是那回合最後
+  一個——是對照指令改的。連帶三個只在重製端成立的測試期望改掉：event 61／75 對話期間 `Acted`
+  已是 true（`0x13512` 在前）；只有一個我方單位的物品測試行動完就自動換手，`sub_1A866(1)`
+  會把剛擲出的 2..5 標記先減一，測試留一個沒行動的單位才驗得到物品本身的擲骰（HEAD 上那兩個測試
+  是因為掃描改的是 clone 指標才綠的）。
+
+結果：r6（原版側 `work/parity-slot-ch07/sample-r6`，dosgolem `f57c23d`，241 動作、2233 個
+checkpoint、34 個亂數同步點）對 remake-r8：四個 gate 全過（`docs/data/ui-traces/parity-ch07.json`）。
+`ai_order` 分岔 0；ch06_post 的 `runtime_context.slot_counts=[34, 44]` 由收據核過（battle_start 34
+筆、event 25 之後 44 筆）；金幣 2000→5500→5537、酒店存檔整檔 sha256 相同（10 人）。228 張畫面
+164 張 0 px，64 張有差全在預算內：63 張 move／stay 是指令環開啟動畫中途（52–255 px，#34）、
+1 張祕密商店店主眨眼（69 px，#38）。同一份重製端重跑第四／五／六章（remake-r14／r10／r10）全過，
+差異像素數逐點相同，只有第六章 seq 619 attack_armed 由 0 變 8 px：調色盤 index 224 的 DAC 循環色
+差一步，重製端的循環相位每次重跑不一定落在同一步（第四章 remake-r59／r14 與 r60／r61 的 PLTE
+226..238 也分成兩組），這是 #38 的形狀，不是行為差。
+
+第七章加進五章回顧的分類表：
+
+| 類別 | 點數 | 像素 | 處置 |
+|---|---|---|---|
+| 指令環開啟動畫中途 | 63（43 move＋20 stay） | 52–255 | #34 |
+| 店主 DATO 眨眼（祕密商店） | 1（seq 2232 secret_shop） | 69 | #38 |
+| 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 10 個 `after_enemy_phase`＋`ai_order` | — | 規則 `oracle_mid_end_turn` |
+
+沒有出現的類別：YES pulse、DAC 循環色、橫幅馬賽克這一章都是 0。
+
+抽樣截圖證據：`tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch07.json
+--oracle work/parity-slot-ch07/sample-r6 --remake work/parity-slot-ch07/remake-r8 --out
+docs/figures/parity-ch07-samples.png --index docs/data/ui-traces/parity-ch07-samples.json
+--include-seq 1926 1955 1973 2011 2209`（在 `fd2-assets-local` 容器內跑）。抽樣規則固定：每種
+kind 第一點、全部 `diff_pixels>0`、指定的點；每列「原版 checkpoint｜重製最小差變體｜差異遮罩」，
+標 seq、kind、diff_pixels、兩側 sha256 前 8 碼；index 記每列對到收據哪一點、在哪一張。一張放不下
+1.5 MB 就依列數平均切成 `-p1`…（第七章 81 列切五張），切分無損；整張 256 色量化會失真（各章
+表都超過 550 色），不做。工具先核對 run 目錄裡的 PNG sha256 與收據相同才畫，拿錯輪次會直接失敗。
+第四／五／六章用同一支工具回補（`docs/figures/parity-ch04-samples-p{1,2}.png`、
+`parity-ch05-samples.png`、`parity-ch06-samples.png`）。
+
+### 城鎮進戰場的過場（#37）
+
+原版側探針（`work/parity-slot-ch07/probe-fade`：`FD2_ORACLE_FRAME_EIP=0x11D40`，每次進 DAC 寫入
+迴圈取一幀，`FD2_ORACLE_EIP_TRACE=0x1F882,0x11D40`）定出出口 YES 之後到 battle_start 之間的
+兩段：
+
+1. `0x2D190..0x2D275`（城鎮出發 `0x2D16B` 收到 YES 之後）：把整幀抄到工作緩衝，`ebx=1..10` 十步，
+   每步依 `[0x5412B]` 城鎮變體的 `0x52635`／`0x52647` 表以 `k/10` 內插座標、`0x80-9k` 位移呼叫
+   `0x2FB9F` 重畫（抽幀看是建築往中心放大，強推論），`0x373C4` 搬到 VGA，`0x11D40(0, 0xFF, 4k)`
+   把 DAC 一路壓暗（step 456535776 起每步約 1.1M 指令）；迴圈後 `0x11D40(0, 0xFF, 0x40)` 全黑、
+   `0x375C0(0xA0000, 0, 0xFA00)` 清 VGA。輔助基準 `docs/figures/parity-ch07-town-fade-probe.png`
+   （非 gate，index `docs/data/ui-traces/parity-ch07-town-fade-probe.json`）。
+2. `0x1F42D` 進戰場：LOADCH 之後（frame 71 的 unit_count 已是 9）`0x1F544` 的迴圈呼叫
+   `0x11D40(0, 0xFF, level)` 64 次、level 0x40→0（每次約 19.2k 指令），從黑淡入戰場地圖；之後才是
+   戰前 handler 的對白與 battle_start 游標。
+
+`sub_1A866` 的三個呼叫點都不在這段裡：selector 1 與 0 在 `0x1A30B`（上面拆開的順序），selector 2
+在 `0x117E7` 的 PLAYER PHASE 橫幅之後、輸入之前；一場戰鬥第一次跑的是第一回合玩家階段的
+selector 2。第七章 gate 的兩端（departure_prompt 在 YES 之前、battle_start 在游標）都不含這段過場，
+所以收據看不到它；重製端 `beginNativeTransientPhases` 不是這段動畫的擁有者，城鎮縮放暗化與戰場淡入
+兩段都還沒接（另開 issue，見 58）。
 
 ## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
 

@@ -117,7 +117,7 @@ func BuildNativeCurrentPersistentRecords(
 		if count >= len(out) {
 			return out, 0, errors.New("native current save: persistent roster exceeds 32 records")
 		}
-		record, err := table.MaterializePersistentRecord(int(id), itemRows)
+		record, err := table.MaterializePersistentRecordOn(out[count], int(id), itemRows)
 		if err != nil {
 			return out, 0, err
 		}

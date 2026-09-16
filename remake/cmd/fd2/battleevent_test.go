@@ -309,7 +309,14 @@ func triggerChapter7Event26(t *testing.T, g *Game) {
 	for steps := 0; g.walk != nil && steps < 8; steps++ {
 		g.stepBattleWalk()
 	}
-	if !done || g.walk != nil || g.loadErr != "" || g.st.NativeEventState[16] != 1 {
+	if !done || g.walk != nil || g.loadErr != "" || g.st.NativeEventState[16] != 0 {
+		t.Fatalf(
+			"event26 walk done=%v walk=%v err=%q state16=%d (0x1198A 收尾才分派)",
+			done, g.walk != nil, g.loadErr, g.st.NativeEventState[16],
+		)
+	}
+	g.finishSuccessfulUnitAction(trigger, nil)
+	if g.loadErr != "" || g.st.NativeEventState[16] != 1 {
 		t.Fatalf(
 			"event26 done=%v walk=%v err=%q state16=%d",
 			done, g.walk != nil, g.loadErr, g.st.NativeEventState[16],
@@ -376,6 +383,7 @@ func TestChapter7Event26RejectsWrongTriggerProvenance(t *testing.T) {
 			for steps := 0; g.walk != nil && steps < 8; steps++ {
 				g.stepBattleWalk()
 			}
+			g.finishSuccessfulUnitAction(trigger, nil)
 			if g.walk != nil || g.loadErr != "" || g.st.NativeEventState[16] != 0 {
 				t.Fatalf("rejected event26 walk=%v err=%q state16=%d", g.walk != nil, g.loadErr, g.st.NativeEventState[16])
 			}
@@ -421,11 +429,22 @@ func TestChapter7Event25BuildsSlot43ThenCommitsState17(t *testing.T) {
 	if !g.sc.RuntimeAppendGroups || len(g.st.Units) != 34 || !g.st.PendingGroups[2] {
 		t.Fatalf("chapter7 opening units=%d pending=%v runtime_append=%v", len(g.st.Units), g.st.PendingGroups, g.sc.RuntimeAppendGroups)
 	}
+	attachOfficialTestLocale(t, g, "zh-Hant") // 對白走 native_dialogue_ref，要有正式語言包
 	triggerChapter7Event26(t, g)
+	// event 25 是第 10 回合 selector 0 的回合事件：0x1A30B 在 ENEMY PHASE 橫幅之後、
+	// 敵方 AI 之前才查 state16（r6 seq 1962）。
 	g.st.Turn = 10
-	g.finishTurn()
+	g.endTurn()
+	for steps := 0; g.banner != "ENEMY PHASE" && g.loadErr == "" && steps < 8; steps++ {
+		g.aiStep() // 友軍 AI 那一遍跑完才進橫幅
+	}
+	if g.loadErr != "" || !g.aiBusy || g.banner != "ENEMY PHASE" || len(g.st.Units) != 34 {
+		t.Fatalf("event25 before banner err=%q ai=%v banner=%q units=%d", g.loadErr, g.aiBusy, g.banner, len(g.st.Units))
+	}
+	g.bannerT = 0
+	g.aiStep()
 	if len(g.st.Units) != 44 || g.camPan == nil || g.st.NativeEventState[17] != 0 {
-		t.Fatalf("event25 spawn units=%d pan=%v state17=%d", len(g.st.Units), g.camPan != nil, g.st.NativeEventState[17])
+		t.Fatalf("event25 spawn units=%d pan=%v state17=%d err=%q", len(g.st.Units), g.camPan != nil, g.st.NativeEventState[17], g.loadErr)
 	}
 	if slot43 := g.st.Units[43]; slot43 == nil || slot43.Group != 2 || slot43.Camp != battle.Ally || slot43.Fig != 12 ||
 		!slot43.HasNativeRecordByte5 || slot43.NativeRecordByte5&1 != 0 {
@@ -449,8 +468,9 @@ func TestChapter7Event25BuildsSlot43ThenCommitsState17(t *testing.T) {
 		g.dialog = nil
 		g.advanceBattleEvent()
 	}
-	if g.battleEvent != nil || g.st.NativeEventState[17] != 1 || g.st.Turn != 11 {
-		t.Fatalf("event25 completion run=%v state17=%d turn=%d", g.battleEvent != nil, g.st.NativeEventState[17], g.st.Turn)
+	// 事件收完仍在第 10 回合的敵方階段（敵方 AI 還沒跑），回合數要等 finishTurn 才加。
+	if g.battleEvent != nil || g.st.NativeEventState[17] != 1 || g.st.Turn != 10 || !g.aiBusy {
+		t.Fatalf("event25 completion run=%v state17=%d turn=%d ai=%v", g.battleEvent != nil, g.st.NativeEventState[17], g.st.Turn, g.aiBusy)
 	}
 }
 

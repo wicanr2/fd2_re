@@ -150,7 +150,7 @@ func (g *Game) startNativeRawCamp2TurnEvents(then func()) (bool, error) {
 			g.loadErr = err.Error()
 			return
 		}
-		*g.st = *candidate
+		g.adoptNativeStateCandidate(candidate)
 		g.nativeMapVGA = frame
 		g.runNativeEvent76Presentation(event, 0, then)
 	})

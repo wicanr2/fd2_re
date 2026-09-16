@@ -7,6 +7,21 @@
   },
   "rules": [
     {
+      "event_id": 26,
+      "handler": "0x3499b",
+      "selector": 0,
+      "trigger_gate": "record_byte6_nonzero",
+      "set_mode_ranges": [
+        {
+          "start": 9,
+          "end": 27,
+          "mode": 0
+        }
+      ],
+      "set_state_index": 16,
+      "set_state_value": 1
+    },
+    {
       "event_id": 59,
       "handler": "0x35641",
       "selector": 0,

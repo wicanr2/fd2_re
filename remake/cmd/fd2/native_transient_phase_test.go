@@ -244,16 +244,25 @@ func TestEndTurnTicksRawSelectorsOneThenZeroBeforeEnemyPhase(t *testing.T) {
 
 	g.endTurn()
 	g.aiStep() // 0x1A30B 先跑友軍 AI（0x1D80B）那一遍，跑完才進橫幅
+	// sub_1A866(1) 在友軍 AI 之前；sub_1A866(0) 要等橫幅、0x13536 與 selector 0 回合事件之後
+	// 才跑，橫幅還在時 camp 0 的 +0x23 仍是 2。
 	if g.loadErr != "" || !g.aiBusy || g.banner != "ENEMY PHASE" ||
 		g.st.Units[0].NativeTransient[0] != 1 ||
-		g.st.Units[1].NativeTransient[1] != 1 ||
+		g.st.Units[1].NativeTransient[1] != 2 ||
 		g.st.NativeRuntimeRecords[0].Raw[0x22] != 1 ||
-		g.st.NativeRuntimeRecords[1].Raw[0x23] != 1 {
+		g.st.NativeRuntimeRecords[1].Raw[0x23] != 2 {
 		t.Fatalf("err=%q ai=%v banner=%q durations=%v/%v raw=%d/%d",
 			g.loadErr, g.aiBusy, g.banner,
 			g.st.Units[0].NativeTransient, g.st.Units[1].NativeTransient,
 			g.st.NativeRuntimeRecords[0].Raw[0x22],
 			g.st.NativeRuntimeRecords[1].Raw[0x23])
+	}
+	g.bannerT = 0
+	g.aiStep() // 橫幅播完：0x13536 → selector 0 回合事件 → sub_1A866(0) → 敵方 AI
+	if g.loadErr != "" || g.st.Units[1].NativeTransient[1] != 1 ||
+		g.st.NativeRuntimeRecords[1].Raw[0x23] != 1 {
+		t.Fatalf("selector 0 sweep after banner: err=%q durations=%v raw=%d",
+			g.loadErr, g.st.Units[1].NativeTransient, g.st.NativeRuntimeRecords[1].Raw[0x23])
 	}
 }
 

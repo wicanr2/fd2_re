@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_parity_fade_probe_sheet",
+  "chapter": 7,
+  "role": "輔助基準、非 gate",
+  "probe_run": "work/parity-slot-ch07/probe-fade",
+  "dosgolem_commit": "f57c23df2fa712224b9a54d9f910e5bcaf07067a",
+  "capture": "FD2_ORACLE_FRAME_EIP=0x11D40（每次進 DAC 寫入迴圈取一幀）",
+  "sheet": "docs/figures/parity-ch07-town-fade-probe.png",
+  "sheet_sha256": "1735989f69951d1d0240dee6a78f19438afe83aa60d8669bd022a423de240c82",
+  "frames": [
+    {
+      "frame": 61,
+      "file": "frame-000061.png",
+      "step": 456535776,
+      "indexed_sha256": "bc9ab068d1888d0ad8682d80eed1c01125ff9143278467566636eefce5ee4918",
+      "dac_level_arg": "0x4",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2092266
+    },
+    {
+      "frame": 62,
+      "file": "frame-000062.png",
+      "step": 457647638,
+      "indexed_sha256": "379534dd14b633167f80984f1ce57310623b29c67d09e3a6e035df148e9b4258",
+      "dac_level_arg": "0x8",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2093034
+    },
+    {
+      "frame": 63,
+      "file": "frame-000063.png",
+      "step": 458759551,
+      "indexed_sha256": "9596aa3a1f11346dab5bbf085e8fcafcf8552dc8331bf9444c0c3be3cb18757c",
+      "dac_level_arg": "0xC",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2093802
+    },
+    {
+      "frame": 64,
+      "file": "frame-000064.png",
+      "step": 459871514,
+      "indexed_sha256": "a46a27c2192746ecb34d1de2f53e1bfafcf65943dd743a6f6d3fa12e11b77c1b",
+      "dac_level_arg": "0x10",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2094570
+    },
+    {
+      "frame": 65,
+      "file": "frame-000065.png",
+      "step": 460983557,
+      "indexed_sha256": "3206583feaccfdf4b490e5e68fd7df472efa951ff8dec79825d10062e347b6f1",
+      "dac_level_arg": "0x14",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2095338
+    },
+    {
+      "frame": 66,
+      "file": "frame-000066.png",
+      "step": 462095680,
+      "indexed_sha256": "1ea3735100b11000ccb74de33b8a257c2f8a32a43e0b2a426c3a22f4fd115fad",
+      "dac_level_arg": "0x18",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2096106
+    },
+    {
+      "frame": 67,
+      "file": "frame-000067.png",
+      "step": 463207871,
+      "indexed_sha256": "0acbd459a31e7639eac57833e447ff96a981418f675165a09256d69169ceb483",
+      "dac_level_arg": "0x1C",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2096874
+    },
+    {
+      "frame": 68,
+      "file": "frame-000068.png",
+      "step": 464320128,
+      "indexed_sha256": "1161de9ad63af0206620b1a9296392201da8f271a6f2f716b5f5746cc38baf2d",
+      "dac_level_arg": "0x20",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2097642
+    },
+    {
+      "frame": 69,
+      "file": "frame-000069.png",
+      "step": 465432450,
+      "indexed_sha256": "b19557885e3becefb90a418c96fcc431d6284a154cb835c388fa2be8b0dd0b9c",
+      "dac_level_arg": "0x24",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2098410
+    },
+    {
+      "frame": 70,
+      "file": "frame-000070.png",
+      "step": 466544851,
+      "indexed_sha256": "ce9df1460d3d98eca9e73049003cd5dd8ba69a6fd787b532e5c9de4fc68c6ff7",
+      "dac_level_arg": "0x28",
+      "caller_return": "0x2D25A",
+      "palette_writes": 2099178
+    },
+    {
+      "frame": 71,
+      "file": "frame-000071.png",
+      "step": 466736398,
+      "indexed_sha256": "cd919fdc0a93ac6153cfb1815e486a8409544dd1ddf20dd382d552a17525f159",
+      "dac_level_arg": "0x40",
+      "caller_return": "0x1F544",
+      "palette_writes": 2100714
+    }
+  ]
+}
