@@ -335,7 +335,9 @@ type Game struct {
 	// FD2.SAV plaintext 與該槽快照；酒店存檔以它們為 byte 基底寫回原版槽。
 	nativeChapterSlotPlain    []byte
 	nativeChapterSlotBaseline *fdsave.ChapterSlotSnapshot
-	nativeChapterSlotSaveErr  error // 最近一次酒店存檔寫回原版槽的結果（對拍收據用）
+	nativeChapterSlotSaveErr  error                             // 最近一次酒店存檔寫回原版槽的結果（對拍收據用）
+	nativeMapUnitWindowAssets *battle.NativeItemPanelDataAssets // 0x18B84 單位資訊視窗（框／bar／digit／姓名）
+	nativeActionCellsRaw      []fdother.RawCell                 // FDOTHER#2 指令環 indexed 原格（整幀合成用）
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
 	// 呼叫的 0x16F55 空游標面板。direction0／巢狀戰場資訊、direction2／設定
 	// 與 direction3／END 已有 action owner；巢狀 direction3 離場亦已閉合到
@@ -5533,11 +5535,7 @@ func (g *Game) ringInput() bool {
 		}
 		switch g.ringSel {
 		case 0: // 攻擊 → 關環,進選目標(游標移到攻擊範圍內的敵人;範圍依武器射程,doc32)
-			g.beginActionOverlayClose(func() {
-				if message, ok := g.localeMessage("battle.attack.choose_target"); ok {
-					g.msg = message
-				}
-			})
+			g.beginActionOverlayClose(g.beginPlayerAttackTargeting)
 		case 1: // 法術(原版 0x1cff0；有法術者才可用)
 			if ids := g.sel.NativeCommandIDs(); len(ids) > 0 && g.localeEntities != nil && len(g.nativeUIPalette) >= 0xce {
 				// Native 0x18d8c disables its command action when raw unit+0x27
@@ -7443,6 +7441,8 @@ func (g *Game) confirm() {
 	// 攻擊階段:游標在攻擊範圍內的敵 → 攻擊;在自己格 → 待命
 	if tgt := g.st.UnitAt(g.curX, g.curY); tgt != nil && tgt != g.sel &&
 		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
+		// 0x115b6 確認回來，0x18f86 的 0x4dbfc 先於攻擊演出清掉射程標記。
+		g.resetNativeTargetField()
 		// The original transaction requires both attack and defender-idle FIGANI
 		// inputs. Preflight the complete separated pair before direction, RNG, HP,
 		// EXP or acted state changes; a missing presentation must not become a
@@ -7483,6 +7483,10 @@ func (g *Game) confirm() {
 		g.attachCounterPresentation(g.atk, actor, tgt, attackResult)
 		if g.atk != nil {
 			g.atk.after = func() {
+				// 攻擊演出結束後原版的 raw +3 回到靜止值：第四章 r9 收據 seq 132
+				// （攻擊 (9,12)→(9,11) 之後）與其後每個檢查點都是 pose 0，面向
+				// 目標只存在於演出期間。
+				actor.SetMapPose(nativeMapRestPose)
 				g.finishSuccessfulUnitAction(actor, nil)
 			}
 		} else {
@@ -7495,6 +7499,7 @@ func (g *Game) confirm() {
 		g.sel, g.reach, g.moved = nil, nil, false
 		g.checkResult()
 	} else if g.curX == g.sel.X && g.curY == g.sel.Y { // 原地待命
+		g.resetNativeTargetField()
 		g.finishSelectedWait()
 	}
 }
@@ -8251,6 +8256,8 @@ func (g *Game) Update() error {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
 		if g.sel != nil && g.moved { // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
+			// 0x115b6 回 -1 之後 0x18f86 先 0x4dbfc 清掉攻擊射程標記。
+			g.resetNativeTargetField()
 			// 退回時沿用上一個選擇；它若已不可用就依 sub_173E7 回到第一個
 			// 可用方向，否則方向鍵閘門會把選擇鎖死在不可用格上。
 			// 0x18890 的完整重進場語意尚未閉合，不在此宣稱每次退回都重設。
@@ -9338,6 +9345,14 @@ func (g *Game) actionOverlayAvailability() [4]int {
 	} else if g.sel.Sealed || len(g.sel.Spells) == 0 {
 		availability[1] = 1
 	}
+	// 0x18a5f..0x18a72：真的走過路（0x4e1a6 步數非 0／0xff，經 0x13488）之後才進
+	// 0x18d8c 的那一條，會先把表的 +4 設 1，只放過 raw +7 為 0x12／0x13／0x22 的
+	// 單位；原地開環走 0x18b33 沒有這一條。第四章 r9 收據 seq 459：有指令的單位
+	// 走完五格，指令格是紅的。
+	if g.moved && (g.sel.X != g.selOrigX || g.sel.Y != g.selOrigY) &&
+		!nativeCommandAllowedAfterMove(g.sel.BattleFig) {
+		availability[1] = 1
+	}
 	if len(g.sel.NativeInventoryFlags) == 8 {
 		if count, err := battle.NativeInventoryAvailableCount(g.sel.NativeInventoryFlags); err != nil || count == 0 {
 			availability[2] = 1
@@ -9388,6 +9403,17 @@ func hasNativeEquippedWeapon(unit *battle.Unit) bool {
 		}
 	}
 	return false
+}
+
+// nativeCommandAllowedAfterMove 是 0x18a5f..0x18a70 的三個 raw +7 常數；其餘
+// 單位移動之後指令格一律不可選。
+func nativeCommandAllowedAfterMove(battleFig int) bool {
+	switch battleFig {
+	case 0x12, 0x13, 0x22:
+		return true
+	default:
+		return false
+	}
 }
 
 // hasNativeCommand uses only the exact 0x1c269 bit inventory.  It must not
@@ -10690,7 +10716,7 @@ func loadGame() *Game {
 		g.nativeBattlePanel = &panelAssets
 		g.nativeBattleValues = make(map[nativeBattlePanelValueKey]*ebiten.Image)
 	}
-	g.nativeActionCells = loadNativeActionCells(g.nativeUIPalette)
+	g.nativeActionCells, g.nativeActionCellsRaw = loadNativeActionCellsWithRaw(g.nativeUIPalette)
 	if systemInfo, err := loadNativeSystemInfoAssets(); err == nil {
 		g.nativeSystemInfoAssets = systemInfo
 	}
@@ -11323,7 +11349,24 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 	if err := g.composeNativeMapFrame(); err != nil {
 		return false
 	}
+	img, ok := g.nativeMapFrameImage()
+	if !ok {
+		return false
+	}
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(2, 2)
+	screen.DrawImage(ebiten.NewImageFromImage(img), op)
+	return true
+}
+
+// nativeMapFrameImage 把已組好的 nativeMapVGA 配上當前 DAC，再依橫幅狀態
+// （bannerT）疊上馬賽克與字樣，回傳玩家看到的 320×200 索引畫面。重播測試
+// 也走這裡取橫幅期間的畫面。
+func (g *Game) nativeMapFrameImage() (*image.Paletted, bool) {
 	a := g.nativeMapAssets
+	if a == nil || len(g.nativeMapVGA) < indexedmap.NativeMapVGASize {
+		return nil, false
+	}
 	palette := a.Palette
 	if len(g.nativeMapDAC) == 256*3 {
 		if current, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC); err == nil {
@@ -11367,17 +11410,14 @@ func (g *Game) drawNativeMapFrame(screen *ebiten.Image) bool {
 		if err := indexedmap.MosaicNativeMapViewport(
 			img.Pix, src, indexedmap.PhaseBannerBlock(step),
 		); err != nil {
-			return false
+			return nil, false
 		}
 	}
 	// 字樣疊在馬賽克之後，與原版同序（`sub_4E809` 之後才 `sub_15F0E`）。
 	if offset, visible := g.phaseBannerSlideOffset(); visible {
 		g.blitPhaseBannerGlyphs(img.Pix, offset)
 	}
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(2, 2)
-	screen.DrawImage(ebiten.NewImageFromImage(img), op)
-	return true
+	return img, true
 }
 
 func (g *Game) composeNativeMapFrame() error {
@@ -11452,6 +11492,16 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	if err != nil {
 		return err
 	}
+	if overlay, err := g.nativeMapSelectionOverlay(&candidateState); err != nil {
+		return err
+	} else if overlay != nil {
+		in.Frame.SelectionOverlay = overlay
+		if g.ring {
+			// 指令環貼在走行結束時的畫面上，0x1741C 的迴圈不再進 0x122DC：畫面上
+			// 沒有游標白框（第四章 r9 seq 208 收據），只有四張圖示。
+			in.Frame.RangeMode = 0
+		}
+	}
 	if len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize {
 		g.nativeMapWork = make([]byte, indexedmap.NativeUnitPresentWorkSize)
 	}
@@ -11462,7 +11512,11 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	// 單位與前景，完全不進 0x11CAC、0x122DC 與 0x1AD72，所以畫面上沒有游標
 	// 白框也沒有左下 HUD 面板。收據見
 	// docs/knowledge-base/99-move-confirm-cursor-20260909.md。
-	if g.walk != nil {
+	// 回合橫幅期間也是同一種畫面：0x1A30B 在 0x1F1CC 之前用 0x11EB0 把離屏地圖
+	// 緩衝區（地形、單位、前景）整塊搬到 VGA (4,4)，蓋掉左下 HUD；游標白框也不
+	// 在裡面（第四章 r9 收據 seq 636／913：全員行動完自動換手，橫幅下沒有白框
+	// 與地形面板）。橫幅本身對這張快照做馬賽克，之後不重繪。
+	if g.walk != nil || g.bannerT > 0 {
 		if err := indexedmap.ComposeNativeStepFrame(g.nativeMapWork, g.nativeMapVGA, in.Frame); err != nil {
 			return err
 		}
@@ -11787,6 +11841,10 @@ func (g *Game) finishNativeTransientPlayerPhaseInput() {
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
 // 全單位動完 → finishTurn。
 func (g *Game) aiStep() {
+	// 回合橫幅（0x1F1CC）是同步播完才回到 0x1A30B 往下走；橫幅期間 AI 不動。
+	if g.bannerT > 0 {
+		return
+	}
 	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeAIIdleRecovery != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false

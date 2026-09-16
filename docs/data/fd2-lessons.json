@@ -433,6 +433,30 @@
       "why": "2026-09-16 第四章酒店存檔對拍：重製端把賣掉後的尾格寫成 80 ff，原版是 80 c9（舊第 8 格的值），整檔 sha256 因此差一個 byte；#23 的 0x00/0xff 也是同一類。",
       "date": "2026-09-16",
       "evidence": "remake/internal/battle/native_inventory_transfer.go removeNativeCompactInventory；TestRemoveNativeCompactInventoryKeepsTailItemByte"
+    },
+    {
+      "id": "oracle-checkpoint-is-post-action",
+      "area": "對拍",
+      "rule": "原版側每個動作的 checkpoint 是動作做完之後拍的（選取後有移動範圍、END 後是換手橫幅）。重製端「借下一個動作的檢查點」的閒置點只能比行為，不能比畫面；要比畫面就在重製端同一個動作之後拍。",
+      "why": "2026-09-16 第四章 after_enemy_phase 三張幀差 4–6 萬像素，看圖才發現對到的是下一個 select／END 做完的畫面，不是重製端拍的閒置畫面。",
+      "date": "2026-09-16",
+      "evidence": "tools/verify_chapter_parity.py frame_comparable；tools/test_verify_chapter_parity.py"
+    },
+    {
+      "id": "frame-variants-multiply-only-independent-phases",
+      "area": "對拍",
+      "rule": "重製端為原版沒記錄的相位出多張候選幀時，只乘上真的獨立變動的維度；原版凍結的東西（橫幅期間的地圖）就不要再乘 LUT／idle 相位。事前算一下張數：超過幾百張 verifier 就要跑十分鐘以上。",
+      "why": "2026-09-16 加橫幅變體時沒擋 LUT 相位，PLAYER PHASE 橫幅還在倒數就開始選單位，7 個檢查點各出 1716 張、共 1.4 萬張，verifier 跑了十幾分鐘還沒完。根因有兩個：變體維度相乘、重播在橫幅期間就接受輸入。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/chapter_parity_replay_test.go bannerVariants／playerHasControl"
+    },
+    {
+      "id": "availability-table-can-be-preset-by-caller",
+      "area": "逆向",
+      "rule": "wrapper 只清輸出表的一格、其餘格子由呼叫端先寫的情況存在：說「這個旗標只有這幾個寫入端」之前，把呼叫端傳表進來之前的寫入也看一遍。",
+      "why": "2026-09-16 第四章 seq 459：有指令的單位移動後指令格是紅的，0x18D8C 裡找不到原因；答案在呼叫端 0x18A72——走過路的單位除 raw +7 為 0x12／0x13／0x22 外先把表 +4 設 1。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/main.go nativeCommandAllowedAfterMove；TestActionOverlayCommandDisabledAfterMoveExceptThreeFigs"
     }
   ]
 }

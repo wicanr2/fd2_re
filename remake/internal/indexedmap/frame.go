@@ -71,6 +71,11 @@ type FrameInput struct {
 	ForegroundUnits                                  []fdicon.NativeForegroundLayerEntry
 	ChapterAux                                       *fdother.NativeChapterAuxSurface
 	ChapterAuxPhase                                  int
+	// SelectionOverlay 是選單位之後的重繪比 0x11CAC 多出的一步：0x18B84 在前景
+	// 之後、HUD 之前對 viewport 呼叫 0x18C6D 畫單位資訊視窗；指令環（0x1741C）
+	// 則把四張圖示貼在同一個時點的畫面上。nil 就是 0x11CAC 本來的排程。
+	// frame 是整個工作緩衝，stride 456，viewportBase 是 work+0x8088 的位移。
+	SelectionOverlay func(frame []byte, stride, viewportBase int) error
 }
 
 // NativeFrameInput is the complete, directly composable steady redraw slice.
@@ -588,6 +593,11 @@ func composeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error,
 	}
 	if err := observeFrameStage(observer, FrameStageForeground, frame, vga); err != nil {
 		return err
+	}
+	if in.SelectionOverlay != nil {
+		if err := in.SelectionOverlay(frame, workStride, workBase); err != nil {
+			return fmt.Errorf("indexedmap: selection overlay: %w", err)
+		}
 	}
 	if err := renderHUD(frame); err != nil {
 		return fmt.Errorf("indexedmap: HUD: %w", err)

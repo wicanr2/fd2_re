@@ -7637,17 +7637,38 @@ phase、目前 segment、來源交易總數與 ready；另輸出是否正在呈�
   被打的單位（`awardDeathReward(u, tgt)`）。
 - 交易 gate 的存檔項改比兩側酒店存檔後整份 FD2.SAV 的 sha256
   （`verify_chapter_parity.save_gate_entry`），重播端在輸出目錄放建構槽複本當可寫覆蓋層。
+- **戰場覆蓋進 indexed composer（#28 關閉）。** 選取單位的狀態小窗（`0x18B84` 重繪加
+  `0x18C6D`，可見游標 X `<7` 時在視窗 (156,5) 否則 (5,5)）、指令環（`0x1741C`／
+  `0x179D5` 的四張 FDOTHER 圖示貼在走行結束畫面上，穩態偏移
+  `[-0x23a0, 0x378, 0x3a8, 0x2ac0]`，環開著時不進 `0x122DC` 所以沒有游標白框）都由
+  `FrameInput.SelectionOverlay` 在前景之後、HUD 之前疊進去（`nativeMapSelectionOverlay`）。
+  攻擊選目標時的射程染色是 `0x18F6A` 的 `0x14818(x, y, out, row+0xc, row+0xb, 0)`
+  寫進 composition byte+3（`NativePlayerAttackTargetField`；`+0xc` 是 flood 預算、
+  `+0xb` 排除內圈），`0x115B6` 一回來（確認、取消、待命）`0x4DBFC` 就清掉。
+  兩條連帶的原版規則：攻擊演出結束後 raw `+3` 回靜止值 0（r9 seq 132 起每個檢查點
+  都是 0，面向目標只在演出期間）；`0x18A5F..0x18A72` 走過路（`0x4E1A6` 步數非
+  0／0xff，經 `0x13488`）之後指令格一律不可選，只放過 raw `+7` 為 `0x12`／`0x13`／
+  `0x22` 的單位，原地開環（`0x18B33`）沒有這一條（`nativeCommandAllowedAfterMove`）。
+- **回合橫幅下的畫面（`0x1A3A2`，已證實）。** `0x1A30B` 在 `0x1F1CC` 之前用 `0x11EB0`
+  把離屏地圖緩衝區（地形、單位、前景）搬到 VGA (4,4)，蓋掉左下 HUD，游標白框也不在
+  裡面（r9 seq 636／913）；橫幅同步播完 AI 才動。重製端 `bannerT > 0` 期間走
+  `ComposeNativeStepFrame`，`aiStep` 等橫幅結束；重播每個檢查點若橫幅進行中，對每個
+  不同的（馬賽克步、字樣偏移）各出一張變體。
+- 重播的 `after_enemy_phase` 點只比行為不比畫面：它借用下一個動作的原版檢查點，
+  那張圖是動作做完之後拍的（`verify_chapter_parity.frame_comparable`）。
 
 重播端另有兩條與原版側驅動對齊的規則：`force_enemy_clear` 緊接在 END 之後時，
 原版側是在敵方任何一個單位行動之前注入（r9 收據 seq 934→935 之間沒有 `0x13A9F`
 入口），重製端也只推到敵方回合開始就清場；武器店 `shop_menu` 這一點比的是出售前
 的金額（動作的 `gold_before`）。
 
-第四章 r9／r39 的結果：行為、節點、交易三個 gate 通過（LOAD → 出口 → 五回合 →
+第四章 r9／r48 的結果：行為、節點、交易三個 gate 通過（LOAD → 出口 → 五回合 →
 增援 → 清場 → 戰後城鎮出售／四棟建築／酒店存檔／祕密商店，單位、HP、回合、金額逐點
-相同，酒店存檔整檔 sha256 相同）；畫面 gate 46／59 張未過，分成戰場覆蓋（#28）、
-敵方回合後鏡頭位置（#30）、升級與 END 回復演出（#29）、酒店介面（#27）四類。
+相同，酒店存檔整檔 sha256 相同）；畫面 gate 56 張比 29 張未過：第 1–3 回合的
+select／move／attack_armed／attack_result／stay／wait 與自動換手橫幅全部在 640 像素
+預算內，未過的是第 5 回合起的全部戰場幀（敵方回合後鏡頭 X 差 4 格，#30）與酒店
+存檔畫面（#27）。
 
 尚未閉合：酒店 `0x2FC85` 原生介面（資源 13、四圖示、存檔槽列表、「記錄儲存完畢」）
-未實作，選項 0 目前是重製端自創的傳聞；戰場覆蓋（移動範圍、狀態面板、指令環）
-不在 indexed composer，select／ring 幀不比；`#24` 原版槽 bytes。各開一條 issue。
+未實作，選項 0 目前是重製端自創的傳聞（#27）；敵方回合的鏡頭規則（#30）；升級與
+END 回復演出（#29，這一章的樣本沒有抽到升級幀）。

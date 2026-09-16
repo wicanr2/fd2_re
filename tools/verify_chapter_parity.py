@@ -8,7 +8,7 @@
 
 比對單位是重製側 checkpoints.jsonl 的每一筆：它帶 oracle_seq，對到原版
 checkpoint-<seq>.json；`after_enemy_phase` 對到下一個動作那一格（原版 end_turn 紀錄
-在 END 之後、敵方回合之前）。
+在 END 之後、敵方回合之前），只比行為不比畫面——那張原版圖是下一個動作做完後拍的。
 
 gate：
   behavior   單位（camp、x、y、存活）逐點相同、回合相同；HP 逐點相同，
@@ -121,6 +121,12 @@ def save_gate_entry(save_actions: list[dict], remake_save: list[dict], blocked_i
     return entry
 
 
+def frame_comparable(remake_cp: dict) -> bool:
+    """after_enemy_phase 只比行為：它借用下一個動作的原版檢查點，而那張圖是動作做完
+    之後（選取後的移動範圍、END 後的換手橫幅）拍的，原版沒有同一瞬間的閒置畫面。"""
+    return remake_cp.get("kind") != "after_enemy_phase"
+
+
 def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     seq = remake_cp.get("oracle_seq") or 0
     if seq <= 0:
@@ -193,7 +199,7 @@ def main() -> int:
             oracle_gold = oracle_gold_for(actions, seq, cp["kind"], view)
             transactions.append({"seq": seq, "kind": cp["kind"], "oracle": oracle_gold, "remake": cp.get("gold"),
                                  "ok": oracle_gold == cp.get("gold")})
-        if cp.get("frame"):
+        if cp.get("frame") and frame_comparable(cp):
             opng = args.oracle / f"checkpoint-{seq:04d}.png"
             # 重製側每點寫出全部動畫相位的變體（remake-NNNN-pK.png）；取差異最小的一張。
             stem = re.sub(r"-p\d+\.png$", "", cp["frame"])

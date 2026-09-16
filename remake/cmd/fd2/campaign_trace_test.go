@@ -41,6 +41,7 @@ func TestEndTurnEnemyPhaseResultEntersPostbattleCutsceneThenTown(t *testing.T) {
 	if !g.aiBusy {
 		t.Fatal("endTurn did not enter enemy phase")
 	}
+	g.bannerT = 0 // 回合橫幅（0x1F1CC）同步播完 AI 才動；這裡直接視為已播完
 	g.aiStep()
 	if g.aiBusy || g.result != "win" || st.Turn != 1 {
 		t.Fatalf("enemy phase completion: aiBusy=%v result=%q turn=%d", g.aiBusy, g.result, st.Turn)

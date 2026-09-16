@@ -91,3 +91,27 @@ func (g *Game) drawNativeMovementPanel(screen *ebiten.Image) {
 	op.GeoM.Translate(float64(g.nativeMovePanelX*2), 18)
 	screen.DrawImage(g.nativeMovePanel, op)
 }
+
+// beginPlayerAttackTargeting 是指令環攻擊收合後的共同入口（0x18f22 分支）：
+// 標記射程、提示選目標。重播測試也走這裡，不另抄一份。
+func (g *Game) beginPlayerAttackTargeting() {
+	g.markNativePlayerAttackField()
+	if message, ok := g.localeMessage("battle.attack.choose_target"); ok {
+		g.msg = message
+	}
+}
+
+// markNativePlayerAttackField 在指令環選攻擊收合後，把 0x18f6a 那次 0x14818 的
+// 標記寫進 NativeTileBlitModes；選目標期間整幀就會照原版染出武器射程。舊版
+// JSON 戰場沒有原版物品表時維持不標記。
+func (g *Game) markNativePlayerAttackField() {
+	if g == nil || g.st == nil || g.sel == nil ||
+		len(g.st.NativeTileBlitModes) != g.st.W*g.st.H {
+		return
+	}
+	field, err := g.st.NativePlayerAttackTargetField(g.sel)
+	if err != nil {
+		return
+	}
+	copy(g.st.NativeTileBlitModes, field)
+}

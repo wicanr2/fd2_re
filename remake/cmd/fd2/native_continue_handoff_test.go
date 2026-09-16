@@ -893,6 +893,7 @@ func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 		t.Fatalf("restored YES did not enter enemy phase: ai=%v banner=%q ui=%#v",
 			g.aiBusy, g.banner, g.nativeSystemEndTurnUI)
 	}
+	g.bannerT = 0 // 回合橫幅（0x1F1CC）同步播完 AI 才動；這裡直接視為已播完
 	g.aiStep()
 	if g.aiBusy || state.Turn != 1 || g.banner != "PLAYER PHASE" {
 		t.Fatalf("enemy phase did not return to player: ai=%v turn=%d banner=%q",

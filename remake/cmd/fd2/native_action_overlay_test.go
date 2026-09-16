@@ -386,6 +386,32 @@ func TestActionOverlayNativeCommandGateUsesRawOffset27NotLegacySeal(t *testing.T
 	}
 }
 
+// 0x18a5f..0x18a72：走過路之後只有 raw +7 為 0x12／0x13／0x22 的單位還能選指令；
+// 原地開環沒有這一條。
+func TestActionOverlayCommandDisabledAfterMoveExceptThreeFigs(t *testing.T) {
+	selected := battle.Unit{
+		OnField: true, HP: 10, AtkMin: 1, AtkMax: 1, X: 2, Y: 2,
+		Inventory: []int{3}, Equipped: []bool{true},
+		NativeCommandMask: [5]byte{1}, BattleFig: 9,
+	}
+	enemy := &battle.Unit{OnField: true, HP: 10, Camp: battle.Enemy, X: 3, Y: 2}
+	g := &Game{st: &battle.State{Units: []*battle.Unit{enemy}}, sel: &selected,
+		moved: true, selOrigX: 2, selOrigY: 2}
+	if got := g.actionOverlayAvailability(); got != [4]int{0, 0, 0, 0} {
+		t.Fatalf("原地開環 availability=%v", got)
+	}
+	g.selOrigX, g.selOrigY = 2, 5
+	if got := g.actionOverlayAvailability(); got != [4]int{0, 1, 0, 0} {
+		t.Fatalf("走過路 availability=%v", got)
+	}
+	for _, fig := range []int{0x12, 0x13, 0x22} {
+		selected.BattleFig = fig
+		if got := g.actionOverlayAvailability(); got != [4]int{0, 0, 0, 0} {
+			t.Fatalf("fig %#x 走過路 availability=%v", fig, got)
+		}
+	}
+}
+
 func TestNativeActionSelectableRejectsDisabledWordAndInvalidDirection(t *testing.T) {
 	availability := [4]int{0, 1, 0, 0}
 	for _, direction := range []int{-1, 1, 4} {

@@ -962,10 +962,12 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 城鎮游標取 selector-cache 首槽，不是固定 FDICON archive group 0。外部存檔的
 建立歷程與 dosgolem 未推送分支仍是收據內的證據限制。
 
-第四章整章收據 [`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（2026-09-15）：
-59 個比較點中 13 張在 640 像素預算內（城鎮、出發、戰鬥開始、部分移動／待機）；
-未過的 46 張分成戰場覆蓋不在 indexed composer（#28）、敵方回合後鏡頭位置（#30）、
-升級訊息與 END 回復演出（#29）、酒店介面（#27）四類。
+第四章整章收據 [`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（2026-09-16，
+r48）：56 個畫面比較點中 27 張在 640 像素預算內——城鎮、出發、戰鬥開始，以及第
+1–3 回合全部的 select／move／attack_armed／attack_result／stay／wait（狀態小窗、指令環、
+攻擊射程染色、自動換手的 ENEMY PHASE 橫幅都在 indexed composer 內，#28 關閉）；
+未過的 29 張是第 5 回合起的戰場幀（敵方回合後鏡頭 X 差 4 格，#30）與酒店存檔畫面
+（#27）。`after_enemy_phase` 點只比行為。
 
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 

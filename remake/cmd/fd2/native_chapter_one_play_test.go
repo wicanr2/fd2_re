@@ -392,7 +392,7 @@ func playUnit(t *testing.T, g *Game, actor *battle.Unit, rec *ch01Recorder) bool
 	available := g.actionOverlayAvailability()
 	if target != nil && nativeActionSelectable(available, 0) {
 		g.ringSel = 0
-		if !closeRing(t, g, func() {}) {
+		if !closeRing(t, g, g.beginPlayerAttackTargeting) {
 			t.Fatal("攻擊：指令環沒有收合")
 		}
 		if !g.positionScreenshotCursor(target.X, target.Y) {

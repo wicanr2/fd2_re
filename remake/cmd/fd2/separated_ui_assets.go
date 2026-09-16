@@ -20,20 +20,26 @@ func loadNativeUIPalette() color.Palette {
 }
 
 func loadNativeActionCells(palette color.Palette) []*ebiten.Image {
+	images, _ := loadNativeActionCellsWithRaw(palette)
+	return images
+}
+
+// loadNativeActionCellsWithRaw 同時回傳 indexed 原格（給 indexed 整幀的指令環用）。
+func loadNativeActionCellsWithRaw(palette color.Palette) ([]*ebiten.Image, []fdother.RawCell) {
 	if len(palette) != 256 {
-		return nil
+		return nil, nil
 	}
 	cells, err := fdother.LoadSeparatedActionCells(separatedAssetPath("ui"))
 	if err != nil || len(cells) != nativeActionOverlayCellCount {
-		return nil
+		return nil, nil
 	}
 	images := make([]*ebiten.Image, len(cells))
 	for index, cell := range cells {
 		decoded, err := cell.Paletted(palette)
 		if err != nil {
-			return nil
+			return nil, nil
 		}
 		images[index] = ebiten.NewImageFromImage(decoded)
 	}
-	return images
+	return images, cells
 }

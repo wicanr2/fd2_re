@@ -16,7 +16,6 @@ import (
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
-	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 // 章重播（111 章工作單元的重製側）：從同一份建構槽由標題 LOAD 進城，照原版側
@@ -105,6 +104,10 @@ type parityReplay struct {
 	// 升級訊息的等待迴圈同樣依時序吃亂數，所以每一次成長擲骰前都對齊一次。
 	growthEntries []parityAIEntry
 	growthCursor  int
+	// keys 是原版側 control-history.jsonl 的逐序號按鍵；move 用它重走驅動端在 select
+	// 與 move 之間真正按過的方向鍵與被拒絕的 enter，鏡頭才會跟原版走到同一格。
+	keys    map[int]string
+	prevSeq int // 上一個語意動作的 seq
 }
 
 // parityAIEntry 是 eip-trace.jsonl 裡一筆 0x13A9F 入口：unit 是 record 索引（堆疊第一個引數）。
@@ -143,6 +146,30 @@ func readParityAIEntries(t *testing.T, path, eip string) []parityAIEntry {
 			t.Fatalf("eip-trace.jsonl 堆疊引數：%v：%s", err, line)
 		}
 		out = append(out, parityAIEntry{ControlSeq: row.ControlSeq, Unit: int(unit), RNGWord: *row.RNGWord})
+	}
+	return out
+}
+
+// readParityControlKeys 讀 oracle 輸出目錄的 control-history.jsonl（seq → key）。
+func readParityControlKeys(t *testing.T, path string) map[int]string {
+	t.Helper()
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return nil
+	}
+	out := map[int]string{}
+	for _, line := range strings.Split(string(raw), "\n") {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		var row struct {
+			Seq int    `json:"seq"`
+			Key string `json:"key"`
+		}
+		if err := json.Unmarshal([]byte(line), &row); err != nil {
+			t.Fatalf("control-history.jsonl：%v：%s", err, line)
+		}
+		out[row.Seq] = row.Key
 	}
 	return out
 }
@@ -239,7 +266,8 @@ func TestChapterParityReplay(t *testing.T) {
 		town:          fmt.Sprintf("town_ch%02d", chapter),
 		townAfter:     fmt.Sprintf("town_ch%02d", chapter+1),
 		aiEntries:     readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x13A9F"),
-		growthEntries: readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x1E54A")}
+		growthEntries: readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x1E54A"),
+		keys:          readParityControlKeys(t, filepath.Join(run, "control-history.jsonl"))}
 	g.aiPlanObserver = r.observeAIPlan
 	g.growthRollObserver = r.observeGrowthRoll
 	logFile, err := os.Create(filepath.Join(out, "checkpoints.jsonl"))
@@ -335,6 +363,7 @@ func TestChapterParityReplay(t *testing.T) {
 		if g.loadErr != "" {
 			t.Fatalf("動作 %s(seq %d) 之後執行期錯誤：%s\n阻塞：%s", action.Kind, action.Seq, g.loadErr, ch01Blockers(g))
 		}
+		r.prevSeq = action.Seq
 	}
 	r.checkpoint("end", 0, r.ui(), true)
 }
@@ -422,7 +451,7 @@ func (r *parityReplay) playerHasControl() bool {
 	g := r.g
 	return g.camp != nil && g.camp.NodeID() == r.battle && g.st != nil &&
 		g.result == "" && !g.aiBusy && g.battleEvent == nil && g.nativeTurnStaging == nil &&
-		len(g.dialog) == 0 && g.walk == nil && g.atk == nil && !g.ring &&
+		g.bannerT == 0 && len(g.dialog) == 0 && g.walk == nil && g.atk == nil && !g.ring &&
 		g.nativeClassUIJob == nil && g.spawnIntroTransition == nil && g.indexedTransition == nil &&
 		g.nativeUnitPresent == nil && g.actJob == nil && g.camPan == nil && g.focusJob == nil
 }
@@ -524,37 +553,56 @@ func nativeCampCode(camp battle.Camp) int {
 // 城鎮游標脈衝相位是 BIOS tick 決定的，兩側不可能逐 tick 對齊；所以每一點寫出
 // 全部相位的變體（remake-NNNN-pK.png），verifier 取差異最小的那一張。回傳主檔名
 // 與主檔雜湊（相位 0）。
+// frameVariant 是一個檢查點的一張候選畫面；橫幅馬賽克各步的 DAC 不同，所以
+// 每張自帶調色盤。
+type frameVariant struct {
+	pix     []byte
+	palette color.Palette
+}
+
 func (r *parityReplay) frame(kind string) (string, string) {
 	g := r.g
-	variants := [][]byte{}
+	variants := []frameVariant{}
 	var palette color.Palette
 	switch {
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "battle" && g.st != nil:
 		saved := g.st.NativeMapCycleState
-		for idle := 0; idle < 4; idle++ {
-			g.st.NativeMapCycleState.Idle = idle
-			if err := g.composeNativeMapFrame(); err != nil {
-				g.st.NativeMapCycleState = saved
-				var prov []string
-				for i, u := range g.st.Units {
-					if u == nil {
-						continue
+		savedPhase := g.st.NativeTerrainPhaseState
+		// 0x11EEE 對標記格（移動範圍）用 [0x53C1F] 相位選的 LUT 著色，20 個相位對到
+		// 11 張 LUT 隨 BIOS 計時脈動；原版 checkpoint 沒有輸出這個相位，所以有標記格
+		// 時每張 LUT 各出一個變體，verifier 取差異最小的。
+		phases := []int{savedPhase.Phase}
+		for _, mode := range g.st.NativeTileBlitModes {
+			if mode != 0xff && g.bannerT <= 0 {
+				phases = []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+				break
+			}
+		}
+		restore := func() {
+			g.st.NativeMapCycleState = saved
+			g.st.NativeTerrainPhaseState = savedPhase
+		}
+		for _, phase := range phases {
+			for idle := 0; idle < 4; idle++ {
+				g.st.NativeMapCycleState.Idle = idle
+				g.st.NativeTerrainPhaseState.Phase = phase
+				if err := g.composeNativeMapFrame(); err != nil {
+					restore()
+					var prov []string
+					for i, u := range g.st.Units {
+						if u == nil {
+							continue
+						}
+						prov = append(prov, fmt.Sprintf("%d:camp=%d (%d,%d) fig=%d on=%v hp=%d pres=%v slot=%v key=%v b5=%v id=%v/%d",
+							i, u.Camp, u.X, u.Y, u.BattleFig, u.OnField, u.HP, u.HasNativeMapPresentation, u.HasMapSelectorSlot, u.HasMapSelectorKey,
+							u.HasNativeRecordByte5, u.HasNativeIdentity, u.NativeIdentity))
 					}
-					prov = append(prov, fmt.Sprintf("%d:camp=%d (%d,%d) fig=%d on=%v hp=%d pres=%v slot=%v key=%v b5=%v id=%v/%d",
-						i, u.Camp, u.X, u.Y, u.BattleFig, u.OnField, u.HP, u.HasNativeMapPresentation, u.HasMapSelectorSlot, u.HasMapSelectorKey,
-						u.HasNativeRecordByte5, u.HasNativeIdentity, u.NativeIdentity))
+					r.t.Fatalf("%s 組不出戰場整幀：%v\n%s", kind, err, strings.Join(prov, "\n"))
 				}
-				r.t.Fatalf("%s 組不出戰場整幀：%v\n%s", kind, err, strings.Join(prov, "\n"))
-			}
-			variants = append(variants, append([]byte(nil), g.nativeMapVGA...))
-		}
-		g.st.NativeMapCycleState = saved
-		palette = g.nativeMapAssets.Palette
-		if len(g.nativeMapDAC) == 256*3 {
-			if p, e := fdother.VGAPaletteFromDAC(g.nativeMapDAC); e == nil {
-				palette = p
+				variants = append(variants, r.bannerVariants()...)
 			}
 		}
+		restore()
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "town":
 		saved := g.nativeTownUIPulse
 		for pulse := 0; pulse < 4; pulse++ {
@@ -564,7 +612,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 				g.nativeTownUIPulse = saved
 				return "", ""
 			}
-			variants = append(variants, append([]byte(nil), source...))
+			variants = append(variants, frameVariant{pix: append([]byte(nil), source...)})
 		}
 		g.nativeTownUIPulse = saved
 		palette = g.nativeClassUI.palette
@@ -573,7 +621,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		if !ok {
 			return "", ""
 		}
-		variants, palette = append(variants, source), g.nativeClassUI.palette
+		variants, palette = append(variants, frameVariant{pix: source}), g.nativeClassUI.palette
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "shop":
 		saved := g.nativeShopUIPulse
 		for pulse := 0; pulse < 4; pulse++ {
@@ -582,22 +630,30 @@ func (r *parityReplay) frame(kind string) (string, string) {
 			if !ok {
 				break
 			}
-			variants = append(variants, append([]byte(nil), source...))
+			variants = append(variants, frameVariant{pix: append([]byte(nil), source...)})
 		}
 		g.nativeShopUIPulse = saved
 		palette = g.nativeClassUI.palette
 	default:
 		return "", ""
 	}
-	if len(variants) == 0 || len(palette) == 0 {
+	if len(variants) == 0 {
 		return "", ""
 	}
 	var mainName, mainHash string
-	for k, pix := range variants {
+	for k, variant := range variants {
+		pix := variant.pix
 		if len(pix) != 320*200 {
 			r.t.Fatalf("%s 相位 %d 的畫面不是 320×200：%d", kind, k, len(pix))
 		}
-		pic := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+		pal := variant.palette
+		if pal == nil {
+			pal = palette
+		}
+		if len(pal) == 0 {
+			return "", ""
+		}
+		pic := image.NewPaletted(image.Rect(0, 0, 320, 200), pal)
 		copy(pic.Pix, pix)
 		name := fmt.Sprintf("remake-%04d-p%d.png", r.index, k)
 		f, err := os.Create(filepath.Join(r.out, name))
@@ -614,6 +670,44 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		}
 	}
 	return mainName, mainHash
+}
+
+// bannerVariants 把目前組好的 nativeMapVGA 配上 DAC 出一張；回合橫幅進行中
+// （全員行動完自動換手、END 之後）再把橫幅每一個不同的（馬賽克步、字樣偏移）
+// 各出一張——原版 checkpoint 沒記橫幅走到哪一步，verifier 取差異最小的。
+// 橫幅期間畫面凍結在進場那一刻，這裡以當前 nativeMapVGA 當那張快照。
+func (r *parityReplay) bannerVariants() []frameVariant {
+	g := r.g
+	out := []frameVariant{}
+	if g.bannerT <= 0 || g.banner == "" {
+		img, ok := g.nativeMapFrameImage()
+		if !ok {
+			return out
+		}
+		return append(out, frameVariant{pix: append([]byte(nil), img.Pix...), palette: img.Palette})
+	}
+	savedT, savedFrame := g.bannerT, g.bannerFrame
+	defer func() { g.bannerT, g.bannerFrame = savedT, savedFrame }()
+	seen := map[[3]int]bool{}
+	total := phaseBannerFrames(g.banner)
+	for t := total; t >= 1; t-- {
+		g.bannerT, g.bannerFrame = t, nil
+		offset, visible := g.phaseBannerSlideOffset()
+		key := [3]int{g.phaseBannerStep(), offset, 0}
+		if visible {
+			key[2] = 1
+		}
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+		img, ok := g.nativeMapFrameImage()
+		if !ok {
+			continue
+		}
+		out = append(out, frameVariant{pix: append([]byte(nil), img.Pix...), palette: img.Palette})
+	}
+	return out
 }
 
 func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame bool, extra ...string) parityCheckpoint {
@@ -716,8 +810,16 @@ func (r *parityReplay) moveUnit(action parityAction, actor *battle.Unit) bool {
 	if actor == nil {
 		t.Fatalf("move(seq %d)：沒有先 select", action.Seq)
 	}
-	if !g.positionScreenshotCursor(action.To[0], action.To[1]) {
-		t.Fatalf("move(seq %d)：游標移不到 (%d,%d)", action.Seq, action.To[0], action.To[1])
+	// 驅動端在 select 與 move 之間可能繞路（先試別的格、被拒絕的 enter）；鏡頭
+	// 跟著這些方向鍵捲動，只走直線會停在不同的鏡頭位置（r9 seq 459：原版 camera_y
+	// 11、直線重播 12）。有 control-history 就照按鍵重走，沒有才走直線。
+	if !r.replayCursorKeys(action) {
+		if !g.positionScreenshotCursor(action.To[0], action.To[1]) {
+			t.Fatalf("move(seq %d)：游標移不到 (%d,%d)", action.Seq, action.To[0], action.To[1])
+		}
+	}
+	if g.curX != action.To[0] || g.curY != action.To[1] {
+		t.Fatalf("move(seq %d)：照原版按鍵走完游標在 (%d,%d)，不是 (%d,%d)", action.Seq, g.curX, g.curY, action.To[0], action.To[1])
 	}
 	g.confirm()
 	if g.walk == nil {
@@ -736,8 +838,58 @@ func (r *parityReplay) moveUnit(action parityAction, actor *battle.Unit) bool {
 	if !pump(t, g, 240, func() bool { return g.ring }) {
 		t.Fatalf("move(seq %d)：走到 (%d,%d) 之後沒有開指令環", action.Seq, action.To[0], action.To[1])
 	}
+	r.settleActionOverlay(action)
 	r.checkpoint("move", action.Seq, "ring", true)
 	return true
+}
+
+// replayCursorKeys 重走 (prevSeq, action.Seq) 之間的方向鍵與 enter：方向鍵走鍵盤
+// 游標處理器（0x11B48 家族），enter 走 confirm——原版側那些 enter 都被拒絕了（否則
+// 動作就會記在那個 seq），重製端若接受就是分岔，直接 Fatalf。沒有按鍵資料回 false。
+func (r *parityReplay) replayCursorKeys(action parityAction) bool {
+	t, g := r.t, r.g
+	if r.keys == nil {
+		return false
+	}
+	walked := false
+	for seq := r.prevSeq + 1; seq < action.Seq; seq++ {
+		switch r.keys[seq] {
+		case "up":
+			g.moveMapCursor(0, -1)
+		case "down":
+			g.moveMapCursor(0, 1)
+		case "left":
+			g.moveMapCursor(-1, 0)
+		case "right":
+			g.moveMapCursor(1, 0)
+		case "enter":
+			g.confirm()
+			if g.walk != nil {
+				t.Fatalf("move(seq %d)：原版在 seq %d 的 enter 被拒絕，重製端卻接受並開始走行（游標 (%d,%d)）",
+					action.Seq, seq, g.curX, g.curY)
+			}
+		default:
+			continue
+		}
+		walked = true
+	}
+	return walked
+}
+
+// settleActionOverlay 把指令環推到穩態（0x1741C 的四張展開幀播完、進 0x179D5 的
+// 停留迴圈）再抓幀：原版側的 move／stay checkpoint 都是在圖示停好之後取的。
+// 展開幀靠「這一幀被畫過」推進，離屏測試用 markActionOverlayDrawn 承認。
+func (r *parityReplay) settleActionOverlay(action parityAction) {
+	t, g := r.t, r.g
+	for i := 0; i < 240 && g.ring && g.actionOverlayBlocksInput(); i++ {
+		g.markActionOverlayDrawn()
+		if err := g.Update(); err != nil {
+			t.Fatalf("Update：%v", err)
+		}
+	}
+	if g.ring && g.actionOverlayBlocksInput() {
+		t.Fatalf("%s(seq %d)：指令環展開沒有完成", action.Kind, action.Seq)
+	}
 }
 
 func (r *parityReplay) stayUnit(action parityAction, actor *battle.Unit) {
@@ -749,6 +901,7 @@ func (r *parityReplay) stayUnit(action parityAction, actor *battle.Unit) {
 	if !pump(t, g, 240, func() bool { return g.ring }) {
 		t.Fatalf("stay(seq %d)：原地確認之後沒有開指令環", action.Seq)
 	}
+	r.settleActionOverlay(action)
 	r.checkpoint("stay", action.Seq, "ring", true)
 }
 
@@ -768,7 +921,7 @@ func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.U
 		return nil
 	}
 	g.ringSel = 0
-	if !closeRing(t, g, func() {}) {
+	if !closeRing(t, g, g.beginPlayerAttackTargeting) {
 		t.Fatalf("attack(seq %d)：指令環沒有收合", action.Seq)
 	}
 	if !g.positionScreenshotCursor(action.Target[0], action.Target[1]) {
