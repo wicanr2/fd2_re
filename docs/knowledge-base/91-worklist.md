@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 13 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -78,6 +78,14 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 原版 `0x1E292` 升級時以 `0x15F84` 逐行顯示「升級！」與 AP／DP／DX／HP／MP 增量（FDTXT #0x1E8..#0x1EE），每行之間 `0x16559`／`0x16E24` 等待按鍵；`0x1A30B` 開頭的我方回復在每個回復的單位上畫 `0x1DA16` 圖示並播音效 4。重製端 `AwardExpNative` 與 `ApplyNativeEndTurnRecovery` 只改數值（第四章對拍已靠這兩條把回合 4 的行為 gate 推到只剩 RNG 時序差），畫面與等待節奏沒有接，所以原版側這幾格的幀在重製側對不到同狀態。要做：升級訊息用 indexed 資源逐行顯示與等待；END 回復加圖示與音效；重播測試的 `ackPresents` 收進這兩種工作。
 
 怎樣算做完：第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。
+
+### 第四章 seq 892 stay 幀：畫面上只有一隻單位停在別的 idle 相位
+
+`stay-frame-single-unit-idle-phase-ch04-892` · RE待解 · [#31](https://github.com/wicanr2/fd2_re/issues/31) · 仍未完成 · 要人判
+
+第四章 r10／r52 收據 seq 892（第 5 回合在 (11,13) 原地開指令環）：原版畫面上 11 隻單位有 10 隻是 idle 幀 2（含 HUD 頭像），只有 (4,17) 的熊（記錄 0x1A）是幀 0／1，差 373 像素；重製端整幀單一相位的四個變體最好只到 839 像素（預算 640）。`0x127E0` 每隻單位各自讀 `[0x53C0B]`，而計數只在 `0x1297D`（`0x11CAC`／`0x1741C`／`0x177FC`／`0x18B84` 開頭）遞增，所以不是畫到一半換相位；更像是那隻單位（或整個下半區）在最後一次整幀重繪之後沒有再被搬到 VGA，或是被某個局部重繪蓋回舊相位。要做：用 `FD2_ORACLE_FRAME_EIP=0x11CAC` 加 `0x1741C`／`0x179D5` 的 eip-watch 取 seq 891→892 之間逐幀，定出哪一次繪製留下那隻單位的舊幀。同一批 r52 收據其餘 5 個回合的 stay 幀都在預算內。
+
+怎樣算做完：第四章收據 seq 892 的 stay 幀落在 640 像素預算內，且成因寫進 56（哪個繪製呼叫、什麼條件）。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
