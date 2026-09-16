@@ -313,7 +313,6 @@
           "groups": [
             2
           ],
-          "camp": "ally",
           "native_spawns": [
             {
               "group": 2,
@@ -322,7 +321,99 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 11
+          "native_event_id": 11,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34579",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch04.json",
+            "scene_index": 2,
+            "line": 0,
+            "source_dat": "FDTXT_004",
+            "string_index": 2,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 24,
+            "pages": [
+              [
+                "『嗽嗚！．是誰在這裡大吵",
+                "　大鬧？』"
+              ]
+            ]
+          },
+          "native_event_id": 11,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34579",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch04.json",
+            "scene_index": 2,
+            "line": 1,
+            "source_dat": "FDTXT_004",
+            "string_index": 2,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 25,
+            "pages": [
+              [
+                "『吼．好像是人類在打架。",
+                "　』"
+              ]
+            ]
+          },
+          "native_event_id": 11,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34579",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch04.json",
+            "scene_index": 2,
+            "line": 2,
+            "source_dat": "FDTXT_004",
+            "string_index": 2,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 26,
+            "pages": [
+              [
+                "『呼．好像很有趣，我們去",
+                "　打人少的那一邊！』"
+              ]
+            ]
+          },
+          "native_event_id": 11,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34579",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch04.json",
+            "scene_index": 2,
+            "line": 3,
+            "source_dat": "FDTXT_004",
+            "string_index": 2,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 27,
+            "pages": [
+              [
+                "『贊成！贊成！』"
+              ]
+            ]
+          },
+          "native_event_id": 11,
+          "camp": "ally"
         }
       ]
     }

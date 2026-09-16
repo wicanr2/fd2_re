@@ -40,6 +40,117 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/a74122d27e06/events/1/1",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 0,
+                "operand": 24,
+                "pages": [
+                  [
+                    "『嗽嗚！．是誰在這裡大吵",
+                    "　大鬧？』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch04.json",
+                "source_dat": "FDTXT_004",
+                "string_index": 2,
+                "utterance": 0
+              },
+              "native_event_id": 11,
+              "native_source": "0x34579",
+              "native_text_index": 2
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/a74122d27e06/events/1/2",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 1,
+                "operand": 25,
+                "pages": [
+                  [
+                    "『吼．好像是人類在打架。",
+                    "　』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch04.json",
+                "source_dat": "FDTXT_004",
+                "string_index": 2,
+                "utterance": 1
+              },
+              "native_event_id": 11,
+              "native_source": "0x34579",
+              "native_text_index": 2
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/a74122d27e06/events/1/3",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 2,
+                "operand": 26,
+                "pages": [
+                  [
+                    "『呼．好像很有趣，我們去",
+                    "　打人少的那一邊！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch04.json",
+                "source_dat": "FDTXT_004",
+                "string_index": 2,
+                "utterance": 2
+              },
+              "native_event_id": 11,
+              "native_source": "0x34579",
+              "native_text_index": 2
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/a74122d27e06/events/1/4",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 3,
+                "operand": 27,
+                "pages": [
+                  [
+                    "『贊成！贊成！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch04.json",
+                "source_dat": "FDTXT_004",
+                "string_index": 2,
+                "utterance": 3
+              },
+              "native_event_id": 11,
+              "native_source": "0x34579",
+              "native_text_index": 2
+            }
+          },
+          "type": "dialogue"
         }
       ],
       "event_id": "legacy/event/a74122d27e06/events/1",

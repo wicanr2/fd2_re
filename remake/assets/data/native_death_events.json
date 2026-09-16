@@ -131,6 +131,163 @@
       ]
     },
     {
+      "id": 11,
+      "handler": "0x34565",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 0,
+          "source": "0x3456f"
+        },
+        {
+          "op": "dialogue",
+          "text": 2,
+          "source": "0x34579",
+          "tail_sources": [
+            "0x3452f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "handler": "0x345ea",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 37,
+          "last": 40,
+          "mode": 0,
+          "source": "0x345f4"
+        },
+        {
+          "op": "ai_mode_range",
+          "first": 13,
+          "last": 24,
+          "mode": 0,
+          "source": "0x34602"
+        },
+        {
+          "op": "dialogue",
+          "text": 3,
+          "source": "0x34610",
+          "tail_sources": [
+            "0x3452f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "handler": "0x3462e",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "range_zero",
+          "source": "0x34638"
+        },
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 1,
+          "source": "0x34642"
+        },
+        {
+          "op": "pan",
+          "x": 14,
+          "y": 0,
+          "source": "0x3465a"
+        },
+        {
+          "op": "acting",
+          "resource": 23,
+          "source": "0x34666"
+        },
+        {
+          "op": "reset_pose",
+          "source": "0x34670"
+        },
+        {
+          "op": "ai_mode_range",
+          "first": 7,
+          "last": 12,
+          "mode": 0,
+          "source": "0x34675"
+        },
+        {
+          "op": "ai_mode_range",
+          "first": 33,
+          "last": 35,
+          "mode": 0,
+          "source": "0x34683"
+        },
+        {
+          "op": "dialogue",
+          "text": 4,
+          "source": "0x34691",
+          "tail_sources": [
+            "0x34516"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "handler": "0x34696",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 3,
+          "gate": 0,
+          "source": "0x346a0"
+        },
+        {
+          "op": "dialogue",
+          "text": 5,
+          "source": "0x346aa",
+          "tail_sources": [
+            "0x3452f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "handler": "0x346c8",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 48,
+          "last": 51,
+          "mode": 7,
+          "source": "0x346d2"
+        },
+        {
+          "op": "dialogue",
+          "text": 6,
+          "source": "0x346e0"
+        },
+        {
+          "op": "acting",
+          "resource": 24,
+          "source": "0x34707"
+        },
+        {
+          "op": "dialogue",
+          "text": 7,
+          "source": "0x34711",
+          "tail_sources": [
+            "0x343fa"
+          ]
+        }
+      ]
+    },
+    {
       "id": 19,
       "handler": "0x34716",
       "battle_units": [

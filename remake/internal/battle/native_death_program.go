@@ -242,6 +242,9 @@ func (st *State) ApplyNativeDeathOp(op NativeDeathOp) error {
 	case "range_one":
 		// 0x35C18：互動時的地圖範圍選擇值。
 		st.NativeMapRangeMode, st.HasNativeMapRangeModeState = 1, true
+	case "range_zero":
+		// 0x34638（第五章事件 15）：登場演出前把地圖範圍選擇值關掉。
+		st.NativeMapRangeMode, st.HasNativeMapRangeModeState = 0, true
 	case "exp_cancel":
 		// 效果在攻擊結算時由 NativeDeathCancelsExp 先套用；這裡只保留位置。
 	default:

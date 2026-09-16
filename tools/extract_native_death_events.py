@@ -76,6 +76,38 @@ EVENTS = [
         op("state_set", [(0x345E0, 0x345E9)], index=0x10, value=1,
            when={"state_eq": [0x10, 0]}),
     ]},
+    # 11 是第四章（map 3）第 4 回合的回合事件：登場 group 2 之後一段對白。
+    {"id": 11, "handler": 0x34565, "ops": [
+        op("spawn_group", [(0x3456F, 0x34579)], group=2, gate=0),
+        op("dialogue", [(0x34579, 0x34594), (0x3452F, 0x3453D)], text=2),
+    ]},
+    # 14..17 是第五章（map 4）的回合事件（turn_events.json：第 3／4／7／8 回合），
+    # 不是死亡效果；同一張全域事件表，同一套轉寫與核對。
+    {"id": 14, "handler": 0x345EA, "ops": [
+        op("ai_mode_range", [(0x345F4, 0x34602)], first=0x25, last=0x28, mode=0),
+        op("ai_mode_range", [(0x34602, 0x34610)], first=0xD, last=0x18, mode=0),
+        op("dialogue", [(0x34610, 0x3462E), (0x3452F, 0x3453D)], text=3),
+    ]},
+    {"id": 15, "handler": 0x3462E, "ops": [
+        op("range_zero", [(0x34638, 0x34642)]),
+        op("spawn_group", [(0x34642, 0x3465A)], group=2, gate=1),
+        op("pan", [(0x3465A, 0x34666)], x=0xE, y=0),
+        op("acting", [(0x34666, 0x34670)], resource=0x17),
+        op("reset_pose", [(0x34670, 0x34675)]),
+        op("ai_mode_range", [(0x34675, 0x34683)], first=7, last=0xC, mode=0),
+        op("ai_mode_range", [(0x34683, 0x34691)], first=0x21, last=0x23, mode=0),
+        op("dialogue", [(0x34691, 0x34696), (0x34516, 0x3453D)], text=4),
+    ]},
+    {"id": 16, "handler": 0x34696, "ops": [
+        op("spawn_group", [(0x346A0, 0x346AA)], group=3, gate=0),
+        op("dialogue", [(0x346AA, 0x346C8), (0x3452F, 0x3453D)], text=5),
+    ]},
+    {"id": 17, "handler": 0x346C8, "ops": [
+        op("ai_mode_range", [(0x346D2, 0x346E0)], first=0x30, last=0x33, mode=7),
+        op("dialogue", [(0x346E0, 0x34707)], text=6),
+        op("acting", [(0x34707, 0x34711)], resource=0x18),
+        op("dialogue", [(0x34711, 0x34716), (0x343FA, 0x34421)], text=7),
+    ]},
     {"id": 19, "handler": 0x34716, "guards": [
         op("guard_any_active", [(0x34724, 0x34728), (0x3475D, 0x34786)], first=7, last=0x24),
     ], "ops": [
@@ -305,6 +337,8 @@ def check_op(image, event_id, o):
         expect_seq(insns, ["call 0x134e4"], where)
     elif kind == "range_one":
         expect_seq(insns, [("mov dword ptr [0x1a83], 1", RANGE)], where)
+    elif kind == "range_zero":
+        expect_seq(insns, [("mov dword ptr [0x1a83], 0", RANGE)], where)
     elif kind == "mark_inactive":
         expect_seq(insns, [f"push {imm(o['unit'])}", "call 0x32975", "add esp, 4"], where)
     elif kind == "clear_hp_from":

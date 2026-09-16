@@ -127,14 +127,44 @@ def frame_comparable(remake_cp: dict) -> bool:
     return remake_cp.get("kind") != "after_enemy_phase"
 
 
+# 0x1A30B..0x1A7BD 是換手處理（回復、回合事件、友軍 AI、橫幅、敵軍 AI）。原版側的
+# checkpoint 是動作做完之後隔幾百萬道指令拍的；最後一個玩家動作讓全員行動完自動換手
+# 時，回合事件（第五章 event 15 的登場與對白）與友軍 AI 在橫幅之前就開始跑，那張圖與
+# 單位座標已經是換手處理中（r5 seq 789／1156），不是任何玩家看得到的輸入邊界。
+# 重製端的 enemy_phase_start 本來就是拍橫幅（0x1A30B 內），不套這條。
+END_TURN_RANGE = (0x1A30B, 0x1A7BD)
+
+
+def oracle_mid_end_turn(oracle_cp: dict, remake_cp: dict) -> bool:
+    if remake_cp.get("kind") == "enemy_phase_start":
+        return False
+    for addr in oracle_cp.get("input_chain") or []:
+        try:
+            value = int(str(addr), 16)
+        except ValueError:
+            continue
+        if END_TURN_RANGE[0] <= value < END_TURN_RANGE[1]:
+            return True
+    return False
+
+
 def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     seq = remake_cp.get("oracle_seq") or 0
     if seq <= 0:
         return None
     if remake_cp.get("kind") != "after_enemy_phase":
         return seq
-    later = [a["seq"] for a in actions if a.get("seq", 0) > seq]
-    return min(later) if later else None
+    later = [a for a in actions if a.get("seq", 0) > seq]
+    if not later:
+        return None
+    following = min(later, key=lambda a: a["seq"])
+    if following.get("kind") == "end_turn":
+        # 下一個動作又是 END（那一回合玩家沒有動作）：END 的紀錄 seq 是 YES 那一鍵，
+        # 之後的 checkpoint 在有友軍 NPC 的關卡已經是友軍在走。借用系統選單剛開那一格
+        # （驅動端 before_seq；舊收據沒有這個欄位，依 open→down×3→confirm→settle×4→yes
+        # 的固定鍵序回推 9 格）。
+        return int(following.get("before_seq") or following["seq"] - 9)
+    return following["seq"]
 
 
 def main() -> int:
@@ -180,7 +210,12 @@ def main() -> int:
         entry = {"seq": seq, "kind": cp["kind"], "status": "ok"}
         if cp.get("rng_synced"):
             rng_synced_points += 1
-        if cp.get("units") is not None and ocp.get("units"):
+        mid_ai = oracle_mid_end_turn(ocp, cp)
+        if mid_ai:
+            # 原版側這一張是換手處理中拍的：單位、回合與畫面都不是輸入邊界，只留金額。
+            entry["status"] = "oracle_mid_end_turn"
+            entry["note"] = "原版 checkpoint 在 0x1A30B 換手處理裡（全員行動完自動換手），單位、回合與畫面不比"
+        if cp.get("units") is not None and ocp.get("units") and not mid_ai:
             ou, ru = oracle_units(ocp), remake_units(cp)
             if ou != ru:
                 entry["status"] = "units_differ"
@@ -199,7 +234,7 @@ def main() -> int:
             oracle_gold = oracle_gold_for(actions, seq, cp["kind"], view)
             transactions.append({"seq": seq, "kind": cp["kind"], "oracle": oracle_gold, "remake": cp.get("gold"),
                                  "ok": oracle_gold == cp.get("gold")})
-        if cp.get("frame") and frame_comparable(cp):
+        if cp.get("frame") and frame_comparable(cp) and not mid_ai:
             opng = args.oracle / f"checkpoint-{seq:04d}.png"
             # 重製側每點寫出全部動畫相位的變體（remake-NNNN-pK.png）；取差異最小的一張。
             stem = re.sub(r"-p\d+\.png$", "", cp["frame"])
@@ -221,7 +256,7 @@ def main() -> int:
     runtime_errors = [cp.get("note") for cp in remake_cps if cp.get("kind") == "runtime_error"]
     for note in runtime_errors:
         behavior.append({"seq": None, "kind": "runtime_error", "status": "remake_runtime_error", "note": note})
-    behavior_ok = all(e["status"] == "ok" for e in behavior)
+    behavior_ok = all(e["status"] in ("ok", "oracle_mid_end_turn") for e in behavior)
     nodes_ok = node_seq_oracle == node_seq_remake and "?" not in node_seq_oracle
     save_actions = [a for a in actions if a.get("kind") == "town_save"]
     remake_save = [cp for cp in remake_cps if cp.get("kind") == "town_save"]

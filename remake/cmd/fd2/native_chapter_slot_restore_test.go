@@ -412,6 +412,7 @@ func TestExternalLateSlotUsesProductionTitleAndPreparationInputOwners(t *testing
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
+	g.aiStep() // 0x1A30B 先跑友軍 AI（0x1D80B）那一遍，跑完才進橫幅
 	if g.nativeClassUIJob != nil || !g.aiBusy || g.banner != "ENEMY PHASE" {
 		t.Fatalf("外部晚期槽 END→YES 未進敵方回合：job=%v ai=%v banner=%q err=%q",
 			g.nativeClassUIJob != nil, g.aiBusy, g.banner, g.loadErr)

@@ -62,7 +62,7 @@
       "limitations": [
         "原版側 r13 收據由 dosgolem feat/fd2-oracle-input-chain caa9ee8（dirty=0）重生，逐點與 r10 相同；checkpoint 落在 0x373C4／0x11EB0／0x4E809 中間時只延後 PNG（不撕裂），其餘狀態照舊拍",
         "原版側整章計畫跑完（LOAD→出口→5 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店）",
-        "四個 gate 全過（r55）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，57 個畫面比較點逐像素相同（after_enemy_phase 只比行為）",
+        "四個 gate 全過（r58）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，55 個畫面比較點逐像素相同（after_enemy_phase 只比行為；seq 636／913／935 落在 0x1A30B 換手處理裡，依 oracle_mid_end_turn 規則不比）",
         "未抽樣到的演出：升級、END 回復圖示（#29）；酒店服務 2 讀檔未接，傳聞後回城鎮而非酒店選單"
       ],
       "prior_receipts": [
@@ -71,14 +71,20 @@
     },
     {
       "chapter": 5,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch05.json",
+      "slot_manifest": "docs/data/parity-slots/ch05-manifest.json",
+      "slot_sha256": "c01e220e69532604cb2f78e5a8be2b7977e92f2c9faec37b20d143c28bd0d99a",
+      "dosgolem_commit": "caa9ee8dea199ea343cddb18be922d96ecc6b2c6",
+      "date": "2026-09-16",
+      "verify": "tools/chapter_parity.sh 5 work/parity-slot-ch05 <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch05-sample.jsonl",
+      "limitations": [
+        "槽由 ch02-cleared 基底建到 target 4（每章 +6 級政策，假設第三章無人陣亡）；合法性檢查 docs/data/parity-plans/ch05-slot-load.jsonl（LOAD 進城鎮、五棟建築）",
+        "原版側 r5 收據由 dosgolem feat/fd2-oracle-input-chain caa9ee8（dirty=0）重生；整章計畫跑完（LOAD→出口→第 1、2 回合 END→第 3 回合八個單位移動待機→第 4 回合友軍 group 2 登場與兩次攻擊→第 5 回合 force_enemy_clear 27→0→END→戰後對白→城鎮出售 2000→2037／五棟建築／酒店存檔／ctrl-f5 祕密商店）",
+        "四個 gate 全過（remake-r5）：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同，58 個畫面比較點逐像素相同（after_enemy_phase 只比行為；seq 789／1156 落在 0x1A30B 換手處理裡，依 oracle_mid_end_turn 規則不比）",
+        "未抽樣到：第 7、8 回合的 event 16／17（敵軍 group 3 登場與 text 5–7 對白，已轉寫進劇本但沒有原版收據）、法術與物品指令、商店買入（驅動端沒有這三種指令）、升級與 END 回復圖示（#29）",
+        "其餘 57 筆回合事件仍是 gen_campaign 的 spawn 版本，逐章轉寫（#33）"
+      ],
       "prior_receipts": []
     },
     {

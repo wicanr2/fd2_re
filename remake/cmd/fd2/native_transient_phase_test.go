@@ -216,6 +216,7 @@ func TestEndTurnTicksRawSelectorsOneThenZeroBeforeEnemyPhase(t *testing.T) {
 	g.st.NativeRuntimeRecords = append(g.st.NativeRuntimeRecords, secondRaw)
 
 	g.endTurn()
+	g.aiStep() // 0x1A30B 先跑友軍 AI（0x1D80B）那一遍，跑完才進橫幅
 	if g.loadErr != "" || !g.aiBusy || g.banner != "ENEMY PHASE" ||
 		g.st.Units[0].NativeTransient[0] != 1 ||
 		g.st.Units[1].NativeTransient[1] != 1 ||

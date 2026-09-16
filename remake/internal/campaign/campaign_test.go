@@ -1492,7 +1492,7 @@ func TestCh04PostBindingMaterializesLayoutAndDialogue(t *testing.T) {
 	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch04 post compile err=%v issues=%#v", err, issues)
 	}
-	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || beats[0].RuntimeContext.SlotCount != 50 {
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || !reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{42, 48, 52}) {
 		t.Fatalf("ch04 runtime context=%#v", beats[:min(len(beats), 1)])
 	}
 	var layout *Beat

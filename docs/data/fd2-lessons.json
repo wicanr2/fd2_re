@@ -497,6 +497,46 @@
       "why": "2026-09-16 content.json 停在 8 月 30 日的行號（4731 vs 5081），四個既有紅測試裡三個是寫死筆數；重綁後 5,099 筆，只有 40 筆新字串要補候選。",
       "date": "2026-09-16",
       "evidence": "tools/migrate_full_locale_content.py；docs/data/localization/README.md"
+    },
+    {
+      "id": "turn-event-handlers-carry-more-than-spawns",
+      "area": "逆向",
+      "rule": "FDFIELD 回合事件列只給「第幾回合、哪個事件、哪個 phase」；處理器本體（全域事件表 0x51B91）還會改 AI 模式（0x3419C）、搬鏡頭、播演出、播對白。接一章之前先把該章每個回合事件的處理器反組譯一遍，用 extract_native_death_events.py 的轉寫＋逐條核對接進 sync_native_turn_events.py，不要只看 turn_events.json 有沒有 group 就當事件只是登場。",
+      "why": "2026-09-16 第五章 event 14（第 3 回合）只改 AI 模式加一句對白、event 17 改模式加兩段對白加演出，turn_events.json 的 groups 都是空的，gen_campaign 直接跳過；第四章 event 11 的四句增援對白也一直沒播、卻沒有任何 gate 抓到。",
+      "date": "2026-09-16",
+      "evidence": "tools/sync_native_turn_events.py；remake/assets/data/native_death_events.json 事件 11、14–17"
+    },
+    {
+      "id": "enemy-phase-order-ally-ai-before-banner",
+      "area": "逆向",
+      "rule": "0x1A30B 的順序是：我方回復 → selector 1 事件 → 友軍 AI（0x1D80B）→ ENEMY PHASE 橫幅 → 0x13536 清 bit7 → selector 0 事件 → 敵軍兩遍。友軍 NPC 在橫幅之前動、selector 0 的對白在橫幅之後才播；接有友軍或 selector 0 事件的章之前先確認重製端的敵方回合骨架照這個順序。",
+      "why": "2026-09-16 第五章有 4 名友軍 NPC 與第 3 回合的 selector 0 事件，重製端原本橫幅先於一切、selector 0 事件先於橫幅；第四章兩者都沒有所以從來沒紅。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/main.go aiAllyPhasePending／aiPhaseSelector0Pending；docs/knowledge-base/56 §第五章"
+    },
+    {
+      "id": "driver-plausibility-limits-must-cover-every-map",
+      "area": "對拍",
+      "rule": "驅動端判「在不在戰場」用的座標上限要涵蓋全部 33 張地圖（最寬 50、最高 64）。上限寫小了不會報錯，只會把新章的正常戰場當成過場，然後 resume_battle 一路送 enter 穿進指令環。換到座標範圍不同的章時先看 in_battle 的判準。",
+      "why": "2026-09-16 第五章 map4 寬 39、敵人站 x=37，MAP_LIMIT_X=31 讓第一輪 r1 在戰鬥開始後就把 enter 送進狀態面板。",
+      "date": "2026-09-16",
+      "evidence": "tools/dosgolem_oracle_drive.py MAP_LIMIT_X"
+    },
+    {
+      "id": "one-chapter-receipt-is-a-special-case-not-a-rule",
+      "area": "對拍",
+      "rule": "一章收據裡「剛好相等」的兩個量不能寫成規則。存檔或記錄逐 byte 比對只差幾處時，先用 fd2save.py 把差異對回記錄欄位（slot／unit／offset），再查那個欄位在原版的寫入端；別拿上一章的巧合（+2 等於 runtime 索引、+3 全 0）去「修」這一章。",
+      "why": "2026-09-16 第五章酒店存檔差 9 byte：七筆 +3 是戰後 layout 0x233c6 寫的朝向，角色 10 的 +2 是 FDICON 快取槽 13 不是索引 41。第四章的 +2=0..6、+3=0 只是沒有 layout 且快取槽剛好等於索引的特例，卻被寫成了 0x11506 的規則。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/main.go syncPartyFromBattleRecords 註解；docs/data/ui-traces/parity-ch05.json transaction.save"
+    },
+    {
+      "id": "post-handler-slot-frontier-is-materialized-count",
+      "area": "資料",
+      "rule": "戰後 handler 綁定的 runtime_context 槽數是實跑時記錄表的筆數（名冊＋戰前事件登場＋已觸發的回合事件群組），每個可能的結束時機一個 frontier；不是 FDFIELD roster 的總筆數（含永不登場的 group 255）。勝負判定（0x205b4）只看已登場的列，援軍還沒登場就清場是合法的結束時機。",
+      "why": "2026-09-16 ch04_post 寫 50（FDFIELD map4 的 50 筆），實跑第 5 回合清場時記錄表是 48（42＋group 2 六筆），第 7 回合 group 3 登場後才 52；重製端另外還用 PendingCount 擋住勝利，原版沒有這條。",
+      "date": "2026-09-16",
+      "evidence": "remake/assets/cutscenes/bindings/ch04_post.json slot_counts；remake/internal/battle/combat.go Result"
     }
   ]
 }

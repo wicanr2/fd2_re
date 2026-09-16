@@ -963,13 +963,21 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 建立歷程與 dosgolem 未推送分支仍是收據內的證據限制。
 
 第四章整章收據 [`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（2026-09-16，
-r55，原版側 r13、dosgolem `caa9ee8`）：狀態 `passed`，57 個畫面比較點全部逐像素相同——
+r58，原版側 r13、dosgolem `caa9ee8`）：狀態 `passed`，55 個畫面比較點全部逐像素相同——
 城鎮、出發、戰鬥開始，五個回合全部的 select／move／attack_armed／attack_result／stay／
 wait、換手橫幅（狀態小窗、指令環、攻擊射程染色、橫幅都在 indexed composer 內，#28
 關閉）、敵方回合的鏡頭（游標協定，#30 關閉）、酒店四圖示／存檔槽列表／「記錄儲存
 完畢」（`native_hotel_ui.go`，#27 關閉）；`after_enemy_phase` 點只比行為。這一輪修掉
 的兩個假差異：原版側 checkpoint 落在整幀 memcpy 中間的撕裂（dosgolem 延後 PNG，#31），
 與重播端 idle 相位被 `0x1297D` 推進而少一張變體。
+
+第五章整章收據 [`parity-ch05.json`](../data/ui-traces/parity-ch05.json)（2026-09-16，
+remake-r5，原版側 r5、dosgolem `caa9ee8`）：狀態 `passed`，58 個畫面比較點全部逐像素相同——
+城鎮、出發、戰鬥開始、第 3 回合八個單位移動待機、第 4 回合友軍 group 2 登場（鏡頭、演出、
+四句對白，回合事件處理器整筆轉寫，#33）與兩次攻擊、第 5 回合清場、戰後對白、城鎮出售、
+五棟建築、酒店存檔（整檔 sha256 相同：`+3` 朝向與 `+2` FDICON 快取槽照原版抄）、祕密商店；
+`after_enemy_phase` 與落在 `0x1A30B` 換手處理裡的兩個 wait 只比行為。細節見
+[56 §第五章章工作單元](56-fd2-remake-sdd.md#第五章章工作單元回合事件處理器與敵方回合順序2026-09-16)。
 
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 

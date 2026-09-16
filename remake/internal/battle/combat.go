@@ -261,7 +261,12 @@ func (s *State) AITurn() {
 }
 
 // Result 勝負判定。回傳 "win"/"lose"/""。
-// 預設規則(可被 scenario 覆寫):敵全滅(且無待命援軍)→ win;指定要保護的單位死 → lose。
+// 預設規則(可被 scenario 覆寫):敵全滅 → win;指定要保護的單位死 → lose。
+//
+// 「敵全滅」只看已登場的單位，照原版 default handler 0x205b4／0x205be 的三值規則：
+// 它只掃記錄表 [0x53a45]，還沒被回合事件 0x10B4E 追加進表的援軍群組不存在於判定裡。
+// 第五章收據（docs/data/ui-traces/parity-ch05.json）在第 7 回合的 group 3 還沒登場時
+// 清場，原版當回合就進戰後對白。
 func (s *State) Result(protect string) string {
 	if protect != "" {
 		dead := true
@@ -275,7 +280,7 @@ func (s *State) Result(protect string) string {
 			return "lose"
 		}
 	}
-	if s.AliveCount(Enemy) == 0 && s.PendingCount(Enemy) == 0 {
+	if s.AliveCount(Enemy) == 0 {
 		return "win"
 	}
 	return ""
@@ -671,7 +676,7 @@ func (s *State) nextAISpellPlan(u *Unit) *AIPlan {
 // NextAIPlan 找下一個未行動的 AI 單位並產生重製端近似計畫
 // （不執行、不設 Acted）；它不是原版 0x14237/0x1548e 的替代實作。
 func (s *State) NextAIPlan() *AIPlan {
-	if plan, handled := s.nextNativeScannedAIPlan(); handled {
+	if plan, handled := s.nextNativeScannedAIPlan(3); handled {
 		return plan
 	}
 	for _, u := range s.Units {
@@ -702,9 +707,17 @@ func (s *State) ResetNativeAIScan() {
 	}
 }
 
-// nextNativeScannedAIPlan 依原版三遍順序挑下一個行動單位。沒有 raw +6 provenance
-// 的名冊回 handled=false，交回舊的單遍迴圈。
-func (s *State) nextNativeScannedAIPlan() (*AIPlan, bool) {
+// NextAllyAIPlan 只跑 0x1D80B 那一遍（pass 0，raw +6==1 的友軍）。0x1A30B 在回合
+// 橫幅之前先跑友軍 AI，橫幅與 0x13536 之後才是敵軍兩遍；pass 0 跑完回 (nil, true)，
+// 游標停在 pass 1，之後 NextAIPlan 從敵軍第一遍接下去。沒有 raw +6 provenance 的
+// 名冊回 handled=false，呼叫端直接進橫幅。
+func (s *State) NextAllyAIPlan() (*AIPlan, bool) {
+	return s.nextNativeScannedAIPlan(1)
+}
+
+// nextNativeScannedAIPlan 依原版三遍順序挑下一個行動單位，只掃 pass < passLimit
+// 的那幾遍。沒有 raw +6 provenance 的名冊回 handled=false，交回舊的單遍迴圈。
+func (s *State) nextNativeScannedAIPlan(passLimit int) (*AIPlan, bool) {
 	if s == nil || len(s.Units) == 0 {
 		return nil, false
 	}
@@ -716,7 +729,7 @@ func (s *State) nextNativeScannedAIPlan() (*AIPlan, bool) {
 	if !s.nativeAIScan.active {
 		s.nativeAIScan = nativeAIScanState{active: true}
 	}
-	for pass := s.nativeAIScan.pass; pass < 3; pass++ {
+	for pass := s.nativeAIScan.pass; pass < passLimit; pass++ {
 		start := 0
 		if pass == s.nativeAIScan.pass {
 			start = s.nativeAIScan.index
@@ -739,6 +752,11 @@ func (s *State) nextNativeScannedAIPlan() (*AIPlan, bool) {
 			}
 		}
 		s.nativeAIScan = nativeAIScanState{active: true, pass: pass + 1}
+	}
+	if passLimit < 3 {
+		// 只跑了前面幾遍：游標留在下一遍的起點，敵軍兩遍稍後接著掃。
+		s.nativeAIScan = nativeAIScanState{active: true, pass: passLimit}
+		return nil, true
 	}
 	s.nativeAIScan = nativeAIScanState{}
 	return nil, true

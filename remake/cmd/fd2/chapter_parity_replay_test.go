@@ -108,6 +108,10 @@ type parityReplay struct {
 	// 與 move 之間真正按過的方向鍵與被拒絕的 enter，鏡頭才會跟原版走到同一格。
 	keys    map[int]string
 	prevSeq int // 上一個語意動作的 seq
+	// walkStartedEarly：重走按鍵時原版接受移動的那個 enter 早於 move 紀錄的 seq，走行已開始。
+	walkStartedEarly bool
+	// stoppedBeforeAI：上一個 END 停在敵方回合開始（下一個動作是 force_enemy_clear）。
+	stoppedBeforeAI bool
 }
 
 // parityAIEntry 是 eip-trace.jsonl 裡一筆 0x13A9F 入口：unit 是 record 索引（堆疊第一個引數）。
@@ -853,10 +857,15 @@ func (r *parityReplay) moveUnit(action parityAction, actor *battle.Unit) bool {
 			t.Fatalf("move(seq %d)：游標移不到 (%d,%d)", action.Seq, action.To[0], action.To[1])
 		}
 	}
-	if g.curX != action.To[0] || g.curY != action.To[1] {
-		t.Fatalf("move(seq %d)：照原版按鍵走完游標在 (%d,%d)，不是 (%d,%d)", action.Seq, g.curX, g.curY, action.To[0], action.To[1])
+	if r.walkStartedEarly {
+		// 走行已在重走按鍵時開始（游標跟著走行，不在目的格）。
+		r.walkStartedEarly = false
+	} else {
+		if g.curX != action.To[0] || g.curY != action.To[1] {
+			t.Fatalf("move(seq %d)：照原版按鍵走完游標在 (%d,%d)，不是 (%d,%d)", action.Seq, g.curX, g.curY, action.To[0], action.To[1])
+		}
+		g.confirm()
 	}
-	g.confirm()
 	if g.walk == nil {
 		r.checkpoint("move", action.Seq, r.ui(), true,
 			fmt.Sprintf("divergence: (%d,%d)→(%d,%d) 原版接受、重製端拒絕（err=%q）",
@@ -898,10 +907,18 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 		case "right":
 			g.moveMapCursor(1, 0)
 		case "enter":
+			atX, atY := g.curX, g.curY
 			g.confirm()
 			if g.walk != nil {
+				// 驅動端有時在 enter 之後多等一格才確認進了指令環，move 就記在後一個
+				// seq（第五章 r5 seq 601 enter、602 記 move）：那個 enter 就是這次移動，
+				// 只要按下時游標在目的格、之後到 action.Seq 之間沒有再送鍵。
+				if atX == action.To[0] && atY == action.To[1] && r.onlyIdleKeysUntil(seq+1, action.Seq) {
+					r.walkStartedEarly = true
+					return true
+				}
 				t.Fatalf("move(seq %d)：原版在 seq %d 的 enter 被拒絕，重製端卻接受並開始走行（游標 (%d,%d)）",
-					action.Seq, seq, g.curX, g.curY)
+					action.Seq, seq, atX, atY)
 			}
 		default:
 			continue
@@ -909,6 +926,16 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 		walked = true
 	}
 	return walked
+}
+
+// onlyIdleKeysUntil 回報 [from, to) 之間原版側沒有再送任何鍵（只有空字串的前進格）。
+func (r *parityReplay) onlyIdleKeysUntil(from, to int) bool {
+	for seq := from; seq < to; seq++ {
+		if r.keys[seq] != "" {
+			return false
+		}
+	}
+	return true
 }
 
 // settleActionOverlay 把指令環推到穩態（0x1741C 的四張展開幀播完、進 0x179D5 的
@@ -1077,10 +1104,13 @@ func (r *parityReplay) endTurn(action parityAction, stopBeforeAI bool) {
 	before := g.st.Turn
 	g.endTurn()
 	if stopBeforeAI {
-		if !pump(t, g, ch01FrameBudget*6, func() bool { return g.result != "" || g.aiBusy }) {
+		// 0x1A30B 先跑友軍 AI（0x1D80B）才進 ENEMY PHASE 橫幅；原版側這一點的檢查點
+		// 是橫幅（第四章 seq 934 的 EIP 在 0x4E809 馬賽克裡），所以等到橫幅開始。
+		if !pump(t, g, ch01FrameBudget*6, func() bool { return g.result != "" || (g.aiBusy && g.bannerT > 0) }) {
 			t.Fatalf("end_turn(seq %d)：敵方回合沒有開始\n阻塞：%s", action.Seq, ch01Blockers(g))
 		}
 		r.checkpoint("enemy_phase_start", action.Seq, r.ui(), true, extra...)
+		r.stoppedBeforeAI = true
 		return
 	}
 	if !pump(t, g, ch01FrameBudget*6, func() bool {
@@ -1094,6 +1124,13 @@ func (r *parityReplay) endTurn(action parityAction, stopBeforeAI bool) {
 
 func (r *parityReplay) forceEnemyClear(action parityAction) {
 	g := r.g
+	// 清場前一個動作若不是 END（全員行動完自動換手，原版側是等敵方回合跑完、下一
+	// 回合拿回游標才注入），先把換手處理與敵方回合跑完；接在 END 後面的維持在敵方
+	// 回合開始時注入（第四章）。
+	if !r.stoppedBeforeAI {
+		pump(r.t, g, ch01FrameBudget*6, func() bool { return g.result != "" || r.playerHasControl() })
+	}
+	r.stoppedBeforeAI = false
 	// 與 oracle 的 force_enemy_clear 相同的注入：把場上 camp 0 的 HP 寫成 0。
 	// 這是明示的修改路徑；收據會標記。
 	cleared := 0

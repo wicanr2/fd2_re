@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -35,6 +36,14 @@ func (g *Game) startNativeEventDialogue(action battle.Action) error {
 		return fmt.Errorf("戰鬥對話來源句 %d 不存在", ref.Line)
 	}
 	upper := ref.Control == "FFED" || ref.Control == "FFEF"
+	if g.cutsceneLog { // FD2_CUTSCENE_LOG：印回合／死亡事件的每一句，對原版 0x15F84 呼叫序列比對
+		event := -1
+		if action.NativeEventID != nil {
+			event = *action.NativeEventID
+		}
+		log.Printf("[cutscene] event dialogue source=%s event=%d text=%d scene=%d line=%d",
+			action.NativeSource, event, ref.StringIndex, ref.SceneIndex, ref.Line)
+	}
 	if !g.nativeBattleDialogueAvailable() {
 		// 這一章的戰場還沒有原生視圖與 HUD 狀態，它自己的回合事件也用一般對白框；
 		// 死亡台詞照同一種呈現，文字與說話者取自同一行故事腳本，不另造內容。

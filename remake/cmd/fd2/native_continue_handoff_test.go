@@ -336,6 +336,7 @@ func TestNativeContinueTitleCallerPublishesChapter29Candidate(t *testing.T) {
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
+	g.aiStep() // 0x1A30B 先跑友軍 AI（0x1D80B）那一遍，跑完才進橫幅
 	if g.nativeClassUIJob != nil || !g.aiBusy || g.banner != "ENEMY PHASE" {
 		t.Fatalf("第29戰 END→YES 未進敵方回合：job=%v ai=%v banner=%q err=%q",
 			g.nativeClassUIJob != nil, g.aiBusy, g.banner, g.loadErr)
@@ -889,6 +890,7 @@ func TestNativeSystemDownEndYesEntersAndCompletesEnemyPhase(t *testing.T) {
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
+	g.aiStep() // 0x1A30B 先跑友軍 AI（0x1D80B）那一遍，跑完才進橫幅
 	if !g.aiBusy || g.banner != "ENEMY PHASE" || g.nativeSystemEndTurnUI != nil {
 		t.Fatalf("restored YES did not enter enemy phase: ai=%v banner=%q ui=%#v",
 			g.aiBusy, g.banner, g.nativeSystemEndTurnUI)

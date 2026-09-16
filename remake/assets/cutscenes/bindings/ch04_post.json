@@ -3,7 +3,11 @@
   "handler_script": "../handlers/ch04_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
-    "slot_count": 50,
+    "slot_counts": [
+      42,
+      48,
+      52
+    ],
     "story_viewport": true
   },
   "dialogue_contexts": {

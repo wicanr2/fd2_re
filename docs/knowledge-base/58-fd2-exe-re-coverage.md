@@ -930,11 +930,18 @@ selector-cache 首槽資料流；正式重製端改以首位 persistent party �
 2026-09-15 三章設施擴充測試於 Docker 全過，狀態 `passed`（issue #13 關閉）；
 外部存檔建立歷程限制與 dosgolem 分支未推送限制均保留在收據內。
 111 第四章章工作單元的整章收據見
-[`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（r55／原版側 r13，四個 gate 全過：
-酒店存檔整檔 sha256 與原版相同，57 個畫面比較點逐像素相同，狀態 `passed`）；
+[`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（r58／原版側 r13，四個 gate 全過：
+酒店存檔整檔 sha256 與原版相同，55 個畫面比較點逐像素相同，狀態 `passed`）；
 本輪閉合的原版語意（反擊經驗 `0x1566A`、`0x1E529` 成長擲骰、`0x1A30B` 回復、
 `0x1DB65` 死亡標記、`0x14B78` 四段目的地、三遍敵方掃描、`turn_events` selector
 byte、`0x18F6A` 玩家攻擊射程標記、`0x18A72` 移動後指令閘、`0x1A3A2` 橫幅前視窗搬運、
 敵方回合 `0x12D7B`／`0x12CEA` 游標協定、`0x1A477` 回復標記與 `0x13536` 清除、酒店
 `0x2FC85` 資源 13／DATO `0x81`／存檔槽 `0x30550`／文字 `0x249`、`0x294`）記在
 [56 §第四章章工作單元](56-fd2-remake-sdd.md#第四章章工作單元敵方回合與經驗鏈2026-09-15)。
+第五章的整章收據見 [`parity-ch05.json`](../data/ui-traces/parity-ch05.json)（remake-r5／原版側
+r5，四個 gate 全過：58 個畫面比較點逐像素相同、酒店存檔整檔 sha256 相同，狀態 `passed`）；
+本輪閉合的原版語意（全域事件表 `0x51B91` 的回合事件處理器 `0x345EA`／`0x3462E`／`0x34696`／
+`0x346C8`／`0x34565` 整筆轉寫、`0x1A30B` 友軍 AI 在橫幅之前與 selector 0 事件在橫幅之後的
+順序、default handler `0x205b4` 只掃已登場記錄的勝負判定、`0x11506` 照抄 `+2` FDICON
+快取槽與 `+3` 朝向）記在
+[56 §第五章章工作單元](56-fd2-remake-sdd.md#第五章章工作單元回合事件處理器與敵方回合順序2026-09-16)。

@@ -59,6 +59,10 @@ func TestNativeDeathOpsFollowTranscription(t *testing.T) {
 	if st.NativeMapRangeMode != 1 || !st.HasNativeMapRangeModeState {
 		t.Fatal("range_one 應把地圖範圍選擇值設回 1")
 	}
+	must(NativeDeathOp{Op: "range_zero"})
+	if st.NativeMapRangeMode != 0 || !st.HasNativeMapRangeModeState {
+		t.Fatal("range_zero 應把地圖範圍選擇值關成 0")
+	}
 	if err := st.ApplyNativeDeathOp(NativeDeathOp{Op: "staging"}); err == nil {
 		t.Fatal("staging 由介面擁有者執行，狀態層不該默默接受")
 	}
@@ -203,7 +207,7 @@ func TestNativeDeathProgramsCoverEveryBattleMap(t *testing.T) {
 		"native_acting": true, "reset_pose": true, "spawn_group": true, "delay": true}
 	ops := map[string]bool{"ai_mode_range": true, "ai_byte_set_range": true, "ai_byte_and_range": true,
 		"record_bytes": true, "control_turn": true, "state_set": true, "state_inc": true,
-		"mark_inactive": true, "range_one": true, "exp_cancel": true, "staging": true,
+		"mark_inactive": true, "range_one": true, "range_zero": true, "exp_cancel": true, "staging": true,
 		"clear_hp_from": true, "reward": true}
 	gaps := map[string]bool{}
 	paths, _ := filepath.Glob("../../assets/scenarios/ch[0-9][0-9].json")

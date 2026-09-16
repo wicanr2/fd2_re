@@ -32,7 +32,9 @@
   續跑點。判準是覆蓋層裡
   ``FD2.SAV`` 的內容雜湊變更，或 dosgolem 直接記到對該檔的成功 DOS 寫入；後者
   涵蓋「載入後立刻以相同狀態覆寫同一槽」而內容逐位元組不變的合法情況。
-* ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。
+* ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。加
+  ``"stop_on_auto_end": true`` 時，全員行動完原版自動換手（回合數進位）就直接收工，
+  不再送 END；沒加的舊計畫維持原行為（第四章收據靠它重生）。
 * ``{"sweep_battle": true, "rounds": 30}``：一路打到敵方全滅。
 * ``{"force_enemy_clear": true}``：要求 oracle 把當下 camp 0 單位的 HP 寫成 0。
   這是明示的修改路徑，只能用來驗證戰後節點／介面／存檔閉環；oracle 會把
@@ -253,6 +255,13 @@ def do_force_enemy_clear(command):
             if town_seen(int(command.get("cutscene_steps", 5_000_000))):
                 print("force_enemy_clear：清場後原版直接進入戰後城鎮", flush=True)
                 return True
+            # 清場後第一個按鍵就可能觸發勝利判定（第五章 r3：游標 enter 沒開系統選單，
+            # 直接進戰後對白）。對白要 enter 才會走，交給 await_ui 的同一套推法。
+            if ui_mode(state()) in ("dialogue", "unknown") and do_await_ui(
+                    {"await_ui": "town", "steps": int(command.get("steps", 5_000_000)),
+                     "max": int(command.get("town_max", 80))}):
+                print("force_enemy_clear：清場後第一個按鍵即判勝利，對白推完進戰後城鎮", flush=True)
+                return True
             print("force_enemy_clear：清場後無法結束回合",
                   file=sys.stderr)
             return False
@@ -427,8 +436,10 @@ def do_await(command):
 
 # 已知的陣營編碼。過場期間 `units` 是垃圾，camp 會出現 63／34／54 這種值。
 KNOWN_CAMPS = {0, 1, 2, 3}
-# 地圖上限（第一關 map0 之外的圖也在這個量級內）。垃圾資料的 x／y 會遠超過。
-MAP_LIMIT_X, MAP_LIMIT_Y = 31, 63
+# 地圖上限：33 張地圖裡最寬 50、最高 64（remake/assets/maps/*/map.json）。第五章
+# map4 就有 39 寬，敵人站在 x=37；上限寫小了 in_battle 會判成「不在戰場」，
+# resume_battle 便一路送 enter 穿進指令環。垃圾資料的 x／y 仍會遠超過這個量級。
+MAP_LIMIT_X, MAP_LIMIT_Y = 63, 63
 
 
 def plausible_battle(current):
@@ -591,7 +602,10 @@ def distance(a, b):
 
 
 def occupied_cells(current):
-    return {(u["x"], u["y"]) for u in current.get("units", []) if u.get("hp", 0) > 0}
+    """有記錄站著的格。HP 0 但 +5 bit0 還沒設的記錄（force_enemy_clear 之後、死亡
+    收尾之前的屍體）在原版仍佔格：游標 enter 上去開的是狀態面板不是系統選單。"""
+    return {(u["x"], u["y"]) for u in current.get("units", [])
+            if u.get("hp", 0) > 0 or (u.get("byte5", 1) & 1) == 0}
 
 
 # 每個單位實際走得成功的距離。移動力連同地形成本在狀態層看不到，只能從「哪一格
@@ -1026,6 +1040,9 @@ def end_turn(command):
         return False
     seq, current = send("enter", max(steps, 5_000_000))
     report(seq, "enter", current, " end-turn=open")
+    # 這一格的 checkpoint 是玩家階段最後一張（系統選單剛開、單位都沒動）；YES 之後的
+    # checkpoint 在第五章這種有友軍 NPC 的關卡已經是友軍在走了，verifier 借用時要拿這張。
+    open_seq = seq
     if wait_mode({"system"}, steps) != "system":
         print(f"end_turn：空地上 enter 開的不是系統選單（{ui_mode(state())}）",
               file=sys.stderr)
@@ -1038,7 +1055,7 @@ def end_turn(command):
     settle(steps, 4)
     seq, current = send("enter", max(steps, 5_000_000))
     report(seq, "enter", current, " end-turn=yes")
-    log_action("end_turn", current, at=list(cell))
+    log_action("end_turn", current, at=list(cell), before_seq=open_seq)
     return True
 
 
@@ -1320,6 +1337,7 @@ def do_sweep_round(command):
     reach = int(command.get("reach", 2))
     span = int(command.get("typical_move", 6))
     handled = set()
+    start_round = int((state().get("view") or {}).get("round", 0))
     for _ in range(int(command.get("max_units", 12))):
         if ui_mode(state()) == "town":
             print("sweep_round：已經在戰後城鎮，這一場結束", flush=True)
@@ -1329,6 +1347,14 @@ def do_sweep_round(command):
             print("sweep_round：離開戰場且推不回來，中止", file=sys.stderr)
             return False
         current = state()
+        # 全員行動完原版會自動換手（0x13565）：最後一個 engage 回來時回合數已經進位，
+        # 這一輪就結束了，不能再送 END——那會把新回合的玩家階段整個跳掉。
+        # 用 "stop_on_auto_end": true 開啟；第四章的計畫沒有這個旗標，收據維持可重生。
+        if command.get("stop_on_auto_end") and \
+                int((current.get("view") or {}).get("round", 0)) > start_round:
+            print(f"sweep_round：全員行動完已自動換手（{start_round}→"
+                  f"{(current.get('view') or {}).get('round')}），不再送 END", flush=True)
+            return True
         enemies = [(e["x"], e["y"]) for e in side(current, ENEMY_CAMP)]
         if not enemies:
             print("sweep_round：敵方已全滅", flush=True)

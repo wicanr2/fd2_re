@@ -1,29 +1,29 @@
 {
   "schema_version": 1,
   "kind": "fd2_chapter_parity_receipt",
-  "chapter": 4,
+  "chapter": 5,
   "generated_at": "2026-09-16",
   "status": "passed",
   "policy": "docs/knowledge-base/111-goal-original-parity-campaign-20260915.md",
   "original": {
     "runner": "dosgolem apps/fd2/cmd/oracle",
     "dosgolem_commit": "caa9ee8dea199ea343cddb18be922d96ecc6b2c6",
-    "control_plan": "docs/data/parity-plans/ch04-sample.jsonl",
-    "control_plan_sha256": "1ad24e3139a191158c471ab571d9fe35076abdfce9a87d37ae9b9a4ef0ff9979",
+    "control_plan": "docs/data/parity-plans/ch05-sample.jsonl",
+    "control_plan_sha256": "03438cb998565c7e61786f61249677c0a619ebefa1d5f508832316996e0cab06",
     "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
     "state_injections_declared": [
       "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
       "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
     ],
-    "actions": 62,
-    "checkpoints": 1224
+    "actions": 65,
+    "checkpoints": 1474
   },
   "slot": {
     "manifest": "/slot/manifest.json",
-    "output_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+    "output_sha256": "c01e220e69532604cb2f78e5a8be2b7977e92f2c9faec37b20d143c28bd0d99a",
     "base_sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
     "base_chapter": 2,
-    "target_chapter": 3,
+    "target_chapter": 4,
     "level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
     "assumptions": [
       {
@@ -34,8 +34,8 @@
     ]
   },
   "remake": {
-    "checkpoints": 65,
-    "rng_synced_points": 8
+    "checkpoints": 68,
+    "rng_synced_points": 4
   },
   "gates": {
     "behavior": {
@@ -52,310 +52,324 @@
           "status": "ok"
         },
         {
-          "seq": 55,
+          "seq": 64,
           "kind": "battle_start",
           "status": "ok"
         },
         {
-          "seq": 82,
+          "seq": 91,
           "kind": "after_enemy_phase",
           "status": "ok"
         },
         {
-          "seq": 109,
+          "seq": 130,
           "kind": "after_enemy_phase",
           "status": "ok"
         },
         {
-          "seq": 109,
+          "seq": 130,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 115,
+          "seq": 239,
           "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 117,
-          "kind": "attack_armed",
-          "status": "ok"
-        },
-        {
-          "seq": 132,
-          "kind": "attack_result",
-          "status": "ok"
-        },
-        {
-          "seq": 143,
-          "kind": "select",
-          "status": "ok"
-        },
-        {
-          "seq": 208,
-          "kind": "move",
-          "status": "ok"
-        },
-        {
-          "seq": 214,
+          "seq": 245,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 225,
+          "seq": 260,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 290,
+          "seq": 325,
           "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 296,
+          "seq": 331,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 308,
+          "seq": 342,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 375,
+          "seq": 407,
           "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 381,
+          "seq": 413,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 390,
+          "seq": 423,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 459,
+          "seq": 494,
           "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 465,
+          "seq": 500,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 476,
+          "seq": 511,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 541,
+          "seq": 578,
           "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 547,
+          "seq": 584,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 557,
+          "seq": 594,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 630,
+          "seq": 602,
           "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 636,
+          "seq": 608,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 621,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 690,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 696,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 706,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 783,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 789,
           "kind": "wait",
           "status": "oracle_mid_end_turn",
           "note": "原版 checkpoint 在 0x1A30B 換手處理裡（全員行動完自動換手），單位、回合與畫面不比"
         },
         {
-          "seq": 720,
-          "kind": "after_enemy_phase",
-          "status": "ok"
-        },
-        {
-          "seq": 720,
+          "seq": 823,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 721,
+          "seq": 824,
           "kind": "stay",
           "status": "ok"
         },
         {
-          "seq": 742,
-          "kind": "wait",
-          "status": "ok"
-        },
-        {
-          "seq": 749,
-          "kind": "select",
-          "status": "ok"
-        },
-        {
-          "seq": 750,
-          "kind": "stay",
-          "status": "ok"
-        },
-        {
-          "seq": 752,
+          "seq": 826,
           "kind": "attack_armed",
           "status": "ok"
         },
         {
-          "seq": 767,
+          "seq": 841,
           "kind": "attack_result",
           "status": "ok"
         },
         {
-          "seq": 775,
+          "seq": 853,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 776,
-          "kind": "stay",
+          "seq": 859,
+          "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 778,
+          "seq": 861,
           "kind": "attack_armed",
           "status": "ok"
         },
         {
-          "seq": 793,
+          "seq": 876,
           "kind": "attack_result",
           "status": "ok"
         },
         {
-          "seq": 800,
+          "seq": 887,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 801,
-          "kind": "stay",
+          "seq": 943,
+          "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 803,
-          "kind": "attack_armed",
-          "status": "ok"
-        },
-        {
-          "seq": 818,
-          "kind": "attack_result",
-          "status": "ok"
-        },
-        {
-          "seq": 830,
-          "kind": "select",
-          "status": "ok"
-        },
-        {
-          "seq": 831,
-          "kind": "stay",
-          "status": "ok"
-        },
-        {
-          "seq": 852,
+          "seq": 964,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 862,
+          "seq": 973,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 863,
-          "kind": "stay",
+          "seq": 1014,
+          "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 884,
+          "seq": 1035,
           "kind": "wait",
           "status": "ok"
         },
         {
-          "seq": 891,
+          "seq": 1045,
           "kind": "select",
           "status": "ok"
         },
         {
-          "seq": 892,
-          "kind": "stay",
+          "seq": 1069,
+          "kind": "move",
           "status": "ok"
         },
         {
-          "seq": 913,
+          "seq": 1075,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1086,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1108,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1114,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1124,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1129,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1135,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1145,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1150,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1156,
           "kind": "wait",
           "status": "oracle_mid_end_turn",
           "note": "原版 checkpoint 在 0x1A30B 換手處理裡（全員行動完自動換手），單位、回合與畫面不比"
         },
         {
-          "seq": 934,
-          "kind": "enemy_phase_start",
-          "status": "ok"
-        },
-        {
-          "seq": 935,
+          "seq": 1192,
           "kind": "force_enemy_clear",
-          "status": "oracle_mid_end_turn",
-          "note": "原版 checkpoint 在 0x1A30B 換手處理裡（全員行動完自動換手），單位、回合與畫面不比"
+          "status": "ok"
         },
         {
-          "seq": 1023,
+          "seq": 1212,
+          "kind": "end_turn",
+          "status": "ok"
+        },
+        {
+          "seq": 1258,
           "kind": "town_after_battle",
           "status": "ok"
         },
         {
-          "seq": 1097,
+          "seq": 1327,
           "kind": "shop_menu",
           "status": "ok"
         },
         {
-          "seq": 1097,
+          "seq": 1327,
           "kind": "shop_sell",
           "status": "ok"
         },
         {
-          "seq": 1105,
+          "seq": 1335,
           "kind": "town_enter",
           "status": "ok"
         },
         {
-          "seq": 1120,
+          "seq": 1378,
           "kind": "town_enter",
           "status": "ok"
         },
         {
-          "seq": 1142,
+          "seq": 1400,
           "kind": "town_enter",
           "status": "ok"
         },
         {
-          "seq": 1157,
+          "seq": 1415,
           "kind": "town_enter",
           "status": "ok"
         },
         {
-          "seq": 1198,
+          "seq": 1442,
           "kind": "town_save",
           "status": "ok"
         },
         {
-          "seq": 1223,
+          "seq": 1473,
           "kind": "secret_shop",
           "status": "ok"
         }
@@ -371,6 +385,34 @@
         "after_enemy_phase:cursor",
         "select:target",
         "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
         "attack_armed:target",
         "attack_result:cursor",
         "select:target",
@@ -391,33 +433,8 @@
         "select:target",
         "move:ring",
         "wait:cursor",
-        "after_enemy_phase:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "select:target",
-        "stay:ring",
-        "attack_armed:target",
-        "attack_result:cursor",
-        "select:target",
-        "stay:ring",
-        "attack_armed:target",
-        "attack_result:cursor",
-        "select:target",
-        "stay:ring",
-        "attack_armed:target",
-        "attack_result:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "enemy_phase_start:enemy",
-        "force_enemy_clear:enemy",
+        "force_enemy_clear:cursor",
+        "end_turn:cursor",
         "battle_result:dialogue",
         "town_after_battle:town",
         "shop_menu:shop",
@@ -438,6 +455,34 @@
         "after_enemy_phase:cursor",
         "select:target",
         "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
         "attack_armed:target",
         "attack_result:cursor",
         "select:target",
@@ -458,33 +503,8 @@
         "select:target",
         "move:ring",
         "wait:cursor",
-        "after_enemy_phase:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "select:target",
-        "stay:ring",
-        "attack_armed:target",
-        "attack_result:cursor",
-        "select:target",
-        "stay:ring",
-        "attack_armed:target",
-        "attack_result:cursor",
-        "select:target",
-        "stay:ring",
-        "attack_armed:target",
-        "attack_result:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "select:target",
-        "stay:ring",
-        "wait:cursor",
-        "enemy_phase_start:enemy",
-        "force_enemy_clear:enemy",
+        "force_enemy_clear:cursor",
+        "end_turn:cursor",
         "battle_result:dialogue",
         "town_after_battle:town",
         "shop_menu:shop",
@@ -516,427 +536,448 @@
           "ok": true
         },
         {
-          "seq": 55,
+          "seq": 64,
           "kind": "battle_start",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 82,
+          "seq": 91,
           "kind": "after_enemy_phase",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 109,
+          "seq": 130,
           "kind": "after_enemy_phase",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 109,
+          "seq": 130,
           "kind": "select",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 115,
+          "seq": 239,
           "kind": "move",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 117,
+          "seq": 245,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 260,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 325,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 331,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 342,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 407,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 413,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 423,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 494,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 500,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 511,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 578,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 584,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 594,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 602,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 608,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 621,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 690,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 696,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 706,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 783,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 789,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 823,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 824,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 826,
           "kind": "attack_armed",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 132,
+          "seq": 841,
           "kind": "attack_result",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 143,
+          "seq": 853,
           "kind": "select",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 208,
+          "seq": 859,
           "kind": "move",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 214,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 225,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 290,
-          "kind": "move",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 296,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 308,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 375,
-          "kind": "move",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 381,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 390,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 459,
-          "kind": "move",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 465,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 476,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 541,
-          "kind": "move",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 547,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 557,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 630,
-          "kind": "move",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 636,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 720,
-          "kind": "after_enemy_phase",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 720,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 721,
-          "kind": "stay",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 742,
-          "kind": "wait",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 749,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 750,
-          "kind": "stay",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 752,
+          "seq": 861,
           "kind": "attack_armed",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 767,
+          "seq": 876,
           "kind": "attack_result",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 775,
+          "seq": 887,
           "kind": "select",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 776,
-          "kind": "stay",
+          "seq": 943,
+          "kind": "move",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 778,
-          "kind": "attack_armed",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 793,
-          "kind": "attack_result",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 800,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 801,
-          "kind": "stay",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 803,
-          "kind": "attack_armed",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 818,
-          "kind": "attack_result",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 830,
-          "kind": "select",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 831,
-          "kind": "stay",
-          "oracle": 2000,
-          "remake": 2000,
-          "ok": true
-        },
-        {
-          "seq": 852,
+          "seq": 964,
           "kind": "wait",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 862,
+          "seq": 973,
           "kind": "select",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 863,
-          "kind": "stay",
+          "seq": 1014,
+          "kind": "move",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 884,
+          "seq": 1035,
           "kind": "wait",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 891,
+          "seq": 1045,
           "kind": "select",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 892,
-          "kind": "stay",
+          "seq": 1069,
+          "kind": "move",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 913,
+          "seq": 1075,
           "kind": "wait",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 934,
-          "kind": "enemy_phase_start",
+          "seq": 1086,
+          "kind": "select",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 935,
+          "seq": 1108,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1114,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1124,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1129,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1135,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1145,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1150,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1156,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1192,
           "kind": "force_enemy_clear",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 1023,
+          "seq": 1212,
+          "kind": "end_turn",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1258,
           "kind": "town_after_battle",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 1097,
+          "seq": 1327,
           "kind": "shop_menu",
           "oracle": 2000,
           "remake": 2000,
           "ok": true
         },
         {
-          "seq": 1097,
+          "seq": 1327,
           "kind": "shop_sell",
           "oracle": 2037,
           "remake": 2037,
           "ok": true
         },
         {
-          "seq": 1105,
+          "seq": 1335,
           "kind": "town_enter",
           "oracle": 2037,
           "remake": 2037,
           "ok": true
         },
         {
-          "seq": 1120,
+          "seq": 1378,
           "kind": "town_enter",
           "oracle": 2037,
           "remake": 2037,
           "ok": true
         },
         {
-          "seq": 1142,
+          "seq": 1400,
           "kind": "town_enter",
           "oracle": 2037,
           "remake": 2037,
           "ok": true
         },
         {
-          "seq": 1157,
+          "seq": 1415,
           "kind": "town_enter",
           "oracle": 2037,
           "remake": 2037,
           "ok": true
         },
         {
-          "seq": 1198,
+          "seq": 1442,
           "kind": "town_save",
           "oracle": 2037,
           "remake": 2037,
           "ok": true
         },
         {
-          "seq": 1223,
+          "seq": 1473,
           "kind": "secret_shop",
           "oracle": 2037,
           "remake": 2037,
@@ -944,9 +985,9 @@
         }
       ],
       "save": {
-        "oracle_save_sha256": "fe32809cba994a6515824755fbb4f03bacb99080b51d530d6df23e9e8e8d2475",
-        "remake_save_sha256": "fe32809cba994a6515824755fbb4f03bacb99080b51d530d6df23e9e8e8d2475",
-        "remake_note": "save_sha256=fe32809cba994a6515824755fbb4f03bacb99080b51d530d6df23e9e8e8d2475",
+        "oracle_save_sha256": "af82ccb442204b00ba261617482807528f57388f26ac366d12848d749cc0ae5f",
+        "remake_save_sha256": "af82ccb442204b00ba261617482807528f57388f26ac366d12848d749cc0ae5f",
+        "remake_note": "save_sha256=af82ccb442204b00ba261617482807528f57388f26ac366d12848d749cc0ae5f",
         "blocked_by": null,
         "status": "ok"
       }
@@ -955,7 +996,7 @@
       "ok": true,
       "pixel_budget": 640,
       "min_frames": 12,
-      "compared": 55,
+      "compared": 58,
       "points": [
         {
           "seq": 17,
@@ -987,661 +1028,702 @@
           "remake_sha256": "7388e21461c84123a14d853dedae468f6498c4a5aaf054a4b86e4018db4f6508"
         },
         {
-          "seq": 55,
+          "seq": 64,
           "kind": "battle_start",
-          "oracle": "checkpoint-0055.png",
-          "remake": "remake-0002-p2.png",
+          "oracle": "checkpoint-0064.png",
+          "remake": "remake-0002-p1.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "4533e6e7908a136d4fadce1dcfae509c0873cacc0dd9e4254c1ca92495801d89",
-          "remake_sha256": "4e0862c0ec3d0f4ee7a628369d3abb540545865292d7b1dcbcc49d640775508d"
+          "oracle_sha256": "e3b556f2684d7b0905e767ee13d3496fb5dce389136d0d3e44c4be1001103ffb",
+          "remake_sha256": "2d6f47fdab5f15a447298a905bafcb7e0493384697512c9fd6c1267b366dd69e"
         },
         {
-          "seq": 109,
+          "seq": 130,
           "kind": "select",
-          "oracle": "checkpoint-0109.png",
-          "remake": "remake-0005-p13.png",
+          "oracle": "checkpoint-0130.png",
+          "remake": "remake-0005-p10.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "7833d3e412eec59486ccccaf27f6630ca0fa2cd48666f3688dd364e2c526d876",
-          "remake_sha256": "6b58629883311d50162cbea027d0e87902c906a42ab047908639c2fe19b462df"
+          "oracle_sha256": "4cac3aea9c6a31787037c1cf12d0ab29f446e418b84d01e1ff34e602e9513c09",
+          "remake_sha256": "4d4317ba55ec9d4b4bc62c8bf1bb5e1e896cd4c4f1ed48b29fd5373977c0853e"
         },
         {
-          "seq": 115,
+          "seq": 239,
           "kind": "move",
-          "oracle": "checkpoint-0115.png",
+          "oracle": "checkpoint-0239.png",
           "remake": "remake-0006-p2.png",
           "phases": 4,
-          "diff_pixels": 151,
+          "diff_pixels": 80,
           "box": [
-            126,
-            10,
-            145,
-            27
+            102,
+            46,
+            121,
+            51
           ],
           "ok": true,
-          "oracle_sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0",
-          "remake_sha256": "73bad3d58b50bc9161e3ec985ecc5467c18b015c284507993fbc904213ccff92"
+          "oracle_sha256": "860dcc2233b29969551580efcd2a05d54c743d561507ef8272ca1ccd7568176c",
+          "remake_sha256": "3c5331ebf7a8c675b2b52014b35954427f154a44914089b80c93bd93b6e40a55"
         },
         {
-          "seq": 117,
-          "kind": "attack_armed",
-          "oracle": "checkpoint-0117.png",
-          "remake": "remake-0007-p37.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "6b94eeaf7af51b38e5f4efc3769339e2401b6689a4a4345d13e3435e834dac2a",
-          "remake_sha256": "ff5be0ac644939259138f116ac12b11f3b4a54ae0ad43a0dc4662fb05df2adfe"
-        },
-        {
-          "seq": 132,
-          "kind": "attack_result",
-          "oracle": "checkpoint-0132.png",
-          "remake": "remake-0008-p1.png",
+          "seq": 245,
+          "kind": "wait",
+          "oracle": "checkpoint-0245.png",
+          "remake": "remake-0007-p2.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "68b22165148ecb93936234812facebe72a24fef4f75458878c8da6864705a9ad",
-          "remake_sha256": "c2767dd05ed51e065dc472b7ff75ce01f5d2c404f5ce0b0392fe8269d0785a66"
+          "oracle_sha256": "d7dced0ab29222cf36cb9807009ff9325d4dda382f97dfe81152623384f2230d",
+          "remake_sha256": "24a08e97571ea4928feedc34166f7a1ab0dac992af33af71dbac471d66caf156"
         },
         {
-          "seq": 143,
+          "seq": 260,
           "kind": "select",
-          "oracle": "checkpoint-0143.png",
-          "remake": "remake-0009-p34.png",
+          "oracle": "checkpoint-0260.png",
+          "remake": "remake-0008-p13.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "6677dcb8b5278b2b6208b7ef93e58dfddaa505147d5e853c35932dbcb98afbbb",
-          "remake_sha256": "fe17fc1e859c2bd108f930b69c6187d720f845bce1d3cccf1979965cd6b4cfe4"
+          "oracle_sha256": "1d972f2b475bbe07d23a5b18dd1f6fbf14d2e93eb9a12afabbae4f97b429d7c3",
+          "remake_sha256": "804333b7f3dfab3cc448de9ea232ebc282a9fc09852a7b1ddf9c09137617627d"
         },
         {
-          "seq": 208,
+          "seq": 325,
           "kind": "move",
-          "oracle": "checkpoint-0208.png",
-          "remake": "remake-0010-p1.png",
+          "oracle": "checkpoint-0325.png",
+          "remake": "remake-0009-p1.png",
           "phases": 4,
           "diff_pixels": 179,
           "box": [
-            149,
+            101,
             47,
-            190,
+            142,
             71
           ],
           "ok": true,
-          "oracle_sha256": "0ddf369d66a5f43c5a97c167b99b6e3f458a33823f585c08caa6aeb391374ee8",
-          "remake_sha256": "2e2fd75918497b09c42d5f9a7ffd04a82b73fa9033e2fe849c9f71e44fa90625"
+          "oracle_sha256": "8eaa1c253a21be89fdb0eddc0b444b3d4e0748c82817fe8b496c87a07faa304d",
+          "remake_sha256": "88f4a08dba37a5fdbbdd0b0ddbdd6c81e8e78e30b5484ae5c2bdd0241aa3def2"
         },
         {
-          "seq": 214,
+          "seq": 331,
           "kind": "wait",
-          "oracle": "checkpoint-0214.png",
-          "remake": "remake-0011-p2.png",
+          "oracle": "checkpoint-0331.png",
+          "remake": "remake-0010-p0.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "00f0c013aa3fdad01c427f59b1876f8950cd2a70b4bec0ca0dfcf052694b75cc",
-          "remake_sha256": "a7b971c3dc2e582e38d3101e623900c3a758d4f9eaf714205c00a158f4c48a2b"
+          "oracle_sha256": "4f6a5fddb9b402e4ad51054900a3ceb26b7c33b3311a28622d3352dcc3a1e2f4",
+          "remake_sha256": "cf8b7a364787eb02a7a4e67b1abc488d5362e977781573a4a3267940760e32e4"
         },
         {
-          "seq": 225,
+          "seq": 342,
           "kind": "select",
-          "oracle": "checkpoint-0225.png",
-          "remake": "remake-0012-p34.png",
+          "oracle": "checkpoint-0342.png",
+          "remake": "remake-0011-p16.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "250fb2655d3550befb102717174672d4eb2028e2acfe2f9c6f1ab8a193daded3",
-          "remake_sha256": "7ce21283e40860609c87937aa67f254190ae9f4a767374583e35ce642dec0a18"
+          "oracle_sha256": "a994e9e9ee63324fade57b8a4eed86a4f23430c9c98bb844d188613de55a1a72",
+          "remake_sha256": "2e47f40f74e9cfd8347aeb6347cade6882400c30c73ecea4bcdbe539a4c2f3a2"
         },
         {
-          "seq": 290,
+          "seq": 407,
           "kind": "move",
-          "oracle": "checkpoint-0290.png",
+          "oracle": "checkpoint-0407.png",
+          "remake": "remake-0012-p0.png",
+          "phases": 4,
+          "diff_pixels": 172,
+          "box": [
+            127,
+            46,
+            166,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "09a70bb458d097918bc6de857e02ceccf170a388c454da3851f290b4dae14692",
+          "remake_sha256": "7b9b96db711332529c692b1b1de0ab06e39dc0a8b763efb04883d613e4d955be"
+        },
+        {
+          "seq": 413,
+          "kind": "wait",
+          "oracle": "checkpoint-0413.png",
           "remake": "remake-0013-p1.png",
           "phases": 4,
-          "diff_pixels": 74,
-          "box": [
-            174,
-            47,
-            193,
-            51
-          ],
-          "ok": true,
-          "oracle_sha256": "de13ae74dc8fe332a133563c6a18b5b52b649f9a08f41bd3fc871cb0b96bdbfa",
-          "remake_sha256": "9f96883c51f1de1683f6818c45f7b075ed5cdc4c910c08f5bf1a06ccc82debd7"
-        },
-        {
-          "seq": 296,
-          "kind": "wait",
-          "oracle": "checkpoint-0296.png",
-          "remake": "remake-0014-p2.png",
-          "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "ec23d89de025f109e8d547dca8d021531bf795b22fc8056facf585e1e31bdf78",
-          "remake_sha256": "3afd24f16a40b280316c9a0f2958853e11ea109d27787f90454d887c19b471a2"
+          "oracle_sha256": "321f356ffeb2f72792eeec8c1594d216917084bc99876ae9f30ccbac924d3012",
+          "remake_sha256": "33eb800eadb878774f849b8726bb3fee19db1c4d3c182f1e897dc7f48f2d18b0"
         },
         {
-          "seq": 308,
+          "seq": 423,
           "kind": "select",
-          "oracle": "checkpoint-0308.png",
-          "remake": "remake-0015-p18.png",
+          "oracle": "checkpoint-0423.png",
+          "remake": "remake-0014-p5.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "824e168c75e5f632f687783aaf7f12cfd3ea36140b94ceb479cefaf249acc68f",
-          "remake_sha256": "d248e8dfb730245c609cb33479ae08542bd3db8efea5d8ad6f0ab55b5c5366a2"
+          "oracle_sha256": "c58c0271059e730f22081935fefc04db5cfb4996940b53be84984236d57b2aa7",
+          "remake_sha256": "7ee9129ef8db06c631b5684b63b4a2c91a1a917f44106b4388b936833b994d12"
         },
         {
-          "seq": 375,
+          "seq": 494,
           "kind": "move",
-          "oracle": "checkpoint-0375.png",
-          "remake": "remake-0016-p1.png",
+          "oracle": "checkpoint-0494.png",
+          "remake": "remake-0015-p0.png",
           "phases": 4,
-          "diff_pixels": 161,
+          "diff_pixels": 179,
           "box": [
             103,
-            71,
+            46,
             142,
-            95
+            71
           ],
           "ok": true,
-          "oracle_sha256": "2931fcd6e9a0c06a1d1b804094882c5c5cfd758bdc646c295aca8040726ae4e6",
-          "remake_sha256": "4112d338014107d5f11355e92a53b635edb5f756574e6f8c22fa2c45d4d012d2"
+          "oracle_sha256": "dc70810a369e1257b9de80c4e32f6fbae3b1c5cab42432090231d0c3b5b289c4",
+          "remake_sha256": "6d957f1e75b475ee9045bd935c2285c6d8a6e1bb2d2bd5da9cb48c96c98e4a18"
         },
         {
-          "seq": 381,
+          "seq": 500,
           "kind": "wait",
-          "oracle": "checkpoint-0381.png",
-          "remake": "remake-0017-p1.png",
+          "oracle": "checkpoint-0500.png",
+          "remake": "remake-0016-p1.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "655194c142ce8b1410647f6f7b36421dd7b36628e88a70ca878f661dc5da4f80",
-          "remake_sha256": "133bf444ecf6ed6ddfc2562c2e170881d1dc90a55261fbc80f8e7b82afd03278"
+          "oracle_sha256": "9de77962186950941210291e5166093b11de780cb024300715cb4f7090e5fa29",
+          "remake_sha256": "8113ff60057123f9c2991821cea28f337645734553d54fbffef8c2fc5237c8a3"
         },
         {
-          "seq": 390,
+          "seq": 511,
           "kind": "select",
-          "oracle": "checkpoint-0390.png",
-          "remake": "remake-0018-p21.png",
+          "oracle": "checkpoint-0511.png",
+          "remake": "remake-0017-p16.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "f45c6c0a716b852ec5132f3519c7d7fc2629eafe8bf1986c686d249bfc7b11c6",
-          "remake_sha256": "28b57dd996ab7b759400d306abb1b02edcd71d587955b2c2663c5b0a19cc12b5"
+          "oracle_sha256": "a3169f69726a9de0655d7681ed9c258507aa56f3a341ed15d80ee6f47c57f3d1",
+          "remake_sha256": "6f2ef978473e6750602825de80838776e2b5af902d43c52ce31a2ccb5eb19da8"
         },
         {
-          "seq": 459,
+          "seq": 578,
           "kind": "move",
-          "oracle": "checkpoint-0459.png",
-          "remake": "remake-0019-p2.png",
+          "oracle": "checkpoint-0578.png",
+          "remake": "remake-0018-p2.png",
           "phases": 4,
-          "diff_pixels": 81,
+          "diff_pixels": 94,
           "box": [
-            151,
+            126,
             46,
-            168,
+            145,
             51
           ],
           "ok": true,
-          "oracle_sha256": "c2709882c1c90719b71c13ce8618ba7477ee95648ab90d167d82f11d6ed1f120",
-          "remake_sha256": "90a97d794b6ed9ed97300f978be04a354fbf11f66c191e29a6a029df78fdee3a"
+          "oracle_sha256": "17599d708d261fe22463a88ee06625af6e61b6ef02277ab56853bbc440d6e66e",
+          "remake_sha256": "0cacb1beb73fe84b2c7d68e506280cb167a2111f1af0a79a320e793d99688f19"
         },
         {
-          "seq": 465,
+          "seq": 584,
           "kind": "wait",
-          "oracle": "checkpoint-0465.png",
-          "remake": "remake-0020-p0.png",
+          "oracle": "checkpoint-0584.png",
+          "remake": "remake-0019-p1.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "5eccad7290025179fcf0d2c00452ccba3edb401af46c431f1cb66c3d9d1e1dac",
-          "remake_sha256": "cebc6b5baf97ad42b5a8ea5615296d2401fb86530fc3bc7a4b52810c42d4a02c"
+          "oracle_sha256": "ff391ccd74e67e4d52a58e0774a465a2eb043c0e3ddcfe58b1524fb944eeec0f",
+          "remake_sha256": "3f1759a57b15f67c4525ae6a4858b3141d9771c11445f3eba25f2d797892e08d"
         },
         {
-          "seq": 476,
+          "seq": 594,
           "kind": "select",
-          "oracle": "checkpoint-0476.png",
-          "remake": "remake-0021-p24.png",
+          "oracle": "checkpoint-0594.png",
+          "remake": "remake-0020-p5.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "c03383d9fb5a059d5d396f7d53d7f5892266ed4fbd55a4e26c04f870ef39bdf9",
-          "remake_sha256": "7812268bb444154b8ae404bb3f36efb874c9d771aa671540a69dd92e0c54be4f"
+          "oracle_sha256": "5e6ba60110c4c7698dc4f3b3fc1cae5f28fbe7cf31727815cd0765e970149cca",
+          "remake_sha256": "41143e37ec7078365d18e3de3eb23d9f9d296fcadb9a2c6353a5245b43b57ac5"
         },
         {
-          "seq": 541,
+          "seq": 602,
           "kind": "move",
-          "oracle": "checkpoint-0541.png",
-          "remake": "remake-0022-p1.png",
+          "oracle": "checkpoint-0602.png",
+          "remake": "remake-0021-p1.png",
           "phases": 4,
-          "diff_pixels": 74,
+          "diff_pixels": 97,
           "box": [
-            175,
-            47,
-            192,
-            51
-          ],
-          "ok": true,
-          "oracle_sha256": "7f18372e0c20b275cd9f8c9be918b52ad013daa508bee52ed80e5044e9a604cf",
-          "remake_sha256": "7a3258617c21d991aa48f2839989515d5d7dee138b2a1264bde38a7fae56aa66"
-        },
-        {
-          "seq": 547,
-          "kind": "wait",
-          "oracle": "checkpoint-0547.png",
-          "remake": "remake-0023-p1.png",
-          "phases": 4,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "29dc1d609e596fefb089d5e1c14f0f29ca1e0ffa5d083d4182f5ae7dafdc4548",
-          "remake_sha256": "238c217fe944ef0318609289113736ac99228d3a42dba83fe2725979d28a873a"
-        },
-        {
-          "seq": 557,
-          "kind": "select",
-          "oracle": "checkpoint-0557.png",
-          "remake": "remake-0024-p21.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "51c54559db4777ea16f46b0c56ff521d6bbd5907f9d516f395a386eab7ab41cd",
-          "remake_sha256": "e3d363af88646e4b59ed9936ed6771d7ea6d9665c6fbbb0b4b65f2965f848001"
-        },
-        {
-          "seq": 630,
-          "kind": "move",
-          "oracle": "checkpoint-0630.png",
-          "remake": "remake-0025-p1.png",
-          "phases": 4,
-          "diff_pixels": 85,
-          "box": [
-            149,
-            47,
-            168,
-            51
-          ],
-          "ok": true,
-          "oracle_sha256": "30f8534b20b3ecaf2fbc57bcd29832fb25141b34748d999b6aeaf28cc9b9eae6",
-          "remake_sha256": "e2e5b4df54db8cc3745c3d5d683801b1f1e0d8b71a64ddcd1604979d8c19c419"
-        },
-        {
-          "seq": 720,
-          "kind": "select",
-          "oracle": "checkpoint-0720.png",
-          "remake": "remake-0028-p5.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "69ffa0043954390def5549752899fa66575c824fba26542fa66cd0f2c9e08a0b",
-          "remake_sha256": "69ffa0043954390def5549752899fa66575c824fba26542fa66cd0f2c9e08a0b"
-        },
-        {
-          "seq": 721,
-          "kind": "stay",
-          "oracle": "checkpoint-0721.png",
-          "remake": "remake-0029-p2.png",
-          "phases": 4,
-          "diff_pixels": 81,
-          "box": [
-            247,
-            46,
-            264,
-            51
-          ],
-          "ok": true,
-          "oracle_sha256": "790f9a8696bb45e25f2ae5956f79b540522d0f9057066e942d0d419588a5aecf",
-          "remake_sha256": "4871980cd1a172d9103343337d5fb9ce8e1003eeaa8f486036f5bd434c057510"
-        },
-        {
-          "seq": 742,
-          "kind": "wait",
-          "oracle": "checkpoint-0742.png",
-          "remake": "remake-0030-p1.png",
-          "phases": 4,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "ddb2bdd184aa41c4d0d76e247cc8405aba73ab3ad3fcf627d34060194f855e1e",
-          "remake_sha256": "a87d442d7f08c3be241be3f02605013c905198e66e8ed34ec4167d86aefbfd9e"
-        },
-        {
-          "seq": 749,
-          "kind": "select",
-          "oracle": "checkpoint-0749.png",
-          "remake": "remake-0031-p18.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "e99f6f29ce9f5fe55e5d7de279dd5d7ceece96624a400ac25de5b060342b335c",
-          "remake_sha256": "155395b06f855327e89754ddac52b9269b471eb3d96efa12cd874fc1cf6dfe28"
-        },
-        {
-          "seq": 750,
-          "kind": "stay",
-          "oracle": "checkpoint-0750.png",
-          "remake": "remake-0032-p1.png",
-          "phases": 4,
-          "diff_pixels": 96,
-          "box": [
-            222,
+            78,
             23,
-            241,
+            97,
             27
           ],
           "ok": true,
-          "oracle_sha256": "bc05302af6cd09eec76066ebdf4c413e0649bf2b159b9dcf9a8254bfcb7d29fd",
-          "remake_sha256": "6e65ee2eafd3bc90550062c01e8355872ed59686b5bc98d30a9bbc01f131455f"
+          "oracle_sha256": "5782e452101d82eb9ae67fbb16c47e4bd9b9e2fc4eb94f4d1cda0e9c40e1ab87",
+          "remake_sha256": "62419e3697c812aad095b06127c8614b7ede427a6cddf7b7e2a1b36744a5146a"
         },
         {
-          "seq": 752,
-          "kind": "attack_armed",
-          "oracle": "checkpoint-0752.png",
-          "remake": "remake-0033-p37.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "7a4e0343ab2f60763a4b8da7bea8f8a663d65a7272c89fed9ddb3c828a5839fa",
-          "remake_sha256": "4176c80e19900410a69db3cf900036943ac60a2eca613f9770d8d533850a6095"
-        },
-        {
-          "seq": 767,
-          "kind": "attack_result",
-          "oracle": "checkpoint-0767.png",
-          "remake": "remake-0034-p1.png",
+          "seq": 608,
+          "kind": "wait",
+          "oracle": "checkpoint-0608.png",
+          "remake": "remake-0022-p0.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "d2d169961eaa8f7d6f68615fffcc3542bedfa2479521884f8e0ac9c670745d8e",
-          "remake_sha256": "00d6e07c5958950f9bf33f24cc29a2c6554c4de7e59bfc65ddc49748b93512cb"
+          "oracle_sha256": "535606b70235eb4ef1f1d06ffa71ec6e6a5794cb11058bfb2e6d1d7723f58c76",
+          "remake_sha256": "e18901fd4cb96405e9dff71294eeaba1e1fd0e8a76bcdaea6703cf8a5e675e2b"
         },
         {
-          "seq": 775,
+          "seq": 621,
           "kind": "select",
-          "oracle": "checkpoint-0775.png",
+          "oracle": "checkpoint-0621.png",
+          "remake": "remake-0023-p26.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3b036ef0c9801bf809125caabb7a4d71bf9fd6c25187e3bde519bec123ec99c2",
+          "remake_sha256": "97e20cc98bc5dabff827dbae60fe2ab7f462bc132e6824b5e95cc55f3c54e9d9"
+        },
+        {
+          "seq": 690,
+          "kind": "move",
+          "oracle": "checkpoint-0690.png",
+          "remake": "remake-0024-p1.png",
+          "phases": 4,
+          "diff_pixels": 85,
+          "box": [
+            101,
+            47,
+            120,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "13ed9931ada27be6d0f25b51f3a68ad1b0741b5c4561b119e20e45d0de502999",
+          "remake_sha256": "206fc351a4855a6bab276d06eafaa2ff0e1f7272f4e6c8ef050446089afbc079"
+        },
+        {
+          "seq": 696,
+          "kind": "wait",
+          "oracle": "checkpoint-0696.png",
+          "remake": "remake-0025-p0.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d091c5b6a17c4077940b0dfd0bed29b6012b3a07e63f3cd801f110eb29c8eff5",
+          "remake_sha256": "794b2d9fd9d125c0690f14c0fcf3ab013fdde89f33c2cc5d354c1004fe58519a"
+        },
+        {
+          "seq": 706,
+          "kind": "select",
+          "oracle": "checkpoint-0706.png",
+          "remake": "remake-0026-p5.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "929b089c0bde7c61617855aed03d44a1c1bbf1aeb6d15296b1083dc895805797",
+          "remake_sha256": "6626f59bc7422a3cb2373d672170252ce06dc9bb7037a60205a9ce949f3372ea"
+        },
+        {
+          "seq": 783,
+          "kind": "move",
+          "oracle": "checkpoint-0783.png",
+          "remake": "remake-0027-p2.png",
+          "phases": 4,
+          "diff_pixels": 94,
+          "box": [
+            78,
+            46,
+            97,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "e39a2a30cd290d47054e95d5d75360350238a01a384ab87b171a765d12a06733",
+          "remake_sha256": "2948db7589d7c25db20c1eeabd5b0a95ff57aa0a2463fbb6856db0a5e8cbee6f"
+        },
+        {
+          "seq": 823,
+          "kind": "select",
+          "oracle": "checkpoint-0823.png",
+          "remake": "remake-0029-p5.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2e0a848220fc1f20e07d2291a669f70d3df4cc68d65034402644f07a6a6f6cba",
+          "remake_sha256": "b9eb871b9f4707c9d6f7b81c045eada37cbd9ad7dbe1728db8afef7902c186e2"
+        },
+        {
+          "seq": 824,
+          "kind": "stay",
+          "oracle": "checkpoint-0824.png",
+          "remake": "remake-0030-p2.png",
+          "phases": 4,
+          "diff_pixels": 124,
+          "box": [
+            30,
+            10,
+            49,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "ce627a9062c7562d7daf8332d334f8861f34cd81a902ee8e9dff49630135bb48",
+          "remake_sha256": "a3eedbb67077537ed65064d3ab67146ea7c56fb2058b428c64b8e45af58ad929"
+        },
+        {
+          "seq": 826,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-0826.png",
+          "remake": "remake-0031-p37.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d43601a215615b1fb77e9a83e3ca8a319f8aefb13aba10e6557b66341e8a53db",
+          "remake_sha256": "4062945b48593f4dcda6fb591765403c1afff30f664c83713f9ae36a9375cf36"
+        },
+        {
+          "seq": 841,
+          "kind": "attack_result",
+          "oracle": "checkpoint-0841.png",
+          "remake": "remake-0032-p0.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c4a9faec37bc79a00c0078cd786c14d019a78738d8cdbfa73226dc1d1244006b",
+          "remake_sha256": "512f0d8d44f35bc0299d3cd9250404a45d40596a543a2b23656d000cd591f783"
+        },
+        {
+          "seq": 853,
+          "kind": "select",
+          "oracle": "checkpoint-0853.png",
+          "remake": "remake-0033-p21.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "1c5ec97b99e2cc77b6457273cb9f4fdee1c98a7a8725ee5baa1ad919a6db7bb0",
+          "remake_sha256": "a9497b456ce6773f77883d4f6089bd847fbd6f1d5d68d7edb1df2635a83dc69a"
+        },
+        {
+          "seq": 859,
+          "kind": "move",
+          "oracle": "checkpoint-0859.png",
+          "remake": "remake-0034-p1.png",
+          "phases": 4,
+          "diff_pixels": 628,
+          "box": [
+            100,
+            80,
+            123,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "944cc76d1a960678cc4f39e84c2c31fbd8bd57f4de93daea086af0ca8f98f44b",
+          "remake_sha256": "483bcf0bad220e9725b5b17fa7f8aea18d4373ea027b32125bd688efed3f966b"
+        },
+        {
+          "seq": 861,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-0861.png",
           "remake": "remake-0035-p21.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "83d66c031b1264301c6d03e5c8208de488643a58591ae03e92be13e4fe7112b4",
-          "remake_sha256": "720be69420bb0f848edc47e19dd2955742b1440068f6d32182ea91fe38c78486"
+          "oracle_sha256": "9bff99a699945c5f796fdfd3ab300e253cd6f564012b1c0c30f7962deb871138",
+          "remake_sha256": "4ee367e78156a0354214020d7700a8e416fb79905bcfc0c2970f03b54ce4dc7b"
         },
         {
-          "seq": 776,
-          "kind": "stay",
-          "oracle": "checkpoint-0776.png",
-          "remake": "remake-0036-p2.png",
+          "seq": 876,
+          "kind": "attack_result",
+          "oracle": "checkpoint-0876.png",
+          "remake": "remake-0036-p0.png",
           "phases": 4,
-          "diff_pixels": 109,
-          "box": [
-            245,
-            70,
-            264,
-            75
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
-          "oracle_sha256": "9c2a73bfb3cce92bb335009ce5094389f23e58a2d99b73e99b03a0bd36c1c53e",
-          "remake_sha256": "6f02c569027986d83a9d56b1127badb81f48c7823b571fdd4372ae245a405587"
+          "oracle_sha256": "2de820bc4dd87eff023fdec36d1290a0a86db5fa10d2834ff6d8de5f3138b133",
+          "remake_sha256": "63ee29cca2c08bb5e2e208e6a8a876e824266ef8740a257043239a7766384e01"
         },
         {
-          "seq": 778,
-          "kind": "attack_armed",
-          "oracle": "checkpoint-0778.png",
-          "remake": "remake-0037-p37.png",
+          "seq": 887,
+          "kind": "select",
+          "oracle": "checkpoint-0887.png",
+          "remake": "remake-0037-p8.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "024a247d128b9181eb2fd9e6b860944b79c184e0f2cbe0ce3e72402f922a0f2c",
-          "remake_sha256": "bc0fe89c12f3f9773ed10ae7ff0290ca2a66ebf3099fe39238aebfd394fc651a"
+          "oracle_sha256": "b3ba30d6827f7a49cd46589e418dfee1f17bdff1fdf0a649391a766bc270a5b2",
+          "remake_sha256": "b3ba30d6827f7a49cd46589e418dfee1f17bdff1fdf0a649391a766bc270a5b2"
         },
         {
-          "seq": 793,
-          "kind": "attack_result",
-          "oracle": "checkpoint-0793.png",
+          "seq": 943,
+          "kind": "move",
+          "oracle": "checkpoint-0943.png",
           "remake": "remake-0038-p1.png",
           "phases": 4,
+          "diff_pixels": 179,
+          "box": [
+            77,
+            71,
+            118,
+            95
+          ],
+          "ok": true,
+          "oracle_sha256": "75e50e736ecc7e59fd20b21c0edb28a45bdbfe6c98a645fcf2771bcf8cb4cc9c",
+          "remake_sha256": "b866c770ef6b91ef6d5677e03c0c26acaba158120ae75f8ac24b39952eb57ecf"
+        },
+        {
+          "seq": 964,
+          "kind": "wait",
+          "oracle": "checkpoint-0964.png",
+          "remake": "remake-0039-p0.png",
+          "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "25fb87c708cba45803fd5c92bb6a190770485a24994e46b6d4fe76f695615d37",
-          "remake_sha256": "442b01a048a8dcaddbf0de45ab4e7783712f788a023271a2f1d48849aa4fe651"
+          "oracle_sha256": "41584d4572c1bd11aa9a1b131536b08b435661c62c3d155d081c0b133ef82ccd",
+          "remake_sha256": "1be0347ce1abacc83dd2552ec6f9ac65341d79d707383207bccd012060f0f1ca"
         },
         {
-          "seq": 800,
+          "seq": 973,
           "kind": "select",
-          "oracle": "checkpoint-0800.png",
-          "remake": "remake-0039-p18.png",
+          "oracle": "checkpoint-0973.png",
+          "remake": "remake-0040-p5.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "880b8a3902cf32c75200ae0405e5f9c3b191523c352a982b9058daac8c7e743b",
-          "remake_sha256": "740b972d3698d98d383a1f3c572af4e19c44cd71f745c87c66a079e4f95102fe"
+          "oracle_sha256": "d76f1711c239a80b01206e217af3e56c8702176e0dd93bb74e6325af3a986d67",
+          "remake_sha256": "d02ff16e68b25cbf73f7f4e83cd815503462fa1f2b61ed592333fb74b7a6fd16"
         },
         {
-          "seq": 801,
-          "kind": "stay",
-          "oracle": "checkpoint-0801.png",
-          "remake": "remake-0040-p1.png",
+          "seq": 1014,
+          "kind": "move",
+          "oracle": "checkpoint-1014.png",
+          "remake": "remake-0041-p1.png",
           "phases": 4,
-          "diff_pixels": 74,
+          "diff_pixels": 66,
           "box": [
-            271,
+            104,
             71,
-            288,
+            119,
             75
           ],
           "ok": true,
-          "oracle_sha256": "71a30a4d695edb6f8e36e696227e5416b376b70a06dc91ea3eb088a949314bc4",
-          "remake_sha256": "e590f0e409e696f9a96a9c473dfeaabb72417236703602d44e0b8558246c023b"
+          "oracle_sha256": "da946e9ff78cee1362e885651dd711b3e6aac05820fa2c226d37ba9949ba2571",
+          "remake_sha256": "934e0e5257fff54f814a200731fc6d2d8b580118b4764f4e6bb98fd148cd9e8b"
         },
         {
-          "seq": 803,
-          "kind": "attack_armed",
-          "oracle": "checkpoint-0803.png",
-          "remake": "remake-0041-p21.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "b318b425f6c75a40254f94aa008b1fb56c8a2e1c92b0706b099c84bb99f64523",
-          "remake_sha256": "902a980681fa376ea96a75ca99adbf8dd7d28c63e8ec3cdcd423a55f1ec6c342"
-        },
-        {
-          "seq": 818,
-          "kind": "attack_result",
-          "oracle": "checkpoint-0818.png",
-          "remake": "remake-0042-p1.png",
+          "seq": 1035,
+          "kind": "wait",
+          "oracle": "checkpoint-1035.png",
+          "remake": "remake-0042-p0.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "8c821f9f852458cc51a3ef5dfe7246fd352ff74f35d71f9d5ec8b7ac94bb759b",
-          "remake_sha256": "ddf5b5f80e32d6cb39a4bc1673020362dbd97cee9046f4cf4e594ae883de63ce"
+          "oracle_sha256": "67219ebccec183c67d98572d1e71d7aaf2f3bb2a55ba6eda9d75b6a913d29c12",
+          "remake_sha256": "e32fc2276bea0e41f6e244271276c1fea9bc11abd5226cbb5df6a85432895f5a"
         },
         {
-          "seq": 830,
+          "seq": 1045,
           "kind": "select",
-          "oracle": "checkpoint-0830.png",
+          "oracle": "checkpoint-1045.png",
           "remake": "remake-0043-p34.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "82281dbaec6d08c9e863a92b4783405711aea4d8206cc094d6ab38386e44efd6",
-          "remake_sha256": "c234dc00523700abe4d80837db06fdb3432324081201773b60adfa13394d8c0e"
+          "oracle_sha256": "9da6cb5a122d56a07a081fa983a6fe6527c31ad219441cdd915ebb70c71a285e",
+          "remake_sha256": "623f95e95d36e7913b40acc6fe9510d259c4a6a4a738c106e975c7f1a243bbd2"
         },
         {
-          "seq": 831,
-          "kind": "stay",
-          "oracle": "checkpoint-0831.png",
+          "seq": 1069,
+          "kind": "move",
+          "oracle": "checkpoint-1069.png",
           "remake": "remake-0044-p2.png",
           "phases": 4,
           "diff_pixels": 179,
           "box": [
-            175,
+            55,
+            46,
             94,
-            214,
-            119
+            71
           ],
           "ok": true,
-          "oracle_sha256": "5c3a7252dfd11837f25eca8e67a87e6143ec12140f0f2732882e343c62a1109a",
-          "remake_sha256": "62ab644ecf682b4e7b10106b280f0e12f78e1d1936850887243c23cf15d8a10c"
+          "oracle_sha256": "e3c37a4e7a110992b43ac6f13dc7e355fbb5af4b528fcaa7957c4b204d87f07e",
+          "remake_sha256": "0ff4cda11cf3c6eb28fc5c9eacdf52dfd3c40b637a6cd814e400cf753d7adf27"
         },
         {
-          "seq": 852,
+          "seq": 1075,
           "kind": "wait",
-          "oracle": "checkpoint-0852.png",
+          "oracle": "checkpoint-1075.png",
           "remake": "remake-0045-p1.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "acb611247d06978718acfc2f980f184f3ba0a3582a0ef02afc51bc784915233c",
-          "remake_sha256": "1539bef288e20e41d1c565d2720fe362bd0eedb1d490f5fe19d9540cda7129c0"
+          "oracle_sha256": "edb91ab22bbc0d610ba44a435c5fd8fb94587a5254ad6f13bd21820609daebae",
+          "remake_sha256": "0053cfe009ef066c7bdbc9c35532ede6c029f38a94b4a1fdd99f50938320c0bc"
         },
         {
-          "seq": 862,
+          "seq": 1086,
           "kind": "select",
-          "oracle": "checkpoint-0862.png",
-          "remake": "remake-0046-p21.png",
+          "oracle": "checkpoint-1086.png",
+          "remake": "remake-0046-p24.png",
           "phases": 44,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "590b61594b0712299513b5acd8d30feac4bbb807397fbaea31496933c2312941",
-          "remake_sha256": "dcff89b94c49693e84b922c67c4402931f7631f8baed67d4905420cd34170d40"
+          "oracle_sha256": "afc0e45695ae473755a58a5c66a55718abe2a3239134ffffe9b49e84a1ecf3e0",
+          "remake_sha256": "0172c23f2a581cea0700ce3ebd8b574376bed0c2f50c7af627e81b6e558f12c2"
         },
         {
-          "seq": 863,
-          "kind": "stay",
-          "oracle": "checkpoint-0863.png",
-          "remake": "remake-0047-p2.png",
+          "seq": 1108,
+          "kind": "move",
+          "oracle": "checkpoint-1108.png",
+          "remake": "remake-0047-p1.png",
           "phases": 4,
-          "diff_pixels": 201,
+          "diff_pixels": 165,
           "box": [
-            221,
-            22,
-            262,
-            47
-          ],
-          "ok": true,
-          "oracle_sha256": "0d9de3c82a77c394d37334202c578f489b1fa28052c1b4b123f88629e2d74b1a",
-          "remake_sha256": "08e66f4e53e32ec26c932068565196fb364867663793fbbca5d138cf2b850a17"
-        },
-        {
-          "seq": 884,
-          "kind": "wait",
-          "oracle": "checkpoint-0884.png",
-          "remake": "remake-0048-p1.png",
-          "phases": 4,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "feb56d203671527ab8bdbd6a6d950027f59ba0e394e2a403e2dd6fa9a92bd668",
-          "remake_sha256": "ec35d95af484e2d8b17b1ed4d6dfd594d14a40f2fc2695b643e876ca9a48f50f"
-        },
-        {
-          "seq": 891,
-          "kind": "select",
-          "oracle": "checkpoint-0891.png",
-          "remake": "remake-0049-p34.png",
-          "phases": 44,
-          "diff_pixels": 0,
-          "box": [],
-          "ok": true,
-          "oracle_sha256": "b78477552ed1dbeca8d145f303d941927b9dd03c5c789484e64d89f445c831cb",
-          "remake_sha256": "cba5b606cbab213e4934d142f956adbefaf6d0f9948b205a8ed24af1fdc306d4"
-        },
-        {
-          "seq": 892,
-          "kind": "stay",
-          "oracle": "checkpoint-0892.png",
-          "remake": "remake-0050-p2.png",
-          "phases": 4,
-          "diff_pixels": 185,
-          "box": [
-            246,
-            46,
-            286,
+            78,
+            47,
+            118,
             71
           ],
           "ok": true,
-          "oracle_sha256": "dae0d6969c274da462e6972b96ca51b60d92696f5e8e04a53d9485be5ffffe04",
-          "remake_sha256": "ba871a1bcb11aa30a1a4627471fbd793d72c080f56daa2392581d4d17aeb71cc"
+          "oracle_sha256": "b81b8fa75bb0df04a1dce94aea68f26860e5ac1d9be939ad533a61b54530e849",
+          "remake_sha256": "e5bdea398f8706f635ab03c8559a5fdbf0034b94ff5ce1a1bc7ac7d5dce77606"
         },
         {
-          "seq": 934,
-          "kind": "enemy_phase_start",
-          "oracle": "checkpoint-0934.png",
-          "remake": "remake-0052-p14.png",
-          "phases": 156,
-          "diff_pixels": 162,
+          "seq": 1114,
+          "kind": "wait",
+          "oracle": "checkpoint-1114.png",
+          "remake": "remake-0048-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "630ef9ff2ca3fe9e1c333021390fcc6815f2a81f308d36e12099585f46019eeb",
+          "remake_sha256": "32ec67d5108c0b854493359ba502d99d69ec2e3eb93b20f3efcf116afe8fc41f"
+        },
+        {
+          "seq": 1124,
+          "kind": "select",
+          "oracle": "checkpoint-1124.png",
+          "remake": "remake-0049-p24.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c568d17ebc33194741b225631e89aa099e5a17e9b4d252ff30da1d9ac174f1bd",
+          "remake_sha256": "a69f514f9a3a040d7c7a7d9ffd46984e32b62a2f05a2c890fc791a259a94c1ad"
+        },
+        {
+          "seq": 1129,
+          "kind": "move",
+          "oracle": "checkpoint-1129.png",
+          "remake": "remake-0050-p1.png",
+          "phases": 4,
+          "diff_pixels": 85,
           "box": [
-            148,
-            31,
-            156,
-            57
+            53,
+            47,
+            72,
+            51
           ],
           "ok": true,
-          "oracle_sha256": "3fa15e040298704b578177a38e50331d3518c1b6dbb02b1f9ce2eb1f11ebaa67",
-          "remake_sha256": "55194d498b909e83c92d81fb32e2fb3cdb28485a8a9cacc4b2af12528e389794"
+          "oracle_sha256": "147914de413066d8304022f8e74ccc7e93f2efa7a6c35ad833751e8d30674f40",
+          "remake_sha256": "0e408baf40ca5120e5dd2df72099066d691e44551737171508588a251b26c3c4"
         },
         {
-          "seq": 1023,
+          "seq": 1135,
+          "kind": "wait",
+          "oracle": "checkpoint-1135.png",
+          "remake": "remake-0051-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "64ee25d2a8d4fc1ed152e773a7002c315f6eb4d09eab964c8c1142415fada8c5",
+          "remake_sha256": "3a335b996a52b6c783a6a369ed117b8c137c93c33900d7bc87a4ce1f618c24c0"
+        },
+        {
+          "seq": 1145,
+          "kind": "select",
+          "oracle": "checkpoint-1145.png",
+          "remake": "remake-0052-p40.png",
+          "phases": 44,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "662477955fe77e3cb0c8f6cacb2ecb039bd5219fe3d6b8bc75a9f5b5a8732732",
+          "remake_sha256": "77e868f04ed7a3d6fdbea5675d81ee90215584f0cc93d460a16771e7cd760c3b"
+        },
+        {
+          "seq": 1150,
+          "kind": "move",
+          "oracle": "checkpoint-1150.png",
+          "remake": "remake-0053-p1.png",
+          "phases": 4,
+          "diff_pixels": 165,
+          "box": [
+            31,
+            47,
+            70,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "1e751f165623e9bd4478a28dcc35513fde409275906b14354fd573753a67f812",
+          "remake_sha256": "1d037b1267c62a11edd3cfd2a2a35545de1b142736b0292dac9860b85a17bcbd"
+        },
+        {
+          "seq": 1258,
           "kind": "town_after_battle",
-          "oracle": "checkpoint-1023.png",
-          "remake": "remake-0055-p1.png",
+          "oracle": "checkpoint-1258.png",
+          "remake": "remake-0058-p1.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "9cd9c722f2bb079cd9e54c8e8b92a5790c135a27546c8af030dfcfbdc50f3849",
-          "remake_sha256": "9cd9c722f2bb079cd9e54c8e8b92a5790c135a27546c8af030dfcfbdc50f3849"
+          "oracle_sha256": "403f343b9691f8e9f6fd9358312dee299abc8f93362cefb1d1d100c837f0a12c",
+          "remake_sha256": "403f343b9691f8e9f6fd9358312dee299abc8f93362cefb1d1d100c837f0a12c"
         },
         {
-          "seq": 1097,
+          "seq": 1327,
           "kind": "shop_sell",
-          "oracle": "checkpoint-1097.png",
-          "remake": "remake-0057-p2.png",
+          "oracle": "checkpoint-1327.png",
+          "remake": "remake-0060-p1.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "2b045e405c121ff4745e759745a4df0ec3e1f1776243ec95ce47c8fd3e126e7c",
-          "remake_sha256": "2b045e405c121ff4745e759745a4df0ec3e1f1776243ec95ce47c8fd3e126e7c"
+          "oracle_sha256": "8f94486eff06b40f4705c96b0a8f03ffe7ab6a2d7677f05b0e8dc814f462380c",
+          "remake_sha256": "8f94486eff06b40f4705c96b0a8f03ffe7ab6a2d7677f05b0e8dc814f462380c"
         },
         {
-          "seq": 1105,
+          "seq": 1335,
           "kind": "town_enter",
-          "oracle": "checkpoint-1105.png",
-          "remake": "remake-0058-p0.png",
+          "oracle": "checkpoint-1335.png",
+          "remake": "remake-0061-p0.png",
           "phases": 1,
           "diff_pixels": 60,
           "box": [
@@ -1651,14 +1733,14 @@
             179
           ],
           "ok": true,
-          "oracle_sha256": "b87687c8ccfc19f44d8056a06e12dc7e8d05b7963c660e7c09daf02d5bb04140",
-          "remake_sha256": "7388e21461c84123a14d853dedae468f6498c4a5aaf054a4b86e4018db4f6508"
+          "oracle_sha256": "eb2bb73f15d277939941125b1b193b965f605bb34eaa4826481e28b886ff9bb8",
+          "remake_sha256": "ab96d01f464cc5514405b38fee697ad69740782bb991a407eede47dc58cf2d22"
         },
         {
-          "seq": 1120,
+          "seq": 1378,
           "kind": "town_enter",
-          "oracle": "checkpoint-1120.png",
-          "remake": "remake-0059-p0.png",
+          "oracle": "checkpoint-1378.png",
+          "remake": "remake-0062-p0.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
@@ -1667,34 +1749,34 @@
           "remake_sha256": "ae06750f0039677a12a8ac709a4156762cfd753a836545717a5bc660db62d91d"
         },
         {
-          "seq": 1157,
+          "seq": 1415,
           "kind": "town_enter",
-          "oracle": "checkpoint-1157.png",
-          "remake": "remake-0061-p0.png",
+          "oracle": "checkpoint-1415.png",
+          "remake": "remake-0064-p12.png",
           "phases": 16,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "f7ceb0f0f9cf2cec1e0569854a2e1a45d225be78d48f6c3e30c19ef59430f1eb",
-          "remake_sha256": "f7ceb0f0f9cf2cec1e0569854a2e1a45d225be78d48f6c3e30c19ef59430f1eb"
+          "oracle_sha256": "9158cc6ee1864560d1f3ed1d89fd222b2181306f7c7f481b3e94076bc1828dc7",
+          "remake_sha256": "9158cc6ee1864560d1f3ed1d89fd222b2181306f7c7f481b3e94076bc1828dc7"
         },
         {
-          "seq": 1198,
+          "seq": 1442,
           "kind": "town_save",
-          "oracle": "checkpoint-1198.png",
-          "remake": "remake-0062-p0.png",
+          "oracle": "checkpoint-1442.png",
+          "remake": "remake-0065-p3.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],
           "ok": true,
-          "oracle_sha256": "0dc22df00b27e80bcbf65b2c5edcaab2d98498d40c8bcb6ae9300f4674a40ca6",
-          "remake_sha256": "cdabab5c19e09e29b02a295a1c69b9bd12fa1a82c68124279647d270f63b8b65"
+          "oracle_sha256": "54f5c75f9b15748a4cad37477edfe933d5dc1998e7cb3c6926bb1f26b6cdff0f",
+          "remake_sha256": "8f1483903deaac35c0d30a7ab0026f337f965bebdb2f7ded004ef8ba08a5e5ba"
         },
         {
-          "seq": 1223,
+          "seq": 1473,
           "kind": "secret_shop",
-          "oracle": "checkpoint-1223.png",
-          "remake": "remake-0063-p2.png",
+          "oracle": "checkpoint-1473.png",
+          "remake": "remake-0066-p2.png",
           "phases": 4,
           "diff_pixels": 0,
           "box": [],

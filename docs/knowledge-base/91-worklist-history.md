@@ -4266,3 +4266,20 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
   台帳第四章 `passed`。
 - [ ] 酒店服務 2 讀檔（`0x301F4`）與傳聞後回酒店選單（#32）；升級與 END 回復演出
   （#29）這一章沒抽到。`FDOTHER_013` 分離素材只在本機素材包，私人庫尚未同步。
+
+## 2026-09-16：第五章 111 四 gate 全過
+
+- [x] 原版側 r5（dosgolem `caa9ee8`，dirty=0）：LOAD → 出口 → 第 1、2 回合 END →
+  第 3 回合八個單位移動待機（event 14 改 AI 模式）→ 第 4 回合友軍 group 2 登場、鏡頭、
+  演出、四句對白、兩次攻擊 → 第 5 回合 `force_enemy_clear` 27→0 → END → 戰後對白 →
+  城鎮出售 2000→2037 → 五棟建築 → 酒店存檔 → 教會 ctrl-f5 祕密商店。驅動端修掉
+  `MAP_LIMIT_X=31` 誤判、加 `stop_on_auto_end`、清場後改用 `await_ui` 推進戰後對白。
+- [x] 重製側 remake-r5：回合事件處理器整筆轉寫（`tools/sync_native_turn_events.py
+  --chapters 4,5`，#33 開著記其餘 57 筆）；`0x1A30B` 順序改成友軍 AI → 橫幅 → 清 bit7 →
+  selector 0 事件 → 敵軍；勝負判定拿掉 `PendingCount`（`0x205b4` 只看已登場記錄）；
+  `ch04_post` 槽數改 `[42, 48, 52]`；`0x11506` 同步照抄 `+2` FDICON 快取槽與 `+3` 朝向。
+  收據 `parity-ch05.json` 狀態 `passed`，58 張逐像素相同、存檔 sha256 相同；台帳第五章
+  `passed`。第四章 r58 重跑仍 `passed`（55 張：verifier 新規則把落在 `0x1A30B` 裡的三個
+  checkpoint 改成不比）。
+- [ ] 未抽到：第 7、8 回合 event 16／17、法術／物品／買入（驅動端沒有）、升級幀（#29）；
+  酒店讀檔（#32）。

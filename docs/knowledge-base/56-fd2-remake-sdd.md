@@ -7692,11 +7692,80 @@ phase、目前 segment、來源交易總數與 ready；另輸出是否正在呈�
   重繪開頭依 BIOS tick 可能先把相位 +1，設定的那一張就少掉；相位被推進就重設再畫
   一次（r55 前 seq 934 只差 idle 0 那一幀）。
 
-第四章 r13／r55 的結果（原版側 r13 由 dosgolem `caa9ee8` 乾淨樹重生，逐點與 r10 相同）：
+第四章 r13／r58 的結果（原版側 r13 由 dosgolem `caa9ee8` 乾淨樹重生，逐點與 r10 相同）：
 四個 gate 全過——行為、節點、交易（LOAD → 出口 → 五回合 → 增援 → 清場 → 戰後城鎮出售／
 四棟建築／酒店存檔／祕密商店，單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256
-相同）與畫面（57 張逐像素相同，`after_enemy_phase` 不比畫面）。
+相同）與畫面（55 張逐像素相同，`after_enemy_phase` 不比畫面；seq 636／913 兩個 wait 與
+seq 935 的 force_enemy_clear 原版 checkpoint 落在 `0x1A30B` 換手處理裡，依第五章定的
+`oracle_mid_end_turn` 規則不比單位、回合與畫面，r57 之前這三點是在換手處理中途拍到
+恰好相同才算過）。
 
 尚未閉合（不影響這一章的收據）：升級與 END 回復的圖示演出（#29；`0x1DA16` 在橫幅之前
 播完，checkpoint 拍不到，這一章的樣本也沒有抽到升級幀）；酒店服務 2 讀檔與傳聞後回
 酒店選單。
+
+## 第五章章工作單元：回合事件處理器與敵方回合順序（2026-09-16）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 4
+--levels-per-chapter 6`（manifest `docs/data/parity-slots/ch05-manifest.json`，名冊 7 人，
+ch04_post 的 join char 10 已套用）。正對照：與第四章對拍實跑寫出的酒店存檔
+（`work/parity-slot-ch04/remake-r55/FD2.SAV`，與原版逐 byte 相同）比，89 處差異全部是
+升級政策（每章 +6 級）、實際擊殺經驗、掉落物品、出售、三名倒下單位的 `+5` 與戰場
+座標殘值。合法性檢查 `docs/data/parity-plans/ch05-slot-load.jsonl`：LOAD 進城鎮、五棟建築
+探法與第四章相同。
+
+這一章原版側新踩到、重製側因此改掉的東西：
+
+- **回合事件處理器不只有 spawn（已證實；#33）。** 第五章 map 4 的四筆回合事件
+  （`turn_events.json`）：第 3 回合 event 14 `0x345EA` ＝ `0x3419C(0x25..0x28, 0)`、
+  `0x3419C(0xD..0x18, 0)`、對白 text 3；第 4 回合 event 15 `0x3462E` ＝ `[0x51A83]=0`、
+  `[0x53AFA]=1` 下 `0x10B4E(2)` 登場友軍 group 2、`0x135DD(0xE,0)` 鏡頭、`0x1366A(0x17)`
+  演出、`0x134E4` 姿勢歸零、`0x3419C(7..0xC, 0)`、`0x3419C(0x21..0x23, 0)`、對白 text 4；
+  第 7 回合 event 16 `0x34696` ＝ `0x10B4E(3)` 敵軍 group 3、對白 text 5；第 8 回合
+  event 17 `0x346C8` ＝ `0x3419C(0x30..0x33, 7)`、對白 text 6、`0x1366A(0x18)`、對白 text 7。
+  第四章 event 11 `0x34565` 也是 `0x10B4E(2)` 加對白 text 2。這些與死亡效果型態 2 是
+  同一張全域事件表 `0x51B91`，所以轉寫進 `tools/extract_native_death_events.py` 的
+  `EVENTS`（逐條指令核對、覆蓋檢查），由新的 `tools/sync_native_turn_events.py
+  --chapters 4,5` 降成劇本動作（`native_death_op ai_mode_range`／`range_zero`、
+  `spawn_group`、`pan`、`native_acting`、`reset_pose`、`dialogue` 帶 `native_dialogue_ref`），
+  每個動作帶 `native_event_id` 與該列 `camp`（phase selector）。其餘 57 筆回合事件仍是
+  gen_campaign 的 spawn 版本，逐章推進時逐章轉寫（#33）。
+- **`0x1A30B` 的順序在重製端照做（已證實）。** 友軍 AI（`0x1D80B`，raw `+6==1`）在
+  ENEMY PHASE 橫幅之前；橫幅 → `0x13536` 清 bit7 → `0x1A813(0)` selector 0 事件 →
+  敵軍兩遍。重製端 `beginEnemyPhase` 先設 `aiAllyPhasePending`，`aiStep` 以
+  `NextAllyAIPlan`（只掃 pass 0）跑完友軍才 `showBanner`，橫幅後 `aiPhaseSelector0Pending`
+  跑 selector 0 的可編輯事件，事件（對白、鏡頭、演出）進行中 AI 不動。第四章沒有
+  friendly NPC 也沒有 selector 0 事件，順序改了收據不變（r57 仍 57 張全過，且第 4 回合
+  event 11 的四句對白現在會播）。
+- **驅動端（`tools/dosgolem_oracle_drive.py`）**：`MAP_LIMIT_X` 從 31 放到 63（map4 寬 39，
+  敵人在 x=37 時 `in_battle` 誤判不在戰場，`resume_battle` 一路送 enter 穿進指令環）；
+  `sweep_round` 加 `stop_on_auto_end`（全員行動完自動換手就不再送 END，舊計畫不受影響）；
+  `force_enemy_clear` 之後第一個按鍵就可能觸發勝利判定（游標 enter 沒開系統選單、直接
+  進戰後對白），改用 `await_ui` 的推法把對白推到城鎮。計畫每回合之後先 `await_ui cursor`
+  再看回合數：第五章敵方 30 隻，敵方回合比 `sweep_round` 內建的過場預算長。
+- **勝負判定不等未登場的援軍（已證實）。** 原版 default handler `0x205b4／0x205be`
+  只掃記錄表 `[0x53a45]`：任一 raw `+6==0` 且 `+5 bit0` 清的列存在就是 0，否則 2；還沒被
+  `0x10B4E` 追加進表的群組不在判定裡。r5 在第 5 回合清場時第 7 回合的 group 3 還沒登場，
+  原版當回合就進戰後對白。重製端 `State.Result` 拿掉 `PendingCount(Enemy)==0` 的條件，
+  `PendingCount` 只供戰前資訊與測試觀測。
+- **戰後 handler 的 slot frontier 要用實跑的記錄數（已證實）。** `ch04_post.json` 的
+  `runtime_context` 原本寫 50（那是 FDFIELD map 4 的 roster 筆數，含永不登場的 group 255），
+  實跑的記錄表是 42（7 人名冊＋戰前事件登場的角色 10）→ 48（第 4 回合友軍 group 2 六筆）→
+  52（第 7 回合敵軍 group 3 四筆），改成 `slot_counts [42, 48, 52]`，layout 的 slot 41 在最小
+  frontier 之內。
+- **`0x11506` 戰後同步照抄 `+2／+3`（已證實）。** 存檔逐 byte 比對只差 9 處：七筆名冊的
+  `+3` 是戰後 layout `0x233c6` 寫下的朝向（2,2,2,3,3,1,1），角色 10 的 `+2` 是 `0x11019`
+  的 FDICON 快取槽 13（第 14 個鍵）而不是 runtime 索引 41。`syncPartyFromBattleRecords`
+  不再把 pose 歸零、也不再用 runtime 索引蓋掉 `MapSelectorSlot`；第四章的存檔（+3 全 0、
+  +2 = 0..6）是這條規則在沒有 layout 且快取槽剛好等於索引時的特例，r58 重跑仍相同。
+
+第五章 r5／remake-r5 的結果：四個 gate 全過——行為（65 個動作、66 個比對點，seq 789／
+1156 兩個 wait 落在換手處理裡標 `oracle_mid_end_turn`，其餘逐點相同：LOAD → 出口 →
+第 1、2 回合 END → 第 3 回合 8 個單位移動待機（event 14 改 AI 模式）→ 第 4 回合友軍
+group 2 登場、鏡頭、演出、四句對白、兩次攻擊（亂數字組同步）→ 第 5 回合
+`force_enemy_clear` 27→0 → END → 戰後對白 → 城鎮 → 出售 2000→2037 → 五棟建築 →
+酒店存檔 → 教會 ctrl-f5 祕密商店）、節點（68 個原版介面狀態序列相同）、交易（金額逐點、
+酒店存檔整檔 sha256 `af82ccb4…` 相同）與畫面（58 張逐像素相同）。收據
+`docs/data/ui-traces/parity-ch05.json`，台帳 `docs/data/parity-campaign-progress.json`
+第五章 `passed`。未抽到：第 7、8 回合的 event 16／17（group 3 登場與 text 5–7 對白）、
+法術與物品指令、商店買入（驅動端沒有這三種指令）；升級幀同第四章（#29）。

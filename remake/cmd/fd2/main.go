@@ -441,6 +441,8 @@ type Game struct {
 	prevCurX, prevCurY        int                    // 游標移動音偵測
 	aiBusy                    bool                   // AI 回合進行中(逐單位行走動畫)
 	aiPhaseClearBit7Pending   bool                   // 橫幅播完後第一次 aiStep 要跑 0x13536（全記錄 +5 bit7 清零）
+	aiPhaseSelector0Pending   bool                   // 0x13536 之後、敵方 AI 之前要跑 0x1A813(0) 的 selector 0 回合事件
+	aiAllyPhasePending        bool                   // 橫幅之前先跑 0x1D80B 友軍 AI（pass 0）
 	deathRewarded             map[*battle.Unit]bool  // 每個死亡 transition 的 reward 只執行一次
 	pendingDeathPrograms      []pendingDeathProgram  // 本次行動擊倒、帶型態 2／3 死亡效果的單位
 	deathProgramKiller        *battle.Unit           // 正在執行的死亡程式的擊殺者（0x1AA1D 的第一個參數）
@@ -4007,11 +4009,15 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 		snapshot.MP = snapshot.MaxMP
 		snapshot.Acted = false
 		snapshot.OffX, snapshot.OffY = 0, 0
-		// 0x11506 把 runtime 紀錄整筆抄回持續槽：+2 是 runtime 索引，+3／+4 在每次
-		// 行動收尾（0x134E4）與死亡演出結尾（0x1DB65 第 12 格）都已歸零。第四章 r9
-		// 酒店存檔收據：七筆的 +2 就是 0..6、+3／+4 全為 0。
-		snapshot.MapSelectorSlot, snapshot.HasMapSelectorSlot = index, true
-		snapshot.NativeMapPresentation.Pose, snapshot.NativeMapPresentation.Motion = 0, 0
+		// 0x11506 把 runtime 紀錄整筆抄回持續槽，+2／+3／+4 照抄當下的值：+2 是
+		// 0x11019 的 FDICON 選擇器快取槽（第五章戰前事件登場的角色 10 是第 14 個
+		// 鍵，存檔裡 +2=13，不是 runtime 索引 41）；+3 是戰後 layout（0x233c6）寫下的
+		// 朝向，沒有 layout 的章在行動收尾（0x134E4）與死亡演出結尾（0x1DB65 第 12 格）
+		// 都已歸零。第四章 r9 與第五章 r5 的酒店存檔收據各證實一種形狀。沒有原生
+		// 快取槽出處的舊資料才退回 runtime 索引。
+		if !snapshot.HasMapSelectorSlot {
+			snapshot.MapSelectorSlot, snapshot.HasMapSelectorSlot = index, true
+		}
 		snapshot.BuffAPPct, snapshot.BuffDPPct = 0, 0
 		snapshot.BuffHit, snapshot.BuffEV, snapshot.BuffTurns = 0, 0, 0
 		snapshot.Sealed, snapshot.SealTurns = false, 0
@@ -11612,10 +11618,16 @@ func (g *Game) endTurnAfterSelector1Events() {
 	g.beginEnemyPhaseAfterTurnEvents()
 }
 
-// beginEnemyPhaseAfterTurnEvents 先跑 selector 0 的可編輯回合事件（0x1A813(0)，
-// 在 0x1D8BA 敵方 AI 之前），再進敵方回合。
+// beginEnemyPhaseAfterTurnEvents 進敵方回合。0x1A30B 的順序是橫幅（0x1A3A2）→
+// 0x13536 清已行動 → 0x1A813(0) 的 selector 0 回合事件 → 0x1D8BA 敵方 AI，所以
+// selector 0 的事件（第五章第 3 回合的 event 14：AI 模式改寫＋對白）要等橫幅播完才跑，
+// 由 aiStep 在清 bit7 之後接手；不跑 AI 的截圖模式直接在這裡跑完再收回合。
 func (g *Game) beginEnemyPhaseAfterTurnEvents() {
-	g.runEditableTurnEvents(0, g.beginEnemyPhase)
+	if g.shotPath != "" && os.Getenv("FD2_SHOT_AI") == "" {
+		g.runEditableTurnEvents(0, g.beginEnemyPhase)
+		return
+	}
+	g.beginEnemyPhase()
 }
 
 // runEditableTurnEvents 觸發 on_turn_end 裡 phase selector 相符的事件，跑完再 then。
@@ -11640,8 +11652,9 @@ func (g *Game) beginEnemyPhase() {
 	}
 	if g.shotPath == "" || os.Getenv("FD2_SHOT_AI") != "" { // 截圖模式預設跳 AI;FD2_SHOT_AI=1 強制驗證 AI 行走
 		g.aiBusy = true // AI 階段:逐單位行走動畫(Update 內 aiStep 驅動),播完 finishTurn
-		g.showBanner("ENEMY PHASE")
-		g.aiPhaseClearBit7Pending = true
+		// 0x1A30B：友軍 AI（0x1D80B，raw +6==1）在橫幅之前；aiStep 跑完 pass 0 才
+		// 進 ENEMY PHASE 橫幅、0x13536、selector 0 事件與敵軍兩遍。
+		g.aiAllyPhasePending = true
 		return
 	}
 	g.finishTurn()
@@ -11900,13 +11913,38 @@ func (g *Game) aiStep() {
 		}
 		g.aiPhaseClearBit7Pending = false
 	}
+	// 回合事件（對白、鏡頭、演出）進行中 AI 不動；0x1A813(0) 是同步呼叫，回來才進 AI。
+	if g.battleEvent != nil || g.camPan != nil || g.actJob != nil || g.nativeTurnStaging != nil {
+		return
+	}
+	if g.aiPhaseSelector0Pending && g.aiBusy && g.st != nil {
+		g.aiPhaseSelector0Pending = false
+		g.runEditableTurnEvents(0, func() {})
+		if g.battleEvent != nil {
+			return
+		}
+	}
 	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeAIIdleRecovery != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}
 		return
 	}
-	plan := g.st.NextAIPlan()
+	var plan *battle.AIPlan
+	if g.aiAllyPhasePending {
+		allyPlan, handled := g.st.NextAllyAIPlan()
+		if !handled || allyPlan == nil {
+			// 友軍那一遍跑完（或名冊沒有 raw +6，沒有獨立的友軍遍）：進橫幅。
+			g.aiAllyPhasePending = false
+			g.showBanner("ENEMY PHASE")
+			g.aiPhaseClearBit7Pending = true
+			g.aiPhaseSelector0Pending = true
+			return
+		}
+		plan = allyPlan
+	} else {
+		plan = g.st.NextAIPlan()
+	}
 	if plan == nil {
 		g.aiBusy = false
 		g.finishTurn()

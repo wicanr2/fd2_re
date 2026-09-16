@@ -2,6 +2,7 @@
   "chapter": 5,
   "name": "塞拉村",
   "map": 4,
+  "runtime_append_groups": true,
   "initial_groups": [
     0,
     1
@@ -301,6 +302,63 @@
       ]
     },
     {
+      "id": "turn_ch05_e14_t3",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 3
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x345f4",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 37,
+            "last": 40,
+            "mode": 0
+          },
+          "native_event_id": 14,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34602",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 13,
+            "last": 24,
+            "mode": 0
+          },
+          "native_event_id": 14,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34610",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 1,
+            "line": 9,
+            "source_dat": "FDTXT_005",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 117,
+            "pages": [
+              [
+                "『就幾個小鬼還打發不掉嗎？",
+                "　好，第二隊，第三隊上！』"
+              ]
+            ]
+          },
+          "native_event_id": 14,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
       "id": "reinforce_ch05_e15_t4",
       "trigger": "on_turn_end",
       "when": {
@@ -309,11 +367,19 @@
       "once": true,
       "do": [
         {
+          "type": "native_death_op",
+          "native_source": "0x34638",
+          "native_death_op": {
+            "op": "range_zero"
+          },
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             2
           ],
-          "camp": "ally",
           "native_spawns": [
             {
               "group": 2,
@@ -322,7 +388,133 @@
               "raw_placement_gate": 1
             }
           ],
-          "native_event_id": 15
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x3465a",
+          "grid": [
+            14,
+            0
+          ],
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "native_acting",
+          "native_source": "0x34666",
+          "native_acting": {
+            "resource": 23,
+            "source": "0x34666"
+          },
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "reset_pose",
+          "native_source": "0x34670",
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34675",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 7,
+            "last": 12,
+            "mode": 0
+          },
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34683",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 33,
+            "last": 35,
+            "mode": 0
+          },
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34691",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 2,
+            "line": 0,
+            "source_dat": "FDTXT_005",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 69,
+            "pages": [
+              [
+                "『無法無天的盜賊，竟然侵犯",
+                "　受神所庇護的神聖之村，",
+                "　難道不怕遭天罰嗎？"
+              ],
+              [
+                "　我們王國正規軍這就來替天",
+                "　行道！』"
+              ]
+            ]
+          },
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34691",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 2,
+            "line": 1,
+            "source_dat": "FDTXT_005",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 117,
+            "pages": [
+              [
+                "『你們來的正好，還來得及幫",
+                "　你們的伙伴收屍。喔呵呵呵",
+                "　！』"
+              ]
+            ]
+          },
+          "native_event_id": 15,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34691",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 2,
+            "line": 2,
+            "source_dat": "FDTXT_005",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 69,
+            "pages": [
+              [
+                "『可惡，大家上啊！和這些傢",
+                "　伙拼了！』"
+              ]
+            ]
+          },
+          "native_event_id": 15,
+          "camp": "ally"
         }
       ]
     },
@@ -339,7 +531,6 @@
           "groups": [
             3
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 3,
@@ -348,7 +539,176 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 16
+          "native_event_id": 16,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x346aa",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 3,
+            "line": 0,
+            "source_dat": "FDTXT_005",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 48,
+            "pages": [
+              [
+                "『嗚吼～好吵啊！』"
+              ]
+            ]
+          },
+          "native_event_id": 16,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x346aa",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 3,
+            "line": 1,
+            "source_dat": "FDTXT_005",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 49,
+            "pages": [
+              [
+                "『嗚吼～又發生什麼事了？』"
+              ]
+            ]
+          },
+          "native_event_id": 16,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x346aa",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 3,
+            "line": 2,
+            "source_dat": "FDTXT_005",
+            "string_index": 5,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 50,
+            "pages": [
+              [
+                "『嗚吼～又有人類在打架了！",
+                "　』"
+              ]
+            ]
+          },
+          "native_event_id": 16,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x346aa",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 3,
+            "line": 3,
+            "source_dat": "FDTXT_005",
+            "string_index": 5,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 51,
+            "pages": [
+              [
+                "『有趣有趣！我們再去打人少",
+                "　的那一邊！』"
+              ]
+            ]
+          },
+          "native_event_id": 16,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch05_e17_t8",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 8
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x346d2",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 48,
+            "last": 51,
+            "mode": 7
+          },
+          "native_event_id": 17,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x346e0",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 3,
+            "line": 4,
+            "source_dat": "FDTXT_005",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 102,
+            "pages": [
+              [
+                "『吼．等等，那好像是我們上",
+                "　次遇到的那一批人耶！』"
+              ]
+            ]
+          },
+          "native_event_id": 17,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_acting",
+          "native_source": "0x34707",
+          "native_acting": {
+            "resource": 24,
+            "source": "0x34707"
+          },
+          "native_event_id": 17,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34711",
+          "native_text_index": 7,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch05.json",
+            "scene_index": 3,
+            "line": 5,
+            "source_dat": "FDTXT_005",
+            "string_index": 7,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 102,
+            "pages": [
+              [
+                "『好可怕，不要和他們打！",
+                "　快逃快逃！』"
+              ]
+            ]
+          },
+          "native_event_id": 17,
+          "camp": "enemy"
         }
       ]
     }
@@ -418,5 +778,6 @@
         }
       }
     ]
-  }
+  },
+  "native_acting_resources": "assets/cutscenes/acting/map32.json"
 }
