@@ -489,6 +489,14 @@
       "why": "2026-09-16 第四章 seq 1198 酒店存檔畫面；照商店框架接上後一次逐像素相同。",
       "date": "2026-09-16",
       "evidence": "remake/cmd/fd2/native_hotel_ui.go"
+    },
+    {
+      "id": "locale-content-is-rebound-not-rebuilt",
+      "area": "資料",
+      "rule": "四語 content.json 的暫定 string_id 帶 Go 行號，改 Go 檔就漂移；要跟上時用 tools/migrate_full_locale_content.py 依簽章重綁，不要整份重建——重建會把已審校譯文換成機器初稿，而且模型權重不在庫裡。任何寫死筆數的測試（5176、處置各幾筆）都會在下一次重綁時紅，寫測試時釘結構不釘數字。",
+      "why": "2026-09-16 content.json 停在 8 月 30 日的行號（4731 vs 5081），四個既有紅測試裡三個是寫死筆數；重綁後 5,099 筆，只有 40 筆新字串要補候選。",
+      "date": "2026-09-16",
+      "evidence": "tools/migrate_full_locale_content.py；docs/data/localization/README.md"
     }
   ]
 }

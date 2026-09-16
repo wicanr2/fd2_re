@@ -42,8 +42,8 @@ type canonicalCampaign struct {
 	Kind          string          `json:"kind"`
 	Nodes         []canonicalNode `json:"nodes"`
 	Source        struct {
-		Path             string `json:"path"`
-		ImporterVersion  string `json:"importer_version"`
+		Path            string `json:"path"`
+		ImporterVersion string `json:"importer_version"`
 	} `json:"source"`
 	Extensions struct {
 		Legacy map[string]json.RawMessage `json:"legacy"`

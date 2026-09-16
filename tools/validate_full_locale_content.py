@@ -9,7 +9,8 @@ import sys
 from pathlib import Path
 
 LOCALES = ("zh-Hant", "zh-Hans", "ja", "en")
-VAR_RE = re.compile(r"%(?:%|[-+0-9.#]*[a-zA-Z])")
+# 與 cmd/fd2-string-inventory 的 formatVariable 同形（`variables` 由它產生）：`%%` 不算變數。
+VAR_RE = re.compile(r"%(?:[0-9]+\$)?[-+# 0]*(?:[0-9]+|\*)?(?:\.[0-9*]+)?[vTtbcdoOqxXUeEfgGswxp]")
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
 
 

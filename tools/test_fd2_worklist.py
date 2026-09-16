@@ -92,6 +92,7 @@ class RealWorklistBothDirections(unittest.TestCase):
             "town-shop-ui-e2-sampling": '"status": "passed"\n',
             "parity-ch02-ch04-original-side": '{"town_save": true}\n',
             "ch27-death-event64-text-alignment": "\"2:64\": []\n",
+            "campaign-postbattle-e2-full": '"all_chapters_passed": true\n',
         }
         for item in items:
             with self.subTest(item["id"]):

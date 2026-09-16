@@ -29,7 +29,7 @@ func TestNativePlayerCycleRawOrderSkipsEachGateAndWraps(t *testing.T) {
 		t.Fatal(err)
 	}
 	g.cycleNativePlayerUnit()
-	if g.loadErr != "" || g.nativePlayerFocus == nil || *g.nativePlayerFocus != (battle.Cell{7, 14}) || g.nativeNextPlayerIndex != 1 {
+	if g.loadErr != "" || g.nativePlayerFocus == nil || *g.nativePlayerFocus != (battle.Cell{X: 7, Y: 14}) || g.nativeNextPlayerIndex != 1 {
 		t.Fatalf("cycle failed: %s target=%v next=%d", g.loadErr, g.nativePlayerFocus, g.nativeNextPlayerIndex)
 	}
 	g.nativePlayerFocus = nil

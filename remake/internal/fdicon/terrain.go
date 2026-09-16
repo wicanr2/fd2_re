@@ -63,7 +63,7 @@ func NativeMapHUDLayoutFor(anchorX, stride int) (NativeMapHUDLayout, error) {
 	}
 	base := stride*157 + anchorX
 	return NativeMapHUDLayout{
-		Frame:   base,
+		Frame: base,
 		// 0x1adbf computes ebp + 5*stride + 6 for the terrain icon;
 		// it shares the same row-5 slot as the optional unit icon.
 		Terrain: base + NativeMapStride*5 + 6,

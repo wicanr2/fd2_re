@@ -42,7 +42,11 @@ func TestLoadOfficialContentRejectsUnknownField(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	bad := strings.Replace(string(raw), `"entry_count": 5176,`, `"entry_count": 5176, "future": true,`, 1)
+	// 筆數會隨字串清冊重生而變，不寫死；只要在 entry_count 後面塞一個未知欄位。
+	bad := strings.Replace(string(raw), `"entry_count": `, `"future": true, "entry_count": `, 1)
+	if bad == string(raw) {
+		t.Fatal("content.json lacks entry_count")
+	}
 	dir := t.TempDir()
 	if err := os.Mkdir(filepath.Join(dir, "en"), 0700); err != nil {
 		t.Fatal(err)

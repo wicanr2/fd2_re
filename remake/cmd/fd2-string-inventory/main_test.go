@@ -147,6 +147,25 @@ func drawTown() { label := "TOWN"; use(label) }
 	t.Fatal("indirect draw string was not collected")
 }
 
+func TestDrawFunctionContextSkipsLocaleKeys(t *testing.T) {
+	root := t.TempDir()
+	writeFixture(t, root, "remake/assets/story/ch00.json", `{"text":"測試"}`)
+	writeFixture(t, root, "remake/cmd/fd2/ui.go", `package main
+func drawChurch() { title, _ := localeMessage("church.service.revive"); use(title, "TOWN") }
+`)
+	inventory, err := build(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := map[string]bool{}
+	for _, entry := range inventory.Entries {
+		seen[entry.Text] = true
+	}
+	if seen["church.service.revive"] || !seen["TOWN"] {
+		t.Fatalf("locale key must be skipped and UI literal kept: %v", seen)
+	}
+}
+
 func TestReviewedGoCandidatesMatchCurrentInventory(t *testing.T) {
 	repo := filepath.Clean(filepath.Join("..", "..", ".."))
 	inventory, err := build(repo)

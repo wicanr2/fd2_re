@@ -22,6 +22,11 @@ var stableID = regexp.MustCompile(`^[a-z0-9][a-z0-9._/-]*$`)
 var formatVariable = regexp.MustCompile(`%([0-9]+\$)?[-+# 0]*([0-9]+|\*)?(\.[0-9*]+)?[vTtbcdoOqxXUeEfgGswxp]`)
 var unsafeIDCharacters = regexp.MustCompile(`[^a-z0-9._/-]+`)
 
+// localeKey 是語言包鍵名（`common.yes`、`church.service.revive`）；它們是查表用的
+// 識別字，不是玩家看到的文字，不進候選清冊。與 tools/validate_locale_packs.py 的
+// KEY_RE 同一個形狀。
+var localeKey = regexp.MustCompile(`^[a-z][a-z0-9]*(?:\.[a-z0-9_]+)+$`)
+
 type Source struct {
 	File        string `json:"file"`
 	JSONPointer string `json:"json_pointer,omitempty"`
@@ -266,7 +271,7 @@ func collectGo(repo string) ([]Entry, error) {
 					return true
 				}
 				text, err := strconv.Unquote(literal.Value)
-				if err != nil || text == "" {
+				if err != nil || text == "" || localeKey.MatchString(text) {
 					return true
 				}
 				role, confidence, direct := goRole(stack[:len(stack)-1])

@@ -62,8 +62,12 @@ class CanonicalExportTest(unittest.TestCase):
             (root / "remake/assets/scenarios").mkdir(parents=True)
             (root / "remake/assets/story").mkdir(parents=True)
             (root / "remake/assets/scenarios/campaign_full.json").write_text("{}", encoding="utf-8")
-            (root / "remake/assets/scenarios/ch01.json").write_text(json.dumps({"party": [{"native_identity": 3, "name": "甲", "portrait": 3, "fig": 3}]}), encoding="utf-8")
-            (root / "remake/assets/scenarios/ch02.json").write_text(json.dumps({"party": [{"native_identity": 3, "name": "乙", "portrait": 3, "fig": 3}]}), encoding="utf-8")
+            # 兩個名字出現在同一章才是身份衝突；章節互不重疊的是場景稱呼（note），
+            # 共同前綴加編號的是共用身份（note），見 _classify_multi_candidate。
+            (root / "remake/assets/scenarios/ch01.json").write_text(json.dumps({"party": [
+                {"native_identity": 3, "name": "甲", "portrait": 3, "fig": 3},
+                {"native_identity": 3, "name": "乙", "portrait": 3, "fig": 3},
+            ]}), encoding="utf-8")
             (root / "remake/assets/story/ch01.json").write_text(json.dumps({"scenes": []}), encoding="utf-8")
             catalog, diagnostics = build_character_identity_catalog(root)
             self.assertEqual(len(diagnostics), 1)
