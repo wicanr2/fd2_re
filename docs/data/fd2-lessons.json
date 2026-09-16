@@ -457,6 +457,14 @@
       "why": "2026-09-16 第四章 seq 459：有指令的單位移動後指令格是紅的，0x18D8C 裡找不到原因；答案在呼叫端 0x18A72——走過路的單位除 raw +7 為 0x12／0x13／0x22 外先把表 +4 設 1。",
       "date": "2026-09-16",
       "evidence": "remake/cmd/fd2/main.go nativeCommandAllowedAfterMove；TestActionOverlayCommandDisabledAfterMoveExceptThreeFigs"
+    },
+    {
+      "id": "enemy-phase-camera-is-cursor-protocol",
+      "area": "對拍",
+      "rule": "敵方回合沒有獨立的鏡頭規則：每次鏡頭變化都是 0x12CEA 把游標逐格走到某一格（聚焦行動者、走行跟隨、聚焦目標、聚焦說話者、回合末聚焦記錄 0）。要對鏡頭，先用 FD2_ORACLE_EIP_TRACE=0x12CEA 拿到「誰、什麼時候、走到哪」的序列，再照序列呼叫同一支游標函式；不要拿 checkpoint 的 camera 數字反推規則。",
+      "why": "2026-09-16 第四章 seq 720 起 camera_x 差 4 格。trace 一看就是四句增援對白各聚焦說話者、每個 AI 單位走前聚焦自己、攻擊前聚焦目標的連鎖結果；重製端接上同一套之後 50 個檢查點的 camera 全部相同。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/main.go aiFocusCursor；work/parity-slot-ch04/sample-r10/eip-trace.jsonl"
     }
   ]
 }

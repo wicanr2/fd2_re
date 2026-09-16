@@ -38,6 +38,10 @@ func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after 
 	// the owner is being started.
 	g.nativeAIActionPlan = plan
 	defer func() { g.nativeAIActionPlan = nil }()
+	// 0x15311／0x1567E：聚焦自己（0x15360／0x150BA）後把游標移到選中的目標格
+	// （0x153C2／0x1515B）。
+	g.aiFocusCursor(actor.X, actor.Y)
+	g.aiFocusCursor(plan.NativeActionDestination.X, plan.NativeActionDestination.Y)
 	switch plan.NativeActionKind {
 	case battle.NativeAIActionCommand:
 		if target == nil {

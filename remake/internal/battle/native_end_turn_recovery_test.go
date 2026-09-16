@@ -31,6 +31,12 @@ func TestNativeEndTurnRecoveryFollows1A30BGates(t *testing.T) {
 		t.Fatalf("HP：fresh=%d nearFull=%d legacy=%d acted=%d dead=%d full=%d transient=%d enemy=%d",
 			fresh.HP, nearFull.HP, legacy.HP, acted.HP, dead.HP, full.HP, transient.HP, enemy.HP)
 	}
+	// 0x1A477 → 0x13512：回復過的記錄 +5 bit7 設起來；沒回復的不動。
+	if fresh.NativeRecordByte5 != 0x80 || nearFull.NativeRecordByte5 != 0x80 ||
+		full.NativeRecordByte5 != 0 || transient.NativeRecordByte5 != 0 {
+		t.Fatalf("+5：fresh=%#x nearFull=%#x full=%#x transient=%#x",
+			fresh.NativeRecordByte5, nearFull.NativeRecordByte5, full.NativeRecordByte5, transient.NativeRecordByte5)
+	}
 }
 
 func TestMarkNativeDeadRecordsWritesByte5AfterCommandDamage(t *testing.T) {

@@ -437,6 +437,7 @@ type Game struct {
 	handlerResource           int                    // currently loaded handler resource-table id
 	prevCurX, prevCurY        int                    // 游標移動音偵測
 	aiBusy                    bool                   // AI 回合進行中(逐單位行走動畫)
+	aiPhaseClearBit7Pending   bool                   // 橫幅播完後第一次 aiStep 要跑 0x13536（全記錄 +5 bit7 清零）
 	deathRewarded             map[*battle.Unit]bool  // 每個死亡 transition 的 reward 只執行一次
 	pendingDeathPrograms      []pendingDeathProgram  // 本次行動擊倒、帶型態 2／3 死亡效果的單位
 	deathProgramKiller        *battle.Unit           // 正在執行的死亡程式的擊殺者（0x1AA1D 的第一個參數）
@@ -5759,6 +5760,11 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	}
 	finish := func() {
 		actor.Acted = true
+		// 行動收尾後 raw +3 回靜止值：玩家攻擊（r9 seq 132）與敵方攻擊（r9 seq 920→921）
+		// 之後的每個檢查點都是 pose 0，面向目標只存在於演出期間。
+		if actor.HasNativeMapPresentation {
+			actor.SetMapPose(nativeMapRestPose)
+		}
 		if actor == g.sel && g.st != nil && g.st.HasNativeMapViewState && actor.HasNativeRecordByte5 {
 			actor.NativeRecordByte5 |= 0x80
 		}
@@ -5832,6 +5838,9 @@ type walkAnim struct {
 	seg  int           // 目前段:path[seg] → path[seg+1]
 	tick int           // 原版 unit+4:每格 1..6，第7 tick提交目的格並直接接上下一段
 	then func()        // 走完回呼(nil=玩家預設:開指令環)
+	// followView：走行步進家族搬視圖。玩家自己的走行（then 為 nil）一定跟；敵方 AI
+	// 走的是同一支 0x13488（0x14EC4），所以也跟；劇情走位另有 owner。
+	followView bool
 	// nil 保留既有 selector0；全軍移動明確帶 selector1。
 	nativeEventSelector *byte
 	// 全軍移動的 selector1 事件已在確認前預演；walk 到達指定格時暫停，
@@ -5908,7 +5917,7 @@ func (g *Game) stepBattleWalkSegment(w *walkAnim, finish func(pose int)) bool {
 	}
 	// 走行步進家族在格邊界也搬視圖：絕對游標跟著單位走一格，可見游標或鏡頭
 	// 二選一。只有玩家自己的走行才跟；AI 與劇情走位由各自的 owner 決定。
-	if w.then == nil {
+	if w.then == nil || w.followView {
 		g.followNativeMapCursorStep(a.X, a.Y, b.X-a.X, b.Y-a.Y)
 	}
 	// 原版 0x13488 只有 path byte 1 進 0x1300D；該函式在第七拍
@@ -7483,10 +7492,6 @@ func (g *Game) confirm() {
 		g.attachCounterPresentation(g.atk, actor, tgt, attackResult)
 		if g.atk != nil {
 			g.atk.after = func() {
-				// 攻擊演出結束後原版的 raw +3 回到靜止值：第四章 r9 收據 seq 132
-				// （攻擊 (9,12)→(9,11) 之後）與其後每個檢查點都是 pose 0，面向
-				// 目標只存在於演出期間。
-				actor.SetMapPose(nativeMapRestPose)
 				g.finishSuccessfulUnitAction(actor, nil)
 			}
 		} else {
@@ -8338,6 +8343,26 @@ func (g *Game) focusNativeMapCursorOnUnit(u *battle.Unit) {
 		return
 	}
 	if !g.st.FocusNativeMapCursor(u.X, u.Y) {
+		return
+	}
+	if g.st.HasNativeMapHUDState {
+		view := g.st.NativeMapViewState
+		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
+	}
+	g.syncNativeMapView()
+}
+
+// aiFocusCursor 是敵方回合裡的 0x12D7B／0x12CEA：游標先 X 後 Y 逐格走到 (x,y)，
+// 可見游標與鏡頭照鍵盤處理器的安全帶規則跟著動。第四章 r10 收據（eip-trace
+// 0x12CEA）的順序：走路的單位先聚焦自己（0x13BA5／0x14203）再走（0x13488 跟視圖）；
+// 攻擊前 0x1548E 再聚焦自己（0x154AD）與目標（0x154DE）；指令／物品路徑聚焦自己後
+// 把游標移到目標格（0x153C2／0x1515B）。原版每一步有沒有等 tick 只影響時間，
+// 不影響最後的視圖狀態。
+func (g *Game) aiFocusCursor(x, y int) {
+	if g == nil || g.st == nil || !g.st.HasNativeMapViewState {
+		return
+	}
+	if !g.st.FocusNativeMapCursor(x, y) {
 		return
 	}
 	if g.st.HasNativeMapHUDState {
@@ -11601,6 +11626,7 @@ func (g *Game) beginEnemyPhase() {
 	if g.shotPath == "" || os.Getenv("FD2_SHOT_AI") != "" { // 截圖模式預設跳 AI;FD2_SHOT_AI=1 強制驗證 AI 行走
 		g.aiBusy = true // AI 階段:逐單位行走動畫(Update 內 aiStep 驅動),播完 finishTurn
 		g.showBanner("ENEMY PHASE")
+		g.aiPhaseClearBit7Pending = true
 		return
 	}
 	g.finishTurn()
@@ -11845,6 +11871,20 @@ func (g *Game) aiStep() {
 	if g.bannerT > 0 {
 		return
 	}
+	if g.aiPhaseClearBit7Pending && g.aiBusy && g.st != nil {
+		// 0x13536：橫幅之後、敵方 AI 之前把全部記錄的 +5 bit7 清掉（含 END 回復
+		// 剛設的與玩家已行動位）；戰鬥在敵方回合中結束時，持續紀錄裡就不會留著它。
+		for _, u := range g.st.Units {
+			if u == nil {
+				continue
+			}
+			if u.HasNativeRecordByte5 {
+				u.NativeRecordByte5 &= 0x7f
+			}
+			u.Acted = false
+		}
+		g.aiPhaseClearBit7Pending = false
+	}
 	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeAIIdleRecovery != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
@@ -11957,6 +11997,9 @@ func (g *Game) aiStep() {
 				g.aiBusy = false
 				return
 			}
+			// 0x1548E：聚焦自己（0x154AD）、聚焦目標（0x154DE）再進 0x1F04A 演出。
+			g.aiFocusCursor(u.X, u.Y)
+			g.aiFocusCursor(tgt.X, tgt.Y)
 			u.SetMapPose(dirToward(u.X, u.Y, tgt.X, tgt.Y))
 			hp0 := tgt.HP
 			rngBefore := g.nativeRNGState
@@ -12013,7 +12056,9 @@ func (g *Game) aiStep() {
 				plan.NativeModeFallback, plan.NativeModeIntended.X, plan.NativeModeIntended.Y,
 				plan.NativeModeBlockedCell.X, plan.NativeModeBlockedCell.Y, plan.NativeModeBlockedFound, plan.NativeModeOpposite, plan.NativeModeCandidates)
 		}
-		g.walk = &walkAnim{u: u, path: plan.Path, then: act}
+		// 0x13BA5／0x14203：走之前先把游標走到自己身上。
+		g.aiFocusCursor(u.X, u.Y)
+		g.walk = &walkAnim{u: u, path: plan.Path, then: act, followView: true}
 	} else {
 		act()
 	}

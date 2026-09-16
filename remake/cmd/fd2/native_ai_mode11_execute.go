@@ -69,7 +69,8 @@ func (g *Game) runNativeAIMode11Stage(plan *battle.AIPlan, index int) {
 		g.executeNativeAIMode11Physical(action, next)
 	}
 	if len(action.Path) >= 2 {
-		g.walk = &walkAnim{u: action.U, path: action.Path, then: act}
+		g.aiFocusCursor(action.U.X, action.U.Y)
+		g.walk = &walkAnim{u: action.U, path: action.Path, then: act, followView: true}
 		return
 	}
 	act()
@@ -95,6 +96,8 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		g.aiBusy = false
 		return
 	}
+	g.aiFocusCursor(actor.X, actor.Y)
+	g.aiFocusCursor(target.X, target.Y)
 	actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
 	defHP0 := target.HP
 	attackResult, err := g.resolvePhysicalAttack(actor, target)

@@ -7,6 +7,7 @@ package battle
 // `+0x26`＝0、且 `+0x40`≠`+0x42` 的記錄，`+0x40 += +0x42 / 5`，超過就取 `+0x42`。
 // 這段在 selector 1 的回合事件（0x1A813(1)）之前，玩家按 END、全員行動完的 0x13565
 // 都會經過；已行動（0x80）的單位不回復，所以「全員行動完自動換手」那一回合沒有人回血。
+// 回復過的單位由 0x13512 設 +5 bit7（0x1A477），橫幅之後 0x13536 才清。
 // 數值部分由 fdother.NativeBattleEntryStep 釘住 raw 版面，這裡是 Unit 投影上的同一件事。
 
 // NativeEndTurnRecovery 是一個單位在 0x1A30B 回復掃描的結果。
@@ -60,6 +61,11 @@ func (s *State) ApplyNativeEndTurnRecovery() []NativeEndTurnRecovery {
 			next = u.MaxHP
 		}
 		u.HP = next
+		// 0x1A477：每個回復的單位接著 0x13512 把 +5 bit7 設起來（橫幅下畫成灰色，
+		// r10 收據 seq 934），0x13536 在橫幅之後才整批清掉。
+		if u.HasNativeRecordByte5 {
+			u.NativeRecordByte5 |= 0x80
+		}
 		out = append(out, NativeEndTurnRecovery{Unit: u, Before: before, After: next})
 	}
 	return out

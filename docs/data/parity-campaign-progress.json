@@ -58,12 +58,12 @@
       "slot_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
       "dosgolem_commit": "3c54de656fb23a8f7a7f201c3f067d9e1774370c",
       "date": "2026-09-16",
-      "verify": "tools/chapter_parity.sh 4 work/parity-slot-ch04 <dosgolem run> <out>；原版側：FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch04-sample.jsonl",
+      "verify": "tools/chapter_parity.sh 4 work/parity-slot-ch04 <dosgolem run> <out>；原版側：FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x12CEA,0x135DD tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch04-sample.jsonl",
       "limitations": [
-        "原版側 r9 收據由 dosgolem 36f0389＋唯一一個未提交檔（eip-trace）產生，該差異已提交為 feat/fd2-oracle-input-chain 的 3c54de6（已推送 origin）；runner.json 內仍記 36f0389 dirty=1",
-        "原版側整章計畫跑完（LOAD→出口→5 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店），收據帶 0x13A9F／0x1E54A eip-trace",
-        "行為、節點、交易 gate 通過：單位、HP、回合、金額逐點相同，酒店存檔整檔 sha256 與原版相同",
-        "畫面 gate 29／56 未過（r48）：第 1–3 回合的戰場幀與自動換手橫幅全過（#28 關閉）；未過的是第 5 回合起的戰場幀（敵方回合後鏡頭 X 差 4 格，#30）與酒店存檔畫面（#27）；升級與 END 回復演出（#29）這一章樣本沒抽到"
+        "原版側 r10 收據由 dosgolem feat/fd2-oracle-input-chain 3c54de6（已推送、dirty=0）重生，逐點與 r9 相同；帶 0x13A9F／0x1E54A／0x12CEA／0x135DD eip-trace 與第 4 回合敵方回合的 0x11CAC 逐幀",
+        "原版側整章計畫跑完（LOAD→出口→5 回合→增援→清場→戰後城鎮出售／四棟建築／酒店存檔／Shift+F4 祕密商店）",
+        "行為、節點、交易 gate 通過：單位、HP、回合、金額、鏡頭逐點相同，酒店存檔整檔 sha256 與原版相同",
+        "畫面 gate 3／56 未過（r52）：seq 892 第 5 回合 stay 差 839 像素（只有 (4,17) 一隻單位是 idle 相位 1、其餘相位 2，成因待查）；seq 934 END 後橫幅馬賽克差 1035 像素（回復單位的 0x1DA16 圖示演出未接，#29）；seq 1198 酒店存檔畫面（#27）"
       ],
       "prior_receipts": [
         "docs/data/ch04-clear-receipt-20260914.json"

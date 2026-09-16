@@ -963,11 +963,12 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 建立歷程與 dosgolem 未推送分支仍是收據內的證據限制。
 
 第四章整章收據 [`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（2026-09-16，
-r48）：56 個畫面比較點中 27 張在 640 像素預算內——城鎮、出發、戰鬥開始，以及第
-1–3 回合全部的 select／move／attack_armed／attack_result／stay／wait（狀態小窗、指令環、
-攻擊射程染色、自動換手的 ENEMY PHASE 橫幅都在 indexed composer 內，#28 關閉）；
-未過的 29 張是第 5 回合起的戰場幀（敵方回合後鏡頭 X 差 4 格，#30）與酒店存檔畫面
-（#27）。`after_enemy_phase` 點只比行為。
+r52，原版側 r10）：56 個畫面比較點中 53 張在 640 像素預算內——城鎮、出發、戰鬥開始，
+五個回合全部的 select／move／attack_armed／attack_result／stay／wait、換手橫幅（狀態
+小窗、指令環、攻擊射程染色、橫幅都在 indexed composer 內，#28 關閉；敵方回合的游標
+協定接上後鏡頭逐點相同，#30 關閉）；未過的 3 張：seq 892（單一單位 idle 相位差）、
+seq 934（END 回復圖示，#29）、seq 1198（酒店存檔畫面，#27）。`after_enemy_phase`
+點只比行為。
 
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 
