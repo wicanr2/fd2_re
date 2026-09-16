@@ -132,17 +132,33 @@ func firstInventoryHole(slots []int) int {
 	return -1
 }
 
+// inventoryCellOccupied 判斷第 i 格有沒有東西。原版消費端（0x1B722 等）看旗標
+// bit7，空格的 item byte 可以是任何殘值（0x1B8E7 左移後第 8 格就留著舊值），所以
+// 有 raw 旗標時旗標 bit7 為 1 就是空；沒有旗標、或舊夾具只用 0xff 標空的，仍看 0xff。
+func (u *Unit) inventoryCellOccupied(i int) bool {
+	if i < 0 || i >= len(u.InventorySlots) {
+		return false
+	}
+	if len(u.NativeInventoryFlags) == nativeInventoryCells && len(u.InventorySlots) == nativeInventoryCells &&
+		u.NativeInventoryFlags[i]&0x80 != 0 {
+		return false
+	}
+	return u.InventorySlots[i] != 0xff
+}
+
 // removeNativeCompactInventory combines the compact editable view with the
 // fixed-cell shift performed by native 0x1b8e7.  The latter does not leave a
-// hole: cells after the removed slot move left and the tail is marked 0x80.
+// hole: `0x1B924 memmove` 把後面的格子左移一格，然後只把第 8 格的旗標 byte
+// 寫成 0x80（`0x1B92C mov byte [ebx+0x18], 0x80`）；第 8 格的 item byte 不動，
+// 留著移走前第 8 格的值。有 raw 旗標時照這個版面，item byte 只是殘值。
 func removeNativeCompactInventory(u *Unit, compactIndex int) bool {
 	if u == nil || compactIndex < 0 || compactIndex >= len(u.Inventory) {
 		return false
 	}
 	u.normalizeInventorySlots()
 	seen, slot := 0, -1
-	for i, id := range u.InventorySlots {
-		if id != 0xff {
+	for i := range u.InventorySlots {
+		if u.inventoryCellOccupied(i) {
 			if seen == compactIndex {
 				slot = i
 				break
@@ -154,10 +170,11 @@ func removeNativeCompactInventory(u *Unit, compactIndex int) bool {
 		return false
 	}
 	copy(u.InventorySlots[slot:], u.InventorySlots[slot+1:])
-	u.InventorySlots[len(u.InventorySlots)-1] = 0xff
 	if len(u.NativeInventoryFlags) == nativeInventoryCells {
 		copy(u.NativeInventoryFlags[slot:], u.NativeInventoryFlags[slot+1:])
 		u.NativeInventoryFlags[len(u.NativeInventoryFlags)-1] = 0x80
+	} else {
+		u.InventorySlots[len(u.InventorySlots)-1] = 0xff
 	}
 	u.Inventory = append(u.Inventory[:compactIndex], u.Inventory[compactIndex+1:]...)
 	if compactIndex < len(u.Equipped) {

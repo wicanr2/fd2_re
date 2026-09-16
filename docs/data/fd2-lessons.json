@@ -425,6 +425,14 @@
       "why": "2026-09-15 第四章對拍：升級五行訊息之間各吃 6～19 步亂數，整回合逐次對上做不到；改成在決策點抄 rng_word 之後才分得清是規則錯還是時序。",
       "date": "2026-09-15",
       "evidence": "tools/dosgolem_oracle.sh FD2_ORACLE_EIP_TRACE；chapter_parity_replay_test.go observeAIPlan／observeGrowthRoll"
+    },
+    {
+      "id": "empty-inventory-cell-item-byte-is-residue",
+      "area": "逆向",
+      "rule": "原版物品欄的空格只看旗標 bit7，item byte 是殘值：0x1B8E7 左移後第 8 格只寫旗標 0x80、item byte 留舊值。轉寫或寫回時不要把空格的 item byte「整理」成 0xff／0x00，佔用判斷也不能拿 item byte 當依據。",
+      "why": "2026-09-16 第四章酒店存檔對拍：重製端把賣掉後的尾格寫成 80 ff，原版是 80 c9（舊第 8 格的值），整檔 sha256 因此差一個 byte；#23 的 0x00/0xff 也是同一類。",
+      "date": "2026-09-16",
+      "evidence": "remake/internal/battle/native_inventory_transfer.go removeNativeCompactInventory；TestRemoveNativeCompactInventoryKeepsTailItemByte"
     }
   ]
 }

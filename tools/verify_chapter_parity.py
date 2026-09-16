@@ -99,6 +99,28 @@ def oracle_gold_for(actions: list[dict], seq: int, kind: str, view: dict) -> int
     return view.get("gold")
 
 
+def save_gate_entry(save_actions: list[dict], remake_save: list[dict], blocked_issue: str) -> dict:
+    """交易 gate 的存檔項：兩側酒店存檔後整份 FD2.SAV 的 sha256 要相同。重製側的
+    town_save checkpoint 在 note 寫 `save_sha256=<hex>`；沒有這個欄位（寫回失敗、
+    或舊版重播）而且有指定 blocked issue 時標 blocked，否則 fail。"""
+    oracle = save_actions[-1].get("save_sha256") if save_actions else None
+    note = remake_save[-1].get("note") if remake_save else None
+    remake = None
+    if note:
+        match = re.search(r"save_sha256=([0-9a-f]{64})", note)
+        if match:
+            remake = match.group(1)
+    entry = {"oracle_save_sha256": oracle, "remake_save_sha256": remake, "remake_note": note, "blocked_by": None}
+    if not save_actions:
+        entry["status"] = "not_sampled"
+    elif remake is None:
+        entry["status"] = "blocked" if blocked_issue else "fail"
+        entry["blocked_by"] = blocked_issue or None
+    else:
+        entry["status"] = "ok" if remake == oracle else "fail"
+    return entry
+
+
 def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     seq = remake_cp.get("oracle_seq") or 0
     if seq <= 0:
@@ -197,14 +219,9 @@ def main() -> int:
     nodes_ok = node_seq_oracle == node_seq_remake and "?" not in node_seq_oracle
     save_actions = [a for a in actions if a.get("kind") == "town_save"]
     remake_save = [cp for cp in remake_cps if cp.get("kind") == "town_save"]
-    save_entry = {
-        "oracle_save_sha256": save_actions[-1].get("save_sha256") if save_actions else None,
-        "remake_save": remake_save[-1].get("note") if remake_save else None,
-        "status": "blocked" if args.save_blocked_issue else ("pending" if save_actions else "not_sampled"),
-        "blocked_by": args.save_blocked_issue or None,
-    }
+    save_entry = save_gate_entry(save_actions, remake_save, args.save_blocked_issue)
     gold_ok = all(t["ok"] for t in transactions)
-    transaction_ok = gold_ok and save_entry["status"] not in ("blocked", "pending")
+    transaction_ok = gold_ok and save_entry["status"] in ("ok", "not_sampled")
     compared_frames = [f for f in frames if "diff_pixels" in f]
     frames_ok = len(compared_frames) >= args.min_frames and all(f["ok"] for f in compared_frames)
 

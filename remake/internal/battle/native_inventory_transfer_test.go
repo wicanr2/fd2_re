@@ -136,3 +136,32 @@ func TestReplaceNativeFullInventoryRewardRejectsInvalidStateAtomically(t *testin
 		}
 	}
 }
+
+// TestRemoveNativeCompactInventoryKeepsTailItemByte 釘住 0x1B8E7：左移之後只把第 8 格
+// 的旗標寫成 0x80，item byte 留著移走前第 8 格的值（第四章 r9 酒店存檔收據 rec0：
+// 賣掉第 1 格後尾格是 `80 c9`，與原本第 8 格相同）。
+func TestRemoveNativeCompactInventoryKeepsTailItemByte(t *testing.T) {
+	u := &Unit{
+		Inventory:            []int{0x00, 0x84, 0xc0},
+		Equipped:             []bool{true, true, false},
+		InventorySlots:       []int{0x00, 0x84, 0xc0, 0xff, 0xff, 0xff, 0x00, 0xc9},
+		NativeInventoryFlags: []int{0x40, 0x40, 0x00, 0x80, 0x80, 0x80, 0x80, 0x80},
+	}
+	if err := RemoveNativeCompactInventory(u, 0); err != nil {
+		t.Fatal(err)
+	}
+	wantSlots := []int{0x84, 0xc0, 0xff, 0xff, 0xff, 0x00, 0xc9, 0xc9}
+	wantFlags := []int{0x40, 0x00, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	for i := range wantSlots {
+		if u.InventorySlots[i] != wantSlots[i] || u.NativeInventoryFlags[i] != wantFlags[i] {
+			t.Fatalf("slots=%x flags=%x", u.InventorySlots, u.NativeInventoryFlags)
+		}
+	}
+	if len(u.Inventory) != 2 || u.Inventory[0] != 0x84 {
+		t.Fatalf("compact=%x", u.Inventory)
+	}
+	// 殘值不算佔用：再放一件會落在第 3 格，不會被尾格的 0xc9 擋住。
+	if !u.AddInventoryItem(0x33, false) || u.InventorySlots[2] != 0x33 || u.NativeInventoryFlags[2] != 0 {
+		t.Fatalf("add after remove: slots=%x flags=%x", u.InventorySlots, u.NativeInventoryFlags)
+	}
+}

@@ -220,6 +220,10 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 	// overwrite the slot byte through the cross-node capture hook.
 	g.dialog, g.st, g.sel = nil, nil, nil
 	g.nativeChapterRestore = &plan
+	// 酒店存檔（0x30012）要把持續紀錄寫回同一份 FD2.SAV 的同一個槽；讀檔時的
+	// plaintext 與槽快照就是那次寫回的 byte 基底（沒有 raw 來源的 byte 照抄）。
+	g.nativeChapterSlotPlain = append([]byte(nil), plain...)
+	g.nativeChapterSlotBaseline = &snapshot
 	g.loadErr = ""
 	g.enterNode()
 	if g.loadErr != "" {

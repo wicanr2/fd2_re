@@ -262,6 +262,12 @@ func (u *Unit) applyGrowthRow(row GrowthRow, roll statRoll) LevelUpEvent {
 	u.AP += ev.ApGain
 	u.DP += ev.DpGain
 	u.DX += ev.DxGain
+	// 0x1E529 寫的是基礎攻防 +0x37／+0x39，之後 0x1B750 才把裝備加成疊成 +0x48／
+	// +0x4A；有拆出基礎值的單位兩邊一起長，持續紀錄寫回時才對得上。
+	if u.EquipmentBaseSet {
+		u.BaseAP += ev.ApGain
+		u.BaseDP += ev.DpGain
+	}
 	// DX is the shared raw source for both derived HIT and EV in the
 	// original status constructor (references/text/memory.md; docs/32).
 	// Keep the equipment contributions intact while carrying a level-up's

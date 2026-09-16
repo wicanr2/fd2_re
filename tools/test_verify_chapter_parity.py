@@ -26,6 +26,15 @@ class PairingAndUnits(unittest.TestCase):
         self.assertEqual(vp.oracle_gold_for(actions, 1097, "shop_sell", {"gold": 2037}), 2037)
         self.assertEqual(vp.oracle_gold_for([], 1097, "shop_menu", {"gold": 2037}), 2037)
 
+    def test_save_gate_compares_whole_file_hashes(self):
+        h = "a" * 64
+        acts = [{"kind": "town_save", "save_sha256": h}]
+        self.assertEqual(vp.save_gate_entry(acts, [{"note": f"save_sha256={h}"}], "")["status"], "ok")
+        self.assertEqual(vp.save_gate_entry(acts, [{"note": "save_sha256=" + "b" * 64}], "")["status"], "fail")
+        self.assertEqual(vp.save_gate_entry(acts, [{"note": "原版槽寫回失敗：x"}], "24")["status"], "blocked")
+        self.assertEqual(vp.save_gate_entry(acts, [{"note": "原版槽寫回失敗：x"}], "")["status"], "fail")
+        self.assertEqual(vp.save_gate_entry([], [], "")["status"], "not_sampled")
+
     def test_remake_units_keep_camp_code(self):
         cp = {"units": [{"camp": 2, "x": 3, "y": 4, "hp": 9, "identity": 0, "acted": 0}]}
         self.assertEqual(vp.remake_units(cp), {(2, 3, 4)})

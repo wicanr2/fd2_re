@@ -216,7 +216,15 @@ func TestChapterParityReplay(t *testing.T) {
 	t.Setenv("FD2_SHOT_AI", "1")
 	battle.DebugAI = log.Printf
 	defer func() { battle.DebugAI = nil }()
-	t.Setenv("FD2_NATIVE_SAVE", slot)
+	// 建構槽是唯讀輸入；酒店存檔（0x30012）要寫回同一份 FD2.SAV，所以在輸出目錄
+	// 放一份複本當可寫覆蓋層，與 oracle 的 -state 覆蓋層同一個角色。
+	slotCopy := filepath.Join(out, "FD2.SAV")
+	if raw, err := os.ReadFile(slot); err != nil {
+		t.Fatal(err)
+	} else if err := os.WriteFile(slotCopy, raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_SAVE", slotCopy)
 	t.Setenv("FD2_CUTSCENE_LOG", "1")
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
 	userDataDirCached = ""
@@ -1008,9 +1016,18 @@ func (r *parityReplay) townSave(action parityAction) {
 		slot = *action.Slot
 	}
 	g.saveGameToSlot(slot)
-	note := "重製端槽存檔為自有格式（非原版 FD2.SAV 槽 bytes）"
+	// 收據記的是寫回後整份 FD2.SAV 的 sha256（與 oracle 的 save_sha256 同一個算法）；
+	// 寫不出原版槽就把錯誤寫進 note，verifier 會判 save 項失敗。
+	note := ""
+	if g.nativeChapterSlotSaveErr != nil {
+		note = "原版槽寫回失敗：" + g.nativeChapterSlotSaveErr.Error()
+	} else if raw, err := os.ReadFile(nativeCurrentSavePath()); err != nil {
+		note = "原版槽寫回後讀不到 FD2.SAV：" + err.Error()
+	} else {
+		note = fmt.Sprintf("save_sha256=%x", sha256.Sum256(raw))
+	}
 	if _, err := os.Stat(saveSlotPath(slot)); err != nil {
-		note = "重製端槽存檔未寫出：" + err.Error()
+		note += "；重製端自有存檔未寫出：" + err.Error()
 	}
 	r.checkpoint("town_save", action.Seq, "town", true, note)
 }

@@ -40,6 +40,7 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
@@ -330,6 +331,11 @@ type Game struct {
 	// writes preserve its chapter slots and opaque bytes; authored battles never
 	// receive this carrier.
 	nativeCurrentSavePlain []byte
+	// nativeChapterSlotPlain／nativeChapterSlotBaseline 是標題四槽 LOAD 讀進來的
+	// FD2.SAV plaintext 與該槽快照；酒店存檔以它們為 byte 基底寫回原版槽。
+	nativeChapterSlotPlain    []byte
+	nativeChapterSlotBaseline *fdsave.ChapterSlotSnapshot
+	nativeChapterSlotSaveErr  error // 最近一次酒店存檔寫回原版槽的結果（對拍收據用）
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
 	// 呼叫的 0x16F55 空游標面板。direction0／巢狀戰場資訊、direction2／設定
 	// 與 direction3／END 已有 action owner；巢狀 direction3 離場亦已閉合到
@@ -3943,7 +3949,7 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 		g.partyRoster = make(map[int]battle.Unit)
 	}
 	synced := 0
-	for _, current := range g.st.Units {
+	for index, current := range g.st.Units {
 		if current == nil {
 			continue
 		}
@@ -3993,6 +3999,11 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 		snapshot.MP = snapshot.MaxMP
 		snapshot.Acted = false
 		snapshot.OffX, snapshot.OffY = 0, 0
+		// 0x11506 把 runtime 紀錄整筆抄回持續槽：+2 是 runtime 索引，+3／+4 在每次
+		// 行動收尾（0x134E4）與死亡演出結尾（0x1DB65 第 12 格）都已歸零。第四章 r9
+		// 酒店存檔收據：七筆的 +2 就是 0..6、+3／+4 全為 0。
+		snapshot.MapSelectorSlot, snapshot.HasMapSelectorSlot = index, true
+		snapshot.NativeMapPresentation.Pose, snapshot.NativeMapPresentation.Motion = 0, 0
 		snapshot.BuffAPPct, snapshot.BuffDPPct = 0, 0
 		snapshot.BuffHit, snapshot.BuffEV, snapshot.BuffTurns = 0, 0, 0
 		snapshot.Sealed, snapshot.SealTurns = false, 0
@@ -11911,6 +11922,9 @@ func (g *Game) aiStep() {
 					attackResult.Amount, attackResult.Missed, counter, rngBefore, g.nativeRNGState)
 			}
 			g.awardDeathReward(tgt, u)
+			// 反擊把攻方打倒：0x1562F 0x1B6B7 → 0x1AA1D([0x53C4B]) 把掉落給被打的那個
+			// 單位（第四章 r9 酒店存檔收據 rec2 多出 0xCE／0xCA 兩件）。
+			g.awardDeathReward(u, tgt)
 			message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, u, tgt, attackResult)
 			if messageErr != nil {
 				g.loadErr = "AI physical attack locale: " + messageErr.Error()

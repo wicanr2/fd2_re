@@ -930,8 +930,8 @@ selector-cache 首槽資料流；正式重製端改以首位 persistent party �
 2026-09-15 三章設施擴充測試於 Docker 全過，狀態 `passed`（issue #13 關閉）；
 外部存檔建立歷程限制與 dosgolem 分支未推送限制均保留在收據內。
 111 第四章章工作單元的整章收據見
-[`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（行為／節點 gate 通過，
-交易 gate 由 #24 阻擋，畫面 gate 分四類 #27／#28／#29／#30）；本輪閉合的原版語意
+[`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（行為／節點／交易 gate 通過，
+酒店存檔整檔 sha256 與原版相同；畫面 gate 分四類 #27／#28／#29／#30）；本輪閉合的原版語意
 （反擊經驗 `0x1566A`、`0x1E529` 成長擲骰、`0x1A30B` 回復、`0x1DB65` 死亡標記、
 `0x14B78` 四段目的地、三遍敵方掃描、`turn_events` selector byte）記在
 [56 §第四章章工作單元](56-fd2-remake-sdd.md#第四章章工作單元敵方回合與經驗鏈2026-09-15)。

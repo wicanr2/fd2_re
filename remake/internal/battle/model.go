@@ -346,8 +346,8 @@ func (u *Unit) AddInventoryItem(id int, equipped bool) bool {
 	}
 	u.normalizeInventorySlots()
 	slot := -1
-	for i, held := range u.InventorySlots {
-		if held == 0xff {
+	for i := range u.InventorySlots {
+		if !u.inventoryCellOccupied(i) {
 			slot = i
 			break
 		}
@@ -370,8 +370,8 @@ func (u *Unit) RemoveInventoryIndex(index int) bool {
 	}
 	u.normalizeInventorySlots()
 	seen, slot := 0, -1
-	for i, id := range u.InventorySlots {
-		if id != 0xff {
+	for i := range u.InventorySlots {
+		if u.inventoryCellOccupied(i) {
 			if seen == index {
 				slot = i
 				break
