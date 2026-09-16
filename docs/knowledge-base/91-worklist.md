@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -102,6 +102,14 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 第六章對拍（73853d2b）把 sub_1A866(selector) 的暫時狀態掃描接回「從城鎮正常進戰場」的路徑（nativeTransientSweepAvailable → beginNativeTransientPhases），但只比了數值：+0x25 扣血、sub_1DB65 標記、+0x22..+0x27 遞減與到期重算。使用者記得從城鎮出發進戰場時原版有一段淡出動畫；目前的證據（58 §0x1A866→0x1DB65／0x1B750、docs/data/ida/fd2_transient_expiry_presentation_ida.txt）只閉合到期端的 DATO＋FDTXT 0x1E1..0x1E6 提示、present／input 與 delay10，沒有淡出；淡出也可能屬於出口→LOADCH 那段（0x11d40 DAC 寫入迴圈、0x24618 indexed transition 家族）而不是暫時狀態階段本身。要用原版證據定下來：(1) 出口 YES 之後到 battle_start 之間原版畫了什麼（第六章 r4 seq 39→77 的 checkpoint 只有兩端，中間用 FD2_ORACLE_FRAMES 抽幀），淡出是哪一支函式、由誰呼叫、在 LOADCH／佈陣之前還是之後；(2) 三個 selector 的 0x1A866 呼叫點相對於淡出、橫幅、佈陣的順序；(3) 重製端 beginNativeTransientPhases 現在在 endTurnAfterSelector1Events（selector 1、0 合併在友軍 AI 之前）與 completeTurnPlayerPhase（selector 2）跑，原版 selector 0 在橫幅之後，這個合併對有友軍 AI 的章是不是可見差異。做完把順序寫進 56 的 0x1A30B 段落，淡出接進重製端或明寫不在這條路徑。
 
 怎樣算做完：56 記下淡出函式的位址、caller 與在出口→LOADCH→佈陣→第一回合裡的位置，並記下三個 0x1A866 呼叫點相對它的順序；重製端要嘛接上同狀態的淡出（原版側抽幀對照），要嘛在 58 明寫它不在這條路徑。第七章對拍的 town→battle 抽幀不出現這段差異。
+
+### 重播端在 town_enter／attack_armed 沒出 DATO 嘴型相位與 DAC 循環色相位的變體（ch06 seq 1603 335 px、seq 1053 8 px）
+
+`parity-replay-dato-mouth-and-dac-cycle-variants` · 缺陷 · [#38](https://github.com/wicanr2/fd2_re/issues/38) · 仍未完成 · 要人判
+
+第六章收據 parity-ch06.json 的 18 個 diff_pixels>0 點裡有兩個新形狀，不屬於 #34（指令環開啟步）與 #35（YES pulse）：(1) seq 1603 town_enter（酒店入口對白）335 px，框 [25,146,252,179]：左側 x 24–47、y 146–158 是店主 DATO 頭像的嘴型／眼部幀不同（原版 sub_16C57 的嘴型倒數吃 rand()%30，r4 eip-trace 在對白期間 0x16C9E 呼叫 0x4E893 21 次），右側 x 240–252 是 YES 的 pulse（#35 同一形狀）；重播端 town_enter 只出一張（phases 1）。(2) seq 1053 attack_armed 8 px，框 [106,110,115,115]：8 個像素都是調色盤 index 225，原版 DAC (44,73,142)、重製 (48,77,146)，是循環色差一步（0x11d40 DAC 寫入的相位），44 個 idle 變體都取不到；ch04／ch05 沒出現這個形狀。兩個都是「原版沒記錄的時間相位，重播端沒出對應變體」，和 #34 同一類處置：重播端在這兩種點多出變體（嘴型倒數 0..N／閉合、DAC 循環相位），verifier 取最小；或證明原版在 checkpoint 當下的相位由什麼決定（rand%30 的序列、BIOS tick）直接算出來。
+
+怎樣算做完：重跑 ch06 remake 側後 parity-ch06.json 的 seq 1603 只剩 #35 的 60 px、seq 1053 為 0；56 記下嘴型倒數與 index 225 循環色在 checkpoint 當下的相位規則。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
