@@ -32,8 +32,8 @@
 | 系統架構、ABI 與證據 gate | [`56` SDD](56-fd2-remake-sdd.md) | 舊 WBS、聊天摘要 |
 | 玩家可見 UI 與畫面差距 | [`57` UI 矩陣](57-ui-evidence-matrix.md) | README 圖片、單一 screenshot |
 | 下一批可執行工作 | [`fd2-worklist.json`](../data/fd2-worklist.json)，渲染在 [`91`](91-worklist.md) | [`91-worklist-history.md`](91-worklist-history.md) 的舊勾選與規劃快照 |
-| 全戰役原版一致目標：門檻、章工作單元、開工順序 | [`111` 目標提示詞](111-goal-original-parity-campaign-20260915.md)，進度台帳 `parity-campaign-progress.json` | 逐章收據自己的散文摘要 |
-| 目前這一章的工作單元（順序、門檻、交付物） | [`112` 第七章提示詞](112-goal-ch07-parity-and-sample-sheet-20260916.md)（做完就換下一章的） | 聊天裡貼的舊版提示詞 |
+| 全戰役原版一致目標：門檻、章工作單元、開工順序 | [`111` 目標提示詞](../goal/111-goal-original-parity-campaign-20260915.md)，進度台帳 `parity-campaign-progress.json` | 逐章收據自己的散文摘要 |
+| 目前這一章的工作單元（順序、門檻、交付物） | [`112` 第七章提示詞](../goal/112-goal-ch07-parity-and-sample-sheet-20260916.md)（做完就換下一章的；目標文件都在 [`docs/goal/`](../goal/README.md)） | 聊天裡貼的舊版提示詞 |
 | 位址／位元組主證據 | `docs/data/ida/`、`docs/data/fd2_*` | 自訂名稱、handoff 重述、generated binding |
 | 歷史錯誤形成與勘誤 | [`SESSION-HANDOFF`](SESSION-HANDOFF-2026-07-06.md)、[`99`](99-reflections-log.md) | 現況矩陣 |
 

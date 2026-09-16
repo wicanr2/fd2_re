@@ -60,7 +60,7 @@ def cmd_init(_: argparse.Namespace) -> int:
     data = {
         "schema_version": 1,
         "kind": "fd2_parity_campaign_progress",
-        "policy": "docs/knowledge-base/111-goal-original-parity-campaign-20260915.md",
+        "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
         "updated": None,
         "all_chapters_passed": False,
         "chapters": [empty_chapter(n) for n in range(1, 31)],

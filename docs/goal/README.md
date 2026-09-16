@@ -1,0 +1,13 @@
+# 目標提示詞
+
+給代理程式開工用的目標與工作單元，集中在這裡；結果不寫回本目錄，寫回
+`docs/knowledge-base/56`／`57`／`58`／`91-worklist-history.md` 與台帳
+[`docs/data/parity-campaign-progress.json`](../data/parity-campaign-progress.json)。
+
+| 檔案 | 用途 |
+|---|---|
+| [`111-goal-original-parity-campaign-20260915.md`](111-goal-original-parity-campaign-20260915.md) | 全戰役原版一致的總目標：門檻、章工作單元範本、開工順序（2026-09-15 定案） |
+| [`112-goal-ch07-parity-and-sample-sheet-20260916.md`](112-goal-ch07-parity-and-sample-sheet-20260916.md) | 目前這一章（第七章）的工作單元：順序、門檻、抽樣截圖交付物 |
+
+每章做完，下一章的提示詞另開一個編號，舊的留著當紀錄；`00-index.md` 的
+「目前這一章的工作單元」列指向最新的一份。

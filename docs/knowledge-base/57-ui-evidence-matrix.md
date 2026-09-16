@@ -1,6 +1,6 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-> 2026-09-15 起，全戰役原版一致依 [111](111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
+> 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
 
 2026-09-08 最新玩家路徑：[94](94-ch01-town-parity-20260908.md) 優先於下列歷史
 進度。新 AppImage 已由普通 START 到第三回合援軍，發現 JOIN 阻塞；修正重跑中。

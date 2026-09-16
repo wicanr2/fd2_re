@@ -1,6 +1,6 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-> 2026-09-15 起，全戰役原版一致依 [111](111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
+> 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
 
 2026-09-08 最新長鏈勘誤：正常 START 實跑揭露普通物理 EXP 資料邊界與
 JOIN 先於登場的來源要求兩個阻塞，依既有／補齊的原版證據修正於 v.1.0.14／15。
@@ -284,7 +284,7 @@ map0＋item79 交叉 fixture 固定 score8、`(19,15)`、slot0，屬靜態 E0，
 | E3 | 攻略、影片、視覺推論或 UX 慣例 | 只能列為假設，不得解除 native/handler gate |
 
 **E2 的建構槽例外（使用者 2026-09-15 定案）**：依
-[`111`](111-goal-original-parity-campaign-20260915.md)取得的章收據——受版控
+[`111`](../goal/111-goal-original-parity-campaign-20260915.md)取得的章收據——受版控
 工具依攻略校準的存檔槽、原版 LOAD 合法性檢查通過、章內全程正常鍵盤輸入、
 抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點——視同該章 `PLAYER-E2`。
 收據記錄槽來源與 `state_injections` 是出處要求，不構成降級。這條例外只
@@ -7566,7 +7566,7 @@ phase、目前 segment、來源交易總數與 ready；另輸出是否正在呈�
 
 ## 第四章章工作單元：敵方回合與經驗鏈（2026-09-15）
 
-依 [111](111-goal-original-parity-campaign-20260915.md) 用 dosgolem 整章收據
+依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 用 dosgolem 整章收據
 （`docs/data/ui-traces/parity-ch04.json`，原版側 `ch04-sample.jsonl` 加
 `FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A`）逐一修掉的分歧。位址皆為固定雜湊
 `FD2.EXE`（capstone 線性位址，`tools/disasm_le.py`），每條都有 r8／r9 收據可回查。

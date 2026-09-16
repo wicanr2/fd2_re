@@ -272,7 +272,7 @@ def main() -> int:
         "chapter": args.chapter,
         "generated_at": dt.date.today().isoformat(),
         "status": "passed" if (behavior_ok and nodes_ok and transaction_ok and frames_ok) else "failed",
-        "policy": "docs/knowledge-base/111-goal-original-parity-campaign-20260915.md",
+        "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
         "original": {
             "runner": "dosgolem apps/fd2/cmd/oracle",
             "dosgolem_commit": runner.get("dosgolem_commit"),
