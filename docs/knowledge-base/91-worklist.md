@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -78,14 +78,6 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 原版酒店 `0x2FC85` 以資源 13 畫框、列四個圖示，第二個圖示進存檔槽列表（四槽、寫 `FD2.SAV` 後顯示「記錄儲存完畢」）。重製端 `applyHotelServiceSelection` 只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「待 UI callee」訊息，沒有畫面、沒有槽列表；重播測試在 `town_save` 那一格只能拿城鎮畫面當代替，111 的畫面 gate 對第四章（以及之後每一章）的酒店存檔幀永遠不會過。要做：以 0x2FC85 的 indexed 資源與圖示位置畫酒店介面、存檔槽列表與完成訊息，存檔本體另見 #24。
 
 怎樣算做完：第四章收據 `parity-ch04.json` 的 `town_save` 幀在 640 像素預算內，且 hotel 節點的四個圖示、槽列表與「記錄儲存完畢」都由 indexed 資源畫出。
-
-### 戰場覆蓋（移動範圍、狀態面板、指令環）不在 indexed composer 裡
-
-`battle-overlays-not-in-indexed-composer` · 缺陷 · [#28](https://github.com/wicanr2/fd2_re/issues/28) · 仍未完成 · 要人判
-
-111 的畫面 gate 用 `composeNativeMapFrame` 的 indexed 幀與原版 checkpoint 逐像素比。選中單位後的移動範圍著色、右側單位狀態面板與指令環圖示目前只在 Ebiten Draw 路徑畫，indexed 幀裡沒有，所以第四章每一個 `select`／`attack_armed` 幀都差 3.6 萬～6 萬像素（`parity-ch04.json` frames）。要做：把這三種覆蓋改成從原版 indexed 資源（0x1F882 範圍著色、狀態面板資源、指令環 FIGANI 圖示）畫進 composer，Draw 路徑改用同一份結果。
-
-怎樣算做完：第四章收據的 `select`／`attack_armed`／`stay` 幀差異落在 640 像素預算內。
 
 ### 升級五行訊息與 END 回復圖示／音效只有數值沒有演出
 

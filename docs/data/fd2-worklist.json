@@ -218,19 +218,6 @@
       "issue": 27
     },
     {
-      "id": "battle-overlays-not-in-indexed-composer",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "戰場覆蓋（移動範圍、狀態面板、指令環）不在 indexed composer 裡",
-      "body": "111 的畫面 gate 用 `composeNativeMapFrame` 的 indexed 幀與原版 checkpoint 逐像素比。選中單位後的移動範圍著色、右側單位狀態面板與指令環圖示目前只在 Ebiten Draw 路徑畫，indexed 幀裡沒有，所以第四章每一個 `select`／`attack_armed` 幀都差 3.6 萬～6 萬像素（`parity-ch04.json` frames）。要做：把這三種覆蓋改成從原版 indexed 資源（0x1F882 範圍著色、狀態面板資源、指令環 FIGANI 圖示）畫進 composer，Draw 路徑改用同一份結果。",
-      "acceptance": "第四章收據的 `select`／`attack_armed`／`stay` 幀差異落在 640 像素預算內。",
-      "verify": {
-        "kind": "manual",
-        "note": "沒有單一識別字可綁：覆蓋接進 composer 後以 parity-ch04.json 的 frames gate 判定。"
-      },
-      "issue": 28
-    },
-    {
       "id": "levelup-and-end-recovery-presentation",
       "layer": "runtime",
       "category": "缺陷",
