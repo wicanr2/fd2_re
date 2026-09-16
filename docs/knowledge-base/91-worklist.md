@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -94,14 +94,6 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像素、同一個框 [235,173,252,179]。把原版 checkpoint-0038 的 YES 區域（24×16，座標 232,168）逐格對 ui/action_cells 的 78 個 cell：cell_049 差 0、cell_048 差 60。重製端 ComposeNativeConfirmationChoices 對選中項畫 base+pulse（YES 48／49），checkpoint 當下 nativeClassUIPulse/2 是 0，原版是 1。要查的是 0x19953 選中閃爍的起始相位（提示一開就是 cell 49？還是相位由 BIOS tick 決定而 checkpoint 剛好落在 1），確定後改重製端的起始相位或讓重播對這個點出 pulse 0／1 兩個變體。NO（cell 51／52）在這四個點沒差。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json frames.points kind=departure_prompt／town_enter。
 
 怎樣算做完：parity-ch04.json 與 parity-ch05.json 的 departure_prompt／town_enter 點 diff_pixels 為 0，且 56 記下 0x19953 起始相位的證據（哪一條指令、哪個全域）。
-
-### 敵方法師 AI 的指令選擇（17 強化／0／4 攻擊）與原版不同：第六章 r3 第 11 回合我方 HP 98 對 40
-
-`enemy-mage-ai-command-selection-parity` · 缺陷 · [#36](https://github.com/wicanr2/fd2_re/issues/36) · 仍未完成 · 要人判
-
-第六章對拍（work/parity-slot-ch06/sample-r3、remake-r8）四個 gate 只剩行為 gate 在 seq 1457 失敗：第 11 回合敵方回合後 (10,17) 鐵諾原版 HP 98、重製端 40。逐筆對 eip-trace（0x13A9F 入口的 rng_word）與 replay.log：原版法師 19（記錄 19，cls 5，指令遮罩 0x01＋byte2 0x02＝指令 0 與 17）第 1 回合就在 pass 1（0x1D947）消耗亂數、MP 35→30，對 18 施指令 17（18 的 +0x22 變 5、AP 39→45），之後第 3、5、6、7、9 回合各 −5（強化）、第 2、10 回合各 −2（指令 0），第 11 回合 MP 只剩 1 所以沒行動；法師 18 直到第 11 回合才用指令 4（MP 35→31）。重製端的 19 第 1 回合走 0x14EF0 物理路線（physicalOK=true、priority 8）然後什麼都沒做，第 2 回合指令 0（與原版同、rng 19233 對得上），其餘回合沒有記到強化，第 11 回合 MP 仍夠再放指令 0（49 傷害），18 的指令 4 打 36（原版 39），16 的 AP 是 93（原版 80，強化對象不同）。三個 score producer（0x14237／0x1598A／0x1567E）對指令 17（target code 1，對友軍）的評分與 0x15311 的目標選擇要對原版逐條核對；亂數在每次攻擊確認重新同步，所以這個分歧要到強化過的單位打到我方時才看得見。收據 docs/data/ui-traces/parity-ch06.json；原版側 r3 的 eip-trace.jsonl、checkpoint-1449～1453；重製側 work/parity-slot-ch06/remake-r8/replay.log。
-
-怎樣算做完：tools/chapter_parity.sh 6 work/parity-slot-ch06 work/parity-slot-ch06/sample-r3 <out> 四個 gate 全過（seq 1457 的 HP 相同），且 56 記下 0x1598A／0x15311 對指令 17 的評分與目標規則。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
