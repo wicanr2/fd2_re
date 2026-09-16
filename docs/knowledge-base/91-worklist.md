@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -70,14 +70,6 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 怎樣算做完：人複核四筆的分類；若有誤判就調整判準並重生 bundle。
 
 ## runtime — 還沒接進正式執行期
-
-### 酒店存檔沒有寫原版 FD2.SAV 章節槽 bytes
-
-`hotel-save-native-slot-bytes` · 缺陷 · [#24](https://github.com/wicanr2/fd2_re/issues/24) · 仍未完成 · 自承還在 docs/data/ui-traces/parity-ch04.json
-
-原版酒店存檔（0x30012）把 32 筆 0x50 持續紀錄與 +0..+9 metadata 寫進 FD2.SAV 的四槽區（0x312B + slot×0xA28），標題 LOAD 讀回同一區。重製端 `saveGameToSlot` 只寫自有 JSON；只有戰場系統選單 SAVE 走 `buildNativeCurrentSaveStored` 寫 current 區。111 的交易 gate 要比兩側酒店寫出的槽 bytes，目前重製側沒有可比的輸出，第四章起每章收據的存檔項都會 blocked。要做：以 `campaign.BuildNativeCurrentPersistentRecords` 同一套紀錄投影＋`fdsave.WriteSlot`／`Encode` 在酒店存檔時同步寫原版四槽（FD2_NATIVE_SAVE 有指定時），metadata +0 chapter、+1 count、+2..+5 gold、+6..+9 依 0x30012 的 writer。
-
-怎樣算做完：酒店存檔後 FD2_NATIVE_SAVE 的對應槽 bytes 與原版同狀態存檔相同（第四章收據交易 gate 的 save 項由 blocked 轉 ok）。
 
 ### 酒店原生介面（0x2FC85）未實作，選項只有 raw selector 路由
 
