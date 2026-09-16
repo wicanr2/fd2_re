@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/knowledge-base/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-09-15",
+  "updated": "2026-09-16",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -60,7 +60,7 @@
       "date": "2026-09-15",
       "verify": "FD2_PARITY_SAVE_ISSUE=24 tools/chapter_parity.sh 4 work/parity-slot-ch04 <dosgolem run> <out>；原版側：FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch04-sample.jsonl",
       "limitations": [
-        "原版側 r9 收據由 dosgolem 36f0389＋唯一一個未提交檔（eip-trace）產生，該差異已提交為 feat/fd2-oracle-input-chain 的 3c54de6（未推送）；runner.json 內仍記 36f0389 dirty=1"
+        "原版側 r9 收據由 dosgolem 36f0389＋唯一一個未提交檔（eip-trace）產生，該差異已提交為 feat/fd2-oracle-input-chain 的 3c54de6（已推送 origin）；runner.json 內仍記 36f0389 dirty=1"
       ],
       "prior_receipts": [
         "docs/data/ch04-clear-receipt-20260914.json"
