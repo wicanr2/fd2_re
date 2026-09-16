@@ -560,6 +560,7 @@ type Node struct {
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
 	BGM    string `json:"bgm,omitempty"`
 	Next   string `json:"next,omitempty"`    // story/event
+	Rumor  string `json:"rumor,omitempty"`   // hotel：服務 0（0x2FFA5 打聽消息）要進的 story 節點
 	OnWin  string `json:"on_win,omitempty"`  // battle
 	OnLose string `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
 	// EndingPartySnapshotOnWin 是重製終局資料邊界；只允許勝利直接進 ending
@@ -950,6 +951,14 @@ func (r *Runner) Advance(outcome string) string {
 	case "preparation":
 		if outcome == "cancel" {
 			next = n.Cancel
+		} else {
+			next = n.Next
+		}
+	case "hotel":
+		// 0x2FC85 的四格：0 傳聞、1 存檔、2 讀檔、3 離開。傳聞是另一個 story 節點；
+		// 其餘都回城鎮（原版讀檔／存檔完留在酒店選單，重製端由酒店 UI 自己接）。
+		if outcome == "rumor" && n.Rumor != "" {
+			next = n.Rumor
 		} else {
 			next = n.Next
 		}

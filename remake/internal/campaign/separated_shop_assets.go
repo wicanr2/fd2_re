@@ -101,7 +101,7 @@ func readSeparatedBinaryMask(path string, width, height int) ([]byte, error) {
 // LoadSeparatedNativeShopAssets loads one caller-proven shop resource without
 // consulting FDOTHER.DAT. Production callers must preflight all three variants.
 func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAssets, error) {
-	wantContainer, ok := map[int]string{12: "llllll", 29: "scene_lmi1", 63: "llllll"}[resource]
+	wantContainer, ok := map[int]string{12: "llllll", 13: "scene_lmi1", 29: "scene_lmi1", 63: "llllll"}[resource]
 	if !ok || packRoot == "" {
 		return nil, errors.New("campaign: unsupported separated shop resource")
 	}
@@ -114,8 +114,8 @@ func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAs
 	if err := json.Unmarshal(raw, &doc); err != nil {
 		return nil, err
 	}
-	wantRawCount := map[int]int{12: 28, 29: 24, 63: 30}[resource]
-	wantTypedCount := map[int]int{12: 23, 29: 19, 63: 25}[resource]
+	wantRawCount := map[int]int{12: 28, 13: 28, 29: 24, 63: 30}[resource]
+	wantTypedCount := map[int]int{12: 23, 13: 18, 29: 19, 63: 25}[resource]
 	if doc.SchemaVersion != 1 || doc.Kind != "native_shop_indexed_assets" || doc.AssetID != fmt.Sprintf("shop/FDOTHER_%03d", resource) || doc.Status != "decoded" || doc.Evidence != "confirmed" || doc.ContainerKind != wantContainer || doc.EntryCount != wantRawCount || len(doc.Entries) != wantTypedCount || doc.Source.File != "FDOTHER.DAT" || doc.Source.Resource != resource || doc.Source.Size != separatedFDOTHERSize || doc.Source.MD5 != separatedFDOTHERMD5 || doc.Source.SHA256 != separatedFDOTHERSHA256 || doc.Source.RawSize <= 0 {
 		return nil, errors.New("campaign: separated shop metadata contract mismatch")
 	}
@@ -198,8 +198,9 @@ func LoadSeparatedNativeShopAssets(packRoot string, resource int) (*NativeShopAs
 		}
 		out.CompareCells[i] = fdother.LMI1Entry{Width: e.Width, Height: e.Height, Pixels: p}
 	}
-	wantPlan := map[int]separatedShopSuccess{12: {X: 169, Y: 45, TicksPerFrame: 2, RestorePortrait: true}, 29: {X: 148, Y: 39, PreTicks: 1, PostTicks: 8, RestorePortrait: true}, 63: {X: 131, Y: 28, TicksPerFrame: 2}}[resource]
-	wantFrames := map[int]int{12: 5, 29: 1, 63: 7}[resource]
+	// 酒店（13）沒有購買成功演出：不匯出 success 條目，計畫全零。
+	wantPlan := map[int]separatedShopSuccess{12: {X: 169, Y: 45, TicksPerFrame: 2, RestorePortrait: true}, 13: {}, 29: {X: 148, Y: 39, PreTicks: 1, PostTicks: 8, RestorePortrait: true}, 63: {X: 131, Y: 28, TicksPerFrame: 2}}[resource]
+	wantFrames := map[int]int{12: 5, 13: 0, 29: 1, 63: 7}[resource]
 	if doc.Success.X != wantPlan.X || doc.Success.Y != wantPlan.Y || doc.Success.PreTicks != wantPlan.PreTicks || doc.Success.TicksPerFrame != wantPlan.TicksPerFrame || doc.Success.PostTicks != wantPlan.PostTicks || doc.Success.RestorePortrait != wantPlan.RestorePortrait || len(doc.Success.Frames) != wantFrames {
 		return nil, errors.New("campaign: separated shop success plan mismatch")
 	}

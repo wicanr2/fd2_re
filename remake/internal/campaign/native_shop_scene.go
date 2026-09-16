@@ -65,7 +65,9 @@ type NativeShopAssets struct {
 // uses a scene-flavoured LMI1 directory. Per-entry codecs are selected only
 // from recovered call sites and are not inferred by container.
 func DecodeNativeShopAssets(datPath string, resourceID int) (*NativeShopAssets, error) {
-	if resourceID != 12 && resourceID != 29 && resourceID != 63 {
+	// 12／29／63 是三種商店；13 是酒店（0x2FC85 以 0x111BA 載入資源 13，hub 變體 0，
+	// DATO 0x81），容器與 28 個條目的版面和 12 相同（LMI1 目錄）。
+	if resourceID != 12 && resourceID != 13 && resourceID != 29 && resourceID != 63 {
 		return nil, errors.New("campaign: unsupported native shop resource")
 	}
 	raw, err := fdother.ReadResource(datPath, resourceID)
@@ -129,7 +131,8 @@ func DecodeNativeShopAssets(datPath string, resourceID int) (*NativeShopAssets, 
 			)
 		}
 	}
-	successCount := map[int]int{12: 5, 29: 1, 63: 7}[resourceID]
+	// 酒店（13）沒有購買成功演出：條目 23..27 存在但 0x2FC85 家族不消費，不解碼。
+	successCount := map[int]int{12: 5, 13: 0, 29: 1, 63: 7}[resourceID]
 	if len(entries) < 23+successCount {
 		return nil, errors.New(
 			"campaign: native shop success animation entries are incomplete",

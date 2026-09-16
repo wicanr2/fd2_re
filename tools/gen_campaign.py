@@ -810,9 +810,15 @@ def build_campaign(
                 nodes[secret_shop_id]["next"] = town_id
 
             town_options = []
+            # 原版城鎮 hub 的 0 號一定是酒店（0x2FC85：傳聞／存檔／讀檔／離開）；
+            # 傳聞是另一個 story 節點，只有本章有祕密商店才有內容。
+            hotel_id = f"hotel_ch{intermission_cid}"
+            nodes[hotel_id] = {"type": "hotel", "next": town_id}
+            town_options.append({"label": "酒店：打聽消息", "to": hotel_id})
             if secret_row:
                 rumor_id = f"rumor_ch{intermission_cid}"
                 flag_name = f"found_secret_ch{intermission_cid}"
+                nodes[hotel_id]["rumor"] = rumor_id
                 nodes[rumor_id] = {
                     "type": "story",
                     "bgm": BGM_STORY,
@@ -825,7 +831,6 @@ def build_campaign(
                     "set_flags": {flag_name: True},
                     "next": town_id,
                 }
-                town_options.append({"label": "酒店：打聽消息", "to": rumor_id})
             shop_by_kind = {s["kind"]: sid for sid, s in zip(shop_node_ids, normal_rows)}
             town_options.append({"label": "武器店", "to": shop_by_kind["weapon"]})
             town_options.append({"label": "出口：出戰整備", "to": tail_target})

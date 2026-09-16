@@ -465,6 +465,30 @@
       "why": "2026-09-16 第四章 seq 720 起 camera_x 差 4 格。trace 一看就是四句增援對白各聚焦說話者、每個 AI 單位走前聚焦自己、攻擊前聚焦目標的連鎖結果；重製端接上同一套之後 50 個檢查點的 camera 全部相同。",
       "date": "2026-09-16",
       "evidence": "remake/cmd/fd2/main.go aiFocusCursor；work/parity-slot-ch04/sample-r10/eip-trace.jsonl"
+    },
+    {
+      "id": "oracle-checkpoint-can-tear-mid-memcpy",
+      "area": "對拍",
+      "rule": "原版側 checkpoint 的 EIP 落在整幀 memcpy（0x373C4）、視窗複製（0x11EB0）或馬賽克（0x4E809）中間時，PNG 上半是新畫面、下半是舊畫面。畫面差在「一個單位換相位、其餘沒換」這種只影響幾列的形狀時，先看 checkpoint json 的 eip 欄位再懷疑重製端；dosgolem caa9ee8 起會延後 PNG 到離開這幾段，其餘狀態照舊拍，時間線不變。",
+      "why": "2026-09-16 第四章 seq 892 只有 (4,17) 一隻熊在 idle 相位 1、其餘相位 2；checkpoint eip=0x37400 正在 memcpy 中段，熊那幾列還是上一幀。",
+      "date": "2026-09-16",
+      "evidence": "work/parity-slot-ch04/sample-r10/checkpoint-0892.json；~/cht/dosgolem-fd2-oracle caa9ee8 insideScreenWriter"
+    },
+    {
+      "id": "replay-idle-variant-can-be-advanced-by-clock",
+      "area": "對拍",
+      "rule": "重播端替原版沒記錄的相位出變體時，設定相位之後要驗證那一張真的是用那個相位畫的。0x1297D 在每次重繪開頭依 BIOS tick 推進 idle 相位，上一張之後過了四個 tick 就會先 +1 再畫，設定的第一個相位悄悄少掉；相位被推進就重設再畫一次。",
+      "why": "2026-09-16 第四章 seq 934 的四個 idle 變體只有兩張不同：idle 0 被時鐘推成 1，而原版正是 idle 0 那一幀，1035 像素差了兩輪才找到。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/chapter_parity_replay_test.go frame()"
+    },
+    {
+      "id": "hotel-is-shop-framework-variant-0",
+      "area": "逆向",
+      "rule": "酒店 0x2FC85 是商店框架的 hub 變體 0：資源 13 與資源 12 同版面（LMI1 目錄 28 條目）、DATO 0x81 店主、文字 0x249／0x294、四圖示 0x2D669／0x2D7BD；存檔槽列表 0x30550 與標題 LOAD 是同一支繪製器。要接酒店介面先重用商店與 LOAD 的 composer，不要另寫一套。",
+      "why": "2026-09-16 第四章 seq 1198 酒店存檔畫面；照商店框架接上後一次逐像素相同。",
+      "date": "2026-09-16",
+      "evidence": "remake/cmd/fd2/native_hotel_ui.go"
     }
   ]
 }

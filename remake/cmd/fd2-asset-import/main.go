@@ -902,7 +902,7 @@ func exportNativeTown(fdotherPath, outputRoot string) error {
 }
 
 func exportNativeShops(fdotherPath, outputRoot string) error {
-	for _, resource := range []int{12, 29, 63} {
+	for _, resource := range []int{12, 13, 29, 63} {
 		assets, err := campaign.DecodeNativeShopAssets(fdotherPath, resource)
 		if err != nil {
 			return fmt.Errorf("FDOTHER #%d shop: %w", resource, err)
@@ -914,7 +914,7 @@ func exportNativeShops(fdotherPath, outputRoot string) error {
 		directory := filepath.Join(outputRoot, "shop", fmt.Sprintf("FDOTHER_%03d", resource))
 		doc := shopResourceDocument{SchemaVersion: 1, Kind: "native_shop_indexed_assets",
 			AssetID: fmt.Sprintf("shop/FDOTHER_%03d", resource), Status: "decoded", Evidence: "confirmed",
-			ContainerKind: map[bool]string{true: "scene_lmi1", false: "llllll"}[resource == 29],
+			ContainerKind: map[bool]string{true: "scene_lmi1", false: "llllll"}[resource == 13 || resource == 29],
 			EntryCount:    len(assets.RawEntries), Source: sourceID{File: fdotherArchive.file, Resource: resource,
 				Size: fdotherArchive.size, MD5: fdotherArchive.md5, SHA256: fdotherArchive.sha256, RawSize: len(raw)}}
 		add := func(index int, role, codec string, width, height int, pixels []byte, transparent bool) error {
@@ -967,7 +967,7 @@ func exportNativeShops(fdotherPath, outputRoot string) error {
 				return err
 			}
 		}
-		plan := map[int]shopSuccessDocument{12: {X: 169, Y: 45, TicksPerFrame: 2, RestorePortrait: true}, 29: {X: 148, Y: 39, PreTicks: 1, PostTicks: 8, RestorePortrait: true}, 63: {X: 131, Y: 28, TicksPerFrame: 2}}[resource]
+		plan := map[int]shopSuccessDocument{12: {X: 169, Y: 45, TicksPerFrame: 2, RestorePortrait: true}, 13: {}, 29: {X: 148, Y: 39, PreTicks: 1, PostTicks: 8, RestorePortrait: true}, 63: {X: 131, Y: 28, TicksPerFrame: 2}}[resource]
 		for i, frame := range assets.SuccessFrames {
 			indexed, mask, err := frame.IndexedLayers()
 			if err != nil {

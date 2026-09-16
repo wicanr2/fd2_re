@@ -963,12 +963,13 @@ handler 進第一戰。七拍格線動作另由約 18.2065 Hz 硬體規格近似
 建立歷程與 dosgolem 未推送分支仍是收據內的證據限制。
 
 第四章整章收據 [`parity-ch04.json`](../data/ui-traces/parity-ch04.json)（2026-09-16，
-r52，原版側 r10）：56 個畫面比較點中 53 張在 640 像素預算內——城鎮、出發、戰鬥開始，
-五個回合全部的 select／move／attack_armed／attack_result／stay／wait、換手橫幅（狀態
-小窗、指令環、攻擊射程染色、橫幅都在 indexed composer 內，#28 關閉；敵方回合的游標
-協定接上後鏡頭逐點相同，#30 關閉）；未過的 3 張：seq 892（單一單位 idle 相位差）、
-seq 934（END 回復圖示，#29）、seq 1198（酒店存檔畫面，#27）。`after_enemy_phase`
-點只比行為。
+r55，原版側 r13、dosgolem `caa9ee8`）：狀態 `passed`，57 個畫面比較點全部逐像素相同——
+城鎮、出發、戰鬥開始，五個回合全部的 select／move／attack_armed／attack_result／stay／
+wait、換手橫幅（狀態小窗、指令環、攻擊射程染色、橫幅都在 indexed composer 內，#28
+關閉）、敵方回合的鏡頭（游標協定，#30 關閉）、酒店四圖示／存檔槽列表／「記錄儲存
+完畢」（`native_hotel_ui.go`，#27 關閉）；`after_enemy_phase` 點只比行為。這一輪修掉
+的兩個假差異：原版側 checkpoint 落在整幀 memcpy 中間的撕裂（dosgolem 延後 PNG，#31），
+與重播端 idle 相位被 `0x1297D` 推進而少一張變體。
 
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 

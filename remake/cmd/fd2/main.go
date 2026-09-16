@@ -286,6 +286,9 @@ type Game struct {
 	nativeChurchUIShotHold   bool
 	nativeChurchTextIndex    int
 	nativeShopUI             *nativeShopUIAssets
+	nativeHotelUI            *nativeHotelUIAssets
+	nativeHotelMode          string // ""＝舊版面；menu／slots／saved
+	nativeHotelSlotSel       int
 	nativeShopUIJob          *nativeClassUIJob
 	nativeShopUIClock        nativeBIOSClock
 	nativeShopUIPulse        int
@@ -3346,6 +3349,8 @@ func (g *Game) enterNode() {
 		g.hotelSel = 0
 		g.hotelRoute = fdother.NativeHotelServiceRoute{}
 		g.hotelHasRoute = false
+		g.nativeHotelMode = ""
+		g.setupNativeHotel()
 	case "shop":
 		g.dialog, g.st, g.sel = nil, nil, nil
 		g.shopSel = 0
@@ -4874,6 +4879,9 @@ func (g *Game) campInput() bool {
 		}
 		return true
 	case "hotel":
+		if g.nativeHotelMode != "" {
+			return g.handleNativeHotelInput(currentNativeHotelInput(enter))
+		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) && g.hotelSel > 0 {
 			g.hotelSel--
 		}
@@ -5070,9 +5078,9 @@ func (g *Game) applyHotelServiceSelection(selector byte) bool {
 	}
 	g.hotelRoute, g.hotelHasRoute = route, true
 	if route.Secondary != 0 {
-		g.msg = fmt.Sprintf("旅館 raw selector %d：%05X→%05X（待 UI callee）", selector, route.Primary, route.Secondary)
+		g.msg = fmt.Sprintf("旅館 raw selector %d：%05X→%05X（原生介面尚未接這一項）", selector, route.Primary, route.Secondary)
 	} else {
-		g.msg = fmt.Sprintf("旅館 raw selector %d：%05X（待 UI callee）", selector, route.Primary)
+		g.msg = fmt.Sprintf("旅館 raw selector %d：%05X（原生介面尚未接這一項）", selector, route.Primary)
 	}
 	return true
 }
@@ -5083,6 +5091,7 @@ func (g *Game) leaveHotel() {
 	if g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "hotel" {
 		return
 	}
+	g.nativeHotelMode = ""
 	g.camp.Advance("")
 	g.nativeTownHubReturn = true
 	g.enterNode()
@@ -9766,6 +9775,9 @@ func (g *Game) drawCampaignUI(screen *ebiten.Image) {
 			g.font.Draw(screen, fmt.Sprintf("%s%s  %d G", pre, gd.Name, gd.Price), 156, 100+float64(i)*30, 1.0, c)
 		}
 	case n.Type == "hotel":
+		if g.drawNativeHotel(screen) {
+			return
+		}
 		fillBox(140, 105, 360, 210)
 		title := n.Text
 		if title == "" {
@@ -10758,6 +10770,9 @@ func loadGame() *Game {
 		}
 		if shopUI, shopErr := loadNativeShopUIAssets(classUI); shopErr == nil {
 			g.nativeShopUI = shopUI
+		}
+		if hotelUI, hotelErr := loadNativeHotelUIAssets(classUI); hotelErr == nil {
+			g.nativeHotelUI = hotelUI
 		}
 	}
 	if raw, e := os.ReadFile(assetPath("assets/bg/bg.png")); e == nil { // 戰鬥背景(BG.DAT)

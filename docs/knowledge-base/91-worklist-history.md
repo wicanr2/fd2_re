@@ -4253,3 +4253,16 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
   `tools/verify_ch04_clear_receipt.py` 已核對所有雜湊及語意閘門。
 - [ ] 這不是一般玩家 E2：鎖 HP 與清空 camp 0 HP 都是修改路徑，只能證明節點、
   介面與存檔閉環；傷害、存活、正常戰鬥勝利條件與逐像素一致仍未驗證。
+
+## 2026-09-16：第四章 111 四 gate 全過
+
+- [x] 原版側 r13（dosgolem `feat/fd2-oracle-input-chain` `caa9ee8`，dirty=0）：checkpoint
+  的 EIP 在 `0x373C4`／`0x11EB0`／`0x4E809` 內時只延後 PNG，其餘狀態照拍；時間線
+  逐點與 r10 相同。seq 892 的「單一單位相位差」是 memcpy 中段的撕裂（#31 關閉）。
+- [x] 重製側 r55：酒店 `0x2FC85` 原生介面（`native_hotel_ui.go`，資源 13、DATO `0x81`、
+  存檔槽 `0x30550`、文字 `0x249`／`0x294`；戰役資料每章加 `hotel_chNN` 節點）接上，
+  seq 1198 0 像素差（#27 關閉）；重播出 idle 變體時相位被 `0x1297D` 時鐘推進就重設
+  再畫，seq 934 0 像素差。收據 `parity-ch04.json` 狀態 `passed`，57 張全部逐像素相同，
+  台帳第四章 `passed`。
+- [ ] 酒店服務 2 讀檔（`0x301F4`）與傳聞後回酒店選單（#32）；升級與 END 回復演出
+  （#29）這一章沒抽到。`FDOTHER_013` 分離素材只在本機素材包，私人庫尚未同步。

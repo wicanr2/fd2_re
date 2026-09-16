@@ -492,6 +492,8 @@ func (r *parityReplay) ui() string {
 		return "shop"
 	case "church":
 		return "church"
+	case "hotel":
+		return "hotel"
 	case "preparation":
 		return "preparation"
 	case "battle":
@@ -586,7 +588,17 @@ func (r *parityReplay) frame(kind string) (string, string) {
 			for idle := 0; idle < 4; idle++ {
 				g.st.NativeMapCycleState.Idle = idle
 				g.st.NativeTerrainPhaseState.Phase = phase
-				if err := g.composeNativeMapFrame(); err != nil {
+				err := g.composeNativeMapFrame()
+				if err == nil && g.st.NativeMapCycleState.Idle != idle {
+					// 0x1297D 在每次重繪開頭依 BIOS tick 推進 idle 相位；上一次重繪
+					// 之後若已過四個 tick，這一張會先 +1 再畫，設定的相位就少一張
+					// （第四章 seq 934 只差 idle 0 那一幀）。推進後 last tick 已更新，
+					// 重設相位再畫一次就不會再推進。
+					g.st.NativeMapCycleState.Idle = idle
+					g.st.NativeTerrainPhaseState.Phase = phase
+					err = g.composeNativeMapFrame()
+				}
+				if err != nil {
 					restore()
 					var prov []string
 					for i, u := range g.st.Units {
@@ -615,6 +627,29 @@ func (r *parityReplay) frame(kind string) (string, string) {
 			variants = append(variants, frameVariant{pix: append([]byte(nil), source...)})
 		}
 		g.nativeTownUIPulse = saved
+		palette = g.nativeClassUI.palette
+	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "hotel":
+		// 店主頭像在 0x16559 等待期間會眨眼（DATO 0x81 各幀）、圖示閃爍有四個相位；
+		// 原版 checkpoint 沒記這兩個相位，各出一張。
+		if g.nativeHotelUI == nil {
+			return "", ""
+		}
+		saved := g.nativeShopUIPulse
+		for portraitFrame := range g.nativeHotelUI.portraits {
+			for pulse := 0; pulse < 4; pulse++ {
+				g.nativeShopUIPulse = pulse
+				source, ok := g.composeNativeHotelFrame(portraitFrame)
+				if !ok {
+					g.nativeShopUIPulse = saved
+					return "", ""
+				}
+				variants = append(variants, frameVariant{pix: append([]byte(nil), source...)})
+				if g.nativeHotelMode != "menu" {
+					break
+				}
+			}
+		}
+		g.nativeShopUIPulse = saved
 		palette = g.nativeClassUI.palette
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "preparation":
 		source, ok := g.composeNativePreparationPromptFrame()
@@ -1162,13 +1197,38 @@ func (r *parityReplay) townProbe(action parityAction) {
 }
 
 func (r *parityReplay) townSave(action parityAction) {
-	g := r.g
+	t, g := r.t, r.g
 	r.ensureTown()
 	slot := 0
 	if action.Slot != nil {
 		slot = *action.Slot
 	}
-	g.saveGameToSlot(slot)
+	// 原版側：城鎮 hub 停在酒店（0 號）按 enter → 圖示選單 right 一格到存檔 → enter
+	// 開四槽列表 → enter 確認第一槽 → 「記錄儲存完畢！」；重製端走同一套原生酒店 UI。
+	for guard := 0; g.campSel != 0 && guard < 8; guard++ {
+		if !g.moveNativeTownSelection(1) {
+			t.Fatalf("town_save(seq %d)：城鎮選擇移不到酒店", action.Seq)
+		}
+	}
+	r.enterTownOption(0)
+	pump(t, g, 120, func() bool { return g.nativeClassUIJob == nil && g.fade == nil })
+	if n := g.camp.Node(); n == nil || n.Type != "hotel" || g.nativeHotelMode != "menu" {
+		t.Fatalf("town_save(seq %d)：沒有進到原生酒店選單（node=%q mode=%q）", action.Seq, g.camp.NodeID(), g.nativeHotelMode)
+	}
+	for step := 0; step < nativeHotelServiceSave; step++ {
+		g.handleNativeHotelInput(nativeHotelInput{delta: 1})
+	}
+	g.handleNativeHotelInput(nativeHotelInput{enter: true})
+	if g.nativeHotelMode != "slots" {
+		t.Fatalf("town_save(seq %d)：存檔列表沒有開（mode=%q）", action.Seq, g.nativeHotelMode)
+	}
+	for g.nativeHotelSlotSel < slot {
+		g.handleNativeHotelInput(nativeHotelInput{down: true})
+	}
+	g.handleNativeHotelInput(nativeHotelInput{enter: true})
+	if g.nativeHotelMode != "saved" {
+		t.Fatalf("town_save(seq %d)：存檔後沒有「記錄儲存完畢」（mode=%q）", action.Seq, g.nativeHotelMode)
+	}
 	// 收據記的是寫回後整份 FD2.SAV 的 sha256（與 oracle 的 save_sha256 同一個算法）；
 	// 寫不出原版槽就把錯誤寫進 note，verifier 會判 save 項失敗。
 	note := ""
@@ -1182,7 +1242,14 @@ func (r *parityReplay) townSave(action parityAction) {
 	if _, err := os.Stat(saveSlotPath(slot)); err != nil {
 		note += "；重製端自有存檔未寫出：" + err.Error()
 	}
-	r.checkpoint("town_save", action.Seq, "town", true, note)
+	r.checkpoint("town_save", action.Seq, "hotel", true, note)
+	// 原版側接著 esc 三次回到城鎮：訊息 → 選單 → 離開。
+	g.handleNativeHotelInput(nativeHotelInput{esc: true})
+	g.handleNativeHotelInput(nativeHotelInput{esc: true})
+	pump(t, g, 120, func() bool { return g.camp.NodeID() == r.currentTown() })
+	if g.camp.NodeID() != r.currentTown() {
+		t.Fatalf("town_save(seq %d)：離開酒店後沒有回到城鎮：%q", action.Seq, g.camp.NodeID())
+	}
 }
 
 // shopSell 對應驅動端的 shop_sell：武器店（選項 1）賣掉第一位隊員的第一件物品。

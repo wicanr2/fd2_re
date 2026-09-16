@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 13 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -63,14 +63,6 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 ## runtime — 還沒接進正式執行期
 
-### 酒店原生介面（0x2FC85）未實作，選項只有 raw selector 路由
-
-`hotel-native-ui-0x2fc85` · 缺陷 · [#27](https://github.com/wicanr2/fd2_re/issues/27) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
-
-原版酒店 `0x2FC85` 以資源 13 畫框、列四個圖示，第二個圖示進存檔槽列表（四槽、寫 `FD2.SAV` 後顯示「記錄儲存完畢」）。重製端 `applyHotelServiceSelection` 只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「待 UI callee」訊息，沒有畫面、沒有槽列表；重播測試在 `town_save` 那一格只能拿城鎮畫面當代替，111 的畫面 gate 對第四章（以及之後每一章）的酒店存檔幀永遠不會過。要做：以 0x2FC85 的 indexed 資源與圖示位置畫酒店介面、存檔槽列表與完成訊息，存檔本體另見 #24。
-
-怎樣算做完：第四章收據 `parity-ch04.json` 的 `town_save` 幀在 640 像素預算內，且 hotel 節點的四個圖示、槽列表與「記錄儲存完畢」都由 indexed 資源畫出。
-
 ### 升級五行訊息與 END 回復圖示／音效只有數值沒有演出
 
 `levelup-and-end-recovery-presentation` · 缺陷 · [#29](https://github.com/wicanr2/fd2_re/issues/29) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
@@ -79,13 +71,13 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 怎樣算做完：第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。
 
-### 第四章 seq 892 stay 幀：畫面上只有一隻單位停在別的 idle 相位
+### 酒店服務 2 讀檔（0x301F4）與傳聞後回酒店選單尚未接
 
-`stay-frame-single-unit-idle-phase-ch04-892` · RE待解 · [#31](https://github.com/wicanr2/fd2_re/issues/31) · 仍未完成 · 要人判
+`hotel-load-service-0x301f4` · 缺陷 · [#32](https://github.com/wicanr2/fd2_re/issues/32) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
 
-第四章 r10／r52 收據 seq 892（第 5 回合在 (11,13) 原地開指令環）：原版畫面上 11 隻單位有 10 隻是 idle 幀 2（含 HUD 頭像），只有 (4,17) 的熊（記錄 0x1A）是幀 0／1，差 373 像素；重製端整幀單一相位的四個變體最好只到 839 像素（預算 640）。`0x127E0` 每隻單位各自讀 `[0x53C0B]`，而計數只在 `0x1297D`（`0x11CAC`／`0x1741C`／`0x177FC`／`0x18B84` 開頭）遞增，所以不是畫到一半換相位；更像是那隻單位（或整個下半區）在最後一次整幀重繪之後沒有再被搬到 VGA，或是被某個局部重繪蓋回舊相位。要做：用 `FD2_ORACLE_FRAME_EIP=0x11CAC` 加 `0x1741C`／`0x179D5` 的 eip-watch 取 seq 891→892 之間逐幀，定出哪一次繪製留下那隻單位的舊幀。同一批 r52 收據其餘 5 個回合的 stay 幀都在預算內。
+酒店 `0x2FC85` 的原生介面（資源 13 框與四圖示、DATO 0x81 店主、存檔槽列表 `0x30550`、「記錄儲存完畢」）已在 `remake/cmd/fd2/native_hotel_ui.go` 接上（#27），第四章收據 seq 1198 逐像素相同。還缺兩項：服務 2 讀檔（`0x301F4`，四槽列表載入後直接進該存檔的城鎮）目前仍只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「原生介面尚未接這一項」；服務 0 打聽消息的 story 播完，原版回到酒店選單，重製端經 `hotel_chNN.rumor` 播完回城鎮。要做：讀檔走標題 LOAD 同一條載入路徑但回城鎮節點；傳聞 story 結束後回酒店選單（戰役資料的 story `next` 指回 `hotel_chNN`，或酒店節點自己接 story）。
 
-怎樣算做完：第四章收據 seq 892 的 stay 幀落在 640 像素預算內，且成因寫進 56（哪個繪製呼叫、什麼條件）。
+怎樣算做完：酒店選服務 2 能列四槽並載入存檔進該章城鎮；傳聞播完回酒店選單；`applyHotelServiceSelection` 的自承訊息拿掉。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

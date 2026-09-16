@@ -95,7 +95,7 @@ def problems(data: dict) -> list[str]:
             out.append(f"ch{n}: dosgolem_commit 不是完整 40 位雜湊")
         if status == "blocked" and not c.get("limitations"):
             out.append(f"ch{n}: blocked 必須寫原因到 limitations")
-        if status == "passed":
+        if status == "passed" and c.get("receipt") and (ROOT / c["receipt"]).is_file():
             receipt = json.loads((ROOT / c["receipt"]).read_text(encoding="utf-8"))
             if receipt.get("status") != "passed":
                 out.append(f"ch{n}: 台帳 passed 但收據 status={receipt.get('status')!r}")

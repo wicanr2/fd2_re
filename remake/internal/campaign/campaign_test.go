@@ -679,7 +679,7 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 				nextStory = "story_ch02_pre"
 			}
 			wantOptions := []Option{
-				{Label: "酒店：打聽消息", To: fmt.Sprintf("rumor_ch%02d", chapter)},
+				{Label: "酒店：打聽消息", To: fmt.Sprintf("hotel_ch%02d", chapter)},
 				{Label: "武器店", To: fmt.Sprintf("shop_ch%02d_weapon", chapter)},
 				{Label: "出口：出戰整備", To: preparationID},
 				{Label: "道具店", To: fmt.Sprintf("shop_ch%02d_item", chapter)},
