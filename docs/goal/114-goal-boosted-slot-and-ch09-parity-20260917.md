@@ -1,4 +1,4 @@
-# 114 — 強化建構槽（AP／DP 政策值）＋第九章工作單元（騎士的抉擇，map 8）（2026-09-17）
+# 114 — 強化建構槽（AP／DP／DX 政策值）＋第九章工作單元（騎士的抉擇，map 8）（2026-09-17）
 
 > 這是 [`111`](111-goal-original-parity-campaign-20260915.md) 的下一個工作單元，接在
 > [`113`](113-goal-ch08-parity-20260917.md)（第八章已 passed，提交 `de83d928`）之後。
@@ -18,35 +18,42 @@
 | 項目 | 定案 |
 |---|---|
 | 強化位置 | 建槽時寫進存檔：原版與重製端 LOAD 同一份 bytes，章內不注入 |
-| 強化幅度 | 固定政策值，所有章相同；先用第八章校準一次，定案後寫進本檔與 manifest |
+| 強化幅度 | 固定政策值，所有章相同；先用第八章校準一次，定案後寫進本檔與 manifest。DP 不能拉太高，閃避可以拉高 |
 | 證據等級 | 視同 111 例外的 `PLAYER-E2`：強化是建構槽政策的一部分，和每章升級政策同等 |
 | 範圍 | 機制＋第八章校準回補＋第九章 |
 
 ## 0. 規則同步（先做，不改碼）
 
 - `CLAUDE.md`「實作與驗證」的 111 例外、`111`「起點存檔與證據等級」、`56` §2 各補一句：建構槽
-  可以依受版控工具的明示政策值提高我方基底 AP／DP，收據視同 `PLAYER-E2`；政策值與「不得用來談
+  可以依受版控工具的明示政策值提高我方基底 AP／DP／DX，收據視同 `PLAYER-E2`；政策值與「不得用來談
   傷害、存活、敵方選目標」的限制寫進 manifest assumption 與收據 limitations。
 - 台帳 `parity-campaign-progress.json` 每章加 `slot_policy` 欄位（升級、seed、event-states、強化值）；
   `tools/fd2_parity_progress.py verify` 檢查 `passed` 的章都有這一欄。
 
 ## 1. 強化機制（`remake/cmd/fd2-chapter-slot`）
 
-- 新旗標 `-boost-base-ap N`、`-boost-base-dp N`（包裝器 `--boost-base-ap`／`--boost-base-dp`）：對名冊
-  每筆記錄把 `+0x37`（基底 AP）與 `+0x39`（基底 DP）加上 N，**再跑工具既有的 `0x1B750` 重算**讓
-  `+0x48`／`+0x4A` 與裝備一致。不直接改 `+0x48`／`+0x4A`：下一次換裝或升級重算就會蓋回去，兩側
+- 新旗標 `-boost-base-ap N`、`-boost-base-dp N`、`-boost-base-dx N`（包裝器 `--boost-base-ap`／
+  `--boost-base-dp`／`--boost-base-dx`）：對名冊每筆記錄把 `+0x37`（基底 AP）、`+0x39`（基底 DP）、
+  `+0x3E`（DX）加上 N，**再跑工具既有的重算**讓 `+0x48`／`+0x4A`／`+0x4C`／`+0x4E` 與裝備一致。
+- **閃避沒有獨立的基底欄位（已證實）。** `0x1145A`／`0x1B750` 的重算以 `+0x3E` DX 同時當 HIT 與 EV
+  的基底，再加裝備列 `+3`／`+7`（`remake/internal/battle/native_equipment.go nativeEquipmentTotals`）。
+  要拉高閃避就是拉高 DX，命中會一起變高；不要直接改 `+0x4E`，下一次重算就蓋回去。不直接改 `+0x48`／`+0x4A`：下一次換裝或升級重算就會蓋回去，兩側
   會在不同時點分岔。word 上限 `0x7FFF` 失敗即關閉。
 - 強化在所有章節套完、升級政策之後做一次；manifest 的 `assumptions` 記一筆 `boost`（值、套用筆數、
   前後 AP／DP）。
-- 測試：同一組參數不帶強化與帶強化建槽，逐欄比只有 `+0x37`／`+0x39`／`+0x48`／`+0x4A`（與檢查碼）
-  不同；重算恆等檢查仍通過；第七章槽不帶強化重建 sha 仍是 `85b080cb…`。
-- **HP 不在這一輪強化**：先看 AP／DP 夠不夠。第八章校準兩輪後仍有陣亡再議。
+- 測試：同一組參數不帶強化與帶強化建槽，逐欄比只有 `+0x37`／`+0x39`／`+0x3E`／`+0x48`／`+0x4A`／
+  `+0x4C`／`+0x4E`（與檢查碼）不同；重算恆等檢查仍通過；第七章槽不帶強化重建 sha 仍是 `85b080cb…`。
+- **HP 不在這一輪強化**：先看 AP／DP／DX 夠不夠。第八章校準兩輪後仍有陣亡再議。
 
 ### 選值的限制（校準時要守）
 
 - **DP 不能高到敵人不攻擊。** `0x14237` 物理候選在 `actor +0x48 − target +0x4A <= 2` 時直接略過
   （11-enemy-ai.md §物理攻擊候選）；DP 拉太高，敵人全部改走移動與 `0x13FD4` 回復，敵方攻擊、
   反擊、升級這些戰鬥節拍就抽不到了。校準要確認每回合仍有敵方攻擊命中我方。
+- **閃避（DX）可以拉高。** AI 物理評分只看 `+0x48`／`+0x4A`，不看 EV，所以敵人照樣出手，只是比較常
+  被閃掉；攻擊、未命中與反擊的節拍仍抽得到。命中與閃避的擲骰公式要先查 `58` 確認讀的是 `+0x4C`／
+  `+0x4E`，再決定加多少；每回合至少要有一次敵方命中，否則「受傷、升級對話底圖、我方回復」這些
+  節拍會消失。
 - **AP 要讓 Boss 在幾回合內倒得下。** 第八章騎士 slot 10 是 300 HP，第九章 Boss（map 8 unit 0，
   Lv18）要在第 6 回合前後倒下，才有時間抽事件 30 之後的回合。
 - 施法傷害走指令記錄與另一條公式，AP 強化不一定影響；敵方施法者仍可能打死低 HP 的隊員，
@@ -56,12 +63,13 @@
 
 - 建槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 7
   --levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap A --boost-base-dp D
-  --out-dir work/parity-slot-ch08-boost/`，合法性檢查沿用 `ch08-slot-load.jsonl`。
+  --boost-base-dx X --out-dir work/parity-slot-ch08-boost/`，合法性檢查沿用 `ch08-slot-load.jsonl`。
 - 計畫另存 `docs/data/parity-plans/ch08-boost-sample.jsonl`：第 1～N 回合北上接戰，**擊倒騎士
   slot 10**（死亡程式 29：text 2、slots 10..27 `+0x34 &= 0x80`），推到第 15 回合抽 event 28，
   之後 `force_enemy_clear` → 戰後 → 城鎮收尾（同 r1）。開跑前報時長。
-- 校準最多三輪，每輪只改 A、D 其中一個，記下「第幾回合騎士倒、有無陣亡、每回合敵方命中次數」。
-  定案的 A、D 寫回本檔下面的表與 56，之後各章固定用這組值。
+- 校準最多三輪，每輪只改 A、D、X 其中一個，記下「第幾回合騎士倒、有無陣亡、每回合敵方出手與命中
+  次數」。定案的 A、D、X 寫回本檔下面的表與 56，之後各章固定用這組值。建議順序：先加 A 與 X，
+  D 維持小值。
 - 收據：通過後 `parity-ch08.json` 換成強化版（死亡程式 29 與 event 28 補上原版收據），舊的
   sample-r1 收據移到台帳的 `prior_receipts`；57／58 的第八章段落改寫成現況，limitations 拿掉
   「沒有原版收據」那一條。
@@ -69,7 +77,8 @@
 | 政策值 | 定案 | 校準輪 | 依據 |
 |---|---|---|---|
 | 基底 AP 加值 A | （待校準） | | |
-| 基底 DP 加值 D | （待校準） | | |
+| 基底 DP 加值 D | （待校準，維持小值） | | |
+| DX 加值 X（HIT 與 EV 共用基底） | （待校準） | | |
 
 ## 3. 第九章：這一章有什麼（開工前已知，動手時用收據核）
 
@@ -100,7 +109,7 @@
    `turn_events.json` 的靜態列，要先查 `0x1A813` 怎麼掃控制列，再決定劇本怎麼表示「第 k+1、k+2
    回合的事件 31」（k 是 Boss 倒下的回合）。不能先接 runtime 再補文件。
 2. **建槽**：`--target 8 --levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap A
-   --boost-base-dp D`（第八章戰後沒有讀戰場狀態的分支就不用加新的 event-states，先看 `ch07_post`
+   --boost-base-dp D --boost-base-dx X`（第八章戰後沒有讀戰場狀態的分支就不用加新的 event-states，先看 `ch07_post`
    確認）。正對照：與強化版第八章重製端寫出的酒店存檔逐欄比。合法性檢查
    `ch09-slot-load.jsonl`。
 3. **計畫** `ch09-sample.jsonl`：LOAD → 出口 → 戰前 → 北上擊倒 Boss（事件 30：倒戈、登場 group 1、
