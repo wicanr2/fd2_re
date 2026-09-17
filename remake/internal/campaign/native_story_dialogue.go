@@ -278,11 +278,18 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 		if len(layout.GlyphPages) != 0 {
 			prefix.GlyphPages = [][][]string{nil}
 		}
+		prefix.GlyphIDs = nil
+		if len(layout.GlyphIDs) != 0 {
+			prefix.GlyphIDs = [][][]int{nil}
+		}
 		offset := 0
 		for i := 0; i <= page; i++ {
 			prefix.Pages[0] = append(prefix.Pages[0], layout.Pages[i]...)
 			if len(prefix.GlyphPages) != 0 {
 				prefix.GlyphPages[0] = append(prefix.GlyphPages[0], layout.GlyphPages[i]...)
+			}
+			if len(prefix.GlyphIDs) != 0 {
+				prefix.GlyphIDs[0] = append(prefix.GlyphIDs[0], layout.GlyphIDs[i]...)
 			}
 			if i < page {
 				steps, err := NativeStoryDialogueGlyphSteps(layout, i)
@@ -354,6 +361,9 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 		}
 		for column, token := range tokens {
 			glyph, ok := glyphIndex[token]
+			if ok && len(layout.GlyphIDs) != 0 {
+				glyph = layout.GlyphIDs[page][row][column]
+			}
 			if !ok || glyph < 0 || glyph >= font.GlyphCount() {
 				return nil, fmt.Errorf("campaign: native story dialogue glyph %q is unavailable", token)
 			}

@@ -76,7 +76,10 @@ tick 對齊。所以 oracle 把每個控制邊界的字組寫進 `view.rng_word`
   沒有證實語意的欄位保持基底存檔的 raw bytes，不猜。
 - 每章升幾級、金幣多少不是原版證據，工具預設不升級、不改金幣；要給就用
   `--levels-per-chapter`／`--level-overrides`／`--gold` 明示，manifest 逐項記成
-  assumption。正對照（ch01→ch02、ch02→ch03 對真實通關槽）證實：工具寫的
+  assumption。我方基底 AP／DP／DX 的強化（`--boost-base-ap`／`--boost-base-dp`／
+  `--boost-base-dx`，使用者 2026-09-17 定案，見 `114`）同樣是明示政策值：兩側 LOAD
+  同一份 bytes、章內不注入，收據仍視同 `PLAYER-E2`，但不得用來談傷害、存活或
+  敵方選目標。正對照（ch01→ch02、ch02→ch03 對真實通關槽）證實：工具寫的
   欄位全部對上，剩餘差異都是遊玩決定的（擊殺經驗與升級、掉落物品、
   戰場座標、`+0x28..+0x36` 殘值）與一個條件式加入。
 - 基底一律用 `work/parity-state/ch02-cleared`（最後一份隊伍組成符合一般玩家

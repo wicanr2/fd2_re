@@ -226,6 +226,14 @@ func (g *Game) startNativeRawCamp0TurnEvents() (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	staged := events[:0]
+	for _, event := range events {
+		// 帶轉寫動作的控制列事件由 runEditableTurnEvents(0) 在橫幅之後執行。
+		if len(event.Actions) == 0 {
+			staged = append(staged, event)
+		}
+	}
+	events = staged
 	if len(events) == 0 {
 		return false, nil
 	}

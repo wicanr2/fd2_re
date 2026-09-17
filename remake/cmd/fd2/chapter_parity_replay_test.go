@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
@@ -52,6 +53,8 @@ type parityAction struct {
 	Moves   []string `json:"moves"`
 	Key     string   `json:"key"`
 	Label   string   `json:"label"`
+	// BeforeSeq 是 end_turn 開系統選單那個 enter 的 seq；在它之前的方向鍵是把游標推到空格。
+	BeforeSeq *int `json:"before_seq"`
 }
 
 type parityUnit struct {
@@ -313,7 +316,25 @@ func TestChapterParityReplay(t *testing.T) {
 	var actor, target *battle.Unit
 	var moveTo [2]int
 	skipUnit := false
+	traceSeq := 0
+	if path := os.Getenv("FD2_FOCUS_TRACE_OUT"); path != "" {
+		trace, err := os.Create(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer trace.Close()
+		battle.NativeFocusTraceHook = func(x, y int, view battle.NativeMapViewState) {
+			round := 0
+			if g.st != nil {
+				round = g.st.Turn
+			}
+			fmt.Fprintf(trace, "%d r%d (%d,%d) from cur(%d,%d) cam(%d,%d)\n", traceSeq, round, x, y,
+				view.CursorX, view.CursorY, view.CameraX, view.CameraY)
+		}
+		defer func() { battle.NativeFocusTraceHook = nil }()
+	}
 	for i, action := range actions {
+		traceSeq = action.Seq
 		if skipUnit {
 			switch action.Kind {
 			case "move", "stay", "attack", "attack_result", "wait", "cancel":
@@ -470,7 +491,8 @@ func (r *parityReplay) playerHasControl() bool {
 		g.result == "" && !g.aiBusy && g.battleEvent == nil && g.nativeTurnStaging == nil &&
 		g.bannerT == 0 && len(g.dialog) == 0 && g.walk == nil && g.atk == nil && !g.ring &&
 		g.nativeClassUIJob == nil && g.spawnIntroTransition == nil && g.indexedTransition == nil &&
-		g.nativeUnitPresent == nil && g.actJob == nil && g.camPan == nil && g.focusJob == nil
+		g.nativeUnitPresent == nil && g.actJob == nil && g.camPan == nil && g.focusJob == nil &&
+		g.nativePlayerFocus == nil
 }
 
 func (r *parityReplay) settleTown() {
@@ -597,9 +619,15 @@ func (r *parityReplay) frame(kind string) (string, string) {
 				break
 			}
 		}
+		// 列舉變體時凍結 BIOS 取樣：兩次合成之間跨過 tick 會推進 idle 或地形脈動相位，
+		// 同一個 checkpoint 在不同輪取到不同變體（第八章 reg3 seq 2611 idle、reg3b seq 2322
+		// 脈動相位，各 1951／1607 px）。
+		frozen := time.Now()
+		g.nativeMapFrozenNow = func() time.Time { return frozen }
 		restore := func() {
 			g.st.NativeMapCycleState = saved
 			g.st.NativeTerrainPhaseState = savedPhase
+			g.nativeMapFrozenNow = nil
 		}
 		for _, phase := range phases {
 			for idle := 0; idle < 4; idle++ {
@@ -612,7 +640,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 					compose = func() error { return g.composeNativeMapFrameBeforeActed(rewardActor) }
 				}
 				err := compose()
-				if err == nil && g.st.NativeMapCycleState.Idle != idle {
+				if err == nil && (g.st.NativeMapCycleState.Idle != idle || g.st.NativeTerrainPhaseState.Phase != phase) {
 					// 0x1297D 在每次重繪開頭依 BIOS tick 推進 idle 相位；上一次重繪
 					// 之後若已過四個 tick，這一張會先 +1 再畫，設定的相位就少一張
 					// （第四章 seq 934 只差 idle 0 那一幀）。推進後 last tick 已更新，
@@ -754,6 +782,18 @@ func (r *parityReplay) bannerVariants() []frameVariant {
 				if err != nil {
 					r.t.Fatalf("掉落訊息疊不上戰場整幀：%v", err)
 				}
+				out = append(out, frameVariant{pix: pix, palette: img.Palette})
+			}
+			return out
+		}
+		if (g.battleEvent != nil || g.nativeTurnStaging != nil) && len(g.dialog) > 0 && g.nativeStoryDialogueAtInputWait() {
+			// 戰場事件對白（死亡程式、回合事件的 0x15F84）停在等鍵處：開框時就組好整幀，
+			// 嘴型與箭頭各出變體（第八章 c2 seq 1452 騎士倒下的 text 2）。
+			variants, err := g.nativeStoryDialogueWaitVariants()
+			if err != nil {
+				r.t.Fatalf("戰場事件對白等鍵畫面：%v", err)
+			}
+			for _, pix := range variants {
 				out = append(out, frameVariant{pix: pix, palette: img.Palette})
 			}
 			return out
@@ -1162,12 +1202,30 @@ func (r *parityReplay) checkpointAttackResult(action parityAction, _ *battle.Uni
 	// 攻擊收尾之後可能接 0x1AA1D 的掉落訊息（等鍵）、0x1E292 的經驗／升級對話（每個 FFFD
 	// 等鍵；只有經驗那一頁走 0x1E5C0 計時自己關）、死亡對白；推到玩家再度有操作權、停在
 	// 等鍵處或戰鬥結束。原版側的 attack_result 就是在第一個等鍵處拍的。
+	// 死亡程式的對白（第八章騎士 slot 10 倒下跑事件 29 的 text 2）也是等鍵處：原版側 c2
+	// seq 1452 停在那一頁打完字的畫面。pump 會自己按掉戰場事件對白，所以在按之前先停。
+	deathDialogueOpen := func() bool {
+		return (g.battleEvent != nil || g.nativeTurnStaging != nil) && len(g.dialog) > 0
+	}
 	settled := func() bool {
 		return r.playerHasControl() || g.nativeDeathRewardMessageAwaitingKey() || g.nativeLevelUpDialogueAtWait() ||
-			g.result != "" || g.camp.NodeID() != r.battle
+			deathDialogueOpen() || g.result != "" || g.camp.NodeID() != r.battle
 	}
 	pump(r.t, g, ch01FrameBudget, settled)
+	if deathDialogueOpen() {
+		// 對白一出現就停下，不按鍵推到這一頁打完字（pump 每幀都會替戰場事件對白按 enter）。
+		for frame := 0; frame < ch01FrameBudget && !storyEnterReady(g); frame++ {
+			ackPresents(g)
+			if err := g.Update(); err != nil {
+				r.t.Fatalf("Update：%v", err)
+			}
+		}
+	}
 	r.checkpoint("attack_result", action.Seq, r.ui(), true)
+	if deathDialogueOpen() {
+		// 對白之後的升級與掉落訊息由下一個動作前的 pump 一起推完（原版驅動端逐則送 enter）。
+		return
+	}
 	// 原版側驅動端在 attack_result 之後對每個等鍵處送 enter（finish-dialogue），直到回到
 	// 游標才做下一個動作：掉落訊息一鍵、升級對話每頁一鍵（r4 seq 969..973、r6 seq
 	// 1837..1841）。同一次行動可能先掉落再升級（0x18890 handler 裡的 0x1AA1D 在 0x1196D 的
@@ -1248,6 +1306,32 @@ func (r *parityReplay) endTurn(action parityAction, stopBeforeAI bool) {
 	extra := []string{}
 	if r.syncRNG(action) {
 		extra = append(extra, "rng_synced")
+	}
+	// 驅動端開系統選單前先把游標推到空格（第八章 c3 seq 1700 down：(13,22)→(13,23)，鏡頭
+	// 跟著下捲一列）。這幾鍵走地圖游標處理器，會改鏡頭；before_seq 之後的方向鍵是選單內
+	// 移動，不重走。
+	// 上一個動作若也是 END，原版側 checkpoint 的游標是按 END 那一刻、不是敵方回合收尾
+	// 0x1A7B0 聚焦之後，不能當起點；改成先在副本上走一遍，終點等於 at 才重走。
+	if action.BeforeSeq != nil && len(action.At) == 2 && g.st != nil && g.st.HasNativeMapViewState {
+		probe := &battle.State{W: g.st.W, H: g.st.H, NativeMapViewState: g.st.NativeMapViewState, HasNativeMapViewState: true}
+		var steps [][2]int
+		for seq := r.prevSeq + 1; seq < *action.BeforeSeq; seq++ {
+			step, ok := map[string][2]int{"up": {0, -1}, "down": {0, 1}, "left": {-1, 0}, "right": {1, 0}}[r.keys[seq]]
+			if ok {
+				probe.MoveNativeMapCursor(step[0], step[1])
+				steps = append(steps, step)
+			}
+		}
+		if len(steps) > 0 {
+			if probe.NativeMapViewState.CursorX == action.At[0] && probe.NativeMapViewState.CursorY == action.At[1] {
+				for _, step := range steps {
+					g.moveMapCursor(step[0], step[1])
+				}
+			} else {
+				r.note(action, fmt.Sprintf("END 前 %d 個方向鍵從 (%d,%d) 走不到 at (%d,%d)，不重走",
+					len(steps), g.st.NativeMapViewState.CursorX, g.st.NativeMapViewState.CursorY, action.At[0], action.At[1]))
+			}
+		}
 	}
 	before := g.st.Turn
 	g.endTurn()

@@ -69,7 +69,7 @@ func (g *Game) nativeDeathProgramsPending() bool {
 // 佇列在開始時換算成記錄索引，每一步再從 g.st.Units 取當下的單位：staging 與
 // 0x1DB65 呈現會把 Units 換成新的快照指標，舊指標在那之後就不在戰場上了。記錄
 // 索引在原版與重製端都不會移動。
-func (g *Game) runPendingDeathPrograms(then func()) bool {
+func (g *Game) runPendingDeathPrograms(actor *battle.Unit, then func()) bool {
 	if len(g.pendingDeathPrograms) == 0 || g.st == nil {
 		return false
 	}
@@ -121,6 +121,17 @@ func (g *Game) runPendingDeathPrograms(then func()) bool {
 		actions = append(actions, program...)
 		// 擊殺者在同一次行動裡倒下也照樣分派；查不到擊殺者時給物品的動作不給。
 		g.deathProgramKiller, g.deathProgramRunning, g.deathProgramDead = killer, true, dead
+		// 死亡程式的對白疊在倒下之後重繪過的畫面上：倒下的記錄已移除、HUD 小窗換成游標所在
+		// 的地形（第八章 c2 seq 1452 騎士倒下）。對白組圖讀的是 nativeMapVGA 快取，先重組一次，
+		// 否則底圖還是攻擊前那一張。行動者的 +5 bit7 在 0x13512 才設，底圖上還不是灰的
+		// （c2e seq 1452 整幀重組把攻擊者畫灰，多出 2600 px）。
+		if g.st != nil && g.st.HasNativeMapViewState {
+			if err := g.composeNativeMapFrameBeforeActed(actor); err != nil {
+				g.deathProgramKiller, g.deathProgramRunning, g.deathProgramDead = nil, false, nil
+				g.loadErr = "死亡程式開始前重繪：" + err.Error()
+				return
+			}
+		}
 		g.startBattleEvent(actions, func() { step(i + 1) })
 	}
 	step(0)

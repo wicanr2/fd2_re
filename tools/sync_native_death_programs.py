@@ -98,6 +98,11 @@ def lower(chapter: Chapter, event, event_id):
             lowered = [{"type": "delay", "native_source": source, "ms": o["ms"]}]
         elif kind == "reset_pose":
             lowered = [{"type": "reset_pose", "native_source": source}]
+        elif kind == "spawn_group" and o.get("group_from") == "state":
+            # group 在執行當下讀戰場狀態表；劇本裡只記索引，不預先解出值。
+            lowered = [{"type": "spawn_group", "groups": [], "act_immediately": True,
+                        "native_spawns": [{"group": -1, "group_from_state": o["index"], "via": "spawn_group",
+                                           "source": source, "raw_placement_gate": o["gate"]}]}]
         elif kind == "spawn_group":
             if "group" not in o:
                 raise ValueError(f"事件 {event_id} 的 spawn_group 取自 {o.get('group_from')}，要由呼叫端代入")

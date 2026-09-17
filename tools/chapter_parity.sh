@@ -51,7 +51,7 @@ docker run --rm --network none --memory 8g --cpus "$cpus" --pids-limit 512 \
   -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack \
   -e FD2_PARITY_CHAPTER="$chapter" -e FD2_PARITY_SLOT=/slot/FD2.SAV \
   -e FD2_PARITY_ORACLE_RUN=/oracle -e FD2_PARITY_OUT=/parity-out \
-  -e FD2_PARITY_TRACE_KEYS="${FD2_PARITY_TRACE_KEYS:-}" \
+  -e FD2_PARITY_TRACE_KEYS="${FD2_PARITY_TRACE_KEYS:-}" -e FD2_FOCUS_TRACE_OUT="${FD2_FOCUS_TRACE_OUT:-}" \
   -v "$repo_root:/src" -v "$pack:/pack:ro" -v "$cache:/gocache" \
   -v "$slot_dir:/slot:ro" -v "$oracle_run:/oracle:ro" -v "$out_dir:/parity-out" \
   -w /src/remake "$go_image" \

@@ -610,6 +610,79 @@
       ]
     },
     {
+      "id": 31,
+      "handler": "0x34b5d",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group_from": "state",
+          "index": 16,
+          "gate": 0,
+          "source": "0x34b67"
+        },
+        {
+          "op": "state_inc",
+          "index": 16,
+          "value": 1,
+          "source": "0x34b79",
+          "tail_sources": [
+            "0x34b82"
+          ]
+        },
+        {
+          "op": "pan",
+          "x": 0,
+          "y": 0,
+          "source": "0x34b7e",
+          "tail_sources": [
+            "0x34b85"
+          ]
+        },
+        {
+          "op": "delay",
+          "ms": 200,
+          "source": "0x34b8d"
+        },
+        {
+          "op": "pan",
+          "x": 12,
+          "y": 0,
+          "source": "0x34b9a"
+        },
+        {
+          "op": "delay",
+          "ms": 200,
+          "source": "0x34ba6"
+        },
+        {
+          "op": "pan",
+          "x": 12,
+          "y": 11,
+          "source": "0x34bb3"
+        },
+        {
+          "op": "delay",
+          "ms": 200,
+          "source": "0x34bbf"
+        },
+        {
+          "op": "pan",
+          "x": 0,
+          "y": 11,
+          "source": "0x34bcc"
+        },
+        {
+          "op": "delay",
+          "ms": 200,
+          "source": "0x34bd8",
+          "tail_sources": [
+            "0x353d1"
+          ]
+        }
+      ]
+    },
+    {
       "id": 29,
       "handler": "0x34a3c",
       "battle_units": [

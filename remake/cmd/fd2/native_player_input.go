@@ -54,6 +54,11 @@ func (g *Game) stepNativePlayerFocus() {
 	if p == nil || g.st == nil {
 		return
 	}
+	defer func() {
+		if g.nativePlayerFocus == nil && g.nativeGateBAfterFocus {
+			g.restoreNativeDisplayGateB()
+		}
+	}()
 	v := g.st.NativeMapViewState
 	dx, dy := 0, 0
 	switch {

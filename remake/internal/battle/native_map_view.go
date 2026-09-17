@@ -253,12 +253,20 @@ func (s *State) FocusNativeMapCursor(x, y int) bool {
 	return s.FocusNativeMapCursorSteps(x, y, nil)
 }
 
+// NativeFocusTraceHook 是對拍診斷掛勾：非 nil 時每次 0x12CEA 聚焦前回報目標與當下視圖，
+// 讓重播測試（FD2_FOCUS_TRACE_OUT）逐筆對照原版 eip-trace 的 0x12CEA 參數。0x13FD4 原地回復
+// 走 focusUnitJob，不經過這裡。
+var NativeFocusTraceHook func(x, y int, view NativeMapViewState)
+
 // FocusNativeMapCursorSteps 是 FocusNativeMapCursor 的逐步版本：每走一格呼叫一次
 // onStep（走之前、走之後的視圖），讓呼叫端照 0x11C59 家族的重繪規則決定要不要
 // 更新 HUD anchor。
 func (s *State) FocusNativeMapCursorSteps(x, y int, onStep func(before, after NativeMapViewState)) bool {
 	if s == nil || !s.HasNativeMapViewState {
 		return false
+	}
+	if NativeFocusTraceHook != nil {
+		NativeFocusTraceHook(x, y, s.NativeMapViewState)
 	}
 	if !s.NativeMapViewState.CursorInField(s.W, s.H) ||
 		x < 0 || x >= s.W || y < 0 || y >= s.H {

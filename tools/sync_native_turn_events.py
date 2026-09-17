@@ -35,6 +35,7 @@ EVENT_ID_GROUPS = ROOT / "docs/data/event_id_groups.json"
 MAPPING = ROOT / "remake/assets/cutscenes/dialogue-index/count-aligned.json"
 GLYPHS = ROOT / "docs/data/glyph_map.json"
 SCENARIOS = ROOT / "remake/assets/scenarios"
+CONTROLS = ROOT / "remake/assets/maps/native_turn_event_controls.json"
 CANONICAL = ROOT / "remake/assets/editor-canonical"
 
 
@@ -80,6 +81,7 @@ def sync(write: bool, chapters=None):
     group_sources = {(int(event_id), spawn["group"]): spawn["source"]
                      for event_id, entry in json.loads(EVENT_ID_GROUPS.read_text(encoding="utf-8")).items()
                      if event_id.isdigit() for spawn in entry.get("spawns", [])}
+    controls_by_map = {m["map"]: m["controls"] for m in json.loads(CONTROLS.read_text(encoding="utf-8"))["maps"]}
     mapping = json.loads(MAPPING.read_text(encoding="utf-8"))
     glyphs = {int(k): v for k, v in json.loads(GLYPHS.read_text(encoding="utf-8")).items()
               if k != "_comment"}
@@ -117,6 +119,30 @@ def sync(write: bool, chapters=None):
                 scenario["native_acting_resources"] = ACTING_LIBRARY
                 report.append(f"{path.name} 回合事件要播演出，補上全域演出資源庫")
             replaced.append(new_event["id"])
+        # 休眠的控制列（turn=0xff）由其他處理器的 control_turn 在執行期啟用（第九章事件 30 排
+        # 事件 31）；它們不在 turn_events.json，改成 native_turn_events 的動作版本，執行期由
+        # 0x1A813 依活的列分派。
+        dormant = [row for row in controls_by_map.get(scenario["map"], []) if row["turn"] == 0xFF
+                   and row["event_id"] != 0xFF and row["event_id"] in events]
+        native = [e for e in scenario.get("native_turn_events", []) if not e.get("actions")]
+        seen = set()
+        for row in dormant:
+            key = (row["event_id"], row["raw_camp"])
+            if key in seen:
+                continue
+            seen.add(key)
+            event = events[row["event_id"]]
+            actions = lower(chapter, event, row["event_id"])
+            for action in actions:
+                action["camp"] = ["enemy", "ally", "special"][row["raw_camp"]]
+                action.pop("act_immediately", None)  # 0x10B4E 建構的 +5 是 0，原生路徑不用這個旗標
+            if not scenario.get("runtime_append_groups"):
+                raise SystemExit(f"{path.name} 有控制列事件 {row['event_id']}，但劇本沒有 runtime_append_groups")
+            native.append({"event_id": row["event_id"], "raw_camp": row["raw_camp"],
+                           "handler": event["handler"], "staging": {}, "actions": actions})
+            replaced.append(f'native_e{row["event_id"]}')
+        if native:
+            scenario["native_turn_events"] = native
         # 回合事件依回合排序，opening 之類的手寫事件維持在前。
         turn_ids = {e["id"] for e in scenario["events"] if e.get("trigger") == "on_turn_end"
                     and (e["id"].startswith("reinforce_ch") or e["id"].startswith("turn_ch"))}

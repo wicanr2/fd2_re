@@ -25,6 +25,21 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+# 執行期由token查字模用的正規表。glyph_map 有一字多模（例：584 兩點與 347 一點都解成
+# 「．」），原始 word 不是正規字模的句子要另帶 glyph_ids，否則重製端會畫成另一個字模。
+CANONICAL_GLYPHS = Path(__file__).resolve().parent.parent / "remake/assets/fonts/unicode_to_glyph.json"
+_canonical_cache: dict[str, int] | None = None
+
+
+def canonical_glyphs() -> dict[str, int]:
+    global _canonical_cache
+    if _canonical_cache is None:
+        _canonical_cache = {
+            key: value for key, value in load_json(CANONICAL_GLYPHS).items() if key != "_comment"
+        }
+    return _canonical_cache
+
+
 def parse_fdtxt(path: Path) -> list[list[int]]:
     raw = path.read_bytes()
     if len(raw) < 2:
@@ -63,25 +78,32 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
         cursor += 2
         pages: list[list[str]] = []
         glyph_pages: list[list[list[str]]] = []
+        id_pages: list[list[list[int]]] = []
         page: list[str] = []
         glyph_page: list[list[str]] = []
+        id_page: list[list[int]] = []
         row: list[str] = []
+        id_row: list[int] = []
 
         def flush_row():
-            nonlocal row
+            nonlocal row, id_row
             if row:
                 page.append("".join(row))
                 glyph_page.append(row)
+                id_page.append(id_row)
                 row = []
+                id_row = []
 
         def flush_page():
-            nonlocal page, glyph_page
+            nonlocal page, glyph_page, id_page
             flush_row()
             if page:
                 pages.append(page)
                 glyph_pages.append(glyph_page)
+                id_pages.append(id_page)
                 page = []
                 glyph_page = []
+                id_page = []
 
         while cursor < len(words) and words[cursor] not in SPEAKER_CONTROLS:
             word = words[cursor]
@@ -96,6 +118,7 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
                 raise ValueError(f"{source}#{string_index}: glyph {word:#x} absent")
             else:
                 row.append(glyphs[word])
+                id_row.append(word)
         flush_page()
         if not pages or any(len(page_rows) > 64 for page_rows in pages):
             raise ValueError(
@@ -123,6 +146,14 @@ def decode_layouts(source: str, string_index: int, words: list[int], glyphs: dic
         # 避免把所有既有binding膨脹成重複資料。
         if any(len(token) != 1 for page_rows in glyph_pages for row in page_rows for token in row):
             layout["glyph_pages"] = glyph_pages
+        canonical = canonical_glyphs()
+        if any(
+            canonical.get(token) != word
+            for page_rows, id_rows in zip(glyph_pages, id_pages)
+            for row_tokens, row_ids in zip(page_rows, id_rows)
+            for token, word in zip(row_tokens, row_ids)
+        ):
+            layout["glyph_ids"] = id_pages
         layouts.append(layout)
     return layouts
 

@@ -118,3 +118,42 @@ func TestEventStateBranchNeedsExplicitValue(t *testing.T) {
 		}
 	}
 }
+
+// 114 強化政策：只動 +0x37、+0x39、+0x3e 與重算後的 +0x48..+0x4e，AP／DP 的生效值剛好多出政策值、
+// HIT 與 EV 各多出 DX 加值；其餘位元組不變。超出有號 word 失敗、不截斷。
+func TestApplyBoostTouchesOnlyBaseStatsAndRecalc(t *testing.T) {
+	b := &builder{}
+	if _, err := b.loadTables("../../assets"); err != nil {
+		t.Fatal(err)
+	}
+	record, err := b.constructor.MaterializePersistentRecord(2, b.itemRows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b.roster = append([]byte(nil), record.Raw[:]...)
+	b.count = 1
+	before := append([]byte(nil), b.roster...)
+	if err := b.applyBoost(8, 300, 20, 40); err != nil {
+		t.Fatal(err)
+	}
+	word := func(raw []byte, off int) int { return int(int16(binary.LittleEndian.Uint16(raw[off:]))) }
+	for _, c := range []struct{ off, delta int }{
+		{0x37, 300}, {0x39, 20}, {0x3e, 40}, {0x48, 300}, {0x4a, 20}, {0x4c, 40}, {0x4e, 40},
+	} {
+		if got := word(b.roster, c.off) - word(before, c.off); got != c.delta {
+			t.Fatalf("+0x%x 差 %d，要 %d", c.off, got, c.delta)
+		}
+	}
+	for i := range before {
+		touched := (i >= 0x37 && i < 0x3b) || (i >= 0x3e && i < 0x40) || (i >= 0x48 && i < 0x50)
+		if !touched && before[i] != b.roster[i] {
+			t.Fatalf("+0x%x 不該變：%02x→%02x", i, before[i], b.roster[i])
+		}
+	}
+	if len(b.assumptions) != 1 || b.assumptions[0].Kind != "boost" {
+		t.Fatalf("manifest 應記一筆 boost：%+v", b.assumptions)
+	}
+	if err := b.applyBoost(8, 0x7fff, 0, 0); err == nil {
+		t.Fatal("超出有號 word 應該失敗")
+	}
+}

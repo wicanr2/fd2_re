@@ -43,6 +43,10 @@ type NativeTurnEvent struct {
 	DynamicGroup *NativeTurnDynamicGroup `json:"dynamic_group,omitempty"`
 	Progression  *NativeTurnProgression  `json:"progression,omitempty"`
 	PairMutation *NativeTurnPairMutation `json:"pair_mutation,omitempty"`
+	// Actions 是控制列事件轉寫後降階的劇本動作（tools/sync_native_turn_events.py 由
+	// native_death_events.json 產生），依 0x1A813 的 selector 在該階段的可編輯事件之後執行。
+	// 用於由其他處理器 control_turn 動態啟用、不在靜態 turn_events 裡的列（第九章事件 31）。
+	Actions []Action `json:"actions,omitempty"`
 }
 
 // NativeTurnDynamicGroup 從 raw event-state table 解析一個 0x35822 group 參數，
@@ -229,6 +233,7 @@ type NativeEventDialogue struct {
 	Operand     int          `json:"operand"`
 	Pages       [][]string   `json:"pages"`
 	GlyphPages  [][][]string `json:"glyph_pages,omitempty"`
+	GlyphIDs    [][][]int    `json:"glyph_ids,omitempty"`
 }
 
 // NativeSpawnCall 保存全域事件處理器的一個確切呼叫點。Group 是該排程回合
@@ -239,6 +244,9 @@ type NativeSpawnCall struct {
 	Source           string                 `json:"source"`
 	RawPlacementGate *int                   `json:"raw_placement_gate"`
 	FollowingActing  *NativeFollowingActing `json:"following_acting,omitempty"`
+	// GroupFromState 非 nil 時 group 在執行當下讀戰場狀態表 [0x53AD5]+index（第九章事件 31
+	// `0x34B67 movzx eax, byte [eax+0x10]; push eax; call 0x10B4E`），Group 不使用。
+	GroupFromState *int `json:"group_from_state,omitempty"`
 }
 
 // NativeFollowingActing 保存 wrapper 返回後、由同一呼叫端明確執行的 ACTING。
@@ -266,6 +274,7 @@ type NativeDialogueLayout struct {
 	Operand     int
 	Pages       [][]string
 	GlyphPages  [][][]string
+	GlyphIDs    [][][]int
 	// MotionTargetY 是 sub_15F84 var_20 的 caller-resolved runtime 值。
 	// 它不屬於可編輯 FDTXT bytes；HasMotionTarget=false 時原生收框必須失敗即關閉。
 	MotionTargetY    int
@@ -401,6 +410,13 @@ func LoadScenario(path string) (*Scenario, error) {
 			event.RawCamp < 0 || event.RawCamp > 0xff || event.Handler == "" ||
 			seenNativeTurn[key] {
 			return nil, fmt.Errorf("scenario native turn event %d is invalid", eventIndex)
+		}
+		if len(event.Actions) > 0 {
+			if event.DynamicGroup != nil || event.Progression != nil || event.PairMutation != nil || len(staging.Calls) != 0 {
+				return nil, fmt.Errorf("scenario native turn event %d mixes actions with staging", eventIndex)
+			}
+			seenNativeTurn[key] = true
+			continue
 		}
 		if event.Progression == nil && event.PairMutation == nil && (staging.Helper == "" || staging.PanHelper == "" ||
 			staging.SpawnHelper == "" || staging.PaletteHelper == "" || staging.RedrawHelper == "" ||
@@ -566,6 +582,26 @@ func (sc *Scenario) materializePendingGroups(st *State) {
 // NativeTurnEventsAt returns the editable handlers selected by sub_1A813's
 // exact live-row predicate, preserving the sixteen-row order. A live row with
 // no unique editable consumer is an error rather than a skipped event.
+// NativeTurnActionEventsAt 回傳這一階段活的控制列裡、帶轉寫動作的事件，依 16 列順序。
+// 沒有動作版本的列（由靜態 turn_events 降成的劇本事件，或舊的 staging 事件）不在這裡處理。
+func (sc *Scenario) NativeTurnActionEventsAt(st *State, rawCamp byte) []NativeTurnEvent {
+	if sc == nil || st == nil || !st.HasNativeTurnEventControlState || st.NativeRoundCounter <= 0 {
+		return nil
+	}
+	var out []NativeTurnEvent
+	for _, row := range st.NativeTurnEventControls {
+		if int(row.Turn) != st.NativeRoundCounter || row.RawCamp != rawCamp {
+			continue
+		}
+		for _, event := range sc.NativeTurnEvents {
+			if len(event.Actions) > 0 && event.EventID == int(row.EventID) && event.RawCamp == int(rawCamp) {
+				out = append(out, event)
+			}
+		}
+	}
+	return out
+}
+
 func (sc *Scenario) NativeTurnEventsAt(st *State, rawCamp byte) ([]NativeTurnEvent, error) {
 	if sc == nil || st == nil || !st.HasNativeTurnEventControlState ||
 		st.NativeRoundCounter <= 0 || st.NativeRoundCounter > 0xfe {
@@ -764,8 +800,15 @@ func (sc *Scenario) ExecuteActionChecked(st *State, a Action) (DialogLine, bool,
 					return DialogLine{}, false, fmt.Errorf("native spawn %s lacks raw placement gate", call.Source)
 				}
 				before := len(st.Units)
+				group := call.Group
+				if call.GroupFromState != nil {
+					if *call.GroupFromState < 0 || *call.GroupFromState >= len(st.NativeEventState) {
+						return DialogLine{}, false, fmt.Errorf("native spawn %s state index %d outside table", call.Source, *call.GroupFromState)
+					}
+					group = int(st.NativeEventState[*call.GroupFromState])
+				}
 				if _, err := st.AppendGroupWithNativePlacement(
-					call.Group, byte(*call.RawPlacementGate),
+					group, byte(*call.RawPlacementGate),
 				); err != nil {
 					return DialogLine{}, false, fmt.Errorf("native spawn %s: %w", call.Source, err)
 				}

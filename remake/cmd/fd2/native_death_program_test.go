@@ -177,7 +177,7 @@ func TestNativeDeathProgramMissingFailsClosed(t *testing.T) {
 	dead.DeathEffect = &battle.DeathEffect{Type: 2, Value: 64}
 	dead.ApplyHPDamage(dead.HP)
 	g.awardDeathReward(dead, killer)
-	if !g.runPendingDeathPrograms(func() { t.Fatal("缺程式卻繼續往下") }) {
+	if !g.runPendingDeathPrograms(nil, func() { t.Fatal("缺程式卻繼續往下") }) {
 		t.Fatal("有待跑的死亡程式卻沒有執行")
 	}
 	if !strings.Contains(g.loadErr, "2:64") {

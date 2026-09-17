@@ -733,3 +733,45 @@ func TestChapter3Turn3TriggerPreservesOriginalStagingOrder(t *testing.T) {
 		t.Fatalf("once event triggered twice: %#v", again)
 	}
 }
+
+// 第九章：開場只有隊伍＋group 0（0x1088D 只呼叫 0x10B4E(0)）；事件 31 在 map 8 控制列是休眠列，
+// 由事件 30 的 control_turn 啟用後才在 selector 0 分派，登場的 group 讀 state16（事件 30 寫 2，
+// 所以第一次是 group 2），接著 state16 加一。
+func TestChapter9Event31SpawnsGroupFromStateWhenControlRowIsLive(t *testing.T) {
+	st, err := Load("../../assets/maps/map8/map8_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	bindNativeFutureItemRowsForTest(t, st)
+	sc, err := LoadScenario("../../assets/scenarios/ch09.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !sc.RuntimeAppendGroups || !reflect.DeepEqual(sc.InitialGroups, []int{0}) {
+		t.Fatalf("chapter9 constructor policy runtime=%v initial=%v", sc.RuntimeAppendGroups, sc.InitialGroups)
+	}
+	sc.Setup(st)
+	if !st.HasNativeTurnEventControlState || st.NativeTurnEventControls[0] != (NativeTurnEventControl{Turn: 0xff, EventID: 31}) {
+		t.Fatalf("map8 control rows=%v has=%v", st.NativeTurnEventControls[:2], st.HasNativeTurnEventControlState)
+	}
+	if got := sc.NativeTurnActionEventsAt(st, 0); len(got) != 0 {
+		t.Fatalf("休眠列不該分派：%v", got)
+	}
+	opening := len(st.Units)
+	st.NativeEventState[0x10] = 2
+	st.NativeTurnEventControls[0].Turn = byte(st.NativeRoundCounter)
+	events := sc.NativeTurnActionEventsAt(st, 0)
+	if len(events) != 1 || events[0].EventID != 31 {
+		t.Fatalf("啟用後應分派事件 31：%v", events)
+	}
+	actions := events[0].Actions
+	if actions[0].Type != "spawn_group" || actions[1].Type != "native_death_op" {
+		t.Fatalf("事件 31 動作順序=%v", actions)
+	}
+	if _, _, err := sc.ExecuteActionChecked(st, actions[0]); err != nil {
+		t.Fatal(err)
+	}
+	if len(st.Units) == opening || st.Units[opening].Group != 2 {
+		t.Fatalf("state16=2 應登場 group 2：units %d→%d", opening, len(st.Units))
+	}
+}

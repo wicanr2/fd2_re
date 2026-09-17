@@ -59,6 +59,10 @@ type NativeDialogueLayout struct {
 	// GlyphPages 與Pages同形；每個token對應一個原始FDTXT ordinary word。
 	// 單一原版glyph可能映成多個Unicode rune，故不可由Pages反推token數。
 	GlyphPages [][][]string `json:"glyph_pages,omitempty"`
+	// GlyphIDs 與token同形，保存原始FDTXT ordinary word（字模索引）。glyph_map 有一字
+	// 多模（584 與 347 都解成「．」，前者是兩點、後者是一點），token 查不回原字模；
+	// 只有這種句子才輸出，其餘由token查正規字模。
+	GlyphIDs [][][]int `json:"glyph_ids,omitempty"`
 }
 
 // nativeDialogueLineGlyphLimit 保存固定原版FDTXT已觀察到的每種speaker control
@@ -120,6 +124,30 @@ func (layout *NativeDialogueLayout) Validate() error {
 			}
 		}
 	}
+	if len(layout.GlyphIDs) != 0 {
+		if len(layout.GlyphIDs) != len(layout.Pages) {
+			return fmt.Errorf("native dialogue layout has %d glyph id pages for %d text pages", len(layout.GlyphIDs), len(layout.Pages))
+		}
+		for page, rows := range layout.Pages {
+			if len(layout.GlyphIDs[page]) != len(rows) {
+				return fmt.Errorf("native dialogue layout page %d glyph id rows do not match text rows", page)
+			}
+			for row, text := range rows {
+				tokens, err := layout.glyphTokens(page, row, text)
+				if err != nil {
+					return err
+				}
+				if len(layout.GlyphIDs[page][row]) != len(tokens) {
+					return fmt.Errorf("native dialogue layout page %d row %d has %d glyph ids for %d tokens", page, row, len(layout.GlyphIDs[page][row]), len(tokens))
+				}
+				for _, id := range layout.GlyphIDs[page][row] {
+					if id < 0 || id >= 0xff00 {
+						return fmt.Errorf("native dialogue layout page %d row %d glyph id %d is invalid", page, row, id)
+					}
+				}
+			}
+		}
+	}
 	if len(layout.GlyphPages) != 0 && len(layout.GlyphPages) != len(layout.Pages) {
 		return fmt.Errorf("native dialogue layout has %d glyph pages for %d text pages", len(layout.GlyphPages), len(layout.Pages))
 	}
@@ -158,6 +186,15 @@ func cloneNativeDialogueLayout(layout *NativeDialogueLayout) *NativeDialogueLayo
 	out.Pages = make([][]string, len(layout.Pages))
 	for i := range layout.Pages {
 		out.Pages[i] = append([]string(nil), layout.Pages[i]...)
+	}
+	if len(layout.GlyphIDs) != 0 {
+		out.GlyphIDs = make([][][]int, len(layout.GlyphIDs))
+		for page := range layout.GlyphIDs {
+			out.GlyphIDs[page] = make([][]int, len(layout.GlyphIDs[page]))
+			for row := range layout.GlyphIDs[page] {
+				out.GlyphIDs[page][row] = append([]int(nil), layout.GlyphIDs[page][row]...)
+			}
+		}
 	}
 	if len(layout.GlyphPages) != 0 {
 		out.GlyphPages = make([][][]string, len(layout.GlyphPages))

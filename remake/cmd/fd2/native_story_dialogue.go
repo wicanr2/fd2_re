@@ -170,6 +170,15 @@ func (g *Game) prepareNativeDialogueFrames() error {
 	for i := range native.Pages {
 		layout.Pages[i] = append([]string(nil), native.Pages[i]...)
 	}
+	if len(native.GlyphIDs) != 0 {
+		layout.GlyphIDs = make([][][]int, len(native.GlyphIDs))
+		for page := range native.GlyphIDs {
+			layout.GlyphIDs[page] = make([][]int, len(native.GlyphIDs[page]))
+			for row := range native.GlyphIDs[page] {
+				layout.GlyphIDs[page][row] = append([]int(nil), native.GlyphIDs[page][row]...)
+			}
+		}
+	}
 	if len(native.GlyphPages) != 0 {
 		layout.GlyphPages = make([][][]string, len(native.GlyphPages))
 		for page := range native.GlyphPages {

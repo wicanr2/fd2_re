@@ -1,0 +1,64 @@
+# 第九章抽樣（111 章工作單元，docs/goal/114）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 8 章」強化槽（--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap/dp/dx 依 114 定案值），11 人，manifest docs/data/parity-slots/ch09-manifest.json。
+# 可抽項目（remake/assets/scenarios/ch09.json、native_death_events.json、native_turn_event_controls.json map 8）：騎士的抉擇 map8（25×36）、開局 group 0 的 23 筆（slots 11..33）、Boss 在 (12,15)（map 8 unit 0＝slot 11）。擊倒 Boss 跑事件 30（0x34A7A：slots 12..33 +0x34 寫 0、控制列 slot 0／1 排事件 31 在下一與下下回合、slot 11 以 1 HP 倒戈為友軍 identity 6、text 2、group 1 登場、text 3、這次行動不給經驗、state16=2）；事件 31（0x34B5D）兩次各以 state16 登場 group 2、3 並鏡頭繞四角。戰後 ch08_post（0x235BC：pan (6,1)、group 4 登場、ACTING 36、text 4、無 JOIN）。
+# 章內全程正常 BIOS 鍵；只有第 10 回合開頭的 force_enemy_clear 是注入。強化是建構槽政策（114）。法術／物品指令驅動端沒有（limitations）。
+# --- 標題 LOAD 槽 0 → 城鎮（town_ch09，variant 0）---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前（ch08_pre 0x3327D：LOADCH、pan (6,0)、text 0、ACTING 35、text 1、聚焦記錄 0）→ 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":160}
+{"await_ui":"cursor","steps":10000000,"max":80}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～9 回合：全隊北上接戰（advance true、typical_move 4），瑪琳（7）與貝克威（8）留守。擊倒 Boss 後的兩回合各有一次事件 31。---
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round3","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round6","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=8","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=9","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=10","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round9","steps":1000000}
+# --- 第 10 回合開頭清場（修改路徑；敵人已全滅就略過）→ END → 戰後（ch08_post）→ town_ch10 ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":120}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（town_ch10 洞窟中的激戰，variant 2）：武器店出售一件（選項 1）→ 道具店買入一件（選項 3）→ 教會、酒店各探一次 → 酒店存檔 → 道具店（選項 3）前 Alt+F9（scan 0x70）祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"shop_buy":{"moves":["left","left"]},"steps":10000000}
+{"town_probe":{"moves":["left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":["left","left","left"],"key":"alt-f9"},"steps":10000000}

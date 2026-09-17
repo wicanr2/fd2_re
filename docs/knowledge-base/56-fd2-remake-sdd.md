@@ -289,6 +289,10 @@ map0＋item79 交叉 fixture 固定 score8、`(19,15)`、slot0，屬靜態 E0，
 抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點——視同該章 `PLAYER-E2`。
 收據記錄槽來源與 `state_injections` 是出處要求，不構成降級。這條例外只
 適用於 `111` 的章收據，不回溯改寫更早的 E2 判定，也不放寬其他修改路徑。
+2026-09-17 使用者補充定案（[`114`](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)）：
+建構槽以受版控工具明示的政策值提高我方基底 AP（`+0x37`）、DP（`+0x39`）、DX（`+0x3E`，HIT 與 EV
+共用基底）再跑重算，仍屬這條例外；政策值記在 manifest 與收據，收據不得用來談傷害、存活或
+敵方選目標。章內週期性改寫狀態不在例外內。
 
 本輪重新核對的已知更正：`0x16559` 是 DATO mouth-frame／glyph blit caller，`0x4ea2a` 才是 native glyph renderer；`0x2c435 push 0x1e`、`0x2c437 call 0x1088d` 會在 loader 內選 FDTXT archive resource #31，不能把 raw selector `0x1e` 或實體欄位直接命名成 ch30；`0x2c548` 有 `i=0→slot1、i=1→slot0` swap；`0x29164` 第一參數是 party unit index，TAI#3 是 7-byte transparent aux，不是可見台座。這些結論不可再由名稱外推 renderer 語意。
 
@@ -8105,13 +8109,14 @@ departure_prompt 的 YES pulse（60 px，#35）。r1d 曾有 1 張 select（seq 
 不一致差 619 px，reg2 重跑是 0 px，屬於重播端取樣時機，沒有再現。同一份重製端重跑第四／五／六／七章
 （remake-reg2）全過，每個畫面點的差異像素數與既有收據逐點相同。
 
-抽樣截圖證據：`tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch08.json --oracle
-work/parity-slot-ch08/sample-r1 --remake work/parity-slot-ch08/remake-reg2 --out docs/figures/parity-ch08-samples.png
---index docs/data/ui-traces/parity-ch08-samples.json --include-seq 635 2236 2865 2996`（`fd2-assets-local`
-容器內），91 列切四張。
+抽樣截圖證據：`tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch08-unboosted-r1.json --oracle
+work/parity-slot-ch08/sample-r1 --remake work/parity-slot-ch08/remake-reg2 --out docs/figures/parity-ch08-unboosted-r1-samples.png
+--index docs/data/ui-traces/parity-ch08-unboosted-r1-samples.json --include-seq 635 2236 2865 2996`（`fd2-assets-local`
+容器內），91 列切四張。這份未強化收據與清冊改名保留（`parity-ch08-unboosted-r1.json`、
+`ch08-unboosted-manifest.json`），正式收據由下一節的強化槽 c3 取代。
 
-限制：死亡程式 29（騎士 slot 10 陣亡）與第 15 回合 event 28 沒有原版收據（騎士到清場剩 217/300 HP）；
-兩者轉寫已過指令覆蓋檢查、消費端在，但行為只由轉寫支撐。玩家法術與物品仍沒有驅動端指令。
+限制：這一輪騎士 slot 10 沒倒（清場時 217/300 HP），死亡程式 29 與第 15 回合 event 28 由下一節的強化
+收據補上原版證據。玩家法術與物品仍沒有驅動端指令。
 
 第八章加進回顧分類表：
 
@@ -8120,6 +8125,121 @@ work/parity-slot-ch08/sample-r1 --remake work/parity-slot-ch08/remake-reg2 --out
 | 指令環開啟動畫中途 | 76（52 move＋24 stay） | 61–624（seq 2529 已到 624，預算 640） | #34 |
 | 出口確認 YES pulse（cell 48／49） | 1（seq 38 departure_prompt） | 60 | #35 |
 | 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 9 | — | 規則 `oracle_mid_end_turn` |
+
+## 114 強化槽與第八章強化收據（2026-09-17）
+
+政策（`docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md`）：`fd2-chapter-slot` 的
+`-boost-base-ap/-dp/-dx` 在所有章節與升級政策之後，對名冊每筆記錄把 `+0x37`／`+0x39`／`+0x3E`
+加上政策值，再跑 `0x1145A`／`0x1B750` 重算（`ApplyNativeEquipmentRecalc`），manifest 記 `boost`
+assumption。定案值 AP+200、DP+0、DX+60（校準紀錄見 114 §2 的表）。兩側 LOAD 同一份 bytes，收據只證明
+節點、畫面、介面、交易與存檔閉環，不談傷害、命中、存活或敵方選目標。
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 7
+--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0
+--boost-base-dx 60`（manifest `docs/data/parity-slots/ch08-manifest.json`，sha `8113b684…`）。計畫
+`docs/data/parity-plans/ch08-boost-sample.jsonl`：第 1～6 回合接戰、第 7～15 回合停手、第 16 回合開頭
+`force_enemy_clear`，城鎮段同 r1。
+
+原版側 sample-c3（dosgolem `f57c23d`，dirty 0，eip-trace `0x13A9F,0x1E54A,0x4E893,0x34A0E,0x34A3C,0x12CEA`）：
+
+- **死亡程式 29 `0x34A3C`（已證實，eip-trace）。** 第 6 回合 seq 1438 擊倒騎士 slot 10 進入 handler，
+  對白後 seq 1453 在 `0x34A71` 呼叫 `0x34A0E`（返回位址 `0x34A76`），與轉寫的 `ai_byte_and_range` 同一段。
+- **event 28 `0x34A0E`（已證實，eip-trace）。** 第 15 回合 seq 1917 由 `0x1A861` 回合事件分派進入。
+- 與 c2 同一份控制序列，197 個動作逐筆相同。
+
+重製側依 c2／c3 改掉的東西：
+
+- **死亡程式對白疊在重繪過的畫面上（已證實，c2 seq 1452 同狀態畫面）。** 原版對白框下方屍體已移除、
+  HUD 小窗換成游標所在格的地形。`runPendingDeathPrograms` 在開對白前重組 `nativeMapVGA`，並沿用
+  `composeNativeMapFrameBeforeActed`：行動者的 `+5` bit7 在 handler 成功返回臂 `0x13512` 才設，
+  底圖上攻擊者還不是灰的（整幀重組不暫時拿掉 bit7 時多出約 2600 px）。
+- **原生對白帶原始字模編號（已證實，FDTXT 原始 word 與 `FDOTHER.DAT` 資源 4 點陣）。** `glyph_map.json`
+  有 12 組一字多模，執行期由 token 查 `unicode_to_glyph.json` 只會得到正規字模；「．」的正規字模是 347
+  （一點），FDTXT_001 起的對白用 584（兩點），共 1299 處，另有「查」1040、「、」1507 等。版面資料新增
+  `glyph_ids`（與 token 同形），只在原始 word 不是正規字模的句子輸出；`generate_native_story_dialogue.py`
+  的 `decode_layouts` 產生，`tools/backfill_native_dialogue_glyph_ids.py` 回填既有 381 句並以原始位元組
+  重解核對 `pages`／`glyph_pages`（`--check` 可重跑）。非繁中 locale 走 TTF，不受影響。
+- **AI 攻擊前的聚焦順序（已證實，Capstone `0x1548E..0x1567D` 與 c3 eip-trace）。** `0x154AD` 聚焦自己
+  → `0x154C6 call 0x14B78` 移動 → `0x154DE` 聚焦目標 → `0x154ED` 演出；走路時自己的聚焦在原位，
+  走完不再聚焦自己。c3 seq 1692：`(20,18)` 返回 `0x154B2` → `(16,22)` 返回 `0x154E3`，中間沒有 `(18,20)`。
+  重製端原本走完又聚焦一次，停在不同的可見游標格，第 7 回合起鏡頭差一列。
+- **重播端 END 前重走推游標的方向鍵。** 驅動端開系統選單前會把游標推到空格（c3 seq 1700 `down`，
+  `(13,22)`→`(13,23)`，鏡頭下捲一列）。`endTurn` 取 `(prevSeq, before_seq)` 的方向鍵，先在視圖副本上
+  走一遍，終點等於 `at` 才真的重走；上一個動作是 END 時原版 checkpoint 是按 END 那一刻、不是敵方回合收尾
+  `0x1A7B0` 聚焦之後，不能拿來當起點。
+- **重播端列舉畫面相位變體時凍結 BIOS 取樣。** `composeNativeMapFrame` 讀牆鐘換算 BIOS tick，兩次
+  合成之間跨過 tick 會推進 idle 或地形脈動相位；原本的重試只檢查 idle。主機負載高時同一份程式兩輪壞在
+  不同的 select 點（未強化 r1：reg3 seq 2611 idle 相位 1951 px、reg3b seq 2322 脈動相位 1607 px；強化
+  c3d seq 397 459 px）。`frame()` 在列舉期間以 `Game.nativeMapFrozenNow` 固定取樣時間，重試改成 idle
+  或地形相位任一被推進就重畫；正式執行路徑不設這個欄位。
+- 診斷掛勾 `battle.NativeFocusTraceHook` 與重播環境變數 `FD2_FOCUS_TRACE_OUT` 逐筆記下 `0x12CEA` 目標，
+  用來對照原版 eip-trace（`0x13FD4` 原地回復走 `focusUnitJob`，不經過掛勾）。
+
+結果：c3 對 remake-c3e 四個 gate 全過（`docs/data/ui-traces/parity-ch08.json`）：179 個畫面點 127 點
+0 px，其餘 41 move＋9 stay 指令環開啟中途（#34，最大 629 px）、1 點出口 YES pulse（#35）、1 點攻擊結果
+4 px；死亡程式 29 對白 seq 1452 0 px；金幣 2000→4800→4837→4827、
+酒店存檔整檔 sha256 相同。同一份重製端重跑第四～七章（remake-reg5，原版側 ch04 r13、ch05 r5、ch06 r4、
+ch07 r6）與未強化第八章 r1 全過，每個畫面點的差異像素數與各自的收據逐點相同。抽樣截圖 `tools/parity_sample_sheet.py --receipt
+docs/data/ui-traces/parity-ch08.json --oracle work/parity-slot-ch08-boost-x60/sample-c3 --remake
+work/parity-slot-ch08-boost-x60/remake-c3e --out docs/figures/parity-ch08-samples.png --index
+docs/data/ui-traces/parity-ch08-samples.json --include-seq 1452 1799 1929 2187`，68 列切三張。
+
+限制：洛娜（identity 5）是 FDFIELD 直接登場的記錄，不吃建槽強化，第 2 回合陣亡；凱麗（identity 12，
+DX 10、EV 70）在停手期間第 9 回合陣亡，使用者 2026-09-17 同意接受。
+
+## 第九章章工作單元：Boss 倒戈、休眠回合事件列與回合開頭聚焦的閘 B（2026-09-17）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 8
+--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0
+--boost-base-dx 60`（manifest `docs/data/parity-slots/ch09-manifest.json`，sha `c2771d7c…`，名冊 11 人，
+第八章戰後 handler 沒有讀戰場狀態的分支，不加新的 `--event-states`）。合法性檢查
+`docs/data/parity-plans/ch09-slot-load.jsonl`（LOAD 進騎士的抉擇城鎮、五棟建築，探訪結果與第八章同形）。
+
+轉寫（`extract_native_death_events.py` 指令覆蓋檢查通過）：
+
+- **事件 30 `0x34A7A`（死亡程式 `2:30`，已證實，eip-trace seq 909 之後的 911）。** slots 12..33 `+0x34`
+  寫 0 → 控制列 slot 0 回合＝目前回合＋1、slot 1＝＋2 → 記錄 11（Boss）`+5=0`、`+6=1`、`+7=6`、`+8=6`、
+  `+0x31=0xFF`、`+0x34=0x80`、HP=1 → text 2 → 登場 group 1 → text 3 → 本次行動不給經驗 → state16=2。
+  原版收據：Boss 以 1 HP 變成 camp 1、identity 6（之後在戰場上倒下，兩側同步）。
+- **事件 31 `0x34B5D`（已證實，eip-trace seq 1419、1692，返回位址 `0x1A861` selector 0）。**
+  `0x34B67 mov eax,[0x53AD5]; movzx eax, byte [eax+0x10]; push eax; call 0x10B4E` 登場「戰場狀態表
+  索引 16 的值」那一群 → `0x34B79` 索引 16 加 1 → 鏡頭 (0,0)、(12,0)、(12,11)、(0,11) 各接
+  `delay(200)`（尾端跳到共用的 `0x353D1`）。事件 30 把 state16 寫 2，所以第一次登場 group 2（6 筆）、
+  第二次 group 3（2 筆）。
+- **休眠回合事件列（已證實，FDFIELD_025 控制段）。** map 8 控制列 slot 0／1 是 `(255, 31, 0)`：回合 255
+  不會命中，事件 30 的 `control_turn` 把回合改成 k+1／k+2 才啟用。`sync_native_turn_events.py` 對這種
+  列產生只有 `actions` 的 `native_turn_events`（`group_from_state` 的 `spawn_group`、`state_inc`、`pan`、
+  `delay`），執行期 `Scenario.NativeTurnActionEventsAt` 依控制列當下的回合與 selector 取出，
+  `runEditableTurnEvents` 接在同一個 selector 的回合事件之後。
+
+重製側依 r1 收據改掉的東西：
+
+- **開場群組只有 group 0（已證實，原版 battle_start seq 57 敵方 23 筆）。** `ch09.json` 原本寫
+  `initial_groups [0,2,3,4]`，group 1／2／3 由事件 30／31 登場、group 4 由戰後 handler 登場；改成 `[0]`
+  並開 `runtime_append_groups`。
+- **`battle_ch09` 的 `native_map_view` 取自原版 battle_start（camera (6,27)、游標 (9,33)、可見游標 (3,6)）。**
+- **`ch08_post` 的 `runtime_context` 改成 `slot_counts [39, 45, 47]`（47 已證實，39／45 由群組筆數推出）。**
+  原本寫 `slot_count 60`，原版戰末是 47 筆（11＋23＋group 1 的 5＋group 2 的 6＋group 3 的 2）。Boss 倒下
+  必定觸發事件 30，所以沒有 34；39 是事件 31 還沒跑就清場、45 是只跑一次。
+- **回合開頭聚焦時閘 B 仍是 0（已證實，Capstone `0x135AF..0x135DB`、`0x17266..0x1727E`、
+  `0x1A79F..0x1A7B8`）。** `0x1A30B` 在 `0x1A79F` 寫 `[0x51A83]=1`、`0x1A7AB` 呼叫 `0x12D7B(0)` 聚焦記錄 0，
+  兩個呼叫端都在 `0x1A30B` 返回之後才把 `[0x51AAC]` 寫回 1。重製端原本在聚焦之前就打開閘 B，逐格
+  重繪時可見游標落在 (2,6) 把小窗翻到右側；第九章 r1 seq 814 起 26 點各約 4656 px。現在
+  `finishNativeTransientPlayerPhaseInput` 先開始聚焦，走完才 `restoreNativeDisplayGateB`（寫回 1，
+  接著照 `0x11CAC`→`0x1ACF3` 以當下可見游標評估一次 anchor）；重播端的操作權判定加上聚焦走完。
+
+結果：r1（原版側 `work/parity-slot-ch09/sample-r1`，dosgolem `f57c23d`，298 個動作、40 個亂數同步點）
+對 remake-r2 四個 gate 全過（`docs/data/ui-traces/parity-ch09.json`）：`ai_order` 分岔 0、金幣
+2000→3000→3037（出售）→3027（買入）、酒店存檔整檔 sha256 相同；286 個畫面點 203 點 0 px，其餘 64 move＋
+17 stay 指令環開啟中途（#34，最大 627 px）、1 點出口 YES pulse（#35）、1 點事件 30 對白底圖（seq 924，
+地圖上方單位 101 px）。事件 30 對白「唔．．公主殿下」的兩點字模由 `glyph_ids` 畫出。同一份重製端重跑
+第四～八章（remake-reg5，強化第八章 remake-c3f、未強化第八章 r1）全過，每個畫面點與各自收據逐點相同。抽樣截圖 `tools/parity_sample_sheet.py --receipt
+docs/data/ui-traces/parity-ch09.json --oracle work/parity-slot-ch09/sample-r1 --remake
+work/parity-slot-ch09/remake-r2 --out docs/figures/parity-ch09-samples.png --index
+docs/data/ui-traces/parity-ch09-samples.json --include-seq 909 924 1438 1702 2667`，100 列切四張。
+
+限制：事件 31 的鏡頭巡視與戰後 ACTING 36 落在兩個 checkpoint 之間，畫面 gate 只比到之後的點；
+玩家法術與物品仍沒有驅動端指令。
 
 ## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
 

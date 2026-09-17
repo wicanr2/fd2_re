@@ -266,6 +266,7 @@ type Game struct {
 	nativeClassUIJob         *nativeClassUIJob
 	nativePlayerStatus       *nativePlayerStatusState
 	nativePlayerFocus        *battle.Cell
+	nativeGateBAfterFocus    bool // 0x1A7AB 聚焦在 0x1A30B 裡；閘 B 要等 0x17277／0x135D4 返回後才寫回 1
 	nativeNextPlayerIndex    int
 	transientUI              bool
 	nativeClassUIClock       nativeBIOSClock
@@ -527,6 +528,7 @@ type Game struct {
 	fontNm                       *Font                                       // 狀態欄名字(整數尺寸 face,scale1 銳利)
 	nativeBattleFont             *fdtxt.Font                                 // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
 	nativeBattleGlyphs           map[string]int                              // Unicode→原版 glyph 索引（未知字元失敗即關閉）
+	nativeMapFrozenNow           func() time.Time                            // 對拍重播列舉相位變體時凍結 BIOS 取樣；nil 用實際時鐘
 	nativeBattlePanel            *battle.NativeItemPanelDataAssets           // 0x18C6D框／bar／digit indexed素材
 	nativeBattleValues           map[nativeBattlePanelValueKey]*ebiten.Image // 可見值panel快取
 	digits                       [10]*ebiten.Image                           // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
@@ -2450,6 +2452,15 @@ func (g *Game) resolveCampaignDialogLine(line campaign.Line, upperOverride *bool
 		}
 		for i := range layout.Pages {
 			native.Pages[i] = append([]string(nil), layout.Pages[i]...)
+		}
+		if len(layout.GlyphIDs) != 0 {
+			native.GlyphIDs = make([][][]int, len(layout.GlyphIDs))
+			for page := range layout.GlyphIDs {
+				native.GlyphIDs[page] = make([][]int, len(layout.GlyphIDs[page]))
+				for row := range layout.GlyphIDs[page] {
+					native.GlyphIDs[page][row] = append([]int(nil), layout.GlyphIDs[page][row]...)
+				}
+			}
 		}
 		if len(layout.GlyphPages) != 0 {
 			native.GlyphPages = make([][][]string, len(layout.GlyphPages))
@@ -5836,7 +5847,7 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 		return
 	}
 	// 死亡程式在攻擊演出之後、行動收尾之前執行（0x1CFF0 → 0x1B6B7／0x1AA1D）。
-	if g.runPendingDeathPrograms(func() {
+	if g.runPendingDeathPrograms(actor, func() {
 		g.finishSuccessfulUnitAction(actor, after)
 		g.checkResult()
 	}) {
@@ -8510,10 +8521,9 @@ func (g *Game) followNativeMapCursorStep(fromX, fromY, dx, dy int) {
 	if !g.st.AdvanceNativeMapWalkStepView(fromX, fromY, dx, dy) {
 		return
 	}
-	view := g.st.NativeMapViewState
-	if g.st.HasNativeMapHUDState {
-		g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
-	}
+	// 走行步進不推 HUD anchor：0x12EAA／0x1300D／0x13185／0x13315 只呼叫 0x1297D 局部重繪與
+	// 0x11EB0／0x11EEE 拷貝，不經過 0x11CAC，所以不會進 0x1ACF3。第八章 c2 seq 1667 單位走過
+	// 可見游標 (2,6)，原版小窗沒翻邊。
 	g.syncNativeMapView()
 }
 
@@ -11581,6 +11591,9 @@ func (g *Game) nativeMapFrameImage() (*image.Paletted, bool) {
 
 func (g *Game) composeNativeMapFrame() error {
 	now := time.Now()
+	if g != nil && g.nativeMapFrozenNow != nil {
+		now = g.nativeMapFrozenNow()
+	}
 	if g != nil && (g.shotPath != "" || g.shotSeries != "") && os.Getenv("FD2_SHOT_DETERMINISTIC") == "1" {
 		// 截圖證據只取固定 60 Hz 虛擬時鐘；一般玩家仍使用實際 BIOS
 		// 時鐘。這避免 Xvfb 排程差異把同一狀態存成不同動畫幀。
@@ -11777,6 +11790,11 @@ func (g *Game) runEditableTurnEvents(selector int, then func()) {
 	actions := g.sc.TriggerActionsWhere(g.st, "on_turn_end", "", func(e *battle.Event) bool {
 		return e.NativeTurnPhaseSelector() == selector
 	})
+	// 由 control_turn 動態啟用的控制列（第九章事件 30 排的事件 31）同樣由 0x1A813 在這個
+	// selector 分派，接在靜態列降成的劇本事件之後。
+	for _, event := range g.sc.NativeTurnActionEventsAt(g.st, byte(selector)) {
+		actions = append(actions, event.Actions...)
+	}
 	if len(actions) == 0 {
 		then()
 		return
@@ -12023,15 +12041,33 @@ func (g *Game) finishNativeTransientPlayerPhase() {
 
 func (g *Game) finishNativeTransientPlayerPhaseInput() {
 	g.sel, g.reach, g.moved = nil, nil, false
-	// 0x1A30B 返回：0x135D4／0x17277 把閘門 B 寫回 1。
-	if g.st != nil && g.st.HasNativeMapHUDState {
-		g.st.NativeMapHUDState.DisplayGateB = 1
-	}
+	// 0x1A79F [0x51A83]=1 → 0x1A7AB 0x12D7B(0) 聚焦記錄 0 都還在 0x1A30B 裡，閘 B 仍是 0，
+	// 逐格重繪不評估 HUD anchor；0x1A30B 返回後 0x17277／0x135D4 才寫回 1（第九章 r1 seq 814：
+	// 聚焦途中可見游標 (2,6)，原版小窗沒翻到右側）。
 	if g.st != nil && g.st.HasNativeMapViewState && len(g.st.Units) > 0 {
 		g.nativeNextPlayerIndex = 0
-		g.beginNativePlayerFocus(g.st.Units[0])
+		if g.beginNativePlayerFocus(g.st.Units[0]) {
+			g.nativeGateBAfterFocus = true
+			g.checkResult()
+			return
+		}
 	}
+	g.restoreNativeDisplayGateB()
 	g.checkResult()
+}
+
+// restoreNativeDisplayGateB 是 0x1A30B 返回後的 0x17277／0x135D4 閘 B 寫回；輸入迴圈接著的
+// 0x11CAC 重繪經 0x1ACF3 依當下可見游標評估 anchor。
+func (g *Game) restoreNativeDisplayGateB() {
+	g.nativeGateBAfterFocus = false
+	if g.st == nil || !g.st.HasNativeMapHUDState {
+		return
+	}
+	g.st.NativeMapHUDState.DisplayGateB = 1
+	if g.st.HasNativeMapViewState {
+		v := g.st.NativeMapViewState
+		g.st.AdvanceNativeMapHUDAnchor(v.VisibleCursorX, v.VisibleCursorY)
+	}
 }
 
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
@@ -12218,8 +12254,12 @@ func (g *Game) aiStep() {
 				g.aiBusy = false
 				return
 			}
-			// 0x1548E：聚焦自己（0x154AD）、聚焦目標（0x154DE）再進 0x1F04A 演出。
-			g.aiFocusCursor(u.X, u.Y)
+			// 0x1548E：聚焦自己（0x154AD）→ 0x14B78 移動 → 聚焦目標（0x154DE）再進 0x1F04A
+			// 演出。有走路時自己的聚焦已在走之前做過（原位），走完不再聚焦自己（第八章 c3
+			// eip-trace seq 1692：(20,18) 0x154B2 → (16,22) 0x154E3，中間沒有 (18,20)）。
+			if len(plan.Path) < 2 {
+				g.aiFocusCursor(u.X, u.Y)
+			}
 			g.aiFocusCursor(tgt.X, tgt.Y)
 			u.SetMapPose(dirToward(u.X, u.Y, tgt.X, tgt.Y))
 			hp0 := tgt.HP

@@ -95,6 +95,12 @@ def problems(data: dict) -> list[str]:
             out.append(f"ch{n}: dosgolem_commit 不是完整 40 位雜湊")
         if status == "blocked" and not c.get("limitations"):
             out.append(f"ch{n}: blocked 必須寫原因到 limitations")
+        if status == "passed":
+            policy = c.get("slot_policy")
+            # 建構槽政策（升級、seed、戰場狀態、AP／DP／DX 強化）決定原版與重製端 LOAD 的 bytes；
+            # 114 起每一章都要寫明，缺了就無法從台帳重建同一個槽。
+            if not isinstance(policy, dict) or not {"levels_per_chapter", "seed", "event_states", "boost"} <= policy.keys():
+                out.append(f"ch{n}: passed 但 slot_policy 缺 levels_per_chapter／seed／event_states／boost")
         if status == "passed" and c.get("receipt") and (ROOT / c["receipt"]).is_file():
             receipt = json.loads((ROOT / c["receipt"]).read_text(encoding="utf-8"))
             if receipt.get("status") != "passed":

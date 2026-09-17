@@ -96,7 +96,10 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		g.aiBusy = false
 		return
 	}
-	g.aiFocusCursor(actor.X, actor.Y)
+	// 0x154AD 聚焦自己在 0x14B78 移動之前；有走路時呼叫端已在原位聚焦過。
+	if len(plan.Path) < 2 {
+		g.aiFocusCursor(actor.X, actor.Y)
+	}
 	g.aiFocusCursor(target.X, target.Y)
 	actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
 	defHP0 := target.HP

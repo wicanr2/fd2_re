@@ -4366,3 +4366,30 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
   重製端重跑（remake-reg2）全過，差異像素數與既有收據逐點相同。
 - [x] 抽樣截圖表 `parity-ch08-samples-p1..p4.png`（91 列）。
 - [ ] 死亡程式 29 與第 15 回合 event 28 沒有原版收據（limitations）。
+
+## 2026-09-17：114 強化建構槽＋第八章強化收據
+
+- [x] 目標提示詞 `docs/goal/114`；建槽工具 `-boost-base-ap/-dp/-dx`（`+0x37`／`+0x39`／`+0x3E` 加值後重算，
+  manifest `boost` assumption）；111、56 §2、`AGENTS.md` 補強化政策條款；台帳每章 `slot_policy`。
+- [x] 校準（c1 X30、c2 X60）定案 AP+200／DP+0／DX+60。
+- [x] 原版側 sample-c3（dosgolem `f57c23d`）：第 6 回合擊倒騎士，死亡程式 29 `0x34A3C` 與第 15 回合
+  event 28 `0x34A0E` 取得 eip-trace 與畫面收據。
+- [x] 重製側：死亡程式對白底圖重繪（行動者尚未變灰）、原生對白 `glyph_ids`（381 句回填，
+  `tools/backfill_native_dialogue_glyph_ids.py`）、`0x1548E` 走完不再聚焦自己、重播端 END 前重走方向鍵、
+  重播端列舉相位時凍結 BIOS 取樣；事件 31 轉寫與控制列動作事件。
+- [x] 收據 `parity-ch08.json` 換成強化版（remake-c3e，179 點 127 點 0 px，存檔 sha256 相同），舊收據、
+  清冊與抽樣圖改名 `parity-ch08-unboosted-r1*`、`ch08-unboosted-manifest.json` 並列入 `prior_receipts`；
+  第四～八章 remake-reg4 全過、逐點與收據相同。
+
+## 2026-09-17：第九章 111 四 gate 全過
+
+- [x] 事件 30 `0x34A7A`／事件 31 `0x34B5D` 轉寫；休眠控制列 `(255,31,0)` 由事件 30 啟用，劇本以
+  `native_turn_events` 的 `actions` 表示，執行期 `NativeTurnActionEventsAt`。
+- [x] 建構槽 `ch09-manifest.json`（sha `c2771d7c…`，強化 AP+200／DP+0／DX+60，11 人），合法性檢查通過。
+- [x] 原版側 sample-r1（dosgolem `f57c23d`）：第 4 回合擊倒 Boss（事件 30 倒戈、登場 group 1）、第 5／6 回合
+  END 之後事件 31 登場 group 2／3、第 10 回合開頭清場、戰後 ch08_post、洞窟中的激戰城鎮收尾。
+- [x] 重製側：`ch09.json` 開場只登場 group 0、`battle_ch09` 開場視圖、`ch08_post` `slot_counts [39,45,47]`、
+  回合開頭聚焦時閘 B 維持 0（`0x17277`／`0x135D4` 返回後才寫回）。收據 `parity-ch09.json` 狀態 `passed`
+  （286 點全在預算內、203 點 0 px、存檔 sha256 相同、`ai_order` 分岔 0）；台帳第九章 `passed`。第四～八章
+  remake-reg5（強化第八章 remake-c3f、未強化 r1）全過、逐點與收據相同。
+- [x] 抽樣截圖 `parity-ch09-samples-p1..p4.png`（100 列）。

@@ -1033,24 +1033,43 @@ ACTING 之後凱麗的朝向、暫時狀態掃描換掉 Unit 指標；收尾順�
 重製端尚未接這段過場，見 #37 的後續 issue）。
 
 第八章整章收據 [`parity-ch08.json`](../data/ui-traces/parity-ch08.json)（2026-09-17，
-remake-reg2，原版側 sample-r1、dosgolem `f57c23d`；槽由 `fd2_chapter_slot.py` 從 ch02-cleared 建到
-「已通關第 7 章」、10 人，`--seed 4 --event-states 7:17=1`）：狀態 `passed`，275 個原版動作、263 個
-畫面比較點全部在預算內、186 點逐像素相同，77 點的差是指令環開啟中途 76 點（61–624 px，#34）與出口
-YES pulse 1 點（60 px，#35）——王城前的戰鬥城鎮、出發、戰鬥開始（戰前 ACTING 31／32）、第 1～9 回合
-全隊北上接戰（第 2～7 回合 event 27 每回合鏡頭 (8,2) 登場兩筆、敵方指令 0／4 施法與指令 13／14
-回復、被圍住的敵人回復兩成、洛娜以槍在距離 2 攻擊）、第 10 回合開頭清場、戰後 JOIN5 洛娜、騎士的
-抉擇城鎮出售與買入（金幣 7000→7037→7027）、教會與酒店探訪、酒店存檔（整檔 sha256 相同）、出口前
-Ctrl+F8 祕密商店；`after_enemy_phase` 與 `ai_order` 只比行為、`ai_order` 分岔 0。這一輪修掉的行為差異：
-`0x1598A` 施法落點用了行動者的移動成本列（第 3 回合記錄 18／19 在距離 5 施法算成走不到）、mode 0
-後備沒走成時沒有 `0x13FD4` 回復（第 7 回合記錄 36）、FDFIELD 我方記錄沒有武器射程；畫面差異：
-重播端 select 瞬移游標，漏掉途中可見游標格推的 HUD anchor（seq 1924 起 27 點各約 4600 px）。細節見
-[56 §第八章章工作單元](56-fd2-remake-sdd.md#第八章章工作單元施法落點成本列被圍住的回復與-fdfield-我方射程2026-09-17)。
-抽樣對照表分四張 [`parity-ch08-samples-p1.png`](../figures/parity-ch08-samples-p1.png)、
-[`p2`](../figures/parity-ch08-samples-p2.png)、[`p3`](../figures/parity-ch08-samples-p3.png)、
-[`p4`](../figures/parity-ch08-samples-p4.png)（91 列：每種 kind 第一點、全部 `diff_pixels>0`、指定的
-635／2236／2865／2996，每張 ≤1.5 MB，index [`parity-ch08-samples.json`](../data/ui-traces/parity-ch08-samples.json)）。
-限制：騎士沒倒，死亡程式 29 與第 15 回合 event 28 沒有畫面收據；這關以建構槽隊伍正常打撐不久，
-使用者定案提早清場。
+remake-c3e，原版側 sample-c3、dosgolem `f57c23d`；槽由 `fd2_chapter_slot.py` 從 ch02-cleared 建到
+「已通關第 7 章」、10 人，`--seed 4 --event-states 7:17=1`，再依 114 強化政策加基底 AP+200／DP+0／
+DX+60）：狀態 `passed`，197 個原版動作、179 個畫面比較點全部在預算內、127 點逐像素相同，52 點的差是
+指令環開啟中途 50 點（41 move＋9 stay，最大 629 px，#34）、出口 YES pulse 1 點（60 px，#35）與
+攻擊結果 1 點（4 px）——王城前的戰鬥城鎮、出發、戰鬥開始、
+第 1～6 回合北上接戰（event 27 登場、敵方施法與回復）、第 6 回合擊倒騎士 slot 10（死亡程式 29 對白
+seq 1452 逐像素相同）、第 7～15 回合停手（第 15 回合 event 28）、第 16 回合開頭清場、戰後 JOIN5 洛娜、
+騎士的抉擇城鎮出售與買入（金幣 4800→4837→4827）、教會與酒店探訪、酒店存檔（整檔 sha256 相同）、
+祕密商店；`after_enemy_phase` 與 `ai_order` 只比行為、`ai_order` 分岔 0。強化收據修掉的畫面差異：
+死亡程式對白底圖沒重繪（HUD 小窗仍是攻擊前、屍體還在）、整幀重繪時攻擊者被提早畫灰、對白「．．」
+畫成一點的字模 347（原版 584 兩點）、敵方攻擊前多聚焦自己一次與重播端 END 前沒重走推游標的方向鍵
+（兩者都讓鏡頭差一列）。細節見
+[56 §114 強化槽與第八章強化收據](56-fd2-remake-sdd.md#114-強化槽與第八章強化收據2026-09-17)。
+抽樣對照表分三張 [`parity-ch08-samples-p1.png`](../figures/parity-ch08-samples-p1.png)、
+[`p2`](../figures/parity-ch08-samples-p2.png)、[`p3`](../figures/parity-ch08-samples-p3.png)（68 列：每種
+kind 第一點、全部 `diff_pixels>0`、指定的 1452／1799／1929／2187，每張 ≤1.5 MB，index
+[`parity-ch08-samples.json`](../data/ui-traces/parity-ch08-samples.json)）。
+限制：強化值不是原版證據，收據不談傷害、命中、存活與敵方選目標；洛娜（FDFIELD 記錄，不吃強化）
+第 2 回合、凱麗第 9 回合陣亡，使用者同意接受。未強化槽的舊收據改名保留為
+[`parity-ch08-unboosted-r1.json`](../data/ui-traces/parity-ch08-unboosted-r1.json)（第 10 回合提早清場）。
+
+第九章整章收據 [`parity-ch09.json`](../data/ui-traces/parity-ch09.json)（2026-09-17，remake-r2，原版側
+sample-r1、dosgolem `f57c23d`；槽由 `fd2_chapter_slot.py` 建到「已通關第 8 章」、11 人，強化 AP+200／DP+0／
+DX+60）：狀態 `passed`，298 個原版動作、286 個畫面比較點全部在預算內、203 點逐像素相同，83 點的差是指令環
+開啟中途 81 點（64 move＋17 stay，最大 627 px，#34）、出口 YES pulse 1 點（60 px，#35）與事件 30 對白底圖
+1 點（seq 924，地圖上方單位 101 px）——騎士的抉擇城鎮、出發、戰前（ch08_pre）、第 1～9 回合北上接戰、
+第 4 回合擊倒 Boss（事件 30 對白兩句、倒戈成友軍、登場 group 1）、第 5／6 回合 END 之後事件 31 登場
+group 2／3、第 10 回合開頭清場、戰後 ch08_post、洞窟中的激戰城鎮出售與買入（金幣 3000→3037→3027）、
+教會與酒店探訪、酒店存檔（整檔 sha256 相同）、Alt+F9 祕密商店；`ai_order` 分岔 0。這一輪修掉的畫面差異：
+回合開頭聚焦時提早打開閘 B，小窗翻到右側（seq 814 起 26 點各約 4656 px）。細節見
+[56 §第九章章工作單元](56-fd2-remake-sdd.md#第九章章工作單元boss-倒戈休眠回合事件列與回合開頭聚焦的閘-b2026-09-17)。
+抽樣對照表分四張 [`parity-ch09-samples-p1.png`](../figures/parity-ch09-samples-p1.png)、
+[`p2`](../figures/parity-ch09-samples-p2.png)、[`p3`](../figures/parity-ch09-samples-p3.png)、
+[`p4`](../figures/parity-ch09-samples-p4.png)（100 列：每種 kind 第一點、全部 `diff_pixels>0`、指定的
+909／924／1438／1702／2667，index [`parity-ch09-samples.json`](../data/ui-traces/parity-ch09-samples.json)）。
+限制：強化值不是原版證據；事件 31 的鏡頭巡視與戰後 ACTING 36 落在兩個 checkpoint 之間，畫面 gate 只比到
+之後的點。
 
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 

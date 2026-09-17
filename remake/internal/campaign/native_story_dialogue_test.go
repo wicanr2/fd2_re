@@ -1252,6 +1252,10 @@ func TestNativeDialogueLayoutPreservesMultiRuneOriginalGlyphTokens(t *testing.T)
 }
 
 func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words []uint16, glyphs map[uint16]string) ([]*NativeDialogueLayout, error) {
+	canonical, err := loadCanonicalGlyphIndex()
+	if err != nil {
+		return nil, err
+	}
 	isSpeaker := func(word uint16) bool { return word >= 0xffec && word <= 0xffef }
 	var layouts []*NativeDialogueLayout
 	for cursor := 0; cursor < len(words); {
@@ -1269,14 +1273,20 @@ func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words [
 		cursor += 2
 		var pages [][]string
 		var glyphPages [][][]string
+		var idPages [][][]int
 		var page []string
 		var glyphPage [][]string
+		var idPage [][]int
 		var row []string
+		var idRow []int
+		nonCanonical := false
 		flushRow := func() {
 			if len(row) != 0 {
 				page = append(page, strings.Join(row, ""))
 				glyphPage = append(glyphPage, row)
+				idPage = append(idPage, idRow)
 				row = nil
+				idRow = nil
 			}
 		}
 		flushPage := func() {
@@ -1284,8 +1294,10 @@ func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words [
 			if len(page) > 0 {
 				pages = append(pages, page)
 				glyphPages = append(glyphPages, glyphPage)
+				idPages = append(idPages, idPage)
 				page = nil
 				glyphPage = nil
+				idPage = nil
 			}
 		}
 		for cursor < len(words) && !isSpeaker(words[cursor]) {
@@ -1304,6 +1316,10 @@ func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words [
 					return nil, fmt.Errorf("FDTXT glyph %#x is absent from glyph_map", word)
 				}
 				row = append(row, text)
+				idRow = append(idRow, int(word))
+				if glyph, ok := canonical[text]; !ok || glyph != int(word) {
+					nonCanonical = true
+				}
 			}
 		}
 		flushPage()
@@ -1318,6 +1334,9 @@ func decodeOriginalNativeDialogueLayouts(source string, stringIndex int, words [
 		}
 		if multiRune {
 			layout.GlyphPages = glyphPages
+		}
+		if nonCanonical {
+			layout.GlyphIDs = idPages
 		}
 		if err := layout.Validate(); err != nil {
 			return nil, err
@@ -1374,6 +1393,39 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 			t.Fatal(err)
 		}
 		index[key] = glyph
+	}
+	// glyph_map 一字多模：FDTXT_008#2 的「．．」是字模 584（兩點），正規表把「．」查成 347
+	// （一點）。GlyphIDs 必須蓋過 token 查表，照原始 word 畫。
+	{
+		background := make([]byte, 320*200)
+		dots := &NativeDialogueLayout{
+			SourceDAT: "FDTXT_008", StringIndex: 2, Control: "FFED", Operand: 16,
+			Pages: [][]string{{"『公主殿下．．"}},
+		}
+		byToken, err := ComposeNativeStoryDialoguePage(background, cells, portraits[0], font, index, dots, 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		dots.GlyphIDs = [][][]int{{{557, 776, 881, 1104, 559, index["．"], index["．"]}}}
+		canonical, err := ComposeNativeStoryDialoguePage(background, cells, portraits[0], font, index, dots, 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if string(canonical) != string(byToken) {
+			t.Fatal("GlyphIDs 與正規字模相同時畫面卻不同")
+		}
+		dots.GlyphIDs[0][0][5], dots.GlyphIDs[0][0][6] = 584, 584
+		raw, err := ComposeNativeStoryDialoguePage(background, cells, portraits[0], font, index, dots, 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if string(raw) == string(byToken) {
+			t.Fatal("GlyphIDs 584 沒有蓋過「．」的正規字模 347")
+		}
+		dots.GlyphIDs[0][0] = dots.GlyphIDs[0][0][:6]
+		if err := dots.Validate(); err == nil {
+			t.Fatal("GlyphIDs 與 token 數不同卻通過驗證")
+		}
 	}
 	layout := &NativeDialogueLayout{
 		SourceDAT: "FDTXT_025", StringIndex: 6, Utterance: 0,
@@ -1481,4 +1533,29 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	if _, err := ComposeNativeStoryDialoguePage(background, cells, portraits[0], font, index, &bad, 0); err == nil {
 		t.Fatal("unknown editable glyph did not fail closed")
 	}
+}
+
+// loadCanonicalGlyphIndex 讀執行期由 token 查字模的正規表；原始 word 不在表上的句子要帶
+// GlyphIDs（見 tools/generate_native_story_dialogue.py）。
+func loadCanonicalGlyphIndex() (map[string]int, error) {
+	raw, err := os.ReadFile("../../assets/fonts/unicode_to_glyph.json")
+	if err != nil {
+		return nil, err
+	}
+	var encoded map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &encoded); err != nil {
+		return nil, err
+	}
+	index := make(map[string]int, len(encoded))
+	for key, value := range encoded {
+		if key == "_comment" {
+			continue
+		}
+		var glyph int
+		if err := json.Unmarshal(value, &glyph); err != nil {
+			return nil, err
+		}
+		index[key] = glyph
+	}
+	return index, nil
 }

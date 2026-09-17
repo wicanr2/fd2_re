@@ -158,6 +158,9 @@ func run() error {
 	gold := flag.Int("gold", -1, "金幣覆寫；負值表示保留基底")
 	levelsPer := flag.Int("levels-per-chapter", 0, "每通關一章，既有隊員各升幾級（政策，非證據；正對照顯示實際升級只發生在有擊殺的人，預設 0）")
 	overrideText := flag.String("level-overrides", "", "以 key7=level 指定最終等級，逗號分隔（攻略校準用）")
+	boostAP := flag.Int("boost-base-ap", 0, "每筆名冊記錄的基底 AP（+0x37）加值；政策值，114 定案，套完再跑 0x1145A 重算")
+	boostDP := flag.Int("boost-base-dp", 0, "每筆名冊記錄的基底 DP（+0x39）加值；政策值，拉太高敵人會不攻擊（0x14237 差值 <= 2 略過）")
+	boostDX := flag.Int("boost-base-dx", 0, "每筆名冊記錄的 DX（+0x3E，HIT 與 EV 共用基底）加值；EV 不可大於等於敵人 HIT")
 	eventStateText := flag.String("event-states", "", "以 章:索引=值 指定戰後 handler 讀到的戰場狀態表值，逗號分隔（政策，非證據；例如 7:17=1 讓 ch06_post 走 JOIN12）")
 	seed := flag.Int64("seed", 0, "成長擲骰種子；0 表示用 target")
 	assetsDir := flag.String("assets", "assets", "remake 資產根（含 data/、cutscenes/handlers/）")
@@ -231,6 +234,9 @@ func run() error {
 		if err := b.applyChapter(chapter); err != nil {
 			return fmt.Errorf("第 %d 章：%w", chapter, err)
 		}
+	}
+	if err := b.applyBoost(*target, *boostAP, *boostDP, *boostDX); err != nil {
+		return err
 	}
 	var goldOut *uint32
 	if *gold >= 0 {
@@ -698,6 +704,45 @@ func (b *builder) levelUp(chapter, slot int) bool {
 	}
 	b.steps = append(b.steps, levelStep{Chapter: chapter, Slot: slot, Key: key, FromLevel: level, ToLevel: level + 1, Gains: gains, Learned: learned})
 	return true
+}
+
+// applyBoost 是 114 的建構槽強化政策：對名冊每筆記錄把基底 AP／DP 與 DX 加上政策值，再跑
+// 0x1145A 重算讓 +0x48..+0x4E 與裝備一致。不直接改 +0x48..+0x4E：之後的換裝或升級重算會蓋回去，
+// 原版與重製端就會在不同時點分岔。加完超出有號 word 範圍就失敗，不截斷。
+func (b *builder) applyBoost(chapter, ap, dp, dx int) error {
+	if ap == 0 && dp == 0 && dx == 0 {
+		return nil
+	}
+	if ap < 0 || dp < 0 || dx < 0 {
+		return fmt.Errorf("boost 政策值不可為負：ap=%d dp=%d dx=%d", ap, dp, dx)
+	}
+	var detail []string
+	for slot := 0; slot < b.count; slot++ {
+		record := b.record(slot)
+		before := [4]int16{}
+		for i, off := range [...]int{0x48, 0x4a, 0x4c, 0x4e} {
+			before[i] = int16(binary.LittleEndian.Uint16(record[off:]))
+		}
+		for _, field := range []struct{ off, delta int }{{recordBaseAP, ap}, {recordBaseDP, dp}, {recordDX, dx}} {
+			value := int(int16(binary.LittleEndian.Uint16(record[field.off:]))) + field.delta
+			if value > 0x7fff {
+				return fmt.Errorf("boost：名冊 %d +0x%x 加 %d 後是 %d，超出有號 word", slot, field.off, field.delta, value)
+			}
+			addWord(record, field.off, field.delta)
+		}
+		if err := battle.ApplyNativeEquipmentRecalc(record, b.itemRows); err != nil {
+			return fmt.Errorf("boost：名冊 %d 重算：%w", slot, err)
+		}
+		after := [4]int16{}
+		for i, off := range [...]int{0x48, 0x4a, 0x4c, 0x4e} {
+			after[i] = int16(binary.LittleEndian.Uint16(record[off:]))
+		}
+		detail = append(detail, fmt.Sprintf("roster %d id8=%d AP/DP/HIT/EV %v→%v", slot, record[recordIdentity], before, after))
+	}
+	b.assumptions = append(b.assumptions, assumption{Chapter: chapter, Kind: "boost", Detail: fmt.Sprintf(
+		"基底 AP +%d、DP +%d、DX +%d（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 %d 筆：%s",
+		ap, dp, dx, b.count, strings.Join(detail, "；"))})
+	return nil
 }
 
 func rollRange(rng *rand.Rand, r battle.StatRange) int {

@@ -24,6 +24,7 @@ func (g *Game) startNativeEventDialogue(action battle.Action) error {
 	layout := &campaign.NativeDialogueLayout{
 		SourceDAT: ref.SourceDAT, StringIndex: ref.StringIndex, Utterance: ref.Utterance,
 		Control: ref.Control, Operand: ref.Operand, Pages: ref.Pages, GlyphPages: ref.GlyphPages,
+		GlyphIDs: ref.GlyphIDs,
 	}
 	if err := layout.Validate(); err != nil {
 		return err

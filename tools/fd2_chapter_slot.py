@@ -138,6 +138,10 @@ def cmd_build(args: argparse.Namespace) -> int:
         inner += ["-level-overrides", args.level_overrides]
     if args.event_states:
         inner += ["-event-states", args.event_states]
+    for flag, value in (("-boost-base-ap", args.boost_base_ap), ("-boost-base-dp", args.boost_base_dp),
+                        ("-boost-base-dx", args.boost_base_dx)):
+        if value:
+            inner += [flag, str(value)]
     script = (
         "go build -o /tmp/fd2-chapter-slot ./cmd/fd2-chapter-slot && "
         + " ".join(inner)
@@ -181,6 +185,9 @@ def main() -> int:
     p.add_argument("--gold", type=int, default=-1)
     p.add_argument("--levels-per-chapter", type=int, default=0)
     p.add_argument("--level-overrides", default="")
+    p.add_argument("--boost-base-ap", type=int, default=0, help="名冊基底 AP 加值（114 政策值）")
+    p.add_argument("--boost-base-dp", type=int, default=0, help="名冊基底 DP 加值（114 政策值，維持小值）")
+    p.add_argument("--boost-base-dx", type=int, default=0, help="名冊 DX 加值（HIT／EV 共用基底，114 政策值）")
     p.add_argument("--event-states", default="",
                    help="章:索引=值，逗號分隔；戰後 handler 讀的戰場狀態表值（政策，寫進 manifest assumptions）")
     p.add_argument("--seed", type=int, default=0)

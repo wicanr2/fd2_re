@@ -173,6 +173,22 @@ EVENTS = [
     {"id": 28, "handler": 0x34A0E, "ops": [
         op("ai_byte_and_range", [(0x34A19, 0x34A3A)], first=0xA, last=0x1B, mask=0x80, inline=True),
     ]},
+    # 31 是第九章（map 8）由事件 30 啟用的控制列事件（slot 0／1：Boss 倒下的回合＋1、＋2）：
+    # 以戰場狀態 16 當 group 登場（事件 30 寫 2，所以兩次分別是 group 2、3）並把狀態 16 加一，
+    # 鏡頭依序走 (0,0)→(12,0)→(12,11)→(0,11)，每步 delay(200)。state_inc 的讀表夾在 pan 的
+    # 兩個 push 之前、inc 夾在 push 與 call 之間，兩個動作都跨兩段範圍。
+    {"id": 31, "handler": 0x34B5D, "ops": [
+        op("spawn_group", [(0x34B67, 0x34B79)], group_from="state", index=0x10, gate=0),
+        op("state_inc", [(0x34B79, 0x34B7E), (0x34B82, 0x34B85)], index=0x10, value=1),
+        op("pan", [(0x34B7E, 0x34B82), (0x34B85, 0x34B8D)], x=0, y=0),
+        op("delay", [(0x34B8D, 0x34B9A)], ms=0xC8),
+        op("pan", [(0x34B9A, 0x34BA6)], x=0xC, y=0),
+        op("delay", [(0x34BA6, 0x34BB3)], ms=0xC8),
+        op("pan", [(0x34BB3, 0x34BBF)], x=0xC, y=0xB),
+        op("delay", [(0x34BBF, 0x34BCC)], ms=0xC8),
+        op("pan", [(0x34BCC, 0x34BD8)], x=0, y=0xB),
+        op("delay", [(0x34BD8, 0x34BDD), (0x353D1, 0x353D9)], ms=0xC8),
+    ]},
     {"id": 29, "handler": 0x34A3C, "ops": [
         op("dialogue", [(0x34A46, 0x34A6D)], text=2),
         op("ai_byte_and_range", [(0x34A6D, 0x34A79), (0x34A19, 0x34A3A)],
@@ -373,10 +389,13 @@ def check_op(image, event_id, o):
     elif kind == "spawn_group":
         if o.get("group_from") == "round":
             # group 取自回合計數；由回合事件列觸發時就是該列的回合。
-            push = ("push dword ptr [0x3bef]", ROUND)
+            body = [("push dword ptr [0x3bef]", ROUND), "call 0x10b4e", "add esp, 4"]
+        elif o.get("group_from") == "state":
+            # group 取自戰場狀態表；登場時才讀，所以劇本要在執行期讀同一格。
+            body = [("mov eax, dword ptr [0x3ad5]", STATE), f"movzx eax, byte ptr [eax + {imm(o['index'])}]",
+                    "push eax", "call 0x10b4e", "add esp, 4"]
         else:
-            push = f"push {imm(o['group'])}"
-        body = [push, "call 0x10b4e", "add esp, 4"]
+            body = [f"push {imm(o['group'])}", "call 0x10b4e", "add esp, 4"]
         if o["gate"]:
             body = [("mov byte ptr [0x3afa], 1", GATE), *body, ("mov byte ptr [0x3afa], 0", GATE)]
         expect_seq(insns, body, where)

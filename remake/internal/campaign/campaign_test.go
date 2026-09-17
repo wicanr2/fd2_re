@@ -1378,7 +1378,9 @@ func TestCh08PostBindingMaterializesSpawnPanActAndDialogue(t *testing.T) {
 	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch08 post compile err=%v issues=%#v", err, issues)
 	}
-	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || beats[0].RuntimeContext.SlotCount != 60 || beats[0].RuntimeContext.SpawnGroups[4] != 1 {
+	// 第九章 r1 收據戰末 47 筆（11＋group 0 的 23＋事件 30 group 1 的 5＋事件 31 group 2／3 的 6／2）；
+	// 39／45 是事件 31 跑零次／一次時由群組筆數推出。
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || !reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{39, 45, 47}) || beats[0].RuntimeContext.SpawnGroups[4] != 1 {
 		t.Fatalf("ch08 runtime context=%#v", beats[:min(len(beats), 1)])
 	}
 	var pan, act *Beat

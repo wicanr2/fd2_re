@@ -8,7 +8,7 @@
   "base_chapter": 2,
   "target_chapter": 7,
   "out_slot": 0,
-  "output_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+  "output_sha256": "8113b684e9a31f028e54fb84498282cc65ff6876b18a28091b812b6af58c6674",
   "evidence_sources": {
     "command_learn": "assets/data/command_learn.json（升級學指令，learn_idx 來自成長列）",
     "growth": "assets/data/class_change_growth.json（0x55EA1，68 列，+7 選列）",
@@ -3454,6 +3454,11 @@
       "chapter": 7,
       "kind": "if",
       "detail": "any_unit_inactive→false（假設無人陣亡）"
+    },
+    {
+      "chapter": 7,
+      "kind": "boost",
+      "detail": "基底 AP +200、DP +0、DX +60（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 10 筆：roster 0 id8=0 AP/DP/HIT/EV [213 153 159 64]→[413 153 219 124]；roster 1 id8=9 AP/DP/HIT/EV [134 103 133 48]→[334 103 193 108]；roster 2 id8=4 AP/DP/HIT/EV [257 142 160 70]→[457 142 220 130]；roster 3 id8=30 AP/DP/HIT/EV [325 311 166 76]→[525 311 226 136]；roster 4 id8=1 AP/DP/HIT/EV [266 139 141 46]→[466 139 201 106]；roster 5 id8=8 AP/DP/HIT/EV [215 91 161 66]→[415 91 221 126]；roster 6 id8=2 AP/DP/HIT/EV [209 129 151 56]→[409 129 211 116]；roster 7 id8=10 AP/DP/HIT/EV [78 69 115 20]→[278 69 175 80]；roster 8 id8=13 AP/DP/HIT/EV [84 52 123 28]→[284 52 183 88]；roster 9 id8=12 AP/DP/HIT/EV [100 79 110 15]→[300 79 170 75]"
     }
   ],
   "roster": [
@@ -3469,10 +3474,10 @@
       "max_hp": 341,
       "mp": 0,
       "max_mp": 0,
-      "ap": 213,
+      "ap": 413,
       "dp": 153,
-      "hit": 159,
-      "ev": 64,
+      "hit": 219,
+      "ev": 124,
       "inventory_cells_hex": "4000408400c080ff80ff80ff800080c9"
     },
     {
@@ -3487,10 +3492,10 @@
       "max_hp": 207,
       "mp": 168,
       "max_mp": 168,
-      "ap": 134,
+      "ap": 334,
       "dp": 103,
-      "hit": 133,
-      "ev": 48,
+      "hit": 193,
+      "ev": 108,
       "inventory_cells_hex": "403440a480ff80ff80ff80ff80c380c1"
     },
     {
@@ -3505,10 +3510,10 @@
       "max_hp": 341,
       "mp": 0,
       "max_mp": 0,
-      "ap": 257,
+      "ap": 457,
       "dp": 142,
-      "hit": 160,
-      "ev": 70,
+      "hit": 220,
+      "ev": 130,
       "inventory_cells_hex": "4014408000c000c000c080ff803f803f"
     },
     {
@@ -3523,10 +3528,10 @@
       "max_hp": 394,
       "mp": 0,
       "max_mp": 0,
-      "ap": 325,
+      "ap": 525,
       "dp": 311,
-      "hit": 166,
-      "ev": 76,
+      "hit": 226,
+      "ev": 136,
       "inventory_cells_hex": "404840b280ff80ff80ff80ff80f180ed"
     },
     {
@@ -3541,10 +3546,10 @@
       "max_hp": 387,
       "mp": 0,
       "max_mp": 0,
-      "ap": 266,
+      "ap": 466,
       "dp": 139,
-      "hit": 141,
-      "ev": 46,
+      "hit": 201,
+      "ev": 106,
       "inventory_cells_hex": "4020408080ff80ff80ff80ff80ff80ff"
     },
     {
@@ -3559,10 +3564,10 @@
       "max_hp": 250,
       "mp": 0,
       "max_mp": 0,
-      "ap": 215,
+      "ap": 415,
       "dp": 91,
-      "hit": 161,
-      "ev": 66,
+      "hit": 221,
+      "ev": 126,
       "inventory_cells_hex": "402c408180ff80ff80ff80ff80ff80ff"
     },
     {
@@ -3577,10 +3582,10 @@
       "max_hp": 279,
       "mp": 0,
       "max_mp": 0,
-      "ap": 209,
+      "ap": 409,
       "dp": 129,
-      "hit": 151,
-      "ev": 56,
+      "hit": 211,
+      "ev": 116,
       "inventory_cells_hex": "4000408080ff80ff80ff80ff80008000"
     },
     {
@@ -3595,10 +3600,10 @@
       "max_hp": 131,
       "mp": 101,
       "max_mp": 101,
-      "ap": 78,
+      "ap": 278,
       "dp": 69,
-      "hit": 115,
-      "ev": 20,
+      "hit": 175,
+      "ev": 80,
       "inventory_cells_hex": "4000408180ff80ff80ff80ff80008000"
     },
     {
@@ -3613,10 +3618,10 @@
       "max_hp": 123,
       "mp": 0,
       "max_mp": 0,
-      "ap": 84,
+      "ap": 284,
       "dp": 52,
-      "hit": 123,
-      "ev": 28,
+      "hit": 183,
+      "ev": 88,
       "inventory_cells_hex": "4000408180ff80ff80ff80ff80008000"
     },
     {
@@ -3631,10 +3636,10 @@
       "max_hp": 151,
       "mp": 0,
       "max_mp": 0,
-      "ap": 100,
+      "ap": 300,
       "dp": 79,
-      "hit": 110,
-      "ev": 15,
+      "hit": 170,
+      "ev": 75,
       "inventory_cells_hex": "403e40ac80ff80ff80ff80ff80008000"
     }
   ],

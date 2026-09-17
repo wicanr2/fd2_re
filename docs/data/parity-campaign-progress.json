@@ -67,7 +67,17 @@
       ],
       "prior_receipts": [
         "docs/data/ch04-clear-receipt-20260914.json"
-      ]
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 3,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0
+        }
+      }
     },
     {
       "chapter": 5,
@@ -85,7 +95,17 @@
         "未抽樣到：第 7、8 回合的 event 16／17（敵軍 group 3 登場與 text 5–7 對白，已轉寫進劇本但沒有原版收據）、法術與物品指令、商店買入（驅動端沒有這三種指令）、升級與 END 回復圖示（#29）",
         "其餘 57 筆回合事件仍是 gen_campaign 的 spawn 版本，逐章轉寫（#33）"
       ],
-      "prior_receipts": []
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0
+        }
+      }
     },
     {
       "chapter": 6,
@@ -105,7 +125,17 @@
       ],
       "prior_receipts": [
         "docs/data/ui-traces/town-shop-early-mid-late-e2.json"
-      ]
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0
+        }
+      }
     },
     {
       "chapter": 7,
@@ -124,38 +154,83 @@
         "未抽樣到：玩家法術與物品、商店買入（驅動端沒有這三種指令）；event 26 只以 step_into 踏格觸發一次（記錄 9..27 AI 模式清 0），沒有第二次踏格的收據；升級對話與掉落訊息只在 attack_result 等鍵處拍",
         "重製端由建構槽 LOAD 進下一章時，JOIN 記錄殘值（x=0xe8 之類）能否容忍還沒驗；fd2-chapter-slot 建槽工具仍整筆覆寫 JOIN 記錄"
       ],
-      "prior_receipts": []
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0
+        }
+      }
     },
     {
       "chapter": 8,
       "status": "passed",
       "receipt": "docs/data/ui-traces/parity-ch08.json",
       "slot_manifest": "docs/data/parity-slots/ch08-manifest.json",
-      "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+      "slot_sha256": "8113b684e9a31f028e54fb84498282cc65ff6876b18a28091b812b6af58c6674",
       "dosgolem_commit": "f57c23df2fa712224b9a54d9f910e5bcaf07067a",
       "date": "2026-09-17",
-      "verify": "tools/chapter_parity.sh 8 work/parity-slot-ch08 <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x1AD2A tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch08-sample.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch08.json --oracle <run> --remake <out> --include-seq 635 2236 2865 2996",
+      "verify": "tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 7 --levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0 --boost-base-dx 60 --out-dir <槽>；FD2_PARITY_PLAN=docs/data/parity-plans/ch08-boost-sample.jsonl tools/chapter_parity.sh 8 <槽> <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x34A0E,0x34A3C,0x12CEA tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch08-boost-sample.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch08.json --oracle <run> --remake <out> --include-seq 1452 1799 1929 2187",
       "limitations": [
-        "槽由 ch02-cleared 基底建到 target 7（每章 +6 級政策、--seed 4、--event-states 7:17=1 讓 ch06_post 走 JOIN12）、10 人；瑪琳與貝克威沿用第七章記下的建構偏差，凱麗 JOIN 記錄由工具整筆覆寫（真實存檔是 LOAD 殘值）；合法性檢查 docs/data/parity-plans/ch08-slot-load.jsonl（LOAD 進王城前的戰鬥城鎮、五棟建築）",
-        "原版側 sample-r1 由 dosgolem feat/fd2-oracle-input-chain f57c23d（dirty=0）重生；計畫：LOAD→出口→戰前對白（ACTING 31／32）→第 1～9 回合全隊北上接戰（第 2～7 回合 event 27 各登場兩筆，記錄 29→41）→第 10 回合開頭 force_enemy_clear→戰後 ch07_post（JOIN5 洛娜）→騎士的抉擇城鎮出售／買入／教會與酒店探訪／酒店存檔／出口前 Ctrl+F8 祕密商店；275 動作、3113 個 checkpoint、33 個亂數同步點",
-        "四個 gate 全過（remake-reg2）：單位、HP、回合、金額（2000→7000→7037→7027）、鏡頭逐點相同，ai_order 分岔 0，ch07_post frontier 41 核過，酒店存檔整檔 sha256 與原版相同（11 人）；263 個畫面比較點全在 640 px 預算內、186 點逐像素相同，其餘 76 點是指令環開啟中途（#34，最大 624 px）與 1 點 YES pulse（#35）；after_enemy_phase 與 ai_order 依 oracle_mid_end_turn 只比行為。抽樣截圖 docs/figures/parity-ch08-samples-p1..p4.png（91 列）",
-        "這關以建構槽隊伍正常打撐不久（r1 第 3 回合起陸續陣亡、第 10 回合我方剩 4 人），使用者 2026-09-17 定案提早清場：騎士 slot 10 沒倒（清場時 217/300），死亡程式 29 與第 15 回合 event 28 沒有原版收據，只由轉寫與指令覆蓋檢查支撐；曾以 FD2_ORACLE_LOCK_ALLY_HP 推進（sample-r2／r3），週期性寫回 HP 落在施法演出中途令原版 0x4E6BD 解碼失控，兩輪作廢",
+        "槽由 ch02-cleared 基底建到 target 7（每章 +6 級政策、--seed 4、--event-states 7:17=1），再依 114 強化政策把名冊 10 筆基底 AP +200、DP +0、DX +60（manifest assumption boost，sha 8113b684…）；瑪琳與貝克威沿用第七章記下的建構偏差，凱麗 JOIN 記錄由工具整筆覆寫；合法性檢查 docs/data/parity-plans/ch08-slot-load.jsonl",
+        "強化政策值不是原版證據：收據只證明節點、畫面、介面、交易與存檔閉環，不得用來談傷害、命中、存活或敵方選目標",
+        "原版側 sample-c3 由 dosgolem feat/fd2-oracle-input-chain f57c23d（dirty=0）重生；計畫 ch08-boost-sample：LOAD→出口→戰前對白→第 1～6 回合北上接戰（第 6 回合擊倒騎士 slot 10，死亡程式 29 `0x34A3C` 對白並經 `0x34A71` 呼叫 event 28 主體）→第 7～15 回合停手（第 15 回合 `0x1A861` 分派 event 28 `0x34A0E`）→第 16 回合開頭 force_enemy_clear→戰後 ch07_post→騎士的抉擇城鎮出售／買入／教會與酒店探訪／酒店存檔／祕密商店；197 動作、2188 個 checkpoint、33 個亂數同步點",
+        "四個 gate 全過（remake-c3e）：單位、HP、回合、金額（2000→4800→4837→4827）、ai_order 分岔 0，酒店存檔整檔 sha256 與原版相同；179 個畫面比較點全在 640 px 預算內、127 點逐像素相同，其餘 41 點 move 與 9 點 stay 是指令環開啟中途（#34，最大 629 px）、1 點出口 YES pulse（#35）、1 點攻擊結果 4 px；after_enemy_phase 與 ai_order 依 oracle_mid_end_turn 只比行為。抽樣截圖 docs/figures/parity-ch08-samples-p1..p3.png（68 列）",
+        "洛娜（identity 5）是 FDFIELD 直接登場的記錄、不吃建槽強化，第 2 回合陣亡；凱麗（identity 12，DX 10、EV 70）在停手期間第 9 回合陣亡，使用者 2026-09-17 同意接受",
         "未抽樣到：玩家法術與物品（驅動端沒有指令）；商店買入只買清單第一件給第一位收件人",
         "城鎮出發縮放暗化與進戰場淡入重製端仍未接（#39），章收據兩端都在這段之外"
       ],
-      "prior_receipts": []
+      "prior_receipts": [
+        "docs/data/ui-traces/parity-ch08-unboosted-r1.json（未強化槽 sample-r1／remake-reg2，第 10 回合提早清場；清冊 docs/data/parity-slots/ch08-unboosted-manifest.json）"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 9,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch09.json",
+      "slot_manifest": "docs/data/parity-slots/ch09-manifest.json",
+      "slot_sha256": "c2771d7c62c3ad9603599efa864d047ff6cbd8aa32f1f6153403fab78af07bdc",
+      "dosgolem_commit": "f57c23df2fa712224b9a54d9f910e5bcaf07067a",
+      "date": "2026-09-17",
+      "verify": "tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 8 --levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0 --boost-base-dx 60 --out-dir <槽>；tools/chapter_parity.sh 9 <槽> <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x34A7A,0x34B5D,0x12CEA tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch09-sample.jsonl；合法性檢查 docs/data/parity-plans/ch09-slot-load.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch09.json --oracle <run> --remake <out> --include-seq 909 924 1438 1702 2667",
+      "limitations": [
+        "槽由 ch02-cleared 基底建到 target 8（每章 +6 級政策、--seed 4、--event-states 7:17=1），再依 114 強化政策把名冊 11 筆基底 AP +200、DP +0、DX +60（sha c2771d7c…）；合法性檢查 ch09-slot-load（LOAD 進騎士的抉擇城鎮、五棟建築）",
+        "強化政策值不是原版證據：收據只證明節點、畫面、介面、交易與存檔閉環，不得用來談傷害、命中、存活或敵方選目標",
+        "原版側 sample-r1 由 dosgolem feat/fd2-oracle-input-chain f57c23d（dirty=0）重生；計畫 ch09-sample：LOAD→出口→戰前（ch08_pre）→第 1～9 回合北上接戰（第 4 回合 seq 909 擊倒 Boss，事件 30 `0x34A7A` 倒戈成友軍、登場 group 1；第 5、6 回合 END 之後（seq 1419、1692）由 `0x1A861` 分派事件 31 `0x34B5D` 登場 group 2、3）→第 10 回合開頭 force_enemy_clear（3 筆）→戰後 ch08_post→洞窟中的激戰城鎮出售／買入／教會與酒店探訪／酒店存檔／Alt+F9 祕密商店；298 動作、2869 個 checkpoint、40 個亂數同步點",
+        "四個 gate 全過（remake-r2）：單位、HP、回合、金額（2000→3000→3037→3027）、ai_order 分岔 0，戰末記錄 47 筆與原版相同，酒店存檔整檔 sha256 與原版相同；286 個畫面比較點全在 640 px 預算內、203 點逐像素相同，其餘 64 點 move 與 17 點 stay 是指令環開啟中途（#34，最大 627 px）、1 點出口 YES pulse（#35）、1 點事件 30 對白底圖上方單位 101 px。抽樣截圖 docs/figures/parity-ch09-samples-p1..p4.png（100 列）",
+        "事件 31 的鏡頭巡視與登場、戰後 ACTING 36 發生在兩個 checkpoint 之間，畫面 gate 只比到之後的 select／mark／城鎮點；行為由 eip-trace 與記錄筆數核對",
+        "未抽樣到：玩家法術與物品（驅動端沒有指令）；商店買入只買清單第一件給第一位收件人",
+        "城鎮出發縮放暗化與進戰場淡入重製端仍未接（#39），章收據兩端都在這段之外"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 10,

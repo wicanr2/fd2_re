@@ -745,6 +745,38 @@
       "why": "2026-09-17 第八章洛娜裝槍 22（1..2）與防具 135，原版第 1 回合在距離 2 攻擊，重製端指令環攻擊不可選。",
       "date": "2026-09-17",
       "evidence": "remake/internal/campaign/equipment.go ApplyEquippedAttackRange；remake/cmd/fd2/main.go applyFieldOwnAttackRanges"
+    },
+    {
+      "id": "native-dialogue-uses-raw-glyph-ids",
+      "area": "重製端",
+      "rule": "原生對白要照 FDTXT 原始 word 畫字模，不可由 Unicode 文字反查：glyph_map 有一字多模（「．」347 一點／584 兩點、「查」467／1040、「、」1188／1507…），反查只會得到正規字模。版面資料的 glyph_ids 由 decode_layouts 產生，改過 glyph_map 或 unicode_to_glyph 就跑 tools/backfill_native_dialogue_glyph_ids.py --check。",
+      "why": "2026-09-17 第八章強化收據 seq 1452 死亡程式 29 對白「．．」畫成一點，其餘全對時仍差數百 px；FDTXT_001 起共 1299 處用 584。",
+      "date": "2026-09-17",
+      "evidence": "tools/generate_native_story_dialogue.py decode_layouts；remake/internal/campaign/native_story_dialogue.go ComposeNativeStoryDialogueProgressiveFrames"
+    },
+    {
+      "id": "focus-sequence-diff-before-camera-guess",
+      "area": "對拍",
+      "rule": "鏡頭或可見游標差一格時，先用原版 FD2_ORACLE_EIP_TRACE=0x12CEA（stack[1..2] 是目標、stack[3] 是 0x12D7B 的呼叫端）和重製端 FD2_FOCUS_TRACE_OUT 逐筆對照聚焦序列，找多出或少掉的聚焦；也要看驅動端在 END 前送過的方向鍵有沒有在重播端重走。不要從最後的鏡頭值反推規則。",
+      "why": "2026-09-17 第八章強化輪第 7 回合起鏡頭差一列，兩個原因疊在一起：重製端 AI 走完攻擊前多聚焦自己一次（原版 0x154AD 在 0x14B78 移動之前），以及重播端 END 前沒重走 down 鍵；逐筆對照兩輪就定位。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/battle/native_map_view.go NativeFocusTraceHook；remake/cmd/fd2/chapter_parity_replay_test.go endTurn"
+    },
+    {
+      "id": "replay-variants-freeze-clock",
+      "area": "回歸",
+      "rule": "重製端同一份程式重跑兩輪、失敗點落在不同 checkpoint，就先找讀牆鐘的合成路徑（composeNativeMapFrame 等以 time.Now 取 BIOS tick），不要當成偶發略過；列舉相位變體時要固定取樣時間，重試條件要涵蓋所有會被 tick 推進的相位。",
+      "why": "2026-09-17 未強化第八章 r1 在主機負載 28 時 reg3 壞 seq 2611（idle 相位）、reg3b 壞 seq 2322（地形脈動相位），先前 r1d seq 508 也被記成「沒有再現」；凍結時鐘後 reg4 全過，強化 c3 seq 397 由 459 px 變 0。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/chapter_parity_replay_test.go frame；remake/cmd/fd2/main.go composeNativeMapFrame nativeMapFrozenNow"
+    },
+    {
+      "id": "gate-b-reopens-after-1a30b-returns",
+      "area": "重製端",
+      "rule": "呼叫端包住的全域寫入要照呼叫端的先後重現：被包住的函式內部做的所有事（例如 0x1A30B 裡的 0x1A7AB 回合開頭聚焦）都看不到外層返回後才寫的值。重製端把「返回後」的寫入提前到非同步工作開始之前，就會讓中途的重繪用到錯的閘門。",
+      "why": "2026-09-17 第九章 r1：0x17277／0x135D4 在 0x1A30B 返回後才把閘 B 寫回 1，重製端在回合開頭聚焦前就設 1，聚焦途中可見游標 (2,6) 把 HUD 小窗翻到右側，seq 814 起 26 點各約 4656 px。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/main.go finishNativeTransientPlayerPhaseInput restoreNativeDisplayGateB；remake/cmd/fd2/native_player_input.go stepNativePlayerFocus"
     }
   ]
 }
