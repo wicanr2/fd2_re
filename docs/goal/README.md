@@ -7,7 +7,8 @@
 | 檔案 | 用途 |
 |---|---|
 | [`111-goal-original-parity-campaign-20260915.md`](111-goal-original-parity-campaign-20260915.md) | 全戰役原版一致的總目標：門檻、章工作單元範本、開工順序（2026-09-15 定案） |
-| [`112-goal-ch07-parity-and-sample-sheet-20260916.md`](112-goal-ch07-parity-and-sample-sheet-20260916.md) | 目前這一章（第七章）的工作單元：順序、門檻、抽樣截圖交付物 |
+| [`112-goal-ch07-parity-and-sample-sheet-20260916.md`](112-goal-ch07-parity-and-sample-sheet-20260916.md) | 第七章的工作單元（已 passed，留作紀錄）：順序、門檻、抽樣截圖交付物 |
+| [`113-goal-ch08-parity-20260917.md`](113-goal-ch08-parity-20260917.md) | 目前這一章（第八章，王城前的戰鬥）的工作單元：已知事件與 frontier、順序、門檻、交付物 |
 
 每章做完，下一章的提示詞另開一個編號，舊的留著當紀錄；`00-index.md` 的
 「目前這一章的工作單元」列指向最新的一份。
