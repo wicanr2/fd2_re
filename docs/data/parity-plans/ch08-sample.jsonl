@@ -1,0 +1,64 @@
+# 第八章抽樣（111 章工作單元，docs/goal/113）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 7 章」槽（--levels-per-chapter 6 --seed 4 --event-states 7:17=1；ch02_post join 2、ch05_post join 10、ch06 JOIN13、ch07 JOIN12 已套用，10 人），manifest docs/data/parity-slots/ch08-manifest.json。
+# 可抽項目（remake/assets/scenarios/ch08.json、docs/data/turn_events.json map 7、docs/data/ida/fd2_ch07_post_ida.txt）：王城前的戰鬥 map7（29×45）、開局 party 10＋group 0 的 19 筆（slots 10..27 敵、slot 28 是 +6=2 的洛娜，在 (14,26)）、第 2～7 回合 event 27（鏡頭 (8,2)、delay 100、登場 group N 兩筆、delay 100；selector 0）、第 15 回合 event 28（slots 10..27 +0x34 &= 0x80）、slot 10 騎士（(14,12)）陣亡跑死亡程式 29（text 2 → 同一段 &= 0x80）、戰後 ch07_post（佈位、text 3／4、ACTING 33／34、全黑、JOIN5 洛娜）。
+# 敵人 +0x34 低四位都是 2（11-enemy-ai.md：先走 0x14EF0 候選，失敗直接 0x14237，不走 0x13E9C 最近座標備援）。章節 handler 是 default 0x205b4：只有記錄 0 陣亡判負，洛娜陣亡不影響勝負，戰後 JOIN5 沒有分支。
+# 章內全程正常 BIOS 鍵；只有第 10 回合開頭的 force_enemy_clear 是注入。法術／物品指令驅動端沒有（limitations）；商店買入用新的 shop_buy。
+# --- 標題 LOAD 槽 0 → 城鎮（town_ch08，variant 0）---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前（ch07_pre：0x205DA、PAN(7,32)、ACTING 31、text 0、PAN(7,23)、ACTING 32）→ 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":160}
+{"await_ui":"cursor","steps":10000000,"max":80}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～9 回合：全隊北上接戰（advance true、typical_move 4）。第 2～7 回合敵方階段前各有一次 event 27 登場；騎士 slot 10 在 (14,12)，打倒它就跑死亡程式 29。---
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round2","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=8","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round7","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=9","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=10","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+# --- 第 10 回合開頭清場（修改路徑）→ END → 戰後（ch07_post）→ town_ch09 ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":120}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（town_ch09，variant 0）：武器店出售一件（選項 1）→ 道具店買入一件（選項 3）→ 教會、酒店各探一次（left 兩次停在 0 號酒店，town_save 進目前那一棟）→ 酒店存檔 → 出口（選項 2）前 Ctrl+F8（scan 0x65）祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"shop_buy":{"moves":["left","left"]},"steps":10000000}
+{"town_probe":{"moves":["left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":["left","left"],"key":"ctrl-f8"},"steps":10000000}

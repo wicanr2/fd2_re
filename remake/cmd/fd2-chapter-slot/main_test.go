@@ -93,3 +93,28 @@ func TestLevelUpTouchesOnlyGrowthFields(t *testing.T) {
 		t.Fatal("升級不該改目前 HP")
 	}
 }
+
+// ch06_post 的 JOIN12 掛在 state17==1 之下：沒明示時走 else（對白 5、不入隊），
+// 以 -event-states 7:17=1 明示時走 then，且理由寫出值的來源。
+func TestEventStateBranchNeedsExplicitValue(t *testing.T) {
+	beat := map[string]any{"condition": map[string]any{
+		"op": "native_event_state_eq", "event_state_index": float64(17), "event_state_value": float64(1)}}
+	b := &builder{eventStates: map[[2]int]int{}}
+	if branch, _ := b.decideBranch(7, beat); branch != "else" {
+		t.Fatalf("未明示時應走 else，得到 %s", branch)
+	}
+	if err := b.parseEventStates("7:17=1"); err != nil {
+		t.Fatal(err)
+	}
+	if branch, why := b.decideBranch(7, beat); branch != "then" {
+		t.Fatalf("明示 7:17=1 應走 then，得到 %s（%s）", branch, why)
+	}
+	if branch, _ := b.decideBranch(8, beat); branch != "else" {
+		t.Fatalf("別章的同一索引不該被套用")
+	}
+	for _, bad := range []string{"17=1", "7:17", "7:x=1", "7:17=256"} {
+		if err := b.parseEventStates(bad); err == nil {
+			t.Fatalf("%q 應該是格式錯誤", bad)
+		}
+	}
+}

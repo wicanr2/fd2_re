@@ -973,3 +973,13 @@ dosgolem 補 `0A`／`32` 的 SIB 記憶體形式）記在
 `0x11D40` 呼叫序列閉合為 RE-CLOSED，但**不在重製端路徑上**：正式重製端從城鎮出發直接進戰場，
 兩段動畫都還沒接（`BLOCKED`，issue 見 91 worklist）；章收據的 departure_prompt／battle_start
 兩端都在這段之外，不受影響。
+第八章的整章收據見 [`parity-ch08.json`](../data/ui-traces/parity-ch08.json)（remake-reg2／原版側
+sample-r1、dosgolem `f57c23d`，四個 gate 全過：263 個畫面比較點全在預算內、186 點逐像素相同、
+酒店存檔整檔 sha256 相同、`ai_order` 分岔 0，狀態 `passed`；第 10 回合開頭提早清場，死亡程式 29
+與第 15 回合 event 28 沒有原版收據；抽樣截圖 `docs/figures/parity-ch08-samples-p1..p4.png`）；
+本輪閉合的原版語意（event 27 `0x349D9` 整筆轉寫：`0x135DD(8,2)`→`delay(100)`→
+`0x10B4E([0x53BEF])`→`delay(100)`；event 28 `0x34A0E` 是 slots 10..27 `+0x34 &= 0x80`；`0x1598A`
+施法落點以 `0x159A5 push 0`→`0x4E555` 取成本列 0 交給 `0x4E040`，不是行動者移動成本列；mode 0／1 的
+`0x13E9C`／`0x14121` 回 0 時經 `0x13C06` 呼叫 `0x13FD4` 回復 MaxHP/5，`0x13E9C` 在沒有目標或目標在
+原格時不聚焦直接回 0；攻擊射程只從 ID < 0x80 的已裝備物品取）記在
+[56 §第八章章工作單元](56-fd2-remake-sdd.md#第八章章工作單元施法落點成本列被圍住的回復與-fdfield-我方射程2026-09-17)。

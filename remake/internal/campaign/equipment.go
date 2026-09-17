@@ -71,10 +71,12 @@ func RecomputeEquipment(u *battle.Unit, stats map[int]ItemStats) {
 		u.HIT += item.HIT
 		u.EV += item.EV
 		u.MV += item.MV
-		if item.Min > 0 {
+		// 射程只從武器取：0x1b83d 找的是 ID < 0x80 的已裝備物品，防具與飾品在
+		// item.json 也有 range [1,1]，拿來覆寫會把槍／弓的 2 格蓋回 1。
+		if u.Inventory[i] < 0x80 && item.Min > 0 {
 			u.AtkMin = item.Min
 		}
-		if item.Max > 0 {
+		if u.Inventory[i] < 0x80 && item.Max > 0 {
 			u.AtkMax = item.Max
 		}
 	}
@@ -100,10 +102,10 @@ func ApplyEquippedAttackRange(u *battle.Unit, stats map[int]ItemStats) {
 		if !ok {
 			continue
 		}
-		if item.Min > 0 {
+		if u.Inventory[i] < 0x80 && item.Min > 0 {
 			u.AtkMin = item.Min
 		}
-		if item.Max > 0 {
+		if u.Inventory[i] < 0x80 && item.Max > 0 {
 			u.AtkMax = item.Max
 		}
 	}

@@ -1032,6 +1032,26 @@ ACTING 之後凱麗的朝向、暫時狀態掃描換掉 Unit 指標；收尾順�
 [`parity-ch07-town-fade-probe.json`](../data/ui-traces/parity-ch07-town-fade-probe.json)；
 重製端尚未接這段過場，見 #37 的後續 issue）。
 
+第八章整章收據 [`parity-ch08.json`](../data/ui-traces/parity-ch08.json)（2026-09-17，
+remake-reg2，原版側 sample-r1、dosgolem `f57c23d`；槽由 `fd2_chapter_slot.py` 從 ch02-cleared 建到
+「已通關第 7 章」、10 人，`--seed 4 --event-states 7:17=1`）：狀態 `passed`，275 個原版動作、263 個
+畫面比較點全部在預算內、186 點逐像素相同，77 點的差是指令環開啟中途 76 點（61–624 px，#34）與出口
+YES pulse 1 點（60 px，#35）——王城前的戰鬥城鎮、出發、戰鬥開始（戰前 ACTING 31／32）、第 1～9 回合
+全隊北上接戰（第 2～7 回合 event 27 每回合鏡頭 (8,2) 登場兩筆、敵方指令 0／4 施法與指令 13／14
+回復、被圍住的敵人回復兩成、洛娜以槍在距離 2 攻擊）、第 10 回合開頭清場、戰後 JOIN5 洛娜、騎士的
+抉擇城鎮出售與買入（金幣 7000→7037→7027）、教會與酒店探訪、酒店存檔（整檔 sha256 相同）、出口前
+Ctrl+F8 祕密商店；`after_enemy_phase` 與 `ai_order` 只比行為、`ai_order` 分岔 0。這一輪修掉的行為差異：
+`0x1598A` 施法落點用了行動者的移動成本列（第 3 回合記錄 18／19 在距離 5 施法算成走不到）、mode 0
+後備沒走成時沒有 `0x13FD4` 回復（第 7 回合記錄 36）、FDFIELD 我方記錄沒有武器射程；畫面差異：
+重播端 select 瞬移游標，漏掉途中可見游標格推的 HUD anchor（seq 1924 起 27 點各約 4600 px）。細節見
+[56 §第八章章工作單元](56-fd2-remake-sdd.md#第八章章工作單元施法落點成本列被圍住的回復與-fdfield-我方射程2026-09-17)。
+抽樣對照表分四張 [`parity-ch08-samples-p1.png`](../figures/parity-ch08-samples-p1.png)、
+[`p2`](../figures/parity-ch08-samples-p2.png)、[`p3`](../figures/parity-ch08-samples-p3.png)、
+[`p4`](../figures/parity-ch08-samples-p4.png)（91 列：每種 kind 第一點、全部 `diff_pixels>0`、指定的
+635／2236／2865／2996，每張 ≤1.5 MB，index [`parity-ch08-samples.json`](../data/ui-traces/parity-ch08-samples.json)）。
+限制：騎士沒倒，死亡程式 29 與第 15 回合 event 28 沒有畫面收據；這關以建構槽隊伍正常打撐不久，
+使用者定案提早清場。
+
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 
 全螢幕戰鬥演出的左右是資料決定的：FIGANI 幀標頭內嵌的絕對螢幕座標按陣營分邊

@@ -8046,6 +8046,81 @@ selector 2。第七章 gate 的兩端（departure_prompt 在 YES 之前、battle
 所以收據看不到它；重製端 `beginNativeTransientPhases` 不是這段動畫的擁有者，城鎮縮放暗化與戰場淡入
 兩段都還沒接（另開 issue，見 58）。
 
+## 第八章章工作單元：施法落點成本列、被圍住的回復與 FDFIELD 我方射程（2026-09-17）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 7
+--levels-per-chapter 6 --seed 4 --event-states 7:17=1`（manifest `docs/data/parity-slots/ch08-manifest.json`，
+sha `768a561e…`，名冊 10 人）。建槽工具原本把戰後 handler 讀戰場狀態表的分支一律當 false（註解寫
+「只影響對白」），但 ch06_post 的 state17 決定凱麗 JOIN12，不帶這個值名冊只有 9 人；現在要用
+`--event-states 章:索引=值` 明示，manifest 記成 assumption。`--seed` 沿用第六、七章的 4：不帶 seed
+時預設等於 target，同一組參數重建第七章槽會得到另一個 sha。正對照：與第七章 remake-r8 酒店存檔
+逐欄比 123 處，全在升級政策、座標、出售與買入後的物品欄、金幣、瑪琳／貝克威的建構偏差、凱麗 JOIN
+記錄殘值（工具整筆覆寫）與檢查碼。合法性檢查 `docs/data/parity-plans/ch08-slot-load.jsonl`（LOAD 進
+王城前的戰鬥城鎮、五棟建築）。
+
+回合事件轉寫（#33 的第八章份，`extract_native_death_events.py` 指令覆蓋檢查通過）：
+
+- **event 27 `0x349D9`（已證實）**：`0x135DD(8,2)` 鏡頭 → `delay(100)` → `0x10B4E([0x53BEF])` →
+  `delay(100)`（尾端跳到共用的 `0x353D1`）。group 取自回合計數，不是固定值；`sync_native_turn_events.py`
+  依回合事件列的回合代入（第 2～7 回合 → group 2～7）。原版 r1 收據：記錄數 29→31→…→41。
+- **event 28 `0x34A0E`（已證實）**：slots 10..27 `+0x34 &= 0x80`，與死亡程式 29 的尾段是同一段指令；
+  回合事件版本以 `inline` 形式單獨核對。
+
+原版側只跑一輪就拿到收據（sample-r1，dosgolem `f57c23d`）：全隊北上接戰到第 9 回合，第 10 回合開頭
+`force_enemy_clear`。這關以建構槽的隊伍正常打撐不久（第 3 回合起陸續陣亡，第 10 回合我方剩 4 人），
+騎士 slot 10 沒被擊倒，所以死亡程式 29 與第 15 回合的 event 28 沒抽到。曾試過 `FD2_ORACLE_LOCK_ALLY_HP`
+推到第 15 回合（sample-r2／r3），但週期性寫回 HP 會落在施法演出中途，原版在 `0x4E6BD` 的 RLE 解碼
+失控寫爆近堆，收據作廢；使用者定案改回提早清場。驅動端新增 `shop_buy`（道具店買清單第一件給第一位
+收件人，金幣 7037→7027），重播端同步。
+
+重製側依 r1 收據改掉的東西：
+
+- **AI 施法評分的落點用成本列 0（已證實）。** `0x1598A` 在 `0x159A5` `push 0; call 0x4E555` 取
+  成本列 0（`0x55446`，20 個 1），`0x15A60` 以 `0x4E040(成本列0, x, y, 指令+3 距離, …)` 擴散施法落點。
+  重製端原本傳行動者自己的移動成本列，第 3 回合記錄 18（12,21）與 19（16,21）對距離 5 的貝克威、
+  記錄 6 放指令 0 時算成走不到，整個敵方階段分岔。`ScoreNativeAI1598A` 改用固定的
+  `nativeAICommandCostRow`。
+- **mode 0／1 的移動後備沒走成就回復兩成（已證實）。** `0x13B19 0x13E9C` 之後 `jmp 0x13C06`，mode 1
+  `0x13B3F 0x14121` 之後 `jmp 0x13B1E`→`0x13C06`；`0x13C06` 在回傳 0 時 `call 0x13FD4`。`0x13E9C` 沒有
+  對立單位或最近的就在原格時不聚焦直接回 0（`0x13F67..0x13F84`），找到了但 `0x14B78` 沒走成時先
+  `0x12D7B` 聚焦、兩次 `[0x51A83]` 寫入再回 0。第 7 回合記錄 36 在 (15,21) 被圍住，原版 HP 7→43
+  （180/5），重製端原本回傳原地計畫不回血。`nativeAIIdleRecoveryOnlyPlan`（沒有落點）與
+  `NativeFallbackIdleRecovery`（聚焦但沒走成，在共用收尾前 `beginNativeAIIdleRecovery`）。
+- **FDFIELD 直接登場的我方記錄要套武器射程（強推論，收據核過）。** 洛娜（group 0 最後一筆，raw
+  `+6=2`、identity 5）裝槍 22（item.json range 1..2），地圖單位檔沒有射程欄位，重製端一律 1，原版
+  seq 94 在距離 2 可以攻擊。戰場節點 `resetBattle` 之後 `applyFieldOwnAttackRanges` 對射程未設的
+  `+6==2` 記錄套 `ApplyEquippedAttackRange`；射程只從 ID < 0x80 的已裝備物品取（`0x1B83D`），防具 135
+  的 range [1,1] 不再覆寫槍的 2 格（LOAD 名冊與商店重算同一個函式）。
+- **重播端：mark 先推到該回合的操作權；select 前重走方向鍵。** `await round>=N` 之後的 mark 原本
+  在自動換手前就拍；select 原本把游標瞬移到單位，漏掉途中可見游標格推的 HUD anchor（seq 1919..1923
+  左三上二，途中 (2,6) 把小窗翻到右邊）。重走只在重製端游標和原版上一個 checkpoint 一致時做，
+  起點不同（第四章 seq 793 攻擊者反擊陣亡）就照舊定位。
+
+結果：r1（原版側 `work/parity-slot-ch08/sample-r1`，dosgolem `f57c23d`，276 個行為點、33 個亂數同步點）
+對 remake-reg2：四個 gate 全過（`docs/data/ui-traces/parity-ch08.json`），`ai_order` 分岔 0；
+戰後 `ch07_post` 的 `runtime_context.slot_counts` 由收據核過 frontier 41（第 2～7 回合六次 event 27 都登場）；
+金幣 2000→7000→7037（出售）→7027（買入）、酒店存檔整檔 sha256 相同（10 人，洛娜 JOIN5 之後）。263 張
+畫面 186 張 0 px，77 張有差全在預算內：76 張 move／stay 是指令環開啟動畫中途（61–624 px，#34）、1 張
+departure_prompt 的 YES pulse（60 px，#35）。r1d 曾有 1 張 select（seq 508）因幾個單位的 idle 相位
+不一致差 619 px，reg2 重跑是 0 px，屬於重播端取樣時機，沒有再現。同一份重製端重跑第四／五／六／七章
+（remake-reg2）全過，每個畫面點的差異像素數與既有收據逐點相同。
+
+抽樣截圖證據：`tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch08.json --oracle
+work/parity-slot-ch08/sample-r1 --remake work/parity-slot-ch08/remake-reg2 --out docs/figures/parity-ch08-samples.png
+--index docs/data/ui-traces/parity-ch08-samples.json --include-seq 635 2236 2865 2996`（`fd2-assets-local`
+容器內），91 列切四張。
+
+限制：死亡程式 29（騎士 slot 10 陣亡）與第 15 回合 event 28 沒有原版收據（騎士到清場剩 217/300 HP）；
+兩者轉寫已過指令覆蓋檢查、消費端在，但行為只由轉寫支撐。玩家法術與物品仍沒有驅動端指令。
+
+第八章加進回顧分類表：
+
+| 類別 | 點數 | 像素 | 處置 |
+|---|---|---|---|
+| 指令環開啟動畫中途 | 76（52 move＋24 stay） | 61–624（seq 2529 已到 624，預算 640） | #34 |
+| 出口確認 YES pulse（cell 48／49） | 1（seq 38 departure_prompt） | 60 | #35 |
+| 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 9 | — | 規則 `oracle_mid_end_turn` |
+
 ## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
 
 111 規定每五章回頭看一次累積的畫面差異。ch01–03 在台帳裡還是 `todo`（只有早／中／晚

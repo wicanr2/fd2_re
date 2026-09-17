@@ -3311,6 +3311,7 @@ func (g *Game) enterNode() {
 			}
 		}
 		g.resetBattle(n.Units, n.Scenario)
+		g.applyFieldOwnAttackRanges()
 		if !g.materializeNativeMapRuntime(n) {
 			return
 		}
@@ -3485,6 +3486,25 @@ func (g *Game) materializeNativeMapRuntime(n *campaign.Node) bool {
 	g.nativeMapHUDPersistent.CaptureNativeMapHUD(g.st.NativeMapHUDState)
 	g.syncNativeMapView()
 	return true
+}
+
+// applyFieldOwnAttackRanges 讓 FDFIELD 直接登場的我方記錄（raw +6==2、不在持久名冊裡，
+// 例如第八章 group 0 的洛娜）和 LOAD 進來的名冊用同一條射程規則：地圖單位檔沒有射程
+// 欄位，沒有這一步就一律是 1，裝槍的單位在距離 2 的敵人前面攻擊不可選（原版 r1 seq 94
+// 可以攻擊）。已經有射程的單位（名冊、劇本手寫值）不動。
+func (g *Game) applyFieldOwnAttackRanges() {
+	if g.st == nil {
+		return
+	}
+	for _, units := range [][]*battle.Unit{g.st.Units, g.st.Roster} {
+		for _, u := range units {
+			if u == nil || !u.HasNativeRecordByte6 || u.NativeRecordByte6 != 2 ||
+				u.AtkMin != 0 || u.AtkMax != 0 {
+				continue
+			}
+			campaign.ApplyEquippedAttackRange(u, g.shopItemStats)
+		}
+	}
 }
 
 // captureNativeMapHUDPersistence runs before a campaign node can clear or
@@ -12107,7 +12127,7 @@ func (g *Game) aiStep() {
 		if err := g.beginNativeAIIdleRecovery(plan.U, *plan.NativeIdleRecovery, func() {
 			g.finishSuccessfulUnitAction(plan.U, nil)
 		}); err != nil {
-			g.loadErr = "native AI mode 2 0x13fd4: " + err.Error()
+			g.loadErr = "native AI 0x13fd4: " + err.Error()
 			g.aiBusy = false
 		}
 		return
@@ -12164,6 +12184,15 @@ func (g *Game) aiStep() {
 					g.aiBusy = false
 					return
 				}
+			}
+			if plan.NativeFallbackIdleRecovery != nil {
+				if err := g.beginNativeAIIdleRecovery(u, *plan.NativeFallbackIdleRecovery, func() {
+					g.finishSuccessfulUnitAction(u, nil)
+				}); err != nil {
+					g.loadErr = "native AI mode fallback 0x13fd4: " + err.Error()
+					g.aiBusy = false
+				}
+				return
 			}
 			if plan.NativeModeWriteByte5 {
 				// 0x32975 writes the complete runtime +0x05 byte only after

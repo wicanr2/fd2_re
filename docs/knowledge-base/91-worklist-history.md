@@ -4345,3 +4345,24 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 > 是把「全在 640 px 預算內」寫成了「逐像素相同」；實際是第四章 38／55、第五章 40／58、第六章
 > 40／58（重跑後 39／58）點逐像素相同，其餘是 56 五章回顧分類過的 #34／#35／#38 形狀。57、58
 > 與台帳已改成正確措辭；三章的 `passed` 判定不受影響（gate 本來就是預算而不是 0 px）。
+
+## 2026-09-17：第八章 111 四 gate 全過
+
+- [x] 目標提示詞 `docs/goal/113`（第八章工作單元）。
+- [x] event 27 `0x349D9`／event 28 `0x34A0E` 轉寫（`extract_native_death_events.py` 新增 `delay`
+  動作與 `group_from="round"`，`sync_native_turn_events.py --chapters 4,5,6,7,8` 依回合代入 group）；
+  `ch08.json` 的 `reinforce_ch08_e27_t2..t7` 換成 pan／delay／spawn／delay，新增 `turn_ch08_e28_t15`。
+- [x] 建槽工具 `-event-states 章:索引=值`（戰後 handler 的戰場狀態分支不再一律當 false）；建構槽
+  `ch08-manifest.json`（sha `768a561e…`，`--seed 4 --event-states 7:17=1`，10 人），合法性檢查
+  `ch08-slot-load.jsonl`；正對照對第七章 remake-r8 酒店存檔 123 處差異全部歸因。
+- [x] 原版側 sample-r1（dosgolem `f57c23d`；驅動端新增 `shop_buy`）：LOAD → 出口 → 戰前 → 第 1～9 回合
+  全隊北上 → 第 10 回合開頭 `force_enemy_clear` → 戰後 JOIN5 → 出售／買入／探訪／存檔／Ctrl+F8。
+  sample-r2／r3 試過 `FD2_ORACLE_LOCK_ALLY_HP` 推到第 15 回合，HP 寫回落在施法演出中途令原版解碼
+  失控，作廢；使用者定案提早清場。dosgolem 為此加的越界寫入背書（`72362fe`）理由不成立，未推送即退回。
+- [x] 重製側：`0x1598A` 施法落點改用成本列 0、mode 0／1 後備沒走成接 `0x13FD4` 回復、FDFIELD 我方
+  記錄套武器射程（射程只從 ID < 0x80 的武器取）、重播端 mark 先推到該回合操作權與 select 前重走方向鍵
+  （起點一致才走）。收據 `parity-ch08.json` 狀態 `passed`（263 點全在預算內、186 點逐像素相同、
+  存檔 sha256 相同、`ai_order` 分岔 0、frontier 41 核過）；台帳第八章 `passed`。第四～七章以同一份
+  重製端重跑（remake-reg2）全過，差異像素數與既有收據逐點相同。
+- [x] 抽樣截圖表 `parity-ch08-samples-p1..p4.png`（91 列）。
+- [ ] 死亡程式 29 與第 15 回合 event 28 沒有原版收據（limitations）。

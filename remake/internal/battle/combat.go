@@ -335,6 +335,11 @@ type AIPlan struct {
 	// 原始決策。已證實 fallback 上的 nil 表示恢復閘門（recovery gate）拒絕，
 	// 共用收尾仍須完成該單位。
 	NativeIdleRecovery *NativeAIIdleRecoveryDecision
+	// NativeFallbackIdleRecovery 是 mode 0／1 的移動後備找到落點但沒有走成時的 0x13FD4：
+	// 0x13E9C 已經做完 0x12D7B 聚焦與 [0x51A83] 寫入、0x14B78 回 0，0x13C06 才呼叫
+	// 0x13FD4，所以要在這個（不移動的）計畫執行完、共用收尾之前回復。nil 表示沒有
+	// 這一步或回復閘門拒絕。
+	NativeFallbackIdleRecovery *NativeAIIdleRecoveryDecision
 	// NativeError 是失敗即關閉的來源／執行期錯誤；非 nil 時，命令層 runner
 	// 必須在消耗單位行動前停止。
 	NativeError error

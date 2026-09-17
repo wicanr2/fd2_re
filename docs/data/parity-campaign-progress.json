@@ -128,14 +128,21 @@
     },
     {
       "chapter": 8,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch08.json",
+      "slot_manifest": "docs/data/parity-slots/ch08-manifest.json",
+      "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+      "dosgolem_commit": "f57c23df2fa712224b9a54d9f910e5bcaf07067a",
+      "date": "2026-09-17",
+      "verify": "tools/chapter_parity.sh 8 work/parity-slot-ch08 <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x1AD2A tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch08-sample.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch08.json --oracle <run> --remake <out> --include-seq 635 2236 2865 2996",
+      "limitations": [
+        "槽由 ch02-cleared 基底建到 target 7（每章 +6 級政策、--seed 4、--event-states 7:17=1 讓 ch06_post 走 JOIN12）、10 人；瑪琳與貝克威沿用第七章記下的建構偏差，凱麗 JOIN 記錄由工具整筆覆寫（真實存檔是 LOAD 殘值）；合法性檢查 docs/data/parity-plans/ch08-slot-load.jsonl（LOAD 進王城前的戰鬥城鎮、五棟建築）",
+        "原版側 sample-r1 由 dosgolem feat/fd2-oracle-input-chain f57c23d（dirty=0）重生；計畫：LOAD→出口→戰前對白（ACTING 31／32）→第 1～9 回合全隊北上接戰（第 2～7 回合 event 27 各登場兩筆，記錄 29→41）→第 10 回合開頭 force_enemy_clear→戰後 ch07_post（JOIN5 洛娜）→騎士的抉擇城鎮出售／買入／教會與酒店探訪／酒店存檔／出口前 Ctrl+F8 祕密商店；275 動作、3113 個 checkpoint、33 個亂數同步點",
+        "四個 gate 全過（remake-reg2）：單位、HP、回合、金額（2000→7000→7037→7027）、鏡頭逐點相同，ai_order 分岔 0，ch07_post frontier 41 核過，酒店存檔整檔 sha256 與原版相同（11 人）；263 個畫面比較點全在 640 px 預算內、186 點逐像素相同，其餘 76 點是指令環開啟中途（#34，最大 624 px）與 1 點 YES pulse（#35）；after_enemy_phase 與 ai_order 依 oracle_mid_end_turn 只比行為。抽樣截圖 docs/figures/parity-ch08-samples-p1..p4.png（91 列）",
+        "這關以建構槽隊伍正常打撐不久（r1 第 3 回合起陸續陣亡、第 10 回合我方剩 4 人），使用者 2026-09-17 定案提早清場：騎士 slot 10 沒倒（清場時 217/300），死亡程式 29 與第 15 回合 event 28 沒有原版收據，只由轉寫與指令覆蓋檢查支撐；曾以 FD2_ORACLE_LOCK_ALLY_HP 推進（sample-r2／r3），週期性寫回 HP 落在施法演出中途令原版 0x4E6BD 解碼失控，兩輪作廢",
+        "未抽樣到：玩家法術與物品（驅動端沒有指令）；商店買入只買清單第一件給第一位收件人",
+        "城鎮出發縮放暗化與進戰場淡入重製端仍未接（#39），章收據兩端都在這段之外"
+      ],
       "prior_receipts": []
     },
     {

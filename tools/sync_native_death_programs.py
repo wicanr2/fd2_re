@@ -94,9 +94,13 @@ def lower(chapter: Chapter, event, event_id):
         elif kind == "acting":
             lowered = [{"type": "native_acting", "native_source": source,
                         "native_acting": {"resource": o["resource"], "source": source}}]
+        elif kind == "delay":
+            lowered = [{"type": "delay", "native_source": source, "ms": o["ms"]}]
         elif kind == "reset_pose":
             lowered = [{"type": "reset_pose", "native_source": source}]
         elif kind == "spawn_group":
+            if "group" not in o:
+                raise ValueError(f"事件 {event_id} 的 spawn_group 取自 {o.get('group_from')}，要由呼叫端代入")
             # 0x10B4E 建構器把 +5 寫成 0（0x10EED），新單位沒有「已行動」標記。
             lowered = [{"type": "spawn_group", "groups": [o["group"]], "act_immediately": True,
                         "native_spawns": [{"group": o["group"], "via": "spawn_group", "source": source,
@@ -116,7 +120,7 @@ def lower(chapter: Chapter, event, event_id):
 def spawned_groups(event):
     groups = []
     for o in event["ops"]:
-        if o["op"] in ("spawn_group", "staging"):
+        if o["op"] in ("spawn_group", "staging") and "group" in o:
             groups.append(o["group"])
     return groups
 

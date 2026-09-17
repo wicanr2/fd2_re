@@ -38,7 +38,17 @@ SCENARIOS = ROOT / "remake/assets/scenarios"
 CANONICAL = ROOT / "remake/assets/editor-canonical"
 
 
+def bind_round(event, row):
+    """group 取自回合計數 [0x53BEF] 的 spawn_group：回合事件列在回合計數等於該列回合時分派，
+    所以代入 row["turn"]。其餘事件原樣回傳。"""
+    if not any(o.get("group_from") == "round" for o in event["ops"]):
+        return event
+    ops = [dict(o, group=row["turn"]) if o.get("group_from") == "round" else o for o in event["ops"]]
+    return {**event, "ops": ops}
+
+
 def lowered_turn_event(chapter: Chapter, event, row, cid: str, group_sources):
+    event = bind_round(event, row)
     actions = lower(chapter, event, row["event_id"])
     for action in actions:
         action["camp"] = row["camp"]
@@ -47,10 +57,14 @@ def lowered_turn_event(chapter: Chapter, event, row, cid: str, group_sources):
             # 呼叫來源沿用 event_id_groups.json 記的 `call 0x10b4e` 位址（轉寫的 source
             # 是該動作第一條指令，gate=1 時會是前面的 [0x53afa] 寫入）。
             for call in action["native_spawns"]:
-                call["source"] = group_sources[(row["event_id"], call["group"])]
+                key = (row["event_id"], call["group"])
+                if key not in group_sources:
+                    # event_id_groups.json 對回合計數群組記的是 "$turn_counter[0x53bef]"。
+                    key = (row["event_id"], "$turn_counter[0x53bef]")
+                call["source"] = group_sources[key]
             action["groups"] = [call["group"] for call in action["native_spawns"]]
             action.pop("act_immediately", None)
-    prefix = "reinforce" if spawned_groups(event) else "turn"
+    prefix = "reinforce" if spawned_groups(event) else "turn"  # event 已代入回合
     return {
         "id": f'{prefix}_ch{cid}_e{row["event_id"]}_t{row["turn"]}',
         "trigger": "on_turn_end",
@@ -94,7 +108,7 @@ def sync(write: bool, chapters=None):
                    f'turn_ch{cid}_e{row["event_id"]}_t{row["turn"]}'}
             scenario["events"] = [e for e in scenario["events"] if e.get("id") not in ids]
             scenario["events"].append(new_event)
-            removed = [g for g in spawned_groups(event) if g in scenario["initial_groups"]]
+            removed = [g for g in spawned_groups(bind_round(event, row)) if g in scenario["initial_groups"]]
             if removed:
                 scenario["initial_groups"] = [g for g in scenario["initial_groups"] if g not in removed]
                 report.append(f"{path.name} 開局移除回合事件生成的群組 {removed}")

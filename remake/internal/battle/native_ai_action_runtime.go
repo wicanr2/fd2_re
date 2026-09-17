@@ -452,13 +452,24 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 			// 接著走 0x13E9C 以最近的對立單位再規劃一次。第七章 r6 第 7 回合記錄 23
 			// 在 (13,11)：0x14121 的阻擋格是 (14,32)、長路徑第一步就被 (13,12) 的
 			// 零預算格截住而留在原地，原版改以索爾 (12,12) 為目標走到 (12,11)。
-			if mode == 1 || len(plan.Path) > 1 {
+			if len(plan.Path) > 1 {
+				return plan, true, nil
+			}
+			if mode == 1 {
+				// 0x13B3F 0x14121 → jmp 0x13B1E → 0x13C06：沒走成（回 0）就 0x13FD4。
+				if err := s.attachNativeFallbackIdleRecovery(plan, records, actor); err != nil {
+					return nil, true, err
+				}
 				return plan, true, nil
 			}
 		}
 	}
 	if mode == 1 {
-		return nil, true, fmt.Errorf("native AI mode 1 0x14121 produced no raw target; 0x13fd4 recovery is unavailable")
+		if found {
+			return nil, true, fmt.Errorf("native AI mode 1 0x14121 blocked coordinate has no unique raw record")
+		}
+		// 0x14121 沒有阻擋格就回 0，同樣經 0x13C06 呼叫 0x13FD4。
+		return s.nativeAIIdleRecoveryOnlyPlan(u, records, actor, mode)
 	}
 	nearest, found, err := SelectNativeNearestOppositeCoordinate(
 		records, len(s.Units), actor, selector,
@@ -466,14 +477,23 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 	if err != nil {
 		return nil, true, err
 	}
-	if !found {
-		return nil, true, fmt.Errorf("native AI mode 0 0x13e9c produced no raw target; 0x13fd4 recovery is unavailable")
+	// 0x13F67..0x13F84：沒有對立單位、或最近的就在原格，0x13E9C 不聚焦不走行、回 0；
+	// 0x13B21 jmp 0x13C06 → 0x13FD4。
+	if !found || (nearest.X == int(actorRecord[0]) && nearest.Y == int(actorRecord[1])) {
+		return s.nativeAIIdleRecoveryOnlyPlan(u, records, actor, mode)
 	}
 	plan, err := s.nativeAIPlanTowardRawDestination(
 		u, actor, selector, records, actorRecord, baseFlags, costRow, nearest,
 	)
 	if err != nil {
 		return nil, true, err
+	}
+	if len(plan.Path) <= 1 {
+		// 0x13F86..0x13FBF：聚焦、0x14B78 沒走成回 0 → 0x13C06 → 0x13FD4。第八章 r1
+		// 第 7 回合記錄 36 在 (15,21) 被圍住，原版 HP 7→43（180/5）。
+		if err := s.attachNativeFallbackIdleRecovery(plan, records, actor); err != nil {
+			return nil, true, err
+		}
 	}
 	plan.NativeModeFallbackActive = true
 	plan.NativeModeFallback = byte(mode)
@@ -486,6 +506,36 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 	}
 	plan.Target = nil
 	return plan, true, nil
+}
+
+// nativeAIIdleRecoveryOnlyPlan 是移動後備完全沒有落點時的 0x13C06→0x13FD4：沒有聚焦、
+// 沒有走行，只有回復（或閘門拒絕）與共用收尾，和 mode 2 無物理候選同一種計畫形狀。
+func (s *State) nativeAIIdleRecoveryOnlyPlan(u *Unit, records []byte, actor, mode int) (*AIPlan, bool, error) {
+	decision, err := PlanNativeAIIdleRecovery(records, len(s.Units), actor)
+	if err != nil {
+		return nil, true, fmt.Errorf("native AI mode %d 0x13fd4: %w", mode, err)
+	}
+	plan := &AIPlan{
+		U: u, SpellID: -1,
+		NativeModeFallbackActive: true, NativeModeFallback: byte(mode),
+		NativeScoredCommands: s.nativeAIPlanScoredCommands(u),
+	}
+	if decision.Accepted {
+		plan.NativeIdleRecovery = &decision
+	}
+	return plan, true, nil
+}
+
+func (s *State) attachNativeFallbackIdleRecovery(plan *AIPlan, records []byte, actor int) error {
+	decision, err := PlanNativeAIIdleRecovery(records, len(s.Units), actor)
+	if err != nil {
+		return fmt.Errorf("native AI mode %d 0x13fd4: %w", plan.NativeModeFallback, err)
+	}
+	plan.Target = nil
+	if decision.Accepted {
+		plan.NativeFallbackIdleRecovery = &decision
+	}
+	return nil
 }
 
 // nativeAIMovementApproachPoint 是 0x14B78 的第 1～3 段（0x14C16..0x14D43）：

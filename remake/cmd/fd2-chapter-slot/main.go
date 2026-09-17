@@ -138,6 +138,7 @@ type builder struct {
 	steps       []levelStep
 	levelsPer   int
 	overrides   map[int]int
+	eventStates map[[2]int]int // key: {章, 狀態表索引}；只收 -event-states 明示的值
 	target      int
 }
 
@@ -157,6 +158,7 @@ func run() error {
 	gold := flag.Int("gold", -1, "金幣覆寫；負值表示保留基底")
 	levelsPer := flag.Int("levels-per-chapter", 0, "每通關一章，既有隊員各升幾級（政策，非證據；正對照顯示實際升級只發生在有擊殺的人，預設 0）")
 	overrideText := flag.String("level-overrides", "", "以 key7=level 指定最終等級，逗號分隔（攻略校準用）")
+	eventStateText := flag.String("event-states", "", "以 章:索引=值 指定戰後 handler 讀到的戰場狀態表值，逗號分隔（政策，非證據；例如 7:17=1 讓 ch06_post 走 JOIN12）")
 	seed := flag.Int64("seed", 0, "成長擲骰種子；0 表示用 target")
 	assetsDir := flag.String("assets", "assets", "remake 資產根（含 data/、cutscenes/handlers/）")
 	checkRecalc := flag.Bool("check-recalc", true, "先對基底每筆隊員套 0x1B750 重算，確認是恆等（工具自檢）")
@@ -198,15 +200,19 @@ func run() error {
 	}
 
 	b := &builder{
-		roster:    slot.Roster,
-		meta:      slot.Metadata,
-		count:     int(verified.RosterCount),
-		rng:       rand.New(rand.NewSource(*seed)),
-		levelsPer: *levelsPer,
-		overrides: map[int]int{},
-		target:    *target,
+		roster:      slot.Roster,
+		meta:        slot.Metadata,
+		count:       int(verified.RosterCount),
+		rng:         rand.New(rand.NewSource(*seed)),
+		levelsPer:   *levelsPer,
+		overrides:   map[int]int{},
+		eventStates: map[[2]int]int{},
+		target:      *target,
 	}
 	if err := b.parseOverrides(*overrideText); err != nil {
+		return err
+	}
+	if err := b.parseEventStates(*eventStateText); err != nil {
 		return err
 	}
 	sources, err := b.loadTables(*assetsDir)
@@ -313,6 +319,30 @@ func (b *builder) parseOverrides(text string) error {
 			return fmt.Errorf("level-overrides 格式錯誤：%q", pair)
 		}
 		b.overrides[key] = level
+	}
+	return nil
+}
+
+func (b *builder) parseEventStates(text string) error {
+	if strings.TrimSpace(text) == "" {
+		return nil
+	}
+	for _, pair := range strings.Split(text, ",") {
+		kv := strings.SplitN(strings.TrimSpace(pair), "=", 2)
+		ci := []string{}
+		if len(kv) == 2 {
+			ci = strings.SplitN(kv[0], ":", 2)
+		}
+		if len(ci) != 2 {
+			return fmt.Errorf("event-states 格式錯誤：%q", pair)
+		}
+		chapter, err1 := strconv.Atoi(ci[0])
+		index, err2 := strconv.Atoi(ci[1])
+		value, err3 := strconv.Atoi(kv[1])
+		if err1 != nil || err2 != nil || err3 != nil || index < 0 || value < 0 || value > 0xFF {
+			return fmt.Errorf("event-states 格式錯誤：%q", pair)
+		}
+		b.eventStates[[2]int{chapter, index}] = value
 	}
 	return nil
 }
@@ -484,7 +514,7 @@ func (b *builder) applyBeats(chapter int, beats []map[string]any) error {
 			item := int(beat["item_id"].(float64))
 			b.grantItem(chapter, item, beat["source"])
 		case "if":
-			branch, why := b.decideBranch(beat)
+			branch, why := b.decideBranch(chapter, beat)
 			b.assumptions = append(b.assumptions, assumption{Chapter: chapter, Kind: "if", Detail: why})
 			if nested, ok := beat[branch].([]any); ok {
 				if err := b.applyBeats(chapter, toBeatList(nested)); err != nil {
@@ -501,7 +531,9 @@ func (b *builder) applyBeats(chapter int, beats []map[string]any) error {
 
 // decideBranch 用「一般玩家最佳情況」決定 if 分支：無人陣亡、回合數不超限；
 // 能從已建構的隊伍判定的（roster_has、物品在不在）就照實判定。
-func (b *builder) decideBranch(beat map[string]any) (string, string) {
+// 戰場狀態表的值來自該章戰鬥裡的事件（例如格子事件、回合事件寫的 state），存檔裡沒有；
+// 沒以 -event-states 明示就當 0。它可能決定 JOIN（ch06_post 的 state17），不只影響對白。
+func (b *builder) decideBranch(chapter int, beat map[string]any) (string, string) {
 	cond, _ := beat["condition"].(map[string]any)
 	op, _ := cond["op"].(string)
 	switch op {
@@ -522,7 +554,21 @@ func (b *builder) decideBranch(beat map[string]any) (string, string) {
 	case "native_round_gt", "native_inactive_count_gt", "native_any_of":
 		return "else", op + "→false（假設回合數未超限、陣亡數未超限）"
 	case "native_event_state_eq", "native_event_state_nonzero":
-		return "else", op + "→false（事件旗標假設未觸發；只影響對白）"
+		index := intField(cond, "event_state_index")
+		value, given := b.eventStates[[2]int{chapter, index}]
+		source := "-event-states 明示"
+		if !given {
+			value, source = 0, "未明示，當 0"
+		}
+		taken := value != 0
+		if op == "native_event_state_eq" {
+			taken = value == intField(cond, "event_state_value")
+		}
+		branch := "else"
+		if taken {
+			branch = "then"
+		}
+		return branch, fmt.Sprintf("%s(state%d)→%t（第 %d 章戰場狀態 %d＝%d，%s）", op, index, taken, chapter, index, value, source)
 	}
 	return "else", fmt.Sprintf("未知條件 %q→else", op)
 }

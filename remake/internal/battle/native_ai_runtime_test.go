@@ -526,6 +526,38 @@ func TestNextAIPlanMode0FallsBackToNearestWhenBlockedPlanStays(t *testing.T) {
 	}
 }
 
+// 0x13E9C 聚焦後 0x14B78 沒走成就回 0，0x13B21 jmp 0x13C06 → 0x13FD4：第八章 r1 第 7 回合
+// 記錄 36 被圍住，原版 HP 7→43（max 180 的五分之一）。計畫不移動，但要帶回復決策。
+func TestNextAIPlanMode0StuckFallbackCarriesIdleRecovery(t *testing.T) {
+	actor := nativeAIRuntimeUnit(0, 0, 1, 0)
+	actor.MV = 1
+	actor.HP = 7
+	actor.MaxHP = 180
+	blocker := nativeAIRuntimeUnit(1, 0, 1, 0)
+	target := nativeAIRuntimeUnit(4, 0, 0, 0)
+	target.Camp = Own
+	state := &State{
+		W: 5, H: 1, Units: []*Unit{actor, blocker, target},
+		NativeCompositionEventBytes: make([]byte, 5),
+		NativeTerrainMoveCodes:      make([]byte, 5),
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil || plan.NativeModeFallback != 0 || plan.Target != nil {
+		t.Fatalf("mode0 plan=%+v", plan)
+	}
+	moved := len(plan.Path) > 1
+	recovery := plan.NativeFallbackIdleRecovery
+	if plan.NativeIdleRecovery != nil {
+		recovery = plan.NativeIdleRecovery
+	}
+	if moved || recovery == nil {
+		t.Fatalf("被圍住的 mode 0 應該不動並帶 0x13FD4 回復：path=%v recovery=%+v", plan.Path, recovery)
+	}
+}
+
 func mustNativeAIModeBlockedSearchFlags(t *testing.T, state *State, selector int) []byte {
 	t.Helper()
 	records, err := NativeAIScoringRecords(state.Units)

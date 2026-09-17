@@ -1,6 +1,9 @@
 package battle
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestScoreNativeAI1598ARejectsAllZeroWinner(t *testing.T) {
 	unit := completeNativeAIScoringUnit()
@@ -96,5 +99,19 @@ func TestMap0AssetsProducePositiveNativeAI1598AScoreForCommand0(t *testing.T) {
 	if got.PositiveWinner.CommandID != 0 ||
 		got.PositiveWinner.X != 23 || got.PositiveWinner.Y != 14 {
 		t.Fatalf("map0 command0 native winner=%+v", got)
+	}
+	// 0x159A5 push 0 → 0x4E555：施法落點固定用成本列 0，行動者自己的移動成本列
+	// （這裡用全部是 10 的列代表崎嶇地形）不能讓落點變少。
+	heavy := make([]byte, NativeMovementCostRowSize)
+	for i := range heavy {
+		heavy[i] = 10
+	}
+	again, err := ScoreNativeAI1598A(
+		st.W, st.H, records, len(st.Units), actor, 0, st.Units[actor], book,
+		nativeCompositionBaseFlagsForTest(t, st),
+		st.NativeTerrainMoveCodes, heavy, nil,
+	)
+	if err != nil || !reflect.DeepEqual(again, got) {
+		t.Fatalf("行動者成本列影響了 0x1598a 落點：%+v／%v，要 %+v", again, err, got)
 	}
 }

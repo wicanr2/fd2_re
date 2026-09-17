@@ -37,6 +37,8 @@
 * ``{"town_probe": {"moves": [...]}}``：在戰間城鎮沿方向序列切建築，每步 enter 看
   進到哪裡，進了選單就 esc 退回。城鎮是五格循環而不是走動畫面：left 遞增、
   right 遞減，up 與 down 不動。
+* ``{"shop_buy": {"moves": ["left", "left"]}}``：切到道具店（選項 3）買清單第一件給第一位
+  收件人，金幣前後值記進 ``shop_buy`` 動作；沒扣錢就記 ``bought=false``。
 * ``{"town_save": true, "slot": 0}``：在 0 號酒店存到指定四槽，建立下一關的
   續跑點。判準是覆蓋層裡
   ``FD2.SAV`` 的內容雜湊變更，或 dosgolem 直接記到對該檔的成功 DOS 寫入；後者
@@ -1588,6 +1590,45 @@ def do_shop_sell(command):
     return town_seen(steps)
 
 
+def do_shop_buy(command):
+    """在戰間城鎮走進道具店買清單第一件，給第一位收件人，記成語意動作 ``shop_buy``。
+
+    重製端 native_shop_ui.go 的購買流程：店家選單預設選項 0（購買）→ 清單 enter 選
+    第一件 → 確認視窗預設 YES → 收件人列表 enter 選第一位 → 成功動畫與扣款後回到清單；
+    道具（item type >= 0x20）不問要不要裝備。``moves`` 是從目前建築切到道具店（選項 3）
+    的方向鍵，預設假設從 0 號酒店出發。金幣前後值從 ``view.gold`` 讀；金幣沒變就是沒買成，
+    由計畫決定要不要繼續（回 True，收據照實記 ``bought=false``）。
+    """
+    command = command_options(command, "shop_buy")
+    steps = int(command.get("steps", 10_000_000))
+    settle_count = int(command.get("settle", 6))
+    if not town_seen(steps):
+        print("shop_buy：目前不在城鎮", file=sys.stderr)
+        return False
+    for move in command.get("moves", ["left", "left", "left"]):
+        seq, current = send(move, steps)
+        report(seq, move, current, " shop-buy=move")
+    before = state()
+    gold_before = (before.get("view") or {}).get("gold")
+    for key, note in (("enter", "enter-shop"), ("enter", "pick-buy"), ("enter", "first-good"),
+                      ("enter", "yes"), ("enter", "first-recipient")):
+        seq, current = send(key, max(steps, 10_000_000))
+        report(seq, key, current, f" shop-buy={note}")
+        current = settle(steps, settle_count)
+    current = settle(steps, int(command.get("after_settle", 10)))
+    gold_after = (current.get("view") or {}).get("gold")
+    for _ in range(int(command.get("escape_max", 6))):
+        if ui_mode(state()) == "town":
+            break
+        seq, current = send("esc", max(steps, 10_000_000))
+        report(seq, "esc", current, " shop-buy=leave")
+        current = settle(steps, 4)
+    log_action("shop_buy", state(), building=3, gold_before=gold_before, gold_after=gold_after,
+               bought=(gold_after is not None and gold_before is not None and gold_after != gold_before))
+    print(f"shop_buy：金幣 {gold_before}→{gold_after}", flush=True)
+    return town_seen(steps)
+
+
 def do_secret_shop(command):
     """在城鎮切到指定建築後送祕密商店的功能鍵 chord，enter 進店，記成 ``secret_shop``。"""
     command = command_options(command, "secret_shop")
@@ -1786,6 +1827,10 @@ def main():
             continue
         if "shop_sell" in command:
             if not do_shop_sell(command):
+                return 16
+            continue
+        if "shop_buy" in command:
+            if not do_shop_buy(command):
                 return 16
             continue
         if "town_probe" in command:

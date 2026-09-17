@@ -79,3 +79,19 @@ func TestApplyEquippedAttackRangeUsesEquippedWeaponOnly(t *testing.T) {
 		t.Fatalf("unequipped weapon must fall back to the default range, got [%d,%d]", u.AtkMin, u.AtkMax)
 	}
 }
+
+// 洛娜（第八章 FDFIELD group 0）裝槍 22（range 1..2）與防具 135（item.json range 1..1）：
+// 射程只看 ID < 0x80 的武器，防具不能把 2 格蓋回 1。
+func TestApplyEquippedAttackRangeIgnoresArmorRange(t *testing.T) {
+	stats := map[int]ItemStats{22: {Type: 3, AP: 50, Min: 1, Max: 2}, 135: {Type: 22, DP: 48, Min: 1, Max: 1}}
+	u := battle.Unit{Inventory: []int{22, 135}, Equipped: []bool{true, true}}
+	ApplyEquippedAttackRange(&u, stats)
+	if u.AtkMin != 1 || u.AtkMax != 2 {
+		t.Fatalf("射程 %d..%d，要 1..2", u.AtkMin, u.AtkMax)
+	}
+	u = battle.Unit{Inventory: []int{135, 22}, Equipped: []bool{true, true}, EquipmentBaseSet: true}
+	RecomputeEquipment(&u, stats)
+	if u.AtkMin != 1 || u.AtkMax != 2 {
+		t.Fatalf("RecomputeEquipment 射程 %d..%d，要 1..2", u.AtkMin, u.AtkMax)
+	}
+}

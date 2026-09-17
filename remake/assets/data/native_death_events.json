@@ -564,6 +564,52 @@
       ]
     },
     {
+      "id": 27,
+      "handler": "0x349d9",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "pan",
+          "x": 8,
+          "y": 2,
+          "source": "0x349e3"
+        },
+        {
+          "op": "delay",
+          "ms": 100,
+          "source": "0x349ef"
+        },
+        {
+          "op": "spawn_group",
+          "group_from": "round",
+          "gate": 0,
+          "source": "0x349f9"
+        },
+        {
+          "op": "delay",
+          "ms": 100,
+          "source": "0x34a07",
+          "tail_sources": [
+            "0x353d1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "handler": "0x34a0e",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_byte_and_range",
+          "first": 10,
+          "last": 27,
+          "mask": 128,
+          "source": "0x34a19"
+        }
+      ]
+    },
+    {
       "id": 29,
       "handler": "0x34a3c",
       "battle_units": [

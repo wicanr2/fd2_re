@@ -161,6 +161,18 @@ EVENTS = [
     {"id": 24, "handler": 0x348FC, "ops": [
         op("dialogue", [(0x34906, 0x3491F), (0x34C0F, 0x34C1D)], text=3),
     ]},
+    # 27 是第八章（map 7）第 2～7 回合的回合事件：鏡頭到 (8,2)、delay(100)、以回合計數
+    # [0x53BEF] 當 group 呼叫 0x10B4E、delay(100)（尾端跳到共用的 0x353D1）。
+    {"id": 27, "handler": 0x349D9, "ops": [
+        op("pan", [(0x349E3, 0x349EF)], x=8, y=2),
+        op("delay", [(0x349EF, 0x349F9)], ms=0x64),
+        op("spawn_group", [(0x349F9, 0x34A07)], group_from="round", gate=0),
+        op("delay", [(0x34A07, 0x34A0E), (0x353D1, 0x353D9)], ms=0x64),
+    ]},
+    # 28 是第八章第 15 回合的回合事件，本體就是死亡程式 29 呼叫的那段迴圈。
+    {"id": 28, "handler": 0x34A0E, "ops": [
+        op("ai_byte_and_range", [(0x34A19, 0x34A3A)], first=0xA, last=0x1B, mask=0x80, inline=True),
+    ]},
     {"id": 29, "handler": 0x34A3C, "ops": [
         op("dialogue", [(0x34A46, 0x34A6D)], text=2),
         op("ai_byte_and_range", [(0x34A6D, 0x34A79), (0x34A19, 0x34A3A)],
@@ -356,8 +368,15 @@ def check_op(image, event_id, o):
                            "call 0x135dd", "add esp, 8"], where)
     elif kind == "acting":
         expect_seq(insns, [f"push {imm(o['resource'])}", "call 0x1366a", "add esp, 4"], where)
+    elif kind == "delay":
+        expect_seq(insns, [f"push {imm(o['ms'])}", "call 0x375b2", "add esp, 4"], where)
     elif kind == "spawn_group":
-        body = [f"push {imm(o['group'])}", "call 0x10b4e", "add esp, 4"]
+        if o.get("group_from") == "round":
+            # group 取自回合計數；由回合事件列觸發時就是該列的回合。
+            push = ("push dword ptr [0x3bef]", ROUND)
+        else:
+            push = f"push {imm(o['group'])}"
+        body = [push, "call 0x10b4e", "add esp, 4"]
         if o["gate"]:
             body = [("mov byte ptr [0x3afa], 1", GATE), *body, ("mov byte ptr [0x3afa], 0", GATE)]
         expect_seq(insns, body, where)
@@ -402,8 +421,9 @@ def check_op(image, event_id, o):
             f"cmp edx, {imm(o['last'] + 1)}", lambda i: i[1] == "jl"], where)
     elif kind == "ai_byte_and_range":
         count = o["last"] - o["first"] + 1
+        prefix = [] if o.get("inline") else ["push dword ptr [esp + 4]", "call 0x34a0e", "add esp, 4"]
         expect_seq(insns, [
-            "push dword ptr [esp + 4]", "call 0x34a0e", "add esp, 4",
+            *prefix,
             "xor edx, edx", f"lea ebx, [edx + {imm(o['first'])}]", "mov eax, ebx", "shl eax, 2",
             "add ebx, eax", "shl ebx, 4", ("mov eax, dword ptr [0x3a45]", UNITS),
             f"and byte ptr [ebx + eax + 0x34], {H(o['mask'])}", "inc edx",
@@ -557,7 +577,7 @@ def main():
         ops = []
         for o in event["ops"]:
             sources = check_op(image, event["id"], o)
-            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register")}
+            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline")}
             if "rodata" in clean:
                 clean["rodata"] = H(clean["rodata"])
             clean["source"] = sources[0]

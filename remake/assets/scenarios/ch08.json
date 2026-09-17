@@ -426,11 +426,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x349e3",
+          "grid": [
+            8,
+            2
+          ],
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x349ef",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             2
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 2,
@@ -439,7 +455,15 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 27
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x34a07",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
         }
       ]
     },
@@ -452,11 +476,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x349e3",
+          "grid": [
+            8,
+            2
+          ],
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x349ef",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             3
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 3,
@@ -465,7 +505,15 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 27
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x34a07",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
         }
       ]
     },
@@ -478,11 +526,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x349e3",
+          "grid": [
+            8,
+            2
+          ],
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x349ef",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             4
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 4,
@@ -491,7 +555,15 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 27
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x34a07",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
         }
       ]
     },
@@ -504,11 +576,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x349e3",
+          "grid": [
+            8,
+            2
+          ],
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x349ef",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             5
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 5,
@@ -517,7 +605,15 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 27
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x34a07",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
         }
       ]
     },
@@ -530,11 +626,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x349e3",
+          "grid": [
+            8,
+            2
+          ],
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x349ef",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             6
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 6,
@@ -543,7 +655,15 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 27
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x34a07",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
         }
       ]
     },
@@ -556,11 +676,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x349e3",
+          "grid": [
+            8,
+            2
+          ],
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x349ef",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             7
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 7,
@@ -569,7 +705,37 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 27
+          "native_event_id": 27,
+          "camp": "enemy"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x34a07",
+          "ms": 100,
+          "native_event_id": 27,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch08_e28_t15",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 15
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x34a19",
+          "native_death_op": {
+            "op": "ai_byte_and_range",
+            "first": 10,
+            "last": 27,
+            "mask": 128
+          },
+          "native_event_id": 28,
+          "camp": "enemy"
         }
       ]
     }

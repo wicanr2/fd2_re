@@ -14,6 +14,12 @@ type NativeAI1598AScoreResult struct {
 	HasPositiveWinner bool
 }
 
+// nativeAICommandCostRow 是 0x4E555(0) 的成本列：0x55446 的 20 個 1
+// （remake/assets/data/native_movement_cost_rows.json selector 0）。
+var nativeAICommandCostRow = [NativeMovementCostRowSize]byte{
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+}
+
 // ScoreNativeAI1598A connects the proven 0x1598a slices without executing a
 // command: availability, destination/target groups, 0x15b77 family scoring,
 // and the strict positive-score winner comparison.
@@ -51,9 +57,12 @@ func ScoreNativeAI1598A(
 	candidates := make([]NativeAISpellCandidate, 0)
 	for _, commandID := range NativeAvailableAIScoredCommandIDs(unit, book) {
 		command := book[commandID]
+		// 施法落點不走行動者的移動成本：0x159A5 push 0 → 0x4E555 取成本列 0（20 個 1），
+		// 0x15A60 把它與指令 +3 距離一起交給 0x4E040。傳進來的 costRow 是行動者那一列，
+		// 地形成本大於 1 的路上會把距離 5 的施法算成走不到（第八章 r1 seq 940 記錄 18）。
 		groups, err := NativeAIScoredCommandCandidateGroups(
 			w, h, records, count, actor, selector, command,
-			baseFlags, terrainMoveCodes, costRow,
+			baseFlags, terrainMoveCodes, nativeAICommandCostRow[:],
 		)
 		if err != nil {
 			return NativeAI1598AScoreResult{}, err

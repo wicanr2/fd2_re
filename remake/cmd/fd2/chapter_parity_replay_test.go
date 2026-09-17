@@ -88,6 +88,7 @@ type parityReplay struct {
 	t          *testing.T
 	g          *Game
 	out        string
+	run        string // 原版側輸出目錄（checkpoint-NNNN.json）
 	log        *os.File
 	index      int
 	battle     string
@@ -265,7 +266,7 @@ func TestChapterParityReplay(t *testing.T) {
 	if g.loadErr != "" {
 		t.Fatal(g.loadErr)
 	}
-	r := &parityReplay{t: t, g: g, out: out,
+	r := &parityReplay{t: t, g: g, out: out, run: run,
 		battle:        fmt.Sprintf("battle_ch%02d", chapter),
 		town:          fmt.Sprintf("town_ch%02d", chapter),
 		townAfter:     fmt.Sprintf("town_ch%02d", chapter+1),
@@ -359,6 +360,8 @@ func TestChapterParityReplay(t *testing.T) {
 			r.townSave(action)
 		case "shop_sell":
 			r.shopSell(action)
+		case "shop_buy":
+			r.shopBuy(action)
 		case "secret_shop":
 			r.secretShop(action)
 		default:
@@ -423,6 +426,16 @@ func (r *parityReplay) mark(action parityAction) {
 		r.ensureTown()
 		r.checkpoint("town_after_battle", action.Seq, "town", true)
 	default:
+		// 戰場裡的 mark 通常接在 await round>=N 之後：原版側已經推過敵方階段、回到下一回合
+		// 的游標。重製端上一個動作（全員行動完的 wait）只觸發自動換手，敵方階段還沒跑完，
+		// 先推到有操作權再拍，否則比到的是換手前的畫面。
+		if g.camp != nil && g.camp.NodeID() == r.battle && g.st != nil && action.Round > g.st.Turn {
+			if !pump(t, g, journeyStoryFrames, func() bool {
+				return r.playerHasControl() && g.st.Turn >= action.Round
+			}) {
+				t.Fatalf("mark %s(seq %d)：推不到第 %d 回合的操作權\n阻塞：%s", action.Label, action.Seq, action.Round, ch01Blockers(g))
+			}
+		}
 		r.checkpoint("mark:"+action.Label, action.Seq, r.ui(), true)
 	}
 }
@@ -846,6 +859,10 @@ func (r *parityReplay) selectUnit(action parityAction) *battle.Unit {
 	if !pump(t, g, journeyStoryFrames, r.playerHasControl) {
 		t.Fatalf("select(seq %d)：玩家沒有操作權\n阻塞：%s", action.Seq, ch01Blockers(g))
 	}
+	// 先重走上一個動作到 select 之間的方向鍵：游標經過的格子會推 HUD anchor
+	//（0x11B48 家族每步重繪走 0x1ACF3）。第八章 r1 seq 1919..1923 左三上二，途中可見游標
+	// (2,6) 把小窗翻到右邊；瞬移到選取格就漏掉那一步（seq 1924 起 4600 px）。
+	r.replayDirectionKeys(action)
 	if !g.positionScreenshotCursor(action.At[0], action.At[1]) {
 		t.Fatalf("select(seq %d)：游標移不到 (%d,%d)", action.Seq, action.At[0], action.At[1])
 	}
@@ -980,6 +997,39 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 		walked = true
 	}
 	return walked
+}
+
+// replayDirectionKeys 只重走 (prevSeq, action.Seq) 之間的方向鍵，不碰 enter／esc：select
+// 之前那些鍵是驅動端把游標推到單位上，沒有被拒絕的確認可比對。起點要和原版側上一個動作
+// 的 checkpoint 游標同一格才重走；起點不同（例如攻擊者反擊陣亡後游標停的格子不同，第四章
+// r13 seq 793）從別處走同樣的鍵會把鏡頭推歪，那種情況照舊直接定位。
+func (r *parityReplay) replayDirectionKeys(action parityAction) {
+	g := r.g
+	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", r.prevSeq)))
+	if err != nil {
+		return
+	}
+	var cp struct {
+		View struct {
+			CursorX int `json:"cursor_x"`
+			CursorY int `json:"cursor_y"`
+		} `json:"view"`
+	}
+	if json.Unmarshal(raw, &cp) != nil || cp.View.CursorX != g.curX || cp.View.CursorY != g.curY {
+		return
+	}
+	for seq := r.prevSeq + 1; seq < action.Seq; seq++ {
+		switch r.keys[seq] {
+		case "up":
+			g.moveMapCursor(0, -1)
+		case "down":
+			g.moveMapCursor(0, 1)
+		case "left":
+			g.moveMapCursor(-1, 0)
+		case "right":
+			g.moveMapCursor(1, 0)
+		}
+	}
 }
 
 // onlyIdleKeysUntil 回報 [from, to) 之間原版側沒有再送任何鍵（只有空字串的前進格）。
@@ -1421,6 +1471,53 @@ func (r *parityReplay) shopSell(action parityAction) {
 	g.leaveShop()
 	pump(t, g, 120, func() bool { return g.camp.NodeID() == r.currentTown() })
 	r.checkpoint("shop_sell", action.Seq, "town", true)
+}
+
+// shopBuy 對應驅動端的 shop_buy：道具店（選項 3）買清單第一件給第一位收件人。
+// 鍵序與驅動端相同（enter 進店、enter 購買、enter 第一件、enter YES、enter 第一位），
+// 每一鍵都走 handleNativeShopInputState，中間的開關框工作直接收掉（離屏不畫）。
+func (r *parityReplay) shopBuy(action parityAction) {
+	t, g := r.t, r.g
+	r.ensureTown()
+	for g.campSel != 3 {
+		if !g.moveNativeTownSelection(1) {
+			t.Fatalf("shop_buy(seq %d)：無法走到道具店", action.Seq)
+		}
+	}
+	r.enterTownOption(3)
+	drain := func() {
+		for i := 0; g.nativeShopUIJob != nil; i++ {
+			if i > 32 {
+				t.Fatalf("shop_buy(seq %d)：商店工作收不完（mode=%q）", action.Seq, g.nativeShopMode)
+			}
+			after := g.nativeShopUIJob.after
+			g.nativeShopUIJob = nil
+			if after != nil {
+				after()
+			}
+		}
+	}
+	drain()
+	gold := g.gold
+	for _, want := range []string{"menu", "purchase", "confirm", "recipient_consumable"} {
+		if g.nativeShopMode != want || g.loadErr != "" {
+			t.Fatalf("shop_buy(seq %d)：預期 %q，實際 mode=%q err=%q msg=%q",
+				action.Seq, want, g.nativeShopMode, g.loadErr, g.msg)
+		}
+		g.handleNativeShopInputState(nativeShopTransferInput{enter: true})
+		drain()
+	}
+	// 成功動畫與扣款之後回到購買清單（product loop）。
+	if g.nativeShopMode != "purchase" || g.gold == gold {
+		t.Fatalf("shop_buy(seq %d)：購買沒有完成（mode=%q gold %d→%d msg=%q）",
+			action.Seq, g.nativeShopMode, gold, g.gold, g.msg)
+	}
+	if action.Gold != nil && g.gold != *action.Gold {
+		r.note(action, fmt.Sprintf("金幣 %d，原版 %d", g.gold, *action.Gold))
+	}
+	g.leaveShop()
+	pump(t, g, 120, func() bool { return g.camp.NodeID() == r.currentTown() })
+	r.checkpoint("shop_buy", action.Seq, "town", true)
 }
 
 // secretChordScanCode 把 dosgolem 鍵表的 F 鍵 chord 名稱換成 BIOS 掃描碼：

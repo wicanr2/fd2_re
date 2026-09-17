@@ -136,6 +136,8 @@ def cmd_build(args: argparse.Namespace) -> int:
     ]
     if args.level_overrides:
         inner += ["-level-overrides", args.level_overrides]
+    if args.event_states:
+        inner += ["-event-states", args.event_states]
     script = (
         "go build -o /tmp/fd2-chapter-slot ./cmd/fd2-chapter-slot && "
         + " ".join(inner)
@@ -179,6 +181,8 @@ def main() -> int:
     p.add_argument("--gold", type=int, default=-1)
     p.add_argument("--levels-per-chapter", type=int, default=0)
     p.add_argument("--level-overrides", default="")
+    p.add_argument("--event-states", default="",
+                   help="章:索引=值，逗號分隔；戰後 handler 讀的戰場狀態表值（政策，寫進 manifest assumptions）")
     p.add_argument("--seed", type=int, default=0)
     p.set_defaults(func=cmd_build)
 

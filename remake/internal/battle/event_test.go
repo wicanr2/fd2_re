@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"testing"
 )
@@ -454,10 +455,15 @@ func TestChapter8UsesNativePartyThenGroup0RuntimeOrder(t *testing.T) {
 
 	st.Turn = 2
 	actions := sc.TriggerActions(st, "on_turn_end", "")
-	if len(actions) != 1 {
-		t.Fatalf("chapter8 turn2 actions=%#v", actions)
+	// event 27 0x349D9：pan (8,2) → delay(100) → 0x10B4E([0x53BEF]) → delay(100)。
+	kinds := make([]string, len(actions))
+	for i, action := range actions {
+		kinds[i] = action.Type
 	}
-	if _, _, err := sc.ExecuteActionChecked(st, actions[0]); err != nil {
+	if !reflect.DeepEqual(kinds, []string{"pan", "delay", "spawn_group", "delay"}) {
+		t.Fatalf("chapter8 turn2 actions=%v", kinds)
+	}
+	if _, _, err := sc.ExecuteActionChecked(st, actions[2]); err != nil {
 		t.Fatal(err)
 	}
 	if len(st.Units) != 31 || st.Units[29] == nil || st.Units[29].Group != 2 ||

@@ -689,6 +689,62 @@
       "why": "2026-09-17 兩個標記測試在 HEAD 上綠是因為掃描改的是 clone 指標、測試握的舊指標沒被減；修好指標採用之後才紅，值是 1 不是 2..5。",
       "date": "2026-09-17",
       "evidence": "remake/cmd/fd2/native_item_panel_ui_test.go TestNativeRetainedStatItemsSyncDerivedWordsAndMarkers"
+    },
+    {
+      "id": "chapter-slot-event-state-decides-join",
+      "area": "資料",
+      "rule": "建槽時戰後 handler 讀戰場狀態表（native_event_state_eq／nonzero）的分支不能一律當 false：那個值來自該章戰鬥裡的事件，存檔裡沒有，而它可能決定 JOIN（ch06_post 的 state17 決定凱麗入隊）。要走一般玩家最佳路徑就用 --event-states 章:索引=值 明示，manifest 會記成 assumption；建完先核對 roster_count 與下一章戰役資料的隊伍人數。",
+      "why": "2026-09-17 建第八章槽時工具照舊把 state17 當 false，名冊 9 人；第七章收據裡原版戰後已 JOIN12 是 10 人，註解還寫著「只影響對白」。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2-chapter-slot/main.go decideBranch；docs/data/parity-slots/ch08-manifest.json assumptions"
+    },
+    {
+      "id": "chapter-slot-seed-must-match-prior-manifest",
+      "area": "資料",
+      "rule": "建構槽的成長擲骰 seed 預設等於 target，換 target 就換一條亂數序列；往下一章建槽時要沿用前幾章 manifest 的 seed（第六、七章是 4），並先用同一組參數重建上一章的槽，sha256 對上台帳再往前。",
+      "why": "2026-09-17 不帶 --seed 重建第七章槽得到 bc27…，台帳是 85b0…；差異全在升級成長值，第六、七章建槽時明示了 --seed 4。",
+      "date": "2026-09-17",
+      "evidence": "docs/data/parity-slots/ch07-manifest.json seed；docs/data/parity-campaign-progress.json chapter 7 slot_sha256"
+    },
+    {
+      "id": "lock-ally-hp-corrupts-command-presentation",
+      "area": "對拍",
+      "rule": "`FD2_ORACLE_LOCK_ALLY_HP` 每 2000 道指令把我方 HP 寫回最高值，會落在施法演出中途：傷害已寫、演出還在用前後 HP 算數字與血條，被寫回之後原版在 0x4E6BD 的 RLE 解碼失控，一路寫到近堆上界。有敵方施法的章節不要用它；打不過就提早 force_enemy_clear，或在建槽時明示政策值，不要在章內週期性改狀態。",
+      "why": "2026-09-17 第八章 sample-r2／r3 開了 HP 鎖，第 3 回合敵方記錄 18 對貝克威放指令 0 時 dosgolem 以 STOSB 寫 0x278000、0x2100001 中止；沒鎖的 r1 同一段正常。",
+      "date": "2026-09-17",
+      "evidence": "work/parity-slot-ch08/sample-r2/oracle.log、sample-r3/oracle.log 的 error 欄位"
+    },
+    {
+      "id": "ai-1598a-command-destinations-use-cost-row-0",
+      "area": "逆向",
+      "rule": "AI 施法評分 0x1598A 的落點擴散用成本列 0（0x159A5 push 0 → 0x4E555，20 個 1），不是行動者自己的移動成本列；施法距離走崎嶇地形不打折。轉寫其他用 0x4E040 的呼叫點時，先看它 push 的是哪一列。",
+      "why": "2026-09-17 第八章 r1 第 3 回合記錄 18、19 在距離 5 放指令 0，重製端用行動者成本列算成走不到而沒有候選，整個敵方階段分岔。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/battle/native_ai_1598a_score.go nativeAICommandCostRow"
+    },
+    {
+      "id": "ai-mode0-mode1-stuck-fallback-recovers",
+      "area": "逆向",
+      "rule": "mode 0／1 的移動後備（0x14121、0x13E9C）沒走成就回 0，0x13B21／0x13B44 跳到 0x13C06 呼叫 0x13FD4：HP 未滿且 +0x25／+0x26 為 0 就回 MaxHP/5。被圍住不動的敵人會回血；重製端的不動計畫要帶這一步，不是只回傳原地計畫。",
+      "why": "2026-09-17 第八章 r1 第 7 回合記錄 36 在 (15,21) 被圍住，原版 HP 7→43，重製端留在 7，下一回合起 HP 分岔。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/battle/native_ai_action_runtime.go attachNativeFallbackIdleRecovery"
+    },
+    {
+      "id": "replay-select-walks-cursor-keys",
+      "area": "對拍",
+      "rule": "重播端 select 之前要重走原版側送過的方向鍵（起點游標和原版上一個 checkpoint 一致時），不要直接把游標定位到單位上：途中經過的可見游標格會推 HUD anchor，瞬移會漏掉小窗翻邊。起點不同（例如攻擊者反擊陣亡）就退回直接定位。",
+      "why": "2026-09-17 第八章 r1 seq 1919..1923 左三上二，途中 (2,6) 把小窗翻到右邊，重製端瞬移之後 27 點各差 4600 px；第一次加上重走時第四章 seq 793 起點不同反而多出 1111 px。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/chapter_parity_replay_test.go replayDirectionKeys"
+    },
+    {
+      "id": "fdfield-own-units-need-weapon-range",
+      "area": "重製端",
+      "rule": "攻擊射程只從 ID < 0x80 的已裝備武器取（0x1B83D），防具在 item.json 也有 range [1,1]，不能拿來覆寫；FDFIELD 直接登場的我方記錄（raw +6==2、不在持久名冊）和 LOAD 的名冊一樣要套 ApplyEquippedAttackRange，地圖單位檔沒有射程欄位。",
+      "why": "2026-09-17 第八章洛娜裝槍 22（1..2）與防具 135，原版第 1 回合在距離 2 攻擊，重製端指令環攻擊不可選。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/campaign/equipment.go ApplyEquippedAttackRange；remake/cmd/fd2/main.go applyFieldOwnAttackRanges"
     }
   ]
 }
