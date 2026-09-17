@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 18 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,6 +110,14 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 #37 用原版側探針（work/parity-slot-ch07/probe-fade，FD2_ORACLE_FRAME_EIP=0x11D40 抽幀、FD2_ORACLE_EIP_TRACE=0x1F882,0x11D40）把出口 YES 之後到 battle_start 之間的兩段過場閉合了（56 §城鎮進戰場的過場、輔助基準 docs/figures/parity-ch07-town-fade-probe.png）：(1) 0x2D190..0x2D275 城鎮出發：ebx=1..10 十步，每步依 [0x5412B] 城鎮變體的 0x52635／0x52647 表內插座標呼叫 0x2FB9F 重畫（建築往中心放大），0x373C4 搬到 VGA，0x11D40(0,0xFF,4k) 把 DAC 壓暗，迴圈後 0x11D40(0,0xFF,0x40) 全黑、0x375C0 清 VGA；(2) 0x1F42D 進戰場：LOADCH 之後 0x1F544 呼叫 0x11D40(0,0xFF,level) 64 次、level 0x40→0 從黑淡入地圖，之後才是戰前 handler 的對白與 battle_start 游標。正式重製端從城鎮出發直接進戰場，兩段都沒接；章收據的 departure_prompt／battle_start 都在這段之外，gate 看不到。做法：把 0x2FB9F 的縮放重畫與 0x11D40 的 DAC 等級寫成 indexed composer 的兩個過場工作（城鎮側十步、戰場側 64 步），用探針幀（每步一幀，index parity-ch07-town-fade-probe.json）做同狀態對照；0x2FB9F 的內插表 0x52635／0x52647 與「建築往中心放大」目前是強推論，接之前先把它反組譯成規則。
 
 怎樣算做完：重製端從城鎮出口 YES 到戰場第一幀之間播出十步縮放暗化與 64 步淡入；用 FD2_ORACLE_FRAME_EIP=0x11D40 的探針幀逐步對照（每步 diff 在 640 px 預算內）並記進 57；56 的 0x2FB9F 內插表升為已證實。
+
+### 戰場 HUD 小窗 anchor 要跟著每次 0x11CAC 重繪評估，不是只在幾個呼叫點
+
+`battle-hud-anchor-follows-redraw` · 缺陷 · [#40](https://github.com/wicanr2/fd2_re/issues/40) · 仍未完成 · 自承還在 remake/internal/battle/native_map_view.go
+
+原版每次 `0x11CAC` 重繪都經 `0x1ACF3` 檢查閘 A `[0x51AAB]`／閘 B `[0x51AAC]`，兩個都開就由 `0x1AD2A` 依當下可見游標決定小窗在左或右（可見游標 Y>5 時 X<3 翻右、X>9 翻左）。重製端沒有「重繪」這個單一入口，anchor 只在幾個呼叫點評估：鍵盤游標步 `nativeCursorStepHUD`（照 `NativeMapCursorStepRedraws`）、AI 聚焦 `FocusNativeMapCursorSteps`、戰場節點進場、回合開頭聚焦 `stepNativePlayerFocus`（每步無條件評估）與 fd380cc6 新增的 `restoreNativeDisplayGateB`。已知沒有評估的重繪：`0x13FD4` 原地回復的 `focusUnitJob`（`stepFocusUnit`）、死亡程式與掉落訊息開框前的整幀重組、攻擊演出收尾與升級對話底圖。目前第四～九章收據都過，是因為這些路徑剛好沒讓可見游標落進翻邊區；第八章 c2 seq 1667 與第九章 r1 seq 814 兩次都是同一類差異（各約 4600 px）。要做：以原版 `0x11CAC` 呼叫點為準盤點重製端的重繪時機，把 anchor 評估收成一個跟著重繪走的入口（閘門與 `[0x51A83]` 規則照原版），不要再逐個呼叫點補。
+
+怎樣算做完：重製端所有對應原版 `0x11CAC` 的重繪路徑經同一個入口評估 HUD anchor，`stepFocusUnit` 與死亡程式／掉落訊息重組也涵蓋；驗收直接跑第十章 111 章收據（使用者 2026-09-17 定案：已通過的第四～九章不重跑），四個 gate 全過。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
