@@ -254,8 +254,8 @@ func (s *State) FocusNativeMapCursor(x, y int) bool {
 }
 
 // NativeFocusTraceHook 是對拍診斷掛勾：非 nil 時每次 0x12CEA 聚焦前回報目標與當下視圖，
-// 讓重播測試（FD2_FOCUS_TRACE_OUT）逐筆對照原版 eip-trace 的 0x12CEA 參數。0x13FD4 原地回復
-// 走 focusUnitJob，不經過這裡。
+// 讓重播測試（FD2_FOCUS_TRACE_OUT）逐筆對照原版 eip-trace 的 0x12CEA 參數。戰場視圖上的
+// focusUnitJob（0x13FD4 原地回復）與回合開頭聚焦也在各自的起點呼叫它。
 var NativeFocusTraceHook func(x, y int, view NativeMapViewState)
 
 // FocusNativeMapCursorSteps 是 FocusNativeMapCursor 的逐步版本：每走一格呼叫一次

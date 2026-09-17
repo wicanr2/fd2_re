@@ -1233,28 +1233,33 @@ func exportMapLUTBank(fdotherPath, outputRoot string) error {
 }
 
 func exportChapterAuxSurface(fdotherPath, outputRoot string) error {
-	raw, err := fdother.ReadResource(fdotherPath, fdother.NativeChapterAuxSurfaceResource)
-	if err != nil {
-		return err
+	for _, contract := range fdother.NativeChapterAuxSurfaceContracts() {
+		raw, err := fdother.ReadResource(fdotherPath, contract.Resource)
+		if err != nil {
+			return err
+		}
+		md5sum, sha := md5.Sum(raw), sha256.Sum256(raw)
+		if len(raw) != 64004 || binary.LittleEndian.Uint16(raw) != 320 || binary.LittleEndian.Uint16(raw[2:]) != 200 ||
+			hex.EncodeToString(md5sum[:]) != contract.RawMD5 ||
+			hex.EncodeToString(sha[:]) != contract.RawSHA256 {
+			return fmt.Errorf("FDOTHER #%d raw identity mismatch", contract.Resource)
+		}
+		directory := filepath.Join(outputRoot, "surfaces", fmt.Sprintf("FDOTHER_%03d", contract.Resource))
+		if err := writeIndexedPNG(filepath.Join(directory, "frame.png"), 320, 200, raw[4:]); err != nil {
+			return err
+		}
+		if err := writeJSON(filepath.Join(directory, "resource.json"), surfaceDocument{
+			SchemaVersion: 1, Kind: "indexed_surface", AssetID: fmt.Sprintf("surface/FDOTHER_%03d", contract.Resource),
+			Status: "decoded", Evidence: "confirmed", Codec: "raw_indexed_opaque",
+			Width: 320, Height: 200, Frame: "frame.png",
+			Source: sourceID{File: "FDOTHER.DAT", Resource: contract.Resource, Size: fdotherSize,
+				MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
+				RawMD5: hex.EncodeToString(md5sum[:]), RawSHA256: hex.EncodeToString(sha[:])},
+		}); err != nil {
+			return err
+		}
 	}
-	md5sum, sha := md5.Sum(raw), sha256.Sum256(raw)
-	if len(raw) != 64004 || binary.LittleEndian.Uint16(raw) != 320 || binary.LittleEndian.Uint16(raw[2:]) != 200 ||
-		hex.EncodeToString(md5sum[:]) != "710ce98d109298ff0110b1a4fb8fec53" ||
-		hex.EncodeToString(sha[:]) != "a1999b7547bc4eabfb79049ae7cd7d08b12fd4402132e9e6e67b1fb56c981e65" {
-		return errors.New("FDOTHER #55 raw identity mismatch")
-	}
-	directory := filepath.Join(outputRoot, "surfaces", "FDOTHER_055")
-	if err := writeIndexedPNG(filepath.Join(directory, "frame.png"), 320, 200, raw[4:]); err != nil {
-		return err
-	}
-	return writeJSON(filepath.Join(directory, "resource.json"), surfaceDocument{
-		SchemaVersion: 1, Kind: "indexed_surface", AssetID: "surface/FDOTHER_055",
-		Status: "decoded", Evidence: "confirmed", Codec: "raw_indexed_opaque",
-		Width: 320, Height: 200, Frame: "frame.png",
-		Source: sourceID{File: "FDOTHER.DAT", Resource: fdother.NativeChapterAuxSurfaceResource, Size: fdotherSize,
-			MD5: fdotherMD5, SHA256: fdotherSHA256, RawSize: len(raw),
-			RawMD5: hex.EncodeToString(md5sum[:]), RawSHA256: hex.EncodeToString(sha[:])},
-	})
+	return nil
 }
 
 func exportRangeOverlay(fdotherPath, outputRoot string) error {

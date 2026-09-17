@@ -49,9 +49,9 @@ func (s *State) nextNativeAIPhysicalPlan(u *Unit) (*AIPlan, bool, error) {
 		return nil, true, err
 	}
 	if !found {
-		// 0x1b83d 找不到已裝備低階物品時會進另一條原生收尾；該 recovery
-		// consumer 尚未閉合，因此此處停止，不把「沒有物理候選」冒充成已完成待機。
-		return nil, true, fmt.Errorf("native AI mode 2 equipped low-item source is unavailable")
+		// 0x1428B 0x1B83D(actor,0) 回 -1 → 0x14296 je 0x145C3 → xor eax,eax：0x14237 回傳 0，
+		// 與沒有候選同一條收尾（0x13C06→0x13FD4）。第十章友軍記錄 50 身上沒有武器。
+		return s.nativeAIMode2IdleRecoveryPlan(u, records, actor)
 	}
 	selector := int(u.NativeRecordByte6)
 	if selector != 0 && selector != 1 {
@@ -95,21 +95,7 @@ func (s *State) nextNativeAIPhysicalPlan(u *Unit) (*AIPlan, bool, error) {
 		return nil, true, err
 	}
 	if !ok {
-		// 0x13C06/0x13C0F 在 0x14237 回傳零時消費 0x13FD4。接受恢復
-		// 與合法的閘門拒絕都要保留，兩者皆不可掉入正規化規劃器（planner）。
-		decision, err := PlanNativeAIIdleRecovery(records, len(s.Units), actor)
-		if err != nil {
-			return nil, true, fmt.Errorf("native AI mode 2 0x13fd4: %w", err)
-		}
-		plan := &AIPlan{
-			U: u, SpellID: -1, NativeMode2Physical: true,
-			NativeModeFallbackActive: true, NativeModeFallback: 2,
-			NativeScoredCommands: s.nativeAIPlanScoredCommands(u),
-		}
-		if decision.Accepted {
-			plan.NativeIdleRecovery = &decision
-		}
-		return plan, true, nil
+		return s.nativeAIMode2IdleRecoveryPlan(u, records, actor)
 	}
 	selected := selection.Candidate
 	pathDirections, reachable, err := NativePathDirections(
@@ -273,4 +259,22 @@ func nativeAIDirectionPath(start Cell, directions []byte) ([]Cell, error) {
 		path = append(path, current)
 	}
 	return path, nil
+}
+
+// nativeAIMode2IdleRecoveryPlan 是 0x14237 回傳零之後的收尾：0x13C06/0x13C0F 消費 0x13FD4。
+// 接受恢復與合法的閘門拒絕都要保留，兩者皆不可掉入正規化規劃器（planner）。
+func (s *State) nativeAIMode2IdleRecoveryPlan(u *Unit, records []byte, actor int) (*AIPlan, bool, error) {
+	decision, err := PlanNativeAIIdleRecovery(records, len(s.Units), actor)
+	if err != nil {
+		return nil, true, fmt.Errorf("native AI mode 2 0x13fd4: %w", err)
+	}
+	plan := &AIPlan{
+		U: u, SpellID: -1, NativeMode2Physical: true,
+		NativeModeFallbackActive: true, NativeModeFallback: 2,
+		NativeScoredCommands: s.nativeAIPlanScoredCommands(u),
+	}
+	if decision.Accepted {
+		plan.NativeIdleRecovery = &decision
+	}
+	return plan, true, nil
 }

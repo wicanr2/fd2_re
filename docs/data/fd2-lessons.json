@@ -777,6 +777,54 @@
       "why": "2026-09-17 第九章 r1：0x17277／0x135D4 在 0x1A30B 返回後才把閘 B 寫回 1，重製端在回合開頭聚焦前就設 1，聚焦途中可見游標 (2,6) 把 HUD 小窗翻到右側，seq 814 起 26 點各約 4656 px。",
       "date": "2026-09-17",
       "evidence": "remake/cmd/fd2/main.go finishNativeTransientPlayerPhaseInput restoreNativeDisplayGateB；remake/cmd/fd2/native_player_input.go stepNativePlayerFocus"
+    },
+    {
+      "id": "ai-dispatcher-focus-before-move",
+      "area": "重製端",
+      "rule": "AI 分派器在 0x14B78 之前的 0x12D7B 聚焦是無條件的：mode 0／3／4／7／9／10 的單位就算已經在目的地、一步都不走，也要聚焦自己；0x14B78 回 0 再進 0x13FD4。只在有走行時才聚焦，鏡頭會少捲一次。",
+      "why": "2026-09-17 第十章 r2：record 12／13（mode 4）每回合停在 (8,10)／(22,10) 仍各聚焦一次，把鏡頭 X 由 10 帶到 11；重製端沒聚焦，seq 1129 起整段畫面錯一欄。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/battle/native_ai_action_runtime.go NativeModeFocusActor；remake/cmd/fd2/main.go aiStep 無走行分支"
+    },
+    {
+      "id": "map-mismatch-check-chapter-aux-underlay",
+      "area": "對拍",
+      "rule": "原版畫面有一片地圖圖檔裡沒有的圖樣（熔岩、水面）時，先查 0x10652／0x11EEE 的章節輔助底面（raw chapter 9／24／25 用 FDOTHER #15、28／29 用 #55），不要先當成殘留緩衝或模擬器缺口。底面相位 [0x539FC] 由 oracle 視圖 aux_phase 輸出，畫面上實測是 (aux_phase-1)&15 或 (aux_phase-2)&15，兩個都要列成變體。",
+      "why": "2026-09-17 第十章 r2 seq 1525 起左上一片熔岩，重製端畫成地板＋舊畫面殘影；先誤以為是 HUD 存底緩衝，實際是透明圖塊露出的 #15 底面。",
+      "date": "2026-09-17",
+      "evidence": "remake/internal/fdother/chapter_aux_surface.go NativeChapterAuxSurfaceFor；dosgolem a9bcd62"
+    },
+    {
+      "id": "ring-checkpoint-may-show-last-open-frame",
+      "area": "對拍",
+      "rule": "指令環穩態的原版檢查點可能還是 0x1741C 最後一張展開幀（上／下圖示各差 2 列）：0x179D5 在第一次穩態重繪前就可能讀鍵。重播端兩種位置各出一組變體，不要把位移差當成圖示位置錯。",
+      "why": "2026-09-17 第十章 r2 seq 1291／1328 的 move 點各約 700–800 px，全在上下兩張圖示。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/native_map_unit_window.go nativeActionOverlayOpenFrameVariant；chapter_parity_replay_test.go frame"
+    },
+    {
+      "id": "prebattle-handler-record-writes-target-story-actors",
+      "area": "重製端",
+      "rule": "戰前處理器在 LOADCH 之後對 runtime record 的寫入（例如 0x3332B 寫 record 50／51 的 +0x26），重製端要寫劇情演員陣列（handlerUnitAt），戰場接手時才帶進 g.st；這時 g.st 還是 nil。",
+      "why": "2026-09-17 第十章：友軍 record 50／51 的 +0x26=100 讓 0x1D80B 跳過它們；補寫入時第一版寫 g.st，重播直接 runtime battle records unavailable。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/native_palette_ramp.go applyHandlerDirectRecordPatch；remake/assets/cutscenes/handlers/ch09_pre.json"
+    },
+    {
+      "id": "oracle-plan-budget-by-rounds",
+      "area": "對拍",
+      "rule": "原版側抽樣計畫的回合數要跟指令預算一起估：後段章節一回合約 1.5e9 道指令，12 回合就超過預設 2e10。抽樣回合夠用就提前清場，需要更長時設 FD2_ORACLE_STEPS。",
+      "why": "2026-09-17 第十章 r3 在第 12 回合用完預算（seq 6061 逾時），跑了約兩個半小時沒有戰後節點。",
+      "date": "2026-09-17",
+      "evidence": "docs/data/parity-plans/ch10-sample.jsonl；tools/dosgolem_oracle.sh FD2_ORACLE_STEPS"
+    },
+    {
+      "id": "replay-key-precheck-uses-checkpoint-before-first-key",
+      "area": "對拍",
+      "rule": "重播端重走方向鍵之前的游標核對，要拿第一個方向鍵前一格的原版檢查點，不要拿上一個語意動作的檢查點：那一點可能在 0x1A30B 換手中途取樣，游標還沒被回合開頭聚焦搬走，核對失敗就會整段跳鍵、瞬移，漏掉途中的 HUD 翻邊。",
+      "why": "2026-09-17 第十章 r4 seq 3613 after_enemy_phase 游標在 (10,27)，回合開頭聚焦後才到 (16,28)；重播端跳過左十上二，seq 3645 起 26 點各約 4300 px。",
+      "date": "2026-09-17",
+      "evidence": "remake/cmd/fd2/chapter_parity_replay_test.go replayDirectionKeys"
     }
   ]
 }

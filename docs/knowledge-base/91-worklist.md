@@ -113,7 +113,7 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 ### 戰場 HUD 小窗 anchor 要跟著每次 0x11CAC 重繪評估，不是只在幾個呼叫點
 
-`battle-hud-anchor-follows-redraw` · 缺陷 · [#40](https://github.com/wicanr2/fd2_re/issues/40) · 仍未完成 · 自承還在 remake/internal/battle/native_map_view.go
+`battle-hud-anchor-follows-redraw` · 缺陷 · [#40](https://github.com/wicanr2/fd2_re/issues/40) · **可能已完成，回去確認** · 找不到 走 focusUnitJob，不經過這裡
 
 原版每次 `0x11CAC` 重繪都經 `0x1ACF3` 檢查閘 A `[0x51AAB]`／閘 B `[0x51AAC]`，兩個都開就由 `0x1AD2A` 依當下可見游標決定小窗在左或右（可見游標 Y>5 時 X<3 翻右、X>9 翻左）。重製端沒有「重繪」這個單一入口，anchor 只在幾個呼叫點評估：鍵盤游標步 `nativeCursorStepHUD`（照 `NativeMapCursorStepRedraws`）、AI 聚焦 `FocusNativeMapCursorSteps`、戰場節點進場、回合開頭聚焦 `stepNativePlayerFocus`（每步無條件評估）與 fd380cc6 新增的 `restoreNativeDisplayGateB`。已知沒有評估的重繪：`0x13FD4` 原地回復的 `focusUnitJob`（`stepFocusUnit`）、死亡程式與掉落訊息開框前的整幀重組、攻擊演出收尾與升級對話底圖。目前第四～九章收據都過，是因為這些路徑剛好沒讓可見游標落進翻邊區；第八章 c2 seq 1667 與第九章 r1 seq 814 兩次都是同一類差異（各約 4600 px）。要做：以原版 `0x11CAC` 呼叫點為準盤點重製端的重繪時機，把 anchor 評估收成一個跟著重繪走的入口（閘門與 `[0x51A83]` 規則照原版），不要再逐個呼叫點補。
 

@@ -4393,3 +4393,19 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
   （286 點全在預算內、203 點 0 px、存檔 sha256 相同、`ai_order` 分岔 0）；台帳第九章 `passed`。第四～八章
   remake-reg5（強化第八章 remake-c3f、未強化 r1）全過、逐點與收據相同。
 - [x] 抽樣截圖 `parity-ch09-samples-p1..p4.png`（100 列）。
+
+## 2026-09-17：#40 HUD anchor 重繪入口＋第十章 111 四 gate 全過
+
+- [x] #40：`0x11CAC` 呼叫點與閘 A／B 寫入端 IDA 匯出（`fd2_redraw_callers_hud_gates_ida.txt`）；游標鍵、
+  `0x12CEA` 開頭與逐步、`0x1A30B` 返回後、戰場進場接到 `redrawNativeMapHUD`；第十章收據 HUD 小窗全部一致。
+  攻擊演出收尾、`0x1DEAE`、`0x19742` 三類仍未接（56 §#40 表）。
+- [x] 第十章 RE：事件 32／33／34、`0x20707`、`0x3332B` 友軍 `+0x26=100`、`0x1A866` 扣血回覆、`0x2A12F`
+  附加狀態、寶箱金錢、分派器停留聚焦、`0x15055` 不移動、`0x112A5` 旗標與暫態、`0x10652`／`0x11EEE`
+  chapter 9／24／25 的 FDOTHER #15 底面（58 各列）。
+- [x] dosgolem `1b68329`（16-bit 記憶體 INC）、`a9bcd62`（視圖 `aux_phase`）；分離素材 `surfaces/FDOTHER_015`。
+- [x] 原版側 sample-r4（計畫抽樣到第 9 回合、第 10 回合清場）；r3 在第 12 回合用完 2e10 預算作廢。
+- [x] 收據 `parity-ch10.json`（remake-r6）`passed`：行為 281 點一致、金額 2000→12000→22000→22037→22027、
+  存檔 sha256 相同、268 個畫面點 174 點 0 px；台帳第十章 `passed`；抽樣截圖 `parity-ch10-samples-p1..p5.png`。
+- [ ] 第四～九章依使用者定案未重跑；停留聚焦、道具原地使用與 JOIN 旗標修正下次重跑時要以新收據確認。
+- [ ] 分離素材 `FDOTHER_015` 尚未同步到私人素材庫。
+- [ ] 事件 33／34（Boss 倒下）沒有原版收據。

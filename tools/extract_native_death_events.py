@@ -207,6 +207,17 @@ EVENTS = [
         op("exp_cancel", [(0x34B48, 0x34B52)]),
         op("state_set", [(0x34B52, 0x34B5B)], index=0x10, value=2),
     ]},
+    # 32／33 是第十章（map 9）控制列第 5／20 回合的回合事件。32 的主體與事件 5 共用
+    # `0x34BEC..0x34C1D`（登場 group 1、text 1）；33 是 text 2 後把記錄 12、13 的 +0x34 寫 0。
+    {"id": 32, "handler": 0x34BE2, "ops": [
+        op("spawn_group", [(0x34BEC, 0x34BF6)], group=1, gate=0),
+        op("dialogue", [(0x34BF6, 0x34C1D)], text=1),
+    ]},
+    {"id": 33, "handler": 0x34C1E, "ops": [
+        op("dialogue", [(0x34C28, 0x34C4F)], text=2),
+        op("record_bytes", [(0x34C4F, 0x34C5D)], unit=12, writes=[[0x34, 0, 1]]),
+        op("record_bytes", [(0x34C5D, 0x34C6B)], unit=13, writes=[[0x34, 0, 1]]),
+    ]},
     {"id": 34, "handler": 0x34C6C, "ops": [
         op("dialogue", [(0x34906, 0x3491F), (0x34C0F, 0x34C1D)], text=3),
     ]},

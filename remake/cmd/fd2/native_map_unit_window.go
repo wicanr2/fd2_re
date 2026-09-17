@@ -54,7 +54,13 @@ func (g *Game) nativeMapActionOverlay(state *battle.State) func([]byte, int, int
 		return func([]byte, int, int) error { return err }
 	}
 	steady := !g.actionOverlayBlocksInput()
-	if steady {
+	if steady && g.nativeActionOverlayOpenFrameVariant {
+		offsets, err = fdother.ActionOverlayFrameOffsets(3, false)
+		if err != nil {
+			return func([]byte, int, int) error { return err }
+		}
+		steady = false
+	} else if steady {
 		offsets = [4]int{-0x23a0, 0x378, 0x3a8, 0x2ac0}
 	}
 	view := state.NativeMapViewState

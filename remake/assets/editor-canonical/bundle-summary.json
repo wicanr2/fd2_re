@@ -3605,7 +3605,49 @@
         {
           "code": "unmapped_field",
           "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[1].actions[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[1].actions[2]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[1].actions[3]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
           "path": "events[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[0]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[2]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2]",
           "severity": "warning"
         }
       ],
@@ -17647,7 +17689,7 @@
       "document_id": "legacy/campaign/b5c1e4503510/campaign_full",
       "kind": "campaign",
       "output": "campaign/campaign_full.json",
-      "sha256": "17c23346e9bf820a86232b7f2cb96f459c0b99aa15f8f6283de011e9aa0d3a87",
+      "sha256": "f064801e2e82edc6b8858fda240adb5ef41f71d40f1edbd438ba6bad5404c1d1",
       "source": "remake/assets/scenarios/campaign_full.json"
     },
     {
@@ -17723,11 +17765,11 @@
       "source": "remake/assets/scenarios/ch09.json"
     },
     {
-      "diagnostics": 16,
+      "diagnostics": 23,
       "document_id": "legacy/scenario/82293901dfcc/ch10",
       "kind": "scenario",
       "output": "scenarios/ch10.json",
-      "sha256": "7610ef6d11f30f47eef8240692eaf619a9a2d8eee256c383d96eb471ab5bd749",
+      "sha256": "2a3ae19d6819b3f891dbe5e521f52f7755e5c1f8b9b5fb3dcc458d5dbb3d36d3",
       "source": "remake/assets/scenarios/ch10.json"
     },
     {

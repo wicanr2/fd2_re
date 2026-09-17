@@ -179,9 +179,12 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 		if !item.HasPositiveWinner || len(item.TargetIndices) == 0 {
 			return nil, true, fmt.Errorf("native AI 0x14ef0 selected 0x15055 without item target")
 		}
-		plan, err := s.nativeAIPlanForDestination(
-			u, actorRecord, selector,
-			Cell{X: item.X, Y: item.Y}, int(item.TargetIndices[0]), costRow,
+		// 0x15055 沒有 0x14B78：winner 的 [0x53C37/0x53C3B] 是 0x1567E 在 actor 原地的指令
+		// 目標場內選出的效果格，0x150BA 聚焦自己、0x1515B 聚焦效果格後就原地用物品
+		// （第十章 r4 seq 3614 record 54 在 (10,28) 對 (9,28) 的 record 2 用物品 194）。
+		plan, err := s.nativeAIPlanForStationarySelection(
+			u, actorRecord,
+			Cell{X: item.X, Y: item.Y}, int(item.TargetIndices[0]),
 		)
 		if err != nil {
 			return nil, true, err
@@ -399,6 +402,13 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 		// mode 3 explicitly clears [0x51a83] after 0x14b78.  Mode 9 jumps
 		// through the shared 0x14b78 block without that explicit caller write.
 		plan.NativeModeWriteRangeZero = mode == 3
+		plan.NativeModeFocusActor = true
+		if len(plan.Path) <= 1 {
+			// 0x13BC0（mode 3）／0x13C06（mode 9 經 0x13BFE）：0x14B78 沒走成回 0 → 0x13FD4。
+			if err := s.attachNativeFallbackIdleRecovery(plan, records, actor); err != nil {
+				return nil, true, err
+			}
+		}
 		return plan, true, nil
 	}
 	if mode == 4 || mode == 7 || mode == 10 {
@@ -416,6 +426,13 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 		plan.NativeModeFallback = byte(mode)
 		plan.NativeModeWriteByte5 = mode == 7 && plan.NativeActionDestination == intended
 		plan.NativeModeWriteRangeZero = true
+		plan.NativeModeFocusActor = true
+		if len(plan.Path) <= 1 {
+			// 0x13C06（mode 4／10）／0x13D53（mode 7）：0x14B78 沒走成回 0 → 0x13FD4。
+			if err := s.attachNativeFallbackIdleRecovery(plan, records, actor); err != nil {
+				return nil, true, err
+			}
+		}
 		return plan, true, nil
 	}
 
@@ -497,6 +514,7 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 	}
 	plan.NativeModeFallbackActive = true
 	plan.NativeModeFallback = byte(mode)
+	plan.NativeModeFocusActor = true // 0x13F86
 	plan.NativeModeBlockedCell, plan.NativeModeBlockedFound = blocked, found
 	for index := 0; index < len(s.Units); index++ {
 		record := records[index*nativeRecordSize:]

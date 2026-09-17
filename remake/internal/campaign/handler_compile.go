@@ -1348,7 +1348,8 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			issue(i, input, "unit_present is blocked: legacy payload lacks a proven native 0x22253 caller ABI")
 		case "direct_record_patch":
 			patch := input.DirectRecordPatch
-			provenSource := input.Source.Addr == "0x2362d" || input.Source.Addr == "0x23ec4"
+			provenSource := input.Source.Addr == "0x2362d" || input.Source.Addr == "0x23ec4" ||
+				input.Source.Addr == "0x33346" // 0x3332B 第十章開場：record 50／51 的 +0x26 寫 100
 			if !provenSource || input.Source.Target != "" ||
 				patch == nil || len(patch.Units) == 0 || activeSlotCount <= 0 {
 				issue(i, input, "direct_record_patch requires an active runtime frontier and unit writes")

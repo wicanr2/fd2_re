@@ -321,6 +321,11 @@ type AIPlan struct {
 	NativeModeFallback       byte
 	NativeModeWriteByte5     bool
 	NativeModeWriteRangeZero bool
+	// NativeModeFocusActor：分派器在 0x14B78 之前無條件 0x12D7B 聚焦自己（mode 3
+	// 0x13BA5、mode 4／10 0x13BEC、mode 7 0x13D39、mode 9 0x13DCD、mode 0 的
+	// 0x13E9C 0x13F86）。有走路時執行端本來就在走之前聚焦；沒走（已在目的地）時也
+	// 要聚焦，第十章每回合 record 12／13 的鏡頭靠這一步。
+	NativeModeFocusActor bool
 	// NativeModeEventActive marks mode 5's exact 0x15df3 map-event lookup.
 	// The event ID and destination are raw dispatcher operands; the executor
 	// must revalidate the map/control bytes before mutating the unit.

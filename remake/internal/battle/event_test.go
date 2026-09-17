@@ -775,3 +775,19 @@ func TestChapter9Event31SpawnsGroupFromStateWhenControlRowIsLive(t *testing.T) {
 		t.Fatalf("state16=2 應登場 group 2：units %d→%d", opening, len(st.Units))
 	}
 }
+
+func TestNativeResultCode1ChecksListedRecordsByte5Bit0(t *testing.T) {
+	// 0x20707：0x3453E(0x32)／0x3453E(0x33) 任一非 0 就寫 [0x53ECC]=1。
+	sc := &Scenario{NativeResultHandler: "0x20707", NativeResultCode1Records: []int{2, 3, 9}}
+	st := &State{Units: []*Unit{{}, {}, {HasNativeRecordByte5: true}, {HasNativeRecordByte5: true, NativeRecordByte5: 0x80}}}
+	if sc.NativeResultCode1(st) {
+		t.Fatal("bit0 都沒成立卻判成結果碼 1")
+	}
+	st.Units[3].NativeRecordByte5 = 0x81
+	if !sc.NativeResultCode1(st) {
+		t.Fatal("記錄 3 的 +5 bit0 成立沒有判成結果碼 1")
+	}
+	if (&Scenario{}).NativeResultCode1(st) {
+		t.Fatal("沒有列記錄的章節不該覆寫結果")
+	}
+}

@@ -95,8 +95,8 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 		return nil, err
 	}
 	var chapterAux *fdother.NativeChapterAuxSurface
-	if mapIndex == 28 || mapIndex == 29 {
-		chapterAux, err = fdother.LoadSeparatedChapterAuxSurface(separatedAssetPath("surfaces"))
+	if contract, ok := fdother.NativeChapterAuxSurfaceFor(mapIndex); ok {
+		chapterAux, err = fdother.LoadSeparatedChapterAuxSurfaceResource(separatedAssetPath("surfaces"), contract)
 		if err != nil {
 			return nil, err
 		}
@@ -124,7 +124,7 @@ func nativeMapAssetsAvailable(a *nativeMapAssets) bool {
 			return false
 		}
 	}
-	if (a.MapIndex == 28 || a.MapIndex == 29) && (a.ChapterAux == nil || len(a.ChapterAux.Pixels) != 320*200) {
+	if _, ok := fdother.NativeChapterAuxSurfaceFor(a.MapIndex); ok && (a.ChapterAux == nil || len(a.ChapterAux.Pixels) != 320*200) {
 		return false
 	}
 	return true

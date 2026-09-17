@@ -1,0 +1,64 @@
+# 第十章抽樣（111 章工作單元，docs/goal/115）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 9 章」強化槽（--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0 --boost-base-dx 60）。
+# 可抽項目（remake/assets/scenarios/ch10.json、native_death_events.json、native_turn_event_controls.json map 9）：洞窟中的激戰 map9（31×45）、開局 group 0 的 42 筆（記錄 11..52：敵 39、友軍記錄 50／51、我方 FDFIELD 記錄 52）、Boss 在 (15,4)、第 5 回合事件 32（登場 group 1 友軍 8 筆、text 1）、死亡程式 2:34（Boss，5 句）、勝負 handler 0x20707（記錄 50／51 倒下即結果碼 1）。
+# 章內全程正常 BIOS 鍵；只有第 10 回合開頭的 force_enemy_clear 是注入。強化是建構槽政策（114）。法術／物品指令驅動端沒有（limitations）。事件 33 在第 20 回合，不刻意去抽。
+# --- 標題 LOAD 槽 0 → 城鎮（town_ch10，variant 2）---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前（ch09_pre：LOADCH、pan、text 0、聚焦）→ 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":160}
+{"await_ui":"cursor","steps":10000000,"max":80}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～9 回合：全隊北上接戰（advance true、typical_move 4），瑪琳（7）與貝克威（8）留守。第 5 回合結束事件 32。Boss（死亡程式 34）在抽樣回合內不會倒下，戰後由清場進入。---
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round3","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round6","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=8","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=9","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"skip_indices":[7,8],"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=10","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round9","steps":1000000}
+# --- 第 10 回合開頭清場（修改路徑；敵人已全滅就略過）→ END → 戰後（ch09_post：ACTING 37、JOIN 11／6）→ town_ch11 ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":120}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（town_ch11 幻之森林，variant 2）：武器店出售一件（選項 1）→ 道具店買入一件（選項 3）→ 教會、酒店各探一次 → 酒店存檔 → 教會（選項 4）前 Shift+F10（scan 0x5D）祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"shop_buy":{"moves":["left","left"]},"steps":10000000}
+{"town_probe":{"moves":["left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":["left","left","left","left"],"key":"shift-f10"},"steps":10000000}

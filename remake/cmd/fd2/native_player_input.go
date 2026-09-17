@@ -46,6 +46,7 @@ func (g *Game) beginNativePlayerFocus(u *battle.Unit) bool {
 		return false
 	}
 	g.nativePlayerFocus = &battle.Cell{X: int(p.X), Y: int(p.Y)}
+	g.nativePlayerFocusStarted = false
 	return true
 }
 
@@ -59,6 +60,14 @@ func (g *Game) stepNativePlayerFocus() {
 			g.restoreNativeDisplayGateB()
 		}
 	}()
+	if !g.nativePlayerFocusStarted {
+		// 0x1A7AB 0x12D7B(0)→0x12CEA：開頭先 0x11CAC(0)。
+		g.nativePlayerFocusStarted = true
+		if battle.NativeFocusTraceHook != nil {
+			battle.NativeFocusTraceHook(p.X, p.Y, g.st.NativeMapViewState)
+		}
+		g.redrawNativeMapHUD()
+	}
 	v := g.st.NativeMapViewState
 	dx, dy := 0, 0
 	switch {
@@ -80,10 +89,7 @@ func (g *Game) stepNativePlayerFocus() {
 		return
 	}
 	g.syncNativeMapView()
-	if g.st.HasNativeMapHUDState {
-		v = g.st.NativeMapViewState
-		g.st.AdvanceNativeMapHUDAnchor(v.VisibleCursorX, v.VisibleCursorY)
-	}
+	g.nativeCursorStepHUD(v, g.st.NativeMapViewState)
 	if g.curX == p.X && g.curY == p.Y {
 		g.nativePlayerFocus = nil
 	}

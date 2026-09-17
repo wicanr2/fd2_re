@@ -1,0 +1,535 @@
+# FD2.EXE IDA Pro 9.4 export: 0x11CAC callers and HUD gate xrefs
+# input_sha256=222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f address_space=IDA LE linear
+=== redraw 0x11cac direct calls=83 ===
+call=0x10494 function=0x10010..0x10620 instruction=call    sub_11CAC
+    0x10483 mov     dword_51A83, 0
+    0x1048d call    sub_12263
+    0x10492 push    1
+call=0x105ed function=0x10010..0x10620 instruction=call    sub_11CAC
+    0x105e1 mov     ebx, 9
+    0x105e6 jmp     loc_10529
+    0x105eb push    0
+call=0x11951 function=0x117e7..0x11aa8 instruction=call    sub_11CAC
+    0x1194b test    eax, eax
+    0x1194d jz      short loc_11942
+    0x1194f push    0
+call=0x11adf function=0x11aa8..0x11b48 instruction=call    sub_11CAC
+    0x11ad9 cmp     edx, eax
+    0x11adb jz      short loc_11AB3
+    0x11add push    0
+call=0x11b92 function=0x11b48..0x11b9b instruction=call    sub_11CAC
+    0x11b87 cmp     dword_51A83, 0
+    0x11b8e jz      short locret_11B9A
+    0x11b90 push    0
+call=0x11bf1 function=0x11b9b..0x11bfa instruction=call    sub_11CAC
+    0x11be6 cmp     dword_51A83, 0
+    0x11bed jz      short locret_11BF9
+    0x11bef push    0
+call=0x11c50 function=0x11bfa..0x11c59 instruction=call    sub_11CAC
+    0x11c45 cmp     dword_51A83, 0
+    0x11c4c jz      short locret_11C58
+    0x11c4e push    0
+call=0x11ca3 function=0x11c59..0x11cac instruction=call    sub_11CAC
+    0x11c98 cmp     dword_51A83, 0
+    0x11c9f jz      short locret_11CAB
+    0x11ca1 push    0
+call=0x12d01 function=0x12cea..0x12d7b instruction=call    sub_11CAC
+    0x12cf7 mov     esi, [esp+0Ch+arg_0]
+    0x12cfb mov     edi, [esp+0Ch+arg_4]
+    0x12cff push    0
+call=0x12dd4 function=0x12dac..0x12e38 instruction=call    sub_11CAC
+    0x12dce cmp     esi, eax
+    0x12dd0 jz      short loc_12DB8
+    0x12dd2 push    0
+call=0x13622 function=0x135dd..0x1366a instruction=call    sub_11CAC
+    0x13614 inc     dword_53AB1
+    0x1361a inc     dword_53AA9
+    0x13620 push    0
+call=0x1365b function=0x135dd..0x1366a instruction=call    sub_11CAC
+    0x1364d inc     dword_53AB5
+    0x13653 inc     dword_53AAD
+    0x13659 push    0
+call=0x137b8 function=0x1366a..0x1399c instruction=call    sub_11CAC
+    0x137ae call    sub_17AA9
+    0x137b3 add     esp, 4
+    0x137b6 push    0
+call=0x13805 function=0x1366a..0x1399c instruction=call    sub_11CAC
+    0x137fc mov     [esp+6Ch+var_20], 0
+    0x13801 jmp     short loc_13820
+    0x13803 push    0
+call=0x138d2 function=0x1366a..0x1399c instruction=call    sub_11CAC
+    0x138c8 jz      short loc_138F1
+    0x138ca push    1
+    0x138cc inc     dword_53AFB
+call=0x138f3 function=0x1366a..0x1399c instruction=call    sub_11CAC
+    0x138ec add     esp, 0Ch
+    0x138ef jmp     short loc_138FB
+    0x138f1 push    0
+call=0x1398c function=0x1366a..0x1399c instruction=call    sub_11CAC
+    0x13985 inc     byte ptr [eax+1]
+    0x13988 jmp     short loc_1394C
+    0x1398a push    1
+call=0x13e8f function=0x13a9f..0x13e9c instruction=call    sub_11CAC
+    0x13e85 add     esp, 4
+    0x13e88 call    sub_134E4
+    0x13e8d push    0
+call=0x15178 function=0x15055..0x15311 instruction=call    sub_11CAC
+    0x1516e call    sub_1F04A
+    0x15173 add     esp, 8
+    0x15176 push    1
+call=0x152a8 function=0x15055..0x15311 instruction=call    sub_11CAC
+    0x1529e jmp     short loc_152BB
+    0x152a0 mov     dword_53C1F, ebx
+    0x152a6 push    1
+call=0x153d6 function=0x15311..0x1548e instruction=call    sub_11CAC
+    0x153c7 add     esp, 8
+    0x153ca mov     dword_51A83, 0
+    0x153d4 push    0
+call=0x1543f function=0x15311..0x1548e instruction=call    sub_11CAC
+    0x15438 mov     esi, eax
+    0x1543a add     esp, 4
+    0x1543d push    0
+call=0x15462 function=0x15311..0x1548e instruction=call    sub_11CAC
+    0x15458 call    sub_1AA1D
+    0x1545d add     esp, 0Ch
+    0x15460 push    0
+call=0x15510 function=0x1548e..0x1567e instruction=call    sub_11CAC
+    0x154fe jz      loc_15618
+    0x15504 mov     dword_51A83, 0
+    0x1550e push    0
+call=0x1563b function=0x1548e..0x1567e instruction=call    sub_11CAC
+    0x15634 mov     ebx, eax
+    0x15636 add     esp, 4
+    0x15639 push    0
+call=0x1565c function=0x1548e..0x1567e instruction=call    sub_11CAC
+    0x15652 call    sub_1AA1D
+    0x15657 add     esp, 0Ch
+    0x1565a push    0
+call=0x16fcb function=0x16f55..0x1728c instruction=call    sub_11CAC
+    0x16fc1 call    sub_176B4
+    0x16fc6 add     esp, 8
+    0x16fc9 push    0
+call=0x1714c function=0x16f55..0x1728c instruction=call    sub_11CAC
+    0x17142 add     esp, 4
+    0x17145 jmp     loc_170C5
+    0x1714a push    0
+call=0x18f0e function=0x18d8c..0x190ac instruction=call    sub_11CAC
+    0x18f04 call    sub_176B4
+    0x18f09 add     esp, 8
+    0x18f0c push    0
+call=0x19742 function=0x196cb..0x1974c instruction=call    sub_11CAC
+    0x19738 call    free
+    0x1973d add     esp, 4
+    0x19740 push    0
+call=0x19ee6 function=0x19df7..0x1a30b instruction=call    sub_11CAC
+    0x19edc call    sub_176B4
+    0x19ee1 add     esp, 8
+    0x19ee4 push    0
+call=0x1a4bd function=0x1a30b..0x1a7bd instruction=call    sub_11CAC
+    0x1a4b3 call    sub_17AA9
+    0x1a4b8 add     esp, 4
+    0x1a4bb push    0
+call=0x1a54a function=0x1a30b..0x1a7bd instruction=call    sub_11CAC
+    0x1a540 add     esp, 4
+    0x1a543 call    sub_13536
+    0x1a548 push    0
+call=0x1a601 function=0x1a30b..0x1a7bd instruction=call    sub_11CAC
+    0x1a5f0 mov     dword_51A83, 0
+    0x1a5fa call    sub_13536
+    0x1a5ff push    0
+call=0x1a76c function=0x1a30b..0x1a7bd instruction=call    sub_11CAC
+    0x1a760 mov     esi, 9
+    0x1a765 jmp     loc_1A6A8
+    0x1a76a push    0
+call=0x1bcab function=0x1bbdc..0x1bffe instruction=call    sub_11CAC
+    0x1bca1 call    sub_176B4
+    0x1bca6 add     esp, 8
+    0x1bca9 push    0
+call=0x1c517 function=0x1c4cc..0x1c75e instruction=call    sub_11CAC
+    0x1c512 rep movsd
+    0x1c514 movsb
+    0x1c515 push    0
+call=0x1c74e function=0x1c4cc..0x1c75e instruction=call    sub_11CAC
+    0x1c744 call    free
+    0x1c749 add     esp, 4
+    0x1c74c push    0
+call=0x1cb81 function=0x1cac7..0x1cb94 instruction=call    sub_11CAC
+    0x1cb7a cmp     ebx, 4
+    0x1cb7d jl      short loc_1CB11
+    0x1cb7f push    0
+call=0x1d3ff function=0x1cff0..0x1d4cb instruction=call    sub_11CAC
+    0x1d3ee jmp     loc_1D4C0
+    0x1d3f3 mov     dword_51A83, 0
+    0x1d3fd push    0
+call=0x1deae function=0x1db65..0x1debe instruction=call    sub_11CAC
+    0x1dea4 call    free
+    0x1dea9 add     esp, 4
+    0x1deac push    0
+call=0x203ad function=0x2000a..0x203bd instruction=call    sub_11CAC
+    0x203a2 mov     eax, [esp+4Ch+var_38]
+    0x203a6 mov     dword_53A5D, eax
+    0x203ab push    0
+call=0x20657 function=0x205da..0x2067d instruction=call    sub_11CAC
+    0x20641 mov     dword_53AB9, 0
+    0x2064b mov     dword_53ABD, 0
+    0x20655 push    1
+call=0x20e44 function=0x20c6f..0x21082 instruction=call    sub_11CAC
+    0x20e3d add     esp, 4
+    0x20e40 jmp     short loc_20E0E
+    0x20e42 push    0
+call=0x20fe7 function=0x20c6f..0x21082 instruction=call    sub_11CAC
+    0x20fe0 add     esp, 4
+    0x20fe3 jmp     short loc_20FB6
+    0x20fe5 push    0
+call=0x210ef function=0x21082..0x2111a instruction=call    sub_11CAC
+    0x210e5 call    sub_1E0DB
+    0x210ea add     esp, 0Ch
+    0x210ed push    0
+call=0x21192 function=0x2111a..0x211a4 instruction=call    sub_11CAC
+    0x2118b add     esp, 4
+    0x2118e jmp     short loc_21167
+    0x21190 push    0
+call=0x21518 function=0x214ad..0x21527 instruction=call    sub_11CAC
+    0x2150e call    sub_1E0DB
+    0x21513 add     esp, 0Ch
+    0x21516 push    0
+call=0x217fe function=0x21548..0x2185f instruction=call    sub_11CAC
+    0x217f3 mov     eax, [esp+50h+var_14]
+    0x217f7 mov     dword_53A5D, eax
+    0x217fc push    0
+call=0x2184a function=0x21548..0x2185f instruction=call    sub_11CAC
+    0x21843 add     esp, 4
+    0x21846 jmp     short loc_21819
+    0x21848 push    0
+call=0x219a3 function=0x2189a..0x219ad instruction=call    sub_11CAC
+    0x21999 call    free
+    0x2199e add     esp, 4
+    0x219a1 push    0
+call=0x2202f function=0x21eb1..0x22046 instruction=call    sub_11CAC
+    0x22025 call    free
+    0x2202a add     esp, 4
+    0x2202d push    0
+call=0x2281d function=0x22721..0x2282f instruction=call    sub_11CAC
+    0x22810 add     dword_53EC8, eax
+    0x22816 jmp     loc_2276E
+    0x2281b push    0
+call=0x22a73 function=0x22997..0x22a85 instruction=call    sub_11CAC
+    0x22a66 add     dword_53EC8, edx
+    0x22a6c jmp     loc_229E4
+    0x22a71 push    0
+call=0x22bb9 function=0x22af6..0x22bc6 instruction=call    sub_11CAC
+    0x22baf add     dword_53EC8, ebp
+    0x22bb5 jmp     short loc_22B44
+    0x22bb7 push    0
+call=0x22ca5 function=0x22c04..0x22cbf instruction=call    sub_11CAC
+    0x22c9b add     dword_53EC8, edx
+    0x22ca1 jmp     short loc_22C5E
+    0x22ca3 push    0
+call=0x22e27 function=0x22d1b..0x22e41 instruction=call    sub_11CAC
+    0x22e1d movzx   eax, byte ptr [edx]
+    0x22e20 jmp     loc_22D68
+    0x22e25 push    0
+call=0x2349f function=0x233c6..0x234bb instruction=call    sub_11CAC
+    0x23489 mov     dword_53AB9, 0
+    0x23493 mov     dword_53ABD, 0
+    0x2349d push    1
+call=0x236ee function=0x235f9..0x23790 instruction=call    sub_11CAC
+    0x236d8 mov     dword_53AB9, 0
+    0x236e2 mov     dword_53ABD, 0
+    0x236ec push    1
+call=0x23f69 function=0x23e74..0x240fa instruction=call    sub_11CAC
+    0x23f53 mov     dword_53AB9, 0
+    0x23f5d mov     dword_53ABD, 0
+    0x23f67 push    1
+call=0x24b87 function=0x24b4d..0x24bde instruction=call    sub_11CAC
+    0x24b7d call    sub_11EEE
+    0x24b82 add     esp, 18h
+    0x24b85 push    0
+call=0x24c63 function=0x24c1e..0x24d22 instruction=call    sub_11CAC
+    0x24c5a mov     edi, 2
+    0x24c5f jmp     short loc_24C7C
+    0x24c61 push    1
+call=0x24cd3 function=0x24c1e..0x24d22 instruction=call    sub_11CAC
+    0x24cc9 call    sub_11D40
+    0x24cce add     esp, 0Ch
+    0x24cd1 push    0
+call=0x258b6 function=0x25757..0x25977 instruction=call    sub_11CAC
+    0x258a0 mov     dword_53AB9, 0
+    0x258aa mov     dword_53ABD, 0
+    0x258b4 push    1
+call=0x258ea function=0x25757..0x25977 instruction=call    sub_11CAC
+    0x258e4 xor     ebx, ebx
+    0x258e6 jmp     short loc_258FD
+    0x258e8 push    0
+call=0x27fb1 function=0x276ec..0x27fc9 instruction=call    sub_11CAC
+    0x27fa7 call    memset
+    0x27fac add     esp, 0Ch
+    0x27faf push    1
+call=0x2850d function=0x27fc9..0x286bd instruction=call    sub_11CAC
+    0x28503 call    memset
+    0x28508 add     esp, 0Ch
+    0x2850b push    1
+call=0x28a2e function=0x28784..0x28a6c instruction=call    sub_11CAC
+    0x28a24 call    memset
+    0x28a29 add     esp, 0Ch
+    0x28a2c push    1
+call=0x290c2 function=0x28a6c..0x29117 instruction=call    sub_11CAC
+    0x290b8 call    memset
+    0x290bd add     esp, 0Ch
+    0x290c0 push    1
+call=0x2b5c9 function=0x2a6bd..0x2b5e1 instruction=call    sub_11CAC
+    0x2b5bf call    memset
+    0x2b5c4 add     esp, 0Ch
+    0x2b5c7 push    1
+call=0x32921 function=0x3231b..0x32975 instruction=call    sub_11CAC
+    0x32917 call    sub_32975
+    0x3291c add     esp, 4
+    0x3291f push    0
+call=0x32de6 function=0x32d18..0x33219 instruction=call    sub_11CAC
+    0x32ddc call    sub_10B4E
+    0x32de1 add     esp, 4
+    0x32de4 push    0
+call=0x330ae function=0x32d18..0x33219 instruction=call    sub_11CAC
+    0x330a4 call    sub_10B4E
+    0x330a9 add     esp, 4
+    0x330ac push    0
+call=0x3371c function=0x336a0..0x338c4 instruction=call    sub_11CAC
+    0x33714 mov     byte ptr [eax+3], 2
+    0x33718 jmp     short loc_336F1
+    0x3371a push    0
+call=0x33855 function=0x336a0..0x338c4 instruction=call    sub_11CAC
+    0x3384b call    j___delay
+    0x33850 add     esp, 4
+    0x33853 push    0
+call=0x33d15 function=0x33c9d..0x33dba instruction=call    sub_11CAC
+    0x33d0d mov     byte ptr [eax+5], 0
+    0x33d11 jmp     short loc_33CEE
+    0x33d13 push    0
+call=0x34208 function=0x341db..0x342b5 instruction=call    sub_11CAC
+    0x341fe call    sub_135DD
+    0x34203 add     esp, 8
+    0x34206 push    1
+call=0x34266 function=0x341db..0x342b5 instruction=call    sub_11CAC
+    0x3425c call    sub_10B4E
+    0x34261 add     esp, 4
+    0x34264 push    1
+call=0x342dd function=0x342b5..0x3431d instruction=call    sub_11CAC
+    0x342d3 add     esp, 4
+    0x342d6 call    sub_4E031
+    0x342db push    1
+call=0x34345 function=0x3431d..0x34377 instruction=call    sub_11CAC
+    0x3433b add     esp, 4
+    0x3433e call    sub_4E031
+    0x34343 push    1
+call=0x343a8 function=0x34377..0x343e2 instruction=call    sub_11CAC
+    0x3439c add     esp, 4
+    0x3439f mov     byte_53AFA, 0
+    0x343a6 push    1
+call=0x3545f function=0x353da..0x35487 instruction=call    sub_11CAC
+    0x35455 mov     byte ptr [eax], 1
+    0x35458 call    sub_12263
+    0x3545d push    1
+call=0x3588b function=0x35822..0x35898 instruction=call    sub_11CAC
+    0x35881 call    sub_11DF2
+    0x35886 add     esp, 0Ch
+    0x35889 push    0
+=== hud 0x1acf3 direct calls=4 ===
+call=0x11d0a function=0x11cac..0x11d40 instruction=call    sub_1ACF3
+call=0x174df function=0x1741c..0x175a9 instruction=call    sub_1ACF3
+call=0x1793f function=0x17898..0x179d5 instruction=call    sub_1ACF3
+call=0x18c2c function=0x18b84..0x18c6d instruction=call    sub_1ACF3
+=== hud 0x1ad2a direct calls=1 ===
+call=0x1ad24 function=0x1acf3..0x1aeb1 instruction=jz      loc_1317D
+=== global 0x51aab gate_a data xrefs=8 ===
+xref=0x10436 kind=write function=0x10010..0x10620 instruction=mov     byte_51AAB, al
+xref=0x17306 kind=read function=0x1728c..0x173e7 instruction=movzx   eax, byte_51AAB
+xref=0x173ba kind=write function=0x1728c..0x173e7 instruction=xor     byte_51AAB, 1
+xref=0x1a0c5 kind=read function=0x19df7..0x1a30b instruction=mov     dl, byte_51AAB
+xref=0x1ad0c kind=read function=0x1acf3..0x1aeb1 instruction=movzx   eax, byte_51AAB
+xref=0x26080 kind=write function=0x25ebb..0x26152 instruction=mov     byte_51AAB, al
+xref=0x300f9 kind=read function=0x30012..0x301f4 instruction=mov     al, byte_51AAB
+xref=0x3032f kind=write function=0x301f4..0x30437 instruction=mov     byte_51AAB, al
+=== global 0x51aac gate_b data xrefs=15 ===
+xref=0x135b4 kind=write function=0x13565..0x135dd instruction=mov     byte_51AAC, 0
+xref=0x135d4 kind=write function=0x13565..0x135dd instruction=mov     byte_51AAC, 1
+xref=0x170ba kind=write function=0x16f55..0x1728c instruction=mov     byte_51AAC, 0
+xref=0x17163 kind=write function=0x16f55..0x1728c instruction=mov     byte_51AAC, 1
+xref=0x1726b kind=write function=0x16f55..0x1728c instruction=mov     byte_51AAC, 0
+xref=0x17277 kind=write function=0x16f55..0x1728c instruction=mov     byte_51AAC, 1
+xref=0x1ad1b kind=read function=0x1acf3..0x1aeb1 instruction=movzx   eax, byte_51AAC
+xref=0x25dde kind=write function=0x25bf4..0x25ebb instruction=mov     byte_51AAC, 0
+xref=0x25dea kind=write function=0x25bf4..0x25ebb instruction=mov     byte_51AAC, 1
+xref=0x25e0b kind=write function=0x25bf4..0x25ebb instruction=mov     byte_51AAC, 0
+xref=0x25e5e kind=write function=0x25bf4..0x25ebb instruction=mov     byte_51AAC, 1
+xref=0x25f04 kind=write function=0x25ebb..0x26152 instruction=mov     byte_51AAC, 0
+xref=0x25f2e kind=write function=0x25ebb..0x26152 instruction=mov     byte_51AAC, 1
+xref=0x260de kind=write function=0x25ebb..0x26152 instruction=mov     byte_51AAC, 0
+xref=0x26112 kind=write function=0x25ebb..0x26152 instruction=mov     byte_51AAC, 1
+=== global 0x51a83 range_mode data xrefs=167 ===
+xref=0x10483 kind=write function=0x10010..0x10620 instruction=mov     dword_51A83, 0
+xref=0x1060c kind=write function=0x10010..0x10620 instruction=mov     dword_51A83, 1
+xref=0x115dc kind=read function=0x115b6..0x117e7 instruction=mov     eax, dword_51A83
+xref=0x11b87 kind=read function=0x11b48..0x11b9b instruction=cmp     dword_51A83, 0
+xref=0x11be6 kind=read function=0x11b9b..0x11bfa instruction=cmp     dword_51A83, 0
+xref=0x11c45 kind=read function=0x11bfa..0x11c59 instruction=cmp     dword_51A83, 0
+xref=0x11c98 kind=read function=0x11c59..0x11cac instruction=cmp     dword_51A83, 0
+xref=0x122e6 kind=read function=0x122dc..0x126f7 instruction=cmp     dword_51A83, 1
+xref=0x122fc kind=read function=0x122dc..0x126f7 instruction=cmp     dword_51A83, 2
+xref=0x12309 kind=read function=0x122dc..0x126f7 instruction=cmp     dword_51A83, 3
+xref=0x12385 kind=read function=0x122dc..0x126f7 instruction=cmp     dword_51A83, 4
+xref=0x124b8 kind=read function=0x122dc..0x126f7 instruction=cmp     dword_51A83, 5
+xref=0x126d0 kind=read function=0x122dc..0x126f7 instruction=cmp     dword_51A83, 6
+xref=0x12d1f kind=read function=0x12cea..0x12d7b instruction=cmp     dword_51A83, 0
+xref=0x12d28 kind=read function=0x12cea..0x12d7b instruction=cmp     dword_51A83, 6
+xref=0x12d58 kind=read function=0x12cea..0x12d7b instruction=cmp     dword_51A83, 0
+xref=0x12d61 kind=read function=0x12cea..0x12d7b instruction=cmp     dword_51A83, 6
+xref=0x135bb kind=write function=0x13565..0x135dd instruction=mov     dword_51A83, 0
+xref=0x135ca kind=write function=0x13565..0x135dd instruction=mov     dword_51A83, 1
+xref=0x135f2 kind=write function=0x135dd..0x1366a instruction=mov     dword_51A83, 0
+xref=0x13bcd kind=write function=0x13a9f..0x13e9c instruction=mov     dword_51A83, 0
+xref=0x13be1 kind=write function=0x13a9f..0x13e9c instruction=mov     dword_51A83, 0
+xref=0x13c34 kind=write function=0x13a9f..0x13e9c instruction=mov     dword_51A83, eax
+xref=0x13d2e kind=write function=0x13a9f..0x13e9c instruction=mov     dword_51A83, 0
+xref=0x13df8 kind=write function=0x13a9f..0x13e9c instruction=mov     dword_51A83, eax
+xref=0x13f86 kind=write function=0x13e9c..0x13fd4 instruction=mov     dword_51A83, 0
+xref=0x13fbf kind=write function=0x13e9c..0x13fd4 instruction=mov     dword_51A83, 1
+xref=0x14018 kind=write function=0x13fd4..0x14121 instruction=mov     dword_51A83, eax
+xref=0x1410e kind=write function=0x13fd4..0x14121 instruction=mov     dword_51A83, 1
+xref=0x141f5 kind=write function=0x14121..0x14237 instruction=mov     dword_51A83, 0
+xref=0x14226 kind=write function=0x14121..0x14237 instruction=mov     dword_51A83, 1
+xref=0x15041 kind=write function=0x14ef0..0x15055 instruction=mov     dword_51A83, 0
+xref=0x15140 kind=write function=0x15055..0x15311 instruction=mov     dword_51A83, eax
+xref=0x151dd kind=write function=0x15055..0x15311 instruction=mov     dword_51A83, 6
+xref=0x1528f kind=write function=0x15055..0x15311 instruction=mov     dword_51A83, 0
+xref=0x153b1 kind=write function=0x15311..0x1548e instruction=mov     dword_51A83, eax
+xref=0x153ca kind=write function=0x15311..0x1548e instruction=mov     dword_51A83, 0
+xref=0x15474 kind=write function=0x15311..0x1548e instruction=mov     dword_51A83, 0
+xref=0x154a2 kind=write function=0x1548e..0x1567e instruction=mov     dword_51A83, 0
+xref=0x154ce kind=write function=0x1548e..0x1567e instruction=mov     dword_51A83, 1
+xref=0x15504 kind=write function=0x1548e..0x1567e instruction=mov     dword_51A83, 0
+xref=0x15518 kind=write function=0x1548e..0x1567e instruction=mov     dword_51A83, 1
+xref=0x165c4 kind=write function=0x165ac..0x1685c instruction=mov     dword_51A83, 0
+xref=0x165de kind=write function=0x165ac..0x1685c instruction=mov     dword_51A83, 1
+xref=0x170b0 kind=write function=0x16f55..0x1728c instruction=mov     dword_51A83, 0
+xref=0x17159 kind=write function=0x16f55..0x1728c instruction=mov     dword_51A83, 1
+xref=0x18a14 kind=write function=0x18890..0x18b84 instruction=mov     dword_51A83, 0
+xref=0x18a2e kind=write function=0x18890..0x18b84 instruction=mov     dword_51A83, 1
+xref=0x1a5f0 kind=write function=0x1a30b..0x1a7bd instruction=mov     dword_51A83, 0
+xref=0x1a79f kind=write function=0x1a30b..0x1a7bd instruction=mov     dword_51A83, 1
+xref=0x1a8d4 kind=write function=0x1a866..0x1aa1d instruction=mov     dword_51A83, 0
+xref=0x1a8e7 kind=write function=0x1a866..0x1aa1d instruction=mov     dword_51A83, 1
+xref=0x1a9aa kind=write function=0x1a866..0x1aa1d instruction=mov     dword_51A83, eax
+xref=0x1a9b8 kind=write function=0x1a866..0x1aa1d instruction=mov     dword_51A83, 1
+xref=0x1bd14 kind=write function=0x1bbdc..0x1bffe instruction=mov     dword_51A83, edi
+xref=0x1bd6c kind=write function=0x1bbdc..0x1bffe instruction=mov     dword_51A83, 1
+xref=0x1be15 kind=write function=0x1bbdc..0x1bffe instruction=mov     dword_51A83, 0
+xref=0x1be28 kind=write function=0x1bbdc..0x1bffe instruction=mov     dword_51A83, 1
+xref=0x1be60 kind=write function=0x1bbdc..0x1bffe instruction=mov     dword_51A83, 0
+xref=0x1be73 kind=write function=0x1bbdc..0x1bffe instruction=mov     dword_51A83, 1
+xref=0x1d188 kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, eax
+xref=0x1d25f kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 0
+xref=0x1d278 kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 1
+xref=0x1d366 kind=read function=0x1cff0..0x1d4cb instruction=mov     eax, dword_51A83
+xref=0x1d36e kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 1
+xref=0x1d3c9 kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 0
+xref=0x1d3e2 kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 1
+xref=0x1d3f3 kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 0
+xref=0x1d4b1 kind=write function=0x1cff0..0x1d4cb instruction=mov     dword_51A83, 1
+xref=0x1d817 kind=write function=0x1d80b..0x1d8ba instruction=mov     dword_51A83, 0
+xref=0x1d832 kind=write function=0x1d80b..0x1d8ba instruction=mov     dword_51A83, 0
+xref=0x1d8d7 kind=write function=0x1d8ba..0x1da16 instruction=mov     dword_51A83, 0
+xref=0x205e5 kind=write function=0x205da..0x2067d instruction=mov     dword_51A83, 0
+xref=0x2065f kind=write function=0x205da..0x2067d instruction=mov     dword_51A83, 1
+xref=0x22205 kind=write function=0x2218a..0x22253 instruction=mov     dword_51A83, 0
+xref=0x22247 kind=write function=0x2218a..0x22253 instruction=mov     dword_51A83, 1
+xref=0x23021 kind=write function=0x22f37..0x230f2 instruction=mov     dword_51A83, 0
+xref=0x23069 kind=write function=0x22f37..0x230f2 instruction=mov     dword_51A83, 0
+xref=0x2345b kind=write function=0x233c6..0x234bb instruction=mov     dword_51A83, 0
+xref=0x2352d kind=write function=0x234bb..0x235bc instruction=mov     dword_51A83, 0
+xref=0x23572 kind=write function=0x234bb..0x235bc instruction=mov     dword_51A83, 0
+xref=0x236a6 kind=write function=0x235f9..0x23790 instruction=mov     dword_51A83, 0; Watcom v9-*1.5  32bit common runtime
+xref=0x2372f kind=write function=0x235f9..0x23790 instruction=mov     dword_51A83, 0
+xref=0x23971 kind=write function=0x237d5..0x239bd instruction=mov     dword_51A83, 0
+xref=0x23ae4 kind=write function=0x23a0a..0x23b5f instruction=mov     dword_51A83, 0
+xref=0x23bc6 kind=write function=0x23b5f..0x23cd5 instruction=mov     dword_51A83, 0
+xref=0x23c33 kind=write function=0x23b5f..0x23cd5 instruction=mov     dword_51A83, 0
+xref=0x23d68 kind=write function=0x23cd5..0x23e39 instruction=mov     dword_51A83, 0
+xref=0x23da3 kind=write function=0x23cd5..0x23e39 instruction=mov     dword_51A83, 0
+xref=0x23dde kind=write function=0x23cd5..0x23e39 instruction=mov     dword_51A83, 0
+xref=0x23f21 kind=write function=0x23e74..0x240fa instruction=mov     dword_51A83, 0; Watcom v9-*1.5  32bit common runtime
+xref=0x23faa kind=write function=0x23e74..0x240fa instruction=mov     dword_51A83, 0
+xref=0x23fe5 kind=write function=0x23e74..0x240fa instruction=mov     dword_51A83, 0
+xref=0x24046 kind=write function=0x23e74..0x240fa instruction=mov     dword_51A83, 0
+xref=0x24081 kind=write function=0x23e74..0x240fa instruction=mov     dword_51A83, 0
+xref=0x24253 kind=write function=0x240fa..0x24336 instruction=mov     dword_51A83, 0
+xref=0x2428e kind=write function=0x240fa..0x24336 instruction=mov     dword_51A83, 0
+xref=0x24822 kind=write function=0x24754..0x24b14 instruction=mov     dword_51A83, 0
+xref=0x2486b kind=write function=0x24754..0x24b14 instruction=mov     dword_51A83, 0
+xref=0x248e5 kind=write function=0x24754..0x24b14 instruction=mov     dword_51A83, 0
+xref=0x24c54 kind=write function=0x24c1e..0x24d22 instruction=mov     dword_51A83, esi
+xref=0x24cb5 kind=write function=0x24c1e..0x24d22 instruction=mov     dword_51A83, 0
+xref=0x24f4b kind=write function=0x24e80..0x25052 instruction=mov     dword_51A83, 0
+xref=0x24f86 kind=write function=0x24e80..0x25052 instruction=mov     dword_51A83, 0
+xref=0x24fcc kind=write function=0x24e80..0x25052 instruction=mov     dword_51A83, 0
+xref=0x25007 kind=write function=0x24e80..0x25052 instruction=mov     dword_51A83, 0
+xref=0x25170 kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x251be kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x251f9 kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x2536f kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x253aa kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x253e5 kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x2544e kind=write function=0x250cc..0x25464 instruction=mov     dword_51A83, 0
+xref=0x25564 kind=write function=0x2548c..0x25757 instruction=mov     dword_51A83, 0
+xref=0x255cd kind=write function=0x2548c..0x25757 instruction=mov     dword_51A83, 0
+xref=0x25636 kind=write function=0x2548c..0x25757 instruction=mov     dword_51A83, 0
+xref=0x257e3 kind=write function=0x25757..0x25977 instruction=mov     dword_51A83, 0
+xref=0x25860 kind=write function=0x25757..0x25977 instruction=mov     dword_51A83, 0
+xref=0x25929 kind=write function=0x25757..0x25977 instruction=mov     dword_51A83, 0
+xref=0x3238a kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x323d3 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32455 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32490 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x324cb kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32510 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x3253d kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x3258e kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x325c9 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32604 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x3264b kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32686 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x326cb kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32706 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32741 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x3277c kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x327c3 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32822 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32876 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x328f4 kind=write function=0x3231b..0x32975 instruction=mov     dword_51A83, 0
+xref=0x32d6e kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x32dc3 kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x32e2c kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x32edb kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x32f43 kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x32f7e kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x32ffe kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x3307f kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x330f4 kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x3315a kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x3319f kind=write function=0x32d18..0x33219 instruction=mov     dword_51A83, 0
+xref=0x332df kind=write function=0x3327d..0x3332b instruction=mov     dword_51A83, 0
+xref=0x3339d kind=write function=0x33367..0x333f5 instruction=mov     dword_51A83, 0
+xref=0x33557 kind=write function=0x334d9..0x335a0 instruction=mov     dword_51A83, 0
+xref=0x33610 kind=write function=0x335da..0x33674 instruction=mov     dword_51A83, 0
+xref=0x33657 kind=write function=0x335da..0x33674 instruction=mov     dword_51A83, 0
+xref=0x33808 kind=write function=0x336a0..0x338c4 instruction=mov     dword_51A83, 0
+xref=0x33d85 kind=write function=0x33c9d..0x33dba instruction=mov     dword_51A83, 0
+xref=0x33dab kind=write function=0x33c9d..0x33dba instruction=mov     dword_51A83, 1
+xref=0x33dc9 kind=write function=0x33dba..0x33e3c instruction=mov     dword_51A83, 0
+xref=0x33e88 kind=write function=0x33e3c..0x33f78 instruction=mov     dword_51A83, 0
+xref=0x33f29 kind=write function=0x33e3c..0x33f78 instruction=mov     dword_51A83, 0
+xref=0x33f69 kind=write function=0x33e3c..0x33f78 instruction=mov     dword_51A83, 1
+xref=0x34250 kind=write function=0x341db..0x342b5 instruction=mov     dword_51A83, 0
+xref=0x34638 kind=write function=0x3462e..0x34696 instruction=mov     dword_51A83, 0
+xref=0x35951 kind=write function=0x358ea..0x3599b instruction=mov     dword_51A83, 1
+xref=0x35c18 kind=write function=0x34819..0x34924 instruction=mov     dword_51A83, 1
+xref=0x35fda kind=write function=0x35f92..0x36088 instruction=mov     dword_51A83, 0

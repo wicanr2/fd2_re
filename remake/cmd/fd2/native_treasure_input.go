@@ -12,10 +12,11 @@ type nativeTreasurePrompt struct {
 	reward   battle.Treasure
 	x, y     int
 	awaitAck bool
+	claimed  bool // ClaimTreasure 已成立（YES 且交易通過）
 }
 
-// beginNativeTreasureItemPrompt 只接 0x190AC 有空欄位的普通物品分支。
-// 所有資產先驗證，之後才關閉行動環；取消不改寶箱與庫存。
+// beginNativeTreasureItemPrompt 接 0x190AC 有空欄位的普通物品分支與金錢分支（寶物列 +0x53
+// 為 0／1）。所有資產先驗證，之後才關閉行動環；取消不改寶箱、庫存與金幣。
 func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treasure) error {
 	if g.nativePreparationUI == nil || g.nativeClassUI == nil || !u.HasBattleFig {
 		return fmt.Errorf("native treasure: dialogue assets or actor provenance unavailable")
@@ -37,7 +38,15 @@ func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treas
 	if err != nil {
 		return err
 	}
-	accepted, err := campaign.NativeTreasureItemResponseFrames(question, ui.status.Strings, ui.status.Font, reward.Value, reward.Hidden)
+	var accepted [][]byte
+	switch reward.Kind {
+	case "item":
+		accepted, err = campaign.NativeTreasureItemResponseFrames(question, ui.status.Strings, ui.status.Font, reward.Value, reward.Hidden)
+	case "gold":
+		accepted, err = campaign.NativeTreasureGoldResponseFrames(question, ui.status.Strings, ui.status.Font, reward.Value, reward.Hidden)
+	default:
+		err = fmt.Errorf("native treasure: kind %q has no native prompt", reward.Kind)
+	}
 	if err != nil {
 		return err
 	}
@@ -71,9 +80,14 @@ func (g *Game) commitNativeTreasurePrompt(p *nativeTreasurePrompt) bool {
 		g.loadErr = "native treasure: item transaction rejected"
 		return false
 	}
+	p.claimed = true
 	return true
 }
 
 func (g *Game) finishNativeTreasurePrompt(p *nativeTreasurePrompt) {
+	// 0x194E3..0x194E8：金錢在 0x196CB 關框之後才加進 [0x53BF3]。取消時沒有 claimed，不加。
+	if p.reward.Kind == "gold" && p.claimed {
+		g.gold += p.reward.Value
+	}
 	g.finishSuccessfulUnitAction(p.actor, func() { g.sel, g.reach, g.moved = nil, nil, false })
 }

@@ -174,12 +174,15 @@ func nativeDACIsBlack(dac []byte) bool {
 }
 
 func (g *Game) applyHandlerDirectRecordPatch(patch *campaign.HandlerDirectRecordPatch) error {
-	if patch == nil || g.st == nil || len(patch.Units) == 0 {
+	// 戰場上寫 g.st；戰前處理器（例如 0x3332B 在 LOADCH 之後）寫同一份 runtime slot 的
+	// 劇情演員陣列，戰場接手時由 AdoptHandlerBattleState 原樣帶進去。
+	if patch == nil || g.handlerUnitCount() == 0 || len(patch.Units) == 0 ||
+		(patch.View != nil && g.st == nil) {
 		return errors.New("runtime battle records unavailable")
 	}
 	seen := make(map[int]bool, len(patch.Units))
 	for _, entry := range patch.Units {
-		if entry.Slot < 0 || entry.Slot >= len(g.st.Units) || seen[entry.Slot] {
+		if entry.Slot < 0 || entry.Slot >= g.handlerUnitCount() || seen[entry.Slot] {
 			return fmt.Errorf("slot%d unavailable or duplicated", entry.Slot)
 		}
 		if (entry.X == nil) != (entry.Y == nil) ||
@@ -193,7 +196,7 @@ func (g *Game) applyHandlerDirectRecordPatch(patch *campaign.HandlerDirectRecord
 			return fmt.Errorf("slot%d pose outside native range", entry.Slot)
 		}
 		seen[entry.Slot] = true
-		unit := g.st.Units[entry.Slot]
+		unit := g.handlerUnitAt(entry.Slot)
 		if unit == nil || ((entry.X != nil || entry.Pose != nil) && !unit.HasNativeMapPresentation) {
 			return fmt.Errorf("slot%d lacks native map-record provenance", entry.Slot)
 		}
@@ -218,7 +221,7 @@ func (g *Game) applyHandlerDirectRecordPatch(patch *campaign.HandlerDirectRecord
 		}
 	}
 	for _, entry := range patch.Units {
-		unit := g.st.Units[entry.Slot]
+		unit := g.handlerUnitAt(entry.Slot)
 		if entry.X != nil && !unit.SetNativeMapCoordinatesRaw(*entry.X, *entry.Y) {
 			return fmt.Errorf("slot%d coordinate write failed", entry.Slot)
 		}

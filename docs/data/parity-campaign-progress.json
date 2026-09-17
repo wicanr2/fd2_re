@@ -234,15 +234,35 @@
     },
     {
       "chapter": 10,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch10.json",
+      "slot_manifest": "docs/data/parity-slots/ch10-manifest.json",
+      "slot_sha256": "9849c0257f9562fe074106fe263fd8ba681ceda2ecff3777ffb794e4e27ba49c",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "date": "2026-09-17",
+      "verify": "tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 9 --levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0 --boost-base-dx 60 --out-dir <槽>；tools/chapter_parity.sh 10 <槽> <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_STEPS=25000000000 FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x34BE2,0x34C1E,0x34C6C,0x20707,0x12CEA tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch10-sample.jsonl；合法性檢查 docs/data/parity-plans/ch10-slot-load.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch10.json --oracle <run> --remake <out> --include-seq 1525 1561 1853 2403 3645 4345",
+      "limitations": [
+        "槽由 ch02-cleared 基底建到 target 9（每章 +6 級政策、--seed 4、--event-states 7:17=1），再依 114 強化政策把名冊 11 筆基底 AP +200、DP +0、DX +60（sha 9849c025…）；合法性檢查 ch10-slot-load（LOAD 進洞窟中的激戰城鎮）",
+        "強化政策值不是原版證據：收據只證明節點、畫面、介面、交易與存檔閉環，不得用來談傷害、命中、存活或敵方選目標",
+        "原版側 sample-r4 由 dosgolem feat/fd2-oracle-input-chain a9bcd62（dirty=0，含 16-bit 記憶體 INC 與視圖 aux_phase）重生；計畫 ch10-sample：LOAD→出口→戰前（ch09_pre，含 0x33346 record 50／51 +0x26=100）→第 1～9 回合北上接戰（第 5 回合結束事件 32 `0x34BE2` 登場友軍 group 1；兩次寶箱取得 10000 金）→第 10 回合開頭 force_enemy_clear（1 次 25 筆）→戰後 ch09_post（戰末記錄 61 筆）→幻之森林城鎮出售／買入／探訪／酒店存檔／Shift+F10 祕密商店；280 動作、4553 個 checkpoint",
+        "四個 gate 全過（remake-r6）：行為 281 點全部一致、金額 2000→12000→22000→22037→22027、酒店存檔整檔 sha256 與原版相同；268 個畫面點全在 640 px 預算內、174 點逐像素相同，其餘以指令環開啟中途（#34，最大 428 px）為主。抽樣截圖 docs/figures/parity-ch10-samples-p1..p5.png（113 列）",
+        "輔助底面（FDOTHER #15）相位由收據 aux_phase 推回，實測落在 aux_phase-1 或 -2（強推論），重播端兩者各出一組變體",
+        "Boss（死亡程式 34）與事件 33（第 20 回合）不在抽樣回合內；第 12 回合起曾出現移動被拒的空轉（r3），本輪計畫不涵蓋",
+        "未抽樣到：玩家法術與物品（驅動端沒有指令）；商店買入只買清單第一件給第一位收件人"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 11,

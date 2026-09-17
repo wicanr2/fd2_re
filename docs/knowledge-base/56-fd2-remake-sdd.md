@@ -8241,6 +8241,99 @@ docs/data/ui-traces/parity-ch09-samples.json --include-seq 909 924 1438 1702 266
 限制：事件 31 的鏡頭巡視與戰後 ACTING 36 落在兩個 checkpoint 之間，畫面 gate 只比到之後的點；
 玩家法術與物品仍沒有驅動端指令。
 
+## #40 重繪入口：戰場 HUD anchor 跟著原版重繪評估（2026-09-17）
+
+原版證據（[`fd2_redraw_callers_hud_gates_ida.txt`](../data/ida/fd2_redraw_callers_hud_gates_ida.txt)，
+IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x11B9B`、`0x1A760..0x1A7BD`、
+`0x1CFF0` 尾段）：
+
+- **HUD anchor 只在重繪裡評估（已證實）。** `0x11CAC` 在 `0x11D0A` 呼叫 `0x1ACF3`；`0x1ACF3` 查閘 A
+  `[0x51AAB]`（`0x1AD0C`）與閘 B `[0x51AAC]`（`0x1AD1B`），兩個都非 0 才進 `0x1AD2A`。`0x1ACF3` 另外只有
+  選單 `0x174DF`／`0x1793F`／`0x18C2C` 三個呼叫端。
+- **`0x12CEA` 開頭先重繪一次（已證實）。** `0x12CFF push 0; 0x12D01 call 0x11CAC`，之後 X 步呼叫
+  `0x11C59`／`0x11BFA`、Y 步呼叫 `0x11B48`／`0x11B9B`；四個處理器在捲鏡頭（或游標已在邊上）時必定
+  `0x11CAC(0)`，只動可見游標時要 `[0x51A83]!=0` 才重繪。
+- **閘 B 寫入端（已證實）。** `0x135B4`／`0x135D4`、`0x1726B`／`0x17277` 包住 `0x1A30B`；`0x170BA`／
+  `0x17163` 在 `0x16F55` 系統選單內；`0x25DDE..0x25E5E`、`0x25F04..0x26112` 在主迴圈與存讀檔。閘 A 由
+  `0x10010`（讀檔）、`0x1728C`（選項切換）、`0x25EBB`、`0x301F4` 寫。
+- **回合開頭聚焦（已證實）。** `0x1A79F [0x51A83]=1` → `0x1A7AB 0x12D7B(0)`，都在閘 B 為 0 的期間。
+
+重製端契約：
+
+| 原版重繪點 | 重製端入口 | 狀態 |
+|---|---|---|
+| 游標鍵處理器 `0x11B48` 家族 | `nativeCursorStepHUD`（`NativeMapCursorStepRedraws`）→ `redrawNativeMapHUD` | 接上 |
+| `0x12CEA` 開頭 `0x12D01` | `aiFocusCursor`、`focusNativeMapCursorOnUnit`、`stepNativePlayerFocus` 第一步、戰場視圖的 `stepFocusUnit`（`0x13FD4` 原地回復）第一步 → `redrawNativeMapHUD` | 接上 |
+| `0x12CEA` 逐步 | 同上各路徑逐步走 `nativeCursorStepHUD` | 接上 |
+| `0x1A30B` 返回後輸入迴圈的重繪 | `restoreNativeDisplayGateB` → `redrawNativeMapHUD` | 接上 |
+| 戰場節點進場第一次重繪 | `materializeNativeMapRuntime` | 接上 |
+| 走行步進 `0x12EAA` 家族 | 不評估（只 `0x1297D` 局部重繪） | 照原版 |
+| 攻擊演出前後 `0x1D3FF`、`0x15510`／`0x1563B`／`0x1565C`；`0x1DB65` 的 `0x1DEAE`；訊息關框 `0x19742` | 死亡程式／掉落訊息／升級對話的整幀重組 | **未接**：對應時機未逐點證明，不為收斂差異自行加評估點 |
+
+`redrawNativeMapHUD` 只做 anchor 評估（閘門由 `AdvanceNativeMapHUDAnchor` 判），不重組畫面；每幀 Draw 的
+整幀重組不是原版重繪，不經過它。`finishNativeTransientPlayerPhaseInput` 照 `0x1A79F` 在聚焦前寫
+`[0x51A83]=1`。單元測試 `native_hud_redraw_test.go`：聚焦開頭評估、閘 B 為 0 不評估、原地回復聚焦經
+同一入口、未重繪的步進不評估。依使用者 2026-09-17 定案不重跑第四～九章，驗收在第十章章收據。
+
+第十章驗收結果（2026-09-17，`parity-ch10.json` remake-r6）：HUD 小窗左右在 268 個畫面點全部一致。途中
+暴露一個重播端缺口：`replayDirectionKeys` 用上一個動作的檢查點核對游標，那一點若在 `0x1A30B` 換手中途
+取樣（第十章 seq 3613），整段方向鍵會被跳過、直接瞬移到選取格，漏掉途中可見游標 (1..2,6) 的翻邊
+（seq 3645 起約 4300 px）；改用第一個方向鍵前一格的檢查點。上表「未接」一列維持原狀，第十章沒有出現
+需要它的差異。
+
+## 第十章章工作單元：狀態扣血訊息、友軍休眠、停留聚焦與輔助底面（2026-09-17）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 9
+--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0
+--boost-base-dx 60`（manifest `docs/data/parity-slots/ch10-manifest.json`，sha `9849c025…`，名冊 11 人）。
+合法性檢查 `docs/data/parity-plans/ch10-slot-load.jsonl`。
+
+轉寫與 RE（已證實，Docker Capstone 5.0.3；`FD2.EXE` sha256 `222b7d06…`，檔案偏移＝線性位址＋`0xE00`）：
+
+- **事件 32 `0x34BE2`／33 `0x34C1E`／34 `0x34C6C`。** 32 與 33 共用 `0x34BEC..0x34C1D`：32 登場 group 1
+  （gate 0）接 text 1；33 寫 records 12、13 的 `+0x34=0` 接 text 2；34 跳 `0x34901` 共用對白 text 3。
+  `extract_native_death_events.py` 轉寫，`sync_native_turn_events.py` 產生 `reinforce_ch10_e32_t5`、
+  `turn_ch10_e33_t20`。原版收據：seq 1822 事件 32 之後記錄 53 → 61。
+- **勝敗 `0x20707`。** 先 `0x205BE`，`0x3453E(0x32)` 或 `0x3453E(0x33)` 非 0 → `[0x53ECC]=1`（敗）。
+  `ch10.json` 以 `native_result_handler`／`native_result_code1_records [50,51]` 表示，
+  `Scenario.NativeResultCode1` 查兩筆 `+5 bit0`。
+- **開場寫友軍休眠 `0x3332B`（`0x33346..0x33362`）。** record 50／51 的 `+0x26=100`；每回合 selector 1
+  掃描減 1，`0x1D80B` 因而跳過兩筆。`ch09_pre` 處理器以 `direct_record_patch`（來源 `0x33346`）寫
+  LOADCH 之後的劇情演員陣列，戰場接手帶入。
+- **`+0x25` 扣血回覆 `0x1A866`。** 每筆：`[0x51A83]=0` → `0x12D7B` 聚焦 → `[0x51A83]=1` → `0x1956B` →
+  FDTXT `0x1E7`（FFFE 換行、FFFA＝`MaxHP/10`）→ `0x1E5C0(10)` → `0x196CB`；全部扣完才 `0x1DB65`、
+  章節表、到期倒數，到期提示也先 `0x1A9AA` 聚焦。重製端 `beginNativeTransientPhases` 依序播扣血訊息
+  （共用 `beginNativeTimedMessageDialogue`，10 tick＝33 幀）再逐筆聚焦播到期提示。
+- **武器附加狀態 `0x2A12F`。** item `+9==2` 時 `rand%100 < +0xA` 寫守方 `+0x25 = rand%4+2`（命中判定前）。
+- **寶箱金錢 `0x190AC`。** `+0x53==1`：金額非 0 字串 `0x1AA`／`0x1AE`（隱藏），為 0 用 `0x1AB`／`0x1AF`；
+  關框 `0x196CB` 之後才加進 `[0x53BF3]`。
+- **分派器停留聚焦 `0x13A9F`。** mode 3／4／7／9／10 與 mode 0 的 `0x13E9C` 在 `0x14B78` 之前無條件
+  `0x12D7B` 聚焦自己，`0x14B78` 回 0 再 `0x13FD4`。record 12／13（mode 4）每回合已在目的地仍聚焦，
+  鏡頭 X 由 10 到 11。
+- **道具路由 `0x15055` 不移動。** 函式內沒有 `0x14B78`；`[0x53C37/0x53C3B]` 是 `0x1567E` 在原地指令目標場
+  選出的效果格。seq 3614 record 54 在 (10,28) 對 (9,28) 的 record 2 用物品 194。重製端改用
+  `nativeAIPlanForStationarySelection`。
+- **JOIN 建構 `0x112A5`。** `0x1138B` 有物品的格旗標寫 0（不留殘值），`0x113C9` 清 `+0x22..+0x27`。
+  第十章酒店存檔 id 11 的 `+0x0E` 因此由殘值 0xF8 變 0。
+- **輔助底面 `0x10652`／`0x11EEE`。** raw chapter 9／24／25 載入 FDOTHER #15，與 28／29 的 #55 同一條
+  `0x4EB90` 鋪底；圖塊透明處露出熔岩。`fdother.NativeChapterAuxSurfaceFor` 依章節選資源，分離素材
+  `surfaces/FDOTHER_015`。dosgolem oracle 視圖加 `aux_phase`（`[0x539FC]`）；畫面上的相位實測是
+  `aux_phase-1` 或 `-2`（強推論，十四點逐相位比對 #15），重播端兩者各出一組。
+- **dosgolem 補 `66 FF /0`（16-bit 記憶體 INC），寶箱取得 `0x122CD` 需要。**
+
+重播端（對拍工具，不是正式路徑）另補：寶物提問停在 `0x19953` 讀鍵時取 `wait` 檢查點並疊出提問框；
+指令環穩態檢查點另出 `0x1741C` 最後一張展開幀位置（`0x179D5` 可能在第一次穩態重繪前讀鍵）。
+
+結果：原版側 `work/parity-slot-ch10/sample-r4`（dosgolem `a9bcd62`，280 動作）對 remake-r6 四個 gate 全過
+（`docs/data/ui-traces/parity-ch10.json`）：行為 281 點一致、金額 2000→12000→22000→22037→22027、
+酒店存檔整檔 sha256 相同；268 個畫面點 174 點 0 px，其餘在 640 px 內（最大 428 px，指令環開啟中途 #34）。
+抽樣截圖 `docs/figures/parity-ch10-samples-p1..p5.png`（113 列，含 1525 熔岩底面、1561 寶物提問、
+1853 事件 32 之後、2403、3645、4345 戰後城鎮）。
+
+限制：r3 計畫 12 回合超過 2e10 指令預算，改抽樣到第 9 回合、第 10 回合清場；Boss（死亡程式 34）與
+事件 33 不在抽樣內。輔助底面相位是由收據推回的強推論，不是逐 tick 模擬。第四～九章依定案未重跑；
+停留聚焦、道具原地使用與 JOIN 旗標三項修正會影響這些章的重播，下次重跑時要以新收據確認。
+
 ## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
 
 111 規定每五章回頭看一次累積的畫面差異。ch01–03 在台帳裡還是 `todo`（只有早／中／晚

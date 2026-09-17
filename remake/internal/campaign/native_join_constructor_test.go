@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 func TestNativeJoinConstructorMaterializesKeliFromRawTables(t *testing.T) {
@@ -124,5 +125,40 @@ func TestNativeJoinConstructorRejectsOffsetDrift(t *testing.T) {
 	}
 	if _, err := LoadNativeJoinConstructorTable(path); err == nil {
 		t.Fatal("shifted source offset was accepted")
+	}
+}
+
+func TestNativeJoinConstructorClearsItemFlagsAndTransientOverResidual(t *testing.T) {
+	// 0x1138B：有物品的格旗標寫 0；0x113C9：+0x22..+0x27 清零。第十章 r4 酒店存檔 id 11 的
+	// +0x0E 殘值 0xF8 被寫成 0。
+	table, err := LoadNativeJoinConstructorTable(filepath.Join("..", "..", "assets", "data", "native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix(filepath.Join("..", "..", "assets", "data", "native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var residual fdsave.PersistentRecord
+	for i := range residual.Raw {
+		residual.Raw[i] = 0xf8
+	}
+	record, err := table.MaterializePersistentRecordOn(residual, 11, itemRows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw := record.Raw
+	for slot := 0; slot < 4; slot++ {
+		cell := 0x0e + slot*2
+		want := byte(0)
+		if raw[cell+1] == 0xff {
+			want = 0x80
+		}
+		if raw[cell] != want {
+			t.Fatalf("slot %d flag=%#x item=%#x want %#x", slot, raw[cell], raw[cell+1], want)
+		}
+	}
+	if !bytes.Equal(raw[0x22:0x28], make([]byte, 6)) {
+		t.Fatalf("transient bytes kept residual: % x", raw[0x22:0x28])
 	}
 }

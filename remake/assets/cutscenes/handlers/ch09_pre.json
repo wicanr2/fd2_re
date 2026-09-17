@@ -22,6 +22,34 @@
       }
     },
     {
+      "op": "direct_record_patch",
+      "direct_record_patch": {
+        "units": [
+          {
+            "slot": 50,
+            "raw_bytes": [
+              {
+                "offset": 38,
+                "value": 100
+              }
+            ]
+          },
+          {
+            "slot": 51,
+            "raw_bytes": [
+              {
+                "offset": 38,
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "source": {
+        "addr": "0x33346"
+      }
+    },
+    {
       "op": "dialog",
       "text_index": 0,
       "source": {

@@ -140,6 +140,11 @@ func (s *State) nativePhysicalExchange(a, d *Unit, rngState uint16) ([]NativePhy
 			return nil, rngState, err
 		}
 		rng = roll.RNGState
+		if roll.Status {
+			// 0x2A12F：武器 +9＝2 發動時在命中判定之前就寫守方 +0x25＝rand()%4+2，
+			// 未命中也照寫（第十章 r2 第 1 回合記錄 5、52 在下一個 0x1A866 扣 MaxHP/10）。
+			d.SetNativeTransientDuration(0x25, byte(roll.StatusValue))
+		}
 		strike := NativePhysicalStrike{Roll: roll}
 		if !roll.Missed {
 			before := d.HP

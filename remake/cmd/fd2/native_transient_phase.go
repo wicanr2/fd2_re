@@ -14,21 +14,22 @@ import (
 // byte expires, it runs the proven 0x1B750 equipment/derived-stat
 // recalculation before publishing the state. This path deliberately has no
 // killer and never enters the action-only 0x1B6B7/0x1AA1D dispatch.
-func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []battle.NativeTransientExpiry, error) {
+func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []battle.NativeTransientExpiry, []battle.NativeTransientDamage, error) {
 	if g == nil || g.st == nil || len(selectors) == 0 {
-		return nil, nil, fmt.Errorf("native transient phase: state unavailable")
+		return nil, nil, nil, fmt.Errorf("native transient phase: state unavailable")
 	}
 	if !g.st.HasNativeRuntimeUnitProjection {
 		return g.buildNativeTransientPhasesTyped(selectors...)
 	}
+	var damage []battle.NativeTransientDamage
 	if len(g.st.Units) != len(g.st.NativeRuntimeRecords) {
-		return nil, nil, fmt.Errorf("native transient phase: runtime raw projection is incomplete")
+		return nil, nil, nil, fmt.Errorf("native transient phase: runtime raw projection is incomplete")
 	}
 	candidate := *g.st
 	candidate.Units = make([]*battle.Unit, len(g.st.Units))
 	for index, source := range g.st.Units {
 		if source == nil {
-			return nil, nil, fmt.Errorf("native transient phase: unit %d is nil", index)
+			return nil, nil, nil, fmt.Errorf("native transient phase: unit %d is nil", index)
 		}
 		clone := *source
 		candidate.Units[index] = &clone
@@ -40,14 +41,15 @@ func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []b
 	var expired []battle.NativeTransientExpiry
 	for _, selector := range selectors {
 		if _, duplicate := selected[selector]; duplicate {
-			return nil, nil, fmt.Errorf("native transient phase: duplicate selector %d", selector)
+			return nil, nil, nil, fmt.Errorf("native transient phase: duplicate selector %d", selector)
 		}
 		selected[selector] = struct{}{}
 		result, err := candidate.AdvanceNativeTransientPhaseRaw(selector)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
 		expired = append(expired, result.Expired...)
+		damage = append(damage, result.Damage...)
 	}
 	expiredUnits := make(map[*battle.Unit]struct{}, len(expired))
 	for _, event := range expired {
@@ -63,7 +65,7 @@ func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []b
 		}
 		panel, err := battle.NativeItemPanelRecordForUnit(unit)
 		if err != nil {
-			return nil, nil, fmt.Errorf("native transient phase: unit %d record: %w", index, err)
+			return nil, nil, nil, fmt.Errorf("native transient phase: unit %d record: %w", index, err)
 		}
 		record := append([]byte(nil), candidate.NativeRuntimeRecords[index].Raw[:]...)
 		copy(record[6:0x28], panel[6:0x28])
@@ -73,10 +75,10 @@ func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []b
 				assetPath("assets/data/native_item_effect_rows.json"),
 			)
 			if err != nil {
-				return nil, nil, fmt.Errorf("native transient phase: item rows: %w", err)
+				return nil, nil, nil, fmt.Errorf("native transient phase: item rows: %w", err)
 			}
 			if err := battle.ApplyNativeRuntimeEquipmentRecalc(record, itemRows); err != nil {
-				return nil, nil, fmt.Errorf("native transient phase: unit %d recompute: %w", index, err)
+				return nil, nil, nil, fmt.Errorf("native transient phase: unit %d recompute: %w", index, err)
 			}
 			unit.AP = int(int16(binary.LittleEndian.Uint16(record[0x48:])))
 			unit.DP = int(int16(binary.LittleEndian.Uint16(record[0x4a:])))
@@ -85,11 +87,11 @@ func (g *Game) buildNativeTransientPhases(selectors ...byte) (*battle.State, []b
 		}
 		copy(candidate.NativeRuntimeRecords[index].Raw[:], record)
 	}
-	return &candidate, expired, nil
+	return &candidate, expired, damage, nil
 }
 
 func (g *Game) applyNativeTransientPhases(selectors ...byte) ([]battle.NativeTransientExpiry, error) {
-	candidate, expired, err := g.buildNativeTransientPhases(selectors...)
+	candidate, expired, _, err := g.buildNativeTransientPhases(selectors...)
 	if err != nil {
 		return nil, err
 	}
@@ -140,35 +142,37 @@ func (g *Game) applyNativeTransientPhase(selector byte) ([]battle.NativeTransien
 // 到期的單位以 0x1B750 的規則從基礎攻防＋裝備重算 +0x48..+0x4E（強化到期時
 // AP 從 1.15 倍回到基礎值；第六章 r4 收據 seq 177：記錄 15 的 +0x22 歸零、AP 93→80）。
 // 每個單位都要有 raw +5／+6 與基礎攻防出處，缺了整段拒絕。
-func (g *Game) buildNativeTransientPhasesTyped(selectors ...byte) (*battle.State, []battle.NativeTransientExpiry, error) {
+func (g *Game) buildNativeTransientPhasesTyped(selectors ...byte) (*battle.State, []battle.NativeTransientExpiry, []battle.NativeTransientDamage, error) {
 	candidate := *g.st
 	candidate.Units = make([]*battle.Unit, len(g.st.Units))
 	for index, source := range g.st.Units {
 		if source == nil {
-			return nil, nil, fmt.Errorf("native transient phase: unit %d is nil", index)
+			return nil, nil, nil, fmt.Errorf("native transient phase: unit %d is nil", index)
 		}
 		clone := *source
 		candidate.Units[index] = &clone
 	}
 	selected := make(map[byte]struct{}, len(selectors))
 	var expired []battle.NativeTransientExpiry
+	var damage []battle.NativeTransientDamage
 	for _, selector := range selectors {
 		if _, duplicate := selected[selector]; duplicate {
-			return nil, nil, fmt.Errorf("native transient phase: duplicate selector %d", selector)
+			return nil, nil, nil, fmt.Errorf("native transient phase: duplicate selector %d", selector)
 		}
 		selected[selector] = struct{}{}
 		result, err := candidate.AdvanceNativeTransientPhaseTyped(selector)
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
 		expired = append(expired, result.Expired...)
+		damage = append(damage, result.Damage...)
 	}
 	if len(expired) == 0 {
-		return &candidate, nil, nil
+		return &candidate, nil, damage, nil
 	}
 	itemRows, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
 	if err != nil {
-		return nil, nil, fmt.Errorf("native transient phase: item rows: %w", err)
+		return nil, nil, nil, fmt.Errorf("native transient phase: item rows: %w", err)
 	}
 	expiredUnits := make(map[*battle.Unit]struct{}, len(expired))
 	for _, event := range expired {
@@ -180,15 +184,15 @@ func (g *Game) buildNativeTransientPhasesTyped(selectors ...byte) (*battle.State
 		}
 		record, err := campaign.NativeShopEquipmentRecordForUnit(unit)
 		if err != nil {
-			return nil, nil, fmt.Errorf("native transient phase: unit %d record: %w", index, err)
+			return nil, nil, nil, fmt.Errorf("native transient phase: unit %d record: %w", index, err)
 		}
 		if err := battle.ApplyNativeRuntimeEquipmentRecalc(record, itemRows); err != nil {
-			return nil, nil, fmt.Errorf("native transient phase: unit %d recompute: %w", index, err)
+			return nil, nil, nil, fmt.Errorf("native transient phase: unit %d recompute: %w", index, err)
 		}
 		unit.AP = int(int16(binary.LittleEndian.Uint16(record[0x48:])))
 		unit.DP = int(int16(binary.LittleEndian.Uint16(record[0x4a:])))
 		unit.HIT = int(int16(binary.LittleEndian.Uint16(record[0x4c:])))
 		unit.EV = int(int16(binary.LittleEndian.Uint16(record[0x4e:])))
 	}
-	return &candidate, expired, nil
+	return &candidate, expired, damage, nil
 }

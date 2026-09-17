@@ -301,6 +301,39 @@ func NativeTreasureItemResponseFrames(question []byte, strings *fdtxt.Strings, f
 	return nativeBattleResponseWordFrames(question, font, expanded)
 }
 
+// NativeTreasureGoldResponseFrames 是 0x190AC 金錢分支（寶物列 +0x53 == 1）的回覆：金額非 0 時
+// 0x19477 先把金額存進 [0x53AE1]，顯示 0x1AA（格子旗標 0x20 成立）／0x1AE（隱藏），FFFA 展開成
+// 十進位；金額為 0 顯示 0x1AB／0x1AF。加金在 0x196CB 關框之後（0x194E8），不在這裡。
+func NativeTreasureGoldResponseFrames(question []byte, strings *fdtxt.Strings, font *fdtxt.Font, value int, hidden bool) ([][]byte, error) {
+	if len(question) != 320*200 || strings == nil || font == nil || value < 0 || value > 0xffff {
+		return nil, errors.New("campaign: invalid treasure gold response source")
+	}
+	index := 0x1aa
+	if value == 0 {
+		index = 0x1ab
+	}
+	if hidden {
+		index += 4
+	}
+	words, err := strings.Words(index)
+	if err != nil {
+		return nil, err
+	}
+	digits := make([]uint16, 0, 5)
+	for _, digit := range strconv.Itoa(value) {
+		digits = append(digits, uint16(digit-'0'))
+	}
+	expanded := make([]uint16, 0, len(words)+len(digits))
+	for _, word := range words {
+		if word == 0xfffa {
+			expanded = append(expanded, digits...)
+		} else {
+			expanded = append(expanded, word)
+		}
+	}
+	return nativeBattleResponseWordFrames(question, font, expanded)
+}
+
 func nativeBattleResponseWordFrames(question []byte, font *fdtxt.Font, words []uint16) ([][]byte, error) {
 	frame := append([]byte(nil), question...)
 	frames := make([][]byte, 0, len(words))

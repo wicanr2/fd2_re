@@ -40,6 +40,122 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/82293901dfcc/events/1/1",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      48,
+                      49,
+                      125,
+                      98,
+                      342,
+                      724,
+                      559,
+                      579,
+                      734,
+                      341
+                    ],
+                    [
+                      181,
+                      589,
+                      343,
+                      1073,
+                      671,
+                      1179,
+                      515,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ],
+                "line": 6,
+                "operand": 69,
+                "pages": [
+                  [
+                    "『萊汀大人！屬下來遲了",
+                    "　真是罪該萬死．．』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch10.json",
+                "source_dat": "FDTXT_010",
+                "string_index": 1,
+                "utterance": 0
+              },
+              "native_event_id": 32,
+              "native_source": "0x34bf6",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/82293901dfcc/events/1/2",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 7,
+                "operand": 6,
+                "pages": [
+                  [
+                    "『沒關係！陛下確是被監",
+                    "　禁在此，憑著王國禁衛軍的",
+                    "　名譽，大家要努力作戰，"
+                  ],
+                  [
+                    "　將陛下平安救回！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch10.json",
+                "source_dat": "FDTXT_010",
+                "string_index": 1,
+                "utterance": 1
+              },
+              "native_event_id": 32,
+              "native_source": "0x34bf6",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/82293901dfcc/events/1/3",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 8,
+                "operand": 69,
+                "pages": [
+                  [
+                    "『遵命！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch10.json",
+                "source_dat": "FDTXT_010",
+                "string_index": 1,
+                "utterance": 2
+              },
+              "native_event_id": 32,
+              "native_source": "0x34bf6",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
         }
       ],
       "event_id": "legacy/event/82293901dfcc/events/1",
@@ -52,6 +168,97 @@
       "trigger": "on_turn_end",
       "when": {
         "turn": 5
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/82293901dfcc/events/2/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 9,
+                "operand": 11,
+                "pages": [
+                  [
+                    "『我不得不承認，你們比我預",
+                    "　想的還難纏，不過我沒有耐",
+                    "　性再和你們玩下去了，"
+                  ],
+                  [
+                    "　來人，殺了卡納恩三世。』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch10.json",
+                "source_dat": "FDTXT_010",
+                "string_index": 2,
+                "utterance": 0
+              },
+              "native_event_id": 33,
+              "native_source": "0x34c28",
+              "native_text_index": 2
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/82293901dfcc/events/2/1",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_death_op": {
+                "op": "record_bytes",
+                "unit": 12,
+                "writes": [
+                  [
+                    52,
+                    0,
+                    1
+                  ]
+                ]
+              },
+              "native_event_id": 33,
+              "native_source": "0x34c4f"
+            }
+          },
+          "type": "native_death_op"
+        },
+        {
+          "action_id": "legacy/action/82293901dfcc/events/2/2",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_death_op": {
+                "op": "record_bytes",
+                "unit": 13,
+                "writes": [
+                  [
+                    52,
+                    0,
+                    1
+                  ]
+                ]
+              },
+              "native_event_id": 33,
+              "native_source": "0x34c5d"
+            }
+          },
+          "type": "native_death_op"
+        }
+      ],
+      "event_id": "legacy/event/82293901dfcc/events/2",
+      "extensions": {
+        "legacy": {
+          "id": "turn_ch10_e33_t20",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 20
       }
     }
   ],
@@ -333,6 +540,11 @@
           }
         ]
       },
+      "native_result_code1_records": [
+        50,
+        51
+      ],
+      "native_result_handler": "0x20707",
       "runtime_append_groups": true
     }
   },

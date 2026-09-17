@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/binary"
+	"fmt"
 	"path/filepath"
 	"reflect"
 	"testing"
@@ -281,6 +282,35 @@ func TestNativeTransientPresentationFailsClosedBeforeCountdown(t *testing.T) {
 		g.st.NativeRuntimeRecords[0].Raw[0x22] != 1 ||
 		g.nativeClassUIJob != nil || g.transientUI {
 		t.Fatal("failed presentation published countdown or UI state")
+	}
+}
+
+func TestNativeTransientDamagePresentationFailsClosedBeforeHPWrite(t *testing.T) {
+	// 0x1A8AF：+0x25 扣血之後每筆都要 0x1956B 開框寫 FDTXT 0x1E7；字串或肖像缺件時
+	// 整個掃描不發布，HP 與倒數都保持原值。
+	g, _, _ := nativeCurrentSaveTestGame(t)
+	unit := g.st.Units[0]
+	unit.NativeRecordByte6 = 2
+	unit.NativeTransient[3] = 1
+	g.st.NativeRuntimeRecords[0].Raw[6] = 2
+	g.st.NativeRuntimeRecords[0].Raw[0x25] = 1
+	hp := unit.HP
+
+	if err := g.beginNativeTransientPhases([]byte{2}, nil); err == nil {
+		t.Fatal("missing FDTXT damage text was accepted")
+	}
+	if g.st.Units[0].HP != hp || g.st.Units[0].NativeTransient[3] != 1 ||
+		g.nativeLevelUpDialogue != nil || g.transientUI {
+		t.Fatalf("failed damage presentation published state: hp=%d→%d poison=%d",
+			hp, g.st.Units[0].HP, g.st.Units[0].NativeTransient[3])
+	}
+}
+
+func TestNativeMessagePagesSplitsDamageTextLines(t *testing.T) {
+	// 0x1A8C3 把 MaxHP/10 存進 [0x53AE1]，0x15F84 把 FFFA 寫成十進位數字、FFFE 換行。
+	pages, wait, err := nativeMessagePages(fakeLevelUpStrings{0x1e7: {90, 0xfffe, 91, 0xfffa, 92}}, 0x1e7, 12)
+	if err != nil || wait || fmt.Sprint(pages) != fmt.Sprint([][][]uint16{{{90}, {91, 1, 2, 92}}}) {
+		t.Fatalf("pages=%v wait=%v err=%v", pages, wait, err)
 	}
 }
 

@@ -639,8 +639,20 @@ CURSOR_MODES = {"cursor", "target"}
 ESCAPABLE = {"system", "status", "grid", "target", "ring", "shop", "spell"}
 
 
+# 待機在寶物格時 0x190AC 在原地跳「發現寶藏，要挖掘嗎？」YES／NO（0x19953），選 YES 後再等一次
+# 取得訊息（0x16559）。輸入鏈落在這支函式裡就是寶藏提示；預設選項是 YES，送 enter。
+TREASURE_RANGE = (0x190AC, 0x1956A)
+
+
 def ui_mode(current):
     chain = current.get("input_chain") or []
+    for address in chain:
+        try:
+            value = int(address, 16)
+        except (TypeError, ValueError):
+            continue
+        if TREASURE_RANGE[0] <= value <= TREASURE_RANGE[1]:
+            return "treasure"
     for name, marker in UI_MODES:
         if marker in chain:
             return name
@@ -1065,6 +1077,11 @@ def do_move_unit(command):
         mode = ui_mode(current)
         if mode == "cursor":
             return True
+        if mode == "treasure":
+            key = "" if current.get("kbd_pending", 0) > 0 else "enter"
+            seq, current = send(key, max(steps, 3_000_000))
+            report(seq, key, current, " move_unit=finish-treasure")
+            continue
         if mode == "dialogue":
             maybe_dialogue_probe(current, command)
             key = "" if current.get("kbd_pending", 0) > 0 else "enter"
@@ -1262,6 +1279,11 @@ def do_engage(command):
             # 的存檔就沒跑到，整場的進度也跟著沒了。
             print(f"engage {moved_to} 之後已經進到戰後城鎮，這一場結束", flush=True)
             return True
+        if mode == "treasure":
+            key = "" if current.get("kbd_pending", 0) > 0 else "enter"
+            seq, current = send(key, max(steps, 3_000_000))
+            report(seq, key, current, " engage=finish-treasure")
+            continue
         if mode == "dialogue":
             maybe_dialogue_probe(current, command)
             key = "" if current.get("kbd_pending", 0) > 0 else "enter"

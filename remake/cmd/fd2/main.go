@@ -266,6 +266,7 @@ type Game struct {
 	nativeClassUIJob         *nativeClassUIJob
 	nativePlayerStatus       *nativePlayerStatusState
 	nativePlayerFocus        *battle.Cell
+	nativePlayerFocusStarted bool
 	nativeGateBAfterFocus    bool // 0x1A7AB 聚焦在 0x1A30B 裡；閘 B 要等 0x17277／0x135D4 返回後才寫回 1
 	nativeNextPlayerIndex    int
 	transientUI              bool
@@ -516,35 +517,37 @@ type Game struct {
 	result             string // 勝負:""/win/lose
 	msg                string // 短訊息(攻擊傷害等)
 	// 地圖單位 sprite(FDICON 待機分鏡):fig index → 幀序列
-	sprites                      map[int][]*ebiten.Image
-	figani                       map[int][]*ebiten.Image                     // 攻擊全身動畫(FIGANI):fig → 幀序列
-	figaniDelays                 map[int][]int                               // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
-	atk                          *atkAnim                                    // 進行中的攻擊演出
-	bg                           *ebiten.Image                               // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
-	tai                          *ebiten.Image                               // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
-	panel                        *ebiten.Image                               // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
-	dlgBox                       *ebiten.Image                               // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
-	dlgGrad                      *ebiten.Image                               // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
-	fontNm                       *Font                                       // 狀態欄名字(整數尺寸 face,scale1 銳利)
-	nativeBattleFont             *fdtxt.Font                                 // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
-	nativeBattleGlyphs           map[string]int                              // Unicode→原版 glyph 索引（未知字元失敗即關閉）
-	nativeMapFrozenNow           func() time.Time                            // 對拍重播列舉相位變體時凍結 BIOS 取樣；nil 用實際時鐘
-	nativeBattlePanel            *battle.NativeItemPanelDataAssets           // 0x18C6D框／bar／digit indexed素材
-	nativeBattleValues           map[nativeBattlePanelValueKey]*ebiten.Image // 可見值panel快取
-	digits                       [10]*ebiten.Image                           // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
-	redSil                       map[*ebiten.Image]*ebiten.Image             // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
-	dim                          *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
-	figMeta                      map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
-	font                         *Font                                       // 原版點陣中文字型(doc 08)
-	fontScale                    float64                                     // 玩家選的字級倍率(F7;settings.go fontScales)
-	localeID                     string                                      // 全域語系設定；不寫入戰役存檔
-	localeCatalog                *localization.Catalog                       // 已完整驗證的官方語言包
-	localeContent                *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
-	localeEntities               *localization.EntityCatalog                 // 已按遊戲 ID 正規化的實體名稱
-	sourceBattleEntities         *localization.EntityCatalog                 // protect 使用來源姓名，不受顯示語系影響
-	modernStoryPortraits         *modernStoryPortraitSet                     // 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
-	nativeDialogueModernPortrait *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
-	nativeDialogueArrowTicks     int
+	sprites                             map[int][]*ebiten.Image
+	figani                              map[int][]*ebiten.Image                     // 攻擊全身動畫(FIGANI):fig → 幀序列
+	figaniDelays                        map[int][]int                               // 原始 FIGANI descriptor +6 delay，與 PNG 幀數一一對齊
+	atk                                 *atkAnim                                    // 進行中的攻擊演出
+	bg                                  *ebiten.Image                               // 戰鬥背景(BG.DAT,by 戰場;map0=BG_004 森林)
+	tai                                 *ebiten.Image                               // 我方腳下台座(TAI.DAT;0x29164 載 0x28c46,doc35 §3.3)
+	panel                               *ebiten.Image                               // 狀態欄框素材(FDOTHER#5 LMI1 #22,149×42;含bevel+HP/MP標籤+槽,doc35 §4)
+	dlgBox                              *ebiten.Image                               // 對話框框素材(FDOTHER#5 LMI1 #21,310×99;orig 下框(5,112)@320)
+	dlgGrad                             *ebiten.Image                               // 對話框內部漸層(比對頭像底色 40,69,138→56,85,154 消接縫色差;lazy 建)
+	fontNm                              *Font                                       // 狀態欄名字(整數尺寸 face,scale1 銳利)
+	nativeBattleFont                    *fdtxt.Font                                 // 全螢幕戰鬥狀態欄 FDOTHER#4 16×16 字模
+	nativeBattleGlyphs                  map[string]int                              // Unicode→原版 glyph 索引（未知字元失敗即關閉）
+	nativeMapFrozenNow                  func() time.Time                            // 對拍重播列舉相位變體時凍結 BIOS 取樣；nil 用實際時鐘
+	nativeChapterAuxPhaseOverride       *int                                        // 非 nil：0x4EB90 底面相位改用此值（對拍重播依原版收據 [0x539FC] 指定）
+	nativeActionOverlayOpenFrameVariant bool                                        // 對拍重播用：指令環穩態時仍以 0x1741C 最後一張展開幀位移貼圖示（0x179D5 可能在第一次穩態重繪前讀鍵）
+	nativeBattlePanel                   *battle.NativeItemPanelDataAssets           // 0x18C6D框／bar／digit indexed素材
+	nativeBattleValues                  map[nativeBattlePanelValueKey]*ebiten.Image // 可見值panel快取
+	digits                              [10]*ebiten.Image                           // 狀態欄數字 0-9(LMI1 #31-40 原版 digit cell,白/藍影)
+	redSil                              map[*ebiten.Image]*ebiten.Image             // E1 紅色剪影近似快取；不是 raw DAC 脈衝本身
+	dim                                 *ebiten.Image                               // 全螢幕暗化/底板共用(回合橫幅、單位面板)
+	figMeta                             map[int][][2]int                            // FIGANI 每幀內嵌絕對螢幕座標 (dx,dy)@320(doc06;動畫走位全靠它)
+	font                                *Font                                       // 原版點陣中文字型(doc 08)
+	fontScale                           float64                                     // 玩家選的字級倍率(F7;settings.go fontScales)
+	localeID                            string                                      // 全域語系設定；不寫入戰役存檔
+	localeCatalog                       *localization.Catalog                       // 已完整驗證的官方語言包
+	localeContent                       *localization.ContentCatalog                // 已完整驗證的全量玩家內容目錄
+	localeEntities                      *localization.EntityCatalog                 // 已按遊戲 ID 正規化的實體名稱
+	sourceBattleEntities                *localization.EntityCatalog                 // protect 使用來源姓名，不受顯示語系影響
+	modernStoryPortraits                *modernStoryPortraitSet                     // 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
+	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
+	nativeDialogueArrowTicks            int
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
 
@@ -679,6 +682,7 @@ type focusUnitJob struct {
 	targetX, targetY int
 	then             func()
 	nativeView       bool
+	started          bool // 0x12CEA 開頭的 0x11CAC(0) 已經做過
 }
 
 // actPoseJob 承接 beat「act」。acting 非空時按原版 0x1366a 規則播放：正常 frame
@@ -1162,6 +1166,22 @@ func (g *Game) stepFocusUnit() {
 	if j == nil || g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 {
 		return
 	}
+	// 戰場視圖上的聚焦（0x13FD4 原地回復的 0x12D7B 等）與 AI 聚焦是同一支 0x12CEA：開頭重繪
+	// 一次，逐步照游標鍵處理器的重繪規則；故事視圖另有自己的 HUD，不動戰場的 anchor。
+	battleView := j.nativeView && !g.hasStoryNativeMapView && g.st != nil && g.st.HasNativeMapViewState
+	if !j.started {
+		j.started = true
+		if battleView {
+			if battle.NativeFocusTraceHook != nil {
+				battle.NativeFocusTraceHook(j.targetX, j.targetY, g.st.NativeMapViewState)
+			}
+			g.redrawNativeMapHUD()
+		}
+	}
+	var stepBefore battle.NativeMapViewState
+	if battleView {
+		stepBefore = g.st.NativeMapViewState
+	}
 	finish := func() {
 		g.focusJob = nil
 		if j.then != nil {
@@ -1232,6 +1252,9 @@ func (g *Game) stepFocusUnit() {
 	if !g.syncStoryNativeMapFocusView(screenX, screenY) {
 		g.focusJob = nil
 		return
+	}
+	if battleView {
+		g.nativeCursorStepHUD(stepBefore, g.st.NativeMapViewState)
 	}
 	if g.curX == j.targetX && g.curY == j.targetY {
 		finish()
@@ -1879,7 +1902,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.camX, g.camY = float64(b.Layout.CamX), float64(b.Layout.CamY)
 		g.beatAdvance()
 	case "direct_record_patch":
-		if (b.Source != "0x2362d" && b.Source != "0x23ec4") || b.DirectRecordPatch == nil {
+		if (b.Source != "0x2362d" && b.Source != "0x23ec4" && b.Source != "0x33346") || b.DirectRecordPatch == nil {
 			g.loadErr = "beat direct_record_patch:缺少原版來源或 sparse payload"
 			return
 		}
@@ -5786,7 +5809,7 @@ func (g *Game) finishSelectedWait() {
 		}
 	}
 	if before, exists := g.st.TreasureAt(u.X, u.Y); exists {
-		if g.st.HasNativeMapViewState && before.Kind == "item" && len(u.Inventory) < 8 {
+		if g.st.HasNativeMapViewState && ((before.Kind == "item" && len(u.Inventory) < 8) || before.Kind == "gold") {
 			if err := g.beginNativeTreasureItemPrompt(u, before); err != nil {
 				g.loadErr = err.Error()
 			}
@@ -7659,6 +7682,11 @@ func (g *Game) checkResult() {
 		g.result = "lose"
 		return
 	}
+	// 章節 handler（第十章 0x20707）在 0x205BE 之後覆寫結果碼 1。
+	if g.sc.NativeResultCode1(g.st) {
+		g.result = "lose"
+		return
+	}
 	if r := g.st.Result(""); r != "" {
 		g.result = r
 	}
@@ -8463,10 +8491,22 @@ func (g *Game) syncNativeMapView() bool {
 // nativeCursorStepHUD 在一格游標步之後照 0x11C59 家族的重繪規則更新 HUD anchor：
 // 沒重繪（只動可見游標且 [0x51A83]==0）就不評估 0x1AD2A。
 func (g *Game) nativeCursorStepHUD(before, after battle.NativeMapViewState) {
-	if g == nil || g.st == nil || !g.st.HasNativeMapHUDState || !g.st.NativeMapCursorStepRedraws(before, after) {
+	if g == nil || g.st == nil || !g.st.NativeMapCursorStepRedraws(before, after) {
 		return
 	}
-	g.st.AdvanceNativeMapHUDAnchor(after.VisibleCursorX, after.VisibleCursorY)
+	g.redrawNativeMapHUD()
+}
+
+// redrawNativeMapHUD 是一次原版 0x11CAC 重繪裡 0x1ACF3→0x1AD2A 的 HUD anchor 評估：閘 A／閘 B
+// 由 AdvanceNativeMapHUDAnchor 判，可見游標取當下視圖。重製端每幀 Draw 的整幀重組不是原版的
+// 重繪（走行步進 0x12EAA 家族就不呼叫 0x11CAC），所以 anchor 只在對應原版重繪點的地方經這裡
+// 評估；對照表見 56 §#40 重繪入口。
+func (g *Game) redrawNativeMapHUD() {
+	if g == nil || g.st == nil || !g.st.HasNativeMapHUDState || !g.st.HasNativeMapViewState {
+		return
+	}
+	v := g.st.NativeMapViewState
+	g.st.AdvanceNativeMapHUDAnchor(v.VisibleCursorX, v.VisibleCursorY)
 }
 
 func (g *Game) moveMapCursor(dx, dy int) {
@@ -8489,6 +8529,7 @@ func (g *Game) focusNativeMapCursorOnUnit(u *battle.Unit) {
 	if g == nil || u == nil || g.st == nil || !g.st.HasNativeMapViewState {
 		return
 	}
+	g.redrawNativeMapHUD() // 0x12D01：0x12CEA 開頭的 0x11CAC(0)
 	if !g.st.FocusNativeMapCursorSteps(u.X, u.Y, g.nativeCursorStepHUD) {
 		return
 	}
@@ -8505,6 +8546,10 @@ func (g *Game) aiFocusCursor(x, y int) {
 	if g == nil || g.st == nil || !g.st.HasNativeMapViewState {
 		return
 	}
+	if battle.NativeFocusTraceHook != nil {
+		battle.NativeFocusTraceHook(x, y, g.st.NativeMapViewState)
+	}
+	g.redrawNativeMapHUD() // 0x12D01：0x12CEA 開頭的 0x11CAC(0)
 	if !g.st.FocusNativeMapCursorSteps(x, y, g.nativeCursorStepHUD) {
 		return
 	}
@@ -11640,6 +11685,9 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	if auxPhase < 0 {
 		auxPhase += 16
 	}
+	if g.nativeChapterAuxPhaseOverride != nil {
+		auxPhase = *g.nativeChapterAuxPhaseOverride & 15
+	}
 	currentDAC := g.nativeMapDAC
 	if len(currentDAC) == 0 && nativeMapAssetsAvailable(a) {
 		// loadMap normally owns this initialization. Direct compositor owners
@@ -12046,6 +12094,8 @@ func (g *Game) finishNativeTransientPlayerPhaseInput() {
 	// 聚焦途中可見游標 (2,6)，原版小窗沒翻到右側）。
 	if g.st != nil && g.st.HasNativeMapViewState && len(g.st.Units) > 0 {
 		g.nativeNextPlayerIndex = 0
+		// 0x1A79F：聚焦前 [0x51A83]=1，逐格都重繪（閘 B 仍是 0，anchor 不動）。
+		g.st.MaterializeNativeMapRangeMode(1)
 		if g.beginNativePlayerFocus(g.st.Units[0]) {
 			g.nativeGateBAfterFocus = true
 			g.checkResult()
@@ -12064,10 +12114,7 @@ func (g *Game) restoreNativeDisplayGateB() {
 		return
 	}
 	g.st.NativeMapHUDState.DisplayGateB = 1
-	if g.st.HasNativeMapViewState {
-		v := g.st.NativeMapViewState
-		g.st.AdvanceNativeMapHUDAnchor(v.VisibleCursorX, v.VisibleCursorY)
-	}
+	g.redrawNativeMapHUD()
 }
 
 // aiStep AI 回合驅動:一次取一個單位的行動計畫,播行走動畫→到位攻擊(全螢幕演出)。
@@ -12112,7 +12159,7 @@ func (g *Game) aiStep() {
 				g.aiBusy = false
 				return
 			}
-			if g.transientUI {
+			if g.nativeTransientPresentationActive() {
 				return
 			}
 		}
@@ -12221,8 +12268,20 @@ func (g *Game) aiStep() {
 					return
 				}
 			}
+			writeByte5 := func() {
+				if plan.NativeModeWriteByte5 {
+					// 0x32975 writes the complete runtime +0x05 byte only after
+					// mode 7's raw destination comparison succeeds (0x13D60, after
+					// the optional 0x13FD4).  Keep the mutation on the native field;
+					// Acted remains the engine projection updated by the common
+					// completion owner below.
+					u.NativeRecordByte5 = 1
+					u.HasNativeRecordByte5 = true
+				}
+			}
 			if plan.NativeFallbackIdleRecovery != nil {
 				if err := g.beginNativeAIIdleRecovery(u, *plan.NativeFallbackIdleRecovery, func() {
+					writeByte5()
 					g.finishSuccessfulUnitAction(u, nil)
 				}); err != nil {
 					g.loadErr = "native AI mode fallback 0x13fd4: " + err.Error()
@@ -12230,14 +12289,7 @@ func (g *Game) aiStep() {
 				}
 				return
 			}
-			if plan.NativeModeWriteByte5 {
-				// 0x32975 writes the complete runtime +0x05 byte only after
-				// mode 7's raw destination comparison succeeds.  Keep the
-				// mutation on the native field; Acted remains the engine
-				// projection updated by the common completion owner below.
-				u.NativeRecordByte5 = 1
-				u.HasNativeRecordByte5 = true
-			}
+			writeByte5()
 			g.finishSuccessfulUnitAction(u, nil)
 		}
 		if plan.Target != nil && plan.Target.Alive() {
@@ -12321,6 +12373,15 @@ func (g *Game) aiStep() {
 		g.aiFocusCursor(u.X, u.Y)
 		g.walk = &walkAnim{u: u, path: plan.Path, then: act, followView: true}
 	} else {
+		if plan.NativeModeFocusActor && plan.Target == nil {
+			// 已在目的地：分派器照樣在 0x14B78 之前 0x12D7B 聚焦自己。mode 4／7／10 在聚焦
+			// 前寫 [0x51A83]=0（0x13BE1／0x13D2E／0x13DF8）；mode 0／3／9 沒有這個前置寫入。
+			if plan.NativeModeWriteRangeZero && plan.NativeModeFallback != 3 {
+				g.st.NativeMapRangeMode = 0
+				g.st.HasNativeMapRangeModeState = true
+			}
+			g.aiFocusCursor(u.X, u.Y)
+		}
 		act()
 	}
 }

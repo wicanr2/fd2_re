@@ -41,6 +41,7 @@ type nativeLevelUpDialogueState struct {
 	// 沒有 FFFD，直接進計時。
 	awaitLastKey bool
 	closeTimer   int
+	closeFrames  int // 0x1E5C0(n) 的 n 個 BIOS tick 換成 60 Hz 幀
 	closing      bool
 	then         func()
 }
@@ -66,6 +67,82 @@ func (g *Game) runPendingNativeLevelUpDialogues(then func()) bool {
 	return true
 }
 
+// expandNativeMessageWords 把 FDTXT_000 一條字串展開成原始 glyph word：FFFA 代入十進位數字、
+// FFFC 代入名字，FFFD 只回報等鍵。0x15F84 的單行訊息（升級、中毒扣血）共用。
+func expandNativeMessageWords(strings interface {
+	Words(int) ([]uint16, error)
+}, index int, number int, name []uint16) ([]uint16, bool, error) {
+	words, err := strings.Words(index)
+	if err != nil {
+		return nil, false, err
+	}
+	out := make([]uint16, 0, len(words)+8)
+	wait := false
+	for _, word := range words {
+		switch word {
+		case 0xfffa:
+			for _, digit := range strconv.Itoa(number) {
+				out = append(out, uint16(digit-'0'))
+			}
+		case 0xfffc:
+			out = append(out, name...)
+		case 0xfffd:
+			wait = true
+		case 0xfffe:
+			return nil, false, fmt.Errorf("message text %#x has an unexpected line break", index)
+		default:
+			out = append(out, word)
+		}
+	}
+	return out, wait, nil
+}
+
+// nativeMessagePages 把一條 FDTXT_000 字串展開成 0x15F84 會寫的頁：FFFE 換行、FFFD 等鍵後
+// 換頁，FFFA 代入十進位數字。回傳的 lastWait 表示字串以 FFFD 收尾（最後一頁也等鍵）。
+func nativeMessagePages(strings interface {
+	Words(int) ([]uint16, error)
+}, index int, number int) ([][][]uint16, bool, error) {
+	words, err := strings.Words(index)
+	if err != nil {
+		return nil, false, err
+	}
+	pages := [][][]uint16{}
+	page := [][]uint16{}
+	line := []uint16{}
+	lastWait := false
+	for _, word := range words {
+		lastWait = false
+		switch word {
+		case 0xfffa:
+			for _, digit := range strconv.Itoa(number) {
+				line = append(line, uint16(digit-'0'))
+			}
+		case 0xfffe:
+			page = append(page, line)
+			line = []uint16{}
+		case 0xfffd:
+			page = append(page, line)
+			pages = append(pages, page)
+			page, line = [][]uint16{}, []uint16{}
+			lastWait = true
+		case 0xfffc:
+			return nil, false, fmt.Errorf("message text %#x needs a name argument", index)
+		default:
+			line = append(line, word)
+		}
+	}
+	if len(line) != 0 {
+		page = append(page, line)
+	}
+	if len(page) != 0 {
+		pages = append(pages, page)
+	}
+	if len(pages) == 0 {
+		return nil, false, fmt.Errorf("message text %#x is empty", index)
+	}
+	return pages, lastWait, nil
+}
+
 // nativeLevelUpDialogueLines 把 0x1E292 會寫的每一行展開成 FDTXT 原始字（FFFA／FFFC 已代入），
 // 依 FFFD 切頁。回傳每頁的行（每行是原始 glyph word 序列），以及最後一行是否以 FFFD 收尾
 // （是：最後一頁也等鍵；否：例如只有經驗一行、或「學會了」收尾，直接進 0x1E5C0 計時）。
@@ -73,29 +150,7 @@ func nativeLevelUpDialogueLines(strings interface {
 	Words(int) ([]uint16, error)
 }, pending pendingNativeLevelUp) ([][][]uint16, bool, error) {
 	expand := func(index int, number int, name []uint16) ([]uint16, bool, error) {
-		words, err := strings.Words(index)
-		if err != nil {
-			return nil, false, err
-		}
-		out := make([]uint16, 0, len(words)+8)
-		wait := false
-		for _, word := range words {
-			switch word {
-			case 0xfffa:
-				for _, digit := range strconv.Itoa(number) {
-					out = append(out, uint16(digit-'0'))
-				}
-			case 0xfffc:
-				out = append(out, name...)
-			case 0xfffd:
-				wait = true
-			case 0xfffe:
-				return nil, false, fmt.Errorf("level-up text %#x has an unexpected line break", index)
-			default:
-				out = append(out, word)
-			}
-		}
-		return out, wait, nil
+		return expandNativeMessageWords(strings, index, number, name)
 	}
 	pages := [][][]uint16{}
 	page := [][]uint16{}
@@ -148,12 +203,29 @@ func nativeLevelUpDialogueLines(strings interface {
 }
 
 func (g *Game) beginNativeLevelUpDialogue(pending pendingNativeLevelUp, then func()) error {
-	unit := pending.unit
-	if unit == nil || !unit.HasBattleFig || !unit.HasNativeMapPresentation {
+	if pending.unit == nil || !pending.unit.HasBattleFig || !pending.unit.HasNativeMapPresentation {
 		return errors.New("unit DATO selector or map presentation is unavailable")
 	}
 	if g.nativePreparationUI == nil || g.nativePreparationUI.status.Strings == nil {
 		return errors.New("FDTXT_000 strings are unavailable")
+	}
+	pages, lastWait, err := nativeLevelUpDialogueLines(g.nativePreparationUI.status.Strings, pending)
+	if err != nil {
+		return err
+	}
+	if os.Getenv("FD2_SHOT_AI") != "" {
+		log.Printf("level-up dialogue: unit id=%d at (%d,%d) exp=%d ups=%d pages=%d lastWait=%v",
+			pending.unit.NativeIdentity, pending.unit.X, pending.unit.Y, pending.exp, len(pending.ups), len(pages), lastWait)
+	}
+	return g.beginNativeTimedMessageDialogue(pending.unit, nativeLevelUpExpTextIndex, pages, lastWait, nativeLevelUpCloseFrames, then)
+}
+
+// beginNativeTimedMessageDialogue 是 0x1956B(unit+7) 開框 → 0x15F84 寫 FDTXT_000 字串（FFFD 等鍵
+// 切頁）→ 0x1E5C0(n) 計時 → 0x196CB 關框的共用排程；升級對話（0x1E292）與中毒扣血訊息
+// （0x1A866）都走這條。
+func (g *Game) beginNativeTimedMessageDialogue(unit *battle.Unit, textIndex int, pages [][][]uint16, lastWait bool, closeFrames int, then func()) error {
+	if unit == nil || !unit.HasBattleFig || !unit.HasNativeMapPresentation {
+		return errors.New("unit DATO selector or map presentation is unavailable")
 	}
 	if g.localeID == "zh-Hant" && (g.nativeBattleFont == nil || g.nativeBattleGlyphs == nil) {
 		font, glyphs, err := loadNativeBattleNameAssets()
@@ -165,10 +237,6 @@ func (g *Game) beginNativeLevelUpDialogue(pending pendingNativeLevelUp, then fun
 	if g.nativeBattleGlyphs == nil {
 		return errors.New("glyph index is unavailable")
 	}
-	pages, lastWait, err := nativeLevelUpDialogueLines(g.nativePreparationUI.status.Strings, pending)
-	if err != nil {
-		return err
-	}
 	// 原始 glyph word → 索引表的鍵（故事對白引擎用鍵查 glyph）。
 	keyOf := make(map[int]string, len(g.nativeBattleGlyphs))
 	for key, glyph := range g.nativeBattleGlyphs {
@@ -177,7 +245,7 @@ func (g *Game) beginNativeLevelUpDialogue(pending pendingNativeLevelUp, then fun
 		}
 	}
 	layout := &battle.NativeDialogueLayout{
-		SourceDAT: "FDTXT_000", StringIndex: nativeLevelUpExpTextIndex, Utterance: 0,
+		SourceDAT: "FDTXT_000", StringIndex: textIndex, Utterance: 0,
 		Control: "FFEC", Operand: 0, MotionTargetY: 0, HasMotionTargetY: true,
 	}
 	for _, page := range pages {
@@ -205,12 +273,8 @@ func (g *Game) beginNativeLevelUpDialogue(pending pendingNativeLevelUp, then fun
 	upper := false
 	g.dialog = []battle.DialogLine{{Speaker: unit.BattleFig, Upper: &upper, NativeDialogue: layout}}
 	g.dlgPage, g.dlgScrollT, g.dlgShown, g.dlgPhase, g.dlgT = 0, 0, dlgNone, 0, 0
-	state := &nativeLevelUpDialogueState{unit: unit, awaitLastKey: lastWait, then: then}
+	state := &nativeLevelUpDialogueState{unit: unit, awaitLastKey: lastWait, closeFrames: closeFrames, then: then}
 	g.nativeLevelUpDialogue = state
-	if os.Getenv("FD2_SHOT_AI") != "" {
-		log.Printf("level-up dialogue: unit id=%d at (%d,%d) exp=%d ups=%d pages=%d lastWait=%v",
-			unit.NativeIdentity, unit.X, unit.Y, pending.exp, len(pending.ups), len(pages), lastWait)
-	}
 	if err := g.startNativeDialogueFrames(); err != nil {
 		g.dialog = nil
 		g.nativeLevelUpDialogue = nil
@@ -256,7 +320,10 @@ func (g *Game) stepNativeLevelUpDialogue(advance bool) {
 		return
 	}
 	if !state.awaitLastKey || advance {
-		state.closeTimer = nativeLevelUpCloseFrames
+		state.closeTimer = state.closeFrames
+		if state.closeTimer <= 0 {
+			state.closeTimer = nativeLevelUpCloseFrames
+		}
 	}
 }
 

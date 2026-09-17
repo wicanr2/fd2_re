@@ -809,6 +809,60 @@
       ]
     },
     {
+      "id": 32,
+      "handler": "0x34be2",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 1,
+          "gate": 0,
+          "source": "0x34bec"
+        },
+        {
+          "op": "dialogue",
+          "text": 1,
+          "source": "0x34bf6"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "handler": "0x34c1e",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 2,
+          "source": "0x34c28"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 12,
+          "writes": [
+            [
+              52,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34c4f"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 13,
+          "writes": [
+            [
+              52,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34c5d"
+        }
+      ]
+    },
+    {
       "id": 34,
       "handler": "0x34c6c",
       "battle_units": [

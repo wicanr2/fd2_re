@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
 // 章重播（111 章工作單元的重製側）：從同一份建構槽由標題 LOAD 進城，照原版側
@@ -116,6 +117,23 @@ type parityReplay struct {
 	walkStartedEarly bool
 	// stoppedBeforeAI：上一個 END 停在敵方回合開始（下一個動作是 force_enemy_clear）。
 	stoppedBeforeAI bool
+	// currentSeq：正在寫畫面的檢查點對應的原版 seq。
+	currentSeq int
+}
+
+// oracleAuxPhase 讀原版 checkpoint 的 view.aux_phase（[0x539FC]）。
+func (r *parityReplay) oracleAuxPhase(seq int) (int, bool) {
+	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", seq)))
+	if err != nil {
+		return 0, false
+	}
+	var doc struct {
+		View map[string]*int `json:"view"`
+	}
+	if json.Unmarshal(raw, &doc) != nil || doc.View["aux_phase"] == nil {
+		return 0, false
+	}
+	return *doc.View["aux_phase"], true
 }
 
 // parityAIEntry 是 eip-trace.jsonl 裡一筆 0x13A9F 入口：unit 是 record 索引（堆疊第一個引數）。
@@ -607,8 +625,27 @@ func (r *parityReplay) frame(kind string) (string, string) {
 	var palette color.Palette
 	switch {
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "battle" && g.st != nil:
+		// 輔助底面（raw chapter 9/24/25/28/29）：原版收據記下 [0x539FC]。畫面上的底面相位實測是
+		// (aux_phase-1)&15 或 (aux_phase-2)&15（強推論：第十章 r4 十四點以 FDOTHER #15 逐相位比對
+		// 原版索引畫面，都落在這兩個值之一；差在讀鍵前 0x11EEE 有沒有多推進一次）。兩個各出一組；
+		// 收據沒有這個欄位就沿用 BIOS tick 推算。
+		auxPhases := []*int{nil}
+		if g.nativeMapAssets != nil && g.nativeMapAssets.ChapterAux != nil {
+			if phase, ok := r.oracleAuxPhase(r.currentSeq); ok {
+				one, two := (phase+15)&15, (phase+14)&15
+				auxPhases = []*int{&one, &two}
+			}
+		}
+		defer func() { g.nativeChapterAuxPhaseOverride = nil }()
 		saved := g.st.NativeMapCycleState
 		savedPhase := g.st.NativeTerrainPhaseState
+		savedFlip := g.st.NativeTerrainFlipState
+		// 地形逐格動畫（第十章火柱）吃 TerrainCycle（＝idle）與 0x11CAC 的二元 tick 翻轉；翻轉
+		// 相位原版 checkpoint 也沒輸出，0／1 各出一組。
+		flips := []int{savedFlip.Value}
+		if g.st.HasNativeMapBinaryTimingState {
+			flips = []int{0, 1}
+		}
 		// 0x11EEE 對標記格（移動範圍）用 [0x53C1F] 相位選的 LUT 著色，20 個相位對到
 		// 11 張 LUT 隨 BIOS 計時脈動；原版 checkpoint 沒有輸出這個相位，所以有標記格
 		// 時每張 LUT 各出一個變體，verifier 取差異最小的。
@@ -627,42 +664,61 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		restore := func() {
 			g.st.NativeMapCycleState = saved
 			g.st.NativeTerrainPhaseState = savedPhase
+			g.st.NativeTerrainFlipState = savedFlip
 			g.nativeMapFrozenNow = nil
 		}
-		for _, phase := range phases {
-			for idle := 0; idle < 4; idle++ {
-				g.st.NativeMapCycleState.Idle = idle
-				g.st.NativeTerrainPhaseState.Phase = phase
-				compose := g.composeNativeMapFrame
-				if g.nativeDeathRewardMessageAwaitingKey() {
-					// 0x1AA1D 的訊息在 0x13512 設 bit7 之前：底圖上行動單位沒變灰。
-					rewardActor := g.nativeSystemEndTurnUI.rewardMessage.actor
-					compose = func() error { return g.composeNativeMapFrameBeforeActed(rewardActor) }
-				}
-				err := compose()
-				if err == nil && (g.st.NativeMapCycleState.Idle != idle || g.st.NativeTerrainPhaseState.Phase != phase) {
-					// 0x1297D 在每次重繪開頭依 BIOS tick 推進 idle 相位；上一次重繪
-					// 之後若已過四個 tick，這一張會先 +1 再畫，設定的相位就少一張
-					// （第四章 seq 934 只差 idle 0 那一幀）。推進後 last tick 已更新，
-					// 重設相位再畫一次就不會再推進。
-					g.st.NativeMapCycleState.Idle = idle
-					g.st.NativeTerrainPhaseState.Phase = phase
-					err = compose()
-				}
-				if err != nil {
-					restore()
-					var prov []string
-					for i, u := range g.st.Units {
-						if u == nil {
-							continue
+		// 指令環穩態的檢查點：原版 0x179D5 可能在第一次穩態重繪前就讀鍵，畫面還是 0x1741C
+		// 最後一張展開幀（第十章 r2 seq 1328 上／下圖示各差 2 列），兩種位置各出一組。
+		openFrameVariants := []bool{false}
+		if g.ring && !g.actionOverlayBlocksInput() {
+			openFrameVariants = []bool{false, true}
+		}
+		defer func() { g.nativeActionOverlayOpenFrameVariant = false }()
+		for _, auxPhase := range auxPhases {
+			g.nativeChapterAuxPhaseOverride = auxPhase
+			for _, openFrame := range openFrameVariants {
+				g.nativeActionOverlayOpenFrameVariant = openFrame
+				for _, flip := range flips {
+					for _, phase := range phases {
+						for idle := 0; idle < 4; idle++ {
+							g.st.NativeMapCycleState.Idle = idle
+							g.st.NativeTerrainPhaseState.Phase = phase
+							g.st.NativeTerrainFlipState.Value = flip
+							compose := g.composeNativeMapFrame
+							if g.nativeDeathRewardMessageAwaitingKey() {
+								// 0x1AA1D 的訊息在 0x13512 設 bit7 之前：底圖上行動單位沒變灰。
+								rewardActor := g.nativeSystemEndTurnUI.rewardMessage.actor
+								compose = func() error { return g.composeNativeMapFrameBeforeActed(rewardActor) }
+							}
+							err := compose()
+							if err == nil && (g.st.NativeMapCycleState.Idle != idle || g.st.NativeTerrainPhaseState.Phase != phase ||
+								g.st.NativeTerrainFlipState.Value != flip) {
+								// 0x1297D 在每次重繪開頭依 BIOS tick 推進 idle 相位；上一次重繪
+								// 之後若已過四個 tick，這一張會先 +1 再畫，設定的相位就少一張
+								// （第四章 seq 934 只差 idle 0 那一幀）。推進後 last tick 已更新，
+								// 重設相位再畫一次就不會再推進。
+								g.st.NativeMapCycleState.Idle = idle
+								g.st.NativeTerrainPhaseState.Phase = phase
+								g.st.NativeTerrainFlipState.Value = flip
+								err = compose()
+							}
+							if err != nil {
+								restore()
+								var prov []string
+								for i, u := range g.st.Units {
+									if u == nil {
+										continue
+									}
+									prov = append(prov, fmt.Sprintf("%d:camp=%d (%d,%d) fig=%d on=%v hp=%d pres=%v slot=%v key=%v b5=%v id=%v/%d",
+										i, u.Camp, u.X, u.Y, u.BattleFig, u.OnField, u.HP, u.HasNativeMapPresentation, u.HasMapSelectorSlot, u.HasMapSelectorKey,
+										u.HasNativeRecordByte5, u.HasNativeIdentity, u.NativeIdentity))
+								}
+								r.t.Fatalf("%s 組不出戰場整幀：%v\n%s", kind, err, strings.Join(prov, "\n"))
+							}
+							variants = append(variants, r.bannerVariants()...)
 						}
-						prov = append(prov, fmt.Sprintf("%d:camp=%d (%d,%d) fig=%d on=%v hp=%d pres=%v slot=%v key=%v b5=%v id=%v/%d",
-							i, u.Camp, u.X, u.Y, u.BattleFig, u.OnField, u.HP, u.HasNativeMapPresentation, u.HasMapSelectorSlot, u.HasMapSelectorKey,
-							u.HasNativeRecordByte5, u.HasNativeIdentity, u.NativeIdentity))
 					}
-					r.t.Fatalf("%s 組不出戰場整幀：%v\n%s", kind, err, strings.Join(prov, "\n"))
 				}
-				variants = append(variants, r.bannerVariants()...)
 			}
 		}
 		restore()
@@ -770,6 +826,37 @@ func (r *parityReplay) bannerVariants() []frameVariant {
 		if !ok {
 			return out
 		}
+		if state := g.nativeSystemEndTurnUI; state != nil && state.treasure != nil &&
+			g.nativeSystemEndTurnConfirm && g.nativeClassUIJob == nil && g.nativePreparationUI != nil {
+			// 0x190AC 的取得提問停在 0x19953 讀鍵：畫面是開框時抄下的底圖＋問句＋YES／NO，
+			// 選項外框脈動相位原版 checkpoint 沒記，各出一張。
+			// 框外是開框時抄下的底圖；輔助底面相位跟著這一張變體走，所以框外改抄目前整幀，
+			// 框內（問句與原底圖不同的外接矩形）保留提問畫面。
+			x0, y0, x1, y1 := 320, 200, -1, -1
+			for i := range state.question {
+				if i < len(state.source) && state.question[i] != state.source[i] {
+					x, y := i%320, i/320
+					x0, y0, x1, y1 = min(x0, x), min(y0, y), max(x1, x), max(y1, y)
+				}
+			}
+			for pulse := 0; pulse < 2; pulse++ {
+				pix, err := campaign.ComposeNativeConfirmationChoices(
+					state.question, g.nativePreparationUI.choices, state.choice, pulse,
+				)
+				if err != nil {
+					r.t.Fatalf("寶物提問畫面：%v", err)
+				}
+				if x1 >= 0 && len(img.Pix) == len(pix) {
+					merged := append([]byte(nil), img.Pix...)
+					for y := y0; y <= y1; y++ {
+						copy(merged[y*320+x0:y*320+x1+1], pix[y*320+x0:y*320+x1+1])
+					}
+					pix = merged
+				}
+				out = append(out, frameVariant{pix: pix, palette: img.Palette})
+			}
+			return out
+		}
 		if g.nativeDeathRewardMessageAwaitingKey() {
 			// 0x1AA1D 的訊息：0x1956B 把當下畫面抄走再開對話格，底圖跟著這一張
 			// idle／LUT 相位變體走。
@@ -869,6 +956,7 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 		cp.Round = g.st.Turn
 	}
 	if withFrame {
+		r.currentSeq = seq
 		cp.Frame, cp.FrameHash = r.frame(kind)
 	}
 	r.write(cp)
@@ -1031,8 +1119,9 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 		}
 		if os.Getenv("FD2_PARITY_TRACE_KEYS") != "" && g.st != nil && g.st.HasNativeMapViewState {
 			v := g.st.NativeMapViewState
-			t.Logf("key seq=%d %s cursor=(%d,%d) camera=(%d,%d) visible=(%d,%d)", seq, r.keys[seq],
-				v.CursorX, v.CursorY, v.CameraX, v.CameraY, v.VisibleCursorX, v.VisibleCursorY)
+			t.Logf("key seq=%d %s cursor=(%d,%d) camera=(%d,%d) visible=(%d,%d) range=%d anchor=%#x gateB=%d", seq, r.keys[seq],
+				v.CursorX, v.CursorY, v.CameraX, v.CameraY, v.VisibleCursorX, v.VisibleCursorY,
+				g.st.NativeMapRangeMode, g.st.NativeMapHUDState.AnchorX, g.st.NativeMapHUDState.DisplayGateB)
 		}
 		walked = true
 	}
@@ -1045,7 +1134,23 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 // r13 seq 793）從別處走同樣的鍵會把鏡頭推歪，那種情況照舊直接定位。
 func (r *parityReplay) replayDirectionKeys(action parityAction) {
 	g := r.g
-	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", r.prevSeq)))
+	// 前提檢查取第一個方向鍵之前那一格的檢查點：上一個動作的檢查點可能在 0x1A30B 換手
+	// 中途取樣（第十章 r4 seq 3613 游標還在 (10,27)，之後回合開頭聚焦才到 (16,28)），拿它
+	// 比會把整段鍵跳過、瞬移到選取格，漏掉途中 HUD 翻邊（seq 3645 起約 4300 px）。
+	firstKey := -1
+	for seq := r.prevSeq + 1; seq < action.Seq; seq++ {
+		switch r.keys[seq] {
+		case "up", "down", "left", "right":
+			firstKey = seq
+		}
+		if firstKey >= 0 {
+			break
+		}
+	}
+	if firstKey < 0 {
+		return
+	}
+	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", firstKey-1)))
 	if err != nil {
 		return
 	}
@@ -1258,10 +1363,24 @@ func (r *parityReplay) waitUnit(action parityAction, actor *battle.Unit) {
 	if !closeRing(t, g, g.finishSelectedWait) {
 		t.Fatalf("wait(seq %d)：指令環沒有收合", action.Seq)
 	}
-	if !pump(t, g, ch01FrameBudget, func() bool { return actor.Acted || actor.HP <= 0 }) {
+	// 待機在寶物格會停在 0x190AC 的取得提示；驅動端一律按 enter（預設 YES，再確認取得訊息）。
+	// 原版側的 wait 檢查點是在提示問句等鍵時取的（0x19953 讀鍵，金錢還沒加），所以
+	// 重製端也在問句展開完、回答之前取這一點。
+	checkpointed := false
+	if !pump(t, g, ch01FrameBudget, func() bool {
+		if state := g.nativeSystemEndTurnUI; !checkpointed && state != nil && state.treasure != nil &&
+			g.nativeSystemEndTurnConfirm && g.nativeClassUIJob == nil && !state.treasure.awaitAck {
+			r.checkpoint("wait", action.Seq, "treasure", true)
+			checkpointed = true
+		}
+		answerNativeTreasurePrompt(g)
+		return actor.Acted || actor.HP <= 0
+	}) {
 		t.Fatalf("wait(seq %d)：待機之後沒有行動完畢\n阻塞：%s", action.Seq, ch01Blockers(g))
 	}
-	r.checkpoint("wait", action.Seq, "cursor", true)
+	if !checkpointed {
+		r.checkpoint("wait", action.Seq, "cursor", true)
+	}
 }
 
 func (r *parityReplay) cancelUnit(action parityAction, actor *battle.Unit) {

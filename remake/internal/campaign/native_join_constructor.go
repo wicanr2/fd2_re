@@ -247,8 +247,11 @@ func (table NativeJoinConstructorTable) MaterializePersistentRecordOn(
 	for slot := 0; slot < 4; slot++ {
 		item := row.defaults[0x0e+slot]
 		cell := 0x0e + slot*2
+		// 0x11383..0x1138B：空格旗標 0x80，有物品的格旗標寫 0（不留殘值）。
 		if item == 0xff {
 			raw[cell] = 0x80
+		} else {
+			raw[cell] = 0
 		}
 		raw[cell+1] = item
 	}
@@ -258,6 +261,7 @@ func (table NativeJoinConstructorTable) MaterializePersistentRecordOn(
 	raw[0x1f] = row.defaults[0]
 	raw[0x20] = row.defaults[1]
 	raw[0x21] = byte(level)
+	clear(raw[0x22:0x28]) // 0x113C9：0x375C0(+0x22, 0, 6)
 	raw[0x31] = 0xff
 	baseAP := nativeJoinWord(row.defaults[:], 0x12) + int(row.growth[0])*level
 	baseDP := nativeJoinWord(row.defaults[:], 0x14) + int(row.growth[2])*level

@@ -188,7 +188,9 @@ func TestNextAIPlanMode2FailsClosedWithoutMovementRows(t *testing.T) {
 	}
 }
 
-func TestNextAIPlanMode2FailsClosedWithoutEquippedLowItem(t *testing.T) {
+// 0x1428B 0x1B83D(actor,0) 回 -1 → 0x14296 je 0x145C3 → xor eax,eax：0x14237 回傳 0，
+// 與沒有物理候選同一條 0x13C06→0x13FD4 收尾，不是失敗即關閉。
+func TestNextAIPlanMode2WithoutEquippedLowItemTakesIdleRecoveryTail(t *testing.T) {
 	actor := nativeAIRuntimeUnit(0, 0, 0, 2)
 	state := &State{
 		W:                           1,
@@ -204,8 +206,9 @@ func TestNextAIPlanMode2FailsClosedWithoutEquippedLowItem(t *testing.T) {
 		t.Fatal(err)
 	}
 	plan := state.NextAIPlan()
-	if plan == nil || plan.NativeError == nil {
-		t.Fatalf("plan=%+v want missing-item fail-closed error", plan)
+	if plan == nil || plan.NativeError != nil || !plan.NativeMode2Physical || !plan.NativeModeFallbackActive ||
+		plan.NativeModeFallback != 2 || plan.Target != nil || len(plan.Path) != 0 {
+		t.Fatalf("plan=%+v want 0x13C06 idle-recovery tail", plan)
 	}
 }
 
@@ -409,8 +412,11 @@ func TestNextAIPlanUses14EF0ItemWinnerAndRetainsRawTarget(t *testing.T) {
 	if len(plan.NativeItemTargetIndices) != 1 || plan.NativeItemTargetIndices[0] != 1 {
 		t.Fatalf("item target list=%v want detached raw [1]", plan.NativeItemTargetIndices)
 	}
-	if len(plan.Path) < 2 || plan.Path[len(plan.Path)-1] != (Cell{X: 1, Y: 0}) {
-		t.Fatalf("item path=%v want destination (1,0)", plan.Path)
+	// 0x15055 不呼叫 0x14B78：原地使用，(1,0) 只是效果格。
+	if len(plan.Path) != 1 || plan.Path[0] != (Cell{X: 0, Y: 0}) ||
+		plan.NativeActionDestination != (Cell{X: 1, Y: 0}) {
+		t.Fatalf("item path=%v destination=%v want stationary origin and effect (1,0)",
+			plan.Path, plan.NativeActionDestination)
 	}
 }
 
@@ -445,6 +451,28 @@ func TestNextAIPlanUsesMode4RawDestinationFallback(t *testing.T) {
 	}
 	if len(plan.Path) != 2 || plan.Path[1] != (Cell{X: 1, Y: 0}) {
 		t.Fatalf("mode4 path=%v", plan.Path)
+	}
+}
+
+func TestNextAIPlanMode4AtDestinationFocusesActorAndTakesIdleRecovery(t *testing.T) {
+	// 0x13BE1..0x13C0F：mode 4 無條件 0x12D7B 聚焦自己，0x14B78 沒走成回 0 → 0x13FD4。
+	// 第十章 r2 每回合 record 12／13 已在 (8,10)／(22,10) 仍各聚焦一次。
+	actor := nativeAIRuntimeUnit(1, 0, 1, 4)
+	actor.NativeRecordByte35, actor.NativeRecordByte36 = 1, 0
+	state := &State{
+		W: 3, H: 1, Units: []*Unit{actor},
+		NativeCompositionEventBytes: []byte{0, 0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0, 0},
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil || plan.NativeModeFallback != 4 {
+		t.Fatalf("mode4 plan=%+v", plan)
+	}
+	if len(plan.Path) > 1 || !plan.NativeModeFocusActor || !plan.NativeModeWriteRangeZero || plan.Target != nil {
+		t.Fatalf("mode4 at destination plan=%+v", plan)
 	}
 }
 

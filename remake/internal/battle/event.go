@@ -28,7 +28,30 @@ type Scenario struct {
 	// NativeDeathPrograms 是死亡效果型態 2／3 降成的動作清單，鍵是「型態:值」。
 	// 來源與逐動作的原始位址見 native_death_program.go。
 	NativeDeathPrograms map[string][]Action `json:"native_death_programs,omitempty"`
-	pendingJoins        []int
+	// NativeResultHandler／NativeResultCode1Records 是非 default 的章節勝負 handler：先跑
+	// 0x205BE 的三值規則，再對列出的記錄查 raw +5 bit0（0x3453E），任一筆成立就寫
+	// [0x53ECC]=1——與 default「記錄 0 倒下」同一個碼。第十章 0x20707 查記錄 50、51
+	// （docs/knowledge-base/26-per-chapter-event-handlers.md）。
+	NativeResultHandler      string `json:"native_result_handler,omitempty"`
+	NativeResultCode1Records []int  `json:"native_result_code1_records,omitempty"`
+	pendingJoins             []int
+}
+
+// NativeResultCode1 回報章節 handler 列出的記錄是否有任一筆 raw +5 bit0 成立。還沒建立的
+// 記錄（索引超出記錄表）原版讀到的是未使用槽，不算。
+func (sc *Scenario) NativeResultCode1(st *State) bool {
+	if sc == nil || st == nil {
+		return false
+	}
+	for _, index := range sc.NativeResultCode1Records {
+		if index < 0 || index >= len(st.Units) {
+			continue
+		}
+		if u := st.Units[index]; u != nil && u.HasNativeRecordByte5 && u.NativeRecordByte5&1 != 0 {
+			return true
+		}
+	}
+	return false
 }
 
 // NativeTurnEvent preserves one live FDFIELD three-byte row consumer without
