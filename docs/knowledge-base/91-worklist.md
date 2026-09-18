@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -42,6 +42,18 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 重製端 `campaign.MaterializePersistentRecord`（sub_112A5 轉寫）對物品格 6／7 只寫旗標 `+0x16`／`+0x18`＝0x80，item byte `+0x17`／`+0x19` 留 0；真實原版存檔（ch01-cleared 剛加入的 id 8、ch02-cleared 同一筆）這兩格是 `80 ff`。四格 defaults 那邊，defaults 為 0xff 時旗標寫 0x80、item 寫 0xff，與觀察一致；只有固定的兩格不同。消費端只看旗標 bit7，所以玩法不受影響，但建槽工具的輸出與原版 bytes 差這兩個 byte。要回 IDA 看 0x112A5 是否另有寫 `+0x17`／`+0x19`＝0xff 的指令，或紀錄區在 JOIN 前被 0xff 填過。
 
 怎樣算做完：IDA 9.4 直接指令證實 +0x17／+0x19 的來源（明寫 0xff 或前置填充），轉寫與建槽工具同步修正，正對照這兩個 byte 歸零。
+
+### HUD 地形描述子仍讀載入時的可編輯地圖，不是事件會改寫的可變緩衝
+
+`hud-terrain-descriptor-reads-editable-map` · RE待解 · [#43](https://github.com/wicanr2/fd2_re/issues/43) · 仍未完成 · 自承還在 docs/knowledge-base/56-fd2-remake-sdd.md
+
+第十一章接上了繪圖端的可變地圖緩衝：`0x12263` 在 mode 5 撿走寶箱時把該格圖塊字 +1，重製端 `buildNativeMapFrameInput` 改讀 `State.NativeMapDrawTiles()`，那一格才會換成打開的箱子（收據 `docs/data/ui-traces/parity-ch11.json` seq 5797 由 278 px 變 0 px）。
+
+還沒處理的是**同一份緩衝的另一個消費端**：重製端 `nativeMapHUDInput` 取游標格的地形描述子時仍讀 `g.m.Tiles`（載入時的可編輯地圖）。原版讀的若也是可變緩衝，游標停在已打開的箱子上時HUD 小窗的地形圖示／數值會跟著換；目前沒有收據能判定，第十一章的抽樣裡游標沒有停在那一格。
+
+不要先照「應該一樣」把它改掉——兩邊都可能成立，要先有原版證據。
+
+怎樣算做完：以原版證據判定 HUD 地形描述子讀的是哪一份資料：反組譯 `0x11CAC`／HUD 小窗那條路徑的地形描述子讀取端位址，或做一次同狀態實驗（把游標停在已被撿走的事件格上，比對 HUD 小窗）。讀可變緩衝就把重製端改成同一個來源並補收據；讀初始地圖就在 56 記下結論與位址。
 
 ## data — 可編輯資料還沒就緒
 
