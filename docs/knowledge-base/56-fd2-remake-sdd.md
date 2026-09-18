@@ -8334,6 +8334,53 @@ IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x1
 事件 33 不在抽樣內。輔助底面相位是由收據推回的強推論，不是逐 tick 模擬。第四～九章依定案未重跑；
 停留聚焦、道具原地使用與 JOIN 旗標三項修正會影響這些章的重播，下次重跑時要以新收據確認。
 
+## 第十一章章工作單元：mode 5 取寶箱與打開的箱子（2026-09-18）
+
+槽：`tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 10
+--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0
+--boost-base-dx 60`（manifest `docs/data/parity-slots/ch11-manifest.json`，sha `35ed64ac…`，名冊 13 人）。
+合法性檢查 `docs/data/parity-plans/ch11-slot-load.jsonl`。幻之森林 map10（35×45）沒有回合事件控制列、
+沒有死亡程式，勝敗走 default `0x205B4`。
+
+轉寫與 RE（已證實，Docker Capstone 5.0.3；`FD2.EXE` sha256 `222b7d06…`，檔案偏移＝線性位址＋`0xE00`）：
+
+- **mode 5 找事件格 `0x12E38`／`0x15DF3`。** 事件編號是可變地圖緩衝（`[0x53A51]`）每格 `+2` byte 的低
+  5 bit，記錄 `+0x3D` 是這隻要去的編號；`0x12E38` 把 `[0x53A69]+4*tile` 的四個 byte 抄進 out`[4..7]`，
+  `0x15E4B` 檢查的是**控制列第 0 個 byte** 的 `&0x60==0x20`（先前重製端讀成第 3 個 byte，第十一章的
+  事件 0 因此找不到格子）。掃描是 row-major 的第一個命中。
+- **走不到就只是結束 `0x13B05`。** mode 5 在 `0x14B78` 沒把單位送到事件格時，走的是 mode 0／1 的共用
+  尾段（沒有移動就 `0x13FD4`），不是改派別的目的地。重製端先前會替換目的地，導致行為分岔。
+- **事件尾段 `0x13CCE`／`0x13CD6`／`0x122xx`。** `[0x53AD5+event]=1` → `0x25B45` 音效（資源 31、
+  index 12）→ `0x12263` 掃全圖 → 記錄 `+0x34=7`。寶箱列在 `[0x53A55]+0x53+3*slot`（type、value），
+  type<2 時抄進記錄 `+0x31..+0x33`：type 0 進物品格、type 1 是金額。撿走的東西掛在這隻身上，
+  被擊倒時才掉給玩家（第十一章 seq 4688：記錄 37 撿了 slot 7 的 10000 金，seq 4702 掉落訊息）。
+  重製端的死亡掉落讀的是具型別的 `DeathEffect`／`DeathReward`，所以尾段兩份要一起寫。
+- **`0x12263` 就地把事件格的 tile word +1 並清掉事件 byte。** 這不只是狀態：**原版的地圖繪製與事件
+  更新讀寫同一份 `[0x53A51]` 緩衝**，所以撿走之後那一格的圖塊換成打開的箱子。重製端先前只有
+  `battle.State` 更新，畫面回頭讀不會變的可編輯地圖 `field.Tiles`，箱子永遠關著；現在
+  `buildNativeMapFrameInput` 改讀 `State.NativeMapDrawTiles()`（緩衝沒材料化才沿用可編輯地圖）。
+  原版收據 seq 5525 起鏡頭捲到 (7,20)，箱子是開的。
+- **寶箱控制列的來源。** 從 CONTINUE 進戰場時讀 raw `NativeFieldControlRaw`；從城鎮進戰場時，
+  `battle.Load` 由地圖 `chests` 建同一批 bytes（`HasNativeChestControlState`）。兩個出處都沒有就
+  失敗即關閉。
+
+戰役資料：`ch11.json` 的 `initial_groups` 只留 group 0，戰前 group 1 由 `ch10_pre` 處理器在執行期追加
+（`runtime_append_groups`）——map10 的單位表有 14 筆 `group 255` 佔位列，直接當初始編組會讓地圖幀
+第 0 筆沒有來源。`campaign_full.json` 的 `battle_ch11` 補 `native_map_view`（鏡頭 15,9／游標 18,10／
+可見 3,1／range_mode 1）與 `native_map_hud_inherited`（`display_gate_b 1`），照原版 battle_start 的視圖。
+
+結果：原版側 `work/parity-slot-ch11/sample-r2`（dosgolem `a9bcd62`，240 動作、7074 個 checkpoint）
+對 remake-r3 四個 gate 全過（`docs/data/ui-traces/parity-ch11.json`）：行為 241 點一致、
+金額 2000→12000→12037→12027、酒店存檔整檔 sha256 相同；231 個畫面點 157 點 0 px，其餘在 640 px 內
+（最大 489 px，單位動畫相位與指令環開啟中途 #34）。接上可變地圖緩衝之後 0 px 的點由 121 增為 157、
+差異總和由 18375 降為 11561。抽樣截圖 `docs/figures/parity-ch11-samples-p1..p5.png`（91 列，含
+101 戰場開場、4687／4702 撿到寶箱的敵人被擊倒、5797 打開的箱子、6870 戰後城鎮、7073 祕密商店）。
+
+限制：r1 計畫 7 回合吃掉 1.9e10／2.5e10 指令預算才停在第 7 回合，改抽樣到第 6 回合、第 7 回合清場
+（預算 3e10）。玩家自己踏事件格、玩家法術／物品沒有驅動端指令，抽樣不涵蓋；HUD 的地形描述子
+（重製端 `nativeMapHUDInput`）目前仍讀可編輯地圖的 `field.Tiles`，游標停在已打開的箱子上要不要換
+描述子沒有收據。
+
 ## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
 
 111 規定每五章回頭看一次累積的畫面差異。ch01–03 在台帳裡還是 `todo`（只有早／中／晚

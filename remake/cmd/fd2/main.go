@@ -12259,6 +12259,12 @@ func (g *Game) aiStep() {
 						g.playSFX(cue.Index)
 					}
 				}
+				if os.Getenv("FD2_SHOT_AI") != "" {
+					log.Printf("0x13a9f mode5 event: unit id=%d at (%d,%d) event=%d dest=(%d,%d) before=%v",
+						u.NativeIdentity, u.X, u.Y, plan.NativeModeEventID,
+						plan.NativeModeEventDestination.X, plan.NativeModeEventDestination.Y,
+						u.NativeRecordDeathEffect)
+				}
 				if err := g.st.ApplyNativeAIMode5EventWithAudioCue(
 					u, plan.NativeModeEventID, plan.NativeModeEventDestination,
 					emitMode5Audio,

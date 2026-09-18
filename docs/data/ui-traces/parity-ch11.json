@@ -1,0 +1,6614 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_receipt",
+  "chapter": 11,
+  "generated_at": "2026-09-18",
+  "status": "passed",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "control_plan": "docs/data/parity-plans/ch11-sample.jsonl",
+    "control_plan_sha256": "4e5cc4a6ca5300f7929e4168f8dde1113c3c2ca98478e64c037356aaaf8c1478",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 240,
+    "checkpoints": 7074
+  },
+  "slot": {
+    "manifest": "/slot/manifest.json",
+    "output_sha256": "35ed64accc3082bb445d3bcaa9ba0c05c3602e60e941179f67ee21340c98ca92",
+    "base_sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
+    "base_chapter": 2,
+    "target_chapter": 10,
+    "level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+    "assumptions": [
+      {
+        "chapter": 3,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "native_event_state_eq(state17)→true（第 7 章戰場狀態 17＝1，-event-states 明示）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 10,
+        "kind": "boost",
+        "detail": "基底 AP +200、DP +0、DX +60（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 13 筆：roster 0 id8=0 AP/DP/HIT/EV [263 190 175 80]→[463 190 235 140]；roster 1 id8=9 AP/DP/HIT/EV [173 127 147 62]→[373 127 207 122]；roster 2 id8=4 AP/DP/HIT/EV [294 162 170 80]→[494 162 230 140]；roster 3 id8=30 AP/DP/HIT/EV [520 473 211 121]→[720 473 271 181]；roster 4 id8=1 AP/DP/HIT/EV [337 182 152 57]→[537 182 212 117]；roster 5 id8=8 AP/DP/HIT/EV [255 108 175 80]→[455 108 235 140]；roster 6 id8=2 AP/DP/HIT/EV [289 181 175 80]→[489 181 235 140]；roster 7 id8=10 AP/DP/HIT/EV [140 135 133 38]→[340 135 193 98]；roster 8 id8=13 AP/DP/HIT/EV [186 106 159 64]→[386 106 219 124]；roster 9 id8=12 AP/DP/HIT/EV [249 169 141 46]→[449 169 201 106]；roster 10 id8=5 AP/DP/HIT/EV [137 116 135 40]→[337 116 195 100]；roster 11 id8=11 AP/DP/HIT/EV [92 108 96 21]→[292 108 156 81]；roster 12 id8=6 AP/DP/HIT/EV [211 138 126 41]→[411 138 186 101]"
+      }
+    ]
+  },
+  "remake": {
+    "checkpoints": 243,
+    "rng_synced_points": 10
+  },
+  "gates": {
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "status": "ok"
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "status": "ok"
+        },
+        {
+          "seq": 101,
+          "kind": "battle_start",
+          "status": "ok"
+        },
+        {
+          "seq": 121,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 157,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 163,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 187,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 207,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 213,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 230,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 235,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 241,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 259,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 264,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 270,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 297,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 302,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 308,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 318,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 323,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 329,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 364,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 369,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 375,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 389,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 394,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 400,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 415,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 420,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 426,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 440,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 445,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 451,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 477,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 540,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 546,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 567,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 572,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 578,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 625,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 625,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 630,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 636,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 649,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 747,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 753,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 778,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 857,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 863,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 878,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 898,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 904,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 922,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 971,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 977,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 993,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1096,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 1102,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1117,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1184,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1190,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1198,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1218,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1224,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1245,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1250,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1256,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1274,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1279,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1285,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1296,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1301,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1307,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1328,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1469,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 1475,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1518,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 1518,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1596,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1602,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1614,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1616,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1622,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1647,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1752,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 1758,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1765,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1870,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 1876,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1883,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 1960,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 1966,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 1989,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2130,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 2136,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2150,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2213,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 2219,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2234,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2268,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 2274,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2291,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2430,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 2436,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2443,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2580,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 2586,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2605,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2746,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 2752,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2773,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 2851,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 2857,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 2883,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 2883,
+          "kind": "mark:after_round3",
+          "status": "ok"
+        },
+        {
+          "seq": 2899,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3019,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 3025,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3031,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3187,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 3193,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3199,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3319,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 3325,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3348,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3366,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 3372,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3383,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3400,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 3406,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3424,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3427,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 3433,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3447,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3466,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 3472,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3492,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3629,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 3635,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3642,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3777,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 3783,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3792,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3795,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 3801,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3822,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 3963,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 3969,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 3996,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4137,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 4143,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4180,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 4180,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4181,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 4202,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4213,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4214,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 4235,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4247,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4325,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 4327,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 4342,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 4364,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4443,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 4464,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4491,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4634,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 4640,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4666,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4685,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 4687,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 4702,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 4716,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4720,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 4726,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4745,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4748,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 4754,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4763,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 4896,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 4902,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 4909,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5042,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 5048,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 5061,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5202,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 5208,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 5235,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5376,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 5382,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 5435,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 5435,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5436,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 5438,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 5453,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 5480,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5483,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 5485,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 5500,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 5525,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5621,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 5642,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 5669,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5791,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 5797,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 5822,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 5942,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 5948,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 5972,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6128,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 6134,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6145,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6148,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 6154,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6162,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6165,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 6171,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6190,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6331,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 6337,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6352,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6487,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 6493,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6500,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6633,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 6639,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6658,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 6799,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 6805,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 6828,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 6828,
+          "kind": "mark:after_round6",
+          "status": "ok"
+        },
+        {
+          "seq": 6829,
+          "kind": "force_enemy_clear",
+          "status": "ok"
+        },
+        {
+          "seq": 6848,
+          "kind": "end_turn",
+          "status": "oracle_mid_end_turn",
+          "note": "原版 checkpoint 在 0x1A30B 換手處理裡（全員行動完自動換手），單位、回合與畫面不比"
+        },
+        {
+          "seq": 6870,
+          "kind": "town_after_battle",
+          "status": "ok"
+        },
+        {
+          "seq": 6939,
+          "kind": "shop_menu",
+          "status": "ok"
+        },
+        {
+          "seq": 6939,
+          "kind": "shop_sell",
+          "status": "ok"
+        },
+        {
+          "seq": 7001,
+          "kind": "shop_buy",
+          "status": "ok"
+        },
+        {
+          "seq": 7009,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 7024,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 7051,
+          "kind": "town_save",
+          "status": "ok"
+        },
+        {
+          "seq": 7073,
+          "kind": "secret_shop",
+          "status": "ok"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": true,
+      "oracle": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "mark:after_round3:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:dialogue",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "mark:after_round6:cursor",
+        "force_enemy_clear:cursor",
+        "end_turn:cursor",
+        "battle_result:dialogue",
+        "town_after_battle:town",
+        "shop_menu:shop",
+        "shop_sell:town",
+        "shop_buy:town",
+        "town_enter:church",
+        "town_enter:hotel",
+        "town_save:hotel",
+        "secret_shop:shop",
+        "end:shop"
+      ],
+      "remake": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "mark:after_round3:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:dialogue",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "after_enemy_phase:cursor",
+        "mark:after_round6:cursor",
+        "force_enemy_clear:cursor",
+        "end_turn:cursor",
+        "battle_result:dialogue",
+        "town_after_battle:town",
+        "shop_menu:shop",
+        "shop_sell:town",
+        "shop_buy:town",
+        "town_enter:church",
+        "town_enter:hotel",
+        "town_save:hotel",
+        "secret_shop:shop",
+        "end:shop"
+      ]
+    },
+    "transaction": {
+      "ok": true,
+      "gold": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 101,
+          "kind": "battle_start",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 121,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 157,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 163,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 187,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 207,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 213,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 230,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 235,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 241,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 259,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 264,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 270,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 297,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 302,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 308,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 318,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 323,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 329,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 364,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 369,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 375,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 389,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 394,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 400,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 415,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 420,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 426,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 440,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 445,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 451,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 477,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 540,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 546,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 567,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 572,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 578,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 625,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 625,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 630,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 636,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 649,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 747,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 753,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 778,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 857,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 863,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 878,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 898,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 904,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 922,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 971,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 977,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 993,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1096,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1102,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1117,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1184,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1190,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1198,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1218,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1224,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1245,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1250,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1256,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1274,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1279,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1285,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1296,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1301,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1307,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1328,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1469,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1475,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1518,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1518,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1596,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1602,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1614,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1616,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1622,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1647,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1752,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1758,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1765,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1870,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1876,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1883,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1960,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1966,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1989,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2130,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2136,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2150,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2213,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2219,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2234,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2268,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2274,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2291,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2430,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2436,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2443,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2580,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2586,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2605,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2746,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2752,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2773,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2851,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2857,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2883,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2883,
+          "kind": "mark:after_round3",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 2899,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3019,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3025,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3031,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3187,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3193,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3199,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3319,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3325,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3348,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3366,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3372,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3383,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3400,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3406,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3424,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3427,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3433,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3447,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3466,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3472,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3492,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3629,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3635,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3642,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3777,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3783,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3792,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3795,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3801,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3822,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3963,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3969,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 3996,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4137,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4143,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4180,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4180,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4181,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4202,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4213,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4214,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4235,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4247,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4325,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4327,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4342,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4364,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4443,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4464,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4491,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4634,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4640,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4666,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4685,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4687,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4702,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 4716,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4720,
+          "kind": "move",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4726,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4745,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4748,
+          "kind": "move",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4754,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4763,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4896,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4902,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 4909,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5042,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5048,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5061,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5202,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5208,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5235,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5376,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5382,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5435,
+          "kind": "after_enemy_phase",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5435,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5436,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5438,
+          "kind": "attack_armed",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5453,
+          "kind": "attack_result",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5480,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5483,
+          "kind": "move",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5485,
+          "kind": "attack_armed",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5500,
+          "kind": "attack_result",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5525,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5621,
+          "kind": "move",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5642,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5669,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5791,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5797,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5822,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5942,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5948,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 5972,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6128,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6134,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6145,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6148,
+          "kind": "move",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6154,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6162,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6165,
+          "kind": "move",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6171,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6190,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6331,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6337,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6352,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6487,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6493,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6500,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6633,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6639,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6658,
+          "kind": "select",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6799,
+          "kind": "stay",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6805,
+          "kind": "wait",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6828,
+          "kind": "after_enemy_phase",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6828,
+          "kind": "mark:after_round6",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6829,
+          "kind": "force_enemy_clear",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6848,
+          "kind": "end_turn",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6870,
+          "kind": "town_after_battle",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6939,
+          "kind": "shop_menu",
+          "oracle": 12000,
+          "remake": 12000,
+          "ok": true
+        },
+        {
+          "seq": 6939,
+          "kind": "shop_sell",
+          "oracle": 12037,
+          "remake": 12037,
+          "ok": true
+        },
+        {
+          "seq": 7001,
+          "kind": "shop_buy",
+          "oracle": 12027,
+          "remake": 12027,
+          "ok": true
+        },
+        {
+          "seq": 7009,
+          "kind": "town_enter",
+          "oracle": 12027,
+          "remake": 12027,
+          "ok": true
+        },
+        {
+          "seq": 7024,
+          "kind": "town_enter",
+          "oracle": 12027,
+          "remake": 12027,
+          "ok": true
+        },
+        {
+          "seq": 7051,
+          "kind": "town_save",
+          "oracle": 12027,
+          "remake": 12027,
+          "ok": true
+        },
+        {
+          "seq": 7073,
+          "kind": "secret_shop",
+          "oracle": 12027,
+          "remake": 12027,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": "6f66f8d6181bcc0cff93b1b05a90f9b083c834ae5cfbfd73f772f5efd8f6dc0e",
+        "remake_save_sha256": "6f66f8d6181bcc0cff93b1b05a90f9b083c834ae5cfbfd73f772f5efd8f6dc0e",
+        "remake_note": "save_sha256=6f66f8d6181bcc0cff93b1b05a90f9b083c834ae5cfbfd73f772f5efd8f6dc0e",
+        "blocked_by": null,
+        "status": "ok"
+      }
+    },
+    "frames": {
+      "ok": true,
+      "pixel_budget": 640,
+      "min_frames": 12,
+      "compared": 231,
+      "points": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "oracle": "checkpoint-0018.png",
+          "remake": "remake-0000-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "8d12e2fc6ae1360f1b025e74758696c99a446e04793a15b0ca444163446043dd",
+          "remake_sha256": "8d12e2fc6ae1360f1b025e74758696c99a446e04793a15b0ca444163446043dd"
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "oracle": "checkpoint-0039.png",
+          "remake": "remake-0001-p0.png",
+          "phases": 1,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d9751b6845af8394078b4355325d1879cf872a502f13f301b399cf82594b3a7f",
+          "remake_sha256": "ab96d01f464cc5514405b38fee697ad69740782bb991a407eede47dc58cf2d22"
+        },
+        {
+          "seq": 101,
+          "kind": "battle_start",
+          "oracle": "checkpoint-0101.png",
+          "remake": "remake-0002-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "25c081713a01008b82419093dd979ac0437e8fa41c6a292beac1e53b13a2a0b4",
+          "remake_sha256": "cc121c1affb3aa528204b3c97b125699d1376f5a1a72a80319b934261ad75311"
+        },
+        {
+          "seq": 121,
+          "kind": "select",
+          "oracle": "checkpoint-0121.png",
+          "remake": "remake-0003-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f8c1cfe818d16937336d025f692cd7a492eadb2d5dde27d4e04701b4b8735bc6",
+          "remake_sha256": "49fe8a32a78d00b0b80246a830d85fb4cd5014c68b9c837475a80f38eccac822"
+        },
+        {
+          "seq": 157,
+          "kind": "move",
+          "oracle": "checkpoint-0157.png",
+          "remake": "remake-0004-p1.png",
+          "phases": 16,
+          "diff_pixels": 61,
+          "box": [
+            31,
+            95,
+            48,
+            99
+          ],
+          "ok": true,
+          "oracle_sha256": "94008ed90be8732e9e92c14f72f3b6c8422897787e0764fdaadf03aebda3468b",
+          "remake_sha256": "d76cf91a03b0e6189838b023c16c2af4fe876b88942238a02ea340660ff3c269"
+        },
+        {
+          "seq": 163,
+          "kind": "wait",
+          "oracle": "checkpoint-0163.png",
+          "remake": "remake-0005-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "7de95d723e678996c9578fc92f4c193ecba0e6f2088173a4b3e8820dc68e2c3d",
+          "remake_sha256": "7cb95723e151a9a452ee13374afc24b1222559b9f53e57c2858ec806c24e755c"
+        },
+        {
+          "seq": 187,
+          "kind": "select",
+          "oracle": "checkpoint-0187.png",
+          "remake": "remake-0006-p12.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3a70e36ce17651a36036929c9389d1061e84e21506a355d6d58a95ff98df444d",
+          "remake_sha256": "48128542fd38f02588b88f7532519334e729c21c72c41810944b7d8d887276aa"
+        },
+        {
+          "seq": 207,
+          "kind": "move",
+          "oracle": "checkpoint-0207.png",
+          "remake": "remake-0007-p1.png",
+          "phases": 16,
+          "diff_pixels": 192,
+          "box": [
+            220,
+            119,
+            262,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "1e5db4f8f19e3c82ef09187b90da0d7ec1265e60ac91af53eac740abf31eef7e",
+          "remake_sha256": "0543483ff187360a31c9d6511c6074c896df0611ec007f86502e3eb6c6c8f976"
+        },
+        {
+          "seq": 213,
+          "kind": "wait",
+          "oracle": "checkpoint-0213.png",
+          "remake": "remake-0008-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "588fdb6e3bf5e98e2746d14da03d1ae33986016561afafc303317828df9a1dbe",
+          "remake_sha256": "94b69c145fa22df788918408186a1b43b3cce696327ddb5b7db3ca65e3d00c91"
+        },
+        {
+          "seq": 230,
+          "kind": "select",
+          "oracle": "checkpoint-0230.png",
+          "remake": "remake-0009-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d044c521c3a80b22d7c554caec53f6ce049634c8b15a751a52b47aa9e95cc8e8",
+          "remake_sha256": "2154b377f91df7edeace7692a186dfd993ef15d3d5fbb55349454299d154bdf5"
+        },
+        {
+          "seq": 235,
+          "kind": "move",
+          "oracle": "checkpoint-0235.png",
+          "remake": "remake-0010-p1.png",
+          "phases": 16,
+          "diff_pixels": 73,
+          "box": [
+            32,
+            95,
+            49,
+            99
+          ],
+          "ok": true,
+          "oracle_sha256": "215d2694d29d702155aa1a067b94c4085759268baf41f3f6b2345ddba585b1e5",
+          "remake_sha256": "6b79a993b3fd777ed9712c00ef0d725a2f663f81ea693bf5c9d7c0ccddd39e29"
+        },
+        {
+          "seq": 241,
+          "kind": "wait",
+          "oracle": "checkpoint-0241.png",
+          "remake": "remake-0011-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c885b9a053255edb70200a93fe196ff99edc5e79d51404647f3450d77ce54d75",
+          "remake_sha256": "26a15389fc7d6117f3e7b13a7537bc58571714d6897564519123608425fa9728"
+        },
+        {
+          "seq": 259,
+          "kind": "select",
+          "oracle": "checkpoint-0259.png",
+          "remake": "remake-0012-p20.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "81bb115e9ab87507e800eb208eea02c475f817289de6d0e0e247ef7496c01dc1",
+          "remake_sha256": "131314d0eaab9b39c46889a4e3c94b88e037c484c4ad4beb1b8c1b5f0b1c9318"
+        },
+        {
+          "seq": 264,
+          "kind": "move",
+          "oracle": "checkpoint-0264.png",
+          "remake": "remake-0013-p2.png",
+          "phases": 16,
+          "diff_pixels": 172,
+          "box": [
+            31,
+            118,
+            70,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "b610cb4232edfca9004acae661e67a4e2097c84c6342adb6d5c0f07ebdb45172",
+          "remake_sha256": "4c7375df8fbfbab2698dc88ab8ff4d88bfe9ad6c03983127fdf2612e907cb79c"
+        },
+        {
+          "seq": 270,
+          "kind": "wait",
+          "oracle": "checkpoint-0270.png",
+          "remake": "remake-0014-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "bd1d23b07d1442af4526c9fdf2c08384ecaa56fb2cd2c927c816378addac5365",
+          "remake_sha256": "086c19ff8ee1d4386373e8f5297cc7eb71c8a43200a0b4a26bb13923656a1a7d"
+        },
+        {
+          "seq": 297,
+          "kind": "select",
+          "oracle": "checkpoint-0297.png",
+          "remake": "remake-0015-p14.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c75b2be564125851730bd6c1e3441aa089788819020acabeaad57102fb133ab6",
+          "remake_sha256": "8f2ea83617eb79bfb33cf0ac0639dc55982ee5444c065bd62e3c4506b03a4e99"
+        },
+        {
+          "seq": 302,
+          "kind": "move",
+          "oracle": "checkpoint-0302.png",
+          "remake": "remake-0016-p1.png",
+          "phases": 16,
+          "diff_pixels": 157,
+          "box": [
+            247,
+            95,
+            286,
+            119
+          ],
+          "ok": true,
+          "oracle_sha256": "075baa93898426c33b5cd6f339040ebaace4481f02b4d6c049c791fe882466bb",
+          "remake_sha256": "15bdbc853ad3a131dbc9e35b53c3cc6978559b9b99514479f93b8ae69041f3f8"
+        },
+        {
+          "seq": 308,
+          "kind": "wait",
+          "oracle": "checkpoint-0308.png",
+          "remake": "remake-0017-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "23830fea9751fdb7cc081d517888a368c3a010ce2bdb04ab9d21b779ea1070db",
+          "remake_sha256": "398604319a510adff9305e26905084df76e13db6c779a75fca9423d95c6edc3f"
+        },
+        {
+          "seq": 318,
+          "kind": "select",
+          "oracle": "checkpoint-0318.png",
+          "remake": "remake-0018-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "91657e0317a415fc35d52cc8b0688b21f47b1ec0c6e9c9fdf96c298ebf9d9ee6",
+          "remake_sha256": "c77b954cd63172f26fec4362589bb580fcddba15a5a4916e76bc1d77cc4c7e7f"
+        },
+        {
+          "seq": 323,
+          "kind": "move",
+          "oracle": "checkpoint-0323.png",
+          "remake": "remake-0019-p1.png",
+          "phases": 16,
+          "diff_pixels": 180,
+          "box": [
+            270,
+            143,
+            310,
+            167
+          ],
+          "ok": true,
+          "oracle_sha256": "39efe27e84a8d6f3cdf1aeedce571dc89b0b8b33f674f893762e911298fd1995",
+          "remake_sha256": "37efd5f8bdd3f478674941bdb87194a0d6da35895431b6333561d9b644a5046c"
+        },
+        {
+          "seq": 329,
+          "kind": "wait",
+          "oracle": "checkpoint-0329.png",
+          "remake": "remake-0020-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "4abe27a1acd94882b5b9181b18322928f35634d2232aa699a21670a2c04af317",
+          "remake_sha256": "2e71660d6d9a09ee0ab2ca2d30a115258017d6757576a16e9ab14db3b38f59f2"
+        },
+        {
+          "seq": 364,
+          "kind": "select",
+          "oracle": "checkpoint-0364.png",
+          "remake": "remake-0021-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0082154303e0d2c45731ad8f0f60f3ec2bb56635573faf8343cbefe057c77be6",
+          "remake_sha256": "bbd007ebce36b454bc3c6ed2db55769fdd808c3b61a2c060b99e98cbe73716dd"
+        },
+        {
+          "seq": 369,
+          "kind": "move",
+          "oracle": "checkpoint-0369.png",
+          "remake": "remake-0022-p1.png",
+          "phases": 16,
+          "diff_pixels": 176,
+          "box": [
+            29,
+            119,
+            70,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "b7b11ec2264e17a7f86b07ae072885db24fa4ea67e9c55afdab7f1c95e189bd7",
+          "remake_sha256": "e10aa2afe05977026f5f240dca1bc08875adba43a84e61b5c81a641395dcd482"
+        },
+        {
+          "seq": 375,
+          "kind": "wait",
+          "oracle": "checkpoint-0375.png",
+          "remake": "remake-0023-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "8952f6c1a3c76da3be0bfde3de411a32c268c2eef9add1ed1578d23ab1e5983d",
+          "remake_sha256": "07741b0ec1501dc3eca206a6e7ab1c42410986159bd1556d86b6d17ab1adb442"
+        },
+        {
+          "seq": 389,
+          "kind": "select",
+          "oracle": "checkpoint-0389.png",
+          "remake": "remake-0024-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b19f38672a8baa0cc76e4cb6ea05489a593164b5c57af82d257a07166a75f66e",
+          "remake_sha256": "c9b2716e97ce4952d67105affc58d53d4a8c5811492835e2b77c8c47d9d682d4"
+        },
+        {
+          "seq": 394,
+          "kind": "move",
+          "oracle": "checkpoint-0394.png",
+          "remake": "remake-0025-p2.png",
+          "phases": 16,
+          "diff_pixels": 185,
+          "box": [
+            174,
+            142,
+            214,
+            167
+          ],
+          "ok": true,
+          "oracle_sha256": "dcd33b1c0e6e21469e3c42a5ae39fa50cdbc2a4144e3a6bb69d672e6a61e96d8",
+          "remake_sha256": "3ce7650b03212c66e9b71bdd437656f68b5b011b86ccd5b91533b60183cacb21"
+        },
+        {
+          "seq": 400,
+          "kind": "wait",
+          "oracle": "checkpoint-0400.png",
+          "remake": "remake-0026-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "1f42110dce64ec61b6b0505f0ac0f0f52c5a69164f03aa4225935959c200d7f6",
+          "remake_sha256": "a4acd68e912524b29d0ac662b95efb841abf13afe5567475ca0109b7fdd97f27"
+        },
+        {
+          "seq": 415,
+          "kind": "select",
+          "oracle": "checkpoint-0415.png",
+          "remake": "remake-0027-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "05a55680a25f8d7ca0c76631ed77370c9dd02ece3d266037e8237926b1f782a4",
+          "remake_sha256": "3865ab3f8af53151fc72f4a3b4b2ebb9d85e062cfc5fd1d56449ea8e1d8bdad0"
+        },
+        {
+          "seq": 420,
+          "kind": "move",
+          "oracle": "checkpoint-0420.png",
+          "remake": "remake-0028-p1.png",
+          "phases": 16,
+          "diff_pixels": 418,
+          "box": [
+            197,
+            57,
+            238,
+            95
+          ],
+          "ok": true,
+          "oracle_sha256": "5a8e0be9fb7c123b36a16d5a79c3f17f01578900bede8bb1d1a3ef9d056c056f",
+          "remake_sha256": "9e0c45d90da2440b4be46c4305473995260e01c84842320f58a869d331fdbb20"
+        },
+        {
+          "seq": 426,
+          "kind": "wait",
+          "oracle": "checkpoint-0426.png",
+          "remake": "remake-0029-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2b1e2da60cab8b8cb45cefde7ba4528b8dd2065d324db81dc8a97b1811b3fe2a",
+          "remake_sha256": "c94cb951fbe22541b71338d84a5e68f053548aad7057a24b24aa0b2e27a91278"
+        },
+        {
+          "seq": 440,
+          "kind": "select",
+          "oracle": "checkpoint-0440.png",
+          "remake": "remake-0030-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "7aa2ff2e9720e4ecac3def9743211d697a87f287b80b07d73f27ae5c27e4caaa",
+          "remake_sha256": "b0d7835faf53c90be2c8cac473d1c589becd67f030614b47fb878d09674a1aed"
+        },
+        {
+          "seq": 445,
+          "kind": "move",
+          "oracle": "checkpoint-0445.png",
+          "remake": "remake-0031-p0.png",
+          "phases": 16,
+          "diff_pixels": 208,
+          "box": [
+            270,
+            118,
+            310,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "9812946608dcdb3dbbb30e94300901d085c2229c2ac11db69f4887fb8de0b04e",
+          "remake_sha256": "ca27f8afff76dbfb3d32bdf117936aed32fbc7417db2c669e30d836f92be9bd0"
+        },
+        {
+          "seq": 451,
+          "kind": "wait",
+          "oracle": "checkpoint-0451.png",
+          "remake": "remake-0032-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f03a1d2952406d5048c911e85c955f9a49400e681d811afee2e295bb3e3cded0",
+          "remake_sha256": "ad832a796e397c5a2ae2ff9c4cdfd9b5d8f290741d6a6c33dda6c855e7889176"
+        },
+        {
+          "seq": 477,
+          "kind": "select",
+          "oracle": "checkpoint-0477.png",
+          "remake": "remake-0033-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e1ecfac56b34385abba368c06b244087d49c70f2cc3648642d1412a4b9301f11",
+          "remake_sha256": "8b1ccb601b7cb173f2531d483ad757a681f47f867878935c919fc65b7fa78fe8"
+        },
+        {
+          "seq": 540,
+          "kind": "move",
+          "oracle": "checkpoint-0540.png",
+          "remake": "remake-0034-p1.png",
+          "phases": 16,
+          "diff_pixels": 53,
+          "box": [
+            32,
+            95,
+            47,
+            99
+          ],
+          "ok": true,
+          "oracle_sha256": "99975d46a2b99638d9cab96965f5f7b23e8b4c05dc35e84ed92d60a8304036fa",
+          "remake_sha256": "7d6f113623c509415e1f6f3918b2c3390a473c48054206cdf4ba85394752e929"
+        },
+        {
+          "seq": 546,
+          "kind": "wait",
+          "oracle": "checkpoint-0546.png",
+          "remake": "remake-0035-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3b1a3eac753272ef75568a8f3cdb77bd7c04820fee8aee32fba7d6cb52f5a4e6",
+          "remake_sha256": "c1d61de3ff90fb0f5328325dd230d4260873f99fab5d2bda38359a46575c4875"
+        },
+        {
+          "seq": 567,
+          "kind": "select",
+          "oracle": "checkpoint-0567.png",
+          "remake": "remake-0036-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2b0619b75db30303aec13b3a7ff905caa9ca4e55fbaa2142f866d045de33c162",
+          "remake_sha256": "d853a7d56cb7a04f6c3bfa5561a8f246b90a1ba83ad41d8ce0a3dfa948b8b238"
+        },
+        {
+          "seq": 572,
+          "kind": "move",
+          "oracle": "checkpoint-0572.png",
+          "remake": "remake-0037-p2.png",
+          "phases": 16,
+          "diff_pixels": 345,
+          "box": [
+            268,
+            118,
+            310,
+            167
+          ],
+          "ok": true,
+          "oracle_sha256": "3dcd61c41015d52006b0727f11b9658f64a5cbe8a634b7837a035eb2e63a4362",
+          "remake_sha256": "7192532044aeb923024b5432873d0154f145a934a35e737af2c352f3398a16a9"
+        },
+        {
+          "seq": 578,
+          "kind": "wait",
+          "oracle": "checkpoint-0578.png",
+          "remake": "remake-0038-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3fd7edc90630b4603d5cd5ca13b04f663f912fd5dbfba2cae494ee666c11f3d8",
+          "remake_sha256": "d6cc8e01010779c952fbadb5b91d1155dbc772317a20b356546f4c475ca20c3a"
+        },
+        {
+          "seq": 625,
+          "kind": "select",
+          "oracle": "checkpoint-0625.png",
+          "remake": "remake-0040-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "673059e2bdaea134127070d78404dbec117b5ac8bcbc439bbce609109fc0baa2",
+          "remake_sha256": "b256894c1c72f6f5e11f332f0849ad410c4d49579561f25c6569653fc335b18b"
+        },
+        {
+          "seq": 630,
+          "kind": "move",
+          "oracle": "checkpoint-0630.png",
+          "remake": "remake-0041-p0.png",
+          "phases": 16,
+          "diff_pixels": 215,
+          "box": [
+            172,
+            142,
+            214,
+            167
+          ],
+          "ok": true,
+          "oracle_sha256": "858ed342962d0e4f476f0c1bee5347f826f8061dbd5d487f9a84ef3134e8bccf",
+          "remake_sha256": "db6ea61e12921161308ae650783412e3c1a9b251e65693c000ed3ab06738f7a4"
+        },
+        {
+          "seq": 636,
+          "kind": "wait",
+          "oracle": "checkpoint-0636.png",
+          "remake": "remake-0042-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0e65b2184a360ca533e3220227c6683b35c8d4dd442b933501bff69cfb36ee7a",
+          "remake_sha256": "57128559df9cdd6022575beb47fc453ecae4e18ae79233072c8755ba83d8d3c8"
+        },
+        {
+          "seq": 649,
+          "kind": "select",
+          "oracle": "checkpoint-0649.png",
+          "remake": "remake-0043-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "29cccaf472011dd6807ba307b033b454fe53ae721ce7d44675f2e5538427d2f2",
+          "remake_sha256": "da5bab8c5379c7ab2ea16ed2efe87e6ad1ed95c9790517becca1303ef2355480"
+        },
+        {
+          "seq": 747,
+          "kind": "move",
+          "oracle": "checkpoint-0747.png",
+          "remake": "remake-0044-p1.png",
+          "phases": 16,
+          "diff_pixels": 180,
+          "box": [
+            246,
+            47,
+            286,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "86c7cef07bbec58f3ef8ee81e080338ce1bb7f91bbadbe9647cfd5239520a4e7",
+          "remake_sha256": "fdbcf2d7a0383de71ab1e2e30434c3507e3eb9dc5f81d1f49af4907b1417d94b"
+        },
+        {
+          "seq": 753,
+          "kind": "wait",
+          "oracle": "checkpoint-0753.png",
+          "remake": "remake-0045-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d724bd44867461d9beacc87e54935b7e1501824e0bf551cef9a017322fd6e54c",
+          "remake_sha256": "28d19cf256f613fc1b09650020d3e19419e898f23da3ab09aafd85c3db2dd550"
+        },
+        {
+          "seq": 778,
+          "kind": "select",
+          "oracle": "checkpoint-0778.png",
+          "remake": "remake-0046-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "5937246258026b3c17afcf8b4a1081b37bef44c1fef9752893e53312e9335d45",
+          "remake_sha256": "2ba9baceb478db8249ae818a55cfb6638c0eda6cc4bf887d61fac69bb0b55668"
+        },
+        {
+          "seq": 857,
+          "kind": "move",
+          "oracle": "checkpoint-0857.png",
+          "remake": "remake-0047-p0.png",
+          "phases": 16,
+          "diff_pixels": 171,
+          "box": [
+            54,
+            46,
+            94,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "8c6d35af783ed0d3488835c154eeab7049b35384f09892c35412701e2c2a5fef",
+          "remake_sha256": "ebc078981837fbda8a67cf9c4beb8223059b4a09d0e374acc58421d12f707b21"
+        },
+        {
+          "seq": 863,
+          "kind": "wait",
+          "oracle": "checkpoint-0863.png",
+          "remake": "remake-0048-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b4a0f236cca024bd9d1f8cd472c3dc4ad7f002122d28eca489429452847b922d",
+          "remake_sha256": "fe5d2476900547c7bb298778155e7e4d7b3bd2358898e2e145d0d87b96ee208c"
+        },
+        {
+          "seq": 878,
+          "kind": "select",
+          "oracle": "checkpoint-0878.png",
+          "remake": "remake-0049-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c70bdf443a0a5c579e580b0b3dba486984d3a6decd2571aec549a7e6841daaeb",
+          "remake_sha256": "37cebf1d26769020467f14cbdef1f20697a8e380bb9bb559e05ff1e5dc4dd2c1"
+        },
+        {
+          "seq": 898,
+          "kind": "move",
+          "oracle": "checkpoint-0898.png",
+          "remake": "remake-0050-p1.png",
+          "phases": 16,
+          "diff_pixels": 73,
+          "box": [
+            272,
+            95,
+            289,
+            99
+          ],
+          "ok": true,
+          "oracle_sha256": "6d269880bf17673783de8b2c44658daf8b97c445b4285f4d9c0cac6c3a960b17",
+          "remake_sha256": "81effa5445aae3fea7c84dbcd1130da6cf2b7a25f889cd88af53d19e7321facd"
+        },
+        {
+          "seq": 904,
+          "kind": "wait",
+          "oracle": "checkpoint-0904.png",
+          "remake": "remake-0051-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "9204ce1af131410e9af48c378ea354080df301b83dd2f9657af1b5cccce59da4",
+          "remake_sha256": "1310bb7ea6e08ae23a9374127cdf4653d3e0271a15dc4f093787045a1e4d4605"
+        },
+        {
+          "seq": 922,
+          "kind": "select",
+          "oracle": "checkpoint-0922.png",
+          "remake": "remake-0052-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "374cfce2db71d5e762feb9fa5f270c32ef9696c37f69a1dd3bc6eaa363645d07",
+          "remake_sha256": "bf747dca6887c65f9cb342d81b3282a0db83865be64ab9531d63443e14bddf64"
+        },
+        {
+          "seq": 971,
+          "kind": "move",
+          "oracle": "checkpoint-0971.png",
+          "remake": "remake-0053-p0.png",
+          "phases": 16,
+          "diff_pixels": 81,
+          "box": [
+            31,
+            70,
+            48,
+            75
+          ],
+          "ok": true,
+          "oracle_sha256": "03380562cea25b42ddb027a161e5725334c94b6950dff127ce04dcc0a8b9d1c5",
+          "remake_sha256": "2dd2e3b17d33e87ef3743cb286ae216e61166edd5dc5a68ad20e1d2001de967d"
+        },
+        {
+          "seq": 977,
+          "kind": "wait",
+          "oracle": "checkpoint-0977.png",
+          "remake": "remake-0054-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "145fbbba6fb4f08ed3191b2158b70f4c02cfdba25cef55de9e7c3851433f9d59",
+          "remake_sha256": "573ca5f584d4581c7069dd63da54d17504ab9f79fff449062c9833bfa616b7fb"
+        },
+        {
+          "seq": 993,
+          "kind": "select",
+          "oracle": "checkpoint-0993.png",
+          "remake": "remake-0055-p20.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6c906e5ea1fb0d193f228dfe4490166d7e17da08c12e13f7529d42a664f7921a",
+          "remake_sha256": "6c906e5ea1fb0d193f228dfe4490166d7e17da08c12e13f7529d42a664f7921a"
+        },
+        {
+          "seq": 1096,
+          "kind": "stay",
+          "oracle": "checkpoint-1096.png",
+          "remake": "remake-0056-p2.png",
+          "phases": 16,
+          "diff_pixels": 185,
+          "box": [
+            198,
+            22,
+            238,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "d3a1c59d6a2589b4b5708dd114e41fe39780b070995dbdb7a592d53f53cd21bc",
+          "remake_sha256": "577975e7ed5b01c6121282c728b3f83b1fa7d5cf87d0ae5bab9fb7a96beaccff"
+        },
+        {
+          "seq": 1102,
+          "kind": "wait",
+          "oracle": "checkpoint-1102.png",
+          "remake": "remake-0057-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0ab5d7ae47de269c37c46020cc3d82f918ed573a3923ef323fabda0c7c3838c3",
+          "remake_sha256": "684ec77f0ff6ebd9989b1f4bba141b6f406c7929dbc7cef967b44c9e0dcd4938"
+        },
+        {
+          "seq": 1117,
+          "kind": "select",
+          "oracle": "checkpoint-1117.png",
+          "remake": "remake-0058-p30.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "66e6386f2c1ff502f8a322b7e9d43c8ba7451c17043684debd1eb26d1b80563c",
+          "remake_sha256": "b5ad11f20f2db97aa31c98cef1e68e952dcff61ade5e34f5c0688e46c1bd4a0d"
+        },
+        {
+          "seq": 1184,
+          "kind": "move",
+          "oracle": "checkpoint-1184.png",
+          "remake": "remake-0059-p1.png",
+          "phases": 16,
+          "diff_pixels": 157,
+          "box": [
+            247,
+            47,
+            286,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "8252c6ceb8a0d7a99475d0d9a0389417d5042236ad72401291225a453703db37",
+          "remake_sha256": "1847b6f6a7ab1d3066548b78b73a2235b6746ca4a16a407a44f68e73ada43fe0"
+        },
+        {
+          "seq": 1190,
+          "kind": "wait",
+          "oracle": "checkpoint-1190.png",
+          "remake": "remake-0060-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "10e9dc0a4e3d9b5c34226b84be6ac0640911b161c93dee2efcf63740bce4e286",
+          "remake_sha256": "3998a3402924ff97b6ff9d3d6a2c0535541c37f7c5620a33b329eeb6daa066b6"
+        },
+        {
+          "seq": 1198,
+          "kind": "select",
+          "oracle": "checkpoint-1198.png",
+          "remake": "remake-0061-p1.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "bcef73fabecbb509b13a7f754e8a1ec8fa5fde19d82558c0b2eb929bc4a4cfbb",
+          "remake_sha256": "014f9e6f54591565e33a9e1eb3625cd23115879c61f6f7987fc58c2f6ca143c7"
+        },
+        {
+          "seq": 1218,
+          "kind": "move",
+          "oracle": "checkpoint-1218.png",
+          "remake": "remake-0062-p1.png",
+          "phases": 16,
+          "diff_pixels": 188,
+          "box": [
+            222,
+            95,
+            262,
+            119
+          ],
+          "ok": true,
+          "oracle_sha256": "77f4681cde8deaaf87709c2c1e4a435149584c4359a7327afad28549b625da75",
+          "remake_sha256": "83beb72a2d1efdc33bd451870dd1c445551826e0675de5ff95316a142d4e6bee"
+        },
+        {
+          "seq": 1224,
+          "kind": "wait",
+          "oracle": "checkpoint-1224.png",
+          "remake": "remake-0063-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0b255d57a783679b2cbd5581c73288f8f7f4a3ddb12b6966dfa16ca97e678500",
+          "remake_sha256": "dae46b1699a9d6325377a4e108268b265b2b68ffe1b7d75187394030810f428c"
+        },
+        {
+          "seq": 1245,
+          "kind": "select",
+          "oracle": "checkpoint-1245.png",
+          "remake": "remake-0064-p1.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "28701c755ebbb2390bb9ce26dfa35fc257df7310a59ebdeaad59604290c3657b",
+          "remake_sha256": "3c2ced79860c63cdc5c7b68c063772cf1d8558cd06e0220db74ea849e39f1019"
+        },
+        {
+          "seq": 1250,
+          "kind": "move",
+          "oracle": "checkpoint-1250.png",
+          "remake": "remake-0065-p1.png",
+          "phases": 16,
+          "diff_pixels": 85,
+          "box": [
+            29,
+            143,
+            48,
+            147
+          ],
+          "ok": true,
+          "oracle_sha256": "8a4117516e5a47371ef15a1f7d54fcfd69c0e01b7d75a4b4754859d0340e6e61",
+          "remake_sha256": "33458fdde4b7d7f5f51c99ad287246be5c3ae2c6c71b27fa8a1bd56e96863fc5"
+        },
+        {
+          "seq": 1256,
+          "kind": "wait",
+          "oracle": "checkpoint-1256.png",
+          "remake": "remake-0066-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b35778464317f7240a46b78acefff881250f50a3175c271f17369043009ed032",
+          "remake_sha256": "9c7cb1f7a5e55cfc5f88a76a6be34d98536cbbee4fd25e7ace9e31be05e88f92"
+        },
+        {
+          "seq": 1274,
+          "kind": "select",
+          "oracle": "checkpoint-1274.png",
+          "remake": "remake-0067-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "14dcefb0645f55d151ef7c81d01325941e98dbb3fd08efcb68590c95bfaae7ac",
+          "remake_sha256": "eb940e54fe546c774fef04b1ad1043e9540c6b6824377054d42f839bfeae6fff"
+        },
+        {
+          "seq": 1279,
+          "kind": "move",
+          "oracle": "checkpoint-1279.png",
+          "remake": "remake-0068-p2.png",
+          "phases": 16,
+          "diff_pixels": 88,
+          "box": [
+            199,
+            118,
+            216,
+            123
+          ],
+          "ok": true,
+          "oracle_sha256": "eba75687ee8f82a6ba3bb2c7a0a51d6ad2a93daa89c0eb1d4a708f477d57307a",
+          "remake_sha256": "3489dc49ec013dd8f830269714677090f0cf09cba1fb6af4973f37ac08fecbf5"
+        },
+        {
+          "seq": 1285,
+          "kind": "wait",
+          "oracle": "checkpoint-1285.png",
+          "remake": "remake-0069-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "fa122b35cb0da49c7f6f68136bc59db263e1d7e5a2877662805d76b19cd61543",
+          "remake_sha256": "a08840619eb28dd7bb2523d4b1f28bc890a83c6b687a89a3284144a3b1b76326"
+        },
+        {
+          "seq": 1296,
+          "kind": "select",
+          "oracle": "checkpoint-1296.png",
+          "remake": "remake-0070-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c4253223436b74375e9452e002d4661925d8c247519cd69529fa8a5402416375",
+          "remake_sha256": "1a734c4fbb37458d7434910d6092ad64bfcaadf726ba3770d63eb18a8b248c7d"
+        },
+        {
+          "seq": 1301,
+          "kind": "move",
+          "oracle": "checkpoint-1301.png",
+          "remake": "remake-0071-p2.png",
+          "phases": 16,
+          "diff_pixels": 489,
+          "box": [
+            245,
+            105,
+            267,
+            167
+          ],
+          "ok": true,
+          "oracle_sha256": "6a7b4f901fb872805e778b53f85319f826f3a8d4200290db8a21266df2562b38",
+          "remake_sha256": "f1f6c7bcb2cd9b6613cac99ea096eac2058ffc10002396fb89e6dd488c9a9485"
+        },
+        {
+          "seq": 1307,
+          "kind": "wait",
+          "oracle": "checkpoint-1307.png",
+          "remake": "remake-0072-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b7e149909e3cdec28dfc4119506902628ec5e5e84a6de4aa0e1b3768866419e8",
+          "remake_sha256": "21aa1769b928d3d11dc8294b9e65a8a6a1882ea6a4eee49ca36d28bbc8d27d10"
+        },
+        {
+          "seq": 1328,
+          "kind": "select",
+          "oracle": "checkpoint-1328.png",
+          "remake": "remake-0073-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "60a618dd1b10f7fbf496ba0aa61101e6d23f8f06761f859b4851186322f81a23",
+          "remake_sha256": "4886077c68e89eda6d6a9ac998abdcbda2f7eff10d7d7ad2e241f7ee44c69c7c"
+        },
+        {
+          "seq": 1469,
+          "kind": "stay",
+          "oracle": "checkpoint-1469.png",
+          "remake": "remake-0074-p1.png",
+          "phases": 16,
+          "diff_pixels": 53,
+          "box": [
+            32,
+            47,
+            47,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "cc9c2997f50b6a484635b74494a8169b7498330d60fa5a03fb1adb16bc0c28ec",
+          "remake_sha256": "f8a03958c2fda2ec5fe17cb67b9f84400d380c60517bc7c7aff08830870b91da"
+        },
+        {
+          "seq": 1475,
+          "kind": "wait",
+          "oracle": "checkpoint-1475.png",
+          "remake": "remake-0075-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e12cd55c5dceb126a630f757dbce948bfd69d4efc98c78edf3fcf6feca075c5e",
+          "remake_sha256": "0186be1af2a52d8261cfc6b4201c693e5ad1d299e5cae4efb228291ea59f2baf"
+        },
+        {
+          "seq": 1518,
+          "kind": "select",
+          "oracle": "checkpoint-1518.png",
+          "remake": "remake-0077-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6f7c5927f4cddfb996dc4d3316b1626e1bc27607cd2cd534d6331a9a6ff27681",
+          "remake_sha256": "af971eb63b1532b4e102452ed3edca8b6422213e42323418261557e8ae751b5f"
+        },
+        {
+          "seq": 1596,
+          "kind": "move",
+          "oracle": "checkpoint-1596.png",
+          "remake": "remake-0078-p0.png",
+          "phases": 16,
+          "diff_pixels": 124,
+          "box": [
+            196,
+            70,
+            218,
+            75
+          ],
+          "ok": true,
+          "oracle_sha256": "ddea1dc48ab427d7bb1290e0db43ec892ab12d9a5ac2b0b8a6a22f67c3b2fcc9",
+          "remake_sha256": "9af060f20786be4c532ef61df5b28c0181aa6772162972f44d4be96223e98034"
+        },
+        {
+          "seq": 1602,
+          "kind": "wait",
+          "oracle": "checkpoint-1602.png",
+          "remake": "remake-0079-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a10a2a861fe9af715ebaded678e093d690d55b72c783ae5fb7c7655e022aa54a",
+          "remake_sha256": "4db0f9dbd9d5f8b70b5e9177206340bb359ba6d5fa10887f30f24841fb34dee9"
+        },
+        {
+          "seq": 1614,
+          "kind": "select",
+          "oracle": "checkpoint-1614.png",
+          "remake": "remake-0080-p50.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "5a4db45db93da496964889e1f9a7e7219e70e999be6d0192c53c8e3b559eacbb",
+          "remake_sha256": "a77386fdbf5981506037e3583711b488c9147b04106866893bd7716091ff04e7"
+        },
+        {
+          "seq": 1616,
+          "kind": "move",
+          "oracle": "checkpoint-1616.png",
+          "remake": "remake-0081-p0.png",
+          "phases": 16,
+          "diff_pixels": 109,
+          "box": [
+            246,
+            22,
+            265,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "18c6fae86f97b3e789d1c083cc2431740b7076f31e62a776bf5f819754cf9939",
+          "remake_sha256": "f790eea4693f2fa7376b408670665e4db25cedb0a604cbef4fbcff70198e971a"
+        },
+        {
+          "seq": 1622,
+          "kind": "wait",
+          "oracle": "checkpoint-1622.png",
+          "remake": "remake-0082-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2054240d7d8968a3014aae3b610150e4771129f5b81604c39cf821f894b86bbe",
+          "remake_sha256": "e8999b715d8f212740fc4dbc1280594227daa474ba898065b52be256eb31ba0d"
+        },
+        {
+          "seq": 1647,
+          "kind": "select",
+          "oracle": "checkpoint-1647.png",
+          "remake": "remake-0083-p20.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2fcd75313c6851fec2f9eadc58136915ed79e4e7cd9c197096a76c9bd9089b68",
+          "remake_sha256": "2fcd75313c6851fec2f9eadc58136915ed79e4e7cd9c197096a76c9bd9089b68"
+        },
+        {
+          "seq": 1752,
+          "kind": "stay",
+          "oracle": "checkpoint-1752.png",
+          "remake": "remake-0084-p1.png",
+          "phases": 16,
+          "diff_pixels": 240,
+          "box": [
+            29,
+            23,
+            71,
+            48
+          ],
+          "ok": true,
+          "oracle_sha256": "c29968d26ab56c342c6f2242b05f33adee873b5a715479398848eec359c284a4",
+          "remake_sha256": "d8ec941b252b81b647d3e0ea87c641041c22530ddfffb0d02e5bbdb875b6ad97"
+        },
+        {
+          "seq": 1758,
+          "kind": "wait",
+          "oracle": "checkpoint-1758.png",
+          "remake": "remake-0085-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "9fb7a18e3595b6bb2cd2478436bb8d08c837c67998dc6ed91c96e9573794921a",
+          "remake_sha256": "596bbaa7cdb790589e28737b5e5ea74f93b780261b19f6a5f2c37bb0513ce86a"
+        },
+        {
+          "seq": 1765,
+          "kind": "select",
+          "oracle": "checkpoint-1765.png",
+          "remake": "remake-0086-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f8aa2ce719467add9b6c51f5649fdac50ca4a8055976436cda57f093d9fc635b",
+          "remake_sha256": "f8aa2ce719467add9b6c51f5649fdac50ca4a8055976436cda57f093d9fc635b"
+        },
+        {
+          "seq": 1870,
+          "kind": "stay",
+          "oracle": "checkpoint-1870.png",
+          "remake": "remake-0087-p1.png",
+          "phases": 16,
+          "diff_pixels": 235,
+          "box": [
+            77,
+            23,
+            120,
+            48
+          ],
+          "ok": true,
+          "oracle_sha256": "df9a790322597d728c1a79bf4a6c7e5fd5b9ab9f95584dcbafe546c1d2c33db7",
+          "remake_sha256": "8dc4fc7327c7caaed396704a9cd33d694ce3896da3244f86edbdfddbc2375747"
+        },
+        {
+          "seq": 1876,
+          "kind": "wait",
+          "oracle": "checkpoint-1876.png",
+          "remake": "remake-0088-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "4881f7d26913c8707489bfd1c32bbdf96af3df5a318a71e1f1a1a301ab14adc4",
+          "remake_sha256": "14df5f87f4ca5cfeb9c7f630e698e99cf21e3f98675502274ad565da749c4d7e"
+        },
+        {
+          "seq": 1883,
+          "kind": "select",
+          "oracle": "checkpoint-1883.png",
+          "remake": "remake-0089-p41.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e00ad19389b5e9b47c9e66f3a47fafa223e0c58828425aacf11ddf6f31e0c0eb",
+          "remake_sha256": "009488f3193d20b5d7838269600150bc2821c38abc63932f80b36a777b874cb5"
+        },
+        {
+          "seq": 1960,
+          "kind": "move",
+          "oracle": "checkpoint-1960.png",
+          "remake": "remake-0090-p1.png",
+          "phases": 16,
+          "diff_pixels": 85,
+          "box": [
+            77,
+            47,
+            96,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "8d5d107b36addd50cb9d2d86641acfb2bdd916076bdddc797f699bd8940c3fae",
+          "remake_sha256": "946ec6f0042511c7662282a90f1d43f716b092adf9e21c2189adc6d40bde18ed"
+        },
+        {
+          "seq": 1966,
+          "kind": "wait",
+          "oracle": "checkpoint-1966.png",
+          "remake": "remake-0091-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c75648112e049ee698880d86307fbbf5ef72dd9cc26c697581626b38cc32b9d1",
+          "remake_sha256": "3e369a683a8d57fdedd1fe0588593d7815fafd7cd41177019fdbcbb518fd4386"
+        },
+        {
+          "seq": 1989,
+          "kind": "select",
+          "oracle": "checkpoint-1989.png",
+          "remake": "remake-0092-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "5d27dd99bf6d34b97d9ccb28cc6098a97742b7721ee1abd572700aff5ca1168c",
+          "remake_sha256": "533fef95fcb3562cd01710e3e35b344cc5e531ae6a90962e5294d45a3fd94ca9"
+        },
+        {
+          "seq": 2130,
+          "kind": "stay",
+          "oracle": "checkpoint-2130.png",
+          "remake": "remake-0093-p0.png",
+          "phases": 16,
+          "diff_pixels": 177,
+          "box": [
+            247,
+            22,
+            286,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "88ad15db863ed697496c7ba12b1da0d474b385b0c4c8ae648d006d8412a2c33b",
+          "remake_sha256": "881ef30ae757dc67605a7afdde75d0e74b4606048fc99fd3a5e0b5f7d6dcbbf2"
+        },
+        {
+          "seq": 2136,
+          "kind": "wait",
+          "oracle": "checkpoint-2136.png",
+          "remake": "remake-0094-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3288049b0e9d23065f1ca19be315803da88a292b78b2a6516e79f8d0d2e9e406",
+          "remake_sha256": "05559c0d4a43b034b96baf44fd8d3196c4eecb11c04a062547269967b4854d4b"
+        },
+        {
+          "seq": 2150,
+          "kind": "select",
+          "oracle": "checkpoint-2150.png",
+          "remake": "remake-0095-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a676f850245c33a2128109fc100be138b4f8fdbd6c6e9bfd0adda5f127ca6068",
+          "remake_sha256": "4276ad4e7fab224353ef874d5c202c98ef07b6d14d763bf23020dc960bbafc19"
+        },
+        {
+          "seq": 2213,
+          "kind": "move",
+          "oracle": "checkpoint-2213.png",
+          "remake": "remake-0096-p1.png",
+          "phases": 16,
+          "diff_pixels": 164,
+          "box": [
+            80,
+            119,
+            118,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "5131396f71148a609d2eb3956c7c3f34905b8f8f87299d0e2a53af92e5185f5c",
+          "remake_sha256": "25e461b26c005ee5c06a193fc16c9eed17fce244a955cc4c07c7441990e89dda"
+        },
+        {
+          "seq": 2219,
+          "kind": "wait",
+          "oracle": "checkpoint-2219.png",
+          "remake": "remake-0097-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "7bda94b3713478003cc4ba43e5a3069d89001f196048c500f0d3c9657e6908b0",
+          "remake_sha256": "6f995f318309ef3a71c952c84e779857c354b8fcbae468f0e7dd3d1b4c157058"
+        },
+        {
+          "seq": 2234,
+          "kind": "select",
+          "oracle": "checkpoint-2234.png",
+          "remake": "remake-0098-p14.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "54b1bfdc32da22e66106b235fbed9067df9d7bb21588d3bca13b46e79bb6178c",
+          "remake_sha256": "646cc97fd48074a694d3c60ec9b2ceb247c9d2b027a7cda65f628dbef8756131"
+        },
+        {
+          "seq": 2268,
+          "kind": "move",
+          "oracle": "checkpoint-2268.png",
+          "remake": "remake-0099-p1.png",
+          "phases": 16,
+          "diff_pixels": 188,
+          "box": [
+            222,
+            95,
+            262,
+            119
+          ],
+          "ok": true,
+          "oracle_sha256": "cc488c12b5cd13d9431f8cb89f08e334c8c8c01c3fcd8d6c167421259b2338a6",
+          "remake_sha256": "ec8ce8b5adf850e810741f8dc996e2a6862674ae7f4f553d63510cd7d2a53a6f"
+        },
+        {
+          "seq": 2274,
+          "kind": "wait",
+          "oracle": "checkpoint-2274.png",
+          "remake": "remake-0100-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e06cdd4ad00cdbe3a95bfef4668806ae56a29c1d39134a50fd40afddc329f041",
+          "remake_sha256": "2bb471f95c27c19789225b53dc940febd0bc2e0e5c4c90bdc824e6a4357b8ff1"
+        },
+        {
+          "seq": 2291,
+          "kind": "select",
+          "oracle": "checkpoint-2291.png",
+          "remake": "remake-0101-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a9699606e2ea8934e0669ae67e5d253fa265d8402a8da5b4f1e538fe66da1882",
+          "remake_sha256": "5cb514b3795c0197ba646a4b58eda6583362f257cb5d0d323ddba1e93311361e"
+        },
+        {
+          "seq": 2430,
+          "kind": "stay",
+          "oracle": "checkpoint-2430.png",
+          "remake": "remake-0102-p1.png",
+          "phases": 16,
+          "diff_pixels": 165,
+          "box": [
+            54,
+            23,
+            94,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "b88a28706c505c5d724d44a213cb7526a2579a7e9dae914cd4d2d19e322e6754",
+          "remake_sha256": "90d0345f14f4355884a5746567fcb6e902b7be006b784ee43f27683e1e77b0bb"
+        },
+        {
+          "seq": 2436,
+          "kind": "wait",
+          "oracle": "checkpoint-2436.png",
+          "remake": "remake-0103-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "56ec8d7801cc6b2b75a942d565a1dda5bcf79099bb195961b4d4f081f0907419",
+          "remake_sha256": "4c55b61c8fd9da22799d01253eed5bfed5613e090ba28040cde97e4c83ae7273"
+        },
+        {
+          "seq": 2443,
+          "kind": "select",
+          "oracle": "checkpoint-2443.png",
+          "remake": "remake-0104-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6ee3d77fc7b78172af18a39ff6e1cce48c88914d880b5ecfa9c680344ccdaca7",
+          "remake_sha256": "5450f8fe870128356a5036578da81e7806ee87798219ea4fe09cee4351860b60"
+        },
+        {
+          "seq": 2580,
+          "kind": "stay",
+          "oracle": "checkpoint-2580.png",
+          "remake": "remake-0105-p1.png",
+          "phases": 16,
+          "diff_pixels": 70,
+          "box": [
+            79,
+            47,
+            96,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "2591487d4c6084387810297b2544963df64d512ff40bf6e2c277678be29da0bf",
+          "remake_sha256": "bf99af102de942957cfee09320a7f7a6f1836868a2709f1d06132025cd02a6ca"
+        },
+        {
+          "seq": 2586,
+          "kind": "wait",
+          "oracle": "checkpoint-2586.png",
+          "remake": "remake-0106-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "382e87fe6ce2eb1e8ffafcf24ca0d78335bb5f3594a746df32c1a7d509b4dd58",
+          "remake_sha256": "09de8613637759671a0d93f1a3704baa587dfbb1294cd4cbcdcefdda3116fc12"
+        },
+        {
+          "seq": 2605,
+          "kind": "select",
+          "oracle": "checkpoint-2605.png",
+          "remake": "remake-0107-p20.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b8048f9a897ef7a9ebf714e63d1105a09d41261ffeabe1d2bbe60879a29da937",
+          "remake_sha256": "ab686b49d021b32fd4f1f84b386a1a76849d25d7cfe05d19a678c03452f98877"
+        },
+        {
+          "seq": 2746,
+          "kind": "stay",
+          "oracle": "checkpoint-2746.png",
+          "remake": "remake-0108-p0.png",
+          "phases": 16,
+          "diff_pixels": 71,
+          "box": [
+            31,
+            22,
+            48,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "d157351307f1641a32b47ff99035b01ac867c7f00459100fcfa415e4604fe4f5",
+          "remake_sha256": "8a734a6326a587aac7790a7e3b7f90326b5c25f65b927eb3484d260a04f0c32b"
+        },
+        {
+          "seq": 2752,
+          "kind": "wait",
+          "oracle": "checkpoint-2752.png",
+          "remake": "remake-0109-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d3306bf9c7dd9a1e021044b1ac81cdeee4544c0caa284f034a26b1d94129ca17",
+          "remake_sha256": "be9cf135d4164ced5e1e5e409f1ea989f7358827cc90cdafca70cffda1785ae3"
+        },
+        {
+          "seq": 2773,
+          "kind": "select",
+          "oracle": "checkpoint-2773.png",
+          "remake": "remake-0110-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c4881f0d388323aa25519db7e65820794ff03ef3f1a16bec337e734b7a75b049",
+          "remake_sha256": "5bf9b83d0b73a3744c9fcb48b4fa5398146eee90e5853f52d710dd746d1d63b9"
+        },
+        {
+          "seq": 2851,
+          "kind": "move",
+          "oracle": "checkpoint-2851.png",
+          "remake": "remake-0111-p1.png",
+          "phases": 16,
+          "diff_pixels": 327,
+          "box": [
+            269,
+            129,
+            290,
+            147
+          ],
+          "ok": true,
+          "oracle_sha256": "a604079a098a1727c249dcd4a73f60af50b8c1577ef7eb9827754a95cba64828",
+          "remake_sha256": "640d47547f4eae875862eebb478c5c24faea4cf2b6ef3401c63ca3da2cd0d832"
+        },
+        {
+          "seq": 2857,
+          "kind": "wait",
+          "oracle": "checkpoint-2857.png",
+          "remake": "remake-0112-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "9f8205a2bf840a5a9115e23f6f4401aaa41af0be0c62a69e4a3a96223a319bbf",
+          "remake_sha256": "048007f297e44045f59089371b3f7a2376164045b37b092c8c59db3f024209d6"
+        },
+        {
+          "seq": 2883,
+          "kind": "mark:after_round3",
+          "oracle": "checkpoint-2883.png",
+          "remake": "remake-0114-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "1340c55331eea6ccda1d6007ec00ff50762b9ffdc4e6e52381ddab917d43acb0",
+          "remake_sha256": "dcac9a6614c4b817ab9bdb520ddd2aab6ea194f361844564dc8dbe5704b27d98"
+        },
+        {
+          "seq": 2899,
+          "kind": "select",
+          "oracle": "checkpoint-2899.png",
+          "remake": "remake-0115-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "522d6ac5c94594c052c0f3938c0c1fbc89d490f9cf17ad2358920f419f40c7ee",
+          "remake_sha256": "877316163a39123dcadd5a627838a701f4c88c095f7532f32a66f37a763c8127"
+        },
+        {
+          "seq": 3019,
+          "kind": "stay",
+          "oracle": "checkpoint-3019.png",
+          "remake": "remake-0116-p2.png",
+          "phases": 16,
+          "diff_pixels": 255,
+          "box": [
+            29,
+            46,
+            72,
+            72
+          ],
+          "ok": true,
+          "oracle_sha256": "f5f5e8860b24f7dc6bffaf238309cd4517d72f438d1af311993d4c51008a5ac9",
+          "remake_sha256": "aa7995250a77a6e2ff1cbd2b7684b1fcd75a4ed8585fe94f0cb8b1451acd8d2d"
+        },
+        {
+          "seq": 3025,
+          "kind": "wait",
+          "oracle": "checkpoint-3025.png",
+          "remake": "remake-0117-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ebc2eacf1e380f089088f3de5ab0a0d9dd499b4fc59351d4a1fd071148b05f26",
+          "remake_sha256": "7d3324929e5427f9827242530f99e5174e21ef1ea7cd000053d844f5aa21392d"
+        },
+        {
+          "seq": 3031,
+          "kind": "select",
+          "oracle": "checkpoint-3031.png",
+          "remake": "remake-0118-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2c2c617ee104123516ff2b0190c8061620dcbdf6bb52d1a1b251f6c92a01c41b",
+          "remake_sha256": "625d3a83707282ce137fd7102b88b3a3a347262f9276d021ff4feff6fb4e5bdb"
+        },
+        {
+          "seq": 3187,
+          "kind": "stay",
+          "oracle": "checkpoint-3187.png",
+          "remake": "remake-0119-p1.png",
+          "phases": 16,
+          "diff_pixels": 85,
+          "box": [
+            77,
+            47,
+            96,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "bda1adcbb63231aae5469f290c871fc73d5c8e1c66fc5bfd9f2752f63cef96c8",
+          "remake_sha256": "0e24139b0b0d574c1b9824b2741f9efeeb939a651c93576e76d615724cb319c5"
+        },
+        {
+          "seq": 3193,
+          "kind": "wait",
+          "oracle": "checkpoint-3193.png",
+          "remake": "remake-0120-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6707ffe8537f75782ee77ef9bb090c335fc56986231cb5bc8d52bf928e181dce",
+          "remake_sha256": "09af8b78cf39cf51ad9ef534f8eed64fb5c1ce81f2d278490b95f0a7880352b7"
+        },
+        {
+          "seq": 3199,
+          "kind": "select",
+          "oracle": "checkpoint-3199.png",
+          "remake": "remake-0121-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "00cfaf9fd01a17a767ee94bae6449bebb6df125a0e1475058704ac57182f16be",
+          "remake_sha256": "5ee3125b0cc4022a7aad5cfd867a1ed31b404aea733ee62366156efc6d2d6c1b"
+        },
+        {
+          "seq": 3319,
+          "kind": "stay",
+          "oracle": "checkpoint-3319.png",
+          "remake": "remake-0122-p1.png",
+          "phases": 16,
+          "diff_pixels": 61,
+          "box": [
+            103,
+            47,
+            120,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "3171280f90c3569dc317af316a65e91dd23c38827084bbc308f76fab68251956",
+          "remake_sha256": "ecbc72667068104de8d5001400364062071ba3836fb4e3aa78cde0bf86985b0d"
+        },
+        {
+          "seq": 3325,
+          "kind": "wait",
+          "oracle": "checkpoint-3325.png",
+          "remake": "remake-0123-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "388396c3e8e2415866f67c23666e944392c4e648ab6f02f397c17a912b93a636",
+          "remake_sha256": "225410c9342625a38db02e22617b773a84ab4d946d8727d5cf7a39bd1080e0bb"
+        },
+        {
+          "seq": 3348,
+          "kind": "select",
+          "oracle": "checkpoint-3348.png",
+          "remake": "remake-0124-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2b9fc5597ce64cf42e4a26861d487c278cd1333a1eac439f8b57c3da1da28975",
+          "remake_sha256": "582c025caccf04df0d33292f207e45be0b5bc7fa7c3d452110ad9bc7769aeed5"
+        },
+        {
+          "seq": 3366,
+          "kind": "move",
+          "oracle": "checkpoint-3366.png",
+          "remake": "remake-0125-p1.png",
+          "phases": 16,
+          "diff_pixels": 192,
+          "box": [
+            268,
+            119,
+            310,
+            143
+          ],
+          "ok": true,
+          "oracle_sha256": "47f6f424bb394e8ef4f25fd70eaf2ea93b95348f0c00e431dbd9dbec7c130d96",
+          "remake_sha256": "f594b85812f971de80550bbb971555ca52a925f08f76c3f37105724f6373d98d"
+        },
+        {
+          "seq": 3372,
+          "kind": "wait",
+          "oracle": "checkpoint-3372.png",
+          "remake": "remake-0126-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d5330afc947b0654103dcc59026ea140da9d9b67d057fb69182c6aa0010f7363",
+          "remake_sha256": "4fedb4183b81882b70dcab0c7384a8a12086cda761d5bcbbfb162edde952d391"
+        },
+        {
+          "seq": 3383,
+          "kind": "select",
+          "oracle": "checkpoint-3383.png",
+          "remake": "remake-0127-p1.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e02538b361d2815afe49f6b07a6e45ac46ef25f9f8238838000a93d8c81c65a2",
+          "remake_sha256": "c4b3022644f4510c70b733a8c04b333ca8c65e6dca98dbc12ca538366db5e8b8"
+        },
+        {
+          "seq": 3400,
+          "kind": "move",
+          "oracle": "checkpoint-3400.png",
+          "remake": "remake-0128-p1.png",
+          "phases": 16,
+          "diff_pixels": 180,
+          "box": [
+            270,
+            23,
+            310,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "3678a6e25521244c135a237207c8f419060a271cd8509ec94d81314194bc1e6b",
+          "remake_sha256": "3cbe0678547f810b2cdd93f2da6c55ce8f513a9540192125a3363865429c17f0"
+        },
+        {
+          "seq": 3406,
+          "kind": "wait",
+          "oracle": "checkpoint-3406.png",
+          "remake": "remake-0129-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "22a4b58a1b9a0e286fe20861b45c823b5a0dee883ffad7246c489d6c90b8c0cd",
+          "remake_sha256": "4867898c0ed2470bc29407ae962c18019056f9763cf69112dcce9fab4bc66e7f"
+        },
+        {
+          "seq": 3424,
+          "kind": "select",
+          "oracle": "checkpoint-3424.png",
+          "remake": "remake-0130-p22.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "bbb8bedb866ae126f012816cbbcf47dae50eef129d3d24ef47402a62e7b3332a",
+          "remake_sha256": "f5a30a0d1c902ab867ca74639b4c91f716c4fa5ca4765c9d6edbe02867a91adc"
+        },
+        {
+          "seq": 3427,
+          "kind": "move",
+          "oracle": "checkpoint-3427.png",
+          "remake": "remake-0131-p0.png",
+          "phases": 16,
+          "diff_pixels": 91,
+          "box": [
+            31,
+            46,
+            50,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "9289ad80a71d70e4f36becb8ecc2032edbcdab3efe34f4d8bddfc04d78c64c31",
+          "remake_sha256": "a066f3ed7d69a2771dbd404730b4d1fc71458ee31f4ea044fc2961275d1f53c0"
+        },
+        {
+          "seq": 3433,
+          "kind": "wait",
+          "oracle": "checkpoint-3433.png",
+          "remake": "remake-0132-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0b008ac634b893048da0ab01455d8df4bbfb10666f1596f466d61642e25a7022",
+          "remake_sha256": "e6c1305c488ec35bc84d04da4f62c2c2f0c30e47e68cc492f66c76e33875fd12"
+        },
+        {
+          "seq": 3447,
+          "kind": "select",
+          "oracle": "checkpoint-3447.png",
+          "remake": "remake-0133-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "fc47572469e329a66afb4c5427b98e9ed0ac8f10a84fc200105b3c198172389a",
+          "remake_sha256": "3a491a2a164e733b4c3b619e18ffcb36147421b11342984775329a8e4955e4d3"
+        },
+        {
+          "seq": 3466,
+          "kind": "move",
+          "oracle": "checkpoint-3466.png",
+          "remake": "remake-0134-p1.png",
+          "phases": 16,
+          "diff_pixels": 97,
+          "box": [
+            246,
+            71,
+            265,
+            75
+          ],
+          "ok": true,
+          "oracle_sha256": "aea10d6fc5e197591adfb1281032e89a4d6ed4e18e67eb6dd139572b153cb169",
+          "remake_sha256": "e5f75bf497eb1fb2dea6626ac3123c2058b2c20c5a25e7a9b40dc238c2d1929d"
+        },
+        {
+          "seq": 3472,
+          "kind": "wait",
+          "oracle": "checkpoint-3472.png",
+          "remake": "remake-0135-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3577dc00a0364c3ece82636950848cf90f5b29aea2955dea4388f8f41cfae32b",
+          "remake_sha256": "b4e238dcf0a4ec7e1fdd2463dd2184110cbb98bf64d1cc6a04191e0762782ab1"
+        },
+        {
+          "seq": 3492,
+          "kind": "select",
+          "oracle": "checkpoint-3492.png",
+          "remake": "remake-0136-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f74f9bdc1019a20115cd71593195904c9b120520f645d2d6917ffb2038248d1a",
+          "remake_sha256": "185815561dcab28e0c2868dcad47374f689b96bc96fdb95a14e52cc5f6cb3009"
+        },
+        {
+          "seq": 3629,
+          "kind": "stay",
+          "oracle": "checkpoint-3629.png",
+          "remake": "remake-0137-p1.png",
+          "phases": 16,
+          "diff_pixels": 165,
+          "box": [
+            78,
+            23,
+            118,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "83c0bae7a57d26551151d7e4f407f1868016634d13754d076c34664c7fe5d399",
+          "remake_sha256": "cc0a54efca44660de4cffa51c6c7850b67310070f1f1e29339a6596a60899ca3"
+        },
+        {
+          "seq": 3635,
+          "kind": "wait",
+          "oracle": "checkpoint-3635.png",
+          "remake": "remake-0138-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "715cf641b8b39abb9770889ff1b2d696d860a433a73ab986b2644b7148752fdb",
+          "remake_sha256": "594691829213c343dc99b480222c8a5ed5fd618e2b18eceeaf1ecd27cab2f3ee"
+        },
+        {
+          "seq": 3642,
+          "kind": "select",
+          "oracle": "checkpoint-3642.png",
+          "remake": "remake-0139-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "32876d31bac85938fd2c3dbabd0c0ba0bffa852f4a606d4799746af27de99163",
+          "remake_sha256": "563552aaccdc8ca0bbcf03af500987fd4a3ee2431938cfc911ab275003cfcd5d"
+        },
+        {
+          "seq": 3777,
+          "kind": "stay",
+          "oracle": "checkpoint-3777.png",
+          "remake": "remake-0140-p0.png",
+          "phases": 16,
+          "diff_pixels": 88,
+          "box": [
+            103,
+            46,
+            120,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "9375f7f19d5b53fd8b4dd4d31f209b5f7e5883b0f6c2c059e74c682201141d78",
+          "remake_sha256": "2a4c4a0ddf016ef5a3b92f35e80b08d0f00f9cc3fd661ecb539cbd86e527643c"
+        },
+        {
+          "seq": 3783,
+          "kind": "wait",
+          "oracle": "checkpoint-3783.png",
+          "remake": "remake-0141-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a08e99bac49b8d769da881b0bdbb20d37ac4e2c78d837c2acf7d335238705470",
+          "remake_sha256": "3e940d57c2a1ca22926cb93d1792abfdfa2b9022a244596ab75fdef5815b9239"
+        },
+        {
+          "seq": 3792,
+          "kind": "select",
+          "oracle": "checkpoint-3792.png",
+          "remake": "remake-0142-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "8dab8ea679a4775e5856f9f92ffd0cc836ea46f7b504d1616bf5ef6ab700fe6a",
+          "remake_sha256": "01ca19958ba4eeb05726d7a8d193a11d7de5b03c53e6fe978a6aed81d1ee3b1a"
+        },
+        {
+          "seq": 3795,
+          "kind": "move",
+          "oracle": "checkpoint-3795.png",
+          "remake": "remake-0143-p1.png",
+          "phases": 16,
+          "diff_pixels": 88,
+          "box": [
+            101,
+            95,
+            122,
+            99
+          ],
+          "ok": true,
+          "oracle_sha256": "02814a4ffdec85de02611400059e3b660b7c7ba65b9a34e0b9ed4fd8f2e4c8f8",
+          "remake_sha256": "0ec51589e64ddfb1605f0b1117b80f2af8b786a484b147df13bd63697879c215"
+        },
+        {
+          "seq": 3801,
+          "kind": "wait",
+          "oracle": "checkpoint-3801.png",
+          "remake": "remake-0144-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "618b301c062cc9b2e7fcf5369db7e33efbf3948006f0dbd14d938bf19c2a90fb",
+          "remake_sha256": "2f489ad32864c453eaf6588b023486cb1b81b0ac991d5fc96676e690e95461b4"
+        },
+        {
+          "seq": 3822,
+          "kind": "select",
+          "oracle": "checkpoint-3822.png",
+          "remake": "remake-0145-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0eded98ff3ecb1132bd145ab041d8e6d75437bf4ab719cedf409a6ed20b9c48c",
+          "remake_sha256": "81585627c302ecc094859970c3e3e01d30e7d9ffe75d195d2d83c0d950a4ce0e"
+        },
+        {
+          "seq": 3963,
+          "kind": "stay",
+          "oracle": "checkpoint-3963.png",
+          "remake": "remake-0146-p1.png",
+          "phases": 16,
+          "diff_pixels": 227,
+          "box": [
+            5,
+            23,
+            47,
+            48
+          ],
+          "ok": true,
+          "oracle_sha256": "a7d3ed06142102d97014c0577604fa2f607a3c9fba8bf0bc32f417f1ee531de8",
+          "remake_sha256": "4bed92dc8ca8bda8f7621c46be311de0e4e76a52de1b205a0a2adf9553632c3e"
+        },
+        {
+          "seq": 3969,
+          "kind": "wait",
+          "oracle": "checkpoint-3969.png",
+          "remake": "remake-0147-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d10f59ca5d9130ef50601d26fb0901cc91eaab1e7ea01b299280a3ccfa8080bc",
+          "remake_sha256": "459deccfec716380c5ebd539e7cea714d381662cae8bfee9bf666ffc9a07222c"
+        },
+        {
+          "seq": 3996,
+          "kind": "select",
+          "oracle": "checkpoint-3996.png",
+          "remake": "remake-0148-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "5591cfd7869b89dd60814293414db09f6f84eec3806c08102f05d8866385fabf",
+          "remake_sha256": "668b06ffd434e3c55090f283818f0184af15847f7c3f8704626f7f66b0a1c314"
+        },
+        {
+          "seq": 4137,
+          "kind": "stay",
+          "oracle": "checkpoint-4137.png",
+          "remake": "remake-0149-p1.png",
+          "phases": 16,
+          "diff_pixels": 157,
+          "box": [
+            247,
+            47,
+            286,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "2d4c1b58830741bcc26f3ce60ade7f954b49697a310bfd7ef9dd8d1df378e6a1",
+          "remake_sha256": "5cc351772bc392929f652c79c67c2f0ae0fd03ee623e8b136e7ad6c1ff703c67"
+        },
+        {
+          "seq": 4143,
+          "kind": "wait",
+          "oracle": "checkpoint-4143.png",
+          "remake": "remake-0150-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "fbf2b2cd12d5977fe3765ba1c3ca35bf753411536e712ce7642a14e53b035f73",
+          "remake_sha256": "da384e8234152e0b22641e688124a0d96d8c45ed0c4683d058f4014a809c4d18"
+        },
+        {
+          "seq": 4180,
+          "kind": "select",
+          "oracle": "checkpoint-4180.png",
+          "remake": "remake-0152-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c4ad6678659bfb149a3b744b619e0c864c70ca02ddbc37edded0a4057f913d31",
+          "remake_sha256": "e9c16d12194487956824f27fa1bb736357f4ed71335ee8b41188562878e1ce52"
+        },
+        {
+          "seq": 4181,
+          "kind": "stay",
+          "oracle": "checkpoint-4181.png",
+          "remake": "remake-0153-p1.png",
+          "phases": 16,
+          "diff_pixels": 235,
+          "box": [
+            5,
+            47,
+            48,
+            72
+          ],
+          "ok": true,
+          "oracle_sha256": "1ecac29464dd0e935c27fb60e05952d22c0f7a7534225e1ec2e2a34072e75c90",
+          "remake_sha256": "5200483c1a03e9440f937fc6da3ebdf8618686a69c3e73be84fd27befb7851be"
+        },
+        {
+          "seq": 4202,
+          "kind": "wait",
+          "oracle": "checkpoint-4202.png",
+          "remake": "remake-0154-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "fb2563187f4d27ef72da772014e5fc90fa929de8226fc0fcd50b624640e717da",
+          "remake_sha256": "0ad2ec5e22eb915ffdf3e425dfdfc64293090b0c30e7a898f1b8e8faf77c3f6c"
+        },
+        {
+          "seq": 4213,
+          "kind": "select",
+          "oracle": "checkpoint-4213.png",
+          "remake": "remake-0155-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "aa70c9efb53d37c0a0408d4641fd43e3761b19d15a20bfd3f467af69b52df70c",
+          "remake_sha256": "0379e458a078dfb5af213d83065f0e641e09f0b3fec0027b2cc20b0d1f40d42f"
+        },
+        {
+          "seq": 4214,
+          "kind": "stay",
+          "oracle": "checkpoint-4214.png",
+          "remake": "remake-0156-p2.png",
+          "phases": 16,
+          "diff_pixels": 424,
+          "box": [
+            149,
+            57,
+            190,
+            95
+          ],
+          "ok": true,
+          "oracle_sha256": "fba085766b2e461c741bb8c70eb2039ec8ee214881f708f75037bae3d503eab5",
+          "remake_sha256": "d85845e684f7d923828c4812c3aa2547be7f8c1ea46db967d2f28837063070b2"
+        },
+        {
+          "seq": 4235,
+          "kind": "wait",
+          "oracle": "checkpoint-4235.png",
+          "remake": "remake-0157-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ce40409b976da3ba974b67e0591104d10863d139d4c6f7e43de83aeaeafa24b8",
+          "remake_sha256": "bc7ee256d78a8b2108c7d7841bf8f68292e26abb2ba79bb24e4fef432d5deb45"
+        },
+        {
+          "seq": 4247,
+          "kind": "select",
+          "oracle": "checkpoint-4247.png",
+          "remake": "remake-0158-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "415fa0f0d27c80385a736faf5d4a3d632db02a4275dc5d91647cae7a9237333c",
+          "remake_sha256": "7d6d7b0b54394e2bd3868a9c9708325ec5d675d711efadbda896271084a06fb8"
+        },
+        {
+          "seq": 4325,
+          "kind": "move",
+          "oracle": "checkpoint-4325.png",
+          "remake": "remake-0159-p2.png",
+          "phases": 16,
+          "diff_pixels": 109,
+          "box": [
+            125,
+            46,
+            144,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "70b0fe80a2db86ec7e74d499c982d8894a02a53da06c701bc44f434c03f9f0a9",
+          "remake_sha256": "e01bb0bc7719358ab988b8f59e759d9b1032234edaf299309f229fc97a4bbc1f"
+        },
+        {
+          "seq": 4327,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-4327.png",
+          "remake": "remake-0160-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "aa7a43d42a769ef91438c94c8852bc09242dba5ccef40a90e0aefdf2b69a2a07",
+          "remake_sha256": "fec88e0606a0d053ead0e6e79ac699698bbb550373016eea554a0d2c28f4214d"
+        },
+        {
+          "seq": 4342,
+          "kind": "attack_result",
+          "oracle": "checkpoint-4342.png",
+          "remake": "remake-0161-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ae5786e2ddc33a7eb8e1817104e92beecbea222987c4b5613dc464cc99d82ddd",
+          "remake_sha256": "92d7119be280a71330ae0039fa2ec0bb9afd5af97883166f938025dc6cc71f5a"
+        },
+        {
+          "seq": 4364,
+          "kind": "select",
+          "oracle": "checkpoint-4364.png",
+          "remake": "remake-0162-p50.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eb2607e96d8edefb86bb112e72d2e9a781af23ba8b3a895e46dd806e1dc2cb4c",
+          "remake_sha256": "e30b3cfd504155f88c6793f0dfc76e9507e046cce1687c8330b30b57a9526c4a"
+        },
+        {
+          "seq": 4443,
+          "kind": "move",
+          "oracle": "checkpoint-4443.png",
+          "remake": "remake-0163-p1.png",
+          "phases": 16,
+          "diff_pixels": 180,
+          "box": [
+            246,
+            47,
+            286,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "b27f629214d88d547fd09ad532a7721d3a33ff9b5484a71aca4f24c7ff90d363",
+          "remake_sha256": "fe6f39ad15b19df045a3beafab9149fc8c31148374ddecaeaeddd0e2bc9c8374"
+        },
+        {
+          "seq": 4464,
+          "kind": "wait",
+          "oracle": "checkpoint-4464.png",
+          "remake": "remake-0164-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "7a1fe7ef13a27d2d10781756e7256e3f8f6e22bbeb906599f6f71d986d3eedfe",
+          "remake_sha256": "773e9f3f804b317d3f639359098930ec260be6c20e36a6d280353e968cfd32f2"
+        },
+        {
+          "seq": 4491,
+          "kind": "select",
+          "oracle": "checkpoint-4491.png",
+          "remake": "remake-0165-p14.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "549180282bd11b9f74c42504bd58357321345b04784df18ae164657ecad24b75",
+          "remake_sha256": "dbcd03ca3ce39b13028c878b322d779293a007c39a5a9b7c90d061c333c90eb9"
+        },
+        {
+          "seq": 4634,
+          "kind": "move",
+          "oracle": "checkpoint-4634.png",
+          "remake": "remake-0166-p2.png",
+          "phases": 16,
+          "diff_pixels": 172,
+          "box": [
+            79,
+            46,
+            118,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "9fb63613794c4397d69e2acb3e140ee11f27a688811df598fd3f06579a5a7584",
+          "remake_sha256": "8609b3710b275547c32b92b4e0433ab9c0d1acdbfdd0f3ee497785c363ef2d18"
+        },
+        {
+          "seq": 4640,
+          "kind": "wait",
+          "oracle": "checkpoint-4640.png",
+          "remake": "remake-0167-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "714c9fc6c4da22a48215de96132b57a8b30fcf8ca06f8a3c4ca8590459f19d0d",
+          "remake_sha256": "ce846a1828e29480bb23def253f9a40afc598d6cb064d9e7cb3bf6d89457db4c"
+        },
+        {
+          "seq": 4666,
+          "kind": "select",
+          "oracle": "checkpoint-4666.png",
+          "remake": "remake-0168-p22.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "78168a6a8d636f2104b68a7c22ee934c2d169b7ec5eaaf3f777ad6002b7da2dd",
+          "remake_sha256": "1bc855a81f9caaa0a21321c11a2e104743c5e4d972c72c86512cfb6a7e802da5"
+        },
+        {
+          "seq": 4685,
+          "kind": "move",
+          "oracle": "checkpoint-4685.png",
+          "remake": "remake-0169-p1.png",
+          "phases": 16,
+          "diff_pixels": 178,
+          "box": [
+            13,
+            106,
+            290,
+            178
+          ],
+          "ok": true,
+          "oracle_sha256": "c84b41ac96d9557df80684cbe0176893afed8342555a42221da8610620c96813",
+          "remake_sha256": "2318fd5e60a47c41f80fddd4038f424bb73a3c9b454d5def1c2c9d1477f86424"
+        },
+        {
+          "seq": 4687,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-4687.png",
+          "remake": "remake-0170-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "743a22ca8d3bbddd36deb310fce62dc1702c02703b8fa0695007304c7d8af503",
+          "remake_sha256": "6b23c4ec13bdf565c5d97191f006103fa7abc0e769ceffee5d7f86587fef89dd"
+        },
+        {
+          "seq": 4702,
+          "kind": "attack_result",
+          "oracle": "checkpoint-4702.png",
+          "remake": "remake-0171-p0.png",
+          "phases": 32,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ce4f8590500e8c5b5cc443262a8b78af9c77baeee7f0956d84dac091c5391198",
+          "remake_sha256": "f5181d4881147563659144991a440e807c1d4ad66ad36481c96189ff828052b5"
+        },
+        {
+          "seq": 4716,
+          "kind": "select",
+          "oracle": "checkpoint-4716.png",
+          "remake": "remake-0172-p50.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ec88cf03dd57594407f3acf71fd2750c95cc6d3f13e5c913f8be7ab808d2c29c",
+          "remake_sha256": "f7dcdba1bc84a5749c5bfadc75a029144a18991f9a6aa4de1749bd5390d0d609"
+        },
+        {
+          "seq": 4720,
+          "kind": "move",
+          "oracle": "checkpoint-4720.png",
+          "remake": "remake-0173-p2.png",
+          "phases": 16,
+          "diff_pixels": 119,
+          "box": [
+            270,
+            22,
+            289,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "c534c9b99972766e2602b937d036cbf0912d61b991f3bddd4135da2b4ad75f82",
+          "remake_sha256": "4534ffb4ec074cf2f5a80c60e7badec8d5181b410973fbe299e58dd412cfc664"
+        },
+        {
+          "seq": 4726,
+          "kind": "wait",
+          "oracle": "checkpoint-4726.png",
+          "remake": "remake-0174-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "4d96eff33b4ed9130965e3f4091bfa24a62bec8660dcd9ecc3952ebc17551dc9",
+          "remake_sha256": "646f28f96757571204539a58ea4f37c0dfcee878e761655de8e692f4707a26ef"
+        },
+        {
+          "seq": 4745,
+          "kind": "select",
+          "oracle": "checkpoint-4745.png",
+          "remake": "remake-0175-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "1f80aa24895d112696813798b863d2c269702e21e46a568706fab806a6f334f0",
+          "remake_sha256": "177f5d91a6a4ecce029dc1414075677f6edf33c31fb7cbd05f3139bbf739c657"
+        },
+        {
+          "seq": 4748,
+          "kind": "move",
+          "oracle": "checkpoint-4748.png",
+          "remake": "remake-0176-p0.png",
+          "phases": 16,
+          "diff_pixels": 110,
+          "box": [
+            29,
+            22,
+            50,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "348eb4d42452d6f7882f9d3b4768aa4bbd2b60145ae7d7cfcf48d0097827e425",
+          "remake_sha256": "69f754e1da6e28e4e0b89b833c1ecf9e4f3d933683bec35e8603359a9c5e5777"
+        },
+        {
+          "seq": 4754,
+          "kind": "wait",
+          "oracle": "checkpoint-4754.png",
+          "remake": "remake-0177-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e15bc79791cbc33dc71da8cb1032e3406f3b61ae243395af3b98ad7709d483f8",
+          "remake_sha256": "7c1908d25985c473c0bd5d7f8cea9625fa52c29b270d6731c11802a045985227"
+        },
+        {
+          "seq": 4763,
+          "kind": "select",
+          "oracle": "checkpoint-4763.png",
+          "remake": "remake-0178-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "32e842d5104dd21f2e0e3a840f8f7babfed36ceb45d034814df62fb622eb322e",
+          "remake_sha256": "356b573c73e1d5c743db8e58a0bf642a53a23df850f6431ce52dcba2f83a92a5"
+        },
+        {
+          "seq": 4896,
+          "kind": "stay",
+          "oracle": "checkpoint-4896.png",
+          "remake": "remake-0179-p0.png",
+          "phases": 16,
+          "diff_pixels": 185,
+          "box": [
+            126,
+            22,
+            166,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "3f150875cd1738e9e74e6853e1602622233d87cfee70ac3c0cb4c482e7bc290a",
+          "remake_sha256": "a11bb12839b03c7b516cac01cd12b8364139c749874bc2a097ebc2df671c15f4"
+        },
+        {
+          "seq": 4902,
+          "kind": "wait",
+          "oracle": "checkpoint-4902.png",
+          "remake": "remake-0180-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "90fcc9db0ea989198059667ff1b1b58df3104322b70c800d6e982f9cd0129aa2",
+          "remake_sha256": "562b98002b0bbe6ceeb9ff8b938cf46fbf8ed196e97c6855ecf4ee4db0ffc7ba"
+        },
+        {
+          "seq": 4909,
+          "kind": "select",
+          "oracle": "checkpoint-4909.png",
+          "remake": "remake-0181-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "32b0f15b3680e238890b1ec7eac03952867def5d5929650dddd09e68aa2149a3",
+          "remake_sha256": "a84a9ffa41a0a984a06e5372d9c26a9e73c17dd4ffc89b3770f954b4926fa17e"
+        },
+        {
+          "seq": 5042,
+          "kind": "stay",
+          "oracle": "checkpoint-5042.png",
+          "remake": "remake-0182-p2.png",
+          "phases": 16,
+          "diff_pixels": 88,
+          "box": [
+            151,
+            46,
+            168,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "63d8e031e63e1386bc468cb698ee249305004ac3ebaccde24fff915ef151403f",
+          "remake_sha256": "fc1c12ef7ff43efd2399e8c9b89cb4800a4ea68249167af40d06cf749c816205"
+        },
+        {
+          "seq": 5048,
+          "kind": "wait",
+          "oracle": "checkpoint-5048.png",
+          "remake": "remake-0183-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "133e40ba227c499b4fe6126e367e07d36aaddd706baa78c1a5e05b3593ba4cd7",
+          "remake_sha256": "7451fef2c2e94fa5aa62a949949dc23184d8a19b429bf1f35f51b1635bc5f4e6"
+        },
+        {
+          "seq": 5061,
+          "kind": "select",
+          "oracle": "checkpoint-5061.png",
+          "remake": "remake-0184-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ef60ab923853648795c8ba0ca41998d4497de3426777e75d62f2f662da6c8b36",
+          "remake_sha256": "5274de276843ab5c056a8c1769efe3c412184114dfd9c549428819fb4131ffe3"
+        },
+        {
+          "seq": 5202,
+          "kind": "stay",
+          "oracle": "checkpoint-5202.png",
+          "remake": "remake-0185-p1.png",
+          "phases": 16,
+          "diff_pixels": 157,
+          "box": [
+            247,
+            47,
+            286,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "7120abed217884b2bc894675fcb37cbeac065b2c0dbf467edc9f60faf9236436",
+          "remake_sha256": "1ec6ae3320b90a3beed4fcdfd2bcf8ce7bd14c465957c6d0df5cf4b52781f599"
+        },
+        {
+          "seq": 5208,
+          "kind": "wait",
+          "oracle": "checkpoint-5208.png",
+          "remake": "remake-0186-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3ea11b8c5771df8dcd161d80f6138169f3e957959aa642dd2aae50bc1033ab5c",
+          "remake_sha256": "b33ef5ef8f236a3ba1e95cbaa17595b96d1ec87ac9b29312812e0413238b6a49"
+        },
+        {
+          "seq": 5235,
+          "kind": "select",
+          "oracle": "checkpoint-5235.png",
+          "remake": "remake-0187-p14.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e495c9050e85c0d439f125b9d8985d5f9e594a5962fe8652e36f58019fccc8b4",
+          "remake_sha256": "e815cbacabdb31205256233d65c88ade241918ec24ad6b925bca1b9fbc36b532"
+        },
+        {
+          "seq": 5376,
+          "kind": "stay",
+          "oracle": "checkpoint-5376.png",
+          "remake": "remake-0188-p1.png",
+          "phases": 16,
+          "diff_pixels": 227,
+          "box": [
+            5,
+            23,
+            47,
+            48
+          ],
+          "ok": true,
+          "oracle_sha256": "102eeb2b62290c42650648bfe5cc98716f0e46f4d062fb06fb0e1dd9c75e49c5",
+          "remake_sha256": "8e98271a5f844fcb4619d740724715120d41a3453d644c8cfecb56eace90cb2b"
+        },
+        {
+          "seq": 5382,
+          "kind": "wait",
+          "oracle": "checkpoint-5382.png",
+          "remake": "remake-0189-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "87e3db9d33cc6f3e668ff11646315a9aefc73113a240517feef103e1b056a052",
+          "remake_sha256": "22cb2f98c99f8df7a5bf392ebb4e86b13e399431070f019055af8501384d1add"
+        },
+        {
+          "seq": 5435,
+          "kind": "select",
+          "oracle": "checkpoint-5435.png",
+          "remake": "remake-0191-p4.png",
+          "phases": 88,
+          "diff_pixels": 20,
+          "box": [
+            13,
+            166,
+            33,
+            178
+          ],
+          "ok": true,
+          "oracle_sha256": "3021f7cd7bf19be7c73eccb6e2c9940c245032bd815a6e9859f07161f32c5d8c",
+          "remake_sha256": "cc2dc8c80dbf68676fe294ace788f2a0d154427b57ae95c244947a4c7637dcb8"
+        },
+        {
+          "seq": 5436,
+          "kind": "stay",
+          "oracle": "checkpoint-5436.png",
+          "remake": "remake-0192-p2.png",
+          "phases": 16,
+          "diff_pixels": 183,
+          "box": [
+            13,
+            130,
+            290,
+            178
+          ],
+          "ok": true,
+          "oracle_sha256": "fb85e6417da3abb2855d9b8864678e9ab53e87f7f9829cdd1623fa7a07eeb1cc",
+          "remake_sha256": "b5de0f898ea6b471ef1aa1a515fcf49c2cbad81c1494448c6ccf2fbe5272619f"
+        },
+        {
+          "seq": 5438,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-5438.png",
+          "remake": "remake-0193-p1.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "7c0ac7449a16916410593595a4d23ad1924e89206ae88c1af786594afda2acb4",
+          "remake_sha256": "40f357b81ea525ec229fa4aacb045106dda4ca2a2df0ab5e504b94b82b1f16c6"
+        },
+        {
+          "seq": 5453,
+          "kind": "attack_result",
+          "oracle": "checkpoint-5453.png",
+          "remake": "remake-0194-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b55ca12dfb84b6fd63ca8b7a207236af278526362e7b7b4ee7e4bf28374d45eb",
+          "remake_sha256": "947d4790120ab30d25e4ac0d31e2b7eb1cfc1f89f8997954a57eb09f7939fe75"
+        },
+        {
+          "seq": 5480,
+          "kind": "select",
+          "oracle": "checkpoint-5480.png",
+          "remake": "remake-0195-p14.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "dc746b209bd7601dcb776fbbcdf84afad32a80f734dca3cbc424c5a1f91bc299",
+          "remake_sha256": "7ebdf3c72aa5ae8250e570ef8dbfecbf3d178bc299dc82285f3155576ad609f1"
+        },
+        {
+          "seq": 5483,
+          "kind": "move",
+          "oracle": "checkpoint-5483.png",
+          "remake": "remake-0196-p1.png",
+          "phases": 16,
+          "diff_pixels": 129,
+          "box": [
+            29,
+            58,
+            49,
+            75
+          ],
+          "ok": true,
+          "oracle_sha256": "841064cbaa7caf05d49de9f87c2d95009a1e766e0f3fbdb9383be69b18b73431",
+          "remake_sha256": "c3adfa8d26766d2b5e62b59b4aee35aeba7385380a85e1c98158986c0b1d03e7"
+        },
+        {
+          "seq": 5485,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-5485.png",
+          "remake": "remake-0197-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0ad6c02ac5acaea2b608d65c7cc1cf1843e5a461a681d0279bfe60f7fd242402",
+          "remake_sha256": "7ad271af5cf65aa9ed7f292dd6d76d4df8eb82cdc8310d5829439f71af6c08b3"
+        },
+        {
+          "seq": 5500,
+          "kind": "attack_result",
+          "oracle": "checkpoint-5500.png",
+          "remake": "remake-0198-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6e3dc58b1a6a67b769b3ac42438133577577959698ed6ffc5ec5769f4eb0a0b1",
+          "remake_sha256": "38aea6a7cf05d71da6c25aaf6ae18366adad2eca89fcdcf6fbdfdf00db4c9ffb"
+        },
+        {
+          "seq": 5525,
+          "kind": "select",
+          "oracle": "checkpoint-5525.png",
+          "remake": "remake-0199-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "317de2f727d1d8e1b6359103e6fa0c8447aae9f4ca1389dadf1c076f32d46584",
+          "remake_sha256": "2b6caa43672ff91d32e04c5fa755074606354d6fb089fc84f79f42209a763973"
+        },
+        {
+          "seq": 5621,
+          "kind": "move",
+          "oracle": "checkpoint-5621.png",
+          "remake": "remake-0200-p1.png",
+          "phases": 16,
+          "diff_pixels": 180,
+          "box": [
+            246,
+            23,
+            286,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "0012cd8dda5f7a2ac1e3074444baad12c75d98231df8293126faa5f50fcc7a41",
+          "remake_sha256": "9afb9a24bc02e6c070d4a7abd2f3ebb8c04180137f7cdb0f8b0b081c7f3303e5"
+        },
+        {
+          "seq": 5642,
+          "kind": "wait",
+          "oracle": "checkpoint-5642.png",
+          "remake": "remake-0201-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "27326daec4f7d1e16e593a9045d198cf819daa072f25973f9e1e7fe2cbce7c05",
+          "remake_sha256": "ed46d402462423cd74c4a3ac0f64d3ffe86bba98614612b4c6b8552b78fa1149"
+        },
+        {
+          "seq": 5669,
+          "kind": "select",
+          "oracle": "checkpoint-5669.png",
+          "remake": "remake-0202-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "8bce600f98168a4006c6d2bfd838979727c83355cc5ce9feaa676f718b3dd998",
+          "remake_sha256": "1add27771b2e45fec019f3ab120c9882d0c61a54eacf814b4db4447087f2e235"
+        },
+        {
+          "seq": 5791,
+          "kind": "stay",
+          "oracle": "checkpoint-5791.png",
+          "remake": "remake-0203-p2.png",
+          "phases": 16,
+          "diff_pixels": 255,
+          "box": [
+            29,
+            22,
+            72,
+            48
+          ],
+          "ok": true,
+          "oracle_sha256": "37b63c60453a36350f97c1c78f25917bbd62afbd943d3d1ace9101b4fb5bb8fa",
+          "remake_sha256": "b3641aa3f9c50a9ee30c229e116f34612cf7e1d143ae5af3715f906185698e2a"
+        },
+        {
+          "seq": 5797,
+          "kind": "wait",
+          "oracle": "checkpoint-5797.png",
+          "remake": "remake-0204-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "af554426f8bd15cabe3c7323d94f2e6074c58eef79fdead74f5a42ba62064344",
+          "remake_sha256": "8e0342f73db1b44052e2ae89dfec3f58ba769fb0284a16b3b300a64cf747b58b"
+        },
+        {
+          "seq": 5822,
+          "kind": "select",
+          "oracle": "checkpoint-5822.png",
+          "remake": "remake-0205-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "688ee2929ca37973d1605437512d6364856531dc4ba6c87235fb00e9e462a93b",
+          "remake_sha256": "9df0f695673374b62a73356352780d957ac6c1f118488d0a0a3ee621a2c1969c"
+        },
+        {
+          "seq": 5942,
+          "kind": "stay",
+          "oracle": "checkpoint-5942.png",
+          "remake": "remake-0206-p2.png",
+          "phases": 16,
+          "diff_pixels": 119,
+          "box": [
+            198,
+            70,
+            217,
+            75
+          ],
+          "ok": true,
+          "oracle_sha256": "4506a1e03da82fd776bcb3330e4a02ef2429098d15eab53bfca394e7412aca8e",
+          "remake_sha256": "7737c02d81364b615fe8897e8746012ddc5cb585ac34c3545232b6ae78db084f"
+        },
+        {
+          "seq": 5948,
+          "kind": "wait",
+          "oracle": "checkpoint-5948.png",
+          "remake": "remake-0207-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "85561164a2ce0cdf03e2599363d3f599f85b7b5833b42f4242c5c5027adac2fc",
+          "remake_sha256": "85561164a2ce0cdf03e2599363d3f599f85b7b5833b42f4242c5c5027adac2fc"
+        },
+        {
+          "seq": 5972,
+          "kind": "select",
+          "oracle": "checkpoint-5972.png",
+          "remake": "remake-0208-p20.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "22ac9d361d1252022119b1724ddea9f21ef5d88e1db6d64375ad2835027087dd",
+          "remake_sha256": "c8eb367febdb5c6bafc72fcef9b394b6f9dc89e94d7b13f80a891adcf82f174e"
+        },
+        {
+          "seq": 6128,
+          "kind": "stay",
+          "oracle": "checkpoint-6128.png",
+          "remake": "remake-0209-p1.png",
+          "phases": 16,
+          "diff_pixels": 61,
+          "box": [
+            79,
+            23,
+            96,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "500c70692297018eede3898393c4f56561aa6da12afebd4a21fb43ba8412db68",
+          "remake_sha256": "51908f4ee444068a878a4e18c26283fcbfccdeb28ce0614bd3dbb3e17962c076"
+        },
+        {
+          "seq": 6134,
+          "kind": "wait",
+          "oracle": "checkpoint-6134.png",
+          "remake": "remake-0210-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "49b2144181d14d552ab34cd12ac11bba14054de5945b6d1451e8bb71b782a6b5",
+          "remake_sha256": "a5f234373e4dd967ce3f4e4bc63f87cbfec42ff5c7ce1a80492888d62dc8b152"
+        },
+        {
+          "seq": 6145,
+          "kind": "select",
+          "oracle": "checkpoint-6145.png",
+          "remake": "remake-0211-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "9b2f6c987a8345d0025adaf0d81c95cb796383e5ed63cf20d62a65b4eac56229",
+          "remake_sha256": "85e4c1187185c9bbaca4aec8bd164025dcc6b75d599f4da58302912313a67cb1"
+        },
+        {
+          "seq": 6148,
+          "kind": "move",
+          "oracle": "checkpoint-6148.png",
+          "remake": "remake-0212-p1.png",
+          "phases": 16,
+          "diff_pixels": 164,
+          "box": [
+            152,
+            47,
+            190,
+            71
+          ],
+          "ok": true,
+          "oracle_sha256": "a602b46838ed584a09996cd1582c79ea43c0982dafdbf7a0c26bd3cca9926699",
+          "remake_sha256": "c92b04060d5a1e44664f12c170f78a84ab7317d46eb66450ad9044afed018878"
+        },
+        {
+          "seq": 6154,
+          "kind": "wait",
+          "oracle": "checkpoint-6154.png",
+          "remake": "remake-0213-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "33be4ac2bc7c12d0b681167305ac2b4c6d55de9bdb28785636dfc5b9893058d9",
+          "remake_sha256": "1bf122f96b7efd7a947f23402d095b16b4bb70bb54e3e199f5b5376362c4ccab"
+        },
+        {
+          "seq": 6162,
+          "kind": "select",
+          "oracle": "checkpoint-6162.png",
+          "remake": "remake-0214-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a20da21714d4ecbd6a522e9ac263272082d93ead075e38d991cd8335de882777",
+          "remake_sha256": "e8bc9300197b15c0c3adaf949b0a01a1dd712171ef3368773de7475c94c5a5c2"
+        },
+        {
+          "seq": 6165,
+          "kind": "move",
+          "oracle": "checkpoint-6165.png",
+          "remake": "remake-0215-p1.png",
+          "phases": 16,
+          "diff_pixels": 88,
+          "box": [
+            125,
+            23,
+            146,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "9a37a81c3644a90ff4b2706d1e9b218aed30f6ba152f4ca1394ca519472cc0d8",
+          "remake_sha256": "6b48571f982fa39e0cd45266933a9d18bce5d012260d582365c9cbf2035f7985"
+        },
+        {
+          "seq": 6171,
+          "kind": "wait",
+          "oracle": "checkpoint-6171.png",
+          "remake": "remake-0216-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b337c7ebb7f3c0f64d96c100cc49495c0a89ab8029ab871e232da18f5baaf7f9",
+          "remake_sha256": "9d476ff0f3104fafa6f56df6286d8cb4ec35d1cde32128e94231b50e518292c4"
+        },
+        {
+          "seq": 6190,
+          "kind": "select",
+          "oracle": "checkpoint-6190.png",
+          "remake": "remake-0217-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "384532d68190995e877eadcb257ddd7ab77a2fefff9834c59c4fe6af0c425416",
+          "remake_sha256": "1fbc9961c5d51fcb5626606d9e70e82c51e89e46ae190f3e2c2a395c70afb386"
+        },
+        {
+          "seq": 6331,
+          "kind": "stay",
+          "oracle": "checkpoint-6331.png",
+          "remake": "remake-0218-p2.png",
+          "phases": 16,
+          "diff_pixels": 86,
+          "box": [
+            247,
+            22,
+            265,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "b480e28bf4573bdb5cde310b2bd77ef489dbdf9eb88d70da6d620deb69808bbd",
+          "remake_sha256": "e69a72f5a7a15cb71b5a22bdc746a0d610f440592fe19a435ff40375966941ac"
+        },
+        {
+          "seq": 6337,
+          "kind": "wait",
+          "oracle": "checkpoint-6337.png",
+          "remake": "remake-0219-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2feddc6c86eefb0cef669a82318253d033e756ebefe1e92ed5ba782c993baa4a",
+          "remake_sha256": "303ca6ab5a8da7b9c65b900a6191e70c038eafcf5b547d7fef5265cd7bd9972f"
+        },
+        {
+          "seq": 6352,
+          "kind": "select",
+          "oracle": "checkpoint-6352.png",
+          "remake": "remake-0220-p28.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "8946f431373394ad6e32dd11cb44acf4e0818e8a55f17d913dd3800f729ca4f1",
+          "remake_sha256": "761162558880682dcdec40cc1c428c1f91fd313e82e27960f3471e97100f4910"
+        },
+        {
+          "seq": 6487,
+          "kind": "stay",
+          "oracle": "checkpoint-6487.png",
+          "remake": "remake-0221-p1.png",
+          "phases": 16,
+          "diff_pixels": 74,
+          "box": [
+            102,
+            23,
+            121,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "1472aa5354627a591000673a638aaa5982b862aa552e036f79d5f9366a459deb",
+          "remake_sha256": "56aa09eb22c8034a4da583c7da8e1f42404d7dc64802c2dd7d34a467630bebf8"
+        },
+        {
+          "seq": 6493,
+          "kind": "wait",
+          "oracle": "checkpoint-6493.png",
+          "remake": "remake-0222-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "e4167a447e9c73c14870fcd75a361a8aaab88fc6a407c1829072e627148d8bd6",
+          "remake_sha256": "b95433e06ba5d19ef2fd8edd17799c8182b3a92dc9293322ae6643f642514b31"
+        },
+        {
+          "seq": 6500,
+          "kind": "select",
+          "oracle": "checkpoint-6500.png",
+          "remake": "remake-0223-p41.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "b90de5f30771e24deb58994985ebf9ac0ebcc72b264e4ff136bd9debb94de524",
+          "remake_sha256": "33865465d1f7491d49c98df7aea297847df75de1e6ed6209bbf1a90f1e54c319"
+        },
+        {
+          "seq": 6633,
+          "kind": "stay",
+          "oracle": "checkpoint-6633.png",
+          "remake": "remake-0224-p1.png",
+          "phases": 16,
+          "diff_pixels": 70,
+          "box": [
+            127,
+            47,
+            144,
+            51
+          ],
+          "ok": true,
+          "oracle_sha256": "423ad67c8051ad4bcfd4639f62b27dc004f23c448e63c09bf24c1d0f1fb0384d",
+          "remake_sha256": "677a37a1354b918272dd56f115503d281b46e1586c685951fa24ac8b266e1308"
+        },
+        {
+          "seq": 6639,
+          "kind": "wait",
+          "oracle": "checkpoint-6639.png",
+          "remake": "remake-0225-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d9d4d30bfb44bf3d2624c7f224fde21e982bf8f02e875abc678b92d9062b5194",
+          "remake_sha256": "aeb687f2acc9379b1ac3ea424363e8c14de3349f609e92a11e7408e01eab09c8"
+        },
+        {
+          "seq": 6658,
+          "kind": "select",
+          "oracle": "checkpoint-6658.png",
+          "remake": "remake-0226-p4.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "4324f3740e5ef470bb16614748737e79546728ed592db3ef989f2d5942761fd9",
+          "remake_sha256": "ee1732291c1c084ea9d647e4b17018182b39f10b2a11c097a48fbecfe15037ec"
+        },
+        {
+          "seq": 6799,
+          "kind": "stay",
+          "oracle": "checkpoint-6799.png",
+          "remake": "remake-0227-p1.png",
+          "phases": 16,
+          "diff_pixels": 53,
+          "box": [
+            32,
+            23,
+            47,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "6e56f422e11e7417e30871286c70edd415ef840aba7a7e56b3255ff561ec7ccb",
+          "remake_sha256": "27453fd48612f6222147020c6825ed29da57b44db297af6e3afbc643f2611589"
+        },
+        {
+          "seq": 6805,
+          "kind": "wait",
+          "oracle": "checkpoint-6805.png",
+          "remake": "remake-0228-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eb5df33585c93595d228e86257a959026245558bddb65a1bae45fd64bb921450",
+          "remake_sha256": "40decf068be8f26a45fd0a407a73c420af08e564c70155f849e72091a932de02"
+        },
+        {
+          "seq": 6828,
+          "kind": "mark:after_round6",
+          "oracle": "checkpoint-6828.png",
+          "remake": "remake-0230-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d6d889cf5bf58904110aabf4858c60df8ec72ef6ae821e2e14b578af112f3a66",
+          "remake_sha256": "6b6f5c7c29e39d34b830a163a9216d40c3869207747ad177eff0243e6e030756"
+        },
+        {
+          "seq": 6870,
+          "kind": "town_after_battle",
+          "oracle": "checkpoint-6870.png",
+          "remake": "remake-0234-p1.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6b609a1d598d4973aad064457dd315de47ec9d13a56e5063497c9f1786b55e5b",
+          "remake_sha256": "6b609a1d598d4973aad064457dd315de47ec9d13a56e5063497c9f1786b55e5b"
+        },
+        {
+          "seq": 6939,
+          "kind": "shop_sell",
+          "oracle": "checkpoint-6939.png",
+          "remake": "remake-0236-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f3b2e42bbdff015a517d81c0760bee750427065654700a70584cc9cee6706ed9",
+          "remake_sha256": "f3b2e42bbdff015a517d81c0760bee750427065654700a70584cc9cee6706ed9"
+        },
+        {
+          "seq": 7001,
+          "kind": "shop_buy",
+          "oracle": "checkpoint-7001.png",
+          "remake": "remake-0237-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "33a7dd372bf9c64af24c3cc78381bf12c4c42cb7bb39ced93807abe88b5e2699",
+          "remake_sha256": "33a7dd372bf9c64af24c3cc78381bf12c4c42cb7bb39ced93807abe88b5e2699"
+        },
+        {
+          "seq": 7024,
+          "kind": "town_enter",
+          "oracle": "checkpoint-7024.png",
+          "remake": "remake-0239-p0.png",
+          "phases": 16,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f7ceb0f0f9cf2cec1e0569854a2e1a45d225be78d48f6c3e30c19ef59430f1eb",
+          "remake_sha256": "f7ceb0f0f9cf2cec1e0569854a2e1a45d225be78d48f6c3e30c19ef59430f1eb"
+        },
+        {
+          "seq": 7051,
+          "kind": "town_save",
+          "oracle": "checkpoint-7051.png",
+          "remake": "remake-0240-p0.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "9e312f60f634b402af6f5e7b5e1351625ee0a19e5316382459363978a9ab1c64",
+          "remake_sha256": "cdabab5c19e09e29b02a295a1c69b9bd12fa1a82c68124279647d270f63b8b65"
+        },
+        {
+          "seq": 7073,
+          "kind": "secret_shop",
+          "oracle": "checkpoint-7073.png",
+          "remake": "remake-0241-p2.png",
+          "phases": 4,
+          "diff_pixels": 69,
+          "box": [
+            150,
+            48,
+            180,
+            53
+          ],
+          "ok": true,
+          "oracle_sha256": "b7c7ed63840c4c3556f98eba685007e7999937954c7bb767e5d211835b0bcb74",
+          "remake_sha256": "1415113d894f98569993dc5384ef5aa0f0573f02155b90ad2aac4061e91eaddd"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。"
+  ]
+}

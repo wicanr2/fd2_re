@@ -558,8 +558,13 @@ type State struct {
 	// scenario consumer。
 	HasNativeTurnEventControlState bool
 	NativeChestControls            [16]NativeChestControl
-	NativeFieldUnitControls        []NativeFieldUnitControl
-	HasNativeFieldControlState     bool
+	// HasNativeChestControlState 表示 NativeChestControls 的 16 筆是有出處的
+	// FDFIELD 控制列（0x53+3*slot 的 type／value）：從城鎮進戰場時由地圖的
+	// `chests`（tools/parse_field.py 從同一段 bytes 取出）建立，從 CONTINUE
+	// 進來時由存檔的 raw 控制影像建立。
+	HasNativeChestControlState bool
+	NativeFieldUnitControls    []NativeFieldUnitControl
+	HasNativeFieldControlState bool
 	// NativeRuntimeRecords preserves the exact saved current-unit array and
 	// CONTINUE-rebuilt selector slots before a typed Unit projection exists.
 	// Units remains the normalized/gameplay array and is never guessed from
@@ -1196,6 +1201,19 @@ func Load(path string) (*State, error) {
 		st.NativeTileBlitModes[i] = 0xff
 	}
 	st.Treasures = loadTreasures(filepath.Join(filepath.Dir(path), "map.json"), f.W, f.H, f.Chests)
+	// 0x53+3*slot 的寶箱控制列：mode 5 的事件尾段直接讀它（type 0 給物品、
+	// type 1 給金錢、其餘不給）。地圖 JSON 的 chests 就是這段 bytes 的具型別
+	// 版本，所以從城鎮進戰場也有出處，不必等 CONTINUE 的 raw 影像。
+	for _, chest := range f.Chests {
+		if chest.Slot < 0 || chest.Slot >= len(st.NativeChestControls) ||
+			chest.Value < 0 || chest.Value > 0xffff {
+			continue
+		}
+		st.NativeChestControls[chest.Slot] = NativeChestControl{
+			RawType: chest.NativeType, Value: uint16(chest.Value),
+		}
+		st.HasNativeChestControlState = true
+	}
 	return st, nil
 }
 

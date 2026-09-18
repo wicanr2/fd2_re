@@ -4409,3 +4409,22 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 - [ ] 第四～九章依使用者定案未重跑；停留聚焦、道具原地使用與 JOIN 旗標修正下次重跑時要以新收據確認。
 - [ ] 分離素材 `FDOTHER_015` 尚未同步到私人素材庫。
 - [ ] 事件 33／34（Boss 倒下）沒有原版收據。
+
+## 2026-09-18：README 逐章對拍進度（#42）＋第十一章 111 四 gate 全過
+
+- [x] #42：`tools/render_parity_progress.py`（＋8 個單元測試）由台帳與章收據產生逐章對拍表，
+  寫進 `README.md` 與 `docs/REMAKE-STATUS.md` 的產生區塊；`--check` 供提交前核對。數字不再手抄。
+- [x] 第十一章 RE：mode 5 找事件格 `0x15DF3`／`0x12E38`（判準是控制列第 0 個 byte 的 `&0x60==0x20`）、
+  走不到就走 `0x13B05` 共用尾段、事件尾段的獎勵列 `[0x53A55]+0x53+3*id` 與 `0x12263` 的圖塊字 +1（58 同列）。
+- [x] 重製側：mode 5 撿到的獎勵同時寫具型別 `DeathEffect`／`DeathReward`（掉落的消費端）；
+  繪圖端改讀可變地圖緩衝 `State.NativeMapDrawTiles()`，撿走之後那一格換成打開的箱子；
+  `ch11.json` 改成 group 0 開場＋執行期追加（map10 有 14 筆 `group 255` 佔位列）；
+  `battle_ch11` 補 `native_map_view` 與 `native_map_hud_inherited`。
+- [x] 原版側 sample-r2（dosgolem `a9bcd62`，240 動作、7074 個 checkpoint）；r1 在第 7 回合用完
+  1.9e10／2.5e10 預算作廢，改抽樣到第 6 回合、第 7 回合清場（預算 3e10）。
+- [x] 收據 `parity-ch11.json`（remake-r3）`passed`：行為 241 點一致、金額 2000→12000→12037→12027、
+  存檔 sha256 相同、231 個畫面點 157 點 0 px（接上可變緩衝前是 121 點）；台帳第十一章 `passed`；
+  抽樣截圖 `parity-ch11-samples-p1..p5.png`（91 列）。
+- [ ] 第四～十章依使用者定案未重跑；本輪的繪圖端可變緩衝改動下次重跑那些章時要以新收據確認。
+- [ ] HUD 地形描述子仍讀可編輯地圖：游標停在已打開的箱子上要不要換描述子沒有收據。
+- [ ] 玩家自己踏事件格、玩家法術／物品仍沒有驅動端指令。

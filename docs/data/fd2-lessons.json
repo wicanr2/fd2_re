@@ -825,6 +825,38 @@
       "why": "2026-09-17 第十章 r4 seq 3613 after_enemy_phase 游標在 (10,27)，回合開頭聚焦後才到 (16,28)；重播端跳過左十上二，seq 3645 起 26 點各約 4300 px。",
       "date": "2026-09-17",
       "evidence": "remake/cmd/fd2/chapter_parity_replay_test.go replayDirectionKeys"
+    },
+    {
+      "id": "dispatcher-branch-misses-are-fallbacks-not-errors",
+      "area": "重製端",
+      "rule": "分派器某個分支「條件不成立」時多半是跳到另一條共用尾段，不是錯誤。接這種分支前先讀 jne／je 的目標位址：跳到共用收尾或別的 mode 尾段，重製端就要走那條，不能失敗即關閉——失敗即關閉只留給「原版根本沒有這條路徑」的情況。",
+      "why": "2026-09-18 第十一章：mode 5 在事件已觸發（0x13C42）或 0x15DF3 找不到格子（0x13C59）時都跳 0x13B05 走 mode 0 尾段，重製端卻回錯誤，25 個敵人全部卡住；走到一半沒到事件格（0x13C9E 比座標）原版也只是收尾，不是錯誤。",
+      "date": "2026-09-18",
+      "evidence": "remake/internal/battle/native_ai_action_runtime.go mode 5 分支；docs/knowledge-base/58 的 0x13A9F mode 5 列"
+    },
+    {
+      "id": "helper-output-buffer-field-offsets-need-the-writer",
+      "area": "逆向",
+      "rule": "看到 `call helper` 之後讀 `[esp+N]` 的程式，要回去讀 helper 本體怎麼填那個緩衝區，逐欄位對出偏移；不要照「看起來像哪個欄位」去猜。",
+      "why": "2026-09-18：0x15DF3／0x12263 檢查的是 0x12E38 輸出緩衝的 out[4]，也就是地形控制列的第 0 個 byte；重製端當初猜成第 3 個 byte，mode 5 因此永遠找不到事件格，而測試用的合成資料剛好也照同一個猜測寫，兩邊一起錯。",
+      "date": "2026-09-18",
+      "evidence": "remake/internal/battle/native_ai_mode5.go NativeAIMode5EventCell；native_ai_mode5_test.go 的 NativeTerrainControl"
+    },
+    {
+      "id": "mutable-runtime-buffer-is-also-the-drawing-source",
+      "area": "重製端",
+      "rule": "原版就地改寫的執行期緩衝，通常也是繪圖端讀的那一份。把狀態更新接好之後，要回頭確認畫面讀的是同一份緩衝，而不是載入時的可編輯資料——不然狀態對、畫面永遠停在初始值。",
+      "why": "2026-09-18 第十一章：0x12263 撿走寶箱時把該格圖塊字 +1（關著的箱子換成打開的），重製端只更新了 battle.State 的可變緩衝，畫面仍讀 field.Tiles，箱子永遠關著；四個 gate 還是過（278 px 在 640 px 預算內），是逐點看抽樣圖才發現的。接上之後逐像素相同的點由 121 增為 157。",
+      "date": "2026-09-18",
+      "evidence": "remake/cmd/fd2/native_map_frame_input.go 的 NativeMapDrawTiles；docs/data/ui-traces/parity-ch11.json seq 5797"
+    },
+    {
+      "id": "gate-passed-is-not-pixel-identical",
+      "area": "對拍",
+      "rule": "畫面 gate 過只代表每一點都在預算內。收下一章之前，把非零差異依「連通區域」分群看一遍：同一塊固定大小的區域反覆出現在很多點，就是一個真的缺口，不是動畫相位。",
+      "why": "2026-09-18 第十一章：seq 5525 之後有 11 個點各差約 278 px，全部落在同一格 22×16 的範圍——那是沒有換成打開的箱子，不是相位差。只看最大值與通過與否會直接放過。",
+      "date": "2026-09-18",
+      "evidence": "docs/data/ui-traces/parity-ch11.json；docs/figures/parity-ch11-samples-p*.png"
     }
   ]
 }

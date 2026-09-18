@@ -351,32 +351,47 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 		if !u.HasNativeRecordByte3D || int(u.NativeRecordByte3D) >= len(s.NativeEventState) {
 			return nil, true, fmt.Errorf("native AI mode 5 event-state index provenance is unavailable")
 		}
-		if !s.HasNativeFieldControlState || len(s.NativeFieldControlRaw) < 0x56+3*int(u.NativeRecordByte3D) {
+		if _, _, ok := s.nativeChestControlRow(u.NativeRecordByte3D); !ok {
 			return nil, true, fmt.Errorf("native AI mode 5 event-control row provenance is unavailable")
 		}
-		if s.NativeEventState[u.NativeRecordByte3D] != 0 {
-			return nil, true, fmt.Errorf("native AI mode 5 event state is already set; mode-0 recovery owner is unavailable")
+		// 0x13C42：`[0x53AD5][+0x3D]` 非零就跳 0x13B05；0x13C59：`0x15DF3` 找不到格子
+		// （回 −1）也跳 0x13B05。兩種都不是錯誤，是走 mode 0 的 0x14121／0x13E9C 尾段。
+		eventReady := s.NativeEventState[u.NativeRecordByte3D] == 0
+		var intended Cell
+		if eventReady {
+			cell, err := s.NativeAIMode5EventCell(u.NativeRecordByte3D)
+			if err == nil {
+				intended = cell
+			} else {
+				eventReady = false
+			}
 		}
-		intended, err := s.NativeAIMode5EventCell(u.NativeRecordByte3D)
-		if err != nil {
-			return nil, true, err
+		if eventReady {
+			plan, err := s.nativeAIPlanTowardRawDestination(
+				u, actor, selector, records, actorRecord, baseFlags, costRow, intended,
+			)
+			if err != nil {
+				return nil, true, err
+			}
+			plan.NativeModeFallbackActive = true
+			plan.NativeModeFallback = byte(mode)
+			plan.NativeModeWriteRangeZero = true
+			plan.NativeModeFocusActor = true // 0x13C39
+			// 0x13C8C..0x13CB9：0x14B78 之後比記錄的 x／y 與事件格，走到了才跑事件尾段，
+			// 沒走到就直接進共用收尾（0x13E5A）；0x13C7F 回 0（沒走成）先進 0x13FD4。
+			if plan.NativeActionDestination == intended {
+				plan.NativeModeEventActive = true
+				plan.NativeModeEventID = u.NativeRecordByte3D
+				plan.NativeModeEventDestination = intended
+			}
+			if len(plan.Path) <= 1 {
+				if err := s.attachNativeFallbackIdleRecovery(plan, records, actor); err != nil {
+					return nil, true, err
+				}
+			}
+			return plan, true, nil
 		}
-		plan, err := s.nativeAIPlanTowardRawDestination(
-			u, actor, selector, records, actorRecord, baseFlags, costRow, intended,
-		)
-		if err != nil {
-			return nil, true, err
-		}
-		if plan.NativeActionDestination != intended {
-			return nil, true, fmt.Errorf("native AI mode 5 event destination was substituted")
-		}
-		plan.NativeModeFallbackActive = true
-		plan.NativeModeFallback = byte(mode)
-		plan.NativeModeWriteRangeZero = true
-		plan.NativeModeEventActive = true
-		plan.NativeModeEventID = u.NativeRecordByte3D
-		plan.NativeModeEventDestination = intended
-		return plan, true, nil
+		// 落到下面 mode 0／1 的共用尾段（0x13B05）。
 	}
 	if mode == 3 || mode == 9 {
 		// 0x12c60 receives raw record +0x35 and returns the first live record

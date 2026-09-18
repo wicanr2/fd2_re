@@ -1,0 +1,5754 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_slot_manifest",
+  "tool": "remake/cmd/fd2-chapter-slot",
+  "base_save": "/base/FD2.SAV",
+  "base_sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
+  "base_slot": 0,
+  "base_chapter": 2,
+  "target_chapter": 10,
+  "out_slot": 0,
+  "output_sha256": "35ed64accc3082bb445d3bcaa9ba0c05c3602e60e941179f67ee21340c98ca92",
+  "evidence_sources": {
+    "command_learn": "assets/data/command_learn.json（升級學指令，learn_idx 來自成長列）",
+    "growth": "assets/data/class_change_growth.json（0x55EA1，68 列，+7 選列）",
+    "handler_ch01": "assets/cutscenes/handlers/ch00_post.json @0x22ef6",
+    "handler_ch02": "assets/cutscenes/handlers/ch01_post.json @0x22f37",
+    "handler_ch03": "assets/cutscenes/handlers/ch02_post.json @0x230f2",
+    "handler_ch04": "assets/cutscenes/handlers/ch03_post.json @0x231bc",
+    "handler_ch05": "assets/cutscenes/handlers/ch04_post.json @0x231f9",
+    "handler_ch06": "assets/cutscenes/handlers/ch05_post.json @0x23296",
+    "handler_ch07": "assets/cutscenes/handlers/ch06_post.json @0x232e8",
+    "handler_ch08": "assets/cutscenes/handlers/ch07_post.json @0x234bb",
+    "handler_ch09": "assets/cutscenes/handlers/ch08_post.json @0x235bc",
+    "handler_ch10": "assets/cutscenes/handlers/ch09_post.json @0x235f9",
+    "handler_ch11": "assets/cutscenes/handlers/ch10_post.json @0x23790",
+    "handler_ch12": "assets/cutscenes/handlers/ch11_post.json @0x237d5",
+    "handler_ch13": "assets/cutscenes/handlers/ch12_post.json @0x2389f",
+    "handler_ch14": "assets/cutscenes/handlers/ch13_post.json @0x238dc",
+    "handler_ch15": "assets/cutscenes/handlers/ch14_post.json @0x239bd",
+    "handler_ch16": "assets/cutscenes/handlers/ch15_post.json @0x23a0a",
+    "handler_ch17": "assets/cutscenes/handlers/ch16_post.json @0x23b5f",
+    "handler_ch18": "assets/cutscenes/handlers/ch17_post.json @0x23cd5",
+    "handler_ch19": "assets/cutscenes/handlers/ch18_post.json @0x23e39",
+    "handler_ch20": "assets/cutscenes/handlers/ch19_post.json @0x23e74",
+    "handler_ch21": "assets/cutscenes/handlers/ch20_post.json @0x240fa",
+    "handler_ch22": "assets/cutscenes/handlers/ch21_post.json @0x244b6",
+    "handler_ch23": "assets/cutscenes/handlers/ch22_post.json @0x24754",
+    "handler_ch24": "assets/cutscenes/handlers/ch23_post.json @0x24c1e",
+    "handler_ch25": "assets/cutscenes/handlers/ch24_post.json @0x24df2",
+    "handler_ch26": "assets/cutscenes/handlers/ch25_post.json @0x24e80",
+    "handler_ch27": "assets/cutscenes/handlers/ch26_post.json @0x250cc",
+    "handler_ch28": "assets/cutscenes/handlers/ch27_post.json @0x25464",
+    "handler_ch29": "assets/cutscenes/handlers/ch28_post.json @0x2548c",
+    "handler_ch30": "assets/cutscenes/handlers/ch29_post.json @0x25757",
+    "item_rows": "assets/data/native_item_effect_rows.json（0x602ad 列表，0x1145a／0x1B750 重算）",
+    "join_constructor": "assets/data/native_join_constructor.json（sub_112A5，0x55ba1／0x55ea1）"
+  },
+  "applied": [
+    {
+      "chapter": 3,
+      "op": "join",
+      "char_id": 2,
+      "source": {
+        "addr": "0x231af",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 6
+    },
+    {
+      "chapter": 5,
+      "op": "join",
+      "char_id": 10,
+      "source": {
+        "addr": "0x2327d",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 7
+    },
+    {
+      "chapter": 6,
+      "op": "join",
+      "char_id": 13,
+      "source": {
+        "addr": "0x232a2",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 8
+    },
+    {
+      "chapter": 7,
+      "op": "join",
+      "char_id": 12,
+      "source": {
+        "addr": "0x23389",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 9
+    },
+    {
+      "chapter": 8,
+      "op": "join",
+      "char_id": 5,
+      "source": {
+        "addr": "0x2327d",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 10
+    },
+    {
+      "chapter": 10,
+      "op": "join",
+      "char_id": 11,
+      "source": {
+        "addr": "0x23771",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 11
+    },
+    {
+      "chapter": 10,
+      "op": "join",
+      "char_id": 6,
+      "source": {
+        "addr": "0x2377b",
+        "target": "0x112a5"
+      },
+      "result": "appended",
+      "roster_slot": 12
+    }
+  ],
+  "level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+  "seed": 4,
+  "level_steps": [
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 1,
+      "to_level": 2,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        2,
+        8,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        7,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        3,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        2,
+        2,
+        6,
+        5
+      ],
+      "learned_command_ids": [
+        17
+      ]
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        2,
+        6,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        10,
+        12,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        8,
+        3,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        10,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        12,
+        3,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        10,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        12,
+        3,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 1,
+      "to_level": 2,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 2,
+      "to_level": 3,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        1,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 3,
+      "to_level": 4,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 3,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        8,
+        6
+      ],
+      "learned_command_ids": [
+        1
+      ]
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        2,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        2,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        2,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        2,
+        6,
+        7
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        6,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        8,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        10,
+        10,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        8,
+        3,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        11,
+        8,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        9,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        4,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        4,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 4,
+      "to_level": 5,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 5,
+      "to_level": 6,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 6,
+      "to_level": 7,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 7,
+      "to_level": 8,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 4,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        1,
+        5,
+        7
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        2,
+        2,
+        6,
+        5
+      ],
+      "learned_command_ids": [
+        26
+      ]
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        2,
+        6,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        1,
+        6,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        8,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        1,
+        6,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        12,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        9,
+        3,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        8,
+        3,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        10,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        8,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        11,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 5,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        2,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        7,
+        4
+      ],
+      "learned_command_ids": [
+        2
+      ]
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        2,
+        8,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        2,
+        6,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        11,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        12,
+        3,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        10,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        11,
+        9,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        12,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        10,
+        7,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        4,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        1,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        3,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        7,
+        4
+      ],
+      "learned_command_ids": [
+        14
+      ]
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        5,
+        1,
+        4,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        7,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 6,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        6,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": [
+        27
+      ]
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        1,
+        6,
+        7
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        2,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        2,
+        2,
+        7,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        4,
+        2,
+        7,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        10,
+        3,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        10,
+        3,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        8,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        10,
+        3,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        10,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        6,
+        3,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        5,
+        1,
+        5,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": [
+        18
+      ]
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        4,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        1,
+        7,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 7,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        3,
+        1,
+        8,
+        7
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        8,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        6,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 2,
+      "record_key7": 4,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        11,
+        9,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        10,
+        7,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        11,
+        3,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        8,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        7,
+        3,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        11,
+        7,
+        3,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        1,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        1,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        2,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        2,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        2,
+        1,
+        4,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        3,
+        1,
+        4,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        5,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        4,
+        1,
+        5,
+        5
+      ],
+      "learned_command_ids": [
+        22
+      ]
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        6,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        5,
+        1,
+        5,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        3,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 8,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        3,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 0,
+      "record_key7": 0,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        2,
+        7,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        7,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 1,
+      "record_key7": 9,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        2,
+        2,
+        8,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        6,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        11,
+        2,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 40,
+      "to_level": 41,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        11,
+        3,
+        14,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 41,
+      "to_level": 42,
+      "gains_ap_dp_dx_hp_mp": [
+        10,
+        12,
+        3,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 42,
+      "to_level": 43,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        12,
+        3,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 43,
+      "to_level": 44,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        7,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 4,
+      "record_key7": 1,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 5,
+      "record_key7": 8,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        9,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        4,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 38,
+      "to_level": 39,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        4,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 6,
+      "record_key7": 2,
+      "from_level": 39,
+      "to_level": 40,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        5,
+        1,
+        5,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        5,
+        1,
+        7,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        7,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        4,
+        1,
+        7,
+        4
+      ],
+      "learned_command_ids": [
+        23
+      ]
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        2,
+        1,
+        4,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        5,
+        1,
+        6,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        8,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        3,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 20,
+      "to_level": 21,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        12,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 21,
+      "to_level": 22,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 8,
+      "to_level": 9,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 9,
+      "to_level": 10,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 10,
+      "to_level": 11,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 11,
+      "to_level": 12,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        6,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 12,
+      "to_level": 13,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        6,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 9,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 13,
+      "to_level": 14,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        6,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 44,
+      "to_level": 45,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        12,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 45,
+      "to_level": 46,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        11,
+        2,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 46,
+      "to_level": 47,
+      "gains_ap_dp_dx_hp_mp": [
+        13,
+        10,
+        2,
+        10,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 47,
+      "to_level": 48,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        8,
+        3,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 48,
+      "to_level": 49,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        7,
+        3,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 3,
+      "record_key7": 30,
+      "from_level": 49,
+      "to_level": 50,
+      "gains_ap_dp_dx_hp_mp": [
+        12,
+        6,
+        3,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 32,
+      "to_level": 33,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        5,
+        1,
+        4,
+        6
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 33,
+      "to_level": 34,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        5,
+        1,
+        7,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 34,
+      "to_level": 35,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        5,
+        1,
+        6,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 35,
+      "to_level": 36,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        2,
+        1,
+        6,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 36,
+      "to_level": 37,
+      "gains_ap_dp_dx_hp_mp": [
+        4,
+        3,
+        1,
+        6,
+        5
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 7,
+      "record_key7": 10,
+      "from_level": 37,
+      "to_level": 38,
+      "gains_ap_dp_dx_hp_mp": [
+        3,
+        3,
+        1,
+        4,
+        4
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        5,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 28,
+      "to_level": 29,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 29,
+      "to_level": 30,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 30,
+      "to_level": 31,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 8,
+      "record_key7": 13,
+      "from_level": 31,
+      "to_level": 32,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        3,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 22,
+      "to_level": 23,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 23,
+      "to_level": 24,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        3,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 24,
+      "to_level": 25,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        2,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 25,
+      "to_level": 26,
+      "gains_ap_dp_dx_hp_mp": [
+        9,
+        5,
+        1,
+        13,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 26,
+      "to_level": 27,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 9,
+      "record_key7": 12,
+      "from_level": 27,
+      "to_level": 28,
+      "gains_ap_dp_dx_hp_mp": [
+        8,
+        5,
+        1,
+        11,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 14,
+      "to_level": 15,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        6,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 15,
+      "to_level": 16,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        6,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 16,
+      "to_level": 17,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 17,
+      "to_level": 18,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        5,
+        2,
+        6,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 18,
+      "to_level": 19,
+      "gains_ap_dp_dx_hp_mp": [
+        7,
+        5,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    },
+    {
+      "chapter": 10,
+      "roster_slot": 10,
+      "record_key7": 5,
+      "from_level": 19,
+      "to_level": 20,
+      "gains_ap_dp_dx_hp_mp": [
+        6,
+        6,
+        2,
+        7,
+        0
+      ],
+      "learned_command_ids": null
+    }
+  ],
+  "assumptions": [
+    {
+      "chapter": 3,
+      "kind": "if",
+      "detail": "any_unit_inactive→false（假設無人陣亡）"
+    },
+    {
+      "chapter": 7,
+      "kind": "if",
+      "detail": "native_event_state_eq(state17)→true（第 7 章戰場狀態 17＝1，-event-states 明示）"
+    },
+    {
+      "chapter": 7,
+      "kind": "if",
+      "detail": "any_unit_inactive→false（假設無人陣亡）"
+    },
+    {
+      "chapter": 10,
+      "kind": "boost",
+      "detail": "基底 AP +200、DP +0、DX +60（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 13 筆：roster 0 id8=0 AP/DP/HIT/EV [263 190 175 80]→[463 190 235 140]；roster 1 id8=9 AP/DP/HIT/EV [173 127 147 62]→[373 127 207 122]；roster 2 id8=4 AP/DP/HIT/EV [294 162 170 80]→[494 162 230 140]；roster 3 id8=30 AP/DP/HIT/EV [520 473 211 121]→[720 473 271 181]；roster 4 id8=1 AP/DP/HIT/EV [337 182 152 57]→[537 182 212 117]；roster 5 id8=8 AP/DP/HIT/EV [255 108 175 80]→[455 108 235 140]；roster 6 id8=2 AP/DP/HIT/EV [289 181 175 80]→[489 181 235 140]；roster 7 id8=10 AP/DP/HIT/EV [140 135 133 38]→[340 135 193 98]；roster 8 id8=13 AP/DP/HIT/EV [186 106 159 64]→[386 106 219 124]；roster 9 id8=12 AP/DP/HIT/EV [249 169 141 46]→[449 169 201 106]；roster 10 id8=5 AP/DP/HIT/EV [137 116 135 40]→[337 116 195 100]；roster 11 id8=11 AP/DP/HIT/EV [92 108 96 21]→[292 108 156 81]；roster 12 id8=6 AP/DP/HIT/EV [211 138 126 41]→[411 138 186 101]"
+    }
+  ],
+  "roster": [
+    {
+      "roster_slot": 0,
+      "key7": 0,
+      "identity8": 0,
+      "race": 1,
+      "class": 1,
+      "level": 40,
+      "exp": 44,
+      "hp": 420,
+      "max_hp": 420,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 463,
+      "dp": 190,
+      "hit": 235,
+      "ev": 140,
+      "inventory_cells_hex": "4000408400c080ff80ff80ff800080c9"
+    },
+    {
+      "roster_slot": 1,
+      "key7": 9,
+      "identity8": 9,
+      "race": 1,
+      "class": 5,
+      "level": 40,
+      "exp": 78,
+      "hp": 272,
+      "max_hp": 272,
+      "mp": 219,
+      "max_mp": 219,
+      "ap": 373,
+      "dp": 127,
+      "hit": 207,
+      "ev": 122,
+      "inventory_cells_hex": "403440a480ff80ff80ff80ff80c380c1"
+    },
+    {
+      "roster_slot": 2,
+      "key7": 4,
+      "identity8": 4,
+      "race": 1,
+      "class": 3,
+      "level": 40,
+      "exp": 78,
+      "hp": 385,
+      "max_hp": 385,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 494,
+      "dp": 162,
+      "hit": 230,
+      "ev": 140,
+      "inventory_cells_hex": "4014408000c000c000c080ff803f803f"
+    },
+    {
+      "roster_slot": 3,
+      "key7": 30,
+      "identity8": 30,
+      "race": 6,
+      "class": 25,
+      "level": 50,
+      "exp": 29,
+      "hp": 596,
+      "max_hp": 596,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 720,
+      "dp": 473,
+      "hit": 271,
+      "ev": 181,
+      "inventory_cells_hex": "404840b280ff80ff80ff80ff80f180ed"
+    },
+    {
+      "roster_slot": 4,
+      "key7": 1,
+      "identity8": 1,
+      "race": 1,
+      "class": 2,
+      "level": 40,
+      "exp": 84,
+      "hp": 494,
+      "max_hp": 494,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 537,
+      "dp": 182,
+      "hit": 212,
+      "ev": 117,
+      "inventory_cells_hex": "4020408080ff80ff80ff80ff80ff80ff"
+    },
+    {
+      "roster_slot": 5,
+      "key7": 8,
+      "identity8": 8,
+      "race": 1,
+      "class": 4,
+      "level": 40,
+      "exp": 0,
+      "hp": 302,
+      "max_hp": 302,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 455,
+      "dp": 108,
+      "hit": 235,
+      "ev": 140,
+      "inventory_cells_hex": "402c408180ff80ff80ff80ff80ff80ff"
+    },
+    {
+      "roster_slot": 6,
+      "key7": 2,
+      "identity8": 2,
+      "race": 1,
+      "class": 1,
+      "level": 40,
+      "exp": 0,
+      "hp": 380,
+      "max_hp": 380,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 489,
+      "dp": 181,
+      "hit": 235,
+      "ev": 140,
+      "inventory_cells_hex": "4000408080ff80ff80ff80ff80008000"
+    },
+    {
+      "roster_slot": 7,
+      "key7": 10,
+      "identity8": 10,
+      "race": 1,
+      "class": 6,
+      "level": 38,
+      "exp": 0,
+      "hp": 229,
+      "max_hp": 229,
+      "mp": 189,
+      "max_mp": 189,
+      "ap": 340,
+      "dp": 135,
+      "hit": 193,
+      "ev": 98,
+      "inventory_cells_hex": "4000408180ff80ff80ff80ff80008000"
+    },
+    {
+      "roster_slot": 8,
+      "key7": 13,
+      "identity8": 13,
+      "race": 2,
+      "class": 4,
+      "level": 32,
+      "exp": 0,
+      "hp": 240,
+      "max_hp": 240,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 386,
+      "dp": 106,
+      "hit": 219,
+      "ev": 124,
+      "inventory_cells_hex": "4000408180ff80ff80ff80ff80008000"
+    },
+    {
+      "roster_slot": 9,
+      "key7": 12,
+      "identity8": 12,
+      "race": 1,
+      "class": 8,
+      "level": 28,
+      "exp": 0,
+      "hp": 360,
+      "max_hp": 360,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 449,
+      "dp": 169,
+      "hit": 201,
+      "ev": 106,
+      "inventory_cells_hex": "403e40ac80ff80ff80ff80ff80008000"
+    },
+    {
+      "roster_slot": 10,
+      "key7": 5,
+      "identity8": 5,
+      "race": 1,
+      "class": 3,
+      "level": 20,
+      "exp": 0,
+      "hp": 193,
+      "max_hp": 193,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 337,
+      "dp": 116,
+      "hit": 195,
+      "ev": 100,
+      "inventory_cells_hex": "4000408180ff80ff80ff80ff80008000"
+    },
+    {
+      "roster_slot": 11,
+      "key7": 11,
+      "identity8": 11,
+      "race": 1,
+      "class": 6,
+      "level": 16,
+      "exp": 0,
+      "hp": 120,
+      "max_hp": 120,
+      "mp": 69,
+      "max_mp": 69,
+      "ap": 292,
+      "dp": 108,
+      "hit": 156,
+      "ev": 81,
+      "inventory_cells_hex": "403640a700d180ff80ff80ff80008000"
+    },
+    {
+      "roster_slot": 12,
+      "key7": 6,
+      "identity8": 6,
+      "race": 1,
+      "class": 3,
+      "level": 18,
+      "exp": 0,
+      "hp": 240,
+      "max_hp": 240,
+      "mp": 0,
+      "max_mp": 0,
+      "ap": 411,
+      "dp": 138,
+      "hit": 186,
+      "ev": 101,
+      "inventory_cells_hex": "4017408780ff80ff80ff80ff80008000"
+    }
+  ],
+  "roster_count": 13,
+  "recalc_check": "基底 6 筆隊員套 0x1B750 重算皆恆等",
+  "known_deviations": [
+    "經驗值、擊殺帶來的升級、金幣與掉落物品（死亡獎勵、寶箱）全部依實際遊玩而定，本工具不模擬；等級與金幣只能靠 -levels-per-chapter／-level-overrides／-gold 明示。",
+    "紀錄 +0x00..+0x04（戰場座標等）與 +0x28..+0x36 隨遊玩漂移，保留基底值。",
+    "JOIN 建構器輸出的物品格 6／7 是 80 00，真實原版存檔是 80 ff（旗標 bit7 置位時 item byte 不被消費）；差異已登記待解。"
+  ]
+}

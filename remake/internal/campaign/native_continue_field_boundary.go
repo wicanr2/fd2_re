@@ -84,6 +84,7 @@ func MaterializeNativeContinueFieldBoundary(
 			RawType: chest.RawType, Value: chest.Value,
 		}
 	}
+	candidate.HasNativeChestControlState = true
 	candidate.NativeFieldUnitControls = make(
 		[]battle.NativeFieldUnitControl,
 		len(input.FieldControl.Units),

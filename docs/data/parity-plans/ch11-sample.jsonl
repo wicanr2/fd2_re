@@ -1,0 +1,54 @@
+# 第十一章抽樣（111 章工作單元，docs/goal/116）。起點：tools/fd2_chapter_slot.py build 由 ch02-cleared 建的「已通關第 10 章」強化槽（--levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0 --boost-base-dx 60），名冊 13 人。
+# 可抽項目（remake/assets/scenarios/ch11.json、map10_units.json、turn_events.json map 10）：幻之森林 map10（35×45）、我方部署在北側 y 5..16、敵方 group 0 的 25 筆在南側 y 25..44、戰前 ch10_pre 登場 group 1 的友軍 1 筆（fig 14、HP 20、(17,5)）與兩段 ACTING（38、39）＋三段對白、12 格寶箱、戰後 ch10_post 的 JOIN 14。這一章沒有回合事件控制列、沒有死亡程式、勝負走 default 0x205B4。
+# 章內全程正常 BIOS 鍵；只有第 7 回合開頭的 force_enemy_clear 是注入。強化是建構槽政策（114）。法術／物品指令驅動端沒有（limitations）。
+# --- 標題 LOAD 槽 0 → 城鎮（town_ch11 幻之森林，variant 2）---
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+# --- 出口（選項 2：left 兩次）→ 要進入戰場嗎 YES → 戰前（ch10_pre：LOADCH、text 0、pan、spawn group 1、ACTING 38、text 1、ACTING 39、text 2、重設姿態、聚焦）→ 戰場 ---
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":200}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"battle_start","steps":1000000}
+# --- 第 1～6 回合：全隊南下接戰（advance true、typical_move 4；驅動端自己朝敵方推進，這一章敵方在南側）---
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round3","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":4,"stop_on_auto_end":true,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"after_round6","steps":1000000}
+# --- 第 7 回合開頭清場（修改路徑；敵人已全滅就略過）→ END → 戰後（ch10_post：text 3、同步隊伍、JOIN 14）→ town_ch12 ---
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":160}
+{"mark":"town_after_battle","steps":1000000}
+# --- 戰後城鎮（town_ch12 北山道，variant 1）：武器店出售一件（選項 1）→ 道具店買入一件（選項 3）→ 兩棟探訪 → 酒店存檔 → 選項 0（酒店）上 Ctrl+F1（scan 0x5E）祕密商店 ---
+{"shop_sell":true,"steps":10000000}
+{"shop_buy":{"moves":["left","left"]},"steps":10000000}
+{"town_probe":{"moves":["left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":[],"key":"ctrl-f1"},"steps":10000000}

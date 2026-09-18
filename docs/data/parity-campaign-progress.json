@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-09-17",
+  "updated": "2026-09-18",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -266,14 +266,20 @@
     },
     {
       "chapter": 11,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch11.json",
+      "slot_manifest": "docs/data/parity-slots/ch11-manifest.json",
+      "slot_sha256": "35ed64accc3082bb445d3bcaa9ba0c05c3602e60e941179f67ee21340c98ca92",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "date": "2026-09-18",
+      "verify": "tools/fd2_chapter_slot.py build --base work/parity-state/ch02-cleared/FD2.SAV --target 10 --levels-per-chapter 6 --seed 4 --event-states 7:17=1 --boost-base-ap 200 --boost-base-dp 0 --boost-base-dx 60 --out-dir <槽>；tools/chapter_parity.sh 11 <槽> <dosgolem run> <out>；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_STEPS=30000000000 FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x12CEA tools/dosgolem_oracle.sh <run> docs/data/parity-plans/ch11-sample.jsonl；合法性檢查 docs/data/parity-plans/ch11-slot-load.jsonl；抽樣截圖：tools/parity_sample_sheet.py --receipt docs/data/ui-traces/parity-ch11.json --oracle <run> --remake <out> --include-seq 101 4687 4702 5797 6870 7073",
+      "limitations": [
+        "槽由 ch02-cleared 基底建到 target 10（每章 +6 級政策、--seed 4、--event-states 7:17=1），再依 114 強化政策把名冊 13 筆基底 AP +200、DP +0、DX +60（sha 35ed64ac…）；合法性檢查 ch11-slot-load（LOAD 進幻之森林城鎮）",
+        "強化政策值不是原版證據：收據只證明節點、畫面、介面、交易與存檔閉環，不得用來談傷害、命中、存活或敵方選目標",
+        "原版側 sample-r2 由 dosgolem feat/fd2-oracle-input-chain a9bcd62（dirty=0）重生；計畫 ch11-sample：LOAD→出口→戰前（ch10_pre：登場友軍 group 1、ACTING 38／39 與三段對白）→第 1～6 回合全隊南下接戰（敵方 mode 5 沿途取寶箱，記錄 37 撿 slot 7 的 10000 金並在被擊倒時掉出）→第 7 回合開頭 force_enemy_clear→戰後 ch10_post（JOIN 14 珊）→北山道城鎮出售／買入／探訪／酒店存檔／Ctrl+F1 祕密商店；240 動作、7074 個 checkpoint",
+        "四個 gate 全過（remake-r3）：行為 241 點全部一致、金額 2000→12000→12037→12027、酒店存檔整檔 sha256 與原版相同；231 個畫面點全在 640 px 預算內、157 點逐像素相同，其餘以單位動畫相位與指令環開啟中途（#34，最大 489 px）為主。抽樣截圖 docs/figures/parity-ch11-samples-p1..p5.png（91 列）",
+        "這一章沒有回合事件控制列、沒有死亡程式，勝負走 default 0x205B4；玩家法術／物品與第二次踏事件格仍沒有驅動端指令，抽樣不涵蓋"
+      ],
       "prior_receipts": []
     },
     {

@@ -42,7 +42,16 @@ func buildNativeMapFrameInput(
 		return indexedmap.NativeFrameInput{}, errors.New("native map frame: raw runtime globals are outside verified bounds")
 	}
 	view := state.NativeMapViewState
-	cells, err := indexedmap.BuildNativeTerrainCells(field.Tiles, state.NativeTileBlitModes)
+	// 撿走寶箱那一格的圖塊由 0x12263 就地 +1，繪圖端跟著讀那份可變緩衝；可編輯地圖的
+	// field.Tiles 是初始值，直接拿去畫會讓箱子永遠關著。
+	drawTiles := field.Tiles
+	if mutable, ok := state.NativeMapDrawTiles(); ok {
+		if len(mutable) != len(field.Tiles) {
+			return indexedmap.NativeFrameInput{}, errors.New("native map frame: mutable map buffer does not match the editable field")
+		}
+		drawTiles = mutable
+	}
+	cells, err := indexedmap.BuildNativeTerrainCells(drawTiles, state.NativeTileBlitModes)
 	if err != nil {
 		return indexedmap.NativeFrameInput{}, fmt.Errorf("native map frame: terrain cells: %w", err)
 	}

@@ -350,7 +350,7 @@ func TestAIStepConsumesVerifiedMode5EventPlan(t *testing.T) {
 		NativeEventState:            [0x20]byte{},
 		NativeCompositionEventBytes: []byte{0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 		NativeMapEventGrid:          nativeAIConsumerMode5Grid(3, 1, battle.Cell{X: 2, Y: 0}, 1),
 		HasNativeMapEventGrid:       true,
 		NativeFieldControlRaw:       make([]byte, 0x56+3),
@@ -392,7 +392,7 @@ func TestAIStepStopsMode5WithoutMovementProvenance(t *testing.T) {
 		NativeEventState:            [0x20]byte{},
 		NativeCompositionEventBytes: []byte{0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 		NativeMapEventGrid:          nativeAIConsumerMode5Grid(3, 1, battle.Cell{X: 2, Y: 0}, 1),
 		HasNativeMapEventGrid:       true,
 		NativeFieldControlRaw:       make([]byte, 0x56+3),
@@ -431,7 +431,7 @@ func TestAIStepConsumesVerifiedMode7DestinationPlan(t *testing.T) {
 		Units:                       []*battle.Unit{actor},
 		NativeCompositionEventBytes: []byte{0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 	}
 	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
 		t.Fatal(err)
@@ -471,7 +471,7 @@ func TestAIStepStopsMode7WithoutMovementProvenance(t *testing.T) {
 		Units:                       []*battle.Unit{actor},
 		NativeCompositionEventBytes: []byte{0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 	}
 	g := &Game{
 		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
@@ -498,7 +498,7 @@ func TestAIStepConsumesTwoVerifiedMode7ActorsBeforeFinishingTurn(t *testing.T) {
 		W: 4, H: 1, Units: []*battle.Unit{first, second},
 		NativeCompositionEventBytes: []byte{0, 0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 	}
 	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
 		t.Fatal(err)
@@ -547,7 +547,7 @@ func TestAIStepStopsTwoMode7ActorsWithoutMovementProvenance(t *testing.T) {
 		W: 4, H: 1, Units: []*battle.Unit{first, second},
 		NativeCompositionEventBytes: []byte{0, 0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 	}
 	g := &Game{
 		m:      &MapData{W: 4, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0, 0}},

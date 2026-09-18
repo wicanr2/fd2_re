@@ -57,12 +57,33 @@ func (s *State) NativeAIMode5EventCell(eventID byte) (Cell, error) {
 			if s.NativeMapEventGrid[offset+2]&0x1f != eventID {
 				continue
 			}
-			if s.NativeTerrainControl[tile*4+3]&0x60 == 0x20 {
+			// 0x12E38 把 [0x53A69]+4*tile 的四個 byte 抄進 out[4..7]，0x15E4B 檢查的是
+			// out[4]（控制列第 0 個 byte）。
+			if s.NativeTerrainControl[tile*4]&0x60 == 0x20 {
 				return Cell{X: x, Y: y}, nil
 			}
 		}
 	}
 	return Cell{}, fmt.Errorf("native AI mode 5 event %d has no map cell", eventID)
+}
+
+// nativeChestControlRow 取事件尾段要用的 0x53+3*slot 寶箱控制列（type、value）。
+// 從 CONTINUE 進來時直接讀 raw 控制影像；從城鎮進戰場時讀由地圖 chests 建立的
+// 同一批 bytes。兩個出處都沒有就回 false，呼叫端失敗即關閉。
+func (s *State) nativeChestControlRow(slot byte) (byte, uint16, bool) {
+	if s == nil || int(slot) >= len(s.NativeChestControls) {
+		return 0, 0, false
+	}
+	if s.HasNativeFieldControlState && len(s.NativeFieldControlRaw) >= 0x56+3*int(slot) {
+		offset := 0x53 + 3*int(slot)
+		return s.NativeFieldControlRaw[offset],
+			binary.LittleEndian.Uint16(s.NativeFieldControlRaw[offset+1 : offset+3]), true
+	}
+	if s.HasNativeChestControlState {
+		row := s.NativeChestControls[slot]
+		return row.RawType, row.Value, true
+	}
+	return 0, 0, false
 }
 
 // ApplyNativeAIMode5Event commits the stateful tail after a successful raw
@@ -104,12 +125,10 @@ func (s *State) applyNativeAIMode5Event(
 	if cell != destination || u.X != destination.X || u.Y != destination.Y {
 		return fmt.Errorf("native AI mode 5 event %d did not reach raw destination", eventID)
 	}
-	if !s.HasNativeFieldControlState || len(s.NativeFieldControlRaw) < 0x56+3*int(eventID) {
+	rowMode, rowValue, ok := s.nativeChestControlRow(eventID)
+	if !ok {
 		return fmt.Errorf("native AI mode 5 event %d field-control row is unavailable", eventID)
 	}
-	rowOffset := 0x53 + 3*int(eventID)
-	rowMode := s.NativeFieldControlRaw[rowOffset]
-	rowValue := binary.LittleEndian.Uint16(s.NativeFieldControlRaw[rowOffset+1 : rowOffset+3])
 	if rowMode < 2 {
 		if !u.HasNativeRecordDeathEffect || len(u.InventorySlots) != nativeInventoryCells ||
 			len(u.NativeInventoryFlags) != nativeInventoryCells {
@@ -130,6 +149,11 @@ func (s *State) applyNativeAIMode5Event(
 		u.NativeRecordDeathEffect[0] = rowMode
 		u.NativeRecordDeathEffect[1] = byte(rowValue)
 		u.NativeRecordDeathEffect[2] = byte(rowValue >> 8)
+		// 原版只有 +0x31..+0x33 這一份記錄；重製端的死亡掉落走具型別的
+		// DeathEffect／DeathReward，所以兩邊要一起寫，撿到的寶箱才會在被擊倒時掉出來
+		//（第十一章 r2 seq 4688：記錄 37 撿了 slot 7 的 10000 金，倒下時進玩家金庫）。
+		effect := DeathEffect{Type: int(rowMode), Value: int(rowValue)}
+		u.DeathEffect, u.DeathReward = &effect, &effect
 		if rowMode == 0 && !u.AddInventoryItem(int(byte(rowValue)), false) {
 			return fmt.Errorf("native AI mode 5 event %d inventory writer rejected raw value", eventID)
 		}
@@ -148,6 +172,23 @@ func (s *State) applyNativeAIMode5Event(
 	return nil
 }
 
+// NativeMapDrawTiles 回傳繪圖端該用的圖塊索引。原版的地圖繪製與 0x12263 的事件更新
+// 讀寫同一份 0x53A51 緩衝：寶箱被撿走時那一格的 tile word +1（關著的箱子換成打開的），
+// 所以畫面不能回頭讀不會變的可編輯地圖欄位。緩衝沒有材料化時回 false，呼叫端沿用
+// 可編輯地圖（story 幕沒有戰場的可變緩衝）。
+func (s *State) NativeMapDrawTiles() ([]int, bool) {
+	if s == nil || !s.HasNativeMapEventGrid || s.W <= 0 || s.H <= 0 ||
+		len(s.NativeMapEventGrid) != 4+4*s.W*s.H {
+		return nil, false
+	}
+	tiles := make([]int, s.W*s.H)
+	for index := range tiles {
+		offset := 4 + 4*index
+		tiles[index] = int(binary.LittleEndian.Uint16(s.NativeMapEventGrid[offset:offset+2]) & 0x03ff)
+	}
+	return tiles, true
+}
+
 // advanceNativeAIMode5EventGrid is the state portion of 0x12263.  It uses
 // the same mutable map buffer as 0x15df3 and increments a matching tile word
 // once for every already-set raw event state, then clears that cell's event
@@ -158,15 +199,17 @@ func (s *State) advanceNativeAIMode5EventGrid() error {
 	}
 	for index := 0; index < s.W*s.H; index++ {
 		offset := 4 + 4*index
+		// 0x122AD 直接以 out[2..3]（低 5 bit）索引 [0x53AD5]，事件 0 也算數：第十一章的
+		// 敵方 mode 5 就用 +0x3D=0。
 		eventID := s.NativeMapEventGrid[offset+2] & 0x1f
-		if eventID == 0 || int(eventID) >= len(s.NativeEventState) || s.NativeEventState[eventID] == 0 {
+		if int(eventID) >= len(s.NativeEventState) || s.NativeEventState[eventID] == 0 {
 			continue
 		}
 		tile := int(binary.LittleEndian.Uint16(s.NativeMapEventGrid[offset:offset+2]) & 0x03ff)
 		if tile < 0 || tile >= len(s.NativeTerrainControl)/4 {
 			return fmt.Errorf("native AI mode 5 update tile %d is outside terrain control", tile)
 		}
-		if s.NativeTerrainControl[tile*4+3]&0x60 != 0x20 {
+		if s.NativeTerrainControl[tile*4]&0x60 != 0x20 {
 			continue
 		}
 		word := binary.LittleEndian.Uint16(s.NativeMapEventGrid[offset : offset+2])

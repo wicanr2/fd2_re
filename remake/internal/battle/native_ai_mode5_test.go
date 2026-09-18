@@ -27,7 +27,7 @@ func TestNativeAIMode5EventCellAndStateTailPreserveRawRows(t *testing.T) {
 		NativeEventState:            [0x20]byte{},
 		NativeCompositionEventBytes: []byte{0, 0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 		NativeMapEventGrid:          nativeAIMode5Grid(3, 1, Cell{X: 2, Y: 0}, 1),
 		HasNativeMapEventGrid:       true,
 		NativeFieldControlRaw:       make([]byte, 0x56+3),
@@ -65,7 +65,7 @@ func TestNativeAIMode5EventEmitsProvenRawAudioCueBeforeStateCompletion(t *testin
 	state := &State{
 		W: 1, H: 1, Units: []*Unit{actor},
 		NativeEventState:      [0x20]byte{},
-		NativeTerrainControl:  []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:  []byte{0x20, 0, 0, 0},
 		NativeMapEventGrid:    nativeAIMode5Grid(1, 1, Cell{X: 0, Y: 0}, 1),
 		HasNativeMapEventGrid: true,
 		NativeFieldControlRaw: func() []byte {
@@ -109,7 +109,7 @@ func TestNextAIPlanMode5UsesRawEventCellAndFailsClosedWithoutRow(t *testing.T) {
 		W: 2, H: 1, Units: []*Unit{actor},
 		NativeCompositionEventBytes: []byte{0, 0},
 		NativeTerrainMoveCodes:      []byte{0, 0},
-		NativeTerrainControl:        []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
 		NativeMapEventGrid:          nativeAIMode5Grid(2, 1, Cell{X: 1, Y: 0}, 1),
 		HasNativeMapEventGrid:       true,
 	}
@@ -141,7 +141,7 @@ func TestNativeAIMode5RejectsMalformedLaterCellWithoutPartialMutation(t *testing
 	state := &State{
 		W: 2, H: 1, Units: []*Unit{actor},
 		NativeEventState:      [0x20]byte{},
-		NativeTerrainControl:  []byte{0, 0, 0, 0x20},
+		NativeTerrainControl:  []byte{0x20, 0, 0, 0},
 		NativeMapEventGrid:    grid,
 		HasNativeMapEventGrid: true,
 		NativeFieldControlRaw: func() []byte {
@@ -166,5 +166,124 @@ func TestNativeAIMode5RejectsMalformedLaterCellWithoutPartialMutation(t *testing
 		if state.NativeMapEventGrid[i] != beforeGrid[i] {
 			t.Fatalf("mode5 partial grid mutation at %d: got=%d want=%d", i, state.NativeMapEventGrid[i], beforeGrid[i])
 		}
+	}
+}
+
+func TestNativeMapDrawTilesFollowsTheMutableBuffer(t *testing.T) {
+	// 0x12263 就地把事件格的 tile word +1；繪圖端讀的是同一份緩衝，所以撿走之後
+	// 那一格要換成打開的箱子（第十一章 (7,20) 事件 5：原版 seq 5525 起箱子是開的）。
+	actor := nativeAIRuntimeUnit(0, 0, 1, 5)
+	actor.NativeRecordByte3D = 1
+	actor.HasNativeRecordByte3D = true
+	actor.NativeRecordDeathEffect = [3]byte{0xff, 0, 0}
+	actor.HasNativeRecordDeathEffect = true
+	state := &State{
+		W: 2, H: 1, Units: []*Unit{actor},
+		NativeCompositionEventBytes: []byte{0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
+		NativeMapEventGrid:          nativeAIMode5Grid(2, 1, Cell{X: 1, Y: 0}, 1),
+		HasNativeMapEventGrid:       true,
+		HasNativeChestControlState:  true,
+	}
+	state.NativeChestControls[1] = NativeChestControl{RawType: 1, Value: 3000}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	before, ok := state.NativeMapDrawTiles()
+	if !ok {
+		t.Fatal("可變緩衝沒有材料化")
+	}
+	actor.SetMapPlacement(1, 0, 0)
+	if err := state.ApplyNativeAIMode5Event(actor, 1, Cell{X: 1, Y: 0}); err != nil {
+		t.Fatal(err)
+	}
+	after, ok := state.NativeMapDrawTiles()
+	if !ok {
+		t.Fatal("事件之後讀不到可變緩衝")
+	}
+	if after[1] != before[1]+1 || after[0] != before[0] {
+		t.Fatalf("繪圖圖塊 %v → %v，事件格應該只 +1", before, after)
+	}
+	empty := &State{W: 2, H: 1}
+	if _, ok := empty.NativeMapDrawTiles(); ok {
+		t.Fatal("沒有可變緩衝時不該回報可用")
+	}
+}
+
+func TestNativeAIMode5PickupBecomesExecutableDeathReward(t *testing.T) {
+	// 0x13CCE／0x13CD6 的寶箱列寫進 +0x31..+0x33；重製端的掉落走 DeathEffect／
+	// DeathReward，兩份要一致，撿到的金錢才會在被擊倒時進玩家金庫。
+	actor := nativeAIRuntimeUnit(0, 0, 1, 5)
+	actor.NativeRecordByte3D = 1
+	actor.HasNativeRecordByte3D = true
+	actor.NativeRecordDeathEffect = [3]byte{0xff, 0, 0}
+	actor.HasNativeRecordDeathEffect = true
+	state := &State{
+		W: 2, H: 1, Units: []*Unit{actor},
+		NativeCompositionEventBytes: []byte{0, 0},
+		NativeTerrainMoveCodes:      []byte{0, 0},
+		NativeTerrainControl:        []byte{0x20, 0, 0, 0},
+		NativeMapEventGrid:          nativeAIMode5Grid(2, 1, Cell{X: 1, Y: 0}, 1),
+		HasNativeMapEventGrid:       true,
+		HasNativeChestControlState:  true,
+	}
+	state.NativeChestControls[1] = NativeChestControl{RawType: 1, Value: 10000}
+	if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	actor.SetMapPlacement(1, 0, 0)
+	if err := state.ApplyNativeAIMode5Event(actor, 1, Cell{X: 1, Y: 0}); err != nil {
+		t.Fatal(err)
+	}
+	if actor.NativeRecordDeathEffect != [3]byte{1, 0x10, 0x27} {
+		t.Fatalf("raw +0x31..+0x33=%v", actor.NativeRecordDeathEffect)
+	}
+	if actor.DeathReward == nil || actor.DeathReward.Type != 1 || actor.DeathReward.Value != 10000 ||
+		actor.DeathEffect == nil || *actor.DeathEffect != *actor.DeathReward {
+		t.Fatalf("typed 掉落沒有跟著寫：effect=%+v reward=%+v", actor.DeathEffect, actor.DeathReward)
+	}
+}
+
+func TestNativeAIMode5FallsBackToModeZeroTailWhenEventUnavailable(t *testing.T) {
+	// 0x13C42：[0x53AD5][+0x3D] 非零跳 0x13B05；0x13C59：0x15DF3 回 −1 也跳 0x13B05。
+	// 兩種都不是失敗即關閉，是走 mode 0 的 0x14121／0x13E9C 尾段。
+	build := func() (*State, *Unit) {
+		actor := nativeAIRuntimeUnit(0, 0, 1, 5)
+		actor.NativeRecordByte3D = 1
+		actor.HasNativeRecordByte3D = true
+		target := nativeAIRuntimeUnit(1, 0, 0, 0)
+		target.Camp = Own
+		state := &State{
+			W: 2, H: 1, Units: []*Unit{actor, target},
+			NativeCompositionEventBytes: []byte{0, 0},
+			NativeTerrainMoveCodes:      []byte{0, 0},
+			NativeTerrainControl:        []byte{0x20, 0, 0, 0},
+			NativeMapEventGrid:          nativeAIMode5Grid(2, 1, Cell{X: 1, Y: 0}, 1),
+			HasNativeMapEventGrid:       true,
+			HasNativeChestControlState:  true,
+		}
+		if err := state.BindNativeMovementCostRows(nativeAIRuntimeCostRows()); err != nil {
+			t.Fatal(err)
+		}
+		return state, actor
+	}
+	state, _ := build()
+	state.NativeEventState[1] = 1
+	plan := state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil {
+		t.Fatalf("事件已觸發時的計畫=%+v", plan)
+	}
+	if plan.NativeModeEventActive || !plan.NativeModeFallbackActive || plan.NativeModeFallback != 5 {
+		t.Fatalf("事件已觸發仍走事件分支：%+v", plan)
+	}
+	state, _ = build()
+	state.NativeMapEventGrid = nativeAIMode5Grid(2, 1, Cell{X: 1, Y: 0}, 9) // 沒有 +0x3D=1 的格子
+	plan = state.NextAIPlan()
+	if plan == nil || plan.NativeError != nil {
+		t.Fatalf("找不到事件格時的計畫=%+v", plan)
+	}
+	if plan.NativeModeEventActive {
+		t.Fatalf("找不到事件格仍走事件分支：%+v", plan)
 	}
 }

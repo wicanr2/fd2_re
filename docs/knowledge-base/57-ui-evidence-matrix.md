@@ -1084,6 +1084,20 @@ sample-r4、dosgolem `a9bcd62`；槽建到「已通關第 9 章」、11 人，�
 （113 列，index [`parity-ch10-samples.json`](../data/ui-traces/parity-ch10-samples.json)）。
 限制：強化值不是原版證據；輔助底面相位由收據推回（強推論）；Boss 與事件 33 不在抽樣回合內。
 
+第十一章整章收據 [`parity-ch11.json`](../data/ui-traces/parity-ch11.json)（2026-09-18，remake-r3，原版側
+sample-r2、dosgolem `a9bcd62`；槽建到「已通關第 10 章」、13 人，強化 AP+200／DP+0／DX+60）：狀態 `passed`，
+240 個原版動作、行為 241 點一致、231 個畫面比較點全部在預算內、157 點逐像素相同，其餘以單位動畫相位與
+指令環開啟中途為主（最大 489 px，#34）——幻之森林城鎮、出發、戰前（ch10_pre：登場友軍 group 1 與
+ACTING 38／39）、第 1～6 回合全隊南下接戰、敵方 mode 5 沿途取寶箱（記錄 37 撿走 slot 7 的 10000 金，
+被擊倒時掉給玩家：2000→12000）、第 7 回合開頭清場、戰後 ch10_post 的 JOIN 14（珊）、北山道城鎮出售與
+買入（12037→12027）、探訪、酒店存檔（整檔 sha256 相同）、Ctrl+F1 祕密商店。這一輪修掉的畫面差異：
+敵方撿走寶箱之後那一格要換成打開的箱子（`0x12263` 就地把 tile word +1，繪圖端跟著讀同一份可變緩衝），
+以及 mode 5 撿到的東西要能在死亡時掉出來。細節見
+[56 §第十一章章工作單元](56-fd2-remake-sdd.md#第十一章章工作單元mode-5-取寶箱與打開的箱子2026-09-18)。
+抽樣對照表 [`parity-ch11-samples-p1.png`](../figures/parity-ch11-samples-p1.png)…[`p5`](../figures/parity-ch11-samples-p5.png)
+（91 列，index [`parity-ch11-samples.json`](../data/ui-traces/parity-ch11-samples.json)）。
+限制：強化值不是原版證據；玩家法術／物品與第二次踏事件格沒有驅動端指令，抽樣不涵蓋。
+
 ### 2026-09-09：我方被攻擊時台座蓋住腳步（RUNTIME-E1）
 
 全螢幕戰鬥演出的左右是資料決定的：FIGANI 幀標頭內嵌的絕對螢幕座標按陣營分邊
