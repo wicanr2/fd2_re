@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -210,5 +210,19 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
+
+### README 沒有各章對拍進度，REMAKE-STATUS 的自我評分停在 2026-09-08
+
+`readme-parity-progress-and-self-score` · 缺陷 · [#42](https://github.com/wicanr2/fd2_re/issues/42) · **可能已完成，回去確認** · 已經出現在 docs/REMAKE-STATUS.md
+
+111 逐章對拍從 2026-09-15 起跑，第四～十章已有章收據（台帳 `docs/data/parity-campaign-progress.json`），但 `README.md` 只有「第一輪 60／60 抽樣」那組里程碑敘述，讀者看不出目前對到第幾章、每章的 gate 與限制是什麼。`docs/REMAKE-STATUS.md` 的自評表也停在 2026-09-08（本次完整流程對拍那一列還寫「當時暫停交人工」），分數與現況脫節。
+
+要做：
+
+1. `README.md` 加一段各章對拍進度（依台帳產生，不要手抄數字漂移）：每章狀態、收據連結、四個 gate 通過與否、抽樣圖入口；文化保存與玩家敘事段落不動。
+2. `docs/REMAKE-STATUS.md` 自評更新到現況：對拍那一列換成章數與收據、畫面點統計，並寫清楚計分限制（強化槽政策值不是原版證據、force_enemy_clear 是修改路徑、`PLAYER-E2` 的例外依 111／114）。
+3. 進度數字要能重生：由台帳（必要時加一支小工具）產生，README 不保存會漂移的手抄統計。
+
+怎樣算做完：README 有依台帳產生的各章對拍進度段落（含收據與限制連結），REMAKE-STATUS 自評表更新到當日並標明計分限制；數字與 `parity-campaign-progress.json` 一致，且可由同一來源重生。
 
 <!-- END fd2_worklist.py render -->

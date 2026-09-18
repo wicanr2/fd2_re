@@ -315,6 +315,23 @@
         "note": "56 §#40 對照表裡自承的那一列；接上之後改掉。"
       },
       "issue": 41
+    },
+    {
+      "id": "readme-parity-progress-and-self-score",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "README 沒有各章對拍進度，REMAKE-STATUS 的自我評分停在 2026-09-08",
+      "body": "111 逐章對拍從 2026-09-15 起跑，第四～十章已有章收據（台帳 `docs/data/parity-campaign-progress.json`），但 `README.md` 只有「第一輪 60／60 抽樣」那組里程碑敘述，讀者看不出目前對到第幾章、每章的 gate 與限制是什麼。`docs/REMAKE-STATUS.md` 的自評表也停在 2026-09-08（本次完整流程對拍那一列還寫「當時暫停交人工」），分數與現況脫節。\n\n要做：\n\n1. `README.md` 加一段各章對拍進度（依台帳產生，不要手抄數字漂移）：每章狀態、收據連結、四個 gate 通過與否、抽樣圖入口；文化保存與玩家敘事段落不動。\n2. `docs/REMAKE-STATUS.md` 自評更新到現況：對拍那一列換成章數與收據、畫面點統計，並寫清楚計分限制（強化槽政策值不是原版證據、force_enemy_clear 是修改路徑、`PLAYER-E2` 的例外依 111／114）。\n3. 進度數字要能重生：由台帳（必要時加一支小工具）產生，README 不保存會漂移的手抄統計。",
+      "acceptance": "README 有依台帳產生的各章對拍進度段落（含收據與限制連結），REMAKE-STATUS 自評表更新到當日並標明計分限制；數字與 `parity-campaign-progress.json` 一致，且可由同一來源重生。",
+      "verify": {
+        "kind": "absent",
+        "paths": [
+          "docs/REMAKE-STATUS.md"
+        ],
+        "pattern": "當時暫停交人工",
+        "note": "自評表裡那句過期敘述；更新後就不在了。"
+      },
+      "issue": 42
     }
   ]
 }
