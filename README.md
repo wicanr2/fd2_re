@@ -219,6 +219,39 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 工程架構移至 [`docs/ENGINEERING.md`](docs/ENGINEERING.md)；第一輪重製門檻、目前
 進度與剩餘工作移至 [`docs/REMAKE-STATUS.md`](docs/REMAKE-STATUS.md)。
 
+## 逐章對拍進度
+
+重製端每一章都拿原版執行結果當基準比對：同一份存檔槽、同一串鍵盤輸入，原版在
+dosgolem 無頭執行器上跑一遍，重製端重播同一串輸入，再逐點比四件事——單位與回合的
+行為、節點流程、金錢與存檔交易、畫面像素。四項全過才算這一章通過。
+
+<!-- BEGIN tools/render_parity_progress.py render；不要手改這一段 -->
+
+依 [111](docs/goal/111-goal-original-parity-campaign-20260915.md) 的四個 gate（行為、節點、交易、畫面）逐章對拍，第 4～10 章已通過（台帳更新日 2026-09-17）。
+
+| 章 | 通過的 gate | 原版動作 | 行為比較點 | 畫面比較點 | 最大畫面差異 | 酒店存檔 | 證據 |
+|---|---|---|---|---|---|---|---|
+| 第 4 章 | 行為、節點、交易、畫面 | 62 | 63 | 55（38 張逐像素相同） | 201 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch04.json) ／ [2 張](docs/figures/parity-ch04-samples-p1.png) |
+| 第 5 章 | 行為、節點、交易、畫面 | 65 | 66 | 58（40 張逐像素相同） | 628 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch05.json) ／ [1 張](docs/figures/parity-ch05-samples.png) |
+| 第 6 章 | 行為、節點、交易、畫面 | 72 | 73 | 58（39 張逐像素相同） | 618 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch06.json) ／ [1 張](docs/figures/parity-ch06-samples.png) |
+| 第 7 章 | 行為、節點、交易、畫面 | 241 | 242 | 228（164 張逐像素相同） | 255 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch07.json) ／ [5 張](docs/figures/parity-ch07-samples-p1.png) |
+| 第 8 章 | 行為、節點、交易、畫面 | 197 | 198 | 179（127 張逐像素相同） | 629 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch08.json) ／ [3 張](docs/figures/parity-ch08-samples-p1.png) |
+| 第 9 章 | 行為、節點、交易、畫面 | 298 | 299 | 286（203 張逐像素相同） | 627 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch09.json) ／ [4 張](docs/figures/parity-ch09-samples-p1.png) |
+| 第 10 章 | 行為、節點、交易、畫面 | 280 | 281 | 268（174 張逐像素相同） | 428 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch10.json) ／ [5 張](docs/figures/parity-ch10-samples-p1.png) |
+
+其餘各章（第 1 章、第 2 章、第 3 章…共 23 章）還沒跑這套逐章對拍；第 1～3 章另有更早的單點證據，不列在這張表裡。
+
+每章的建構槽政策、抽樣範圍與限制寫在台帳 [`parity-campaign-progress.json`](docs/data/parity-campaign-progress.json) 的 `limitations`；這張表由 `tools/render_parity_progress.py` 依台帳與收據產生。
+
+<!-- END tools/render_parity_progress.py render -->
+
+讀這張表要知道的限制：建構槽是工具依政策值建出來的（每章固定升級數、強化基底
+攻防），不是原版實際遊玩累積的數值，所以收據只能談節點、畫面、介面與存檔閉環，
+不能拿來談傷害、命中或敵方選目標；抽樣尾端用修改路徑一次清空敵方 HP 進戰後節點，
+那一段不屬於一般玩家路徑。詳細規則見
+[`111` 全戰役原版一致目標](docs/goal/111-goal-original-parity-campaign-20260915.md)。
+
+
 ## Remake 里程碑
 
 **`v.1.0.3-20260907` 已撤銷穩定版資格。** 實際玩家啟動揭露預設戰役未載入、
