@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -132,6 +132,21 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 玩家開箱走 OpenedTreasure，沒有改可變地圖緩衝：箱子不會變成打開的，事件也沒被消掉
+
+`player-chest-open-bypasses-native-map-buffer` · 缺陷 · [#44](https://github.com/wicanr2/fd2_re/issues/44) · 仍未完成 · 自承還在 remake/internal/battle/model.go
+
+第十一章接上了敵方 mode 5 撿寶箱那一條：`0x12263` 把該格圖塊字 +1（關著的箱子換成打開的）並清掉格子的事件 byte，重製端的繪圖端改讀同一份可變緩衝（`State.NativeMapDrawTiles`），收據 `docs/data/ui-traces/parity-ch11.json` seq 5797 由 278 px 變 0 px。
+
+**玩家自己踏上寶箱那一條還沒接。** 重製端 `battle.ClaimTreasure`（`remake/internal/battle/model.go`）只寫自己的 `OpenedTreasure map[int]bool`，入口在 `remake/cmd/fd2/main.go` 的 `TreasureAt`／`beginNativeTreasureItemPrompt`。它沒有寫 `NativeEventState[event]=1`，也沒有走 `0x12263` 的圖塊字 +1 與事件 byte 清除，所以同一件事在重製端有兩套互不相通的狀態：
+
+1. **畫面**：玩家開完箱，那一格仍然畫關著的箱子。
+2. **行為**：`[0x53AD5+event]` 還是 0，敵方 mode 5 之後仍會把那一格當成沒人拿過的事件格走過去撿；原版是靠同一次寫入同時擋掉這件事。
+
+這條不只是外觀。敵人撿走的東西會掛在牠身上、被擊倒時掉出來，是戰役分支的一環（天空之鑰 `0x24B14(0x64)` 的 gate 見 `56` 與 `58` 的 ch20／ch26 列），所以「誰先拿到那一格」必須和原版一致。
+
+怎樣算做完：玩家開箱與敵方 mode 5 取寶箱共用同一份原版狀態：開箱時寫 `NativeEventState`、走 `0x12263` 的圖塊字 +1 與事件 byte 清除，`OpenedTreasure` 不再是另一個平行來源（或降成它的投影）。先反組譯玩家側開箱那條路徑（`0x190AC` 之後的狀態寫入端）確認原版寫了哪些位址，再接執行期；驗收要有一章對拍收據，抽樣包含「玩家踏上寶箱之後那一格的畫面」與「同一格敵方不再重複觸發」。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

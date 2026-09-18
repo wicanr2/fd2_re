@@ -332,6 +332,23 @@
         "note": "56 §第十一章工作單元限制段的自承；判定之後改掉那句。"
       },
       "issue": 43
+    },
+    {
+      "id": "player-chest-open-bypasses-native-map-buffer",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "玩家開箱走 OpenedTreasure，沒有改可變地圖緩衝：箱子不會變成打開的，事件也沒被消掉",
+      "body": "第十一章接上了敵方 mode 5 撿寶箱那一條：`0x12263` 把該格圖塊字 +1（關著的箱子換成打開的）並清掉格子的事件 byte，重製端的繪圖端改讀同一份可變緩衝（`State.NativeMapDrawTiles`），收據 `docs/data/ui-traces/parity-ch11.json` seq 5797 由 278 px 變 0 px。\n\n**玩家自己踏上寶箱那一條還沒接。** 重製端 `battle.ClaimTreasure`（`remake/internal/battle/model.go`）只寫自己的 `OpenedTreasure map[int]bool`，入口在 `remake/cmd/fd2/main.go` 的 `TreasureAt`／`beginNativeTreasureItemPrompt`。它沒有寫 `NativeEventState[event]=1`，也沒有走 `0x12263` 的圖塊字 +1 與事件 byte 清除，所以同一件事在重製端有兩套互不相通的狀態：\n\n1. **畫面**：玩家開完箱，那一格仍然畫關著的箱子。\n2. **行為**：`[0x53AD5+event]` 還是 0，敵方 mode 5 之後仍會把那一格當成沒人拿過的事件格走過去撿；原版是靠同一次寫入同時擋掉這件事。\n\n這條不只是外觀。敵人撿走的東西會掛在牠身上、被擊倒時掉出來，是戰役分支的一環（天空之鑰 `0x24B14(0x64)` 的 gate 見 `56` 與 `58` 的 ch20／ch26 列），所以「誰先拿到那一格」必須和原版一致。",
+      "acceptance": "玩家開箱與敵方 mode 5 取寶箱共用同一份原版狀態：開箱時寫 `NativeEventState`、走 `0x12263` 的圖塊字 +1 與事件 byte 清除，`OpenedTreasure` 不再是另一個平行來源（或降成它的投影）。先反組譯玩家側開箱那條路徑（`0x190AC` 之後的狀態寫入端）確認原版寫了哪些位址，再接執行期；驗收要有一章對拍收據，抽樣包含「玩家踏上寶箱之後那一格的畫面」與「同一格敵方不再重複觸發」。",
+      "verify": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/model.go"
+        ],
+        "pattern": "OpenedTreasure is remake-owned state for editable treasure nodes",
+        "note": "model.go 裡 OpenedTreasure 自承是 remake-owned 的那段註解；接成原版狀態之後改掉。"
+      },
+      "issue": 44
     }
   ]
 }
