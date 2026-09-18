@@ -111,13 +111,13 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：重製端從城鎮出口 YES 到戰場第一幀之間播出十步縮放暗化與 64 步淡入；用 FD2_ORACLE_FRAME_EIP=0x11D40 的探針幀逐步對照（每步 diff 在 640 px 預算內）並記進 57；56 的 0x2FB9F 內插表升為已證實。
 
-### 戰場 HUD 小窗 anchor 要跟著每次 0x11CAC 重繪評估，不是只在幾個呼叫點
+### 攻擊演出收尾、0x1DEAE 與訊息關框三類重繪還沒經過 HUD anchor 入口
 
-`battle-hud-anchor-follows-redraw` · 缺陷 · [#40](https://github.com/wicanr2/fd2_re/issues/40) · **可能已完成，回去確認** · 找不到 走 focusUnitJob，不經過這裡
+`hud-anchor-attack-and-message-redraws` · 缺陷 · [#41](https://github.com/wicanr2/fd2_re/issues/41) · 仍未完成 · 自承還在 docs/knowledge-base/56-fd2-remake-sdd.md
 
-原版每次 `0x11CAC` 重繪都經 `0x1ACF3` 檢查閘 A `[0x51AAB]`／閘 B `[0x51AAC]`，兩個都開就由 `0x1AD2A` 依當下可見游標決定小窗在左或右（可見游標 Y>5 時 X<3 翻右、X>9 翻左）。重製端沒有「重繪」這個單一入口，anchor 只在幾個呼叫點評估：鍵盤游標步 `nativeCursorStepHUD`（照 `NativeMapCursorStepRedraws`）、AI 聚焦 `FocusNativeMapCursorSteps`、戰場節點進場、回合開頭聚焦 `stepNativePlayerFocus`（每步無條件評估）與 fd380cc6 新增的 `restoreNativeDisplayGateB`。已知沒有評估的重繪：`0x13FD4` 原地回復的 `focusUnitJob`（`stepFocusUnit`）、死亡程式與掉落訊息開框前的整幀重組、攻擊演出收尾與升級對話底圖。目前第四～九章收據都過，是因為這些路徑剛好沒讓可見游標落進翻邊區；第八章 c2 seq 1667 與第九章 r1 seq 814 兩次都是同一類差異（各約 4600 px）。要做：以原版 `0x11CAC` 呼叫點為準盤點重製端的重繪時機，把 anchor 評估收成一個跟著重繪走的入口（閘門與 `[0x51A83]` 規則照原版），不要再逐個呼叫點補。
+#40 把 anchor 評估收成單一入口 `redrawNativeMapHUD`（游標鍵步、`0x12CEA` 開頭與逐步、`0x1A30B` 返回後、戰場進場），第十章章收據 268 個畫面點全部一致。還沒接的是三類原版 `0x11CAC` 呼叫點：攻擊演出收尾（`0x1CFF0` 的 `0x1D3FF`、`0x1548E` 的 `0x15510`／`0x1563B`／`0x1565C`）、`0x1DB65` 的 `0x1DEAE`、訊息關框 `0x19742`。呼叫點清單在 `docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt`，對照表在 `docs/knowledge-base/56` §#40（那三列標「未接」）。它們對應到重製端哪一段整幀重組、當時閘 B 與可見游標是什麼，都還沒逐點證明；在拿到收據之前不要為了收斂差異自行加評估點。
 
-怎樣算做完：重製端所有對應原版 `0x11CAC` 的重繪路徑經同一個入口評估 HUD anchor，`stepFocusUnit` 與死亡程式／掉落訊息重組也涵蓋；驗收直接跑第十章 111 章收據（使用者 2026-09-17 定案：已通過的第四～九章不重跑），四個 gate 全過。
+怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口，並由某一章的章收據（畫面 gate）確認 HUD 小窗左右在這些時點也一致。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
