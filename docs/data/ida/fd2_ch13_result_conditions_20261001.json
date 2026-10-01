@@ -5455,6 +5455,21 @@
         "meaning": "失敗狀態仍有效，但護援計畫跳過玩家回合；不能把這份結果單獨歸因於合法護援戰術不足。",
         "verification": "docs/data/fd2_oracle_sweep_auto_end_20261002.json"
       }
+    },
+    "east_guard_attempt_after_auto_end_fix": {
+      "date": "2026-10-02",
+      "run": "work/parity-slot-ch13/east-guard-original-r2",
+      "receipt": "docs/data/fd2_oracle_paralyzed_selection_20261002.json",
+      "driver_commit": "5d5b446ca398b149a8fd8eb471e35bf17d619999",
+      "result": "round8工具exit9，原版仍在麻痺record14狀態面板；不是敗北。",
+      "checkpoint_sha256": "d4e267b1061eaa5dbbbe713a55874f1106469b2601da454104a8b95a1dae388a",
+      "round": 8,
+      "record20_hp": 95,
+      "record59_hp": 119,
+      "trace207a4_hits": 0,
+      "trace207ec_hits": 0,
+      "level": "confirmed",
+      "limits": "第九回合與完整章四gate未驗收；本輪不再重啟整章。"
     }
   }
 }

@@ -611,6 +611,7 @@ UI_MODES = (
                               # up 與 down 無效，enter 進入目前那一棟
     ("grid", "0x1BC8E"),      # 指令 grid（六格圖示，`0x1BBDC` 那組 chooser）
     ("status", "0x1BA37"),    # 單位狀態面板（能力值與裝備）：esc 退得掉
+    ("status", "0x17B0B"),    # sub_17AED 的等鍵返回點；麻痺單位選取（#66）
     ("spell", "0x1D0D4"),     # 指令環 ← 開的法術清單（第四章 r2 悠妮實測一筆；只用來 esc 退回）
     ("ring", "0x18EEF"),      # 指令環：↑攻擊／←法術／→物品／↓待機
     ("system", "0x16FAE"),    # 空地上按 enter 開的系統選單（含 END）
@@ -686,6 +687,13 @@ def acted(unit):
     if len(raw) < 12:
         return False
     return bool(int(raw[10:12], 16) & 0x80)
+
+
+def paralyzed(unit):
+    """0x1191D..0x1192B：raw +0x26 非零時選取會開狀態面板，不進移動格。"""
+    raw = unit.get("raw_hex") or ""
+    offset = 0x26 * 2
+    return len(raw) >= offset + 2 and int(raw[offset:offset + 2], 16) != 0
 
 
 def side(current, camp):
@@ -1022,6 +1030,9 @@ def do_move_unit(command):
     if acted(unit):
         print(f"move_unit ({ux},{uy}) 本回合已行動，跳過", flush=True)
         return True
+    if paralyzed(unit):
+        print(f"move_unit ({ux},{uy}) raw +0x26 非零，跳過麻痺單位", flush=True)
+        return True
     started_round = measure(current, "round")
     if not do_goto({"goto": [ux, uy], "steps": steps, "max": command.get("max", 80)}):
         return False
@@ -1135,6 +1146,9 @@ def do_engage(command):
         return False
     if acted(unit):
         print(f"engage ({ux},{uy}) 本回合已行動，跳過", flush=True)
+        return True
+    if paralyzed(unit):
+        print(f"engage ({ux},{uy}) raw +0x26 非零，跳過麻痺單位", flush=True)
         return True
     started_round = measure(current, "round")
     if not do_goto({"goto": [ux, uy], "steps": steps, "max": command.get("max", 80)}):
@@ -1716,7 +1730,8 @@ def do_sweep_round(command):
             return True
         skip = {int(i) for i in command.get("skip_indices", [])}
         pending = [u for u in side(current, ALLY_CAMP)
-                   if not acted(u) and unit_key(u) not in handled and u.get("index") not in skip]
+                   if not acted(u) and not paralyzed(u)
+                   and unit_key(u) not in handled and u.get("index") not in skip]
         # 只挑走得到敵人旁邊的：貼敵格離它不超過一般移動力加射程。
         reachable = [u for u in pending
                      if min(distance((u["x"], u["y"]), e) for e in enemies) <= span + reach]

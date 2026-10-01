@@ -229,4 +229,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第十三章保護友軍與第九回合抽樣計畫：[ch13-protect-sample.jsonl](../data/parity-plans/ch13-protect-sample.jsonl)，保持114建構槽、seed4與正常章內操作；完整驗收狀態見58與#61。
 - 第十三章東側護援計畫：[ch13-east-guard-sample.jsonl](../data/parity-plans/ch13-east-guard-sample.jsonl)，以正常鍵盤提早派 slot3／14 向東；同槽、亂數與驗收限制維持 #61，結果由58記錄。
 - 原版掃描末名自動換手缺陷 #65：[有界回合計畫](../data/parity-plans/ch13-auto-end-boundary.jsonl)與[驗證收據](../data/fd2_oracle_sweep_auto_end_20261002.json)，只驗證新回合不被多送 END，完整章現況見58。
+- 原版麻痺單位選取缺陷 #66：[原始選取判準與工具回歸](../data/fd2_oracle_paralyzed_selection_20261002.json)，保存第八回合角色狀態面板與 raw 閘門；完整章仍由 #61 驗收。
 - 戰後測試入口勘誤 #64：[八條測試與分支驗證](../data/fd2_post_fixture_verification_20261001.json)，保存正確素材、前置狀態與實際非略過結果；證據範圍見58。

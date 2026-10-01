@@ -35,7 +35,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ## re — 原版證據還沒閉合
 
-### 第十三章第六回合原版回標題的判定與正式敗北路徑待閉合
+### 第十三章完整原版第九回合與戰後四項驗收未通過
 
 `ch13-round6-result-and-defeat-path-unknown` · RE待解 · [#61](https://github.com/wicanr2/fd2_re/issues/61) · 仍未完成 · 要人判
 

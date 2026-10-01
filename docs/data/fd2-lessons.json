@@ -985,6 +985,14 @@
       "why": "第十三章東側護援最後一名自動換手後，工具仍送 END，跳過第2／4回合正常操作；迴圈開頭的檢查未涵蓋最後一次，失敗不能只歸因於護援安排。",
       "date": "2026-10-02",
       "evidence": "docs/data/fd2_oracle_sweep_auto_end_20261002.json"
+    },
+    {
+      "id": "oracle-paralyzed-selection-status-caller",
+      "area": "對拍",
+      "rule": "tools/dosgolem_oracle_drive.py 的接戰候選排除raw+0x26非零的單位；將0x17B0B等鍵caller分類為status，優先於0x16D05泛用對白。入口：paralyzed／UI_MODES與tools/test_dosgolem_oracle_drive.py的ParalyzedSelection。",
+      "why": "第十三章第8回合record14麻痺，原版選取開角色狀態面板；工具仍等移動選格而exit9，當時兩組友軍仍存活，不能誤報為原版敗北。",
+      "date": "2026-10-02",
+      "evidence": "docs/data/fd2_oracle_paralyzed_selection_20261002.json"
     }
   ]
 }

@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_oracle_paralyzed_selection_verification",
+  "date": "2026-10-02",
+  "issue": 66,
+  "status": "RUNTIME-E1",
+  "level": "confirmed",
+  "scope": "原版麻痺選取分支、面板分類與工具候選排除；不宣稱完整章通過。",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "original_evidence": {
+    "tool": "IDA Pro 9.4",
+    "instructions": [
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11912",
+        "bytes": "83fa02",
+        "original": "cmp     edx, 2",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11915",
+        "bytes": "750e",
+        "original": "jnz     short loc_11925",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11917",
+        "bytes": "f6400580",
+        "original": "test    byte ptr [eax+5], 80h",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x1191b",
+        "bytes": "7508",
+        "original": "jnz     short loc_11925",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x1191d",
+        "bytes": "0fb64026",
+        "original": "movzx   eax, byte ptr [eax+26h]",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11921",
+        "bytes": "85c0",
+        "original": "test    eax, eax",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11923",
+        "bytes": "740b",
+        "original": "jz      short loc_11930",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11925",
+        "bytes": "56",
+        "original": "push    esi",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11926",
+        "bytes": "e8c2610000",
+        "original": "call    sub_17AED",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x1192b",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x1192e",
+        "bytes": "eb1f",
+        "original": "jmp     short loc_1194F",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_117E7",
+        "address": "0x11930",
+        "bytes": "6a01",
+        "original": "push    1",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_opening_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_17AED",
+        "address": "0x17b04",
+        "bytes": "6a00",
+        "original": "push    0",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_player_neutral_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_17AED",
+        "address": "0x17b06",
+        "bytes": "e84cf1ffff",
+        "original": "call    sub_16C57",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_player_neutral_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_17AED",
+        "address": "0x17b0b",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_player_neutral_input_20260907.json",
+        "address_space": "IDA LE linear"
+      },
+      {
+        "original_function": "sub_17AED",
+        "address": "0x17b0e",
+        "bytes": "6a00",
+        "original": "push    0",
+        "semantic": "玩家選取raw+0x26閘門／狀態面板等鍵呼叫",
+        "level": "confirmed",
+        "source": "docs/data/ida/fd2_player_neutral_input_20260907.json",
+        "address_space": "IDA LE linear"
+      }
+    ],
+    "source_sha256": {
+      "docs/data/ida/fd2_opening_input_20260907.json": "c475a1d1f7ebcc5b767340fc7ed15ec67c6791c7f7888450a811327834ff6b94",
+      "docs/data/ida/fd2_player_neutral_input_20260907.json": "7afeca7b75f97bfcac2933c41248c6093e8c8c039a9e557b32d7c497f9160579"
+    },
+    "review": "raw+0x26為零跳至0x11930；非零經0x11926 call sub_17AED，該面板在0x17B06 call sub_16C57(0)等待任一鍵，返回caller0x17B0B。原始名稱與指令保留，沒有改名或重開已閉合RE。"
+  },
+  "runtime_sample": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "driver_commit": "5d5b446ca398b149a8fd8eb471e35bf17d619999",
+    "address_space": "dosgolem relocated LE linear",
+    "slot_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
+    "slot_construction_seed": 4,
+    "rng_word_at_stop": 7318,
+    "plan": "docs/data/parity-plans/ch13-east-guard-sample.jsonl",
+    "plan_sha256": "ade6ba7d256c0462a2ab61e5fb3cb5f675c836a98c07e668c57f3de865e98aa7",
+    "run": "work/parity-slot-ch13/east-guard-original-r2",
+    "process_exit_code": 9,
+    "steps": 16553354130,
+    "round": 8,
+    "control_seq": 5360,
+    "checkpoint_sha256": "d4e267b1061eaa5dbbbe713a55874f1106469b2601da454104a8b95a1dae388a",
+    "screenshot_sha256": "d0810eb2226ec8c0463e74debf071e4c6fc60c5cab3f87d0fc5f96bb5325033d",
+    "input_chain": [
+      "0x16D05",
+      "0x17B0B",
+      "0x1192B",
+      "0x25DD3",
+      "0x45D91",
+      "0x3CB91"
+    ],
+    "ui": "status",
+    "raw_projection": {
+      "index": 14,
+      "identity": 17,
+      "x": 21,
+      "y": 17,
+      "hp": 168,
+      "byte5": 0,
+      "raw25": 3,
+      "raw26": 3
+    },
+    "initial_survivor": {
+      "index": 20,
+      "hp": 95,
+      "byte5": 0,
+      "x": 17,
+      "y": 0
+    },
+    "late_survivor": {
+      "index": 59,
+      "hp": 119,
+      "byte5": 0,
+      "x": 21,
+      "y": 15
+    },
+    "trace_hits": {
+      "0x207A4": 0,
+      "0x207EC": 0,
+      "0x34D72": 0
+    },
+    "state_injections": [],
+    "driver_log_sha256": "6de4473de697940a63387404176386104d8793deba59707178eeeae97f7d8c60",
+    "actions_sha256": "4cc6a4893af27ac607228c5569e47311bd3e73d01cb84da3ece173bc7d35f06b",
+    "eip_trace_sha256": "ac625e42799c7045f24702678bec9bb32d2b8241765cca8d3803a3ffc6916d02",
+    "runner_sha256": "1b2f819dee8ec0ef1b0c148f872692602019b55b3c47053a0d800e666e5b7031",
+    "classification": "工具對麻痺單位的選取與UI分類缺口；不是原版敗北、CPU缺口或預算用盡。"
+  },
+  "fix": {
+    "candidate_gate": "do_sweep_round排除raw+0x26非零；顯式do_engage／do_move_unit跳過，不送選取鍵。",
+    "ui_marker": "0x17B0B在UI_MODES優先於泛用對白判準分類status。",
+    "formal_engine_change": false
+  },
+  "tests": {
+    "command": "python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py",
+    "passed": 81,
+    "before_fix_behavior_tests": {
+      "cases": 3,
+      "failed": 3,
+      "errors": 0
+    },
+    "new_cases": [
+      "狀態面板caller優先分類，真正對白仍dialogue",
+      "只有非零raw26阻擋，零與其他五個暫態不阻擋",
+      "真實record14位置／HP／raw26投影排除，仍選其他可行動單位",
+      "顯式接戰／移動對麻痺單位不送鍵"
+    ],
+    "logs": [
+      {
+        "path": "work/parity-slot-ch13/paralyzed-tests-before.log",
+        "sha256": "f86ccea092f935e7a243892fa2b24b674140c61a18327b5fdd7647eaa67485c6"
+      },
+      {
+        "path": "work/parity-slot-ch13/paralyzed-tests-after.log",
+        "sha256": "f986db86197c232d7ec2cd094069b788a717e05fe0696eda4520d9be3685de4a"
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "path": "tools/dosgolem_oracle_drive.py",
+      "sha256": "4f79180ac2034b8922ca71b440acbf12ae897a60fe09dcd0aa9eb8e70d521a7a"
+    },
+    {
+      "path": "tools/test_dosgolem_oracle_drive.py",
+      "sha256": "f24a2b46c7375743a783792efa25e99d8effac2e8546b2e127c7f1909387f6b4"
+    },
+    {
+      "path": "tools/dosgolem_oracle.sh",
+      "sha256": "34d3bce1565d3fcc61272a4050335e722ccf9b25cdf134f65a4126c007a40345"
+    }
+  ],
+  "reproduce": {
+    "original_plan": "docs/data/parity-plans/ch13-east-guard-sample.jsonl",
+    "original_driver_revision": "5d5b446ca398b149a8fd8eb471e35bf17d619999",
+    "oracle_steps": 25000000000,
+    "oracle_cpus": 2,
+    "outer_timeout_seconds": 2400,
+    "eip_trace": [
+      "0x12CEA",
+      "0x13A9F",
+      "0x1E54A",
+      "0x4E893",
+      "0x190AC",
+      "0x1911D",
+      "0x1917E",
+      "0x1956B",
+      "0x196CB",
+      "0x34D72",
+      "0x34D80",
+      "0x34D91",
+      "0x207A4",
+      "0x34DAA",
+      "0x34C15",
+      "0x207EC"
+    ]
+  },
+  "limits": [
+    "此原版程序第八回合停止，未到第九回合event7／force-enemy-clear／戰後，四gate尚未通過。",
+    "修正後完整原版計畫尚未重跑；工具回歸只證明候選與鍵盤分派。",
+    "記錄3的移動力4與計畫toward預設6是另一個已觀察的候選差異，本次沒有更改戰術。",
+    "沒有HP鎖定、重擲或章內狀態改寫。"
+  ]
+}

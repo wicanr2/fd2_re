@@ -73,6 +73,58 @@ class ModuleIntegrity(unittest.TestCase):
         self.assertEqual(missing, [], f"呼叫了不存在的名稱：{missing}")
 
 
+class ParalyzedSelection(unittest.TestCase):
+    """第八回合原版 raw +0x26=3，選取開 sub_17AED 狀態面板。"""
+
+    def marked_unit(self, offset, value):
+        made = unit(21, 17, drive.ALLY_CAMP, hp=168, identity=17)
+        raw = bytearray.fromhex(made["raw_hex"])
+        raw[offset] = value
+        made["raw_hex"] = raw.hex()
+        return made
+
+    def test_status_wait_caller_precedes_generic_dialogue_marker(self):
+        self.assertEqual(drive.ui_mode({"input_chain": [
+            "0x16D05", "0x17B0B", "0x1192B", "0x25DD3",
+        ]}), "status")
+        self.assertEqual(drive.ui_mode({"input_chain": ["0x16D05", "0x164C4"]}), "dialogue")
+
+    def test_only_nonzero_raw26_blocks_movement(self):
+        self.assertTrue(drive.paralyzed(self.marked_unit(0x26, 3)))
+        self.assertFalse(drive.paralyzed(self.marked_unit(0x26, 0)))
+        for offset in [0x22, 0x23, 0x24, 0x25, 0x27]:
+            with self.subTest(offset=offset):
+                self.assertFalse(drive.paralyzed(self.marked_unit(offset, 3)))
+
+    def test_sweep_skips_paralyzed_unit_and_selects_available_unit(self):
+        blocked = self.marked_unit(0x26, 3)
+        available = unit(16, 0, drive.ALLY_CAMP, identity=4)
+        current = {"view": {"round": 8}, "units": [
+            blocked, available, unit(22, 17, drive.ENEMY_CAMP, identity=70),
+        ]}
+        with mock.patch.object(drive, "state", return_value=current), \
+                mock.patch.object(drive, "ui_mode", return_value="cursor"), \
+                mock.patch.object(drive, "resume_battle", return_value=True), \
+                mock.patch.object(drive, "do_engage", return_value=True) as engage, \
+                mock.patch.object(drive, "end_turn", return_value=True):
+            self.assertTrue(drive.do_sweep_round({"max_units": 1}))
+        self.assertEqual(engage.call_args.args[0]["engage"], [16, 0])
+
+    def test_explicit_engage_and_move_do_not_send_keys_to_paralyzed_unit(self):
+        current = {"view": {"round": 8}, "units": [self.marked_unit(0x26, 3)]}
+        with mock.patch.object(drive, "state", return_value=current), \
+                mock.patch.object(drive, "resume_battle", return_value=True), \
+                mock.patch.object(drive, "ensure_cursor_mode", return_value=True), \
+                mock.patch.object(drive, "do_goto", return_value=True), \
+                mock.patch.object(drive, "wait_mode", return_value="status"), \
+                mock.patch.object(drive, "report"), \
+                mock.patch.object(drive, "log_action"), \
+                mock.patch.object(drive, "send", return_value=(1, current)) as send:
+            self.assertTrue(drive.do_engage({"engage": [21, 17]}))
+            self.assertTrue(drive.do_move_unit({"move_unit": {"from": [21, 17], "to": [21, 18]}}))
+        send.assert_not_called()
+
+
 class SweepAutoEnd(unittest.TestCase):
     """末名行動後的自動換手不得被另一個 END 跳過；保留舊計畫的旗標語意。"""
 
