@@ -857,6 +857,46 @@
       "why": "2026-09-18 第十一章：seq 5525 之後有 11 個點各差約 278 px，全部落在同一格 22×16 的範圍——那是沒有換成打開的箱子，不是相位差。只看最大值與通過與否會直接放過。",
       "date": "2026-09-18",
       "evidence": "docs/data/ui-traces/parity-ch11.json；docs/figures/parity-ch11-samples-p*.png"
+    },
+    {
+      "id": "chapter-receipt-requires-planned-endpoints",
+      "area": "對拍",
+      "rule": "章驗收先核對受版控計畫的所有明示節點與交易；截短或仍在執行的收據不得標為 passed，計畫要求存檔時不得以 not_sampled 放行。使用 tools/verify_chapter_parity.py 的 plan_completion 核對完整性，再判四 gate。",
+      "why": "2026-10-01 第十二章預檢僅有開場與第一回合，舊驗證器已回報 passed；戰後、寶箱 HUD、酒店存檔與祕密商店尚未執行。#45 修正缺少計畫動作時的節點及交易 gate。",
+      "date": "2026-10-01",
+      "evidence": "tools/test_verify_chapter_parity.py；work/parity-slot-ch12/preflight-receipt.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py"
+        ],
+        "pattern": "planned_save_missing",
+        "note": "計畫存檔缺少時，交易 gate 必須失敗。"
+      }
+    },
+    {
+      "id": "shared-exp-reset-needs-exact-caller",
+      "area": "逆向",
+      "rule": "追共用累計的重設時，先用IDA函式邊界與確切caller核對writer，並檢查早退是否跳過清零；相鄰函式尾段的重設不得移植為下一個物理入口契約。入口見58與docs/data/ida/fd2_shared_physical_exp_20261001.json。",
+      "why": "第十二章原版無反擊仍發15經驗；舊106把sub_15311尾段0x1546A誤作sub_1548E物理入口重設，漏掉滿級早退保留[0x53EC8]，導致洛娜少升級與後續HP偏離。",
+      "date": "2026-10-01",
+      "evidence": "docs/data/ida/fd2_shared_physical_exp_20261001.json；docs/knowledge-base/106-physical-attack-counterattack-20260910.md"
+    },
+    {
+      "id": "same-position-ring-is-valid-replay",
+      "area": "對拍",
+      "rule": "原版move的起終點相同時，以正式confirm後是否開指令環判斷成功，不要求必有走行動畫；任何實際重播分岔都由tools/verify_chapter_parity.py的replay_divergences拒絕，不能因座標相同放行。",
+      "why": "第十二章第11回合重回已開箱格，原版原地confirm開環；舊重播把walk=nil誤判拒絕，隨後待機造成座標碰巧相同，舊行為gate未看divergence註記。",
+      "date": "2026-10-01",
+      "evidence": "docs/data/ui-traces/parity-ch12.json；tools/test_verify_chapter_parity.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py"
+        ],
+        "pattern": "remake_divergence",
+        "note": "重播實際分岔仍為行為失敗。"
+      }
     }
   ]
 }

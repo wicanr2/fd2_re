@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 30 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -45,7 +45,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 ### HUD 地形描述子仍讀載入時的可編輯地圖，不是事件會改寫的可變緩衝
 
-`hud-terrain-descriptor-reads-editable-map` · RE待解 · [#43](https://github.com/wicanr2/fd2_re/issues/43) · 仍未完成 · 自承還在 docs/knowledge-base/56-fd2-remake-sdd.md
+`hud-terrain-descriptor-reads-editable-map` · RE待解 · [#43](https://github.com/wicanr2/fd2_re/issues/43) · **可能已完成，回去確認** · 找不到 目前仍讀可編輯地圖的
 
 第十一章接上了繪圖端的可變地圖緩衝：`0x12263` 在 mode 5 撿走寶箱時把該格圖塊字 +1，重製端 `buildNativeMapFrameInput` 改讀 `State.NativeMapDrawTiles()`，那一格才會換成打開的箱子（收據 `docs/data/ui-traces/parity-ch11.json` seq 5797 由 278 px 變 0 px）。
 
@@ -135,7 +135,7 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 ### 玩家開箱走 OpenedTreasure，沒有改可變地圖緩衝：箱子不會變成打開的，事件也沒被消掉
 
-`player-chest-open-bypasses-native-map-buffer` · 缺陷 · [#44](https://github.com/wicanr2/fd2_re/issues/44) · 仍未完成 · 自承還在 remake/internal/battle/model.go
+`player-chest-open-bypasses-native-map-buffer` · 缺陷 · [#44](https://github.com/wicanr2/fd2_re/issues/44) · **可能已完成，回去確認** · 找不到 OpenedTreasure is remake-owned state for editable treasure nodes
 
 第十一章接上了敵方 mode 5 撿寶箱那一條：`0x12263` 把該格圖塊字 +1（關著的箱子換成打開的）並清掉格子的事件 byte，重製端的繪圖端改讀同一份可變緩衝（`State.NativeMapDrawTiles`），收據 `docs/data/ui-traces/parity-ch11.json` seq 5797 由 278 px 變 0 px。
 
@@ -147,6 +147,58 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 這條不只是外觀。敵人撿走的東西會掛在牠身上、被擊倒時掉出來，是戰役分支的一環（天空之鑰 `0x24B14(0x64)` 的 gate 見 `56` 與 `58` 的 ch20／ch26 列），所以「誰先拿到那一格」必須和原版一致。
 
 怎樣算做完：玩家開箱與敵方 mode 5 取寶箱共用同一份原版狀態：開箱時寫 `NativeEventState`、走 `0x12263` 的圖塊字 +1 與事件 byte 清除，`OpenedTreasure` 不再是另一個平行來源（或降成它的投影）。先反組譯玩家側開箱那條路徑（`0x190AC` 之後的狀態寫入端）確認原版寫了哪些位址，再接執行期；驗收要有一章對拍收據，抽樣包含「玩家踏上寶箱之後那一格的畫面」與「同一格敵方不再重複觸發」。
+
+### 第十二章缺記錄 14 倒下即敗北的原生結果規則
+
+`ch12-protected-record14-result-missing` · 缺陷 · [#46](https://github.com/wicanr2/fd2_re/issues/46) · 仍未完成 · 要人判
+
+原版 sample-r2 第五回合友軍記錄 14 HP 歸零後返回標題，我方 14 人仍存活。26 與 battle_events.json 已記 sub_2073D，但 ch12.json 缺接線。IDA 9.4 已核 0x2074E 查記錄 14 +5 bit0，0x2075A 寫結果 1。
+
+怎樣算做完：ch12.json 接入已證實的記錄 14 原生結果規則；bit0／bit7 回歸與普通原版保護友軍路徑驗證，第十二章對拍通過。
+
+### 第十二章敗北流程走自訂撤退再戰，未接原版返回標題
+
+`ch12-defeat-return-to-title` · 缺陷 · [#47](https://github.com/wicanr2/fd2_re/issues/47) · 仍未完成 · 自承還在 remake/assets/scenarios/campaign_full.json
+
+原版 sample-r2 第 5 回合記錄 14 倒下後，checkpoint-2429.png 已返回標題；ch12.json 的敗北判準另由 #46 接線。campaign_full.json 的 retreat_ch12 目前仍是自訂撤退台詞並 next battle_ch12，confirmBattleResult 經 OnLose 走此分支。原版敗北訊息、輸入與返回標題的有限控制流尚未形成 READY 規格。
+
+怎樣算做完：以 sample-r2 的失敗收據與原版 caller 閉合敗北提示／輸入／返回標題的有限順序，建立 READY 規格後接入正式玩家路徑並做同狀態驗證；不得只刪掉自訂台詞後猜補流程。
+
+### 物理 AI 遺失保留經驗，導致第十二章升級與後續 HP 偏離
+
+`ch12-growth-derived-stats-diverge` · 缺陷 · [#48](https://github.com/wicanr2/fd2_re/issues/48) · 仍未完成 · 要人判
+
+初始觀察：sample-r3 第六回合洛娜（記錄 10）原版已升級，AP／DP=382／154，preflight3 第七回合 AI 輸入仍為 376／148。同一 AI 決策 RNG word 22986 下，記錄 31 攻擊的原版傷害 27、重製 33；第八、九回合 6 個核對點 HP 持續差 6。
+
+2026-10-01 勘誤：preflight4 的逐點數值紀錄顯示重製端並未升級；不是升級後投影回退。原版 seq 3068 隔空未命中且沒有反擊，洛娜卻由 EXP 52 變 67。IDA 9.4 直接 writer／consumer 已證實物理 AI 入口 sub_1548E 不重設 [0x53EC8]，滿級早退不清零，後續無反擊仍對被打單位消費保留值。106 原把 sub_15311 的 0x1546A 清零當成物理入口，已保留原文並追加勘誤；主證據 docs/data/ida/fd2_shared_physical_exp_20261001.json，規格 56 READY。缺少的 15 EXP 來自先前滿級反擊屬強推論，尚未直接擷取該全域。修正後 preflight5 洛娜 Lv27／EXP3、AP382／DP154 已對齊，但重播死亡對話後的升級確認另需補足，再做完整章驗證。
+
+怎樣算做完：定位最早攻防數值偏離的寫入／回讀端，依既有或補足的原版證據建立 READY 修規，補升級與原生狀態投影的回歸；第十二章完整行為、畫面、交易／存檔與節點 gate 通過。
+
+### 第十二章戰後固定 60 槽，拒絕原生 45 槽接手
+
+`ch12-post-runtime-slot-count` · 缺陷 · [#49](https://github.com/wicanr2/fd2_re/issues/49) · 仍未完成 · 要人判
+
+完整 sample-r5 重播已取箱，但 ch11_post runtime_context 固定 60，原版 seq 3853／3854／3873 均為 45 筆：14 我方＋group1 11＋group2 8＋group3／4 各6。已由既閉合編組 producer 與 dosgolem a9bcd62 收據核對；不得材料化 group255 佔位列。
+
+怎樣算做完：binding 明示接受已證實 45 槽，保留既有 60 槽相容；編譯正規資料並由完整章重播走 ACTING45／JOIN17 進城鎮，四 gate 通過。
+
+### 戰後隊伍同步漏清原生行動與暫態欄位
+
+`postbattle-raw-transient-sync-missing` · 缺陷 · [#50](https://github.com/wicanr2/fd2_re/issues/50) · 仍未完成 · 要人判
+
+第十二章 sample-r5／remake-r2 酒店存檔差異定位槽0+5與槽10+25；IDA Pro 9.4 sub_11506 0x11586／0x1158E 已證實清六個暫態 bytes及 +5 &=1。既有 runtime 只清相容欄位；原始證據與 READY 規格見 58／56 本輪條目。
+
+怎樣算做完：持續槽正確清六個 raw 暫態 bytes與acted位元，保留inactive bit0，active回填HP、MP回填，來源戰場不變；完整第十二章存檔SHA-256與原版相同且四gate通過。
+
+### 死亡事件對話底圖與行動完成位元時序偏離
+
+`death-dialogue-actor-grays-too-early` · 缺陷 · [#51](https://github.com/wicanr2/fd2_re/issues/51) · 仍未完成 · 要人判
+
+第十二章 sample-r5 seq3109 記錄10 +5=0，3116 才為128；remake-r3 對白底圖相差860像素。既有 composeNativeMapFrameBeforeActed 只暫清一幀，200ms delay 重繪又恢復灰化。沿已閉合 0x18890／0x1AA1D／0x13512 順序，由正式 Game 結算保留入口bit7至尾端 owner；56 READY／58 直接同狀態反證已登錄。
+
+同輪勘誤：remake-r6 直接原圖放大顯示860像素來自兩個待機相位，兩側灰階相同；初始灰化解釋不成立。raw bit7 提前發布與選取清除後尾端漏發布仍由指令及收據確認，已修正且完整行為／存檔對齊。最後畫面差異是重播器在死亡對白分支忽略已枚舉的框外相位；沿既有升級對白的同一方式枚舉上／下框外的原生 renderer 相位，保留所有框內像素，不抄原版圖。
+
+怎樣算做完：死亡事件延遲及對白前攻擊者未變灰，尾端按原版順序發布bit7，完整第十二章四gate通過；不改像素預算或遮罩差異。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -175,6 +227,22 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 開場配樂曲號、戰鬥曲與勝利曲的對應、以及 UI 音效 index 2..0xb 的語意畫面，都要實際聽辨才能定案。容器內無音訊裝置，驗不了。
 
 怎樣算做完：逐項聽辨後修正曲號對映與音效語意記錄。
+
+### 第十二章 HUD 地形縮圖反覆出現單像素差異
+
+`ch12-hud-terrain-single-pixel` · 缺陷 · [#52](https://github.com/wicanr2/fd2_re/issues/52) · 仍未完成 · 要人判
+
+sample-r5／remake-r8 的完整四gate通過，但13個點反覆在 HUD 地形縮圖 x11 的不同視窗y位置差1像素，seq60／63／87／103／111／229／436／443／622／630／747／3137／3152。顏色是地形綠褐色或黑色，非整體DAC相位；根因未知。已由原版及重製RGB逐點核實，保留parity-ch12與抽樣圖。本項是本章通過後的可選像素修飾，不阻塞111收據。
+
+怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第十二章取寶提問底圖仍顯示游標框
+
+`ch12-treasure-prompt-cursor-remains` · 缺陷 · [#53](https://github.com/wicanr2/fd2_re/issues/53) · 仍未完成 · 要人判
+
+sample-r5 seq3820「發現寶藏，要挖掘嗎？」的上方英雄沒有游標框；remake-r8 remake-0271-p11.png 顯示框線，差134像素，bbox [244,28,267,51]。取得後seq3853箱格及HUD為0px、存檔相同；不影響#43／#44的共用原生事件狀態與開箱驗收。本項是已passed章內的可選提示畫面修飾。
+
+怎樣算做完：依原生取寶提示開框前的游標／底圖契約補足READY規格與正式介面接線，seq3820游標框差異消失，取得後事件狀態及HUD仍相同。
 
 ## release — 發行、平台與封包
 
@@ -239,5 +307,13 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
+
+### 章對拍未核計畫完整性，截短收據可能誤報 passed
+
+`chapter-parity-truncated-plan-pass` · 缺陷 · [#45](https://github.com/wicanr2/fd2_re/issues/45) · 仍未完成 · 要人判
+
+第十二章原版仍執行時，預檢只重播開場與第一回合 33 個動作，verify_chapter_parity.py 已回報 passed；戰後、寶箱 HUD 與計畫要求的酒店存檔尚未執行，存檔卻以 not_sampled 通過。重現：work/parity-slot-ch12/preflight-receipt.json。
+
+怎樣算做完：逐項核對受版控計畫的 mark 與清場、買賣、存檔、祕密商店動作；截短或執行中收據必須 failed，缺計畫存檔不得 not_sampled 通過；既有完整章收據仍通過，加入截短回歸。
 
 <!-- END fd2_worklist.py render -->

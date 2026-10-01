@@ -8381,8 +8381,72 @@ IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x1
 
 限制：r1 計畫 7 回合吃掉 1.9e10／2.5e10 指令預算才停在第 7 回合，改抽樣到第 6 回合、第 7 回合清場
 （預算 3e10）。玩家自己踏事件格、玩家法術／物品沒有驅動端指令，抽樣不涵蓋；HUD 的地形描述子
-（重製端 `nativeMapHUDInput`）目前仍讀可編輯地圖的 `field.Tiles`，游標停在已打開的箱子上要不要換
-描述子沒有收據。
+（重製端 `nativeMapHUDInput`）當時讀取初始 `field.Tiles` 的限制已由 2026-10-01
+下列 IDA 證據判定；第十二章動態收據仍待驗收。
+
+## 玩家開箱與 HUD 共用地圖緩衝（2026-10-01，#44／#43）
+
+狀態：`READY`。主證據與固定輸入身分見 `58` §五及
+[`fd2_player_chest_hud_20261001.json`](../data/ida/fd2_player_chest_hud_20261001.json)。
+本節只授權已證實的普通物品／金錢、事件狀態及地圖消費端接線；滿欄交換的提示
+與未知事件 handler 不因本次變更擴張。
+
+1. `TreasureAt` 以 `NativeEventState[slot]` 判定可領取；`OpenedTreasure` 僅為相容投影，
+   不得遮蔽原生狀態。slot 必須在 0..31，原生地圖已材料化時先驗證完整緩衝及控制列。
+2. 物品 YES 成功把物品放入行動者的八格庫存後設事件狀態（`0x19239..0x1924B`）；
+   關框後才跑共用 `0x12263` 更新（`0x19263..0x19268`）。金錢 YES 先保留接受狀態，
+   關框後才入帳、設事件狀態並更新（`0x194DE..0x194F7`）。NO、來源變動或滿欄不得變更狀態。
+3. 同步非提示入口一次完成交易及地圖更新。已證實的事件寶物 handler 依既有 OpenSlots
+   設同一份事件表，不新增推測事件；玩家不得寫 mode 5 專用死亡獎勵。
+4. 共用更新依 `0x12299..0x122D0`：控制列第 0 byte `&0x60==0x20` 且事件狀態非零時，
+   tile word 加一、事件 byte 清零，保留其他 byte；更新前驗證所有格，避免半套交易。
+5. HUD 依 `0x1AD9D→0x12E38` 讀同一份可變 tile，低十位索引描述子及控制列。
+   未材料化的故事畫面才沿用初始地圖；已材料化但損壞時拒絕畫面，不偷偷退回初始值。
+6. 戰場存檔仍序列化既有原生事件表與地圖影像，不新增存檔格式或平行寶箱清單。
+   驗收：開箱前後圖塊／HUD、NO 與滿欄零交易、敵方 mode 5 不重複取物、同一事件只領一次、
+   提示關框時序、既有存檔回歸；第十二章對拍包含玩家開箱及游標回到已開格。
+
+## 第十二章回合事件 35（2026-10-01）
+
+狀態：`READY`。原版定位與固定輸入身分見 `58` §五及
+[`fd2_ch12_events_20261001.json`](../data/ida/fd2_ch12_events_20261001.json)。
+依 FDFIELD 回合控制列在第 1 回合的既有 phase 分派，完整執行
+pan(12,5) → placement gate 1 的 group 2 登場 → ACTING 42 → reset_pose。
+資料由 `tools/extract_native_death_events.py` 逐指令核對後產生，再以
+`tools/sync_native_turn_events.py --write --chapters 12` 降成劇本；保留來源位址。
+已證實 `0x34CAE` 尾跳 `0x134E4` 視同該動作完成，不把 helper 展開成第二套事件。
+驗收包含來源覆蓋檢查、正式回合事件測試及第十二章增援後畫面。
+死亡事件 37 的 group 3／4 與 ACTING 43／44 沿用既有正式程式，不新增觸發條件。
+同份 IDA 證據也閉合事件 36：在第 5 回合的友軍 phase，將記錄 14 的 `+0x34`
+覆寫為 `0x83`（`0x34CBD..0x34CCB`），沿用既有具型別 `record_bytes` 動作與原生回合控制列。
+不以我方名冊長度重新換算索引，不只改低 nibble；正式轉寫同屬 `READY`。
+
+第十二章戰場接手同屬 `READY`：`ch11_pre` 已按原生 placement gate 1 建構 group 1，
+`ch12.json` 啟用 `runtime_append_groups`，由 `AdoptHandlerBattleState` 保留同一份演員與
+選擇器順序；`initial_groups [1]` 僅確認既有編組，不重播建構，也不把 group 255 佔位列
+材料化。原版 dosgolem `a9bcd62` 的 `work/parity-slot-ch12/sample-r1/checkpoint-0060.json`
+（`battle_start`）給出鏡頭 `(9,42)`、游標 `(15,44)`、可見位置 `(6,2)`、range mode 1。
+`battle_ch12` 依此設定視圖，HUD gate B 沿用既有戰場控制器的 1，gate A／anchor 保留
+前一節點的持續狀態。本段保留實作前 READY 規格；最後四 gate 結果與 CONFORMED 分級見本檔「第十二章收尾驗收」。
+
+章收據完整性（`READY`）：四 gate 必須涵蓋受版控計畫中所有明示的 mark、清場、
+商店買賣、酒店存檔與祕密商店動作。原版動作或重製檢查點缺任一項時節點 gate 失敗；計畫要求存檔
+卻沒有原版存檔動作時，交易 gate 不得以 `not_sampled` 通過。這是 `111` 整章工作單元
+原有驗收條件的工具落實，適用於正在執行、逾時與截短的收據；不調整像素或行為容許值。
+
+本輪亂數測試條件：原版在 dosgolem 決定性的全新程序起點執行，開機檢查點的 RNG word
+固定為 22661；重製側原生 RNG 初值為 0，另以 `FD2_SEED=4` 固定相容 Go 亂數，兩者均
+在重播前設定。AI／攻擊確認／END／升級的比較點依既有受控 RNG word 收據同步，
+不把相同數字當成不同亂數實作的等價證明，也不更改正式遊戲的時鐘種子。
+
+第十二章敗北規則（`READY`）：依 `58` 的 `sub_2073D` 直接指令，先做既有 default
+結果，再查 raw 記錄 14 的 `+5 bit0`；非零時覆寫結果碼 1。劇本使用
+`native_result_handler="0x2073d"`、`native_result_code1_records=[14]`，保留原生
+記錄順序，不以角色姓名或隊伍長度取代固定索引。NPC 倒下而我方仍存活的測試必須敗北，
+bit7 的已行動狀態不得觸發；正常玩家驗收須在原版允許的輸入下保護該友軍。
+此規格只閉合結果判準，不提升敗北提示與返回標題的完整介面流程。
+`retreat_ch12` 的自訂撤退再戰分支已由原版 sample-r2 返回標題畫面反證；
+後續有限 caller／輸入與正式路徑接線由 [#47](https://github.com/wicanr2/fd2_re/issues/47) 追蹤。
 
 ## 111 五章回顧：ch01–05 累積畫面差異分類（2026-09-16）
 
@@ -8412,3 +8476,34 @@ IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x1
 | 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 2（wait）＋ 18 個 `ai_order` | — | 規則 `oracle_mid_end_turn` |
 
 ENEMY PHASE 橫幅馬賽克的兩格取樣色差第六章沒再出現。
+
+## 第十二章共用物理經驗累計（2026-10-01，#48）
+
+狀態：READY。原版直接 writer／consumer 與勘誤見 58 的本輪條目，
+主證據為 fd2_shared_physical_exp_20261001.json。在原生戰場持續保留
+[0x53EC8] 的戰鬥內累計；玩家物理入口先重設，由我方揮擊最後一擊覆寫。
+敵方揮擊沒有 writer，反擊若為我方則覆寫；敵方物理 caller 對被打單位消費累計，
+不以「有反擊」作必要條件。玩家 caller 的 99 上限保留；
+零值、已倒下或滿級早退不清累計，正常收下經驗後才清零。
+已閉合的 AI 效果／道具路徑在動作邊界投影 0x1546A／0x152FD 清零；
+此暫態全域不新增到存檔格式，不推測未知效果累計。
+
+驗收以固定種子與同一受控 RNG 比較：滿級反擊保留經驗，後續沒有反擊的敵方
+物理行動將經驗交給被打的非滿級我方、正常消費後不重複發放；
+第十二章洛娜經驗、升級、後續 HP 與完整四 gate 均需相符。
+
+第十二章戰後接手（2026-10-01，READY）：ch11_post 的 runtime_context 接受明示集合 [45,60]；45 是本輪原版逐編組追加後的實際槽數，60 是既有編輯資料相容形狀。其他槽數仍失敗即關閉，不補 group 255 佔位列。驗收由完整章重播走 layout／ACTING45／JOIN17 進 town_ch13。
+
+第十二章戰後配置／持續槽同步（2026-10-01，READY）：依 [戰後主證據](../data/ida/fd2_ch12_post_persistence_20261001.json)，binding 保存三張表的 slots0..13 與特殊槽14、camera=(4,0)。syncPartyFromBattleRecords 在私有持續快照清 NativeTransient 六欄、raw +5 &=1，active 回填 MaxHP，MP 回填 MaxMP；保留原先戰場物件與位置／pose，不把清理寫回戰鬥來源。驗收包含 active／inactive raw 狀態與來源不變的測試，以及原版完整章酒店存檔整檔 SHA-256 相同。
+
+死亡事件行動灰化（2026-10-01，READY）：Game 玩家選取單位的物理結算與升級排隊保留行動者入口的 raw +5 bit7，死亡／掉落程式及延遲使用這份未行動完成的呈現；finishSuccessfulUnitAction 的既有 0x13512 owner 才發布 bit7。保留傷害導致的bit0與其他raw狀態。驗收以延遲後對白灰化時序、正式結算回歸與第十二章 seq3109 畫面；不移動經驗對話的灰化順序。
+
+此灰化切片的尾端玩家辨識以既有選取指標，或非 AI 執行中的原生 +6==2 為準；正式攻擊在等待對話前會清選取指標，不得因此漏發布行動完成位元。第十二章整章行為比對須同時驗證後續換手與 HP，不能只用單張灰化圖通過。
+
+## 第十二章收尾驗收（2026-10-01）
+
+本輪玩家寶箱／可變地圖 HUD、事件35／36、原生結果2073D、共用物理經驗、戰後配置與持續槽同步等 READY 切片，經完整章驗證後為 CONFORMED／RUNTIME-E1；章路徑 PLAYER-E2 採111建構槽與最後清場例外。原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。
+
+[正式收據](../data/ui-traces/parity-ch12.json)、[槽清冊](../data/parity-slots/ch12-manifest.json)、[抽樣索引](../data/ui-traces/parity-ch12-samples.json)與[逐章台帳](../data/parity-campaign-progress.json)可回查。第10回合玩家取物56，seq3853已開箱格與HUD為0px；死亡對白seq3109相位比較為0px。共用經驗的writer／consumer已證實，特定15經驗來源仍為強推論，不升格原版全域動態實測。
+
+17個HUD單像素區域（13個純單像素畫面、4個與指令環差異共存）與取寶提問框外游標134px分別由[#52](https://github.com/wicanr2/fd2_re/issues/52)／[#53](https://github.com/wicanr2/fd2_re/issues/53)追蹤；敗北返回標題[#47](https://github.com/wicanr2/fd2_re/issues/47)與#41仍未閉合。強化槽不證明傷害／存活／敵方選目標忠實度，第四～十一章依117未重跑。

@@ -1353,7 +1353,7 @@ func TestCh11PostBindingMaterializesLayoutActAndDialogue(t *testing.T) {
 	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch11 post compile err=%v issues=%#v", err, issues)
 	}
-	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || beats[0].RuntimeContext.SlotCount != 60 {
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || !reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{45, 60}) {
 		t.Fatalf("ch11 runtime context=%#v", beats[:min(len(beats), 1)])
 	}
 	var layout, act *Beat
@@ -1368,7 +1368,7 @@ func TestCh11PostBindingMaterializesLayoutActAndDialogue(t *testing.T) {
 			dialogs = append(dialogs, &beats[i])
 		}
 	}
-	if layout == nil || len(layout.Layout.Units) != 14 || layout.Layout.Units[2].X != 10 || layout.Layout.Units[2].Y != 4 || layout.Layout.Units[2].Pose != 0 || layout.Layout.CamX != 336 || layout.Layout.CamY != 0 || act == nil || len(act.Acting) != 2 || !act.Acting[0].Special || act.Acting[0].Units[0].Slot == nil || *act.Acting[0].Units[0].Slot != 8 || len(dialogs) != 10 || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 3 || dialogs[2].Line != 2 || dialogs[3].SceneIndex == nil || *dialogs[3].SceneIndex != 3 || dialogs[9].Line != 9 {
+	if layout == nil || len(layout.Layout.Units) != 15 || layout.Layout.Units[2].X != 9 || layout.Layout.Units[2].Y != 4 || layout.Layout.Units[2].Pose != 2 || layout.Layout.CamX != 96 || layout.Layout.CamY != 0 || layout.Layout.Units[14].Slot != 14 || layout.Layout.Units[14].X != 10 || layout.Layout.Units[14].Y != 2 || layout.Layout.Units[14].Pose != 0 || act == nil || len(act.Acting) != 2 || !act.Acting[0].Special || act.Acting[0].Units[0].Slot == nil || *act.Acting[0].Units[0].Slot != 8 || len(dialogs) != 10 || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 3 || dialogs[2].Line != 2 || dialogs[3].SceneIndex == nil || *dialogs[3].SceneIndex != 3 || dialogs[9].Line != 9 {
 		t.Fatalf("ch11 layout=%#v act=%#v dialogs=%#v", layout, act, dialogs)
 	}
 }

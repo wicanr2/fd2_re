@@ -911,6 +911,30 @@ func TestSyncPartyUsesNativeIdentityWhenFigDiffers(t *testing.T) {
 	}
 }
 
+func TestSyncPartyClearsRawTransientStateWithoutChangingBattle(t *testing.T) {
+	for _, status := range []byte{0x80, 0x83} {
+		source := &battle.Unit{Camp: battle.Own, Fig: 4, HP: 3, MaxHP: 30, MP: 2, MaxMP: 7,
+			HasNativeRecordByte5: true, NativeRecordByte5: status, Acted: true,
+			NativeTransient: [battle.NativeTransientCount]byte{1, 2, 3, 4, 5, 6}}
+		g := &Game{partyMembers: map[int]bool{4: true}, st: &battle.State{Units: []*battle.Unit{source}}}
+		if err := g.syncPartyFromBattle(); err != nil {
+			t.Fatal(err)
+		}
+		got := g.partyRoster[4]
+		wantHP := 30
+		if status&1 != 0 {
+			wantHP = 3
+		}
+		if got.NativeRecordByte5 != status&1 || got.NativeTransient != [battle.NativeTransientCount]byte{} ||
+			got.Acted || got.HP != wantHP || got.MP != 7 {
+			t.Fatalf("sync status=%#x: %+v", status, got)
+		}
+		if source.NativeRecordByte5 != status || source.NativeTransient[3] != 4 || source.HP != 3 || !source.Acted {
+			t.Fatalf("sync changed battle source: %+v", source)
+		}
+	}
+}
+
 func TestSyncPartySkipsUnknownNativeIdentity(t *testing.T) {
 	g := &Game{
 		partyMembers: map[int]bool{4: true},

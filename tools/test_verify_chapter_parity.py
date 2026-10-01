@@ -1,5 +1,6 @@
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -8,6 +9,56 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_rejected_action_fails_even_when_unit_state_matches(self):
+        cp = {"kind": "move", "oracle_seq": 3847, "units": [],
+              "note": "divergence: 原版接受、重製端拒絕"}
+        failures = vp.replay_divergences([cp, {"kind": "wait", "note": "skipped after divergence"},
+                                        {"kind": "move", "note": "rng_synced"}])
+        self.assertEqual(len(failures), 1)
+        self.assertEqual(failures[0]["status"], "remake_divergence")
+        self.assertEqual(failures[0]["seq"], 3847)
+
+    @unittest.skipIf(vp.Image is None, "需要容器內 Pillow")
+    def test_frame_diff_keeps_exact_rgb_count_and_inclusive_bounds(self):
+        with tempfile.TemporaryDirectory() as root:
+            a = vp.Image.new("RGB", (320, 200), (10, 20, 30))
+            b = a.copy()
+            pa, pb = Path(root) / "a.png", Path(root) / "b.png"
+            a.save(pa)
+            b.save(pb)
+            self.assertEqual(vp.frame_diff(pa, pb), (0, []))
+            for at, color in [((0, 0), (11, 20, 30)), ((319, 199), (10, 21, 30)),
+                              ((12, 47), (10, 20, 31)), ((20, 80), (11, 21, 31))]:
+                b.putpixel(at, color)
+            b.save(pb)
+            self.assertEqual(vp.frame_diff(pa, pb), (4, [0, 0, 319, 199]))
+            # 密集差異也與原先逐點 RGB 比較完全一致。
+            b = vp.Image.new("RGB", (320, 200), (10, 20, 31))
+            b.save(pb)
+            self.assertEqual(vp.frame_diff(pa, pb), (64000, [0, 0, 319, 199]))
+
+    def test_truncated_plan_cannot_pass_without_postbattle_and_save(self):
+        plan = [{"mark": "battle_start"}, {"mark": "town_after_battle"},
+                {"town_save": True}, {"secret_shop": {"key": "alt-f2"}}]
+        actions = [{"kind": "mark", "label": "battle_start"}]
+        result = vp.plan_completion(plan, actions)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["missing"],
+                         {"mark:town_after_battle": 1, "town_save": 1, "secret_shop": 1})
+        actions += [{"kind": "mark", "label": "town_after_battle"},
+                    {"kind": "town_save"}, {"kind": "secret_shop"}]
+        self.assertTrue(vp.plan_completion(plan, actions)["ok"])
+        result = vp.plan_completion(plan, actions, [{"kind": "battle_start"}])
+        self.assertFalse(result["ok"])
+        self.assertIn("town_save", result["remake_missing"])
+
+    def test_repeated_planned_marks_require_each_occurrence(self):
+        plan = [{"mark": "checkpoint"}, {"mark": "checkpoint"}]
+        actions = [{"kind": "mark", "label": "checkpoint"}]
+        self.assertEqual(vp.plan_completion(plan, actions)["missing"], {"mark:checkpoint": 1})
+        self.assertEqual(vp.plan_completion([{"mark": "checkpoint", "repeat": 3}], actions)["missing"],
+                         {"mark:checkpoint": 2})
+
     def test_after_enemy_phase_pairs_with_the_next_action(self):
         actions = [{"kind": "end_turn", "seq": 50}, {"kind": "select", "seq": 80}, {"kind": "move", "seq": 95}]
         self.assertEqual(vp.pair_oracle_seq(actions, {"kind": "after_enemy_phase", "oracle_seq": 50}), 80)

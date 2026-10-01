@@ -21,6 +21,7 @@ gate：
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import datetime as dt
 import hashlib
 import json
@@ -30,7 +31,7 @@ import sys
 from pathlib import Path
 
 try:
-    from PIL import Image
+    from PIL import Image, ImageChops
 except ImportError:  # pragma: no cover - 容器外沒有 Pillow
     Image = None
 
@@ -45,6 +46,32 @@ def read_jsonl(path: Path) -> list[dict]:
             if line and not line.startswith("#"):
                 out.append(json.loads(line))
     return out
+
+
+def plan_completion(plan: list[dict], actions: list[dict], remake_cps: list[dict] | None = None) -> dict:
+    """截短或仍在執行的原版收據不得冒充完整章工作單元。"""
+    required = Counter()
+    for step in plan:
+        copies = max(0, int(step.get("repeat", 1)))
+        if step.get("mark"):
+            required["mark:" + step["mark"]] += copies
+        for kind in ("force_enemy_clear", "shop_sell", "shop_buy", "town_save", "secret_shop"):
+            if step.get(kind):
+                required[kind] += copies
+    observed = Counter(
+        "mark:" + a.get("label", "") if a.get("kind") == "mark" else a.get("kind", "")
+        for a in actions
+    )
+    missing = dict(required - observed)
+    remake_missing = {}
+    if remake_cps is not None:
+        observed_remake = Counter(
+            "mark:" + cp.get("kind", "") if "mark:" + cp.get("kind", "") in required
+            else cp.get("kind", "") for cp in remake_cps
+        )
+        remake_missing = dict(required - observed_remake)
+    return {"ok": not missing and not remake_missing, "required": dict(required),
+            "missing": missing, "remake_missing": remake_missing}
 
 
 def oracle_checkpoint(run: Path, seq: int) -> dict | None:
@@ -79,14 +106,13 @@ def frame_diff(oracle_png: Path, remake_png: Path) -> tuple[int, list[int]]:
     b = Image.open(remake_png).convert("RGB")
     if a.size != (320, 200) or b.size != (320, 200):
         raise ValueError(f"畫面尺寸不是 320×200：{a.size} vs {b.size}")
-    pa, pb = a.load(), b.load()
-    diff, minx, miny, maxx, maxy = 0, 320, 200, -1, -1
-    for y in range(200):
-        for x in range(320):
-            if pa[x, y] != pb[x, y]:
-                diff += 1
-                minx, miny, maxx, maxy = min(minx, x), min(miny, y), max(maxx, x), max(maxy, y)
-    return diff, [minx, miny, maxx, maxy] if diff else []
+    # 任一 RGB 通道非零就算一個不同像素；以 Pillow 執行整張比較，
+    # 保留逐像素等值判定與含端點的 bbox，不改門檻或排除任何區域。
+    red, green, blue = ImageChops.difference(a, b).split()
+    different = ImageChops.lighter(ImageChops.lighter(red, green), blue)
+    diff = 320 * 200 - different.histogram()[0]
+    box = different.getbbox()
+    return diff, [box[0], box[1], box[2] - 1, box[3] - 1] if box else []
 
 
 def oracle_gold_for(actions: list[dict], seq: int, kind: str, view: dict) -> int | None:
@@ -125,6 +151,13 @@ def frame_comparable(remake_cp: dict) -> bool:
     """after_enemy_phase 只比行為：它借用下一個動作的原版檢查點，而那張圖是動作做完
     之後（選取後的移動範圍、END 後的換手橫幅）拍的，原版沒有同一瞬間的閒置畫面。"""
     return remake_cp.get("kind") != "after_enemy_phase"
+
+
+def replay_divergences(checkpoints: list[dict]) -> list[dict]:
+    """重播拒絕原版接受的動作時，後續狀態碰巧相同也不得放行。"""
+    return [{"seq": cp.get("oracle_seq"), "kind": cp.get("kind"),
+             "status": "remake_divergence", "note": cp["note"]}
+            for cp in checkpoints if str(cp.get("note", "")).startswith("divergence:")]
 
 
 # 0x1A30B..0x1A7BD 是換手處理（回復、回合事件、友軍 AI、橫幅、敵軍 AI）。原版側的
@@ -183,7 +216,11 @@ def main() -> int:
     runner = json.loads((args.oracle / "runner.json").read_text(encoding="utf-8"))
     actions = read_jsonl(args.oracle / "actions.jsonl")
     remake_cps = read_jsonl(args.remake / "checkpoints.jsonl")
+    completion = plan_completion(read_jsonl(args.plan), actions, remake_cps)
     manifest = json.loads(args.slot_manifest.read_text(encoding="utf-8"))
+    settings_path = args.remake / "replay-settings.json"
+    replay_settings = json.loads(settings_path.read_text(encoding="utf-8")) if settings_path.is_file() else None
+    boot_checkpoint = oracle_checkpoint(args.oracle, 0) or {}
 
     behavior: list[dict] = []
     node_seq_oracle: list[str] = []
@@ -256,11 +293,14 @@ def main() -> int:
     runtime_errors = [cp.get("note") for cp in remake_cps if cp.get("kind") == "runtime_error"]
     for note in runtime_errors:
         behavior.append({"seq": None, "kind": "runtime_error", "status": "remake_runtime_error", "note": note})
+    behavior.extend(replay_divergences(remake_cps))
     behavior_ok = all(e["status"] in ("ok", "oracle_mid_end_turn") for e in behavior)
-    nodes_ok = node_seq_oracle == node_seq_remake and "?" not in node_seq_oracle
+    nodes_ok = completion["ok"] and node_seq_oracle == node_seq_remake and "?" not in node_seq_oracle
     save_actions = [a for a in actions if a.get("kind") == "town_save"]
     remake_save = [cp for cp in remake_cps if cp.get("kind") == "town_save"]
     save_entry = save_gate_entry(save_actions, remake_save, args.save_blocked_issue)
+    if completion["missing"].get("town_save"):
+        save_entry["status"] = "planned_save_missing"
     gold_ok = all(t["ok"] for t in transactions)
     transaction_ok = gold_ok and save_entry["status"] in ("ok", "not_sampled")
     compared_frames = [f for f in frames if "diff_pixels" in f]
@@ -282,6 +322,10 @@ def main() -> int:
             "state_injections_declared": runner.get("state_injections") or runner.get("force_enemy_clear_declared"),
             "actions": len(actions),
             "checkpoints": len(list(args.oracle.glob("checkpoint-*.json"))),
+            "random_control": {
+                "initial_checkpoint_rng_word": boot_checkpoint.get("view", {}).get("rng_word"),
+                "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace",
+            },
         },
         "slot": {
             "manifest": str(args.slot_manifest),
@@ -292,10 +336,12 @@ def main() -> int:
             "level_policy": manifest.get("level_policy"),
             "assumptions": manifest.get("assumptions"),
         },
-        "remake": {"checkpoints": len(remake_cps), "rng_synced_points": rng_synced_points},
+        "remake": {"checkpoints": len(remake_cps), "rng_synced_points": rng_synced_points,
+                   "random_control": replay_settings},
         "gates": {
             "behavior": {"ok": behavior_ok, "points": behavior},
-            "nodes": {"ok": nodes_ok, "oracle": node_seq_oracle, "remake": node_seq_remake},
+            "nodes": {"ok": nodes_ok, "oracle": node_seq_oracle, "remake": node_seq_remake,
+                      "plan_completion": completion},
             "transaction": {"ok": transaction_ok, "gold": transactions, "save": save_entry},
             "frames": {"ok": frames_ok, "pixel_budget": args.pixel_budget, "min_frames": args.min_frames,
                        "compared": len(compared_frames), "points": frames},

@@ -158,7 +158,7 @@ func (s *State) applyNativeAIMode5Event(
 			return fmt.Errorf("native AI mode 5 event %d inventory writer rejected raw value", eventID)
 		}
 	}
-	s.NativeEventState[eventID] = 1
+	s.markTreasureEvent(int(eventID))
 	if emit != nil {
 		emit(NativeAIMode5AudioCueForRawTail())
 	}
@@ -187,6 +187,17 @@ func (s *State) NativeMapDrawTiles() ([]int, bool) {
 		tiles[index] = int(binary.LittleEndian.Uint16(s.NativeMapEventGrid[offset:offset+2]) & 0x03ff)
 	}
 	return tiles, true
+}
+
+// NativeMapTileAt 對應 0x12E38：HUD 與繪圖均取可變緩衝的低十位圖塊字。
+func (s *State) NativeMapTileAt(x, y int) (int, bool) {
+	if s == nil || !s.HasNativeMapEventGrid || x < 0 || y < 0 || x >= s.W || y >= s.H ||
+		len(s.NativeMapEventGrid) != 4+4*s.W*s.H ||
+		int(s.NativeMapEventGrid[0]) != s.W || int(s.NativeMapEventGrid[2]) != s.H {
+		return 0, false
+	}
+	offset := 4 + 4*(x+s.W*y)
+	return int(binary.LittleEndian.Uint16(s.NativeMapEventGrid[offset:offset+2]) & 0x03ff), true
 }
 
 // advanceNativeAIMode5EventGrid is the state portion of 0x12263.  It uses

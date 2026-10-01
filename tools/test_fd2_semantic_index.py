@@ -19,6 +19,13 @@ INVENTORY = ROOT / "docs/data/ida/fd2_function_inventory.json"
 
 
 class SemanticIndexTest(unittest.TestCase):
+    def test_instruction_annotations_do_not_inflate_function_inventory(self):
+        _, functions = load_semantic_index(INDEX, ROOT)
+        _, all_rows = load_semantic_index(INDEX, ROOT, include_instructions=True)
+        self.assertNotIn(0x1924B, functions)
+        self.assertEqual(all_rows[0x1924B][0]["confidence"], "已證實")
+        self.assertIn(0x122CD, all_rows)
+
     def test_checked_in_index_is_well_formed_and_evidence_exists(self):
         document, entries = load_semantic_index(INDEX, ROOT)
         self.assertEqual(document["input"]["file"], "FD2.EXE")

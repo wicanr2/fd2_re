@@ -883,6 +883,53 @@
       ]
     },
     {
+      "id": 35,
+      "handler": "0x34c76",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "pan",
+          "x": 12,
+          "y": 5,
+          "source": "0x34c80"
+        },
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 1,
+          "source": "0x34c8c"
+        },
+        {
+          "op": "acting",
+          "resource": 42,
+          "source": "0x34ca4"
+        },
+        {
+          "op": "reset_pose",
+          "source": "0x34cae"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "handler": "0x34cb3",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "record_bytes",
+          "unit": 14,
+          "writes": [
+            [
+              52,
+              131,
+              1
+            ]
+          ],
+          "source": "0x34cbd"
+        }
+      ]
+    },
+    {
       "id": 37,
       "handler": "0x34ccc",
       "battle_units": [

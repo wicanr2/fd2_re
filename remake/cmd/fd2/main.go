@@ -4097,6 +4097,11 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 			snapshot.NativeIdentity, snapshot.HasNativeIdentity = rawIdentity, true
 		}
 		snapshot.Spells = append([]int(nil), current.Spells...)
+		// 0x11586／0x1158E：清六個 raw 暫態 bytes，+5 僅保留 inactive bit0。
+		snapshot.NativeTransient = [battle.NativeTransientCount]byte{}
+		if snapshot.HasNativeRecordByte5 {
+			snapshot.NativeRecordByte5 &= 1
+		}
 		snapshot.Inventory = append([]int(nil), current.Inventory...)
 		snapshot.Equipped = append([]bool(nil), current.Equipped...)
 		snapshot.InventorySlots = append([]int(nil), current.InventorySlots...)
@@ -5879,7 +5884,8 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	// handler 成功返回臂（0x13512）：Acted、靜止姿態、+5 bit7。這些是冪等的，對話回來
 	// 再進一次也不會變。
 	actor.Acted = true
-	if actor == g.sel && g.st != nil && g.st.HasNativeMapViewState && actor.HasNativeRecordByte5 {
+	playerActor := actor == g.sel || (!g.aiBusy && actor.HasNativeRecordByte6 && actor.NativeRecordByte6 == 2)
+	if playerActor && g.st != nil && g.st.HasNativeMapViewState && actor.HasNativeRecordByte5 {
 		actor.NativeRecordByte5 |= 0x80
 	}
 	// 0x11951 0x11CAC 重繪之後才 0x1196D 0x1E292：經驗／升級對話看到的是攻擊者已變灰、
@@ -6770,15 +6776,21 @@ func (g *Game) resolvePhysicalAttackFull(actor, target *battle.Unit) (battle.Nat
 	}
 	// 傷害、反擊與原生單位的經驗／升級成長都走原版的全域 `0x627B8`
 	// （g.nativeRNGState）；g.rng 只剩沒有原版 `+6` 的舊可編輯單位在用。
+	initialActedBit := actor.NativeRecordByte5 & 0x80
 	result, err := g.st.AttackNativePhysicalWithExperience(
 		actor, target, g.nativeRNGState, g.rng)
 	if err != nil {
 		return battle.NativePhysicalAttackResult{}, err
 	}
+	// 純結算先標行動完成，正式 UI 則由 0x13512 的既有尾端 owner 發布 bit7。
+	// 保留入口位元直到死亡事件／掉落對話結束，避免 delay 期間重繪提前變灰。
+	if actor == g.sel && !g.aiBusy && actor.HasNativeRecordByte5 {
+		actor.NativeRecordByte5 = actor.NativeRecordByte5&^0x80 | initialActedBit
+	}
 	g.nativeRNGState = result.RNGState
 	// 0x1196D／0x1566A：兩段交鋒結束後才 0x1E292；經驗非零就有對話（行動收尾時播）。
 	g.queueNativeLevelUpDialogue(actor, int(result.Attack.ExpGained), result.Attack.LevelUps)
-	if result.Counter != nil {
+	if result.CounterExpGained > 0 {
 		g.queueNativeLevelUpDialogue(target, result.CounterExpGained, result.CounterLevelUps)
 	}
 	return result, nil
@@ -11488,7 +11500,22 @@ func (g *Game) nativeMapHUDInput() (indexedmap.NativeMapHUDInput, bool) {
 		g.nativeMapHUDInputReason = "資產、HUD／cycle 狀態、selector cache 或游標界線其一不成立"
 		return indexedmap.NativeMapHUDInput{}, false
 	}
-	tile := g.m.Tiles[g.curY*g.m.W+g.curX]
+	var tile int
+	if g.st.HasNativeMapEventGrid {
+		var ok bool
+		tile, ok = g.st.NativeMapTileAt(g.curX, g.curY)
+		if !ok {
+			g.nativeMapHUDInputReason = "原生可變地圖緩衝損壞"
+			return indexedmap.NativeMapHUDInput{}, false
+		}
+	} else {
+		index := g.curY*g.m.W + g.curX
+		if index >= len(g.m.Tiles) {
+			g.nativeMapHUDInputReason = "初始地圖圖塊資料不足"
+			return indexedmap.NativeMapHUDInput{}, false
+		}
+		tile = g.m.Tiles[index]
+	}
 	if tile < 0 || tile >= len(a.Controls)/4 || tile > 0x3ff {
 		g.nativeMapHUDInputReason = fmt.Sprintf("terrain descriptor %d outside 0..%d", tile, len(a.Controls)/4-1)
 		return indexedmap.NativeMapHUDInput{}, false

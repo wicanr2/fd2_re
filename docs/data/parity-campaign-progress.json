@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-09-18",
+  "updated": "2026-10-01",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -284,15 +284,35 @@
     },
     {
       "chapter": 12,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch12.json",
+      "slot_manifest": "docs/data/parity-slots/ch12-manifest.json",
+      "slot_sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "date": "2026-10-01",
+      "verify": "FD2_PARITY_CPUS=2 FD2_PARITY_TRACE_KEYS=1 tools/chapter_parity.sh 12 work/parity-slot-ch12 work/parity-slot-ch12/sample-r5 work/parity-slot-ch12/remake-r8；原版側：FD2_ORACLE_STATE=<覆蓋層> FD2_ORACLE_STEPS=30000000000 FD2_ORACLE_FORCE_ENEMY_CLEAR=1 FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x4E893,0x34C76,0x34CB3,0x12CEA tools/dosgolem_oracle.sh work/parity-slot-ch12/sample-r5 docs/data/parity-plans/ch12-sample.jsonl",
+      "limitations": [
+        "建構槽 target11，14人，每章6級／seed4／event states7:17=1／基底AP+200、DP+0、DX+60；槽SHA與原版固定執行檔身分由manifest綁定。強化政策不得用於傷害、存活或敵方選目標宣稱。",
+        "原版 sample-r5 由 dosgolem a9bcd62（tracked dirty0）重生；286動作、11回合，三名騎士正常走位保護raw記錄14；第10回合在(16,15)取得物品56，第11回合同格核HUD。計畫頭註解「十回合後清場」為舊描述，正式動作是第11回合取樣後清8敵，完整執行計畫複本在sample-r5/control-plan.jsonl。",
+        "整章收據 PLAYER-E2 依111建構槽與最後force-enemy-clear例外；沒有鎖HP或週期性改寫友軍，戰後layout／ACTING45／JOIN17→town_ch13→出售7000→7037→買入6957→酒店存檔→Alt+F2祕密商店全部完成。",
+        "remake-r8：289重製檢查點、287行為比較點，無重播分岔，275畫面比較點，176點0px，最大215px；酒店FD2.SAV整檔SHA-256為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821，兩側相同。",
+        "99個非零畫面點多為指令環展開（#34）；17個HUD地形縮圖單像素區域（13個純單像素畫面、4個與指令環差異共存；#52）、取寶提問游標框134px（#53）仍是可選修飾。寶箱取得後與HUD seq3853、死亡對白seq3109逐像素相同。",
+        "未驗收玩家法術／物品指令；敗北返回標題完整流程仍由#47追蹤；#41三類HUD重繪入口維持未接，本章未出現其阻塞差異。",
+        "第四～十一章依117定案不因本輪共用狀態修正重跑，台帳仍引用各自既有收據；下次重跑須用目前程式重新驗證。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 13,

@@ -71,12 +71,20 @@ func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treas
 }
 
 func (g *Game) commitNativeTreasurePrompt(p *nativeTreasurePrompt) bool {
+	if p == nil || p.claimed || p.actor == nil {
+		return false
+	}
 	current, ok := g.st.TreasureAt(p.x, p.y)
 	if !ok || current != p.reward || p.actor.X != p.x || p.actor.Y != p.y {
 		g.loadErr = "native treasure: source changed before confirmation"
 		return false
 	}
-	if _, ok := g.st.ClaimTreasure(p.actor, p.x, p.y); !ok {
+	// 金錢在關框後才交易（0x194DE..0x194F7）；YES 只保留接受狀態。
+	if p.reward.Kind == "gold" {
+		p.claimed = true
+		return true
+	}
+	if _, ok := g.st.ClaimTreasureBeforeClosing(p.actor, p.x, p.y); !ok {
 		g.loadErr = "native treasure: item transaction rejected"
 		return false
 	}
@@ -87,7 +95,21 @@ func (g *Game) commitNativeTreasurePrompt(p *nativeTreasurePrompt) bool {
 func (g *Game) finishNativeTreasurePrompt(p *nativeTreasurePrompt) {
 	// 0x194E3..0x194E8：金錢在 0x196CB 關框之後才加進 [0x53BF3]。取消時沒有 claimed，不加。
 	if p.reward.Kind == "gold" && p.claimed {
+		current, available := g.st.TreasureAt(p.x, p.y)
+		if !available || current != p.reward {
+			g.loadErr = "native treasure: gold source changed before closing"
+			return
+		}
 		g.gold += p.reward.Value
+		if _, ok := g.st.ClaimTreasureBeforeClosing(p.actor, p.x, p.y); !ok {
+			g.gold -= p.reward.Value
+			g.loadErr = "native treasure: gold transaction rejected after closing"
+			return
+		}
+	}
+	if p.claimed && !g.st.CompleteTreasureMapUpdate() {
+		g.loadErr = "native treasure: map update rejected after closing"
+		return
 	}
 	g.finishSuccessfulUnitAction(p.actor, func() { g.sel, g.reach, g.moved = nil, nil, false })
 }

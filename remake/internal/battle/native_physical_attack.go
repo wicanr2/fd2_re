@@ -233,22 +233,35 @@ func (s *State) attackNativePhysical(
 			a, d, result.Attack.Amount, rng, nil)
 		return result, nil
 	}
-	exp := nativeLastStrikeExperience(nativeEXP, strikes)
-	if exp > 99 {
-		exp = 99 // 0x11959：玩家路徑把 [0x53EC8] 壓到 99 再呼叫 0x1E292
+	// 0x18DC4 玩家入口重設；敵方 sub_1548E 沒有重設。兩段揮擊結束後
+	// 留下最後一個我方 writer 的值，沒有反擊也可能保留前一動作的累計。
+	if a.NativeRecordByte6 == 2 {
+		s.NativeExperienceAccumulator = 0
 	}
-	if s.killCancelsExp(d) {
-		exp = 0
+	if nativeEXP.writesAccumulator {
+		s.NativeExperienceAccumulator = nativeLastStrikeExperience(nativeEXP, strikes)
 	}
-	got, ups, next := s.AwardExpNative(a, exp, result.RNGState)
-	result.Attack.ExpGained, result.Attack.LevelUps, result.RNGState = float64(got), ups, next
-	if result.Counter != nil {
-		exp := nativeLastStrikeExperience(counterEXP, result.CounterStrikes)
-		if s.killCancelsExp(a) {
-			exp = 0
+	if result.Counter != nil && counterEXP != nil && counterEXP.writesAccumulator {
+		s.NativeExperienceAccumulator = nativeLastStrikeExperience(counterEXP, result.CounterStrikes)
+	}
+	if s.killCancelsExp(d) || s.killCancelsExp(a) {
+		s.NativeExperienceAccumulator = 0
+	}
+	if a.NativeRecordByte6 == 2 {
+		if s.NativeExperienceAccumulator > 99 {
+			s.NativeExperienceAccumulator = 99 // 0x11959：只限玩家 caller。
 		}
-		got, ups, next := s.AwardExpNative(d, exp, result.RNGState)
+		got, ups, next := s.AwardExpNative(a, s.NativeExperienceAccumulator, result.RNGState)
+		result.Attack.ExpGained, result.Attack.LevelUps, result.RNGState = float64(got), ups, next
+		if got > 0 {
+			s.NativeExperienceAccumulator = 0 // 0x1E51A；滿級／死亡早退不抵達。
+		}
+	} else {
+		got, ups, next := s.AwardExpNative(d, s.NativeExperienceAccumulator, result.RNGState)
 		result.CounterExpGained, result.CounterLevelUps, result.RNGState = got, ups, next
+		if got > 0 {
+			s.NativeExperienceAccumulator = 0
+		}
 	}
 	return result, nil
 }

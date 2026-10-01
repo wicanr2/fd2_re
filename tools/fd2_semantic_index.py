@@ -59,7 +59,8 @@ def validate_input_identity(index_input: dict, actual_input: dict) -> None:
         raise ValueError(f"semantic index input mismatch ({details})")
 
 
-def load_semantic_index(path: str | Path, repo_root: str | Path | None = None):
+def load_semantic_index(path: str | Path, repo_root: str | Path | None = None,
+                        *, include_instructions: bool = False):
     """回傳 ``(document, entries_by_address)``，並完整驗證固定契約。"""
 
     index_path = Path(path)
@@ -74,9 +75,13 @@ def load_semantic_index(path: str | Path, repo_root: str | Path | None = None):
     entries = document.get("entries")
     if not isinstance(entries, list):
         raise ValueError("semantic index entries must be an array")
+    instructions = document.get("instruction_entries", [])
+    if not isinstance(instructions, list):
+        raise ValueError("semantic index instruction_entries must be an array")
+    function_addresses = {entry.get("address") for entry in entries if isinstance(entry, dict)}
     by_address: dict[int, list[dict]] = {}
     root = Path(repo_root).resolve() if repo_root is not None else None
-    for position, entry in enumerate(entries):
+    for position, entry in enumerate(entries + instructions):
         label = f"semantic index entries[{position}]"
         if not isinstance(entry, dict):
             raise ValueError(f"{label} must be an object")
@@ -116,6 +121,9 @@ def load_semantic_index(path: str | Path, repo_root: str | Path | None = None):
                 if not target.is_file():
                     raise ValueError(f"{label}.evidence does not exist: {relative}")
         by_address[address] = [entry]
+    if not include_instructions:
+        by_address = {address: rows for address, rows in by_address.items()
+                      if hex(address) in function_addresses}
     return document, by_address
 
 

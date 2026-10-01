@@ -604,11 +604,11 @@ type State struct {
 	AICommandSpell           map[int]int       // editable item command byte -> spell id; AI ranking remains separate
 	Treasures                map[Cell]Treasure // FDFIELD composition 地形旗標+slot 與 control chest table 的 join
 	NativeTreasureEventRules map[int]NativeTreasureEventRule
-	// OpenedTreasure is remake-owned state for editable treasure nodes.  It has
-	// no asserted native-global address: native [0x53ad5] is a pointer to a
-	// 0x20-byte battle-local state table (0x10322 copies it; 0x13d00 writes an
-	// index). Ch25 reads entry #12 for dialogue, which does not prove a treasure
-	// slot mapping.
+	// NativeExperienceAccumulator 投影戰鬥內 [0x53EC8]；滿級／死亡早退保留，
+	// 正常收下才清零。原版不序列化這個暫態全域（58 的 2026-10-01 勘誤）。
+	NativeExperienceAccumulator int
+	// OpenedTreasure 僅投影 NativeEventState，供既有工具讀取；領取判定只讀
+	// 原生事件表。玩家 0x1924B／0x194F3 與敵方 mode 5 共用 [0x53AD5]。
 	OpenedTreasure map[int]bool
 	// 來源:tools/export_engine_assets.py 依地形控制表(doc01 §5)換算,由 Load 讀同目錄
 	// map.json 的 "cost" 陣列自動接上(worklist 第 8 輪「地形屬性接線」)。
@@ -807,22 +807,35 @@ type NativeFieldEventRule struct {
 
 // TreasureAt 查詢尚未取得的寶物格。
 func (s *State) TreasureAt(x, y int) (Treasure, bool) {
-	if s == nil || s.OpenedTreasure == nil {
+	if s == nil {
 		return Treasure{}, false
 	}
 	t, ok := s.Treasures[Cell{X: x, Y: y}]
-	return t, ok && !s.OpenedTreasure[t.Slot]
+	return t, ok && t.Slot >= 0 && t.Slot < len(s.NativeEventState) && s.NativeEventState[t.Slot] == 0
 }
 
 // ClaimTreasure 投影原版 0x190ac：只有站在該格的 active unit 可取；物品放進
 // 該單位8格 inventory，滿背包時不開箱；金錢由 caller 加到 campaign bank。
 // 原版沒有 camp 限制，因此 Enemy 也能取得並標記 opened。
 func (s *State) ClaimTreasure(u *Unit, x, y int) (Treasure, bool) {
+	return s.claimTreasure(u, x, y, true)
+}
+
+// ClaimTreasureBeforeClosing 對應物品 YES：取得物品並設事件狀態，0x19268
+// 的地圖更新留到關框後由 CompleteTreasureMapUpdate 執行。
+func (s *State) ClaimTreasureBeforeClosing(u *Unit, x, y int) (Treasure, bool) {
+	return s.claimTreasure(u, x, y, false)
+}
+
+func (s *State) claimTreasure(u *Unit, x, y int, updateMap bool) (Treasure, bool) {
 	if u == nil || !u.OnField || !u.Alive() || u.X != x || u.Y != y {
 		return Treasure{}, false
 	}
 	t, ok := s.TreasureAt(x, y)
 	if !ok {
+		return Treasure{}, false
+	}
+	if s.HasNativeMapEventGrid && s.validateNativeAIMode5EventGrid() != nil {
 		return Treasure{}, false
 	}
 	switch t.Kind {
@@ -836,12 +849,39 @@ func (s *State) ClaimTreasure(u *Unit, x, y int) (Treasure, bool) {
 	case "gold":
 		// Game owns the campaign bank; returning the reward lets it add atomically.
 	case "event":
-		return s.claimNativeTreasureEvent(u, t)
+		var claimed bool
+		t, claimed = s.claimNativeTreasureEvent(u, t)
+		if !claimed {
+			return Treasure{}, false
+		}
 	default:
 		return Treasure{}, false
 	}
-	s.OpenedTreasure[t.Slot] = true
+	s.markTreasureEvent(t.Slot)
+	if updateMap && !s.CompleteTreasureMapUpdate() {
+		return Treasure{}, false // 完整緩衝已於交易前驗證，正常路徑不會抵達此處。
+	}
 	return t, true
+}
+
+func (s *State) markTreasureEvent(slot int) {
+	s.NativeEventState[slot] = 1
+	if s.OpenedTreasure == nil {
+		s.OpenedTreasure = map[int]bool{}
+	}
+	s.OpenedTreasure[slot] = true
+}
+
+// CompleteTreasureMapUpdate 共用玩家 0x19268 與敵方 mode 5 的 0x12263。
+// 沒有原生緩衝的可編輯測試場景不需更新；已材料化但損壞的緩衝拒絕寫入。
+func (s *State) CompleteTreasureMapUpdate() bool {
+	if s == nil {
+		return false
+	}
+	if !s.HasNativeMapEventGrid {
+		return true
+	}
+	return s.validateNativeAIMode5EventGrid() == nil && s.advanceNativeAIMode5EventGrid() == nil
 }
 
 func (s *State) claimNativeTreasureEvent(u *Unit, t Treasure) (Treasure, bool) {
@@ -864,7 +904,7 @@ func (s *State) claimNativeTreasureEvent(u *Unit, t Treasure) (Treasure, bool) {
 		return Treasure{}, false
 	}
 	for slot := range seen {
-		s.OpenedTreasure[slot] = true
+		s.markTreasureEvent(slot)
 	}
 	t.Kind = "item"
 	t.Value = item

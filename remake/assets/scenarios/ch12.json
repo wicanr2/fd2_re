@@ -5,6 +5,9 @@
   "initial_groups": [
     1
   ],
+  "runtime_append_groups": true,
+  "native_result_handler": "0x2073d",
+  "native_result_code1_records": [14],
   "party": [
     {
       "name": "索爾",
@@ -582,11 +585,20 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x34c80",
+          "grid": [
+            12,
+            5
+          ],
+          "native_event_id": 35,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             2
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 2,
@@ -595,7 +607,51 @@
               "raw_placement_gate": 1
             }
           ],
-          "native_event_id": 35
+          "native_event_id": 35,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_acting",
+          "native_source": "0x34ca4",
+          "native_acting": {
+            "resource": 42,
+            "source": "0x34ca4"
+          },
+          "native_event_id": 35,
+          "camp": "enemy"
+        },
+        {
+          "type": "reset_pose",
+          "native_source": "0x34cae",
+          "native_event_id": 35,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch12_e36_t5",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 5
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x34cbd",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 14,
+            "writes": [
+              [
+                52,
+                131,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 36,
+          "camp": "ally"
         }
       ]
     }

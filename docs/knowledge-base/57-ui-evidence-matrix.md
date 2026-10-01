@@ -1173,3 +1173,9 @@ START 走完序章取到三次 pan 共 126 格逐格對上，收據見
 走行捲動 `0x13185` 家族的發布也改成逐格套用寫入端規則，與戰鬥走行共用
 `battle.AdvanceNativeMapWalkStepViewState`；序章 15 格捲動的端點
 （camera_y 34→20、cursor_y 34→19、visible_y 0→−1）由同一份收據背書。
+
+### 2026-10-01：玩家取箱／可變 HUD 與第十二章（PLAYER-E2，111例外）
+
+原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。 寶箱slot0／物品56／(16,15)由玩家第10回合取得，seq3853同格HUD與打開的箱子逐像素相同；第1回合事件35、第五回合事件36、保護友軍、戰後JOIN17、買賣、酒店存檔與祕密商店均納入。
+
+[正式收據](../data/ui-traces/parity-ch12.json)、[抽樣索引](../data/ui-traces/parity-ch12-samples.json)與[7張對照圖入口](../figures/parity-ch12-samples-p1.png)保存115列。非零差異有99點：指令環相位為主，HUD縮圖13個1px點及取寶提問游標框134px仍留#52／#53；不得宣稱全章逐像素一致。敗北返回標題#47、玩家法術／物品操作與#41未完成；第四～十一章本輪未重跑。

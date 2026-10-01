@@ -544,5 +544,73 @@
       "evidence": ["docs/data/ida/fd2_story_dialogue_layout_ida.txt", "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"],
       "scope": "下框右端錨點、stride 與寫入方向；portrait record bytes 的高階身分語意仍須另證"
     }
+  ],
+  "instruction_entries": [
+    {
+      "address": "0x122cd",
+      "classification": "product",
+      "semantic": "已領取寶箱格的圖塊字加一",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
+      "scope": "0x12299..0x122B3 以控制列與事件表篩選；原運算元 word ptr [eax]"
+    },
+    {
+      "address": "0x122d0",
+      "classification": "product",
+      "semantic": "已領取寶箱格的事件 byte 清零",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
+      "scope": "保留原運算元 byte ptr [eax+2]；緊接 0x122CD"
+    },
+    {
+      "address": "0x12e5c",
+      "classification": "product",
+      "semantic": "格子解碼器取可變地圖緩衝指標",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
+      "scope": "0x12E4A..0x12E64 算 y*width+x 的四 byte 格地址；HUD caller 0x1AD9D"
+    },
+    {
+      "address": "0x1924b",
+      "classification": "product",
+      "semantic": "玩家物品取得成功後設事件狀態為 1",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
+      "scope": "0x19239 物品庫存 writer 的回傳非 -1；0x19263 關框、0x19268 更新地圖"
+    },
+    {
+      "address": "0x194f3",
+      "classification": "product",
+      "semantic": "玩家寶箱金錢關框並入帳後設事件狀態為 1",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
+      "scope": "0x194DE 關框；0x194E8 金庫加款；0x194F7 跳 0x19268"
+    },
+    {
+      "address": "0x1ad9d",
+      "classification": "product",
+      "semantic": "HUD 從可變地圖取游標格的圖塊與控制列",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
+      "scope": "原呼叫 sub_12E38；0x1ADA5..0x1ADAF 消費描述子"
+    }
   ]
 }

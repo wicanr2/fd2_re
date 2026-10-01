@@ -791,3 +791,30 @@ func TestNativeResultCode1ChecksListedRecordsByte5Bit0(t *testing.T) {
 		t.Fatal("沒有列記錄的章節不該覆寫結果")
 	}
 }
+
+func TestChapter12ProtectsNativeRecord14WhilePartySurvives(t *testing.T) {
+	st, err := Load("../../assets/maps/map11/map11_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sc, err := LoadScenario("../../assets/scenarios/ch12.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(st); err != nil {
+		t.Fatal(err)
+	}
+	if len(st.Units) <= 14 || st.Units[14].Fig != 17 || st.Units[14].Camp != Ally {
+		t.Fatalf("chapter12 protected record has wrong construction order: %v", st.Units)
+	}
+	protected := st.Units[14]
+	protected.NativeRecordByte5 = 0x80
+	if sc.NativeResultCode1(st) {
+		t.Fatal("acted bit7 caused defeat while the protected ally remains active")
+	}
+	protected.NativeRecordByte5 = 0x81
+	protected.HP = 0
+	if !st.Units[0].Alive() || !sc.NativeResultCode1(st) {
+		t.Fatal("protected record bit0 did not cause defeat while the party survives")
+	}
+}

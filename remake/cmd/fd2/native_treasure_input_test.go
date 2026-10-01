@@ -34,3 +34,21 @@ func TestNativeTreasureNoFinishesActionWithoutOpeningChest(t *testing.T) {
 		t.Fatal("NO changed chest or left action active")
 	}
 }
+
+func TestNativeTreasureGoldWaitsForClosing(t *testing.T) {
+	u := nativeNeutralTestUnit(7, 13)
+	u.X, u.Y, u.OnField = 7, 13, true
+	r := battle.Treasure{Slot: 0, Kind: "gold", Value: 3500}
+	g := &Game{gold: 10, st: &battle.State{Treasures: map[battle.Cell]battle.Treasure{{X: 7, Y: 13}: r}}, sel: u}
+	p := &nativeTreasurePrompt{actor: u, reward: r, x: 7, y: 13}
+	if !g.commitNativeTreasurePrompt(p) || g.gold != 10 || g.st.NativeEventState[0] != 0 {
+		t.Fatal("gold or event state committed before closing")
+	}
+	if g.commitNativeTreasurePrompt(p) {
+		t.Fatal("gold YES acknowledged twice")
+	}
+	g.finishNativeTreasurePrompt(p)
+	if g.loadErr != "" || g.gold != 3510 || g.st.NativeEventState[0] != 1 {
+		t.Fatalf("closing failed: error=%s gold=%d event=%d", g.loadErr, g.gold, g.st.NativeEventState[0])
+	}
+}

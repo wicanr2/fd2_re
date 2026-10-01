@@ -132,3 +132,12 @@ func TestNativePlayerUnmovedWaitPublishesRawCompletionWithoutPreview(t *testing.
 		t.Fatal("unmoved wait lost raw completion after movement preview closed")
 	}
 }
+
+func TestNativePlayerCompletionSurvivesReleasedSelection(t *testing.T) {
+	u := nativeNeutralTestUnit(7, 13)
+	g := &Game{st: &battle.State{HasNativeMapViewState: true}}
+	g.finishSuccessfulUnitAction(u, nil)
+	if !u.Acted || u.NativeRecordByte5&0x80 == 0 {
+		t.Fatal("released player selection lost raw completion")
+	}
+}

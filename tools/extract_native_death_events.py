@@ -221,6 +221,16 @@ EVENTS = [
     {"id": 34, "handler": 0x34C6C, "ops": [
         op("dialogue", [(0x34906, 0x3491F), (0x34C0F, 0x34C1D)], text=3),
     ]},
+    # 35 是第十二章回合事件；0x34CAE 尾跳已閉合的姿態重設 helper。
+    {"id": 35, "handler": 0x34C76, "terminal_jumps": {0x34CAE: 0x134E4}, "ops": [
+        op("pan", [(0x34C80, 0x34C8C)], x=12, y=5),
+        op("spawn_group", [(0x34C8C, 0x34CA4)], group=2, gate=1),
+        op("acting", [(0x34CA4, 0x34CAE)], resource=42),
+        op("reset_pose", [(0x34CAE, 0x34CB3)], tail=True),
+    ]},
+    {"id": 36, "handler": 0x34CB3, "ops": [
+        op("record_bytes", [(0x34CBD, 0x34CCB)], unit=14, writes=[[0x34, 0x83, 1]]),
+    ]},
     {"id": 37, "handler": 0x34CCC, "ops": [
         op("dialogue", [(0x34CD6, 0x34CFD)], text=1),
         op("pan", [(0x34CFD, 0x34D09)], x=0xF, y=0x22),
@@ -352,9 +362,9 @@ def imm(value):
     return H(value) if value >= 10 else str(value)
 
 
-def expect_seq(insns, patterns, where):
+def expect_seq(insns, patterns, where, include_jumps=False):
     """逐條比對：pattern 是字串（完全相等）或 (字串, 全域位址) 或 callable。"""
-    body = [i for i in insns if i[1] != "jmp"]
+    body = [i for i in insns if include_jumps or i[1] != "jmp"]
     if len(body) != len(patterns):
         raise SystemExit(f"{where}：指令數 {len(body)}，樣式 {len(patterns)}\n" +
                          "\n".join(text(i) for i in body))
@@ -411,7 +421,8 @@ def check_op(image, event_id, o):
             body = [("mov byte ptr [0x3afa], 1", GATE), *body, ("mov byte ptr [0x3afa], 0", GATE)]
         expect_seq(insns, body, where)
     elif kind == "reset_pose":
-        expect_seq(insns, ["call 0x134e4"], where)
+        expect_seq(insns, ["jmp 0x134e4" if o.get("tail") else "call 0x134e4"],
+                   where, include_jumps=bool(o.get("tail")))
     elif kind == "range_one":
         expect_seq(insns, [("mov dword ptr [0x1a83], 1", RANGE)], where)
     elif kind == "range_zero":
@@ -507,7 +518,7 @@ FILLER = re.compile(
 PROBE = re.compile(r"^push (0x[0-9a-f]+|[0-9]+)$")
 
 
-def reachable(image, entry):
+def reachable(image, entry, terminal_jumps=None):
     seen, todo, out = set(), [entry], {}
     while todo:
         addr = todo.pop()
@@ -519,6 +530,8 @@ def reachable(image, entry):
             if mnemonic == "ret":
                 break
             if mnemonic == "jmp":
+                if (terminal_jumps or {}).get(addr) == int(insn[2], 16):
+                    break
                 addr = int(insn[2], 16)
                 continue
             if mnemonic.startswith("j"):
@@ -541,7 +554,7 @@ def check_coverage(image, event):
         for start, end in o["ranges"]:
             claimed.update(i[0] for i in image.insns(start, end))
     missing = []
-    for addr, insn in sorted(reachable(image, event["handler"]).items()):
+    for addr, insn in sorted(reachable(image, event["handler"], event.get("terminal_jumps")).items()):
         if addr in claimed or FILLER.match(text(insn)):
             continue
         if addr == event["handler"] and PROBE.match(text(insn)):
@@ -607,7 +620,7 @@ def main():
         ops = []
         for o in event["ops"]:
             sources = check_op(image, event["id"], o)
-            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline")}
+            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline", "tail")}
             if "rodata" in clean:
                 clean["rodata"] = H(clean["rodata"])
             clean["source"] = sources[0]

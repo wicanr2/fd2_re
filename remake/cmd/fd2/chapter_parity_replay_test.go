@@ -264,6 +264,7 @@ func TestChapterParityReplay(t *testing.T) {
 	}
 
 	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_SEED", "4")
 	t.Setenv("FD2_MUTE", "1")
 	t.Setenv("FD2_CAMPAIGN", defaultPlayerCampaign)
 	t.Setenv("FD2_SHOT_AI", "1")
@@ -286,6 +287,17 @@ func TestChapterParityReplay(t *testing.T) {
 	g := loadGame()
 	if g.loadErr != "" {
 		t.Fatal(g.loadErr)
+	}
+	settings, err := json.MarshalIndent(map[string]interface{}{
+		"go_seed":            4,
+		"native_rng_initial": g.nativeRNGState,
+		"method":             "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+	}, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(out, "replay-settings.json"), append(settings, '\n'), 0o644); err != nil {
+		t.Fatal(err)
 	}
 	r := &parityReplay{t: t, g: g, out: out, run: run,
 		battle:        fmt.Sprintf("battle_ch%02d", chapter),
@@ -881,6 +893,13 @@ func (r *parityReplay) bannerVariants() []frameVariant {
 				r.t.Fatalf("戰場事件對白等鍵畫面：%v", err)
 			}
 			for _, pix := range variants {
+				// 對白框外仍是開框當下的待機相位；與升級對白相同，
+				// 以此輪已枚舉的整幀承載框外，保留原有對白框與頭像。
+				if g.nativeDialogueLayout.Control == "FFEF" || g.nativeDialogueLayout.Control == "FFED" {
+					pix = rebaseNativeUpperDialogueFrame(pix, img.Pix)
+				} else {
+					pix = rebaseNativeLowerDialogueFrame(pix, img.Pix)
+				}
 				out = append(out, frameVariant{pix: pix, palette: img.Palette})
 			}
 			return out
@@ -938,6 +957,17 @@ func rebaseNativeLowerDialogueFrame(variant, base []byte) []byte {
 	return out
 }
 
+func rebaseNativeUpperDialogueFrame(variant, base []byte) []byte {
+	if len(variant) != 320*200 || len(base) != 320*200 {
+		return variant
+	}
+	out := append([]byte(nil), base...)
+	for y := 2; y < 88; y++ {
+		copy(out[y*320+5:y*320+315], variant[y*320+5:y*320+315])
+	}
+	return out
+}
+
 func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame bool, extra ...string) parityCheckpoint {
 	g := r.g
 	cp := parityCheckpoint{Index: r.index, Kind: kind, OracleSeq: seq, Node: g.camp.NodeID(), UI: ui,
@@ -954,6 +984,13 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 	}
 	if g.st != nil {
 		cp.Round = g.st.Turn
+		if os.Getenv("FD2_PARITY_TRACE_KEYS") != "" {
+			for index, unit := range g.st.Units {
+				if unit != nil && unit.OnField && unit.HP > 0 {
+					r.t.Logf("stat seq=%d kind=%s record=%d lv=%d exp=%.0f base=%d/%d effective=%d/%d dx=%d", seq, kind, index, unit.Lv, unit.Exp, unit.BaseAP, unit.BaseDP, unit.AP, unit.DP, unit.DX)
+				}
+			}
+		}
 	}
 	if withFrame {
 		r.currentSeq = seq
@@ -1060,7 +1097,7 @@ func (r *parityReplay) moveUnit(action parityAction, actor *battle.Unit) bool {
 		}
 		g.confirm()
 	}
-	if g.walk == nil {
+	if g.walk == nil && !(g.ring && action.From[0] == action.To[0] && action.From[1] == action.To[1]) {
 		r.checkpoint("move", action.Seq, r.ui(), true,
 			fmt.Sprintf("divergence: (%d,%d)→(%d,%d) 原版接受、重製端拒絕（err=%q）",
 				action.From[0], action.From[1], action.To[0], action.To[1], g.loadErr))
@@ -1328,8 +1365,12 @@ func (r *parityReplay) checkpointAttackResult(action parityAction, _ *battle.Uni
 	}
 	r.checkpoint("attack_result", action.Seq, r.ui(), true)
 	if deathDialogueOpen() {
-		// 對白之後的升級與掉落訊息由下一個動作前的 pump 一起推完（原版驅動端逐則送 enter）。
-		return
+		// 原版驅動端在死亡事件對白之後仍逐則送 enter；接著可能是玩家升級，
+		// 不能交給只會在 aiBusy 時按升級訊息的共用 pump，否則下一次 select 會卡住。
+		pump(r.t, g, ch01FrameBudget, func() bool {
+			return r.playerHasControl() || g.nativeDeathRewardMessageAwaitingKey() ||
+				g.nativeLevelUpDialogueAtWait() || g.result != "" || g.camp.NodeID() != r.battle
+		})
 	}
 	// 原版側驅動端在 attack_result 之後對每個等鍵處送 enter（finish-dialogue），直到回到
 	// 游標才做下一個動作：掉落訊息一鍵、升級對話每頁一鍵（r4 seq 969..973、r6 seq

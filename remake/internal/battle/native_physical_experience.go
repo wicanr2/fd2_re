@@ -11,6 +11,7 @@ import (
 // 只閉合 EXP 邊界，傷害與成長仍沿用既有執行期的證據限制。
 type nativePhysicalExperiencePlan struct {
 	base, targetMaxHP int
+	writesAccumulator bool
 }
 
 func planNativePhysicalExperience(actor, target *Unit) (nativePhysicalExperiencePlan, error) {
@@ -50,6 +51,7 @@ func planNativePhysicalExperience(actor, target *Unit) (nativePhysicalExperience
 	}
 	return nativePhysicalExperiencePlan{
 		base: int(table.Record[9]) * target.Lv / int(level), targetMaxHP: target.MaxHP,
+		writesAccumulator: true,
 	}, nil
 }
 

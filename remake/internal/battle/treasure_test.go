@@ -1,12 +1,71 @@
 package battle
 
 import (
+	"encoding/binary"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strconv"
 	"testing"
 )
+
+func playerTreasureMapState() (*State, *Unit) {
+	u := &Unit{X: 0, Y: 0, HP: 10, MaxHP: 10, OnField: true}
+	grid := nativeAIMode5Grid(2, 1, Cell{}, 0)
+	binary.LittleEndian.PutUint16(grid[8:10], 2)
+	return &State{
+		W: 2, H: 1, Units: []*Unit{u},
+		Treasures:          map[Cell]Treasure{{}: {Slot: 0, Kind: "item", Value: 56}},
+		NativeMapEventGrid: grid, HasNativeMapEventGrid: true,
+		NativeTerrainControl: []byte{0x20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	}, u
+}
+
+func TestPlayerTreasureUsesNativeEventStateAndMutableMap(t *testing.T) {
+	st, u := playerTreasureMapState()
+	// 相容投影不能決定是否領取；事件表才是原版唯一來源。
+	st.OpenedTreasure = map[int]bool{0: true}
+	if _, ok := st.ClaimTreasure(u, 0, 0); !ok {
+		t.Fatal("projection incorrectly blocked native event")
+	}
+	if st.NativeEventState[0] != 1 || len(u.Inventory) != 1 || u.Inventory[0] != 56 {
+		t.Fatal("inventory and event state did not commit together")
+	}
+	if tile, ok := st.NativeMapTileAt(0, 0); !ok || tile != 1 || st.NativeMapEventGrid[6] != 0 {
+		t.Fatalf("opened tile=(%d,%v), event=%d", tile, ok, st.NativeMapEventGrid[6])
+	}
+	if _, err := st.NativeAIMode5EventCell(0); err == nil {
+		t.Fatal("enemy mode 5 can still find the opened chest")
+	}
+	st.OpenedTreasure = nil
+	if _, ok := st.TreasureAt(0, 0); ok {
+		t.Fatal("clearing projection made the native event claimable again")
+	}
+	if !st.CompleteTreasureMapUpdate() {
+		t.Fatal("repeat map update failed")
+	}
+	if tile, _ := st.NativeMapTileAt(0, 0); tile != 1 {
+		t.Fatal("repeat map update incremented the opened tile again")
+	}
+}
+
+func TestPlayerTreasureDefersMapUntilClosingAndRejectsMalformedMap(t *testing.T) {
+	st, u := playerTreasureMapState()
+	if _, ok := st.ClaimTreasureBeforeClosing(u, 0, 0); !ok {
+		t.Fatal("YES item transaction failed")
+	}
+	if tile, _ := st.NativeMapTileAt(0, 0); tile != 0 || st.NativeEventState[0] != 1 {
+		t.Fatal("YES did not preserve pre-closing tile and post-inventory event")
+	}
+	if !st.CompleteTreasureMapUpdate() {
+		t.Fatal("closing did not update map")
+	}
+	st, u = playerTreasureMapState()
+	binary.LittleEndian.PutUint16(st.NativeMapEventGrid[8:10], 99)
+	if _, ok := st.ClaimTreasure(u, 0, 0); ok || len(u.Inventory) != 0 || st.NativeEventState[0] != 0 {
+		t.Fatal("malformed later cell left a partial treasure transaction")
+	}
+}
 
 func TestLoadJoinsTreasureSlotAndPreservesUnitInventory(t *testing.T) {
 	dir := t.TempDir()

@@ -52,6 +52,34 @@ func TestNativePhysicalExperienceTwoIntegerDivisions(t *testing.T) {
 	}
 }
 
+// 滿級反擊的 0x1E292 早退不清 [0x53EC8]；下一次敵方隔空未命中，
+// 沒有反擊，0x1566A 仍把保留值交給被打的非滿級我方。
+func TestNativePhysicalExperienceCarriesAcrossCappedCounterAndMiss(t *testing.T) {
+	s, enemy, capped := nativeCounterExperiencePair(t)
+	capped.Lv, capped.Exp = 40, 0
+	enemy.Lv = 15
+	enemy.NativeConstructor.Record[9] = 40
+	first, err := s.AttackNativePhysicalWithExperience(enemy, capped, 0x1234, rand.New(rand.NewSource(4)))
+	if err != nil || first.Counter == nil || enemy.HP != 0 || first.CounterExpGained != 0 || s.NativeExperienceAccumulator != 15 {
+		t.Fatalf("滿級反擊未保留15：result=%+v carry=%d err=%v", first, s.NativeExperienceAccumulator, err)
+	}
+	_, target := nativeExperiencePair()
+	target.Camp, target.NativeRecordByte6, target.NativeRecordClass = Own, 2, 2
+	target.BattleFig, target.NativeRecordByte8 = 5, 5
+	target.Lv, target.Exp, target.HP, target.MaxHP, target.EV = 26, 52, 129, 231, 100
+	target.X, target.Y = 0, 0
+	enemy.HP, enemy.X, enemy.Y = 28, 4, 0
+	s.W, s.Units = 5, []*Unit{enemy, target}
+	second, err := s.AttackNativePhysicalWithExperience(enemy, target, 0x1234, rand.New(rand.NewSource(4)))
+	if err != nil || second.Counter != nil || !second.Attack.Missed || second.CounterExpGained != 15 || target.Exp != 67 || s.NativeExperienceAccumulator != 0 {
+		t.Fatalf("隔空未命中未消費保留值：result=%+v exp=%v carry=%d err=%v", second, target.Exp, s.NativeExperienceAccumulator, err)
+	}
+	third, err := s.AttackNativePhysicalWithExperience(enemy, target, 0x1234, rand.New(rand.NewSource(4)))
+	if err != nil || third.CounterExpGained != 0 || target.Exp != 67 {
+		t.Fatalf("正常清零後重複發經驗：result=%+v exp=%v err=%v", third, target.Exp, err)
+	}
+}
+
 // nativeCounterExperiencePair 讓敵方（`+6`＝0）打我方（`+6`＝2）：敵人打不死我方，
 // 我方反擊一擊必殺。兩邊都帶原版建構列，所以反擊的經驗計畫和主攻一樣可算。
 func nativeCounterExperiencePair(t *testing.T) (*State, *Unit, *Unit) {

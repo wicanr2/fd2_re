@@ -4,8 +4,11 @@
   "acting_resources": "../acting/ch11_post.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "runtime_context": {
-    "slot_count": 60,
-    "story_viewport": true
+    "story_viewport": true,
+    "slot_counts": [
+      45,
+      60
+    ]
   },
   "dialogue_contexts": {
     "0x23852": {
@@ -21,25 +24,105 @@
     "0x2382b": {
       "layout": {
         "units": [
-          { "slot": 0, "x": 10, "y": 4, "pose": 2 },
-          { "slot": 1, "x": 11, "y": 4, "pose": 2 },
-          { "slot": 2, "x": 10, "y": 4, "pose": 0 },
-          { "slot": 3, "x": 12, "y": 4, "pose": 2 },
-          { "slot": 4, "x": 8, "y": 4, "pose": 2 },
-          { "slot": 5, "x": 10, "y": 5, "pose": 2 },
-          { "slot": 6, "x": 11, "y": 5, "pose": 2 },
-          { "slot": 7, "x": 9, "y": 5, "pose": 2 },
-          { "slot": 8, "x": 12, "y": 5, "pose": 2 },
-          { "slot": 9, "x": 8, "y": 5, "pose": 2 },
-          { "slot": 10, "x": 8, "y": 3, "pose": 3 },
-          { "slot": 11, "x": 12, "y": 3, "pose": 1 },
-          { "slot": 12, "x": 8, "y": 2, "pose": 3 },
-          { "slot": 13, "x": 12, "y": 2, "pose": 1 }
+          {
+            "slot": 0,
+            "x": 10,
+            "y": 4,
+            "pose": 2
+          },
+          {
+            "slot": 1,
+            "x": 11,
+            "y": 4,
+            "pose": 2
+          },
+          {
+            "slot": 2,
+            "x": 9,
+            "y": 4,
+            "pose": 2
+          },
+          {
+            "slot": 3,
+            "x": 12,
+            "y": 4,
+            "pose": 2
+          },
+          {
+            "slot": 4,
+            "x": 8,
+            "y": 4,
+            "pose": 2
+          },
+          {
+            "slot": 5,
+            "x": 10,
+            "y": 5,
+            "pose": 2
+          },
+          {
+            "slot": 6,
+            "x": 11,
+            "y": 5,
+            "pose": 2
+          },
+          {
+            "slot": 7,
+            "x": 9,
+            "y": 5,
+            "pose": 2
+          },
+          {
+            "slot": 8,
+            "x": 12,
+            "y": 5,
+            "pose": 2
+          },
+          {
+            "slot": 9,
+            "x": 8,
+            "y": 5,
+            "pose": 2
+          },
+          {
+            "slot": 10,
+            "x": 8,
+            "y": 3,
+            "pose": 3
+          },
+          {
+            "slot": 11,
+            "x": 12,
+            "y": 3,
+            "pose": 1
+          },
+          {
+            "slot": 12,
+            "x": 8,
+            "y": 2,
+            "pose": 3
+          },
+          {
+            "slot": 13,
+            "x": 12,
+            "y": 2,
+            "pose": 1
+          },
+          {
+            "slot": 14,
+            "x": 10,
+            "y": 2,
+            "pose": 0
+          }
         ],
-        "cam_x": 336,
+        "cam_x": 96,
         "cam_y": 0
       }
     },
-    "0x2385c": { "act": { "resource": 45 } }
+    "0x2385c": {
+      "act": {
+        "resource": 45
+      }
+    }
   }
 }

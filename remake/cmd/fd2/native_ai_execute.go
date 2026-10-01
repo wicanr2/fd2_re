@@ -26,10 +26,17 @@ func nativeAICommandHasIndexedOwner(id int) bool {
 // owner for mode 11 without prematurely handing control back to NextAIPlan.
 // The continuation runs only after the existing successful-action boundary
 // (including selector-1 field-event ownership) has completed.
-func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after func()) error {
+func (g *Game) executeNativeAIActionWithContinuation(plan *battle.AIPlan, after func()) (returnErr error) {
 	if g == nil || g.st == nil || plan == nil || plan.U == nil {
 		return fmt.Errorf("native AI action context unavailable")
 	}
+	// sub_15311／sub_15055 的已閉合效果／道具路徑在 0x1546A／0x152FD
+	// 清除累計。這裡只投影下一個行動邊界，不宣稱演出中途的全域逐幀值。
+	defer func() {
+		if returnErr == nil {
+			g.st.NativeExperienceAccumulator = 0
+		}
+	}()
 	actor := plan.U
 	target := plan.Target
 	// The command presentation owners rebuild the 0x14818 target array at the

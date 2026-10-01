@@ -632,6 +632,48 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 ## 五、已知位址的「不要重做」索引
 
+2026-10-01 玩家寶箱與 HUD（#44／#43，`RE-CLOSED`）：既有
+[`fd2_treasure_input_20260907.json`](../data/ida/fd2_treasure_input_20260907.json)
+已保存玩家 `0x190AC` 全部直接指令，不重做問答。IDA Pro 9.4 以既有資料庫的
+容器內複本補核 `0x12263`／`0x12E38`／`0x1ACF3` 的 caller 與讀寫端；輸入仍是
+357074 bytes、MD5 `b97caf2239a27a896069d03549d96e1e`、SHA-256
+`222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f`，位址均為 IDA LE linear。
+玩家物品成功 `0x1924B` 設 `[0x53AD5+event]=1`，關框 `0x19263` 後
+`0x19268` 呼叫 `0x12263`；金錢 `0x194E8` 入帳後在 `0x194F3` 設事件並跳同一更新端。
+玩家普通物品／金錢分支沒有 mode 5 的 `+0x31..+0x33` 死亡獎勵寫入。
+HUD 在 `0x1AD9D` 呼叫 `0x12E38`，後者 `0x12E5C` 讀 `[0x53A51]`，
+`0x12E67..0x12E76` 取得可變 tile word 的低十位；`0x1ADA5..0x1ADAF` 用它選圖示描述子。
+故 HUD 與開箱圖塊必須共用可變緩衝，並非初始可編輯地圖。
+正式分級匯出由 `tools/ida_opening_input_probe.py`（`PROBE_ADDRESSES=0x190ac 0x12263 0x12e38 0x1acf3`）
+自動合併 `fd2_semantic_index.json`，入口見
+[`fd2_player_chest_hud_20261001.json`](../data/ida/fd2_player_chest_hud_20261001.json)。
+索引的 `entries` 保留函式起點；`instruction_entries` 保存此次六個指令位址。
+`tools/fd2_semantic_index.py` 完整驗證兩者，函式清冊只取前者，probe 以
+`include_instructions=True` 自動合併兩者，不把指令算成新增函式或改寫原始名稱。
+此段只記錄 RE 結論；執行期與第十二章對拍的最新分級見本檔末段「第十二章分層結論」。
+
+2026-10-01 第十二章事件（`RE-CLOSED`）：同一固定雜湊 `FD2.EXE`、IDA Pro 9.4、
+IDA LE linear，證據見
+[`fd2_ch12_events_20261001.json`](../data/ida/fd2_ch12_events_20261001.json)。
+回合事件 35 `sub_34C76` 的完整順序是 `0x34C84→0x135DD(12,5)`、
+`0x34C8C` 設 placement gate 1、`0x34C95→0x10B4E(2)`、`0x34C9D` 清 gate、
+`0x34CA6→0x1366A(42)`、`0x34CAE` 尾跳已閉合 `sub_134E4` 重設姿態。
+尾跳是已知 helper 的呼叫，不把 helper 內部重新列為事件轉寫範圍。
+group 3／4 並非缺觸發：既有死亡事件 37（map11 單位 1 的 `type 2/value 37`）
+在 `0x34D12`／`0x34D45` 分別登場，並播放 ACTING 43／44；
+`native_death_events.json` 與 `ch12.json` 已有完整動作，這一輪只核對出處，不重解。
+它們不因 `force-enemy-clear` 就保證跑到死亡獎勵分派，動態抽樣仍需如實記錄。
+事件 36 `sub_34CB3` 在第 5 回合的友軍 phase 執行：`0x34CBD` 取 `[0x53A45]`、
+`0x34CC2` 加 `0x460`（記錄 14）、`0x34CC7` 將該記錄 `+0x34` 整 byte 寫為 `0x83`。
+這是 raw 模式寫入，不從高位或低 nibble 猜測角色行為名稱。
+
+2026-10-01 第十二章敗北條件勘誤（`RE-CLOSED`）：`26`／`battle_events.json` 已列
+raw chapter 11 的 `sub_2073D`，本輪先前未將它接進劇本。IDA 9.4 核對
+`0x20747→0x205BE` 後，`0x2074C..0x20758` 查記錄 14 的 `+5 bit0`，非零時
+`0x2075A` 寫 `[0x53ECC]=1`。原版 sample-r2 第 5 回合換手中，記錄 14（友軍）
+在 `(17,27)` HP 歸零，隨後返回標題；索爾仍 HP 420。這不是原版執行器能力缺口，
+也不是全隊倒下。沿用既有原生結果規則接線；友軍存活與取箱的最後章收據見本檔末段「第十二章分層結論」。
+
 下表指定目前主證據與可重開條件。舊交接、SDD 附錄或 exporter 仍寫 `unknown`，都不能
 單獨成為重做理由。
 
@@ -1004,3 +1046,34 @@ sample-r1、dosgolem `f57c23d`，四個 gate 全過：286 個畫面比較點全�
 控制列啟用、事件 31 `0x34B5D` 登場戰場狀態表索引 16 那一群再加 1 與四段鏡頭巡視、map 8 開場只登場
 group 0、`0x1A30B` 的 `0x1A7AB` 回合開頭聚焦時閘 B 仍是 0，由 `0x17277`／`0x135D4` 返回後寫回）記在
 [56 §第九章章工作單元](56-fd2-remake-sdd.md#第九章章工作單元boss-倒戈休眠回合事件列與回合開頭聚焦的閘-b2026-09-17)。
+
+### 2026-10-01 勘誤：敵方物理經驗累計跨行動保留（#48）
+
+RE-CLOSED：固定輸入身分與 IDA 9.4 原始名稱、指令、全域交叉參照見
+[fd2_shared_physical_exp_20261001.json](../data/ida/fd2_shared_physical_exp_20261001.json)。
+0x1546A 的清零屬於 sub_15311 效果分支收尾；sub_1548E 物理分支沒有這個重設。
+0x1566A 對被打記錄呼叫 0x1E292，即使沒有反擊也會消費累計。
+0x1E2C9..0x1E2F8 的零經驗、死亡與滿級早退跳過 0x1E51A 清零；
+0x2A209..0x2A27A 只由我方揮擊覆寫累計，敵方揮擊不會把它清零。
+以上為直接指令已證實；上一段滿級反擊是這次 15 經驗的具體來源仍是強推論，
+原版收據沒有直接匯出該全域值。
+
+原版 sample-r3 的 3067→3068（記錄 31 隔四格未命中）讓記錄 10 經驗 52→67，
+3115→3116 升到 27 級、攻防 382／154；重製仍為 26 級、376／148，後續同一
+RNG word 22986 傷害 27 對 33。這是新同狀態反證，足以重開 106 的
+「沒有反擊就不發經驗」舊斷言；保留原證據與原表，不重解傷害公式。
+正式共用累計接線與第十二章完整 gate 結果見本檔末段「第十二章分層結論」。
+
+第十二章戰後槽數勘誤（2026-10-01，RE-CLOSED）：原版 sample-r5 seq 60 為 25 筆（14 我方＋group 1 的 11 筆），事件 35 與死亡事件 37 後，seq 3853／3854／3873 均為 45 筆（再追加 group 2 的 8 筆、group 3／4 各 6 筆）。舊 ch11_post binding 固定 60 筆含編輯資料佔位列，無法接手此原生路徑；保留舊 60 筆相容輸入，另明示接受已由 dosgolem a9bcd62／固定 FD2.EXE 雜湊證實的 45 筆。0x237D5 的 layout、ACTING 45 與 JOIN17 沿用既閉合 writer／consumer，不重解或改動單位索引。
+
+第十二章存檔反證（2026-10-01，RE-CLOSED）：主證據 [fd2_ch12_post_persistence_20261001.json](../data/ida/fd2_ch12_post_persistence_20261001.json) 保留固定 FD2.EXE 身分、IDA Pro 9.4 線性位址、原指令與原始配置表。sub_11506 在 identity 匹配整筆複製後，0x11586 清 +0x22..0x27 六 bytes、0x1158E 將 +5 &= 1，active 回填 MaxHP、所有筆回填 MaxMP。舊 runtime 只清相容狀態，遺留 raw acted 與毒剩餘回合；sample-r5／remake-r2 存檔原生槽0+5、槽10+25 的直接反證足以重開消費端。另 0x2382B 的三張14-byte表為 slots0..13，槽2=(9,4,2)；特殊槽14=(10,2,0)，camera=(4,0)。舊 binding 錯把特殊位置寫在槽2，已由直接參數及 0x233C6 writer 否定。ACTING45 與原版解碼一致，不改演出資源。
+
+死亡事件延遲與行動灰化（2026-10-01，RE-CLOSED／RUNTIME 待核）：sample-r5 seq3109 原版記錄10 +5=0，seq3116 才為128；重製 remake-r3 的死亡事件等待畫面差860 px。已閉合 0x18890→0x1AA1D 先執行死亡效果，0x13512 才設bit7（既有 native_death_program_runtime／native_death_reward_message 實作與 110 行動尾端證據）。舊 helper 只在開程式那一幀暫清bit7，200ms delay 期間重繪又帶回灰化。修正正式 Game 物理結算在外層 owner 完成前保留既有bit7，由已存在 finishSuccessfulUnitAction 寫入；不更改純 battle 結算與經驗規則。
+
+同輪實作勘誤：remake-r4 將 bit7 保留套到所有 Game 物理行動，改變 AI 行動結算，行為 gate 反證後續 HP 偏離；此版本不採用。修正限定 actor==玩家選取單位且非 aiBusy，保留 AI 原有標記；同一 sample-r5 重跑，不挑選亂數結果。
+
+同輪尾端接手勘誤：remake-r5 只限定玩家結算保留 bit7 仍失敗，因正式攻擊流程在尾端前已清 g.sel，finishSuccessfulUnitAction 原僅以 actor==g.sel 判定玩家，未發布bit7。舊提前結算寫入掩蓋此缺口。尾端改以既有選取身分或非 aiBusy 的 raw +6==2 識別玩家，依原版 0x13512 發布bit7；敵方物理入口標記維持原有行為。
+
+影像成因勘誤：原版 seq3109 的 raw +5 尚未設置屬已證實；但「860像素來自灰化」只是初始假說，remake-r6 修正 bit7 後仍差860，放大原圖／重製圖可見兩侧灰階相同，差異全落在兩個 FDICON 待機相位。對話開框時凍結底圖，重播器先枚舉待機相位，卻在死亡對白分支輸出固定快照，全部候選使用同一框外底圖。依既有升級對白方式保留完整上／下框、嘴型、箭頭與頭像，框外使用同輪原生 renderer 的已枚舉整幀；不抄原版像素或增加門檻。主實驗 sample-r5 seq3109／remake-r6 remake-0219-p1，原版影像 SHA 與同狀態比較見 parity-ch12 正式收據；純相位比較仍待整章驗收。
+
+第十二章分層結論（2026-10-01）：本輪四份IDA主證據已 RE-CLOSED，具型別事件／劇本／binding 為 DATA-READY，正式接線與最後全套回歸為 RUNTIME-E1；章收據 PLAYER-E2 依111例外。原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。 主證據入口為[章收據](../data/ui-traces/parity-ch12.json)及[抽樣索引](../data/ui-traces/parity-ch12-samples.json)，限制以[逐章台帳](../data/parity-campaign-progress.json)第12章為準。RE未知（特定保留15經驗的動態來源）與可選UI修飾不改寫為已證實；敗北完整路徑#47仍未完成。

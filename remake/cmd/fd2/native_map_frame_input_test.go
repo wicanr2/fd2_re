@@ -24,6 +24,26 @@ func nativeFrameTestSprite(pixel byte) fdicon.Sprite {
 	return fdicon.Sprite{Pixels: pixels, Mask: mask, RemapMask: make([]byte, 24*24)}
 }
 
+func TestNativeMapHUDReadsMutableTileAndRejectsBrokenBuffer(t *testing.T) {
+	a, m, st := completeNativeMapFrameFixture(t)
+	g := &Game{nativeMapAssets: a, m: m, st: st}
+	st.NativeMapEventGrid = make([]byte, 4+4*st.W*st.H)
+	st.NativeMapEventGrid[0], st.NativeMapEventGrid[2] = byte(st.W), byte(st.H)
+	st.HasNativeMapEventGrid = true
+	a.Controls = append(a.Controls, 0, 7, 0, 0)
+	tile := len(a.Controls)/4 - 1
+	binary.LittleEndian.PutUint16(st.NativeMapEventGrid[4:6], uint16(tile))
+	m.Tiles = nil // 原生 HUD 不得先取初始地圖，即使最後又覆寫結果。
+	in, ok := g.nativeMapHUDInput()
+	if !ok || in.TerrainDescriptor != tile || in.TerrainControl != 7 {
+		t.Fatalf("HUD still reads initial map: (%+v,%v) reason=%s", in, ok, g.nativeMapHUDInputReason)
+	}
+	st.NativeMapEventGrid = st.NativeMapEventGrid[:4]
+	if _, ok := g.nativeMapHUDInput(); ok {
+		t.Fatal("broken native buffer silently fell back to initial map")
+	}
+}
+
 func nativeFrameTestBank(count int, pixel byte) *fdicon.Bank {
 	bank := &fdicon.Bank{Sprites: make([]fdicon.Sprite, count)}
 	for i := range bank.Sprites {

@@ -3857,7 +3857,37 @@
         {
           "code": "unmapped_field",
           "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[1].actions[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[1].actions[2]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[1].actions[3]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
           "path": "events[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[0]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2]",
           "severity": "warning"
         }
       ],
@@ -17689,7 +17719,7 @@
       "document_id": "legacy/campaign/b5c1e4503510/campaign_full",
       "kind": "campaign",
       "output": "campaign/campaign_full.json",
-      "sha256": "20ad8e7269dd404109318adf03a8edaef8b78b1d0fab4e165db156d7b9097306",
+      "sha256": "1205a51072cb1ec2db42a1f1d955d26a83a045fb53cc44b551ae1d2fded8e22f",
       "source": "remake/assets/scenarios/campaign_full.json"
     },
     {
@@ -17781,11 +17811,11 @@
       "source": "remake/assets/scenarios/ch11.json"
     },
     {
-      "diagnostics": 18,
+      "diagnostics": 23,
       "document_id": "legacy/scenario/d0652b895346/ch12",
       "kind": "scenario",
       "output": "scenarios/ch12.json",
-      "sha256": "cf9c1ddb7f16d628f969bf9c17f584ef5843a6e854c8c893e4690425420cc6d2",
+      "sha256": "066289faa86b33d306800f179cf82c821e024fada315350d4b92246247e46d66",
       "source": "remake/assets/scenarios/ch12.json"
     },
     {
