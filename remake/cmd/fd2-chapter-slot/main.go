@@ -159,7 +159,7 @@ func run() error {
 	levelsPer := flag.Int("levels-per-chapter", 0, "每通關一章，既有隊員各升幾級（政策，非證據；正對照顯示實際升級只發生在有擊殺的人，預設 0）")
 	overrideText := flag.String("level-overrides", "", "以 key7=level 指定最終等級，逗號分隔（攻略校準用）")
 	boostAP := flag.Int("boost-base-ap", 0, "每筆名冊記錄的基底 AP（+0x37）加值；政策值，114 定案，套完再跑 0x1145A 重算")
-	boostDP := flag.Int("boost-base-dp", 0, "每筆名冊記錄的基底 DP（+0x39）加值；政策值，拉太高敵人會不攻擊（0x14237 差值 <= 2 略過）")
+	boostDP := flag.Int("boost-base-dp", 0, "每筆名冊記錄的基底 DP（+0x39）加值；政策值，拉太高會改變敵方評分（0x14237 差值 <= 2 仍以 priority 0 比較）")
 	boostDX := flag.Int("boost-base-dx", 0, "每筆名冊記錄的 DX（+0x3E，HIT 與 EV 共用基底）加值；EV 不可大於等於敵人 HIT")
 	eventStateText := flag.String("event-states", "", "以 章:索引=值 指定戰後 handler 讀到的戰場狀態表值，逗號分隔（政策，非證據；例如 7:17=1 讓 ch06_post 走 JOIN12）")
 	seed := flag.Int64("seed", 0, "成長擲骰種子；0 表示用 target")
@@ -302,7 +302,7 @@ func run() error {
 var knownDeviations = []string{
 	"經驗值、擊殺帶來的升級、金幣與掉落物品（死亡獎勵、寶箱）全部依實際遊玩而定，本工具不模擬；等級與金幣只能靠 -levels-per-chapter／-level-overrides／-gold 明示。",
 	"紀錄 +0x00..+0x04（戰場座標等）與 +0x28..+0x36 隨遊玩漂移，保留基底值。",
-	"JOIN 建構器輸出的物品格 6／7 是 80 00，真實原版存檔是 80 ff（旗標 bit7 置位時 item byte 不被消費）；差異已登記待解。",
+	"JOIN 保留目標槽 +0x17／+0x19 的載入殘值；建槽工具不重播戰場 sync_party，原版 0x11506 可能整筆複製場上記錄並改寫它們（ch01→ch02 identity 8 是 3f／06 對 ff／ff）；此差異仍由 #23 追蹤。",
 }
 
 func sha(data []byte) string {
@@ -623,13 +623,14 @@ func (b *builder) join(chapter, id int, source any) error {
 	if b.count >= fdsave.RosterUnits {
 		return fmt.Errorf("join char_id=%d：隊伍已滿 %d", id, fdsave.RosterUnits)
 	}
-	record, err := b.constructor.MaterializePersistentRecord(id, b.itemRows)
+	// sub_112A5 只改指定欄位；未寫的位元組保留 count 所在槽的載入原值。
+	// 0x11506 的戰場整筆複製是另一個階段，不能在 JOIN 猜補 ff。
+	var residual fdsave.PersistentRecord
+	copy(residual.Raw[:], b.record(b.count))
+	record, err := b.constructor.MaterializePersistentRecordOn(residual, id, b.itemRows)
 	if err != nil {
 		return err
 	}
-	// sub_112A5 寫進 persistent_count 那一格。ch01→ch02 真實存檔的新成員（id 8）
-	// 在建構器沒寫到的 +0x28..+0x30 全是 0，只有 +0x31 是 0xff，與建構器的零初始
-	// 紀錄一致；所以整筆覆寫，不保留槽區那一格的舊 bytes（那是存檔緩衝殘值）。
 	copy(b.record(b.count), record.Raw[:])
 	slot := b.count
 	b.count++

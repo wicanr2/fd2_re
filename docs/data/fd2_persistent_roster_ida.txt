@@ -31,7 +31,7 @@ FD2 persistent roster 0x50-byte record（IDA Pro 9.4）
 | `+6` | `0x1133B` | raw camp／selector byte 初值 2 |
 | `+7` | `0x1133F..0x11343` | caller join id 寫入的可變 presentation/resource key |
 | `+8` | `0x11343..0x11346` | 同一 join id；另由 `0x33499` 作 persistent identity lookup |
-| `+0A..+19` | `0x1134D..0x11399` | 八個兩-byte item cells；偶數 offset 是 raw flags，奇數 offset 是 item id |
+| `+0A..+15`、`+16/+18` | `0x1134D..0x11399` | 前六格 flags／item 與最後兩格 flags；最後兩格 item `+17/+19` 未在此寫入，見下方勘誤 |
 | `+1A..+1D` | `0x11399..0x113A3` | constructor command bytes |
 | `+1E` | `0x113AB` | 第五個 command byte 初值 0 |
 | `+1F/+20` | `0x113AF..0x113B7` | race／class raw bytes |
@@ -77,3 +77,21 @@ FD2 persistent roster 0x50-byte record（IDA Pro 9.4）
   cache slot 或永遠相等的 character id。
 - 此 view 尚不補角色名稱、class 名稱、圖像 resolver 或 chapter
   materialization，因此仍不是完整 `battle.Unit`／native restore。
+
+
+2026-10-01 勘誤：JOIN 與戰後複製不能合併
+------------------------------------------------
+沿用同一 FD2.EXE identity、IDA Pro 9.4 線性位址及第七章已閉合證據。
+原表把 +0A..+19 全列為 constructor writer 範圍過廣：0x11395 只寫
++0x16/+0x18 的旗標 80，+0x17/+0x19 保留載入記憶體的原值。
+已證實的完整殘值範圍與實際存檔比較見 56 第七章章工作單元；
+章節槽 LOAD 的全 0xA00-byte reader 是 0x2604A..0x26056，見
+docs/data/fd2_native_chapter_slot_restore_ida.txt。0x10010 是另一條續戰入口。
+較早 zero-initial materializer 的說明只適用零基底，不是所有 JOIN 的 ABI。
+
+ch01-cleared 槽0 count5 的第5筆 item bytes 是 3f/06；ch02-cleared
+identity8 同位置是 ff/ff。ch01_post 的 0x230D9 呼叫 sub_112A5 之後，
+0x230E1 還呼叫 sub_11506。第七章證據已證實後者可整筆抄回 Own
+場上記錄；因此最終 ff/ff 不能反推 constructor 寫 ff。
+具體第一章當下場上 writer／copy-back 對照尚待 #23 的有界驗證。
+本輪修正建槽工具的 constructor consumer，沒有宣稱整個戰後存檔已一致。

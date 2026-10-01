@@ -8052,8 +8052,10 @@ r2 騎士第 3 回合先衝踏格、第 6 回合陣亡；r3 守到第 7 回合�
   以我方身分打過仗，`0x11506` 把場上記錄整筆抄回，殘值被 FDFIELD 登場的零初始記錄蓋掉。重製端
   `MaterializePersistentRecordOn(residual)` 疊在殘值上、`Unit.NativeJoinPersistentPending` 在戰後
   同步前擋掉 x／y／+0x34..+0x36／+0x3d／死亡效果 +0x32..+0x33 的覆寫；三章酒店存檔 sha256 全同。
-  `fd2-chapter-slot` 建槽工具仍整筆覆寫（真實 ch01→ch02 存檔那一格是 0，結果相同）；由建構槽
+  當時 `fd2-chapter-slot` 建槽工具整筆覆寫；2026-10-01 已接回殘值建構。較早
+  「真實 ch01→ch02 存檔那一格是 0，結果相同」的解釋已由下方勘誤反證。由建構槽
   LOAD 的實跑，重製端下一章讀到 x=0xe8 這種殘值要能容忍，還沒驗。
+
 - **selector 0 的暫時狀態掃描搬到橫幅之後（已證實的順序）。** `0x1A30B`：selector 1 回合事件 →
   `sub_1A866(1)` → 友軍 AI → 橫幅 → `0x13536` → selector 0 回合事件 → `sub_1A866(0)` → 敵軍兩遍；
   重製端原本把 1、0 併在友軍 AI 之前。拆開之後 seq 1763 整張單位畫格對不上（1294 px）：
@@ -8131,6 +8133,34 @@ kind 第一點、全部 `diff_pixels>0`、指定的點；每列「原版 checkpo
 selector 2。第七章 gate 的兩端（departure_prompt 在 YES 之前、battle_start 在游標）都不含這段過場，
 所以收據看不到它；重製端 `beginNativeTransientPhases` 不是這段動畫的擁有者，城鎮縮放暗化與戰場淡入
 兩段都還沒接（另開 issue，見 58）。
+
+### 建槽工具 JOIN 殘值勘誤（2026-10-01，#23）
+
+規格狀態：**CONFORMED（僅建構器殘值契約；先 READY 再實作）**。沿用本節已閉合的 `sub_112A5` 寫入範圍及
+`0x11506` 戰後整筆複製證據，不重新反組譯。章節槽 LOAD 的直接複製端是
+`0x2604A..0x26056`，見 [`fd2_native_chapter_slot_restore_ida.txt`](../data/fd2_native_chapter_slot_restore_ida.txt)；
+`0x10010` 是另一條續戰入口，不能混用其呼叫鏈。
+
+建槽工具 `join` 必須把目前 count 所在的完整 0x50-byte 槽記錄交給
+`MaterializePersistentRecordOn`，只改已證實的建構欄位。`+0x17/+0x19`
+保留原值；來源為零、ff 或其他值都不得猜補。驗收需覆蓋不同殘值、原有成員與鄰槽不變、
+空旗標固定 80、暫時欄位歸零，以及序列化後仍保留兩個 item byte。
+
+正對照的反證：ch01-cleared 槽0 count5 的未使用第5筆 `+0x17/+0x19` 是
+`3f/06`；ch02-cleared 槽0新增 identity8 是 `ff/ff`。`ch01_post` 的
+`0x230D9→0x112A5` 後接 `0x230E1→0x11506`，所以最終存檔不能只代表
+JOIN 當下。工具目前不重播戰場 `sync_party`，此差異仍由 #23 追蹤；
+本切片只能驗證建構器殘值契約，不宣稱這兩個真實通關槽或完整戰役已一致。
+
+驗證入口：Docker 映像檔 `fd2-go-test-local:20260909`，在 `remake` 執行
+`go test ./cmd/fd2-chapter-slot ./internal/campaign ./internal/fdsave`，三套件通過。
+用唯讀掛載的 ch01-cleared 槽執行 `go run ./cmd/fd2-chapter-slot -base /base/FD2.SAV
+-target 2 -out-dir /src/work/parity-state/join-residual-20261001 -seed 2`，成長步數0，
+新增 identity8 的兩個 item byte 保留 `3f/06`，符合 JOIN；與原版最終 `ff/ff` 仍差兩個 byte。
+來源／輸出雜湊、驗收結果與限制見
+[`fd2_join_residual_builder_20261001.json`](../data/fd2_join_residual_builder_20261001.json)。
+既有章槽、manifest 與章收據不重建、不改寫；其中舊版已知差異文案是歷史產物，
+不得再當作現行建構器規格。
 
 ## 第八章章工作單元：施法落點成本列、被圍住的回復與 FDFIELD 我方射程（2026-09-17）
 

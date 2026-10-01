@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_join_residual_builder_verification",
+  "date": "2026-10-01",
+  "issue": 23,
+  "status": "constructor_conformed_copyback_open",
+  "evidence_level": "RUNTIME-E1 tooling; no new PLAYER-E2",
+  "reference_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "sources": [
+    {
+      "path": "work/parity-state/ch01-cleared/FD2.SAV",
+      "sha256": "d6960ee1608ecb5ed8bab7cce0734a9d92cc3aec139857a3d1fc0ada4100b43d",
+      "slot": 0,
+      "chapter": 1,
+      "roster_count": 5,
+      "record_index": 5,
+      "identity": null,
+      "item_flags": [
+        250,
+        250
+      ],
+      "item_bytes": [
+        63,
+        6
+      ]
+    },
+    {
+      "path": "work/parity-state/ch02-cleared/FD2.SAV",
+      "sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
+      "slot": 0,
+      "chapter": 2,
+      "roster_count": 6,
+      "record_index": 5,
+      "identity": 8,
+      "item_flags": [
+        128,
+        128
+      ],
+      "item_bytes": [
+        255,
+        255
+      ]
+    },
+    {
+      "path": "work/parity-state/join-residual-20261001/FD2.SAV",
+      "sha256": "f4f6181f19c0dda3bc34a28da6e3cec7c130d2bf933ce713a905019bf06039d0",
+      "slot": 0,
+      "chapter": 2,
+      "roster_count": 6,
+      "record_index": 5,
+      "identity": 8,
+      "item_flags": [
+        128,
+        128
+      ],
+      "item_bytes": [
+        63,
+        6
+      ]
+    }
+  ],
+  "build": {
+    "cwd": "remake",
+    "command": "go run ./cmd/fd2-chapter-slot -base /base/FD2.SAV -target 2 -out-dir /src/work/parity-state/join-residual-20261001 -seed 2",
+    "image": "fd2-go-test-local:20260909",
+    "seed": 2,
+    "levels_per_chapter": 0,
+    "level_steps": 0,
+    "original_executed": false
+  },
+  "gates": {
+    "constructor_preserves_loaded_item_bytes": true,
+    "empty_flags_are_80": true,
+    "real_clear_save_item_bytes_equal": false
+  },
+  "tests": {
+    "command": "go test ./cmd/fd2-chapter-slot ./internal/campaign ./internal/fdsave",
+    "passed": true,
+    "cases": [
+      "00/00",
+      "ff/ff",
+      "3f/06",
+      "ff/00"
+    ],
+    "save_roundtrip": true,
+    "existing_members_and_neighbors_unchanged": true
+  },
+  "evidence": [
+    "docs/data/fd2_join_constructor_word42_ida.txt",
+    "docs/data/fd2_persistent_roster_ida.txt",
+    "docs/data/fd2_native_chapter_slot_restore_ida.txt",
+    "docs/knowledge-base/56-fd2-remake-sdd.md#建槽工具-join-殘值勘誤2026-10-01-23"
+  ],
+  "limitations": [
+    "未重跑原版；沿用第七章閉合證據與既有真實通關存檔。",
+    "本工具未重播 0x11506 場上 Own 記錄整筆複製；第一章最終 ff/ff 來源仍待有界實測。",
+    "#23 維持開啟；沒有宣稱完整通關存檔、傷害、亂數或玩家路徑 parity。"
+  ]
+}

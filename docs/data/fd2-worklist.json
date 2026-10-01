@@ -195,8 +195,8 @@
         "paths": [
           "remake/cmd/fd2-chapter-slot/main.go"
         ],
-        "pattern": "物品格 6／7 是 80 00",
-        "note": "建槽工具 known_deviations 裡自承的那一句；解掉就拿掉。"
+        "pattern": "建槽工具不重播戰場 sync_party",
+        "note": "建槽工具仍缺戰場整筆複製；JOIN 殘值已修正，不代表最終原版存檔差異已消失。"
       },
       "issue": 23
     },

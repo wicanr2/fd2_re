@@ -1118,3 +1118,23 @@ RE-CLOSED／DATA-READY／RUNTIME-E1／PLAYER-E2（依114建構槽限制）：[�
 同日另以現行程式重跑勝利sample-r5→victory-after-defeat-r1，四項驗收全數通過；影像門檻沿用[既有第十二章收據](../data/ui-traces/parity-ch12.json)，未擴張至未驗證畫面。統計由python3 tools/audit_story_script_coverage.py重生：120個story/cutscene、9個script、57個handler-bound、54個fallback，其中自訂retreat29；這是刪除retreat_ch12後的資料形狀，不代表其餘29章敗北完成。
 
 本批驗證：Go整體19個有測試套件全部通過；原版控制端73項單元測試通過。最終nil guard修正後，正式敗北重播r6及敗北／START／缺件／選取測試全數通過，campaign及字串審查另以現行檔案重跑通過。所有本批容器已退出；工作目錄無root-owned檔案或同名.md空目錄。
+
+## 2026-10-01：建槽 JOIN 殘值與戰後複製分層（#23）
+
+目前狀態：原版 JOIN 殘值契約 RE-CLOSED；正式執行期已在第七章驗證；
+建槽工具本輪接回相同的 MaterializePersistentRecordOn，屬工具 RUNTIME-E1。
+來源仍是固定 FD2.EXE／IDA Pro 9.4 線性位址，canonical
+[JOIN writer](../data/fd2_join_constructor_word42_ida.txt)、
+[名冊欄位勘誤](../data/fd2_persistent_roster_ida.txt)、
+[章槽 LOAD reader](../data/fd2_native_chapter_slot_restore_ida.txt)；
+規格與驗證命令在 [56 建槽勘誤](56-fd2-remake-sdd.md#建槽工具-join-殘值勘誤2026-10-01-23)。
+新 [工具驗證收據](../data/fd2_join_residual_builder_20261001.json)保留來源與輸出 SHA-256，
+四種殘值／原有成員／鄰槽／存檔往返測試及三套件回歸通過。
+
+#23 仍 BLOCKED（戰場 copy-back 未接入建槽工具），不是 constructor unknown。
+ch01-cleared 槽0第5筆空格 item 是 3f/06；新工具保留它們，ch02-cleared
+identity8 卻是 ff/ff。較早「該格是零、整筆覆寫相同」已被直接存檔反證。
+ch01_post 的 0x230D9 JOIN 後還有 0x230E1→0x11506，不能把最終 ff/ff
+當作建構器固定值。下一切片僅追第一章該場上記錄寫入與整筆複製；
+不重開已閉合的 0x112A5，不猜填 ff。原版最終正對照仍有兩 byte 差異，沒有新增 PLAYER-E2。
+現存章槽／manifest 的舊文案保留為歷史，既有章收據與交付版本未變。

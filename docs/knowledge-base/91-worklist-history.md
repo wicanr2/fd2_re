@@ -4451,3 +4451,9 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 勝利路徑以sample-r5再次重播並驗四項驗收通過。整體回歸首輪只有字串review來源座標與retreat統計失效；依盤點重綁既有92筆處置，新增兩筆loadErr顯示字串按消費端審查為player_visible，再乾淨重跑。詳細可重跑入口及現況統計集中58。
 
 驗證收尾：Go整體19套件全過、控制端73測試全過；最後審閱補回confirmBattleResult的nil guard，並以r6重跑敗北及正式START／缺件等測試，收據重新綁定現行程式。Docker無本批殘留容器，工作輸出UID/GID1000，無root-owned或.md目錄殘留。
+
+## 2026-10-01：#23 JOIN 殘值部分修正與正對照反證
+
+沿用第七章已閉合證據，建槽工具從全零建構改為疊寫目標槽的 LOAD 殘值；四種兩-byte 殘值、成員／鄰槽不變、已證實旗標／暫時欄位與原生存檔往返通過，三套件回歸通過。第一章真實基底重建第2章，輸出 SHA-256 f4f6181f19c0dda3bc34a28da6e3cec7c130d2bf933ce713a905019bf06039d0，保留 3f/06。
+
+原版第二章 identity8 是 ff/ff，反證較早「第一章那一格是零，所以整筆覆寫」；不能只刪除舊 known_deviations 就關 issue。#23 內文追加此勘誤，verify 改綁真正剩餘的 sync_party 缺口。56／58／57同步限定為工具 RUNTIME-E1，canonical writer 表範圍修正並保留訂正原因。既有章槽與收據保留，沒有新 PLAYER-E2。另把建槽 DP 參數說明依已閉合 #56 改成 priority0 仍比較，移除「差值<=2略過」的舊斷言。

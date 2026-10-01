@@ -1,13 +1,83 @@
 package main
 
 import (
+	"bytes"
 	"encoding/binary"
+	"fmt"
 	"math/rand"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
+
+// #23：JOIN 不能把 LOAD 載入、建構器未寫的位元組當成全零或固定 ff。
+// 同時驗證輸出槽的序列化，避免只測孤立的建構器。
+func TestBuilderJoinPreservesLoadedResidualThroughSave(t *testing.T) {
+	for _, pair := range [][2]byte{{0, 0}, {0xff, 0xff}, {0x3f, 0x06}, {0xff, 0}} {
+		t.Run(fmt.Sprintf("%02x_%02x", pair[0], pair[1]), func(t *testing.T) {
+			b := &builder{roster: make([]byte, fdsave.RosterSize), count: 1}
+			if _, err := b.loadTables("../../assets"); err != nil {
+				t.Fatal(err)
+			}
+			for i := range b.roster {
+				b.roster[i] = 0xf8
+			}
+			b.record(0)[recordIdentity] = 0
+			b.record(1)[0x17], b.record(1)[0x19] = pair[0], pair[1]
+			before := append([]byte(nil), b.roster...)
+			if err := b.join(2, 8, nil); err != nil {
+				t.Fatal(err)
+			}
+			if b.count != 2 || len(b.applied) != 1 || b.applied[0].Result != "appended" {
+				t.Fatalf("JOIN 結果不正確：count=%d applied=%+v", b.count, b.applied)
+			}
+			if !bytes.Equal(before[:fdsave.UnitSize], b.record(0)) ||
+				!bytes.Equal(before[2*fdsave.UnitSize:], b.roster[2*fdsave.UnitSize:]) {
+				t.Fatal("JOIN 改寫了原有成員或鄰槽")
+			}
+			raw := b.record(1)
+			for _, off := range []int{0, 1, 2, 3, 4, 0x17, 0x19, 0x28, 0x30, 0x32, 0x36, 0x3d} {
+				if raw[off] != before[fdsave.UnitSize+off] {
+					t.Fatalf("未寫欄位 %#x：%#x → %#x", off, before[fdsave.UnitSize+off], raw[off])
+				}
+			}
+			if raw[recordIdentity] != 8 || raw[0x16] != 0x80 || raw[0x18] != 0x80 || raw[0x31] != 0xff {
+				t.Fatalf("JOIN 已證實欄位未寫入：% x", raw)
+			}
+			if !bytes.Equal(raw[0x22:0x28], make([]byte, 6)) {
+				t.Fatalf("JOIN 未清除暫時欄位：% x", raw[0x22:0x28])
+			}
+			meta := make([]byte, fdsave.MetadataSize)
+			meta[0], meta[1] = 2, byte(b.count)
+			plain, err := fdsave.WriteSlot(make([]byte, fdsave.FileSize), 0, fdsave.Slot{Roster: b.roster, Metadata: meta})
+			if err != nil {
+				t.Fatal(err)
+			}
+			stored, err := fdsave.Encode(plain)
+			if err != nil {
+				t.Fatal(err)
+			}
+			decoded, err := fdsave.Decode(stored)
+			if err != nil {
+				t.Fatal(err)
+			}
+			slot, err := fdsave.ReadSlot(decoded, 0)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(slot.Roster, b.roster) {
+				t.Fatal("序列化後名冊位元組改變")
+			}
+			if err := b.join(2, 8, nil); err != nil {
+				t.Fatal(err)
+			}
+			if b.count != 2 || !bytes.Equal(slot.Roster, b.roster) || b.applied[1].Result != "already_present" {
+				t.Fatal("重複 JOIN 改寫了名冊")
+			}
+		})
+	}
+}
 
 // 受版控的 30 份戰後 handler 必須各自恰有一個 set_chapter，且目標章 1..30 不重複；
 // 建槽工具靠這個對映決定「通關第 k 章要套哪一份」。
