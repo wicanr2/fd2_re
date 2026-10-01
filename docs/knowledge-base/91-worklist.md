@@ -28,10 +28,22 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
+
+## re — 原版證據還沒閉合
+
+### 第十五章回合事件13／18／38尚缺完整動作與正式消費端
+
+`ch15-turn-events-13-18-38` · RE待解 · [#78](https://github.com/wicanr2/fd2_re/issues/78) · 仍未完成 · 要人判
+
+#76 第十五章抽樣前核對原版 FDFIELD_043 控制列：第4回合event13 raw camp1、第7回合event38 raw camp0、第9回合event18 raw camp0。現有 ch15 劇本只將event38降為spawn group1；native_death_events.json尚無三者的完整轉寫，因此既有同步工具無法還原鏡頭、模式與對白等其餘動作。先查58及現有reinforcement_eax_sources證據，僅匯出缺少的有限handler及writer／consumer，形成READY規格後同步legacy／canonical並以本章原版抽樣驗收。
+
+怎樣算做完：保留固定EXE雜湊、IDA9.4原始名稱／位址／bytes、完整直接控制流及caller／consumer；三個事件有分級canonical證據、READY typed規格及正式消費端，按原始camp與回合時機執行；固定建構槽第4／7／9回合抽樣通過行為與完整RGB≤640，不以spawn-only或重製單元測試當作原版一致。
+
+證據：`['docs/data/turn_events.json', 'docs/data/event_id_groups.json', 'docs/data/ida/fd2_reinforcement_eax_sources.json', 'remake/assets/scenarios/ch15.json', 'remake/assets/maps/native_turn_event_controls.json']`
 
 ## data — 可編輯資料還沒就緒
 
@@ -111,6 +123,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
+### 第十五章起手缺原版名冊前沿與HUD綁定
+
+`ch15-startup-runtime-topology` · 缺陷 · [#77](https://github.com/wicanr2/fd2_re/issues/77) · 仍未完成 · 要人判
+
+第十五章 #76 的正常 LOAD 有界預檢已產生原版收據：preflight-original-r2，seq71，round1，16名我方、48名敵軍，視圖camera(30,39)、cursor(38,45)、selector1。重製 preflight-remake-r1 在 battle_start 組裝整幀時因 HUD 狀態缺失停止，並將我方追加於場地容量80筆後；原版採持續隊伍在前。第一輪原版 r1 僅擷取參數錯誤，沒有遊戲證據，與本缺陷分開。依既有 canonical 證據及同槽原版收據，核對實際前沿、部署順序、演出寫入與視圖狀態後才接入正式資料；不得猜補。
+
+怎樣算做完：原版證據登記58，規格READY後完成具型別起手名冊、部署與HUD／視圖綁定；以相同建構槽與固定計畫重跑預檢，battle_start 的活單位順序及原版狀態一致、全RGB320×200差異≤640；保持錯誤輸入失敗即關閉，整章驗收另由 #76 管理。
+
+證據：`['docs/data/parity-plans/ch15-preflight.jsonl', 'docs/data/parity-slots/ch15-manifest.json', 'work/parity-slot-ch15/preflight-original-r2', 'work/parity-slot-ch15/preflight-remake-r1.log']`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -150,6 +172,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第十五章缺完整原版與重製四項對拍收據
+
+`ch15-full-chapter-parity` · 工作 · [#76](https://github.com/wicanr2/fd2_re/issues/76) · 仍未完成 · 要人判
+
+第十四章已於36678491完成完整驗收。接續111／114逐章工作單元，先核對第十五章正常LOAD起手、實際名冊前沿及可編輯事件，再跑有界原版與完整同槽重製。未知行為先登記RE或缺陷工單，不猜補正式路徑。
+
+怎樣算做完：以已核對ch02-cleared基底建構相同第十五章槽，levels6、seed4、state7:17=1與AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後、城鎮、交易與酒店存檔。原版與完整Go串行，四項全過、至少12張320×200全RGB≤640px，保存manifest／plan／正式收據並同步56／57／58、台帳與首頁。
+
+證據：`['docs/data/parity-campaign-progress.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
 
 ## release — 發行、平台與封包
 

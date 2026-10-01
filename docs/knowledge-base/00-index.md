@@ -250,3 +250,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第十四章修正後[完整四項收據](../data/ui-traces/parity-ch14.json)，保持同槽、固定亂數與111／114限制；完整現況統一見58。
 
 - 第十四章[原版／重製／差異固定抽樣索引](../data/ui-traces/parity-ch14-samples.json)與[總覽一](../figures/parity-ch14-samples-p1.png)、[總覽二](../figures/parity-ch14-samples-p2.png)，按每種動作首點與所有非零差異抽樣，不另提升驗證範圍。
+
+- 第十五章 #76：[建構槽清冊](../data/parity-slots/ch15-manifest.json)與[正常LOAD有界預檢計畫](../data/parity-plans/ch15-preflight.jsonl)，僅起手核對，不宣稱整章完成；現況仍由58與台帳承載。
+
+- 第十五章 #77：[起手原版證據與READY規格](../data/ida/fd2_ch15_startup_20261002.json)，只核對74筆名冊、16格部署與視圖／HUD，整章由 #76 驗收。
+
+- 第十五章 #77：[正常LOAD起手比較收據](../data/ui-traces/ch15-native-startup.json)，三張完整RGB影像差異均為0；整章12張與戰後／存檔門檻仍保留。

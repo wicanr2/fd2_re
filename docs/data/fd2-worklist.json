@@ -311,6 +311,63 @@
         "note": "17個地圖tile27局部(7,9)殘差點：13個完整畫面1px，4個與指令環差異共存；不是HUD縮圖。"
       },
       "issue": 52
+    },
+    {
+      "id": "ch15-full-chapter-parity",
+      "layer": "player",
+      "category": "工作",
+      "title": "第十五章缺完整原版與重製四項對拍收據",
+      "body": "第十四章已於36678491完成完整驗收。接續111／114逐章工作單元，先核對第十五章正常LOAD起手、實際名冊前沿及可編輯事件，再跑有界原版與完整同槽重製。未知行為先登記RE或缺陷工單，不猜補正式路徑。",
+      "acceptance": "以已核對ch02-cleared基底建構相同第十五章槽，levels6、seed4、state7:17=1與AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後、城鎮、交易與酒店存檔。原版與完整Go串行，四項全過、至少12張320×200全RGB≤640px，保存manifest／plan／正式收據並同步56／57／58、台帳與首頁。",
+      "evidence": [
+        "docs/data/parity-campaign-progress.json",
+        "docs/goal/111-goal-original-parity-campaign-20260915.md",
+        "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "完整章原版與同槽重製四項收據。"
+      },
+      "issue": 76
+    },
+    {
+      "id": "ch15-startup-runtime-topology",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十五章起手缺原版名冊前沿與HUD綁定",
+      "body": "第十五章 #76 的正常 LOAD 有界預檢已產生原版收據：preflight-original-r2，seq71，round1，16名我方、48名敵軍，視圖camera(30,39)、cursor(38,45)、selector1。重製 preflight-remake-r1 在 battle_start 組裝整幀時因 HUD 狀態缺失停止，並將我方追加於場地容量80筆後；原版採持續隊伍在前。第一輪原版 r1 僅擷取參數錯誤，沒有遊戲證據，與本缺陷分開。依既有 canonical 證據及同槽原版收據，核對實際前沿、部署順序、演出寫入與視圖狀態後才接入正式資料；不得猜補。",
+      "acceptance": "原版證據登記58，規格READY後完成具型別起手名冊、部署與HUD／視圖綁定；以相同建構槽與固定計畫重跑預檢，battle_start 的活單位順序及原版狀態一致、全RGB320×200差異≤640；保持錯誤輸入失敗即關閉，整章驗收另由 #76 管理。",
+      "evidence": [
+        "docs/data/parity-plans/ch15-preflight.jsonl",
+        "docs/data/parity-slots/ch15-manifest.json",
+        "work/parity-slot-ch15/preflight-original-r2",
+        "work/parity-slot-ch15/preflight-remake-r1.log"
+      ],
+      "verify": {
+        "kind": "manual",
+        "reason": "需核對新產生的同槽原版名冊、畫面與四項整章收據，不能由單元測試代替。"
+      },
+      "issue": 77
+    },
+    {
+      "id": "ch15-turn-events-13-18-38",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "第十五章回合事件13／18／38尚缺完整動作與正式消費端",
+      "body": "#76 第十五章抽樣前核對原版 FDFIELD_043 控制列：第4回合event13 raw camp1、第7回合event38 raw camp0、第9回合event18 raw camp0。現有 ch15 劇本只將event38降為spawn group1；native_death_events.json尚無三者的完整轉寫，因此既有同步工具無法還原鏡頭、模式與對白等其餘動作。先查58及現有reinforcement_eax_sources證據，僅匯出缺少的有限handler及writer／consumer，形成READY規格後同步legacy／canonical並以本章原版抽樣驗收。",
+      "acceptance": "保留固定EXE雜湊、IDA9.4原始名稱／位址／bytes、完整直接控制流及caller／consumer；三個事件有分級canonical證據、READY typed規格及正式消費端，按原始camp與回合時機執行；固定建構槽第4／7／9回合抽樣通過行為與完整RGB≤640，不以spawn-only或重製單元測試當作原版一致。",
+      "evidence": [
+        "docs/data/turn_events.json",
+        "docs/data/event_id_groups.json",
+        "docs/data/ida/fd2_reinforcement_eax_sources.json",
+        "remake/assets/scenarios/ch15.json",
+        "remake/assets/maps/native_turn_event_controls.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "reason": "需審查IDA writer／consumer並完成本章同槽第4、7、9回合原版比較。"
+      },
+      "issue": 78
     }
   ]
 }

@@ -1650,3 +1650,22 @@ IDA LE直接指令與同槽原版入口序列反證11及native fallback註解的
 同狀態抽樣圖：[總覽一](../figures/parity-ch14-samples-p1.png)、[總覽二](../figures/parity-ch14-samples-p2.png)與[來源索引](../data/ui-traces/parity-ch14-samples.json)。固定規則包含全部非零差異及wait860；圖中的差異欄僅顯示差異，不用於遮蔽驗收。
 
 第十四章已驗證修正提交 `3667849118f2d94ca8ec8767a7c3642cdc9e42cb`；主機gh回讀確認#69與#71～#75已關閉，快照由正式pull格式器同步。總工單#14仍開啟，其他章與平台／音訊驗收保持原狀。
+
+### 2026-10-02：第十五章起手原版核對與READY（#76／#77）
+
+[主證據](../data/ida/fd2_ch15_startup_20261002.json)保存固定EXE雜湊、IDA 9.4原始函式與工具位址空間。
+0x334D9..0x335A0 的完整caller已核對，LOADCH／HUD helper沿用已閉合writer-consumer。
+dosgolem preflight-original-r2 正常LOAD至seq71，16我方＋58筆group0＝74筆，含48敵軍與10友軍；
+群組座標、圖像、陣營及HP逐欄相符，16格部署與持續隊伍順序相符。
+camera(30,39)、cursor(38,45)、visible(8,6)、selector1；archive80筆只代表容量。
+READY範圍僅runtime_append_groups、完整部署與既有view／inherited HUD B=1；A與anchor仍繼承。
+重製首次預檢缺HUD、仍把我方追加於80筆後而無法組出整幀，#77已登記；尚未列CONFORMED或整章PLAYER-E2。
+第一輪原版只因擷取參數錯誤停止，沒有執行遊戲；第二輪使用相同固定計畫與全新覆蓋層。
+
+## 2026-10-02 #77 第十五章原生起手有限驗收
+
+[原版IDA與逐欄名冊](../data/ida/fd2_ch15_startup_20261002.json)及[同槽收據](../data/ui-traces/ch15-native-startup.json)
+證明16我方＋58筆group0＝74筆前沿，16格部署、原生視圖與繼承HUD接入canonical正式戰役。
+正常LOAD、出戰確認、戰場起手三張完整RGB畫面差異均為0；完整Go回歸19套件通過，遊戲套件111.014秒。
+有限切片列CONFORMED／RUNTIME-E1；整章仍保持12張最低量與戰後／存檔門檻，#76尚未完成。
+第4／7／9回合event13／38／18尚缺完整動作，先登記#78再有界補證；不以spawn-only代表完整事件。
