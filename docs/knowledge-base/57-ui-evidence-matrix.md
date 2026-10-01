@@ -1362,3 +1362,9 @@ input_chain的0x17B0B等鍵caller被工具泛用對白判準誤判，接戰仍�
 [原版IDA與逐欄名冊](../data/ida/fd2_ch14_startup_20261002.json)與[同槽收據](../data/ui-traces/ch14-native-startup.json)證明67筆前沿、三張完整RGB畫面各0px；完整Go回歸19套件通過。
 本切片列CONFORMED／RUNTIME-E1；整章12張最低量不變，有界比較器仍回傳failed，不借三張起手畫面宣稱PLAYER-E2。
 #69的受版控整章計畫另抽樣三回合後清敵，再驗戰後與交易存檔；正式收據尚未產生。
+
+## 2026-10-02 #69 第十四章完整原版與重製失敗診斷
+
+[58最新現況](58-fd2-exe-re-coverage.md)保存完整原版終態、重製失敗點與分層限制；
+[完整首次診斷](../data/ui-traces/parity-ch14-r1.json)四項未通過，整章不列PLAYER-E2。
+#71事件10規格仍DRAFT、#72較早AI順序差異與#73戰後前沿待修；本次未修改正式事件行為。

@@ -364,15 +364,16 @@
     },
     {
       "chapter": 14,
-      "status": "slot-ready",
-      "receipt": null,
+      "status": "oracle-done",
+      "receipt": "docs/data/ui-traces/parity-ch14-r1.json",
       "slot_manifest": "docs/data/parity-slots/ch14-manifest.json",
       "slot_sha256": "e2365c32ee56b1e88fd00bd7950f1ae98e2eabf0e3bb8e6f36f586764212cfb1",
       "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
       "date": "2026-10-02",
-      "verify": "TestChapterParityReplay：docs/data/parity-plans/ch14-preflight.jsonl；有限起手收據，整章仍待#69",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 14 --oracle work/parity-slot-ch14/sample-original-r2 --remake work/parity-slot-ch14/sample-remake-r1 --slot-manifest docs/data/parity-slots/ch14-manifest.json --plan docs/data/parity-plans/ch14-sample.jsonl --out work/parity-slot-ch14/sample-verify-r1.json",
       "limitations": [
-        "固定111／114建構槽；只有正常LOAD至起手三張完整畫面0px，整章尚未驗收。"
+        "原版完整到城鎮、交易、酒店與秘密商店；重製wait seq860缺event10 owner而停止，四項未通過。",
+        "#71事件10、#72較早AI順序差異、#73戰後前沿待修；不得列PLAYER-E2或增加完成章數。"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/parity-ch14-preflight.json",

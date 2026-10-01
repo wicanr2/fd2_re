@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,6 +110,36 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 第十四章戰場事件10缺少轉寫，正常抽樣停止
+
+`ch14-field-event10-owner` · RE待解 · [#71](https://github.com/wicanr2/fd2_re/issues/71) · 仍未完成 · 要人判
+
+#69完整原版r2已正常跑完1344seq，來源c314be4f與固定SAV。重製同槽整章TestChapterParityReplay在wait seq860停止：battle field event: selector 0 event 10 has no transcribed owner。定時控制列為空不代表沒有區域／單位等戰場事件；需先查58／00／canonical事件資料，補章14事件10的原版writer、caller與consumer，不能以空owner或忽略事件繼續。
+
+怎樣算做完：固定FD2.EXE雜湊下以IDA與原版收據確認selector0 event10的觸發、資料寫入及玩家效果；先canonical RE及READY規格再正式轉寫；同一整章原版收據重播能越過該事件，相關真實回歸通過。整章完成仍由#69驗收。
+
+證據：`docs/data/ui-traces/parity-ch14-r1.json`
+
+### 第十四章同槽重播AI行動順序出現差異
+
+`ch14-ai-order-divergence` · 缺陷 · [#72](https://github.com/wicanr2/fd2_re/issues/72) · 仍未完成 · 要人判
+
+#69完整原版r2與重製r1的同槽比較：seq583第40／42／54個AI行動為原版48／50／62，重製49／52／48；seq780第99／101個為原版48／50，重製49／52。收據同時保留oracle_mid_end_turn分類，但remake_divergence仍未解除。先逐筆核對AI trace、狀態與sort consumer；不得直接豁免或改順序讓驗收過。
+
+怎樣算做完：判明每個比較點是否可比及實際第一個分岔；以既有閉合證據及必要窄IDA查詢修正真正差異，保留固定seed與同狀態前置。原版與重製有效AI行動順序一致，相關真實回歸通過；不可放寬閘門或將實際分岔藏入中途排除。
+
+證據：`docs/data/ui-traces/parity-ch14-r1.json`
+
+### 第十四章戰後binding錯把70筆archive當執行期前沿
+
+`ch14-post-runtime-frontier` · 缺陷 · [#73](https://github.com/wicanr2/fd2_re/issues/73) · 仍未完成 · 要人判
+
+#69目前已證實：正常LOAD原版前沿67筆，章內無新增群組，post raw0x238DC在0x2391B追加group1後為68筆（首次seq1093）。原版完整收據直接命中post各writer一次。現有ch13_post binding進入runtime_context要求70筆，但main.go:1745做exact前沿檢查；原native ACTING47也指向新增record67。這是尚未到達的戰後消費端缺陷，需在事件10解除後驗收，不把archive容量視為前沿。
+
+怎樣算做完：保留原版67→68前沿、IDA post直接指令及layout／sync consumer證據；READY規格後修正binding與失實測試斷言。正常同槽完整重播可進post、追加record67、演出、sync與章15城鎮，酒店存檔閉環通過；#69整章四項仍獨立驗收。
+
+證據：`docs/data/ui-traces/parity-ch14-r1.json`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
