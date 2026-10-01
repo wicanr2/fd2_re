@@ -993,6 +993,22 @@
       "why": "第十三章第8回合record14麻痺，原版選取開角色狀態面板；工具仍等移動選格而exit9，當時兩組友軍仍存活，不能誤報為原版敗北。",
       "date": "2026-10-02",
       "evidence": "docs/data/fd2_oracle_paralyzed_selection_20261002.json"
+    },
+    {
+      "id": "parity-secret-gate-uses-current-town",
+      "area": "對拍",
+      "date": "2026-10-02",
+      "rule": "章對拍的秘密商店計畫按動作當下的城鎮查selection／BIOS掃描碼；戰後以town_ch(N+1)查tools/gen_campaign.py的NATIVE_SECRET_GATES，不沿用戰前town_chN鍵。原版ui=shop不足以證明秘密商店；以0x2CEF7選項5寫入、派送與正式重播節點核對，入口見docs/data/ui-traces/ch13-secret-shop-reload.json。",
+      "why": "第十三章三份計畫沿用town_ch13 selection1／Alt+F2，戰後已是town_ch14 selection2／Shift+F3；原版進一般武器店，重播正確拒絕，整章節點未通過。",
+      "evidence": "docs/data/ui-traces/parity-ch13-r3.json；docs/data/ui-traces/ch13-secret-shop-reload.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/gen_campaign.py"
+        ],
+        "pattern": "14: \\(2, 0x56\\)",
+        "note": "第十四章城鎮的已閉合selection2／scan0x56來源仍在；計畫與原版收據另逐項驗證。"
+      }
     }
   ]
 }

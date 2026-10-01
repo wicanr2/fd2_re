@@ -1523,3 +1523,26 @@ input_chain的0x17B0B等鍵caller被工具泛用對白判準誤判，接戰仍�
 既有IDA來源、有效原版畫面與raw投影、日誌雜湊及測試範圍。正式遊戲規則沒有改動。
 修正後完整原版計畫尚未重跑；第九回合／戰後四gate未驗收，第十三章不提升PLAYER-E2。
 本輪不再重啟整章；先保留有效終態，後續重生沿維護工具與相同計畫，原版／全Go仍串行。
+
+
+## 2026-10-02 #61 整章 r3 診斷與 #67 戰後秘密鍵修正
+
+目前狀態：原版 r3 已越過 #65／#66 停止點，完整到第九回合 event7 與戰後；
+[四項診斷](../data/ui-traces/parity-ch13-r3.json)的行為、交易與258張畫面通過，
+節點未通過，整章仍不提升 PLAYER-E2。兩侧酒店存檔 SHA-256 相同
+`137b8dfae9ee4afb0d4c1a0b70a09b4d56bbd1cd757ae4d843986f05b7f6cd8e`。
+原版 trace 直接命中 0x34D72／0x34D80／0x34D91／0x34DAA，兩個敗北writer均0次；
+event7後進round10，才按111執行force-enemy-clear。初始槽仍採114政策，未鎖HP。
+
+節點停止原因是計畫誤用戰前秘密鍵：動作當下已在town_ch14，
+既有0x6238D城鎮表要求selection2／Shift+F3（0x56），不是town_ch13的selection1／Alt+F2。
+依[#67](https://github.com/wicanr2/fd2_re/issues/67)修正三份章十三計畫；正式引擎沒有更改。
+[合法酒店存檔重載收據](../data/ui-traces/ch13-secret-shop-reload.json)已直接命中
+0x2CEF7（EAX=2、EDX=0x56），接0x2D093→0x2D28C→0x2E341；
+重製端到shop_ch14_secret，LOAD城鎮與秘密商店各0px。比較依既有完整相位候選，
+保留所有相位數值，不遮罩。這是有限RUNTIME-E1，不與r3拼接為完整章通過。
+
+重生入口：原版tools/dosgolem_oracle.sh配ch13-secret-shop-reload.jsonl，
+來源為上述原版酒店SAV，trace／步數上限見收據；重製用TestChapterParityReplay、章14、
+同一SAV與該原版run，在維護的Go Docker／Xvfb執行。完整新計畫仍由#61驗收，
+須從原建構槽重生，不使用拼接動作或覆寫r3。舊計畫由b80894d0與原SHA保留。

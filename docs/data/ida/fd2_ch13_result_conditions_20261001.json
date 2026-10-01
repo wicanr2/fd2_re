@@ -5470,6 +5470,161 @@
       "trace207ec_hits": 0,
       "level": "confirmed",
       "limits": "第九回合與完整章四gate未驗收；本輪不再重啟整章。"
+    },
+    "east_guard_attempt_after_paralyzed_fix": {
+      "date": "2026-10-02",
+      "run": "work/parity-slot-ch13/east-guard-original-r3",
+      "driver_commit": "b80894d0d88703f1b94137eacd1cd5948950da56",
+      "plan_sha256": "ade6ba7d256c0462a2ab61e5fb3cb5f675c836a98c07e668c57f3de865e98aa7",
+      "source_revision_for_plan": "b80894d0d88703f1b94137eacd1cd5948950da56",
+      "result": "原版exit0；第九回合event7、round10、戰後城鎮、交易與酒店存檔完成；最後秘密商店用錯戰前鍵，完整章節點gate未通過。",
+      "last_checkpoint": 5997,
+      "steps": 21113354130,
+      "trace_hits": {
+        "0x4E893": 8030,
+        "0x1956B": 50,
+        "0x12CEA": 519,
+        "0x190AC": 74,
+        "0x13A9F": 250,
+        "0x196CB": 37,
+        "0x34C15": 2,
+        "0x1E54A": 4,
+        "0x1911D": 1,
+        "0x1917E": 1,
+        "0x34D72": 1,
+        "0x34D80": 1,
+        "0x34D91": 1,
+        "0x34DAA": 1
+      },
+      "event7_trace": [
+        {
+          "step": 17955380239,
+          "control_seq": 5730,
+          "eip": "0x34D72",
+          "eax": "0x7",
+          "edx": "0x0",
+          "ebx": "0x1",
+          "ecx": "0x16D0B8",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x5561C",
+          "rng_word": 62632,
+          "stack": [
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "step": 17955380254,
+          "control_seq": 5730,
+          "eip": "0x34D80",
+          "eax": "0x7",
+          "edx": "0x0",
+          "ebx": "0x1",
+          "ecx": "0x16D0B8",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x55614",
+          "rng_word": 62632,
+          "stack": [
+            "0x1B",
+            "0x5",
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0"
+          ]
+        },
+        {
+          "step": 17958286360,
+          "control_seq": 5730,
+          "eip": "0x34D91",
+          "eax": "0xA0036",
+          "edx": "0x160",
+          "ebx": "0x1",
+          "ecx": "0x0",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x55618",
+          "rng_word": 62632,
+          "stack": [
+            "0x2",
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "step": 17961544106,
+          "control_seq": 5730,
+          "eip": "0x34DAA",
+          "eax": "0xAF3C4",
+          "edx": "0x160",
+          "ebx": "0x1",
+          "ecx": "0x0",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x5561C",
+          "rng_word": 62632,
+          "stack": [
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        }
+      ],
+      "actions_sha256": "ee89f6dd5cf9c906de5c22ccf3b6268d02972f6f98c13710c8f6fc162165312c",
+      "save_sha256": "137b8dfae9ee4afb0d4c1a0b70a09b4d56bbd1cd757ae4d843986f05b7f6cd8e",
+      "gates": {
+        "behavior": true,
+        "nodes": false,
+        "transaction": true,
+        "frames": true
+      },
+      "receipt": "docs/data/ui-traces/parity-ch13-r3.json",
+      "level": "confirmed",
+      "limits": [
+        "建構槽與force-enemy-clear保持114／111例外；不談自然難度、傷害、存活或敵方選目標。",
+        "尚缺正確秘密商店的完整章收據，不標整章PLAYER-E2。",
+        "第九回合與戰後不再以舊r1／r2停止點判為不可達。"
+      ]
+    },
+    "secret_shop_plan_correction": {
+      "issue": 67,
+      "status": "CONFORMED",
+      "level": "RUNTIME-E1",
+      "source": "tools/gen_campaign.py NATIVE_SECRET_GATES（0x6238D／0x2CDE0..0x2CEF7）",
+      "known_pair": {
+        "town": "town_ch14",
+        "selection": 2,
+        "scan_code": "0x56",
+        "chord": "shift-f3"
+      },
+      "old_pair": {
+        "selection": 1,
+        "scan_code": "0x69",
+        "chord": "alt-f2",
+        "meaning": "town_ch13戰前鍵；r3末端只進一般武器店。"
+      },
+      "receipt": "docs/data/ui-traces/ch13-secret-shop-reload.json",
+      "limits": "合法酒店存檔重載短程不與r3拼接成整章通過；修正後完整計畫待重生。"
     }
   }
 }
