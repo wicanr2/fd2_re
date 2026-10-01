@@ -1566,3 +1566,23 @@ event7後進round10，才按111執行force-enemy-clear。初始槽仍採114政�
 原版與完整Go重播串行，使用維護的oracle、TestChapterParityReplay與verify_chapter_parity.py，
 不改像素門檻、不遮罩。戰役章數由tools/fd2_parity_progress.py verify重生，
 正式完整收據為本章現況權威，r3失敗與短程收據仍保留其歷史範圍。
+
+## 2026-10-02 #68 首頁對拍表格勘誤
+
+第十三章正式收據入庫後，上一輪未執行既有產生工具，README與REMAKE-STATUS仍列第4～12章。
+現已由 tools/render_parity_progress.py 依台帳與收據重生兩處區塊，並以 --check 驗證一致；
+區塊外文字逐位元組保持不變。此修正不新增玩家驗證範圍，現況與限制沿用58的第十三章完整收據。
+
+## 2026-10-02 #69／#70 第十四章起手現況
+
+原版有界預檢正常LOAD進場，固定槽16我方＋51敵方，共67筆。重製端battle_start缺少HUD且仍走非原生名冊重建，整章未完成。
+[章別IDA與同槽狀態](../data/ida/fd2_ch14_startup_20261002.json)保存原名、位址、bytes與推論等級；
+LOADCH／HUD共用helper沿用既有已閉合契約，本次只補章14主入口與共用尾段，不重做constructor。
+新規格與修正由#70處理；#69仍負責完整章驗收，兩者均不因起手可跑就提升PLAYER-E2。
+
+## 2026-10-02 #70 第十四章原生起手有限驗收
+
+依READY規格，Scenario改為group0與runtime-append、補第16部署格；原生鏡頭與繼承HUD接入canonical正式戰役，legacy來源同步。
+[原版IDA與逐欄名冊](../data/ida/fd2_ch14_startup_20261002.json)與[同槽收據](../data/ui-traces/ch14-native-startup.json)證明67筆前沿、三張完整RGB畫面各0px；完整Go回歸19套件通過。
+本切片列CONFORMED／RUNTIME-E1；整章12張最低量不變，有界比較器仍回傳failed，不借三張起手畫面宣稱PLAYER-E2。
+#69的受版控整章計畫另抽樣三回合後清敵，再驗戰後與交易存檔；正式收據尚未產生。

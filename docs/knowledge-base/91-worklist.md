@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -150,6 +150,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第十四章缺完整原版與重製四項對拍收據
+
+`ch14-full-chapter-parity` · 工作 · [#69](https://github.com/wicanr2/fd2_re/issues/69) · 仍未完成 · 要人判
+
+接續已通過的第十三章（6e62119f），依#14與111／114完成第十四章「平原的會戰」工作單元。現況尚無ch14建構槽manifest、控制計畫或完整章收據；正式節點為town_ch14→preparation_ch14→raw ch13_pre／battle_ch14(map13)→raw ch13_post→town_ch15。先以原版LOAD驗證建構槽、起手名冊與事件，再重播並修正實際差異，不以單元測試或孤立資料升格。
+
+怎樣算做完：依111／114從已核對的ch02-cleared基底建構同槽，固定每章6級、建構seed4、AP+200／DP+0／DX+60與event-state7:17=1。控制計畫涵蓋戰前、正常移動攻擊／敵方回合、該章事件、戰後、城鎮／交易／酒店存檔與town_ch15指定秘密鍵；原版／完整Go重播串行，四項全過且至少12張完整320×200畫面≤640px。保存可重跑manifest／plan／正式收據並同步58／56／57、台帳、首頁產生表與Issue。未證實原版語意不猜接production。
+
+證據：`docs/knowledge-base/58-fd2-exe-re-coverage.md`
 
 ## release — 發行、平台與封包
 

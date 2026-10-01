@@ -8964,3 +8964,28 @@ input_chain的0x17B0B等鍵caller被工具泛用對白判準誤判，接戰仍�
 行為、節點、交易與259張畫面全部達標，最後秘密商店0px，酒店SAV雜湊相同。
 依111／114例外列PLAYER-E2，保留建構槽、清敵與亂數設定限制；不拼接舊收據。
 目前真相、範圍與重生入口統一見[58最新段落](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-02 #68 首頁對拍表格勘誤
+
+第十三章正式收據入庫後，上一輪未執行既有產生工具，README與REMAKE-STATUS仍列第4～12章。
+現已由 tools/render_parity_progress.py 依台帳與收據重生兩處區塊，並以 --check 驗證一致；
+區塊外文字逐位元組保持不變。此修正不新增玩家驗證範圍，現況與限制沿用58的第十三章完整收據。
+
+## 2026-10-02 #70 第十四章原生起手規格（READY）
+
+證據入口：docs/data/ida/fd2_ch14_startup_20261002.json。
+章14 Scenario採 runtime_append_groups=true、initial_groups=[0]；原生LOADCH的持續隊伍前綴由存檔決定，group0依FDFIELD順序追加。
+部署格沿用map13的16筆own_deploy，不以舊15人靜態party截掉本槽末位。
+battle_ch14視圖取固定槽起手camera(23,28)、cursor(32,33)、visible(9,5)、range_mode=1；HUD只綁 inherited B=1，A／anchor保留持續來源。
+不改archive與bindings的容量欄位。驗收為同槽67筆實際名冊逐欄一致、起手完整RGB畫面達原640px門檻；有界計畫不算整章。
+
+證據審查：51筆group0的座標、battle_fig、raw+6、raw+8與HP逐欄一致，16筆部署亦與原版一致；章別入口沒有額外group1呼叫。共用constructor／HUD不重開。READY只授權上述原生起手資料接線。
+
+正式玩家入口讀 assets/editor-canonical：來源JSON修改後，必須由 tools/export_editor_canonical.py --output <受控候選目錄> --without-animations 重生並審查差異，再同步campaign、ch14與bundle-summary；不能只修改legacy來源就宣稱執行期已接線。
+
+## 2026-10-02 #70 第十四章原生起手有限驗收
+
+依READY規格，Scenario改為group0與runtime-append、補第16部署格；原生鏡頭與繼承HUD接入canonical正式戰役，legacy來源同步。
+[原版IDA與逐欄名冊](../data/ida/fd2_ch14_startup_20261002.json)與[同槽收據](../data/ui-traces/ch14-native-startup.json)證明67筆前沿、三張完整RGB畫面各0px；完整Go回歸19套件通過。
+本切片列CONFORMED／RUNTIME-E1；整章12張最低量不變，有界比較器仍回傳failed，不借三張起手畫面宣稱PLAYER-E2。
+#69的受版控整章計畫另抽樣三回合後清敵，再驗戰後與交易存檔；正式收據尚未產生。

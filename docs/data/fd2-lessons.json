@@ -1009,6 +1009,37 @@
         "pattern": "14: \\(2, 0x56\\)",
         "note": "第十四章城鎮的已閉合selection2／scan0x56來源仍在；計畫與原版收據另逐項驗證。"
       }
+    },
+    {
+      "id": "parity-ledger-renders-public-tables",
+      "area": "驗證",
+      "date": "2026-10-02",
+      "rule": "戰役台帳切換passed後執行python3 tools/render_parity_progress.py重生README與docs/REMAKE-STATUS的產生區塊；提交前以--check確認兩份現況與台帳一致。入口為tools/render_parity_progress.py；不得手抄章數或只查9／30字串而漏掉章範圍。",
+      "why": "第十三章完整收據與台帳已更新，上一輪漏執行渲染工具，首頁仍寫第4～12章與21章未跑。",
+      "evidence": "GitHub #68；docs/data/ui-traces/parity-ch13.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/render_parity_progress.py"
+        ],
+        "pattern": "產生區塊與台帳不一致",
+        "note": "提交前的產生區塊一致性檢查仍有拒絕過期內容的訊號。"
+      }
+    },
+    {
+      "id": "canonical-player-campaign-consumer",
+      "date": "2026-10-02",
+      "area": "正式玩家接線",
+      "rule": "修改章別戰役資料後，以 tools/export_editor_canonical.py 在受控候選目錄重生並審查，再同步 remake/assets/editor-canonical；用 canonical 正式入口跑同槽重播，確認來源與玩家消費端一致。",
+      "why": "#70首輪只改legacy campaign_full，Go正式入口仍讀canonical，鏡頭已由handler更新但HUD仍未物化；同步預期三檔後起手三張畫面各0px。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/70；docs/data/ida/fd2_ch14_startup_20261002.json；remake/cmd/fd2/packaged_startup.go",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/packaged_startup.go"
+        ],
+        "pattern": "CompileCampaignJSON"
+      }
     }
   ]
 }

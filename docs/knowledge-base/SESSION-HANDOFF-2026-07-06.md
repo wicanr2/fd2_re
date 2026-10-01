@@ -8843,3 +8843,10 @@ input_chain的0x17B0B等鍵caller被工具泛用對白判準誤判，接戰仍�
 末端秘密商店0px、酒店SAV相同。r3前5988筆狀態完全重現，沒有拼接收據。
 本章依111／114例外列PLAYER-E2；自然難度、傷害、存活與硬體時序限制保留。
 #61可依正式完整收據關閉；戰役統計仍由台帳工具產生，後續處理下一個未完成章。
+
+## 2026-10-02 #70 第十四章原生起手有限驗收
+
+依READY規格，Scenario改為group0與runtime-append、補第16部署格；原生鏡頭與繼承HUD接入canonical正式戰役，legacy來源同步。
+[原版IDA與逐欄名冊](../data/ida/fd2_ch14_startup_20261002.json)與[同槽收據](../data/ui-traces/ch14-native-startup.json)證明67筆前沿、三張完整RGB畫面各0px；完整Go回歸19套件通過。
+本切片列CONFORMED／RUNTIME-E1；整章12張最低量不變，有界比較器仍回傳failed，不借三張起手畫面宣稱PLAYER-E2。
+#69的受版控整章計畫另抽樣三回合後清敵，再驗戰後與交易存檔；正式收據尚未產生。

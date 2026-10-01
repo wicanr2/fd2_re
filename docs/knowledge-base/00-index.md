@@ -234,3 +234,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 原版掃描末名自動換手缺陷 #65：[有界回合計畫](../data/parity-plans/ch13-auto-end-boundary.jsonl)與[驗證收據](../data/fd2_oracle_sweep_auto_end_20261002.json)，只驗證新回合不被多送 END，完整章現況見58。
 - 原版麻痺單位選取缺陷 #66：[原始選取判準與工具回歸](../data/fd2_oracle_paralyzed_selection_20261002.json)，保存第八回合角色狀態面板與 raw 閘門；完整章仍由 #61 驗收。
 - 戰後測試入口勘誤 #64：[八條測試與分支驗證](../data/fd2_post_fixture_verification_20261001.json)，保存正確素材、前置狀態與實際非略過結果；證據範圍見58。
+
+- 第十四章 #69：[建構槽清冊](../data/parity-slots/ch14-manifest.json)與[正常LOAD有界預檢計畫](../data/parity-plans/ch14-preflight.jsonl)；固定政策依111／114，整章現況由58與戰役台帳承載。
+- 第十四章有界預檢[診斷收據](../data/ui-traces/parity-ch14-preflight.json)：原版已進場，重製起手HUD缺少輸入；整章尚未通過，後續修正與驗收由#69追蹤。
+- 第十四章起手缺陷 #70：[IDA章別入口與同槽原版狀態](../data/ida/fd2_ch14_startup_20261002.json)，共用constructor／HUD沿用已閉合證據；規格與分層現況見56／58。
+- 第十四章 #69 的[整章抽樣計畫](../data/parity-plans/ch14-sample.jsonl)：三回合正常抽樣後依111清敵，戰後完整節點驗收；正式收據尚未產生，現況見58。
+- 第十四章 #70 [同槽原生起手收據](../data/ui-traces/ch14-native-startup.json)：三張完整畫面0px，僅有限RUNTIME-E1，整章仍由#69驗收；原始失敗預檢收據保留。

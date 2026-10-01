@@ -1,0 +1,943 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "functions": [
+    {
+      "requested_address": "0x3347c",
+      "address": "0x3347c",
+      "end": "0x33499",
+      "original_name": "sub_3347C",
+      "chunks": [
+        {
+          "start": "0x3347c",
+          "end": "0x33499"
+        },
+        {
+          "start": "0x3344d",
+          "end": "0x3346b"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x3344d",
+          "bytes": "6a01",
+          "original": "push    1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3344d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3344f",
+          "bytes": "6a13",
+          "original": "push    13h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3344f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33451",
+          "bytes": "6a4a",
+          "original": "push    4Ah ; 'J'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33451",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33453",
+          "bytes": "6a4c",
+          "original": "push    4Ch ; 'L'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33453",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33455",
+          "bytes": "68cd000000",
+          "original": "push    0CDh",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33455",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3345a",
+          "bytes": "6840010000",
+          "original": "push    140h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3345a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3345f",
+          "bytes": "6800000a00",
+          "original": "push    0A0000h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3345f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33464",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33464",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33466",
+          "bytes": "e99bfdffff",
+          "original": "jmp     loc_33206",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33466",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3347c",
+          "bytes": "6828000000",
+          "original": "push    28h ; '('",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3347c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33481",
+          "bytes": "e851380000",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33481",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33486",
+          "bytes": "e84fd1feff",
+          "original": "call    sub_205DA",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33486",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3348b",
+          "bytes": "6a14",
+          "original": "push    14h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3348b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3348d",
+          "bytes": "6a14",
+          "original": "push    14h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3348d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3348f",
+          "bytes": "e84901feff",
+          "original": "call    sub_135DD",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3348f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33494",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33494",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33497",
+          "bytes": "ebb4",
+          "original": "jmp     short loc_3344D",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33497",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x25e3a",
+        "0x25f10",
+        "0x260f5"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x3347c"
+    },
+    {
+      "requested_address": "0x33140",
+      "address": "0x32d18",
+      "end": "0x33219",
+      "original_name": "sub_32D18",
+      "chunks": [
+        {
+          "start": "0x32d18",
+          "end": "0x33219"
+        },
+        {
+          "start": "0x3344d",
+          "end": "0x3346b"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x33140",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33140",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33142",
+          "bytes": "e834fcfdff",
+          "original": "call    sub_12D7B",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33142",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33147",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33147",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33206",
+          "bytes": "ff35793a0500",
+          "original": "push    dword_53A79",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33206",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3320c",
+          "bytes": "e8732dfeff",
+          "original": "call    sub_15F84",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3320c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33211",
+          "bytes": "83c424",
+          "original": "add     esp, 24h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33211",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33214",
+          "bytes": "e927ffffff",
+          "original": "jmp     loc_33140",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33214",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x25e3a",
+        "0x25f10",
+        "0x260f5"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x32d18"
+    }
+  ],
+  "kind": "fd2_ch14_native_startup_review",
+  "date": "2026-10-02",
+  "issues": [
+    69,
+    70
+  ],
+  "source_export_sha256": "62b4ca97bfe98cc3ec3ef44f197fda751eabc49c535236b510cde433b93469a1",
+  "query_environment": {
+    "PROBE_ADDRESSES": "0x3347C 0x3344D 0x33206 0x33140",
+    "PROBE_OUTPUT": "/out/native-startup-ida.json",
+    "command": "IDA Pro 9.4 idat -A -S/src/tools/ida_opening_input_probe.py /tmp/probe.i64",
+    "image": "ida-pro-9.4-idapython:locked-v1",
+    "database_source": "work/ch01-town-parity-20260908/ida/fd2-io.i64；唯讀來源複製至一次性/tmp/probe.i64",
+    "scope": "只匯出章14主入口與共用對白／聚焦的直接指令，其餘共用helper沿用已閉合證據"
+  },
+  "export_tool": "tools/ida_opening_input_probe.py",
+  "export_tool_sha256": "8da51d5be86c93e2dac7d9d89c3df44824c907af081c350d9bf11c4cd7e8ec07",
+  "startup_compare": {
+    "oracle_path": "work/parity-slot-ch14/preflight-original-r1/checkpoint-0045.json",
+    "oracle_sha256": "2b81b1120dc8cce166783d451049cadf14aca638851a58688a76b6b0e5ea1b6d",
+    "image_sha256": "e1a10cb8db214dc9358afc14978d4d82ce1f017f6d5b944d0db7c270980798eb",
+    "slot_sha256": "e2365c32ee56b1e88fd00bd7950f1ae98e2eabf0e3bb8e6f36f586764212cfb1",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "map_source": "remake/assets/maps/map13/map13_units.json",
+    "map_sha256": "25fe0b0d01c880acb3e0a93139601a9d69c06a0aad96711a1db6463ea01afcfc",
+    "party_prefix": 16,
+    "group0_count": 51,
+    "total_runtime": 67,
+    "view": {
+      "aux_phase": 0,
+      "camera_x": 23,
+      "camera_y": 28,
+      "cursor_x": 32,
+      "cursor_y": 33,
+      "gold": 2000,
+      "overlay_selector": 1,
+      "rng_word": 64068,
+      "round": 1,
+      "visible_x": 9,
+      "visible_y": 5
+    },
+    "normal_player_path_verified": false,
+    "state_injections": [],
+    "construction_policy": "111／114建構槽、seed4、levels6、AP+200／DP+0／DX+60；正常LOAD及鍵盤進場",
+    "matched_group0": [
+      {
+        "runtime_index": 16,
+        "x": 25,
+        "y": 12,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 17,
+        "x": 16,
+        "y": 20,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 18,
+        "x": 16,
+        "y": 9,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 19,
+        "x": 7,
+        "y": 19,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 20,
+        "x": 9,
+        "y": 11,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 21,
+        "x": 12,
+        "y": 7,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 22,
+        "x": 20,
+        "y": 21,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 23,
+        "x": 16,
+        "y": 23,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 24,
+        "x": 14,
+        "y": 26,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 25,
+        "x": 22,
+        "y": 13,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 26,
+        "x": 2,
+        "y": 7,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 27,
+        "x": 17,
+        "y": 12,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 28,
+        "x": 22,
+        "y": 6,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 29,
+        "x": 18,
+        "y": 7,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 30,
+        "x": 15,
+        "y": 6,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 31,
+        "x": 19,
+        "y": 15,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 32,
+        "x": 10,
+        "y": 14,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 33,
+        "x": 20,
+        "y": 10,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 34,
+        "x": 21,
+        "y": 17,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 35,
+        "x": 4,
+        "y": 4,
+        "battle_fig": 103,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 374
+      },
+      {
+        "runtime_index": 36,
+        "x": 7,
+        "y": 12,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 37,
+        "x": 7,
+        "y": 16,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 38,
+        "x": 15,
+        "y": 15,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 39,
+        "x": 10,
+        "y": 19,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 40,
+        "x": 28,
+        "y": 5,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 41,
+        "x": 23,
+        "y": 9,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 42,
+        "x": 7,
+        "y": 6,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 43,
+        "x": 5,
+        "y": 9,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 44,
+        "x": 10,
+        "y": 5,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 45,
+        "x": 9,
+        "y": 1,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 46,
+        "x": 6,
+        "y": 2,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 47,
+        "x": 30,
+        "y": 12,
+        "battle_fig": 91,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 273
+      },
+      {
+        "runtime_index": 48,
+        "x": 19,
+        "y": 19,
+        "battle_fig": 91,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 273
+      },
+      {
+        "runtime_index": 49,
+        "x": 20,
+        "y": 2,
+        "battle_fig": 91,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 273
+      },
+      {
+        "runtime_index": 50,
+        "x": 11,
+        "y": 22,
+        "battle_fig": 91,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 273
+      },
+      {
+        "runtime_index": 51,
+        "x": 1,
+        "y": 2,
+        "battle_fig": 91,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 273
+      },
+      {
+        "runtime_index": 52,
+        "x": 23,
+        "y": 17,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 53,
+        "x": 9,
+        "y": 25,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 54,
+        "x": 17,
+        "y": 25,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 55,
+        "x": 4,
+        "y": 18,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 56,
+        "x": 14,
+        "y": 13,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 57,
+        "x": 17,
+        "y": 4,
+        "battle_fig": 88,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 252
+      },
+      {
+        "runtime_index": 58,
+        "x": 7,
+        "y": 23,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 59,
+        "x": 4,
+        "y": 14,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 60,
+        "x": 0,
+        "y": 16,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 61,
+        "x": 15,
+        "y": 1,
+        "battle_fig": 102,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 272
+      },
+      {
+        "runtime_index": 62,
+        "x": 17,
+        "y": 17,
+        "battle_fig": 94,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 287
+      },
+      {
+        "runtime_index": 63,
+        "x": 12,
+        "y": 16,
+        "battle_fig": 94,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 287
+      },
+      {
+        "runtime_index": 64,
+        "x": 4,
+        "y": 21,
+        "battle_fig": 94,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 287
+      },
+      {
+        "runtime_index": 65,
+        "x": 12,
+        "y": 2,
+        "battle_fig": 94,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 287
+      },
+      {
+        "runtime_index": 66,
+        "x": 2,
+        "y": 12,
+        "battle_fig": 94,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 287
+      }
+    ],
+    "matched_party_deploy": [
+      [
+        32,
+        33
+      ],
+      [
+        34,
+        32
+      ],
+      [
+        33,
+        30
+      ],
+      [
+        36,
+        30
+      ],
+      [
+        37,
+        33
+      ],
+      [
+        35,
+        35
+      ],
+      [
+        32,
+        35
+      ],
+      [
+        29,
+        34
+      ],
+      [
+        29,
+        37
+      ],
+      [
+        34,
+        37
+      ],
+      [
+        37,
+        36
+      ],
+      [
+        39,
+        31
+      ],
+      [
+        34,
+        28
+      ],
+      [
+        27,
+        36
+      ],
+      [
+        29,
+        32
+      ],
+      [
+        30,
+        29
+      ]
+    ]
+  },
+  "claims": [
+    {
+      "original_location": "IDA LE 0x3347C／0x33486／0x3348F／0x33497→0x3344D→0x33206→0x33140",
+      "semantic": "章14 raw章13戰前呼叫LOADCH、pan(20,20)、共用text0與focus runtime slot0；完整主區間與尾段沒有額外10B4E群組呼叫。",
+      "level": "confirmed",
+      "source": "本檔原始bytes、直接jmp與共用片段；完整資料庫匯出來源雜湊保留"
+    },
+    {
+      "original_location": "IDA LE 0x205FF→0x1088D／0x10A77..0x10B43",
+      "semantic": "沿用已閉合LOADCH先持續隊伍再追加group0的constructor；章14起手不能預載全部archive70筆或追加group1。",
+      "level": "confirmed",
+      "source": "docs/data/ida/fd2_ch13_handoff_20261001.json完整constructor指令與本檔章14入口、正常LOAD名冊"
+    },
+    {
+      "original_location": "dosgolem seq45 raw+0,+1,+6,+8／view",
+      "semantic": "本固定槽起手16我方、51group0敵方；camera23,28、cursor32,33、visible9,5、selector1。",
+      "level": "confirmed",
+      "source": "本檔startup_compare，51筆group0逐欄與16筆部署全部一致；正常LOAD原版checkpoint"
+    },
+    {
+      "original_location": "IDA LE 0x33142→0x12D7B／0x1F525控制流程；HUD globals0x51AAB／0x51AAC／0x51A0C",
+      "semantic": "HUD gate A與anchor沿用持續狀態，B於可操作戰場入口採既有1契約；不把A與anchor寫成章別常數。",
+      "level": "confirmed",
+      "source": "docs/data/fd2_hud_persistence_ida.txt；docs/data/ida/fd2_ch13_handoff_20261001.json；56既有HUD契約"
+    }
+  ],
+  "limits": [
+    "只驗固定建構槽的起手；章14整章、戰後名冊與存檔尚未驗收。",
+    "archive70筆與binding容量不代表runtime前沿；不修改既有原始FDFIELD資料。",
+    "本次沒有重新反組譯已閉合constructor與HUD helper。"
+  ],
+  "spec_review": {
+    "status": "READY",
+    "date": "2026-10-02",
+    "evidence": "IDA主入口、直接尾段及既有LOADCH／HUD writer-consumer；51筆group0與16筆部署逐欄審查通過",
+    "production_scope": "只接既有runtime-append typed contract與已驗證native view/HUD；不新增規則、資料格式或猜測群組",
+    "chapter_status": "整章未通過"
+  },
+  "verification": {
+    "scope": "章14固定建構槽正常LOAD到起手，有限RUNTIME-E1",
+    "spec_status": "CONFORMED（只限起手）",
+    "receipt": "docs/data/ui-traces/ch14-native-startup.json",
+    "receipt_sha256": "2a8621a8afaf7266fcf225902c89b84bbc7f78883c907c502ccd287be3ba9159",
+    "same_state_go_test": "TestChapterParityReplay PASS 2.57s",
+    "frames": {
+      "compared": 3,
+      "all_rgb_diff_pixels": 0,
+      "budget": 640,
+      "unmasked": true,
+      "whole_chapter_min_frames": 12,
+      "full_chapter_passed": false
+    },
+    "go_regression": {
+      "command": "FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s",
+      "image": "fd2-go-test-local:20260909",
+      "packages_passed": 19,
+      "log": "work/parity-slot-ch14/startup-go-regression.log",
+      "log_sha256": "eb2239dd5594b453ed2673e0e71acf960b7fe4ecb96f8d588ba1cae85b9c68af",
+      "outer_timeout": 700,
+      "memory": "8g",
+      "cpus": 4,
+      "pids_limit": 512,
+      "original_and_go_serial": true
+    }
+  }
+}

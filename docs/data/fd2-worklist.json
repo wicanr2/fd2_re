@@ -311,6 +311,20 @@
         "note": "17個地圖tile27局部(7,9)殘差點：13個完整畫面1px，4個與指令環差異共存；不是HUD縮圖。"
       },
       "issue": 52
+    },
+    {
+      "id": "ch14-full-chapter-parity",
+      "layer": "player",
+      "category": "工作",
+      "title": "第十四章缺完整原版與重製四項對拍收據",
+      "body": "接續已通過的第十三章（6e62119f），依#14與111／114完成第十四章「平原的會戰」工作單元。現況尚無ch14建構槽manifest、控制計畫或完整章收據；正式節點為town_ch14→preparation_ch14→raw ch13_pre／battle_ch14(map13)→raw ch13_post→town_ch15。先以原版LOAD驗證建構槽、起手名冊與事件，再重播並修正實際差異，不以單元測試或孤立資料升格。",
+      "acceptance": "依111／114從已核對的ch02-cleared基底建構同槽，固定每章6級、建構seed4、AP+200／DP+0／DX+60與event-state7:17=1。控制計畫涵蓋戰前、正常移動攻擊／敵方回合、該章事件、戰後、城鎮／交易／酒店存檔與town_ch15指定秘密鍵；原版／完整Go重播串行，四項全過且至少12張完整320×200畫面≤640px。保存可重跑manifest／plan／正式收據並同步58／56／57、台帳、首頁產生表與Issue。未證實原版語意不猜接production。",
+      "evidence": "docs/knowledge-base/58-fd2-exe-re-coverage.md",
+      "verify": {
+        "kind": "manual",
+        "note": "須回讀正式ch14原版／重製收據，四項全部通過；目前尚未執行完整章工作單元。"
+      },
+      "issue": 69
     }
   ]
 }

@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_receipt",
+  "chapter": 14,
+  "generated_at": "2026-10-01",
+  "status": "failed",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "control_plan": "docs/data/parity-plans/ch14-preflight.jsonl",
+    "control_plan_sha256": "e3568e62628c93113191da3c78ad699c603bbf72f582f4155e3860a9a29bc323",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 3,
+    "checkpoints": 46,
+    "random_control": {
+      "initial_checkpoint_rng_word": 22661,
+      "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+    }
+  },
+  "slot": {
+    "manifest": "docs/data/parity-slots/ch14-manifest.json",
+    "output_sha256": "e2365c32ee56b1e88fd00bd7950f1ae98e2eabf0e3bb8e6f36f586764212cfb1",
+    "base_sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
+    "base_chapter": 2,
+    "target_chapter": 13,
+    "level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+    "assumptions": [
+      {
+        "chapter": 3,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "native_event_state_eq(state17)→true（第 7 章戰場狀態 17＝1，-event-states 明示）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 13,
+        "kind": "boost",
+        "detail": "基底 AP +200、DP +0、DX +60（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 16 筆：roster 0 id8=0 AP/DP/HIT/EV [263 190 175 80]→[463 190 235 140]；roster 1 id8=9 AP/DP/HIT/EV [173 127 147 62]→[373 127 207 122]；roster 2 id8=4 AP/DP/HIT/EV [294 162 170 80]→[494 162 230 140]；roster 3 id8=30 AP/DP/HIT/EV [710 642 256 166]→[910 642 316 226]；roster 4 id8=1 AP/DP/HIT/EV [337 182 152 57]→[537 182 212 117]；roster 5 id8=8 AP/DP/HIT/EV [255 108 175 80]→[455 108 235 140]；roster 6 id8=2 AP/DP/HIT/EV [289 181 175 80]→[489 181 235 140]；roster 7 id8=10 AP/DP/HIT/EV [147 144 135 40]→[347 144 195 100]；roster 8 id8=13 AP/DP/HIT/EV [229 130 175 80]→[429 130 235 140]；roster 9 id8=12 AP/DP/HIT/EV [351 229 161 66]→[551 229 221 126]；roster 10 id8=5 AP/DP/HIT/EV [256 215 171 76]→[456 215 231 136]；roster 11 id8=11 AP/DP/HIT/EV [137 188 114 39]→[337 188 174 99]；roster 12 id8=6 AP/DP/HIT/EV [357 243 162 77]→[557 243 222 137]；roster 13 id8=14 AP/DP/HIT/EV [173 148 112 42]→[373 148 172 102]；roster 14 id8=17 AP/DP/HIT/EV [286 203 153 73]→[486 203 213 133]；roster 15 id8=3 AP/DP/HIT/EV [270 187 116 31]→[470 187 176 91]"
+      }
+    ]
+  },
+  "remake": {
+    "checkpoints": 2,
+    "rng_synced_points": 0,
+    "random_control": {
+      "go_seed": 4,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "native_rng_initial": 0
+    }
+  },
+  "gates": {
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 17,
+          "kind": "town_loaded",
+          "status": "ok"
+        },
+        {
+          "seq": 38,
+          "kind": "departure_prompt",
+          "status": "ok"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": false,
+      "oracle": [
+        "town_loaded:town",
+        "departure_prompt:preparation"
+      ],
+      "remake": [
+        "town_loaded:town",
+        "departure_prompt:preparation"
+      ],
+      "plan_completion": {
+        "ok": false,
+        "required": {
+          "mark:town_loaded": 1,
+          "mark:departure_prompt": 1,
+          "mark:battle_start": 1
+        },
+        "missing": {},
+        "remake_missing": {
+          "mark:battle_start": 1
+        }
+      }
+    },
+    "transaction": {
+      "ok": true,
+      "gold": [
+        {
+          "seq": 17,
+          "kind": "town_loaded",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 38,
+          "kind": "departure_prompt",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": null,
+        "remake_save_sha256": null,
+        "remake_note": null,
+        "blocked_by": null,
+        "status": "not_sampled"
+      }
+    },
+    "frames": {
+      "ok": false,
+      "pixel_budget": 640,
+      "min_frames": 12,
+      "compared": 2,
+      "points": [
+        {
+          "seq": 17,
+          "kind": "town_loaded",
+          "oracle": "checkpoint-0017.png",
+          "remake": "remake-0000-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+          "remake_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e"
+        },
+        {
+          "seq": 38,
+          "kind": "departure_prompt",
+          "oracle": "checkpoint-0038.png",
+          "remake": "remake-0001-p0.png",
+          "phases": 1,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eab9dcaa1bf6e8472dd764c225c21e165d2e46beac3895c3be7a3e95eb60663f",
+          "remake_sha256": "ba73cbba395f27e10d7bcacfa434d24d9c5fa789cf0d5b6c408f8a6e9dc0108d"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。"
+  ],
+  "scope": {
+    "partial": true,
+    "comparison": "同槽正常LOAD至battle_start的有界診斷；重製起手HUD失敗，沒有整章驗收",
+    "original_source": "work/parity-slot-ch14/preflight-original-r1",
+    "remake_run": "work/parity-slot-ch14/preflight-remake-r1",
+    "chapter_issue": 69
+  }
+}

@@ -1349,3 +1349,16 @@ input_chain的0x17B0B等鍵caller被工具泛用對白判準誤判，接戰仍�
 行為、節點、交易與259張畫面全部達標，最後秘密商店0px，酒店SAV雜湊相同。
 依111／114例外列PLAYER-E2，保留建構槽、清敵與亂數設定限制；不拼接舊收據。
 目前真相、範圍與重生入口統一見[58最新段落](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-02 #68 首頁對拍表格勘誤
+
+第十三章正式收據入庫後，上一輪未執行既有產生工具，README與REMAKE-STATUS仍列第4～12章。
+現已由 tools/render_parity_progress.py 依台帳與收據重生兩處區塊，並以 --check 驗證一致；
+區塊外文字逐位元組保持不變。此修正不新增玩家驗證範圍，現況與限制沿用58的第十三章完整收據。
+
+## 2026-10-02 #70 第十四章原生起手有限驗收
+
+依READY規格，Scenario改為group0與runtime-append、補第16部署格；原生鏡頭與繼承HUD接入canonical正式戰役，legacy來源同步。
+[原版IDA與逐欄名冊](../data/ida/fd2_ch14_startup_20261002.json)與[同槽收據](../data/ui-traces/ch14-native-startup.json)證明67筆前沿、三張完整RGB畫面各0px；完整Go回歸19套件通過。
+本切片列CONFORMED／RUNTIME-E1；整章12張最低量不變，有界比較器仍回傳failed，不借三張起手畫面宣稱PLAYER-E2。
+#69的受版控整章計畫另抽樣三回合後清敵，再驗戰後與交易存檔；正式收據尚未產生。
