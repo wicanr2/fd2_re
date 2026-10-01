@@ -1,0 +1,26 @@
+# #65：同槽 seed4，沿前次東側護援相同首回合操作，只確認末名自動換手後不再 END。
+# 不修改章內狀態、不清敵；第2回合起手即停止，不代表整章驗收。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":200}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"battle_start","steps":1000000}
+{"move_unit":{"from_index":3,"toward":[23,22],"stay_if_blocked":true},"steps":2000000}
+{"move_unit":{"from_index":14,"toward":[24,21],"stay_if_blocked":true},"steps":2000000}
+{"sweep_round":true,"advance":true,"typical_move":6,"stop_on_auto_end":true,"steps":2000000,"max_units":13,"skip_indices":[3,14]}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"auto_end_round2_boundary","steps":1000000}

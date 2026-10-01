@@ -1738,6 +1738,13 @@ def do_sweep_round(command):
         inner["engage"] = [pick["x"], pick["y"]]
         if not do_engage(inner):
             return False
+    # 最後一次 engage 也可能觸發全員行動完自動換手；max_units 已耗盡時不會
+    # 再走到迴圈開頭的檢查。此時 END 會跳過新回合（#65，原版 seq1253→1266）。
+    if command.get("stop_on_auto_end") and \
+            int((state().get("view") or {}).get("round", 0)) > start_round:
+        print(f"sweep_round：末名行動已自動換手（{start_round}→"
+              f"{(state().get('view') or {}).get('round')}），不再送 END", flush=True)
+        return True
     print(f"sweep_round：這一回合處理了 {len(handled)} 個單位，結束回合",
           flush=True)
     return end_turn(command)

@@ -73,6 +73,46 @@ class ModuleIntegrity(unittest.TestCase):
         self.assertEqual(missing, [], f"呼叫了不存在的名稱：{missing}")
 
 
+class SweepAutoEnd(unittest.TestCase):
+    """末名行動後的自動換手不得被另一個 END 跳過；保留舊計畫的旗標語意。"""
+
+    def run_sweep(self, limit, *, advance_round, stop_on_auto_end):
+        current = {
+            "view": {"round": 1},
+            "units": [unit(1, 1, drive.ALLY_CAMP, identity=1),
+                      unit(2, 1, drive.ENEMY_CAMP, identity=2)],
+        }
+
+        def engage(command):
+            current["units"][0]["raw_hex"] = unit(1, 1, drive.ALLY_CAMP, acted=True)["raw_hex"]
+            if advance_round:
+                current["view"]["round"] = 2
+            return True
+
+        with mock.patch.object(drive, "state", return_value=current), \
+                mock.patch.object(drive, "ui_mode", return_value="cursor"), \
+                mock.patch.object(drive, "resume_battle", return_value=True), \
+                mock.patch.object(drive, "do_engage", side_effect=engage) as action, \
+                mock.patch.object(drive, "end_turn", return_value=True) as end:
+            self.assertTrue(drive.do_sweep_round({
+                "max_units": limit, "stop_on_auto_end": stop_on_auto_end,
+            }))
+        action.assert_called_once()
+        return end
+
+    def test_final_unit_at_limit_keeps_next_player_round(self):
+        self.run_sweep(1, advance_round=True, stop_on_auto_end=True).assert_not_called()
+
+    def test_auto_end_before_limit_keeps_next_player_round(self):
+        self.run_sweep(2, advance_round=True, stop_on_auto_end=True).assert_not_called()
+
+    def test_no_auto_end_still_sends_end(self):
+        self.run_sweep(1, advance_round=False, stop_on_auto_end=True).assert_called_once()
+
+    def test_legacy_plan_without_flag_still_sends_end(self):
+        self.run_sweep(1, advance_round=True, stop_on_auto_end=False).assert_called_once()
+
+
 class DefeatReturnTitle(unittest.TestCase):
     def test_title_is_identified_by_its_original_input_caller(self):
         self.assertEqual(drive.ui_mode({"input_chain": ["0x1FE60", "0x25ECD", "0x25DC2"]}), "title")

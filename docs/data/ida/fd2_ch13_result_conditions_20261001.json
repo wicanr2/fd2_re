@@ -5442,7 +5442,19 @@
         "護援使slot14到東側，但slot3未移動、初始友軍保護不足",
         "本輪不再重啟整章；先調整有界局部正常輸入與核對111的停止條件",
         "測試端全Go回歸與oracle並行不符111紀律，結果保留，後續必須串行"
-      ]
+      ],
+      "driver_boundary_correction": {
+        "date": "2026-10-02",
+        "issue": 65,
+        "level": "confirmed",
+        "source": "tools/dosgolem_oracle_drive.py do_sweep_round／east-guard-original-r1 driver.log",
+        "observations": [
+          "seq1253末名自動換手1→2，seq1257～1266仍送新回合END",
+          "seq2333末名自動換手3→4，後續仍送新回合END"
+        ],
+        "meaning": "失敗狀態仍有效，但護援計畫跳過玩家回合；不能把這份結果單獨歸因於合法護援戰術不足。",
+        "verification": "docs/data/fd2_oracle_sweep_auto_end_20261002.json"
+      }
     }
   }
 }

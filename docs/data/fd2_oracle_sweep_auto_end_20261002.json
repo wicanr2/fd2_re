@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_oracle_sweep_auto_end_verification",
+  "date": "2026-10-02",
+  "issue": 65,
+  "status": "RUNTIME-E1",
+  "level": "confirmed",
+  "scope": "正常首回合輸入完成後，驅動工具不跳過第二玩家回合；不是整章PLAYER-E2。",
+  "original": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "tracked_dirty": 0,
+    "address_space": "dosgolem relocated LE linear"
+  },
+  "slot": {
+    "manifest": "docs/data/parity-slots/ch13-manifest.json",
+    "sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
+    "construction_seed": 4,
+    "seed_scope": "受版控章槽建構與成長抽樣；不是原版RNG字組4。",
+    "runtime_rng_control": "原版確定性開機與相同初始狀態／輸入；逐檢查點rng_word包含於1254筆相同前綴核對。"
+  },
+  "source_files": [
+    {
+      "path": "tools/dosgolem_oracle_drive.py",
+      "sha256": "b5f22fb0598a59d204357ebbfe6c372a337e54eb4230115714029a3bb678a1c9"
+    },
+    {
+      "path": "tools/test_dosgolem_oracle_drive.py",
+      "sha256": "b88a349ac7391b476972bf266be9d3d3ff33e54b8502b467a775d562a334a1c4"
+    },
+    {
+      "path": "tools/dosgolem_oracle.sh",
+      "sha256": "34d3bce1565d3fcc61272a4050335e722ccf9b25cdf134f65a4126c007a40345"
+    },
+    {
+      "path": "docs/data/parity-plans/ch13-auto-end-boundary.jsonl",
+      "sha256": "3748f1bfb38d8cbd14f9698fd67d89698572d1148e72c486befd6f75e842cdb5"
+    },
+    {
+      "path": "docs/data/parity-plans/ch13-east-guard-sample.jsonl",
+      "sha256": "ade6ba7d256c0462a2ab61e5fb3cb5f675c836a98c07e668c57f3de865e98aa7"
+    }
+  ],
+  "old_failure": {
+    "driver_source_git": "e496929087a5f94ec7a47a2b3e8cc45d93d8124d:tools/dosgolem_oracle_drive.py",
+    "driver_source_sha256": "5d3c167541c2d4a620518b86303d9bba16ce66e0eb7153b1ce175e18668714a8",
+    "run": "work/parity-slot-ch13/east-guard-original-r1",
+    "driver_log_sha256": "33fef0e7cbf36064bf23e35f2599c488af2781306a4be7d525c1ff28cf77d426",
+    "transitions": [
+      {
+        "auto_end_seq": 1253,
+        "old_round": 1,
+        "new_round": 2,
+        "end_open_seq": 1257,
+        "end_yes_seq": 1266
+      },
+      {
+        "auto_end_seq": 2333,
+        "old_round": 3,
+        "new_round": 4
+      }
+    ],
+    "explanation": "max_units剛好耗盡時不再進迴圈開頭，末名自動換手後仍執行end_turn。"
+  },
+  "tests": {
+    "command": "python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py",
+    "total": 77,
+    "result": "passed",
+    "new_cases": [
+      "末名等於max_units時不END",
+      "未耗盡max_units的自動換手不END",
+      "未自動換手仍END",
+      "未啟用旗標保留舊END語意"
+    ],
+    "before_fix": {
+      "cases": 4,
+      "failed": [
+        "test_final_unit_at_limit_keeps_next_player_round"
+      ],
+      "passed": 3
+    },
+    "log": "work/parity-slot-ch13/auto-end-driver-tests.log",
+    "log_sha256": "60f7db0ca978d754b2a6b66c3a67a6c74b480c7e99165b441ab3d7fa2a86a437"
+  },
+  "original_verification": {
+    "run": "work/parity-slot-ch13/auto-end-original-r1",
+    "control_plan": "docs/data/parity-plans/ch13-auto-end-boundary.jsonl",
+    "plan_commands": 24,
+    "process_exit_code": 0,
+    "prefix_comparison": {
+      "checkpoints": 1254,
+      "first_seq": 0,
+      "last_seq": 1253,
+      "fields": [
+        "steps",
+        "eip",
+        "kbd_pending",
+        "kbd_reads",
+        "view",
+        "unit_base",
+        "units",
+        "input_chain",
+        "state_injections"
+      ],
+      "result": "equal"
+    },
+    "final_checkpoint": "checkpoint-1254.json",
+    "final_sha256": "c028747bff09bb2b55c5288cb64a02d72d8077c317e02ba91bb6a3c82a2a3a6e",
+    "steps": 3783354130,
+    "round": 2,
+    "ui": "cursor",
+    "rng_word": 59322,
+    "end_turn_actions": 0,
+    "state_injections": [],
+    "mark": "auto_end_round2_boundary",
+    "driver_log_sha256": "7f6ed7736a9982806646b8e69680a1df25253b9ff234c27ab062fd25d5563a0c",
+    "actions_sha256": "13556bbbbf85d6c853e77791ad3ece6ce33fe354665f221ac3516e3ea3c736d3",
+    "runner_sha256": "3ba9230c042b9536e631ceae003c170cbeebda12eb071ce98e97f08f1a5c8e81",
+    "slot_after_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae"
+  },
+  "reproduce": {
+    "driver": "tools/dosgolem_oracle.sh",
+    "plan": "docs/data/parity-plans/ch13-auto-end-boundary.jsonl",
+    "state": "同manifest重生FD2.SAV至新的私人state目錄",
+    "oracle_steps": 7000000000,
+    "cpus": 2,
+    "outer_timeout_seconds": 900,
+    "hp_lock": false,
+    "force_enemy_clear": false
+  },
+  "limits": [
+    "沒有比較完整章四gate／原版第九回合或戰後。",
+    "修正工具不證明護援一定成功；舊失敗條件相符仍保留。",
+    "未啟用stop_on_auto_end的既有章計畫不更動，也不重跑已驗收第四～十二章。"
+  ]
+}

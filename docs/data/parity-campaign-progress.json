@@ -334,13 +334,14 @@
       "slot_manifest": "docs/data/parity-slots/ch13-manifest.json",
       "slot_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
       "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
-      "date": "2026-10-01",
+      "date": "2026-10-02",
       "verify": "python3 tools/fd2_parity_progress.py verify",
       "limitations": [
         "#58起手59筆原生名冊／HUD修正已驗證0px；第十三章完整四gate尚未通過。",
         "#60色盤raw表與受控相位已修正，同槽前77動作75張畫面通過640px門檻：51張0px、最大215px；完整章仍未通過。",
         "#61正式逐條結果／依序對白／原生敗北已同槽有限CONFORMED；event7完整動作與戰後JOIN3／town14／存讀檔建構E1已通過。原版protect-r2第八回合後到援軍失效；east-guard-r1第七回合初始15～26全bit0=1、59仍HP52，符合第一分支（未追writer，強推論）。完整原版第九回合／戰後四gate未通過，title失效陣列不是全滅證據。",
-        "法術／物品操作尚缺驅動；舊mid收據只覆蓋戰間介面。"
+        "法術／物品操作尚缺驅動；舊mid收據只覆蓋戰間介面。",
+        "#65原版掃描末名自動換手後多送END已用同槽首回合1254筆相同前綴證實並修正；舊東側護援跳過第2／4玩家回合，不能單獨歸因於戰術不足。完整章尚未重驗。"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/town-shop-early-mid-late-e2.json",
