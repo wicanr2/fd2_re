@@ -945,6 +945,22 @@
         "pattern": "SHARED_HANDLER_CHUNKS",
         "note": "共用尾段仍由固定雜湊主證據限定；原始call參數另由工具回歸驗證。"
       }
+    },
+    {
+      "id": "native-result-dialogue-sequential-owner",
+      "area": "實作",
+      "rule": "同步原版結果處理器改為非同步對白時，保留單一擁有者；每列對白收框後才讀下一列條件，等所有列完成再發布結果。對白測試先等待說話者聚焦，不能在啟動當幀假定框已可見。入口：remake/cmd/fd2/native_chapter_result.go與native_chapter_result_test.go，規格見56的第十三章逐條結果契約。",
+      "why": "20765兩個code1分支彼此獨立且各有阻塞對白；提前計算或第一列即返回會漏讀後續狀態，當幀檢查框則會誤判正常的聚焦等待。",
+      "date": "2026-10-01",
+      "evidence": "docs/data/ui-traces/ch13-defeat-return-title.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_chapter_result.go"
+        ],
+        "pattern": "g\\.startBattleEvent\\(rule\\.Actions, g\\.advanceNativeChapterResult\\)",
+        "note": "逐列續行仍由同一原生結果擁有者接續；順序語意另由GUI回歸驗證。"
+      }
     }
   ]
 }

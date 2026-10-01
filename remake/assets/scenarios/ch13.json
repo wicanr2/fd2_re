@@ -1124,5 +1124,147 @@
         }
       }
     ]
-  }
+  },
+  "native_result_handler": "0x20765",
+  "native_result_rules": [
+    {
+      "id": "initial_allies_inactive",
+      "source": "0x207a4",
+      "records_all_inactive": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "code": 1,
+      "actions": [
+        {
+          "type": "dialogue",
+          "native_source": "0x207cd",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 5,
+            "line": 0,
+            "source_dat": "FDTXT_013",
+            "string_index": 10,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『糟糕，精靈們全被消滅了",
+                "　！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "late_record59_inactive",
+      "source": "0x207ec",
+      "records_all_inactive": [
+        59
+      ],
+      "round_greater_than": 5,
+      "code": 1,
+      "actions": [
+        {
+          "type": "dialogue",
+          "native_source": "0x20815",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 7,
+            "source_dat": "FDTXT_013",
+            "string_index": 2,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 3,
+            "pages": [
+              [
+                "『．啊，我年紀畢竟是老了，",
+                "　不能太逞強．．哈諾，",
+                "　以後你要自己照顧自己了，"
+              ],
+              [
+                "　老爹．不行了．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  584,
+                  464,
+                  370,
+                  568,
+                  699,
+                  1262,
+                  427,
+                  592,
+                  343,
+                  602,
+                  341,
+                  370
+                ],
+                [
+                  181,
+                  346,
+                  428,
+                  797,
+                  730,
+                  820,
+                  584,
+                  584,
+                  38,
+                  39,
+                  370
+                ],
+                [
+                  181,
+                  401,
+                  733,
+                  605,
+                  334,
+                  906,
+                  907,
+                  834,
+                  1005,
+                  906,
+                  907,
+                  341,
+                  370
+                ]
+              ],
+              [
+                [
+                  181,
+                  602,
+                  775,
+                  584,
+                  346,
+                  279,
+                  341,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
 }

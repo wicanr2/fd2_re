@@ -43,9 +43,11 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 2026-10-01以IDA Pro9.4完整chunks閉合raw章12的sub_20765：記錄15～26全部raw+5 bit0=1時寫code1／文字10；獨立第二分支於回合>5且記錄59 bit0=1時寫code1／文字2。事件5第四回合由0x34D6D跳到共用尾段，0x34BEE加入group1，接文字1。主證據保存原始名稱、bytes、來源與分級：docs/data/ida/fd2_ch13_result_conditions_20261001.json。
 
-原版2034首次新增記錄59（HP294），2110仍15我方與3初始友軍存活，但記錄59 HP0／bit0=1；符合第二分支，惟r1未追207EC，原因仍標強推論。2111後戰場緩衝失效，不得把title時ally_alive=0當全滅。
+歷史r1（原因已由下列新trace補證）：原版2034首次新增記錄59（HP294），2110仍15我方與3初始友軍存活，但記錄59 HP0／bit0=1；符合第二分支，惟r1未追207EC，原因仍標強推論。2111後戰場緩衝失效，不得把title時ally_alive=0當全滅。
 
-#62另修清冊漏共用尾段與錯誤48；48來自stack入口push30h，不是受保護單位。#60畫面前綴已關閉；本項不再依賴它。第四回合接線限定READY切片，正式結果／對白規格仍DRAFT，自訂retreat_ch13尚需替換，並修正把「精靈族全滅」當作角色名稱的生成目標文字。
+#62清冊錯誤與#60畫面前綴已關閉；第四回合event5接線已於6c48c218推送。本輪READY→實作→同槽有限CONFORMED：新原版trace直接走207EC→20815（文字2）→22E5C，未走207A4；正式native_result_rules逐列讀raw條件、對白收框後才讀下一列。battle_ch13使用原生敗北，移除自訂retreat_ch13，目標與繁中語系同步修正。
+
+正式收據docs/data/ui-traces/ch13-defeat-return-title.json保存兩張提示各0px與indexed／PNG SHA相等、9／36 ticks順序、完整標題返回及SAV未改寫。normal_player_path_verified=false（114建構槽）與決策點受控RNG均保留；不宣稱整章E2、自然難度／傷害／存活或硬體時鐘。19個Go套件通過，文字與覆蓋稽核同步。第九回合完整event7、正常保護友軍操作、戰後與存檔四gate仍未閉合；本Issue保持開啟，戰役9／30不變。
 
 怎樣算做完：已閉合原版raw章12兩個code1條件與event5來源；完成READY typed規格後接正式條件、依序對白與原生返回標題，重生無章內狀態改寫的正常輸入敗北收據。重新安排章內正常操作保護記錄15～26／59，走到第九回合event7與戰後，逐項驗證四gate；不得猜成我方或友軍全滅。
 

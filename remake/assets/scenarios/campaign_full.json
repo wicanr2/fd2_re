@@ -2044,7 +2044,7 @@
     },
     {
      "speaker": -1,
-     "text": "目標:敵全滅。務必保護「精靈族全滅」存活。"
+     "text": "目標：擊退敵軍。初始十二名友軍不可全數陣亡；第六回合起須保護後到援軍。"
     }
    ],
    "next": "battle_ch13"
@@ -2151,7 +2151,6 @@
    "units": "assets/maps/map12/map12_units.json",
    "scenario": "assets/scenarios/ch13.json",
    "on_win": "postbattle_ch13_persist",
-   "on_lose": "retreat_ch13",
    "native_map_view": {
     "camera_x": 0,
     "camera_y": 13,
@@ -2163,26 +2162,17 @@
    },
    "native_map_hud_inherited": {
     "display_gate_b": 1
+   },
+   "native_defeat_return_title": {
+    "handler": "0x22e5c",
+    "resource": 79,
+    "return": "full_title_sequence"
    }
   },
   "postbattle_ch13_persist": {
    "type": "cutscene",
    "handler_binding": "assets/cutscenes/bindings/ch12_post.json",
    "next": "town_ch14"
-  },
-  "retreat_ch13": {
-   "type": "story",
-   "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "撤退!先回頭整頓,再找機會反攻……"
-    }
-   ],
-   "set_flags": {
-    "retried_ch13": true
-   },
-   "next": "battle_ch13"
   },
   "story_ch14": {
    "type": "cutscene",

@@ -1342,3 +1342,51 @@ event5 的 `0x34D6D→0x34BE7` 共用尾段由 IDA chunks 證實，`0x34BEE` 生
 更新成47/47並加獨立原版fixture後，同容器完整battle套件乾淨重跑通過，合計19套件。
 字串清冊仍為dc3ecfa5e01f105d2928c0da7d7f19da4c37599028c2d96050b0c9010e80a9f2，
 與既有審查相同，不改綁定。全部本批容器已退出，新增檔案UID/GID1000:1000。
+
+
+## 2026-10-01 #61 第十三章有限敗北重生（進行中）
+
+[受版控敗北計畫](../data/parity-plans/ch13-defeat.jsonl)沿同槽seed4與原r1前五次sweep正常輸入，
+最後只等待完整標題；不鎖HP、不清敵、不改章內狀態。
+原版仍用tools/dosgolem_oracle.sh與clean dosgolem a9bcd621，追20765／207EC／22E5C
+及兩個FDOTHER79呼叫點，WaitTick取幀限於已知8.1～8.9e9步範圍。
+本節目前沒有新驗收結論；原版條件見[主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)。
+
+
+## 2026-10-01 #61 第十三章有限敗北驗收（CONFORMED）
+
+[正式有限收據](../data/ui-traces/ch13-defeat-return-title.json)由受版控
+`ch13-defeat.jsonl`、clean dosgolem a9bcd621、同槽SHA-256
+`d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae`與seed4重生。
+原版新trace直接執行207EC→20815（文字2）→22E5C，沒有207A4；
+因此取代舊r1「第六回合原因僅強推論」的現況。舊r1與形成原因保留，
+完整原始定位／bytes／推論等級與新runtime錨點見[主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)。
+
+56的逐條結果契約先達READY，再接入可編輯`native_result_rules`：
+raw預設結果→初始記錄15～26→回合>5／記錄59，當前列原生對白收框後
+才讀下一列。兩列都走完才發布pending；正式battle_ch13使用既有原生敗北
+而不再走自訂retreat_ch13。目標說明與繁中語系同步修正。
+條件、缺資料拒絕、GUI順序及擁有者重設達DATA-READY／RUNTIME-E1。
+
+同槽正常LOAD與章內輸入重播到第六回合，只命中late_record59_inactive；
+記錄59 HP0／bit0=1，記錄15、16、20仍有效。固定原版22EC5／22EE6
+下一個17AA9的兩張提示均0px，indexed及PNG SHA相等；9／36 BIOS ticks
+順序不可略過，既有完整標題播放器自行返回menu，原生SAV整檔未改寫。
+有限敗北條件／對白順序／提示及返回控制流列CONFORMED。
+原版normal_player_path_verified仍為false（114建構槽），收據如實保留；
+不提升整章PLAYER-E2，不宣稱完整標題逐幀、自然難度／傷害／存活或硬體時鐘一致。
+AI／攻擊決策點承接原版受控RNG，沒有挑選重擲結果，也沒有章內HP鎖定或清敵。
+
+完整Go回歸17套件先通過；文字綁定與移除假敗退節點的覆蓋斷言同步後，
+同容器兩套件乾淨重跑通過，合計19套件。文字盤點SHA-256為`3dcf679b175a62d47302379f6980ad11b234a18f9b88a1cee8e73aee32fb756a`，
+新增三個錯誤片段分類為內部診斷，原有審查決定保留。
+覆蓋由`python3 tools/audit_story_script_coverage.py`以目前campaign重生：
+119個story/cutscene、9個scripted、57個handler-bound、53個fallback
+（28個retreat／23個rumor／2個generic）；此數取代此前120／54／29的現況。
+canonical由既有exporter重生；移除legacy節點導致後續暫定索引序號隨來源重排。
+
+完整第十三章仍BLOCKED：第九回合event7的完整動作、正常保護友軍操作、
+戰後與存檔四項驗收尚未閉合。#61保持開啟，戰役台帳維持9／30，
+已通過第四～十二章未重跑。前批第四回合接線已於6c48c218推送；本批提交見後續交接。
+
+本批Docker收尾檢查：沒有本專案容器執行或停止殘留；新增／修改產物抽查UID/GID1000:1000，沒有*.md目錄，歷史root-owned數仍2811且未修改。

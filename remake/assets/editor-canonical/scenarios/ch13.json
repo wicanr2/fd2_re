@@ -655,6 +655,148 @@
           }
         ]
       },
+      "native_result_handler": "0x20765",
+      "native_result_rules": [
+        {
+          "actions": [
+            {
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 0,
+                "operand": 0,
+                "pages": [
+                  [
+                    "『糟糕，精靈們全被消滅了",
+                    "　！』"
+                  ]
+                ],
+                "scene_index": 5,
+                "script": "assets/story/ch13.json",
+                "source_dat": "FDTXT_013",
+                "string_index": 10,
+                "utterance": 0
+              },
+              "native_source": "0x207cd",
+              "native_text_index": 10,
+              "type": "dialogue"
+            }
+          ],
+          "code": 1,
+          "id": "initial_allies_inactive",
+          "records_all_inactive": [
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "source": "0x207a4"
+        },
+        {
+          "actions": [
+            {
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      584,
+                      464,
+                      370,
+                      568,
+                      699,
+                      1262,
+                      427,
+                      592,
+                      343,
+                      602,
+                      341,
+                      370
+                    ],
+                    [
+                      181,
+                      346,
+                      428,
+                      797,
+                      730,
+                      820,
+                      584,
+                      584,
+                      38,
+                      39,
+                      370
+                    ],
+                    [
+                      181,
+                      401,
+                      733,
+                      605,
+                      334,
+                      906,
+                      907,
+                      834,
+                      1005,
+                      906,
+                      907,
+                      341,
+                      370
+                    ]
+                  ],
+                  [
+                    [
+                      181,
+                      602,
+                      775,
+                      584,
+                      346,
+                      279,
+                      341,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ],
+                "line": 7,
+                "operand": 3,
+                "pages": [
+                  [
+                    "『．啊，我年紀畢竟是老了，",
+                    "　不能太逞強．．哈諾，",
+                    "　以後你要自己照顧自己了，"
+                  ],
+                  [
+                    "　老爹．不行了．．』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch13.json",
+                "source_dat": "FDTXT_013",
+                "string_index": 2,
+                "utterance": 0
+              },
+              "native_source": "0x20815",
+              "native_text_index": 2,
+              "type": "dialogue"
+            }
+          ],
+          "code": 1,
+          "id": "late_record59_inactive",
+          "records_all_inactive": [
+            59
+          ],
+          "round_greater_than": 5,
+          "source": "0x207ec"
+        }
+      ],
       "runtime_append_groups": true
     }
   },

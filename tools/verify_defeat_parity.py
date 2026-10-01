@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""核對第十二章有限敗北呈現；在 fd2-assets-local:20260829-sfx 容器內執行。
+"""核對第十二／十三章有限敗北呈現；在 fd2-assets-local:20260829-sfx 容器內執行。
 
 依 0x22EC5／0x22EE6 原始 call-site 對應下一個 0x17AA9 擷取，不能挑圖或放寬像素門檻。
 範圍只含兩段提示、固定順序、完整標題返回與存檔邊界，不宣稱自然難度或硬體時鐘一致。
@@ -22,13 +22,15 @@ def lines(path):
     return [json.loads(line) for line in Path(path).read_text().splitlines() if line.strip()]
 
 
-def verify(original, remake, plan, slot_manifest):
+def verify(original, remake, plan, slot_manifest, chapter=12):
     runner = json.loads((original / "runner.json").read_text())
     current = json.loads((original / "current.json").read_text())
     presentation = json.loads((remake / "defeat-presentation.json").read_text())
     trace = lines(original / "eip-trace.jsonl")
     captured = lines(original / "frames/frames.jsonl")
     sequence = ["0x22E5C", "0x22EC5", "0x22EE6", "0x25DFB", "0x1F894"]
+    if chapter == 13:
+        sequence = ["0x207EC", "0x20815"] + sequence
     cursor = -1
     selected = {}
     for address in sequence:
@@ -45,10 +47,14 @@ def verify(original, remake, plan, slot_manifest):
         "original_title_menu": "0x1FE60" in current["input_chain"] and "0x25ECD" in current["input_chain"],
         "preserved_edi_zero": selected["0x25DFB"]["edi"] == "0x0" and selected["0x1F894"]["edi"] == "0x0",
         "remake_return": presentation["status"] == "passed" and presentation["result"] == "lose" and presentation["title_selection"] == 0,
-        "remake_defeat_record": presentation["protected_record"] == 14 and presentation["protected_raw_byte5"] & 1 != 0,
+        "remake_defeat_record": presentation["protected_record"] == (59 if chapter == 13 else 14) and presentation["protected_raw_byte5"] & 1 != 0,
         "no_skip": not presentation["input_can_skip_defeat"],
         "remake_save_unchanged": presentation["save_unchanged"],
     }
+    if chapter == 13:
+        gates["original_second_branch_only"] = not any(row["eip"] == "0x207A4" for row in trace)
+        gates["original_result_dialogue"] = selected["0x20815"]["stack"][1] == "0x2"
+        gates["remake_second_branch_only"] = presentation["native_result_rules"] == ["late_record59_inactive"] and presentation["native_round"] == 6 and bool(presentation["initial_allies_active_records"])
     compared = []
     for ticks, address in [(9, "0x22EC5"), (36, "0x22EE6")]:
         anchor = selected[address]["step"]
@@ -83,11 +89,16 @@ def verify(original, remake, plan, slot_manifest):
     gates["same_initial_slot"] = sha(slot) == presentation["slot_sha256"]
     replay = json.loads((remake / "replay-settings.json").read_text())
     source_paths = ["remake/cmd/fd2/main.go", "remake/cmd/fd2/native_defeat.go", "remake/cmd/fd2/native_defeat_parity_test.go", "remake/cmd/fd2/battle_protection.go", "remake/internal/battle/native_ai_runtime.go", "remake/internal/battle/native_ai_physical_score.go", "tools/dosgolem_oracle_drive.py", "tools/verify_defeat_parity.py"]
+    evidence = ["docs/data/ida/fd2_pending_code1_return_title_20261001.json", "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json"]
+    if chapter == 13:
+        source_paths += ["remake/cmd/fd2/native_chapter_result.go", "remake/internal/battle/native_result.go", "remake/assets/scenarios/ch13.json", "remake/assets/scenarios/campaign_full.json"]
+        evidence.append("docs/data/ida/fd2_ch13_result_conditions_20261001.json")
     return {
-        "schema_version": 1, "kind": "fd2_finite_defeat_parity_receipt", "chapter": 12,
+        "schema_version": 1, "kind": "fd2_finite_defeat_parity_receipt", "chapter": chapter,
         "status": "passed" if all(gates.values()) else "failed", "gates": gates,
-        "evidence": ["docs/data/ida/fd2_pending_code1_return_title_20261001.json", "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json"], "spec": "docs/knowledge-base/56-fd2-remake-sdd.md §5.2.1／5.2.2／5.2.3",
+        "evidence": evidence, "spec": "docs/knowledge-base/56-fd2-remake-sdd.md " + ("第十三章逐條結果與對白 READY" if chapter == 13 else "§5.2.1／5.2.2／5.2.3"),
         "original": {"runner": runner["runner"], "dosgolem_commit": runner["dosgolem_commit"], "tracked_dirty": runner["dosgolem_tracked_dirty_files"],
+            "normal_player_path_verified": current["normal_player_path_verified"], "state_injections": current["state_injections"],
             "exe_sha256": EXE_SHA256, "address_space": current["address_space"], "plan": str(plan), "plan_sha256": sha(plan),
             "call_sequence": [{"address": address, "step": selected[address]["step"], "control_seq": selected[address]["control_seq"]} for address in sequence]},
         "slot": {"sha256": sha(slot), "manifest_sha256": sha(slot_manifest), "policy": "114 建構槽；非自然難度／傷害／存活證據", "assumptions": manifest.get("assumptions", [])},
@@ -105,8 +116,9 @@ def main():
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--slot-manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--chapter", type=int, choices=[12, 13], default=12)
     args = parser.parse_args()
-    report = verify(args.original, args.remake, args.plan, args.slot_manifest)
+    report = verify(args.original, args.remake, args.plan, args.slot_manifest, args.chapter)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps({"status": report["status"], "gates": report["gates"], "frames": report["frames"]}, ensure_ascii=False))
     return 0 if report["status"] == "passed" else 1

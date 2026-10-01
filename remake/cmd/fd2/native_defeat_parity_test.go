@@ -18,7 +18,12 @@ import (
 // 皆由既有 parityReplay 決定；此處只替換宿主時鐘，不改單位或結果。
 func (r *parityReplay) verifyNativeDefeatReturnTitle(action parityAction) {
 	t, g := r.t, r.g
-	if !pump(t, g, ch01FrameBudget*6, func() bool { return g.result != "" }) || g.result != "lose" || g.nativeDefeat == nil {
+	if !pump(t, g, ch01FrameBudget*6, func() bool {
+		if len(g.dialog) > 0 && g.battleEvent != nil && storyEnterReady(g) {
+			g.handleBattleEventDialogueInput(true)
+		}
+		return g.result != ""
+	}) || g.result != "lose" || g.nativeDefeat == nil {
 		t.Fatalf("正常章重播未抵達原生敗北：result=%s err=%s", g.result, g.loadErr)
 	}
 	if g.confirmBattleResult() {
@@ -28,7 +33,21 @@ func (r *parityReplay) verifyNativeDefeatReturnTitle(action parityAction) {
 	screen := ebiten.NewImage(640, 400)
 	seen := map[int]bool{}
 	frames := []map[string]any{}
-	protected := g.st.Units[14]
+	protectedIndex := 14
+	if r.battle == "battle_ch13" {
+		protectedIndex = 59
+	}
+	protected := g.st.Units[protectedIndex]
+	resultRules := append([]string(nil), g.nativeResultMatchedRules...)
+	resultRound := g.st.NativeRoundCounter
+	initialAlliesActive := []int{}
+	if r.battle == "battle_ch13" {
+		for i := 15; i <= 26; i++ {
+			if g.st.Units[i].NativeRecordByte5&1 == 0 {
+				initialAlliesActive = append(initialAlliesActive, i)
+			}
+		}
+	}
 	for k := 0; g.nativeDefeat != nil && k < 500; k++ {
 		j := g.nativeDefeat
 		g.Draw(screen)
@@ -70,7 +89,8 @@ func (r *parityReplay) verifyNativeDefeatReturnTitle(action parityAction) {
 	r.checkpoint("defeat_return_title", action.Seq, "title", false)
 	data := map[string]any{
 		"schema_version": 1, "status": "passed", "method": "正常 LOAD／章內玩家動作與決策點受控 RNG；只以決定性宿主時鐘推進呈現",
-		"result": "lose", "protected_record": 14, "protected_hp": protected.HP, "protected_raw_byte5": protected.NativeRecordByte5,
+		"result": "lose", "protected_record": protectedIndex, "protected_hp": protected.HP, "protected_raw_byte5": protected.NativeRecordByte5,
+		"native_result_rules": resultRules, "native_round": resultRound, "initial_allies_active_records": initialAlliesActive,
 		"frames": frames, "returned_title_sequence": "publisher→既有完整開場→menu", "title_selection": g.titleSel,
 		"input_can_skip_defeat": false, "clock_limit": "BIOS tick 依既有規格近似；2ms DAC 每步呈現，60Hz延長亞幀等待",
 		"save_unchanged": true,

@@ -8809,3 +8809,66 @@ FDFIELD已版本化的控制列給round4／event5／raw camp1；現行動作轉�
 獨立原版checkpoint2034的runtime59比對及19套件回歸通過。
 同狀態正常UI／敗北／event7／戰後仍未驗收，完整CONFORMED與PLAYER-E2未提升。
 正式來源與結果由[58](58-fd2-exe-re-coverage.md)承載。
+
+
+## 2026-10-01 #61 第十三章逐條結果與對白（READY）
+
+本節取代先前結果接線DRAFT；原始條件／writer／consumer由
+[主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)及
+[受版控敗北計畫](../data/parity-plans/ch13-defeat.jsonl)給出。
+新原版同槽正常鍵盤計畫直接命中207EC／20815，未命中207A4，
+其後22E5C→22EC5→22EE6→25DFB→1F894且EDI=0；SAV雜湊未變。
+
+DRAFT資料介面：Scenario新增可編輯 `native_result_rules`，
+每列保存 `id`、`source`（pending writer）、`records_all_inactive`、
+可選 `round_greater_than`、`code`及 `actions`。目前只開放已證實的code1覆寫，
+actions只能是帶NativeDialogueRef／TextIndex／Source的一般原生對白，
+不以handler位址作正式分派鍵；舊native_result_code1_records不與新規則混用。
+第十三章列1查15～26全部raw+5 bit0=1，source207A4，顯示文字10；
+列2先查NativeRoundCounter>5再查記錄59的bit0=1，source207EC，顯示文字2。
+對白由既有FDTXT→story映射工具生成，分別使用15F84呼叫點207CD／20815。
+
+共用基礎結果沿205BE：初值2，任一當前runtime記錄的raw+6=0且+5 bit0=0
+就改0，最後記錄0 bit0非0改1；不查待登場Roster、不用正規化Camp或HP代替raw。
+沒有raw記錄／欄位時失敗即關閉，不由空白值猜補。
+新規則缺索引、重複ID／索引、負回合門檻、未知code或對白provenance不完整時拒收。
+round門檻未達前不查尚未建立的59；門檻已達但缺59時報錯。
+
+非同步擁有者：先保存基礎結果，再依列順序在執行當下判條件；
+命中就保存pending code，交給既有battle-event擁有者播完該列所有對白。
+對白完整收框後才評估下一列，不能預先算第二列或第一次命中就return。
+規則擁有者在此期間阻止重複checkResult與AI／玩家戰鬥輸入；
+讀取、START、敗北返回標題等既有戰鬥重設邊界清除此暫態。
+全部列走完才把code0／1／2交回無結果／lose／win介面；code1再呼叫既有
+原生FDOTHER79敗北擁有者，完整返回標題。不寫SAV，不提供略過提示的輸入。
+
+正式battle_ch13刪除on_lose與無其他消費端的retreat_ch13，
+改用已閉合native_defeat_return_title契約（22E5C／79／full_title_sequence）。
+把攻略「精靈族全滅」當成角色名的自動目標文字改成原始判定的可讀敘述，
+不改勝利／戰後／JOIN或第九回合event7的既有待驗證路徑。
+
+驗收：純raw base、兩條件各自／同時命中、HP與bit0分離、回合5／6、
+未到回合不讀59、欄位缺漏拒收；正式擁有者測試證明對白1未結束時
+不評估第二列、結束後再判、不重複、錯誤停止且清理可重新LOAD。
+同槽正常LOAD敗北重播必須記錄命中列／raw旗標／回合／兩段79提示／
+完整標題返回與SAV不變，以新原版writer追蹤及固定呼叫點畫面比對。
+相同seed4在兩側執行前固定；既有重播決策點受控RNG必須如實記錄，
+不挑重擲結果，不把局部收據提升為完整第九回合與戰後PLAYER-E2。
+
+證據審查已核對直接指令、表入口、完整chunks、新原版順序與對白映射：
+15～26與59均有原版runtime／typed FDFIELD消費鏈；新資料只描述raw運算及
+既有對白／敗北API。所有欄位、先後與錯誤邊界均已定義，本切片列READY。
+實作入口：remake/internal/battle/native_result.go、
+remake/cmd/fd2/native_chapter_result.go；測試與收據仍由58統一分級。
+
+
+## 2026-10-01 #61 第十三章有限敗北閉合
+
+[58現況](58-fd2-exe-re-coverage.md)與[正式有限收據](../data/ui-traces/ch13-defeat-return-title.json)
+取代此前「結果DRAFT／原因僅強推論」的現況：原版207EC→20815→22E5C
+已重生，正式逐條raw結果與阻塞對白按READY契約實作；同槽第六回合只命中記錄59分支，
+兩張提示各0px且indexed／PNG SHA相等，完整標題返回與SAV不變通過。
+限於這條敗北路徑標CONFORMED／RUNTIME-E1；原版建構槽的normal_player_path_verified=false
+及受控決策點RNG均明示，不提升整章PLAYER-E2，不宣稱自然難度、傷害、存活或硬體時鐘相同。
+19個Go套件與文字審查綁定通過。第九回合完整event7、友軍保護與戰後／存檔仍未閉合，
+#61保持開啟，9／30不變；已通過第四～十二章未重跑。

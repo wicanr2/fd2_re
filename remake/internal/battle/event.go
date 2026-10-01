@@ -32,8 +32,9 @@ type Scenario struct {
 	// 0x205BE 的三值規則，再對列出的記錄查 raw +5 bit0（0x3453E），任一筆成立就寫
 	// [0x53ECC]=1——與 default「記錄 0 倒下」同一個碼。第十章 0x20707 查記錄 50、51
 	// （docs/knowledge-base/26-per-chapter-event-handlers.md）。
-	NativeResultHandler      string `json:"native_result_handler,omitempty"`
-	NativeResultCode1Records []int  `json:"native_result_code1_records,omitempty"`
+	NativeResultHandler      string             `json:"native_result_handler,omitempty"`
+	NativeResultCode1Records []int              `json:"native_result_code1_records,omitempty"`
+	NativeResultRules        []NativeResultRule `json:"native_result_rules,omitempty"`
 	pendingJoins             []int
 }
 
@@ -313,6 +314,21 @@ func LoadScenario(path string) (*Scenario, error) {
 	var sc Scenario
 	if err := json.Unmarshal(raw, &sc); err != nil {
 		return nil, err
+	}
+	if len(sc.NativeResultRules) != 0 {
+		if sc.NativeResultHandler == "" || len(sc.NativeResultCode1Records) != 0 {
+			return nil, fmt.Errorf("原生結果列缺少handler來源或混用舊記錄清單")
+		}
+		seen := map[string]bool{}
+		for i, rule := range sc.NativeResultRules {
+			if err := rule.Validate(); err != nil {
+				return nil, fmt.Errorf("原生結果列%d：%w", i, err)
+			}
+			if seen[rule.ID] {
+				return nil, fmt.Errorf("原生結果列ID重複：%s", rule.ID)
+			}
+			seen[rule.ID] = true
+		}
 	}
 	for i, member := range sc.Party {
 		// Validate at the editable boundary. PartyUnits has a legacy no-error

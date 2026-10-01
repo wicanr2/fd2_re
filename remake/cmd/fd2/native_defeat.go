@@ -178,6 +178,7 @@ func (g *Game) drawNativeDefeat(screen *ebiten.Image) {
 }
 
 func (g *Game) clearDefeatedBattleTransientState() {
+	g.nativeChapterResult, g.nativeResultMatchedRules = nil, nil
 	g.cancelNativeCommand32Presentation()
 	g.cancelNativeCommand33Presentation()
 	g.resetActionOverlayLifecycle()

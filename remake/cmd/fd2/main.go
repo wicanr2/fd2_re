@@ -89,6 +89,8 @@ type Game struct {
 	nativeMapDAC                []byte                // current 256xRGB six-bit DAC state for handler palette ramps
 	nativePaletteRamp           *nativePaletteRampJob // exact 0x1f882/0x1f525 indexed DAC presentation
 	nativeDefeat                *nativeDefeatJob
+	nativeChapterResult         *nativeChapterResultJob
+	nativeResultMatchedRules    []string
 	titleNeedsNewCampaign       bool
 	nativePalettePulse          *nativePalettePulseJob             // exact 0x35E5A 0..63/hold/62..0 indexed DAC presentation
 	nativeCh20SkyKey            *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
@@ -3230,6 +3232,7 @@ func (g *Game) enterNode() {
 	g.nativeFullDACBlack = false
 	g.handlerResource = 0
 	g.battleEvent, g.battleEventDelay = nil, 0
+	g.nativeChapterResult, g.nativeResultMatchedRules = nil, nil
 	g.dlgShown, g.dlgPhase, g.dlgT = dlgNone, 0, 0
 	g.dlgUpper = nil
 	g.dlgScrollT, g.dlgScrollFrom = 0, 0
@@ -7681,11 +7684,15 @@ func (g *Game) confirm() {
 
 // checkResult 檢查勝負(失敗條件:索爾死;勝利:敵全滅,doc28 第1章)。
 func (g *Game) checkResult() {
-	if g.result != "" || g.sc == nil {
+	if g.result != "" || g.sc == nil || g.nativeChapterResult != nil {
 		return
 	}
 	// 死亡程式還沒跑完（例如頭目的死亡台詞）就先不判；跑完的續行會再判一次。
 	if g.nativeDeathProgramsPending() {
+		return
+	}
+	if len(g.sc.NativeResultRules) != 0 {
+		g.beginNativeChapterResult()
 		return
 	}
 	protect := "索爾"
@@ -11938,6 +11945,9 @@ func (g *Game) startBattleEvent(actions []battle.Action, then func()) {
 
 func (g *Game) finishBattleEventWithError(message string) {
 	g.loadErr = "battle event: " + message
+	if g.nativeChapterResult != nil {
+		g.failNativeChapterResult(message)
+	}
 	g.battleEvent, g.battleEventDelay, g.camPan = nil, 0, nil
 }
 

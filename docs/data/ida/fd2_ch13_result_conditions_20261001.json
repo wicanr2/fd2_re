@@ -4867,5 +4867,225 @@
     "runtime_code_changed": false,
     "event5_runtime_status": "RUNTIME-E1：原生append與對白動作順序；尚無第四回合正常UI同狀態收據",
     "string_inventory_sha256": "dc3ecfa5e01f105d2928c0da7d7f19da4c37599028c2d96050b0c9010e80a9f2"
+  },
+  "runtime_result_closure": {
+    "status": "RE-CLOSED",
+    "level": "confirmed",
+    "source_run": "work/parity-slot-ch13/defeat-original-r1",
+    "plan": "docs/data/parity-plans/ch13-defeat.jsonl",
+    "plan_sha256": "159837c43669f6f7fe9537456ac385698f2d286efc955e6e780a88b4d11ce556",
+    "runner": {
+      "schema_version": 1,
+      "kind": "fd2_oracle_runner_provenance",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "dosgolem_branch": "feat/fd2-oracle-input-chain",
+      "dosgolem_tracked_dirty_files": 0,
+      "dosgolem_untracked_files": 0,
+      "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+      "generated_at": "2026-10-01T13:00:17+00:00",
+      "control_plan": "docs/data/parity-plans/ch13-defeat.jsonl",
+      "lock_ally_hp": false,
+      "force_enemy_clear_declared": false,
+      "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "original_reference_manifest": "docs/data/fd2-reference-files.json",
+      "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch13/defeat-state-r1",
+      "state_injections": [
+        "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+        "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+      ],
+      "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+    },
+    "current": {
+      "control_seq": 2113,
+      "eip": "0x36D98",
+      "input_kind": "normal BIOS keys",
+      "input_chain": [
+        "0x1FE60",
+        "0x25ECD",
+        "0x25DC2",
+        "0x45D91",
+        "0x3CB91"
+      ],
+      "steps": 8296306455,
+      "state_injections": [],
+      "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "address_space": "dosgolem relocated LE linear",
+      "normal_player_path_verified": false
+    },
+    "trace_sha256": "841b9036947e62decd099d2cbdc94ddd50722de49f290f189b2710f9ec739a8d",
+    "trace_selected": [
+      {
+        "step": 8206118861,
+        "control_seq": 2109,
+        "eip": "0x207EC",
+        "eax": "0x1",
+        "edx": "0x1270",
+        "ebx": "0xC",
+        "ecx": "0x17",
+        "esi": "0x16FA6C",
+        "edi": "0x13098",
+        "esp": "0x5560C",
+        "rng_word": 52055,
+        "stack": [
+          "0x20701",
+          "0x15E7E0",
+          "0x1A954",
+          "0x0",
+          "0x5",
+          "0x13098",
+          "0xA",
+          "0x15E7E0"
+        ]
+      },
+      {
+        "step": 8206118871,
+        "control_seq": 2109,
+        "eip": "0x20815",
+        "eax": "0x1",
+        "edx": "0x1270",
+        "ebx": "0xC",
+        "ecx": "0x17",
+        "esi": "0x16FA6C",
+        "edi": "0x13098",
+        "esp": "0x555E8",
+        "rng_word": 52055,
+        "stack": [
+          "0x16C780",
+          "0x2",
+          "0xA0000",
+          "0x140",
+          "0xCD",
+          "0x4C",
+          "0x4A",
+          "0x13"
+        ]
+      },
+      {
+        "step": 8241245285,
+        "control_seq": 2111,
+        "eip": "0x22E5C",
+        "eax": "0x0",
+        "edx": "0x1",
+        "ebx": "0x328000",
+        "ecx": "0x0",
+        "esi": "0x0",
+        "edi": "0x0",
+        "esp": "0x55688",
+        "rng_word": 62946,
+        "stack": [
+          "0x25DEA",
+          "0x546B0",
+          "0x546B1",
+          "0x0",
+          "0x45D91",
+          "0x1",
+          "0x100031",
+          "0x0"
+        ]
+      },
+      {
+        "step": 8243701584,
+        "control_seq": 2111,
+        "eip": "0x22EC5",
+        "eax": "0x2C00",
+        "edx": "0xC00",
+        "ebx": "0x158D80",
+        "ecx": "0x0",
+        "esi": "0x0",
+        "edi": "0x0",
+        "esp": "0x55684",
+        "rng_word": 62946,
+        "stack": [
+          "0x328000",
+          "0x25DEA",
+          "0x546B0",
+          "0x546B1",
+          "0x0",
+          "0x45D91",
+          "0x1",
+          "0x100031"
+        ]
+      },
+      {
+        "step": 8243747484,
+        "control_seq": 2111,
+        "eip": "0x22EE6",
+        "eax": "0xFFFFFF81",
+        "edx": "0x109",
+        "ebx": "0x158D80",
+        "ecx": "0x0",
+        "esi": "0x0",
+        "edi": "0x0",
+        "esp": "0x55684",
+        "rng_word": 62946,
+        "stack": [
+          "0x328000",
+          "0x25DEA",
+          "0x546B0",
+          "0x546B1",
+          "0x0",
+          "0x45D91",
+          "0x1",
+          "0x100031"
+        ]
+      },
+      {
+        "step": 8243925289,
+        "control_seq": 2111,
+        "eip": "0x25DFB",
+        "eax": "0x27D5",
+        "edx": "0x24",
+        "ebx": "0x328000",
+        "ecx": "0x0",
+        "esi": "0x0",
+        "edi": "0x0",
+        "esp": "0x5568C",
+        "rng_word": 62946,
+        "stack": [
+          "0x546B0",
+          "0x546B1",
+          "0x0",
+          "0x45D91",
+          "0x1",
+          "0x100031",
+          "0x0",
+          "0x556B0"
+        ]
+      },
+      {
+        "step": 8243929134,
+        "control_seq": 2111,
+        "eip": "0x1F894",
+        "eax": "0x10023C",
+        "edx": "0x0",
+        "ebx": "0x328000",
+        "ecx": "0x7F",
+        "esi": "0x1",
+        "edi": "0x0",
+        "esp": "0x55678",
+        "rng_word": 62946,
+        "stack": [
+          "0x25ECD",
+          "0x0",
+          "0x1",
+          "0x328000",
+          "0x25DC2",
+          "0x546B0",
+          "0x546B1",
+          "0x0"
+        ]
+      }
+    ],
+    "first_branch_hits": 0,
+    "record59_branch_hits": 1,
+    "semantic": "第六回合直接執行207EC writer及20815文字2，第一分支207A4未執行；後續22E5C→22EC5→22EE6→25DFB→1F894與EDI0對上既有code1返回完整標題契約。",
+    "source": "原版未修改章內狀態、正常鍵盤計畫與固定EXE／seed4；每個trace保留原始位址、暫存器與stack。",
+    "correction": "前輪r1因未追結果writer只標強推論；本輪同槽新計畫直接追writer／consumer，提升此條件的原版執行原因。未提高remake或整章驗收等級。",
+    "limits": [
+      "不宣稱自然難度、傷害或存活parity；114建構槽政策仍明示。",
+      "完整標題控制流已返回選單，但本份不宣稱完整標題逐幀畫面一致。"
+    ]
   }
 }

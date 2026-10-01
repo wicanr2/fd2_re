@@ -1198,9 +1198,9 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 			generic++
 		}
 	}
-	// #47 以原版 pending1 返回標題取代 retreat_ch12；現況統計入口為58，
+	// #47／#61 以原版 pending1 返回標題取代 retreat_ch12／ch13；現況統計入口為58，
 	// 可重跑工具 tools/audit_story_script_coverage.py，不把移除的自訂台詞算成證據。
-	if storyNodes != 120 || scripted != 9 || handlerBound != 57 || fallback != 54 || retreat != 29 || rumor != 23 || postbattle != 0 || generic != 2 {
+	if storyNodes != 119 || scripted != 9 || handlerBound != 57 || fallback != 53 || retreat != 28 || rumor != 23 || postbattle != 0 || generic != 2 {
 		t.Fatalf("campaign story coverage changed: nodes=%d scripted=%d handler_bound=%d fallback=%d retreat=%d rumor=%d postbattle=%d generic=%d; update the audit before changing claims", storyNodes, scripted, handlerBound, fallback, retreat, rumor, postbattle, generic)
 	}
 }
