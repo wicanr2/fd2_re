@@ -370,6 +370,21 @@
           "extensions": {
             "legacy": {
               "camp": "enemy",
+              "grid": [
+                27,
+                5
+              ],
+              "native_event_id": 7,
+              "native_source": "0x34d7c"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/3f9cedff7b64/events/2/1",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
               "groups": [
                 2
               ],
@@ -385,6 +400,78 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/3f9cedff7b64/events/2/2",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_acting": {
+                "resource": 46,
+                "source": "0x34da0"
+              },
+              "native_event_id": 7,
+              "native_source": "0x34da0"
+            }
+          },
+          "type": "native_acting"
+        },
+        {
+          "action_id": "legacy/action/3f9cedff7b64/events/2/3",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_event_id": 7,
+              "native_source": "0x34daa"
+            }
+          },
+          "type": "reset_pose"
+        },
+        {
+          "action_id": "legacy/action/3f9cedff7b64/events/2/4",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      955,
+                      954,
+                      342,
+                      656,
+                      341,
+                      462,
+                      608,
+                      612,
+                      609,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ],
+                "line": 5,
+                "operand": 103,
+                "pages": [
+                  [
+                    "『吼嗚！宰了這些傢伙．．』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch13.json",
+                "source_dat": "FDTXT_013",
+                "string_index": 8,
+                "utterance": 0
+              },
+              "native_event_id": 7,
+              "native_source": "0x34daf",
+              "native_text_index": 8
+            }
+          },
+          "type": "dialogue"
         }
       ],
       "event_id": "legacy/event/3f9cedff7b64/events/2",
@@ -470,6 +557,7 @@
       ],
       "map": 12,
       "name": "哈斯米爾之戰",
+      "native_acting_resources": "assets/cutscenes/acting/map32.json",
       "native_death_programs": {
         "3:3": [
           {

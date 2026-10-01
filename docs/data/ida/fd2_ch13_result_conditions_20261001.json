@@ -1062,10 +1062,10 @@
           "address": "0x34d80",
           "bytes": "e858e8fdff",
           "original": "call    sub_135DD",
-          "semantic": "未附加推測語意",
-          "level": "unknown",
-          "warning": "語意未經本次審查",
-          "source": "FD2.EXE IDA LE 0x34d80",
+          "semantic": "event7 pan caller（僅所列字面參數／順序）",
+          "level": "confirmed",
+          "warning": "",
+          "source": "本檔IDA Pro9.4 LE 0x34d80；docs/data/ida/fd2_semantic_index.json entry0x135dd；既有callee契約",
           "semantic_annotations": []
         },
         {
@@ -1102,10 +1102,10 @@
           "address": "0x34d91",
           "bytes": "e8b8bdfdff",
           "original": "call    sub_10B4E",
-          "semantic": "未附加推測語意",
-          "level": "unknown",
-          "warning": "語意未經本次審查",
-          "source": "FD2.EXE IDA LE 0x34d91",
+          "semantic": "event7 spawn_group caller（僅所列字面參數／順序）",
+          "level": "confirmed",
+          "warning": "",
+          "source": "本檔IDA Pro9.4 LE 0x34d91；docs/data/ida/fd2_ch13_handoff_20261001.json；typed FDFIELD原生append",
           "semantic_annotations": []
         },
         {
@@ -1142,10 +1142,10 @@
           "address": "0x34da2",
           "bytes": "e8c3e8fdff",
           "original": "call    sub_1366A",
-          "semantic": "未附加推測語意",
-          "level": "unknown",
-          "warning": "語意未經本次審查",
-          "source": "FD2.EXE IDA LE 0x34da2",
+          "semantic": "event7 acting caller（僅所列字面參數／順序）",
+          "level": "confirmed",
+          "warning": "",
+          "source": "本檔IDA Pro9.4 LE 0x34da2；docs/knowledge-base/54-acting-pose-semantics.md；既有runtime slot語意",
           "semantic_annotations": []
         },
         {
@@ -1162,10 +1162,10 @@
           "address": "0x34daa",
           "bytes": "e835e7fdff",
           "original": "call    sub_134E4",
-          "semantic": "未附加推測語意",
-          "level": "unknown",
-          "warning": "語意未經本次審查",
-          "source": "FD2.EXE IDA LE 0x34daa",
+          "semantic": "event7 reset_pose caller（僅所列字面參數／順序）",
+          "level": "confirmed",
+          "warning": "",
+          "source": "本檔IDA Pro9.4 LE 0x34daa；docs/data/ida/fd2_semantic_index.json entry0x134e4",
           "semantic_annotations": []
         },
         {
@@ -5087,5 +5087,208 @@
       "不宣稱自然難度、傷害或存活parity；114建構槽政策仍明示。",
       "完整標題控制流已返回選單，但本份不宣稱完整標題逐幀畫面一致。"
     ]
+  },
+  "event7_transcription_review": {
+    "status": "RE-CLOSED",
+    "scope": "只閉合event7的字面動作順序／參數與共用尾段；未驗玩家第九回合畫面或完整章",
+    "handler": "0x34d72",
+    "original_name": "sub_34D72",
+    "shared_dialogue_tail": {
+      "range": [
+        "0x34c0f",
+        "0x34c1e"
+      ],
+      "source_function": "sub_34D68",
+      "branch": "0x34dc8 e942feffff →0x34c0f"
+    },
+    "ops": [
+      {
+        "op": "pan",
+        "ranges": [
+          [
+            "0x34d7c",
+            "0x34d88"
+          ]
+        ],
+        "x": 27,
+        "y": 5,
+        "call": "0x34d80",
+        "consumer": "0x135dd",
+        "evidence": "docs/data/ida/fd2_semantic_index.json entry0x135dd；既有callee契約",
+        "level": "confirmed",
+        "source": "本檔IDA Pro9.4 LE 0x34d80；docs/data/ida/fd2_semantic_index.json entry0x135dd；既有callee契約",
+        "original_call": "call    sub_135DD",
+        "call_bytes": "e858e8fdff"
+      },
+      {
+        "op": "spawn_group",
+        "ranges": [
+          [
+            "0x34d88",
+            "0x34da0"
+          ]
+        ],
+        "group": 2,
+        "gate": 1,
+        "call": "0x34d91",
+        "consumer": "0x10b4e",
+        "evidence": "docs/data/ida/fd2_ch13_handoff_20261001.json；typed FDFIELD原生append",
+        "level": "confirmed",
+        "source": "本檔IDA Pro9.4 LE 0x34d91；docs/data/ida/fd2_ch13_handoff_20261001.json；typed FDFIELD原生append",
+        "original_call": "call    sub_10B4E",
+        "call_bytes": "e8b8bdfdff"
+      },
+      {
+        "op": "acting",
+        "ranges": [
+          [
+            "0x34da0",
+            "0x34daa"
+          ]
+        ],
+        "resource": 46,
+        "call": "0x34da2",
+        "consumer": "0x1366a",
+        "evidence": "docs/knowledge-base/54-acting-pose-semantics.md；既有runtime slot語意",
+        "level": "confirmed",
+        "source": "本檔IDA Pro9.4 LE 0x34da2；docs/knowledge-base/54-acting-pose-semantics.md；既有runtime slot語意",
+        "original_call": "call    sub_1366A",
+        "call_bytes": "e8c3e8fdff"
+      },
+      {
+        "op": "reset_pose",
+        "ranges": [
+          [
+            "0x34daa",
+            "0x34daf"
+          ]
+        ],
+        "call": "0x34daa",
+        "consumer": "0x134e4",
+        "evidence": "docs/data/ida/fd2_semantic_index.json entry0x134e4",
+        "level": "confirmed",
+        "source": "本檔IDA Pro9.4 LE 0x34daa；docs/data/ida/fd2_semantic_index.json entry0x134e4",
+        "original_call": "call    sub_134E4",
+        "call_bytes": "e835e7fdff"
+      },
+      {
+        "op": "dialogue",
+        "ranges": [
+          [
+            "0x34daf",
+            "0x34dcd"
+          ],
+          [
+            "0x34c0f",
+            "0x34c1d"
+          ]
+        ],
+        "text": 8,
+        "call": "0x34c15",
+        "consumer": "0x15f84",
+        "evidence": "直接34DC6 push8／34DC8 jmp34C0F；既有FDTXT原生對白ABI",
+        "level": "confirmed",
+        "source": "本檔IDA Pro9.4 LE 0x34c15；直接34DC6 push8／34DC8 jmp34C0F；既有FDTXT原生對白ABI",
+        "original_call": "call    sub_15F84",
+        "call_bytes": "e86a13feff"
+      }
+    ],
+    "control": {
+      "source": "remake/assets/maps/native_turn_event_controls.json map12",
+      "resource": "FDFIELD_037.bin",
+      "sha256": "8791204bb8311c20de164fe7d42c8c8255b6fd200c98dfbb735b93ab19d3e597",
+      "round": 9,
+      "raw_camp": 0,
+      "event": 7
+    },
+    "acting": {
+      "source": "remake/assets/cutscenes/acting/map32.json",
+      "sha256": "c930dd7e448ca8da44c25502396ec5bedad6424042270fdc9120102079dd4e0d",
+      "resource": 46,
+      "frames": 3,
+      "slot_range": [
+        61,
+        71
+      ],
+      "slot_basis": "runtime record索引；15我方＋group0 44＋group1 1＋group2 12＝72筆",
+      "level": "confirmed",
+      "warning": "形狀與slot契約已證實，當前章正常玩家可達性尚未對拍"
+    },
+    "limits": [
+      "沿用已閉合原語，未重解callee；未知指令保留原名稱／bytes／warning",
+      "原版probe36CD7不進玩家動作序列",
+      "本項不能關閉#61或提升整章PLAYER-E2"
+    ],
+    "secondary_validation": {
+      "tool": "fd2-cap-local／tools/extract_native_death_events.py",
+      "method": "只在既有Capstone Docker image；固定FD2.EXE hash；全部EVENTS的event_table／check_op／check_coverage",
+      "result": "40個事件原始參數與可達指令覆蓋通過；--write 後 --check 相等，章13限定 sync --check 通過。",
+      "level": "confirmed"
+    },
+    "runtime_validation": {
+      "date": "2026-10-01",
+      "status": "DATA-READY / RUNTIME-E1",
+      "spec": "docs/knowledge-base/56-fd2-remake-sdd.md 第九回合 event7 READY 契約",
+      "test": "TestChapter13Event7FinishesActingBeforeDialogueAndContinuation",
+      "source": "remake/cmd/fd2/native_chapter_result_test.go",
+      "method": "建構章13狀態與第4回合 group1；第9回合 Scenario 產生 pan／spawn／acting／reset／dialogue；逐幀等待 ACTING 完成，再以正式對白輸入收框，才允許 continuation。",
+      "assertions": [
+        "camp enemy／turn9／event7／once",
+        "ACTING46 與 72 筆紀錄、slot60～71 group2",
+        "對白8前 ACTING 已退出、各新紀錄 pose／motion 已重設",
+        "對白收框後才 continuation"
+      ],
+      "result": "PASS",
+      "limits": [
+        "建構前置與直接回合設定，只列 E1",
+        "沒有原版第九回合同狀態畫面收據，不標 CONFORMED 或整章 PLAYER-E2"
+      ]
+    },
+    "normal_protection_attempt": {
+      "plan": "docs/data/parity-plans/ch13-protect-sample.jsonl",
+      "plan_sha256": "4c6602c9719564df4330b1b0618c23a196348f019b3f0906802ca496652268e6",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "seed": 4,
+      "slot_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
+      "result": "未完成；第八回合敗北返回標題，尚未到 event7／戰後。",
+      "last_battle_checkpoint": "work/parity-slot-ch13/protect-original-r2/checkpoint-3149.json",
+      "checkpoint_sha256": "53fcfeb21cc3ccc87d8b3917e3da438179c709e368a189a5fa2de25830557309",
+      "round": 8,
+      "records": [
+        {
+          "index": 0,
+          "camp": 2,
+          "byte5": 128,
+          "fig": 0,
+          "x": 9,
+          "y": 1,
+          "hp": 420
+        },
+        {
+          "index": 16,
+          "camp": 1,
+          "byte5": 0,
+          "fig": 72,
+          "x": 14,
+          "y": 1,
+          "hp": 230
+        },
+        {
+          "index": 59,
+          "camp": 1,
+          "byte5": 1,
+          "fig": 3,
+          "x": 23,
+          "y": 18,
+          "hp": 0
+        }
+      ],
+      "limits": [
+        "無 HP 鎖定；失敗前未執行計畫末端的 force_enemy_clear",
+        "title 清空陣列不代表我方全滅；失敗前 slot0 HP420、slot16 HP230、slot59 HP0／bit0=1",
+        "維持同槽、seed4；不得選擇重擲結果或據此宣稱整章通過"
+      ]
+    }
   }
 }

@@ -110,3 +110,60 @@ func TestNativeChapterResultMissingDialogueStateStopsBeforeDefeat(t *testing.T) 
 		t.Fatal("錯誤流程改寫正式規則或我方狀態")
 	}
 }
+
+func TestChapter13Event7FinishesActingBeforeDialogueAndContinuation(t *testing.T) {
+	// 直接進章與回合設定僅驗RUNTIME-E1；正常章內輸入由#61章重播驗。
+	g := chapter13ResultGame(t)
+	g.st.Turn, g.st.NativeRoundCounter = 9, 9
+	actions := g.sc.TriggerActions(g.st, "on_turn_end", "")
+	want := []string{"pan", "spawn_group", "native_acting", "reset_pose", "dialogue"}
+	if len(actions) != len(want) {
+		t.Fatalf("event7動作數=%d，預期%d", len(actions), len(want))
+	}
+	for i, kind := range want {
+		if actions[i].Type != kind || actions[i].Camp != "enemy" ||
+			actions[i].NativeEventID == nil || *actions[i].NativeEventID != 7 {
+			t.Fatalf("event7動作%d的順序／camp／來源不符：%+v", i, actions[i])
+		}
+	}
+	if actions[0].Grid == nil || *actions[0].Grid != [2]int{27, 5} ||
+		len(actions[1].NativeSpawns) != 1 || actions[1].NativeSpawns[0].Source != "0x34d91" ||
+		actions[1].NativeSpawns[0].RawPlacementGate == nil || *actions[1].NativeSpawns[0].RawPlacementGate != 1 ||
+		actions[2].NativeActing == nil || actions[2].NativeActing.Resource != 46 {
+		t.Fatal("event7缺少原始鏡頭／配置閘門／ACTING46")
+	}
+	continued, sawActing := false, false
+	g.startBattleEvent(actions, func() { continued = true })
+	if !pump(t, g, journeyStoryFrames, func() bool {
+		if g.actJob != nil {
+			sawActing = true
+			if len(g.dialog) != 0 || continued {
+				t.Fatal("ACTING未結束即交出對白或敵方續行")
+			}
+		}
+		return len(g.dialog) > 0
+	}) {
+		t.Fatalf("event7未走完演出到文字8：%s", g.loadErr)
+	}
+	if !sawActing || continued || g.actJob != nil || len(g.st.Units) != 72 ||
+		g.dialog[0].NativeDialogue == nil || g.dialog[0].NativeDialogue.StringIndex != 8 {
+		t.Fatalf("event7演出／收框交接不完整：%s", g.loadErr)
+	}
+	for i := 60; i <= 71; i++ {
+		u := g.st.Units[i]
+		if u.Group != 2 || !u.HasNativeMapPresentation || u.NativeMapPresentation.Pose != 0 || u.NativeMapPresentation.Motion != 0 {
+			t.Fatalf("event7的原生record%d未生成或姿態未收尾：%+v", i, u)
+		}
+	}
+	if !pump(t, g, journeyStoryFrames, func() bool {
+		if len(g.dialog) > 0 && storyEnterReady(g) {
+			g.handleBattleEventDialogueInput(true)
+		}
+		return continued
+	}) {
+		t.Fatalf("event7對白完整收框後未續行：%s", g.loadErr)
+	}
+	if g.battleEvent != nil || len(g.dialog) != 0 || len(g.sc.TriggerActions(g.st, "on_turn_end", "")) != 0 {
+		t.Fatal("event7留下對白／擁有者或重複觸發")
+	}
+}

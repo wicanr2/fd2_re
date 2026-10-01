@@ -1735,7 +1735,7 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 
 func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -1743,7 +1743,7 @@ func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -1754,6 +1754,7 @@ func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, len(order)-1),
 	}
+	attachOfficialLocale(t, g)
 	for _, id := range order {
 		g.partyMembers[id] = true
 	}
@@ -1770,6 +1771,19 @@ func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 	g.resetBattle("assets/maps/map12/map12_units.json", "assets/scenarios/ch13.json")
 	if g.loadErr != "" || g.st == nil || g.sc == nil {
 		t.Fatalf("ch13 handoff err=%q state=%v scenario=%v", g.loadErr, g.st != nil, g.sc != nil)
+	}
+	// 這是建構的戰後 E1 前置狀態：正常章路徑在第 4、9 回合
+	// 已追加 group1、group2；JOIN3 的基底來自 group1 的 slot59。
+	for _, spawn := range []struct {
+		group int
+		gate  byte
+	}{{1, 0}, {2, 1}} {
+		if _, err := g.st.AppendGroupWithNativePlacement(spawn.group, spawn.gate); err != nil {
+			t.Fatalf("ch13 戰後前置 group%d: %v", spawn.group, err)
+		}
+	}
+	if len(g.st.Units) != 72 || !g.st.Units[59].HasNativeRecordByte8 || g.st.Units[59].NativeRecordByte8 != 3 {
+		t.Fatal("ch13 戰後前置缺少 72 筆紀錄或 JOIN3 的 slot59 基底")
 	}
 	emptyX, emptyY, found := 0, 0, false
 	for y := 0; y < g.st.H && !found; y++ {

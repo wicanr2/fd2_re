@@ -322,9 +322,23 @@
       "evidence": "docs/data/ida/fd2_ch13_result_conditions_20261001.json",
       "verify": {
         "kind": "manual",
-        "note": "RE、READY與兩條具型別結果／依序原生對白／敗北返回標題已閉合。同槽defeat-original-r1→defeat-remake-r1第六回合只命中記錄59分支，兩張提示0px且indexed／PNG SHA相同、標題與SAV不變通過；受控RNG與114槽限制明示。完整event7／第九回合正常保護友軍與戰後四gate仍未驗收，不能關閉或提升整章PLAYER-E2。"
+        "note": "RE、READY與逐條原生結果／依序對白／敗北返回標題已有限CONFORMED；event7完整動作已接線並通過GUI順序（建構E1）。#63戰後12段對白／JOIN3／town14與存讀檔實際PASS。原版protect-original-r2同槽seed4第八回合slot59陣亡，尚未到第九回合與戰後；完整章四gate未驗收，不得關閉或提升整章PLAYER-E2。"
       },
       "issue": 61
+    },
+    {
+      "id": "post-fixtures-wrong-fdicon-archive",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "其餘戰後回歸錯用不存在的 FDICON.DAT 而跳過",
+      "body": "修正第十三章測試 #63 時，查到 battleevent_test.go 其餘測試仍以不存在的 FDICON.DAT 為必備素材，完整固定原版使用 FDICON.B24。受影響測試：TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8、TestChapter6PostJoins13PersistsPartyAndEntersTown7、TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9、TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11、TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21、TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary、TestChapter18PostJoins21And7Town19SaveBoundary、TestChapter17PostBranchJoin16Town18SaveBoundary。這是驗證入口缺陷；不得把套件綠燈當成這些測試已實際執行。依章次收尾時修正前置資料並乾淨重跑，不據此重開已驗收第四～十二章。",
+      "acceptance": "逐項改用固定版本 FDICON.B24，補齊正式語系與已證實戰後前置狀態；在維護容器與完整素材下確認相關測試實際 PASS 而非 SKIP，記錄 E1 範圍與現況勘誤。",
+      "evidence": "remake/cmd/fd2/battleevent_test.go",
+      "verify": {
+        "kind": "manual",
+        "note": "逐項以原版六份檔案唯讀掛載執行，確認沒有 FDICON.DAT 假缺件 SKIP；修正測試前置狀態後查核實際 PASS。"
+      },
+      "issue": 64
     }
   ]
 }

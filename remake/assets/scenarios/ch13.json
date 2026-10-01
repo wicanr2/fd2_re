@@ -922,11 +922,20 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x34d7c",
+          "grid": [
+            27,
+            5
+          ],
+          "native_event_id": 7,
+          "camp": "enemy"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             2
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 2,
@@ -935,7 +944,65 @@
               "raw_placement_gate": 1
             }
           ],
-          "native_event_id": 7
+          "native_event_id": 7,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_acting",
+          "native_source": "0x34da0",
+          "native_acting": {
+            "resource": 46,
+            "source": "0x34da0"
+          },
+          "native_event_id": 7,
+          "camp": "enemy"
+        },
+        {
+          "type": "reset_pose",
+          "native_source": "0x34daa",
+          "native_event_id": 7,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34daf",
+          "native_text_index": 8,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 2,
+            "line": 5,
+            "source_dat": "FDTXT_013",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 103,
+            "pages": [
+              [
+                "『吼嗚！宰了這些傢伙．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  955,
+                  954,
+                  342,
+                  656,
+                  341,
+                  462,
+                  608,
+                  612,
+                  609,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 7,
+          "camp": "enemy"
         }
       ]
     }
@@ -1266,5 +1333,6 @@
         }
       ]
     }
-  ]
+  ],
+  "native_acting_resources": "assets/cutscenes/acting/map32.json"
 }

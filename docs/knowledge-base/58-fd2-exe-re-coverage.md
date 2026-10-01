@@ -1390,3 +1390,57 @@ canonical由既有exporter重生；移除legacy節點導致後續暫定索引序
 已通過第四～十二章未重跑。前批第四回合接線已於6c48c218推送；本批提交見後續交接。
 
 本批Docker收尾檢查：沒有本專案容器執行或停止殘留；新增／修改產物抽查UID/GID1000:1000，沒有*.md目錄，歷史root-owned數仍2811且未修改。
+
+
+## 2026-10-01 #61 第九回合event7來源（RE-CLOSED，待資料接線）
+
+沿用[IDA主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)的sub_34D72完整原始指令，
+新增event7_transcription_review，未重開已閉合callee。pan(27,5)→group2/gate1→
+ACTING46→reset_pose→文字8；34DC8跳34C0F的尾段由同檔sub_34D68提供原始bytes。
+控制列為raw camp0／round9。既有ACTING46三幀引用runtime61～71；完整原生append後名冊72筆。
+正式轉寫入口tools/extract_native_death_events.py，再由tools/sync_native_turn_events.py限定章13接線。
+來源列RE-CLOSED；尚無第九回合玩家收據，規格與資料不得自行提升整章。
+前輪有限敗北已於5801429f推送，正式收據不變。
+
+保護r1計畫已登記[受版控正常操作](../data/parity-plans/ch13-protect-sample.jsonl)：
+同槽seed4，前三回合最多15人前進／攻擊，其後每回合最多6人持續接戰；typical_move6
+只給既有鍵盤路徑選擇候選格，移動是否合法仍由原版判定。無章內HP鎖定，
+只在第九回合抽樣後沿111明示force-enemy-clear；尚無完成收據。
+
+
+## 2026-10-01 #61 第九回合資料接線與 #63 戰後回歸勘誤
+
+[IDA 主證據](../data/ida/fd2_ch13_result_conditions_20261001.json) 的 event7_transcription_review
+追加 runtime_validation 與 normal_protection_attempt。第九回合契約於 56 達 READY 後，
+來源工具以固定原版檢查全部 40 個事件；`--write` 後 `--check` 相等，章13限定 sync 通過。
+可編輯 scenario 與 canonical 已接入 pan(27,5)→group2/gate1→ACTING46→reset_pose→文字8。
+正式介面逐幀測試確認 72 筆紀錄、先完成 ACTING／重設再顯示文字8、收框後才 continuation，
+事件仍依 camp0／round9／once。此項為 DATA-READY／RUNTIME-E1；前置狀態由測試建構，
+尚無原版第九回合同狀態畫面，不標 CONFORMED／整章 PLAYER-E2。
+
+[#63](https://github.com/wicanr2/fd2_re/issues/63) 揭露舊章13戰後測試要求不存在的 FDICON.DAT，
+即使完整原版掛載也 SKIP；此前「19個套件通過」不代表這條戰後測試已執行。
+固定版本清單的正確素材是 FDICON.B24，size624010、SHA-256
+`7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44`。
+修正檔名後，依正式 loadGame 契約補語系，並建構已證實 group1／group2 戰後前置；
+JOIN3 從 slot59 的 raw +8=3 取基底，不猜補角色表或改正式規則。
+`TestChapter13PostNativeDialogueJoins3Town14SaveBoundary` 現在實際 PASS 而非 SKIP：
+12段 FDTXT013 文字9、原生開收框、JOIN3、town14 與存讀檔邊界通過。
+此為建構狀態 E1，不取代章內一般玩家路徑。其餘八個同類假缺件測試已另登記
+[#64](https://github.com/wicanr2/fd2_re/issues/64)，本批沒有擴張修改或重跑已驗收第四～十二章。
+
+保護計畫 r1 維持同槽 seed4，無章內 HP 鎖定；原版 protect-original-r2 第八回合敗北，
+最後有效 checkpoint3149 中 slot0 HP420、slot16 HP230，slot59 HP0／bit0=1。
+這與已閉合的後到援軍保護條件一致，不能拿 title 的清空陣列當全滅。
+第九回合／戰後計畫未完成，末端 force-enemy-clear 尚未執行，失敗樣本完整保留於 work/。
+protect-original-r1 因診斷 trace 指定18個地址超過 oracle 的16個上限而未啟動；
+修成16個後同工具重跑 r2，這是驗證配置失敗，不是遊戲缺陷。
+完整第十三章仍 BLOCKED，#61 保持開啟，戰役台帳 9／30 不變。
+
+驗證使用 fd2-go-test-local:20260909、原版六份素材唯讀掛載與完整素材包／locales：
+全套首輪18個套件通過，遊戲套件因上述被揭露的前置缺件失敗；修正後同容器乾淨重跑
+整個 cmd/fd2 通過（最終配置141.484秒），合計19個套件。兩條章13測試獨立輸出 PASS，沒有 SKIP。
+字串盤點 SHA-256 仍為 `3dcf679b175a62d47302379f6980ad11b234a18f9b88a1cee8e73aee32fb756a`，
+沒有新增正式 Go 字串，不改審查綁定。前輪有限敗北切片已推送 5801429f，本輪沒有重跑該原版路線。
+
+本批收尾檢查：canonical 全清冊雜湊相符，新增本地連結失效0；兩條歷史交付包連結的檔案不在工作區，未改寫歷史。變更檔案UID/GID1000:1000，root-owned歷史數2811未增加，沒有*.md目錄。本批所有FD2容器已退出且沒有停止殘留，沒有工具鏈變更。

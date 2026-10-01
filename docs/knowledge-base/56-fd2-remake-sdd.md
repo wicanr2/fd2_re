@@ -8872,3 +8872,34 @@ remake/cmd/fd2/native_chapter_result.go；測試與收據仍由58統一分級。
 及受控決策點RNG均明示，不提升整章PLAYER-E2，不宣稱自然難度、傷害、存活或硬體時鐘相同。
 19個Go套件與文字審查綁定通過。第九回合完整event7、友軍保護與戰後／存檔仍未閉合，
 #61保持開啟，9／30不變；已通過第四～十二章未重跑。
+
+
+## 2026-10-01 #61 第九回合event7接線（DRAFT）
+
+來源：[58](58-fd2-exe-re-coverage.md)→[IDA event7審查](../data/ida/fd2_ch13_result_conditions_20261001.json)。
+沿用既有typed原語，不新增格式或位址分派：raw camp0／round9只觸發一次，
+依序pan grid(27,5)、spawn_group2/gate1/source34D91、native_acting46、reset_pose，
+再展開FDTXT_013索引8的所有utterance；原版收框後才恢復敵方AI。
+群組2不放initial_groups；第四回合group1保持原有順序。完整append後72筆，
+ACTING46的runtime61～71才可執行，缺source／資源／槽位或對白參照仍失敗即關閉。
+存檔與JOIN／結果規則沿用已閉合邊界；不加HP鎖定或章內注入。
+
+原始範圍：pan34D7C..34D88、spawn34D88..34DA0、acting34DA0..34DAA、
+reset34DAA..34DAF、dialog34DAF..34DCD＋34C0F..34C1D；均為IDA LE線性位址。
+先由轉寫器逐指令核對範圍／參數／可達覆蓋，再審查READY；此前不寫scenario。
+驗收包括來源工具check、章13限定sync、once/camp/順序、ACTING槽位與原生append，
+以及同槽正常章內操作的第九回合與完整戰後四gate。只通過內部測試不能宣稱完整章。
+
+本節DRAFT現提升READY：已核對既有IDA直接call／push與尾跳，固定原版雜湊一致；
+fd2-cap-local第二套檢查通過全部40個事件的參數模式及可達指令覆蓋，沒有放寬樣式。
+原生控制列、群組2配置來源、ACTING46三幀及FDTXT文字8映射均可用既有資料結構表達。
+只有章13的event7替換完整序列，callee／存檔格式與其餘章均不更動。
+執行前維持缺資源／raw欄位拒絕；驗收及PLAYER-E2限制維持上列契約。
+
+
+第九回合 READY 契約現達 DATA-READY／RUNTIME-E1：既有來源工具與章13限定同步完成，
+逐幀測試證實 ACTING46 退出→reset_pose→文字8→收框→continuation 的順序。
+沒有原版第九回合同狀態收據，尚未 CONFORMED；完整章驗收仍由 #61 管理。
+#63 測試入口修正不更動正式 runtime／資料格式：使用固定 FDICON.B24、正式語系初始化，
+以及已證實 round4／round9 的 group1／group2 追加狀態。戰後12段對話、JOIN3、town14與
+存讀檔實際通過，僅建構 E1；舊 SKIP 形成原因與原版保護失敗均在58保留。

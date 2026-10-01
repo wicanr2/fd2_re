@@ -71,6 +71,42 @@
       ]
     },
     {
+      "id": 7,
+      "handler": "0x34d72",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "pan",
+          "x": 27,
+          "y": 5,
+          "source": "0x34d7c"
+        },
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 1,
+          "source": "0x34d88"
+        },
+        {
+          "op": "acting",
+          "resource": 46,
+          "source": "0x34da0"
+        },
+        {
+          "op": "reset_pose",
+          "source": "0x34daa"
+        },
+        {
+          "op": "dialogue",
+          "text": 8,
+          "source": "0x34daf",
+          "tail_sources": [
+            "0x34c0f"
+          ]
+        }
+      ]
+    },
+    {
       "id": 12,
       "handler": "0x34594",
       "battle_units": [

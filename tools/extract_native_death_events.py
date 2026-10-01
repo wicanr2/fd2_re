@@ -67,6 +67,15 @@ EVENTS = [
         op("spawn_group", [(0x34BEC, 0x34BF6)], group=1, gate=0),
         op("dialogue", [(0x34BF6, 0x34C1D)], text=1),
     ]},
+    # 第十三章第9回合raw camp0；主證據與READY入口見58及
+    # fd2_ch13_result_conditions_20261001.json的event7_transcription_review。
+    {"id": 7, "handler": 0x34D72, "ops": [
+        op("pan", [(0x34D7C, 0x34D88)], x=27, y=5),
+        op("spawn_group", [(0x34D88, 0x34DA0)], group=2, gate=1),
+        op("acting", [(0x34DA0, 0x34DAA)], resource=46),
+        op("reset_pose", [(0x34DAA, 0x34DAF)]),
+        op("dialogue", [(0x34DAF, 0x34DCD), (0x34C0F, 0x34C1D)], text=8),
+    ]},
     {"id": 12, "handler": 0x34594, "guards": [
         op("guard_state", [(0x3459E, 0x345AB)], index=0x10, equals=0),
     ], "ops": [
