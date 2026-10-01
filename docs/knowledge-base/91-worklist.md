@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,14 +120,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第十二章敗北流程走自訂撤退再戰，未接原版返回標題
-
-`ch12-defeat-return-to-title` · 缺陷 · [#47](https://github.com/wicanr2/fd2_re/issues/47) · 仍未完成 · 自承還在 remake/assets/scenarios/campaign_full.json
-
-原版 sample-r2 第 5 回合記錄 14 倒下後，checkpoint-2429.png 已返回標題；ch12.json 的敗北判準另由 #46 接線。campaign_full.json 的 retreat_ch12 目前仍是自訂撤退台詞並 next battle_ch12，confirmBattleResult 經 OnLose 走此分支。原版敗北訊息、輸入與返回標題的有限控制流尚未形成 READY 規格。
-
-怎樣算做完：以 sample-r2 的失敗收據與原版 caller 閉合敗北提示／輸入／返回標題的有限順序，建立 READY 規格後接入正式玩家路徑並做同狀態驗證；不得只刪掉自訂台詞後猜補流程。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

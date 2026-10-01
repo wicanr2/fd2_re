@@ -38,7 +38,7 @@ type NativePhysicalAttackSelection struct {
 }
 
 // ScoreNativePhysicalAttackCandidate preserves 0x14586..0x144D5:
-// candidates with actor word48-target word4A <= 2 are rejected; a strict
+// candidates with actor word48-target word4A <= 2 start at priority zero; a strict
 // score>target word40 raises priority from 8 to 18 and doubles the score;
 // helper result 1 adds actor word4A-target word48; raw target byte8 zero
 // applies the native signed truncation-toward-zero 3/2 multiplier.
@@ -56,11 +56,10 @@ func ScoreNativePhysicalAttackCandidate(in NativePhysicalAttackScoreInput) (Nati
 	}
 
 	score := in.ActorWord48 - in.TargetWord4A
-	if score <= 2 {
-		return NativePhysicalAttackScore{}, false, nil
+	priority := 0
+	if score > 2 {
+		priority = 8
 	}
-
-	priority := 8
 	if score > in.TargetWord40 {
 		score *= 2
 		priority = 18
@@ -96,8 +95,9 @@ func SelectNativePhysicalAttackCandidate(candidates []NativePhysicalAttackCandid
 		if !accepted {
 			continue
 		}
-		if !found ||
-			ranking.Priority > best.Ranking.Priority ||
+		// 0x14248／0x1427E 的初值為 score/priority=0/0；priority0
+		// 的非正分不能靠「尚未找到候選」繞過原版比較。
+		if ranking.Priority > best.Ranking.Priority ||
 			(ranking.Priority == best.Ranking.Priority && ranking.Score > best.Ranking.Score) {
 			best = NativePhysicalAttackSelection{Candidate: candidate, Ranking: ranking}
 			found = true

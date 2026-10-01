@@ -2009,39 +2009,29 @@
    "units": "assets/maps/map11/map11_units.json",
    "scenario": "assets/scenarios/ch12.json",
    "on_win": "postbattle_ch12_persist",
-    "on_lose": "retreat_ch12",
-    "native_map_view": {
-      "camera_x": 9,
-      "camera_y": 42,
-      "cursor_x": 15,
-      "cursor_y": 44,
-      "visible_cursor_x": 6,
-      "visible_cursor_y": 2,
-      "range_mode": 1
-    },
-    "native_map_hud_inherited": {
-      "display_gate_b": 1
-    }
+   "native_map_view": {
+    "camera_x": 9,
+    "camera_y": 42,
+    "cursor_x": 15,
+    "cursor_y": 44,
+    "visible_cursor_x": 6,
+    "visible_cursor_y": 2,
+    "range_mode": 1
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   },
+   "native_defeat_return_title": {
+    "handler": "0x22e5c",
+    "resource": 79,
+    "return": "full_title_sequence"
+   }
   },
   "postbattle_ch12_persist": {
    "type": "cutscene",
    "handler_binding": "assets/cutscenes/bindings/ch11_post.json",
    "beats": [],
    "next": "town_ch13"
-  },
-  "retreat_ch12": {
-   "type": "story",
-   "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "撤退!先回頭整頓,再找機會反攻……"
-    }
-   ],
-   "set_flags": {
-    "retried_ch12": true
-   },
-   "next": "battle_ch12"
   },
   "story_ch13": {
    "type": "cutscene",

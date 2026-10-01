@@ -5,7 +5,7 @@ import "testing"
 func TestNativePendingCode1PresentationPlanPreservesRawOrder(t *testing.T) {
 	got := NativePendingCode1PresentationPlan()
 	wantKinds := []PendingCode1PresentationKind{
-		PendingCode1StopBGM, PendingCode1PreparePalette, PendingCode1ClearScreen,
+		PendingCode1StopBGM, PendingCode1WaitTick, PendingCode1PreparePalette, PendingCode1ClearScreen,
 		PendingCode1DrawFrame, PendingCode1FadeIn, PendingCode1WaitTick,
 		PendingCode1DrawFrame, PendingCode1WaitTick, PendingCode1Release,
 	}
@@ -17,8 +17,8 @@ func TestNativePendingCode1PresentationPlanPreservesRawOrder(t *testing.T) {
 			t.Fatalf("step %d kind=%q want=%q", index, got[index].Kind, kind)
 		}
 	}
-	if got[3].Frame != 0 || got[4].Count != 65 || got[4].DurationMS != 2 ||
-		got[5].Count != 9 || got[6].Frame != 1 || got[7].Count != 36 {
+	if got[1].Count != 1 || got[4].Frame != 0 || got[5].Count != 65 || got[5].DurationMS != 2 ||
+		got[6].Count != 9 || got[7].Frame != 1 || got[8].Count != 36 {
 		t.Fatalf("raw schedule drifted: %+v", got)
 	}
 }

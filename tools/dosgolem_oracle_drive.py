@@ -349,7 +349,7 @@ def do_step_into(command):
 def do_await_ui(command):
     """以可觀測輸入鏈等待介面，僅在對白狀態送 enter。"""
     want = command["await_ui"]
-    allowed = {"cursor", "dialogue", "grid", "ring", "shop", "status",
+    allowed = {"title", "cursor", "dialogue", "grid", "ring", "shop", "status",
                "system", "target", "town", "unknown"}
     if want not in allowed:
         raise SystemExit(f"await_ui 不支援介面：{want!r}")
@@ -646,6 +646,11 @@ TREASURE_RANGE = (0x190AC, 0x1956A)
 
 def ui_mode(current):
     chain = current.get("input_chain") or []
+
+    # 0x1FE60 為已閉合 sub_1F894 主選單讀鍵 caller；不能把返回標題
+    # 誤當成戰場 cursor，亦不可在這裡自動按 START。
+    if "0x1FE60" in chain:
+        return "title"
     for address in chain:
         try:
             value = int(address, 16)

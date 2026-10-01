@@ -135,7 +135,11 @@ func (s *State) nativePhysicalExchange(a, d *Unit, rngState uint16) ([]NativePhy
 	extraUsed := false
 	for budget > 0 {
 		budget--
-		roll, err := RollNativePhysicalDamage(s.buildNativePhysicalRoll(a, d, rng))
+		input := s.buildNativePhysicalRoll(a, d, rng)
+		if DebugAI != nil {
+			DebugAI("native physical roll: actor=(%d,%d) target=(%d,%d) input=%+v", a.X, a.Y, d.X, d.Y, input)
+		}
+		roll, err := RollNativePhysicalDamage(input)
 		if err != nil {
 			return nil, rngState, err
 		}

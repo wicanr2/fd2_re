@@ -75,7 +75,7 @@
 
 因此目前對「電腦如何選攻擊目標」最精確的回答是：原版不是只找最近角色。
 物理路徑會按固定落點順序，對每個落點列出合法目標，套地形後計算攻防差，
-拒絕分數 `<=2` 的候選；能嚴格超過目標原始欄位 `+0x40` 的候選提高優先級並將
+分數 `<=2` 的候選以優先級0繼續比較；能嚴格超過目標原始欄位 `+0x40` 的候選提高優先級並將
 分數加倍，另受 `0x1DEBE` 與目標原始欄位 `+8` 修正。先比較優先級，再比較
 分數；兩者完全相同時保留較早出現的候選。模式0沒有可用 action 時的
 `0x14121→0x13E9C` blocked-cell／最近相反分組座標備援已閉合，不能再寫成
@@ -253,8 +253,8 @@ E0 helper，不代表完整 mode 語意、回合交易、畫面或 `NextAIPlan` 
    `word +0x48/+0x4A`。
 4. `0x14430→0x14818` 從候選格建立目標索引陣列。每個目標另在
    `0x1452A..0x14584` 以其所在格地形修正 target `word +0x48/+0x4A`。
-5. 原始分數先計算 `actor word48 - target word4A`；`<=2` 直接略過。
-   其餘候選的基本優先級為 8。若分數**嚴格大於** target `word +0x40`，
+5. 原始分數先計算 `actor word48 - target word4A`；`<=2` 的基本優先級為0，
+   `>2` 為8，兩者均繼續。若分數**嚴格大於** target `word +0x40`，
    分數乘 2、優先級升為 `0x12`。
 6. `0x1448A→0x1DEBE` 回傳 1 時，分數再加
    `actor word4A - target word48`。target raw `byte +8==0` 時，
@@ -266,6 +266,13 @@ E0 helper，不代表完整 mode 語意、回合交易、畫面或 `NextAIPlan` 
 
 合法 IDA 9.4 以同一雜湊交叉確認函式邊界 `0x14237..0x145CC`，直接 callers
 為 `0x13A9F` 兩處及 `0x14EF0` 一處；`0x1DEBE` 只有本評分函式的一個 caller。
+
+2026-10-01 勘誤：舊版將 `0x1458F` 的分支讀成拒絕，實際跳至 `0x14479`，
+繼續 HP／反擊／身份加權。初始最佳 priority/score=0/0，所以 priority0 的
+非正分仍不會選中。另外 target 地形讀自己的 raw +0/+1，actor 才讀候選格。
+原始分支、bytes 與替代關係見
+[本次 IDA 主證據](../data/ida/fd2_ai_physical_target_terrain_20261001.json)及
+[56 §5.2.3](56-fd2-remake-sdd.md#523-原生人工智慧候選地形與低分比較)。
 
 `battle.ScoreNativePhysicalAttackCandidate` 保存上述單一候選的 raw
 評分契約；`SelectNativePhysicalAttackCandidate` 另保存優先級、分數及同分

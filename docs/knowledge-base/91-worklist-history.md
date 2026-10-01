@@ -4,7 +4,8 @@
 都是寫下當時的快照：東西做完而沒有人回頭改那一條，是常態而不是例外，所以不能
 拿這裡的任何一條去推算「還剩多少」，也不能照著它重做一遍。
 
-- 未完成項的唯一權威是 [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)，
+- 未完成項的唯一權威是 [GitHub worklist Issues](https://github.com/wicanr2/fd2_re/issues?q=is%3Aissue+is%3Aopen+label%3Aworklist)；
+  [`docs/data/fd2-worklist.json`](../data/fd2-worklist.json)只保存遠端快照，
   由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 每一條掛一個會自己
   開口的檢查，渲染結果在 [`91-worklist.md`](91-worklist.md)。
 - 每一題的 RE／資料／正式執行期／E2 分層現況以
@@ -4442,3 +4443,11 @@ handler-bound與24 active／0 blocked；不得再用本段重開已接節點。
 本輪非零影像另以 Pillow RGB 全圖差異做八鄰接連通區域稽核（不遮罩、不改640px門檻）：99個非零畫面含17個HUD單像素區域、275個指令環相位區域、4個取寶提問游標邊框區域。HUD的13個純單像素畫面之外，seq97／430／616／741也各有同位置單像素，與指令環差異共存。指令環反覆形狀包括11×15／51像素、5×15／27像素各35次，仍由#34追蹤；取寶提問4條邊合計134像素由#53追蹤。七張抽樣圖115列均已檢視，不能由gate通過宣稱全部逐像素一致。
 
 本輪提交 eb5ce992 已關閉遠端 #43／44／45／46／48／49／50／51，留言各附驗收範圍、限制與提交；回讀確認全部 CLOSED，重新 pull 後 worklist 共22條開啟。#47敗北完整流程、#52／53及既有#34等畫面差異保留，標籤已一致。最後全套 Go 回歸19套件、驗收工具與語意索引19個測試、98條教訓的14個guard、收據／圖片雜湊與本地連結檢查通過；本輪容器均已退出並刪除，新增與修改輸出UID/GID為1000:1000，沒有同名 .md 空目錄。既有2811個root-owned歷史項目未擴權修復。依117，本機提交尚待使用者確認後推送 origin/main。
+
+## 2026-10-01：第十二章敗北垂直鏈與候選勘誤
+
+#47新增具型別敗北返回標題資料及正式呈現owner，移除該章自訂撤退節點；有限規格先RE-CLOSED／READY才接正式執行期。新原版defeat-r3正常五回合倒下並返回menu；remake-r1留下過期經驗造成NPC升兩級，修0x118EE後r2／r3仍剩11HP。再核對0x14545..0x1454E，發現target地形誤讀actor候選格，#55修正後defeat-remake-r4／r5正常進敗北；不修改HP或重擲。兩張提示各0差異像素，[正式收據](../data/ui-traces/ch12-defeat-return-title.json)保存限制。
+#54修正官方角色語系來源，不再要求私人原版分離包附帶locales。#56原始jle反證舊「攻防差<=2就拒絕」：priority0仍繼續HP／反擊／身份比較，初值0/0擋掉非正分；新純規則測試及正式章重播通過。11／56／58已回填，舊歷史段落保留以追溯錯讀；不重開傷害／成長公式。
+勝利路徑以sample-r5再次重播並驗四項驗收通過。整體回歸首輪只有字串review來源座標與retreat統計失效；依盤點重綁既有92筆處置，新增兩筆loadErr顯示字串按消費端審查為player_visible，再乾淨重跑。詳細可重跑入口及現況統計集中58。
+
+驗證收尾：Go整體19套件全過、控制端73測試全過；最後審閱補回confirmBattleResult的nil guard，並以r6重跑敗北及正式START／缺件等測試，收據重新綁定現行程式。Docker無本批殘留容器，工作輸出UID/GID1000，無root-owned或.md目錄殘留。

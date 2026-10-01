@@ -219,6 +219,9 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 工程架構移至 [`docs/ENGINEERING.md`](docs/ENGINEERING.md)；第一輪重製門檻、目前
 進度與剩餘工作移至 [`docs/REMAKE-STATUS.md`](docs/REMAKE-STATUS.md)。
 
+第十二章敗北已依原版播放提示並返回完整標題；同狀態驗證範圍與限制見
+[敗北流程收據](docs/data/ui-traces/ch12-defeat-return-title.json)。
+
 ## 逐章對拍進度
 
 重製端每一章都拿原版執行結果當基準比對：同一份存檔槽、同一串鍵盤輸入，原版在

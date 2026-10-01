@@ -196,7 +196,7 @@ helper。它以 `0x145CD→0x4E040→0x146D1→0x14B16` 建立 row-major 候選�
 再以 `0x14818` 建立各格目標陣列；actor 與 target
 的 raw `word +0x48/+0x4A` 會依各自 `0x12E38` 地形 control byte及
 `0x51A12/0x51A2A` 百分比表修正。單一候選先算
-`actor word48-target word4A`，`<=2` 拒絕；基本 priority=8，分數嚴格
+`actor word48-target word4A`，`<=2` 的基本 priority=0、`>2` 為8，兩者繼續；分數嚴格
 `> target word40` 時分數×2且 priority=`0x12`。`0x1DEBE` 回傳1時再加
 `actor word4A-target word48`；target raw `+8==0` 時以 signed toward-zero 規則×1.5。
 選擇先比 priority，再比 score，完全同分保留先枚舉者，寫
@@ -3082,7 +3082,7 @@ effects/targets remain the separate UI-03 execution workstream.
 IDA 對 `0x25DE5` 的直接控制流固定了可編輯戰役圖必須保存的外層順序。
 `sub_25EBB` 完成標題／章節前置流程並回傳 0 後，main 才呼叫
 `sub_117E7` 共享戰鬥控制器；
-`[0x53ECC]==1` 時固定呼叫 `0x22E5C`，清除 pending 後繼續。
+`[0x53ECC]==1` 時固定呼叫 `0x22E5C`，清除 pending 後退出內層戰役迴圈，再由保留的 EDI=0 返回外層標題（詳 §5.2.1）。
 `0x22E5C` 的函式體只證實它載入 `FDOTHER.DAT` 資源 #79，做兩次呈現與
 固定 tick；函式不讀章節索引。因此舊稱「第 1 章專屬世界地圖／中場」
 缺少直接證據，已撤回。`[0x53ECC]==2` 時先停止 BGM，呼叫章節索引的
@@ -3093,6 +3093,88 @@ IDA 對 `0x25DE5` 的直接控制流固定了可編輯戰役圖必須保存的�
 表格各 entry 與 `0x2CAD7` 的玩家可見選單名稱仍是獨立證據工作，但此順序
 已足以拒絕任何泛化的 `battle → next battle` 捷徑。重製轉場必須在下一戰
 節點前保留明確的戰後處理器／選單 gate，即使高階節點名稱仍未閉合。
+
+
+### 5.2.1 第十二章敗北返回標題契約
+
+狀態：READY（2026-10-01，Issue #47）。DRAFT 審查已核對固定 EXE 身分、main
+原始分支／暫存器、#79 呈現體、標題完整入口及 START consumer；尚未宣稱 CONFORMED。
+主證據：[有限 IDA 匯出](../data/ida/fd2_pending_code1_return_title_20261001.json)。
+FD2.EXE 357074 bytes，MD5 b97caf2239a27a896069d03549d96e1e，
+SHA-256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f；
+工具 IDA Pro 9.4、位址空間 IDA LE linear。資源 #79 身分及幾何沿用
+[既有主證據](../data/ida/fd2_pending_code1_fdother79_ida.txt)；原始檔保持唯讀。
+
+範圍：只將正式第十二章的已驗證敗北結果接到原版 pending=1 呈現與回標題。
+其他章 pending producer 不因本契約自動取得敗北名稱或新的規則。
+可編輯 battle 節點以 native_defeat_return_title 指定 handler=0x22e5c、resource=79、
+return=full_title_sequence；與 on_lose 互斥。載入與 runtime 均拒絕未知組合。
+
+已證實順序：停止 BGM → 等1 BIOS tick → 0x1F882 淡出（delta 0..63，各2ms）→
+載入 #79 → 清 320×200 索引畫面 → 畫第0幀 → 0x1F525 淡入
+（delta 64..0，各2ms）→ 等9 BIOS ticks → 在同一底圖疊第1幀 → 等36 BIOS ticks →
+釋放 #79 → BGM18／完整標題序列。沒有 Enter、Escape 或任意鍵確認／略過；
+提示期間阻擋一般戰鬥輸入，固定停留從畫面已呈現開始計算。色盤沿用進入時的戰場
+baseline，不把 #79 猜成自帶色盤。原版 BIOS tick 採既有 nativeBIOSTickPeriod；
+Ebiten 色盤每一步等待繪圖確認，在60Hz會延長亞幀2ms，屬來源約束近似，
+不宣稱逐週期或同硬體 wall-clock。
+
+垂直鏈：既有分離 #79 清冊／解析器 → 具型別呈現計畫 → 正式 Game 敗北 owner →
+原生索引畫面／完整標題 → START、LOAD、CONTINUE。所有資產（含重新載入的完整
+標題 ANI）成功預檢後才停止原戰鬥；缺件、無 DAC／底圖、未知設定均失敗即關閉，
+不可退回自訂再戰或文字提示。返回標題清除戰鬥暫存演出，不寫 FD2.SAV。
+START 必須重新建立戰役起點、清舊持續名冊／金幣／原生槽基底，執行既有章0
+前置節點；不能只關閉標題。LOAD／CONTINUE 沿用原子讀檔入口，不重建新遊戲。
+
+驗收（重製內部）：從正式 checkResult 啟動；逐畫面確認次序／停留／輸入阻擋，
+兩幀合成保留未覆蓋像素；缺素材不發布部分狀態；回標題後 START 到章0，
+LOAD／CONTINUE 不受舊敗北暫存狀態污染；存檔 bytes 不因敗北改寫。
+
+原版驗收：受版控 ch12-defeat.jsonl、建構槽政策114、章內正常鍵盤到NPC敗北，
+不鎖血、不清場；dosgolem 正式 oracle 重生 #79 第0幀、第1幀與回標題呼叫鏈，
+重製使用同一槽／固定亂數條件，比較同狀態有限呈現。建構槽限制保留在收據；
+不宣稱自然難度、傷害或全標題逐幀 E2。分離原版素材留私人包，本公開庫僅保存
+規則、工具、來源／輸出雜湊及已授權的有限總覽證據。
+
+
+### 5.2.2 玩家返回單位索引的經驗累計邊界
+
+READY（2026-10-01，Issue #55）。DRAFT 審查已比對 0x118BC 的 -1 分支、
+0x118DA 指標計算、0x118EE 的清零 bytes，與其後原生陣營／已行動／麻痺判定。
+輸入身分／工具／位址基準同 §5.2.1；主證據同有限 IDA 匯出的
+player-record-selection-exp-reset claim，另回查 #48 的完整經驗全域交叉參照。
+
+已證實：玩家地圖 Enter 在沒有既有選取的狀態返回原生單位索引時，立即將
+State.NativeExperienceAccumulator 清零，早於檢視或可行動判定。空地打開系統
+指令環（0x12C0D 返回 -1）不抵達該清零；攻擊目標確認、AI 與正在移動的單位不屬
+此入口。相容作者單位沒有原生 +6 來源時不宣稱同一 ABI。
+
+垂直鏈：已解出的 [0x53EC8] writer → 原生記錄來源 → 正式 confirm owner →
+檢視／選取／待機 → 下一個友軍／敵軍階段的既有經驗 consumer。不改正式存檔格式、
+EXP／傷害／成長公式或戰役規則。測試需涵蓋原生己方已行動、敵軍、麻痺與空地；
+同一建構槽、同一玩家動作及決策點受控 RNG 重跑 #47 敗北，不注入死亡、不重擲。
+完成只限狀態轉移與敗北呈現，保留114限制，不宣稱自然難度／傷害／存活 E2。
+
+### 5.2.3 原生人工智慧候選地形與低分比較
+
+READY（2026-10-01，Issue #55／#56）。DRAFT 審查已核對固定 FD2.EXE 的
+IDA Pro 9.4 原始分支、運算元與 bytes；主證據為
+[物理候選窄匯出](../data/ida/fd2_ai_physical_target_terrain_20261001.json)。
+
+actor 地形取候選目的地；target 地形取 target 原始記錄 +0/+1。兩者在
+0x14237 評分器均以 sub_1F183 **非零**為套用閘門，保留原版與 0x29F72
+傷害公式不同的條件，不猜測這項差異的戰術意圖。typed resolver 只修改
+target 地形座標來源，不能搬動單位或改寫能力、HP、骰序與存檔格式。
+
+0x1458F 的 <=2 分支將 priority 設為0後繼續，並非拒絕；>2 的基本 priority
+才為8。其後 >target HP 仍乘2並升18，反擊與身份加權保持原算式。比較初值
+固定0/0，故 priority0 的非正分不會選中，正分可以選中；同分保留先枚舉者。
+測試必須涵蓋三種 priority、低分後的 HP／反擊加權、初值與穩定同分，
+以及飛行 target 在不同候選地形時仍讀自己格子的例子。
+
+正常章重播以既有固定槽、相同玩家動作及決策點受控 RNG 驗證正式 planner
+消費結果。114 的建構槽限制仍適用；本切片只驗證 caller 狀態、候選落點與
+敗北入口，不擴張為自然存活／難度或逐週期亂數一致聲明。
 
 ## 6. Reverse-engineering re-audit workstreams
 
@@ -8507,3 +8589,7 @@ ENEMY PHASE 橫幅馬賽克的兩格取樣色差第六章沒再出現。
 [正式收據](../data/ui-traces/parity-ch12.json)、[槽清冊](../data/parity-slots/ch12-manifest.json)、[抽樣索引](../data/ui-traces/parity-ch12-samples.json)與[逐章台帳](../data/parity-campaign-progress.json)可回查。第10回合玩家取物56，seq3853已開箱格與HUD為0px；死亡對白seq3109相位比較為0px。共用經驗的writer／consumer已證實，特定15經驗來源仍為強推論，不升格原版全域動態實測。
 
 17個HUD單像素區域（13個純單像素畫面、4個與指令環差異共存）與取寶提問框外游標134px分別由[#52](https://github.com/wicanr2/fd2_re/issues/52)／[#53](https://github.com/wicanr2/fd2_re/issues/53)追蹤；敗北返回標題[#47](https://github.com/wicanr2/fd2_re/issues/47)與#41仍未閉合。強化槽不證明傷害／存活／敵方選目標忠實度，第四～十一章依117未重跑。
+
+## 2026-10-01 有限敗北規格驗收
+
+§5.2.1／§5.2.2／§5.2.3由READY進入CONFORMED，限第十二章敗北caller／兩張提示／完整標題返回／存檔邊界與正式AI候選consumer。證據、種子／受控方法及同槽重跑結果見[58本輪現況](58-fd2-exe-re-coverage.md)與[正式收據](../data/ui-traces/ch12-defeat-return-title.json)。其餘章節自訂撤退節點不因此升級；完整標題逐幀與音訊人耳仍是另一驗證範圍。

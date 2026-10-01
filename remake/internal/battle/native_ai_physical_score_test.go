@@ -2,14 +2,40 @@ package battle
 
 import "testing"
 
-func TestScoreNativePhysicalAttackCandidateRejectsNativeThreshold(t *testing.T) {
+func TestScoreNativePhysicalAttackCandidateRetainsLowScoreFallthrough(t *testing.T) {
 	got, ok, err := ScoreNativePhysicalAttackCandidate(NativePhysicalAttackScoreInput{
-		ActorWord48:  12,
-		TargetWord4A: 10,
-		TargetWord40: 1,
+		ActorWord48:    12,
+		TargetWord4A:   10,
+		TargetWord40:   1,
+		RawTargetByte8: 1,
 	})
-	if err != nil || ok || got != (NativePhysicalAttackScore{}) {
-		t.Fatalf("score=%+v ok=%v err=%v, want rejected zero result", got, ok, err)
+	if err != nil || !ok || got != (NativePhysicalAttackScore{Priority: 18, Score: 4}) {
+		t.Fatalf("score=%+v ok=%v err=%v，低分仍應通過生命比較", got, ok, err)
+	}
+}
+
+func TestSelectNativePhysicalAttackCandidateUsesZeroInitialRanking(t *testing.T) {
+	for _, score := range []int{-2, 0, 1, 2} {
+		candidate := NativePhysicalAttackCandidate{TargetIndex: 7, Inputs: NativePhysicalAttackScoreInput{
+			ActorWord48: 10 + score, TargetWord4A: 10, TargetWord40: 99, RawTargetByte8: 1,
+		}}
+		got, ok, err := SelectNativePhysicalAttackCandidate([]NativePhysicalAttackCandidate{candidate, candidate})
+		if err != nil || ok != (score > 0) {
+			t.Fatalf("分數%d：候選=%+v 選中=%v 錯誤=%v", score, got, ok, err)
+		}
+		if ok && (got.Candidate.TargetIndex != 7 || got.Ranking.Priority != 0 || got.Ranking.Score != score) {
+			t.Fatalf("priority0 候選比較錯誤：%+v", got)
+		}
+	}
+}
+
+func TestScoreNativePhysicalAttackCandidateLowScoreKeepsCounterAdjustment(t *testing.T) {
+	got, ok, err := ScoreNativePhysicalAttackCandidate(NativePhysicalAttackScoreInput{
+		ActorWord48: 9, TargetWord4A: 10, TargetWord40: 99,
+		ActorWord4A: 20, TargetWord48: 10, RawHelper1DEBEResult: 1, RawTargetByte8: 0,
+	})
+	if err != nil || !ok || got != (NativePhysicalAttackScore{Priority: 0, Score: 13}) {
+		t.Fatalf("低分反擊／身份加權=%+v 選中=%v 錯誤=%v", got, ok, err)
 	}
 }
 

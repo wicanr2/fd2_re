@@ -80,14 +80,16 @@ type MapData struct {
 
 type Game struct {
 	m                           *MapData
-	nativeMapAssets             *nativeMapAssets                   // all original map HUD resources, nil on any missing/malformed asset
-	modernMapTilesetLoaded      bool                               // 本次 loadMap 已原子採用現代圖集
-	baseMapTileset              image.Image                        // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
-	currentMapID                int                                // 目前地圖 selector；-1 表示尚未載入
-	nativeMapWork               []byte                             // persistent 456-stride original tactical framebuffer
-	nativeMapVGA                []byte                             // persistent 320x200 indexed VGA surface
-	nativeMapDAC                []byte                             // current 256xRGB six-bit DAC state for handler palette ramps
-	nativePaletteRamp           *nativePaletteRampJob              // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativeMapAssets             *nativeMapAssets      // all original map HUD resources, nil on any missing/malformed asset
+	modernMapTilesetLoaded      bool                  // 本次 loadMap 已原子採用現代圖集
+	baseMapTileset              image.Image           // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
+	currentMapID                int                   // 目前地圖 selector；-1 表示尚未載入
+	nativeMapWork               []byte                // persistent 456-stride original tactical framebuffer
+	nativeMapVGA                []byte                // persistent 320x200 indexed VGA surface
+	nativeMapDAC                []byte                // current 256xRGB six-bit DAC state for handler palette ramps
+	nativePaletteRamp           *nativePaletteRampJob // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativeDefeat                *nativeDefeatJob
+	titleNeedsNewCampaign       bool
 	nativePalettePulse          *nativePalettePulseJob             // exact 0x35E5A 0..63/hold/62..0 indexed DAC presentation
 	nativeCh20SkyKey            *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
 	nativeCh23State             *nativeCh23AdapterState            // raw ch23 staging/latch/timer state shared across both handler loops
@@ -5016,6 +5018,9 @@ func (g *Game) confirmBattleResult() bool {
 	if g == nil || g.camp == nil || g.result == "" {
 		return false
 	}
+	if g.result == "lose" && g.camp.Node() != nil && g.camp.Node().NativeDefeatReturnTitle != nil {
+		return false // 原生敗北自動返回標題，Enter 不得走相容 on_lose。
+	}
 	outcome := g.result
 	current := g.camp.Node()
 	// 第30戰的可編輯 ending edge明確要求保存最後隊伍，供來源約束 E1 的角色
@@ -6881,6 +6886,10 @@ func (g *Game) confirm() {
 	if g.sel == nil { // 選我方單位
 		u := g.st.UnitAt(g.curX, g.curY)
 		g.consumeNativeContinueOpeningConfirm()
+		if u != nil && u.HasNativeRecordByte6 {
+			// 0x118EE：0x12C0D 返回單位索引即清零，早於檢視／行動 gate。
+			g.st.NativeExperienceAccumulator = 0
+		}
 		if u != nil && g.st.HasNativeMapViewState {
 			handled, err := g.inspectNativePlayerUnit(u, false)
 			if err != nil {
@@ -7692,15 +7701,18 @@ func (g *Game) checkResult() {
 	}
 	if !alive {
 		g.result = "lose"
+		g.beginNativeDefeatIfConfigured()
 		return
 	}
 	// 章節 handler（第十章 0x20707）在 0x205BE 之後覆寫結果碼 1。
 	if g.sc.NativeResultCode1(g.st) {
 		g.result = "lose"
+		g.beginNativeDefeatIfConfigured()
 		return
 	}
 	if r := g.st.Result(""); r != "" {
 		g.result = r
+		g.beginNativeDefeatIfConfigured()
 	}
 }
 
@@ -7726,6 +7738,10 @@ func (g *Game) tileAt(idx int) *ebiten.Image {
 func (g *Game) Update() error {
 	defer g.recordInputAuditState()
 	g.frame++
+	if g.nativeDefeat != nil {
+		g.stepNativeDefeat(time.Now())
+		return nil
+	}
 	if g.startupBlocked {
 		return nil
 	}
@@ -8665,7 +8681,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if g.nativeFullDACBlack {
 			screen.Fill(color.Black)
 		}
-		if g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC) {
+		if g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC) {
 			screen.Fill(color.Black)
 		}
 		if g.nativeTurnStaging != nil && !g.nativeTurnStaging.indexed &&
@@ -8681,6 +8697,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		ebitenutil.DebugPrintAt(screen,
 			"FD2 remake cannot start\nRequired original assets are missing or invalid.\nImport a legal FD2 asset pack, then restart.\n\n"+g.loadErr,
 			24, 32)
+		return
+	}
+	if g.nativeDefeat != nil {
+		g.drawNativeDefeat(screen)
 		return
 	}
 	if g.titlePhase != "" {

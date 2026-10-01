@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_finite_defeat_parity_receipt",
+  "chapter": 12,
+  "status": "passed",
+  "gates": {
+    "clean_dosgolem": true,
+    "fixed_exe": true,
+    "no_periodic_injection": true,
+    "normal_keyboard": true,
+    "original_title_menu": true,
+    "preserved_edi_zero": true,
+    "remake_return": true,
+    "remake_defeat_record": true,
+    "no_skip": true,
+    "remake_save_unchanged": true,
+    "frame_9_exact": true,
+    "frame_36_exact": true,
+    "same_initial_slot": true
+  },
+  "evidence": [
+    "docs/data/ida/fd2_pending_code1_return_title_20261001.json",
+    "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json"
+  ],
+  "spec": "docs/knowledge-base/56-fd2-remake-sdd.md §5.2.1／5.2.2／5.2.3",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "tracked_dirty": 0,
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "address_space": "dosgolem relocated LE linear",
+    "plan": "docs/data/parity-plans/ch12-defeat.jsonl",
+    "plan_sha256": "f92929af77a1ac47d889de0af31dd77c0dfda30343672a5be377598f1b1b1ad1",
+    "call_sequence": [
+      {
+        "address": "0x22E5C",
+        "step": 7366659117,
+        "control_seq": 2142
+      },
+      {
+        "address": "0x22EC5",
+        "step": 7369115031,
+        "control_seq": 2142
+      },
+      {
+        "address": "0x22EE6",
+        "step": 7369160931,
+        "control_seq": 2142
+      },
+      {
+        "address": "0x25DFB",
+        "step": 7369338729,
+        "control_seq": 2142
+      },
+      {
+        "address": "0x1F894",
+        "step": 7369342574,
+        "control_seq": 2142
+      }
+    ]
+  },
+  "slot": {
+    "sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+    "manifest_sha256": "705c496293b4a03ec81e3f0ab60771e4acd50647c1a65d8d3b0fed8cbc64751d",
+    "policy": "114 建構槽；非自然難度／傷害／存活證據",
+    "assumptions": [
+      {
+        "chapter": 3,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "native_event_state_eq(state17)→true（第 7 章戰場狀態 17＝1，-event-states 明示）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 11,
+        "kind": "boost",
+        "detail": "基底 AP +200、DP +0、DX +60（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 14 筆：roster 0 id8=0 AP/DP/HIT/EV [263 190 175 80]→[463 190 235 140]；roster 1 id8=9 AP/DP/HIT/EV [173 127 147 62]→[373 127 207 122]；roster 2 id8=4 AP/DP/HIT/EV [294 162 170 80]→[494 162 230 140]；roster 3 id8=30 AP/DP/HIT/EV [582 539 227 137]→[782 539 287 197]；roster 4 id8=1 AP/DP/HIT/EV [337 182 152 57]→[537 182 212 117]；roster 5 id8=8 AP/DP/HIT/EV [255 108 175 80]→[455 108 235 140]；roster 6 id8=2 AP/DP/HIT/EV [289 181 175 80]→[489 181 235 140]；roster 7 id8=10 AP/DP/HIT/EV [147 144 135 40]→[347 144 195 100]；roster 8 id8=13 AP/DP/HIT/EV [218 124 171 76]→[418 124 231 136]；roster 9 id8=12 AP/DP/HIT/EV [299 199 151 56]→[499 199 211 116]；roster 10 id8=5 AP/DP/HIT/EV [176 148 147 52]→[376 148 207 112]；roster 11 id8=11 AP/DP/HIT/EV [108 140 102 27]→[308 140 162 87]；roster 12 id8=6 AP/DP/HIT/EV [260 173 138 53]→[460 173 198 113]；roster 13 id8=14 AP/DP/HIT/EV [128 124 96 26]→[328 124 156 86]"
+      }
+    ]
+  },
+  "random_control": {
+    "original_initial_word": 22661,
+    "remake": {
+      "go_seed": 4,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "native_rng_initial": 0
+    },
+    "method": "同一建構槽／等價玩家動作；每個 AI／攻擊／成長決策點承接受控原版 RNG word，不挑選重擲結果"
+  },
+  "frames": [
+    {
+      "hold_bios_ticks": 9,
+      "original_call_site": "0x22EC5",
+      "original_frame": "frame-000001.png",
+      "original_step": 7369115033,
+      "original_control_seq": 2142,
+      "original_png_sha256": "ee7ddbc60326ce7e1fbcabf7e3a78ff785b854f16f4eb7b805be872d346e4c1c",
+      "remake_frame": "defeat-9-ticks.png",
+      "remake_png_sha256": "ee7ddbc60326ce7e1fbcabf7e3a78ff785b854f16f4eb7b805be872d346e4c1c",
+      "original_indexed_sha256": "72821327d0320e1544e8ee06efb5886aca812a9b6d5c9619f18983804bc27588",
+      "remake_indexed_sha256": "72821327d0320e1544e8ee06efb5886aca812a9b6d5c9619f18983804bc27588",
+      "different_pixels": 0,
+      "same_indices": true
+    },
+    {
+      "hold_bios_ticks": 36,
+      "original_call_site": "0x22EE6",
+      "original_frame": "frame-000002.png",
+      "original_step": 7369160933,
+      "original_control_seq": 2142,
+      "original_png_sha256": "bbf49f64669bd5221ee30715ea2a015c784aefcb04dff7142ecfb3b392a8267c",
+      "remake_frame": "defeat-36-ticks.png",
+      "remake_png_sha256": "bbf49f64669bd5221ee30715ea2a015c784aefcb04dff7142ecfb3b392a8267c",
+      "original_indexed_sha256": "a77956eda57a610645732b56ba3edd29913cb56fa4024f8badb4be3eb61c0588",
+      "remake_indexed_sha256": "a77956eda57a610645732b56ba3edd29913cb56fa4024f8badb4be3eb61c0588",
+      "different_pixels": 0,
+      "same_indices": true
+    }
+  ],
+  "remake": {
+    "clock_limit": "BIOS tick 依既有規格近似；2ms DAC 每步呈現，60Hz延長亞幀等待",
+    "frames": [
+      {
+        "dac_sha256": "b89f66fd8cec0b38e9e8697cc72ee63095f0a61b14edcee10d6ea908fff429ae",
+        "file": "defeat-9-ticks.png",
+        "hold_bios_ticks": 9,
+        "indexed_sha256": "72821327d0320e1544e8ee06efb5886aca812a9b6d5c9619f18983804bc27588"
+      },
+      {
+        "dac_sha256": "b89f66fd8cec0b38e9e8697cc72ee63095f0a61b14edcee10d6ea908fff429ae",
+        "file": "defeat-36-ticks.png",
+        "hold_bios_ticks": 36,
+        "indexed_sha256": "a77956eda57a610645732b56ba3edd29913cb56fa4024f8badb4be3eb61c0588"
+      }
+    ],
+    "input_can_skip_defeat": false,
+    "method": "正常 LOAD／章內玩家動作與決策點受控 RNG；只以決定性宿主時鐘推進呈現",
+    "protected_hp": 0,
+    "protected_raw_byte5": 1,
+    "protected_record": 14,
+    "result": "lose",
+    "returned_title_sequence": "publisher→既有完整開場→menu",
+    "save_unchanged": true,
+    "schema_version": 1,
+    "slot_sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+    "status": "passed",
+    "title_selection": 0
+  },
+  "source_sha256": {
+    "remake/cmd/fd2/main.go": "a09607561f679e8f31a27b77c2e9833b3b1e051ea51d912f6a67c9493cec9d80",
+    "remake/cmd/fd2/native_defeat.go": "018c62d9264156123ffdd5d5e6d6c7ae8caf03c50b5c69319a19c6b6db499dbe",
+    "remake/cmd/fd2/native_defeat_parity_test.go": "f9d9d94b33f62962af831e1828e5f078044e75fdf640057e04cb385ef7bdecc4",
+    "remake/cmd/fd2/battle_protection.go": "2ed8111bf49ad62e0b717c9f39623a0f6114c9120ac0077db9a5e09bc5bf8da1",
+    "remake/internal/battle/native_ai_runtime.go": "10c0e978bffaa6cab724a8d7b84648d04cbbf9dd4bb06b80c5426a0bd939bd11",
+    "remake/internal/battle/native_ai_physical_score.go": "a71b0b6a7fb691cf7cd465b3aea6be8f7b80e53921cb928fa99ba352195fe192",
+    "tools/dosgolem_oracle_drive.py": "5d3c167541c2d4a620518b86303d9bba16ce66e0eb7153b1ce175e18668714a8",
+    "tools/verify_defeat_parity.py": "c88d54e9f136f829417fedc1d779bec49b4f4ff373c3e3a01c82dc4621d461bb"
+  },
+  "limits": [
+    "僅閉合兩段敗北提示與完整標題返回控制流；完整標題逐幀 E2 未由本收據宣稱",
+    "BIOS tick 採既有規格近似；2ms DAC 每步在60Hz呈現，不宣稱逐週期／同硬體 wall-clock",
+    "建構槽政策114只支持節點／介面／存檔驗證，不支持自然難度、傷害或存活 parity"
+  ]
+}

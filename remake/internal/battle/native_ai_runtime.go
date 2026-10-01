@@ -181,7 +181,10 @@ func (s *State) nativeAIPhysicalScoreInput(
 	if err != nil {
 		return NativePhysicalAttackScoreInput{}, err
 	}
-	target48, target4a, err = s.nativeAITerrainAdjustedWords(raw.TargetRecord, raw.Destination, target48, target4a)
+	// 0x14545..0x1454E 讀 target +0/+1；只有 actor 使用候選目的地。
+	// 兩側均保留 sub_1F183 非零才調整的 caller-specific 閘門。
+	targetCell := Cell{X: int(raw.TargetRecord[0]), Y: int(raw.TargetRecord[1])}
+	target48, target4a, err = s.nativeAITerrainAdjustedWords(raw.TargetRecord, targetCell, target48, target4a)
 	if err != nil {
 		return NativePhysicalAttackScoreInput{}, err
 	}

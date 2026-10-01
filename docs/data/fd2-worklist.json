@@ -317,23 +317,6 @@
       "issue": 41
     },
     {
-      "id": "ch12-defeat-return-to-title",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十二章敗北流程走自訂撤退再戰，未接原版返回標題",
-      "body": "原版 sample-r2 第 5 回合記錄 14 倒下後，checkpoint-2429.png 已返回標題；ch12.json 的敗北判準另由 #46 接線。campaign_full.json 的 retreat_ch12 目前仍是自訂撤退台詞並 next battle_ch12，confirmBattleResult 經 OnLose 走此分支。原版敗北訊息、輸入與返回標題的有限控制流尚未形成 READY 規格。",
-      "acceptance": "以 sample-r2 的失敗收據與原版 caller 閉合敗北提示／輸入／返回標題的有限順序，建立 READY 規格後接入正式玩家路徑並做同狀態驗證；不得只刪掉自訂台詞後猜補流程。",
-      "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/assets/scenarios/campaign_full.json"
-        ],
-        "pattern": "(?s)\"retreat_ch12\":\\s*\\{[^}]*\"text\":\\s*\"撤退!先回頭整頓",
-        "note": "精確綁定第十二章 retreat_ch12 的自訂提示，不受其他章同文影響。"
-      },
-      "issue": 47
-    },
-    {
       "id": "ch12-hud-terrain-single-pixel",
       "layer": "player",
       "category": "缺陷",

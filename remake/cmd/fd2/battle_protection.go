@@ -14,7 +14,7 @@ func (g *Game) protectedBattleUnitAlive(protect string) (bool, error) {
 		name := u.Name
 		if u.HasNativeRecordByte8 || u.HasNativeIdentity {
 			if g.sourceBattleEntities == nil {
-				catalog, err := localization.LoadOfficialEntities(separatedAssetPath("locales"), "zh-Hant")
+				catalog, err := localization.LoadOfficialEntities(assetPath("assets/locales"), "zh-Hant")
 				if err != nil {
 					return false, err
 				}

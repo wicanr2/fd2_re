@@ -73,6 +73,24 @@ class ModuleIntegrity(unittest.TestCase):
         self.assertEqual(missing, [], f"呼叫了不存在的名稱：{missing}")
 
 
+class DefeatReturnTitle(unittest.TestCase):
+    def test_title_is_identified_by_its_original_input_caller(self):
+        self.assertEqual(drive.ui_mode({"input_chain": ["0x1FE60", "0x25ECD", "0x25DC2"]}), "title")
+        self.assertNotEqual(drive.ui_mode({"input_chain": ["0x25DC2"]}), "title")
+
+    def test_wait_title_confirms_only_dialogue_and_never_start(self):
+        states = iter([
+            {"input_chain": ["0x16D05", "0x164C4"]},
+            {"input_chain": []},
+            {"input_chain": ["0x1FE60", "0x25ECD"]},
+        ])
+        with mock.patch.object(drive, "state", side_effect=lambda: next(states)), \
+                mock.patch.object(drive, "send", return_value=(1, {})) as send, \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_await_ui({"await_ui": "title", "steps": 20, "max": 3}))
+        self.assertEqual([call.args[0] for call in send.call_args_list], ["enter", ""])
+
+
 class NestedCommandOptions(unittest.TestCase):
     """文件化的閉環命令參數位於命令名稱之下，不能靜默退回預設值。"""
 

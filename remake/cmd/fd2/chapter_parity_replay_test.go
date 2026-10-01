@@ -423,7 +423,7 @@ func TestChapterParityReplay(t *testing.T) {
 		}
 		r.prevSeq = action.Seq
 	}
-	r.checkpoint("end", 0, r.ui(), true)
+	r.checkpoint("end", 0, r.ui(), g.titlePhase == "")
 }
 
 // mark 對應驅動端的 mark：同一個節點兩側各取一張畫面。標記本身不送鍵，但重製端
@@ -476,6 +476,8 @@ func (r *parityReplay) mark(action parityAction) {
 	case "town_after_battle":
 		r.ensureTown()
 		r.checkpoint("town_after_battle", action.Seq, "town", true)
+	case "defeat_return_title":
+		r.verifyNativeDefeatReturnTitle(action)
 	default:
 		// 戰場裡的 mark 通常接在 await round>=N 之後：原版側已經推過敵方階段、回到下一回合
 		// 的游標。重製端上一個動作（全員行動完的 wait）只觸發自動換手，敵方階段還沒跑完，
@@ -550,6 +552,9 @@ func (r *parityReplay) enterTownOption(selection int) {
 
 func (r *parityReplay) ui() string {
 	g := r.g
+	if g.titlePhase != "" {
+		return "title"
+	}
 	n := g.camp.Node()
 	if n == nil {
 		return "unknown"

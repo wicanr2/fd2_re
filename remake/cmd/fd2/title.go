@@ -71,6 +71,12 @@ func (g *Game) applyTitleMenuEvent(event TitleMenuEvent) bool {
 			g.msg = err.Error()
 		}
 	case TitleMenuStart:
+		if g.titleNeedsNewCampaign {
+			if err := g.restartCampaignFromTitle(); err != nil {
+				g.msg = err.Error()
+				return true
+			}
+		}
 		g.titlePhase = ""
 	}
 	return true

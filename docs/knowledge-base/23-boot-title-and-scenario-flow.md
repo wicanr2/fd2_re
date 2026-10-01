@@ -25,7 +25,13 @@
 
 ## 1. 頂層狀態機骨架
 
-沒有單一 `while(1)`;頂層是 **main(0x25bf4)內的雙層迴圈**,配合「離開即 `jmp 0x16f04` 回標題模組」構成 module 互跳的狀態機。**核心驅動變數只有一個:`[0x53c03]` = 目前章節**。
+2026-10-01 勘誤：舊版將 0x16F04 說成返回標題入口。
+[有限 IDA 主證據](../data/ida/fd2_pending_code1_return_title_20261001.json)
+保留 main 原始 EDI／ESI 與跳躍 bytes：pending1 回的是 0x25DB1；
+0x16F04 之前已進顯示模式3清理。舊說因只觀察尾端 jump，未追雙層分支而失效。
+
+
+沒有單一 `while(1)`;頂層是 **main(0x25bf4)內的雙層迴圈**,由內層戰役返回外層標題呼叫構成狀態機。**核心驅動變數只有一個:`[0x53c03]` = 目前章節**。
 
 ```
 DOS/4GW entry 0x3c964 ──► Watcom CRT ──► main 0x25bf4
@@ -43,7 +49,8 @@ DOS/4GW entry 0x3c964 ──► Watcom CRT ──► main 0x25bf4
         ├ [0x53ecc]==1 → 固定資源 #79 呈現 0x22e5c
         ├ [0x53ecc]==2 → call [ [0x53c03]*4 + 0x51de9 ]，再進 0x2cad7 gate
         ├ 續打 → 回戰場初始化
-        └ 結束 / quit → jmp 0x16f04(回標題/選單模組 0x16f55,選擇變數 [0x53c57])
+        └ pending1 → ESI=1、EDI=0 → 0x25E91 → 0x25DB1 → 完整標題
+        └ quit／終止 → EDI非零 → 顯示模式3／清理 → jmp 0x16F04
 ```
 
 **狀態變數(都在 obj2 0x50000 區)** [驗]：

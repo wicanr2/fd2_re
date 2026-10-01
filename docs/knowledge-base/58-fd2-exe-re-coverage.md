@@ -1077,3 +1077,44 @@ RNG word 22986 傷害 27 對 33。這是新同狀態反證，足以重開 106 �
 影像成因勘誤：原版 seq3109 的 raw +5 尚未設置屬已證實；但「860像素來自灰化」只是初始假說，remake-r6 修正 bit7 後仍差860，放大原圖／重製圖可見兩侧灰階相同，差異全落在兩個 FDICON 待機相位。對話開框時凍結底圖，重播器先枚舉待機相位，卻在死亡對白分支輸出固定快照，全部候選使用同一框外底圖。依既有升級對白方式保留完整上／下框、嘴型、箭頭與頭像，框外使用同輪原生 renderer 的已枚舉整幀；不抄原版像素或增加門檻。主實驗 sample-r5 seq3109／remake-r6 remake-0219-p1，原版影像 SHA 與同狀態比較見 parity-ch12 正式收據；純相位比較仍待整章驗收。
 
 第十二章分層結論（2026-10-01）：本輪四份IDA主證據已 RE-CLOSED，具型別事件／劇本／binding 為 DATA-READY，正式接線與最後全套回歸為 RUNTIME-E1；章收據 PLAYER-E2 依111例外。原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。 主證據入口為[章收據](../data/ui-traces/parity-ch12.json)及[抽樣索引](../data/ui-traces/parity-ch12-samples.json)，限制以[逐章台帳](../data/parity-campaign-progress.json)第12章為準。RE未知（特定保留15經驗的動態來源）與可選UI修飾不改寫為已證實；敗北完整路徑#47仍未完成。
+
+
+### 第十二章敗北返回標題：有限外層閉合（2026-10-01，Issue #47）
+
+可重跑工具入口：[verify_defeat_parity.py](../../tools/verify_defeat_parity.py)，以
+`--original`、`--remake`、`--plan`、`--slot-manifest`、`--output` 指定同輪收據；
+影像工具為既有 `fd2-assets-local:20260829-sfx`（Pillow 11.3.0）。玩家動作重播沿用
+`TestChapterParityReplay`，敗北尾端在 [native_defeat_parity_test.go](../../remake/cmd/fd2/native_defeat_parity_test.go)。
+
+主證據 [fd2_pending_code1_return_title_20261001.json](../data/ida/fd2_pending_code1_return_title_20261001.json)
+為 RE-CLOSED；保留固定 FD2.EXE 身分、IDA Pro 9.4 LE 線性位址、原始名稱／bytes／xref
+及逐項分級。既有 #79 呈現體與標題排程不重開；新切片補足 main 的 caller／返回 consumer：
+EDI=0、ESI=1 使 0x25E91 回 0x25DB1，再呼叫完整 0x1F894。
+0x16F04 是非零 EDI 的清理尾端，舊「敗北回標題經 0x16F04」不成立。
+
+本輪現況與正式[敗北收據](../data/ui-traces/ch12-defeat-return-title.json)由同槽正常重播驗證；原版以 dosgolem 重生，不以舊 sample-r2 或靜態證據替代。
+第十二章敗北不再適用自訂撤退再戰；READY 契約入口為 [56 §5.2.1](56-fd2-remake-sdd.md#521-第十二章敗北返回標題契約)。
+
+
+Issue #55 選取清零 consumer（2026-10-01，RE-CLOSED）：同一份
+[有限 IDA 主證據](../data/ida/fd2_pending_code1_return_title_20261001.json)
+新增原樣 0x118B3..0x11925 與分級 claim。0x118EE 的 writer 已在 #48 匯出，
+本次補的是正式 Game.confirm 的 consumer 缺口：返回單位索引即清累計，空地返回 -1
+不清；不是等到真的物理攻擊才清零。重製敗北重播的第五回合讓 Ally 槽14誤承接15、
+從 Exp255 升兩級，為強推論的具體分歧成因；新同狀態重跑才能驗證。物理／成長公式
+不重開，114 建構槽不得提升成傷害／自然存活忠實度聲明。規格見56 §5.2.2。
+
+### 2026-10-01：#55／#56 物理候選 caller 勘誤
+
+RE-CLOSED／READY：新增 [IDA 主證據](../data/ida/fd2_ai_physical_target_terrain_20261001.json)與[受版控匯出器](../../tools/ida_probe_ai_physical_terrain.py)，規格見56 §5.2.3。
+0x14545..0x1454E 讀 target +0/+1，不是 actor 候選落點；原生 resolver 誤用目的地，讓第十二章第五回合敵兵由(17,26)改選(18,27)。兩側 RNG 起訖相同卻讀不同地形，不重開已閉合傷害公式。先前選取清零確實修掉多餘升級，但修後重播仍剩11HP，所以不是唯一成因；保留 r1／r2／r3 失敗紀錄。
+0x1458F 的 <=2 跳到0x14479，只把 priority 變0，仍繼續比較；舊§5的「<=2拒絕」由本段及56 §5.2.3取代。0x14248／0x1427E 比較初值0/0，priority0負分／零分仍不被選中。執行期與玩家層待同槽驗證，不先標 CONFORMED。
+
+### 2026-10-01：第十二章敗北有限垂直鏈驗收
+
+RE-CLOSED／DATA-READY／RUNTIME-E1／PLAYER-E2（依114建構槽限制）：[正式敗北收據](../data/ui-traces/ch12-defeat-return-title.json)以乾淨的dosgolem a9bcd621重生。正常LOAD槽0、整備及五回合章內鍵盤操作讓槽14倒下；無週期鎖HP、無清敵／直接注入敗北。原版兩張320×200畫面與重製色盤索引、PNG SHA-256完全相同，兩張各0差異像素；固定停留9／36 BIOS ticks，之後完整標題owner正常交出menu。存檔SHA-256不變，START入口另以正式menu的E1抽測確認重開章0，不沿用敗北隊伍。
+#54官方語系來源、#55選取清零與target地形座標、#56低分priority均完成正式消費端；規格 §5.2.1–5.2.3的有限範圍列CONFORMED。完整標題逐幀、音訊人耳與硬體wall-clock仍未由本收據聲明。初始原版RNG word=22661、Go seed=4，各AI／攻擊／成長決策點以原版收據同步受控word，未挑結果。
+重跑：以tools/dosgolem_oracle.sh、docs/data/parity-plans/ch12-defeat.jsonl及原始建構槽運行；FD2_ORACLE_EIP_TRACE=0x22E5C,0x22EC5,0x22EE6,0x25DFB,0x1F894,0x13A9F,0x1E54A，FD2_ORACLE_FRAME_EIP=0x17AA9，frame window=7366659100..7369342580、stride=0、cap=200，steps上限12000000000。重製側在維護的Go容器／Xvfb設定FD2_PARITY_CHAPTER=12、FD2_PARITY_SLOT指向同一FD2.SAV、FD2_PARITY_ORACLE_RUN指向原版run、FD2_PARITY_OUT指向新輸出，執行go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1。判定器[verify_defeat_parity.py](../../tools/verify_defeat_parity.py)在fd2-assets-local:20260829-sfx內執行（entrypoint為python3）；參數--original／--remake／--plan／--slot-manifest／--output對應收據輸入。不能用其他畫面補代。
+同日另以現行程式重跑勝利sample-r5→victory-after-defeat-r1，四項驗收全數通過；影像門檻沿用[既有第十二章收據](../data/ui-traces/parity-ch12.json)，未擴張至未驗證畫面。統計由python3 tools/audit_story_script_coverage.py重生：120個story/cutscene、9個script、57個handler-bound、54個fallback，其中自訂retreat29；這是刪除retreat_ch12後的資料形狀，不代表其餘29章敗北完成。
+
+本批驗證：Go整體19個有測試套件全部通過；原版控制端73項單元測試通過。最終nil guard修正後，正式敗北重播r6及敗北／START／缺件／選取測試全數通過，campaign及字串審查另以現行檔案重跑通過。所有本批容器已退出；工作目錄無root-owned檔案或同名.md空目錄。

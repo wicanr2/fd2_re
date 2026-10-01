@@ -1179,3 +1179,7 @@ START 走完序章取到三次 pan 共 126 格逐格對上，收據見
 原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。 寶箱slot0／物品56／(16,15)由玩家第10回合取得，seq3853同格HUD與打開的箱子逐像素相同；第1回合事件35、第五回合事件36、保護友軍、戰後JOIN17、買賣、酒店存檔與祕密商店均納入。
 
 [正式收據](../data/ui-traces/parity-ch12.json)、[抽樣索引](../data/ui-traces/parity-ch12-samples.json)與[7張對照圖入口](../figures/parity-ch12-samples-p1.png)保存115列。非零差異有99點：指令環相位為主，HUD縮圖13個1px點及取寶提問游標框134px仍留#52／#53；不得宣稱全章逐像素一致。敗北返回標題#47、玩家法術／物品操作與#41未完成；第四～十一章本輪未重跑。
+
+## 2026-10-01：第十二章敗北返回標題
+
+[正式收據](../data/ui-traces/ch12-defeat-return-title.json)列PLAYER-E2（114建構槽限制）：正常LOAD、整備、五回合章內鍵盤輸入進敗北，兩張提示各0差異像素且indexed／PNG SHA一致；9／36 BIOS ticks順序不可由確認鍵略過，完整既有標題owner自行交出menu，原生存檔不變。START重開章0另列RUNTIME-E1；本收據未比較完整標題所有幀，不宣稱自然難度／傷害／存活或硬體時鐘相同。勝利分支同日現行程式重跑四項驗收仍通過。有限規格與消費端勘誤見[58](58-fd2-exe-re-coverage.md)。

@@ -1,0 +1,4596 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "functions": [
+    {
+      "address": "0x14237",
+      "end": "0x145cd",
+      "original_name": "sub_14237",
+      "instructions": [
+        {
+          "address": "0x14237",
+          "bytes": "6880000000",
+          "original": "push    80h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1423c",
+          "bytes": "e8962a0200",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14241",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14242",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14243",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14244",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14245",
+          "bytes": "83ec54",
+          "original": "sub     esp, 54h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14248",
+          "bytes": "c744244000000000",
+          "original": "mov     [esp+64h+var_24], 0",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14250",
+          "bytes": "c744241c00000000",
+          "original": "mov     [esp+64h+var_48], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14258",
+          "bytes": "8b542468",
+          "original": "mov     edx, [esp+64h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1425c",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1425e",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14261",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14263",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14266",
+          "bytes": "8b35453a0500",
+          "original": "mov     esi, dword_53A45",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1426c",
+          "bytes": "01c6",
+          "original": "add     esi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1426e",
+          "bytes": "0fb74648",
+          "original": "movzx   eax, word ptr [esi+48h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14272",
+          "bytes": "89442424",
+          "original": "mov     [esp+64h+var_40], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14276",
+          "bytes": "0fb7464a",
+          "original": "movzx   eax, word ptr [esi+4Ah]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1427a",
+          "bytes": "89442428",
+          "original": "mov     [esp+64h+var_3C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1427e",
+          "bytes": "c7054f3c050000000000",
+          "original": "mov     dword_53C4F, 0",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14288",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1428a",
+          "bytes": "52",
+          "original": "push    edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1428b",
+          "bytes": "e8ad750000",
+          "original": "call    sub_1B83D",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14290",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14293",
+          "bytes": "83f8ff",
+          "original": "cmp     eax, 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14296",
+          "bytes": "0f8427030000",
+          "original": "jz      loc_145C3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1429c",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1429d",
+          "bytes": "ff74246c",
+          "original": "push    [esp+68h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142a1",
+          "bytes": "e87c740000",
+          "original": "call    sub_1B722",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142a6",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142a9",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142aa",
+          "bytes": "e8bda20300",
+          "original": "call    sub_4E56C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142af",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142b2",
+          "bytes": "0fb6500b",
+          "original": "movzx   edx, byte ptr [eax+0Bh]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142b6",
+          "bytes": "89542410",
+          "original": "mov     [esp+64h+var_54], edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142ba",
+          "bytes": "0fb6400c",
+          "original": "movzx   eax, byte ptr [eax+0Ch]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142be",
+          "bytes": "89442414",
+          "original": "mov     [esp+64h+var_50], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142c2",
+          "bytes": "0fb67e3b",
+          "original": "movzx   edi, byte ptr [esi+3Bh]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142c6",
+          "bytes": "0fb62e",
+          "original": "movzx   ebp, byte ptr [esi]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142c9",
+          "bytes": "0fb64601",
+          "original": "movzx   eax, byte ptr [esi+1]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142cd",
+          "bytes": "89442408",
+          "original": "mov     [esp+64h+var_5C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142d1",
+          "bytes": "ff742468",
+          "original": "push    [esp+64h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142d5",
+          "bytes": "e8a9ae0000",
+          "original": "call    sub_1F183",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142da",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142dd",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142df",
+          "bytes": "7407",
+          "original": "jz      short loc_142E8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142e1",
+          "bytes": "b813000000",
+          "original": "mov     eax, 13h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142e6",
+          "bytes": "eb04",
+          "original": "jmp     short loc_142EC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142e8",
+          "bytes": "0fb64620",
+          "original": "movzx   eax, byte ptr [esi+20h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142ec",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142ed",
+          "bytes": "e863a20300",
+          "original": "call    sub_4E555",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142f2",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142f5",
+          "bytes": "89c3",
+          "original": "mov     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142f7",
+          "bytes": "6a20",
+          "original": "push    20h ; ' '",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142f9",
+          "bytes": "e8182a0200",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x142fe",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14301",
+          "bytes": "8944240c",
+          "original": "mov     [esp+64h+var_58], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14305",
+          "bytes": "6800080000",
+          "original": "push    800h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1430a",
+          "bytes": "e8072a0200",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1430f",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14312",
+          "bytes": "89442420",
+          "original": "mov     [esp+64h+var_44], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14316",
+          "bytes": "837c246c00",
+          "original": "cmp     [esp+64h+arg_4], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1431b",
+          "bytes": "7508",
+          "original": "jnz     short loc_14325",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1431d",
+          "bytes": "c744241c01000000",
+          "original": "mov     [esp+64h+var_48], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14325",
+          "bytes": "ff74246c",
+          "original": "push    [esp+64h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14329",
+          "bytes": "e89f020000",
+          "original": "call    sub_145CD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1432e",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14331",
+          "bytes": "ff35693a0500",
+          "original": "push    dword_53A69",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14337",
+          "bytes": "ff35513a0500",
+          "original": "push    dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1433d",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1433e",
+          "bytes": "ff742414",
+          "original": "push    [esp+70h+var_5C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14342",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14343",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14344",
+          "bytes": "e8f79c0300",
+          "original": "call    sub_4E040",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14349",
+          "bytes": "83c418",
+          "original": "add     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1434c",
+          "bytes": "ff74246c",
+          "original": "push    [esp+64h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14350",
+          "bytes": "ff74246c",
+          "original": "push    [esp+68h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14354",
+          "bytes": "e878030000",
+          "original": "call    sub_146D1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14359",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1435c",
+          "bytes": "ff742420",
+          "original": "push    [esp+64h+var_44]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14360",
+          "bytes": "e8b1070000",
+          "original": "call    sub_14B16",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14365",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14368",
+          "bytes": "89442418",
+          "original": "mov     [esp+64h+var_4C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1436c",
+          "bytes": "ff35513a0500",
+          "original": "push    dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14372",
+          "bytes": "e885980300",
+          "original": "call    sub_4DBFC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14377",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1437a",
+          "bytes": "6a64",
+          "original": "push    64h ; 'd'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1437c",
+          "bytes": "e895290200",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14381",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14384",
+          "bytes": "89442434",
+          "original": "mov     [esp+64h+var_30], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14388",
+          "bytes": "c744242c00000000",
+          "original": "mov     [esp+64h+var_38], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14390",
+          "bytes": "eb04",
+          "original": "jmp     short loc_14396",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14392",
+          "bytes": "ff44242c",
+          "original": "inc     [esp+64h+var_38]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14396",
+          "bytes": "8b44242c",
+          "original": "mov     eax, [esp+64h+var_38]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1439a",
+          "bytes": "3b442418",
+          "original": "cmp     eax, [esp+64h+var_4C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1439e",
+          "bytes": "0f8dfb010000",
+          "original": "jge     loc_1459F",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143a4",
+          "bytes": "01c0",
+          "original": "add     eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143a6",
+          "bytes": "03442420",
+          "original": "add     eax, [esp+64h+var_44]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143aa",
+          "bytes": "0fb610",
+          "original": "movzx   edx, byte ptr [eax]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143ad",
+          "bytes": "89542444",
+          "original": "mov     [esp+64h+var_20], edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143b1",
+          "bytes": "0fb64001",
+          "original": "movzx   eax, byte ptr [eax+1]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143b5",
+          "bytes": "89442448",
+          "original": "mov     [esp+64h+var_1C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143b9",
+          "bytes": "8b442424",
+          "original": "mov     eax, [esp+64h+var_40]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143bd",
+          "bytes": "8944243c",
+          "original": "mov     [esp+64h+var_28], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143c1",
+          "bytes": "8b442428",
+          "original": "mov     eax, [esp+64h+var_3C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143c5",
+          "bytes": "89442438",
+          "original": "mov     [esp+64h+var_2C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x143c9",
+          "bytes": "ff742468",
+          "original": "push    [esp+64h+arg_0]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143cd",
+          "bytes": "e8b1ad0000",
+          "original": "call    sub_1F183",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143d2",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143d5",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143d7",
+          "bytes": "7457",
+          "original": "jz      short loc_14430",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143d9",
+          "bytes": "89e0",
+          "original": "mov     eax, esp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143db",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143dc",
+          "bytes": "ff74244c",
+          "original": "push    [esp+68h+var_1C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143e0",
+          "bytes": "ff74244c",
+          "original": "push    [esp+6Ch+var_20]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143e4",
+          "bytes": "e84feaffff",
+          "original": "call    sub_12E38",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143e9",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143ec",
+          "bytes": "0fb65c2405",
+          "original": "movzx   ebx, [esp+64h+var_5F]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143f1",
+          "bytes": "8b149d121a0500",
+          "original": "mov     edx, dword_51A12[ebx*4]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143f8",
+          "bytes": "0faf542424",
+          "original": "imul    edx, [esp+64h+var_40]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x143fd",
+          "bytes": "b964000000",
+          "original": "mov     ecx, 64h ; 'd'",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14402",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14404",
+          "bytes": "c1fa1f",
+          "original": "sar     edx, 1Fh",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14407",
+          "bytes": "f7f9",
+          "original": "idiv    ecx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14409",
+          "bytes": "8b542424",
+          "original": "mov     edx, [esp+64h+var_40]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1440d",
+          "bytes": "01c2",
+          "original": "add     edx, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1440f",
+          "bytes": "8954243c",
+          "original": "mov     [esp+64h+var_28], edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14413",
+          "bytes": "8b149d2a1a0500",
+          "original": "mov     edx, dword_51A2A[ebx*4]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1441a",
+          "bytes": "0faf542428",
+          "original": "imul    edx, [esp+64h+var_3C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1441f",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14421",
+          "bytes": "c1fa1f",
+          "original": "sar     edx, 1Fh",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14424",
+          "bytes": "f7f9",
+          "original": "idiv    ecx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14426",
+          "bytes": "8b542428",
+          "original": "mov     edx, [esp+64h+var_3C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1442a",
+          "bytes": "01c2",
+          "original": "add     edx, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1442c",
+          "bytes": "89542438",
+          "original": "mov     [esp+64h+var_2C], edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14430",
+          "bytes": "ff74241c",
+          "original": "push    [esp+64h+var_48]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14434",
+          "bytes": "ff742414",
+          "original": "push    [esp+68h+var_54]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14438",
+          "bytes": "ff74241c",
+          "original": "push    [esp+6Ch+var_50]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1443c",
+          "bytes": "ff742440",
+          "original": "push    [esp+70h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14440",
+          "bytes": "ff742458",
+          "original": "push    [esp+74h+var_1C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14444",
+          "bytes": "ff742458",
+          "original": "push    [esp+78h+var_20]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14448",
+          "bytes": "e8cb030000",
+          "original": "call    sub_14818",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1444d",
+          "bytes": "89c6",
+          "original": "mov     esi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1444f",
+          "bytes": "83c418",
+          "original": "add     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14452",
+          "bytes": "89442430",
+          "original": "mov     [esp+64h+var_34], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14456",
+          "bytes": "ff35513a0500",
+          "original": "push    dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1445c",
+          "bytes": "e89b970300",
+          "original": "call    sub_4DBFC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14461",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14464",
+          "bytes": "85f6",
+          "original": "test    esi, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14466",
+          "bytes": "0f8426ffffff",
+          "original": "jz      loc_14392",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1446c",
+          "bytes": "c744244c00000000",
+          "original": "mov     [esp+64h+var_18], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14474",
+          "bytes": "e985000000",
+          "original": "jmp     loc_144FE",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14479",
+          "bytes": "31ff",
+          "original": "xor     edi, edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1447b",
+          "bytes": "0fb74340",
+          "original": "movzx   eax, word ptr [ebx+40h]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1447f",
+          "bytes": "39c6",
+          "original": "cmp     esi, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14481",
+          "bytes": "7e07",
+          "original": "jle     short loc_1448A",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14483",
+          "bytes": "01f6",
+          "original": "add     esi, esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14485",
+          "bytes": "bf12000000",
+          "original": "mov     edi, 12h",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1448a",
+          "bytes": "ff742448",
+          "original": "push    [esp+64h+var_1C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1448e",
+          "bytes": "ff742448",
+          "original": "push    [esp+68h+var_20]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14492",
+          "bytes": "ff742458",
+          "original": "push    [esp+6Ch+var_14]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14496",
+          "bytes": "e8239a0000",
+          "original": "call    sub_1DEBE",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1449b",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1449e",
+          "bytes": "83f801",
+          "original": "cmp     eax, 1",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144a1",
+          "bytes": "7508",
+          "original": "jnz     short loc_144AB",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144a3",
+          "bytes": "8b442438",
+          "original": "mov     eax, [esp+64h+var_2C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144a7",
+          "bytes": "29e8",
+          "original": "sub     eax, ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144a9",
+          "bytes": "01c6",
+          "original": "add     esi, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144ab",
+          "bytes": "0fb64308",
+          "original": "movzx   eax, byte ptr [ebx+8]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144af",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144b1",
+          "bytes": "7512",
+          "original": "jnz     short loc_144C5",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144b3",
+          "bytes": "89f2",
+          "original": "mov     edx, esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144b5",
+          "bytes": "c1e202",
+          "original": "shl     edx, 2",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144b8",
+          "bytes": "29f2",
+          "original": "sub     edx, esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144ba",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144bc",
+          "bytes": "c1fa1f",
+          "original": "sar     edx, 1Fh",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144bf",
+          "bytes": "2bc2",
+          "original": "sub     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144c1",
+          "bytes": "d1f8",
+          "original": "sar     eax, 1",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144c3",
+          "bytes": "89c6",
+          "original": "mov     esi, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144c5",
+          "bytes": "3b3d4f3c0500",
+          "original": "cmp     edi, dword_53C4F",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144cb",
+          "bytes": "7f08",
+          "original": "jg      short loc_144D5",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144cd",
+          "bytes": "752b",
+          "original": "jnz     short loc_144FA",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144cf",
+          "bytes": "3b742440",
+          "original": "cmp     esi, [esp+64h+var_24]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144d3",
+          "bytes": "7e25",
+          "original": "jle     short loc_144FA",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144d5",
+          "bytes": "89742440",
+          "original": "mov     [esp+64h+var_24], esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144d9",
+          "bytes": "8b442444",
+          "original": "mov     eax, [esp+64h+var_20]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144dd",
+          "bytes": "a3433c0500",
+          "original": "mov     dword_53C43, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144e2",
+          "bytes": "8b442448",
+          "original": "mov     eax, [esp+64h+var_1C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144e6",
+          "bytes": "a3473c0500",
+          "original": "mov     dword_53C47, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144eb",
+          "bytes": "8b442450",
+          "original": "mov     eax, [esp+64h+var_14]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144ef",
+          "bytes": "a34b3c0500",
+          "original": "mov     dword_53C4B, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144f4",
+          "bytes": "893d4f3c0500",
+          "original": "mov     dword_53C4F, edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x144fa",
+          "bytes": "ff44244c",
+          "original": "inc     [esp+64h+var_18]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x144fe",
+          "bytes": "8b44244c",
+          "original": "mov     eax, [esp+64h+var_18]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14502",
+          "bytes": "3b442430",
+          "original": "cmp     eax, [esp+64h+var_34]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14506",
+          "bytes": "0f8d86feffff",
+          "original": "jge     loc_14392",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1450c",
+          "bytes": "8b542434",
+          "original": "mov     edx, [esp+64h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14510",
+          "bytes": "01c2",
+          "original": "add     edx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14512",
+          "bytes": "0fb602",
+          "original": "movzx   eax, byte ptr [edx]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14515",
+          "bytes": "89442450",
+          "original": "mov     [esp+64h+var_14], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14519",
+          "bytes": "89c3",
+          "original": "mov     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1451b",
+          "bytes": "c1e302",
+          "original": "shl     ebx, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1451e",
+          "bytes": "01c3",
+          "original": "add     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14520",
+          "bytes": "c1e304",
+          "original": "shl     ebx, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14523",
+          "bytes": "a1453a0500",
+          "original": "mov     eax, dword_53A45",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14528",
+          "bytes": "01c3",
+          "original": "add     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1452a",
+          "bytes": "0fb76b48",
+          "original": "movzx   ebp, word ptr [ebx+48h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1452e",
+          "bytes": "0fb77b4a",
+          "original": "movzx   edi, word ptr [ebx+4Ah]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x14532",
+          "bytes": "ff742450",
+          "original": "push    [esp+64h+var_14]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14536",
+          "bytes": "e848ac0000",
+          "original": "call    sub_1F183",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1453b",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1453e",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14540",
+          "bytes": "7444",
+          "original": "jz      short loc_14586",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14542",
+          "bytes": "89e0",
+          "original": "mov     eax, esp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14544",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14545",
+          "bytes": "0fb64301",
+          "original": "movzx   eax, byte ptr [ebx+1]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14549",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1454a",
+          "bytes": "0fb603",
+          "original": "movzx   eax, byte ptr [ebx]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1454d",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1454e",
+          "bytes": "e8e5e8ffff",
+          "original": "call    sub_12E38",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14553",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14556",
+          "bytes": "0fb6742405",
+          "original": "movzx   esi, [esp+64h+var_5F]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1455b",
+          "bytes": "8b14b5121a0500",
+          "original": "mov     edx, dword_51A12[esi*4]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14562",
+          "bytes": "0fafd5",
+          "original": "imul    edx, ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14565",
+          "bytes": "b964000000",
+          "original": "mov     ecx, 64h ; 'd'",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1456a",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1456c",
+          "bytes": "c1fa1f",
+          "original": "sar     edx, 1Fh",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1456f",
+          "bytes": "f7f9",
+          "original": "idiv    ecx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14571",
+          "bytes": "01c5",
+          "original": "add     ebp, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14573",
+          "bytes": "8b14b52a1a0500",
+          "original": "mov     edx, dword_51A2A[esi*4]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1457a",
+          "bytes": "0fafd7",
+          "original": "imul    edx, edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1457d",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1457f",
+          "bytes": "c1fa1f",
+          "original": "sar     edx, 1Fh",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14582",
+          "bytes": "f7f9",
+          "original": "idiv    ecx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14584",
+          "bytes": "01c7",
+          "original": "add     edi, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14586",
+          "bytes": "8b74243c",
+          "original": "mov     esi, [esp+64h+var_28]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1458a",
+          "bytes": "29fe",
+          "original": "sub     esi, edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1458c",
+          "bytes": "83fe02",
+          "original": "cmp     esi, 2",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1458f",
+          "bytes": "0f8ee4feffff",
+          "original": "jle     loc_14479",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x14595",
+          "bytes": "bf08000000",
+          "original": "mov     edi, 8",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1459a",
+          "bytes": "e9dcfeffff",
+          "original": "jmp     loc_1447B",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_ai_physical_target_terrain_20261001.json",
+                "tools/ida_probe_ai_physical_terrain.py",
+                "docs/data/ida/fd2_ai_physical_score_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1459f",
+          "bytes": "ff742434",
+          "original": "push    [esp+64h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145a3",
+          "bytes": "e86e2e0200",
+          "original": "call    free",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145a8",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145ab",
+          "bytes": "ff74240c",
+          "original": "push    [esp+64h+var_58]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145af",
+          "bytes": "e8622e0200",
+          "original": "call    free",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145b4",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145b7",
+          "bytes": "ff742420",
+          "original": "push    [esp+64h+var_44]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145bb",
+          "bytes": "e8562e0200",
+          "original": "call    free",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145c0",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145c3",
+          "bytes": "31c0",
+          "original": "xor     eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145c5",
+          "bytes": "83c454",
+          "original": "add     esp, 54h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145c8",
+          "bytes": "5d",
+          "original": "pop     ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145c9",
+          "bytes": "5f",
+          "original": "pop     edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145ca",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145cb",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x145cc",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "本匯出只閉合列出的 caller-specific claims",
+      "source": [
+        "tools/ida_probe_ai_physical_terrain.py"
+      ],
+      "callers": [
+        {
+          "address": "0x13b5f",
+          "original": "call    sub_14237"
+        },
+        {
+          "address": "0x13e26",
+          "original": "call    sub_14237"
+        },
+        {
+          "address": "0x14f0b",
+          "original": "call    sub_14237"
+        }
+      ]
+    },
+    {
+      "address": "0x1f183",
+      "end": "0x1f1cc",
+      "original_name": "sub_1F183",
+      "instructions": [
+        {
+          "address": "0x1f183",
+          "bytes": "6804000000",
+          "original": "push    4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f188",
+          "bytes": "e84a7b0100",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f18d",
+          "bytes": "8b542404",
+          "original": "mov     edx, [esp+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f191",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f193",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f196",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f198",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f19b",
+          "bytes": "8b15453a0500",
+          "original": "mov     edx, dword_53A45",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1a1",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1a3",
+          "bytes": "0fb65007",
+          "original": "movzx   edx, byte ptr [eax+7]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1a7",
+          "bytes": "83fa1c",
+          "original": "cmp     edx, 1Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1aa",
+          "bytes": "741d",
+          "original": "jz      short loc_1F1C9",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1ac",
+          "bytes": "0fb65020",
+          "original": "movzx   edx, byte ptr [eax+20h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1b0",
+          "bytes": "83fa13",
+          "original": "cmp     edx, 13h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1b3",
+          "bytes": "740e",
+          "original": "jz      short loc_1F1C3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1b5",
+          "bytes": "0fb6401f",
+          "original": "movzx   eax, byte ptr [eax+1Fh]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1b9",
+          "bytes": "83f804",
+          "original": "cmp     eax, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1bc",
+          "bytes": "7405",
+          "original": "jz      short loc_1F1C3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1be",
+          "bytes": "83f805",
+          "original": "cmp     eax, 5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1c1",
+          "bytes": "7506",
+          "original": "jnz     short loc_1F1C9",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1c3",
+          "bytes": "b801000000",
+          "original": "mov     eax, 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1c8",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1c9",
+          "bytes": "31c0",
+          "original": "xor     eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1f1cb",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_ai_physical_terrain.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "本匯出只閉合列出的 caller-specific claims",
+      "source": [
+        "tools/ida_probe_ai_physical_terrain.py"
+      ],
+      "callers": [
+        {
+          "address": "0x116ca",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x12a3d",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x1415b",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x142d5",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x143cd",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x14536",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x14bbb",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x15bed",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x188e6",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x1c7e1",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x1ed82",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x1edc7",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x2a05a",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x2a0a0",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x2a8cc",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x2b639",
+          "original": "call    sub_1F183"
+        },
+        {
+          "address": "0x2ca0e",
+          "original": "call    sub_1F183"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "date": "2026-10-01",
+  "status": "RE-CLOSED",
+  "issues": [
+    55,
+    56
+  ],
+  "exporter": "tools/ida_probe_ai_physical_terrain.py",
+  "reproduction": "固定原版目錄唯讀掛載 /input；複製既有 .i64 到容器 /tmp；FD2_IDA_OUTPUT 指向明確輸出 JSON；idat -A -S/src/tools/ida_probe_ai_physical_terrain.py /tmp/fd2.i64；使用 ida-pro-9.4-idapython:locked-v1。",
+  "claims": [
+    {
+      "id": "actor-candidate-terrain-positive-gate",
+      "level": "已證實",
+      "original": [
+        "0x143C9..0x1442C"
+      ],
+      "semantic": "actor 的 sub_1F183 非零才以候選座標 var_20/var_1C 套地形 AP/DP；保留此與物理傷害不同的 caller-specific 閘門，不能反轉。",
+      "source": [
+        "tools/ida_probe_ai_physical_terrain.py",
+        "docs/data/ida/fd2_ai_physical_score_ida.txt"
+      ]
+    },
+    {
+      "id": "target-terrain-current-record-coordinates",
+      "level": "已證實",
+      "original": [
+        "0x14532..0x14584"
+      ],
+      "semantic": "target 的 sub_1F183 非零才讀 target record 原始 +0/+1 座標取地形，不能借用 actor 候選目的地。",
+      "source": [
+        "tools/ida_probe_ai_physical_terrain.py",
+        "docs/data/ida/fd2_ai_physical_score_ida.txt"
+      ]
+    },
+    {
+      "id": "low-score-priority-fallthrough",
+      "level": "已證實",
+      "original": [
+        "0x14248",
+        "0x1427E",
+        "0x14586..0x1459A",
+        "0x14479..0x144F4"
+      ],
+      "semantic": "actor AP-target DP<=2 跳到 priority=0，仍執行 HP 比較、反擊及身份加權；>HP 仍可提升18。比較初始 priority/score=0/0，priority0候選只有分數>0才取代初值，同分保持前者。",
+      "source": [
+        "tools/ida_probe_ai_physical_terrain.py",
+        "docs/data/ida/fd2_ai_physical_score_ida.txt"
+      ]
+    }
+  ],
+  "source_database": "work/ch01-town-parity-20260908/ida/fd2-exp-read.i64（容器 /tmp 複本，原始資料庫不改寫）",
+  "exporter_sha256": "c1e2a084a2ff020acd40ad04dffcd744c1b1acb683867e4a86a196c751ec5b30"
+}

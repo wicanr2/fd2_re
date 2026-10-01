@@ -513,6 +513,18 @@ type NativeEndingPrefixConfig struct {
 	Mode     string `json:"mode"`
 }
 
+// NativeDefeatReturnTitleConfig 僅接已閉合的 pending=1 外層返回契約。
+// 原始 bytes／caller／consumer 見 fd2_pending_code1_return_title_20261001.json。
+type NativeDefeatReturnTitleConfig struct {
+	Handler  string `json:"handler"`
+	Resource int    `json:"resource"`
+	Return   string `json:"return"`
+}
+
+func (c *NativeDefeatReturnTitleConfig) IsRecoveredContract() bool {
+	return c != nil && c.Handler == "0x22e5c" && c.Resource == 79 && c.Return == "full_title_sequence"
+}
+
 const NativeEndingPrefixSourceBoundE1 = "source_bound_e1_terminal_hold"
 
 // IsRecoveredPrefixContract 即使呼叫端在記憶體內建構 Campaign、略過 JSON
@@ -558,11 +570,12 @@ type Node struct {
 	FollowWalk     bool   `json:"follow_walk,omitempty"`     // story:走位期間鏡頭鎖定跟隨走位者(原版 13×8 格視野長廊運鏡,doc25 0x11eee)
 	CamMaxY        int    `json:"cam_max_y,omitempty"`       // story:鏡頭 Y 上限(px;0=不限)。王座廳=808 擋住 map32 底部草地段
 	// (原版第一幕畫面無草地,索爾從畫面外沿紅毯走入,使用者回饋 2026-07-04 #1)
-	BGM    string `json:"bgm,omitempty"`
-	Next   string `json:"next,omitempty"`    // story/event
-	Rumor  string `json:"rumor,omitempty"`   // hotel：服務 0（0x2FFA5 打聽消息）要進的 story 節點
-	OnWin  string `json:"on_win,omitempty"`  // battle
-	OnLose string `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
+	BGM                     string                         `json:"bgm,omitempty"`
+	Next                    string                         `json:"next,omitempty"`    // story/event
+	Rumor                   string                         `json:"rumor,omitempty"`   // hotel：服務 0（0x2FFA5 打聽消息）要進的 story 節點
+	OnWin                   string                         `json:"on_win,omitempty"`  // battle
+	OnLose                  string                         `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
+	NativeDefeatReturnTitle *NativeDefeatReturnTitleConfig `json:"native_defeat_return_title,omitempty"`
 	// EndingPartySnapshotOnWin 是重製終局資料邊界；只允許勝利直接進 ending
 	// 的 battle。它保存最後隊伍供回顧，不冒稱原版 FD2.SAV ABI。
 	EndingPartySnapshotOnWin bool                      `json:"ending_party_snapshot_on_win,omitempty"`
@@ -713,6 +726,9 @@ func Decode(raw []byte) (*Campaign, error) {
 		return nil
 	}
 	for id, n := range c.Nodes {
+		if n.NativeDefeatReturnTitle != nil && (n.Type != "battle" || n.OnLose != "" || !n.NativeDefeatReturnTitle.IsRecoveredContract()) {
+			return nil, fmt.Errorf("節點 %q 的原生敗北返回標題契約無效", id)
+		}
 		if err := validateBeats(id, n.Beats); err != nil {
 			return nil, err
 		}

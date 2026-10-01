@@ -22,11 +22,12 @@ type PendingCode1PresentationStep struct {
 	DurationMS int
 }
 
-// NativePendingCode1PresentationPlan is data only. The Game runtime must not
-// consume it until the normal-player pending-code producer/consumer is wired.
+// NativePendingCode1PresentationPlan 保留 0x22E5C 固定呈現順序；正式敗北
+// owner 依 READY 規格接線，其他 pending producer 不自動取得敗北語意。
 func NativePendingCode1PresentationPlan() []PendingCode1PresentationStep {
 	return []PendingCode1PresentationStep{
 		{Kind: PendingCode1StopBGM},
+		{Kind: PendingCode1WaitTick, Count: 1},
 		{Kind: PendingCode1PreparePalette},
 		{Kind: PendingCode1ClearScreen},
 		{Kind: PendingCode1DrawFrame, Frame: 0},
