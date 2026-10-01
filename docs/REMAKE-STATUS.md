@@ -30,7 +30,7 @@
 | 第 9 章 | 行為、節點、交易、畫面 | 298 | 299 | 286（203 張逐像素相同） | 627 px | 整檔相同 | [收據](data/ui-traces/parity-ch09.json) ／ [4 張](figures/parity-ch09-samples-p1.png) |
 | 第 10 章 | 行為、節點、交易、畫面 | 280 | 281 | 268（174 張逐像素相同） | 428 px | 整檔相同 | [收據](data/ui-traces/parity-ch10.json) ／ [5 張](figures/parity-ch10-samples-p1.png) |
 | 第 11 章 | 行為、節點、交易、畫面 | 240 | 241 | 231（157 張逐像素相同） | 489 px | 整檔相同 | [收據](data/ui-traces/parity-ch11.json) ／ [5 張](figures/parity-ch11-samples-p1.png) |
-| 第 12 章 | 行為、節點、交易、畫面 | 286 | 287 | 275（176 張逐像素相同） | 215 px | 整檔相同 | [收據](data/ui-traces/parity-ch12.json) ／ [7 張](figures/parity-ch12-samples-p1.png) |
+| 第 12 章 | 行為、節點、交易、畫面 | 286 | 287 | 275（177 張逐像素相同） | 215 px | 整檔相同 | [收據](data/ui-traces/parity-ch12.json) ／ [7 張](figures/parity-ch12-samples-p1.png) |
 
 其餘各章（第 1 章、第 2 章、第 3 章…共 21 章）還沒跑這套逐章對拍；第 1～3 章另有更早的單點證據，不列在這張表裡。
 

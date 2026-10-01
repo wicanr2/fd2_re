@@ -11682,6 +11682,13 @@ func (g *Game) nativeMapFrameImage() (*image.Paletted, bool) {
 }
 
 func (g *Game) composeNativeMapFrame() error {
+	return g.composeNativeMapFrameForActionBackground(false)
+}
+
+// composeNativeMapFrameForActionBackground 的 closedAction 投影只供 0x190AC
+// 取寶提示底圖；依 17643 的背景恢復與 seq3820 的同狀態畫面，保留原始
+// selector，省略互動 range／selection。契約見 SDD #53，不能套用其他對話。
+func (g *Game) composeNativeMapFrameForActionBackground(closedAction bool) error {
 	now := time.Now()
 	if g != nil && g.nativeMapFrozenNow != nil {
 		now = g.nativeMapFrozenNow()
@@ -11691,7 +11698,7 @@ func (g *Game) composeNativeMapFrame() error {
 		// 時鐘。這避免 Xvfb 排程差異把同一狀態存成不同動畫幀。
 		now = time.Unix(0, int64(g.frame)*int64(time.Second/60))
 	}
-	return g.composeNativeMapFrameAt(now)
+	return g.composeNativeMapFrameAtForActionBackground(now, closedAction)
 }
 
 // composeNativeMapFrameAt owns one complete 0x11CAC-style transaction:
@@ -11700,6 +11707,10 @@ func (g *Game) composeNativeMapFrame() error {
 // succeeds. The explicit time argument keeps CONTINUE redraw tests
 // deterministic.
 func (g *Game) composeNativeMapFrameAt(now time.Time) error {
+	return g.composeNativeMapFrameAtForActionBackground(now, false)
+}
+
+func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedAction bool) error {
 	a := g.nativeMapAssets
 	if g.st == nil {
 		return errors.New("native map frame: battle state is unavailable")
@@ -11759,7 +11770,9 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 	if err != nil {
 		return err
 	}
-	if overlay, err := g.nativeMapSelectionOverlay(&candidateState); err != nil {
+	if closedAction {
+		in.Frame.RangeMode = 0
+	} else if overlay, err := g.nativeMapSelectionOverlay(&candidateState); err != nil {
 		return err
 	} else if overlay != nil {
 		in.Frame.SelectionOverlay = overlay

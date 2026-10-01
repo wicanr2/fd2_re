@@ -188,3 +188,8 @@ remake 每關的劇本檔 `remake/assets/scenarios/chNN.json` = **事件骨架 +
 [九項驗收收據](../data/fd2_join_copyback_verification_20261001.json)及
 [原版受版控控制計畫](../data/parity-plans/ch02-join-copyback.jsonl)。
 工具、規格、正式與建槽回歸入口集中58；既有JOIN殘值歷史收據保留。
+
+
+#53 取寶提示底圖：[58蒐證入口](58-fd2-exe-re-coverage.md) →
+[開框VGA與行動caller](../data/ida/fd2_treasure_background_20261001.json)；
+原版控制計畫沿用 ch12-sample.jsonl，規格狀態與限制由56／58承載。

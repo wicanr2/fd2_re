@@ -1188,3 +1188,32 @@ go test ./cmd/fd2-chapter-slot ./internal/campaign ./internal/battle ./internal/
 不宣稱跨實作骰序一致。
 
 #23 遠端回讀已為 CLOSED；工作清單快照依主機 gh 重新產生，剩餘未完成項以遠端 Issue 為準。
+
+
+## 2026-10-01：#53 取寶提示底圖蒐證
+
+[IDA主證據](../data/ida/fd2_treasure_background_20261001.json)及
+[受版控探針](../../tools/ida_probe_treasure_background.py)補足待機caller與開框VGA保存。
+1956B的195B0..195DE保存現成64000-byte VGA，沒有重新組合游標；
+18D8C先關行動環、待機後190AC、最後13512提交。17643恢復72×72背景，
+但18F0E仍會11CAC(0)，不得只由close末端推論全程禁游標。
+sample-r5 seq3820的raw selector仍為1，畫面沒有白框，故不能修改正式selector來讓差異消失。
+目前狀態表：RE-CLOSED／DATA-READY／RUNTIME-E1，56底圖契約為CONFORMED。
+原版取寶caller的內部完整逐指令解釋仍有強推論限制，不重開range bank規則。
+新原版treasure-original-r2已從同槽同計畫重生；r1缺少AI／成長RNG trace主動停止，
+屬驗證設定問題，不能作本輪通過收據。
+
+正式treasure-formal-r2重播、[275張四項驗收收據](../data/ui-traces/parity-ch12.json)及
+[抽樣圖索引](../data/ui-traces/parity-ch12-samples.json)均已更新。
+seq3820提問134→0像素；seq3853取得後寶箱／HUD仍為0；酒店存檔SHA-256保持
+6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。
+177張0像素，最大差異215，像素預算640未改；剩餘指令環與HUD縮圖差異仍依#52等Issue處理。
+本輪只消除#53，不宣稱全章逐像素或增加未抽樣功能的PLAYER-E2。
+
+重跑仍由tools/dosgolem_oracle.sh驅動乾淨dosgolem a9bcd621，使用ch12-sample.jsonl，
+原始FD2.EXE雜湊如主證據、建槽SHA-256為ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b。
+原版全新決定性程序，取寶入口control_seq3816的RNG word64324，提問3820為14238；
+重製seed4並承接既有AI／成長決策點受控word，沒有反覆重擲。
+建構槽boost政策及force-enemy-clear均保留，依111／114章收據例外，只驗本題底圖及交易。
+新增EIP trace：190AC、1911D、1917E、1956B、196CB，並保留
+12CEA、13A9F、1E54A、34C76、34CB3、4E893供重播；步數上限22000000000。

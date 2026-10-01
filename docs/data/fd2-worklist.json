@@ -313,17 +313,17 @@
       "issue": 52
     },
     {
-      "id": "ch12-treasure-prompt-cursor-remains",
-      "layer": "player",
-      "category": "缺陷",
-      "title": "第十二章取寶提問底圖仍顯示游標框",
-      "body": "sample-r5 seq3820「發現寶藏，要挖掘嗎？」的上方英雄沒有游標框；remake-r8 remake-0271-p11.png 顯示框線，差134像素，bbox [244,28,267,51]。取得後seq3853箱格及HUD為0px、存檔相同；不影響#43／#44的共用原生事件狀態與開箱驗收。本項是已passed章內的可選提示畫面修飾。",
-      "acceptance": "依原生取寶提示開框前的游標／底圖契約補足READY規格與正式介面接線，seq3820游標框差異消失，取得後事件狀態及HUD仍相同。",
+      "id": "ch11-ledger-slot-policy-missing",
+      "layer": "tooling",
+      "category": "工作",
+      "title": "第十一章對拍台帳缺少可重建的 slot_policy 欄位",
+      "body": "本輪 #53 收尾核對時，tools/fd2_parity_progress.py 的 problems() 回報 ch11: passed 但 slot_policy 缺 levels_per_chapter／seed／event_states／boost。其餘本輪第十二章四項對拍與 Go 回歸均通過。這是台帳政策欄位缺口，不是第十一章原版／重製結果反證，不因此重開既有章收據或重跑戰鬥。",
+      "acceptance": "以既有 ch11-manifest.json、槽雜湊與原版收據回填可追溯的 slot_policy；無法由來源確認的政策明示 unknown 並記錄限制，不猜測或改寫舊收據。台帳驗證不再回報本項。",
       "verify": {
         "kind": "manual",
-        "note": "parity-ch12 seq3820原圖／重製圖與3853取得後點。"
+        "note": "tools/fd2_parity_progress.py verify 的 ch11 slot_policy 訊號，以及欄位來源／槽雜湊核對。"
       },
-      "issue": 53
+      "issue": 57
     }
   ]
 }

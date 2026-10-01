@@ -24,6 +24,39 @@ func nativeFrameTestSprite(pixel byte) fdicon.Sprite {
 	return fdicon.Sprite{Pixels: pixels, Mask: mask, RemapMask: make([]byte, 24*24)}
 }
 
+func TestNativeTreasureBackgroundPreservesSelectorAndRestoresInteractiveFrame(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	if err := state.MaterializeNativeMapViewState(battle.NativeMapViewState{
+		CursorX: 4, CursorY: 4, VisibleCursorX: 4, VisibleCursorY: 4,
+	}); err != nil || !state.MaterializeNativeMapRangeMode(1) {
+		t.Fatalf("底圖測試狀態：%v", err)
+	}
+	g := &Game{nativeMapAssets: assets, m: field, st: state}
+	now := time.Unix(500, 0)
+	if err := g.composeNativeMapFrameAtForActionBackground(now, true); err != nil {
+		t.Fatal(err)
+	}
+	const cursorPixel = 100*320 + 100
+	if state.NativeMapRangeMode != 1 || g.nativeMapVGA[cursorPixel] != 1 {
+		t.Fatalf("取寶底圖改動selector或仍含互動游標：mode=%d pixel=%d", state.NativeMapRangeMode, g.nativeMapVGA[cursorPixel])
+	}
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	if state.NativeMapRangeMode != 1 || g.nativeMapVGA[cursorPixel] != 2 {
+		t.Fatal("取寶底圖投影污染後續互動游標")
+	}
+	before := append([]byte(nil), g.nativeMapVGA...)
+	beforeCycles := state.NativeMapCycleState
+	state.MaterializeNativeMapRangeMode(6)
+	if err := g.composeNativeMapFrameAtForActionBackground(now, true); err == nil {
+		t.Fatal("取寶底圖把未知selector猜成有效狀態")
+	}
+	if !bytes.Equal(before, g.nativeMapVGA) || state.NativeMapCycleState != beforeCycles {
+		t.Fatal("失敗的取寶底圖合成發布了部分畫面或時序")
+	}
+}
+
 func TestNativeMapHUDReadsMutableTileAndRejectsBrokenBuffer(t *testing.T) {
 	a, m, st := completeNativeMapFrameFixture(t)
 	g := &Game{nativeMapAssets: a, m: m, st: st}

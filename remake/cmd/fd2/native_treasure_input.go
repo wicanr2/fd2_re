@@ -25,7 +25,7 @@ func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treas
 	if err != nil || len(portraits) == 0 {
 		return fmt.Errorf("native treasure: actor portrait unavailable")
 	}
-	if err := g.composeNativeMapFrame(); err != nil {
+	if err := g.composeNativeMapFrameForActionBackground(true); err != nil {
 		return err
 	}
 	ui := g.nativePreparationUI

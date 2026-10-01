@@ -147,14 +147,6 @@ sample-r5／remake-r8 的完整四gate通過，但13個點反覆在 HUD 地形�
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
-### 第十二章取寶提問底圖仍顯示游標框
-
-`ch12-treasure-prompt-cursor-remains` · 缺陷 · [#53](https://github.com/wicanr2/fd2_re/issues/53) · 仍未完成 · 要人判
-
-sample-r5 seq3820「發現寶藏，要挖掘嗎？」的上方英雄沒有游標框；remake-r8 remake-0271-p11.png 顯示框線，差134像素，bbox [244,28,267,51]。取得後seq3853箱格及HUD為0px、存檔相同；不影響#43／#44的共用原生事件狀態與開箱驗收。本項是已passed章內的可選提示畫面修飾。
-
-怎樣算做完：依原生取寶提示開框前的游標／底圖契約補足READY規格與正式介面接線，seq3820游標框差異消失，取得後事件狀態及HUD仍相同。
-
 ## release — 發行、平台與封包
 
 ### 網頁版前景玩家路徑待最終自動驗收
@@ -218,5 +210,13 @@ sample-r5 seq3820「發現寶藏，要挖掘嗎？」的上方英雄沒有游標
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
+
+### 第十一章對拍台帳缺少可重建的 slot_policy 欄位
+
+`ch11-ledger-slot-policy-missing` · 工作 · [#57](https://github.com/wicanr2/fd2_re/issues/57) · 仍未完成 · 要人判
+
+本輪 #53 收尾核對時，tools/fd2_parity_progress.py 的 problems() 回報 ch11: passed 但 slot_policy 缺 levels_per_chapter／seed／event_states／boost。其餘本輪第十二章四項對拍與 Go 回歸均通過。這是台帳政策欄位缺口，不是第十一章原版／重製結果反證，不因此重開既有章收據或重跑戰鬥。
+
+怎樣算做完：以既有 ch11-manifest.json、槽雜湊與原版收據回填可追溯的 slot_policy；無法由來源確認的政策明示 unknown 並記錄限制，不猜測或改寫舊收據。台帳驗證不再回報本項。
 
 <!-- END fd2_worklist.py render -->

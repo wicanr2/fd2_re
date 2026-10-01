@@ -845,6 +845,19 @@ func (r *parityReplay) bannerVariants() []frameVariant {
 		}
 		if state := g.nativeSystemEndTurnUI; state != nil && state.treasure != nil &&
 			g.nativeSystemEndTurnConfirm && g.nativeClassUIJob == nil && g.nativePreparationUI != nil {
+			// 相位變體仍走正式取寶底圖 owner；副本避免更新正式狀態與時鐘。
+			candidate := *g
+			candidateState := *g.st
+			candidate.st = &candidateState
+			candidate.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
+			candidate.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
+			if err := candidate.composeNativeMapFrameForActionBackground(true); err != nil {
+				r.t.Fatalf("取寶底圖相位合成失敗：%v", err)
+			}
+			img, ok = candidate.nativeMapFrameImage()
+			if !ok {
+				r.t.Fatal("取寶底圖相位影像不可用")
+			}
 			// 0x190AC 的取得提問停在 0x19953 讀鍵：畫面是開框時抄下的底圖＋問句＋YES／NO，
 			// 選項外框脈動相位原版 checkpoint 沒記，各出一張。
 			// 框外是開框時抄下的底圖；輔助底面相位跟著這一張變體走，所以框外改抄目前整幀，

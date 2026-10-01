@@ -1,0 +1,6444 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "functions": [
+    {
+      "target": "0x1956b",
+      "address": "0x1956b",
+      "end": "0x196cb",
+      "original_name": "sub_1956B",
+      "instructions": [
+        {
+          "address": "0x1956b",
+          "bytes": "6820000000",
+          "original": "push    20h ; ' '",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19570",
+          "bytes": "e862d70100",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19575",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19576",
+          "bytes": "8b5c2408",
+          "original": "mov     ebx, [esp+4+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1957a",
+          "bytes": "6800fa0000",
+          "original": "push    0FA00h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1957f",
+          "bytes": "e892d70100",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19584",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19587",
+          "bytes": "a35b3c0500",
+          "original": "mov     dword_53C5B, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1958c",
+          "bytes": "6800fa0000",
+          "original": "push    0FA00h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19591",
+          "bytes": "e880d70100",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19596",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19599",
+          "bytes": "a35f3c0500",
+          "original": "mov     dword_53C5F, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1959e",
+          "bytes": "6800fa0000",
+          "original": "push    0FA00h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195a3",
+          "bytes": "e86ed70100",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195a8",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195ab",
+          "bytes": "a3633c0500",
+          "original": "mov     dword_53C63, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195b0",
+          "bytes": "6800fa0000",
+          "original": "push    0FA00h",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195b5",
+          "bytes": "6800000a00",
+          "original": "push    0A0000h",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195ba",
+          "bytes": "ff355f3c0500",
+          "original": "push    dword_53C5F",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195c0",
+          "bytes": "e8ffdd0100",
+          "original": "call    memmove",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195c5",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195c8",
+          "bytes": "6800fa0000",
+          "original": "push    0FA00h",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195cd",
+          "bytes": "ff355f3c0500",
+          "original": "push    dword_53C5F",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195d3",
+          "bytes": "ff35633c0500",
+          "original": "push    dword_53C63",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195d9",
+          "bytes": "e8e6dd0100",
+          "original": "call    memmove",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195de",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x195e1",
+          "bytes": "6a05",
+          "original": "push    5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195e3",
+          "bytes": "6a13",
+          "original": "push    13h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195e5",
+          "bytes": "6a70",
+          "original": "push    70h ; 'p'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195e7",
+          "bytes": "6a05",
+          "original": "push    5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195e9",
+          "bytes": "6840010000",
+          "original": "push    140h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195ee",
+          "bytes": "ff35633c0500",
+          "original": "push    dword_53C63",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195f4",
+          "bytes": "e8bdd2ffff",
+          "original": "call    sub_168B6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195f9",
+          "bytes": "83c418",
+          "original": "add     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x195fc",
+          "bytes": "81fb80000000",
+          "original": "cmp     ebx, 80h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19602",
+          "bytes": "750c",
+          "original": "jnz     short loc_19610",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19604",
+          "bytes": "c705673c0500bb100000",
+          "original": "mov     dword_53C67, 10BBh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1960e",
+          "bytes": "eb5a",
+          "original": "jmp     short loc_1966A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19610",
+          "bytes": "81fb81000000",
+          "original": "cmp     ebx, 81h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19616",
+          "bytes": "750c",
+          "original": "jnz     short loc_19624",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19618",
+          "bytes": "c705673c0500ab060000",
+          "original": "mov     dword_53C67, 6ABh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19622",
+          "bytes": "eb46",
+          "original": "jmp     short loc_1966A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19624",
+          "bytes": "81fb82000000",
+          "original": "cmp     ebx, 82h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1962a",
+          "bytes": "750c",
+          "original": "jnz     short loc_19638",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1962c",
+          "bytes": "c705673c0500630f0000",
+          "original": "mov     dword_53C67, 0F63h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19636",
+          "bytes": "eb32",
+          "original": "jmp     short loc_1966A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19638",
+          "bytes": "81fb83000000",
+          "original": "cmp     ebx, 83h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1963e",
+          "bytes": "750c",
+          "original": "jnz     short loc_1964C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19640",
+          "bytes": "c705673c050076050000",
+          "original": "mov     dword_53C67, 576h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1964a",
+          "bytes": "eb1e",
+          "original": "jmp     short loc_1966A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1964c",
+          "bytes": "81fb84000000",
+          "original": "cmp     ebx, 84h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19652",
+          "bytes": "750c",
+          "original": "jnz     short loc_19660",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19654",
+          "bytes": "c705673c05003c0e0000",
+          "original": "mov     dword_53C67, 0E3Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1965e",
+          "bytes": "eb0a",
+          "original": "jmp     short loc_1966A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19660",
+          "bytes": "c705673c050017900000",
+          "original": "mov     dword_53C67, 9017h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1966a",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1966b",
+          "bytes": "ff35853a0500",
+          "original": "push    dword_53A85",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19671",
+          "bytes": "68701a0500",
+          "original": "push    offset aDatoDat; \"DATO.DAT\"",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19676",
+          "bytes": "e83f7bffff",
+          "original": "call    sub_111BA",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1967b",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1967e",
+          "bytes": "a3853a0500",
+          "original": "mov     dword_53A85, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19683",
+          "bytes": "0fb618",
+          "original": "movzx   ebx, byte ptr [eax]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19686",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19688",
+          "bytes": "6840010000",
+          "original": "push    140h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1968d",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1968e",
+          "bytes": "a1633c0500",
+          "original": "mov     eax, dword_53C63",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19693",
+          "bytes": "0305673c0500",
+          "original": "add     eax, dword_53C67",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19699",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1969a",
+          "bytes": "e842520300",
+          "original": "call    sub_4E8E1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1969f",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196a2",
+          "bytes": "bb05000000",
+          "original": "mov     ebx, 5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196a7",
+          "bytes": "eb1c",
+          "original": "jmp     short loc_196C5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196a9",
+          "bytes": "ff35633c0500",
+          "original": "push    dword_53C63",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196af",
+          "bytes": "ff355b3c0500",
+          "original": "push    dword_53C5B",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196b5",
+          "bytes": "6bc30d",
+          "original": "imul    eax, ebx, 0Dh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196b8",
+          "bytes": "83c070",
+          "original": "add     eax, 70h ; 'p'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196bb",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196bc",
+          "bytes": "e88b000000",
+          "original": "call    sub_1974C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196c1",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196c4",
+          "bytes": "4b",
+          "original": "dec     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196c5",
+          "bytes": "85db",
+          "original": "test    ebx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196c7",
+          "bytes": "7de0",
+          "original": "jge     short loc_196A9",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196c9",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x196ca",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合個別已審查的寫入與消費端",
+      "source": [
+        "tools/ida_probe_treasure_background.py"
+      ],
+      "callers": [
+        {
+          "address": "0x100bf",
+          "original": "call    sub_1956B",
+          "bytes": "e8a7940000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1700b",
+          "original": "call    sub_1956B",
+          "bytes": "e85b250000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x171d2",
+          "original": "call    sub_1956B",
+          "bytes": "e894230000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1911d",
+          "original": "call    sub_1956B",
+          "bytes": "e849040000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1929a",
+          "original": "call    sub_1956B",
+          "bytes": "e8cc020000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1936a",
+          "original": "call    sub_1956B",
+          "bytes": "e8fc010000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x193cf",
+          "original": "call    sub_1956B",
+          "bytes": "e897010000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x19f1c",
+          "original": "call    sub_1956B",
+          "bytes": "e84af6ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1a1ac",
+          "original": "call    sub_1956B",
+          "bytes": "e8baf3ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1a25d",
+          "original": "call    sub_1956B",
+          "bytes": "e809f3ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1a8f6",
+          "original": "call    sub_1956B",
+          "bytes": "e870ecffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1a9c7",
+          "original": "call    sub_1956B",
+          "bytes": "e89febffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1aa7e",
+          "original": "call    sub_1956B",
+          "bytes": "e8e8eaffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1ab2e",
+          "original": "call    sub_1956B",
+          "bytes": "e838eaffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1aba7",
+          "original": "call    sub_1956B",
+          "bytes": "e8bfe9ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1ac98",
+          "original": "call    sub_1956B",
+          "bytes": "e8cee8ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1e32d",
+          "original": "call    sub_1956B",
+          "bytes": "e839b2ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2c3af",
+          "original": "call    sub_1956B",
+          "bytes": "e8b7d1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2cc2b",
+          "original": "call    sub_1956B",
+          "bytes": "e83bc9feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2d0d3",
+          "original": "call    sub_1956B",
+          "bytes": "e893c4feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2e3e0",
+          "original": "call    sub_1956B",
+          "bytes": "e886b1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2e555",
+          "original": "call    sub_1956B",
+          "bytes": "e811b0feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f160",
+          "original": "call    sub_1956B",
+          "bytes": "e806a4feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f25e",
+          "original": "call    sub_1956B",
+          "bytes": "e808a3feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f39e",
+          "original": "call    sub_1956B",
+          "bytes": "e8c8a1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f41e",
+          "original": "call    sub_1956B",
+          "bytes": "e848a1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f6ba",
+          "original": "call    sub_1956B",
+          "bytes": "e8ac9efeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f7e8",
+          "original": "call    sub_1956B",
+          "bytes": "e87e9dfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f94a",
+          "original": "call    sub_1956B",
+          "bytes": "e81c9cfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2f9a1",
+          "original": "call    sub_1956B",
+          "bytes": "e8c59bfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2fa89",
+          "original": "call    sub_1956B",
+          "bytes": "e8dd9afeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2fb2a",
+          "original": "call    sub_1956B",
+          "bytes": "e83c9afeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2fcf5",
+          "original": "call    sub_1956B",
+          "bytes": "e87198feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2fdbb",
+          "original": "call    sub_1956B",
+          "bytes": "e8ab97feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x2fe64",
+          "original": "call    sub_1956B",
+          "bytes": "e80297feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x30192",
+          "original": "call    sub_1956B",
+          "bytes": "e8d493feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x302d0",
+          "original": "call    sub_1956B",
+          "bytes": "e89692feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x303d6",
+          "original": "call    sub_1956B",
+          "bytes": "e89091feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x3079f",
+          "original": "call    sub_1956B",
+          "bytes": "e8c78dfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x308da",
+          "original": "call    sub_1956B",
+          "bytes": "e88c8cfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x30deb",
+          "original": "call    sub_1956B",
+          "bytes": "e87b87feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x30e41",
+          "original": "call    sub_1956B",
+          "bytes": "e82587feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x30eb0",
+          "original": "call    sub_1956B",
+          "bytes": "e8b686feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x313b4",
+          "original": "call    sub_1956B",
+          "bytes": "e8b281feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x3140a",
+          "original": "call    sub_1956B",
+          "bytes": "e85c81feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x31483",
+          "original": "call    sub_1956B",
+          "bytes": "e8e380feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x3163e",
+          "original": "call    sub_1956B",
+          "bytes": "e8287ffeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x31d3e",
+          "original": "call    sub_1956B",
+          "bytes": "e82878feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x31e0d",
+          "original": "call    sub_1956B",
+          "bytes": "e85977feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x35537",
+          "original": "call    sub_1956B",
+          "bytes": "e82f40feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x356ec",
+          "original": "call    sub_1956B",
+          "bytes": "e87a3efeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x35cc0",
+          "original": "call    sub_1956B",
+          "bytes": "e8a638feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        }
+      ]
+    },
+    {
+      "target": "0x176b4",
+      "address": "0x176b4",
+      "end": "0x177fc",
+      "original_name": "sub_176B4",
+      "instructions": [
+        {
+          "address": "0x176b4",
+          "bytes": "6844000000",
+          "original": "push    44h ; 'D'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176b9",
+          "bytes": "e819f60100",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176be",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176bf",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176c0",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176c1",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176c2",
+          "bytes": "83ec18",
+          "original": "sub     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176c5",
+          "bytes": "8b6c2430",
+          "original": "mov     ebp, [esp+28h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176c9",
+          "bytes": "6a01",
+          "original": "push    1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176cb",
+          "bytes": "6a08",
+          "original": "push    8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176cd",
+          "bytes": "ff35ec3e0500",
+          "original": "push    dword_53EEC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176d3",
+          "bytes": "e8bee30000",
+          "original": "call    sub_25A96",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176d8",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176db",
+          "bytes": "e82db5ffff",
+          "original": "call    sub_12C0D",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176e0",
+          "bytes": "89442410",
+          "original": "mov     [esp+28h+var_18], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176e4",
+          "bytes": "a1493a0500",
+          "original": "mov     eax, dword_53A49",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176e9",
+          "bytes": "6b3db93a050018",
+          "original": "imul    edi, dword_53AB9, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176f0",
+          "bytes": "0588800000",
+          "original": "add     eax, 8088h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176f5",
+          "bytes": "01c7",
+          "original": "add     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176f7",
+          "bytes": "8b15bd3a0500",
+          "original": "mov     edx, dword_53ABD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176fd",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176ff",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17702",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17704",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17707",
+          "bytes": "29d0",
+          "original": "sub     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17709",
+          "bytes": "c1e006",
+          "original": "shl     eax, 6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1770c",
+          "bytes": "89c2",
+          "original": "mov     edx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1770e",
+          "bytes": "c1e003",
+          "original": "shl     eax, 3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17711",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17713",
+          "bytes": "01c7",
+          "original": "add     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17715",
+          "bytes": "c7042460dcffff",
+          "original": "mov     [esp+28h+var_28], 0FFFFDC60h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1771c",
+          "bytes": "c744240478030000",
+          "original": "mov     [esp+28h+var_24], 378h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17724",
+          "bytes": "c7442408a8030000",
+          "original": "mov     [esp+28h+var_20], 3A8h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1772c",
+          "bytes": "c744240cc02a0000",
+          "original": "mov     [esp+28h+var_1C], 2AC0h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17734",
+          "bytes": "c744241400000000",
+          "original": "mov     [esp+28h+var_14], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1773c",
+          "bytes": "e983000000",
+          "original": "jmp     loc_177C4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17741",
+          "bytes": "89f0",
+          "original": "mov     eax, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17743",
+          "bytes": "8b54242c",
+          "original": "mov     edx, [esp+28h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17747",
+          "bytes": "8b1c82",
+          "original": "mov     ebx, [edx+eax*4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1774a",
+          "bytes": "89da",
+          "original": "mov     edx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1774c",
+          "bytes": "c1e202",
+          "original": "shl     edx, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1774f",
+          "bytes": "29da",
+          "original": "sub     edx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17751",
+          "bytes": "89d3",
+          "original": "mov     ebx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17753",
+          "bytes": "8b548500",
+          "original": "mov     edx, [ebp+eax*4+0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17757",
+          "bytes": "01d2",
+          "original": "add     edx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17759",
+          "bytes": "01da",
+          "original": "add     edx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1775b",
+          "bytes": "8b1d893a0500",
+          "original": "mov     ebx, dword_53A89",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17761",
+          "bytes": "8b1493",
+          "original": "mov     edx, [ebx+edx*4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17764",
+          "bytes": "01da",
+          "original": "add     edx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17766",
+          "bytes": "68c8010000",
+          "original": "push    1C8h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1776b",
+          "bytes": "52",
+          "original": "push    edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1776c",
+          "bytes": "8b44b408",
+          "original": "mov     eax, [esp+esi*4+30h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17770",
+          "bytes": "01f8",
+          "original": "add     eax, edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17772",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17773",
+          "bytes": "e86c720300",
+          "original": "call    sub_4E9E4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17778",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1777b",
+          "bytes": "46",
+          "original": "inc     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1777c",
+          "bytes": "83fe04",
+          "original": "cmp     esi, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1777f",
+          "bytes": "7cc0",
+          "original": "jl      short loc_17741",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17781",
+          "bytes": "837c2410ff",
+          "original": "cmp     [esp+28h+var_18], 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17786",
+          "bytes": "740c",
+          "original": "jz      short loc_17794",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17788",
+          "bytes": "ff742410",
+          "original": "push    [esp+28h+var_18]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1778c",
+          "bytes": "e84fb0ffff",
+          "original": "call    sub_127E0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17791",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17794",
+          "bytes": "68c0000000",
+          "original": "push    0C0h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17799",
+          "bytes": "6838010000",
+          "original": "push    138h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1779e",
+          "bytes": "68c8010000",
+          "original": "push    1C8h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177a3",
+          "bytes": "a1493a0500",
+          "original": "mov     eax, dword_53A49",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177a8",
+          "bytes": "0588800000",
+          "original": "add     eax, 8088h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177ad",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177ae",
+          "bytes": "6840010000",
+          "original": "push    140h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177b3",
+          "bytes": "6804050a00",
+          "original": "push    0A0504h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177b8",
+          "bytes": "e8f3a6ffff",
+          "original": "call    sub_11EB0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177bd",
+          "bytes": "83c418",
+          "original": "add     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177c0",
+          "bytes": "ff442414",
+          "original": "inc     [esp+28h+var_14]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177c4",
+          "bytes": "837c241404",
+          "original": "cmp     [esp+28h+var_14], 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177c9",
+          "bytes": "7d22",
+          "original": "jge     short loc_177ED",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177cb",
+          "bytes": "810424e8080000",
+          "original": "add     [esp+28h+var_28], 8E8h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177d2",
+          "bytes": "8344240406",
+          "original": "add     [esp+28h+var_24], 6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177d7",
+          "bytes": "836c240806",
+          "original": "sub     [esp+28h+var_20], 6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177dc",
+          "bytes": "816c240ce8080000",
+          "original": "sub     [esp+28h+var_1C], 8E8h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177e4",
+          "bytes": "e85afeffff",
+          "original": "call    sub_17643",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177e9",
+          "bytes": "31f6",
+          "original": "xor     esi, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177eb",
+          "bytes": "eb8f",
+          "original": "jmp     short loc_1777C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177ed",
+          "bytes": "e851feffff",
+          "original": "call    sub_17643",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "行動環關閉末端呼叫17643，恢復先前保存的72×72背景；其caller18D8C仍有自己的11CAC(0)，不能把此行單獨解釋成全路徑永久禁止游標。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x177f2",
+          "bytes": "e83a680300",
+          "original": "call    sub_4E031",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x177f7",
+          "bytes": "e9d0c7ffff",
+          "original": "jmp     loc_13FCC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合個別已審查的寫入與消費端",
+      "source": [
+        "tools/ida_probe_treasure_background.py"
+      ],
+      "callers": [
+        {
+          "address": "0x16fc1",
+          "original": "call    sub_176B4",
+          "bytes": "e8ee060000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1734a",
+          "original": "call    sub_176B4",
+          "bytes": "e865030000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x18f04",
+          "original": "call    sub_176B4",
+          "bytes": "e8abe7ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x19edc",
+          "original": "call    sub_176B4",
+          "bytes": "e8d3d7ffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x1bca1",
+          "original": "call    sub_176B4",
+          "bytes": "e80ebaffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        }
+      ]
+    },
+    {
+      "target": "0x17643",
+      "address": "0x17643",
+      "end": "0x176b4",
+      "original_name": "sub_17643",
+      "instructions": [
+        {
+          "address": "0x17643",
+          "bytes": "6818000000",
+          "original": "push    18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17648",
+          "bytes": "e88af60100",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1764d",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1764e",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1764f",
+          "bytes": "a1b93a0500",
+          "original": "mov     eax, dword_53AB9",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17654",
+          "bytes": "48",
+          "original": "dec     eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17655",
+          "bytes": "6bf018",
+          "original": "imul    esi, eax, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17658",
+          "bytes": "a1493a0500",
+          "original": "mov     eax, dword_53A49",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1765d",
+          "bytes": "0588800000",
+          "original": "add     eax, 8088h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17662",
+          "bytes": "01c6",
+          "original": "add     esi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17664",
+          "bytes": "8b15bd3a0500",
+          "original": "mov     edx, dword_53ABD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1766a",
+          "bytes": "4a",
+          "original": "dec     edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1766b",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1766d",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17670",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17672",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17675",
+          "bytes": "29d0",
+          "original": "sub     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17677",
+          "bytes": "c1e006",
+          "original": "shl     eax, 6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1767a",
+          "bytes": "89c2",
+          "original": "mov     edx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1767c",
+          "bytes": "c1e003",
+          "original": "shl     eax, 3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1767f",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17681",
+          "bytes": "01c6",
+          "original": "add     esi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17683",
+          "bytes": "31db",
+          "original": "xor     ebx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17685",
+          "bytes": "eb25",
+          "original": "jmp     short loc_176AC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x17687",
+          "bytes": "6a48",
+          "original": "push    48h ; 'H'",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x17689",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1768b",
+          "bytes": "c1e003",
+          "original": "shl     eax, 3",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1768e",
+          "bytes": "8d1403",
+          "original": "lea     edx, [ebx+eax]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x17691",
+          "bytes": "c1e203",
+          "original": "shl     edx, 3",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x17694",
+          "bytes": "a1713a0500",
+          "original": "mov     eax, dword_53A71",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x17699",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1769b",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1769c",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1769d",
+          "bytes": "e822fd0100",
+          "original": "call    memmove",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x176a2",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x176a5",
+          "bytes": "81c6c8010000",
+          "original": "add     esi, 1C8h",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x176ab",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x176ac",
+          "bytes": "83fb48",
+          "original": "cmp     ebx, 48h ; 'H'",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x176af",
+          "bytes": "7cd6",
+          "original": "jl      short loc_17687",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x176b1",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176b2",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x176b3",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合個別已審查的寫入與消費端",
+      "source": [
+        "tools/ida_probe_treasure_background.py"
+      ],
+      "callers": [
+        {
+          "address": "0x175a0",
+          "original": "call    sub_17643",
+          "bytes": "e89e000000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x177e4",
+          "original": "call    sub_17643",
+          "bytes": "e85afeffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x177ed",
+          "original": "call    sub_17643",
+          "bytes": "e851feffff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        }
+      ]
+    },
+    {
+      "target": "0x18d8c",
+      "address": "0x18d8c",
+      "end": "0x190ac",
+      "original_name": "sub_18D8C",
+      "instructions": [
+        {
+          "address": "0x18d8c",
+          "bytes": "68b0000000",
+          "original": "push    0B0h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18d91",
+          "bytes": "e841df0100",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18d96",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18d97",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18d98",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18d99",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18d9a",
+          "bytes": "81ec84000000",
+          "original": "sub     esp, 84h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18da0",
+          "bytes": "8bac2498000000",
+          "original": "mov     ebp, [esp+94h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18da7",
+          "bytes": "b904000000",
+          "original": "mov     ecx, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dac",
+          "bytes": "8d7c2464",
+          "original": "lea     edi, [esp+94h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18db0",
+          "bytes": "bed51e0500",
+          "original": "mov     esi, offset unk_51ED5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18db5",
+          "bytes": "f3a5",
+          "original": "rep movsd",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18db7",
+          "bytes": "8b84249c000000",
+          "original": "mov     eax, [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dbe",
+          "bytes": "c70000000000",
+          "original": "mov     dword ptr [eax], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dc4",
+          "bytes": "c705c83e050000000000",
+          "original": "mov     dword_53EC8, 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dce",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dd0",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dd1",
+          "bytes": "e8672a0000",
+          "original": "call    sub_1B83D",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dd6",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dd9",
+          "bytes": "83f8ff",
+          "original": "cmp     eax, 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ddc",
+          "bytes": "750f",
+          "original": "jnz     short loc_18DED",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dde",
+          "bytes": "8b84249c000000",
+          "original": "mov     eax, [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18de5",
+          "bytes": "c70001000000",
+          "original": "mov     dword ptr [eax], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18deb",
+          "bytes": "eb5f",
+          "original": "jmp     short loc_18E4C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ded",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dee",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18def",
+          "bytes": "e82e290000",
+          "original": "call    sub_1B722",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18df4",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18df7",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18df8",
+          "bytes": "e86f570300",
+          "original": "call    sub_4E56C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18dfd",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e00",
+          "bytes": "0fb6580b",
+          "original": "movzx   ebx, byte ptr [eax+0Bh]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e04",
+          "bytes": "899c2480000000",
+          "original": "mov     [esp+94h+var_14], ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e0b",
+          "bytes": "0fb6400c",
+          "original": "movzx   eax, byte ptr [eax+0Ch]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e0f",
+          "bytes": "8944247c",
+          "original": "mov     [esp+94h+var_18], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e13",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e15",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e16",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e17",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e19",
+          "bytes": "ff35b53a0500",
+          "original": "push    dword_53AB5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e1f",
+          "bytes": "ff35b13a0500",
+          "original": "push    dword_53AB1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e25",
+          "bytes": "e8eeb9ffff",
+          "original": "call    sub_14818",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e2a",
+          "bytes": "83c418",
+          "original": "add     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e2d",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e2f",
+          "bytes": "750d",
+          "original": "jnz     short loc_18E3E",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e31",
+          "bytes": "8b84249c000000",
+          "original": "mov     eax, [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e38",
+          "bytes": "c70001000000",
+          "original": "mov     dword ptr [eax], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e3e",
+          "bytes": "ff35513a0500",
+          "original": "push    dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e44",
+          "bytes": "e8b34d0300",
+          "original": "call    sub_4DBFC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e49",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e4c",
+          "bytes": "ffb4249c000000",
+          "original": "push    [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e53",
+          "bytes": "e88fe5ffff",
+          "original": "call    sub_173E7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e58",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e5b",
+          "bytes": "ffb4249c000000",
+          "original": "push    [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e62",
+          "bytes": "8d442468",
+          "original": "lea     eax, [esp+98h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e66",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e67",
+          "bytes": "e8b0e5ffff",
+          "original": "call    sub_1741C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e6c",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e6f",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e70",
+          "bytes": "e8312a0000",
+          "original": "call    sub_1B8A6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e75",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e78",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e7a",
+          "bytes": "750e",
+          "original": "jnz     short loc_18E8A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e7c",
+          "bytes": "8b84249c000000",
+          "original": "mov     eax, [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e83",
+          "bytes": "c7400801000000",
+          "original": "mov     dword ptr [eax+8], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e8a",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e8c",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e8d",
+          "bytes": "e8d7330000",
+          "original": "call    sub_1C269",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e92",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e95",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e97",
+          "bytes": "750e",
+          "original": "jnz     short loc_18EA7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18e99",
+          "bytes": "8b84249c000000",
+          "original": "mov     eax, [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ea0",
+          "bytes": "c7400401000000",
+          "original": "mov     dword ptr [eax+4], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ea7",
+          "bytes": "89e8",
+          "original": "mov     eax, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ea9",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eac",
+          "bytes": "01e8",
+          "original": "add     eax, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eae",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eb1",
+          "bytes": "8b35453a0500",
+          "original": "mov     esi, dword_53A45",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eb7",
+          "bytes": "01c6",
+          "original": "add     esi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eb9",
+          "bytes": "0fb64627",
+          "original": "movzx   eax, byte ptr [esi+27h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ebd",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ebf",
+          "bytes": "740e",
+          "original": "jz      short loc_18ECF",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ec1",
+          "bytes": "8b84249c000000",
+          "original": "mov     eax, [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ec8",
+          "bytes": "c7400401000000",
+          "original": "mov     dword ptr [eax+4], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ecf",
+          "bytes": "ffb4249c000000",
+          "original": "push    [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ed6",
+          "bytes": "e80ce5ffff",
+          "original": "call    sub_173E7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18edb",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ede",
+          "bytes": "ffb4249c000000",
+          "original": "push    [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ee5",
+          "bytes": "8d442468",
+          "original": "lea     eax, [esp+98h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ee9",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eea",
+          "bytes": "e80de9ffff",
+          "original": "call    sub_177FC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eef",
+          "bytes": "89c3",
+          "original": "mov     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ef1",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ef4",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ef6",
+          "bytes": "74e6",
+          "original": "jz      short loc_18EDE",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ef8",
+          "bytes": "ffb4249c000000",
+          "original": "push    [esp+94h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18eff",
+          "bytes": "8d442468",
+          "original": "lea     eax, [esp+98h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f03",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f04",
+          "bytes": "e8abe7ffff",
+          "original": "call    sub_176B4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f09",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f0c",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f0e",
+          "bytes": "e8998dffff",
+          "original": "call    sub_11CAC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f13",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f16",
+          "bytes": "83fbff",
+          "original": "cmp     ebx, 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f19",
+          "bytes": "7507",
+          "original": "jnz     short loc_18F22",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f1b",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f1d",
+          "bytes": "e97f010000",
+          "original": "jmp     loc_190A1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f22",
+          "bytes": "833d573c050000",
+          "original": "cmp     dword_53C57, 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f29",
+          "bytes": "0f85d6000000",
+          "original": "jnz     loc_19005",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f2f",
+          "bytes": "a1b13a0500",
+          "original": "mov     eax, dword_53AB1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f34",
+          "bytes": "89442478",
+          "original": "mov     [esp+94h+var_1C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f38",
+          "bytes": "a1b53a0500",
+          "original": "mov     eax, dword_53AB5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f3d",
+          "bytes": "89442474",
+          "original": "mov     [esp+94h+var_20], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f41",
+          "bytes": "6a64",
+          "original": "push    64h ; 'd'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f43",
+          "bytes": "e8cedd0100",
+          "original": "call    malloc",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f48",
+          "bytes": "89c6",
+          "original": "mov     esi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f4a",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f4d",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f4f",
+          "bytes": "ffb42484000000",
+          "original": "push    [esp+98h+var_14]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f56",
+          "bytes": "ffb42484000000",
+          "original": "push    [esp+9Ch+var_18]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f5d",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f5e",
+          "bytes": "ff35b53a0500",
+          "original": "push    dword_53AB5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f64",
+          "bytes": "ff35b13a0500",
+          "original": "push    dword_53AB1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f6a",
+          "bytes": "e8a9b8ffff",
+          "original": "call    sub_14818",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f6f",
+          "bytes": "83c418",
+          "original": "add     esp, 18h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f72",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f73",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f74",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f76",
+          "bytes": "e83b86ffff",
+          "original": "call    sub_115B6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f7b",
+          "bytes": "89c7",
+          "original": "mov     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f7d",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f80",
+          "bytes": "ff35513a0500",
+          "original": "push    dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f86",
+          "bytes": "e8714c0300",
+          "original": "call    sub_4DBFC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f8b",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f8e",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f8f",
+          "bytes": "e882e40100",
+          "original": "call    free",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f94",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f97",
+          "bytes": "83ffff",
+          "original": "cmp     edi, 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f9a",
+          "bytes": "7517",
+          "original": "jnz     short loc_18FB3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18f9c",
+          "bytes": "ff742474",
+          "original": "push    [esp+94h+var_20]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fa0",
+          "bytes": "ff74247c",
+          "original": "push    [esp+98h+var_1C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fa4",
+          "bytes": "e8419dffff",
+          "original": "call    sub_12CEA",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fa9",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fac",
+          "bytes": "31c0",
+          "original": "xor     eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fae",
+          "bytes": "e9ee000000",
+          "original": "jmp     loc_190A1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fb3",
+          "bytes": "e8559cffff",
+          "original": "call    sub_12C0D",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fb8",
+          "bytes": "89c3",
+          "original": "mov     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fba",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fbb",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fbc",
+          "bytes": "e889600000",
+          "original": "call    sub_1F04A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fc1",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fc4",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fc5",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fc6",
+          "bytes": "e8a1fa0000",
+          "original": "call    sub_28A6C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fcb",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fce",
+          "bytes": "e811a5ffff",
+          "original": "call    sub_134E4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fd3",
+          "bytes": "89e0",
+          "original": "mov     eax, esp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fd5",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fd6",
+          "bytes": "e8dc260000",
+          "original": "call    sub_1B6B7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fdb",
+          "bytes": "89c3",
+          "original": "mov     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fdd",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fe0",
+          "bytes": "e8804b0000",
+          "original": "call    sub_1DB65",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fe5",
+          "bytes": "89e0",
+          "original": "mov     eax, esp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fe7",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fe8",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fe9",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fea",
+          "bytes": "e82e1a0000",
+          "original": "call    sub_1AA1D",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18fef",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ff2",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ff3",
+          "bytes": "e81aa5ffff",
+          "original": "call    sub_13512",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ff8",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x18ffb",
+          "bytes": "e831500300",
+          "original": "call    sub_4E031",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19000",
+          "bytes": "e997000000",
+          "original": "jmp     loc_1909C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19005",
+          "bytes": "833d573c050001",
+          "original": "cmp     dword_53C57, 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1900c",
+          "bytes": "753e",
+          "original": "jnz     short loc_1904C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1900e",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1900f",
+          "bytes": "e8dc3f0000",
+          "original": "call    sub_1CFF0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19014",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19017",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19019",
+          "bytes": "74f3",
+          "original": "jz      short loc_1900E",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1901b",
+          "bytes": "83f8ff",
+          "original": "cmp     eax, 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1901e",
+          "bytes": "748c",
+          "original": "jz      short loc_18FAC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19020",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19021",
+          "bytes": "e8eca4ffff",
+          "original": "call    sub_13512",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19026",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19029",
+          "bytes": "0fb65e21",
+          "original": "movzx   ebx, byte ptr [esi+21h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1902d",
+          "bytes": "0fb64620",
+          "original": "movzx   eax, byte ptr [esi+20h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19031",
+          "bytes": "83f808",
+          "original": "cmp     eax, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19034",
+          "bytes": "7e03",
+          "original": "jle     short loc_19039",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19036",
+          "bytes": "83c31e",
+          "original": "add     ebx, 1Eh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19039",
+          "bytes": "a1c83e0500",
+          "original": "mov     eax, dword_53EC8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1903e",
+          "bytes": "89c2",
+          "original": "mov     edx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19040",
+          "bytes": "c1fa1f",
+          "original": "sar     edx, 1Fh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19043",
+          "bytes": "f7fb",
+          "original": "idiv    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19045",
+          "bytes": "a3c83e0500",
+          "original": "mov     dword_53EC8, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1904a",
+          "bytes": "eb50",
+          "original": "jmp     short loc_1909C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1904c",
+          "bytes": "833d573c050002",
+          "original": "cmp     dword_53C57, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19053",
+          "bytes": "7522",
+          "original": "jnz     short loc_19077",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19055",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19056",
+          "bytes": "e8812b0000",
+          "original": "call    sub_1BBDC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1905b",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1905e",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19060",
+          "bytes": "74f3",
+          "original": "jz      short loc_19055",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19062",
+          "bytes": "83f8ff",
+          "original": "cmp     eax, 0FFFFFFFFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19065",
+          "bytes": "0f8441ffffff",
+          "original": "jz      loc_18FAC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1906b",
+          "bytes": "c705c83e050000000000",
+          "original": "mov     dword_53EC8, 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19075",
+          "bytes": "eb25",
+          "original": "jmp     short loc_1909C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x19077",
+          "bytes": "83bc24a000000000",
+          "original": "cmp     [esp+94h+arg_8], 0",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1907f",
+          "bytes": "7509",
+          "original": "jnz     short loc_1908A",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19081",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19082",
+          "bytes": "e84dafffff",
+          "original": "call    sub_13FD4",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19087",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1908a",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1908b",
+          "bytes": "e81c000000",
+          "original": "call    sub_190AC",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19090",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19093",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19094",
+          "bytes": "e879a4ffff",
+          "original": "call    sub_13512",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x19099",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_treasure_background_20261001.json",
+                "tools/ida_probe_treasure_background.py",
+                "docs/data/ida/fd2_player_chest_hud_20261001.json"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1909c",
+          "bytes": "b801000000",
+          "original": "mov     eax, 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x190a1",
+          "bytes": "81c484000000",
+          "original": "add     esp, 84h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x190a7",
+          "bytes": "5d",
+          "original": "pop     ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x190a8",
+          "bytes": "5f",
+          "original": "pop     edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x190a9",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x190aa",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x190ab",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合個別已審查的寫入與消費端",
+      "source": [
+        "tools/ida_probe_treasure_background.py"
+      ],
+      "callers": [
+        {
+          "address": "0x18a82",
+          "original": "call    sub_18D8C",
+          "bytes": "e805030000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        },
+        {
+          "address": "0x18b33",
+          "original": "call    sub_18D8C",
+          "bytes": "e854020000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_treasure_background.py"
+          ]
+        }
+      ]
+    }
+  ],
+  "kind": "fd2_treasure_background_evidence",
+  "date": "2026-10-01",
+  "claims": [
+    {
+      "original": [
+        "0x195b0..0x195de"
+      ],
+      "semantic": "開框先把A0000h的FA00h bytes完整保存到[53C5F]，再複製到staging [53C63]；這個producer保存現成VGA，沒有重新進11CAC或122DC。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_treasure_background.py",
+        "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+      ]
+    },
+    {
+      "original": [
+        "0x177ed"
+      ],
+      "semantic": "行動環關閉末端呼叫17643，恢復先前保存的72×72背景；其caller18D8C仍有自己的11CAC(0)，不能把此行單獨解釋成全路徑永久禁止游標。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_treasure_background.py"
+      ]
+    },
+    {
+      "original": [
+        "0x17687..0x176af"
+      ],
+      "semantic": "從[53A71]逐列取72byte背景，寫回[53A49]+8088h的游標周圍區域，共72列；保留原始運算元，不猜命名全域。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_treasure_background.py"
+      ]
+    },
+    {
+      "original": [
+        "0x19077..0x19099"
+      ],
+      "semantic": "待機分支在有條件呼叫13FD4後，呼叫190AC，再由13512提交行動完成；取寶提示在這次動作尚未提交時開框。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_treasure_background.py",
+        "docs/data/ida/fd2_player_chest_hud_20261001.json"
+      ]
+    }
+  ],
+  "visual": {
+    "receipt": "docs/data/ui-traces/parity-ch12.json",
+    "receipt_sha256": "94e4b6fccb18cd114ed094cd48561355d2206c7ae6984bb14b7f33fc724b5354",
+    "original_run": "sample-r5",
+    "seq": 3820,
+    "cursor_overlay_selector": 1,
+    "statement": "同狀態原版提問底圖的角色(16,15)周圍沒有游標白框，原先重製差134pixel。這是已證實的有限視覺要求；不推論所有1956B caller均隱藏游標。"
+  },
+  "scope": "閉合VGA保存與待機/取寶提交先後，原版完整章新實驗仍在執行；映射到重製底圖邊界須經同狀態驗證，不宣稱新的E2。",
+  "projection_review": {
+    "status": "CONFORMED",
+    "date": "2026-10-01",
+    "contract": "190AC普通物品／金錢提問保存已關閉行動環的底圖；重製以無互動range／selection的原生底圖投影，不改raw selector。",
+    "level": "強推論",
+    "evidence": [
+      "0x177ED→0x17643 恢復背景",
+      "0x195B0..0x195DE 保存現成VGA",
+      "sample-r5 seq3820 raw selector=1而無游標白框",
+      "測試副本treasure-prototype-r3：seq3820與3853皆0像素；酒店存檔SHA-256與原版相同"
+    ],
+    "limit": "原版18D8C仍有11CAC(0)；這不是整條caller無122DC的宣稱，也不推廣到其他對話owner。原型不算正式PLAYER-E2。",
+    "formal_receipt": "docs/data/ui-traces/parity-ch12.json",
+    "formal_receipt_sha256": "4b7584e7035b22a1c65bcaa7cf500dd56cbbfebc2f18ab4a08b8d8dbdc7064e7",
+    "original_run": "treasure-original-r2",
+    "remake_run": "treasure-formal-r2",
+    "original_trace": {
+      "control_seq": 3816,
+      "rng_word": 64324,
+      "caller": "0x190AC→0x1956B",
+      "address_space": "dosgolem relocated LE linear"
+    }
+  }
+}

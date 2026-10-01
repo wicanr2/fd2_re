@@ -2,9 +2,9 @@
   "schema_version": 1,
   "kind": "fd2_parity_sample_sheet",
   "chapter": 12,
-  "generated_at": "2026-10-01T05:11:46+00:00",
+  "generated_at": "2026-10-01T09:46:56+00:00",
   "receipt": "docs/data/ui-traces/parity-ch12.json",
-  "receipt_sha256": "94e4b6fccb18cd114ed094cd48561355d2206c7ae6984bb14b7f33fc724b5354",
+  "receipt_sha256": "4b7584e7035b22a1c65bcaa7cf500dd56cbbfebc2f18ab4a08b8d8dbdc7064e7",
   "sheet": [
     "docs/figures/parity-ch12-samples-p1.png",
     "docs/figures/parity-ch12-samples-p2.png",
@@ -15,25 +15,25 @@
     "docs/figures/parity-ch12-samples-p7.png"
   ],
   "sheet_sha256": [
-    "58febe055b671e899834d0e609d47f35882f3f51f35e3f1ad519466314013b73",
-    "719c51dbf989679d2b19f638e9ada28c85064cf0d71d9d1b2a49a776bc86f381",
-    "be36f0dfd5a6ebb2dab41c67881859542fa59f5fe5c43ad479c903ba2fd456f5",
-    "0a4906f5003b4b386c5a97d2d2836fcd4d77f86ab409306e35322205b1bd2274",
-    "83441cc50f3417efd340dab480d7483f67f45d30ec0ccd558fe762b69e93f79f",
-    "92f8fbae51310e008dfc13ff18610dd02a2823cd9627468e416ecb15e5888418",
-    "8dcb4ad1419d9bd6b818b756acbbf618335e6e038f3f1737ef93241e9039c760"
+    "999342fb08165dcb2dfbbe78a89e775e45930660cbdcb79e7ea14560929e1f2b",
+    "d5bc634489ea884ec4c96f12d64fde8c3a2f6067db2cdb5bcef66f18fa75bded",
+    "45b2d6704de20659fc792c879c9e499a2d95dc74ba2977c1f694d1f96ed6b98b",
+    "f27f53251345af7dd474c9231b6776498f9f6c363564095642a32b762443a9e3",
+    "5f914b6256fb0243fa30644405a2161d3f3f05bcbb8d31d6ebba67479f1a39ca",
+    "f556ac34602d12d13428e64f38f1b5f4a4af5298919cc8efd9d728f9a7112aca",
+    "50db5da0b8bc774a5376e69f56fa388f7d9336d43f8c58c617d2dbde4e14fccc"
   ],
   "sheet_bytes": [
-    1254321,
-    1319899,
-    1325168,
-    1275885,
-    1252374,
-    1224911,
-    795135
+    1254960,
+    1320046,
+    1324824,
+    1276059,
+    1251226,
+    1224494,
+    795150
   ],
-  "oracle_run": "sample-r5",
-  "remake_run": "remake-r8",
+  "oracle_run": "treasure-original-r2",
+  "remake_run": "treasure-formal-r2",
   "selection_rule": "每種 kind 第一點、所有 diff_pixels>0、--include-seq 指定；依 seq 排序",
   "include_seq": [
     60,
@@ -113,7 +113,7 @@
       "oracle": "checkpoint-0063.png",
       "oracle_sha256": "a649663fede96e8a12848dcddf4ec20ca2a71ce8b8caf7258f0652cdd094f6f6",
       "remake": "remake-0003-p30.png",
-      "remake_sha256": "bd3bc9cf30581f4fe94df6972119fb88e423a7dc6aaadd7c7dbed45e39626321",
+      "remake_sha256": "257fa544030c06ea6c55c3d283d324e299681cf43d91a3981d03de085c82402e",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -132,7 +132,7 @@
       "oracle": "checkpoint-0068.png",
       "oracle_sha256": "1fd4a0bc16ab14365a2632abe96f1541cdcb4df39796ee37ac4668fd4ba104c3",
       "remake": "remake-0004-p1.png",
-      "remake_sha256": "6edda64867189b756f9ea7d53962fd1c35ebeaca760c9dbcc088e459afd94c21",
+      "remake_sha256": "1bf157dc060e0de90795767ef53330badc51bfa1b2d04d52d3db1e37b6e2d0b5",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -146,7 +146,7 @@
       "oracle": "checkpoint-0074.png",
       "oracle_sha256": "20d202faf80e598073866158112cba04c1dafa74c293f0a2a0e2aca6ce944ccd",
       "remake": "remake-0005-p1.png",
-      "remake_sha256": "cf439d0da1120d23d06806d5e66edb9fbadc59b251124969040300b94c47f357",
+      "remake_sha256": "bc707ecd1f6ef47a35c7306d330bf3d8e4b9d0b6d9c21035275dc05963a853ec",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -165,7 +165,7 @@
       "oracle": "checkpoint-0087.png",
       "oracle_sha256": "d96fa32e15d03e7e667502df819f0e653b55e16110721c9d1bb1b36c933b3eb5",
       "remake": "remake-0006-p11.png",
-      "remake_sha256": "acc4de945ddaa51fe56b5f5a6ed513b0d17b8a4d766992ee5f98d8d85ca5ea54",
+      "remake_sha256": "57bb3985da0dd1e397f9e55a2771e825b177d5f19b16a99508cd04394b66438f",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -184,7 +184,7 @@
       "oracle": "checkpoint-0097.png",
       "oracle_sha256": "1905dbc7c899478d6f52609ad6a135d698e4b6e4c5ff4ae90ae28fd6655718fc",
       "remake": "remake-0007-p2.png",
-      "remake_sha256": "ed02b9fa52c188a84fc60ad7c04d282cfb02646b66473264f23592c5dcbe41b9",
+      "remake_sha256": "6e2c6f9aa0b3a0ffb083159dc227320038c739072075a7b9916f7c078ca12012",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -203,7 +203,7 @@
       "oracle": "checkpoint-0103.png",
       "oracle_sha256": "887ee0c08bcd5ff2c28bbc3457e221d040677749da280dad11d6e17afa1b4c21",
       "remake": "remake-0008-p1.png",
-      "remake_sha256": "7400dfcfcde66f20c556545c1dd200ea1427aeca63ec31f3208e1c7f54bb47a6",
+      "remake_sha256": "e8539371f287f207b1d336eb2950e12d89d53c149d1f61cbc2ba511a95e175dd",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -222,7 +222,7 @@
       "oracle": "checkpoint-0111.png",
       "oracle_sha256": "e56912a9d479a2d9008dd70e907c1c458b503016eb75d6b360a88f30b350d8c8",
       "remake": "remake-0009-p12.png",
-      "remake_sha256": "74cdc48a2326017852cd5cf90563dd3a45ef3feea1a3ed3ec17209b988e0b9e9",
+      "remake_sha256": "51334583adfacbf5129b5046a0af7a40eefbabe6ba74a434b5a9a8fc6ac846bc",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -241,7 +241,7 @@
       "oracle": "checkpoint-0149.png",
       "oracle_sha256": "4c66552e50898c90b15f6898b81419aac82b00cbece10cf966302379612e001f",
       "remake": "remake-0010-p12.png",
-      "remake_sha256": "ac6b4861455f89828c697a7a5e8e9dd3fc4ba007ed0f7242a853dd86ecb370b7",
+      "remake_sha256": "24a0d17ef747368b97fbe55dd158fe6842ea6abd7da68661d9c8b83aeb0170d6",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -260,7 +260,7 @@
       "oracle": "checkpoint-0210.png",
       "oracle_sha256": "f81ed62af8e2654f039908056f28b8ab31ae5455eb4d83e4920ffbc14ec49280",
       "remake": "remake-0013-p1.png",
-      "remake_sha256": "8cf29625f8f8f54e597d973b22cc47c1e32077f3847bed0bf4f941d38b5e58d4",
+      "remake_sha256": "5dcd097421a53de5d944844433c4b6018ea5034cd56604b50b2d608ba88e1bea",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -279,7 +279,7 @@
       "oracle": "checkpoint-0229.png",
       "oracle_sha256": "8100d73307ae8e6ffb8a471a79c7972dd7103e756e0233d455f006104f30a427",
       "remake": "remake-0015-p25.png",
-      "remake_sha256": "2a8c0b748470deee236eb5e8439240755e16d5b0bc18ae4f65bcf94232590e9e",
+      "remake_sha256": "f6cd8dfed43399a57af2771ec744e418fe69c0d619e9a03305445f89bf17af4b",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -298,7 +298,7 @@
       "oracle": "checkpoint-0430.png",
       "oracle_sha256": "122fd5ad5601078eb27b4775fbd88db55e0566dbd713da1834fdb466351b95a5",
       "remake": "remake-0016-p2.png",
-      "remake_sha256": "5d3c9125448369a95ba9aaa4d0279f3eb11de2a14dc6b2612cd9a37962aac89e",
+      "remake_sha256": "31ed4bcbd40757885198347a9b18ead5a6eefdb7c9d67dfa9b9ce55b9bef5e75",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -317,7 +317,7 @@
       "oracle": "checkpoint-0436.png",
       "oracle_sha256": "968c93e30b3d80b4f28ecfcdb87a76d0ad74659f5ab449607aa4cd83eeb1fb59",
       "remake": "remake-0017-p2.png",
-      "remake_sha256": "a6c813c89993190732bbcdde6bef236a7f4872f47d49c6ac85e93b7e3af23585",
+      "remake_sha256": "bfcc54614b8275f76036f2bdc061476f370476af00472c27ed5650c792685411",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -336,7 +336,7 @@
       "oracle": "checkpoint-0443.png",
       "oracle_sha256": "9d14d8acb2ec09e20b536e35e84186b64d2c55ff21c18623c4cbb46bb8360365",
       "remake": "remake-0018-p11.png",
-      "remake_sha256": "f7ef1085a138a7eaa2aaae0355c00e72d05db296b2d7e299d2bda30943db8f22",
+      "remake_sha256": "fac01bfc66e660aff5bf04bd3bae64135227a627c100cc15987fe922c56d4761",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -355,7 +355,7 @@
       "oracle": "checkpoint-0616.png",
       "oracle_sha256": "b81b059490783315cc3ccc0689bdfd3dd14a2fd4fda1cb962d482116db47c9e9",
       "remake": "remake-0019-p1.png",
-      "remake_sha256": "b2bf11b07b55e27ba154ab69b4cf90922dfef6e415ba38a953b91141929415ba",
+      "remake_sha256": "904040de9b3af510d0ec30c76974430293e7442add15a9daee3baebe571d05de",
       "sheet": "docs/figures/parity-ch12-samples-p1.png"
     },
     {
@@ -374,7 +374,7 @@
       "oracle": "checkpoint-0622.png",
       "oracle_sha256": "5178d5fc3a5ed77c05cffb146f96926def2bf047cd78c10fde1d6b68f84f9630",
       "remake": "remake-0020-p1.png",
-      "remake_sha256": "0d1f8dfe75d2556ecdd93ce1383bb352fe2251619424d61d9c503df6b349d0a7",
+      "remake_sha256": "c0341f0380ba5d36c0613ae7ea3f83c95d46b5bdfb764030cbc404848c4bf4cc",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -393,7 +393,7 @@
       "oracle": "checkpoint-0630.png",
       "oracle_sha256": "10690349f999e2cfc4a589ccafbbd46ded88710688f4402e3a26bd28b1e3fafd",
       "remake": "remake-0021-p25.png",
-      "remake_sha256": "563a706ea4e4ef875be054e1148da0aac92396d5cee8b0807aa3825bf8e0c9b4",
+      "remake_sha256": "1129590b43d1dd4e682b5d4a2d76e5a44a617837e2e94a29487f3615da5359e8",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -412,7 +412,7 @@
       "oracle": "checkpoint-0741.png",
       "oracle_sha256": "76f15beb63a4505df55c73c182cfccbdfe794ee6e2f4733a3ccfe59052657875",
       "remake": "remake-0022-p2.png",
-      "remake_sha256": "37e062cf7d3915a16d35125e2a623a549146dbe931bcbc026b497b1ee497a7f1",
+      "remake_sha256": "02149c300affa335bad8ce773b9a2199fd70ebcdd35cfb2919ef0e9c3df3bc52",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -431,7 +431,7 @@
       "oracle": "checkpoint-0747.png",
       "oracle_sha256": "6c549b0380aff159b61493c2f76662fdeaf01dc747810b6ebdbe19f0d9baa12a",
       "remake": "remake-0023-p1.png",
-      "remake_sha256": "c2a207e354cdaec623066f835a3e43575a99d5cff0ff51484312353bfc7f76b8",
+      "remake_sha256": "90f581bbdc8da59347ca44fea7913d1473a7d7603e8424a9c8e96815df5ec8ad",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -450,7 +450,7 @@
       "oracle": "checkpoint-0903.png",
       "oracle_sha256": "fb94ec9769fc9d582996149f857a013c3fa517ebebd301a0faab89ccfdc052bd",
       "remake": "remake-0025-p1.png",
-      "remake_sha256": "adcee96e58b456767844a96a6984e8a1909deb970ab63bfc99583c518e41b7ec",
+      "remake_sha256": "d42c83ad90edc4d05d5cd5e0bacfc600b5ca8d84dec9f76ca805fc62221aaeb4",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -469,7 +469,7 @@
       "oracle": "checkpoint-1045.png",
       "oracle_sha256": "e43f514465984cbbfb3fbf80b9e08ade109e1dc1ddcec8a9178f8559648941aa",
       "remake": "remake-0028-p1.png",
-      "remake_sha256": "aa81cd8959d0158090b0203a80dc330e86a24f5bf484d5bf610de709973c2366",
+      "remake_sha256": "49a4c787fe32868c1c988b7193105a271e95c6c1c94566b739a882206d4cf057",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -488,7 +488,7 @@
       "oracle": "checkpoint-1171.png",
       "oracle_sha256": "a1fa39744113bdbf4a46669dcdaadc2cdb291fd2787d7bafb86b3f29ddda1c7b",
       "remake": "remake-0031-p1.png",
-      "remake_sha256": "b01ec0b28c4d38a6514113d1b12a90a76f9aea38bf75cc38e19b7d4213b32d6c",
+      "remake_sha256": "408ec7fced33f6be4b623d62739e4ff20532b82d1fe27c689c2b94e0dc641cde",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -507,7 +507,7 @@
       "oracle": "checkpoint-1281.png",
       "oracle_sha256": "aaade93d9b1fb29edeef799c700a437b19b1d3dff4c912f253772c7094a89cf7",
       "remake": "remake-0034-p0.png",
-      "remake_sha256": "3f2d7d47911642ffadd7468a2b4c4bc5daad3df4b2ba4f10cea0a73194f7a10f",
+      "remake_sha256": "87f511b1df352d9b142f2b653e53aa757ed8e577fe4e5e844ee12e44040fdf4d",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -526,7 +526,7 @@
       "oracle": "checkpoint-1349.png",
       "oracle_sha256": "7d7013ecad5c6b7b12306f8cbad5f8e1323bdad0b3c660fc938f7c859f523e88",
       "remake": "remake-0037-p0.png",
-      "remake_sha256": "b1feca04b9ca3d88198ff7768be6d0600351c93bc64441907df30e0dcceb007f",
+      "remake_sha256": "71245e88fb20494e429aaafc2c7fbb1bda1c03249a784fb39c41f0e04608191a",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -545,7 +545,7 @@
       "oracle": "checkpoint-1436.png",
       "oracle_sha256": "ba68fb685e3288443fffbf7740a8cd9a1c1183d2d905912db8fe5bf8abc38bbe",
       "remake": "remake-0040-p0.png",
-      "remake_sha256": "12c1035bb40bc3eb79032a779e93a588c59b62e09aa702d80b3c77bce362abc2",
+      "remake_sha256": "b5c272cac2e6d65a110c4c31fd5662fae3300c5660c5b48b04766f47cbe1a596",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -564,7 +564,7 @@
       "oracle": "checkpoint-1522.png",
       "oracle_sha256": "202113b2237636c618da7bd22064d8dc6666617dee9bff9c18444117a6b18f2e",
       "remake": "remake-0043-p11.png",
-      "remake_sha256": "54f836a72265ba1e3bb6f3c41b641dcfd21b1856c8da1e1fa0933a1c4f83fc0a",
+      "remake_sha256": "a6b2168192eb97d82d2385c86178d68a0166dba1980946727aa3993874a598b8",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -597,7 +597,7 @@
       "oracle": "checkpoint-1553.png",
       "oracle_sha256": "56945e408941a293af7c8f1532a3f6542dace9906daa358a6bd01aa36a327bf8",
       "remake": "remake-0047-p1.png",
-      "remake_sha256": "276c29632c7f210a9797c78586a099b41e094e7c9084b98074679a2710101fcd",
+      "remake_sha256": "28f0ada81591e2865e8f4dcd64c1a7e45868073c91e703c8c0e03f5145a615f8",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -616,7 +616,7 @@
       "oracle": "checkpoint-1622.png",
       "oracle_sha256": "d3c4da7392037a13de853b3b66b23f08f6c2eee69b78d43650fc00c51ff3ba09",
       "remake": "remake-0050-p2.png",
-      "remake_sha256": "b9b539f1025ccfae919a45afea28fcd9d148957e337aee8ffd31a739a31502fa",
+      "remake_sha256": "2f8d49ccb573f6285e415f1134b957dd45bca7b9b659b786e9a1724b42e193cc",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -635,7 +635,7 @@
       "oracle": "checkpoint-1673.png",
       "oracle_sha256": "0df69ba3e41826619656583d4686d496ce34becad80d1bb8d98968eeeaeec569",
       "remake": "remake-0053-p2.png",
-      "remake_sha256": "caa33bf5c8e19478054df24f216fda6a3005dbd8abb64574b1ec5244f8545666",
+      "remake_sha256": "9e0d4905009a24e1ae790fc8f6bea119d3f418e7de882f7890b37b2d0e774115",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -654,7 +654,7 @@
       "oracle": "checkpoint-1745.png",
       "oracle_sha256": "575b15b9a4ee9320edd85b0298b63f6b67f59b91c37a96dd3e2c71432b4ae601",
       "remake": "remake-0056-p1.png",
-      "remake_sha256": "9b151983b9671dcc718da3c4326445d11945d76b7c59c524c94f947d83a42bb4",
+      "remake_sha256": "a03e86547c4ec973218451397c624b30a898d1cf8f1f580f3568cf48aa1dd78d",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -673,7 +673,7 @@
       "oracle": "checkpoint-1770.png",
       "oracle_sha256": "aaf5b3f8c85daf1041b21eaf08f65480765445c2947e95f489fa34f40ac9f6e6",
       "remake": "remake-0059-p1.png",
-      "remake_sha256": "a39f9b20513ea0b23f467af50aac4414ce8524157be0983a9e93cb9fb91671b3",
+      "remake_sha256": "4b3445b5eaa907038d0a92596b43c38b8e7f691bea3241b85cf11ff158cb4ab0",
       "sheet": "docs/figures/parity-ch12-samples-p2.png"
     },
     {
@@ -692,7 +692,7 @@
       "oracle": "checkpoint-1793.png",
       "oracle_sha256": "645a8809786cd00ec80667a5b7ed6bcf167742f4b789e84ef5ab4a10b7cd876a",
       "remake": "remake-0062-p1.png",
-      "remake_sha256": "7e51520f307d0c1b8c8034191bdaa685fcd74439fddbff62550e02f9acce5d1c",
+      "remake_sha256": "b215d4e404540d74db758511dde6497337d2ef1fa196cddbcccc3cf7d215132e",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -711,7 +711,7 @@
       "oracle": "checkpoint-1815.png",
       "oracle_sha256": "df5a7fdc57e4fbdbe79a1e4ea52b00854f9618e1ebe0e36e8a69be0a648a01dc",
       "remake": "remake-0065-p1.png",
-      "remake_sha256": "602fc6f406ba53bb7ef8e437d07b353c7fc7408496a45643c7badeb57e35fc2b",
+      "remake_sha256": "deabb4c6683523297aed7fe15353766bc66f45c3a687f87bf400449763cb24b5",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -730,7 +730,7 @@
       "oracle": "checkpoint-1835.png",
       "oracle_sha256": "771d5e87c6ba61fbae026fdde51d4b58a276953f0eae296220f78232625b5848",
       "remake": "remake-0068-p2.png",
-      "remake_sha256": "da0b9dc23337a82fc85ee9f35777c143e742daf72d4fa78bc052f13b541fea49",
+      "remake_sha256": "7dcb6cc962763f2045b047cca5df4556f4ccfda6b43eb528affb88510d0a80e3",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -749,7 +749,7 @@
       "oracle": "checkpoint-1855.png",
       "oracle_sha256": "ac48a4e7d905bc66492ba95863281cc17273e3d76fcda80e31839887f9b1f231",
       "remake": "remake-0071-p2.png",
-      "remake_sha256": "43fe26377fbb8055761257c75ac2dafbedf2c9c1416064c6c2ef4dc731930157",
+      "remake_sha256": "053d5da33ed64be3a935e9efbe03e782a3d53aa063d1c9b8c3b9d2207c423161",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -768,7 +768,7 @@
       "oracle": "checkpoint-1875.png",
       "oracle_sha256": "143dc2d9d0ccf1a8fd00c2f013493d5048d5101b39047ec0e5a19ef937a6bc85",
       "remake": "remake-0074-p1.png",
-      "remake_sha256": "a0ac3d7c75a96f213dfd2c17e29b75da0a0296ee886335dccccf67cd69d5a41c",
+      "remake_sha256": "d8550ca4825b214115447e7c29827a9fddeafcd982cb31aacff38deb9c63a41b",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -787,7 +787,7 @@
       "oracle": "checkpoint-1893.png",
       "oracle_sha256": "c3796f3c4499a5031dc386270a3b6cfd4d6f82b3d43fe4bfcc87f8f857c28f2d",
       "remake": "remake-0077-p1.png",
-      "remake_sha256": "c246a68fbceee2abf2795fb422ec89b68ac2a76c17b2881a807c6517fa135d95",
+      "remake_sha256": "66ec40a5ee26f93d764818b46622785385ed3aa5e444e7f772cbedef3e338eb8",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -806,7 +806,7 @@
       "oracle": "checkpoint-1909.png",
       "oracle_sha256": "9896f30195f852acba1a16ecac9553daede23f38d49403a04ef43e030a359c46",
       "remake": "remake-0080-p1.png",
-      "remake_sha256": "b57990a67197e37922d557b78504d7bf59ce6ab8c4887680eb96a47a7a222ad8",
+      "remake_sha256": "50f6920d78b67e5584fccc3c57e045e42982b4bf4dc26d236de7427f7abaf781",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -825,7 +825,7 @@
       "oracle": "checkpoint-1925.png",
       "oracle_sha256": "3e7ebbecace5468597de0a3b1dc874dd1e2b3547bd9c63f80471e2e4acd755a8",
       "remake": "remake-0083-p1.png",
-      "remake_sha256": "13d547694b3c350f804b23e9c59a8cb33de33b2a7800ebd4f92096b1f21d4416",
+      "remake_sha256": "d18805418dc9f8bf1ce6f82396c8d28982488590ca671933a4cb4bd8ebc05c8b",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -863,7 +863,7 @@
       "oracle": "checkpoint-2054.png",
       "oracle_sha256": "dabceccfb6707417f848442f45163fc666dbca5aa0607a7f54c6efadd7be09fb",
       "remake": "remake-0089-p0.png",
-      "remake_sha256": "6f2dab6328191cd83baf36769b7dbddf6baf73a9c1e8eb98873484297764ebd6",
+      "remake_sha256": "75adf640588410804a54b229f77178d4cd81b59c999de7470a2f14358cae75be",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -882,7 +882,7 @@
       "oracle": "checkpoint-2089.png",
       "oracle_sha256": "f9798809e29c57d086399d961f7502aceaea995a23b05a75d6cd886e4f104d4d",
       "remake": "remake-0092-p0.png",
-      "remake_sha256": "4de4c7b3b967d582f8978c648ccb80f1001618faf3320ac357a8920b1356fc62",
+      "remake_sha256": "573a8e2833ee46605407927bdce9d052974d96c72e9d07048af379d06fee444d",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -901,7 +901,7 @@
       "oracle": "checkpoint-2131.png",
       "oracle_sha256": "37f94a8bc8c49a1a47a7c5aac3a067b33cabecb69989ccec85df28c95732db21",
       "remake": "remake-0095-p2.png",
-      "remake_sha256": "31bb95819cb2ca8b1d36e830f0d3d452aa44687af7f582b4575e612ca33b1720",
+      "remake_sha256": "3102de4be2d4f42020d18e6f40ca7677254190888852bb9709ae4268d6a51abb",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -920,7 +920,7 @@
       "oracle": "checkpoint-2157.png",
       "oracle_sha256": "e19fa34fc2c250e66fc8b3c809aecda0c5518ed3181876ad0777bd60a1fe954d",
       "remake": "remake-0098-p1.png",
-      "remake_sha256": "bffc1ae479659fcbde6b8d89638a28a472a0002da7a67c809c21742f08098ec0",
+      "remake_sha256": "c0b4617bd5265033c3bc0259f01c3f9333e616556b97f535cab4df9203fc4782",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -939,7 +939,7 @@
       "oracle": "checkpoint-2181.png",
       "oracle_sha256": "975790a9a4ec045872bdc7c80a687498cefa744ad964674c67353c0b1cf21376",
       "remake": "remake-0101-p2.png",
-      "remake_sha256": "8f3ff3a2cf8829e8d4fd68a8594af30eab942803d813306ba2bc1653f8895f52",
+      "remake_sha256": "8d465f0c97d1cf6e53f3057fa38fe06b4b49a3cf87ad4721d7f6d42de0898857",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -958,7 +958,7 @@
       "oracle": "checkpoint-2205.png",
       "oracle_sha256": "7161ed1a398412b9d1287efa06d9160e20312438c66c3c8ae4acba3ee076f864",
       "remake": "remake-0104-p1.png",
-      "remake_sha256": "26b6235247e97dcb48efe7d9cd4e7b0bb5b71ce6caf7bd7e26abee0d79ec9a86",
+      "remake_sha256": "f3dca273c3081007dc63bd730e31184d70f0543dac9962c6038f2a24322bd187",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -977,7 +977,7 @@
       "oracle": "checkpoint-2224.png",
       "oracle_sha256": "a125ef50ad1bef6425e1db1b8793a0c95f93505e8f626389f37f841e5bca5f2a",
       "remake": "remake-0107-p2.png",
-      "remake_sha256": "312b18e90d17b20ab84d1753dd0febc89fcb6cf02afb32624ebb997971296b1c",
+      "remake_sha256": "31ab311646a743e4f3076e4b0287f7826bb13f58c36460f10faf0aad8f1dc30b",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -996,7 +996,7 @@
       "oracle": "checkpoint-2245.png",
       "oracle_sha256": "ffe84957e86afd391c7ab213271386030aeda57e3b55fc694933ac98431f7e50",
       "remake": "remake-0110-p2.png",
-      "remake_sha256": "6a6d870987a8bcfdb8c6f0f369387b910bda6e4683ffd0b1dcdc8ae1f1e74571",
+      "remake_sha256": "3e6984d85ab6817f78cf15aca9838b99c95aa806687921fd6dcd5be322a954b3",
       "sheet": "docs/figures/parity-ch12-samples-p3.png"
     },
     {
@@ -1015,7 +1015,7 @@
       "oracle": "checkpoint-2265.png",
       "oracle_sha256": "f2ed0c4627d88c22762d23237fd25ea37b562da1ce550973c474523160b2c479",
       "remake": "remake-0113-p2.png",
-      "remake_sha256": "10cf5a33b30fdc3930a204f649bea5b9ae53291bf579f9ac1c0089fa85ee621f",
+      "remake_sha256": "27ae311d559310d8ce588a92a46865f5c55b5a2feae84148431c31481351846b",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1034,7 +1034,7 @@
       "oracle": "checkpoint-2286.png",
       "oracle_sha256": "5a22d35fa68b61d34ce52dffce0c76bfdb36c6bb6bb35acc5c8a6f723fb568bf",
       "remake": "remake-0116-p0.png",
-      "remake_sha256": "7ab025bd88bf00995a0d943a217fd8b98d822cf672414b096096cfecf464f02a",
+      "remake_sha256": "e4e6f622b022349057f3b940561eb79cfa0b41579405f32fed282c3f012fe2aa",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1053,7 +1053,7 @@
       "oracle": "checkpoint-2306.png",
       "oracle_sha256": "5cfb87e7a4110ebc2f4cdfdcc1f77eff968614eddee5156f395e24142c6a45f2",
       "remake": "remake-0119-p1.png",
-      "remake_sha256": "8446f12872f706849bc3bbb5332c24dd0e1d4d72e3dc82b400caa32e0a89c6e4",
+      "remake_sha256": "1426e8b5778ff83d8a5296b4c8e5a11d8a3df82cf47e3270d404e7ec2a681af2",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1072,7 +1072,7 @@
       "oracle": "checkpoint-2323.png",
       "oracle_sha256": "a5a611771f83f74f1090e997bd4f87a6a0d6be99fdcd01d2950608f4c094a299",
       "remake": "remake-0122-p2.png",
-      "remake_sha256": "a8fff49507dd91f8caf1b5e8262161d808731bee6bb94b434d5ba1b2dcf8b402",
+      "remake_sha256": "317b5f0792849f58fdb8a4eacab212317e9e1ea2c85da14323aeb1dc09cea65c",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1091,7 +1091,7 @@
       "oracle": "checkpoint-2340.png",
       "oracle_sha256": "c6b5d33f49713fcd67a57a24703d42e08f438b32894b9de8f07ffa2df43dd8fb",
       "remake": "remake-0125-p1.png",
-      "remake_sha256": "ec20e6953ce0b2453b6bd040e09f9cafda573d4115b488632c806eed9929e07e",
+      "remake_sha256": "3c4762270db0fc19c310af327732b24a159689b3da80ded8f8a457648d0be4b2",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1110,7 +1110,7 @@
       "oracle": "checkpoint-2377.png",
       "oracle_sha256": "da6f0a9714926a503c6f5251e351918b676ca5636911b7cbc62cc48172a0637e",
       "remake": "remake-0129-p1.png",
-      "remake_sha256": "2befe1a050253c8709ceb276cfe07840136d389517815fb10b2564ef5a0449f9",
+      "remake_sha256": "c0a9dff841fd8ca3d0f58921106a12ea575815dd693c854fa4f8f167f8c38320",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1129,7 +1129,7 @@
       "oracle": "checkpoint-2397.png",
       "oracle_sha256": "d95bb7c147be1c67606763855593db44ae8b0d62250225c6df2d2c00ba2765b7",
       "remake": "remake-0132-p1.png",
-      "remake_sha256": "5bcff3299442ef4f0a4ff0d8784f10859631a17a703a8a12be327d4fc717b2fb",
+      "remake_sha256": "c4b774a63160d2b48a73b13a87d2a1846e36b4e5065b7ea2dd6696ee6be473b5",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1143,7 +1143,7 @@
       "oracle": "checkpoint-2399.png",
       "oracle_sha256": "d8b52a888c87a18bc88d70c8967fb4fa7c0d3fc723fafa19590e0a79f1d911d5",
       "remake": "remake-0133-p14.png",
-      "remake_sha256": "0be0155772fbe5463122b50b6c3d5c83c95284780130316430ef75d0e13a92f0",
+      "remake_sha256": "ee3429f69709219a4915b55da9fea7f10067ac26ef1f99181cb0a48c6b50f2b8",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1157,7 +1157,7 @@
       "oracle": "checkpoint-2414.png",
       "oracle_sha256": "5c54a0eb08576cf928815ce7422f94a014c4d15041c17188feaa38f7632684f4",
       "remake": "remake-0134-p1.png",
-      "remake_sha256": "0b2c43a5cd54b1c55c55ff7bbffc36a843ecd7e3ffd2b832b53bc6b37052b238",
+      "remake_sha256": "88ea360177f3b6e009752ddb29d109dc80b3d530a72c1584f7c7e2a5ec77b90d",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1176,7 +1176,7 @@
       "oracle": "checkpoint-2450.png",
       "oracle_sha256": "39f8e50f16bf2d8f2736aaa741d9b2b62d98f5ba52eb3723f37b949b77e5747c",
       "remake": "remake-0136-p1.png",
-      "remake_sha256": "dd1040d54104dc8c4cad4833f5b18a0e04f663e3dacf6f27a3015fa4fc8ef19b",
+      "remake_sha256": "7326b1d610d41d26ca07335b8b32ee80a3a72f77904e55e99c7c1116dfb7d992",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1195,7 +1195,7 @@
       "oracle": "checkpoint-2491.png",
       "oracle_sha256": "a3d7cab63b8ed29af5fccdfb249b847e25273e98eddb7eb05da2b3450e3d3ec1",
       "remake": "remake-0139-p1.png",
-      "remake_sha256": "4040599546c882efd9c606939926f9a0a8402959003ba9e2fb2cfc7b37c58807",
+      "remake_sha256": "3650f5c8353d5b52379b60aa1c152f3314195636b139416a494ba0a0e9107bab",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1214,7 +1214,7 @@
       "oracle": "checkpoint-2546.png",
       "oracle_sha256": "f9a940b79a17dc03e972ded4303d741a0560caf9010c970488cd142b0c2ff67b",
       "remake": "remake-0142-p1.png",
-      "remake_sha256": "3cab1dbce718c2a468a8831c65a4ad98a27b9d3636b4b2db48dbc21a56e93bd2",
+      "remake_sha256": "3f2610d670584619351a1c6bdf5edcccf903b3ec7b704754aa0c1fd4081bbfb8",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1233,7 +1233,7 @@
       "oracle": "checkpoint-2570.png",
       "oracle_sha256": "d7d74b89fd7962d60fa60b30e6b5d8779498b428cd9242f10c4f84e0f043d04b",
       "remake": "remake-0145-p1.png",
-      "remake_sha256": "b8209817965c5d959411720ff004f18bb087c725b4df0bba05c421bb03ea921c",
+      "remake_sha256": "4fc5162de487826c1613e4dcc1c97b0a7b27b2c279ea3b79b3a0c9afcc6d66c3",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1252,7 +1252,7 @@
       "oracle": "checkpoint-2590.png",
       "oracle_sha256": "493d1f38cdf6fe9bd7e9607a168dd53d6f1e8576b42d1867b74b130d9cae8b0b",
       "remake": "remake-0148-p1.png",
-      "remake_sha256": "8c8fc73a1a93789765de59404ed42f0d59dce25440cb935364177192ed8a37fb",
+      "remake_sha256": "9ea78b04221e85c5c7fe7986d4999fd989f785d7ddca136602d8c5eaa4915977",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1271,7 +1271,7 @@
       "oracle": "checkpoint-2610.png",
       "oracle_sha256": "a55f1b760e478de58091e2b9558e9d90fea2d17542d06bab3958b79f4ab35760",
       "remake": "remake-0151-p0.png",
-      "remake_sha256": "31b1374d388610286f8b654592bf11d19ff76842b747c6011e27986618c59cf7",
+      "remake_sha256": "b48187c668f8650c05a94ddd3375129a5ae72b981daeafbf6e3fb46d2709d662",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1290,7 +1290,7 @@
       "oracle": "checkpoint-2628.png",
       "oracle_sha256": "59074d436a3dc21f072d31855c951f49b74005368155616739db5a322f640823",
       "remake": "remake-0154-p1.png",
-      "remake_sha256": "2b07aaff1f5e3433f36031440ef69b0fde069a916fbeb36e148456a6924e5aef",
+      "remake_sha256": "637afe3953794ed0b56063e3ca45ec977d9b1f57b46e357063c1ce11e6200927",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1309,7 +1309,7 @@
       "oracle": "checkpoint-2648.png",
       "oracle_sha256": "4e295cc9b66b3b91452a3e5c1eade520837f75fb6ddc0f3e9beb9e5ef4eb72c5",
       "remake": "remake-0157-p1.png",
-      "remake_sha256": "833eb2494007fed9ff00da6d3097ba617ee61e98e24c07f3b12783bec345b40d",
+      "remake_sha256": "e780996138da20cbfedb3713b8b409bea9a26999c915bca29cb9128a893c1771",
       "sheet": "docs/figures/parity-ch12-samples-p4.png"
     },
     {
@@ -1328,7 +1328,7 @@
       "oracle": "checkpoint-2668.png",
       "oracle_sha256": "3c86265f0048d57c6ca36e6dbbeaf3d2a326749461808f3dbdddafbf948caec0",
       "remake": "remake-0160-p1.png",
-      "remake_sha256": "f3367b38893d94026eaa39e4f232418a7f4987cb71daf185049c23782add18a7",
+      "remake_sha256": "62c08b030ffb26b2b6654a5d0527f85a6c42ca922715448adfe8a1d8b2454e98",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1347,7 +1347,7 @@
       "oracle": "checkpoint-2686.png",
       "oracle_sha256": "07d457866e4baf64ac941065cc9e2f7e37a901b010603fd00200a6153af93455",
       "remake": "remake-0163-p0.png",
-      "remake_sha256": "4e8f7c8ec2320e0b3b8a153ae339606a009ccbcdca480661f41d36984b7dfc27",
+      "remake_sha256": "28ab4b324ffb8b96084c87abd29c41af2e8f83aef70c877f162ce1c358f48b2b",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1366,7 +1366,7 @@
       "oracle": "checkpoint-2702.png",
       "oracle_sha256": "46373c9d1ff5a846168060090ada82981115954b0980c34c656ea2cd9e0bfb03",
       "remake": "remake-0166-p1.png",
-      "remake_sha256": "f7c295db286bf83d9009894df58afd20831f10c85756255caca93b1ecb628d52",
+      "remake_sha256": "33b7d327eac38d213d18432ed10f9203c5c93bd323b699689eec0056fc513de9",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1380,7 +1380,7 @@
       "oracle": "checkpoint-2737.png",
       "oracle_sha256": "ae85abbd7101643ca6df4f0664cee2c6c6517cc0d434631f8b0e99950759af55",
       "remake": "remake-0169-p1.png",
-      "remake_sha256": "c23853e262da965b56d8721d8d5df6f424c115a33523bdff553213fdbb9525ca",
+      "remake_sha256": "340fb1f18644ca731818773cd8fd9b7f8b5ecddd7498953b0a547fa65ca7c537",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1399,7 +1399,7 @@
       "oracle": "checkpoint-2744.png",
       "oracle_sha256": "3215b26b8719d0f4596f453bb74e1feb7c0d24411c24f3d48d79a389924eb553",
       "remake": "remake-0171-p2.png",
-      "remake_sha256": "9b5534ffd4ac6d7d6a3d0d4b8187fa7596d6b7d3c2a5f27fb59874df1227e4cc",
+      "remake_sha256": "2a6bb74804c0a3816afbe8bb382085bb730bf98b3ee843a7a81fefa02dc63c19",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1418,7 +1418,7 @@
       "oracle": "checkpoint-2761.png",
       "oracle_sha256": "fcb95eb008d68e8e81848e069ecdc5d416deed548bd7c239810597c1ec7bfa76",
       "remake": "remake-0174-p1.png",
-      "remake_sha256": "214328512342873613791c79d474279c6ede5f849056a42b3b5ce32ce55e0f42",
+      "remake_sha256": "cfb01d476e282be4b64e17ef92aa76a58bde0236beb00bd2934a6ead44291676",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1437,7 +1437,7 @@
       "oracle": "checkpoint-2792.png",
       "oracle_sha256": "ac664bfba0198c287d683d15143a9eaf7c2caef90d81f0d22f2c753e8be3505b",
       "remake": "remake-0178-p2.png",
-      "remake_sha256": "addf76ddd66e36c4b621e460e4db909ca73b8bb9017898ef953802254505d90c",
+      "remake_sha256": "4b4cbe41594a28adbb0fa8db2fc78f07b022de8add1742f9e462f578a18e8e63",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1456,7 +1456,7 @@
       "oracle": "checkpoint-2827.png",
       "oracle_sha256": "58d36b1532e1af2ca823bf6d5a69c9a294d3a884400fd01a3728c91565bfa3f4",
       "remake": "remake-0182-p0.png",
-      "remake_sha256": "9521a9f0d3d62458d58dd7c1ae2d8f6682aac96b1d2cd5775cc628758dcb9aa1",
+      "remake_sha256": "12b7b80b530adce6416f7a167b9b0c8364832275610bb2cc26d10d4fc070befc",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1475,7 +1475,7 @@
       "oracle": "checkpoint-2864.png",
       "oracle_sha256": "37d883be64d3abd8f9fc952d31f4b4dfe2efe9f95c2682e4d2b591507763e103",
       "remake": "remake-0186-p11.png",
-      "remake_sha256": "fbb6ed4c052955008b95cb3eb148b4e3eab70e38029d600943db4f369f403a08",
+      "remake_sha256": "77b0b56f5a07b81a78ed1c306ec635eacbe3390efcf95be4997f486fb32b61b8",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1494,7 +1494,7 @@
       "oracle": "checkpoint-2889.png",
       "oracle_sha256": "e5c249996e74716afbf0d15f956a69f87f4562e4953f2681d3201c9bb07e4e81",
       "remake": "remake-0189-p1.png",
-      "remake_sha256": "a30071a8a559c9d0416b76ec1838095cb7ebca6568dca56eda8e53a02a446022",
+      "remake_sha256": "3e6ad6263d30758886de4761cee5f97b45588e9480070bd44d10816c083164a1",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1513,7 +1513,7 @@
       "oracle": "checkpoint-2910.png",
       "oracle_sha256": "f48e68a15d0626a1c28399c2874376a405543c364ee67f40864bd73ea592ea1b",
       "remake": "remake-0192-p1.png",
-      "remake_sha256": "dd14428f4060290012fd9f7fc7ec1ebaf5fd5667ff819e061e7ba7d2f9f75ce2",
+      "remake_sha256": "54f223e5b1054e0f6ec597373891fd3375d08fc0f9233705fe35d050fa584081",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1532,7 +1532,7 @@
       "oracle": "checkpoint-2945.png",
       "oracle_sha256": "cddb024a2e44bb5b75567d69fee7c5ac2eb0a13371b1c1cf4449ac462e19cb9a",
       "remake": "remake-0195-p0.png",
-      "remake_sha256": "db7a4f4659ccca6794a06626bbb3119630b170b274416c2528013c9c57e9975f",
+      "remake_sha256": "6fd9fce27c772e26c26b221fb9704f849c66c68551d1face1decd11c0c2ecc5c",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1551,7 +1551,7 @@
       "oracle": "checkpoint-2964.png",
       "oracle_sha256": "7d1b1188a2ad3899c23ff4449154eec6668d3ae712d6bf5a6f6aa2dade1e073f",
       "remake": "remake-0198-p1.png",
-      "remake_sha256": "63ae9a0fd6391581cc6149be65acf5df17151afdb8b70669032598abc2b60ec7",
+      "remake_sha256": "fa45e5cfc70a429c995da33e4082eb972e097c06792aa82a95ef633f14f4a95c",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1570,7 +1570,7 @@
       "oracle": "checkpoint-2985.png",
       "oracle_sha256": "3adc4d7008a9ffbd6feca178545fef9809b604e22316c4797e12a49c292fb735",
       "remake": "remake-0201-p1.png",
-      "remake_sha256": "e3f0ed641ec84394ff16158692d79b4882bb0292800a0b5ae54e68a3c712e880",
+      "remake_sha256": "7feed750e9255d9e5c79fecdfd72884fe94e071ed5f6bc29879952e3149a1fe8",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1589,7 +1589,7 @@
       "oracle": "checkpoint-3006.png",
       "oracle_sha256": "17fbf76e4979dbaf22319ace1d2be483ceea14ab0d138d3179fe81e0a1f53f0b",
       "remake": "remake-0204-p0.png",
-      "remake_sha256": "28fc2f03be22aa33e12d01c4c8f403f90ee4d182def40bf4f36180344dff69b5",
+      "remake_sha256": "ef6c9cfadbe81c95349c7f6352d6fb341adb308a3efcc8ea8540005cc3b44fa0",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1608,7 +1608,7 @@
       "oracle": "checkpoint-3024.png",
       "oracle_sha256": "86d009e9459c15356a12fc1dd05babf9e1b7608b4120852b7149fb1c2fcaaf15",
       "remake": "remake-0207-p1.png",
-      "remake_sha256": "84568be43b5a576e1b20efd6c5a71405cd38f1724ae60d06bf128b9e50d437e5",
+      "remake_sha256": "5ed392df1f011e78b535cfd049be52fb37aba0d3c0749a756283219d19f9a852",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1627,7 +1627,7 @@
       "oracle": "checkpoint-3041.png",
       "oracle_sha256": "19f07e4053cf14bd28835e2a7d521ae5e65a74a5530e74a860e8ad8669c6c098",
       "remake": "remake-0210-p1.png",
-      "remake_sha256": "0da475b22ba1d3c4ce302c73161386ee9c0093c2a71265dd0ac353a2c8f6f233",
+      "remake_sha256": "dd4f90b76e0ce01f909490dd0b67ac1439cf402241cf0c740a428fd16fdaa055",
       "sheet": "docs/figures/parity-ch12-samples-p5.png"
     },
     {
@@ -1646,7 +1646,7 @@
       "oracle": "checkpoint-3076.png",
       "oracle_sha256": "db8fbc940d2479b8de8220f2c9e27f329db8c728dc6dd9f27a4dfe4303400bd5",
       "remake": "remake-0214-p0.png",
-      "remake_sha256": "7e5c62d8333a1297e0c273f5b5a9873e3c4c6608508aa1837063f64d3e7aad88",
+      "remake_sha256": "d6049074c88cb68991a5363387672e938ccc38fb5c8e4b0afe50e64775788053",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1665,7 +1665,7 @@
       "oracle": "checkpoint-3092.png",
       "oracle_sha256": "fb17d9a69a36f88bc3f079b235197bfa728e9c70533ddfaa902d6f835e1297a8",
       "remake": "remake-0217-p2.png",
-      "remake_sha256": "6dd1fde3a0521150d969cff0b8bbd0a8c9a812f7634eadc2eab310d2de5d8fb1",
+      "remake_sha256": "e12a3f7aa0135675b6ff832972df886e619e0be1d059f0e0368a8705066a3d56",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1679,7 +1679,7 @@
       "oracle": "checkpoint-3109.png",
       "oracle_sha256": "8c569152015f78a2b171aea9f3b66f9d48f75f1a85608300e6a224b17734cd91",
       "remake": "remake-0219-p11.png",
-      "remake_sha256": "f2aa8e613f88e021d3bba903005317879254dcd22392f43a5a259651dd54d947",
+      "remake_sha256": "909f7ecd601708023789e43f1d1865f882c8b5da36d47486fbff5cdb18cdab5a",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1698,7 +1698,7 @@
       "oracle": "checkpoint-3135.png",
       "oracle_sha256": "6c2f848872542a0705c888c26421388f36eb625eb0685a8320d4bc134dc03f30",
       "remake": "remake-0221-p2.png",
-      "remake_sha256": "b8fe857395ad57240798e66590c6ec8176ddfcfb2080359bcab744ec791921f7",
+      "remake_sha256": "ce1b3d05631d19cbb8a156af20cd5a32d357a4a854e8fd4a1085cdf52b4a7a04",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1717,7 +1717,7 @@
       "oracle": "checkpoint-3137.png",
       "oracle_sha256": "6245f35bee8eec7a8a377b6de1d3b70410da00f246c4f13602c4277fc1e869cb",
       "remake": "remake-0222-p22.png",
-      "remake_sha256": "fe10ef0dcf7c089508ad0f18372ead672aa20c39849c35f89232ba9d572ad0d5",
+      "remake_sha256": "14a8c997f1c70579bd384b22db12751dd4c5b4eb6fdfe752bfac1a4b126f7915",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1736,7 +1736,7 @@
       "oracle": "checkpoint-3152.png",
       "oracle_sha256": "32b23e000897580b1a5076910f737fc01a7741a14982fb3f47f8d08308631a26",
       "remake": "remake-0223-p1.png",
-      "remake_sha256": "b959f5dc4d273b47118ed1825be00814b711f75a67078e13c44710e722f30f77",
+      "remake_sha256": "2d0c8b5fdb5456cd63f71cddbc6a814d3aa2edf9eeada39b6dc6b33a77c1f3ce",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1755,7 +1755,7 @@
       "oracle": "checkpoint-3164.png",
       "oracle_sha256": "25fdb606249793c6394db3671974843b3dde3aaf6b2080182ec3b42336eebce9",
       "remake": "remake-0225-p0.png",
-      "remake_sha256": "2e7ac3ff94632c7a3a74a9234c04184ac1b6cce38689f7e765ad7a158a600865",
+      "remake_sha256": "784fc0203f05d4f18f5b423c72adc5920123a6a4b5b5f899967b3b3e5bfda4f5",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1774,7 +1774,7 @@
       "oracle": "checkpoint-3195.png",
       "oracle_sha256": "fa367017dfa66118f8eb972ec3f70839a81a2f03bce18f0990651f1fb65f0334",
       "remake": "remake-0229-p2.png",
-      "remake_sha256": "91013436f1a33080dbc4ec6906a6ee41405bd3c0ec07d9d95739091197d1b031",
+      "remake_sha256": "a8f8117a5b7b36c1a9b0ac198d6f53414b0aa7e633e9fc6ae247ec6333ea8a17",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1793,7 +1793,7 @@
       "oracle": "checkpoint-3241.png",
       "oracle_sha256": "3d96cce22ac8e45e4465192faf9b9ea89db5e07f157fb201cc4121e12da54d90",
       "remake": "remake-0233-p1.png",
-      "remake_sha256": "dee469465c1da738c161449ed7e81c0c3feeafc77eb03697a455688f65e23d32",
+      "remake_sha256": "a5d67bfd09f3b15f44798ad5f3f2a42b755f69c645597fdae52db39cc1edd230",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1812,7 +1812,7 @@
       "oracle": "checkpoint-3259.png",
       "oracle_sha256": "76b8dd5730d6129c3df643f5709dc66379c58649d82e53bbc0d7f2152459bc5b",
       "remake": "remake-0236-p2.png",
-      "remake_sha256": "a120fadb225dc55eeb5d1fcddaa97ee0afca464ff7f363b6f2f50d7f3f7697c4",
+      "remake_sha256": "b16fcba2716628fd92aedf87e36aa6653f548e8acd10959f49954c0fd6ac3df8",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1831,7 +1831,7 @@
       "oracle": "checkpoint-3300.png",
       "oracle_sha256": "5d636f404bd4c20fb440e19c8bcdbb90f2611bcb91865019bf7370bad71805d5",
       "remake": "remake-0239-p1.png",
-      "remake_sha256": "0a57dab61350b83b004a755d593ce47d88a19e3e562bdef2a87c9e17978d450f",
+      "remake_sha256": "3e0ca6380fd5c24e8181edac2cff826e76209e9218cf0c333ba93eac509f6060",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1850,7 +1850,7 @@
       "oracle": "checkpoint-3332.png",
       "oracle_sha256": "699a00c2f276abf7651f7a2764e5bd292bec204112fc189d2588f87d4d330f84",
       "remake": "remake-0242-p1.png",
-      "remake_sha256": "d86e74d6425a8aa105eae9012962264731ea79810637031daad79e04fd3ceca2",
+      "remake_sha256": "871aca86fc0a1f2e6c729e62e7243e25f88de66c1ebed0b652c8fae138f3871e",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1869,7 +1869,7 @@
       "oracle": "checkpoint-3498.png",
       "oracle_sha256": "1948435d8b5c5d801a7158e4c522ac8552d6b47bee751a88cc30b96eba812960",
       "remake": "remake-0245-p1.png",
-      "remake_sha256": "c313247a6de46a97a486b85704035d930e935f46ca68833ba14ff3015d4957d6",
+      "remake_sha256": "31b2c758c2e22d40d873e3c40fbef34f1d13a85102e9bd895e44eab6ac0bd228",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1888,7 +1888,7 @@
       "oracle": "checkpoint-3517.png",
       "oracle_sha256": "8b91d9cea921a6f7a73030cbecf30862a40d442ae6f01a015c65b6c17ad06d4b",
       "remake": "remake-0248-p2.png",
-      "remake_sha256": "62f06d40f8934d08b2780bd3d1382e58b340387fd3e75dee0bc9388eccf18f06",
+      "remake_sha256": "e9c255ca78721f54bb15eeafcf5d3f27fa0696f60aa1a5f15cf02c462e43eca7",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1907,7 +1907,7 @@
       "oracle": "checkpoint-3631.png",
       "oracle_sha256": "adb2a4416af85576fa56bc4489932696d169c5acfcfcfdf3a5b9cbfdd427ff69",
       "remake": "remake-0251-p2.png",
-      "remake_sha256": "94750b184f14827fad33d447721ab15cc22a2280269213e33281c26377bff9dd",
+      "remake_sha256": "a04f8efe4602ef2b488abc4a32b2d40006bf4c1a8f972b21f3b0a5796de3b9dd",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1926,7 +1926,7 @@
       "oracle": "checkpoint-3662.png",
       "oracle_sha256": "15a67043c898da403ee0edb2e850752f42573d2a256634169f8fc04a6f9d9eec",
       "remake": "remake-0254-p2.png",
-      "remake_sha256": "25286ee8dde4ba7c88d10bd571140bc8a0869ff1915546f59e895f207f76ac75",
+      "remake_sha256": "c35f5ddc5bdeac3c0e9824addf5d526dfdff5d13c4f16deb6c4ae145828d0145",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1945,7 +1945,7 @@
       "oracle": "checkpoint-3704.png",
       "oracle_sha256": "2b8d87e87343bceccfb0e3a2a8f93851600ee8c945bd8ab871375f575f3b7bbb",
       "remake": "remake-0258-p1.png",
-      "remake_sha256": "c907ede8b56ff18ad4c9d67f473c52519d6979f91650342a0f5ebb2d70021dc7",
+      "remake_sha256": "93a39d00209260fd361e2899e29c42e9f53581a6747628f8441c29fabf2c1b55",
       "sheet": "docs/figures/parity-ch12-samples-p6.png"
     },
     {
@@ -1964,7 +1964,7 @@
       "oracle": "checkpoint-3741.png",
       "oracle_sha256": "890e279bbe1acd9375001f9d98a3bcb6ae40feb607a69e639209b10909857e30",
       "remake": "remake-0262-p2.png",
-      "remake_sha256": "1c140e4e24d890c746a3b7610fb8b3343721b2a44cc82eaee8a6194e66259381",
+      "remake_sha256": "85d90188975ddd2469ac76984cd6c7d77e2f34d3ccaef16daf43ce21810b7932",
       "sheet": "docs/figures/parity-ch12-samples-p7.png"
     },
     {
@@ -1983,7 +1983,7 @@
       "oracle": "checkpoint-3778.png",
       "oracle_sha256": "664e1d720aab40e32a1f7355b1151e94504466e5436c545fd16c741f1f35fb1d",
       "remake": "remake-0266-p1.png",
-      "remake_sha256": "ba09f8e3633f25fd7ce19df596f1879b7dce598b77647e751997ab3dd98a41d2",
+      "remake_sha256": "e5cd2b2b31067861e23cc501916d349335a96ba8fc045f795a29c74672546ea6",
       "sheet": "docs/figures/parity-ch12-samples-p7.png"
     },
     {
@@ -1997,7 +1997,7 @@
       "oracle": "checkpoint-3784.png",
       "oracle_sha256": "6848daad5a701b8eb31a1c27736d6e4f1c1c5da353856584eb9cd865711a727d",
       "remake": "remake-0267-p1.png",
-      "remake_sha256": "eac4eef839c9841c0c1ef675ddf77a591a59dce4f33f5625c53a0ccc15850e88",
+      "remake_sha256": "5666322354634609188941e4ebe33e4c7919386bb971b5dd1cca07c83ca11f86",
       "sheet": "docs/figures/parity-ch12-samples-p7.png"
     },
     {
@@ -2023,19 +2023,14 @@
       "row": 106,
       "seq": 3820,
       "kind": "wait",
-      "diff_pixels": 134,
-      "box": [
-        244,
-        28,
-        267,
-        51
-      ],
+      "diff_pixels": 0,
+      "box": [],
       "ok": true,
       "phases": 16,
       "oracle": "checkpoint-3820.png",
       "oracle_sha256": "c85d01a6f217cb55261a4622e98ffa7e89af762f411d95dc2261511a276ba2ae",
       "remake": "remake-0271-p11.png",
-      "remake_sha256": "1f08b8f925ffd3d15631fdc755a50ea6939573c69928d402b02877cca1ee531f",
+      "remake_sha256": "cf7ae9e99eaec552e04daaff0aaaa09b900d605fe6d7e37e0a05df0bd981c148",
       "sheet": "docs/figures/parity-ch12-samples-p7.png"
     },
     {
@@ -2054,7 +2049,7 @@
       "oracle": "checkpoint-3847.png",
       "oracle_sha256": "7675ef3e2f37dd35c49beaec10db967c3895ab922a8cb455badaa738556d4635",
       "remake": "remake-0274-p1.png",
-      "remake_sha256": "32a325c0582d53d8b00576905f64ce8e1b3b04cccf05f99f4b54f7878aebc43b",
+      "remake_sha256": "624c003e2432e81cc222d7da3d3107bad7da85771413a38cdcd6ffaa9403d748",
       "sheet": "docs/figures/parity-ch12-samples-p7.png"
     },
     {
@@ -2068,7 +2063,7 @@
       "oracle": "checkpoint-3853.png",
       "oracle_sha256": "51690c42f01ab3190e0c99efa64b7432660a329c275bbf2626cd34ed7910d476",
       "remake": "remake-0276-p2.png",
-      "remake_sha256": "e9965b7c9a9029b0c01e60e2b91a220aff3a2a5f7bf1199f641d497679c37c25",
+      "remake_sha256": "51690c42f01ab3190e0c99efa64b7432660a329c275bbf2626cd34ed7910d476",
       "sheet": "docs/figures/parity-ch12-samples-p7.png"
     },
     {

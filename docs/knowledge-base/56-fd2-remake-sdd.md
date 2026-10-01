@@ -8638,12 +8638,29 @@ ENEMY PHASE 橫幅馬賽克的兩格取樣色差第六章沒再出現。
 
 ## 第十二章收尾驗收（2026-10-01）
 
-本輪玩家寶箱／可變地圖 HUD、事件35／36、原生結果2073D、共用物理經驗、戰後配置與持續槽同步等 READY 切片，經完整章驗證後為 CONFORMED／RUNTIME-E1；章路徑 PLAYER-E2 採111建構槽與最後清場例外。原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。
+本輪玩家寶箱／可變地圖 HUD、事件35／36、原生結果2073D、共用物理經驗、戰後配置與持續槽同步等 READY 切片，經完整章驗證後為 CONFORMED／RUNTIME-E1；章路徑 PLAYER-E2 採111建構槽與最後清場例外。下列為2026-10-01修正#53之前的歷史驗收（統計已失效，目前見本檔#53節）：原版 sample-r5（dosgolem a9bcd62、固定 FD2.EXE SHA-256、tracked dirty0）與 remake-r8 完整重播通過：286 原版動作、289 重製檢查點、287 行為比較點、275 畫面點，176 點0px、最大215px；所有計畫節點齊全，酒店存檔整檔 SHA-256 6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821 相同。
 
 [正式收據](../data/ui-traces/parity-ch12.json)、[槽清冊](../data/parity-slots/ch12-manifest.json)、[抽樣索引](../data/ui-traces/parity-ch12-samples.json)與[逐章台帳](../data/parity-campaign-progress.json)可回查。第10回合玩家取物56，seq3853已開箱格與HUD為0px；死亡對白seq3109相位比較為0px。共用經驗的writer／consumer已證實，特定15經驗來源仍為強推論，不升格原版全域動態實測。
 
-17個HUD單像素區域（13個純單像素畫面、4個與指令環差異共存）與取寶提問框外游標134px分別由[#52](https://github.com/wicanr2/fd2_re/issues/52)／[#53](https://github.com/wicanr2/fd2_re/issues/53)追蹤；敗北返回標題[#47](https://github.com/wicanr2/fd2_re/issues/47)與#41仍未閉合。強化槽不證明傷害／存活／敵方選目標忠實度，第四～十一章依117未重跑。
+17個HUD單像素區域（13個純單像素畫面、4個與指令環差異共存）與取寶提問框外游標134px分別由[#52](https://github.com/wicanr2/fd2_re/issues/52)／[#53](https://github.com/wicanr2/fd2_re/issues/53)追蹤；當時敗北返回標題[#47](https://github.com/wicanr2/fd2_re/issues/47)與#41仍未閉合；#47已由下節有限敗北驗收取代，#53亦由後節取寶驗收取代。強化槽不證明傷害／存活／敵方選目標忠實度，第四～十一章依117未重跑。
 
 ## 2026-10-01 有限敗北規格驗收
 
 §5.2.1／§5.2.2／§5.2.3由READY進入CONFORMED，限第十二章敗北caller／兩張提示／完整標題返回／存檔邊界與正式AI候選consumer。證據、種子／受控方法及同槽重跑結果見[58本輪現況](58-fd2-exe-re-coverage.md)與[正式收據](../data/ui-traces/ch12-defeat-return-title.json)。其餘章節自訂撤退節點不因此升級；完整標題逐幀與音訊人耳仍是另一驗證範圍。
+
+
+## #53 取寶提示底圖邊界（2026-10-01，CONFORMED）
+
+原版開框保存現成VGA，具體writer與caller 見[58蒐證](58-fd2-exe-re-coverage.md)。
+raw selector=1本身不證明提問底圖應有游標。禁止改正式selector、遮蔽游標區域或調高預算。
+待機完成前的取寶owner應從已關閉行動環的底圖建立問句，之後不重畫互動游標；
+重製投影經測試副本審查：seq3820由134像素降至0，seq3853仍為0，酒店存檔雜湊不變。
+投影是強推論，限定0x190AC普通物品／金錢owner；原版caller仍呼叫11CAC(0)，
+不能據此宣稱全路徑都不進122DC，也不延伸到其他對話。正式實作仍須重跑同槽驗收。
+驗收必須同時包含seq3820提問、seq3853取得後寶箱/HUD及酒店存檔；取消不交易，
+缺素材不可發布半套介面。對拍相位變體只能換原生渲染的底圖，不從原版拷像素。
+
+正式取寶底圖與重播相位變體均走同一個原生合成入口，保存raw selector=1。
+[本輪正式收據](../data/ui-traces/parity-ch12.json)的seq3820及3853皆為0像素，酒店存檔整檔雜湊一致。
+新增回歸確認提問底圖無互動游標、後續正常合成恢復游標，以及未知selector失敗時不發布畫面或時序。
+只確認本題的底圖／交易邊界，不提升其他對話、全章逐像素或未抽樣玩家法術／物品操作。
