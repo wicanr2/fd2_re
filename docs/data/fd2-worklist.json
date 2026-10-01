@@ -303,27 +303,38 @@
       "id": "ch12-hud-terrain-single-pixel",
       "layer": "player",
       "category": "缺陷",
-      "title": "第十二章 HUD 地形縮圖反覆出現單像素差異",
-      "body": "sample-r5／remake-r8 的完整四gate通過，但13個點反覆在 HUD 地形縮圖 x11 的不同視窗y位置差1像素，seq60／63／87／103／111／229／436／443／622／630／747／3137／3152。顏色是地形綠褐色或黑色，非整體DAC相位；根因未知。已由原版及重製RGB逐點核實，保留parity-ch12與抽樣圖。本項是本章通過後的可選像素修飾，不阻塞111收據。",
+      "title": "第十二章地圖 tile27 的 mode3 單像素殘差",
+      "body": "2026-10-01 定位勘誤：目前正式 treasure-original-r2／treasure-formal-r2 收據的17個差異點，均位於地圖 tile27 的局部像素(7,9)，不是HUD地形縮圖。13張完整畫面只差1px，另4張與指令環差異共存；完整四gate仍通過，本項維持可選像素修飾、不阻塞111。\n\n原版IDA 9.4既有解碼契約核對：0x11EEE的0x1220C／0x12220分別呼叫raw 0x4DEDA及LUT 0x4DCC6。mode3在raw路徑保留目的底色，在LUT路徑讀目的像素並映射。每張殘差的實際分支及底色寫入來源尚未知，不能用archive byte+3推論runtime分支，也不能改成固定色。\n\n主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。",
       "acceptance": "定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。",
       "verify": {
         "kind": "manual",
-        "note": "完整收據非零差異中的13個1px地形縮圖點。"
+        "note": "17個地圖tile27局部(7,9)殘差點：13個完整畫面1px，4個與指令環差異共存；不是HUD縮圖。"
       },
       "issue": 52
     },
     {
-      "id": "ch11-ledger-slot-policy-missing",
-      "layer": "tooling",
-      "category": "工作",
-      "title": "第十一章對拍台帳缺少可重建的 slot_policy 欄位",
-      "body": "本輪 #53 收尾核對時，tools/fd2_parity_progress.py 的 problems() 回報 ch11: passed 但 slot_policy 缺 levels_per_chapter／seed／event_states／boost。其餘本輪第十二章四項對拍與 Go 回歸均通過。這是台帳政策欄位缺口，不是第十一章原版／重製結果反證，不因此重開既有章收據或重跑戰鬥。",
-      "acceptance": "以既有 ch11-manifest.json、槽雜湊與原版收據回填可追溯的 slot_policy；無法由來源確認的政策明示 unknown 並記錄限制，不猜測或改寫舊收據。台帳驗證不再回報本項。",
+      "id": "ch13-preflight-map-rendering-over-budget",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十三章前兩回合畫面對拍多點超過640像素，行為比較通過",
+      "acceptance": "定位同槽正常輸入下的繪圖差異writer／consumer，依RE→READY規格修正正式畫面，使用原版同狀態點重跑且維持未遮罩640px上限；保留部分預檢的限制，不能以此宣稱整章PLAYER-E2。",
       "verify": {
         "kind": "manual",
-        "note": "tools/fd2_parity_progress.py verify 的 ch11 slot_policy 訊號，以及欄位來源／槽雜湊核對。"
+        "note": "parity-ch13-preflight.json的frames gate為false；正式第十三章四gate仍由#14追蹤。"
       },
-      "issue": 57
+      "issue": 60
+    },
+    {
+      "id": "ch13-round6-result-and-defeat-path-unknown",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "第十三章第六回合原版回標題的判定與正式敗北路徑待閉合",
+      "acceptance": "先查58既有結果表與controller證據，以IDA直接指令及raw跳表定位raw章12判定writer／consumer，對照seq2108..2113來源；READY後接正式條件與原生返回標題流程，重新安排不改狀態的章內正常輸入以走到第九回合與戰後，不能猜成我方或友軍全滅。",
+      "verify": {
+        "kind": "manual",
+        "note": "第十三章完整r1未完成計畫；現有自訂retreat_ch13不能代替原版第六回合返回標題。"
+      },
+      "issue": 61
     }
   ]
 }

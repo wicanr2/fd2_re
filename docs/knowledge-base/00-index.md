@@ -193,3 +193,17 @@ remake 每關的劇本檔 `remake/assets/scenarios/chNN.json` = **事件骨架 +
 #53 取寶提示底圖：[58蒐證入口](58-fd2-exe-re-coverage.md) →
 [開框VGA與行動caller](../data/ida/fd2_treasure_background_20261001.json)；
 原版控制計畫沿用 ch12-sample.jsonl，規格狀態與限制由56／58承載。
+
+
+#52 地圖tile27殘差定位勘誤：[58入口](58-fd2-exe-re-coverage.md) →
+[17點座標與既有raw／LUT指令契約](../data/ida/fd2_terrain_mode3_review_20261001.json)。
+原版底色寫入來源仍未知，不重開已閉合的解碼器。
+
+第十三章正常LOAD：[58入口](58-fd2-exe-re-coverage.md) → [有限收據](../data/parity-slots/ch13-load-validation.json)；
+manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity-campaign-progress.json)連結。
+
+#58 第十三章原生交接與#59完整函式chunks：[58入口](58-fd2-exe-re-coverage.md) →
+[IDA與59筆原版起手對照](../data/ida/fd2_ch13_handoff_20261001.json)。
+
+第十三章診斷收據：[58目前阻塞](58-fd2-exe-re-coverage.md) →
+[有界預檢，整章未通過](../data/ui-traces/parity-ch13-preflight.json)；#60／#61分別追畫面與結果判定。

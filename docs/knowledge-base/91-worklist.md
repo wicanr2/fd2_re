@@ -28,10 +28,18 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
+
+## re — 原版證據還沒閉合
+
+### 第十三章第六回合原版回標題的判定與正式敗北路徑待閉合
+
+`ch13-round6-result-and-defeat-path-unknown` · RE待解 · [#61](https://github.com/wicanr2/fd2_re/issues/61) · 仍未完成 · 要人判
+
+怎樣算做完：先查58既有結果表與controller證據，以IDA直接指令及raw跳表定位raw章12判定writer／consumer，對照seq2108..2113來源；READY後接正式條件與原生返回標題流程，重新安排不改狀態的章內正常輸入以走到第九回合與戰後，不能猜成我方或友軍全滅。
 
 ## data — 可編輯資料還沒就緒
 
@@ -111,6 +119,12 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
+### 第十三章前兩回合畫面對拍多點超過640像素，行為比較通過
+
+`ch13-preflight-map-rendering-over-budget` · 缺陷 · [#60](https://github.com/wicanr2/fd2_re/issues/60) · 仍未完成 · 要人判
+
+怎樣算做完：定位同槽正常輸入下的繪圖差異writer／consumer，依RE→READY規格修正正式畫面，使用原版同狀態點重跑且維持未遮罩640px上限；保留部分預檢的限制，不能以此宣稱整章PLAYER-E2。
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -139,11 +153,15 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：逐項聽辨後修正曲號對映與音效語意記錄。
 
-### 第十二章 HUD 地形縮圖反覆出現單像素差異
+### 第十二章地圖 tile27 的 mode3 單像素殘差
 
 `ch12-hud-terrain-single-pixel` · 缺陷 · [#52](https://github.com/wicanr2/fd2_re/issues/52) · 仍未完成 · 要人判
 
-sample-r5／remake-r8 的完整四gate通過，但13個點反覆在 HUD 地形縮圖 x11 的不同視窗y位置差1像素，seq60／63／87／103／111／229／436／443／622／630／747／3137／3152。顏色是地形綠褐色或黑色，非整體DAC相位；根因未知。已由原版及重製RGB逐點核實，保留parity-ch12與抽樣圖。本項是本章通過後的可選像素修飾，不阻塞111收據。
+2026-10-01 定位勘誤：目前正式 treasure-original-r2／treasure-formal-r2 收據的17個差異點，均位於地圖 tile27 的局部像素(7,9)，不是HUD地形縮圖。13張完整畫面只差1px，另4張與指令環差異共存；完整四gate仍通過，本項維持可選像素修飾、不阻塞111。
+
+原版IDA 9.4既有解碼契約核對：0x11EEE的0x1220C／0x12220分別呼叫raw 0x4DEDA及LUT 0x4DCC6。mode3在raw路徑保留目的底色，在LUT路徑讀目的像素並映射。每張殘差的實際分支及底色寫入來源尚未知，不能用archive byte+3推論runtime分支，也不能改成固定色。
+
+主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
@@ -210,13 +228,5 @@ sample-r5／remake-r8 的完整四gate通過，但13個點反覆在 HUD 地形�
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
-
-### 第十一章對拍台帳缺少可重建的 slot_policy 欄位
-
-`ch11-ledger-slot-policy-missing` · 工作 · [#57](https://github.com/wicanr2/fd2_re/issues/57) · 仍未完成 · 要人判
-
-本輪 #53 收尾核對時，tools/fd2_parity_progress.py 的 problems() 回報 ch11: passed 但 slot_policy 缺 levels_per_chapter／seed／event_states／boost。其餘本輪第十二章四項對拍與 Go 回歸均通過。這是台帳政策欄位缺口，不是第十一章原版／重製結果反證，不因此重開既有章收據或重跑戰鬥。
-
-怎樣算做完：以既有 ch11-manifest.json、槽雜湊與原版收據回填可追溯的 slot_policy；無法由來源確認的政策明示 unknown 並記錄限制，不猜測或改寫舊收據。台帳驗證不再回報本項。
 
 <!-- END fd2_worklist.py render -->

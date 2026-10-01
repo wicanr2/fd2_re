@@ -8642,7 +8642,7 @@ ENEMY PHASE 橫幅馬賽克的兩格取樣色差第六章沒再出現。
 
 [正式收據](../data/ui-traces/parity-ch12.json)、[槽清冊](../data/parity-slots/ch12-manifest.json)、[抽樣索引](../data/ui-traces/parity-ch12-samples.json)與[逐章台帳](../data/parity-campaign-progress.json)可回查。第10回合玩家取物56，seq3853已開箱格與HUD為0px；死亡對白seq3109相位比較為0px。共用經驗的writer／consumer已證實，特定15經驗來源仍為強推論，不升格原版全域動態實測。
 
-17個HUD單像素區域（13個純單像素畫面、4個與指令環差異共存）與取寶提問框外游標134px分別由[#52](https://github.com/wicanr2/fd2_re/issues/52)／[#53](https://github.com/wicanr2/fd2_re/issues/53)追蹤；當時敗北返回標題[#47](https://github.com/wicanr2/fd2_re/issues/47)與#41仍未閉合；#47已由下節有限敗北驗收取代，#53亦由後節取寶驗收取代。強化槽不證明傷害／存活／敵方選目標忠實度，第四～十一章依117未重跑。
+17個單像素區域（當時誤稱HUD；2026-10-01已依下節勘誤為地圖tile27）（13個純單像素畫面、4個與指令環差異共存）與取寶提問框外游標134px分別由[#52](https://github.com/wicanr2/fd2_re/issues/52)／[#53](https://github.com/wicanr2/fd2_re/issues/53)追蹤；當時敗北返回標題[#47](https://github.com/wicanr2/fd2_re/issues/47)與#41仍未閉合；#47已由下節有限敗北驗收取代，#53亦由後節取寶驗收取代。強化槽不證明傷害／存活／敵方選目標忠實度，第四～十一章依117未重跑。
 
 ## 2026-10-01 有限敗北規格驗收
 
@@ -8664,3 +8664,60 @@ raw selector=1本身不證明提問底圖應有游標。禁止改正式selector�
 [本輪正式收據](../data/ui-traces/parity-ch12.json)的seq3820及3853皆為0像素，酒店存檔整檔雜湊一致。
 新增回歸確認提問底圖無互動游標、後續正常合成恢復游標，以及未知selector失敗時不發布畫面或時序。
 只確認本題的底圖／交易邊界，不提升其他對話、全章逐像素或未抽樣玩家法術／物品操作。
+
+
+## 2026-10-01 #52 地圖殘差定位勘誤
+
+[主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)以正式第十二章
+收據逐張核對17個殘差點：13張全畫面1px、4張與指令環差異共存。
+camera→world tile對照均為tile27局部(7,9)，畫面座標y85／109／133／157，
+不在底部HUD；因此否定前輪「HUD地形縮圖」定位。歷史抽樣及舊Issue名稱保留作追溯。
+IDA LE 0x1220C／0x12220分別呼叫raw 0x4DEDA／LUT 0x4DCC6；既有mode3
+契約分別保留目的底色／讀目的色經LUT寫回。這些指令契約已證實，不重開既有RE。
+每張殘差的實際runtime分支與目的底色writer仍未知；不可從archive byte+3猜測，
+也不可固定色、遮罩或調高640px預算。#52維持開啟；正式runtime未改，本項未CONFORMED。
+
+
+## 2026-10-01 #58 第十三章原生名冊交接契約（CONFORMED，僅起手）
+
+主證據：[原始IDA位址／bytes、完整chunks與同槽59筆對照](../data/ida/fd2_ch13_handoff_20261001.json)。
+沿用既有LOADCH與handler-adopt合約，raw章12的sub_3346B只LOADCH→text0→focus slot0。
+0x1088D先持續隊伍、後10B4E(0)；正常LOAD seq48共15筆隊伍＋44筆group0，
+其中12友軍、32敵方。未加入group1，不能沿用舊scenario的initial_groups=[0,1]。
+正式可編輯ch13.json宣告runtime_append_groups=true、initial_groups=[0]；
+採用handler actors，保留native presentation、selector及原始runtime順序。
+剩餘group1／2與255來源列仍留待其各自已證實consumer，不預先啟用、不可丟棄。
+資產或selector缺失維持失敗即關閉，不新增renderer fallback、不改原版或建槽bytes。
+驗收：正常LOAD同槽起手59筆、15／12／32陣營投影、HP／座標／順序及HUD可合成，
+重播seq48未遮罩320×200並核對640px上限；章內完整四gate另由#14驗收。
+
+證據審查：逐項核對0x33475／0x3347A、共用chunk0x3344D與跳轉0x33466／0x33214，
+以及0x10B3C／0x10B3E的group0實參；與原版59筆runtime及44筆FDFIELD逐列對照相符。
+只啟用既有可編輯群組承接契約；當時規格READY，尚未CONFORMED；現況見下方有限驗收。
+
+第十三章READY補充（r2起手仍HUD未物化）：只修scenario已恢復59筆原生名冊，
+battle_ch13卻沒有視圖／HUD承接資料；因此仍不得標CONFORMED。
+依同槽原版seq48設定camera=(0,13)、absolute cursor=(3,15)、visible=(3,2)、
+range_mode=1。HUD沿用已閉合[持續擁有者](../data/fd2_hud_persistence_ida.txt)：
+controller gate B=1，gate A／anchor繼承原生LOAD／程序狀態，不改成章節常數。
+上述入口視圖由原版六欄位與focus slot0 caller直接核對，規格READY；
+DRAFT發現的這個consumer缺口已先補規格，才接入正式節點。
+
+
+## 2026-10-01 第十三章起手有限驗收與目前阻塞
+
+[#58](https://github.com/wicanr2/fd2_re/issues/58)依READY規格修正可編輯scenario的
+原生handler承接與group0，正式battle節點接入已證實入口view及持續HUD。
+[同槽預檢](../data/ui-traces/parity-ch13-preflight.json)seq48名冊共59筆
+（15我方／12友軍／32敵方）、原生順序／座標／HP及320×200未遮罩畫面對上原版，RGB差0px。
+限於這個起手切片標CONFORMED／RUNTIME-E1；未提升整章PLAYER-E2。
+[原始位址、完整chunks與有限驗收](../data/ida/fd2_ch13_handoff_20261001.json)保留出處。
+完整Go回歸19套件通過；編輯器canonical由受版控exporter重生及驗證清冊雜湊。
+
+目前原版r1第六回合回標題，沒有完成計畫。seq2110仍15名我方及3名友軍HP>0，
+seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77動作凍結預檢
+行為gate通過，但35個畫面點超過640px（最大11901px），節點／交易拒絕截短計畫。
+[#60](https://github.com/wicanr2/fd2_re/issues/60)追畫面；
+[#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
+戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
+#59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。

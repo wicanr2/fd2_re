@@ -1196,4 +1196,35 @@ START 走完序章取到三次 pan 共 126 格逐格對上，收據見
 提問seq3820的游標框差異134→0像素；取得後seq3853仍為0，酒店存檔整檔雜湊一致。
 275張中177張0像素，98個非零點最大215，未改像素預算。取寶底圖契約CONFORMED，
 原始selector不變；完整caller內部解釋仍為強推論，不能推廣至其他對話。
-#52的HUD縮圖與其他指令環相位差異仍保留，不宣稱全章逐像素；玩家法術／物品操作與#41仍未完成。
+#52的地圖tile27殘差（原稱HUD縮圖，見下方勘誤）與其他指令環相位差異仍保留，不宣稱全章逐像素；玩家法術／物品操作與#41仍未完成。
+
+
+## 2026-10-01 #52 地圖殘差定位勘誤
+
+[主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)以正式第十二章
+收據逐張核對17個殘差點：13張全畫面1px、4張與指令環差異共存。
+camera→world tile對照均為tile27局部(7,9)，畫面座標y85／109／133／157，
+不在底部HUD；因此否定前輪「HUD地形縮圖」定位。歷史抽樣及舊Issue名稱保留作追溯。
+IDA LE 0x1220C／0x12220分別呼叫raw 0x4DEDA／LUT 0x4DCC6；既有mode3
+契約分別保留目的底色／讀目的色經LUT寫回。這些指令契約已證實，不重開既有RE。
+每張殘差的實際runtime分支與目的底色writer仍未知；不可從archive byte+3猜測，
+也不可固定色、遮罩或調高640px預算。#52維持開啟；正式runtime未改，本項未CONFORMED。
+
+
+## 2026-10-01 第十三章起手有限驗收與目前阻塞
+
+[#58](https://github.com/wicanr2/fd2_re/issues/58)依READY規格修正可編輯scenario的
+原生handler承接與group0，正式battle節點接入已證實入口view及持續HUD。
+[同槽預檢](../data/ui-traces/parity-ch13-preflight.json)seq48名冊共59筆
+（15我方／12友軍／32敵方）、原生順序／座標／HP及320×200未遮罩畫面對上原版，RGB差0px。
+限於這個起手切片標CONFORMED／RUNTIME-E1；未提升整章PLAYER-E2。
+[原始位址、完整chunks與有限驗收](../data/ida/fd2_ch13_handoff_20261001.json)保留出處。
+完整Go回歸19套件通過；編輯器canonical由受版控exporter重生及驗證清冊雜湊。
+
+目前原版r1第六回合回標題，沒有完成計畫。seq2110仍15名我方及3名友軍HP>0，
+seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77動作凍結預檢
+行為gate通過，但35個畫面點超過640px（最大11901px），節點／交易拒絕截短計畫。
+[#60](https://github.com/wicanr2/fd2_re/issues/60)追畫面；
+[#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
+戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
+#59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。

@@ -897,6 +897,22 @@
         "pattern": "remake_divergence",
         "note": "重播實際分岔仍為行為失敗。"
       }
+    },
+    {
+      "id": "ida-function-exports-include-all-chunks",
+      "area": "逆向",
+      "rule": "IDA函式匯出以idautils.FuncItems／Chunks遍歷所有非連續區塊，並核對requested指令確實在結果內；f.start_ea至f.end_ea只涵蓋主區間。入口：tools/ida_opening_input_probe.py與58的第十三章交接證據。",
+      "why": "第十三章查0x3344D時，舊探針回傳sub_32D18的主區間卻漏掉共用尾段；雜湊與JSON存在無法發現這個漏匯出。#59改成列舉chunks並檢查requested地址。",
+      "date": "2026-10-01",
+      "evidence": "docs/data/ida/fd2_ch13_handoff_20261001.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/ida_opening_input_probe.py"
+        ],
+        "pattern": "idautils.FuncItems",
+        "note": "探針必須遍歷完整函式items。"
+      }
     }
   ]
 }

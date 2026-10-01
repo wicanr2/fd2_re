@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_slot_load_validation",
+  "chapter": 13,
+  "raw_chapter": 12,
+  "date": "2026-10-01",
+  "status": "slot-ready",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/14",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "manifest": {
+    "path": "docs/data/parity-slots/ch13-manifest.json",
+    "sha256": "9455bf1a2c453b4345ac11ba5070f97e612b863c6b2673e2cd88fef64f0d9d7c"
+  },
+  "slot_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
+  "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "original_runner": {
+    "schema_version": 1,
+    "kind": "fd2_oracle_runner_provenance",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "dosgolem_branch": "feat/fd2-oracle-input-chain",
+    "dosgolem_tracked_dirty_files": 0,
+    "dosgolem_untracked_files": 0,
+    "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+    "generated_at": "2026-10-01T10:27:51+00:00",
+    "control_plan": "docs/data/parity-plans/ch13-slot-load.jsonl",
+    "lock_ally_hp": false,
+    "force_enemy_clear_declared": false,
+    "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_reference_manifest": "docs/data/fd2-reference-files.json",
+    "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch13/load-state",
+    "state_injections": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+  },
+  "load": {
+    "plan": "docs/data/parity-plans/ch13-slot-load.jsonl",
+    "plan_sha256": "beeafb18fd0834ff7cffa062c60b53299d9691c02783bb6d4d4f09ca78647baf",
+    "last_control_seq": 17,
+    "ui": "town",
+    "steps": 75354130,
+    "rng_word": 22661,
+    "checkpoint_sha256": "26c98f9f3bbd6f6b383e31b25012e9e1178af689258a2e67e766a0c5dd42f3af",
+    "image_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+    "state_injections": []
+  },
+  "battle_entry_roster": {
+    "plan": "docs/data/parity-plans/ch13-sample.jsonl",
+    "plan_sha256": "e90be5b684f22bde2be3f72e83ec3a5b041772bbbfb500f768c3ac39510d8301",
+    "seq": 48,
+    "checkpoint_sha256": "ad9ae1c3ce8ad9e3f5cffe89c5f88cc6a94ab318c63a16f082364314039c2999",
+    "image_sha256": "86cce7d9e03efea49342a4cfb99c744c5fa617ac72ef4554269a62188643b426",
+    "rng_word": 63825,
+    "own_count": 15,
+    "enemy_count": 32,
+    "compared_to_manifest": [
+      "identity",
+      "level",
+      "exp",
+      "hp"
+    ],
+    "matched_roster": [
+      {
+        "index": 0,
+        "identity": 0,
+        "level": 40,
+        "exp": 44,
+        "hp": 420
+      },
+      {
+        "index": 1,
+        "identity": 9,
+        "level": 40,
+        "exp": 78,
+        "hp": 272
+      },
+      {
+        "index": 2,
+        "identity": 4,
+        "level": 40,
+        "exp": 78,
+        "hp": 385
+      },
+      {
+        "index": 3,
+        "identity": 30,
+        "level": 62,
+        "exp": 29,
+        "hp": 720
+      },
+      {
+        "index": 4,
+        "identity": 1,
+        "level": 40,
+        "exp": 84,
+        "hp": 494
+      },
+      {
+        "index": 5,
+        "identity": 8,
+        "level": 40,
+        "exp": 0,
+        "hp": 302
+      },
+      {
+        "index": 6,
+        "identity": 2,
+        "level": 40,
+        "exp": 0,
+        "hp": 380
+      },
+      {
+        "index": 7,
+        "identity": 10,
+        "level": 40,
+        "exp": 0,
+        "hp": 242
+      },
+      {
+        "index": 8,
+        "identity": 13,
+        "level": 40,
+        "exp": 0,
+        "hp": 296
+      },
+      {
+        "index": 9,
+        "identity": 12,
+        "level": 40,
+        "exp": 0,
+        "hp": 503
+      },
+      {
+        "index": 10,
+        "identity": 5,
+        "level": 32,
+        "exp": 0,
+        "hp": 269
+      },
+      {
+        "index": 11,
+        "identity": 11,
+        "level": 28,
+        "exp": 0,
+        "hp": 202
+      },
+      {
+        "index": 12,
+        "identity": 6,
+        "level": 30,
+        "exp": 0,
+        "hp": 371
+      },
+      {
+        "index": 13,
+        "identity": 14,
+        "level": 22,
+        "exp": 0,
+        "hp": 195
+      },
+      {
+        "index": 14,
+        "identity": 17,
+        "level": 21,
+        "exp": 0,
+        "hp": 245
+      }
+    ]
+  },
+  "limitations": [
+    "只證明正常LOAD及戰場起手名冊接受同一建構槽；不是全章四gate或PLAYER-E2收據。",
+    "建構槽seed4控制成長政策；原版行程RNG開機為0，LOAD點及戰場起手字組如實記錄，沒有把正式遊戲鎖定測試seed。",
+    "原版完整r1第六回合返回標題而未完成計畫；整章失敗診斷見parity-ch13-preflight.json，阻塞由#60／#61追蹤。"
+  ]
+}

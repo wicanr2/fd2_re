@@ -4495,3 +4495,59 @@ DRAFT→原型審查→READY→正式底圖投影→同槽驗收→CONFORMED，�
 本輪變更及產物皆為UID/GID 1000，沒有.md空目錄；既有extracted/歷史root產物未在本輪寫入或改權限。
 原始建構槽雜湊未變，文件連結、115列／7張對照圖雜湊與git diff --check皆通過。
 提交與遠端HEAD核對記於[#53驗收留言](https://github.com/wicanr2/fd2_re/issues/53)。
+
+## 2026-10-01：#57第十一章台帳政策來源核對
+
+既有[ch11清冊](../data/parity-slots/ch11-manifest.json)的level_policy=每章6級、seed4，
+assumptions明示戰場狀態7:17=1及AP+200／DP+0／DX+60；與[原版章收據](../data/ui-traces/parity-ch11.json)的slot欄位逐項相同。
+固定槽、清冊、原版收據及台帳SHA-256皆為35ed64accc3082bb445d3bcaa9ba0c05c3602e60e941179f67ee21340c98ca92。
+據此只回填[台帳](../data/parity-campaign-progress.json)既定slot_policy欄位，沒有unknown需猜補。
+來源政策並非原版規則；舊槽與章收據未重建或改寫，PLAYER-E2範圍保持原收據限制。
+台帳verify已不再回報ch11政策缺欄位；執行入口tools/fd2_parity_progress.py verify（fd2-go-test-local:20260909容器）。
+
+
+## 2026-10-01 #52 地圖殘差定位勘誤
+
+[主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)以正式第十二章
+收據逐張核對17個殘差點：13張全畫面1px、4張與指令環差異共存。
+camera→world tile對照均為tile27局部(7,9)，畫面座標y85／109／133／157，
+不在底部HUD；因此否定前輪「HUD地形縮圖」定位。歷史抽樣及舊Issue名稱保留作追溯。
+IDA LE 0x1220C／0x12220分別呼叫raw 0x4DEDA／LUT 0x4DCC6；既有mode3
+契約分別保留目的底色／讀目的色經LUT寫回。這些指令契約已證實，不重開既有RE。
+每張殘差的實際runtime分支與目的底色writer仍未知；不可從archive byte+3猜測，
+也不可固定色、遮罩或調高640px預算。#52維持開啟；正式runtime未改，本項未CONFORMED。
+
+
+## 2026-10-01 第十三章建槽與正常LOAD
+
+[#14](https://github.com/wicanr2/fd2_re/issues/14)登記下一章哈斯米爾之戰（raw12／map12）。
+[manifest](../data/parity-slots/ch13-manifest.json)、[LOAD有限收據](../data/parity-slots/ch13-load-validation.json)
+與[控制計畫](../data/parity-plans/ch13-sample.jsonl)由111／114既定政策重建。
+同一槽SHA-256為`d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae`；
+dosgolem a9bcd621從標題正常LOAD進營地，無鎖HP。戰場起手15筆身份、等級、EXP、HP
+逐筆對上manifest。唯一現況由parity-campaign-progress.json記為slot-ready；
+章內原版抽樣正在執行，尚未比較四gate，不宣稱第十三章PLAYER-E2。
+
+
+## 2026-10-01 第十三章起手有限驗收與目前阻塞
+
+[#58](https://github.com/wicanr2/fd2_re/issues/58)依READY規格修正可編輯scenario的
+原生handler承接與group0，正式battle節點接入已證實入口view及持續HUD。
+[同槽預檢](../data/ui-traces/parity-ch13-preflight.json)seq48名冊共59筆
+（15我方／12友軍／32敵方）、原生順序／座標／HP及320×200未遮罩畫面對上原版，RGB差0px。
+限於這個起手切片標CONFORMED／RUNTIME-E1；未提升整章PLAYER-E2。
+[原始位址、完整chunks與有限驗收](../data/ida/fd2_ch13_handoff_20261001.json)保留出處。
+完整Go回歸19套件通過；編輯器canonical由受版控exporter重生及驗證清冊雜湊。
+
+目前原版r1第六回合回標題，沒有完成計畫。seq2110仍15名我方及3名友軍HP>0，
+seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77動作凍結預檢
+行為gate通過，但35個畫面點超過640px（最大11901px），節點／交易拒絕截短計畫。
+[#60](https://github.com/wicanr2/fd2_re/issues/60)追畫面；
+[#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
+戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
+#59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。
+
+本批清理驗證：所有23個新增／變更檔案為UID/GID1000，新增47個本地連結可達，
+沒有FD2容器留存或.md空目錄。2811個歷史root-owned產物未新增、未改動。
+Python章驗證器14項測試、99條教訓的15項guard及遠端21條worklist驗證通過；
+原版r1未完計畫的失敗樣本保留在work/且不提交原版bytes或圖片。
