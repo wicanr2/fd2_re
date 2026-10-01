@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,54 +111,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第十四章戰場事件10缺少轉寫，正常抽樣停止
-
-`ch14-field-event10-owner` · RE待解 · [#71](https://github.com/wicanr2/fd2_re/issues/71) · 仍未完成 · 要人判
-
-#69完整原版r2已正常跑完1344seq，來源c314be4f與固定SAV。重製同槽整章TestChapterParityReplay在wait seq860停止：battle field event: selector 0 event 10 has no transcribed owner。定時控制列為空不代表沒有區域／單位等戰場事件；需先查58／00／canonical事件資料，補章14事件10的原版writer、caller與consumer，不能以空owner或忽略事件繼續。
-
-怎樣算做完：固定FD2.EXE雜湊下以IDA與原版收據確認selector0 event10的觸發、資料寫入及玩家效果；先canonical RE及READY規格再正式轉寫；同一整章原版收據重播能越過該事件，相關真實回歸通過。整章完成仍由#69驗收。
-
-證據：`docs/data/ui-traces/parity-ch14-r1.json`
-
-### 第十四章同槽重播AI行動順序出現差異
-
-`ch14-ai-order-divergence` · 缺陷 · [#72](https://github.com/wicanr2/fd2_re/issues/72) · 仍未完成 · 要人判
-
-#69完整原版r2與重製r1的同槽比較：seq583第40／42／54個AI行動為原版48／50／62，重製49／52／48；seq780第99／101個為原版48／50，重製49／52。收據同時保留oracle_mid_end_turn分類，但remake_divergence仍未解除。先逐筆核對AI trace、狀態與sort consumer；不得直接豁免或改順序讓驗收過。
-
-怎樣算做完：判明每個比較點是否可比及實際第一個分岔；以既有閉合證據及必要窄IDA查詢修正真正差異，保留固定seed與同狀態前置。原版與重製有效AI行動順序一致，相關真實回歸通過；不可放寬閘門或將實際分岔藏入中途排除。
-
-證據：`docs/data/ui-traces/parity-ch14-r1.json`
-
-### 第十四章戰後binding錯把70筆archive當執行期前沿
-
-`ch14-post-runtime-frontier` · 缺陷 · [#73](https://github.com/wicanr2/fd2_re/issues/73) · 仍未完成 · 要人判
-
-#69目前已證實：正常LOAD原版前沿67筆，章內無新增群組，post raw0x238DC在0x2391B追加group1後為68筆（首次seq1093）。原版完整收據直接命中post各writer一次。現有ch13_post binding進入runtime_context要求70筆，但main.go:1745做exact前沿檢查；原native ACTING47也指向新增record67。這是尚未到達的戰後消費端缺陷，需在事件10解除後驗收，不把archive容量視為前沿。
-
-怎樣算做完：保留原版67→68前沿、IDA post直接指令及layout／sync consumer證據；READY規格後修正binding與失實測試斷言。正常同槽完整重播可進post、追加record67、演出、sync與章15城鎮，酒店存檔閉環通過；#69整章四項仍獨立驗收。
-
-證據：`docs/data/ui-traces/parity-ch14-r1.json`
-
-### 完整重播依原版狀態保留清敵前的敵方回合
-
-`parity-force-clear-phase-boundary` · 缺陷 · [#74](https://github.com/wicanr2/fd2_re/issues/74) · 仍未完成 · 要人判
-
-怎樣算做完：登錄原版END與清敵checkpoint、受版控完整計畫及trace證據；來源可比且READY後修正重播時序。原版清敵前完整回合保持完整；既有提前清敵樣本保持原有停點。第十四章round、AI順序及酒店SAV閉環通過；不改正式玩法、種子或清敵政策。
-
-證據：`docs/data/ui-traces/parity-ch14-r1.json`
-
-### 第十四章戰後排列座標必須保留至酒店存檔
-
-`ch14-post-layout-persistence` · 缺陷 · [#75](https://github.com/wicanr2/fd2_re/issues/75) · 仍未完成 · 要人判
-
-完整原版 sample-original-r2 與重製 r6 的酒店存檔解碼後，差異僅剩 16 人 record +0/+1/+3 座標及姿態與 checksum。現有 ch13_post 綁定 0x23942 的排列來源需核對；不以原版存檔注入或改雜湊門檻通過。
-
-怎樣算做完：由原始排列 bytes 與 ACT47 消費端證據確認座標／姿態，修正正式綁定；完整第十四章同槽重播後酒店 FD2.SAV 全檔 SHA-256 與原版相同，並通過戰後回歸。
-
-證據：`['docs/data/ui-traces/parity-ch14-r1.json', 'remake/assets/cutscenes/bindings/ch13_post.json']`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -198,16 +150,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### 第十四章缺完整原版與重製四項對拍收據
-
-`ch14-full-chapter-parity` · 工作 · [#69](https://github.com/wicanr2/fd2_re/issues/69) · 仍未完成 · 要人判
-
-接續已通過的第十三章（6e62119f），依#14與111／114完成第十四章「平原的會戰」工作單元。現況尚無ch14建構槽manifest、控制計畫或完整章收據；正式節點為town_ch14→preparation_ch14→raw ch13_pre／battle_ch14(map13)→raw ch13_post→town_ch15。先以原版LOAD驗證建構槽、起手名冊與事件，再重播並修正實際差異，不以單元測試或孤立資料升格。
-
-怎樣算做完：依111／114從已核對的ch02-cleared基底建構同槽，固定每章6級、建構seed4、AP+200／DP+0／DX+60與event-state7:17=1。控制計畫涵蓋戰前、正常移動攻擊／敵方回合、該章事件、戰後、城鎮／交易／酒店存檔與town_ch15指定秘密鍵；原版／完整Go重播串行，四項全過且至少12張完整320×200畫面≤640px。保存可重跑manifest／plan／正式收據並同步58／56／57、台帳、首頁產生表與Issue。未證實原版語意不猜接production。
-
-證據：`docs/knowledge-base/58-fd2-exe-re-coverage.md`
 
 ## release — 發行、平台與封包
 

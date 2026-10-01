@@ -1648,3 +1648,5 @@ IDA LE直接指令與同槽原版入口序列反證11及native fallback註解的
 `python3 tools/fd2_parity_progress.py verify`依正式台帳產生，不另維護一份數字。
 
 同狀態抽樣圖：[總覽一](../figures/parity-ch14-samples-p1.png)、[總覽二](../figures/parity-ch14-samples-p2.png)與[來源索引](../data/ui-traces/parity-ch14-samples.json)。固定規則包含全部非零差異及wait860；圖中的差異欄僅顯示差異，不用於遮蔽驗收。
+
+第十四章已驗證修正提交 `3667849118f2d94ca8ec8767a7c3642cdc9e42cb`；主機gh回讀確認#69與#71～#75已關閉，快照由正式pull格式器同步。總工單#14仍開啟，其他章與平台／音訊驗收保持原狀。
