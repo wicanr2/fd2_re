@@ -140,6 +140,10 @@ type builder struct {
 	overrides   map[int]int
 	eventStates map[[2]int]int // key: {章, 狀態表索引}；只收 -event-states 明示的值
 	target      int
+	assetsDir   string
+	sourceRefs  map[string]string
+	postSpawn   []postSpawnItemTail
+	postJoined  map[int]bool
 }
 
 func main() {
@@ -302,7 +306,7 @@ func run() error {
 var knownDeviations = []string{
 	"經驗值、擊殺帶來的升級、金幣與掉落物品（死亡獎勵、寶箱）全部依實際遊玩而定，本工具不模擬；等級與金幣只能靠 -levels-per-chapter／-level-overrides／-gold 明示。",
 	"紀錄 +0x00..+0x04（戰場座標等）與 +0x28..+0x36 隨遊玩漂移，保留基底值。",
-	"JOIN 保留目標槽 +0x17／+0x19 的載入殘值；建槽工具不重播戰場 sync_party，原版 0x11506 可能整筆複製場上記錄並改寫它們（ch01→ch02 identity 8 是 3f／06 對 ff／ff）；此差異仍由 #23 追蹤。",
+	"JOIN 保留載入殘值；戰後新登場列與當章新加入角色在 sync_party 時，只依 raw +8 投影物品末兩格。工具不重播完整戰場的 0x11506，已在戰鬥中登場 NPC 的物品異動仍取決於實際遊玩。",
 }
 
 func sha(data []byte) string {
@@ -355,6 +359,7 @@ func (b *builder) parseEventStates(text string) error {
 
 func (b *builder) loadTables(assetsDir string) (map[string]string, error) {
 	sources := map[string]string{}
+	b.assetsDir, b.sourceRefs = assetsDir, sources
 	handlerDir := filepath.Join(assetsDir, "cutscenes", "handlers")
 	entries, err := os.ReadDir(handlerDir)
 	if err != nil {
@@ -478,6 +483,9 @@ func (b *builder) record(i int) []byte {
 }
 
 func (b *builder) applyChapter(chapter int) error {
+	// 戰後新登場與 JOIN 的配對只屬於當章，不能帶到下一章。
+	b.postSpawn = nil
+	b.postJoined = map[int]bool{}
 	// 先升級：這一章打完才有 JOIN，新成員不吃這一章的經驗。
 	for i := 0; i < b.count; i++ {
 		record := b.record(i)
@@ -511,12 +519,23 @@ func (b *builder) finalChapterFor() int { return b.target }
 func (b *builder) applyBeats(chapter int, beats []map[string]any) error {
 	for _, beat := range beats {
 		switch beat["op"] {
+		case "spawn", "spawn_intro":
+			if err := b.capturePostSpawnItemTail(chapter, intField(beat, "group")); err != nil {
+				return err
+			}
+		case "sync_party":
+			if err := b.syncPostJoinedItemTail(chapter, beat["source"]); err != nil {
+				return err
+			}
 		case "join":
 			id := int(beat["char_id"].(float64))
 			if err := b.join(chapter, id, beat["source"]); err != nil {
 				return err
 			}
 		case "grant_item":
+			if len(b.postSpawn) != 0 {
+				return fmt.Errorf("第 %d 章 spawn 後 grant_item 的戰場來源尚未驗證", chapter)
+			}
 			item := int(beat["item_id"].(float64))
 			b.grantItem(chapter, item, beat["source"])
 		case "if":
@@ -633,6 +652,10 @@ func (b *builder) join(chapter, id int, source any) error {
 	}
 	copy(b.record(b.count), record.Raw[:])
 	slot := b.count
+	if b.postJoined == nil {
+		b.postJoined = map[int]bool{}
+	}
+	b.postJoined[slot] = true
 	b.count++
 	entry.Result = "appended"
 	entry.RosterSlot = &slot

@@ -1,0 +1,23 @@
+# #23：合法槽 LOAD 到玩家第二章；縮短戰鬥以觀察 raw ch01_post 的 JOIN→sync_party。
+# 明示 force_enemy_clear；只證明場上記錄建構、複製與存檔，不宣稱一般戰鬥 E2。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":200}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"battle_start","steps":1000000}
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":120}
+{"mark":"town_after_battle","steps":1000000}
+{"town_save":true,"steps":10000000}

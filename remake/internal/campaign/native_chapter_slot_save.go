@@ -36,7 +36,7 @@ func EncodeNativePersistentRecord(baseline fdsave.PersistentRecord, unit *battle
 		return baseline, fmt.Errorf("native chapter slot save: identity %d does not match baseline %d", panel[8], baseline.Raw[8])
 	}
 	record := baseline
-	// JOIN 之後還沒打過仗的記錄：+0..+4、+0x34..+0x36、+0x3d 是建構器沒碰的殘值，
+	// JOIN 之後尚未被 0x11506 同步的記錄：+0..+4、+0x34..+0x36、+0x3d 是建構器沒碰的殘值，
 	// 要等 0x11506 整筆抄回才會有場上的值（第七章 r6 凱麗）。
 	pending := unit.NativeJoinPersistentPending
 	if !pending {
@@ -130,9 +130,9 @@ func BuildNativeChapterSlot(
 			return fdsave.Slot{}, errors.New("native chapter slot save: persistent roster exceeds 32 records")
 		}
 		// sub_112A5 寫進 count 那一格，沒寫到的 byte 是那一格 LOAD 時的殘值（第七章
-		// 凱麗：戰後 handler 的 JOIN12，場上是 +6==1 的友軍，0x11506 不抄）。JOIN 之後
-		// 以我方身分打過仗的（第五章瑪琳、第六章貝克威），戰後 0x11506 把場上記錄整筆
-		// 抄回，殘值被場上記錄（FDFIELD 登場時零初始＋建構器）蓋掉：基底用零記錄。
+		// 凱麗：JOIN12 的身分與場上 raw +8=140 不符，0x11506 不抄）。0x11506 按 raw +8
+		// 匹配，不要求參戰或特定 camp；第二章新登場的 JOIN8 也會立即被同步。同步後
+		// 的場上記錄覆蓋建構殘值；這份具型別投影以零基底補建，已知欄位由 unit 寫回。
 		residual := fdsave.PersistentRecord{}
 		if unit.NativeJoinPersistentPending {
 			residual = records[count]

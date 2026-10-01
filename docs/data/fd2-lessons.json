@@ -645,10 +645,10 @@
     {
       "id": "join-record-bytes-the-constructor-does-not-write-are-load-time-residue",
       "area": "資料",
-      "rule": "sub_112A5 建構持續記錄只寫特定欄位；沒寫到的 byte 是那一格在 JOIN 之前的記憶體內容，而 0x10010 是整槽還原的，所以就是 LOAD 時槽裡的 bytes（新開局全 0）。JOIN 之後以我方身分打過仗的，0x11506 會整筆抄回場上記錄把殘值蓋掉；沒打過仗的（戰後 handler 的 JOIN、場上是友軍）殘值原封留到存檔。寫回槽時不能從 Unit「整理」這些 byte。",
-      "why": "2026-09-17 第七章 r6：凱麗 rec9 的 +0..+4、+0x17／+0x19、+0x28..+0x30、+0x32..+0x36、+0x3d 全是殘值；改成殘值基底後第五／六章的瑪琳／貝克威反而紅，因為他們打過仗，才分出 NativeJoinPersistentPending。",
+      "rule": "sub_112A5 只覆寫已證實欄位，其他 byte 保留目標槽的 LOAD 殘值；0x11506 按 raw +8 配對後整筆抄回場上記錄，不以是否參戰或 camp 判斷。JOIN 尚未被同步時保留殘值，同步後保存場上來源；不能從正規化 Unit 猜填未知 byte。章槽 LOAD 用0x2604A..0x26056，續戰 LOAD 的0x10010另行辨識。",
+      "why": "2026-09-17 第七章 r6：凱麗 rec9 的 +0..+4、+0x17／+0x19、+0x28..+0x30、+0x32..+0x36、+0x3d 全是殘值；改成殘值基底後第五／六章的瑪琳／貝克威反而紅，因為他們打過仗，才分出 NativeJoinPersistentPending。 2026-10-01勘誤：第二章戰後新登場的identity8未參戰即經0x11506同步；第七章凱麗的場上raw +8=140與JOIN12不符，才未抄回。直接指令11555..11576與本輪dosgolem同來源指標copy反證舊「Own／打過仗」條件，原歷史推論由58的新證據取代。",
       "date": "2026-09-17",
-      "evidence": "remake/internal/campaign/native_join_constructor.go MaterializePersistentRecordOn；native_chapter_slot_save.go EncodeNativePersistentRecord"
+      "evidence": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
     },
     {
       "id": "adopting-a-cloned-state-must-keep-the-unit-pointers",

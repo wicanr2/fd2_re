@@ -11,6 +11,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
 // newBeatTestGame 建最小 Game:一張假地圖(供 storyWalkJob 的 tile 換算用)+ 一個
@@ -762,6 +763,63 @@ func TestBeatJoinPersistsOnlyPlayerCharacterIDs(t *testing.T) {
 	bad.beatAdvance()
 	if bad.loadErr == "" || len(bad.partyMembers) != 0 {
 		t.Fatalf("scene portrait join must fail closed: err=%q party=%#v", bad.loadErr, bad.partyMembers)
+	}
+}
+
+// 第二章戰後新登場的角色不必參戰，也不依 camp 篩選：JOIN 先留持續槽殘值，
+// 0x11506 再按 raw +8 抄回戰場物品，最後由正式酒店存檔編碼保存。
+func TestPostSpawnJoinTailSurvivesRuntimeSyncAndNativeSave(t *testing.T) {
+	st, err := battle.Load(assetPath("assets/maps/map1/map1_units.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var source *battle.Unit
+	for _, unit := range st.Units {
+		if unit.Group == 4 && unit.HasNativeRecordByte8 && unit.NativeRecordByte8 == 8 {
+			source = unit
+		}
+	}
+	if source == nil {
+		t.Fatal("缺少第二章戰後 raw +8=8 的地圖列")
+	}
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "join", CharID: 8, Source: "0x230d9"},
+		{Op: "delay", Ms: 100},
+		{Op: "sync_party", Source: "0x230e1"},
+		{Op: "delay", Ms: 100},
+	})
+	baseline := fdsave.ChapterSlotSnapshot{}
+	baseline.Records[0].Raw[0x17], baseline.Records[0].Raw[0x19] = 0x3f, 6
+	g.nativeChapterSlotBaseline = &baseline
+	g.st = &battle.State{Units: []*battle.Unit{source}}
+	g.beatAdvance()
+	joined := g.partyRoster[8]
+	if g.loadErr != "" || !joined.NativeJoinPersistentPending ||
+		joined.InventorySlots[6] != 0x3f || joined.InventorySlots[7] != 6 {
+		t.Fatalf("JOIN 殘值或時序錯誤：err=%q unit=%#v", g.loadErr, joined)
+	}
+	if source.InventorySlots[6] != 0xff || source.InventorySlots[7] != 0xff {
+		t.Fatal("JOIN 改寫了戰場來源物品")
+	}
+	g.tick(6)
+	synced := g.partyRoster[8]
+	if g.loadErr != "" || synced.NativeJoinPersistentPending {
+		t.Fatalf("同步尚未完成：err=%q pending=%v", g.loadErr, synced.NativeJoinPersistentPending)
+	}
+	table, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	items, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	slot, err := campaign.BuildNativeChapterSlot(baseline, g.partyRoster, g.partyJoinOrder, 2, 0, table, items)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := slot.Roster[0x16:0x1a]; !reflect.DeepEqual(got, []byte{0x80, 0xff, 0x80, 0xff}) {
+		t.Fatalf("正式存檔尾格=% x，應保留同步結果", got)
 	}
 }
 

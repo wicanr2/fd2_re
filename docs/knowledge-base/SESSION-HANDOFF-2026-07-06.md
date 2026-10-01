@@ -8622,3 +8622,11 @@ sprite」。該斷言錯誤，三處正文均已改寫。
 ## 2026-10-01：#23 殘值勘誤，仍需戰場整筆複製驗證
 
 建槽工具 JOIN 現保留 LOAD 殘值，有限驗證見[58](58-fd2-exe-re-coverage.md)及[工具收據](../data/fd2_join_residual_builder_20261001.json)。真實第一章基底第5筆 item 是3f/06，第二章 identity8 是ff/ff；前者經 JOIN 仍保留，後者需追 JOIN 後 0x230E1→0x11506 的場上寫入與整筆複製。較早全零／整筆覆寫解釋失效，但 #23 不關閉，不能把驗收字串消失或三套件綠燈當作原版最終存檔一致。
+
+
+## 2026-10-01：#23 後續勘誤與有限驗收
+
+上段的待解已由[58現況](58-fd2-exe-re-coverage.md)與[九項收據](../data/fd2_join_copyback_verification_20261001.json)取代：
+第二章戰後FDFIELD尾格寫入及0x11576整筆複製均有本輪IDA／dosgolem證據。
+建槽投影及正式JOIN→sync→酒店存檔回歸已通過。同步依raw +8，不要求曾參戰或Own；
+第七章凱麗未抄回是身分不符。只閉合物品尾格，不新增PLAYER-E2或完整存檔一致聲明。

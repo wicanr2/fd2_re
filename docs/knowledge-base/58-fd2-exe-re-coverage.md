@@ -1131,10 +1131,60 @@ RE-CLOSED／DATA-READY／RUNTIME-E1／PLAYER-E2（依114建構槽限制）：[�
 新 [工具驗證收據](../data/fd2_join_residual_builder_20261001.json)保留來源與輸出 SHA-256，
 四種殘值／原有成員／鄰槽／存檔往返測試及三套件回歸通過。
 
-#23 仍 BLOCKED（戰場 copy-back 未接入建槽工具），不是 constructor unknown。
+前輪狀態（由下文新收據取代）：#23 因建槽未投影戰後複製而受阻，並非 constructor unknown。
 ch01-cleared 槽0第5筆空格 item 是 3f/06；新工具保留它們，ch02-cleared
 identity8 卻是 ff/ff。較早「該格是零、整筆覆寫相同」已被直接存檔反證。
 ch01_post 的 0x230D9 JOIN 後還有 0x230E1→0x11506，不能把最終 ff/ff
-當作建構器固定值。下一切片僅追第一章該場上記錄寫入與整筆複製；
+當作建構器固定值。後續切片僅追第二章該場上記錄寫入與整筆複製；
 不重開已閉合的 0x112A5，不猜填 ff。原版最終正對照仍有兩 byte 差異，沒有新增 PLAYER-E2。
 現存章槽／manifest 的舊文案保留為歷史，既有章收據與交付版本未變。
+
+本題後續有界蒐證入口：[第二章 JOIN 複製控制計畫](../data/parity-plans/ch02-join-copyback.jsonl)，
+由 `tools/dosgolem_oracle.sh` 執行；[IDA 寫入／複製探針](../../tools/ida_probe_join_copyback.py)
+沿唯讀 `.i64` 的關係匯出直接指令，沒有註記的位址均標未知。
+此處「第一章」指基底已通關第一章；`ch01_post` 本身是 raw index1、玩家第二章戰後，
+後續收據與規格一律按此區分。
+
+後續 RE-CLOSED：[場上建構與戰後複製證據](../data/ida/fd2_join_copyback_20261001.json)
+由 IDA Pro 9.4 的既有 `.i64` 直接指令及 fresh dosgolem original-r1 交叉驗證。
+`0x10F44/0x10F48` 的迴圈索引4／5，把 map1 FDFIELD 第22筆 b11/b12 的 ff
+寫到場上記錄（dosgolem 執行期線性記憶體）`0x16E94C+0x17/+0x19`；`0x11576` 再把同一記錄整筆複製到
+持續名冊第5筆。這是玩家第二章戰後新登場角色，並未先打過仗；`0x11506`
+只按 raw +8 配對（identity0另有原始特例），不能把「打過仗／Own」當成這個 reader 的通用條件。
+原版 original-r1 的清場注入如實記錄，只證明 bytes 與存檔資料流，不新增 PLAYER-E2。
+
+驗收工具入口：[verify_join_copyback.py](../../tools/verify_join_copyback.py)，讀取上述控制計畫的
+原版 trace／節點／存檔與建槽 manifest；缺 writer、copy 或同步順序時不能只靠 ff/ff 通過。
+
+
+### #23 有限驗收完成：第二章物品尾格（2026-10-01）
+
+目前狀態表：RE-CLOSED／DATA-READY／工具及正式消費端 RUNTIME-E1；
+56 尾格投影契約為 CONFORMED。沒有新增 PLAYER-E2、完整記錄或整檔一致聲明。
+[九項驗收收據](../data/fd2_join_copyback_verification_20261001.json)記錄原版 writer、
+同一來源指標的 0x50-byte copy、JOIN／sync 順序、正常酒店存檔、來源雜湊及建槽結果。
+原版與建槽 identity8 的 +0x16..+0x19 同為 80ff80ff；
+前輪只保留 JOIN 殘值的收據仍保留，不能當作現況。
+
+正式 Game 的 JOIN 不改寫場上來源；sync_party 按 raw +8 複製物品，
+BuildNativeChapterSlot 保存同步結果。新增
+[正式消費端回歸](../../remake/cmd/fd2/beatrunner_test.go)
+TestPostSpawnJoinTailSurvivesRuntimeSyncAndNativeSave，覆蓋殘值3f/06到ff/ff的先後邊界，
+並修正存檔層「參戰／Own才同步」舊註解。
+[建槽回歸](../../remake/cmd/fd2-chapter-slot/post_join_item_tail_test.go)
+另覆蓋可編輯非ff物品、JOIN先後、raw身分不符、既有成員／其他byte不變及缺件拒絕；
+[驗收反例測試](../../tools/test_verify_join_copyback.py)10項通過。
+
+重跑入口：在 fd2-go-test-local:20260909 容器，remake 目錄執行
+go test ./cmd/fd2-chapter-slot ./internal/campaign ./internal/battle ./internal/fdsave；
+正式Game回歸須有界Xvfb，執行 go test ./cmd/fd2 -run
+'TestPostSpawnJoinTailSurvivesRuntimeSyncAndNativeSave|TestBeatJoin|TestSyncParty|TestChapter1PostRuntimeContext' -count=1。
+驗收器參數為 --original（oracle輸出目錄）、--state（覆蓋層）、--builder（建槽輸出目錄）、
+--base（原始第一章通關FD2.SAV）與 --output（JSON收據）。
+原版由 tools/dosgolem_oracle.sh、上述受版控控制計畫、唯讀原始素材及基底槽重生；
+本切片 FD2_ORACLE_EIP_TRACE=0x230D9,0x230E1,0x10F44,0x10F48,0x11555,0x11576，
+明示允許 force_enemy_clear，步數上限12000000000。
+建槽使用 -target 2 -seed 2，成長步數0。兩側亂數條件及限制在收據，
+不宣稱跨實作骰序一致。
+
+#23 遠端回讀已為 CLOSED；工作清單快照依主機 gh 重新產生，剩餘未完成項以遠端 Issue 為準。

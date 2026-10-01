@@ -8149,7 +8149,7 @@ selector 2。第七章 gate 的兩端（departure_prompt 在 YES 之前、battle
 正對照的反證：ch01-cleared 槽0 count5 的未使用第5筆 `+0x17/+0x19` 是
 `3f/06`；ch02-cleared 槽0新增 identity8 是 `ff/ff`。`ch01_post` 的
 `0x230D9→0x112A5` 後接 `0x230E1→0x11506`，所以最終存檔不能只代表
-JOIN 當下。工具目前不重播戰場 `sync_party`，此差異仍由 #23 追蹤；
+JOIN 當下。前一輪工具尚未投影戰後同步；此歷史差異由下節的新收據解決。
 本切片只能驗證建構器殘值契約，不宣稱這兩個真實通關槽或完整戰役已一致。
 
 驗證入口：Docker 映像檔 `fd2-go-test-local:20260909`，在 `remake` 執行
@@ -8161,6 +8161,30 @@ JOIN 當下。工具目前不重播戰場 `sync_party`，此差異仍由 #23 追
 [`fd2_join_residual_builder_20261001.json`](../data/fd2_join_residual_builder_20261001.json)。
 既有章槽、manifest 與章收據不重建、不改寫；其中舊版已知差異文案是歷史產物，
 不得再當作現行建構器規格。
+
+### 建槽工具戰後新登場角色的物品尾格投影（2026-10-01，#23）
+
+規格狀態：**CONFORMED**。原版證據見
+[`fd2_join_copyback_20261001.json`](../data/ida/fd2_join_copyback_20261001.json)：
+`FD2.EXE` 與 `FDFIELD.DAT` 綁定 reference-files 的固定雜湊，IDA Pro 9.4 線性位址
+`0x10F35..0x10F69` 是六格來源 writer，`0x11555..0x11576` 是 raw +8 配對與整筆複製。
+第二章 original-r1 從合法第一章槽 LOAD，以明示清場縮短實驗後正常推完戰後並存檔；
+第22筆 group4 identity8 的尾格來源為 ff/ff，writer 目標與 sync source 皆為
+dosgolem 執行期線性指標 0x16E94C。
+
+工具沿用現有 handler 與 map units 格式，不新增資料格式。每章只追 handler 內 `spawn`
+新登場列、當章新增 JOIN 的持續槽，以及後續 `sync_party` 的順序。從該 raw map 的
+具型別 FDFIELD inventory/source +8 讀取末兩格，在同步時依 raw +8 配對，只投影
+`+0x16..+0x19` 四個 byte；原版完整50h copy 的其餘欄位仍受既有建槽政策限制，
+不得宣稱工具整筆還原了戰場。來源 raw +8 不吻合、沒有新登場、沒有 sync、或 sync 在 JOIN 之前，
+均不覆蓋 JOIN 殘值。每章清除追蹤池，來源檔 SHA-256 加入既有 manifest evidence_sources。
+
+來源旗標／item 必須經既有 battle 載入與八格投影驗證；缺來源、越界 group／byte、
+或 spawn 之後的 grant_item，一律失敗即關閉，不能猜 ff。只處理後段新登場，
+不推論戰鬥中已存在 NPC 的消耗／交易歷史。驗收包括 raw identity 配對、非ff來源、
+JOIN與同步順序、相鄰欄位不變、跨章池清理、缺來源與異動拒絕、原生存檔往返；
+真實第一章基底建到第2章後，與 fresh oracle 及既有第二章原版槽的兩個 item byte 必須一致。
+此切片為建槽工具 RUNTIME-E1，無新 PLAYER-E2，不重建既有章槽／manifest／章收據。
 
 ## 第八章章工作單元：施法落點成本列、被圍住的回復與 FDFIELD 我方射程（2026-09-17）
 

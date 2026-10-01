@@ -1,0 +1,4740 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "functions": [
+    {
+      "target": "0x10fc8",
+      "address": "0x10c50",
+      "end": "0x11019",
+      "original_name": "sub_10C50",
+      "instructions": [
+        {
+          "address": "0x10c50",
+          "bytes": "6854000000",
+          "original": "push    54h ; 'T'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c55",
+          "bytes": "e87d600200",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c5a",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c5b",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c5c",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c5d",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c5e",
+          "bytes": "83ec34",
+          "original": "sub     esp, 34h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c61",
+          "bytes": "c7442430ff000000",
+          "original": "mov     [esp+44h+var_14], 0FFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c69",
+          "bytes": "8b1deb3b0500",
+          "original": "mov     ebx, dword_53BEB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c6f",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c71",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c74",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c76",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c79",
+          "bytes": "8b1d453a0500",
+          "original": "mov     ebx, dword_53A45",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c7f",
+          "bytes": "01c3",
+          "original": "add     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c81",
+          "bytes": "895c241c",
+          "original": "mov     [esp+44h+var_28], ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c85",
+          "bytes": "6b54244806",
+          "original": "imul    edx, [esp+44h+arg_0], 6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c8a",
+          "bytes": "a1593a0500",
+          "original": "mov     eax, dword_53A59",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c8f",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c91",
+          "bytes": "83c002",
+          "original": "add     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c94",
+          "bytes": "0fb610",
+          "original": "movzx   edx, byte ptr [eax]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c97",
+          "bytes": "89542424",
+          "original": "mov     [esp+44h+var_20], edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c9b",
+          "bytes": "0fb64002",
+          "original": "movzx   eax, byte ptr [eax+2]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10c9f",
+          "bytes": "8944242c",
+          "original": "mov     [esp+44h+var_18], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ca3",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ca5",
+          "bytes": "e823390000",
+          "original": "call    sub_145CD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10caa",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cad",
+          "bytes": "6a01",
+          "original": "push    1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10caf",
+          "bytes": "e819390000",
+          "original": "call    sub_145CD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cb4",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cb7",
+          "bytes": "0fb605fa3a0500",
+          "original": "movzx   eax, byte_53AFA",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cbe",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cc0",
+          "bytes": "0f8588000000",
+          "original": "jnz     loc_10D4E",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cc6",
+          "bytes": "31f6",
+          "original": "xor     esi, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cc8",
+          "bytes": "eb01",
+          "original": "jmp     short loc_10CCB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cca",
+          "bytes": "46",
+          "original": "inc     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ccb",
+          "bytes": "3b35c53a0500",
+          "original": "cmp     esi, dword_53AC5",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cd1",
+          "bytes": "0f8d87000000",
+          "original": "jge     loc_10D5E",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cd7",
+          "bytes": "31db",
+          "original": "xor     ebx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cd9",
+          "bytes": "eb01",
+          "original": "jmp     short loc_10CDC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cdb",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cdc",
+          "bytes": "3b1dc13a0500",
+          "original": "cmp     ebx, dword_53AC1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ce2",
+          "bytes": "7de6",
+          "original": "jge     short loc_10CCA",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ce4",
+          "bytes": "8b3dc13a0500",
+          "original": "mov     edi, dword_53AC1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cea",
+          "bytes": "0faffe",
+          "original": "imul    edi, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ced",
+          "bytes": "01df",
+          "original": "add     edi, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cef",
+          "bytes": "c1e702",
+          "original": "shl     edi, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cf2",
+          "bytes": "a1513a0500",
+          "original": "mov     eax, dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cf7",
+          "bytes": "f644070640",
+          "original": "test    byte ptr [edi+eax+6], 40h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cfc",
+          "bytes": "75dd",
+          "original": "jnz     short loc_10CDB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10cfe",
+          "bytes": "89df",
+          "original": "mov     edi, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d00",
+          "bytes": "2b7c2424",
+          "original": "sub     edi, [esp+44h+var_20]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d04",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d05",
+          "bytes": "e8d8680200",
+          "original": "call    abs",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d0a",
+          "bytes": "89442408",
+          "original": "mov     [esp+48h+var_40], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d0e",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d11",
+          "bytes": "89f5",
+          "original": "mov     ebp, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d13",
+          "bytes": "2b6c242c",
+          "original": "sub     ebp, [esp+44h+var_18]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d17",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d18",
+          "bytes": "e8c5680200",
+          "original": "call    abs",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d1d",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d20",
+          "bytes": "03442404",
+          "original": "add     eax, [esp+44h+var_40]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d24",
+          "bytes": "3b442430",
+          "original": "cmp     eax, [esp+44h+var_14]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d28",
+          "bytes": "7fb1",
+          "original": "jg      short loc_10CDB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d2a",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d2b",
+          "bytes": "e8b2680200",
+          "original": "call    abs",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d30",
+          "bytes": "89c7",
+          "original": "mov     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d32",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d35",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d36",
+          "bytes": "e8a7680200",
+          "original": "call    abs",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d3b",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d3e",
+          "bytes": "01c7",
+          "original": "add     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d40",
+          "bytes": "897c2430",
+          "original": "mov     [esp+44h+var_14], edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d44",
+          "bytes": "895c2420",
+          "original": "mov     [esp+44h+var_24], ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d48",
+          "bytes": "89742428",
+          "original": "mov     [esp+44h+var_1C], esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d4c",
+          "bytes": "eb8d",
+          "original": "jmp     short loc_10CDB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d4e",
+          "bytes": "8b442424",
+          "original": "mov     eax, [esp+44h+var_20]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d52",
+          "bytes": "89442420",
+          "original": "mov     [esp+44h+var_24], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d56",
+          "bytes": "8b44242c",
+          "original": "mov     eax, [esp+44h+var_18]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d5a",
+          "bytes": "89442428",
+          "original": "mov     [esp+44h+var_1C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d5e",
+          "bytes": "ff35513a0500",
+          "original": "push    dword_53A51",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d64",
+          "bytes": "e893ce0300",
+          "original": "call    sub_4DBFC",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d69",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d6c",
+          "bytes": "6b4424481a",
+          "original": "imul    eax, [esp+44h+arg_0], 1Ah",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d71",
+          "bytes": "8b1d553a0500",
+          "original": "mov     ebx, dword_53A55",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d77",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d79",
+          "bytes": "8db083000000",
+          "original": "lea     esi, [eax+83h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d7f",
+          "bytes": "0fb68084000000",
+          "original": "movzx   eax, byte ptr [eax+84h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d86",
+          "bytes": "89442408",
+          "original": "mov     [esp+44h+var_3C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d8a",
+          "bytes": "0fb64604",
+          "original": "movzx   eax, byte ptr [esi+4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d8e",
+          "bytes": "89442418",
+          "original": "mov     [esp+44h+var_2C], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d92",
+          "bytes": "0fb606",
+          "original": "movzx   eax, byte ptr [esi]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d95",
+          "bytes": "8944240c",
+          "original": "mov     [esp+44h+var_38], eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d99",
+          "bytes": "837c240844",
+          "original": "cmp     [esp+44h+var_3C], 44h ; 'D'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10d9e",
+          "bytes": "0f8c84000000",
+          "original": "jl      loc_10E28",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10da4",
+          "bytes": "0fb64601",
+          "original": "movzx   eax, byte ptr [esi+1]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10da8",
+          "bytes": "83e844",
+          "original": "sub     eax, 44h ; 'D'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dab",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dac",
+          "bytes": "e84ed70300",
+          "original": "call    sub_4E4FF",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10db1",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10db4",
+          "bytes": "0fb75002",
+          "original": "movzx   edx, word ptr [eax+2]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10db8",
+          "bytes": "8b5c2418",
+          "original": "mov     ebx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dbc",
+          "bytes": "0fafda",
+          "original": "imul    ebx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dbf",
+          "bytes": "895c2414",
+          "original": "mov     [esp+44h+var_30], ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dc3",
+          "bytes": "0fb65004",
+          "original": "movzx   edx, byte ptr [eax+4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dc7",
+          "bytes": "8b5c2418",
+          "original": "mov     ebx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dcb",
+          "bytes": "0fafda",
+          "original": "imul    ebx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dce",
+          "bytes": "895c2410",
+          "original": "mov     [esp+44h+var_34], ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dd2",
+          "bytes": "8a10",
+          "original": "mov     dl, [eax]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dd4",
+          "bytes": "8b5c241c",
+          "original": "mov     ebx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dd8",
+          "bytes": "88531f",
+          "original": "mov     [ebx+1Fh], dl",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ddb",
+          "bytes": "8a5001",
+          "original": "mov     dl, [eax+1]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dde",
+          "bytes": "885320",
+          "original": "mov     [ebx+20h], dl",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10de1",
+          "bytes": "660fb65005",
+          "original": "movzx   dx, byte ptr [eax+5]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10de6",
+          "bytes": "8b5c2418",
+          "original": "mov     ebx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dea",
+          "bytes": "0fafda",
+          "original": "imul    ebx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ded",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10df1",
+          "bytes": "66895a37",
+          "original": "mov     [edx+37h], bx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10df5",
+          "bytes": "660fb65006",
+          "original": "movzx   dx, byte ptr [eax+6]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dfa",
+          "bytes": "8b5c2418",
+          "original": "mov     ebx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10dfe",
+          "bytes": "0fafda",
+          "original": "imul    ebx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e01",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e05",
+          "bytes": "66895a39",
+          "original": "mov     [edx+39h], bx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e09",
+          "bytes": "660fb65007",
+          "original": "movzx   dx, byte ptr [eax+7]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e0e",
+          "bytes": "8b5c2418",
+          "original": "mov     ebx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e12",
+          "bytes": "0fafda",
+          "original": "imul    ebx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e15",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e19",
+          "bytes": "66895a3e",
+          "original": "mov     [edx+3Eh], bx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e1d",
+          "bytes": "8a4008",
+          "original": "mov     al, [eax+8]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e20",
+          "bytes": "88423b",
+          "original": "mov     [edx+3Bh], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e23",
+          "bytes": "e995000000",
+          "original": "jmp     loc_10EBD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e28",
+          "bytes": "ff742408",
+          "original": "push    [esp+44h+var_3C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e2c",
+          "bytes": "e8b7d60300",
+          "original": "call    sub_4E4E8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e31",
+          "bytes": "89c7",
+          "original": "mov     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e33",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e36",
+          "bytes": "ff742408",
+          "original": "push    [esp+44h+var_3C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e3a",
+          "bytes": "e892d60300",
+          "original": "call    sub_4E4D1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e3f",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e42",
+          "bytes": "0fb66806",
+          "original": "movzx   ebp, byte ptr [eax+6]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e46",
+          "bytes": "8b5c2418",
+          "original": "mov     ebx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e4a",
+          "bytes": "4b",
+          "original": "dec     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e4b",
+          "bytes": "0fafeb",
+          "original": "imul    ebp, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e4e",
+          "bytes": "0fb75703",
+          "original": "movzx   edx, word ptr [edi+3]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e52",
+          "bytes": "01ea",
+          "original": "add     edx, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e54",
+          "bytes": "89542414",
+          "original": "mov     [esp+44h+var_30], edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e58",
+          "bytes": "0fb66808",
+          "original": "movzx   ebp, byte ptr [eax+8]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e5c",
+          "bytes": "0fafdd",
+          "original": "imul    ebx, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e5f",
+          "bytes": "0fb75705",
+          "original": "movzx   edx, word ptr [edi+5]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e63",
+          "bytes": "01da",
+          "original": "add     edx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e65",
+          "bytes": "89542410",
+          "original": "mov     [esp+44h+var_34], edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e69",
+          "bytes": "0fb75712",
+          "original": "movzx   edx, word ptr [edi+12h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e6d",
+          "bytes": "891424",
+          "original": "mov     [esp+44h+var_44], edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e70",
+          "bytes": "0fb75714",
+          "original": "movzx   edx, word ptr [edi+14h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e74",
+          "bytes": "0fb75f16",
+          "original": "movzx   ebx, word ptr [edi+16h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e78",
+          "bytes": "8a0f",
+          "original": "mov     cl, [edi]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e7a",
+          "bytes": "8b6c241c",
+          "original": "mov     ebp, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e7e",
+          "bytes": "884d1f",
+          "original": "mov     [ebp+1Fh], cl",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e81",
+          "bytes": "8a4f01",
+          "original": "mov     cl, [edi+1]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e84",
+          "bytes": "884d20",
+          "original": "mov     [ebp+20h], cl",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e87",
+          "bytes": "660fb608",
+          "original": "movzx   cx, byte ptr [eax]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e8b",
+          "bytes": "0faf4c2418",
+          "original": "imul    ecx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e90",
+          "bytes": "030c24",
+          "original": "add     ecx, [esp+44h+var_44]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e93",
+          "bytes": "66894d37",
+          "original": "mov     [ebp+37h], cx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e97",
+          "bytes": "660fb64802",
+          "original": "movzx   cx, byte ptr [eax+2]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10e9c",
+          "bytes": "0faf4c2418",
+          "original": "imul    ecx, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ea1",
+          "bytes": "01d1",
+          "original": "add     ecx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ea3",
+          "bytes": "66894d39",
+          "original": "mov     [ebp+39h], cx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ea7",
+          "bytes": "8a5707",
+          "original": "mov     dl, [edi+7]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10eaa",
+          "bytes": "88553b",
+          "original": "mov     [ebp+3Bh], dl",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ead",
+          "bytes": "660fb64004",
+          "original": "movzx   ax, byte ptr [eax+4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10eb2",
+          "bytes": "0faf442418",
+          "original": "imul    eax, [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10eb7",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10eb9",
+          "bytes": "6689453e",
+          "original": "mov     [ebp+3Eh], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ebd",
+          "bytes": "8a442420",
+          "original": "mov     al, byte ptr [esp+44h+var_24]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ec1",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ec5",
+          "bytes": "8802",
+          "original": "mov     [edx], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ec7",
+          "bytes": "8a442428",
+          "original": "mov     al, byte ptr [esp+44h+var_1C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ecb",
+          "bytes": "884201",
+          "original": "mov     [edx+1], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ece",
+          "bytes": "ff74244c",
+          "original": "push    [esp+44h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ed2",
+          "bytes": "ff74240c",
+          "original": "push    [esp+48h+var_3C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ed6",
+          "bytes": "e83e010000",
+          "original": "call    sub_11019",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10edb",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ede",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ee2",
+          "bytes": "884202",
+          "original": "mov     [edx+2], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ee5",
+          "bytes": "c6420300",
+          "original": "mov     byte ptr [edx+3], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ee9",
+          "bytes": "c6420400",
+          "original": "mov     byte ptr [edx+4], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10eed",
+          "bytes": "c6420500",
+          "original": "mov     byte ptr [edx+5], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ef1",
+          "bytes": "8a44240c",
+          "original": "mov     al, byte ptr [esp+44h+var_38]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ef5",
+          "bytes": "884206",
+          "original": "mov     [edx+6], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ef8",
+          "bytes": "8a442408",
+          "original": "mov     al, byte ptr [esp+44h+var_3C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10efc",
+          "bytes": "884207",
+          "original": "mov     [edx+7], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10eff",
+          "bytes": "884208",
+          "original": "mov     [edx+8], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f02",
+          "bytes": "c6420900",
+          "original": "mov     byte ptr [edx+9], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f06",
+          "bytes": "0fb64605",
+          "original": "movzx   eax, byte ptr [esi+5]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f0a",
+          "bytes": "3dff000000",
+          "original": "cmp     eax, 0FFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f0f",
+          "bytes": "7416",
+          "original": "jz      short loc_10F27",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f11",
+          "bytes": "c6420a40",
+          "original": "mov     byte ptr [edx+0Ah], 40h ; '@'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f15",
+          "bytes": "8a4605",
+          "original": "mov     al, [esi+5]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f18",
+          "bytes": "88420b",
+          "original": "mov     [edx+0Bh], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f1b",
+          "bytes": "c6420c40",
+          "original": "mov     byte ptr [edx+0Ch], 40h ; '@'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f1f",
+          "bytes": "8a4606",
+          "original": "mov     al, [esi+6]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f22",
+          "bytes": "88420d",
+          "original": "mov     [edx+0Dh], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f25",
+          "bytes": "eb0e",
+          "original": "jmp     short loc_10F35",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f27",
+          "bytes": "c6420a40",
+          "original": "mov     byte ptr [edx+0Ah], 40h ; '@'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f2b",
+          "bytes": "8a4606",
+          "original": "mov     al, [esi+6]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f2e",
+          "bytes": "88420b",
+          "original": "mov     [edx+0Bh], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f31",
+          "bytes": "c6420c80",
+          "original": "mov     byte ptr [edx+0Ch], 80h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f35",
+          "bytes": "31c0",
+          "original": "xor     eax, eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f37",
+          "bytes": "eb13",
+          "original": "jmp     short loc_10F4C",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f39",
+          "bytes": "c6430e80",
+          "original": "mov     byte ptr [ebx+0Eh], 80h",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f3d",
+          "bytes": "8d3c00",
+          "original": "lea     edi, [eax+eax]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f40",
+          "bytes": "037c241c",
+          "original": "add     edi, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f44",
+          "bytes": "8a5c0607",
+          "original": "mov     bl, [esi+eax+7]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f48",
+          "bytes": "885f0f",
+          "original": "mov     [edi+0Fh], bl",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f4b",
+          "bytes": "40",
+          "original": "inc     eax",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f4c",
+          "bytes": "83f806",
+          "original": "cmp     eax, 6",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f4f",
+          "bytes": "7d1a",
+          "original": "jge     short loc_10F6B",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f51",
+          "bytes": "0fb67c0607",
+          "original": "movzx   edi, byte ptr [esi+eax+7]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f56",
+          "bytes": "8d1c00",
+          "original": "lea     ebx, [eax+eax]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f59",
+          "bytes": "035c241c",
+          "original": "add     ebx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f5d",
+          "bytes": "81ffff000000",
+          "original": "cmp     edi, 0FFh",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f63",
+          "bytes": "74d4",
+          "original": "jz      short loc_10F39",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f65",
+          "bytes": "c6430e00",
+          "original": "mov     byte ptr [ebx+0Eh], 0",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f69",
+          "bytes": "ebd2",
+          "original": "jmp     short loc_10F3D",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "tools/parse_field.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x10f6b",
+          "bytes": "6a06",
+          "original": "push    6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f6d",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f6f",
+          "bytes": "8b442424",
+          "original": "mov     eax, [esp+4Ch+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f73",
+          "bytes": "83c022",
+          "original": "add     eax, 22h ; '\"'",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f76",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f77",
+          "bytes": "e844660200",
+          "original": "call    memset",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f7c",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f7f",
+          "bytes": "6a04",
+          "original": "push    4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f81",
+          "bytes": "8d460d",
+          "original": "lea     eax, [esi+0Dh]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f84",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f85",
+          "bytes": "8b442424",
+          "original": "mov     eax, [esp+4Ch+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f89",
+          "bytes": "83c01a",
+          "original": "add     eax, 1Ah",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f8c",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f8d",
+          "bytes": "e832640200",
+          "original": "call    memmove",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f92",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f95",
+          "bytes": "8b44241c",
+          "original": "mov     eax, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f99",
+          "bytes": "c6401e00",
+          "original": "mov     byte ptr [eax+1Eh], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10f9d",
+          "bytes": "8a442418",
+          "original": "mov     al, byte ptr [esp+44h+var_2C]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fa1",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fa5",
+          "bytes": "884221",
+          "original": "mov     [edx+21h], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fa8",
+          "bytes": "8a4616",
+          "original": "mov     al, [esi+16h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fab",
+          "bytes": "884231",
+          "original": "mov     [edx+31h], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fae",
+          "bytes": "668b4617",
+          "original": "mov     ax, [esi+17h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fb2",
+          "bytes": "66894232",
+          "original": "mov     [edx+32h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fb6",
+          "bytes": "8a4611",
+          "original": "mov     al, [esi+11h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fb9",
+          "bytes": "884234",
+          "original": "mov     [edx+34h], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fbc",
+          "bytes": "8a4612",
+          "original": "mov     al, [esi+12h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fbf",
+          "bytes": "884235",
+          "original": "mov     [edx+35h], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fc2",
+          "bytes": "8a4613",
+          "original": "mov     al, [esi+13h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fc5",
+          "bytes": "884236",
+          "original": "mov     [edx+36h], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fc8",
+          "bytes": "8a4602",
+          "original": "mov     al, [esi+2]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fcb",
+          "bytes": "88423d",
+          "original": "mov     [edx+3Dh], al",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fce",
+          "bytes": "0fb64206",
+          "original": "movzx   eax, byte ptr [edx+6]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fd2",
+          "bytes": "83f802",
+          "original": "cmp     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fd5",
+          "bytes": "7506",
+          "original": "jnz     short loc_10FDD",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fd7",
+          "bytes": "c6423c00",
+          "original": "mov     byte ptr [edx+3Ch], 0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fdb",
+          "bytes": "eb04",
+          "original": "jmp     short loc_10FE1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fdd",
+          "bytes": "c6423cff",
+          "original": "mov     byte ptr [edx+3Ch], 0FFh",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fe1",
+          "bytes": "8b442414",
+          "original": "mov     eax, [esp+44h+var_30]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fe5",
+          "bytes": "8b54241c",
+          "original": "mov     edx, [esp+44h+var_28]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fe9",
+          "bytes": "66894240",
+          "original": "mov     [edx+40h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10fed",
+          "bytes": "66894242",
+          "original": "mov     [edx+42h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ff1",
+          "bytes": "8b442410",
+          "original": "mov     eax, [esp+44h+var_34]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ff5",
+          "bytes": "66894244",
+          "original": "mov     [edx+44h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ff9",
+          "bytes": "66894246",
+          "original": "mov     [edx+46h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x10ffd",
+          "bytes": "ff35eb3b0500",
+          "original": "push    dword_53BEB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11003",
+          "bytes": "e848a70000",
+          "original": "call    sub_1B750",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11008",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1100b",
+          "bytes": "ff05eb3b0500",
+          "original": "inc     dword_53BEB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11011",
+          "bytes": "83c434",
+          "original": "add     esp, 34h",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11014",
+          "bytes": "5d",
+          "original": "pop     ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11015",
+          "bytes": "5f",
+          "original": "pop     edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11016",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11017",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11018",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合個別已審查的寫入與消費端",
+      "source": [
+        "tools/ida_probe_join_copyback.py"
+      ],
+      "callers": [
+        {
+          "address": "0x10bee",
+          "original": "call    sub_10C50",
+          "bytes": "e85d000000",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        }
+      ]
+    },
+    {
+      "target": "0x11506",
+      "address": "0x11506",
+      "end": "0x115b6",
+      "original_name": "sub_11506",
+      "instructions": [
+        {
+          "address": "0x11506",
+          "bytes": "6820000000",
+          "original": "push    20h ; ' '",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1150b",
+          "bytes": "e8c7570200",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11510",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11511",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11512",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11513",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11514",
+          "bytes": "31ed",
+          "original": "xor     ebp, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11516",
+          "bytes": "eb01",
+          "original": "jmp     short loc_11519",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11518",
+          "bytes": "45",
+          "original": "inc     ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11519",
+          "bytes": "3b2deb3b0500",
+          "original": "cmp     ebp, dword_53BEB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1151f",
+          "bytes": "0f8d30ffffff",
+          "original": "jge     loc_11455",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11525",
+          "bytes": "89e8",
+          "original": "mov     eax, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11527",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1152a",
+          "bytes": "01e8",
+          "original": "add     eax, ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1152c",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1152f",
+          "bytes": "8b3d453a0500",
+          "original": "mov     edi, dword_53A45",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11535",
+          "bytes": "01c7",
+          "original": "add     edi, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11537",
+          "bytes": "31f6",
+          "original": "xor     esi, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11539",
+          "bytes": "eb01",
+          "original": "jmp     short loc_1153C",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1153b",
+          "bytes": "46",
+          "original": "inc     esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1153c",
+          "bytes": "3b35fb3b0500",
+          "original": "cmp     esi, dword_53BFB",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11542",
+          "bytes": "7dd4",
+          "original": "jge     short loc_11518",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11544",
+          "bytes": "89f3",
+          "original": "mov     ebx, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11546",
+          "bytes": "c1e302",
+          "original": "shl     ebx, 2",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11549",
+          "bytes": "01f3",
+          "original": "add     ebx, esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1154b",
+          "bytes": "c1e304",
+          "original": "shl     ebx, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1154e",
+          "bytes": "a1f73b0500",
+          "original": "mov     eax, dword_53BF7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11553",
+          "bytes": "01c3",
+          "original": "add     ebx, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11555",
+          "bytes": "0fb64708",
+          "original": "movzx   eax, byte ptr [edi+8]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "runtime 與 persistent 依 raw +8 配對；這段沒有 camp 或是否打過仗的條件。identity0另有 caller-specific raw bit0 gate，不外推本項。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/knowledge-base/50-cutscene-script-system-design.md"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11559",
+          "bytes": "0fb65308",
+          "original": "movzx   edx, byte ptr [ebx+8]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "runtime 與 persistent 依 raw +8 配對；這段沒有 camp 或是否打過仗的條件。identity0另有 caller-specific raw bit0 gate，不外推本項。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/knowledge-base/50-cutscene-script-system-design.md"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1155d",
+          "bytes": "39d0",
+          "original": "cmp     eax, edx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "runtime 與 persistent 依 raw +8 配對；這段沒有 camp 或是否打過仗的條件。identity0另有 caller-specific raw bit0 gate，不外推本項。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/knowledge-base/50-cutscene-script-system-design.md"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1155f",
+          "bytes": "75da",
+          "original": "jnz     short loc_1153B",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "runtime 與 persistent 依 raw +8 配對；這段沒有 camp 或是否打過仗的條件。identity0另有 caller-specific raw bit0 gate，不外推本項。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/knowledge-base/50-cutscene-script-system-design.md"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11561",
+          "bytes": "85d2",
+          "original": "test    edx, edx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11563",
+          "bytes": "750d",
+          "original": "jnz     short loc_11572",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11565",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11566",
+          "bytes": "e8d32f0200",
+          "original": "call    sub_3453E",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1156b",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1156e",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11570",
+          "bytes": "75c9",
+          "original": "jnz     short loc_1153B",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11572",
+          "bytes": "6a50",
+          "original": "push    50h ; 'P'",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從EDI指向的場上記錄複製完整50h bytes到EBX指向的持續記錄，包含空格item bytes；第二章新增identity8的來源與兩個writer的目標基底均為 dosgolem 執行期線性記憶體指標 0x16e94c。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11574",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從EDI指向的場上記錄複製完整50h bytes到EBX指向的持續記錄，包含空格item bytes；第二章新增identity8的來源與兩個writer的目標基底均為 dosgolem 執行期線性記憶體指標 0x16e94c。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11575",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從EDI指向的場上記錄複製完整50h bytes到EBX指向的持續記錄，包含空格item bytes；第二章新增identity8的來源與兩個writer的目標基底均為 dosgolem 執行期線性記憶體指標 0x16e94c。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11576",
+          "bytes": "e8495e0200",
+          "original": "call    memmove",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "從EDI指向的場上記錄複製完整50h bytes到EBX指向的持續記錄，包含空格item bytes；第二章新增identity8的來源與兩個writer的目標基底均為 dosgolem 執行期線性記憶體指標 0x16e94c。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_join_copyback_20261001.json",
+                "tools/ida_probe_join_copyback.py",
+                "docs/data/parity-plans/ch02-join-copyback.jsonl"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x1157b",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1157e",
+          "bytes": "6a06",
+          "original": "push    6",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11580",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11582",
+          "bytes": "8d4322",
+          "original": "lea     eax, [ebx+22h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11585",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11586",
+          "bytes": "e835600200",
+          "original": "call    memset",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1158b",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1158e",
+          "bytes": "80630501",
+          "original": "and     byte ptr [ebx+5], 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11592",
+          "bytes": "0fb64305",
+          "original": "movzx   eax, byte ptr [ebx+5]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11596",
+          "bytes": "83f801",
+          "original": "cmp     eax, 1",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11599",
+          "bytes": "7408",
+          "original": "jz      short loc_115A3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1159b",
+          "bytes": "668b4342",
+          "original": "mov     ax, [ebx+42h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x1159f",
+          "bytes": "66894340",
+          "original": "mov     [ebx+40h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x115a3",
+          "bytes": "668b4346",
+          "original": "mov     ax, [ebx+46h]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x115a7",
+          "bytes": "66894344",
+          "original": "mov     [ebx+44h], ax",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x115ab",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x115ac",
+          "bytes": "e8a9feffff",
+          "original": "call    sub_1145A",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x115b1",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x115b4",
+          "bytes": "eb85",
+          "original": "jmp     short loc_1153B",
+          "semantic": "",
+          "level": "未知",
+          "warning": "未審查語意；原始指令僅作定位",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ],
+          "semantic_annotations": []
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合個別已審查的寫入與消費端",
+      "source": [
+        "tools/ida_probe_join_copyback.py"
+      ],
+      "callers": [
+        {
+          "address": "0x22f27",
+          "original": "call    sub_11506",
+          "bytes": "e8dae5feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x230e1",
+          "original": "call    sub_11506",
+          "bytes": "e820e4feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23126",
+          "original": "call    sub_11506",
+          "bytes": "e8dbe3feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x231ed",
+          "original": "call    sub_11506",
+          "bytes": "e814e3feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23285",
+          "original": "call    sub_11506",
+          "bytes": "e87ce2feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23319",
+          "original": "call    sub_11506",
+          "bytes": "e8e8e1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x2376a",
+          "original": "call    sub_11506",
+          "bytes": "e897ddfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x237c1",
+          "original": "call    sub_11506",
+          "bytes": "e840ddfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x2388b",
+          "original": "call    sub_11506",
+          "bytes": "e876dcfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x238d0",
+          "original": "call    sub_11506",
+          "bytes": "e831dcfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x239ac",
+          "original": "call    sub_11506",
+          "bytes": "e855dbfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x239fe",
+          "original": "call    sub_11506",
+          "bytes": "e803dbfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23a95",
+          "original": "call    sub_11506",
+          "bytes": "e86cdafeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23b8c",
+          "original": "call    sub_11506",
+          "bytes": "e875d9feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23d15",
+          "original": "call    sub_11506",
+          "bytes": "e8ecd7feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23e43",
+          "original": "call    sub_11506",
+          "bytes": "e8bed6feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x23ff9",
+          "original": "call    sub_11506",
+          "bytes": "e808d5feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x24324",
+          "original": "call    sub_11506",
+          "bytes": "e8ddd1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x24933",
+          "original": "call    sub_11506",
+          "bytes": "e8cecbfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x24d13",
+          "original": "call    sub_11506",
+          "bytes": "e8eec7feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x24e74",
+          "original": "call    sub_11506",
+          "bytes": "e88dc6feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x25042",
+          "original": "call    sub_11506",
+          "bytes": "e8bfc4feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x25333",
+          "original": "call    sub_11506",
+          "bytes": "e8cec1feff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        },
+        {
+          "address": "0x2574a",
+          "original": "call    sub_11506",
+          "bytes": "e8b7bdfeff",
+          "semantic": "",
+          "level": "未知",
+          "warning": "只保留呼叫定位；語意未在本探針審查",
+          "source": [
+            "tools/ida_probe_join_copyback.py"
+          ]
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "original": [
+        "0x10f35..0x10f69"
+      ],
+      "semantic": "FDFIELD b7..b12 依序寫入場上物品格2..7；item為ff時旗標80，否則0。+17/+19 是來源b11/b12，不是JOIN constructor 的常數。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_join_copyback.py",
+        "tools/parse_field.py",
+        "docs/data/parity-plans/ch02-join-copyback.jsonl"
+      ]
+    },
+    {
+      "original": [
+        "0x11555..0x1155f"
+      ],
+      "semantic": "runtime 與 persistent 依 raw +8 配對；這段沒有 camp 或是否打過仗的條件。identity0另有 caller-specific raw bit0 gate，不外推本項。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_join_copyback.py",
+        "docs/knowledge-base/50-cutscene-script-system-design.md"
+      ]
+    },
+    {
+      "original": [
+        "0x11572..0x11576"
+      ],
+      "semantic": "從EDI指向的場上記錄複製完整50h bytes到EBX指向的持續記錄，包含空格item bytes；第二章新增identity8的來源與兩個writer的目標基底均為 dosgolem 執行期線性記憶體指標 0x16e94c。",
+      "level": "已證實",
+      "source": [
+        "tools/ida_probe_join_copyback.py",
+        "docs/data/parity-plans/ch02-join-copyback.jsonl"
+      ]
+    }
+  ],
+  "kind": "fd2_join_copyback_ida_evidence",
+  "date": "2026-10-01",
+  "field_source": {
+    "file": "FDFIELD.DAT",
+    "size": 243169,
+    "sha256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513",
+    "archive_count": 100,
+    "resource_index": 4,
+    "resource_file_offset": "0x17f1",
+    "record_index": 22,
+    "record_file_offset": "0x1ab0",
+    "raw_record_hex": "02080101032c81ffffffffffff000000000000000004ff000000",
+    "inventory_tail_source_offsets": [
+      11,
+      12
+    ],
+    "inventory_tail_source_bytes": [
+      255,
+      255
+    ],
+    "level": "已證實",
+    "source": [
+      "tools/unpack_dat.py",
+      "tools/parse_field.py",
+      "remake/assets/maps/map1/map1_units.json"
+    ]
+  },
+  "scope": "只閉合第二章 post 新登場 identity8 的空物品格寫入與copy-back；修改路徑，不新增PLAYER-E2。"
+}

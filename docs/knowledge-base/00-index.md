@@ -179,3 +179,12 @@ remake 每關的劇本檔 `remake/assets/scenarios/chNN.json` = **事件骨架 +
 
 ## 原始素材(不入 git,不散布)
 - 遊戲本體 `org_game/炎龍騎士團/FLAME2/` · 攻略鏡像 `references/`(E3 authored reference) · 原版錄影 `video/`(E2/E3 visual oracle，依捕捉 provenance 分級)
+
+
+## 2026-10-01 JOIN 戰後尾格有限證據入口
+
+[58 分層現況](58-fd2-exe-re-coverage.md) →
+[IDA／FDFIELD寫入與複製證據](../data/ida/fd2_join_copyback_20261001.json)、
+[九項驗收收據](../data/fd2_join_copyback_verification_20261001.json)及
+[原版受版控控制計畫](../data/parity-plans/ch02-join-copyback.jsonl)。
+工具、規格、正式與建槽回歸入口集中58；既有JOIN殘值歷史收據保留。

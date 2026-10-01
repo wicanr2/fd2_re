@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_join_copyback_verification",
+  "issue": 23,
+  "status": "passed",
+  "gates": {
+    "original_runner": true,
+    "declared_modified_path": true,
+    "planned_load_battle_post_save": true,
+    "writer_join_copy_witness": true,
+    "original_save_tail": true,
+    "builder_save_tail": true,
+    "builder_join_before_sync": true,
+    "builder_input_and_output_hashes": true,
+    "builder_no_growth_draws": true
+  },
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "plan": "docs/data/parity-plans/ch02-join-copyback.jsonl",
+    "plan_sha256": "6ec91e96a4875b5b175f43cdd03e8d072525b4ce95121450c1893a04cef9280a",
+    "initial_rng_word": 22661,
+    "save_sha256": "4b57073aa882f3b2b285976dc747f8bf309a41146af8bebccb4cad3029beb03a",
+    "copy_witness": {
+      "address_space": "dosgolem protected-mode linear memory",
+      "runtime_address": "0x16e94c",
+      "persistent_address": "0x10E624",
+      "writer_steps": [
+        1127456158,
+        1127456171
+      ],
+      "join_step": 2085408159,
+      "sync_step": 2085408543,
+      "copy_step": 2085411629,
+      "copy_rng_word": 33466
+    }
+  },
+  "builder": {
+    "base_sha256": "d6960ee1608ecb5ed8bab7cce0734a9d92cc3aec139857a3d1fc0ada4100b43d",
+    "output_sha256": "a145d405ecb1177e4f15609e654953a761a32daa40d9552763496e3d52c62103",
+    "seed": 2,
+    "level_steps": 0,
+    "record_index": 5,
+    "tail_hex": "80ff80ff"
+  },
+  "source": {
+    "path": "maps/map1/map1_units.json",
+    "sha256": "79a246d2b1149fbc99bb00a44b29449e4ebbb44a1d25a72279941b3367514c58",
+    "record_index": 22,
+    "raw_byte8": 8,
+    "group": 4,
+    "item_bytes": [
+      255,
+      255
+    ]
+  },
+  "limitations": [
+    "明示清場修改路徑；只驗證第二章戰後物品尾格，沒有新增 PLAYER-E2。",
+    "工具只投影四個 byte，不能由此宣稱完整 0x50-byte 記錄或整檔存檔一致。",
+    "未比較亂數規則；原版使用固定 dosgolem 虛擬開機條件，建槽 seed2 未執行成長擲骰。"
+  ]
+}
