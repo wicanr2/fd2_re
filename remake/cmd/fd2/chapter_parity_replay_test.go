@@ -18,6 +18,7 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 // 章重播（111 章工作單元的重製側）：從同一份建構槽由標題 LOAD 進城，照原版側
@@ -71,21 +72,22 @@ type parityUnit struct {
 }
 
 type parityCheckpoint struct {
-	Index     int          `json:"index"`
-	Kind      string       `json:"kind"`
-	OracleSeq int          `json:"oracle_seq"`
-	Node      string       `json:"node"`
-	UI        string       `json:"ui"`
-	Round     int          `json:"round"`
-	Gold      int          `json:"gold"`
-	RNGWord   int          `json:"rng_word"`
-	RNGSynced bool         `json:"rng_synced"`
-	Cursor    []int        `json:"cursor"`
-	Camera    []int        `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
-	Units     []parityUnit `json:"units"`
-	Frame     string       `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
-	FrameHash string       `json:"indexed_sha256,omitempty"`
-	Note      string       `json:"note,omitempty"`
+	Index             int          `json:"index"`
+	Kind              string       `json:"kind"`
+	OracleSeq         int          `json:"oracle_seq"`
+	Node              string       `json:"node"`
+	UI                string       `json:"ui"`
+	Round             int          `json:"round"`
+	Gold              int          `json:"gold"`
+	RNGWord           int          `json:"rng_word"`
+	RNGSynced         bool         `json:"rng_synced"`
+	Cursor            []int        `json:"cursor"`
+	Camera            []int        `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
+	Units             []parityUnit `json:"units"`
+	Frame             string       `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
+	FrameHash         string       `json:"indexed_sha256,omitempty"`
+	PaletteCyclePhase *int         `json:"palette_cycle_phase,omitempty"` // 原版PNG的E0..EF與raw表完整匹配
+	Note              string       `json:"note,omitempty"`
 }
 
 type parityReplay struct {
@@ -118,7 +120,91 @@ type parityReplay struct {
 	// stoppedBeforeAI：上一個 END 停在敵方回合開始（下一個動作是 force_enemy_clear）。
 	stoppedBeforeAI bool
 	// currentSeq：正在寫畫面的檢查點對應的原版 seq。
-	currentSeq int
+	currentSeq        int
+	paletteCyclePhase *int
+}
+
+// parityPaletteCyclePhase只辨認既有原版raw窗口，不複製原版色值或以差異分數挑相位。
+func parityPaletteCyclePhase(palette color.Palette) (int, bool) {
+	if len(palette) != 256 {
+		return 0, false
+	}
+	for phase := 0; phase < 16; phase++ {
+		dac := make([]byte, 256*3)
+		if err := fdother.ApplyNativeDACPaletteCycleE0EF(dac, phase); err != nil {
+			return 0, false
+		}
+		known, err := fdother.VGAPaletteFromDAC(dac)
+		if err != nil {
+			return 0, false
+		}
+		matches := true
+		for index := 0xe0; index < 0xf0; index++ {
+			if palette[index] == nil {
+				matches = false
+				break
+			}
+			r, g, b, a := palette[index].RGBA()
+			kr, kg, kb, ka := known[index].RGBA()
+			if r != kr || g != kg || b != kb || a != ka {
+				matches = false
+				break
+			}
+		}
+		if matches {
+			return phase, true
+		}
+	}
+	return 0, false
+}
+
+func TestParityPaletteCyclePhaseRequiresCompleteRawWindow(t *testing.T) {
+	for phase := 0; phase < 16; phase++ {
+		dac := make([]byte, 256*3)
+		if err := fdother.ApplyNativeDACPaletteCycleE0EF(dac, phase); err != nil {
+			t.Fatal(err)
+		}
+		palette, err := fdother.VGAPaletteFromDAC(dac)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got, ok := parityPaletteCyclePhase(palette); !ok || got != phase {
+			t.Fatalf("phase%d匹配到%d，ok=%v", phase, got, ok)
+		}
+		// 窗口外色值不參與辨認；窗口內任一不屬原始表的色值則不得承接。
+		palette[0] = color.NRGBA{R: 255, A: 255}
+		if _, ok := parityPaletteCyclePhase(palette); !ok {
+			t.Fatal("窗口外色值干擾raw相位辨認")
+		}
+		palette[0xef] = color.NRGBA{R: 255, A: 255}
+		if _, ok := parityPaletteCyclePhase(palette); ok {
+			t.Fatal("未知窗口被當作原版相位")
+		}
+		palette[0xef] = nil
+		if _, ok := parityPaletteCyclePhase(palette); ok {
+			t.Fatal("缺色值窗口被承接")
+		}
+	}
+	if _, ok := parityPaletteCyclePhase(make(color.Palette, 240)); ok {
+		t.Fatal("不完整色盤被承接")
+	}
+}
+
+func (r *parityReplay) oraclePaletteCyclePhase() (int, bool) {
+	f, err := os.Open(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.png", r.currentSeq)))
+	if err != nil {
+		return 0, false
+	}
+	defer f.Close()
+	img, err := png.Decode(f)
+	if err != nil {
+		return 0, false
+	}
+	indexed, ok := img.(*image.Paletted)
+	if !ok {
+		return 0, false
+	}
+	return parityPaletteCyclePhase(indexed.Palette)
 }
 
 // oracleAuxPhase 讀原版 checkpoint 的 view.aux_phase（[0x539FC]）。
@@ -638,6 +724,7 @@ type frameVariant struct {
 
 func (r *parityReplay) frame(kind string) (string, string) {
 	g := r.g
+	r.paletteCyclePhase = nil
 	variants := []frameVariant{}
 	var palette color.Palette
 	switch {
@@ -739,6 +826,29 @@ func (r *parityReplay) frame(kind string) (string, string) {
 			}
 		}
 		restore()
+		// 0x4DFCC獨立於人物idle／地形LUT相位。只承接原版已記錄且與raw表完整相符的窗口，
+		// 寫候選的私有palette，不改Game DAC、phase/tick或任一indexed像素。其他owner不套用。
+		if g.bannerT <= 0 {
+			if phase, ok := r.oraclePaletteCyclePhase(); ok {
+				dac := make([]byte, 256*3)
+				if err := fdother.ApplyNativeDACPaletteCycleE0EF(dac, phase); err != nil {
+					r.t.Fatal(err)
+				}
+				known, err := fdother.VGAPaletteFromDAC(dac)
+				if err != nil {
+					r.t.Fatal(err)
+				}
+				for i := range variants {
+					if len(variants[i].palette) != 256 {
+						r.t.Fatal("戰場候選缺少完整色盤")
+					}
+					candidate := append(color.Palette(nil), variants[i].palette...)
+					copy(candidate[0xe0:0xf0], known[0xe0:0xf0])
+					variants[i].palette = candidate
+				}
+				r.paletteCyclePhase = &phase
+			}
+		}
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "town":
 		saved := g.nativeTownUIPulse
 		for pulse := 0; pulse < 4; pulse++ {
@@ -1013,6 +1123,7 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 	if withFrame {
 		r.currentSeq = seq
 		cp.Frame, cp.FrameHash = r.frame(kind)
+		cp.PaletteCyclePhase = r.paletteCyclePhase
 	}
 	r.write(cp)
 	return cp

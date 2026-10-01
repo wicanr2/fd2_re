@@ -1228,3 +1228,11 @@ seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77
 [#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
 戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
 #59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。
+
+## 2026-10-01 #60 第十三章畫面前綴勘誤
+
+[同槽收據](../data/ui-traces/parity-ch13-preflight.json)已由preflight-remake-r4重生：
+75張、51張0px、最大215px，行為與畫面gate通過。這取代上文r3的35個超標點現況；
+剩餘24個非零點位於指令環圖示，不能宣稱逐像素。正式raw色盤表與測試相位條件修正
+列有限CONFORMED，詳見[58](58-fd2-exe-re-coverage.md)及[IDA證據](../data/ida/fd2_palette_cycle_table_20261001.json)。
+完整第十三章仍因#61計畫未完成而BLOCKED，節點／交易拒絕，9／30章現況不變。

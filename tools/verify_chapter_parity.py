@@ -286,6 +286,9 @@ def main() -> int:
                 frames.append({"seq": seq, "kind": cp["kind"], "oracle": opng.name, "remake": rpng.name,
                                "phases": len(candidates), "diff_pixels": diff, "box": box, "ok": diff <= args.pixel_budget,
                                "oracle_sha256": sha256_file(opng), "remake_sha256": sha256_file(rpng)})
+                if "palette_cycle_phase" in cp:
+                    frames[-1]["palette_cycle_phase"] = cp["palette_cycle_phase"]
+                    frames[-1]["palette_cycle_source"] = "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
             else:
                 frames.append({"seq": seq, "kind": cp["kind"], "status": "frame_missing_or_no_pillow"})
         behavior.append(entry)

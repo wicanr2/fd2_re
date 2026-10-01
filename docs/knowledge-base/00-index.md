@@ -207,3 +207,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 第十三章診斷收據：[58目前阻塞](58-fd2-exe-re-coverage.md) →
 [有界預檢，整章未通過](../data/ui-traces/parity-ch13-preflight.json)；#60／#61分別追畫面與結果判定。
+
+#60 色盤表與對拍相位：[58入口](58-fd2-exe-re-coverage.md) →
+[IDA原始93-byte表及consumer](../data/ida/fd2_palette_cycle_table_20261001.json)；規格見56末節。

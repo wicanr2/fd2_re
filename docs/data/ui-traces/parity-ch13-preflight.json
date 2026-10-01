@@ -1188,7 +1188,7 @@
       }
     },
     "frames": {
-      "ok": false,
+      "ok": true,
       "pixel_budget": 640,
       "min_frames": 12,
       "compared": 75,
@@ -1227,7 +1227,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "86cce7d9e03efea49342a4cfb99c744c5fa617ac72ef4554269a62188643b426",
-          "remake_sha256": "b99a6e8473ff5f4d60cc0a78fe355101d509c1ca8897bcbc52ca99c6da42a68a"
+          "remake_sha256": "86cce7d9e03efea49342a4cfb99c744c5fa617ac72ef4554269a62188643b426",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 58,
@@ -1239,7 +1241,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "9c065e9270cd032c335076b7c4dbce39b60a685ddc34979774235bf043bf978a",
-          "remake_sha256": "2cbe99d3eb840e8dc85b38aefa22d845831b8082526f6dbe22250776cb015549"
+          "remake_sha256": "9c065e9270cd032c335076b7c4dbce39b60a685ddc34979774235bf043bf978a",
+          "palette_cycle_phase": 8,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 63,
@@ -1247,16 +1251,18 @@
           "oracle": "checkpoint-0063.png",
           "remake": "remake-0004-p1.png",
           "phases": 16,
-          "diff_pixels": 1513,
+          "diff_pixels": 180,
           "box": [
-            11,
-            4,
+            126,
+            23,
             166,
-            173
+            47
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "a1abf25c310c047b0d6fe25b33e0e273cc0acedd9d388992751a172575be57a3",
-          "remake_sha256": "6c0e7f3979083035d5dc04ddaee769a436e83430e04b1dbac04163c8e9f6d692"
+          "remake_sha256": "433813578c98a967dc30c4e484da9a531decc105ae2189601eedab90d6505c51",
+          "palette_cycle_phase": 3,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 69,
@@ -1264,16 +1270,13 @@
           "oracle": "checkpoint-0069.png",
           "remake": "remake-0005-p2.png",
           "phases": 8,
-          "diff_pixels": 2016,
-          "box": [
-            11,
-            4,
-            159,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "3947e5ff00e3fd4a74b53a173bd57d82f0d7d03beb40fdac6a550bf74b935432",
-          "remake_sha256": "4de27c43f9d7eff4bcf78cd8e7870f741c43c25f56033f0ea073e8a5b7bfc4bd"
+          "remake_sha256": "3947e5ff00e3fd4a74b53a173bd57d82f0d7d03beb40fdac6a550bf74b935432",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 80,
@@ -1281,16 +1284,13 @@
           "oracle": "checkpoint-0080.png",
           "remake": "remake-0006-p37.png",
           "phases": 88,
-          "diff_pixels": 603,
-          "box": [
-            43,
-            4,
-            157,
-            35
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "a8b0b1005244ed450b14bdf3fd766bc86152ec62d92b7a523e810a47bdd914b7",
-          "remake_sha256": "d981c18a2973c518c1d3838cc34320a0414b91afa9002a66ef7b039e4318c18a"
+          "remake_sha256": "a8b0b1005244ed450b14bdf3fd766bc86152ec62d92b7a523e810a47bdd914b7",
+          "palette_cycle_phase": 1,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 85,
@@ -1298,16 +1298,18 @@
           "oracle": "checkpoint-0085.png",
           "remake": "remake-0007-p2.png",
           "phases": 16,
-          "diff_pixels": 2103,
+          "diff_pixels": 177,
           "box": [
-            11,
-            4,
-            159,
-            177
+            79,
+            22,
+            118,
+            47
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "0e58b9016753004b8a4eff8d751eb0d9d82608e6fba4341a974e2bdcb3d3b59d",
-          "remake_sha256": "1c7d8be93d2ed112e2f35a9de2f77025d9fe501d0016987b340e7db63b06d7bc"
+          "remake_sha256": "12b5ed4d1364ab3c95e190d6596df6043faece55cfd98406ff3d42897c94c691",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 91,
@@ -1315,16 +1317,13 @@
           "oracle": "checkpoint-0091.png",
           "remake": "remake-0008-p1.png",
           "phases": 8,
-          "diff_pixels": 2680,
-          "box": [
-            11,
-            4,
-            159,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "b3094a87814c577855031fcade66434a84d28730f3e9c72b1eb9e28de40d2cc4",
-          "remake_sha256": "fd2996a3bbcf151fec8f2370fd09a798063f42792a60cdaffbce5e280ff7ce6f"
+          "remake_sha256": "b3094a87814c577855031fcade66434a84d28730f3e9c72b1eb9e28de40d2cc4",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 103,
@@ -1332,16 +1331,13 @@
           "oracle": "checkpoint-0103.png",
           "remake": "remake-0009-p37.png",
           "phases": 88,
-          "diff_pixels": 344,
-          "box": [
-            66,
-            4,
-            125,
-            14
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "6e3b12a5a9ed4575ac8a1900a574310337d20f4623f7785f28971c13187f39e5",
-          "remake_sha256": "c835c886117e8bce576d3cd311cb458c449d9fc5464424ed55c6dbd7674d79d4"
+          "remake_sha256": "6e3b12a5a9ed4575ac8a1900a574310337d20f4623f7785f28971c13187f39e5",
+          "palette_cycle_phase": 10,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 108,
@@ -1349,16 +1345,18 @@
           "oracle": "checkpoint-0108.png",
           "remake": "remake-0010-p0.png",
           "phases": 16,
-          "diff_pixels": 532,
+          "diff_pixels": 172,
           "box": [
-            66,
-            4,
+            103,
+            46,
             142,
             71
           ],
           "ok": true,
           "oracle_sha256": "e7c46f184362a2258e51c2ca236b0cce29790d4d780cbc9539c37a5650793609",
-          "remake_sha256": "ee5c657b4b41365c99af3f6d1fdb6b677fac5b77233e1debc9520d6697c32730"
+          "remake_sha256": "17ad79e97eaa9500274d456b3764b7781c966731e3a1b441254ff92a8f09a219",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 114,
@@ -1366,16 +1364,13 @@
           "oracle": "checkpoint-0114.png",
           "remake": "remake-0011-p1.png",
           "phases": 8,
-          "diff_pixels": 35,
-          "box": [
-            67,
-            4,
-            125,
-            13
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "fd8fe8358e487e3cc5cfef423606f3e6b4347993fbd5b3bdc18cbb019d2ba199",
-          "remake_sha256": "d90b41b65f43675baa5ee9c7e5f5a80178d391ddabba997f98a2d280ab1190f1"
+          "remake_sha256": "fd8fe8358e487e3cc5cfef423606f3e6b4347993fbd5b3bdc18cbb019d2ba199",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 124,
@@ -1383,16 +1378,13 @@
           "oracle": "checkpoint-0124.png",
           "remake": "remake-0012-p16.png",
           "phases": 88,
-          "diff_pixels": 412,
-          "box": [
-            64,
-            4,
-            125,
-            15
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "067a9d9e1e5f87b9edb0ed90b6f75ad251703a6d1d493fdb0006fe83818a35f3",
-          "remake_sha256": "4fbba7051ac8ffb687f5a5836df330eb9ce7581dc05899d450784007d2675afd"
+          "remake_sha256": "067a9d9e1e5f87b9edb0ed90b6f75ad251703a6d1d493fdb0006fe83818a35f3",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 158,
@@ -1400,16 +1392,18 @@
           "oracle": "checkpoint-0158.png",
           "remake": "remake-0013-p0.png",
           "phases": 16,
-          "diff_pixels": 2647,
+          "diff_pixels": 80,
           "box": [
             30,
-            4,
-            159,
+            46,
+            49,
             51
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "13501a2f6773c8bb530a086f23729a36d60b1b196342845a6233c70268337543",
-          "remake_sha256": "9bd086f41b5e270695b4b94e46046730e3a43a45d1721ab6be0c6ffa942d1c95"
+          "remake_sha256": "342bcbad333fa5cb98f1f6f052b407ae778800ab5ba36dbcee14598e6048b91d",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 164,
@@ -1417,16 +1411,13 @@
           "oracle": "checkpoint-0164.png",
           "remake": "remake-0014-p0.png",
           "phases": 8,
-          "diff_pixels": 1434,
-          "box": [
-            42,
-            4,
-            158,
-            38
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "fd8b9d7eb0fc8fd0926e7e43a00201ba47c5a8e33eb5d8fad12f2e15ae43cf4b",
-          "remake_sha256": "c96ae0f02593e2da2338e989c7e8e239e2497077f47321b6c1341e56623e7acc"
+          "remake_sha256": "fd8b9d7eb0fc8fd0926e7e43a00201ba47c5a8e33eb5d8fad12f2e15ae43cf4b",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 180,
@@ -1438,7 +1429,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "d62194f285ad1de75d43c5ff1a08fc5c73985f3ae0513c8d0b1b74b14a9d2cdf",
-          "remake_sha256": "f0b2e73c4f64ed4eb2c4ff1e19e7b7e3c84a738bf42a3b5f926f38ddad2b6735"
+          "remake_sha256": "d62194f285ad1de75d43c5ff1a08fc5c73985f3ae0513c8d0b1b74b14a9d2cdf",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 185,
@@ -1455,7 +1448,9 @@
           ],
           "ok": true,
           "oracle_sha256": "9b6afc3d003cb3530c1c964d27b8cc386104c948e5e77782021f059684f6cce4",
-          "remake_sha256": "18128577bfb11c2cfa7f6001997f28b0ef5f84637a167703a6339fb6e4e654ff"
+          "remake_sha256": "f76b3ca6bb5e0ab3709131831161252dff81d4ebb1da17f05e75423f044b5207",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 191,
@@ -1467,7 +1462,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "a388c15174f1ac6677d37ae0114553d5079f6e155e9f09488d909206fa890ec4",
-          "remake_sha256": "32d11ece3c9b40d00cf2f5ba494a44c068d4e01c59059a043ab59591f1416694"
+          "remake_sha256": "a388c15174f1ac6677d37ae0114553d5079f6e155e9f09488d909206fa890ec4",
+          "palette_cycle_phase": 10,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 201,
@@ -1479,7 +1476,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "aa95d243187c6d2507d4794a19d686dbb66476b6f4e0bbba0aec470eb4d3177b",
-          "remake_sha256": "36e8c71baee4fda70a31a02e636758ed2b02e5bc5df6cd0fb382c153c646c61e"
+          "remake_sha256": "aa95d243187c6d2507d4794a19d686dbb66476b6f4e0bbba0aec470eb4d3177b",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 235,
@@ -1496,7 +1495,9 @@
           ],
           "ok": true,
           "oracle_sha256": "bcbf68a1604c136fc15d6df1cf53f8a9b1cbe4a7ef052e95817f81fa57ece6c5",
-          "remake_sha256": "39008b42482efe119892e40911662c607281d7335a75fc15223c46e3602b8e07"
+          "remake_sha256": "e4d39ee47b9ced6491da4c6a2fe908bc685ce17501789384754038788c84ad2d",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 241,
@@ -1508,7 +1509,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "d4ac41031b00493505cde8c934e2225f23aeafd41e5f91d8a4b8dc771bd663d7",
-          "remake_sha256": "d06398ddad62c7e52566b07c55c1329dfd1c80987a666e1822e58268ca2c2261"
+          "remake_sha256": "d4ac41031b00493505cde8c934e2225f23aeafd41e5f91d8a4b8dc771bd663d7",
+          "palette_cycle_phase": 8,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 251,
@@ -1520,7 +1523,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "b5772ac469c47c4d8af0e747f8480af8747620646493af9c372b600e7f408a9e",
-          "remake_sha256": "df2ee41440dc7c14ec16fe00680bbcd1cf5abc5c3313b0d0d5acee4521380240"
+          "remake_sha256": "b5772ac469c47c4d8af0e747f8480af8747620646493af9c372b600e7f408a9e",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 256,
@@ -1537,7 +1542,9 @@
           ],
           "ok": true,
           "oracle_sha256": "e8464b248235731f6862860c8ba2e933a284baff63dc2352158871f398fca53b",
-          "remake_sha256": "62d893a9b1a6a22dce499854b1fda56c220e1a3d9fbb7dfb2880fe8927dfea56"
+          "remake_sha256": "14b50e96af9037ddac3ee41354a9095ae2078dafd46f00c1baf6016257f0bbf0",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 262,
@@ -1549,7 +1556,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "07407b37fb9dc12aad9a6e00c3cbdf343dda3d53c91b9f42471d13c01d4c3714",
-          "remake_sha256": "ccbd4edc0b698398485187097752eb40ab5e4d4521151ff162284ed6786f090b"
+          "remake_sha256": "07407b37fb9dc12aad9a6e00c3cbdf343dda3d53c91b9f42471d13c01d4c3714",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 277,
@@ -1561,7 +1570,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "9c1187526e1ffa05ad510a7d1eaef854c7d7df45c66017528adda97c82c138bc",
-          "remake_sha256": "663cf6b5b7768702a445ce2dfb1cc59778589a689c9843da482eeb014fee68e8"
+          "remake_sha256": "9c1187526e1ffa05ad510a7d1eaef854c7d7df45c66017528adda97c82c138bc",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 282,
@@ -1578,7 +1589,9 @@
           ],
           "ok": true,
           "oracle_sha256": "378dfd8bec7e6e95780626724aacabbbd1ed91e318cf2624a81a3e72d84c1f39",
-          "remake_sha256": "d2e03a7bb37d22b12a449cc912f4f4e66d9c65284810abcadc0ace2870241a36"
+          "remake_sha256": "75c598b2f8f7cc64df9f93929627bef048d091cfc03f1ddc347fc5426a6d437a",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 288,
@@ -1590,7 +1603,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "2ddeca1c4e4747b3b82122640efe601c28a55312521c7204260074767195f474",
-          "remake_sha256": "86410a2759eac2079962ff5bdf46b68cafc2d16c7dc3a22fbc90b71ff051956c"
+          "remake_sha256": "2ddeca1c4e4747b3b82122640efe601c28a55312521c7204260074767195f474",
+          "palette_cycle_phase": 8,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 298,
@@ -1602,7 +1617,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "e208097b455d0af999d1dc150097ab13e0e99c5689967c7fa3fa82fcbee18e90",
-          "remake_sha256": "32f40e197dd4ced56dc45143960225a23f55affa241256d7cda86fee316b4d2b"
+          "remake_sha256": "e208097b455d0af999d1dc150097ab13e0e99c5689967c7fa3fa82fcbee18e90",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 303,
@@ -1619,7 +1636,9 @@
           ],
           "ok": true,
           "oracle_sha256": "2531b46a5f7cf1a29a0415acab46102f04b3dc39b00194542a00d70883237b43",
-          "remake_sha256": "4609793d169b40a4e741858d3b352fd82b357b5080065b0ea4dce8f0f824f506"
+          "remake_sha256": "cd86fb5f6650c9c096cd2f87ac07bdc5446a61caf68b81c81bef0dadeab4bf2f",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 309,
@@ -1631,7 +1650,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "65ba78e128d168830d9612e5527a224c917223ac4c9c306ad88ef25db6f4af98",
-          "remake_sha256": "81747a438a619aee3547ddeb205f0e49fba919ef538f07e7344f9c4fc3ed1d92"
+          "remake_sha256": "65ba78e128d168830d9612e5527a224c917223ac4c9c306ad88ef25db6f4af98",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 319,
@@ -1643,7 +1664,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "488dd2b56a14da3895182de546a2b75568a08c921f4b87a25aa2304e56190edd",
-          "remake_sha256": "81d917b664795ab723244c3bb03ec20fdd0785dc90c9dc9aacbf9f1fc0789dd3"
+          "remake_sha256": "488dd2b56a14da3895182de546a2b75568a08c921f4b87a25aa2304e56190edd",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 324,
@@ -1660,7 +1683,9 @@
           ],
           "ok": true,
           "oracle_sha256": "193ae2267d453a7b5792f694f370afe66ead087d5163695dc7428f7c0440bc4c",
-          "remake_sha256": "78259ccdadf2fe9913d78f58e06702202e20ca1c591d192d94f2006522d0bc6a"
+          "remake_sha256": "04a55e08f902dd59b15a97be707e12e5b39bb3d2dddcee91666a4557621aba9e",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 330,
@@ -1672,7 +1697,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "7defd5a2aee0952510d51076d6bf6c3f5b0770993f2958b8aadfc7740586f8b4",
-          "remake_sha256": "ab34b2bd00ff5999975d7a64a726150d1be5d7066d00d18ed2cc593b57687085"
+          "remake_sha256": "7defd5a2aee0952510d51076d6bf6c3f5b0770993f2958b8aadfc7740586f8b4",
+          "palette_cycle_phase": 8,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 341,
@@ -1684,7 +1711,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "3f8f34de52ce63a4e22cc980b67087c8a877f07d83b3720e327abb387820b57d",
-          "remake_sha256": "2f3954fbc6f0d429aa26b751720f2cc84ba03bfbb4cc9640a408a83632c0f6f5"
+          "remake_sha256": "3f8f34de52ce63a4e22cc980b67087c8a877f07d83b3720e327abb387820b57d",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 346,
@@ -1701,7 +1730,9 @@
           ],
           "ok": true,
           "oracle_sha256": "728dafc25968e7ccfd2e19c23e30f358febe38245f6187b0f8c1d0011c893eeb",
-          "remake_sha256": "01b865c90f69ebc97be08cd386a051e22fde0515e7a064b011682d119f381854"
+          "remake_sha256": "13b23a5042c7a6cf8957df9d53eaf8688dbce2efd65ae4eb1bc21b57a3fad5c1",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 352,
@@ -1713,7 +1744,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "41b57a21402c3cc1c330e79c178e4df5b57ebb119a7195891ed789cdcc8a5252",
-          "remake_sha256": "acd479e0fd59b93cb4018a790806eb61427543af294fc0f48cd14191bc42e434"
+          "remake_sha256": "41b57a21402c3cc1c330e79c178e4df5b57ebb119a7195891ed789cdcc8a5252",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 366,
@@ -1725,7 +1758,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "48fb7d055e6bbf5fc6507e22959c4fecbabde467a416bea14962cb717d310905",
-          "remake_sha256": "34c4a97e5ed162eb80a92b2ed617574b987d1a193e58fc89ed8ec5ca6dae8723"
+          "remake_sha256": "48fb7d055e6bbf5fc6507e22959c4fecbabde467a416bea14962cb717d310905",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 371,
@@ -1742,7 +1777,9 @@
           ],
           "ok": true,
           "oracle_sha256": "132c3f984121e234340c7ecbda3531aacd5045e59dedaf80486cc612e14a7ff1",
-          "remake_sha256": "e47962252f005e7e37c7e805ac8187161864f8997bcb5e138beaee38aa247acd"
+          "remake_sha256": "714477b6834b5a72e066c840fa2fa8d9a00f882dbb53e2b6c5fc951b7ebc34de",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 377,
@@ -1754,7 +1791,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "c6bc3b51d2822d8e36f2d3da703b611930c180b9c097de566dfeba9ca586a66f",
-          "remake_sha256": "c3214cd0f94a3c72e08035b95d4ce638de88cf1c24a07600306a32f1099fe721"
+          "remake_sha256": "c6bc3b51d2822d8e36f2d3da703b611930c180b9c097de566dfeba9ca586a66f",
+          "palette_cycle_phase": 13,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 430,
@@ -1762,16 +1801,13 @@
           "oracle": "checkpoint-0430.png",
           "remake": "remake-0040-p13.png",
           "phases": 88,
-          "diff_pixels": 2035,
-          "box": [
-            4,
-            4,
-            263,
-            173
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "a063bb99e2b661901718ecdfbb94233cc71588af6b6444a68cf70b1db1d82d9d",
-          "remake_sha256": "f034afca1fa08bc44bc443fcf1d065e8c52074a8641e1b6ddfeaaae89a2231df"
+          "remake_sha256": "a063bb99e2b661901718ecdfbb94233cc71588af6b6444a68cf70b1db1d82d9d",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 548,
@@ -1779,16 +1815,18 @@
           "oracle": "checkpoint-0548.png",
           "remake": "remake-0041-p1.png",
           "phases": 16,
-          "diff_pixels": 11399,
+          "diff_pixels": 89,
           "box": [
-            4,
-            4,
-            263,
-            173
+            78,
+            119,
+            97,
+            123
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "7b257971f7b1b948270ac0aef9af7c1410fe2a9a8c5339190124e04b86491dd3",
-          "remake_sha256": "694749796fd5df1bc18510dce50e26c95f802c5b26af6d751c2918f78c73a226"
+          "remake_sha256": "afbc83392e8c255a1f30e3f6477fccdf9778eef542d5cd2b0a3a32c14b04aa1b",
+          "palette_cycle_phase": 3,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 554,
@@ -1796,16 +1834,13 @@
           "oracle": "checkpoint-0554.png",
           "remake": "remake-0042-p1.png",
           "phases": 8,
-          "diff_pixels": 11901,
-          "box": [
-            4,
-            4,
-            263,
-            173
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "60ac607743723059edde54ad8f20d351b535e107a8ffaa9fb2a4edcd04af97d9",
-          "remake_sha256": "001132e0bbf3412751a1c46dae9cd5193e7f75284e857f1950a200fb7cde3257"
+          "remake_sha256": "60ac607743723059edde54ad8f20d351b535e107a8ffaa9fb2a4edcd04af97d9",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 561,
@@ -1813,16 +1848,13 @@
           "oracle": "checkpoint-0561.png",
           "remake": "remake-0043-p49.png",
           "phases": 88,
-          "diff_pixels": 4102,
-          "box": [
-            4,
-            4,
-            275,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "853a7dd7d43205c7b771bc57a2805611c3b94f21a458d0b189c2a022c9752668",
-          "remake_sha256": "1e12598dde4a6dbdcf59339a5340b3d8b46bf7364152c6520034f11d00782d59"
+          "remake_sha256": "853a7dd7d43205c7b771bc57a2805611c3b94f21a458d0b189c2a022c9752668",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 668,
@@ -1830,16 +1862,18 @@
           "oracle": "checkpoint-0668.png",
           "remake": "remake-0044-p1.png",
           "phases": 16,
-          "diff_pixels": 10798,
+          "diff_pixels": 66,
           "box": [
-            4,
-            4,
-            275,
-            177
+            55,
+            119,
+            73,
+            123
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "0eaac82e323db69447cf5eac63bb6a05697901bf6e15457e8d682d519f638447",
-          "remake_sha256": "1bb0ca0f6a8022626fd222b505570e90b1a9330d58e6579a8a3af3240677fcdc"
+          "remake_sha256": "7a12261781168fee06bba7a45b962ba70f47547b92dd360a8b2d896aabdc6d3c",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 674,
@@ -1847,16 +1881,13 @@
           "oracle": "checkpoint-0674.png",
           "remake": "remake-0045-p0.png",
           "phases": 8,
-          "diff_pixels": 11195,
-          "box": [
-            4,
-            4,
-            275,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "41878c9b86061cfeaaad902f5f2fac5925ca62a41b9583205e8a64fd63c7dd2c",
-          "remake_sha256": "50bb8e9ca628f390c9f947f26678729ed4a54cd3c5759c27dc21706f00e56fd8"
+          "remake_sha256": "41878c9b86061cfeaaad902f5f2fac5925ca62a41b9583205e8a64fd63c7dd2c",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 681,
@@ -1864,16 +1895,13 @@
           "oracle": "checkpoint-0681.png",
           "remake": "remake-0046-p21.png",
           "phases": 88,
-          "diff_pixels": 3502,
-          "box": [
-            4,
-            4,
-            158,
-            109
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "4236fb25f6d9fc07bda57ed0cbd874461c8a8073020c337209c5f50cd3a2c2ea",
-          "remake_sha256": "f4b314a2acc63e74b69f694a20a7a544e7d3e5fa492d984a73ed70f769f65ec0"
+          "remake_sha256": "4236fb25f6d9fc07bda57ed0cbd874461c8a8073020c337209c5f50cd3a2c2ea",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 730,
@@ -1881,16 +1909,18 @@
           "oracle": "checkpoint-0730.png",
           "remake": "remake-0047-p0.png",
           "phases": 16,
-          "diff_pixels": 9905,
+          "diff_pixels": 172,
           "box": [
-            4,
-            4,
-            275,
-            177
+            31,
+            94,
+            70,
+            119
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "8c11f7b39d94beee01caccaa74e832db236abe483d5f4ba99d6d44432d983a83",
-          "remake_sha256": "5ba78e2322b0ee6535c335892285defde50c013baaa97321700504f38e6db18f"
+          "remake_sha256": "4bca512bf6d64c1cdbd4f19d0a8103cf49aa491ccd3b8cdf0db78fdbe22ffd5b",
+          "palette_cycle_phase": 9,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 736,
@@ -1898,16 +1928,13 @@
           "oracle": "checkpoint-0736.png",
           "remake": "remake-0048-p2.png",
           "phases": 8,
-          "diff_pixels": 9794,
-          "box": [
-            4,
-            4,
-            275,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "e20db749bf6f51e60b00902e2d753ce6ac40193db713b7b7cfa8ef973b09ba11",
-          "remake_sha256": "8762341649a061f9b41a6e641f8f7bc4ee5ccf2b92eaa45ceb58c5d83e7baafd"
+          "remake_sha256": "e20db749bf6f51e60b00902e2d753ce6ac40193db713b7b7cfa8ef973b09ba11",
+          "palette_cycle_phase": 3,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 747,
@@ -1915,16 +1942,13 @@
           "oracle": "checkpoint-0747.png",
           "remake": "remake-0049-p52.png",
           "phases": 88,
-          "diff_pixels": 5235,
-          "box": [
-            4,
-            4,
-            159,
-            63
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "bf74da10de6b3cda6ac69c8ebe519fe8ccd08eb0e5636d11620c04672af06c89",
-          "remake_sha256": "8a6f69686ed8d3321e6ad6a13b373455af2a1d2143439f8f3ec9fa1a38682499"
+          "remake_sha256": "bf74da10de6b3cda6ac69c8ebe519fe8ccd08eb0e5636d11620c04672af06c89",
+          "palette_cycle_phase": 13,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 752,
@@ -1932,16 +1956,18 @@
           "oracle": "checkpoint-0752.png",
           "remake": "remake-0050-p0.png",
           "phases": 16,
-          "diff_pixels": 4331,
+          "diff_pixels": 124,
           "box": [
-            4,
-            4,
-            158,
+            52,
+            70,
+            74,
             75
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "59b91ace801647efb09eeae584cc64fc5a9dc7683b224e1502ed7c98cd7d55fd",
-          "remake_sha256": "660240116c0fdcc7cf0010e8318866b7beafc4eae7114fbef6b03ce29e60b7fa"
+          "remake_sha256": "178b29e462d2ed9ab4f565c8624218a4061a34d00b9f5b008dd6498bda431cd9",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 758,
@@ -1949,16 +1975,13 @@
           "oracle": "checkpoint-0758.png",
           "remake": "remake-0051-p1.png",
           "phases": 8,
-          "diff_pixels": 1850,
-          "box": [
-            4,
-            4,
-            156,
-            61
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "244f2fd0d2e7c1a94305c3b02a298615a61be5d606fa0510d83f33926befcc10",
-          "remake_sha256": "1ae880694b3ff1a0231a36f829c2e0ea09cdafed19b62eac1bf61dca1ad77609"
+          "remake_sha256": "244f2fd0d2e7c1a94305c3b02a298615a61be5d606fa0510d83f33926befcc10",
+          "palette_cycle_phase": 3,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 766,
@@ -1966,16 +1989,13 @@
           "oracle": "checkpoint-0766.png",
           "remake": "remake-0052-p21.png",
           "phases": 88,
-          "diff_pixels": 4095,
-          "box": [
-            39,
-            4,
-            207,
-            63
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "f5a6811f81b4de996ff2ada7650c2544f5374fba1cc51b2aeca84290400df657",
-          "remake_sha256": "85fa589fb6c0d4fa218387452c650816d5e60bcadced337509b973a0345f3b7f"
+          "remake_sha256": "f5a6811f81b4de996ff2ada7650c2544f5374fba1cc51b2aeca84290400df657",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 831,
@@ -1983,16 +2003,18 @@
           "oracle": "checkpoint-0831.png",
           "remake": "remake-0053-p0.png",
           "phases": 16,
-          "diff_pixels": 10147,
+          "diff_pixels": 80,
           "box": [
             30,
-            4,
-            275,
-            176
+            70,
+            49,
+            75
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "83a88beded01a94d328185388191ef94c477355b404bde1db407ae68d85583a4",
-          "remake_sha256": "c463d21275429b1ede443c16756c3b5f4f9c324685da68361f1475ee0a37a5a3"
+          "remake_sha256": "7215268f60a5538cd6d0606de1b0afcaf94931899c50bb09b2e38a4781d891b6",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 837,
@@ -2000,16 +2022,13 @@
           "oracle": "checkpoint-0837.png",
           "remake": "remake-0054-p0.png",
           "phases": 8,
-          "diff_pixels": 7961,
-          "box": [
-            37,
-            4,
-            275,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "f615bcac220ed104b3dec3323e6316b2fa4692376e9832410bf3c237c0e96288",
-          "remake_sha256": "552a8ec5f10d48c110bbf1e378d64b89a3971e026a3f0e4ffb61f6e8a26dd2c8"
+          "remake_sha256": "f615bcac220ed104b3dec3323e6316b2fa4692376e9832410bf3c237c0e96288",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 848,
@@ -2017,16 +2036,13 @@
           "oracle": "checkpoint-0848.png",
           "remake": "remake-0055-p40.png",
           "phases": 88,
-          "diff_pixels": 3023,
-          "box": [
-            38,
-            4,
-            206,
-            86
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "7c6a2e1e6ed3ec8f2697bb907d28da7a903ad713a1a69d504810754f41c18327",
-          "remake_sha256": "3109ce26b4b0a02724269b37da371326cfbb413d6c3d0ce201526ae8030120a6"
+          "remake_sha256": "7c6a2e1e6ed3ec8f2697bb907d28da7a903ad713a1a69d504810754f41c18327",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 870,
@@ -2034,16 +2050,18 @@
           "oracle": "checkpoint-0870.png",
           "remake": "remake-0056-p2.png",
           "phases": 16,
-          "diff_pixels": 7702,
+          "diff_pixels": 110,
           "box": [
-            37,
-            4,
-            208,
+            125,
+            94,
+            146,
             99
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "c725065e80c2e34d951bd593e42db9136ca4c4c782929a3944338624704cd343",
-          "remake_sha256": "0b3bdecda53fd004e91dc668f055686de874c589e9fa95a18e06b7070b62070e"
+          "remake_sha256": "8800a06216649a4d46b014d5058f25e58a38c58a7a3be0b311f0fc5f368bfaf0",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 876,
@@ -2051,16 +2069,13 @@
           "oracle": "checkpoint-0876.png",
           "remake": "remake-0057-p0.png",
           "phases": 8,
-          "diff_pixels": 7444,
-          "box": [
-            38,
-            4,
-            207,
-            86
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "f3cdceb841892075054dbe2bf5416e9cac1a64001277f66fcd27a4225ef855c9",
-          "remake_sha256": "3d81d454e94f6de0d863591cb136340ebe68e250f5474272ddbe37c934a76511"
+          "remake_sha256": "f3cdceb841892075054dbe2bf5416e9cac1a64001277f66fcd27a4225ef855c9",
+          "palette_cycle_phase": 6,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 886,
@@ -2068,16 +2083,13 @@
           "oracle": "checkpoint-0886.png",
           "remake": "remake-0058-p18.png",
           "phases": 88,
-          "diff_pixels": 6915,
-          "box": [
-            37,
-            4,
-            207,
-            87
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "0845d56912779aa652d1804567670c57add1df1cb2d217a69bded7badd47e345",
-          "remake_sha256": "616064a3d3630125e00f69f81a29e86eaf04d094a01fc5873c46b2c0d16ba922"
+          "remake_sha256": "0845d56912779aa652d1804567670c57add1df1cb2d217a69bded7badd47e345",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 890,
@@ -2085,16 +2097,18 @@
           "oracle": "checkpoint-0890.png",
           "remake": "remake-0059-p0.png",
           "phases": 16,
-          "diff_pixels": 6959,
+          "diff_pixels": 71,
           "box": [
-            37,
-            4,
-            275,
-            177
+            55,
+            70,
+            72,
+            75
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "c27298ee4216a58ad95fe91970d23d4240d761bdd65891e4c0ae1f21876550a1",
-          "remake_sha256": "fcbe0fdb184cb324f016f3be5cd14f647b4f10fd1f411e194a800684c1c0675d"
+          "remake_sha256": "db678918d0a68b0c918b6c92540246b8617ab85f0e595f6947c55be1af756e64",
+          "palette_cycle_phase": 13,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 896,
@@ -2102,16 +2116,13 @@
           "oracle": "checkpoint-0896.png",
           "remake": "remake-0060-p2.png",
           "phases": 8,
-          "diff_pixels": 7456,
-          "box": [
-            37,
-            4,
-            275,
-            177
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "953149ce110d77b68fe0535ccdfe951d62b29d7d0a6691233ca08ae09176c45c",
-          "remake_sha256": "51844c393dca3817bd9db3836c91ffc9e859c7b56755bdbd92af6f089092cf07"
+          "remake_sha256": "953149ce110d77b68fe0535ccdfe951d62b29d7d0a6691233ca08ae09176c45c",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 908,
@@ -2119,16 +2130,13 @@
           "oracle": "checkpoint-0908.png",
           "remake": "remake-0061-p18.png",
           "phases": 88,
-          "diff_pixels": 1473,
-          "box": [
-            49,
-            4,
-            159,
-            39
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "2afafce541ad1aa57352bfbdfc8bda8edf1ad4116da9121ce464ffdcad06aa1f",
-          "remake_sha256": "0a09f61f00b5e465d3a4e8ec599a99f2a4eed56edf234664156ff4c52a094d6f"
+          "remake_sha256": "2afafce541ad1aa57352bfbdfc8bda8edf1ad4116da9121ce464ffdcad06aa1f",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 913,
@@ -2136,16 +2144,18 @@
           "oracle": "checkpoint-0913.png",
           "remake": "remake-0062-p2.png",
           "phases": 16,
-          "diff_pixels": 2158,
+          "diff_pixels": 88,
           "box": [
-            49,
-            4,
-            159,
+            127,
+            70,
+            144,
             75
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "8dfeedf44ac9e4880ca17d1fb70c325a7a2147c9982795a3885b650a577c2c11",
-          "remake_sha256": "1b1f021f6ecedb627dca27bf8d8b19f8c7a9f08e5be19704ec93f77dffdde55f"
+          "remake_sha256": "dbf1e9df771c9a77aebe9bbc5774ab92f8ccd59c2a1d38ca9aabc5ab9ddbe2ab",
+          "palette_cycle_phase": 10,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 919,
@@ -2153,16 +2163,13 @@
           "oracle": "checkpoint-0919.png",
           "remake": "remake-0063-p0.png",
           "phases": 8,
-          "diff_pixels": 658,
-          "box": [
-            50,
-            4,
-            156,
-            37
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "907bc0d612b59d1bb0d3da6431e9c7cfc07243a32d3cd6651dd552696c40e926",
-          "remake_sha256": "5a58357ef66a29fe9b5a1cce490620ec79af2283243e49fa2a5e1fa5552b0423"
+          "remake_sha256": "907bc0d612b59d1bb0d3da6431e9c7cfc07243a32d3cd6651dd552696c40e926",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 929,
@@ -2170,16 +2177,13 @@
           "oracle": "checkpoint-0929.png",
           "remake": "remake-0064-p29.png",
           "phases": 88,
-          "diff_pixels": 1586,
-          "box": [
-            50,
-            4,
-            159,
-            39
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "351a3b3dde5b1003298a06a4e2838954e89f8fa8aee81f20ac3eb6be4192c6a2",
-          "remake_sha256": "410e40217a527e0ed8cfa4b4f51b73fbb721543fc5af8e127b9a4f61b75b902a"
+          "remake_sha256": "351a3b3dde5b1003298a06a4e2838954e89f8fa8aee81f20ac3eb6be4192c6a2",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 934,
@@ -2187,16 +2191,18 @@
           "oracle": "checkpoint-0934.png",
           "remake": "remake-0065-p1.png",
           "phases": 16,
-          "diff_pixels": 2276,
+          "diff_pixels": 176,
           "box": [
-            50,
-            4,
-            159,
+            77,
+            47,
+            118,
             71
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "43b0de35aae427674ab6f1bc513d9f04432da6bee41939b4fb50d35993e072dc",
-          "remake_sha256": "b545854f8ad8d255a91dc103c6640b104bb2d6a9868713955b619868f7445018"
+          "remake_sha256": "a34e1dc19ca87dfa3faa7b1ca251a6a8c48aa7b9b126495030fe858586303f90",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 940,
@@ -2204,16 +2210,13 @@
           "oracle": "checkpoint-0940.png",
           "remake": "remake-0066-p2.png",
           "phases": 8,
-          "diff_pixels": 2070,
-          "box": [
-            49,
-            4,
-            159,
-            39
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "7a8baa7344f32d4bfdfa9a8a8a5fc1104c4ee6e085f8557c3b98e141053ec97a",
-          "remake_sha256": "a49e7aa57b9057f97ecb171b0a386b4073d88a0c92d15bfabb8b903eec8bb492"
+          "remake_sha256": "7a8baa7344f32d4bfdfa9a8a8a5fc1104c4ee6e085f8557c3b98e141053ec97a",
+          "palette_cycle_phase": 9,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 949,
@@ -2221,16 +2224,13 @@
           "oracle": "checkpoint-0949.png",
           "remake": "remake-0067-p18.png",
           "phases": 88,
-          "diff_pixels": 546,
-          "box": [
-            50,
-            4,
-            157,
-            37
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "e46c75e722c998f92c087c504dfce872d6e2a226aa7b6a3de8af85217224ab6a",
-          "remake_sha256": "6a8ab15ec2dcf987db2cbf74bc0976112d68b429311f4bc77b81226076ce6eff"
+          "remake_sha256": "e46c75e722c998f92c087c504dfce872d6e2a226aa7b6a3de8af85217224ab6a",
+          "palette_cycle_phase": 1,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 954,
@@ -2238,16 +2238,18 @@
           "oracle": "checkpoint-0954.png",
           "remake": "remake-0068-p0.png",
           "phases": 16,
-          "diff_pixels": 2013,
+          "diff_pixels": 208,
           "box": [
-            49,
-            4,
-            159,
+            102,
+            70,
+            142,
             95
           ],
-          "ok": false,
+          "ok": true,
           "oracle_sha256": "9b1ad3105cc818c59d24b300037c3b734dfbd8f308532476282def2b54d2bba8",
-          "remake_sha256": "0d529b1821d21f971380be550ace38587845b906100de16645b454912f5323f4"
+          "remake_sha256": "eeaaa76e5bea70eddee587885e930e4d1e49d4962f576694adadf08da1a830c5",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 960,
@@ -2255,16 +2257,13 @@
           "oracle": "checkpoint-0960.png",
           "remake": "remake-0069-p0.png",
           "phases": 8,
-          "diff_pixels": 1430,
-          "box": [
-            49,
-            4,
-            159,
-            39
-          ],
-          "ok": false,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
           "oracle_sha256": "e92ab4816ee410d96443ba31a3b44913283e6f787f4bf2492c27dca2bb003e21",
-          "remake_sha256": "eede7d9680fe59d8fd8f73b2d172bfdf5b0f8526baec85c4bf7040671487c4cd"
+          "remake_sha256": "e92ab4816ee410d96443ba31a3b44913283e6f787f4bf2492c27dca2bb003e21",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 971,
@@ -2272,16 +2271,13 @@
           "oracle": "checkpoint-0971.png",
           "remake": "remake-0070-p49.png",
           "phases": 88,
-          "diff_pixels": 96,
-          "box": [
-            71,
-            4,
-            125,
-            15
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "aa8b5ce8cd469917bdd684a708181a5fdc9bd7ab44fc4aac86b76ae3f830caf4",
-          "remake_sha256": "8893adc1c34c612b2826882ab46d31a08115792b45007e6f70ffe7bd01762a18"
+          "remake_sha256": "aa8b5ce8cd469917bdd684a708181a5fdc9bd7ab44fc4aac86b76ae3f830caf4",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 977,
@@ -2289,16 +2285,18 @@
           "oracle": "checkpoint-0977.png",
           "remake": "remake-0071-p2.png",
           "phases": 16,
-          "diff_pixels": 192,
+          "diff_pixels": 74,
           "box": [
-            72,
-            4,
+            125,
+            70,
             146,
             75
           ],
           "ok": true,
           "oracle_sha256": "79e9d396b23ed4868ff50e7610dc73faeeecf7fcf06b362f4e02643b1cdf7db5",
-          "remake_sha256": "121cf9f8c526dc5519b97a6aaca2409513c71561336185b9a317e5bb957c9112"
+          "remake_sha256": "68ed984f49dff9a32b5c34fbd3a00793373d9dac34d4a29e92ec56c1b09009bd",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 983,
@@ -2306,16 +2304,13 @@
           "oracle": "checkpoint-0983.png",
           "remake": "remake-0072-p0.png",
           "phases": 8,
-          "diff_pixels": 137,
-          "box": [
-            71,
-            4,
-            125,
-            15
-          ],
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "c80cde6f8d84cdf4c84cb118a73e1bb447969e2093c1e584d5a52ef1a1649088",
-          "remake_sha256": "b232693c80aa233d6140747e48c19e689137374306629d28de6bd13b494a6843"
+          "remake_sha256": "c80cde6f8d84cdf4c84cb118a73e1bb447969e2093c1e584d5a52ef1a1649088",
+          "palette_cycle_phase": 1,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 998,
@@ -2327,7 +2322,9 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "c3947c0eb83a00493ee2d095a35a125837f424ee31a33bc17e18d13ad1041639",
-          "remake_sha256": "c3e47399f56b214e80e6f307771d7147e2c0e3947796f566daf02bde690d9bb1"
+          "remake_sha256": "c3947c0eb83a00493ee2d095a35a125837f424ee31a33bc17e18d13ad1041639",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 1003,
@@ -2344,7 +2341,9 @@
           ],
           "ok": true,
           "oracle_sha256": "65c55c54b741787f89c997e19f902c6053935fa3da6d334611bf7707ad85d62f",
-          "remake_sha256": "56cbf3989e2c84adcd6995bc9ccea5ddb7763a3d6c8c5561fb8244772490fa8c"
+          "remake_sha256": "41b8d1d6f57702ab8efca9847eba3b556dd6031d348b15f228a5a550b581ce39",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         },
         {
           "seq": 1009,
@@ -2356,27 +2355,31 @@
           "box": [],
           "ok": true,
           "oracle_sha256": "0fe533d967e5c6cbea2a8936f51a7e25beb75e69ad2fc48c5077318140cf77ed",
-          "remake_sha256": "0e0c7949bac8463760d4ddea754f6fea7ee80e497b48aef54dfcc4767c2bf4f4"
+          "remake_sha256": "0fe533d967e5c6cbea2a8936f51a7e25beb75e69ad2fc48c5077318140cf77ed",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
         }
       ]
     }
   },
   "limitations": [
-    "起點為111／114建構槽；本有界前綴沒有force_enemy_clear或鎖HP，不是完整章路徑PLAYER-E2。",
-    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
-    "本收據是原版前77個動作、到control_seq1020的凍結前綴，只用於第十三章起手修正與畫面缺陷診斷。",
-    "原版完整r1在第六回合回到標題，未完成第九回合增援、戰後或酒店存檔。節點及交易gate拒絕不完整計畫，status必須保持failed。",
-    "原版前綴沒有force_enemy_clear或鎖HP；強化僅建構槽政策。",
-    "起手seq48為59筆名冊及0px；這個有限修正不等於第十三章PLAYER-E2，前兩回合畫面仍超過640px。"
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。"
   ],
   "scope": {
     "partial": true,
     "cap_control_seq": 1020,
     "original_source": "work/parity-slot-ch13/sample-original-r1",
     "original_prefix": "work/parity-slot-ch13/preflight-original-r1",
-    "remake_run": "work/parity-slot-ch13/preflight-remake-r3",
+    "remake_run": "work/parity-slot-ch13/preflight-remake-r4",
     "startup_issue": 58,
     "rendering_issue": 60,
-    "result_issue": 61
+    "result_issue": 61,
+    "rendering_status": "CONFORMED（僅此前綴）",
+    "previous_receipt_commit": "ced4be5ed4dffe0978b403ed09a800b41d62b6f5",
+    "previous_remake_run": "work/parity-slot-ch13/preflight-remake-r3",
+    "palette_source": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+    "palette_control": "只承接原版索引PNG與既有raw窗口完整匹配的DAC phase；不複製原版像素，不修改正式Game phase/tick",
+    "comparison": "same-state，有界前77動作；節點／交易仍拒絕未完計畫"
   }
 }

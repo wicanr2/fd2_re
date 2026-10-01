@@ -1273,3 +1273,41 @@ seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77
 [#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
 戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
 #59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。
+
+## 2026-10-01 #60 色盤表與第十三章前綴有限驗收
+
+目前狀態：RE-CLOSED／CONFORMED（色盤表與同槽前綴），正式表修正達RUNTIME-E1。
+[原始93-byte表及consumer](../data/ida/fd2_palette_cycle_table_20261001.json)證實Go漏列
+index16，後半段18個byte錯位；舊首色／phase0與1測試不足，本輪加入獨立IDA fixture，
+逐byte驗證全部16個窗口及窗口外不變。既有phase／tick規則不改。
+
+[同槽預檢](../data/ui-traces/parity-ch13-preflight.json)由原版r1的不可變前77動作與
+正式preflight-remake-r4重生，75張畫面、51張0px、最大215px，行為與畫面gate皆通過。
+73張原版戰場PNG的E0..EF均完整匹配已證實raw窗口；每張收據記錄承接相位與來源。
+承接只換重播候選的私有palette，不抄原版像素、不改Game DAC／phase／tick；
+PNG窗口未知或非索引圖不承接。640px預算、原版槽、seed4與原版runner a9bcd621不變。
+剩餘24個非零點都在指令環圖示區域，非水面或鏡頭差異，不能宣稱全畫面逐像素。
+
+本段取代上文r3的35個超標點現況；r3失敗圖／收據與來源commit ced4be5e仍可追溯，
+沒有重新跑原版或已通過第四～十二章。Go全部19個有測試套件通過，
+驗收器10項測試在有Pillow的映像全數通過；字串清冊與現行盤點雜湊相同，無需改綁定。
+第十三章節點／交易仍拒絕未完計畫，#61返回標題判定仍BLOCKED，完成章保持9／30；
+#60只關閉畫面前綴缺陷，不提升整章PLAYER-E2。
+
+重跑入口：維護的Go容器／Xvfb，以FD2_PARITY_CHAPTER=13、
+FD2_PARITY_SLOT指向固定槽、FD2_PARITY_ORACLE_RUN指向凍結原版前綴、
+FD2_PARITY_OUT指向新輸出，執行go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1。
+判定器tools/verify_chapter_parity.py在fd2-assets-local:20260829-sfx容器內執行，
+--chapter 13、--oracle、--remake、--slot-manifest、--plan、--out對應上述來源與受版控ch13-sample計畫；
+整章仍預期failed，不能只看畫面gate就登記passed。所有本批容器已退出，輸出UID/GID1000:1000。
+
+
+## 2026-10-01 #60 色盤表勘誤與相位條件（RE-CLOSED／CONFORMED，有限前綴）
+
+[IDA主證據](../data/ida/fd2_palette_cycle_table_20261001.json)回查既有閉合的
+11CAC(0)→4DFCC與0x60003..0x60060原始93-byte表。函式語意不重開；
+本輪發現Go轉寫漏了index16的0e1526，後半段18個byte與原始表不同。
+原版P-mode PNG保留DAC，可用既有16個raw窗口驗證captured phase；
+重播原先只列人物／地形／指令環相位，不能把其水面色差直接判為正式規則缺陷。
+正式表與對拍工具都依[56有限契約](56-fd2-remake-sdd.md)修正；
+完整章仍BLOCKED於#61，前綴不能宣稱PLAYER-E2。原始r3失敗收據保留為歷史。

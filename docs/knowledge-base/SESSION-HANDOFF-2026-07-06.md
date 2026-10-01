@@ -8702,3 +8702,13 @@ seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77
 [#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
 戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
 #59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。
+
+## 2026-10-01 #60 色盤勘誤交接
+
+本段取代上文r3的畫面阻塞：正式Go色盤表漏列index16，18個byte錯位；
+重播也缺少獨立DAC相位條件。依[IDA原始表](../data/ida/fd2_palette_cycle_table_20261001.json)修正，
+同槽preflight-remake-r4的[75張預檢](../data/ui-traces/parity-ch13-preflight.json)最高215px，51張0px，
+行為與畫面gate通過。#60可關閉，完整第十三章仍BLOCKED於#61，9／30章不變。
+Go19個套件、驗收器10項通過，Docker已清理；未重跑第四～十二章。
+下一個切片追raw章12結果handler與seq2108..2113，不能從失效title緩衝猜全滅。
+目前規格／限制以[58](58-fd2-exe-re-coverage.md)與台帳為準，舊r3／原版r1失敗樣本保留。

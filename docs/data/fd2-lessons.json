@@ -913,6 +913,22 @@
         "pattern": "idautils.FuncItems",
         "note": "探針必須遍歷完整函式items。"
       }
+    },
+    {
+      "id": "dac-cycle-windows-use-original-bytes",
+      "area": "對拍",
+      "rule": "DAC滑動表逐byte沿用原版資料並以獨立IDA fixture核對所有窗口；色盤相位與人物相位分開，以原版PNG的完整raw窗口匹配記錄測試條件。入口：56色盤契約及docs/data/ida/fd2_palette_cycle_table_20261001.json。",
+      "why": "第十三章水面大量色差包含Go漏列表index16及對拍未承接DAC相位，僅測首色與phase0/1看不到後半段錯位。",
+      "date": "2026-10-01",
+      "evidence": "docs/data/ui-traces/parity-ch13-preflight.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_palette_cycle_table_20261001.json"
+        ],
+        "pattern": "ff85b2a737b4e838d24fba73331de7d52815f1f87f6d940f339e5d1fd6e74198",
+        "note": "原始93-byte表的獨立證據仍存在；工具預設排除測試檔，測試另由Go回歸驗證。"
+      }
     }
   ]
 }

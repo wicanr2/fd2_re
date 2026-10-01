@@ -8721,3 +8721,37 @@ seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77
 [#61](https://github.com/wicanr2/fd2_re/issues/61)追原版結果判定與正常敗北路徑。
 戰役台帳第十三章目前BLOCKED，完成章仍9／30；不重跑已通過第四～十二章。
 #59探針已驗證5個requested地址均在完整chunks匯出內，原始名稱／位址／bytes與分級保留。
+
+## 2026-10-01 #60 有限規格驗收
+
+下節契約已在實作前完成READY審查，現列CONFORMED（正式表與第十三章前綴）。
+[58驗收紀錄](58-fd2-exe-re-coverage.md)及[同槽收據](../data/ui-traces/parity-ch13-preflight.json)
+記錄75張畫面、51張0px、最大215px，行為與畫面gate通過，節點／交易仍拒絕未完計畫。
+[IDA證據](../data/ida/fd2_palette_cycle_table_20261001.json)保留18-byte錯位與原始表，
+Go全部19個有測試套件及驗收器10項測試通過；整章PLAYER-E2未提升，#61仍受阻。
+
+
+## 2026-10-01 #60 色盤表與同狀態相位契約（CONFORMED，僅本節範圍）
+
+原始FD2.EXE大小357074、MD5 b97caf2239a27a896069d03549d96e1e、SHA-256
+222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f；
+IDA Pro9.4的LE線性位址、caller／consumer／raw bytes與分級保存在
+[主證據](../data/ida/fd2_palette_cycle_table_20261001.json)。
+既有0x11CC3→0x4DFCC、BIOS unsigned兩tick gate與程序相位生命週期已證實，不改。
+
+1. 正式31×RGB表須逐byte等於IDA 0x60003..0x60060；index16應保留0e1526。
+   phase0..15各取從3×phase起的48 bytes，只寫DAC E0..EF；存檔與正式種子不變。
+2. 原版PNG為索引格式時，對拍工具只比對其E0..EF色盤與這16個已證實窗口。
+   完整相符才承接該captured phase；不得抄原版像素、任意色值或用差異分數挑相位。
+   承接的是該張畫面的窗口，不把它當成兩側BIOS tick已逐次對齊的證據。
+3. 承接只套在重播穩態畫面候選的私有palette，使用正式ApplyNativeDACPaletteCycleE0EF
+   和VGAPaletteFromDAC；不改Game phase/tick、indexed framebuffer或E0..EF以外色值。
+   非索引圖、不完整palette或不屬既有窗口時不承接，保留未對齊限制。
+   橫幅等其他owner不套這個條件。每個承接點在重播checkpoint記錄相位來源。
+4. 驗收：以原始表檔案fixture核對全部16個窗口及窗口外不變；反例色盤不得匹配。
+   修表後從同槽LOAD重播同一原版前77動作，未遮罩RGB仍以640px上限判定，
+   行為亦須通過；節點／交易保持拒絕未完計畫，整章#14仍待#61閉合。
+
+證據審查已核對IDA實際JSON、輸入雜湊、0x4DFF8..0x4E021指令、原始93-byte表、
+Go逐byte差異與兩側鏡頭座標。表格修正READY；相位承接只是測試條件，
+不增加未修改正式遊戲的時序忠實度聲明。

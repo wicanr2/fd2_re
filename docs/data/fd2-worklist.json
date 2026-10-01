@@ -313,22 +313,11 @@
       "issue": 52
     },
     {
-      "id": "ch13-preflight-map-rendering-over-budget",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十三章前兩回合畫面對拍多點超過640像素，行為比較通過",
-      "acceptance": "定位同槽正常輸入下的繪圖差異writer／consumer，依RE→READY規格修正正式畫面，使用原版同狀態點重跑且維持未遮罩640px上限；保留部分預檢的限制，不能以此宣稱整章PLAYER-E2。",
-      "verify": {
-        "kind": "manual",
-        "note": "parity-ch13-preflight.json的frames gate為false；正式第十三章四gate仍由#14追蹤。"
-      },
-      "issue": 60
-    },
-    {
       "id": "ch13-round6-result-and-defeat-path-unknown",
       "layer": "re",
       "category": "RE待解",
       "title": "第十三章第六回合原版回標題的判定與正式敗北路徑待閉合",
+      "body": "正常LOAD、無HP鎖定的第十三章sample-original-r1在第六回合返回標題，控制計畫未走到第九回合增援／戰後。seq2110仍有15名我方全部HP>0，runtime0 HP420、byte5=0；12名友軍中仍有3名HP>0，不能推為我方全滅或精靈全滅。seq2111起戰場緩衝已失效，title時的ally_alive=0不是死亡證據。raw章12結果handler／條件尚未定位；重製battle_ch13仍有自訂retreat_ch13，不能拿它宣稱與原版同路徑。原版執行器dosgolem a9bcd621、固定槽d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae。#60另追畫面差異。",
       "acceptance": "先查58既有結果表與controller證據，以IDA直接指令及raw跳表定位raw章12判定writer／consumer，對照seq2108..2113來源；READY後接正式條件與原生返回標題流程，重新安排不改狀態的章內正常輸入以走到第九回合與戰後，不能猜成我方或友軍全滅。",
       "verify": {
         "kind": "manual",

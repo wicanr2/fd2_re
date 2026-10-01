@@ -2,6 +2,8 @@ package fdother
 
 import (
 	"bytes"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"os"
 	"reflect"
@@ -115,6 +117,43 @@ func TestApplyNativeDACPaletteCycleE0EFWritesOnlyNativeRange(t *testing.T) {
 	}
 	if got := dac[0xe0*3 : 0xe0*3+3]; got[0] != 0x0d || got[1] != 0x14 || got[2] != 0x25 {
 		t.Fatalf("palette phase1 entry=%#v", got)
+	}
+}
+
+// 使用獨立IDA證據fixture逐byte驗證全部窗口，避免只驗phase0/1的首色而漏掉後半段錯位。
+func TestNativeDACPaletteCycleMatchesAllOriginalWindows(t *testing.T) {
+	data, err := os.ReadFile("../../../docs/data/ida/fd2_palette_cycle_table_20261001.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var evidence struct {
+		SHA256   string `json:"sha256"`
+		RawTable struct {
+			Hex string `json:"hex"`
+		} `json:"raw_table"`
+	}
+	if err := json.Unmarshal(data, &evidence); err != nil {
+		t.Fatal(err)
+	}
+	if evidence.SHA256 != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" {
+		t.Fatal("IDA證據的原版雜湊不符")
+	}
+	raw, err := hex.DecodeString(evidence.RawTable.Hex)
+	if err != nil || len(raw) != 93 {
+		t.Fatalf("IDA原始表形態不符：len=%d err=%v", len(raw), err)
+	}
+	for phase := 0; phase < 16; phase++ {
+		dac := bytes.Repeat([]byte{63}, 256*3)
+		if err := ApplyNativeDACPaletteCycleE0EF(dac, phase); err != nil {
+			t.Fatal(err)
+		}
+		if !bytes.Equal(dac[0xe0*3:0xf0*3], raw[phase*3:phase*3+48]) {
+			t.Fatalf("phase%d不等於原版IDA窗口", phase)
+		}
+		if !bytes.Equal(dac[:0xe0*3], bytes.Repeat([]byte{63}, 0xe0*3)) ||
+			!bytes.Equal(dac[0xf0*3:], bytes.Repeat([]byte{63}, 16*3)) {
+			t.Fatalf("phase%d改動窗口外DAC", phase)
+		}
 	}
 }
 
