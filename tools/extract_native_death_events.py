@@ -101,6 +101,24 @@ EVENTS = [
         op("spawn_group", [(0x3456F, 0x34579)], group=2, gate=0),
         op("dialogue", [(0x34579, 0x34594), (0x3452F, 0x3453D)], text=2),
     ]},
+    # 第十五章三個回合事件；READY與原始跳表／指令見58及
+    # fd2_ch15_turn_events_20261002.json。+0x35仍保留raw欄位名稱。
+    {"id": 13, "handler": 0x34E90, "ops": [
+        op("dialogue", [(0x34E9B, 0x34EC2)], text=6),
+        *[op("record_bytes", [(0x34EC2, 0x34EE4)], unit=unit,
+             writes=[[0x35, 0, 1]], record_loop=(0x40, 0x49, 0x34EC9, 0x34EDF))
+          for unit in range(0x40, 0x4A)],
+        op("ai_mode_range", [(0x34EE4, 0x34EF2)], first=0x40, last=0x49, mode=3),
+        op("ai_mode_range", [(0x34EF2, 0x34F00)], first=0x23, last=0x31, mode=0),
+    ]},
+    {"id": 18, "handler": 0x34F02, "ops": [
+        op("dialogue", [(0x34F0C, 0x34F33)], text=8),
+        op("ai_mode_range", [(0x34F33, 0x34F41)], first=0x10, last=0x22, mode=0),
+    ]},
+    {"id": 38, "handler": 0x34F42, "ops": [
+        op("spawn_group", [(0x34F4C, 0x34F56)], group=1, gate=0),
+        op("dialogue", [(0x34F56, 0x34F74), (0x34C0F, 0x34C1D)], text=0xA),
+    ]},
     # 14..17 是第五章（map 4）的回合事件（turn_events.json：第 3／4／7／8 回合），
     # 不是死亡效果；同一張全域事件表，同一套轉寫與核對。
     {"id": 14, "handler": 0x345EA, "ops": [
@@ -480,6 +498,18 @@ def check_op(image, event_id, o):
         else:
             expect_seq(insns, [load_round, f"add dl, {o['delta']}", load_row, store], where)
     elif kind == "record_bytes":
+        if "record_loop" in o:
+            first, last, body_address, check_address = o["record_loop"]
+            if not first <= o["unit"] <= last or o["writes"] != [[0x35, 0, 1]]:
+                raise SystemExit(f"{where}：展開記錄寫入不符已審查的迴圈")
+            expect_seq(insns, [
+                f"mov edx, {imm(first)}", f"jmp {H(check_address)}",
+                "mov eax, edx", "shl eax, 2", "lea ebx, [edx + eax]", "shl ebx, 4",
+                ("mov eax, dword ptr [0x3a45]", UNITS),
+                "mov byte ptr [ebx + eax + 0x35], 0", "inc edx",
+                f"cmp edx, {imm(last)}", f"jle {H(body_address)}"],
+                where, include_jumps=True)
+            return [H(start) for start, _ in o["ranges"]]
         body = [("mov eax, dword ptr [0x3a45]", UNITS), f"add eax, {H(o['unit'] * 0x50)}"]
         for offset, value, width in o["writes"]:
             size = "byte" if width == 1 else "word"
@@ -651,7 +681,7 @@ def main():
         ops = []
         for o in event["ops"]:
             sources = check_op(image, event["id"], o)
-            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline", "tail", "mode_from_zero_guard")}
+            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline", "tail", "mode_from_zero_guard", "record_loop")}
             if "rodata" in clean:
                 clean["rodata"] = H(clean["rodata"])
             clean["source"] = sources[0]

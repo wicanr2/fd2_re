@@ -525,8 +525,16 @@ func ch01UnitDump(g *Game) string {
 
 // ackPresents 承認演出工作的「這一幀已呈現」。離屏不走 Draw，而援軍進場、調色盤
 // 斜坡這些工作都掛在 drawn 上；`fastForwardShotCampaign` 走的是同一種承認方式。
-// 這裡只標 drawn，不動各自的 wait——等待幀數照跑，時序維持真實。
+// 地圖快取失效時沿正式合成器重建，其餘只承認drawn；各擁有者等待幀數照跑。
 func ackPresents(g *Game) {
+	// 正式Draw會重建被對白或record_bytes失效的地圖快取；離屏pump也要
+	// 走同一合成器，讓下一次Update的狀態到期提示取得完整底圖（#80）。
+	if len(g.nativeMapVGA) == 0 && g.st != nil && g.st.HasNativeMapViewState &&
+		g.m != nil && nativeMapAssetsAvailable(g.nativeMapAssets) {
+		if err := g.composeNativeMapFrame(); err != nil {
+			g.loadErr = "離屏原生畫面重建：" + err.Error()
+		}
+	}
 	if g.spawnIntroTransition != nil {
 		g.spawnIntroTransition.drawn = true
 	}

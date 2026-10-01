@@ -1669,3 +1669,63 @@ READY範圍僅runtime_append_groups、完整部署與既有view／inherited HUD 
 正常LOAD、出戰確認、戰場起手三張完整RGB畫面差異均為0；完整Go回歸19套件通過，遊戲套件111.014秒。
 有限切片列CONFORMED／RUNTIME-E1；整章仍保持12張最低量與戰後／存檔門檻，#76尚未完成。
 第4／7／9回合event13／38／18尚缺完整動作，先登記#78再有界補證；不以spawn-only代表完整事件。
+
+## 2026-10-02 #78 第十五章三個回合事件（READY）
+
+[主證據](../data/ida/fd2_ch15_turn_events_20261002.json)保留固定EXE identity、IDA 9.4原始名稱／位址／bytes與三個跳表項；
+1A813分派器、3419C低四位writer及LOADCH／10B4E constructor沿用已閉合證據。
+event13於round4 raw camp1依序播text6、64..73的raw+0x35寫0、同範圍mode3、35..49 mode0；
+event38於round7 raw camp0追加group1再播text10；event18於round9 raw camp0先播text8再16..34 mode0。
+所有範圍含兩端，不能把+0x35誤稱狀態解除，不另增加陣營或HP閘門。
+
+正式資料沿用既有Action／NativeDeathOp／record_bytes，將原版十筆迴圈展開成十個明確寫入；
+僅補NativeRecordByte35的整byte投影及原始核對器，不新增格式或AI規則。
+對白與模式順序、控制列camp、raw高四位與來源驗證維持失敗即關閉。
+原始控制流與writer／consumer充分，有限規格READY；待第4／7／9回合與完整整章四項比較後才CONFORMED。
+
+## 2026-10-02 #79 第十五章 record64 無對白敗北（READY）
+
+[固定EXE與完整IDA主證據](../data/ida/fd2_ch15_result_conditions_20261002.json)保存sub_20822的40bytes與結果表項。
+2082C先call205BE，20833以3453E(64)查raw+5 bit0，非零才由2083F寫53ECC=1；沒有對白或回合門檻。
+結果consumer沿[共用敗北返回標題證據](../data/ida/fd2_pending_code1_return_title_20261001.json)，
+不可走自創撤退重試。既有NativeResultRule只放行帶來源的code1列，actions允許空陣列；
+非空對白仍須完整來源並按順序收框，空列直接續行，全部列完成後交既有FDOTHER79敗北owner。
+缺raw旗標仍失敗即關閉，HP或其他友軍倒下不能代替record64 bit0。
+
+原版sample-original-r1最後有效seq1143在round6，我方16人仍存活、record64 HP0／bit0=1；
+後續已釋放陣列不可推算全隊死亡。本run未追2083F，退出原因只列強推論，未到event38／18及戰後，
+清敵計畫未執行，整章#76未通過。先保留此失敗樣本，再以正常護援補成功章，不能提前清敵避開事件。
+
+## 2026-10-02 #80 狀態到期的離屏畫面前置
+
+首次重播日誌的阻塞清單含nativeClassUI，但沒有nativeMapVGA；檔案缺件說法需細分。
+正式Draw的drawNativeMapFrame呼叫composeNativeMapFrame，重建被對白或record_bytes失效的快取；
+離屏pump只用ackPresents承認owner，沒有這個重建步驟。已有
+[狀態到期原版契約與測試](../../remake/cmd/fd2/native_transient_phase_test.go)及
+[正式呈現消費端](../../remake/cmd/fd2/native_transient_presentation.go)的raw倒數／到期提示維持原狀。
+驗證修正範圍：只在離屏ackPresents遇到空快取且原生戰場已完整載入時，呼叫正式合成器；
+缺素材仍拒絕，合成錯誤透過loadErr傳出；不填黑底、不略過到期提示、不改正式遊戲規則。
+驗收以真正載入的原生戰場、到期提示owner／continuation與同槽重播越過舊失敗點為準。
+
+## 2026-10-02 第十五章完整首次嚴格比較
+
+[失敗診斷](../data/ui-traces/parity-ch15-r1.json)的四gate皆未通過；原版r1於round6敗北，重製r2已越過#80原先錯誤，但仍到round7留在戰場。
+61張完整RGB比較，最大16098px，640px門檻與最少12張保持；戰後交易／酒店／秘密商店及抽樣後清敵均缺失。
+AI297筆原版入口只消費295筆，18筆順序分岔；第一處seq1076的第204筆，原版record40而重製record41，
+已另立#81，須從此前raw狀態追因，不能先換護援計畫繞過重製問題。
+
+#79的原始規則及正式敗北owner聚焦測試已通過，但同槽敗北一致仍待#81，工單保持開啟。
+#78三事件保留READY，尚未到round7／9原版抽樣，不列CONFORMED。
+#80已核對正式Draw與離屏前置；重播r2越過舊失敗點，到期提示owner／收合測試通過，待完整回歸後閉合。
+canonical必須以既有公開核心的--without-animations契約重生；本輪首次誤含私人動畫metadata的候選已修正，
+ValidateBundle維持禁止include_animations，不放寬驗收。因移除自創retreat_ch15，
+本輪tools/audit_story_script_coverage.py --json重新盤點118個story／cutscene、9 script、57 handler-bound、52 fallback；
+完整逐節點收據併入#79主證據，不用歷史119／53覆蓋現況。
+
+### 2026-10-02 第十五章有限修正驗證
+
+#78／#79有限實作與#80離屏前置通過完整Go回歸19套件（遊戲113.367秒）；44事件原版bytes／覆蓋核對與6項轉寫負向測試通過。
+#80[可重查收據](../data/fd2_ch15_transient_replay_20261002.json)列有限CONFORMED；正式raw狀態／到期規則未改。
+#78仍待round7／9，第十五章同槽敗北仍受#81分岔阻擋，#76四gate保持failed，不能以綠色Go測試宣稱原版一致。
+#79分級語意已回填自動匯出索引；1305原始函式邊界／名稱／caller未變，機械重生清冊只更動20822一列。
+目前分類62 product／175 runtime／1068 unknown、68條函式註記；來源與命令見[結果主證據](../data/ida/fd2_ch15_result_conditions_20261002.json)。

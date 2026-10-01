@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""全域事件轉寫的固定原版指令回歸；在fd2-cap-local內執行。"""
+
+import copy
+import os
+import sys
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import extract_native_death_events as extractor
+
+
+class NativeDeathExtractorTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.image = extractor.Image(Path(os.environ.get("FD2_EXE", "/orig/FD2.EXE")))
+        cls.events = {event["id"]: event for event in extractor.EVENTS}
+
+    def test_ch15_all_three_handlers_match_bytes_and_cover_control_flow(self):
+        for event_id in (13, 18, 38):
+            with self.subTest(event=event_id):
+                event = self.events[event_id]
+                for op in event["ops"]:
+                    extractor.check_op(self.image, event_id, op)
+                extractor.check_coverage(self.image, event)
+
+    def test_record_loop_rejects_slot_outside_original_inclusive_range(self):
+        op = copy.deepcopy(self.events[13]["ops"][1])
+        op["unit"] = 74
+        with self.assertRaises(SystemExit):
+            extractor.check_op(self.image, 13, op)
+
+    def test_record_loop_rejects_different_write_value(self):
+        op = copy.deepcopy(self.events[13]["ops"][1])
+        op["writes"] = [[0x35, 1, 1]]
+        with self.assertRaises(SystemExit):
+            extractor.check_op(self.image, 13, op)
+
+    def test_record_loop_rejects_wrong_inclusive_endpoint(self):
+        op = copy.deepcopy(self.events[13]["ops"][1])
+        op["record_loop"] = (64, 74, 0x34EC9, 0x34EDF)
+        with self.assertRaises(SystemExit):
+            extractor.check_op(self.image, 13, op)
+
+    def test_event13_missing_record_loop_is_not_complete(self):
+        event = copy.deepcopy(self.events[13])
+        event["ops"] = [op for op in event["ops"] if op["op"] != "record_bytes"]
+        with self.assertRaises(SystemExit):
+            extractor.check_coverage(self.image, event)
+
+    def test_event38_spawn_only_is_not_complete(self):
+        event = copy.deepcopy(self.events[38])
+        event["ops"] = [event["ops"][0]]
+        with self.assertRaises(SystemExit):
+            extractor.check_coverage(self.image, event)
+
+
+if __name__ == "__main__":
+    unittest.main()

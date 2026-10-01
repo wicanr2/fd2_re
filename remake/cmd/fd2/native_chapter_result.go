@@ -44,12 +44,16 @@ func (g *Game) advanceNativeChapterResult() {
 		if !matched {
 			continue
 		}
-		if !g.nativeBattleDialogueAvailable() {
+		if len(rule.Actions) != 0 && !g.nativeBattleDialogueAvailable() {
 			g.failNativeChapterResult(rule.ID + "：缺少原生戰場對白狀態")
 			return
 		}
 		j.code = rule.Code
 		j.matched = append(j.matched, rule.ID)
+		// sub_20822的code1覆寫沒有對白；不要製造事件擁有者或素材要求。
+		if len(rule.Actions) == 0 {
+			continue
+		}
 		g.startBattleEvent(rule.Actions, g.advanceNativeChapterResult)
 		return
 	}

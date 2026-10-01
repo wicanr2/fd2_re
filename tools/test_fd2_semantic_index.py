@@ -40,7 +40,7 @@ class SemanticIndexTest(unittest.TestCase):
         self.assertEqual(inventory["function_count"], 1305)
         self.assertEqual(
             inventory["classification_counts"],
-            {"product": 61, "runtime": 175, "unknown": 1069},
+            {"product": 62, "runtime": 175, "unknown": 1068},
         )
         self.assertEqual(inventory["semantic_annotation_count"], len(entries))
 

@@ -329,6 +329,9 @@ func applyNativeRecordWrites(u *Unit, writes [][3]int) error {
 			})
 		case offset == 0x34 && width == 1:
 			apply = append(apply, func() { u.NativeRecordByte34, u.HasNativeRecordByte34 = byte(value), true })
+		case offset == 0x35 && width == 1:
+			// 第十五章event13在0x34ED9整byte寫0；沿用raw欄位及mode3消費端。
+			apply = append(apply, func() { u.NativeRecordByte35, u.HasNativeRecordByte35 = byte(value), true })
 		case offset == 0x40 && width == 2:
 			apply = append(apply, func() { u.HP = value })
 		default:

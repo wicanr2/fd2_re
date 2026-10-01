@@ -111,6 +111,49 @@ func TestNativeChapterResultMissingDialogueStateStopsBeforeDefeat(t *testing.T) 
 	}
 }
 
+func TestChapter15SilentResultHandsOffToNativeDefeat(t *testing.T) {
+	// 直接進章與注入raw測試條件只驗E1；普通輸入仍由章重播另驗。
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_TITLE", "0")
+	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("FD2_SEED", "4")
+	t.Setenv("FD2_CAMPAIGN", defaultPlayerCampaign)
+	t.Setenv("FD2_CAMP_NODE", "battle_ch15")
+	t.Setenv("FD2_NATIVE_SAVE", filepath.Join(t.TempDir(), "FD2.SAV"))
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = "" })
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	if len(g.sc.NativeResultRules) != 1 || len(g.sc.NativeResultRules[0].Actions) != 0 {
+		t.Fatal("canonical正式入口未載入無對白結果規則")
+	}
+	g.st.Units[65].NativeRecordByte5 |= 1
+	g.checkResult()
+	if g.result != "" || g.nativeDefeat != nil || g.loadErr != "" {
+		t.Fatalf("其他友軍倒下被判敗：%s", g.loadErr)
+	}
+	// 無對白列不產生對白owner；敗北提示沿用FDOTHER79。
+	g.st.Units[64].NativeRecordByte5 |= 1
+	g.checkResult()
+	if g.result != "lose" || g.nativeDefeat == nil || g.battleEvent != nil ||
+		g.nativeChapterResult != nil || g.loadErr != "" ||
+		!reflect.DeepEqual(g.nativeResultMatchedRules, []string{"record64_inactive"}) {
+		t.Fatalf("無對白結果沒有直接交接原生敗北：result=%q error=%s", g.result, g.loadErr)
+	}
+	// 純結果owner沒有對白素材也能判定；正式敗北owner仍要求戰場／色盤。
+	probe := *g
+	probe.nativeChapterResult, probe.nativeDefeat, probe.battleEvent = nil, nil, nil
+	probe.result, probe.loadErr = "", ""
+	probe.camp, probe.nativeMapAssets = nil, nil
+	probe.beginNativeChapterResult()
+	if probe.loadErr != "" || probe.result != "lose" || probe.battleEvent != nil {
+		t.Fatal("無對白結果列錯誤要求戰場對白素材")
+	}
+}
+
 func TestChapter13Event7FinishesActingBeforeDialogueAndContinuation(t *testing.T) {
 	// 直接進章與回合設定僅驗RUNTIME-E1；正常章內輸入由#61章重播驗。
 	g := chapter13ResultGame(t)

@@ -111,3 +111,32 @@ func TestLoadScenarioRejectsUnknownOrIncompleteNativeResults(t *testing.T) {
 		}
 	}
 }
+
+func TestChapter15ResultUsesOnlyRecord64RawInactiveBit(t *testing.T) {
+	sc, err := LoadScenario("../../assets/scenarios/ch15.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sc.NativeResultHandler != "0x20822" || len(sc.NativeResultRules) != 1 {
+		t.Fatal("第十五章結果來源或規則缺漏")
+	}
+	rule := sc.NativeResultRules[0]
+	if len(rule.Actions) != 0 || rule.RoundGreaterThan != nil {
+		t.Fatal("無對白原版處理器被新增對白或回合閘門")
+	}
+	st := nativeResultRecords(74)
+	st.Units[65].NativeRecordByte5 = 1
+	st.Units[64].HP = 0
+	st.Units[64].NativeRecordByte5 = 0x80
+	if match, err := rule.Match(st); err != nil || match {
+		t.Fatalf("其他友軍倒下、HP0或bit7被當成record64 bit0：%v", err)
+	}
+	st.Units[64].HP, st.Units[64].NativeRecordByte5 = 999, 0x81
+	if match, err := rule.Match(st); err != nil || !match {
+		t.Fatalf("原始bit0未使存活我方的戰場判敗：%v", err)
+	}
+	st.Units[64].HasNativeRecordByte5 = false
+	if _, err := rule.Match(st); err == nil {
+		t.Fatal("record64缺原始欄位卻猜補結果")
+	}
+}

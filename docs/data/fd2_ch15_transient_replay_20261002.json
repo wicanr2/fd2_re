@@ -1,0 +1,714 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch15_offscreen_transient_validation",
+  "date": "2026-10-02",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/80",
+  "status": "CONFORMED",
+  "scope": "離屏驗證前置；沒有修改正式狀態到期規則或放寬原版比較。",
+  "old_checkpoint_source": "work/parity-slot-ch15/sample-remake-r1/checkpoints.jsonl",
+  "old_checkpoint_sha256": "14cab66bc41a043f820442d85eefcb50bb8c362127c41750aa81f32b11ecc7db",
+  "old_runtime_error": {
+    "index": 64,
+    "kind": "runtime_error",
+    "oracle_seq": 0,
+    "node": "battle_ch15",
+    "ui": "cursor",
+    "round": 0,
+    "gold": 2000,
+    "rng_word": 42212,
+    "rng_synced": false,
+    "cursor": null,
+    "units": [
+      {
+        "camp": 2,
+        "x": 38,
+        "y": 33,
+        "hp": 420,
+        "identity": 0,
+        "acted": 0,
+        "px": 38,
+        "py": 33
+      },
+      {
+        "camp": 2,
+        "x": 37,
+        "y": 36,
+        "hp": 272,
+        "identity": 9,
+        "acted": 0,
+        "px": 37,
+        "py": 36
+      },
+      {
+        "camp": 2,
+        "x": 40,
+        "y": 33,
+        "hp": 364,
+        "identity": 4,
+        "acted": 0,
+        "px": 40,
+        "py": 33
+      },
+      {
+        "camp": 2,
+        "x": 42,
+        "y": 46,
+        "hp": 846,
+        "identity": 30,
+        "acted": 0,
+        "px": 42,
+        "py": 46
+      },
+      {
+        "camp": 2,
+        "x": 36,
+        "y": 45,
+        "hp": 494,
+        "identity": 1,
+        "acted": 0,
+        "px": 36,
+        "py": 45
+      },
+      {
+        "camp": 2,
+        "x": 38,
+        "y": 47,
+        "hp": 302,
+        "identity": 8,
+        "acted": 0,
+        "px": 38,
+        "py": 47
+      },
+      {
+        "camp": 2,
+        "x": 41,
+        "y": 48,
+        "hp": 380,
+        "identity": 2,
+        "acted": 0,
+        "px": 41,
+        "py": 48
+      },
+      {
+        "camp": 2,
+        "x": 39,
+        "y": 48,
+        "hp": 242,
+        "identity": 10,
+        "acted": 0,
+        "px": 39,
+        "py": 48
+      },
+      {
+        "camp": 2,
+        "x": 35,
+        "y": 48,
+        "hp": 296,
+        "identity": 13,
+        "acted": 0,
+        "px": 35,
+        "py": 48
+      },
+      {
+        "camp": 2,
+        "x": 36,
+        "y": 47,
+        "hp": 503,
+        "identity": 12,
+        "acted": 0,
+        "px": 36,
+        "py": 47
+      },
+      {
+        "camp": 2,
+        "x": 34,
+        "y": 46,
+        "hp": 320,
+        "identity": 5,
+        "acted": 0,
+        "px": 34,
+        "py": 46
+      },
+      {
+        "camp": 2,
+        "x": 43,
+        "y": 47,
+        "hp": 280,
+        "identity": 11,
+        "acted": 0,
+        "px": 43,
+        "py": 47
+      },
+      {
+        "camp": 2,
+        "x": 43,
+        "y": 45,
+        "hp": 478,
+        "identity": 6,
+        "acted": 0,
+        "px": 43,
+        "py": 45
+      },
+      {
+        "camp": 2,
+        "x": 40,
+        "y": 34,
+        "hp": 262,
+        "identity": 14,
+        "acted": 0,
+        "px": 40,
+        "py": 34
+      },
+      {
+        "camp": 2,
+        "x": 37,
+        "y": 33,
+        "hp": 370,
+        "identity": 17,
+        "acted": 0,
+        "px": 37,
+        "py": 33
+      },
+      {
+        "camp": 2,
+        "x": 37,
+        "y": 37,
+        "hp": 378,
+        "identity": 3,
+        "acted": 0,
+        "px": 37,
+        "py": 37
+      },
+      {
+        "camp": 0,
+        "x": 31,
+        "y": 9,
+        "hp": 1200,
+        "identity": -1,
+        "acted": 0,
+        "px": 31,
+        "py": 9
+      },
+      {
+        "camp": 0,
+        "x": 30,
+        "y": 8,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 30,
+        "py": 8
+      },
+      {
+        "camp": 0,
+        "x": 32,
+        "y": 8,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 32,
+        "py": 8
+      },
+      {
+        "camp": 0,
+        "x": 33,
+        "y": 9,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 33,
+        "py": 9
+      },
+      {
+        "camp": 0,
+        "x": 29,
+        "y": 9,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 29,
+        "py": 9
+      },
+      {
+        "camp": 0,
+        "x": 30,
+        "y": 10,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 30,
+        "py": 10
+      },
+      {
+        "camp": 0,
+        "x": 32,
+        "y": 10,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 32,
+        "py": 10
+      },
+      {
+        "camp": 0,
+        "x": 28,
+        "y": 10,
+        "hp": 351,
+        "identity": -1,
+        "acted": 0,
+        "px": 28,
+        "py": 10
+      },
+      {
+        "camp": 0,
+        "x": 34,
+        "y": 10,
+        "hp": 351,
+        "identity": -1,
+        "acted": 0,
+        "px": 34,
+        "py": 10
+      },
+      {
+        "camp": 0,
+        "x": 29,
+        "y": 7,
+        "hp": 369,
+        "identity": -1,
+        "acted": 0,
+        "px": 29,
+        "py": 7
+      },
+      {
+        "camp": 0,
+        "x": 33,
+        "y": 7,
+        "hp": 369,
+        "identity": -1,
+        "acted": 0,
+        "px": 33,
+        "py": 7
+      },
+      {
+        "camp": 0,
+        "x": 34,
+        "y": 8,
+        "hp": 324,
+        "identity": -1,
+        "acted": 0,
+        "px": 34,
+        "py": 8
+      },
+      {
+        "camp": 0,
+        "x": 28,
+        "y": 8,
+        "hp": 324,
+        "identity": -1,
+        "acted": 0,
+        "px": 28,
+        "py": 8
+      },
+      {
+        "camp": 0,
+        "x": 33,
+        "y": 12,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 33,
+        "py": 12
+      },
+      {
+        "camp": 0,
+        "x": 31,
+        "y": 12,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 31,
+        "py": 12
+      },
+      {
+        "camp": 0,
+        "x": 29,
+        "y": 12,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 29,
+        "py": 12
+      },
+      {
+        "camp": 0,
+        "x": 30,
+        "y": 13,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 30,
+        "py": 13
+      },
+      {
+        "camp": 0,
+        "x": 32,
+        "y": 13,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 32,
+        "py": 13
+      },
+      {
+        "camp": 0,
+        "x": 31,
+        "y": 14,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 31,
+        "py": 14
+      },
+      {
+        "camp": 0,
+        "x": 22,
+        "y": 21,
+        "hp": 440,
+        "identity": -1,
+        "acted": 0,
+        "px": 22,
+        "py": 21
+      },
+      {
+        "camp": 0,
+        "x": 23,
+        "y": 23,
+        "hp": 440,
+        "identity": -1,
+        "acted": 0,
+        "px": 23,
+        "py": 23
+      },
+      {
+        "camp": 0,
+        "x": 25,
+        "y": 18,
+        "hp": 440,
+        "identity": -1,
+        "acted": 0,
+        "px": 25,
+        "py": 18
+      },
+      {
+        "camp": 0,
+        "x": 22,
+        "y": 20,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 22,
+        "py": 20
+      },
+      {
+        "camp": 0,
+        "x": 23,
+        "y": 20,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 23,
+        "py": 20
+      },
+      {
+        "camp": 0,
+        "x": 23,
+        "y": 21,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 23,
+        "py": 21
+      },
+      {
+        "camp": 0,
+        "x": 21,
+        "y": 23,
+        "hp": 60,
+        "identity": -1,
+        "acted": 0,
+        "px": 21,
+        "py": 23
+      },
+      {
+        "camp": 0,
+        "x": 24,
+        "y": 23,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 24,
+        "py": 23
+      },
+      {
+        "camp": 0,
+        "x": 24,
+        "y": 22,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 24,
+        "py": 22
+      },
+      {
+        "camp": 0,
+        "x": 25,
+        "y": 23,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 25,
+        "py": 23
+      },
+      {
+        "camp": 0,
+        "x": 24,
+        "y": 19,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 24,
+        "py": 19
+      },
+      {
+        "camp": 0,
+        "x": 25,
+        "y": 17,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 25,
+        "py": 17
+      },
+      {
+        "camp": 0,
+        "x": 26,
+        "y": 17,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 26,
+        "py": 17
+      },
+      {
+        "camp": 0,
+        "x": 24,
+        "y": 17,
+        "hp": 304,
+        "identity": -1,
+        "acted": 0,
+        "px": 24,
+        "py": 17
+      },
+      {
+        "camp": 0,
+        "x": 45,
+        "y": 31,
+        "hp": 300,
+        "identity": -1,
+        "acted": 0,
+        "px": 45,
+        "py": 31
+      },
+      {
+        "camp": 0,
+        "x": 41,
+        "y": 30,
+        "hp": 351,
+        "identity": -1,
+        "acted": 0,
+        "px": 41,
+        "py": 30
+      },
+      {
+        "camp": 0,
+        "x": 43,
+        "y": 30,
+        "hp": 351,
+        "identity": -1,
+        "acted": 0,
+        "px": 43,
+        "py": 30
+      },
+      {
+        "camp": 0,
+        "x": 38,
+        "y": 31,
+        "hp": 369,
+        "identity": -1,
+        "acted": 0,
+        "px": 38,
+        "py": 31
+      },
+      {
+        "camp": 0,
+        "x": 46,
+        "y": 29,
+        "hp": 369,
+        "identity": -1,
+        "acted": 0,
+        "px": 46,
+        "py": 29
+      },
+      {
+        "camp": 0,
+        "x": 48,
+        "y": 30,
+        "hp": 324,
+        "identity": -1,
+        "acted": 0,
+        "px": 48,
+        "py": 30
+      },
+      {
+        "camp": 0,
+        "x": 41,
+        "y": 34,
+        "hp": 180,
+        "identity": -1,
+        "acted": 0,
+        "px": 41,
+        "py": 34
+      },
+      {
+        "camp": 1,
+        "x": 19,
+        "y": 21,
+        "hp": 306,
+        "identity": -1,
+        "acted": 0,
+        "px": 19,
+        "py": 21
+      },
+      {
+        "camp": 1,
+        "x": 20,
+        "y": 20,
+        "hp": 256,
+        "identity": -1,
+        "acted": 0,
+        "px": 20,
+        "py": 20
+      },
+      {
+        "camp": 1,
+        "x": 18,
+        "y": 22,
+        "hp": 320,
+        "identity": -1,
+        "acted": 0,
+        "px": 18,
+        "py": 22
+      },
+      {
+        "camp": 1,
+        "x": 20,
+        "y": 19,
+        "hp": 320,
+        "identity": -1,
+        "acted": 0,
+        "px": 20,
+        "py": 19
+      },
+      {
+        "camp": 1,
+        "x": 19,
+        "y": 20,
+        "hp": 320,
+        "identity": -1,
+        "acted": 0,
+        "px": 19,
+        "py": 20
+      },
+      {
+        "camp": 1,
+        "x": 17,
+        "y": 23,
+        "hp": 320,
+        "identity": -1,
+        "acted": 0,
+        "px": 17,
+        "py": 23
+      },
+      {
+        "camp": 1,
+        "x": 20,
+        "y": 22,
+        "hp": 320,
+        "identity": -1,
+        "acted": 0,
+        "px": 20,
+        "py": 22
+      },
+      {
+        "camp": 1,
+        "x": 19,
+        "y": 22,
+        "hp": 320,
+        "identity": -1,
+        "acted": 0,
+        "px": 19,
+        "py": 22
+      },
+      {
+        "camp": 1,
+        "x": 21,
+        "y": 22,
+        "hp": 269,
+        "identity": -1,
+        "acted": 0,
+        "px": 21,
+        "py": 22
+      },
+      {
+        "camp": 1,
+        "x": 20,
+        "y": 23,
+        "hp": 255,
+        "identity": -1,
+        "acted": 0,
+        "px": 20,
+        "py": 23
+      }
+    ],
+    "note": "loadErr: native transient presentation: indexed source assets are unavailable"
+  },
+  "diagnosis": "原生ClassUI已載入，原生地圖快取被對白失效；正式Draw使用composeNativeMapFrame重建，離屏ackPresents原先只承認擁有者。",
+  "change": "在空快取且原生戰場完整載入時呼叫同一正式合成器；合成錯誤進loadErr，缺件測試仍失敗即關閉。",
+  "tests": [
+    "TestNativeTransientOffscreenRebuildsInvalidatedMapBeforeExpiry",
+    "TestNativeTransientPresentationFailsClosedBeforeCountdown",
+    "TestNativeTransientDamagePresentationFailsClosedBeforeHPWrite",
+    "TestNativeTransientPresentationUsesOriginalIndexedAssets"
+  ],
+  "regression": {
+    "packages_passed": 19,
+    "log": "work/parity-slot-ch15/result-go-regression-r2.log",
+    "sha256": "7455bb6a77f17824d4103cbf99d451d55260e9687a6612d18061b056358f079c",
+    "game_seconds": 113.367
+  },
+  "same_slot_replay": {
+    "log": "work/parity-slot-ch15/sample-remake-r2.log",
+    "log_sha256": "538ddaaceefeb39e64624354a16bce7b69fb3e3686dddcc35d4d820bfd1714be",
+    "result": "TestChapterParityReplay PASS，越過原失敗點至round7；嚴格四gate仍failed。",
+    "strict_receipt": "docs/data/ui-traces/parity-ch15-r1.json",
+    "ai_issue": 81
+  },
+  "limits": [
+    "原版完整章未通過；原版r1第六回合敗北，重製r2還在戰場；不宣稱敗北或AI一致。",
+    "第一次重播日誌因後續命令只替換輸出目錄而被覆寫，舊runtime_error原始checkpoint仍保留；不提供無法回查的舊日誌雜湊。"
+  ],
+  "source_files": {
+    "remake/cmd/fd2/native_chapter_one_play_test.go": "435439da3084a152030fc4245073376dac8606d3220292cb6b5d01ec42abc6ce",
+    "remake/cmd/fd2/native_transient_phase_test.go": "66ae87caf283612e8adc2c6d3c7e30d425953ab4cd46ead99f940dd0a3548da5"
+  }
+}

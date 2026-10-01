@@ -256,3 +256,13 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第十五章 #77：[起手原版證據與READY規格](../data/ida/fd2_ch15_startup_20261002.json)，只核對74筆名冊、16格部署與視圖／HUD，整章由 #76 驗收。
 
 - 第十五章 #77：[正常LOAD起手比較收據](../data/ui-traces/ch15-native-startup.json)，三張完整RGB影像差異均為0；整章12張與戰後／存檔門檻仍保留。
+
+- 第十五章 #78：[回合事件13／18／38原始指令與READY規格](../data/ida/fd2_ch15_turn_events_20261002.json)，沿用全域事件表與既有record_bytes，不以spawn-only代表完整handler。
+
+- 第十五章 #76：[完整整章抽樣計畫](../data/parity-plans/ch15-sample.jsonl)，正常鍵盤涵蓋第4／7／9回合後round10清敵，戰後town_ch16買賣／酒店／Alt+F5秘密商店。
+
+- [第十五章 record64 無對白敗北條件（#79 READY）](../data/ida/fd2_ch15_result_conditions_20261002.json)：固定雜湊、完整20822原始指令、結果writer／consumer、原版失敗樣本及有限規格。
+
+- [第十五章完整首次失敗診斷（#76／#81）](../data/ui-traces/parity-ch15-r1.json)：原版第六回合敗北、AI首個分岔及61張嚴格整幀比較，四項皆未通過。
+
+- [第十五章離屏狀態到期前置修正（#80）](../data/fd2_ch15_transient_replay_20261002.json)：原失敗checkpoint、正式Draw來源、到期提示測試與19套件回歸；整章仍failed。

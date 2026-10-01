@@ -4,7 +4,8 @@ import "fmt"
 
 // NativeResultRule 保存已閉合的章節結果覆寫；Source 只是原始 writer 的
 // 出處，正式執行依具型別條件，不依 FD2.EXE 位址分派。
-// READY 契約與主證據見56及fd2_ch13_result_conditions_20261001.json。
+// READY 契約與主證據見56及fd2_ch13_result_conditions_20261001.json、
+// fd2_ch15_result_conditions_20261002.json；原版無對白列的Actions為空。
 type NativeResultRule struct {
 	ID                 string   `json:"id"`
 	Source             string   `json:"source"`
@@ -15,8 +16,8 @@ type NativeResultRule struct {
 }
 
 func (r NativeResultRule) Validate() error {
-	if r.ID == "" || r.Source == "" || r.Code != 1 || len(r.RecordsAllInactive) == 0 || len(r.Actions) == 0 {
-		return fmt.Errorf("原生結果列缺少來源、記錄或已閉合的code1／對白")
+	if r.ID == "" || r.Source == "" || r.Code != 1 || len(r.RecordsAllInactive) == 0 {
+		return fmt.Errorf("原生結果列缺少來源、記錄或已閉合的code1")
 	}
 	if r.RoundGreaterThan != nil && *r.RoundGreaterThan < 0 {
 		return fmt.Errorf("原生結果列回合門檻為負值")

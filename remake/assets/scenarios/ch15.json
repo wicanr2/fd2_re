@@ -617,6 +617,233 @@
       ]
     },
     {
+      "id": "turn_ch15_e13_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "dialogue",
+          "native_source": "0x34e9b",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 0,
+            "source_dat": "FDTXT_015",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 15,
+            "pages": [
+              [
+                "『沒退路了，",
+                "　大家跟他們拼了！』"
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 64,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 65,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 66,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 67,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 68,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 69,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 70,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 71,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 72,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ec2",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 73,
+            "writes": [
+              [
+                53,
+                0,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ee4",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 64,
+            "last": 73,
+            "mode": 3
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34ef2",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 35,
+            "last": 49,
+            "mode": 0
+          },
+          "native_event_id": 13,
+          "camp": "ally"
+        }
+      ]
+    },
+    {
       "id": "reinforce_ch15_e38_t7",
       "trigger": "on_turn_end",
       "when": {
@@ -629,7 +856,6 @@
           "groups": [
             1
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 1,
@@ -638,7 +864,285 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 38
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 5,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 74,
+            "pages": [
+              [
+                "『哎呀，我們好像來遲啦！』"
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 6,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 75,
+            "pages": [
+              [
+                "『首領命令我們攜帶這批貴重",
+                "　寶物，為了避免引起注意所",
+                "　以繞道而行，遲到也是應該"
+              ],
+              [
+                "　的。』"
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 7,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 76,
+            "pages": [
+              [
+                "『不知道現在戰況如何？』"
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 8,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 3,
+            "control": "FFEC",
+            "operand": 30,
+            "pages": [
+              [
+                "『喂！你們不是負責運送寶物",
+                "　的嗎？來這裡幹什麼？』"
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 9,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 4,
+            "control": "FFED",
+            "operand": 74,
+            "pages": [
+              [
+                "『首領吩咐我們帶著東西，",
+                "　到這裡和他們會合．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  191,
+                  252,
+                  1107,
+                  1108,
+                  568,
+                  569,
+                  466,
+                  690,
+                  461,
+                  86,
+                  370
+                ],
+                [
+                  181,
+                  387,
+                  462,
+                  613,
+                  647,
+                  175,
+                  569,
+                  458,
+                  294,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 10,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 5,
+            "control": "FFEC",
+            "operand": 30,
+            "pages": [
+              [
+                "『笨蛋！你沒看到戰況不妙嗎",
+                "　趕快離開這裡，把東西帶到",
+                "　艾斯島去！』"
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 11,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 6,
+            "control": "FFED",
+            "operand": 74,
+            "pages": [
+              [
+                "『．知．知道了！』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  584,
+                  529,
+                  584,
+                  529,
+                  300,
+                  341,
+                  342,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34f56",
+          "native_text_index": 10,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 12,
+            "source_dat": "FDTXT_015",
+            "string_index": 10,
+            "utterance": 7,
+            "control": "FFED",
+            "operand": 75,
+            "pages": [
+              [
+                "『趕快逃啊！』"
+              ]
+            ]
+          },
+          "native_event_id": 38,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch15_e18_t9",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 9
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "dialogue",
+          "native_source": "0x34f0c",
+          "native_text_index": 8,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch15.json",
+            "scene_index": 2,
+            "line": 2,
+            "source_dat": "FDTXT_015",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 16,
+            "pages": [
+              [
+                "『就這幾個人還解決不了，",
+                "　第二隊再上！』"
+              ]
+            ]
+          },
+          "native_event_id": 18,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x34f33",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 16,
+            "last": 34,
+            "mode": 0
+          },
+          "native_event_id": 18,
+          "camp": "enemy"
         }
       ]
     }
@@ -1087,5 +1591,17 @@
       }
     ]
   },
-  "runtime_append_groups": true
+  "runtime_append_groups": true,
+  "native_result_handler": "0x20822",
+  "native_result_rules": [
+    {
+      "id": "record64_inactive",
+      "source": "0x2083f",
+      "records_all_inactive": [
+        64
+      ],
+      "code": 1,
+      "actions": []
+    }
+  ]
 }

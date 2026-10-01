@@ -231,6 +231,192 @@
       ]
     },
     {
+      "id": 13,
+      "handler": "0x34e90",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 6,
+          "source": "0x34e9b"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 64,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 65,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 66,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 67,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 68,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 69,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 70,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 71,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 72,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 73,
+          "writes": [
+            [
+              53,
+              0,
+              1
+            ]
+          ],
+          "source": "0x34ec2"
+        },
+        {
+          "op": "ai_mode_range",
+          "first": 64,
+          "last": 73,
+          "mode": 3,
+          "source": "0x34ee4"
+        },
+        {
+          "op": "ai_mode_range",
+          "first": 35,
+          "last": 49,
+          "mode": 0,
+          "source": "0x34ef2"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "handler": "0x34f02",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "dialogue",
+          "text": 8,
+          "source": "0x34f0c"
+        },
+        {
+          "op": "ai_mode_range",
+          "first": 16,
+          "last": 34,
+          "mode": 0,
+          "source": "0x34f33"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "handler": "0x34f42",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 1,
+          "gate": 0,
+          "source": "0x34f4c"
+        },
+        {
+          "op": "dialogue",
+          "text": 10,
+          "source": "0x34f56",
+          "tail_sources": [
+            "0x34c0f"
+          ]
+        }
+      ]
+    },
+    {
       "id": 14,
       "handler": "0x345ea",
       "battle_units": [],

@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -123,15 +123,31 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第十五章起手缺原版名冊前沿與HUD綁定
+### 第十五章缺record64倒下的原版敗北判定
 
-`ch15-startup-runtime-topology` · 缺陷 · [#77](https://github.com/wicanr2/fd2_re/issues/77) · 仍未完成 · 要人判
+`ch15-ally64-defeat-rule` · 缺陷 · [#79](https://github.com/wicanr2/fd2_re/issues/79) · 仍未完成 · 要人判
 
-第十五章 #76 的正常 LOAD 有界預檢已產生原版收據：preflight-original-r2，seq71，round1，16名我方、48名敵軍，視圖camera(30,39)、cursor(38,45)、selector1。重製 preflight-remake-r1 在 battle_start 組裝整幀時因 HUD 狀態缺失停止，並將我方追加於場地容量80筆後；原版採持續隊伍在前。第一輪原版 r1 僅擷取參數錯誤，沒有遊戲證據，與本缺陷分開。依既有 canonical 證據及同槽原版收據，核對實際前沿、部署順序、演出寫入與視圖狀態後才接入正式資料；不得猜補。
+#76 完整原版sample-original-r1於第6回合退出，未涵蓋第7／9回合。最後有效checkpoint1143我方16人仍活著，友軍record64 HP0／raw+5 bit0=1。既有battle_events.json記raw章14 handler0x20822查record64，但ch15劇本尚無原生結果規則。先用IDA核對直接writer與結果consumer，保留失敗樣本及未知限制，READY後接既有型別規則。原版退出原因在直接核對前只列強推論，不把它當執行器缺口或全隊陣亡。
 
-怎樣算做完：原版證據登記58，規格READY後完成具型別起手名冊、部署與HUD／視圖綁定；以相同建構槽與固定計畫重跑預檢，battle_start 的活單位順序及原版狀態一致、全RGB320×200差異≤640；保持錯誤輸入失敗即關閉，整章驗收另由 #76 管理。
+怎樣算做完：固定EXE identity、IDA9.4原始20822完整bytes與結果writer／consumer保存canonical並登記58；READY後接入ch15及canonical原生敗北規則，普通玩家操作觸發友軍64倒下後走既有敗北owner；保持其他友軍倒下與我方尚存不誤判、raw旗標缺失失敗即關閉。完整#76另採正常護援保留第4／7／9回合，不提前清敵、不鎖HP。
 
-證據：`['docs/data/parity-plans/ch15-preflight.jsonl', 'docs/data/parity-slots/ch15-manifest.json', 'work/parity-slot-ch15/preflight-original-r2', 'work/parity-slot-ch15/preflight-remake-r1.log']`
+證據：`['docs/data/battle_events.json', 'work/parity-slot-ch15/sample-original-r1/checkpoint-1143.json', 'docs/data/parity-plans/ch15-sample.jsonl', 'remake/assets/scenarios/ch15.json']`
+
+### 第十五章同槽重播在狀態到期提示缺少原生畫面來源
+
+`ch15-transient-indexed-presentation` · 缺陷 · [#80](https://github.com/wicanr2/fd2_re/issues/80) · 仍未完成 · 要人判
+
+怎樣算做完：查證既有原生狀態到期提示的原版證據、正式Draw與重播畫面來源；修正已確認的產品或驗證腳本缺口，測試實際觸發狀態到期與正常無狀態路徑；同槽重播越過原失敗點，完整Go回歸及嚴格比較保留。
+
+證據：`['work/parity-slot-ch15/sample-remake-r1.log', 'remake/cmd/fd2/native_transient_presentation.go', 'remake/cmd/fd2/chapter_parity_replay_test.go']`
+
+### 第十五章原版與重製有18筆AI入口順序分岔
+
+`ch15-ai-entry-divergence` · 缺陷 · [#81](https://github.com/wicanr2/fd2_re/issues/81) · 仍未完成 · 要人判
+
+怎樣算做完：保留第一個原版／重製分岔的seq、raw單位與模式、執行前RNG條件及原始證據；按RE→READY修正真正缺口；同槽AI入口零順序分岔及嚴格畫面／行為比較，完整Go回歸通過。#76整章第7／9回合與戰後仍獨立驗收。
+
+證據：`['work/parity-slot-ch15/sample-remake-r2.log', 'work/parity-slot-ch15/sample-original-r1', 'work/parity-slot-ch15/sample-remake-r2/checkpoints.jsonl', 'remake/cmd/fd2/chapter_parity_replay_test.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

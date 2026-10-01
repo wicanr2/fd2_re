@@ -233,6 +233,17 @@
       "scope": "章節載入、共用尾端與 caller context；不把後續 group constructor、演出或戰役路由併入此函式"
     },
     {
+      "address": "0x20822",
+      "classification": "product",
+      "semantic": "第十五章基礎結果後依record64 raw+5 bit0覆寫code1，無對白",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch15_result_conditions_20261002.json",
+        "docs/data/ida/fd2_pending_code1_return_title_20261001.json"
+      ],
+      "scope": "完整sub_20822、caller結果表0x51B51與共用code1 consumer；不宣稱整章對拍"
+    },
+    {
       "address": "0x2189a",
       "classification": "product",
       "semantic": "十輪 LUT／radius／snapshot／object redraw／viewport copy 的索引呈現原語",
@@ -611,6 +622,17 @@
         "docs/knowledge-base/56-fd2-remake-sdd.md"
       ],
       "scope": "原呼叫 sub_12E38；0x1ADA5..0x1ADAF 消費描述子"
+    },
+    {
+      "address": "0x2083f",
+      "classification": "product",
+      "semantic": "record64 raw+5 bit0非零時寫[0x53ECC]=1",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch15_result_conditions_20261002.json",
+        "docs/data/ida/fd2_pending_code1_return_title_20261001.json"
+      ],
+      "scope": "保留原始mov dword_53ECC,1；消費端main→22E5C→完整標題"
     }
   ]
 }

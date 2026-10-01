@@ -1,0 +1,1456 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "functions": [
+    {
+      "requested_address": "0x20822",
+      "address": "0x20822",
+      "end": "0x2084a",
+      "original_name": "sub_20822",
+      "chunks": [
+        {
+          "start": "0x20822",
+          "end": "0x2084a"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x20822",
+          "bytes": "6808000000",
+          "original": "push    8",
+          "semantic": "先call205BE基礎規則，再以3453E(64)讀record64 raw+5 bit0；零時返回，非零時2083F寫53ECC=1；完整函式沒有對白call或回合門檻。",
+          "level": "confirmed",
+          "warning": "",
+          "source": "本檔claims及原始20822..2084A；共用consumer見fd2_pending_code1_return_title_20261001.json",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x20827",
+          "bytes": "e8ab640100",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x20827",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x2082c",
+          "bytes": "e88dfdffff",
+          "original": "call    loc_205BE",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x2082c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x20831",
+          "bytes": "6a40",
+          "original": "push    40h ; '@'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x20831",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x20833",
+          "bytes": "e8063d0100",
+          "original": "call    sub_3453E",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x20833",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x20838",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x20838",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x2083b",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x2083b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x2083d",
+          "bytes": "740a",
+          "original": "jz      short locret_20849",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x2083d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x2083f",
+          "bytes": "c705cc3e050001000000",
+          "original": "mov     dword_53ECC, 1",
+          "semantic": "raw pending/result code1 writer",
+          "level": "confirmed",
+          "warning": "",
+          "source": "本檔claims及原始20822..2084A；共用consumer見fd2_pending_code1_return_title_20261001.json",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x20849",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x20849",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x1197b",
+        "0x1a94d",
+        "0x1d8a0",
+        "0x1d96c",
+        "0x1d9fc"
+      ],
+      "semantic_annotations": [],
+      "semantic": "先call205BE基礎規則，再以3453E(64)讀record64 raw+5 bit0；零時返回，非零時2083F寫53ECC=1；完整函式沒有對白call或回合門檻。",
+      "level": "confirmed",
+      "warning": "",
+      "source": "本檔claims及原始20822..2084A；共用consumer見fd2_pending_code1_return_title_20261001.json"
+    }
+  ],
+  "data_initial": {
+    "0x51b51": {
+      "bytes": "22080200",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    }
+  },
+  "data_xrefs": {
+    "0x51b51": []
+  },
+  "schema_version": 1,
+  "date": "2026-10-02",
+  "kind": "fd2_ch15_ally64_result_review",
+  "status": "RE-CLOSED",
+  "issues": [
+    76,
+    79
+  ],
+  "exporter": "tools/ida_opening_input_probe.py",
+  "source_export_sha256": "5aadc13741e6d795a9170ad82df9b5a07e319f579049541f500a7ef005a0459d",
+  "query_environment": {
+    "PROBE_ADDRESSES": "0x20822",
+    "PROBE_DATA_ADDRESSES": "0x51B51",
+    "image": "ida-pro-9.4-idapython:locked-v1",
+    "database_source": "work/ch01-town-parity-20260908/ida/fd2-io.i64唯讀複製至/tmp/probe.i64",
+    "command": "idat -A -S/src/tools/ida_opening_input_probe.py /tmp/probe.i64"
+  },
+  "claims": [
+    {
+      "original_location": "IDA LE 0x51B51",
+      "semantic": "raw章14的結果表項22080200指向sub_20822；玩家第十五章。",
+      "level": "confirmed",
+      "source": "本檔data_initial；docs/data/battle_events.json章14表項"
+    },
+    {
+      "original_location": "IDA LE 0x2082C..0x20849",
+      "semantic": "先call205BE基礎規則，再以3453E(64)讀record64 raw+5 bit0；零時返回，非零時2083F寫53ECC=1；完整函式沒有對白call或回合門檻。",
+      "level": "confirmed",
+      "source": "本檔完整40bytes；docs/data/ida/fd2_ch13_result_conditions_20261001.json中的sub_3453E；56的native phase dispatch raw boundary"
+    },
+    {
+      "original_location": "IDA LE 0x2083F→main0x25DD5..0x25E91",
+      "semantic": "code1沿共用22E5C／FDOTHER79兩段提示，返回完整標題；不能走自創撤退對白／重試節點。",
+      "level": "confirmed",
+      "source": "本檔2083F writer；docs/data/ida/fd2_pending_code1_return_title_20261001.json claims return-title、fixed-presentation、full-title"
+    }
+  ],
+  "runtime_diagnostic": {
+    "run": "work/parity-slot-ch15/sample-original-r1",
+    "checkpoint": "work/parity-slot-ch15/sample-original-r1/checkpoint-1143.json",
+    "checkpoint_sha256": "7e3e7547168ecbcb57102b9d0363a0df1e470e8c1ba8dfa4eb7f6cb32ef733b2",
+    "last_valid_control_seq": 1143,
+    "round": 6,
+    "own_alive": 16,
+    "record64": {
+      "hp": 0,
+      "byte5": 1,
+      "x": 19,
+      "y": 21
+    },
+    "cause_level": "strong inference",
+    "note": "原版最後有效狀態符合已證實條件，後續返回標題；本run未追2083F writer，不宣稱直接執行證據。失敗樣本不列完整章通過。",
+    "plan": "docs/data/parity-plans/ch15-sample.jsonl",
+    "plan_sha256": "39e1acfe887c28bacf5c2f745cedd208034a7cb3565b2097467a70df40605793",
+    "slot_sha256": "fb67db55f459764d6a8dd03060842d1cbf10a90ad78a5211845b58a54e6692fe",
+    "seed": 4,
+    "state_injections": [],
+    "force_enemy_clear_reached": false
+  },
+  "spec_review": {
+    "status": "READY",
+    "production_scope": "沿既有NativeResultRule格式，允許actions空陣列的已證實無對白code1列；非空actions仍逐條驗對白來源。ch15讀records_all_inactive=[64]，code1，source2083F。命中空動作列立即續行，不要求不存在的對白素材。campaign改用既有native_defeat_return_title，移除無外部consumer的自創retreat_ch15。",
+    "state_transition": "base205BE→依序讀raw條件→寫pending→有對白才阻塞播完→全部列完成後lose→既有79提示→full title；不寫SAV。",
+    "failure_policy": "缺raw+5／+6、record64或來源／未知code仍失敗即關閉；HP、正規化陣營、其他友軍死亡不得代替bit0。",
+    "acceptance": [
+      "純raw bit0／HP分離、其他友軍與missing raw分支",
+      "正式canonical載入，無對白列交接敗北owner且不產生battleEvent",
+      "同槽失敗樣本重播越過此前缺口並核對結果；完整成功章護援與round7／9另由#76驗收"
+    ]
+  },
+  "limits": [
+    "此READY只閉合友軍64條件與既有結果消費鏈，不外推第十五章完整PLAYER-E2。",
+    "原版failedr1的退出原因仍為強推論；未追writer、已釋放陣列不可當作全隊死亡。",
+    "建構槽114我方boost政策與兩側seed4保持；禁止章內HP鎖定或提前清敵避開事件。"
+  ],
+  "campaign_coverage_audit": {
+    "command": "python3 tools/audit_story_script_coverage.py --json",
+    "date": "2026-10-02",
+    "input": "remake/assets/scenarios/campaign_full.json",
+    "input_sha256": "dcb9f0f25f92a3b4037cd2c773952dab8bc0a4dd39a487dea634d3ea43ff87b0",
+    "result": {
+      "campaign": "remake/assets/scenarios/campaign_full.json",
+      "story_or_cutscene_nodes": 118,
+      "scripted_nodes": 9,
+      "handler_bound_nodes": 57,
+      "fallback_nodes_without_script_or_handler": 52,
+      "generated_binding_skeletons": 24,
+      "unbound_generated_binding_skeletons": 0,
+      "coverage_roles": {
+        "handler_bound": 57,
+        "authored_retreat": 27,
+        "authored_rumor": 23,
+        "direct_script": 9,
+        "generic_story_fallback": 2
+      },
+      "nodes": [
+        {
+          "id": "postbattle_ch04_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch03_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch03_post.json",
+          "next": "town_ch05"
+        },
+        {
+          "id": "postbattle_ch05_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch04_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch04_post.json",
+          "next": "town_ch06"
+        },
+        {
+          "id": "postbattle_ch06_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch05_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch05_post.json",
+          "next": "town_ch07"
+        },
+        {
+          "id": "postbattle_ch07_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch06_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch06_post.json",
+          "next": "town_ch08"
+        },
+        {
+          "id": "postbattle_ch08_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch07_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch07_post.json",
+          "next": "town_ch09"
+        },
+        {
+          "id": "postbattle_ch09_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch08_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch08_post.json",
+          "next": "town_ch10"
+        },
+        {
+          "id": "postbattle_ch10_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch09_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch09_post.json",
+          "next": "town_ch11"
+        },
+        {
+          "id": "postbattle_ch11_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch10_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch10_post.json",
+          "next": "town_ch12"
+        },
+        {
+          "id": "postbattle_ch12_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch11_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch11_post.json",
+          "next": "town_ch13"
+        },
+        {
+          "id": "postbattle_ch13_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch12_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch12_post.json",
+          "next": "town_ch14"
+        },
+        {
+          "id": "postbattle_ch14_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch13_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch13_post.json",
+          "next": "town_ch15"
+        },
+        {
+          "id": "postbattle_ch15_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch14_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch14_post.json",
+          "next": "town_ch16"
+        },
+        {
+          "id": "postbattle_ch16_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch15_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch15_post.json",
+          "next": "town_ch17"
+        },
+        {
+          "id": "postbattle_ch17_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch16_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch16_post.json",
+          "next": "town_ch18"
+        },
+        {
+          "id": "postbattle_ch18_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch17_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch17_post.json",
+          "next": "town_ch19"
+        },
+        {
+          "id": "postbattle_ch19_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch18_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch18_post.json",
+          "next": "town_ch20"
+        },
+        {
+          "id": "postbattle_ch20_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch19_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch19_post.json",
+          "next": "town_ch21"
+        },
+        {
+          "id": "postbattle_ch22_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch21_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch21_post.json",
+          "next": "preparation_ch23"
+        },
+        {
+          "id": "postbattle_ch23_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch22_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch22_post.json",
+          "next": "preparation_ch24"
+        },
+        {
+          "id": "postbattle_ch24_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch23_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch23_post.json",
+          "next": "preparation_ch25"
+        },
+        {
+          "id": "postbattle_ch25_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch24_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch24_post.json",
+          "next": "town_ch26"
+        },
+        {
+          "id": "postbattle_ch26_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch25_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch25_post.json",
+          "next": "town_ch27"
+        },
+        {
+          "id": "postbattle_ch28_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch27_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch27_post.json",
+          "next": "preparation_ch29"
+        },
+        {
+          "id": "postbattle_ch29_persist",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch28_post.json",
+          "generated_binding_skeleton": "remake/assets/cutscenes/bindings/generated/ch28_post.json",
+          "next": "preparation_ch30"
+        },
+        {
+          "id": "retreat_ch01",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch01"
+        },
+        {
+          "id": "retreat_ch02",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch02"
+        },
+        {
+          "id": "retreat_ch03",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch03"
+        },
+        {
+          "id": "retreat_ch04",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch04"
+        },
+        {
+          "id": "retreat_ch05",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch05"
+        },
+        {
+          "id": "retreat_ch06",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch06"
+        },
+        {
+          "id": "retreat_ch07",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch07"
+        },
+        {
+          "id": "retreat_ch08",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch08"
+        },
+        {
+          "id": "retreat_ch09",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch09"
+        },
+        {
+          "id": "retreat_ch10",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch10"
+        },
+        {
+          "id": "retreat_ch11",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch11"
+        },
+        {
+          "id": "retreat_ch14",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch14"
+        },
+        {
+          "id": "retreat_ch16",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch16"
+        },
+        {
+          "id": "retreat_ch17",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch17"
+        },
+        {
+          "id": "retreat_ch18",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch18"
+        },
+        {
+          "id": "retreat_ch19",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch19"
+        },
+        {
+          "id": "retreat_ch20",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch20"
+        },
+        {
+          "id": "retreat_ch21",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch21"
+        },
+        {
+          "id": "retreat_ch22",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch22"
+        },
+        {
+          "id": "retreat_ch23",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch23"
+        },
+        {
+          "id": "retreat_ch24",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch24"
+        },
+        {
+          "id": "retreat_ch25",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch25"
+        },
+        {
+          "id": "retreat_ch26",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch26"
+        },
+        {
+          "id": "retreat_ch27",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch27"
+        },
+        {
+          "id": "retreat_ch28",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch28"
+        },
+        {
+          "id": "retreat_ch29",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch29"
+        },
+        {
+          "id": "retreat_ch30",
+          "type": "story",
+          "coverage_role": "authored_retreat",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch30"
+        },
+        {
+          "id": "rumor_ch02",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch02"
+        },
+        {
+          "id": "rumor_ch03",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch03"
+        },
+        {
+          "id": "rumor_ch04",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch04"
+        },
+        {
+          "id": "rumor_ch05",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch05"
+        },
+        {
+          "id": "rumor_ch06",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch06"
+        },
+        {
+          "id": "rumor_ch07",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch07"
+        },
+        {
+          "id": "rumor_ch08",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch08"
+        },
+        {
+          "id": "rumor_ch09",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch09"
+        },
+        {
+          "id": "rumor_ch10",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch10"
+        },
+        {
+          "id": "rumor_ch11",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch11"
+        },
+        {
+          "id": "rumor_ch12",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch12"
+        },
+        {
+          "id": "rumor_ch13",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch13"
+        },
+        {
+          "id": "rumor_ch14",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch14"
+        },
+        {
+          "id": "rumor_ch15",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch15"
+        },
+        {
+          "id": "rumor_ch16",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch16"
+        },
+        {
+          "id": "rumor_ch17",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch17"
+        },
+        {
+          "id": "rumor_ch18",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch18"
+        },
+        {
+          "id": "rumor_ch19",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch19"
+        },
+        {
+          "id": "rumor_ch20",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch20"
+        },
+        {
+          "id": "rumor_ch21",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch21"
+        },
+        {
+          "id": "rumor_ch22",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch22"
+        },
+        {
+          "id": "rumor_ch26",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch26"
+        },
+        {
+          "id": "rumor_ch27",
+          "type": "story",
+          "coverage_role": "authored_rumor",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch27"
+        },
+        {
+          "id": "story_ch00_handler",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch00_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch01"
+        },
+        {
+          "id": "story_ch01",
+          "type": "story",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch01.json",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch01"
+        },
+        {
+          "id": "story_ch01_forest_discover",
+          "type": "story",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch00_meadow.json",
+          "scene": "發現悠妮與蓋亞",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "story_ch01_march"
+        },
+        {
+          "id": "story_ch01_forest_duel",
+          "type": "cutscene",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch00_meadow.json",
+          "scene": "比劍邀約",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "story_ch01_forest_discover"
+        },
+        {
+          "id": "story_ch01_march",
+          "type": "story",
+          "coverage_role": "generic_story_fallback",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "story_ch01"
+        },
+        {
+          "id": "story_ch01_palace_path",
+          "type": "cutscene",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch00_palace.json",
+          "scene": "王城一隅,亞雷斯撞見",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "story_ch01_forest_duel"
+        },
+        {
+          "id": "story_ch01_palace_throne",
+          "type": "cutscene",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch00_palace.json",
+          "scene": "王座廳,傳位",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "story_ch01_palace_path"
+        },
+        {
+          "id": "story_ch02",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch00_post.json",
+          "generated_binding_skeleton": "",
+          "next": "town_ch02"
+        },
+        {
+          "id": "story_ch02_post",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch01_post.json",
+          "generated_binding_skeleton": "",
+          "next": "town_ch03"
+        },
+        {
+          "id": "story_ch02_pre",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch01_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch02"
+        },
+        {
+          "id": "story_ch03",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch02_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch03"
+        },
+        {
+          "id": "story_ch03_post",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch02_post.json",
+          "generated_binding_skeleton": "",
+          "next": "town_ch04"
+        },
+        {
+          "id": "story_ch04",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch03_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch04"
+        },
+        {
+          "id": "story_ch05",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch04_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch05"
+        },
+        {
+          "id": "story_ch06",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch05_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch06"
+        },
+        {
+          "id": "story_ch07",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch06_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch07"
+        },
+        {
+          "id": "story_ch08",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch07_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch08"
+        },
+        {
+          "id": "story_ch09",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch08_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch09"
+        },
+        {
+          "id": "story_ch10",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch09_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch10"
+        },
+        {
+          "id": "story_ch11",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch10_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch11"
+        },
+        {
+          "id": "story_ch12",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch11_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch12"
+        },
+        {
+          "id": "story_ch13",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch12_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch13"
+        },
+        {
+          "id": "story_ch14",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch13_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch14"
+        },
+        {
+          "id": "story_ch15",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch14_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch15"
+        },
+        {
+          "id": "story_ch16",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch15_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch16"
+        },
+        {
+          "id": "story_ch17",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch16_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch17"
+        },
+        {
+          "id": "story_ch18",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch17_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch18"
+        },
+        {
+          "id": "story_ch19",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch18_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch19"
+        },
+        {
+          "id": "story_ch20",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch19_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch20"
+        },
+        {
+          "id": "story_ch21",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch20_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch21"
+        },
+        {
+          "id": "story_ch21_post_sky_key_crafted",
+          "type": "cutscene",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch21.json",
+          "scene": "希爾法鑄成傳說法器「天空之鑰」",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch22"
+        },
+        {
+          "id": "story_ch21_post_sky_key_insufficient",
+          "type": "cutscene",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch21.json",
+          "scene": "決議直赴巨塔(未鑄成天空之鑰)",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "town_ch22"
+        },
+        {
+          "id": "story_ch21_post_sky_key_intro",
+          "type": "cutscene",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch21.json",
+          "scene": "浴血決戰,團長真身現形——萊汀舊識瑪爾",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "inventory_recipe_ch21_sky_key"
+        },
+        {
+          "id": "story_ch22",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch21_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch22"
+        },
+        {
+          "id": "story_ch23",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch22_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch23"
+        },
+        {
+          "id": "story_ch24",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch23_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch24"
+        },
+        {
+          "id": "story_ch25",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch24_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch25"
+        },
+        {
+          "id": "story_ch26",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch25_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch26"
+        },
+        {
+          "id": "story_ch27",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch26_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch27"
+        },
+        {
+          "id": "story_ch27_post_sky_key_missing",
+          "type": "story",
+          "coverage_role": "direct_script",
+          "script": "assets/story/ch27.json",
+          "scene": "缺少天空之鑰的離別(分支)",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "ending_ch27_no_sky_key"
+        },
+        {
+          "id": "story_ch27_post_sky_key_success",
+          "type": "cutscene",
+          "coverage_role": "generic_story_fallback",
+          "script": "",
+          "scene": "",
+          "handler_binding": "",
+          "generated_binding_skeleton": "",
+          "next": "preparation_ch28"
+        },
+        {
+          "id": "story_ch28",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch27_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch28"
+        },
+        {
+          "id": "story_ch29",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch28_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch29"
+        },
+        {
+          "id": "story_ch30",
+          "type": "cutscene",
+          "coverage_role": "handler_bound",
+          "script": "",
+          "scene": "",
+          "handler_binding": "assets/cutscenes/bindings/ch29_pre.json",
+          "generated_binding_skeleton": "",
+          "next": "battle_ch30"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "status": "RUNTIME-E1",
+    "tests": [
+      "TestChapter15ResultUsesOnlyRecord64RawInactiveBit",
+      "TestChapter15SilentResultHandsOffToNativeDefeat",
+      "TestNativeChapterResultReadsSecondRuleAfterFirstDialogue",
+      "TestNativeChapterResultMissingDialogueStateStopsBeforeDefeat"
+    ],
+    "focused_log": "work/parity-slot-ch15/result-focused-r2.log",
+    "focused_log_sha256": "fdc305ca6578cb21891ab3120522e68eb6ce5bd4ef6cfb1d9bc50a06bf5e3b8c",
+    "full_go_log": "work/parity-slot-ch15/result-go-regression-r2.log",
+    "full_go_log_sha256": "7455bb6a77f17824d4103cbf99d451d55260e9687a6612d18061b056358f079c",
+    "packages_passed": 19,
+    "game_seconds": 113.367,
+    "same_slot_defeat_comparison": "待#81原版與重製狀態分岔修正，不能以直接注入測試升為PLAYER-E2。"
+  },
+  "inventory_refresh": {
+    "command": "IDA_PRO9.4 tools/ida_export_fd2_function_inventory.py→tools/compact_fd2_function_inventory.py",
+    "full_source_sha256": "a178e39e6af0c88eb867304d525675f188e4050251f76887ba49e0fa550518a2",
+    "output": "docs/data/ida/fd2_function_inventory.json",
+    "output_sha256": "ef5bc0198d18d6f65ba2689a3464394354946ac3d81e82e2fdfeee4370a9cdfa",
+    "function_count": 1305,
+    "classification_counts": {
+      "product": 62,
+      "runtime": 175,
+      "unknown": 1068
+    },
+    "semantic_annotations": 68,
+    "delta": "所有原始函式邊界、名稱與caller保持；僅20822合併經審查的分級語意。"
+  }
+}

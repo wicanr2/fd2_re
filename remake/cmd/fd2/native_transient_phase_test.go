@@ -352,3 +352,33 @@ func TestNativeTransientPresentationUsesOriginalIndexedAssets(t *testing.T) {
 		t.Fatalf("continued=%v presenting=%v", continued, g.transientUI)
 	}
 }
+
+func TestNativeTransientOffscreenRebuildsInvalidatedMapBeforeExpiry(t *testing.T) {
+	// 正式資產＋建構戰場只驗E1；到期提示本身仍走正式owner。
+	g := chapter13ResultGame(t)
+	u := g.st.Units[0]
+	u.NativeTransient[0] = 1
+	if len(g.st.NativeRuntimeRecords) != 0 {
+		g.st.NativeRuntimeRecords[0].Raw[0x22] = 1
+	}
+	g.nativeMapVGA = nil // 對白或record_bytes的正式快取失效邊界。
+	ackPresents(g)
+	if g.loadErr != "" || len(g.nativeMapVGA) != 320*200 || u.NativeTransient[0] != 1 {
+		t.Fatalf("離屏Draw前置未重建或提前改倒數：%s", g.loadErr)
+	}
+	continued := false
+	if err := g.beginNativeTransientPhases([]byte{2}, func() { continued = true }); err != nil {
+		t.Fatal(err)
+	}
+	if continued || !g.transientUI || g.nativeClassUIJob == nil ||
+		g.st.Units[0].NativeTransient[0] != 0 {
+		t.Fatal("提示未呈現便續行，或倒數未發布")
+	}
+	for frames := 0; frames < 30 && g.nativeClassUIJob != nil; frames++ {
+		ackPresents(g)
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if !continued || g.transientUI || g.nativeClassUIJob != nil {
+		t.Fatal("到期提示完整收合後未交回續行")
+	}
+}

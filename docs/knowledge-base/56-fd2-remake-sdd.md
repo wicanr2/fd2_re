@@ -9097,3 +9097,37 @@ SHA-256相同；重播不得借用原版SAV注入，不放寬四項gate。證據
 正常LOAD、出戰確認、戰場起手三張完整RGB畫面差異均為0；完整Go回歸19套件通過，遊戲套件111.014秒。
 有限切片列CONFORMED／RUNTIME-E1；整章仍保持12張最低量與戰後／存檔門檻，#76尚未完成。
 第4／7／9回合event13／38／18尚缺完整動作，先登記#78再有界補證；不以spawn-only代表完整事件。
+
+## 2026-10-02 #78 第十五章三個回合事件（READY）
+
+[主證據](../data/ida/fd2_ch15_turn_events_20261002.json)保留固定EXE identity、IDA 9.4原始名稱／位址／bytes與三個跳表項；
+1A813分派器、3419C低四位writer及LOADCH／10B4E constructor沿用已閉合證據。
+event13於round4 raw camp1依序播text6、64..73的raw+0x35寫0、同範圍mode3、35..49 mode0；
+event38於round7 raw camp0追加group1再播text10；event18於round9 raw camp0先播text8再16..34 mode0。
+所有範圍含兩端，不能把+0x35誤稱狀態解除，不另增加陣營或HP閘門。
+
+正式資料沿用既有Action／NativeDeathOp／record_bytes，將原版十筆迴圈展開成十個明確寫入；
+僅補NativeRecordByte35的整byte投影及原始核對器，不新增格式或AI規則。
+對白與模式順序、控制列camp、raw高四位與來源驗證維持失敗即關閉。
+原始控制流與writer／consumer充分，有限規格READY；待第4／7／9回合與完整整章四項比較後才CONFORMED。
+
+## 2026-10-02 #79 第十五章 record64 無對白敗北（READY）
+
+[固定EXE與完整IDA主證據](../data/ida/fd2_ch15_result_conditions_20261002.json)保存sub_20822的40bytes與結果表項。
+2082C先call205BE，20833以3453E(64)查raw+5 bit0，非零才由2083F寫53ECC=1；沒有對白或回合門檻。
+結果consumer沿[共用敗北返回標題證據](../data/ida/fd2_pending_code1_return_title_20261001.json)，
+不可走自創撤退重試。既有NativeResultRule只放行帶來源的code1列，actions允許空陣列；
+非空對白仍須完整來源並按順序收框，空列直接續行，全部列完成後交既有FDOTHER79敗北owner。
+缺raw旗標仍失敗即關閉，HP或其他友軍倒下不能代替record64 bit0。
+
+原版sample-original-r1最後有效seq1143在round6，我方16人仍存活、record64 HP0／bit0=1；
+後續已釋放陣列不可推算全隊死亡。本run未追2083F，退出原因只列強推論，未到event38／18及戰後，
+清敵計畫未執行，整章#76未通過。先保留此失敗樣本，再以正常護援補成功章，不能提前清敵避開事件。
+
+### 2026-10-02 第十五章有限修正驗證
+
+#78／#79有限實作與#80離屏前置通過完整Go回歸19套件（遊戲113.367秒）；44事件原版bytes／覆蓋核對與6項轉寫負向測試通過。
+#80[可重查收據](../data/fd2_ch15_transient_replay_20261002.json)列有限CONFORMED；正式raw狀態／到期規則未改。
+#78仍待round7／9，第十五章同槽敗北仍受#81分岔阻擋，#76四gate保持failed，不能以綠色Go測試宣稱原版一致。
+#79分級語意已回填自動匯出索引；1305原始函式邊界／名稱／caller未變，機械重生清冊只更動20822一列。
+目前分類62 product／175 runtime／1068 unknown、68條函式註記；來源與命令見[結果主證據](../data/ida/fd2_ch15_result_conditions_20261002.json)。

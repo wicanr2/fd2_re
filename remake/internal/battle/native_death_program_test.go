@@ -103,6 +103,36 @@ func TestNativeDeathRecordWritesReviveAsAlly(t *testing.T) {
 	}
 }
 
+// event13的+0x35整byte寫入必須同時更新typed/raw；未知欄位仍整筆拒絕。
+func TestNativeDeathRecord35WriteKeepsProjectionAndAtomicRejection(t *testing.T) {
+	st := deathTestState(2)
+	st.HasNativeRuntimeUnitProjection = true
+	st.NativeRuntimeRecords = make([]NativeRuntimeRecordState, 2)
+	for i, u := range st.Units {
+		u.NativeRecordByte35, u.HasNativeRecordByte35 = 17, true
+		u.NativeRecordByte36, u.HasNativeRecordByte36 = 29, true
+		st.NativeRuntimeRecords[i].Raw[0x35] = 17
+		st.NativeRuntimeRecords[i].Raw[0x36] = 29
+	}
+	op := NativeDeathOp{Op: "record_bytes", Unit: 1, Writes: [][3]int{{0x35, 0, 1}}}
+	if err := st.ApplyNativeDeathOp(op); err != nil {
+		t.Fatal(err)
+	}
+	if st.Units[1].NativeRecordByte35 != 0 || !st.Units[1].HasNativeRecordByte35 ||
+		st.NativeRuntimeRecords[1].Raw[0x35] != 0 || st.Units[0].NativeRecordByte35 != 17 ||
+		st.NativeRuntimeRecords[0].Raw[0x35] != 17 || st.Units[1].NativeRecordByte36 != 29 ||
+		st.NativeRuntimeRecords[1].Raw[0x36] != 29 {
+		t.Fatal("+0x35投影不一致或改到其他欄位／記錄")
+	}
+	op.Writes = [][3]int{{0x35, 9, 1}, {0x20, 1, 1}}
+	if err := st.ApplyNativeDeathOp(op); err == nil {
+		t.Fatal("未知欄位不應被接受")
+	}
+	if st.Units[1].NativeRecordByte35 != 0 || st.NativeRuntimeRecords[1].Raw[0x35] != 0 {
+		t.Fatal("拒絕未知欄位前已部分改寫+0x35")
+	}
+}
+
 // 回合事件控制列：[0x53A55]+3+3×slot = [0x53BEF] + delta，缺回合來源就拒絕。
 func TestNativeDeathControlTurnNeedsRoundProvenance(t *testing.T) {
 	st := deathTestState(1)
