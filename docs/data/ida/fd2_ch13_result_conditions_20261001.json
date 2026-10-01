@@ -5625,6 +5625,144 @@
       },
       "receipt": "docs/data/ui-traces/ch13-secret-shop-reload.json",
       "limits": "合法酒店存檔重載短程不與r3拼接成整章通過；修正後完整計畫待重生。"
+    },
+    "complete_chapter_r4": {
+      "date": "2026-10-02",
+      "status": "CONFORMED",
+      "level": "PLAYER-E2",
+      "policy": [
+        "docs/goal/111-goal-original-parity-campaign-20260915.md",
+        "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md"
+      ],
+      "scope": "依111／114例外的完整第十三章抽樣收據；不是未修改自然難度。",
+      "source_revision": "43ef2d285e281601b2276f044c1ef66635d0e3ce",
+      "run": "work/parity-slot-ch13/east-guard-original-r4",
+      "receipt": "docs/data/ui-traces/parity-ch13.json",
+      "plan_sha256": "cb7035cf21a02510fbd2621ca2eb0f9912d504593ec5bbb6123e24d437e812b5",
+      "trace_sha256": "d082836d75ebd97c702384107b310d5edc80e0f6af8d45526d9b579c3ca6efad",
+      "trace_hits": {
+        "0x4E893": 8033,
+        "0x1956B": 50,
+        "0x12CEA": 519,
+        "0x190AC": 74,
+        "0x13A9F": 250,
+        "0x196CB": 37,
+        "0x34C15": 2,
+        "0x1E54A": 4,
+        "0x1911D": 1,
+        "0x1917E": 1,
+        "0x34D72": 1,
+        "0x34D80": 1,
+        "0x34D91": 1,
+        "0x34DAA": 1
+      },
+      "event7_trace": [
+        {
+          "step": 17955380239,
+          "control_seq": 5730,
+          "eip": "0x34D72",
+          "eax": "0x7",
+          "edx": "0x0",
+          "ebx": "0x1",
+          "ecx": "0x16D0B8",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x5561C",
+          "rng_word": 62632,
+          "stack": [
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "step": 17955380254,
+          "control_seq": 5730,
+          "eip": "0x34D80",
+          "eax": "0x7",
+          "edx": "0x0",
+          "ebx": "0x1",
+          "ecx": "0x16D0B8",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x55614",
+          "rng_word": 62632,
+          "stack": [
+            "0x1B",
+            "0x5",
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0"
+          ]
+        },
+        {
+          "step": 17958286360,
+          "control_seq": 5730,
+          "eip": "0x34D91",
+          "eax": "0xA0036",
+          "edx": "0x160",
+          "ebx": "0x1",
+          "ecx": "0x0",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x55618",
+          "rng_word": 62632,
+          "stack": [
+            "0x2",
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "step": 17961544106,
+          "control_seq": 5730,
+          "eip": "0x34DAA",
+          "eax": "0xAF3C4",
+          "edx": "0x160",
+          "ebx": "0x1",
+          "ecx": "0x0",
+          "esi": "0x0",
+          "edi": "0x69",
+          "esp": "0x5561C",
+          "rng_word": 62632,
+          "stack": [
+            "0x1A861",
+            "0x0",
+            "0x3C",
+            "0x13",
+            "0x1A559",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        }
+      ],
+      "actions_sha256": "7810c24207c15b0371a77acf757487a95dd8bad4e94dcb1d25d3713c2ff2036e",
+      "gates": {
+        "behavior": true,
+        "nodes": true,
+        "transaction": true,
+        "frames": true
+      },
+      "save_sha256": "137b8dfae9ee4afb0d4c1a0b70a09b4d56bbd1cd757ae4d843986f05b7f6cd8e",
+      "limits": [
+        "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+        "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
+        "本章依111建構槽／章內正常鍵盤／抽樣後清敵與114政策例外列PLAYER-E2；不宣稱未修改自然難度、傷害、存活、敵方選目標或整段逐幀硬體時序。"
+      ]
     }
   }
 }

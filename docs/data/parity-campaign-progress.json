@@ -329,25 +329,25 @@
     },
     {
       "chapter": 13,
-      "status": "blocked",
-      "receipt": "docs/data/ui-traces/parity-ch13-r3.json",
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch13.json",
       "slot_manifest": "docs/data/parity-slots/ch13-manifest.json",
       "slot_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
       "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
       "date": "2026-10-02",
       "verify": "python3 tools/fd2_parity_progress.py verify",
       "limitations": [
-        "#58原生起手59筆／HUD、#60色盤與受控相位已修正；完整r3的258張畫面在既有640px門檻內通過，180張0px、最大335px。",
-        "#61正式逐條結果／依序對白／原生敗北已同槽有限CONFORMED；#65末名自動換手與#66麻痺選取修正後，原版r3完整到第九回合event7與戰後酒店存檔。行為與交易通過，兩側SAV雜湊相同。舊r1／r2停止狀態保留在主證據，不再作為目前原版不可達的依據。",
-        "#67已修正三份計畫的戰後town_ch14 selection2／Shift+F3；原版合法酒店存檔重載的城鎮／秘密商店各0px。r3使用舊末端鍵使節點失敗；有界收據不拼接為整章PLAYER-E2，完整新計畫仍待重生。",
-        "建構槽仍依114（AP+200／DP+0／DX+60、seed4），event7後才依111清敵；不據此談自然難度、傷害、存活或敵方選目標。",
-        "法術／物品操作尚缺驅動；舊mid收據只覆蓋戰間介面。"
+        "依111／114建構槽例外：基底AP+200／DP+0／DX+60、seed4為建構成長政策，章內正常鍵盤，第九回合event7完整後round10才清敵。不得據此談自然難度、傷害、存活或敵方選目標。",
+        "完整r4經行為／節點／交易／畫面四項驗收；259張畫面、181張0px、最大335px，沿用640px門檻與完整相位候選，不宣稱所有動畫相位逐像素一致。",
+        "原版與重製酒店存檔SHA-256相同；最後秘密商店selection2／Shift+F3完整同狀態0px。",
+        "法術／物品操作尚缺驅動，本章只宣稱受版控計畫涵蓋的抽樣玩家路徑。"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/town-shop-early-mid-late-e2.json",
         "docs/data/ui-traces/ch13-defeat-return-title.json",
         "docs/data/ui-traces/parity-ch13-preflight.json",
-        "docs/data/ui-traces/ch13-secret-shop-reload.json"
+        "docs/data/ui-traces/ch13-secret-shop-reload.json",
+        "docs/data/ui-traces/parity-ch13-r3.json"
       ],
       "slot_policy": {
         "levels_per_chapter": 6,

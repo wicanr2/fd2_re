@@ -1546,3 +1546,23 @@ event7後進round10，才按111執行force-enemy-clear。初始槽仍採114政�
 來源為上述原版酒店SAV，trace／步數上限見收據；重製用TestChapterParityReplay、章14、
 同一SAV與該原版run，在維護的Go Docker／Xvfb執行。完整新計畫仍由#61驗收，
 須從原建構槽重生，不使用拼接動作或覆寫r3。舊計畫由b80894d0與原SHA保留。
+
+
+## 2026-10-02 #61 第十三章完整四項驗收（CONFORMED／PLAYER-E2）
+
+目前狀態：修正後完整r4從同一原建構槽重生，原版exit0、重製完整重播PASS；
+[正式第十三章收據](../data/ui-traces/parity-ch13.json)行為、節點、交易與畫面全部通過。
+原版與r3的前5988筆實際狀態相同，僅末端秘密商店輸入改為兩次left與Shift+F3；
+不是拼接r3與短程收據。原版第九回合event7直接命中四個入口，
+兩個敗北writer均0次，進round10後才清敵。
+
+259張完整畫面達到原640px門檻，181張0px、最大335px；末端秘密商店0px，
+酒店SAV兩側SHA-256皆為`137b8dfae9ee4afb0d4c1a0b70a09b4d56bbd1cd757ae4d843986f05b7f6cd8e`。
+本章依111建構槽／章內正常鍵盤／抽樣後清敵與114基底政策例外列PLAYER-E2；
+原版normal_player_path_verified=false與注入來源如實保留，不能談未修改自然難度、
+傷害、存活、敵方選目標、完整動畫逐幀或硬體時鐘。
+
+重生步驟、輸入／計畫雜湊、兩側亂數設定與工具版本皆在正式收據；
+原版與完整Go重播串行，使用維護的oracle、TestChapterParityReplay與verify_chapter_parity.py，
+不改像素門檻、不遮罩。戰役章數由tools/fd2_parity_progress.py verify重生，
+正式完整收據為本章現況權威，r3失敗與短程收據仍保留其歷史範圍。
