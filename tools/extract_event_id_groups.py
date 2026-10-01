@@ -32,6 +32,7 @@ provenance，不降成一般 spawn_group，
 """
 import hashlib
 import sys, struct, json
+from pathlib import Path
 sys.path.insert(0, "/work/tools")
 from le_xref import parse_le
 from capstone import Cs, CS_ARCH_X86, CS_MODE_32
@@ -107,6 +108,36 @@ ACTING_FN = 0x1366a
 STAGING_HELPER = 0x35822
 STAGING_SHARED_TAIL = 0x35318
 
+# 入口之前的共用尾段只依已審查的 IDA chunks 放行，不能把搜尋範圍
+# 任意向前擴張。原始名稱／bytes／分級與來源保存在這份受版控主證據。
+SHARED_CHUNK_EVIDENCE = Path(__file__).resolve().parents[1] / "docs/data/ida/fd2_ch13_result_conditions_20261001.json"
+shared_evidence = json.loads(SHARED_CHUNK_EVIDENCE.read_text(encoding="utf-8"))
+if (shared_evidence["sha256"] != EXPECTED_SHA256 or
+        shared_evidence["tool"] != "IDA Pro 9.4" or
+        shared_evidence["address_space"] != "IDA LE linear" or
+        shared_evidence["status"] != "RE-CLOSED"):
+    raise RuntimeError("共用尾段主證據的版本或分級不符")
+SHARED_HANDLER_CHUNKS = {
+    int(function["address"], 16): tuple(
+        (int(chunk["start"], 16), int(chunk["end"], 16))
+        for chunk in function["chunks"]
+    )
+    for function in shared_evidence["functions"]
+    if function["address"] in ("0x34d68", "0x34d72")
+}
+
+for function in shared_evidence["functions"]:
+    if int(function["address"], 16) not in SHARED_HANDLER_CHUNKS:
+        continue
+    for instruction in function["instructions"]:
+        address = int(instruction["address"], 16)
+        raw = bytes.fromhex(instruction["bytes"])
+        # 指令的 relocation bytes 可能由 loader 修復，僅核對無 fixup 的
+        # 直接跳躍／呼叫與立即數 PUSH；不能拿 raw operand 猜 relocated 全域。
+        if raw[:1] in (b"\xe9", b"\xe8", b"\x6a", b"\x68"):
+            if code[address - base:address - base + len(raw)] != raw:
+                raise RuntimeError(f"IDA 共用尾段原始指令不符：{address:#x}")
+
 # Complete [0x53AFA] writer set for global event handlers.  Official IDA Pro
 # 9.4 finds the single reader in 0x10C50 and all paired 1/0 writers; Docker
 # Capstone independently verifies each direct call sequence.  Calls not in
@@ -158,17 +189,19 @@ def staging_spawn(pushes, invoker):
 def walk_handler(start, max_insns=4000):
     """只走這個 handler 自己的鏈:call 過站不進入,遇 ret 停止,
     條件跳兩路都走(BFS),無條件跳跟隨,限制在 [start, start+0x1000) 內
-    (handler 本體不該超出這範圍;超出視為離開本函式,不繼續)。"""
+    已有主證據的入口以 IDA chunks 限定；其餘保留 [start,start+0x1000)
+    的舊有界範圍，不將未知共用尾段猜成函式本體。"""
     spawns = []
     visited = set()
     stack = [start]
     n = 0
+    chunks = SHARED_HANDLER_CHUNKS.get(start, ((start, start + 0x1000),))
     while stack and n < max_insns:
         a = stack.pop()
         pending_pushes = []
         awaiting_intro = None
         while a is not None and a not in visited:
-            if not (start <= a < start + 0x1000):
+            if not any(lo <= a < hi for lo, hi in chunks):
                 break
             ins = insn_at(a)
             if ins is None:

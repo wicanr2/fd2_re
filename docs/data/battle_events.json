@@ -162,14 +162,15 @@
   "handler": "0x20765",
   "is_default": false,
   "trigger_units_flag": [
-   48,
    59
   ],
   "result_codes": [
    1
   ],
   "draw_scene": true,
-  "extra_conditions": [],
+  "extra_conditions": [
+   "raw_record_byte5_bit0"
+  ],
   "action_fns": []
  },
  {
@@ -234,6 +235,7 @@
   "handler": "0x208cf",
   "is_default": false,
   "trigger_units_flag": [
+   0,
    16,
    17,
    52
@@ -243,9 +245,7 @@
    2
   ],
   "draw_scene": false,
-  "extra_conditions": [
-   "raw_record_byte5_bit0"
-  ],
+  "extra_conditions": [],
   "action_fns": []
  },
  {
@@ -267,8 +267,7 @@
   "handler": "0x20957",
   "is_default": false,
   "trigger_units_flag": [
-   10,
-   48,
+   0,
    52
   ],
   "result_codes": [
@@ -276,7 +275,9 @@
    2
   ],
   "draw_scene": true,
-  "extra_conditions": [],
+  "extra_conditions": [
+   "raw_record_byte5_bit0"
+  ],
   "action_fns": []
  },
  {
@@ -298,14 +299,14 @@
   "chapter": 21,
   "handler": "0x20a87",
   "is_default": false,
-  "trigger_units_flag": [],
+  "trigger_units_flag": [
+   1
+  ],
   "result_codes": [
    1
   ],
   "draw_scene": false,
-  "extra_conditions": [
-   "raw_record_byte5_bit0"
-  ],
+  "extra_conditions": [],
   "action_fns": []
  },
  {
@@ -313,6 +314,8 @@
   "handler": "0x20aaf",
   "is_default": false,
   "trigger_units_flag": [
+   0,
+   1,
    16,
    17,
    18
@@ -322,9 +325,7 @@
    2
   ],
   "draw_scene": false,
-  "extra_conditions": [
-   "raw_record_byte5_bit0"
-  ],
+  "extra_conditions": [],
   "action_fns": []
  },
  {
@@ -358,42 +359,43 @@
   "chapter": 25,
   "handler": "0x20b3c",
   "is_default": false,
-  "trigger_units_flag": [],
+  "trigger_units_flag": [
+   1,
+   2
+  ],
   "result_codes": [
    1
   ],
   "draw_scene": false,
-  "extra_conditions": [
-   "raw_record_byte5_bit0"
-  ],
+  "extra_conditions": [],
   "action_fns": []
  },
  {
   "chapter": 26,
   "handler": "0x20a87",
   "is_default": false,
-  "trigger_units_flag": [],
+  "trigger_units_flag": [
+   1
+  ],
   "result_codes": [
    1
   ],
   "draw_scene": false,
-  "extra_conditions": [
-   "raw_record_byte5_bit0"
-  ],
+  "extra_conditions": [],
   "action_fns": []
  },
  {
   "chapter": 27,
   "handler": "0x20a87",
   "is_default": false,
-  "trigger_units_flag": [],
+  "trigger_units_flag": [
+   1
+  ],
   "result_codes": [
    1
   ],
   "draw_scene": false,
-  "extra_conditions": [
-   "raw_record_byte5_bit0"
-  ],
+  "extra_conditions": [],
   "action_fns": []
  },
  {
@@ -401,7 +403,8 @@
   "handler": "0x20b72",
   "is_default": false,
   "trigger_units_flag": [
-   40
+   0,
+   1
   ],
   "result_codes": [
    1,
@@ -416,6 +419,8 @@
   "handler": "0x20bf5",
   "is_default": false,
   "trigger_units_flag": [
+   0,
+   1,
    20
   ],
   "result_codes": [

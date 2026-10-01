@@ -210,3 +210,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 #60 色盤表與對拍相位：[58入口](58-fd2-exe-re-coverage.md) →
 [IDA原始93-byte表及consumer](../data/ida/fd2_palette_cycle_table_20261001.json)；規格見56末節。
+
+
+#61 第十三章結果條件與 #62 匯出器勘誤：[58入口](58-fd2-exe-re-coverage.md) →
+[IDA直接分支、完整chunks與原版raw狀態](../data/ida/fd2_ch13_result_conditions_20261001.json)。
+正式接線與敗北／戰後對拍狀態仍由58及#61承載。
+
+#62來源工具回歸：`tools/test_event_handler_dump.py` 與
+`tools/test_extract_event_id_groups.py`；固定原版與主證據、執行命令見56／58。

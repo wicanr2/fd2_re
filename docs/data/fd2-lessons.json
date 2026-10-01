@@ -929,6 +929,22 @@
         "pattern": "ff85b2a737b4e838d24fba73331de7d52815f1f87f6d940f339e5d1fd6e74198",
         "note": "原始93-byte表的獨立證據仍存在；工具預設排除測試檔，測試另由Go回歸驗證。"
       }
+    },
+    {
+      "id": "native-export-arguments-and-shared-chunks",
+      "area": "反組譯",
+      "rule": "事件匯出依已審查IDA chunks追蹤共用尾段；每個call的參數重新解析，動態push不可繼承stack入口常數。入口：tools/extract_event_id_groups.py、tools/event_handler_dump.py與docs/data/ida/fd2_ch13_result_conditions_20261001.json。",
+      "why": "第十三章event5因入口前共用尾段被排除而遺失group1；raw12結果清冊把入口push30h誤列為記錄48，十進位常數亦漏列。",
+      "date": "2026-10-01",
+      "evidence": "docs/data/ida/fd2_ch13_result_conditions_20261001.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/extract_event_id_groups.py"
+        ],
+        "pattern": "SHARED_HANDLER_CHUNKS",
+        "note": "共用尾段仍由固定雜湊主證據限定；原始call參數另由工具回歸驗證。"
+      }
     }
   ]
 }

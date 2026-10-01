@@ -9,7 +9,7 @@
   0x3453e(idx)         查單位 #idx 狀態 [0x53a45][idx+5]&1
   0x205be              共用 raw 三值結果規則
   0x205da              獨立的戰場重設／完整章節載入入口
-  0x15f84              繪事件畫面(全螢幕圖)
+  0x15f84              章節對白顯示／輸入（ABI 見 docs 100）
   0x1088d              完整章節 loader（FDTXT + FDFIELD/roster/map）
   [0x53ecc]=N          設 raw pending/result code；高階語意依 caller
   [0x53ec8]            raw 累積量(clamp 99)，不是回合數
@@ -125,8 +125,13 @@ def main(av):
                 lastpush = None
                 for ins in dump(cg, fx, t, end):
                     m, op = ins.mnemonic, ins.op_str
-                    if m == 'push' and op.startswith('0x'):
-                        lastpush = int(op, 16)
+                    if m == 'push':
+                        # 只接受本次 call 的字面參數；push eax／記憶體不能
+                        # 繼承 __STK 的入口參數（raw12 曾因此誤列記錄48）。
+                        try:
+                            lastpush = int(op, 0)
+                        except ValueError:
+                            lastpush = None
                     elif m == 'call' and op.startswith('0x'):
                         tt = int(op, 16)
                         if tt == 0x3453e and lastpush is not None and lastpush < 0x100:
@@ -137,6 +142,7 @@ def main(av):
                             draw = True
                         elif tt not in SKIP:
                             acts.append(hex(tt))
+                        lastpush = None
                     elif m == 'mov' and '[0x3ecc],' in op:
                         v = op.split(',')[-1].strip()
                         if v.lstrip('-').isdigit():

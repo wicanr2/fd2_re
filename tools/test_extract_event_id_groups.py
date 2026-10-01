@@ -10,6 +10,13 @@ import extract_event_id_groups as extractor
 
 
 class EventIDGroupExtractorTest(unittest.TestCase):
+    def test_event5_follows_ida_confirmed_shared_tail_before_entry(self):
+        self.assertEqual(
+            extractor.walk_handler(0x34D68),
+            [{"group": 1, "via": "spawn_group", "source": "0x34bee",
+              "raw_placement_gate": 0}],
+        )
+
     def test_ch21_ch22_dynamic_groups_use_ida_closed_formula(self):
         for handler, source, evidence in (
             (0x35112, "0x3512b", "handlers.47"),

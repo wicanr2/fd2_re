@@ -614,6 +614,306 @@
       ]
     },
     {
+      "id": "reinforce_ch13_e5_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "native_spawns": [
+            {
+              "group": 1,
+              "via": "spawn_group",
+              "source": "0x34bee",
+              "raw_placement_gate": 0
+            }
+          ],
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 0,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 3,
+            "pages": [
+              [
+                "『我的天啊！",
+                "　這是怎麼一回事？』"
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 1,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 1,
+            "pages": [
+              [
+                "『老．老爹！",
+                "　您怎麼來了？』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  602,
+                  584,
+                  602,
+                  775,
+                  342
+                ],
+                [
+                  181,
+                  404,
+                  672,
+                  344,
+                  579,
+                  341,
+                  180,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 2,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 3,
+            "pages": [
+              [
+                "『怎麼？我不能來嗎？",
+                "　我只是來看個老朋友而已．",
+                "　怎麼會變成這樣子？』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  672,
+                  344,
+                  180,
+                  568,
+                  346,
+                  428,
+                  579,
+                  338,
+                  180
+                ],
+                [
+                  181,
+                  568,
+                  865,
+                  343,
+                  579,
+                  658,
+                  463,
+                  602,
+                  726,
+                  727,
+                  623,
+                  339,
+                  584
+                ],
+                [
+                  181,
+                  672,
+                  344,
+                  458,
+                  1116,
+                  542,
+                  462,
+                  696,
+                  291,
+                  180,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 3,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 1,
+            "pages": [
+              [
+                "『獸人大軍來攻，",
+                "　村內的居民好像都逃光了，",
+                "　我們正在迎戰敵軍．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  139,
+                  98,
+                  125,
+                  361,
+                  579,
+                  435,
+                  370
+                ],
+                [
+                  181,
+                  162,
+                  432,
+                  367,
+                  669,
+                  163,
+                  369,
+                  616,
+                  634,
+                  821,
+                  145,
+                  341,
+                  370
+                ],
+                [
+                  181,
+                  568,
+                  569,
+                  740,
+                  395,
+                  408,
+                  105,
+                  389,
+                  361,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 4,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 3,
+            "pages": [
+              [
+                "『獸人？",
+                "　這些傢伙是活的不耐煩了？",
+                "　我先來給牠們幾斧頭再說！"
+              ],
+              [
+                "　小子啊，你也要好好幹！』"
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 5,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 1,
+            "pages": [
+              [
+                "『是的，老爹！』"
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch13.json",
+            "scene_index": 1,
+            "line": 6,
+            "source_dat": "FDTXT_013",
+            "string_index": 1,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『哈瓦那老爹，歡迎加入！』"
+              ]
+            ]
+          },
+          "native_event_id": 5,
+          "camp": "ally"
+        }
+      ]
+    },
+    {
       "id": "reinforce_ch13_e7_t9",
       "trigger": "on_turn_end",
       "when": {

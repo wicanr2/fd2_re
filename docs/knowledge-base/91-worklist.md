@@ -39,9 +39,17 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 `ch13-round6-result-and-defeat-path-unknown` · RE待解 · [#61](https://github.com/wicanr2/fd2_re/issues/61) · 仍未完成 · 要人判
 
-正常LOAD、無HP鎖定的第十三章sample-original-r1在第六回合返回標題，控制計畫未走到第九回合增援／戰後。seq2110仍有15名我方全部HP>0，runtime0 HP420、byte5=0；12名友軍中仍有3名HP>0，不能推為我方全滅或精靈全滅。seq2111起戰場緩衝已失效，title時的ally_alive=0不是死亡證據。raw章12結果handler／條件尚未定位；重製battle_ch13仍有自訂retreat_ch13，不能拿它宣稱與原版同路徑。原版執行器dosgolem a9bcd621、固定槽d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae。#60另追畫面差異。
+原版第十三章同槽正常LOAD、無章內HP鎖定的sample-original-r1在第六回合回標題，未完成第九回合與戰後計畫。槽SHA-256 d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae，seed4，dosgolem a9bcd621。
 
-怎樣算做完：先查58既有結果表與controller證據，以IDA直接指令及raw跳表定位raw章12判定writer／consumer，對照seq2108..2113來源；READY後接正式條件與原生返回標題流程，重新安排不改狀態的章內正常輸入以走到第九回合與戰後，不能猜成我方或友軍全滅。
+2026-10-01以IDA Pro9.4完整chunks閉合raw章12的sub_20765：記錄15～26全部raw+5 bit0=1時寫code1／文字10；獨立第二分支於回合>5且記錄59 bit0=1時寫code1／文字2。事件5第四回合由0x34D6D跳到共用尾段，0x34BEE加入group1，接文字1。主證據保存原始名稱、bytes、來源與分級：docs/data/ida/fd2_ch13_result_conditions_20261001.json。
+
+原版2034首次新增記錄59（HP294），2110仍15我方與3初始友軍存活，但記錄59 HP0／bit0=1；符合第二分支，惟r1未追207EC，原因仍標強推論。2111後戰場緩衝失效，不得把title時ally_alive=0當全滅。
+
+#62另修清冊漏共用尾段與錯誤48；48來自stack入口push30h，不是受保護單位。#60畫面前綴已關閉；本項不再依賴它。第四回合接線限定READY切片，正式結果／對白規格仍DRAFT，自訂retreat_ch13尚需替換，並修正把「精靈族全滅」當作角色名稱的生成目標文字。
+
+怎樣算做完：已閉合原版raw章12兩個code1條件與event5來源；完成READY typed規格後接正式條件、依序對白與原生返回標題，重生無章內狀態改寫的正常輸入敗北收據。重新安排章內正常操作保護記錄15～26／59，走到第九回合event7與戰後，逐項驗證四gate；不得猜成我方或友軍全滅。
+
+證據：`docs/data/ida/fd2_ch13_result_conditions_20261001.json`
 
 ## data — 可編輯資料還沒就緒
 

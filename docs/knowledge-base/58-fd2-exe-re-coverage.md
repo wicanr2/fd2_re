@@ -1311,3 +1311,34 @@ FD2_PARITY_OUT指向新輸出，執行go test ./cmd/fd2 -run ^TestChapterParityR
 重播原先只列人物／地形／指令環相位，不能把其水面色差直接判為正式規則缺陷。
 正式表與對拍工具都依[56有限契約](56-fd2-remake-sdd.md)修正；
 完整章仍BLOCKED於#61，前綴不能宣稱PLAYER-E2。原始r3失敗收據保留為歷史。
+
+
+## 2026-10-01 第十三章結果條件與援軍來源（RE-CLOSED；執行期待接）
+
+[#61](https://github.com/wicanr2/fd2_re/issues/61) 的 [IDA 主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)保存固定雜湊、原始名稱、bytes、完整 chunks、分級與原版 raw 狀態。raw章12的 `0x51B49` 指向 `sub_20765`：先跑已閉合 `0x205BE`，再於記錄15～26全部 `+5 bit0=1` 時寫 code1 並顯示文字10；獨立的第二分支於回合>5且記錄59的 bit0=1時寫 code1、顯示文字2。兩個對白返回後才交給既有 [code1 敗北返回標題](../data/ida/fd2_pending_code1_return_title_20261001.json)，不重解共用流程。
+
+event5 的 `0x34D6D→0x34BE7` 共用尾段由 IDA chunks 證實，`0x34BEE` 生成 group1 後 `0x34C15` 顯示文字1。原版第四回合 checkpoint2034 首見記錄59（HP294）；第六回合2110它HP0／bit0=1，初始友軍15、16、20仍存活。這符合第二分支，但原版r1沒有結果writer trace，原因只標強推論；不得宣稱第十三章已驗收。
+
+[#62](https://github.com/wicanr2/fd2_re/issues/62) 修正清冊工具漏共用尾段與 stale push 參數：舊摘要的記錄48是入口 `push30h; call36CD7`，不是受保護單位。本段取代26與battle_events的錯誤48／群組摘要；保留失敗r1與舊提交供回查。此項RE-CLOSED不提升DATA-READY／RUNTIME-E1／PLAYER-E2，完整章仍由#61與戰役台帳記BLOCKED。
+
+
+## 2026-10-01 #62 工具修正與 #61 第四回合接線
+
+[IDA主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)保留20765的兩個直接分支、
+3453E raw查詢、event5完整chunks與其餘清冊改動的字面參數審查。
+#62的90事件清冊只有event5新增group1；30章結果清冊十章有摘要勘誤，
+原始名稱／bytes／位址／推論等級與來源均保留，不重解已閉合玩家規則。
+來源工具十項測試及39個動作程式逐指令check通過。
+
+#61第四回合切片先由[56](56-fd2-remake-sdd.md)完成READY審查，再用
+`tools/sync_native_turn_events.py --write --chapters 13`接入group1與七句文字1。
+正式Scenario→native append測試對照獨立原版checkpoint2034：59→60筆，
+新增記錄59的HP294／座標(23,24)／fig3與原版相等；事件只觸發一次。
+此項列DATA-READY／RUNTIME-E1（原生append與動作順序），未有第4回合UI
+同狀態收據，不標CONFORMED或PLAYER-E2。結果規則／對白／原生敗北流程仍DRAFT，
+完整第九回合event7與戰後未驗收，9／30章不變，#61保持開啟。
+
+全Go回歸18套件先通過，battle只有舊46/46覆蓋斷言失敗；新增來源從IDA已證實，
+更新成47/47並加獨立原版fixture後，同容器完整battle套件乾淨重跑通過，合計19套件。
+字串清冊仍為dc3ecfa5e01f105d2928c0da7d7f19da4c37599028c2d96050b0c9010e80a9f2，
+與既有審查相同，不改綁定。全部本批容器已退出，新增檔案UID/GID1000:1000。

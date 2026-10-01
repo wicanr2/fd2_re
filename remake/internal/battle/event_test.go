@@ -1,6 +1,7 @@
 package battle
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -222,8 +223,10 @@ func TestGeneratedTurnSpawnsCarryExactNativeCallMetadata(t *testing.T) {
 			}
 		}
 	}
-	if actions != 46 || calls != 46 {
-		t.Fatalf("產生的增援覆蓋 actions/calls=%d/%d，預期 46/46", actions, calls)
+	// 第十三章 event5 的入口前共用尾段加入第47個呼叫；原始來源
+	// 與實際配置另由 TestChapter13Turn4AppendsOriginalRecord59 核對。
+	if actions != 47 || calls != 47 {
+		t.Fatalf("產生的增援覆蓋 actions/calls=%d/%d，預期 47/47", actions, calls)
 	}
 	sort.Strings(intro)
 	wantIntro := []string{"4:3:0x342e7", "5:4:0x3434f"}
@@ -242,6 +245,90 @@ func TestGeneratedTurnSpawnsCarryExactNativeCallMetadata(t *testing.T) {
 	sort.Strings(want)
 	if fmt.Sprint(gateOne) != fmt.Sprint(want) {
 		t.Fatalf("gate=1 呼叫=%v，預期 %v", gateOne, want)
+	}
+}
+
+func TestChapter13Turn4AppendsOriginalRecord59(t *testing.T) {
+	// 獨立 fixture 是 dosgolem 原版第四回合首次新增記錄的 raw checkpoint，
+	// 不從 scenario／constructor 的輸出反推預期結果。
+	raw, err := os.ReadFile("../../../docs/data/ida/fd2_ch13_result_conditions_20261001.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var evidence struct {
+		Samples []struct {
+			Seq   int `json:"control_seq"`
+			Units []struct {
+				Index int `json:"index"`
+				HP    int `json:"hp"`
+				X     int `json:"x"`
+				Y     int `json:"y"`
+				Fig   int `json:"fig"`
+			} `json:"units"`
+		} `json:"runtime_samples"`
+	}
+	if err := json.Unmarshal(raw, &evidence); err != nil {
+		t.Fatal(err)
+	}
+	want := []int{}
+	for _, sample := range evidence.Samples {
+		if sample.Seq == 2034 {
+			for _, unit := range sample.Units {
+				if unit.Index == 59 {
+					want = []int{unit.HP, unit.X, unit.Y, unit.Fig}
+				}
+			}
+		}
+	}
+	if len(want) != 4 {
+		t.Fatal("原版第四回合記錄59的 fixture 缺漏")
+	}
+	st, err := Load("../../assets/maps/map12/map12_units.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	bindNativeFutureItemRowsForTest(t, st)
+	sc, err := LoadScenario("../../assets/scenarios/ch13.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := sc.SetupChecked(st); err != nil {
+		t.Fatal(err)
+	}
+	if len(st.Units) != 59 {
+		t.Fatalf("第四回合前名冊應有59筆，實際%d", len(st.Units))
+	}
+	st.Turn, st.NativeRoundCounter = 3, 3
+	if actions := sc.TriggerActions(st, "on_turn_end", ""); len(actions) != 0 {
+		t.Fatal("第四回合援軍提前出現")
+	}
+	st.Turn, st.NativeRoundCounter = 4, 4
+	actions := sc.TriggerActions(st, "on_turn_end", "")
+	if len(actions) != 8 || actions[0].Type != "spawn_group" ||
+		actions[0].NativeEventID == nil || *actions[0].NativeEventID != 5 ||
+		len(actions[0].NativeSpawns) != 1 || actions[0].NativeSpawns[0].Source != "0x34bee" ||
+		actions[0].NativeSpawns[0].RawPlacementGate == nil || *actions[0].NativeSpawns[0].RawPlacementGate != 0 {
+		t.Fatalf("event5 缺少先生成group1的完整來源：%+v", actions)
+	}
+	if _, _, err := sc.ExecuteActionChecked(st, actions[0]); err != nil {
+		t.Fatal(err)
+	}
+	if len(st.Units) != 60 {
+		t.Fatalf("第四回合後名冊應有60筆，實際%d", len(st.Units))
+	}
+	u := st.Units[59]
+	if u == nil || u.Camp != Ally || u.Group != 1 ||
+		!reflect.DeepEqual([]int{u.HP, u.X, u.Y, u.Fig}, want) {
+		t.Fatalf("新增記錄59與原版不符：%+v，原版%v", u, want)
+	}
+	for i, action := range actions[1:] {
+		if action.Type != "dialogue" || action.NativeTextIndex == nil || *action.NativeTextIndex != 1 ||
+			action.NativeDialogueRef == nil || action.NativeDialogueRef.Utterance != i {
+			t.Fatalf("援軍後第%d句未按原始文字1順序接線：%+v", i, action)
+		}
+	}
+	if actions := sc.TriggerActions(st, "on_turn_end", ""); len(actions) != 0 {
+		t.Fatal("event5 在同一回合重複觸發")
 	}
 }
 

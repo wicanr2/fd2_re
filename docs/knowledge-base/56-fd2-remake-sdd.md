@@ -8755,3 +8755,57 @@ IDA Pro9.4的LE線性位址、caller／consumer／raw bytes與分級保存在
 證據審查已核對IDA實際JSON、輸入雜湊、0x4DFF8..0x4E021指令、原始93-byte表、
 Go逐byte差異與兩側鏡頭座標。表格修正READY；相位承接只是測試條件，
 不增加未修改正式遊戲的時序忠實度聲明。
+
+
+## 2026-10-01 #62 證據清冊工具契約（CONFORMED，僅工具）
+
+[58分層現況](58-fd2-exe-re-coverage.md) → [IDA主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)。
+工具契約沿用原版固定雜湊與非破壞匯出：全域事件行走只允許原有有界範圍，
+已有完整主證據的event5／7改依IDA chunks限定，並核對直接call／jmp／PUSH bytes。
+結果清冊只記本次call的字面push參數；call結束或動態push時不可沿用stack入口常數，
+動態索引保留未知。此修正不替清冊補出玩法條件，也不改正式scenario／campaign。
+
+全90事件重生只有event5新增group1（call34BEE、gate0）；全30章重生十章摘要有變，
+已逐call對照IDA，raw12只列立即數59與未解析的動態bit0查詢。
+來源工具六項回歸通過；重跑入口是在fd2-cap-local容器的專案根目錄執行
+`python3 -m unittest discover -s tools -p test_extract_event_id_groups.py -v`
+與 `python3 -m unittest discover -s tools -p test_event_handler_dump.py -v`。
+清冊由 `tools/extract_event_id_groups.py` 與 `tools/event_handler_dump.py <FD2.EXE> json`
+重生；原版檔與主證據雜湊均核對，不重新對拍已完成章。
+
+## 2026-10-01 #61 第十三章正式結果／對白接線（DRAFT）
+
+兩個條件、writer及共用敗北consumer已閉合，資料來源見上列主證據。
+預計以可編輯條件保留先共用結果、後逐條覆寫的順序；命中code1時先完成文字10／2，
+再進既有原生敗北返回標題，不走自訂retreat_ch13。第四回合event5應依完整既有
+動作轉寫加入group1並顯示文字1。未來驗收需涵蓋兩分支獨立／同時命中、
+raw bit0與HP分離、回合5／6邊界、正常LOAD章內輸入與原生標題返回。
+
+本節尚未定義完整typed資料與非同步擁有者交接，維持DRAFT；不得先接正式流程。
+完整第九回合與戰後路徑仍由#61／#14驗收，9／30章不變。
+
+
+## 2026-10-01 #61 第四回合event5接線（READY，僅本切片）
+
+DRAFT範圍：沿用已轉寫的event5與既有native回合事件介面，僅在第十三章
+raw camp1／round4觸發一次，依序執行group1的原生append配置（gate0、
+source34BEE）與FDTXT_013索引1的所有utterance；不加新的路徑或參數猜測。
+若任一來源／group／對白參照缺漏，既有lowerer與runtime報錯即停止。
+group1不能提前放在initial_groups；開局仍只有group0。既有event7保持原樣，
+不以這個切片宣稱第九回合完整演出。存檔仍由現行party／battle持續邊界承接，
+沒有新增格式；對白由既有battle-event非同步擁有者完成後才續行。
+
+證據審查：IDA完整chunks確認34D6D→34BE7、push1／call34BEE與call34C15；
+FDFIELD已版本化的控制列給round4／event5／raw camp1；現行動作轉寫經
+原始指令覆蓋檢查，原版2034新增runtime59、HP294／座標23,24與group1 typed資料相符。
+既有SpawnCall的source／gate／groups及對白腳本映射均可直接使用，無未定義欄位。
+因此只提升這個接線切片為READY；結果規則／完整章仍維持上節DRAFT／BLOCKED。
+
+驗收：tools/sync_native_turn_events.py限定--chapters13重生；
+全戰役來源／call-site一致性測試、既有事件逐指令check與正式Go事件回歸通過。
+一般玩家同狀態回合4／敗北／第九回合／戰後收據仍待#61，不得提升PLAYER-E2。
+
+第4回合READY切片現達DATA-READY／RUNTIME-E1（append與動作順序）：
+獨立原版checkpoint2034的runtime59比對及19套件回歸通過。
+同狀態正常UI／敗北／event7／戰後仍未驗收，完整CONFORMED與PLAYER-E2未提升。
+正式來源與結果由[58](58-fd2-exe-re-coverage.md)承載。

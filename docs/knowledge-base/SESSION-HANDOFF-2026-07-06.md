@@ -8712,3 +8712,28 @@ seq2111後戰場緩衝失效，不得把title時ally_alive=0當作全滅。前77
 Go19個套件、驗收器10項通過，Docker已清理；未重跑第四～十二章。
 下一個切片追raw章12結果handler與seq2108..2113，不能從失效title緩衝猜全滅。
 目前規格／限制以[58](58-fd2-exe-re-coverage.md)與台帳為準，舊r3／原版r1失敗樣本保留。
+
+
+## 2026-10-01 #62 工具修正與 #61 第四回合接線
+
+[IDA主證據](../data/ida/fd2_ch13_result_conditions_20261001.json)保留20765的兩個直接分支、
+3453E raw查詢、event5完整chunks與其餘清冊改動的字面參數審查。
+#62的90事件清冊只有event5新增group1；30章結果清冊十章有摘要勘誤，
+原始名稱／bytes／位址／推論等級與來源均保留，不重解已閉合玩家規則。
+來源工具十項測試及39個動作程式逐指令check通過。
+
+#61第四回合切片先由[56](56-fd2-remake-sdd.md)完成READY審查，再用
+`tools/sync_native_turn_events.py --write --chapters 13`接入group1與七句文字1。
+正式Scenario→native append測試對照獨立原版checkpoint2034：59→60筆，
+新增記錄59的HP294／座標(23,24)／fig3與原版相等；事件只觸發一次。
+此項列DATA-READY／RUNTIME-E1（原生append與動作順序），未有第4回合UI
+同狀態收據，不標CONFORMED或PLAYER-E2。結果規則／對白／原生敗北流程仍DRAFT，
+完整第九回合event7與戰後未驗收，9／30章不變，#61保持開啟。
+
+全Go回歸18套件先通過，battle只有舊46/46覆蓋斷言失敗；新增來源從IDA已證實，
+更新成47/47並加獨立原版fixture後，同容器完整battle套件乾淨重跑通過，合計19套件。
+字串清冊仍為dc3ecfa5e01f105d2928c0da7d7f19da4c37599028c2d96050b0c9010e80a9f2，
+與既有審查相同，不改綁定。全部本批容器已退出，新增檔案UID/GID1000:1000。
+
+本批待提交：修正高風險清冊斷言並接入第四回合已證實垂直切片；#62以來源工具驗收關閉，
+#61保留正式敗北／完整章驗收。詳細現況統一回[58](58-fd2-exe-re-coverage.md)，本段是時間序列紀錄。
