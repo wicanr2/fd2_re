@@ -476,7 +476,7 @@ func TestChapter7Event25BuildsSlot43ThenCommitsState17(t *testing.T) {
 
 func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T) {
 	base := "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -484,7 +484,7 @@ func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T)
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(base, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(base, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(base, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(base, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -500,6 +500,7 @@ func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T)
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			g := &Game{}
+			attachOfficialLocale(t, g)
 			if err := g.loadMap("assets/maps/map6"); err != nil {
 				t.Fatal(err)
 			}
@@ -509,7 +510,8 @@ func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T)
 			}
 			triggerChapter7Event26(t, g)
 			g.st.Turn = 10
-			g.finishTurn()
+			// event25 是 selector0 的敵方階段；這裡建構該入口的 E1 前置。
+			g.runEditableTurnEvents(0, func() {})
 			for steps := 0; g.camPan != nil && steps < 100; steps++ {
 				g.stepCamPan()
 			}
@@ -566,7 +568,7 @@ func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T)
 					current := g.dialog[len(g.dialog)-1]
 					if current.NativeDialogue == nil || current.Upper == nil ||
 						current.NativeDialogue.SourceDAT != "FDTXT_007" || current.NativeDialogue.StringIndex != tc.wantIndex ||
-						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) {
 						t.Fatalf("ch06_post dialog lost indexed lifecycle: %#v", current)
 					}
 					seen[current.NativeDialogue.Utterance] = true
@@ -607,7 +609,7 @@ func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T)
 
 func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -615,7 +617,7 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -640,8 +642,9 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 	if err := g.applyLoadCH(pre[0].LoadCH); err != nil {
 		t.Fatal(err)
 	}
+	// 8筆我方＋FDFIELD group0的25筆；第15回合group1未出現。
 	g.resetBattle("assets/maps/map5/map5_units.json", "assets/scenarios/ch06.json")
-	if g.loadErr != "" || g.st == nil || len(g.st.Units) != 40 {
+	if g.loadErr != "" || g.st == nil || len(g.st.Units) != 33 {
 		t.Fatalf("chapter6 handoff err=%q units=%d", g.loadErr, len(g.st.Units))
 	}
 	if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
@@ -671,7 +674,7 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 		if len(g.dialog) != 0 {
 			current := g.dialog[len(g.dialog)-1]
 			if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_006" ||
-				current.NativeDialogue.StringIndex != 6 || len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+				current.NativeDialogue.StringIndex != 6 || len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) {
 				t.Fatalf("ch05_post dialog lost indexed lifecycle: %#v", current)
 			}
 			seen[current.NativeDialogue.Utterance] = true
@@ -689,7 +692,7 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 			t.Fatalf("ch05_post stopped at %d/%d: %s", g.beatIdx, len(g.beats), g.loadErr)
 		}
 	}
-	if g.camp.NodeID() != "town_ch07" || g.handlerChapter != 6 || g.st != nil || maxSlots != 41 ||
+	if g.camp.NodeID() != "town_ch07" || g.handlerChapter != 6 || g.st != nil || maxSlots != 34 ||
 		!g.partyMembers[13] || len(seen) != 19 {
 		t.Fatalf("ch05_post node=%q chapter=%d state=%v maxSlots=%d members=%v dialogues=%d", g.camp.NodeID(), g.handlerChapter, g.st != nil, maxSlots, g.partyMembers, len(seen))
 	}
@@ -711,7 +714,7 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 
 func TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9(t *testing.T) {
 	base := "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -719,13 +722,14 @@ func TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(base, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(base, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(base, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(base, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(base, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
 	for _, frontier := range []int{29, 41} {
 		t.Run(fmt.Sprintf("frontier_%d", frontier), func(t *testing.T) {
 			g := &Game{}
+			attachOfficialLocale(t, g)
 			if err := g.loadMap("assets/maps/map7"); err != nil {
 				t.Fatal(err)
 			}
@@ -782,8 +786,8 @@ func TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9(t *testing.T) {
 				if len(g.dialog) != 0 {
 					current := g.dialog[len(g.dialog)-1]
 					if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_008" ||
-						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
-						t.Fatalf("ch07_post dialog lost indexed lifecycle: %#v", current)
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) {
+						t.Fatalf("ch07_post dialog lost indexed lifecycle: line=%#v layout=%+v opening=%d closing=%d progressive=%d", current, current.NativeDialogue, len(g.nativeDialogueOpening), len(g.nativeDialogueClosing), len(g.nativeDialogueProgressive))
 					}
 					seen[current.NativeDialogue.Utterance+current.NativeDialogue.StringIndex*10] = true
 					if g.nativeStoryDialogueAtInputWait() && !g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
@@ -817,7 +821,7 @@ func TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9(t *testing.T) {
 
 func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 	originalBase := "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -825,7 +829,7 @@ func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -840,6 +844,7 @@ func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			order := tc.order
 			g := &Game{partyMembers: make(map[int]bool, len(order)), partyJoinOrder: append([]int(nil), order...)}
+			attachOfficialLocale(t, g)
 			for _, id := range order {
 				g.partyMembers[id] = true
 			}
@@ -847,7 +852,7 @@ func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 				t.Fatal(err)
 			}
 			g.resetBattle("assets/maps/map9/map9_units.json", "assets/scenarios/ch10.json")
-			if g.loadErr != "" || g.st == nil || g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != 52 {
+			if g.loadErr != "" || g.st == nil || g.sc == nil || !g.sc.RuntimeAppendGroups || len(g.st.Units) != len(order)+42 {
 				t.Fatalf("chapter10 setup err=%q units=%d runtime_append=%v", g.loadErr, len(g.st.Units), g.sc != nil && g.sc.RuntimeAppendGroups)
 			}
 			// Event 32 appends the eight group-1 allies at turn five. This test enters
@@ -911,8 +916,8 @@ func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 					current := g.dialog[len(g.dialog)-1]
 					if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_010" ||
 						(current.NativeDialogue.StringIndex != 4 && current.NativeDialogue.StringIndex != 5) ||
-						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
-						t.Fatalf("ch09_post dialog lost indexed lifecycle: %#v", current)
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) {
+						t.Fatalf("ch09_post dialog lost indexed lifecycle: line=%#v layout=%+v opening=%d closing=%d progressive=%d", current, current.NativeDialogue, len(g.nativeDialogueOpening), len(g.nativeDialogueClosing), len(g.nativeDialogueProgressive))
 					}
 					seen[current.NativeDialogue.StringIndex*100+current.NativeDialogue.Utterance] = true
 					if g.nativeStoryDialogueAtInputWait() && !g.handleNativeStoryInput(g.camp.Node(), nativeStoryInput{enter: true}) {
@@ -1043,7 +1048,7 @@ func TestChapter20PreparationBuildsFixedLeaderPlusFifteenSlotFrontier(t *testing
 
 func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testing.T) {
 	originalBase := "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -1051,7 +1056,7 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -1072,6 +1077,7 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 				partyJoinOrder: append([]int(nil), order...),
 				partyDeploy:    make(map[int]bool, 15),
 			}
+			attachOfficialLocale(t, g)
 			for _, id := range order {
 				g.partyMembers[id] = true
 			}
@@ -1140,9 +1146,9 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 					if current.NativeDialogue == nil || current.Upper == nil ||
 						current.NativeDialogue.SourceDAT != "FDTXT_020" ||
 						current.NativeDialogue.StringIndex < 11 || current.NativeDialogue.StringIndex > 16 ||
-						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 ||
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) ||
 						len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) {
-						t.Fatalf("ch19_post dialog lost indexed lifecycle: %#v", current)
+						t.Fatalf("ch19_post dialog lost indexed lifecycle: line=%#v layout=%+v opening=%d closing=%d progressive=%d", current, current.NativeDialogue, len(g.nativeDialogueOpening), len(g.nativeDialogueClosing), len(g.nativeDialogueProgressive))
 					}
 					seenDialogue[dialogueKey{current.NativeDialogue.StringIndex, current.NativeDialogue.Utterance}] = true
 					if g.nativeStoryDialogueAtInputWait() &&
@@ -1438,7 +1444,7 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 
 func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -1446,7 +1452,7 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -1472,6 +1478,7 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 				partyJoinOrder: append([]int(nil), order...),
 				partyDeploy:    make(map[int]bool, len(order)-1),
 			}
+			attachOfficialLocale(t, g)
 			for _, id := range order {
 				g.partyMembers[id] = true
 			}
@@ -1546,7 +1553,7 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 				if len(g.dialog) != 0 {
 					current := g.dialog[len(g.dialog)-1]
 					if current.NativeDialogue == nil || current.Upper == nil || current.NativeDialogue.SourceDAT != "FDTXT_016" ||
-						!test.wantIndices[current.NativeDialogue.StringIndex] || len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+						!test.wantIndices[current.NativeDialogue.StringIndex] || len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) {
 						t.Fatalf("ch15_post dialog lost indexed lifecycle: %#v", current)
 					}
 					seen[current.NativeDialogue.StringIndex*100+current.NativeDialogue.Utterance] = true
@@ -1599,7 +1606,7 @@ func TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary(t *testing.T) {
 
 func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -1607,7 +1614,7 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -1618,6 +1625,7 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, len(order)-1),
 	}
+	attachOfficialLocale(t, g)
 	for _, id := range order {
 		g.partyMembers[id] = true
 	}
@@ -1685,7 +1693,7 @@ func TestChapter18PostJoins21And7Town19SaveBoundary(t *testing.T) {
 			if current.NativeDialogue == nil || current.Upper == nil ||
 				current.NativeDialogue.SourceDAT != "FDTXT_018" ||
 				current.NativeDialogue.StringIndex < 7 || current.NativeDialogue.StringIndex > 10 ||
-				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 ||
+				len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) ||
 				len(g.nativeDialogueProgressive) != len(current.NativeDialogue.Pages) {
 				t.Fatalf("ch17_post dialog lost indexed lifecycle: %#v", current)
 			}
@@ -1869,7 +1877,7 @@ func TestChapter13PostNativeDialogueJoins3Town14SaveBoundary(t *testing.T) {
 
 func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 	const originalBase = "../../../org_game/炎龍騎士團/FLAME2"
-	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.DAT", "FDTXT.DAT", "DATO.DAT"} {
+	for _, archive := range []string{"FDFIELD.DAT", "FDSHAP.DAT", "FDOTHER.DAT", "FDICON.B24", "FDTXT.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(originalBase, archive)); err != nil {
 			t.Skipf("player-provided original %s is absent: %v", archive, err)
 		}
@@ -1877,7 +1885,7 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 	t.Setenv("FD2_ORIGINAL_FDFIELD", filepath.Join(originalBase, "FDFIELD.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDSHAP", filepath.Join(originalBase, "FDSHAP.DAT"))
 	t.Setenv("FD2_ORIGINAL_FDOTHER", filepath.Join(originalBase, "FDOTHER.DAT"))
-	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.DAT"))
+	t.Setenv("FD2_ORIGINAL_FDICON", filepath.Join(originalBase, "FDICON.B24"))
 	t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(originalBase, "FDTXT.DAT"))
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(originalBase, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
@@ -1898,6 +1906,7 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 				partyJoinOrder: append([]int(nil), tc.order...),
 				partyDeploy:    make(map[int]bool, len(tc.order)-1),
 			}
+			attachOfficialLocale(t, g)
 			for _, id := range tc.order {
 				g.partyMembers[id] = true
 			}
@@ -1958,7 +1967,7 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 					}
 					index := current.NativeDialogue.StringIndex
 					if (index != tc.branchIndex && index != 6 && index != 8) ||
-						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != 5 {
+						len(g.nativeDialogueOpening) != 5 || len(g.nativeDialogueClosing) != nativeClosingFramesForTest(g, current) {
 						t.Fatalf("ch16_post dialog lost indexed lifecycle: %#v", current)
 					}
 					seen[index*100+current.NativeDialogue.Utterance] = true
@@ -2003,4 +2012,19 @@ func TestChapter17PostBranchJoin16Town18SaveBoundary(t *testing.T) {
 			}
 		})
 	}
+}
+
+// nativeClosingFramesForTest 沿用 beatrunner_test.go 已確認的收框契約：
+// 五幀收框後，非零 MotionTargetY 沿目前可見游標飛回，包含終點。
+// 原版主證據與正式玩家收據由 58 索引；不呼叫正式產生器計算預期值。
+func nativeClosingFramesForTest(g *Game, line battle.DialogLine) int {
+	frames := 5
+	view := g.storyNativeMapView
+	if g.st != nil && g.st.HasNativeMapViewState {
+		view = g.st.NativeMapViewState
+	}
+	if line.NativeDialogue != nil && line.NativeDialogue.MotionTargetY != 0 && view.VisibleCursorX+view.VisibleCursorY > 0 {
+		frames += view.VisibleCursorX + view.VisibleCursorY + 1
+	}
+	return frames
 }

@@ -966,9 +966,17 @@
       "id": "fixture-pass-requires-non-skipped-path",
       "area": "驗證",
       "rule": "宣稱特定玩家功能測試通過前，核對原版固定檔案清單、素材包與正式初始化，並確認該測試實際PASS而非SKIP。手工Game前置須具備正式語系與已證實名冊狀態；入口為docs/data/fd2-reference-files.json、remake/cmd/fd2/locale_fixture_test.go及對應章的回歸測試。",
-      "why": "章13戰後測試錯用不存在的FDICON.DAT，一直被略過。改為FDICON.B24後才揭露測試漏載語系及第4／9回合援軍前置；修正後對白、JOIN3、城鎮與存讀檔才實際受驗。其他同類測試另登記#64，套件綠燈不能取代逐項執行證據。",
+      "why": "章13戰後測試錯用不存在的FDICON.DAT，一直被略過。改為FDICON.B24後才揭露測試漏載語系及第4／9回合援軍前置；修正後對白、JOIN3、城鎮與存讀檔才實際受驗。其他同類測試另登記#64，套件綠燈不能取代逐項執行證據。 第64題其餘八條測試亦被相同假缺件掩蓋；實際執行才揭露舊陣營入口、名冊筆數及收框飛回斷言，修正後16個建構分支實際通過。",
       "date": "2026-10-01",
       "evidence": "remake/cmd/fd2/battleevent_test.go"
+    },
+    {
+      "id": "chapter-oracle-and-full-go-serial",
+      "area": "工具鏈",
+      "rule": "正式章oracle與全Go回歸採串行：先確認tools/dosgolem_oracle.sh的有界程序已終止，再啟動全套回歸；原版執行中只做低成本檢查。入口：docs/goal/111-goal-original-parity-campaign-20260915.md的紀律與tools/dosgolem_oracle.sh。",
+      "why": "本輪在護援oracle執行時同時跑全Go回歸，違反111既有紀律。這兩份結果均保留，未把併行當成合法執行方式；後續工作必須分開排程以免資源爭用。",
+      "date": "2026-10-01",
+      "evidence": "docs/knowledge-base/58-fd2-exe-re-coverage.md"
     }
   ]
 }

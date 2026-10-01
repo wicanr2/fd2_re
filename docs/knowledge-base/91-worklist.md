@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -234,15 +234,5 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
-
-### 其餘戰後回歸錯用不存在的 FDICON.DAT 而跳過
-
-`post-fixtures-wrong-fdicon-archive` · 缺陷 · [#64](https://github.com/wicanr2/fd2_re/issues/64) · 仍未完成 · 要人判
-
-修正第十三章測試 #63 時，查到 battleevent_test.go 其餘測試仍以不存在的 FDICON.DAT 為必備素材，完整固定原版使用 FDICON.B24。受影響測試：TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8、TestChapter6PostJoins13PersistsPartyAndEntersTown7、TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9、TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11、TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21、TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary、TestChapter18PostJoins21And7Town19SaveBoundary、TestChapter17PostBranchJoin16Town18SaveBoundary。這是驗證入口缺陷；不得把套件綠燈當成這些測試已實際執行。依章次收尾時修正前置資料並乾淨重跑，不據此重開已驗收第四～十二章。
-
-怎樣算做完：逐項改用固定版本 FDICON.B24，補齊正式語系與已證實戰後前置狀態；在維護容器與完整素材下確認相關測試實際 PASS 而非 SKIP，記錄 E1 範圍與現況勘誤。
-
-證據：`remake/cmd/fd2/battleevent_test.go`
 
 <!-- END fd2_worklist.py render -->

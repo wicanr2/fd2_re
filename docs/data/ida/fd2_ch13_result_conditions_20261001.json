@@ -5289,6 +5289,160 @@
         "title 清空陣列不代表我方全滅；失敗前 slot0 HP420、slot16 HP230、slot59 HP0／bit0=1",
         "維持同槽、seed4；不得選擇重擲結果或據此宣稱整章通過"
       ]
+    },
+    "east_guard_attempt": {
+      "date": "2026-10-01",
+      "plan": "docs/data/parity-plans/ch13-east-guard-sample.jsonl",
+      "plan_sha256": "ade6ba7d256c0462a2ab61e5fb3cb5f675c836a98c07e668c57f3de865e98aa7",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "seed": 4,
+      "slot_sha256": "d8531b37bad1f98dfffc68c05557cdbc4cd5af0293bf0fc9bd63cfead426daae",
+      "result": "第七回合返回標題，未完成event7／戰後，controller exit15。",
+      "last_valid_checkpoint": "work/parity-slot-ch13/east-guard-original-r1/checkpoint-3183.json",
+      "checkpoint_sha256": "39a1bd58ea1b23138652b40bddcd92ea1fcb58d12c9906f22048aff93d4bd195",
+      "round": 7,
+      "initial_records": [
+        {
+          "index": 15,
+          "camp": 1,
+          "x": 17,
+          "y": 3,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 16,
+          "camp": 1,
+          "x": 15,
+          "y": 2,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 17,
+          "camp": 1,
+          "x": 25,
+          "y": 13,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 18,
+          "camp": 1,
+          "x": 25,
+          "y": 13,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 19,
+          "camp": 1,
+          "x": 23,
+          "y": 11,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 20,
+          "camp": 1,
+          "x": 16,
+          "y": 4,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 21,
+          "camp": 1,
+          "x": 21,
+          "y": 4,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 22,
+          "camp": 1,
+          "x": 26,
+          "y": 4,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 23,
+          "camp": 1,
+          "x": 26,
+          "y": 5,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 24,
+          "camp": 1,
+          "x": 23,
+          "y": 5,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 25,
+          "camp": 1,
+          "x": 20,
+          "y": 20,
+          "hp": 0,
+          "byte5": 1
+        },
+        {
+          "index": 26,
+          "camp": 1,
+          "x": 23,
+          "y": 5,
+          "hp": 0,
+          "byte5": 1
+        }
+      ],
+      "late_record59": {
+        "index": 59,
+        "camp": 1,
+        "x": 25,
+        "y": 19,
+        "hp": 52,
+        "byte5": 0
+      },
+      "party_samples": [
+        {
+          "index": 0,
+          "camp": 2,
+          "x": 9,
+          "y": 5,
+          "hp": 420,
+          "byte5": 0
+        },
+        {
+          "index": 3,
+          "camp": 2,
+          "x": 4,
+          "y": 17,
+          "hp": 720,
+          "byte5": 0
+        },
+        {
+          "index": 14,
+          "camp": 2,
+          "x": 21,
+          "y": 18,
+          "hp": 245,
+          "byte5": 0
+        }
+      ],
+      "cause_level": "strong inference",
+      "cause_note": "raw15～26全部bit0=1，記錄59仍HP52／bit0=0，符合已閉合20765第一分支而非後到援軍分支。此run未追207A4 writer，不升格為writer直接執行證據。",
+      "trace207ec_hits": 0,
+      "limits": [
+        "沒有HP鎖定；沒有執行計畫末端force-enemy-clear；不是我方全滅",
+        "護援使slot14到東側，但slot3未移動、初始友軍保護不足",
+        "本輪不再重啟整章；先調整有界局部正常輸入與核對111的停止條件",
+        "測試端全Go回歸與oracle並行不符111紀律，結果保留，後續必須串行"
+      ]
     }
   }
 }

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_post_fixture_verification",
+  "date": "2026-10-01",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/64",
+  "status": "RUNTIME-E1",
+  "evidence_level": "confirmed",
+  "scope": "八條既有戰後回歸實際執行；共16個建構分支，不增加原版PLAYER-E2覆蓋。",
+  "fixture": {
+    "original_reference": "docs/data/fd2-reference-files.json",
+    "fdicon": {
+      "file": "FDICON.B24",
+      "size": 624010,
+      "md5": "46f793540209a063ea73a5373ca14bf4",
+      "sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
+    },
+    "container": "fd2-go-test-local:20260909",
+    "original_mount": "org_game/炎龍騎士團/FLAME2 readonly",
+    "asset_pack": "remake/generated-assets/fd2-original-b97caf22 + remake/assets/locales",
+    "locale": "zh-Hant",
+    "uid_gid": "1000:1000",
+    "network": "none"
+  },
+  "commands": {
+    "targeted": "FD2_ASSET_PACK=<generated pack with locales> with-xvfb go test ./cmd/fd2 -run ^TestChapter(6Post|7Post|8Post|10Post|20Post|15Post|18Post|17Post) -count=1 -timeout 210s -v",
+    "full": "FD2_ASSET_PACK=<generated pack with locales> with-xvfb go test ./... -count=1 -timeout 800s"
+  },
+  "source_sha256": {
+    "remake/cmd/fd2/battleevent_test.go": "bb88baf0a90b54f0951f28cd4d2aad97063c2f8ee6d0fabe8c5731fed5fa21f5",
+    "remake/cmd/fd2/locale_fixture_test.go": "557def2307e1790a3f3d0942acac06d7ed965a63198ea2916c091f2334b02f17",
+    "remake/cmd/fd2/beatrunner_test.go": "d0c5f01c9bcba260c266bd210d7d39c97cdb76e82402bd739e6e09ea64ad0dae",
+    "remake/assets/maps/map5/map5_units.json": "f94337f25fc7ed7aec7041ee52a92f98309d69893a8e93fcce7e13eae5d49704",
+    "remake/assets/maps/map9/map9_units.json": "95f412b676830cdaebeea1e51a46e8098dd1dce7c01bcd832bdd4bb0b6f928dc",
+    "remake/assets/scenarios/ch06.json": "20e405bbb5e9d31b1a6b00952b527a38d16998a8993944bea19990826abe5c0b",
+    "remake/assets/scenarios/ch07.json": "73f21023493af3c478affeffa1385c947ca607a1f6f822fb6a15153667b9e6be",
+    "docs/data/ui-traces/parity-ch06.json": "2eb573682adbc59f38c38b38a54990bd522fb7225283dd2ae594bb3709b8511c",
+    "remake/cmd/fd2/main.go": "252f15194d182aa0dfae13abd0215943cd077ee4d1284fcec0c4fdea4013373a",
+    "remake/cmd/fd2/native_story_dialogue.go": "af0d780237af51d3382d5948ab9f885ddd79c3fb39ffbca1af8cacecc9d6db06"
+  },
+  "corrections": [
+    {
+      "item": "固定素材名稱",
+      "before": "FDICON.DAT 不存在，完整原版仍 SKIP",
+      "after": "依版本清單使用 FDICON.B24；所有手工 Game 載入正式語系"
+    },
+    {
+      "item": "第七章 event25 前置",
+      "before": "finishTurn 是玩家新回合收尾，未分派 selector0",
+      "after": "以已證實 selector0 入口建構 event25，仍核驗44筆、state17與兩條戰後分支"
+    },
+    {
+      "item": "第六章前置",
+      "before": "誤把固定檔案40筆當 runtime40，戰後期望41",
+      "after": "8我方＋group0 25＝33，未走第15回合；戰後group3追加1成34。既有原版第六章收據亦未到第15回合group1"
+    },
+    {
+      "item": "第十章前置",
+      "before": "不同隊伍筆數一律期望52",
+      "after": "我方 len(order)＋group0 42；group1追加8後仍精確驗60／61"
+    },
+    {
+      "item": "收框",
+      "before": "無條件只期望五幀",
+      "after": "保留精確數量：基本5幀；非零MotionTargetY且可見游標X＋Y>0時，再加X＋Y＋終點1。沿用beatrunner已證實契約，沒有改成只檢查下限"
+    }
+  ],
+  "tests": [
+    {
+      "test": "TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8",
+      "result": "PASS",
+      "cases": [
+        "TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8/active_joins",
+        "TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8/inactive_does_not_join"
+      ]
+    },
+    {
+      "test": "TestChapter6PostJoins13PersistsPartyAndEntersTown7",
+      "result": "PASS",
+      "cases": [
+        "TestChapter6PostJoins13PersistsPartyAndEntersTown7"
+      ]
+    },
+    {
+      "test": "TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9",
+      "result": "PASS",
+      "cases": [
+        "TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9/frontier_29",
+        "TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9/frontier_41"
+      ]
+    },
+    {
+      "test": "TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11",
+      "result": "PASS",
+      "cases": [
+        "TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11/frontier_60",
+        "TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11/frontier_61"
+      ]
+    },
+    {
+      "test": "TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21",
+      "result": "PASS",
+      "cases": [
+        "TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21/round15_runs_optional_arm",
+        "TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21/round16_skips_optional_arm"
+      ]
+    },
+    {
+      "test": "TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary",
+      "result": "PASS",
+      "cases": [
+        "TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary/round_gt_18",
+        "TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary/inactive_gt_4",
+        "TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary/word42_below_gate",
+        "TestChapter15PostFourRawBranchesJoin18Town17AndSaveBoundary/word42_join18"
+      ]
+    },
+    {
+      "test": "TestChapter18PostJoins21And7Town19SaveBoundary",
+      "result": "PASS",
+      "cases": [
+        "TestChapter18PostJoins21And7Town19SaveBoundary"
+      ]
+    },
+    {
+      "test": "TestChapter17PostBranchJoin16Town18SaveBoundary",
+      "result": "PASS",
+      "cases": [
+        "TestChapter17PostBranchJoin16Town18SaveBoundary/roster_has_18",
+        "TestChapter17PostBranchJoin16Town18SaveBoundary/roster_lacks_18"
+      ]
+    }
+  ],
+  "related_test": "TestChapter10PostRuntimeFrontiersTrackConditionalKailey 亦被同一目標正規式涵蓋並PASS",
+  "logs": {
+    "initial_failure": "work/parity-slot-ch13/post-fixtures-r1.log",
+    "detailed_failure": "work/parity-slot-ch13/post-fixtures-detail-r2.log",
+    "targeted_pass": {
+      "path": "work/parity-slot-ch13/post-fixtures-r3.log",
+      "sha256": "fb5cb20b24e214d126a14e097f1f06911c21f0975c73af0ae3de75e340ba006d"
+    },
+    "full_pass": {
+      "path": "work/parity-slot-ch13/post-fixtures-full-go-r4.log",
+      "sha256": "e9e0ea548d60babf9b1902ffea25188dabc30e9e54a4148d197b4c8ec9dfd2f2",
+      "packages": 19,
+      "results": [
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/cmd/fd2\t178.586s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/cmd/fd2-chapter-slot\t0.429s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/cmd/fd2-save-audit\t0.031s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/cmd/fd2-string-inventory\t0.624s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/afm\t1.855s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/battle\t2.414s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/battlepresent\t0.323s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/campaign\t2.329s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/dato\t0.079s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/editorcanonical\t0.575s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/ending\t3.223s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/fdicon\t1.093s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/fdother\t3.098s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/fdsave\t0.068s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/fdtxt\t0.168s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/figani\t0.889s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/indexedmap\t0.517s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/localization\t0.607s",
+        "ok  \tgithub.com/wicanr2/fd2_re/remake/internal/musiccatalog\t0.475s"
+      ]
+    }
+  },
+  "limitations": [
+    "全部是重製端建構前置 E1；沒有重新產生第四～十二章原版收據",
+    "不提升戰役完成章數、不宣稱第十六～二十章正常玩家可達",
+    "此前套件PASS沒有證明這些被略過的測試曾執行；失敗形成證據保留"
+  ],
+  "result": "PASS；八條/16分支非SKIP，全部19個Go套件通過"
+}
