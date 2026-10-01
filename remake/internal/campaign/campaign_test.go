@@ -1330,7 +1330,7 @@ func TestCh13PostBindingMaterializesSpawnLayoutActAndDialogue(t *testing.T) {
 	if err != nil || len(issues) != 0 {
 		t.Fatalf("ch13 post compile err=%v issues=%#v", err, issues)
 	}
-	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || beats[0].RuntimeContext.SlotCount != 70 || beats[0].RuntimeContext.SpawnGroups[1] != 1 {
+	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil || beats[0].RuntimeContext.SlotCount != 67 || beats[0].RuntimeContext.SpawnGroups[1] != 1 {
 		t.Fatalf("ch13 runtime context=%#v", beats[:min(len(beats), 1)])
 	}
 	var layout, act *Beat
@@ -1345,7 +1345,7 @@ func TestCh13PostBindingMaterializesSpawnLayoutActAndDialogue(t *testing.T) {
 			dialogs = append(dialogs, &beats[i])
 		}
 	}
-	if layout == nil || len(layout.Layout.Units) != 16 || layout.Layout.Units[0].X != 0 || layout.Layout.Units[0].Pose != 0 || layout.Layout.CamX != 288 || layout.Layout.CamY != 240 || act == nil || len(act.Acting) != 1 || act.Acting[0].Units[0].Slot == nil || *act.Acting[0].Units[0].Slot != 67 || len(dialogs) != 17 || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 || dialogs[2].Line != 10 || dialogs[3].SceneIndex == nil || *dialogs[3].SceneIndex != 0 || dialogs[16].Line != 6 {
+	if layout == nil || len(layout.Layout.Units) != 16 || layout.Layout.Units[0].X != 18 || layout.Layout.Units[0].Y != 15 || layout.Layout.Units[0].Pose != 2 || layout.Layout.CamX != 288 || layout.Layout.CamY != 240 || act == nil || len(act.Acting) != 1 || act.Acting[0].Units[0].Slot == nil || *act.Acting[0].Units[0].Slot != 67 || len(dialogs) != 17 || dialogs[0].SceneIndex == nil || *dialogs[0].SceneIndex != 0 || dialogs[2].Line != 10 || dialogs[3].SceneIndex == nil || *dialogs[3].SceneIndex != 0 || dialogs[16].Line != 6 {
 		t.Fatalf("ch13 layout=%#v act=%#v dialogs=%#v", layout, act, dialogs)
 	}
 }

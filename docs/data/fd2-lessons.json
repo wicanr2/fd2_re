@@ -1040,6 +1040,37 @@
         ],
         "pattern": "CompileCampaignJSON"
       }
+    },
+    {
+      "id": "native-ai-epilogue-is-not-success",
+      "area": "逆向",
+      "rule": "區分直接返回與成功行動收尾；以原始分支確認Acted、bit7、姿態與事件是否真的提交。",
+      "why": "第十四章mode8跳13D9A→1317D，略過13512；舊共同收尾解釋讓第二遍錯誤漏掉8筆單位。",
+      "date": "2026-10-02",
+      "evidence": "docs/data/ida/fd2_ch14_mode8_dispatch_20261002.json"
+    },
+    {
+      "id": "semantic-adjacency-preserves-control-boundary",
+      "area": "對拍",
+      "rule": "語意動作相鄰時仍核對控制計畫等待與原版回合邊界；注入前狀態對注入前收據。",
+      "why": "END與清敵之間的await未生成動作，舊重播跳掉第十四章第三回合敵軍；清敵後檢查點也不能拿來比較清敵前。",
+      "date": "2026-10-02",
+      "evidence": "docs/data/ui-traces/parity-ch14.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py"
+        ],
+        "pattern": "following\\[\"seq\"\\] - 1"
+      }
+    },
+    {
+      "id": "field-event-owner-precedes-dialogue",
+      "area": "對拍",
+      "rule": "行動結束後的事件擁有者可能先存在再開對白；同狀態截圖等待首段發布，不以Acted或當下文字數推定已恢復操作。",
+      "why": "第十四章wait860已建立事件10但len(dialog)仍0，舊重播拍到錯誤戰場；等待原生首段等鍵後整幀通過。",
+      "date": "2026-10-02",
+      "evidence": "docs/data/ui-traces/parity-ch14.json"
     }
   ]
 }

@@ -163,8 +163,9 @@ func (st *State) ApplyNativeDeathOp(op NativeDeathOp) error {
 	}
 	switch op.Op {
 	case "ai_mode_range":
-		// 0x3419C：只改 +0x34 的低四位，保留高四位旗標。還沒建構的記錄之後由
-		// 建構器整筆寫入，所以只處理現存單位。
+		// 0x3419C：只改 +0x34 低四位。保留原始含端點範圍，只投影物化單位；
+		// 未物化槽的 +0x34 在 0x10FB9 由 FDFIELD row+17 整 byte 覆寫，之後
+		// 0x1100B 才增加有效筆數。證據：fd2_ch14_event10_20261002.json。
 		if op.Mode < 0 || op.Mode > 0x0f || op.First < 0 || op.Last < op.First {
 			return fmt.Errorf("ai_mode_range %d..%d mode %d outside raw range", op.First, op.Last, op.Mode)
 		}

@@ -70,6 +70,12 @@ class PairingAndUnits(unittest.TestCase):
         self.assertFalse(vp.frame_comparable({"kind": "after_enemy_phase", "frame": "remake-0003-p0.png"}))
         self.assertTrue(vp.frame_comparable({"kind": "select", "frame": "remake-0005-p0.png"}))
 
+    def test_after_enemy_phase_pairs_before_clear_injection(self):
+        actions = [{"kind": "end_turn", "seq": 1022},
+                   {"kind": "force_enemy_clear", "seq": 1074}]
+        self.assertEqual(vp.pair_oracle_seq(actions, {"kind": "after_enemy_phase", "oracle_seq": 1022}), 1073)
+        self.assertEqual(vp.pair_oracle_seq(actions, {"kind": "force_enemy_clear", "oracle_seq": 1074}), 1074)
+
     def test_dead_oracle_units_are_dropped(self):
         cp = {"units": [{"camp": 0, "x": 1, "y": 2, "hp": 0}, {"camp": 2, "x": 3, "y": 4, "hp": 9}]}
         self.assertEqual(vp.oracle_units(cp), {(2, 3, 4)})

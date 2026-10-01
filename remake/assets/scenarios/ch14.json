@@ -617,5 +617,185 @@
       ]
     }
   ],
-  "runtime_append_groups": true
+  "runtime_append_groups": true,
+  "native_death_programs": {
+    "2:10": [
+      {
+        "type": "native_death_op",
+        "native_source": "0x34e52",
+        "native_death_op": {
+          "op": "ai_mode_range",
+          "first": 16,
+          "last": 71,
+          "mode": 0
+        },
+        "native_event_id": 10,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34e5f",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch14.json",
+          "scene_index": 0,
+          "line": 4,
+          "source_dat": "FDTXT_014",
+          "string_index": 1,
+          "utterance": 0,
+          "control": "FFED",
+          "operand": 32,
+          "pages": [
+            [
+              "『吼嗚！",
+              "　注意，有人接近了！』"
+            ]
+          ]
+        },
+        "native_event_id": 10,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34e5f",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch14.json",
+          "scene_index": 0,
+          "line": 5,
+          "source_dat": "FDTXT_014",
+          "string_index": 1,
+          "utterance": 1,
+          "control": "FFED",
+          "operand": 16,
+          "pages": [
+            [
+              "『通通給我醒來！開打了！』"
+            ]
+          ]
+        },
+        "native_event_id": 10,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34e5f",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch14.json",
+          "scene_index": 0,
+          "line": 6,
+          "source_dat": "FDTXT_014",
+          "string_index": 1,
+          "utterance": 2,
+          "control": "FFED",
+          "operand": 17,
+          "pages": [
+            [
+              "『咦？對手呢？",
+              "　怎麼都是一堆小鬼頭．．』"
+            ]
+          ],
+          "glyph_ids": [
+            [
+              [
+                557,
+                701,
+                180,
+                716,
+                118,
+                470,
+                180
+              ],
+              [
+                181,
+                672,
+                344,
+                634,
+                343,
+                486,
+                1279,
+                188,
+                143,
+                129,
+                584,
+                584,
+                560
+              ]
+            ]
+          ]
+        },
+        "native_event_id": 10,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "dialogue",
+        "native_source": "0x34e5f",
+        "native_text_index": 1,
+        "native_dialogue_ref": {
+          "script": "assets/story/ch14.json",
+          "scene_index": 0,
+          "line": 7,
+          "source_dat": "FDTXT_014",
+          "string_index": 1,
+          "utterance": 3,
+          "control": "FFED",
+          "operand": 18,
+          "pages": [
+            [
+              "『管他的，知道我們大軍在此",
+              "　集結而還敢接近的，",
+              "　一定不是一般的小鬼，"
+            ],
+            [
+              "　先打了再說！』"
+            ]
+          ]
+        },
+        "native_event_id": 10,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      },
+      {
+        "type": "native_death_op",
+        "native_source": "0x34e86",
+        "native_death_op": {
+          "op": "state_set",
+          "index": 16,
+          "value": 1
+        },
+        "native_event_id": 10,
+        "native_when": {
+          "state_eq": [
+            16,
+            0
+          ]
+        }
+      }
+    ]
+  }
 }

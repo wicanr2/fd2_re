@@ -13,6 +13,125 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+func TestEvent10ActionTailBlocksUntilDialogueAndPreservesFutureGroupMode(t *testing.T) {
+	for _, rawCamp := range []byte{0, 1, 2} {
+		t.Run(fmt.Sprintf("rawCamp%d", rawCamp), func(t *testing.T) {
+			st, err := battle.Load(assetPath("assets/maps/map13/map13_units.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch14.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			// 原版收據的有效前沿是67；高四位另設非零，驗證mode原語只清低四位。
+			st.Roster = st.Units // 不讓mode-range修改尚未物化的FDFIELD來源。
+			st.Units = make([]*battle.Unit, 67)
+			for i := range st.Units {
+				st.Units[i] = &battle.Unit{HP: 1, OnField: true, Camp: battle.Enemy,
+					HasNativeRecordByte34: true, NativeRecordByte34: 0xa8}
+			}
+			actor := st.Units[0]
+			actor.Camp, actor.HasNativeRecordByte6, actor.NativeRecordByte6 = battle.Own, true, rawCamp
+			st.Units[1].Camp = battle.Own // 玩家末名自動換手會清pending；此例保留一位待行動者。
+			found := false
+			for y := 0; y < st.H && !found; y++ {
+				for x := 0; x < st.W; x++ {
+					if id, ok := battle.NativeFieldEventIDAt(st, x, y, 0); ok && id == 10 {
+						actor.X, actor.Y, found = x, y, true
+						break
+					}
+				}
+			}
+			if !found {
+				t.Fatal("map13缺少事件10格子")
+			}
+			g := &Game{st: st, sc: sc, aiBusy: rawCamp != 2}
+			attachOfficialTestLocale(t, g, "zh-Hant")
+			g.noteNativeFieldEventStep(actor, actor.X, actor.Y)
+			g.finishSuccessfulUnitAction(actor, nil)
+			if g.loadErr != "" || g.battleEvent == nil || len(g.dialog) != 1 || !actor.Acted || st.NativeEventState[16] != 0 {
+				t.Fatalf("事件起手err=%q job=%v dialog=%d acted=%v state16=%d", g.loadErr, g.battleEvent != nil, len(g.dialog), actor.Acted, st.NativeEventState[16])
+			}
+			for i, u := range st.Units {
+				want := byte(0xa0)
+				if i < 16 {
+					want = 0xa8
+				}
+				if u.NativeRecordByte34 != want {
+					t.Fatalf("record%d mode=%#x want=%#x", i, u.NativeRecordByte34, want)
+				}
+			}
+			// 建構介面測試：每段對白仍阻塞，只有最後一段結束才提交state。
+			for segments := 0; g.battleEvent != nil; segments++ {
+				if segments > 20 || st.NativeEventState[16] != 0 {
+					t.Fatal("事件未結束或提早提交state")
+				}
+				g.dialog = nil
+				g.advanceBattleEvent()
+			}
+			if g.loadErr != "" || st.NativeEventState[16] != 1 || len(st.Units) != 67 {
+				t.Fatalf("完成err=%q state16=%d count=%d", g.loadErr, st.NativeEventState[16], len(st.Units))
+			}
+			g.noteNativeFieldEventStep(actor, actor.X, actor.Y)
+			g.finishSuccessfulUnitAction(actor, nil)
+			if g.loadErr != "" || g.battleEvent != nil || len(g.dialog) != 0 {
+				t.Fatal("事件10重播或閘門失效")
+			}
+			if st.AppendGroup(1) != 1 || len(st.Units) != 68 || st.Units[67].NativeRecordByte34 != 8 {
+				t.Fatal("戰後新記錄67不應繼承未物化槽的mode0")
+			}
+		})
+	}
+}
+
+func TestEvent10MissingRawModeStopsBeforeMutation(t *testing.T) {
+	st := &battle.State{Units: make([]*battle.Unit, 67)}
+	for i := range st.Units {
+		st.Units[i] = &battle.Unit{HasNativeRecordByte34: true, NativeRecordByte34: 8}
+	}
+	st.Units[20].HasNativeRecordByte34 = false
+	sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch14.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{st: st, sc: sc, nativeFieldEventPending: &nativeFieldEventPending{eventID: 10, trigger: st.Units[0]}}
+	if !g.dispatchNativeFieldEventPending(st.Units[0]) || g.loadErr == "" || g.battleEvent != nil || st.NativeEventState[16] != 0 {
+		t.Fatal("缺raw模式來源必須停止")
+	}
+	for _, u := range st.Units {
+		if u.NativeRecordByte34 != 8 {
+			t.Fatal("失敗預檢不應發布部分模式寫入")
+		}
+	}
+}
+
+func TestNativeAIMode8ReturnsWithoutSuccessfulActionSideEffects(t *testing.T) {
+	u := &battle.Unit{HP: 12, MaxHP: 20, OnField: true, Camp: battle.Ally,
+		HasNativeRecordByte6: true, NativeRecordByte6: 1,
+		HasNativeRecordByte5: true, NativeRecordByte5: 0,
+		HasNativeRecordByte34: true, NativeRecordByte34: 0xa8,
+		HasNativeMapPresentation: true}
+	u.SetMapPose(3)
+	g := &Game{st: &battle.State{Units: []*battle.Unit{u}}, aiBusy: true, aiAllyPhasePending: true}
+	observed := 0
+	g.aiPlanObserver = func(plan *battle.AIPlan) {
+		if plan.U != u || !plan.NativeModeFallbackActive || plan.NativeModeFallback != 8 {
+			t.Fatal("mode8派送來源不符")
+		}
+		observed++
+	}
+	g.aiStep()
+	if observed != 1 || !g.aiBusy || g.loadErr != "" || u.Acted || u.NativeRecordByte5 != 0 ||
+		u.HP != 12 || u.NativeMapPresentation.Pose != 3 || g.battleEvent != nil {
+		t.Fatalf("mode8不可成功收尾：observed=%d acted=%v flags=%#x hp=%d pose=%d err=%q", observed, u.Acted, u.NativeRecordByte5, u.HP, u.NativeMapPresentation.Pose, g.loadErr)
+	}
+	// 掃描游標已前進；此遍結束後交出控制權，不因不設Acted而原地無限重試。
+	if plan, handled := g.st.NextAllyAIPlan(); !handled || plan != nil {
+		t.Fatal("mode8派送必須前進掃描游標")
+	}
+}
+
 func driveNativeBattleIntro(t *testing.T, g *Game) int {
 	t.Helper()
 	frames := 0

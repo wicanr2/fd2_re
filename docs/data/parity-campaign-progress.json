@@ -364,21 +364,33 @@
     },
     {
       "chapter": 14,
-      "status": "oracle-done",
-      "receipt": "docs/data/ui-traces/parity-ch14-r1.json",
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch14.json",
       "slot_manifest": "docs/data/parity-slots/ch14-manifest.json",
       "slot_sha256": "e2365c32ee56b1e88fd00bd7950f1ae98e2eabf0e3bb8e6f36f586764212cfb1",
       "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
-      "date": "2026-10-02",
-      "verify": "python3 tools/verify_chapter_parity.py --chapter 14 --oracle work/parity-slot-ch14/sample-original-r2 --remake work/parity-slot-ch14/sample-remake-r1 --slot-manifest docs/data/parity-slots/ch14-manifest.json --plan docs/data/parity-plans/ch14-sample.jsonl --out work/parity-slot-ch14/sample-verify-r1.json",
+      "date": "2026-10-01",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 14 --oracle work/parity-slot-ch14/sample-original-r2 --remake work/parity-slot-ch14/sample-remake-r9 --slot-manifest docs/data/parity-slots/ch14-manifest.json --plan docs/data/parity-plans/ch14-sample.jsonl --out work/parity-slot-ch14/verify-fresh.json",
       "limitations": [
-        "原版完整到城鎮、交易、酒店與秘密商店；重製wait seq860缺event10 owner而停止，四項未通過。",
-        "#71事件10、#72較早AI順序差異、#73戰後前沿待修；不得列PLAYER-E2或增加完成章數。"
+        "依111／114建構槽政策、seed4、抽樣三回合後round4清敵；不宣稱自然難度、傷害、存活或逐幀硬體時序。"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/parity-ch14-preflight.json",
-        "docs/data/ui-traces/ch14-native-startup.json"
-      ]
+        "docs/data/ui-traces/ch14-native-startup.json",
+        "docs/data/ui-traces/parity-ch14-r1.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 15,

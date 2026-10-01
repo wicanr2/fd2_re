@@ -5919,7 +5919,9 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	}
 	// 0x1198A（玩家）／0x1D855 等（AI）：分派走行時記下的 selector 0 格子事件，或收尾格
 	// 以 selector 1 查到的 event 61／75（0x18B0C／0x18B66 同樣寫 [0x51A8F]）。
-	g.dispatchNativeFieldEventPending(actor)
+	if g.dispatchNativeFieldEventPending(actor) {
+		return
+	}
 	if g.beginNativeFieldEvent61(actor, nil) {
 		return
 	}
@@ -12265,6 +12267,11 @@ func (g *Game) aiStep() {
 		g.aiPlanObserver(plan)
 	}
 	g.nativeFieldEventPending = nil // 0x1D855 等：每個 AI 單位行動前 [0x51A8F] = 0xff
+	if plan.NativeModeFallbackActive && plan.NativeModeFallback == 8 && plan.NativeError == nil {
+		// 0x13D9A→0x1317D直接返回，跳過0x13512／selector1／姿態重設。
+		// 不設Acted，第二遍仍能依raw入場；原生掃描游標已前進，不會原地重試。
+		return
+	}
 	if plan.NativeError != nil {
 		// Native mode 2 有明確的原始來源閘門；閘門失敗時不可消耗行動，也不可
 		// 靜默替換成正規化 AI。

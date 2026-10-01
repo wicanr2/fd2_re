@@ -336,8 +336,8 @@ func (s *State) nextNativeAIModeFallbackPlan(u *Unit) (*AIPlan, bool, error) {
 		return nil, true, fmt.Errorf("native AI mode %d has no recovered dispatcher branch", mode)
 	}
 	if mode == 8 {
-		// 0x13a9f branches directly to its common completion path for mode 8;
-		// no movement or effect is emitted by that branch.
+		// 0x13D9A直接跳0x1317D epilogue，跳過0x13E80→0x13512成功收尾。
+		// 不移動、不設已行動，第二遍仍可派送；見fd2_ch14_mode8_dispatch_20261002.json。
 		return &AIPlan{U: u, SpellID: -1, NativeModeFallbackActive: true, NativeModeFallback: byte(mode)}, true, nil
 	}
 	if mode == 2 || mode == 11 {

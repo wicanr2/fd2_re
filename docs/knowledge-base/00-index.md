@@ -242,3 +242,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第十四章 #70 [同槽原生起手收據](../data/ui-traces/ch14-native-startup.json)：三張完整畫面0px，僅有限RUNTIME-E1，整章仍由#69驗收；原始失敗預檢收據保留。
 - 第十四章整章[首次失敗診斷](../data/ui-traces/parity-ch14-r1.json)：原版完整退出，重製在事件10停止並有AI順序差異；正式完成範圍仍由58及#69承載。
 - 第十四章事件10 #71：[IDA完整owner／範圍consumer與原版live模式轉移](../data/ida/fd2_ch14_event10_20261002.json)；超過live前沿的處理仍待證據，規格DRAFT，AI較早分岔由#72獨立處理。
+
+- 第十四章AI兩遍差異 #72：[mode8跳過成功收尾的IDA與原版trace](../data/ida/fd2_ch14_mode8_dispatch_20261002.json)；有限READY規格與重開原因見56／58。
+
+- 第十四章戰後排列缺陷 #75：[既有 IDA 主證據追加16筆原表](../data/ida/fd2_ch12_post_persistence_20261001.json)，原始定位與writer保留；正式規格、重開原因與驗收由56／58承載。
+
+- 第十四章修正後[完整四項收據](../data/ui-traces/parity-ch14.json)，保持同槽、固定亂數與111／114限制；完整現況統一見58。
+
+- 第十四章[原版／重製／差異固定抽樣索引](../data/ui-traces/parity-ch14-samples.json)與[總覽一](../figures/parity-ch14-samples-p1.png)、[總覽二](../figures/parity-ch14-samples-p2.png)，按每種動作首點與所有非零差異抽樣，不另提升驗證範圍。

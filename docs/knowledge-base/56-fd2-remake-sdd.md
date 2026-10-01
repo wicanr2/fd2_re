@@ -5863,7 +5863,7 @@ raw `+0x05`，也不建立攻擊。缺少 movement provenance 時在位置、回
 重製端新增 `TestAIStepConsumesVerifiedMode0NearestFallback`、
 `TestAIStepStopsMode0WithoutMovementProvenance` 與
 `TestAIStepConsumesVerifiedMode8Completion`。mode 0 只依 raw nearest fallback 建立
-movement-only 路徑並完成回合，不寫入 map-range；mode 8 只驗證共同的 raw 行動完成
+movement-only 路徑並完成回合，不寫入 map-range；mode 8 的「共同 raw 行動完成」已於2026-10-02由#72直接指令與同槽結果推翻（現況見58），改為直接返回
 分支。mode 0 缺少 movement provenance 時在位置、回合或 raw 狀態變更前停止。
 
 這些是重製端 E1 消費邊界，不替 mode 0／8 命名高階玩法；mode 1 的 blocked-coordinate
@@ -8995,3 +8995,97 @@ battle_ch14視圖取固定槽起手camera(23,28)、cursor(32,33)、visible(9,5)�
 [58最新現況](58-fd2-exe-re-coverage.md)保存完整原版終態、重製失敗點與分層限制；
 [完整首次診斷](../data/ui-traces/parity-ch14-r1.json)四項未通過，整章不列PLAYER-E2。
 #71事件10規格仍DRAFT、#72較早AI順序差異與#73戰後前沿待修；本次未修改正式事件行為。
+
+
+## 2026-10-02 #71 第十四章事件10有限規格（READY）
+
+來源：[58](58-fd2-exe-re-coverage.md) → [固定雜湊IDA主證據](../data/ida/fd2_ch14_event10_20261002.json)。
+沿用全域0x51B91事件程式與既有Action／NativeDeathOp／NativeWhen／原生對白，不新增資料格式；
+歷史欄位native_death_programs的2:10指向同一個全域handler，不代表這次由死亡觸發。
+由tools/extract_native_death_events.py逐指令核對事件10，再由sync_native_death_programs.py
+把map13 selector0已綁定的事件10降成章14程式。只登錄已審查的field handler，不推廣未知事件。
+
+走行每格保存最後的selector0事件，成功行動收尾經auto-end後才分派；沒有raw陣營閘門。
+state16非0直接返回；首次依序執行16..71含端點的+0x34低四位mode0、
+FDTXT_014文字1的所有原生對白，再寫state16=1。對白開收框期間阻塞AI／玩家續行，
+結束後才繼續既有selector1收尾；LOAD／START沿用既有暫態重設，不改SAV格式。
+
+原版helper不截斷；可編輯原語完整保留16..71。重製只投影物化單位的byte，未物化
+槽位不建立假單位、也不延遲覆寫未來單位。此投影依據是constructor的0x10FB6..0x10FB9
+在增加有效筆數前整byte覆寫+0x34，且原版戰後新增record67模式為8。證據限於這個欄位
+和本章生命週期，不宣稱constructor整筆80bytes皆覆寫。正式序列缺事件來源、動作身分、
+raw+0x34或對白資料時停止，不用0補缺件；已提交的模式不能因UI錯誤被宣稱為完成交易。
+
+驗收：原始push／call／guard／state寫入全覆蓋，canonical來源與正式入口同步；
+raw高四位保留、有效前沿不增、未物化槽後來依constructor來源生成；不同raw陣營均可觸發；
+對白前mode0但state16仍0、完整收框後state16=1、再次踩格不重播。
+同一完整sample-original-r2由TestChapterParityReplay重播越過seq860；
+#72與#73及完整#69四項驗收獨立，不把內部回歸提升成整章PLAYER-E2。
+
+證據審查：固定FD2.EXE／IDA9.4 LE來源與原名bytes保留，玩家caller、模式writer、
+constructor覆寫、原版51筆轉移及新增record67互相一致；有限契約足夠實作，READY。
+
+
+## 2026-10-02 #73 第十四章戰後入口前沿（READY）
+
+來源：[58](58-fd2-exe-re-coverage.md) → [完整原版r2與診斷](../data/ui-traces/parity-ch14-r1.json)。
+固定雜湊IDA sub_238DC的原始指令已保存於
+[戰後主證據](../data/ida/fd2_ch12_post_persistence_20261001.json)，不重開已閉合helper。
+本槽戰鬥前沿67且章內不新增群組；原版2391B呼叫group1追加一筆後為68，
+新增record67由ACTING47消費。70是素材容量，不能當runtime_context入口的精確前沿。
+因此ch13_post.json的入口SlotCount改67；spawn_groups保持1:1、既有layout／對白／
+ACTING／sync／章遞增順序不變。不把pre LOADCH的素材容量70改成67。
+
+驗收先由campaign編譯測試確認精確67與新增目標67，再從正常LOAD的完整章重播
+確認67→68、戰後所有節點、town_ch15、買賣與酒店存讀檔；仍使用相同原版r2。
+不是任意放寬slot_count列表，其他名冊形狀仍拒絕。無原版新狀態注入、不改SAV格式。
+證據審查：完整原版收據的前沿、post各call及先前ACTING67消費端一致；
+重製r2現在實際抵達同一入口並明確報67不符70，有限更正READY。
+
+
+## 2026-10-02 #72 mode8直接返回（READY）
+
+[固定雜湊IDA與原版trace](../data/ida/fd2_ch14_mode8_dispatch_20261002.json)證明
+0x13D9A直接跳epilogue，跳過0x13512等成功尾段；「共同收尾」舊說法已失效。
+AI計畫仍沿原本三遍與排序產生；native fallback mode8由aiStep直接返回，
+不寫Acted／raw+5、不聚焦、不改姿態／HP、也不呼叫selector1。下一次掃描依原生游標
+繼續；第二遍仍可派送同一單位，不以Acted掩蓋原版重複入口。
+走行pending在AIcaller開始時仍照既有規則清除；mode8沒有走行，不產生格子事件。
+不改seed、計畫、前沿、評分或比較器的分岔拒絕。
+
+驗收：原始mode8分支、第二遍bit7條件與原版兩遍入口順序；
+建構AI測試確認旁觀者仍記錄派送但成功收尾沒有副作用；
+同槽完整第十四章重播的全部AI入口順序、存檔與四項gate仍嚴格比較。
+僅有限mode8修正READY，不重開其他模式／評分內部，也不提升整章。
+
+
+## 2026-10-02 #74 完整章清敵時序（READY）
+
+來源為同一固定槽／計畫／原版run，入口仍見[第十四章診斷](../data/ui-traces/parity-ch14-r1.json)。
+原版actions的END seq1022 round3與清敵seq1074 round4、checkpoint view.round一致；
+計畫兩者之間明示await cursor round4，0x13A9F第三回合入口仍存在。
+因此語意動作相鄰不等於清敵緊接END，舊重播stopBeforeAI推論直接被否定。
+
+重播若下一動作清敵，以已記錄的兩側round判定：同回合保留既有提前清敵的橫幅停點；
+下一回合先完整跑完AI，再清敵。缺失、倒退或跨多回合的資料拒絕，不由動作相鄰猜補。
+正常第三回合AI仍走正式引擎與原有受控亂數；不改遊戲規則、HP政策、清敵筆數或驗收門檻。
+驗收包括兩種合法停點及未知資料拒絕，完整第十四章clear round4、全部AI入口、
+HP／酒店存檔及畫面四項；已有通過章原版不重跑。有限工具修正READY。
+
+## 2026-10-02 #75 第十四章戰後排列（READY）
+
+入口：[58](58-fd2-exe-re-coverage.md) → [固定雜湊 IDA 原表與 consumer](../data/ida/fd2_ch12_post_persistence_20261001.json)。
+0x238F4／0x23904／0x23912 各複製16bytes的X／Y／pose表，0x23942傳入record0..15；
+sub_233C6直接寫+0／+1／+3，arg14=0不另覆寫record0。既有binding的slot0零值、
+其他多筆X減6與Y誤置沒有原始bytes支持；完整酒店SAV的同欄差異直接反證，有限重開。
+依原表重生16筆layout，不改camera(288,240)、前沿67、group1新增67、ACT47與17句對白。
+ACT47只改新增record67姿態；0x239AC同步完整record到持續名冊，酒店SAV保留排列。
+驗收：原始三表與caller／writer完整保留，編譯binding逐筆對上，完整同槽酒店SAV全檔
+SHA-256相同；重播不得借用原版SAV注入，不放寬四項gate。證據審查通過，READY。
+
+## 2026-10-02 #69 第十四章完整四項驗收
+
+[正式收據](../data/ui-traces/parity-ch14.json)的行為、節點、64張整幀畫面與全檔酒店存檔皆通過。
+事件10、mode8、戰後前沿與排列依READY規格完成；原版168筆AI入口無順序分岔。
+依111／114例外列PLAYER-E2／有限CONFORMED，建構槽與清敵限制不變。
+唯一分層現況、完整重生入口與歷史勘誤統一見[58](58-fd2-exe-re-coverage.md)。

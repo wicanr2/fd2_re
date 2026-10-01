@@ -40,6 +40,9 @@ SCENARIOS = ROOT / "remake/assets/scenarios"
 MAPS = ROOT / "remake/assets/maps"
 CANONICAL = ROOT / "remake/assets/editor-canonical"
 LEGACY_DEATH_EVENTS = {"ch01.json": "hawat_berserk"}
+# selector0 與死亡型態2共用全域事件表。只登錄已審查READY的行動收尾事件；
+# 不能因全域程式存在就自動接入其餘尚未驗證的格子事件。
+FIELD_EVENT_PROGRAMS = {"ch14.json": {10}}
 # 0x1366A 的資源庫是 EXE 靜態 bank 的 106 項（doc50「acting resource library」），
 # 全域共用；檔名 map32 是歷史名稱。
 ACTING_LIBRARY = "assets/cutscenes/acting/map32.json"
@@ -144,6 +147,13 @@ def sync(write: bool):
         units = json.loads(units_path.read_text(encoding="utf-8"))["units"]
         effects = sorted({(u["death_effect"]["type"], u["death_effect"]["value"])
                           for u in units if u.get("death_effect") and u["death_effect"]["type"] in (2, 3)})
+        field_ids = FIELD_EVENT_PROGRAMS.get(path.name, set())
+        if field_ids:
+            map_data = json.loads((MAPS / f"map{chapter.map}/map.json").read_text(encoding="utf-8"))
+            bound = {e["event_id"] for e in map_data["native_field_events"] if e["selector"] == 0}
+            if not field_ids <= bound:
+                raise ValueError(f"{path.name} 缺少已審查的selector0事件綁定")
+            effects = sorted(set(effects) | {(2, event_id) for event_id in field_ids})
         programs, removed = {}, []
         for kind, value in effects:
             key = program_key({"type": kind, "value": value})

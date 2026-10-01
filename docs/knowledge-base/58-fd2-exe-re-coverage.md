@@ -1598,3 +1598,53 @@ LOADCH／HUD共用helper沿用既有已閉合契約，本次只補章14主入口
 [事件10原版證據](../data/ida/fd2_ch14_event10_20261002.json)已確認一次state16閘門、16..71低四位寫入、text1及尾端state=1；
 seq856才發生live模式轉移，不能解釋較早AI分岔。超出live前沿的資料生命週期尚未閉合，規格DRAFT，不猜補正式路徑。
 本次未新增正式事件行為，完成章數不增加。原版不必重跑；後續沿同一完整收據重播修正。
+
+
+## 2026-10-02 #71 未物化槽位生命週期閉合
+
+[事件10主證據](../data/ida/fd2_ch14_event10_20261002.json)追加IDA原名sub_10C50與sub_117E7；
+constructor在增加有效筆數前，0x10FB6..0x10FB9以FDFIELD row+17覆寫+0x34。
+原版post首次新增record67的模式為8，直接否定「保留事件10的未物化mode0」。
+此欄位生命週期RE-CLOSED，事件10有限規格READY，見56；不重開其餘已閉合constructor語意。
+原版helper的16..71完整範圍保留，重製不建立假單位，也不把未物化模式排給未來記錄。
+正式接線／same-state仍未驗收，#71保持開啟；#72較早分岔獨立，整章仍未通過。
+
+
+## 2026-10-02 #72 mode8成功收尾勘誤與重開理由
+
+[主證據](../data/ida/fd2_ch14_mode8_dispatch_20261002.json)以相同固定EXE、
+IDA LE直接指令與同槽原版入口序列反證11及native fallback註解的「共同收尾」：
+0x13D9A跳1317D，沒有經13E80→13512；第二遍仍可派送。
+保留原始歷史索引，本次只重開這個尾段投影，不重做整套AI或忽略差異。
+有限規格READY，實作與完整四項驗收尚待確認；#72保持開啟。
+
+## 2026-10-02 #75 戰後排列有限重開
+
+原版 sample-r2 與重製 r7 酒店存檔只差16人record+0／+1／+3及checksum；
+同狀態結果直接反證舊 ch13_post layout，符合重開條件。
+[既有主證據追加原表](../data/ida/fd2_ch12_post_persistence_20261001.json)保留
+原函式sub_237D5（其中0x238DC入口）／sub_233C6／sub_11506與raw指令，
+由目前IDA9.4再取0x52153／0x52163／0x52173各16bytes；caller與writer一致。
+舊binding沒有原表支持的座標由這份READY證據取代，歷史文件與失敗收據保留。
+同槽行為、節點與64張整幀畫面已通過，存檔仍失敗；整章保持未完成。
+
+## 2026-10-02 #69 第十四章修正後完整驗收
+
+[完整同槽收據](../data/ui-traces/parity-ch14.json)由成功原版 sample-original-r2 與
+修正後完整重製 sample-remake-r9 產生，四項皆通過；不拼接舊失敗樣本。
+#71 事件10在行動收尾阻塞首段對白，16..71原語完整保留且未物化+0x34依constructor覆寫；
+#72 mode8直接返回，168筆原版AI入口全部消費、順序分岔0；#73前沿67→68；
+#74依原版round4清敵並比較注入前1073與注入後1074；#75按原始16筆排列表修正戰後名冊。
+64張完整RGB畫面中46張0px、最大368px，維持640px門檻與最少12張，不遮罩。
+酒店FD2.SAV兩側全檔SHA-256相同：
+`c9079b3f6be9566ec11e851d51ee010648ab588397e7ce523d87260530ed7a2e`。
+戰後17句、group1新增record67、town_ch15、買賣、酒店與秘密商店均經同一完整重播。
+
+本章依111／114例外列PLAYER-E2，有限修正列CONFORMED；
+保留建構槽、seed4、levels6、state7:17=1、AP+200／DP+0／DX+60與抽樣後清敵48筆。
+原版runner仍如實記錄normal_player_path_verified=false，不宣稱自然難度、傷害、存活、
+敵方選目標、音訊人耳驗收或逐幀硬體時序。原版第4～13章沒有重跑。
+正式命令、輸入與來源雜湊見收據reproduce／verification；目前章統計由
+`python3 tools/fd2_parity_progress.py verify`依正式台帳產生，不另維護一份數字。
+
+同狀態抽樣圖：[總覽一](../figures/parity-ch14-samples-p1.png)、[總覽二](../figures/parity-ch14-samples-p2.png)與[來源索引](../data/ui-traces/parity-ch14-samples.json)。固定規則包含全部非零差異及wait860；圖中的差異欄僅顯示差異，不用於遮蔽驗收。

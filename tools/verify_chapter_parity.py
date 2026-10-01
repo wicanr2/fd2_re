@@ -191,6 +191,11 @@ def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     if not later:
         return None
     following = min(later, key=lambda a: a["seq"])
+    if following.get("kind") == "force_enemy_clear":
+        # 清敵收據已將敵軍 HP 寫成 0；敵方回合結束的狀態必須比注入前一格。
+        # 例如第十四章 END 1022 → round4 閒置 1073 → 清敵 1074。
+        # 清敵本身仍另比 following.seq，不可用清敵後狀態遮蔽回合差異。
+        return following["seq"] - 1
     if following.get("kind") == "end_turn":
         # 下一個動作又是 END（那一回合玩家沒有動作）：END 的紀錄 seq 是 YES 那一鍵，
         # 之後的 checkpoint 在有友軍 NPC 的關卡已經是友軍在走。借用系統選單剛開那一格

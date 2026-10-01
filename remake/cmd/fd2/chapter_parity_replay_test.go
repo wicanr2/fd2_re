@@ -487,8 +487,15 @@ func TestChapterParityReplay(t *testing.T) {
 		case "cancel":
 			r.cancelUnit(action, actor)
 		case "end_turn":
-			nextIsForceClear := i+1 < len(actions) && actions[i+1].Kind == "force_enemy_clear"
-			r.endTurn(action, nextIsForceClear)
+			stopBeforeAI := false
+			if i+1 < len(actions) && actions[i+1].Kind == "force_enemy_clear" {
+				var err error
+				stopBeforeAI, err = parityClearBeforeAI(action, actions[i+1])
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+			r.endTurn(action, stopBeforeAI)
 		case "force_enemy_clear":
 			r.forceEnemyClear(action)
 		case "town_enter":
@@ -509,7 +516,40 @@ func TestChapterParityReplay(t *testing.T) {
 		}
 		r.prevSeq = action.Seq
 	}
+	t.Logf("AI 入口比較：原版 %d 筆、已消費 %d 筆、順序分岔 %d 筆", len(r.aiEntries), r.aiCursor, r.aiOrderDivergences)
+	if len(r.aiEntries) > 0 && r.aiCursor != len(r.aiEntries) {
+		r.checkpoint("ai_order", 0, r.ui(), false,
+			fmt.Sprintf("divergence: 原版 AI 入口 %d 筆，重製只消費 %d 筆", len(r.aiEntries), r.aiCursor))
+	}
 	r.checkpoint("end", 0, r.ui(), g.titlePhase == "")
+}
+
+// parityClearBeforeAI保留原版實際清敵回合。控制計畫的await不產生語意動作，
+// END與clear相鄰仍可能已跑完整敵方回合；來源不完整時拒絕猜測。
+func parityClearBeforeAI(end, clear parityAction) (bool, error) {
+	if end.Kind != "end_turn" || clear.Kind != "force_enemy_clear" || clear.Seq <= end.Seq ||
+		end.Round <= 0 || clear.Round < end.Round || clear.Round > end.Round+1 {
+		return false, fmt.Errorf("清敵時序缺少可比的END／clear回合：%+v／%+v", end, clear)
+	}
+	return clear.Round == end.Round, nil
+}
+
+func TestParityClearRespectsOraclePhaseBoundary(t *testing.T) {
+	end := parityAction{Kind: "end_turn", Seq: 1022, Round: 3}
+	clear := parityAction{Kind: "force_enemy_clear", Seq: 1074, Round: 4}
+	if early, err := parityClearBeforeAI(end, clear); err != nil || early {
+		t.Fatal("第十四章完整第三回合不能因動作相鄰而略過", early, err)
+	}
+	clear.Round = 3
+	if early, err := parityClearBeforeAI(end, clear); err != nil || !early {
+		t.Fatal("同回合的既有提前清敵停點必須保留", early, err)
+	}
+	for _, round := range []int{0, 2, 5} {
+		clear.Round = round
+		if _, err := parityClearBeforeAI(end, clear); err == nil {
+			t.Fatal("不可猜測缺失或跨越的回合", round)
+		}
+	}
 }
 
 // mark 對應驅動端的 mark：同一個節點兩側各取一張畫面。標記本身不送鍵，但重製端
@@ -1544,12 +1584,25 @@ func (r *parityReplay) waitUnit(action parityAction, actor *battle.Unit) {
 			checkpointed = true
 		}
 		answerNativeTreasurePrompt(g)
-		return actor.Acted || actor.HP <= 0
+		return (actor.Acted && g.nativeLevelUpDialogue == nil && g.nativeFieldEventPending == nil) || actor.HP <= 0
 	}) {
 		t.Fatalf("wait(seq %d)：待機之後沒有行動完畢\n阻塞：%s", action.Seq, ch01Blockers(g))
 	}
 	if !checkpointed {
-		r.checkpoint("wait", action.Seq, "cursor", true)
+		// selector0事件在Acted之後同步開對白。原版wait可停在第一段等鍵，
+		// 不能用Acted把開框之前的戰場當成同狀態畫面；不按鍵先等文字發布。
+		if g.battleEvent != nil {
+			for frame := 0; frame < ch01FrameBudget && !storyEnterReady(g); frame++ {
+				ackPresents(g)
+				if err := g.Update(); err != nil {
+					t.Fatalf("wait事件對白Update：%v", err)
+				}
+			}
+			if !storyEnterReady(g) {
+				t.Fatalf("wait(seq %d)：事件對白未到等鍵", action.Seq)
+			}
+		}
+		r.checkpoint("wait", action.Seq, r.ui(), true)
 	}
 }
 

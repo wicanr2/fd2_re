@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -140,6 +140,24 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：保留原版67→68前沿、IDA post直接指令及layout／sync consumer證據；READY規格後修正binding與失實測試斷言。正常同槽完整重播可進post、追加record67、演出、sync與章15城鎮，酒店存檔閉環通過；#69整章四項仍獨立驗收。
 
 證據：`docs/data/ui-traces/parity-ch14-r1.json`
+
+### 完整重播依原版狀態保留清敵前的敵方回合
+
+`parity-force-clear-phase-boundary` · 缺陷 · [#74](https://github.com/wicanr2/fd2_re/issues/74) · 仍未完成 · 要人判
+
+怎樣算做完：登錄原版END與清敵checkpoint、受版控完整計畫及trace證據；來源可比且READY後修正重播時序。原版清敵前完整回合保持完整；既有提前清敵樣本保持原有停點。第十四章round、AI順序及酒店SAV閉環通過；不改正式玩法、種子或清敵政策。
+
+證據：`docs/data/ui-traces/parity-ch14-r1.json`
+
+### 第十四章戰後排列座標必須保留至酒店存檔
+
+`ch14-post-layout-persistence` · 缺陷 · [#75](https://github.com/wicanr2/fd2_re/issues/75) · 仍未完成 · 要人判
+
+完整原版 sample-original-r2 與重製 r6 的酒店存檔解碼後，差異僅剩 16 人 record +0/+1/+3 座標及姿態與 checksum。現有 ch13_post 綁定 0x23942 的排列來源需核對；不以原版存檔注入或改雜湊門檻通過。
+
+怎樣算做完：由原始排列 bytes 與 ACT47 消費端證據確認座標／姿態，修正正式綁定；完整第十四章同槽重播後酒店 FD2.SAV 全檔 SHA-256 與原版相同，並通過戰後回歸。
+
+證據：`['docs/data/ui-traces/parity-ch14-r1.json', 'remake/assets/cutscenes/bindings/ch13_post.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

@@ -3011,6 +3011,78 @@
       "address_space": "IDA LE linear",
       "level": "confirmed",
       "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x52153": {
+      "bytes": "12111312",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x52157": {
+      "bytes": "11131014",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x5215b": {
+      "bytes": "100f0f10",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x5215f": {
+      "bytes": "14151514",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x52163": {
+      "bytes": "0f0f0f10",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x52167": {
+      "bytes": "10100f0f",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x5216b": {
+      "bytes": "0c0d0e0e",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x5216f": {
+      "bytes": "0c0d0e0e",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x52173": {
+      "bytes": "02020202",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x52177": {
+      "bytes": "02020202",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x5217b": {
+      "bytes": "03030303",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
+    },
+    "0x5217f": {
+      "bytes": "01010101",
+      "address_space": "IDA LE linear",
+      "level": "confirmed",
+      "source": "IDA loader initial image; not a runtime snapshot"
     }
   },
   "data_xrefs": {
@@ -3061,7 +3133,55 @@
     ],
     "0x52149": [],
     "0x5214d": [],
-    "0x52151": []
+    "0x52151": [],
+    "0x52153": [
+      {
+        "address": "0x238f4",
+        "bytes": "be53210500",
+        "original": "mov     esi, offset unk_52153",
+        "function": "0x237d5",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x238f4",
+        "semantic_annotations": []
+      }
+    ],
+    "0x52157": [],
+    "0x5215b": [],
+    "0x5215f": [],
+    "0x52163": [
+      {
+        "address": "0x23904",
+        "bytes": "be63210500",
+        "original": "mov     esi, offset unk_52163",
+        "function": "0x237d5",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x23904",
+        "semantic_annotations": []
+      }
+    ],
+    "0x52167": [],
+    "0x5216b": [],
+    "0x5216f": [],
+    "0x52173": [
+      {
+        "address": "0x23912",
+        "bytes": "be73210500",
+        "original": "mov     esi, offset unk_52173",
+        "function": "0x237d5",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x23912",
+        "semantic_annotations": []
+      }
+    ],
+    "0x52177": [],
+    "0x5217b": [],
+    "0x5217f": []
   },
   "review": [
     {
@@ -3078,6 +3198,28 @@
       "level": "已證實",
       "semantic": "本輪戰後實際45筆，保留既有60筆相容但不材料化group255",
       "source": "dosgolem a9bcd62 sample-r5 seq60／3853／3854／3873；FDFIELD group counts"
+    },
+    {
+      "issue": 75,
+      "level": "confirmed",
+      "semantic": "第十四章戰後0x23942依原始16筆X／Y／pose排列表改寫record0..15；ACT47只改新增record67，0x239AC以完整80bytes同步持續名冊。",
+      "source": [
+        "IDA LE 0x238F4／0x23904／0x23912 rep movsd各16bytes",
+        "IDA LE 0x23923..0x23942：開始0、結束15、姿態參數為表指標0x52173；arg14=0不另覆寫record0",
+        "IDA LE sub_233C6 0x23407..0x23429：+0／+1／+3 writers",
+        "IDA LE sub_11506 0x11572..0x11576：memmove 0x50",
+        "remake/assets/cutscenes/acting/ch13_post.json：ACT47目標67",
+        "sample-original-r2 checkpoint1093及酒店SAV raw+0／+1／+3"
+      ],
+      "tables": {
+        "x": "0x52153",
+        "y": "0x52163",
+        "pose": "0x52173"
+      },
+      "reproduce": "tools/ida_opening_input_probe.py；PROBE_ADDRESSES=0x23942 0x233C6；PROBE_DATA_ADDRESSES=0x52153..0x5217F每4bytes；維護中IDA9.4 Docker與唯讀FD2.EXE。",
+      "spec_status": "CONFORMED",
+      "limitation": "只更正本章正式binding；不改其他生成草稿，不宣稱ACT47逐幀時序已對拍。",
+      "validation_receipt": "docs/data/ui-traces/parity-ch14.json"
     }
   ]
 }

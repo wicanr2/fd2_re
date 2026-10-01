@@ -26,6 +26,7 @@ type Scenario struct {
 	NativeFieldEventRules []NativeFieldEventRule `json:"native_field_event_rules,omitempty"`
 	NativeTurnEvents      []NativeTurnEvent      `json:"native_turn_events,omitempty"`
 	// NativeDeathPrograms 是死亡效果型態 2／3 降成的動作清單，鍵是「型態:值」。
+	// 型態2亦是全域0x51B91事件程式；已審查的selector0行動收尾共用它，不加死亡delay。
 	// 來源與逐動作的原始位址見 native_death_program.go。
 	NativeDeathPrograms map[string][]Action `json:"native_death_programs,omitempty"`
 	// NativeResultHandler／NativeResultCode1Records 是非 default 的章節勝負 handler：先跑

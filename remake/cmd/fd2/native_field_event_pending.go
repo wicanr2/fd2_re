@@ -28,31 +28,76 @@ func (g *Game) noteNativeFieldEventStep(trigger *battle.Unit, x, y int) {
 }
 
 // dispatchNativeFieldEventPending 是行動收尾的 `cmp [0x51A8F],0xff / call [0x51B91+id*4]`：
-// 只分派已轉寫成 native_field_event_rules 的處理器（mode-range 家族與 event62），其餘
-// id 保留失敗即關閉——沒有 owner 的事件不能靜默吞掉。
-func (g *Game) dispatchNativeFieldEventPending(actor *battle.Unit) {
+// mode-range／event62沿用既有規則；已轉寫的全域程式沿用battleEvent阻塞擁有者。
+// 回傳true表示已接管續行或遇到錯誤，其餘id保持失敗即關閉。
+func (g *Game) dispatchNativeFieldEventPending(actor *battle.Unit) bool {
+	if g == nil {
+		return false
+	}
 	pending := g.nativeFieldEventPending
 	g.nativeFieldEventPending = nil
-	if pending == nil || g == nil || g.st == nil || actor == nil || pending.trigger != actor {
-		return
+	if pending == nil || g.st == nil || actor == nil || pending.trigger != actor {
+		return false
 	}
 	if pending.eventID == 62 {
 		if _, err := battle.ApplyNativeFieldTurnActivationEvent(g.st, pending.x, pending.y, 0); err != nil {
 			g.loadErr = "battle field event62: " + err.Error()
 		}
-		return
+		return g.loadErr != ""
 	}
 	if _, applied := battle.ApplyNativeFieldModeEvent(g.st, actor, pending.x, pending.y, 0); applied {
-		return
+		return false
 	}
 	for _, rule := range g.st.NativeFieldEventRules {
 		if rule.EventID == int(pending.eventID) && rule.Selector == 0 {
 			// 規則存在但閘門沒過（例如 event 26 要求觸發單位 raw +6 != 0）：原版處理器
 			// 自己回傳，不是錯誤。
-			return
+			return false
+		}
+	}
+	// selector0與死亡型態2呼叫同一張0x51B91全域表。歷史欄位2:id保存handler
+	// 本體，這裡不加入死亡caller的200ms delay，也不建立死亡／擊殺者暫態。
+	if g.sc != nil {
+		if actions, ok := g.sc.NativeDeathPrograms["2:"+itoa(int(pending.eventID))]; ok && len(actions) > 0 {
+			if g.battleEvent != nil {
+				g.loadErr = "battle field event: event owner is already active"
+				return true
+			}
+			for _, action := range actions {
+				if action.NativeSource == "" || action.NativeEventID == nil || *action.NativeEventID != int(pending.eventID) {
+					g.loadErr = "battle field event: global program provenance mismatch"
+					return true
+				}
+				active, err := action.NativeWhen.Match(g.st)
+				if err != nil {
+					g.loadErr = "battle field event: " + err.Error()
+					return true
+				}
+				if op := action.NativeDeathOp; active && op != nil && op.Op == "ai_mode_range" {
+					for index := op.First; index <= op.Last && index < len(g.st.Units); index++ {
+						if index < 0 || g.st.Units[index] == nil || !g.st.Units[index].HasNativeRecordByte34 {
+							g.loadErr = "battle field event: raw +0x34 provenance is absent"
+							return true
+						}
+					}
+				}
+			}
+			if g.st.HasNativeMapViewState {
+				if err := g.composeNativeMapFrame(); err != nil {
+					g.loadErr = "battle field event redraw: " + err.Error()
+					return true
+				}
+			}
+			g.startBattleEvent(actions, func() {
+				if !g.beginNativeFieldEvent61(actor, nil) {
+					g.beginNativeFieldEvent75(actor, nil)
+				}
+			})
+			return true
 		}
 	}
 	g.loadErr = "battle field event: selector 0 event " + itoa(int(pending.eventID)) + " has no transcribed owner"
+	return true
 }
 
 func itoa(v int) string {

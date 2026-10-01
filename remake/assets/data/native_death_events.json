@@ -107,6 +107,49 @@
       ]
     },
     {
+      "id": 10,
+      "handler": "0x34e3b",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 16,
+          "last": 71,
+          "mode": 0,
+          "when": {
+            "state_eq": [
+              16,
+              0
+            ]
+          },
+          "source": "0x34e52"
+        },
+        {
+          "op": "dialogue",
+          "text": 1,
+          "when": {
+            "state_eq": [
+              16,
+              0
+            ]
+          },
+          "source": "0x34e5f"
+        },
+        {
+          "op": "state_set",
+          "index": 16,
+          "value": 1,
+          "when": {
+            "state_eq": [
+              16,
+              0
+            ]
+          },
+          "source": "0x34e86"
+        }
+      ]
+    },
+    {
       "id": 12,
       "handler": "0x34594",
       "battle_units": [

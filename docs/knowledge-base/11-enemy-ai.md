@@ -562,7 +562,7 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   relocation 或缺目標不會改用正規化技能名稱。
 - raw mode bridge 已直接消費 `0x14121`／`0x13E9C` 的 mode 0／1、
   `0x12D7B→0x14B78` 的 mode 4／7／10，mode 7 的座標抵達後保留
-  `0x32975` 對 runtime `+0x05` 的完整位元組寫入；mode 8 只走共同收尾。
+  `0x32975` 對 runtime `+0x05` 的完整位元組寫入；mode 8 直接返回、不經成功收尾（2026-10-02勘誤，見58與fd2_ch14_mode8_dispatch_20261002.json）。
   mode 3／9 現以 `0x12C60(raw +0x35)` 對 `record +0x08` 做 first-match
   查詢後移向該 raw record 座標，並保留 mode 3 的 `0x51A83=0` 寫入閘門。
 - mode 2 在既有物理候選證據缺失時仍拒絕進入 `0x13FD4`；mode 5 的

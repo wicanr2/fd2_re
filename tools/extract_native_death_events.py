@@ -76,6 +76,17 @@ EVENTS = [
         op("reset_pose", [(0x34DAA, 0x34DAF)]),
         op("dialogue", [(0x34DAF, 0x34DCD), (0x34C0F, 0x34C1D)], text=8),
     ]},
+    # map13 selector0 的行動收尾事件；同一張全域事件表，沿用既有型別。
+    # READY 與未物化槽位的 +0x34 覆寫證據見 fd2_ch14_event10_20261002.json。
+    {"id": 10, "handler": 0x34E3B, "guards": [
+        op("guard_state", [(0x34E45, 0x34E52)], index=0x10, equals=0),
+    ], "ops": [
+        op("ai_mode_range", [(0x34E52, 0x34E5F)], first=0x10, last=0x47, mode=0,
+           when={"state_eq": [0x10, 0]}, mode_from_zero_guard=(0x34E45, 0x34E52, 0x34E8F)),
+        op("dialogue", [(0x34E5F, 0x34E86)], text=1, when={"state_eq": [0x10, 0]}),
+        op("state_set", [(0x34E86, 0x34E8F)], index=0x10, value=1,
+           when={"state_eq": [0x10, 0]}),
+    ]},
     {"id": 12, "handler": 0x34594, "guards": [
         op("guard_state", [(0x3459E, 0x345AB)], index=0x10, equals=0),
     ], "ops": [
@@ -404,7 +415,18 @@ def check_op(image, event_id, o):
     if kind == "dialogue":
         expect_seq(insns, dialogue_patterns(o), where)
     elif kind == "ai_mode_range":
-        expect_seq(insns, [f"push {imm(o['mode'])}", f"push {imm(o['last'])}",
+        mode_push = f"push {imm(o['mode'])}"
+        if "mode_from_zero_guard" in o:
+            start, end, return_address = o["mode_from_zero_guard"]
+            pair = o.get("when", {}).get("state_eq")
+            if o["mode"] != 0 or not pair or pair[1] != 0 or end != o["ranges"][0][0]:
+                raise SystemExit(f"{where}：暫存器mode缺少相鄰的零值guard")
+            expect_seq(image.insns(start, end), [
+                ("mov eax, dword ptr [0x3ad5]", STATE),
+                f"movzx eax, byte ptr [eax + {imm(pair[0])}]",
+                "test eax, eax", f"jne {H(return_address)}"], where + " mode來源")
+            mode_push = "push eax"
+        expect_seq(insns, [mode_push, f"push {imm(o['last'])}",
                            f"push {imm(o['first'])}", "call 0x3419c", "add esp, 0xc"], where)
     elif kind == "staging":
         expect_seq(insns, [f"push {imm(o['group'])}", f"push {imm(o['y'])}",
@@ -629,7 +651,7 @@ def main():
         ops = []
         for o in event["ops"]:
             sources = check_op(image, event["id"], o)
-            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline", "tail")}
+            clean = {k: v for k, v in o.items() if k not in ("ranges", "style_register", "text_register", "inline", "tail", "mode_from_zero_guard")}
             if "rodata" in clean:
                 clean["rodata"] = H(clean["rodata"])
             clean["source"] = sources[0]
