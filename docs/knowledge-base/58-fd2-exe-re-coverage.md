@@ -1753,3 +1753,5 @@ ValidateBundle維持禁止include_animations，不放寬驗收。因移除自創
 [第三份診斷](../data/ui-traces/parity-ch15-r3.json)保留歷史r1／r2：297AI全消費且零分岔，66行為點通過，61張整幀RGB全通過、最大199px，849為0px且兩側PNG雜湊相同。來源記錄phase6、completed_entries4、EIP及原始registers。完整Go19套件通過（遊戲130.703秒）；正式Game DAC／phase／tick與indexed像素不改，640px與12張門檻不變。
 
 #81／#82有限驗收已達；#76完整章、#78第7／9回合與#79敗北返回標題仍未完成。最後重製battle_ch15／enemy，不因所有行為及畫面通過而宣稱返回標題或戰後／存檔完成。下一垂直切片先驗#79結果owner，再以正常護援續到第7／9回合；不提前清敵、鎖HP或修改友軍政策。
+
+#81／#82已驗證修正提交 `a27816fabc17f4c245bd30b448e669eb05a802f6` 已推送，主機gh回讀確認兩條CLOSED；正式pull格式器同步22條未完成快照。第十五章#76／#78／#79保持OPEN；不以有限行為／畫面通過覆蓋整章節點、交易及敗北返回標題缺口。

@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -132,14 +132,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：固定EXE identity、IDA9.4原始20822完整bytes與結果writer／consumer保存canonical並登記58；READY後接入ch15及canonical原生敗北規則，普通玩家操作觸發友軍64倒下後走既有敗北owner；保持其他友軍倒下與我方尚存不誤判、raw旗標缺失失敗即關閉。完整#76另採正常護援保留第4／7／9回合，不提前清敵、不鎖HP。
 
 證據：`['docs/data/battle_events.json', 'work/parity-slot-ch15/sample-original-r1/checkpoint-1143.json', 'docs/data/parity-plans/ch15-sample.jsonl', 'remake/assets/scenarios/ch15.json']`
-
-### 第十五章原版與重製有18筆AI入口順序分岔
-
-`ch15-ai-entry-divergence` · 缺陷 · [#81](https://github.com/wicanr2/fd2_re/issues/81) · 仍未完成 · 要人判
-
-怎樣算做完：保留第一個原版／重製分岔的seq、raw單位與模式、執行前RNG條件及原始證據；按RE→READY修正真正缺口；同槽AI入口零順序分岔及嚴格畫面／行為比較，完整Go回歸通過。#76整章第7／9回合與戰後仍獨立驗收。
-
-證據：`['work/parity-slot-ch15/sample-remake-r2.log', 'work/parity-slot-ch15/sample-original-r1', 'work/parity-slot-ch15/sample-remake-r2/checkpoints.jsonl', 'remake/cmd/fd2/chapter_parity_replay_test.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -254,20 +246,5 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
-
-### 第十五章攻擊結算 seq849 畫面仍差16098像素
-
-`ch15-attack-result-0849-frame` · 缺陷 · [#82](https://github.com/wicanr2/fd2_re/issues/82) · 仍未完成 · 要人判
-
-第十五章同槽重播r3消除了AI分岔，66行為點均通過；61整幀比較只有seq849 attack_result超出640px門檻，差16098px。須核對原版同狀態畫面與正式介面owner；不得遮蔽像素或放寬門檻。
-
-
-
-
-2026-10-02 勘誤：原版當下EIP為4E01F，16D05僅為返回位址。AH E3／ECX13／ESI60021證實phase6完成E0..E3，其餘仍phase5；初始「正式owner缺陷」分類由直接原版證據訂正為對拍工具只辨識完整窗口的缺口。依READY只補私有候選palette與來源記錄，正式Game DAC／時序不改。原16098px失敗歷史保留。
-
-怎樣算做完：seq849同狀態嚴格RGB差異不超過既有640px；原始EIP／暫存器證實完整triplet寫入進度，對拍私有palette依READY生成既有raw窗口並拒絕未知條件，相關回歸通過；完整章戰後與存檔另驗。
-
-證據：`['docs/data/ida/fd2_ch15_palette_writer_20261002.json', 'docs/data/ui-traces/parity-ch15-r2.json']`
 
 <!-- END fd2_worklist.py render -->
