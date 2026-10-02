@@ -305,3 +305,13 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十六章完整對拍收據（#83／#87）](../data/ui-traces/parity-ch16.json)：同槽三回合、戰後18人、買賣／酒店SAV／秘密商店四項通過；依111／114例外列PLAYER-E2，完整Go已通過。
 
 - [第十六章固定抽樣總覽索引](../data/ui-traces/parity-ch16-samples.json)、[總覽一](../figures/parity-ch16-samples-p1.png)與[總覽二](../figures/parity-ch16-samples-p2.png)：每種畫面首點及所有非零差異，完整原版／重製／差異三欄。
+
+- 第十七章 #88：[建構槽清冊](../data/parity-slots/ch17-manifest.json)與[正常選人起手預檢計畫](../data/parity-plans/ch17-preflight-select.jsonl)。目前為待驗輸入，不代表完整章對拍通過。
+
+- [第十七章有限原生起手規格（#89）](../data/ida/fd2_ch17_startup_20261002.json)：sub_335AA、shared text／focus原始指令及53筆同槽起手；完整章仍由#88驗收。
+
+- [第十七章有限起手收據（#89）](../data/ui-traces/ch17-native-startup.json)：五點完整RGB0px、53筆起手；僅RUNTIME-E1，完整章仍#88。另保留[缺HUD首次診斷](../data/ui-traces/parity-ch17-preflight.json)。
+
+- [第十七章有限起手總覽索引](../data/ui-traces/ch17-native-startup-samples.json)與[完整三欄總覽](../figures/ch17-native-startup-samples.png)：五點RUNTIME-E1，無完整章或存檔宣稱。
+
+- [第十七章完整抽樣計畫（#88）](../data/parity-plans/ch17-sample.jsonl)：正常選人、四回合至round5、turn4增援後清敵、戰後交易／酒店SAV與Ctrl+F7。計畫本身不代表整章通過。

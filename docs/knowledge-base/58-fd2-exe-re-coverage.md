@@ -1895,4 +1895,8 @@ levels6、seed4、event7:17=1、我方AP+200／DP+0／DX+60建構槽與第10回�
 原版normal_player_path_verified仍false，不宣稱自然難度、傷害、存活、敵方選目標、音訊人耳或硬體逐週期一致。
 唯一台帳由tools/fd2_parity_progress.py verify產生，整體戰役尚未完成；精確容器命令與雜湊見正式收據。
 
-第十六章已驗證提交8120104c推送後，主機gh確認#83／#87關閉。下一章由[#88](https://github.com/wicanr2/fd2_re/issues/88)追蹤，目前仍todo，尚無第十七章原版或重製驗收收據。
+第十六章已驗證提交8120104c推送後，主機gh確認#83／#87關閉。下一章由[#88](https://github.com/wicanr2/fd2_re/issues/88)追蹤，目前仍todo。第十七章已有下節的有限起手收據，完整章原版與重製驗收仍待執行。
+
+### 第十七章起手HUD缺口（#89，2026-10-02）
+
+#88正常LOAD與15次選人原版到seq117，重製整幀consumer報HUD input unavailable。只重開battle_ch17缺少view／inherited HUD的資料consumer；既有quota、constructor、HUD持續writer不重做。主證據與已驗規格見[第十七章原生起手](../data/ida/fd2_ch17_startup_20261002.json)。本槽17人未含18，原版走group1分支。有限起手已達CONFORMED／RUNTIME-E1：五點完整RGB皆0px、53筆起手一致；19個Go套件通過，第十六章76幀、四項與SAV回歸通過。完整章仍todo。

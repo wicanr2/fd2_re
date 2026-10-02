@@ -259,6 +259,10 @@ dosgolem 無頭執行器上跑一遍，重製端重播同一串輸入，再逐�
 
 ![第十六章有限起手：原版、重製與完整畫面差異](docs/figures/ch16-native-startup-samples.png)
 
+第十七章的正常讀檔、選人與戰場起手已通過五點逐像素比較，53筆單位狀態一致，範圍為RUNTIME-E1。完整回合、增援、戰後與存檔仍由[#88](https://github.com/wicanr2/fd2_re/issues/88)驗收，詳見[有限收據](docs/data/ui-traces/ch17-native-startup.json)。
+
+![第十七章有限起手：原版、重製與完整畫面差異](docs/figures/ch17-native-startup-samples.png)
+
 讀這張表要知道的限制：建構槽是工具依政策值建出來的（每章固定升級數、強化基底
 攻防），不是原版實際遊玩累積的數值，所以收據只能談節點、畫面、介面與存檔閉環，
 不能拿來談傷害、命中或敵方選目標；抽樣尾端用修改路徑一次清空敵方 HP 進戰後節點，

@@ -1445,3 +1445,7 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 [固定抽樣來源](../data/ui-traces/parity-ch16-samples.json)保留所有非零差異，最大200px；640px／最少12張／無遮罩維持。
 前三回合、戰後18人名冊、買賣、酒店與秘密商店同一完整run走到，依111／114例外列PLAYER-E2。
 舊SAV失敗與有限起手收據保留，不宣稱全部動畫相位逐像素；現況及限制見[58](58-fd2-exe-re-coverage.md)。
+
+### 第十七章有限起手（#89，2026-10-02）
+
+正式 `battle_ch17` 已加入有來源的視圖與繼承 HUD。正常讀檔、15次選人與戰前對話後，五點完整 RGB 皆為0像素差異。53筆起手單位狀態一致，分級為RUNTIME-E1。詳見[主規格](../data/ida/fd2_ch17_startup_20261002.json)、[有限收據](../data/ui-traces/ch17-native-startup.json)與[五點總覽](../figures/ch17-native-startup-samples.png)。完整回合、增援、戰後及全檔SAV仍由[#88](https://github.com/wicanr2/fd2_re/issues/88)驗收；不提升整章PLAYER-E2。

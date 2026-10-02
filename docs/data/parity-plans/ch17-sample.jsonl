@@ -1,0 +1,48 @@
+# 第十七章完整抽樣計畫；GitHub #88。固定111／114政策，無鎖HP、無NPC強化。
+# map16原始FDFIELD_049全16列已核對，turn4 event40 raw_camp1，其餘255停用。
+# 四個正常回合到round5，涵蓋turn4增援與其後敵方回合，才依111清敵。
+# 戰後town_ch18秘密商店selection1／Ctrl+F7；全章仍需12張完整RGB≤640px及酒店SAV。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":4}
+{"mark":"party_selection","steps":1000000}
+{"key":"enter","steps":20000000,"repeat":15}
+{"key":"","steps":10000000,"repeat":12}
+{"mark":"departure_confirmation","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":200}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"battle_start","steps":1000000}
+{"sweep_round":true,"advance":true,"typical_move":6,"stop_on_auto_end":true,"steps":2000000,"max_units":6}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":6,"stop_on_auto_end":true,"steps":2000000,"max_units":6}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":6,"stop_on_auto_end":true,"steps":2000000,"max_units":6}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"sweep_round":true,"advance":true,"typical_move":6,"stop_on_auto_end":true,"steps":2000000,"max_units":6}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"force_enemy_clear":true,"steps":20000000}
+{"await_ui":"town","steps":20000000,"max":120}
+{"mark":"town_after_battle","steps":1000000}
+{"shop_sell":true,"steps":10000000}
+{"shop_buy":{"moves":["left","left"]},"steps":10000000}
+{"town_probe":{"moves":["left","left"]},"steps":10000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":10000000}
+{"secret_shop":{"moves":["left"],"key":"ctrl-f7"},"steps":10000000}

@@ -9191,3 +9191,7 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [正式完整收據](../data/ui-traces/parity-ch16.json)、完整Go與舊第十五章回歸均通過。
 正常三回合抽樣、round4清敵、戰後JOIN18、交易與SAV及秘密商店符合既有四項契約。
 依111／114例外列PLAYER-E2；原版11506與格式未改，分層現況及限制見[58](58-fd2-exe-re-coverage.md)。
+
+### 第十七章有限起手（#89，2026-10-02）
+
+正式 `battle_ch17` 已加入有來源的視圖與繼承 HUD。正常讀檔、15次選人與戰前對話後，五點完整 RGB 皆為0像素差異。53筆起手單位狀態一致，分級為RUNTIME-E1。詳見[主規格](../data/ida/fd2_ch17_startup_20261002.json)、[有限收據](../data/ui-traces/ch17-native-startup.json)與[五點總覽](../figures/ch17-native-startup-samples.png)。完整回合、增援、戰後及全檔SAV仍由[#88](https://github.com/wicanr2/fd2_re/issues/88)驗收；不提升整章PLAYER-E2。

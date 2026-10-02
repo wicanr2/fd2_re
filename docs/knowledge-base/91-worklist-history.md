@@ -4846,3 +4846,9 @@ SAV差未出戰record16五欄與checksum，先登記#87再追consumer。
 第十六章完整驗收與未出戰記錄修正8120104c1369edaba9b6ec9b27b64ed77cae3a2f已推送，主機gh回讀#83／#87均CLOSED，留言5946062689／5946065018保存驗收及限制。下一章先登記#88，尚未建構或執行第十七章；正式pull格式器同步20條未完成，台帳13／30，總工單#14及Goal持續開啟。
 
 收尾勘誤：先前純格式器write_snapshot只更新JSON，未等同完整pull／render。已補跑tools/fd2_worklist.py render，20條Markdown有效id與目前JSON一致，無已關閉工單殘留；教訓新增快照與產生區塊須同批同步。遠端Issue仍為唯一權威，不重開已完成工作。
+
+### 2026-10-02 第十七章有限起手 #88／#89
+
+#88固定槽SHA dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786，17人未含18；原版正常LOAD、15次選人、對話到seq117，53筆起手。首次重製缺HUD，先登記#89，再沿既有HUD writer並以IDA sub_335AA／shared focus尾段建立READY規格。正式戰役兩份資料同步camera12,30／cursor23,36／selector1與inherited B1；五點完整RGB皆0px。有限spec達CONFORMED／RUNTIME-E1，整章仍#88待驗。完整Go19套件通過，game261.802s；第十六章既有四項、76幀與SAV回歸通過。
+
+原始map16控制全16列核對，只有turn4 event40 raw_camp1，其他停用。受版控ch17-sample計畫安排四個正常回合到round5，再依111清敵並驗戰後交易、酒店SAV與town_ch18 selection1／Ctrl+F7。尚未執行完整章，不增加13／30統計。初次診斷與五點總覽可由00索引回查。

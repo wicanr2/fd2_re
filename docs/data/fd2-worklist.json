@@ -330,6 +330,27 @@
         "note": "完整原版章與同槽重製四項及全檔SAV收據。"
       },
       "issue": 88
+    },
+    {
+      "id": "ch17-native-startup-hud",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十七章同槽起手缺原生HUD輸入",
+      "acceptance": "保存同槽失敗診斷與固定EXE雜湊；既有主證據或IDA原始指令證實writer／consumer後形成READY規格，修正正式戰役起手，正常讀檔與選人五點完整RGB及全部起手單位一致，既有章回歸通過。整章PLAYER-E2仍由#88另驗。",
+      "evidence": [
+        "docs/data/ida/fd2_ch17_startup_20261002.json",
+        "docs/data/ui-traces/parity-ch17-preflight.json",
+        "docs/data/ui-traces/ch17-native-startup.json",
+        "docs/data/ui-traces/ch17-native-startup-samples.json",
+        "docs/data/parity-slots/ch17-manifest.json",
+        "docs/data/parity-plans/ch17-preflight-select.jsonl",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "固定槽有限起手收據與正式HUD資料CONFORMED；整章不在此工單範圍。"
+      },
+      "issue": 89
     }
   ]
 }

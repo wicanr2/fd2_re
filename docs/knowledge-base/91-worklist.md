@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,6 +110,14 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 第十七章同槽起手缺原生HUD輸入
+
+`ch17-native-startup-hud` · 缺陷 · [#89](https://github.com/wicanr2/fd2_re/issues/89) · 仍未完成 · 要人判
+
+怎樣算做完：保存同槽失敗診斷與固定EXE雜湊；既有主證據或IDA原始指令證實writer／consumer後形成READY規格，修正正式戰役起手，正常讀檔與選人五點完整RGB及全部起手單位一致，既有章回歸通過。整章PLAYER-E2仍由#88另驗。
+
+證據：`['docs/data/ida/fd2_ch17_startup_20261002.json', 'docs/data/ui-traces/parity-ch17-preflight.json', 'docs/data/ui-traces/ch17-native-startup.json', 'docs/data/ui-traces/ch17-native-startup-samples.json', 'docs/data/parity-slots/ch17-manifest.json', 'docs/data/parity-plans/ch17-preflight-select.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
