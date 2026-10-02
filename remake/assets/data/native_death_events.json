@@ -1320,6 +1320,44 @@
       ]
     },
     {
+      "id": 42,
+      "handler": "0x3505f",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 1,
+          "gate": 0,
+          "source": "0x35069"
+        },
+        {
+          "op": "dialogue",
+          "text": 6,
+          "source": "0x35073",
+          "tail_sources": [
+            "0x34c0f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "handler": "0x35091",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 16,
+          "last": 16,
+          "mode": 3,
+          "source": "0x3509b",
+          "tail_sources": [
+            "0x34f37"
+          ]
+        }
+      ]
+    },
+    {
       "id": 51,
       "handler": "0x3529a",
       "battle_units": [

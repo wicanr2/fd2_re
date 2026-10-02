@@ -731,6 +731,28 @@
       ]
     },
     {
+      "id": "turn_ch18_e43_t3",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 3
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x3509b",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 16,
+            "last": 16,
+            "mode": 3
+          },
+          "native_event_id": 43,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
       "id": "reinforce_ch18_e42_t8",
       "trigger": "on_turn_end",
       "when": {
@@ -743,7 +765,6 @@
           "groups": [
             1
           ],
-          "camp": "enemy",
           "native_spawns": [
             {
               "group": 1,
@@ -752,7 +773,105 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 42
+          "native_event_id": 42,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35073",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch18.json",
+            "scene_index": 2,
+            "line": 3,
+            "source_dat": "FDTXT_018",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 53,
+            "pages": [
+              [
+                "『好耐命的老頭！約拿和那個",
+                "　騎士居然都還活著？』"
+              ]
+            ]
+          },
+          "native_event_id": 42,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35073",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch18.json",
+            "scene_index": 2,
+            "line": 4,
+            "source_dat": "FDTXT_018",
+            "string_index": 6,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 61,
+            "pages": [
+              [
+                "『他們好像找來了幫手，弟兄",
+                "　們好像死傷慘重！首領要我",
+                "　們來增援果然是對的。』"
+              ]
+            ]
+          },
+          "native_event_id": 42,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35073",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch18.json",
+            "scene_index": 2,
+            "line": 5,
+            "source_dat": "FDTXT_018",
+            "string_index": 6,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 53,
+            "pages": [
+              [
+                "『既然如此，我們就從這裡突",
+                "　擊他們的後方，和橋上的弟",
+                "　兄左右夾擊，讓他們插翅也"
+              ],
+              [
+                "　難飛！』"
+              ]
+            ]
+          },
+          "native_event_id": 42,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35073",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch18.json",
+            "scene_index": 2,
+            "line": 6,
+            "source_dat": "FDTXT_018",
+            "string_index": 6,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 61,
+            "pages": [
+              [
+                "『好，就這麼辦！",
+                "　我們上吧！』"
+              ]
+            ]
+          },
+          "native_event_id": 42,
+          "camp": "enemy"
         }
       ]
     }

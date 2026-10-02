@@ -647,6 +647,31 @@ func TestAIStepStopsMode3AndMode9WithoutMovementProvenance(t *testing.T) {
 	}
 }
 
+func TestAIStepMode9FollowsRawTargetBeforeAvailableCommand(t *testing.T) {
+	state, actor, target := nativeAIConsumerModeTargetState(9)
+	actor.NativeCommandMask[0] = 1
+	actor.NativeInventoryFlags = []int{0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	target.Camp = battle.Enemy
+	state.NativeCommandBook = nativeAIConsumerCommandBook()
+	state.NativeCommandResistances = map[int]int{0: 10}
+	if err := state.BindNativeFutureItemRows(make([]byte, 2*battle.NativeItemEffectRowSize)); err != nil {
+		t.Fatal(err)
+	}
+	if err := state.BindNativeMovementCostRows(nativeAIConsumerCostRows()); err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		m:      &MapData{W: 3, H: 1, TileW: 24, TileH: 24, Tiles: []int{0, 0, 0}},
+		st:     state,
+		aiBusy: true,
+	}
+	g.aiStep()
+	if g.loadErr != "" || g.walk == nil || g.walk.u != actor || g.atk != nil ||
+		g.walk.path[len(g.walk.path)-1] != (battle.Cell{X: 1, Y: 0}) {
+		t.Fatalf("mode9 did not follow raw target before command: err=%q walk=%v attack=%v", g.loadErr, g.walk != nil, g.atk != nil)
+	}
+}
+
 func TestAIStepConsumesVerifiedMode4AndMode10DestinationPlans(t *testing.T) {
 	for _, mode := range []byte{4, 10} {
 		t.Run(fmt.Sprintf("mode%d", mode), func(t *testing.T) {

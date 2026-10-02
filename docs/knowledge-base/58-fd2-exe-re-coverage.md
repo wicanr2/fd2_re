@@ -1974,3 +1974,40 @@ FIGANI51 frame0為184,35／109×165，target BattleFig17。
 [有限收據](../data/ui-traces/ch18-native-startup.json)在正常LOAD、15次選人與戰前對話後，五點完整RGB皆0px，53筆起手單位一致。正式戰役已保存有來源的鏡頭／HUD，FDOTHER16/17嚴格分離圖面以462×226鋪底，再依原版鏡頭公式取312×192；透明地形保留山景。缺來源或越界原子拒收，不以oracle PNG作資產。
 
 兩份規格列有限CONFORMED／RUNTIME-E1。最終Go19套件、三條山景測試及第十七章98張四項與全檔酒店SAV通過；私人素材清冊驗證通過。原版／重製PNG與總覽留本機，公開庫保存[抽樣索引](../data/ui-traces/ch18-native-startup-samples.json)。不外推逐步捲動動畫。第3／8回合、戰後、交易與SAV由#94續驗，整章不提升PLAYER-E2；唯一分層現況與統計依[58](58-fd2-exe-re-coverage.md)。
+
+### 第十八章完整護援抽樣計畫（#94，待驗）
+
+[受版控正常鍵盤計畫](../data/parity-plans/ch18-guard.jsonl)沿既定槽與八回合抽樣，第3／8回合event43／42保留，round9才清敵。我方記錄0／2／3往NPC附近正常移動；camp1記錄16／17不注入。終點依既有23CD5戰後JOIN21／7到town_ch19，再交易、酒店SAV、selection2 Alt+F8。計畫不等於收據，整章#94仍待驗；沒有提高門檻或先列PLAYER-E2。
+
+### 2026-10-02 第十八章 event43 與首輪 AI 差異
+
+[主證據及READY規格](../data/ida/fd2_ch18_event43_20261002.json)閉合35091的19bytes與34F37共用尾段。event43只以first16、last16、mode3呼叫既有3419C，不播對白；正常原版seq1070→1071的record16模式0x89→0x83一致。RE-CLOSED僅限此handler；#97正式消費端與同槽驗證待完成。
+
+#94護援r1於round5因計畫仍選取戰死record2停止；record0／3及NPC16／17仍活著。重製回放更早在seq632首輪結束出現NPC位置差異，已登記#98。這早於T3，不可歸因於event43。保留原版與重製r1及判定報告於work/parity-slot-ch18，沒有完整章通過收據；14／30保持。
+
+#98的[模式9 READY規格](../data/ida/fd2_ch18_mode9_dispatch_20261002.json)重用既有13A9F原始指令。13DA9先呼叫12C60，只有找不到目標才跳13AF3；重製14EF0先行讓NPC16選command18，首輪停滯。只修有效raw目標時的分派順序，既有目標不存在分支不新增玩法。RUNTIME-E1與首輪對拍待驗；不重開已閉合函式。
+
+#94[護援r2計畫](../data/parity-plans/ch18-guard-r2.jsonl)只移除round5..8的record2選取。沿固定seed4、相同建構槽與前四輪輸入；record0／3繼續正常護援，沒有改NPC／HP。輸出使用新guard-state-r2及guard-original-r2，保留r1。不以重新擲骰或修改戰鬥狀態讓計畫通過。
+
+### 2026-10-02 第十八章事件43與模式9有限驗收
+
+[四輪有限收據](../data/ui-traces/ch18-turns1-4.json)重播同一原版r1，94張完整RGB通過，最大496px；四輪行為與148筆AI順序全部一致。首輪NPC撤退與後續原版拒絕移動恢復一致。模式9有效目標先跟隨，目標不存在的分支仍沿既有路徑，沒有新增未知後備玩法。event43依既有typed動作正式接至turn3 raw camp0，只改record16低四位。
+
+兩份規格列有限CONFORMED／RUNTIME-E1，完整Go19套件通過；#98可按有限缺陷範圍關閉，#97整章後續驗收與#94保持開啟。原版計畫未到T8與戰後，node／transaction完整閘門仍failed，收據如實保留，不升格PLAYER-E2。新的r2保留固定槽與前四輪，只修正fallen record2選取。
+
+### 2026-10-02 第十八章 event42 完整轉寫（#99，READY）
+
+[主證據及規格](../data/ida/fd2_ch18_event42_20261002.json)閉合3505F完整50bytes。T8 raw camp0先追加group1，再以text6跳已閉合34C0F對白尾段。現行spawn-only劇本漏掉對白，已登記#99；只沿既有型別與同步工具補完整動作。不重解共用helper，READY不代表正常T8已驗收，#94 r2仍在執行。
+
+### 2026-10-02 第十八章護援r2拒收與目前狀態
+
+| 範圍 | 目前狀態 | 下一步 |
+|---|---|---|
+| 起手、山景、首輪模式9、T3 event43 | 有限RUNTIME-E1；[四輪收據](../data/ui-traces/ch18-turns1-4.json)已通過；#98可關閉 | 保留同槽回歸 |
+| T8 event42 | #99，READY已實作；增援先行、對白阻塞／once建構E1與完整Go通過 | 正常T8仍待驗 |
+| 第5回合敵軍預選 | #100，seq1519原版record49，重製record18，後續狀態不同 | 先查目前原版r2與正式評分／預選出處 |
+| 整章護援、戰後與SAV | #94／#97仍開啟，14／30保持 | 修正#100後規劃有界正常治療／護援，不反覆刷關 |
+
+r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時，exit15。沒有到T8、清敵、戰後或SAV。重製r2另有三筆AI順序分岔，第一筆seq1519；153張RGB中13張超門檻，全部四項拒收。這不推翻前四輪的有限修正，也不能用它宣稱整章完成。失敗收據留work/parity-slot-ch18／guard-r2-verify-r1.json，索引與雜湊附於四輪收據。
+
+最終Go19套件、事件42／43與模式9建構測試、分離資料轉寫check、canonical重生一致及第17章98張四項／全檔酒店SAV回歸通過。event42沒有正常T8證據，規格維持READY，#99保持開啟。

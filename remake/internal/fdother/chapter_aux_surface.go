@@ -28,7 +28,7 @@ func NativeChapterAuxSurfaceContracts() []NativeChapterAuxSurfaceContract {
 // NativeChapterAuxSurfaceFor 是 sub_10652 的章節分支：raw chapter 9／24／25 載入
 // FDOTHER #15，28／29 載入 #55；sub_11EEE 對同一組章節在地形圖塊前鋪這張底面
 // （docs/data/fd2_chapter_aux_graphics_10652_ida.txt、
-// docs/data/ida/fd2_ch29_aux_terrain_surface_ida.txt）。其他章節沒有底面。
+// docs/data/ida/fd2_ch29_aux_terrain_surface_ida.txt）。raw17 的雙段視差底面由 LoadSeparatedNativeMapParallax 提供。
 func NativeChapterAuxSurfaceFor(chapter int) (NativeChapterAuxSurfaceContract, bool) {
 	switch chapter {
 	case 9, 24, 25:

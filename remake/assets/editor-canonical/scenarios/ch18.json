@@ -25,6 +25,38 @@
           "extensions": {
             "legacy": {
               "camp": "enemy",
+              "native_death_op": {
+                "first": 16,
+                "last": 16,
+                "mode": 3,
+                "op": "ai_mode_range"
+              },
+              "native_event_id": 43,
+              "native_source": "0x3509b"
+            }
+          },
+          "type": "native_death_op"
+        }
+      ],
+      "event_id": "legacy/event/d07118eaa936/events/1",
+      "extensions": {
+        "legacy": {
+          "id": "turn_ch18_e43_t3",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 3
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/d07118eaa936/events/2/0",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
               "groups": [
                 1
               ],
@@ -40,9 +72,126 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/d07118eaa936/events/2/1",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 3,
+                "operand": 53,
+                "pages": [
+                  [
+                    "『好耐命的老頭！約拿和那個",
+                    "　騎士居然都還活著？』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch18.json",
+                "source_dat": "FDTXT_018",
+                "string_index": 6,
+                "utterance": 0
+              },
+              "native_event_id": 42,
+              "native_source": "0x35073",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/d07118eaa936/events/2/2",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 4,
+                "operand": 61,
+                "pages": [
+                  [
+                    "『他們好像找來了幫手，弟兄",
+                    "　們好像死傷慘重！首領要我",
+                    "　們來增援果然是對的。』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch18.json",
+                "source_dat": "FDTXT_018",
+                "string_index": 6,
+                "utterance": 1
+              },
+              "native_event_id": 42,
+              "native_source": "0x35073",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/d07118eaa936/events/2/3",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 5,
+                "operand": 53,
+                "pages": [
+                  [
+                    "『既然如此，我們就從這裡突",
+                    "　擊他們的後方，和橋上的弟",
+                    "　兄左右夾擊，讓他們插翅也"
+                  ],
+                  [
+                    "　難飛！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch18.json",
+                "source_dat": "FDTXT_018",
+                "string_index": 6,
+                "utterance": 2
+              },
+              "native_event_id": 42,
+              "native_source": "0x35073",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/d07118eaa936/events/2/4",
+          "extensions": {
+            "legacy": {
+              "camp": "enemy",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 6,
+                "operand": 61,
+                "pages": [
+                  [
+                    "『好，就這麼辦！",
+                    "　我們上吧！』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch18.json",
+                "source_dat": "FDTXT_018",
+                "string_index": 6,
+                "utterance": 3
+              },
+              "native_event_id": 42,
+              "native_source": "0x35073",
+              "native_text_index": 6
+            }
+          },
+          "type": "dialogue"
         }
       ],
-      "event_id": "legacy/event/d07118eaa936/events/1",
+      "event_id": "legacy/event/d07118eaa936/events/2",
       "extensions": {
         "legacy": {
           "id": "reinforce_ch18_e42_t8",

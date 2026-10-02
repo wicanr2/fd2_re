@@ -1461,3 +1461,9 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 [有限收據](../data/ui-traces/ch18-native-startup.json)在正常LOAD、15次選人與戰前對話後，五點完整RGB皆0px，53筆起手單位一致。正式戰役已保存有來源的鏡頭／HUD，FDOTHER16/17嚴格分離圖面以462×226鋪底，再依原版鏡頭公式取312×192；透明地形保留山景。缺來源或越界原子拒收，不以oracle PNG作資產。
 
 兩份規格列有限CONFORMED／RUNTIME-E1。最終Go19套件、三條山景測試及第十七章98張四項與全檔酒店SAV通過；私人素材清冊驗證通過。原版／重製PNG與總覽留本機，公開庫保存[抽樣索引](../data/ui-traces/ch18-native-startup-samples.json)。不外推逐步捲動動畫。第3／8回合、戰後、交易與SAV由#94續驗，整章不提升PLAYER-E2；唯一分層現況與統計依[58](58-fd2-exe-re-coverage.md)。
+
+### 第十八章四輪有限介面回歸（#97／#98）
+
+模式9修正後，同一原版r1的正常四輪完整RGB通過既定預算；不新增遮罩或改判準。[有限收據](../data/ui-traces/ch18-turns1-4.json)保留每張差異與兩側雜湊，原圖留本機。原版計畫round5停止，沒有T8／戰後／酒店SAV驗收，整章#94不列PLAYER-E2。唯一現況與回歸入口依[58](58-fd2-exe-re-coverage.md)。
+
+第十八章r2的153張比較未通過；首個第5回合AI預選差異由#100。原版round7敗退，沒有T8／戰後／SAV。這不取代前四輪有限收據，整章#94仍未驗收，拒收範圍及工具入口見[58](58-fd2-exe-re-coverage.md)。

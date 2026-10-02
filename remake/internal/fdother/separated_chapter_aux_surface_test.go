@@ -28,7 +28,7 @@ func TestSeparatedChapterAuxSurfaceFailsClosed(t *testing.T) {
 }
 
 func TestNativeChapterAuxSurfaceForFollowsSub10652Branches(t *testing.T) {
-	// sub_10652：raw chapter 9/24/25 → FDOTHER #15，28/29 → #55，其他章節沒有底面。
+	// sub_10652：raw chapter 9/24/25 → FDOTHER #15，28/29 → #55；raw17 由獨立的雙段視差底面契約提供。
 	for chapter, want := range map[int]int{9: 15, 24: 15, 25: 15, 28: 55, 29: 55} {
 		got, ok := NativeChapterAuxSurfaceFor(chapter)
 		if !ok || got.Resource != want {

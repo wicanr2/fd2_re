@@ -25,6 +25,21 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 		// normalized planner.
 		return nil, false, nil
 	}
+	if mode == 9 {
+		// 0x13DA9 resolves +0x35 through 0x12C60 before any scoring. A found
+		// raw +8 target goes straight to the movement bridge below; only -1
+		// reaches 0x13AF3 -> 0x14EF0. See fd2_ch18_mode9_dispatch_20261002.json.
+		if !u.HasNativeRecordByte35 {
+			return nil, true, fmt.Errorf("native AI mode 9 raw target provenance is unavailable")
+		}
+		records, err := NativeAIScoringRecords(s.Units)
+		if err != nil {
+			return nil, true, err
+		}
+		if _, found := nativeAIRawRecord8Index(records, len(s.Units), int(u.NativeRecordByte35)); found {
+			return nil, false, nil
+		}
+	}
 	if len(s.NativeCommandBook) != NativeCommandRecordCount || len(s.nativeFutureItemRows) == 0 {
 		// Keep the previously proven mode-2 physical slice usable in small raw
 		// fixtures that intentionally omit the command/item tables.  Production

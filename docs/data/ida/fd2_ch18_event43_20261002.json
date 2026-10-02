@@ -1,0 +1,270 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "functions": [
+    {
+      "requested_address": "0x35091",
+      "address": "0x35091",
+      "end": "0x350a4",
+      "original_name": "sub_35091",
+      "chunks": [
+        {
+          "start": "0x35091",
+          "end": "0x350a4"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x35091",
+          "bytes": "6810000000",
+          "original": "push    10h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x35091",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x35096",
+          "bytes": "e83c1c0000",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x35096",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3509b",
+          "bytes": "6a03",
+          "original": "push    3",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3509b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3509d",
+          "bytes": "6a10",
+          "original": "push    10h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3509d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3509f",
+          "bytes": "e993feffff",
+          "original": "jmp     loc_34F37",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3509f",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x1199c",
+        "0x1712d",
+        "0x19511",
+        "0x1a85a",
+        "0x1ac1a",
+        "0x1d890",
+        "0x1d95c",
+        "0x1d9ec"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x35091"
+    }
+  ],
+  "kind": "fd2_ch18_event43_evidence_and_spec",
+  "date": "2026-10-02",
+  "issues": [
+    97,
+    94
+  ],
+  "exports": [
+    {
+      "path": "work/parity-slot-ch18/ida-event43-r1/ida-input-probe.json",
+      "sha256": "f9b8aa8385856b367b7978d29675e80bae451bb7b509bd6cd973c5404ac9ce60"
+    }
+  ],
+  "shared_tail": {
+    "source": "docs/data/ida/fd2_ch15_turn_events_20261002.json",
+    "sha256": "f06c846e1f4394210c9a9f267148617b4f58bce6c4d80086f1a4925b66e77e5e",
+    "original_name": "sub_34F02",
+    "jump_entry": "0x34f37",
+    "instructions": [
+      {
+        "address": "0x34f37",
+        "bytes": "6a10",
+        "original": "push    10h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x34f37",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x34f39",
+        "bytes": "e85ef2ffff",
+        "original": "call    sub_3419C",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x34f39",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x34f3e",
+        "bytes": "83c40c",
+        "original": "add     esp, 0Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x34f3e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x34f41",
+        "bytes": "c3",
+        "original": "retn",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x34f41",
+        "semantic_annotations": []
+      }
+    ]
+  },
+  "mode_writer": {
+    "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+    "original_name": "sub_3419C",
+    "address": "0x3419c",
+    "end": "0x341db",
+    "level": "confirmed",
+    "claim": "含兩端，保留記錄+0x34高四位，寫低四位；沒有陣營、HP、inactive篩選。"
+  },
+  "query_environment": {
+    "image": "ida-pro-9.4-idapython:locked-v1",
+    "database": "work/ch01-town-parity-20260908/ida/fd2-io.i64唯讀複製至/tmp/probe.i64",
+    "command": "PROBE_ADDRESSES=0x35091 idat -A -S/src/tools/ida_opening_input_probe.py /tmp/probe.i64"
+  },
+  "controls": {
+    "source": "docs/data/turn_events.json",
+    "map": 17,
+    "chapter": 18,
+    "turn": 3,
+    "raw_camp": 0,
+    "event_id": 43,
+    "handler": "0x35091"
+  },
+  "claims": [
+    {
+      "original_location": "IDA LE 0x3509b..0x350a4→0x34f37..0x34f42",
+      "semantic": "event43以mode3、last16、first16呼叫sub_3419C並返回；跳入模式尾段，不經對白。",
+      "level": "confirmed",
+      "source": "work/parity-slot-ch18/ida-event43-r1/ida-input-probe.json及docs/data/ida/fd2_ch15_turn_events_20261002.json"
+    },
+    {
+      "original_location": "dosgolem checkpoint1070→1071 record16 +0x34",
+      "semantic": "正常第三回合模式byte 0x89→0x83；同時回合清除+5 bit7，不把整個raw變化歸於event43。",
+      "level": "confirmed",
+      "source": "work/parity-slot-ch18/guard-original-r1"
+    },
+    {
+      "original_location": "dosgolem seq632 after_enemy_phase",
+      "semantic": "首輪NPC移動差異早於event43，#97不解釋該差異。",
+      "level": "confirmed",
+      "source": "work/parity-slot-ch18/guard-verify-r1.json"
+    }
+  ],
+  "runtime_observation": {
+    "runner": "dosgolem",
+    "slot": "docs/data/parity-slots/ch18-manifest.json",
+    "seed": 4,
+    "before": {
+      "seq": 1070,
+      "steps": 4502352424,
+      "raw34": 137
+    },
+    "after": {
+      "seq": 1071,
+      "steps": 4522352424,
+      "raw34": 131
+    },
+    "trace_calls": [
+      {
+        "step": 4504021216,
+        "control_seq": 1071,
+        "eip": "0x35091",
+        "eax": "0x2B",
+        "edx": "0x0",
+        "ebx": "0x0",
+        "ecx": "0x16D780",
+        "esi": "0x0",
+        "edi": "0x1E0",
+        "esp": "0x5561C",
+        "rng_word": 17186,
+        "stack": [
+          "0x1A861",
+          "0x0",
+          "0x35",
+          "0x13",
+          "0x1A559",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      }
+    ],
+    "changed_record16_offsets": [
+      [
+        5,
+        128,
+        0
+      ],
+      [
+        52,
+        137,
+        131
+      ]
+    ],
+    "trace_sha256": "4038982cd5d3e46a18c62487cf2afc5af9214a00968614a757957f133d7c0016"
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "date": "2026-10-02",
+    "review": [
+      "完整19bytes handler及原始jmp目標已核對。",
+      "重用既有含端點模式writer及正式AI consumer，不重解共用helper。",
+      "原版正常T3直接call與模式轉移一致。"
+    ],
+    "production_scope": "只增加全域43的ai_mode_range(16,16,3)，經既有同步工具降階至第十八章turn3 raw camp0一次動作及canonical；不加入對白或新的Go玩法。",
+    "fail_closed": "沿既有具來源的native_death_op及原子模式寫入，缺失來源拒收。",
+    "acceptance": [
+      "Capstone獨立核對原始參數及所有可達指令覆蓋。",
+      "正式第十八章T3 selector0一次觸發，只改record16低四位；其他回合、陣營與record17保持。",
+      "既有模式高四位／未物化槽與AI consumer回歸。",
+      "同槽正常回放另受#98首輪差異阻塞，未通過前不列CONFORMED。"
+    ],
+    "conformed_scope": "有限RUNTIME-E1：event43正式T3與模式9有效目標先跟隨；四輪行為及完整RGB，整章#94不提升。"
+  },
+  "limits": [
+    "原版r1在第5回合計畫選取戰死單位2而停止。",
+    "#94整章未完成；本檔READY不證明完整RGB或PLAYER-E2。"
+  ],
+  "validation": {
+    "receipt": "docs/data/ui-traces/ch18-turns1-4.json",
+    "full_chapter_passed": false
+  }
+}

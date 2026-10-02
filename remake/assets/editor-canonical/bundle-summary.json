@@ -4831,6 +4831,42 @@
           "message": "欄位已完整保留於 extensions.legacy",
           "path": "events[1]",
           "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[0]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[2]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[3]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[4]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2]",
+          "severity": "warning"
         }
       ],
       "kind": "scenario",
@@ -18069,11 +18105,11 @@
       "source": "remake/assets/scenarios/ch17.json"
     },
     {
-      "diagnostics": 22,
+      "diagnostics": 28,
       "document_id": "legacy/scenario/d07118eaa936/ch18",
       "kind": "scenario",
       "output": "scenarios/ch18.json",
-      "sha256": "659888c213c20db35c8f078cab575fa1fee13f6de5c365e3a7fe1b27d93fed78",
+      "sha256": "5d101123f8953d523d3bd5d53f34bb08e83a993a36e94f2db4f686050e09f3ca",
       "source": "remake/assets/scenarios/ch18.json"
     },
     {

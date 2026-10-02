@@ -290,6 +290,18 @@ EVENTS = [
         op("reward", [(0x34FFF, 0x35009), (0x35030, 0x35041)], rodata=0x52745),
         op("dialogue", [(0x35041, 0x3505A), (0x34FB7, 0x34FC5)], text=4),
     ]},
+    # 第十八章 turn8 raw camp0；完整handler與共享對白尾段的READY證據：
+    # docs/data/ida/fd2_ch18_event42_20261002.json。
+    {"id": 42, "handler": 0x3505F, "ops": [
+        op("spawn_group", [(0x35069, 0x35073)], group=1, gate=0),
+        op("dialogue", [(0x35073, 0x35091), (0x34C0F, 0x34C1D)], text=6),
+    ]},
+    # 第十八章 turn3 raw camp0；完整19bytes與共用模式尾段的READY證據：
+    # docs/data/ida/fd2_ch18_event43_20261002.json。jmp跳過對白。
+    {"id": 43, "handler": 0x35091, "ops": [
+        op("ai_mode_range", [(0x3509B, 0x350A4), (0x34F37, 0x34F41)],
+           first=0x10, last=0x10, mode=3),
+    ]},
     {"id": 51, "handler": 0x3529A, "ops": [
         op("reward", [(0x352A9, 0x352C4)], rodata=0x52748),
         op("dialogue", [(0x352C4, 0x352DD), (0x34FB7, 0x34FC5)], text=3),

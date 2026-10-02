@@ -13,6 +13,101 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+func TestChapter18Event43UsesTurnAndPhaseBeforeSingleRecordModeWrite(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		turn     int
+		selector int
+		want     byte
+	}{
+		{"before_turn3", 2, 0, 0x89},
+		{"ally_phase", 3, 1, 0x89},
+		{"enemy_phase", 3, 0, 0x83},
+		{"after_turn3", 4, 0, 0x89},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch18.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			st := &battle.State{Turn: tc.turn}
+			for i := 0; i < 53; i++ {
+				st.Units = append(st.Units, &battle.Unit{
+					HasNativeRecordByte34: true, NativeRecordByte34: 0x89,
+				})
+			}
+			g := &Game{st: st, sc: sc}
+			calls := 0
+			g.runEditableTurnEvents(tc.selector, func() { calls++ })
+			if g.loadErr != "" || g.battleEvent != nil || len(g.dialog) != 0 || calls != 1 {
+				t.Fatalf("event43 err=%q job=%v dialogue=%d continuation=%d", g.loadErr, g.battleEvent != nil, len(g.dialog), calls)
+			}
+			for i, u := range st.Units {
+				want := byte(0x89)
+				if i == 16 {
+					want = tc.want
+				}
+				if u.NativeRecordByte34 != want {
+					t.Fatalf("record%d mode=%#x want=%#x", i, u.NativeRecordByte34, want)
+				}
+			}
+			if tc.want == 0x83 {
+				st.Units[16].NativeRecordByte34 = 0xa9
+				g.runEditableTurnEvents(0, func() { calls++ })
+				if g.loadErr != "" || st.Units[16].NativeRecordByte34 != 0xa9 || calls != 2 {
+					t.Fatal("event43 在同一回合重播")
+				}
+			}
+		})
+	}
+}
+
+func TestChapter18Event42SpawnsBeforeBlockingDialogue(t *testing.T) {
+	g := &Game{}
+	attachOfficialLocale(t, g)
+	if err := g.loadMap("assets/maps/map17"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map17/map17_units.json", "assets/scenarios/ch18.json")
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	g.st.Turn = 8
+	before := len(g.st.Units)
+	groupSize := 0
+	for _, u := range g.st.Roster {
+		if u.Group == 1 {
+			groupSize++
+		}
+	}
+	if groupSize == 0 {
+		t.Fatal("chapter18 group1 missing")
+	}
+	calls := 0
+	g.runEditableTurnEvents(1, func() { calls++ })
+	if calls != 1 || len(g.st.Units) != before || g.battleEvent != nil {
+		t.Fatal("event42 ran in ally phase")
+	}
+	g.runEditableTurnEvents(0, func() { calls++ })
+	if g.loadErr != "" || len(g.st.Units) != before+groupSize || g.battleEvent == nil || len(g.dialog) == 0 || calls != 1 {
+		t.Fatalf("event42 spawn/dialogue err=%q count=%d want=%d dialogue=%d job=%v continuation=%d", g.loadErr, len(g.st.Units), before+groupSize, len(g.dialog), g.battleEvent != nil, calls)
+	}
+	// 這是建構介面E1：只檢查正式job owner的阻塞與續行，正常鍵盤T8另由#94。
+	segments := 0
+	for g.battleEvent != nil && segments < 30 {
+		g.dialog = nil
+		g.advanceBattleEvent()
+		segments++
+	}
+	if g.loadErr != "" || g.battleEvent != nil || len(g.dialog) != 0 || calls != 2 {
+		t.Fatalf("event42 completion err=%q job=%v dialogue=%d continuation=%d", g.loadErr, g.battleEvent != nil, len(g.dialog), calls)
+	}
+	g.runEditableTurnEvents(0, func() { calls++ })
+	if g.loadErr != "" || len(g.st.Units) != before+groupSize || g.battleEvent != nil || calls != 3 {
+		t.Fatal("event42 repeated after dialogue")
+	}
+}
+
 func TestEvent10ActionTailBlocksUntilDialogueAndPreservesFutureGroupMode(t *testing.T) {
 	for _, rawCamp := range []byte{0, 1, 2} {
 		t.Run(fmt.Sprintf("rawCamp%d", rawCamp), func(t *testing.T) {

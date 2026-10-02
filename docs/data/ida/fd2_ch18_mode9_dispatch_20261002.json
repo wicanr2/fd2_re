@@ -1,0 +1,341 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "kind": "fd2_ch18_mode9_dispatch_evidence_and_spec",
+  "date": "2026-10-02",
+  "issues": [
+    98,
+    94
+  ],
+  "source": {
+    "path": "docs/data/ida/fd2_ch14_mode8_dispatch_20261002.json",
+    "sha256": "e8ab0d4ff5d37c1d5dfce45375d38ed13a7e7a289cb7b0fd1bb05d2d611e49f0",
+    "original_name": "sub_13A9F"
+  },
+  "original_branch": {
+    "instructions": [
+      {
+        "address": "0x13da0",
+        "bytes": "83f809",
+        "original": "cmp     eax, 9",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13da0",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13da3",
+        "bytes": "7540",
+        "original": "jnz     short loc_13DE5",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13da3",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13da5",
+        "bytes": "ff742404",
+        "original": "push    [esp+1Ch+var_18]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13da5",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13da9",
+        "bytes": "e8b2eeffff",
+        "original": "call    sub_12C60",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13da9",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dae",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dae",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13db1",
+        "bytes": "83f8ff",
+        "original": "cmp     eax, 0FFFFFFFFh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13db1",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13db4",
+        "bytes": "0f8439fdffff",
+        "original": "jz      loc_13AF3",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13db4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dba",
+        "bytes": "89c3",
+        "original": "mov     ebx, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dba",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dbc",
+        "bytes": "c1e002",
+        "original": "shl     eax, 2",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dbc",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dbf",
+        "bytes": "01d8",
+        "original": "add     eax, ebx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dbf",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dc1",
+        "bytes": "c1e004",
+        "original": "shl     eax, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dc1",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dc4",
+        "bytes": "8b1d453a0500",
+        "original": "mov     ebx, dword_53A45",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dc4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dca",
+        "bytes": "01c3",
+        "original": "add     ebx, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dca",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dcc",
+        "bytes": "56",
+        "original": "push    esi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dcc",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dcd",
+        "bytes": "e8a9efffff",
+        "original": "call    sub_12D7B",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dcd",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dd2",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dd2",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dd5",
+        "bytes": "57",
+        "original": "push    edi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dd5",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dd6",
+        "bytes": "56",
+        "original": "push    esi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dd6",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13dd7",
+        "bytes": "0fb64301",
+        "original": "movzx   eax, byte ptr [ebx+1]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13dd7",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13ddb",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13ddb",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13ddc",
+        "bytes": "0fb603",
+        "original": "movzx   eax, byte ptr [ebx]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13ddc",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13ddf",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13ddf",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x13de0",
+        "bytes": "e919feffff",
+        "original": "jmp     loc_13BFE",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x13de0",
+        "semantic_annotations": []
+      }
+    ],
+    "original_location": "IDA LE 0x13DA0..0x13DE5"
+  },
+  "claims": [
+    {
+      "original_location": "IDA LE 0x13DA5..0x13DB4",
+      "semantic": "mode9先用+0x35呼叫12C60；查到目標才聚焦、以目標座標呼叫14B78。不先做14EF0評分；只有回-1才跳13AF3評分。",
+      "level": "confirmed",
+      "source": "docs/data/ida/fd2_ch14_mode8_dispatch_20261002.json"
+    },
+    {
+      "original_location": "dosgolem seq609／610與632",
+      "semantic": "同槽原版NPC16／17模式9跟隨移動；重製先選command18使NPC16停在22,7，NPC17追停滯目標至22,6。",
+      "level": "confirmed",
+      "source": "work/parity-slot-ch18/guard-original-r1/eip-trace.jsonl、guard-remake-r1.log與guard-verify-r1.json"
+    }
+  ],
+  "original_calls": [
+    {
+      "step": 2564526965,
+      "control_seq": 609,
+      "eip": "0x13A9F",
+      "eax": "0x0",
+      "edx": "0x1",
+      "ebx": "0x1702EC",
+      "ecx": "0x30",
+      "esi": "0x10",
+      "edi": "0x1E0",
+      "esp": "0x5561C",
+      "rng_word": 62627,
+      "stack": [
+        "0x1D87B",
+        "0x10",
+        "0x1",
+        "0x35",
+        "0x1702EC",
+        "0x1A4F0",
+        "0x0",
+        "0x0"
+      ]
+    },
+    {
+      "step": 2574051996,
+      "control_seq": 610,
+      "eip": "0x13A9F",
+      "eax": "0x0",
+      "edx": "0x1",
+      "ebx": "0x1702EC",
+      "ecx": "0x0",
+      "esi": "0x11",
+      "edi": "0x1E0",
+      "esp": "0x5561C",
+      "rng_word": 62627,
+      "stack": [
+        "0x1D87B",
+        "0x11",
+        "0x1",
+        "0x35",
+        "0x1702EC",
+        "0x1A4F0",
+        "0x0",
+        "0x0"
+      ]
+    }
+  ],
+  "spec_review": {
+    "status": "CONFORMED",
+    "date": "2026-10-02",
+    "review": [
+      "原始branch與固定EXE雜湊一致；重用既有13A9F證據，不重新匯出。",
+      "12C60與raw8查找已有正式consumer，問題位於14EF0入場順序。"
+    ],
+    "production_scope": "只在mode9且已查到raw+8目標時跳過14EF0生產端，沿既有模式9走行consumer。目標不存在仍沿現有14EF0路徑；不增加未閉合missing-target fallback。",
+    "fail_closed": "需要+0x35及可投影的raw記錄出處；不以正規化identity猜補目標。",
+    "acceptance": [
+      "包含command/item表的mode9候選在進入scorer前交回走行consumer。",
+      "有可用攻擊指令時仍先跟隨移動。",
+      "目前原版首輪NPC及敵軍同狀態位置與完整RGB；後續四輪診斷。",
+      "既有mode3、mode11及全套Go回歸。"
+    ],
+    "conformed_scope": "有限RUNTIME-E1：event43正式T3與模式9有效目標先跟隨；四輪行為及完整RGB，整章#94不提升。"
+  },
+  "limits": [
+    "只改有效跟隨目標的分派順序，不外推所有mode9後備行為。",
+    "#94完整第十八章未通過；#98尚待同槽首輪驗證。"
+  ],
+  "validation": {
+    "receipt": "docs/data/ui-traces/ch18-turns1-4.json",
+    "full_chapter_passed": false
+  }
+}

@@ -333,3 +333,15 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十八章山景底面規格](../data/ida/fd2_ch18_parallax_backdrop_20261002.json)：#96，FDOTHER16/17 writer／consumer與READY契約；同狀態起手待驗。
 
 - [第十八章有限起手收據](../data/ui-traces/ch18-native-startup.json)與[五點抽樣來源](../data/ui-traces/ch18-native-startup-samples.json)：#95／#96，正常起手五點完整RGB0px、Go19與第17章98張四項回歸；只列有限RUNTIME-E1，整章仍#94。
+
+- [第十八章正常護援計畫](../data/parity-plans/ch18-guard.jsonl)：#94，八回合含event43／42，round9才清敵；護援與戰後收據待驗。
+
+- [第十八章 event43 規格](../data/ida/fd2_ch18_event43_20261002.json)：#97，原始35091與34F37尾段將單位16模式低四位設3；READY。首輪AI差異另由#98，整章由#94。
+
+- [第十八章模式9分派規格](../data/ida/fd2_ch18_mode9_dispatch_20261002.json)：#98，重用13A9F直接branch；有效raw目標先跟隨，不進14EF0；READY，首輪同槽待驗。
+
+- [第十八章護援r2計畫](../data/parity-plans/ch18-guard-r2.jsonl)：#94，固定同槽seed4與前四輪，只移除後四輪對戰死record2的選取；舊r1收據保留。
+
+- [第十八章四輪有限對拍收據](../data/ui-traces/ch18-turns1-4.json)：#97／#98的正式事件與模式9順序修正；原版計畫於round5停止，整章#94仍待驗。
+
+- [第十八章event42完整規格](../data/ida/fd2_ch18_event42_20261002.json)：#99，3505F先追加group1再播text6，原始shared tail與READY；正常T8待#94。

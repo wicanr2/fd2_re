@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,6 +110,46 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 第十八章第三回合 event43 尚缺完整 handler 與正式消費端證據
+
+`ch18-turn3-event43-semantics` · RE待解 · [#97](https://github.com/wicanr2/fd2_re/issues/97) · 仍未完成 · 要人判
+
+#94 八回合正常護援正在執行。原始 FDFIELD_052 有 turn3 event43／turn8 event42，既有清冊只記43為0x35091且沒有spawn；正式ch18情境目前只列turn8 spawn，不能把spawn-only摘要當完整handler。已查58、00及docs/data：35091只有定位／函式台帳／unknown footprints，既有reinforcement_eax_sources只閉合其他handler。先查最小直接指令、writer及consumer與本輪T3狀態，再判定是否需正式動作；不得猜成no-op。
+
+怎樣算做完：固定EXE雜湊、IDA9.4原始函式／bytes／位址與caller可回查，完整handler語意分級。依RE→DRAFT→READY再接有來源的typed consumer，或以原始直接證據證明無玩家效果。正常同槽T3及後續事件／戰後全檔SAV、完整RGB與正式回歸通過，整章另由#94。保留未知或無效果的證據，不因清冊沒有spawn就略過。
+
+證據：`['docs/data/parity-plans/ch18-guard.jsonl', 'docs/data/turn_events.json', 'docs/data/event_id_groups.json', 'docs/data/ida/fd2_reinforcement_eax_sources.json', 'remake/assets/scenarios/ch18.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 第十八章首輪 AI 行動與原版不同，兩名 NPC 未撤退
+
+`ch18-first-phase-ai-divergence` · 缺陷 · [#98](https://github.com/wicanr2/fd2_re/issues/98) · 仍未完成 · 要人判
+
+#94 固定槽與 seed4 正常鍵盤護援 r1 的最早行為差異在 seq632 after_enemy_phase。原版 camp1 單位16/17 已從22,7／22,8移至18,7／18,6，重製端單位16仍在22,7，單位17只移到22,6；另有兩名敵軍位置不同。此差異發生於第三回合 event43 之前，不可歸因於 #97。稍後 seq1138 原版拒絕移動、重製端卻接受，需先修正上游首輪 AI 狀態，才判定移動差異是否獨立。原版 r1 因第5回合仍選取已戰死的單位2而停止，這是驗證計畫問題，未證明 NPC 任務失敗。
+
+怎樣算做完：以既有已分級 AI 證據及目前原版收據追到模式9與 camp1 正式消費端；新增語意依 RE→DRAFT→READY。修正後同槽首輪及已完成四回合行為與完整RGB抽樣對拍，保留失敗收據；後續第18章全流程由#94驗收。
+
+證據：`['docs/data/parity-plans/ch18-guard.jsonl', 'work/parity-slot-ch18/guard-verify-r1.json', 'work/parity-slot-ch18/guard-original-r1', 'work/parity-slot-ch18/guard-remake-r1', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 第十八章第八回合 event42 缺少增援後的戰場對白
+
+`ch18-turn8-event42-dialogue` · 缺陷 · [#99](https://github.com/wicanr2/fd2_re/issues/99) · 仍未完成 · 要人判
+
+#94正常八回合驗收前已檢查58及00索引。IDA9.4固定EXE的sub_3505F完整50bytes確認先追加group1，再以text6跳34C0F共享對白尾段。現行第18章只保存spawn_group，缺少對白及其阻塞時序。已有第15章event38的同一shared tail證據，不重解共用helper。原版guard-r2正在固定同槽seed4正常運行，尚未到T8。
+
+怎樣算做完：原始handler／shared tail／固定EXE／caller與控制列可回查，完成READY後將event42完整降階至第18章正式及canonical；增援先發生、text6完整對白阻塞AI、結束後續行且只觸發一次。固定槽正常T8與後續全章完整RGB、戰後及酒店SAV由#94驗收，通過前不關閉。
+
+證據：`['work/parity-slot-ch18/ida-event42-r1/ida-input-probe.json', 'docs/data/ida/fd2_ch15_turn_events_20261002.json', 'docs/data/turn_events.json', 'remake/assets/scenarios/ch18.json', 'docs/data/parity-plans/ch18-guard-r2.jsonl']`
+
+### 第十八章第五回合敵軍 AI 預選順序與原版不同
+
+`ch18-turn5-ai-preselection-divergence` · 缺陷 · [#100](https://github.com/wicanr2/fd2_re/issues/100) · 仍未完成 · 要人判
+
+#94同槽seed4護援r2只移除round5..8已戰死record2選取。前四輪與r1的完整單位、view、虛擬steps及PNG逐項相同。重製首輪模式9修正後四輪通過，但r2第5回合seq1519有新的AI順序分岔：原版第151個AI行動record49，重製端record18；後續seq1536敵方21,4記錄與HP不同。三筆分岔不能藏在已完成#98。原版r2另在seq1973 record16 HP0，round7敗退返回標題，T8及戰後未到；不把原版敗退當重製缺陷。
+
+怎樣算做完：先以目前原版r2、正式原始記錄／預選與評分出處找出第5回合最早差異；已有IDA證據優先沿用。需要新語意時走RE→READY。修正後同一原版r2的AI入口順序、已完成回合行為與完整RGB回歸。整章#94另外驗收；不改seed、NPC能力或HP，不調像素門檻。
+
+證據：`['docs/data/parity-plans/ch18-guard-r2.jsonl', 'work/parity-slot-ch18/guard-original-r2', 'work/parity-slot-ch18/guard-r2-remake-r1', 'work/parity-slot-ch18/guard-r2-verify-r1.json', 'remake/internal/battle/combat.go', 'remake/internal/battle/native_ai_action_runtime.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

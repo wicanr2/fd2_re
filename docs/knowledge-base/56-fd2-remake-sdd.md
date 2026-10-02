@@ -9207,3 +9207,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [有限收據](../data/ui-traces/ch18-native-startup.json)在正常LOAD、15次選人與戰前對話後，五點完整RGB皆0px，53筆起手單位一致。正式戰役已保存有來源的鏡頭／HUD，FDOTHER16/17嚴格分離圖面以462×226鋪底，再依原版鏡頭公式取312×192；透明地形保留山景。缺來源或越界原子拒收，不以oracle PNG作資產。
 
 兩份規格列有限CONFORMED／RUNTIME-E1。最終Go19套件、三條山景測試及第十七章98張四項與全檔酒店SAV通過；私人素材清冊驗證通過。原版／重製PNG與總覽留本機，公開庫保存[抽樣索引](../data/ui-traces/ch18-native-startup-samples.json)。不外推逐步捲動動畫。第3／8回合、戰後、交易與SAV由#94續驗，整章不提升PLAYER-E2；唯一分層現況與統計依[58](58-fd2-exe-re-coverage.md)。
+
+### 第十八章事件43與模式9有限驗收（#97／#98）
+
+正式turn3 raw camp0以既有ai_mode_range只改record16的低四位；模式9查到raw目標時先跟隨，目標不存在沿既有後備。兩份規格列有限CONFORMED。正常四輪回放範圍、完整RGB、Go回歸及剩餘整章閘門見[58](58-fd2-exe-re-coverage.md)與[有限收據](../data/ui-traces/ch18-turns1-4.json)；#94／#97尚未完成戰後與SAV，不提升PLAYER-E2。
+
+第十八章T8 event42已依READY補增援後完整text6對白，建構E1驗證阻塞與once；尚未有正常T8收據。護援r2原版round7敗退，重製另有第5回合預選差異#100，均如實拒收。完整章#94／#97與#99保持開啟，現況及重開入口依[58](58-fd2-exe-re-coverage.md)。
