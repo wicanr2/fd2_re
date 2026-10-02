@@ -266,3 +266,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十五章完整首次失敗診斷（#76／#81）](../data/ui-traces/parity-ch15-r1.json)：原版第六回合敗北、AI首個分岔及61張嚴格整幀比較，四項皆未通過。
 
 - [第十五章離屏狀態到期前置修正（#80）](../data/fd2_ch15_transient_replay_20261002.json)：原失敗checkpoint、正式Draw來源、到期提示測試與19套件回歸；整章仍failed。
+
+- [第十五章 AI 首個分岔診斷計畫](../data/parity-plans/ch15-ai-prefix.jsonl)：GitHub #81，沿整章相同正常輸入只到第五回合；不作整章收據。
+
+- [第十五章敵方承接共享經驗與成長槽](../data/ida/fd2_ch15_ai_growth_20261002.json)：#81，RE-CLOSED／READY；[256槽資料](../data/exe_tables/native_growth_slots.json)與[重生工具](../../tools/extract_native_growth_slots.py)。68列後是相鄰讀取，不是作者表。
+
+- [第十五章成長修正後嚴格診斷（#81／#82）](../data/ui-traces/parity-ch15-r2.json)：297筆AI無分岔、66個行為點通過；seq849色盤與完整章仍未通過，分層現況見58。

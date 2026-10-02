@@ -310,7 +310,12 @@ func GainExp(u *Unit, amount float64, rng *rand.Rand) []LevelUpEvent {
 // 套件層的 GainExp 走舊名字表；State.AwardExp 另外套原版的 +7 成長列與指令學習。
 func gainExp(u *Unit, amount float64, roll statRoll, learn func(*Unit) []int,
 	rowFor func(*Unit) (GrowthRow, bool)) (float64, []LevelUpEvent) {
-	if u == nil || (u.Camp != Own && u.Camp != Ally) || amount <= 0 {
+	return gainExpForCaller(u, amount, roll, learn, rowFor, true)
+}
+
+func gainExpForCaller(u *Unit, amount float64, roll statRoll, learn func(*Unit) []int,
+	rowFor func(*Unit) (GrowthRow, bool), friendlyOnly bool) (float64, []LevelUpEvent) {
+	if u == nil || (friendlyOnly && u.Camp != Own && u.Camp != Ally) || amount <= 0 {
 		return 0, nil
 	}
 	if u.HasNativeRecordByte5 && u.NativeRecordByte5&1 != 0 {
@@ -391,7 +396,11 @@ func (s *State) AwardExpNative(u *Unit, amount int, rngState uint16) (int, []Lev
 			return inner(span)
 		}
 	}
-	got, events := gainExp(u, float64(amount), roll, s.learnNativeCommandsAtLevel, s.NativeGrowthRowFor)
+	// 0x1566A 對被打記錄呼叫；0x1E292 沒有陣營閘門，敵人也能承接共享累計。
+	// 只對有原版來源的單位使用此 caller 契約，正規化單位維持舊範圍。
+	native := u != nil && u.HasNativeRecordByte5 && u.HasNativeRecordByte6 && u.HasBattleFig
+	got, events := gainExpForCaller(u, float64(amount), roll, s.learnNativeCommandsAtLevel,
+		s.NativeGrowthRowFor, !native)
 	return int(got), events, state
 }
 
@@ -416,6 +425,16 @@ func (s *State) NativeGrowthRowFor(u *Unit) (GrowthRow, bool) {
 // [min, max_exclusive)；轉成 StatRange 時上界減一，與手寫 growthTable 的慣例相同
 // （63 列已逐一比對過，見 growthTable 註解），min == max 的欄位就是固定值。
 func LoadNativeGrowthRows(path string) (map[int]GrowthRow, error) {
+	return loadNativeGrowthRows(path, false)
+}
+
+// LoadNativeGrowthSlots 承接 byte selector 可達的256槽；68列後是相鄰資料。
+// 原版0x1E554使用有號idiv，負跨距不能排序或截成固定值。#81主證據保存raw兩端。
+func LoadNativeGrowthSlots(path string) (map[int]GrowthRow, error) {
+	return loadNativeGrowthRows(path, true)
+}
+
+func loadNativeGrowthRows(path string, signedSlots bool) (map[int]GrowthRow, error) {
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -430,6 +449,9 @@ func LoadNativeGrowthRows(path string) (map[int]GrowthRow, error) {
 	if len(rows) == 0 {
 		return nil, fmt.Errorf("native growth rows: empty table")
 	}
+	if signedSlots && len(rows) != 256 {
+		return nil, fmt.Errorf("native growth slots: rows=%d, want 256", len(rows))
+	}
 	out := make(map[int]GrowthRow, len(rows))
 	for i, row := range rows {
 		if row.Idx != i {
@@ -437,10 +459,14 @@ func LoadNativeGrowthRows(path string) (map[int]GrowthRow, error) {
 		}
 		var ranges [5]StatRange
 		for k, r := range [][2]int{row.AP, row.DP, row.DX, row.HP, row.MP} {
-			if r[0] < 0 || r[1] < r[0] {
+			if r[0] < 0 || r[1] < 0 || (!signedSlots && r[1] < r[0]) ||
+				(signedSlots && (r[0] > 255 || r[1] > 255)) {
 				return nil, fmt.Errorf("native growth rows: invalid range %v at idx %d", r, i)
 			}
 			hi := r[1] - 1
+			if signedSlots && r[1] < r[0] {
+				hi = r[0] + (r[0] - r[1]) - 1
+			}
 			if hi < r[0] {
 				hi = r[0]
 			}

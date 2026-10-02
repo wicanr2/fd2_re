@@ -9131,3 +9131,11 @@ event38於round7 raw camp0追加group1再播text10；event18於round9 raw camp0�
 #78仍待round7／9，第十五章同槽敗北仍受#81分岔阻擋，#76四gate保持failed，不能以綠色Go測試宣稱原版一致。
 #79分級語意已回填自動匯出索引；1305原始函式邊界／名稱／caller未變，機械重生清冊只更動20822一列。
 目前分類62 product／175 runtime／1068 unknown、68條函式註記；來源與命令見[結果主證據](../data/ida/fd2_ch15_result_conditions_20261002.json)。
+
+## 2026-10-02 #81 原生共享經驗consumer與成長槽（READY／RUNTIME-E1）
+
+[58現況入口](58-fd2-exe-re-coverage.md) → [固定EXE、IDA直接指令及有限規格](../data/ida/fd2_ch15_ai_growth_20261002.json)。原生0x1E292沒有陣營閘門，只有帶raw +5／+6／+7來源的AwardExpNative解除舊Camp限制；一般AwardExp保持原範圍。writer +6==2不等於consumer閘門，經驗提示承接實際接受的經驗；死亡與滿級早退沿既有契約。
+
+0x4E4D1以byte selector取11-byte槽，正式原生成長載入256槽；前68列是作者表，其餘明示為相鄰讀取。0x1E554有號除法不能排序負跨距，等價範圍為raw_min至raw_min+abs(raw_max−raw_min)−1，相等時固定且不擲；缺槽及超出byte拒絕。角色轉職／學招仍使用既有作者表，未驗的相鄰學招語意不作完成宣稱。
+
+受控record40成長、297筆AI入口、66個行為點與完整Go19套件通過，見[嚴格診斷](../data/ui-traces/parity-ch15-r2.json)。seq849色盤例外仍由#82追查，尚未達#81的嚴格畫面閘門；第十五章整章與敗北返回標題各自未完成，不提升PLAYER-E2。

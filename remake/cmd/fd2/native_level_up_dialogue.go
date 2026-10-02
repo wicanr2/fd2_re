@@ -46,10 +46,10 @@ type nativeLevelUpDialogueState struct {
 	then         func()
 }
 
-// queueNativeLevelUpDialogue 在攻擊結算知道經驗時排一則；只有原版 `+6==2` 的單位會
-// 拿到 [0x53EC8]（sub_29F72 以揮擊者 +6==2 覆寫）。
+// queueNativeLevelUpDialogue 在原生 caller 收下經驗時排一則。0x29F72的+6==2
+// 是累計writer閘門，不是0x1E292的consumer閘門；敵人也可能承接前值（#81）。
 func (g *Game) queueNativeLevelUpDialogue(unit *battle.Unit, exp int, ups []battle.LevelUpEvent) {
-	if g == nil || unit == nil || exp <= 0 || !unit.HasNativeRecordByte6 || unit.NativeRecordByte6 != 2 {
+	if g == nil || unit == nil || exp <= 0 || !unit.HasNativeRecordByte6 {
 		return
 	}
 	g.pendingNativeLevelUps = append(g.pendingNativeLevelUps, pendingNativeLevelUp{unit: unit, exp: exp, ups: ups})

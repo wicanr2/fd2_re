@@ -70,14 +70,15 @@ func TestNativeLevelUpDialogueLinesWithoutLevelUpIsOneUnwaitedPage(t *testing.T)
 	}
 }
 
-func TestQueueNativeLevelUpDialogueOnlyForRawPlayerRecords(t *testing.T) {
+func TestQueueNativeLevelUpDialogueFollowsRawExperienceConsumer(t *testing.T) {
 	g := &Game{}
 	enemy := &battle.Unit{HasNativeRecordByte6: true, NativeRecordByte6: 0}
 	player := &battle.Unit{HasNativeRecordByte6: true, NativeRecordByte6: 2}
 	g.queueNativeLevelUpDialogue(enemy, 12, nil)
 	g.queueNativeLevelUpDialogue(player, 0, nil)
 	g.queueNativeLevelUpDialogue(player, 12, nil)
-	if len(g.pendingNativeLevelUps) != 1 || g.pendingNativeLevelUps[0].unit != player || g.pendingNativeLevelUps[0].exp != 12 {
+	if len(g.pendingNativeLevelUps) != 2 || g.pendingNativeLevelUps[0].unit != enemy ||
+		g.pendingNativeLevelUps[1].unit != player || g.pendingNativeLevelUps[1].exp != 12 {
 		t.Fatalf("pending=%+v", g.pendingNativeLevelUps)
 	}
 }

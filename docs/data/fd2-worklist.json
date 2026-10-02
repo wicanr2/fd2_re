@@ -370,23 +370,6 @@
       "issue": 79
     },
     {
-      "id": "ch15-transient-indexed-presentation",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十五章同槽重播在狀態到期提示缺少原生畫面來源",
-      "acceptance": "查證既有原生狀態到期提示的原版證據、正式Draw與重播畫面來源；修正已確認的產品或驗證腳本缺口，測試實際觸發狀態到期與正常無狀態路徑；同槽重播越過原失敗點，完整Go回歸及嚴格比較保留。",
-      "evidence": [
-        "work/parity-slot-ch15/sample-remake-r1.log",
-        "remake/cmd/fd2/native_transient_presentation.go",
-        "remake/cmd/fd2/chapter_parity_replay_test.go"
-      ],
-      "verify": {
-        "kind": "manual",
-        "reason": "需分類原生畫面來源與實際狀態到期路徑；綠色測試不代表整章對拍完成。"
-      },
-      "issue": 80
-    },
-    {
       "id": "ch15-ai-entry-divergence",
       "layer": "runtime",
       "category": "缺陷",
@@ -403,6 +386,20 @@
         "reason": "需首個分岔的raw與原版證據，不以內部測試通過或修改抽樣計畫放行。"
       },
       "issue": 81
+    },
+    {
+      "id": "ch15-attack-result-0849-frame",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十五章攻擊結算 seq849 畫面仍差16098像素",
+      "body": "第十五章同槽重播r3消除了AI分岔，66行為點均通過；61整幀比較只有seq849 attack_result超出640px門檻，差16098px。須核對原版同狀態畫面與正式介面owner；不得遮蔽像素或放寬門檻。",
+      "acceptance": "seq849原版／重製同狀態畫面差異不超過既有640px，具有原始證據、READY規格、正式owner修正與相關回歸；完整章仍須另驗戰後與存檔。",
+      "evidence": "work/parity-slot-ch15/sample-verify-r3.json",
+      "verify": {
+        "kind": "manual",
+        "reason": "需首個分岔的raw與原版證據，不以內部測試通過或修改抽樣計畫放行。"
+      },
+      "issue": 82
     }
   ]
 }

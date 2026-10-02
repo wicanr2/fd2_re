@@ -1,9 +1,109 @@
 package battle
 
 import (
+	"encoding/json"
 	"math/rand"
+	"os"
 	"testing"
 )
+
+// 原版第十五章 seq1049～1061：敵人 record40 承接共享累計19。
+// 固定seed4，每個成長欄位再承接原版0x1E54A的受控輸入；不要求演出骰序一致。
+func TestNativeEnemyGrowthMatchesChapter15Oracle(t *testing.T) {
+	rows, err := LoadNativeGrowthSlots("../../../docs/data/exe_tables/native_growth_slots.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile("../../../docs/data/ida/fd2_ch15_ai_growth_20261002.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var evidence struct {
+		Oracle struct {
+			GrowthTrace []struct {
+				RNGWord int `json:"rng_word"`
+			} `json:"growth_trace"`
+		} `json:"oracle"`
+	}
+	if err := json.Unmarshal(raw, &evidence); err != nil {
+		t.Fatal(err)
+	}
+	seeds := evidence.Oracle.GrowthTrace
+	if len(seeds) != 10 {
+		t.Fatalf("原版成長收據=%d，應為10", len(seeds))
+	}
+	st := &State{NativeGrowthRows: rows}
+	cursor := 0
+	st.NativeGrowthRollObserver = func(u *Unit, state uint16) uint16 {
+		if cursor >= len(seeds) {
+			t.Fatal("重製成長多擲")
+		}
+		seed := uint16(seeds[cursor].RNGWord)
+		cursor++
+		return seed
+	}
+	u := &Unit{Camp: Enemy, Lv: 19, Exp: 255, HP: 161, MaxHP: 304, MaxMP: 0,
+		AP: 232, DP: 102, DX: 19, HIT: 139, EV: 24, EquipmentBaseSet: true,
+		BaseAP: 152, BaseDP: 38, BaseHIT: 139, BaseEV: 24,
+		BattleFig: 102, HasBattleFig: true,
+		NativeRecordByte5: 0, HasNativeRecordByte5: true,
+		NativeRecordByte6: 0, HasNativeRecordByte6: true,
+		NativeRecordWord42: 304, HasNativeRecordWord42: true,
+		NativeRecordWord46: 0, HasNativeRecordWord46: true}
+	got, ups, _ := st.AwardExpNative(u, 19, 4)
+	if got != 19 || len(ups) != 2 || cursor != 10 || u.Lv != 21 || u.Exp != 74 ||
+		u.HP != 161 || u.MaxHP != 629 || u.MaxMP != 376 ||
+		u.AP != 456 || u.DP != 159 || u.DX != 191 || u.HIT != 311 || u.EV != 196 ||
+		u.BaseAP != 376 || u.BaseDP != 95 ||
+		u.NativeRecordWord42 != 629 || u.NativeRecordWord46 != 376 {
+		t.Fatalf("敵方原生成長不符同槽收據：got=%d ups=%+v rolls=%d unit=%+v", got, ups, cursor, u)
+	}
+	legacy := &Unit{Camp: Enemy, Lv: 19, Exp: 255, HP: 161, MaxHP: 304}
+	if accepted, _, _ := st.AwardExpNative(legacy, 19, 4); accepted != 0 || legacy.Lv != 19 {
+		t.Fatal("缺原始來源的正規化敵人被套用原生例外")
+	}
+	if accepted, _ := st.AwardExp(u, 19, rand.New(rand.NewSource(4))); accepted != 0 || u.Lv != 21 {
+		t.Fatal("一般AwardExp陣營範圍被改動")
+	}
+}
+
+func TestNativeGrowthSlotsRejectMissingAndNonByteRows(t *testing.T) {
+	raw, err := os.ReadFile("../../../docs/data/exe_tables/native_growth_slots.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rows []map[string]interface{}
+	if err := json.Unmarshal(raw, &rows); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"缺槽", "超出byte"} {
+		t.Run(name, func(t *testing.T) {
+			var copyRows []map[string]interface{}
+			if err := json.Unmarshal(raw, &copyRows); err != nil {
+				t.Fatal(err)
+			}
+			if name == "缺槽" {
+				copyRows = copyRows[:255]
+			} else {
+				copyRows[102]["ap"] = []int{256, 5}
+			}
+			data, err := json.Marshal(copyRows)
+			if err != nil {
+				t.Fatal(err)
+			}
+			path := t.TempDir() + "/slots.json"
+			if err := os.WriteFile(path, data, 0600); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := LoadNativeGrowthSlots(path); err == nil {
+				t.Fatal("錯誤成長槽未被拒絕")
+			}
+		})
+	}
+	if _, err := LoadNativeGrowthRows("../../../docs/data/exe_tables/native_growth_slots.json"); err == nil {
+		t.Fatal("作者表讀取器接受了負跨距相鄰資料")
+	}
+}
 
 // 原生戰場的單位不帶名字（身分走 NativeIdentity），升級時成長列由記錄 +7 選
 // （0x1E2F8 → 0x4E4D1 = 0x620A1 + 11 × selector）。用名字查會一律查不到，等級

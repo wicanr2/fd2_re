@@ -11068,8 +11068,13 @@ func loadGame() *Game {
 	} else if g.loadErr == "" {
 		g.loadErr = "command learn selectors: " + e.Error()
 	}
-	// 同一張 EXE 成長表的數值欄：升級時以記錄 +7 選列（0x1E292→0x4E4D1）。
-	if rows, e := battle.LoadNativeGrowthRows(learnSelectorPath); e == nil {
+	// 原生0x1E292以byte +7直接取槽；68列後的相鄰讀取與負跨距見第十五章#81。
+	// 角色轉職／學招仍使用作者的68列；原生成長承接完整256槽的明示資料。
+	nativeGrowthPath := assetPath("assets/data/native_growth_slots.json")
+	if !fileExists(nativeGrowthPath) {
+		nativeGrowthPath = "../docs/data/exe_tables/native_growth_slots.json"
+	}
+	if rows, e := battle.LoadNativeGrowthSlots(nativeGrowthPath); e == nil {
 		g.nativeGrowthRows = rows
 	} else if g.loadErr == "" {
 		g.loadErr = "native growth rows: " + e.Error()
