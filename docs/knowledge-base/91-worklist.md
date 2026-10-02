@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,16 +111,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第十七章敵方指令動畫影格無法寫入繪製目標
-
-`ch17-command-animation-frame-blit` · 缺陷 · [#92](https://github.com/wicanr2/fd2_re/issues/92) · 仍未完成 · 要人判
-
-#88原版正常護援已完成10,886,352,202步與酒店存檔；同槽正式Go回放第一敵方回合，actor38於(31,24)施指令2，target14於(34,22)，報native AI action: figani: frame cannot be blitted to destination。鏡頭(23,18)、游標(34,22)、可見(11,4)。先確認實際影格與目的geometry，再沿既有已閉合動畫／裁切證據審查，不能略過動畫或猜補正式路徑。原版不重跑。
-
-怎樣算做完：原版固定檔案與同狀態可回查；定位實際失敗asset／frame／destination與既有consumer，READY規格先入庫。修正正常正式動畫路徑，保留來源拒收與裁切邊界；相關真實測試、同槽完整章及必要舊分支回歸通過，不跳過效果或放寬章畫面門檻。完整章由#88。
-
-證據：`['docs/data/parity-plans/ch17-guard.jsonl', 'docs/data/parity-slots/ch17-manifest.json', 'remake/cmd/fd2/main.go', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -160,16 +150,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### 第十七章缺完整原版與重製四項對拍收據
-
-`ch17-full-chapter-parity` · 工作 · [#88](https://github.com/wicanr2/fd2_re/issues/88) · 仍未完成 · 要人判
-
-第十六章已於8120104c完成四項驗收，#83／#87已關閉。依111／114接續第十七章，先核對正常LOAD、起手名冊／部署／視圖與既有可編輯事件，再以正常鍵盤抽樣主要回合／事件，清敵後驗戰後城鎮、交易與酒店SAV。每個新缺口先登記獨立RE或缺陷工單，沿RE→READY→實作→同槽驗證，不猜補正式路徑。
-
-怎樣算做完：以已核對ch02-cleared基底建構相同第十七章槽，levels6、seed4、state7:17=1與我方AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後／城鎮／交易／酒店存檔。原版與完整Go串行；四項全過、至少12張320×200全RGB≤640px，保存manifest、plan、正式收據，完整回歸及必要舊分支抽驗通過，同步56／57／58、台帳與首頁。
-
-證據：`['docs/data/parity-campaign-progress.json', 'docs/data/ui-traces/parity-ch16.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
 
 ## release — 發行、平台與封包
 
@@ -244,15 +224,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：四個既有測試逐項釐清契約與目前資料，修正過時fixture或重生受版控證據，保留原始失敗及雜湊；以合適既有Docker映像乾淨重跑相關工具測試。不得調整正式玩法、章通過門檻或把未證實語意升格。
 
 證據：`['tools/test_fd2_chapter_slot.py', 'tools/test_fd2_parity_progress.py', 'tools/test_editor_schemas.py', 'tools/test_fd2_unknown_footprints.py', 'docs/data/ida/fd2_ch17_oracle_d1_20261002.json']`
-
-### 第十七章第四回合移動畫面差異超過門檻
-
-`ch17-round4-move-frame-parity` · 缺陷 · [#93](https://github.com/wicanr2/fd2_re/issues/93) · 仍未完成 · 要人判
-
-第十七章 guard-original-r1 與正式 guard-remake-r3 已跑完整章；行為、節點、交易與酒店存檔一致，124筆AI順序零分岔。98張全幅RGB只有seq1287 move失敗，1195像素，box[4,4,49,195]。保留640像素門檻，先核對HUD／場景狀態及原始consumer。#92動畫界線已修正；這是獨立畫面問題。
-
-怎樣算做完：固定原版與重製失敗畫面、狀態與來源；依既有主證據定出READY規格後修正正式消費端。同槽完整章四項原門檻與必要回歸通過，不遮像素、不放寬640門檻。章完成由#88。
-
-證據：`['docs/data/parity-plans/ch17-guard.jsonl', 'docs/data/parity-slots/ch17-manifest.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 <!-- END fd2_worklist.py render -->
