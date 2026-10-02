@@ -4852,3 +4852,5 @@ SAV差未出戰record16五欄與checksum，先登記#87再追consumer。
 #88固定槽SHA dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786，17人未含18；原版正常LOAD、15次選人、對話到seq117，53筆起手。首次重製缺HUD，先登記#89，再沿既有HUD writer並以IDA sub_335AA／shared focus尾段建立READY規格。正式戰役兩份資料同步camera12,30／cursor23,36／selector1與inherited B1；五點完整RGB皆0px。有限spec達CONFORMED／RUNTIME-E1，整章仍#88待驗。完整Go19套件通過，game261.802s；第十六章既有四項、76幀與SAV回歸通過。
 
 原始map16控制全16列核對，只有turn4 event40 raw_camp1，其他停用。受版控ch17-sample計畫安排四個正常回合到round5，再依111清敵並驗戰後交易、酒店SAV與town_ch18 selection1／Ctrl+F7。尚未執行完整章，不增加13／30統計。初次診斷與五點總覽可由00索引回查。
+
+第十七章有限起手提交b48c69e9已推送並核對遠端HEAD。主機gh確認#89關閉，留言5946433329；#88仍開啟，進度留言5946435773。關閉後以遠端20條重生JSON與91產生區塊，完整章仍13／30，不把有限五點提升為整章通過。
