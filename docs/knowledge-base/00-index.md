@@ -272,3 +272,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十五章敵方承接共享經驗與成長槽](../data/ida/fd2_ch15_ai_growth_20261002.json)：#81，RE-CLOSED／READY；[256槽資料](../data/exe_tables/native_growth_slots.json)與[重生工具](../../tools/extract_native_growth_slots.py)。68列後是相鄰讀取，不是作者表。
 
 - [第十五章成長修正後嚴格診斷（#81／#82）](../data/ui-traces/parity-ch15-r2.json)：297筆AI無分岔、66個行為點通過；seq849色盤與完整章仍未通過，分層現況見58。
+
+- [第十五章色盤寫入中間狀態（#82）](../data/ida/fd2_ch15_palette_writer_20261002.json)：原版EIP／暫存器直接證實phase5→6的四槽進度，有限對拍工具規格READY；現況見58。
+
+- [第十五章AI與嚴格畫面修正後診斷（#81／#82）](../data/ui-traces/parity-ch15-r3.json)：61張畫面與66個行為點通過，完整章節點／交易仍未完成；最新分層由58承載。

@@ -9139,3 +9139,9 @@ event38於round7 raw camp0追加group1再播text10；event18於round9 raw camp0�
 0x4E4D1以byte selector取11-byte槽，正式原生成長載入256槽；前68列是作者表，其餘明示為相鄰讀取。0x1E554有號除法不能排序負跨距，等價範圍為raw_min至raw_min+abs(raw_max−raw_min)−1，相等時固定且不擲；缺槽及超出byte拒絕。角色轉職／學招仍使用既有作者表，未驗的相鄰學招語意不作完成宣稱。
 
 受控record40成長、297筆AI入口、66個行為點與完整Go19套件通過，見[嚴格診斷](../data/ui-traces/parity-ch15-r2.json)。seq849色盤例外仍由#82追查，尚未達#81的嚴格畫面閘門；第十五章整章與敗北返回標題各自未完成，不提升PLAYER-E2。
+
+## 2026-10-02 #82 寫入中間窗口與 #81 有限驗收
+
+[58入口](58-fd2-exe-re-coverage.md) → [原始EIP／registers與有限CONFORMED規格](../data/ida/fd2_ch15_palette_writer_20261002.json)。對拍候選只接受4E01F完整triplet停點；ECX、AH、EDX、ESI與AL須一致，來源固定EXE且非延後快照，生成舊相位及已寫的新相位前綴，再核對全部16色。未知條件拒絕，不複製原版色值，不改正式Game DAC或硬體時間。報告分開完整相位與中間writer來源。
+
+原版849證實phase5→6、完成四槽；同槽新重播0px。#81共享經驗consumer與#82工具切片均通過[嚴格診斷](../data/ui-traces/parity-ch15-r3.json)、完整Go19套件及驗證器12項回歸。有限CONFORMED不代表整章；#76／#78／#79仍未完成。

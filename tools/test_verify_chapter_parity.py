@@ -9,6 +9,18 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_partial_palette_writer_is_not_reported_as_complete_phase(self):
+        writer = {"eip": "0x4E01F", "phase": 6, "completed_entries": 4,
+                  "registers": [0xe323, 13, 0x3c9, 0xc2, 0x55524, 0xffffffff, 0x60021, 0]}
+        result = vp.palette_cycle_metadata({"palette_cycle_phase": 6, "palette_cycle_write": writer})
+        self.assertEqual(result["palette_cycle_write"], writer)
+        self.assertIn("新舊raw窗口", result["palette_cycle_source"])
+        self.assertNotIn("完整匹配已證實raw窗口", result["palette_cycle_source"])
+        wrong = {**writer, "eip": "0x16D05"}
+        result = vp.palette_cycle_metadata({"palette_cycle_phase": 6, "palette_cycle_write": wrong})
+        self.assertIn("未知", result["palette_cycle_source"])
+        self.assertNotIn("palette_cycle_phase", result)
+
     def test_rejected_action_fails_even_when_unit_state_matches(self):
         cp = {"kind": "move", "oracle_seq": 3847, "units": [],
               "note": "divergence: 原版接受、重製端拒絕"}

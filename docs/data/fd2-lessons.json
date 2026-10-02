@@ -1071,6 +1071,21 @@
       "why": "第十四章wait860已建立事件10但len(dialog)仍0，舊重播拍到錯誤戰場；等待原生首段等鍵後整幀通過。",
       "date": "2026-10-02",
       "evidence": "docs/data/ui-traces/parity-ch14.json"
+    },
+    {
+      "id": "checkpoint-eip-is-not-return-address",
+      "area": "對拍",
+      "rule": "判讀原版writer停點先讀checkpoint.eip與registers；input_chain的返回位址不能代替當下EIP。",
+      "why": "第十五章849停4E01F、phase6寫完四槽，曾誤讀返回16D05而把已知中間窗口當E0未知writer。",
+      "date": "2026-10-02",
+      "evidence": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_ch15_palette_writer_20261002.json"
+        ],
+        "pattern": "0x4E01F"
+      }
     }
   ]
 }

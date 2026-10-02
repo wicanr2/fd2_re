@@ -1741,3 +1741,15 @@ ValidateBundle維持禁止include_animations，不放寬驗收。因移除自創
 61張完整RGB比較中60張通過，seq849仍差16098px；320×200索引像素全同，E1..EF符合raw phase5而E0不同。#82已在調查前登記，例外writer仍未知；不複製原版色值、不改640px門檻、不深入硬體時序。等待函式16C57在16D00呼叫既有4DFCC，只證明完整循環caller，不能證明單槽例外。#82下一步須找到軟體writer或取得可重跑的相同狀態反證，再作READY修正。
 
 重製目前第六回合record64 HP0、最後仍在battle_ch15／enemy，尚不能宣稱返回標題；#79保持開啟。#78第7／9回合、#76戰後交易／存檔未到，完整四項仍failed，戰役統計不增加。
+
+## 2026-10-02 #82 色盤writer定位勘誤（READY）
+
+[主證據](../data/ida/fd2_ch15_palette_writer_20261002.json)以原始checkpoint849反證先前判讀：EIP是4E01F，input_chain的16D05只是返回位址。ECX13、AH E3、ESI60021直接導出phase6已寫E0..E3，E4..EF仍phase5；兩份維護oracle輸出重現同一狀態。舊r2的未知writer說法保留其形成原因，由本勘誤取代；循環函式與raw表不重開。有限READY只讓對拍私有palette承接受原始暫存器及完整16槽校驗的中間窗口，不改正式Game DAC／時間，不複製原版色值、不放寬640px，等待實作／同槽驗證。
+
+## 2026-10-02 #81／#82 同槽有限驗收通過
+
+[原生成長主證據](../data/ida/fd2_ch15_ai_growth_20261002.json)與[writer主證據](../data/ida/fd2_ch15_palette_writer_20261002.json)列有限CONFORMED；#82歸類tooling。章重播沿原版r1與固定槽，不重跑原版也不改PNG；私有候選色值由raw表及暫存器生成，不複製oracle色值。11種未知條件拒絕、phase15→0三個triplet邊界、完整相位16窗口及嚴格報告12項回歸通過。
+
+[第三份診斷](../data/ui-traces/parity-ch15-r3.json)保留歷史r1／r2：297AI全消費且零分岔，66行為點通過，61張整幀RGB全通過、最大199px，849為0px且兩側PNG雜湊相同。來源記錄phase6、completed_entries4、EIP及原始registers。完整Go19套件通過（遊戲130.703秒）；正式Game DAC／phase／tick與indexed像素不改，640px與12張門檻不變。
+
+#81／#82有限驗收已達；#76完整章、#78第7／9回合與#79敗北返回標題仍未完成。最後重製battle_ch15／enemy，不因所有行為及畫面通過而宣稱返回標題或戰後／存檔完成。下一垂直切片先驗#79結果owner，再以正常護援續到第7／9回合；不提前清敵、鎖HP或修改友軍政策。

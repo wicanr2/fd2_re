@@ -38,6 +38,24 @@ except ImportError:  # pragma: no cover - 容器外沒有 Pillow
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def palette_cycle_metadata(cp: dict) -> dict:
+    """保留已分級的候選來源；中間writer不能標成完整相位。"""
+    if "palette_cycle_write" in cp:
+        writer = cp["palette_cycle_write"]
+        if (isinstance(writer, dict) and writer.get("eip") == "0x4E01F"
+                and type(writer.get("phase")) is int and 0 <= writer["phase"] < 16
+                and type(writer.get("completed_entries")) is int
+                and 1 <= writer["completed_entries"] <= 16
+                and writer["phase"] == cp.get("palette_cycle_phase")):
+            return {"palette_cycle_phase": writer["phase"], "palette_cycle_write": writer,
+                    "palette_cycle_source": "原版EIP／暫存器證實完整triplet寫入進度，16色全部匹配新舊raw窗口；僅測試候選"}
+        return {"palette_cycle_source": "未知writer metadata；不得宣稱完整相位"}
+    if "palette_cycle_phase" in cp:
+        return {"palette_cycle_phase": cp["palette_cycle_phase"],
+                "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"}
+    return {}
+
+
 def read_jsonl(path: Path) -> list[dict]:
     out = []
     with path.open(encoding="utf-8") as handle:
@@ -291,9 +309,7 @@ def main() -> int:
                 frames.append({"seq": seq, "kind": cp["kind"], "oracle": opng.name, "remake": rpng.name,
                                "phases": len(candidates), "diff_pixels": diff, "box": box, "ok": diff <= args.pixel_budget,
                                "oracle_sha256": sha256_file(opng), "remake_sha256": sha256_file(rpng)})
-                if "palette_cycle_phase" in cp:
-                    frames[-1]["palette_cycle_phase"] = cp["palette_cycle_phase"]
-                    frames[-1]["palette_cycle_source"] = "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+                frames[-1].update(palette_cycle_metadata(cp))
             else:
                 frames.append({"seq": seq, "kind": cp["kind"], "status": "frame_missing_or_no_pillow"})
         behavior.append(entry)

@@ -389,15 +389,18 @@
     },
     {
       "id": "ch15-attack-result-0849-frame",
-      "layer": "runtime",
+      "layer": "tooling",
       "category": "缺陷",
       "title": "第十五章攻擊結算 seq849 畫面仍差16098像素",
-      "body": "第十五章同槽重播r3消除了AI分岔，66行為點均通過；61整幀比較只有seq849 attack_result超出640px門檻，差16098px。須核對原版同狀態畫面與正式介面owner；不得遮蔽像素或放寬門檻。",
-      "acceptance": "seq849原版／重製同狀態畫面差異不超過既有640px，具有原始證據、READY規格、正式owner修正與相關回歸；完整章仍須另驗戰後與存檔。",
-      "evidence": "work/parity-slot-ch15/sample-verify-r3.json",
+      "body": "第十五章同槽重播r3消除了AI分岔，66行為點均通過；61整幀比較只有seq849 attack_result超出640px門檻，差16098px。須核對原版同狀態畫面與正式介面owner；不得遮蔽像素或放寬門檻。\n\n\n\n\n2026-10-02 勘誤：原版當下EIP為4E01F，16D05僅為返回位址。AH E3／ECX13／ESI60021證實phase6完成E0..E3，其餘仍phase5；初始「正式owner缺陷」分類由直接原版證據訂正為對拍工具只辨識完整窗口的缺口。依READY只補私有候選palette與來源記錄，正式Game DAC／時序不改。原16098px失敗歷史保留。",
+      "acceptance": "seq849同狀態嚴格RGB差異不超過既有640px；原始EIP／暫存器證實完整triplet寫入進度，對拍私有palette依READY生成既有raw窗口並拒絕未知條件，相關回歸通過；完整章戰後與存檔另驗。",
+      "evidence": [
+        "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "docs/data/ui-traces/parity-ch15-r2.json"
+      ],
       "verify": {
         "kind": "manual",
-        "reason": "需首個分岔的raw與原版證據，不以內部測試通過或修改抽樣計畫放行。"
+        "reason": "需原版writer停點／暫存器、全部16色raw吻合與同槽嚴格畫面；不以內部測試、複製oracle色值或放寬門檻放行。"
       },
       "issue": 82
     }

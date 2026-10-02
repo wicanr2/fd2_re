@@ -685,7 +685,7 @@
   ],
   "issue": "https://github.com/wicanr2/fd2_re/issues/81",
   "status": "RE-CLOSED",
-  "spec_status": "READY",
+  "spec_status": "CONFORMED",
   "primary_experience_source": "docs/data/ida/fd2_shared_physical_exp_20261001.json",
   "review": [
     {
@@ -1295,12 +1295,12 @@
       "正式章重播使用既有原版run，檢查首個AI順序分岔是否消失",
       "完整Go回歸"
     ],
-    "scope_limit": "有限原生成長consumer列RUNTIME-E1：原版受控成長值及正常章重播AI／行為已通過；#82嚴格畫面未通過，#81仍開啟。不宣稱整章PLAYER-E2、自然難度或硬體wall-clock。"
+    "scope_limit": "有限原生成長consumer列CONFORMED／RUNTIME-E1；受控原版值、同槽AI／行為及嚴格畫面通過，不宣稱整章PLAYER-E2、自然難度或硬體wall-clock。"
   },
   "runtime_status": "RUNTIME-E1",
   "validation": {
     "date": "2026-10-02",
-    "receipt": "docs/data/ui-traces/parity-ch15-r2.json",
+    "receipt": "docs/data/ui-traces/parity-ch15-r3.json",
     "table_check": {
       "rows": 256,
       "first_authored_rows": 68,
@@ -1321,10 +1321,11 @@
     "behavior_points_passed": 66,
     "frames": {
       "total": 61,
-      "passed": 60,
-      "failed_seq": 849,
+      "passed": 61,
+      "max_pixels": 199,
+      "seq849_pixels": 0,
       "budget": 640,
-      "issue": 82
+      "writer_evidence": "docs/data/ida/fd2_ch15_palette_writer_20261002.json"
     },
     "full_go": {
       "passed_packages": 19,
@@ -1334,6 +1335,7 @@
       "log_sha256": "59c3d290e408bb92c076d353f8947c08215a3ce686b4d1d6716b64b4da200f5d",
       "image": "fd2-go-test-local:20260909"
     },
-    "open_gate": "#81仍待#82嚴格畫面；#76完整四項、#78第7／9回合與#79敗北返回標題各自保持未完成。"
+    "open_gate": "#81有限consumer與嚴格畫面條件已通過；#76完整四項、#78第7／9回合及#79敗北返回標題仍未完成。",
+    "previous_receipt": "docs/data/ui-traces/parity-ch15-r2.json"
   }
 }

@@ -72,22 +72,23 @@ type parityUnit struct {
 }
 
 type parityCheckpoint struct {
-	Index             int          `json:"index"`
-	Kind              string       `json:"kind"`
-	OracleSeq         int          `json:"oracle_seq"`
-	Node              string       `json:"node"`
-	UI                string       `json:"ui"`
-	Round             int          `json:"round"`
-	Gold              int          `json:"gold"`
-	RNGWord           int          `json:"rng_word"`
-	RNGSynced         bool         `json:"rng_synced"`
-	Cursor            []int        `json:"cursor"`
-	Camera            []int        `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
-	Units             []parityUnit `json:"units"`
-	Frame             string       `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
-	FrameHash         string       `json:"indexed_sha256,omitempty"`
-	PaletteCyclePhase *int         `json:"palette_cycle_phase,omitempty"` // 原版PNG的E0..EF與raw表完整匹配
-	Note              string       `json:"note,omitempty"`
+	Index             int                      `json:"index"`
+	Kind              string                   `json:"kind"`
+	OracleSeq         int                      `json:"oracle_seq"`
+	Node              string                   `json:"node"`
+	UI                string                   `json:"ui"`
+	Round             int                      `json:"round"`
+	Gold              int                      `json:"gold"`
+	RNGWord           int                      `json:"rng_word"`
+	RNGSynced         bool                     `json:"rng_synced"`
+	Cursor            []int                    `json:"cursor"`
+	Camera            []int                    `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
+	Units             []parityUnit             `json:"units"`
+	Frame             string                   `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
+	FrameHash         string                   `json:"indexed_sha256,omitempty"`
+	PaletteCyclePhase *int                     `json:"palette_cycle_phase,omitempty"` // 原版PNG的E0..EF與raw表完整匹配
+	PaletteCycleWrite *parityPaletteCycleWrite `json:"palette_cycle_write,omitempty"`
+	Note              string                   `json:"note,omitempty"`
 }
 
 type parityReplay struct {
@@ -122,6 +123,65 @@ type parityReplay struct {
 	// currentSeq：正在寫畫面的檢查點對應的原版 seq。
 	currentSeq        int
 	paletteCyclePhase *int
+	paletteCycleWrite *parityPaletteCycleWrite
+}
+
+// #82：只承接完成整個RGB triplet的4E01F軟體停點；不是硬體時序模擬。
+type parityPaletteCycleWrite struct {
+	Phase            int      `json:"phase"`
+	CompletedEntries int      `json:"completed_entries"`
+	EIP              string   `json:"eip"`
+	Registers        []uint32 `json:"registers"`
+}
+
+func parityPaletteCycleWriteWindow(palette color.Palette, checkpoint []byte) (color.Palette, *parityPaletteCycleWrite, bool) {
+	var doc struct {
+		EIP       string   `json:"eip"`
+		EXESHA    string   `json:"exe_sha256"`
+		Deferred  bool     `json:"frame_deferred"`
+		Registers []uint32 `json:"registers"`
+	}
+	if json.Unmarshal(checkpoint, &doc) != nil || doc.EIP != "0x4E01F" || doc.Deferred ||
+		doc.EXESHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" ||
+		len(doc.Registers) != 8 || len(palette) != 256 {
+		return nil, nil, false
+	}
+	regs := doc.Registers // EAX、ECX、EDX、EBX、ESP、EBP、ESI、EDI
+	if regs[1] < 1 || regs[1] > 16 || uint16(regs[2]) != 0x3c9 {
+		return nil, nil, false
+	}
+	completed := 17 - int(regs[1])
+	if (regs[0]>>8)&255 != uint32(0xe0+completed-1) {
+		return nil, nil, false
+	}
+	offset := int64(regs[6]) - 0x60003 - int64(3*completed)
+	if offset < 0 || offset > 45 || offset%3 != 0 {
+		return nil, nil, false
+	}
+	phase := int(offset / 3)
+	dac, next := make([]byte, 256*3), make([]byte, 256*3)
+	if fdother.ApplyNativeDACPaletteCycleE0EF(dac, (phase+15)&15) != nil ||
+		fdother.ApplyNativeDACPaletteCycleE0EF(next, phase) != nil ||
+		byte(regs[0]) != next[(0xe0+completed-1)*3+2] {
+		return nil, nil, false
+	}
+	copy(dac[0xe0*3:(0xe0+completed)*3], next[0xe0*3:(0xe0+completed)*3])
+	known, err := fdother.VGAPaletteFromDAC(dac)
+	if err != nil {
+		return nil, nil, false
+	}
+	for i := 0xe0; i < 0xf0; i++ {
+		if palette[i] == nil {
+			return nil, nil, false
+		}
+		r, g, b, a := palette[i].RGBA()
+		kr, kg, kb, ka := known[i].RGBA()
+		if r != kr || g != kg || b != kb || a != ka {
+			return nil, nil, false
+		}
+	}
+	return known, &parityPaletteCycleWrite{Phase: phase, CompletedEntries: completed,
+		EIP: doc.EIP, Registers: append([]uint32(nil), regs...)}, true
 }
 
 // parityPaletteCyclePhase只辨認既有原版raw窗口，不複製原版色值或以差異分數挑相位。
@@ -190,21 +250,132 @@ func TestParityPaletteCyclePhaseRequiresCompleteRawWindow(t *testing.T) {
 	}
 }
 
-func (r *parityReplay) oraclePaletteCyclePhase() (int, bool) {
+func TestParityPaletteCycleWriteWindowMatchesOriginalAndRejectsUnknown(t *testing.T) {
+	raw, err := os.ReadFile("../../../docs/data/ida/fd2_ch15_palette_writer_20261002.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var evidence struct {
+		SHA        string `json:"sha256"`
+		Checkpoint struct {
+			EIP       string   `json:"eip"`
+			Registers []uint32 `json:"registers"`
+			RGB       []byte   `json:"observed_e0ef_rgb"`
+		} `json:"original_checkpoint"`
+	}
+	if err := json.Unmarshal(raw, &evidence); err != nil {
+		t.Fatal(err)
+	}
+	if len(evidence.Checkpoint.RGB) != 48 {
+		t.Fatal("原版窗口缺16色")
+	}
+	palette := make(color.Palette, 256)
+	for i := 0; i < 16; i++ {
+		v := evidence.Checkpoint.RGB[i*3 : i*3+3]
+		palette[0xe0+i] = color.NRGBA{R: v[0], G: v[1], B: v[2], A: 255}
+	}
+	fixture := map[string]interface{}{"eip": evidence.Checkpoint.EIP, "exe_sha256": evidence.SHA,
+		"frame_deferred": false, "registers": evidence.Checkpoint.Registers}
+	checkpoint, _ := json.Marshal(fixture)
+	known, state, ok := parityPaletteCycleWriteWindow(palette, checkpoint)
+	if !ok || state.Phase != 6 || state.CompletedEntries != 4 {
+		t.Fatalf("原版writer未承接：ok=%v state=%+v", ok, state)
+	}
+	if _, complete := parityPaletteCyclePhase(palette); complete {
+		t.Fatal("原版中間窗口被誤稱完整相位")
+	}
+	for i := 0xe0; i < 0xf0; i++ {
+		r, g, b, a := palette[i].RGBA()
+		kr, kg, kb, ka := known[i].RGBA()
+		if r != kr || g != kg || b != kb || a != ka {
+			t.Fatalf("原版色槽%x不符", i)
+		}
+	}
+	for _, name := range []string{"返回位址", "EXE雜湊", "deferred", "ECX零", "ECX過大", "AH", "EDX", "ESI", "AL", "缺暫存器", "未知色值"} {
+		t.Run(name, func(t *testing.T) {
+			regs := append([]uint32(nil), evidence.Checkpoint.Registers...)
+			doc := map[string]interface{}{"eip": evidence.Checkpoint.EIP, "exe_sha256": evidence.SHA, "frame_deferred": false, "registers": regs}
+			candidate := append(color.Palette(nil), palette...)
+			switch name {
+			case "返回位址":
+				doc["eip"] = "0x16D05"
+			case "EXE雜湊":
+				doc["exe_sha256"] = "wrong"
+			case "deferred":
+				doc["frame_deferred"] = true
+			case "ECX零":
+				regs[1] = 0
+			case "ECX過大":
+				regs[1] = 17
+			case "AH":
+				regs[0] ^= 1 << 8
+			case "EDX":
+				regs[2] = 0x3c8
+			case "ESI":
+				regs[6]++
+			case "AL":
+				regs[0] ^= 1
+			case "缺暫存器":
+				doc["registers"] = regs[:7]
+			case "未知色值":
+				candidate[0xef] = color.NRGBA{R: 255, A: 255}
+			}
+			input, _ := json.Marshal(doc)
+			if _, _, ok := parityPaletteCycleWriteWindow(candidate, input); ok {
+				t.Fatal("未知writer條件被承接")
+			}
+		})
+	}
+	// phase15→0及第一／最後完整triplet邊界。只生成raw受控條件，不挑影像分數。
+	for _, completed := range []int{1, 4, 16} {
+		old, next := make([]byte, 768), make([]byte, 768)
+		if fdother.ApplyNativeDACPaletteCycleE0EF(old, 15) != nil || fdother.ApplyNativeDACPaletteCycleE0EF(next, 0) != nil {
+			t.Fatal("raw窗口無效")
+		}
+		copy(old[0xe0*3:(0xe0+completed)*3], next[0xe0*3:(0xe0+completed)*3])
+		pal, err := fdother.VGAPaletteFromDAC(old)
+		if err != nil {
+			t.Fatal(err)
+		}
+		regs := []uint32{uint32(0xe0+completed-1)<<8 | uint32(next[(0xe0+completed-1)*3+2]), uint32(17 - completed), 0x3c9, 0, 0, 0, uint32(0x60003 + 3*completed), 0}
+		doc, _ := json.Marshal(map[string]interface{}{"eip": "0x4E01F", "exe_sha256": evidence.SHA, "registers": regs})
+		if _, got, ok := parityPaletteCycleWriteWindow(pal, doc); !ok || got.Phase != 0 || got.CompletedEntries != completed {
+			t.Fatalf("回繞邊界%d未承接", completed)
+		}
+	}
+}
+
+func (r *parityReplay) oraclePaletteCycleWindow() (color.Palette, int, *parityPaletteCycleWrite, bool) {
 	f, err := os.Open(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.png", r.currentSeq)))
 	if err != nil {
-		return 0, false
+		return nil, 0, nil, false
 	}
 	defer f.Close()
 	img, err := png.Decode(f)
 	if err != nil {
-		return 0, false
+		return nil, 0, nil, false
 	}
 	indexed, ok := img.(*image.Paletted)
 	if !ok {
-		return 0, false
+		return nil, 0, nil, false
 	}
-	return parityPaletteCyclePhase(indexed.Palette)
+	if phase, ok := parityPaletteCyclePhase(indexed.Palette); ok {
+		dac := make([]byte, 256*3)
+		if fdother.ApplyNativeDACPaletteCycleE0EF(dac, phase) != nil {
+			return nil, 0, nil, false
+		}
+		known, err := fdother.VGAPaletteFromDAC(dac)
+		return known, phase, nil, err == nil
+	}
+	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", r.currentSeq)))
+	if err != nil {
+		return nil, 0, nil, false
+	}
+	known, state, ok := parityPaletteCycleWriteWindow(indexed.Palette, raw)
+	if !ok {
+		return nil, 0, nil, false
+	}
+	return known, state.Phase, state, true
 }
 
 // oracleAuxPhase 讀原版 checkpoint 的 view.aux_phase（[0x539FC]）。
@@ -765,6 +936,7 @@ type frameVariant struct {
 func (r *parityReplay) frame(kind string) (string, string) {
 	g := r.g
 	r.paletteCyclePhase = nil
+	r.paletteCycleWrite = nil
 	variants := []frameVariant{}
 	var palette color.Palette
 	switch {
@@ -869,15 +1041,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		// 0x4DFCC獨立於人物idle／地形LUT相位。只承接原版已記錄且與raw表完整相符的窗口，
 		// 寫候選的私有palette，不改Game DAC、phase/tick或任一indexed像素。其他owner不套用。
 		if g.bannerT <= 0 {
-			if phase, ok := r.oraclePaletteCyclePhase(); ok {
-				dac := make([]byte, 256*3)
-				if err := fdother.ApplyNativeDACPaletteCycleE0EF(dac, phase); err != nil {
-					r.t.Fatal(err)
-				}
-				known, err := fdother.VGAPaletteFromDAC(dac)
-				if err != nil {
-					r.t.Fatal(err)
-				}
+			if known, phase, writer, ok := r.oraclePaletteCycleWindow(); ok {
 				for i := range variants {
 					if len(variants[i].palette) != 256 {
 						r.t.Fatal("戰場候選缺少完整色盤")
@@ -887,6 +1051,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 					variants[i].palette = candidate
 				}
 				r.paletteCyclePhase = &phase
+				r.paletteCycleWrite = writer
 			}
 		}
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "town":
@@ -1164,6 +1329,7 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 		r.currentSeq = seq
 		cp.Frame, cp.FrameHash = r.frame(kind)
 		cp.PaletteCyclePhase = r.paletteCyclePhase
+		cp.PaletteCycleWrite = r.paletteCycleWrite
 	}
 	r.write(cp)
 	return cp
