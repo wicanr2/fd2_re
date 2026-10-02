@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -122,16 +122,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第十五章缺record64倒下的原版敗北判定
-
-`ch15-ally64-defeat-rule` · 缺陷 · [#79](https://github.com/wicanr2/fd2_re/issues/79) · 仍未完成 · 要人判
-
-#76 完整原版sample-original-r1於第6回合退出，未涵蓋第7／9回合。最後有效checkpoint1143我方16人仍活著，友軍record64 HP0／raw+5 bit0=1。既有battle_events.json記raw章14 handler0x20822查record64，但ch15劇本尚無原生結果規則。先用IDA核對直接writer與結果consumer，保留失敗樣本及未知限制，READY後接既有型別規則。原版退出原因在直接核對前只列強推論，不把它當執行器缺口或全隊陣亡。
-
-怎樣算做完：固定EXE identity、IDA9.4原始20822完整bytes與結果writer／consumer保存canonical並登記58；READY後接入ch15及canonical原生敗北規則，普通玩家操作觸發友軍64倒下後走既有敗北owner；保持其他友軍倒下與我方尚存不誤判、raw旗標缺失失敗即關閉。完整#76另採正常護援保留第4／7／9回合，不提前清敵、不鎖HP。
-
-證據：`['docs/data/battle_events.json', 'work/parity-slot-ch15/sample-original-r1/checkpoint-1143.json', 'docs/data/parity-plans/ch15-sample.jsonl', 'remake/assets/scenarios/ch15.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

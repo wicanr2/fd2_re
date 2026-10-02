@@ -1784,3 +1784,5 @@ FD2_PARITY_DEFEAT_TAIL=1只承接同一run的current.json：固定EXE、dosgolem
 節點／交易未完成。有限敗北分支列CONFORMED／RUNTIME-E1；#76成功章與#78第7／9回合仍待驗，
 PLAYER-E2章數不增加。下一步以正常護援續驗，不改友軍政策、不鎖HP、不提前清敵。
 本批受審檔案與輸出UID／GID、來源雜湊及掛載殘留自檢通過；docker ps -a確認無遺留FD2容器。
+
+2026-10-02：#79已驗證提交56379111dc2b7d5ce2650d2ad34ed74f1ffa302a推送且與遠端main一致，主機gh回讀CLOSED；正式pull格式器同步21條未完成。#76／#78仍開啟，下一步正常護援與完整章四項驗收。

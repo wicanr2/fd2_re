@@ -349,25 +349,6 @@
         "reason": "需審查IDA writer／consumer並完成本章同槽第4、7、9回合原版比較。"
       },
       "issue": 78
-    },
-    {
-      "id": "ch15-ally64-defeat-rule",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十五章缺record64倒下的原版敗北判定",
-      "body": "#76 完整原版sample-original-r1於第6回合退出，未涵蓋第7／9回合。最後有效checkpoint1143我方16人仍活著，友軍record64 HP0／raw+5 bit0=1。既有battle_events.json記raw章14 handler0x20822查record64，但ch15劇本尚無原生結果規則。先用IDA核對直接writer與結果consumer，保留失敗樣本及未知限制，READY後接既有型別規則。原版退出原因在直接核對前只列強推論，不把它當執行器缺口或全隊陣亡。",
-      "acceptance": "固定EXE identity、IDA9.4原始20822完整bytes與結果writer／consumer保存canonical並登記58；READY後接入ch15及canonical原生敗北規則，普通玩家操作觸發友軍64倒下後走既有敗北owner；保持其他友軍倒下與我方尚存不誤判、raw旗標缺失失敗即關閉。完整#76另採正常護援保留第4／7／9回合，不提前清敵、不鎖HP。",
-      "evidence": [
-        "docs/data/battle_events.json",
-        "work/parity-slot-ch15/sample-original-r1/checkpoint-1143.json",
-        "docs/data/parity-plans/ch15-sample.jsonl",
-        "remake/assets/scenarios/ch15.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "reason": "需IDA直接判定與同槽敗北比較；整章第9回合及戰後仍由#76驗收。"
-      },
-      "issue": 79
     }
   ]
 }
