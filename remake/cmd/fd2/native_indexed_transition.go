@@ -157,6 +157,7 @@ func (g *Game) buildNativeIndexedTransitionInputForState(state *battle.State) (i
 		return indexedmap.NativeTransitionFrameInput{}, errors.New("terrain phase LUT unavailable")
 	}
 	return indexedmap.NativeTransitionFrameInput{
+		Parallax:    a.Parallax,
 		TerrainBank: a.Terrain, UnitBank: a.Units, ForegroundBank: a.Terrain,
 		SelectorCache: state.NativeMapSelectorCache,
 		Cells:         cells, Controls: a.Controls, TerrainLUT: a.LUTs[lutIndex],

@@ -1960,3 +1960,17 @@ FIGANI51 frame0為184,35／109×165，target BattleFig17。
 [正式收據](../data/ui-traces/parity-ch17.json)行為、節點、交易與98張全幅RGB通過，72張逐像素相同，最大295px；酒店SAV整檔相同。固定初始槽沿111／114政策，NPC52與記錄0／2正常移動護援，四回合後第5回合才清敵23筆。turn4 event40追加8名camp1友軍，frontier53→61；原版124筆AI順序與重製全部一致。依111例外列PLAYER-E2，收據保留建構槽、狀態注入與亂數比較範圍，不能外推自然戰鬥、傷害、存活或敵方選目標。
 
 #92共用FIGANI右半畫布末列界線已修正；#93只擴充4E014完整triplet邊界的測試私有色表窗口。兩份主規格列有限CONFORMED；原始失敗收據仍可回查。最終Go19套件、第15章156張與第16章76張四項回歸通過，既有fixture／證據漂移#91仍開啟。
+
+### 2026-10-02 第十八章有限起手（#94／#95，READY）
+
+正常原版seq136完成1,445,352,424步，53筆單位；前4個城鎮與選人畫面0px，正式Go在battle_start缺HUD而拒收。[主證據](../data/ida/fd2_ch18_startup_20261002.json)用唯讀IDA9.4資料庫只匯出335DA呼叫端，既有shared focus／HUD不重解。group0只37筆，16名出戰者形成53筆；正常視圖5,6／6,8／1,2／selector1可重播。只補既有可編輯視圖與繼承B1；READY不代表已通過。第3回合event43及第8回合event42仍由#94完整驗證，原版control52全16列確認，不能只看scenario的spawn摘要。
+
+### 2026-10-02 第十八章山景底面 #96
+
+原版正常起手與重製r2的53筆狀態相同，但完整RGB差23961px。既有 fd2_chapter_aux_graphics_10652_ida.txt 已定位raw17載入FDOTHER16/17；本輪補充固定EXE的尺寸、雙段解碼及既有 fd2_terrain_mode3_review_20261001.json 的0x11EEE來源偏移consumer。先前熔岩底面契約只涵蓋9/24/25/28/29，不能外推17。主證據與READY規格：[山景底面](../data/ida/fd2_ch18_parallax_backdrop_20261002.json)。RE-CLOSED僅限raw17底面資料流；RUNTIME-E1待驗，PLAYER-E2仍由#94。不重開共有RLE、HUD或DAC。
+
+### 第十八章有限起手與山景（#95／#96，2026-10-02）
+
+[有限收據](../data/ui-traces/ch18-native-startup.json)在正常LOAD、15次選人與戰前對話後，五點完整RGB皆0px，53筆起手單位一致。正式戰役已保存有來源的鏡頭／HUD，FDOTHER16/17嚴格分離圖面以462×226鋪底，再依原版鏡頭公式取312×192；透明地形保留山景。缺來源或越界原子拒收，不以oracle PNG作資產。
+
+兩份規格列有限CONFORMED／RUNTIME-E1。最終Go19套件、三條山景測試及第十七章98張四項與全檔酒店SAV通過；私人素材清冊驗證通過。原版／重製PNG與總覽留本機，公開庫保存[抽樣索引](../data/ui-traces/ch18-native-startup-samples.json)。不外推逐步捲動動畫。第3／8回合、戰後、交易與SAV由#94續驗，整章不提升PLAYER-E2；唯一分層現況與統計依[58](58-fd2-exe-re-coverage.md)。

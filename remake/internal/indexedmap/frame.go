@@ -69,6 +69,8 @@ type FrameInput struct {
 	RangeMode, CursorX, CursorY                      int
 	Units                                            []fdicon.NativeUnitLayerEntry
 	ForegroundUnits                                  []fdicon.NativeForegroundLayerEntry
+	Parallax                                         *fdother.NativeMapParallaxSurface
+	ParallaxScrollX, ParallaxScrollY                 int
 	ChapterAux                                       *fdother.NativeChapterAuxSurface
 	ChapterAuxPhase                                  int
 	// SelectionOverlay 是選單位之後的重繪比 0x11CAC 多出的一步：0x18B84 在前景
@@ -114,6 +116,8 @@ type FrameObserver func(stage FrameStage, work, vga []byte) error
 // middle 0x127a9 callback adds unit and foreground layers between two LUT
 // remaps. Range and HUD are intentionally absent from this contract.
 type NativeTransitionFrameInput struct {
+	Parallax                              *fdother.NativeMapParallaxSurface
+	ParallaxScrollX, ParallaxScrollY      int
 	TerrainBank, UnitBank, ForegroundBank *fdicon.Bank
 	SelectorCache                         *fdicon.NativeSelectorCache
 	Cells                                 []fdicon.NativeTerrainCell
@@ -195,6 +199,9 @@ func ComposeNativeUnitPresentTerrainSnapshot(work []byte, in NativeTransitionFra
 	}
 	frame := append([]byte(nil), work...)
 	baseX, baseY := workBase%workStride, workBase/workStride
+	if err := seedNativeMapParallax(frame, in.Parallax, in.CameraX, in.CameraY, in.ParallaxScrollX, in.ParallaxScrollY); err != nil {
+		return err
+	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(
 		frame, workStride, baseX, baseY,
 		in.MapWidth, in.Cells, in.Controls,
@@ -220,6 +227,9 @@ func ComposeNative24B4DStaging(work []byte, in NativeTransitionFrameInput) error
 	}
 	frame := append([]byte(nil), work...)
 	baseX, baseY := workBase%workStride, workBase/workStride
+	if err := seedNativeMapParallax(frame, in.Parallax, in.CameraX, in.CameraY, in.ParallaxScrollX, in.ParallaxScrollY); err != nil {
+		return err
+	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(
 		frame, workStride, baseX, baseY,
 		in.MapWidth, in.Cells, in.Controls,
@@ -467,6 +477,9 @@ func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
 			return fmt.Errorf("indexedmap: step chapter auxiliary surface: %w", err)
 		}
 	}
+	if err := seedNativeMapParallax(frame, in.Parallax, in.CameraX, in.CameraY, in.ParallaxScrollX, in.ParallaxScrollY); err != nil {
+		return err
+	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, in.Cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: step terrain: %w", err)
 	}
@@ -503,6 +516,9 @@ func ComposeNativeTransitionFrame(work, vga []byte, in NativeTransitionFrameInpu
 	}
 	frame := append([]byte(nil), work...)
 	baseX, baseY := workBase%workStride, workBase/workStride
+	if err := seedNativeMapParallax(frame, in.Parallax, in.CameraX, in.CameraY, in.ParallaxScrollX, in.ParallaxScrollY); err != nil {
+		return err
+	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, in.Cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.TerrainLUT); err != nil {
 		return fmt.Errorf("indexedmap: transition terrain: %w", err)
 	}
@@ -560,6 +576,9 @@ func composeFrame(work, vga []byte, in FrameInput, renderHUD func([]byte) error,
 		if err := fdother.BlitNativeChapterAuxViewport(frame[workBase:], workStride, in.ChapterAux, in.ChapterAuxPhase); err != nil {
 			return fmt.Errorf("indexedmap: chapter auxiliary surface: %w", err)
 		}
+	}
+	if err := seedNativeMapParallax(frame, in.Parallax, in.CameraX, in.CameraY, in.ParallaxScrollX, in.ParallaxScrollY); err != nil {
+		return err
 	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: terrain: %w", err)
@@ -632,6 +651,20 @@ func observeFrameStage(observer FrameObserver, stage FrameStage, work, vga []byt
 		append([]byte(nil), vga...),
 	); err != nil {
 		return fmt.Errorf("indexedmap: frame observer stage %d: %w", stage, err)
+	}
+	return nil
+}
+
+// 所有地形consumer在切片前先檢查viewport base，缺緩衝不得panic。
+func seedNativeMapParallax(frame []byte, surface *fdother.NativeMapParallaxSurface, cameraX, cameraY, scrollX, scrollY int) error {
+	if surface == nil {
+		return nil
+	}
+	if len(frame) < workBase {
+		return errors.New("indexedmap: map parallax work buffer is too small")
+	}
+	if err := fdother.BlitNativeMapParallaxViewport(frame[workBase:], workStride, surface, cameraX, cameraY, scrollX, scrollY); err != nil {
+		return fmt.Errorf("indexedmap: map parallax: %w", err)
 	}
 	return nil
 }

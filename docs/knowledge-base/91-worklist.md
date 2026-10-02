@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,6 +111,26 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
+### 第十八章正常戰場起手缺原生HUD與視圖
+
+`ch18-native-startup-view-and-hud` · 缺陷 · [#95](https://github.com/wicanr2/fd2_re/issues/95) · 仍未完成 · 要人判
+
+#94正常原版預檢完成seq136、1,445,352,424步，53筆單位；鏡頭5,6、游標6,8、可見1,2、selector1。正式Go同槽r1完成戰前53筆actors但battle_start因HUD input unavailable停止，游標3,9。前4個城鎮／選人畫面逐像素相同。先查58與既有startup／shared focus主證據，再為原始335DA與33142 consumer定READY，不在重播端注入起手視圖。
+
+怎樣算做完：原版固定雜湊、主處理器及shared focus／HUD writer與consumer可回查，先READY再修正式正常LOAD／戰前／戰場起手。53筆單位與5點完整RGB同槽一致；缺來源仍拒收。相關真實測試、完整Go與舊章分支通過；只列有限RUNTIME-E1，整章由#94，不放寬門檻、不讓重播端補正式起手狀態。
+
+證據：`['docs/data/parity-slots/ch18-manifest.json', 'docs/data/parity-plans/ch18-preflight-select.jsonl', 'docs/data/ida/fd2_ch17_startup_20261002.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md', 'remake/cmd/fd2/main.go']`
+
+### 第十八章原生地圖未繪製橋後山景背景
+
+`ch18-native-map-backdrop` · 缺陷 · [#96](https://github.com/wicanr2/fd2_re/issues/96) · 仍未完成 · 要人判
+
+#94／#95同槽正常起手r2已到battle_start，53筆單位與視圖一致；五點中前4張逐像素相同，seq136 battle_start差23961px，box[64,4,315,195]。原版橋木之間與橋下有山景，重製是黑色。原版來源不重跑，先查既有map renderer／BG消費端證據，定位實際素材、載入writer與透明層次，再READY與正式實作。
+
+怎樣算做完：固定EXE／原始背景與同狀態畫面可回查；已有主證據先查，不重解已閉合地圖renderer。原始素材→分離素材→具型別正式載入→原生map layer／透明mask證據閉合與READY後才修。正常同槽起手全幅RGB達原門檻，缺素材與未知映射拒收，必要舊分支與完整Go回歸通過；不黑底遮差異、不把原版PNG當素材、不用重播端補背景。
+
+證據：`['docs/data/parity-slots/ch18-manifest.json', 'docs/data/parity-plans/ch18-preflight-select.jsonl', 'docs/data/ida/fd2_ch18_startup_20261002.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md', 'remake/cmd/fd2/main.go']`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -150,6 +170,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第十八章缺完整原版與重製四項對拍收據
+
+`ch18-full-chapter-parity` · 工作 · [#94](https://github.com/wicanr2/fd2_re/issues/94) · 仍未完成 · 要人判
+
+第十七章已依111／114通過，戰役14／30。本條延續同一固定基底與levels6、seed4、event7:17=1、AP+200／DP+0／DX+60政策。先以可重跑工具建第十八章槽，核對既有原版起手、章內事件與戰後主證據，有限正常讀檔預檢確認可比狀態後才跑完整章。所有新缺陷先各開工單再修；原版與完整Go工作序列執行。
+
+怎樣算做完：固定輸入與建構槽政策可重生；原版由乾淨受版控dosgolem oracle產生，章內正常鍵盤抽樣主要戰鬥節拍與已知事件後才force-enemy-clear。戰後、交易、酒店SAV與該城秘密商店入口均達；同槽Go重播行為／節點／交易／至少12張完整320x200 RGB在640像素門檻內，全檔SAV相同。不得遮差異、放寬門檻、跳動畫或永久鎖HP。完整Go及必要舊分支回歸、收據／56／57／58／台帳／README同步，符合111／114例外才列PLAYER-E2，不能外推自然戰鬥或傷害一致。
+
+證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch17.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md', 'remake/cmd/fd2/chapter_parity_replay_test.go']`
 
 ## release — 發行、平台與封包
 

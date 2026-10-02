@@ -39,6 +39,7 @@ type nativeMapAssets struct {
 	CommandHealDigits []fdother.LMI1Entry
 	FDOTHER6          []fdother.LMI1Entry
 	ChapterAux        *fdother.NativeChapterAuxSurface
+	Parallax          *fdother.NativeMapParallaxSurface
 }
 
 func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
@@ -101,6 +102,13 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 			return nil, err
 		}
 	}
+	var parallax *fdother.NativeMapParallaxSurface
+	if mapIndex == 17 {
+		parallax, err = fdother.LoadSeparatedNativeMapParallax(separatedAssetPath("surfaces"))
+		if err != nil {
+			return nil, err
+		}
+	}
 	return &nativeMapAssets{
 		MapIndex: mapIndex, Frames: frames,
 		Terrain: terrain, Range: rangeBank, Units: units,
@@ -110,6 +118,7 @@ func loadNativeMapAssets(mapDir string) (*nativeMapAssets, error) {
 		CommandHealDigits: commandHealDigits,
 		FDOTHER6:          fdother6,
 		ChapterAux:        chapterAux,
+		Parallax:          parallax,
 	}, nil
 }
 
@@ -125,6 +134,9 @@ func nativeMapAssetsAvailable(a *nativeMapAssets) bool {
 		}
 	}
 	if _, ok := fdother.NativeChapterAuxSurfaceFor(a.MapIndex); ok && (a.ChapterAux == nil || len(a.ChapterAux.Pixels) != 320*200) {
+		return false
+	}
+	if a.MapIndex == 17 && (a.Parallax == nil || len(a.Parallax.Pixels) != fdother.NativeMapParallaxWidth*fdother.NativeMapParallaxHeight) {
 		return false
 	}
 	return true

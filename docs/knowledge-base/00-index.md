@@ -325,3 +325,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十七章完整同槽章收據](../data/ui-traces/parity-ch17.json)：#88，98張RGB／酒店SAV四項通過，依111／114例外列PLAYER-E2。
 - 第十七章原始診斷：[FIGANI拒收r1](../data/ui-traces/parity-ch17-figani-r1.json)、[writer未承接r3](../data/ui-traces/parity-ch17-writer-r3.json)，保留失敗形成原因；由正式收據取代。
 - [第十七章固定抽樣總覽索引](../data/ui-traces/parity-ch17-samples.json)：每種畫面首點及所有非零差異，包含seq1287原始writer停點；[總覽一](../figures/parity-ch17-samples-p1.png)與[總覽二](../figures/parity-ch17-samples-p2.png)。
+
+- 第十八章 #94：[建構槽清冊](../data/parity-slots/ch18-manifest.json)與[正常選人起手預檢](../data/parity-plans/ch18-preflight-select.jsonl)。目前為待驗輸入，台帳14／30保持。
+
+- [第十八章有限原生起手規格（#95）](../data/ida/fd2_ch18_startup_20261002.json)：335DA與既有shared tail、53筆原版起手；READY，完整章另由#94。
+
+- [第十八章山景底面規格](../data/ida/fd2_ch18_parallax_backdrop_20261002.json)：#96，FDOTHER16/17 writer／consumer與READY契約；同狀態起手待驗。
+
+- [第十八章有限起手收據](../data/ui-traces/ch18-native-startup.json)與[五點抽樣來源](../data/ui-traces/ch18-native-startup-samples.json)：#95／#96，正常起手五點完整RGB0px、Go19與第17章98張四項回歸；只列有限RUNTIME-E1，整章仍#94。

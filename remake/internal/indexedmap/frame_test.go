@@ -57,6 +57,64 @@ func transparentBank(n int) *fdicon.Bank {
 	return &fdicon.Bank{Sprites: make([]fdicon.Sprite, n)}
 }
 
+func TestNativeParallaxSurvivesTransparentTerrainAcrossFramePaths(t *testing.T) {
+	cache := &fdicon.NativeSelectorCache{}
+	surface := &fdother.NativeMapParallaxSurface{Pixels: bytes.Repeat([]byte{73}, 462*226)}
+	validTransparent := func(count int) *fdicon.Bank {
+		b := bank(count, 0)
+		for i := range b.Sprites {
+			clear(b.Sprites[i].Mask)
+		}
+		return b
+	}
+	in := FrameInput{
+		TerrainBank: validTransparent(12), RangeBank: validTransparent(20),
+		UnitBank: validTransparent(12), ForegroundBank: validTransparent(12),
+		SelectorCache: cache, Cells: make([]fdicon.NativeTerrainCell, 13*8),
+		Controls: []byte{0, 0, 0, 0}, LUT: make([]byte, 256), MapWidth: 13, Parallax: surface,
+	}
+	work, vga := make([]byte, NativeUnitPresentWorkSize), make([]byte, NativeMapVGASize)
+	if err := ComposeFrame(work, vga, in, func([]byte) error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if vga[steadyViewportOffset] != 73 {
+		t.Fatal("正常幀透明地形未保留山景")
+	}
+	if err := ComposeNativeStepFrame(work, vga, in); err != nil {
+		t.Fatal(err)
+	}
+	if vga[steadyViewportOffset] != 73 {
+		t.Fatal("走行幀未保留山景")
+	}
+	transition := NativeTransitionFrameInput{
+		TerrainBank: in.TerrainBank, UnitBank: in.UnitBank, ForegroundBank: in.ForegroundBank,
+		SelectorCache: cache, Cells: in.Cells, Controls: in.Controls, TerrainLUT: in.LUT,
+		MapWidth: 13, Parallax: surface,
+	}
+	identity := make([]byte, 256)
+	for i := range identity {
+		identity[i] = byte(i)
+	}
+	pass, err := fdother.BuildNativeIndexedTransitionPass(6, 6, 10, 0, 192)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := ComposeNativeTransitionFrame(work, vga, transition, pass, identity); err != nil {
+		t.Fatal(err)
+	}
+	if vga[0] != 73 {
+		t.Fatal("轉場幀未保留山景")
+	}
+	if err := ComposeFrame(make([]byte, workStride), vga, in, func([]byte) error { return nil }); err == nil {
+		t.Fatal("缺viewport緩衝卻成功")
+	}
+	beforeWork, beforeVGA := append([]byte(nil), work...), append([]byte(nil), vga...)
+	in.Parallax.Pixels = in.Parallax.Pixels[:1]
+	if err := ComposeNativeStepFrame(work, vga, in); err == nil || !bytes.Equal(work, beforeWork) || !bytes.Equal(vga, beforeVGA) {
+		t.Fatal("壞山景輸入未原子拒收")
+	}
+}
+
 func TestComposeFrameSeedsChapterAuxBeforeTerrainAtomically(t *testing.T) {
 	cache := &fdicon.NativeSelectorCache{}
 	if _, err := cache.SlotFor(0); err != nil {

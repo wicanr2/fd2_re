@@ -28,6 +28,7 @@ type native2189AJob struct {
 func nativeTransitionInput(in indexedmap.NativeFrameInput) indexedmap.NativeTransitionFrameInput {
 	f := in.Frame
 	return indexedmap.NativeTransitionFrameInput{
+		Parallax: f.Parallax, ParallaxScrollX: f.ParallaxScrollX, ParallaxScrollY: f.ParallaxScrollY,
 		TerrainBank: f.TerrainBank, UnitBank: f.UnitBank, ForegroundBank: f.ForegroundBank,
 		SelectorCache: f.SelectorCache, Cells: f.Cells, Controls: f.Controls, TerrainLUT: f.LUT,
 		MapWidth: f.MapWidth, CameraX: f.CameraX, CameraY: f.CameraY,

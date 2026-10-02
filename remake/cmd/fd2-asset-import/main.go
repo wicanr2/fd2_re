@@ -1162,6 +1162,11 @@ func exportMapRuntimeBanks(fdotherPath, outputRoot string) error {
 	if err := exportMapLUTBank(fdotherPath, outputRoot); err != nil {
 		return err
 	}
+	for _, resource := range []int{16, 17} {
+		if err := exportSelectedSingleFrame(fdotherPath, outputRoot, fdotherArchive, resource); err != nil {
+			return err
+		}
+	}
 	return exportChapterAuxSurface(fdotherPath, outputRoot)
 }
 

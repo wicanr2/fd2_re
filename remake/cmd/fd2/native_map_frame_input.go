@@ -74,6 +74,7 @@ func buildNativeMapFrameInput(
 		PixelShift: roster.UnitPixelShift,
 		RangeMode:  state.NativeMapRangeMode, CursorX: view.CursorX, CursorY: view.CursorY,
 		Units: roster.Units, ForegroundUnits: roster.Foreground,
+		Parallax:   assets.Parallax,
 		ChapterAux: assets.ChapterAux, ChapterAuxPhase: runtime.ChapterAuxPhase,
 	}
 	hud := runtime.HUD
