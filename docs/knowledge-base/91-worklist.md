@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,16 +120,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：固定EXE雜湊、IDA9.4原始函式／bytes／位址與caller可回查，完整handler語意分級。依RE→DRAFT→READY再接有來源的typed consumer，或以原始直接證據證明無玩家效果。正常同槽T3及後續事件／戰後全檔SAV、完整RGB與正式回歸通過，整章另由#94。保留未知或無效果的證據，不因清冊沒有spawn就略過。
 
 證據：`['docs/data/parity-plans/ch18-guard.jsonl', 'docs/data/turn_events.json', 'docs/data/event_id_groups.json', 'docs/data/ida/fd2_reinforcement_eax_sources.json', 'remake/assets/scenarios/ch18.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 第十八章首輪 AI 行動與原版不同，兩名 NPC 未撤退
-
-`ch18-first-phase-ai-divergence` · 缺陷 · [#98](https://github.com/wicanr2/fd2_re/issues/98) · 仍未完成 · 要人判
-
-#94 固定槽與 seed4 正常鍵盤護援 r1 的最早行為差異在 seq632 after_enemy_phase。原版 camp1 單位16/17 已從22,7／22,8移至18,7／18,6，重製端單位16仍在22,7，單位17只移到22,6；另有兩名敵軍位置不同。此差異發生於第三回合 event43 之前，不可歸因於 #97。稍後 seq1138 原版拒絕移動、重製端卻接受，需先修正上游首輪 AI 狀態，才判定移動差異是否獨立。原版 r1 因第5回合仍選取已戰死的單位2而停止，這是驗證計畫問題，未證明 NPC 任務失敗。
-
-怎樣算做完：以既有已分級 AI 證據及目前原版收據追到模式9與 camp1 正式消費端；新增語意依 RE→DRAFT→READY。修正後同槽首輪及已完成四回合行為與完整RGB抽樣對拍，保留失敗收據；後續第18章全流程由#94驗收。
-
-證據：`['docs/data/parity-plans/ch18-guard.jsonl', 'work/parity-slot-ch18/guard-verify-r1.json', 'work/parity-slot-ch18/guard-original-r1', 'work/parity-slot-ch18/guard-remake-r1', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 ### 第十八章第八回合 event42 缺少增援後的戰場對白
 
