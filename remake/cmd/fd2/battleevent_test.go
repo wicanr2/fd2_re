@@ -752,6 +752,7 @@ func TestChapter7PostBranchesOnKeliRawInactiveStateThenEntersTown8(t *testing.T)
 			if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
 				t.Fatal(err)
 			}
+			g.applyPersistentParty(g.st)
 			g.curX, g.curY = 0, 0
 			if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil ||
 				!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
@@ -864,6 +865,7 @@ func TestChapter6PostJoins13PersistsPartyAndEntersTown7(t *testing.T) {
 	if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
 		t.Fatal(err)
 	}
+	g.applyPersistentParty(g.st)
 	g.curX, g.curY = 0, 0
 	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil ||
 		!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
@@ -978,6 +980,7 @@ func TestChapter8PostJoinsLornaPersistsPartyAndEntersTown9(t *testing.T) {
 			if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:10]); err != nil {
 				t.Fatal(err)
 			}
+			g.applyPersistentParty(g.st)
 			g.curX, g.curY = 0, 0
 			if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{}); err != nil ||
 				!g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
@@ -1079,6 +1082,7 @@ func TestChapter10PostRunsExactPaletteAndDirectPatchBeforeTown11(t *testing.T) {
 			if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
 				t.Fatal(err)
 			}
+			g.applyPersistentParty(g.st)
 			emptyX, emptyY, foundEmpty := 0, 0, false
 			for y := 0; y < 8 && !foundEmpty; y++ {
 				for x := 0; x < 13; x++ {
@@ -1309,6 +1313,7 @@ func TestChapter20PostRoundGateControlsReinforcementAndJoinBeforeTown21(t *testi
 			if err := g.seedPersistentPartyFromLoadCH(deployed, g.st.Units[:len(deployed)]); err != nil {
 				t.Fatal(err)
 			}
+			g.applyPersistentParty(g.st)
 			g.st.NativeRoundCounter = test.round
 			emptyX, emptyY, foundEmpty := 0, 0, false
 			for y := 0; y < g.st.H && !foundEmpty; y++ {
@@ -1436,6 +1441,7 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 	if err := g.seedPersistentPartyFromLoadCH(order, g.st.Units[:len(order)]); err != nil {
 		t.Fatal(err)
 	}
+	g.applyPersistentParty(g.st)
 
 	// Original event 56 calls 0x10B4E(1) at turn 6.  Materialize that exact
 	// pending group before victory so raw ch24_post enters with 70 records.

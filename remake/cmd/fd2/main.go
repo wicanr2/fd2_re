@@ -15,6 +15,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -4065,9 +4066,11 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 	if g.st == nil {
 		return 0, fmt.Errorf("缺少已完成的戰場狀態")
 	}
-	if g.partyRoster == nil {
-		g.partyRoster = make(map[int]battle.Unit)
+	candidate := make(map[int]battle.Unit, len(g.partyRoster))
+	for id, member := range g.partyRoster {
+		candidate[id] = member
 	}
+	var itemRows []byte
 	synced := 0
 	for index, current := range g.st.Units {
 		if current == nil {
@@ -4140,9 +4143,32 @@ func (g *Game) syncPartyFromBattleRecords() (int, error) {
 		snapshot.Sealed, snapshot.SealTurns = false, 0
 		snapshot.Poisoned, snapshot.PoisonTurns = false, 0
 		snapshot.Paralyzed, snapshot.ParalyzeTurns = false, 0
-		g.partyRoster[id] = snapshot
+		// 0x115AC → sub_1145A：持續副本清暫態後，從基礎值與裝備重算。
+		// 沒有原生出處的舊相容紀錄保留既有投影；正式原生紀錄缺欄位則拒收。
+		if g.st.HasNativeRuntimeUnitProjection || snapshot.EquipmentBaseSet ||
+			snapshot.HasNativeRecordRace || snapshot.HasNativeRecordClass {
+			record, err := campaign.NativeShopEquipmentRecordForUnit(&snapshot)
+			if err != nil {
+				return 0, fmt.Errorf("sync_party record %d: %w", index, err)
+			}
+			if itemRows == nil {
+				itemRows, err = battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+				if err != nil {
+					return 0, fmt.Errorf("sync_party item rows: %w", err)
+				}
+			}
+			if err := battle.ApplyNativeEquipmentRecalc(record, itemRows); err != nil {
+				return 0, fmt.Errorf("sync_party record %d equipment: %w", index, err)
+			}
+			snapshot.AP = int(int16(binary.LittleEndian.Uint16(record[0x48:])))
+			snapshot.DP = int(int16(binary.LittleEndian.Uint16(record[0x4a:])))
+			snapshot.HIT = int(int16(binary.LittleEndian.Uint16(record[0x4c:])))
+			snapshot.EV = int(int16(binary.LittleEndian.Uint16(record[0x4e:])))
+		}
+		candidate[id] = snapshot
 		synced++
 	}
+	g.partyRoster = candidate
 	return synced, nil
 }
 

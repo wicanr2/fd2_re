@@ -491,20 +491,31 @@ func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 	}
 	runner := campaign.NewRunner(campaignData)
 	runner.Cur = "battle_ch30"
+	constructor, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	rows, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	unit := func(side, group byte, level int) battle.Unit {
-		return battle.Unit{
-			Fig: int(group), BattleFig: int(group), HasBattleFig: true,
-			Camp: battle.Own, OnField: true, Lv: level, HP: 8, MaxHP: 42,
-			NativeIdentity: int(group), HasNativeIdentity: true,
-			NativeRecordByte6: side, HasNativeRecordByte6: true,
-			NativeRecordByte8: group, HasNativeRecordByte8: true,
-			NativeRecordClass: 2, HasNativeRecordClass: true,
+		member, err := constructor.MaterializePersistentUnit(int(group), battle.Unit{
+			Fig: int(group), Camp: battle.Own, OnField: true,
+		}, rows)
+		if err != nil {
+			t.Fatal(err)
 		}
+		member.BattleFig, member.HasBattleFig = int(group), true
+		member.Lv, member.HP, member.MaxHP = level, 8, 42
+		member.NativeRecordByte6, member.HasNativeRecordByte6 = side, true
+		member.NativeRecordClass, member.HasNativeRecordClass = 2, true
+		return member
 	}
 	old0, old1 := unit(2, 4, 39), unit(0, 5, 38)
 	final0, final1 := old0, old1
-	final0.Lv, final0.Exp, final0.MaxHP = 40, 88.5, 47
-	final1.Lv, final1.Exp, final1.MaxHP = 39, 44.25, 46
+	final0.Lv, final0.Exp, final0.MaxHP = 40, 88, 47
+	final1.Lv, final1.Exp, final1.MaxHP = 39, 44, 46
 	g := &Game{
 		camp: runner, result: "win",
 		st:           &battle.State{Units: []*battle.Unit{&final0, &final1}},

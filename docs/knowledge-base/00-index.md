@@ -326,34 +326,46 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第十七章原始診斷：[FIGANI拒收r1](../data/ui-traces/parity-ch17-figani-r1.json)、[writer未承接r3](../data/ui-traces/parity-ch17-writer-r3.json)，保留失敗形成原因；由正式收據取代。
 - [第十七章固定抽樣總覽索引](../data/ui-traces/parity-ch17-samples.json)：每種畫面首點及所有非零差異，包含seq1287原始writer停點；[總覽一](../figures/parity-ch17-samples-p1.png)與[總覽二](../figures/parity-ch17-samples-p2.png)。
 
-- 第十八章 #94：[建構槽清冊](../data/parity-slots/ch18-manifest.json)與[正常選人起手預檢](../data/parity-plans/ch18-preflight-select.jsonl)。目前為待驗輸入，台帳14／30保持。
+- 第十八章 #94：[建構槽清冊](../data/parity-slots/ch18-manifest.json)與[正常選人起手預檢](../data/parity-plans/ch18-preflight-select.jsonl)。已由[完整章收據](../data/ui-traces/parity-ch18.json)驗收，現況依58。
 
-- [第十八章有限原生起手規格（#95）](../data/ida/fd2_ch18_startup_20261002.json)：335DA與既有shared tail、53筆原版起手；READY，完整章另由#94。
+- [第十八章有限原生起手規格（#95）](../data/ida/fd2_ch18_startup_20261002.json)：335DA與既有shared tail、53筆原版起手；有限CONFORMED，整章例外驗收另見完整收據。
 
-- [第十八章山景底面規格](../data/ida/fd2_ch18_parallax_backdrop_20261002.json)：#96，FDOTHER16/17 writer／consumer與READY契約；同狀態起手待驗。
+- [第十八章山景底面規格](../data/ida/fd2_ch18_parallax_backdrop_20261002.json)：#96，FDOTHER16/17 writer／consumer與有限CONFORMED契約；同狀態起手已驗收。
 
 - [第十八章有限起手收據](../data/ui-traces/ch18-native-startup.json)與[五點抽樣來源](../data/ui-traces/ch18-native-startup-samples.json)：#95／#96，正常起手五點完整RGB0px、Go19與第17章98張四項回歸；只列有限RUNTIME-E1，整章仍#94。
 
-- [第十八章正常護援計畫](../data/parity-plans/ch18-guard.jsonl)：#94，八回合含event43／42，round9才清敵；護援與戰後收據待驗。
+- [第十八章正常護援計畫](../data/parity-plans/ch18-guard.jsonl)：#94，八回合含event43／42，round9才清敵；早期計畫的原始拒收保留，現行計畫見r4。
 
-- [第十八章 event43 規格](../data/ida/fd2_ch18_event43_20261002.json)：#97，原始35091與34F37尾段將單位16模式低四位設3；READY。首輪AI差異另由#98，整章由#94。
+- [第十八章 event43 規格](../data/ida/fd2_ch18_event43_20261002.json)：#97，原始35091與34F37尾段將單位16模式低四位設3；CONFORMED，完整T3與戰後收據已通過。
 
-- [第十八章模式9分派規格](../data/ida/fd2_ch18_mode9_dispatch_20261002.json)：#98，重用13A9F直接branch；有效raw目標先跟隨，不進14EF0；READY，首輪同槽待驗。
+- [第十八章模式9分派規格](../data/ida/fd2_ch18_mode9_dispatch_20261002.json)：#98，重用13A9F直接branch；有效raw目標先跟隨，不進14EF0；有限CONFORMED，首輪同槽已驗收。
 
 - [第十八章護援r2計畫](../data/parity-plans/ch18-guard-r2.jsonl)：#94，固定同槽seed4與前四輪，只移除後四輪對戰死record2的選取；舊r1收據保留。
 
-- [第十八章四輪有限對拍收據](../data/ui-traces/ch18-turns1-4.json)：#97／#98的正式事件與模式9順序修正；原版計畫於round5停止，整章#94仍待驗。
+- [第十八章四輪有限對拍收據](../data/ui-traces/ch18-turns1-4.json)：#97／#98的正式事件與模式9順序修正；原版該計畫於round5停止；整章已由r4收據驗收。
 
-- [第十八章event42完整規格](../data/ida/fd2_ch18_event42_20261002.json)：#99，3505F先追加group1再播text6，原始shared tail與READY；正常T8待#94。
+- [第十八章event42完整規格](../data/ida/fd2_ch18_event42_20261002.json)：#99，3505F先追加group1再播text6，原始shared tail與CONFORMED；正常T8及戰後SAV已驗收。
 
 - [指令傷害的原生職業抗性索引](../data/ida/fd2_command_damage_raw_class_20261002.json)：#100，sub_1C75E 的 target record+0x20 讀取證據與有限CONFORMED修正规格。
 
 - [指令2目標間的演出亂數](../data/ida/fd2_command2_target_rng_20261002.json)：#101，既有六段HP marker的原始consumer與有限CONFORMED規格。
 
-- [第十八章六輪有限收據](../data/ui-traces/ch18-turns1-6.json)：#100／#101，同一原版r2的213筆AI順序與153張RGB；完整章仍拒收。
+- [第十八章六輪有限收據](../data/ui-traces/ch18-turns1-6.json)：#100／#101，同一原版r2的213筆AI順序與153張RGB；該r2完整章仍拒收，現行r4見完整章收據。
 
-- [第十八章有界後撤計畫r3](../data/parity-plans/ch18-guard-r3.jsonl)：#94，只將我方record0的正常移動目標改為8,10，原版待驗，不修改NPC或HP。
+- [第十八章有界後撤計畫r3](../data/parity-plans/ch18-guard-r3.jsonl)：#94，只將我方record0的正常移動目標改為8,10，原版第7輪STOSB停止，未解限制見#102；不修改NPC或HP。
 
 - [工具收尾有限驗收](../data/ui-traces/tooling-closeout-20261003.json)：#91，四項過時 fixture／快照修正及既有 Capstone、Pillow 映像分流，63項通過；不改遊戲規則或證據等級。
 
-- [第十八章原版素材解碼停止與唯讀追蹤](../data/ida/fd2_ch18_oracle_stosb_20261003.json)：#102，固定原版r3的STOSB停止、IDA sub_4E63D與有限重製前綴；根因未知，完整章仍由#94驗收。
+- [第十八章原版素材解碼停止與唯讀追蹤](../data/ida/fd2_ch18_oracle_stosb_20261003.json)：#102，固定原版r3的STOSB停止、IDA sub_4E63D與有限重製前綴；目前oracle有限生命週期根因閉合，原生配置器重用未知；同r3仍停止，#102保持開啟。
+
+- [第十八章第7／8輪正常後撤計畫r4](../data/parity-plans/ch18-guard-r4.jsonl)：#94，前六輪保持r3，record8正常鍵盤後撤；不改slot、seed、NPC或原版記憶體契約，完整章已驗收。
+
+- [第十八章增援後戰後槽數契約](../data/ida/fd2_ch18_postbattle_slots_20261003.json)：#103，正常T8的53→75及11506 reader，舊55保留建構E1來源；CONFORMED，完整章通過。
+
+- [第十八章戰後裝備重算契約](../data/ida/fd2_ch18_postbattle_equipment_20261003.json)：#104，115AC→1145A與酒店SAV單欄差異；CONFORMED，完整章及共用同步回歸通過。
+
+- [戰後同步工具回歸與字串位置對照](../data/ui-traces/postbattle-tooling-regression-20261003.json)：#105，六個舊章測試補正式覆蓋；97筆人工處置保持，清冊位置轉移逐項可查。
+
+- [第十八章整章四項收據](../data/ui-traces/parity-ch18.json)：#94／#97／#99／#103／#104，受版控r4正常章r8與Go r3；全檔SAV及正式回歸通過，依111／114列本章PLAYER-E2。
+
+- [第十八章整章總覽來源索引](../data/ui-traces/parity-ch18-samples.json)：完整RGB抽樣及全部非零差異來源；圖面留本機，不新增公開原版素材。

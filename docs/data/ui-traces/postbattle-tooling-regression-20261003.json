@@ -1,0 +1,853 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_postbattle_tooling_regression",
+  "date": "2026-10-03",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/105",
+  "status": "passed",
+  "fixture_cause": "六個章測試在resetBattle之後才建立持續名冊，未覆蓋回戰場；正式applyLoadCH於seed後已有applyPersistentParty。沿相同覆蓋補回，正式runtime不放寬。",
+  "source": "remake/cmd/fd2/main.go:applyLoadCH→seedPersistentPartyFromLoadCH→applyPersistentParty；remake/cmd/fd2/battleevent_test.go六個seed後呼叫。",
+  "string_review": {
+    "old_inventory_sha256": "9cd4e753930b7922a09305a70a4ef38150288d6832c6de5a0d9bf87fa75f813e",
+    "new_inventory_sha256": "38ca25679603c964009d3aaaf15a23872ec3abae6a06c58ea418fcb0922b6207",
+    "entries_before": 5162,
+    "entries_after": 5162,
+    "new_candidates": 0,
+    "removed_candidates": 0,
+    "disposition_counts": {
+      "player_visible": 24,
+      "internal_diagnostic": 60,
+      "development": 9,
+      "unknown": 4
+    },
+    "review": "全部97筆go_review的file/function/text/role相同，只有main.go位置因匯入及同步區塊新增而移動；同函式重複文字按原位置順序且數目相同。新增ASCII sync_party拒收訊息不屬go_review候選，不新增或重分處置。",
+    "transfers": [
+      {
+        "before": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l400-c15",
+        "after": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l400-c15",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/action_overlay_runtime.go",
+        "function": "beginNativeNestedCurrentLoad",
+        "text": "原版目前戰況讀檔：目前戰場時鐘尚未物化"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l618-c17",
+        "after": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l618-c17",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/action_overlay_runtime.go",
+        "function": "finishNativeSystemEndTurnChoice",
+        "text": "原版目前戰況存檔：寫入後 baseline 解碼失敗："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
+        "after": "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/ai_spell_execute.go",
+        "function": "executeAISpell",
+        "text": "法術 %d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.ending_preview.l788-c10",
+        "after": "legacy.go.remake.cmd.fd2.ending_preview.l788-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/ending_preview.go",
+        "function": "nativeEndingEvidenceOverlay",
+        "text": "角色蒙太奇（來源約束 E1）：任意按鍵會在本輪結束後略過中間角色。"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.ending_preview.l791-c10",
+        "after": "legacy.go.remake.cmd.fd2.ending_preview.l791-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/ending_preview.go",
+        "function": "nativeEndingEvidenceOverlay",
+        "text": "終局蒙太奇（原版資源、來源約束 E1）：完成後將停留在 THE END。"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11224-c30",
+        "after": "legacy.go.remake.cmd.fd2.main.l11250-c30",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "loadGame",
+        "text": "悠妮"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11224-c49",
+        "after": "legacy.go.remake.cmd.fd2.main.l11250-c49",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "loadGame",
+        "text": "法師"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12311-c17",
+        "after": "legacy.go.remake.cmd.fd2.main.l12337-c17",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "aiStep",
+        "text": "敵方 AI 法術："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12487-c36",
+        "after": "legacy.go.remake.cmd.fd2.main.l12513-c36",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "main",
+        "text": "炎龍騎士團2 重製 (fd2_re %s)"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1706-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1707-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "索爾"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1708-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1709-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "亞雷斯"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1710-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1711-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "悠妮"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1712-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1713-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "蓋亞"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1714-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1715-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "國王"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1716-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1717-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "王后"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1718-c10",
+        "after": "legacy.go.remake.cmd.fd2.main.l1719-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "figName",
+        "text": "守衛"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l7700-c13",
+        "after": "legacy.go.remake.cmd.fd2.main.l7726-c13",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "checkResult",
+        "text": "索爾"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_defeat.l152-c16",
+        "after": "legacy.go.remake.cmd.fd2.native_defeat.l152-c16",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/native_defeat.go",
+        "function": "stepNativeDefeat",
+        "text": "未知原生敗北呈現步驟"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_defeat.l35-c15",
+        "after": "legacy.go.remake.cmd.fd2.native_defeat.l35-c15",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/native_defeat.go",
+        "function": "beginNativeDefeatIfConfigured",
+        "text": "原生敗北呈現："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.player_shortcuts.l32-c10",
+        "after": "legacy.go.remake.cmd.fd2.player_shortcuts.l32-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "function": "cycleTheme",
+        "text": "忠實原版"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.player_shortcuts.l34-c10",
+        "after": "legacy.go.remake.cmd.fd2.player_shortcuts.l34-c10",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/player_shortcuts.go",
+        "function": "cycleTheme",
+        "text": "現代手繪"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.settings.l31-c13",
+        "after": "legacy.go.remake.cmd.fd2.settings.l31-c13",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/settings.go",
+        "function": null,
+        "text": "繁體中文"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.settings.l32-c13",
+        "after": "legacy.go.remake.cmd.fd2.settings.l32-c13",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/settings.go",
+        "function": null,
+        "text": "简体中文"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.settings.l33-c13",
+        "after": "legacy.go.remake.cmd.fd2.settings.l33-c13",
+        "disposition": "player_visible",
+        "file": "remake/cmd/fd2/settings.go",
+        "function": null,
+        "text": "日本語"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11534-c31",
+        "after": "legacy.go.remake.cmd.fd2.main.l11560-c31",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "nativeMapHUDInput",
+        "text": "資產、HUD／cycle 狀態、selector cache 或游標界線其一不成立"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11542-c32",
+        "after": "legacy.go.remake.cmd.fd2.main.l11568-c32",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "nativeMapHUDInput",
+        "text": "原生可變地圖緩衝損壞"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11548-c32",
+        "after": "legacy.go.remake.cmd.fd2.main.l11574-c32",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "nativeMapHUDInput",
+        "text": "初始地圖圖塊資料不足"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11574-c5",
+        "after": "legacy.go.remake.cmd.fd2.main.l11600-c5",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "nativeMapHUDInput",
+        "text": "游標下單位缺少 raw 出處：slot=%v fig=%v(%d) race=%v byte6=%v word42=%v hp=%d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12000-c34",
+        "after": "legacy.go.remake.cmd.fd2.main.l12026-c34",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "advanceBattleEvent",
+        "text": "重設姿態缺少戰場"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12020-c34",
+        "after": "legacy.go.remake.cmd.fd2.main.l12046-c34",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "advanceBattleEvent",
+        "text": "range 寫入缺少來源"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12026-c34",
+        "after": "legacy.go.remake.cmd.fd2.main.l12052-c34",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "advanceBattleEvent",
+        "text": "pan 缺少有效 grid/map"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12045-c34",
+        "after": "legacy.go.remake.cmd.fd2.main.l12071-c34",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "advanceBattleEvent",
+        "text": "native acting 缺少 runtime battle state"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1742-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1743-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat runtime_context:缺少有效 slot_count/slot_counts"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1771-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1772-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat unit_present:缺少 placement payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1774-c15",
+        "after": "legacy.go.remake.cmd.fd2.main.l1775-c15",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat unit_present: legacy payload未綁定已證實的0x22253 caller"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1778-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1779-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_unit_present:缺少原版 0x25535 payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1788-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1789-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_ch28_post_present:缺少原版 0x254c0 payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1797-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1798-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat indexed_transition:缺少 transition payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1806-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1807-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_ch20_sky_key_sequence:缺少原版 0x242c9 payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1815-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1816-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_palette_fade_out:缺少原版 64-step DAC payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1824-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1825-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_palette_fade_in:缺少原版 65-step DAC payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1834-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1835-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_palette_pulse:缺少原版 DAC pulse payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1845-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1846-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_palette_blackout:缺少原版全色盤與畫面清除 payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1865-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1866-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_staging_present:缺少原版 wrapper ABI payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1874-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1875-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_ch23_loop:缺少原始兩段 loop payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1883-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1884-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat native_2189a_loop:缺少原始十次 loop payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1892-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1893-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat layout_units:缺少可編輯的 runtime layout"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1910-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1911-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat direct_record_patch:缺少原版來源或 sparse payload"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1932-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l1933-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat loadch:缺少完整狀態映射"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l1949-c28",
+        "after": "legacy.go.remake.cmd.fd2.main.l1950-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat walk:找不到 fig=%d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2008-c29",
+        "after": "legacy.go.remake.cmd.fd2.main.l2009-c29",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat dialog:無法載入 script=%q scene=%q scene_index=%v: %v"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2022-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2023-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat dialog: native_dialogue 與 native_dialogues 不可混用"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2046-c28",
+        "after": "legacy.go.remake.cmd.fd2.main.l2047-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat dialog:line=%d count=%d 對不到 script lines(len=%d)"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2160-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2161-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat reactivate_nonzero_hp:缺少已證實的 counted-loop 來源"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2213-c28",
+        "after": "legacy.go.remake.cmd.fd2.main.l2214-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat join:非法 player char_id=%d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2227-c30",
+        "after": "legacy.go.remake.cmd.fd2.main.l2228-c30",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat join:char_id=%d 有 %d 筆 raw +8 runtime records"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2241-c30",
+        "after": "legacy.go.remake.cmd.fd2.main.l2242-c30",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat join:char_id=%d 有 %d 筆 raw +8 story records"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2254-c31",
+        "after": "legacy.go.remake.cmd.fd2.main.l2255-c31",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat join:char_id=%d 缺少 raw +8 runtime record 且 base table 無法載入: %v"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2293-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2294-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat clear_native_record_bit7:缺少 runtime battle records"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2311-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2312-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat set_chapter:缺少有效章節"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2318-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2319-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat grant_item:缺少有效 item_id"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2322-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2323-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat grant_item:缺少 runtime battle state"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2341-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2342-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat transition_reveal:缺少正確 frame count"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2349-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l2350-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat load_res:缺少 resource_id"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2378-c28",
+        "after": "legacy.go.remake.cmd.fd2.main.l2379-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat play_sfx:未映射 resource=%v index=%v"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l2424-c15",
+        "after": "legacy.go.remake.cmd.fd2.main.l2425-c15",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "beatStart",
+        "text": "beat:未知原語 "
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l3315-c29",
+        "after": "legacy.go.remake.cmd.fd2.main.l3316-c29",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "enterNode",
+        "text": "cutscene %q 原生對話群組無效: %v"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l4173-c28",
+        "after": "legacy.go.remake.cmd.fd2.main.l4199-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "applyScenarioPartyJoins",
+        "text": "scenario join_party:非法 player char_id=%d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l4187-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l4213-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "applyScenarioPartyJoins",
+        "text": "scenario join_party:缺少戰場來源"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l4196-c30",
+        "after": "legacy.go.remake.cmd.fd2.main.l4222-c30",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "applyScenarioPartyJoins",
+        "text": "scenario join_party:角色%d有多筆場上記錄"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l4211-c30",
+        "after": "legacy.go.remake.cmd.fd2.main.l4237-c30",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "applyScenarioPartyJoins",
+        "text": "scenario join_party:角色%d有多筆待登場來源"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l4219-c29",
+        "after": "legacy.go.remake.cmd.fd2.main.l4245-c29",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "applyScenarioPartyJoins",
+        "text": "scenario join_party:找不到角色%d的我方記錄"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l4227-c28",
+        "after": "legacy.go.remake.cmd.fd2.main.l4253-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "applyScenarioPartyJoins",
+        "text": "scenario join_party:角色%d persistent record: %v"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l5037-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l5063-c16",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "confirmBattleResult",
+        "text": "終局隊伍同步失敗: "
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l949-c4",
+        "after": "legacy.go.remake.cmd.fd2.main.l950-c4",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "syncStoryNativeMapScrollView",
+        "text": "native story map view: 走行捲動只支援單軸整段，(%d,%d)→(%d,%d)"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l961-c6",
+        "after": "legacy.go.remake.cmd.fd2.main.l962-c6",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "syncStoryNativeMapScrollView",
+        "text": "native story map view: 走行捲動第 (%d,%d) 格的視圖更新被拒絕"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l970-c5",
+        "after": "legacy.go.remake.cmd.fd2.main.l971-c5",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "syncStoryNativeMapScrollView",
+        "text": "native story map view: 逐格鏡頭 (%d,%d) 與插值鏡頭 (%d,%d) 不一致"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_chapter_result.l27-c14",
+        "after": "legacy.go.remake.cmd.fd2.native_chapter_result.l27-c14",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_chapter_result.go",
+        "function": "failNativeChapterResult",
+        "text": "原生章節結果："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_chapter_result.l41-c40",
+        "after": "legacy.go.remake.cmd.fd2.native_chapter_result.l41-c40",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_chapter_result.go",
+        "function": "advanceNativeChapterResult",
+        "text": "："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_chapter_result.l48-c40",
+        "after": "legacy.go.remake.cmd.fd2.native_chapter_result.l48-c40",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_chapter_result.go",
+        "function": "advanceNativeChapterResult",
+        "text": "：缺少原生戰場對白狀態"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_death_program_runtime.l114-c28",
+        "after": "legacy.go.remake.cmd.fd2.native_death_program_runtime.l114-c28",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_death_program_runtime.go",
+        "function": "runPendingDeathPrograms",
+        "text": "死亡效果 %s 沒有可執行的原生程式"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_death_program_runtime.l131-c17",
+        "after": "legacy.go.remake.cmd.fd2.native_death_program_runtime.l131-c17",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_death_program_runtime.go",
+        "function": "runPendingDeathPrograms",
+        "text": "死亡程式開始前重繪："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_death_program_runtime.l146-c32",
+        "after": "legacy.go.remake.cmd.fd2.native_death_program_runtime.l146-c32",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_death_program_runtime.go",
+        "function": "runNativeDeathOp",
+        "text": "死亡程式動作缺少來源或戰場"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.native_event_dialogue.l79-c33",
+        "after": "legacy.go.remake.cmd.fd2.native_event_dialogue.l79-c33",
+        "disposition": "internal_diagnostic",
+        "file": "remake/cmd/fd2/native_event_dialogue.go",
+        "function": "handleBattleEventDialogueInput",
+        "text": "原生對話收框不可用"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l11848-c15",
+        "after": "legacy.go.remake.cmd.fd2.main.l11874-c15",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "endTurn",
+        "text": "END recovery: %s(%d,%d) hp %d→%d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12422-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l12448-c16",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "aiStep",
+        "text": "AI attack: %s(%d,%d) hp=%d → (%d,%d) id=%d hp %d→%d dmg=%d miss=%v counter=%s rng %d→%d"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12455-c15",
+        "after": "legacy.go.remake.cmd.fd2.main.l12481-c15",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "aiStep",
+        "text": "AI walk: %s(%d,%d)→(%d,%d) 段數%d 目標=%v mode=%d intended=(%d,%d) blocked=(%d,%d,%v) opposite=%v candidates=%v"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l12482-c14",
+        "after": "legacy.go.remake.cmd.fd2.main.l12508-c14",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "main",
+        "text": "FD2 %s 封裝自我檢查通過\n"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l8209-c25",
+        "after": "legacy.go.remake.cmd.fd2.main.l8235-c25",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Update",
+        "text": "亞雷斯"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l8209-c38",
+        "after": "legacy.go.remake.cmd.fd2.main.l8235-c38",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Update",
+        "text": "盜賊"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l8215-c25",
+        "after": "legacy.go.remake.cmd.fd2.main.l8241-c25",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Update",
+        "text": "盜賊"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l8215-c35",
+        "after": "legacy.go.remake.cmd.fd2.main.l8241-c35",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "Update",
+        "text": "亞雷斯"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l9469-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l9495-c16",
+        "disposition": "development",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "captureShot",
+        "text": "截圖狀態追蹤："
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l674-c19",
+        "after": "legacy.go.remake.cmd.fd2.action_overlay_runtime.l674-c19",
+        "disposition": "unknown",
+        "file": "remake/cmd/fd2/action_overlay_runtime.go",
+        "function": "stepNativeSystemEndTurn",
+        "text": "原版目前戰況讀檔：私有候選狀態遺失"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l3066-c16",
+        "after": "legacy.go.remake.cmd.fd2.main.l3067-c16",
+        "disposition": "unknown",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "dlgWrap",
+        "text": "『"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l3066-c47",
+        "after": "legacy.go.remake.cmd.fd2.main.l3067-c47",
+        "disposition": "unknown",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "dlgWrap",
+        "text": "』"
+      },
+      {
+        "before": "legacy.go.remake.cmd.fd2.main.l7559-c26",
+        "after": "legacy.go.remake.cmd.fd2.main.l7585-c26",
+        "disposition": "unknown",
+        "file": "remake/cmd/fd2/main.go",
+        "function": "confirm",
+        "text": "原始指令 %d：傷害 %d"
+      }
+    ]
+  },
+  "limits": [
+    "字串索引轉移不改翻譯或人工分類。",
+    "章測試仍為建構RUNTIME-E1，不提升原版玩家證據。"
+  ],
+  "additional_fixture_cause": "JOIN後同步測試從battle.Load直接建場，缺正式裝備基礎值初始化；終局合成測試缺完整原生欄位且EXP使用小數。沿InitializeEquipmentBase與MaterializePersistentUnit建構，EXP改成原生byte可表示的整數；不改production拒收。",
+  "validation": {
+    "go_packages": 19,
+    "full_go_log": {
+      "path": "work/parity-slot-ch18/postbattle-equipment-go-regression-r3.log",
+      "sha256": "07fb8c3102b87b2f9bea3333c820ab23eef32514280ba644cdb7c6b48e062fa9",
+      "size": 384388
+    },
+    "failed_go_log": {
+      "path": "work/parity-slot-ch18/postbattle-equipment-go-regression-r1.log",
+      "sha256": "c731f682e55b4779ced24144604d6f5035f995ac6a1bb0e1233765853f2e3183",
+      "size": 386412
+    },
+    "fixture_log": {
+      "path": "work/parity-slot-ch18/postbattle-fixture-focused-r1.log",
+      "sha256": "1ff76c505814de065b5e67203ed536d12db33f07b52185295458b3f60d436db6",
+      "size": 3132
+    },
+    "second_fixture_log": {
+      "path": "work/parity-slot-ch18/postbattle-fixture-focused-r2.log",
+      "sha256": "d6a02503dbe6629c1c2dd4726578060ad917ee7d606561294695b7cbc8d7e474",
+      "size": 1298
+    },
+    "second_failed_go_log": {
+      "path": "work/parity-slot-ch18/postbattle-equipment-go-regression-r2.log",
+      "sha256": "1f1791bacd7f3827c28da5eca7f5a537c2a4e94224a64d5c522944d67faee084",
+      "size": 384804
+    },
+    "source_generation_commands": "test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 2g --cpus 1 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp -e GOFLAGS=-mod=mod fd2-go-test-local:20260909 timeout 180 sh -c 'go run ./cmd/fd2-string-inventory -repo /src -output /src/work/parity-slot-ch18/issue105-current-string-inventory.json && go run ./cmd/fd2-string-inventory -repo /src -summary -output /src/work/parity-slot-ch18/issue105-current-string-summary.json' > work/parity-slot-ch18/issue105-current-string-generation.log 2>&1"
+  },
+  "generated_outputs": [
+    {
+      "path": "docs/data/fd2-string-inventory-summary.json",
+      "sha256": "19aadbe51ef426b30abd358809cef047ddd4461b4af6367aedb6635ba9698946",
+      "size": 1244
+    },
+    {
+      "path": "docs/data/ida/fd2_unknown_footprints.json",
+      "sha256": "c31db30f8901e9bc02c85028591f93e170984a3019c453963814fd8f2501b006",
+      "size": 2709569
+    },
+    {
+      "path": "work/parity-slot-ch18/postbattle-unknown-footprints-final-r2.log",
+      "sha256": "977a0103a64ba115da683b34fe902737c24f2b1cca3142ad9fdf9eabf74b6d20",
+      "size": 187
+    }
+  ]
+}

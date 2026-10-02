@@ -1481,3 +1481,9 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 ### 2026-10-03 第十八章原版停止前綴（#102）
 
 [主證據與有限前綴](../data/ida/fd2_ch18_oracle_stosb_20261003.json)保存r3全部已完成行為、240筆AI順序與152張全幅RGB通過。原版round7繪圖停止，node／transaction拒收；原版r5的1926點前綴一致只證明唯讀觀測未改執行，不提高介面或整章證據等級。
+
+### 第十八章整章驗收（2026-10-03）
+
+[完整章收據](../data/ui-traces/parity-ch18.json)取代先前缺正常T8、戰後與SAV的現況。正式event43／42按原始控制列觸發；T8先增援再完整對白，戰後使用有來源的75槽前沿並清暫態後重算持續裝備能力值。舊55建構形狀保留，來源不完整仍拒收。[前沿契約](../data/ida/fd2_ch18_postbattle_slots_20261003.json)與[同步契約](../data/ida/fd2_ch18_postbattle_equipment_20261003.json)為CONFORMED。
+
+完整行為、節點、無遮罩RGB、交易及全檔酒店SAV通過；第17章與全部Go回歸亦通過。依111／114建構槽及抽樣後一次清敵例外列本章PLAYER-E2，不宣稱自然戰鬥、逐幀演出或全章逐像素一致。[總覽索引](../data/ui-traces/parity-ch18-samples.json)保留所有非零差異；原圖與SAV留本機。唯一統計與#102尚未解決的原版r3停止見[58](58-fd2-exe-re-coverage.md)。

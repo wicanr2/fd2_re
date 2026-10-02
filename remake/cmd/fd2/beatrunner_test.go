@@ -792,6 +792,11 @@ func TestPostSpawnJoinTailSurvivesRuntimeSyncAndNativeSave(t *testing.T) {
 	baseline.Records[0].Raw[0x17], baseline.Records[0].Raw[0x19] = 0x3f, 6
 	g.nativeChapterSlotBaseline = &baseline
 	g.st = &battle.State{Units: []*battle.Unit{source}}
+	g.shopItemStats, err = campaign.LoadItemStats(assetPath("assets/data/item.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.initializeEquipmentBases(g.st)
 	g.beatAdvance()
 	joined := g.partyRoster[8]
 	if g.loadErr != "" || !joined.NativeJoinPersistentPending ||
@@ -1004,6 +1009,72 @@ func TestSyncPartySkipsUnknownNativeIdentity(t *testing.T) {
 	}
 	if got := g.partyRoster[4].HP; got != 21 {
 		t.Fatalf("unknown raw identity should fail closed, HP=%d", got)
+	}
+}
+
+func TestSyncPartyRecalculatesNativeEquipmentAfterClearingTransientState(t *testing.T) {
+	constructor, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	rows, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	member, err := constructor.MaterializePersistentUnit(1, battle.Unit{Fig: 1, Camp: battle.Own, OnField: true}, rows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	member.BaseAP, member.BaseDP, member.DX = 517, 180, 117
+	member.AP, member.DP, member.HIT, member.EV = 619, 210, 227, 132
+	member.NativeTransient = [battle.NativeTransientCount]byte{2, 2, 2}
+	member.InventorySlots = []int{32, 128, 255, 255, 255, 255, 255, 255}
+	member.NativeInventoryFlags = []int{0x40, 0x40, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+	member.Inventory, member.Equipped = []int{32, 128}, []bool{true, true}
+	member.HP, member.MP = 3, 0
+	g := &Game{
+		partyMembers: map[int]bool{1: true},
+		partyRoster:  map[int]battle.Unit{1: member},
+		st:           &battle.State{Units: []*battle.Unit{&member}},
+	}
+	if err := g.syncPartyFromBattle(); err != nil {
+		t.Fatal(err)
+	}
+	got := g.partyRoster[1]
+	if stats := [4]int{got.AP, got.DP, got.HIT, got.EV}; stats != [4]int{537, 182, 212, 117} {
+		t.Fatalf("persistent equipment totals = %v", stats)
+	}
+	if got.NativeTransient != [battle.NativeTransientCount]byte{} || got.HP != got.MaxHP || got.MP != got.MaxMP ||
+		!reflect.DeepEqual(got.NativeInventoryFlags, member.NativeInventoryFlags) {
+		t.Fatalf("persistent state = %+v", got)
+	}
+	if member.DP != 210 || member.NativeTransient[1] != 2 || member.HP != 3 {
+		t.Fatalf("sync mutated battle source: %+v", member)
+	}
+	for _, invalid := range []string{"base", "item"} {
+		t.Run(invalid, func(t *testing.T) {
+			bad := member
+			bad.Fig, bad.NativeIdentity, bad.NativeRecordByte8 = 9, 9, 9
+			bad.InventorySlots = append([]int(nil), member.InventorySlots...)
+			if invalid == "base" {
+				bad.EquipmentBaseSet = false
+			} else {
+				bad.InventorySlots[0] = 255
+			}
+			g.partyMembers[9] = true
+			g.partyRoster[9] = bad
+			before := make(map[int]battle.Unit)
+			for id, value := range g.partyRoster {
+				before[id] = value
+			}
+			g.st.Units = []*battle.Unit{&member, &bad}
+			if _, err := g.syncPartyFromBattleRecords(); err == nil {
+				t.Fatal("invalid native record accepted")
+			}
+			if !reflect.DeepEqual(g.partyRoster, before) || member.DP != 210 || bad.DP != 210 {
+				t.Fatal("failed sync partially published or changed battle source")
+			}
+		})
 	}
 }
 

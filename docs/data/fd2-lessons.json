@@ -1148,6 +1148,21 @@
         ],
         "pattern": "nativeCommandResistanceClass|WalkNativeCommand2RNG"
       }
+    },
+    {
+      "id": "native-postbattle-sync-recalc-and-fixture-overlay",
+      "date": "2026-10-03",
+      "area": "戰後持續隊伍",
+      "rule": "原生戰後同步清暫態後以1145A重算持續能力值；建構戰後測試在seedPersistentPartyFromLoadCH後套用applyPersistentParty，讓戰場具有已物化基礎值與裝備出處。入口是remake/cmd/fd2/main.go的syncPartyFromBattleRecords／applyLoadCH與battleevent_test.go，契約在docs/data/ida/fd2_ch18_postbattle_equipment_20261003.json。",
+      "why": "第十八章酒店SAV留下戰鬥DP210，原版清暫態重算為182；補正式拒收後，六個舊章測試漏持續名冊覆蓋而缺base AP／DP。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/104；https://github.com/wicanr2/fd2_re/issues/105；docs/data/ui-traces/parity-ch18.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "battle\\.ApplyNativeEquipmentRecalc\\(record, itemRows\\)"
+      }
     }
   ]
 }

@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -130,6 +130,26 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：原始handler／shared tail／固定EXE／caller與控制列可回查，完成READY後將event42完整降階至第18章正式及canonical；增援先發生、text6完整對白阻塞AI、結束後續行且只觸發一次。固定槽正常T8與後續全章完整RGB、戰後及酒店SAV由#94驗收，通過前不關閉。
 
 證據：`['work/parity-slot-ch18/ida-event42-r1/ida-input-probe.json', 'docs/data/ida/fd2_ch15_turn_events_20261002.json', 'docs/data/turn_events.json', 'remake/assets/scenarios/ch18.json', 'docs/data/parity-plans/ch18-guard-r2.jsonl']`
+
+### 第十八章增援後的戰後槽數契約過時
+
+`ch18-postbattle-runtime-slots` · 缺陷 · [#103](https://github.com/wicanr2/fd2_re/issues/103) · 仍未完成 · 要人判
+
+完整原版guard-r4/r8已完成第8回合增援、戰後、買賣、酒店SAV與秘密商店。正式Go回放到postbattle_ch18_persist拒收：runtime slots=75, want exact55。先保留failed日誌及收據，核對原版T8槽數writer和持續隊伍consumer，再修過時typed資料契約；不放寬任意槽數或跳過預檢。
+
+怎樣算做完：確認第十八章原版初始、T8增援與戰後持續槽數的writer／consumer和固定來源，完成可審查READY後修正式資料；同槽正常章四项、整檔酒店SAV及相關回歸通過。保留55條件的歷史來源與第一次拒收，不將工具通過當作完整章。
+
+證據：`['remake/assets/cutscenes/bindings/ch17_post.json', 'docs/data/fd2_ch17_post_ida.txt', 'docs/data/ida/fd2_ch18_event42_20261002.json', 'docs/data/parity-plans/ch18-guard-r4.jsonl', 'work/parity-slot-ch18/guard-r8-remake-r1.log']`
+
+### 第十八章酒店存檔與原版不一致
+
+`ch18-hotel-save-parity` · 缺陷 · [#104](https://github.com/wicanr2/fd2_re/issues/104) · 仍未完成 · 要人判
+
+第十八章同槽guard-r4/r8完整原版與正式Go回放r2，行為、節點與182張全幅RGB通過，293筆AI順序零分岔，194個金幣比較點全部一致。酒店SAV整檔雜湊仍不同：原版9adc6a5a、重製14d076e2。先登記再做欄位分析與RE／READY修正，保留原失敗，不忽略未知位元組。
+
+怎樣算做完：逐筆核對兩側酒店SAV差異，沿固定原版證據找到每個差異的writer／consumer，完成READY後修正式持續資料；同一完整原版r8四項及整檔SAV通過，相关持續資料回歸和舊章SAV通過。保留原始拒收與来源，不改比較門檻或選擇性忽略位元組。
+
+證據：`['work/parity-slot-ch18/guard-r8-verify-r2.json', 'work/parity-slot-ch18/guard-state-r8/FD2.SAV', 'work/parity-slot-ch18/guard-r8-remake-r2/FD2.SAV', 'docs/data/ida/fd2_ch18_postbattle_slots_20261003.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -245,16 +265,6 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
 
-### 工具回歸的舊 fixture 與現況證據漂移
-
-`tool-regression-fixture-and-evidence-drift` · 缺陷 · [#91](https://github.com/wicanr2/fd2_re/issues/91) · 仍未完成 · 要人判
-
-第十七章 CPU 修復時額外執行 tools 全套測試，發現四個既有失敗：章槽 fixture 缺 event_states、台帳 fixture 缺 slot_policy，以及字串清冊、unknown footprint 的快照漂移。這些測試與消費工具本輪未修改。另有10個 PIL／Capstone 缺件屬錯用 Go 測試映像的環境失敗，須依既有專用映像分流，不能視為遊戲缺陷。CPU 與前綴驗證已獨立通過；本題不重開已閉合 RE。
-
-怎樣算做完：四個既有測試逐項釐清契約與目前資料，修正過時fixture或重生受版控證據，保留原始失敗及雜湊；以合適既有Docker映像乾淨重跑相關工具測試。不得調整正式玩法、章通過門檻或把未證實語意升格。
-
-證據：`['tools/test_fd2_chapter_slot.py', 'tools/test_fd2_parity_progress.py', 'tools/test_editor_schemas.py', 'tools/test_fd2_unknown_footprints.py', 'docs/data/ida/fd2_ch17_oracle_d1_20261002.json']`
-
 ### 第十八章第七回合 dosgolem 的 STOSB 寫入未處理
 
 `ch18-oracle-stosb-memory-boundary` · 缺陷 · [#102](https://github.com/wicanr2/fd2_re/issues/102) · 仍未完成 · 要人判
@@ -262,5 +272,15 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 戰後重算修正後的舊章測試與字串審查清冊待更新
+
+`postbattle-sync-tooling-regression` · 缺陷 · [#105](https://github.com/wicanr2/fd2_re/issues/105) · 仍未完成 · 要人判
+
+#104的正式第18章與第17章四項及全檔SAV通過。完整Go回歸發現舊章測試在resetBattle後才seedPersistentPartyFromLoadCH，未把已物化持續名冊覆蓋回戰場，缺base AP／DP出處；新sync_party錯誤字串也令line-based審查索引及清冊雜湊漂移。先查正式LOADCH→persistent overlay鏈，再修測試建構與人工審查，不放寬正式拒收。
+
+怎樣算做完：舊章測試使用既有物化名冊與正式覆蓋流程，完整Go19套件通過；字串清冊從現行來源重生，以原始source/function/text核對既有處置對照並明確審查新診斷，無未審查候選；不改正式玩法、比較閘門與原版證據。保留首次失敗與轉移對照及雜湊。
+
+證據：`['work/parity-slot-ch18/postbattle-equipment-go-regression-r1.log', 'remake/cmd/fd2/battleevent_test.go', 'remake/cmd/fd2/main.go', 'docs/data/fd2-string-review.json', 'docs/data/ida/fd2_ch18_postbattle_equipment_20261003.json']`
 
 <!-- END fd2_worklist.py render -->

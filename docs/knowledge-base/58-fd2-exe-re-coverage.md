@@ -2003,15 +2003,16 @@ FIGANI51 frame0為184,35／109×165，target BattleFig17。
 
 | 範圍 | 目前狀態 | 下一步 |
 |---|---|---|
-| 起手、山景、首輪模式9、T3 event43 | 有限RUNTIME-E1；[四輪收據](../data/ui-traces/ch18-turns1-4.json)已通過；#98已關閉 | 保留同槽回歸 |
-| T8 event42 | #99，READY已實作；增援先行、對白阻塞／once建構E1與完整Go通過 | 正常T8仍待驗 |
-| 第5／6回合抗性與指令2亂數 | #100／#101，有限CONFORMED；[六輪收據](../data/ui-traces/ch18-turns1-6.json)行為、213筆AI順序與153張RGB通過 | #100／#101已關閉；保留同槽回歸 |
-| 整章護援、戰後與SAV | #94／#97仍開啟；[r3診斷](../data/ida/fd2_ch18_oracle_stosb_20261003.json)到round7，前綴行為、240筆AI與152張RGB通過 | 原版STOSB停止由#102處理；T8與戰後未驗，14／30保持 |
-| 工具fixture與快照 | #91的[有限收據](../data/ui-traces/tooling-closeout-20261003.json)已通過63項測試 | 提交核對後關閉工單，不改遊戲或RE分級 |
+| 起手、山景、模式9、T3 event43與T8 event42 | RE-CLOSED／DATA-READY／RUNTIME-E1；[完整章收據](../data/ui-traces/parity-ch18.json)通過，#97／#99驗收閉合 | 保留同槽回歸 |
+| 戰後75槽、持續能力值與酒店SAV | #103／#104規格CONFORMED，正式消費端與舊55建構回歸通過 | 保留來源不完整時整份拒收 |
+| 整章護援、戰後、交易及秘密商店 | #94，依111／114例外列PLAYER-E2；四項與全檔SAV通過，台帳15／30 | 接續第十九章 |
+| r3素材生命週期停止 | #102保持開啟；目前oracle有限根因閉合，同r3仍在第7輪停止，原生配置器重用順序未知 | 不放寬記憶體，不把r8通過當作同r3修復 |
+| 工具fixture、字串審查與快照 | #91已關閉；#105的[有限工具收據](../data/ui-traces/postbattle-tooling-regression-20261003.json)通過，既有97筆人工處置保留 | 保留正式資料出處與機械重生 |
+
 
 r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時，exit15。沒有到T8、清敵、戰後或SAV。重製r2另有三筆AI順序分岔，第一筆seq1519；153張RGB中13張超門檻，全部四項拒收。這不推翻前四輪的有限修正，也不能用它宣稱整章完成。失敗收據留work/parity-slot-ch18／guard-r2-verify-r1.json，索引與雜湊附於四輪收據。
 
-最終Go19套件、事件42／43與模式9建構測試、分離資料轉寫check、canonical重生一致及第17章98張四項／全檔酒店SAV回歸通過。event42沒有正常T8證據，規格維持READY，#99保持開啟。
+最終Go19套件、事件42／43與模式9建構測試、分離資料轉寫check、canonical重生一致及第17章98張四項／全檔酒店SAV回歸通過。該r2輪次當時沒有event42正常T8證據，規格維持READY，#99保持開啟；現況由下方完整r4/r8驗收取代。
 
 ### 2026-10-02：#100 原生職業抗性索引補證
 
@@ -2039,4 +2040,24 @@ r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時�
 
 [主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)保存r3第9,341,834,326步的STOSB拒收與IDA sub_4E63D直接指令。最後seq1925仍round7，NPC16／17滿HP；重製端目前前綴行為、240筆AI順序與152張RGB通過，完整節點／交易failed。原版尚未到T8，不能把driver逾時或Go前綴通過寫成整章結果。
 
-先沿[既有原版入口](../../tools/dosgolem_oracle.sh)補唯讀EIP窗口。其READY規格在[dosgolem 012 §7](https://github.com/wicanr2/dosgolem/blob/1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74/docs/spec/012-fd2-parity-capture.md)，支援含首尾指令起訖、最多200000筆，預設行為不變。oracle、CPU、machine測試及五項包裝非法參數拒收通過；1694cde已推送。相同槽、相同r3計畫的r5於同一步、同指令拒收；1926個原版前綴檢查點全部一致，323筆唯讀追蹤確認BG0指標149EF4的header已異常。原始BG0..2均320×100，reader卻讀出32110×39178。既有29C90合成規則不重解，只補28DC4 writer至29CC2 consumer的執行期缺口；r6追查載入與後續生命週期，根因仍未知。
+先沿[既有原版入口](../../tools/dosgolem_oracle.sh)補唯讀EIP窗口。其READY規格在[dosgolem 012 §7](https://github.com/wicanr2/dosgolem/blob/1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74/docs/spec/012-fd2-parity-capture.md)，支援含首尾指令起訖、最多200000筆，預設行為不變。oracle、CPU、machine測試及五項包裝非法參數拒收通過；1694cde已推送。相同槽、相同r3計畫的r5於同一步、同指令拒收；1926個原版前綴檢查點全部一致，323筆唯讀追蹤確認BG0指標149EF4的header已異常。原始BG0..2均320×100，reader卻讀出32110×39178。既有29C90合成規則不重解，只補28DC4 writer至29CC2 consumer的執行期缺口；r7初查時根因仍未知；後續有限生命週期證據見下方勘誤。
+
+r7再次同點停止，1926個r5前綴0差異；同場未重載BG0、反擊仍消費BG0已確認。r7初查時之前的配置／釋放未知，且5410B有其他場景建立者；後續指標釋放與音樂重用證據已補齊。#94的r4正常後撤只改第7／8輪record8，原版r8完整驗收見下節；同r3停止仍未解決。
+
+#102有限根因已閉合於目前oracle：共同前六輪的149EF4背景指標先釋放，FDMUS12在1498BC重載，offset638覆寫原BG0 header；第7輪反擊未重載BG0而消費舊指標。r5與r8的0..1640檢查點唯讀診斷全部一致。主證據保留直接writer／free／consumer和原始位址。原生配置器重用順序仍未知，不宣稱原版實機也會崩潰，不改first-fit契約；#102尚未滿足同計畫越過停止點，保持開啟。
+
+### 2026-10-03 第十八章戰後物化前沿（#103）
+
+[主證據與READY規格](../data/ida/fd2_ch18_postbattle_slots_20261003.json)補正常T8的53→75。舊ch17_post binding固定55，正式Go在戰後交接被拒收。原版23D15先呼叫11506，11519依53BEB掃當前前沿，沒有固定55；既有同步語意不重解。55只保留舊建構E1來源。原版r8完整章與Go r3四項現已通過，規格CONFORMED；首次靜態55拒收來源保留。
+
+### 第十八章戰後裝備重算（2026-10-03，#104）
+
+主證據為 [READY同步契約](../data/ida/fd2_ch18_postbattle_equipment_20261003.json)。沿用11506／1145A已閉合原版證據，補齊清暫態後的重算消費端。原版r8酒店SAV與重製r2只差record4+4A及checksum；Go r3已按該契約通過完整章；規格CONFORMED，原r2單欄拒收保留。
+
+### 2026-10-03 第十八章完整驗收（#94／#97／#99／#103／#104／#105）
+
+[正式收據](../data/ui-traces/parity-ch18.json)取代上述r1／r2／r3與r8 Go r1／r2的未通過現況。原版使用同一建構槽及seed4，受版控r4只改第7／8輪record8正常鍵盤後撤，前六輪保持r3。原版r8正常達T3 event43與T8 event42，53筆追加group1後為75筆；第9回合抽樣後一次force-enemy-clear共49筆，隨後走戰後21句對白、JOIN21／7、town19、買賣、酒店存檔及Alt+F8秘密商店。
+
+Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金幣點一致。182張全幅RGB無遮罩，128張0px，最大346px，640px門檻不變。兩側酒店SAV全22987bytes相同，SHA-256為9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b。原圖及SAV保留本機，[整章總覽索引](../data/ui-traces/parity-ch18-samples.json)保存全部非零差異來源。
+
+第18章按111／114例外列PLAYER-E2；不以建構槽AP+200／DP+0／DX+60或清敵收據談自然難度、傷害、存活、命中或敵方選目標。全部Go19套件、第17章98張四項與全檔SAV回歸通過。台帳由tools/fd2_parity_progress.py set／verify更新，輸入為正式收據、固定槽manifest與dosgolem1694cde；現況15／30，all_chapters_passed仍false。#102同r3停止仍未解決，保留原始拒收與原生配置器未知限制。

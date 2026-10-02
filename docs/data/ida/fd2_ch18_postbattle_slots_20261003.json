@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch18_postbattle_slot_frontier",
+  "date": "2026-10-03",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/103",
+  "status": "CONFORMED",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": "IDA Pro 9.4; dosgolem oracle1694cde",
+  "address_space": "IDA LE linear",
+  "evidence": {
+    "startup_slots": 53,
+    "turn8_slots_before": 53,
+    "turn8_slots_after": 75,
+    "postbattle_slots": 75,
+    "append_count": 22,
+    "checkpoints": [
+      {
+        "path": "work/parity-slot-ch18/guard-original-r8/checkpoint-0136.json",
+        "sha256": "2da3f208e9918120a9d73b38c4556c4af786c3148834ccaa3c110be5f113e7e9",
+        "size": 28332
+      },
+      {
+        "path": "work/parity-slot-ch18/guard-original-r8/checkpoint-2284.json",
+        "sha256": "69523e1e90ac6763cdfbc6ea5e461cd478d6c13384b602fb80d21f40f0c7c08c",
+        "size": 28171
+      },
+      {
+        "path": "work/parity-slot-ch18/guard-original-r8/checkpoint-2285.json",
+        "sha256": "471f80095eb1a9cc371039234ba181478b5e2d423163fc90a3f6ebb56dddf4dc",
+        "size": 34654
+      },
+      {
+        "path": "work/parity-slot-ch18/guard-original-r8/checkpoint-2391.json",
+        "sha256": "cc54fa3ba5122153c9b969c2a6c3c7f5a5e257465e6755b9b546d20b4e77f8c5",
+        "size": 34275
+      },
+      {
+        "path": "work/parity-slot-ch18/guard-original-r8/checkpoint-2596.json",
+        "sha256": "6bb631c9636c74e80627dbea6c63b3f0cab619d6792a2330445846369eabc53a",
+        "size": 35454
+      }
+    ],
+    "turn8_primary": "docs/data/ida/fd2_ch18_event42_20261002.json",
+    "post_primary": "docs/data/fd2_ch17_post_ida.txt",
+    "sync_primary": "docs/data/ida/fd2_ch12_post_persistence_20261001.json",
+    "sync_reader": {
+      "original_name": "sub_11506",
+      "address": "0x11519",
+      "bytes": "3b2deb3b0500",
+      "original": "cmp ebp, dword_53BEB",
+      "level": "已證實",
+      "source": "docs/data/ida/fd2_ch12_post_persistence_20261001.json"
+    },
+    "post_caller": "0x23D15→sub_11506，在重排與對白之前消費目前前沿。",
+    "reopen_reason": "舊55條件只有建構E1來源；正常T8同狀態75反證靜態條件。保留handler／sync既有主證據，不重做函式。"
+  },
+  "legacy_55": {
+    "source": "docs/data/ui-traces/ch17-post-native-dialogue-e1.json",
+    "level": "RUNTIME-E1",
+    "note": "已支援建構形狀保留，不提升為正常原版post槽數。"
+  },
+  "failure": {
+    "log": {
+      "path": "work/parity-slot-ch18/guard-r8-remake-r1.log",
+      "sha256": "5522f7289d2fb1aa15728165a1e899a137faa1e3a2275204c3c33687253eb462",
+      "size": 440448
+    },
+    "node": "postbattle_ch18_persist",
+    "message": "beat runtime_context: runtime slots=75, want exact55 or one of []",
+    "go_source": "remake/cmd/fd2/main.go:runtime_context"
+  },
+  "spec": {
+    "scope": "只修ch17_post binding的物化前沿；handler、同步、JOIN21/7、21句對白、城鎮與SAV規則不變。",
+    "typed_change": {
+      "file": "remake/assets/cutscenes/bindings/ch17_post.json",
+      "remove": "runtime_context.slot_count=55",
+      "add": "runtime_context.slot_counts=[55,75]",
+      "story_viewport": true
+    },
+    "fail_closed": "沿AcceptsSlotCount精確allow-list，74、76及其他未列形狀拒收；不使用最大值或範圍代替實際前沿。",
+    "vertical_chain": "event42 group1原始caller→typed22筆增援→75筆戰鬥狀態→runtime_context→11506同步→原生對白／JOIN21/7→town19→酒店SAV。",
+    "acceptance": [
+      "舊55建構E1對白／JOIN／SAV邊界回歸通過。",
+      "相同原版r8正常章75形狀跨過交接，完整章行為／節點／RGB／交易及全檔酒店SAV通過。",
+      "通用多槽數拒收測試通過；不修改AcceptsSlotCount。"
+    ]
+  },
+  "limits": [
+    "只新增有原版正常T8來源的75形狀，不猜補其他部署／增援組合。",
+    "舊55來源仍是建構E1，不稱為正常原版frontier。"
+  ],
+  "spec_review": {
+    "status": "READY",
+    "date": "2026-10-03",
+    "review": [
+      "正常原版2284／2285同輸入檢查點53→75且完整戰後同前沿。",
+      "固定EXE的11519讀53BEB，23D15 caller在重排前先同步；沒有55原版常數。",
+      "保留舊55建構E1，沿既有slot_counts多前沿資料格式，不改Go拒收邏輯。",
+      "既有55對白／JOIN21/7／SAV整合回歸與完整原版75章回放形成兩條驗收。"
+    ],
+    "implementation_allowed": "只改ch17_post binding由slot_count55轉slot_counts[55,75]。"
+  },
+  "binding_before_sha256": "7eb7ce65ec58a499c74747a3f7037a99d46444e586cfa8e7712aa4a2ba635502",
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-03",
+    "receipt": "docs/data/ui-traces/parity-ch18.json",
+    "level": "PLAYER-E2 依111／114建構槽例外",
+    "go_packages": 19,
+    "prior_ch17_all_four_and_sav": true,
+    "full_sav_sha256": "9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b",
+    "focused_log": {
+      "path": "work/parity-slot-ch18/postbattle-equipment-focused-r2.log",
+      "sha256": "5f62665e7c6a16b4dc65b9e9073a5647287c95f0aa0adb7967313746ad5cc58b",
+      "size": 2102
+    }
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch18_postbattle_equipment_sync",
+  "date": "2026-10-03",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/104",
+  "status": "CONFORMED",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": "IDA Pro 9.4; dosgolem oracle1694cde; tools/fd2save.py checksum-validated decoder",
+  "address_space": "IDA LE linear; SAV offsets explicitly file/plaintext offsets",
+  "sources": [
+    {
+      "path": "work/parity-slot-ch18/FD2.SAV",
+      "sha256": "98d64cd594b8d22c2eaf2c26eaffa8485952be537d35bf2643521a898ddbc1b5",
+      "size": 22987
+    },
+    {
+      "path": "work/parity-slot-ch18/guard-state-r8/FD2.SAV",
+      "sha256": "9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b",
+      "size": 22987
+    },
+    {
+      "path": "work/parity-slot-ch18/guard-r8-remake-r2/FD2.SAV",
+      "sha256": "14d076e25e62e0c2228904e1faea727ae4082fd80e4bdb144fa4470a18ddfe16",
+      "size": 22987
+    },
+    {
+      "path": "work/parity-slot-ch18/guard-original-r8/checkpoint-2315.json",
+      "sha256": "1934446d29a24929be13837ec4722a01cb1ea205fa7dd1459c4e245678794e24",
+      "size": 34502
+    },
+    {
+      "path": "docs/data/ida/fd2_ch12_post_persistence_20261001.json",
+      "sha256": "06bedbb9eeac3043889ca4c5ab8d31523d06cff73b7afdd989521fbf5369f5ce",
+      "size": 106798
+    },
+    {
+      "path": "docs/data/fd2_persistent_roster_ida.txt",
+      "sha256": "8f59338922853806ca6a7d6939befab5b11ed41d278bbcea1799cfd21eab3795",
+      "size": 4657
+    },
+    {
+      "path": "remake/assets/data/native_item_effect_rows.json",
+      "sha256": "1092f6ebb722dd5b89e4738bd10bd6ddd91a9e6d23fdfce24adcf641ef601048",
+      "size": 25907
+    },
+    {
+      "path": "work/parity-slot-ch18/guard-r8-verify-r2.json",
+      "sha256": "5a056cd125580d98c16236aa11426dee93382410dc9753a6cc8a89bf98b76b2a",
+      "size": 172870
+    }
+  ],
+  "evidence": {
+    "level": "已證實",
+    "original_name": "sub_11506",
+    "caller": "ch18 post 0x23D15",
+    "steps": [
+      {
+        "address": "0x11586",
+        "bytes": "e835600200",
+        "original": "call memset",
+        "semantic": "清除持續副本 +22..27",
+        "source": "docs/data/ida/fd2_ch12_post_persistence_20261001.json"
+      },
+      {
+        "address": "0x115AC",
+        "bytes": "e8a9feffff",
+        "original": "call sub_1145A",
+        "semantic": "清除狀態與回填 HP／MP 後，以持續副本重算裝備衍生值",
+        "source": "docs/data/ida/fd2_ch12_post_persistence_20261001.json"
+      }
+    ],
+    "pre_sync": {
+      "checkpoint": "work/parity-slot-ch18/guard-original-r8/checkpoint-2315.json",
+      "record": 4,
+      "identity": 1,
+      "DP": 210,
+      "raw_plus_23": 2
+    },
+    "save_field": {
+      "slot": 0,
+      "record": 4,
+      "identity": 1,
+      "record_offset": "0x4A",
+      "file_offset": "0x32B5",
+      "initial": 182,
+      "original": 182,
+      "remake_before": 210
+    },
+    "stored_differences": [
+      {
+        "file_offset": "0x32b5",
+        "original": 171,
+        "remake_before": 207
+      },
+      {
+        "file_offset": "0x59c7",
+        "original": 32,
+        "remake_before": 92
+      }
+    ],
+    "equipped": "item32: AP20/HIT95/DP0/EV0; item128: AP0/HIT0/DP2/EV0; baseDP180 + DP2 =182。",
+    "cause": "重製 syncPartyFromBattleRecords 清暫態後缺少已證實的 1145A 消費端，因此把戰場 DP210 留在持續隊伍與酒店存檔。",
+    "reopen_policy": "只補既有11506 writer／1145A consumer的實作缺口；不重新反組譯已閉合函式。"
+  },
+  "spec": {
+    "scope": "在 sync_party 持續副本清暫態後使用既有 ApplyNativeEquipmentRecalc；不改 SAV encoder、不改 runtime 1B750、不改裝備效果。",
+    "typed_data": "NativeShopEquipmentRecordForUnit 提供 base AP／DP／DX、原始八格 flag/item；沿已登錄 native_item_effect_rows。",
+    "native_boundary": "正式原生投影或具有原生 race/class／EquipmentBaseSet 出處的紀錄必須完整通過 adapter；缺出處拒絕。僅既有無原生紀錄的相容 fixture 保持舊投影。",
+    "publication": "先建立整份持續隊伍候選；任何 native adapter 或裝備重算失敗，不發布任何成員。不改原本戰場單位。",
+    "acceptance": [
+      "帶暫時攻防／命中迴避狀態的原生成員同步後由 base+equipped 得到無暫態能力值，HP／MP／身分與原始裝備旗標維持既有契約。",
+      "缺原生基礎值／無效裝備資料時整份拒收，持續隊伍及戰場維持原值。",
+      "第18章同一 r8 原版，完整行為／節點／182張RGB／交易與全檔 SAV 通過。",
+      "Go19套件及前一第17章完整四項與酒店 SAV 回歸通過。"
+    ]
+  },
+  "limits": [
+    "建構槽 AP+200／DX+60 依111／114；不以本收據證明傷害、存活或敵方選目標。",
+    "原版r3素材生命周期停止仍由#102維持BLOCKED，不因r8通過宣稱解決。"
+  ],
+  "spec_review": {
+    "status": "READY",
+    "date": "2026-10-03",
+    "review": [
+      "固定EXE的11506原始直接call與既有1145A持續裝備規則具備writer／consumer。",
+      "正常r8戰後前DP210及+23=2，酒店原版DP182；全檔差異只有此欄及checksum。",
+      "沿原生資料出處與既有重算函式，候選發布避免部分持續隊伍。",
+      "只修同步，不在encoder、buff公式或oracle配置猜補。"
+    ]
+  },
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-03",
+    "receipt": "docs/data/ui-traces/parity-ch18.json",
+    "level": "PLAYER-E2 依111／114建構槽例外",
+    "go_packages": 19,
+    "prior_ch17_all_four_and_sav": true,
+    "full_sav_sha256": "9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b",
+    "focused_log": {
+      "path": "work/parity-slot-ch18/postbattle-equipment-focused-r2.log",
+      "sha256": "5f62665e7c6a16b4dc65b9e9073a5647287c95f0aa0adb7967313746ad5cc58b",
+      "size": 2102
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-10-02",
+  "updated": "2026-10-03",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -482,15 +482,32 @@
     },
     {
       "chapter": 18,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch18.json",
+      "slot_manifest": "docs/data/parity-slots/ch18-manifest.json",
+      "slot_sha256": "98d64cd594b8d22c2eaf2c26eaffa8485952be537d35bf2643521a898ddbc1b5",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "date": "2026-10-03",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 18 --oracle work/parity-slot-ch18/guard-original-r8 --remake work/parity-slot-ch18/guard-r8-remake-r3 --slot-manifest docs/data/parity-slots/ch18-manifest.json --plan docs/data/parity-plans/ch18-guard-r4.jsonl --out work/parity-slot-ch18/guard-r8-verify-r3.json",
+      "limitations": [
+        "111／114建構槽；正常護援八回合，第9回合force-enemy-clear；不宣稱完整自然戰鬥或傷害一致；#102同r3原版停止保持未解決"
+      ],
+      "prior_receipts": [
+        "docs/data/ui-traces/ch18-turns1-4.json",
+        "docs/data/ui-traces/ch18-turns1-6.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 19,

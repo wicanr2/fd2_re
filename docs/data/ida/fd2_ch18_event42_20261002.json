@@ -254,7 +254,7 @@
     }
   ],
   "spec_review": {
-    "status": "READY",
+    "status": "CONFORMED",
     "date": "2026-10-02",
     "review": [
       "完整50bytes與原始jmp目標已檢查。",
@@ -270,14 +270,16 @@
     ]
   },
   "limits": [
-    "目前原版r1只到round5；r2正在執行，沒有T8實測結論。",
-    "READY不能證明RUNTIME-E1／PLAYER-E2。"
+    "舊r1／r2未到T8的限制由2026-10-03正常r4/r8收據取代；原失敗保留。",
+    "依111／114例外列本章PLAYER-E2，不宣稱自然戰鬥或全動畫逐幀一致。"
   ],
   "validation": {
     "constructed_runtime_e1": "work/parity-slot-ch18/event42-focused-r1.log",
     "log_sha256": "099bc449b89a8871bd076643229385d73fd5cbaa230d0dde216aca4ce8f1c719",
     "go_regression": "work/parity-slot-ch18/turn-events-mode9-go-regression-r2.log",
-    "normal_turn8_passed": false,
-    "limits": "READY已實作；正常T8尚未驗收，#99不關閉。"
+    "normal_turn8_passed": true,
+    "limits": "整章依111／114建構槽例外；不外推自然戰鬥或逐幀演出。歷史有限收據保留。",
+    "full_chapter_receipt": "docs/data/ui-traces/parity-ch18.json",
+    "full_chapter_passed": true
   }
 }
