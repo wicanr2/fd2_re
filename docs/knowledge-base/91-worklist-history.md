@@ -4877,3 +4877,8 @@ driver等待cursor逾時exit15，CPU沒有再報錯；不得把章敗北當成CP
 不得當成遊戲缺陷。相關9項前綴測試與完整CPU／machine／FD2回歸均通過。
 教訓116條check、台帳13／30verify與renderer --check通過；
 受審檔1000:1000，歷史root-owned2811未變，無*.md目錄，FD2容器均已移除。
+
+CPU修復證據提交bbc4787362955716dcbdfea5cbcb16b9c6b1818c已推送且與遠端main一致。
+主機gh回讀#90 CLOSED，留言5950906157；#88仍開啟，敗北與正常護援紀錄5950908935。
+#91工具fixture／證據漂移保持OPEN。正式pull格式器同步21條未完成，
+台帳13／30與all_chapters_passed=false不變；原版章r2失敗不可重標為通過。

@@ -332,24 +332,6 @@
       "issue": 88
     },
     {
-      "id": "ch17-oracle-d1-sib-shift",
-      "layer": "tooling",
-      "category": "缺陷",
-      "title": "第十七章原版敵方回合觸發dosgolem缺D1記憶體位移指令",
-      "acceptance": "固定原版錯誤與原始指令bytes可回查；依現有dosgolem decoder與x86已知規格補缺少的D1形式，測試SIB／disp／操作數寬度與flags，維持既有形式回歸。變更受版控並提交，FD2專用執行器乾淨且可重跑；以同槽／同計畫驗原版第一敵方回合及前綴。完整章驗收仍由#88。",
-      "evidence": [
-        "docs/data/ida/fd2_ch17_oracle_d1_20261002.json",
-        "docs/data/parity-plans/ch17-sample.jsonl",
-        "docs/data/parity-slots/ch17-manifest.json",
-        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "原版CPU錯誤、可重生指令與同槽回歸；完整章不在本工單範圍。"
-      },
-      "issue": 90
-    },
-    {
       "id": "tool-regression-fixture-and-evidence-drift",
       "layer": "tooling",
       "category": "缺陷",
