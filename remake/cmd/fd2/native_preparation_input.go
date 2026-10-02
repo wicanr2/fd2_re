@@ -33,6 +33,18 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 		}
 	}
 
+	if g.prepRequiredMissing != nil {
+		if input.enter || input.escape {
+			if !g.beginNativePreparationRequiredClosing(func() {
+				g.prepRequiredMissing = nil
+				leavePreparation("cancel")
+			}) {
+				g.loadErr = "preparation required-character closing assets unavailable"
+			}
+		}
+		return true
+	}
+
 	if g.prepConfirm {
 		closeThen := func(after func()) {
 			if !g.beginNativePreparationConfirmationClosing(after) {

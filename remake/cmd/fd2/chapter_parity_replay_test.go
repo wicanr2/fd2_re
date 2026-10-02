@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strconv"
 	"strings"
 	"testing"
@@ -693,7 +694,11 @@ func TestChapterParityReplay(t *testing.T) {
 			}
 			r.endTurn(action, stopBeforeAI)
 		case "force_enemy_clear":
-			r.forceEnemyClear(action)
+			var next *parityAction
+			if i+1 < len(actions) {
+				next = &actions[i+1]
+			}
+			r.forceEnemyClear(action, next)
 		case "town_enter":
 			r.townProbe(action)
 		case "town_save":
@@ -790,7 +795,8 @@ func (r *parityReplay) mark(action parityAction) {
 		r.partySelectionSeq = action.Seq
 		r.checkpoint("party_selection", action.Seq, "preparation", true)
 	case "departure_confirmation":
-		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x31D8E"); err != nil {
+		rejected := verifyParityPreparationOwner(r.run, action.Seq, "0x31E65") == nil
+		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x31D8E"); err != nil && !rejected {
 			t.Fatal(err)
 		}
 		if r.partySelectionSeq <= 0 || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "preparation" ||
@@ -802,8 +808,11 @@ func (r *parityReplay) mark(action parityAction) {
 			t.Fatal(err)
 		}
 		for _, key := range keys {
-			if key == "enter" && !g.handleNativePreparationInput(nativePreparationInput{enter: true}) {
-				t.Fatal("選人Enter未被正式owner消費")
+			if key != "" && !g.handleNativePreparationInput(nativePreparationInput{
+				enter: key == "enter", left: key == "left", right: key == "right",
+				up: key == "up", down: key == "down",
+			}) {
+				t.Fatalf("選人鍵%s未被正式owner消費", key)
 			}
 			if !pump(t, g, 600, func() bool { return !g.nativeClassUIBlocksInput() }) {
 				t.Fatal("選人確認開框沒有完成")
@@ -814,6 +823,20 @@ func (r *parityReplay) mark(action parityAction) {
 			if g.partyDeploy[id] {
 				selected++
 			}
+		}
+		if rejected {
+			if g.prepRequiredMissing == nil || g.prepConfirm || g.prepSelecting || selected != g.prepLimit {
+				t.Fatal("31E65原版拒收沒有對應正式必出角色訊息")
+			}
+			r.checkpoint("required_party_rejection", action.Seq, "preparation", true)
+			if r.keys[action.Seq+1] != "enter" || !g.handleNativePreparationInput(nativePreparationInput{enter: true}) {
+				t.Fatal("原版拒收確認鍵缺少來源或未由正式owner消費")
+			}
+			if !pump(t, g, 600, func() bool { return g.camp.NodeID() == r.town && !g.nativeClassUIBlocksInput() }) {
+				t.Fatal("必出角色拒收沒有返回原城鎮")
+			}
+			r.checkpoint("town_after_required_rejection", action.Seq+1, "town", true)
+			return
 		}
 		if !g.prepConfirm || g.prepSelecting || selected != g.prepLimit || g.prepConfirmSel != 0 {
 			t.Fatalf("正常選人尚未完成：selected=%d quota=%d", selected, g.prepLimit)
@@ -910,7 +933,8 @@ func readParityPreparationControls(run string, from, to, quota int) ([]string, e
 		if entry.Seq <= from || entry.Seq > to {
 			continue
 		}
-		if entry.Seq != expected || (entry.Key != "" && entry.Key != "enter") {
+		knownKey := entry.Key == "" || entry.Key == "enter" || entry.Key == "left" || entry.Key == "right" || entry.Key == "up" || entry.Key == "down"
+		if entry.Seq != expected || !knownKey {
 			return nil, fmt.Errorf("選人seq%d輸入缺格／順序未知", entry.Seq)
 		}
 		expected++
@@ -2020,11 +2044,70 @@ func (r *parityReplay) endTurn(action parityAction, stopBeforeAI bool) {
 		t.Fatalf("end_turn(seq %d)：敵方回合沒有結束（turn %d→%d aiBusy=%v）\n阻塞：%s",
 			action.Seq, before, g.st.Turn, g.aiBusy, ch01Blockers(g))
 	}
+	if g.result != "" {
+		data, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", action.Seq)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		mid, err := parityTerminalENDOwner(data)
+		if err != nil {
+			t.Fatal(err)
+		}
+		// No subsequent player phase exists after a terminal END. Retain its
+		// own boundary only when the oracle is still in 0x1A30B. An already
+		// entered post-handler retains the established next-action pairing.
+		if mid {
+			r.checkpoint("end_turn", action.Seq, r.ui(), false, extra...)
+			return
+		}
+	}
 	r.checkpoint("after_enemy_phase", action.Seq, r.ui(), true, extra...)
 }
 
-func (r *parityReplay) forceEnemyClear(action parityAction) {
+func parityTerminalENDOwner(data []byte) (bool, error) {
+	var cp struct {
+		EXE   string   `json:"exe_sha256"`
+		Chain []string `json:"input_chain"`
+	}
+	if err := json.Unmarshal(data, &cp); err != nil {
+		return false, err
+	}
+	if cp.EXE != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" || len(cp.Chain) == 0 {
+		return false, fmt.Errorf("terminal END owner source unavailable")
+	}
+	for _, address := range cp.Chain {
+		value, err := strconv.ParseUint(address, 0, 32)
+		if err != nil {
+			return false, err
+		}
+		if value >= 0x1A30B && value < 0x1A7BD {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+func (r *parityReplay) forceEnemyClear(action parityAction, next *parityAction) {
 	g := r.g
+	deferResult := next != nil && next.Kind == "end_turn"
+	if deferResult {
+		if next.Round != action.Round || next.BeforeSeq == nil || *next.BeforeSeq <= action.Seq ||
+			verifyParityPreparationOwner(r.run, action.Seq, "0x117F8") != nil ||
+			verifyParityPreparationOwner(r.run, *next.BeforeSeq, "0x118C6") != nil {
+			r.t.Fatal("clear→END 缺少同回合正常玩家游標來源")
+		}
+		data, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", next.Seq)))
+		if err != nil {
+			r.t.Fatal(err)
+		}
+		deferResult, err = parityTerminalENDOwner(data)
+		if err != nil {
+			r.t.Fatal(err)
+		}
+		// A post-handler owner has already crossed the result boundary.
+		// Preserve immediate completion there; only an observed 0x1A30B
+		// owner requires the following END to run its selector1 events.
+	}
 	// 清場前一個動作若不是 END（全員行動完自動換手，原版側是等敵方回合跑完、下一
 	// 回合拿回游標才注入），先把換手處理與敵方回合跑完；接在 END 後面的維持在敵方
 	// 回合開始時注入（第四章）。
@@ -2042,6 +2125,11 @@ func (r *parityReplay) forceEnemyClear(action parityAction) {
 		}
 	}
 	r.checkpoint("force_enemy_clear", action.Seq, r.ui(), false, fmt.Sprintf("cleared=%d（修改路徑）", cleared))
+	if deferResult {
+		// Oracle remains in the cursor owner. The following normal END must
+		// execute selector1 events and JOIN before its own result boundary.
+		return
+	}
 	// 原版在下一個勝負檢查點（單位行動收尾／回合邊界）發現敵方全滅就直接進戰後；
 	// 重製端的同一檢查是 checkResult，這裡沒有行動可掛，所以直接呼叫。敵方回合
 	// 正要開始時（見 endTurn 的 stopBeforeAI），先把 HP 歸零的記錄標成 +5＝1，
@@ -2338,7 +2426,8 @@ func TestParityPreparationControlsRejectIncompleteOrUnknownSource(t *testing.T) 
 		{"one_short", 15, 14, 0, "enter", false},
 		{"one_extra", 15, 16, 0, "enter", false},
 		{"missing_middle", 15, 15, 6, "enter", false},
-		{"unknown_direction", 15, 15, 0, "right", false},
+		{"directions_without_selection", 15, 15, 0, "right", false},
+		{"unsupported_key", 15, 15, 0, "escape", false},
 		{"unknown_quota", 16, 16, 0, "enter", false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -2386,6 +2475,49 @@ func TestParityPreparationOwnerRejectsSharedHelperOrWrongEXE(t *testing.T) {
 			err = verifyParityPreparationOwner(run, 43, "0x31A2E")
 			if (err == nil) != tc.wantOK {
 				t.Fatalf("accepted=%v want=%v err=%v", err == nil, tc.wantOK, err)
+			}
+		})
+	}
+}
+
+func TestParityPreparationControlsPreserveDirectionsAndSelectionQuota(t *testing.T) {
+	run := t.TempDir()
+	keys := append(make([]string, 14), "right", "right", "enter")
+	for i := 0; i < 14; i++ {
+		keys[i] = "enter"
+	}
+	var data strings.Builder
+	for i, key := range keys {
+		fmt.Fprintf(&data, "{\"seq\":%d,\"key\":%q}\n", 45+i, key)
+	}
+	if err := os.WriteFile(filepath.Join(run, "control-history.jsonl"), []byte(data.String()), 0600); err != nil {
+		t.Fatal(err)
+	}
+	got, err := readParityPreparationControls(run, 44, 61, 15)
+	if err != nil || !reflect.DeepEqual(got, keys) {
+		t.Fatalf("normal direction history=%v err=%v", got, err)
+	}
+}
+
+func TestParityTerminalENDUsesObservedOwnerBeforePairing(t *testing.T) {
+	const fixed = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+	for _, tc := range []struct {
+		name, exe, owner string
+		wantMid, wantErr bool
+	}{
+		{"ch19_selector1_dialogue", fixed, "0x1A4CC", true, false},
+		{"ch18_already_post_handler", fixed, "0x23D65", false, false},
+		{"first_instruction", fixed, "0x1A30B", true, false},
+		{"last_instruction", fixed, "0x1A7BC", true, false},
+		{"outside_function", fixed, "0x1A7BD", false, false},
+		{"wrong_version", "other", "0x1A4CC", false, true},
+		{"malformed_owner", fixed, "unknown", false, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			data, _ := json.Marshal(map[string]any{"exe_sha256": tc.exe, "input_chain": []string{tc.owner}})
+			mid, err := parityTerminalENDOwner(data)
+			if mid != tc.wantMid || (err != nil) != tc.wantErr {
+				t.Fatalf("mid=%v err=%v", mid, err)
 			}
 		})
 	}

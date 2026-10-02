@@ -92,6 +92,8 @@ def lower(chapter: Chapter, event, event_id):
         when = o.get("when")
         if kind == "dialogue":
             lowered = chapter.dialogue(o["text"], source, event_id)
+        elif kind == "join_party":
+            lowered = [{"type": "join_party", "native_source": source, "char_id": o["char_id"]}]
         elif kind == "pan":
             lowered = [{"type": "pan", "native_source": source, "grid": [o["x"], o["y"]]}]
         elif kind == "acting":

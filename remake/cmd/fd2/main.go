@@ -130,6 +130,7 @@ type Game struct {
 	prepLimit                   int                 // preparation UI 原版出擊上限（15，末段 19）
 	prepSelecting               bool                // 已通過前置確認，且流程要求進入原版選人階段
 	prepConfirm                 bool                // 選滿或小隊確認後的最終出戰確認階段
+	prepRequiredMissing         *int                // 原生必出角色拒收訊息，確認後返回城鎮
 	prepConfirmSel              int                 // 0=肯定，1=取消
 	prepClock                   nativeBIOSClock     // preparation 0x31e80→0x1297d 的 BIOS 低字來源
 	prepIdleCycle               int                 // 原版 [0x53c0b] 0..3；繪圖時 3 正規化為1
@@ -4333,6 +4334,7 @@ func (g *Game) setupPreparation(n *campaign.Node) {
 	g.prepSelecting = false
 	g.prepConfirm = false
 	g.prepConfirmSel = 0
+	g.prepRequiredMissing = nil
 	g.nativeClassUIJob = nil
 	g.resetNativeClassUIPulse()
 	g.prepLimit = 15
@@ -4382,7 +4384,24 @@ func (g *Game) togglePreparationSelection() bool {
 	id := g.prepIDs[g.prepSel]
 	g.partyDeploy[id] = !g.partyDeploy[id]
 	if g.preparationSelected() == g.prepLimit {
+		if err := g.packNativePreparationRoster(); err != nil {
+			g.loadErr = err.Error()
+			return false
+		}
 		g.prepSelecting = false
+		missing, err := g.missingPreparationRequiredIdentity()
+		if err != nil {
+			g.loadErr = err.Error()
+			return false
+		}
+		if missing != nil {
+			g.prepRequiredMissing = missing
+			if !g.beginNativePreparationRequiredOpening() {
+				g.loadErr = "preparation required-character message assets unavailable"
+				return false
+			}
+			return true
+		}
 		g.prepConfirm = true
 		g.prepConfirmSel = 0
 		g.beginNativePreparationConfirmationOpening()
@@ -4396,6 +4415,30 @@ func (g *Game) togglePreparationSelection() bool {
 
 // confirmPreparationDeparture 擁有 0x31D3C 的肯定分支；原生索引關框必須先於戰役
 // 轉場完成，決定性玩家路徑測試與鍵盤輸入共用此 consumer。
+func (g *Game) missingPreparationRequiredIdentity() (*int, error) {
+	if g.camp == nil || g.camp.Node() == nil {
+		return nil, nil
+	}
+	for _, required := range g.camp.Node().RequiredPartyIdentities {
+		found := false
+		for _, id := range g.prepIDs {
+			if !g.partyDeploy[id] {
+				continue
+			}
+			u, ok := g.partyRoster[id]
+			if !ok || !u.HasNativeRecordByte8 {
+				return nil, fmt.Errorf("preparation selected record %d lacks native +8 provenance", id)
+			}
+			found = found || int(u.NativeRecordByte8) == required
+		}
+		if !found {
+			identity := required
+			return &identity, nil
+		}
+	}
+	return nil, nil
+}
+
 func (g *Game) confirmPreparationDeparture() bool {
 	if g.camp == nil || !g.prepConfirm || g.prepConfirmSel != 0 {
 		return false
@@ -4427,6 +4470,7 @@ func (g *Game) acceptTownDeparturePrompt() bool {
 func (g *Game) restartPreparationSelection() {
 	g.prepSelecting = true
 	g.prepConfirm = false
+	g.prepRequiredMissing = nil
 	g.prepConfirmSel = 0
 	g.nativeClassUIJob = nil
 	g.resetNativeClassUIPulse()

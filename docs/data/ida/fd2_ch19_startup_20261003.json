@@ -1,0 +1,882 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "kind": "fd2_ch19_native_startup",
+  "date": "2026-10-03",
+  "issue": 110,
+  "functions": [
+    {
+      "requested_address": "0x33674",
+      "address": "0x33674",
+      "end": "0x3367e",
+      "original_name": "sub_33674",
+      "chunks": [
+        {
+          "start": "0x33674",
+          "end": "0x3367e"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x33674",
+          "bytes": "6828000000",
+          "original": "push    28h ; '('",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33674",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33679",
+          "bytes": "e9f2fdffff",
+          "original": "jmp     loc_33470",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33679",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x25e3a",
+        "0x25f10",
+        "0x260f5"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x33674"
+    },
+    {
+      "requested_address": "0x33470",
+      "address": "0x3346b",
+      "end": "0x3347c",
+      "original_name": "sub_3346B",
+      "chunks": [
+        {
+          "start": "0x3346b",
+          "end": "0x3347c"
+        },
+        {
+          "start": "0x3344d",
+          "end": "0x3346b"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x3344d",
+          "bytes": "6a01",
+          "original": "push    1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3344d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3344f",
+          "bytes": "6a13",
+          "original": "push    13h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3344f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33451",
+          "bytes": "6a4a",
+          "original": "push    4Ah ; 'J'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33451",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33453",
+          "bytes": "6a4c",
+          "original": "push    4Ch ; 'L'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33453",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33455",
+          "bytes": "68cd000000",
+          "original": "push    0CDh",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33455",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3345a",
+          "bytes": "6840010000",
+          "original": "push    140h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3345a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3345f",
+          "bytes": "6800000a00",
+          "original": "push    0A0000h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3345f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33464",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33464",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33466",
+          "bytes": "e99bfdffff",
+          "original": "jmp     loc_33206",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33466",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3346b",
+          "bytes": "6828000000",
+          "original": "push    28h ; '('",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3346b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33470",
+          "bytes": "e862380000",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33470",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33475",
+          "bytes": "e860d1feff",
+          "original": "call    sub_205DA",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33475",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3347a",
+          "bytes": "ebd1",
+          "original": "jmp     short loc_3344D",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3347a",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x25e3a",
+        "0x25f10",
+        "0x260f5"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x3346b"
+    }
+  ],
+  "existing_evidence": [
+    "docs/data/ida/fd2_ch17_startup_20261002.json",
+    "docs/data/ida/fd2_ch13_handoff_20261001.json",
+    "docs/data/fd2_hud_persistence_ida.txt"
+  ],
+  "claims": [
+    {
+      "original_location": "IDA LE sub_33674 0x33674..0x3367E → loc_33470 → 0x33475 call sub_205DA → 0x3344D..0x3346B → loc_33206 → 0x3320C..0x33219 → loc_33140／0x33142",
+      "semantic": "章19 LOADCH、text0後共用focus runtime0；group0在16名選定隊伍之後追加48筆，archive70不代表runtime前沿",
+      "level": "confirmed",
+      "source": "本檔原始函式、既有ch17 shared尾段與startup_compare"
+    },
+    {
+      "original_location": "dosgolem checkpoint88 view／raw records",
+      "semantic": "相同固定槽正常選人後64筆起手，16部署格、鏡頭與游標如typed_data",
+      "level": "confirmed",
+      "source": "startup_compare"
+    },
+    {
+      "original_location": "IDA LE 0x51AAB／0x51AAC／0x51A0C",
+      "semantic": "A與anchor沿用已閉合持續契約，B=1沿用可操作入口；本章完整RGB仍待驗收",
+      "level": "strong inference",
+      "source": "docs/data/fd2_hud_persistence_ida.txt"
+    }
+  ],
+  "startup_compare": {
+    "oracle_path": "work/parity-slot-ch19/full-original-r4/checkpoint-0088.json",
+    "oracle_sha256": "614243487d35f29b3852572ed3d8249104b78e962a7e131ccd475be50084a17f",
+    "slot_sha256": "e055a53d2af1e96475f444e768ddc23333508c21f467b0ce059589d8791f8e3c",
+    "map_source": "remake/assets/maps/map18/map18_units.json",
+    "map_sha256": "69251f66b970cf732d4db7c81a174f3969ee620ff51525dbc775c551dc7d11dd",
+    "party_prefix": 16,
+    "group0_count": 48,
+    "total_runtime": 64,
+    "matched_map_records": [
+      {
+        "runtime_index": 16,
+        "x": 20,
+        "y": 7,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 660
+      },
+      {
+        "runtime_index": 17,
+        "x": 19,
+        "y": 6,
+        "raw_byte6": 0,
+        "raw_byte8": 83,
+        "raw_word42": 420
+      },
+      {
+        "runtime_index": 18,
+        "x": 21,
+        "y": 6,
+        "raw_byte6": 0,
+        "raw_byte8": 83,
+        "raw_word42": 420
+      },
+      {
+        "runtime_index": 19,
+        "x": 21,
+        "y": 8,
+        "raw_byte6": 0,
+        "raw_byte8": 83,
+        "raw_word42": 420
+      },
+      {
+        "runtime_index": 20,
+        "x": 19,
+        "y": 8,
+        "raw_byte6": 0,
+        "raw_byte8": 83,
+        "raw_word42": 420
+      },
+      {
+        "runtime_index": 21,
+        "x": 23,
+        "y": 7,
+        "raw_byte6": 0,
+        "raw_byte8": 89,
+        "raw_word42": 270
+      },
+      {
+        "runtime_index": 22,
+        "x": 17,
+        "y": 7,
+        "raw_byte6": 0,
+        "raw_byte8": 89,
+        "raw_word42": 270
+      },
+      {
+        "runtime_index": 23,
+        "x": 20,
+        "y": 4,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 24,
+        "x": 20,
+        "y": 10,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 25,
+        "x": 18,
+        "y": 10,
+        "raw_byte6": 0,
+        "raw_byte8": 92,
+        "raw_word42": 290
+      },
+      {
+        "runtime_index": 26,
+        "x": 16,
+        "y": 5,
+        "raw_byte6": 0,
+        "raw_byte8": 92,
+        "raw_word42": 290
+      },
+      {
+        "runtime_index": 27,
+        "x": 23,
+        "y": 4,
+        "raw_byte6": 0,
+        "raw_byte8": 95,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 28,
+        "x": 23,
+        "y": 10,
+        "raw_byte6": 0,
+        "raw_byte8": 95,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 29,
+        "x": 5,
+        "y": 8,
+        "raw_byte6": 0,
+        "raw_byte8": 95,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 30,
+        "x": 20,
+        "y": 21,
+        "raw_byte6": 0,
+        "raw_byte8": 95,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 31,
+        "x": 4,
+        "y": 20,
+        "raw_byte6": 0,
+        "raw_byte8": 92,
+        "raw_word42": 290
+      },
+      {
+        "runtime_index": 32,
+        "x": 13,
+        "y": 14,
+        "raw_byte6": 0,
+        "raw_byte8": 92,
+        "raw_word42": 290
+      },
+      {
+        "runtime_index": 33,
+        "x": 19,
+        "y": 20,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 34,
+        "x": 21,
+        "y": 20,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 35,
+        "x": 20,
+        "y": 19,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 36,
+        "x": 3,
+        "y": 19,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 37,
+        "x": 5,
+        "y": 19,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 38,
+        "x": 4,
+        "y": 18,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 39,
+        "x": 4,
+        "y": 7,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 40,
+        "x": 5,
+        "y": 6,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 41,
+        "x": 6,
+        "y": 7,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 42,
+        "x": 12,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 43,
+        "x": 13,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 44,
+        "x": 14,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 45,
+        "x": 7,
+        "y": 28,
+        "raw_byte6": 0,
+        "raw_byte8": 83,
+        "raw_word42": 420
+      },
+      {
+        "runtime_index": 46,
+        "x": 22,
+        "y": 29,
+        "raw_byte6": 0,
+        "raw_byte8": 83,
+        "raw_word42": 420
+      },
+      {
+        "runtime_index": 47,
+        "x": 10,
+        "y": 29,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 48,
+        "x": 8,
+        "y": 29,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 49,
+        "x": 9,
+        "y": 28,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 50,
+        "x": 20,
+        "y": 29,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 51,
+        "x": 19,
+        "y": 30,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 52,
+        "x": 21,
+        "y": 30,
+        "raw_byte6": 0,
+        "raw_byte8": 79,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 53,
+        "x": 11,
+        "y": 28,
+        "raw_byte6": 0,
+        "raw_byte8": 89,
+        "raw_word42": 270
+      },
+      {
+        "runtime_index": 54,
+        "x": 18,
+        "y": 29,
+        "raw_byte6": 0,
+        "raw_byte8": 89,
+        "raw_word42": 270
+      },
+      {
+        "runtime_index": 55,
+        "x": 20,
+        "y": 31,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 56,
+        "x": 9,
+        "y": 30,
+        "raw_byte6": 0,
+        "raw_byte8": 100,
+        "raw_word42": 540
+      },
+      {
+        "runtime_index": 57,
+        "x": 19,
+        "y": 28,
+        "raw_byte6": 0,
+        "raw_byte8": 92,
+        "raw_word42": 290
+      },
+      {
+        "runtime_index": 58,
+        "x": 10,
+        "y": 27,
+        "raw_byte6": 0,
+        "raw_byte8": 92,
+        "raw_word42": 290
+      },
+      {
+        "runtime_index": 59,
+        "x": 21,
+        "y": 28,
+        "raw_byte6": 0,
+        "raw_byte8": 95,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 60,
+        "x": 8,
+        "y": 27,
+        "raw_byte6": 0,
+        "raw_byte8": 95,
+        "raw_word42": 330
+      },
+      {
+        "runtime_index": 61,
+        "x": 10,
+        "y": 19,
+        "raw_byte6": 0,
+        "raw_byte8": 98,
+        "raw_word42": 560
+      },
+      {
+        "runtime_index": 62,
+        "x": 9,
+        "y": 17,
+        "raw_byte6": 0,
+        "raw_byte8": 98,
+        "raw_word42": 560
+      },
+      {
+        "runtime_index": 63,
+        "x": 11,
+        "y": 17,
+        "raw_byte6": 0,
+        "raw_byte8": 98,
+        "raw_word42": 560
+      }
+    ],
+    "matched_party_deploy": [
+      [
+        10,
+        36
+      ],
+      [
+        12,
+        36
+      ],
+      [
+        14,
+        36
+      ],
+      [
+        11,
+        37
+      ],
+      [
+        13,
+        37
+      ],
+      [
+        15,
+        37
+      ],
+      [
+        9,
+        37
+      ],
+      [
+        10,
+        38
+      ],
+      [
+        12,
+        38
+      ],
+      [
+        14,
+        38
+      ],
+      [
+        13,
+        39
+      ],
+      [
+        11,
+        39
+      ],
+      [
+        9,
+        39
+      ],
+      [
+        15,
+        39
+      ],
+      [
+        16,
+        38
+      ],
+      [
+        8,
+        38
+      ]
+    ],
+    "view": {
+      "aux_phase": 0,
+      "camera_x": 9,
+      "camera_y": 30,
+      "cursor_x": 10,
+      "cursor_y": 36,
+      "gold": 2000,
+      "overlay_selector": 1,
+      "rng_word": 1059,
+      "round": 1,
+      "visible_x": 1,
+      "visible_y": 6
+    },
+    "state_injections": []
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "scope": "只補chapter19 runtime_append_groups、原始16格部署與native_map_view／inherited HUD B1；不改共用constructor、部署選擇或鏡頭規則",
+    "typed_data": {
+      "runtime_append_groups": true,
+      "initial_groups": [
+        0
+      ],
+      "deploy_cells": [
+        [
+          10,
+          36
+        ],
+        [
+          12,
+          36
+        ],
+        [
+          14,
+          36
+        ],
+        [
+          11,
+          37
+        ],
+        [
+          13,
+          37
+        ],
+        [
+          15,
+          37
+        ],
+        [
+          9,
+          37
+        ],
+        [
+          10,
+          38
+        ],
+        [
+          12,
+          38
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          13,
+          39
+        ],
+        [
+          11,
+          39
+        ],
+        [
+          9,
+          39
+        ],
+        [
+          15,
+          39
+        ],
+        [
+          16,
+          38
+        ],
+        [
+          8,
+          38
+        ]
+      ],
+      "native_map_view": {
+        "camera_x": 9,
+        "camera_y": 30,
+        "cursor_x": 10,
+        "cursor_y": 36,
+        "visible_cursor_x": 1,
+        "visible_cursor_y": 6,
+        "range_mode": 1
+      },
+      "native_map_hud_inherited": {
+        "display_gate_b": 1
+      }
+    },
+    "failure_policy": "缺視圖／HUD／selector cache仍拒收，不在重播注入，不放寬640px",
+    "acceptance": [
+      "相同槽正常起手64筆及完整RGB≤640px",
+      "整章四項比較及相關Go回歸；只按實測範圍提升證據"
+    ]
+  },
+  "limits": [
+    "建構槽111／114；不驗傷害、存活或敵方選目標",
+    "正式起手64筆與前五點完整RGB皆0px；完整章通過，但未外推逐步鏡頭動畫。"
+  ],
+  "files": {
+    "work/parity-slot-ch19/ch19-event-and-required-probe-r1.json": "820d15ea3e33394ccbb7eeb84fe18100099dbdf1bc882f3ce0670ca879b8b92a",
+    "work/parity-slot-ch19/ch19-event-and-required-probe-r2.json": "fe9a3a3cbf4e030a963d45277f25698fdec6733138e6a56e4016659bd6d7bd86",
+    "work/parity-slot-ch19/full-r4-remake-r1.log": "1baff0a4cb9df71947a9371cff366dc0544ab56b45aad5f129ba3e4356279761"
+  },
+  "verification": {
+    "date": "2026-10-03",
+    "status": "passed",
+    "receipt": "docs/data/ui-traces/parity-ch19.json",
+    "required_rejection_receipt": "docs/data/ui-traces/ch19-required-party-rejection.json",
+    "scope": "有限CONFORMED：第19章起手、T4、T6、選人必出與拒收、持續排列、戰後交易及SAV。T10 event45僅原始指令與局部E1，未外推原版T10玩家路徑。",
+    "regressions": {
+      "full_go": {
+        "status": "passed",
+        "packages": 19,
+        "log": "work/parity-slot-ch19/chapter19-go-regression-r1.log",
+        "scope": "正式Go來源；最後clear／END限制僅修改重播測試，另以窄測試及兩章整章重播驗證"
+      },
+      "focused_go": {
+        "status": "passed",
+        "log": "work/parity-slot-ch19/chapter19-focused-r6.log"
+      },
+      "chapter18": {
+        "status": "passed",
+        "report": "work/parity-slot-ch19/prior-ch18-verify-r3.json",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "frames": 182,
+        "save": {
+          "oracle_save_sha256": "9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b",
+          "remake_save_sha256": "9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b",
+          "remake_note": "save_sha256=9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b",
+          "blocked_by": null,
+          "status": "ok"
+        }
+      },
+      "python_extract": {
+        "status": "passed",
+        "tests": 8,
+        "instruction_coverage_events": 49
+      },
+      "python_verify": {
+        "status": "passed",
+        "tests": 13,
+        "pillow_skips": 0
+      },
+      "lessons": {
+        "status": "passed",
+        "rules": 120,
+        "guards": 28
+      }
+    },
+    "rejected_attempts": {
+      "chapter19": [
+        "full-r4-verify-r2.json",
+        "full-r4-verify-r3.json",
+        "full-r4-verify-r4.json"
+      ],
+      "chapter18": [
+        "prior-ch18-verify-r1.json",
+        "prior-ch18-verify-r2.json"
+      ],
+      "correction": "clear→END延後須下一END原版仍在1A30B；第18章已進post-handler保持既有即時結果，避免多跑一回合；曾提前讀未完成重播的驗證另重跑，不視為產品缺陷。"
+    }
+  }
+}

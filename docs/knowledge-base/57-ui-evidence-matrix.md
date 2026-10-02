@@ -1487,3 +1487,11 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 [完整章收據](../data/ui-traces/parity-ch18.json)取代先前缺正常T8、戰後與SAV的現況。正式event43／42按原始控制列觸發；T8先增援再完整對白，戰後使用有來源的75槽前沿並清暫態後重算持續裝備能力值。舊55建構形狀保留，來源不完整仍拒收。[前沿契約](../data/ida/fd2_ch18_postbattle_slots_20261003.json)與[同步契約](../data/ida/fd2_ch18_postbattle_equipment_20261003.json)為CONFORMED。
 
 完整行為、節點、無遮罩RGB、交易及全檔酒店SAV通過；第17章與全部Go回歸亦通過。依111／114建構槽及抽樣後一次清敵例外列本章PLAYER-E2，不宣稱自然戰鬥、逐幀演出或全章逐像素一致。[總覽索引](../data/ui-traces/parity-ch18-samples.json)保留所有非零差異；原圖與SAV留本機。唯一統計與#102尚未解決的原版r3停止見[58](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-03 第十九章整章與必出角色拒收（#106至#111）
+
+[正式收據](../data/ui-traces/parity-ch19.json)包含正常LOAD、方向鍵選人、起手、五回合抽樣、清敵後正常END的T6事件、戰後、買賣、教堂、酒店與秘密商店。四項通過；54張完整RGB有39張逐像素相同，最大215px，沒有遮罩或放寬640px。
+
+[拒收前綴收據](../data/ui-traces/ch19-required-party-rejection.json)另驗缺少凱拉斯的原生訊息及返回城鎮，五點差異0／0／0／275／0px。這是有限RUNTIME-E1；原本完整章verifier的failed診斷保留，不能把沒有進戰場的拒收前綴稱為整章通過。
+
+整章依111／114建構槽例外列PLAYER-E2；清敵seq1119在T6事件seq1138之前，槽來源與注入如實記錄。T10、自然戰鬥及逐幀相位不外推；唯一現況與統計見[58](58-fd2-exe-re-coverage.md)。

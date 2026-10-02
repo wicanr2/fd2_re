@@ -1163,6 +1163,21 @@
         ],
         "pattern": "battle\\.ApplyNativeEquipmentRecalc\\(record, itemRows\\)"
       }
+    },
+    {
+      "id": "native-preparation-stable-persistent-pack",
+      "date": "2026-10-03",
+      "area": "整備與持續名冊",
+      "rule": "原生整備額滿時先依320FC將持續名冊穩定排列為固定隊長、已選角色、未選角色，再處理必出角色與最終確認。partyJoinOrder沿用既有名稱，不能據此宣稱順序永遠等於首次JOIN。正式入口在remake/cmd/fd2/main.go的togglePreparationSelection及native_chapter_slot_save.go的packNativePreparationRoster，原始契約見docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json。",
+      "why": "第十九章需要凱拉斯，正常跳過两位後選中identity16；原版SAV將其由record17搬到15，重製忽略320FC而留下舊排列。逐身份比較能力值原本相同。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/111；docs/data/ui-traces/parity-ch19.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "g\\.packNativePreparationRoster\\(\\)"
+      }
     }
   ]
 }

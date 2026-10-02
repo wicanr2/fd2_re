@@ -13,6 +13,60 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+func TestChapter19Event46JoinsAfterDialogueAndOnlyInTurn6AllyPhase(t *testing.T) {
+	g := &Game{}
+	attachOfficialLocale(t, g)
+	if err := g.loadMap("assets/maps/map18"); err != nil {
+		t.Fatal(err)
+	}
+	g.resetBattle("assets/maps/map18/map18_units.json", "assets/scenarios/ch19.json")
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	countRecruit := func() int {
+		n := 0
+		for _, u := range g.st.Units {
+			if u != nil && u.OnField && u.HasNativeRecordByte8 && u.NativeRecordByte8 == 27 {
+				n++
+			}
+		}
+		return n
+	}
+	if countRecruit() != 0 {
+		t.Fatal("事件46的角色27在開局提前登場")
+	}
+	calls := 0
+	for _, phase := range [][2]int{{5, 1}, {6, 0}} {
+		g.st.Turn = phase[0]
+		g.runEditableTurnEvents(phase[1], func() { calls++ })
+		if g.battleEvent != nil || countRecruit() != 0 || g.partyMembers[27] {
+			t.Fatal("事件46在T6我方階段之前觸發")
+		}
+	}
+	g.st.Turn = 6
+	g.runEditableTurnEvents(1, func() { calls++ })
+	if g.loadErr != "" || countRecruit() != 1 || g.battleEvent == nil || len(g.dialog) == 0 || g.partyMembers[27] || calls != 2 {
+		t.Fatalf("增援後應等待對白再JOIN：err=%q units=%d dialogue=%d member=%v continuation=%d", g.loadErr, len(g.st.Units), len(g.dialog), g.partyMembers[27], calls)
+	}
+	// 建構介面E1只隔離正式逐動作owner；正常T6另由#106驗證。
+	for n := 0; g.battleEvent != nil && n < 30; n++ {
+		if g.partyMembers[27] {
+			t.Fatal("對白結束前提前發布永久JOIN")
+		}
+		g.dialog = nil
+		g.advanceBattleEvent()
+	}
+	u, joined := g.partyRoster[27]
+	if g.loadErr != "" || g.battleEvent != nil || !joined || !g.partyMembers[27] || !u.HasNativeRecordByte8 || u.NativeRecordByte8 != 27 || calls != 3 {
+		t.Fatalf("文字返回後永久JOIN未完成：err=%q job=%v joined=%v unit=%+v continuation=%d", g.loadErr, g.battleEvent != nil, joined, u, calls)
+	}
+	order := append([]int(nil), g.partyJoinOrder...)
+	g.runEditableTurnEvents(1, func() { calls++ })
+	if g.battleEvent != nil || countRecruit() != 1 || !reflect.DeepEqual(order, g.partyJoinOrder) || calls != 4 {
+		t.Fatal("事件46同回合重複增援或JOIN")
+	}
+}
+
 func TestChapter18Event43UsesTurnAndPhaseBeforeSingleRecordModeWrite(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
@@ -2247,4 +2301,42 @@ func nativeClosingFramesForTest(g *Game, line battle.DialogLine) int {
 		frames += view.VisibleCursorX + view.VisibleCursorY + 1
 	}
 	return frames
+}
+
+func TestChapter19SpecialTurnModesPreserveInclusiveRangeAndHighBits(t *testing.T) {
+	for _, turn := range []int{4, 10} {
+		for _, selector := range []int{0, 1, 2} {
+			t.Run(fmt.Sprintf("turn%d_selector%d", turn, selector), func(t *testing.T) {
+				sc, err := battle.LoadScenario(assetPath("assets/scenarios/ch19.json"))
+				if err != nil {
+					t.Fatal(err)
+				}
+				st := &battle.State{Turn: turn}
+				for i := 0; i < 64; i++ {
+					// mode writer沒有陣營、HP或OnField篩選。
+					st.Units = append(st.Units, &battle.Unit{Camp: battle.Camp(i % 3), HP: 0, OnField: false,
+						HasNativeRecordByte34: true, NativeRecordByte34: 0xa8})
+				}
+				g := &Game{st: st, sc: sc}
+				calls := 0
+				g.runEditableTurnEvents(selector, func() { calls++ })
+				if g.loadErr != "" || g.battleEvent != nil || calls != 1 {
+					t.Fatalf("mode event err=%q calls=%d", g.loadErr, calls)
+				}
+				first, last := 29, 59
+				if turn == 10 {
+					first, last = 16, 31
+				}
+				for i, u := range st.Units {
+					want := byte(0xa8)
+					if selector == 2 && i >= first && i <= last {
+						want = 0xa3
+					}
+					if u.NativeRecordByte34 != want {
+						t.Fatalf("record%d raw=%#x want=%#x", i, u.NativeRecordByte34, want)
+					}
+				}
+			})
+		}
+	}
 }

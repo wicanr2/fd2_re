@@ -369,3 +369,14 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十八章整章四項收據](../data/ui-traces/parity-ch18.json)：#94／#97／#99／#103／#104，受版控r4正常章r8與Go r3；全檔SAV及正式回歸通過，依111／114列本章PLAYER-E2。
 
 - [第十八章整章總覽來源索引](../data/ui-traces/parity-ch18-samples.json)：完整RGB抽樣及全部非零差異來源；圖面留本機，不新增公開原版素材。
+
+- [第十九章建構槽清冊](../data/parity-slots/ch19-manifest.json)與[正常啟動計畫](../data/parity-plans/ch19-startup.jsonl)：固定111／114政策；前15人缺凱拉斯，拒收前綴保留。
+- [第十九章初始整章抽樣計畫](../data/parity-plans/ch19-sample.jsonl)：缺identity16的早期拒收診斷，沒有完成戰鬥。
+- [第十九章錯選identity7的計畫r2](../data/parity-plans/ch19-sample-r2.jsonl)：誤讀名字的拒收診斷，正式必出者是identity16凱拉斯。
+- [第十九章正確選人計畫r3](../data/parity-plans/ch19-sample-r3.jsonl)：納入identity16，第二回合record2自然陣亡，後續計畫停止。
+- [第十九章正式整章計畫r4](../data/parity-plans/ch19-sample-r4.jsonl)：保留前兩輪，後三輪正常END；T6先清敵一次，再以END執行事件46。舊第二行註解失效，實際順序見正式收據。
+- [第十九章T6事件46完整契約](../data/ida/fd2_ch19_turn_event46_20261003.json)：#107，有限CONFORMED，文字1與永久JOIN27。
+- [第十九章凱拉斯必出限制](../data/ida/fd2_ch19_required_character_20261003.json)：#108，identity16、原生訊息與返回城鎮，有限CONFORMED。
+- [第十九章原生起手](../data/ida/fd2_ch19_startup_20261003.json)：#110，64筆、16格部署與HUD，有限CONFORMED。
+- [第十九章事件44／45與整備名冊排列](../data/ida/fd2_ch19_modes_and_selection_pack_20261003.json)：#111，T4與持續排列通過；T10限局部E1。
+- [第十九章完整四項對拍](../data/ui-traces/parity-ch19.json)、[全部非零差異抽樣索引](../data/ui-traces/parity-ch19-samples.json)與[凱拉斯必出拒收前綴](../data/ui-traces/ch19-required-party-rejection.json)：原版圖面與SAV留本機，分級與限制依58。

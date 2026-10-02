@@ -511,15 +511,29 @@
     },
     {
       "chapter": 19,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch19.json",
+      "slot_manifest": "docs/data/parity-slots/ch19-manifest.json",
+      "slot_sha256": "e055a53d2af1e96475f444e768ddc23333508c21f467b0ce059589d8791f8e3c",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "date": "2026-10-03",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 19 --oracle work/parity-slot-ch19/full-original-r4 --remake work/parity-slot-ch19/full-r4-remake-r7 --slot-manifest docs/data/parity-slots/ch19-manifest.json --plan docs/data/parity-plans/ch19-sample-r4.jsonl --out work/parity-slot-ch19/full-r4-verify-r7.json",
+      "limitations": [
+        "111／114建構槽；T1..T5正常抽樣，第6回合清敵一次後正常END執行event46與JOIN27。無週期鎖HP；T10 event45僅靜態及局部E1。54張無遮罩RGB最大215px，全檔SAV相同；不宣稱自然戰鬥、傷害、存活或敵方選目標。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 20,

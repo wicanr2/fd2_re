@@ -498,6 +498,50 @@ func ComposeNativePreparationRecordQuestion(
 	)
 }
 
+// ComposeNativePreparationRequiredMessage消費31DBE的共享文字0x291，
+// 31E1B寫入的名字索引是原生identity+1。此訊息沒有YES／NO選項。
+func ComposeNativePreparationRequiredMessage(
+	background []byte, dialogueCells []fdother.RawCell, portrait dato.Frame,
+	strings *fdtxt.Strings, font *fdtxt.Font, identity int,
+) ([]byte, error) {
+	if strings == nil || font == nil || identity < 1 || identity > 31 {
+		return nil, errors.New("campaign: invalid preparation required-character source")
+	}
+	frame, err := ComposeNativePreparationConfirmationDialogue(background, dialogueCells, portrait)
+	if err != nil {
+		return nil, err
+	}
+	words, err := strings.Words(0x291)
+	if err != nil {
+		return nil, err
+	}
+	name, err := strings.Words(identity + 1)
+	if err != nil {
+		return nil, err
+	}
+	expanded := make([]uint16, 0, len(words)+len(name))
+	for _, word := range words {
+		if word == 0xfffc {
+			expanded = append(expanded, name...)
+		} else {
+			expanded = append(expanded, word)
+		}
+	}
+	style := fdtxt.NativeGlyphStyle{Foreground: 205, Shadow: 76}
+	for i, word := range expanded {
+		if word >= fdtxt.ControlMin {
+			return nil, fmt.Errorf("campaign: unsupported required-character control %#x", word)
+		}
+		if err := font.BlitNativeGlyph(frame, 320, nativePreparationQuestionY*320+nativePreparationQuestionX+i*fdtxt.GlyphWidth, int(word), style); err != nil {
+			return nil, err
+		}
+	}
+	if err := blitNativeDialoguePortraitAt(frame, portrait, nativeFacilityPortraitOffset(0x4b)); err != nil {
+		return nil, err
+	}
+	return frame, nil
+}
+
 func composeNativePreparationQuestion(
 	background []byte,
 	dialogueCells []fdother.RawCell,

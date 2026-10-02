@@ -3052,7 +3052,19 @@
    "units": "assets/maps/map18/map18_units.json",
    "scenario": "assets/scenarios/ch19.json",
    "on_win": "postbattle_ch19_persist",
-   "on_lose": "retreat_ch19"
+   "on_lose": "retreat_ch19",
+   "native_map_view": {
+    "camera_x": 9,
+    "camera_y": 30,
+    "cursor_x": 10,
+    "cursor_y": 36,
+    "visible_cursor_x": 1,
+    "visible_cursor_y": 6,
+    "range_mode": 1
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   }
   },
   "postbattle_ch19_persist": {
    "type": "cutscene",
@@ -6614,7 +6626,10 @@
    "type": "preparation",
    "prompt": "要進入戰場嗎？",
    "cancel": "town_ch19",
-   "next": "story_ch19"
+   "next": "story_ch19",
+   "required_party_identities": [
+    16
+   ]
   },
   "preparation_ch20": {
    "type": "preparation",

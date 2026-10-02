@@ -3986,6 +3986,18 @@
         "legacy": {
           "bgm": "FDMUS_019",
           "map": "assets/maps/map18",
+          "native_map_hud_inherited": {
+            "display_gate_b": 1
+          },
+          "native_map_view": {
+            "camera_x": 9,
+            "camera_y": 30,
+            "cursor_x": 10,
+            "cursor_y": 36,
+            "range_mode": 1,
+            "visible_cursor_x": 1,
+            "visible_cursor_y": 6
+          },
           "scenario": "assets/scenarios/ch19.json",
           "units": "assets/maps/map18/map18_units.json"
         },
@@ -8252,7 +8264,10 @@
       "extensions": {
         "legacy": {
           "cancel": "town_ch19",
-          "prompt": "要進入戰場嗎？"
+          "prompt": "要進入戰場嗎？",
+          "required_party_identities": [
+            16
+          ]
         },
         "legacy_key": "preparation_ch19"
       },

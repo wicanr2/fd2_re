@@ -195,7 +195,13 @@ func (g *Game) composeNativePreparationPromptQuestion() ([]byte, bool) {
 		frame []byte
 		err   error
 	)
-	if node.Cancel != "" {
+	if g.prepRequiredMissing != nil {
+		frame, err = campaign.ComposeNativePreparationRequiredMessage(
+			g.prepPromptSource, g.nativePreparationUI.dialogue,
+			g.nativePreparationUI.portrait, g.nativePreparationUI.status.Strings,
+			g.nativePreparationUI.status.Font, *g.prepRequiredMissing,
+		)
+	} else if node.Cancel != "" {
 		frame, err = campaign.ComposeNativePreparationDepartureQuestion(
 			g.prepPromptSource,
 			g.nativePreparationUI.dialogue,
@@ -220,6 +226,9 @@ func (g *Game) composeNativePreparationPromptFrame() ([]byte, bool) {
 	if !ok {
 		return nil, false
 	}
+	if g.prepRequiredMissing != nil {
+		return question, true
+	}
 	frame, err := campaign.ComposeNativeConfirmationChoices(
 		question,
 		g.nativePreparationUI.choices,
@@ -227,6 +236,38 @@ func (g *Game) composeNativePreparationPromptFrame() ([]byte, bool) {
 		g.nativeClassUIPulse/2,
 	)
 	return frame, err == nil
+}
+
+func (g *Game) beginNativePreparationRequiredOpening() bool {
+	dialogue, ok := g.composeNativePreparationPromptDialogue()
+	if !ok {
+		return false
+	}
+	message, ok := g.composeNativePreparationPromptQuestion()
+	if !ok {
+		return false
+	}
+	frames, err := campaign.NativeClassListOpeningFrames(g.prepPromptSource, dialogue)
+	if err != nil {
+		return false
+	}
+	g.nativeClassUIJob = &nativeClassUIJob{frames: append(frames, message)}
+	return true
+}
+
+func (g *Game) beginNativePreparationRequiredClosing(after func()) bool {
+	dialogue, ok := g.composeNativePreparationPromptDialogue()
+	if !ok {
+		return false
+	}
+	frames, err := campaign.NativeClassListClosingFrames(g.prepPromptSource, dialogue)
+	if err != nil {
+		return false
+	}
+	g.nativeClassUIJob = &nativeClassUIJob{
+		frames: frames, restore: append([]byte(nil), g.prepPromptSource...), after: after,
+	}
+	return true
 }
 
 func (g *Game) beginNativePreparationPromptOpening() bool {

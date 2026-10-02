@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_preparation_required_party_rejection",
+  "status": "passed",
+  "date": "2026-10-03",
+  "issues": [
+    108,
+    109
+  ],
+  "evidence_level": "有限原版正常輸入／重製RUNTIME-E1，不是完整章PLAYER-E2",
+  "original_runner": "dosgolem apps/fd2/cmd/oracle",
+  "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "slot_sha256": "e055a53d2af1e96475f444e768ddc23333508c21f467b0ce059589d8791f8e3c",
+  "original_run": "work/parity-slot-ch19/full-original-r1",
+  "remake_run": "work/parity-slot-ch19/required-reject-remake-r2",
+  "original_selection_owner": "0x31A2E",
+  "original_rejection_owner": "0x31E65",
+  "selected": "leader＋前15名可選角色，缺identity16",
+  "frames": {
+    "compared": 5,
+    "pixel_budget": 640,
+    "points": [
+      {
+        "seq": 18,
+        "kind": "town_loaded",
+        "oracle": "checkpoint-0018.png",
+        "remake": "remake-0000-p2.png",
+        "phases": 4,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "8d12e2fc6ae1360f1b025e74758696c99a446e04793a15b0ca444163446043dd",
+        "remake_sha256": "8d12e2fc6ae1360f1b025e74758696c99a446e04793a15b0ca444163446043dd"
+      },
+      {
+        "seq": 39,
+        "kind": "departure_prompt",
+        "oracle": "checkpoint-0039.png",
+        "remake": "remake-0001-p0.png",
+        "phases": 2,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "f93ebb0fbf79e54be82b534538cfd66d9f628247f1f7fb81fa758dce1f2a1f4c",
+        "remake_sha256": "ab96d01f464cc5514405b38fee697ad69740782bb991a407eede47dc58cf2d22"
+      },
+      {
+        "seq": 44,
+        "kind": "party_selection",
+        "oracle": "checkpoint-0044.png",
+        "remake": "remake-0002-p0.png",
+        "phases": 3,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "252fb9cfee245f96caedcc2cabcb3afa6caafda08c9cae4f34df7d744dd5e35a",
+        "remake_sha256": "0545bd30da21a787b9988fc3b9ac3cf461e34d0ff464e93cff021e445c6cdc31"
+      },
+      {
+        "seq": 71,
+        "kind": "required_party_rejection",
+        "oracle": "checkpoint-0071.png",
+        "remake": "remake-0003-p0.png",
+        "phases": 2,
+        "diff_pixels": 275,
+        "box": [
+          25,
+          146,
+          65,
+          159
+        ],
+        "ok": true,
+        "oracle_sha256": "5ffbdaed5cc9b94ce9a2cc3902751db1f337bd2c854749ae053fafce4432d04f",
+        "remake_sha256": "aaf8946e5f9e95ebb547aa76782fccbfb59c6bc98a5723711a0c318f99daf28e"
+      },
+      {
+        "seq": 72,
+        "kind": "town_after_required_rejection",
+        "oracle": "checkpoint-0072.png",
+        "remake": "remake-0004-p2.png",
+        "phases": 4,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "07f19eb90e97cf636e60ad4a60d7fc50df465f7067ce5969cbd58dfad6728b21",
+        "remake_sha256": "451c85d604b722fac0a71efe001756fe68a2f2da1cc8a13b77b4ae2740fdf698"
+      }
+    ]
+  },
+  "node_sequence": [
+    "town_ch19",
+    "preparation_ch19：訊息→正常選人→必出拒收",
+    "town_ch19"
+  ],
+  "membership_unchanged": true,
+  "save_claim": "沒有寫檔，未宣稱酒店存檔；不把not_sampled當成完整存檔驗收。",
+  "source_diagnostic": {
+    "path": "work/parity-slot-ch19/required-reject-diagnostic-r2.json",
+    "status": "failed",
+    "explanation": "原版被正常必出拒收後不進battle_start；完整計畫因此缺項。有限前綴只驗已完成5點行為與完整RGB，保留此failed。"
+  },
+  "commands": [
+    "FD2_PARITY_CHAPTER=19 FD2_PARITY_SLOT=work/parity-slot-ch19/FD2.SAV FD2_PARITY_ORACLE_RUN=work/parity-slot-ch19/full-original-r1 FD2_PARITY_OUT=work/parity-slot-ch19/required-reject-remake-r2 go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1",
+    "python3 tools/verify_chapter_parity.py --chapter 19 --oracle work/parity-slot-ch19/full-original-r1 --remake work/parity-slot-ch19/required-reject-remake-r2 --slot-manifest docs/data/parity-slots/ch19-manifest.json --plan docs/data/parity-plans/ch19-startup.jsonl --out work/parity-slot-ch19/required-reject-diagnostic-r2.json --min-frames 5"
+  ],
+  "files": {
+    "work/parity-slot-ch19/required-reject-remake-r2.log": "d4b91ef58b6becf0b2380d4cd6bf760835afac7d202000360d152ed51089015c",
+    "work/parity-slot-ch19/required-reject-diagnostic-r2.json": "c64bc82d0cbc3dd4ae9b806112960f0aec6bb7bfac701189f6e3059bfd6b77f1",
+    "work/parity-slot-ch19/full-original-r1/checkpoint-0071.json": "ec8ce03671fbd27affb0570898e7a5e7e149e1151683aba0ed7ffbaf0911ef10",
+    "work/parity-slot-ch19/full-original-r1/checkpoint-0072.json": "b64e98e4fc89eb929314b215873369324e5c20d21b9e4f66153023f94f852571"
+  }
+}

@@ -778,22 +778,6 @@
     [
       8,
       38
-    ],
-    [
-      9,
-      35
-    ],
-    [
-      9,
-      36
-    ],
-    [
-      10,
-      35
-    ],
-    [
-      10,
-      37
     ]
   ],
   "events": [
@@ -804,6 +788,28 @@
       "do": [
         {
           "type": "spawn_party"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch19_e44_t4",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x350ae",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 29,
+            "last": 59,
+            "mode": 3
+          },
+          "native_event_id": 44,
+          "camp": "special"
         }
       ]
     },
@@ -820,7 +826,6 @@
           "groups": [
             1
           ],
-          "camp": "ally",
           "native_spawns": [
             {
               "group": 1,
@@ -829,7 +834,266 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 46
+          "native_event_id": 46,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x350e0",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch19.json",
+            "scene_index": 1,
+            "line": 0,
+            "source_dat": "FDTXT_019",
+            "string_index": 1,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 27,
+            "pages": [
+              [
+                "『咦！這是惡名昭彰的「死亡",
+                "　骷髏」傭兵團啊！他們竟然",
+                "　在這裡出現，難道果真是有"
+              ],
+              [
+                "　人在暗中．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  701,
+                  342,
+                  462,
+                  343,
+                  102,
+                  902,
+                  1400,
+                  1401,
+                  367,
+                  1100,
+                  515,
+                  516
+                ],
+                [
+                  181,
+                  1398,
+                  1399,
+                  1102,
+                  96,
+                  94,
+                  829,
+                  464,
+                  342,
+                  175,
+                  569,
+                  592,
+                  654
+                ],
+                [
+                  181,
+                  395,
+                  462,
+                  613,
+                  455,
+                  371,
+                  370,
+                  640,
+                  300,
+                  437,
+                  589,
+                  343,
+                  400
+                ]
+              ],
+              [
+                [
+                  181,
+                  98,
+                  395,
+                  110,
+                  331,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 46,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x350e0",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch19.json",
+            "scene_index": 1,
+            "line": 1,
+            "source_dat": "FDTXT_019",
+            "string_index": 1,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 16,
+            "pages": [
+              [
+                "『嘿！那可不是巴拿羅西亞閣",
+                "　下嗎？真巧啊！』"
+              ]
+            ]
+          },
+          "native_event_id": 46,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x350e0",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch19.json",
+            "scene_index": 1,
+            "line": 2,
+            "source_dat": "FDTXT_019",
+            "string_index": 1,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 27,
+            "pages": [
+              [
+                "『啊！你是凱拉斯嘛！好一陣",
+                "　子沒碰面了，想不到會在這",
+                "　裡遇見你．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  464,
+                  342,
+                  605,
+                  343,
+                  58,
+                  68,
+                  45,
+                  598,
+                  342,
+                  369,
+                  486,
+                  988
+                ],
+                [
+                  181,
+                  291,
+                  399,
+                  772,
+                  651,
+                  341,
+                  370,
+                  659,
+                  346,
+                  387,
+                  458,
+                  395,
+                  462
+                ],
+                [
+                  181,
+                  613,
+                  774,
+                  788,
+                  605,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 46,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x350e0",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch19.json",
+            "scene_index": 1,
+            "line": 3,
+            "source_dat": "FDTXT_019",
+            "string_index": 1,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 16,
+            "pages": [
+              [
+                "『巴拿羅西亞閣下，現在可能",
+                "　不是敘舊的好時候，先讓我",
+                "　們解決了這幫想謀害約拿先"
+              ],
+              [
+                "　生的惡徒再說。』"
+              ]
+            ]
+          },
+          "native_event_id": 46,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x350e0",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch19.json",
+            "scene_index": 1,
+            "line": 4,
+            "source_dat": "FDTXT_019",
+            "string_index": 1,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 27,
+            "pages": [
+              [
+                "『約拿先生也在這裡？好極了",
+                "　，這場仗也算上我一份！』"
+              ]
+            ]
+          },
+          "native_event_id": 46,
+          "camp": "ally"
+        },
+        {
+          "type": "join_party",
+          "native_source": "0x35107",
+          "char_id": 27,
+          "native_event_id": 46,
+          "camp": "ally"
+        }
+      ]
+    },
+    {
+      "id": "turn_ch19_e45_t10",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 10
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x350c3",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 16,
+            "last": 31,
+            "mode": 3
+          },
+          "native_event_id": 45,
+          "camp": "special"
         }
       ]
     }
@@ -889,5 +1153,6 @@
         }
       }
     ]
-  }
+  },
+  "runtime_append_groups": true
 }

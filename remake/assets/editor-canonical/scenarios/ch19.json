@@ -24,6 +24,38 @@
           "action_id": "legacy/action/288224cee9e2/events/1/0",
           "extensions": {
             "legacy": {
+              "camp": "special",
+              "native_death_op": {
+                "first": 29,
+                "last": 59,
+                "mode": 3,
+                "op": "ai_mode_range"
+              },
+              "native_event_id": 44,
+              "native_source": "0x350ae"
+            }
+          },
+          "type": "native_death_op"
+        }
+      ],
+      "event_id": "legacy/event/288224cee9e2/events/1",
+      "extensions": {
+        "legacy": {
+          "id": "turn_ch19_e44_t4",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 4
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/0",
+          "extensions": {
+            "legacy": {
               "camp": "ally",
               "groups": [
                 1
@@ -40,9 +72,275 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/1",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      701,
+                      342,
+                      462,
+                      343,
+                      102,
+                      902,
+                      1400,
+                      1401,
+                      367,
+                      1100,
+                      515,
+                      516
+                    ],
+                    [
+                      181,
+                      1398,
+                      1399,
+                      1102,
+                      96,
+                      94,
+                      829,
+                      464,
+                      342,
+                      175,
+                      569,
+                      592,
+                      654
+                    ],
+                    [
+                      181,
+                      395,
+                      462,
+                      613,
+                      455,
+                      371,
+                      370,
+                      640,
+                      300,
+                      437,
+                      589,
+                      343,
+                      400
+                    ]
+                  ],
+                  [
+                    [
+                      181,
+                      98,
+                      395,
+                      110,
+                      331,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ],
+                "line": 0,
+                "operand": 27,
+                "pages": [
+                  [
+                    "『咦！這是惡名昭彰的「死亡",
+                    "　骷髏」傭兵團啊！他們竟然",
+                    "　在這裡出現，難道果真是有"
+                  ],
+                  [
+                    "　人在暗中．．』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch19.json",
+                "source_dat": "FDTXT_019",
+                "string_index": 1,
+                "utterance": 0
+              },
+              "native_event_id": 46,
+              "native_source": "0x350e0",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/2",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 1,
+                "operand": 16,
+                "pages": [
+                  [
+                    "『嘿！那可不是巴拿羅西亞閣",
+                    "　下嗎？真巧啊！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch19.json",
+                "source_dat": "FDTXT_019",
+                "string_index": 1,
+                "utterance": 1
+              },
+              "native_event_id": 46,
+              "native_source": "0x350e0",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/3",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      464,
+                      342,
+                      605,
+                      343,
+                      58,
+                      68,
+                      45,
+                      598,
+                      342,
+                      369,
+                      486,
+                      988
+                    ],
+                    [
+                      181,
+                      291,
+                      399,
+                      772,
+                      651,
+                      341,
+                      370,
+                      659,
+                      346,
+                      387,
+                      458,
+                      395,
+                      462
+                    ],
+                    [
+                      181,
+                      613,
+                      774,
+                      788,
+                      605,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ],
+                "line": 2,
+                "operand": 27,
+                "pages": [
+                  [
+                    "『啊！你是凱拉斯嘛！好一陣",
+                    "　子沒碰面了，想不到會在這",
+                    "　裡遇見你．．』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch19.json",
+                "source_dat": "FDTXT_019",
+                "string_index": 1,
+                "utterance": 2
+              },
+              "native_event_id": 46,
+              "native_source": "0x350e0",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/4",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 3,
+                "operand": 16,
+                "pages": [
+                  [
+                    "『巴拿羅西亞閣下，現在可能",
+                    "　不是敘舊的好時候，先讓我",
+                    "　們解決了這幫想謀害約拿先"
+                  ],
+                  [
+                    "　生的惡徒再說。』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch19.json",
+                "source_dat": "FDTXT_019",
+                "string_index": 1,
+                "utterance": 3
+              },
+              "native_event_id": 46,
+              "native_source": "0x350e0",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/5",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 4,
+                "operand": 27,
+                "pages": [
+                  [
+                    "『約拿先生也在這裡？好極了",
+                    "　，這場仗也算上我一份！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch19.json",
+                "source_dat": "FDTXT_019",
+                "string_index": 1,
+                "utterance": 4
+              },
+              "native_event_id": 46,
+              "native_source": "0x350e0",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/288224cee9e2/events/2/6",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "char_id": 27,
+              "native_event_id": 46,
+              "native_source": "0x35107"
+            }
+          },
+          "type": "join_party"
         }
       ],
-      "event_id": "legacy/event/288224cee9e2/events/1",
+      "event_id": "legacy/event/288224cee9e2/events/2",
       "extensions": {
         "legacy": {
           "id": "reinforce_ch19_e46_t6",
@@ -52,6 +350,38 @@
       "trigger": "on_turn_end",
       "when": {
         "turn": 6
+      }
+    },
+    {
+      "actions": [
+        {
+          "action_id": "legacy/action/288224cee9e2/events/3/0",
+          "extensions": {
+            "legacy": {
+              "camp": "special",
+              "native_death_op": {
+                "first": 16,
+                "last": 31,
+                "mode": 3,
+                "op": "ai_mode_range"
+              },
+              "native_event_id": 45,
+              "native_source": "0x350c3"
+            }
+          },
+          "type": "native_death_op"
+        }
+      ],
+      "event_id": "legacy/event/288224cee9e2/events/3",
+      "extensions": {
+        "legacy": {
+          "id": "turn_ch19_e45_t10",
+          "once": true
+        }
+      },
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 10
       }
     }
   ],
@@ -122,22 +452,6 @@
         [
           8,
           38
-        ],
-        [
-          9,
-          35
-        ],
-        [
-          9,
-          36
-        ],
-        [
-          10,
-          35
-        ],
-        [
-          10,
-          37
         ]
       ],
       "initial_groups": [
@@ -200,7 +514,8 @@
             "type": "dialogue"
           }
         ]
-      }
+      },
+      "runtime_append_groups": true
     }
   },
   "kind": "scenario",

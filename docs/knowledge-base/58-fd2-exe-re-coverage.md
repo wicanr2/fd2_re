@@ -2061,3 +2061,22 @@ r7再次同點停止，1926個r5前綴0差異；同場未重載BG0、反擊仍�
 Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金幣點一致。182張全幅RGB無遮罩，128張0px，最大346px，640px門檻不變。兩側酒店SAV全22987bytes相同，SHA-256為9adc6a5a8807a531b5afa7ffdea6c97a429e27832c633c30039e923c83bef55b。原圖及SAV保留本機，[整章總覽索引](../data/ui-traces/parity-ch18-samples.json)保存全部非零差異來源。
 
 第18章按111／114例外列PLAYER-E2；不以建構槽AP+200／DP+0／DX+60或清敵收據談自然難度、傷害、存活、命中或敵方選目標。全部Go19套件、第17章98張四項與全檔SAV回歸通過。台帳由tools/fd2_parity_progress.py set／verify更新，輸入為正式收據、固定槽manifest與dosgolem1694cde；現況15／30，all_chapters_passed仍false。#102同r3停止仍未解決，保留原始拒收與原生配置器未知限制。
+
+## 2026-10-03 第十九章最終分層現況
+
+| 範圍 | 分層狀態 | 主證據與驗收 |
+|---|---|---|
+| T6事件46增援、文字1、永久JOIN27 | RE-CLOSED／DATA-READY／RUNTIME-E1 | [完整契約](../data/ida/fd2_ch19_turn_event46_20261003.json)，有限CONFORMED |
+| 凱拉斯identity16必出與原生拒收 | RE-CLOSED／DATA-READY／RUNTIME-E1 | [主證據](../data/ida/fd2_ch19_required_character_20261003.json)、[五點拒收前綴](../data/ui-traces/ch19-required-party-rejection.json) |
+| 64筆起手、部署、視圖與繼承HUD | RE-CLOSED／DATA-READY／RUNTIME-E1 | [起手契約](../data/ida/fd2_ch19_startup_20261003.json)，前五點全幅RGB皆0px |
+| T4模式、320FC持續排列、清敵後END邊界 | RE-CLOSED／DATA-READY／RUNTIME-E1 | [模式與排列契約](../data/ida/fd2_ch19_modes_and_selection_pack_20261003.json)，有限CONFORMED |
+| 第十九章整章 | PLAYER-E2，限111／114例外 | [正式收據](../data/ui-traces/parity-ch19.json)，四項及全檔酒店SAV通過 |
+| T10模式事件45 | RE-CLOSED／DATA-READY／RUNTIME-E1 | 原始指令與局部測試，不宣稱本次原版T10玩家實驗 |
+
+正式原版是受版控r4、dosgolem1694cde、1380檢查點與8,438,354,232步，seed4及槽SHA e055a53d…固定，沒有週期鎖HP。T1..T5正常抽樣後，T6清敵seq1119先於event46 seq1138；第二行舊計畫註解的相反順序已失效，保留控制計畫hash，依實際收據判定。永久名冊21人、264筆AI順序零分岔，63個行為點、54張完整RGB與22987 bytes酒店SAV一致。39張RGB0px，最大215px，不宣稱所有畫面逐像素一致。
+
+完整Go19套件、最後重播工具窄回歸與第十八章182張／四項／全檔SAV通過。兩次第18章失敗指出clear→END延後不能只依動作相鄰；原版下一END仍在1A30B才需延後，已進23D65戰後者保持既有立即結果。原失敗與誤提前讀未完成產物的診斷保留，命令、來源hash及訂正在正式收據。
+
+由 tools/fd2_parity_progress.py set／verify 與 tools/render_parity_progress.py 重生台帳及首頁，2026-10-03共16／30章通過。統計輸入為[正式台帳](../data/parity-campaign-progress.json)與逐章收據。尚未通過的章依GitHub worklist繼續；#102同r3原版停止保持未解決，不以本章成功取消。
+
+[圖面抽樣與全部非零差異索引](../data/ui-traces/parity-ch19-samples.json)只保存來源與hash；原版圖、重製圖、總覽及SAV留本機。

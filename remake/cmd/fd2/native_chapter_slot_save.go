@@ -57,3 +57,75 @@ func (g *Game) saveNativeChapterSlot(slot int) error {
 	g.nativeChapterSlotBaseline = &snapshot
 	return nil
 }
+
+// packNativePreparationRoster models 0x31A74→0x320FC before either the
+// required-character rejection or the final YES/NO owner. Record zero stays
+// fixed; both selected and unselected partitions preserve their prior order.
+// partyJoinOrder retains its historical identifier, but native selection can
+// reorder this persistent sequence. No membership or record bytes are lost.
+func (g *Game) packNativePreparationRoster() error {
+	if len(g.partyJoinOrder) == 0 {
+		return errors.New("preparation pack: persistent order unavailable")
+	}
+	order := []int{g.partyJoinOrder[0]}
+	for _, selected := range []bool{true, false} {
+		for _, id := range g.partyJoinOrder[1:] {
+			if g.partyDeploy[id] == selected {
+				order = append(order, id)
+			}
+		}
+	}
+	if g.nativeChapterSlotBaseline == nil {
+		g.partyJoinOrder = order
+		return nil
+	}
+	// Materialize any JOIN since LOAD through the existing constructor before
+	// copying whole records. Publish only after the complete candidate validates.
+	table, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
+	if err != nil {
+		return fmt.Errorf("preparation pack: JOIN constructor: %w", err)
+	}
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+	if err != nil {
+		return fmt.Errorf("preparation pack: item rows: %w", err)
+	}
+	built, err := campaign.BuildNativeChapterSlot(*g.nativeChapterSlotBaseline,
+		g.partyRoster, g.partyJoinOrder, byte(g.handlerChapter), uint32(g.gold), table, itemRows)
+	if err != nil {
+		return fmt.Errorf("preparation pack: records: %w", err)
+	}
+	byIdentity := make(map[int][]byte, len(order))
+	for index := 0; index < int(built.Metadata[1]); index++ {
+		record := built.Roster[index*fdsave.UnitSize : (index+1)*fdsave.UnitSize]
+		identity := int(record[8])
+		if _, duplicate := byIdentity[identity]; duplicate {
+			return fmt.Errorf("preparation pack: duplicate identity %d", identity)
+		}
+		byIdentity[identity] = append([]byte(nil), record...)
+	}
+	if len(byIdentity) != len(order) {
+		return errors.New("preparation pack: persistent topology differs")
+	}
+	for index, id := range order {
+		unit, exists := g.partyRoster[id]
+		if !exists || !unit.HasNativeIdentity {
+			return fmt.Errorf("preparation pack: member %d lacks identity", id)
+		}
+		record, exists := byIdentity[unit.NativeIdentity]
+		if !exists {
+			return fmt.Errorf("preparation pack: record identity %d unavailable", unit.NativeIdentity)
+		}
+		copy(built.Roster[index*fdsave.UnitSize:(index+1)*fdsave.UnitSize], record)
+	}
+	plain, err := fdsave.WriteSlot(g.nativeChapterSlotPlain, g.nativeChapterSlotBaseline.Slot, built)
+	if err != nil {
+		return fmt.Errorf("preparation pack: candidate slot: %w", err)
+	}
+	snapshot, err := fdsave.InspectChapterSlot(plain, g.nativeChapterSlotBaseline.Slot)
+	if err != nil {
+		return fmt.Errorf("preparation pack: candidate inspection: %w", err)
+	}
+	g.nativeChapterSlotBaseline = &snapshot
+	g.partyJoinOrder = order
+	return nil
+}

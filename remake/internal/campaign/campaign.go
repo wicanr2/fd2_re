@@ -579,23 +579,24 @@ type Node struct {
 	// EndingPartySnapshotOnWin 是重製終局資料邊界；只允許勝利直接進 ending
 	// 的 battle。它保存最後隊伍供回顧，不冒稱原版 FD2.SAV ABI。
 	EndingPartySnapshotOnWin bool                      `json:"ending_party_snapshot_on_win,omitempty"`
-	Protect                  string                    `json:"protect,omitempty"`             // battle:保護目標；空值沿用主角索爾
-	ItemID                   *int                      `json:"item_id,omitempty"`             // inventory_gate:原版 unsigned-byte item identity
-	IfPresent                string                    `json:"if_present,omitempty"`          // inventory_gate:全隊任一角色持有 ItemID
-	IfMissing                string                    `json:"if_missing,omitempty"`          // inventory_gate:全隊皆未持有 ItemID
-	ItemIDs                  []int                     `json:"item_ids,omitempty"`            // inventory_recipe:逐 item×runtime slot 計數／移除
-	SlotCount                int                       `json:"slot_count,omitempty"`          // inventory_recipe:只掃前 N 個 runtime records
-	RequiredMatches          int                       `json:"required_matches,omitempty"`    // inventory_recipe:原版要求的精確命中組合數
-	RewardItemID             *int                      `json:"reward_item_id,omitempty"`      // inventory_recipe:成功後 grant 的 item
-	IfCrafted                string                    `json:"if_crafted,omitempty"`          // inventory_recipe:成功 arm
-	IfInsufficient           string                    `json:"if_insufficient,omitempty"`     // inventory_recipe:命中數不符 arm
-	Prompt                   string                    `json:"prompt,omitempty"`              // choice/preparation
-	PartyLimit               int                       `json:"party_limit,omitempty"`         // preparation: original 0x318ad selection cap (15, late route 19)
-	Cancel                   string                    `json:"cancel,omitempty"`              // preparation: native confirmation/selection cancellation target
-	Town                     string                    `json:"town,omitempty"`                // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
-	NativeTownVariant        *int                      `json:"native_town_variant,omitempty"` // town:0/1/2→FDOTHER#11/#61/#62
-	NativeSecretGate         *NativeTownSecretGate     `json:"native_secret_gate,omitempty"`  // town:selection+BIOS scan→reveal selection5
-	Options                  []Option                  `json:"options,omitempty"`             // choice
+	Protect                  string                    `json:"protect,omitempty"`                   // battle:保護目標；空值沿用主角索爾
+	ItemID                   *int                      `json:"item_id,omitempty"`                   // inventory_gate:原版 unsigned-byte item identity
+	IfPresent                string                    `json:"if_present,omitempty"`                // inventory_gate:全隊任一角色持有 ItemID
+	IfMissing                string                    `json:"if_missing,omitempty"`                // inventory_gate:全隊皆未持有 ItemID
+	ItemIDs                  []int                     `json:"item_ids,omitempty"`                  // inventory_recipe:逐 item×runtime slot 計數／移除
+	SlotCount                int                       `json:"slot_count,omitempty"`                // inventory_recipe:只掃前 N 個 runtime records
+	RequiredMatches          int                       `json:"required_matches,omitempty"`          // inventory_recipe:原版要求的精確命中組合數
+	RewardItemID             *int                      `json:"reward_item_id,omitempty"`            // inventory_recipe:成功後 grant 的 item
+	IfCrafted                string                    `json:"if_crafted,omitempty"`                // inventory_recipe:成功 arm
+	IfInsufficient           string                    `json:"if_insufficient,omitempty"`           // inventory_recipe:命中數不符 arm
+	Prompt                   string                    `json:"prompt,omitempty"`                    // choice/preparation
+	PartyLimit               int                       `json:"party_limit,omitempty"`               // preparation: original 0x318ad selection cap (15, late route 19)
+	RequiredPartyIdentities  []int                     `json:"required_party_identities,omitempty"` // preparation: selected records' native +8, checked before final confirmation
+	Cancel                   string                    `json:"cancel,omitempty"`                    // preparation: native confirmation/selection cancellation target
+	Town                     string                    `json:"town,omitempty"`                      // town:原版戰後城鎮/營地名稱(可編輯、可存檔的整備 hub)
+	NativeTownVariant        *int                      `json:"native_town_variant,omitempty"`       // town:0/1/2→FDOTHER#11/#61/#62
+	NativeSecretGate         *NativeTownSecretGate     `json:"native_secret_gate,omitempty"`        // town:selection+BIOS scan→reveal selection5
+	Options                  []Option                  `json:"options,omitempty"`                   // choice
 	SetFlags                 map[string]bool           `json:"set_flags,omitempty"`
 	Text                     string                    `json:"text,omitempty"` // ending:結語
 	NativeEndingPrefix       *NativeEndingPrefixConfig `json:"native_ending_prefix,omitempty"`
@@ -759,6 +760,15 @@ func Decode(raw []byte) (*Campaign, error) {
 			}
 			if n.IfCrafted == "" || n.IfInsufficient == "" {
 				return nil, fmt.Errorf("inventory_recipe 節點 %q 必須同時定義 if_crafted / if_insufficient", id)
+			}
+		}
+		if len(n.RequiredPartyIdentities) != 0 {
+			seen := map[int]bool{}
+			for _, identity := range n.RequiredPartyIdentities {
+				if n.Type != "preparation" || n.Cancel == "" || identity < 1 || identity > 31 || seen[identity] {
+					return nil, fmt.Errorf("preparation node %q has invalid required_party_identities", id)
+				}
+				seen[identity] = true
 			}
 		}
 		if n.Type == "shop" && n.NativeHubVariant != 0 &&

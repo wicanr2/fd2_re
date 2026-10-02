@@ -9235,3 +9235,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [完整章收據](../data/ui-traces/parity-ch18.json)取代先前缺正常T8、戰後與SAV的現況。正式event43／42按原始控制列觸發；T8先增援再完整對白，戰後使用有來源的75槽前沿並清暫態後重算持續裝備能力值。舊55建構形狀保留，來源不完整仍拒收。[前沿契約](../data/ida/fd2_ch18_postbattle_slots_20261003.json)與[同步契約](../data/ida/fd2_ch18_postbattle_equipment_20261003.json)為CONFORMED。
 
 完整行為、節點、無遮罩RGB、交易及全檔酒店SAV通過；第17章與全部Go回歸亦通過。依111／114建構槽及抽樣後一次清敵例外列本章PLAYER-E2，不宣稱自然戰鬥、逐幀演出或全章逐像素一致。[總覽索引](../data/ui-traces/parity-ch18-samples.json)保留所有非零差異；原圖與SAV留本機。唯一統計與#102尚未解決的原版r3停止見[58](58-fd2-exe-re-coverage.md)。
+
+### 2026-10-03 第十九章完整驗收（#106至#111）
+
+[正式章收據](../data/ui-traces/parity-ch19.json)通過四項，取代先前READY與起手／整章未驗收的現況。正式資料使用16人部署與48筆group0；T4模式事件保留高四位，T6增援後等文字返回才永久JOIN27。額滿選人先依原版320FC穩定排列持續名冊，再查identity16；缺少凱拉斯時由原生訊息與關框返回城鎮。酒店SAV完整22987 bytes一致，包含21人名冊。
+
+四份主規格列有限CONFORMED，入口與原始位址見[58](58-fd2-exe-re-coverage.md)。重播clear→END僅在下一END原版仍屬1A30B時延後勝負檢查；已進戰後保持既有即時結果。最後Go重播邊界回歸及第十八章四項均通過，完整Go19套件亦通過。T10模式事件只有靜態與局部E1，沒有原版T10抽樣。

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -113,5 +114,35 @@ func TestPreparationPromptSourcePreservesTownAndClearsStandalone(t *testing.T) {
 	g.setupPreparation(&campaign.Node{Type: "preparation", PartyLimit: 15})
 	if len(g.prepPromptSource) != 320*200 || g.prepPromptSource[0] != 0 {
 		t.Fatal("standalone preparation did not use 0x2cc04 black source")
+	}
+}
+
+func TestPreparationSelectionStablePacksBeforeConfirmation(t *testing.T) {
+	g := &Game{
+		partyJoinOrder: []int{0, 9, 4, 30, 16, 7},
+		partyRoster:    map[int]battle.Unit{},
+		partyMembers:   map[int]bool{},
+	}
+	for _, id := range g.partyJoinOrder {
+		g.partyRoster[id] = battle.Unit{Fig: id, HasNativeRecordByte8: true, NativeRecordByte8: byte(id)}
+		g.partyMembers[id] = true
+	}
+	g.setupPreparation(&campaign.Node{Type: "preparation", PartyLimit: 2})
+	g.restartPreparationSelection()
+	g.prepSel = 3 // identity16，繞過前方的未選者。
+	g.togglePreparationSelection()
+	g.prepSel = 1 // identity4，點選次序不同於原名冊序。
+	g.togglePreparationSelection()
+	if g.loadErr != "" || !g.prepConfirm || !reflect.DeepEqual(g.partyJoinOrder, []int{0, 4, 16, 9, 30, 7}) {
+		t.Fatalf("persistent stable pack=%v confirm=%v err=%q", g.partyJoinOrder, g.prepConfirm, g.loadErr)
+	}
+	if len(g.partyMembers) != 6 || len(g.partyRoster) != 6 || g.partyDeploy[0] || !g.partyDeploy[4] || !g.partyDeploy[16] {
+		t.Fatal("穩定排列改動membership、leader或選取旗標")
+	}
+	// 原版於最後YES/NO之前已重排；取消重選不還原先前排列。
+	g.setupPreparation(&campaign.Node{Type: "preparation", PartyLimit: 2})
+	g.restartPreparationSelection()
+	if !reflect.DeepEqual(g.prepIDs, []int{4, 16, 9, 30, 7}) || len(g.partyDeploy) != 0 {
+		t.Fatal("重選沒有沿用更新後的持續記錄順序")
 	}
 }

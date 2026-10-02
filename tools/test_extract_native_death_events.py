@@ -55,6 +55,22 @@ class NativeDeathExtractorTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             extractor.check_coverage(self.image, event)
 
+    def test_event46_matches_original_and_includes_join(self):
+        event = self.events[46]
+        for op in event["ops"]:
+            extractor.check_op(self.image, 46, op)
+        extractor.check_coverage(self.image, event)
+        incomplete = copy.deepcopy(event)
+        incomplete["ops"] = incomplete["ops"][:-1]
+        with self.assertRaises(SystemExit):
+            extractor.check_coverage(self.image, incomplete)
+
+    def test_event46_rejects_different_join_identity(self):
+        op = copy.deepcopy(self.events[46]["ops"][-1])
+        op["char_id"] = 26
+        with self.assertRaises(SystemExit):
+            extractor.check_op(self.image, 46, op)
+
 
 if __name__ == "__main__":
     unittest.main()

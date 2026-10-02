@@ -9,15 +9,15 @@
   "address_space": "IDA flat-loader linear address",
   "inventory_function_count": 1305,
   "unknown_function_count": 1068,
-  "scanned_text_file_count": 689,
+  "scanned_text_file_count": 697,
   "exact_start_mentioned_count": 501,
   "range_mentioned_count": 525,
   "review_priority_counts": {
     "no_versioned_text_footprint": 543,
-    "recover_lead_only": 16,
+    "recover_lead_only": 15,
     "review_canonical_claim": 54,
     "review_direct_artifact": 68,
-    "review_first": 387
+    "review_first": 388
   },
   "policy": "位址命中只代表受版控文字足跡；classification/confidence/semantic 必須由人工回查 caller、consumer、writer、raw bytes 與證據分級後另行加入語意索引",
   "entries": [
@@ -3825,6 +3825,13 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            248,
+            253
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_ch24_post_ida.txt",
           "lines": [
             46
@@ -3922,6 +3929,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            45
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             45
           ]
@@ -4023,6 +4036,13 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            248,
+            253
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_ch24_post_ida.txt",
           "lines": [
             46
@@ -4120,6 +4140,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            45
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             45
           ]
@@ -6828,7 +6854,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            148
+            188
           ]
         },
         {
@@ -7907,7 +7933,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            148
+            188
           ]
         },
         {
@@ -24364,6 +24390,19 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            87,
+            166
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            231
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_continue_action_overlay_ida.txt",
           "lines": [
             20,
@@ -25193,7 +25232,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            214
+            274
           ]
         },
         {
@@ -25639,7 +25678,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            214
+            274
           ]
         },
         {
@@ -30889,6 +30928,19 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            88,
+            167
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            232
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_dialogue_cause_20260908.json",
           "lines": [
             1923,
@@ -35017,6 +35069,12 @@
           ]
         },
         {
+          "path": "docs/data/ui-traces/parity-ch19.json",
+          "lines": [
+            367
+          ]
+        },
+        {
           "path": "docs/goal/112-goal-ch07-parity-and-sample-sheet-20260916.md",
           "lines": [
             75,
@@ -37131,6 +37189,12 @@
           ]
         },
         {
+          "path": "docs/data/ui-traces/parity-ch19.json",
+          "lines": [
+            367
+          ]
+        },
+        {
           "path": "docs/goal/112-goal-ch07-parity-and-sample-sheet-20260916.md",
           "lines": [
             75,
@@ -38059,6 +38123,19 @@
           "lines": [
             76,
             219
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            89,
+            168
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            233
           ]
         },
         {
@@ -39124,6 +39201,19 @@
           "path": "docs/data/ida/fd2_ch18_event43_20261002.json",
           "lines": [
             77
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            90,
+            169
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            234
           ]
         },
         {
@@ -41915,6 +42005,14 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            45,
+            219,
+            9287
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch14-native-startup.json",
           "lines": [
             31
@@ -42120,6 +42218,12 @@
         },
         {
           "path": "docs/data/ui-traces/parity-ch18.json",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "path": "docs/data/ui-traces/parity-ch19.json",
           "lines": [
             31
           ]
@@ -42458,6 +42562,14 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            45,
+            219,
+            9287
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch14-native-startup.json",
           "lines": [
             31
@@ -42663,6 +42775,12 @@
         },
         {
           "path": "docs/data/ui-traces/parity-ch18.json",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "path": "docs/data/ui-traces/parity-ch19.json",
           "lines": [
             31
           ]
@@ -48594,6 +48712,19 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            91,
+            170
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            235
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_command28_31_reachability_ida.txt",
           "lines": [
             19
@@ -49343,6 +49474,22 @@
           "lines": [
             79,
             80
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            92,
+            93,
+            171,
+            172
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            236,
+            237
           ]
         },
         {
@@ -51072,6 +51219,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            219
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch14-native-startup.json",
           "lines": [
             31
@@ -51277,6 +51430,12 @@
         },
         {
           "path": "docs/data/ui-traces/parity-ch18.json",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "path": "docs/data/ui-traces/parity-ch19.json",
           "lines": [
             31
           ]
@@ -51984,6 +52143,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            219
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch14-native-startup.json",
           "lines": [
             31
@@ -52189,6 +52354,12 @@
         },
         {
           "path": "docs/data/ui-traces/parity-ch18.json",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "path": "docs/data/ui-traces/parity-ch19.json",
           "lines": [
             31
           ]
@@ -52461,6 +52632,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            219
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch14-native-startup.json",
           "lines": [
             31
@@ -52666,6 +52843,12 @@
         },
         {
           "path": "docs/data/ui-traces/parity-ch18.json",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "path": "docs/data/ui-traces/parity-ch19.json",
           "lines": [
             31
           ]
@@ -53025,6 +53208,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            219
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch14-native-startup.json",
           "lines": [
             31
@@ -53241,6 +53430,12 @@
           "lines": [
             31,
             5666
+          ]
+        },
+        {
+          "path": "docs/data/ui-traces/parity-ch19.json",
+          "lines": [
+            31
           ]
         },
         {
@@ -65274,6 +65469,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            15
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch00-post-native-dialogue-e1.json",
           "lines": [
             30
@@ -65467,6 +65668,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            15
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch00-post-native-dialogue-e1.json",
           "lines": [
             30,
@@ -65648,6 +65855,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            16
+          ]
+        },
+        {
           "path": "docs/knowledge-base/24-callgraph-analysis-log.md",
           "lines": [
             92
@@ -65723,6 +65936,12 @@
           "path": "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
           "lines": [
             661
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1594
           ]
         },
         {
@@ -65858,6 +66077,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            16
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             16
           ]
@@ -66054,6 +66279,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            17
+          ]
+        },
+        {
           "path": "docs/knowledge-base/24-callgraph-analysis-log.md",
           "lines": [
             92
@@ -66245,6 +66476,13 @@
             662,
             663,
             664
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1595,
+            1596
           ]
         },
         {
@@ -66471,6 +66709,18 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            17,
+            18,
+            19,
+            58,
+            69,
+            91,
+            113
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch05-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -66666,6 +66916,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            20
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch05-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -66718,6 +66974,12 @@
           "path": "docs/data/ida/fd2_ch05_post_native_dialogue.md",
           "lines": [
             20
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1597
           ]
         },
         {
@@ -66832,6 +67094,13 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            20,
+            80
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             20,
             80
@@ -67010,6 +67279,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            21
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch06-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -67088,6 +67363,12 @@
           "path": "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
           "lines": [
             665
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1598
           ]
         },
         {
@@ -67219,6 +67500,13 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            21,
+            102
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             21,
             102
@@ -68183,6 +68471,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            22
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch07-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -68415,6 +68709,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            22
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch07-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -68600,6 +68900,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            23
+          ]
+        },
+        {
           "path": "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md",
           "lines": [
             96
@@ -68748,6 +69054,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            23
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             23
           ]
@@ -68941,6 +69253,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            24
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch09-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -69052,6 +69370,13 @@
           "path": "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
           "lines": [
             666
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1599,
+            1600
           ]
         },
         {
@@ -69211,6 +69536,14 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            24,
+            124,
+            135
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             24,
             124,
@@ -69428,6 +69761,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            25
+          ]
+        },
+        {
           "path": "docs/knowledge-base/56-fd2-remake-sdd.md",
           "lines": [
             1833
@@ -69518,6 +69857,12 @@
           "path": "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
           "lines": [
             667
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1601
           ]
         },
         {
@@ -69666,6 +70011,15 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            25,
+            146,
+            168,
+            179
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             25,
             146,
@@ -69880,6 +70234,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            26
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             26
           ]
@@ -70330,6 +70690,12 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1602
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_ch21_post_ida.txt",
           "lines": [
             34
@@ -70510,6 +70876,15 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            26,
+            27,
+            28,
+            157
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             26,
             27,
@@ -70738,6 +71113,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            29
+          ]
+        },
+        {
           "path": "docs/knowledge-base/56-fd2-remake-sdd.md",
           "lines": [
             494
@@ -70918,6 +71299,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            29
+          ]
+        },
+        {
           "path": "docs/knowledge-base/56-fd2-remake-sdd.md",
           "lines": [
             494
@@ -71089,6 +71476,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            30
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch15-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -71195,6 +71588,12 @@
           "path": "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
           "lines": [
             672
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1603
           ]
         },
         {
@@ -71325,6 +71724,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            30
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             30
           ]
@@ -71551,6 +71956,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            31
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch16-post-native-dialogue-e1.json",
           "lines": [
             11
@@ -71676,6 +72087,12 @@
           "lines": [
             189,
             220
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1604
           ]
         },
         {
@@ -71814,6 +72231,13 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            31,
+            190
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             31,
             190
@@ -72031,6 +72455,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            32
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch17-post-native-dialogue-e1.json",
           "lines": [
             21
@@ -72181,6 +72611,13 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1605,
+            1606
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_dialogue_cause_20260908.json",
           "lines": [
             6338,
@@ -72315,6 +72752,14 @@
           "path": "docs/data/parity-slots/ch18-manifest.json",
           "lines": [
             32
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            32,
+            201,
+            212
           ]
         },
         {
@@ -72519,6 +72964,12 @@
           "lines": [
             33
           ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            33
+          ]
         }
       ],
       "range_hits": [
@@ -72680,6 +73131,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            33
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             33
           ]
@@ -72857,6 +73314,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            34
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch19-post-native-dialogue-e1.json",
           "lines": [
             20
@@ -72986,6 +73449,13 @@
             22,
             23,
             24
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1607,
+            1608
           ]
         },
         {
@@ -73147,6 +73617,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            34
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             34
           ]
@@ -73379,6 +73855,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            35
+          ]
+        },
+        {
           "path": "docs/knowledge-base/91-worklist-history.md",
           "lines": [
             2626
@@ -73459,6 +73941,13 @@
           "lines": [
             24,
             27
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1609,
+            1610
           ]
         },
         {
@@ -73643,6 +74132,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            35
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             35
           ]
@@ -73879,6 +74374,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            36
+          ]
+        },
+        {
           "path": "docs/knowledge-base/56-fd2-remake-sdd.md",
           "lines": [
             4844
@@ -74081,6 +74582,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            36
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             36
           ]
@@ -74295,6 +74802,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            37
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch22-post-native-dialogue-e1.json",
           "lines": [
             20
@@ -74436,6 +74949,13 @@
           "path": "docs/data/ida/fd2_ch18_parallax_backdrop_20261002.json",
           "lines": [
             1575
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1611,
+            1612
           ]
         },
         {
@@ -74635,6 +75155,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            37
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             37
           ]
@@ -74866,6 +75392,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            38
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             38
           ]
@@ -75132,6 +75664,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            38
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch23-post-native-dialogue-e1.json",
           "lines": [
             8
@@ -75330,6 +75868,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            39
+          ]
+        },
+        {
           "path": "docs/knowledge-base/56-fd2-remake-sdd.md",
           "lines": [
             5160,
@@ -75382,6 +75926,12 @@
           "path": "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
           "lines": [
             680
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1613
           ]
         },
         {
@@ -75539,6 +76089,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            39
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             39
           ]
@@ -75752,6 +76308,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            40
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             40
           ]
@@ -76018,6 +76580,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            40
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch25-post-native-dialogue-e1.json",
           "lines": [
             26,
@@ -76231,6 +76799,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            41
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             41
           ]
@@ -76537,6 +77111,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            41
+          ]
+        },
+        {
           "path": "docs/knowledge-base/39-ani-afm-format.md",
           "lines": [
             248
@@ -76791,6 +77371,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            42
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/ch27-post-native-dialogue-e1.json",
           "lines": [
             25
@@ -76980,6 +77566,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            42
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             42
           ]
@@ -77178,6 +77770,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            43
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             43
           ]
@@ -77551,6 +78149,12 @@
           ]
         },
         {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
+          "lines": [
+            43
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/postbattle-tooling-regression-20261003.json",
           "lines": [
             310,
@@ -77828,6 +78432,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            44
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             44
           ]
@@ -78138,6 +78748,12 @@
         },
         {
           "path": "docs/data/parity-slots/ch18-manifest.json",
+          "lines": [
+            44
+          ]
+        },
+        {
+          "path": "docs/data/parity-slots/ch19-manifest.json",
           "lines": [
             44
           ]
@@ -79057,6 +79673,13 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            46,
+            204
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_ch21_post_ida.txt",
           "lines": [
             21
@@ -79832,6 +80455,15 @@
             425,
             632,
             633
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            47,
+            48,
+            205,
+            206
           ]
         },
         {
@@ -85316,7 +85948,7 @@
         {
           "path": "docs/REMAKE-STATUS.md",
           "lines": [
-            169
+            170
           ]
         },
         {
@@ -85902,6 +86534,16 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            4316,
+            4321,
+            4327,
+            4333,
+            6104
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_preparation_fixed_record_ida.txt",
           "lines": [
             68
@@ -86001,6 +86643,370 @@
           "path": "docs/data/ida/fd2_ch16_startup_20261002.json",
           "lines": [
             13
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            3723,
+            4315,
+            4316,
+            4321,
+            4327,
+            4333,
+            4337,
+            4343,
+            4347,
+            4353,
+            4357,
+            4363,
+            4367,
+            4373,
+            4377,
+            4383,
+            4387,
+            4393,
+            4397,
+            4403,
+            4407,
+            4413,
+            4417,
+            4423,
+            4427,
+            4433,
+            4437,
+            4443,
+            4447,
+            4453,
+            4457,
+            4463,
+            4467,
+            4473,
+            4477,
+            4483,
+            4487,
+            4493,
+            4497,
+            4503,
+            4507,
+            4513,
+            4517,
+            4523,
+            4527,
+            4533,
+            4537,
+            4543,
+            4547,
+            4553,
+            4557,
+            4563,
+            4567,
+            4573,
+            4577,
+            4583,
+            4587,
+            4593,
+            4597,
+            4603,
+            4607,
+            4613,
+            4617,
+            4623,
+            4627,
+            4633,
+            4637,
+            4643,
+            4647,
+            4653,
+            4657,
+            4663,
+            4667,
+            4673,
+            4677,
+            4683,
+            4687,
+            4693,
+            4697,
+            4703,
+            4707,
+            4713,
+            4717,
+            4723,
+            4727,
+            4733,
+            4737,
+            4743,
+            4747,
+            4753,
+            4757,
+            4763,
+            4767,
+            4773,
+            4777,
+            4783,
+            4787,
+            4793,
+            4797,
+            4803,
+            4807,
+            4813,
+            4817,
+            4823,
+            4827,
+            4833,
+            4837,
+            4843,
+            4847,
+            4853,
+            4857,
+            4863,
+            4867,
+            4873,
+            4877,
+            4883,
+            4887,
+            4893,
+            4897,
+            4903,
+            4907,
+            4913,
+            4917,
+            4923,
+            4927,
+            4933,
+            4937,
+            4943,
+            4947,
+            4953,
+            4957,
+            4963,
+            4967,
+            4973,
+            4977,
+            4983,
+            4987,
+            4993,
+            4997,
+            5003,
+            5007,
+            5013,
+            5017,
+            5023,
+            5027,
+            5033,
+            5037,
+            5043,
+            5047,
+            5053,
+            5057,
+            5063,
+            5067,
+            5073,
+            5077,
+            5083,
+            5087,
+            5093,
+            5097,
+            5103,
+            5107,
+            5113,
+            5117,
+            5123,
+            5127,
+            5133,
+            5137,
+            5143,
+            5147,
+            5153,
+            5157,
+            5163,
+            5167,
+            5173,
+            5177,
+            5183,
+            5187,
+            5193,
+            5197,
+            5203,
+            5207,
+            5213,
+            5217,
+            5223,
+            5227,
+            5233,
+            5237,
+            5243,
+            5247,
+            5253,
+            5257,
+            5263,
+            5267,
+            5273,
+            5277,
+            5283,
+            5287,
+            5293,
+            5297,
+            5303,
+            5307,
+            5313,
+            5317,
+            5323,
+            5327,
+            5333,
+            5337,
+            5343,
+            5347,
+            5353,
+            5357,
+            5363,
+            5367,
+            5373,
+            5377,
+            5383,
+            5387,
+            5393,
+            5397,
+            5403,
+            5407,
+            5413,
+            5417,
+            5423,
+            5427,
+            5433,
+            5437,
+            5443,
+            5447,
+            5453,
+            5457,
+            5463,
+            5467,
+            5473,
+            5477,
+            5483,
+            5487,
+            5493,
+            5497,
+            5503,
+            5507,
+            5513,
+            5517,
+            5523,
+            5527,
+            5533,
+            5537,
+            5543,
+            5547,
+            5553,
+            5557,
+            5563,
+            5567,
+            5573,
+            5577,
+            5583,
+            5587,
+            5593,
+            5597,
+            5603,
+            5607,
+            5613,
+            5617,
+            5623,
+            5627,
+            5633,
+            5637,
+            5643,
+            5647,
+            5653,
+            5657,
+            5663,
+            5667,
+            5673,
+            5677,
+            5683,
+            5687,
+            5693,
+            5697,
+            5703,
+            5707,
+            5713,
+            5717,
+            5723,
+            5727,
+            5733,
+            5737,
+            5743,
+            5747,
+            5753,
+            5757,
+            5763,
+            5767,
+            5773,
+            5777,
+            5783,
+            5787,
+            5793,
+            5797,
+            5803,
+            5807,
+            5813,
+            5817,
+            5823,
+            5827,
+            5833,
+            5837,
+            5843,
+            5847,
+            5853,
+            5857,
+            5863,
+            5867,
+            5873,
+            5877,
+            5883,
+            5887,
+            5893,
+            5897,
+            5903,
+            5907,
+            5913,
+            5917,
+            5923,
+            5927,
+            5933,
+            5937,
+            5943,
+            5947,
+            5953,
+            5957,
+            5963,
+            5967,
+            5973,
+            5977,
+            5983,
+            5987,
+            5993,
+            5997,
+            6003,
+            6007,
+            6013,
+            6017,
+            6023,
+            6027,
+            6033,
+            6037,
+            6043,
+            6047,
+            6053,
+            6057,
+            6063,
+            6067,
+            6073,
+            6077,
+            6083,
+            6087,
+            6093,
+            6104
           ]
         },
         {
@@ -86539,6 +87545,13 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            4317,
+            4322
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_town_preparation_background_20261002.json",
           "lines": [
             3740,
@@ -86585,6 +87598,13 @@
           "path": "docs/data/fd2_postbattle_gate_outcome_ida.txt",
           "lines": [
             26
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            4317,
+            4322
           ]
         },
         {
@@ -91545,6 +92565,17 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            19,
+            20,
+            25,
+            31,
+            37,
+            3729
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_preparation_fixed_record_ida.txt",
           "lines": [
             10,
@@ -91678,6 +92709,762 @@
           "path": "docs/data/ida/fd2_ch16_startup_20261002.json",
           "lines": [
             13
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            954,
+            1033
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            19,
+            20,
+            25,
+            31,
+            37,
+            41,
+            47,
+            51,
+            57,
+            61,
+            67,
+            71,
+            77,
+            81,
+            87,
+            91,
+            97,
+            101,
+            107,
+            111,
+            117,
+            121,
+            127,
+            131,
+            137,
+            141,
+            147,
+            151,
+            157,
+            161,
+            167,
+            171,
+            177,
+            181,
+            187,
+            191,
+            197,
+            201,
+            207,
+            211,
+            217,
+            221,
+            227,
+            231,
+            237,
+            241,
+            247,
+            251,
+            257,
+            261,
+            267,
+            271,
+            277,
+            281,
+            287,
+            291,
+            297,
+            301,
+            307,
+            311,
+            317,
+            321,
+            327,
+            331,
+            337,
+            341,
+            347,
+            351,
+            357,
+            361,
+            367,
+            371,
+            377,
+            381,
+            387,
+            391,
+            397,
+            401,
+            407,
+            411,
+            417,
+            421,
+            427,
+            431,
+            437,
+            441,
+            447,
+            451,
+            457,
+            461,
+            467,
+            471,
+            477,
+            481,
+            487,
+            491,
+            497,
+            501,
+            507,
+            511,
+            517,
+            521,
+            527,
+            531,
+            537,
+            541,
+            547,
+            551,
+            557,
+            561,
+            567,
+            571,
+            577,
+            581,
+            587,
+            591,
+            597,
+            601,
+            607,
+            611,
+            617,
+            621,
+            627,
+            631,
+            637,
+            641,
+            647,
+            651,
+            657,
+            661,
+            667,
+            671,
+            677,
+            681,
+            687,
+            691,
+            697,
+            701,
+            707,
+            711,
+            717,
+            721,
+            727,
+            731,
+            737,
+            741,
+            747,
+            751,
+            757,
+            761,
+            767,
+            771,
+            777,
+            781,
+            787,
+            791,
+            797,
+            801,
+            807,
+            811,
+            817,
+            821,
+            827,
+            831,
+            837,
+            841,
+            847,
+            851,
+            857,
+            861,
+            867,
+            871,
+            877,
+            881,
+            887,
+            891,
+            897,
+            901,
+            907,
+            911,
+            917,
+            921,
+            927,
+            931,
+            937,
+            941,
+            947,
+            951,
+            957,
+            961,
+            967,
+            971,
+            977,
+            981,
+            987,
+            991,
+            997,
+            1001,
+            1007,
+            1011,
+            1017,
+            1021,
+            1027,
+            1031,
+            1037,
+            1041,
+            1047,
+            1051,
+            1057,
+            1061,
+            1067,
+            1071,
+            1077,
+            1081,
+            1087,
+            1091,
+            1097,
+            1101,
+            1107,
+            1111,
+            1117,
+            1121,
+            1127,
+            1131,
+            1137,
+            1141,
+            1147,
+            1151,
+            1157,
+            1161,
+            1167,
+            1171,
+            1177,
+            1181,
+            1187,
+            1191,
+            1197,
+            1201,
+            1207,
+            1211,
+            1217,
+            1221,
+            1227,
+            1231,
+            1237,
+            1241,
+            1247,
+            1251,
+            1257,
+            1261,
+            1267,
+            1271,
+            1277,
+            1281,
+            1287,
+            1291,
+            1297,
+            1301,
+            1307,
+            1311,
+            1317,
+            1321,
+            1327,
+            1331,
+            1337,
+            1341,
+            1347,
+            1351,
+            1357,
+            1361,
+            1367,
+            1371,
+            1377,
+            1381,
+            1387,
+            1391,
+            1397,
+            1401,
+            1407,
+            1411,
+            1417,
+            1421,
+            1427,
+            1431,
+            1437,
+            1441,
+            1447,
+            1451,
+            1457,
+            1461,
+            1467,
+            1471,
+            1477,
+            1481,
+            1487,
+            1491,
+            1497,
+            1501,
+            1507,
+            1511,
+            1517,
+            1521,
+            1527,
+            1531,
+            1537,
+            1541,
+            1547,
+            1551,
+            1557,
+            1561,
+            1567,
+            1571,
+            1577,
+            1581,
+            1587,
+            1591,
+            1597,
+            1601,
+            1607,
+            1611,
+            1617,
+            1621,
+            1627,
+            1631,
+            1637,
+            1641,
+            1647,
+            1651,
+            1657,
+            1661,
+            1667,
+            1671,
+            1677,
+            1681,
+            1687,
+            1691,
+            1697,
+            1701,
+            1707,
+            1711,
+            1717,
+            1721,
+            1727,
+            1731,
+            1737,
+            1741,
+            1747,
+            1751,
+            1757,
+            1761,
+            1767,
+            1771,
+            1777,
+            1781,
+            1787,
+            1791,
+            1797,
+            1801,
+            1807,
+            1811,
+            1817,
+            1821,
+            1827,
+            1831,
+            1837,
+            1841,
+            1847,
+            1851,
+            1857,
+            1861,
+            1867,
+            1871,
+            1877,
+            1881,
+            1887,
+            1891,
+            1897,
+            1901,
+            1907,
+            1911,
+            1917,
+            1921,
+            1927,
+            1931,
+            1937,
+            1941,
+            1947,
+            1951,
+            1957,
+            1961,
+            1967,
+            1971,
+            1977,
+            1981,
+            1987,
+            1991,
+            1997,
+            2001,
+            2007,
+            2011,
+            2017,
+            2021,
+            2027,
+            2031,
+            2037,
+            2041,
+            2047,
+            2051,
+            2057,
+            2061,
+            2067,
+            2071,
+            2077,
+            2081,
+            2087,
+            2091,
+            2097,
+            2101,
+            2107,
+            2111,
+            2117,
+            2121,
+            2127,
+            2131,
+            2137,
+            2141,
+            2147,
+            2151,
+            2157,
+            2161,
+            2167,
+            2171,
+            2177,
+            2181,
+            2187,
+            2191,
+            2197,
+            2201,
+            2207,
+            2211,
+            2217,
+            2221,
+            2227,
+            2231,
+            2237,
+            2241,
+            2247,
+            2251,
+            2257,
+            2261,
+            2267,
+            2271,
+            2277,
+            2281,
+            2287,
+            2291,
+            2297,
+            2301,
+            2307,
+            2311,
+            2317,
+            2321,
+            2327,
+            2331,
+            2337,
+            2341,
+            2347,
+            2351,
+            2357,
+            2361,
+            2367,
+            2371,
+            2377,
+            2381,
+            2387,
+            2391,
+            2397,
+            2401,
+            2407,
+            2411,
+            2417,
+            2421,
+            2427,
+            2431,
+            2437,
+            2441,
+            2447,
+            2451,
+            2457,
+            2461,
+            2467,
+            2471,
+            2477,
+            2481,
+            2487,
+            2491,
+            2497,
+            2501,
+            2507,
+            2511,
+            2517,
+            2521,
+            2527,
+            2531,
+            2537,
+            2541,
+            2547,
+            2551,
+            2557,
+            2561,
+            2567,
+            2571,
+            2577,
+            2581,
+            2587,
+            2591,
+            2597,
+            2601,
+            2607,
+            2611,
+            2617,
+            2621,
+            2627,
+            2631,
+            2637,
+            2641,
+            2647,
+            2651,
+            2657,
+            2661,
+            2667,
+            2671,
+            2677,
+            2681,
+            2687,
+            2691,
+            2697,
+            2701,
+            2707,
+            2711,
+            2717,
+            2721,
+            2727,
+            2731,
+            2737,
+            2741,
+            2747,
+            2751,
+            2757,
+            2761,
+            2767,
+            2771,
+            2777,
+            2781,
+            2787,
+            2791,
+            2797,
+            2801,
+            2807,
+            2811,
+            2817,
+            2821,
+            2827,
+            2831,
+            2837,
+            2841,
+            2847,
+            2851,
+            2857,
+            2861,
+            2867,
+            2871,
+            2877,
+            2881,
+            2887,
+            2891,
+            2897,
+            2901,
+            2907,
+            2911,
+            2917,
+            2921,
+            2927,
+            2931,
+            2937,
+            2941,
+            2947,
+            2951,
+            2957,
+            2961,
+            2967,
+            2971,
+            2977,
+            2981,
+            2987,
+            2991,
+            2997,
+            3001,
+            3007,
+            3011,
+            3017,
+            3021,
+            3027,
+            3031,
+            3037,
+            3041,
+            3047,
+            3051,
+            3057,
+            3061,
+            3067,
+            3071,
+            3077,
+            3081,
+            3087,
+            3091,
+            3097,
+            3101,
+            3107,
+            3111,
+            3117,
+            3121,
+            3127,
+            3131,
+            3137,
+            3141,
+            3147,
+            3151,
+            3157,
+            3161,
+            3167,
+            3171,
+            3177,
+            3181,
+            3187,
+            3191,
+            3197,
+            3201,
+            3207,
+            3211,
+            3217,
+            3221,
+            3227,
+            3231,
+            3237,
+            3241,
+            3247,
+            3251,
+            3257,
+            3261,
+            3267,
+            3271,
+            3277,
+            3281,
+            3287,
+            3291,
+            3297,
+            3301,
+            3307,
+            3311,
+            3317,
+            3321,
+            3327,
+            3331,
+            3337,
+            3341,
+            3347,
+            3351,
+            3357,
+            3361,
+            3367,
+            3371,
+            3377,
+            3381,
+            3387,
+            3391,
+            3397,
+            3401,
+            3407,
+            3411,
+            3417,
+            3421,
+            3427,
+            3431,
+            3437,
+            3441,
+            3447,
+            3451,
+            3457,
+            3461,
+            3467,
+            3471,
+            3477,
+            3481,
+            3487,
+            3491,
+            3497,
+            3501,
+            3507,
+            3511,
+            3517,
+            3521,
+            3527,
+            3531,
+            3537,
+            3541,
+            3547,
+            3551,
+            3557,
+            3561,
+            3567,
+            3571,
+            3577,
+            3581,
+            3587,
+            3591,
+            3597,
+            3601,
+            3607,
+            3611,
+            3617,
+            3621,
+            3627,
+            3631,
+            3637,
+            3641,
+            3647,
+            3651,
+            3657,
+            3661,
+            3667,
+            3671,
+            3677,
+            3681,
+            3687,
+            3691,
+            3697,
+            3701,
+            3707,
+            3711,
+            3717,
+            3729,
+            4305,
+            4306
           ]
         },
         {
@@ -92463,6 +94250,12 @@
           ]
         },
         {
+          "path": "docs/data/ui-traces/ch19-required-party-rejection.json",
+          "lines": [
+            16
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/native-load-ch29-preparation-original-remake-e1.json",
           "lines": [
             14
@@ -92576,7 +94369,8 @@
       "direct_code_xref_count": 2,
       "footprint_source_kinds": [
         "canonical_claim",
-        "direct_artifact"
+        "direct_artifact",
+        "raw_only"
       ],
       "review_priority": "review_first",
       "review_state": "pending_human_evidence_review",
@@ -92585,6 +94379,19 @@
           "path": "docs/data/fd2_postbattle_gate_outcome_ida.txt",
           "lines": [
             27
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            21,
+            26,
+            3732,
+            3733,
+            3738,
+            3744,
+            3750,
+            4312
           ]
         },
         {
@@ -92606,6 +94413,129 @@
           "path": "docs/data/fd2_postbattle_gate_outcome_ida.txt",
           "lines": [
             27
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            21,
+            26,
+            3732,
+            3733,
+            3738,
+            3744,
+            3750,
+            3754,
+            3760,
+            3764,
+            3770,
+            3774,
+            3780,
+            3784,
+            3790,
+            3794,
+            3800,
+            3804,
+            3810,
+            3814,
+            3820,
+            3824,
+            3830,
+            3834,
+            3840,
+            3844,
+            3850,
+            3854,
+            3860,
+            3864,
+            3870,
+            3874,
+            3880,
+            3884,
+            3890,
+            3894,
+            3900,
+            3904,
+            3910,
+            3914,
+            3920,
+            3924,
+            3930,
+            3934,
+            3940,
+            3944,
+            3950,
+            3954,
+            3960,
+            3964,
+            3970,
+            3974,
+            3980,
+            3984,
+            3990,
+            3994,
+            4000,
+            4004,
+            4010,
+            4014,
+            4020,
+            4024,
+            4030,
+            4034,
+            4040,
+            4044,
+            4050,
+            4054,
+            4060,
+            4064,
+            4070,
+            4074,
+            4080,
+            4084,
+            4090,
+            4094,
+            4100,
+            4104,
+            4110,
+            4114,
+            4120,
+            4124,
+            4130,
+            4134,
+            4140,
+            4144,
+            4150,
+            4154,
+            4160,
+            4164,
+            4170,
+            4174,
+            4180,
+            4184,
+            4190,
+            4194,
+            4200,
+            4204,
+            4210,
+            4214,
+            4220,
+            4224,
+            4230,
+            4234,
+            4240,
+            4244,
+            4250,
+            4254,
+            4260,
+            4264,
+            4270,
+            4274,
+            4280,
+            4284,
+            4290,
+            4294,
+            4300,
+            4312
           ]
         },
         {
@@ -92642,6 +94572,12 @@
           ]
         },
         {
+          "path": "docs/data/ui-traces/ch19-required-party-rejection.json",
+          "lines": [
+            17
+          ]
+        },
+        {
           "path": "docs/knowledge-base/12-music-playback-and-scene.md",
           "lines": [
             80,
@@ -92675,6 +94611,13 @@
           "lines": [
             17,
             23
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            3734,
+            3739
           ]
         },
         {
@@ -92731,6 +94674,13 @@
           "lines": [
             17,
             23
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+          "lines": [
+            3734,
+            3739
           ]
         },
         {
@@ -92978,6 +94928,18 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            181,
+            182,
+            187,
+            193,
+            199,
+            960,
+            1033
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_preparation_fixed_record_ida.txt",
           "lines": [
             11,
@@ -93022,6 +94984,168 @@
           "path": "docs/data/fd2_parity_preparation_selection_20261002.json",
           "lines": [
             29
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            181,
+            182,
+            187,
+            193,
+            199,
+            203,
+            209,
+            213,
+            219,
+            223,
+            229,
+            233,
+            239,
+            243,
+            249,
+            253,
+            259,
+            263,
+            269,
+            273,
+            279,
+            283,
+            289,
+            293,
+            299,
+            303,
+            309,
+            313,
+            319,
+            323,
+            329,
+            333,
+            339,
+            343,
+            349,
+            353,
+            359,
+            363,
+            369,
+            373,
+            379,
+            383,
+            389,
+            393,
+            399,
+            403,
+            409,
+            413,
+            419,
+            423,
+            429,
+            433,
+            439,
+            443,
+            449,
+            453,
+            459,
+            463,
+            469,
+            473,
+            479,
+            483,
+            489,
+            493,
+            499,
+            503,
+            509,
+            513,
+            519,
+            523,
+            529,
+            533,
+            539,
+            543,
+            549,
+            553,
+            559,
+            563,
+            569,
+            573,
+            579,
+            583,
+            589,
+            593,
+            599,
+            603,
+            609,
+            613,
+            619,
+            623,
+            629,
+            633,
+            639,
+            643,
+            649,
+            653,
+            659,
+            663,
+            669,
+            673,
+            679,
+            683,
+            689,
+            693,
+            699,
+            703,
+            709,
+            713,
+            719,
+            723,
+            729,
+            733,
+            739,
+            743,
+            749,
+            753,
+            759,
+            763,
+            769,
+            773,
+            779,
+            783,
+            789,
+            793,
+            799,
+            803,
+            809,
+            813,
+            819,
+            823,
+            829,
+            833,
+            839,
+            843,
+            849,
+            853,
+            859,
+            863,
+            869,
+            873,
+            879,
+            883,
+            889,
+            893,
+            899,
+            903,
+            909,
+            913,
+            919,
+            923,
+            929,
+            933,
+            939,
+            943,
+            949,
+            960,
+            1033
           ]
         },
         {
@@ -93085,6 +95209,14 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            183,
+            188,
+            1033
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_preparation_fixed_record_ida.txt",
           "lines": [
             11,
@@ -93109,6 +95241,14 @@
           "path": "docs/data/fd2_ch15_post_ida.txt",
           "lines": [
             54
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            183,
+            188,
+            1033
           ]
         },
         {
@@ -93481,6 +95621,15 @@
             457,
             458,
             2607
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1614,
+            1615,
+            1616,
+            1617
           ]
         },
         {
@@ -95094,6 +97243,12 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            222
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
           "lines": [
             68
@@ -95348,6 +97503,12 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            222
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt",
           "lines": [
             288,
@@ -95458,6 +97619,12 @@
           "lines": [
             436,
             441
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            222
           ]
         },
         {
@@ -96159,6 +98326,18 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            58,
+            63,
+            68,
+            163,
+            169,
+            212,
+            222
+          ]
+        },
+        {
           "path": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md",
           "lines": [
             404
@@ -96253,6 +98432,25 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            57,
+            58,
+            63,
+            68,
+            163,
+            169,
+            173,
+            179,
+            183,
+            189,
+            193,
+            199,
+            212,
+            222
+          ]
+        },
+        {
           "path": "docs/knowledge-base/56-fd2-remake-sdd.md",
           "lines": [
             8694
@@ -96321,6 +98519,13 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            59,
+            64
+          ]
+        },
+        {
           "path": "docs/data/ui-traces/parity-ch14-r1.json",
           "lines": [
             1677
@@ -96381,6 +98586,13 @@
             205,
             314,
             880
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            59,
+            64
           ]
         },
         {
@@ -97674,6 +99886,18 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            13,
+            14,
+            19,
+            25,
+            31,
+            54,
+            222
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt",
           "lines": [
             522,
@@ -97723,6 +99947,20 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            13,
+            14,
+            19,
+            25,
+            31,
+            35,
+            41,
+            54,
+            222
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt",
           "lines": [
             522,
@@ -97760,6 +99998,14 @@
           "lines": [
             2
           ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            15,
+            20,
+            222
+          ]
         }
       ],
       "range_hits": [
@@ -97781,6 +100027,14 @@
           "path": "docs/data/ida/fd2_ch13_handoff_20261001.json",
           "lines": [
             475
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_startup_20261003.json",
+          "lines": [
+            15,
+            20,
+            222
           ]
         }
       ]
@@ -99350,6 +101604,12 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            1014
+          ]
+        },
+        {
           "path": "docs/goal/112-goal-ch07-parity-and-sample-sheet-20260916.md",
           "lines": [
             26
@@ -99498,6 +101758,12 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            1014
+          ]
+        },
+        {
           "path": "docs/goal/112-goal-ch07-parity-and-sample-sheet-20260916.md",
           "lines": [
             26
@@ -99622,6 +101888,12 @@
           "path": "docs/data/ida/fd2_ch18_event43_20261002.json",
           "lines": [
             153
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            1015
           ]
         },
         {
@@ -99762,6 +102034,18 @@
           "path": "docs/data/ida/fd2_ch18_event43_20261002.json",
           "lines": [
             153
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            1015
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1618
           ]
         },
         {
@@ -105185,6 +107469,20 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            967,
+            970,
+            976,
+            980,
+            986,
+            990,
+            996,
+            1000,
+            1006
+          ]
+        },
+        {
           "path": "docs/data/ida/fd2_dialogue_cause_20260908.json",
           "lines": [
             6532
@@ -106026,6 +108324,17 @@
           ]
         },
         {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            13,
+            14,
+            19,
+            25,
+            31,
+            99
+          ]
+        },
+        {
           "path": "docs/data/turn_events.json",
           "lines": [
             402
@@ -106045,6 +108354,28 @@
             12,
             17,
             173
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            13,
+            14,
+            19,
+            25,
+            31,
+            35,
+            41,
+            45,
+            51,
+            55,
+            61,
+            65,
+            71,
+            75,
+            81,
+            99,
+            1021
           ]
         },
         {
@@ -106072,15 +108403,30 @@
       ],
       "direct_code_xref_count": 8,
       "footprint_source_kinds": [
+        "direct_artifact",
         "raw_only"
       ],
-      "review_priority": "recover_lead_only",
+      "review_priority": "review_direct_artifact",
       "review_state": "pending_human_evidence_review",
       "exact_start_hits": [
         {
           "path": "docs/data/event_id_groups.json",
           "lines": [
             372
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            15,
+            20,
+            102,
+            103,
+            108,
+            114,
+            120,
+            178,
+            1021
           ]
         },
         {
@@ -106095,6 +108441,29 @@
           "path": "docs/data/event_id_groups.json",
           "lines": [
             372
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            15,
+            20,
+            102,
+            103,
+            108,
+            114,
+            120,
+            124,
+            130,
+            134,
+            140,
+            144,
+            150,
+            154,
+            160,
+            178,
+            1021,
+            1027
           ]
         },
         {
@@ -106122,16 +108491,42 @@
       ],
       "direct_code_xref_count": 8,
       "footprint_source_kinds": [
+        "canonical_claim",
         "direct_artifact",
         "raw_only"
       ],
-      "review_priority": "review_direct_artifact",
+      "review_priority": "review_first",
       "review_state": "pending_human_evidence_review",
       "exact_start_hits": [
         {
           "path": "docs/data/event_id_groups.json",
           "lines": [
             376
+          ]
+        },
+        {
+          "path": "docs/data/fd2-worklist.json",
+          "lines": [
+            359
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            104,
+            109,
+            1027
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            17,
+            18,
+            23,
+            29,
+            35,
+            243
           ]
         },
         {
@@ -106145,6 +108540,12 @@
           "lines": [
             411
           ]
+        },
+        {
+          "path": "docs/knowledge-base/91-worklist.md",
+          "lines": [
+            118
+          ]
         }
       ],
       "range_hits": [
@@ -106153,6 +108554,76 @@
           "lines": [
             376,
             381
+          ]
+        },
+        {
+          "path": "docs/data/fd2-worklist.json",
+          "lines": [
+            359
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_modes_and_selection_pack_20261003.json",
+          "lines": [
+            104,
+            109,
+            1027
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            17,
+            18,
+            23,
+            29,
+            35,
+            39,
+            45,
+            49,
+            55,
+            59,
+            65,
+            69,
+            75,
+            79,
+            85,
+            89,
+            95,
+            99,
+            105,
+            109,
+            115,
+            119,
+            125,
+            129,
+            135,
+            139,
+            145,
+            149,
+            155,
+            159,
+            165,
+            169,
+            175,
+            179,
+            185,
+            189,
+            195,
+            199,
+            205,
+            209,
+            215,
+            219,
+            225,
+            243,
+            1619,
+            1664,
+            1665,
+            1672,
+            1673,
+            1680,
+            1681
           ]
         },
         {
@@ -106179,6 +108650,12 @@
           "path": "docs/data/turn_events.json",
           "lines": [
             411
+          ]
+        },
+        {
+          "path": "docs/knowledge-base/91-worklist.md",
+          "lines": [
+            118
           ]
         }
       ]
@@ -106211,6 +108688,13 @@
           "path": "docs/data/event_id_groups.json",
           "lines": [
             387
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            19,
+            24
           ]
         },
         {
@@ -106263,6 +108747,13 @@
           "lines": [
             387,
             392
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            19,
+            24
           ]
         },
         {
@@ -106640,6 +109131,12 @@
           "lines": [
             417,
             422
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1620
           ]
         },
         {
@@ -107724,6 +110221,12 @@
           "path": "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json",
           "lines": [
             12618
+          ]
+        },
+        {
+          "path": "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+          "lines": [
+            1621
           ]
         },
         {
@@ -120038,7 +122541,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            148
+            188
           ]
         },
         {
@@ -120276,7 +122779,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            148
+            188
           ]
         },
         {
@@ -120689,7 +123192,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            148
+            188
           ]
         },
         {
@@ -120980,7 +123483,7 @@
         {
           "path": "docs/knowledge-base/91-worklist.md",
           "lines": [
-            148
+            188
           ]
         },
         {

@@ -1358,6 +1358,63 @@
       ]
     },
     {
+      "id": 44,
+      "handler": "0x350a4",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 29,
+          "last": 59,
+          "mode": 3,
+          "source": "0x350ae",
+          "tail_sources": [
+            "0x34f39"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "handler": "0x350b9",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "ai_mode_range",
+          "first": 16,
+          "last": 31,
+          "mode": 3,
+          "source": "0x350c3",
+          "tail_sources": [
+            "0x34f37"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "handler": "0x350cc",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 1,
+          "gate": 0,
+          "source": "0x350d6"
+        },
+        {
+          "op": "dialogue",
+          "text": 1,
+          "source": "0x350e0"
+        },
+        {
+          "op": "join_party",
+          "char_id": 27,
+          "source": "0x35107"
+        }
+      ]
+    },
+    {
       "id": 51,
       "handler": "0x3529a",
       "battle_units": [

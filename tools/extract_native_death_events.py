@@ -302,6 +302,23 @@ EVENTS = [
         op("ai_mode_range", [(0x3509B, 0x350A4), (0x34F37, 0x34F41)],
            first=0x10, last=0x10, mode=3),
     ]},
+    # 第十九章raw camp2模式事件；完整IDA與READY見
+    # fd2_ch19_modes_and_selection_pack_20261003.json，沿用3419C共享尾段。
+    {"id": 44, "handler": 0x350A4, "ops": [
+        op("ai_mode_range", [(0x350AE, 0x350B9), (0x34F39, 0x34F41)],
+           first=0x1D, last=0x3B, mode=3),
+    ]},
+    {"id": 45, "handler": 0x350B9, "ops": [
+        op("ai_mode_range", [(0x350C3, 0x350CC), (0x34F37, 0x34F41)],
+           first=0x10, last=0x1F, mode=3),
+    ]},
+    # 第十九章T6；350CC的完整IDA契約與READY規格見
+    # docs/data/ida/fd2_ch19_turn_event46_20261003.json。
+    {"id": 46, "handler": 0x350CC, "ops": [
+        op("spawn_group", [(0x350D6, 0x350E0)], group=1, gate=0),
+        op("dialogue", [(0x350E0, 0x35107)], text=1),
+        op("join_party", [(0x35107, 0x35111)], char_id=27),
+    ]},
     {"id": 51, "handler": 0x3529A, "ops": [
         op("reward", [(0x352A9, 0x352C4)], rodata=0x52748),
         op("dialogue", [(0x352C4, 0x352DD), (0x34FB7, 0x34FC5)], text=3),
@@ -481,6 +498,8 @@ def check_op(image, event_id, o):
         if o["gate"]:
             body = [("mov byte ptr [0x3afa], 1", GATE), *body, ("mov byte ptr [0x3afa], 0", GATE)]
         expect_seq(insns, body, where)
+    elif kind == "join_party":
+        expect_seq(insns, [f"push {imm(o['char_id'])}", "call 0x112a5", "add esp, 4"], where)
     elif kind == "reset_pose":
         expect_seq(insns, ["jmp 0x134e4" if o.get("tail") else "call 0x134e4"],
                    where, include_jumps=bool(o.get("tail")))

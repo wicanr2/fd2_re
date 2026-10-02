@@ -5017,6 +5017,66 @@
           "message": "欄位已完整保留於 extensions.legacy",
           "path": "events[1]",
           "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[0]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[1]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[2]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[3]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[4]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[5]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2].actions[6]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[2]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[3].actions[0]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "events[3]",
+          "severity": "warning"
         }
       ],
       "kind": "scenario",
@@ -17965,7 +18025,7 @@
       "document_id": "legacy/campaign/b5c1e4503510/campaign_full",
       "kind": "campaign",
       "output": "campaign/campaign_full.json",
-      "sha256": "48d3ae7a2b1775af9e78dd800d4cc37a9e1a3647a9c8a3c841bab4da931bd0d8",
+      "sha256": "fe8ac076f85da8417a580e04d5183970bb540fa2613c2d04b85932a562c6e128",
       "source": "remake/assets/scenarios/campaign_full.json"
     },
     {
@@ -18113,11 +18173,11 @@
       "source": "remake/assets/scenarios/ch18.json"
     },
     {
-      "diagnostics": 24,
+      "diagnostics": 34,
       "document_id": "legacy/scenario/288224cee9e2/ch19",
       "kind": "scenario",
       "output": "scenarios/ch19.json",
-      "sha256": "7c84f575320fdbb4ba81ae545d3b5ecf58b948f9aef922e4c1c032f0f15d5fe1",
+      "sha256": "e73ab8fcbd40c6a564585388726d629cb5da54ced0a024968453748492f6a1b4",
       "source": "remake/assets/scenarios/ch19.json"
     },
     {
