@@ -1109,6 +1109,14 @@
         ],
         "pattern": "if unit.HasNativeMapPresentation"
       }
+    },
+    {
+      "id": "issue-snapshot-render-is-separate",
+      "date": "2026-10-02",
+      "area": "工單快照",
+      "rule": "更新工單JSON快照後，同一次執行tools/fd2_worklist.py render重生docs/knowledge-base/91-worklist.md，並核對有效id一致。tools/fd2_worklist_issues.py的write_snapshot只寫JSON，不能當成完整pull收尾。",
+      "why": "第十六章關閉與第十七章登記後，遠端和JSON已同步，Markdown產生區塊仍保存舊工單。補跑正式renderer才移除#83／#84／#85／#86並列出#88。",
+      "evidence": "tools/fd2_worklist_issues.py:write_snapshot；tools/fd2_worklist.py:render；docs/knowledge-base/91-worklist.md"
     }
   ]
 }

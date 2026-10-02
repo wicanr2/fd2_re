@@ -151,15 +151,15 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
-### 第十六章缺完整原版與重製四項對拍收據
+### 第十七章缺完整原版與重製四項對拍收據
 
-`ch16-full-chapter-parity` · 工作 · [#83](https://github.com/wicanr2/fd2_re/issues/83) · 仍未完成 · 要人判
+`ch17-full-chapter-parity` · 工作 · [#88](https://github.com/wicanr2/fd2_re/issues/88) · 仍未完成 · 要人判
 
-第十五章已於de4d655a完整驗收，#76／#78已關閉。依111／114接續第十六章，先核對正常LOAD、起手名冊／視圖及可編輯事件，再抽樣戰鬥與戰後城鎮／交易／酒店SAV。未知行為先登記RE或缺陷工單，再經RE→READY→實作→同槽驗證，不猜補正式路徑。
+第十六章已於8120104c完成四項驗收，#83／#87已關閉。依111／114接續第十七章，先核對正常LOAD、起手名冊／部署／視圖與既有可編輯事件，再以正常鍵盤抽樣主要回合／事件，清敵後驗戰後城鎮、交易與酒店SAV。每個新缺口先登記獨立RE或缺陷工單，沿RE→READY→實作→同槽驗證，不猜補正式路徑。
 
-怎樣算做完：以已核對ch02-cleared基底建構相同第十六章槽，levels6、seed4、state7:17=1與AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後、城鎮、交易與酒店存檔。原版與完整Go串行，四項全過、至少12張320×200全RGB≤640px，保存manifest／plan／正式收據並同步56／57／58、台帳與首頁。
+怎樣算做完：以已核對ch02-cleared基底建構相同第十七章槽，levels6、seed4、state7:17=1與我方AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後／城鎮／交易／酒店存檔。原版與完整Go串行；四項全過、至少12張320×200全RGB≤640px，保存manifest、plan、正式收據，完整回歸及必要舊分支抽驗通過，同步56／57／58、台帳與首頁。
 
-證據：`['docs/data/parity-campaign-progress.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
+證據：`['docs/data/parity-campaign-progress.json', 'docs/data/ui-traces/parity-ch16.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
 
 ## release — 發行、平台與封包
 

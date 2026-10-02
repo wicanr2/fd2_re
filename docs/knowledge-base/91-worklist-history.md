@@ -4844,3 +4844,5 @@ SAV差未出戰record16五欄與checksum，先登記#87再追consumer。
 提交前核對來源／日誌／SAV／圖像雜湊、首頁與新文件索引、本機連結、台帳與renderer一致。115條教訓check通過，受審檔案1000:1000，歷史root-owned數2811未變，無*.md目錄，FD2工作容器均已退出並移除。
 
 第十六章完整驗收與未出戰記錄修正8120104c1369edaba9b6ec9b27b64ed77cae3a2f已推送，主機gh回讀#83／#87均CLOSED，留言5946062689／5946065018保存驗收及限制。下一章先登記#88，尚未建構或執行第十七章；正式pull格式器同步20條未完成，台帳13／30，總工單#14及Goal持續開啟。
+
+收尾勘誤：先前純格式器write_snapshot只更新JSON，未等同完整pull／render。已補跑tools/fd2_worklist.py render，20條Markdown有效id與目前JSON一致，無已關閉工單殘留；教訓新增快照與產生區塊須同批同步。遠端Issue仍為唯一權威，不重開已完成工作。
