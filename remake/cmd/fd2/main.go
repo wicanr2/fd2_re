@@ -2971,29 +2971,58 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	// binding supplies PartyScenario; LOADCH then materializes group 0 and later
 	// SPAWN calls append groups in FDFIELD order. This preserves the actual
 	// runtime slot identity for every evidence-backed load/spawn sequence.
-	g.st, g.sel, g.sc = nil, nil, nil
-	g.storyActors = make([]battle.Unit, 0, len(party)+len(roster.Units))
-	g.storyRoster = make([]battle.Unit, 0, len(roster.Units))
-	g.storySpawned = make(map[int]bool)
+	actors := make([]battle.Unit, 0, len(party)+len(roster.Units))
+	sourceRoster := make([]battle.Unit, 0, len(roster.Units))
+	prospective := make([]*battle.Unit, 0, len(party)+len(roster.Units))
 	for _, unit := range party {
-		g.storyActors = append(g.storyActors, *unit)
+		actor := *unit
+		// 0x10A8A..0x10AAD writes deployment coordinates, zero pose/motion
+		// and raw camp 2 after copying the persistent record.
+		if err := actor.MaterializeNativeMapPresentation(); err != nil {
+			return fmt.Errorf("LOADCH party native presentation: %w", err)
+		}
+		actors = append(actors, actor)
+		prospective = append(prospective, &actor)
 	}
 	for _, u := range roster.Units {
 		if u == nil {
 			// State.Load does not create holes. Keep a harmless roster placeholder
 			// if a future loader does, without inventing a live unit.
-			g.storyRoster = append(g.storyRoster, battle.Unit{Group: 255})
+			sourceRoster = append(sourceRoster, battle.Unit{Group: 255})
 			continue
 		}
 		actor := *u
 		actor.OffX, actor.OffY = 0, 0
 		actor.OnField = false
-		g.storyRoster = append(g.storyRoster, actor)
+		sourceRoster = append(sourceRoster, actor)
 		if actor.Group == 0 {
+			// 0x10B3C calls 0x10B4E(0) with [0x53AFA]=0. Each
+			// constructor sees the party and all preceding group0 records.
+			// Evidence and READY contract: fd2_ch20_initial_placement_20261003.json.
+			if !actor.HasNativePositionRecord {
+				return fmt.Errorf("LOADCH group0 row %d lacks native position record", len(sourceRoster)-1)
+			}
+			cell, err := battle.NativeFutureGroupPlacement(
+				g.m.W, g.m.H, g.m.NativeCompositionEventBytes,
+				prospective, actor.NativePositionRecord, 0,
+			)
+			if err != nil {
+				return fmt.Errorf("LOADCH group0 row %d placement: %w", len(sourceRoster)-1, err)
+			}
+			if !actor.SetMapPlacement(cell.X, cell.Y, 0) {
+				return fmt.Errorf("LOADCH group0 row %d invalid placement", len(sourceRoster)-1)
+			}
+			if err := actor.MaterializeNativeMapPresentation(); err != nil {
+				return fmt.Errorf("LOADCH group0 row %d presentation: %w", len(sourceRoster)-1, err)
+			}
 			actor.OnField = true
-			g.storyActors = append(g.storyActors, actor)
+			actors = append(actors, actor)
+			prospective = append(prospective, &actor)
 		}
 	}
+	g.st, g.sel, g.sc = nil, nil, nil
+	g.storyActors, g.storyRoster = actors, sourceRoster
+	g.storySpawned = make(map[int]bool)
 	g.storySpawned[0] = true
 	// LOADCH has constructed these runtime records before any hard-coded
 	// 0x22253 coordinate writer can consume them. Scenario/FDFIELD JSON keeps
@@ -3008,7 +3037,7 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 			return fmt.Errorf("story actor %d native presentation: %w", i, err)
 		}
 	}
-	g.storyCompositionEventBytes = append(g.storyCompositionEventBytes[:0], roster.NativeCompositionEventBytes...)
+	g.storyCompositionEventBytes = append(g.storyCompositionEventBytes[:0], g.m.NativeCompositionEventBytes...)
 	g.storyRosterPath = state.Roster
 	g.storyPartyScenario = state.PartyScenario
 	g.storyWalks = nil

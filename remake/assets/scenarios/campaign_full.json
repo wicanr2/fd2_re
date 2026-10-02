@@ -3224,7 +3224,19 @@
    "units": "assets/maps/map19/map19_units.json",
    "scenario": "assets/scenarios/ch20.json",
    "on_win": "postbattle_ch20_persist",
-   "on_lose": "retreat_ch20"
+   "on_lose": "retreat_ch20",
+   "native_map_view": {
+    "camera_x": 20,
+    "camera_y": 30,
+    "cursor_x": 30,
+    "cursor_y": 35,
+    "visible_cursor_x": 10,
+    "visible_cursor_y": 5,
+    "range_mode": 1
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   }
   },
   "postbattle_ch20_persist": {
    "type": "cutscene",

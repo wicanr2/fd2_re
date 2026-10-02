@@ -1,0 +1,584 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_loadch_initial_group0_placement",
+  "date": "2026-10-03",
+  "issues": [
+    112,
+    114
+  ],
+  "input": {
+    "name": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE linear",
+    "method": "沿用已閉合匯出，不重建資料庫"
+  },
+  "sources": [
+    {
+      "path": "docs/data/ida/fd2_ch13_handoff_20261001.json",
+      "sha256": "30426072fb592d345a6d88d9a385f22e0cc7fc8267a5970e9aab3c54a362fb8a"
+    },
+    {
+      "path": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "sha256": "3750710f029e4cf9be3cc25c3b90629b740155f9af6e3c396a0f12981d6cfb0c"
+    },
+    {
+      "path": "docs/data/fd2_future_group_raw_gate_ida.txt",
+      "sha256": "65de3b008c56a7930af8eb04fbd5db014ece09a5de69f3a071c6fe4e31bd9919"
+    }
+  ],
+  "instructions": [
+    {
+      "address": "0x10b3c",
+      "bytes": "6a00",
+      "original": "push    0",
+      "source": "docs/data/ida/fd2_ch13_handoff_20261001.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10b3e",
+      "bytes": "e80b000000",
+      "original": "call    sub_10B4E",
+      "source": "docs/data/ida/fd2_ch13_handoff_20261001.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10b43",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch13_handoff_20261001.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c85",
+      "bytes": "6b54244806",
+      "original": "imul    edx, [esp+44h+arg_0], 6",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c8a",
+      "bytes": "a1593a0500",
+      "original": "mov     eax, dword_53A59",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c8f",
+      "bytes": "01d0",
+      "original": "add     eax, edx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c91",
+      "bytes": "83c002",
+      "original": "add     eax, 2",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c94",
+      "bytes": "0fb610",
+      "original": "movzx   edx, byte ptr [eax]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c97",
+      "bytes": "89542424",
+      "original": "mov     [esp+44h+var_20], edx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c9b",
+      "bytes": "0fb64002",
+      "original": "movzx   eax, byte ptr [eax+2]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10c9f",
+      "bytes": "8944242c",
+      "original": "mov     [esp+44h+var_18], eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10ca3",
+      "bytes": "6a00",
+      "original": "push    0",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10ca5",
+      "bytes": "e823390000",
+      "original": "call    sub_145CD",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10caa",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cad",
+      "bytes": "6a01",
+      "original": "push    1",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10caf",
+      "bytes": "e819390000",
+      "original": "call    sub_145CD",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cb4",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cb7",
+      "bytes": "0fb605fa3a0500",
+      "original": "movzx   eax, byte_53AFA",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cbe",
+      "bytes": "85c0",
+      "original": "test    eax, eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cc0",
+      "bytes": "0f8588000000",
+      "original": "jnz     loc_10D4E",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cc6",
+      "bytes": "31f6",
+      "original": "xor     esi, esi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cc8",
+      "bytes": "eb01",
+      "original": "jmp     short loc_10CCB",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cca",
+      "bytes": "46",
+      "original": "inc     esi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10ccb",
+      "bytes": "3b35c53a0500",
+      "original": "cmp     esi, dword_53AC5",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cd1",
+      "bytes": "0f8d87000000",
+      "original": "jge     loc_10D5E",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cd7",
+      "bytes": "31db",
+      "original": "xor     ebx, ebx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cd9",
+      "bytes": "eb01",
+      "original": "jmp     short loc_10CDC",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cdb",
+      "bytes": "43",
+      "original": "inc     ebx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cdc",
+      "bytes": "3b1dc13a0500",
+      "original": "cmp     ebx, dword_53AC1",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10ce2",
+      "bytes": "7de6",
+      "original": "jge     short loc_10CCA",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10ce4",
+      "bytes": "8b3dc13a0500",
+      "original": "mov     edi, dword_53AC1",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cea",
+      "bytes": "0faffe",
+      "original": "imul    edi, esi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10ced",
+      "bytes": "01df",
+      "original": "add     edi, ebx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cef",
+      "bytes": "c1e702",
+      "original": "shl     edi, 2",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cf2",
+      "bytes": "a1513a0500",
+      "original": "mov     eax, dword_53A51",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cf7",
+      "bytes": "f644070640",
+      "original": "test    byte ptr [edi+eax+6], 40h",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cfc",
+      "bytes": "75dd",
+      "original": "jnz     short loc_10CDB",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10cfe",
+      "bytes": "89df",
+      "original": "mov     edi, ebx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d00",
+      "bytes": "2b7c2424",
+      "original": "sub     edi, [esp+44h+var_20]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d04",
+      "bytes": "57",
+      "original": "push    edi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d05",
+      "bytes": "e8d8680200",
+      "original": "call    abs",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d0a",
+      "bytes": "89442408",
+      "original": "mov     [esp+48h+var_40], eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d0e",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d11",
+      "bytes": "89f5",
+      "original": "mov     ebp, esi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d13",
+      "bytes": "2b6c242c",
+      "original": "sub     ebp, [esp+44h+var_18]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d17",
+      "bytes": "55",
+      "original": "push    ebp",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d18",
+      "bytes": "e8c5680200",
+      "original": "call    abs",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d1d",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d20",
+      "bytes": "03442404",
+      "original": "add     eax, [esp+44h+var_40]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d24",
+      "bytes": "3b442430",
+      "original": "cmp     eax, [esp+44h+var_14]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d28",
+      "bytes": "7fb1",
+      "original": "jg      short loc_10CDB",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d2a",
+      "bytes": "57",
+      "original": "push    edi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d2b",
+      "bytes": "e8b2680200",
+      "original": "call    abs",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d30",
+      "bytes": "89c7",
+      "original": "mov     edi, eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d32",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d35",
+      "bytes": "55",
+      "original": "push    ebp",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d36",
+      "bytes": "e8a7680200",
+      "original": "call    abs",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d3b",
+      "bytes": "83c404",
+      "original": "add     esp, 4",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d3e",
+      "bytes": "01c7",
+      "original": "add     edi, eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d40",
+      "bytes": "897c2430",
+      "original": "mov     [esp+44h+var_14], edi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d44",
+      "bytes": "895c2420",
+      "original": "mov     [esp+44h+var_24], ebx",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d48",
+      "bytes": "89742428",
+      "original": "mov     [esp+44h+var_1C], esi",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d4c",
+      "bytes": "eb8d",
+      "original": "jmp     short loc_10CDB",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d4e",
+      "bytes": "8b442424",
+      "original": "mov     eax, [esp+44h+var_20]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d52",
+      "bytes": "89442420",
+      "original": "mov     [esp+44h+var_24], eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d56",
+      "bytes": "8b44242c",
+      "original": "mov     eax, [esp+44h+var_18]",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    },
+    {
+      "address": "0x10d5a",
+      "bytes": "89442428",
+      "original": "mov     [esp+44h+var_1C], eax",
+      "source": "docs/data/ida/fd2_ch14_event10_20261002.json",
+      "address_space": "IDA LE linear"
+    }
+  ],
+  "observation": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+    "checkpoint": "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json",
+    "sha256": "eaefc553c984ea7fc4f836d5811e5bb28000d7c8917bcab45f8e0fa35e411daa",
+    "frontier": 83,
+    "same_authored_position": [
+      18,
+      30
+    ],
+    "first_record": 19,
+    "second_record": 35,
+    "native_second_position": [
+      18,
+      31
+    ],
+    "earliest_observed_checkpoint": 72,
+    "ai_entries_before_startup": 0
+  },
+  "claims": [
+    {
+      "semantic": "sub_1088D 在 persistent party loop 後以 literal 0 呼叫 sub_10B4E；0x10B4E 依 FDFIELD 順序追加 group0。",
+      "level": "confirmed",
+      "source": "fd2_ch13_handoff_20261001.json 0x10A77..0x10B43；26-per-chapter-event-handlers.md"
+    },
+    {
+      "semantic": "LOADCH caller 沒有非零 gate writer；完整22筆直接 writer 均在另11組 set/call/reset，故本 caller 的 gate=0。",
+      "level": "confirmed",
+      "source": "fd2_future_group_raw_gate_ida.txt 完整 data-xref audit"
+    },
+    {
+      "semantic": "sub_10C50 以位置列低位元組為原點，兩次 sub_145CD 累積既有 runtime 的占格；逐列追加後，後列可見前列。排除0x40後按 Manhattan 最短、同距離後掃優先。",
+      "level": "confirmed",
+      "source": "fd2_ch14_event10_20261002.json sub_10C50 0x10C85..0x10D5A；26-per-chapter-event-handlers.md"
+    },
+    {
+      "semantic": "applyLoadCH 初始 group0 曾繞過放置器，造成 record35 與 record19 重疊；未見 AI writer，首次對白時已分歧。",
+      "level": "confirmed",
+      "source": "startup-original-r1 checkpoint72/103、startup-remake-r3、main.go applyLoadCH"
+    }
+  ],
+  "spec_review": {
+    "status": "CONFORMED",
+    "scope": "共用 applyLoadCH 初始 group0 使用既有 NativeFutureGroupPlacement；原始地圖列與未出場群組不改。",
+    "typed_contract": [
+      "persistent party 先歸零 LOADCH pose/motion並具備原生欄位；group0 配置消費 party 與已追加列。",
+      "composition 取 LOADCH 明示 Map 的資料；場景 roster 位於另一目錄時，不以 roster 同目錄的 map.json 猜測來源。",
+      "每列要求 NativePositionRecord 與完整 composition bytes；以 rawGate=0 計算。",
+      "MaterializeNativeFutureConstructor 已由 bindNativeFutureItemRows 完成；本切片只配置位置及 presentation，不重算數值或 selector。",
+      "所有候選列通過後才發佈 storyActors／storyRoster，缺原生來源即拒收。"
+    ],
+    "acceptance": [
+      "第二十章起手83筆原生欄位及5張完整RGB通過。",
+      "第十九章完整章收據四項回歸與Go測試通過。"
+    ],
+    "failure_policy": "不以章號、record35或硬編碼18,31補洞；不從正規化HP推測raw mask。"
+  },
+  "limits": [
+    "只證明初始配置 consumer，不宣稱第二十章完整PLAYER-E2。",
+    "使用前章酒店SAV接續，繼承111／114限制。"
+  ],
+  "validation_notes": [
+    "r4 在開場 map32 拒收，因場景 roster 與實際 Map 分離；改取已驗證載入的 MapData composition，不放寬缺來源閘門。"
+  ],
+  "validation": {
+    "scope": "第二十章正常起手前綴，有限RUNTIME-E1；不外推整章",
+    "receipt": "docs/data/ui-traces/ch20-native-startup.json",
+    "startup_report": "work/parity-slot-ch20/startup-verify-r5.json",
+    "native_frontier": 83,
+    "frames": 5,
+    "all_diff_pixels": 0,
+    "go_regression": "work/parity-slot-ch20/chapter20-go-regression-r3.log",
+    "go_packages": 19,
+    "prior_ch19_report": "work/parity-slot-ch19/full-r4-verify-r8.json",
+    "prior_ch19_all_four_gates": true,
+    "prior_ch19_save_full_equal": true,
+    "focused": "work/parity-slot-ch20/chapter20-loadch-focused-r3.log"
+  }
+}

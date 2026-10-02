@@ -9241,3 +9241,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [正式章收據](../data/ui-traces/parity-ch19.json)通過四項，取代先前READY與起手／整章未驗收的現況。正式資料使用16人部署與48筆group0；T4模式事件保留高四位，T6增援後等文字返回才永久JOIN27。額滿選人先依原版320FC穩定排列持續名冊，再查identity16；缺少凱拉斯時由原生訊息與關框返回城鎮。酒店SAV完整22987 bytes一致，包含21人名冊。
 
 四份主規格列有限CONFORMED，入口與原始位址見[58](58-fd2-exe-re-coverage.md)。重播clear→END僅在下一END原版仍屬1A30B時延後勝負檢查；已進戰後保持既有即時結果。最後Go重播邊界回歸及第十八章四項均通過，完整Go19套件亦通過。T10模式事件只有靜態與局部E1，沒有原版T10抽樣。
+
+### 2026-10-03 第二十章原生起手（#112／#113／#114）
+
+[有限起手收據](../data/ui-traces/ch20-native-startup.json)驗證83筆前沿與五點完整RGB，全部0px。正式LOADCH初始group0按既有0x10C50逐列避讓；原始位置列保持18,30，第二筆record35在執行期為18,31。composition取binding明示Map，包含與roster分離的開場場景。共用writer／consumer契約見[主證據](../data/ida/fd2_ch20_initial_placement_20261003.json)。
+
+第十九章r8四項與全檔SAV回歸通過；原生開場、正常封包與初始重疊整合測試通過。完整Go19套件通過，兩份起手規格列有限CONFORMED。第二十章章內／戰後仍在驗證，本段僅RUNTIME-E1；唯一整章統計仍依58與正式台帳。

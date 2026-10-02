@@ -1495,3 +1495,9 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 [拒收前綴收據](../data/ui-traces/ch19-required-party-rejection.json)另驗缺少凱拉斯的原生訊息及返回城鎮，五點差異0／0／0／275／0px。這是有限RUNTIME-E1；原本完整章verifier的failed診斷保留，不能把沒有進戰場的拒收前綴稱為整章通過。
 
 整章依111／114建構槽例外列PLAYER-E2；清敵seq1119在T6事件seq1138之前，槽來源與注入如實記錄。T10、自然戰鬥及逐幀相位不外推；唯一現況與統計見[58](58-fd2-exe-re-coverage.md)。
+
+### 2026-10-03 第二十章原生起手（#112／#113／#114）
+
+[有限起手收據](../data/ui-traces/ch20-native-startup.json)驗證83筆前沿與五點完整RGB，全部0px。正式LOADCH初始group0按既有0x10C50逐列避讓；原始位置列保持18,30，第二筆record35在執行期為18,31。composition取binding明示Map，包含與roster分離的開場場景。共用writer／consumer契約見[主證據](../data/ida/fd2_ch20_initial_placement_20261003.json)。
+
+第十九章r8四項與全檔SAV回歸通過；原生開場、正常封包與初始重疊整合測試通過。完整Go19套件通過，兩份起手規格列有限CONFORMED。第二十章章內／戰後仍在驗證，本段僅RUNTIME-E1；唯一整章統計仍依58與正式台帳。

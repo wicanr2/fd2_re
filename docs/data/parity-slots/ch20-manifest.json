@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_save_continuation_manifest",
+  "tool": "dosgolem apps/fd2/cmd/oracle 0x30012酒店SAV，直接接續",
+  "base_save": "work/parity-slot-ch19/full-state-r4/FD2.SAV",
+  "base_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+  "base_slot": 0,
+  "base_chapter": 19,
+  "target_chapter": 19,
+  "out_slot": 0,
+  "output_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+  "source_receipt": "docs/data/ui-traces/parity-ch19.json",
+  "source_save_seq": 1354,
+  "source_original_runner_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+  "source_construction_manifest": "docs/data/parity-slots/ch19-manifest.json",
+  "level_policy": "沿用第十九章酒店SAV，不再次升級、強化、治療或改金幣。祖先建構槽levels-per-chapter=6，seed4，AP+200／DP+0／DX+60；後續正常JOIN27與交易依原版結果。",
+  "seed": 4,
+  "roster_count": 21,
+  "evidence_sources": [
+    "docs/data/ui-traces/parity-ch19.json",
+    "docs/data/ida/fd2_ch19_turn_event46_20261003.json",
+    "docs/data/parity-slots/ch19-manifest.json"
+  ],
+  "assumptions": [
+    {
+      "kind": "continuation",
+      "detail": "章19來源按111／114例外；本章沿用完全相同SAV，零額外狀態改寫。不宣稱自然難度或新JOIN也接受祖先強化。"
+    }
+  ],
+  "known_deviations": [
+    "祖先為政策建構槽且章19抽樣後清敵一次；不是自然難度連續通關。",
+    "第20章尚未驗收，清冊存在不代表正常玩家可達。"
+  ]
+}

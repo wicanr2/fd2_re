@@ -2474,3 +2474,34 @@ func TestEnterTownClearsCompletedBattlePresentation(t *testing.T) {
 		t.Fatalf("town retained completed battle presentation: state=%#v sel=%#v dialog=%#v", g.st, g.sel, g.dialog)
 	}
 }
+
+func TestChapter20LoadCHResolvesInitialGroupCollisionInSourceOrder(t *testing.T) {
+	order := []int{0, 9, 4, 30, 1, 8, 2, 10, 13, 12, 5, 11, 6, 14, 17, 16}
+	g := &Game{partyMembers: make(map[int]bool)}
+	for _, id := range order {
+		g.partyMembers[id] = true
+	}
+	err := g.applyLoadCH(&campaign.LoadCHState{
+		Chapter: 19, Map: "assets/maps/map19",
+		Roster: "assets/maps/map19/map19_units.json", SlotCount: 70,
+		Script: "assets/story/ch20.json", PartyScenario: "assets/scenarios/ch20.json",
+		PartyOrder: order,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(g.storyActors) != 83 {
+		t.Fatalf("initial frontier=%d, want83", len(g.storyActors))
+	}
+	for _, tc := range []struct{ slot, x, y int }{{19, 18, 30}, {35, 18, 31}} {
+		u := g.storyActors[tc.slot]
+		if !u.HasNativeMapPresentation || u.X != tc.x || u.Y != tc.y ||
+			int(u.NativeMapPresentation.X) != tc.x || int(u.NativeMapPresentation.Y) != tc.y {
+			t.Fatalf("record%d position/presentation=%#v, want(%d,%d)", tc.slot, u.NativeMapPresentation, tc.x, tc.y)
+		}
+	}
+	if u := g.storyRoster[19]; u.X != 18 || u.Y != 30 ||
+		u.NativePositionRecord.XWord != 18 || u.NativePositionRecord.YWord != 30 {
+		t.Fatalf("placement rewrote archive row19: %#v", u)
+	}
+}

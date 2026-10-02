@@ -1178,6 +1178,21 @@
         ],
         "pattern": "g\\.packNativePreparationRoster\\(\\)"
       }
+    },
+    {
+      "id": "loadch-initial-group-placement-and-map-source",
+      "date": "2026-10-03",
+      "area": "章節初始配置",
+      "rule": "LOADCH 初始 group0 與增援共用已證實的逐列占格配置。composition 取 binding 明示的 Map，不從 roster 同目錄推斷；來源不足即拒收。入口是 remake/cmd/fd2/main.go 的 applyLoadCH、battle.NativeFutureGroupPlacement 與 docs/data/ida/fd2_ch20_initial_placement_20261003.json。",
+      "why": "第二十章 map19 authored 兩筆18,30，原版後筆35移到18,31；舊初始 consumer 漏配置。開場 map32 的場景 roster 在 cutscenes/rosters，與實際 Map 分離，不能從該處讀 map.json。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/114；work/parity-slot-ch20/startup-verify-r5.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "g\\.m\\.NativeCompositionEventBytes"
+      }
     }
   ]
 }

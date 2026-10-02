@@ -328,6 +328,73 @@
         "note": "固定原版與計畫的記憶體邊界證據、工具回歸及正式原版前綴重生。"
       },
       "issue": 102
+    },
+    {
+      "id": "ch20-full-chapter-parity",
+      "layer": "player",
+      "category": "工作",
+      "title": "第二十章整章原版／重製對拍與收尾",
+      "body": "依111／114既定政策完成第二十章。同槽固定seed、正常鍵盤輸入，驗收起手、章內抽樣與事件、戰後、城鎮、交易、酒店SAV與秘密商店。既有證據足夠就沿用；缺陷先另開Issue，RE→READY後修正。",
+      "acceptance": [
+        "dosgolem受版控oracle原版收據與重製重播可重生；行為、節點、完整RGB、交易及全檔SAV四項通過。",
+        "章收據如實記錄建構槽、政策值、seed、一次清敵與所有驗證限制，不以局部Go測試宣稱整章。",
+        "相關Go及第十九章四項回歸通過；同步台帳、58、56、57及首頁。"
+      ],
+      "evidence": [
+        "docs/goal/111-goal-original-parity-campaign-20260915.md",
+        "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md",
+        "docs/data/ui-traces/parity-ch19.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對第二十章正式章收據、原版對拍四項與相關回歸。"
+      },
+      "issue": 112
+    },
+    {
+      "id": "ch20-native-startup-view-hud",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第二十章原生起手視圖與 HUD 尚未接入",
+      "body": "#112原版正常起手已形成83筆單位與camera20,30／cursor30,35；正式重播起手拒收HUD input unavailable。已閉合共用33674→33470 LOADCH／text0／focus不重做，先核對本章原版起手及來源，再補READY與正式戰役資料。",
+      "acceptance": [
+        "固定原版輸入與同槽正常起手狀態可回查，保留83筆名冊、視圖、HUD與caller證據。",
+        "READY後只補正式第二十章資料，不由重播注入或放寬原生來源檢查。",
+        "相同槽正常起手逐欄狀態與完整RGB通過；相關Go與第十九章回歸通過。"
+      ],
+      "evidence": [
+        "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json",
+        "work/parity-slot-ch20/startup-remake-r1.log",
+        "docs/data/ida/fd2_ch19_startup_20261003.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對第二十章原生起手主證據、有限CONFORMED收據與相關回歸。"
+      },
+      "issue": 113
+    },
+    {
+      "id": "ch20-startup-record35-position-source",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "第二十章正常起手 record35 的位置差異來源",
+      "body": "#112／#113起手逐欄核對發現唯一位置差異：原版checkpoint103 record35為(18,31)，地圖group0第19筆與正式重製為(18,30)。同一原版trace沒有13A9F AI入口，不能猜成AI移動。先找位置writer與特定loader／caller consumer，再定READY規格。",
+      "acceptance": [
+        "保存固定FD2.EXE及FDFIELD來源、原始位址／bytes／writer／consumer，定位record35起手y的來源。",
+        "需修正資料或runtime時先完成READY，不直接以oracle座標注入正式路徑。",
+        "相同原版正常起手逐欄及完整RGB通過，相關回歸完成。"
+      ],
+      "evidence": [
+        "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json",
+        "work/parity-slot-ch20/startup-original-r1/eip-trace.jsonl",
+        "work/parity-slot-ch20/startup-remake-r1.log",
+        "remake/assets/maps/map19/map19_units.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對record35原生位置writer與正常起手同狀態驗收。"
+      },
+      "issue": 114
     }
   ]
 }

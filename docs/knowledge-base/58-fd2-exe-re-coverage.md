@@ -2080,3 +2080,19 @@ Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金�
 由 tools/fd2_parity_progress.py set／verify 與 tools/render_parity_progress.py 重生台帳及首頁，2026-10-03共16／30章通過。統計輸入為[正式台帳](../data/parity-campaign-progress.json)與逐章收據。尚未通過的章依GitHub worklist繼續；#102同r3原版停止保持未解決，不以本章成功取消。
 
 [圖面抽樣與全部非零差異索引](../data/ui-traces/parity-ch19-samples.json)只保存來源與hash；原版圖、重製圖、總覽及SAV留本機。
+
+## 2026-10-03 第二十章起手進行中（#112／#113／#114）
+
+沿用第十九章正式原版酒店SAV（SHA f738de3c…），21人含JOIN27，不重複升級或強化；[接續清冊](../data/parity-slots/ch20-manifest.json)保留祖先111／114政策。原版正常選人後83筆，16人加67筆group0。[視圖主證據與READY](../data/ida/fd2_ch20_startup_20261003.json)只補正式戰役的camera20,30、cursor30,35及繼承HUD；首個重播因HUD來源缺失拒收。首次record35原版y31、地圖／重製y30；#114已追到初始配置consumer並以r5驗證，原始位置列不改。整章未驗收，16／30保持。
+
+- 第二十章初始配置的 writer／consumer 與 READY 規格：[fd2_ch20_initial_placement_20261003.json](../data/ida/fd2_ch20_initial_placement_20261003.json)；Issue #114，沿用已閉合的 LOADCH／0x10C50 證據。
+
+- 第二十章章內／戰後正常鍵盤計畫：[ch20-sample-r1.jsonl](../data/parity-plans/ch20-sample-r1.jsonl)，Issue #112，尚待四項驗收。
+
+### 2026-10-03 第二十章原生起手（#112／#113／#114）
+
+[有限起手收據](../data/ui-traces/ch20-native-startup.json)驗證83筆前沿與五點完整RGB，全部0px。正式LOADCH初始group0按既有0x10C50逐列避讓；原始位置列保持18,30，第二筆record35在執行期為18,31。composition取binding明示Map，包含與roster分離的開場場景。共用writer／consumer契約見[主證據](../data/ida/fd2_ch20_initial_placement_20261003.json)。
+
+第十九章r8四項與全檔SAV回歸通過；原生開場、正常封包與初始重疊整合測試通過。完整Go19套件通過，兩份起手規格列有限CONFORMED。第二十章章內／戰後仍在驗證，本段僅RUNTIME-E1；唯一整章統計仍依58與正式台帳。
+
+- [第二十章短路徑計畫](../data/parity-plans/ch20-sample-r2.jsonl)：沿用r1首回合與固定SAV，一次敵方階段後清敵；r1保留失敗来源，#112。

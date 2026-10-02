@@ -28,10 +28,22 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
+
+## re — 原版證據還沒閉合
+
+### 第二十章正常起手 record35 的位置差異來源
+
+`ch20-startup-record35-position-source` · RE待解 · [#114](https://github.com/wicanr2/fd2_re/issues/114) · 仍未完成 · 要人判
+
+#112／#113起手逐欄核對發現唯一位置差異：原版checkpoint103 record35為(18,31)，地圖group0第19筆與正式重製為(18,30)。同一原版trace沒有13A9F AI入口，不能猜成AI移動。先找位置writer與特定loader／caller consumer，再定READY規格。
+
+怎樣算做完：['保存固定FD2.EXE及FDFIELD來源、原始位址／bytes／writer／consumer，定位record35起手y的來源。', '需修正資料或runtime時先完成READY，不直接以oracle座標注入正式路徑。', '相同原版正常起手逐欄及完整RGB通過，相關回歸完成。']
+
+證據：`['work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json', 'work/parity-slot-ch20/startup-original-r1/eip-trace.jsonl', 'work/parity-slot-ch20/startup-remake-r1.log', 'remake/assets/maps/map19/map19_units.json']`
 
 ## data — 可編輯資料還沒就緒
 
@@ -111,6 +123,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
+### 第二十章原生起手視圖與 HUD 尚未接入
+
+`ch20-native-startup-view-hud` · 缺陷 · [#113](https://github.com/wicanr2/fd2_re/issues/113) · 仍未完成 · 要人判
+
+#112原版正常起手已形成83筆單位與camera20,30／cursor30,35；正式重播起手拒收HUD input unavailable。已閉合共用33674→33470 LOADCH／text0／focus不重做，先核對本章原版起手及來源，再補READY與正式戰役資料。
+
+怎樣算做完：['固定原版輸入與同槽正常起手狀態可回查，保留83筆名冊、視圖、HUD與caller證據。', 'READY後只補正式第二十章資料，不由重播注入或放寬原生來源檢查。', '相同槽正常起手逐欄狀態與完整RGB通過；相關Go與第十九章回歸通過。']
+
+證據：`['work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json', 'work/parity-slot-ch20/startup-remake-r1.log', 'docs/data/ida/fd2_ch19_startup_20261003.json']`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -150,6 +172,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第二十章整章原版／重製對拍與收尾
+
+`ch20-full-chapter-parity` · 工作 · [#112](https://github.com/wicanr2/fd2_re/issues/112) · 仍未完成 · 要人判
+
+依111／114既定政策完成第二十章。同槽固定seed、正常鍵盤輸入，驗收起手、章內抽樣與事件、戰後、城鎮、交易、酒店SAV與秘密商店。既有證據足夠就沿用；缺陷先另開Issue，RE→READY後修正。
+
+怎樣算做完：['dosgolem受版控oracle原版收據與重製重播可重生；行為、節點、完整RGB、交易及全檔SAV四項通過。', '章收據如實記錄建構槽、政策值、seed、一次清敵與所有驗證限制，不以局部Go測試宣稱整章。', '相關Go及第十九章四項回歸通過；同步台帳、58、56、57及首頁。']
+
+證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch19.json']`
 
 ## release — 發行、平台與封包
 

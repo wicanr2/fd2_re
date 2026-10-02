@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch20_native_startup_view_hud",
+  "date": "2026-10-03",
+  "issues": [
+    112,
+    113
+  ],
+  "input": {
+    "name": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "name": "dosgolem apps/fd2/cmd/oracle",
+    "commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+    "address_space": "dosgolem relocated LE linear"
+  },
+  "canonical_evidence": {
+    "shared_ida_source": "docs/data/ida/fd2_ch19_startup_20261003.json",
+    "shared_ida_sha256": "9ea3a4dfa0a48bae11cb253e3d66739fb94a59c2b722125cd8d3c8b51610c923",
+    "original_name": "sub_33674",
+    "ida_linear_address": "0x33674",
+    "shared_loader_chain": "0x33674→0x33470→0x33475 sub_205DA；text0 0x3320C；runtime0 focus 0x33142",
+    "caller_trace": "work/parity-slot-ch20/startup-original-r1/eip-trace.jsonl",
+    "startup_checkpoint": "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json",
+    "startup_checkpoint_sha256": "eaefc553c984ea7fc4f836d5811e5bb28000d7c8917bcab45f8e0fa35e411daa",
+    "slot_manifest": "docs/data/parity-slots/ch20-manifest.json",
+    "original_roster": "remake/assets/maps/map19/map19_units.json",
+    "original_roster_sha256": "cd30276b48d06187ced69c4e7ee0c0c7c749a38a7484b9e132da5eb78313e424"
+  },
+  "claims": [
+    {
+      "semantic": "正常選定16人後追加67筆group0，83筆前沿；本章原始部署16格與既有first16相同。",
+      "level": "confirmed",
+      "source": "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json及group0逐欄核對；record35位置差異另由#114處理"
+    },
+    {
+      "semantic": "原版view如typed_data，來源為正常鍵盤讀檔、選人及戰前text0後交回游標。",
+      "level": "confirmed",
+      "source": "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json"
+    },
+    {
+      "semantic": "此起手狀態HUD A與anchor沿既有持續契約，B=1；五點完整RGB通過。",
+      "level": "confirmed",
+      "source": "fd2_hud_persistence_ida.txt 與 startup-verify-r5"
+    }
+  ],
+  "spec_review": {
+    "status": "CONFORMED",
+    "scope": "只補battle_ch20的native_map_view與native_map_hud_inherited，不改共用loader／deployment／HUD規則或record35座標。",
+    "typed_data": {
+      "native_map_view": {
+        "camera_x": 20,
+        "camera_y": 30,
+        "cursor_x": 30,
+        "cursor_y": 35,
+        "visible_cursor_x": 10,
+        "visible_cursor_y": 5,
+        "range_mode": 1
+      },
+      "native_map_hud_inherited": {
+        "display_gate_b": 1
+      }
+    },
+    "failure_policy": "缺來源仍拒收；不在重播注入、不放寬640px。",
+    "acceptance": [
+      "正常同槽起手完整RGB與逐欄原生名冊；#114位置差異仍須閉合，不能只以HUD可畫稱整章通過。",
+      "相關Go及第十九章四項回歸。"
+    ]
+  },
+  "limits": [
+    "前章SAV直接接續並繼承111／114限制，不再次強化。",
+    "首次HUD拒收與record35位置差異來源保留；目前限定起手範圍CONFORMED，整章仍由#112處理。"
+  ],
+  "validation": {
+    "scope": "第二十章正常起手前綴，有限RUNTIME-E1；不外推整章",
+    "receipt": "docs/data/ui-traces/ch20-native-startup.json",
+    "startup_report": "work/parity-slot-ch20/startup-verify-r5.json",
+    "native_frontier": 83,
+    "frames": 5,
+    "all_diff_pixels": 0,
+    "go_regression": "work/parity-slot-ch20/chapter20-go-regression-r3.log",
+    "go_packages": 19,
+    "prior_ch19_report": "work/parity-slot-ch19/full-r4-verify-r8.json",
+    "prior_ch19_all_four_gates": true,
+    "prior_ch19_save_full_equal": true,
+    "focused": "work/parity-slot-ch20/chapter20-loadch-focused-r3.log"
+  }
+}

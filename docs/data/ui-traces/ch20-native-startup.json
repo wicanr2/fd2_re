@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_startup_prefix_receipt",
+  "chapter": 20,
+  "generated_at": "2026-10-03",
+  "status": "passed",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+    "control_plan": "docs/data/parity-plans/ch20-startup.jsonl",
+    "control_plan_sha256": "b9415812b6d13710d0f3e284d53c17fde812bf7c93f6d3a62b5d50fc75df87fd",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 5,
+    "checkpoints": 104,
+    "random_control": {
+      "initial_checkpoint_rng_word": 22661,
+      "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+    }
+  },
+  "slot": {
+    "manifest": "docs/data/parity-slots/ch20-manifest.json",
+    "output_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+    "base_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+    "base_chapter": 19,
+    "target_chapter": 19,
+    "level_policy": "沿用第十九章酒店SAV，不再次升級、強化、治療或改金幣。祖先建構槽levels-per-chapter=6，seed4，AP+200／DP+0／DX+60；後續正常JOIN27與交易依原版結果。",
+    "assumptions": [
+      {
+        "kind": "continuation",
+        "detail": "章19來源按111／114例外；本章沿用完全相同SAV，零額外狀態改寫。不宣稱自然難度或新JOIN也接受祖先強化。"
+      }
+    ]
+  },
+  "remake": {
+    "checkpoints": 6,
+    "rng_synced_points": 0,
+    "random_control": {
+      "go_seed": 4,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "native_rng_initial": 0
+    }
+  },
+  "gates": {
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "status": "ok"
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "status": "ok"
+        },
+        {
+          "seq": 44,
+          "kind": "party_selection",
+          "status": "ok"
+        },
+        {
+          "seq": 71,
+          "kind": "departure_confirmation",
+          "status": "ok"
+        },
+        {
+          "seq": 103,
+          "kind": "battle_start",
+          "status": "ok"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": true,
+      "oracle": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor",
+        "end:cursor"
+      ],
+      "remake": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor",
+        "end:cursor"
+      ],
+      "plan_completion": {
+        "ok": true,
+        "required": {
+          "mark:town_loaded": 1,
+          "mark:departure_prompt": 1,
+          "mark:party_selection": 1,
+          "mark:departure_confirmation": 1,
+          "mark:battle_start": 1
+        },
+        "missing": {},
+        "remake_missing": {}
+      }
+    },
+    "transaction": {
+      "ok": true,
+      "gold": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "oracle": 1957,
+          "remake": 1957,
+          "ok": true
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "oracle": 1957,
+          "remake": 1957,
+          "ok": true
+        },
+        {
+          "seq": 44,
+          "kind": "party_selection",
+          "oracle": 1957,
+          "remake": 1957,
+          "ok": true
+        },
+        {
+          "seq": 71,
+          "kind": "departure_confirmation",
+          "oracle": 1957,
+          "remake": 1957,
+          "ok": true
+        },
+        {
+          "seq": 103,
+          "kind": "battle_start",
+          "oracle": 1957,
+          "remake": 1957,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": null,
+        "remake_save_sha256": null,
+        "remake_note": null,
+        "blocked_by": null,
+        "status": "not_sampled"
+      }
+    },
+    "frames": {
+      "ok": true,
+      "pixel_budget": 640,
+      "min_frames": 5,
+      "compared": 5,
+      "points": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "oracle": "checkpoint-0018.png",
+          "remake": "remake-0000-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+          "remake_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e"
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "oracle": "checkpoint-0039.png",
+          "remake": "remake-0001-p1.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ab4069bf945a22713d5a190ad5801aad5b493971dfc0e1b61b50e8d75eec2728",
+          "remake_sha256": "86df174b92fd0ba91a8fe8b97949ac933c34fcfb27f98eb9a7194511bf521fd8"
+        },
+        {
+          "seq": 44,
+          "kind": "party_selection",
+          "oracle": "checkpoint-0044.png",
+          "remake": "remake-0002-p1.png",
+          "phases": 3,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a8777393fa9aa0d79ae944889d8709ac4c146bffb8700cdd788ce9213a57cc0e",
+          "remake_sha256": "1207a9a9c41d9e9083b384ba3a579cfe812bace151abe4cfaaf717db3daad407"
+        },
+        {
+          "seq": 71,
+          "kind": "departure_confirmation",
+          "oracle": "checkpoint-0071.png",
+          "remake": "remake-0003-p0.png",
+          "phases": 6,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "1eb6cc706a0c4ffcd055df15202b77a8ca75a0b851804f3f21294be9f5e98036",
+          "remake_sha256": "e8dba5dcb5abc57c91e2bb9e244b3044e4e98d28ffa2b11075aae17f72eacf45"
+        },
+        {
+          "seq": 103,
+          "kind": "battle_start",
+          "oracle": "checkpoint-0103.png",
+          "remake": "remake-0004-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "dc990e424e72a13098c13a5518d18868cc5789ed6fc4aec832ee2950f6435158",
+          "remake_sha256": "dc990e424e72a13098c13a5518d18868cc5789ed6fc4aec832ee2950f6435158",
+          "palette_cycle_phase": 10,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "只驗LOAD、城鎮、選人與戰場起手五點；SAVE未抽樣，不是整章PLAYER-E2。",
+    "前章酒店SAV直接接續，manifest明示祖先111／114政策，沒有再次強化。",
+    "原圖、原版SAV及重製擷取留本機；完整RGB不加遮罩，五點0px。"
+  ],
+  "evidence_level": "RUNTIME-E1",
+  "source_report": {
+    "path": "work/parity-slot-ch20/startup-verify-r5.json",
+    "sha256": "5a57a022203268906d129eb2a4f85c1da86f7ac0b482883b965641b41276bec7",
+    "command": "tools/verify_chapter_parity.py --chapter 20 --oracle work/parity-slot-ch20/startup-original-r1 --remake work/parity-slot-ch20/startup-remake-r5 --slot-manifest docs/data/parity-slots/ch20-manifest.json --plan docs/data/parity-plans/ch20-startup.jsonl --out work/parity-slot-ch20/startup-verify-r5.json --min-frames 5"
+  },
+  "issues": [
+    112,
+    113,
+    114
+  ],
+  "normal_initial_frontier": 83,
+  "validation": {
+    "go_packages": 19,
+    "go_log": "work/parity-slot-ch20/chapter20-go-regression-r3.log",
+    "prior_ch19": "work/parity-slot-ch19/full-r4-verify-r8.json",
+    "all_four_gates": true,
+    "save_full_equal": true
+  }
+}

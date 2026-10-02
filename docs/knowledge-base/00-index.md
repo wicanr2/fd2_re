@@ -380,3 +380,15 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十九章原生起手](../data/ida/fd2_ch19_startup_20261003.json)：#110，64筆、16格部署與HUD，有限CONFORMED。
 - [第十九章事件44／45與整備名冊排列](../data/ida/fd2_ch19_modes_and_selection_pack_20261003.json)：#111，T4與持續排列通過；T10限局部E1。
 - [第十九章完整四項對拍](../data/ui-traces/parity-ch19.json)、[全部非零差異抽樣索引](../data/ui-traces/parity-ch19-samples.json)與[凱拉斯必出拒收前綴](../data/ui-traces/ch19-required-party-rejection.json)：原版圖面與SAV留本機，分級與限制依58。
+
+- [第二十章正常啟動計畫](../data/parity-plans/ch20-startup.jsonl)與[前章酒店存檔接續清冊](../data/parity-slots/ch20-manifest.json)：[#112](https://github.com/wicanr2/fd2_re/issues/112)，沿用第十九章SAV，尚待正常選人與整章驗收。
+
+- [第二十章原生起手視圖 READY](../data/ida/fd2_ch20_startup_20261003.json)：[#113](https://github.com/wicanr2/fd2_re/issues/113)，原版83筆前沿與HUD；record35位置差異另由#114追查。
+
+- 第二十章初始配置的 writer／consumer 與 READY 規格：[fd2_ch20_initial_placement_20261003.json](../data/ida/fd2_ch20_initial_placement_20261003.json)；Issue #114，沿用已閉合的 LOADCH／0x10C50 證據。
+
+- 第二十章章內／戰後正常鍵盤計畫：[ch20-sample-r1.jsonl](../data/parity-plans/ch20-sample-r1.jsonl)，Issue #112，尚待四項驗收。
+
+- [第二十章有限起手收據](../data/ui-traces/ch20-native-startup.json)：83筆前沿與五點完整RGB，RUNTIME-E1；整章權威仍依58。
+
+- [第二十章短路徑計畫](../data/parity-plans/ch20-sample-r2.jsonl)：沿用r1首回合與固定SAV，一次敵方階段後清敵；r1保留失敗来源，#112。
