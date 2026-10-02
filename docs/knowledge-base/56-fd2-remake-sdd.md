@@ -9145,3 +9145,20 @@ event38於round7 raw camp0追加group1再播text10；event18於round9 raw camp0�
 [58入口](58-fd2-exe-re-coverage.md) → [原始EIP／registers與有限CONFORMED規格](../data/ida/fd2_ch15_palette_writer_20261002.json)。對拍候選只接受4E01F完整triplet停點；ECX、AH、EDX、ESI與AL須一致，來源固定EXE且非延後快照，生成舊相位及已寫的新相位前綴，再核對全部16色。未知條件拒絕，不複製原版色值，不改正式Game DAC或硬體時間。報告分開完整相位與中間writer來源。
 
 原版849證實phase5→6、完成四槽；同槽新重播0px。#81共享經驗consumer與#82工具切片均通過[嚴格診斷](../data/ui-traces/parity-ch15-r3.json)、完整Go19套件及驗證器12項回歸。有限CONFORMED不代表整章；#76／#78／#79仍未完成。
+
+## 2026-10-02 #79 同槽敗北規格驗收（有限 CONFORMED）
+
+[58現況](58-fd2-exe-re-coverage.md) → [主證據與可重跑命令](../data/ida/fd2_ch15_result_conditions_20261002.json)。
+相同建構槽正常LOAD／原版動作與決策點RNG下，round6 record64 bit0觸發無對白code1，
+交既有FDOTHER79提示、完整開場及標題選單；16我方仍存活，存檔雜湊不變。
+這取代先前「受#81阻擋、返回標題未驗」的現況；sub_20822原始名稱／40bytes與直接writer不重開。
+
+回放的END在敗北結果成立即停止；新增選用FD2_PARITY_DEFEAT_TAIL=1只讀原版run的
+current.json驗固定EXE、dosgolem、EIP36D98及完整標題輸入鏈、正常鍵、空注入與序號，
+再沿既有敗北驗證入口推進正式呈現。缺來源拒絕，不補造mark或注入結果。
+BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格式或整章四項門檻。
+
+結果／缺raw／提示不可略過等聚焦測試及完整Go19套件通過，r6收據已重生。
+有限CONFORMED只含這條敗北分支；原版run無2083F直接trace，原因仍列強推論；
+本章提示沒有同狀態兩幀原版擷取，跨章共用索引雜湊僅為旁證。
+嚴格章報告仍節點／交易failed，#76／#78成功護援、第7／9回合與戰後存檔另驗。

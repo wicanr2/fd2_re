@@ -35,6 +35,7 @@ import (
 //   FD2_PARITY_SLOT         建構槽 FD2.SAV（同一份餵給 dosgolem）
 //   FD2_PARITY_ORACLE_RUN   dosgolem 輸出目錄（actions.jsonl、checkpoint-*.json）
 //   FD2_PARITY_OUT          重製側輸出目錄
+//   FD2_PARITY_DEFEAT_TAIL  設為 1 時另驗原版 current.json 的標題終態；不改整章四項門檻
 
 type parityAction struct {
 	Kind    string   `json:"kind"`
@@ -691,6 +692,9 @@ func TestChapterParityReplay(t *testing.T) {
 	if len(r.aiEntries) > 0 && r.aiCursor != len(r.aiEntries) {
 		r.checkpoint("ai_order", 0, r.ui(), false,
 			fmt.Sprintf("divergence: 原版 AI 入口 %d 筆，重製只消費 %d 筆", len(r.aiEntries), r.aiCursor))
+	}
+	if os.Getenv("FD2_PARITY_DEFEAT_TAIL") == "1" {
+		r.verifyObservedDefeatTail()
 	}
 	r.checkpoint("end", 0, r.ui(), g.titlePhase == "")
 }

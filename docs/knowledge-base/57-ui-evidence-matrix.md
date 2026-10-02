@@ -1411,3 +1411,15 @@ input_chain的0x17B0B等鍵caller被工具泛用對白判準誤判，接戰仍�
 [新嚴格診斷](../data/ui-traces/parity-ch15-r3.json)的61張完整RGB全部通過，最大199px，seq849原版／重製PNG SHA-256相同。640px、最少12張及無遮罩契約不變。原始EIP4E01F與暫存器證實phase6已寫四槽，不再把返回位址16D05誤當目前EIP；#82只修對拍私有候選，不改正式Game DAC。
 
 66個行為點與297AI入口一致，#81／#82有限CONFORMED；節點、交易與#79敗北返回標題未驗，整章不列PLAYER-E2。權威現況與重生入口仍見[58](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-02 #79 正常章回放的敗北返回標題
+
+[58唯一現況](58-fd2-exe-re-coverage.md)與[同槽敗北主證據](../data/ida/fd2_ch15_result_conditions_20261002.json)
+取代前述返回標題未驗：原版r1的seq1431已在標題選單，重製r6由相同建構槽正常LOAD及章內動作，
+round6 record64 bit0觸發既有敗北提示，完整開場自行回menu，清理戰鬥暫態且SAV不變。
+回放此前在result=lose停住，補驗尾端後通過；沒有修改正式敗北呈現或結果規則。
+
+提示兩幀僅保存重製收據；與已閉合第十三章共用FDOTHER79索引雜湊相同屬跨章旁證，
+不宣稱第十五章同狀態提示逐像素。本分支列有限CONFORMED／RUNTIME-E1。
+sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交易failed；
+整章不提升PLAYER-E2，#76／#78的成功護援、第7／9回合與戰後存檔繼續。

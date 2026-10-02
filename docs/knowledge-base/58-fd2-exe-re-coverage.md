@@ -1755,3 +1755,32 @@ ValidateBundle維持禁止include_animations，不放寬驗收。因移除自創
 #81／#82有限驗收已達；#76完整章、#78第7／9回合與#79敗北返回標題仍未完成。最後重製battle_ch15／enemy，不因所有行為及畫面通過而宣稱返回標題或戰後／存檔完成。下一垂直切片先驗#79結果owner，再以正常護援續到第7／9回合；不提前清敵、鎖HP或修改友軍政策。
 
 #81／#82已驗證修正提交 `a27816fabc17f4c245bd30b448e669eb05a802f6` 已推送，主機gh回讀確認兩條CLOSED；正式pull格式器同步22條未完成快照。第十五章#76／#78／#79保持OPEN；不以有限行為／畫面通過覆蓋整章節點、交易及敗北返回標題缺口。
+
+## 2026-10-02 #79 同槽敗北尾端（有限 CONFORMED／RUNTIME-E1）
+
+[主證據與重生命令](../data/ida/fd2_ch15_result_conditions_20261002.json)的
+verification.same_slot_defeat_comparison取代前述「最後battle_ch15／enemy，返回標題未驗」現況。
+原版r1的最後有效戰場seq1143在round6：我方16人存活、record64 HP0／raw+5=1；
+正常Enter seq1144收完死亡訊息後進入標題，終態seq1431的EIP36D98及完整輸入鏈
+1FE60→25ECD→25DC2→45D91→3CB91證實已在標題選單。未追2083F的退出原因仍保留強推論，
+不把靜態writer證據冒充本run直接trace，也不以已釋放名冊推算全隊陣亡。
+
+重製r6從相同建構槽正常LOAD，依原版既有動作、決策點受控RNG重播；
+297筆AI全消費且零分岔，round6僅命中record64_inactive，16我方仍活著。
+既有回放endTurn在result=lose即停住，這是驗證尾端未推進，不能據此認定正式敗北owner缺陷。
+本輪沿既有verifyNativeDefeatReturnTitle補驗FDOTHER79兩個提示及完整開場自行抵達menu；
+確認鍵不能略過，戰鬥暫態清理、SAV全檔雜湊不變。無結果、HP或單位注入。
+
+FD2_PARITY_DEFEAT_TAIL=1只承接同一run的current.json：固定EXE、dosgolem、EIP、
+完整標題鏈、正常BIOS鍵、空注入與最後動作後的序號全部一致才放行；未知或缺欄位拒收。
+來源入口在[章回放](../../remake/cmd/fd2/chapter_parity_replay_test.go)與
+[敗北尾端](../../remake/cmd/fd2/native_defeat_parity_test.go)，完整容器命令及來源雜湊在主證據。
+聚焦拒收／結果／敗北測試與完整Go19套件通過（遊戲125.306秒）；
+最終版本再次重生同槽收據，原版r1未重跑。
+
+兩個提示的重製索引雜湊與已閉合第十三章共用FDOTHER79收據相同，僅列跨章旁證；
+第十五章原版run未擷取兩段hold入口，不宣稱本章提示同狀態逐像素或硬體時鐘一致。
+同槽嚴格報告sample-verify-r6仍為failed：66行為點及61張完整RGB通過，
+節點／交易未完成。有限敗北分支列CONFORMED／RUNTIME-E1；#76成功章與#78第7／9回合仍待驗，
+PLAYER-E2章數不增加。下一步以正常護援續驗，不改友軍政策、不鎖HP、不提前清敵。
+本批受審檔案與輸出UID／GID、來源雜湊及掛載殘留自檢通過；docker ps -a確認無遺留FD2容器。

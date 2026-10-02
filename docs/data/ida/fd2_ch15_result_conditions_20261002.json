@@ -204,7 +204,7 @@
     "force_enemy_clear_reached": false
   },
   "spec_review": {
-    "status": "READY",
+    "status": "CONFORMED",
     "production_scope": "沿既有NativeResultRule格式，允許actions空陣列的已證實無對白code1列；非空actions仍逐條驗對白來源。ch15讀records_all_inactive=[64]，code1，source2083F。命中空動作列立即續行，不要求不存在的對白素材。campaign改用既有native_defeat_return_title，移除無外部consumer的自創retreat_ch15。",
     "state_transition": "base205BE→依序讀raw條件→寫pending→有對白才阻塞播完→全部列完成後lose→既有79提示→full title；不寫SAV。",
     "failure_policy": "缺raw+5／+6、record64或來源／未知code仍失敗即關閉；HP、正規化陣營、其他友軍死亡不得代替bit0。",
@@ -212,10 +212,37 @@
       "純raw bit0／HP分離、其他友軍與missing raw分支",
       "正式canonical載入，無對白列交接敗北owner且不產生battleEvent",
       "同槽失敗樣本重播越過此前缺口並核對結果；完整成功章護援與round7／9另由#76驗收"
-    ]
+    ],
+    "defeat_tail_validation": {
+      "status": "CONFORMED",
+      "issue": 79,
+      "scope": "既有章重播在最後END的result=lose停住。選用FD2_PARITY_DEFEAT_TAIL=1時，從同一原版run的current.json確認固定EXE、dosgolem、EIP36D98與完整標題輸入鏈1FE60→25ECD→25DC2→45D91→3CB91，再沿既有verifyNativeDefeatReturnTitle完成正式呈現。不得補造mark、修改原版run、注入結果或改四項整章門檻。",
+      "original_terminal": {
+        "source": "work/parity-slot-ch15/sample-original-r1/current.json",
+        "control_seq": 1431,
+        "eip": "0x36D98",
+        "input_chain": [
+          "0x1FE60",
+          "0x25ECD",
+          "0x25DC2",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "last_battle_checkpoint": 1143,
+        "death_message_ack_enter_seq": 1144
+      },
+      "protected_record": 64,
+      "acceptance": [
+        "未知EXE／runner／EIP／輸入鏈／不存在的control_seq拒收",
+        "同槽正常LOAD與既有動作得到raw record64 bit0、code1與既有nativeDefeat owner",
+        "原生兩幀提示走完整title至menu，戰鬥暫態清理且SAV雜湊不變"
+      ],
+      "limits": "建構槽與決策點受控RNG的有限敗北條件／結果consumer驗證；不聲稱完整第十五章PLAYER-E2、提示畫面同狀態逐像素或硬體時鐘parity。兩個提示影像僅為重製側呈現收據。",
+      "source_validation": "固定EXE／dosgolem、完整標題輸入鏈、normal BIOS keys、明示空state_injections與在最後語意動作後的control_seq；缺欄位、null或非空注入拒收。"
+    }
   },
   "limits": [
-    "此READY只閉合友軍64條件與既有結果消費鏈，不外推第十五章完整PLAYER-E2。",
+    "此有限CONFORMED閉合友軍64 raw條件與既有結果消費鏈，不外推第十五章完整PLAYER-E2。",
     "原版failedr1的退出原因仍為強推論；未追writer、已釋放陣列不可當作全隊死亡。",
     "建構槽114我方boost政策與兩側seed4保持；禁止章內HP鎖定或提前清敵避開事件。"
   ],
@@ -1437,7 +1464,148 @@
     "full_go_log_sha256": "7455bb6a77f17824d4103cbf99d451d55260e9687a6612d18061b056358f079c",
     "packages_passed": 19,
     "game_seconds": 113.367,
-    "same_slot_defeat_comparison": "待#81原版與重製狀態分岔修正，不能以直接注入測試升為PLAYER-E2。"
+    "same_slot_defeat_comparison": {
+      "status": "passed",
+      "layer": "RUNTIME-E1",
+      "scope": "同槽正常LOAD／章內動作到record64 bit0敗北，正式呈現與完整標題返回；不包含完整章成功路徑。",
+      "original_run": "work/parity-slot-ch15/sample-original-r1",
+      "original_terminal_sha256": "8b9ce5a77760dbde2a226be0e19eb38641fe8be72fb871babc72f940d09847b6",
+      "original_checkpoint_sha256": "7e3e7547168ecbcb57102b9d0363a0df1e470e8c1ba8dfa4eb7f6cb32ef733b2",
+      "original_terminal": {
+        "runner": "dosgolem",
+        "control_seq": 1431,
+        "eip": "0x36D98",
+        "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "input_chain": [
+          "0x1FE60",
+          "0x25ECD",
+          "0x25DC2",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "input_kind": "normal BIOS keys",
+        "state_injections": [],
+        "normal_player_path_verified": false,
+        "address_space": "dosgolem relocated LE linear"
+      },
+      "original_record64": {
+        "byte5": 1,
+        "camp": 1,
+        "exp": 255,
+        "fig": 15,
+        "hp": 0,
+        "identity": 15,
+        "index": 64,
+        "level": 23,
+        "motion": 0,
+        "pose": 0,
+        "raw_hex": "131517000001010f0f00403f40ae00c200c280ff80ff80ff80ff0000000000030817000000000000000000000000000000030700830015e000840005ff01210000004001000000001201bb007b002100",
+        "x": 19,
+        "y": 21
+      },
+      "original_own_alive": 16,
+      "remake_own_alive_before_defeat": 16,
+      "remake_run": "work/parity-slot-ch15/sample-remake-r6",
+      "remake_log": "work/parity-slot-ch15/sample-remake-r6.log",
+      "remake_log_sha256": "0db8e670023c795a7b2d393d8f33f5c1d9dc2ec74fa13ee11c0c8639ac41d355",
+      "presentation": {
+        "clock_limit": "BIOS tick 依既有規格近似；2ms DAC 每步呈現，60Hz延長亞幀等待",
+        "frames": [
+          {
+            "dac_sha256": "b89f66fd8cec0b38e9e8697cc72ee63095f0a61b14edcee10d6ea908fff429ae",
+            "file": "defeat-9-ticks.png",
+            "hold_bios_ticks": 9,
+            "indexed_sha256": "72821327d0320e1544e8ee06efb5886aca812a9b6d5c9619f18983804bc27588"
+          },
+          {
+            "dac_sha256": "b89f66fd8cec0b38e9e8697cc72ee63095f0a61b14edcee10d6ea908fff429ae",
+            "file": "defeat-36-ticks.png",
+            "hold_bios_ticks": 36,
+            "indexed_sha256": "a77956eda57a610645732b56ba3edd29913cb56fa4024f8badb4be3eb61c0588"
+          }
+        ],
+        "initial_allies_active_records": [],
+        "input_can_skip_defeat": false,
+        "method": "正常 LOAD／章內玩家動作與決策點受控 RNG；只以決定性宿主時鐘推進呈現",
+        "native_result_rules": [
+          "record64_inactive"
+        ],
+        "native_round": 6,
+        "protected_hp": 0,
+        "protected_raw_byte5": 1,
+        "protected_record": 64,
+        "result": "lose",
+        "returned_title_sequence": "publisher→既有完整開場→menu",
+        "save_unchanged": true,
+        "schema_version": 1,
+        "slot_sha256": "fb67db55f459764d6a8dd03060842d1cbf10a90ad78a5211845b58a54e6692fe",
+        "status": "passed",
+        "title_selection": 0
+      },
+      "presentation_sha256": "42ffa76774de0ccb113f3815e32d03f2bc246731f21fab0beb69c2b6d15e89ad",
+      "checkpoints_sha256": "37ca130e7c4ec177cb9f214643f1875ccad967ef867f1cee3b21999e0fe58d18",
+      "random_control": {
+        "original_initial_rng_word": 22661,
+        "remake_settings": {
+          "go_seed": 4,
+          "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+          "native_rng_initial": 0
+        },
+        "method": "執行前固定建構槽／seed4；承接原版各AI／攻擊／成長決策點RNG word。未重擲原版、未注入結果或record64。"
+      },
+      "shared_presentation_comparison": {
+        "source": "docs/data/ui-traces/ch13-defeat-return-title.json",
+        "source_sha256": "c08b6bb2fd0b5da6a00a355ccece4aa10d07f08bb51f4a468aecd7b3e636050f",
+        "relation": "跨章共用FDOTHER79契約旁證，兩個索引雜湊與已閉合提示相同；不是第十五章同狀態提示影像比較。"
+      },
+      "strict_chapter_report": "work/parity-slot-ch15/sample-verify-r6.json",
+      "strict_chapter_report_sha256": "f94f68b1b56dafa74acaeb6ea4aa33081c812ca37ccea239a90da92a345b2a51",
+      "strict_chapter_status": "failed",
+      "strict_gates": {
+        "behavior": true,
+        "nodes": false,
+        "transaction": false,
+        "frames": true
+      },
+      "strict_frames": 61,
+      "limits": [
+        "原版未追2083F，直接writer原始指令已證實，但本run退出原因仍為強推論。",
+        "原版current與回標題鏈是已觀察終態；後續釋放名冊不可推算全隊死亡。",
+        "建構槽114與受控決策點RNG只驗有限條件／consumer，不用來談自然難度、傷害、存活或敵方選目標。",
+        "第十五章提示原版run未擷取兩段hold入口；不宣稱本章提示逐像素、逐週期或硬體wall-clock一致。",
+        "完整章的節點／交易仍failed；#76與#78第7／9回合另驗。"
+      ]
+    },
+    "defeat_tail_tests": [
+      "TestObservedDefeatTitleRejectsUnknownTerminal",
+      "TestChapter15ResultUsesOnlyRecord64RawInactiveBit",
+      "TestChapter15SilentResultHandsOffToNativeDefeat",
+      "TestNativeChapterResultReadsSecondRuleAfterFirstDialogue",
+      "TestNativeChapterResultMissingDialogueStateStopsBeforeDefeat",
+      "TestNativeDefeatRequiresDrawAndFixedHolds",
+      "TestNativeDefeatMissingAssetsCannotConfirmRetreat",
+      "TestNativeDefeatChapter12ReturnsTitleAndStartResetsCampaign"
+    ],
+    "defeat_tail_focused_log": "work/parity-slot-ch15/defeat-focused-r3.log",
+    "defeat_tail_focused_log_sha256": "021ab8ef1915f2e46ded6b8d6cd1145a7b5b2bdad01750b8e15ff2ee25459f77",
+    "defeat_tail_full_go_log": "work/parity-slot-ch15/defeat-go-regression-r1.log",
+    "defeat_tail_full_go_log_sha256": "29859f1b6c9b476813c0ed182882ee7e0efd40118ff2c6a443b19a4201b99af9",
+    "defeat_tail_full_go_packages": 19,
+    "defeat_tail_game_seconds": 125.306,
+    "defeat_tail_reproduce": {
+      "remake_command": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_DEFEAT_TAIL=1 FD2_PARITY_CHAPTER=15 FD2_PARITY_SLOT=/src/work/parity-slot-ch15/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch15/sample-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch15/sample-remake-r6 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch15/sample-remake-r6.log 2>&1",
+      "focused_command": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; export FD2_ASSET_PACK=/tmp/fd2-pack; gofmt -w cmd/fd2/chapter_parity_replay_test.go cmd/fd2/native_defeat_parity_test.go; with-xvfb go test ./cmd/fd2 -run \"^Test(ObservedDefeatTitle|Chapter15Result|Chapter15SilentResult|NativeChapterResult|NativeDefeat)\" -count=1 -timeout 600s -v' > work/parity-slot-ch15/defeat-focused-r3.log 2>&1",
+      "full_go_command": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w internal/battle/growth.go internal/battle/growth_native_test.go cmd/fd2/main.go cmd/fd2/native_level_up_dialogue.go cmd/fd2/native_level_up_dialogue_test.go; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s -v' > work/parity-slot-ch15/defeat-go-regression-r1.log 2>&1",
+      "source_sha256": {
+        "remake/cmd/fd2/chapter_parity_replay_test.go": "520de9227ce1d3d56b067c26bd0a616a4bd7f8b142923117c18247c57cec8cbe",
+        "remake/cmd/fd2/native_defeat_parity_test.go": "3a37b5e4f70a62599a8ceef233ced64e344895cac514b243a905065e223dca86",
+        "remake/cmd/fd2/native_chapter_result.go": "29846c31cb606a809260b092996cabb3c40c0822040ff88469a4b19139e6eca4",
+        "remake/cmd/fd2/native_defeat.go": "e26722856968d9e65dae657615a0269ee1489c136a7c0af6d894ecf7306c97b2",
+        "remake/internal/battle/native_result.go": "f4fe8e6b48280f16995bdb238fadfcf60ebb4adf06bde5010961af718d302bd6",
+        "remake/assets/scenarios/ch15.json": "6be69406935d5da6ffa12b5020c2391f09386fd964e5fec409849e03eb82d775",
+        "remake/assets/scenarios/campaign_full.json": "dcb9f0f25f92a3b4037cd2c773952dab8bc0a4dd39a487dea634d3ea43ff87b0"
+      }
+    }
   },
   "inventory_refresh": {
     "command": "IDA_PRO9.4 tools/ida_export_fd2_function_inventory.py→tools/compact_fd2_function_inventory.py",

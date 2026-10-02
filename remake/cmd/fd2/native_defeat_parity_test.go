@@ -8,11 +8,96 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+// #79：只承接同一原版 run 真正抵達的標題選單，不能補造語意動作。
+func observedDefeatTitleSequence(raw []byte) (int, error) {
+	var state struct {
+		Runner     string            `json:"runner"`
+		EXESHA     string            `json:"exe_sha256"`
+		EIP        string            `json:"eip"`
+		Seq        int               `json:"control_seq"`
+		Chain      []string          `json:"input_chain"`
+		Input      string            `json:"input_kind"`
+		Injections []json.RawMessage `json:"state_injections"`
+	}
+	if err := json.Unmarshal(raw, &state); err != nil {
+		return 0, err
+	}
+	chain := []string{"0x1FE60", "0x25ECD", "0x25DC2", "0x45D91", "0x3CB91"}
+	if state.Runner != "dosgolem" || state.EXESHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" ||
+		state.EIP != "0x36D98" || state.Seq <= 0 || len(state.Chain) != len(chain) ||
+		state.Input != "normal BIOS keys" || state.Injections == nil || len(state.Injections) != 0 {
+		return 0, fmt.Errorf("原版終態不是已證實的標題選單")
+	}
+	for i := range chain {
+		if state.Chain[i] != chain[i] {
+			return 0, fmt.Errorf("原版標題輸入鏈不符：%v", state.Chain)
+		}
+	}
+	return state.Seq, nil
+}
+
+func (r *parityReplay) verifyObservedDefeatTail() {
+	if r.battle != "battle_ch15" {
+		r.t.Fatal("此終態尾端規格只驗第十五章；其他章須使用既有正式 mark")
+	}
+	raw, err := os.ReadFile(filepath.Join(r.run, "current.json"))
+	if err != nil {
+		r.t.Fatal(err)
+	}
+	seq, err := observedDefeatTitleSequence(raw)
+	if err != nil || seq <= r.prevSeq {
+		r.t.Fatalf("原版敗北尾端缺少可比來源：seq=%d last=%d err=%v", seq, r.prevSeq, err)
+	}
+	r.verifyNativeDefeatReturnTitle(parityAction{Seq: seq})
+}
+
+func TestObservedDefeatTitleRejectsUnknownTerminal(t *testing.T) {
+	valid := map[string]any{"runner": "dosgolem", "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+		"eip": "0x36D98", "control_seq": 1431, "input_chain": []string{"0x1FE60", "0x25ECD", "0x25DC2", "0x45D91", "0x3CB91"},
+		"input_kind": "normal BIOS keys", "state_injections": []string{}}
+	for _, key := range []string{"", "runner", "exe_sha256", "eip", "control_seq", "input_chain", "input_kind", "state_injections"} {
+		t.Run(key, func(t *testing.T) {
+			candidate := map[string]any{}
+			for k, v := range valid {
+				candidate[k] = v
+			}
+			if key != "" {
+				delete(candidate, key)
+			}
+			raw, err := json.Marshal(candidate)
+			if err != nil {
+				t.Fatal(err)
+			}
+			seq, err := observedDefeatTitleSequence(raw)
+			if key == "" && (err != nil || seq != 1431) {
+				t.Fatal(seq, err)
+			}
+			if key != "" && err == nil {
+				t.Fatal("未知原版終態不得承接敗北尾端", key)
+			}
+		})
+	}
+	for _, injections := range []any{nil, []string{"force-enemy-clear"}} {
+		valid["state_injections"] = injections
+		raw, _ := json.Marshal(valid)
+		if _, err := observedDefeatTitleSequence(raw); err == nil {
+			t.Fatal("未知或注入終態不得作為敗北證據")
+		}
+	}
+	valid["state_injections"] = []string{}
+	valid["input_chain"] = []string{"0x1FE60", "0x25ECD", "0x25DC2", "0x45D91", "0xDEADBEEF"}
+	raw, _ := json.Marshal(valid)
+	if _, err := observedDefeatTitleSequence(raw); err == nil {
+		t.Fatal("部分輸入鏈相同不足以證明返回標題")
+	}
+}
 
 // 正式章重播的敗北尾端。初始槽、玩家動作及每次 AI／攻擊的受控亂數
 // 皆由既有 parityReplay 決定；此處只替換宿主時鐘，不改單位或結果。
@@ -36,6 +121,9 @@ func (r *parityReplay) verifyNativeDefeatReturnTitle(action parityAction) {
 	protectedIndex := 14
 	if r.battle == "battle_ch13" {
 		protectedIndex = 59
+	}
+	if r.battle == "battle_ch15" {
+		protectedIndex = 64
 	}
 	protected := g.st.Units[protectedIndex]
 	resultRules := append([]string(nil), g.nativeResultMatchedRules...)

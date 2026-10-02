@@ -261,7 +261,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - 第十五章 #76：[完整整章抽樣計畫](../data/parity-plans/ch15-sample.jsonl)，正常鍵盤涵蓋第4／7／9回合後round10清敵，戰後town_ch16買賣／酒店／Alt+F5秘密商店。
 
-- [第十五章 record64 無對白敗北條件（#79 READY）](../data/ida/fd2_ch15_result_conditions_20261002.json)：固定雜湊、完整20822原始指令、結果writer／consumer、原版失敗樣本及有限規格。
+- [第十五章 record64 無對白敗北（#79 有限 CONFORMED）](../data/ida/fd2_ch15_result_conditions_20261002.json)：固定雜湊、完整20822原始指令、結果writer／consumer、同槽正常回放至完整標題選單、存檔不變與重生命令；整章成功路徑另驗。
 
 - [第十五章完整首次失敗診斷（#76／#81）](../data/ui-traces/parity-ch15-r1.json)：原版第六回合敗北、AI首個分岔及61張嚴格整幀比較，四項皆未通過。
 
