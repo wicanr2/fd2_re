@@ -7,6 +7,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 EXE_SHA256 = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
@@ -48,7 +49,11 @@ def valid_checkpoint(document):
     return True
 
 
-def verify(prefix, full):
+def verify(prefix, full, *, prefix_commit=None, full_commit=None):
+    explicit_pair = prefix_commit is not None or full_commit is not None
+    if explicit_pair and not all(isinstance(commit, str) and re.fullmatch(r"[0-9a-f]{40}", commit)
+                                 for commit in [prefix_commit, full_commit]):
+        raise ValueError("升級比較須同時指定完整40位 prefix-commit 與 full-commit")
     checkpoints = sorted(prefix.glob("checkpoint-*.json"))
     if not checkpoints:
         raise ValueError("前綴沒有原版檢查點")
@@ -56,7 +61,10 @@ def verify(prefix, full):
     new_controls = controls(full / "control-history.jsonl")
     old_runner, new_runner = read_json(prefix / "runner.json"), read_json(full / "runner.json")
     commit = old_runner.get("dosgolem_commit")
-    clean = bool(commit and commit != "unknown" and commit == new_runner.get("dosgolem_commit"))
+    new_commit = new_runner.get("dosgolem_commit")
+    clean = bool(commit and commit != "unknown" and commit == new_commit)
+    if explicit_pair:
+        clean = commit == prefix_commit and new_commit == full_commit
     for runner in [old_runner, new_runner]:
         clean &= runner.get("original_fd2_exe_sha256") == EXE_SHA256
         clean &= runner.get("dosgolem_tracked_dirty_files") == 0 and runner.get("dosgolem_untracked_files") == 0
@@ -90,6 +98,8 @@ def verify(prefix, full):
         "schema_version": 1, "kind": "fd2_original_oracle_prefix_comparison",
         "status": "passed" if clean and contiguous and not differences else "failed",
         "prefix": str(prefix), "full": str(full), "dosgolem_commit": commit,
+        "prefix_dosgolem_commit": commit, "full_dosgolem_commit": new_commit,
+        "commit_comparison": "explicit-commit-pair" if explicit_pair else "same-commit",
         "fixed_exe_sha256": EXE_SHA256, "clean_source": clean,
         "prefix_checkpoints": len(checkpoints), "checked": len(checked), "contiguous_from_zero": contiguous,
         "ignored_fields": sorted(ASYNC_FIELDS), "differences": differences,
@@ -103,8 +113,10 @@ def main():
     parser.add_argument("--prefix", type=Path, required=True)
     parser.add_argument("--full", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--prefix-commit", help="升級比較時明示前綴來源的完整40位提交")
+    parser.add_argument("--full-commit", help="升級比較時明示重跑來源的完整40位提交")
     args = parser.parse_args()
-    report = verify(args.prefix, args.full)
+    report = verify(args.prefix, args.full, prefix_commit=args.prefix_commit, full_commit=args.full_commit)
     args.out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     print(f"原版前綴：{report['status']}，{report['checked']}/{report['prefix_checkpoints']}檢查點，差異{len(report['differences'])}筆")
     return 0 if report["status"] == "passed" else 1

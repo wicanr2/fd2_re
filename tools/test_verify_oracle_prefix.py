@@ -81,6 +81,45 @@ class PrefixVerificationTests(unittest.TestCase):
                 self.assertEqual(verify(self.prefix, self.full)["status"], "failed")
                 path.write_text(saved)
 
+    def test_revision_pair_requires_exact_explicit_commits(self):
+        old, new = "a" * 40, "b" * 40
+        self.mutate("runner.json", lambda data: data.update(dosgolem_commit=new))
+        path = self.prefix / "runner.json"
+        runner = json.loads(path.read_text())
+        runner["dosgolem_commit"] = old
+        self.write(path, runner)
+        self.assertEqual(verify(self.prefix, self.full)["status"], "failed")
+        report = verify(self.prefix, self.full, prefix_commit=old, full_commit=new)
+        self.assertEqual(report["status"], "passed")
+        self.assertEqual(report["commit_comparison"], "explicit-commit-pair")
+        self.assertEqual((report["prefix_dosgolem_commit"], report["full_dosgolem_commit"]), (old, new))
+        self.assertEqual(verify(self.prefix, self.full, prefix_commit=new, full_commit=old)["status"], "failed")
+        for pair in [(old, None), (None, new), ("a9bcd621", new), ("unknown", new)]:
+            with self.subTest(pair=pair), self.assertRaises(ValueError):
+                verify(self.prefix, self.full, prefix_commit=pair[0], full_commit=pair[1])
+
+    def test_explicit_pair_keeps_state_and_provenance_checks(self):
+        old, new = "a" * 40, "b" * 40
+        for directory, commit in [(self.prefix, old), (self.full, new)]:
+            path = directory / "runner.json"
+            runner = json.loads(path.read_text())
+            runner["dosgolem_commit"] = commit
+            self.write(path, runner)
+        for filename, change in [
+            ("checkpoint-0001.json", {"registers": [0] * 8}),
+            ("checkpoint-0001.json", {"state_injections": ["force-enemy-clear"]}),
+            ("checkpoint-0001.json", {"view": {"rng_word": 2}}),
+            ("runner.json", {"original_fd2_exe_sha256": "unknown"}),
+            ("runner.json", {"dosgolem_tracked_dirty_files": 1}),
+            ("runner.json", {"dosgolem_untracked_files": 1}),
+        ]:
+            with self.subTest(change=change):
+                path = self.full / filename
+                saved = path.read_text()
+                self.mutate(filename, lambda data: data.update(change))
+                self.assertEqual(verify(self.prefix, self.full, prefix_commit=old, full_commit=new)["status"], "failed")
+                path.write_text(saved)
+
 
 if __name__ == "__main__":
     unittest.main()

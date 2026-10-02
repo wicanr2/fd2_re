@@ -1900,3 +1900,36 @@ levels6、seed4、event7:17=1、我方AP+200／DP+0／DX+60建構槽與第10回�
 ### 第十七章起手HUD缺口（#89，2026-10-02）
 
 #88正常LOAD與15次選人原版到seq117，重製整幀consumer報HUD input unavailable。只重開battle_ch17缺少view／inherited HUD的資料consumer；既有quota、constructor、HUD持續writer不重做。主證據與已驗規格見[第十七章原生起手](../data/ida/fd2_ch17_startup_20261002.json)。本槽17人未含18，原版走group1分支。有限起手已達CONFORMED／RUNTIME-E1：五點完整RGB皆0px、53筆起手一致；19個Go套件通過，第十六章76幀、四項與SAV回歸通過。完整章仍todo。
+
+第十七章整章原版r1在正常第1回合END後，dosgolem於relocated LE 0x15C59拒絕D1 ModRM64並退出。IDA LE同數值位址的原始指令為d1642408，SHL stack memory,1。主證據見[CPU缺口診斷](../data/ida/fd2_ch17_oracle_d1_20261002.json)，工具缺陷由[#90](https://github.com/wicanr2/fd2_re/issues/90)處理。118／118起手前綴相同；沒有清敵、鎖HP或重製整章重播。這是執行器缺口，整章仍todo，不能增加通過章數。
+
+### #90 執行器升級前綴契約（READY）
+
+dosgolem 的 [190 規格](https://github.com/wicanr2/dosgolem/blob/c91e8031942bba02570634403adab0168903680c/docs/spec/190-cpu386-d1-shl-rm32.md)
+與 CPU 修正 c91e803 已通過完整 cpu386、machine、FD2 oracle／parity 回歸。
+同槽、同計畫的 sample-original-r2 使用該乾淨提交；r1 失敗保留，原版尚在重跑。
+
+[前綴工具](../../tools/verify_oracle_prefix.py)預設繼續要求相同提交。
+升級比較須同時指定完整40位 `--prefix-commit` 與 `--full-commit`，
+分別精確匹配兩側 runner；缺一側、未知值、誤配、髒工作樹及未知原版拒收。
+明示配對只處理來源提交，CPU、raw record、亂數、DOS 呼叫、輸入、注入與連續序號
+仍按既有完整比較；只排除既有兩個 PNG 排程欄位。報告須同列兩提交及比較模式。
+完整 RGB 另走章驗證器，不由前綴報告取代。
+驗收先跑既有拒收測試與新提交配對測試，再比 r1 全部592點及起手118點。
+這是 #90 的工具驗證切片，不修改正式玩法、章計畫、狀態或完成門檻。
+
+### #90 有限CPU驗證（CONFORMED）
+
+[主證據的 resolution](../data/ida/fd2_ch17_oracle_d1_20261002.json)追加修復與重跑，
+原失敗資料保留。乾淨 c91e803 的原版 r2 使用相同槽與操作計畫，
+118點起手及舊失敗全部592點的CPU、raw record、亂數、DOS呼叫、輸入與注入均相同。
+正常END seq591後，seq592已完成2,976,352,202步，越過原D1停止點。
+CPU、machine、FD2 oracle／parity全套與前綴工具9項測試通過；
+明示提交配對契約亦列有限CONFORMED，預設仍拒收不同提交。
+
+seq601的record52 identity18 HP73，seq602 HP0／byte5=1；其餘16名我方仍存活。
+seq605 EIP36D98與完整標題輸入鏈，原版已返回標題，沒有注入。
+NPC死亡引發本章敗北列強推論，本輪不重解結果handler。
+driver等待戰場逾時exit15，不能稱為成功章退出；酒店SAV與戰後交易尚未取得。
+覆蓋層SAV仍與起始槽全檔相同；CPU切片CONFORMED不增加13／30章數。
+#88下一步沿既有move_unit／skip_indices正常護援，不強化NPC、不鎖HP、不提前清敵。

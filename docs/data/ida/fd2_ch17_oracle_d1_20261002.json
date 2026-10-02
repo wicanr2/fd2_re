@@ -1,0 +1,545 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_original_runner_failure",
+  "chapter": 17,
+  "date": "2026-10-02",
+  "status": "oracle-failed",
+  "issues": [
+    88,
+    90
+  ],
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "failure": {
+    "classification": "原版執行器CPU缺少指令形式；driver等待逾時是後續症狀",
+    "error": "cpu386: EIP=00015C59 opcode=D1：D1 ModRM 64 尚未支援",
+    "oracle_exit_status": 2,
+    "driver_exit_status": 5,
+    "request_seq": 592,
+    "last_completed_seq": 591,
+    "steps_completed": 2965476127,
+    "original_address_space": "dosgolem relocated LE linear",
+    "original_stop_eip": "0x15C59",
+    "cpu_eip_after_error": "0x15C5B",
+    "registers": [
+      243,
+      486,
+      0,
+      1509356,
+      349572,
+      349620,
+      2,
+      0
+    ],
+    "state_injections": [],
+    "game_semantics": "unknown；不由指令形式推論玩法欄位"
+  },
+  "ida_evidence": {
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "original_function_name": "sub_15B77",
+    "function_start": "0x15b77",
+    "function_end": "0x15da2",
+    "source_export_sha256": "34ac12fa4729aa55562d014fd7032ab29c510a87a282dd38913df0ec78775d80",
+    "export_tool": "tools/ida_opening_input_probe.py",
+    "instructions": [
+      {
+        "address": "0x15c53",
+        "bytes": "f6433401",
+        "original": "test    byte ptr [ebx+34h], 1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x15c53",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x15c57",
+        "bytes": "7404",
+        "original": "jz      short loc_15C5D",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x15c57",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x15c59",
+        "bytes": "d1642408",
+        "original": "shl     [esp+20h+var_18], 1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x15c59",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x15c5d",
+        "bytes": "037c2408",
+        "original": "add     edi, [esp+20h+var_18]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x15c5d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x15c61",
+        "bytes": "46",
+        "original": "inc     esi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x15c61",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x15c62",
+        "bytes": "3b742428",
+        "original": "cmp     esi, [esp+20h+arg_4]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x15c62",
+        "semantic_annotations": []
+      }
+    ]
+  },
+  "claims": [
+    {
+      "original_location": "IDA LE 0x15C59 bytes d1642408",
+      "level": "confirmed",
+      "semantic": "原始指令為SHL stack memory,1，SIB24及disp08；保留IDA原operand [esp+20h+var_18]，var_18只為導覽名稱",
+      "source": "本檔IDA原始指令"
+    },
+    {
+      "original_location": "dosgolem relocated LE 0x15C59／cpu386 D1 branch",
+      "level": "confirmed",
+      "semantic": "目前a9bcd621的D1分支拒絕ModRM64，原版在正常END後退出；未完成第一敵方回合",
+      "source": "固定oracle.log與既有decoder"
+    },
+    {
+      "original_location": "FD2 remake",
+      "level": "unknown",
+      "semantic": "完整章尚未重播；這次退出不構成重製缺陷或整章不相容結論",
+      "source": "原版先行、Go串行流程"
+    }
+  ],
+  "runner_provenance": {
+    "schema_version": 1,
+    "kind": "fd2_oracle_runner_provenance",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+    "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+    "dosgolem_branch": "feat/fd2-oracle-input-chain",
+    "dosgolem_tracked_dirty_files": 0,
+    "dosgolem_untracked_files": 0,
+    "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+    "generated_at": "2026-10-02T06:05:14+00:00",
+    "control_plan": "docs/data/parity-plans/ch17-sample.jsonl",
+    "lock_ally_hp": false,
+    "force_enemy_clear_declared": true,
+    "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_reference_manifest": "docs/data/fd2-reference-files.json",
+    "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch17/sample-state-r1",
+    "state_injections": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+  },
+  "slot_sha256": "dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786",
+  "control_plan": "docs/data/parity-plans/ch17-sample.jsonl",
+  "control_plan_sha256": "db9d2b2d00fea28970d5bf06b6c41875cc1422aff17b3a3ae565fd9ddfc9559b",
+  "prefix": {
+    "result": {
+      "schema_version": 1,
+      "kind": "fd2_original_oracle_prefix_comparison",
+      "status": "passed",
+      "prefix": "work/parity-slot-ch17/preflight-original-r1",
+      "full": "work/parity-slot-ch17/sample-original-r1",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "fixed_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "clean_source": true,
+      "prefix_checkpoints": 118,
+      "checked": 118,
+      "contiguous_from_zero": true,
+      "ignored_fields": [
+        "frame_deferred",
+        "frames_deferred_so_far"
+      ],
+      "differences": [],
+      "limits": "只驗原版重跑的控制與CPU／記錄前綴；PNG排程欄位不參與，完整RGB另走章驗證器。",
+      "verifier_sha256": "5c72e6c4208b079b89de0d65e45f92253a6d887a6aaf51cab036ab7bf3642a9f"
+    },
+    "receipt_sha256": "d0b80c185abab81a7eb4f8015b3ed138224e6aa1c85bbaa77820dc535f500ca5"
+  },
+  "logs": {
+    "work/parity-slot-ch17/sample-original-r1/oracle.log": "ac333ba700e0f918b76461ce2f39adae4b136fb56f91f74d49692f9ab0fc17d9",
+    "work/parity-slot-ch17/sample-original-r1/driver.log": "cb2082d21ebcb7a79e8160ce7d8838be68c6f2df73a5cf824b639279ab099d9d",
+    "work/parity-slot-ch17/sample-original-r1/control-history.jsonl": "55ec4ce01bb79cc144fb1d7d8284a40a1dacda474240a20559c70d1488c44a07",
+    "work/parity-slot-ch17/sample-original-r1/current.json": "64cd3221f8d8ebadef4da67a92926288f6e70007f27bca8fe249b2d81dfd8185",
+    "work/parity-slot-ch17/sample-original-r1.log": "d36cd8807adf7b039b78af0175d16966500998d6da8eded5469389281714a38b"
+  },
+  "reproduce": {
+    "original": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch17/sample-state-r1 -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=16000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=1 -e FD2_ORACLE_EIP_TRACE=0x335AA,0x205DA,0x1088D,0x10B4E,0x13A9F,0x1E54A,0x20822,0x34FD7,0x23B5F fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch17/sample-original-r1; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 3000 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch17-sample.jsonl >work/parity-slot-ch17/sample-original-r1.log 2>&1'",
+    "ida": "test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-io.i64 && test -d /home/anr2/cht/fd2/work/parity-slot-ch17 && test -f /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2/FD2.EXE && docker run --rm --network none --memory 3g --cpus 2 --pids-limit 256 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch17,dst=/shots --workdir /tmp -e HOME=/home/ubuntu -e PROBE_ADDRESSES='0x15C59' -e PROBE_OUTPUT=/shots/oracle-d1-ida.json --entrypoint timeout ida-pro-9.4-idapython:locked-v1 240 bash -c 'cp /src/work/ch01-town-parity-20260908/ida/fd2-io.i64 /tmp/probe.i64; idat -A -S/src/tools/ida_opening_input_probe.py /tmp/probe.i64' > work/parity-slot-ch17/oracle-d1-ida.log 2>&1",
+    "prefix": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src fd2-go-test-local:20260909 timeout 40 python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch17/preflight-original-r1 --full work/parity-slot-ch17/sample-original-r1 --out work/parity-slot-ch17/sample-prefix-preflight.json"
+  },
+  "limitations": [
+    "完整章沒有通過，仍13／30",
+    "正常選人、六個單位第1回合與正常END；未清敵、未鎖HP、未強化NPC",
+    "不以提高timeout或DOSBox替代正式收據",
+    "只擷取已知錯誤位址的原始指令，不深挖遊戲helper語意",
+    "修正CPU後由乾淨受版控執行器同槽同計畫重跑，原失敗不覆寫"
+  ],
+  "resolution": {
+    "status": "CONFORMED",
+    "scope": "只限D1 /4 r/m32 CPU切片；完整章仍#88未完成",
+    "date": "2026-10-02",
+    "cpu_commit": "c91e8031942bba02570634403adab0168903680c",
+    "spec": "dosgolem/docs/spec/190-cpu386-d1-shl-rm32.md",
+    "source_contract": "Intel SDM Volume2B SAL/SAR/SHL/SHR",
+    "source_url": "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-2b-manual.pdf",
+    "run": "work/parity-slot-ch17/sample-original-r2",
+    "driver_exit_status": 15,
+    "driver_failure": "await_ui=cursor 等待逾時；原版已正常敗北返回標題，不是CPU錯誤",
+    "full_chapter_passed": false,
+    "tests": {
+      "focused_before": "failed",
+      "focused_after": "passed",
+      "cpu386_machine_fd2": "passed",
+      "prefix_verifier_tests": 9
+    },
+    "reproduce": {
+      "regression": "test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && docker run --rm --network none --memory 3g --cpus 2 --pids-limit 256 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/dos/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/dos/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --workdir /dos -e GOCACHE=/dos/workplace/gocache -e GOMODCACHE=/dos/workplace/gomodcache -e HOME=/tmp -e DOSGOLEM_FD2_EXE=/orig/FD2.EXE -e DOSGOLEM_FD2_ROOT=/orig --entrypoint timeout golang:1.24-bookworm 900 go test ./internal/cpu386 ./internal/machine ./apps/fd2/... -count=1 -timeout=600s -v > /home/anr2/cht/fd2/work/parity-slot-ch17/oracle-d1-regression-r1.log 2>&1",
+      "original": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch17/sample-state-r2 -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=16000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=1 -e FD2_ORACLE_EIP_TRACE=0x335AA,0x205DA,0x1088D,0x10B4E,0x13A9F,0x1E54A,0x20822,0x34FD7,0x23B5F fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch17/sample-original-r2; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 3000 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch17-sample.jsonl >work/parity-slot-ch17/sample-original-r2.log 2>&1'",
+      "preflight_prefix": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src fd2-go-test-local:20260909 timeout 40 python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch17/preflight-original-r1 --full work/parity-slot-ch17/sample-original-r2 --out work/parity-slot-ch17/sample-prefix-preflight-r2.json --prefix-commit a9bcd621e93e7e5b132832f98f931077658e7b21 --full-commit c91e8031942bba02570634403adab0168903680c",
+      "failed_prefix": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src fd2-go-test-local:20260909 timeout 40 python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch17/sample-original-r1 --full work/parity-slot-ch17/sample-original-r2 --out work/parity-slot-ch17/sample-prefix-failed-r1-r2.json --prefix-commit a9bcd621e93e7e5b132832f98f931077658e7b21 --full-commit c91e8031942bba02570634403adab0168903680c",
+      "prefix_tests": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src fd2-go-test-local:20260909 timeout 40  sh -c 'PYTHONPATH=tools python3 -m unittest tools/test_verify_oracle_prefix.py -v > work/parity-slot-ch17/oracle-prefix-upgrade-tests.log 2>&1'"
+    },
+    "claim": {
+      "level": "confirmed",
+      "location": "dosgolem relocated LE：seq591正常END，seq592 steps2976352202",
+      "semantic": "相同狀態正常敵方回合越過原D1錯誤；沒有CPU錯誤或狀態注入",
+      "source": "新舊592點前綴及checkpoint0592"
+    },
+    "defeat_limit": {
+      "level": "strong inference",
+      "observations": "seq601 record52 identity18 HP73；seq602 HP0／byte5=1；seq605 EIP0x36D98標題輸入鏈，沒有注入",
+      "interpretation": "NPC死亡引發敗北；本輪只記錄狀態與返回標題，不重新推測高影響handler",
+      "remaining_issue": 88
+    },
+    "runner_provenance": {
+      "schema_version": 1,
+      "kind": "fd2_oracle_runner_provenance",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+      "dosgolem_commit": "c91e8031942bba02570634403adab0168903680c",
+      "dosgolem_branch": "feat/fd2-oracle-input-chain",
+      "dosgolem_tracked_dirty_files": 0,
+      "dosgolem_untracked_files": 0,
+      "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+      "generated_at": "2026-10-02T10:39:44+00:00",
+      "control_plan": "docs/data/parity-plans/ch17-sample.jsonl",
+      "lock_ally_hp": false,
+      "force_enemy_clear_declared": true,
+      "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "original_reference_manifest": "docs/data/fd2-reference-files.json",
+      "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch17/sample-state-r2",
+      "state_injections": [
+        "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+        "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+      ],
+      "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+    },
+    "prefix_reports": {
+      "sample-prefix-preflight-r2.json": {
+        "result": {
+          "schema_version": 1,
+          "kind": "fd2_original_oracle_prefix_comparison",
+          "status": "passed",
+          "prefix": "work/parity-slot-ch17/preflight-original-r1",
+          "full": "work/parity-slot-ch17/sample-original-r2",
+          "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+          "prefix_dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+          "full_dosgolem_commit": "c91e8031942bba02570634403adab0168903680c",
+          "commit_comparison": "explicit-commit-pair",
+          "fixed_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "clean_source": true,
+          "prefix_checkpoints": 118,
+          "checked": 118,
+          "contiguous_from_zero": true,
+          "ignored_fields": [
+            "frame_deferred",
+            "frames_deferred_so_far"
+          ],
+          "differences": [],
+          "limits": "只驗原版重跑的控制與CPU／記錄前綴；PNG排程欄位不參與，完整RGB另走章驗證器。",
+          "verifier_sha256": "1cd737da78c65e62c12b74a0573fe2d5a5f586e787aa856be4c6d4b52059e2d0"
+        },
+        "sha256": "b203d7cb97b1b331ac8ea69d99e0d6c72a729648ea1bd6379124c68b9ae605e9"
+      },
+      "sample-prefix-failed-r1-r2.json": {
+        "result": {
+          "schema_version": 1,
+          "kind": "fd2_original_oracle_prefix_comparison",
+          "status": "passed",
+          "prefix": "work/parity-slot-ch17/sample-original-r1",
+          "full": "work/parity-slot-ch17/sample-original-r2",
+          "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+          "prefix_dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+          "full_dosgolem_commit": "c91e8031942bba02570634403adab0168903680c",
+          "commit_comparison": "explicit-commit-pair",
+          "fixed_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "clean_source": true,
+          "prefix_checkpoints": 592,
+          "checked": 592,
+          "contiguous_from_zero": true,
+          "ignored_fields": [
+            "frame_deferred",
+            "frames_deferred_so_far"
+          ],
+          "differences": [],
+          "limits": "只驗原版重跑的控制與CPU／記錄前綴；PNG排程欄位不參與，完整RGB另走章驗證器。",
+          "verifier_sha256": "1cd737da78c65e62c12b74a0573fe2d5a5f586e787aa856be4c6d4b52059e2d0"
+        },
+        "sha256": "1f8cf7e40e8672e15b04d5143ad802cffa8b548907076f8277f36b0429fcbe4e"
+      }
+    },
+    "checkpoints": {
+      "591": {
+        "sha256": "b740868a97c0b9c50995164afe88e83e8dbd4d755d9c0310411f67667f153a8d",
+        "steps": 2956352202,
+        "eip": "0x4E83B",
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 27,
+          "camera_y": 22,
+          "cursor_x": 33,
+          "cursor_y": 24,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 32174,
+          "round": 1,
+          "visible_x": 6,
+          "visible_y": 2
+        },
+        "state_injections": [],
+        "record52": {
+          "byte5": 128,
+          "camp": 2,
+          "exp": 8,
+          "fig": 18,
+          "hp": 173,
+          "identity": 18,
+          "index": 52,
+          "level": 1,
+          "motion": 0,
+          "pose": 0,
+          "raw_hex": "161f15000080021212004007408a80ff80ff80ff80ff80ff80ff0000000000010901000000000000000000000000000000ff0000800000b30089000508012f00ad001801080008004901e900a7003400",
+          "x": 22,
+          "y": 31
+        }
+      },
+      "592": {
+        "sha256": "0e07c9a1dc687e2a14800647e9f063a7bcc6bfc8aaab99f7bb2622f164aae4af",
+        "steps": 2976352202,
+        "eip": "0x4DEDD",
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 22,
+          "camera_y": 12,
+          "cursor_x": 23,
+          "cursor_y": 13,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 32174,
+          "round": 1,
+          "visible_x": 1,
+          "visible_y": 1
+        },
+        "state_injections": [],
+        "record52": {
+          "byte5": 0,
+          "camp": 2,
+          "exp": 8,
+          "fig": 18,
+          "hp": 173,
+          "identity": 18,
+          "index": 52,
+          "level": 1,
+          "motion": 0,
+          "pose": 0,
+          "raw_hex": "161f15000000021212004007408a80ff80ff80ff80ff80ff80ff0000000000010901000000000000000000000000000000ff0000800000b30089000508012f00ad001801080008004901e900a7003400",
+          "x": 22,
+          "y": 31
+        }
+      },
+      "601": {
+        "sha256": "7692b5f1e6c811b7b9e98dcc292b77a373549e6bd7e9dd65fc492a3931b093e8",
+        "steps": 3156352202,
+        "eip": "0x4E694",
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 15,
+          "camera_y": 25,
+          "cursor_x": 22,
+          "cursor_y": 31,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 31010,
+          "round": 1,
+          "visible_x": 7,
+          "visible_y": 6
+        },
+        "state_injections": [],
+        "record52": {
+          "byte5": 0,
+          "camp": 2,
+          "exp": 23,
+          "fig": 18,
+          "hp": 73,
+          "identity": 18,
+          "index": 52,
+          "level": 1,
+          "motion": 0,
+          "pose": 0,
+          "raw_hex": "161f15000000021212004007408a80ff80ff80ff80ff80ff80ff0000000000010901000000000000000000000000000000ff0000800000b30089000517012f0049001801080008004901e900a7003400",
+          "x": 22,
+          "y": 31
+        }
+      },
+      "602": {
+        "sha256": "36f722c82ee14245d7bc5bd274f535c03cec6089680cbc01c31708dd25cf42fe",
+        "steps": 3176352202,
+        "eip": "0x4E91C",
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 15,
+          "camera_y": 25,
+          "cursor_x": 22,
+          "cursor_y": 31,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 64251,
+          "round": 1,
+          "visible_x": 7,
+          "visible_y": 6
+        },
+        "state_injections": [],
+        "record52": {
+          "byte5": 1,
+          "camp": 2,
+          "exp": 23,
+          "fig": 18,
+          "hp": 0,
+          "identity": 18,
+          "index": 52,
+          "level": 1,
+          "motion": 0,
+          "pose": 0,
+          "raw_hex": "161f15000001021212004007408a80ff80ff80ff80ff80ff80ff0000000000010901000000000000000000000000000000ff0000800000b30089000517012f0000001801080008004901e900a7003400",
+          "x": 22,
+          "y": 31
+        }
+      },
+      "605": {
+        "sha256": "4a4fece1287b232d4bf17804f645ffb7e57281bd2588b29c350e519027b51fcf",
+        "steps": 3231447670,
+        "eip": "0x36D98",
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 15,
+          "camera_y": 25,
+          "cursor_x": 22,
+          "cursor_y": 31,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 22652,
+          "round": 1,
+          "visible_x": 7,
+          "visible_y": 6
+        },
+        "state_injections": [],
+        "record52": {
+          "byte5": 0,
+          "camp": 0,
+          "exp": 0,
+          "fig": 0,
+          "hp": 0,
+          "identity": 0,
+          "index": 52,
+          "level": 0,
+          "motion": 0,
+          "pose": 0,
+          "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "x": 0,
+          "y": 0
+        }
+      },
+      "891": {
+        "sha256": "5dc3e1db6e77b215025872d715debd75c7e1364726c4df7e787e19f1fe592c9d",
+        "steps": 3231447956,
+        "eip": "0x36D98",
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 15,
+          "camera_y": 25,
+          "cursor_x": 22,
+          "cursor_y": 31,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 22652,
+          "round": 1,
+          "visible_x": 7,
+          "visible_y": 6
+        },
+        "state_injections": [],
+        "record52": {
+          "byte5": 0,
+          "camp": 0,
+          "exp": 0,
+          "fig": 0,
+          "hp": 0,
+          "identity": 0,
+          "index": 52,
+          "level": 0,
+          "motion": 0,
+          "pose": 0,
+          "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    "files": {
+      "work/parity-slot-ch17/oracle-d1-before-fix.log": "0d660617ebba6282ebf52d24e24739a2592426f546e9d802951cb5cb27eb7eed",
+      "work/parity-slot-ch17/oracle-d1-after-fix.log": "bd86cc1bbafc2ea8297c46a7139b51f7b0fa7cf6e86905b1cfa41164bbcda1b7",
+      "work/parity-slot-ch17/oracle-d1-regression-r1.log": "7bb121cc24c2b49137725fcaf3c663c4c540af660177fadcdb671f84516e5b7b",
+      "work/parity-slot-ch17/oracle-prefix-upgrade-tests.log": "e755a936a860a46395f2194dbf6500ac4c441d2927cf77dca3cc653ce51cad87",
+      "work/parity-slot-ch17/sample-original-r2.log": "07d4bf7ef3e82325b507b3b11450286c2c9aa77985236a63014e6c942d79b98b",
+      "work/parity-slot-ch17/sample-original-r2/driver.log": "cc4e42ebfd0e587d917a39350fb1d7cb5d5568dd0b2acb8aa1acec0390e33dde",
+      "work/parity-slot-ch17/sample-original-r2/control-history.jsonl": "9fe157af50a0737ac59902b278603e20a17f6ec0a050e1f2b2caba81fcc9fa58",
+      "work/parity-slot-ch17/sample-original-r2/current.json": "5dc3e1db6e77b215025872d715debd75c7e1364726c4df7e787e19f1fe592c9d"
+    },
+    "state_sav_sha256": "dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786",
+    "spec_verification_commit": "a0dbaab851cd608e67071228aef65f0c440306ac",
+    "broader_tool_regression": {
+      "status": "failed",
+      "tests": 312,
+      "failures": 3,
+      "errors": 11,
+      "skipped": 2,
+      "log_sha256": "1ad94007c618f611c902c613ee80812ee78e85084375319e04ccd571f65e9703",
+      "existing_contract_failures": 4,
+      "environment_missing_dependencies": 10,
+      "issue": 91,
+      "limits": "非CPU修正套件；相關fixture及消費工具本輪未修改，依#91修正與專用Docker分流，不宣稱全工具測試通過"
+    }
+  }
+}

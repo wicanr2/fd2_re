@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -224,5 +224,23 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。
 
 怎樣算做完：重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。
+
+### 第十七章原版敵方回合觸發dosgolem缺D1記憶體位移指令
+
+`ch17-oracle-d1-sib-shift` · 缺陷 · [#90](https://github.com/wicanr2/fd2_re/issues/90) · 仍未完成 · 要人判
+
+怎樣算做完：固定原版錯誤與原始指令bytes可回查；依現有dosgolem decoder與x86已知規格補缺少的D1形式，測試SIB／disp／操作數寬度與flags，維持既有形式回歸。變更受版控並提交，FD2專用執行器乾淨且可重跑；以同槽／同計畫驗原版第一敵方回合及前綴。完整章驗收仍由#88。
+
+證據：`['docs/data/ida/fd2_ch17_oracle_d1_20261002.json', 'docs/data/parity-plans/ch17-sample.jsonl', 'docs/data/parity-slots/ch17-manifest.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 工具回歸的舊 fixture 與現況證據漂移
+
+`tool-regression-fixture-and-evidence-drift` · 缺陷 · [#91](https://github.com/wicanr2/fd2_re/issues/91) · 仍未完成 · 要人判
+
+第十七章 CPU 修復時額外執行 tools 全套測試，發現四個既有失敗：章槽 fixture 缺 event_states、台帳 fixture 缺 slot_policy，以及字串清冊、unknown footprint 的快照漂移。這些測試與消費工具本輪未修改。另有10個 PIL／Capstone 缺件屬錯用 Go 測試映像的環境失敗，須依既有專用映像分流，不能視為遊戲缺陷。CPU 與前綴驗證已獨立通過；本題不重開已閉合 RE。
+
+怎樣算做完：四個既有測試逐項釐清契約與目前資料，修正過時fixture或重生受版控證據，保留原始失敗及雜湊；以合適既有Docker映像乾淨重跑相關工具測試。不得調整正式玩法、章通過門檻或把未證實語意升格。
+
+證據：`['tools/test_fd2_chapter_slot.py', 'tools/test_fd2_parity_progress.py', 'tools/test_editor_schemas.py', 'tools/test_fd2_unknown_footprints.py', 'docs/data/ida/fd2_ch17_oracle_d1_20261002.json']`
 
 <!-- END fd2_worklist.py render -->

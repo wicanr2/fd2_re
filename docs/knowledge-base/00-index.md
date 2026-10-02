@@ -315,3 +315,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十七章有限起手總覽索引](../data/ui-traces/ch17-native-startup-samples.json)與[完整三欄總覽](../figures/ch17-native-startup-samples.png)：五點RUNTIME-E1，無完整章或存檔宣稱。
 
 - [第十七章完整抽樣計畫（#88）](../data/parity-plans/ch17-sample.jsonl)：正常選人、四回合至round5、turn4增援後清敵、戰後交易／酒店SAV與Ctrl+F7。計畫本身不代表整章通過。
+
+- [第十七章原版CPU缺口診斷與修復（#90）](../data/ida/fd2_ch17_oracle_d1_20261002.json)：IDA LE 15C59 bytes d1642408、原版D1退出保留；CPU有限CONFORMED，升級後118點起手及592點失敗前綴全同。原版正常敗北，完整章由#88護援續驗。

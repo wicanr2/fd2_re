@@ -330,6 +330,44 @@
         "note": "完整原版章與同槽重製四項及全檔SAV收據。"
       },
       "issue": 88
+    },
+    {
+      "id": "ch17-oracle-d1-sib-shift",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "第十七章原版敵方回合觸發dosgolem缺D1記憶體位移指令",
+      "acceptance": "固定原版錯誤與原始指令bytes可回查；依現有dosgolem decoder與x86已知規格補缺少的D1形式，測試SIB／disp／操作數寬度與flags，維持既有形式回歸。變更受版控並提交，FD2專用執行器乾淨且可重跑；以同槽／同計畫驗原版第一敵方回合及前綴。完整章驗收仍由#88。",
+      "evidence": [
+        "docs/data/ida/fd2_ch17_oracle_d1_20261002.json",
+        "docs/data/parity-plans/ch17-sample.jsonl",
+        "docs/data/parity-slots/ch17-manifest.json",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "原版CPU錯誤、可重生指令與同槽回歸；完整章不在本工單範圍。"
+      },
+      "issue": 90
+    },
+    {
+      "id": "tool-regression-fixture-and-evidence-drift",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "工具回歸的舊 fixture 與現況證據漂移",
+      "body": "第十七章 CPU 修復時額外執行 tools 全套測試，發現四個既有失敗：章槽 fixture 缺 event_states、台帳 fixture 缺 slot_policy，以及字串清冊、unknown footprint 的快照漂移。這些測試與消費工具本輪未修改。另有10個 PIL／Capstone 缺件屬錯用 Go 測試映像的環境失敗，須依既有專用映像分流，不能視為遊戲缺陷。CPU 與前綴驗證已獨立通過；本題不重開已閉合 RE。",
+      "acceptance": "四個既有測試逐項釐清契約與目前資料，修正過時fixture或重生受版控證據，保留原始失敗及雜湊；以合適既有Docker映像乾淨重跑相關工具測試。不得調整正式玩法、章通過門檻或把未證實語意升格。",
+      "evidence": [
+        "tools/test_fd2_chapter_slot.py",
+        "tools/test_fd2_parity_progress.py",
+        "tools/test_editor_schemas.py",
+        "tools/test_fd2_unknown_footprints.py",
+        "docs/data/ida/fd2_ch17_oracle_d1_20261002.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "四項fixture／證據失敗與專用Docker測試契約，相關乾淨重跑通過後關閉。"
+      },
+      "issue": 91
     }
   ]
 }
