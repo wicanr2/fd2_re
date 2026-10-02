@@ -18,7 +18,7 @@ func nativeCompound32Fixture() (*State, *Unit, *Unit) {
 	book[32] = NativeCommandRecord{ID: 32, Damage: 50, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 76, TargetCode: 0}
 	return &State{
 		W: 2, H: 1, Units: []*Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2),
-		NativeCommandBook: book, NativeCommandResistances: map[int]int{5: 10},
+		NativeCommandBook: book, NativeCommandResistances: map[int]int{2: 10},
 	}, actor, target
 }
 
@@ -55,7 +55,7 @@ func TestExecuteNativeCompoundCommand32RejectsMissingProvenanceAtomically(t *tes
 	for _, mutate := range []func(*State, *Unit, *Unit){
 		func(_ *State, actor, _ *Unit) { actor.BattleFig = 18 },
 		func(_ *State, actor, _ *Unit) { actor.MP = 75 },
-		func(st *State, _, target *Unit) { delete(st.NativeCommandResistances, target.ClassID) },
+		func(st *State, _, target *Unit) { delete(st.NativeCommandResistances, int(target.NativeRecordClass)) },
 		func(_ *State, _, target *Unit) { target.HasNativeRecordClass = false },
 	} {
 		st, actor, target := nativeCompound32Fixture()

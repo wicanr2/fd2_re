@@ -104,13 +104,17 @@ func (g *Game) startNativeCommand2Presentation(actor, confirmed *battle.Unit, th
 	}
 	var plan *battle.NativeCommandDamagePlan
 	var err error
+	rngBefore := g.nativeRNGState
+	walk := func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+		return figani.WalkNativeCommand2RNG(rngBefore, targetCount, resolve)
+	}
 	if actor.Camp == battle.Enemy {
 		var origin battle.Cell
 		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
-			plan, err = g.st.PlanNativeAICommandDamage(actor, origin, 2, g.st.NativeCommandResistances, g.nativeRNGState)
+			plan, err = g.st.PlanNativeAICommandDamageWalk(actor, origin, 2, g.st.NativeCommandResistances, rngBefore, walk)
 		}
 	} else {
-		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, 2, g.st.NativeCommandResistances, g.nativeRNGState)
+		plan, err = g.st.PlanNativeCommandDamageWalk(actor, confirmed, 2, g.st.NativeCommandResistances, rngBefore, walk)
 	}
 	if err != nil {
 		return err

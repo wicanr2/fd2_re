@@ -59,16 +59,16 @@ func ApplyNativeItemCommandDamage(
 		if target == nil {
 			return nil, rngState, fmt.Errorf("nil native item target %d", i)
 		}
-		resistance, exists := resistances[target.ClassID]
+		resistance, exists := resistances[nativeCommandResistanceClass(target)]
 		if !exists || resistance < 0 || resistance > 10 {
-			return nil, rngState, fmt.Errorf("native resistance class %d is unavailable", target.ClassID)
+			return nil, rngState, fmt.Errorf("native resistance class %d is unavailable", nativeCommandResistanceClass(target))
 		}
 	}
 
 	results := make([]NativeCommandDamage, 0, len(targets))
 	for _, target := range targets {
 		result, nextRNG, err := ApplyNativeCommandDamage(
-			target, record.Damage, record.Hit, resistances[target.ClassID], rngState,
+			target, record.Damage, record.Hit, resistances[nativeCommandResistanceClass(target)], rngState,
 		)
 		if err != nil {
 			return nil, rngState, err

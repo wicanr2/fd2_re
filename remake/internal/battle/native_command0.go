@@ -100,8 +100,8 @@ func (s *State) PlanNativeCommandDamageWalk(actor, confirmed *Unit, commandID in
 	// target before 0x1CA89-equivalent MP mutation to keep a missing editable
 	// table entry fail-closed rather than making a partial command transaction.
 	for _, target := range targets {
-		if raw, ok := resistByClass[target.ClassID]; !ok || raw < 0 || raw > 10 {
-			return nil, fmt.Errorf("native command damage missing resistance class=%d", target.ClassID)
+		if raw, ok := resistByClass[nativeCommandResistanceClass(target)]; !ok || raw < 0 || raw > 10 {
+			return nil, fmt.Errorf("native command damage missing resistance class=%d", nativeCommandResistanceClass(target))
 		}
 	}
 	if actor == nil || actor.Acted || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
@@ -143,7 +143,7 @@ func resolveNativeCommandDamagePlan(plan *NativeCommandDamagePlan, record Native
 			return rng, false, fmt.Errorf("native command damage walk resolved target %d out of order", index)
 		}
 		target := targets[index]
-		result, next, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistByClass[target.ClassID], rng)
+		result, next, err := ResolveNativeCommandDamage(record.Damage, record.Hit, resistByClass[nativeCommandResistanceClass(target)], rng)
 		if err != nil {
 			return rng, false, err
 		}
@@ -202,9 +202,9 @@ func (s *State) PlanNativeAICommandDamageSingleTarget(actor, target *Unit, comma
 	if record.EffectMode != 0 || record.TargetCode != 0 || actor.Acted || record.MPCost < 0 || record.MPCost > 0xff || actor.MP < record.MPCost {
 		return nil, fmt.Errorf("native AI command single-target contract unavailable id=%d", commandID)
 	}
-	resistance, ok := resistByClass[target.ClassID]
+	resistance, ok := resistByClass[nativeCommandResistanceClass(target)]
 	if !ok || resistance < 0 || resistance > 10 {
-		return nil, fmt.Errorf("native AI command damage missing resistance class=%d", target.ClassID)
+		return nil, fmt.Errorf("native AI command damage missing resistance class=%d", nativeCommandResistanceClass(target))
 	}
 	stages, err := nativeCommandDamageStages(commandID)
 	if err != nil {
@@ -284,9 +284,9 @@ func (s *State) PlanNativeAICommandDamageWalk(actor *Unit, origin Cell, commandI
 	targets := make([]*Unit, 0, len(indices))
 	for _, index := range indices {
 		target := s.Units[int(index)]
-		resistance, ok := resistByClass[target.ClassID]
+		resistance, ok := resistByClass[nativeCommandResistanceClass(target)]
 		if !ok || resistance < 0 || resistance > 10 {
-			return nil, fmt.Errorf("native AI command damage missing resistance class=%d", target.ClassID)
+			return nil, fmt.Errorf("native AI command damage missing resistance class=%d", nativeCommandResistanceClass(target))
 		}
 		targets = append(targets, target)
 	}

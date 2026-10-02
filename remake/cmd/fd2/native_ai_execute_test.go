@@ -304,7 +304,7 @@ func TestApplyNativeAITargetItemConsumesCompleteCommandDamageList(t *testing.T) 
 		nativeItemEffectRows: rows,
 		nativeCommandBook:    book,
 		nativeCommandResistances: map[int]int{
-			first.ClassID: 10,
+			int(first.NativeRecordClass): 10,
 		},
 		nativeRNGState: 0x2345,
 	}

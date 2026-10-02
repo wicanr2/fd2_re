@@ -8,6 +8,42 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
+func TestNativeCommand2RNGWalkMatchesChapter18FourTargetBoundary(t *testing.T) {
+	// 依已閉合數值轉移與marker推導四組RNG；原版r2的HP與
+	// 下一筆record51的0x13A9F入口43037核對推導結果。
+	before := []uint16{42897, 42415, 13218, 47507}
+	after := []uint16{27114, 61801, 28245, 60022}
+	calls := 0
+	rng, err := WalkNativeCommand2RNG(before[0], 4, func(index int, rng uint16) (uint16, bool, error) {
+		if index != calls || rng != before[index] {
+			t.Fatalf("目標%d的數值入口RNG=%d，應為%d", index, rng, before[index])
+		}
+		calls++
+		return after[index], true, nil
+	})
+	if err != nil || calls != 4 || rng != 43037 {
+		t.Fatalf("指令2目標間亂數不符：calls=%d rng=%d err=%v", calls, rng, err)
+	}
+}
+
+func TestNativeCommand2RNGWalkMissSkipsHitMarkers(t *testing.T) {
+	missAfter := fdother.NativeRNGStep(42897)
+	calls := 0
+	rng, err := WalkNativeCommand2RNG(42897, 2, func(index int, rng uint16) (uint16, bool, error) {
+		calls++
+		if index == 0 {
+			return missAfter, false, nil
+		}
+		if rng != missAfter {
+			t.Fatal("未命中目標不得消耗命中HP marker亂數")
+		}
+		return rng, false, nil
+	})
+	if err != nil || calls != 2 || rng != missAfter {
+		t.Fatalf("miss亂數不符：calls=%d rng=%d err=%v", calls, rng, err)
+	}
+}
+
 func command2TestAnimation() *Animation {
 	frames := make([]Frame, NativeCommand2EffectFrameCount)
 	for i := range frames {

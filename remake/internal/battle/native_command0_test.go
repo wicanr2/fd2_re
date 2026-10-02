@@ -2,6 +2,26 @@ package battle
 
 import "testing"
 
+func TestNativeCommandDamageUsesRawClassBeforeAuthoredClass(t *testing.T) {
+	st, actor, target := nativeCommand0TestState()
+	actor.Camp, actor.MP = Ally, 188
+	target.ClassID, target.NativeRecordClass, target.HasNativeRecordClass = 1, 26, true
+	target.HP = 266
+	st.NativeCommandBook[8] = NativeCommandRecord{ID: 8, Damage: 440, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 24, TargetCode: 0}
+	resistances := map[int]int{1: 10, 26: 4}
+	plan, err := st.PlanNativeCommandDamage(actor, target, 8, resistances, 33548)
+	if err != nil || len(plan.Results) != 1 || plan.Results[0].Damage != 174 || plan.Results[0].HPAfter != 92 {
+		t.Fatalf("record+0x20 抗性未生效：plan=%+v err=%v", plan, err)
+	}
+	if actor.MP != 188 || target.HP != 266 || actor.Acted {
+		t.Fatal("預建傷害計畫不得發布交易")
+	}
+	delete(resistances, 26)
+	if _, err := st.PlanNativeCommandDamage(actor, target, 8, resistances, 33548); err == nil || actor.MP != 188 || target.HP != 266 {
+		t.Fatal("原生職業缺抗性時不得回退或發布交易")
+	}
+}
+
 func nativeCommand0TestState() (*State, *Unit, *Unit) {
 	actor := &Unit{Camp: Own, X: 0, Y: 0, HP: 20, MP: 3, OnField: true}
 	target := &Unit{Camp: Enemy, ClassID: 5, X: 1, Y: 0, HP: 100, OnField: true}
@@ -169,6 +189,7 @@ func TestPlanNativeAICommand4UsesRawSelectorTargetArray(t *testing.T) {
 	actor.NativeRecordByte6, actor.MP = 0, 10
 	target := completeNativeAIScoringUnit()
 	target.Camp, target.OnField, target.ClassID = Own, true, 5
+	target.NativeRecordClass = 5
 	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 1, 0
 	target.NativeRecordByte6, target.HP = 1, 100
 	book := make([]NativeCommandRecord, NativeCommandRecordCount)
@@ -196,6 +217,7 @@ func TestPlanNativeAICommandDamageUsesWinnerCellNotActorCell(t *testing.T) {
 	actor.NativeRecordByte6, actor.MP = 0, 10
 	target := completeNativeAIScoringUnit()
 	target.Camp, target.OnField, target.ClassID = Own, true, 5
+	target.NativeRecordClass = 5
 	target.NativeMapPresentation.X, target.NativeMapPresentation.Y = 2, 0
 	target.NativeRecordByte6, target.HP = 1, 100
 	book := make([]NativeCommandRecord, NativeCommandRecordCount)

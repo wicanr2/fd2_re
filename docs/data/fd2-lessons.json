@@ -1132,6 +1132,22 @@
         ],
         "pattern": "lastAvailableRow\\ :=\\ \\(remaining\\ \\-\\ rowEnd\\)\\ /\\ stride"
       }
+    },
+    {
+      "id": "native-damage-class-and-visual-rng",
+      "date": "2026-10-02",
+      "area": "原生傷害來源",
+      "rule": "原生傷害依target record+0x20查抗性，有原生職業時不得以normalized ClassID取代；多目標傷害按正式演出marker消耗共用亂數。入口是remake/internal/battle/native_command_damage.go的nativeCommandResistanceClass、remake/internal/figani/native_command2.go的WalkNativeCommand2RNG及兩份20261002主規格。",
+      "why": "第十八章raw職業26被normalized1取代，指令8提前殺死目標49，造成AI順序分岔；抗性修正後又發現指令2漏掉目標間六次HP marker亂數。",
+      "evidence": "docs/data/ida/fd2_command_damage_raw_class_20261002.json；docs/data/ida/fd2_command2_target_rng_20261002.json；docs/data/ui-traces/ch18-turns1-6.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/native_command_damage.go",
+          "remake/internal/figani/native_command2.go"
+        ],
+        "pattern": "nativeCommandResistanceClass|WalkNativeCommand2RNG"
+      }
     }
   ]
 }

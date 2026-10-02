@@ -66,7 +66,7 @@ func TestStartNativeCommand32PresentationUsesOriginalAssetsEndToEnd(t *testing.T
 	}
 	book[32] = battle.NativeCommandRecord{ID: 32, Damage: 50, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 76, TargetCode: 0}
 	g.st.NativeCommandBook = book
-	g.st.NativeCommandResistances = map[int]int{5: 10}
+	g.st.NativeCommandResistances = map[int]int{2: 10}
 	g.st.NativeCompositionEventBytes = make([]byte, g.st.W*g.st.H)
 	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{CameraX: 0, CameraY: 0, CursorX: 1, CursorY: 0, VisibleCursorX: 1, VisibleCursorY: 0}); err != nil {
 		t.Fatal(err)
@@ -125,7 +125,7 @@ func nativeCompound32FixtureForMain() (*battle.State, *battle.Unit, *battle.Unit
 	book[32] = battle.NativeCommandRecord{ID: 32, Damage: 50, Hit: 100, SelectionMode: 1, EffectMode: 0, MPCost: 76, TargetCode: 0}
 	return &battle.State{
 		W: 2, H: 1, Units: []*battle.Unit{actor, target}, NativeCompositionEventBytes: make([]byte, 2),
-		NativeCommandBook: book, NativeCommandResistances: map[int]int{5: 10},
+		NativeCommandBook: book, NativeCommandResistances: map[int]int{2: 10},
 	}, actor, target
 }
 

@@ -58,6 +58,7 @@ func TestExecuteNativeAICommand10UsesOriginalIndexedOwner(t *testing.T) {
 	}
 	actor.Camp, actor.HP, actor.MaxHP, actor.MP, actor.Acted = battle.Enemy, 100, 100, 40, false
 	target.Camp, target.HP, target.MaxHP, target.ClassID = battle.Own, 403, 403, 5
+	target.NativeRecordClass = 5
 	book := make([]battle.NativeCommandRecord, battle.NativeCommandRecordCount)
 	for id := range book {
 		book[id] = battle.NativeCommandRecord{ID: id}

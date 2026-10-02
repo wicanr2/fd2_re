@@ -345,3 +345,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十八章四輪有限對拍收據](../data/ui-traces/ch18-turns1-4.json)：#97／#98的正式事件與模式9順序修正；原版計畫於round5停止，整章#94仍待驗。
 
 - [第十八章event42完整規格](../data/ida/fd2_ch18_event42_20261002.json)：#99，3505F先追加group1再播text6，原始shared tail與READY；正常T8待#94。
+
+- [指令傷害的原生職業抗性索引](../data/ida/fd2_command_damage_raw_class_20261002.json)：#100，sub_1C75E 的 target record+0x20 讀取證據與有限CONFORMED修正规格。
+
+- [指令2目標間的演出亂數](../data/ida/fd2_command2_target_rng_20261002.json)：#101，既有六段HP marker的原始consumer與有限CONFORMED規格。
+
+- [第十八章六輪有限收據](../data/ui-traces/ch18-turns1-6.json)：#100／#101，同一原版r2的213筆AI順序與153張RGB；完整章仍拒收。
+
+- [第十八章有界後撤計畫r3](../data/parity-plans/ch18-guard-r3.jsonl)：#94，只將我方record0的正常移動目標改為8,10，原版待驗，不修改NPC或HP。

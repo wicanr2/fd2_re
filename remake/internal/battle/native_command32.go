@@ -84,7 +84,7 @@ func (s *State) PlanNativeCompoundCommand32(actor, confirmed *Unit, rngState uin
 			return nil, fmt.Errorf("native compound command 32 target %d duplicated", index)
 		}
 		seenTargets[target] = struct{}{}
-		resistance, ok := s.NativeCommandResistances[target.ClassID]
+		resistance, ok := s.NativeCommandResistances[nativeCommandResistanceClass(target)]
 		if !ok || resistance < 0 || resistance > 10 {
 			return nil, fmt.Errorf("native compound command 32 target %d resistance unavailable", index)
 		}
@@ -94,7 +94,7 @@ func (s *State) PlanNativeCompoundCommand32(actor, confirmed *Unit, rngState uin
 	state := rngState
 	for _, target := range targets {
 		damage, nextState, resolveErr := ResolveNativeCommandDamage(
-			record.Damage, record.Hit, s.NativeCommandResistances[target.ClassID], state,
+			record.Damage, record.Hit, s.NativeCommandResistances[nativeCommandResistanceClass(target)], state,
 		)
 		if resolveErr != nil {
 			return nil, resolveErr

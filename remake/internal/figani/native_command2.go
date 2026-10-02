@@ -1,6 +1,10 @@
 package figani
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+)
 
 const (
 	NativeCommand2EffectFrameCount = 18
@@ -17,6 +21,35 @@ const (
 
 type NativeCommand2HelperState struct {
 	Frame, Repeat byte
+}
+
+// WalkNativeCommand2RNG preserves sub_2A6BD's per-target 0x2B114 numeric
+// call followed by one 0x2AF40 RNG step per hit's mode-5 HP marker. Misses
+// bypass those markers at 0x2AE0C. Mode 0/3 and transitions add no rolls.
+// Evidence: docs/data/ida/fd2_command2_target_rng_20261002.json.
+func WalkNativeCommand2RNG(rng uint16, targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+	if targetCount <= 0 || resolve == nil {
+		return rng, fmt.Errorf("figani: command2 RNG walk needs targets and a resolver")
+	}
+	frames, _, err := BuildNativeCommand2TargetSequence()
+	if err != nil {
+		return rng, err
+	}
+	for index := 0; index < targetCount; index++ {
+		next, hit, err := resolve(index, rng)
+		if err != nil {
+			return rng, err
+		}
+		rng = next
+		if hit {
+			for _, frame := range frames {
+				if frame.NumericMarker {
+					rng = fdother.NativeRNGStep(rng)
+				}
+			}
+		}
+	}
+	return rng, nil
 }
 
 type NativeCommand2HelperFrame struct {

@@ -690,7 +690,7 @@ func TestPlayerNativeCommand0RunsIndexedPresentationThroughCursorConfirm(t *test
 		t.Fatalf("command0 missing resistance crossed transaction boundary: actor=%#v target=%#v targeting=%v sel=%#v",
 			actor, target, g.nativeCommand0Targeting, g.sel)
 	}
-	state.NativeCommandResistances = map[int]int{5: 10}
+	state.NativeCommandResistances = map[int]int{1: 10}
 	target.HasBattleFig = false
 	g.confirm()
 	if g.nativeCmd0Presentation != nil || actor.MP != 8 || actor.Acted || target.HP != 100 || !g.nativeCommand0Targeting {

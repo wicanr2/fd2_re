@@ -9212,4 +9212,12 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 
 正式turn3 raw camp0以既有ai_mode_range只改record16的低四位；模式9查到raw目標時先跟隨，目標不存在沿既有後備。兩份規格列有限CONFORMED。正常四輪回放範圍、完整RGB、Go回歸及剩餘整章閘門見[58](58-fd2-exe-re-coverage.md)與[有限收據](../data/ui-traces/ch18-turns1-4.json)；#94／#97尚未完成戰後與SAV，不提升PLAYER-E2。
 
-第十八章T8 event42已依READY補增援後完整text6對白，建構E1驗證阻塞與once；尚未有正常T8收據。護援r2原版round7敗退，重製另有第5回合預選差異#100，均如實拒收。完整章#94／#97與#99保持開啟，現況及重開入口依[58](58-fd2-exe-re-coverage.md)。
+第十八章T8 event42已依READY補增援後完整text6對白，建構E1驗證阻塞與once；尚未有正常T8收據。護援r2原版round7敗退；第5回合抗性與第6回合指令2亂數差異已依下節修正，整章仍拒收。完整章#94／#97與#99保持開啟，現況及重開入口依[58](58-fd2-exe-re-coverage.md)。
+
+### 第十八章原生傷害 consumer 與目標亂數（#100／#101，2026-10-02）
+
+[抗性索引規格](../data/ida/fd2_command_damage_raw_class_20261002.json)依 sub_1C75E 的 target record+0x20 選抗性；舊可編輯單位缺原生職業才沿用 ClassID，已提供的無效原生職業拒收。正式指令、AI、道具與指令32共用此來源。
+
+[指令2規格](../data/ida/fd2_command2_target_rng_20261002.json)將每個命中目標的六個HP marker亂數交錯接至傷害計畫；未命中跳過，玩家與AI共用，既有Draw交易邊界不變。兩份規格達有限CONFORMED／RUNTIME-E1。[六輪有限收據](../data/ui-traces/ch18-turns1-6.json)保留固定原版r2、213筆AI順序、所有已完成行為及153張RGB通過。整章節點、酒店SAV及正常T8仍拒收，不提升PLAYER-E2。現況及重開條件依[58](58-fd2-exe-re-coverage.md)。
+
+本批最終Go19套件與第十七章98張、四項及整檔酒店SAV回歸通過，命令與輸出雜湊保存在[六輪收據](../data/ui-traces/ch18-turns1-6.json)。

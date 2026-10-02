@@ -61,12 +61,14 @@ type parityAction struct {
 }
 
 type parityUnit struct {
-	Camp     int `json:"camp"`
-	X        int `json:"x"`
-	Y        int `json:"y"`
-	HP       int `json:"hp"`
-	Identity int `json:"identity"`
-	Acted    int `json:"acted"`
+	// 診斷保留runtime陣列索引；不把敵軍的raw+8當持續角色身分。
+	NativeIndex int `json:"native_index"`
+	Camp        int `json:"camp"`
+	X           int `json:"x"`
+	Y           int `json:"y"`
+	HP          int `json:"hp"`
+	Identity    int `json:"identity"`
+	Acted       int `json:"acted"`
 	// PX／PY 是原版 record +0／+1（NativeMapPresentation），AI 用的是這一組座標。
 	PX int `json:"px"`
 	PY int `json:"py"`
@@ -496,6 +498,16 @@ func (r *parityReplay) observeAIPlan(plan *battle.AIPlan) {
 		}
 	}
 	entry := r.aiEntries[r.aiCursor]
+	if os.Getenv("FD2_PARITY_AI_DIAGNOSTICS") == "1" {
+		targetIndex := -1
+		for i, u := range r.g.st.Units {
+			if u == plan.Target {
+				targetIndex = i
+				break
+			}
+		}
+		r.t.Logf("AI plan diagnostic: turn=%d entry=%d seq=%d actor=%d target=%d kind=%d command=%d item=%d route=%+v destination=%+v path=%+v rng_before=%d rng_entry=%d", r.g.st.Turn, r.aiCursor, entry.ControlSeq, index, targetIndex, plan.NativeActionKind, plan.NativeCommandID, plan.NativeItemID, plan.NativeAI14EF0Route, plan.NativeActionDestination, plan.Path, r.g.nativeRNGState, entry.RNGWord)
+	}
 	if entry.Unit == index {
 		r.aiCursor++
 		r.g.nativeRNGState = uint16(entry.RNGWord)
@@ -1018,7 +1030,7 @@ func (r *parityReplay) units() []parityUnit {
 		return nil
 	}
 	var out []parityUnit
-	for _, u := range g.st.Units {
+	for nativeIndex, u := range g.st.Units {
 		if u == nil || !u.OnField || u.HP <= 0 {
 			continue
 		}
@@ -1030,7 +1042,7 @@ func (r *parityReplay) units() []parityUnit {
 		if u.HasNativeIdentity {
 			identity = u.NativeIdentity
 		}
-		out = append(out, parityUnit{Camp: nativeCampCode(u.Camp), X: u.X, Y: u.Y, HP: u.HP, Identity: identity, Acted: acted,
+		out = append(out, parityUnit{NativeIndex: nativeIndex, Camp: nativeCampCode(u.Camp), X: u.X, Y: u.Y, HP: u.HP, Identity: identity, Acted: acted,
 			PX: int(u.NativeMapPresentation.X), PY: int(u.NativeMapPresentation.Y)})
 	}
 	return out

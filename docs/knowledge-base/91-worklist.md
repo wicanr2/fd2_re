@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -131,7 +131,7 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 證據：`['work/parity-slot-ch18/ida-event42-r1/ida-input-probe.json', 'docs/data/ida/fd2_ch15_turn_events_20261002.json', 'docs/data/turn_events.json', 'remake/assets/scenarios/ch18.json', 'docs/data/parity-plans/ch18-guard-r2.jsonl']`
 
-### 第十八章第五回合敵軍 AI 預選順序與原版不同
+### 第十八章原生職業抗性索引錯誤導致 AI 順序分岔
 
 `ch18-turn5-ai-preselection-divergence` · 缺陷 · [#100](https://github.com/wicanr2/fd2_re/issues/100) · 仍未完成 · 要人判
 
@@ -140,6 +140,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：先以目前原版r2、正式原始記錄／預選與評分出處找出第5回合最早差異；已有IDA證據優先沿用。需要新語意時走RE→READY。修正後同一原版r2的AI入口順序、已完成回合行為與完整RGB回歸。整章#94另外驗收；不改seed、NPC能力或HP，不調像素門檻。
 
 證據：`['docs/data/parity-plans/ch18-guard-r2.jsonl', 'work/parity-slot-ch18/guard-original-r2', 'work/parity-slot-ch18/guard-r2-remake-r1', 'work/parity-slot-ch18/guard-r2-verify-r1.json', 'remake/internal/battle/combat.go', 'remake/internal/battle/native_ai_action_runtime.go']`
+
+### 第十八章第六回合指令 2 多目標傷害與原版不同
+
+`ch18-turn6-command2-target-rng` · 缺陷 · [#101](https://github.com/wicanr2/fd2_re/issues/101) · 仍未完成 · 要人判
+
+#100 的原生職業抗性修正已消除全部 213 筆 AI 入口順序分岔，第五回合完整行為通過，153 張 RGB 亦通過。r2 第六回合仍有兩筆 HP 差異：record6 原版59／重製37，record16 原版99／重製100。最早差異在 record40 的指令2第二個目標：原版380→155，重製380→133；第一個目標420→192一致。正式指令2尚未把演出亂數交錯接入傷害計畫。這是待查的來源，不先猜固定跳步數。原版r2第七回合敗北，仍不是整章通過。
+
+怎樣算做完：沿既有 sub_1C75E、指令2演出與共用目標迴圈證據查清第二個目標前的亂數消費。證據不足才補窄IDA／原版trace；RE→READY後接正式owner。以原始r2同槽／seed與完整RGB閘門重跑，已完成六輪的HP與行動一致；不重擲、不調門檻，不追全程內部骰序或硬體wall-clock。
+
+證據：`['docs/data/ida/fd2_command_damage_raw_class_20261002.json', 'docs/data/ida/fd2_command1_8_entries_ida.txt', 'remake/cmd/fd2/native_command2_presentation.go', 'work/parity-slot-ch18/guard-original-r2', 'work/parity-slot-ch18/guard-r2-remake-r5', 'work/parity-slot-ch18/guard-r2-verify-r5.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

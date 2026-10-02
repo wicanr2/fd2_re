@@ -2005,9 +2005,23 @@ FIGANI51 frame0為184,35／109×165，target BattleFig17。
 |---|---|---|
 | 起手、山景、首輪模式9、T3 event43 | 有限RUNTIME-E1；[四輪收據](../data/ui-traces/ch18-turns1-4.json)已通過；#98已關閉 | 保留同槽回歸 |
 | T8 event42 | #99，READY已實作；增援先行、對白阻塞／once建構E1與完整Go通過 | 正常T8仍待驗 |
-| 第5回合敵軍預選 | #100，seq1519原版record49，重製record18，後續狀態不同 | 先查目前原版r2與正式評分／預選出處 |
-| 整章護援、戰後與SAV | #94／#97仍開啟，14／30保持 | 修正#100後規劃有界正常治療／護援，不反覆刷關 |
+| 第5／6回合抗性與指令2亂數 | #100／#101，有限CONFORMED；[六輪收據](../data/ui-traces/ch18-turns1-6.json)行為、213筆AI順序與153張RGB通過 | 收尾Go回歸與工單 |
+| 整章護援、戰後與SAV | #94／#97仍開啟，14／30保持 | 同槽有界正常後撤r3待驗，不反覆刷關 |
 
 r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時，exit15。沒有到T8、清敵、戰後或SAV。重製r2另有三筆AI順序分岔，第一筆seq1519；153張RGB中13張超門檻，全部四項拒收。這不推翻前四輪的有限修正，也不能用它宣稱整章完成。失敗收據留work/parity-slot-ch18／guard-r2-verify-r1.json，索引與雜湊附於四輪收據。
 
 最終Go19套件、事件42／43與模式9建構測試、分離資料轉寫check、canonical重生一致及第17章98張四項／全檔酒店SAV回歸通過。event42沒有正常T8證據，規格維持READY，#99保持開啟。
+
+### 2026-10-02：#100 原生職業抗性索引補證
+
+既有 sub_1C75E 數值公式不重解。本次重開原因是舊主證據未列出它聲稱具備的職業讀取端。IDA 0x1C792 明確讀 target record+0x20，0x1C7AB 依職業減一查 0x51F96。新[主證據與規格](../data/ida/fd2_command_damage_raw_class_20261002.json)保留原始名稱、bytes、工具位址、固定 EXE 雜湊與 caller；取代以 normalized ClassID 查原生傷害抗性的執行期做法。第十八章 r2 首次 AI 順序差異之前，record49 的原版 HP 是92，重製端已死亡；實際差異從友軍 record16 的指令8傷害開始。此段是READY時的定位記錄；抗性與下一項指令2已依下節完成有限驗收，整章 #94 仍開啟。
+
+### 2026-10-02 第十八章六輪 consumer 有限驗收
+
+#100 原生職業抗性索引修正後，原版r2全部213筆AI入口順序一致，第5回合行為通過；第6回合仍有兩筆HP差異，另登記#101。[指令2目標亂數主證據](../data/ida/fd2_command2_target_rng_20261002.json)只補既有sub_2A6BD的0x2B114數值、0x2AE0C miss分支與0x2AF40 marker亂數consumer，不重解既有12 frame／6 marker排程。正式owner接入typed walk後，同一r2的全部已完成行為及153張完整RGB通過，107張0px，最大496px；213筆AI順序零分岔。
+
+[六輪有限收據](../data/ui-traces/ch18-turns1-6.json)包含完整拒收報告、指令、來源與輸出雜湊；只列RUNTIME-E1，完整章node／transaction仍failed。原版r2第7回合NPC16死亡，T8／戰後／酒店SAV未到，不提高NPC能力、不鎖HP、不改seed或像素門檻。兩份規格列有限CONFORMED；Go收尾與第17章98張／全檔酒店SAV回歸結果寫入同一收據。
+
+本批最終Go19套件與第十七章98張、四項及整檔酒店SAV回歸通過，命令與輸出雜湊保存在[六輪收據](../data/ui-traces/ch18-turns1-6.json)。
+
+#94 下一個[有界後撤r3計畫](../data/parity-plans/ch18-guard-r3.jsonl)只將八輪我方record0的正常鍵盤移動目標由24,7改為8,10，其餘r2輸入不變。NPC16原生mode9／mode3的raw目標仍由原版追蹤，不注入NPC位置、能力或HP，不改建構槽或seed。此為待驗策略，尚無新原版收據；完成定案只依正式oracle重跑。

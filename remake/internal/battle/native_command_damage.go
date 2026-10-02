@@ -51,6 +51,18 @@ type NativeCommandDamage struct {
 	Damage int
 }
 
+// nativeCommandResistanceClass preserves sub_1C75E's target record+0x20
+// reader at IDA LE 0x1C792. ClassID is the compatibility source only for
+// authored units without raw class provenance. An invalid supplied raw class
+// must fail the resistance-table preflight rather than fall back.
+// Evidence: docs/data/ida/fd2_command_damage_raw_class_20261002.json.
+func nativeCommandResistanceClass(target *Unit) int {
+	if target.HasNativeRecordClass {
+		return int(target.NativeRecordClass)
+	}
+	return target.ClassID
+}
+
 // ResolveNativeCommandDamage mirrors 0x1c75e -> 0x1c81f for a single target.
 // It consumes exactly two 0x4e893 steps on a hit (hit roll, then damage
 // variance), and only the hit-roll step on a miss. It does not mutate target.
