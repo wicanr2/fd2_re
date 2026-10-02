@@ -1894,3 +1894,5 @@ levels6、seed4、event7:17=1、我方AP+200／DP+0／DX+60建構槽與第10回�
 本章依111／114例外列PLAYER-E2；固定levels6／seed4／event7:17=1、我方AP+200 DP+0 DX+60，沒有HP鎖定或NPC強化。
 原版normal_player_path_verified仍false，不宣稱自然難度、傷害、存活、敵方選目標、音訊人耳或硬體逐週期一致。
 唯一台帳由tools/fd2_parity_progress.py verify產生，整體戰役尚未完成；精確容器命令與雜湊見正式收據。
+
+第十六章已驗證提交8120104c推送後，主機gh確認#83／#87關閉。下一章由[#88](https://github.com/wicanr2/fd2_re/issues/88)追蹤，目前仍todo，尚無第十七章原版或重製驗收收據。
