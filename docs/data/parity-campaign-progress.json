@@ -394,15 +394,33 @@
     },
     {
       "chapter": 15,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch15.json",
+      "slot_manifest": "docs/data/parity-slots/ch15-manifest.json",
+      "slot_sha256": "fb67db55f459764d6a8dd03060842d1cbf10a90ad78a5211845b58a54e6692fe",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "date": "2026-10-02",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 15 --oracle work/parity-slot-ch15/guard-original-r2 --remake work/parity-slot-ch15/guard-remake-r2 --slot-manifest docs/data/parity-slots/ch15-manifest.json --plan docs/data/parity-plans/ch15-guard.jsonl --out <fresh-report>",
+      "limitations": [
+        "依111／114例外：levels6／seed4／event7:17=1、我方AP+200 DP+0 DX+60；正常鍵盤第4／7／9回合事件後第十回合清敵28筆。依序驗戰後、城鎮、交易、酒店SAV；不談自然難度、傷害、存活、敵方選目標或硬體逐週期一致。"
+      ],
+      "prior_receipts": [
+        "docs/data/ui-traces/parity-ch15-r1.json",
+        "docs/data/ui-traces/parity-ch15-r2.json",
+        "docs/data/ui-traces/parity-ch15-r3.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 16,

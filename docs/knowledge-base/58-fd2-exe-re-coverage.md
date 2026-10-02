@@ -1786,3 +1786,55 @@ PLAYER-E2章數不增加。下一步以正常護援續驗，不改友軍政策�
 本批受審檔案與輸出UID／GID、來源雜湊及掛載殘留自檢通過；docker ps -a確認無遺留FD2容器。
 
 2026-10-02：#79已驗證提交56379111dc2b7d5ce2650d2ad34ed74f1ffa302a推送且與遠端main一致，主機gh回讀CLOSED；正式pull格式器同步21條未完成。#76／#78仍開啟，下一步正常護援與完整章四項驗收。
+
+## 2026-10-02 #76／#78 正常護援前綴與預算勘誤
+
+受版控[護援計畫](../data/parity-plans/ch15-guard.jsonl)與[回合事件主證據](../data/ida/fd2_ch15_turn_events_20261002.json)
+保存原版guard-original-r1的第4／7／9回合邊界：event13後64..73的raw+35全0、mode3，
+35..49 mode0；event38使實際前沿74→78；event18後16..34 mode0。
+友軍64在第9回合後仍存活；round10才按111例外清敵28筆，原版抵達戰後城鎮。
+同槽重製guard-remake-r1抵達相同節點，416AI全消費且零分岔，162行為點與151張完整RGB通過，
+最大215px，640px／最少12張與無遮罩契約不變。原失敗sample及guard-r1全保留，不重寫歷史。
+
+guard-original-r1的oracle.log明示step_budget=steps_completed=14B，商店流程尚未完成，程序exit5；
+這是指令預算限制，不是遊戲缺陷。嚴格章報告guard-verify-r1仍nodes／transaction failed。
+#78原READY驗收含全章戰後存檔四項，維持READY／有限RUNTIME-E1，#76／#78保持OPEN，
+不得因回合行為／畫面已通過而提前宣稱CONFORMED或PLAYER-E2。
+
+已在#76登記guard-original-r2：相同槽、相同計畫與seed4，只提高預算至20B，
+使用新覆蓋層guard-state-r2；須核對逐檢查點前綴一致後完成交易與酒店SAV。
+正常護援未修改友軍／HP／結果；正式重生入口仍tools/dosgolem_oracle.sh，
+重製沿TestChapterParityReplay，嚴格比較沿tools/verify_chapter_parity.py。
+
+## 2026-10-02 第十五章護援完整收據（#76／#78）
+
+[正式章收據](../data/ui-traces/parity-ch15.json)取代前述「護援前綴通過、交易待驗」現況：
+原版 guard-original-r2 正常退出，20B 指令預算實際完成 16,020,354,190 步；
+控制序列終點3339，維護的 dosgolem a9bcd621、相同建構槽及 ch15-guard 計畫未改。
+[前綴核對工具](../../tools/verify_oracle_prefix.py)確認舊140億預算 run 的3,142筆檢查點，
+完整CPU、raw80單位、亂數、DOS呼叫、輸入及注入皆重現；只排除PNG背景排程欄位，
+所有RGB仍由章驗證器獨立驗證。舊原版商店中止 exit5 屬驗證預算，並非遊戲缺陷；
+原失敗計畫、三份失敗診斷與 guard-r1 部分驗證完整保留於正式收據及主證據歷史。
+
+第4／7／9回合 event13／38／18 以正常鍵盤輸入觸發，原始記錄模式、raw35與增援前沿均相符；
+第7回合前沿74→78，第9回合事件後才在第10回合依計畫清敵28筆。
+[原始事件與規格](../data/ida/fd2_ch15_turn_events_20261002.json)保留原READY完整戰後／SAV條件，
+現已列有限CONFORMED；未重新推測handler、未增加HP鎖定或NPC強化。
+
+完整重製回放PASS，416筆AI全消費、順序分岔0；169筆行為列表含既有seq3083
+「原版自動換手中不比該點狀態／畫面」例外，無新放寬。
+節點、買賣、酒店與town_ch16 Alt+F5秘密商店都走到；
+156張完整320×200 RGB通過，其中110張逐像素相同、最大215px，門檻640px／最少12張／無遮罩不變。
+兩側全檔酒店SAV SHA-256均為
+649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87。
+
+本章依[111](../goal/111-goal-original-parity-campaign-20260915.md)／
+[114](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)例外列PLAYER-E2：
+levels6、seed4、event7:17=1、我方AP+200／DP+0／DX+60建構槽與第10回合清敵如實登錄。
+原版normal_player_path_verified仍為false；不宣稱自然難度、傷害、存活、敵方選目標、
+整段亂數骰序或DOS硬體逐週期一致。整體戰役完成數只由[台帳](../data/parity-campaign-progress.json)
+與tools/fd2_parity_progress.py verify產生；本章通過不代表全戰役完成。
+
+本批沒有修改正式Go程式；完整章回放15.586秒與前綴工具7項拒收測試通過。
+前批19套件完整回歸保留在#79主證據，本批不重複宣稱已重跑。
+重生入口、維護映像、固定原版雜湊、計畫／槽／日誌雜湊及串行命令均在正式收據的reproduce／verification。

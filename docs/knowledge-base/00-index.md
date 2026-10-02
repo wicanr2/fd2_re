@@ -257,11 +257,13 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - 第十五章 #77：[正常LOAD起手比較收據](../data/ui-traces/ch15-native-startup.json)，三張完整RGB影像差異均為0；整章12張與戰後／存檔門檻仍保留。
 
-- 第十五章 #78：[回合事件13／18／38原始指令與READY規格](../data/ida/fd2_ch15_turn_events_20261002.json)，沿用全域事件表與既有record_bytes，不以spawn-only代表完整handler。
+- 第十五章 #78：[回合事件13／18／38原始指令與CONFORMED規格](../data/ida/fd2_ch15_turn_events_20261002.json)，沿用全域事件表與既有record_bytes，不以spawn-only代表完整handler。
 
-- 第十五章 #76：[完整整章抽樣計畫](../data/parity-plans/ch15-sample.jsonl)，正常鍵盤涵蓋第4／7／9回合後round10清敵，戰後town_ch16買賣／酒店／Alt+F5秘密商店。
+- 第十五章 #76：[原首次完整計畫（歷史敗北樣本）](../data/parity-plans/ch15-sample.jsonl)，正常鍵盤涵蓋第4／7／9回合後round10清敵，戰後town_ch16買賣／酒店／Alt+F5秘密商店。
 
-- [第十五章 record64 無對白敗北（#79 有限 CONFORMED）](../data/ida/fd2_ch15_result_conditions_20261002.json)：固定雜湊、完整20822原始指令、結果writer／consumer、同槽正常回放至完整標題選單、存檔不變與重生命令；整章成功路徑另驗。
+- [第十五章 record64 無對白敗北（#79 有限 CONFORMED）](../data/ida/fd2_ch15_result_conditions_20261002.json)：固定雜湊、完整20822原始指令、結果writer／consumer、同槽正常回放至完整標題選單、存檔不變與重生命令；整章成功路徑依正式parity-ch15收據驗收。
+- [第十五章正常護援控制計畫（#76／#78，完整四項通過）](../data/parity-plans/ch15-guard.jsonl)：相同槽與亂數政策，記錄2／10先推進護援、保留第4／7／9回合、round10才清敵；原失敗計畫與收據保留。
+- [原版預算重跑前綴核對工具](../../tools/verify_oracle_prefix.py)與[拒收測試](../../tools/test_verify_oracle_prefix.py)：比較完整CPU／原始記錄、亂數及控制序列，只排除PNG背景輸出排程；配合章驗證器確認提高預算未變更既有結果。
 
 - [第十五章完整首次失敗診斷（#76／#81）](../data/ui-traces/parity-ch15-r1.json)：原版第六回合敗北、AI首個分岔及61張嚴格整幀比較，四項皆未通過。
 
@@ -276,3 +278,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十五章色盤寫入中間狀態（#82）](../data/ida/fd2_ch15_palette_writer_20261002.json)：原版EIP／暫存器直接證實phase5→6的四槽進度，有限對拍工具規格READY；現況見58。
 
 - [第十五章AI與嚴格畫面修正後診斷（#81／#82）](../data/ui-traces/parity-ch15-r3.json)：61張畫面與66個行為點通過，完整章節點／交易仍未完成；最新分層由58承載。
+
+- [第十五章完整對拍正式收據（#76／#78）](../data/ui-traces/parity-ch15.json)：第4／7／9回合、416筆AI、戰後城鎮、交易與酒店SAV；依111／114例外列PLAYER-E2，舊失敗與140億預算前綴均可回查。
+
+- [第十五章固定抽樣對照總覽索引](../data/ui-traces/parity-ch15-samples.json)：每種畫面第一點、所有非零差異與回合事件後指定點，完整原版／重製／差異三欄，可回查正式收據與PNG雜湊。
