@@ -2005,7 +2005,7 @@ FIGANI51 frame0為184,35／109×165，target BattleFig17。
 |---|---|---|
 | 起手、山景、首輪模式9、T3 event43 | 有限RUNTIME-E1；[四輪收據](../data/ui-traces/ch18-turns1-4.json)已通過；#98已關閉 | 保留同槽回歸 |
 | T8 event42 | #99，READY已實作；增援先行、對白阻塞／once建構E1與完整Go通過 | 正常T8仍待驗 |
-| 第5／6回合抗性與指令2亂數 | #100／#101，有限CONFORMED；[六輪收據](../data/ui-traces/ch18-turns1-6.json)行為、213筆AI順序與153張RGB通過 | 收尾Go回歸與工單 |
+| 第5／6回合抗性與指令2亂數 | #100／#101，有限CONFORMED；[六輪收據](../data/ui-traces/ch18-turns1-6.json)行為、213筆AI順序與153張RGB通過 | #100／#101已關閉；保留同槽回歸 |
 | 整章護援、戰後與SAV | #94／#97仍開啟，14／30保持 | 同槽有界正常後撤r3待驗，不反覆刷關 |
 
 r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時，exit15。沒有到T8、清敵、戰後或SAV。重製r2另有三筆AI順序分岔，第一筆seq1519；153張RGB中13張超門檻，全部四項拒收。這不推翻前四輪的有限修正，也不能用它宣稱整章完成。失敗收據留work/parity-slot-ch18／guard-r2-verify-r1.json，索引與雜湊附於四輪收據。

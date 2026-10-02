@@ -392,48 +392,6 @@
         "note": "完整事件轉寫、增援與對白阻塞時序，以及同槽正常T8及#94後續全章收據。"
       },
       "issue": 99
-    },
-    {
-      "id": "ch18-turn5-ai-preselection-divergence",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十八章原生職業抗性索引錯誤導致 AI 順序分岔",
-      "body": "#94同槽seed4護援r2只移除round5..8已戰死record2選取。前四輪與r1的完整單位、view、虛擬steps及PNG逐項相同。重製首輪模式9修正後四輪通過，但r2第5回合seq1519有新的AI順序分岔：原版第151個AI行動record49，重製端record18；後續seq1536敵方21,4記錄與HP不同。三筆分岔不能藏在已完成#98。原版r2另在seq1973 record16 HP0，round7敗退返回標題，T8及戰後未到；不把原版敗退當重製缺陷。",
-      "acceptance": "先以目前原版r2、正式原始記錄／預選與評分出處找出第5回合最早差異；已有IDA證據優先沿用。需要新語意時走RE→READY。修正後同一原版r2的AI入口順序、已完成回合行為與完整RGB回歸。整章#94另外驗收；不改seed、NPC能力或HP，不調像素門檻。",
-      "evidence": [
-        "docs/data/parity-plans/ch18-guard-r2.jsonl",
-        "work/parity-slot-ch18/guard-original-r2",
-        "work/parity-slot-ch18/guard-r2-remake-r1",
-        "work/parity-slot-ch18/guard-r2-verify-r1.json",
-        "remake/internal/battle/combat.go",
-        "remake/internal/battle/native_ai_action_runtime.go"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "同一固定槽r2第5回合原版record49的預選原因、正式consumer與完整AI／行為／RGB回放。"
-      },
-      "issue": 100
-    },
-    {
-      "id": "ch18-turn6-command2-target-rng",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十八章第六回合指令 2 多目標傷害與原版不同",
-      "body": "#100 的原生職業抗性修正已消除全部 213 筆 AI 入口順序分岔，第五回合完整行為通過，153 張 RGB 亦通過。r2 第六回合仍有兩筆 HP 差異：record6 原版59／重製37，record16 原版99／重製100。最早差異在 record40 的指令2第二個目標：原版380→155，重製380→133；第一個目標420→192一致。正式指令2尚未把演出亂數交錯接入傷害計畫。這是待查的來源，不先猜固定跳步數。原版r2第七回合敗北，仍不是整章通過。",
-      "acceptance": "沿既有 sub_1C75E、指令2演出與共用目標迴圈證據查清第二個目標前的亂數消費。證據不足才補窄IDA／原版trace；RE→READY後接正式owner。以原始r2同槽／seed與完整RGB閘門重跑，已完成六輪的HP與行動一致；不重擲、不調門檻，不追全程內部骰序或硬體wall-clock。",
-      "evidence": [
-        "docs/data/ida/fd2_command_damage_raw_class_20261002.json",
-        "docs/data/ida/fd2_command1_8_entries_ida.txt",
-        "remake/cmd/fd2/native_command2_presentation.go",
-        "work/parity-slot-ch18/guard-original-r2",
-        "work/parity-slot-ch18/guard-r2-remake-r5",
-        "work/parity-slot-ch18/guard-r2-verify-r5.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "第六回合原版record40指令2的四目標傷害、演出亂數出處，以及同一r2六輪行為／153張RGB回放。"
-      },
-      "issue": 101
     }
   ]
 }
