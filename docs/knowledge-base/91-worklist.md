@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,46 +111,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第十九章 T6 事件46完整語意與正式接線
-
-`ch19-turn-event46-complete-semantics` · RE待解 · [#107](https://github.com/wicanr2/fd2_re/issues/107) · 仍未完成 · 要人判
-
-第十九章整章工單 #106 的有界切片。現行場景只含0x350D8的group1增援；先以既有索引與IDA完整函式核對0x350CC，確認caller、writer、consumer與共用尾段。未驗證效果不接正式執行路徑。
-
-怎樣算做完：['固定原版EXE雜湊，保存IDA9.4原始函式／線性位址／bytes與caller及consumer，分級完整事件46語意。', '既有轉寫若有缺口，先完成READY規格，再以typed data接入正式canonical玩家路徑。', '第六回合原版／重製同狀態比較與相關回歸通過。']
-
-證據：`['docs/data/event_id_groups.json', 'docs/data/turn_events.json', 'remake/assets/scenarios/ch19.json', 'docs/data/parity-plans/ch19-sample.jsonl']`
-
-### 第十九章整備凱拉斯必須出場的限制與拒收路徑
-
-`ch19-preparation-required-character-gate` · 缺陷 · [#108](https://github.com/wicanr2/fd2_re/issues/108) · 仍未完成 · 要人判
-
-#106原版full-original-r1使用前15個可選名冊後，在checkpoint0071顯示凱拉斯必須出場，確認後回城鎮。現行togglePreparationSelection滿額直接進確認，需核對原版caller的必出角色閘門並補正式玩家路徑。先查58／canonical，RE→READY後才修正。
-
-怎樣算做完：['固定原版輸入與IDA9.4地址／bytes，證實第十九章必出角色的writer、consumer與原版拒收位置。', '原版拒收與納入凱拉斯的正常選人分支可重生；保存相同狀態比較。', '正式重製整備同樣拒收缺少凱拉斯，回城鎮行為、原生文字與正常出發通過回歸。']
-
-證據：`['work/parity-slot-ch19/full-original-r1/checkpoint-0071.json', 'work/parity-slot-ch19/full-original-r1/checkpoint-0071.png', 'remake/cmd/fd2/main.go', 'docs/data/parity-plans/ch19-sample.jsonl']`
-
-### 第十九章原生開戰名冊、部署與 HUD 投影
-
-`ch19-native-startup-projection` · 缺陷 · [#110](https://github.com/wicanr2/fd2_re/issues/110) · 仍未完成 · 要人判
-
-第十九章同槽正常整備後，原版開戰前沿為16名我方加48敵軍。重製正式重播在 battle_start 無法組出整幀，HUD 未建立，且仍將20名持續隊伍追加在70筆 archive 後。先核对已閉合 LOADCH helper 與章別 caller，再補 READY 規格及正式資料。
-
-怎樣算做完：['章19 caller 原始指令與相同槽正常開戰狀態形成可回查 READY 證據。', '正式 runtime 以選定16人加 group0 48筆形成64筆起手，部署與 HUD 不由測試注入。', '相同狀態起手 RGB 與逐欄名冊比較通過，完整章重播與相關回歸完成。']
-
-證據：`['work/parity-slot-ch19/full-r4-remake-r1.log', 'work/parity-slot-ch19/full-original-r4', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 第十九章第四回合 AI 次序與戰後存檔差異
-
-`ch19-turn4-ai-and-save-divergence` · 缺陷 · [#111](https://github.com/wicanr2/fd2_re/issues/111) · 仍未完成 · 要人判
-
-章19正式完整重播已抵達交易與存檔，54張完整RGB、節點與金幣比較通過，但第四回合開始出現AI次序及位置差異，旅館SAV雜湊也不同。依固定原版r4與重製r2找最早狀態分岔，核對事件、寫入端及消費端，不放寬行為或SAV驗收。
-
-怎樣算做完：['保存最早分岔與原始writer／consumer，按已閉合索引限定重開範圍。', 'READY規格後修正正式資料或runtime，保留未知行為失敗即關閉。', '章19行為、節點、完整RGB與22987bytes全檔SAV四项比較通過；相關回歸通過。']
-
-證據：`['work/parity-slot-ch19/full-r4-verify-r2.json', 'docs/data/ida/fd2_ch19_turn_event46_20261003.json', 'work/parity-slot-ch19/full-original-r4']`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -190,26 +150,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### 第十九章整章原版／重製對拍與收尾
-
-`ch19-full-chapter-parity` · 工作 · [#106](https://github.com/wicanr2/fd2_re/issues/106) · 仍未完成 · 要人判
-
-依既有 111／114 政策完成第十九章。使用固定種子、受版控建構槽與正常鍵盤輸入。先核對既有證據，再完成章內戰鬥抽樣、戰後節點、第二十章城鎮、交易、旅館存檔與秘密商店。發現缺陷先另開工單，依 RE → READY → 實作驗證修正。
-
-怎樣算做完：['dosgolem oracle 原版收據與重製重播可重生，逐點行為、RGB、金錢與完整存檔比較通過。', '章收據如實記錄建構槽、政策值、種子、狀態注入、一次 force-enemy-clear 與驗證限制。', '相關 Go 回歸與第十八章回歸通過；同步章台帳、證據矩陣與現況入口。']
-
-證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch18.json']`
-
-### 整備對拍重播需消費方向鍵並識別必出角色拒收
-
-`parity-preparation-direction-and-rejection-controls` · 缺陷 · [#109](https://github.com/wicanr2/fd2_re/issues/109) · 仍未完成 · 要人判
-
-#106第十九章需用正常右鍵納入identity16。既有readParityPreparationControls只允許空鍵與Enter，departure_confirmation也只派送Enter且只接受31D8E owner。原版31E65必出拒收須獨立標記，不能誤登成最終確認。修正維護中的重播工具，保留逐格連續性及原版owner驗證。
-
-怎樣算做完：['原版控制收據中的四方向與Enter逐次送入正式native_preparation_input owner，沒有直接注入prepSel或partyDeploy。', '最終確認必須符合31D8E；缺少identity16拒收符合31E65，以獨立required_party_rejection分類與圖像比較。', '來源序列缺格／未支援按鍵／最終名額不足維持拒收；正向第十九章及第十八章回歸通過。']
-
-證據：`['remake/cmd/fd2/chapter_parity_replay_test.go', 'docs/data/parity-plans/ch19-sample-r4.jsonl', 'docs/data/ida/fd2_ch19_required_character_20261003.json']`
 
 ## release — 發行、平台與封包
 
