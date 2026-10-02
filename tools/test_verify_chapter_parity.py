@@ -9,6 +9,17 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_before_next_index_writer_keeps_partial_window_metadata(self):
+        writer = {"eip": "0x4E014", "phase": 0, "completed_entries": 7,
+                  "registers": [0xe723, 9, 0x3c8, 0, 0, 0, 0x60018, 0]}
+        result = vp.palette_cycle_metadata({"palette_cycle_phase": 0, "palette_cycle_write": writer})
+        self.assertEqual(result["palette_cycle_write"], writer)
+        self.assertIn("新舊raw窗口", result["palette_cycle_source"])
+        for invalid in (0, 16):
+            result = vp.palette_cycle_metadata({"palette_cycle_phase": 0,
+                                               "palette_cycle_write": {**writer, "completed_entries": invalid}})
+            self.assertIn("未知", result["palette_cycle_source"])
+
     def test_partial_palette_writer_is_not_reported_as_complete_phase(self):
         writer = {"eip": "0x4E01F", "phase": 6, "completed_entries": 4,
                   "registers": [0xe323, 13, 0x3c9, 0xc2, 0x55524, 0xffffffff, 0x60021, 0]}

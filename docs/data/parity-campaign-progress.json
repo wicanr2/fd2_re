@@ -453,15 +453,32 @@
     },
     {
       "chapter": 17,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch17.json",
+      "slot_manifest": "docs/data/parity-slots/ch17-manifest.json",
+      "slot_sha256": "dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786",
+      "dosgolem_commit": "a0dbaab851cd608e67071228aef65f0c440306ac",
+      "date": "2026-10-02",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 17 --oracle work/parity-slot-ch17/guard-original-r1 --remake work/parity-slot-ch17/guard-remake-r4 --slot-manifest docs/data/parity-slots/ch17-manifest.json --plan docs/data/parity-plans/ch17-guard.jsonl --out work/parity-slot-ch17/guard-verify-r4.json",
+      "limitations": [
+        "111／114建構槽；正常護援四回合，第5回合force-enemy-clear；不宣稱完整自然戰鬥或傷害一致"
+      ],
+      "prior_receipts": [
+        "docs/data/ui-traces/parity-ch17-figani-r1.json",
+        "docs/data/ui-traces/parity-ch17-writer-r3.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 18,

@@ -350,6 +350,43 @@
         "note": "四項fixture／證據失敗與專用Docker測試契約，相關乾淨重跑通過後關閉。"
       },
       "issue": 91
+    },
+    {
+      "id": "ch17-command-animation-frame-blit",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十七章敵方指令動畫影格無法寫入繪製目標",
+      "body": "#88原版正常護援已完成10,886,352,202步與酒店存檔；同槽正式Go回放第一敵方回合，actor38於(31,24)施指令2，target14於(34,22)，報native AI action: figani: frame cannot be blitted to destination。鏡頭(23,18)、游標(34,22)、可見(11,4)。先確認實際影格與目的geometry，再沿既有已閉合動畫／裁切證據審查，不能略過動畫或猜補正式路徑。原版不重跑。",
+      "acceptance": "原版固定檔案與同狀態可回查；定位實際失敗asset／frame／destination與既有consumer，READY規格先入庫。修正正常正式動畫路徑，保留來源拒收與裁切邊界；相關真實測試、同槽完整章及必要舊分支回歸通過，不跳過效果或放寬章畫面門檻。完整章由#88。",
+      "evidence": [
+        "docs/data/parity-plans/ch17-guard.jsonl",
+        "docs/data/parity-slots/ch17-manifest.json",
+        "remake/cmd/fd2/main.go",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "同槽原版與重製動畫影格／consumer、來源拒收與正式玩家回歸。"
+      },
+      "issue": 92
+    },
+    {
+      "id": "ch17-round4-move-frame-parity",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "第十七章第四回合移動畫面差異超過門檻",
+      "body": "第十七章 guard-original-r1 與正式 guard-remake-r3 已跑完整章；行為、節點、交易與酒店存檔一致，124筆AI順序零分岔。98張全幅RGB只有seq1287 move失敗，1195像素，box[4,4,49,195]。保留640像素門檻，先核對HUD／場景狀態及原始consumer。#92動畫界線已修正；這是獨立畫面問題。",
+      "acceptance": "固定原版與重製失敗畫面、狀態與來源；依既有主證據定出READY規格後修正正式消費端。同槽完整章四項原門檻與必要回歸通過，不遮像素、不放寬640門檻。章完成由#88。",
+      "evidence": [
+        "docs/data/parity-plans/ch17-guard.jsonl",
+        "docs/data/parity-slots/ch17-manifest.json",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "同槽第四回合移動畫面與完整章四項驗證。"
+      },
+      "issue": 93
     }
   ]
 }

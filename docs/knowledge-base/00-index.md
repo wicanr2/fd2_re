@@ -317,3 +317,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十七章完整抽樣計畫（#88）](../data/parity-plans/ch17-sample.jsonl)：正常選人、四回合至round5、turn4增援後清敵、戰後交易／酒店SAV與Ctrl+F7。計畫本身不代表整章通過。
 
 - [第十七章原版CPU缺口診斷與修復（#90）](../data/ida/fd2_ch17_oracle_d1_20261002.json)：IDA LE 15C59 bytes d1642408、原版D1退出保留；CPU有限CONFORMED，升級後118點起手及592點失敗前綴全同。原版正常敗北，完整章由#88護援續驗。
+- [第十七章正常護援計畫（#88）](../data/parity-plans/ch17-guard.jsonl)：NPC52後撤，南側記錄0／2正常移動掩護；四回合與turn4事件保留，round5才依111清敵，完整章仍待驗。
+- [第十七章FIGANI畫布界線consumer（#92）](../data/ida/fd2_ch17_figani_bounds_20261002.json)：FANI51 frame0原始header與640-stride右半畫布最後span；有限CONFORMED，修正合法末列誤拒收，不重新解原版prelude或handler。
+
+- [第十七章調色盤下一筆寫入前停點](../data/ida/fd2_ch17_palette_writer_20261002.json)：#93，有限CONFORMED，只擴充已證實完整triplet窗口的對拍候選。
+
+- [第十七章完整同槽章收據](../data/ui-traces/parity-ch17.json)：#88，98張RGB／酒店SAV四項通過，依111／114例外列PLAYER-E2。
+- 第十七章原始診斷：[FIGANI拒收r1](../data/ui-traces/parity-ch17-figani-r1.json)、[writer未承接r3](../data/ui-traces/parity-ch17-writer-r3.json)，保留失敗形成原因；由正式收據取代。
+- [第十七章固定抽樣總覽索引](../data/ui-traces/parity-ch17-samples.json)：每種畫面首點及所有非零差異，包含seq1287原始writer停點；[總覽一](../figures/parity-ch17-samples-p1.png)與[總覽二](../figures/parity-ch17-samples-p2.png)。

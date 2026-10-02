@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-02",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/93",
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4，沿用已閉合匯出",
+  "address_space": "IDA LE linear；checkpoint為dosgolem relocated LE linear，同一固定EXE",
+  "status": "RE-CLOSED",
+  "spec_status": "CONFORMED",
+  "layer": "tooling",
+  "source": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+  "original_checkpoint": {
+    "path": "work/parity-slot-ch17/guard-original-r1/checkpoint-1287.json",
+    "sha256": "4e4a1b6574bcdd8a16476af1d327a96213b8ddf9090aa3411f0024b16e6b04f1",
+    "eip": "0x4E014",
+    "registers": [
+      59171,
+      9,
+      968,
+      349756,
+      349512,
+      9,
+      393240,
+      349692
+    ],
+    "runner_commit": "a0dbaab851cd608e67071228aef65f0c440306ac",
+    "observed_e0ef_rgb": [
+      56,
+      85,
+      154,
+      52,
+      81,
+      150,
+      52,
+      81,
+      150,
+      52,
+      81,
+      150,
+      48,
+      77,
+      146,
+      48,
+      77,
+      146,
+      44,
+      73,
+      142,
+      44,
+      73,
+      142,
+      44,
+      73,
+      142,
+      44,
+      73,
+      142,
+      44,
+      73,
+      142,
+      48,
+      77,
+      146,
+      48,
+      77,
+      146,
+      52,
+      81,
+      150,
+      56,
+      85,
+      154,
+      56,
+      85,
+      154
+    ]
+  },
+  "instructions": [
+    {
+      "address": "0x4e010",
+      "bytes": "66bac803",
+      "original": "mov     dx, 3C8h",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e010",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e014",
+      "bytes": "8ac4",
+      "original": "mov     al, ah",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e014",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e016",
+      "bytes": "ee",
+      "original": "out     dx, al",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e016",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e017",
+      "bytes": "6642",
+      "original": "inc     dx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e017",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e019",
+      "bytes": "ac",
+      "original": "lodsb",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e019",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e01a",
+      "bytes": "ee",
+      "original": "out     dx, al",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e01a",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e01b",
+      "bytes": "ac",
+      "original": "lodsb",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e01b",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e01c",
+      "bytes": "ee",
+      "original": "out     dx, al",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e01c",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e01d",
+      "bytes": "ac",
+      "original": "lodsb",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e01d",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e01e",
+      "bytes": "ee",
+      "original": "out     dx, al",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e01e",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e01f",
+      "bytes": "fec4",
+      "original": "inc     ah",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e01f",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x4e021",
+      "bytes": "e2ed",
+      "original": "loop    loc_4E010",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x4e021",
+      "semantic_annotations": []
+    }
+  ],
+  "derived": {
+    "completed_entries": 7,
+    "phase": 0,
+    "previous_phase": 15,
+    "offset_formula": "ESI - 0x60003 - 3*(16-ECX) = 0",
+    "AH": 231,
+    "AL": 35,
+    "DX": 968,
+    "all_16_slots_match_raw": true,
+    "diagnostic_diff_pixels": 115,
+    "diagnostic_before_diff_pixels": 1195,
+    "level": "已證實"
+  },
+  "spec": {
+    "history": [
+      "DRAFT：seq1287移動畫面超門檻",
+      "READY：現有IDA原始指令、暫存器與93-byte raw表證實完整triplet邊界，16槽全部校驗",
+      "CONFORMED：固定seq1287紅轉綠、跨phase及未知拒收、Go19／嚴格13項／同槽第15／16／17章通過"
+    ],
+    "scope": "只擴充對拍私有候選；正式Game DAC／時間、原版PNG、640px門檻不改",
+    "rule": "另接4E014且DX3C8、ECX1..15，completed=16-ECX，AH=E0+completed；ESI回推phase0..15，AL必須等於前一筆raw藍值。只接受全部16槽逐色一致。4E01F契約保持。未知EIP、參數、半triplet或色值不符皆拒收。",
+    "acceptance": [
+      "actual seq1287來源測試紅轉綠",
+      "4E014跨phase15→0與phase0→1、多邊界、未知與色值拒收",
+      "完整同槽第17章四項原門檻、既有第15／16章分支及Go回歸"
+    ]
+  },
+  "validation": {
+    "receipt": "docs/data/ui-traces/parity-ch17.json",
+    "source_sha256": {
+      "remake/internal/figani/figani.go": "879995521526f4a165dcebd130d39deafe98a2b64ebea10cc60e5b4bb0eb47fa",
+      "remake/internal/figani/blit_bounds_test.go": "53d3e102ed32bad1da2f91feea340cd492fce24e1b3f4af5b8aed9a99f4cddf2",
+      "remake/internal/battlepresent/native_command_prelude_bounds_test.go": "9f8b2534b4ae0faead5959bef5f682fc1420ec75ae5073324d5f34f306d13918",
+      "remake/cmd/fd2/chapter_parity_replay_test.go": "c5c07cc57b29f0bea001148ead1809fa2ae413cc64277e9d2cfc5735ddd1ceb4",
+      "remake/cmd/fd2/chapter_parity_palette_boundary_test.go": "83ff6e7fa124212ba3d02bcda5b603c3217dc717440dffc9f88162ca913c2cca",
+      "tools/verify_chapter_parity.py": "04d99c22c5f7d22e133cb7bbc07ee165fcbfcae3c97a507c9a291d6b68e0725b",
+      "tools/test_verify_chapter_parity.py": "a5fdefe0552ac97b6edad2ed23baf91284e94f339a79e0933f5b4202611aabd0"
+    },
+    "red_log": {
+      "path": "work/parity-slot-ch17/palette-boundary-before-fix.log",
+      "sha256": "32263739ef2ab220c420cc110a36279288a7670637fa5d12d42c5abac9dc6769"
+    },
+    "green_log": {
+      "path": "work/parity-slot-ch17/palette-boundary-after-fix.log",
+      "sha256": "8c85b1d5224ff17bf3d8aeda2d6e2276d94dc0f436d4e30eb370bf988b2649ef"
+    },
+    "raw_window_diff_pixels": 115,
+    "go_regression": {
+      "status": "passed",
+      "packages_passed": 19,
+      "game_seconds": 314.98,
+      "log": "work/parity-slot-ch17/guard-go-regression-r2.log",
+      "log_sha256": "81f158868094c724ebbe9a41e88b43c71aa831dc2abf82528f73916176e47622",
+      "image": "fd2-go-test-local:20260909",
+      "exit": 0
+    },
+    "prior_ch15": {
+      "status": "passed",
+      "report": "work/parity-slot-ch17/palette-prior-ch15-parity.json",
+      "report_sha256": "15ef41ea96181e2af3b70ae2ba3fadf829d43d4d8154039aea835593ff373ef8",
+      "frames": 156,
+      "save": {
+        "oracle_save_sha256": "649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "remake_save_sha256": "649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "remake_note": "save_sha256=649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "blocked_by": null,
+        "status": "ok"
+      }
+    }
+  },
+  "reopen_reason": "同槽完整RGB反證對拍工具4E01F-only候選範圍；原始函式、raw表及正式Game循環不重開。"
+}

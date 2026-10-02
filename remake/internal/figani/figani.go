@@ -291,8 +291,22 @@ func (f Frame) BlitAt(dst []byte, stride int) error {
 // work surface. 0x29164 uses it for its stage*10 shifts into a 640-stride
 // buffer; the frame's signed coordinates remain untouched.
 func (f Frame) BlitAtBase(dst []byte, stride, base int) error {
-	if f.Width <= 0 || f.Height <= 0 || len(f.Pixels) != f.Width*f.Height || len(f.Mask) != len(f.Pixels) || stride <= 0 || base < 0 || base > len(dst) || f.X < 0 || f.Y < 0 || f.X+f.Width > stride || base+(f.Y+f.Height)*stride > len(dst) {
-		return errors.New("figani: frame cannot be blitted to destination")
+	invalid := f.Width <= 0 || f.Height <= 0 || stride <= 0 || base < 0 || base > len(dst) || f.X < 0 || f.Y < 0
+	if !invalid {
+		invalid = len(f.Pixels)%f.Width != 0 || len(f.Pixels)/f.Width != f.Height || len(f.Mask) != len(f.Pixels) || f.X > stride || f.Width > stride-f.X
+	}
+	if !invalid {
+		// #92：檢查實際末列span，右半畫布的base不需要額外尾列padding。
+		remaining := len(dst) - base
+		rowEnd := f.X + f.Width // 已由stride界線保證不溢位。
+		invalid = rowEnd > remaining
+		if !invalid {
+			lastAvailableRow := (remaining - rowEnd) / stride
+			invalid = f.Y > lastAvailableRow || f.Height-1 > lastAvailableRow-f.Y
+		}
+	}
+	if invalid {
+		return fmt.Errorf("figani: frame cannot be blitted to destination: frame=(%d,%d,%d,%d) dst=%d stride=%d base=%d", f.X, f.Y, f.Width, f.Height, len(dst), stride, base)
 	}
 	for y := 0; y < f.Height; y++ {
 		for x := 0; x < f.Width; x++ {

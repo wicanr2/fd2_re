@@ -18,7 +18,7 @@
 
 <!-- BEGIN tools/render_parity_progress.py render；不要手改這一段 -->
 
-依 [111](goal/111-goal-original-parity-campaign-20260915.md) 的四個 gate（行為、節點、交易、畫面）逐章對拍，第 4～16 章已通過（台帳更新日 2026-10-02）。
+依 [111](goal/111-goal-original-parity-campaign-20260915.md) 的四個 gate（行為、節點、交易、畫面）逐章對拍，第 4～17 章已通過（台帳更新日 2026-10-02）。
 
 | 章 | 通過的 gate | 原版動作 | 行為比較點 | 畫面比較點 | 最大畫面差異 | 酒店存檔 | 證據 |
 |---|---|---|---|---|---|---|---|
@@ -35,8 +35,9 @@
 | 第 14 章 | 行為、節點、交易、畫面 | 70 | 71 | 64（46 張逐像素相同） | 368 px | 整檔相同 | [收據](data/ui-traces/parity-ch14.json) ／ [2 張](figures/parity-ch14-samples-p1.png) |
 | 第 15 章 | 行為、節點、交易、畫面 | 168 | 169 | 156（110 張逐像素相同） | 215 px | 整檔相同 | [收據](data/ui-traces/parity-ch15.json) ／ [2 張](figures/parity-ch15-samples-p1.png) |
 | 第 16 章 | 行為、節點、交易、畫面 | 82 | 83 | 76（58 張逐像素相同） | 200 px | 整檔相同 | [收據](data/ui-traces/parity-ch16.json) ／ [2 張](figures/parity-ch16-samples-p1.png) |
+| 第 17 章 | 行為、節點、交易、畫面 | 105 | 106 | 98（72 張逐像素相同） | 295 px | 整檔相同 | [收據](data/ui-traces/parity-ch17.json) ／ [2 張](figures/parity-ch17-samples-p1.png) |
 
-其餘各章（第 1 章、第 2 章、第 3 章…共 17 章）還沒跑這套逐章對拍；第 1～3 章另有更早的單點證據，不列在這張表裡。
+其餘各章（第 1 章、第 2 章、第 3 章…共 16 章）還沒跑這套逐章對拍；第 1～3 章另有更早的單點證據，不列在這張表裡。
 
 每章的建構槽政策、抽樣範圍與限制寫在台帳 [`parity-campaign-progress.json`](data/parity-campaign-progress.json) 的 `limitations`；這張表由 `tools/render_parity_progress.py` 依台帳與收據產生。
 

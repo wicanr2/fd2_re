@@ -128,7 +128,7 @@ type parityReplay struct {
 	paletteCycleWrite *parityPaletteCycleWrite
 }
 
-// #82：只承接完成整個RGB triplet的4E01F軟體停點；不是硬體時序模擬。
+// #82／#93：只承接完整RGB triplet邊界，依暫存器及全部16槽raw窗口校驗。
 type parityPaletteCycleWrite struct {
 	Phase            int      `json:"phase"`
 	CompletedEntries int      `json:"completed_entries"`
@@ -143,17 +143,28 @@ func parityPaletteCycleWriteWindow(palette color.Palette, checkpoint []byte) (co
 		Deferred  bool     `json:"frame_deferred"`
 		Registers []uint32 `json:"registers"`
 	}
-	if json.Unmarshal(checkpoint, &doc) != nil || doc.EIP != "0x4E01F" || doc.Deferred ||
+	if json.Unmarshal(checkpoint, &doc) != nil || (doc.EIP != "0x4E01F" && doc.EIP != "0x4E014") || doc.Deferred ||
 		doc.EXESHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" ||
 		len(doc.Registers) != 8 || len(palette) != 256 {
 		return nil, nil, false
 	}
 	regs := doc.Registers // EAX、ECX、EDX、EBX、ESP、EBP、ESI、EDI
-	if regs[1] < 1 || regs[1] > 16 || uint16(regs[2]) != 0x3c9 {
+	if regs[1] < 1 || regs[1] > 16 {
 		return nil, nil, false
 	}
 	completed := 17 - int(regs[1])
-	if (regs[0]>>8)&255 != uint32(0xe0+completed-1) {
+	index := 0xe0 + completed - 1
+	port := uint16(0x3c9)
+	if doc.EIP == "0x4E014" {
+		// 4E021已減ECX並跳回4E010；AH已指向下一筆，ESI仍在前筆藍色之後。
+		completed--
+		index = 0xe0 + completed
+		port = 0x3c8
+		if completed == 0 {
+			return nil, nil, false
+		}
+	}
+	if uint16(regs[2]) != port || (regs[0]>>8)&255 != uint32(index) {
 		return nil, nil, false
 	}
 	offset := int64(regs[6]) - 0x60003 - int64(3*completed)

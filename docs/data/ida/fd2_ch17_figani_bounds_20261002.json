@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_remake_figani_bounds_consumer",
+  "date": "2026-10-02",
+  "issues": [
+    88,
+    92
+  ],
+  "status": "CONFORMED",
+  "level": "confirmed",
+  "source_head": "7a10e53c7087018cf59f1f77032f64d32a487fb9",
+  "inputs": [
+    {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    {
+      "file": "FIGANI.DAT",
+      "size": 15279582,
+      "md5": "7da21ec0ad9917455459f1acb970bdf4",
+      "sha256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+    }
+  ],
+  "original_runner": {
+    "schema_version": 1,
+    "kind": "fd2_oracle_runner_provenance",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+    "dosgolem_commit": "a0dbaab851cd608e67071228aef65f0c440306ac",
+    "dosgolem_branch": "feat/fd2-oracle-input-chain",
+    "dosgolem_tracked_dirty_files": 0,
+    "dosgolem_untracked_files": 0,
+    "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+    "generated_at": "2026-10-02T11:07:56+00:00",
+    "control_plan": "docs/data/parity-plans/ch17-guard.jsonl",
+    "lock_ally_hp": false,
+    "force_enemy_clear_declared": true,
+    "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_reference_manifest": "docs/data/fd2-reference-files.json",
+    "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch17/guard-state-r1",
+    "state_injections": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+  },
+  "asset": {
+    "file": "FIGANI.DAT",
+    "address_space": "file offset",
+    "archive_count": 409,
+    "resource": 51,
+    "resource_file_start": 1715591,
+    "resource_file_end": 1747870,
+    "resource_sha256": "cab55e65ef045f5b4e455a196b641e3ae24280603027fb99cd066f6efb34a321",
+    "frame_index": 0,
+    "frame_resource_offset": 24,
+    "frame_file_offset": 1715615,
+    "header_hex": "b800230000000200006d00a500",
+    "geometry": {
+      "x": 184,
+      "y": 35,
+      "width": 109,
+      "height": 165
+    },
+    "metadata_sha256": "6efd9dd7db5d9d979f50f107daf7510ccb5cb3754c36dc240e105b1002f57712"
+  },
+  "failure": {
+    "consumer": "BlitAtBase → BuildNativeCommandPreludeFrames → startNativeCommand2Presentation → executeNativeAIAction",
+    "actor": 38,
+    "target": 14,
+    "target_battle_fig": 17,
+    "raw_side": 0,
+    "error": "figani: frame cannot be blitted to destination: frame=(184,35,109,165) dst=128000 stride=640 base=320",
+    "first_pixel": 22904,
+    "last_pixel": 127972,
+    "one_past_last_pixel": 127973,
+    "old_rejection_expression": 128320,
+    "classification": "重製端界線多計尾列未寫入的padding；合法原始影格被拒收"
+  },
+  "spec": {
+    "history": [
+      "DRAFT：相同原版正常敵方回合，重製prelude拒收",
+      "READY：固定原始resource51 frame0 header與精確最後寫入位址證實",
+      "CONFORMED：固定FANI51、兩側shared consumer與非法span測試通過；同槽整章及第15／16章回歸、Go19套件通過"
+    ],
+    "inputs": "Frame indexed pixels／mask、stride、base與目的slice，原始座標及透明mask不改",
+    "rule": "驗證每列最後寫入位置在slice內，以精確最後span判斷；用除法與減法避免界線整數溢位；原座標寬度仍不能超過stride。全部驗證完成後才繪製，非法frame拒收且目的不變。",
+    "scope": "只修BlitAtBase緩衝區界線，不新增裁切、不換動畫、狀態、damage、MP、RNG或演出排程。",
+    "vertical_chain": "FIGANI raw51 → 既有decoder／分離PNG與metadata → Frame → 29164共用prelude → command2正常AI → 章節與SAV",
+    "acceptance": [
+      "底列完整及部分span、透明mask、兩半畫布、非法geometry／目的與整數溢位拒收",
+      "原始與分離FANI51相等，frame0 geometry已固定；實際source測試PASS",
+      "共用prelude兩raw side0／2、actor與target兩種TallFrame consumers",
+      "完整Go19套件與同槽guard-original-r1重播、章四項原門檻與必要舊章分支"
+    ],
+    "limits": "READY不是整章已通過；不重做29164／command2 handler、DAC或硬體時序"
+  },
+  "existing_evidence": {
+    "path": "docs/data/ida/fd2_command0_presentation_ida.txt",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "caller": "sub_29164，原始0x2A97E..0x2A9AF，320×200 base及640-stride work，mode0兩角色滑入",
+    "reopen_reason": "同狀態執行結果矛盾，只重開重製BlitAtBase界線consumer；既有原版caller與排程不重解"
+  },
+  "files": {
+    "remake/internal/figani/figani.go": "26fc12efd65a3c14da1520086c6adb1584a684787564c64e621619eb0f37cc26",
+    "remake/internal/battlepresent/native_command24_prelude.go": "d8a6f8833606d0d1e3a857280e7bbb606734f905a4b4dfa1e7c359f4c80c61a3",
+    "remake/cmd/fd2/native_command2_presentation.go": "79ad472ff21e29e6f0818e5a18b6f4643ec230921c452c42f5e171517fbc7e4e",
+    "work/parity-slot-ch17/guard-remake-r1.log": "d83122dbe9cf3f941d690a4b51a0932c5a07cd7dd78f1c871403505850c17330",
+    "work/parity-slot-ch17/guard-remake-r2.log": "714d5a00a8dfad7ebf120a7a9ef5105f4e05c7376a0751511eab82aab30eb6d3",
+    "work/parity-slot-ch17/guard-verify-r1.json": "89908b7f0cd4cad28d354e0bebe76d4bb097bb3d8eb36c4e6798a5d60205a4cf",
+    "docs/data/parity-plans/ch17-guard.jsonl": "7fd71aaa28a11294670b3c910e7b798df585e5107b0533e1af368ad34d8014c0",
+    "docs/data/ida/fd2_command0_presentation_ida.txt": "2941361ffb544938c4ed5350904ccee193e7c8b0dedf7ab42042bb6f42753ba0"
+  },
+  "reproduce": {
+    "original": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch17/guard-state-r1 -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=16000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=1 -e FD2_ORACLE_EIP_TRACE=0x335AA,0x205DA,0x1088D,0x10B4E,0x13A9F,0x1E54A,0x20822,0x34FD7,0x23B5F fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 3000 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch17-guard.jsonl >work/parity-slot-ch17/guard-original-r1.log 2>&1'",
+    "failed_remake": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=17 FD2_PARITY_SLOT=/src/work/parity-slot-ch17/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch17/guard-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch17/guard-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch17/guard-remake-r1.log 2>&1",
+    "geometry_diagnostic": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=17 FD2_PARITY_SLOT=/src/work/parity-slot-ch17/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch17/guard-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch17/guard-remake-r2 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch17/guard-remake-r2.log 2>&1"
+  },
+  "diagnostic_source_note": "source_head是修正前基底；files中的figani.go為r2僅加入geometry錯誤上下文的未提交來源。原始r1未改繪製；r2不作修復通過證據。",
+  "validation": {
+    "receipt": "docs/data/ui-traces/parity-ch17.json",
+    "source_sha256": {
+      "remake/internal/figani/figani.go": "879995521526f4a165dcebd130d39deafe98a2b64ebea10cc60e5b4bb0eb47fa",
+      "remake/internal/figani/blit_bounds_test.go": "53d3e102ed32bad1da2f91feea340cd492fce24e1b3f4af5b8aed9a99f4cddf2",
+      "remake/internal/battlepresent/native_command_prelude_bounds_test.go": "9f8b2534b4ae0faead5959bef5f682fc1420ec75ae5073324d5f34f306d13918",
+      "remake/cmd/fd2/chapter_parity_replay_test.go": "c5c07cc57b29f0bea001148ead1809fa2ae413cc64277e9d2cfc5735ddd1ceb4",
+      "remake/cmd/fd2/chapter_parity_palette_boundary_test.go": "83ff6e7fa124212ba3d02bcda5b603c3217dc717440dffc9f88162ca913c2cca",
+      "tools/verify_chapter_parity.py": "04d99c22c5f7d22e133cb7bbc07ee165fcbfcae3c97a507c9a291d6b68e0725b",
+      "tools/test_verify_chapter_parity.py": "a5fdefe0552ac97b6edad2ed23baf91284e94f339a79e0933f5b4202611aabd0"
+    },
+    "red_logs": {
+      "work/parity-slot-ch17/figani-bounds-before-fix.log": "234fd512e46a8e1b1e29013a6d88997496b92807a84ab1f5284de08fdad8e6b8",
+      "work/parity-slot-ch17/figani-source-before-fix.log": "44b10dff956211f5bb3c3dd60eff9222959158964399a018aa0073149f4348c7"
+    },
+    "green_logs": {
+      "work/parity-slot-ch17/figani-bounds-after-fix.log": "4147a7961ee8400946dda7c62ac25c8958fdcd8b4b3e49195486e2447c64f67a",
+      "work/parity-slot-ch17/figani-bounds-consumer-regression.log": "4f6f57b943833255d09b884ec0c7f8429109977fb47a8645c940790f697412f5"
+    },
+    "go_regression": {
+      "status": "passed",
+      "packages_passed": 19,
+      "game_seconds": 314.98,
+      "log": "work/parity-slot-ch17/guard-go-regression-r2.log",
+      "log_sha256": "81f158868094c724ebbe9a41e88b43c71aa831dc2abf82528f73916176e47622",
+      "image": "fd2-go-test-local:20260909",
+      "exit": 0
+    },
+    "prior_ch16": {
+      "status": "passed",
+      "report": "work/parity-slot-ch17/figani-prior-ch16-parity.json",
+      "report_sha256": "2e5067948279cbdee112142e8b818207a35337db38cd0cd6efa7d7bbb7da00e0",
+      "frames": 76,
+      "save": {
+        "oracle_save_sha256": "d759d46197c649f37aac32769446402d40ac1237a1c90291613c2259198ba443",
+        "remake_save_sha256": "d759d46197c649f37aac32769446402d40ac1237a1c90291613c2259198ba443",
+        "remake_note": "save_sha256=d759d46197c649f37aac32769446402d40ac1237a1c90291613c2259198ba443",
+        "blocked_by": null,
+        "status": "ok"
+      }
+    }
+  }
+}

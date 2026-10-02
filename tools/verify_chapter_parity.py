@@ -42,10 +42,11 @@ def palette_cycle_metadata(cp: dict) -> dict:
     """保留已分級的候選來源；中間writer不能標成完整相位。"""
     if "palette_cycle_write" in cp:
         writer = cp["palette_cycle_write"]
-        if (isinstance(writer, dict) and writer.get("eip") == "0x4E01F"
+        if (isinstance(writer, dict) and writer.get("eip") in ("0x4E01F", "0x4E014")
                 and type(writer.get("phase")) is int and 0 <= writer["phase"] < 16
                 and type(writer.get("completed_entries")) is int
                 and 1 <= writer["completed_entries"] <= 16
+                and (writer["eip"] != "0x4E014" or writer["completed_entries"] < 16)
                 and writer["phase"] == cp.get("palette_cycle_phase")):
             return {"palette_cycle_phase": writer["phase"], "palette_cycle_write": writer,
                     "palette_cycle_source": "原版EIP／暫存器證實完整triplet寫入進度，16色全部匹配新舊raw窗口；僅測試候選"}

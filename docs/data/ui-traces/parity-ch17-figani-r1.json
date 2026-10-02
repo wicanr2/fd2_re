@@ -1,0 +1,994 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_receipt",
+  "chapter": 17,
+  "generated_at": "2026-10-02",
+  "status": "failed",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "a0dbaab851cd608e67071228aef65f0c440306ac",
+    "control_plan": "docs/data/parity-plans/ch17-guard.jsonl",
+    "control_plan_sha256": "7fd71aaa28a11294670b3c910e7b798df585e5107b0533e1af368ad34d8014c0",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 105,
+    "checkpoints": 1778,
+    "random_control": {
+      "initial_checkpoint_rng_word": 22661,
+      "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+    }
+  },
+  "slot": {
+    "manifest": "docs/data/parity-slots/ch17-manifest.json",
+    "output_sha256": "dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786",
+    "base_sha256": "85f02107c9752fba0690e09340a36bc66e4b07dbb5628011c3fc92d865f1503f",
+    "base_chapter": 2,
+    "target_chapter": 16,
+    "level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+    "assumptions": [
+      {
+        "chapter": 3,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "native_event_state_eq(state17)→true（第 7 章戰場狀態 17＝1，-event-states 明示）"
+      },
+      {
+        "chapter": 7,
+        "kind": "if",
+        "detail": "any_unit_inactive→false（假設無人陣亡）"
+      },
+      {
+        "chapter": 15,
+        "kind": "if",
+        "detail": "roster_has(12)→true（已在隊伍）"
+      },
+      {
+        "chapter": 16,
+        "kind": "if",
+        "detail": "native_any_of→false（假設回合數未超限、陣亡數未超限）"
+      },
+      {
+        "chapter": 16,
+        "kind": "if",
+        "detail": "未知條件 \"native_record_word_gte\"→else"
+      },
+      {
+        "chapter": 16,
+        "kind": "boost",
+        "detail": "基底 AP +200、DP +0、DX +60（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 17 筆：roster 0 id8=0 AP/DP/HIT/EV [263 190 175 80]→[463 190 235 140]；roster 1 id8=9 AP/DP/HIT/EV [173 127 147 62]→[373 127 207 122]；roster 2 id8=4 AP/DP/HIT/EV [294 162 170 80]→[494 162 230 140]；roster 3 id8=30 AP/DP/HIT/EV [894 822 300 210]→[1094 822 360 270]；roster 4 id8=1 AP/DP/HIT/EV [337 182 152 57]→[537 182 212 117]；roster 5 id8=8 AP/DP/HIT/EV [255 108 175 80]→[455 108 235 140]；roster 6 id8=2 AP/DP/HIT/EV [289 181 175 80]→[489 181 235 140]；roster 7 id8=10 AP/DP/HIT/EV [147 144 135 40]→[347 144 195 100]；roster 8 id8=13 AP/DP/HIT/EV [229 130 175 80]→[429 130 235 140]；roster 9 id8=12 AP/DP/HIT/EV [351 229 161 66]→[551 229 221 126]；roster 10 id8=5 AP/DP/HIT/EV [269 227 175 80]→[469 227 235 140]；roster 11 id8=11 AP/DP/HIT/EV [154 214 120 45]→[354 214 180 105]；roster 12 id8=6 AP/DP/HIT/EV [392 265 170 85]→[592 265 230 145]；roster 13 id8=14 AP/DP/HIT/EV [214 172 133 63]→[414 172 193 123]；roster 14 id8=17 AP/DP/HIT/EV [394 278 179 99]→[594 278 239 159]；roster 15 id8=3 AP/DP/HIT/EV [382 280 133 48]→[582 280 193 108]；roster 16 id8=15 AP/DP/HIT/EV [334 216 131 41]→[534 216 191 101]"
+      }
+    ]
+  },
+  "remake": {
+    "checkpoints": 30,
+    "rng_synced_points": 3,
+    "random_control": {
+      "go_seed": 4,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "native_rng_initial": 0
+    }
+  },
+  "gates": {
+    "behavior": {
+      "ok": false,
+      "points": [
+        {
+          "seq": 17,
+          "kind": "town_loaded",
+          "status": "ok"
+        },
+        {
+          "seq": 38,
+          "kind": "departure_prompt",
+          "status": "ok"
+        },
+        {
+          "seq": 43,
+          "kind": "party_selection",
+          "status": "ok"
+        },
+        {
+          "seq": 70,
+          "kind": "departure_confirmation",
+          "status": "ok"
+        },
+        {
+          "seq": 117,
+          "kind": "battle_start",
+          "status": "ok"
+        },
+        {
+          "seq": 122,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 128,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 134,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 140,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 145,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 151,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 159,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 167,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 173,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 202,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 206,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 208,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 223,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 257,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 262,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 264,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 279,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 311,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 496,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 502,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 510,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 515,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 517,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 532,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": null,
+          "kind": "runtime_error",
+          "status": "remake_runtime_error",
+          "note": "loadErr: native AI action: figani: frame cannot be blitted to destination"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": false,
+      "oracle": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "runtime_error:cursor"
+      ],
+      "remake": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "runtime_error:cursor"
+      ],
+      "plan_completion": {
+        "ok": false,
+        "required": {
+          "mark:town_loaded": 1,
+          "mark:departure_prompt": 1,
+          "mark:party_selection": 1,
+          "mark:departure_confirmation": 1,
+          "mark:battle_start": 1,
+          "force_enemy_clear": 1,
+          "mark:town_after_battle": 1,
+          "shop_sell": 1,
+          "shop_buy": 1,
+          "town_save": 1,
+          "secret_shop": 1
+        },
+        "missing": {},
+        "remake_missing": {
+          "force_enemy_clear": 1,
+          "mark:town_after_battle": 1,
+          "shop_sell": 1,
+          "shop_buy": 1,
+          "town_save": 1,
+          "secret_shop": 1
+        }
+      }
+    },
+    "transaction": {
+      "ok": false,
+      "gold": [
+        {
+          "seq": 17,
+          "kind": "town_loaded",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 38,
+          "kind": "departure_prompt",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 43,
+          "kind": "party_selection",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 70,
+          "kind": "departure_confirmation",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 117,
+          "kind": "battle_start",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 122,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 128,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 134,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 140,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 145,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 151,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 159,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 167,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 173,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 202,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 206,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 208,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 223,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 257,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 262,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 264,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 279,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 311,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 496,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 502,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 510,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 515,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 517,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 532,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": "bce3b7e5967d354d23444ce2da75b163e905d7e58914b80be44f77c237033333",
+        "remake_save_sha256": null,
+        "remake_note": null,
+        "blocked_by": null,
+        "status": "fail"
+      }
+    },
+    "frames": {
+      "ok": true,
+      "pixel_budget": 640,
+      "min_frames": 12,
+      "compared": 29,
+      "points": [
+        {
+          "seq": 17,
+          "kind": "town_loaded",
+          "oracle": "checkpoint-0017.png",
+          "remake": "remake-0000-p2.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+          "remake_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e"
+        },
+        {
+          "seq": 38,
+          "kind": "departure_prompt",
+          "oracle": "checkpoint-0038.png",
+          "remake": "remake-0001-p0.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "eab9dcaa1bf6e8472dd764c225c21e165d2e46beac3895c3be7a3e95eb60663f",
+          "remake_sha256": "ba73cbba395f27e10d7bcacfa434d24d9c5fa789cf0d5b6c408f8a6e9dc0108d"
+        },
+        {
+          "seq": 43,
+          "kind": "party_selection",
+          "oracle": "checkpoint-0043.png",
+          "remake": "remake-0002-p0.png",
+          "phases": 3,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ff9dfd18172261696092aabc1bad72c1799d32165e22a0b72f4137cd208ed63a",
+          "remake_sha256": "9bd77e67970514b49552d7100eb3e9bd0959826b6ab1b5442f893ad494ea1fa6"
+        },
+        {
+          "seq": 70,
+          "kind": "departure_confirmation",
+          "oracle": "checkpoint-0070.png",
+          "remake": "remake-0003-p0.png",
+          "phases": 6,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "912a194365fa25b4f7b5dcfa3d573bab346ed4a5d9c85f60475af9f8802439eb",
+          "remake_sha256": "e8dba5dcb5abc57c91e2bb9e244b3044e4e98d28ffa2b11075aae17f72eacf45"
+        },
+        {
+          "seq": 117,
+          "kind": "battle_start",
+          "oracle": "checkpoint-0117.png",
+          "remake": "remake-0004-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "66fcea0c74d986cde49c2aeb02da59e5cd956c709b399eb2bfee1e971e0055be",
+          "remake_sha256": "66fcea0c74d986cde49c2aeb02da59e5cd956c709b399eb2bfee1e971e0055be",
+          "palette_cycle_phase": 6,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 122,
+          "kind": "select",
+          "oracle": "checkpoint-0122.png",
+          "remake": "remake-0005-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "8e9b3ac70ba477631a10460fcc766a44bb71a2fdd9f8ccf880332c086cea8ab6",
+          "remake_sha256": "8e9b3ac70ba477631a10460fcc766a44bb71a2fdd9f8ccf880332c086cea8ab6",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 128,
+          "kind": "move",
+          "oracle": "checkpoint-0128.png",
+          "remake": "remake-0006-p2.png",
+          "phases": 16,
+          "diff_pixels": 90,
+          "box": [
+            270,
+            142,
+            289,
+            147
+          ],
+          "ok": true,
+          "oracle_sha256": "9f4b8cbe7a1f3882f0060b6d43f33d4e80fb4e67594371d55cca094991c8ea19",
+          "remake_sha256": "16cbc1c46e40ed0effa04b4d4322ba4a5d24760fdee7abc3be47cde190e6a8e3",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 134,
+          "kind": "wait",
+          "oracle": "checkpoint-0134.png",
+          "remake": "remake-0007-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a42ed94682802d437a19113ab0e8f15184761b68be2e74ec5c96566abcdb7713",
+          "remake_sha256": "a42ed94682802d437a19113ab0e8f15184761b68be2e74ec5c96566abcdb7713",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 140,
+          "kind": "select",
+          "oracle": "checkpoint-0140.png",
+          "remake": "remake-0008-p30.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "30aa7366c9c398a171ead6f35b5f5d92502242870d19b63d85c49d8d9303f1d1",
+          "remake_sha256": "30aa7366c9c398a171ead6f35b5f5d92502242870d19b63d85c49d8d9303f1d1",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 145,
+          "kind": "move",
+          "oracle": "checkpoint-0145.png",
+          "remake": "remake-0009-p1.png",
+          "phases": 16,
+          "diff_pixels": 88,
+          "box": [
+            269,
+            23,
+            290,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "af5f95e4023ca114e826ab8640728d32149cce8167d25e2308deaedf1e4d89a9",
+          "remake_sha256": "310898f453b635ffd81beed9040895742f5fa555f7b179d9a2e5f10065f5bc4e",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 151,
+          "kind": "wait",
+          "oracle": "checkpoint-0151.png",
+          "remake": "remake-0010-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0823b0a0baa1e73900b762a12966b0cbada5e08a45488d9863a67ecf355ea02b",
+          "remake_sha256": "0823b0a0baa1e73900b762a12966b0cbada5e08a45488d9863a67ecf355ea02b",
+          "palette_cycle_phase": 6,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 159,
+          "kind": "select",
+          "oracle": "checkpoint-0159.png",
+          "remake": "remake-0011-p50.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "fdcbf328444b46bee3bc67f9d2a1cddff58b68014a84dad80074a286cc219a6d",
+          "remake_sha256": "fdcbf328444b46bee3bc67f9d2a1cddff58b68014a84dad80074a286cc219a6d",
+          "palette_cycle_phase": 9,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 167,
+          "kind": "move",
+          "oracle": "checkpoint-0167.png",
+          "remake": "remake-0012-p2.png",
+          "phases": 16,
+          "diff_pixels": 210,
+          "box": [
+            270,
+            22,
+            310,
+            47
+          ],
+          "ok": true,
+          "oracle_sha256": "247bdf1d262828c75ba009d729a9ca3bc53fd13f32adc04c5c56b541e1452854",
+          "remake_sha256": "3caf38334f782d1ffc31531ba121324d18b7089646f68e998ba334c94e137a64",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 173,
+          "kind": "wait",
+          "oracle": "checkpoint-0173.png",
+          "remake": "remake-0013-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ae854d4cd54d165a0ffd0ca23c8698cfcfcca92ec3722e5c700907fdf53f591b",
+          "remake_sha256": "ae854d4cd54d165a0ffd0ca23c8698cfcfcca92ec3722e5c700907fdf53f591b",
+          "palette_cycle_phase": 6,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 202,
+          "kind": "select",
+          "oracle": "checkpoint-0202.png",
+          "remake": "remake-0014-p50.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "35e9199ed13ff017d66d5d80eb63e8236fa64c968d2c84d212f047223e3b4b71",
+          "remake_sha256": "35e9199ed13ff017d66d5d80eb63e8236fa64c968d2c84d212f047223e3b4b71",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 206,
+          "kind": "move",
+          "oracle": "checkpoint-0206.png",
+          "remake": "remake-0015-p1.png",
+          "phases": 16,
+          "diff_pixels": 57,
+          "box": [
+            197,
+            23,
+            218,
+            27
+          ],
+          "ok": true,
+          "oracle_sha256": "55a56186d16c7b3248a870365bdb5248938169ce2c7e946f4e857875af181287",
+          "remake_sha256": "db17b1e96b99f692faa228739a1200604ba3dc3bd03f833becf4a125c76cd072",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 208,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-0208.png",
+          "remake": "remake-0016-p12.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "ef501e1f26804b3db99ad592688f8e8790395c66e974674c7234648b65492987",
+          "remake_sha256": "ef501e1f26804b3db99ad592688f8e8790395c66e974674c7234648b65492987",
+          "palette_cycle_phase": 9,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 223,
+          "kind": "attack_result",
+          "oracle": "checkpoint-0223.png",
+          "remake": "remake-0017-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "43eb51b6ff57793407cf2fe7a116940ffa9b52ed7a50c6b1ba77163c780a14dc",
+          "remake_sha256": "43eb51b6ff57793407cf2fe7a116940ffa9b52ed7a50c6b1ba77163c780a14dc",
+          "palette_cycle_phase": 4,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 257,
+          "kind": "select",
+          "oracle": "checkpoint-0257.png",
+          "remake": "remake-0018-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "3e5ced715f4d48d1ac991b3150449770e4ac388445e1093b1f6e5fbd557893b8",
+          "remake_sha256": "3e5ced715f4d48d1ac991b3150449770e4ac388445e1093b1f6e5fbd557893b8",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 262,
+          "kind": "move",
+          "oracle": "checkpoint-0262.png",
+          "remake": "remake-0019-p1.png",
+          "phases": 16,
+          "diff_pixels": 89,
+          "box": [
+            126,
+            71,
+            145,
+            75
+          ],
+          "ok": true,
+          "oracle_sha256": "50a741d2b1dd3b3e5f93ef4865c153553db59a9d233a02c4559e929991380ccf",
+          "remake_sha256": "fe177d53c4074fc3a2bbe70217a113e60e2ffe2162762fdc26d18ee413b1e7c5",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 264,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-0264.png",
+          "remake": "remake-0020-p25.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "67a3baf8ac83c4eb6dd4b8ec1f22573d00117536e049c79b5ad5eb3cf3b14e7d",
+          "remake_sha256": "67a3baf8ac83c4eb6dd4b8ec1f22573d00117536e049c79b5ad5eb3cf3b14e7d",
+          "palette_cycle_phase": 10,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 279,
+          "kind": "attack_result",
+          "oracle": "checkpoint-0279.png",
+          "remake": "remake-0021-p2.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "d901fd68eff4d6e142ca2c3e60a6e9678a44ecd9e212bd9670be8be0146f2ed8",
+          "remake_sha256": "d901fd68eff4d6e142ca2c3e60a6e9678a44ecd9e212bd9670be8be0146f2ed8",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 311,
+          "kind": "select",
+          "oracle": "checkpoint-0311.png",
+          "remake": "remake-0022-p33.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "07b012cb79391410ef664e423ef4dd9f0b2cae9ba69d949f6b5c444472c756c7",
+          "remake_sha256": "07b012cb79391410ef664e423ef4dd9f0b2cae9ba69d949f6b5c444472c756c7",
+          "palette_cycle_phase": 3,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 496,
+          "kind": "move",
+          "oracle": "checkpoint-0496.png",
+          "remake": "remake-0023-p0.png",
+          "phases": 16,
+          "diff_pixels": 153,
+          "box": [
+            222,
+            70,
+            241,
+            93
+          ],
+          "ok": true,
+          "oracle_sha256": "a02d6d577f3209a149be37f28768ee79456f08c3921b4f749f8eb2aad5ddb427",
+          "remake_sha256": "fdc1d29f3d46935fc019340106203945778be1404c304cac655c3760b6c27c13",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 502,
+          "kind": "wait",
+          "oracle": "checkpoint-0502.png",
+          "remake": "remake-0024-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "835d09d462583f31c2d61d0249e1faa16c1b43cff8f70b849c7c30aaa7c15fd3",
+          "remake_sha256": "835d09d462583f31c2d61d0249e1faa16c1b43cff8f70b849c7c30aaa7c15fd3",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 510,
+          "kind": "select",
+          "oracle": "checkpoint-0510.png",
+          "remake": "remake-0025-p17.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "fe179a47312ba78fdbd1fed1821fdeba877da31765507b69b8f4ba6406c058bf",
+          "remake_sha256": "fe179a47312ba78fdbd1fed1821fdeba877da31765507b69b8f4ba6406c058bf",
+          "palette_cycle_phase": 6,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 515,
+          "kind": "move",
+          "oracle": "checkpoint-0515.png",
+          "remake": "remake-0026-p1.png",
+          "phases": 16,
+          "diff_pixels": 85,
+          "box": [
+            245,
+            119,
+            264,
+            123
+          ],
+          "ok": true,
+          "oracle_sha256": "73c11ededfcf146ae2dbdcb39cab0a276974beb39b60a286b9cfc36089663d81",
+          "remake_sha256": "b3a3dc5f95508475dc0f98be4d8c80db31425685109dc30cb71909b24bde79be",
+          "palette_cycle_phase": 1,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 517,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-0517.png",
+          "remake": "remake-0027-p11.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "5abaa12de09b01f7aab527301d9f0bbb14bcc3b67b2ff3bac86c46091d1ba6d6",
+          "remake_sha256": "5abaa12de09b01f7aab527301d9f0bbb14bcc3b67b2ff3bac86c46091d1ba6d6",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 532,
+          "kind": "attack_result",
+          "oracle": "checkpoint-0532.png",
+          "remake": "remake-0028-p1.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "c49cfdf539511dfd068eee182c7d90b84d6277635a49f89c2f2d29d0921d06fa",
+          "remake_sha256": "c49cfdf539511dfd068eee182c7d90b84d6277635a49f89c2f2d29d0921d06fa",
+          "palette_cycle_phase": 0,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。"
+  ],
+  "diagnostic_source": {
+    "path": "work/parity-slot-ch17/guard-verify-r1.json",
+    "sha256": "89908b7f0cd4cad28d354e0bebe76d4bb097bb3d8eb36c4e6798a5d60205a4cf"
+  },
+  "superseded_by": "docs/data/ui-traces/parity-ch17.json"
+}

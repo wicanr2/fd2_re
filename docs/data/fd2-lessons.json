@@ -1117,6 +1117,21 @@
       "rule": "更新工單JSON快照後，同一次執行tools/fd2_worklist.py render重生docs/knowledge-base/91-worklist.md，並核對有效id一致。tools/fd2_worklist_issues.py的write_snapshot只寫JSON，不能當成完整pull收尾。",
       "why": "第十六章關閉與第十七章登記後，遠端和JSON已同步，Markdown產生區塊仍保存舊工單。補跑正式renderer才移除#83／#84／#85／#86並列出#88。",
       "evidence": "tools/fd2_worklist_issues.py:write_snapshot；tools/fd2_worklist.py:render；docs/knowledge-base/91-worklist.md"
+    },
+    {
+      "id": "blit-bounds-use-last-written-span",
+      "date": "2026-10-02",
+      "area": "動畫畫布界線",
+      "rule": "Frame.BlitAtBase按最後實際寫入span判界，先以減法與除法驗證幾何、來源及整數溢位，再寫入目的。入口是remake/internal/figani/figani.go與blit_bounds_test.go，含原始FANI51及640-stride兩半畫布回歸。",
+      "why": "#92右半base320的合法末列影格被整列padding界線拒收；舊Y+H乘法亦能溢位。原始影格最後pixel127972在128000內。",
+      "evidence": "docs/data/ida/fd2_ch17_figani_bounds_20261002.json；https://github.com/wicanr2/fd2_re/issues/92",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/figani/figani.go"
+        ],
+        "pattern": "lastAvailableRow\\ :=\\ \\(remaining\\ \\-\\ rowEnd\\)\\ /\\ stride"
+      }
     }
   ]
 }

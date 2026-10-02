@@ -9195,3 +9195,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 ### 第十七章有限起手（#89，2026-10-02）
 
 正式 `battle_ch17` 已加入有來源的視圖與繼承 HUD。正常讀檔、15次選人與戰前對話後，五點完整 RGB 皆為0像素差異。53筆起手單位狀態一致，分級為RUNTIME-E1。詳見[主規格](../data/ida/fd2_ch17_startup_20261002.json)、[有限收據](../data/ui-traces/ch17-native-startup.json)與[五點總覽](../figures/ch17-native-startup-samples.png)。完整回合、增援、戰後及全檔SAV仍由[#88](https://github.com/wicanr2/fd2_re/issues/88)驗收；不提升整章PLAYER-E2。
+
+### 第十七章完整同槽章收據（#88／#92／#93，2026-10-02）
+
+[正式收據](../data/ui-traces/parity-ch17.json)行為、節點、交易與98張全幅RGB通過，72張逐像素相同，最大295px；酒店SAV整檔相同。固定初始槽沿111／114政策，NPC52與記錄0／2正常移動護援，四回合後第5回合才清敵23筆。turn4 event40追加8名camp1友軍，frontier53→61；原版124筆AI順序與重製全部一致。依111例外列PLAYER-E2，收據保留建構槽、狀態注入與亂數比較範圍，不能外推自然戰鬥、傷害、存活或敵方選目標。
+
+#92共用FIGANI右半畫布末列界線已修正；#93只擴充4E014完整triplet邊界的測試私有色表窗口。兩份主規格列有限CONFORMED；原始失敗收據仍可回查。最終Go19套件、第15章156張與第16章76張四項回歸通過，既有fixture／證據漂移#91仍開啟。
