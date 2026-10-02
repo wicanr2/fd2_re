@@ -1438,3 +1438,10 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 [總覽及來源](../data/ui-traces/ch16-native-startup-samples.json)列兩側完整影像與雜湊；有限CONFORMED／RUNTIME-E1。
 整章最低12張、640px與無遮罩契約不變，戰鬥／戰後／交易／SAV仍待#83，不能列PLAYER-E2。
 唯一分層現況與重生入口見[58](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-02 第十六章完整畫面與存檔驗收（#83／#87）
+
+[正式收據](../data/ui-traces/parity-ch16.json)行為、節點、76張完整RGB與全檔酒店SAV皆通過。
+[固定抽樣來源](../data/ui-traces/parity-ch16-samples.json)保留所有非零差異，最大200px；640px／最少12張／無遮罩維持。
+前三回合、戰後18人名冊、買賣、酒店與秘密商店同一完整run走到，依111／114例外列PLAYER-E2。
+舊SAV失敗與有限起手收據保留，不宣稱全部動畫相位逐像素；現況及限制見[58](58-fd2-exe-re-coverage.md)。

@@ -40,18 +40,23 @@ func EncodeNativePersistentRecord(baseline fdsave.PersistentRecord, unit *battle
 	// 要等 0x11506 整筆抄回才會有場上的值（第七章 r6 凱麗）。
 	pending := unit.NativeJoinPersistentPending
 	if !pending {
-		record.Raw[0] = byte(unit.X)
-		record.Raw[1] = byte(unit.Y)
+		// #87：11506只抄回raw身分匹配的runtime紀錄。未出戰者的
+		// LOAD投影沒有呈現來源，保留持續槽的原始欄位。
+		if unit.HasNativeMapPresentation {
+			record.Raw[0] = byte(unit.X)
+			record.Raw[1] = byte(unit.Y)
+			record.Raw[3] = unit.NativeMapPresentation.Pose
+			record.Raw[4] = unit.NativeMapPresentation.Motion
+		}
 		if unit.HasMapSelectorSlot && unit.MapSelectorSlot >= 0 && unit.MapSelectorSlot <= 0xff {
 			record.Raw[2] = byte(unit.MapSelectorSlot)
 		}
-		// +3／+4 是戰後同步時歸零的姿勢／動作（見 syncPartyFromBattle），沒有地圖
-		// 呈現來源的單位本來就是 0。
-		record.Raw[3] = unit.NativeMapPresentation.Pose
-		record.Raw[4] = unit.NativeMapPresentation.Motion
 	}
 	record.Raw[5] = unit.NativeRecordByte5
-	copy(record.Raw[6:9], panel[6:9])
+	record.Raw[6], record.Raw[8] = panel[6], panel[8]
+	if unit.HasBattleFig {
+		record.Raw[7] = panel[7]
+	}
 	copy(record.Raw[0x0a:0x28], panel[0x0a:0x28])
 	if unit.HasNativeRecordDeathEffect && !pending {
 		// 建構器只寫 +0x31=0xff，+0x32／+0x33 留殘值。

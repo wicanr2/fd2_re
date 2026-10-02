@@ -424,19 +424,32 @@
     },
     {
       "chapter": 16,
-      "status": "slot-ready",
-      "receipt": null,
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch16.json",
       "slot_manifest": "docs/data/parity-slots/ch16-manifest.json",
       "slot_sha256": "ecea8b82e1b6a31302b9b8cde54207069fdffdaf719c1a139dbf96b3d72fcf91",
       "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
       "date": "2026-10-02",
-      "verify": "FD2_ORACLE_STATE=<fresh-state> tools/dosgolem_oracle.sh <fresh-original> docs/data/parity-plans/ch16-preflight-select.jsonl",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 16 --oracle work/parity-slot-ch16/sample-original-r1 --remake work/parity-slot-ch16/sample-remake-r2 --slot-manifest docs/data/parity-slots/ch16-manifest.json --plan docs/data/parity-plans/ch16-sample.jsonl --out <fresh-report>",
       "limitations": [
-        "依111／114固定建構槽政策；五點起手CONFORMED／RUNTIME-E1見docs/data/ui-traces/ch16-native-startup.json。整章四項、最少12張與戰後SAV尚未驗收；#83。"
+        "依111／114例外：levels6／seed4／event7:17=1、我方AP+200 DP+0 DX+60；正常選人與三回合抽樣後round4清敵38筆。四項與酒店SAV全檔通過；不談自然難度、傷害、存活、敵方選目標或DOS硬體逐週期一致。"
       ],
       "prior_receipts": [
-        "docs/data/ui-traces/ch16-native-startup.json"
-      ]
+        "docs/data/ui-traces/ch16-native-startup.json",
+        "docs/data/ui-traces/parity-ch16-r1.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 17,

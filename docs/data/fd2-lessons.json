@@ -1094,6 +1094,21 @@
       "rule": "宣稱原始素材回歸通過前，核對測試工作目錄、原始素材相對路徑與實際PASS。素材已存在而路徑錯誤時，修正路徑並執行該測試，不把t.Skip當驗收。",
       "why": "#86既有整備UI測試從remake/cmd/fd2讀../../org_game，實際原檔在../../../org_game；先前略過也遮蔽了FDTXT0x292九字被誤寫十字的舊斷言。正常同槽確認完整RGB0px後，修正fixture並實跑城鎮／黑底來源與關框還原。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/86；docs/data/ui-traces/ch16-native-startup.json；remake/cmd/fd2/native_preparation_ui_test.go"
+    },
+    {
+      "id": "persistent-default-is-not-provenance",
+      "date": "2026-10-02",
+      "area": "存檔出處",
+      "rule": "持續記錄寫回只覆寫具有原始出處的欄位。未出戰等未物化投影保留raw基底，不能以Go零值或OnField代替來源；入口是remake/internal/campaign/native_chapter_slot_save.go的EncodeNativePersistentRecord。",
+      "why": "#87第十六章五個欄位被缺呈現來源的零值覆寫；原版11506沒有匹配未出戰raw身分，酒店SAV保留初始值。既有HasNativeMapPresentation與HasBattleFig限制覆寫後，全檔SAV相同。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/87；docs/data/ida/fd2_ch16_unselected_persistence_20261002.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/campaign/native_chapter_slot_save.go"
+        ],
+        "pattern": "if unit.HasNativeMapPresentation"
+      }
     }
   ]
 }

@@ -1867,3 +1867,30 @@ levels6、seed4、event7:17=1、我方AP+200／DP+0／DX+60建構槽與第10回�
 只涵蓋上述五點。完整章嚴格診斷仍因少於12張而failed；第十六章#83戰鬥、戰後交易與SAV未驗。
 台帳保持slot-ready，不能提升PLAYER-E2；完成章數仍由正式台帳工具產生。
 重生容器命令、原版／工具／素材／日誌雜湊、來源拒收測試均在有限收據，不另造章完成門檻。
+
+## 2026-10-02 #87 未出戰持續記錄consumer（READY）
+
+[主證據與READY規格](../data/ida/fd2_ch16_unselected_persistence_20261002.json)保存固定EXE與既有IDA sub_11506原始指令。1256有效前沿沒有raw+8=15，未出戰record16在原版酒店SAV保留初始值；重製只把+0／+1／+3／+4／+7誤覆寫零，另外兩個差異為checksum。這是同狀態反證，有限重開持續槽writer consumer，不重做原版同步或猜補新呈現語意。LOAD投影有意保留呈現來源未知，存檔須依既有HasNativeMapPresentation／HasBattleFig決定可覆寫欄位；inventory與stats仍寫回。原始[整章失敗診斷](../data/ui-traces/parity-ch16-r1.json)的行為／節點／76張RGB通過，但SAV未過，#83保持未完成。
+
+## 2026-10-02 第十六章完整驗收（#83／#87）
+
+[正式章收據](../data/ui-traces/parity-ch16.json)取代前述有限起手與SAV未過的現況。
+同一17人槽正常LOAD、選15人加固定隊長，前三回合各最多六人抽樣，round4才清敵38筆。
+原版sample-original-r1正常退出10,190,350,619步、終點seq1513，108筆起手前綴全同；原版沒有重跑。
+重製r2完整回放19.27秒PASS，161筆AI全消費、順序分岔0，83筆行為與節點通過。
+76張完整320×200 RGB中58張0px、最大200px，640px／最少12張／無遮罩維持。
+戰後JOIN18使持續名冊17→18，town_ch17、買賣、酒店與selection0／Shift+F5秘密商店皆走到。
+兩側酒店FD2.SAV全檔SHA-256均為d759d46197c649f37aac32769446402d40ac1237a1c90291613c2259198ba443。
+
+#87依[原READY規格](../data/ida/fd2_ch16_unselected_persistence_20261002.json)限制持續槽呈現覆寫：
+無HasNativeMapPresentation保留+0／+1／+3／+4，無HasBattleFig保留+7，inventory及stats仍正常寫回。
+有限CONFORMED；舊五欄／checksum失敗保留於r1，沒有借用原版SAV或補造LOAD呈現來源。
+原版11506、戰後排列與JOIN constructor沿已閉合證據，不重做或新增規則。
+完整Go19套件通過，遊戲264.319秒，三項聚焦回歸通過；首輪cache環境失敗如實保留。
+共用writer修正後，第十五章舊完整收據再次四項、156張及全檔SAV通過。
+[總覽一](../figures/parity-ch16-samples-p1.png)、[總覽二](../figures/parity-ch16-samples-p2.png)與
+[固定來源索引](../data/ui-traces/parity-ch16-samples.json)保存每kind首點與全部非零差異，已檢查無裁切。
+
+本章依111／114例外列PLAYER-E2；固定levels6／seed4／event7:17=1、我方AP+200 DP+0 DX+60，沒有HP鎖定或NPC強化。
+原版normal_player_path_verified仍false，不宣稱自然難度、傷害、存活、敵方選目標、音訊人耳或硬體逐週期一致。
+唯一台帳由tools/fd2_parity_progress.py verify產生，整體戰役尚未完成；精確容器命令與雜湊見正式收據。

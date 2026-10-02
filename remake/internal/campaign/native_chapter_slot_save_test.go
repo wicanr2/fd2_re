@@ -9,6 +9,39 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
+// #87：未出戰record16的五個呈現欄位須留在原始持續槽，
+// 同一角色仍可在戰後商店更改物品與能力值。
+func TestEncodeNativePersistentRecordPreservesUnmaterializedPresentation(t *testing.T) {
+	baseline := fdsave.PersistentRecord{}
+	baseline.Raw[0], baseline.Raw[1] = 133, 216
+	baseline.Raw[2], baseline.Raw[3], baseline.Raw[4] = 204, 189, 189
+	baseline.Raw[7], baseline.Raw[8] = 15, 4
+	unit := completeNativeCurrentSaveUnit()
+	unit.X, unit.Y, unit.BattleFig = 0, 0, 0
+	unit.HasNativeMapPresentation, unit.HasMapSelectorSlot, unit.HasBattleFig = false, false, false
+	unit.NativeMapPresentation = battle.NativeMapPresentationState{}
+	unit.InventorySlots[0] = 24
+	unit.HP = 27
+	got, err := EncodeNativePersistentRecord(baseline, unit)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, offset := range []int{0, 1, 2, 3, 4, 7} {
+		if got.Raw[offset] != baseline.Raw[offset] {
+			t.Fatalf("未物化+%x=%d want原始%d", offset, got.Raw[offset], baseline.Raw[offset])
+		}
+	}
+	if got.Raw[0x0b] != 24 || binary.LittleEndian.Uint16(got.Raw[0x40:]) != 27 {
+		t.Fatal("未出戰者的物品或能力值沒有寫回")
+	}
+	// OnField不代表有raw呈現來源，不能用它覆寫保留欄位。
+	unit.OnField = false
+	again, err := EncodeNativePersistentRecord(baseline, unit)
+	if err != nil || again != got {
+		t.Fatalf("OnField改變存檔出處政策：err=%v", err)
+	}
+}
+
 // TestBuildNativeChapterSlotOverlaysRosterOnBaseline 釘住酒店存檔寫回：已證實的欄位
 // 由隊伍覆寫，其餘 byte 照讀檔基底，metadata 只改章節、筆數與金幣。第四章 r9 收據
 // （state-sample9/FD2.SAV）與重製端 r38 寫出的整檔 sha256 相同就是這條規則的來源。

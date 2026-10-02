@@ -9180,3 +9180,14 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 對拍承接15／19次正常Enter及專屬原版caller，控制序列缺步、未知鍵、錯EXE拒收。
 五點完整RGB、兩背景分支、完整Go與舊免選人第十五章四項回歸通過，有限規格CONFORMED。
 不宣稱selector轉場逐幀時序；整章第十六章仍須既有四項與最少12張門檻，由#83續驗。
+
+## 2026-10-02 #87 持續槽呈現出處（READY）
+
+[58入口](58-fd2-exe-re-coverage.md) → [原始writer／同槽差異及READY規格](../data/ida/fd2_ch16_unselected_persistence_20261002.json)。酒店存檔以raw baseline保留未物化的+0／+1／+3／+4／+7，只有既有HasNativeMapPresentation／HasBattleFig才覆寫對應欄位；pending JOIN、selector槽、inventory、stats與metadata沿原契約。不得以OnField推定呈現來源，也不跳過未出戰角色的商店與恢復。驗收需相同原版完整收據重播、全檔SAV與全部四項通過。
+
+## 2026-10-02 第十六章完整規格驗收（#83／#87）
+
+持續槽呈現出處限制已依READY實作，未物化欄位保留、物品／能力值仍寫回，有限CONFORMED。
+[正式完整收據](../data/ui-traces/parity-ch16.json)、完整Go與舊第十五章回歸均通過。
+正常三回合抽樣、round4清敵、戰後JOIN18、交易與SAV及秘密商店符合既有四項契約。
+依111／114例外列PLAYER-E2；原版11506與格式未改，分層現況及限制見[58](58-fd2-exe-re-coverage.md)。

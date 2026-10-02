@@ -317,18 +317,40 @@
       "layer": "player",
       "category": "工作",
       "title": "第十六章缺完整原版與重製四項對拍收據",
-      "body": "第十五章已於de4d655a完整驗收，#76／#78已關閉。依111／114接續第十六章，先核對正常LOAD、起手名冊／視圖及可編輯事件，再抽樣戰鬥與戰後城鎮／交易／酒店SAV。未知行為先登記RE或缺陷工單，再經RE→READY→實作→同槽驗證，不猜補正式路徑。",
+      "body": "第十五章已於de4d655a完整驗收，#76／#78已關閉。依111／114接續第十六章，先核對正常LOAD、起手名冊／視圖及可編輯事件，再抽樣戰鬥與戰後城鎮／交易／酒店SAV。未知行為先登記RE或缺陷工單，再經RE→READY→實作→同槽驗證，不猜補正式路徑。\n\n2026-10-02：修正後完整r2四項通過，161筆AI零分岔、76張完整RGB最大200px與酒店SAV全檔相同；完整Go19套件與舊第十五章156張／SAV回歸通過。有限規格CONFORMED；依111／114例外列PLAYER-E2，自然難度與硬體時序限制維持。",
       "acceptance": "以已核對ch02-cleared基底建構相同第十六章槽，levels6、seed4、state7:17=1與AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後、城鎮、交易與酒店存檔。原版與完整Go串行，四項全過、至少12張320×200全RGB≤640px，保存manifest／plan／正式收據並同步56／57／58、台帳與首頁。",
       "evidence": [
         "docs/data/parity-campaign-progress.json",
         "docs/goal/111-goal-original-parity-campaign-20260915.md",
-        "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md"
+        "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md",
+        "docs/data/ui-traces/parity-ch16.json",
+        "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json"
       ],
       "verify": {
         "kind": "manual",
         "note": "完整章原版與同槽重製四項收據。"
       },
       "issue": 83
+    },
+    {
+      "id": "ch16-whole-save-parity",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十六章酒店存檔與原版全檔不同",
+      "body": "#83相同固定建構槽與完整計畫下，原版sample-original-r1正常退出，重製sample-remake-r1回放PASS。83筆行為／節點／76張完整RGB通過，161筆AI全部消費且零分岔，金幣相符；酒店SAV SHA-256不同。先定位差異欄位，再依既有原始writer／consumer補充分級證據及READY規格。不得借用原版SAV注入重製或放寬全檔驗收。\n\n2026-10-02：修正後完整r2四項通過，161筆AI零分岔、76張完整RGB最大200px與酒店SAV全檔相同；完整Go19套件與舊第十五章156張／SAV回歸通過。有限規格CONFORMED；依111／114例外列PLAYER-E2，自然難度與硬體時序限制維持。",
+      "acceptance": "保留原始失敗收據，定位全檔差異與寫入／消費端，證據與可審查規格先入庫，再修正正式玩家接線；沿相同原版完整收據及固定槽重播，行為、節點、至少12張320×200完整RGB≤640px與酒店SAV全檔SHA-256全部通過。相關拒收／回歸與完整Go通過；同步56／57／58及現況工單。",
+      "evidence": [
+        "docs/data/ui-traces/parity-ch16-r1.json",
+        "docs/data/parity-plans/ch16-sample.jsonl",
+        "remake/assets/cutscenes/bindings/ch15_post.json",
+        "docs/data/ui-traces/parity-ch16.json",
+        "docs/data/ida/fd2_ch16_unselected_persistence_20261002.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "相同原版完整收據、固定槽與完整重播的酒店SAV全檔驗收。"
+      },
+      "issue": 87
     }
   ]
 }
