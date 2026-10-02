@@ -13,7 +13,7 @@ checkpoint-<seq>.json；`after_enemy_phase` 對到下一個動作那一格（原
 gate：
   behavior   單位（camp、x、y、存活）逐點相同、回合相同；HP 逐點相同，
              差異另分成「亂數已同步」與「同步之間漂移」兩類列出，兩類都算失敗
-  nodes      節點／介面序列相同
+   nodes      已抽樣原版動作／介面家族相同；跨時序點另列未比較
   transaction 每點金幣相同；酒店存檔兩側 SHA-256（重製側尚未寫原版槽格式時標 blocked）
   frames     每張有畫面的點：320×200 逐像素 RGB 差異 ≤ pixel-budget；有畫面的點數 ≥ min-frames
 """
@@ -29,6 +29,8 @@ import os
 import re
 import sys
 from pathlib import Path
+
+from dosgolem_oracle_drive import ui_mode as oracle_ui_mode
 
 try:
     from PIL import Image, ImageChops
@@ -224,6 +226,53 @@ def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     return following["seq"]
 
 
+def compare_node(actions: list[dict], remake_cp: dict, oracle_cp: dict | None,
+                 seq: int | None) -> dict:
+    """#117：從原版動作及輸入owner獨立取值；契約見fd2-chapter-node-comparison-contract.json。"""
+    kind = remake_cp.get("kind")
+    entry = {"seq": seq, "kind": kind, "remake_ui": remake_cp.get("ui")}
+    if seq is None:
+        return {**entry, "status": "not_comparable", "reason": "衍生重製點沒有原版配對"}
+    if oracle_cp is None:
+        return {**entry, "status": "missing_oracle_checkpoint"}
+    action = next((a for a in actions if a.get("seq") == seq), None)
+    original_ui = oracle_ui_mode(oracle_cp)
+    entry["oracle_ui"] = original_ui
+    if kind in ("after_enemy_phase", "shop_menu", "end_turn", "enemy_phase_start", "town_save"):
+        return {**entry, "status": "not_comparable", "reason": {
+            "after_enemy_phase": "借用下一動作；原版沒有同瞬間閒置畫面",
+            "shop_menu": "出售前介面借用出售後的原版checkpoint",
+            "end_turn": "END按鍵後有界前進；可能已進換手或戰後對白",
+            "enemy_phase_start": "重製換手橫幅與原版END按鍵後checkpoint不同時序",
+            "town_save": "SAVE動作在DOS寫入完成點；服務框／確認訊息時序不同",
+        }[kind]}
+    if action is None:
+        return {**entry, "status": "missing_oracle_action"}
+    original_kind = action.get("label") if action.get("kind") == "mark" else action.get("kind")
+    entry["oracle_kind"] = original_kind
+    # 驅動器do_engage用armed快照記attack；這是目標確認前的配對點。
+    comparable_kind = "attack_armed" if original_kind == "attack" else original_kind
+    entry["oracle_comparable_kind"] = comparable_kind
+    if oracle_mid_end_turn(oracle_cp, remake_cp):
+        return {**entry, "status": "not_comparable", "reason": "原版已在換手處理，並非同一輸入邊界"}
+    if original_ui == "unknown":
+        return {**entry, "status": "unknown_oracle_ui"}
+    # 原版2D7D1為共用服務對話owner；此處不宣稱具體建築一致。
+    family = lambda ui: "service" if ui in ("shop", "hotel", "church") else ui
+    entry["oracle_family"] = family(original_ui)
+    entry["remake_family"] = family(remake_cp.get("ui"))
+    entry["status"] = "ok" if (comparable_kind == kind and
+                               entry["oracle_family"] == entry["remake_family"]) else "node_differ"
+    return entry
+
+
+def node_gate_ok(points: list[dict], completion: dict, checkpoints: list[dict]) -> bool:
+    return (completion["ok"] and any(p["status"] == "ok" for p in points) and
+            all(p["status"] in ("ok", "not_comparable") for p in points) and
+            not replay_divergences(checkpoints) and
+            not any(cp.get("kind") == "runtime_error" for cp in checkpoints))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--chapter", type=int, required=True)
@@ -249,24 +298,24 @@ def main() -> int:
     behavior: list[dict] = []
     node_seq_oracle: list[str] = []
     node_seq_remake: list[str] = []
+    node_points: list[dict] = []
     transactions: list[dict] = []
     frames: list[dict] = []
     rng_synced_points = 0
 
     for cp in remake_cps:
         seq = pair_oracle_seq(actions, cp)
-        node_seq_remake.append(f"{cp.get('kind')}:{cp.get('ui')}")
+        ocp = oracle_checkpoint(args.oracle, seq) if seq is not None else None
+        node = compare_node(actions, cp, ocp, seq)
+        node_points.append(node)
+        if node["status"] != "not_comparable":
+            node_seq_oracle.append(f"{node.get('oracle_comparable_kind')}:{node.get('oracle_family')}")
+            node_seq_remake.append(f"{cp.get('kind')}:{node.get('remake_family')}")
         if seq is None:
-            node_seq_oracle.append(f"{cp.get('kind')}:{cp.get('ui')}")
             continue
-        ocp = oracle_checkpoint(args.oracle, seq)
         if ocp is None:
             behavior.append({"seq": seq, "kind": cp["kind"], "status": "missing_oracle_checkpoint"})
-            node_seq_oracle.append("?")
             continue
-        ui = None
-        # 原版側的介面模式沒有寫進 checkpoint；用動作種類代表，序列比較看種類。
-        node_seq_oracle.append(f"{cp.get('kind')}:{cp.get('ui')}")
         view = ocp.get("view", {}) or {}
         entry = {"seq": seq, "kind": cp["kind"], "status": "ok"}
         if cp.get("rng_synced"):
@@ -320,7 +369,7 @@ def main() -> int:
         behavior.append({"seq": None, "kind": "runtime_error", "status": "remake_runtime_error", "note": note})
     behavior.extend(replay_divergences(remake_cps))
     behavior_ok = all(e["status"] in ("ok", "oracle_mid_end_turn") for e in behavior)
-    nodes_ok = completion["ok"] and node_seq_oracle == node_seq_remake and "?" not in node_seq_oracle
+    nodes_ok = node_gate_ok(node_points, completion, remake_cps)
     save_actions = [a for a in actions if a.get("kind") == "town_save"]
     remake_save = [cp for cp in remake_cps if cp.get("kind") == "town_save"]
     save_entry = save_gate_entry(save_actions, remake_save, args.save_blocked_issue)
@@ -366,7 +415,10 @@ def main() -> int:
         "gates": {
             "behavior": {"ok": behavior_ok, "points": behavior},
             "nodes": {"ok": nodes_ok, "oracle": node_seq_oracle, "remake": node_seq_remake,
-                      "plan_completion": completion},
+                       "plan_completion": completion, "comparison_version": 2,
+                       "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
+                       "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+                       "points": node_points},
             "transaction": {"ok": transaction_ok, "gold": transactions, "save": save_entry},
             "frames": {"ok": frames_ok, "pixel_budget": args.pixel_budget, "min_frames": args.min_frames,
                        "compared": len(compared_frames), "points": frames},
@@ -374,6 +426,7 @@ def main() -> int:
         "limitations": [
             "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
             "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
+            "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
         ],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -383,6 +436,9 @@ def main() -> int:
     for e in behavior:
         if e["status"] != "ok":
             print("  behavior:", json.dumps(e, ensure_ascii=False)[:300])
+    for node in node_points:
+        if node["status"] not in ("ok", "not_comparable"):
+            print("  node:", json.dumps(node, ensure_ascii=False))
     for f in compared_frames:
         if not f["ok"]:
             print(f"  frame seq={f['seq']} {f['kind']}: {f['diff_pixels']} px box={f['box']}")

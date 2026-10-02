@@ -352,49 +352,68 @@
       "issue": 112
     },
     {
-      "id": "ch20-native-startup-view-hud",
+      "id": "ch20-battle-frame-lifecycle",
       "layer": "runtime",
       "category": "缺陷",
-      "title": "第二十章原生起手視圖與 HUD 尚未接入",
-      "body": "#112原版正常起手已形成83筆單位與camera20,30／cursor30,35；正式重播起手拒收HUD input unavailable。已閉合共用33674→33470 LOADCH／text0／focus不重做，先核對本章原版起手及來源，再補READY與正式戰役資料。",
+      "title": "第二十章攻擊後與再選人畫面超過像素預算",
+      "body": "完整r2原版与重製行為、節點、交易及全檔SAV一致，64筆AI順序零分岔；畫面seq593 attack_result 2621px（220,4..291,75），seq612 select 15422px（8,4..315,195）超過640px。先查相同狀態原圖、原生繪圖writer／consumer，既有#41等契約足夠就沿用，不猜HUD或overlay。",
       "acceptance": [
-        "固定原版輸入與同槽正常起手狀態可回查，保留83筆名冊、視圖、HUD與caller證據。",
-        "READY後只補正式第二十章資料，不由重播注入或放寬原生來源檢查。",
-        "相同槽正常起手逐欄狀態與完整RGB通過；相關Go與第十九章回歸通過。"
+        "以原版畫面、原始欄位與既有IDA主證據定位兩點差異；RE→READY後修正正式consumer或有來源的重播取樣。",
+        "同一原版r2與未修改SAV重播，兩點完整RGB≤640且其他三gate、SAV、Go及第十九章回歸保持通過。"
       ],
       "evidence": [
-        "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json",
-        "work/parity-slot-ch20/startup-remake-r1.log",
-        "docs/data/ida/fd2_ch19_startup_20261003.json"
+        "work/parity-slot-ch20/full-r2-verify-r1.json",
+        "docs/data/parity-plans/ch20-sample-r2.jsonl",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
       ],
       "verify": {
         "kind": "manual",
-        "note": "核對第二十章原生起手主證據、有限CONFORMED收據與相關回歸。"
+        "note": "seq593與612同狀態完整RGB及三gate/SAV回歸，不能遮罩或放寬640px。"
       },
-      "issue": 113
+      "issue": 115
     },
     {
-      "id": "ch20-startup-record35-position-source",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "第二十章正常起手 record35 的位置差異來源",
-      "body": "#112／#113起手逐欄核對發現唯一位置差異：原版checkpoint103 record35為(18,31)，地圖group0第19筆與正式重製為(18,30)。同一原版trace沒有13A9F AI入口，不能猜成AI移動。先找位置writer與特定loader／caller consumer，再定READY規格。",
+      "id": "ch21-secret-shop-frame-entry",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第二十一章神秘商店選鍵後原版與重製畫面不符",
+      "body": "第二十章戰後town21，依正式selection4／scan0x67計畫Ctrl+F10後enter，原版与重製ui均為shop，但seq1094完整RGB差62123px。需核對原版實際shop owner、鍵码與selector、重播取樣及正式城鎮資料，不能只靠shop分類宣稱神秘商店成功。",
       "acceptance": [
-        "保存固定FD2.EXE及FDFIELD來源、原始位址／bytes／writer／consumer，定位record35起手y的來源。",
-        "需修正資料或runtime時先完成READY，不直接以oracle座標注入正式路徑。",
-        "相同原版正常起手逐欄及完整RGB通過，相關回歸完成。"
+        "定位原版鍵碼、selector與實際商店consumer及畫面狀態；既有主證據足夠就沿用，RE→READY後修正。",
+        "同一原版r2/SAV與鍵盤輸入的seq1094完整RGB≤640，交易與全檔SAV及回歸通過。"
       ],
       "evidence": [
-        "work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json",
-        "work/parity-slot-ch20/startup-original-r1/eip-trace.jsonl",
-        "work/parity-slot-ch20/startup-remake-r1.log",
-        "remake/assets/maps/map19/map19_units.json"
+        "work/parity-slot-ch20/full-r2-verify-r1.json",
+        "docs/data/parity-plans/ch20-sample-r2.jsonl",
+        "remake/assets/scenarios/campaign_full.json"
       ],
       "verify": {
         "kind": "manual",
-        "note": "核對record35原生位置writer與正常起手同狀態驗收。"
+        "note": "核對實際商店owner與完整畫面，不以ui=shop推論神秘商店。"
       },
-      "issue": 114
+      "issue": 116
+    },
+    {
+      "id": "parity-nodes-oracle-ui-source",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "章比較器的節點序列直接複製重製UI造成假通過",
+      "body": "verify_chapter_parity.py 258..269將重製kind/ui同時写入oracle和remake節點序列，實際未核對原版UI。第二十章r2 seq1094原版action ui=shop、重製ui=town且note=gate 未開，nodes仍true；behavior只收divergence前綴，也未拒收。影像gate拒收使本章沒有整體假passed，但原版節點序列標示需要訂正。",
+      "acceptance": [
+        "節點比較從原版actions與原生input owner取得獨立來源；無來源的點明示未核對，不複製重製UI。",
+        "原版shop／重製town或gate未開必須拒收，有意義的正反例測試；同一章20、19原版收據回歸，舊收據限制與現況同步。"
+      ],
+      "evidence": [
+        "tools/verify_chapter_parity.py",
+        "work/parity-slot-ch20/full-r2-verify-r1.json",
+        "work/parity-slot-ch20/full-original-r2/actions.jsonl",
+        "work/parity-slot-ch20/full-r2-remake-r1/checkpoints.jsonl"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "獨立原版UI／input owner、假通過反例及20／19原版回歸。"
+      },
+      "issue": 117
     }
   ]
 }

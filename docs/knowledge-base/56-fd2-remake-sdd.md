@@ -9247,3 +9247,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [有限起手收據](../data/ui-traces/ch20-native-startup.json)驗證83筆前沿與五點完整RGB，全部0px。正式LOADCH初始group0按既有0x10C50逐列避讓；原始位置列保持18,30，第二筆record35在執行期為18,31。composition取binding明示Map，包含與roster分離的開場場景。共用writer／consumer契約見[主證據](../data/ida/fd2_ch20_initial_placement_20261003.json)。
 
 第十九章r8四項與全檔SAV回歸通過；原生開場、正常封包與初始重疊整合測試通過。完整Go19套件通過，兩份起手規格列有限CONFORMED。第二十章章內／戰後仍在驗證，本段僅RUNTIME-E1；唯一整章統計仍依58與正式台帳。
+
+### 2026-10-03 章比較器節點判準勘誤（#117）
+
+舊比較器將重製 `kind/ui` 同時寫進原版序列，`nodes=true` 沒有獨立原版介面證據。已依[CONFORMED契約](../data/fd2-chapter-node-comparison-contract.json)改讀原版動作與 `input_chain`，未知來源拒收；跨時序點列 `not_comparable`，不計為介面一致。酒店、教會、商店只比較共用服務家族，不宣稱具體建築一致。
+
+[工具回歸](../data/ui-traces/parity-node-source-regression-20261003.json)以相同原始收據重驗，第十九章四項與全檔SAV通過。第二十章r2的seq593原版仍為target、seq1094原版為shop而重製為town，節點拒收；31張RGB中三張超標。歷史原始報告不改寫，過去節點通過敘述依本段限制閱讀；第二十章未新增PLAYER-E2。

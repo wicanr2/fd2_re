@@ -2096,3 +2096,9 @@ Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金�
 第十九章r8四項與全檔SAV回歸通過；原生開場、正常封包與初始重疊整合測試通過。完整Go19套件通過，兩份起手規格列有限CONFORMED。第二十章章內／戰後仍在驗證，本段僅RUNTIME-E1；唯一整章統計仍依58與正式台帳。
 
 - [第二十章短路徑計畫](../data/parity-plans/ch20-sample-r2.jsonl)：沿用r1首回合與固定SAV，一次敵方階段後清敵；r1保留失敗来源，#112。
+
+### 2026-10-03 第二十章完整診斷與節點判準勘誤（#115／#116／#117）
+
+[整理過的工具回歸與診斷](../data/ui-traces/parity-node-source-regression-20261003.json)保存第二十章r2原版、重製r1及新比較器r3的hash。原版有1095檢查點，正常一個敵方階段後seq800一次清敵，戰後進town21；64筆AI零順序分岔，酒店22987 bytes SAV SHA49f00f95…完全相同。31張完整RGB的seq593／612／1094分別差2621／15422／62123px，整章拒收。#115追查攻擊目標等待與後續鏡頭；#116追查神秘商店抽測，r2一個left進selection1的一般店，不證明selection4／Ctrl+F10入口。
+
+舊 `verify_chapter_parity.py` 將重製UI複製成原版序列，過去 `nodes=true` 只表示舊工具未檢出差異，不是獨立原版介面證據。本次[CONFORMED契約](../data/fd2-chapter-node-comparison-contract.json)獨立使用原版動作及 `input_chain`，未知來源拒收，跨時序點明列未比較。第二十章seq593的target／cursor及seq1094的shop／town確實拒收；第十九章同原始收據以新版四項通過。歷史收據保留，其他已完成章未在本批重新驗證；不得外推新節點證據。章台帳仍16／30，#112／#115／#116未完成。

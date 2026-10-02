@@ -1,0 +1,222 @@
+{
+  "kind": "fd2_parity_node_source_regression",
+  "date": "2026-10-03",
+  "issue": 117,
+  "scope": "tooling CONFORMED，沒有新增整章PLAYER-E2",
+  "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+  "tests": [
+    {
+      "pattern": "test_verify_chapter_parity.py",
+      "exit_code": 0,
+      "summary": [
+        "----------------------------------------------------------------------",
+        "Ran 17 tests in 0.054s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "pattern": "test_dosgolem_oracle_drive.py",
+      "exit_code": 0,
+      "summary": [
+        "----------------------------------------------------------------------",
+        "Ran 82 tests in 0.193s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "pattern": "test_verify_oracle_prefix.py",
+      "exit_code": 0,
+      "summary": [
+        "----------------------------------------------------------------------",
+        "Ran 9 tests in 0.036s",
+        "",
+        "OK"
+      ]
+    }
+  ],
+  "test_log": "work/parity-slot-ch20/node-verifier-tests-r1.log",
+  "test_log_sha256": "262b7e4875a1f2c3c5b2b057e67db52afe7c7f7f029084b96bb15e2844b1a4b2",
+  "sources": {
+    "tools/verify_chapter_parity.py": "c150b8479b611876d6bb374254e7cb417c856ddb0aa777182aee62bafa34f6fd",
+    "tools/test_verify_chapter_parity.py": "548b5aeb86fd48a2383d7fffdc01652e39129ccf2543d210b941f6e1ab156795",
+    "tools/dosgolem_oracle_drive.py": "40901c4d85359ed3ebb8a461e0d36e21d5362079ade0f3089a38d93649b17fda"
+  },
+  "chapter_checks": [
+    {
+      "chapter": 19,
+      "report": "work/parity-slot-ch19/full-r4-verify-r10.json",
+      "report_sha256": "e9280fe4eeb3c51037f742bf026bb1714a658470b32c84c4a8d1343d000571f7",
+      "status": "passed",
+      "gates": {
+        "behavior": true,
+        "nodes": true,
+        "transaction": true,
+        "frames": true
+      },
+      "node_comparison_version": 2,
+      "node_status_counts": {
+        "not_comparable": 10,
+        "ok": 55
+      },
+      "node_failures": [],
+      "frames_compared": 54,
+      "frame_failures": [],
+      "save": {
+        "oracle_save_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+        "remake_save_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+        "remake_note": "save_sha256=f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+        "blocked_by": null,
+        "status": "ok"
+      },
+      "original": {
+        "runner": "dosgolem apps/fd2/cmd/oracle",
+        "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+        "control_plan": "docs/data/parity-plans/ch19-sample-r4.jsonl",
+        "control_plan_sha256": "96a573b93a0af49dc78e375e75939b53afdeda05f99c852257efe57d8b242fe9",
+        "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "state_injections_declared": [
+          "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+          "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+        ],
+        "actions": 62,
+        "checkpoints": 1380,
+        "random_control": {
+          "initial_checkpoint_rng_word": 22661,
+          "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+        }
+      }
+    },
+    {
+      "chapter": 20,
+      "report": "work/parity-slot-ch20/full-r2-verify-r3.json",
+      "report_sha256": "bb065391cd05f78dd85e4937bd5ddb2d9de66a7e7f2c0dad17faf4ed7a7961a4",
+      "status": "failed",
+      "gates": {
+        "behavior": true,
+        "nodes": false,
+        "transaction": true,
+        "frames": false
+      },
+      "node_comparison_version": 2,
+      "node_status_counts": {
+        "node_differ": 2,
+        "not_comparable": 6,
+        "ok": 30
+      },
+      "node_failures": [
+        {
+          "seq": 593,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "target",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "target",
+          "remake_family": "cursor",
+          "status": "node_differ"
+        },
+        {
+          "seq": 1094,
+          "kind": "secret_shop",
+          "remake_ui": "town",
+          "oracle_ui": "shop",
+          "oracle_kind": "secret_shop",
+          "oracle_comparable_kind": "secret_shop",
+          "oracle_family": "service",
+          "remake_family": "town",
+          "status": "node_differ"
+        }
+      ],
+      "frames_compared": 31,
+      "frame_failures": [
+        {
+          "seq": 593,
+          "kind": "attack_result",
+          "oracle": "checkpoint-0593.png",
+          "remake": "remake-0021-p3.png",
+          "phases": 8,
+          "diff_pixels": 2621,
+          "box": [
+            220,
+            4,
+            291,
+            75
+          ],
+          "ok": false,
+          "oracle_sha256": "b80011f14f99f5dd9dd810f4e818ef42d94064d0c140e4b92228e318c8276e85",
+          "remake_sha256": "ead0f060356544a632520152ad6378d500596f5ee5761ba08e68664fce3a5d13",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 612,
+          "kind": "select",
+          "oracle": "checkpoint-0612.png",
+          "remake": "remake-0022-p32.png",
+          "phases": 88,
+          "diff_pixels": 15422,
+          "box": [
+            8,
+            4,
+            315,
+            195
+          ],
+          "ok": false,
+          "oracle_sha256": "d1843d7f44e8e16fb7475b1104c5348a0f919aa71381c629815b92e3fb39a925",
+          "remake_sha256": "05ed183a3006c2df2287ed98b9e9f4649be71df04d4d6a438378ea542fb64561",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        },
+        {
+          "seq": 1094,
+          "kind": "secret_shop",
+          "oracle": "checkpoint-1094.png",
+          "remake": "remake-0036-p1.png",
+          "phases": 4,
+          "diff_pixels": 62123,
+          "box": [
+            0,
+            0,
+            319,
+            199
+          ],
+          "ok": false,
+          "oracle_sha256": "ba41a1790ff6c608fc29303480422307085f4e1d7cd3caa9dcb52431e1dabd1b",
+          "remake_sha256": "24b81df12b53ee9f9cf0f813d8ddab719cf311dd28023df978ed57ace9fe6621"
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": "49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+        "remake_save_sha256": "49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+        "remake_note": "save_sha256=49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+        "blocked_by": null,
+        "status": "ok"
+      },
+      "original": {
+        "runner": "dosgolem apps/fd2/cmd/oracle",
+        "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+        "control_plan": "docs/data/parity-plans/ch20-sample-r2.jsonl",
+        "control_plan_sha256": "0bdec94e2aececdb427b13d6552e415be49f0dccddb400c9cb8f0423dbc0486a",
+        "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "state_injections_declared": [
+          "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+          "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+        ],
+        "actions": 35,
+        "checkpoints": 1095,
+        "random_control": {
+          "initial_checkpoint_rng_word": 22661,
+          "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+        }
+      }
+    }
+  ],
+  "limits": [
+    "舊缺少comparison_version的nodes=true不能證明獨立原版介面比較；其餘原始收據與歷史保留。",
+    "第二十章原版r2及重製r1仍失敗，#112／115／116繼續；31張RGB有三張超640px。",
+    "一般shop家族不證明秘密商店gate；r2一個left只到selection1，正式gate需selection4。",
+    "第十九章未重跑原版或重製，只用新工具重驗相同已完成原始收據。"
+  ]
+}

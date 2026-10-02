@@ -9,6 +9,74 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_nodes_use_original_input_owner_and_reject_real_ch20_mismatches(self):
+        for seq, kind, chain, remake_ui in [
+            (1094, "secret_shop", ["0x2D7D1", "0x2CF39"], "town"),
+            (593, "attack_result", ["0x117AE", "0x18F7B"], "cursor"),
+        ]:
+            with self.subTest(seq=seq):
+                cp = {"kind": kind, "ui": remake_ui, "oracle_seq": seq}
+                point = vp.compare_node([{"kind": kind, "seq": seq}], cp,
+                                        {"input_chain": chain}, seq)
+                self.assertEqual(point["status"], "node_differ")
+                self.assertNotEqual(point["oracle_family"], point["remake_family"])
+                self.assertFalse(vp.node_gate_ok([point], {"ok": True}, [cp]))
+
+    def test_matching_original_marks_and_service_family(self):
+        point = vp.compare_node([{"kind": "attack", "seq": 10}],
+                                {"kind": "attack_armed", "ui": "target"},
+                                {"input_chain": ["0x117AE", "0x18F7B"]}, 10)
+        self.assertEqual(point["status"], "ok")
+        self.assertEqual(point["oracle_kind"], "attack")
+        self.assertEqual(point["oracle_comparable_kind"], "attack_armed")
+        for kind, ui, chain in [
+            ("battle_start", "cursor", ["0x117F8"]),
+            ("town_after_battle", "town", ["0x2CE08"]),
+            ("party_selection", "preparation", ["0x31A2E"]),
+        ]:
+            point = vp.compare_node([{"kind": "mark", "label": kind, "seq": 10}],
+                                    {"kind": kind, "ui": ui}, {"input_chain": chain}, 10)
+            self.assertEqual(point["status"], "ok")
+        for ui in ("shop", "church", "hotel"):
+            point = vp.compare_node([{"kind": "town_enter", "seq": 10}],
+                                    {"kind": "town_enter", "ui": ui},
+                                    {"input_chain": ["0x2D7D1"]}, 10)
+            self.assertEqual(point["status"], "ok")
+            self.assertEqual(point["oracle_ui"], "shop")
+            self.assertEqual(point["oracle_family"], "service")
+            self.assertTrue(vp.node_gate_ok([point], {"ok": True}, []))
+
+    def test_unknown_ui_missing_action_and_wrong_mark_fail_closed(self):
+        cp = {"kind": "battle_start", "ui": "cursor"}
+        acts = [{"kind": "mark", "label": "battle_start", "seq": 10}]
+        known = {"input_chain": ["0x117F8"]}
+        for actions, original, status in [
+            (acts, {"input_chain": []}, "unknown_oracle_ui"),
+            ([], known, "missing_oracle_action"),
+            ([{"kind": "mark", "label": "wrong", "seq": 10}], known, "node_differ"),
+            (acts, None, "missing_oracle_checkpoint"),
+        ]:
+            point = vp.compare_node(actions, cp, original, 10)
+            self.assertEqual(point["status"], status)
+            self.assertFalse(vp.node_gate_ok([point], {"ok": True}, []))
+
+    def test_cross_time_points_are_explicit_and_cannot_pass_alone(self):
+        points = []
+        for kind in ("shop_menu", "end_turn", "after_enemy_phase", "enemy_phase_start", "town_save"):
+            point = vp.compare_node([], {"kind": kind, "ui": "shop"},
+                                    {"input_chain": ["0x2CE08"]}, 10)
+            self.assertEqual(point["status"], "not_comparable")
+            self.assertIn("reason", point)
+            self.assertNotIn("oracle_family", point)
+            points.append(point)
+        points.append(vp.compare_node([], {"kind": "end", "ui": "shop"}, None, None))
+        self.assertFalse(vp.node_gate_ok(points, {"ok": True}, []))
+        point = vp.compare_node([{"kind": "wait", "seq": 10}], {"kind": "wait", "ui": "cursor"},
+                                {"input_chain": ["0x117F8"]}, 10)
+        self.assertFalse(vp.node_gate_ok([point], {"ok": False}, []))
+        self.assertFalse(vp.node_gate_ok([point], {"ok": True}, [{"note": "divergence: rejected"}]))
+        self.assertFalse(vp.node_gate_ok([point], {"ok": True}, [{"kind": "runtime_error"}]))
+
     def test_before_next_index_writer_keeps_partial_window_metadata(self):
         writer = {"eip": "0x4E014", "phase": 0, "completed_entries": 7,
                   "registers": [0xe723, 9, 0x3c8, 0, 0, 0, 0x60018, 0]}

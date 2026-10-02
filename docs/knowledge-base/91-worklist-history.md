@@ -4985,3 +4985,13 @@ r4拒收map32，原因是composition曾從場景roster同目錄讀取；改取bi
 第二十章原版r1在第二敵方階段record52（raw identity25）HP146→0，1076已bit0=1，之後進1FE60→25ECD並退出；driver因未返回游標退出15。不是第18章STOSB同類停止。按111最小抽樣及AGENTS有界短路徑，r2完整保留r1首回合、固定同一SAV與初始亂數，正常第一敵方階段後在T2清敵；沒有HP注入、沒有重擲或重刷求勝。原版圖與log留本機，尚待r2驗證。
 
 第二十章起手最終完整Go r3共19套件PASS，包含新初始配置整合與97筆字串review；第十九章r8四項、54張RGB與全檔SAV回歸PASS。兩份起手主規格限RUNTIME-E1列CONFORMED，完整章#112仍待r2戰後，不增加章台帳。
+
+起手垂直切片提交f9b909a31d72753b3120f55e2bf540934551d184已推送，遠端HEAD相同；#113／#114依83筆、五張0px、完整Go19套件及第19章四項/SAV回歸結案。#112繼續，21筆開啟工單以主機gh更新。Docker本輪寫入根沒有root檔或Markdown目錄；既有docs/data/ida/fd2_xrefs.json仍root-owned，blob9fa9e50b前後未變，沒有修復或覆寫。
+
+### 2026-10-03 章比較器假通過勘誤（#117）
+
+第二十章完整原版r2及重製r1跑完，原工具判behavior／nodes／transaction通過，frames失敗。追查發現原版節點序列直接抄重製UI；這個nodes通過說法失效。先登記#117、建立READY契約，再改用既有原版ui_mode與獨立動作。第二十章r3比較正確拒收seq593與1094；第十九章新版r10四項／54張RGB／全檔SAV通過。新版首次前章重驗拒收attack與attack_armed名稱，確認原版log使用armed快照後，將唯一名稱對照寫回契約並重跑通過。
+
+第二十章seq593原版仍在攻擊目標owner，且目標是我方自身，沒有傷害或acted變更；原版直到594才esc回環、600完成待機。此點不能稱已完成攻擊。seq1094抽測計畫只有一個left，實際選擇1，沒有到神秘商店所需的4；不把重製拒絕gate當成gate規則錯誤。#115／#116保留追查，未猜補規則。三個完整RGB失敗及原報告皆保留；後續改計畫另存版本，不覆寫r2。
+
+工作清單以主機gh更新24條；第一次Docker快照回呼漏參數，未寫入後立即修正。verify因外層40秒逾時另以180秒同image乾淨重跑，24條均未完成，沒有產品缺陷。新工具回歸及來源hash見[收據](../data/ui-traces/parity-node-source-regression-20261003.json)，規格限tooling列CONFORMED；沒有重跑或重宣稱其他舊章，台帳16／30。

@@ -1501,3 +1501,9 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 [有限起手收據](../data/ui-traces/ch20-native-startup.json)驗證83筆前沿與五點完整RGB，全部0px。正式LOADCH初始group0按既有0x10C50逐列避讓；原始位置列保持18,30，第二筆record35在執行期為18,31。composition取binding明示Map，包含與roster分離的開場場景。共用writer／consumer契約見[主證據](../data/ida/fd2_ch20_initial_placement_20261003.json)。
 
 第十九章r8四項與全檔SAV回歸通過；原生開場、正常封包與初始重疊整合測試通過。完整Go19套件通過，兩份起手規格列有限CONFORMED。第二十章章內／戰後仍在驗證，本段僅RUNTIME-E1；唯一整章統計仍依58與正式台帳。
+
+### 2026-10-03 節點假通過訂正（#117）
+
+舊章比較器的原版序列複製重製UI，舊 `nodes=true` 不能當作獨立介面證據。[新契約](../data/fd2-chapter-node-comparison-contract.json)使用原版動作與輸入鏈；未知來源拒收，跨時序點明列未比較。共用服務對話僅比較家族，不證明酒店／教會／一般或秘密商店身分。
+
+[回歸收據](../data/ui-traces/parity-node-source-regression-20261003.json)確認第十九章四項仍通過；第二十章r2的target／cursor及shop／town兩點被節點判準拒收，三個原有RGB差異保留，沒有遮罩或改640px預算。歷史原始收據及其餘證據保留，第二十章仍未通過整章。

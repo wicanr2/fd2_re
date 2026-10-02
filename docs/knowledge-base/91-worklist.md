@@ -28,22 +28,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
-
-## re — 原版證據還沒閉合
-
-### 第二十章正常起手 record35 的位置差異來源
-
-`ch20-startup-record35-position-source` · RE待解 · [#114](https://github.com/wicanr2/fd2_re/issues/114) · 仍未完成 · 要人判
-
-#112／#113起手逐欄核對發現唯一位置差異：原版checkpoint103 record35為(18,31)，地圖group0第19筆與正式重製為(18,30)。同一原版trace沒有13A9F AI入口，不能猜成AI移動。先找位置writer與特定loader／caller consumer，再定READY規格。
-
-怎樣算做完：['保存固定FD2.EXE及FDFIELD來源、原始位址／bytes／writer／consumer，定位record35起手y的來源。', '需修正資料或runtime時先完成READY，不直接以oracle座標注入正式路徑。', '相同原版正常起手逐欄及完整RGB通過，相關回歸完成。']
-
-證據：`['work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json', 'work/parity-slot-ch20/startup-original-r1/eip-trace.jsonl', 'work/parity-slot-ch20/startup-remake-r1.log', 'remake/assets/maps/map19/map19_units.json']`
 
 ## data — 可編輯資料還沒就緒
 
@@ -123,15 +111,25 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第二十章原生起手視圖與 HUD 尚未接入
+### 第二十章攻擊後與再選人畫面超過像素預算
 
-`ch20-native-startup-view-hud` · 缺陷 · [#113](https://github.com/wicanr2/fd2_re/issues/113) · 仍未完成 · 要人判
+`ch20-battle-frame-lifecycle` · 缺陷 · [#115](https://github.com/wicanr2/fd2_re/issues/115) · 仍未完成 · 要人判
 
-#112原版正常起手已形成83筆單位與camera20,30／cursor30,35；正式重播起手拒收HUD input unavailable。已閉合共用33674→33470 LOADCH／text0／focus不重做，先核對本章原版起手及來源，再補READY與正式戰役資料。
+完整r2原版与重製行為、節點、交易及全檔SAV一致，64筆AI順序零分岔；畫面seq593 attack_result 2621px（220,4..291,75），seq612 select 15422px（8,4..315,195）超過640px。先查相同狀態原圖、原生繪圖writer／consumer，既有#41等契約足夠就沿用，不猜HUD或overlay。
 
-怎樣算做完：['固定原版輸入與同槽正常起手狀態可回查，保留83筆名冊、視圖、HUD與caller證據。', 'READY後只補正式第二十章資料，不由重播注入或放寬原生來源檢查。', '相同槽正常起手逐欄狀態與完整RGB通過；相關Go與第十九章回歸通過。']
+怎樣算做完：['以原版畫面、原始欄位與既有IDA主證據定位兩點差異；RE→READY後修正正式consumer或有來源的重播取樣。', '同一原版r2與未修改SAV重播，兩點完整RGB≤640且其他三gate、SAV、Go及第十九章回歸保持通過。']
 
-證據：`['work/parity-slot-ch20/startup-original-r1/checkpoint-0103.json', 'work/parity-slot-ch20/startup-remake-r1.log', 'docs/data/ida/fd2_ch19_startup_20261003.json']`
+證據：`['work/parity-slot-ch20/full-r2-verify-r1.json', 'docs/data/parity-plans/ch20-sample-r2.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 第二十一章神秘商店選鍵後原版與重製畫面不符
+
+`ch21-secret-shop-frame-entry` · 缺陷 · [#116](https://github.com/wicanr2/fd2_re/issues/116) · 仍未完成 · 要人判
+
+第二十章戰後town21，依正式selection4／scan0x67計畫Ctrl+F10後enter，原版与重製ui均為shop，但seq1094完整RGB差62123px。需核對原版實際shop owner、鍵码與selector、重播取樣及正式城鎮資料，不能只靠shop分類宣稱神秘商店成功。
+
+怎樣算做完：['定位原版鍵碼、selector與實際商店consumer及畫面狀態；既有主證據足夠就沿用，RE→READY後修正。', '同一原版r2/SAV與鍵盤輸入的seq1094完整RGB≤640，交易與全檔SAV及回歸通過。']
+
+證據：`['work/parity-slot-ch20/full-r2-verify-r1.json', 'docs/data/parity-plans/ch20-sample-r2.jsonl', 'remake/assets/scenarios/campaign_full.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -254,5 +252,15 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 章比較器的節點序列直接複製重製UI造成假通過
+
+`parity-nodes-oracle-ui-source` · 缺陷 · [#117](https://github.com/wicanr2/fd2_re/issues/117) · 仍未完成 · 要人判
+
+verify_chapter_parity.py 258..269將重製kind/ui同時写入oracle和remake節點序列，實際未核對原版UI。第二十章r2 seq1094原版action ui=shop、重製ui=town且note=gate 未開，nodes仍true；behavior只收divergence前綴，也未拒收。影像gate拒收使本章沒有整體假passed，但原版節點序列標示需要訂正。
+
+怎樣算做完：['節點比較從原版actions與原生input owner取得獨立來源；無來源的點明示未核對，不複製重製UI。', '原版shop／重製town或gate未開必須拒收，有意義的正反例測試；同一章20、19原版收據回歸，舊收據限制與現況同步。']
+
+證據：`['tools/verify_chapter_parity.py', 'work/parity-slot-ch20/full-r2-verify-r1.json', 'work/parity-slot-ch20/full-original-r2/actions.jsonl', 'work/parity-slot-ch20/full-r2-remake-r1/checkpoints.jsonl']`
 
 <!-- END fd2_worklist.py render -->

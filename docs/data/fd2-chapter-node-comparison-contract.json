@@ -1,0 +1,51 @@
+{
+  "kind": "fd2_chapter_node_comparison_contract",
+  "issue": 117,
+  "date": "2026-10-03",
+  "status": "CONFORMED",
+  "scope": "章比較器的獨立原版介面判準；不改正式遊戲規則、資料格式或原版執行器",
+  "evidence": [
+    {
+      "level": "confirmed",
+      "source": "tools/verify_chapter_parity.py，修正前258..269",
+      "claim": "原版及重製的節點序列均使用重製checkpoint的kind及ui，無獨立原版UI比較"
+    },
+    {
+      "level": "confirmed",
+      "source": "tools/dosgolem_oracle_drive.py UI_MODES／ui_mode；work/parity-slot-ch20/full-original-r2/checkpoint-1094.json",
+      "claim": "原版輸入鏈含0x2D7D1，既有原版分類器判為shop；重製secret_shop卻為town並註記gate未開"
+    },
+    {
+      "level": "confirmed",
+      "source": "work/parity-slot-ch20/full-original-r2/checkpoint-0593.json",
+      "claim": "原版攻擊後仍有0x117AE與0x18F7B輸入owner，分類為target；重製attack_result記為cursor"
+    }
+  ],
+  "input": "原版checkpoint的input_chain、獨立actions.jsonl與重製checkpoints.jsonl；原版EXE SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "rules": [
+    "直接呼叫受版控原版驅動器的ui_mode，不複製位址表，也不從重製ui推導原版ui。",
+    "可配對點的原版動作名稱由actions.kind或mark.label取得；重製名稱及UI分別比較。原版do_engage的attack動作使用armed的seq，對應重製attack_armed；只允許這個已查明的名稱對照，保留原始名稱。",
+    "既有原版shop分類共用酒店與教會對話owner；重製shop、hotel、church只比較service介面家族，不宣稱具體建築相同。",
+    "未知原版UI、缺少原版動作或checkpoint，均失敗即關閉。不得把unknown當作重製UI。",
+    "沒有oracle_seq的衍生重製節點、after_enemy_phase借用的後續動作、shop_menu借用的出售後checkpoint，以及END／酒店SAVE的跨時序點，明列not_comparable及原因，不複製成原版序列。",
+    "nodes通過需有至少一個可比較點、全部可比較點相同、計畫完整且無重播拒絕或runtime_error。其涵義限於已抽樣的介面家族與原版動作，不證明所有內部節點。",
+    "原始比較報告不覆寫；新報告加node比較版本、來源與未比較點。過去nodes=true僅表示舊工具未檢出差異，不能當作獨立介面證據。"
+  ],
+  "acceptance": [
+    "shop／town與target／cursor兩個真實失敗樣本均拒收，未知UI及缺少動作也拒收。",
+    "原版mark名稱與重製kind不一致時拒收；匹配的正常target、town、preparation及共用service家族可通過。",
+    "跨時序點明列未比較，不混入已證實序列；計畫截斷或重播拒絕不能通過。",
+    "第二十章r2既有失敗改為nodes=false，保留其他行為、交易與完整RGB判準。",
+    "第十九章r4既有收據重新比較，獨立nodes判準及原有三項判準全部通過。"
+  ],
+  "limits": [
+    "ui_mode是既有已用於原版鍵盤驅動的粗粒度分類；本規格不新增FD2二進位語意結論。",
+    "不將一般shop家族分類提升為神秘商店已開；該入口仍由Issue116與完整畫面驗證。",
+    "本規格不自動撤銷或重新宣稱舊章PLAYER-E2；歷史node工具的證據限制須同步記錄。"
+  ],
+  "verification": {
+    "report": "docs/data/ui-traces/parity-node-source-regression-20261003.json",
+    "report_sha256": "c87454e4b568b6eeded59b2d5e8c0f198fd6afee148557942de1ff30255e9e21",
+    "scope": "tooling CONFORMED，沒有新增整章PLAYER-E2"
+  }
+}
