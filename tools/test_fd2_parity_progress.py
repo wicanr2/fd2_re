@@ -31,10 +31,14 @@ class ParityProgressTest(unittest.TestCase):
     def test_passed_requires_receipt_file_with_passed_status(self):
         data = tool.load()
         data["chapters"][3].update({"status": "passed", "receipt": "docs/data/x.json", "verify": "true"})
+        policy = {"levels_per_chapter": 6, "seed": 4, "event_states": {},
+                  "boost": {"base_ap": 200, "base_dp": 0, "base_dx": 60}}
         self.assertTrue(any("receipt 不存在" in p for p in tool.problems(data)))
         (tool.ROOT / "docs" / "data" / "x.json").write_text(json.dumps({"status": "candidate"}), encoding="utf-8")
         self.assertTrue(any("收據 status" in p for p in tool.problems(data)))
         (tool.ROOT / "docs" / "data" / "x.json").write_text(json.dumps({"status": "passed"}), encoding="utf-8")
+        self.assertTrue(any("slot_policy 缺" in p for p in tool.problems(data)))
+        data["chapters"][3]["slot_policy"] = policy
         self.assertEqual(tool.problems(data), [])
 
     def test_all_chapters_passed_only_when_every_chapter_passed(self):

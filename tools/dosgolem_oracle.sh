@@ -38,6 +38,9 @@
 #   FD2_ORACLE_FRAME_MAX     張數上限（預設 4000）
 #   FD2_ORACLE_FRAME_EIP     改以遊戲自己的繪圖進入點為邊界，如 0x11CAC
 #   FD2_ORACLE_EIP_TRACE     逗號分隔的位址：每次進入就把暫存器與堆疊頂寫進 <out>/eip-trace.jsonl
+#   FD2_ORACLE_EIP_TRACE_FROM／FD2_ORACLE_EIP_TRACE_TO
+#                            唯讀追蹤的指令範圍，含首尾；終點 0 表示不設上界
+#   FD2_ORACLE_EIP_TRACE_MAX 最多記錄筆數（1至200000），預設 200000
 #                            （Watcom 暫存器呼叫慣例，前四個引數在 EAX/EDX/EBX/ECX）
 #   FD2_ORACLE_FRAME_FROM／FD2_ORACLE_FRAME_TO
 #                            只在這段指令區間取樣，用來把輸出限在要看的那一段
@@ -79,6 +82,14 @@ frame_from=${FD2_ORACLE_FRAME_FROM:-0}
 frame_to=${FD2_ORACLE_FRAME_TO:-0}
 eip_watch=${FD2_ORACLE_EIP_WATCH:-}
 eip_trace=${FD2_ORACLE_EIP_TRACE:-}
+eip_trace_from=${FD2_ORACLE_EIP_TRACE_FROM:-0}
+eip_trace_to=${FD2_ORACLE_EIP_TRACE_TO:-0}
+eip_trace_max=${FD2_ORACLE_EIP_TRACE_MAX:-200000}
+for trace_bound in "$eip_trace_from" "$eip_trace_to"; do
+  [[ "$trace_bound" =~ ^(0|[1-9][0-9]{0,11})$ ]] || { echo "EIP 追蹤指令範圍格式無效" >&2; exit 2; }
+done
+[[ "$eip_trace_max" =~ ^[1-9][0-9]{0,5}$ ]] && [ "$eip_trace_max" -le 200000 ] || { echo "EIP 追蹤筆數越界" >&2; exit 2; }
+[ "$eip_trace_to" -eq 0 ] || [ "$eip_trace_to" -ge "$eip_trace_from" ] || { echo "EIP 追蹤終點早於起點" >&2; exit 2; }
 
 test -d "$dos/apps/fd2/cmd/oracle" || { echo "找不到 dosgolem oracle：$dos" >&2; exit 2; }
 test -f "$orig/FD2.EXE" || { echo "找不到固定版本 FD2.EXE：$orig" >&2; exit 2; }
@@ -106,6 +117,7 @@ cat > "$out/runner.json" <<JSON
   "original_root": "$orig",
   "generated_at": "$(date -Iseconds)",
   "control_plan": "$plan",
+  "eip_trace_window": {"from_step": $eip_trace_from, "to_step": $eip_trace_to, "max_entries": $eip_trace_max},
   "lock_ally_hp": $lock_ally_hp_json,
   "force_enemy_clear_declared": $force_enemy_clear_json,
   "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
@@ -155,6 +167,9 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_FRAME_TO="$frame_to" \
   -e FD2_ORACLE_EIP_WATCH="$eip_watch" \
   -e FD2_ORACLE_EIP_TRACE="$eip_trace" \
+  -e FD2_ORACLE_EIP_TRACE_FROM="$eip_trace_from" \
+  -e FD2_ORACLE_EIP_TRACE_TO="$eip_trace_to" \
+  -e FD2_ORACLE_EIP_TRACE_MAX="$eip_trace_max" \
   -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
   -e FD2_ORACLE_STATE="${state_dir:+/state}" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
@@ -176,7 +191,10 @@ if [ -n "$FD2_ORACLE_FRAMES" ]; then
   fi
 fi
 if [ -n "$FD2_ORACLE_EIP_TRACE" ]; then
-  frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE")
+  frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE"
+             -eip-trace-from "$FD2_ORACLE_EIP_TRACE_FROM"
+             -eip-trace-to "$FD2_ORACLE_EIP_TRACE_TO"
+             -eip-trace-max "$FD2_ORACLE_EIP_TRACE_MAX")
 fi
 cheatargs=()
 if [ -n "$FD2_ORACLE_LOCK_ALLY_HP" ]; then

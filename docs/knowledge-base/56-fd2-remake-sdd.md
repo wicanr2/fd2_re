@@ -9221,3 +9221,11 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [指令2規格](../data/ida/fd2_command2_target_rng_20261002.json)將每個命中目標的六個HP marker亂數交錯接至傷害計畫；未命中跳過，玩家與AI共用，既有Draw交易邊界不變。兩份規格達有限CONFORMED／RUNTIME-E1。[六輪有限收據](../data/ui-traces/ch18-turns1-6.json)保留固定原版r2、213筆AI順序、所有已完成行為及153張RGB通過。整章節點、酒店SAV及正常T8仍拒收，不提升PLAYER-E2。現況及重開條件依[58](58-fd2-exe-re-coverage.md)。
 
 本批最終Go19套件與第十七章98張、四項及整檔酒店SAV回歸通過，命令與輸出雜湊保存在[六輪收據](../data/ui-traces/ch18-turns1-6.json)。
+
+### 2026-10-03 工具現況契約（#91）
+
+[有限工具收據](../data/ui-traces/tooling-closeout-20261003.json)完成舊fixture／快照漂移的63項檢查。台帳passed仍要求114的完整slot_policy；字串摘要由目前來源重生，既有人工判定不變。unknown足跡只是文字索引，不提升語意等級、不重開已閉合位址。唯一現況入口仍為[58](58-fd2-exe-re-coverage.md)，不增加遊戲完成度。
+
+### 2026-10-03 原版素材邊界驗證（#102）
+
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)記錄原版同輸入STOSB停止。唯讀追蹤工具的新舊1926點前綴一致；BG0原始尺寸正常，執行期header異常，根因未判定。不放寬記憶體、不推測正式規則；第十八章仍缺正常T8、戰後與SAV。

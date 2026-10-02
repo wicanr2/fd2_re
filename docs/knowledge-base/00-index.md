@@ -353,3 +353,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十八章六輪有限收據](../data/ui-traces/ch18-turns1-6.json)：#100／#101，同一原版r2的213筆AI順序與153張RGB；完整章仍拒收。
 
 - [第十八章有界後撤計畫r3](../data/parity-plans/ch18-guard-r3.jsonl)：#94，只將我方record0的正常移動目標改為8,10，原版待驗，不修改NPC或HP。
+
+- [工具收尾有限驗收](../data/ui-traces/tooling-closeout-20261003.json)：#91，四項過時 fixture／快照修正及既有 Capstone、Pillow 映像分流，63項通過；不改遊戲規則或證據等級。
+
+- [第十八章原版素材解碼停止與唯讀追蹤](../data/ida/fd2_ch18_oracle_stosb_20261003.json)：#102，固定原版r3的STOSB停止、IDA sub_4E63D與有限重製前綴；根因未知，完整章仍由#94驗收。

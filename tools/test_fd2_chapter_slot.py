@@ -93,6 +93,7 @@ class ChapterSlotToolTest(unittest.TestCase):
         args = type("A", (), {
             "base": str(path), "out_dir": str(self.dir / "out"), "base_slot": 0, "target": 2,
             "out_slot": -1, "gold": -1, "levels_per_chapter": 0, "level_overrides": "", "seed": 0,
+            "event_states": "", "boost_base_ap": 0, "boost_base_dp": 0, "boost_base_dx": 0,
         })()
         with self.assertRaises(SystemExit):
             tool.cmd_build(args)

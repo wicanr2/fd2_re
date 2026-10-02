@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -254,5 +254,13 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：四個既有測試逐項釐清契約與目前資料，修正過時fixture或重生受版控證據，保留原始失敗及雜湊；以合適既有Docker映像乾淨重跑相關工具測試。不得調整正式玩法、章通過門檻或把未證實語意升格。
 
 證據：`['tools/test_fd2_chapter_slot.py', 'tools/test_fd2_parity_progress.py', 'tools/test_editor_schemas.py', 'tools/test_fd2_unknown_footprints.py', 'docs/data/ida/fd2_ch17_oracle_d1_20261002.json']`
+
+### 第十八章第七回合 dosgolem 的 STOSB 寫入未處理
+
+`ch18-oracle-stosb-memory-boundary` · 缺陷 · [#102](https://github.com/wicanr2/fd2_re/issues/102) · 仍未完成 · 要人判
+
+怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
+
+證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 <!-- END fd2_worklist.py render -->

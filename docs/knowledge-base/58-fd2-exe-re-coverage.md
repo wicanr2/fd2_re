@@ -1999,14 +1999,15 @@ FIGANI51 frame0為184,35／109×165，target BattleFig17。
 
 [主證據及規格](../data/ida/fd2_ch18_event42_20261002.json)閉合3505F完整50bytes。T8 raw camp0先追加group1，再以text6跳已閉合34C0F對白尾段。現行spawn-only劇本漏掉對白，已登記#99；只沿既有型別與同步工具補完整動作。不重解共用helper，READY不代表正常T8已驗收，#94 r2仍在執行。
 
-### 2026-10-02 第十八章護援r2拒收與目前狀態
+### 第十八章收尾的唯一目前狀態表（2026-10-03）
 
 | 範圍 | 目前狀態 | 下一步 |
 |---|---|---|
 | 起手、山景、首輪模式9、T3 event43 | 有限RUNTIME-E1；[四輪收據](../data/ui-traces/ch18-turns1-4.json)已通過；#98已關閉 | 保留同槽回歸 |
 | T8 event42 | #99，READY已實作；增援先行、對白阻塞／once建構E1與完整Go通過 | 正常T8仍待驗 |
 | 第5／6回合抗性與指令2亂數 | #100／#101，有限CONFORMED；[六輪收據](../data/ui-traces/ch18-turns1-6.json)行為、213筆AI順序與153張RGB通過 | #100／#101已關閉；保留同槽回歸 |
-| 整章護援、戰後與SAV | #94／#97仍開啟，14／30保持 | 同槽有界正常後撤r3待驗，不反覆刷關 |
+| 整章護援、戰後與SAV | #94／#97仍開啟；[r3診斷](../data/ida/fd2_ch18_oracle_stosb_20261003.json)到round7，前綴行為、240筆AI與152張RGB通過 | 原版STOSB停止由#102處理；T8與戰後未驗，14／30保持 |
+| 工具fixture與快照 | #91的[有限收據](../data/ui-traces/tooling-closeout-20261003.json)已通過63項測試 | 提交核對後關閉工單，不改遊戲或RE分級 |
 
 r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時，exit15。沒有到T8、清敵、戰後或SAV。重製r2另有三筆AI順序分岔，第一筆seq1519；153張RGB中13張超門檻，全部四項拒收。這不推翻前四輪的有限修正，也不能用它宣稱整章完成。失敗收據留work/parity-slot-ch18／guard-r2-verify-r1.json，索引與雜湊附於四輪收據。
 
@@ -2025,3 +2026,17 @@ r2原版seq1973 record16 HP0，在round7敗退，driver最終等待cursor逾時�
 本批最終Go19套件與第十七章98張、四項及整檔酒店SAV回歸通過，命令與輸出雜湊保存在[六輪收據](../data/ui-traces/ch18-turns1-6.json)。
 
 #94 下一個[有界後撤r3計畫](../data/parity-plans/ch18-guard-r3.jsonl)只將八輪我方record0的正常鍵盤移動目標由24,7改為8,10，其餘r2輸入不變。NPC16原生mode9／mode3的raw目標仍由原版追蹤，不注入NPC位置、能力或HP，不改建構槽或seed。此為待驗策略，尚無新原版收據；完成定案只依正式oracle重跑。
+
+### 2026-10-03 工具收尾有限驗收（#91）
+
+[工具收據](../data/ui-traces/tooling-closeout-20261003.json)取代第十七章所記fixture／快照失敗的現況。章槽fixture補現行event_states與boost預設值；台帳fixture先驗證缺slot_policy仍拒收，再提供114政策。正式工具及玩法未改。
+
+從目前Go與可編輯資料重生的完整字串清冊SHA-256與既有人工review相同，只更新過時摘要與本機診斷清冊。人工處置不重分。unknown足跡依現行函式清冊機械重生，保留unknown及人工待審，不將文字命中提升為逆向證據。
+
+四項相關工具17個案例，以及按現有Capstone／Pillow映像分流的46個既有案例通過。原失敗、映像誤配與乾淨重跑日誌雜湊保留於收據。有限工具驗收不增加戰役完成章數；第十八章整章仍由#94驗收。
+
+### 2026-10-03 第十八章原版素材解碼停止（#102）
+
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)保存r3第9,341,834,326步的STOSB拒收與IDA sub_4E63D直接指令。最後seq1925仍round7，NPC16／17滿HP；重製端目前前綴行為、240筆AI順序與152張RGB通過，完整節點／交易failed。原版尚未到T8，不能把driver逾時或Go前綴通過寫成整章結果。
+
+先沿[既有原版入口](../../tools/dosgolem_oracle.sh)補唯讀EIP窗口。其READY規格在[dosgolem 012 §7](https://github.com/wicanr2/dosgolem/blob/1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74/docs/spec/012-fd2-parity-capture.md)，支援含首尾指令起訖、最多200000筆，預設行為不變。oracle、CPU、machine測試及五項包裝非法參數拒收通過；1694cde已推送。相同槽、相同r3計畫的r5於同一步、同指令拒收；1926個原版前綴檢查點全部一致，323筆唯讀追蹤確認BG0指標149EF4的header已異常。原始BG0..2均320×100，reader卻讀出32110×39178。既有29C90合成規則不重解，只補28DC4 writer至29CC2 consumer的執行期缺口；r6追查載入與後續生命週期，根因仍未知。

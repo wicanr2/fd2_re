@@ -392,6 +392,23 @@
         "note": "完整事件轉寫、增援與對白阻塞時序，以及同槽正常T8及#94後續全章收據。"
       },
       "issue": 99
+    },
+    {
+      "id": "ch18-oracle-stosb-memory-boundary",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "第十八章第七回合 dosgolem 的 STOSB 寫入未處理",
+      "acceptance": "釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。",
+      "evidence": [
+        "tools/dosgolem_oracle.sh",
+        "docs/data/parity-plans/ch18-guard-r3.jsonl",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "固定原版與計畫的記憶體邊界證據、工具回歸及正式原版前綴重生。"
+      },
+      "issue": 102
     }
   ]
 }

@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_tool_regression_receipt",
+  "generated_at": "2026-10-03",
+  "timezone": "Asia/Taipei",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/91",
+  "status": "passed",
+  "scope": "四項既有工具失敗與錯誤映像缺件的有限驗收，不提升遊戲或章節證據等級",
+  "source_commit_before": "be990be2ec5050bff1817b03518e4b3957ed9cbf",
+  "causes": [
+    {
+      "tool": "fd2_chapter_slot",
+      "cause": "測試args缺event_states與三項boost預設欄位；正式CLI已有欄位",
+      "change": "fixture加入既有預設值"
+    },
+    {
+      "tool": "fd2_parity_progress",
+      "cause": "passed fixture缺114要求的slot_policy",
+      "change": "先驗證缺政策仍拒收，再提供政策驗證合法收據"
+    },
+    {
+      "tool": "fd2-string-inventory",
+      "cause": "受版控摘要與本機完整清冊過時；人工review與目前重生清冊相符",
+      "change": "從目前Go與資料重生清冊及摘要，保留所有人工dispositions"
+    },
+    {
+      "tool": "audit_fd2_unknown_footprints",
+      "cause": "目前函式清冊unknown=1068，舊文字足跡1069",
+      "change": "按既有機械工具重生，不改classification/confidence/semantic"
+    }
+  ],
+  "verification": [
+    {
+      "kind": "fd2_chapter_slot",
+      "tests": 4,
+      "status": "passed",
+      "log": "work/parity-slot-ch18/issue91-fd2_chapter_slot-after.log",
+      "sha256": "23edcc150c2943a9873c3b6bf59612522386c96a26fd0ab7f549545336b4a753"
+    },
+    {
+      "kind": "fd2_parity_progress",
+      "tests": 4,
+      "status": "passed",
+      "log": "work/parity-slot-ch18/issue91-fd2_parity_progress-after.log",
+      "sha256": "158e59312b84f4932e5938ab3c13c0e789f715366ca6ff65793097e07268954c"
+    },
+    {
+      "kind": "editor_schemas",
+      "tests": 7,
+      "status": "passed",
+      "log": "work/parity-slot-ch18/issue91-editor_schemas-after.log",
+      "sha256": "9ec9e3c52e7908b746c625587944c7e1eb71f90fc834fbb4527d510523684dd2"
+    },
+    {
+      "kind": "fd2_unknown_footprints",
+      "tests": 2,
+      "status": "passed",
+      "log": "work/parity-slot-ch18/issue91-fd2_unknown_footprints-after.log",
+      "sha256": "a00815eb17f1f4d9c0f476fc54b9b7fedb096755a64cabb75b235f94cf83714b"
+    },
+    {
+      "kind": "cap_environment",
+      "tests": 26,
+      "status": "passed",
+      "log": "work/parity-slot-ch18/issue91-cap-environment-r2.log",
+      "sha256": "1db5505c0caf0cffb72f1cbd407668ff7a528e1ffa04f94bf77206b1c404736a"
+    },
+    {
+      "kind": "pillow_environment",
+      "tests": 20,
+      "status": "passed",
+      "log": "work/parity-slot-ch18/issue91-pillow-environment-r2.log",
+      "sha256": "eaa948f62ab7f523b47ac0eaf4a2a039a15fa5564dc3e348c886a67ee0750b6a"
+    }
+  ],
+  "total_tests": 63,
+  "current_inventory_sha256": "9cd4e753930b7922a09305a70a4ef38150288d6832c6de5a0d9bf87fa75f813e",
+  "current_inventory_matches_review": true,
+  "review_dispositions_unchanged": true,
+  "failed_logs": [
+    {
+      "path": "work/parity-slot-ch18/issue91-chapter-slot-before.log",
+      "sha256": "9e1a6c15aa7d486c81c0f7c029e3a58e7320837def618b214288c65c2a672ef1"
+    },
+    {
+      "path": "work/parity-slot-ch18/issue91-editor-schemas-before.log",
+      "sha256": "6eb65fdfd0e94b62c66633414ecda927b6f8fd61a0d45eb97fc25819119462a9"
+    },
+    {
+      "path": "work/parity-slot-ch18/issue91-parity-progress-before.log",
+      "sha256": "bb19d4f4b692930f28eea832bc7abd120371381d0daae0a0ece35662ed6d6d2d"
+    },
+    {
+      "path": "work/parity-slot-ch18/issue91-unknown-footprints-before.log",
+      "sha256": "f8c542d18ead5adb7b84e9f89c7e3082e76fea3c0dc8e8807bb5f7b2b597adea"
+    }
+  ],
+  "environment_corrections": [
+    {
+      "path": "work/parity-slot-ch18/issue91-cap-environment-r1.log",
+      "sha256": "560e04577eaea07d5b972f917a34bcacdfd5b0cf7c726ac590e1ddf29b9d1acf",
+      "cause": "對話文字解析透過decode_text依賴Pillow，應分配至既有資產映像；不是Capstone或遊戲缺陷"
+    }
+  ],
+  "reproduce": {
+    "string_generation": "docker: fd2-go-test-local:20260909; go run ./cmd/fd2-string-inventory -repo /src -output <inventory>; 加 -summary 重生摘要",
+    "footprints": "docker: fd2-go-test-local:20260909; python3 tools/audit_fd2_unknown_footprints.py --output docs/data/ida/fd2_unknown_footprints.json",
+    "core_tests": "docker: fd2-go-test-local:20260909; python3 -m unittest discover -s tools -p <test_file>",
+    "capstone_tests": "docker: fd2-cap-local; classifying/dump_chapter_beats/event_handler_dump/extract_event_id_groups/extract_native_death_events，原版唯讀掛載/orig",
+    "pillow_tests": "docker: fd2-assets-local:20260829-sfx; decode_story_text/decode_figani/modern_theme_catalog/process_modern_map_sprite_sheet/update_modern_fdicon_hashes",
+    "commands": {
+      "string_generation": "test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 2g --cpus 1 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp -e GOFLAGS=-mod=mod fd2-go-test-local:20260909 timeout 180 sh -c 'go run ./cmd/fd2-string-inventory -repo /src -output /src/work/parity-slot-ch18/issue91-current-string-inventory.json && go run ./cmd/fd2-string-inventory -repo /src -summary -output /src/work/parity-slot-ch18/issue91-current-string-summary.json' > work/parity-slot-ch18/issue91-current-string-generation.log 2>&1",
+      "capstone_tests": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --workdir /src --entrypoint timeout fd2-cap-local 120 python3 - > work/parity-slot-ch18/issue91-cap-environment-r2.log 2>&1 <<'PY'\nimport sys,unittest\nsys.path.insert(0,'tools')\nnames=[\"test_classify_handler_native_calls\",\"test_dump_chapter_beats\",\"test_event_handler_dump\",\"test_extract_event_id_groups\",\"test_extract_native_death_events\"]\nsuite=unittest.TestLoader().loadTestsFromNames(names)\nr=unittest.TextTestRunner(verbosity=1).run(suite)\nraise SystemExit(not r.wasSuccessful())\nPY",
+      "pillow_tests": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 - > work/parity-slot-ch18/issue91-pillow-environment-r2.log 2>&1 <<'PY'\nimport sys,unittest\nsys.path.insert(0,'tools')\nnames=[\"test_decode_story_text\",\"test_decode_figani\",\"test_modern_theme_catalog\",\"test_process_modern_map_sprite_sheet\",\"test_update_modern_fdicon_hashes\"]\nsuite=unittest.TestLoader().loadTestsFromNames(names)\nr=unittest.TextTestRunner(verbosity=1).run(suite)\nraise SystemExit(not r.wasSuccessful())\nPY"
+    }
+  },
+  "limitations": [
+    "沒有修改正式Go玩法或原版執行檔",
+    "字串清冊是診斷資料，未新增翻譯或語意判定",
+    "unknown足跡只作文字索引，不構成RE-CLOSED或新逆向需求",
+    "第十八章完整節點／交易／SAV仍由#94驗收"
+  ],
+  "generated_outputs": [
+    {
+      "path": "docs/data/fd2-string-inventory-summary.json",
+      "sha256": "b86c77f71970bc6bff3289bdab1a1ecc820ccb6825e8411dd91061ad7fb0ee98",
+      "size": 1244
+    },
+    {
+      "path": "docs/data/ida/fd2_unknown_footprints.json",
+      "sha256": "04bab30e064ca2c488e7b1e2b4ba3592ee913d3712fff3322fcd8bd115154f39",
+      "size": 2700738
+    },
+    {
+      "path": "work/parity-slot-ch18/issue91-unknown-footprints-final.log",
+      "sha256": "b72ec94cdbf0e57efb6483ae9167a0c56ba2e33d31f8f63ca1e40c7b0ee16f32",
+      "size": 100
+    }
+  ]
+}
