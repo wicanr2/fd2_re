@@ -313,67 +313,6 @@
       "issue": 52
     },
     {
-      "id": "ch18-full-chapter-parity",
-      "layer": "player",
-      "category": "工作",
-      "title": "第十八章缺完整原版與重製四項對拍收據",
-      "body": "第十七章已依111／114通過，戰役14／30。本條延續同一固定基底與levels6、seed4、event7:17=1、AP+200／DP+0／DX+60政策。先以可重跑工具建第十八章槽，核對既有原版起手、章內事件與戰後主證據，有限正常讀檔預檢確認可比狀態後才跑完整章。所有新缺陷先各開工單再修；原版與完整Go工作序列執行。",
-      "acceptance": "固定輸入與建構槽政策可重生；原版由乾淨受版控dosgolem oracle產生，章內正常鍵盤抽樣主要戰鬥節拍與已知事件後才force-enemy-clear。戰後、交易、酒店SAV與該城秘密商店入口均達；同槽Go重播行為／節點／交易／至少12張完整320x200 RGB在640像素門檻內，全檔SAV相同。不得遮差異、放寬門檻、跳動畫或永久鎖HP。完整Go及必要舊分支回歸、收據／56／57／58／台帳／README同步，符合111／114例外才列PLAYER-E2，不能外推自然戰鬥或傷害一致。",
-      "evidence": [
-        "docs/goal/111-goal-original-parity-campaign-20260915.md",
-        "docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md",
-        "docs/data/ui-traces/parity-ch17.json",
-        "docs/knowledge-base/58-fd2-exe-re-coverage.md",
-        "remake/cmd/fd2/chapter_parity_replay_test.go"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "完整同槽原版／重製四項、全檔SAV與正式回歸收據。"
-      },
-      "issue": 94
-    },
-    {
-      "id": "ch18-turn3-event43-semantics",
-      "layer": "runtime",
-      "category": "RE待解",
-      "title": "第十八章第三回合 event43 尚缺完整 handler 與正式消費端證據",
-      "body": "#94 八回合正常護援正在執行。原始 FDFIELD_052 有 turn3 event43／turn8 event42，既有清冊只記43為0x35091且沒有spawn；正式ch18情境目前只列turn8 spawn，不能把spawn-only摘要當完整handler。已查58、00及docs/data：35091只有定位／函式台帳／unknown footprints，既有reinforcement_eax_sources只閉合其他handler。先查最小直接指令、writer及consumer與本輪T3狀態，再判定是否需正式動作；不得猜成no-op。",
-      "acceptance": "固定EXE雜湊、IDA9.4原始函式／bytes／位址與caller可回查，完整handler語意分級。依RE→DRAFT→READY再接有來源的typed consumer，或以原始直接證據證明無玩家效果。正常同槽T3及後續事件／戰後全檔SAV、完整RGB與正式回歸通過，整章另由#94。保留未知或無效果的證據，不因清冊沒有spawn就略過。",
-      "evidence": [
-        "docs/data/parity-plans/ch18-guard.jsonl",
-        "docs/data/turn_events.json",
-        "docs/data/event_id_groups.json",
-        "docs/data/ida/fd2_reinforcement_eax_sources.json",
-        "remake/assets/scenarios/ch18.json",
-        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "原版T3完整handler資料流、正式消費端與同槽四項及SAV；無玩家效果則需直接原版證據。"
-      },
-      "issue": 97
-    },
-    {
-      "id": "ch18-turn8-event42-dialogue",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十八章第八回合 event42 缺少增援後的戰場對白",
-      "body": "#94正常八回合驗收前已檢查58及00索引。IDA9.4固定EXE的sub_3505F完整50bytes確認先追加group1，再以text6跳34C0F共享對白尾段。現行第18章只保存spawn_group，缺少對白及其阻塞時序。已有第15章event38的同一shared tail證據，不重解共用helper。原版guard-r2正在固定同槽seed4正常運行，尚未到T8。",
-      "acceptance": "原始handler／shared tail／固定EXE／caller與控制列可回查，完成READY後將event42完整降階至第18章正式及canonical；增援先發生、text6完整對白阻塞AI、結束後續行且只觸發一次。固定槽正常T8與後續全章完整RGB、戰後及酒店SAV由#94驗收，通過前不關閉。",
-      "evidence": [
-        "work/parity-slot-ch18/ida-event42-r1/ida-input-probe.json",
-        "docs/data/ida/fd2_ch15_turn_events_20261002.json",
-        "docs/data/turn_events.json",
-        "remake/assets/scenarios/ch18.json",
-        "docs/data/parity-plans/ch18-guard-r2.jsonl"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "完整事件轉寫、增援與對白阻塞時序，以及同槽正常T8及#94後續全章收據。"
-      },
-      "issue": 99
-    },
-    {
       "id": "ch18-oracle-stosb-memory-boundary",
       "layer": "tooling",
       "category": "缺陷",
@@ -389,65 +328,6 @@
         "note": "固定原版與計畫的記憶體邊界證據、工具回歸及正式原版前綴重生。"
       },
       "issue": 102
-    },
-    {
-      "id": "ch18-postbattle-runtime-slots",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十八章增援後的戰後槽數契約過時",
-      "body": "完整原版guard-r4/r8已完成第8回合增援、戰後、買賣、酒店SAV與秘密商店。正式Go回放到postbattle_ch18_persist拒收：runtime slots=75, want exact55。先保留failed日誌及收據，核對原版T8槽數writer和持續隊伍consumer，再修過時typed資料契約；不放寬任意槽數或跳過預檢。",
-      "acceptance": "確認第十八章原版初始、T8增援與戰後持續槽數的writer／consumer和固定來源，完成可審查READY後修正式資料；同槽正常章四项、整檔酒店SAV及相關回歸通過。保留55條件的歷史來源與第一次拒收，不將工具通過當作完整章。",
-      "evidence": [
-        "remake/assets/cutscenes/bindings/ch17_post.json",
-        "docs/data/fd2_ch17_post_ida.txt",
-        "docs/data/ida/fd2_ch18_event42_20261002.json",
-        "docs/data/parity-plans/ch18-guard-r4.jsonl",
-        "work/parity-slot-ch18/guard-r8-remake-r1.log"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "同一完整原版r8與正式Go重放的四項和酒店SAV通過，再審查結案。"
-      },
-      "issue": 103
-    },
-    {
-      "id": "ch18-hotel-save-parity",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第十八章酒店存檔與原版不一致",
-      "body": "第十八章同槽guard-r4/r8完整原版與正式Go回放r2，行為、節點與182張全幅RGB通過，293筆AI順序零分岔，194個金幣比較點全部一致。酒店SAV整檔雜湊仍不同：原版9adc6a5a、重製14d076e2。先登記再做欄位分析與RE／READY修正，保留原失敗，不忽略未知位元組。",
-      "acceptance": "逐筆核對兩側酒店SAV差異，沿固定原版證據找到每個差異的writer／consumer，完成READY後修正式持續資料；同一完整原版r8四項及整檔SAV通過，相关持續資料回歸和舊章SAV通過。保留原始拒收與来源，不改比較門檻或選擇性忽略位元組。",
-      "evidence": [
-        "work/parity-slot-ch18/guard-r8-verify-r2.json",
-        "work/parity-slot-ch18/guard-state-r8/FD2.SAV",
-        "work/parity-slot-ch18/guard-r8-remake-r2/FD2.SAV",
-        "docs/data/ida/fd2_ch18_postbattle_slots_20261003.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "同一完整原版r8與Go正式回放的四項和全檔酒店SAV通過，再審查結案。"
-      },
-      "issue": 104
-    },
-    {
-      "id": "postbattle-sync-tooling-regression",
-      "layer": "tooling",
-      "category": "缺陷",
-      "title": "戰後重算修正後的舊章測試與字串審查清冊待更新",
-      "body": "#104的正式第18章與第17章四項及全檔SAV通過。完整Go回歸發現舊章測試在resetBattle後才seedPersistentPartyFromLoadCH，未把已物化持續名冊覆蓋回戰場，缺base AP／DP出處；新sync_party錯誤字串也令line-based審查索引及清冊雜湊漂移。先查正式LOADCH→persistent overlay鏈，再修測試建構與人工審查，不放寬正式拒收。",
-      "acceptance": "舊章測試使用既有物化名冊與正式覆蓋流程，完整Go19套件通過；字串清冊從現行來源重生，以原始source/function/text核對既有處置對照並明確審查新診斷，無未審查候選；不改正式玩法、比較閘門與原版證據。保留首次失敗與轉移對照及雜湊。",
-      "evidence": [
-        "work/parity-slot-ch18/postbattle-equipment-go-regression-r1.log",
-        "remake/cmd/fd2/battleevent_test.go",
-        "remake/cmd/fd2/main.go",
-        "docs/data/fd2-string-review.json",
-        "docs/data/ida/fd2_ch18_postbattle_equipment_20261003.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "審查測試建構來源、字串處置轉移與新增诊斷，完整Go及清冊關聯通過。"
-      },
-      "issue": 105
     }
   ]
 }

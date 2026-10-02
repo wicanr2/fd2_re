@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,46 +111,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第十八章第三回合 event43 尚缺完整 handler 與正式消費端證據
-
-`ch18-turn3-event43-semantics` · RE待解 · [#97](https://github.com/wicanr2/fd2_re/issues/97) · 仍未完成 · 要人判
-
-#94 八回合正常護援正在執行。原始 FDFIELD_052 有 turn3 event43／turn8 event42，既有清冊只記43為0x35091且沒有spawn；正式ch18情境目前只列turn8 spawn，不能把spawn-only摘要當完整handler。已查58、00及docs/data：35091只有定位／函式台帳／unknown footprints，既有reinforcement_eax_sources只閉合其他handler。先查最小直接指令、writer及consumer與本輪T3狀態，再判定是否需正式動作；不得猜成no-op。
-
-怎樣算做完：固定EXE雜湊、IDA9.4原始函式／bytes／位址與caller可回查，完整handler語意分級。依RE→DRAFT→READY再接有來源的typed consumer，或以原始直接證據證明無玩家效果。正常同槽T3及後續事件／戰後全檔SAV、完整RGB與正式回歸通過，整章另由#94。保留未知或無效果的證據，不因清冊沒有spawn就略過。
-
-證據：`['docs/data/parity-plans/ch18-guard.jsonl', 'docs/data/turn_events.json', 'docs/data/event_id_groups.json', 'docs/data/ida/fd2_reinforcement_eax_sources.json', 'remake/assets/scenarios/ch18.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 第十八章第八回合 event42 缺少增援後的戰場對白
-
-`ch18-turn8-event42-dialogue` · 缺陷 · [#99](https://github.com/wicanr2/fd2_re/issues/99) · 仍未完成 · 要人判
-
-#94正常八回合驗收前已檢查58及00索引。IDA9.4固定EXE的sub_3505F完整50bytes確認先追加group1，再以text6跳34C0F共享對白尾段。現行第18章只保存spawn_group，缺少對白及其阻塞時序。已有第15章event38的同一shared tail證據，不重解共用helper。原版guard-r2正在固定同槽seed4正常運行，尚未到T8。
-
-怎樣算做完：原始handler／shared tail／固定EXE／caller與控制列可回查，完成READY後將event42完整降階至第18章正式及canonical；增援先發生、text6完整對白阻塞AI、結束後續行且只觸發一次。固定槽正常T8與後續全章完整RGB、戰後及酒店SAV由#94驗收，通過前不關閉。
-
-證據：`['work/parity-slot-ch18/ida-event42-r1/ida-input-probe.json', 'docs/data/ida/fd2_ch15_turn_events_20261002.json', 'docs/data/turn_events.json', 'remake/assets/scenarios/ch18.json', 'docs/data/parity-plans/ch18-guard-r2.jsonl']`
-
-### 第十八章增援後的戰後槽數契約過時
-
-`ch18-postbattle-runtime-slots` · 缺陷 · [#103](https://github.com/wicanr2/fd2_re/issues/103) · 仍未完成 · 要人判
-
-完整原版guard-r4/r8已完成第8回合增援、戰後、買賣、酒店SAV與秘密商店。正式Go回放到postbattle_ch18_persist拒收：runtime slots=75, want exact55。先保留failed日誌及收據，核對原版T8槽數writer和持續隊伍consumer，再修過時typed資料契約；不放寬任意槽數或跳過預檢。
-
-怎樣算做完：確認第十八章原版初始、T8增援與戰後持續槽數的writer／consumer和固定來源，完成可審查READY後修正式資料；同槽正常章四项、整檔酒店SAV及相關回歸通過。保留55條件的歷史來源與第一次拒收，不將工具通過當作完整章。
-
-證據：`['remake/assets/cutscenes/bindings/ch17_post.json', 'docs/data/fd2_ch17_post_ida.txt', 'docs/data/ida/fd2_ch18_event42_20261002.json', 'docs/data/parity-plans/ch18-guard-r4.jsonl', 'work/parity-slot-ch18/guard-r8-remake-r1.log']`
-
-### 第十八章酒店存檔與原版不一致
-
-`ch18-hotel-save-parity` · 缺陷 · [#104](https://github.com/wicanr2/fd2_re/issues/104) · 仍未完成 · 要人判
-
-第十八章同槽guard-r4/r8完整原版與正式Go回放r2，行為、節點與182張全幅RGB通過，293筆AI順序零分岔，194個金幣比較點全部一致。酒店SAV整檔雜湊仍不同：原版9adc6a5a、重製14d076e2。先登記再做欄位分析與RE／READY修正，保留原失敗，不忽略未知位元組。
-
-怎樣算做完：逐筆核對兩側酒店SAV差異，沿固定原版證據找到每個差異的writer／consumer，完成READY後修正式持續資料；同一完整原版r8四項及整檔SAV通過，相关持續資料回歸和舊章SAV通過。保留原始拒收與来源，不改比較門檻或選擇性忽略位元組。
-
-證據：`['work/parity-slot-ch18/guard-r8-verify-r2.json', 'work/parity-slot-ch18/guard-state-r8/FD2.SAV', 'work/parity-slot-ch18/guard-r8-remake-r2/FD2.SAV', 'docs/data/ida/fd2_ch18_postbattle_slots_20261003.json']`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -190,16 +150,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### 第十八章缺完整原版與重製四項對拍收據
-
-`ch18-full-chapter-parity` · 工作 · [#94](https://github.com/wicanr2/fd2_re/issues/94) · 仍未完成 · 要人判
-
-第十七章已依111／114通過，戰役14／30。本條延續同一固定基底與levels6、seed4、event7:17=1、AP+200／DP+0／DX+60政策。先以可重跑工具建第十八章槽，核對既有原版起手、章內事件與戰後主證據，有限正常讀檔預檢確認可比狀態後才跑完整章。所有新缺陷先各開工單再修；原版與完整Go工作序列執行。
-
-怎樣算做完：固定輸入與建構槽政策可重生；原版由乾淨受版控dosgolem oracle產生，章內正常鍵盤抽樣主要戰鬥節拍與已知事件後才force-enemy-clear。戰後、交易、酒店SAV與該城秘密商店入口均達；同槽Go重播行為／節點／交易／至少12張完整320x200 RGB在640像素門檻內，全檔SAV相同。不得遮差異、放寬門檻、跳動畫或永久鎖HP。完整Go及必要舊分支回歸、收據／56／57／58／台帳／README同步，符合111／114例外才列PLAYER-E2，不能外推自然戰鬥或傷害一致。
-
-證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch17.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md', 'remake/cmd/fd2/chapter_parity_replay_test.go']`
 
 ## release — 發行、平台與封包
 
@@ -272,15 +222,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 戰後重算修正後的舊章測試與字串審查清冊待更新
-
-`postbattle-sync-tooling-regression` · 缺陷 · [#105](https://github.com/wicanr2/fd2_re/issues/105) · 仍未完成 · 要人判
-
-#104的正式第18章與第17章四項及全檔SAV通過。完整Go回歸發現舊章測試在resetBattle後才seedPersistentPartyFromLoadCH，未把已物化持續名冊覆蓋回戰場，缺base AP／DP出處；新sync_party錯誤字串也令line-based審查索引及清冊雜湊漂移。先查正式LOADCH→persistent overlay鏈，再修測試建構與人工審查，不放寬正式拒收。
-
-怎樣算做完：舊章測試使用既有物化名冊與正式覆蓋流程，完整Go19套件通過；字串清冊從現行來源重生，以原始source/function/text核對既有處置對照並明確審查新診斷，無未審查候選；不改正式玩法、比較閘門與原版證據。保留首次失敗與轉移對照及雜湊。
-
-證據：`['work/parity-slot-ch18/postbattle-equipment-go-regression-r1.log', 'remake/cmd/fd2/battleevent_test.go', 'remake/cmd/fd2/main.go', 'docs/data/fd2-string-review.json', 'docs/data/ida/fd2_ch18_postbattle_equipment_20261003.json']`
 
 <!-- END fd2_worklist.py render -->
