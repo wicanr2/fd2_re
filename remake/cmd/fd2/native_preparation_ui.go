@@ -83,6 +83,15 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 	}, nil
 }
 
+// #86 sub_318AD restores its saved 64000-byte caller frame before 0x31D3C.
+// setupPreparation owns both town sources and standalone black sources.
+func (g *Game) nativePreparationBackground() ([]byte, bool) {
+	if g == nil || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "preparation" || len(g.prepPromptSource) != 320*200 {
+		return nil, false
+	}
+	return append([]byte(nil), g.prepPromptSource...), true
+}
+
 func (g *Game) composeNativePreparationFrame() ([]byte, bool) {
 	if g.camp == nil || g.nativePreparationUI == nil || g.nativeClassUI == nil ||
 		(!g.prepSelecting && !g.prepConfirm) || len(g.prepIDs) == 0 {
@@ -106,7 +115,12 @@ func (g *Game) composeNativePreparationFrame() ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
-	frame, err := fdother.ComposeNativePreparationFrame(
+	background, ok := g.nativePreparationBackground()
+	if !ok {
+		return nil, false
+	}
+	frame, err := fdother.ComposeNativePreparationFrameOnBackground(
+		background,
 		g.nativePreparationUI.roster,
 		keys, selected, g.prepSel, cycle, g.prepLimit,
 	)
@@ -130,7 +144,7 @@ func (g *Game) composeNativePreparationConfirmationFrame() ([]byte, bool) {
 	if !g.prepConfirm || g.nativeClassUI == nil {
 		return nil, false
 	}
-	background, ok := g.composeNativePreparationFrame()
+	background, ok := g.nativePreparationBackground()
 	if !ok {
 		return nil, false
 	}
@@ -265,7 +279,7 @@ func (g *Game) beginNativePreparationPromptClosing(after func()) bool {
 }
 
 func (g *Game) composeNativePreparationConfirmationDialogue() ([]byte, bool) {
-	background, ok := g.composeNativePreparationFrame()
+	background, ok := g.nativePreparationBackground()
 	if !ok {
 		return nil, false
 	}
@@ -278,7 +292,7 @@ func (g *Game) composeNativePreparationConfirmationDialogue() ([]byte, bool) {
 }
 
 func (g *Game) composeNativePreparationConfirmationQuestion() ([]byte, bool) {
-	background, ok := g.composeNativePreparationFrame()
+	background, ok := g.nativePreparationBackground()
 	if !ok {
 		return nil, false
 	}
@@ -293,7 +307,7 @@ func (g *Game) composeNativePreparationConfirmationQuestion() ([]byte, bool) {
 }
 
 func (g *Game) beginNativePreparationConfirmationOpening() bool {
-	source, ok := g.composeNativePreparationFrame()
+	source, ok := g.nativePreparationBackground()
 	if !ok {
 		return false
 	}
@@ -317,7 +331,7 @@ func (g *Game) beginNativePreparationConfirmationOpening() bool {
 }
 
 func (g *Game) beginNativePreparationConfirmationClosing(after func()) bool {
-	source, ok := g.composeNativePreparationFrame()
+	source, ok := g.nativePreparationBackground()
 	if !ok {
 		return false
 	}

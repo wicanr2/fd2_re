@@ -347,6 +347,14 @@ class RoundMonotonicity(unittest.TestCase):
 
 
 class UIMode(unittest.TestCase):
+    def test_preparation_uses_specific_owner_not_shared_question_renderer(self):
+        for marker in ("0x2D11D", "0x31A2E", "0x31D8E"):
+            with self.subTest(marker=marker):
+                self.assertEqual(drive.ui_mode({"input_chain": ["0x19CD2", marker, "0x2CF39"]}), "preparation")
+        for marker in ("0x19CD2", "0x19C2A", "0x32051", "0x2D170"):
+            with self.subTest(shared_marker=marker):
+                self.assertEqual(drive.ui_mode({"input_chain": [marker]}), "unknown")
+
     """介面模式由 input_chain 的特徵位址決定——那是唯一分得出四種介面的訊號。"""
 
     def chain(self, *addrs):

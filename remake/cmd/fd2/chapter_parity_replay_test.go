@@ -93,16 +93,17 @@ type parityCheckpoint struct {
 }
 
 type parityReplay struct {
-	t          *testing.T
-	g          *Game
-	out        string
-	run        string // 原版側輸出目錄（checkpoint-NNNN.json）
-	log        *os.File
-	index      int
-	battle     string
-	town       string // LOAD 進的城鎮（本章戰前）
-	townAfter  string // 戰後城鎮（原版 chapter 已推進，城鎮記錄是下一章的）
-	battleDone bool
+	t                 *testing.T
+	g                 *Game
+	out               string
+	run               string // 原版側輸出目錄（checkpoint-NNNN.json）
+	log               *os.File
+	index             int
+	battle            string
+	town              string // LOAD 進的城鎮（本章戰前）
+	townAfter         string // 戰後城鎮（原版 chapter 已推進，城鎮記錄是下一章的）
+	battleDone        bool
+	partySelectionSeq int // #84：正常選人起點；缺少此mark不推測部署
 	// aiEntries 是原版側 eip-trace 的 0x13A9F 入口（每個 AI 單位行動一筆，含 rng_word）；
 	// 重播在每個 AI 計畫產生後、執行前依序對齊 RNG。等待迴圈（死亡訊息、對白）會依
 	// 虛擬時間消耗 0x4E893，回合內的 RNG 沒有辦法逐次對上，所以以「決策點」對齊。
@@ -750,6 +751,51 @@ func (r *parityReplay) mark(action parityAction) {
 			t.Fatal("整備提示的開啟動畫沒有結束")
 		}
 		r.checkpoint("departure_prompt", action.Seq, "preparation", true)
+	case "party_selection":
+		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x31A2E"); err != nil {
+			t.Fatal(err)
+		}
+		if g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "preparation" ||
+			g.prepSelecting || g.prepConfirm || len(g.prepIDs) <= g.prepLimit ||
+			(g.prepLimit != 15 && g.prepLimit != 19) || len(g.partyDeploy) != 0 || g.prepConfirmSel != 0 {
+			t.Fatal("選人mark缺少未消費的正常出戰YES或名冊／quota不符")
+		}
+		if !g.handleNativePreparationInput(nativePreparationInput{enter: true}) ||
+			!pump(t, g, 600, func() bool { return g.prepSelecting && !g.nativeClassUIBlocksInput() }) {
+			t.Fatal("正式出戰YES沒有進入選人")
+		}
+		r.partySelectionSeq = action.Seq
+		r.checkpoint("party_selection", action.Seq, "preparation", true)
+	case "departure_confirmation":
+		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x31D8E"); err != nil {
+			t.Fatal(err)
+		}
+		if r.partySelectionSeq <= 0 || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "preparation" ||
+			!g.prepSelecting || g.prepConfirm || g.prepSel != 0 || len(g.partyDeploy) != 0 {
+			t.Fatal("最終確認mark缺少正常選人起點")
+		}
+		keys, err := readParityPreparationControls(r.run, r.partySelectionSeq, action.Seq, g.prepLimit)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, key := range keys {
+			if key == "enter" && !g.handleNativePreparationInput(nativePreparationInput{enter: true}) {
+				t.Fatal("選人Enter未被正式owner消費")
+			}
+			if !pump(t, g, 600, func() bool { return !g.nativeClassUIBlocksInput() }) {
+				t.Fatal("選人確認開框沒有完成")
+			}
+		}
+		selected := 0
+		for _, id := range g.prepIDs {
+			if g.partyDeploy[id] {
+				selected++
+			}
+		}
+		if !g.prepConfirm || g.prepSelecting || selected != g.prepLimit || g.prepConfirmSel != 0 {
+			t.Fatalf("正常選人尚未完成：selected=%d quota=%d", selected, g.prepLimit)
+		}
+		r.checkpoint("departure_confirmation", action.Seq, "preparation", true)
 	case "battle_start":
 		if g.camp.Node() != nil && g.camp.Node().Type == "preparation" {
 			if !g.handleNativePreparationInput(nativePreparationInput{enter: true}) {
@@ -792,6 +838,71 @@ func (r *parityReplay) mark(action parityAction) {
 		}
 		r.checkpoint("mark:"+action.Label, action.Seq, r.ui(), true)
 	}
+}
+
+// #84只支援受版控計畫中的順序Enter選人；未知來源、缺格或方向輸入都拒收。
+func verifyParityPreparationOwner(run string, seq int, owner string) error {
+	data, err := os.ReadFile(filepath.Join(run, fmt.Sprintf("checkpoint-%04d.json", seq)))
+	if err != nil {
+		return err
+	}
+	var cp struct {
+		EXE   string   `json:"exe_sha256"`
+		Chain []string `json:"input_chain"`
+	}
+	if err := json.Unmarshal(data, &cp); err != nil {
+		return err
+	}
+	if cp.EXE != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" {
+		return fmt.Errorf("選人來源EXE未知")
+	}
+	for _, address := range cp.Chain {
+		if address == owner {
+			return nil
+		}
+	}
+	return fmt.Errorf("選人seq%d缺少已證實owner %s", seq, owner)
+}
+
+func readParityPreparationControls(run string, from, to, quota int) ([]string, error) {
+	if from <= 0 || to <= from || (quota != 15 && quota != 19) {
+		return nil, fmt.Errorf("選人序列／quota未知")
+	}
+	f, err := os.Open(filepath.Join(run, "control-history.jsonl"))
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	expected, count := from+1, 0
+	var keys []string
+	for scanner.Scan() {
+		var entry struct {
+			Seq int    `json:"seq"`
+			Key string `json:"key"`
+		}
+		if err := json.Unmarshal(scanner.Bytes(), &entry); err != nil {
+			return nil, err
+		}
+		if entry.Seq <= from || entry.Seq > to {
+			continue
+		}
+		if entry.Seq != expected || (entry.Key != "" && entry.Key != "enter") {
+			return nil, fmt.Errorf("選人seq%d輸入缺格／順序未知", entry.Seq)
+		}
+		expected++
+		if entry.Key == "enter" {
+			count++
+		}
+		keys = append(keys, entry.Key)
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+	if expected != to+1 || count != quota {
+		return nil, fmt.Errorf("選人輸入數量%d與quota%d不符或尾端缺格", count, quota)
+	}
+	return keys, nil
 }
 
 func readParityActions(t *testing.T, path string) []parityAction {
@@ -1095,11 +1206,34 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		g.nativeShopUIPulse = saved
 		palette = g.nativeClassUI.palette
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "preparation":
-		source, ok := g.composeNativePreparationPromptFrame()
-		if !ok {
-			return "", ""
+		savedCycle, savedPulse := g.prepIdleCycle, g.nativeClassUIPulse
+		defer func() { g.prepIdleCycle, g.nativeClassUIPulse = savedCycle, savedPulse }()
+		for cycle := 0; cycle < 3; cycle++ {
+			for pulse := 0; pulse < 2; pulse++ {
+				g.prepIdleCycle, g.nativeClassUIPulse = cycle, pulse*2
+				var source []byte
+				var ok bool
+				switch {
+				case g.prepConfirm:
+					source, ok = g.composeNativePreparationConfirmationFrame()
+				case g.prepSelecting:
+					source, ok = g.composeNativePreparationFrame()
+				default:
+					source, ok = g.composeNativePreparationPromptFrame()
+				}
+				if !ok {
+					return "", ""
+				}
+				variants = append(variants, frameVariant{pix: append([]byte(nil), source...)})
+				if g.prepSelecting {
+					break
+				}
+			}
+			if !g.prepSelecting && !g.prepConfirm {
+				break
+			}
 		}
-		variants, palette = append(variants, frameVariant{pix: source}), g.nativeClassUI.palette
+		palette = g.nativeClassUI.palette
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "shop":
 		saved := g.nativeShopUIPulse
 		for pulse := 0; pulse < 4; pulse++ {
@@ -2164,4 +2298,72 @@ func (r *parityReplay) secretShop(action parityAction) {
 		ui = r.ui()
 	}
 	r.checkpoint("secret_shop", action.Seq, ui, true)
+}
+
+func TestParityPreparationControlsRejectIncompleteOrUnknownSource(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		quota  int
+		count  int
+		remove int
+		key    string
+		wantOK bool
+	}{
+		{"normal15", 15, 15, 0, "enter", true},
+		{"late19", 19, 19, 0, "enter", true},
+		{"missing_selection", 15, 0, 0, "enter", false},
+		{"one_short", 15, 14, 0, "enter", false},
+		{"one_extra", 15, 16, 0, "enter", false},
+		{"missing_middle", 15, 15, 6, "enter", false},
+		{"unknown_direction", 15, 15, 0, "right", false},
+		{"unknown_quota", 16, 16, 0, "enter", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			run := t.TempDir()
+			var data strings.Builder
+			for i := 1; i <= tc.count; i++ {
+				if i == tc.remove {
+					continue
+				}
+				fmt.Fprintf(&data, "{\"seq\":%d,\"key\":%q}\n", 43+i, tc.key)
+			}
+			if err := os.WriteFile(filepath.Join(run, "control-history.jsonl"), []byte(data.String()), 0600); err != nil {
+				t.Fatal(err)
+			}
+			_, err := readParityPreparationControls(run, 43, 43+tc.count, tc.quota)
+			if (err == nil) != tc.wantOK {
+				t.Fatalf("accepted=%v want=%v err=%v", err == nil, tc.wantOK, err)
+			}
+		})
+	}
+	if _, err := readParityPreparationControls(t.TempDir(), 0, 70, 15); err == nil {
+		t.Fatal("接受缺少選人mark")
+	}
+}
+
+func TestParityPreparationOwnerRejectsSharedHelperOrWrongEXE(t *testing.T) {
+	const fixedEXE = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+	for _, tc := range []struct {
+		name, exe, owner string
+		wantOK           bool
+	}{
+		{"proven_selector", fixedEXE, "0x31A2E", true},
+		{"shared_render_only", fixedEXE, "0x32051", false},
+		{"wrong_exe", "other", "0x31A2E", false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			run := t.TempDir()
+			data, err := json.Marshal(map[string]any{"exe_sha256": tc.exe, "input_chain": []string{tc.owner}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(run, "checkpoint-0043.json"), data, 0600); err != nil {
+				t.Fatal(err)
+			}
+			err = verifyParityPreparationOwner(run, 43, "0x31A2E")
+			if (err == nil) != tc.wantOK {
+				t.Fatalf("accepted=%v want=%v err=%v", err == nil, tc.wantOK, err)
+			}
+		})
+	}
 }

@@ -12,7 +12,7 @@ import (
 )
 
 func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
-	base := "../../org_game/炎龍騎士團/FLAME2"
+	base := "../../../org_game/炎龍騎士團/FLAME2"
 	assets, err := fdother.DecodeNativePreparationAssetsArchive(
 		filepath.Join(base, "FDOTHER.DAT"),
 		filepath.Join(base, "FDICON.B24"),
@@ -109,7 +109,7 @@ func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
 		t.Fatal("prompt continuation ran before source restore")
 	}
 	g.prepSelecting = true
-	g.prepPromptSource = nil
+	g.prepPromptSource = make([]byte, 320*200)
 	frame, ok := g.composeNativePreparationFrame()
 	if !ok || len(frame) != 320*200 {
 		t.Fatalf("native preparation frame unavailable: ok=%v length=%d", ok, len(frame))
@@ -125,7 +125,7 @@ func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
 	if !ok || len(confirm) != 320*200 {
 		t.Fatalf("native preparation confirmation unavailable: ok=%v length=%d", ok, len(confirm))
 	}
-	if stringWords, err := status.Strings.Words(658); err != nil || len(stringWords) != 10 {
+	if stringWords, err := status.Strings.Words(658); err != nil || len(stringWords) != 9 {
 		t.Fatalf("FDTXT index 0x292 mismatch: words=%d err=%v", len(stringWords), err)
 	}
 	closed := false
@@ -141,8 +141,43 @@ func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
 	if !closed {
 		t.Fatal("preparation continuation ran before the restored source was presented")
 	}
+	// 城鎮caller的板外像素及最終確認上方必須原樣保留，source不可變。
+	g.camp.Node().Cancel = "town"
+	for i := range g.prepPromptSource {
+		g.prepPromptSource[i] = 7
+	}
 	g.prepConfirm = false
 	g.prepSelecting = true
+	townSelection, ok := g.composeNativePreparationFrame()
+	if !ok || townSelection[0] != 7 {
+		t.Fatal("城鎮選人遺失caller板外像素")
+	}
+	g.prepSelecting = false
+	g.prepConfirm = true
+	townConfirm, ok := g.composeNativePreparationConfirmationFrame()
+	if !ok || townConfirm[10*320+10] != 7 {
+		t.Fatal("最終確認未還原城鎮caller")
+	}
+	for _, value := range g.prepPromptSource {
+		if value != 7 {
+			t.Fatal("繪圖改寫caller來源")
+		}
+	}
+	g.nativeClassUIJob = nil
+	if !g.beginNativePreparationConfirmationClosing(func() {}) || g.nativeClassUIJob.restore[10*320+10] != 7 {
+		t.Fatal("確認關框未還原caller")
+	}
+	g.prepPromptSource = nil
+	if _, ok := g.composeNativePreparationConfirmationFrame(); ok {
+		t.Fatal("接受未知caller來源")
+	}
+	g.nativeClassUIJob = nil
+	g.prepConfirm = false
+	g.prepSelecting = true
+	if _, ok := g.composeNativePreparationFrame(); ok {
+		t.Fatal("選人接受未知caller來源")
+	}
+	g.prepPromptSource = make([]byte, 320*200)
 	g.partyRoster[ids[1]] = battle.Unit{}
 	if _, ok := g.composeNativePreparationFrame(); ok {
 		t.Fatal("preparation renderer guessed a missing raw FDICON selector")

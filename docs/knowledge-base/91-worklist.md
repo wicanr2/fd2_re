@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -150,6 +150,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第十六章缺完整原版與重製四項對拍收據
+
+`ch16-full-chapter-parity` · 工作 · [#83](https://github.com/wicanr2/fd2_re/issues/83) · 仍未完成 · 要人判
+
+第十五章已於de4d655a完整驗收，#76／#78已關閉。依111／114接續第十六章，先核對正常LOAD、起手名冊／視圖及可編輯事件，再抽樣戰鬥與戰後城鎮／交易／酒店SAV。未知行為先登記RE或缺陷工單，再經RE→READY→實作→同槽驗證，不猜補正式路徑。
+
+怎樣算做完：以已核對ch02-cleared基底建構相同第十六章槽，levels6、seed4、state7:17=1與AP+200／DP+0／DX+60政策不變；章內正常鍵盤抽樣主要事件及敵方回合，再依111清敵驗戰後、城鎮、交易與酒店存檔。原版與完整Go串行，四項全過、至少12張320×200全RGB≤640px，保存manifest／plan／正式收據並同步56／57／58、台帳與首頁。
+
+證據：`['docs/data/parity-campaign-progress.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
 
 ## release — 發行、平台與封包
 

@@ -1,0 +1,730 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "date": "2026-10-02",
+  "source_export_sha256": "3f08383cff27665364cd9f2b959176bbf77b94bc8efc79ff4a0a733bfda4bf3c",
+  "export_tool": "tools/ida_opening_input_probe.py",
+  "query_environment": {
+    "image": "ida-pro-9.4-idapython:locked-v1",
+    "PROBE_ADDRESSES": "0x335A0 0x318AD 0x2D093",
+    "database_source": "work/ch01-town-parity-20260908/ida/fd2-io.i64 read-only→一次性/tmp/probe.i64",
+    "uid": 1000
+  },
+  "limits": [
+    "固定111／114建構槽；起手有限比較，完整章仍由#83驗收",
+    "不驗傷害、存活、敵方選目標；原版無鎖HP、無清敵"
+  ],
+  "issue": 85,
+  "kind": "fd2_ch16_native_startup",
+  "functions": [
+    {
+      "requested_address": "0x335a0",
+      "address": "0x335a0",
+      "end": "0x335aa",
+      "original_name": "sub_335A0",
+      "chunks": [
+        {
+          "start": "0x335a0",
+          "end": "0x335aa"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x335a0",
+          "bytes": "6828000000",
+          "original": "push    28h ; '('",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x335a0",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x335a5",
+          "bytes": "e9c6feffff",
+          "original": "jmp     loc_33470",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x335a5",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x25e3a",
+        "0x25f10",
+        "0x260f5"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x335a0"
+    }
+  ],
+  "existing_evidence": [
+    "docs/data/ida/fd2_ch13_handoff_20261001.json",
+    "docs/data/fd2_hud_persistence_ida.txt"
+  ],
+  "claims": [
+    {
+      "original_location": "IDA LE sub_335A0 0x335A0 bytes6828000000／0x335A5 bytese9c6feffff→loc_33470",
+      "level": "confirmed",
+      "semantic": "push28→共用sub_36CD7→sub_205DA；共用text0後focus runtime0，沿用13主證據完整chunks",
+      "source": "本檔原始2指令與fd2_ch13_handoff_20261001.json 0x33470／0x33475／0x3347A→0x3344D→0x33142"
+    },
+    {
+      "original_location": "dosgolem seq107 view／raw records",
+      "level": "confirmed",
+      "semantic": "16名我方加60筆group0；51敵軍、9友軍；camera9,3 cursor12,7 visible3,4 selector1",
+      "source": "startup_compare"
+    },
+    {
+      "original_location": "IDA LE 0x51AAB／0x51AAC／0x51A0C",
+      "level": "confirmed",
+      "semantic": "HUD A與anchor繼承持續狀態，B=1沿用既有可操作戰場契約",
+      "source": "docs/data/fd2_hud_persistence_ida.txt及fd2_ch13_handoff_20261001.json"
+    }
+  ],
+  "startup_compare": {
+    "oracle_path": "work/parity-slot-ch16/preflight-original-r2/checkpoint-0107.json",
+    "oracle_sha256": "c60d9dc7f69d14052f8fe6d89b7587ee808e8c46c2d1ba3c0223a54a319dd4a1",
+    "slot_sha256": "ecea8b82e1b6a31302b9b8cde54207069fdffdaf719c1a139dbf96b3d72fcf91",
+    "map_source": "remake/assets/maps/map15/map15_units.json",
+    "map_sha256": "2bc91631b51811ede69de5e3c6a4ad33c80e0c626669a7418ef67f9f2b86b218",
+    "party_prefix": 16,
+    "group0_count": 60,
+    "enemy_count": 51,
+    "special_count": 9,
+    "total_runtime": 76,
+    "view": {
+      "aux_phase": 0,
+      "camera_x": 9,
+      "camera_y": 3,
+      "cursor_x": 12,
+      "cursor_y": 7,
+      "gold": 2000,
+      "overlay_selector": 1,
+      "rng_word": 45043,
+      "round": 1,
+      "visible_x": 3,
+      "visible_y": 4
+    },
+    "matched_group0": [
+      {
+        "runtime_index": 16,
+        "x": 32,
+        "y": 35,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 462
+      },
+      {
+        "runtime_index": 17,
+        "x": 20,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 462
+      },
+      {
+        "runtime_index": 18,
+        "x": 15,
+        "y": 15,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 462
+      },
+      {
+        "runtime_index": 19,
+        "x": 31,
+        "y": 34,
+        "raw_byte6": 0,
+        "raw_byte8": 103,
+        "raw_word42": 462
+      },
+      {
+        "runtime_index": 20,
+        "x": 17,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 21,
+        "x": 22,
+        "y": 33,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 22,
+        "x": 23,
+        "y": 32,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 23,
+        "x": 29,
+        "y": 11,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 24,
+        "x": 18,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 25,
+        "x": 16,
+        "y": 14,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 26,
+        "x": 30,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 27,
+        "x": 30,
+        "y": 10,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 28,
+        "x": 32,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 29,
+        "x": 21,
+        "y": 32,
+        "raw_byte6": 0,
+        "raw_byte8": 102,
+        "raw_word42": 336
+      },
+      {
+        "runtime_index": 30,
+        "x": 18,
+        "y": 16,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 31,
+        "x": 19,
+        "y": 15,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 32,
+        "x": 29,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 33,
+        "x": 28,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 34,
+        "x": 31,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 35,
+        "x": 23,
+        "y": 30,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 36,
+        "x": 20,
+        "y": 31,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 37,
+        "x": 24,
+        "y": 31,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 38,
+        "x": 21,
+        "y": 30,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 39,
+        "x": 28,
+        "y": 33,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 40,
+        "x": 31,
+        "y": 31,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 41,
+        "x": 30,
+        "y": 32,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 42,
+        "x": 29,
+        "y": 31,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 43,
+        "x": 28,
+        "y": 10,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 44,
+        "x": 16,
+        "y": 12,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 45,
+        "x": 15,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 46,
+        "x": 31,
+        "y": 30,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 47,
+        "x": 29,
+        "y": 33,
+        "raw_byte6": 0,
+        "raw_byte8": 81,
+        "raw_word42": 300
+      },
+      {
+        "runtime_index": 48,
+        "x": 18,
+        "y": 14,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 49,
+        "x": 29,
+        "y": 9,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 50,
+        "x": 33,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 51,
+        "x": 25,
+        "y": 32,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 52,
+        "x": 19,
+        "y": 32,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 53,
+        "x": 30,
+        "y": 35,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 54,
+        "x": 32,
+        "y": 32,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 55,
+        "x": 22,
+        "y": 29,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 56,
+        "x": 17,
+        "y": 15,
+        "raw_byte6": 0,
+        "raw_byte8": 88,
+        "raw_word42": 324
+      },
+      {
+        "runtime_index": 57,
+        "x": 31,
+        "y": 11,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 351
+      },
+      {
+        "runtime_index": 58,
+        "x": 19,
+        "y": 13,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 351
+      },
+      {
+        "runtime_index": 59,
+        "x": 16,
+        "y": 16,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 351
+      },
+      {
+        "runtime_index": 60,
+        "x": 22,
+        "y": 31,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 351
+      },
+      {
+        "runtime_index": 61,
+        "x": 34,
+        "y": 34,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 351
+      },
+      {
+        "runtime_index": 62,
+        "x": 29,
+        "y": 34,
+        "raw_byte6": 0,
+        "raw_byte8": 91,
+        "raw_word42": 351
+      },
+      {
+        "runtime_index": 63,
+        "x": 32,
+        "y": 33,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 369
+      },
+      {
+        "runtime_index": 64,
+        "x": 30,
+        "y": 36,
+        "raw_byte6": 0,
+        "raw_byte8": 94,
+        "raw_word42": 369
+      },
+      {
+        "runtime_index": 65,
+        "x": 22,
+        "y": 20,
+        "raw_byte6": 1,
+        "raw_byte8": 18,
+        "raw_word42": 280
+      },
+      {
+        "runtime_index": 66,
+        "x": 23,
+        "y": 21,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 67,
+        "x": 21,
+        "y": 19,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 68,
+        "x": 22,
+        "y": 21,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 69,
+        "x": 22,
+        "y": 19,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 70,
+        "x": 21,
+        "y": 21,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 71,
+        "x": 23,
+        "y": 19,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 72,
+        "x": 23,
+        "y": 20,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 73,
+        "x": 21,
+        "y": 20,
+        "raw_byte6": 1,
+        "raw_byte8": 68,
+        "raw_word42": 432
+      },
+      {
+        "runtime_index": 74,
+        "x": 31,
+        "y": 5,
+        "raw_byte6": 0,
+        "raw_byte8": 98,
+        "raw_word42": 210
+      },
+      {
+        "runtime_index": 75,
+        "x": 4,
+        "y": 23,
+        "raw_byte6": 0,
+        "raw_byte8": 98,
+        "raw_word42": 210
+      }
+    ],
+    "matched_party_deploy": [
+      [
+        12,
+        7
+      ],
+      [
+        16,
+        4
+      ],
+      [
+        13,
+        4
+      ],
+      [
+        12,
+        3
+      ],
+      [
+        9,
+        5
+      ],
+      [
+        10,
+        7
+      ],
+      [
+        16,
+        6
+      ],
+      [
+        15,
+        3
+      ],
+      [
+        11,
+        1
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        10,
+        3
+      ],
+      [
+        11,
+        5
+      ],
+      [
+        14,
+        6
+      ],
+      [
+        15,
+        7
+      ],
+      [
+        9,
+        1
+      ],
+      [
+        13,
+        1
+      ]
+    ],
+    "state_injections": []
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "scope": "只補battle_ch16 native_map_view與native_map_hud_inherited B=1；既有scenario group0與部署不修改",
+    "acceptance": "正常LOAD選人後16人＋60records及完整RGB≤640；缺少視圖仍fail-closed；完整章不升級",
+    "ready_review": "READY原條件保留；僅本有限scope通過，完整章仍#83"
+  },
+  "verification": {
+    "scope": "有限正常LOAD／選人／起手，RUNTIME-E1",
+    "spec_status": "CONFORMED",
+    "receipt": "docs/data/ui-traces/ch16-native-startup.json",
+    "receipt_sha256": "7323b016aae4c166103758754d3a1c64a48bbca982a837d628a3b52c64094dcb",
+    "frames": {
+      "compared": 5,
+      "rgb_diff_pixels": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "budget": 640,
+      "unmasked": true,
+      "whole_chapter_min_frames": 12,
+      "full_chapter_passed": false
+    },
+    "go_regression": {
+      "packages_passed": 19,
+      "game_seconds": 150.473,
+      "log": "work/parity-slot-ch16/startup-go-regression-r3.log",
+      "log_sha256": "7127f35328c185f61f95782940e602152a5dbb70fcb15d7ef955c4a954c3e149",
+      "image": "fd2-go-test-local:20260909",
+      "raw_preparation_test": "PASS, original FDOTHER.DAT／FDICON.B24 read-only",
+      "source_background_branches": [
+        "城鎮caller保留／確認還原",
+        "獨立黑底caller保持",
+        "缺失來源拒收"
+      ],
+      "known_failed_attempts": [
+        {
+          "log": "work/parity-slot-ch16/startup-go-regression-r1.log",
+          "classification": "canonical清冊hash未更新；舊整備fixture路徑造成SKIP，未算驗收"
+        },
+        {
+          "log": "work/parity-slot-ch16/startup-go-regression-r2.log",
+          "classification": "路徑修正後真正跑出九字誤寫十字的舊fixture斷言，已訂正；不是產品缺陷"
+        }
+      ]
+    },
+    "prior_16_member_chapter": {
+      "chapter": 15,
+      "status": "passed",
+      "report": "work/parity-slot-ch16/prior-ch15-parity.json",
+      "report_sha256": "15ef41ea96181e2af3b70ae2ba3fadf829d43d4d8154039aea835593ff373ef8",
+      "frames": 156,
+      "whole_save": {
+        "oracle_save_sha256": "649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "remake_save_sha256": "649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "remake_note": "save_sha256=649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "blocked_by": null,
+        "status": "ok"
+      }
+    }
+  }
+}

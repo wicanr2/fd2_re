@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "issue": 84,
+  "date": "2026-10-02",
+  "status": "CONFORMED",
+  "scope": "章對拍工具的正常順序選人及確認；有限起手比較，不代表完整章PLAYER-E2",
+  "reference": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "LE linear, database base 0x10000"
+  },
+  "existing_evidence": [
+    {
+      "level": "confirmed",
+      "source": "docs/data/ida/fd2_preparation_fixed_record_ida.txt",
+      "original_names": [
+        "sub_318AD",
+        "sub_320FC"
+      ],
+      "addresses": [
+        "0x318BE",
+        "0x318C7",
+        "0x31A54",
+        "0x31A60",
+        "0x31A6C",
+        "0x3210E"
+      ],
+      "contract": "quota15／19，selection byte i對應persistent record i+1，record0固定，選滿後原序已選優先重排"
+    },
+    {
+      "level": "confirmed",
+      "source": "docs/data/ida/fd2_preparation_gray_roster_ida.txt",
+      "contract": "保留固定隊長，未選角色灰色；沿用已證實原生整備素材"
+    }
+  ],
+  "oracle": {
+    "runner": {
+      "schema_version": 1,
+      "kind": "fd2_oracle_runner_provenance",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "dosgolem_branch": "feat/fd2-oracle-input-chain",
+      "dosgolem_tracked_dirty_files": 0,
+      "dosgolem_untracked_files": 0,
+      "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+      "generated_at": "2026-10-02T03:21:17+00:00",
+      "control_plan": "docs/data/parity-plans/ch16-preflight-select.jsonl",
+      "lock_ally_hp": false,
+      "force_enemy_clear_declared": false,
+      "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "original_reference_manifest": "docs/data/fd2-reference-files.json",
+      "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch16/preflight-state-r2",
+      "state_injections": [
+        "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+        "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+      ],
+      "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+    },
+    "directory": "work/parity-slot-ch16/preflight-original-r2",
+    "exit_code": 0,
+    "last_seq": 107,
+    "steps": 1155350619,
+    "slot_sha256": "ecea8b82e1b6a31302b9b8cde54207069fdffdaf719c1a139dbf96b3d72fcf91",
+    "plan": "docs/data/parity-plans/ch16-preflight-select.jsonl",
+    "plan_sha256": "a688a4e33c6c1baaf662846a8b5f61e5eace8828eaa716250e0459ce6f2fb18a",
+    "driver_sha256": "4f79180ac2034b8922ca71b440acbf12ae897a60fe09dcd0aa9eb8e70d521a7a",
+    "marks": [
+      {
+        "label": "town_loaded",
+        "seq": 17,
+        "input_chain": [
+          "0x2CFC7",
+          "0x36CE0",
+          "0x2CE08",
+          "0x260EA",
+          "0x25DC2",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "kbd_reads": 3,
+        "checkpoint_sha256": "fe6b1250d7a252628f421cedec3a35bae799a0882dd3be3d5f2948058061f085",
+        "png_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e"
+      },
+      {
+        "label": "departure_prompt",
+        "seq": 38,
+        "input_chain": [
+          "0x19CD2",
+          "0x2D11D",
+          "0x2CF39",
+          "0x260EA",
+          "0x25DC2",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "kbd_reads": 6,
+        "checkpoint_sha256": "ed3dc408f6aef8fe96b63f23e8a1593aff4e76220b26e6b1b1ff230f6247510b",
+        "png_sha256": "eab9dcaa1bf6e8472dd764c225c21e165d2e46beac3895c3be7a3e95eb60663f"
+      },
+      {
+        "label": "party_selection",
+        "seq": 43,
+        "input_chain": [
+          "0x32002",
+          "0x32051",
+          "0x31A2E",
+          "0x37421",
+          "0x2D170",
+          "0x2CF39",
+          "0x260EA",
+          "0x25DC2",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "kbd_reads": 7,
+        "checkpoint_sha256": "200cf5cd3955d6db8f50e37b43e2efc5dbf8992cd55725c5ac55cdeaae900b89",
+        "png_sha256": "ff9dfd18172261696092aabc1bad72c1799d32165e22a0b72f4137cd208ed63a"
+      },
+      {
+        "label": "departure_confirmation",
+        "seq": 70,
+        "input_chain": [
+          "0x4E906",
+          "0x19C2A",
+          "0x31D8E",
+          "0x2D170",
+          "0x2CF39",
+          "0x260EA",
+          "0x25DC2",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "kbd_reads": 22,
+        "checkpoint_sha256": "430f1b1b20033e6935eda1b850903c41cfcc8c9dcbe12c5a7df3bba135039347",
+        "png_sha256": "912a194365fa25b4f7b5dcfa3d573bab346ed4a5d9c85f60475af9f8802439eb"
+      },
+      {
+        "label": "battle_start",
+        "seq": 107,
+        "input_chain": [
+          "0x12211",
+          "0x11CED",
+          "0x11AE4",
+          "0x117F8",
+          "0x25DD3",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "kbd_reads": 44,
+        "checkpoint_sha256": "c60d9dc7f69d14052f8fe6d89b7587ee808e8c46c2d1ba3c0223a54a319dd4a1",
+        "png_sha256": "c96d568ed2369d11f3d55080c4856e4c9d886622a8144f5cbe66d78fff97a9b7"
+      }
+    ],
+    "normal_keys": "seq39初次YES；seq44..58共15次Enter；seq71最終YES；起手camp2共16人",
+    "level": "confirmed"
+  },
+  "superseded_failure": {
+    "directory": "work/parity-slot-ch16/preflight-original-r1",
+    "plan": "docs/data/parity-plans/ch16-preflight.jsonl",
+    "exit_code": 7,
+    "last_seq": 239,
+    "steps": 2315350619,
+    "cause": "計畫缺少選人按鍵，停留selector；不是重製產品缺陷"
+  },
+  "spec": {
+    "transitions": [
+      "departure_prompt→party_selection：既有正式owner消費YES並完成關框",
+      "party_selection→departure_confirmation：只重播control-history已宣告的連續Enter與空等待；Enter數必須等於native quota",
+      "departure_confirmation→battle_start：既有正式owner消費最終YES，正常story到戰場"
+    ],
+    "typed_input": "mark(label,seq)加原版checkpoint(input_chain,exe_sha256)與control-history(seq,key)；未知来源、缺少前置mark、重複或錯量選取一律拒收",
+    "output": "各階段320×200完整RGB候選與原序單位狀態；只枚舉既有合法閃爍／待機相位，禁止遮罩、代用原版圖片或直接寫partyDeploy",
+    "save": "不改正式存檔與部署邏輯；完整章戰後SAV另由#83驗收",
+    "acceptance": [
+      "正常LOAD至battle_start行為、原序身份及所有5點完整RGB≤640",
+      "錯量／未知來源／缺少mark拒收測試",
+      "既有正常整備與16人章回放回歸"
+    ],
+    "known_limits": "本次原版r2工具分類為unknown的三個整備mark，由既有IDA caller與checkpoint輸入鏈證實；圖片差異另立產品Issue處理",
+    "copyright": "原版包僅本機，公開只保存雜湊及規格"
+  },
+  "review": [
+    "DRAFT：以原r1停止點界定工具缺口",
+    "READY：既有IDA固定record契約加同槽r2正常按鍵與16人出戰實驗足以實作工具；確認畫面待同狀態比較",
+    "CONFORMED：五點完整RGB與原序16人相符、82控制器測試、原始素材兩分支與19套件回歸、第十五章既有四gate通過"
+  ],
+  "verification": {
+    "scope": "有限正常LOAD／選人／起手，RUNTIME-E1",
+    "spec_status": "CONFORMED",
+    "receipt": "docs/data/ui-traces/ch16-native-startup.json",
+    "receipt_sha256": "7323b016aae4c166103758754d3a1c64a48bbca982a837d628a3b52c64094dcb",
+    "frames": {
+      "compared": 5,
+      "rgb_diff_pixels": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "budget": 640,
+      "unmasked": true,
+      "whole_chapter_min_frames": 12,
+      "full_chapter_passed": false
+    },
+    "go_regression": {
+      "packages_passed": 19,
+      "game_seconds": 150.473,
+      "log": "work/parity-slot-ch16/startup-go-regression-r3.log",
+      "log_sha256": "7127f35328c185f61f95782940e602152a5dbb70fcb15d7ef955c4a954c3e149",
+      "image": "fd2-go-test-local:20260909",
+      "raw_preparation_test": "PASS, original FDOTHER.DAT／FDICON.B24 read-only",
+      "source_background_branches": [
+        "城鎮caller保留／確認還原",
+        "獨立黑底caller保持",
+        "缺失來源拒收"
+      ],
+      "known_failed_attempts": [
+        {
+          "log": "work/parity-slot-ch16/startup-go-regression-r1.log",
+          "classification": "canonical清冊hash未更新；舊整備fixture路徑造成SKIP，未算驗收"
+        },
+        {
+          "log": "work/parity-slot-ch16/startup-go-regression-r2.log",
+          "classification": "路徑修正後真正跑出九字誤寫十字的舊fixture斷言，已訂正；不是產品缺陷"
+        }
+      ]
+    },
+    "prior_16_member_chapter": {
+      "chapter": 15,
+      "status": "passed",
+      "report": "work/parity-slot-ch16/prior-ch15-parity.json",
+      "report_sha256": "15ef41ea96181e2af3b70ae2ba3fadf829d43d4d8154039aea835593ff373ef8",
+      "frames": 156,
+      "whole_save": {
+        "oracle_save_sha256": "649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "remake_save_sha256": "649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "remake_note": "save_sha256=649de7b9254ec9a3d9edadfad268297e5bd70165d7bccf51e76da710ba302b87",
+        "blocked_by": null,
+        "status": "ok"
+      }
+    }
+  }
+}

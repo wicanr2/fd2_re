@@ -258,6 +258,21 @@ func ComposeNativePreparationFrame(
 	selected []bool,
 	cursor, cycle, limit int,
 ) ([]byte, error) {
+	return ComposeNativePreparationFrameOnBackground(make([]byte, 320*200), assets, selectorKeys, selected, cursor, cycle, limit)
+}
+
+// ComposeNativePreparationFrameOnBackground follows sub_318AD's saved caller
+// frame (0x31930..0x31957). Panel writes preserve every untouched source pixel.
+func ComposeNativePreparationFrameOnBackground(
+	background []byte,
+	assets *NativePreparationAssets,
+	selectorKeys []int,
+	selected []bool,
+	cursor, cycle, limit int,
+) ([]byte, error) {
+	if len(background) != 320*200 {
+		return nil, errors.New("fdother: preparation caller frame unavailable")
+	}
 	if assets == nil || limit < 0 || limit > 99 || len(selectorKeys) != len(selected) {
 		return nil, errors.New("fdother: invalid native preparation frame input")
 	}
@@ -270,7 +285,7 @@ func ComposeNativePreparationFrame(
 	if selectedCount > limit {
 		return nil, errors.New("fdother: native preparation selection exceeds limit")
 	}
-	frame := make([]byte, 320*200)
+	frame := append([]byte(nil), background...)
 	if err := assets.UpperRight.BlitOpaqueAt(frame, 320, 92, 7, false); err != nil {
 		return nil, err
 	}

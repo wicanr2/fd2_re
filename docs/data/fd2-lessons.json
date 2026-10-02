@@ -1086,6 +1086,14 @@
         ],
         "pattern": "0x4E01F"
       }
+    },
+    {
+      "id": "original-fixture-skip-path-check",
+      "date": "2026-10-02",
+      "area": "驗證前置狀態",
+      "rule": "宣稱原始素材回歸通過前，核對測試工作目錄、原始素材相對路徑與實際PASS。素材已存在而路徑錯誤時，修正路徑並執行該測試，不把t.Skip當驗收。",
+      "why": "#86既有整備UI測試從remake/cmd/fd2讀../../org_game，實際原檔在../../../org_game；先前略過也遮蔽了FDTXT0x292九字被誤寫十字的舊斷言。正常同槽確認完整RGB0px後，修正fixture並實跑城鎮／黑底來源與關框還原。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/86；docs/data/ui-traces/ch16-native-startup.json；remake/cmd/fd2/native_preparation_ui_test.go"
     }
   ]
 }

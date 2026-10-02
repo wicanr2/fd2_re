@@ -106,6 +106,10 @@ func TestPreparationPromptSourcePreservesTownAndClearsStandalone(t *testing.T) {
 	if len(g.prepPromptSource) != 320*200 || g.prepPromptSource[0] != 7 {
 		t.Fatal("town-backed preparation discarded its source frame")
 	}
+	g.restartPreparationSelection()
+	if len(g.prepPromptSource) != 320*200 || g.prepPromptSource[0] != 7 {
+		t.Fatal("選人開始丟失城鎮caller")
+	}
 	g.setupPreparation(&campaign.Node{Type: "preparation", PartyLimit: 15})
 	if len(g.prepPromptSource) != 320*200 || g.prepPromptSource[0] != 0 {
 		t.Fatal("standalone preparation did not use 0x2cc04 black source")

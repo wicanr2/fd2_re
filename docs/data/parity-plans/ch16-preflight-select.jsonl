@@ -1,0 +1,27 @@
+# 第十六章有界預檢；GitHub #83／#84。依111／114由固定建構槽正常LOAD至戰場起手。
+# 17人名冊需15選人＋固定隊長；正常Enter選取後確認。
+# 只查名冊、鏡頭與HUD，不清敵、不鎖HP，不作整章PLAYER-E2驗收。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":4}
+{"mark":"party_selection","steps":1000000}
+{"key":"enter","steps":20000000,"repeat":15}
+{"key":"","steps":10000000,"repeat":12}
+{"mark":"departure_confirmation","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":200}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"battle_start","steps":1000000}

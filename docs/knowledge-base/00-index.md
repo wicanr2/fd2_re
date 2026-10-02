@@ -282,3 +282,16 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十五章完整對拍正式收據（#76／#78）](../data/ui-traces/parity-ch15.json)：第4／7／9回合、416筆AI、戰後城鎮、交易與酒店SAV；依111／114例外列PLAYER-E2，舊失敗與140億預算前綴均可回查。
 
 - [第十五章固定抽樣對照總覽索引](../data/ui-traces/parity-ch15-samples.json)：每種畫面第一點、所有非零差異與回合事件後指定點，完整原版／重製／差異三欄，可回查正式收據與PNG雜湊。
+
+- 第十六章 #83：[建構槽清冊](../data/parity-slots/ch16-manifest.json)與[正常LOAD有界起手預檢](../data/parity-plans/ch16-preflight.jsonl)，只驗名冊／部署／視圖，整章四項與戰後SAV仍待驗。
+
+- 第十六章 #84：[17人名冊正常選人預檢計畫](../data/parity-plans/ch16-preflight-select.jsonl)，15位可選隊員與固定隊長；原首次計畫停在選人，舊輸入與收據保留，不列產品缺陷。
+
+- [章對拍選人工具規格（#84）](../data/fd2_parity_preparation_selection_20261002.json)：既有IDA固定隊長契約、17人槽正常按鍵與有界起手收據；有限CONFORMED／RUNTIME-E1，完整章由#83驗收。
+
+- [第十六章原生起手規格（#85）](../data/ida/fd2_ch16_startup_20261002.json)：335A0跳躍尾段、既有constructor與76筆同槽起手，有限CONFORMED／RUNTIME-E1。
+- [城鎮整備caller背景（#86）](../data/ida/fd2_town_preparation_background_20261002.json)：完整原始保存／還原與確認consumer，有限CONFORMED／RUNTIME-E1；[原失敗診斷](../data/ui-traces/parity-ch16-preflight.json)保留。
+
+- [第十六章有限原生起手收據（#84／#85／#86）](../data/ui-traces/ch16-native-startup.json)：五個完整RGB點0px、16人原序與76筆起手；僅RUNTIME-E1，完整章12幀及戰後SAV仍待#83。
+
+- [第十六章有限起手總覽索引](../data/ui-traces/ch16-native-startup-samples.json)與[原版／重製／差異總覽](../figures/ch16-native-startup-samples.png)：固定抽樣五個kind首點，僅有限起手RUNTIME-E1，完整章仍待#83。

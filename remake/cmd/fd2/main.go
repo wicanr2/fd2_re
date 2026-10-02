@@ -4404,7 +4404,7 @@ func (g *Game) restartPreparationSelection() {
 	g.prepConfirmSel = 0
 	g.nativeClassUIJob = nil
 	g.resetNativeClassUIPulse()
-	g.prepPromptSource = nil
+	// 0x31930保存caller；選人與最終確認都沿用同一來源。
 	g.partyDeploy = make(map[int]bool)
 }
 

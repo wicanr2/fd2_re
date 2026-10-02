@@ -1838,3 +1838,32 @@ levels6、seed4、event7:17=1、我方AP+200／DP+0／DX+60建構槽與第10回�
 本批沒有修改正式Go程式；完整章回放15.586秒與前綴工具7項拒收測試通過。
 前批19套件完整回歸保留在#79主證據，本批不重複宣稱已重跑。
 重生入口、維護映像、固定原版雜湊、計畫／槽／日誌雜湊及串行命令均在正式收據的reproduce／verification。
+
+## 2026-10-02 第十六章有限起手驗收（#84／#85／#86）
+
+[同槽起手收據](../data/ui-traces/ch16-native-startup.json)保存五個完整RGB比較點：
+城鎮、出戰提示、選人、最終確認與戰場操作權交接，全部0px，沒有遮罩。
+正常LOAD後以15次Enter選人，再經最終確認與原生開場；固定record0與15名選取角色共16人，
+其後追加60筆group0形成76筆前沿，完整部署、順序、座標、陣營與HP逐欄相符。
+
+[選人工具規格](../data/fd2_parity_preparation_selection_20261002.json)沿用已閉合sub_318AD／sub_320FC：
+回放只接受固定EXE、專屬caller、連續控制歷史及15／19合法配額，缺步、未知鍵、錯來源拒絕。
+原版r1停在selector是控制計畫缺項，失敗run保留；r2正常抵達seq107。
+[起手主證據](../data/ida/fd2_ch16_startup_20261002.json)保留335A0的直接指令及共用LOADCH consumer，
+既有視圖與繼承HUD接入canonical正式戰役，不重做共用constructor或改資料格式。
+
+#86依同狀態反證有限重開caller背景consumer：舊selector板外黑底、最終確認仍留選人板，
+與原版seq43／70矛盾。[背景主證據](../data/ida/fd2_town_preparation_background_20261002.json)
+保存IDA 9.4原始名稱、bytes、固定雜湊與LE線性位址；原版31930..31957保存／複製caller，
+31B80..31B95還原，再交既有最終確認對白。正式consumer保留來源，城鎮與獨立黑底兩分支均抽驗。
+原quota、固定record、灰階圖示與字形證據不重開；selector十一階段mosaic時序未驗。
+
+三份有限規格均列CONFORMED／RUNTIME-E1。完整Go19套件通過，遊戲150.473秒；
+原始素材整備測試實際PASS，缺來源拒收及兩背景分支通過，工具82項測試通過。
+舊16人第十五章完整回放再次通過四項、156張畫面與酒店SAV，未破壞免選人路徑。
+首輪canonical hash及第二輪舊字數斷言失敗，原因與乾淨重跑日誌保留於起手收據。
+
+[有限起手總覽](../figures/ch16-native-startup-samples.png)與[來源索引](../data/ui-traces/ch16-native-startup-samples.json)
+只涵蓋上述五點。完整章嚴格診斷仍因少於12張而failed；第十六章#83戰鬥、戰後交易與SAV未驗。
+台帳保持slot-ready，不能提升PLAYER-E2；完成章數仍由正式台帳工具產生。
+重生容器命令、原版／工具／素材／日誌雜湊、來源拒收測試均在有限收據，不另造章完成門檻。

@@ -424,15 +424,19 @@
     },
     {
       "chapter": 16,
-      "status": "todo",
+      "status": "slot-ready",
       "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "slot_manifest": "docs/data/parity-slots/ch16-manifest.json",
+      "slot_sha256": "ecea8b82e1b6a31302b9b8cde54207069fdffdaf719c1a139dbf96b3d72fcf91",
+      "dosgolem_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+      "date": "2026-10-02",
+      "verify": "FD2_ORACLE_STATE=<fresh-state> tools/dosgolem_oracle.sh <fresh-original> docs/data/parity-plans/ch16-preflight-select.jsonl",
+      "limitations": [
+        "依111／114固定建構槽政策；五點起手CONFORMED／RUNTIME-E1見docs/data/ui-traces/ch16-native-startup.json。整章四項、最少12張與戰後SAV尚未驗收；#83。"
+      ],
+      "prior_receipts": [
+        "docs/data/ui-traces/ch16-native-startup.json"
+      ]
     },
     {
       "chapter": 17,

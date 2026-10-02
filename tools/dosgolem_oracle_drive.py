@@ -659,6 +659,10 @@ def ui_mode(current):
             continue
         if TREASURE_RANGE[0] <= value <= TREASURE_RANGE[1]:
             return "treasure"
+    # 已閉合整備 caller；共享的 0x19C2A／0x19CD2 單獨不足以判為整備。
+    # #84：正常17人槽 seq38／43／70，固定EXE與來源見工具規格。
+    if any(marker in chain for marker in ("0x2D11D", "0x31A2E", "0x31D8E")):
+        return "preparation"
     for name, marker in UI_MODES:
         if marker in chain:
             return name
