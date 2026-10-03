@@ -113,7 +113,8 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 		if err != nil {
 			t.Fatal(err)
 		}
-		sequence, err := figani.BuildNativeCommand6TargetSequence(schedule, figani.NativeCommand6Coordinates(36, schedule.BaseByte), side)
+		points := figani.NativeCommand6TargetCoordinates(figani.NativeCommand6Coordinates(36, schedule.BaseByte), 42)
+		sequence, err := figani.BuildNativeCommand6TargetSequence(schedule, points, side)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -155,6 +156,30 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 				if got[i] != value {
 					t.Fatalf("resource%d step%d viewport pixel%d：%d != %d", resource, step, i, got[i], value)
 				}
+			}
+		}
+		// 完整兩目標 owner：#33 必須可預建，#32 的 #154 負列仍零發布。
+		base := make([]byte, 320*200)
+		stages := make([][]byte, figani.NativeCommand6DamageStages+1)
+		for i := range stages {
+			stages[i] = base
+		}
+		target.Delay = 1
+		idle := &figani.Animation{Frames: []figani.Frame{target}}
+		all, err := BuildNativeCommand6EffectSequence(NativeCommand6EffectInput{
+			FrontBase: base, TailBase: base, TargetBases: [][][]byte{stages, stages}, TransitionBases: [][]byte{base},
+			ActorEffect: idle, TargetIdle: []*figani.Animation{idle, idle}, Effect: effect, Schedule: schedule, RawSide: side,
+		})
+		if side == 0 {
+			if err != nil || len(all.Targets) != 2 || len(all.Targets[1].Frames) != 12 || len(all.Transitions) != 1 {
+				t.Fatalf("原始#33完整兩目標預建失敗：%v", err)
+			}
+		} else if err == nil || len(all.Front) != 0 || len(all.Targets) != 0 || len(all.Transitions) != 0 || len(all.Tail) != 0 {
+			t.Fatalf("原始#32負列發布部分sequence：%+v err=%v", all, err)
+		}
+		for _, pixel := range base {
+			if pixel != 0 {
+				t.Fatal("原始資產預建改寫caller base")
 			}
 		}
 	}

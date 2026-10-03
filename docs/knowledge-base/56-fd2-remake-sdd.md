@@ -1068,11 +1068,13 @@ X=`fistp(cos*radius+baseByte)`，Y=`fistp(sin*radius*1.2+30)`；角度轉換常�
 
 ID6 target compositor使用可複製的`NativeCommand6TargetState`，初始counter為
 `[0,-1,-2,-3,-4]`、secondary全零。每張先產生mode4 main layers，再畫target，
-再產生mode5 main與secondary layers；非零side只畫main channels0/1，零side只在
-mode5畫全部main channels。負counter使用frame4，state1令secondary=5；mode5後
+再產生mode5 main與secondary layers；非零side在mode4畫main channels0/1，
+mode5畫main channels2/3/4；零side只在mode5畫全部main channels。負counter使用frame4，state1令secondary=5；mode5後
 counter modulo5，任一變2只產生raw numeric marker，secondary在
 `point+(-60,-20)`畫5..9後歸零。動畫長度由mode3回傳12固定，不可把第二張
-marker誤作完成；十二張的marker分布為第一張false、後十一張true。compositor只接受十幀已驗證effect與完整
+marker誤作完成；初始target十二張的marker分布為第一張false、後十一張true。
+首次mode3交換X2/X4、Y2←Y4、Y4←42；同次effect的target與九張boundary保持
+counter／secondary與這組座標，下個target不重新初始化。compositor只接受十幀已驗證effect與完整
 schedule，任一frame／座標越界整張拒絕；音效與數值發布仍不在此primitive。
 
 BG asset boundary：`BG.DAT` 是 LLLLLL archive；generic compositor 的前三個已知 layer #0/#1/#2 都是 `{u16 width,u16 height, 0x4e63d four-mode RLE}` single-frame payload，實測各為 320×100。`fdother.DecodeArchiveSingleFrame` 明確解這種無 frame-directory 的 archive entry，player-archive regression 對三個 layer 解入 320×100 indexed surface。它不替 `0x2b5e1` 的其他 raw selector 命名，也不自動把 current PNG background 當 native layer schedule。
@@ -9356,3 +9358,5 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 2026-10-04：#155已依[stage主契約的補正](../data/ida/fd2_ch24_stage_runtime_20261003.json)關閉驗證工具的錯誤拒收。sub_24D22只旋轉0x53AFF記憶體，不撤回已完成的VGA發布；Go重播與獨立Python比較仍依最後完整copy承接相位，未知來源／參數、未發布與截斷拒收保留。正常攻擊seq1840恢復對拍，整份正常重播可完成且AI順序一致。整份影像報告仍failed，#153及#142不提升；數字、雜湊與範圍依[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-04：#153已依[stage主契約的延後圖片補正](../data/ida/fd2_ch24_stage_runtime_20261003.json)達有限CONFORMED。原版按排程記錄狀態，PNG延至VGA copy完成；Go與獨立Python現在依同一呼叫者完整發布推導圖片相位。正式繪圖流程與原版狀態不改，未知邊界／來源／參數仍拒收。正常選取全RGB及整份影像門檻通過，原版未知介面、晚期計畫與保存仍使整章failed。#142／#154保持未完成，驗證、命令、雜湊與範圍依[58](58-fd2-exe-re-coverage.md)。
+
+2026-10-04：#156依[指令6主契約補正](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)達有限CONFORMED。正式共用owner保存首次mode3座標搬移、非零側mode4／5的0/1與2/3/4分層，以及target／九張轉場後的counter與secondary。固定#33雙目標序列及既有正常收據回歸通過；影像門檻通過不代表本次所有target影格已逐幀對拍。#154負列仍原子拒收，#157數值亂數交錯另待RE，整章#142及DP政策不變。驗證數字與限制由[58](58-fd2-exe-re-coverage.md)承載。

@@ -45,6 +45,44 @@ func TestNativeCommand6CoordinatesPreserveFivePointFormula(t *testing.T) {
 	}
 }
 
+func TestNativeCommand6TargetsPreserveMode3GeometryAndState(t *testing.T) {
+	// 手算對照原始 0x26F13..0x26F3A；保留負 Y，不猜補裁切。
+	front := [5]NativeCommand6Point{{66, 30}, {41, 71}, {1, 55}, {1, 5}, {41, -11}}
+	want := [5]NativeCommand6Point{{66, 30}, {41, 71}, {41, -11}, {1, 5}, {1, 42}}
+	if got := NativeCommand6TargetCoordinates(front, 42); got != want || front[2] != (NativeCommand6Point{1, 55}) {
+		t.Fatalf("mode3 coordinates=%v want=%v", got, want)
+	}
+	for _, side := range []byte{0, 1} {
+		schedule, _ := BuildNativeCommand6PresentationSchedule(side, command6TestAnimation())
+		first, err := BuildNativeCommand6TargetSequence(schedule, want, side)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, layer := range first[0].Mode4 {
+			if side == 0 || layer.Channel > 1 {
+				t.Fatalf("mode4 side%d channel%d", side, layer.Channel)
+			}
+		}
+		for _, layer := range first[0].Mode5 {
+			if side != 0 && layer.Channel < 2 {
+				t.Fatalf("mode5 side%d channel%d", side, layer.Channel)
+			}
+		}
+		transition, err := BuildNativeCommand6TransitionSequence(first[11].Next, schedule, want, side)
+		if err != nil {
+			t.Fatal(err)
+		}
+		state := transition[8].Next
+		if state.Counters != [5]int{1, 0, 4, 3, 2} {
+			t.Fatalf("12+9 calls counters=%v", state.Counters)
+		}
+		second, err := BuildNativeCommand6TargetSequenceFromState(state, schedule, want, side)
+		if err != nil || second[0].HPStage != 1 || second[0].Next.Counters != [5]int{2, 1, 0, 4, 3} {
+			t.Fatalf("next target reset state: frames=%+v err=%v", second, err)
+		}
+	}
+}
+
 func TestNativeCommand6OrbitPlansPreserveModeOrderAndSideSplit(t *testing.T) {
 	schedule, _ := BuildNativeCommand6PresentationSchedule(1, command6TestAnimation())
 	front, err := PlanNativeCommand6PreludeFrame(0, 1, schedule)
@@ -78,7 +116,7 @@ func TestNativeCommand6TargetPlanMarksNumericBoundaryWithoutEndingLoop(t *testin
 	if err != nil {
 		t.Fatal(err)
 	}
-	if first.NumericMarker || len(first.Mode4) != 2 || len(first.Mode5) != 2 || first.Next.Counters != [5]int{1, 0, -1, -2, -3} {
+	if first.NumericMarker || len(first.Mode4) != 2 || len(first.Mode5) != 3 || first.Next.Counters != [5]int{1, 0, -1, -2, -3} {
 		t.Fatalf("first target frame=%+v", first)
 	}
 	second, err := PlanNativeCommand6TargetFrame(first.Next, schedule, points, 1)
@@ -88,7 +126,7 @@ func TestNativeCommand6TargetPlanMarksNumericBoundaryWithoutEndingLoop(t *testin
 	if !second.NumericMarker || second.Next.Counters != [5]int{2, 1, 0, -1, -2} {
 		t.Fatalf("second target frame=%+v", second)
 	}
-	if len(second.Mode5) != 3 || !second.Mode5[2].Secondary || second.Mode5[2].Frame != 5 || second.Mode5[2].Channel != 0 {
+	if len(second.Mode5) != 4 || !second.Mode5[3].Secondary || second.Mode5[3].Frame != 5 || second.Mode5[3].Channel != 0 {
 		t.Fatalf("second secondary layers=%+v", second.Mode5)
 	}
 }

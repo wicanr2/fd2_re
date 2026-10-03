@@ -78,6 +78,15 @@ func NativeCommand6Coordinates(radius int, baseByte byte) [NativeCommand6Channel
 	return points
 }
 
+// NativeCommand6TargetCoordinates preserves the first mode3 writes at
+// 0x26F13..0x26F3A. Later targets keep these coordinates through the 0x54096 gate.
+func NativeCommand6TargetCoordinates(points [NativeCommand6ChannelCount]NativeCommand6Point, nextRadius int) [NativeCommand6ChannelCount]NativeCommand6Point {
+	points[2].X, points[4].X = points[4].X, points[2].X
+	points[2].Y = points[4].Y
+	points[4].Y = nextRadius
+	return points
+}
+
 func nativeCommand6OrbitLayers(mode, radius int, rawSide byte, schedule NativeCommand6PresentationSchedule) ([]NativeCommand6Layer, error) {
 	if schedule.EffectResource != 32 && schedule.EffectResource != 33 {
 		return nil, fmt.Errorf("figani: command6 orbit schedule unavailable")
@@ -161,8 +170,8 @@ func PlanNativeCommand6TargetFrame(state NativeCommand6TargetState, schedule Nat
 				next.Secondary[channel] = 5
 			}
 			draw := rawSide == 0 && mode == 5
-			if rawSide != 0 && channel < 2 {
-				draw = true
+			if rawSide != 0 {
+				draw = mode == 4 && channel < 2 || mode == 5 && channel > 1
 			}
 			if draw {
 				layers = append(layers, NativeCommand6Layer{
@@ -209,10 +218,15 @@ func PlanNativeCommand6TargetFrame(state NativeCommand6TargetState, schedule Nat
 }
 
 // BuildNativeCommand6TargetSequence binds the twelve mode3 frames to the
-// outer 0x2A6BD consumer. All eleven raw markers remain visible, but only the
-// first five publish HP because 0x525AF[6] is five.
+// outer 0x2A6BD consumer for the first target. Only the first five raw markers
+// publish HP because 0x525AF[6] is five.
 func BuildNativeCommand6TargetSequence(schedule NativeCommand6PresentationSchedule, points [NativeCommand6ChannelCount]NativeCommand6Point, rawSide byte) ([]NativeCommand6TargetFrame, error) {
-	state := NewNativeCommand6TargetState()
+	return BuildNativeCommand6TargetSequenceFromState(NewNativeCommand6TargetState(), schedule, points, rawSide)
+}
+
+// BuildNativeCommand6TargetSequenceFromState keeps the handler state passed
+// through sub_2BA22 into the next target's gated mode3 call.
+func BuildNativeCommand6TargetSequenceFromState(state NativeCommand6TargetState, schedule NativeCommand6PresentationSchedule, points [NativeCommand6ChannelCount]NativeCommand6Point, rawSide byte) ([]NativeCommand6TargetFrame, error) {
 	frames := make([]NativeCommand6TargetFrame, 0, NativeCommand6TargetFrames)
 	hpStage := 0
 	for index := 0; index < NativeCommand6TargetFrames; index++ {

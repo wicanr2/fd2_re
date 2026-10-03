@@ -1922,5 +1922,33 @@
       142,
       154
     ]
+  },
+  "command6_target_validation": {
+    "issue": 156,
+    "primary": "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+    "correction_issue": 156,
+    "status": "CONFORMED",
+    "chapter_completion": false,
+    "normal_replay": "work/parity-slot-ch24/fresh-full-remake-r8",
+    "normal_exit": 0,
+    "ai_order_divergences": 0,
+    "full_report": "work/parity-slot-ch24/fresh-full-verify-r8.json",
+    "full_report_status": "failed",
+    "full_report_frames_gate": true,
+    "regressions": [
+      "work/parity-slot-ch23/ch24-command6-target-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-command6-target-verify-r1.json"
+    ],
+    "open_followups": [
+      142,
+      154,
+      157
+    ],
+    "limits": [
+      "69張影像門檻與已完成行為通過，但本份沒有單独比對#156所有target影格；不稱完整逐幀parity。",
+      "整章仍failed於未知原版UI、晚期計畫與保存，正式台帳20/30不變。",
+      "#154仍嚴格拒收；#157數值演出亂數交錯另行RE，這次不改RNG。",
+      "固定seed4／AP+200/DP+0/DX+60建構槽；不宣稱自然傷害、存活、敵方選目標或新增PLAYER-E2。"
+    ]
   }
 }

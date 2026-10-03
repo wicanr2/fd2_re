@@ -43,6 +43,20 @@ func TestBuildNativeCommand6EffectSequencePrebuildsEveryTarget(t *testing.T) {
 		len(sequence.Transitions) != 1 || len(sequence.Transitions[0]) != 9 || len(sequence.Tail) != 7 {
 		t.Fatalf("sequence shape front=%d targets=%d/%d transitions=%d/%d tail=%d", len(sequence.Front), len(sequence.Targets), len(sequence.Targets[0].Frames), len(sequence.Transitions), len(sequence.Transitions[0]), len(sequence.Tail))
 	}
+	// #156：依原始 mode3/mode5 及 12+9 次 counter 推進手算。
+	// 首目標 channel4 在 (1,42)，下一目標 counter4=2；fixture Y=20。
+	for _, sample := range []struct {
+		target, x, y int
+		pixel        byte
+	}{
+		{0, 1, 62, 5},
+		{1, 4, 65, 3},
+		{1, 74, 58, 2},
+	} {
+		if got := sequence.Targets[sample.target].Frames[0][sample.y*320+sample.x]; got != sample.pixel {
+			t.Fatalf("target%d pixel(%d,%d)=%d want%d", sample.target, sample.x, sample.y, got, sample.pixel)
+		}
+	}
 	for target, frames := range sequence.Targets {
 		published := 0
 		for _, stage := range frames.HPStages {

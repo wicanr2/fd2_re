@@ -243,7 +243,7 @@ ID6 mode4/5 target draw plan (2026-08-24)
   frame bytes to0. For either mode4 or mode5, a negative counter selects main
   frame4 without changing the counter; a nonnegative counter selects its low
   byte. Main state1 writes that channel's secondary frame byte to5.
-- With raw actor +6!=0, mode4 and mode5 main passes draw channels0/1 only.
+- [2026-10-04 已否定，保留歷史] With raw actor +6!=0, mode4 and mode5 main passes draw channels0/1 only.
   With raw +6==0, mode4 draws no main channel and mode5 draws all five.
 - A main draw uses the precomputed five-point coordinate plus
   `localDword[state]` on X and `localByte[state]` on Y. The ordering is all
@@ -330,3 +330,26 @@ command ID. The composition page is `work+0x49C0`.
 This is the nine-frame transition between adjacent final targets, not the
 twelve-frame per-target effect. It is `DATA-READY`; missing handler/effect/
 idle/framebuffer provenance remains fail-closed.
+
+ID6 2026-10-04 勘誤：#156 首次 mode3、分層及跨目標狀態
+------------------------------------------------
+
+輸入仍為本檔記錄的固定 FD2.EXE；新核對使用 IDA Pro 9.4，
+位址為 IDA LE linear，原始 bytes 與 caller 見
+docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json 的 corrections issue156。
+新資料庫將 requested 0x26E39 合併在原始 sub_26152，保留兩種定位。
+
+0x27145..0x27161 的直接比較否定上述「mode4 和 mode5 都只畫0/1」：
+非零 raw actor+6 的 mode4 畫通道0/1，mode5 畫2/3/4。
+零側仍只在 mode5 畫全部5個；secondary pass仍走全部通道。
+
+0x26EEC..0x26EF5 的 0x54096 gate 僅首次 mode3 初始化 counters 與 secondary；
+0x26F13..0x26F3A 交換 X2/X4、Y2←Y4、Y4←下一半徑42。
+0x2B059 的9張 sub_2BA22 轉場後，0x2B0B9 的下個 mode3 保留狀態。
+前述11個 numeric marker只適用初始 target，不能推論每個 target 都重置。
+原版負列並未由搬移消除，#154 仍保留嚴格拒收。
+上述三項已證實，正式 consumer 限 RUNTIME-E1；不提升正常玩家逐幀 parity。
+
+另見 #157：0x2AEC0 命中 marker 後的 0x2AF40 抖動 RNG 與
+0x2B114 下個目標 resolve，正式指令6尚缺交錯 walk。
+缺正常命中逐次 trace，相關數值結果仍待驗，不併入 #156。

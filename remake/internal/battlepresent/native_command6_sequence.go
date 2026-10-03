@@ -55,7 +55,6 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 			return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 transition %d base unavailable", index)
 		}
 	}
-	points := figani.NativeCommand6Coordinates(36, in.Schedule.BaseByte)
 	out := NativeCommand6EffectSequence{Targets: make([]NativeCommand6TargetSequence, len(in.TargetIdle))}
 
 	frontBase := append([]byte(nil), in.FrontBase...)
@@ -78,10 +77,12 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 	if radius != 42 {
 		return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 front radius=%d", radius)
 	}
+	points := figani.NativeCommand6TargetCoordinates(figani.NativeCommand6Coordinates(36, in.Schedule.BaseByte), radius)
+	state := figani.NewNativeCommand6TargetState()
 
 	lastTargetFrame := 0
 	for targetIndex, idle := range in.TargetIdle {
-		planned, err := figani.BuildNativeCommand6TargetSequence(in.Schedule, points, in.RawSide)
+		planned, err := figani.BuildNativeCommand6TargetSequenceFromState(state, in.Schedule, points, in.RawSide)
 		if err != nil {
 			return NativeCommand6EffectSequence{}, err
 		}
@@ -106,8 +107,9 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 			}
 		}
 		lastTargetFrame = idleFrame
+		state = planned[len(planned)-1].Next
 		if targetIndex+1 < len(in.TargetIdle) {
-			transitionPlan, err := figani.BuildNativeCommand6TransitionSequence(planned[len(planned)-1].Next, in.Schedule, points, in.RawSide)
+			transitionPlan, err := figani.BuildNativeCommand6TransitionSequence(state, in.Schedule, points, in.RawSide)
 			if err != nil {
 				return NativeCommand6EffectSequence{}, err
 			}
@@ -124,6 +126,7 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 				frames = append(frames, pixels)
 			}
 			out.Transitions = append(out.Transitions, frames)
+			state = transitionPlan[len(transitionPlan)-1].Next
 		}
 	}
 

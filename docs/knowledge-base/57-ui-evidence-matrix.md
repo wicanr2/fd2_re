@@ -1602,3 +1602,5 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 2026-10-04：#155已依[stage主契約的補正](../data/ida/fd2_ch24_stage_runtime_20261003.json)關閉驗證工具的錯誤拒收。sub_24D22只旋轉0x53AFF記憶體，不撤回已完成的VGA發布；Go重播與獨立Python比較仍依最後完整copy承接相位，未知來源／參數、未發布與截斷拒收保留。正常攻擊seq1840恢復對拍，整份正常重播可完成且AI順序一致。整份影像報告仍failed，#153及#142不提升；數字、雜湊與範圍依[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-04：#153已依[stage主契約的延後圖片補正](../data/ida/fd2_ch24_stage_runtime_20261003.json)達有限CONFORMED。原版按排程記錄狀態，PNG延至VGA copy完成；Go與獨立Python現在依同一呼叫者完整發布推導圖片相位。正式繪圖流程與原版狀態不改，未知邊界／來源／參數仍拒收。正常選取全RGB及整份影像門檻通過，原版未知介面、晚期計畫與保存仍使整章failed。#142／#154保持未完成，驗證、命令、雜湊與範圍依[58](58-fd2-exe-re-coverage.md)。
+
+2026-10-04：#156依[指令6主契約補正](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)達有限CONFORMED。正式共用owner保存首次mode3座標搬移、非零側mode4／5的0/1與2/3/4分層，以及target／九張轉場後的counter與secondary。固定#33雙目標序列及既有正常收據回歸通過；影像門檻通過不代表本次所有target影格已逐幀對拍。#154負列仍原子拒收，#157數值亂數交錯另待RE，整章#142及DP政策不變。驗證數字與限制由[58](58-fd2-exe-re-coverage.md)承載。

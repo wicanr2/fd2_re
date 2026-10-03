@@ -2411,3 +2411,21 @@ Go11項與Python22項相關回歸通過。相同SAV／原版r6→fresh-full-rema
 相同SAV／正常r6輸入→fresh-full-remake-r7通過75筆檢查點，56/56筆AI入口、零順序分歧與runtime_error。兩個原有固定候選seq206／1867全RGB為0px，PNG雜湊相同；獨立69張影像門檻全部通過既定640px，未改門檻或遮罩。Go12項、Python23項，以及第23章24張／第24章既有有限13張與兩份整檔SAV回歸通過。首輪完整比較因120秒工具時限退出；同一容器、同一命令延至360秒乾淨重跑後取得終端報告，這是驗證環境事件。
 
 整份報告仍failed：已完成行為通過；seq2254原版介面未知，節點拒收；seq2267換手中途按既有規則不比。原版正常T5敗北、晚期計畫與保存未達仍由#142處理，#154負列維持未完成。限工具與有限RUNTIME-E1，DP政策及正式20/30章台帳不變。前述#150／#155的RGB失敗收據留作歷史，不能再單獨當作現況缺陷。
+
+### 2026-10-04 #154：指令6 mode3座標與負列來源核對
+
+沿用[指令1..8主證據](../data/ida/fd2_command1_8_entries_ida.txt)的ID6與[#151配置契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)，不重解sin／cos、12張排程、HP或samples。既有mode3筆記記錄0x5405C..0x54078座標搬移，但typed consumer與真實資產測試直接使用front末次座標。#154先以IDA資料庫的原始指令核對這個writer與consumer映射，判定負列是漏掉座標搬移或工作緩衝契約；尚未建立READY，不改正式序列與嚴格拒收。
+
+### 2026-10-04 #154／#156：負列與目標演出差異分開處理
+
+[原始配置主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)追加IDA9.4原始requested 0x26E39、原始sub_26152合併邊界與raw指令。mode3將X2/X4交換、Y2←Y4、Y4←42；負列從channel4移到channel2，並未消失。固定#32 frame9第一列在x77含不透明像素，推導work首個寫入為(218,-1)、線性偏移-422。sub_2935B與既有sub_4E63D直接計算dest後寫入，沒有負列裁切。這仍缺正常原版#32逐幀收據，不把配置前寫入視為安全合法契約；#154保留嚴格拒收。
+
+另登記[#156](https://github.com/wicanr2/fd2_re/issues/156)：原始0x27145..0x27161非零側mode4畫通道0/1、mode5畫2/3/4，typed兩者都畫0/1；首次mode3座標搬移也未接consumer。54096 gate與0x2B059→0x2B0B9證實target與9張transition後保留counter／secondary，typed每目標重新初始化與原始指令矛盾。主契約先記DRAFT再審查為READY，只修三項handler-owned差異，不改傷害、聲音、素材、DP政策或#154邊界拒收。驗收與整章#142仍待。
+
+### 2026-10-04 #156：指令6目標演出有限 CONFORMED
+
+[主契約補正](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)保留舊配置與指令1..8證據。正式共用effect owner只初始化一次mode3 state，先搬移座標，target12張／boundary9張後傳遞Next；非零側mode4畫0/1、mode5畫2/3/4。每target的五段HP上限與預建原子拒收保留。修正前雙目標手算像素反例失敗，修正後雙側state與圖層、固定#33完整雙目標，以及玩家／AI共用Draw發布及回復測試通過。#32負列仍回空effect，沒有裁切或加入猜測緩衝。
+
+完整Go19套件2311項通過、27項既有略過，零失敗。正常原版r6相同SAV／輸入重播至fresh-full-remake-r8通過75筆檢查點、56/56筆AI零順序分歧與runtime_error；獨立69張影像仍全部通過640px門檻，最大282px。既有第23章24張與第24章有限13張、兩份整檔SAV回歸通過。來源、命令、輸出及實作雜湊存於主契約。
+
+整份正常報告仍failed於未知原版UI、晚期計畫與保存，且這份影像報告未逐幀核對所有指令6 target影格。#156限RE-CLOSED／DATA-READY／RUNTIME-E1，不新增PLAYER-E2，正式台帳仍20/30。新發現的命中數字段RNG與下一目標resolve缺交錯，已先登記[#157](https://github.com/wicanr2/fd2_re/issues/157)，正常命中trace仍待。#142／#154／#157維持未完成，DP決定仍待使用者，現行政策維持AP+200/DP+0/DX+60。
