@@ -5098,3 +5098,13 @@ r2於T18索爾死亡；r3正常到T19玩家游標、再END才死亡。標題新u
 目前狀態統一見[58](58-fd2-exe-re-coverage.md)；#143至145待附最終提交結案，#142保持開啟，正式台帳20／30不變。
 
 2026-10-03：host gh回讀#143／#144／#145均CLOSED，結案附c193fd7d52e0eb6074f3a3a1fb0f9a6c5c7d1efe與有限收據；遠端main一致。正式快照21條開啟，#142仍開啟，20／30不變。此批FD2容器已退出／移除，變更檔擁有權抽查1000:1000；既有無關root-owned研究圖及證據維持原狀。
+
+2026-10-03：全員存活槽r2正常LOAD至T2，4筆AI吻合、前四張RGB0px。seq129位於screen writer且PNG延後，計畫最後沒有後續步驟，frames gate保持failed。這是擷取範圍限制，不稱重製缺陷。晚期新r1沿相同正常LOAD前綴，加入正常移動與接戰，T11才清敵一次；政策未變。原版執行期間不跑完整Go套件。
+
+晚期fresh-full-original-r1未啟動：eip-trace-max500000超過oracle既有上限，來源程式啟動時panic。參數回200000，fresh-full-original-r2按相同SAV／seed／受版控計畫另跑；未加新執行器或改oracle。
+
+### 2026-10-04：第24章原版CPU D8記憶體乘法（#146）
+
+正常T4及12名增援已到達，fresh-full-original-r2在0x26FAB D8 4C 24 30停止，完成6958650848步。指令為FMUL m32fp；trace120378筆未截斷。seq2115 driver timeout是CPU錯誤的後果。新工單#146及canonical 191 READY先於實作；不調HP或遊戲規則。首次CPU反例測試正確重現D8拒絕；測試誤要求既有decoder不支援的FS覆寫，收窄為段覆寫拒絕，不擴大production契約。
+
+D8修正5599d26已推送，相關三套件920筆pass事件，parity無測試但建置通過。同條件r3的2115個舊checkpoint全一致，26FAB已越過；十個指令後3C7C5 D9 FF停止，另開#147。這是新CPU缺口，有限D8已驗收；#142及20／30不變。CPUexit2後手動停止driver容器exit124，沒有遺留容器。

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "status": "CONFORMED",
+  "inference_level": "已證實",
+  "scope": "dosgolem CPU指令切片；不附加遊戲欄位語意、不作整章驗收",
+  "issue": 146,
+  "original": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "instruction": {
+    "original_name": null,
+    "bytes": "D8 4C 24 30",
+    "operand": "fmul dword ptr [esp + 0x30]",
+    "dosgolem_address": {
+      "space": "relocated LE linear",
+      "value": "0x26FAB"
+    },
+    "capstone_address": {
+      "space": "tools/disasm_le.py LE linear",
+      "value": "0x26FAB"
+    },
+    "tool": "Capstone 5.0.3 / fd2-cap-local",
+    "ida_skipped_reason": "純屬已知位址的機械式位元組核對，未新解函式邊界或遊戲資料流。"
+  },
+  "failure": {
+    "run": "work/parity-slot-ch24/fresh-full-original-r2",
+    "runner_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+    "error": "cpu386: EIP=00026FAB opcode=D8：opcode 尚未支援",
+    "steps_completed": 6958650848,
+    "trace_entries": 120378,
+    "trace_limit": 200000,
+    "round": 4,
+    "checkpoint_seq": 2114,
+    "driver_exit": 5,
+    "driver_timeout_note": "seq2115等待逾時是原版CPU先停止的後果，不分類為remake缺陷。",
+    "state_injections": [],
+    "source_save_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+    "seed": 4,
+    "control_plan": "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl",
+    "control_plan_sha256": "4e8c75a8ab5cd8b0a5d25c4ba5acf73fc7758f85e5cf2d56e87dd91d14833fb6"
+  },
+  "spec": {
+    "path": "/home/anr2/cht/dosgolem-fd2-oracle/docs/spec/191-cpu386-x87-fmul-m32.md",
+    "status": "CONFORMED",
+    "source": "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-2a-manual.pdf#page=463",
+    "numerical_policy": "沿用float64；未宣稱80位精度、例外或逐旗標硬體一致。"
+  },
+  "chapter_completion": false,
+  "implementation": {
+    "commit": "5599d26f11510f8f2433efd672f558ded2645903",
+    "branch": "feat/fd2-oracle-input-chain",
+    "remote_head_verified": true,
+    "files": [
+      "internal/cpu386/cpu.go",
+      "internal/cpu386/x87_fmul_single_test.go"
+    ],
+    "test_packages": [
+      "github.com/wicanr2/dosgolem/apps/fd2/cmd/oracle",
+      "github.com/wicanr2/dosgolem/internal/cpu386",
+      "github.com/wicanr2/dosgolem/internal/machine"
+    ],
+    "parity_package": "無測試；建置通過",
+    "passed_test_events": 920,
+    "regression_receipt": "/home/anr2/cht/dosgolem-fd2-oracle/workplace/fd2-d8-regression-20261004.jsonl",
+    "regression_sha256": "d82b9d0cfefea0e87de954497ba1cab1a24c3ae5319f4ad02f1e5e44b016cd99",
+    "original_replay": "work/parity-slot-ch24/fresh-full-original-r3",
+    "original_result": "D8已越過；十個指令後因新CPU缺口#147停止"
+  },
+  "reproduce": {
+    "regression": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 660 docker run --rm --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp -e DOSGOLEM_FD2_EXE=/orig/FD2.EXE -e DOSGOLEM_FD2_ROOT=/orig --workdir /dos golang:1.24-bookworm timeout 600 go test -json ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle ./apps/fd2/cmd/parity -count=1",
+    "original": "test -d /home/anr2/cht/fd2/work/parity-slot-ch24/fresh-full-original-r3 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/fresh-full-state-r3 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch24-fresh-sample-r1.jsonl && timeout 7260 docker run --rm --name fd2-ch24-fresh-full-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --log-opt max-size=10m --log-opt max-file=3 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/fresh-full-original-r3,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/fresh-full-state-r3,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-fresh-sample-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 7200 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nimport hashlib,json,datetime\nfrom pathlib import Path\nexpected=\"222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f\"\nassert hashlib.sha256(Path(\"/orig/FD2.EXE\").read_bytes()).hexdigest()==expected\nassert hashlib.sha256(Path(\"/state/FD2.SAV\").read_bytes()).hexdigest()==\"1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810\"\np={\"schema_version\":1,\"kind\":\"fd2_oracle_runner_provenance\",\"runner\":\"dosgolem apps/fd2/cmd/oracle\",\"dosgolem_root\":\"/home/anr2/cht/dosgolem-fd2-oracle\",\"dosgolem_commit\":\"5599d26f11510f8f2433efd672f558ded2645903\",\"dosgolem_branch\":\"feat/fd2-oracle-input-chain\",\"dosgolem_tracked_dirty_files\":0,\"dosgolem_untracked_files\":0,\"original_root\":\"/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2\",\"generated_at\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"control_plan\":\"docs/data/parity-plans/ch24-fresh-sample-r1.jsonl\",\"eip_trace_window\":{\"from_step\":0,\"to_step\":0,\"max_entries\":200000},\"lock_ally_hp\":False,\"force_enemy_clear_declared\":True,\"original_fd2_exe_sha256\":expected,\"original_reference_manifest\":\"docs/data/fd2-reference-files.json\",\"state_directory\":\"/home/anr2/cht/fd2/work/parity-slot-ch24/fresh-full-state-r3\",\"state_injections\":[],\"evidence_note\":\"第24章111／114固定政策全員存活槽，保留舊接續槽r1／r2 T4敗北與fresh起手r1逾時。沿已驗正常LOAD前綴，正常移動與接戰、END到T11抽樣event54@T2／4／7／10後清敵一次，再正常戰後保存。未通過不作整章驗收。未經四項門檻不作驗收；不鎖HP、不追加強化或治療。\",\"runtime_image\":\"sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac\",\"driver_sha256\":hashlib.sha256(Path(\"/drive.py\").read_bytes()).hexdigest()}\nPath(\"/out/runner.json\").write_text(json.dumps(p,ensure_ascii=False,indent=2)+\"\\n\")\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x11EED,0x11D3B,0x24D48,0x13A9F,0x1E54A,0x2CC71,0x2CCB6,0x30012,0x30550,0x30158 -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 200000 -steps 40000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /drive.py | tee /out/driver.log'"
+  },
+  "resolution": {
+    "date": "2026-10-04",
+    "scope": "只限D8 /1 CPU切片",
+    "cpu_commit": "5599d26f11510f8f2433efd672f558ded2645903",
+    "prefix_report": "work/parity-slot-ch24/d8-old-prefix-r1.json",
+    "prefix_report_sha256": "a50975d935139a6f8b69f9251a216c2c252364a3650842bd04cc2c3522296890",
+    "checkpoints": 2115,
+    "differences": 0,
+    "old_stop_steps": 6958650848,
+    "new_stop_steps": 6958650858,
+    "old_stop_eip": "0x26FAB",
+    "new_stop_eip": "0x3C7C5",
+    "new_cpu_error": "D9 FF FCOS尚未支援",
+    "new_issue": 147,
+    "oracle_exit": 2,
+    "driver_container_exit": 124,
+    "driver_note": "CPU已退出，停止僅剩等待的本輪容器；不是完整計畫通過。",
+    "state_injections": [],
+    "chapter_completion": false
+  }
+}

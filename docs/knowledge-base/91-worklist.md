@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -232,5 +232,25 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### dosgolem 第24章正常T4後x87 D8 /1記憶體乘法未支援
+
+`ch24-oracle-x87-d8-m32fmul` · 缺陷 · [#146](https://github.com/wicanr2/fd2_re/issues/146) · 仍未完成 · 要人判
+
+第24章111／114固定政策全員存活槽1c29f51b…、seed4、受版控ch24-fresh-sample-r1正常LOAD與接戰。原版T4 END已追加group4共12筆；6958650848 steps停在dosgolem relocated LE linear0x26FAB，error cpu386 opcode=D8尚未支援。raw next bytes D8 4C 24 30，ModRM /1與ESP+30；原版檔與來源碼不可修改。這是原版執行器缺口，不稱重製玩法缺陷。先讀現行dosgolem契約與官方x87指令規格，READY後只補必要CPU支援。原始r2輸出保留，不以DOSBox擷取代替正式收據。
+
+怎樣算做完：['在維護中的dosgolem原版oracle來源建立READY規格，綁原版EXE雜湊、實測錯誤、raw bytes與官方x87來源。', '補D8 /1 m32fp乘法，沿現有x87數值政策；有界CPU回歸含有效位址／符號／棧及拒收邊界，不猜遊戲規則。', '提交並推送可重跑oracle版本，原版用相同SAV／seed／ch24-fresh-sample-r1正常輸入重跑，越過0x26FAB並保留原失敗輸出；不得以未完成或截斷trace稱第24章通過。']
+
+證據：`['work/parity-slot-ch24/fresh-full-original-r2/oracle.log', 'docs/data/parity-slots/ch24-fresh-policy-manifest.json', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl']`
+
+### dosgolem 第24章正常T4後x87 D9 FF FCOS未支援
+
+`ch24-oracle-x87-fcos` · 缺陷 · [#147](https://github.com/wicanr2/fd2_re/issues/147) · 仍未完成 · 要人判
+
+相同SAV／seed／受版控輸入在D8修正5599d26重跑，舊2115個原版檢查點全部一致，越過0x26FAB十個指令後在relocated LE 0x3C7C5遇到D9 FF，cpu386 D9 ModRM FF尚未支援。已完成6958650858步，原版收據fresh-full-original-r3保留。這是CPU原版執行器缺口，不是remake玩法缺陷。依Intel x87官方契約先READY再實作；不得猜測遊戲規則或用注入略過。
+
+怎樣算做完：['canonical dosgolem建立READY規格，綁原版雜湊、D9 FF原bytes、CPU停止與Intel FCOS契約；需要補同族指令時逐項列bytes、證據限制與驗收，不猜遊戲語意。', '沿既有float64模型實作FCOS，正確處理非空堆疊、弧度、C2範圍閘門及拒收邊界；不宣稱x87 80位精度／例外逐旗標一致。', '提交並推送可重跑版本，同SAV／seed／計畫核對舊前綴一致並越過0x3C7C5；第24章整章仍由#142驗收。']
+
+證據：`['work/parity-slot-ch24/fresh-full-original-r3/oracle.log', 'work/parity-slot-ch24/d8-old-prefix-r1.json', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl']`
 
 <!-- END fd2_worklist.py render -->

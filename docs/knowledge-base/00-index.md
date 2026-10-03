@@ -503,3 +503,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第24章既定政策全員存活建構槽](../data/parity-slots/ch24-fresh-policy-manifest.json)與[有界正常LOAD探查](../data/parity-plans/ch24-fresh-startup-r1.jsonl)：#142，沿111／114固定AP+200／DP+0／DX+60與seed4，不額外改政策。
 
 - [第24章有限同狀態收據](../data/ui-traces/ch24-finite-parity.json)：#143／#144／#145限RUNTIME-E1驗收，兩種正常選人分支、T2增援與28筆戰後保存；#142整章仍需T4／7／10。
+
+- [第24章全員存活槽正常接戰至T11計畫](../data/parity-plans/ch24-fresh-sample-r1.jsonl)：#142，沿已驗正常LOAD前綴，正常接戰後END，T11才清敵一次；晚期與戰後尚未驗收。
+
+- [第24章原版執行器D8 /1停止與READY契約](../data/ida/fd2_ch24_oracle_d8_20261004.json)：工單#146，CPU切片與整章#142分開。

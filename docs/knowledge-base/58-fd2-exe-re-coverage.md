@@ -2318,3 +2318,9 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 完整Go19套件／2303項通過，27項條件略過；獨立比較器21測試、第23章24張RGB／四項／全檔SAV及canonical fresh export回歸通過。原r1／r2第四回合敗北不刪除，不重擲。#143／#144／#145限本批RUNTIME-E1可結案，#142整章保持開啟，正式台帳仍20／30；有限收據未加入台帳。
 
 晚期抽樣改用[既定政策全員存活槽](../data/parity-slots/ch24-fresh-policy-manifest.json)先做[有界正常LOAD](../data/parity-plans/ch24-fresh-startup-r1.jsonl)。這是111／114既有建構政策，AP+200／DP+0／DX+60、seed4保持不變；25名隊員存活，SHA256為1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810。不把新來源冒稱前章自然接續，尚未作晚期或整章驗收。
+
+全員存活槽有界起手補驗：fresh-startup-original-r2正常到T2，4筆AI入口零分岔；LOAD問題／選人／確認／起手四張完整RGB皆0px。最後T2點seq129停在0x3740C螢幕copy，依oracle既有契約PNG延後，沒有圖片；比較器保留frames=false，不降低五張門檻。正常接戰晚期計畫[新r1](../data/parity-plans/ch24-fresh-sample-r1.jsonl)已啟動，尚未列整章驗收。
+
+2026-10-04勘誤：晚期fresh-full-original-r2正常到T4，group4追加12名。隨後原版CPU在relocated LE 0x26FAB拒絕D8 /1，120378筆trace未達200000上限；driver等待逾時是後果。[#146主證據與READY](../data/ida/fd2_ch24_oracle_d8_20261004.json)限定FMUL m32fp，未注入HP、未清敵。#142仍未驗T7／10及全章四項，台帳20／30不變。
+
+D8切片已列有限CONFORMED：5599d26同槽重跑的舊2115點零差異，越過26FAB後十個指令在3C7C5 D9 FF停止。新CPU缺口由#147處理；第24章仍未通過完整門檻。原版CPUexit2後停止等待容器，收據不改寫。
