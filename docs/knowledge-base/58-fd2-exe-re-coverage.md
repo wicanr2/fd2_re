@@ -2336,3 +2336,5 @@ PF分支有限CONFORMED：30746f0同槽r5的舊2115點零差異，越過3C868 JN
 目前CPU切片狀態以[D8](../data/ida/fd2_ch24_oracle_d8_20261004.json)、[FCOS](../data/ida/fd2_ch24_oracle_fcos_20261004.json)、[PF分支](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)及[FILD16](../data/ida/fd2_ch24_oracle_fild16_20261004.json)四份有限CONFORMED主證據為準；取代上文各輪「重跑中」描述，歷史失敗保留。#149的9b05369同SAV／seed／計畫r6舊2115點零差異，越過26FDB並正常到T5，oracle.log沒有CPU錯誤。194有限驗收已推送951cb55；靜態候選、80位精度與完整硬體旗標未知。
 
 r6在T5正常END後索爾HP420→209→9，seq2274的unit_base重設，seq2277返回標題；不把新標題單位表讀成全隊死亡。driver等待玩家游標逾時exit15，容器自行退出及移除。沒有HP鎖定、治療、強化或重擲。此輪不作#142整章驗收，T7／10及完整重製比較仍待，正式20／30不變。下一輪只調整同槽／seed的正常移動與接戰計畫。
+
+同槽／seed的[正常避敵計畫r2](../data/parity-plans/ch24-fresh-sample-r2.jsonl)保留T1..3前綴；T4先由move_unit正常選取索爾移到(21,22)，後續在下緣待機，移動仍由原版指令環裁決。AP200／DP0／DX60與T11單次清敵不變，不注入座標或HP；r7尚待，未增整章台帳。

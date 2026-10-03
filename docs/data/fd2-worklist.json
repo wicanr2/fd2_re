@@ -350,28 +350,6 @@
         "note": "核對第24章正式四gate、實際保存完整SAV、正常章路徑及回歸。"
       },
       "issue": 142
-    },
-    {
-      "id": "ch24-oracle-x87-fild-m16",
-      "layer": "tooling",
-      "category": "缺陷",
-      "title": "dosgolem 第24章 x87 DF /0 的16位整數載入未支援",
-      "body": "相同SAV／seed／受版控計畫，PF分支修正30746f0重跑已越過3C868，18個指令後在6958650886 steps的relocated LE 0x26FDB遇到DF 44 24 34，cpu386 DF ModRM44尚未支援。原bytes為FILD m16int [ESP+34]。原r5失敗完整保留，CPUexit2後停止等待容器。這是原版CPU支援缺口；不改遊戲狀態或數值政策。另核對這個已知呼叫者附近原bytes，列實際形式，未實測候選不冒稱玩家可達。",
-      "acceptance": [
-        "canonical dosgolem先建READY規格，綁原版雜湊、DF442434、工具位址空間與Intel FILD有號m16int契約，核對相鄰必要CPU形式。",
-        "沿既有x87堆疊模型補DF /0記憶體有號16位整數載入；驗SS定址、2-byte寬度、符號、堆疊容量、FMULP消費及拒收，完整相關CPU與FD2工具回歸。",
-        "提交／推送後用相同SAV／seed／輸入重跑，舊2115點一致且越過26FDB；保留新停止與整章限制。"
-      ],
-      "evidence": [
-        "work/parity-slot-ch24/fresh-full-original-r5/oracle.log",
-        "work/parity-slot-ch24/parity-branch-old-prefix-r1.json",
-        "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "原版CPU在26FDB DF442434停止，m16int FILD待驗"
-      },
-      "issue": 149
     }
   ]
 }

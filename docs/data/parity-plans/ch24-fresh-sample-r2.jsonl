@@ -1,0 +1,74 @@
+# #142：固定同SAV／seed4及AP200／DP0／DX60；不改能力或追加治療。
+# r1在T5 END後索爾HP420→209→9並返回標題。保留正常LOAD與T1..3前綴，T4先正常移動索爾到(21,22)，此後在下緣待機。
+# 可達仍由原版指令環裁決；T11才清敵一次，未通過四gate不作整章驗收。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 10000000, "repeat": 20}
+{"mark": "record_question", "steps": 1000000}
+{"key": "right", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "record_party_selection", "steps": 1000000}
+{"key": "enter", "steps": 20000000, "repeat": 15}
+{"key": "", "steps": 10000000, "repeat": 12}
+{"mark": "departure_confirmation", "steps": 1000000}
+{"key": "enter", "steps": 20000000}
+{"await": "enemy_alive>=1", "steps": 10000000, "max": 300}
+{"await_ui": "cursor", "steps": 10000000, "max": 180}
+{"mark": "battle_start", "steps": 1000000}
+{"key": "", "steps": 10000000, "repeat": 2}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=2", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_2", "steps": 1000000}
+{"sweep_round": true, "max_units": 2, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=3", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_3", "steps": 1000000}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=4", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_4", "steps": 1000000}
+{"move_unit": {"from_index": 0, "to": [21, 22]}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=5", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_5", "steps": 1000000}
+{"move_unit": {"from_index": 0, "toward": [21, 22], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": true}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=6", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_6", "steps": 1000000}
+{"move_unit": {"from_index": 0, "toward": [21, 22], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": true}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=7", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_7", "steps": 1000000}
+{"move_unit": {"from_index": 0, "toward": [21, 22], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": true}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=8", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_8", "steps": 1000000}
+{"move_unit": {"from_index": 0, "toward": [21, 22], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": true}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=9", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_9", "steps": 1000000}
+{"move_unit": {"from_index": 0, "toward": [21, 22], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": true}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=10", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_10", "steps": 1000000}
+{"move_unit": {"from_index": 0, "toward": [21, 22], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": true}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=11", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_11", "steps": 1000000}
+{"force_enemy_clear": true, "steps": 1, "end_turn": false}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "record_question", "steps": 20000000, "max": 300}
+{"mark": "record_question", "steps": 1000000}
+{"preparation_save": true, "slot": 0, "steps": 10000000, "settle": 4, "exit_settle": 8, "max": 30}

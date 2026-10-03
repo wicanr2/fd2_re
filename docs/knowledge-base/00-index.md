@@ -513,3 +513,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第24章原版短JP／JNP缺口與READY](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)：#148，原x87狀態消費端的PF分支。
 
 - [第24章原版FILD m16int缺口與READY](../data/ida/fd2_ch24_oracle_fild16_20261004.json)：#149，已知乘加鏈的有界指令盤點。
+
+- [第24章正常避敵計畫r2](../data/parity-plans/ch24-fresh-sample-r2.jsonl)：#142同槽／seed鍵盤輸入；現況與限制見[58](58-fd2-exe-re-coverage.md)。
