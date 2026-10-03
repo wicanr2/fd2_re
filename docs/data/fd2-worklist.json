@@ -352,28 +352,6 @@
       "issue": 142
     },
     {
-      "id": "ch24-fresh-ai-round4-divergence",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第24章全員存活槽 T4 敵方回合狀態與原版不一致",
-      "body": "#150 的 fresh-full-remake-r3 正常重播，獨立報告首次在 after_enemy_phase seq1775（T4）出現 units_differ：原版有 camp0 (13,15) 與 camp2 (14,16)，重製有 camp0 (14,13)；camp0 (14,14) HP 原版400／重製440。比較點標記 rng_synced_point；不得直接歸咎未受控亂數。後續原版選取 (14,16) 重製無單位且節點分歧。先對照維護中 oracle 現行收據與 RE 主證據，確認第一筆資料或決策差異，禁止調 DP、座標補洞或略過差異。",
-      "acceptance": [
-        "核對同槽、seed4、原版及重製決策前狀態與受控 RNG 條件，定位第一筆真正分歧。",
-        "依證據建立 READY 並修正正式 typed 規則或狀態消費端，未知語意仍拒收。",
-        "同源正常回合重播狀態與節點通過，相關章回歸保留，整章完成另由 #142 驗收。"
-      ],
-      "evidence": [
-        "work/parity-slot-ch24/fresh-full-verify-r3.json",
-        "work/parity-slot-ch24/fresh-full-remake-r3",
-        "work/parity-slot-ch24/fresh-full-original-r6"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "逐筆決策狀態證據及同源正常路徑比較。"
-      },
-      "issue": 152
-    },
-    {
       "id": "ch24-fresh-select-rgb-divergence",
       "layer": "runtime",
       "category": "缺陷",

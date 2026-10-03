@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,16 +110,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第24章全員存活槽 T4 敵方回合狀態與原版不一致
-
-`ch24-fresh-ai-round4-divergence` · 缺陷 · [#152](https://github.com/wicanr2/fd2_re/issues/152) · 仍未完成 · 要人判
-
-#150 的 fresh-full-remake-r3 正常重播，獨立報告首次在 after_enemy_phase seq1775（T4）出現 units_differ：原版有 camp0 (13,15) 與 camp2 (14,16)，重製有 camp0 (14,13)；camp0 (14,14) HP 原版400／重製440。比較點標記 rng_synced_point；不得直接歸咎未受控亂數。後續原版選取 (14,16) 重製無單位且節點分歧。先對照維護中 oracle 現行收據與 RE 主證據，確認第一筆資料或決策差異，禁止調 DP、座標補洞或略過差異。
-
-怎樣算做完：['核對同槽、seed4、原版及重製決策前狀態與受控 RNG 條件，定位第一筆真正分歧。', '依證據建立 READY 並修正正式 typed 規則或狀態消費端，未知語意仍拒收。', '同源正常回合重播狀態與節點通過，相關章回歸保留，整章完成另由 #142 驗收。']
-
-證據：`['work/parity-slot-ch24/fresh-full-verify-r3.json', 'work/parity-slot-ch24/fresh-full-remake-r3', 'work/parity-slot-ch24/fresh-full-original-r6']`
 
 ### 第24章全員存活槽正常選取 seq206 完整 RGB 差異超標
 
