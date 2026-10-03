@@ -2330,3 +2330,7 @@ D8切片已列有限CONFORMED：5599d26同槽重跑的舊2115點零差異，越�
 FCOS切片有限CONFORMED：9ad073f同槽r4舊2115點零差異，越過3C7C5後十個指令在3C868 JNP停止。FSIN只限CPU測試，原版到達性未知。[#148主證據](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)及canonical 193 READY已登錄；第24章仍未通過完整門檻。
 
 2026-10-04目前CPU切片狀態：D8 /1與FCOS有限CONFORMED；PF短分支#148已通過相關回歸並推送30746f0，同槽r5重跑中。原版T4已出現group4的12名增援，尚未完成T4後續重製比較或整章門檻。完整範圍依三份主證據，未新增正式章收據。
+
+PF分支有限CONFORMED：30746f0同槽r5的舊2115點零差異，越過3C868 JNP後18個指令在26FDB DF /0停止。新[#149主證據](../data/ida/fd2_ch24_oracle_fild16_20261004.json)及canonical194 READY已登錄，相鄰乘加鏈只缺有號16位FILD。JP原版到達性未知，未新增完整章驗收。
+
+目前FILD16 #149已按194 READY完成CPU回歸與乘加鏈驗證，9b05369已推送；相同SAV／seed／計畫r6重跑中。D8、FCOS及JNP只限已列有限CONFORMED；#142與正式20／30不變。

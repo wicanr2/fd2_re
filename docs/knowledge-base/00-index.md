@@ -510,4 +510,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第24章原版執行器FCOS缺口與三角函數READY](../data/ida/fd2_ch24_oracle_fcos_20261004.json)：#147，FSIN目前只有靜態原bytes證據。
 
-- [第24章原版短JP／JNP缺口與READY](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)：#148，原x87狀態consumer的PF分支。
+- [第24章原版短JP／JNP缺口與READY](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)：#148，原x87狀態消費端的PF分支。
+
+- [第24章原版FILD m16int缺口與READY](../data/ida/fd2_ch24_oracle_fild16_20261004.json)：#149，已知乘加鏈的有界指令盤點。

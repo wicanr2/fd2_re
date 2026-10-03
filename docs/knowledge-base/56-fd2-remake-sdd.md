@@ -9342,3 +9342,5 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 2026-10-04：第24章晚期原版抽樣先受CPU指令缺口#146阻擋。修正與同槽重跑現況引用[58](58-fd2-exe-re-coverage.md)及[D8主證據](../data/ida/fd2_ch24_oracle_d8_20261004.json)；本工具切片不提升UI或整章驗收等級。
 
 2026-10-04：FCOS有限驗收與後續PF分支阻擋#148引用[58](58-fd2-exe-re-coverage.md)及[三角函數主證據](../data/ida/fd2_ch24_oracle_fcos_20261004.json)。CPU指令切片不提升玩家介面或整章驗收。
+
+2026-10-04：PF分支有限驗收及後續FILD16阻擋#149引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)。指令支援不提升整章或UI驗收等級。

@@ -233,17 +233,7 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
-### dosgolem 第24章正常T4後x87 D9 FF FCOS未支援
-
-`ch24-oracle-x87-fcos` · 缺陷 · [#147](https://github.com/wicanr2/fd2_re/issues/147) · 仍未完成 · 要人判
-
-相同SAV／seed／受版控輸入在D8修正5599d26重跑，舊2115個原版檢查點全部一致，越過0x26FAB十個指令後在relocated LE 0x3C7C5遇到D9 FF，cpu386 D9 ModRM FF尚未支援。已完成6958650858步，原版收據fresh-full-original-r3保留。這是CPU原版執行器缺口，不是remake玩法缺陷。依Intel x87官方契約先READY再實作；不得猜測遊戲規則或用注入略過。
-
-怎樣算做完：['canonical dosgolem建立READY規格，綁原版雜湊、D9 FF原bytes、CPU停止與Intel FCOS契約；需要補同族指令時逐項列bytes、證據限制與驗收，不猜遊戲語意。', '沿既有float64模型實作FCOS，正確處理非空堆疊、弧度、C2範圍閘門及拒收邊界；不宣稱x87 80位精度／例外逐旗標一致。', '提交並推送可重跑版本，同SAV／seed／計畫核對舊前綴一致並越過0x3C7C5；第24章整章仍由#142驗收。']
-
-證據：`['work/parity-slot-ch24/fresh-full-original-r3/oracle.log', 'work/parity-slot-ch24/d8-old-prefix-r1.json', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl']`
-
-### dosgolem 第24章x87狀態consumer的短JP／JNP未支援
+### dosgolem 第24章 x87 狀態消費端的短JP／JNP未支援
 
 `ch24-oracle-short-parity-branch` · 缺陷 · [#148](https://github.com/wicanr2/fd2_re/issues/148) · 仍未完成 · 要人判
 
@@ -252,5 +242,15 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：['canonical dosgolem先建READY規格，綁原版雜湊、7B18／7AF4 bytes、位址空間及Intel Jcc PF契約。', '以既有PF支援7A JP／7B JNP短分支，驗正負rel8、taken／not-taken、旗標保留及前綴／截斷拒收，完整相關CPU與FD2工具回歸。', '提交／推送後，相同SAV／seed／輸入重跑，舊2115點一致且越過3C868，保留新停止及整章限制。']
 
 證據：`['work/parity-slot-ch24/fresh-full-original-r4/oracle.log', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl', 'docs/data/ida/fd2_ch24_oracle_fcos_20261004.json']`
+
+### dosgolem 第24章 x87 DF /0 的16位整數載入未支援
+
+`ch24-oracle-x87-fild-m16` · 缺陷 · [#149](https://github.com/wicanr2/fd2_re/issues/149) · 仍未完成 · 要人判
+
+相同SAV／seed／受版控計畫，PF分支修正30746f0重跑已越過3C868，18個指令後在6958650886 steps的relocated LE 0x26FDB遇到DF 44 24 34，cpu386 DF ModRM44尚未支援。原bytes為FILD m16int [ESP+34]。原r5失敗完整保留，CPUexit2後停止等待容器。這是原版CPU支援缺口；不改遊戲狀態或數值政策。另核對這個已知呼叫者附近原bytes，列實際形式，未實測候選不冒稱玩家可達。
+
+怎樣算做完：['canonical dosgolem先建READY規格，綁原版雜湊、DF442434、工具位址空間與Intel FILD有號m16int契約，核對相鄰必要CPU形式。', '沿既有x87堆疊模型補DF /0記憶體有號16位整數載入；驗SS定址、2-byte寬度、符號、堆疊容量、FMULP消費及拒收，完整相關CPU與FD2工具回歸。', '提交／推送後用相同SAV／seed／輸入重跑，舊2115點一致且越過26FDB；保留新停止與整章限制。']
+
+證據：`['work/parity-slot-ch24/fresh-full-original-r5/oracle.log', 'work/parity-slot-ch24/parity-branch-old-prefix-r1.json', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl']`
 
 <!-- END fd2_worklist.py render -->
