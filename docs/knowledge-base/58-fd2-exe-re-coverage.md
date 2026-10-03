@@ -2333,4 +2333,6 @@ FCOS切片有限CONFORMED：9ad073f同槽r4舊2115點零差異，越過3C7C5後�
 
 PF分支有限CONFORMED：30746f0同槽r5的舊2115點零差異，越過3C868 JNP後18個指令在26FDB DF /0停止。新[#149主證據](../data/ida/fd2_ch24_oracle_fild16_20261004.json)及canonical194 READY已登錄，相鄰乘加鏈只缺有號16位FILD。JP原版到達性未知，未新增完整章驗收。
 
-目前FILD16 #149已按194 READY完成CPU回歸與乘加鏈驗證，9b05369已推送；相同SAV／seed／計畫r6重跑中。D8、FCOS及JNP只限已列有限CONFORMED；#142與正式20／30不變。
+目前CPU切片狀態以[D8](../data/ida/fd2_ch24_oracle_d8_20261004.json)、[FCOS](../data/ida/fd2_ch24_oracle_fcos_20261004.json)、[PF分支](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)及[FILD16](../data/ida/fd2_ch24_oracle_fild16_20261004.json)四份有限CONFORMED主證據為準；取代上文各輪「重跑中」描述，歷史失敗保留。#149的9b05369同SAV／seed／計畫r6舊2115點零差異，越過26FDB並正常到T5，oracle.log沒有CPU錯誤。194有限驗收已推送951cb55；靜態候選、80位精度與完整硬體旗標未知。
+
+r6在T5正常END後索爾HP420→209→9，seq2274的unit_base重設，seq2277返回標題；不把新標題單位表讀成全隊死亡。driver等待玩家游標逾時exit15，容器自行退出及移除。沒有HP鎖定、治療、強化或重擲。此輪不作#142整章驗收，T7／10及完整重製比較仍待，正式20／30不變。下一輪只調整同槽／seed的正常移動與接戰計畫。

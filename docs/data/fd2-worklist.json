@@ -352,28 +352,6 @@
       "issue": 142
     },
     {
-      "id": "ch24-oracle-short-parity-branch",
-      "layer": "tooling",
-      "category": "缺陷",
-      "title": "dosgolem 第24章 x87 狀態消費端的短JP／JNP未支援",
-      "body": "第24章相同SAV／seed／受版控計畫，FCOS修正9ad073f重跑後越過3C7C5，在6958650868 steps的relocated LE 0x3C868遇到7B 18，cpu386 opcode7B尚未支援。這是JNP rel8的通用CPU缺口；同段原bytes還包含7A F4。原版r4失敗完整保留，CPUexit2後停止等待容器，不稱第24章通過。沿既有CPU／READY流程，只補PF短條件跳躍，不改遊戲狀態或FPU數值模型。",
-      "acceptance": [
-        "canonical dosgolem先建READY規格，綁原版雜湊、7B18／7AF4 bytes、位址空間及Intel Jcc PF契約。",
-        "以既有PF支援7A JP／7B JNP短分支，驗正負rel8、taken／not-taken、旗標保留及前綴／截斷拒收，完整相關CPU與FD2工具回歸。",
-        "提交／推送後，相同SAV／seed／輸入重跑，舊2115點一致且越過3C868，保留新停止及整章限制。"
-      ],
-      "evidence": [
-        "work/parity-slot-ch24/fresh-full-original-r4/oracle.log",
-        "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl",
-        "docs/data/ida/fd2_ch24_oracle_fcos_20261004.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "原版CPU在3C868 7B18停止；PF條件分支待驗"
-      },
-      "issue": 148
-    },
-    {
       "id": "ch24-oracle-x87-fild-m16",
       "layer": "tooling",
       "category": "缺陷",

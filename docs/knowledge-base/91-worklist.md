@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -232,16 +232,6 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### dosgolem 第24章 x87 狀態消費端的短JP／JNP未支援
-
-`ch24-oracle-short-parity-branch` · 缺陷 · [#148](https://github.com/wicanr2/fd2_re/issues/148) · 仍未完成 · 要人判
-
-第24章相同SAV／seed／受版控計畫，FCOS修正9ad073f重跑後越過3C7C5，在6958650868 steps的relocated LE 0x3C868遇到7B 18，cpu386 opcode7B尚未支援。這是JNP rel8的通用CPU缺口；同段原bytes還包含7A F4。原版r4失敗完整保留，CPUexit2後停止等待容器，不稱第24章通過。沿既有CPU／READY流程，只補PF短條件跳躍，不改遊戲狀態或FPU數值模型。
-
-怎樣算做完：['canonical dosgolem先建READY規格，綁原版雜湊、7B18／7AF4 bytes、位址空間及Intel Jcc PF契約。', '以既有PF支援7A JP／7B JNP短分支，驗正負rel8、taken／not-taken、旗標保留及前綴／截斷拒收，完整相關CPU與FD2工具回歸。', '提交／推送後，相同SAV／seed／輸入重跑，舊2115點一致且越過3C868，保留新停止及整章限制。']
-
-證據：`['work/parity-slot-ch24/fresh-full-original-r4/oracle.log', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl', 'docs/data/ida/fd2_ch24_oracle_fcos_20261004.json']`
 
 ### dosgolem 第24章 x87 DF /0 的16位整數載入未支援
 

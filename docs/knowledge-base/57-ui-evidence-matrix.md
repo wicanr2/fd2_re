@@ -1590,3 +1590,5 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 2026-10-04：FCOS有限驗收與後續PF分支阻擋#148引用[58](58-fd2-exe-re-coverage.md)及[三角函數主證據](../data/ida/fd2_ch24_oracle_fcos_20261004.json)。CPU指令切片不提升玩家介面或整章驗收。
 
 2026-10-04：PF分支有限驗收及後續FILD16阻擋#149引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)。指令支援不提升整章或UI驗收等級。
+
+2026-10-04：FILD16有限驗收與T5正常路徑返回標題的限制引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_fild16_20261004.json)。CPU切片已解除阻擋，完整章與UI驗收保持原等級。
