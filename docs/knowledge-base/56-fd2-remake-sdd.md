@@ -9352,3 +9352,5 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 2026-10-04：#151已依[原版工作配置契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)將shared indexed work修正為0x2A300 bytes／640-byte列距＝270列。原#33 frame9底端263合法，不裁切或改排程，預建交易與真正越界拒收保留。正常r6重播不再中止，消費56筆AI但順序仍分岔7筆；獨立65張完整報告仍failed。第23章24張與第24章13／5張有限回歸通過，完整Go19套件2306項通過、27項既有略過。#154的#32負列、#152的AI與#153的RGB仍未完成；限RUNTIME-E1，不提升整章或逐幀特效證據。唯一現況見[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-04：#152 指令7已依[亂數交錯主契約](../data/ida/fd2_command7_target_rng_20261004.json)達有限CONFORMED／RUNTIME-E1。正式玩家與AI owner逐目標resolve，命中的全部NumericMarker消耗共用亂數，超過五段HP上限仍計入；miss推進handler但不抖動。首次T3差異與T4入口狀態已修正，已完成節點序列一致。完整章未驗收，後續攻擊比較點的stage copy未完成另登錄[#155](https://github.com/wicanr2/fd2_re/issues/155)，#153／#154仍開啟；不提升傷害、存活、選目標或整章PLAYER-E2。唯一現況及完整驗證依[58](58-fd2-exe-re-coverage.md)。
+
+2026-10-04：#155已依[stage主契約的補正](../data/ida/fd2_ch24_stage_runtime_20261003.json)關閉驗證工具的錯誤拒收。sub_24D22只旋轉0x53AFF記憶體，不撤回已完成的VGA發布；Go重播與獨立Python比較仍依最後完整copy承接相位，未知來源／參數、未發布與截斷拒收保留。正常攻擊seq1840恢復對拍，整份正常重播可完成且AI順序一致。整份影像報告仍failed，#153及#142不提升；數字、雜湊與範圍依[58](58-fd2-exe-re-coverage.md)。

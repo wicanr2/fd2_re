@@ -2383,3 +2383,17 @@ READY限定完整0x11D3B copy可重新綁定source並發布當時raw offset；�
 正式玩家與AI owner均接WalkNativeCommand7RNG，保留預建失敗零交易及既有Draw發布／回復。正常r6→remake-r5的T4 seq1775全部26筆存活record之camp／座標／HP一致，record12保留69HP，並能正常選取與移動。獨立39張報告的已完成行為通過、已完成節點序列相等；整體仍failed，晚期計畫／保存未達且#153早期RGB仍差14772px。seq1840攻擊比較點因原版stage copy未完成而驗證fatal，另登錄#155，不能將此假定為遊戲崩潰，也不略過該點稱完整通過。
 
 完整Go19套件2308項通過、27項既有略過、零失敗；第23章24張與整檔SAV、第24章有限13張與整檔SAV皆通過。#152只閉合首次指令7數值交錯及T4狀態，限RE-CLOSED／DATA-READY／RUNTIME-E1；建構槽政策限制保留，不提升自然傷害、存活、敵方選目標或新的PLAYER-E2。#142／#153／#154／#155保持未完成，正式章台帳仍20/30。
+
+### 2026-10-04 #155：舞台旋轉中的已發布相位 DRAFT
+
+沿用[stage主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)及既有sub_24D22的0x53AFF記憶體列旋轉證據，不重解helper。原版seq1840停在0x24DBB，先前完整0x11EED→0x11D3B已發布viewport，後續0x24D48只推進work緩衝。Go／Python以整個0x24D22..0x24DF2範圍誤拒收，並不能證明VGA未完成。本題只修驗證工具假失敗，保留未知來源、未發布、完整trace與loader等拒收；達READY後才實作。
+
+#155 規格審查：Go與Python新反例均重現；原始seq1840最後發布列82、當下work列83。以完整發布為準且保留既有trace拒收，契約提升READY。工具回歸與正常重播通過前不稱CONFORMED。
+
+### 2026-10-04 #155：旋轉中的完整VGA發布有限 CONFORMED
+
+[主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)的#155補正保留既有IDA stage-memory資料流、正常seq1840的raw trace與反例。原版0x24DBB只旋轉0x53AFF緩衝；最後完整0x11EED→0x11D3B已發布列82，進行中的work列83不能用來承接可見畫面。Go／Python整段EIP拒收是驗證假失敗，現在只驗證有效EIP並由完整trace判定已發布相位。loader、未發布、未知caller／參數／來源與截斷拒收保留，不改正式Game或原版輸入。
+
+Go11項與Python22項相關回歸通過。相同SAV／原版r6→fresh-full-remake-r6可完成全部既有動作，75筆檢查點、56/56筆AI入口、零順序分歧與runtime_error；seq1840兩側列82且全RGB零差異，PNG SHA-256相同。第23章24張與整檔SAV、第24章既有有限13張與整檔SAV回歸通過。
+
+獨立69張完整報告仍failed：已完成行為通過，seq2267換手中途不比；seq2254原版UI未知而節點拒收，晚期計畫與保存未達，#153 seq206／1867的RGB差異仍保留。#155限工具與有限RUNTIME-E1，不提升整章、自然傷害、存活或新的PLAYER-E2。#142／#153／#154維持未完成，固定DP政策及正式20/30章台帳不變。

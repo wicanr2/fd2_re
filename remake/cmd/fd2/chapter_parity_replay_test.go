@@ -236,10 +236,11 @@ func (r *parityReplay) oracleCh23RowOffset() (int, error) {
 	if json.Unmarshal(raw, &cp) != nil || cp.SHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" {
 		return 0, fmt.Errorf("stage checkpoint來源錯誤")
 	}
-	eip, err := strconv.ParseUint(cp.EIP, 0, 32)
-	if err != nil || (eip >= 0x24d22 && eip < 0x24df2) {
-		return 0, fmt.Errorf("stage copy尚未完成")
+	if _, err := strconv.ParseUint(cp.EIP, 0, 32); err != nil {
+		return 0, fmt.Errorf("stage checkpoint EIP無效")
 	}
+	// #155: sub_24D22 rotates stage memory, preserving the last completed VGA copy.
+	// parityCh23RowOffset validates that publication independently of pending work.
 	raw, err = os.ReadFile(filepath.Join(r.run, "runner.json"))
 	if err != nil {
 		return 0, err
@@ -1600,6 +1601,51 @@ func TestParityCh23RowOffsetRequiresOriginalLoaderAndCaller(t *testing.T) {
 	resume := strings.Replace(selection, `"step":5`, `"step":7`, 1)
 	if offset, err := parityCh23RowOffset([]byte(trace+"\n"+otherSource+"\n"+resume), 7); err != nil || offset != 3 {
 		t.Fatalf("已驗work再次發布後未恢復相位：offset=%d err=%v", offset, err)
+	}
+}
+
+// #155：觀測到的EIP使用受控trace測驗wrapper，不冒充原版收據。
+func TestParityCh23CheckpointDuringWorkRotationKeepsPublishedPhase(t *testing.T) {
+	run := t.TempDir()
+	write := func(name string, value interface{}) {
+		t.Helper()
+		raw, err := json.Marshal(value)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(run, name), raw, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	checkpoint := map[string]interface{}{"steps": 4, "eip": "0x24DBB", "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}
+	write("checkpoint-1840.json", checkpoint)
+	write("runner.json", map[string]interface{}{"eip_trace_window": map[string]interface{}{"from_step": 0, "to_step": 0, "max_entries": 100}})
+	entries := []map[string]interface{}{
+		{"step": 1, "eip": "0x24D48", "eax": "0x1", "stack": []string{"0x0", "0x0", "0x10842", "0x0"}},
+		{"step": 2, "eip": "0x24D48", "eax": "0x2", "stack": []string{"0x0", "0x0", "0x120B6", "0x0"}},
+		{"step": 3, "eip": "0x11EED", "stack": []string{"0x11D3B", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"}},
+		{"step": 4, "eip": "0x24D48", "eax": "0x2", "stack": []string{"0x0", "0x0", "0x120B6", "0x0"}},
+	}
+	var trace []byte
+	for _, row := range entries {
+		raw, err := json.Marshal(row)
+		if err != nil {
+			t.Fatal(err)
+		}
+		trace = append(trace, raw...)
+		trace = append(trace, '\n')
+	}
+	if err := os.WriteFile(filepath.Join(run, "eip-trace.jsonl"), trace, 0600); err != nil {
+		t.Fatal(err)
+	}
+	r := parityReplay{run: run, currentSeq: 1840}
+	if offset, err := r.oracleCh23RowOffset(); err != nil || offset != 3 {
+		t.Fatalf("已發布的VGA相位被工作旋轉拒收：offset=%d err=%v", offset, err)
+	}
+	checkpoint["eip"] = "invalid"
+	write("checkpoint-1840.json", checkpoint)
+	if _, err := r.oracleCh23RowOffset(); err == nil {
+		t.Fatal("未知checkpoint EIP被接受")
 	}
 }
 

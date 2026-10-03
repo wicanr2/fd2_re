@@ -7500,6 +7500,206 @@
           "skipped": 0
         }
       }
+    },
+    {
+      "date": "2026-10-04",
+      "issue": "#155",
+      "status": "CONFORMED",
+      "reason": "Go／Python將EIP位於sub_24D22誤當VGA copy未完成。此函式只旋轉0x53AFF的stage owner；0x11EB0完整返回才發布VGA，兩者必須分開。",
+      "primary_reused": [
+        "docs/data/ida/fd2_ch23_post_ida.txt",
+        "本檔#144／#150的完整viewport發布契約"
+      ],
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "tool": "IDA Pro 9.4既有主證據；dosgolem apps/fd2/cmd/oracle直接raw trace",
+      "address_spaces": {
+        "static": "IDA LE linear",
+        "runtime": "dosgolem relocated LE linear"
+      },
+      "original_name": "sub_24D22",
+      "address": "0x24D22..0x24DF2",
+      "proof": {
+        "checkpoint": "work/parity-slot-ch24/fresh-full-original-r6/checkpoint-1840.json",
+        "checkpoint_sha256": "926acbf0268cd9827c6f68f28f0678c85e617e10cccc1915e77fb3c2c6cf7917",
+        "checkpoint_eip": "0x24DBB",
+        "checkpoint_steps": 5889355608,
+        "last_completed_viewport": {
+          "step": 5889348426,
+          "control_seq": 1840,
+          "eip": "0x11EED",
+          "eax": "0xAF3C4",
+          "edx": "0x160",
+          "ebx": "0x11",
+          "ecx": "0x0",
+          "esi": "0xFFFFF8D7",
+          "edi": "0x0",
+          "esp": "0x55530",
+          "rng_word": 6897,
+          "stack": [
+            "0x11D3B",
+            "0xA0504",
+            "0x140",
+            "0x14CCC4",
+            "0x1C8",
+            "0x138",
+            "0xC0",
+            "0x11"
+          ]
+        },
+        "last_rotation_entry": {
+          "step": 5889350419,
+          "control_seq": 1840,
+          "eip": "0x24D48",
+          "eax": "0x1",
+          "edx": "0x0",
+          "ebx": "0x11",
+          "ecx": "0x0",
+          "esi": "0xFFFFF8FE",
+          "edi": "0x0",
+          "esp": "0x55508",
+          "rng_word": 6897,
+          "stack": [
+            "0xFFFFF8FE",
+            "0x11",
+            "0x120B6",
+            "0x0",
+            "0x1620FC",
+            "0xFFFFF8FE",
+            "0x2",
+            "0x0"
+          ]
+        },
+        "last_published_offset": 82,
+        "pending_work_offset": 83,
+        "trace_sha256": "9a9d75088c82855f276880f462d347fe98d5ce57dab2f42e3307c3ff5c20ffb6",
+        "original_runner_commit": "9b05369bb9b81fbdaeae563bf23f9b28de07b97d",
+        "state_injections": []
+      },
+      "level": "已證實",
+      "spec": {
+        "status": "CONFORMED",
+        "contract": [
+          "在固定EXE且完整trace下，以最後一筆已驗viewport完整返回的相位對齊原版VGA。",
+          "CPU位於已閉合stage-memory旋轉函式內，不使已發布VGA相位失效；不把進行中的work counter當畫面。",
+          "保留固定雜湊、EIP有效值、完整追蹤、loader、未知caller／參數與來源重綁的所有拒收。",
+          "僅修Go重播及獨立Python比較器的假失敗，不改正式遊戲、素材、亂數、DP或輸入計畫。"
+        ],
+        "acceptance": [
+          "以原始seq1840 trace回歸，Go與Python都接受其最後已發布相位。",
+          "無完整發布、未知caller、錯來源或截斷仍拒收。",
+          "同一正常r6重播不再停在1840；獨立完整比較保留其他真實差異。",
+          "相關stage方法、Python比較器及第23／24章有限對拍保持通過。"
+        ]
+      },
+      "review": {
+        "decision": "READY",
+        "basis": [
+          "既有IDA明確區分0x53AFF記憶體列旋轉與0x11EB0向0xA0504完成發布。",
+          "seq1840原始trace證明完整VGA發布82已完成；之後只有舞台work旋轉至83。",
+          "Go／Python新反例均以0x24DBB重現錯誤拒收。",
+          "不重開stage helper、不接未知規則、不改正式Game，只撤銷錯誤的整段EIP拒收。"
+        ],
+        "acceptance_pending": "限定舞台記憶體旋轉不使已發布VGA失效的驗證契約已通過；完整章與其他RGB差異仍未通過。"
+      },
+      "validation": {
+        "level": "RUNTIME-E1 / tooling",
+        "go_tests": {
+          "passed": 11,
+          "failed": 0,
+          "log": "work/parity-slot-ch24/stage-rotation-go-r1.log"
+        },
+        "python_tests": {
+          "passed": 22,
+          "skipped": 0,
+          "failed": 0,
+          "log": "work/parity-slot-ch24/stage-rotation-python-r1.log"
+        },
+        "negative_before_fix": {
+          "go": "TestParityCh23CheckpointDuringWorkRotationKeepsPublishedPhase：stage copy尚未完成，exit1",
+          "python": "test_stage_phase_requires_completed_vga_copy：stage_phase_match=False，exit1"
+        },
+        "normal_replay": {
+          "run": "work/parity-slot-ch24/fresh-full-remake-r6",
+          "exit_code": 0,
+          "checkpoints": 75,
+          "runtime_errors": 0,
+          "ai_entries": 56,
+          "ai_consumed": 56,
+          "ai_order_divergences": 0
+        },
+        "actual_frame1840": {
+          "seq": 1840,
+          "kind": "attack_armed",
+          "oracle": "checkpoint-1840.png",
+          "remake": "remake-0042-p38.png",
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "0cb5da69df6fa8c2e6d28800473ade6146c5877a909aac91e5746683550d3b1d",
+          "remake_sha256": "0cb5da69df6fa8c2e6d28800473ade6146c5877a909aac91e5746683550d3b1d",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "stage_row_offset": 82,
+          "original_stage_row_offset": 82,
+          "original_stage_work_offset": 83,
+          "stage_trace_presents": 22173,
+          "stage_trace_rotations": 21971,
+          "stage_phase_match": true,
+          "stage_phase_source": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
+        },
+        "whole_report": {
+          "path": "work/parity-slot-ch24/fresh-full-verify-r6.json",
+          "status": "failed",
+          "gates": {
+            "behavior": true,
+            "nodes": false,
+            "transaction": false,
+            "frames": false
+          },
+          "compared_frames": 69,
+          "limitations": [
+            "seq2267為原版0x1A30B換手中途，既有比較器不比該點。",
+            "seq2254原版UI unknown，節點拒收。",
+            "完整晚期計畫與保存未達；#142原版r6正常T5敗北事實保留。",
+            "#153 seq206仍差14772px，seq1867選取亦差9323px，不遮蔽／挑相近圖通過。"
+          ]
+        },
+        "regressions": [
+          "work/parity-slot-ch23/ch24-stage-rotation-regression-verify-r1.json",
+          "work/parity-slot-ch24/full-r5-stage-rotation-verify-r1.json"
+        ],
+        "source_sha256": {
+          "remake/cmd/fd2/chapter_parity_replay_test.go": "e2039e19379a9bb2043c0a5c8a2ede5f9894e069295cbf16f7e448dd95ca8b34",
+          "tools/verify_chapter_parity.py": "23c094fe55995c322844ad6114cbf6bd374599a6d577b5a007cedd69d9647b64",
+          "tools/test_verify_chapter_parity.py": "46b7f16eb614ef9e7ef484cd3a20b874628965f526cb519c97f3322ddfbe3fb6"
+        },
+        "artifact_sha256": {
+          "work/parity-slot-ch23/ch24-stage-rotation-regression-verify-r1.json": "f3c6b18ddf289cd8848cb44646e843652350a1591acc602fc13fd57dda7503d6",
+          "work/parity-slot-ch24/full-r5-stage-rotation-verify-r1.json": "02403d64cfe8e4f6e2ab484a498aac6ba46c85fdc00bf2bc3d1f06f8d073512e",
+          "work/parity-slot-ch24/fresh-full-verify-r6.json": "7eee04db1dd3874be43bd64f40f6dd19e2be222356dcd3aca95a28964aa41291",
+          "work/parity-slot-ch24/fresh-full-remake-r6.log": "e99dc1579fa01af4f95af6e9fc4051ca94dd61f300d4408e828e85076a8b99d8",
+          "work/parity-slot-ch24/stage-rotation-go-r1.log": "1e05962ad96488fb875357bc660edac07e7b9d23f59477fc6cc3c2685122520f",
+          "work/parity-slot-ch24/stage-rotation-python-r1.log": "eded3a597f8430314564e8adf5657d5a377bbe8653dcc68cd0347aa19343c298"
+        },
+        "reproduction_commands": {
+          "go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'gofmt -w cmd/fd2/chapter_parity_replay_test.go; with-xvfb go test ./cmd/fd2 -run \"TestParity\" -count=1 -timeout 90s -v' > work/parity-slot-ch24/stage-rotation-go-r1.log 2>&1",
+          "python": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 60 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 40 python3 -m unittest discover -s tools -p test_verify_chapter_parity.py > work/parity-slot-ch24/stage-rotation-python-r1.log 2>&1",
+          "normal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --name fd2-ch24-r6-work-bounds-replay --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/fresh-full-original-r6 FD2_PARITY_OUT=/src/work/parity-slot-ch24/fresh-full-remake-r6 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/fresh-full-remake-r6.log 2>&1",
+          "normal_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/fresh-full-original-r6 --remake work/parity-slot-ch24/fresh-full-remake-r6 --slot-manifest docs/data/parity-slots/ch24-fresh-policy-manifest.json --plan docs/data/parity-plans/ch24-fresh-sample-r1.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/fresh-full-verify-r6.json",
+          "ch23_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r4 FD2_PARITY_OUT=/src/work/parity-slot-ch23/ch24-stage-rotation-regression-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch24-stage-rotation-regression-remake-r1.log 2>&1",
+          "finite_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/full-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch24/full-r5-stage-rotation-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/full-r5-stage-rotation-remake-r1.log 2>&1",
+          "regression_verify": [
+            "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/full-original-r4 --remake work/parity-slot-ch23/ch24-stage-rotation-regression-remake-r1 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-sample-r4.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/ch24-stage-rotation-regression-verify-r1.json",
+            "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/full-original-r5 --remake work/parity-slot-ch24/full-r5-stage-rotation-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-sample-r3.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/full-r5-stage-rotation-verify-r1.json"
+          ]
+        }
+      }
     }
   ],
   "conformed_scope": {

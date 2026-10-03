@@ -31,6 +31,12 @@ class PairingAndUnits(unittest.TestCase):
             result = check([loader, rotation, present, pending])
             self.assertTrue(result["stage_phase_match"])
             self.assertEqual(result["original_stage_work_offset"], 5)
+            # #155: 0x24DBB rotates stage memory after the last complete VGA copy.
+            checkpoint["eip"] = "0x24DBB"
+            result = check([loader, rotation, present, pending])
+            self.assertTrue(result["stage_phase_match"])
+            self.assertEqual(result["original_stage_row_offset"], 3)
+            self.assertEqual(result["original_stage_work_offset"], 5)
             self.assertFalse(check([loader, rotation, pending])["stage_phase_match"])
             self.assertFalse(check([loader, rotation, present, pending], 5)["stage_phase_match"])
             self.assertFalse(check([loader, rotation, {**present, "step": 5}])["stage_phase_match"])

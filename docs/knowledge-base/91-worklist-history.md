@@ -5142,3 +5142,9 @@ IDA9.4直接指令與Capstone核對sub_2A6BD的0x2A300-byte配置，640列距得
 以新IDA 9.4直接caller與canonical dosgolem 951cb55f正常短路徑逐次trace確認漏掉命中數字段抖動RNG。READY後才接正式玩家／AI的WalkNativeCommand7RNG；全部marker計入，miss仍推進state。正常fresh-full-remake-r5在T4入口全部26筆存活record之camp／位置／HP與原版一致，已完成節點相等，record12由51修正為69且下一次施放未命中。主證據、命令、來源與輸出雜湊見fd2_command7_target_rng_20261004.json，正式現況入口為58。
 
 完整Go19套件2308項通過、27項略過；第23章24張／整檔SAV與第24章有限13張／整檔SAV回歸通過。完整r6重播在seq1840的stage copy比較點驗證fatal，另登錄#155；獨立39張報告只證明已完成行為，整體仍failed。#153早期RGB、#154負列與#142整章仍未完成；未改DP、未清敵或鎖HP，正式章台帳仍20/30。#152只按首次分歧的有限範圍收束，不宣稱整章或新的傷害E2。
+
+## 2026-10-04：#155 舞台記憶體旋轉的驗證假失敗
+
+原版seq1840停在sub_24D22的0x24DBB，last completed VGA列82與pending work列83是不同狀態。依既有IDA的0x53AFF row rotation與0x11EB0發布證據，Go／Python新反例先失敗，READY後撤銷整段EIP拒收；有效EIP、完整trace、loader及未知來源／caller／參數拒收保留。主契約追加#155，不改寫#144／#150歷史。
+
+相同r6→fresh-full-remake-r6正常重播PASS，75筆檢查點與56筆AI零順序分歧；seq1840完整RGB 0px且PNG雜湊相同。Go11項、Python22項與既有第23章24張／第24章有限13張及兩份整檔SAV通過。獨立69張報告仍failed，早期選取RGB與未知原版UI均保留；#142／#153／#154維持未完成，不改DP或提升整章台帳。命令、來源、輸出雜湊與限制見fd2_ch24_stage_runtime_20261003.json的#155補正，現況入口仍是58。

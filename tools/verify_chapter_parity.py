@@ -77,8 +77,9 @@ def stage_trace_metadata(root: Path, checkpoint: dict, recorded: object) -> dict
             raise ValueError("重製列偏移超界")
         if checkpoint.get("exe_sha256") != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f":
             raise ValueError("原版EXE錯誤")
-        if 0x24D22 <= int(checkpoint["eip"], 16) < 0x24DF2:
-            raise ValueError("原版copy未完成")
+        if not 0 <= int(checkpoint["eip"], 16) <= 0xffffffff:
+            raise ValueError("原版checkpoint EIP無效")
+        # #155: work-buffer rotation cannot invalidate a completed VGA publication.
         window = json.loads((root / "runner.json").read_text())["eip_trace_window"]
         trace = read_jsonl(root / "eip-trace.jsonl")
         if window["from_step"] != 0 or window["to_step"] != 0 or len(trace) >= window["max_entries"]:

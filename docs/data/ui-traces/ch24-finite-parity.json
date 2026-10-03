@@ -1827,5 +1827,33 @@
       154,
       155
     ]
+  },
+  "stage_rotation_checkpoint_validation": {
+    "issue": 155,
+    "primary": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json",
+    "status": "CONFORMED",
+    "chapter_completion": false,
+    "normal_replay": "work/parity-slot-ch24/fresh-full-remake-r6",
+    "normal_exit": 0,
+    "ai_order_divergences": 0,
+    "full_report": "work/parity-slot-ch24/fresh-full-verify-r6.json",
+    "full_report_status": "failed",
+    "compared_frames": 69,
+    "seq1840": {
+      "published_offset": 82,
+      "work_offset": 83,
+      "diff_pixels": 0,
+      "png_sha256": "0cb5da69df6fa8c2e6d28800473ade6146c5877a909aac91e5746683550d3b1d"
+    },
+    "regressions": [
+      "work/parity-slot-ch23/ch24-stage-rotation-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-stage-rotation-verify-r1.json"
+    ],
+    "open_followups": [
+      142,
+      153,
+      154
+    ],
+    "correction_issue": 155
   }
 }
