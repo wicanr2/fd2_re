@@ -352,28 +352,6 @@
       "issue": 142
     },
     {
-      "id": "ch24-command6-work-frame-bounds",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第24章敵方指令6 mode5 工作影格越界中止",
-      "body": "#150 修正來源檢查後，同源 fresh-full-original-r6 的正常重播已越過 attack_result seq2100，於 T4 敵方 actor20 command6 target0 frame6 中止：mode5 channel1 work frame bounds (334,153 143x110)。原版同槽同 seed4 已執行該回合，重製端不得以放寬界限或忽略特效掩蓋差異。先查既有 command6 主證據、索引與原始影格，再形成 READY 規格。保持既定 DP 政策及第24章整章未驗收狀態。",
-      "acceptance": [
-        "核對既有 command6／mode5 主證據與原始資料格式，查明越界的來源與消費端；新推論分級，先建立 READY 規格。",
-        "依證據修正正式播放與工作緩衝路徑，保留未知參數及資產邊界的拒收。",
-        "同源 r6 重播通過該命令，相關測試與已驗章回歸通過；實際差異及整章限制如實保留。"
-      ],
-      "evidence": [
-        "work/parity-slot-ch24/fresh-full-remake-r3.log",
-        "work/parity-slot-ch24/fresh-full-original-r6",
-        "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "核對 READY 原始影格證據、正式消費端修正與同源正常重播。"
-      },
-      "issue": 151
-    },
-    {
       "id": "ch24-fresh-ai-round4-divergence",
       "layer": "runtime",
       "category": "缺陷",

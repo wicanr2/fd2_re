@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,16 +110,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第24章敵方指令6 mode5 工作影格越界中止
-
-`ch24-command6-work-frame-bounds` · 缺陷 · [#151](https://github.com/wicanr2/fd2_re/issues/151) · 仍未完成 · 要人判
-
-#150 修正來源檢查後，同源 fresh-full-original-r6 的正常重播已越過 attack_result seq2100，於 T4 敵方 actor20 command6 target0 frame6 中止：mode5 channel1 work frame bounds (334,153 143x110)。原版同槽同 seed4 已執行該回合，重製端不得以放寬界限或忽略特效掩蓋差異。先查既有 command6 主證據、索引與原始影格，再形成 READY 規格。保持既定 DP 政策及第24章整章未驗收狀態。
-
-怎樣算做完：['核對既有 command6／mode5 主證據與原始資料格式，查明越界的來源與消費端；新推論分級，先建立 READY 規格。', '依證據修正正式播放與工作緩衝路徑，保留未知參數及資產邊界的拒收。', '同源 r6 重播通過該命令，相關測試與已驗章回歸通過；實際差異及整章限制如實保留。']
-
-證據：`['work/parity-slot-ch24/fresh-full-remake-r3.log', 'work/parity-slot-ch24/fresh-full-original-r6', 'docs/data/ida/fd2_ch24_stage_runtime_20261003.json']`
 
 ### 第24章全員存活槽 T4 敵方回合狀態與原版不一致
 
