@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,16 +120,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['核對固定原始資產及既有座標／consumer直接指令，定位負列位置的來源與原版可見契約。', '形成 READY 並依證據修正正式 typed sequence／compositor，未知資產與交易拒收保留。', '真實#32完整sequence與相關命令回歸通過，必要時由維護中dosgolem正常原版收據核對可見輸出；不以局部資產測試代替E2。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/battlepresent/native_command6_test.go', 'docs/data/ida/fd2_command1_8_entries_ida.txt']`
-
-### 指令6目標演出漏掉 mode3 座標、mode5 分層及跨目標狀態
-
-`command6-target-state-parity` · 缺陷 · [#156](https://github.com/wicanr2/fd2_re/issues/156) · 仍未完成 · 要人判
-
-#154 原始指令核對發現三個獨立於負列拒收的正式 typed sequence 差異。IDA LE 0x26F13..0x26F3F 首次 mode3 搬移 X2/X4、Y2←Y4、Y4←42，54096 gate 保留跨目標狀態。0x27145..0x27161 非零側 mode4 畫通道0/1，mode5 畫2/3/4；現行兩者都畫0/1。共用 caller 0x2B059 的9張轉場後進入下一次 mode3，typed owner 卻重置 counters／secondary。只按直接指令修正，不更動傷害、音訊、資產或 #154 嚴格越界拒收；局部回歸不提升 PLAYER-E2。
-
-怎樣算做完：['保存固定 EXE 雜湊、原始指令與 caller／consumer，完成 READY 規格。', '正式玩家與AI共用的 effect owner 使用首次 mode3 座標、正確分層與跨目標狀態；未知輸入仍原子拒收。', '雙側與多目標決定性回歸通過；重跑既有 dosgolem 同源收據，分開有限影像結果及整章驗收。']
-
-證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/figani/native_command6.go', 'remake/internal/battlepresent/native_command6_sequence.go']`
 
 ### 指令6正式 owner 未交錯目標間數字段抖動亂數
 
