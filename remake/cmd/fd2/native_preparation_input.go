@@ -26,6 +26,36 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 		return true
 	}
 	townBacked := n.Cancel != ""
+	if g.prepRecordSlots {
+		if townBacked {
+			g.loadErr = "preparation record slots have a town owner"
+			return true
+		}
+		if input.escape {
+			g.restartPreparationSelection()
+			return true
+		}
+		if input.up && g.prepRecordSlotSel > 0 {
+			g.prepRecordSlotSel--
+		}
+		if input.down && g.prepRecordSlotSel < 3 {
+			g.prepRecordSlotSel++
+		}
+		if _, ok := g.composeNativePreparationRecordSlotsFrame(); !ok {
+			g.loadErr = "preparation record slot source unavailable"
+			return true
+		}
+		if input.enter {
+			if nativeCurrentSavePath() != "" && g.nativeChapterSlotBaseline == nil {
+				g.loadErr = "preparation record save baseline unavailable"
+				return true
+			}
+			if err := g.saveGameToSlot(g.prepRecordSlotSel); err != nil {
+				g.loadErr = "preparation record save failed: " + err.Error()
+			}
+		}
+		return true
+	}
 	leavePreparation := func(outcome string) {
 		if g.camp.Advance(outcome) != "" {
 			g.nativeTownHubReturn = outcome == "cancel"
@@ -99,9 +129,10 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 			if !townBacked {
 				closeThen(func() {
 					if g.prepConfirmSel == 0 {
-						g.saveGame()
+						g.beginNativePreparationRecordSlots()
+					} else {
+						g.restartPreparationSelection()
 					}
-					g.restartPreparationSelection()
 				})
 			} else if g.prepConfirmSel != 0 {
 				closeThen(func() {

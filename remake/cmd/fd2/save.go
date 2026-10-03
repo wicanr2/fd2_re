@@ -114,12 +114,12 @@ func validateSavePartyTopology(d saveData) error {
 
 func (g *Game) saveGame() { g.saveGameToSlot(0) }
 
-func (g *Game) saveGameToSlot(slot int) {
+func (g *Game) saveGameToSlot(slot int) error {
 	if g.camp == nil {
 		if message, ok := g.localeMessage("save.unsupported"); ok {
 			g.msg = message
 		}
-		return
+		return fmt.Errorf("save campaign unavailable")
 	}
 	if n := g.camp.Node(); n != nil && n.Type == "cutscene" && ((n.HandlerBinding != "" && g.st != nil) || strings.HasPrefix(g.camp.NodeID(), "postbattle_")) {
 		// Post-battle handlers intentionally retain the completed canonical battle
@@ -131,7 +131,7 @@ func (g *Game) saveGameToSlot(slot int) {
 		if message, ok := g.localeMessage("save.postbattle_blocked"); ok {
 			g.msg = message
 		}
-		return
+		return fmt.Errorf("save transient postbattle node blocked")
 	}
 	g.captureNativeMapHUDPersistence()
 	d := saveData{
@@ -152,9 +152,10 @@ func (g *Game) saveGameToSlot(slot int) {
 	d.NativeRaw53AF9, d.NativeRaw51E61, d.NativeRaw51E62 = &raw53AF9, &raw51E61, &raw51E62
 	raw, err := json.MarshalIndent(d, "", " ")
 	if err != nil {
-		return
+		return err
 	}
-	if writeSaveFile(saveSlotPath(slot), raw) == nil {
+	writeErr := writeSaveFile(saveSlotPath(slot), raw)
+	if writeErr == nil {
 		if message, ok := g.localeMessage("save.saved", slot+1, g.camp.Cur); ok {
 			g.msg = message
 		}
@@ -165,10 +166,12 @@ func (g *Game) saveGameToSlot(slot int) {
 		if err := g.saveNativeChapterSlot(slot); err != nil {
 			g.msg = err.Error()
 			g.nativeChapterSlotSaveErr = err
+			return err
 		} else {
 			g.nativeChapterSlotSaveErr = nil
 		}
 	}
+	return writeErr
 }
 
 func (g *Game) loadGame() { g.loadGameFromSlot(0) }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
@@ -10,6 +11,115 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+func newPreparationRecordTestGame(t *testing.T) *Game {
+	t.Helper()
+	t.Setenv("FD2_NATIVE_SAVE", "")
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = "" })
+	ui, err := loadNativePreparationUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		camp: campaign.NewRunner(&campaign.Campaign{Start: "prep", Nodes: map[string]*campaign.Node{
+			"prep": {Type: "preparation", PartyLimit: 15},
+		}}),
+		nativePreparationUI: ui,
+		nativeClassUI:       &nativeClassUIAssets{strings: ui.status.Strings, font: ui.status.Font},
+		partyJoinOrder:      []int{0, 1},
+		partyRoster:         map[int]battle.Unit{0: {Fig: 0}, 1: {Fig: 1}},
+		partyMembers:        map[int]bool{0: true, 1: true},
+	}
+	attachOfficialLocale(t, g)
+	g.handlerChapter = 22
+	g.setupPreparation(g.camp.Node())
+	finishPreparationRecordTransition(t, g)
+	return g
+}
+
+func finishPreparationRecordTransition(t *testing.T, g *Game) {
+	t.Helper()
+	for frame := 0; g.nativeClassUIJob != nil && frame < 32; frame++ {
+		g.nativeClassUIJob.drawn = true
+		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if g.nativeClassUIJob != nil {
+		t.Fatal("整備提示動畫沒有完成")
+	}
+}
+
+func TestNativePreparationRecordSlotsSaveRetainsChooserAndESCSelects(t *testing.T) {
+	g := newPreparationRecordTestGame(t)
+	g.handleNativePreparationInput(nativePreparationInput{enter: true})
+	finishPreparationRecordTransition(t, g)
+	if !g.prepRecordSlots || g.prepSelecting || g.prepRecordSlotSel != 0 {
+		t.Fatal("YES應開四槽，不能直接保存或選人")
+	}
+	if _, err := os.Stat(saveSlotPath(0)); !os.IsNotExist(err) {
+		t.Fatal("YES在選槽前寫了存檔", err)
+	}
+	g.handleNativePreparationInput(nativePreparationInput{up: true})
+	if g.prepRecordSlotSel != 0 {
+		t.Fatal("槽0向上不能繞回")
+	}
+	for i := 0; i < 5; i++ {
+		g.handleNativePreparationInput(nativePreparationInput{down: true})
+	}
+	if g.prepRecordSlotSel != 3 {
+		t.Fatal("槽3向下不能繞回")
+	}
+	g.handleNativePreparationInput(nativePreparationInput{enter: true})
+	if g.loadErr != "" || !g.prepRecordSlots || g.prepSelecting {
+		t.Fatal("保存應保留四槽", g.loadErr)
+	}
+	if _, err := os.Stat(saveSlotPath(3)); err != nil {
+		t.Fatal("沒有保存選中的槽3", err)
+	}
+	g.handleNativePreparationInput(nativePreparationInput{escape: true})
+	if g.prepRecordSlots || !g.prepSelecting || g.preparationSelected() != 0 {
+		t.Fatal("ESC應回零勾選選人")
+	}
+}
+
+func TestNativePreparationRecordNoDoesNotSave(t *testing.T) {
+	g := newPreparationRecordTestGame(t)
+	g.handleNativePreparationInput(nativePreparationInput{right: true})
+	g.handleNativePreparationInput(nativePreparationInput{enter: true})
+	finishPreparationRecordTransition(t, g)
+	if g.prepRecordSlots || !g.prepSelecting {
+		t.Fatal("NO應直接選人")
+	}
+	if _, err := os.Stat(saveSlotPath(0)); !os.IsNotExist(err) {
+		t.Fatal("NO寫了存檔", err)
+	}
+}
+
+func TestNativePreparationRecordMissingSourceAndWriteFailureClose(t *testing.T) {
+	t.Run("missing_source", func(t *testing.T) {
+		g := newPreparationRecordTestGame(t)
+		g.prepPromptSource = nil
+		g.handleNativePreparationInput(nativePreparationInput{enter: true})
+		if g.loadErr == "" || g.prepRecordSlots || g.prepSelecting {
+			t.Fatal("缺caller來源不能跳過槽列表")
+		}
+	})
+	t.Run("write_failure", func(t *testing.T) {
+		g := newPreparationRecordTestGame(t)
+		g.handleNativePreparationInput(nativePreparationInput{enter: true})
+		finishPreparationRecordTransition(t, g)
+		dir := filepath.Dir(saveSlotPath(0))
+		if err := os.Chmod(dir, 0o555); err != nil {
+			t.Fatal(err)
+		}
+		t.Cleanup(func() { os.Chmod(dir, 0o755) })
+		g.handleNativePreparationInput(nativePreparationInput{enter: true})
+		if g.loadErr == "" || !g.prepRecordSlots || g.prepSelecting {
+			t.Fatal("保存失敗不能進入選人或假成功")
+		}
+	})
+}
 
 func TestComposeNativePreparationFrameUsesRawRosterSelectors(t *testing.T) {
 	base := "../../../org_game/炎龍騎士團/FLAME2"

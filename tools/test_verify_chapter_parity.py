@@ -9,6 +9,39 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_preparation_save_rejects_partial_write_or_missing_owner(self):
+        action = {"before_seq": 37, "seq": 55}
+        exe = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        before = {"exe_sha256": exe, "input_chain": ["0x2CC76"], "dos_file_calls": []}
+        after = {"exe_sha256": exe, "input_chain": ["0x3009C", "0x2CCBB"],
+                 "dos_file_calls": [{"op": "write", "path": "FD2.SAV", "handled": True,
+                                     "carry": False, "written_bytes": 22987}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp)
+            (run / "checkpoint-0037.json").write_text(json.dumps(before))
+            (run / "checkpoint-0055.json").write_text(json.dumps(after))
+            self.assertTrue(vp.preparation_save_proof(action, run))
+            for invalid in [
+                    {**after, "input_chain": ["0x3009C"]},
+                    {**after, "dos_file_calls": []},
+                    {**after, "dos_file_calls": [{**after["dos_file_calls"][0], "written_bytes": 22528}]},
+                    {**after, "dos_file_calls": [{**after["dos_file_calls"][0], "carry": True}]}]:
+                (run / "checkpoint-0055.json").write_text(json.dumps(invalid))
+                self.assertFalse(vp.preparation_save_proof(action, run))
+
+    def test_preparation_save_is_planned_and_independently_compared(self):
+        plan = [{"preparation_save": True}]
+        action = {"kind": "preparation_save", "seq": 55}
+        cp = {"kind": "preparation_save", "ui": "record_slots"}
+        self.assertFalse(vp.plan_completion(plan, [], [cp])["ok"])
+        self.assertFalse(vp.plan_completion(plan, [action], [])["ok"])
+        self.assertTrue(vp.plan_completion(plan, [action], [cp])["ok"])
+        point = vp.compare_node([action], cp, {"input_chain": ["0x3009C", "0x2CCBB"]}, 55)
+        self.assertEqual(point["status"], "ok")
+        point = vp.compare_node([action], {**cp, "ui": "preparation"},
+                                {"input_chain": ["0x3009C", "0x2CCBB"]}, 55)
+        self.assertEqual(point["status"], "node_differ")
+
     def test_nodes_use_original_input_owner_and_reject_real_ch20_mismatches(self):
         for seq, kind, chain, remake_ui in [
             (1094, "secret_shop", ["0x2D7D1", "0x2CF39"], "town"),

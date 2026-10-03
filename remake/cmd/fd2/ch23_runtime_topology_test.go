@@ -214,6 +214,18 @@ func TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoun
 		t.Fatal("preparation_ch24 record confirmation did not start indexed closing")
 	}
 	drainNativeUI(g)
+	if !g.prepRecordSlots || g.prepSelecting {
+		t.Fatal("preparation24 YES沒有進四槽保存")
+	}
+	if _, err := os.Stat(saveSlotPath(0)); !os.IsNotExist(err) {
+		t.Fatal("preparation24選槽前不應寫檔", err)
+	}
+	if !g.handleNativePreparationInput(nativePreparationInput{enter: true}) || !g.prepRecordSlots {
+		t.Fatal("preparation24保存後應保留四槽")
+	}
+	if !g.handleNativePreparationInput(nativePreparationInput{escape: true}) {
+		t.Fatal("preparation24槽列表ESC未消費")
+	}
 	if !g.prepSelecting || g.prepSel != 0 || g.preparationSelected() != 0 ||
 		g.msg != "已存檔（槽位 1：preparation_ch24）" {
 		t.Fatalf("preparation24 formal save selecting=%v cursor=%d selected=%d msg=%q",

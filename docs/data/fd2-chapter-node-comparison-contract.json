@@ -47,5 +47,17 @@
     "report": "docs/data/ui-traces/parity-node-source-regression-20261003.json",
     "report_sha256": "c87454e4b568b6eeded59b2d5e8c0f198fd6afee148557942de1ff30255e9e21",
     "scope": "tooling CONFORMED，沒有新增整章PLAYER-E2"
-  }
+  },
+  "extensions": [
+    {
+      "issues": [
+        125,
+        127
+      ],
+      "source": "docs/data/ida/fd2_preparation_record_save_20261003.json",
+      "status": "CONFORMED",
+      "scope": "record_question由2CC76，record_slots同時需3009C／2CCBB；preparation_save比較完整RGB與獨立owner，無跨時序豁免。",
+      "receipt": "docs/data/ui-traces/preparation-record-save.json"
+    }
+  ]
 }

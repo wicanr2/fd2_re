@@ -2170,4 +2170,18 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 
 [有限主收據](../data/ui-traces/ch22-native-startup.json)取代本輪READY狀態。原版r2正常選入身份24，record1希爾法、record2約拿，66筆前沿；合法與拒收各五點完整RGB0px。原生view與nonzero HUD來自正式campaign／canonical，未以重播注入來源。相關三套件與第二十一章四項／30張／全檔SAV回歸通過。三筆HP0及raw B限制分列，#123整章與#125非城鎮記錄提示保存仍未完成，台帳18／30不變。
 
-#125已登記直接整備保存工具能力，原版2CAD7的2CC71問句、2CCB6→30012選槽存檔後才2CCD6選人。caller bytes保存在本輪工作輸出；尚未形成完整正常保存收據，不解釋為戰後城鎮，也不提升章gate。
+#125已登記直接整備保存工具能力，原版2CAD7的2CC71問句、2CCB6→30012選槽存檔後才2CCD6選人。caller bytes保存在本輪工作輸出；探查時尚未形成完整正常保存收據，現況由下方有限CONFORMED取代，不解釋為戰後城鎮，也不提升章gate。
+
+#125採[獨立記錄提示探查清冊](../data/parity-slots/preparation-record-probe-manifest.json)與[正常鍵序](../data/parity-plans/preparation-record-probe-r1.jsonl)，受版控建槽器從同源SAV只推target22、levels0／seed4，不追加政策值。此槽只驗非城鎮問句與四槽保存caller，最多局部E1；第二十二章正式槽與章路徑保持獨立，不能替代#123。
+
+2026-10-03：#125／#127 的整備保存 caller／chooser 已 RE-CLOSED，規格當時 READY；runtime與局部對拍後由下方有限CONFORMED取代。入口：[fd2_preparation_record_save_20261003.json](../data/ida/fd2_preparation_record_save_20261003.json)。保留原始名稱、IDA LE 位址與bytes；建構raw22槽probe只算E1。
+
+#125／#127 可重跑保存計畫：[preparation-record-save-r3.jsonl](../data/parity-plans/preparation-record-save-r3.jsonl)。同一建構槽，正式driver正常YES／保存／ESC；局部驗證已通過，見下方CONFORMED。
+
+### 2026-10-03 非城鎮整備四槽保存（#125／#127）
+
+[主規格](../data/ida/fd2_preparation_record_save_20261003.json)與[有限收據](../data/ui-traces/preparation-record-save.json)限局部RUNTIME-E1列CONFORMED。2CC76問題YES→2CCBB／3009C四槽；Enter寫完整SAV後保留列表，ESC才到31A2E零勾選選人。重製已補上正式owner，NO不保存；素材／來源或寫入失敗即停止。
+
+四個完整RGB皆0px，22987 bytes SAV兩側SHA-256相同。原版成功寫入22528+459 bytes，內容相同也屬合法覆寫。driver、replay及比較器新增preparation_save；缺planned save、錯owner、無成功寫入均拒收，沒有跨時序畫面豁免。相關三套件與第二十一章30畫面／全檔SAV回歸通過。建構raw22槽不代表第二十二章戰後可達；#123仍開啟，整章數以正式台帳為準。
+
+本批最終回歸：19套件／2293個Go測試全部通過；97個Go審查候選文字與各處置數不變，只遷移原始碼定位。第一次清冊綁定失敗保留於有限收據，不能視為玩法缺陷。

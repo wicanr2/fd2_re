@@ -620,7 +620,10 @@ func TestChapterParityReplay(t *testing.T) {
 	if !g.applyTitleSlotEvent(TitleSlotConfirm) {
 		t.Fatalf("LOAD 槽 0 失敗：%s", g.msg)
 	}
-	if g.camp.NodeID() != r.town || g.loadErr != "" {
+	loadNode := g.camp.Node()
+	standalone := loadNode != nil && loadNode.Type == "preparation" && loadNode.Cancel == "" &&
+		g.camp.NodeID() == fmt.Sprintf("preparation_ch%02d", chapter)
+	if (g.camp.NodeID() != r.town && !standalone) || g.loadErr != "" {
 		t.Fatalf("LOAD 後 node=%q err=%q", g.camp.NodeID(), g.loadErr)
 	}
 	r.settleTown()
@@ -705,6 +708,8 @@ func TestChapterParityReplay(t *testing.T) {
 			r.townProbe(action)
 		case "town_save":
 			r.townSave(action)
+		case "preparation_save":
+			r.preparationSave(action)
 		case "shop_sell":
 			r.shopSell(action)
 		case "shop_buy":
@@ -763,6 +768,35 @@ func TestParityClearRespectsOraclePhaseBoundary(t *testing.T) {
 func (r *parityReplay) mark(action parityAction) {
 	t, g := r.t, r.g
 	switch action.Label {
+	case "record_question":
+		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x2CC76"); err != nil {
+			t.Fatal(err)
+		}
+		if !pump(t, g, 600, func() bool {
+			return g.nativePreparationPromptActive() && !g.nativeClassUIBlocksInput()
+		}) || g.camp.Node().Cancel != "" {
+			t.Fatal("非城鎮記錄問題未取得操作權")
+		}
+		r.checkpoint("record_question", action.Seq, r.ui(), true)
+	case "record_slots":
+		if verifyParityPreparationOwner(r.run, action.Seq, "0x3009C") != nil ||
+			verifyParityPreparationOwner(r.run, action.Seq, "0x2CCBB") != nil {
+			t.Fatal("四槽保存缺少原版caller")
+		}
+		r.replayPreparationRecordKeys(r.prevSeq, action.Seq)
+		if !g.prepRecordSlots || g.prepSelecting {
+			t.Fatal("正常YES輸入沒有進四槽保存")
+		}
+		r.checkpoint("record_slots", action.Seq, r.ui(), true)
+	case "record_party_selection":
+		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x31A2E"); err != nil {
+			t.Fatal(err)
+		}
+		r.replayPreparationRecordKeys(r.prevSeq, action.Seq)
+		if !g.prepSelecting || g.prepRecordSlots || g.preparationSelected() != 0 {
+			t.Fatal("四槽ESC沒有回零勾選選人")
+		}
+		r.checkpoint("record_party_selection", action.Seq, r.ui(), true)
 	case "town_loaded":
 		r.settleTown()
 		r.checkpoint("town_loaded", action.Seq, "town", true)
@@ -1030,6 +1064,12 @@ func (r *parityReplay) ui() string {
 	case "hotel":
 		return "hotel"
 	case "preparation":
+		if g.prepRecordSlots {
+			return "record_slots"
+		}
+		if g.nativePreparationPromptActive() && n.Cancel == "" {
+			return "record_question"
+		}
 		return "preparation"
 	case "battle":
 		switch {
@@ -1263,6 +1303,8 @@ func (r *parityReplay) frame(kind string) (string, string) {
 				var source []byte
 				var ok bool
 				switch {
+				case g.prepRecordSlots:
+					source, ok = g.composeNativePreparationRecordSlotsFrame()
 				case g.prepConfirm:
 					source, ok = g.composeNativePreparationConfirmationFrame()
 				case g.prepSelecting:
@@ -2260,6 +2302,73 @@ func (r *parityReplay) townProbe(action parityAction) {
 	if g.camp.NodeID() != r.currentTown() {
 		t.Fatalf("town_enter(seq %d)：離開選項 %d 之後沒有回到城鎮：%q", action.Seq, selection, g.camp.NodeID())
 	}
+}
+
+// #125：只重播原版實際按鍵，缺控制格或非整備owner即拒收。
+func (r *parityReplay) replayPreparationRecordKeys(from, to int) {
+	t, g := r.t, r.g
+	if from <= 0 || to <= from {
+		t.Fatal("整備記錄缺少控制序列邊界")
+	}
+	for seq := from + 1; seq <= to; seq++ {
+		key, ok := r.keys[seq]
+		if !ok {
+			t.Fatalf("整備記錄缺control-history seq%d", seq)
+		}
+		if key == "" {
+			continue
+		}
+		input := nativePreparationInput{}
+		switch key {
+		case "enter":
+			input.enter = true
+		case "esc":
+			input.escape = true
+		case "up":
+			input.up = true
+		case "down":
+			input.down = true
+		case "left":
+			input.left = true
+		case "right":
+			input.right = true
+		default:
+			t.Fatalf("整備記錄未知按鍵%q", key)
+		}
+		if !g.handleNativePreparationInput(input) ||
+			!pump(t, g, 600, func() bool { return !g.nativeClassUIBlocksInput() }) {
+			t.Fatalf("整備記錄seq%d輸入未消費", seq)
+		}
+	}
+}
+
+func (r *parityReplay) preparationSave(action parityAction) {
+	t, g := r.t, r.g
+	if action.Slot == nil || *action.Slot < 0 || *action.Slot > 3 || !g.prepRecordSlots ||
+		g.prepRecordSlotSel != *action.Slot ||
+		verifyParityPreparationOwner(r.run, action.Seq, "0x3009C") != nil ||
+		verifyParityPreparationOwner(r.run, action.Seq, "0x2CCBB") != nil {
+		t.Fatal("整備保存缺少原版四槽owner或selected slot")
+	}
+	confirms := 0
+	for seq := r.prevSeq + 1; seq <= action.Seq; seq++ {
+		if r.keys[seq] == "enter" {
+			confirms++
+		}
+	}
+	if confirms != 1 {
+		t.Fatal("整備保存必須消費一次正常Enter，不能只比既存SAV")
+	}
+	r.replayPreparationRecordKeys(r.prevSeq, action.Seq)
+	if !g.prepRecordSlots || g.prepSelecting || g.nativeChapterSlotSaveErr != nil || g.loadErr != "" {
+		t.Fatal("整備保存後沒有保留四槽列表", g.loadErr, g.nativeChapterSlotSaveErr)
+	}
+	raw, err := os.ReadFile(nativeCurrentSavePath())
+	if err != nil {
+		t.Fatal(err)
+	}
+	r.checkpoint("preparation_save", action.Seq, r.ui(), true,
+		fmt.Sprintf("save_sha256=%x", sha256.Sum256(raw)))
 }
 
 func (r *parityReplay) townSave(action parityAction) {

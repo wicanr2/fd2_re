@@ -76,7 +76,7 @@ def plan_completion(plan: list[dict], actions: list[dict], remake_cps: list[dict
         copies = max(0, int(step.get("repeat", 1)))
         if step.get("mark"):
             required["mark:" + step["mark"]] += copies
-        for kind in ("force_enemy_clear", "shop_sell", "shop_buy", "town_save", "secret_shop"):
+        for kind in ("force_enemy_clear", "shop_sell", "shop_buy", "town_save", "preparation_save", "secret_shop"):
             if step.get(kind):
                 required[kind] += copies
     observed = Counter(
@@ -166,6 +166,26 @@ def save_gate_entry(save_actions: list[dict], remake_save: list[dict], blocked_i
     else:
         entry["status"] = "ok" if remake == oracle else "fail"
     return entry
+
+
+def preparation_save_proof(action: dict, run: Path) -> bool:
+    """#125：語意動作不能取代原版writer收據；核對同一保存前後的DOS成功bytes。"""
+    before_seq, seq = action.get("before_seq"), action.get("seq")
+    if not isinstance(before_seq, int) or not isinstance(seq, int) or before_seq >= seq:
+        return False
+    before, after = oracle_checkpoint(run, before_seq), oracle_checkpoint(run, seq)
+    expected = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    if (not before or not after or before.get("exe_sha256") != expected or
+            after.get("exe_sha256") != expected or oracle_ui_mode(before) != "record_question" or
+            oracle_ui_mode(after) != "record_slots"):
+        return False
+
+    def successful_bytes(cp):
+        return sum(int(call.get("written_bytes", 0)) for call in cp.get("dos_file_calls", [])
+                   if call.get("op") == "write" and call.get("handled") is True and
+                   not call.get("carry") and str(call.get("path", "")).replace("\\", "/").rsplit("/", 1)[-1].upper() == "FD2.SAV")
+
+    return successful_bytes(after) - successful_bytes(before) == 22987
 
 
 def frame_comparable(remake_cp: dict) -> bool:
@@ -370,10 +390,14 @@ def main() -> int:
     behavior.extend(replay_divergences(remake_cps))
     behavior_ok = all(e["status"] in ("ok", "oracle_mid_end_turn") for e in behavior)
     nodes_ok = node_gate_ok(node_points, completion, remake_cps)
-    save_actions = [a for a in actions if a.get("kind") == "town_save"]
-    remake_save = [cp for cp in remake_cps if cp.get("kind") == "town_save"]
+    save_actions = [a for a in actions if a.get("kind") in ("town_save", "preparation_save")]
+    remake_save = [cp for cp in remake_cps if cp.get("kind") in ("town_save", "preparation_save")]
     save_entry = save_gate_entry(save_actions, remake_save, args.save_blocked_issue)
-    if completion["missing"].get("town_save"):
+    if any(not preparation_save_proof(a, args.oracle) for a in save_actions
+           if a.get("kind") == "preparation_save"):
+        save_entry["status"] = "original_save_write_missing"
+    if any(completion["missing"].get(k) or completion["remake_missing"].get(k)
+           for k in ("town_save", "preparation_save")):
         save_entry["status"] = "planned_save_missing"
     gold_ok = all(t["ok"] for t in transactions)
     transaction_ok = gold_ok and save_entry["status"] in ("ok", "not_sampled")

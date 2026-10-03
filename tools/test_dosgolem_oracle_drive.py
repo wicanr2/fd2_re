@@ -40,6 +40,71 @@ def unit(x, y, camp, hp=10, acted=False, identity=None):
     return made
 
 
+class PreparationRecordSave(unittest.TestCase):
+    def initial(self):
+        return {"control_seq": 37, "exe_sha256":
+                "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+                "input_chain": ["0x19B19", "0x2CC76"], "kbd_pending": 0,
+                "dos_file_calls": [], "view": {"gold": 2029}}
+
+    def exercise(self, writes):
+        current = self.initial()
+        keys, actions = [], []
+        enters = 0
+
+        def send(key, steps):
+            nonlocal enters
+            keys.append(key)
+            current["control_seq"] += 1
+            if key == "enter":
+                enters += 1
+                current["input_chain"] = ["0x30666", "0x3009C", "0x2CCBB"]
+                if enters == 2 and writes:
+                    current["dos_file_calls"] = [
+                        {"op": "write", "path": "FD2.SAV", "handled": True,
+                         "carry": False, "written_bytes": size} for size in [22528, 459]]
+            if key == "esc":
+                current["input_chain"] = ["0x32051", "0x31A2E", "0x2CCDB"]
+            return current["control_seq"], current.copy()
+
+        def log(kind, cp, **fields):
+            actions.append({"kind": kind, "seq": cp["control_seq"], **fields})
+
+        with mock.patch.object(drive, "state", side_effect=lambda: current.copy()), \
+                mock.patch.object(drive, "send", side_effect=send), \
+                mock.patch.object(drive, "save_fingerprint", return_value={"FD2.SAV": (22987, "a" * 64)}), \
+                mock.patch.object(drive, "log_action", side_effect=log):
+            result = drive.do_preparation_save({"slot": 0})
+        return result, keys, actions
+
+    def test_unchanged_hash_needs_successful_dos_write_and_esc(self):
+        result, keys, actions = self.exercise(True)
+        self.assertTrue(result)
+        self.assertEqual([key for key in keys if key], ["enter", "enter", "esc"])
+        self.assertEqual([a["kind"] for a in actions], ["mark", "preparation_save", "mark"])
+        self.assertEqual(actions[1]["successful_write_count"], 2)
+        self.assertEqual(actions[-1]["label"], "record_party_selection")
+
+    def test_hash_alone_without_write_cannot_save(self):
+        result, keys, actions = self.exercise(False)
+        self.assertFalse(result)
+        self.assertNotIn("esc", keys)
+        self.assertFalse(any(a["kind"] == "preparation_save" for a in actions))
+
+    def test_wrong_owner_and_hash_send_no_keys(self):
+        for field, value in [("input_chain", ["0x3009C"]), ("exe_sha256", "unknown")]:
+            cp = self.initial()
+            cp[field] = value
+            with mock.patch.object(drive, "state", return_value=cp), \
+                    mock.patch.object(drive, "send") as send:
+                self.assertFalse(drive.do_preparation_save({"slot": 0}))
+                send.assert_not_called()
+
+    def test_shared_chooser_alone_is_not_preparation_save(self):
+        self.assertEqual(drive.ui_mode({"input_chain": ["0x3009C"]}), "unknown")
+        self.assertEqual(drive.ui_mode({"input_chain": ["0x3009C", "0x2CCBB"]}), "record_slots")
+
+
 class ModuleIntegrity(unittest.TestCase):
     """每個被呼叫的模組級名稱都要存在。
 

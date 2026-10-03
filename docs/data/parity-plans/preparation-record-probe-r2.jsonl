@@ -1,0 +1,18 @@
+# #125：保留r1全部同源SAV、seed與鍵序，只在保存後由Enter改Escape退出四槽列表；原版30012成功後保持列表，最高局部E1。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":20}
+{"mark":"record_question","steps":1000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_slots","steps":1000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_saved","steps":1000000}
+{"key":"esc","steps":20000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_party_selection","steps":1000000}
+{"key":"","steps":10000000,"repeat":2}

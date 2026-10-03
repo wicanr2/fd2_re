@@ -1276,6 +1276,22 @@
         ],
         "pattern": "1514161613131313"
       }
+    },
+    {
+      "id": "preparation-save-chooser-and-write-source",
+      "date": "2026-10-03",
+      "area": "保存介面與對拍",
+      "rule": "非城鎮整備保存沿2CC76→2CCBB／3009C四槽owner，Enter成功寫檔後保留列表，ESC才回選人。原版driver必須明示FD2_ORACLE_STATE=/state；完整SAV雜湊相同時仍核對成功DOS寫入。入口docs/data/ida/fd2_preparation_record_save_20261003.json，執行方式及邊界見docs/data/ui-traces/preparation-record-save.json的commands／limits。",
+      "why": "重製省略四槽而跳選人；合法同內容覆寫會被只看hash的檢查誤拒，缺/state環境設定也會造成驗證假失敗。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/125；https://github.com/wicanr2/fd2_re/issues/127",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle_drive.py",
+          "remake/cmd/fd2/native_preparation_input.go"
+        ],
+        "pattern": "preparation_save|prepRecordSlots"
+      }
     }
   ]
 }

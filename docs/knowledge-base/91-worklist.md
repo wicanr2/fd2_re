@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,25 +111,15 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第二十二章必出希爾法與合法選人來源缺口
+### 非城鎮記錄提示略過四槽選擇與Escape返回
 
-`ch22-required-party-silfa` · 缺陷 · [#124](https://github.com/wicanr2/fd2_re/issues/124) · 仍未完成 · 要人判
+`preparation-record-four-slot-owner` · 缺陷 · [#127](https://github.com/wicanr2/fd2_re/issues/127) · 仍未完成 · 要人判
 
-#123同源第二十一章SAV正常LOAD／首15候選選人，原版seq71的0x31E65提示「本章希爾法必須出場！」，seq72正常Enter返回城鎮，尚未開戰。正式preparation_ch22沒有required_party_identities，先核對原版raw21 caller、身份、名單與消費端，再建立READY與合法鍵序。保留原r1拒收收據，不改SAV或注入。
+#125固定原版record-probe-r1：seq37記錄問句0x2CC76，YES後seq46進四槽列表0x3009C／0x30666；Enter保存成功DOS22528+459 bytes後仍留四槽列表，30012迴圈只有30550回傳-1才離開，再由2CCD6選人。重製native_preparation_input.go在YES直接saveGame並restartPreparationSelection，跳過選槽與Escape返回，正式UI不能對拍。先RE→READY補正常owner與黑底四槽介面，保存走既有saveGameToSlot／原版SAV serializer，不改格式或猜補。
 
-怎樣算做完：['固定EXE、IDA9.4原始位址／bytes、writer及required consumer，查證希爾法身份與raw21必出／排序政策，形成READY。', '正式typed data與正常鍵盤拒收／合法起手驗證，沒有猜補或存檔注入。', '相關Go與第二十一章回歸通過，同步56／57／58及索引；整章由#123驗收。']
+怎樣算做完：['固定EXE、原始question／slot／writer／退出consumer與正常原版鍵序，建立READY，明示非城鎮保存不顯示酒店完成訊息。', '正式鍵盤YES→四槽；上下選槽、Enter保存後保留列表、Escape回選人；NO不寫檔直接選人，缺必要原生來源fail-closed。', '原版獨立探查正常完整RGB與SAV逐byte一致，相關Go及章21酒店回歸通過；整章仍由#123驗收。']
 
-證據：`['docs/data/parity-plans/ch22-startup-r1.jsonl', 'docs/data/parity-slots/ch22-manifest.json', 'work/parity-slot-ch22/startup-original-r1/checkpoint-0071.json', 'docs/data/ida/fd2_ch21_required_character_20261003.json']`
-
-### 第二十二章合法起手缺原生視圖與HUD來源
-
-`ch22-native-startup-hud` · 缺陷 · [#126](https://github.com/wicanr2/fd2_re/issues/126) · 仍未完成 · 要人判
-
-#123／#124正常選入希爾法後原版r2已進戰場：66筆、record1 identity24，camera16,27／cursor22,32／visible6,5／range1。重製相同SAV與鍵序完成66筆建構及排序，但battle_start正式完整RGB因HUD input unavailable拒收。正式battle_ch22缺原生視圖／HUD來源；先沿既有ch21_pre LOADCH→PAN→ACT67→text0→runtime0 focus caller核對，READY後補正式typed data，不注入oracle視圖。
-
-怎樣算做完：['固定EXE、原版同源起手及shared caller／consumer，形成原生視圖與HUD READY契約，raw gate精確byte未知保留限制。', '正式資料後正常LOAD／選人／起手66筆、完整RGB有限抽樣通過，不以測試橋接或擷取後注入替代。', '相關Go與第二十一章四項／全檔SAV回歸，同步56／57／58及索引；整章由#123驗收。']
-
-證據：`['docs/data/parity-slots/ch22-manifest.json', 'docs/data/parity-plans/ch22-startup-r2.jsonl', 'work/parity-slot-ch22/startup-original-r2/checkpoint-0103.json', 'work/parity-slot-ch22/startup-r2-remake-r1.log', 'docs/data/ida/fd2_ch21_startup_20261003.json']`
+證據：`['docs/data/parity-plans/preparation-record-probe-r1.jsonl', 'docs/data/parity-slots/preparation-record-probe-manifest.json', 'work/parity-slot-ch22/preparation-record-owner-r1.json', 'work/parity-slot-ch22/preparation-record-save-callees-r2.json', 'work/parity-slot-ch22/record-probe-original-r1/checkpoint-0046.json', 'remake/cmd/fd2/native_preparation_input.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

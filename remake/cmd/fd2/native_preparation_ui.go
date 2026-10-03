@@ -18,6 +18,7 @@ type nativePreparationUIAssets struct {
 	choices  []fdother.RawCell
 	dialogue []fdother.RawCell
 	portrait dato.Frame
+	slotsBox fdother.LMI1Entry
 }
 
 func (g *Game) stepNativePreparationCycleTick(rawTick int) {
@@ -77,9 +78,13 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 		}
 		return nil, errors.New("native preparation UI: DATO#75 has no frames")
 	}
+	slotsBox, err := fdother.LoadSeparatedLoadSlotsFrame(separatedAssetPath("ui"))
+	if err != nil {
+		return nil, err
+	}
 	return &nativePreparationUIAssets{
 		roster: roster, status: status, choices: choices,
-		dialogue: dialogue, portrait: portraits[0],
+		dialogue: dialogue, portrait: portraits[0], slotsBox: slotsBox,
 	}, nil
 }
 
@@ -165,7 +170,7 @@ func (g *Game) composeNativePreparationConfirmationFrame() ([]byte, bool) {
 }
 
 func (g *Game) nativePreparationPromptActive() bool {
-	if g.camp == nil || g.prepSelecting || g.prepConfirm {
+	if g.camp == nil || g.prepSelecting || g.prepConfirm || g.prepRecordSlots {
 		return false
 	}
 	node := g.camp.Node()
@@ -400,6 +405,15 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	if g.drawNativeClassUIJob(screen) {
 		return true
 	}
+	if g.prepRecordSlots {
+		frame, ok := g.composeNativePreparationRecordSlotsFrame()
+		if !ok {
+			g.loadErr = "preparation record slot assets unavailable"
+			return false
+		}
+		g.presentNativeClassFrame(screen, frame)
+		return true
+	}
 	if g.nativePreparationPromptActive() {
 		frame, ok := g.composeNativePreparationPromptFrame()
 		if !ok {
@@ -422,4 +436,37 @@ func (g *Game) drawNativePreparation(screen *ebiten.Image) bool {
 	}
 	g.presentNativeClassFrame(screen, frame)
 	return true
+}
+
+// #127：0x30550 保存黑色caller；非城鎮槽列表不帶酒店頭像或保存訊息。
+func (g *Game) composeNativePreparationRecordSlotsFrame() ([]byte, bool) {
+	if g == nil || g.camp == nil || g.nativePreparationUI == nil || g.nativeClassUI == nil ||
+		g.prepRecordSlotSel < 0 || g.prepRecordSlotSel > 3 {
+		return nil, false
+	}
+	n := g.camp.Node()
+	if n == nil || n.Type != "preparation" || n.Cancel != "" {
+		return nil, false
+	}
+	background, ok := g.nativePreparationBackground()
+	if !ok {
+		return nil, false
+	}
+	slots, ok := nativeLoadSlotMetadata()
+	if !ok {
+		return nil, false
+	}
+	frame, err := campaign.ComposeNativeLoadSlotsFrame(background,
+		g.nativePreparationUI.slotsBox, g.nativeClassUI.strings, g.nativeClassUI.font,
+		slots, g.prepRecordSlotSel)
+	return frame, err == nil
+}
+
+func (g *Game) beginNativePreparationRecordSlots() {
+	g.prepRecordSlotSel = 0
+	if _, ok := g.composeNativePreparationRecordSlotsFrame(); !ok {
+		g.loadErr = "preparation record slot source unavailable"
+		return
+	}
+	g.prepRecordSlots = true
 }

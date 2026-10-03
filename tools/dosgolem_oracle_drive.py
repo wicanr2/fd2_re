@@ -43,6 +43,8 @@
   續跑點。判準是覆蓋層裡
   ``FD2.SAV`` 的內容雜湊變更，或 dosgolem 直接記到對該檔的成功 DOS 寫入；後者
   涵蓋「載入後立刻以相同狀態覆寫同一槽」而內容逐位元組不變的合法情況。
+* ``{"preparation_save": true, "slot": 0}``：在非城鎮記錄問題以正常YES進四槽，
+  保存後保留列表，再按ESC回選人。必須有完整SAV及成功DOS寫入收據。
 * ``{"sweep_round": true}``：把這一回合所有未行動的我方單位依序接戰。加
   ``"stop_on_auto_end": true`` 時，全員行動完原版自動換手（回合數進位）就直接收工，
   不再送 END；沒加的舊計畫維持原行為（第四章收據靠它重生）。
@@ -350,7 +352,8 @@ def do_await_ui(command):
     """以可觀測輸入鏈等待介面，僅在對白狀態送 enter。"""
     want = command["await_ui"]
     allowed = {"title", "cursor", "dialogue", "grid", "ring", "shop", "status",
-               "system", "target", "town", "unknown"}
+               "system", "target", "town", "unknown", "preparation",
+               "record_question", "record_slots"}
     if want not in allowed:
         raise SystemExit(f"await_ui 不支援介面：{want!r}")
     steps = int(command.get("steps", 10_000_000))
@@ -652,6 +655,11 @@ def ui_mode(current):
     # 誤當成戰場 cursor，亦不可在這裡自動按 START。
     if "0x1FE60" in chain:
         return "title"
+    # #125：共享chooser只在非城鎮30012 caller鏈才屬整備保存。
+    if "0x3009C" in chain and "0x2CCBB" in chain:
+        return "record_slots"
+    if "0x2CC76" in chain:
+        return "record_question"
     for address in chain:
         try:
             value = int(address, 16)
@@ -1553,6 +1561,52 @@ def do_town_save(command):
     return True
 
 
+def do_preparation_save(command):
+    """#125：非城鎮記錄問題 YES→四槽→保存→ESC→選人，全程正常按鍵。"""
+    slot = int(command.get("slot", 0))
+    steps = int(command.get("steps", 10_000_000))
+    if slot not in range(4):
+        raise SystemExit(f"preparation_save 槽號超出0..3：{slot}")
+    current = state()
+    if (current.get("exe_sha256") !=
+            "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" or
+            ui_mode(current) != "record_question" or current.get("kbd_pending", 0)):
+        return False
+    before_seq = current.get("control_seq")
+    before_writes = successful_save_writes(current)
+    send("enter", max(steps, 20_000_000))
+    if wait_mode({"record_slots"}, steps, int(command.get("max", 30))) != "record_slots":
+        return False
+    for _ in range(slot):
+        send("down", max(steps, 5_000_000))
+        settle(steps, 2)
+        if ui_mode(state()) != "record_slots":
+            return False
+    current = settle(steps, int(command.get("settle", 4)))
+    if ui_mode(current) != "record_slots":
+        return False
+    slots_seq = current.get("control_seq")
+    log_action("mark", current, label="record_slots", ui="record_slots")
+    send("enter", max(steps, 20_000_000))
+    current = settle(steps, int(command.get("settle", 4)))
+    after = save_fingerprint()
+    written = successful_save_writes(current) - before_writes
+    if (ui_mode(current) != "record_slots" or written <= 0 or
+            after.get("FD2.SAV", (0,))[0] != 22987):
+        return False
+    log_action("preparation_save", current, slot=slot, before_seq=before_seq,
+               slots_seq=slots_seq, save_sha256=after["FD2.SAV"][1],
+               successful_write_count=written, proof="成功DOS寫入；保存後仍在四槽列表")
+    send("esc", max(steps, 20_000_000))
+    if wait_mode({"preparation"}, steps, int(command.get("max", 30))) != "preparation":
+        return False
+    current = settle(steps, int(command.get("exit_settle", 8)))
+    if "0x31A2E" not in (current.get("input_chain") or []):
+        return False
+    log_action("mark", current, label="record_party_selection", ui="preparation")
+    return True
+
+
 def do_shop_probe(command):
     """進到店家（酒店／教會／商店）之後逐項按下去，看哪一項會寫出存檔。
 
@@ -1892,6 +1946,10 @@ def main():
             continue
         if "town_save" in command:
             if not do_town_save(command):
+                return 13
+            continue
+        if "preparation_save" in command:
+            if not do_preparation_save(command):
                 return 13
             continue
         if "sweep_round" in command:

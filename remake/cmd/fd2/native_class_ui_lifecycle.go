@@ -142,7 +142,7 @@ func (g *Game) stepNativeClassUILifecycle(now time.Time) {
 	if g.camp != nil {
 		if node := g.camp.Node(); node != nil && node.Type == "preparation" {
 			preparationConfirm = g.prepConfirm
-			preparationPrompt = !g.prepSelecting && !g.prepConfirm
+			preparationPrompt = !g.prepSelecting && !g.prepConfirm && !g.prepRecordSlots
 		}
 	}
 	if g.nativeClassUIJob == nil &&

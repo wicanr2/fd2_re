@@ -129,6 +129,8 @@ type Game struct {
 	prepSel                     int                 // preparation UI 游標
 	prepLimit                   int                 // preparation UI 原版出擊上限（15，末段 19）
 	prepSelecting               bool                // 已通過前置確認，且流程要求進入原版選人階段
+	prepRecordSlots             bool                // 0x2CCB6→0x30012 的非城鎮四槽保存
+	prepRecordSlotSel           int                 // 0x30550 的0..3槽游標
 	prepConfirm                 bool                // 選滿或小隊確認後的最終出戰確認階段
 	prepRequiredMissing         *int                // 原生必出角色拒收訊息，確認後返回城鎮
 	prepConfirmSel              int                 // 0=肯定，1=取消
@@ -4361,6 +4363,8 @@ func (g *Game) setupPreparation(n *campaign.Node) {
 	}
 	g.prepSel = 0
 	g.prepSelecting = false
+	g.prepRecordSlots = false
+	g.prepRecordSlotSel = 0
 	g.prepConfirm = false
 	g.prepConfirmSel = 0
 	g.prepRequiredMissing = nil
@@ -4501,6 +4505,7 @@ func (g *Game) acceptTownDeparturePrompt() bool {
 }
 
 func (g *Game) restartPreparationSelection() {
+	g.prepRecordSlots = false
 	g.prepSelecting = true
 	g.prepConfirm = false
 	g.prepRequiredMissing = nil
