@@ -372,29 +372,6 @@
         "note": "原始資產／直接指令、READY與正式consumer回歸。"
       },
       "issue": 154
-    },
-    {
-      "id": "oracle-dialogue-ui-return-chain",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "原版對白返回鏈 0x16D66 未被介面分類器辨識",
-      "body": "#142 正常第24章 r6 seq2254 停在已知對白繪製鏈 0x165A7→0x16D66→0x1ACEE，重製端 attack_result 為 dialogue，但 tools/dosgolem_oracle_drive.py 的 ui_mode 只列 0x16CF8／0x16D05 等少數返回點，獨立節點比較回報 unknown_oracle_ui。先核對固定EXE與已閉合IDA caller／對白owner，確認是否為分類缺口；不因原版畫面相近就放寬 unknown gate，也不重做嘴型亂數內部。#38嘴型／DAC像素相位與此輸入owner分類題分開。",
-      "acceptance": [
-        "以固定EXE、已閉合IDA原始名稱／位址／caller及正常原版收據確定額外返回鏈的介面語意，先記RE與READY。",
-        "READY後分類器辨識已證鏈；新分支限固定指紋與已證配對，既有外層owner優先，未知仍拒收；原版驅動與獨立節點比較共用可審查契約。",
-        "第24章原seq2254節點不再unknown且與正式重製狀態一致，相關Python／Go與既有第23章／第24章有限收據回歸通過；整章#142獨立。"
-      ],
-      "evidence": [
-        "tools/dosgolem_oracle_drive.py",
-        "tools/verify_chapter_parity.py",
-        "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
-        "docs/data/ui-traces/ch24-finite-parity.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "固定caller／normal原版checkpoint／READY與分類拒收回歸；原seq2254節點同狀態比較。"
-      },
-      "issue": 158
     }
   ]
 }
