@@ -6,7 +6,8 @@
     142,
     143,
     144,
-    145
+    145,
+    158
   ],
   "status": "finite_passed",
   "evidence_level": "RUNTIME-E1",
@@ -1978,6 +1979,40 @@
       "正常原版數值樣本為raw side0；side1及第三目標marker屬受控規則回歸，不宣稱新增PLAYER-E2。",
       "AI入口／比較點承接原版RNG，56筆order與HP相符不單獨證明跨整章內部骰序一致；本次另以cast內逐目標與最終RNG收據驗證。",
       "AP+200/DP+0/DX+60未變，沒有章內HP鎖定。"
+    ]
+  },
+  "dialogue_ui_validation": {
+    "issue": 158,
+    "primary": "docs/data/fd2-chapter-node-comparison-contract.json",
+    "extension_issue": 158,
+    "status": "CONFORMED",
+    "normal_report": "work/parity-slot-ch24/fresh-full-verify-r10.json",
+    "node2254": {
+      "seq": 2254,
+      "kind": "attack_result",
+      "remake_ui": "dialogue",
+      "oracle_ui": "dialogue",
+      "oracle_kind": "attack_result",
+      "oracle_comparable_kind": "attack_result",
+      "oracle_family": "dialogue",
+      "remake_family": "dialogue",
+      "status": "ok"
+    },
+    "node_status_counts": {
+      "ok": 69,
+      "not_comparable": 6
+    },
+    "full_report_status": "failed",
+    "regressions": [
+      "work/parity-slot-ch23/ch24-dialogue-ui-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-dialogue-ui-verify-r1.json"
+    ],
+    "chapter_completion": false,
+    "limits": [
+      "驗證工具分類修正，不改正式runtime、mouth RNG、DAC或節點gate。",
+      "正常樣本有上下文與固定EXE指紋；受控上框helper配對只驗已閉合函式規則。",
+      "全部已可比較節點為ok不等於完整章通過；原版T5敗北、T6..T11／清敵／保存未達，#142保持開啟。",
+      "#38嘴型／DAC像素相位、#154負列與DP待決不在此範圍，章台帳20/30不變。"
     ]
   }
 }

@@ -1607,3 +1607,6 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 
 
 2026-10-04 #157 補正：指令6命中數字抖動與下個目標判定已依[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)接入正式玩家／AI路徑，達有限 CONFORMED。每個命中 marker 都消耗亂數，超過五段 HP 後仍繼續；落空及九張轉場只傳遞動畫 state。全序列預建後才准許 Draw 發布 MP／HP，完成時才提交 RNG。前述「#157另待RE」已由正常原版逐次 trace 與受控規則測試取代；章驗收與負列限制仍由[58](58-fd2-exe-re-coverage.md)承載。
+
+
+2026-10-04 #158：原版分類器依[節點主契約](../data/fd2-chapter-node-comparison-contract.json)補足sub_16C57等待期的頭像巢狀返回配對。固定EXE指紋、mouth owner與portrait helper同時成立才辨識dialogue，保持既有外層owner優先與unknown拒收。正常r6 seq2254已獨立對上重製dialogue；前述「原版未知介面造成節點拒收」由此補正取代，整章計畫與保存仍未達。驗證數字與範圍見[58](58-fd2-exe-re-coverage.md)；#38像素相位、#154負列與#142章驗收不變。

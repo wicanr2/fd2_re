@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,6 +120,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['核對固定原始資產及既有座標／consumer直接指令，定位負列位置的來源與原版可見契約。', '形成 READY 並依證據修正正式 typed sequence／compositor，未知資產與交易拒收保留。', '真實#32完整sequence與相關命令回歸通過，必要時由維護中dosgolem正常原版收據核對可見輸出；不以局部資產測試代替E2。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/battlepresent/native_command6_test.go', 'docs/data/ida/fd2_command1_8_entries_ida.txt']`
+
+### 原版對白返回鏈 0x16D66 未被介面分類器辨識
+
+`oracle-dialogue-ui-return-chain` · 缺陷 · [#158](https://github.com/wicanr2/fd2_re/issues/158) · 仍未完成 · 要人判
+
+#142 正常第24章 r6 seq2254 停在已知對白繪製鏈 0x165A7→0x16D66→0x1ACEE，重製端 attack_result 為 dialogue，但 tools/dosgolem_oracle_drive.py 的 ui_mode 只列 0x16CF8／0x16D05 等少數返回點，獨立節點比較回報 unknown_oracle_ui。先核對固定EXE與已閉合IDA caller／對白owner，確認是否為分類缺口；不因原版畫面相近就放寬 unknown gate，也不重做嘴型亂數內部。#38嘴型／DAC像素相位與此輸入owner分類題分開。
+
+怎樣算做完：['以固定EXE、已閉合IDA原始名稱／位址／caller及正常原版收據確定額外返回鏈的介面語意，先記RE與READY。', 'READY後分類器辨識已證鏈；新分支限固定指紋與已證配對，既有外層owner優先，未知仍拒收；原版驅動與獨立節點比較共用可審查契約。', '第24章原seq2254節點不再unknown且與正式重製狀態一致，相關Python／Go與既有第23章／第24章有限收據回歸通過；整章#142獨立。']
+
+證據：`['tools/dosgolem_oracle_drive.py', 'tools/verify_chapter_parity.py', 'docs/data/ida/fd2_story_dialogue_layout_ida.txt', 'docs/data/ui-traces/ch24-finite-parity.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

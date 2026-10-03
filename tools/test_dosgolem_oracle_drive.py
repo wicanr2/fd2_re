@@ -40,6 +40,35 @@ def unit(x, y, camp, hp=10, acted=False, identity=None):
     return made
 
 
+class DialoguePortraitOwner(unittest.TestCase):
+    def test_closed_and_open_portrait_wait_returns(self):
+        # #158 正常 r6 seq2254／2253；IDA sub_16C57 與 sub_16559。
+        fingerprint = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        for owner in ("0x16D66", "0x16D92"):
+            for helper in ("0x16596", "0x165A7"):
+                with self.subTest(owner=owner, helper=helper):
+                    cp = {"exe_sha256": fingerprint,
+                          "input_chain": [helper, owner, "0x1ACEE", "0x1B71C"]}
+                    self.assertEqual(drive.ui_mode(cp), "dialogue")
+
+    def test_portrait_alone_or_wrong_fingerprint_is_unknown(self):
+        fingerprint = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        for cp in (
+                {"input_chain": ["0x165A7", "0x16D66"]},
+                {"exe_sha256": "wrong", "input_chain": ["0x165A7", "0x16D66"]},
+                {"exe_sha256": fingerprint, "input_chain": ["0x165A7"]},
+                {"exe_sha256": fingerprint, "input_chain": ["0x16D66"]},
+                {"exe_sha256": fingerprint, "input_chain": ["0x165A7", "0x16D67"]},
+                {"exe_sha256": fingerprint, "input_chain": ["0x165A8", "0x16D92"]}):
+            with self.subTest(cp=cp):
+                self.assertEqual(drive.ui_mode(cp), "unknown")
+
+    def test_existing_outer_owner_keeps_priority(self):
+        cp = {"exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+              "input_chain": ["0x165A7", "0x16D66", "0x2D7D1"]}
+        self.assertEqual(drive.ui_mode(cp), "shop")
+
+
 class PreparationRecordSave(unittest.TestCase):
     def initial(self):
         return {"control_seq": 37, "exe_sha256":

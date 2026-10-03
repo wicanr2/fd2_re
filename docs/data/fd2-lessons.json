@@ -1198,9 +1198,9 @@
       "id": "parity-node-independent-original-source",
       "date": "2026-10-03",
       "area": "對拍工具",
-      "rule": "節點與介面比較各自從原版輸入鏈及原版動作取值，未知來源拒收；跨時序點明列未比較。不可把重製UI複製成原版序列。入口是tools/verify_chapter_parity.py的compare_node及docs/data/fd2-chapter-node-comparison-contract.json；原版分類沿用tools/dosgolem_oracle_drive.py的ui_mode。",
-      "why": "第二十章原版target、shop與重製cursor、town不同，舊工具仍nodes=true，因為兩邊序列均由重製UI填入。",
-      "evidence": "https://github.com/wicanr2/fd2_re/issues/117；docs/data/ui-traces/parity-node-source-regression-20261003.json",
+      "rule": "節點與介面比較各自從原版輸入鏈及原版動作取值，未知來源拒收；跨時序點明列未比較。不可把重製UI複製成原版序列。入口是tools/verify_chapter_parity.py的compare_node及docs/data/fd2-chapter-node-comparison-contract.json；原版分類沿用tools/dosgolem_oracle_drive.py的ui_mode。 檢查點停在等待期的頭像繪製子程序時，以固定指紋與已證等待常式／繪製常式返回配對分類；單獨繪製常式或寬範圍不能取代等待常式。#158精確配對見節點主契約補正與ui_mode。",
+      "why": "第二十章原版target、shop與重製cursor、town不同，舊工具仍nodes=true，因為兩邊序列均由重製UI填入。 第24章正常seq2254漏0x16D66與0x165A7配對而誤判unknown，阻擋已相符的對白節點。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/117；docs/data/ui-traces/parity-node-source-regression-20261003.json；https://github.com/wicanr2/fd2_re/issues/158",
       "guard": {
         "kind": "present",
         "paths": [

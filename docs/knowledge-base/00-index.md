@@ -393,7 +393,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第二十章短路徑計畫](../data/parity-plans/ch20-sample-r2.jsonl)：沿用r1首回合與固定SAV，一次敵方階段後清敵；r1保留失敗来源，#112。
 
-- [章比較器獨立原版介面契約](../data/fd2-chapter-node-comparison-contract.json)：#117，原版輸入鏈分類、跨時序限制與假通過的拒收條件；入口為 `tools/verify_chapter_parity.py`，在 `fd2-assets-local:20260829-sfx` 執行。
+- [章比較器獨立原版介面契約](../data/fd2-chapter-node-comparison-contract.json)：#117，原版輸入鏈分類、跨時序限制與假通過的拒收條件；入口為 `tools/verify_chapter_parity.py`，在 `fd2-assets-local:20260829-sfx` 執行。 #158 的固定指紋／巢狀頭像返回配對補正亦存於此契約。
 
 - [章比較器原版來源回歸](../data/ui-traces/parity-node-source-regression-20261003.json)：#117，第二十章兩個介面差異拒收、第十九章四項重新通過，以及舊節點欄位的證據限制。
 

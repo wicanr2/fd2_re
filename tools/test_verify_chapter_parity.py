@@ -9,6 +9,23 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_attack_result_dialogue_owner_is_independent_of_remake_ui(self):
+        # 原版正常r6 seq2254。此處保留精確來源鏈，不能直接採remake的ui。
+        cp = {"exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+              "input_chain": ["0x165A7", "0x16D66", "0x1ACEE", "0x1B71C",
+                              "0x18FEF", "0x11ED9", "0x36CE0", "0x13A61",
+                              "0x1317A", "0x18A87"]}
+        action = {"kind": "attack_result", "seq": 2254}
+        remake = {"kind": "attack_result", "ui": "dialogue"}
+        result = vp.compare_node([action], remake, cp, 2254)
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["oracle_ui"], "dialogue")
+        wrong = vp.compare_node([action], {**remake, "ui": "cursor"}, cp, 2254)
+        self.assertEqual(wrong["status"], "node_differ")
+        rejected = vp.compare_node([action], remake, {**cp, "exe_sha256": "wrong"}, 2254)
+        self.assertEqual(rejected["status"], "unknown_oracle_ui")
+
+
     def test_stage_phase_requires_completed_vga_copy(self):
         checkpoint = {"steps": 4, "eip": "0x4DF45", "exe_sha256":
                       "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}

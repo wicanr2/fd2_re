@@ -634,6 +634,12 @@ UI_MODES = (
 # 與 `0x16D05` 的框繪製。四個標記都實測與其他介面零衝突。
 DIALOGUE_MARKERS = ("0x16039", "0x164C4", "0x16CF8", "0x16D05")
 DIALOGUE_RANGE = (0x1E400, 0x1E5FF)
+# #158：sub_16C57 等待期間呼 sub_16559 畫 m0／m3；只辨識已證實的
+# 巢狀返回配對。單獨的共用portrait renderer不能證明目前UI。
+DIALOGUE_PORTRAIT_WAIT_RETURNS = ("0x16D66", "0x16D92")
+DIALOGUE_PORTRAIT_BLIT_RETURNS = ("0x16596", "0x165A7")
+DIALOGUE_PORTRAIT_EXE_SHA256 = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+
 
 # 方向鍵會移動地圖游標的模式。其餘模式送方向鍵是在選選項，不會動游標。
 CURSOR_MODES = {"cursor", "target"}
@@ -674,6 +680,10 @@ def ui_mode(current):
     for name, marker in UI_MODES:
         if marker in chain:
             return name
+    if (current.get("exe_sha256") == DIALOGUE_PORTRAIT_EXE_SHA256 and
+            any(marker in chain for marker in DIALOGUE_PORTRAIT_WAIT_RETURNS) and
+            any(marker in chain for marker in DIALOGUE_PORTRAIT_BLIT_RETURNS)):
+        return "dialogue"
     if any(marker in chain for marker in DIALOGUE_MARKERS):
         return "dialogue"
     for address in chain:

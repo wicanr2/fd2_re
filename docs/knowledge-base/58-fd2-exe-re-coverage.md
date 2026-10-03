@@ -2443,3 +2443,15 @@ Go11項與Python22項相關回歸通過。相同SAV／原版r6→fresh-full-rema
 完整Go19套件2313項通過、27項既有略過，零失敗；正常r9重播75筆檢查點、56/56筆AI零順序分歧與runtime_error。actor21 seq2116的rng_before已是32891，與原版entry相符。獨立69張影像通過640px門檻；第23章24張及第24章有限13張、兩份整檔SAV回歸均通過。AI比較點會承接原版RNG，不能只憑order或HP聲稱跨整章骰序一致；本次以cast內逐目標與末端RNG補足規則證據。
 
 #157限RE-CLOSED／DATA-READY／RUNTIME-E1，未增加PLAYER-E2。正常原版數值樣本為raw side0，side1與三目標序列屬受控規則回歸。整份正常報告仍failed於未知UI、晚期計畫與保存；#142／#154維持未完成，正式章台帳20/30，AP+200/DP+0/DX+60及待決DP政策不變。#154負列仍嚴格拒收。前述#157「trace與READY仍待」是本輪較早階段，現在由本段與主證據取代。
+
+### 2026-10-04 #158：原版對白巢狀返回鏈分類 READY
+
+[節點比較主契約](../data/fd2-chapter-node-comparison-contract.json)新增#158，沿用已閉合的sub_16C57與sub_16559原始IDA9.4 LE linear bytes。0x16D61／0x16D8D畫DATO frame0／3，返回0x16D66／0x16D92，之後繼續已發布page的等待迴圈；helper返回0x16596／0x165A7不能單獨推定owner。正常r6 seq2253／2254保存了該配對與固定EXE指紋。READY只准在指紋一致與配對成立時補dialogue分類，保持原有外層owner優先及unknown拒收，不以寬range猜補，不重解mouth RNG。整章#142與#38嘴型／DAC相位仍獨立。
+
+### 2026-10-04 #158：對白巢狀返回分類有限 CONFORMED
+
+[主契約的#158補正](../data/fd2-chapter-node-comparison-contract.json)保留兩函式的IDA原始定位／bytes、正常seq2253／2254與SHA-256。新反例先失敗，READY後補固定指紋與16D66／16D92、16596／165A7配對。相鄰地址、缺配對、錯指紋拒收，服務等既有外層owner優先。沒有放寬節點gate或從重製UI猜原版。
+
+Python驅動89項與獨立比較24項全部通過，零略過；相關Go17項通過、1項既有條件略過。第23章24張及第24章有限13張與整檔SAV四gate回歸通過。以相同r6原版及r9重製收據重算r10，seq2254獨立節點為ok，全部69個可比較節點一致，6個跨時序點仍不比較；69張影像通過640px門檻，最大282px。
+
+完整r10報告仍failed：原版正常T5敗北，T6..T11、一次清敵與保存未達，使計畫與交易gate未完成。此前的unknown_oracle_ui診斷保留為修正前收據，現在不再列為這條r6路徑的未解題。#158限工具與RUNTIME-E1，不增加PLAYER-E2或章台帳；#142／#154／#38及DP決定維持，AP+200/DP+0/DX+60不變。
