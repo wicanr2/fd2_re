@@ -988,6 +988,16 @@ def build_campaign(
                 "range_mode": 1,
             }
             nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+        elif c == 24:
+            # #143：338CE／338FC／33142，正常原版起手seq100。
+            # fd2_ch24_startup_frontier_20261003.json 的 READY 契約。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 9, "camera_y": 13,
+                "cursor_x": 20, "cursor_y": 19,
+                "visible_cursor_x": 11, "visible_cursor_y": 6,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
 
         retry_flag = f"retried_ch{cid}"
         flags[retry_flag] = False

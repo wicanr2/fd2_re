@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
 
@@ -526,6 +527,8 @@ func ch01UnitDump(g *Game) string {
 // ackPresents 承認演出工作的「這一幀已呈現」。離屏不走 Draw，而援軍進場、調色盤
 // 斜坡這些工作都掛在 drawn 上；`fastForwardShotCampaign` 走的是同一種承認方式。
 // 地圖快取失效時沿正式合成器重建，其餘只承認drawn；各擁有者等待幀數照跑。
+var ch23JourneyScreen *ebiten.Image
+
 func ackPresents(g *Game) {
 	// 正式Draw會重建被對白或record_bytes失效的地圖快取；離屏pump也要
 	// 走同一合成器，讓下一次Update的狀態到期提示取得完整底圖（#80）。
@@ -555,6 +558,15 @@ func ackPresents(g *Game) {
 	}
 	if g.native2189A != nil {
 		g.native2189A.drawn = true
+	}
+	if g.nativeCh23Loop != nil {
+		// #144：共用玩家路徑原先漏了此呈現owner。走正式Draw再交出回呼。
+		if ch23JourneyScreen == nil {
+			ch23JourneyScreen = ebiten.NewImage(640, 400)
+		}
+		if !g.drawNativeCh23Loop(ch23JourneyScreen) {
+			g.loadErr = "第24章舞台Draw缺少完整來源"
+		}
 	}
 	if g.nativeClassUIJob != nil {
 		g.nativeClassUIJob.drawn = true

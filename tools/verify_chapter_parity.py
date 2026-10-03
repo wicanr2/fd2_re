@@ -69,6 +69,71 @@ def read_jsonl(path: Path) -> list[dict]:
     return out
 
 
+def stage_trace_metadata(root: Path, checkpoint: dict, recorded: object) -> dict:
+    """獨立核對測試承接的列偏移；只讀raw trace，不讀影像。"""
+    source = "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
+    try:
+        if type(recorded) is not int or not 0 <= recorded < 192:
+            raise ValueError("重製列偏移超界")
+        if checkpoint.get("exe_sha256") != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f":
+            raise ValueError("原版EXE錯誤")
+        if 0x24D22 <= int(checkpoint["eip"], 16) < 0x24DF2:
+            raise ValueError("原版copy未完成")
+        window = json.loads((root / "runner.json").read_text())["eip_trace_window"]
+        trace = read_jsonl(root / "eip-trace.jsonl")
+        if window["from_step"] != 0 or window["to_step"] != 0 or len(trace) >= window["max_entries"]:
+            raise ValueError("追蹤不是完整且未截斷")
+        offset, presented, source_buffer, previous, rotations, presents = None, None, None, 0, 0, 0
+        for entry in trace:
+            if entry["step"] < previous:
+                raise ValueError("追蹤順序錯誤")
+            previous = entry["step"]
+            if entry["step"] > checkpoint["steps"]:
+                break
+            if entry["eip"] == "0x11EED" and offset is not None:
+                stack = entry["stack"]
+                if len(stack) < 7:
+                    raise ValueError("copy返回參數缺失")
+                full_viewport = [stack[i] for i in (1, 2, 4, 5, 6)] == ["0xA0504", "0x140", "0x1C8", "0x138", "0xC0"]
+                if not full_viewport:
+                    if stack[0] == "0x11D3B":
+                        raise ValueError("VGA copy參數未知")
+                    continue
+                if source_buffer is None and stack[0] != "0x11D3B":
+                    raise ValueError("VGA work來源缺失")
+                if source_buffer is not None and source_buffer != stack[3]:
+                    if stack[0] == "0x11D3B":
+                        raise ValueError("VGA source不一致")
+                    presented = None
+                    continue
+                source_buffer, presented = stack[3], offset
+                presents += 1
+                continue
+            if entry["eip"] != "0x24D48":
+                continue
+            latch = int(entry["eax"], 16)
+            stack = entry["stack"]
+            if not 1 <= latch <= 14 or stack[3] != "0x0":
+                raise ValueError("旋轉參數未知")
+            if stack[2] == "0x10842":
+                offset = 0
+                presented, source_buffer = None, None
+            elif stack[2] != "0x120B6":
+                raise ValueError("旋轉caller未知")
+            if offset is None:
+                raise ValueError("缺loader")
+            offset = (offset + latch) % 192
+            rotations += 1
+        if presented is None:
+            raise ValueError("缺完整VGA發布")
+        return {"stage_row_offset": recorded, "original_stage_row_offset": presented,
+                "original_stage_work_offset": offset, "stage_trace_presents": presents,
+                "stage_trace_rotations": rotations, "stage_phase_match": presented == recorded,
+                "stage_phase_source": source}
+    except (OSError, ValueError, KeyError, IndexError, TypeError) as exc:
+        return {"stage_phase_match": False, "stage_phase_error": str(exc), "stage_phase_source": source}
+
+
 def plan_completion(plan: list[dict], actions: list[dict], remake_cps: list[dict] | None = None) -> dict:
     """截短或仍在執行的原版收據不得冒充完整章工作單元。"""
     required = Counter()
@@ -384,6 +449,9 @@ def main() -> int:
                                "phases": len(candidates), "diff_pixels": diff, "box": box, "ok": diff <= args.pixel_budget,
                                "oracle_sha256": sha256_file(opng), "remake_sha256": sha256_file(rpng)})
                 frames[-1].update(palette_cycle_metadata(cp))
+                if "stage_row_offset" in cp:
+                    frames[-1].update(stage_trace_metadata(args.oracle, ocp, cp["stage_row_offset"]))
+                    frames[-1]["ok"] &= frames[-1]["stage_phase_match"]
             else:
                 frames.append({"seq": seq, "kind": cp["kind"], "status": "frame_missing_or_no_pillow"})
         behavior.append(entry)

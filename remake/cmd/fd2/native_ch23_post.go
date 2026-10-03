@@ -45,6 +45,38 @@ func cloneNativeCh23AdapterState(src *nativeCh23AdapterState) *nativeCh23Adapter
 	return &dst
 }
 
+// #144：0x10652 的 #42 owner 也由正常 0x11EEE case23 消費。
+// 契約見 fd2_ch24_stage_runtime_20261003.json；此處只準備候選，呼叫端提交。
+func (g *Game) prepareNativeCh23SteadyStage(rawTick int) (*nativeCh23AdapterState, error) {
+	if g.nativeMapAssets == nil || g.nativeMapAssets.MapIndex != 23 || g.nativeCh23Loop != nil {
+		return nil, nil
+	}
+	state := cloneNativeCh23AdapterState(g.nativeCh23State)
+	if state == nil {
+		frame, err := fdother.LoadSeparatedNativeCh23Stage(separatedAssetPath("surfaces"))
+		if err != nil {
+			return nil, fmt.Errorf("FDOTHER #42: %w", err)
+		}
+		state = &nativeCh23AdapterState{
+			staging: make([]byte, fdother.NativeCh23StageStride*fdother.NativeCh23StageHeight),
+			latch:   1, tickSnapshot: rawTick,
+		}
+		if err := fdother.BlitNativeCh23Stage(frame, state.staging); err != nil {
+			return nil, err
+		}
+		// 0x10842 的 loader 尾端先執行一次 sub_24D22(0)。
+		if err := fdother.RotateNativeCh23Rows(state.staging, state.latch); err != nil {
+			return nil, err
+		}
+	} else if state.tickSnapshot != rawTick {
+		if err := fdother.RotateNativeCh23Rows(state.staging, state.latch); err != nil {
+			return nil, err
+		}
+		state.tickSnapshot = rawTick
+	}
+	return state, nil
+}
+
 func nativeCh23LoopSpec(loop campaign.NativeCh23Loop) fdother.NativeCh23LoopSpec {
 	return fdother.NativeCh23LoopSpec{
 		Phase: loop.Phase, Repeat: loop.Repeat,
@@ -97,20 +129,23 @@ func (g *Game) startNativeCh23Loop(loop campaign.NativeCh23Loop, then func()) er
 
 	rollback := g.snapshotNativeCh23LoopState()
 	if spec.Phase == "initial" {
-		if g.nativeCh23State != nil {
+		if g.nativeCh23State != nil &&
+			(g.nativeCh23State.latch != 1 || g.nativeCh23State.initialComplete) {
 			return errors.New("native ch23 initial loop state already exists")
 		}
-		frame, err := fdother.LoadSeparatedNativeCh23Stage(
-			separatedAssetPath("surfaces"),
-		)
-		if err != nil {
-			return fmt.Errorf("FDOTHER #42: %w", err)
+		if g.nativeCh23State == nil {
+			frame, err := fdother.LoadSeparatedNativeCh23Stage(
+				separatedAssetPath("surfaces"),
+			)
+			if err != nil {
+				return fmt.Errorf("FDOTHER #42: %w", err)
+			}
+			staging := make([]byte, fdother.NativeCh23StageStride*fdother.NativeCh23StageHeight)
+			if err := fdother.BlitNativeCh23Stage(frame, staging); err != nil {
+				return fmt.Errorf("FDOTHER #42 staging: %w", err)
+			}
+			g.nativeCh23State = &nativeCh23AdapterState{staging: staging, tickSnapshot: currentTick}
 		}
-		staging := make([]byte, fdother.NativeCh23StageStride*fdother.NativeCh23StageHeight)
-		if err := fdother.BlitNativeCh23Stage(frame, staging); err != nil {
-			return fmt.Errorf("FDOTHER #42 staging: %w", err)
-		}
-		g.nativeCh23State = &nativeCh23AdapterState{staging: staging, tickSnapshot: currentTick}
 	} else if g.nativeCh23State == nil || !g.nativeCh23State.initialComplete {
 		return errors.New("native ch23 palette loop lacks completed initial state")
 	}

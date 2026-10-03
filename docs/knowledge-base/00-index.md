@@ -485,3 +485,21 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第23章三次事件後保存計畫r4](../data/parity-plans/ch23-sample-r4.jsonl)：#133／#138，保留r3相同前綴，到T19玩家游標清敵一次；T22不列本次抽樣，敗北不刪除。
 
 - [第23章正式四項對拍](../data/ui-traces/parity-ch23.json)及[全部非零RGB抽樣](../data/ui-traces/parity-ch23-samples.json)：#133／#138／#141；T13／15／18正常事件、T19一次清敵、62筆正常戰後與全檔SAV，24張完整RGB。PLAYER-E2限111／114例外，T22未抽樣；回歸已通過。
+
+- [第24章接續槽清冊](../data/parity-slots/ch24-manifest.json)與[正常起手有限計畫](../data/parity-plans/ch24-startup-r1.jsonl)：#142，沿用第23章完整SAV、seed4，零額外改寫；尚未驗收。
+
+- [第24章四次增援抽樣計畫](../data/parity-plans/ch24-sample-r1.jsonl)：#142，正常移動與END至T11後清敵一次、正常戰後保存；未通過四項門檻不作驗收。
+
+- [第24章正常起手前沿有限CONFORMED契約](../data/ida/fd2_ch24_startup_frontier_20261003.json)：#143，0x338CE／0x338FC正常16＋4筆，完整清冊97筆重建失敗反證；先規格再資料契約。
+
+- [第24章存活隊員正常選人計畫r2](../data/parity-plans/ch24-sample-r2.jsonl)：#142，保留r1 T4敗北；相同SAV與seed4，只用正常方向鍵排除HP0隊員，不改HP。
+
+- [第24章舞台執行期有限CONFORMED契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)：#144，沿既有#42／0x10652／0x11EEE case23；補正常compositor並接續戰後owner，抽樣完成VGA copy相位已驗；未抽樣仍未知。
+
+- [第24章T3戰後保存有限計畫r3](../data/parity-plans/ch24-sample-r3.jsonl)：#142／#144，r1與r2均T4敗北，不再刷長局；只抽樣事件54@T2，再一次清敵及正常戰後保存。T4／7／10動態未驗。
+
+- [第24章28筆正常戰後有限CONFORMED](../data/ida/fd2_ch24_post_frontier_20261003.json)：#145，24C4C／24CAD原版caller與28筆count；86只留歷史fixture，其他形狀仍拒收。
+
+- [第24章既定政策全員存活建構槽](../data/parity-slots/ch24-fresh-policy-manifest.json)與[有界正常LOAD探查](../data/parity-plans/ch24-fresh-startup-r1.jsonl)：#142，沿111／114固定AP+200／DP+0／DX+60與seed4，不額外改政策。
+
+- [第24章有限同狀態收據](../data/ui-traces/ch24-finite-parity.json)：#143／#144／#145限RUNTIME-E1驗收，兩種正常選人分支、T2增援與28筆戰後保存；#142整章仍需T4／7／10。

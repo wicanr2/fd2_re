@@ -1307,6 +1307,29 @@
         ],
         "pattern": "candidate.MaterializeNativeMapViewState"
       }
+    },
+    {
+      "id": "stage-rotation-is-not-vga-publication",
+      "date": "2026-10-03",
+      "area": "舞台相位與對拍",
+      "rule": "從raw trace推導舞台相位時，追蹤已完成VGA copy及其src／stride／尺寸；工作緩衝旋轉只更新work相位。不同src copy使已發布相位未知，重新由已證work發布後才恢復。入口docs/data/ida/fd2_ch24_stage_runtime_20261003.json、remake/cmd/fd2/chapter_parity_replay_test.go的parityCh23RowOffset與tools/verify_chapter_parity.py的stage_trace_metadata；目前限固定FD2.EXE的312x192舞台。",
+      "why": "第24章checkpoint可能位於旋轉後、VGA發布前；選人與移動也從自己的caller發布work。只追正常renderer返回會把部分畫面列偏移誤算。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/144；docs/data/ui-traces/ch24-finite-parity.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py"
+        ],
+        "pattern": "def stage_trace_metadata"
+      }
+    },
+    {
+      "id": "offscreen-ack-must-complete-native-draw",
+      "date": "2026-10-03",
+      "area": "離屏重播與演出",
+      "rule": "離屏重播遇到Draw完成閘門時，執行正式繪圖consumer後再回報，不只切換rendered旗標。入口remake/cmd/fd2/native_chapter_one_play_test.go的ackPresents與drawNativeCh23Loop；目前涵蓋第24章舞台及既有原生呈現閘門，不能據此取代GUI正常玩家驗收。",
+      "why": "第24章11句戰後已到達，但舞台繪製沒有執行，重播6001幀超時；補實際Draw後完成300次正常舞台演出與保存。",
+      "evidence": "docs/data/ui-traces/ch24-finite-parity.json"
     }
   ]
 }

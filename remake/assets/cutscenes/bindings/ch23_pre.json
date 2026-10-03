@@ -4,8 +4,14 @@
   "acting_resources": "../acting/map32.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "dialogue_contexts": {
-    "0x338f2": { "source_dat": "FDTXT_024", "script": "ch24.json" },
-    "0x3320c": { "source_dat": "FDTXT_024", "script": "ch24.json" }
+    "0x338f2": {
+      "source_dat": "FDTXT_024",
+      "script": "ch24.json"
+    },
+    "0x3320c": {
+      "source_dat": "FDTXT_024",
+      "script": "ch24.json"
+    }
   },
   "overrides": {
     "0x338ce": {
@@ -18,9 +24,495 @@
         "party_scenario": "assets/scenarios/ch24.json"
       }
     },
-    "0x33908": { "pan": { "x": 0, "y": 96, "tile_step": true } },
-    "0x33921": { "pan": { "x": 0, "y": 528, "tile_step": true } },
-    "0x3393a": { "pan": { "x": 624, "y": 576, "tile_step": true } },
-    "0x33953": { "pan": { "x": 624, "y": 48, "tile_step": true } }
+    "0x33908": {
+      "pan": {
+        "x": 0,
+        "y": 96,
+        "tile_step": true
+      }
+    },
+    "0x33921": {
+      "pan": {
+        "x": 0,
+        "y": 528,
+        "tile_step": true
+      }
+    },
+    "0x3393a": {
+      "pan": {
+        "x": 624,
+        "y": 576,
+        "tile_step": true
+      }
+    },
+    "0x33953": {
+      "pan": {
+        "x": 624,
+        "y": 48,
+        "tile_step": true
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x338f2#0": {
+      "script": "ch24.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 0,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『啊，無聊得要命．到底還要",
+                "　飛多久啊！』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  464,
+                  370,
+                  306,
+                  1299,
+                  386,
+                  334,
+                  259,
+                  584,
+                  387,
+                  664,
+                  465,
+                  334
+                ],
+                [
+                  181,
+                  326,
+                  70,
+                  587,
+                  464,
+                  342,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 0,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 21,
+            "pages": [
+              [
+                "『真神奇，我們一天內就飛過",
+                "　了大陸西北部．從方向看來",
+                "　，現在應該是在前往邊界的"
+              ],
+              [
+                "　山脈吧！』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  589,
+                  157,
+                  885,
+                  370,
+                  568,
+                  569,
+                  486,
+                  266,
+                  432,
+                  345,
+                  326,
+                  563
+                ],
+                [
+                  181,
+                  341,
+                  125,
+                  567,
+                  86,
+                  505,
+                  1001,
+                  584,
+                  388,
+                  524,
+                  523,
+                  658,
+                  579
+                ],
+                [
+                  181,
+                  370,
+                  371,
+                  395,
+                  866,
+                  671,
+                  343,
+                  395,
+                  493,
+                  491,
+                  533,
+                  1235,
+                  367
+                ]
+              ],
+              [
+                [
+                  181,
+                  506,
+                  1423,
+                  358,
+                  342,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 2,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 0,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『你是說「惡魔之山」嗎？那",
+                "　一帶全是未熄滅的火山啊！",
+                "　聽說那裡也是惡魔族的根據"
+              ],
+              [
+                "　地．難道惡魔族也和這件事",
+                "　有關？』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  605,
+                  343,
+                  534,
+                  1100,
+                  102,
+                  103,
+                  132,
+                  506,
+                  1102,
+                  338,
+                  180,
+                  151
+                ],
+                [
+                  181,
+                  486,
+                  466,
+                  362,
+                  343,
+                  528,
+                  1575,
+                  545,
+                  367,
+                  142,
+                  506,
+                  464,
+                  342
+                ],
+                [
+                  181,
+                  561,
+                  534,
+                  151,
+                  613,
+                  693,
+                  343,
+                  102,
+                  103,
+                  170,
+                  367,
+                  1478,
+                  989
+                ]
+              ],
+              [
+                [
+                  181,
+                  114,
+                  584,
+                  640,
+                  300,
+                  102,
+                  103,
+                  170,
+                  693,
+                  647,
+                  462,
+                  272,
+                  536
+                ],
+                [
+                  181,
+                  400,
+                  762,
+                  180,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 3,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 0,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 16,
+            "pages": [
+              [
+                "『那倒不奇怪，惡魔族本來就",
+                "　棲息在黑暗和地獄般的炎熱",
+                "　中，和其他種族向不往來，"
+              ],
+              [
+                "　誰曉得它們暗地裡會搞出些",
+                "　什麼！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 0,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 3,
+            "pages": [
+              [
+                "『瞧，有人來迎接我們了！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x3320c#1": {
+      "script": "ch24.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 16,
+            "pages": [
+              [
+                "『那．那是什麼？飛行的大岩",
+                "　石，上面有人？』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  151,
+                  584,
+                  151,
+                  343,
+                  411,
+                  344,
+                  180,
+                  326,
+                  279,
+                  367,
+                  125,
+                  231
+                ],
+                [
+                  181,
+                  322,
+                  370,
+                  391,
+                  651,
+                  400,
+                  98,
+                  180,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 17,
+            "pages": [
+              [
+                "『笨！那是魔法驅動的飛行裝",
+                "　置，那些人是乘坐在上面的",
+                "　乘客！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 7,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 18,
+            "pages": [
+              [
+                "『他們想幹什麼？想突破這裡",
+                "　的空域前往火焰之谷嗎？』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 8,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 19,
+            "pages": [
+              [
+                "『陛下吩咐過我們，絕不可讓",
+                "　任何人從空中或地下經過此",
+                "　地的！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 4,
+            "control": "FFED",
+            "operand": 16,
+            "pages": [
+              [
+                "『所以現在我們要宰了那些傢",
+                "　伙！上吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 16,
+            "pages": [
+              [
+                "『哇！對方來意不善呢！好像",
+                "　想要動手了！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『要在這種地方打嗎？好像對",
+                "　我們很不利吧！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 12,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 20,
+            "pages": [
+              [
+                "『我們的伙伴中還有幾個會飛",
+                "　的，勉強可以牽制敵方的攻",
+                "　勢，你們只要在地上確貫消"
+              ],
+              [
+                "　滅敵人就可以了！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_024",
+            "string_index": 1,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『對方不過是會飛而已，有什",
+                "　麼好怕的！我們先打了再說",
+                "　！』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
   }
 }

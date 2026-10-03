@@ -158,6 +158,70 @@ func TestNativeCh23RejectsMissingRawFrameBeforeMutation(t *testing.T) {
 	}
 }
 
+func TestNativeCh23SteadyStageTickAndPostOwner(t *testing.T) {
+	g, now := completeNativeCh23Game(t)
+	g.nativeMapAssets.MapIndex = 23
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativeCh23State == nil || g.nativeCh23State.latch != 1 {
+		t.Fatal("normal chapter23 draw did not materialize the loader's latch1 owner")
+	}
+	first := append([]byte(nil), g.nativeCh23State.staging...)
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(first, g.nativeCh23State.staging) {
+		t.Fatal("same BIOS tick rotated the stage twice")
+	}
+	now = now.Add(nativeBIOSTickPeriod)
+	want := append([]byte(nil), first...)
+	if err := fdother.RotateNativeCh23Rows(want, 1); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(want, g.nativeCh23State.staging) {
+		t.Fatal("next BIOS tick did not preserve the recovered one-row rotation")
+	}
+	// 相同 tick 的 initial 第一 draw 只先寫stage2，必須保留戰鬥的內容。
+	if err := g.startNativeCh23Loop(nativeCh23LoopForTest("initial"), nil); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativeCh23State.latch != 2 || bytes.Equal(first, g.nativeCh23State.staging) {
+		t.Fatal("post loop discarded the battle-stage owner")
+	}
+	runNativeCh23Job(t, g, &now)
+	if !g.nativeCh23State.initialComplete {
+		t.Fatal("post initial loop did not complete")
+	}
+}
+
+func TestNativeCh23SteadyStageFailureIsAtomic(t *testing.T) {
+	g, now := completeNativeCh23Game(t)
+	g.nativeMapAssets.MapIndex = 23
+	if err := g.composeNativeMapFrameAt(now); err != nil {
+		t.Fatal(err)
+	}
+	before := cloneNativeCh23AdapterState(g.nativeCh23State)
+	work := append([]byte(nil), g.nativeMapWork...)
+	vga := append([]byte(nil), g.nativeMapVGA...)
+	g.nativeCh23State.staging = g.nativeCh23State.staging[:17]
+	invalid := cloneNativeCh23AdapterState(g.nativeCh23State)
+	if err := g.composeNativeMapFrameAt(now.Add(nativeBIOSTickPeriod)); err == nil {
+		t.Fatal("short stage accepted")
+	}
+	if !reflect.DeepEqual(invalid, g.nativeCh23State) || !bytes.Equal(work, g.nativeMapWork) || !bytes.Equal(vga, g.nativeMapVGA) {
+		t.Fatal("rejected stage changed owner or indexed pixels")
+	}
+	g.nativeCh23State = before
+	g.nativeMapAssets.MapIndex = 22
+	if candidate, err := g.prepareNativeCh23SteadyStage(100); candidate != nil || err != nil {
+		t.Fatal("another map consumed chapter23's staging")
+	}
+}
+
 func TestNativeCh23RejectsMissingSeparatedStageBeforeMutation(t *testing.T) {
 	g, _ := completeNativeCh23Game(t)
 	t.Setenv("FD2_ASSET_PACK", t.TempDir())

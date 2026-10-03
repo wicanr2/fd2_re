@@ -9,6 +9,41 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_stage_phase_requires_completed_vga_copy(self):
+        checkpoint = {"steps": 4, "eip": "0x4DF45", "exe_sha256":
+                      "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}
+        loader = {"step": 1, "eip": "0x24D48", "eax": "0x1",
+                  "stack": ["0x0", "0x0", "0x10842", "0x0"]}
+        rotation = {"step": 2, "eip": "0x24D48", "eax": "0x2",
+                    "stack": ["0x0", "0x0", "0x120B6", "0x0"]}
+        present = {"step": 3, "eip": "0x11EED",
+                   "stack": ["0x11D3B", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"]}
+        pending = {**rotation, "step": 4}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "runner.json").write_text(json.dumps({"eip_trace_window":
+                {"from_step": 0, "to_step": 0, "max_entries": 100}}))
+
+            def check(entries, recorded=3):
+                (root / "eip-trace.jsonl").write_text("\n".join(map(json.dumps, entries)))
+                return vp.stage_trace_metadata(root, checkpoint, recorded)
+
+            result = check([loader, rotation, present, pending])
+            self.assertTrue(result["stage_phase_match"])
+            self.assertEqual(result["original_stage_work_offset"], 5)
+            self.assertFalse(check([loader, rotation, pending])["stage_phase_match"])
+            self.assertFalse(check([loader, rotation, present, pending], 5)["stage_phase_match"])
+            self.assertFalse(check([loader, rotation, {**present, "step": 5}])["stage_phase_match"])
+            self.assertFalse(check([loader, rotation, {**present, "stack":
+                ["0x11D3B", "0xA0000", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"]}])["stage_phase_match"])
+            self.assertFalse(check([loader, rotation, present, {**loader, "step": 4}])["stage_phase_match"])
+            foreign = {**present, "step": 4, "stack":
+                       ["0x12F57", "0xA0504", "0x140", "0x14D3E4", "0x1C8", "0x138", "0xC0"]}
+            self.assertFalse(check([loader, rotation, present, foreign])["stage_phase_match"])
+            selection = {**present, "step": 4, "stack":
+                         ["0x18C5D", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"]}
+            self.assertTrue(check([loader, rotation, present, selection])["stage_phase_match"])
+
     def test_preparation_save_rejects_partial_write_or_missing_owner(self):
         action = {"before_seq": 37, "seq": 55}
         exe = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"

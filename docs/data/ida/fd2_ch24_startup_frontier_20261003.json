@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_native_frontier_contract",
+  "status": "CONFORMED",
+  "date": "2026-10-03",
+  "issues": [
+    142,
+    143
+  ],
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "fdtxt_archive": {
+      "file": "FDTXT.DAT",
+      "size": 120502,
+      "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+      "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69",
+      "manifest": "docs/data/fd2-reference-files.json"
+    }
+  },
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE flat-loader linear address",
+    "existing_evidence": "docs/data/ida/fd2_reinforcement_eax_sources.json"
+  },
+  "claims": [
+    {
+      "level": "已證實",
+      "original_name": "sub_338C4",
+      "address": "0x338FC",
+      "raw_bytes": "e8 4d d2 fd ff",
+      "semantic": "呼叫既有sub_10B4E；群組1由受版控handler beat與原版同狀態20筆收據共同確認。",
+      "source": [
+        "docs/data/ida/fd2_reinforcement_eax_sources.json:spawn_group_consumer.function.code_xrefs_to_start",
+        "remake/assets/cutscenes/handlers/ch23_pre.json",
+        "work/parity-slot-ch24/startup-original-r1/checkpoint-0100.json"
+      ]
+    },
+    {
+      "level": "已證實",
+      "original_name": "sub_205DA / sub_1088D / sub_10B4E",
+      "address": "0x338CE / 0x338FC",
+      "semantic": "本章正常選取16筆持續隊伍，先LOADCH，再spawn group1四筆；完整FDFIELD來源70筆不是即時count。",
+      "source": [
+        "docs/data/ida/fd2_ch13_handoff_20261001.json",
+        "docs/data/ida/fd2_reinforcement_eax_sources.json",
+        "work/parity-slot-ch24/startup-original-r1/checkpoint-0100.json"
+      ],
+      "dynamic_count": 20
+    },
+    {
+      "level": "已證實",
+      "semantic": "重製applyLoadCH已建立20筆，resetBattle因scenario未宣告runtime_append_groups而退回authored初始化，產生97筆。",
+      "source": "work/parity-slot-ch24/startup-remake-r1.log"
+    },
+    {
+      "level": "已證實",
+      "original_name": "sub_338C4 shared tail sub_33142 → sub_12D7B",
+      "address": "0x33142 / 0x12D7B",
+      "semantic": "正常固定record0座標20,19，起手camera9,13、visible11,6；直接使用原版seq100六全域及既有view consumer。",
+      "source": [
+        "remake/assets/cutscenes/handlers/ch23_pre.json",
+        "work/parity-slot-ch24/startup-original-r1/checkpoint-0100.json"
+      ]
+    },
+    {
+      "level": "強推論",
+      "semantic": "起手完整畫面有HUD；沿save-persistent gate A=1及既有renderer gate B非零契約，materialization取1；精確raw B值未知。",
+      "source": [
+        "docs/data/ida/fd2_ch23_startup_20261003.json",
+        "work/parity-slot-ch24/startup-original-r1/checkpoint-0100.png"
+      ]
+    }
+  ],
+  "original_run": {
+    "root": "work/parity-slot-ch24/startup-original-r1",
+    "checkpoint": "work/parity-slot-ch24/startup-original-r1/checkpoint-0100.json",
+    "checkpoint_sha256": "7778efe6c575ea64003bd037bf97898c01f99e712343dc3280fe6f7745f8b551",
+    "seq": 100,
+    "count": 20,
+    "own_count": 16,
+    "enemy_count": 4,
+    "own_alive": 6,
+    "view": {
+      "aux_phase": 0,
+      "camera_x": 9,
+      "camera_y": 13,
+      "cursor_x": 20,
+      "cursor_y": 19,
+      "gold": 2009,
+      "overlay_selector": 1,
+      "rng_word": 28447,
+      "round": 1,
+      "visible_x": 11,
+      "visible_y": 6
+    },
+    "runner_sha256": "381ee0b8f99484faee1001aca115c1019c30cc9e4097c6cb80bc2c75193f3e17",
+    "state_injections": []
+  },
+  "ready_spec": {
+    "typed_data": "remake/assets/scenarios/ch24.json runtime_append_groups=true；不增加schema或opcode。",
+    "handoff": "同名map23 roster與ch24 scenario才由既有AdoptHandlerBattleState消費20筆前置陣列；已入場group1從來源中剔除，其他66筆保留pending。",
+    "failure_policy": "沿既有path match、原生record與selector cache驗證；缺資料仍拒絕。",
+    "acceptance": [
+      "同一SAV重播起手20筆及T2、AI／UI／完整RGB。",
+      "相同source契約同步editor-canonical並檢查重生。",
+      "本契約不放寬戰後exact86；正常戰後另用動態原版證據。"
+    ],
+    "native_map_view": {
+      "camera_x": 9,
+      "camera_y": 13,
+      "cursor_x": 20,
+      "cursor_y": 19,
+      "visible_cursor_x": 11,
+      "visible_cursor_y": 6,
+      "range_mode": 1
+    },
+    "native_map_hud_inherited": {
+      "display_gate_b": 1
+    },
+    "consumer": "既有enterNode materializeNativeMapRuntime與HUD renderer；缺來源仍拒收。"
+  },
+  "limitations": [
+    "T2游標是第二回合開始；事件54於第二回合END後才執行，本有限收據未包含增援。",
+    "源SAV中HP0保留；不宣稱自然難度或完整PLAYER-E2。",
+    "既有helper不重解。",
+    "HUD gate B精確byte未知，1只保存已知非零renderer等價條件。"
+  ],
+  "corrections": [
+    {
+      "date": "2026-10-03",
+      "reason": "同源存檔的正常存活隊員選取分支反證固定camera9，原版對白聚焦留下camera10。固定常數僅覆蓋前15位分支。",
+      "evidence": [
+        {
+          "checkpoint": "work/parity-slot-ch24/startup-original-r1/checkpoint-0100.json",
+          "sha256": "7778efe6c575ea64003bd037bf97898c01f99e712343dc3280fe6f7745f8b551",
+          "view": {
+            "aux_phase": 0,
+            "camera_x": 9,
+            "camera_y": 13,
+            "cursor_x": 20,
+            "cursor_y": 19,
+            "gold": 2009,
+            "overlay_selector": 1,
+            "rng_word": 28447,
+            "round": 1,
+            "visible_x": 11,
+            "visible_y": 6
+          },
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "level": "已證實"
+        },
+        {
+          "checkpoint": "work/parity-slot-ch24/full-original-r3/checkpoint-0114.json",
+          "sha256": "4ca5b0e078e9932eb528de3e0b4b54a9a76d30e2e85f4d05f969e4b862948d39",
+          "view": {
+            "aux_phase": 0,
+            "camera_x": 10,
+            "camera_y": 13,
+            "cursor_x": 20,
+            "cursor_y": 19,
+            "gold": 2009,
+            "overlay_selector": 1,
+            "rng_word": 2159,
+            "round": 1,
+            "visible_x": 10,
+            "visible_y": 6
+          },
+          "input_chain": [
+            "0x11ED9",
+            "0x12103",
+            "0x11CED",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "level": "已證實"
+        }
+      ],
+      "primary_reused": [
+        "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+        "docs/data/ida/fd2_player_neutral_input_20260907.json"
+      ],
+      "address_space": "IDA LE linear",
+      "writers": "sub_165D6開框前speaker focus／sub_12CEA六視圖全域／0x33142 sub_12D7B(slot0)",
+      "consumer": "sub_25A40→sub_117E7，共用原版六視圖全域；remake story_ch24→battle_ch24不得以靜態常數覆蓋",
+      "spec_status": "READY",
+      "runtime_contract": "僅story_ch24的已驗focus_unit尾端使用原生視圖；進battle_ch24前若LOADCH路徑相符，保存現行storyNativeMapView至既有handlerInheritedMapView，再以六值物化battle.State。HUD anchor取承接後visible cursor。缺完整載體拒絕，不猜值；direct-entry仍只使用已知前15位樣本常數，不作一般玩家驗收。"
+    },
+    {
+      "date": "2026-10-03",
+      "issue": "#143",
+      "reason": "實際r6除錯證明舊binding只有14句generic dialogue，沒有NativeDialogue，完全未消費既有speaker focus；不能以空載體冒稱正常交接。",
+      "failure_log": "work/parity-slot-ch24/full-r4-remake-r6.log",
+      "primary_reused": [
+        "docs/data/ida/fd2_player_neutral_input_20260907.json",
+        "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"
+      ],
+      "raw_input": {
+        "path": "extracted/raw/FDTXT/FDTXT_024.bin",
+        "size": 1722,
+        "sha256": "6a705b7a455393175e273c0ad5a7931acd9b53763e0fe73a2f5c552f26bb00e1"
+      },
+      "glyph_map": {
+        "path": "docs/data/glyph_map.json",
+        "sha256": "fff424b819d50bae7e2570c7fca1fec27dc670cf4832aeed7a32c2c2b4144731"
+      },
+      "level": "已證實",
+      "spec_status": "READY",
+      "contract": "由維護中的generate_native_story_dialogue.py解析FDTXT_024索引0／1，共兩caller14句，保存control／operand／pages／必要原始glyph_ids，接既有原生對話與speaker focus。PAN與末端focus_unit共用原生六全域，正常story_ch24交接battle_ch24；缺席FFEE說話者依現有原版查找契約不聚焦，不補角色。",
+      "control_operands": {
+        "0x338f2#0": [
+          {
+            "control": "FFEE",
+            "operand": 0
+          },
+          {
+            "control": "FFEE",
+            "operand": 21
+          },
+          {
+            "control": "FFEE",
+            "operand": 24
+          },
+          {
+            "control": "FFEE",
+            "operand": 16
+          },
+          {
+            "control": "FFEE",
+            "operand": 3
+          }
+        ],
+        "0x3320c#1": [
+          {
+            "control": "FFED",
+            "operand": 16
+          },
+          {
+            "control": "FFED",
+            "operand": 17
+          },
+          {
+            "control": "FFED",
+            "operand": 18
+          },
+          {
+            "control": "FFED",
+            "operand": 19
+          },
+          {
+            "control": "FFED",
+            "operand": 16
+          },
+          {
+            "control": "FFEE",
+            "operand": 16
+          },
+          {
+            "control": "FFEE",
+            "operand": 4
+          },
+          {
+            "control": "FFEE",
+            "operand": 20
+          },
+          {
+            "control": "FFEE",
+            "operand": 0
+          }
+        ]
+      },
+      "command": "python3 tools/generate_native_story_dialogue.py remake/assets/cutscenes/bindings/ch23_pre.json --raw-dir extracted/raw/FDTXT --glyph-map docs/data/glyph_map.json --expected-callers 2 --expected-utterances 14"
+    }
+  ],
+  "conformed_scope": {
+    "receipt": "docs/data/ui-traces/ch24-finite-parity.json",
+    "evidence_level": "RUNTIME-E1",
+    "scope": "限兩個正常選人分支、T2／T3及28筆正常戰後保存；晚期T4／7／10與整章未驗。"
+  }
+}

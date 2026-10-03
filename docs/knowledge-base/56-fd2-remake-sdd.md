@@ -9330,3 +9330,11 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 [主契約](../data/ida/fd2_ch23_event52_20261003.json)與[正式收據](../data/ui-traces/parity-ch23.json)已列CONFORMED。52於T13呼叫254／255空群組仍PAN與白閃，T15追加2／3、T18追加8／9；producer依已證低byte算式代入控制列，沿用既有staging格式。#141只修本caller：發布預檢roster時保留PAN後六全域，避免視圖回滾。
 
 同源SAV與seed4，正常T18移動後到T19玩家游標清敵一次，62筆進正常戰後與整備四槽保存。現行ch22_post只接受42／62／86；62有原版24962 consumer與完整保存直接證據，T2有限42／86契約保留原適用範圍。正式台帳、測試與限制統一引用[58](58-fd2-exe-re-coverage.md)；PLAYER-E2限111／114建構槽例外，T22未抽樣，不宣稱傷害、存活、AI選目標或特效中間幀parity。原r2／r3敗北與#141失敗RGB保留。
+
+### 2026-10-03 第24章正常起手與戰後舞台（#143／#144／#145）
+
+[有限收據](../data/ui-traces/ch24-finite-parity.json)限定RUNTIME-E1，取代前段本切片待驗狀態。LOADCH承接既有runtime_append_groups，不再從完整資料重建戰場。正式開場使用原生FDTXT對白、說話者聚焦與PAN，最後聚焦保留六全域，兩種正常選人分支各自帶入battle_ch24；固定camera僅保留直接進場fixture用途。
+
+FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪依BIOS tick決定單次旋轉，先驗候選再發布。測試承接最後已完成VGA copy的列偏移，獨立比較器再核對raw trace；工作緩衝旋轉不等於畫面已發布。不同src指標的copy只列相位未知，不猜其owner。
+
+正常戰後binding接受實測28筆與歷史86筆局部fixture，其餘數量仍拒收。原生對白、舞台與整備保存已串接，完整SAV兩側相同。完整Go、第23章四項／SAV與比較器測試通過，具體命令與限制在有限收據。#142仍需T4／7／10，不列整章PLAYER-E2；唯一現況依[58](58-fd2-exe-re-coverage.md)。

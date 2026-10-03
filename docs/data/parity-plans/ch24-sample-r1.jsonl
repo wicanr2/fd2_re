@@ -1,0 +1,68 @@
+# #142：第23章正常保存槽，seed4；正常LOAD／NO／選人／YES。
+# 正常移動索爾並END至T11，抽樣事件54 T2／4／7／10；清敵一次後正常戰後／四槽保存。
+# 零治療、零追加強化、不鎖HP。未通過四項門檻不作整章驗收。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 10000000, "repeat": 20}
+{"mark": "record_question", "steps": 1000000}
+{"key": "right", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "record_party_selection", "steps": 1000000}
+{"key": "enter", "steps": 20000000, "repeat": 15}
+{"key": "", "steps": 10000000, "repeat": 12}
+{"mark": "departure_confirmation", "steps": 1000000}
+{"key": "enter", "steps": 20000000}
+{"await": "enemy_alive>=1", "steps": 10000000, "max": 300}
+{"await_ui": "cursor", "steps": 10000000, "max": 180}
+{"mark": "battle_start", "steps": 1000000}
+{"key": "", "steps": 10000000, "repeat": 2}
+{"move_unit": {"from_index": 0, "toward": [20, 20], "map": 23, "mv": 6, "max_tries": 6, "stay_if_blocked": false}, "steps": 2000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=2", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_2", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=3", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_3", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=4", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_4", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=5", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_5", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=6", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_6", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=7", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_7", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=8", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_8", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=9", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_9", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=10", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_10", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=11", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_11", "steps": 1000000}
+{"force_enemy_clear": true, "steps": 1, "end_turn": false}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "record_question", "steps": 20000000, "max": 300}
+{"mark": "record_question", "steps": 1000000}
+{"preparation_save": true, "slot": 0, "steps": 10000000, "settle": 4, "exit_settle": 8, "max": 30}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
@@ -92,6 +93,7 @@ type parityCheckpoint struct {
 	FrameHash         string                   `json:"indexed_sha256,omitempty"`
 	PaletteCyclePhase *int                     `json:"palette_cycle_phase,omitempty"` // 原版PNG的E0..EF與raw表完整匹配
 	PaletteCycleWrite *parityPaletteCycleWrite `json:"palette_cycle_write,omitempty"`
+	StageRowOffset    *int                     `json:"stage_row_offset,omitempty"`
 	Note              string                   `json:"note,omitempty"`
 }
 
@@ -132,6 +134,124 @@ type parityReplay struct {
 	currentSeq        int
 	paletteCyclePhase *int
 	paletteCycleWrite *parityPaletteCycleWrite
+	stageRowOffset    *int
+}
+
+// #144：只計已證實0x24D48的raw列旋轉，不讀影像或搜尋相位。
+func parityCh23RowOffset(raw []byte, steps uint64) (int, error) {
+	offset, previous := -1, uint64(0)
+	presented, source := -1, ""
+	scanner := bufio.NewScanner(bytes.NewReader(raw))
+	for scanner.Scan() {
+		var entry struct {
+			Step  uint64   `json:"step"`
+			EIP   string   `json:"eip"`
+			EAX   string   `json:"eax"`
+			Stack []string `json:"stack"`
+		}
+		if err := json.Unmarshal(scanner.Bytes(), &entry); err != nil {
+			return 0, err
+		}
+		if entry.Step < previous {
+			return 0, fmt.Errorf("stage trace順序錯誤")
+		}
+		previous = entry.Step
+		if entry.Step > steps {
+			break
+		}
+		if entry.EIP == "0x11EED" && offset >= 0 {
+			if len(entry.Stack) < 7 {
+				return 0, fmt.Errorf("stage copy返回參數缺失")
+			}
+			fullViewport := entry.Stack[1] == "0xA0504" && entry.Stack[2] == "0x140" &&
+				entry.Stack[4] == "0x1C8" && entry.Stack[5] == "0x138" && entry.Stack[6] == "0xC0"
+			if !fullViewport {
+				if entry.Stack[0] == "0x11D3B" {
+					return 0, fmt.Errorf("stage VGA copy參數未知")
+				}
+				continue
+			}
+			if source == "" && entry.Stack[0] != "0x11D3B" {
+				return 0, fmt.Errorf("stage VGA work來源缺失")
+			}
+			if source != "" && source != entry.Stack[3] {
+				if entry.Stack[0] == "0x11D3B" {
+					return 0, fmt.Errorf("stage VGA source不一致")
+				}
+				presented = -1
+				continue
+			}
+			source, presented = entry.Stack[3], offset
+			continue
+		}
+		if entry.EIP != "0x24D48" {
+			continue
+		}
+		latch, err := strconv.ParseUint(entry.EAX, 0, 8)
+		if err != nil || latch < 1 || latch > 14 || len(entry.Stack) < 4 || entry.Stack[3] != "0x0" {
+			return 0, fmt.Errorf("stage trace參數未知")
+		}
+		switch entry.Stack[2] {
+		case "0x10842":
+			offset = 0
+			presented, source = -1, ""
+		case "0x120B6":
+		default:
+			return 0, fmt.Errorf("stage trace返回caller未知")
+		}
+		if offset < 0 {
+			return 0, fmt.Errorf("stage trace缺少loader")
+		}
+		offset = (offset + int(latch)) % fdother.NativeCh23StageHeight
+	}
+	if err := scanner.Err(); err != nil {
+		return 0, err
+	}
+	if presented < 0 {
+		return 0, fmt.Errorf("stage trace缺少完整VGA發布")
+	}
+	return presented, nil
+}
+
+func (r *parityReplay) oracleCh23RowOffset() (int, error) {
+	var cp struct {
+		Steps uint64 `json:"steps"`
+		SHA   string `json:"exe_sha256"`
+		EIP   string `json:"eip"`
+	}
+	var runner struct {
+		Window struct {
+			From uint64 `json:"from_step"`
+			To   uint64 `json:"to_step"`
+			Max  int    `json:"max_entries"`
+		} `json:"eip_trace_window"`
+	}
+	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", r.currentSeq)))
+	if err != nil {
+		return 0, err
+	}
+	if json.Unmarshal(raw, &cp) != nil || cp.SHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" {
+		return 0, fmt.Errorf("stage checkpoint來源錯誤")
+	}
+	eip, err := strconv.ParseUint(cp.EIP, 0, 32)
+	if err != nil || (eip >= 0x24d22 && eip < 0x24df2) {
+		return 0, fmt.Errorf("stage copy尚未完成")
+	}
+	raw, err = os.ReadFile(filepath.Join(r.run, "runner.json"))
+	if err != nil {
+		return 0, err
+	}
+	if json.Unmarshal(raw, &runner) != nil || runner.Window.From != 0 || runner.Window.To != 0 || runner.Window.Max <= 0 {
+		return 0, fmt.Errorf("stage trace不是完整追蹤")
+	}
+	raw, err = os.ReadFile(filepath.Join(r.run, "eip-trace.jsonl"))
+	if err != nil {
+		return 0, err
+	}
+	if bytes.Count(bytes.TrimSpace(raw), []byte("\n"))+1 >= runner.Window.Max {
+		return 0, fmt.Errorf("stage trace已達截斷上限")
+	}
+	return parityCh23RowOffset(raw, cp.Steps)
 }
 
 // #82／#93：只承接完整RGB triplet邊界，依暫存器及全部16槽raw窗口校驗。
@@ -1162,6 +1282,42 @@ func (r *parityReplay) frame(kind string) (string, string) {
 	g := r.g
 	r.paletteCyclePhase = nil
 	r.paletteCycleWrite = nil
+	r.stageRowOffset = nil
+	var stageTime *time.Time
+	if r.currentSeq > 0 && g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 23 && g.st != nil && g.st.HasNativeMapViewState {
+		offset, err := r.oracleCh23RowOffset()
+		if err != nil {
+			r.t.Fatal(err)
+		}
+		frame, err := fdother.LoadSeparatedNativeCh23Stage(separatedAssetPath("surfaces"))
+		if err != nil {
+			r.t.Fatal(err)
+		}
+		frozen := time.Now()
+		stageTime = &frozen
+		clock := g.nativeMapClock
+		tick := clock.Sample(frozen)
+		candidate := cloneNativeCh23AdapterState(g.nativeCh23State)
+		if candidate == nil {
+			candidate, err = g.prepareNativeCh23SteadyStage(tick)
+			if err != nil || candidate == nil {
+				r.t.Fatalf("stage初始化失敗：%v", err)
+			}
+		}
+		candidate.staging = make([]byte, fdother.NativeCh23StageStride*fdother.NativeCh23StageHeight)
+		if err := fdother.BlitNativeCh23Stage(frame, candidate.staging); err != nil {
+			r.t.Fatal(err)
+		}
+		if err := fdother.RotateNativeCh23Rows(candidate.staging, offset); err != nil {
+			r.t.Fatal(err)
+		}
+		candidate.tickSnapshot = tick
+		savedStage, savedFrozen := g.nativeCh23State, g.nativeMapFrozenNow
+		g.nativeCh23State = candidate
+		g.nativeMapFrozenNow = func() time.Time { return frozen }
+		defer func() { g.nativeCh23State, g.nativeMapFrozenNow = savedStage, savedFrozen }()
+		r.stageRowOffset = &offset
+	}
 	variants := []frameVariant{}
 	var palette color.Palette
 	switch {
@@ -1201,6 +1357,9 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		// 同一個 checkpoint 在不同輪取到不同變體（第八章 reg3 seq 2611 idle、reg3b seq 2322
 		// 脈動相位，各 1951／1607 px）。
 		frozen := time.Now()
+		if stageTime != nil {
+			frozen = *stageTime
+		}
 		g.nativeMapFrozenNow = func() time.Time { return frozen }
 		restore := func() {
 			g.st.NativeMapCycleState = saved
@@ -1396,6 +1555,51 @@ func (r *parityReplay) frame(kind string) (string, string) {
 	return mainName, mainHash
 }
 
+func TestParityCh23RowOffsetRequiresOriginalLoaderAndCaller(t *testing.T) {
+	loader := `{"step":1,"eip":"0x24D48","eax":"0x1","stack":["0x0","0x0","0x10842","0x0"]}`
+	draw := `{"step":2,"eip":"0x24D48","eax":"0x2","stack":["0x0","0x0","0x120B6","0x0"]}`
+	present := `{"step":3,"eip":"0x11EED","stack":["0x11D3B","0xA0504","0x140","0x14CCC4","0x1C8","0x138","0xC0"]}`
+	trace := loader + "\n" + draw + "\n" + present
+	if offset, err := parityCh23RowOffset([]byte(trace), 3); err != nil || offset != 3 {
+		t.Fatalf("raw stage offset=%d err=%v", offset, err)
+	}
+	pending := strings.Replace(draw, `"step":2`, `"step":4`, 1)
+	if offset, err := parityCh23RowOffset([]byte(trace+"\n"+pending), 4); err != nil || offset != 3 {
+		t.Fatalf("未發布的work相位進入VGA快照：offset=%d err=%v", offset, err)
+	}
+	for _, bad := range []string{
+		draw, "", strings.Replace(loader, "0x10842", "0x12345", 1),
+		strings.Replace(loader, `"eax":"0x1"`, `"eax":"0xff"`, 1),
+		draw + "\n" + loader,
+		loader + "\n" + draw,
+		strings.Replace(trace, "0xA0504", "0xA0000", 1),
+		strings.Replace(trace, "0x1C8", "0x140", 1),
+	} {
+		if _, err := parityCh23RowOffset([]byte(bad), 4); err == nil {
+			t.Fatal("unknown stage trace accepted")
+		}
+	}
+	reset := strings.Replace(loader, `"step":1`, `"step":4`, 1)
+	if _, err := parityCh23RowOffset([]byte(trace+"\n"+reset), 4); err == nil {
+		t.Fatal("重載後尚未發布卻沿用舊VGA相位")
+	}
+	if _, err := parityCh23RowOffset([]byte(trace), 2); err == nil {
+		t.Fatal("future present進入快照")
+	}
+	selection := strings.Replace(strings.Replace(present, `"step":3`, `"step":5`, 1), "0x11D3B", "0x18C5D", 1)
+	if offset, err := parityCh23RowOffset([]byte(trace+"\n"+pending+"\n"+selection), 5); err != nil || offset != 5 {
+		t.Fatalf("選取介面獨立發布未承接：offset=%d err=%v", offset, err)
+	}
+	otherSource := strings.Replace(strings.Replace(selection, `"step":5`, `"step":6`, 1), "0x14CCC4", "0x14D3E4", 1)
+	if _, err := parityCh23RowOffset([]byte(trace+"\n"+otherSource), 6); err == nil {
+		t.Fatal("不同viewport來源的stage相位被猜補")
+	}
+	resume := strings.Replace(selection, `"step":5`, `"step":7`, 1)
+	if offset, err := parityCh23RowOffset([]byte(trace+"\n"+otherSource+"\n"+resume), 7); err != nil || offset != 3 {
+		t.Fatalf("已驗work再次發布後未恢復相位：offset=%d err=%v", offset, err)
+	}
+}
+
 // bannerVariants 把目前組好的 nativeMapVGA 配上 DAC 出一張；回合橫幅進行中
 // （全員行動完自動換手、END 之後）再把橫幅每一個不同的（馬賽克步、字樣偏移）
 // 各出一張——原版 checkpoint 沒記橫幅走到哪一步，verifier 取差異最小的。
@@ -1580,6 +1784,7 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 		cp.Frame, cp.FrameHash = r.frame(kind)
 		cp.PaletteCyclePhase = r.paletteCyclePhase
 		cp.PaletteCycleWrite = r.paletteCycleWrite
+		cp.StageRowOffset = r.stageRowOffset
 	}
 	r.write(cp)
 	return cp

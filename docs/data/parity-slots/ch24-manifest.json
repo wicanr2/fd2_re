@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_save_continuation_manifest",
+  "tool": "dosgolem apps/fd2/cmd/oracle正式SAV，直接接續",
+  "base_save": "work/parity-slot-ch23/full-state-r4/FD2.SAV",
+  "base_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+  "base_slot": 0,
+  "base_chapter": 23,
+  "target_chapter": 23,
+  "out_slot": 0,
+  "output_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+  "source_receipt": "docs/data/ui-traces/parity-ch23.json",
+  "source_save_seq": 826,
+  "source_original_runner_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+  "source_construction_manifest": "docs/data/parity-slots/ch19-manifest.json",
+  "level_policy": "沿用第23章正式SAV，不再次升級、強化、治療、改金幣或道具。祖先levels-per-chapter=6、seed4、AP+200／DP+0／DX+60、event7:17=1；正常新JOIN20不追補強化。",
+  "seed": 4,
+  "roster_count": 26,
+  "evidence_sources": [
+    "docs/data/ui-traces/parity-ch23.json",
+    "docs/data/parity-slots/ch23-manifest.json"
+  ],
+  "assumptions": [
+    {
+      "kind": "continuation",
+      "detail": "來源按111／114例外，本章保持同一SAV，零額外改寫；不宣稱自然難度。"
+    }
+  ],
+  "known_deviations": [
+    "祖先建構政策與前章一次清敵，非自然難度通關。",
+    "本清冊只指定第24章接續來源，章未驗收，現況依58與正式台帳。"
+  ]
+}

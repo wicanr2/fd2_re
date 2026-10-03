@@ -1033,7 +1033,7 @@ func (g *Game) publishStoryNativeMapView(
 	// The original uses the same absolute cursor globals throughout the
 	// handler. Keep the generic renderer cursor aligned with that typed carrier
 	// so a following 0x12D7B focus starts from the post-pan position.
-	if ch28Continuity || ownedBattleEvent {
+	if ch28Continuity || ownedBattleEvent || (g.camp != nil && g.camp.NodeID() == "story_ch24") {
 		g.curX, g.curY = view.CursorX, view.CursorY
 	}
 	return true
@@ -2252,6 +2252,16 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		u := &g.storyActors[*b.Slot]
 		g.focusJob = &focusUnitJob{targetX: u.X, targetY: u.Y}
+		if g.camp != nil && g.camp.NodeID() == "story_ch24" {
+			// 0x33142 的尾端聚焦延續對白留下的六個全域，不能改回章節常數。
+			if !g.hasStoryNativeMapView {
+				g.loadErr = "beat focus_unit:原生視圖交接缺失"
+				g.focusJob = nil
+				return
+			}
+			g.curX, g.curY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
+			g.focusJob.nativeView = true
+		}
 	case "join":
 		if !campaign.JoinableCharacterID(b.CharID) {
 			g.loadErr = fmt.Sprintf("beat join:非法 player char_id=%d", b.CharID)
@@ -3271,6 +3281,12 @@ func (g *Game) enterNode() {
 	} else {
 		g.handlerInheritedMapView = battle.NativeMapViewState{}
 	}
+	if g.camp.NodeID() == "battle_ch24" && g.hasStoryNativeMapView &&
+		g.camp.Node() != nil && g.storyRosterPath == g.camp.Node().Units &&
+		g.storyPartyScenario == g.camp.Node().Scenario {
+		g.handlerInheritedMapView = g.storyNativeMapView
+		g.hasHandlerInheritedMapView = true
+	}
 	g.resetActionOverlayLifecycle()
 	g.nativeEnding = nil
 	g.endingNotice = ""
@@ -3278,6 +3294,9 @@ func (g *Game) enterNode() {
 	if n == nil {
 		return // 流程結束(game over)
 	}
+	stageHandoff := g.camp.NodeID() == "battle_ch24" && g.nativeMapAssets != nil &&
+		g.nativeMapAssets.MapIndex == 23 && g.hasStoryNativeMapView &&
+		g.storyRosterPath == n.Units && g.storyPartyScenario == n.Scenario
 	// campaign 結局尚無已證實的場景→曲目對映；空白 ending BGM 先停止前一場景，
 	// 避免戰鬥音樂漏到終局頁。若資料明確填入 BGM，仍保留可編輯的曲目入口，
 	// 待證據閉合後即可使用。
@@ -3298,7 +3317,9 @@ func (g *Game) enterNode() {
 	g.transitionReveal = nil
 	g.indexedTransition = nil
 	g.nativeCh20SkyKey = nil
-	g.nativeCh23State = nil
+	if g.camp.NodeID() != "postbattle_ch24_persist" && !stageHandoff {
+		g.nativeCh23State = nil
+	}
 	g.nativeCh23Loop = nil
 	g.native2189A = nil
 	g.nativeUnitPresent = nil
@@ -3549,11 +3570,15 @@ func (g *Game) materializeNativeMapRuntime(n *campaign.Node) bool {
 		g.loadErr = "native map runtime view: " + err.Error()
 		return false
 	}
-	if err := candidate.MaterializeNativeMapViewState(battle.NativeMapViewState{
+	entryView := battle.NativeMapViewState{
 		CameraX: view.CameraX, CameraY: view.CameraY,
 		CursorX: view.CursorX, CursorY: view.CursorY,
 		VisibleCursorX: view.VisibleCursorX, VisibleCursorY: view.VisibleCursorY,
-	}); err != nil {
+	}
+	if g.camp != nil && g.camp.NodeID() == "battle_ch24" && g.hasHandlerInheritedMapView {
+		entryView = g.handlerInheritedMapView
+	}
+	if err := candidate.MaterializeNativeMapViewState(entryView); err != nil {
 		g.loadErr = "native map runtime view: " + err.Error()
 		return false
 	}
@@ -3599,7 +3624,7 @@ func (g *Game) materializeNativeMapRuntime(n *campaign.Node) bool {
 	// 戰前 handler 把游標聚焦到記錄 0 之後，第一次重繪就走 0x1ACF3→0x1AD2A：兩個閘門都開
 	// 時 anchor 依可見游標決定。第七章 battle_start（可見游標 (2,7)）的原版 checkpoint
 	// 小窗已經在右側；只靠繼承的 anchor 1 會畫在左側（r3 seq 60 差 4617 px）。
-	g.st.AdvanceNativeMapHUDAnchor(view.VisibleCursorX, view.VisibleCursorY)
+	g.st.AdvanceNativeMapHUDAnchor(entryView.VisibleCursorX, entryView.VisibleCursorY)
 	g.nativeMapHUDPersistent.CaptureNativeMapHUD(g.st.NativeMapHUDState)
 	g.syncNativeMapView()
 	return true
@@ -3636,6 +3661,8 @@ func (g *Game) captureNativeMapHUDPersistence() {
 
 // resetBattle 重開一場戰鬥(campaign battle 節點;敗北重試也走這裡)。
 func (g *Game) resetBattle(unitsPath, scnPath string) {
+	continueNativeCh23Stage := g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 23 && g.nativeCh23State != nil &&
+		len(g.storyActors) > 0 && g.storyRosterPath == unitsPath && g.storyPartyScenario == scnPath
 	g.cancelNativeCommand32Presentation()
 	g.cancelNativeCommand33Presentation()
 	g.resetActionOverlayLifecycle()
@@ -3643,7 +3670,10 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.nativeCurrentSavePlain = nil
 	g.nativeSystemCursorOverlay = false
 	g.nativeCh20SkyKey = nil
-	g.nativeCh23State = nil
+	if !continueNativeCh23Stage {
+		g.nativeCh23State = nil
+		g.nativeMapClock.Reset()
+	}
 	g.nativeCh23Loop = nil
 	g.native2189A = nil
 	g.nativeUnitPresent = nil
@@ -3654,7 +3684,6 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 	g.nativeTurnStaging = nil
 	g.nativeFullDACWhite = false
 	g.nativeFullDACBlack = false
-	g.nativeMapClock.Reset()
 	g.nativeMapWork, g.nativeMapVGA = nil, nil
 	if unitsPath == "" {
 		unitsPath = "assets/map0_units.json"
@@ -3716,6 +3745,10 @@ func (g *Game) resetBattle(unitsPath, scnPath string) {
 				// state and keep the boundary fail-closed rather than calling
 				// AdoptHandlerBattleState on an incompatible scenario.
 				adoptHandlerState = false
+				if continueNativeCh23Stage {
+					g.nativeCh23State = nil
+					g.nativeMapClock.Reset()
+				}
 			}
 			g.sc = sc
 			g.bindNativeDeathPrograms()
@@ -11949,6 +11982,18 @@ func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedA
 	if len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
 		g.nativeMapVGA = make([]byte, indexedmap.NativeMapVGASize)
 	}
+	stage, err := g.prepareNativeCh23SteadyStage(rawTick)
+	if err != nil {
+		return fmt.Errorf("native map frame: ch23 staging: %w", err)
+	}
+	work, vga := g.nativeMapWork, g.nativeMapVGA
+	if stage != nil {
+		work = append([]byte(nil), work...)
+		vga = append([]byte(nil), vga...)
+		if err := indexedmap.SeedNativeCh23Staging(work, stage.staging); err != nil {
+			return err
+		}
+	}
 	// 走行中的重繪是另一條路徑，不是整幀排程關掉幾層：原版每一幀只進地形、
 	// 單位與前景，完全不進 0x11CAC、0x122DC 與 0x1AD72，所以畫面上沒有游標
 	// 白框也沒有左下 HUD 面板。收據見
@@ -11958,11 +12003,15 @@ func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedA
 	// 在裡面（第四章 r9 收據 seq 636／913：全員行動完自動換手，橫幅下沒有白框
 	// 與地形面板）。橫幅本身對這張快照做馬賽克，之後不重繪。
 	if g.walk != nil || g.bannerT > 0 {
-		if err := indexedmap.ComposeNativeStepFrame(g.nativeMapWork, g.nativeMapVGA, in.Frame); err != nil {
+		if err := indexedmap.ComposeNativeStepFrame(work, vga, in.Frame); err != nil {
 			return err
 		}
-	} else if err := indexedmap.ComposeNativeFrame(g.nativeMapWork, g.nativeMapVGA, in); err != nil {
+	} else if err := indexedmap.ComposeNativeFrame(work, vga, in); err != nil {
 		return err
+	}
+	if stage != nil {
+		g.nativeCh23State = stage
+		g.nativeMapWork, g.nativeMapVGA = work, vga
 	}
 	*g.st = candidateState
 	g.nativeMapClock = candidateGame.nativeMapClock

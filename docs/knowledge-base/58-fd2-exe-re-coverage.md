@@ -2291,3 +2291,30 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 收據由tools/verify_chapter_parity.py以full-original-r4、full-r4-remake-r1及ch23-sample-r4.jsonl重生。四gate通過：836個原版checkpoint、44動作、24完整RGB，三張移動差179／70／88px，其餘21張0px；原始全幀不遮罩，沿111既有640px預算及已證DAC相位候選。兩側22987-byte SAV SHA256相同，為22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63。原版最終7,467,520,008 steps；同源SAV及seed4不追加強化、治療或重擲。
 
 完整Go19套件／2299項通過，27項依條件跳過；六項staging回歸、第22章34完整RGB／完整SAV／212筆AI入口零分岔回歸與68份canonical fresh export通過。第23章EIP trace只收事件52，未收AI入口，不宣稱逐入口AI順序。工具命令、來源及輸出hash、r2／r3敗北、測試腳本失敗、metadata訂正及跳過項保存於正式收據。現在章覆蓋僅由正式台帳與tools/fd2_parity_progress.py／render_parity_progress.py產生，不在此另數整章。
+
+### 第24章正常起手前沿，2026-10-03
+
+#142／#143的[READY契約](../data/ida/fd2_ch24_startup_frontier_20261003.json)沿用已閉合的0x205DA／0x1088D／0x10B4E。原版正常LOAD、NO、選15位加索爾、YES形成20筆。重製LOADCH已建20筆，但缺runtime_append_groups導致戰場重建97筆。只補第24章既有資料契約，不重開helper。尚未通過重製比較，不列整章PLAYER-E2。
+
+#144的[舞台READY契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)補第24章正常renderer缺漏。原有stage2..14 helper保持RE-CLOSED；本次從same-SAV全RGB確認正常透明地形下方缺#42舞台。絕對列相位與完整章路徑尚未驗收。
+
+#145的[28筆戰後READY](../data/ida/fd2_ch24_post_frontier_20261003.json)以原版seq185／190的24C51／24CB2返回位址與count反證exact86。只補既有slot_counts資料契約；stage loop helper保持RE-CLOSED，本次T4／7／10未驗。
+
+第24章起手視圖勘誤（2026-10-03，#143）：同源槽正常選存活隊員得到camera(10,13)、visible(10,6)，反證原有固定camera(9,13)涵蓋全部分支。已追加原版收據與READY交接契約到[起手主證據](../data/ida/fd2_ch24_startup_frontier_20261003.json)。重製需承接實際對白與尾端聚焦視圖；尚待兩分支RGB驗證。
+
+## 2026-10-03 第24章目前狀態表（#142至145）
+
+以[有限同狀態收據](../data/ui-traces/ch24-finite-parity.json)及目前程式為準，取代前段本切片尚待比較的描述；歷史失敗及READY形成原因保留。
+
+| 垂直切片 | 主證據 | 可編輯資料 | 正式執行期 | 玩家驗收 |
+|---|---|---|---|---|
+| 20筆起手與兩種選人視圖 | [有限CONFORMED](../data/ida/fd2_ch24_startup_frontier_20261003.json) | DATA-READY | RUNTIME-E1 | 正常LOAD／鍵盤及兩分支RGB通過 |
+| #42舞台正常重繪至戰後 | [有限CONFORMED](../data/ida/fd2_ch24_stage_runtime_20261003.json) | DATA-READY | RUNTIME-E1 | 抽樣完成VGA copy相位及RGB通過 |
+| 28筆正常戰後與整備保存 | [有限CONFORMED](../data/ida/fd2_ch24_post_frontier_20261003.json) | DATA-READY | RUNTIME-E1 | 四項與全檔SAV通過 |
+| event54@T4／7／10 | 已有靜態事件來源 | DATA-READY | 已接typed事件 | 原版oracle未抽樣，#142仍阻擋整章 |
+
+存活分支228個原版checkpoint、17動作、16筆AI入口全消費且零順序分岔；13張完整RGB有12張0px，移動一張88px。前15位分支120點、6動作、4筆AI零分岔、五張完整RGB皆0px。兩者沿同一第23章SAV及seed4；T3分支清敵一次12筆，再正常戰後11句及300次舞台Draw，22987 bytes SAV SHA256兩側均為a1e6cc85722fc820cf38f820f4454785cb2138450d9c6000226466a340288406。無HP鎖定、章內治療或追加強化。
+
+完整Go19套件／2303項通過，27項條件略過；獨立比較器21測試、第23章24張RGB／四項／全檔SAV及canonical fresh export回歸通過。原r1／r2第四回合敗北不刪除，不重擲。#143／#144／#145限本批RUNTIME-E1可結案，#142整章保持開啟，正式台帳仍20／30；有限收據未加入台帳。
+
+晚期抽樣改用[既定政策全員存活槽](../data/parity-slots/ch24-fresh-policy-manifest.json)先做[有界正常LOAD](../data/parity-plans/ch24-fresh-startup-r1.jsonl)。這是111／114既有建構政策，AP+200／DP+0／DX+60、seed4保持不變；25名隊員存活，SHA256為1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810。不把新來源冒稱前章自然接續，尚未作晚期或整章驗收。

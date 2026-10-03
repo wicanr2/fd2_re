@@ -4,7 +4,33 @@ import (
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func TestChapter24MapEntryKeepsBothNormalSelectionViews(t *testing.T) {
+	mode := 1
+	node := &campaign.Node{NativeMapView: &campaign.NativeMapViewConfig{
+		CameraX: 9, CameraY: 13, CursorX: 20, CursorY: 19,
+		VisibleCursorX: 11, VisibleCursorY: 6, RangeMode: &mode,
+	}, NativeMapHUDInherited: &campaign.NativeMapHUDInheritedConfig{DisplayGateB: 1}}
+	for _, cameraX := range []int{9, 10} {
+		view := battle.NativeMapViewState{CameraX: cameraX, CameraY: 13,
+			CursorX: 20, CursorY: 19, VisibleCursorX: 20 - cameraX, VisibleCursorY: 6}
+		g := &Game{st: &battle.State{W: 39, H: 30}, m: &MapData{TileW: 24, TileH: 24},
+			camp:                    campaign.NewRunner(&campaign.Campaign{Start: "battle_ch24"}),
+			handlerInheritedMapView: view, hasHandlerInheritedMapView: true}
+		if !g.materializeNativeMapRuntime(node) || g.st.NativeMapViewState != view {
+			t.Fatalf("正常選人視圖遭常數覆蓋：%+v err=%s", g.st.NativeMapViewState, g.loadErr)
+		}
+	}
+	// 不完整原生載體不能部分發布到battle.State。
+	g := &Game{st: &battle.State{W: 39, H: 30},
+		camp:                    campaign.NewRunner(&campaign.Campaign{Start: "battle_ch24"}),
+		handlerInheritedMapView: battle.NativeMapViewState{CameraX: -1}, hasHandlerInheritedMapView: true}
+	if g.materializeNativeMapRuntime(node) || g.st.HasNativeMapViewState || g.st.HasNativeMapHUDState {
+		t.Fatal("缺欄或非法交接視圖被部分發布")
+	}
+}
 
 // newNativeHUDRedrawGame 建一個只有視圖與 HUD 狀態的戰場：可見游標 (2,6) 落在 0x1AD2A 的
 // 翻右區（Y>5、X<3），anchor 仍在左側 1。

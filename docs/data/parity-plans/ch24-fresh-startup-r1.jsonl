@@ -1,0 +1,25 @@
+# #142：111／114既定建構政策全員存活槽、seed4；正常LOAD、NO、選前15位、YES，有限起手。
+# 零額外狀態改寫，只到T2；不作整章驗收。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 10000000, "repeat": 20}
+{"mark": "record_question", "steps": 1000000}
+{"key": "right", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "record_party_selection", "steps": 1000000}
+{"key": "enter", "steps": 20000000, "repeat": 15}
+{"key": "", "steps": 10000000, "repeat": 12}
+{"mark": "departure_confirmation", "steps": 1000000}
+{"key": "enter", "steps": 20000000}
+{"await": "enemy_alive>=1", "steps": 10000000, "max": 300}
+{"await_ui": "cursor", "steps": 10000000, "max": 180}
+{"mark": "battle_start", "steps": 1000000}
+{"key": "", "steps": 10000000, "repeat": 2}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=2", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_2", "steps": 1000000}
