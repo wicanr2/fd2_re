@@ -875,7 +875,7 @@ func (r *parityReplay) mark(action parityAction) {
 				t.Fatal("原版拒收確認鍵缺少來源或未由正式owner消費")
 			}
 			if g.camp.Node().Cancel != "" {
-				if err := verifyParityPreparationOwner(r.run, action.Seq+1, "0x2D170"); err != nil {
+				if err := verifyParityPreparationOwner(r.run, action.Seq+1, "0x2CE08"); err != nil {
 					t.Fatal(err)
 				}
 				if !pump(t, g, 600, func() bool { return g.camp.NodeID() == r.town && !g.nativeClassUIBlocksInput() }) {

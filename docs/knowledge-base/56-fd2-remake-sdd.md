@@ -9314,3 +9314,5 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 - 開場只物化group0／1，42筆前沿與原版一致；group2..9的44筆原始rows保留，尚未接事件52，不虛構PendingGroups索引。原86筆post局部fixture明示建構與E1範圍。
 
 [重播延伸](../data/fd2-chapter-node-comparison-contract.json)先驗31A2E及零勾選，再消費正常鍵序；拒收確認需獨立原版31E65→31A2E證據。拒收通用節點比較仍失敗，有限owner／RGB驗證不豁免整章gate。完整Go、第22章四項及完整SAV、四槽保存回歸通過；現況數字與限制統一見[58](58-fd2-exe-re-coverage.md)。#133整章、#138晚期事件仍未完成。
+
+#135結案前補查城鎮返回來源：確認前31E65的chain含出發caller2D170，正常Enter後checkpoint72已回2CE08。新增來源驗證只接受確認後2CE08；無Cancel仍31A2E。新城鎮前綴、非城鎮拒收及合法起手重播通過，原錯source拒收保留於上述有限收據。

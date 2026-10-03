@@ -134,7 +134,37 @@
       "verification": {
         "receipt": "docs/data/ui-traces/ch23-native-startup.json",
         "scope": "合法分支四項通過；拒收分支以實際owner與五張完整RGB驗有限行為，通用nodes=false保留，沒有豁免。"
-      }
+      },
+      "followups": [
+        {
+          "issue": 135,
+          "status": "CONFORMED",
+          "scope": "結案前補查城鎮拒收正常Enter後的實際返回owner；37a3618a新增的2D170是出發caller，確認後已不在chain。",
+          "evidence": {
+            "level": "confirmed",
+            "source": "work/parity-slot-ch22/startup-original-r1/checkpoint-0072.json",
+            "sha256": "350ab3bce2b36ec05ecc9b33ab6d067a05d097133569f9df86ba67a139cbbfb1",
+            "input_chain": [
+              "0x4E8D4",
+              "0x2CFC7",
+              "0x36CE0",
+              "0x2CE08",
+              "0x260EA",
+              "0x25DC2",
+              "0x45D91",
+              "0x3CB91"
+            ],
+            "failed_replay": "work/parity-slot-ch23/city-rejection-remake-r1.log",
+            "failed_log_sha256": "ba20cb3e2de4b6cd1c41a92faee6ec3fbd9b7c5c8dbfb14cb228e6795b37bf1a"
+          },
+          "rule": "有Cancel只驗已證實返回town owner2CE08；無Cancel仍31A2E。兩臂正常輸入及錯source拒收不變。",
+          "acceptance": "相同原版城鎮拒收前綴新重播PASS且已驗source；非城鎮拒收與合法起手正常重播回歸。",
+          "verification": {
+            "receipt": "docs/data/ui-traces/ch23-native-startup.json",
+            "scope": "同城鎮前綴r1拒收／r2PASS，非城鎮r3五張0px與合法r6四項回歸。"
+          }
+        }
+      ]
     }
   ]
 }

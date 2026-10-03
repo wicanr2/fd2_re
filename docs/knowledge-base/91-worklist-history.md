@@ -5064,3 +5064,5 @@ r1缺希爾法seq71拒收，72正常Enter回城鎮，確認後停止無效await�
 第23章章內及event52由#133／#138繼續。352E2直接低位元組減14／加倍及兩次35822證據已在#138留言；live控制列與counter對應尚待查證，不猜補正式路徑。正式現況以[58](58-fd2-exe-re-coverage.md)與遠端Issue為準，整章台帳19／30不變。
 
 本批提交前核對：fresh canonical exporter候選68檔與正式資料相同，本批新增本地連結20個全有效；128條教訓的35個guard通過，git diff --check通過。抽查變更UID/GID為1000:1000，work/parity-slot-ch23沒有root檔或Markdown目錄；本輪Go與FD2命名容器皆已退出／移除，工具鏈未變更。
+
+37a3618af04bd5aed31e0a1bde8766a5cdb9a6a7已推送且遠端相同。#135結案前補查城鎮分支，確認後原版owner2CE08與新檢查的出發caller2D170矛盾；原碼實際重播拒收，追加READY後窄改test來源，城鎮返回、非城鎮拒收及合法起手回歸通過。全Go收據保留執行版本，不冒稱此後重跑；本批Issue尚待附最終提交結案。

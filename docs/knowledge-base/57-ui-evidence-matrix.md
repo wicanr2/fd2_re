@@ -1562,3 +1562,5 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 [起手收據](../data/ui-traces/ch23-native-startup.json)保存同一第22章SAV、seed4、正常LOAD／NO／選人與零章內注入。合法分支的記錄問題、選人、確認及開場四張完整RGB各0px；缺希爾法訊息與返回重選分支五張各0px。camera(14,29)、cursor(19,35)、visible(5,6)與存活名冊對齊；九筆HP0不由active快照外推逐欄一致。
 
 拒收通用nodes仍因departure_confirmation來源標籤及seq76沒有action而失敗，原報告保留。有限CONFORMED只依31E65／31A2E、正常正式輸入與完整RGB，不宣稱該分支四項或整章PLAYER-E2。正式HUD B精確值、晚期event52、戰後與本章保存另驗。完整Go、前章與保存probe回歸通過，唯一現況入口為[58](58-fd2-exe-re-coverage.md)。
+
+#135城鎮返回補驗：同一原版拒收前綴正常Enter後為2CE08，重播已回town；錯用出發caller2D170會拒收。額外城鎮分支只驗正式API／source owner，非城鎮五張0px與合法四張0px回歸通過；不將城鎮前綴稱整章驗收。

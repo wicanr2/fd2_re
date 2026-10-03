@@ -8898,3 +8898,5 @@ mode8「共同成功收尾」的舊交接、歷史工作項說法已失效；直
 #134至#137有限CONFORMED見[起手收據](../data/ui-traces/ch23-native-startup.json)。合法四張與拒收五張完整RGB0px；31E65收框後依2CCE7重進31A2E、清勾選並用已stable-pack名冊重建候選。336ED首16筆僅非零HP寫byte5=0與pose2。正式typed view／HUD補齊，raw B精確值未知；HP0不外推raw全欄位。
 
 全Go r2舊拓撲斷言、related r1錯索引假設及更早畫面差異均保留。乾淨完整Go r3、第22章四項與完整SAV、四槽保存四張0px／全檔SAV通過。27個略過含缺archive的post局部測試，明列於收據。拒收通用nodes失敗仍保留，不豁免章gate。#133整章與#138事件52未完成，台帳19／30不變；未執行T2診斷計畫不作整章驗收。
+
+#135城鎮owner追加勘誤：37a3618a新增檢查未先核對確認後checkpoint，錯把2D170出發caller作返回來源。原版seq72只含2CE08；舊檢查實際拒收後，READY追加窄改test literal，城鎮正常返回與另兩條非城鎮重播回歸通過。全Go執行版本仍37a3618a，後續只改test來源檢查，不外推未執行的全Go。

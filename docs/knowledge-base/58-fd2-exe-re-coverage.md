@@ -2250,3 +2250,5 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 拒收返回另有五張完整RGB0px，31E65／31A2E來源與正常正式API通過；通用nodes仍拒收錯標departure_confirmation及衍生seq76缺action，不改比較器或稱四項全過。原r1誤標、r4開場460px差異、完整Go r2舊86筆斷言及related r1錯誤PendingGroups假設均保留診斷。
 
 乾淨完整Go r3通過19套件、2297個頂層測試，27項略過逐條列入收據。缺原始archive的第23章post局部測試不稱已跑；正式起手使用分離資產已驗。第22章正常重播212筆AI零分岔，34張RGB、四項與完整22987-byte SAV通過；四槽保存四張0px與全檔SAV回歸通過。字串清冊97筆處置不變，只重綁定位；原舊inventory須取先前正式綁定版本，缺command_labels的archive清冊不作完整hash基準。正式章台帳仍19／30，不能以有限起手增加。
+
+#135結案前補查發現37a3618a新增城鎮返回檢查誤用了確認前的2D170；原版checkpoint72是2CE08，實際重播city-rejection-r1直接拒收舊檢查。先追加READY，再修唯一test literal；相同前綴r2正常回town，合法r6四項／四張0px、非城鎮拒收r3五張0px通過。原城市run曾中止143，僅用有限正常確認前綴，不宣稱整章。全Go2297測試對應37a3618a修正前test來源，production code此後未變；三條實際來源回歸另列在同一收據，不把舊全Go套到新檢查。

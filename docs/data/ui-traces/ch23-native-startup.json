@@ -510,7 +510,9 @@
         "--- SKIP: TestMaterializeNativeContinueRuntimeUnitsOriginalSnapshot (0.00s)",
         "--- SKIP: TestMaterializeNativePersistentPartyOriginalSnapshot (0.00s)"
       ],
-      "scope": "略過包括缺少原始archive的post局部測試；正式有限開場／拒收對拍以分離資產跑通，不外推第23章戰後。"
+      "scope": "略過包括缺少原始archive的post局部測試；正式有限開場／拒收對拍以分離資產跑通，不外推第23章戰後。 全Go先於城鎮返回owner檢查的單一literal修正；正式production code未再改，後續三條實際重播另列。",
+      "executed_base_commit": "37a3618af04bd5aed31e0a1bde8766a5cdb9a6a7",
+      "replay_test_sha256_at_execution": "79bd195ec81d52681f848bbb66a3f749ab84468093f37bd160c4d9a7a9ae273e"
     },
     "related_go": {
       "log": "work/parity-slot-ch23/ch23-related-go-r2.log",
@@ -583,12 +585,17 @@
     "work/parity-slot-ch23/prior-ch22-remake-r1.log": "fed82bb676d05910fe188ddbbf054ad7bfc1b44035d7378c4f9d8d9bac0fadb2",
     "work/parity-slot-ch23/record-save-remake-r1.log": "aa5e8aff67f80f06ac6218d9a1fb4cbe838d20ce090fc6e1dd8265ef1752f640",
     "work/parity-slot-ch23/prior-ch22-verify-r1.json": "69365322fadccf572c8d2224abac0b1f4a9879a9b2ff9d8ab49853a6a5a14be7",
-    "work/parity-slot-ch23/record-save-verify-r1.json": "a28fa95fb2021bcbf67e42965716cc60279e027f341916216576ca244c7a486e"
+    "work/parity-slot-ch23/record-save-verify-r1.json": "a28fa95fb2021bcbf67e42965716cc60279e027f341916216576ca244c7a486e",
+    "work/parity-slot-ch23/city-rejection-remake-r1.log": "ba20cb3e2de4b6cd1c41a92faee6ec3fbd9b7c5c8dbfb14cb228e6795b37bf1a",
+    "work/parity-slot-ch23/city-rejection-remake-r2.log": "f13250ea6d12395dee7517072345cd32a63e29090cebb929673d1c1db8314f4b",
+    "work/parity-slot-ch23/city-rejection-remake-r2/checkpoints.jsonl": "872596081d0071e84e96e93397071a770b9c4d3fb1dfbb4af7daa303a279cb61",
+    "work/parity-slot-ch23/startup-r2-verify-r6.json": "16b495829626e78079eceabf204514730e1aa79d3876f152269461b11d8b7803",
+    "work/parity-slot-ch23/startup-r3-verify-r3.json": "28cb409432b198152c7e7f9ba591a87d5e515ef2c87ba4f695e6c68d4bd627ba"
   },
   "runtime_source_sha256": {
     "remake/cmd/fd2/native_preparation_input.go": "36abc70a5f3fe05d78d3e2dcdf2d4dfed697c26a78e91a73bd4f95860e18ca2b",
     "remake/cmd/fd2/main.go": "f129b96487b326aa0ed7a390b555eeaf08bfcb4dbd74696478d9d2167a0ce53e",
-    "remake/cmd/fd2/chapter_parity_replay_test.go": "79bd195ec81d52681f848bbb66a3f749ab84468093f37bd160c4d9a7a9ae273e",
+    "remake/cmd/fd2/chapter_parity_replay_test.go": "8441a1e5c8a6acd35a8cc839aa8b1f5295cdc7a442cf1885c844c76fcadca7ab",
     "remake/internal/campaign/campaign.go": "65d5c79f499c7cc8d91149fbb81e41f4fecbcb213285691e88d3360298fdc171",
     "remake/internal/campaign/handler_compile.go": "b2b86e7f7a509326996cde1ce1434a11b43c035eb9d216d04b71e13a6494096d",
     "remake/assets/scenarios/campaign_full.json": "3ef82a271bc0f33c69789410d8ce54ca5b70e145cd44174e00d84937954462be",
@@ -623,5 +630,41 @@
     "同源SAV保留死亡隊員，零額外治療／強化／狀態注入；不談自然難度。",
     "九筆HP0不由active比較提升逐raw全欄位parity；raw HUD B精確值仍未知。",
     "r1誤標record_question計畫與原版diagnostic保留；r3同鍵序改真實返回標籤，不代換收據。"
-  ]
+  ],
+  "source_validation_followup": {
+    "issue": 135,
+    "status": "CONFORMED",
+    "base_commit": "37a3618af04bd5aed31e0a1bde8766a5cdb9a6a7",
+    "error": "城鎮確認前chain有2D170，確認後checkpoint72已返回2CE08；新增owner檢查誤用確認前出發caller。",
+    "original": "work/parity-slot-ch22/startup-original-r1/checkpoint-0072.json",
+    "original_sha256": "350ab3bce2b36ec05ecc9b33ab6d067a05d097133569f9df86ba67a139cbbfb1",
+    "failed_replay": "work/parity-slot-ch23/city-rejection-remake-r1.log",
+    "passed_city_replay": "work/parity-slot-ch23/city-rejection-remake-r2.log",
+    "city_return_ui": "town",
+    "owner": "0x2CE08",
+    "source_bound_check": "固定EXE hash／input_chain需有2CE08，錯2D170實際拒收；原版r1整個run曾exit143，只用正常ack後有限前綴，不宣稱整章。",
+    "legal_report": "work/parity-slot-ch23/startup-r2-verify-r6.json",
+    "legal_gates": {
+      "behavior": true,
+      "nodes": true,
+      "transaction": true,
+      "frames": true
+    },
+    "noncity_report": "work/parity-slot-ch23/startup-r3-verify-r3.json",
+    "noncity_gates": {
+      "behavior": true,
+      "nodes": false,
+      "transaction": true,
+      "frames": true
+    },
+    "commands": {
+      "city_failed": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=22 FD2_PARITY_SLOT=/src/work/parity-slot-ch22/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch22/startup-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch23/city-rejection-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/city-rejection-remake-r1.log 2>&1",
+      "city_passed": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=22 FD2_PARITY_SLOT=/src/work/parity-slot-ch22/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch22/startup-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch23/city-rejection-remake-r2 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/city-rejection-remake-r2.log 2>&1",
+      "noncity_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/startup-original-r3 FD2_PARITY_OUT=/src/work/parity-slot-ch23/startup-r3-remake-r3 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/startup-r3-remake-r3.log 2>&1",
+      "noncity_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/startup-original-r3 --remake work/parity-slot-ch23/startup-r3-remake-r3 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-startup-r3.jsonl --min-frames 5 --pixel-budget 0 --out work/parity-slot-ch23/startup-r3-verify-r3.json",
+      "legal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/startup-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch23/startup-r2-remake-r6 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/startup-r2-remake-r6.log 2>&1",
+      "legal_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/startup-original-r2 --remake work/parity-slot-ch23/startup-r2-remake-r6 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-startup-r2.jsonl --min-frames 4 --pixel-budget 0 --out work/parity-slot-ch23/startup-r2-verify-r6.json"
+    },
+    "limits": "只修test replay來源檢查；沒有增加正式遊戲規則或放寬RGB／node gate。城鎮額外分支驗正常API與實際owner，不外推逐像素或PLAYER-E2。"
+  }
 }
