@@ -9268,3 +9268,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 先前攻擊自身無效目標seq593與後續選人seq612，現均完整RGB0px。商店計畫r3由酒店selection0按right到4，再Ctrl-F10／Enter，seq1094完整RGB0px；正式gate規則未改。原r1謝多自然陣亡及r2錯選一般店的拒收仍保留，較早「整章未驗收」是當時狀態，由本節與正式章收據取代。
 
 PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血或改金幣，seq800一次清敵56筆，沒有lock_ally_hp。不得外推自然難度通關、傷害、存活或敵方選目標。未抽樣及not_comparable節點仍未知。完整Go r5共19套件、第十九章r9／比較r11四項與54張RGB、全檔SAV通過。唯一整章統計依58與正式台帳。
+
+### 2026-10-03 第二十一章必出、排序與原生起手（#119／#120）
+
+[有限收據](../data/ui-traces/ch21-native-startup.json)驗證正常LOAD、選入約拿與起手。必出檢查和排序分別由可編輯 required_party_identities、preparation_front_identities 表達；額滿穩定分組後先檢查，再按321C8移動完整持續record至1，固定record0與其餘順序保留。所有目標先驗證才發布排列；缺值或身份不唯一即拒收。第十九章只有必出檢查，不自動套用排序。原始caller／consumer與bytes見[CONFORMED主證據](../data/ida/fd2_ch21_required_character_20261003.json)。
+
+[起手規格](../data/ida/fd2_ch21_startup_20261003.json)沿用既有runtime0聚焦consumer，來源寫入正式可編輯campaign_full，再由canonical exporter同步。HUD B=1只適配已知nonzero入口，原版raw B精確值未知。完整Go19套件在視圖資料更新前通過；更新後三個相關套件107測試及第二十章完整四項／SAV回歸通過。本段最高RUNTIME-E1，第二十一章整章仍由#118驗收。

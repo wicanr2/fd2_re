@@ -403,3 +403,15 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第二十章物理確認有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)：#115，seq593／612完整RGB0px、原版正常取消／待機鍵序、完整Go19套件及第十九章完整回歸。整章未在此驗收。
 
 - [第二十章正式四項對拍](../data/ui-traces/parity-ch20.json)與[全部非零差異抽樣索引](../data/ui-traces/parity-ch20-samples.json)：#112／#115／#116，31張完整RGB、酒店全檔SAV、正常商店鍵序；PLAYER-E2限111／114建構槽例外，現況與未驗範圍見58。
+
+- [第二十一章酒店存檔接續清冊](../data/parity-slots/ch21-manifest.json)與[正常啟動計畫](../data/parity-plans/ch21-startup.jsonl)：[#118](https://github.com/wicanr2/fd2_re/issues/118)，SAV源自第二十章正式收據，不追加強化或治療；有限起手已驗收，整章仍待四項及酒店SAV。
+
+- [第二十一章約拿必出及record1排序CONFORMED規格](../data/ida/fd2_ch21_required_character_20261003.json)：#119，raw chapter20／31C93 push21，沿用既有IDA writer與checker；提示初讀「索爾」已由固定名字索引22訂正。
+
+- [第二十一章合法選入約拿計畫r2](../data/parity-plans/ch21-startup-r2.jsonl)：#118／#119，三次right僅改正常選人，SAV與政策不變；原版合法進場，末點PNG限制由r3補擷取。
+
+- [第二十一章相同合法前綴與擷取等待r3](../data/parity-plans/ch21-startup-r3.jsonl)：#118／#120，原r2最後PNG未落檔；只在battle_start mark之後增加有界空白等待，固定同一SAV與鍵序。
+
+- [第二十一章原生起手主證據與有限CONFORMED](../data/ida/fd2_ch21_startup_20261003.json)：#120，shared runtime0 focus、正常75筆及視圖／HUD；原版raw gate B精確值保留限制，五點完整RGB皆0px。
+
+- [第二十一章有限起手及必出拒收收據](../data/ui-traces/ch21-native-startup.json)：#119／#120，75筆前沿、72筆active快照、五點完整RGB0px；缺約拿返回城鎮的五點畫面另列，拒收前綴節點判準仍有缺項，不提升整章。

@@ -111,25 +111,25 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第二十章攻擊後與再選人畫面超過像素預算
+### 第二十一章整備必出角色拒收與重製訊息缺口
 
-`ch20-battle-frame-lifecycle` · 缺陷 · [#115](https://github.com/wicanr2/fd2_re/issues/115) · 仍未完成 · 要人判
+`ch21-required-party-rejection` · 缺陷 · [#119](https://github.com/wicanr2/fd2_re/issues/119) · 仍未完成 · 要人判
 
-完整r2原版与重製行為、節點、交易及全檔SAV一致，64筆AI順序零分岔；畫面seq593 attack_result 2621px（220,4..291,75），seq612 select 15422px（8,4..315,195）超過640px。先查相同狀態原圖、原生繪圖writer／consumer，既有#41等契約足夠就沿用，不猜HUD或overlay。
+#118第二十一章同源酒店SAV正常LOAD／選人前綴，原版seq59..71顯示必出角色拒收，72正常Enter返回城鎮。原版有界試跑exit7未建立戰場；重製同源重播在chapter_parity_replay_test.go拒收31E65原版訊息沒有正式對應。先查既有必出名單與IDA caller，不能只依提示字形猜成identity0，也不能修改存檔、略過gate或替換畫面。
 
-怎樣算做完：['以原版畫面、原始欄位與既有IDA主證據定位兩點差異；RE→READY後修正正式consumer或有來源的重播取樣。', '同一原版r2與未修改SAV重播，兩點完整RGB≤640且其他三gate、SAV、Go及第十九章回歸保持通過。']
+怎樣算做完：['固定FD2.EXE雜湊、IDA線性位址、原始bytes、名單writer及0x31E65訊息consumer，分級記錄第二十一章所需身分及出發拒收／接受。', '先RE→READY後修正正式typed data／消費端，正常鍵盤原版拒收與合法選人起手均可比，沒有猜補或狀態注入。', '相關Go與第二十章四項回歸通過；同步58／56／57／索引，保留原r1失敗與合法r2計畫。']
 
-證據：`['work/parity-slot-ch20/full-r2-verify-r1.json', 'docs/data/parity-plans/ch20-sample-r2.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+證據：`['docs/data/parity-slots/ch21-manifest.json', 'docs/data/parity-plans/ch21-startup.jsonl', 'docs/data/ida/fd2_ch19_required_character_20261003.json']`
 
-### 第二十一章神秘商店選鍵後原版與重製畫面不符
+### 第二十一章合法起手缺原生視圖與HUD來源
 
-`ch21-secret-shop-frame-entry` · 缺陷 · [#116](https://github.com/wicanr2/fd2_re/issues/116) · 仍未完成 · 要人判
+`ch21-native-startup-view` · 缺陷 · [#120](https://github.com/wicanr2/fd2_re/issues/120) · 仍未完成 · 要人判
 
-第二十章戰後town21，依正式selection4／scan0x67計畫Ctrl+F10後enter，原版与重製ui均為shop，但seq1094完整RGB差62123px。需核對原版實際shop owner、鍵码與selector、重播取樣及正式城鎮資料，不能只靠shop分類宣稱神秘商店成功。
+#118／#119合法正常選入約拿後，原版r2已交出戰場游標：75筆、camera26,16、cursor37,17。重製r1到battle_start卻因HUD input unavailable拒收，正式battle_ch21缺原生視圖／HUD來源；不注入oracle視圖或以測試捷徑冒稱起手。名冊identity21移到record1的321C8 consumer另外由#119追查。
 
-怎樣算做完：['定位原版鍵碼、selector與實際商店consumer及畫面狀態；既有主證據足夠就沿用，RE→READY後修正。', '同一原版r2/SAV與鍵盤輸入的seq1094完整RGB≤640，交易與全檔SAV及回歸通過。']
+怎樣算做完：['固定EXE及原版同槽鍵序，找到起手camera／cursor／overlay與HUD寫入及消費端，形成READY規格。', '正式資料／runtime實作後，正常選人→pre-handler→75筆配置→原生完整RGB起手抽樣通過，與原版固定snapshot可重生。', '相關Go、第二十章四項與全檔SAV回歸；同步58／56／57及索引，不外推整章。']
 
-證據：`['work/parity-slot-ch20/full-r2-verify-r1.json', 'docs/data/parity-plans/ch20-sample-r2.jsonl', 'remake/assets/scenarios/campaign_full.json']`
+證據：`['docs/data/parity-plans/ch21-startup-r2.jsonl', 'docs/data/parity-slots/ch21-manifest.json', 'docs/data/ida/fd2_ch21_required_character_20261003.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -171,15 +171,15 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
-### 第二十章整章原版／重製對拍與收尾
+### 第二十一章整章原版／重製對拍與收尾
 
-`ch20-full-chapter-parity` · 工作 · [#112](https://github.com/wicanr2/fd2_re/issues/112) · 仍未完成 · 要人判
+`ch21-full-chapter-parity` · 工作 · [#118](https://github.com/wicanr2/fd2_re/issues/118) · 仍未完成 · 要人判
 
-依111／114既定政策完成第二十章。同槽固定seed、正常鍵盤輸入，驗收起手、章內抽樣與事件、戰後、城鎮、交易、酒店SAV與秘密商店。既有證據足夠就沿用；缺陷先另開Issue，RE→READY後修正。
+依111／114既定政策接續第二十章正式原版酒店SAV，零額外升級、強化、治療或改金幣。同槽固定seed、正常鍵盤輸入，驗收起手、章內抽樣與事件、戰後、城鎮、交易、酒店SAV及支援的神秘商店。先查58避免重做；缺陷先另開Issue，RE→READY後修正。
 
-怎樣算做完：['dosgolem受版控oracle原版收據與重製重播可重生；行為、節點、完整RGB、交易及全檔SAV四項通過。', '章收據如實記錄建構槽、政策值、seed、一次清敵與所有驗證限制，不以局部Go測試宣稱整章。', '相關Go及第十九章四項回歸通過；同步台帳、58、56、57及首頁。']
+怎樣算做完：['dosgolem受版控oracle原版收據與重製重播可重生；行為、節點、完整RGB、交易及全檔SAV四項通過。', '章收據如實記錄建構槽、政策值、seed、一次清敵與所有驗證限制，不以局部Go測試宣稱整章。', '相關Go及第二十章四項回歸通過；同步台帳、58、56、57及首頁。']
 
-證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch19.json']`
+證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch20.json']`
 
 ## release — 發行、平台與封包
 

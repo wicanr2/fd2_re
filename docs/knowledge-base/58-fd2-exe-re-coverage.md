@@ -2117,3 +2117,19 @@ Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金�
 PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血或改金幣，seq800一次清敵56筆，沒有lock_ally_hp。不得外推自然難度通關、傷害、存活或敵方選目標。未抽樣及not_comparable節點仍未知。完整Go r5共19套件、第十九章r9／比較r11四項與54張RGB、全檔SAV通過。唯一整章統計依58與正式台帳。
 
 目前狀態表由受版控工具重生：python3 tools/fd2_parity_progress.py set 20後執行verify，再以tools/render_parity_progress.py產生首頁與狀態頁。2026-10-03輸入為[正式台帳](../data/parity-campaign-progress.json)及逐章收據，17／30章通過，範圍第4～20章。remake本切片已驗收；未抽樣原版規則及其他章oracle仍未知；六個sprite區域的相位差異是既定預算內限制。#102既有原版STOSB停止題目仍未解決。
+
+### 第二十一章接續起手（#118）
+
+[清冊](../data/parity-slots/ch21-manifest.json)直接使用第二十章正常酒店存檔，22987 bytes，SHA49f00f95…，raw chapter20、23人、金幣2102。[計畫](../data/parity-plans/ch21-startup.jsonl)由標題正常LOAD、城鎮出發及選人進戰場。沒有新增升級、強化或治療。先驗起手後再展開章內抽樣；正式章台帳仍17／30。
+
+#119的[READY規格](../data/ida/fd2_ch21_required_character_20261003.json)沿用已閉合sub_318AD／sub_31DBE：raw chapter20的31C93明示identity21，名字索引22為約拿。r1缺約拿，原版拒收後返回城鎮；重製沒有對應正式必出訊息。不得按初次誤讀加入identity0，先補既有typed required_party_identities，再驗原版拒收與合法選人。
+
+#119合法出發的額外consumer已以IDA9.4正式匯出[同一READY規格](../data/ida/fd2_ch21_required_character_20261003.json)：31D05 push21→321C8將完整0x50紀錄穩定移到persistent record1，record0與其餘順序保存。原版r2已正常進場，record1為21、record2為9；這是新增審查，沒有重開320FC的穩定分組。#120另追原生起手HUD，章21仍未通過。
+
+#120的[起手READY](../data/ida/fd2_ch21_startup_20261003.json)沿用shared LOADCH→text0→runtime0 focus；原版r3為75筆、camera26,16／cursor37,17，原版HUD可見。r2最後PNG未落檔，r3保留108點同源CPU／輸入／RNG狀態，末尾有界等待補擷取。既有B=1僅適配nonzero控制入口，原版raw B未直接dump，RGB通過不能宣稱該byte精確對拍。章21仍未驗收。
+
+### 第二十一章起手有限CONFORMED（#119／#120）
+
+[主收據](../data/ui-traces/ch21-native-startup.json)取代上文READY進度，兩份主規格限起手列CONFORMED。正常選入約拿後321C8將完整record移到1，record0固定，其餘穩定；原版75筆前沿，重製72筆active快照及五點獨立節點／完整RGB通過，全部0px。HP0 slots3／7／13未序列化，raw HUD B只知nonzero；這些限制不因畫面相同而升級。
+
+缺約拿r1保留原版拒收與返回城鎮，五點畫面最大275px；通用章比較器的兩個拒收節點仍未知，不偽裝為整章通過。r2缺最後PNG，r3相同SAV／輸入／seed前108點完全一致，僅末尾兩次空白等待補擷取。完整Go19套件、更新視圖後107相關測試與第二十章31張四項／全檔SAV回歸通過。第二十一章未寫酒店SAV，#118整章仍未完成，唯一台帳17／30不變。

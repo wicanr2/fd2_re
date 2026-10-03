@@ -75,6 +75,50 @@ func (g *Game) packNativePreparationRoster() error {
 			}
 		}
 	}
+	return g.reorderNativePreparationRoster(order)
+}
+
+// 0x31D05→0x321C8 moves the required identity's complete persistent record to
+// index one, preserving record zero and the relative order of every other
+// member, including members not selected for this battle.
+func (g *Game) frontNativePreparationRequiredRoster() error {
+	if g.camp == nil || g.camp.Node() == nil || len(g.camp.Node().PartyFrontIdentities) == 0 {
+		return nil
+	}
+	if len(g.partyJoinOrder) < 2 {
+		return errors.New("preparation front: persistent order unavailable")
+	}
+	order := append([]int(nil), g.partyJoinOrder...)
+	seen := map[int]bool{}
+	for _, identity := range g.camp.Node().PartyFrontIdentities {
+		if identity < 1 || identity > 31 || seen[identity] {
+			return fmt.Errorf("preparation front: invalid identity %d", identity)
+		}
+		seen[identity] = true
+		match := -1
+		for index, id := range order[1:] {
+			unit, exists := g.partyRoster[id]
+			if !exists || !unit.HasNativeIdentity {
+				return fmt.Errorf("preparation front: member %d lacks identity", id)
+			}
+			if unit.NativeIdentity == identity {
+				if match >= 0 || !g.partyDeploy[id] {
+					return fmt.Errorf("preparation front: identity %d duplicated or not selected", identity)
+				}
+				match = index + 1
+			}
+		}
+		if match < 0 {
+			return fmt.Errorf("preparation front: required identity %d unavailable", identity)
+		}
+		id := order[match]
+		copy(order[2:match+1], order[1:match])
+		order[1] = id
+	}
+	return g.reorderNativePreparationRoster(order)
+}
+
+func (g *Game) reorderNativePreparationRoster(order []int) error {
 	if g.nativeChapterSlotBaseline == nil {
 		g.partyJoinOrder = order
 		return nil

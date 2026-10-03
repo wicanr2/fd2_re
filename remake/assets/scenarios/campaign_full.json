@@ -3395,7 +3395,19 @@
    "units": "assets/maps/map20/map20_units.json",
    "scenario": "assets/scenarios/ch21.json",
    "on_win": "story_ch21_post_sky_key_intro",
-   "on_lose": "retreat_ch21"
+   "on_lose": "retreat_ch21",
+   "native_map_view": {
+    "camera_x": 26,
+    "camera_y": 16,
+    "cursor_x": 37,
+    "cursor_y": 17,
+    "visible_cursor_x": 11,
+    "visible_cursor_y": 1,
+    "range_mode": 1
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   }
   },
   "retreat_ch21": {
    "type": "story",
@@ -6653,7 +6665,13 @@
    "type": "preparation",
    "prompt": "要進入戰場嗎？",
    "cancel": "town_ch21",
-   "next": "story_ch21"
+   "next": "story_ch21",
+   "required_party_identities": [
+    21
+   ],
+   "preparation_front_identities": [
+    21
+   ]
   },
   "preparation_ch22": {
    "type": "preparation",

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch21_native_startup_evidence",
+  "date": "2026-10-03",
+  "issues": [
+    118,
+    120
+  ],
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "canonical_evidence": {
+    "shared_ida_source": "docs/data/ida/fd2_ch13_handoff_20261001.json",
+    "shared_ida_sha256": "30426072fb592d345a6d88d9a385f22e0cc7fc8267a5970e9aab3c54a362fb8a",
+    "shared_loader_chain": "sub_33674→loc_33470／33475 sub_205DA→loc_33206／3320C text0→33140 push0／33142 sub_12D7B",
+    "focus_runtime0_tail": [
+      {
+        "address": "0x33140",
+        "bytes": "6a00",
+        "original": "push    0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x33140",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x33142",
+        "bytes": "e834fcfdff",
+        "original": "call    sub_12D7B",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x33142",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x33147",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x33147",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x3314a",
+        "bytes": "c3",
+        "original": "retn",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x3314a",
+        "semantic_annotations": []
+      }
+    ],
+    "hud_writer_consumer_source": "docs/data/fd2_hud_persistence_ida.txt",
+    "hud_source_sha256": "29ce47f2adeef724c2672d0f7f6f6b87f74d4098c37b8270c8f6236ea7002910",
+    "slot_manifest": "docs/data/parity-slots/ch21-manifest.json",
+    "startup_checkpoint": "work/parity-slot-ch21/startup-original-r3/checkpoint-0107.json",
+    "startup_checkpoint_sha256": "a3b5d78b4670362421142e5957f4b99e06369f07fff3854527cdd15645775b39",
+    "startup_png": "work/parity-slot-ch21/startup-original-r3/checkpoint-0107.png",
+    "startup_png_sha256": "6f671e7749ff0934a613577d7c5e4e5aed9af1e0932556a460f0e9f7e2248bb1",
+    "original_roster": "remake/assets/maps/map20/map20_units.json",
+    "original_roster_sha256": "7cc1d99387468231afd5d4b6615f9cbda32ec1a3bfb96e542de3da9f92211b33"
+  },
+  "claims": [
+    {
+      "semantic": "正常選入約拿並依321C8移至record1後，16人與group0追加59筆形成75筆。binding舊slot_count80不代表實際前沿，沿用runtime_append_groups。",
+      "level": "confirmed",
+      "source": "原版r3 checkpoint107、map20 group0及#119原始321C8。"
+    },
+    {
+      "semantic": "shared text0後33142聚焦runtime0；可操作snapshot為camera26,16、cursor37,17、visible11,1、overlay1，runtime0座標37,17。",
+      "level": "confirmed",
+      "source": "共享IDA尾段及原版r3 checkpoint107；正常鍵盤、沒有視圖注入。"
+    },
+    {
+      "semantic": "HUD A與anchor沿既有程序／SAV生命週期。原版可操作frame確有HUD，B入口為nonzero；正式既有inherited gate B=1作為可見控制適配值。本章raw B的精確數值未直接dump。",
+      "level": "strong inference",
+      "source": "HUD writer／consumer契約與正常起手PNG，有限RGB驗證後仍不外推原版未讀byte。"
+    }
+  ],
+  "spec_review": {
+    "status": "CONFORMED",
+    "scope": "同源合法起手75筆及完整RGB；B=1是已存在Boolean consumer的入口適配值，只驗可見輸出。",
+    "typed_data": {
+      "native_map_view": {
+        "camera_x": 26,
+        "camera_y": 16,
+        "cursor_x": 37,
+        "cursor_y": 17,
+        "visible_cursor_x": 11,
+        "visible_cursor_y": 1,
+        "range_mode": 1
+      },
+      "native_map_hud_inherited": {
+        "display_gate_b": 1
+      }
+    },
+    "production_route": "受版控可編輯scenarios/campaign_full.json原生欄位→export_editor_canonical.py→battle_ch21既有NativeMapView／HUD consumer；gen_campaign.py是歷史候選骨架，不聲稱能重建人工整合視圖。",
+    "failure_policy": "缺HUD程序來源或不合法游標仍fail-closed，不提供modern fallback，不注入oracle視圖。",
+    "acceptance": [
+      "同源正常合法選人起手，75筆身份／位置／HP／前沿一致。",
+      "起手五張完整RGB與獨立原版節點判準通過既定門檻。",
+      "相關Go及第二十章四項／全檔酒店SAV回歸通過。"
+    ],
+    "validation_scope": "有限必出檢查／完整紀錄穩定重排及起手可見外觀；章內與酒店SAV尚未驗收。"
+  },
+  "limits": [
+    "r1缺約拿正常拒收留存，不作起手通過；#119名冊重排另依主規格。",
+    "r2最後PNG未落檔，r3相同前綴後加有界等待；108點CPU／輸入／RNG／狀態一致。",
+    "限RUNTIME-E1，不宣稱章內、戰後與本章SAV；台帳仍17／30。",
+    "raw gate B本章精確值未直接dump，不宣稱原版全暫態記憶體一致。"
+  ],
+  "verification": {
+    "receipt": "docs/data/ui-traces/ch21-native-startup.json",
+    "original_run": "work/parity-slot-ch21/startup-original-r3",
+    "report": "work/parity-slot-ch21/startup-r3-verify-r1.json",
+    "source_sha256": {
+      "remake/cmd/fd2/main.go": "5b53543a6d31db96f772be87ff56e6d3398a30e5443792ece7fb8b3fbf260ffa",
+      "remake/cmd/fd2/native_chapter_slot_save.go": "b185d048907113ea2fd3772e59a35469292f4e2c3d9d62ac6b5163cb59f16736",
+      "remake/internal/campaign/campaign.go": "b6bd5b83d6c2c060190adb14575038a5cbacc37501aa008e56ad1cf4a4d907c5",
+      "remake/assets/scenarios/campaign_full.json": "e6df10932a04d4658aafaca0a926fb59b95c39e9427cb43a8bd16e0d52562f93",
+      "remake/assets/editor-canonical/campaign/campaign_full.json": "88bca18b5100725c57b3a667991c711445ffaaf7d950701435420b3345758d7e"
+    },
+    "prior_chapter20": "work/parity-slot-ch21/prior-ch20-verify-r1.json",
+    "full_go": "work/parity-slot-ch21/chapter21-go-regression-r1.log",
+    "related_go": "work/parity-slot-ch21/chapter21-related-regression-r2.log"
+  }
+}

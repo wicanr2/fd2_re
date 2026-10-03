@@ -1223,6 +1223,29 @@
         ],
         "pattern": "g\\.nativePhysicalAttackConfirmationAllowed\\(\\)"
       }
+    },
+    {
+      "id": "required-membership-and-front-order-separate",
+      "date": "2026-10-03",
+      "area": "整備與持續名冊",
+      "rule": "必出檢查與持續record前置排序依各自caller表達，不由必出身份推定排序。額滿分組、必出檢查通過後才處理明示preparation_front_identities；先驗證全部身份再發布。入口為remake/cmd/fd2/main.go的togglePreparationSelection、native_chapter_slot_save.go的frontNativePreparationRequiredRoster及docs/data/ida/fd2_ch21_required_character_20261003.json；目前支持明示已選且唯一的非隊長身份。",
+      "why": "第二十一章31D05 push21呼叫321C8，約拿整筆移到record1；第十九章必出凱拉斯沒有這個call。單純補必出資料仍留下錯誤順序。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/119；docs/data/ui-traces/ch21-native-startup.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "g\\.frontNativePreparationRequiredRoster\\(\\)"
+      }
+    },
+    {
+      "id": "bitmap-name-confirm-index-before-identity",
+      "date": "2026-10-03",
+      "area": "原版文字辨識",
+      "rule": "以提示字模判定角色身份前，同時核對固定名字資源索引、raw身份及caller；人工圖面讀字只作線索。入口為docs/data/fd2-reference-files.json固定版本、remake/generated-assets/fd2-original-b97caf22/text/FDTXT_000/resource.json與該章IDA主證據，不從誤讀新增角色規則。",
+      "why": "第二十一章必出提示初讀索爾，固定名字索引22與31C93 push21實為約拿。",
+      "evidence": "docs/data/ida/fd2_ch21_required_character_20261003.json；https://github.com/wicanr2/fd2_re/issues/119"
     }
   ]
 }

@@ -576,6 +576,9 @@ type Node struct {
 	OnWin                   string                         `json:"on_win,omitempty"`  // battle
 	OnLose                  string                         `json:"on_lose,omitempty"` // battle(敗北路線;空=game over)
 	NativeDefeatReturnTitle *NativeDefeatReturnTitleConfig `json:"native_defeat_return_title,omitempty"`
+	// Proven 0x321C8 calls after required checks and before final confirmation.
+	PartyFrontIdentities []int `json:"preparation_front_identities,omitempty"`
+
 	// EndingPartySnapshotOnWin 是重製終局資料邊界；只允許勝利直接進 ending
 	// 的 battle。它保存最後隊伍供回顧，不冒稱原版 FD2.SAV ABI。
 	EndingPartySnapshotOnWin bool                      `json:"ending_party_snapshot_on_win,omitempty"`
@@ -767,6 +770,19 @@ func Decode(raw []byte) (*Campaign, error) {
 			for _, identity := range n.RequiredPartyIdentities {
 				if n.Type != "preparation" || n.Cancel == "" || identity < 1 || identity > 31 || seen[identity] {
 					return nil, fmt.Errorf("preparation node %q has invalid required_party_identities", id)
+				}
+				seen[identity] = true
+			}
+		}
+		if len(n.PartyFrontIdentities) != 0 {
+			seen := map[int]bool{}
+			for _, identity := range n.PartyFrontIdentities {
+				required := false
+				for _, member := range n.RequiredPartyIdentities {
+					required = required || member == identity
+				}
+				if n.Type != "preparation" || n.Cancel == "" || !required || identity < 1 || identity > 31 || seen[identity] {
+					return nil, fmt.Errorf("preparation node %q has invalid preparation_front_identities", id)
 				}
 				seen[identity] = true
 			}

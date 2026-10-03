@@ -4431,6 +4431,10 @@ func (g *Game) togglePreparationSelection() bool {
 			}
 			return true
 		}
+		if err := g.frontNativePreparationRequiredRoster(); err != nil {
+			g.loadErr = err.Error()
+			return false
+		}
 		g.prepConfirm = true
 		g.prepConfirmSel = 0
 		g.beginNativePreparationConfirmationOpening()

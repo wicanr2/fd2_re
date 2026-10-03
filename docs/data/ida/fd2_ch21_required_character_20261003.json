@@ -1,0 +1,1915 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch21_preparation_required_character_evidence",
+  "issue": 119,
+  "status": "CONFORMED",
+  "re_level": "RE-CLOSED",
+  "runtime_level": "RUNTIME-E1",
+  "scope": "玩家第21章raw chapter20選人額滿後identity21檢查、共享文字拒收、合法選人後完整持續名冊移至record1；不宣稱起手視圖或整章。",
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "canonical_evidence": {
+    "source": "docs/data/ida/fd2_ch19_required_character_20261003.json",
+    "source_sha256": "6ebdbf5a3b85a24f74b95f4034e5573e17b006a09a3688b59f4d9aa414aa15b3",
+    "policy": "沿用既有IDA資料庫匯出與已閉合writer／checker；本次新增審查raw chapter20分支，不重做函式。",
+    "selection_branch": [
+      {
+        "address": "0x31c8a",
+        "bytes": "833d033c050014",
+        "original": "cmp     dword_53C03, 14h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31c8a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31c91",
+        "bytes": "7504",
+        "original": "jnz     short loc_31C97",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31c91",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31c93",
+        "bytes": "6a15",
+        "original": "push    15h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31c93",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31c95",
+        "bytes": "eb32",
+        "original": "jmp     short loc_31CC9",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31c95",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31cc9",
+        "bytes": "55",
+        "original": "push    ebp",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31cc9",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31cca",
+        "bytes": "e8ef000000",
+        "original": "call    sub_31DBE",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31cca",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31ccf",
+        "bytes": "83c408",
+        "original": "add     esp, 8",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31ccf",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31cd2",
+        "bytes": "89c7",
+        "original": "mov     edi, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31cd2",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31cd4",
+        "bytes": "83ff01",
+        "original": "cmp     edi, 1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31cd4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x31cd7",
+        "bytes": "0f85d5000000",
+        "original": "jnz     loc_31DB2",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x31cd7",
+        "semantic_annotations": []
+      }
+    ],
+    "required_checker": {
+      "requested_address": "0x31dbe",
+      "address": "0x31dbe",
+      "end": "0x31e80",
+      "original_name": "sub_31DBE",
+      "chunks": [
+        {
+          "start": "0x31dbe",
+          "end": "0x31e80"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x31dbe",
+          "bytes": "6830000000",
+          "original": "push    30h ; '0'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dbe",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dc3",
+          "bytes": "e80f4f0000",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dc3",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dc8",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dc8",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dc9",
+          "bytes": "83ec04",
+          "original": "sub     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dc9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dcc",
+          "bytes": "8b4c240c",
+          "original": "mov     ecx, [esp+8+arg_0]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dcc",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dd0",
+          "bytes": "c6042400",
+          "original": "mov     [esp+8+var_8], 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dd0",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dd4",
+          "bytes": "31d2",
+          "original": "xor     edx, edx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dd4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dd6",
+          "bytes": "eb01",
+          "original": "jmp     short loc_31DD9",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dd6",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dd8",
+          "bytes": "42",
+          "original": "inc     edx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dd8",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dd9",
+          "bytes": "39ca",
+          "original": "cmp     edx, ecx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dd9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31ddb",
+          "bytes": "7d26",
+          "original": "jge     short loc_31E03",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31ddb",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31ddd",
+          "bytes": "8d5a01",
+          "original": "lea     ebx, [edx+1]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31ddd",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31de0",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31de0",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31de2",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31de2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31de5",
+          "bytes": "01c3",
+          "original": "add     ebx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31de5",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31de7",
+          "bytes": "c1e304",
+          "original": "shl     ebx, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31de7",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dea",
+          "bytes": "a1453a0500",
+          "original": "mov     eax, dword_53A45",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dea",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31def",
+          "bytes": "0fb65c0308",
+          "original": "movzx   ebx, byte ptr [ebx+eax+8]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31def",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31df4",
+          "bytes": "0fb6442410",
+          "original": "movzx   eax, [esp+8+arg_4]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31df4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31df9",
+          "bytes": "39c3",
+          "original": "cmp     ebx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31df9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dfb",
+          "bytes": "75db",
+          "original": "jnz     short loc_31DD8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dfb",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31dfd",
+          "bytes": "c6042401",
+          "original": "mov     [esp+8+var_8], 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31dfd",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e01",
+          "bytes": "ebd5",
+          "original": "jmp     short loc_31DD8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e01",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e03",
+          "bytes": "0fb60424",
+          "original": "movzx   eax, [esp+8+var_8]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e03",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e07",
+          "bytes": "85c0",
+          "original": "test    eax, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e07",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e09",
+          "bytes": "756c",
+          "original": "jnz     short loc_31E77",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e09",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e0b",
+          "bytes": "6a4b",
+          "original": "push    4Bh ; 'K'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e0b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e0d",
+          "bytes": "e85977feff",
+          "original": "call    sub_1956B",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e0d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e12",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e12",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e15",
+          "bytes": "0fb6442410",
+          "original": "movzx   eax, [esp+8+arg_4]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e15",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e1a",
+          "bytes": "40",
+          "original": "inc     eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e1a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e1b",
+          "bytes": "a3d93a0500",
+          "original": "mov     dword_53AD9, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e1b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e20",
+          "bytes": "6a01",
+          "original": "push    1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e20",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e22",
+          "bytes": "6a13",
+          "original": "push    13h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e22",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e24",
+          "bytes": "6a4a",
+          "original": "push    4Ah ; 'J'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e24",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e26",
+          "bytes": "6a4c",
+          "original": "push    4Ch ; 'L'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e26",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e28",
+          "bytes": "68cd000000",
+          "original": "push    0CDh",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e28",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e2d",
+          "bytes": "6840010000",
+          "original": "push    140h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e2d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e32",
+          "bytes": "681f950a00",
+          "original": "push    0A951Fh",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e32",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e37",
+          "bytes": "6891020000",
+          "original": "push    291h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e37",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e3c",
+          "bytes": "ff357d3a0500",
+          "original": "push    dword_53A7D",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e3c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e42",
+          "bytes": "e83d41feff",
+          "original": "call    sub_15F84",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e42",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e47",
+          "bytes": "83c424",
+          "original": "add     esp, 24h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e47",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e4a",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e4a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e4c",
+          "bytes": "e80847feff",
+          "original": "call    sub_16559",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e4c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e51",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e51",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e54",
+          "bytes": "c705513a050001000000",
+          "original": "mov     dword_53A51, 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e54",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e5e",
+          "bytes": "6a00",
+          "original": "push    0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e5e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e60",
+          "bytes": "e8f24dfeff",
+          "original": "call    sub_16C57",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e60",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e65",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e65",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e68",
+          "bytes": "c705513a050000000000",
+          "original": "mov     dword_53A51, 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e68",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e72",
+          "bytes": "e8a4b4ffff",
+          "original": "call    sub_2D31B",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e72",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e77",
+          "bytes": "0fb60424",
+          "original": "movzx   eax, [esp+8+var_8]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e77",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e7b",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e7b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e7e",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e7e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31e7f",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x31e7f",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x31cb9",
+        "0x31cca"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x31dbe"
+    },
+    "town_caller_reference": {
+      "address": "0x2D16B..0x2D17C",
+      "source": "docs/data/ida/fd2_ch19_required_character_20261003.json"
+    },
+    "text_resource": {
+      "path": "remake/generated-assets/fd2-original-b97caf22/text/FDTXT_000/resource.json",
+      "sha256": "01bde5a75f847b66d269a8572f6e0733930346c15dd072569e5a6141d07a38d6",
+      "source_index": 22,
+      "text": "約拿"
+    },
+    "required_front_owner": {
+      "requested_address": "0x321c8",
+      "address": "0x321c8",
+      "end": "0x3231b",
+      "original_name": "sub_321C8",
+      "chunks": [
+        {
+          "start": "0x321c8",
+          "end": "0x3231b"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x321c8",
+          "bytes": "6820000000",
+          "original": "push    20h ; ' '",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321c8",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321cd",
+          "bytes": "e8054b0000",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321cd",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321d2",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321d2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321d3",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321d3",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321d4",
+          "bytes": "83ec08",
+          "original": "sub     esp, 8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321d4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321d7",
+          "bytes": "8a4c2414",
+          "original": "mov     cl, [esp+10h+arg_0]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321d7",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321db",
+          "bytes": "c6042400",
+          "original": "mov     [esp+10h+var_10], 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321db",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321df",
+          "bytes": "c644240402",
+          "original": "mov     [esp+10h+var_C], 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321df",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321e4",
+          "bytes": "bb01000000",
+          "original": "mov     ebx, 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321e4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321e9",
+          "bytes": "eb01",
+          "original": "jmp     short loc_321EC",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321e9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321eb",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321eb",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321ec",
+          "bytes": "3b1dfb3b0500",
+          "original": "cmp     ebx, dword_53BFB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321ec",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321f2",
+          "bytes": "7d21",
+          "original": "jge     short loc_32215",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321f2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321f4",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321f4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321f6",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321f6",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321f9",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321f9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321fb",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321fb",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x321fe",
+          "bytes": "8b15453a0500",
+          "original": "mov     edx, dword_53A45",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x321fe",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32204",
+          "bytes": "0fb6540208",
+          "original": "movzx   edx, byte ptr [edx+eax+8]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32204",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32209",
+          "bytes": "0fb6c1",
+          "original": "movzx   eax, cl",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32209",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3220c",
+          "bytes": "39c2",
+          "original": "cmp     edx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3220c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3220e",
+          "bytes": "75db",
+          "original": "jnz     short loc_321EB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3220e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32210",
+          "bytes": "881c24",
+          "original": "mov     [esp+10h+var_10], bl",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32210",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32213",
+          "bytes": "ebd6",
+          "original": "jmp     short loc_321EB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32213",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32215",
+          "bytes": "68000a0000",
+          "original": "push    0A00h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32215",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3221a",
+          "bytes": "e8f74a0000",
+          "original": "call    malloc",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3221a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3221f",
+          "bytes": "89c3",
+          "original": "mov     ebx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3221f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32221",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32221",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32224",
+          "bytes": "89c6",
+          "original": "mov     esi, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32224",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32226",
+          "bytes": "68000a0000",
+          "original": "push    0A00h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32226",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3222b",
+          "bytes": "ff35f73b0500",
+          "original": "push    dword_53BF7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3222b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32231",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32231",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32232",
+          "bytes": "e88d510000",
+          "original": "call    memmove",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32232",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32237",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32237",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3223a",
+          "bytes": "6a50",
+          "original": "push    50h ; 'P'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3223a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3223c",
+          "bytes": "0fb6542404",
+          "original": "movzx   edx, [esp+14h+var_10]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3223c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32241",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32241",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32243",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32243",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32246",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32246",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32248",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32248",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3224b",
+          "bytes": "01c3",
+          "original": "add     ebx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3224b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3224d",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3224d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3224e",
+          "bytes": "a1f73b0500",
+          "original": "mov     eax, dword_53BF7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3224e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32253",
+          "bytes": "83c050",
+          "original": "add     eax, 50h ; 'P'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32253",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32256",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32256",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32257",
+          "bytes": "e868510000",
+          "original": "call    memmove",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32257",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3225c",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3225c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3225f",
+          "bytes": "bb01000000",
+          "original": "mov     ebx, 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3225f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32264",
+          "bytes": "eb01",
+          "original": "jmp     short loc_32267",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32264",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32266",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32266",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32267",
+          "bytes": "3b1dfb3b0500",
+          "original": "cmp     ebx, dword_53BFB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32267",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3226d",
+          "bytes": "7d3c",
+          "original": "jge     short loc_322AB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3226d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3226f",
+          "bytes": "0fb60424",
+          "original": "movzx   eax, [esp+10h+var_10]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3226f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32273",
+          "bytes": "39c3",
+          "original": "cmp     ebx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32273",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32275",
+          "bytes": "74ef",
+          "original": "jz      short loc_32266",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32275",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32277",
+          "bytes": "6a50",
+          "original": "push    50h ; 'P'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32277",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32279",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32279",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3227b",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3227b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3227e",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3227e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32280",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32280",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32283",
+          "bytes": "01f0",
+          "original": "add     eax, esi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32283",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32285",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32285",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32286",
+          "bytes": "0fb654240c",
+          "original": "movzx   edx, [esp+18h+var_C]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32286",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3228b",
+          "bytes": "89d0",
+          "original": "mov     eax, edx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3228b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3228d",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3228d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32290",
+          "bytes": "01c2",
+          "original": "add     edx, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32290",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32292",
+          "bytes": "c1e204",
+          "original": "shl     edx, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32292",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32295",
+          "bytes": "a1f73b0500",
+          "original": "mov     eax, dword_53BF7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32295",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3229a",
+          "bytes": "01d0",
+          "original": "add     eax, edx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3229a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3229c",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3229c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3229d",
+          "bytes": "e822510000",
+          "original": "call    memmove",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3229d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322a2",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322a2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322a5",
+          "bytes": "fe442404",
+          "original": "inc     [esp+10h+var_C]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322a5",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322a9",
+          "bytes": "ebbb",
+          "original": "jmp     short loc_32266",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322a9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322ab",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322ab",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322ac",
+          "bytes": "e865510000",
+          "original": "call    free",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322ac",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322b1",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322b1",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322b4",
+          "bytes": "ff35613a0500",
+          "original": "push    dword_53A61",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322b4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322ba",
+          "bytes": "e857510000",
+          "original": "call    free",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322ba",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322bf",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322bf",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322c2",
+          "bytes": "68b7020500",
+          "original": "push    offset aRb_10; \"rb\"",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322c2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322c7",
+          "bytes": "68ba020500",
+          "original": "push    offset aFdiconB24_4; \"FDICON.B24\"",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322c7",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322cc",
+          "bytes": "e8fb4c0000",
+          "original": "call    fopen",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322cc",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322d1",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322d1",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322d4",
+          "bytes": "89c6",
+          "original": "mov     esi, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322d4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322d6",
+          "bytes": "c705df3b050000000000",
+          "original": "mov     dword_53BDF, 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322d6",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322e0",
+          "bytes": "31db",
+          "original": "xor     ebx, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322e0",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322e2",
+          "bytes": "eb20",
+          "original": "jmp     short loc_32304",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322e2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322e4",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322e4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322e5",
+          "bytes": "8b0df73b0500",
+          "original": "mov     ecx, dword_53BF7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322e5",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322eb",
+          "bytes": "89d8",
+          "original": "mov     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322eb",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322ed",
+          "bytes": "c1e002",
+          "original": "shl     eax, 2",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322ed",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322f0",
+          "bytes": "01d8",
+          "original": "add     eax, ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322f0",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322f2",
+          "bytes": "c1e004",
+          "original": "shl     eax, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322f2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322f5",
+          "bytes": "0fb6440107",
+          "original": "movzx   eax, byte ptr [ecx+eax+7]",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322f5",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322fa",
+          "bytes": "50",
+          "original": "push    eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322fa",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x322fb",
+          "bytes": "e819edfdff",
+          "original": "call    sub_11019",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x322fb",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32300",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32300",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32303",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32303",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32304",
+          "bytes": "3b1dfb3b0500",
+          "original": "cmp     ebx, dword_53BFB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32304",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3230a",
+          "bytes": "7cd8",
+          "original": "jl      short loc_322E4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3230a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3230c",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3230c",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3230d",
+          "bytes": "e8324f0000",
+          "original": "call    fclose",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3230d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32312",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32312",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32315",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32315",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32318",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32318",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x32319",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x32319",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3231a",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3231a",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x31d2a",
+        "0x31d34"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x321c8"
+    },
+    "required_front_export": {
+      "path": "work/parity-slot-ch21/ch21-required-pack-r1.json",
+      "sha256": "61abb3ec67d443ba4dbbb27214f3e18e33ac90d0cb2f269f2e4ee489549af02e",
+      "source_database": "work/ch01-town-parity-20260908/ida/fd2-io.i64唯讀，容器/tmp副本",
+      "image": "ida-pro-9.4-idapython:locked-v1"
+    }
+  },
+  "claims": [
+    {
+      "level": "已證實",
+      "semantic": "31C8A cmp dword_53C03,14h為raw chapter20；31C93 push15h，31CC9 push ebp／31CCA call sub_31DBE，要求已選record1..quota的byte+8含identity21。",
+      "evidence": "本檔selection_branch與既有31A54／31A74／320FC穩定分組主證據。"
+    },
+    {
+      "level": "已證實",
+      "semantic": "缺少21時checker令53AD9=22、共享文字0x291以FFFC代換名字約拿，原版正常Enter後返回城鎮。",
+      "evidence": "31E15..31E42、FDTXT_000 index22、原版r1 checkpoint71／72。"
+    },
+    {
+      "level": "已證實",
+      "semantic": "同源SAV的約拿為persistent index18；r1原版前15次Enter只選index1..15，額滿時缺約拿。合法計畫先選1..14，三次right由15到18，再Enter。",
+      "evidence": "ch21-manifest、固定FD2.SAV與fd2_chapter_slot.summarize；原版44..59輸入。"
+    },
+    {
+      "level": "已證實",
+      "semantic": "raw20通過required checker後，31D05 push15h→31D34 call sub_321C8，發生在31D3C最終YES／NO開框前。",
+      "evidence": "既有selection_owner 31CFC..31D3C原始指令。"
+    },
+    {
+      "level": "已證實",
+      "semantic": "321D7取byte身份參數；321E4..32213從persistent record1掃到count-1，以+8比對，保留最後匹配索引。32226..32257保存完整0xA00並把匹配的完整0x50紀錄放record1；3225F..322AB把其餘record1..count-1穩定放到record2起，record0及尾部未動。",
+      "evidence": "本檔required_front_owner；32204身份reader、32257／3229D memmove writer；原版r2最終75筆的record1 identity21、record2 identity9。"
+    },
+    {
+      "level": "已證實",
+      "semantic": "後半322C5..32312重新讀取FDICON.B24並依重排後+7載入portrait資源，沒有另改隊伍身份或欄位；remake身份資源loader沿用現有映射。",
+      "evidence": "321C8匯出末段與既有11019資料來源契約；不深挖檔案／allocator helper。"
+    }
+  ],
+  "original_experiments": {
+    "rejected_run": "work/parity-slot-ch21/startup-original-r1",
+    "exit_code": 7,
+    "reason": "await enemy_alive>=1在200格不成立，原版已正常拒收回城；非CPU／oracle缺陷。",
+    "rejected_prompt_seq": 71,
+    "town_return_seq": 72,
+    "input_save_sha256": "49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+    "runner_sha256": "f399891bb2339636e3e479584f10ca80e33eefd52bda95787cb0ff52703f8eeb",
+    "checkpoint71_sha256": "84a724bc52931444eccd8e58da5eed29e81a1a0b94bb0e6fa9fa74fa7e592f2f",
+    "checkpoint72_sha256": "1cb0d0de14bb8093f7c4f282650a77ec66e0e52c76a9df2ea166da2ad274ca94",
+    "legal_run": "work/parity-slot-ch21/startup-original-r2",
+    "legal_exit_code": 0,
+    "legal_start_seq": 107,
+    "legal_record1_identity": 21
+  },
+  "remake_gap": "preparation_ch21.required_party_identities缺21，正常選人額滿未經正式missingPreparationRequiredIdentity拒收；同源r1重播明確失敗。",
+  "ready_contract": {
+    "typed_data": {
+      "node": "preparation_ch21",
+      "required_party_identities": [
+        21
+      ],
+      "preparation_front_identities": [
+        21
+      ]
+    },
+    "consumer": "先320FC穩定分組→required checker拒收→成功時依preparation_front_identities逐筆移完整persistent record到index1→最終YES／NO。先建立完整candidate，驗證identity與名冊拓撲後才發布partyJoinOrder與原生baseline。",
+    "production_route": "tools/gen_campaign.py映射→assets/scenarios/campaign_full.json→export_editor_canonical.py→正式戰役Node→既有整備owner。",
+    "failure": "缺21拒收，正常鍵盤選足含21才進YES／NO；資料缺失沿用fail-closed。",
+    "save": "名冊包含未選人，完整0x50紀錄、record0、既有尾部與成員資料均保存；後續LOADCH與酒店SAV消費重排後baseline。無HP、金幣或政策寫入。",
+    "boundaries": "合法資料身份唯一且在已選人內；缺身份、非法0／>31、重複配置或缺native identity時fail-closed，不模擬321C8未找到時的record0 fallback。"
+  },
+  "acceptance": [
+    "同源原版r1拒收／回城完整RGB及節點可比，舊失敗保留。",
+    "原版r2正常選入identity21後起手可達；本項不宣稱起手視圖或整章通過。",
+    "相關Go、第二十章四項與全檔SAV回歸通過。"
+  ],
+  "limitations": [
+    "首次人工誤讀提示為索爾；固定文字索引22與原始push15h足以否定該讀法，沒有據此新增identity0規則。",
+    "其他章raw分支保留未審查。本切片只新增raw20的identity21重排，不推定所有required角色都移到record1；第19章identity16沒有這個call，保持既有行為。原版起手75筆與視圖另由#120驗收。"
+  ],
+  "validation_scope": "有限必出檢查／完整紀錄穩定重排及起手可見外觀；章內與酒店SAV尚未驗收。",
+  "verification": {
+    "receipt": "docs/data/ui-traces/ch21-native-startup.json",
+    "original_run": "work/parity-slot-ch21/startup-original-r3",
+    "report": "work/parity-slot-ch21/startup-r3-verify-r1.json",
+    "source_sha256": {
+      "remake/cmd/fd2/main.go": "5b53543a6d31db96f772be87ff56e6d3398a30e5443792ece7fb8b3fbf260ffa",
+      "remake/cmd/fd2/native_chapter_slot_save.go": "b185d048907113ea2fd3772e59a35469292f4e2c3d9d62ac6b5163cb59f16736",
+      "remake/internal/campaign/campaign.go": "b6bd5b83d6c2c060190adb14575038a5cbacc37501aa008e56ad1cf4a4d907c5",
+      "remake/assets/scenarios/campaign_full.json": "e6df10932a04d4658aafaca0a926fb59b95c39e9427cb43a8bd16e0d52562f93",
+      "remake/assets/editor-canonical/campaign/campaign_full.json": "88bca18b5100725c57b3a667991c711445ffaaf7d950701435420b3345758d7e"
+    },
+    "prior_chapter20": "work/parity-slot-ch21/prior-ch20-verify-r1.json",
+    "full_go": "work/parity-slot-ch21/chapter21-go-regression-r1.log",
+    "related_go": "work/parity-slot-ch21/chapter21-related-regression-r2.log"
+  }
+}
