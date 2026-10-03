@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,26 +111,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第二十二章第五回合事件後鏡頭未回到原版視圖
-
-`ch22-turn5-camera-restore` · 缺陷 · [#129](https://github.com/wicanr2/fd2_re/issues/129) · 仍未完成 · 要人判
-
-#123同源SAV及正常鍵盤短路徑，full-original-r1 seq915原版camera16,28 cursor23,34，full-r1-remake-r2對應camera12,33 cursor23,34。完整RGB差51740px；T2／3／4視圖相同、AI240筆零順序分岔。先查58／00既有turn-event caller及PAN／focus證據，再依RE→READY修正正式runtime；禁止在重播注入原版camera、遮罩或放寬像素門檻。
-
-怎樣算做完：['固定原始版本與原始定位，查明T5視圖writer／consumer及caller，附證據等級。', 'READY規格定義typed event視圖時序及失敗即關閉，正式runtime實作。', 'T5同狀態完整RGB及整章四項／完整SAV通過，上一章回歸。']
-
-證據：`['docs/data/ida/fd2_ch22_startup_20261003.json', 'work/parity-slot-ch22/full-r1-verify-r2.json', 'work/parity-slot-ch22/full-original-r1/checkpoint-0915.json']`
-
-### 第二十二章戰後持續record欄位與原版完整SAV不符
-
-`ch22-post-record-save-fields` · 缺陷 · [#131](https://github.com/wicanr2/fd2_re/issues/131) · 仍未完成 · 要人判
-
-#123 full-original-r2／full-r2-remake-r2，行為／節點／34張畫面通過、AI212筆零分岔，但正常記錄提示SAV雜湊不同。以維護工具fd2save解碼且checksum均有效，除checksum外33 bytes不符：slot0前16筆record +0/+1各差6，persistent record1 +0x31原版FF／重製03。保存原始差分，不以遮罩、patch SAV或忽略欄位解決；先查已閉合ch21_post layout、copyback、record flags的writer／consumer，再依RE→READY修正正式runtime。
-
-怎樣算做完：['固定EXE及SAV版本，原始位址／bytes與33個plaintext差分綁定，分級語意及writer／consumer。', 'READY後只修正正式post或持續record路徑，不在replay／writer猜補。', '正常記錄四槽全檔SAV逐byte相同、完整章四項與上一章回歸通過。']
-
-證據：`['docs/data/ida/fd2_ch21_post_ida.txt', 'work/parity-slot-ch22/ch22-save-difference-r1.json', 'work/parity-slot-ch22/full-r2-verify-r2.json']`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -170,18 +150,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### 第二十二章整章原版／重製對拍與收尾
-
-`ch22-full-chapter-parity` · 工作 · [#123](https://github.com/wicanr2/fd2_re/issues/123) · 仍未完成 · 要人判
-
-接續第二十一章正式酒店SAV22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd，保留祖先111／114政策，不追加升級、強化、治療、金幣或道具。先查58／00既有證據與可編輯資料，正常LOAD、整備、章內鍵盤輸入、抽樣正常戰鬥節拍後清敵一次，再驗戰後、交易與酒店存檔。新缺陷另登Issue並依RE→READY修正。
-
-已閉合raw ch21 post 0x244B6→共享尾端0x239AC指向preparation_ch23，原版沒有戰後城鎮。先保留起點城鎮的交易／酒店抽樣，再以正常戰後記錄提示寫出的SAV驗證下一章邊界；不創造town_ch23。依據docs/data/ida/fd2_ch21_post_ida.txt與fd2_ch21_post_native_dialogue.md。
-
-怎樣算做完：['固定FD2.EXE與dosgolem版本、同源SAV、受版控計畫與清冊；正常起手及章內至戰後路徑可重跑。', '四項對拍與原版實際保存邊界全檔SAV相同；有城鎮時酒店抽樣，戰後直接整備時以正常記錄提示存檔。相關Go與上一章回歸通過。', '同步56／57／58、索引、正式章台帳與生成現況，保存原始拒收及PLAYER-E2例外限制。']
-
-證據：`['docs/data/ui-traces/parity-ch21.json', 'docs/data/parity-slots/ch21-manifest.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
 
 ## release — 發行、平台與封包
 
@@ -254,35 +222,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 對拍驗證器將正常回合mark誤判為節點差異
-
-`parity-generic-mark-node-identity` · 缺陷 · [#128](https://github.com/wicanr2/fd2_re/issues/128) · 仍未完成 · 要人判
-
-#123敗北短路徑 full-original-r1／full-r1-remake-r2，AI240筆零分岔。verifier對round_2／3／4／5的原版kind round_N與重製kind mark:round_N判node_differ，兩側UI均cursor。須保留來源mark標籤及實際UI核對，再修正名稱契約，不能跳過節點或放寬門檻。
-
-怎樣算做完：['相同來源標籤正常匹配，不同標籤與不同UI仍失敗。', '既有驗證器回歸及第二十二章四項重新核對。']
-
-證據：`['tools/verify_chapter_parity.py', 'work/parity-slot-ch22/full-r1-verify-r2.json']`
-
-### 章重播未走戰果與戰後對白便等待非城鎮記錄提示
-
-`parity-record-question-postbattle-replay` · 缺陷 · [#130](https://github.com/wicanr2/fd2_re/issues/130) · 仍未完成 · 要人判
-
-#123正式原版 full-original-r2 已完成T5清敵後的戰後對白，seq955 record_question、965完整SAV寫入、974返回選人。完整event50資料接入後，重製 full-r2-remake-r1 在 mark record_question 只pump等待，沒有執行正常戰果確認與故事對白，因此未取得記錄owner。這是重播工具缺口，正式runtime戰果→preparation_ch23既有回歸已通過；只透過現有正常輸入API接回，不直接切節點、清dialog或注入畫面。
-
-怎樣算做完：['原版固定hash及record_question caller驗證通過後，以正常戰果確認及故事輸入到非城鎮整備。', '保留dialogue／transition正常owner與失敗即關閉；正常YES／保存／ESC不改。', '第二十二章四項、完整SAV與上一章回歸通過。']
-
-證據：`['docs/data/ida/fd2_ch21_post_native_dialogue.md', 'work/parity-slot-ch22/full-original-r2/actions.jsonl', 'work/parity-slot-ch22/full-r2-remake-r1.log']`
-
-### 對拍進度表將延後畫面算成已比較
-
-`parity-progress-deferred-frame-count` · 缺陷 · [#132](https://github.com/wicanr2/fd2_re/issues/132) · 仍未完成 · 要人判
-
-#123 完整第22章報告有34張實際比較與1個frame_missing_or_no_pillow點。render_parity_progress.receipt_stats目前以len(points)計35張，並將無diff_pixels的點預設0，造成首頁的比較數與0px數錯誤。只修正報表統計，保存所有原始缺圖點，不改verifier門檻。存檔欄需涵蓋非城鎮記錄保存。
-
-怎樣算做完：['缺圖與not-comparable點不算已比較或0px；有實際diff_pixels的正反樣本保留。', '第22章進度列顯示34張、28張0px及完整存檔；其他正式收據重新產生，驗證實際數字。']
-
-證據：`['work/parity-slot-ch22/full-r2-verify-r3.json', 'tools/render_parity_progress.py']`
 
 <!-- END fd2_worklist.py render -->
