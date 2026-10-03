@@ -5108,3 +5108,9 @@ r2於T18索爾死亡；r3正常到T19玩家游標、再END才死亡。標題新u
 正常T4及12名增援已到達，fresh-full-original-r2在0x26FAB D8 4C 24 30停止，完成6958650848步。指令為FMUL m32fp；trace120378筆未截斷。seq2115 driver timeout是CPU錯誤的後果。新工單#146及canonical 191 READY先於實作；不調HP或遊戲規則。首次CPU反例測試正確重現D8拒絕；測試誤要求既有decoder不支援的FS覆寫，收窄為段覆寫拒絕，不擴大production契約。
 
 D8修正5599d26已推送，相關三套件920筆pass事件，parity無測試但建置通過。同條件r3的2115個舊checkpoint全一致，26FAB已越過；十個指令後3C7C5 D9 FF停止，另開#147。這是新CPU缺口，有限D8已驗收；#142及20／30不變。CPUexit2後手動停止driver容器exit124，沒有遺留容器。
+
+2026-10-04：D8有限比較已以b6ae9d49推送，#146由主機gh回讀為CLOSED；#147 OPEN。FCOS／FSIN canonical 192 READY先於實作，針對性先失敗後通過，完整三套件948個pass事件，parity無測試但建置通過。9ad073f已推送並核對遠端；原r4同槽／seed／計畫重跑中。FSIN先只有3C7DA原bytes證據，不外推正常玩家可達。
+
+#147同時修正既有new-chapters-surface-new-cpu-gaps教訓的完整x87覆蓋斷言；保留2026-09-11原事件與數字，追加2026-10-04直接反證。規則改為先查錯誤來源、只補READY必要形式，靜態清單不證明支援。教訓總數不增加。
+
+原r4再驗2115點零差異；FCOS已越過，十個指令後6958650868步在3C868 7B18 JNP停止，開#148。FSIN只限CPU回歸，未證正常到達。CPUexit2後手動停止等待容器exit124，未清敵或追加狀態注入。193 READY與原bytes先登錄再補PF分支。

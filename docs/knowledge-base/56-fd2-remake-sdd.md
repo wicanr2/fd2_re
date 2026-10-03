@@ -9340,3 +9340,5 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 正常戰後binding接受實測28筆與歷史86筆局部fixture，其餘數量仍拒收。原生對白、舞台與整備保存已串接，完整SAV兩側相同。完整Go、第23章四項／SAV與比較器測試通過，具體命令與限制在有限收據。#142仍需T4／7／10，不列整章PLAYER-E2；唯一現況依[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-04：第24章晚期原版抽樣先受CPU指令缺口#146阻擋。修正與同槽重跑現況引用[58](58-fd2-exe-re-coverage.md)及[D8主證據](../data/ida/fd2_ch24_oracle_d8_20261004.json)；本工具切片不提升UI或整章驗收等級。
+
+2026-10-04：FCOS有限驗收與後續PF分支阻擋#148引用[58](58-fd2-exe-re-coverage.md)及[三角函數主證據](../data/ida/fd2_ch24_oracle_fcos_20261004.json)。CPU指令切片不提升玩家介面或整章驗收。

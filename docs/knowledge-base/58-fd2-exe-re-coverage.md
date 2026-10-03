@@ -2311,7 +2311,7 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 | 20筆起手與兩種選人視圖 | [有限CONFORMED](../data/ida/fd2_ch24_startup_frontier_20261003.json) | DATA-READY | RUNTIME-E1 | 正常LOAD／鍵盤及兩分支RGB通過 |
 | #42舞台正常重繪至戰後 | [有限CONFORMED](../data/ida/fd2_ch24_stage_runtime_20261003.json) | DATA-READY | RUNTIME-E1 | 抽樣完成VGA copy相位及RGB通過 |
 | 28筆正常戰後與整備保存 | [有限CONFORMED](../data/ida/fd2_ch24_post_frontier_20261003.json) | DATA-READY | RUNTIME-E1 | 四項與全檔SAV通過 |
-| event54@T4／7／10 | 已有靜態事件來源 | DATA-READY | 已接typed事件 | 原版oracle未抽樣，#142仍阻擋整章 |
+| event54@T4／7／10 | 已有靜態事件來源；T4原版到達 | DATA-READY | 已接typed事件 | T7／10及完整重製比較未驗，#142仍阻擋整章 |
 
 存活分支228個原版checkpoint、17動作、16筆AI入口全消費且零順序分岔；13張完整RGB有12張0px，移動一張88px。前15位分支120點、6動作、4筆AI零分岔、五張完整RGB皆0px。兩者沿同一第23章SAV及seed4；T3分支清敵一次12筆，再正常戰後11句及300次舞台Draw，22987 bytes SAV SHA256兩側均為a1e6cc85722fc820cf38f820f4454785cb2138450d9c6000226466a340288406。無HP鎖定、章內治療或追加強化。
 
@@ -2324,3 +2324,9 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 2026-10-04勘誤：晚期fresh-full-original-r2正常到T4，group4追加12名。隨後原版CPU在relocated LE 0x26FAB拒絕D8 /1，120378筆trace未達200000上限；driver等待逾時是後果。[#146主證據與READY](../data/ida/fd2_ch24_oracle_d8_20261004.json)限定FMUL m32fp，未注入HP、未清敵。#142仍未驗T7／10及全章四項，台帳20／30不變。
 
 D8切片已列有限CONFORMED：5599d26同槽重跑的舊2115點零差異，越過26FAB後十個指令在3C7C5 D9 FF停止。新CPU缺口由#147處理；第24章仍未通過完整門檻。原版CPUexit2後停止等待容器，收據不改寫。
+
+[#147主證據](../data/ida/fd2_ch24_oracle_fcos_20261004.json)已登錄canonical 192 READY。FCOS有正式原版停止收據；同段FSIN只有靜態bytes。實作沿既有float64近似及Intel C2契約，不提升原版硬體精度或第24章玩家驗收。
+
+FCOS切片有限CONFORMED：9ad073f同槽r4舊2115點零差異，越過3C7C5後十個指令在3C868 JNP停止。FSIN只限CPU測試，原版到達性未知。[#148主證據](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)及canonical 193 READY已登錄；第24章仍未通過完整門檻。
+
+2026-10-04目前CPU切片狀態：D8 /1與FCOS有限CONFORMED；PF短分支#148已通過相關回歸並推送30746f0，同槽r5重跑中。原版T4已出現group4的12名增援，尚未完成T4後續重製比較或整章門檻。完整範圍依三份主證據，未新增正式章收據。

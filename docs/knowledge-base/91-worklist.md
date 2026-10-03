@@ -233,16 +233,6 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
-### dosgolem 第24章正常T4後x87 D8 /1記憶體乘法未支援
-
-`ch24-oracle-x87-d8-m32fmul` · 缺陷 · [#146](https://github.com/wicanr2/fd2_re/issues/146) · 仍未完成 · 要人判
-
-第24章111／114固定政策全員存活槽1c29f51b…、seed4、受版控ch24-fresh-sample-r1正常LOAD與接戰。原版T4 END已追加group4共12筆；6958650848 steps停在dosgolem relocated LE linear0x26FAB，error cpu386 opcode=D8尚未支援。raw next bytes D8 4C 24 30，ModRM /1與ESP+30；原版檔與來源碼不可修改。這是原版執行器缺口，不稱重製玩法缺陷。先讀現行dosgolem契約與官方x87指令規格，READY後只補必要CPU支援。原始r2輸出保留，不以DOSBox擷取代替正式收據。
-
-怎樣算做完：['在維護中的dosgolem原版oracle來源建立READY規格，綁原版EXE雜湊、實測錯誤、raw bytes與官方x87來源。', '補D8 /1 m32fp乘法，沿現有x87數值政策；有界CPU回歸含有效位址／符號／棧及拒收邊界，不猜遊戲規則。', '提交並推送可重跑oracle版本，原版用相同SAV／seed／ch24-fresh-sample-r1正常輸入重跑，越過0x26FAB並保留原失敗輸出；不得以未完成或截斷trace稱第24章通過。']
-
-證據：`['work/parity-slot-ch24/fresh-full-original-r2/oracle.log', 'docs/data/parity-slots/ch24-fresh-policy-manifest.json', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl']`
-
 ### dosgolem 第24章正常T4後x87 D9 FF FCOS未支援
 
 `ch24-oracle-x87-fcos` · 缺陷 · [#147](https://github.com/wicanr2/fd2_re/issues/147) · 仍未完成 · 要人判
@@ -252,5 +242,15 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：['canonical dosgolem建立READY規格，綁原版雜湊、D9 FF原bytes、CPU停止與Intel FCOS契約；需要補同族指令時逐項列bytes、證據限制與驗收，不猜遊戲語意。', '沿既有float64模型實作FCOS，正確處理非空堆疊、弧度、C2範圍閘門及拒收邊界；不宣稱x87 80位精度／例外逐旗標一致。', '提交並推送可重跑版本，同SAV／seed／計畫核對舊前綴一致並越過0x3C7C5；第24章整章仍由#142驗收。']
 
 證據：`['work/parity-slot-ch24/fresh-full-original-r3/oracle.log', 'work/parity-slot-ch24/d8-old-prefix-r1.json', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl']`
+
+### dosgolem 第24章x87狀態consumer的短JP／JNP未支援
+
+`ch24-oracle-short-parity-branch` · 缺陷 · [#148](https://github.com/wicanr2/fd2_re/issues/148) · 仍未完成 · 要人判
+
+第24章相同SAV／seed／受版控計畫，FCOS修正9ad073f重跑後越過3C7C5，在6958650868 steps的relocated LE 0x3C868遇到7B 18，cpu386 opcode7B尚未支援。這是JNP rel8的通用CPU缺口；同段原bytes還包含7A F4。原版r4失敗完整保留，CPUexit2後停止等待容器，不稱第24章通過。沿既有CPU／READY流程，只補PF短條件跳躍，不改遊戲狀態或FPU數值模型。
+
+怎樣算做完：['canonical dosgolem先建READY規格，綁原版雜湊、7B18／7AF4 bytes、位址空間及Intel Jcc PF契約。', '以既有PF支援7A JP／7B JNP短分支，驗正負rel8、taken／not-taken、旗標保留及前綴／截斷拒收，完整相關CPU與FD2工具回歸。', '提交／推送後，相同SAV／seed／輸入重跑，舊2115點一致且越過3C868，保留新停止及整章限制。']
+
+證據：`['work/parity-slot-ch24/fresh-full-original-r4/oracle.log', 'docs/data/parity-plans/ch24-fresh-sample-r1.jsonl', 'docs/data/ida/fd2_ch24_oracle_fcos_20261004.json']`
 
 <!-- END fd2_worklist.py render -->
