@@ -2077,13 +2077,13 @@ Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金�
 
 完整Go19套件、最後重播工具窄回歸與第十八章182張／四項／全檔SAV通過。兩次第18章失敗指出clear→END延後不能只依動作相鄰；原版下一END仍在1A30B才需延後，已進23D65戰後者保持既有立即結果。原失敗與誤提前讀未完成產物的診斷保留，命令、來源hash及訂正在正式收據。
 
-由 tools/fd2_parity_progress.py set／verify 與 tools/render_parity_progress.py 重生台帳及首頁，2026-10-03共16／30章通過。統計輸入為[正式台帳](../data/parity-campaign-progress.json)與逐章收據。尚未通過的章依GitHub worklist繼續；#102同r3原版停止保持未解決，不以本章成功取消。
+由 tools/fd2_parity_progress.py set／verify 與 tools/render_parity_progress.py 重生台帳及首頁，第十九章驗收時共16／30章通過；本節統計已由後文第二十章及正式台帳取代。統計輸入為[正式台帳](../data/parity-campaign-progress.json)與逐章收據。尚未通過的章依GitHub worklist繼續；#102同r3原版停止保持未解決，不以本章成功取消。
 
 [圖面抽樣與全部非零差異索引](../data/ui-traces/parity-ch19-samples.json)只保存來源與hash；原版圖、重製圖、總覽及SAV留本機。
 
-## 2026-10-03 第二十章起手進行中（#112／#113／#114）
+## 2026-10-03 第二十章起手初驗（#112／#113／#114）
 
-沿用第十九章正式原版酒店SAV（SHA f738de3c…），21人含JOIN27，不重複升級或強化；[接續清冊](../data/parity-slots/ch20-manifest.json)保留祖先111／114政策。原版正常選人後83筆，16人加67筆group0。[視圖主證據與READY](../data/ida/fd2_ch20_startup_20261003.json)只補正式戰役的camera20,30、cursor30,35及繼承HUD；首個重播因HUD來源缺失拒收。首次record35原版y31、地圖／重製y30；#114已追到初始配置consumer並以r5驗證，原始位置列不改。整章未驗收，16／30保持。
+沿用第十九章正式原版酒店SAV（SHA f738de3c…），21人含JOIN27，不重複升級或強化；[接續清冊](../data/parity-slots/ch20-manifest.json)保留祖先111／114政策。原版正常選人後83筆，16人加67筆group0。[視圖主證據與READY](../data/ida/fd2_ch20_startup_20261003.json)只補正式戰役的camera20,30、cursor30,35及繼承HUD；首個重播因HUD來源缺失拒收。首次record35原版y31、地圖／重製y30；#114已追到初始配置consumer並以r5驗證，原始位置列不改。初驗時整章未驗收，16／30為當時統計；現況見本檔第二十章四項對拍。
 
 - 第二十章初始配置的 writer／consumer 與 READY 規格：[fd2_ch20_initial_placement_20261003.json](../data/ida/fd2_ch20_initial_placement_20261003.json)；Issue #114，沿用已閉合的 LOADCH／0x10C50 證據。
 
@@ -2101,8 +2101,19 @@ Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金�
 
 [整理過的工具回歸與診斷](../data/ui-traces/parity-node-source-regression-20261003.json)保存第二十章r2原版、重製r1及新比較器r3的hash。原版有1095檢查點，正常一個敵方階段後seq800一次清敵，戰後進town21；64筆AI零順序分岔，酒店22987 bytes SAV SHA49f00f95…完全相同。31張完整RGB的seq593／612／1094分別差2621／15422／62123px，整章拒收。#115追查攻擊目標等待與後續鏡頭；#116追查神秘商店抽測，r2一個left進selection1的一般店，不證明selection4／Ctrl+F10入口。
 
-舊 `verify_chapter_parity.py` 將重製UI複製成原版序列，過去 `nodes=true` 只表示舊工具未檢出差異，不是獨立原版介面證據。本次[CONFORMED契約](../data/fd2-chapter-node-comparison-contract.json)獨立使用原版動作及 `input_chain`，未知來源拒收，跨時序點明列未比較。第二十章seq593的target／cursor及seq1094的shop／town確實拒收；第十九章同原始收據以新版四項通過。歷史收據保留，其他已完成章未在本批重新驗證；不得外推新節點證據。章台帳仍16／30，#112／#115／#116未完成。
+舊 `verify_chapter_parity.py` 將重製UI複製成原版序列，過去 `nodes=true` 只表示舊工具未檢出差異，不是獨立原版介面證據。本次[CONFORMED契約](../data/fd2-chapter-node-comparison-contract.json)獨立使用原版動作及 `input_chain`，未知來源拒收，跨時序點明列未比較。第二十章seq593的target／cursor及seq1094的shop／town確實拒收；第十九章同原始收據以新版四項通過。歷史收據保留，其他已完成章未在本批重新驗證；不得外推新節點證據。診斷時章台帳仍16／30，#112／#115／#116未完成；現況由後文正式章收據取代。
 
 #115的[原生物理確認主證據與READY](../data/ida/fd2_player_physical_target_confirmation_20261003.json)由IDA9.4唯讀DB重生，固定EXE雜湊與原始名稱／bytes保留。重開範圍是正式physical consumer漏用既有0x115B6確認閘門；不重新解射程或共享指令規則。seq578..593確認我方自身格未通過，原版target持續，直到ESC及指令環待機才提交acted。#116另以[ch20-sample-r3](../data/parity-plans/ch20-sample-r3.jsonl)更正正常方向鍵，舊r2不改寫；兩項均尚未驗收。
 
-#115已以[有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)達RUNTIME-E1，主規格限該scope列CONFORMED。原版r2／重播r2／比較r4的seq593、612完整RGB皆0px；64筆AI零分岔、全檔SAV不變。第十九章新重播r9／比較r11四項、54張RGB與全檔SAV通過；乾淨Go r5共19套件PASS，game219.956秒。前一輪只有事件61 fixture漏正式target前置，補已裝備武器、raw target及射程writer後同image乾淨重跑通過，沒有放寬閘門。97筆字串review按同簽名重綁，原始處置及數量不變。r3新原版正在驗證，#112／#115／#116尚未整章結案，16／30保持。
+#115已以[有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)達RUNTIME-E1，主規格限該scope列CONFORMED。原版r2／重播r2／比較r4的seq593、612完整RGB皆0px；64筆AI零分岔、全檔SAV不變。第十九章新重播r9／比較r11四項、54張RGB與全檔SAV通過；乾淨Go r5共19套件PASS，game219.956秒。前一輪只有事件61 fixture漏正式target前置，補已裝備武器、raw target及射程writer後同image乾淨重跑通過，沒有放寬閘門。97筆字串review按同簽名重綁，原始處置及數量不變。此有限驗收時r3新原版仍在驗證，16／30為當時統計；後文正式章收據取代這項進度。
+
+
+### 2026-10-03 第二十章四項對拍（#112／#115／#116）
+
+[正式章收據](../data/ui-traces/parity-ch20.json)使用同源第十九章酒店SAV、原版r3及重製r1；原版1095檢查點、35動作，64筆AI全消費且零順序分岔。獨立原版節點比較version2、行為、交易與畫面四項通過。31張完整RGB有25張0px，六張差異最大181px；[抽樣索引](../data/ui-traces/parity-ch20-samples.json)包含全部非零點，圖面留本機。酒店22987 bytes SAV SHA49f00f95…兩側整檔相同。
+
+先前攻擊自身無效目標seq593與後續選人seq612，現均完整RGB0px。商店計畫r3由酒店selection0按right到4，再Ctrl-F10／Enter，seq1094完整RGB0px；正式gate規則未改。原r1謝多自然陣亡及r2錯選一般店的拒收仍保留，較早「整章未驗收」是當時狀態，由本節與正式章收據取代。
+
+PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血或改金幣，seq800一次清敵56筆，沒有lock_ally_hp。不得外推自然難度通關、傷害、存活或敵方選目標。未抽樣及not_comparable節點仍未知。完整Go r5共19套件、第十九章r9／比較r11四項與54張RGB、全檔SAV通過。唯一整章統計依58與正式台帳。
+
+目前狀態表由受版控工具重生：python3 tools/fd2_parity_progress.py set 20後執行verify，再以tools/render_parity_progress.py產生首頁與狀態頁。2026-10-03輸入為[正式台帳](../data/parity-campaign-progress.json)及逐章收據，17／30章通過，範圍第4～20章。remake本切片已驗收；未抽樣原版規則及其他章oracle仍未知；六個sprite區域的相位差異是既定預算內限制。#102既有原版STOSB停止題目仍未解決。

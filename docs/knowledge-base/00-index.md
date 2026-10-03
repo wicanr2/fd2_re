@@ -381,7 +381,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第十九章事件44／45與整備名冊排列](../data/ida/fd2_ch19_modes_and_selection_pack_20261003.json)：#111，T4與持續排列通過；T10限局部E1。
 - [第十九章完整四項對拍](../data/ui-traces/parity-ch19.json)、[全部非零差異抽樣索引](../data/ui-traces/parity-ch19-samples.json)與[凱拉斯必出拒收前綴](../data/ui-traces/ch19-required-party-rejection.json)：原版圖面與SAV留本機，分級與限制依58。
 
-- [第二十章正常啟動計畫](../data/parity-plans/ch20-startup.jsonl)與[前章酒店存檔接續清冊](../data/parity-slots/ch20-manifest.json)：[#112](https://github.com/wicanr2/fd2_re/issues/112)，沿用第十九章SAV，尚待正常選人與整章驗收。
+- [第二十章正常啟動計畫](../data/parity-plans/ch20-startup.jsonl)與[前章酒店存檔接續清冊](../data/parity-slots/ch20-manifest.json)：[#112](https://github.com/wicanr2/fd2_re/issues/112)，沿用第十九章SAV；準備期清冊，正常選人與整章結果見正式章收據。
 
 - [第二十章原生起手視圖 READY](../data/ida/fd2_ch20_startup_20261003.json)：[#113](https://github.com/wicanr2/fd2_re/issues/113)，原版83筆前沿與HUD；record35位置差異另由#114追查。
 
@@ -398,6 +398,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [章比較器原版來源回歸](../data/ui-traces/parity-node-source-regression-20261003.json)：#117，第二十章兩個介面差異拒收、第十九章四項重新通過，以及舊節點欄位的證據限制。
 
 - [原生物理攻擊目標確認 CONFORMED](../data/ida/fd2_player_physical_target_confirmation_20261003.json)：#115，sub_18D8C／sub_115B6保留原始名稱與bytes，補正式確認consumer與重播按鍵邊界。
-- [第二十章商店方向鍵訂正計畫r3](../data/parity-plans/ch20-sample-r3.jsonl)：#112／#116，保留r2首回合與同源SAV，酒店選擇0以right到4，再Ctrl+F10；尚待新原版收據。
+- [第二十章商店方向鍵訂正計畫r3](../data/parity-plans/ch20-sample-r3.jsonl)：#112／#116，保留r2首回合與同源SAV，酒店選擇0以right到4，再Ctrl+F10；新原版r3及正式章收據已通過。
 
 - [第二十章物理確認有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)：#115，seq593／612完整RGB0px、原版正常取消／待機鍵序、完整Go19套件及第十九章完整回歸。整章未在此驗收。
+
+- [第二十章正式四項對拍](../data/ui-traces/parity-ch20.json)與[全部非零差異抽樣索引](../data/ui-traces/parity-ch20-samples.json)：#112／#115／#116，31張完整RGB、酒店全檔SAV、正常商店鍵序；PLAYER-E2限111／114建構槽例外，現況與未驗範圍見58。

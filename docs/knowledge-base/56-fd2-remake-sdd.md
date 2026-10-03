@@ -9259,3 +9259,12 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 [CONFORMED主證據](../data/ida/fd2_player_physical_target_confirmation_20261003.json)確認物理攻擊以targetCode0進既有0x115B6。正式確認補用同一原生閘門，來源不足或目標不合法時保留選擇、射程、HP、RNG與acted，自己的格子不再直接提交待機。正式待機仍由指令環第四項；Escape返回owner由Update與重播共用。
 
 [有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)驗同一原版r2的seq593／612完整RGB皆0px，64筆AI零分岔及全檔SAV相同。重播保留拒收時target畫面，再消費原版ESC／down／Enter，該down不重播成地圖移動。第十九章最新完整重播／四項及Go19套件通過，97筆字串處置保持。原r2商店錯選仍拒收，第二十章整章未完成。
+
+
+### 2026-10-03 第二十章四項對拍（#112／#115／#116）
+
+[正式章收據](../data/ui-traces/parity-ch20.json)使用同源第十九章酒店SAV、原版r3及重製r1；原版1095檢查點、35動作，64筆AI全消費且零順序分岔。獨立原版節點比較version2、行為、交易與畫面四項通過。31張完整RGB有25張0px，六張差異最大181px；[抽樣索引](../data/ui-traces/parity-ch20-samples.json)包含全部非零點，圖面留本機。酒店22987 bytes SAV SHA49f00f95…兩側整檔相同。
+
+先前攻擊自身無效目標seq593與後續選人seq612，現均完整RGB0px。商店計畫r3由酒店selection0按right到4，再Ctrl-F10／Enter，seq1094完整RGB0px；正式gate規則未改。原r1謝多自然陣亡及r2錯選一般店的拒收仍保留，較早「整章未驗收」是當時狀態，由本節與正式章收據取代。
+
+PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血或改金幣，seq800一次清敵56筆，沒有lock_ally_hp。不得外推自然難度通關、傷害、存活或敵方選目標。未抽樣及not_comparable節點仍未知。完整Go r5共19套件、第十九章r9／比較r11四項與54張RGB、全檔SAV通過。唯一整章統計依58與正式台帳。

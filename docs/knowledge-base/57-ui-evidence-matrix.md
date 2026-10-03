@@ -1511,3 +1511,12 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 ### 第二十章物理確認畫面（#115）
 
 [有限RUNTIME-E1收據](../data/ui-traces/ch20-physical-target-confirmation.json)保留原版r2，以補正正式0x115B6 consumer及取消／待機按鍵owner的重播r2比較。seq593目標等待與seq612後續選人兩張完整RGB皆0px，獨立節點判準一致；64筆AI及全檔酒店SAV不變。第十九章54張／四項與Go19套件回歸通過。沒有注入原版視圖或遮罩；商店錯選由#116追查，第二十章仍未新增PLAYER-E2。
+
+
+### 2026-10-03 第二十章四項對拍（#112／#115／#116）
+
+[正式章收據](../data/ui-traces/parity-ch20.json)使用同源第十九章酒店SAV、原版r3及重製r1；原版1095檢查點、35動作，64筆AI全消費且零順序分岔。獨立原版節點比較version2、行為、交易與畫面四項通過。31張完整RGB有25張0px，六張差異最大181px；[抽樣索引](../data/ui-traces/parity-ch20-samples.json)包含全部非零點，圖面留本機。酒店22987 bytes SAV SHA49f00f95…兩側整檔相同。
+
+先前攻擊自身無效目標seq593與後續選人seq612，現均完整RGB0px。商店計畫r3由酒店selection0按right到4，再Ctrl-F10／Enter，seq1094完整RGB0px；正式gate規則未改。原r1謝多自然陣亡及r2錯選一般店的拒收仍保留，較早「整章未驗收」是當時狀態，由本節與正式章收據取代。
+
+PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血或改金幣，seq800一次清敵56筆，沒有lock_ally_hp。不得外推自然難度通關、傷害、存活或敵方選目標。未抽樣及not_comparable節點仍未知。完整Go r5共19套件、第十九章r9／比較r11四項與54張RGB、全檔SAV通過。唯一整章統計依58與正式台帳。

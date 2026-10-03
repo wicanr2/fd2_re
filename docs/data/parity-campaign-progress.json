@@ -537,15 +537,33 @@
     },
     {
       "chapter": 20,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch20.json",
+      "slot_manifest": "docs/data/parity-slots/ch20-manifest.json",
+      "slot_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "date": "2026-10-03",
+      "verify": "python3 tools/verify_chapter_parity.py --chapter 20 --oracle work/parity-slot-ch20/full-original-r3 --remake work/parity-slot-ch20/full-r3-remake-r1 --slot-manifest docs/data/parity-slots/ch20-manifest.json --plan docs/data/parity-plans/ch20-sample-r3.jsonl --out work/parity-slot-ch20/full-r3-verify-r1.json",
+      "limitations": [
+        "延續第19章酒店SAV與111／114祖先建構槽政策，章內正常鍵盤抽樣後T2清敵一次；無補血或鎖HP，不宣稱自然難度、傷害、存活或敵方選目標。",
+        "31張完整RGB，25張0px，最大181px；節點version2獨立原版家族，未比較與未抽樣仍未知。"
+      ],
+      "prior_receipts": [
+        "docs/data/ui-traces/ch20-native-startup.json",
+        "docs/data/ui-traces/ch20-physical-target-confirmation.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 21,
