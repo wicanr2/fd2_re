@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,36 +110,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第24章正常起手前沿、視圖與HUD契約缺失
-
-`ch24-loadch-frontier` · 缺陷 · [#143](https://github.com/wicanr2/fd2_re/issues/143) · 仍未完成 · 要人判
-
-接續已驗收第23章非城鎮記錄SAV，SHA256 22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63。依111／114例外，保持同一槽與seed4，不新增強化、治療、金幣或道具。先核對正常整備／選人／起手與58已閉合來源，再正常抽樣章內節拍、清敵一次、戰後與實際保存。遇反證另立缺陷／RE待解，READY先於修正，不放寬四gate。
-
-怎樣算做完：['綁定同一SAV與FD2.EXE雜湊，確認原版0x338CE caller與party／group1 producer。', '先保存READY契約，再由正式LOADCH消費正常16人部署與4名group1敵人，未入場群組只保留來源。', '正常起手20筆與第2回合AI、完整RGB回歸通過，保留97筆失敗收據；更新56／57／58／工作清單。', '正常起手view(9,13)、cursor(20,19)、visible(11,6)，沿既有HUD A保存來源與B非零renderer契約；精確B值未知不得升格。']
-
-證據：`['work/parity-slot-ch24/startup-original-r1', 'work/parity-slot-ch24/startup-remake-r1.log', 'docs/data/parity-plans/ch24-startup-r1.jsonl']`
-
-### 第24章正常地圖重繪漏載FDOTHER 42舞台緩衝
-
-`ch24-native-stage-background` · 缺陷 · [#144](https://github.com/wicanr2/fd2_re/issues/144) · 仍未完成 · 要人判
-
-接續已驗收第23章非城鎮記錄SAV，SHA256 22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63。依111／114例外，保持同一槽與seed4，不新增強化、治療、金幣或道具。先核對正常整備／選人／起手與58已閉合來源，再正常抽樣章內節拍、清敵一次、戰後與實際保存。遇反證另立缺陷／RE待解，READY先於修正，不放寬四gate。
-
-怎樣算做完：['沿58既有0x10652／0x11EEE case23證據，不重解硬體driver；先建立READY契約。', '正常LOADCH／戰場初始化由固定#42與312×192來源建立舞台緩衝；旋轉遵循[0x46c]與[0x539f8]不同tick及raw latch1，正式戰後stage2至14接續相同owner。', '同SAV起手／AI／全RGB、stage生命周期與失敗原子性回歸通過；記錄phase證據限制與失敗收據。']
-
-證據：`['docs/data/ida/fd2_ch23_post_ida.txt', 'work/parity-slot-ch24/startup-verify-r4.json', 'work/parity-slot-ch24/startup-original-r1/checkpoint-0100.png']`
-
-### 第24章正常28筆戰後被exact86契約拒絕
-
-`ch24-postbattle-frontier` · 缺陷 · [#145](https://github.com/wicanr2/fd2_re/issues/145) · 仍未完成 · 要人判
-
-接續已驗收第23章非城鎮記錄SAV，SHA256 22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63。依111／114例外，保持同一槽與seed4，不新增強化、治療、金幣或道具。先核對正常整備／選人／起手與58已閉合來源，再正常抽樣章內節拍、清敵一次、戰後與實際保存。遇反證另立缺陷／RE待解，READY先於修正，不放寬四gate。
-
-怎樣算做完：['沿既有0x24C1E／0x24D22 RE-CLOSED主證據，記錄正常event54@T2後28筆原版戰後及SAV；先READY再binding。', '以既有slot_counts格式接受已驗28與歷史86 fixture；其他形狀仍拒收。', '正常28筆戰後11句、舞台2..14、同期隊伍與全檔SAV比較通過，更新56／57／58及工作清單。']
-
-證據：`['docs/data/ida/fd2_ch23_post_ida.txt', 'work/parity-slot-ch24/full-original-r3', 'work/parity-slot-ch24/full-r3-remake-r1.log']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
