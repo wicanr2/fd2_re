@@ -3,6 +3,8 @@ package figani
 import (
 	"fmt"
 	"math"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
 const (
@@ -308,4 +310,42 @@ func BuildNativeCommand6PresentationSchedule(rawSide byte, effect *Animation) (N
 		DwordTable:     dwords,
 		ByteTable:      bytes,
 	}, nil
+}
+
+// WalkNativeCommand6RNG follows sub_2A6BD: resolve each target, then consume
+// numeric jitter at every hit marker, including markers after the fifth HP
+// stage. Misses and transitions retain animation state without numeric RNG.
+func WalkNativeCommand6RNG(rng uint16, schedule NativeCommand6PresentationSchedule, rawSide byte, targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+	if targetCount <= 0 || resolve == nil {
+		return rng, fmt.Errorf("figani: command6 RNG walk needs targets and a resolver")
+	}
+	points := NativeCommand6TargetCoordinates(NativeCommand6Coordinates(36, schedule.BaseByte), 42)
+	state := NewNativeCommand6TargetState()
+	for index := 0; index < targetCount; index++ {
+		frames, err := BuildNativeCommand6TargetSequenceFromState(state, schedule, points, rawSide)
+		if err != nil {
+			return rng, err
+		}
+		next, hit, err := resolve(index, rng)
+		if err != nil {
+			return rng, err
+		}
+		rng = next
+		if hit {
+			for _, frame := range frames {
+				if frame.NumericMarker {
+					rng = fdother.NativeRNGStep(rng)
+				}
+			}
+		}
+		state = frames[len(frames)-1].Next
+		if index+1 < targetCount {
+			transition, err := BuildNativeCommand6TransitionSequence(state, schedule, points, rawSide)
+			if err != nil {
+				return rng, err
+			}
+			state = transition[len(transition)-1].Next
+		}
+	}
+	return rng, nil
 }

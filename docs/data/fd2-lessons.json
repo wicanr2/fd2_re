@@ -1345,6 +1345,21 @@
         ],
         "pattern": "nativeCommand0WorkHeight\\s*=\\s*270"
       }
+    },
+    {
+      "id": "rng-aligned-replay-needs-local-cast-receipt",
+      "date": "2026-10-04",
+      "area": "亂數交錯與對拍",
+      "rule": "重播在動作入口承接原版RNG時，另驗該動作內各目標entry及最終RNG；命中HP或AI順序一致不能單獨證明演出亂數消費正確。入口docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json的followups issue157與remake/cmd/fd2/native_command6_presentation_test.go；按validation.commands重跑，目前限已證指令6 caller。",
+      "why": "指令6 hit→miss的HP碰巧相同，但nil walk末端27990與原版32891不同；下一AI入口對齊掩蓋缺少11次numeric jitter。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/157",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_command6_presentation.go"
+        ],
+        "pattern": "figani.WalkNativeCommand6RNG"
+      }
     }
   ]
 }

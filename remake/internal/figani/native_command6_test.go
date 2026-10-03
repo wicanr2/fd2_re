@@ -1,6 +1,7 @@
 package figani
 
 import (
+	"errors"
 	"os"
 	"testing"
 
@@ -246,5 +247,34 @@ func TestOriginalFDOTHERCommand6ResourcesMatchRecoveredSignatures(t *testing.T) 
 		if err != nil || len(raw) == 0 {
 			t.Fatalf("resource 87 sample %d len=%d err=%v", sample, len(raw), err)
 		}
+	}
+}
+
+func TestNativeCommand6RNGRejectsInvalidInputBeforeResolve(t *testing.T) {
+	schedule, err := BuildNativeCommand6PresentationSchedule(0, command6TestAnimation())
+	if err != nil {
+		t.Fatal(err)
+	}
+	calls := 0
+	resolve := func(index int, rng uint16) (uint16, bool, error) { calls++; return rng, true, nil }
+	for _, tc := range []struct {
+		schedule NativeCommand6PresentationSchedule
+		count    int
+		resolve  func(int, uint16) (uint16, bool, error)
+	}{
+		{NativeCommand6PresentationSchedule{}, 1, resolve},
+		{NativeCommand6PresentationSchedule{EffectResource: 32}, 1, resolve},
+		{schedule, 0, resolve},
+		{schedule, 1, nil},
+	} {
+		final, err := WalkNativeCommand6RNG(14047, tc.schedule, 0, tc.count, tc.resolve)
+		if err == nil || final != 14047 || calls != 0 {
+			t.Fatalf("invalid preflight final=%d calls=%d err=%v", final, calls, err)
+		}
+	}
+	sentinel := errors.New("resolver failed")
+	final, err := WalkNativeCommand6RNG(14047, schedule, 0, 1, func(int, uint16) (uint16, bool, error) { return 15766, true, sentinel })
+	if !errors.Is(err, sentinel) || final != 14047 {
+		t.Fatalf("resolver failure final=%d err=%v", final, err)
 	}
 }

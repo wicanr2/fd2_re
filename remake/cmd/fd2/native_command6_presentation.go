@@ -66,15 +66,30 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
 		return errors.New("native command6 raw actor provenance unavailable")
 	}
+	effectResource := 32
+	if actor.NativeRecordByte6 == 0 {
+		effectResource = 33
+	}
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
+	if err != nil {
+		return err
+	}
+	schedule, err := figani.BuildNativeCommand6PresentationSchedule(actor.NativeRecordByte6, effect)
+	if err != nil {
+		return err
+	}
+	rngBefore := g.nativeRNGState
+	walk := func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+		return figani.WalkNativeCommand6RNG(rngBefore, schedule, actor.NativeRecordByte6, targetCount, resolve)
+	}
 	var plan *battle.NativeCommandDamagePlan
-	var err error
 	if actor.Camp == battle.Enemy {
 		var origin battle.Cell
 		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
-			plan, err = g.st.PlanNativeAICommandDamage(actor, origin, 6, g.st.NativeCommandResistances, g.nativeRNGState)
+			plan, err = g.st.PlanNativeAICommandDamageWalk(actor, origin, 6, g.st.NativeCommandResistances, rngBefore, walk)
 		}
 	} else {
-		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, 6, g.st.NativeCommandResistances, g.nativeRNGState)
+		plan, err = g.st.PlanNativeCommandDamageWalk(actor, confirmed, 6, g.st.NativeCommandResistances, rngBefore, walk)
 	}
 	if err != nil {
 		return err
@@ -144,18 +159,6 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 		if err != nil {
 			return err
 		}
-	}
-	effectResource := 32
-	if actor.NativeRecordByte6 == 0 {
-		effectResource = 33
-	}
-	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
-	if err != nil {
-		return err
-	}
-	schedule, err := figani.BuildNativeCommand6PresentationSchedule(actor.NativeRecordByte6, effect)
-	if err != nil {
-		return err
 	}
 	if err := g.requireSeparatedCommandSounds(schedule.SoundResource, 0, 1, 2, 3); err != nil {
 		return fmt.Errorf("native command6 sounds: %w", err)

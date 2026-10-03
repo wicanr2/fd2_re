@@ -353,3 +353,10 @@ docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json 的 corrections issue1
 另見 #157：0x2AEC0 命中 marker 後的 0x2AF40 抖動 RNG 與
 0x2B114 下個目標 resolve，正式指令6尚缺交錯 walk。
 缺正常命中逐次 trace，相關數值結果仍待驗，不併入 #156。
+
+ID6 2026-10-04 #157 追加勘誤
+固定 FD2.EXE／IDA9.4 LE linear 的 0x2AEC0 marker→0x2AF40 RND、
+0x2B114 下個 target resolve，由 command6-rng-original-r1 正常 trace 證實。
+目標9→11 entry14047→57339，hit→miss，末端32891。
+前段「正式指令6尚缺walk、trace待驗」已由主契約 followups issue157 取代。
+正式玩家／AI walker 達有限 RUNTIME-E1；#154負列與整章#142仍未閉合。

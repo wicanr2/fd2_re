@@ -2429,3 +2429,17 @@ Go11項與Python22項相關回歸通過。相同SAV／原版r6→fresh-full-rema
 完整Go19套件2311項通過、27項既有略過，零失敗。正常原版r6相同SAV／輸入重播至fresh-full-remake-r8通過75筆檢查點、56/56筆AI零順序分歧與runtime_error；獨立69張影像仍全部通過640px門檻，最大282px。既有第23章24張與第24章有限13張、兩份整檔SAV回歸通過。來源、命令、輸出及實作雜湊存於主契約。
 
 整份正常報告仍failed於未知原版UI、晚期計畫與保存，且這份影像報告未逐幀核對所有指令6 target影格。#156限RE-CLOSED／DATA-READY／RUNTIME-E1，不新增PLAYER-E2，正式台帳仍20/30。新發現的命中數字段RNG與下一目標resolve缺交錯，已先登記[#157](https://github.com/wicanr2/fd2_re/issues/157)，正常命中trace仍待。#142／#154／#157維持未完成，DP決定仍待使用者，現行政策維持AP+200/DP+0/DX+60。
+
+### 2026-10-04 #157：指令6數值亂數交錯 RE
+
+[指令6主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)先保留#156幾何與state補正，另核對原始sub_2A6BD的命中numeric marker→0x2AF40與下個target 0x2B114。正常r6確有指令6命中，但trace只記舞台copy，不能用其缺項判定沒有RNG。新增[受版控短計畫](../data/parity-plans/ch24-command6-rng-r1.jsonl)，同一固定fresh-policy槽、seed4及AP+200/DP+0/DX+60，正常LOAD／鍵盤至第5回合入口即停。canonical 951cb55f在6942355500..7282355700取有界trace；未清敵、未鎖HP，不重解RND內部。逐次收據與READY仍待，正式owner不先改。
+
+#157 規格審查（2026-10-04）：固定版本 caller 與正常 command6-rng-original-r1 的 159 筆 trace 一致，2141/2141 原版前綴檢查點無差異。actor20 先命中 target9，再落空 target11，目標 entry RNG 為 14047、57339，結束 32891；原 nil walk 結束 27990。主證據的 followups[issue=157].draft 已升為 READY，允許玩家／AI 共用純 RNG walker；#154 的負座標拒絕與 #142 章驗收界線維持。
+
+### 2026-10-04 #157：指令6命中亂數交錯有限 CONFORMED
+
+[主契約的 issue157](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)保存固定 EXE 雜湊、IDA9.4 LE linear caller bytes、canonical 951cb55f 的正常鍵盤 trace 與可重跑命令。159筆追蹤未截斷；相同固定槽與輸入的2141/2141原版前綴檢查點零差異。actor20 目標9命中、目標11落空：entry14047→57339、結束32891；後兩次單目標結束61045、59025。兩側純walker、後續目標12個marker、先落空與Draw交易測試通過，原nil walk的27990反例已修正。
+
+完整Go19套件2313項通過、27項既有略過，零失敗；正常r9重播75筆檢查點、56/56筆AI零順序分歧與runtime_error。actor21 seq2116的rng_before已是32891，與原版entry相符。獨立69張影像通過640px門檻；第23章24張及第24章有限13張、兩份整檔SAV回歸均通過。AI比較點會承接原版RNG，不能只憑order或HP聲稱跨整章骰序一致；本次以cast內逐目標與末端RNG補足規則證據。
+
+#157限RE-CLOSED／DATA-READY／RUNTIME-E1，未增加PLAYER-E2。正常原版數值樣本為raw side0，side1與三目標序列屬受控規則回歸。整份正常報告仍failed於未知UI、晚期計畫與保存；#142／#154維持未完成，正式章台帳20/30，AP+200/DP+0/DX+60及待決DP政策不變。#154負列仍嚴格拒收。前述#157「trace與READY仍待」是本輪較早階段，現在由本段與主證據取代。

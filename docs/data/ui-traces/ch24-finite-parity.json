@@ -1941,14 +1941,43 @@
     ],
     "open_followups": [
       142,
-      154,
-      157
+      154
     ],
     "limits": [
       "69張影像門檻與已完成行為通過，但本份沒有單独比對#156所有target影格；不稱完整逐幀parity。",
       "整章仍failed於未知原版UI、晚期計畫與保存，正式台帳20/30不變。",
-      "#154仍嚴格拒收；#157數值演出亂數交錯另行RE，這次不改RNG。",
+      "#154仍嚴格拒收；#156當輪未改RNG，#157後續補正見command6_rng_validation。",
       "固定seed4／AP+200/DP+0/DX+60建構槽；不宣稱自然傷害、存活、敵方選目標或新增PLAYER-E2。"
+    ]
+  },
+  "command6_rng_validation": {
+    "issue": 157,
+    "primary": "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+    "status": "CONFORMED",
+    "layers": [
+      "RE-CLOSED",
+      "DATA-READY",
+      "RUNTIME-E1"
+    ],
+    "chapter_completion": false,
+    "normal_replay": "work/parity-slot-ch24/fresh-full-remake-r9",
+    "full_report": "work/parity-slot-ch24/fresh-full-verify-r9.json",
+    "full_report_status": "failed",
+    "full_report_frames_gate": true,
+    "regressions": [
+      "work/parity-slot-ch23/ch24-command6-rng-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-command6-rng-verify-r1.json"
+    ],
+    "open_followups": [
+      142,
+      154
+    ],
+    "limits": [
+      "獨立整章報告仍failed：未知原版UI、晚期計畫與保存；#142仍開啟，章台帳20/30。",
+      "#154固定#32負列仍嚴格原子拒收，沒有裁切或補猜測buffer。",
+      "正常原版數值樣本為raw side0；side1及第三目標marker屬受控規則回歸，不宣稱新增PLAYER-E2。",
+      "AI入口／比較點承接原版RNG，56筆order與HP相符不單獨證明跨整章內部骰序一致；本次另以cast內逐目標與最終RNG收據驗證。",
+      "AP+200/DP+0/DX+60未變，沒有章內HP鎖定。"
     ]
   }
 }
