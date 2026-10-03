@@ -1855,5 +1855,72 @@
       154
     ],
     "correction_issue": 155
+  },
+  "deferred_frame_publication_validation": {
+    "issue": 153,
+    "primary": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json",
+    "correction_issue": 153,
+    "status": "CONFORMED",
+    "chapter_completion": false,
+    "normal_replay": "work/parity-slot-ch24/fresh-full-remake-r7",
+    "normal_exit": 0,
+    "ai_order_divergences": 0,
+    "full_report": "work/parity-slot-ch24/fresh-full-verify-r7.json",
+    "full_report_status": "failed",
+    "full_report_frames_gate": true,
+    "compared_frames": 69,
+    "pixel_budget": 640,
+    "first_divergence_fixed": [
+      {
+        "seq": 206,
+        "kind": "select",
+        "oracle": "checkpoint-0206.png",
+        "remake": "remake-0007-p28.png",
+        "phases": 88,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "120366824e9c433f5ddf94939a6d72cb794317c579c40bfd7d1164e5f43542ad",
+        "remake_sha256": "120366824e9c433f5ddf94939a6d72cb794317c579c40bfd7d1164e5f43542ad",
+        "palette_cycle_phase": 6,
+        "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+        "stage_row_offset": 6,
+        "original_stage_row_offset": 6,
+        "original_stage_work_offset": 6,
+        "stage_trace_presents": 1740,
+        "stage_trace_rotations": 1734,
+        "stage_phase_match": true,
+        "stage_state_steps": 1415355608,
+        "stage_frame_steps": 1415361044,
+        "stage_phase_source": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
+      },
+      {
+        "seq": 1867,
+        "kind": "select",
+        "oracle": "checkpoint-1867.png",
+        "remake": "remake-0044-p33.png",
+        "phases": 88,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "38ab6663553c4789ef91f285462d12e7febe361e8c20cb7f2edb194b25453be5",
+        "remake_sha256": "38ab6663553c4789ef91f285462d12e7febe361e8c20cb7f2edb194b25453be5",
+        "palette_cycle_phase": 5,
+        "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+        "stage_row_offset": 141,
+        "original_stage_row_offset": 141,
+        "original_stage_work_offset": 141,
+        "stage_trace_presents": 23192,
+        "stage_trace_rotations": 22989,
+        "stage_phase_match": true,
+        "stage_state_steps": 6075355608,
+        "stage_frame_steps": 6075357246,
+        "stage_phase_source": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
+      }
+    ],
+    "open_followups": [
+      142,
+      154
+    ]
   }
 }

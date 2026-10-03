@@ -5148,3 +5148,9 @@ IDA9.4直接指令與Capstone核對sub_2A6BD的0x2A300-byte配置，640列距得
 原版seq1840停在sub_24D22的0x24DBB，last completed VGA列82與pending work列83是不同狀態。依既有IDA的0x53AFF row rotation與0x11EB0發布證據，Go／Python新反例先失敗，READY後撤銷整段EIP拒收；有效EIP、完整trace、loader及未知來源／caller／參數拒收保留。主契約追加#155，不改寫#144／#150歷史。
 
 相同r6→fresh-full-remake-r6正常重播PASS，75筆檢查點與56筆AI零順序分歧；seq1840完整RGB 0px且PNG雜湊相同。Go11項、Python22項與既有第23章24張／第24章有限13張及兩份整檔SAV通過。獨立69張報告仍failed，早期選取RGB與未知原版UI均保留；#142／#153／#154維持未完成，不改DP或提升整章台帳。命令、來源、輸出雜湊與限制見fd2_ch24_stage_runtime_20261003.json的#155補正，現況入口仍是58。
+
+## 2026-10-04：#153 延後PNG的舞台相位消費端
+
+原版seq206與1867的frame_deferred已明示PNG在state之後發布；canonical oracle程式與原始完整copy返回證明其列分別是6／141。原先比較器讀state最後發布5／140，造成14772／9323px假差異。新反例先失敗、READY後才修Go與Python工具，未改正式繪圖流程或原版狀態。原有固定候選全RGB零差異且PNG雜湊相同。
+
+正常r7重播75筆檢查點、56筆AI零順序分歧；獨立69張影像門檻達640px門檻，整份仍failed於未知原版UI、晚期計畫及保存。Go12項、Python23項及既有第23章24張／第24章13張與兩份整檔SAV回歸通過。120秒比較逾時屬環境，360秒同命令乾淨重跑已完成。主證據與可重跑命令存於fd2_ch24_stage_runtime_20261003.json的#153，現況仍由58承載；#142／#154與DP政策不變，未新增PLAYER-E2。

@@ -7700,6 +7700,322 @@
           ]
         }
       }
+    },
+    {
+      "date": "2026-10-04",
+      "issue": "#153",
+      "status": "CONFORMED",
+      "level": "已證實",
+      "scope": "延後PNG的stage圖片相位工具契約；不改正式renderer與原版state步數",
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "address_spaces": {
+        "static": "IDA LE linear，沿用主證據",
+        "runtime": "dosgolem relocated LE linear"
+      },
+      "proof": {
+        "original_runner_commit": "9b05369bb9b81fbdaeae563bf23f9b28de07b97d",
+        "canonical_current_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+        "oracle_source": "apps/fd2/cmd/oracle/main.go：insideScreenWriter／writeFrame／capture／pendingFrame迴圈",
+        "oracle_current_source_sha256": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3",
+        "data_flow": "capture先寫state步數與frame_deferred；insideScreenWriter時pendingFrame延到CPU離開memcpy與11EB0範圍後寫PNG。讀取JSON步數的stage相位consumer因此取得舊發布，圖片已是下一次copy。",
+        "primary_reused": "docs/data/ida/fd2_ch23_post_ida.txt，0x11EB0完整copy ABI與0x53AFF記憶體旋轉",
+        "trace_sha256": "9a9d75088c82855f276880f462d347fe98d5ce57dab2f42e3307c3ff5c20ffb6",
+        "points": [
+          {
+            "seq": 206,
+            "checkpoint_eip": "0x37415",
+            "state_steps": 1415355608,
+            "frame_deferred": true,
+            "input_chain": [
+              "0x11ED9",
+              "0x18C5D",
+              "0x18978",
+              "0x394B0",
+              "0x11948",
+              "0x25DD3",
+              "0x45D91",
+              "0x3CB91"
+            ],
+            "checkpoint_sha256": "4e0d6559dfa166140a9636abdc495aae40414e65a3d168422b45157de352b8e1",
+            "first_return_after_state": {
+              "step": 1415361044,
+              "control_seq": 207,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x3",
+              "ecx": "0x0",
+              "esi": "0x5186",
+              "edi": "0x8ED",
+              "esp": "0x55608",
+              "rng_word": 5866,
+              "stack": [
+                "0x18C5D",
+                "0xA0504",
+                "0x140",
+                "0x14CCC4",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x2"
+              ]
+            },
+            "state_published_offset": 5,
+            "frame_published_offset": 6
+          },
+          {
+            "seq": 1867,
+            "checkpoint_eip": "0x373D2",
+            "state_steps": 6075355608,
+            "frame_deferred": true,
+            "input_chain": [
+              "0x11ED9",
+              "0x18C5D",
+              "0x18978",
+              "0x394B0",
+              "0x11948",
+              "0x25DD3",
+              "0x45D91",
+              "0x3CB91"
+            ],
+            "checkpoint_sha256": "ac883bd3335d01b564cdb20d7d238a34971f97987f79812da8a237aabe65277a",
+            "first_return_after_state": {
+              "step": 6075357246,
+              "control_seq": 1868,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x8",
+              "ecx": "0x0",
+              "esi": "0xFFFF8A19",
+              "edi": "0x984",
+              "esp": "0x55608",
+              "rng_word": 2449,
+              "stack": [
+                "0x18C5D",
+                "0xA0504",
+                "0x140",
+                "0x14CCC4",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x9"
+              ]
+            },
+            "state_published_offset": 140,
+            "frame_published_offset": 141
+          }
+        ],
+        "oracle_capture_source_identical_between_commits": true,
+        "canonical_seq206_receipt": {
+          "run": "work/parity-slot-ch24/command7-rng-original-r1",
+          "runner_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "checkpoint_sha256": "4e0d6559dfa166140a9636abdc495aae40414e65a3d168422b45157de352b8e1",
+          "png_sha256": "120366824e9c433f5ddf94939a6d72cb794317c579c40bfd7d1164e5f43542ad",
+          "same_state_and_png_as_r6": true
+        }
+      },
+      "spec": {
+        "status": "CONFORMED",
+        "contract": [
+          "固定EXE、完整trace與原版frame_deferred=true；只對原版runtime memcpy中、input_chain開頭0x11ED9及已證實viewport owner承接延後畫面。",
+          "找到state步數後的第一筆trace，必須是0x11EED完整312×192 VGA copy，caller等於原版input_chain的viewport返回位址；以此發布步數推導圖片的相位。",
+          "0x12103只搬stage→work，0x24DC1只旋轉stage記憶體；保留state時刻的最後VGA發布，不把memory copy當新增畫面。",
+          "保留loader、trace順序／窗口／截斷、來源重綁與完整copy參數拒收；缺邊界或未知deferred viewport拒收。",
+          "只修Go重播與Python工具的圖片phase consumer，state／units／camera／RNG仍在原排程步數。正式渲染、PNG、SAV、輸入及DP政策不改。"
+        ],
+        "acceptance": [
+          "受控反例先失敗，READY後實作。",
+          "原始seq206及1867以state與image分離的步數解析，完整RGB達既定上限。",
+          "正常重播與原版正常短路徑不跳點；第23章及第24章有限回歸通過。",
+          "其他晚期差異保留，整章仍由#142驗收。"
+        ]
+      },
+      "review": {
+        "decision": "READY",
+        "basis": [
+          "Go及Python反例均重現state發布3而deferred PNG應承接5。",
+          "原始seq206與1867都在runtime memcpy、input_chain=11ED9→18C5D，state後首筆raw trace即相同caller完整VGA viewport返回。",
+          "原版oracle的pendingFrame在離開copy範圍時直接寫PNG，先於該步EIP trace；同一步11EED正是圖片邊界。",
+          "圖片的已完成發布使用後一個步數；狀態、亂數、輸入排程仍用原步數，不增加玩家路徑注入。",
+          "stage→work的12103與stage記憶體旋轉不提升image步數；未知deferred viewport不猜下一個相位。"
+        ],
+        "limits": "尚未跑修正後完整RGB，不稱CONFORMED。",
+        "result": "有限圖片發布契約CONFORMED；完整章仍failed，#142／#154保持未完成。"
+      },
+      "validation": {
+        "go_tests": {
+          "passed": 12,
+          "failed": 0,
+          "log": "work/parity-slot-ch24/deferred-frame-go-r1.log"
+        },
+        "python_tests": {
+          "passed": 23,
+          "skipped": 0,
+          "failed": 0,
+          "log": "work/parity-slot-ch24/deferred-frame-python-r1.log"
+        },
+        "negative_before_fix": {
+          "go": "deferred viewport原取state已發布3，預期PNG已發布5，exit1",
+          "python": "stage_phase_match=False，原版3／測試5，exit1"
+        },
+        "normal_replay": {
+          "path": "work/parity-slot-ch24/fresh-full-remake-r7",
+          "exit_code": 0,
+          "checkpoints": 75,
+          "ai_entries": 56,
+          "ai_consumed": 56,
+          "ai_order_divergences": 0,
+          "runtime_errors": 0
+        },
+        "fixed_existing_candidates": [
+          {
+            "seq": 206,
+            "remake": "remake-0007-p28.png",
+            "png_sha256": "120366824e9c433f5ddf94939a6d72cb794317c579c40bfd7d1164e5f43542ad",
+            "rgb_equal": true,
+            "diff_pixels": 0,
+            "candidate_index_changed": false
+          },
+          {
+            "seq": 1867,
+            "remake": "remake-0044-p33.png",
+            "png_sha256": "38ab6663553c4789ef91f285462d12e7febe361e8c20cb7f2edb194b25453be5",
+            "rgb_equal": true,
+            "diff_pixels": 0,
+            "candidate_index_changed": false
+          }
+        ],
+        "regressions": [
+          {
+            "path": "work/parity-slot-ch23/ch24-deferred-frame-regression-verify-r1.json",
+            "status": "passed",
+            "frames": 24,
+            "gates": {
+              "behavior": true,
+              "nodes": true,
+              "transaction": true,
+              "frames": true
+            }
+          },
+          {
+            "path": "work/parity-slot-ch24/full-r5-deferred-frame-verify-r1.json",
+            "status": "passed",
+            "frames": 13,
+            "gates": {
+              "behavior": true,
+              "nodes": true,
+              "transaction": true,
+              "frames": true
+            }
+          }
+        ],
+        "whole_report": {
+          "path": "work/parity-slot-ch24/fresh-full-verify-r7.json",
+          "status": "failed",
+          "gates": {
+            "behavior": true,
+            "nodes": false,
+            "transaction": false,
+            "frames": true
+          },
+          "compared_frames": 69,
+          "pixel_budget": 640,
+          "maximum_diff_pixels": 282,
+          "frame_points": [
+            {
+              "seq": 206,
+              "kind": "select",
+              "oracle": "checkpoint-0206.png",
+              "remake": "remake-0007-p28.png",
+              "phases": 88,
+              "diff_pixels": 0,
+              "box": [],
+              "ok": true,
+              "oracle_sha256": "120366824e9c433f5ddf94939a6d72cb794317c579c40bfd7d1164e5f43542ad",
+              "remake_sha256": "120366824e9c433f5ddf94939a6d72cb794317c579c40bfd7d1164e5f43542ad",
+              "palette_cycle_phase": 6,
+              "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+              "stage_row_offset": 6,
+              "original_stage_row_offset": 6,
+              "original_stage_work_offset": 6,
+              "stage_trace_presents": 1740,
+              "stage_trace_rotations": 1734,
+              "stage_phase_match": true,
+              "stage_state_steps": 1415355608,
+              "stage_frame_steps": 1415361044,
+              "stage_phase_source": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
+            },
+            {
+              "seq": 1867,
+              "kind": "select",
+              "oracle": "checkpoint-1867.png",
+              "remake": "remake-0044-p33.png",
+              "phases": 88,
+              "diff_pixels": 0,
+              "box": [],
+              "ok": true,
+              "oracle_sha256": "38ab6663553c4789ef91f285462d12e7febe361e8c20cb7f2edb194b25453be5",
+              "remake_sha256": "38ab6663553c4789ef91f285462d12e7febe361e8c20cb7f2edb194b25453be5",
+              "palette_cycle_phase": 5,
+              "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+              "stage_row_offset": 141,
+              "original_stage_row_offset": 141,
+              "original_stage_work_offset": 141,
+              "stage_trace_presents": 23192,
+              "stage_trace_rotations": 22989,
+              "stage_phase_match": true,
+              "stage_state_steps": 6075355608,
+              "stage_frame_steps": 6075357246,
+              "stage_phase_source": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
+            }
+          ],
+          "limits": [
+            "原版seq2254 UI未知，節點維持拒收。",
+            "seq2267原版換手中途不比，規則未放寬。",
+            "原版r6正常T5敗北，晚期計畫及保存仍未達；#142不驗收。",
+            "DP政策及建構槽限制不變；不提升自然傷害、存活或整章PLAYER-E2。"
+          ]
+        },
+        "reproduction_commands": {
+          "go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'gofmt -w cmd/fd2/chapter_parity_replay_test.go; with-xvfb go test ./cmd/fd2 -run \"TestParity\" -count=1 -timeout 90s -v' > work/parity-slot-ch24/deferred-frame-go-r1.log 2>&1",
+          "python": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 60 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 40 python3 -m unittest discover -s tools -p test_verify_chapter_parity.py > work/parity-slot-ch24/deferred-frame-python-r1.log 2>&1",
+          "normal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --name fd2-ch24-r6-work-bounds-replay --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/fresh-full-original-r6 FD2_PARITY_OUT=/src/work/parity-slot-ch24/fresh-full-remake-r7 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/fresh-full-remake-r7.log 2>&1",
+          "normal_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 420 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 360 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/fresh-full-original-r6 --remake work/parity-slot-ch24/fresh-full-remake-r7 --slot-manifest docs/data/parity-slots/ch24-fresh-policy-manifest.json --plan docs/data/parity-plans/ch24-fresh-sample-r1.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/fresh-full-verify-r7.json",
+          "regression_replays": [
+            "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r4 FD2_PARITY_OUT=/src/work/parity-slot-ch23/ch24-deferred-frame-regression-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch24-deferred-frame-regression-remake-r1.log 2>&1",
+            "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/full-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch24/full-r5-deferred-frame-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/full-r5-deferred-frame-remake-r1.log 2>&1"
+          ],
+          "regression_verifies": [
+            "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/full-original-r4 --remake work/parity-slot-ch23/ch24-deferred-frame-regression-remake-r1 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-sample-r4.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/ch24-deferred-frame-regression-verify-r1.json",
+            "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/full-original-r5 --remake work/parity-slot-ch24/full-r5-deferred-frame-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-sample-r3.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/full-r5-deferred-frame-verify-r1.json"
+          ]
+        },
+        "source_sha256": {
+          "remake/cmd/fd2/chapter_parity_replay_test.go": "4b1f5c4bbe1fb9bb8c099c1bbe5ace0bd17c0ab83849933e4ac31fb6b63566fe",
+          "tools/verify_chapter_parity.py": "bbe737c2fd713beb9e762668097e84e10560669820540dae7e32a91705edefd2",
+          "tools/test_verify_chapter_parity.py": "514a75ccb48e89e7e30a2d1fe3f2c51659eefd51c20c3c24c17a3794df72f7a8"
+        },
+        "level": "tooling / finite RUNTIME-E1",
+        "verification_timeout": {
+          "first_attempt_exit": 124,
+          "cause": "120秒有界驗證工具時限",
+          "clean_rerun": "同一容器與命令只延長至360秒；terminal exit1是整章gate failed，frames=True。"
+        },
+        "artifact_sha256": {
+          "work/parity-slot-ch24/fresh-full-verify-r7.json": "ecabe2428cb56f6e4f0a306b429e0058f042f45ff84f4e5a9e45978fafa709a4",
+          "work/parity-slot-ch24/fresh-full-remake-r7.log": "0554e8d595f4c2e1c9385f344dea6690492d73907f95075132f31cf024cfcad6",
+          "work/parity-slot-ch24/deferred-frame-go-r1.log": "ba3e20fb4096c8bae1e6368022c8e6c7fcf530afb79a17e14d7441e33abd28dc",
+          "work/parity-slot-ch24/deferred-frame-python-r1.log": "2d1ce1e613f92b44e77ee1e11901d4fbee5066321a86639f2d1f39f198997de2",
+          "work/parity-slot-ch23/ch24-deferred-frame-regression-verify-r1.json": "f3c6b18ddf289cd8848cb44646e843652350a1591acc602fc13fd57dda7503d6",
+          "work/parity-slot-ch24/full-r5-deferred-frame-verify-r1.json": "2722e698b2d9709584934890103e88e1577f2676877f23eaec3f7df448f73072"
+        }
+      }
     }
   ],
   "conformed_scope": {

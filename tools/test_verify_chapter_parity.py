@@ -50,6 +50,41 @@ class PairingAndUnits(unittest.TestCase):
                          ["0x18C5D", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"]}
             self.assertTrue(check([loader, rotation, present, selection])["stage_phase_match"])
 
+    def test_deferred_viewport_uses_image_publication(self):
+        cp = {"steps": 4, "eip": "0x37415", "frame_deferred": True,
+              "input_chain": ["0x11ED9", "0x18C5D"],
+              "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}
+        loader = {"step": 1, "eip": "0x24D48", "eax": "0x1",
+                  "stack": ["0x0", "0x0", "0x10842", "0x0"]}
+        rotation = {**loader, "step": 2, "eax": "0x2",
+                    "stack": ["0x0", "0x0", "0x120B6", "0x0"]}
+        present = {"step": 3, "eip": "0x11EED",
+                   "stack": ["0x11D3B", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"]}
+        pending = {**rotation, "step": 4}
+        completed = {**present, "step": 5, "stack": ["0x18C5D"] + present["stack"][1:]}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "runner.json").write_text(json.dumps({"eip_trace_window":
+                {"from_step": 0, "to_step": 0, "max_entries": 100}}))
+            def check(rows, recorded=5):
+                (root / "eip-trace.jsonl").write_text("\n".join(map(json.dumps, rows)))
+                return vp.stage_trace_metadata(root, cp, recorded)
+            rows = [loader, rotation, present, pending, completed]
+            result = check(rows)
+            self.assertTrue(result["stage_phase_match"], result)
+            self.assertEqual(result["stage_state_steps"], 4)
+            self.assertEqual(result["stage_frame_steps"], 5)
+            self.assertFalse(check(rows[:-1])["stage_phase_match"])
+            for slot, value in [(0, "0x19D59"), (1, "0xA0000"), (3, "0x14D3E4")]:
+                stack = list(completed["stack"])
+                stack[slot] = value
+                self.assertFalse(check(rows[:-1] + [{**completed, "stack": stack}])["stage_phase_match"])
+            cp["frame_deferred"] = False
+            self.assertTrue(check(rows, 3)["stage_phase_match"])
+            cp["frame_deferred"] = True
+            cp["input_chain"] = ["0x11ED9", "0x12103"]
+            self.assertTrue(check(rows, 3)["stage_phase_match"])
+
     def test_stage_rebind_requires_completed_native_viewport_witness(self):
         evidence = json.loads((vp.ROOT / "docs/data/ida/fd2_ch24_stage_runtime_20261003.json").read_text())
         correction = next(c for c in evidence["corrections"] if c["issue"] == "#150")

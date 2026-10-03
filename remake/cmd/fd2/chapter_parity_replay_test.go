@@ -216,11 +216,55 @@ func parityCh23RowOffset(raw []byte, steps uint64) (int, error) {
 	return presented, nil
 }
 
+// #153: the oracle defers PNG publication inside a viewport copy, keeping state steps.
+// Only the first witnessed return of that same copy can advance the image boundary.
+func parityCh23FrameSteps(raw []byte, steps uint64, deferred bool, eip string, chain []string) (uint64, error) {
+	if !deferred || len(chain) == 0 || chain[0] != "0x11ED9" {
+		return steps, nil
+	}
+	if len(chain) < 2 {
+		return 0, fmt.Errorf("stage延後畫面的返回鏈缺失")
+	}
+	if chain[1] == "0x12103" { // stage-to-work memory copy preserves VGA.
+		return steps, nil
+	}
+	ip, err := strconv.ParseUint(eip, 0, 32)
+	if err != nil || ip < 0x373c4 || ip >= 0x37416 {
+		return 0, fmt.Errorf("stage延後畫面不在已證實memcpy內")
+	}
+	scanner := bufio.NewScanner(bytes.NewReader(raw))
+	for scanner.Scan() {
+		var entry struct {
+			Step  uint64   `json:"step"`
+			EIP   string   `json:"eip"`
+			Stack []string `json:"stack"`
+		}
+		if err := json.Unmarshal(scanner.Bytes(), &entry); err != nil {
+			return 0, err
+		}
+		if entry.Step <= steps {
+			continue
+		}
+		s := entry.Stack
+		if entry.EIP != "0x11EED" || len(s) < 7 || s[0] != chain[1] ||
+			s[1] != "0xA0504" || s[2] != "0x140" || s[4] != "0x1C8" || s[5] != "0x138" || s[6] != "0xC0" {
+			return 0, fmt.Errorf("stage延後畫面的完整viewport返回未知")
+		}
+		return entry.Step, nil
+	}
+	if err := scanner.Err(); err != nil {
+		return 0, err
+	}
+	return 0, fmt.Errorf("stage延後畫面缺少copy完成邊界")
+}
+
 func (r *parityReplay) oracleCh23RowOffset() (int, error) {
 	var cp struct {
-		Steps uint64 `json:"steps"`
-		SHA   string `json:"exe_sha256"`
-		EIP   string `json:"eip"`
+		Steps    uint64   `json:"steps"`
+		SHA      string   `json:"exe_sha256"`
+		EIP      string   `json:"eip"`
+		Deferred bool     `json:"frame_deferred"`
+		Chain    []string `json:"input_chain"`
 	}
 	var runner struct {
 		Window struct {
@@ -255,7 +299,11 @@ func (r *parityReplay) oracleCh23RowOffset() (int, error) {
 	if bytes.Count(bytes.TrimSpace(raw), []byte("\n"))+1 >= runner.Window.Max {
 		return 0, fmt.Errorf("stage trace已達截斷上限")
 	}
-	return parityCh23RowOffset(raw, cp.Steps)
+	frameSteps, err := parityCh23FrameSteps(raw, cp.Steps, cp.Deferred, cp.EIP, cp.Chain)
+	if err != nil {
+		return 0, err
+	}
+	return parityCh23RowOffset(raw, frameSteps)
 }
 
 // #82／#93：只承接完整RGB triplet邊界，依暫存器及全部16槽raw窗口校驗。
@@ -3044,5 +3092,76 @@ func TestParityTerminalENDUsesObservedOwnerBeforePairing(t *testing.T) {
 				t.Fatalf("mid=%v err=%v", mid, err)
 			}
 		})
+	}
+}
+
+func TestParityCh23DeferredViewportUsesFramePublication(t *testing.T) {
+	run := t.TempDir()
+	write := func(name string, value interface{}) {
+		t.Helper()
+		raw, err := json.Marshal(value)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(run, name), raw, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	cp := map[string]interface{}{"steps": 4, "eip": "0x37415", "frame_deferred": true,
+		"input_chain": []string{"0x11ED9", "0x18C5D"},
+		"exe_sha256":  "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}
+	write("checkpoint-0206.json", cp)
+	write("runner.json", map[string]interface{}{"eip_trace_window": map[string]interface{}{"from_step": 0, "to_step": 0, "max_entries": 100}})
+	entries := []map[string]interface{}{
+		{"step": 1, "eip": "0x24D48", "eax": "0x1", "stack": []string{"0x0", "0x0", "0x10842", "0x0"}},
+		{"step": 2, "eip": "0x24D48", "eax": "0x2", "stack": []string{"0x0", "0x0", "0x120B6", "0x0"}},
+		{"step": 3, "eip": "0x11EED", "stack": []string{"0x11D3B", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"}},
+		{"step": 4, "eip": "0x24D48", "eax": "0x2", "stack": []string{"0x0", "0x0", "0x120B6", "0x0"}},
+		{"step": 5, "eip": "0x11EED", "stack": []string{"0x18C5D", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"}},
+	}
+	check := func(rows []map[string]interface{}) (int, error) {
+		t.Helper()
+		var raw []byte
+		for _, row := range rows {
+			line, err := json.Marshal(row)
+			if err != nil {
+				t.Fatal(err)
+			}
+			raw = append(raw, line...)
+			raw = append(raw, '\n')
+		}
+		if err := os.WriteFile(filepath.Join(run, "eip-trace.jsonl"), raw, 0600); err != nil {
+			t.Fatal(err)
+		}
+		r := parityReplay{run: run, currentSeq: 206}
+		return r.oracleCh23RowOffset()
+	}
+	if got, err := check(entries); err != nil || got != 5 {
+		t.Fatalf("延後PNG未承接新發布：offset=%d err=%v", got, err)
+	}
+	if _, err := check(entries[:4]); err == nil {
+		t.Fatal("缺完成邊界卻接受延後PNG")
+	}
+	for _, stack := range [][]string{
+		{"0x19D59", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"},
+		{"0x18C5D", "0xA0504", "0x140", "0x14D3E4", "0x1C8", "0x138", "0xC0"},
+		{"0x18C5D", "0xA0000", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"},
+	} {
+		bad := append([]map[string]interface{}(nil), entries[:4]...)
+		bad = append(bad, map[string]interface{}{"step": 5, "eip": "0x11EED", "stack": stack})
+		if _, err := check(bad); err == nil {
+			t.Fatalf("錯誤延後copy被接受：%v", stack)
+		}
+	}
+	cp["frame_deferred"] = false
+	write("checkpoint-0206.json", cp)
+	if got, err := check(entries); err != nil || got != 3 {
+		t.Fatalf("未延後PNG的state發布被改動：%d %v", got, err)
+	}
+	cp["frame_deferred"] = true
+	cp["input_chain"] = []string{"0x11ED9", "0x12103"}
+	write("checkpoint-0206.json", cp)
+	if got, err := check(entries); err != nil || got != 3 {
+		t.Fatalf("stage→work被當VGA發布：%d %v", got, err)
 	}
 }

@@ -84,12 +84,32 @@ def stage_trace_metadata(root: Path, checkpoint: dict, recorded: object) -> dict
         trace = read_jsonl(root / "eip-trace.jsonl")
         if window["from_step"] != 0 or window["to_step"] != 0 or len(trace) >= window["max_entries"]:
             raise ValueError("追蹤不是完整且未截斷")
+        # #153: deferred PNG uses the first completed return of the same viewport copy.
+        frame_steps = checkpoint["steps"]
+        deferred = checkpoint.get("frame_deferred", False)
+        if type(deferred) is not bool:
+            raise ValueError("延後畫面旗標無效")
+        chain = checkpoint.get("input_chain", [])
+        if deferred and chain and chain[0] == "0x11ED9":
+            if len(chain) < 2:
+                raise ValueError("延後畫面的返回鏈缺失")
+            if chain[1] != "0x12103":  # stage-to-work copy preserves the published VGA.
+                if not 0x373C4 <= int(checkpoint["eip"], 16) < 0x37416:
+                    raise ValueError("延後畫面不在已證實memcpy內")
+                completed = next((row for row in trace if row["step"] > frame_steps), None)
+                if completed is None:
+                    raise ValueError("延後畫面缺少copy完成邊界")
+                stack = completed["stack"]
+                if (completed["eip"] != "0x11EED" or len(stack) < 7 or stack[0] != chain[1] or
+                        [stack[i] for i in (1, 2, 4, 5, 6)] != ["0xA0504", "0x140", "0x1C8", "0x138", "0xC0"]):
+                    raise ValueError("延後畫面的完整viewport返回未知")
+                frame_steps = completed["step"]
         offset, presented, source_buffer, previous, rotations, presents = None, None, None, 0, 0, 0
         for entry in trace:
             if entry["step"] < previous:
                 raise ValueError("追蹤順序錯誤")
             previous = entry["step"]
-            if entry["step"] > checkpoint["steps"]:
+            if entry["step"] > frame_steps:
                 break
             if entry["eip"] == "0x11EED" and offset is not None:
                 stack = entry["stack"]
@@ -132,6 +152,7 @@ def stage_trace_metadata(root: Path, checkpoint: dict, recorded: object) -> dict
         return {"stage_row_offset": recorded, "original_stage_row_offset": presented,
                 "original_stage_work_offset": offset, "stage_trace_presents": presents,
                 "stage_trace_rotations": rotations, "stage_phase_match": presented == recorded,
+                "stage_state_steps": checkpoint["steps"], "stage_frame_steps": frame_steps,
                 "stage_phase_source": source}
     except (OSError, ValueError, KeyError, IndexError, TypeError) as exc:
         return {"stage_phase_match": False, "stage_phase_error": str(exc), "stage_phase_source": source}

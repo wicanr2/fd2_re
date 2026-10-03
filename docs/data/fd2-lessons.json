@@ -1312,9 +1312,9 @@
       "id": "stage-rotation-is-not-vga-publication",
       "date": "2026-10-03",
       "area": "舞台相位與對拍",
-      "rule": "從raw trace推導舞台相位時，追蹤已完成VGA copy及其src／stride／尺寸；工作緩衝旋轉只更新work相位。完整0x11D3B viewport copy可見證新的來源指標，不假設loader後指標固定；其他caller不同src使相位未知，直到已證caller重新發布。入口docs/data/ida/fd2_ch24_stage_runtime_20261003.json、remake/cmd/fd2/chapter_parity_replay_test.go的parityCh23RowOffset與tools/verify_chapter_parity.py的stage_trace_metadata；目前限固定FD2.EXE的312x192舞台。 CPU停在sub_24D22的stage-memory旋轉時，最後完整發布仍有效；不要以0x24D22..0x24DF2整段EIP拒收。Go入口oracleCh23RowOffset與Python入口tools/verify_chapter_parity.py的stage_trace_metadata仍驗完整發布。",
-      "why": "第24章checkpoint可能位於旋轉後、VGA發布前；選人與移動也從自己的caller發布work。只追正常renderer返回會把部分畫面列偏移誤算。 2026-10-04正常T4的0x11D3B完成copy來源由0x14CCC4換成0x1920E8；固定指標假設誤拒原版收據。 2026-10-04 #155正常seq1840因範圍判定誤停；work83／published82，修後同點PNG與RGB完全相同。",
-      "evidence": "https://github.com/wicanr2/fd2_re/issues/144；docs/data/ui-traces/ch24-finite-parity.json；https://github.com/wicanr2/fd2_re/issues/150；docs/data/ida/fd2_ch24_stage_runtime_20261003.json #155",
+      "rule": "從raw trace推導舞台相位時，追蹤已完成VGA copy及其src／stride／尺寸；工作緩衝旋轉只更新work相位。完整0x11D3B viewport copy可見證新的來源指標，不假設loader後指標固定；其他caller不同src使相位未知，直到已證caller重新發布。入口docs/data/ida/fd2_ch24_stage_runtime_20261003.json、remake/cmd/fd2/chapter_parity_replay_test.go的parityCh23RowOffset與tools/verify_chapter_parity.py的stage_trace_metadata；目前限固定FD2.EXE的312x192舞台。 CPU停在sub_24D22的stage-memory旋轉時，最後完整發布仍有效；不要以0x24D22..0x24DF2整段EIP拒收。Go入口oracleCh23RowOffset與Python入口tools/verify_chapter_parity.py的stage_trace_metadata仍驗完整發布。 原版frame_deferred的PNG與state步數分開；圖片相位只承接同一viewport返回鏈的首筆完整copy邊界，不拿state的舊發布對齊新PNG。入口parityCh23FrameSteps與stage_trace_metadata，限已證實0x11ED9返回鏈及完整VGA參數。",
+      "why": "第24章checkpoint可能位於旋轉後、VGA發布前；選人與移動也從自己的caller發布work。只追正常renderer返回會把部分畫面列偏移誤算。 2026-10-04正常T4的0x11D3B完成copy來源由0x14CCC4換成0x1920E8；固定指標假設誤拒原版收據。 2026-10-04 #155正常seq1840因範圍判定誤停；work83／published82，修後同點PNG與RGB完全相同。 #153的seq206／1867因延後PNG套用state相位產生假差異；按原始發布邊界修正後兩個原候選圖逐位元相同。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/144；docs/data/ui-traces/ch24-finite-parity.json；https://github.com/wicanr2/fd2_re/issues/150；docs/data/ida/fd2_ch24_stage_runtime_20261003.json #155；https://github.com/wicanr2/fd2_re/issues/153",
       "guard": {
         "kind": "present",
         "paths": [

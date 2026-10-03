@@ -2397,3 +2397,17 @@ READY限定完整0x11D3B copy可重新綁定source並發布當時raw offset；�
 Go11項與Python22項相關回歸通過。相同SAV／原版r6→fresh-full-remake-r6可完成全部既有動作，75筆檢查點、56/56筆AI入口、零順序分歧與runtime_error；seq1840兩側列82且全RGB零差異，PNG SHA-256相同。第23章24張與整檔SAV、第24章既有有限13張與整檔SAV回歸通過。
 
 獨立69張完整報告仍failed：已完成行為通過，seq2267換手中途不比；seq2254原版UI未知而節點拒收，晚期計畫與保存未達，#153 seq206／1867的RGB差異仍保留。#155限工具與有限RUNTIME-E1，不提升整章、自然傷害、存活或新的PLAYER-E2。#142／#153／#154維持未完成，固定DP政策及正式20/30章台帳不變。
+
+### 2026-10-04 #153：延後PNG與狀態步數的舞台相位 DRAFT
+
+原版seq206／1867已明示frame_deferred，canonical oracle先按排程記錄狀態，再在退出VGA copy時寫PNG；狀態與圖片不是同一個步數。比較器按state取得舊發布列5／140，原始trace的下一筆完整copy則發布6／141。沿用[stage主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)追加#153，限定原始memcpy與viewport返回鏈，分開state及已完成PNG的發布邊界。正式繪圖流程尚無反證，不以猜測修改素材。反例與READY審查後才修工具，完整章仍由#142驗收。
+
+#153規格審查：Go與Python延後發布反例均失敗。兩個正常選取點的state後首筆raw trace均為同一呼叫者完整VGA copy返回，canonical oracle先寫PNG再記該步trace，沒有跨過下一次stage rotation。按此圖片邊界推導phase並保留狀態步數，達READY；尚不宣稱完整RGB通過。
+
+### 2026-10-04 #153：延後圖片發布相位有限 CONFORMED
+
+[stage主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)追加#153的原版JSON、raw trace、canonical oracle資料流與READY審查。原版狀態停在memcpy，PNG已延到同一viewport copy完成才寫；Go與Python分開原排程狀態步數及同一呼叫者完整返回的圖片步數。seq206承接6、seq1867承接141，沒有搜尋stage相位、改PNG、素材或正式繪圖流程。stage→work／記憶體旋轉不當成VGA發布；缺邊界、錯caller／來源／參數與截斷仍拒收。現行canonical 951cb55f正常短路徑的seq206 JSON及PNG與r6同源收據逐位元相同，兩個commit的oracle capture程式也相同。
+
+相同SAV／正常r6輸入→fresh-full-remake-r7通過75筆檢查點，56/56筆AI入口、零順序分歧與runtime_error。兩個原有固定候選seq206／1867全RGB為0px，PNG雜湊相同；獨立69張影像門檻全部通過既定640px，未改門檻或遮罩。Go12項、Python23項，以及第23章24張／第24章既有有限13張與兩份整檔SAV回歸通過。首輪完整比較因120秒工具時限退出；同一容器、同一命令延至360秒乾淨重跑後取得終端報告，這是驗證環境事件。
+
+整份報告仍failed：已完成行為通過；seq2254原版介面未知，節點拒收；seq2267換手中途按既有規則不比。原版正常T5敗北、晚期計畫與保存未達仍由#142處理，#154負列維持未完成。限工具與有限RUNTIME-E1，DP政策及正式20/30章台帳不變。前述#150／#155的RGB失敗收據留作歷史，不能再單獨當作現況缺陷。
