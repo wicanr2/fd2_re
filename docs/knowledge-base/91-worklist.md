@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -111,25 +111,25 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第二十一章戰後城鎮販售角色／道具owner無法建立
+### 第二十二章必出希爾法與合法選人來源缺口
 
-`ch21-post-town-sell-owner` · 缺陷 · [#121](https://github.com/wicanr2/fd2_re/issues/121) · 仍未完成 · 要人判
+`ch22-required-party-silfa` · 缺陷 · [#124](https://github.com/wicanr2/fd2_re/issues/124) · 仍未完成 · 要人判
 
-#118原版full-original-r1完整退出0，987檢查點與34動作，正常販售seq822金幣2102→2109。重製full-r1-remake-r1在shop_sell無法建立正式sell roster／item owner，未到酒店存檔；診斷行為與25張RGB通過，節點／交易拒收。先確認正式城鎮路由、角色／道具owner與原版呼叫鏈，RE→READY後修正實際缺口。
+#123同源第二十一章SAV正常LOAD／首15候選選人，原版seq71的0x31E65提示「本章希爾法必須出場！」，seq72正常Enter返回城鎮，尚未開戰。正式preparation_ch22沒有required_party_identities，先核對原版raw21 caller、身份、名單與消費端，再建立READY與合法鍵序。保留原r1拒收收據，不改SAV或注入。
 
-怎樣算做完：['同一原版收據及SAV重播正常販售，不以測試專用入口或狀態注入繞過正式owner。', '原版／重製四項及酒店全檔SAV通過；相關Go、第二十章回歸通過。', '固定輸入、原始失敗、證據分級與consumer記錄於主證據及58。']
+怎樣算做完：['固定EXE、IDA9.4原始位址／bytes、writer及required consumer，查證希爾法身份與raw21必出／排序政策，形成READY。', '正式typed data與正常鍵盤拒收／合法起手驗證，沒有猜補或存檔注入。', '相關Go與第二十一章回歸通過，同步56／57／58及索引；整章由#123驗收。']
 
-證據：`['docs/data/parity-plans/ch21-sample-r1.jsonl', 'docs/data/parity-slots/ch21-manifest.json', 'work/parity-slot-ch21/full-r1-remake-r1.log', 'work/parity-slot-ch21/full-r1-verify-r1.json']`
+證據：`['docs/data/parity-plans/ch22-startup-r1.jsonl', 'docs/data/parity-slots/ch22-manifest.json', 'work/parity-slot-ch22/startup-original-r1/checkpoint-0071.json', 'docs/data/ida/fd2_ch21_required_character_20261003.json']`
 
-### 第二十一章戰後持續隊伍X座標與原版相差六格
+### 第二十二章合法起手缺原生視圖與HUD來源
 
-`ch21-post-layout-x-persistence` · 缺陷 · [#122](https://github.com/wicanr2/fd2_re/issues/122) · 仍未完成 · 要人判
+`ch22-native-startup-hud` · 缺陷 · [#126](https://github.com/wicanr2/fd2_re/issues/126) · 仍未完成 · 要人判
 
-#118同一原版full-original-r1及修正JOIN後重播r3，行為、節點與30張RGB通過；金幣全相同，酒店SAV只有18筆record+0 X相差6及checksum。已核對SAV roster先0xA00後metadata0x28，完整差異在work/parity-slot-ch21/full-r3-save-differences.json。先定位0x2415B配置與0x24324同步間的原版writer／consumer，對既有閉合主證據追加矛盾及取代關係。不得直接加6或注入座標讓SAV通過。
+#123／#124正常選入希爾法後原版r2已進戰場：66筆、record1 identity24，camera16,27／cursor22,32／visible6,5／range1。重製相同SAV與鍵序完成66筆建構及排序，但battle_start正式完整RGB因HUD input unavailable拒收。正式battle_ch22缺原生視圖／HUD來源；先沿既有ch21_pre LOADCH→PAN→ACT67→text0→runtime0 focus caller核對，READY後補正式typed data，不注入oracle視圖。
 
-怎樣算做完：['固定同源原版收據與SAV，解明原始writer／consumer、條件與位址空間，建立READY後才修正式typed路徑。', '第二十一章四項及酒店全檔SAV完全相同；相關Go及第二十章回歸通過。', '同步58、56、57及追加歷史勘誤，保留舊固定layout主證據。']
+怎樣算做完：['固定EXE、原版同源起手及shared caller／consumer，形成原生視圖與HUD READY契約，raw gate精確byte未知保留限制。', '正式資料後正常LOAD／選人／起手66筆、完整RGB有限抽樣通過，不以測試橋接或擷取後注入替代。', '相關Go與第二十一章四項／全檔SAV回歸，同步56／57／58及索引；整章由#123驗收。']
 
-證據：`['docs/data/parity-plans/ch21-sample-r1.jsonl', 'docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt', 'work/parity-slot-ch21/full-r1-verify-r3.json', 'work/parity-slot-ch21/full-r3-save-differences.json']`
+證據：`['docs/data/parity-slots/ch22-manifest.json', 'docs/data/parity-plans/ch22-startup-r2.jsonl', 'work/parity-slot-ch22/startup-original-r2/checkpoint-0103.json', 'work/parity-slot-ch22/startup-r2-remake-r1.log', 'docs/data/ida/fd2_ch21_startup_20261003.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -171,15 +171,27 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
-### 第二十一章整章原版／重製對拍與收尾
+### 第二十二章整章原版／重製對拍與收尾
 
-`ch21-full-chapter-parity` · 工作 · [#118](https://github.com/wicanr2/fd2_re/issues/118) · 仍未完成 · 要人判
+`ch22-full-chapter-parity` · 工作 · [#123](https://github.com/wicanr2/fd2_re/issues/123) · 仍未完成 · 要人判
 
-依111／114既定政策接續第二十章正式原版酒店SAV，零額外升級、強化、治療或改金幣。同槽固定seed、正常鍵盤輸入，驗收起手、章內抽樣與事件、戰後、城鎮、交易、酒店SAV及支援的神秘商店。先查58避免重做；缺陷先另開Issue，RE→READY後修正。
+接續第二十一章正式酒店SAV22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd，保留祖先111／114政策，不追加升級、強化、治療、金幣或道具。先查58／00既有證據與可編輯資料，正常LOAD、整備、章內鍵盤輸入、抽樣正常戰鬥節拍後清敵一次，再驗戰後、交易與酒店存檔。新缺陷另登Issue並依RE→READY修正。
 
-怎樣算做完：['dosgolem受版控oracle原版收據與重製重播可重生；行為、節點、完整RGB、交易及全檔SAV四項通過。', '章收據如實記錄建構槽、政策值、seed、一次清敵與所有驗證限制，不以局部Go測試宣稱整章。', '相關Go及第二十章四項回歸通過；同步台帳、58、56、57及首頁。']
+已閉合raw ch21 post 0x244B6→共享尾端0x239AC指向preparation_ch23，原版沒有戰後城鎮。先保留起點城鎮的交易／酒店抽樣，再以正常戰後記錄提示寫出的SAV驗證下一章邊界；不創造town_ch23。依據docs/data/ida/fd2_ch21_post_ida.txt與fd2_ch21_post_native_dialogue.md。
 
-證據：`['docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md', 'docs/data/ui-traces/parity-ch20.json']`
+怎樣算做完：['固定FD2.EXE與dosgolem版本、同源SAV、受版控計畫與清冊；正常起手及章內至戰後路徑可重跑。', '四項對拍與原版實際保存邊界全檔SAV相同；有城鎮時酒店抽樣，戰後直接整備時以正常記錄提示存檔。相關Go與上一章回歸通過。', '同步56／57／58、索引、正式章台帳與生成現況，保存原始拒收及PLAYER-E2例外限制。']
+
+證據：`['docs/data/ui-traces/parity-ch21.json', 'docs/data/parity-slots/ch21-manifest.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/goal/114-goal-boosted-slot-and-ch09-parity-20260917.md']`
+
+### 章對拍工具補戰後整備記錄提示存檔收據
+
+`parity-preparation-record-save` · 工作 · [#125](https://github.com/wicanr2/fd2_re/issues/125) · 仍未完成 · 要人判
+
+#123第二十二章raw ch21 post直接進preparation_ch23，無戰後城鎮。現有dosgolem_oracle_drive.py與章重播／verifier只支援town_save，不能完整驗正常記錄提示所寫的FD2.SAV。先查固定EXE記錄提示owner、正常鍵序與DOS AH=40h寫入，再建立READY；擴充受版控既有driver與replay／verifier，不另造原版執行器、不用state注入替代保存。酒店路徑維持。
+
+怎樣算做完：['固定EXE、記錄提示caller／存檔writer、正常原版鍵序與成功DOS寫入證據先形成READY。', '既有driver新增獨立整備保存動作；原版與重製需觀測完整SAV並逐byte比對，計畫缺保存或缺成功write即拒收。', '節點判準使用獨立原版input_chain，對未知owner拒收；章21酒店對拍與相關工具／Go回歸通過。']
+
+證據：`['docs/data/ida/fd2_ch21_post_ida.txt', 'docs/data/ida/fd2_ch21_post_native_dialogue.md', 'tools/dosgolem_oracle_drive.py', 'tools/verify_chapter_parity.py', 'remake/cmd/fd2/native_preparation_input.go']`
 
 ## release — 發行、平台與封包
 

@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_required_party_caller_spec",
+  "date": "2026-10-03",
+  "issue": 124,
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "scope": "玩家第22章raw21選人額滿後身份24必出與321C8完整持續record前置。",
+  "source_export": {
+    "path": "work/parity-slot-ch22/ch22-required-caller-r1.json",
+    "sha256": "9e146c138644a671846c628f3c469d7c4bceba1851a6e5af2adeea8a27ee4dcf"
+  },
+  "canonical_reuse": [
+    {
+      "path": "docs/data/ida/fd2_ch21_required_character_20261003.json",
+      "sha256": "4f697ee10775ab057881a00f1ea0b462a53d6ae930de1e8024239311cf07dc05",
+      "scope": "31DBE selected +8 checker／31E65拒收；321C8穩定移完整0x50到record1，record0固定；不重解callee。"
+    }
+  ],
+  "original_rejection": {
+    "run": "work/parity-slot-ch22/startup-original-r1",
+    "seq": 71,
+    "input_chain": [
+      "0x16CF8",
+      "0x31E65",
+      "0x31CCF",
+      "0x2D170"
+    ],
+    "text": "本章希爾法必須出場！",
+    "return_town_seq": 72,
+    "termination": "原版已拒收且回城鎮後停止本輪容器，避免後續await無效等待；exit143，不是完整成功收據。"
+  },
+  "name_evidence": {
+    "path": "remake/generated-assets/fd2-original-b97caf22/text/FDTXT_000/resource.json",
+    "source_index": 25,
+    "identity": 24,
+    "text": "希爾法",
+    "source": {
+      "file": "FDTXT.DAT",
+      "resource": 0,
+      "size": 120502,
+      "md5": "fe5c487ce4313485f1da9d48d35b05f9",
+      "sha256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69",
+      "raw_size": 7636
+    },
+    "resource_json_sha256": "01bde5a75f847b66d269a8572f6e0733930346c15dd072569e5a6141d07a38d6"
+  },
+  "functions": [
+    {
+      "original_name": "sub_318AD",
+      "address": "0x318ad",
+      "end": "0x31dbe",
+      "chunks": [
+        {
+          "start": "0x318ad",
+          "end": "0x31dbe"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x31c97",
+          "bytes": "833d033c050015",
+          "original": "cmp     dword_53C03, 15h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31c97",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31c9e",
+          "bytes": "7409",
+          "original": "jz      short loc_31CA9",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31c9e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31ca0",
+          "bytes": "833d033c050016",
+          "original": "cmp     dword_53C03, 16h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31ca0",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31ca7",
+          "bytes": "7504",
+          "original": "jnz     short loc_31CAD",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31ca7",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31ca9",
+          "bytes": "6a18",
+          "original": "push    18h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31ca9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31cab",
+          "bytes": "eb1c",
+          "original": "jmp     short loc_31CC9",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31cab",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31cc9",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31cc9",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31cca",
+          "bytes": "e8ef000000",
+          "original": "call    sub_31DBE",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31cca",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31ccf",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31ccf",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31cd2",
+          "bytes": "89c7",
+          "original": "mov     edi, eax",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31cd2",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31cd4",
+          "bytes": "83ff01",
+          "original": "cmp     edi, 1",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31cd4",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31cd7",
+          "bytes": "0f85d5000000",
+          "original": "jnz     loc_31DB2",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31cd7",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d09",
+          "bytes": "833d033c050015",
+          "original": "cmp     dword_53C03, 15h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d09",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d10",
+          "bytes": "7409",
+          "original": "jz      short loc_31D1B",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d10",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d12",
+          "bytes": "833d033c050016",
+          "original": "cmp     dword_53C03, 16h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d12",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d19",
+          "bytes": "7504",
+          "original": "jnz     short loc_31D1F",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d19",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d1b",
+          "bytes": "6a18",
+          "original": "push    18h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d1b",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d1d",
+          "bytes": "eb15",
+          "original": "jmp     short loc_31D34",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d1d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d1f",
+          "bytes": "833d033c050019",
+          "original": "cmp     dword_53C03, 19h",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d1f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d26",
+          "bytes": "7514",
+          "original": "jnz     short loc_31D3C",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d26",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d28",
+          "bytes": "6a09",
+          "original": "push    9",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d28",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d2a",
+          "bytes": "e899040000",
+          "original": "call    sub_321C8",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d2a",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d2f",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d2f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d32",
+          "bytes": "6a1d",
+          "original": "push    1Dh",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d32",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d34",
+          "bytes": "e88f040000",
+          "original": "call    sub_321C8",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d34",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d39",
+          "bytes": "83c404",
+          "original": "add     esp, 4",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d39",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x31d3c",
+          "bytes": "6a4b",
+          "original": "push    4Bh ; 'K'",
+          "semantic": "原始定位保留；語意依本檔claims分級",
+          "level": "unknown",
+          "warning": "單筆指令不自動命名遊戲語意",
+          "source": "FD2.EXE IDA LE 0x31d3c",
+          "semantic_annotations": []
+        }
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "level": "已證實",
+      "original_location": "IDA LE 0x31C97→0x31CA9→0x31CC9→0x31CCA",
+      "semantic": "raw21分支push18h即24，額滿後由31DBE檢查selected record+8。",
+      "source": "本檔caller原bytes與原版seq71提示。"
+    },
+    {
+      "level": "已證實",
+      "original_location": "IDA LE 0x31D09→0x31D1B→0x31D34",
+      "semantic": "raw21合法後push24呼叫321C8，完整record移到1；必出與排序各自明示。",
+      "source": "本檔caller原bytes與已閉合321C8主證據。"
+    }
+  ],
+  "typed_contract": {
+    "node": "preparation_ch22",
+    "required_party_identities": [
+      24
+    ],
+    "preparation_front_identities": [
+      24
+    ],
+    "producer": "tools/gen_campaign.py正常城鎮整備資料；正式可編輯campaign_full及canonical exporter",
+    "consumer": "既有nativePreparationRequiredMissing／frontNativePreparationRequiredRoster，先320FC穩定分組、必出檢查，合法後排序，再最終確認。",
+    "fail_closed": "缺身份、不唯一或未選中即拒收；不改HP、金幣、物品或正式亂數政策。"
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "level": "RUNTIME-E1",
+    "basis": "固定EXE直接raw21 caller、同源原版拒收、固定名字索引及既有callee主證據。",
+    "scope": "正常必出拒收與合法起手；章22戰鬥／戰後未驗收。"
+  },
+  "limits": [
+    "已驗合法起手與原生視圖；章內、戰後與保存仍由#123／#125驗收。",
+    "raw22同分支另caller尚未接入該章runtime，本切片只改玩家第22章。"
+  ],
+  "verification_result": {
+    "receipt": "docs/data/ui-traces/ch22-native-startup.json",
+    "legal": "work/parity-slot-ch22/startup-r2-verify-r1.json",
+    "rejection": "work/parity-slot-ch22/startup-r1-verify-r1.json",
+    "related_go": "work/parity-slot-ch22/chapter22-startup-related-r1.log",
+    "prior_ch21": "work/parity-slot-ch22/prior-ch21-verify-r1.json"
+  }
+}

@@ -423,3 +423,13 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第二十一章戰後固定配置表有限CONFORMED訂正](../data/ida/fd2_ch21_post_layout_tables_20261003.json)：#122，IDA與固定EXE75-byte三表一致，X起點21；保留舊證據並說明取代範圍，整檔SAV通過。
 
 - [第二十一章正式四項對拍](../data/ui-traces/parity-ch21.json)與[全部非零抽樣索引](../data/ui-traces/parity-ch21-samples.json)：#118／#121／#122，30張完整RGB、酒店全檔SAV及原版不足臂；PLAYER-E2限111／114例外，現況與限制見58。
+
+- [第二十二章接續清冊](../data/parity-slots/ch22-manifest.json)與[首15候選拒收計畫](../data/parity-plans/ch22-startup-r1.jsonl)：#123，同源第二十一章正式SAV，不追加強化或治療；原r1拒收保留，合法起手另見r2有限收據，後續記錄邊界待驗。
+
+- [第二十二章必出希爾法與持續record排序有限CONFORMED](../data/ida/fd2_ch22_required_character_20261003.json)：#124，raw21兩個caller均push24，固定名字索引25；沿用已閉合checker／321C8，合法起手五點完整RGB0px。
+
+- [第二十二章合法選入希爾法起手計畫](../data/parity-plans/ch22-startup-r2.jsonl)：#124，鍵序依同源SAV解碼身份定位，原版及重製有限起手五點完整RGB0px。
+
+- [第二十二章原生起手有限CONFORMED](../data/ida/fd2_ch22_startup_20261003.json)：#126，3367E新caller與shared runtime0 focus，66筆／camera16,27；raw HUD B精確值保留限制。
+
+- [第二十二章正常起手與必出拒收有限收據](../data/ui-traces/ch22-native-startup.json)：#124／#126，66筆前沿、63筆active快照；合法與拒收各五點完整RGB0px，最高RUNTIME-E1，章內與保存待#123／#125。

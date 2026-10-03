@@ -776,13 +776,16 @@ def build_campaign(
                 "prompt": "要記錄戰況嗎？",
                 "next": next_story_id,
             }
-            # #108／#119：raw chapter18的31C86與chapter20的31C93
-            # →31DBE，額滿後檢查selected record +8。其餘章未在此審查。
+            # #108／#119／#124：raw18／20／21 caller→31DBE，
+            # 額滿後檢查selected record +8；排序依各章321C8 caller。
             if intermission_cid == "19":
                 nodes[preparation_id]["required_party_identities"] = [16]
             elif intermission_cid == "21":
                 nodes[preparation_id]["required_party_identities"] = [21]
                 nodes[preparation_id]["preparation_front_identities"] = [21]
+            elif intermission_cid == "22":
+                nodes[preparation_id]["required_party_identities"] = [24]
+                nodes[preparation_id]["preparation_front_identities"] = [24]
         shop_node_ids: list[str] = []
         if normal_rows:
             for i, s in enumerate(normal_rows):

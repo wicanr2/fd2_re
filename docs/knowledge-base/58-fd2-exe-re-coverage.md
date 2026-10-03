@@ -2157,3 +2157,17 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 本章沿用第二十章SAV與祖先政策，未再升級、治療、強化或改金幣。製作成功臂只有本機測試；原版raw HUD B、未序列化死亡slots及未抽樣畫面仍是證據限制，不阻塞本章既定gate。六個局部動畫／遮擋差異是可選polish，不宣稱逐幀相位已證實。
 
 本輪以tools/fd2_parity_progress.py verify、tools/fd2_worklist.py render從正式台帳重生統計，輸入docs/data/parity-campaign-progress.json，日期2026-10-03。現為18／30，第4至21章passed；其餘章與Issue仍未完成。上文17／30是當時快照，現況由本節及台帳取代。
+
+### 2026-10-03 第二十二章接續準備（#123）
+
+[清冊](../data/parity-slots/ch22-manifest.json)沿用第二十一章酒店SAV22399b54…，25筆名冊，沒有追加升級／強化／治療／道具／金幣。[起手計畫](../data/parity-plans/ch22-startup-r1.jsonl)以正常LOAD、出口與選人驗證原版前沿。既有raw ch21 post主證據指向preparation_ch23，沒有戰後城鎮；後續保存依實際正常輸入，尚未通過章gate。正式台帳維持18／30。
+
+#124的[READY主證據](../data/ida/fd2_ch22_required_character_20261003.json)查證raw21必出與排序均為identity24希爾法：31CA9→31CCA checker、31D1B→31D34完整record前置；名字資源index25與原版seq71一致。原r1首15候選缺24，Enter返回城鎮；已保留拒收後停止記錄。正常來源在SAV明文persistent23、候選index22，首14人後從index14按right八次再選入；尚未驗合法起手，不提升章台帳。
+
+#124原版合法r2已到66筆、record1 identity24希爾法，camera16,27／cursor22,32／visible6,5／range1。重製r1因HUD來源缺項拒收，另登#126；新[起手READY](../data/ida/fd2_ch22_startup_20261003.json)固定3367E LOADCH／PAN16,28／ACT67與shared runtime0 focus。B=1僅適配已知nonzero顯示，raw B精確值未知，不由畫面升級。
+
+### 第二十二章起手有限CONFORMED（#124／#126）
+
+[有限主收據](../data/ui-traces/ch22-native-startup.json)取代本輪READY狀態。原版r2正常選入身份24，record1希爾法、record2約拿，66筆前沿；合法與拒收各五點完整RGB0px。原生view與nonzero HUD來自正式campaign／canonical，未以重播注入來源。相關三套件與第二十一章四項／30張／全檔SAV回歸通過。三筆HP0及raw B限制分列，#123整章與#125非城鎮記錄提示保存仍未完成，台帳18／30不變。
+
+#125已登記直接整備保存工具能力，原版2CAD7的2CC71問句、2CCB6→30012選槽存檔後才2CCD6選人。caller bytes保存在本輪工作輸出；尚未形成完整正常保存收據，不解釋為戰後城鎮，也不提升章gate。

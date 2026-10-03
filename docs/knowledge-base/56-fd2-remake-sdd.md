@@ -9282,3 +9282,9 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 [固定表訂正](../data/ida/fd2_ch21_post_layout_tables_20261003.json)以IDA loader與LE原檔同一75-byte否定舊X表抄錄，首值應為21。233C6直接寫入表值，可編輯layout同步修正，沒有新增座標加6規則。舊研究筆記保留並追加勘誤，Y、pose及slot25特例不變。
 
 兩份規格限已驗範圍列CONFORMED。天空之鑰材料不足臂有原版章收據，成功臂只經本機相關測試。第二十章在最終資料上重播四項與全檔SAV通過；相關三套件通過。先前19套件回歸對應49bf984f程式，後續修改為資料與測試，驗證範圍依收據分列。較早「第二十一章未驗收」由本節取代，統計依58及正式台帳。
+
+### 2026-10-03 第二十二章必出與原生起手（#124／#126）
+
+[有限收據](../data/ui-traces/ch22-native-startup.json)驗證希爾法身份24的必出與完整record前置。31CA9→31CCA與31D1B→31D34各由required_party_identities、preparation_front_identities明示，沿用已閉合checker／321C8；不自動套用未審章數。3367E新caller LOADCH／PAN16,28／ACT67接shared runtime0 focus，正式view／HUD由campaign與canonical資料消費。
+
+兩份主規格限起手列CONFORMED，合法與拒收各五點完整RGB0px。HUD B精確值未知，三筆HP0中途raw欄位未驗；相關三套件與第二十一章四項／全檔SAV通過。本段最高RUNTIME-E1，第二十二章仍需#123／#125章內與正常記錄提示保存。

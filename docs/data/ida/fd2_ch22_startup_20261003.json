@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_native_startup_caller_spec",
+  "date": "2026-10-03",
+  "issues": [
+    123,
+    124,
+    126
+  ],
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "canonical_evidence": [
+    {
+      "file": "docs/data/ida/fd2_ch21_startup_20261003.json",
+      "sha256": "b8369cfa212962231a73e346b35d4801788b7ffc2eb2e714498c9219f6d6cac1",
+      "scope": "shared 33440 ACT／reset→3320C text0→33142 runtime0 focus→原生HUD consumer；raw B只知nonzero，不重解callee。"
+    },
+    {
+      "file": "work/parity-slot-ch22/ch22-pre-focus-r1.json",
+      "sha256": "47160046ca8b7b3233bf67b0e2c216726346f3bab08049d4a265fb640bc96ad4",
+      "scope": "raw21 sub_3367E新caller完整bytes。"
+    }
+  ],
+  "functions": [
+    {
+      "requested_address": "0x3367e",
+      "address": "0x3367e",
+      "end": "0x336a0",
+      "original_name": "sub_3367E",
+      "chunks": [
+        {
+          "start": "0x3367e",
+          "end": "0x336a0"
+        }
+      ],
+      "instructions": [
+        {
+          "address": "0x3367e",
+          "bytes": "6828000000",
+          "original": "push    28h ; '('",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3367e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33683",
+          "bytes": "e84f360000",
+          "original": "call    sub_36CD7",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33683",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33688",
+          "bytes": "e84dcffeff",
+          "original": "call    sub_205DA",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33688",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3368d",
+          "bytes": "6a1c",
+          "original": "push    1Ch",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3368d",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3368f",
+          "bytes": "6a10",
+          "original": "push    10h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3368f",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33691",
+          "bytes": "e847fffdff",
+          "original": "call    sub_135DD",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33691",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33696",
+          "bytes": "83c408",
+          "original": "add     esp, 8",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33696",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x33699",
+          "bytes": "6a43",
+          "original": "push    43h ; 'C'",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x33699",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x3369b",
+          "bytes": "e9a0fdffff",
+          "original": "jmp     loc_33440",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x3369b",
+          "semantic_annotations": []
+        }
+      ],
+      "xrefs": [
+        "0x25e3a",
+        "0x25f10",
+        "0x260f5"
+      ],
+      "semantic_annotations": [],
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x3367e"
+    }
+  ],
+  "claims": [
+    {
+      "original_location": "IDA LE 0x33688／0x33691／0x33699→0x3369B",
+      "level": "已證實",
+      "semantic": "新caller LOADCH後PAN16,28，再push ACT67跳共享33440；後續focus runtime0。",
+      "evidence": "本檔原始caller與既有shared主證據。"
+    },
+    {
+      "original_location": "dosgolem startup-original-r2 checkpoint103",
+      "level": "已證實",
+      "semantic": "正常同源LOAD與選入希爾法後66筆，runtime0在22,32，camera16,27、visible6,5、range1；record1 identity24。",
+      "evidence": "受版控ch22-startup-r2與固定runner1694cde。"
+    },
+    {
+      "original_location": "既有native_map_hud_inherited.display_gate_b",
+      "level": "強推論",
+      "semantic": "B=1只適配已知nonzero顯示入口；原版raw精確B未直接dump，RGB不能證明raw B逐byte相同。",
+      "evidence": "原版正常cursor完整畫面及既有HUD分支契約。"
+    }
+  ],
+  "typed_contract": {
+    "node": "battle_ch22",
+    "native_map_view": {
+      "camera_x": 16,
+      "camera_y": 27,
+      "cursor_x": 22,
+      "cursor_y": 32,
+      "visible_cursor_x": 6,
+      "visible_cursor_y": 5,
+      "range_mode": 1
+    },
+    "native_map_hud_inherited": {
+      "display_gate_b": 1
+    },
+    "producer": "受版控campaign_full→canonical exporter，正式node繼承；不是重播checkpoint注入。",
+    "consumer": "既有enterNode原生view／hud adapter與composeNativeBattleMapFrame，缺來源繼續fail-closed。"
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "level": "RUNTIME-E1",
+    "basis": "固定新caller直接bytes、既有shared consumer及同源正常原版66筆／完整畫面。",
+    "scope": "正常必出拒收與合法起手；章22戰鬥／戰後未驗收。"
+  },
+  "verification": {
+    "original_run": "work/parity-slot-ch22/startup-original-r2",
+    "checkpoint": 103,
+    "plan": "docs/data/parity-plans/ch22-startup-r2.jsonl",
+    "remake_failure": "work/parity-slot-ch22/startup-r2-remake-r1.log"
+  },
+  "limits": [
+    "原版raw display_gate_b精確byte未知。",
+    "66筆前沿含三筆HP0，重製只序列化active，未中途逐raw全欄位驗收。",
+    "本契約只起手，不提升第二十二章整章PLAYER-E2。"
+  ],
+  "verification_result": {
+    "receipt": "docs/data/ui-traces/ch22-native-startup.json",
+    "legal": "work/parity-slot-ch22/startup-r2-verify-r1.json",
+    "rejection": "work/parity-slot-ch22/startup-r1-verify-r1.json",
+    "related_go": "work/parity-slot-ch22/chapter22-startup-related-r1.log",
+    "prior_ch21": "work/parity-slot-ch22/prior-ch21-verify-r1.json"
+  }
+}
