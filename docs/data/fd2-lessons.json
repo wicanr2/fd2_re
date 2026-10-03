@@ -1266,8 +1266,8 @@
       "id": "static-layout-contradiction-recheck-raw-table",
       "date": "2026-10-03",
       "area": "固定表與存檔",
-      "rule": "固定layout與同狀態存檔矛盾時，先以IDA loader及原檔位址映射核對表bytes，再追writer／consumer。不得把統一差值直接補成規則。入口為docs/data/ida/fd2_ch21_post_layout_tables_20261003.json，保留IDA LE線性位址、檔案偏移及舊證據取代索引；目前涵蓋2415B三表75-byte。",
-      "why": "舊X表抄錄少6，造成18筆persistent X與SAV校驗不同；原檔首值21，233C6直接寫入表值。",
+      "rule": "固定layout與同狀態存檔矛盾時，先以IDA loader及原檔位址映射核對表bytes，再追writer／consumer。不得把統一差值直接補成規則。入口為docs/data/ida/fd2_ch21_post_layout_tables_20261003.json，保留IDA LE線性位址、檔案偏移及舊證據取代索引；目前涵蓋2415B三表75-byte。 原始byte文字需標數值基底，hex16轉uint8為22；新增caller的原始表與驗收入口docs/data/ida/fd2_ch22_record_fields_20261003.json、docs/data/ui-traces/parity-ch22.json verification.commands。",
+      "why": "舊X表抄錄少6，造成18筆persistent X與SAV校驗不同；原檔首值21，233C6直接寫入表值。 同日#131新caller的16-byte表也被抄錯；前16筆XY各差6，完整SAV對拍足以反證。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/122；docs/data/ui-traces/parity-ch21.json",
       "guard": {
         "kind": "present",

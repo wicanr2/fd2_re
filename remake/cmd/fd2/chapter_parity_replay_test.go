@@ -105,6 +105,7 @@ type parityReplay struct {
 	battle            string
 	town              string // LOAD 進的城鎮（本章戰前）
 	townAfter         string // 戰後城鎮（原版 chapter 已推進，城鎮記錄是下一章的）
+	preparationAfter  string // 已證實直接到下一章非城鎮整備的保存邊界
 	battleDone        bool
 	partySelectionSeq int // #84：正常選人起點；缺少此mark不推測部署
 	// aiEntries 是原版側 eip-trace 的 0x13A9F 入口（每個 AI 單位行動一筆，含 rng_word）；
@@ -585,12 +586,13 @@ func TestChapterParityReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	r := &parityReplay{t: t, g: g, out: out, run: run,
-		battle:        fmt.Sprintf("battle_ch%02d", chapter),
-		town:          fmt.Sprintf("town_ch%02d", chapter),
-		townAfter:     fmt.Sprintf("town_ch%02d", chapter+1),
-		aiEntries:     readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x13A9F"),
-		growthEntries: readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x1E54A"),
-		keys:          readParityControlKeys(t, filepath.Join(run, "control-history.jsonl"))}
+		battle:           fmt.Sprintf("battle_ch%02d", chapter),
+		town:             fmt.Sprintf("town_ch%02d", chapter),
+		townAfter:        fmt.Sprintf("town_ch%02d", chapter+1),
+		preparationAfter: fmt.Sprintf("preparation_ch%02d", chapter+1),
+		aiEntries:        readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x13A9F"),
+		growthEntries:    readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x1E54A"),
+		keys:             readParityControlKeys(t, filepath.Join(run, "control-history.jsonl"))}
 	g.aiPlanObserver = r.observeAIPlan
 	g.growthRollObserver = r.observeGrowthRoll
 	logFile, err := os.Create(filepath.Join(out, "checkpoints.jsonl"))
@@ -771,6 +773,9 @@ func (r *parityReplay) mark(action parityAction) {
 	case "record_question":
 		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x2CC76"); err != nil {
 			t.Fatal(err)
+		}
+		if g.camp.NodeID() == r.battle {
+			r.ensurePostbattleNode(r.preparationAfter)
 		}
 		if !pump(t, g, 600, func() bool {
 			return g.nativePreparationPromptActive() && !g.nativeClassUIBlocksInput()
@@ -2233,7 +2238,7 @@ func (r *parityReplay) currentTown() string {
 }
 
 func (r *parityReplay) ensureTown() {
-	t, g := r.t, r.g
+	g := r.g
 	if g.camp.NodeID() == r.currentTown() {
 		return
 	}
@@ -2241,6 +2246,12 @@ func (r *parityReplay) ensureTown() {
 		r.battleDone = true
 		return
 	}
+	r.ensurePostbattleNode(r.townAfter)
+}
+
+// #130：沿既有正常戰果確認與故事輸入，到來源owner對應的戰間節點。
+func (r *parityReplay) ensurePostbattleNode(target string) {
+	t, g := r.t, r.g
 	// 戰鬥結束：等演出收掉，在正式 Enter 邊界確認，走戰後過場到城鎮。
 	for frame := 0; frame < 3000 && g.camp.NodeID() == r.battle; frame++ {
 		ackPresents(g)
@@ -2259,7 +2270,7 @@ func (r *parityReplay) ensureTown() {
 	}
 	r.checkpoint("battle_result", 0, r.ui(), true)
 	j := newJourneyTrace()
-	driveStory(t, g, j, func() bool { return g.camp.NodeID() == r.townAfter })
+	driveStory(t, g, j, func() bool { return g.camp.NodeID() == target })
 	r.battleDone = true
 	r.settleTown()
 }

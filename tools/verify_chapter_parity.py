@@ -272,6 +272,10 @@ def compare_node(actions: list[dict], remake_cp: dict, oracle_cp: dict | None,
     entry["oracle_kind"] = original_kind
     # 驅動器do_engage用armed快照記attack；這是目標確認前的配對點。
     comparable_kind = "attack_armed" if original_kind == "attack" else original_kind
+    # #128：普通mark由正式重播加mark:前綴，必須逐字符合原版來源label。
+    if (action.get("kind") == "mark" and isinstance(original_kind, str) and
+            original_kind and kind == "mark:" + original_kind):
+        comparable_kind = kind
     entry["oracle_comparable_kind"] = comparable_kind
     if oracle_mid_end_turn(oracle_cp, remake_cp):
         return {**entry, "status": "not_comparable", "reason": "原版已在換手處理，並非同一輸入邊界"}

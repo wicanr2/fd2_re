@@ -1042,7 +1042,6 @@
           "groups": [
             2
           ],
-          "camp": "special",
           "native_spawns": [
             {
               "group": 2,
@@ -1051,7 +1050,429 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 50
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x35275",
+          "grid": [
+            16,
+            42
+          ],
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x35281",
+          "ms": 439,
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "join_party",
+          "native_source": "0x3528b",
+          "char_id": 20,
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 0,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 20,
+            "pages": [
+              [
+                "『咦，這是怎麼回事？塔頂打",
+                "　成一片？．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  701,
+                  370,
+                  462,
+                  343,
+                  672,
+                  344,
+                  310,
+                  536,
+                  180,
+                  1434,
+                  1387,
+                  373
+                ],
+                [
+                  181,
+                  542,
+                  486,
+                  564,
+                  180,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 1,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『喂，這裡打的正起勁，如果",
+                "　不想受傷就別過來！』"
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 2,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 20,
+            "pages": [
+              [
+                "『別把人看扁了！我起碼也是",
+                "　個龍騎士耶！』"
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 3,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『龍騎士？好久沒聽到這個崇",
+                "　高的名號了．．妳怎麼會恰",
+                "　好來到這裡呢？』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  101,
+                  95,
+                  93,
+                  180,
+                  369,
+                  587,
+                  399,
+                  561,
+                  387,
+                  462,
+                  463,
+                  1518
+                ],
+                [
+                  181,
+                  753,
+                  367,
+                  902,
+                  1167,
+                  341,
+                  584,
+                  584,
+                  583,
+                  672,
+                  344,
+                  458,
+                  1371
+                ],
+                [
+                  181,
+                  369,
+                  579,
+                  387,
+                  462,
+                  613,
+                  470,
+                  180,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 4,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 4,
+            "control": "FFEF",
+            "operand": 20,
+            "pages": [
+              [
+                "『說來話長，我自從不小心被",
+                "　抓之後，就一直被關在所在",
+                "　不明的牢房中，幾天前才被"
+              ],
+              [
+                "　轉送到這塔裡：剛才我聽到",
+                "　塔頂有打鬥聲，看守的人又",
+                "　不在，就設法打破牢門出來"
+              ],
+              [
+                "　看看。』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  534,
+                  579,
+                  652,
+                  141,
+                  370,
+                  568,
+                  906,
+                  388,
+                  346,
+                  188,
+                  255,
+                  340
+                ],
+                [
+                  181,
+                  1021,
+                  132,
+                  733,
+                  370,
+                  345,
+                  486,
+                  861,
+                  340,
+                  762,
+                  395,
+                  628,
+                  395
+                ],
+                [
+                  181,
+                  346,
+                  1074,
+                  367,
+                  1519,
+                  1155,
+                  331,
+                  370,
+                  694,
+                  266,
+                  493,
+                  755,
+                  340
+                ]
+              ],
+              [
+                [
+                  181,
+                  540,
+                  269,
+                  387,
+                  462,
+                  1434,
+                  613,
+                  1366,
+                  860,
+                  755,
+                  568,
+                  561,
+                  387
+                ],
+                [
+                  181,
+                  1434,
+                  1387,
+                  400,
+                  373,
+                  138,
+                  698,
+                  370,
+                  658,
+                  149,
+                  367,
+                  98,
+                  712
+                ],
+                [
+                  181,
+                  346,
+                  395,
+                  370,
+                  345,
+                  883,
+                  81,
+                  373,
+                  204,
+                  1519,
+                  633,
+                  455,
+                  579
+                ]
+              ],
+              [
+                [
+                  181,
+                  658,
+                  658,
+                  581,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 5,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『原來如此，現在妳打算怎麼",
+                "　辦？』"
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 6,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 20,
+            "pages": [
+              [
+                "『當然是加入你們一行，修理",
+                "　那個大傢伙啊！我要好好和",
+                "　清算這筆帳！』"
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 7,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 7,
+            "control": "FFEF",
+            "operand": 124,
+            "pages": [
+              [
+                "『手下敗將，還不認輸嗎？這",
+                "　次我不會再客氣了！』"
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x347f1",
+          "native_text_index": 2,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch22.json",
+            "scene_index": 1,
+            "line": 8,
+            "source_dat": "FDTXT_022",
+            "string_index": 2,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『少囉唆！先應付完我這一劍",
+                "　再說！』"
+              ]
+            ]
+          },
+          "native_event_id": 50,
+          "camp": "special"
         }
       ]
     },

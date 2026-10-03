@@ -39,14 +39,14 @@ def receipt_stats(chapter: int) -> dict | None:
     receipt = json.loads(path.read_text(encoding="utf-8"))
     gates = receipt.get("gates", {})
     frames = gates.get("frames", {}).get("points", [])
-    diffs = [int(point.get("diff_pixels", 0)) for point in frames]
+    diffs = [point["diff_pixels"] for point in frames if type(point.get("diff_pixels")) is int]
     behavior = gates.get("behavior", {}).get("points", [])
     save = gates.get("transaction", {}).get("save", {})
     return {
         "receipt": path.relative_to(ROOT).as_posix(),
         "actions": receipt.get("original", {}).get("actions"),
         "behavior_points": len(behavior),
-        "frame_points": len(frames),
+        "frame_points": len(diffs),
         "frame_zero": sum(1 for value in diffs if value == 0),
         "frame_max": max(diffs) if diffs else 0,
         "gates": {name: bool(gates.get(name, {}).get("ok")) for name in GATE_ORDER},
@@ -131,7 +131,7 @@ def render_block(ledger: dict, style: str) -> str:
     else:
         lines.append(f"逐章對拍還沒有通過的章（台帳更新日 {updated}）。")
     lines.append("")
-    lines.append("| 章 | 通過的 gate | 原版動作 | 行為比較點 | 畫面比較點 | 最大畫面差異 | 酒店存檔 | 證據 |")
+    lines.append("| 章 | 通過的 gate | 原版動作 | 行為比較點 | 畫面比較點 | 最大畫面差異 | 完整存檔 | 證據 |")
     lines.append("|---|---|---|---|---|---|---|---|")
     lines.extend(rows)
     lines.append("")

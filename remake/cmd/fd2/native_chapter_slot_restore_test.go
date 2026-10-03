@@ -15,6 +15,36 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
+func TestNativeLoadCHPartyDisablesDeathEffectAndPreservesPayload(t *testing.T) {
+	source := battle.Unit{
+		NativeIdentity: 24, HasNativeIdentity: true, HasMapSelectorKey: true,
+		NativeRecordDeathEffect: [3]byte{3, 0x17, 0x42}, HasNativeRecordDeathEffect: true,
+		DeathEffect: &battle.DeathEffect{Type: 3, Value: 0x4217},
+	}
+	g := &Game{nativeChapterRestore: &campaign.NativeChapterSlotRestorePlan{},
+		partyRoster: map[int]battle.Unit{24: source}}
+	units, err := g.nativeRestoredPartyUnitsForLoadCH([]int{24}, []battle.Cell{{X: 22, Y: 33}}, nil)
+	if err != nil || len(units) != 1 {
+		t.Fatalf("LOADCH party constructor: units=%d err=%v", len(units), err)
+	}
+	u := units[0]
+	if !u.HasNativeRecordDeathEffect || u.NativeRecordDeathEffect != [3]byte{0xff, 0x17, 0x42} ||
+		u.DeathEffect != nil || u.DeathReward != nil {
+		t.Fatalf("LOADCH death-effect fields: %+v", u)
+	}
+	if _, _, active := battle.NativeDeathEffectOf(u); active {
+		t.Fatal("disabled native death effect remained active")
+	}
+	if g.partyRoster[24].NativeRecordDeathEffect != source.NativeRecordDeathEffect {
+		t.Fatal("candidate constructor changed the persistent source")
+	}
+	source.HasNativeRecordDeathEffect = false
+	g.partyRoster[24] = source
+	if units, err := g.nativeRestoredPartyUnitsForLoadCH([]int{24}, []battle.Cell{{X: 22, Y: 33}}, nil); err == nil || units != nil {
+		t.Fatal("missing native death-effect payload did not reject candidate")
+	}
+}
+
 func writeNativeRestoreFixture(
 	t *testing.T, rawChapter byte,
 ) string {

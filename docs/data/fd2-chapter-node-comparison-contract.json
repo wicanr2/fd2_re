@@ -24,7 +24,7 @@
   "input": "原版checkpoint的input_chain、獨立actions.jsonl與重製checkpoints.jsonl；原版EXE SHA-256為222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
   "rules": [
     "直接呼叫受版控原版驅動器的ui_mode，不複製位址表，也不從重製ui推導原版ui。",
-    "可配對點的原版動作名稱由actions.kind或mark.label取得；重製名稱及UI分別比較。原版do_engage的attack動作使用armed的seq，對應重製attack_armed；只允許這個已查明的名稱對照，保留原始名稱。",
+    "可配對點的原版動作名稱由actions.kind或mark.label取得；重製名稱及UI分別比較。原版do_engage的attack動作使用armed的seq，對應重製attack_armed；另依extension128允許來源標籤逐字相同的mark:+label；只允許這些已查明的名稱對照，保留原始名稱。",
     "既有原版shop分類共用酒店與教會對話owner；重製shop、hotel、church只比較service介面家族，不宣稱具體建築相同。",
     "未知原版UI、缺少原版動作或checkpoint，均失敗即關閉。不得把unknown當作重製UI。",
     "沒有oracle_seq的衍生重製節點、after_enemy_phase借用的後續動作、shop_menu借用的出售後checkpoint，以及END／酒店SAVE的跨時序點，明列not_comparable及原因，不複製成原版序列。",
@@ -58,6 +58,58 @@
       "status": "CONFORMED",
       "scope": "record_question由2CC76，record_slots同時需3009C／2CCBB；preparation_save比較完整RGB與獨立owner，無跨時序豁免。",
       "receipt": "docs/data/ui-traces/preparation-record-save.json"
+    },
+    {
+      "issue": 128,
+      "status": "CONFORMED",
+      "scope": "普通回合mark的來源標籤名稱對照，仍獨立比較實際UI。",
+      "evidence": [
+        {
+          "level": "confirmed",
+          "source": "remake/cmd/fd2/chapter_parity_replay_test.go parityReplay.mark default；work/parity-slot-ch22/full-original-r1/actions.jsonl seq752／793／846／915",
+          "claim": "原版mark.label為round_N；正式重播固定產生mark:round_N，名稱前綴有明確writer。"
+        }
+      ],
+      "rules": [
+        "只在原版action.kind=mark、label為非空字串，且重製kind完整等於mark:+label時對照名稱。",
+        "保留原版label與對照kind；不同label、非mark來源、缺來源或不同UI均拒收。",
+        "不跳過節點、狀態、畫面或計畫完整性比較。"
+      ],
+      "acceptance": [
+        "相同來源普通mark通過；錯標籤、錯UI與偽造非mark前綴拒收。",
+        "既有19項驗證器測試與真實第二十二章重跑；未完成計畫及鏡頭差異仍失敗。"
+      ],
+      "verification": {
+        "receipt": "docs/data/ui-traces/parity-ch22.json",
+        "report": "work/parity-slot-ch22/full-r2-verify-r3.json",
+        "regressions": "verifier20；第21章四項；保存probe四點0px；完整Go19套件"
+      }
+    },
+    {
+      "issue": 130,
+      "status": "CONFORMED",
+      "scope": "非城鎮章戰後record_question重播輸入橋接；不改正式runtime或SAV。",
+      "evidence": [
+        {
+          "level": "confirmed",
+          "source": "work/parity-slot-ch22/full-original-r2/actions.jsonl seq955／965／974；docs/data/ida/fd2_ch21_post_native_dialogue.md；remake/cmd/fd2/ch22_campaign_flow_test.go",
+          "claim": "原版正常戰果／11句／transition到preparation_ch23記錄owner；正式runtime此路徑已有E1，replay mark只等待而沒有推進。"
+        }
+      ],
+      "rules": [
+        "先驗固定EXE hash與原版2CC76 owner，再在仍在該章戰場時用既有resultInputReachable／confirmBattleResult及driveStory走到下一章非城鎮preparation。",
+        "缺戰果、故事停滯、錯落點或Cancel非空均拒收；禁止直接Advance／切節點／清dialog或注入畫面。",
+        "已從LOAD到獨立preparation的局部保存探針沿既有路徑；正常YES／保存／ESC與完整SAV核對保留。"
+      ],
+      "acceptance": [
+        "完整第二十二章重播到記錄owner；原版十一句及正式輸入正常推進。",
+        "上一章城鎮路徑與局部保存probe回歸；四項與完整SAV核對。"
+      ],
+      "verification": {
+        "receipt": "docs/data/ui-traces/parity-ch22.json",
+        "report": "work/parity-slot-ch22/full-r2-verify-r3.json",
+        "regressions": "verifier20；第21章四項；保存probe四點0px；完整Go19套件"
+      }
     }
   ]
 }

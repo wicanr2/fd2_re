@@ -595,15 +595,32 @@
     },
     {
       "chapter": 22,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch22.json",
+      "slot_manifest": "docs/data/parity-slots/ch22-manifest.json",
+      "slot_sha256": "22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "date": "2026-10-03",
+      "verify": "tools/chapter_parity.sh 22 work/parity-slot-ch22 <dosgolem run> <out>；原版與容器直接重跑命令見docs/data/ui-traces/parity-ch22.json verification.commands",
+      "limitations": [
+        "依111／114例外接續第二十一章正式SAV22399b54，不追加治療／強化；T3／T5正常抽樣後seq916清敵一次54筆，T7未抽樣，不談自然難度。",
+        "34張完整RGB、28張0px、最大185px；原r2 seq915延後PNG不計，另有同源r1有限T5完整RGB0px，兩輪該點CPU／view／units相同。",
+        "正常戰後11句接preparation_ch23，YES／Enter保存22987 bytes兩側SHA-256 3c7298cd相同。節點判準來源mark與UI獨立，不放寬畫面或SAV。",
+        "8 BIOS tick轉439ms屬hardware-spec approximation；raw HUD B、三筆HP0中途raw、精確動畫相位及未抽樣畫面保持限制。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 23,

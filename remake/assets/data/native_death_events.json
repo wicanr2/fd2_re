@@ -1415,6 +1415,40 @@
       ]
     },
     {
+      "id": 50,
+      "handler": "0x35261",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group": 2,
+          "gate": 0,
+          "source": "0x3526b"
+        },
+        {
+          "op": "pan",
+          "x": 16,
+          "y": 42,
+          "source": "0x35275"
+        },
+        {
+          "op": "tick_wait",
+          "ticks": 8,
+          "source": "0x35281"
+        },
+        {
+          "op": "join_party",
+          "char_id": 20,
+          "source": "0x3528b"
+        },
+        {
+          "op": "dialogue",
+          "text": 2,
+          "source": "0x347f1"
+        }
+      ]
+    },
+    {
       "id": 51,
       "handler": "0x3529a",
       "battle_units": [

@@ -9296,3 +9296,11 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 四個完整RGB皆0px，22987 bytes SAV兩側SHA-256相同。原版成功寫入22528+459 bytes，內容相同也屬合法覆寫。driver、replay及比較器新增preparation_save；缺planned save、錯owner、無成功寫入均拒收，沒有跨時序畫面豁免。相關三套件與第二十一章30畫面／全檔SAV回歸通過。建構raw22槽不代表第二十二章戰後可達；#123仍開啟，整章數以正式台帳為準。
 
 本批最終回歸：19套件／2293個Go測試全部通過；97個Go審查候選文字與各處置數不變，只遷移原始碼定位。第一次清冊綁定失敗保留於有限收據，不能視為玩法缺陷。
+
+### 2026-10-03 第二十二章章路徑與原始 record（#123／#128至132）
+
+[正式章收據](../data/ui-traces/parity-ch22.json)取代上文第二十二章未驗收狀態。事件50依[CONFORMED契約](../data/ida/fd2_ch22_turn_event50_20261003.json)補齊group2、PAN16,42、8 ticks、JOIN20與文字2九句，經具型別原始事件、正式scenario與canonical進入正常回合。8 ticks換算439ms是hardware-spec approximation，不追逐硬體wall-clock。
+
+[record契約](../data/ida/fd2_ch22_record_fields_20261003.json)修正兩個來源。244B6布局取原始16-byte表值，不能將hex16抄成decimal16。持續record先保留+31/+32/+33三byte；1088D的LOADCH constructor在複製80 bytes後只將+31寫FF，後兩byte不改，關閉舊death effect／reward。來源缺失即拒收，不在SAVwriter補差分。
+
+[節點契約](../data/fd2-chapter-node-comparison-contract.json)限原版mark來源逐字相同時對照mark:前綴，UI仍由原版input_chain獨立取得。非城鎮記錄重播先經正常戰果確認與11句故事，走到preparation_ch23，再YES／Enter／ESC保存。整章四項、完整SAV與第21章／局部保存回歸通過，完整Go19套件2294測試通過。PLAYER-E2限111／114例外；T7、延後PNG及中途raw欄位限制見收據，唯一統計依58。

@@ -319,6 +319,15 @@ EVENTS = [
         op("dialogue", [(0x350E0, 0x35107)], text=1),
         op("join_party", [(0x35107, 0x35111)], char_id=27),
     ]},
+    # 第二十二章T5完整順序；READY及IDA原始位址見58與
+    # docs/data/ida/fd2_ch22_turn_event50_20261003.json。
+    {"id": 50, "handler": 0x35261, "ops": [
+        op("spawn_group", [(0x3526B, 0x35275)], group=2, gate=0),
+        op("pan", [(0x35275, 0x35281)], x=16, y=42),
+        op("tick_wait", [(0x35281, 0x3528B)], ticks=8),
+        op("join_party", [(0x3528B, 0x35295)], char_id=20),
+        op("dialogue", [(0x347F1, 0x34818)], text=2),
+    ]},
     {"id": 51, "handler": 0x3529A, "ops": [
         op("reward", [(0x352A9, 0x352C4)], rodata=0x52748),
         op("dialogue", [(0x352C4, 0x352DD), (0x34FB7, 0x34FC5)], text=3),
@@ -485,6 +494,8 @@ def check_op(image, event_id, o):
         expect_seq(insns, [f"push {imm(o['resource'])}", "call 0x1366a", "add esp, 4"], where)
     elif kind == "delay":
         expect_seq(insns, [f"push {imm(o['ms'])}", "call 0x375b2", "add esp, 4"], where)
+    elif kind == "tick_wait":
+        expect_seq(insns, [f"push {imm(o['ticks'])}", "call 0x17aa9", "add esp, 4"], where)
     elif kind == "spawn_group":
         if o.get("group_from") == "round":
             # group 取自回合計數；由回合事件列觸發時就是該列的回合。

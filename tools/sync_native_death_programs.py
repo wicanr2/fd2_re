@@ -101,6 +101,10 @@ def lower(chapter: Chapter, event, event_id):
                         "native_acting": {"resource": o["resource"], "source": source}}]
         elif kind == "delay":
             lowered = [{"type": "delay", "native_source": source, "ms": o["ms"]}]
+        elif kind == "tick_wait":
+            # 沿58的BIOS tick契約；只近似時長，不宣稱17AA9初始latch逐週期一致。
+            lowered = [{"type": "delay", "native_source": source,
+                        "ms": round(o["ticks"] * 65536 * 1000 / 1193182)}]
         elif kind == "reset_pose":
             lowered = [{"type": "reset_pose", "native_source": source}]
         elif kind == "spawn_group" and o.get("group_from") == "state":

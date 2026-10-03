@@ -25,6 +25,23 @@ class NativeDeathExtractorTest(unittest.TestCase):
                     extractor.check_op(self.image, event_id, op)
                 extractor.check_coverage(self.image, event)
 
+    def test_ch22_event50_covers_spawn_pan_tick_join_and_shared_dialogue(self):
+        event = self.events[50]
+        for action in event["ops"]:
+            extractor.check_op(self.image, 50, action)
+        extractor.check_coverage(self.image, event)
+
+    def test_ch22_event50_rejects_wrong_ticks_join_and_missing_tail(self):
+        for index, field, value in [(2, "ticks", 7), (3, "char_id", 21), (4, "text", 1)]:
+            action = copy.deepcopy(self.events[50]["ops"][index])
+            action[field] = value
+            with self.assertRaises(SystemExit):
+                extractor.check_op(self.image, 50, action)
+        event = copy.deepcopy(self.events[50])
+        event["ops"] = event["ops"][:-1]
+        with self.assertRaises(SystemExit):
+            extractor.check_coverage(self.image, event)
+
     def test_record_loop_rejects_slot_outside_original_inclusive_range(self):
         op = copy.deepcopy(self.events[13]["ops"][1])
         op["unit"] = 74

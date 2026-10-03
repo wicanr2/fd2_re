@@ -2185,3 +2185,35 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 四個完整RGB皆0px，22987 bytes SAV兩側SHA-256相同。原版成功寫入22528+459 bytes，內容相同也屬合法覆寫。driver、replay及比較器新增preparation_save；缺planned save、錯owner、無成功寫入均拒收，沒有跨時序畫面豁免。相關三套件與第二十一章30畫面／全檔SAV回歸通過。建構raw22槽不代表第二十二章戰後可達；#123仍開啟，整章數以正式台帳為準。
 
 本批最終回歸：19套件／2293個Go測試全部通過；97個Go審查候選文字與各處置數不變，只遷移原始碼定位。第一次清冊綁定失敗保留於有限收據，不能視為玩法缺陷。
+
+## 2026-10-03 #129 第二十二章T5事件50（READY）
+
+[主契約](../data/ida/fd2_ch22_turn_event50_20261003.json)保存固定原版hash、IDA9.4原始函式名／指令／跳表與分級claims。原r1同源正常路徑T5鏡頭16,28，重製12,33，完整RGB51740px；新增consumer證據證明原spawn-only轉寫漏PAN、8ticks、JOIN20與本章文字2九句。沿用58已閉合135DD、17AA9與112A5，不重解helper。原r1於T5敗北並返回標題，沒有清敵或戰後保存；#123改為同源前綴T5玩家游標短路徑，完整章仍未通過，台帳18／30。
+
+## 2026-10-03 #131 第二十二章保存反證（RE重開）
+
+full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，除checksum外33 bytes不符：前16筆record+0/+1各差6，identity24 record+31原版FF／重製03。原版行為、節點與34張畫面已通過，不能以這三項掩蓋SAV差異。依「同狀態結果矛盾」只重開244B6新caller的布局參數與欄位writer，主證據仍保留fd2_ch21_post_ida.txt；233C6／11506／acting helper不重解。差分原檔work/parity-slot-ch22/ch22-save-difference-r1.json，正式規格與修正仍待#131。
+
+#131追加定位：IDA9.4固定244B6資料表52273／52283原始byte16是十進位22，現有binding誤存十進位16，已證布局座標差6的來源。244B6本體沒有+31寫入；因同狀態identity24原03→FF反證「layout僅寫XY/pose」的不足，窄查233C6的新consumer是否漏writer，不重開既有渲染器或acting資源。
+
+#131追加勘誤：固定原版bootstrap identity24 persistent+31原03，但LOADCH後seq285及battle_start seq307已為FF，並持續到T5／保存。233C6直接指令沒有+31 writer，先前以post layout為方向僅是定位假說，已由前置快照否定。沿既有1088D裝載caller窄查party建構writer，保存上述負證據，不在post／writer猜補。
+
+#131 READY：[原始record契約](../data/ida/fd2_ch22_record_fields_20261003.json)保存16-byte表、原始函式與233C6負證據。真正+31 writer是1088D的10AB1，在80-byte party copy後寫FF；+32/+33保持來源。以正常LOADCH建構修正，不在post／SAV補洞。完整四項仍待同一r2重播驗證。
+
+### 2026-10-03 第二十二章 PLAYER-E2 與保存反證閉合
+
+[正式章收據](../data/ui-traces/parity-ch22.json)取代上文#123／#129／#131驗證中狀態。固定原版dosgolem1694cde、975檢查點／42動作，full-r2-remake-r4四項通過；212筆AI零順序分岔。正常戰後11句接preparation_ch23，YES／保存／ESC後完整22987-byte SAV兩側SHA-256均為3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1。命令、程式／輸出雜湊與診斷來源保存在收據verification。
+
+| 分層 | 結果與主證據 |
+| --- | --- |
+| RE-CLOSED | [事件50](../data/ida/fd2_ch22_turn_event50_20261003.json)直接指令及共享尾段證明PAN、8ticks、JOIN20及文字2九句；沿用已閉合helper。 |
+| RE-CLOSED | [原始record訂正](../data/ida/fd2_ch22_record_fields_20261003.json)以16-byte表及10AB1 writer反證舊布局抄錄與LOADCH缺投影；233C6無+31 writer的負證據保留。 |
+| DATA-READY | 原生事件50、正式scenario／canonical、244B6布局與三byte持續投影均有消費端。 |
+| RUNTIME-E1 | 正常LOADCH只改+31為FF、保留payload與缺來源拒收；完整Go19套件2294測試、第21章四項／全檔SAV與四槽保存probe通過。 |
+| PLAYER-E2 | 依111／114例外，同源SAV、T3／T5抽樣、一次清敵54筆、11句戰後與正常非城鎮存檔。 |
+
+完整RGB實際34張、28張0px，六個局部差異最大185px，維持640px預算。r2 seq915延後PNG未計入；同源r1該點EIP／steps／registers／input_chain／units／view完全相同，有限RGB0px另記E1，沒有替換原版收據。第7回合未抽樣；硬體tick近似、raw HUD B、三個HP0中途raw欄位及精確動畫相位保留限制，不阻塞本章既定gate。
+
+#128名稱對照仍核對原版mark來源及UI；#130只補正常戰果／故事輸入橋接；#132進度renderer不把缺圖算已比較或0px。原敗北、缺輸入橋接、33-byte SAV矛盾及投影未補齊的拒收均保留，不重寫歷史。完整Go第一次因文字清冊更新順序而拒收，清冊97筆文字／分類未變，同一容器命令乾淨重跑通過。
+
+本輪以tools/fd2_parity_progress.py verify及tools/render_parity_progress.py重生統計，輸入docs/data/parity-campaign-progress.json與正式收據，日期2026-10-03。現為19／30，第4至22章passed，all_chapters_passed=false；上文18／30是已失效的當時快照。其他章與開啟Issue仍未完成。

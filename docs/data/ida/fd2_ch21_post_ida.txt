@@ -213,3 +213,9 @@ X/Y/pose 輸入。呼叫端另帶 raw special/focus scalar；其數值為
 命名成角色演出或通用淡出。這項交叉參照只提升共享 caller 邊界為**已證實**；
 它不提供各 caller 的戰役 owner、一般玩家 E2 畫面或 runtime frontier，
 所以 `postbattle_ch22_persist` 及其他未具完整狀態的節點仍維持失敗即關閉。
+
+## 2026-10-03 布局數值基底與正式章收據勘誤
+
+上列0x52273／0x52283／0x52293原始byte文字採十六進位，位址與bytes保留。byte16代表十進位22，不能把表中文字直接抄成十進位16。舊binding的slots0至15 X／Y因此各差6，同狀態完整SAV已直接反證；233C6按原表寫入，沒有額外加6規則。固定FD2.EXE與IDA9.4主證據：[原始record有限CONFORMED契約](fd2_ch22_record_fields_20261003.json)。
+
+party record+31不是這個layout writer改寫。原版1088D在80-byte複製後由10AB1設FF，+32/+33保留來源；本輪補正常LOADCH投影及constructor，未在SAV補洞。[正式章收據](../ui-traces/parity-ch22.json)依111／114例外驗證戰後11句、preparation_ch23、正常記錄保存與完整SAV。早期「正式binding仍未通過」是已失效的當時狀態；未抽樣畫面與中間raw欄位仍保留限制，現況入口[58](../../knowledge-base/58-fd2-exe-re-coverage.md)。

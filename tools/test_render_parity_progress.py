@@ -98,6 +98,27 @@ class WriteBlockTest(unittest.TestCase):
                 render.write_block(path, "x", check=True)
 
 
+class ReceiptStatsTest(unittest.TestCase):
+    def test_deferred_frames_are_not_compared_or_zero_pixels(self):
+        import tempfile
+        from unittest.mock import patch
+
+        receipt = {"gates": {"frames": {"points": [
+            {"seq": 1, "diff_pixels": 0},
+            {"seq": 2, "status": "frame_missing_or_no_pillow"},
+            {"seq": 3, "diff_pixels": 185},
+            {"seq": 4, "status": "not_comparable"},
+        ]}}}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "parity-ch22.json").write_text(json.dumps(receipt))
+            with patch.object(render, "RECEIPTS", root), patch.object(render, "ROOT", root):
+                stats = render.receipt_stats(22)
+        self.assertEqual(stats["frame_points"], 2)
+        self.assertEqual(stats["frame_zero"], 1)
+        self.assertEqual(stats["frame_max"], 185)
+
+
 class LedgerContractTest(unittest.TestCase):
     def test_repository_ledger_has_the_fields_the_tool_reads(self):
         ledger = json.loads(render.LEDGER.read_text(encoding="utf-8"))

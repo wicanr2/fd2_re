@@ -424,7 +424,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第二十一章正式四項對拍](../data/ui-traces/parity-ch21.json)與[全部非零抽樣索引](../data/ui-traces/parity-ch21-samples.json)：#118／#121／#122，30張完整RGB、酒店全檔SAV及原版不足臂；PLAYER-E2限111／114例外，現況與限制見58。
 
-- [第二十二章接續清冊](../data/parity-slots/ch22-manifest.json)與[首15候選拒收計畫](../data/parity-plans/ch22-startup-r1.jsonl)：#123，同源第二十一章正式SAV，不追加強化或治療；原r1拒收保留，合法起手另見r2有限收據，後續記錄邊界待驗。
+- [第二十二章接續清冊](../data/parity-slots/ch22-manifest.json)與[首15候選拒收計畫](../data/parity-plans/ch22-startup-r1.jsonl)：#123，同源第二十一章正式SAV，不追加強化或治療；原r1拒收保留，合法起手另見r2有限收據，後續記錄邊界已由正式第二十二章收據驗收。
 
 - [第二十二章必出希爾法與持續record排序有限CONFORMED](../data/ida/fd2_ch22_required_character_20261003.json)：#124，raw21兩個caller均push24，固定名字索引25；沿用已閉合checker／321C8，合法起手五點完整RGB0px。
 
@@ -432,18 +432,28 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第二十二章原生起手有限CONFORMED](../data/ida/fd2_ch22_startup_20261003.json)：#126，3367E新caller與shared runtime0 focus，66筆／camera16,27；raw HUD B精確值保留限制。
 
-- [第二十二章正常起手與必出拒收有限收據](../data/ui-traces/ch22-native-startup.json)：#124／#126，66筆前沿、63筆active快照；合法與拒收各五點完整RGB0px，最高RUNTIME-E1，章內與保存待#123／#125。
+- [第二十二章正常起手與必出拒收有限收據](../data/ui-traces/ch22-native-startup.json)：#124／#126，66筆前沿、63筆active快照；合法與拒收各五點完整RGB0px，此起手最高RUNTIME-E1，整章另見正式收據；#125保存局部E1已由四槽收據驗收。
 
 - [非城鎮記錄提示探查清冊](../data/parity-slots/preparation-record-probe-manifest.json)與[正常鍵盤計畫](../data/parity-plans/preparation-record-probe-r1.jsonl)：#125，獨立建構槽只探保存UI與DOS writer，最高局部E1，不代替第二十二章同源整章路徑。
 
-- [非城鎮記錄提示保存後Escape計畫](../data/parity-plans/preparation-record-probe-r2.jsonl)：#125，原版已證成功保存後留四槽列表；r2只改最後退出鍵，仍待正常選人收據。
+- [非城鎮記錄提示保存後Escape計畫](../data/parity-plans/preparation-record-probe-r2.jsonl)：#125，原版已證成功保存後留四槽列表；r2只改最後退出鍵，歷史待驗狀態由r3正常選人收據取代。
 
 整備記錄四槽保存主證據與 READY 規格：[fd2_preparation_record_save_20261003.json](../data/ida/fd2_preparation_record_save_20261003.json)。保留原始名稱、IDA LE 位址與bytes；建構raw22槽probe只算E1。
 
-#125／#127 可重跑保存計畫：[preparation-record-save-r3.jsonl](../data/parity-plans/preparation-record-save-r3.jsonl)。同一建構槽，正式driver正常YES／保存／ESC；尚待局部驗證。
+#125／#127 可重跑保存計畫：[preparation-record-save-r3.jsonl](../data/parity-plans/preparation-record-save-r3.jsonl)。同一建構槽，正式driver正常YES／保存／ESC；局部四項、四張完整RGB0px及全檔SAV已驗收，最高RUNTIME-E1。
 
 ### 2026-10-03 非城鎮整備四槽保存（#125／#127）
 
 [主規格](../data/ida/fd2_preparation_record_save_20261003.json)與[有限收據](../data/ui-traces/preparation-record-save.json)限局部RUNTIME-E1列CONFORMED。2CC76問題YES→2CCBB／3009C四槽；Enter寫完整SAV後保留列表，ESC才到31A2E零勾選選人。重製已補上正式owner，NO不保存；素材／來源或寫入失敗即停止。
 
 四個完整RGB皆0px，22987 bytes SAV兩側SHA-256相同。原版成功寫入22528+459 bytes，內容相同也屬合法覆寫。driver、replay及比較器新增preparation_save；缺planned save、錯owner、無成功寫入均拒收，沒有跨時序畫面豁免。相關三套件與第二十一章30畫面／全檔SAV回歸通過。建構raw22槽不代表第二十二章戰後可達；#123仍開啟，整章數以正式台帳為準。
+
+- [第二十二章整章抽樣計畫r1](../data/parity-plans/ch22-sample-r1.jsonl)：#123，同源SAV、正常城鎮交易／酒店保存、T3／5／7增援與T7清敵一次，非城鎮記錄保存；r1為第五回合敗北診斷，未到第七回合；正式通過來源為r2。
+
+- [第二十二章第五回合短路徑計畫r2](../data/parity-plans/ch22-sample-r2.jsonl)：#123，同源SAV及seed4；原r1第五回合敗北，r2在已抽樣T3／T5的玩家游標清敵一次，不刷關、不追加強化或治療，T7不列本收據範圍。
+
+- [第二十二章T5事件50完整有限CONFORMED契約](../data/ida/fd2_ch22_turn_event50_20261003.json)：#129，group2、PAN16,42、8 BIOS tick、JOIN20及文字2九句；正式原版視圖與全檔保存已在章收據驗收。
+
+- [第二十二章原版record欄位有限CONFORMED契約](../data/ida/fd2_ch22_record_fields_20261003.json)：#131，24512原始16-byte布局表與LOADCH 10AB1死亡效果禁用writer；不在SAV或重播猜補。
+
+- [第二十二章正式四項章收據](../data/ui-traces/parity-ch22.json)：#123／#128至132，PLAYER-E2限111／114例外；原975點、42動作、212筆AI零分岔，34張完整RGB、全檔SAV相同。T7與延後PNG限制如實保存。

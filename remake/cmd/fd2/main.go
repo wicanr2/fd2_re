@@ -2861,7 +2861,7 @@ func (g *Game) nativeRestoredPartyUnitsForLoadCH(
 	for index, id := range order {
 		source, ok := g.partyRoster[id]
 		if !ok || !source.HasNativeIdentity || source.NativeIdentity != id ||
-			!source.HasMapSelectorKey {
+			!source.HasMapSelectorKey || !source.HasNativeRecordDeathEffect {
 			return nil, fmt.Errorf(
 				"原版 LOADCH 隊伍 slot %d 缺 persistent identity %d 來源",
 				index, id,
@@ -2874,6 +2874,11 @@ func (g *Game) nativeRestoredPartyUnitsForLoadCH(
 			unit = cloneNativeShopUnit(source)
 		}
 		unit.Camp = battle.Own
+		// 0x1088D 的80-byte持續record copy後，0x10AB1只將+31寫FF。
+		unit.NativeRecordDeathEffect = source.NativeRecordDeathEffect
+		unit.NativeRecordDeathEffect[0] = 0xff
+		unit.HasNativeRecordDeathEffect = true
+		unit.DeathEffect, unit.DeathReward = nil, nil
 		unit.Fig = id
 		unit.BattleFig = unit.MapSelectorKey
 		unit.HasBattleFig = true

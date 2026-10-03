@@ -79,6 +79,24 @@ class PairingAndUnits(unittest.TestCase):
             self.assertEqual(point["oracle_family"], "service")
             self.assertTrue(vp.node_gate_ok([point], {"ok": True}, []))
 
+    def test_generic_mark_prefix_requires_original_label_and_ui(self):
+        action = {"kind": "mark", "label": "round_5", "seq": 10}
+        cp = {"kind": "mark:round_5", "ui": "cursor"}
+        owner = {"input_chain": ["0x117F8"]}
+        point = vp.compare_node([action], cp, owner, 10)
+        self.assertEqual(point["status"], "ok")
+        self.assertEqual(point["oracle_kind"], "round_5")
+        self.assertEqual(point["oracle_comparable_kind"], "mark:round_5")
+        for original, remake in [
+            ({**action, "label": "round_4"}, cp),
+            ({**action, "label": ""}, cp),
+            ({**action, "kind": "round_5"}, cp),
+            (action, {**cp, "ui": "preparation"}),
+        ]:
+            point = vp.compare_node([original], remake, owner, 10)
+            self.assertEqual(point["status"], "node_differ")
+            self.assertFalse(vp.node_gate_ok([point], {"ok": True}, [remake]))
+
     def test_unknown_ui_missing_action_and_wrong_mark_fail_closed(self):
         cp = {"kind": "battle_start", "ui": "cursor"}
         acts = [{"kind": "mark", "label": "battle_start", "seq": 10}]
