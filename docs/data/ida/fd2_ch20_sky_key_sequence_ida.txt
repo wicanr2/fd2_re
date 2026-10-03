@@ -363,3 +363,13 @@ Capstone：在 fd2-cap-local 中執行
 
 原始 EXE／DAT、IDA database、授權檔與一次性完整輸出不納入儲存庫；本檔只保存
 回查所需的函式邊界、原始定位、直接指令、附加語意、推論等級與版本指紋。
+
+## 2026-10-03 追加勘誤：5.1 X表抄錄與JOIN consumer（#121／#122）
+
+5.1的X表首值15及所有X欄位已失效。固定FD2.EXE SHA-256仍為本檔版本，IDA LE linear 0x52228對應LE object原檔offset0x52028，25-byte原值為：
+
+x = 21 20 22 22 19 19 19 19 18 20 20 20 18 21 21 21 21 19 18 22 17 17 17 23 23
+
+IDA loader的75-byte三表與固定EXE機械讀取完全相同。0x23407→0x2340A直接將X表寫入runtime record+0；Y、pose、slot25 special(23,14,1)與camera raw(14,10)保留。原版#118 seq719以及酒店SAV顯示record0 X21，18筆持續記錄均比舊重製資料大6；新證據足以否定舊X表。原表、原始caller與歷史推導保留，訂正主契約見docs/data/ida/fd2_ch21_post_layout_tables_20261003.json。
+
+另有已證實的JOIN24／23呼叫0x24312／0x2431C，舊可編輯兩臂join未附Source，實際只建立membership而缺partyRoster。舊回歸沒有逐筆驗證新成員物化，不能以JOIN順序通過宣稱完整持續名冊。#121補來源後仍走既有constructor與0x24324同步；主契約見docs/data/ida/fd2_ch21_post_join_materialization_20261003.json。整章四項及全檔SAV仍依58與正式收據，不由本段升級。

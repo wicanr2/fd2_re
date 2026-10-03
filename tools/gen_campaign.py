@@ -906,8 +906,8 @@ def build_campaign(
             crafted_id = "story_ch21_post_sky_key_crafted"
             insufficient_id = "story_ch21_post_sky_key_insufficient"
             common_tail = [
-                {"op": "join", "char_id": 24},
-                {"op": "join", "char_id": 23},
+                {"op": "join", "char_id": 24, "source": "0x24312"},
+                {"op": "join", "char_id": 23, "source": "0x2431c"},
                 {"op": "sync_party"},
                 {"op": "set_chapter", "chapter": 21},
             ]

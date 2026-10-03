@@ -2334,8 +2334,14 @@ func (r *parityReplay) shopSell(action parityAction) {
 	}
 	r.checkpoint("shop_menu", action.Seq, "shop", false)
 	g.nativeShopUIJob = nil
-	if !g.setupNativeShopSellRoster() || !g.setupNativeShopSellItems() {
-		t.Fatalf("shop_sell(seq %d)：正式 sell roster／item owner 無法建立", action.Seq)
+	rosterOK := g.setupNativeShopSellRoster()
+	itemsOK := rosterOK && g.setupNativeShopSellItems()
+	if !rosterOK || !itemsOK {
+		for _, id := range g.partyJoinOrder {
+			u, exists := g.partyRoster[id]
+			t.Logf("sell owner diagnostic: id=%d exists=%t native=%d/%t map=%d/%t inventory=%v flags=%v", id, exists, u.NativeIdentity, u.HasNativeIdentity, u.MapSelectorKey, u.HasMapSelectorKey, u.InventorySlots, u.NativeInventoryFlags)
+		}
+		t.Fatalf("shop_sell(seq %d)：正式 sell roster／item owner 無法建立（roster=%t items=%t）", action.Seq, rosterOK, itemsOK)
 	}
 	g.nativeShopMode, g.nativeShopSellConfirmSel = "sell_confirm", 0
 	if !g.beginNativeShopSellSuccess() || g.nativeShopUIJob == nil {

@@ -415,3 +415,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第二十一章原生起手主證據與有限CONFORMED](../data/ida/fd2_ch21_startup_20261003.json)：#120，shared runtime0 focus、正常75筆及視圖／HUD；原版raw gate B精確值保留限制，五點完整RGB皆0px。
 
 - [第二十一章有限起手及必出拒收收據](../data/ui-traces/ch21-native-startup.json)：#119／#120，75筆前沿、72筆active快照、五點完整RGB0px；缺約拿返回城鎮的五點畫面另列，拒收前綴節點判準仍有缺項，不提升整章。
+
+- [第二十一章章內／天空之鑰與城鎮抽樣計畫](../data/parity-plans/ch21-sample-r1.jsonl)：#118，同源SAV與合法前綴，正常一個敵方階段後清敵一次；戰後使用實際道具分支，正式四項與全檔SAV通過。
+
+- [第二十一章戰後JOIN資料來源有限CONFORMED](../data/ida/fd2_ch21_post_join_materialization_20261003.json)：#121，已閉合24312／2431C來源補到兩臂；修正缺少持續record的販售拒收，同收據四項／SAV通過。
+
+- [第二十一章戰後固定配置表有限CONFORMED訂正](../data/ida/fd2_ch21_post_layout_tables_20261003.json)：#122，IDA與固定EXE75-byte三表一致，X起點21；保留舊證據並說明取代範圍，整檔SAV通過。
+
+- [第二十一章正式四項對拍](../data/ui-traces/parity-ch21.json)與[全部非零抽樣索引](../data/ui-traces/parity-ch21-samples.json)：#118／#121／#122，30張完整RGB、酒店全檔SAV及原版不足臂；PLAYER-E2限111／114例外，現況與限制見58。

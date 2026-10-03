@@ -245,12 +245,17 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 	full.Start = "battle_ch21"
 	g.camp = campaign.NewRunner(full)
 	g.nativeFDOTHERPalettePhase = 5 // 驗證相對 68 次循環，不宣稱原版程序初值固定。
+	for _, id := range []int{24, 23} {
+		if _, exists := g.partyRoster[id]; exists || g.partyMembers[id] {
+			t.Fatalf("戰後新成員%d不應預先存在持續名冊", id)
+		}
+	}
 	g.result = "win"
 	if !g.confirmBattleResult() || g.result != "" || g.camp.NodeID() != "story_ch21_post_sky_key_intro" {
 		t.Fatalf("第21戰勝利邊界 node=%q result=%q err=%q", g.camp.NodeID(), g.result, g.loadErr)
 	}
-	if got := g.st.Units[0]; got.X != 15 || got.Y != 14 || got.Dir != 2 || !got.HasNativeMapPresentation || got.NativeMapPresentation.Pose != 2 {
-		t.Fatalf("第21戰戰後 layout slot0=(%d,%d,pose%d)，want (15,14,2)", got.X, got.Y, got.Dir)
+	if got := g.st.Units[0]; got.X != 21 || got.Y != 14 || got.Dir != 2 || !got.HasNativeMapPresentation || got.NativeMapPresentation.Pose != 2 {
+		t.Fatalf("第21戰戰後 layout slot0=(%d,%d,pose%d)，want (21,14,2)", got.X, got.Y, got.Dir)
 	}
 	if got := g.st.Units[25]; got.X != 23 || got.Y != 14 || got.Dir != 1 || !got.HasNativeMapPresentation || got.NativeMapPresentation.Pose != 1 || g.camX != 336 || g.camY != 240 {
 		t.Fatalf("第21戰戰後 layout slot25=(%d,%d,pose%d) camera=(%.0f,%.0f)", got.X, got.Y, got.Dir, g.camX, g.camY)
@@ -394,6 +399,14 @@ func TestChapterTwentyOneSkyKeyBattleResultReachesTownAndSaveBoundary(t *testing
 
 	// 多數原版關卡在戰後進城鎮；只在這個 node boundary 存檔，證實動畫、
 	// JOIN 與配方獎勵沒有被直接接往下一場戰鬥而遺失。
+	for _, id := range []int{24, 23} {
+		u, exists := g.partyRoster[id]
+		if !exists || !u.HasNativeIdentity || u.NativeIdentity != id ||
+			!u.HasMapSelectorKey || len(u.InventorySlots) != 8 || len(u.NativeInventoryFlags) != 8 {
+			t.Fatalf("JOIN%d未建立可供正常商店與存檔消費的持續記錄: exists=%t unit=%#v", id, exists, u)
+		}
+	}
+
 	oldCache := userDataDirCached
 	userDataDirCached = ""
 	t.Setenv("XDG_DATA_HOME", t.TempDir())
@@ -479,6 +492,11 @@ func TestChapterTwentyOneSkyKeyInsufficientBranchUsesNativeDialogueAndTownSave(t
 	}
 	full.Start = "battle_ch21"
 	g.camp = campaign.NewRunner(full)
+	for _, id := range []int{24, 23} {
+		if _, exists := g.partyRoster[id]; exists || g.partyMembers[id] {
+			t.Fatalf("戰後新成員%d不應預先存在持續名冊", id)
+		}
+	}
 	g.result = "win"
 	if !g.confirmBattleResult() || g.camp.NodeID() != "story_ch21_post_sky_key_intro" {
 		t.Fatalf("第21戰材料不足勝利邊界 node=%q err=%q", g.camp.NodeID(), g.loadErr)
@@ -525,6 +543,14 @@ func TestChapterTwentyOneSkyKeyInsufficientBranchUsesNativeDialogueAndTownSave(t
 	if !g.partyMembers[24] || !g.partyMembers[23] ||
 		g.partyJoinOrder[len(g.partyJoinOrder)-2] != 24 || g.partyJoinOrder[len(g.partyJoinOrder)-1] != 23 {
 		t.Fatalf("材料不足分支遺失共同JOIN24／23: %v", g.partyJoinOrder)
+	}
+
+	for _, id := range []int{24, 23} {
+		u, exists := g.partyRoster[id]
+		if !exists || !u.HasNativeIdentity || u.NativeIdentity != id ||
+			!u.HasMapSelectorKey || len(u.InventorySlots) != 8 || len(u.NativeInventoryFlags) != 8 {
+			t.Fatalf("JOIN%d未建立可供正常商店與存檔消費的持續記錄: exists=%t unit=%#v", id, exists, u)
+		}
 	}
 
 	oldCache := userDataDirCached

@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_parity_sample_sheet",
+  "chapter": 21,
+  "generated_at": "2026-10-03T10:39:15+08:00",
+  "receipt": "docs/data/ui-traces/parity-ch21.json",
+  "receipt_sha256": "b08e83e790bb830599a5e2168fef090ee43f96685f25b74e121b6b463f4ae90c",
+  "sheet": "work/parity-slot-ch21/parity-ch21-samples.png",
+  "sheet_sha256": "dd376244f6b3c6cb46c88f2b89c06adc017be507e10772a927bec5841db6d359",
+  "sheet_bytes": 1093572,
+  "oracle_run": "full-original-r1",
+  "remake_run": "full-r1-remake-r4",
+  "selection_rule": "每種 kind 第一點、所有 diff_pixels>0、--include-seq 指定；依 seq 排序",
+  "include_seq": [],
+  "rows": [
+    {
+      "row": 0,
+      "seq": 18,
+      "kind": "town_loaded",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0018.png",
+      "oracle_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+      "remake": "remake-0000-p2.png",
+      "remake_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 1,
+      "seq": 39,
+      "kind": "departure_prompt",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 2,
+      "oracle": "checkpoint-0039.png",
+      "oracle_sha256": "ab4069bf945a22713d5a190ad5801aad5b493971dfc0e1b61b50e8d75eec2728",
+      "remake": "remake-0001-p1.png",
+      "remake_sha256": "86df174b92fd0ba91a8fe8b97949ac933c34fcfb27f98eb9a7194511bf521fd8",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 2,
+      "seq": 44,
+      "kind": "party_selection",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 3,
+      "oracle": "checkpoint-0044.png",
+      "oracle_sha256": "58a70139bc362ff4c39747657fb6c8e248dc63053f0ad8d980ec409b7517909f",
+      "remake": "remake-0002-p1.png",
+      "remake_sha256": "55c4cc760d156e3d38465379112e4a6c51b1a65c9553d4662bb81d365b68b986",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 3,
+      "seq": 74,
+      "kind": "departure_confirmation",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 6,
+      "oracle": "checkpoint-0074.png",
+      "oracle_sha256": "fca2206af292bfcba3d66c67185b147776705e05358c6983938e1cf7ec2d94d5",
+      "remake": "remake-0003-p1.png",
+      "remake_sha256": "21b9d5bfc70d8855d6b2a99ca8c88deb1a973b5cd849ba141c3f57c746492a77",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 4,
+      "seq": 107,
+      "kind": "battle_start",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 8,
+      "oracle": "checkpoint-0107.png",
+      "oracle_sha256": "6f671e7749ff0934a613577d7c5e4e5aed9af1e0932556a460f0e9f7e2248bb1",
+      "remake": "remake-0004-p1.png",
+      "remake_sha256": "6f671e7749ff0934a613577d7c5e4e5aed9af1e0932556a460f0e9f7e2248bb1",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 5,
+      "seq": 112,
+      "kind": "select",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 88,
+      "oracle": "checkpoint-0112.png",
+      "oracle_sha256": "d1066138dbcb0a44ab10d60ee0fcafe7ca6fb55f8adca71f4f0c55c823949b18",
+      "remake": "remake-0005-p36.png",
+      "remake_sha256": "d1066138dbcb0a44ab10d60ee0fcafe7ca6fb55f8adca71f4f0c55c823949b18",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 6,
+      "seq": 116,
+      "kind": "move",
+      "diff_pixels": 88,
+      "box": [
+        221,
+        47,
+        242,
+        51
+      ],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0116.png",
+      "oracle_sha256": "dc091aecbc43ed95bccf3b4a12d0f8aa0301204fffd841c3314522e2878bfd19",
+      "remake": "remake-0006-p1.png",
+      "remake_sha256": "4a0f23be4c1e0ca177eff3b73f29fa43453d8f04e10aac95144a7d29fbc54074",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 7,
+      "seq": 122,
+      "kind": "wait",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 8,
+      "oracle": "checkpoint-0122.png",
+      "oracle_sha256": "7303e49060272660384f62f4cc49dfd3a877a3bf9d0d18437becee3f51d02ea6",
+      "remake": "remake-0007-p2.png",
+      "remake_sha256": "7303e49060272660384f62f4cc49dfd3a877a3bf9d0d18437becee3f51d02ea6",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 8,
+      "seq": 131,
+      "kind": "move",
+      "diff_pixels": 157,
+      "box": [
+        224,
+        47,
+        262,
+        71
+      ],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0131.png",
+      "oracle_sha256": "35e5f43013ef9fed6ae22111adc811d1e08e13badd0a93033979ab488eec598f",
+      "remake": "remake-0009-p1.png",
+      "remake_sha256": "af968256c2bd12cb8810a480e1d22af8a3b15f80c0db6b6a2c1d9bc223586bbc",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 9,
+      "seq": 308,
+      "kind": "move",
+      "diff_pixels": 157,
+      "box": [
+        103,
+        47,
+        142,
+        71
+      ],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0308.png",
+      "oracle_sha256": "eb5eb63a803851fe2f0dd6383a4fb2950b5826a0a3331a158f1a84d79dd2f248",
+      "remake": "remake-0012-p1.png",
+      "remake_sha256": "5b17607c678d4d7c8bfd7916910712a593b7c646a969dfc3cca24aedefcf2da8",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 10,
+      "seq": 460,
+      "kind": "move",
+      "diff_pixels": 102,
+      "box": [
+        102,
+        118,
+        121,
+        123
+      ],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0460.png",
+      "oracle_sha256": "f050884e5a42110febbb941d10bd9d7d15dc5e7430a861e936784d2dd5bd93ad",
+      "remake": "remake-0015-p2.png",
+      "remake_sha256": "51117df53b09c5c99a3e6ba60d3ad6b7a57854dbaf8f481972645867aededdfd",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 11,
+      "seq": 485,
+      "kind": "move",
+      "diff_pixels": 121,
+      "box": [
+        149,
+        82,
+        170,
+        99
+      ],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0485.png",
+      "oracle_sha256": "6a155bfcae52d0c5fa69a4d3b715809dee8ac54cf4b1cf4724d1a26eeea51de5",
+      "remake": "remake-0018-p2.png",
+      "remake_sha256": "7c37d773c028714bdbc3e43e0afe808a9434d55571d12f94af71ae4f92dbc774",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 12,
+      "seq": 487,
+      "kind": "attack_armed",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 88,
+      "oracle": "checkpoint-0487.png",
+      "oracle_sha256": "8f3485134d60dfdc4a40cd4488386a1ecd99e118eba5d03a768b48cb38840ec8",
+      "remake": "remake-0019-p30.png",
+      "remake_sha256": "8f3485134d60dfdc4a40cd4488386a1ecd99e118eba5d03a768b48cb38840ec8",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 13,
+      "seq": 502,
+      "kind": "attack_result",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 32,
+      "oracle": "checkpoint-0502.png",
+      "oracle_sha256": "0776ebe7bc29887822f9b0000324f7e8848a5cf5da9ea3792918cfd1a171c784",
+      "remake": "remake-0020-p12.png",
+      "remake_sha256": "0776ebe7bc29887822f9b0000324f7e8848a5cf5da9ea3792918cfd1a171c784",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 14,
+      "seq": 643,
+      "kind": "move",
+      "diff_pixels": 375,
+      "box": [
+        220,
+        96,
+        241,
+        117
+      ],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0643.png",
+      "oracle_sha256": "90acdd67741e2042c9e33d7204c2b8ade99c8d776d484f6c3c7bc54d369dc459",
+      "remake": "remake-0022-p10.png",
+      "remake_sha256": "4aa9177d3715d039ba70f4fc1e4132b7f9ce92de677de191adf8e50b258556f7",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 15,
+      "seq": 753,
+      "kind": "town_after_battle",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0753.png",
+      "oracle_sha256": "6b609a1d598d4973aad064457dd315de47ec9d13a56e5063497c9f1786b55e5b",
+      "remake": "remake-0028-p1.png",
+      "remake_sha256": "6b609a1d598d4973aad064457dd315de47ec9d13a56e5063497c9f1786b55e5b",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 16,
+      "seq": 822,
+      "kind": "shop_sell",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0822.png",
+      "oracle_sha256": "f3b2e42bbdff015a517d81c0760bee750427065654700a70584cc9cee6706ed9",
+      "remake": "remake-0030-p2.png",
+      "remake_sha256": "f3b2e42bbdff015a517d81c0760bee750427065654700a70584cc9cee6706ed9",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 17,
+      "seq": 879,
+      "kind": "shop_buy",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0879.png",
+      "oracle_sha256": "732a7f46d25a51346a83a5f604befd89ccdd886a385a4674712c009df8fa1195",
+      "remake": "remake-0031-p0.png",
+      "remake_sha256": "732a7f46d25a51346a83a5f604befd89ccdd886a385a4674712c009df8fa1195",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 18,
+      "seq": 909,
+      "kind": "town_enter",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 16,
+      "oracle": "checkpoint-0909.png",
+      "oracle_sha256": "6b7aa034f8599ff55f8f34aa8ea01e909a2e4021d9f091c1121965f86f408080",
+      "remake": "remake-0033-p2.png",
+      "remake_sha256": "6b7aa034f8599ff55f8f34aa8ea01e909a2e4021d9f091c1121965f86f408080",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 19,
+      "seq": 964,
+      "kind": "town_save",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0964.png",
+      "oracle_sha256": "0dc22df00b27e80bcbf65b2c5edcaab2d98498d40c8bcb6ae9300f4674a40ca6",
+      "remake": "remake-0034-p0.png",
+      "remake_sha256": "cdabab5c19e09e29b02a295a1c69b9bd12fa1a82c68124279647d270f63b8b65",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    },
+    {
+      "row": 20,
+      "seq": 986,
+      "kind": "secret_shop",
+      "diff_pixels": 0,
+      "box": [],
+      "ok": true,
+      "phases": 4,
+      "oracle": "checkpoint-0986.png",
+      "oracle_sha256": "b8cd522a633910684b415395d872d9316e7099ed714d6062186c42d8730de1ce",
+      "remake": "remake-0035-p2.png",
+      "remake_sha256": "b8cd522a633910684b415395d872d9316e7099ed714d6062186c42d8730de1ce",
+      "sheet": "work/parity-slot-ch21/parity-ch21-samples.png"
+    }
+  ],
+  "source_report": "work/parity-slot-ch21/full-r1-verify-r4.json",
+  "source_report_sha256": "5b4eba6fd28ae733273b1bede0449a3a41320c7ae5ed65e492e373365cb5f153",
+  "manual_review": {
+    "status": "reviewed_all_nonzero",
+    "date": "2026-10-03",
+    "review_image": "work/parity-slot-ch21/ch21-nonzero-review.png",
+    "review_image_sha256": "d00d500a4eeee7c96e5c88e4bf9391182dc42ebc473150d9f5b0dbd3afed9bcd",
+    "notes": [
+      {
+        "seq": 116,
+        "observation": "人物頂部與指令環上緣局部",
+        "level": "已證實圖面局部差異；精確相位未知"
+      },
+      {
+        "seq": 131,
+        "observation": "人物與右側指令環圖示局部",
+        "level": "已證實圖面局部差異；精確相位未知"
+      },
+      {
+        "seq": 308,
+        "observation": "人物與右側指令環圖示局部",
+        "level": "已證實圖面局部差異；精確相位未知"
+      },
+      {
+        "seq": 460,
+        "observation": "人物頭部局部",
+        "level": "已證實圖面局部差異；精確相位未知"
+      },
+      {
+        "seq": 485,
+        "observation": "人物與指令環圖示重疊區域",
+        "level": "已證實圖面局部差異；精確相位未知"
+      },
+      {
+        "seq": 643,
+        "observation": "原版選中者人物區域可見；該重製動畫候選人物區域空白，座標／HP相同，375px限於人物區域。",
+        "level": "已證實圖面局部差異；精確相位未知"
+      }
+    ],
+    "limits": "全部非零點皆在既定完整RGB640px預算內；沒有改圖、遮罩或調預算。精確動畫相位未證實，這些局部差異留作可選polish。"
+  }
+}

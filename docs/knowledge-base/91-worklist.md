@@ -111,25 +111,25 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第二十一章整備必出角色拒收與重製訊息缺口
+### 第二十一章戰後城鎮販售角色／道具owner無法建立
 
-`ch21-required-party-rejection` · 缺陷 · [#119](https://github.com/wicanr2/fd2_re/issues/119) · 仍未完成 · 要人判
+`ch21-post-town-sell-owner` · 缺陷 · [#121](https://github.com/wicanr2/fd2_re/issues/121) · 仍未完成 · 要人判
 
-#118第二十一章同源酒店SAV正常LOAD／選人前綴，原版seq59..71顯示必出角色拒收，72正常Enter返回城鎮。原版有界試跑exit7未建立戰場；重製同源重播在chapter_parity_replay_test.go拒收31E65原版訊息沒有正式對應。先查既有必出名單與IDA caller，不能只依提示字形猜成identity0，也不能修改存檔、略過gate或替換畫面。
+#118原版full-original-r1完整退出0，987檢查點與34動作，正常販售seq822金幣2102→2109。重製full-r1-remake-r1在shop_sell無法建立正式sell roster／item owner，未到酒店存檔；診斷行為與25張RGB通過，節點／交易拒收。先確認正式城鎮路由、角色／道具owner與原版呼叫鏈，RE→READY後修正實際缺口。
 
-怎樣算做完：['固定FD2.EXE雜湊、IDA線性位址、原始bytes、名單writer及0x31E65訊息consumer，分級記錄第二十一章所需身分及出發拒收／接受。', '先RE→READY後修正正式typed data／消費端，正常鍵盤原版拒收與合法選人起手均可比，沒有猜補或狀態注入。', '相關Go與第二十章四項回歸通過；同步58／56／57／索引，保留原r1失敗與合法r2計畫。']
+怎樣算做完：['同一原版收據及SAV重播正常販售，不以測試專用入口或狀態注入繞過正式owner。', '原版／重製四項及酒店全檔SAV通過；相關Go、第二十章回歸通過。', '固定輸入、原始失敗、證據分級與consumer記錄於主證據及58。']
 
-證據：`['docs/data/parity-slots/ch21-manifest.json', 'docs/data/parity-plans/ch21-startup.jsonl', 'docs/data/ida/fd2_ch19_required_character_20261003.json']`
+證據：`['docs/data/parity-plans/ch21-sample-r1.jsonl', 'docs/data/parity-slots/ch21-manifest.json', 'work/parity-slot-ch21/full-r1-remake-r1.log', 'work/parity-slot-ch21/full-r1-verify-r1.json']`
 
-### 第二十一章合法起手缺原生視圖與HUD來源
+### 第二十一章戰後持續隊伍X座標與原版相差六格
 
-`ch21-native-startup-view` · 缺陷 · [#120](https://github.com/wicanr2/fd2_re/issues/120) · 仍未完成 · 要人判
+`ch21-post-layout-x-persistence` · 缺陷 · [#122](https://github.com/wicanr2/fd2_re/issues/122) · 仍未完成 · 要人判
 
-#118／#119合法正常選入約拿後，原版r2已交出戰場游標：75筆、camera26,16、cursor37,17。重製r1到battle_start卻因HUD input unavailable拒收，正式battle_ch21缺原生視圖／HUD來源；不注入oracle視圖或以測試捷徑冒稱起手。名冊identity21移到record1的321C8 consumer另外由#119追查。
+#118同一原版full-original-r1及修正JOIN後重播r3，行為、節點與30張RGB通過；金幣全相同，酒店SAV只有18筆record+0 X相差6及checksum。已核對SAV roster先0xA00後metadata0x28，完整差異在work/parity-slot-ch21/full-r3-save-differences.json。先定位0x2415B配置與0x24324同步間的原版writer／consumer，對既有閉合主證據追加矛盾及取代關係。不得直接加6或注入座標讓SAV通過。
 
-怎樣算做完：['固定EXE及原版同槽鍵序，找到起手camera／cursor／overlay與HUD寫入及消費端，形成READY規格。', '正式資料／runtime實作後，正常選人→pre-handler→75筆配置→原生完整RGB起手抽樣通過，與原版固定snapshot可重生。', '相關Go、第二十章四項與全檔SAV回歸；同步58／56／57及索引，不外推整章。']
+怎樣算做完：['固定同源原版收據與SAV，解明原始writer／consumer、條件與位址空間，建立READY後才修正式typed路徑。', '第二十一章四項及酒店全檔SAV完全相同；相關Go及第二十章回歸通過。', '同步58、56、57及追加歷史勘誤，保留舊固定layout主證據。']
 
-證據：`['docs/data/parity-plans/ch21-startup-r2.jsonl', 'docs/data/parity-slots/ch21-manifest.json', 'docs/data/ida/fd2_ch21_required_character_20261003.json']`
+證據：`['docs/data/parity-plans/ch21-sample-r1.jsonl', 'docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt', 'work/parity-slot-ch21/full-r1-verify-r3.json', 'work/parity-slot-ch21/full-r3-save-differences.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

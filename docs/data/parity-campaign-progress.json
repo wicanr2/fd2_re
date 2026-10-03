@@ -567,15 +567,31 @@
     },
     {
       "chapter": 21,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch21.json",
+      "slot_manifest": "docs/data/parity-slots/ch21-manifest.json",
+      "slot_sha256": "49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "date": "2026-10-03",
+      "verify": "依正式收據 verification.commands 重跑原版、重製與 verify_chapter_parity.py；相關三套件與第二十章四項／全檔 SAV 回歸。",
+      "limitations": [
+        "PLAYER-E2限111／114建構槽例外；沿用第二十章酒店SAV、不再次強化或治療；抽樣正常敵方階段後T2清敵一次。",
+        "天空之鑰只驗實際材料不足分支；製作成功分支僅相關Go測試。30張RGB最大375px，未抽樣畫面與精確動畫相位未知。",
+        "HP0 slots3／7／13未完整序列化；raw HUD B只知nonzero；不外推自然難度、傷害、存活或敵方選目標。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 22,

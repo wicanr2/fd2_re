@@ -1246,6 +1246,36 @@
       "rule": "以提示字模判定角色身份前，同時核對固定名字資源索引、raw身份及caller；人工圖面讀字只作線索。入口為docs/data/fd2-reference-files.json固定版本、remake/generated-assets/fd2-original-b97caf22/text/FDTXT_000/resource.json與該章IDA主證據，不從誤讀新增角色規則。",
       "why": "第二十一章必出提示初讀索爾，固定名字索引22與31C93 push21實為約拿。",
       "evidence": "docs/data/ida/fd2_ch21_required_character_20261003.json；https://github.com/wicanr2/fd2_re/issues/119"
+    },
+    {
+      "id": "join-membership-requires-materialized-owner",
+      "date": "2026-10-03",
+      "area": "名冊與戰後服務",
+      "rule": "新JOIN驗收同時檢查membership、完整partyRoster及正常交易／存檔consumer。帶原版來源的join依remake/cmd/fd2/main.go既有constructor實體化；入口為tools/gen_campaign.py與docs/data/ida/fd2_ch21_post_join_materialization_20261003.json，目前涵蓋已證實caller的兩臂JOIN24／23。",
+      "why": "第二十一章舊資料缺Source，membership測試通過，但正常城鎮販售無新角色owner而拒收。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/121；docs/data/ui-traces/parity-ch21.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/gen_campaign.py"
+        ],
+        "pattern": "source.*0x24312"
+      }
+    },
+    {
+      "id": "static-layout-contradiction-recheck-raw-table",
+      "date": "2026-10-03",
+      "area": "固定表與存檔",
+      "rule": "固定layout與同狀態存檔矛盾時，先以IDA loader及原檔位址映射核對表bytes，再追writer／consumer。不得把統一差值直接補成規則。入口為docs/data/ida/fd2_ch21_post_layout_tables_20261003.json，保留IDA LE線性位址、檔案偏移及舊證據取代索引；目前涵蓋2415B三表75-byte。",
+      "why": "舊X表抄錄少6，造成18筆persistent X與SAV校驗不同；原檔首值21，233C6直接寫入表值。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/122；docs/data/ui-traces/parity-ch21.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_ch21_post_layout_tables_20261003.json"
+        ],
+        "pattern": "1514161613131313"
+      }
     }
   ]
 }

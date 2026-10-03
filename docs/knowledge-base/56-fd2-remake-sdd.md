@@ -9274,3 +9274,11 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 [有限收據](../data/ui-traces/ch21-native-startup.json)驗證正常LOAD、選入約拿與起手。必出檢查和排序分別由可編輯 required_party_identities、preparation_front_identities 表達；額滿穩定分組後先檢查，再按321C8移動完整持續record至1，固定record0與其餘順序保留。所有目標先驗證才發布排列；缺值或身份不唯一即拒收。第十九章只有必出檢查，不自動套用排序。原始caller／consumer與bytes見[CONFORMED主證據](../data/ida/fd2_ch21_required_character_20261003.json)。
 
 [起手規格](../data/ida/fd2_ch21_startup_20261003.json)沿用既有runtime0聚焦consumer，來源寫入正式可編輯campaign_full，再由canonical exporter同步。HUD B=1只適配已知nonzero入口，原版raw B精確值未知。完整Go19套件在視圖資料更新前通過；更新後三個相關套件107測試及第二十章完整四項／SAV回歸通過。本段最高RUNTIME-E1，第二十一章整章仍由#118驗收。
+
+### 2026-10-03 第二十一章戰後名冊與存檔訂正（#118／#121／#122）
+
+[正式章收據](../data/ui-traces/parity-ch21.json)通過四項對拍及酒店全檔SAV。兩臂JOIN24、JOIN23補上24312、2431C來源，沿用既有constructor建立完整partyRoster，再由24324同步；僅記錄membership不足以支援後續販售與存檔。原始caller、consumer及驗收契約見[名冊主證據](../data/ida/fd2_ch21_post_join_materialization_20261003.json)。
+
+[固定表訂正](../data/ida/fd2_ch21_post_layout_tables_20261003.json)以IDA loader與LE原檔同一75-byte否定舊X表抄錄，首值應為21。233C6直接寫入表值，可編輯layout同步修正，沒有新增座標加6規則。舊研究筆記保留並追加勘誤，Y、pose及slot25特例不變。
+
+兩份規格限已驗範圍列CONFORMED。天空之鑰材料不足臂有原版章收據，成功臂只經本機相關測試。第二十章在最終資料上重播四項與全檔SAV通過；相關三套件通過。先前19套件回歸對應49bf984f程式，後續修改為資料與測試，驗證範圍依收據分列。較早「第二十一章未驗收」由本節取代，統計依58及正式台帳。

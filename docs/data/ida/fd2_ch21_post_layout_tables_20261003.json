@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_corrected_layout_table_spec",
+  "date": "2026-10-03",
+  "issue": 122,
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "scope": "raw ch20 post 2415B共用layout固定三表訂正；原版不足臂同狀態SAV反證，不重新解配方／演出／233C6 helper。",
+  "supersedes": {
+    "file": "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+    "sha256": "74e0174805f8f53a6d284644a6601679e34df150df6c0bbf27a85c4d8597391c",
+    "section": "5.1 x表及對應runtime預期",
+    "old_first_x": 15,
+    "reason": "同一固定EXE與原版收據顯示21；75-byte表由IDA loader及LE object機械讀取完全相同。舊Y／pose／slot25特例／camera契約保留。",
+    "revision_at_review": "49bf984f5bf391ace07456f23be07e8696408929",
+    "amended_file_sha256": "0c30222c8f94d46bf36040265db9eab89de25413050498e591d159a9aa466127"
+  },
+  "tables": [
+    {
+      "name": "x",
+      "ida_le_linear": "0x52228",
+      "file_offset": "0x52028",
+      "bytes": "15141616131313131214141412151515151312161111111717",
+      "values": [
+        21,
+        20,
+        22,
+        22,
+        19,
+        19,
+        19,
+        19,
+        18,
+        20,
+        20,
+        20,
+        18,
+        21,
+        21,
+        21,
+        21,
+        19,
+        18,
+        22,
+        17,
+        17,
+        17,
+        23,
+        23
+      ],
+      "level": "已證實",
+      "source": [
+        "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json",
+        "work/parity-slot-ch21/ch21-layout-tables-r1.txt"
+      ]
+    },
+    {
+      "name": "y",
+      "ida_le_linear": "0x52241",
+      "file_offset": "0x52041",
+      "bytes": "0e0e0d0e0e0f10110e0f10110d0f10110b0b0b0b0c0d0e0c0d",
+      "values": [
+        14,
+        14,
+        13,
+        14,
+        14,
+        15,
+        16,
+        17,
+        14,
+        15,
+        16,
+        17,
+        13,
+        15,
+        16,
+        17,
+        11,
+        11,
+        11,
+        11,
+        12,
+        13,
+        14,
+        12,
+        13
+      ],
+      "level": "已證實",
+      "source": [
+        "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json",
+        "work/parity-slot-ch21/ch21-layout-tables-r1.txt"
+      ]
+    },
+    {
+      "name": "pose",
+      "ida_le_linear": "0x5225a",
+      "file_offset": "0x5205a",
+      "bytes": "02020101020202020302020203020202000000000303030101",
+      "values": [
+        2,
+        2,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0,
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "level": "已證實",
+      "source": [
+        "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json",
+        "work/parity-slot-ch21/ch21-layout-tables-r1.txt"
+      ]
+    }
+  ],
+  "writer": {
+    "original_name": "sub_233C6",
+    "address": "0x233c6",
+    "end": "0x234bb",
+    "instructions": [
+      {
+        "address": "0x233d4",
+        "bytes": "8b7c2414",
+        "original": "mov     edi, [esp+10h+arg_0]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x233d8",
+        "bytes": "8b6c2418",
+        "original": "mov     ebp, [esp+10h+arg_4]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x233dc",
+        "bytes": "8b742424",
+        "original": "mov     esi, [esp+10h+arg_10]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x233ea",
+        "bytes": "8b542420",
+        "original": "mov     edx, [esp+10h+arg_C]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x233f1",
+        "bytes": "39f2",
+        "original": "cmp     edx, esi",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x23400",
+        "bytes": "a1453a0500",
+        "original": "mov     eax, dword_53A45",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x23407",
+        "bytes": "8a1c3a",
+        "original": "mov     bl, [edx+edi]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2340a",
+        "bytes": "8818",
+        "original": "mov     [eax], bl",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2340c",
+        "bytes": "8a1c2a",
+        "original": "mov     bl, [edx+ebp]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2340f",
+        "bytes": "885801",
+        "original": "mov     [eax+1], bl",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x23419",
+        "bytes": "8a5c241c",
+        "original": "mov     bl, byte ptr [esp+10h+arg_8]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2341d",
+        "bytes": "885803",
+        "original": "mov     [eax+3], bl",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x23422",
+        "bytes": "8b5c241c",
+        "original": "mov     ebx, [esp+10h+arg_8]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x23426",
+        "bytes": "8a1c1a",
+        "original": "mov     bl, [edx+ebx]",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x23429",
+        "bytes": "ebf2",
+        "original": "jmp     short loc_2341D",
+        "semantic": "配置範圍與固定三表的原始讀寫",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json"
+        ],
+        "semantic_annotations": []
+      }
+    ],
+    "semantic": "2415B以52228／52241／5225A三表副本供slots0..24；2340A直接寫runtime record+0，後續24324→11506依身份同步持續record。",
+    "level": "已證實",
+    "source": [
+      "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json",
+      "work/parity-slot-ch21/ch21-layout-writer-tables-r2.json",
+      "docs/data/ida/fd2_join_copyback_20261001.json"
+    ]
+  },
+  "oracle_counterexample": {
+    "original": "work/parity-slot-ch21/full-original-r1",
+    "remake": "work/parity-slot-ch21/full-r1-remake-r3",
+    "first_post_seq": 719,
+    "native_record0_x": 21,
+    "persist_record0_x": 21,
+    "remake_persist_x": 15,
+    "difference": "18筆record+0差6及checksum兩byte，其餘全檔相同。",
+    "data": "work/parity-slot-ch21/full-r3-save-differences.json"
+  },
+  "typed_contract": {
+    "node": "story_ch21_post_sky_key_intro",
+    "op": "layout_units",
+    "source": "0x2415b",
+    "slots": "0..24逐筆取固定X/Y/pose，不按SAV差值加6；slot25 special23,14,1及camera raw14,10保留。",
+    "producer": "正式可編輯remake/assets/scenarios/campaign_full.json；tools/export_editor_canonical.py --root . --output remake/assets/editor-canonical --without-animations同步canonical。gen_campaign.py歷史候選未產生此layout，不宣稱完整重建器。",
+    "validation": "既有consumer先驗所有slots及pose再SetMapPlacement；不足仍失敗即關閉。"
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "level": "RUNTIME-E1",
+    "basis": "固定bytes、直接writer、rawcaller及正常原版同狀態結果已足夠。",
+    "scope": "兩臂局部回歸、原版不足臂987點章收據四項及酒店全檔SAV。"
+  },
+  "verification": [
+    "同一987點原版／同源SAV重播四項與酒店全檔SAV。",
+    "既有SkyKey兩臂相關回歸、第二十章四項／SAV。"
+  ],
+  "limits": [
+    "原版完整章本輪走不足臂，成功臂仍局部E1。",
+    "依111／114例外，不外推自然難度、傷害、存活或所有未抽樣畫面。"
+  ],
+  "verification_result": {
+    "receipt": "docs/data/ui-traces/parity-ch21.json",
+    "report": "work/parity-slot-ch21/full-r1-verify-r4.json",
+    "related_go": "work/parity-slot-ch21/chapter21-post-layout-related-r2.log",
+    "save_sha256": "22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd",
+    "prior_ch20": "work/parity-slot-ch21/prior-ch20-verify-r3.json"
+  }
+}

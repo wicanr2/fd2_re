@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_missing_consumer_source_spec",
+  "date": "2026-10-03",
+  "issue": 121,
+  "scope": "玩家第21戰戰後兩臂共用JOIN24／23的正式持續名冊物化，消費既有原版來源，不重開天空之鑰配方或演出。",
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "original_function": {
+    "name": "sub_240FA",
+    "address": "0x240fa",
+    "end": "0x24336",
+    "instructions": [
+      {
+        "address": "0x24310",
+        "bytes": "6a18",
+        "original": "push    18h",
+        "semantic": "共享尾端JOIN24、JOIN23、持續同步與章號遞增",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+          "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x24312",
+        "bytes": "e88ecffeff",
+        "original": "call    sub_112A5",
+        "semantic": "共享尾端JOIN24、JOIN23、持續同步與章號遞增",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+          "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2431a",
+        "bytes": "6a17",
+        "original": "push    17h",
+        "semantic": "共享尾端JOIN24、JOIN23、持續同步與章號遞增",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+          "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2431c",
+        "bytes": "e884cffeff",
+        "original": "call    sub_112A5",
+        "semantic": "共享尾端JOIN24、JOIN23、持續同步與章號遞增",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+          "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x24324",
+        "bytes": "e8ddd1feff",
+        "original": "call    sub_11506",
+        "semantic": "共享尾端JOIN24、JOIN23、持續同步與章號遞增",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+          "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json"
+        ],
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x24329",
+        "bytes": "ff05033c0500",
+        "original": "inc     dword_53C03",
+        "semantic": "共享尾端JOIN24、JOIN23、持續同步與章號遞增",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+          "work/parity-slot-ch21/ch21-post-join-call-bytes-r1.json"
+        ],
+        "semantic_annotations": []
+      }
+    ]
+  },
+  "canonical_reuse": [
+    {
+      "file": "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt",
+      "sha256": "0c30222c8f94d46bf36040265db9eab89de25413050498e591d159a9aa466127",
+      "level": "已證實",
+      "at_ready_sha256": "74e0174805f8f53a6d284644a6601679e34df150df6c0bbf27a85c4d8597391c",
+      "at_ready_revision": "49bf984f5bf391ace07456f23be07e8696408929"
+    },
+    {
+      "file": "docs/data/ida/fd2_join_copyback_20261001.json",
+      "sha256": "14bda9aa034f990ddbf8384601d0204e56d1ef6256dd125da636d068bf66ce17",
+      "level": "已證實"
+    },
+    {
+      "file": "remake/assets/data/native_join_constructor.json",
+      "sha256": "a8384e717952265f9880a7138bb59a1d20efbadef42a4dc6c3fca2113570f2e7",
+      "level": "已證實"
+    }
+  ],
+  "diagnostic": {
+    "original": "work/parity-slot-ch21/full-original-r1",
+    "remake": "work/parity-slot-ch21/full-r1-remake-r2",
+    "original_save_sha256": "22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd",
+    "observation": "partyJoinOrder有24、23，partyRoster兩筆不存在；setupNativeShopSellRoster拒收。",
+    "cause": "campaign_full兩臂join未提供Source；main.go join只在Source非空且成員未物化時呼叫既有materializeNativeJoinPersistentUnit。後續sync按已存在raw identity查找，不能補這兩筆缺失。",
+    "level": "已證實"
+  },
+  "typed_contract": {
+    "nodes": [
+      "story_ch21_post_sky_key_crafted",
+      "story_ch21_post_sky_key_insufficient"
+    ],
+    "changes": [
+      {
+        "op": "join",
+        "char_id": 24,
+        "source": "0x24312"
+      },
+      {
+        "op": "join",
+        "char_id": 23,
+        "source": "0x2431c"
+      }
+    ],
+    "sequence": "現有對話／演出完成→JOIN24→JOIN23→0x24324同步→0x24329章號21→town_ch22；來源不足、身份不唯一或constructor缺值仍失敗即關閉。",
+    "consumer": "remake/cmd/fd2/main.go case join→materializeNativeJoinPersistentUnit→partyRoster／partyMembers／partyJoinOrder；native_shop_sell_ui.go→native酒店save。",
+    "generator": "tools/gen_campaign.py c==21 common_tail保存兩個call source；正式可編輯campaign_full由tools/export_editor_canonical.py --root . --without-animations同步canonical。",
+    "boundary": "不更改JOIN constructor、商店規則、配方、slots、傷害或任何原版測試狀態。"
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "level": "RUNTIME-E1",
+    "basis": "既有主證據、機械bytes重生、正常原版SAV及相同輸入的缺失資料診斷已足夠。",
+    "scope": "兩臂局部回歸、原版不足臂987點章收據四項及酒店全檔SAV。"
+  },
+  "verification": {
+    "original_remake": "使用#118原版full-original-r1與同一SAV重播，四項及酒店整檔SHA一致。",
+    "remake_only": "既有SkyKey兩臂回歸從沒有24／23的持續名冊開始，驗證實際物化與正常販售owner，再驗存讀檔。",
+    "regressions": "相關Go及第二十章完整四項／SAV。"
+  },
+  "limits": [
+    "首輪原版為天空之鑰不足臂；成功臂僅既有局部E1，不外推本輪原版驗證。",
+    "111／114建構槽例外且T2清敵一次，不能談自然難度／存活／傷害。",
+    "runtime原生JOIN constructor與既有位址本輪不重新反組譯。"
+  ],
+  "verification_result": {
+    "receipt": "docs/data/ui-traces/parity-ch21.json",
+    "report": "work/parity-slot-ch21/full-r1-verify-r4.json",
+    "related_go": "work/parity-slot-ch21/chapter21-post-layout-related-r2.log",
+    "save_sha256": "22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd",
+    "prior_ch20": "work/parity-slot-ch21/prior-ch20-verify-r3.json"
+  }
+}

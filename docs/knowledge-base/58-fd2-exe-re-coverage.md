@@ -2133,3 +2133,27 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 [主收據](../data/ui-traces/ch21-native-startup.json)取代上文READY進度，兩份主規格限起手列CONFORMED。正常選入約拿後321C8將完整record移到1，record0固定，其餘穩定；原版75筆前沿，重製72筆active快照及五點獨立節點／完整RGB通過，全部0px。HP0 slots3／7／13未序列化，raw HUD B只知nonzero；這些限制不因畫面相同而升級。
 
 缺約拿r1保留原版拒收與返回城鎮，五點畫面最大275px；通用章比較器的兩個拒收節點仍未知，不偽裝為整章通過。r2缺最後PNG，r3相同SAV／輸入／seed前108點完全一致，僅末尾兩次空白等待補擷取。完整Go19套件、更新視圖後107相關測試與第二十章31張四項／全檔SAV回歸通過。第二十一章未寫酒店SAV，#118整章仍未完成，唯一台帳17／30不變。
+
+#118的[章內計畫r1](../data/parity-plans/ch21-sample-r1.jsonl)保留已驗合法起手，抽樣一次正常敵方階段後T2清敵一次；沒有週期改HP／NPC／道具。戰後天空之鑰依實際配方條件，town22秘密入口使用既有selection0與Alt-F1。尚未執行完成，不提升正式台帳。
+
+#121已定位正式consumer缺來源，不重開240FA：既有[天空之鑰主證據](../data/ida/fd2_ch20_sky_key_sequence_ida.txt)的24312 JOIN24、2431C JOIN23，兩臂可編輯join卻未附Source，只留下membership而無partyRoster。新[READY契約](../data/ida/fd2_ch21_post_join_materialization_20261003.json)保留原始call bytes與地址，補來源後仍走既有constructor／同步。原版r1完整987點、34動作，酒店SAV22399b54…；重播r2尚拒收，不提高台帳。
+
+#122重開原因為同狀態執行結果矛盾：既有2415B固定layout表X15，原版酒店persistent record0為21，18筆record+0皆比重製大6；其餘SAV欄位及金幣相同，checksum另差兩byte。原版r1／重播r3行為、獨立節點、30張RGB通過，但整檔SAV拒收。先查233C6 writer與24324 consumer間的調整，尚未否定固定table原bytes，不把未知條件寫成常數加6。#121販售已通過，整章#118保持未完成。
+
+#122原始資料審查已否定舊X表抄錄：IDA loader三表75-byte與LE object原檔一致，X首值21；233C6直接寫入table值，無額外加6規則。新[READY訂正](../data/ida/fd2_ch21_post_layout_tables_20261003.json)取代既有5.1的X表與runtime預期，Y／pose、slot25特例與camera保留。原有函式與證據不刪除；補可編輯data後仍需原版／重製整檔SAV。
+
+### 2026-10-03 第二十一章 PLAYER-E2 與勘誤閉合
+
+[正式章收據](../data/ui-traces/parity-ch21.json)取代上文#118／#121／#122驗證中狀態。原版full-original-r1固定dosgolem 1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74，987檢查點／34動作，重製r4四項通過；54筆AI零順序分岔，30張RGB最大375px、24張0px。酒店全檔22987 bytes SAV SHA-256為22399b547dc8457ecbf5df982da99cc594817482981d90ea9dd84a50fd4a81bd，兩側相同。完整命令、輸入雜湊、程式與資料雜湊保存在收據verification。
+
+| 分層 | 結果與主證據 |
+| --- | --- |
+| RE-CLOSED | 24312／2431C既有JOIN caller沿用constructor；[名冊證據](../data/ida/fd2_ch21_post_join_materialization_20261003.json)補完整consumer鏈。 |
+| RE-CLOSED | [固定表訂正](../data/ida/fd2_ch21_post_layout_tables_20261003.json)以IDA loader及LE原檔75-byte反證舊X抄錄。取代5.1 X表，原始歷史與位址保留。 |
+| DATA-READY | 兩臂JOIN來源與intro固定X表已同步可編輯戰役、canonical包及JOIN產生器。 |
+| RUNTIME-E1 | 名冊實體化、販售owner、layout持續性及材料成功／不足兩臂相關三套件通過；第二十章最終資料回歸四項與全檔SAV通過。 |
+| PLAYER-E2 | 依111／114例外，實際不足臂至城鎮、交易、酒店存檔與秘密入口；clear seq700一次46筆，未週期改HP。 |
+
+本章沿用第二十章SAV與祖先政策，未再升級、治療、強化或改金幣。製作成功臂只有本機測試；原版raw HUD B、未序列化死亡slots及未抽樣畫面仍是證據限制，不阻塞本章既定gate。六個局部動畫／遮擋差異是可選polish，不宣稱逐幀相位已證實。
+
+本輪以tools/fd2_parity_progress.py verify、tools/fd2_worklist.py render從正式台帳重生統計，輸入docs/data/parity-campaign-progress.json，日期2026-10-03。現為18／30，第4至21章passed；其餘章與Issue仍未完成。上文17／30是當時快照，現況由本節及台帳取代。
