@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,6 +110,36 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 第24章敵方指令6 mode5 工作影格越界中止
+
+`ch24-command6-work-frame-bounds` · 缺陷 · [#151](https://github.com/wicanr2/fd2_re/issues/151) · 仍未完成 · 要人判
+
+#150 修正來源檢查後，同源 fresh-full-original-r6 的正常重播已越過 attack_result seq2100，於 T4 敵方 actor20 command6 target0 frame6 中止：mode5 channel1 work frame bounds (334,153 143x110)。原版同槽同 seed4 已執行該回合，重製端不得以放寬界限或忽略特效掩蓋差異。先查既有 command6 主證據、索引與原始影格，再形成 READY 規格。保持既定 DP 政策及第24章整章未驗收狀態。
+
+怎樣算做完：['核對既有 command6／mode5 主證據與原始資料格式，查明越界的來源與消費端；新推論分級，先建立 READY 規格。', '依證據修正正式播放與工作緩衝路徑，保留未知參數及資產邊界的拒收。', '同源 r6 重播通過該命令，相關測試與已驗章回歸通過；實際差異及整章限制如實保留。']
+
+證據：`['work/parity-slot-ch24/fresh-full-remake-r3.log', 'work/parity-slot-ch24/fresh-full-original-r6', 'docs/data/ida/fd2_ch24_stage_runtime_20261003.json']`
+
+### 第24章全員存活槽 T4 敵方回合狀態與原版不一致
+
+`ch24-fresh-ai-round4-divergence` · 缺陷 · [#152](https://github.com/wicanr2/fd2_re/issues/152) · 仍未完成 · 要人判
+
+#150 的 fresh-full-remake-r3 正常重播，獨立報告首次在 after_enemy_phase seq1775（T4）出現 units_differ：原版有 camp0 (13,15) 與 camp2 (14,16)，重製有 camp0 (14,13)；camp0 (14,14) HP 原版400／重製440。比較點標記 rng_synced_point；不得直接歸咎未受控亂數。後續原版選取 (14,16) 重製無單位且節點分歧。先對照維護中 oracle 現行收據與 RE 主證據，確認第一筆資料或決策差異，禁止調 DP、座標補洞或略過差異。
+
+怎樣算做完：['核對同槽、seed4、原版及重製決策前狀態與受控 RNG 條件，定位第一筆真正分歧。', '依證據建立 READY 並修正正式 typed 規則或狀態消費端，未知語意仍拒收。', '同源正常回合重播狀態與節點通過，相關章回歸保留，整章完成另由 #142 驗收。']
+
+證據：`['work/parity-slot-ch24/fresh-full-verify-r3.json', 'work/parity-slot-ch24/fresh-full-remake-r3', 'work/parity-slot-ch24/fresh-full-original-r6']`
+
+### 第24章全員存活槽正常選取 seq206 完整 RGB 差異超標
+
+`ch24-fresh-select-rgb-divergence` · 缺陷 · [#153](https://github.com/wicanr2/fd2_re/issues/153) · 仍未完成 · 要人判
+
+#150 修正後 fresh-full-verify-r3 的正常選取 seq206，狀態與節點皆通過，但完整 RGB 差14772px，範圍 [4,4,315,195]，超過111既定640px上限。seq2100完整舞台相位49兩側一致，仍差946px，不能把來源相位修正當視覺驗收。先查第一個 seq206 的同狀態來源、資產、camera、palette、stage及圖層；不遮罩、不放寬上限、不挑像素最低值規避契約。
+
+怎樣算做完：['核對 seq206 原版正常輸入、typed狀態與完整畫面，查第一個視覺差異的證據及既有主索引。', '依 READY 規格修正正式渲染消費端；測試候選相位與正式行為的證據等級分開。', '同源 seq206 完整 RGB 達既定上限，後续晚期差異保留，第23章及第24章有限回歸通過。']
+
+證據：`['work/parity-slot-ch24/fresh-full-verify-r3.json', 'work/parity-slot-ch24/fresh-full-original-r6/checkpoint-0206.png', 'work/parity-slot-ch24/fresh-full-remake-r3']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -232,5 +262,15 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 第24章舞台相位檢查誤拒絕正常 VGA 來源指標重綁
+
+`ch24-stage-vga-source-rebind` · 缺陷 · [#150](https://github.com/wicanr2/fd2_re/issues/150) · 仍未完成 · 要人判
+
+維護中的正常r6重播在T4 attack_result seq2100以「stage VGA source不一致」停止。原版canonical9b05369的完整trace141850筆未截斷，0x11EED返回caller仍是0x11D3B，六copy參數仍符合312×192／stride456／VGA目的0xA0504，但source由0x14CCC4改為0x1920E8；已閉合IDA9.4證據固定sub_11CAC讀dword_53A49+0x8088作來源，未保證pointer在LOADCH後永遠不變。Go重播與Python獨立比較器把新source當錯誤。只修驗證方法，不調DP或遊戲規則；保留其他caller未知copy及原版T5敗北限制。
+
+怎樣算做完：['先以原版固定EXEhash、完整trace、既有IDA9.4 sub_11CAC ABI及實際0x11D3B完成copy反證建立READY契約；未證實來源生命週期不猜命名。', 'Go與Python驗證器只在0x11D3B且完整viewport參數見證時接受來源重新綁定，保留其他caller不同來源的相位未知、loader重設、順序／參數／截斷拒收。', '同源r6正常重播越過seq2100；相關Go／Python回歸及既有第24章有限對拍、第23章回歸通過，保留新差異與整章限制。']
+
+證據：`['work/parity-slot-ch24/fresh-full-original-r6/eip-trace.jsonl', 'work/parity-slot-ch24/fresh-full-remake-r1.log', 'docs/data/ida/fd2_ch24_stage_runtime_20261003.json', 'docs/data/ida/fd2_ch23_post_ida.txt']`
 
 <!-- END fd2_worklist.py render -->

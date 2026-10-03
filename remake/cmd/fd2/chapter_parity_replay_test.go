@@ -174,10 +174,13 @@ func parityCh23RowOffset(raw []byte, steps uint64) (int, error) {
 			if source == "" && entry.Stack[0] != "0x11D3B" {
 				return 0, fmt.Errorf("stage VGA work來源缺失")
 			}
-			if source != "" && source != entry.Stack[3] {
-				if entry.Stack[0] == "0x11D3B" {
-					return 0, fmt.Errorf("stage VGA source不一致")
-				}
+			pointer, err := strconv.ParseUint(entry.Stack[3], 0, 32)
+			if err != nil || pointer == 0 {
+				return 0, fmt.Errorf("stage VGA source無效")
+			}
+			// #150: a completed native viewport copy witnesses the current source.
+			// Other callers may only publish the source already witnessed by 0x11D3B.
+			if entry.Stack[0] != "0x11D3B" && source != entry.Stack[3] {
 				presented = -1
 				continue
 			}
@@ -1597,6 +1600,78 @@ func TestParityCh23RowOffsetRequiresOriginalLoaderAndCaller(t *testing.T) {
 	resume := strings.Replace(selection, `"step":5`, `"step":7`, 1)
 	if offset, err := parityCh23RowOffset([]byte(trace+"\n"+otherSource+"\n"+resume), 7); err != nil || offset != 3 {
 		t.Fatalf("已驗work再次發布後未恢復相位：offset=%d err=%v", offset, err)
+	}
+}
+
+// #150：copy參數直接取正常r6主證據；旋轉序列為受控單元測試，不冒充原版收據。
+func TestParityCh23RowOffsetAcceptsWitnessedSourceRebind(t *testing.T) {
+	raw, err := os.ReadFile("../../../docs/data/ida/fd2_ch24_stage_runtime_20261003.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var doc map[string]interface{}
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		t.Fatal(err)
+	}
+	var before, after map[string]interface{}
+	for _, item := range doc["corrections"].([]interface{}) {
+		correction := item.(map[string]interface{})
+		if correction["issue"] != "#150" {
+			continue
+		}
+		runtime := correction["runtime"].(map[string]interface{})
+		change := runtime["normal_source_changes"].([]interface{})[0].(map[string]interface{})
+		before, after = change["before"].(map[string]interface{}), change["after"].(map[string]interface{})
+	}
+	if before == nil || after == nil {
+		t.Fatal("缺正常source重綁證據")
+	}
+	loader := map[string]interface{}{"step": 1, "eip": "0x24D48", "eax": "0x1", "stack": []string{"0x0", "0x0", "0x10842", "0x0"}}
+	rotation := map[string]interface{}{"step": uint64(before["step"].(float64)) + 1, "eip": "0x24D48", "eax": "0x2", "stack": []string{"0x0", "0x0", "0x120B6", "0x0"}}
+	encode := func(entries ...map[string]interface{}) []byte {
+		var trace []byte
+		for _, entry := range entries {
+			row, err := json.Marshal(entry)
+			if err != nil {
+				t.Fatal(err)
+			}
+			trace = append(trace, row...)
+			trace = append(trace, '\n')
+		}
+		return trace
+	}
+	cutoff := uint64(after["step"].(float64))
+	if offset, err := parityCh23RowOffset(encode(loader, before, rotation, after), cutoff); err != nil || offset != 3 {
+		t.Fatalf("正常consumer重新綁定未發布：offset=%d err=%v", offset, err)
+	}
+	clone := func(row map[string]interface{}) map[string]interface{} {
+		data, _ := json.Marshal(row)
+		var copy map[string]interface{}
+		json.Unmarshal(data, &copy)
+		return copy
+	}
+	foreign := clone(after)
+	foreign["stack"].([]interface{})[0] = "0x12F57"
+	if _, err := parityCh23RowOffset(encode(loader, before, rotation, foreign), cutoff); err == nil {
+		t.Fatal("非正常caller重新綁定了來源")
+	}
+	foreign["step"] = uint64(before["step"].(float64)) + 2
+	if offset, err := parityCh23RowOffset(encode(loader, before, rotation, foreign, after), cutoff); err != nil || offset != 3 {
+		t.Fatalf("正常copy未解除來源未知：offset=%d err=%v", offset, err)
+	}
+	for _, src := range []string{"0x0", "garbage", "0x100000000"} {
+		bad := clone(after)
+		bad["stack"].([]interface{})[3] = src
+		if _, err := parityCh23RowOffset(encode(loader, before, rotation, bad), cutoff); err == nil {
+			t.Fatalf("錯誤來源%s被承接", src)
+		}
+	}
+	// 舊來源不能由其他caller把新見證撤回；必須再有正常copy見證。
+	old := clone(before)
+	old["step"] = cutoff + 1
+	old["stack"].([]interface{})[0] = "0x18C5D"
+	if _, err := parityCh23RowOffset(encode(loader, before, rotation, after, old), cutoff+1); err == nil {
+		t.Fatal("其他caller把source回綁到舊來源")
 	}
 }
 

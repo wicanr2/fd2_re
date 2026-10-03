@@ -101,9 +101,11 @@ def stage_trace_metadata(root: Path, checkpoint: dict, recorded: object) -> dict
                     continue
                 if source_buffer is None and stack[0] != "0x11D3B":
                     raise ValueError("VGA work來源缺失")
-                if source_buffer is not None and source_buffer != stack[3]:
-                    if stack[0] == "0x11D3B":
-                        raise ValueError("VGA source不一致")
+                pointer = int(stack[3], 0)
+                if not 0 < pointer <= 0xffffffff:
+                    raise ValueError("VGA source無效")
+                # #150: only a completed native viewport copy can rebind the source.
+                if stack[0] != "0x11D3B" and source_buffer != stack[3]:
                     presented = None
                     continue
                 source_buffer, presented = stack[3], offset

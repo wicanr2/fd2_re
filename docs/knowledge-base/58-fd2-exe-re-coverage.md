@@ -2337,4 +2337,21 @@ PF分支有限CONFORMED：30746f0同槽r5的舊2115點零差異，越過3C868 JN
 
 r6在T5正常END後索爾HP420→209→9，seq2274的unit_base重設，seq2277返回標題；不把新標題單位表讀成全隊死亡。driver等待玩家游標逾時exit15，容器自行退出及移除。沒有HP鎖定、治療、強化或重擲。此輪不作#142整章驗收，T7／10及完整重製比較仍待，正式20／30不變。下一輪只調整同槽／seed的正常移動與接戰計畫。
 
-同槽／seed的[正常避敵計畫r2](../data/parity-plans/ch24-fresh-sample-r2.jsonl)保留T1..3前綴；T4先由move_unit正常選取索爾移到(21,22)，後續在下緣待機，移動仍由原版指令環裁決。AP200／DP0／DX60與T11單次清敵不變，不注入座標或HP；r7尚待，未增整章台帳。
+同槽／seed的[正常避敵計畫r2](../data/parity-plans/ch24-fresh-sample-r2.jsonl)保留T1..3前綴；T4先由move_unit正常選取索爾移到(21,22)，後續在下緣待機，移動仍由原版指令環裁決。AP200／DP0／DX60與T11單次清敵不變，不注入座標或HP；r7未通過，未增整章台帳。
+
+
+r7正常撤退反證見[同一有限收據的診斷欄位](../data/ui-traces/ch24-finite-parity.json)：seq1783由(20,19)移到(21,22)，seq1789待機，HP420。T4 END後seq2139 HP201、seq2140 HP0，seq2141的unit_base由1522012重設為1065544，seq2143返回標題。oracle.log無CPU錯誤，driver等游標逾時exit15；trace123303筆未截斷，容器自行退出及移除。
+
+兩條全員存活槽正常路徑均未到T7／10，不再刷長局。114固定AP200／DP0／DX60政策保持原值；改政策需使用者另行確認。#142仍開啟，沒有新增正式章收據或提升有限切片等級。後續待決分支與其他未完成工作均以遠端Issue為準。
+
+### 2026-10-04 #150：舞台來源指標重綁 READY
+
+[同一舞台主證據](../data/ida/fd2_ch24_stage_runtime_20261003.json)追加正常r6 seq2100反證：Go重播將0x11D3B完成viewport copy的source變更判成錯誤，Python比較器有同一假設。來源0x14CCC4→0x1920E8仍由相同caller及固定六參數見證；既有IDA9.4 ABI明示dword_53A49+0x8088，沒有來源在loader後固定的契約。只重開這個驗證假設，不重做loader／列旋轉／presenter；來源配置writer仍未知，不附加推測名稱。
+
+READY限定完整0x11D3B copy可重新綁定source並發布當時raw offset；其他caller不同來源仍未知。原版r6 T5敗北及DP待決保持原狀，不提升#142。這是實作前的READY紀錄；後續CONFORMED驗證見下段。
+
+### 2026-10-04 #150：來源重綁有限 CONFORMED，晚期差異另列工單
+
+[主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)追加CONFORMED驗證，不覆寫舊失敗。Go與Python只由完整0x11D3B viewport copy見證新的非零32-bit來源；其他caller不同來源、未知參數、loader重設與截斷拒收保留。Python22項通過，Go相關方法及正常r6重播越過seq2100；該點原版／重製已發布列49一致，工作列50，不以工作相位當畫面。
+
+第23章24張與第24章既有有限13張的四項門檻及完整保存回歸通過；另一選人分支5張的有限門檻通過。r6晚期報告仍failed：seq2100 RGB差946px，seq206先差14772px，T4 seq1775狀態不同，之後指令6工作影格越界。分別登記[#153](https://github.com/wicanr2/fd2_re/issues/153)、[#152](https://github.com/wicanr2/fd2_re/issues/152)、[#151](https://github.com/wicanr2/fd2_re/issues/151)，先查已有主證據再建立READY，不調DP、略過特效或放寬像素門檻。正式章台帳仍20/30，第24章#142保持未驗收。

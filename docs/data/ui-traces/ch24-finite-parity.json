@@ -1644,5 +1644,115 @@
     "control_plan": "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl",
     "issue": 146,
     "evidence": "docs/data/ida/fd2_ch24_oracle_d8_20261004.json"
+  },
+  "fresh_full_player_diagnostics": [
+    {
+      "run": "work/parity-slot-ch24/fresh-full-original-r6",
+      "runner_commit": "9b05369bb9b81fbdaeae563bf23f9b28de07b97d",
+      "source_save_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+      "seed": 4,
+      "slot_manifest": "docs/data/parity-slots/ch24-fresh-policy-manifest.json",
+      "control_plan": "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl",
+      "control_plan_sha256": "4e8c75a8ab5cd8b0a5d25c4ba5acf73fc7758f85e5cf2d56e87dd91d14833fb6",
+      "last_battle_round": 5,
+      "observed_sol_hp_sequence": [
+        420,
+        209,
+        9
+      ],
+      "first_title": {
+        "control_seq": 2277,
+        "steps": 8473537516,
+        "eip": "0x36D98"
+      },
+      "oracle_log_bytes": 0,
+      "driver_exit": 15,
+      "trace_entries": 141850,
+      "state_injections": [],
+      "chapter_completion": false,
+      "classification": "原版正常路徑敗北，未通過晚期或整章驗收；沒有CPU錯誤。",
+      "container_cleanup": "--rm自行退出／移除，stop查無容器。",
+      "artifact_sha256": {
+        "runner.json": "46776d6235bd8be1b5b4ee41d03d0dab0671f9ce460830e72c52561b7358d4a7",
+        "actions.jsonl": "482dea923b6a3d2d9a0c2b2b492745578b89e8b6c3b7cd0bd272f95fb480abcb",
+        "control-history.jsonl": "1cb85f3640b6526ba6435d91084ad41bc37abe292f5602a57f4ae52896b30e0a",
+        "driver.log": "3b6d6e8a1f7e8d41bde42926afd0b03737ee10d39eb3a759c561ee48aaa3457e",
+        "eip-trace.jsonl": "9a9d75088c82855f276880f462d347fe98d5ce57dab2f42e3307c3ff5c20ffb6"
+      }
+    },
+    {
+      "run": "work/parity-slot-ch24/fresh-full-original-r7",
+      "runner_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "source_save_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+      "seed": 4,
+      "slot_manifest": "docs/data/parity-slots/ch24-fresh-policy-manifest.json",
+      "control_plan": "docs/data/parity-plans/ch24-fresh-sample-r2.jsonl",
+      "control_plan_sha256": "eeec4ea05d4d0a91a827eab8f069dcf1fe0ad949ef73f4c3dbb4bb7ad80f1062",
+      "last_battle_round": 4,
+      "observed_sol_hp_sequence": [
+        420,
+        201,
+        0
+      ],
+      "first_title": {
+        "control_seq": 2143,
+        "steps": 7190794528,
+        "eip": "0x36D98"
+      },
+      "oracle_log_bytes": 0,
+      "driver_exit": 15,
+      "trace_entries": 123303,
+      "state_injections": [],
+      "chapter_completion": false,
+      "classification": "原版正常路徑敗北，未通過晚期或整章驗收；沒有CPU錯誤。",
+      "container_cleanup": "--rm自行退出／移除，stop查無容器。",
+      "artifact_sha256": {
+        "runner.json": "9dce7b1e6b3e8f93e4a33d1917809084710b7d672aa99df4e57c9c13e750f488",
+        "actions.jsonl": "9115cfbf02ac9beddc8475739183385cdac10edd5f51a8305577b7170fbc65a3",
+        "control-history.jsonl": "a41519d5e7f85439e71acdab045d4a9f8f0dcc3ff040c5c32187000751c43692",
+        "driver.log": "9208751b0b96ad70d45f1c489ac37c36b7b2953b60dae0eb631209a40a54f566",
+        "eip-trace.jsonl": "44c31072620c8a367901c952b7258ecaaf6d12a52753921ea6cea768e99411a3"
+      },
+      "movement_evidence": {
+        "select_and_move_seq": 1783,
+        "from": [
+          20,
+          19
+        ],
+        "to": [
+          21,
+          22
+        ],
+        "standby_seq": 1789,
+        "hp_at_move": 420,
+        "sol_zero_hp_seq": 2140,
+        "battle_unit_base": 1522012,
+        "reset_unit_base": 1065544,
+        "reset_seq": 2141
+      }
+    }
+  ],
+  "stage_source_rebind_validation": {
+    "issue": 150,
+    "primary": "docs/data/ida/fd2_ch24_stage_runtime_20261003.json",
+    "status": "CONFORMED",
+    "chapter_completion": false,
+    "normal_replay": "work/parity-slot-ch24/fresh-full-remake-r3",
+    "independent_failed_report": "work/parity-slot-ch24/fresh-full-verify-r3.json",
+    "phase_seq2100": {
+      "original": 49,
+      "remake": 49,
+      "match": true
+    },
+    "open_defects": [
+      151,
+      152,
+      153
+    ],
+    "regression_reports": [
+      "work/parity-slot-ch24/full-r5-verify-r11.json",
+      "work/parity-slot-ch24/startup-rebind-verify-r1.json",
+      "work/parity-slot-ch23/ch24-rebind-regression-verify-r1.json"
+    ]
   }
 }

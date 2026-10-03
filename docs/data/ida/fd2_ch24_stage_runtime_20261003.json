@@ -4,7 +4,8 @@
   "status": "CONFORMED",
   "date": "2026-10-03",
   "issues": [
-    144
+    144,
+    150
   ],
   "input": {
     "file": "FD2.EXE",
@@ -7249,6 +7250,256 @@
       "level": "已證實",
       "scope": "來源定位勘誤",
       "reason": "前項把不同src稱為私人演出緩衝過度推論。直接收據只證實0x12F57的src=0x14D3E4，比已驗work viewport0x14CCC4多0x720；其stage列相位關係本切片未知，驗證器維持未知，直到同一原生work viewport再次發布。不得據此宣稱原版配置了另一份stage owner。"
+    },
+    {
+      "date": "2026-10-04",
+      "issue": "#150",
+      "level": "已證實",
+      "spec_status": "READY",
+      "scope": "只撤回0x11D3B完成viewport copy來源必須在loader後固定的驗證器假設；不重解helper或推測來源配置writer。",
+      "reason": "相同原版SAV／seed4正常T4，0x11EED的返回caller0x11D3B與其餘copy參數一致，來源從0x14CCC4改為0x1920E8。既有IDA9.4 sub_11CAC消費dword_53A49+0x8088，沒有固定pointer契約。Go／Python decoder直接拒收原版實際完成copy。",
+      "primary": "docs/data/ida/fd2_ch23_post_ida.txt：sub_11CAC→sub_11EB0固定六參數，來源為dword_53A49+0x8088；IDA9.4 LE線性位址。",
+      "runtime": {
+        "runner_commit": "9b05369bb9b81fbdaeae563bf23f9b28de07b97d",
+        "run": "work/parity-slot-ch24/fresh-full-original-r6",
+        "address_space": "dosgolem relocated LE linear",
+        "trace_entries": 141850,
+        "trace_sha256": "9a9d75088c82855f276880f462d347fe98d5ce57dab2f42e3307c3ff5c20ffb6",
+        "checkpoint_seq": 2100,
+        "checkpoint_sha256": "147d68d54ba18716c80f6292455ae101ab69e6993974cf7eb37bbc0a57570afb",
+        "normal_source_changes": [
+          {
+            "before": {
+              "step": 6701431368,
+              "control_seq": 2086,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x13",
+              "ecx": "0x0",
+              "esi": "0x7347",
+              "edi": "0x0",
+              "esp": "0x55530",
+              "rng_word": 55903,
+              "stack": [
+                "0x11D3B",
+                "0xA0504",
+                "0x140",
+                "0x14CCC4",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x13"
+              ]
+            },
+            "after": {
+              "step": 6708833539,
+              "control_seq": 2086,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x7",
+              "ecx": "0x0",
+              "esi": "0x173B3C",
+              "edi": "0x18A060",
+              "esp": "0x55524",
+              "rng_word": 59769,
+              "stack": [
+                "0x11D3B",
+                "0xA0504",
+                "0x140",
+                "0x1920E8",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x7"
+              ]
+            }
+          },
+          {
+            "before": {
+              "step": 7502383584,
+              "control_seq": 2152,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x16",
+              "ecx": "0x0",
+              "esi": "0xFFFFE507",
+              "edi": "0x0",
+              "esp": "0x55530",
+              "rng_word": 1099,
+              "stack": [
+                "0x11D3B",
+                "0xA0504",
+                "0x140",
+                "0x1920E8",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x16"
+              ]
+            },
+            "after": {
+              "step": 7509926715,
+              "control_seq": 2152,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x34",
+              "ecx": "0x0",
+              "esi": "0x173DBC",
+              "edi": "0x18A060",
+              "esp": "0x55524",
+              "rng_word": 675,
+              "stack": [
+                "0x11D3B",
+                "0xA0504",
+                "0x140",
+                "0x1D34E8",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x34"
+              ]
+            }
+          },
+          {
+            "before": {
+              "step": 8092455755,
+              "control_seq": 2240,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x18",
+              "ecx": "0x0",
+              "esi": "0xFFFFB153",
+              "edi": "0x0",
+              "esp": "0x55530",
+              "rng_word": 55580,
+              "stack": [
+                "0x11D3B",
+                "0xA0504",
+                "0x140",
+                "0x1D34E8",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x18"
+              ]
+            },
+            "after": {
+              "step": 8097935317,
+              "control_seq": 2240,
+              "eip": "0x11EED",
+              "eax": "0xAF3C4",
+              "edx": "0x160",
+              "ebx": "0x5B",
+              "ecx": "0x0",
+              "esi": "0x173A4C",
+              "edi": "0x18A060",
+              "esp": "0x55524",
+              "rng_word": 46387,
+              "stack": [
+                "0x11D3B",
+                "0xA0504",
+                "0x140",
+                "0x1920E8",
+                "0x1C8",
+                "0x138",
+                "0xC0",
+                "0x5B"
+              ]
+            }
+          }
+        ]
+      },
+      "ready_spec": {
+        "normal_copy": "只有0x11EED返回0x11D3B，且目的0xA0504／dest stride0x140／source stride0x1C8／寬0x138／高0xC0全部符合，才能重新綁定source並以當時raw旋轉offset發布。來源必須為有效非零uint32文字；不因來源改變重設舞台offset。",
+        "foreign_copy": "其他caller的同形copy，來源不同仍將presented置未知；不能重新綁定。之後同一來源完成copy或0x11D3B見證才可再發布。",
+        "unchanged": "loader重設、參數／caller／順序／trace容量、完整發布缺項仍拒收；不讀原版RGB選phase、不降低640px或整章門檻。",
+        "acceptance": "Go與獨立Python反例先失敗後通過；r6正常重播越過seq2100，既有有限第24章及第23章回歸通過。"
+      },
+      "inference_limits": "實際來源值與完成copy見證已證實；配置／釋放來源pointer的writer及生命周期未解，本修正不需要也不命名這些欄位。",
+      "failure_log": "work/parity-slot-ch24/fresh-full-remake-r1.log",
+      "chapter_completion": false,
+      "validation": {
+        "status": "CONFORMED",
+        "scope": "驗證器來源重綁修正；不宣稱第24章整章或晚期 RGB／AI 已驗收",
+        "commands": {
+          "go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'gofmt -w cmd/fd2/chapter_parity_replay_test.go; with-xvfb go test ./cmd/fd2 -run \"TestParity\" -count=1 -timeout 90s -v'",
+          "python": "python3 -m unittest discover -s tools -p test_verify_chapter_parity.py (fd2-assets-local:20260829-sfx)",
+          "r6_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --name fd2-ch24-r6-rebind-replay --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/fresh-full-original-r6 FD2_PARITY_OUT=/src/work/parity-slot-ch24/fresh-full-remake-r3 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/fresh-full-remake-r3.log 2>&1",
+          "r6_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/fresh-full-original-r6 --remake work/parity-slot-ch24/fresh-full-remake-r3 --slot-manifest docs/data/parity-slots/ch24-fresh-policy-manifest.json --plan docs/data/parity-plans/ch24-fresh-sample-r1.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/fresh-full-verify-r3.json",
+          "finite_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/full-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch24/full-r5-remake-r11 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/full-r5-remake-r11.log 2>&1",
+          "finite_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/full-original-r5 --remake work/parity-slot-ch24/full-r5-remake-r11 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-sample-r3.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/full-r5-verify-r11.json",
+          "first15_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/startup-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch24/startup-rebind-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/startup-rebind-remake-r1.log 2>&1",
+          "first15_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/startup-original-r2 --remake work/parity-slot-ch24/startup-rebind-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-startup-r1.jsonl --min-frames 5 --pixel-budget 640 --out work/parity-slot-ch24/startup-rebind-verify-r1.json",
+          "ch23_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r4 FD2_PARITY_OUT=/src/work/parity-slot-ch23/ch24-rebind-regression-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch24-rebind-regression-remake-r1.log 2>&1",
+          "ch23_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/full-original-r4 --remake work/parity-slot-ch23/ch24-rebind-regression-remake-r1 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-sample-r4.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/ch24-rebind-regression-verify-r1.json"
+        },
+        "outputs": {
+          "work/parity-slot-ch24/fresh-full-remake-r3.log": "d6e354e9f31c136c7501e145335806ab69a4ec754ddb55d0389bfccf76cc8e89",
+          "work/parity-slot-ch24/fresh-full-remake-r3/checkpoints.jsonl": "d7c7bb5db35cbd6ad2958c0e6c944466fa69e1bfc46da4a2ab5b335dadac9dc9",
+          "work/parity-slot-ch24/fresh-full-verify-r3.json": "4c05d5226fdc34d7f862fb63be4c0db2e10073d7344fe86df0098c59789819b8",
+          "work/parity-slot-ch24/full-r5-verify-r11.json": "02403d64cfe8e4f6e2ab484a498aac6ba46c85fdc00bf2bc3d1f06f8d073512e",
+          "work/parity-slot-ch24/startup-rebind-verify-r1.json": "b973f05c96a7f203f31730458d198711af1c16c658704d1d9e222c844a76cd18",
+          "work/parity-slot-ch23/ch24-rebind-regression-verify-r1.json": "f3c6b18ddf289cd8848cb44646e843652350a1591acc602fc13fd57dda7503d6"
+        },
+        "python_tests": {
+          "passed": 22,
+          "skipped": 0
+        },
+        "normal_r6": {
+          "checkpoint_count": 56,
+          "accepted_seq": 2100,
+          "presented_row_offset": 49,
+          "work_row_offset": 50,
+          "independent_phase_match": true,
+          "full_rgb_diff_pixels": 946,
+          "full_gate_status": "failed",
+          "next_runtime_defect": "#151",
+          "ai_state_defect": "#152",
+          "first_rgb_defect": "#153"
+        },
+        "regressions": {
+          "work/parity-slot-ch24/full-r5-verify-r11.json": {
+            "status": "passed",
+            "frame_count": 13,
+            "gates": {
+              "behavior": true,
+              "nodes": true,
+              "transaction": true,
+              "frames": true
+            }
+          },
+          "work/parity-slot-ch24/startup-rebind-verify-r1.json": {
+            "status": "passed",
+            "frame_count": 5,
+            "gates": {
+              "behavior": true,
+              "nodes": true,
+              "transaction": true,
+              "frames": true
+            }
+          },
+          "work/parity-slot-ch23/ch24-rebind-regression-verify-r1.json": {
+            "status": "passed",
+            "frame_count": 24,
+            "gates": {
+              "behavior": true,
+              "nodes": true,
+              "transaction": true,
+              "frames": true
+            }
+          }
+        },
+        "go_tests": {
+          "passed": true,
+          "pattern": "TestParity",
+          "skipped": 0
+        }
+      }
     }
   ],
   "conformed_scope": {

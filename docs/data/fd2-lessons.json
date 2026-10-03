@@ -1312,9 +1312,9 @@
       "id": "stage-rotation-is-not-vga-publication",
       "date": "2026-10-03",
       "area": "舞台相位與對拍",
-      "rule": "從raw trace推導舞台相位時，追蹤已完成VGA copy及其src／stride／尺寸；工作緩衝旋轉只更新work相位。不同src copy使已發布相位未知，重新由已證work發布後才恢復。入口docs/data/ida/fd2_ch24_stage_runtime_20261003.json、remake/cmd/fd2/chapter_parity_replay_test.go的parityCh23RowOffset與tools/verify_chapter_parity.py的stage_trace_metadata；目前限固定FD2.EXE的312x192舞台。",
-      "why": "第24章checkpoint可能位於旋轉後、VGA發布前；選人與移動也從自己的caller發布work。只追正常renderer返回會把部分畫面列偏移誤算。",
-      "evidence": "https://github.com/wicanr2/fd2_re/issues/144；docs/data/ui-traces/ch24-finite-parity.json",
+      "rule": "從raw trace推導舞台相位時，追蹤已完成VGA copy及其src／stride／尺寸；工作緩衝旋轉只更新work相位。完整0x11D3B viewport copy可見證新的來源指標，不假設loader後指標固定；其他caller不同src使相位未知，直到已證caller重新發布。入口docs/data/ida/fd2_ch24_stage_runtime_20261003.json、remake/cmd/fd2/chapter_parity_replay_test.go的parityCh23RowOffset與tools/verify_chapter_parity.py的stage_trace_metadata；目前限固定FD2.EXE的312x192舞台。",
+      "why": "第24章checkpoint可能位於旋轉後、VGA發布前；選人與移動也從自己的caller發布work。只追正常renderer返回會把部分畫面列偏移誤算。 2026-10-04正常T4的0x11D3B完成copy來源由0x14CCC4換成0x1920E8；固定指標假設誤拒原版收據。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/144；docs/data/ui-traces/ch24-finite-parity.json；https://github.com/wicanr2/fd2_re/issues/150",
       "guard": {
         "kind": "present",
         "paths": [

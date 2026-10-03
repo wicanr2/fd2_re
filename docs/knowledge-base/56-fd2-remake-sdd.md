@@ -9335,7 +9335,7 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 
 [有限收據](../data/ui-traces/ch24-finite-parity.json)限定RUNTIME-E1，取代前段本切片待驗狀態。LOADCH承接既有runtime_append_groups，不再從完整資料重建戰場。正式開場使用原生FDTXT對白、說話者聚焦與PAN，最後聚焦保留六全域，兩種正常選人分支各自帶入battle_ch24；固定camera僅保留直接進場fixture用途。
 
-FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪依BIOS tick決定單次旋轉，先驗候選再發布。測試承接最後已完成VGA copy的列偏移，獨立比較器再核對raw trace；工作緩衝旋轉不等於畫面已發布。不同src指標的copy只列相位未知，不猜其owner。
+FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪依BIOS tick決定單次旋轉，先驗候選再發布。測試承接最後已完成VGA copy的列偏移，獨立比較器再核對raw trace；工作緩衝旋轉不等於畫面已發布。其他caller的不同src指標copy只列相位未知；完整0x11D3B copy可更新來源指標，不猜配置writer或生命週期。
 
 正常戰後binding接受實測28筆與歷史86筆局部fixture，其餘數量仍拒收。原生對白、舞台與整備保存已串接，完整SAV兩側相同。完整Go、第23章四項／SAV與比較器測試通過，具體命令與限制在有限收據。#142仍需T4／7／10，不列整章PLAYER-E2；唯一現況依[58](58-fd2-exe-re-coverage.md)。
 
@@ -9346,3 +9346,5 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 2026-10-04：PF分支有限驗收及後續FILD16阻擋#149引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)。指令支援不提升整章或UI驗收等級。
 
 2026-10-04：FILD16有限驗收與T5正常路徑返回標題的限制引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_fild16_20261004.json)。CPU切片已解除阻擋，完整章與UI驗收保持原等級。
+
+2026-10-04：#150 修正Go重播及Python獨立比較器的固定來源指標假設。只有已證0x11D3B與完整viewport參數能重綁src；其他caller不同src仍未知。正常r6 seq2100兩側已發布列49一致，完整RGB仍差946px。第23章24張與第24章13／5張既有有限回歸皆通過。新晚期特效越界#151、T4狀態差異#152及seq206 RGB差異#153仍未完成；不提升整章驗收。主契約與命令見[舞台證據](../data/ida/fd2_ch24_stage_runtime_20261003.json)，唯一現況見[58](58-fd2-exe-re-coverage.md)。

@@ -5124,3 +5124,9 @@ D8修正5599d26已推送，相關三套件920筆pass事件，parity無測試但�
 #149有限FILD驗收：9b05369同槽／seed／計畫r6舊2115點零差異，越過26FDB並正常到T5；CPU沒有新錯誤。canonical 194 CONFORMED以951cb55推送。T5 END後索爾HP420→209→9，seq2274 unit_base重設，seq2277返回標題；不能用標題單位表斷言全隊死亡。driver await_ui=cursor逾時exit15，容器自行退出及移除，stop查無容器屬已清理狀態。原版完整章未驗收，#142與正式20／30不變；只調整後續正常移動路徑，不改SAV／seed／政策。
 
 2026-10-04：78c931ff已推送且遠端main相同，host gh回讀#149 CLOSED／#142 OPEN，維護工具同步21條開啟工單；正式20／30不變。
+
+r7使用已推送6903fe83的正常避敵r2計畫、canonical951cb55、同SAV／seed4，沒有能力或座標注入。索爾T4正常到(21,22)待機，隨後END敵軍階段HP420→201→0，unit_base重設並返回標題；oracle沒有CPU錯誤，driver exit15，trace123303未滿200000。容器自行移除，stop查無容器屬清理狀態。新診斷附於ch24-finite-parity.json，原r6 T5與r7 T4失敗皆保留。114固定政策未改；先等使用者決定政策分支，不再刷長局，#142及正式20／30不變。
+
+## 2026-10-04 #150來源重綁修正與晚期差異
+
+只撤回loader後舞台來源指標固定的檢查器假設；既有IDA sub_11CAC ABI與正常原版完整copy為直接反證。Go／Python已接受完整0x11D3B見證的src重綁，未知caller仍拒收。Python22項與既有第23章24張、第24章13／5張有限收據通過。正常r6 seq2100兩側舞台列49一致，整份晚期報告仍failed。新特效越界#151、T4狀態差異#152、正常選取RGB#153均已先登記GitHub Issue；未改強化政策。證據、輸出雜湊與命令見[主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)。

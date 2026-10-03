@@ -44,6 +44,39 @@ class PairingAndUnits(unittest.TestCase):
                          ["0x18C5D", "0xA0504", "0x140", "0x14CCC4", "0x1C8", "0x138", "0xC0"]}
             self.assertTrue(check([loader, rotation, present, selection])["stage_phase_match"])
 
+    def test_stage_rebind_requires_completed_native_viewport_witness(self):
+        evidence = json.loads((vp.ROOT / "docs/data/ida/fd2_ch24_stage_runtime_20261003.json").read_text())
+        correction = next(c for c in evidence["corrections"] if c["issue"] == "#150")
+        change = correction["runtime"]["normal_source_changes"][0]
+        before, after = change["before"], change["after"]
+        loader = {"step": 1, "eip": "0x24D48", "eax": "0x1",
+                  "stack": ["0x0", "0x0", "0x10842", "0x0"]}
+        rotation = {"step": before["step"] + 1, "eip": "0x24D48", "eax": "0x2",
+                    "stack": ["0x0", "0x0", "0x120B6", "0x0"]}
+        checkpoint = {"steps": after["step"], "eip": "0x4DF2C",
+                      "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "runner.json").write_text(json.dumps({"eip_trace_window":
+                {"from_step": 0, "to_step": 0, "max_entries": 100}}))
+            def check(entries, recorded=3):
+                (root / "eip-trace.jsonl").write_text("\n".join(map(json.dumps, entries)))
+                return vp.stage_trace_metadata(root, checkpoint, recorded)
+            result = check([loader, before, rotation, after])
+            self.assertTrue(result["stage_phase_match"], result)
+            self.assertEqual(result["original_stage_row_offset"], 3)
+            foreign = {**after, "stack": ["0x12F57"] + after["stack"][1:]}
+            self.assertFalse(check([loader, before, rotation, foreign])["stage_phase_match"])
+            foreign["step"] = before["step"] + 2
+            self.assertTrue(check([loader, before, rotation, foreign, after])["stage_phase_match"])
+            for src in ("0x0", "garbage", "0x100000000"):
+                bad = {**after, "stack": after["stack"][:3] + [src] + after["stack"][4:]}
+                self.assertFalse(check([loader, before, rotation, bad])["stage_phase_match"])
+            old = {**before, "step": after["step"] + 1,
+                   "stack": ["0x18C5D"] + before["stack"][1:]}
+            checkpoint["steps"] += 1
+            self.assertFalse(check([loader, before, rotation, after, old])["stage_phase_match"])
+
     def test_preparation_save_rejects_partial_write_or_missing_owner(self):
         action = {"before_seq": 37, "seq": 55}
         exe = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"

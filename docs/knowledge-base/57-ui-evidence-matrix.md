@@ -1592,3 +1592,5 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 2026-10-04：PF分支有限驗收及後續FILD16阻擋#149引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_parity_branch_20261004.json)。指令支援不提升整章或UI驗收等級。
 
 2026-10-04：FILD16有限驗收與T5正常路徑返回標題的限制引用[58](58-fd2-exe-re-coverage.md)與[主證據](../data/ida/fd2_ch24_oracle_fild16_20261004.json)。CPU切片已解除阻擋，完整章與UI驗收保持原等級。
+
+2026-10-04：#150 修正Go重播及Python獨立比較器的固定來源指標假設。只有已證0x11D3B與完整viewport參數能重綁src；其他caller不同src仍未知。正常r6 seq2100兩側已發布列49一致，完整RGB仍差946px。第23章24張與第24章13／5張既有有限回歸皆通過。新晚期特效越界#151、T4狀態差異#152及seq206 RGB差異#153仍未完成；不提升整章驗收。主契約與命令見[舞台證據](../data/ida/fd2_ch24_stage_runtime_20261003.json)，唯一現況見[58](58-fd2-exe-re-coverage.md)。

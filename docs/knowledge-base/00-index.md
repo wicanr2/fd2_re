@@ -494,9 +494,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第24章存活隊員正常選人計畫r2](../data/parity-plans/ch24-sample-r2.jsonl)：#142，保留r1 T4敗北；相同SAV與seed4，只用正常方向鍵排除HP0隊員，不改HP。
 
-- [第24章舞台執行期有限CONFORMED契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)：#144，沿既有#42／0x10652／0x11EEE case23；補正常compositor並接續戰後owner，抽樣完成VGA copy相位已驗；未抽樣仍未知。
+- [第24章舞台執行期有限CONFORMED契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)：#144／#150，沿既有#42／0x10652／0x11EEE case23；補正常compositor並接續戰後owner，完整0x11D3B copy可重綁來源。抽樣相位已驗，晚期RGB／AI差異與未抽樣仍未知。
 
-- [第24章T3戰後保存有限計畫r3](../data/parity-plans/ch24-sample-r3.jsonl)：#142／#144，r1與r2均T4敗北，不再刷長局；只抽樣事件54@T2，再一次清敵及正常戰後保存。T4／7／10動態未驗。
+- [第24章T3戰後保存有限計畫r3](../data/parity-plans/ch24-sample-r3.jsonl)：#142／#144，r1與r2均T4敗北，不再刷長局；只抽樣事件54@T2，再一次清敵及正常戰後保存。本有限計畫未抽樣T4／7／10；目前整章現況見[58](58-fd2-exe-re-coverage.md)。
 
 - [第24章28筆正常戰後有限CONFORMED](../data/ida/fd2_ch24_post_frontier_20261003.json)：#145，24C4C／24CAD原版caller與28筆count；86只留歷史fixture，其他形狀仍拒收。
 
