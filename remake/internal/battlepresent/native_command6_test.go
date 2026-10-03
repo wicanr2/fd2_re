@@ -1,6 +1,9 @@
 package battlepresent
 
 import (
+	"crypto/sha256"
+	"fmt"
+	"os"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
@@ -80,5 +83,102 @@ func TestComposeNativeCommand6TransitionFrameUsesLastActorAndSelectedTarget(t *t
 	}
 	if got[0] != 7 || got[2] != 9 {
 		t.Fatalf("transition actor/target pixels=%d,%d", got[0], got[2])
+	}
+}
+
+// #151：直接解碼固定原始FDOTHER，對照原版0x2A300-byte work配置。
+// 這是資產／compositor回歸，不當作原版一般玩家逐幀收據。
+func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.T) {
+	path := "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	raw, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		t.Skip("原版資產未提供")
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(raw)); got != "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce" {
+		t.Fatalf("原版FDOTHER雜湊不符：%s", got)
+	}
+	for _, side := range []byte{0, 1} {
+		resource := 32
+		if side == 0 {
+			resource = 33
+		}
+		effect, err := figani.DecodeResource(path, resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		schedule, err := figani.BuildNativeCommand6PresentationSchedule(side, effect)
+		if err != nil {
+			t.Fatal(err)
+		}
+		sequence, err := figani.BuildNativeCommand6TargetSequence(schedule, figani.NativeCommand6Coordinates(36, schedule.BaseByte), side)
+		if err != nil {
+			t.Fatal(err)
+		}
+		target := figani.Frame{Width: 1, Height: 1, Pixels: []byte{99}, Mask: []byte{1}}
+		for step, planned := range sequence {
+			// 獨立參照：用既有FIGANI嚴格blit寫原版大小，依原始viewport擷取。
+			work := make([]byte, 0x2A300)
+			var referenceErr error
+			blit := func(frame figani.Frame, x, y int) {
+				frame.X += 160 + x
+				frame.Y += 30 + y
+				if err := frame.BlitAt(work, 640); err != nil {
+					referenceErr = err
+				}
+			}
+			for _, layer := range planned.Mode4 {
+				blit(effect.Frames[layer.Frame], layer.X, layer.Y)
+			}
+			blit(target, 0, 0)
+			for _, layer := range planned.Mode5 {
+				blit(effect.Frames[layer.Frame], layer.X, layer.Y)
+			}
+			expected := make([]byte, 320*200)
+			for y := 0; y < 200; y++ {
+				copy(expected[y*320:(y+1)*320], work[0x4BA0+y*640:0x4BA0+y*640+320])
+			}
+			got, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), target, effect, planned)
+			if referenceErr != nil {
+				// #154：負列位置仍未知，保留零partial-output拒收，不稱已修正。
+				if err == nil || got != nil {
+					t.Fatalf("原版resource%d step%d未知邊界被發布", resource, step)
+				}
+				continue
+			}
+			if err != nil {
+				t.Fatalf("原版resource%d side%d target step%d：%v", resource, side, step, err)
+			}
+			for i, value := range expected {
+				if got[i] != value {
+					t.Fatalf("resource%d step%d viewport pixel%d：%d != %d", resource, step, i, got[i], value)
+				}
+			}
+		}
+	}
+}
+
+func TestNativeCommandWorkBoundsMatchAllocation(t *testing.T) {
+	work := make([]byte, 0x2A300)
+	last := figani.Frame{X: 479, Y: 239, Width: 1, Height: 1, Pixels: []byte{7}, Mask: []byte{1}}
+	if err := blitCommand0WorkFrame(work, last, 0, 0); err != nil {
+		t.Fatal(err)
+	}
+	if work[len(work)-1] != 7 {
+		t.Fatal("原版work最後一byte未寫入")
+	}
+	for _, frame := range []figani.Frame{
+		{X: 479, Y: 240, Width: 1, Height: 1, Pixels: []byte{9}, Mask: []byte{1}},
+		{X: 480, Y: 239, Width: 1, Height: 1, Pixels: []byte{9}, Mask: []byte{1}},
+		{X: 479, Y: 239, Width: 1, Height: 1, Pixels: []byte{9}},
+	} {
+		if err := blitCommand0WorkFrame(work, frame, 0, 0); err == nil {
+			t.Fatal("真正越界或malformed影格未拒收")
+		}
+		if work[len(work)-1] != 7 {
+			t.Fatal("拒收影格發布部分像素")
+		}
 	}
 }

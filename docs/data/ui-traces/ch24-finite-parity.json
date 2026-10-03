@@ -1754,5 +1754,38 @@
       "work/parity-slot-ch24/startup-rebind-verify-r1.json",
       "work/parity-slot-ch23/ch24-rebind-regression-verify-r1.json"
     ]
+  },
+  "command6_work_bounds_validation": {
+    "issue": 151,
+    "primary": "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+    "status": "CONFORMED",
+    "chapter_completion": false,
+    "full_go": {
+      "packages": 19,
+      "passed": 2306,
+      "skipped": 27,
+      "failed": 0
+    },
+    "normal_r6": {
+      "run": "work/parity-slot-ch24/fresh-full-remake-r4",
+      "go_replay_status": "passed",
+      "checkpoints": 82,
+      "runtime_errors": 0,
+      "ai_entries_consumed": 56,
+      "ai_order_divergences": 7,
+      "full_receipt_status": "failed",
+      "compared_frames": 65,
+      "open_defects": [
+        152,
+        153,
+        154
+      ],
+      "note": "T4前已有#152狀態分歧，不能宣稱seq2115同狀態特效逐幀parity；只確認原越界反例不再中止。"
+    },
+    "regressions": [
+      "work/parity-slot-ch23/ch24-command6-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-command6-verify-r1.json",
+      "work/parity-slot-ch24/startup-command6-verify-r1.json"
+    ]
   }
 }

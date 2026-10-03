@@ -1,0 +1,747 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_command6_native_work_bounds",
+  "date": "2026-10-04",
+  "issue": 151,
+  "status": "CONFORMED",
+  "layers": [
+    "RE-CLOSED",
+    "DATA-READY",
+    "RUNTIME-E1"
+  ],
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "asset_input": {
+    "file": "FDOTHER.DAT",
+    "size": 3382481,
+    "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+    "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+  },
+  "primary_reused": [
+    "docs/data/ida/fd2_command1_8_entries_ida.txt",
+    "docs/data/ida/fd2_command0_presentation_ida.txt"
+  ],
+  "ida_probe": {
+    "path": "work/parity-slot-ch24/command6-work-ida-r1.json",
+    "sha256": "9ac48060241da8e9c512fc88a90e7d8cd0b56ee6ee8628b21731e90e04fe88a7",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "instructions": [
+      {
+        "address": "0x2a949",
+        "bytes": "6800fa0000",
+        "original": "push    0FA00h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a949",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a94e",
+        "bytes": "e8c3c30000",
+        "original": "call    malloc",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a94e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a953",
+        "bytes": "89c3",
+        "original": "mov     ebx, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a953",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a955",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a955",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a958",
+        "bytes": "89842418010000",
+        "original": "mov     [esp+140h+var_28], eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a958",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a95f",
+        "bytes": "6800a30200",
+        "original": "push    (offset loc_2A2FB+5)",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a95f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a964",
+        "bytes": "e8adc30000",
+        "original": "call    malloc",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a964",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a969",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a969",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2a96c",
+        "bytes": "89c6",
+        "original": "mov     esi, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2a96c",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac4a",
+        "bytes": "c7842428010000a04b0000",
+        "original": "mov     [esp+140h+var_18], 4BA0h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac4a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac55",
+        "bytes": "31ff",
+        "original": "xor     edi, edi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac55",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac57",
+        "bytes": "eb6c",
+        "original": "jmp     short loc_2ACC5",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac57",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac59",
+        "bytes": "6880020000",
+        "original": "push    280h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac59",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac5e",
+        "bytes": "8b9c242c010000",
+        "original": "mov     ebx, [esp+144h+var_18]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac5e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac65",
+        "bytes": "01f3",
+        "original": "add     ebx, esi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac65",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac67",
+        "bytes": "53",
+        "original": "push    ebx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac67",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac68",
+        "bytes": "6aff",
+        "original": "push    0FFFFFFFFh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac68",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac6a",
+        "bytes": "ff74240c",
+        "original": "push    [esp+14Ch+var_140]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac6a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac6e",
+        "bytes": "e82e0d0000",
+        "original": "call    sub_2B9A1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac6e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac73",
+        "bytes": "83c410",
+        "original": "add     esp, 10h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac73",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac76",
+        "bytes": "89e8",
+        "original": "mov     eax, ebp",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac76",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac78",
+        "bytes": "6a02",
+        "original": "push    2",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac78",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac7a",
+        "bytes": "6880020000",
+        "original": "push    280h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac7a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac7f",
+        "bytes": "53",
+        "original": "push    ebx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac7f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac80",
+        "bytes": "ffb42420010000",
+        "original": "push    [esp+14Ch+var_2C]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac80",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac87",
+        "bytes": "ffb42454010000",
+        "original": "push    [esp+150h+arg_0]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac87",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac8e",
+        "bytes": "ff1485b9230500",
+        "original": "call    funcs_2AC25[eax*4]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac8e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac95",
+        "bytes": "83c414",
+        "original": "add     esp, 14h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac95",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac98",
+        "bytes": "68c8000000",
+        "original": "push    0C8h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac98",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2ac9d",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2ac9d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2aca2",
+        "bytes": "6880020000",
+        "original": "push    280h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2aca2",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2aca7",
+        "bytes": "53",
+        "original": "push    ebx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2aca7",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2aca8",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2aca8",
+        "semantic_annotations": []
+      }
+    ]
+  },
+  "allocation": {
+    "level": "已證實",
+    "original_function": "sub_2A6BD",
+    "original_pointer_register": "esi",
+    "request_instruction": "0x2A95F",
+    "request_bytes": "6800a30200",
+    "allocation_call": "0x2A964",
+    "pointer_assignment": "0x2A96C",
+    "work_bytes": 172800,
+    "stride_bytes": 640,
+    "height_rows": 270,
+    "viewport_base_bytes": 19360,
+    "viewport_width": 320,
+    "viewport_height": 200,
+    "consumer": "0x2AC4A..0x2ACAA：ESI+0x4BA0傳入0x2B9A1與indexed command handler，stride0x280"
+  },
+  "resources": [
+    {
+      "resource": 32,
+      "archive_file_offset": 1073422,
+      "size": 12485,
+      "sha256": "e6da6dcb8b90125c542cf0f160efdd4362d1bc6be8294e21125c31024853697b",
+      "frames": [
+        {
+          "index": 0,
+          "descriptor_file_offset": 1073470,
+          "descriptor_hex": "000000000000020000b9005f00",
+          "x": 0,
+          "y": 0,
+          "width": 185,
+          "height": 95,
+          "opaque_last_row": 94
+        },
+        {
+          "index": 1,
+          "descriptor_file_offset": 1075992,
+          "descriptor_hex": "5900290000000200005f003200",
+          "x": 89,
+          "y": 41,
+          "width": 95,
+          "height": 50,
+          "opaque_last_row": 49
+        },
+        {
+          "index": 2,
+          "descriptor_file_offset": 1076903,
+          "descriptor_hex": "6c002f0000000200004c002b00",
+          "x": 108,
+          "y": 47,
+          "width": 76,
+          "height": 43,
+          "opaque_last_row": 42
+        },
+        {
+          "index": 3,
+          "descriptor_file_offset": 1077525,
+          "descriptor_hex": "97003700000002000021002100",
+          "x": 151,
+          "y": 55,
+          "width": 33,
+          "height": 33,
+          "opaque_last_row": 32
+        },
+        {
+          "index": 4,
+          "descriptor_file_offset": 1077966,
+          "descriptor_hex": "97003700000004000021002100",
+          "x": 151,
+          "y": 55,
+          "width": 33,
+          "height": 33,
+          "opaque_last_row": 32
+        },
+        {
+          "index": 5,
+          "descriptor_file_offset": 1078380,
+          "descriptor_hex": "21001a00000004000055003f00",
+          "x": 33,
+          "y": 26,
+          "width": 85,
+          "height": 63,
+          "opaque_last_row": 62
+        },
+        {
+          "index": 6,
+          "descriptor_file_offset": 1080479,
+          "descriptor_hex": "11000c00000004000071005a00",
+          "x": 17,
+          "y": 12,
+          "width": 113,
+          "height": 90,
+          "opaque_last_row": 89
+        },
+        {
+          "index": 7,
+          "descriptor_file_offset": 1082561,
+          "descriptor_hex": "0c00080000000400007a006200",
+          "x": 12,
+          "y": 8,
+          "width": 122,
+          "height": 98,
+          "opaque_last_row": 97
+        },
+        {
+          "index": 8,
+          "descriptor_file_offset": 1084251,
+          "descriptor_hex": "06000400000004000083006600",
+          "x": 6,
+          "y": 4,
+          "width": 131,
+          "height": 102,
+          "opaque_last_row": 101
+        },
+        {
+          "index": 9,
+          "descriptor_file_offset": 1085170,
+          "descriptor_hex": "0000000000000400008f006f00",
+          "x": 0,
+          "y": 0,
+          "width": 143,
+          "height": 111,
+          "opaque_last_row": 110
+        }
+      ],
+      "address_space": "FDOTHER.DAT file offset"
+    },
+    {
+      "resource": 33,
+      "archive_file_offset": 1085907,
+      "size": 14113,
+      "sha256": "90d65d5a7e6fc9ceb2f38d0904290e057e7ba6e7c6074214dac5b8e2a7d7dc5a",
+      "frames": [
+        {
+          "index": 0,
+          "descriptor_file_offset": 1085955,
+          "descriptor_hex": "000000000000020000ca008200",
+          "x": 0,
+          "y": 0,
+          "width": 202,
+          "height": 130,
+          "opaque_last_row": 129
+        },
+        {
+          "index": 1,
+          "descriptor_file_offset": 1089232,
+          "descriptor_hex": "01000200000002000064004400",
+          "x": 1,
+          "y": 2,
+          "width": 100,
+          "height": 68,
+          "opaque_last_row": 67
+        },
+        {
+          "index": 2,
+          "descriptor_file_offset": 1090535,
+          "descriptor_hex": "02000300000002000052003700",
+          "x": 2,
+          "y": 3,
+          "width": 82,
+          "height": 55,
+          "opaque_last_row": 54
+        },
+        {
+          "index": 3,
+          "descriptor_file_offset": 1091392,
+          "descriptor_hex": "0300040000000200003f002f00",
+          "x": 3,
+          "y": 4,
+          "width": 63,
+          "height": 47,
+          "opaque_last_row": 46
+        },
+        {
+          "index": 4,
+          "descriptor_file_offset": 1092079,
+          "descriptor_hex": "04000400000004000021002100",
+          "x": 4,
+          "y": 4,
+          "width": 33,
+          "height": 33,
+          "opaque_last_row": 32
+        },
+        {
+          "index": 5,
+          "descriptor_file_offset": 1092498,
+          "descriptor_hex": "a6006200000004000055003f00",
+          "x": 166,
+          "y": 98,
+          "width": 85,
+          "height": 63,
+          "opaque_last_row": 62
+        },
+        {
+          "index": 6,
+          "descriptor_file_offset": 1094597,
+          "descriptor_hex": "96005400000004000071005a00",
+          "x": 150,
+          "y": 84,
+          "width": 113,
+          "height": 90,
+          "opaque_last_row": 89
+        },
+        {
+          "index": 7,
+          "descriptor_file_offset": 1096679,
+          "descriptor_hex": "9100500000000400007a006200",
+          "x": 145,
+          "y": 80,
+          "width": 122,
+          "height": 98,
+          "opaque_last_row": 97
+        },
+        {
+          "index": 8,
+          "descriptor_file_offset": 1098369,
+          "descriptor_hex": "8b004c00000004000083006600",
+          "x": 139,
+          "y": 76,
+          "width": 131,
+          "height": 102,
+          "opaque_last_row": 101
+        },
+        {
+          "index": 9,
+          "descriptor_file_offset": 1099288,
+          "descriptor_hex": "8500480000000400008f006e00",
+          "x": 133,
+          "y": 72,
+          "width": 143,
+          "height": 110,
+          "opaque_last_row": 109
+        }
+      ],
+      "address_space": "FDOTHER.DAT file offset"
+    }
+  ],
+  "runtime_counterexample": {
+    "run": "work/parity-slot-ch24/fresh-full-original-r6",
+    "runner_commit": "9b05369bb9b81fbdaeae563bf23f9b28de07b97d",
+    "slot_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+    "seed": 4,
+    "remake_log": "work/parity-slot-ch24/fresh-full-remake-r3.log",
+    "remake_log_sha256": "d6e354e9f31c136c7501e145335806ab69a4ec754ddb55d0389bfccf76cc8e89",
+    "round": 4,
+    "actor_index": 20,
+    "command_id": 6,
+    "target_index": 0,
+    "target_frame": 6,
+    "mode": 5,
+    "channel": 1,
+    "effect_resource": 33,
+    "effect_frame": 9,
+    "bounds": [
+      334,
+      153,
+      143,
+      110
+    ],
+    "bottom_exclusive": 263,
+    "old_height": 260,
+    "native_height": 270
+  },
+  "spec": {
+    "scope": "修正既有indexed shared command work surface的配置高度260→270，依原版0x2A300 bytes；不改規則、時序、MP／HP／Acted／RNG與SAV格式。",
+    "failure_modes": "malformed frame、來源不符、負起點、跨640列距、超出270列仍拒收；保持全批次預建，失敗不發布部分交易。",
+    "tests": [
+      "原始FDOTHER #33十二target幀與#32落在配置內的target幀正常合成，與獨立172800-byte嚴格FIGANI blit及viewport擷取一致；#154負列反例仍拒收、不當作已修正",
+      "270列最後一列可寫，下一列拒收，保留malformed資產拒收",
+      "同槽seed4 r6正常重播通過原T4指令6；新差異另列Issue，不稱整章成功",
+      "受影響套件、第23章與第24章兩條既有有限收據回歸"
+    ],
+    "unknowns": [
+      "工作畫布未顯示區域不外推一般玩家視覺parity",
+      "第24章完整RGB／AI差異#152／#153未解",
+      "精確音訊及中間特效逐幀未驗",
+      "#154：#32 secondary frame9負列位置仍未知；270列修正不放寬負起點"
+    ],
+    "rights": "只保存原始定位、少量descriptor與雜湊；完整原始素材維持本機/private，不加入公開庫"
+  },
+  "spec_revisions": [
+    {
+      "date": "2026-10-04",
+      "status": "READY",
+      "reason": "真實資產反例發現另一項負列缺陷#154，返回規格審查；本切片只修已直接證實的配置高度，負起點仍拒收。原兩side皆正常合成的預期撤回，不稱指令6所有資產已驗收。"
+    }
+  ],
+  "validation": {
+    "scope": "只驗工作配置與本次越界反例；不宣稱完整指令6／整章PLAYER-E2或同狀態特效逐幀parity",
+    "commands": {
+      "ida": "test -f /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2/FD2.EXE && test -d /home/anr2/cht/fd2/work/parity-slot-ch24 && timeout 360 docker run --rm --name fd2-command6-work-ida --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24,dst=/out -e PROBE_ADDRESSES=\"0x2A6BD 0x2935B\" -e PROBE_OUTPUT=/out/command6-work-ida-r1.json --workdir /tmp --entrypoint timeout ida-pro-9.4-idapython:locked-v1 330 idat -A -o/tmp/fd2.i64 -S/src/tools/ida_opening_input_probe.py /input/FD2.EXE > work/parity-slot-ch24/command6-work-ida-r1.log 2>&1",
+      "targeted_tests": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'gofmt -w internal/battlepresent/native_command6_test.go; with-xvfb go test ./internal/battlepresent -run \"TestComposeNativeCommand6RealResources|TestNativeCommandWorkBounds\" -count=1 -timeout 90s -v'",
+      "full_go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s -v' > work/parity-slot-ch24/ch24-command6-all-go-r1.log 2>&1",
+      "normal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --name fd2-ch24-r6-work-bounds-replay --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/fresh-full-original-r6 FD2_PARITY_OUT=/src/work/parity-slot-ch24/fresh-full-remake-r4 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/fresh-full-remake-r4.log 2>&1",
+      "normal_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/fresh-full-original-r6 --remake work/parity-slot-ch24/fresh-full-remake-r4 --slot-manifest docs/data/parity-slots/ch24-fresh-policy-manifest.json --plan docs/data/parity-plans/ch24-fresh-sample-r1.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/fresh-full-verify-r4.json",
+      "ch23_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r4 FD2_PARITY_OUT=/src/work/parity-slot-ch23/ch24-command6-regression-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch24-command6-regression-remake-r1.log 2>&1",
+      "finite_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/full-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch24/full-r5-command6-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/full-r5-command6-remake-r1.log 2>&1",
+      "finite_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/full-original-r5 --remake work/parity-slot-ch24/full-r5-command6-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-sample-r3.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/full-r5-command6-verify-r1.json",
+      "first15_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/startup-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch24/startup-command6-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/startup-command6-remake-r1.log 2>&1",
+      "first15_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/startup-original-r2 --remake work/parity-slot-ch24/startup-command6-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-startup-r1.jsonl --min-frames 5 --pixel-budget 640 --out work/parity-slot-ch24/startup-command6-verify-r1.json",
+      "ch23_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/full-original-r4 --remake work/parity-slot-ch23/ch24-command6-regression-remake-r1 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-sample-r4.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/ch24-command6-regression-verify-r1.json"
+    },
+    "full_go": {
+      "packages": 19,
+      "passed": 2306,
+      "skipped": 27,
+      "failed": 0
+    },
+    "regressions": {
+      "work/parity-slot-ch23/ch24-command6-regression-verify-r1.json": {
+        "status": "passed",
+        "frames": 24,
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "sha256": "f3c6b18ddf289cd8848cb44646e843652350a1591acc602fc13fd57dda7503d6"
+      },
+      "work/parity-slot-ch24/full-r5-command6-verify-r1.json": {
+        "status": "passed",
+        "frames": 13,
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "sha256": "02403d64cfe8e4f6e2ab484a498aac6ba46c85fdc00bf2bc3d1f06f8d073512e"
+      },
+      "work/parity-slot-ch24/startup-command6-verify-r1.json": {
+        "status": "passed",
+        "frames": 5,
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "sha256": "b973f05c96a7f203f31730458d198711af1c16c658704d1d9e222c844a76cd18"
+      }
+    },
+    "normal_r6": {
+      "run": "work/parity-slot-ch24/fresh-full-remake-r4",
+      "go_replay_status": "passed",
+      "checkpoints": 82,
+      "runtime_errors": 0,
+      "ai_entries_consumed": 56,
+      "ai_order_divergences": 7,
+      "full_receipt_status": "failed",
+      "compared_frames": 65,
+      "open_defects": [
+        152,
+        153,
+        154
+      ],
+      "note": "T4前已有#152狀態分歧，不能宣稱seq2115同狀態特效逐幀parity；只確認原越界反例不再中止。"
+    },
+    "outputs": {
+      "work/parity-slot-ch24/fresh-full-verify-r4.json": "1322f0a9ee11099a8624d08427dcc2baebc3c2afb6490c947baafc3cfee6cbe6",
+      "work/parity-slot-ch24/fresh-full-remake-r4/checkpoints.jsonl": "bf6e667142ea9ecd7274c49d1baae8a381e8d4447c91620c82e6d46758d40af8",
+      "work/parity-slot-ch24/fresh-full-remake-r4.log": "2293cf553f0c18c522d06ad58335735796fda1e44fe86a97b943bc2d1557e055",
+      "work/parity-slot-ch24/ch24-command6-all-go-r1.log": "b8e6ff7e5d2d770852e63931a2976abeadadc5408c80bccc022d56ee3badd314"
+    },
+    "implementation_sha256": {
+      "remake/internal/battlepresent/native_command0.go": "82c9b165c1ac5845d6a7a440723c4720a7d6bbdde5aadbf577a829ff48c693c0",
+      "remake/internal/battlepresent/native_command6_test.go": "4dd4ca250be5fc024fe5f7772220800db46d1cde3700f7c40b2f1087f1fee99d"
+    }
+  },
+  "toolchain": {
+    "ida_image": "ida-pro-9.4-idapython:locked-v1",
+    "ida_image_id": "sha256:6f6d59af49d0008c4109a5295b5f374bdc007e2d1ab28cb9de08779584de2780",
+    "ida_kernel": "9.4",
+    "user": "1000:1000",
+    "capstone_image": "fd2-cap-local",
+    "capstone_version": "5.0.3",
+    "capstone_address_space": "tools/disasm_le.py LE obj1 linear base0x10000",
+    "cross_check": "0x2A949..0x2A96E配置的push0xFA00／push0x2A300／call0x36D16／ESI保存均與IDA raw bytes一致；只作已知位址機械核對。"
+  }
+}

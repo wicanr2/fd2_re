@@ -1330,6 +1330,21 @@
       "rule": "離屏重播遇到Draw完成閘門時，執行正式繪圖consumer後再回報，不只切換rendered旗標。入口remake/cmd/fd2/native_chapter_one_play_test.go的ackPresents與drawNativeCh23Loop；目前涵蓋第24章舞台及既有原生呈現閘門，不能據此取代GUI正常玩家驗收。",
       "why": "第24章11句戰後已到達，但舞台繪製沒有執行，重播6001幀超時；補實際Draw後完成300次正常舞台演出與保存。",
       "evidence": "docs/data/ui-traces/ch24-finite-parity.json"
+    },
+    {
+      "id": "native-work-bounds-follow-allocation",
+      "date": "2026-10-04",
+      "area": "原生特效工作緩衝",
+      "rule": "原生特效work的容量與列距從caller配置值及consumer取證，不用只夠viewport的估計高度；未知起點或超出已證容量仍拒收。入口docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json及remake/internal/battlepresent/native_command0.go；目前sub_2A6BD共用work已證0x2A300 bytes／640列距＝270列，負列#154仍未知。",
+      "why": "第24章正常敵方指令6的#33 frame9底端263在原版270列內，重製260列假設誤拒並中止；原始資產回歸另發現#32負列，不以增高緩衝掩蓋它。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/151；docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battlepresent/native_command0.go"
+        ],
+        "pattern": "nativeCommand0WorkHeight\\s*=\\s*270"
+      }
     }
   ]
 }

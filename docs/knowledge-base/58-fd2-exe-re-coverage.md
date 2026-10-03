@@ -2355,3 +2355,17 @@ READY限定完整0x11D3B copy可重新綁定source並發布當時raw offset；�
 [主契約](../data/ida/fd2_ch24_stage_runtime_20261003.json)追加CONFORMED驗證，不覆寫舊失敗。Go與Python只由完整0x11D3B viewport copy見證新的非零32-bit來源；其他caller不同來源、未知參數、loader重設與截斷拒收保留。Python22項通過，Go相關方法及正常r6重播越過seq2100；該點原版／重製已發布列49一致，工作列50，不以工作相位當畫面。
 
 第23章24張與第24章既有有限13張的四項門檻及完整保存回歸通過；另一選人分支5張的有限門檻通過。r6晚期報告仍failed：seq2100 RGB差946px，seq206先差14772px，T4 seq1775狀態不同，之後指令6工作影格越界。分別登記[#153](https://github.com/wicanr2/fd2_re/issues/153)、[#152](https://github.com/wicanr2/fd2_re/issues/152)、[#151](https://github.com/wicanr2/fd2_re/issues/151)，先查已有主證據再建立READY，不調DP、略過特效或放寬像素門檻。正式章台帳仍20/30，第24章#142保持未驗收。
+
+### 2026-10-04 #151：指令6工作緩衝270列 READY
+
+[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)沿既有指令6排程與common consumer，只重開重製端260列配置假設。IDA9.4原始sub_2A6BD於0x2A95F以6800a30200要求0x2A300 bytes，0x2A964呼配置、0x2A96C保存ESI；0x2AC4A..0x2ACAA從ESI+0x4BA0以0x280列距傳入正式handler。Capstone5.0.3獨立核對同一LE位址的raw指令。0x2A300／640＝270，未深挖malloc helper。
+
+固定FDOTHER.DAT #33 frame9 descriptor為(133,72,143,110)，含末列不透明像素。正常T4 mode5 channel1框(334,153,143,110)底端263，在270列內；不能把它裁掉或稱成原版越界。READY限定既有work高度260→270，原始資產、預建交易與其餘邊界拒收保留。#152／#153與#142維持未完成，不改DP政策。
+
+### 2026-10-04 #151：270列配置有限 CONFORMED
+
+[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)保存原始配置bytes、ESI至consumer資料流、固定FDOTHER #32／#33描述子與原版雜湊，只有已證配置進production。高度260→270後，正常r6重播消費全部56筆AI入口、不再有runtime_error；82個檢查點，仍有7筆AI順序分岔。原T4狀態已在#152分歧，不能稱此特效同狀態逐幀parity。獨立65張完整報告仍failed，#142整章未驗收。
+
+真實原始資產測試先重現#33 step6的(334,153,143,110)錯誤，修正後配置內影格與獨立FIGANI嚴格blit／viewport一致，270末列可寫、下一列及跨stride仍拒收。測試另發現#32 frame9負列(141,-1,143,111)，已先登記[#154](https://github.com/wicanr2/fd2_re/issues/154)並返回規格審查；它仍拒收，不以270列掩蓋或聲稱指令6所有資產已驗。
+
+第23章24張、第24章既有有限13張與另一選人分支5張回歸通過，完整Go19套件2306項通過、27項略過。主契約保存命令、輸出及實作雜湊，Docker工作容器清理。#151限RE-CLOSED／DATA-READY／RUNTIME-E1；#152／#153／#154及#142仍未完成，固定DP政策與正式20/30章台帳不變。

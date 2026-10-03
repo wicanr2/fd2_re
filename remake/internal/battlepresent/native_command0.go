@@ -10,7 +10,7 @@ import (
 const (
 	nativeCommand0SurfaceSize  = 320 * 200
 	nativeCommand0WorkStride   = 640
-	nativeCommand0WorkHeight   = 260
+	nativeCommand0WorkHeight   = 270 // sub_2A6BD: 0x2A300 bytes / 640-byte stride (#151)
 	nativeCommand0ViewportBase = 19360
 )
 
