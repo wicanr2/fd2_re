@@ -352,28 +352,6 @@
       "issue": 142
     },
     {
-      "id": "ch24-fresh-select-rgb-divergence",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "第24章全員存活槽正常選取 seq206 完整 RGB 差異超標",
-      "body": "#150 修正後 fresh-full-verify-r3 的正常選取 seq206，狀態與節點皆通過，但完整 RGB 差14772px，範圍 [4,4,315,195]，超過111既定640px上限。seq2100完整舞台相位49兩側一致，仍差946px，不能把來源相位修正當視覺驗收。先查第一個 seq206 的同狀態來源、資產、camera、palette、stage及圖層；不遮罩、不放寬上限、不挑像素最低值規避契約。",
-      "acceptance": [
-        "核對 seq206 原版正常輸入、typed狀態與完整畫面，查第一個視覺差異的證據及既有主索引。",
-        "依 READY 規格修正正式渲染消費端；測試候選相位與正式行為的證據等級分開。",
-        "同源 seq206 完整 RGB 達既定上限，後续晚期差異保留，第23章及第24章有限回歸通過。"
-      ],
-      "evidence": [
-        "work/parity-slot-ch24/fresh-full-verify-r3.json",
-        "work/parity-slot-ch24/fresh-full-original-r6/checkpoint-0206.png",
-        "work/parity-slot-ch24/fresh-full-remake-r3"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "完整 RGB 與正式正常玩家路徑收據，不遮罩。"
-      },
-      "issue": 153
-    },
-    {
       "id": "command6-side1-negative-work-row",
       "layer": "runtime",
       "category": "缺陷",

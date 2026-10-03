@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -110,16 +110,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第24章全員存活槽正常選取 seq206 完整 RGB 差異超標
-
-`ch24-fresh-select-rgb-divergence` · 缺陷 · [#153](https://github.com/wicanr2/fd2_re/issues/153) · 仍未完成 · 要人判
-
-#150 修正後 fresh-full-verify-r3 的正常選取 seq206，狀態與節點皆通過，但完整 RGB 差14772px，範圍 [4,4,315,195]，超過111既定640px上限。seq2100完整舞台相位49兩側一致，仍差946px，不能把來源相位修正當視覺驗收。先查第一個 seq206 的同狀態來源、資產、camera、palette、stage及圖層；不遮罩、不放寬上限、不挑像素最低值規避契約。
-
-怎樣算做完：['核對 seq206 原版正常輸入、typed狀態與完整畫面，查第一個視覺差異的證據及既有主索引。', '依 READY 規格修正正式渲染消費端；測試候選相位與正式行為的證據等級分開。', '同源 seq206 完整 RGB 達既定上限，後续晚期差異保留，第23章及第24章有限回歸通過。']
-
-證據：`['work/parity-slot-ch24/fresh-full-verify-r3.json', 'work/parity-slot-ch24/fresh-full-original-r6/checkpoint-0206.png', 'work/parity-slot-ch24/fresh-full-remake-r3']`
 
 ### 指令6 FDOTHER #32 真實 target sequence 產生負列位置
 
