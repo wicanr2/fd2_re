@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,16 +120,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['核對固定原始資產及既有座標／consumer直接指令，定位負列位置的來源與原版可見契約。', '形成 READY 並依證據修正正式 typed sequence／compositor，未知資產與交易拒收保留。', '真實#32完整sequence與相關命令回歸通過，必要時由維護中dosgolem正常原版收據核對可見輸出；不以局部資產測試代替E2。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/battlepresent/native_command6_test.go', 'docs/data/ida/fd2_command1_8_entries_ida.txt']`
-
-### 指令6正式 owner 未交錯目標間數字段抖動亂數
-
-`command6-target-numeric-rng` · 缺陷 · [#157](https://github.com/wicanr2/fd2_re/issues/157) · 仍未完成 · 要人判
-
-#156 核對跨目標狀態時確認：原版共用 caller 0x2AEB6→0x2AEC0 在命中且 mode5 回傳 numeric marker 時繼續至0x2AF40呼 sub_4E893；下一目標0x2B114才呼sub_1C75E。正式指令6玩家／AI owner 仍使用 PlanNativeCommandDamage／PlanNativeAICommandDamage 的 nil RNG walk，依序完成全部傷害擲骰，沒有演出交錯。這是直接指令與正式消費端差異，尚缺正常指令6命中的逐次 oracle trace，不冒稱已定位玩家首次HP差異。#156只修圖層／座標／state，本題獨立先 RE→READY，再修正式數值owner，不深挖RND內部。
-
-怎樣算做完：['以固定 EXE 原始 caller、指令6 marker 與正式 owner 確定交錯契約；補正常有界 dosgolem 收據與種子／初始狀態。', 'READY後玩家與AI正式 owner 逐目標交錯命中抖動，miss及transition保留原始語意；預建失敗不發布交易。', '雙側／多目標／miss回歸與同狀態数值比較通過，章驗收另依#142。']
-
-證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation.go', 'remake/internal/battle/native_command0.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

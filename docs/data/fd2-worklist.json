@@ -372,28 +372,6 @@
         "note": "原始資產／直接指令、READY與正式consumer回歸。"
       },
       "issue": 154
-    },
-    {
-      "id": "command6-target-numeric-rng",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "指令6正式 owner 未交錯目標間數字段抖動亂數",
-      "body": "#156 核對跨目標狀態時確認：原版共用 caller 0x2AEB6→0x2AEC0 在命中且 mode5 回傳 numeric marker 時繼續至0x2AF40呼 sub_4E893；下一目標0x2B114才呼sub_1C75E。正式指令6玩家／AI owner 仍使用 PlanNativeCommandDamage／PlanNativeAICommandDamage 的 nil RNG walk，依序完成全部傷害擲骰，沒有演出交錯。這是直接指令與正式消費端差異，尚缺正常指令6命中的逐次 oracle trace，不冒稱已定位玩家首次HP差異。#156只修圖層／座標／state，本題獨立先 RE→READY，再修正式數值owner，不深挖RND內部。",
-      "acceptance": [
-        "以固定 EXE 原始 caller、指令6 marker 與正式 owner 確定交錯契約；補正常有界 dosgolem 收據與種子／初始狀態。",
-        "READY後玩家與AI正式 owner 逐目標交錯命中抖動，miss及transition保留原始語意；預建失敗不發布交易。",
-        "雙側／多目標／miss回歸與同狀態数值比較通過，章驗收另依#142。"
-      ],
-      "evidence": [
-        "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
-        "remake/cmd/fd2/native_command6_presentation.go",
-        "remake/internal/battle/native_command0.go"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "固定caller、正常指令6命中trace、READY與正式數值交易回歸。"
-      },
-      "issue": 157
     }
   ]
 }
