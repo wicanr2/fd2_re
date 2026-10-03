@@ -28,22 +28,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
-
-## re — 原版證據還沒閉合
-
-### 第二十三章第13至22回合事件52尚缺具型別動作與正常對拍
-
-`ch23-turn-event52-native-program` · RE待解 · [#138](https://github.com/wicanr2/fd2_re/issues/138) · 仍未完成 · 要人判
-
-#133開場稽核發現docs/data/turn_events.json明示map22於T13／15／18／22 enemy event52→0x352E2；正式ch23 scenario目前只有opening，native_death_events也沒有52轉寫。gen_campaign會跳過無直接spawn列，不能將typed events缺項當原版沒有事件。先查58／00與既有event table證據，不重做shared constructor；以IDA原始條件與writer／consumer建立READY，補完整可編輯動作及一般回合路徑，正常來源對拍事件回合及戰後保存。T2診斷不可冒稱已抽晚期事件。
-
-怎樣算做完：['固定EXEhash、IDA9.4原始handler／跳表／間接spawn或event writer及consumer，推論分級，READY先於實作。', '同源原版事件回合正常輸入、具型別scenario及canonical；未知行為仍拒收。', '正式#133章收據分別驗行為／獨立節點／交易／完整RGB與SAV，明列未抽範圍；不靠提前登場群組或猜補完成。']
-
-證據：`['docs/data/turn_events.json', 'remake/assets/data/native_death_events.json', 'remake/assets/scenarios/ch23.json']`
 
 ## data — 可編輯資料還沒就緒
 
@@ -123,16 +111,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### 第23章增援commit覆蓋PAN後原生視圖
-
-`ch23-staging-pan-view-commit` · 缺陷 · [#141](https://github.com/wicanr2/fd2_re/issues/141) · 仍未完成 · 要人判
-
-#133／#138 r3敗北前有限RGB：T14／T15原版camera16,28／15,28，重製14,30；HP、單位與RNG同狀態。staging preflight凍結PAN前NativeMapViewState，commit以整個snapshot覆蓋已由stepCamPan發布的視圖。先復用已閉合135DD六全域writer，建立READY；限事件52保留live PAN視圖再發布預檢的roster，不擴張其他caller。
-
-怎樣算做完：['READY先於修正；保留舊失敗及原始位址／固定hash。', '空群組與非空群組PAN後六全域不被commit回滾，局部回歸與相同原版RGB通過。', '正式#133四gate、全檔SAV及相關Go／前章回歸通過，明列sprite及未抽範圍。']
-
-證據：`['docs/data/ida/fd2_ch23_event52_20261003.json', 'remake/cmd/fd2/native_turn_staging.go', 'work/parity-slot-ch23/event52-defeat-prefix-rgb.json']`
-
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -172,16 +150,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### 第二十三章整章原版／重製對拍與收尾
-
-`ch23-full-chapter-parity` · 工作 · [#133](https://github.com/wicanr2/fd2_re/issues/133) · 仍未完成 · 要人判
-
-接續已驗收第22章非城鎮記錄SAV，SHA-256 3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1。依111／114例外，保持相同起始槽與seed4，不追加治療、強化、金幣或道具。先核對正常整備／選人／起手與既有閉合來源，再抽樣章內節拍、一次清敵後正常戰後與實際保存邊界。發現反證另開缺陷／RE待解，不放寬四gate。
-
-怎樣算做完：['固定FD2.EXE、dosgolem commit、同源SAV與受版控計畫／清冊，正常章路徑可重跑。', '行為、獨立原版節點、交易／完整SAV、完整RGB四項通過，相關Go與第22章回歸通過。', '同步56／57／58、索引、正式台帳與產生現況；保留敗北、注入與未抽樣限制。']
-
-證據：`['docs/data/ui-traces/parity-ch22.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/data/parity-campaign-progress.json']`
 
 ## release — 發行、平台與封包
 
