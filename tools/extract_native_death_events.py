@@ -332,6 +332,13 @@ EVENTS = [
         op("reward", [(0x352A9, 0x352C4)], rodata=0x52748),
         op("dialogue", [(0x352C4, 0x352DD), (0x34FB7, 0x34FC5)], text=3),
     ]},
+    # 第23章raw camp0；完整IDA與空群組consumer見fd2_ch23_event52_20261003.json。
+    {"id": 52, "handler": 0x352E2, "ops": [
+        op("staging", [(0x352EC, 0x35305)], x=2, y=11, group_from="round",
+           group_subtract=14, group_scale=2, group_mask=255, group_addend=0),
+        op("staging", [(0x35305, 0x35320)], x=26, y=11, group_from="round",
+           group_subtract=14, group_scale=2, group_mask=255, group_addend=1),
+    ]},
     {"id": 53, "handler": 0x35321, "ops": [
         op("dialogue", [(0x3532B, 0x35352)], text=5),
         op("clear_hp_from", [(0x35352, 0x3535C)], first=0x12),
@@ -485,7 +492,16 @@ def check_op(image, event_id, o):
         expect_seq(insns, [mode_push, f"push {imm(o['last'])}",
                            f"push {imm(o['first'])}", "call 0x3419c", "add esp, 0xc"], where)
     elif kind == "staging":
-        expect_seq(insns, [f"push {imm(o['group'])}", f"push {imm(o['y'])}",
+        if o.get("group_from") == "round":
+            if (o["group_scale"], o["group_mask"], o["group_addend"]) not in ((2, 255, 0), (2, 255, 1)):
+                raise SystemExit(f"{where}：未證實的round staging算式")
+            body = [("mov al, byte ptr [0x3bef]", ROUND), f"sub al, {imm(o['group_subtract'])}", "add al, al"]
+            if o["group_addend"]:
+                body.append("inc al")
+            expect_seq(insns, [*body, "movzx eax, al", "push eax", f"push {imm(o['y'])}",
+                               f"push {imm(o['x'])}", "call 0x35822", "add esp, 0xc"], where)
+        else:
+            expect_seq(insns, [f"push {imm(o['group'])}", f"push {imm(o['y'])}",
                            f"push {imm(o['x'])}", "call 0x35822", "add esp, 0xc"], where)
     elif kind == "pan":
         expect_seq(insns, [f"push {imm(o['y'])}", f"push {imm(o['x'])}",

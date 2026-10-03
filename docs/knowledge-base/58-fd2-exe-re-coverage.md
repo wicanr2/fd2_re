@@ -2268,3 +2268,26 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 [視圖契約](../data/ida/fd2_ch23_post_view_20261003.json)沿用233C6的23465..23493原始writer。247B4布局同時重設camera／absolute cursor，可見cursor清0，range gate清0；native focus／pan在post兩個載體同步發布。沒有放寬徑向幾何或夾中心。離屏測試補Draw回報後走完2189A與戰後，不改正式演出節拍。
 
 14張完整RGB中12張0px，兩張move為179／70px，依111既定640px上限通過，精確動畫相位未知。24筆AI入口零分岔；保存22987 bytes兩側SHA-256均eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279。第22章34張與全檔SAV回歸通過。特效中間幀未逐幀對拍，晚期event52／#138與#133整章仍開啟，不改正式章台帳。完整Go r6：19套件／2298個測試通過、27項略過。#139／#140限本批RUNTIME-E1列CONFORMED。
+
+## 2026-10-03 #138 第23章事件52（READY）
+
+[主契約](../data/ida/fd2_ch23_event52_20261003.json)保存IDA9.4原始名稱、LE位址、bytes與固定EXE雜湊。完整handler只做兩次低byte算式及35822；已閉合PAN／白閃helper不重做。T13實際254／255不追加但仍PAN，T15為2／3、T18為8／9，前沿42→54→62。T22的16／17是static confirmed公式結果，動態路徑未驗。r2主角死亡返回標題，未保存；r3只用相同SAV／seed與正常移動避開敵軍。
+
+沿用既有bind_round及staging資料格式；空群組僅在本章已證counter／source放行。READY先於實作，未驗收不提升章台帳、不關#133／#138。
+
+#141追加READY於[同一事件52主契約](../data/ida/fd2_ch23_event52_20261003.json)：T14／T15完整RGB41225／39519px且camera不同，預檢snapshot整體commit覆蓋PAN後view。僅保存event52已發布的live六全域，不重解135DD或修改群組／硬體時序。未通過RGB前不能稱事件52CONFORMED。
+
+## 2026-10-03 第23章目前狀態表（#133／#138／#141）
+
+以[正式收據](../data/ui-traces/parity-ch23.json)、[事件52主契約](../data/ida/fd2_ch23_event52_20261003.json)及目前程式為準。前段READY及T2有限診斷保留為形成原因，本表取代本章待驗描述。
+
+| 垂直切片 | 原版證據 | 可編輯資料 | 正式執行期 | 玩家驗收 |
+|---|---|---|---|---|
+| event52完整兩次低byte算式／35822 | RE-CLOSED | DATA-READY | RUNTIME-E1 | T13／15／18 PLAYER-E2，限111／114 |
+| PAN後view及roster原子發布 | RE-CLOSED | DATA-READY | RUNTIME-E1 | 同源T14／15完整RGB通過 |
+| 62筆戰後至整備四槽保存 | RE-CLOSED | DATA-READY | RUNTIME-E1 | PLAYER-E2，限111／114 |
+| T22動態事件／特效中間幀 | 公式及空群組consumer已證 | DATA-READY | 局部回歸 | 原版oracle未抽樣，非本章阻擋 |
+
+收據由tools/verify_chapter_parity.py以full-original-r4、full-r4-remake-r1及ch23-sample-r4.jsonl重生。四gate通過：836個原版checkpoint、44動作、24完整RGB，三張移動差179／70／88px，其餘21張0px；原始全幀不遮罩，沿111既有640px預算及已證DAC相位候選。兩側22987-byte SAV SHA256相同，為22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63。原版最終7,467,520,008 steps；同源SAV及seed4不追加強化、治療或重擲。
+
+完整Go19套件／2299項通過，27項依條件跳過；六項staging回歸、第22章34完整RGB／完整SAV／212筆AI入口零分岔回歸與68份canonical fresh export通過。第23章EIP trace只收事件52，未收AI入口，不宣稱逐入口AI順序。工具命令、來源及輸出hash、r2／r3敗北、測試腳本失敗、metadata訂正及跳過項保存於正式收據。現在章覆蓋僅由正式台帳與tools/fd2_parity_progress.py／render_parity_progress.py產生，不在此另數整章。

@@ -5080,3 +5080,9 @@ r5離屏沒有2189A drawn回報造成假卡關，補與正式Draw相同的回報
 #133整章與#138晚期event52仍未完成；正式19／30不變。準備[晚期抽樣計畫r2](../data/parity-plans/ch23-sample-r2.jsonl)，正常END到T23才清敵一次，尚未實跑。IDA9.4補查10B4E空群組scan，零相符正常返回，probe雜湊與位址已留言#138；不由靜態算式外推晚期可達。
 
 2026-10-03：3088488fef4987c766235d511d07a262c9bafa79已推送且遠端main相同；host gh回讀#139／#140均CLOSED，留言附有限收據與全部限制。fresh快照22條開啟工單，#133／#138仍開啟，正式19／30不變。本批FD2容器已全數退出／移除，變更檔UID/GID1000:1000。
+
+### 2026-10-03：第23章事件52及整章抽樣驗收
+
+#133／#138／#141正式四gate、完整SAV與回歸已通過，主證據與限制見[58](58-fd2-exe-re-coverage.md)、[正式收據](../data/ui-traces/parity-ch23.json)。事件52完整byte算式、T13空群組PAN、T15／T18指定增援及62筆戰後保存接入資料與正式路徑；預檢roster commit不再回滾本caller PAN後view。
+
+r2於T18索爾死亡；r3正常到T19玩家游標、再END才死亡。標題新unit_base不能據此判成全隊死亡。r4保留r3同源SAV／seed與完整前綴，T19玩家游標清敵一次，不刷關、不治療或重擲。T22及特效中間幀未抽樣。r4 launcher繼承r2的T23說明，已在runner保存文字訂正與理由，原plan／actions／checkpoint／SAV未改。新測試opening When誤讀及第15章限定defeat-tail誤用均為測試方法失敗，修正後另有乾淨回歸；不記成產品缺陷。

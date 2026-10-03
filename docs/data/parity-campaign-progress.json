@@ -624,15 +624,32 @@
     },
     {
       "chapter": 23,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch23.json",
+      "slot_manifest": "docs/data/parity-slots/ch23-manifest.json",
+      "slot_sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "date": "2026-10-03",
+      "verify": "tools/chapter_parity.sh 23 work/parity-slot-ch23 <dosgolem run> <out>；確切原版、重播及比較命令見docs/data/ui-traces/parity-ch23.json verification.commands",
+      "limitations": [
+        "PLAYER-E2限111／114建構槽例外；同源第22章SAV與seed4，無追加強化或治療。",
+        "正常T13／15／18事件52，T19玩家游標清敵一次；T22與特效中間幀未抽樣。",
+        "三張完整RGB移動差179／70／88px，既有640px預算；無遮罩，不稱逐像素exact。",
+        "第23章EIP trace未收AI入口，不宣稱逐入口AI順序；不作傷害、存活或敵方選目標parity。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 0,
+          "base_dx": 60
+        }
+      }
     },
     {
       "chapter": 24,

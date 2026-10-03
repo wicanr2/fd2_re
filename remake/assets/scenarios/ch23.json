@@ -1042,6 +1042,142 @@
           "type": "spawn_party"
         }
       ]
+    },
+    {
+      "id": "reinforce_ch23_e52_t13",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 13
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x352ec",
+          "native_death_op": {
+            "op": "staging",
+            "x": 2,
+            "y": 11,
+            "group": 254
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35305",
+          "native_death_op": {
+            "op": "staging",
+            "x": 26,
+            "y": 11,
+            "group": 255
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch23_e52_t15",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 15
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x352ec",
+          "native_death_op": {
+            "op": "staging",
+            "x": 2,
+            "y": 11,
+            "group": 2
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35305",
+          "native_death_op": {
+            "op": "staging",
+            "x": 26,
+            "y": 11,
+            "group": 3
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch23_e52_t18",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 18
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x352ec",
+          "native_death_op": {
+            "op": "staging",
+            "x": 2,
+            "y": 11,
+            "group": 8
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35305",
+          "native_death_op": {
+            "op": "staging",
+            "x": 26,
+            "y": 11,
+            "group": 9
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "id": "reinforce_ch23_e52_t22",
+      "trigger": "on_turn_end",
+      "when": {
+        "turn": 22
+      },
+      "once": true,
+      "do": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x352ec",
+          "native_death_op": {
+            "op": "staging",
+            "x": 2,
+            "y": 11,
+            "group": 16
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35305",
+          "native_death_op": {
+            "op": "staging",
+            "x": 26,
+            "y": 11,
+            "group": 17
+          },
+          "native_event_id": 52,
+          "camp": "enemy"
+        }
+      ]
     }
   ],
   "native_death_programs": {

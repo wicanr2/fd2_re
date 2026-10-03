@@ -41,10 +41,22 @@ CANONICAL = ROOT / "remake/assets/editor-canonical"
 
 def bind_round(event, row):
     """group 取自回合計數 [0x53BEF] 的 spawn_group：回合事件列在回合計數等於該列回合時分派，
-    所以代入 row["turn"]。其餘事件原樣回傳。"""
+    所以代入 row["turn"]；低byte算式在producer完成，runtime沿用固定group。其餘事件原樣回傳。"""
     if not any(o.get("group_from") == "round" for o in event["ops"]):
         return event
-    ops = [dict(o, group=row["turn"]) if o.get("group_from") == "round" else o for o in event["ops"]]
+    ops = []
+    for original in event["ops"]:
+        if original.get("group_from") != "round":
+            ops.append(original)
+            continue
+        o = dict(original)
+        group = row["turn"]
+        if "group_subtract" in o:
+            group = ((group - o.pop("group_subtract")) * o.pop("group_scale") +
+                     o.pop("group_addend")) & o.pop("group_mask")
+        o.pop("group_from")
+        o["group"] = group
+        ops.append(o)
     return {**event, "ops": ops}
 
 

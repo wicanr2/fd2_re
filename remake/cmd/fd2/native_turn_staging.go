@@ -13,6 +13,36 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
+// nativeEvent52EmptyGroup 保留0x10B4E無匹配列的正常返回；0x35822仍PAN及白閃。
+// 契約：docs/data/ida/fd2_ch23_event52_20261003.json。其他caller仍要求非空。
+func (g *Game) nativeEvent52EmptyGroup(event battle.NativeTurnEvent, call battle.NativeTurnStagingCall) bool {
+	if g.sc == nil || g.st == nil || g.sc.Chapter != 23 || g.sc.Map != 22 || event.EventID != 52 ||
+		event.Handler != nativeDeathStagingHandler || len(event.Staging.Calls) != 1 || call.Y != 11 {
+		return false
+	}
+	round := g.st.NativeRoundCounter
+	if round != 13 && round != 22 {
+		return false
+	}
+	addend := 0
+	switch {
+	case call.X == 2 && strings.EqualFold(call.Source, "0x352ec"):
+	case call.X == 26 && strings.EqualFold(call.Source, "0x35305"):
+		addend = 1
+	default:
+		return false
+	}
+	if call.Group != int(byte(2*(round-14)+addend)) || len(g.st.Roster) == 0 {
+		return false
+	}
+	for _, u := range g.st.Roster {
+		if u != nil && u.Group == call.Group {
+			return false
+		}
+	}
+	return true
+}
+
 type nativeTurnStagingPhase uint8
 
 const (
@@ -159,10 +189,12 @@ func (g *Game) preflightNativeTurnStaging(event battle.NativeTurnEvent) (battle.
 		if call.X+13 > g.m.W || call.Y+8 > g.m.H {
 			return event, nil, nil, false, fmt.Errorf("event%d staging call %d camera exceeds native viewport", event.EventID, i)
 		}
-		if n, err := candidate.AppendGroupWithNativePlacement(
-			call.Group, byte(resolved.Staging.RawPlacementGate),
-		); err != nil || n <= 0 {
-			return event, nil, nil, false, fmt.Errorf("event%d staging call %d group %d: append=%d err=%v", event.EventID, i, call.Group, n, err)
+		if !g.nativeEvent52EmptyGroup(resolved, call) {
+			if n, err := candidate.AppendGroupWithNativePlacement(
+				call.Group, byte(resolved.Staging.RawPlacementGate),
+			); err != nil || n <= 0 {
+				return event, nil, nil, false, fmt.Errorf("event%d staging call %d group %d: append=%d err=%v", event.EventID, i, call.Group, n, err)
+			}
 		}
 		if event.EventID == 74 {
 			dynamic := event.DynamicGroup
@@ -315,7 +347,20 @@ func (g *Game) commitNativeTurnStagingSpawn() {
 		}
 		copy(job.vga, g.nativeMapVGA)
 	}
-	*g.st = *job.states[job.call]
+	candidate := job.states[job.call]
+	// event52的PAN已透過battleEvent owner發布六全域；roster預檢不能回滾視圖。
+	// #141 READY見fd2_ch23_event52_20261003.json，其他caller不擴張本契約。
+	if job.event.EventID == 52 {
+		if !g.st.HasNativeMapViewState {
+			g.failNativeTurnStaging("event52 completed pan has no native view")
+			return
+		}
+		if err := candidate.MaterializeNativeMapViewState(g.st.NativeMapViewState); err != nil {
+			g.failNativeTurnStaging("event52 completed pan view: " + err.Error())
+			return
+		}
+	}
+	*g.st = *candidate
 	job.phase = nativeTurnStagingDelay
 	job.ticks = nativeDelayTicks(job.event.Staging.DelayBeforeFlashMS)
 }

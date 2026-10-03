@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -122,6 +122,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 第23章增援commit覆蓋PAN後原生視圖
+
+`ch23-staging-pan-view-commit` · 缺陷 · [#141](https://github.com/wicanr2/fd2_re/issues/141) · 仍未完成 · 要人判
+
+#133／#138 r3敗北前有限RGB：T14／T15原版camera16,28／15,28，重製14,30；HP、單位與RNG同狀態。staging preflight凍結PAN前NativeMapViewState，commit以整個snapshot覆蓋已由stepCamPan發布的視圖。先復用已閉合135DD六全域writer，建立READY；限事件52保留live PAN視圖再發布預檢的roster，不擴張其他caller。
+
+怎樣算做完：['READY先於修正；保留舊失敗及原始位址／固定hash。', '空群組與非空群組PAN後六全域不被commit回滾，局部回歸與相同原版RGB通過。', '正式#133四gate、全檔SAV及相關Go／前章回歸通過，明列sprite及未抽範圍。']
+
+證據：`['docs/data/ida/fd2_ch23_event52_20261003.json', 'remake/cmd/fd2/native_turn_staging.go', 'work/parity-slot-ch23/event52-defeat-prefix-rgb.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

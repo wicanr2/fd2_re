@@ -372,6 +372,28 @@
         "note": "核對事件52主證據／READY、正式typed consumer與本章正常回合／保存收據。"
       },
       "issue": 138
+    },
+    {
+      "id": "ch23-staging-pan-view-commit",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第23章增援commit覆蓋PAN後原生視圖",
+      "body": "#133／#138 r3敗北前有限RGB：T14／T15原版camera16,28／15,28，重製14,30；HP、單位與RNG同狀態。staging preflight凍結PAN前NativeMapViewState，commit以整個snapshot覆蓋已由stepCamPan發布的視圖。先復用已閉合135DD六全域writer，建立READY；限事件52保留live PAN視圖再發布預檢的roster，不擴張其他caller。",
+      "acceptance": [
+        "READY先於修正；保留舊失敗及原始位址／固定hash。",
+        "空群組與非空群組PAN後六全域不被commit回滾，局部回歸與相同原版RGB通過。",
+        "正式#133四gate、全檔SAV及相關Go／前章回歸通過，明列sprite及未抽範圍。"
+      ],
+      "evidence": [
+        "docs/data/ida/fd2_ch23_event52_20261003.json",
+        "remake/cmd/fd2/native_turn_staging.go",
+        "work/parity-slot-ch23/event52-defeat-prefix-rgb.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對PAN後view原子commit及正式第23章收據。"
+      },
+      "issue": 141
     }
   ]
 }

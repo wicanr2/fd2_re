@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_nonzero_frame_index",
+  "chapter": 23,
+  "date": "2026-10-03",
+  "source_receipt": "docs/data/ui-traces/parity-ch23.json",
+  "comparison": "完整320x200 RGB，nearest-neighbor尺寸正規化；不遮罩或裁切，沿既有原版DAC／sprite相位候選。",
+  "pixel_budget": 640,
+  "samples": [
+    {
+      "seq": 194,
+      "kind": "move",
+      "oracle": "checkpoint-0194.png",
+      "remake": "remake-0005-p1.png",
+      "phases": 16,
+      "diff_pixels": 179,
+      "box": [
+        77,
+        119,
+        118,
+        143
+      ],
+      "ok": true,
+      "oracle_sha256": "3827a9a36a976169ce5eefe49c7a59dc24d2ff11a426c39784b76a07c2d91b63",
+      "remake_sha256": "68aa0212dc3d737a3ef3d246b875fa7473c88dd3282f8507c26b27548f26a338",
+      "palette_cycle_phase": 1,
+      "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+    },
+    {
+      "seq": 213,
+      "kind": "move",
+      "oracle": "checkpoint-0213.png",
+      "remake": "remake-0008-p1.png",
+      "phases": 16,
+      "diff_pixels": 70,
+      "box": [
+        127,
+        71,
+        144,
+        75
+      ],
+      "ok": true,
+      "oracle_sha256": "4623a79c821487934e1ce94d0969311e3dd806a2469623bbf30918e9f7bc98c0",
+      "remake_sha256": "b78da4701ae39327cc89aae9200f5154dcc0156e8f4b02dbd99d05eba5414f5e",
+      "palette_cycle_phase": 14,
+      "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+    },
+    {
+      "seq": 714,
+      "kind": "move",
+      "oracle": "checkpoint-0714.png",
+      "remake": "remake-0034-p1.png",
+      "phases": 16,
+      "diff_pixels": 88,
+      "box": [
+        29,
+        143,
+        50,
+        147
+      ],
+      "ok": true,
+      "oracle_sha256": "e1d6481271f4159da6e892ca2c52baac400ccffe2c2bd46fb9f47a32a89f9950",
+      "remake_sha256": "9abc259f2bf89da218de2a15c54ac70688f62947f1bf6d2bc3b125d449174d11",
+      "palette_cycle_phase": 12,
+      "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+    }
+  ],
+  "limitations": [
+    "完整RGB依111既有640px上限與原版DAC窗口相位候選比較，不遮罩、不修改原版畫面；三張移動179／70／88px，未宣稱逐像素exact或特效中間幀。",
+    "r4 runner沿用r2的T23文字已加來源訂正，原plan／actions／checkpoint及SAV未改。"
+  ]
+}

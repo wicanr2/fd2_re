@@ -466,7 +466,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第二十三章原生起手契約（#136）](../data/ida/fd2_ch23_startup_20261003.json)：原始caller、typed view／HUD及有限驗收。
 
-- [第二十三章第二回合診斷計畫r1](../data/parity-plans/ch23-sample-r1.jsonl)：#133，同源SAV、正常攻擊／移動、敵方回合與一次清敵，尚未執行。不涵蓋晚期事件52，不作整章驗收。
+- [第二十三章第二回合診斷計畫r1](../data/parity-plans/ch23-sample-r1.jsonl)：#133，同源SAV、正常攻擊／移動、敵方回合與一次清敵，已完成T2有限診斷。不涵蓋晚期事件52，不作整章驗收。
 
 - [第二十三章有限原生起手收據](../data/ui-traces/ch23-native-startup.json)：#134／#135／#136／#137，合法四點與拒收返回五張RGB；整章及事件52另驗。
 
@@ -476,4 +476,12 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第23章T2戰後有限收據](../data/ui-traces/ch23-post-frontier.json)：42筆正常戰後、14張全RGB及完整SAV；不作整章驗收。
 
-- [第23章晚期事件抽樣計畫r2](../data/parity-plans/ch23-sample-r2.jsonl)：#133／#138，正常END推進與事件前後T13／15／18／22；未執行不算驗收。
+- [第23章晚期事件抽樣計畫r2](../data/parity-plans/ch23-sample-r2.jsonl)：#133／#138，正常END推進與事件前後T13／15／18／22；r2於T18主角死亡，T22與保存未執行，不算整章驗收。
+
+- [第23章晚期抽樣r3](../data/parity-plans/ch23-sample-r3.jsonl)：r2索爾T18死亡後，以相同seed／SAV、正常移動record0避開敵軍；不改HP／DP，未通過不作驗收。
+
+- [第23章事件52 CONFORMED契約](../data/ida/fd2_ch23_event52_20261003.json)：#138，IDA完整byte算式、空群組consumer及T13／15／18原版stack；T22動態未抽樣；整章正式驗收範圍另見本章收據。
+
+- [第23章三次事件後保存計畫r4](../data/parity-plans/ch23-sample-r4.jsonl)：#133／#138，保留r3相同前綴，到T19玩家游標清敵一次；T22不列本次抽樣，敗北不刪除。
+
+- [第23章正式四項對拍](../data/ui-traces/parity-ch23.json)及[全部非零RGB抽樣](../data/ui-traces/parity-ch23-samples.json)：#133／#138／#141；T13／15／18正常事件、T19一次清敵、62筆正常戰後與全檔SAV，24張完整RGB。PLAYER-E2限111／114例外，T22未抽樣；回歸已通過。

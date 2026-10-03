@@ -1292,6 +1292,21 @@
         ],
         "pattern": "preparation_save|prepRecordSlots"
       }
+    },
+    {
+      "id": "staging-preflight-preserves-live-pan-view",
+      "date": "2026-10-03",
+      "area": "增援預檢與視圖發布",
+      "rule": "阻塞式動作先預檢roster時，提交快照前保留該動作等待期間已發布的原生視圖，並驗證六全域再發布；不把舊State整體覆蓋live State。依已證caller限定適用範圍。入口docs/data/ida/fd2_ch23_event52_20261003.json的pan_view_commit，執行方式與驗收範圍見docs/data/ui-traces/parity-ch23.json verification.commands。",
+      "why": "事件52的PAN逐格更新camera／cursor，預檢snapshot仍含PAN前view；commit回滾使T14／T15原版鏡頭與完整RGB不同。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/141",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_turn_staging.go"
+        ],
+        "pattern": "candidate.MaterializeNativeMapViewState"
+      }
     }
   ]
 }

@@ -84,6 +84,80 @@ func countActiveGroup(st *battle.State, group int) int {
 	return count
 }
 
+func TestChapter23Event52KeepsEmptyStagingAndMaterializesOnlySelectedGroups(t *testing.T) {
+	g, _ := newChapter23RuntimeBattle(t)
+	if g.loadErr != "" || g.st == nil {
+		t.Fatalf("chapter23 setup: %s", g.loadErr)
+	}
+	view := battle.NativeMapViewState{CameraX: 14, CameraY: 30, CursorX: 17, CursorY: 34, VisibleCursorX: 3, VisibleCursorY: 4}
+	if err := g.st.MaterializeNativeMapViewState(view); err != nil {
+		t.Fatal(err)
+	}
+	g.camX, g.camY = float64(view.CameraX*g.m.TileW), float64(view.CameraY*g.m.TileH)
+	g.curX, g.curY = view.CursorX, view.CursorY
+	g.battleEvent = &battleEventRun{}
+	screen := ebiten.NewImage(640, 400)
+	for _, sample := range []struct{ round, frontier int }{{13, 42}, {15, 54}, {18, 62}, {22, 62}} {
+		g.st.NativeRoundCounter = sample.round
+		calls := 0
+		for _, event := range g.sc.Events {
+			if event.Trigger != "on_turn_end" || event.When == nil || event.When.Turn != sample.round {
+				continue
+			}
+			for _, action := range event.Do {
+				if action.NativeEventID == nil || *action.NativeEventID != 52 || action.NativeDeathOp == nil {
+					t.Fatalf("event52 action has no typed provenance: %#v", action)
+				}
+				staging := nativeDeathStagingEvent(52, *action.NativeDeathOp, action.NativeSource)
+				before := g.st.NativeMapViewState
+				completed := false
+				if err := g.beginNativeStagingJob(staging, func() { completed = true }); err != nil {
+					t.Fatalf("T%d call%d: %v", sample.round, calls, err)
+				}
+				finishNativeTurnStagingPan(t, g, screen)
+				call := staging.Staging.Calls[0]
+				want := before
+				want.CursorX += call.X - before.CameraX
+				want.CursorY += call.Y - before.CameraY
+				want.CameraX, want.CameraY = call.X, call.Y
+				if g.st.NativeMapViewState != want {
+					t.Fatalf("T%d call%d committed stale PAN view: %#v, want %#v", sample.round, calls, g.st.NativeMapViewState, want)
+				}
+				advanceNativeTurnStagingFlash(t, g, screen)
+				if !completed || g.nativeTurnStaging != nil {
+					t.Fatalf("T%d call%d did not finish PAN/white flash", sample.round, calls)
+				}
+				calls++
+			}
+		}
+		if calls != 2 || len(g.st.Units) != sample.frontier {
+			t.Fatalf("T%d calls=%d frontier=%d, want 2/%d", sample.round, calls, len(g.st.Units), sample.frontier)
+		}
+	}
+	for _, group := range []int{4, 5, 6, 7} {
+		if countActiveGroup(g.st, group) != 0 {
+			t.Fatalf("unselected group%d was materialized", group)
+		}
+	}
+	for _, sample := range []struct {
+		id, group, round int
+		source           string
+	}{
+		{52, 17, 22, "0x352ec"}, {52, 254, 12, "0x352ec"},
+		{52, 254, 13, "0x352fd"}, {51, 254, 13, "0x352ec"},
+	} {
+		g.st.NativeRoundCounter = sample.round
+		before := cloneBattleUnitPointers(g.st.Units)
+		event := nativeDeathStagingEvent(sample.id, battle.NativeDeathOp{Group: sample.group, X: 2, Y: 11}, sample.source)
+		if _, _, _, _, err := g.preflightNativeTurnStaging(event); err == nil {
+			t.Fatalf("unknown empty staging accepted: %#v", sample)
+		}
+		if !reflect.DeepEqual(g.st.Units, before) {
+			t.Fatal("rejected empty staging mutated units")
+		}
+	}
+}
+
 func finishNativeTurnStagingPan(t *testing.T, g *Game, screen *ebiten.Image) {
 	t.Helper()
 	for steps := 0; g.camPan != nil && steps < 100; steps++ {

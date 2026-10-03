@@ -1476,6 +1476,35 @@
       ]
     },
     {
+      "id": 52,
+      "handler": "0x352e2",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "staging",
+          "x": 2,
+          "y": 11,
+          "group_from": "round",
+          "group_subtract": 14,
+          "group_scale": 2,
+          "group_mask": 255,
+          "group_addend": 0,
+          "source": "0x352ec"
+        },
+        {
+          "op": "staging",
+          "x": 26,
+          "y": 11,
+          "group_from": "round",
+          "group_subtract": 14,
+          "group_scale": 2,
+          "group_mask": 255,
+          "group_addend": 1,
+          "source": "0x35305"
+        }
+      ]
+    },
+    {
       "id": 53,
       "handler": "0x35321",
       "battle_units": [

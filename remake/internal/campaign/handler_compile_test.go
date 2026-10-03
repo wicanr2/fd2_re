@@ -2491,10 +2491,10 @@ func TestCompileCompleteChapter22PostBindingPreservesLayoutResourcesAndPaletteLo
 	}
 	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil ||
 		beats[0].RuntimeContext.SlotCount != 0 ||
-		!reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{42, 86}) || !beats[0].RuntimeContext.StoryViewport {
+		!reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{42, 62, 86}) || !beats[0].RuntimeContext.StoryViewport {
 		t.Fatalf("ch22_post runtime context=%#v", beats)
 	}
-	for _, count := range []int{0, 18, 41, 43, 54, 62, 85, 87, 96} {
+	for _, count := range []int{0, 18, 41, 43, 54, 61, 63, 85, 87, 96} {
 		if beats[0].RuntimeContext.AcceptsSlotCount(count) {
 			t.Fatalf("ch22_post accepted unverified runtime frontier %d", count)
 		}

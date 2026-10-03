@@ -9324,3 +9324,9 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 [視圖契約](../data/ida/fd2_ch23_post_view_20261003.json)沿用233C6的23465..23493原始writer。247B4布局同時重設camera／absolute cursor，可見cursor清0，range gate清0；native focus／pan在post兩個載體同步發布。沒有放寬徑向幾何或夾中心。離屏測試補Draw回報後走完2189A與戰後，不改正式演出節拍。
 
 14張完整RGB中12張0px，兩張move為179／70px，依111既定640px上限通過，精確動畫相位未知。24筆AI入口零分岔；保存22987 bytes兩側SHA-256均eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279。第22章34張與全檔SAV回歸通過。特效中間幀未逐幀對拍，晚期event52／#138與#133整章仍開啟，不改正式章台帳。完整Go r6：19套件／2298個測試通過、27項略過。#139／#140限本批RUNTIME-E1列CONFORMED。
+
+### 2026-10-03：第23章事件52與正常戰後保存（#133／#138／#141）
+
+[主契約](../data/ida/fd2_ch23_event52_20261003.json)與[正式收據](../data/ui-traces/parity-ch23.json)已列CONFORMED。52於T13呼叫254／255空群組仍PAN與白閃，T15追加2／3、T18追加8／9；producer依已證低byte算式代入控制列，沿用既有staging格式。#141只修本caller：發布預檢roster時保留PAN後六全域，避免視圖回滾。
+
+同源SAV與seed4，正常T18移動後到T19玩家游標清敵一次，62筆進正常戰後與整備四槽保存。現行ch22_post只接受42／62／86；62有原版24962 consumer與完整保存直接證據，T2有限42／86契約保留原適用範圍。正式台帳、測試與限制統一引用[58](58-fd2-exe-re-coverage.md)；PLAYER-E2限111／114建構槽例外，T22未抽樣，不宣稱傷害、存活、AI選目標或特效中間幀parity。原r2／r3敗北與#141失敗RGB保留。
