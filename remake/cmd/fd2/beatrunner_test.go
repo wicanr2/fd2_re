@@ -2363,6 +2363,52 @@ func TestDeactivateResetAndRedrawPreserveHandlerBoundaries(t *testing.T) {
 	}
 }
 
+func TestCh23PostLayoutResetsSharedViewBeforeNativeFocus(t *testing.T) {
+	// 0x23465..0x23493 resets camera, absolute cursor and visible cursor.
+	// A stale battle cursor previously drove the story camera to Y=0 while
+	// the 0x2189A compositor retained Y=30 (Issue #140).
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "layout_units", Source: "0x247b4", Layout: &campaign.HandlerLayout{
+			Units: []campaign.HandlerUnitLayout{{Slot: 0, X: 20, Y: 19, Pose: 0}},
+			CamX:  336, CamY: 336,
+		}},
+		{Op: "delay", Frames: 100},
+	})
+	g.camp = campaign.NewRunner(&campaign.Campaign{
+		Start: "postbattle_ch23_persist",
+		Nodes: map[string]*campaign.Node{"postbattle_ch23_persist": {Type: "cutscene"}},
+	})
+	g.m = &MapData{W: 32, H: 48, TileW: 24, TileH: 24}
+	stale := battle.NativeMapViewState{CameraX: 14, CameraY: 30, CursorX: 20, CursorY: 35, VisibleCursorX: 6, VisibleCursorY: 5}
+	g.st = &battle.State{W: 32, H: 48, Units: []*battle.Unit{{X: 20, Y: 35}}}
+	if err := g.st.MaterializeNativeMapViewState(stale); err != nil {
+		t.Fatal(err)
+	}
+	g.storyNativeMapView, g.hasStoryNativeMapView = stale, true
+	g.curX, g.curY, g.camX, g.camY = 20, 35, 336, 720
+	g.beatAdvance()
+	want := battle.NativeMapViewState{CameraX: 14, CameraY: 14, CursorX: 14, CursorY: 14}
+	if g.loadErr != "" || g.storyNativeMapView != want || g.st.NativeMapViewState != want ||
+		g.curX != 14 || g.curY != 14 || g.camX != 336 || g.camY != 336 ||
+		!g.st.HasNativeMapRangeModeState || g.st.NativeMapRangeMode != 0 {
+		t.Fatalf("layout reset: story=%+v battle=%+v error=%q", g.storyNativeMapView, g.st.NativeMapViewState, g.loadErr)
+	}
+	g.focusJob = &focusUnitJob{targetX: 20, targetY: 17, nativeView: true, then: func() {}}
+	for step := 0; step < 20 && g.focusJob != nil; step++ {
+		g.stepFocusUnit()
+	}
+	want.CursorX, want.CursorY, want.VisibleCursorX, want.VisibleCursorY = 20, 17, 6, 3
+	if g.focusJob != nil || g.loadErr != "" || g.storyNativeMapView != want || g.st.NativeMapViewState != want {
+		t.Fatalf("focus shared view: story=%+v battle=%+v error=%q", g.storyNativeMapView, g.st.NativeMapViewState, g.loadErr)
+	}
+	g.camPan = &camPanJob{toX: 336, toY: 360, tileStep: true}
+	g.stepCamPan()
+	want.CameraY, want.CursorY = 15, 18
+	if g.loadErr != "" || g.storyNativeMapView != want || g.st.NativeMapViewState != want {
+		t.Fatalf("pan shared view: story=%+v battle=%+v error=%q", g.storyNativeMapView, g.st.NativeMapViewState, g.loadErr)
+	}
+}
+
 func TestLayoutUnitsUsesCanonicalRuntimeSlotsAndCamera(t *testing.T) {
 	layout := &campaign.HandlerLayout{
 		Units: []campaign.HandlerUnitLayout{

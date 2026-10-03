@@ -2286,6 +2286,22 @@ func (r *parityReplay) ensurePostbattleNode(target string) {
 	}
 	r.checkpoint("battle_result", 0, r.ui(), true)
 	j := newJourneyTrace()
+	defer func() {
+		if !strings.Contains(g.loadErr, "invalid radial LUT remap geometry") {
+			return
+		}
+		t.Logf("戰後徑向幾何：story view=%+v", g.storyNativeMapView)
+		if hud, ok := g.nativeMapHUDInput(); ok {
+			if in, err := buildNativeMapFrameInput(g.nativeMapAssets, g.m, g.st, nativeMapFrameRuntime{HUD: hud}); err == nil {
+				t.Logf("戰後徑向幾何：native frame camera=(%d,%d)", in.Frame.CameraX, in.Frame.CameraY)
+			}
+		}
+		for _, slot := range []int{10, 16} {
+			if unit := g.handlerUnitAt(slot); unit != nil {
+				t.Logf("戰後徑向幾何：slot%d XY=(%d,%d) presentation=%+v", slot, unit.X, unit.Y, unit.NativeMapPresentation)
+			}
+		}
+	}()
 	driveStory(t, g, j, func() bool { return g.camp.NodeID() == target })
 	r.battleDone = true
 	r.settleTown()

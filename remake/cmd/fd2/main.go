@@ -1024,6 +1024,9 @@ func (g *Game) publishStoryNativeMapView(
 	}
 	if g.hasStoryNativeMapView {
 		g.storyNativeMapView = carrier.NativeMapViewState
+		if g.camp != nil && g.camp.NodeID() == "postbattle_ch23_persist" && g.st != nil && g.st.HasNativeMapViewState {
+			g.st.NativeMapViewState = carrier.NativeMapViewState
+		}
 	} else {
 		g.st.NativeMapViewState = carrier.NativeMapViewState
 	}
@@ -1085,6 +1088,9 @@ func (g *Game) syncStoryNativeMapFocusView(visibleX, visibleY int) bool {
 	}
 	if g.hasStoryNativeMapView {
 		g.storyNativeMapView = carrier.NativeMapViewState
+		if g.camp != nil && g.camp.NodeID() == "postbattle_ch23_persist" && g.st != nil && g.st.HasNativeMapViewState {
+			g.st.NativeMapViewState = carrier.NativeMapViewState
+		}
 	} else {
 		g.st.NativeMapViewState = carrier.NativeMapViewState
 	}
@@ -1896,6 +1902,25 @@ func (g *Game) beatStart(b campaign.Beat) {
 			g.loadErr = "beat layout_units:缺少可編輯的 runtime layout"
 			return
 		}
+		// 0x247B4 calls 0x233C6: 0x23465..0x23493 resets all six
+		// view globals, not only the pixel camera. Both postbattle carriers
+		// represent those same globals (Issue #140).
+		var layoutView *battle.NativeMapViewState
+		if b.Source == "0x247b4" {
+			if g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 ||
+				b.Layout.CamX%g.m.TileW != 0 || b.Layout.CamY%g.m.TileH != 0 {
+				g.loadErr = "beat layout_units: native reset camera is unavailable"
+				return
+			}
+			x, y := b.Layout.CamX/g.m.TileW, b.Layout.CamY/g.m.TileH
+			view := battle.NativeMapViewState{CameraX: x, CameraY: y, CursorX: x, CursorY: y}
+			carrier := &battle.State{W: g.m.W, H: g.m.H}
+			if err := carrier.MaterializeNativeMapViewState(view); err != nil {
+				g.loadErr = "beat layout_units: " + err.Error()
+				return
+			}
+			layoutView = &view
+		}
 		for _, placement := range b.Layout.Units {
 			unit := g.handlerUnitAt(placement.Slot)
 			if unit == nil || placement.Pose < 0 || placement.Pose > 3 {
@@ -1908,6 +1933,14 @@ func (g *Game) beatStart(b campaign.Beat) {
 			unit.SetMapPlacement(placement.X, placement.Y, placement.Pose)
 		}
 		g.camX, g.camY = float64(b.Layout.CamX), float64(b.Layout.CamY)
+		if layoutView != nil {
+			g.curX, g.curY = layoutView.CursorX, layoutView.CursorY
+			g.storyNativeMapView, g.hasStoryNativeMapView = *layoutView, true
+			if g.st != nil {
+				g.st.NativeMapViewState, g.st.HasNativeMapViewState = *layoutView, true
+				g.st.MaterializeNativeMapRangeMode(0)
+			}
+		}
 		g.beatAdvance()
 	case "direct_record_patch":
 		if (b.Source != "0x2362d" && b.Source != "0x23ec4" && b.Source != "0x33346") || b.DirectRecordPatch == nil {

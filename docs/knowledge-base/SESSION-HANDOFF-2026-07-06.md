@@ -8900,3 +8900,13 @@ mode8「共同成功收尾」的舊交接、歷史工作項說法已失效；直
 全Go r2舊拓撲斷言、related r1錯索引假設及更早畫面差異均保留。乾淨完整Go r3、第22章四項與完整SAV、四槽保存四張0px／全檔SAV通過。27個略過含缺archive的post局部測試，明列於收據。拒收通用nodes失敗仍保留，不豁免章gate。#133整章與#138事件52未完成，台帳19／30不變；未執行T2診斷計畫不作整章驗收。
 
 #135城鎮owner追加勘誤：37a3618a新增檢查未先核對確認後checkpoint，錯把2D170出發caller作返回來源。原版seq72只含2CE08；舊檢查實際拒收後，READY追加窄改test literal，城鎮正常返回與另兩條非城鎮重播回歸通過。全Go執行版本仍37a3618a，後續只改test來源檢查，不外推未執行的全Go。
+
+### 2026-10-03：第23章T2正常戰後與視圖勘誤（#139／#140）
+
+[有限收據](../data/ui-traces/ch23-post-frontier.json)取代上文「未執行T2診斷」；正常同源T2已經由canonical dosgolem走到完整保存，42筆frontier直接反證舊exact86。READY後binding接受42／86，其他數量仍拒收。原版SAV及重製SAV同為eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279。
+
+#140原r2..r4在2189A pass0負中心拒收，實測story cameraY0／battle cameraY30。camMaxY清0的定位猜測被stepFocusUnit不消費camMaxY否定；真正缺項為233C6的六全域writer23465..23493未實作，且兩個carrier分離。layout按247B4來源重設camera及absolute cursor、visible清0、range0；focus／pan同步限postbattle_ch23_persist。
+
+r5離屏沒有2189A drawn回報造成假卡關，補與正式Draw相同的回報後r6到保存。全Go r4為清冊定位主動停止；r5兩個失敗是舊86斷言及過廣同步影響第13章，已收窄並修正契約測試，related r2七個top-level通過。最終replay r7再次完整通過：24筆AI零分岔，14張完整RGB有12張0px，兩張move179／70px，精確相位未知；特效中間幀沒有另對拍。第22章34張及完整SAV回歸通過；全Go r6完成：19套件／2298個測試通過、27項略過。#139／#140限RUNTIME-E1列CONFORMED。
+
+#133整章與#138晚期event52仍未完成；正式19／30不變。準備[晚期抽樣計畫r2](../data/parity-plans/ch23-sample-r2.jsonl)，正常END到T23才清敵一次，尚未實跑。IDA9.4補查10B4E空群組scan，零相符正常返回，probe雜湊與位址已留言#138；不由靜態算式外推晚期可達。

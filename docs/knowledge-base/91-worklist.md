@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -122,6 +122,26 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
+
+### 第二十三章正常戰後42筆前沿被舊86筆契約拒收
+
+`ch23-postbattle-frontier-42` · 缺陷 · [#139](https://github.com/wicanr2/fd2_re/issues/139) · 仍未完成 · 要人判
+
+#133受版控ch23-sample-r1有界T2診斷：canonical dosgolem同源第22章SAV、正常戰鬥與敵方回合後T2清敵一次，戰後正常對白至記錄保存完整退出，原版前沿仍42筆；22987-byte SAV SHA-256 eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279。remake diagnostic-r1在postbattle_ch23_persist拒收runtime slots42、want exact86。這是既有全量86筆局部fixture外推造成的正式consumer阻塞。先查58／既有24754 post主證據與現有slot-count候選欄位，建立READY，再窄補已實測42；不提前append後續群組、不猜晚期前沿。T2不作#133整章驗收，event52仍#138。
+
+怎樣算做完：['固定EXE／FDFIELD輸入雜湊、正常42筆戰後與既有layout／caller／consumer證據，READY先於正式綁定；不重解已閉合helper。', '正式post接納已實測42筆，保留86筆局部fixture的明示範圍；其他未知數量仍拒收，不注入後續群組或改SAV。', '同一原版T2診斷重播戰果、對白、正常整備保存與完整RGB／SAV，相關Go及前章回歸；晚期事件與整章另驗#138／#133。']
+
+證據：`['work/parity-slot-ch23/full-original-r1', 'work/parity-slot-ch23/diagnostic-remake-r1.log', 'docs/data/ida/fd2_ch22_post_ida.txt', 'remake/assets/cutscenes/bindings/ch22_post.json']`
+
+### 第二十三章正常戰後2189A呈現因LUT幾何拒收
+
+`ch23-postbattle-radial-remap-geometry` · 缺陷 · [#140](https://github.com/wicanr2/fd2_re/issues/140) · 仍未完成 · 要人判
+
+#139只補現有slot_counts的42候選後，同源T2診斷重播已越過runtime_context並進入正式戰後對白。diagnostic-remake-r2於beat30的native_2189a_loop pass0因fdother invalid radial LUT remap geometry拒收。原版full-original-r1在同一正常戰後流程完成保存，不能用既有孤立helper綠燈宣稱玩家路徑已通。先查58／原24754及2189A主證據、实际FDOTHER #3形狀與正式載入／frame consumer，限定格式、stride或介面整合的真因；READY先於修正，不重做無關helper。#133整章／#138晚期事件仍另驗。
+
+怎樣算做完：['核對固定EXE及FDOTHER來源雜湊、原始caller與既有2189A／radial LUT契約；實際形狀、stride及正式producer／consumer證據，READY先於修正。', '同一原版T2診斷重播走完徑向呈現、後續演出、正常記錄與完整SAV；完整RGB對拍，未知輸入仍拒收。', '相關真實回歸與第22章／保存回歸；保留r2失敗及未抽晚期範圍，不以局部helper測試當整章驗收。']
+
+證據：`['work/parity-slot-ch23/diagnostic-remake-r2.log', 'work/parity-slot-ch23/full-original-r1', 'docs/data/ida/fd2_ch22_post_ida.txt', 'remake/assets/cutscenes/bindings/ch22_post.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

@@ -553,6 +553,9 @@ func ackPresents(g *Game) {
 	if g.nativeUnitPresent != nil {
 		g.nativeUnitPresent.drawn = true
 	}
+	if g.native2189A != nil {
+		g.native2189A.drawn = true
+	}
 	if g.nativeClassUIJob != nil {
 		g.nativeClassUIJob.drawn = true
 	}

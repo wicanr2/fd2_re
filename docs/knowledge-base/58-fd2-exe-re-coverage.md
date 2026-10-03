@@ -2252,3 +2252,19 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 乾淨完整Go r3通過19套件、2297個頂層測試，27項略過逐條列入收據。缺原始archive的第23章post局部測試不稱已跑；正式起手使用分離資產已驗。第22章正常重播212筆AI零分岔，34張RGB、四項與完整22987-byte SAV通過；四槽保存四張0px與全檔SAV回歸通過。字串清冊97筆處置不變，只重綁定位；原舊inventory須取先前正式綁定版本，缺command_labels的archive清冊不作完整hash基準。正式章台帳仍19／30，不能以有限起手增加。
 
 #135結案前補查發現37a3618a新增城鎮返回檢查誤用了確認前的2D170；原版checkpoint72是2CE08，實際重播city-rejection-r1直接拒收舊檢查。先追加READY，再修唯一test literal；相同前綴r2正常回town，合法r6四項／四張0px、非城鎮拒收r3五張0px通過。原城市run曾中止143，僅用有限正常確認前綴，不宣稱整章。全Go2297測試對應37a3618a修正前test來源，production code此後未變；三條實際來源回歸另列在同一收據，不把舊全Go套到新檢查。
+
+### 2026-10-03 #139 第二十三章42筆正常戰後反證
+
+[READY契約](../data/ida/fd2_ch23_post_frontier_20261003.json)沿同源SAV與受版控T2診斷，原版327點、3,256,517,888steps完整退出，前沿42筆且正常保存SAVeab7665b…。重製正式postbattle_ch23_persist因exact86契約拒收；只重開這個全量容量外推，不重解24754／layout／acting helper。現有slot_counts只列實測42與明示86局部fixture，其他數量仍拒收。尚待同狀態重播、完整RGB與SAV；#133／#138保持開啟，19／30不變。
+
+### 2026-10-03：第23章戰後視圖 READY，Issue #140
+
+[契約](../data/ida/fd2_ch23_post_view_20261003.json)沿用已匯出的233C6原始writer。現有layout只更新鏡頭，留下舊游標；story與battle載體分離造成2189A負中心。先按247B4 caller重設六全域，再同步正常post的聚焦與呈現。尚未通過RGB／SAV，不稱CONFORMED；第23章整章仍由#133／#138追蹤。
+
+### 2026-10-03：第23章T2戰後有限診斷（#139／#140）
+
+[有限收據](../data/ui-traces/ch23-post-frontier.json)沿用第22章正式SAV與seed4，正常T2後清敵一次，走戰後對白到整備保存。原版有效前沿42直接反證exact86；binding只接受42及既有明示86局部fixture，其他數量仍拒收。
+
+[視圖契約](../data/ida/fd2_ch23_post_view_20261003.json)沿用233C6的23465..23493原始writer。247B4布局同時重設camera／absolute cursor，可見cursor清0，range gate清0；native focus／pan在post兩個載體同步發布。沒有放寬徑向幾何或夾中心。離屏測試補Draw回報後走完2189A與戰後，不改正式演出節拍。
+
+14張完整RGB中12張0px，兩張move為179／70px，依111既定640px上限通過，精確動畫相位未知。24筆AI入口零分岔；保存22987 bytes兩側SHA-256均eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279。第22章34張與全檔SAV回歸通過。特效中間幀未逐幀對拍，晚期event52／#138與#133整章仍開啟，不改正式章台帳。完整Go r6：19套件／2298個測試通過、27項略過。#139／#140限本批RUNTIME-E1列CONFORMED。

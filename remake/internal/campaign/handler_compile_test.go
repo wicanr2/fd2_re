@@ -2490,8 +2490,14 @@ func TestCompileCompleteChapter22PostBindingPreservesLayoutResourcesAndPaletteLo
 		t.Fatalf("ch22_post err=%v issues=%#v", err, issues)
 	}
 	if len(beats) == 0 || beats[0].Op != "runtime_context" || beats[0].RuntimeContext == nil ||
-		beats[0].RuntimeContext.SlotCount != 86 || !beats[0].RuntimeContext.StoryViewport {
+		beats[0].RuntimeContext.SlotCount != 0 ||
+		!reflect.DeepEqual(beats[0].RuntimeContext.SlotCounts, []int{42, 86}) || !beats[0].RuntimeContext.StoryViewport {
 		t.Fatalf("ch22_post runtime context=%#v", beats)
+	}
+	for _, count := range []int{0, 18, 41, 43, 54, 62, 85, 87, 96} {
+		if beats[0].RuntimeContext.AcceptsSlotCount(count) {
+			t.Fatalf("ch22_post accepted unverified runtime frontier %d", count)
+		}
 	}
 	var layout *HandlerLayout
 	paletteStarts := make([]int, 0, 32)

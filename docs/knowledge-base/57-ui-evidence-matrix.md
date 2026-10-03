@@ -1564,3 +1564,11 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 拒收通用nodes仍因departure_confirmation來源標籤及seq76沒有action而失敗，原報告保留。有限CONFORMED只依31E65／31A2E、正常正式輸入與完整RGB，不宣稱該分支四項或整章PLAYER-E2。正式HUD B精確值、晚期event52、戰後與本章保存另驗。完整Go、前章與保存probe回歸通過，唯一現況入口為[58](58-fd2-exe-re-coverage.md)。
 
 #135城鎮返回補驗：同一原版拒收前綴正常Enter後為2CE08，重播已回town；錯用出發caller2D170會拒收。額外城鎮分支只驗正式API／source owner，非城鎮五張0px與合法四張0px回歸通過；不將城鎮前綴稱整章驗收。
+
+### 2026-10-03：第23章T2戰後有限診斷（#139／#140）
+
+[有限收據](../data/ui-traces/ch23-post-frontier.json)沿用第22章正式SAV與seed4，正常T2後清敵一次，走戰後對白到整備保存。原版有效前沿42直接反證exact86；binding只接受42及既有明示86局部fixture，其他數量仍拒收。
+
+[視圖契約](../data/ida/fd2_ch23_post_view_20261003.json)沿用233C6的23465..23493原始writer。247B4布局同時重設camera／absolute cursor，可見cursor清0，range gate清0；native focus／pan在post兩個載體同步發布。沒有放寬徑向幾何或夾中心。離屏測試補Draw回報後走完2189A與戰後，不改正式演出節拍。
+
+14張完整RGB中12張0px，兩張move為179／70px，依111既定640px上限通過，精確動畫相位未知。24筆AI入口零分岔；保存22987 bytes兩側SHA-256均eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279。第22章34張與全檔SAV回歸通過。特效中間幀未逐幀對拍，晚期event52／#138與#133整章仍開啟，不改正式章台帳。完整Go r6：19套件／2298個測試通過、27項略過。#139／#140限本批RUNTIME-E1列CONFORMED。

@@ -469,3 +469,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第二十三章第二回合診斷計畫r1](../data/parity-plans/ch23-sample-r1.jsonl)：#133，同源SAV、正常攻擊／移動、敵方回合與一次清敵，尚未執行。不涵蓋晚期事件52，不作整章驗收。
 
 - [第二十三章有限原生起手收據](../data/ui-traces/ch23-native-startup.json)：#134／#135／#136／#137，合法四點與拒收返回五張RGB；整章及事件52另驗。
+
+- [第二十三章42筆戰後前沿READY](../data/ida/fd2_ch23_post_frontier_20261003.json)：#139，正常T2診斷反證exact86；沿現有slot_counts格式，不外推晚期前沿。
+
+- [第23章戰後視圖重設與共用載體 CONFORMED，Issue #140](../data/ida/fd2_ch23_post_view_20261003.json)：沿用233C6六全域writer；T2有限RGB／SAV與完整Go通過，不提升整章覆蓋。
+
+- [第23章T2戰後有限收據](../data/ui-traces/ch23-post-frontier.json)：42筆正常戰後、14張全RGB及完整SAV；不作整章驗收。
+
+- [第23章晚期事件抽樣計畫r2](../data/parity-plans/ch23-sample-r2.jsonl)：#133／#138，正常END推進與事件前後T13／15／18／22；未執行不算驗收。

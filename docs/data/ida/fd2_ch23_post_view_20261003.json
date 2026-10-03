@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch23_post_view_contract",
+  "date": "2026-10-03",
+  "issue": 140,
+  "status": "CONFORMED",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "field": {
+      "file": "FDFIELD.DAT",
+      "size": 243169,
+      "md5": "ecdb0436d26adfe5d107f2713fa7e9a2",
+      "sha256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+    },
+    "fdother": {
+      "file": "FDOTHER.DAT",
+      "size": 3382481,
+      "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+      "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+    }
+  },
+  "canonical_reuse": {
+    "evidence": "docs/data/ida/fd2_ch22_record_fields_20261003.json",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "original_locations": [
+      "0x233C6",
+      "0x23465..0x234A4",
+      "0x247B4",
+      "0x2189A"
+    ],
+    "scope": "沿用既有完整233C6 raw指令；只修正layout遺漏的六全域重設與同一全域的多載體同步。"
+  },
+  "claims": [
+    {
+      "level": "confirmed",
+      "source": "docs/data/ida/fd2_ch22_record_fields_20261003.json functions sub_233C6；23469/23472/2347B/23484/23489/23493",
+      "claim": "camera及absolute cursor同設為caller arg24/28，可見cursor清0；2345B將range gate51A83清0。"
+    },
+    {
+      "level": "confirmed",
+      "source": "work/parity-slot-ch23/diagnostic-remake-r4.log、main.go layout_units/publishStoryNativeMapView/syncStoryNativeMapFocusView與native_ch22_post.go",
+      "claim": "layout只設generic camera，繼承舊cursor；focus只發布story view，2189A仍讀battle view。失敗時storyY0、battleY30、slot10Y16形成負中心。"
+    },
+    {
+      "level": "strong inference",
+      "source": "上述writer與consumer資料流，及原版T2完整到存檔",
+      "claim": "依原始layout重設六全域、同步同一post的兩個carrier應消除錯誤負中心；RGB與存檔仍須實測。"
+    },
+    {
+      "level": "confirmed",
+      "source": "FDOTHER.DAT固定清單實檔雜湊核對、startNative2189A ten-LUT preflight及diagnostic-r2的pass0幾何錯誤",
+      "claim": "來源3382481 bytes與清單相同；十張256-byte LUT完整，幾何拒收由view消費錯誤，沒有改LUT／stride。"
+    }
+  ],
+  "typed_contract": {
+    "source": "layout_units Source=0x247b4",
+    "view": {
+      "CameraX": 14,
+      "CameraY": 14,
+      "CursorX": 14,
+      "CursorY": 14,
+      "VisibleCursorX": 0,
+      "VisibleCursorY": 0
+    },
+    "range_mode": 0,
+    "consumer": "僅postbattle_ch23_persist的native focus／pan在兩個carrier同步發布同一六全域；其他章不擴張本契約。",
+    "failure_policy": "先驗證完整view與tile對齊再改單位；不放寬radial幾何、不夾中心、不注入鏡頭。"
+  },
+  "spec_review": {
+    "status": "READY",
+    "basis": "已受版控原始writer與caller ABI，無新增規則或資料格式。"
+  },
+  "verification": {
+    "original_run": "work/parity-slot-ch23/full-original-r1",
+    "original_final": 327,
+    "steps": 3256517888,
+    "plan": "docs/data/parity-plans/ch23-sample-r1.jsonl",
+    "bootstrap_sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+    "original_save_sha256": "eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279",
+    "failed_replay": "work/parity-slot-ch23/diagnostic-remake-r4.log",
+    "files": {},
+    "commands": {},
+    "finite_receipt": "docs/data/ui-traces/ch23-post-frontier.json",
+    "related_tests": "work/parity-slot-ch23/post-view-tests-r2.log",
+    "regression": "work/parity-slot-ch23/prior-ch22-verify-r2.json",
+    "full_go_status": "passed",
+    "full_go": "work/parity-slot-ch23/ch23-all-go-r6.log",
+    "full_go_packages": 19,
+    "full_go_top_level_pass": 2298,
+    "full_go_skip": 27,
+    "scope": "有限T2診斷；不提升整章，不宣稱特效中間幀逐像素一致。"
+  },
+  "acceptance": [
+    "同源T2正常戰後到四槽保存、14張全RGB依111上限比較及22987-byte完整SAV；不含特效逐幀RGB。",
+    "既有native focus/pan與post layout局部測試及第22章回歸。"
+  ],
+  "limits": [
+    "T2清敵一次，只作有界診斷，不作晚期事件或第23章整章PLAYER-E2。",
+    "其他晚期前沿數量尚未驗，不依capacity或群組算式先加入候選。"
+  ],
+  "corrections": [
+    {
+      "date": "2026-10-03",
+      "source": "work/parity-slot-ch23/ch23-all-go-r5.log",
+      "level": "confirmed",
+      "claim": "r5廣泛同步所有story+battle載體使第13章局部對白closing shape測試失敗；改為僅postbattle_ch23_persist，符合本契約唯一caller範圍。未知其他章不套用本章修正。",
+      "spec_status": "READY"
+    }
+  ],
+  "evidence_level": "RUNTIME-E1"
+}

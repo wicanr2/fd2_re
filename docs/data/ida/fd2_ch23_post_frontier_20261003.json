@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch23_post_frontier_contract",
+  "date": "2026-10-03",
+  "issue": 139,
+  "status": "CONFORMED",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "field": {
+      "file": "FDFIELD.DAT",
+      "size": 243169,
+      "md5": "ecdb0436d26adfe5d107f2713fa7e9a2",
+      "sha256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+    }
+  },
+  "canonical_reuse": {
+    "evidence": "docs/data/ida/fd2_ch22_post_ida.txt",
+    "tool": "IDA Pro 9.4與Capstone交叉驗證，沿用已閉合證據",
+    "address_space": "IDA LE linear；既有主證據逐項分別標示Capstone基準",
+    "original_locations": [
+      "0x24754",
+      "0x247B4",
+      "0x233C6",
+      "0x24B14",
+      "0x24BDE",
+      "0x2189A"
+    ],
+    "scope": "只重開86筆必須全部物化的錯誤外推；layout、acting與渲染helper不重解。"
+  },
+  "claims": [
+    {
+      "level": "confirmed",
+      "source": "work/parity-slot-ch23/full-original-r1/current.json、actions.jsonl與成功DOS保存",
+      "claim": "同源正常T2戰後、對白與四槽保存時有效前沿42筆，沒有追加group2..9；原版完整退出0。"
+    },
+    {
+      "level": "confirmed",
+      "source": "docs/data/ida/fd2_ch22_post_ida.txt IDA LE0x247B4→233C6，522A3／522B4／522C5原始17-byte tables與special slot17",
+      "claim": "已閉合layout消費slots0..17，這個caller不要求全量86筆；ACT71／72使用group0的16／17。"
+    },
+    {
+      "level": "confirmed",
+      "source": "work/parity-slot-ch23/diagnostic-remake-r1.log",
+      "claim": "正式postbattle_ch23_persist停於runtime_context，42與錯誤exact86契約矛盾。"
+    }
+  ],
+  "typed_contract": {
+    "binding": "remake/assets/cutscenes/bindings/ch22_post.json",
+    "runtime_context": {
+      "slot_counts": [
+        42,
+        86
+      ],
+      "story_viewport": true
+    },
+    "producer": "既有HandlerBindings runtime_context，不新增schema或opcode。",
+    "consumer": "既有MinimumSlotCount／MaximumSlotCount／AcceptsSlotCount與beat runtime_context；只有列出的數量合法。",
+    "scope_42": "本輪同源正常T2戰後有效前沿，零額外群組注入。",
+    "scope_86": "既有明示post局部全量fixture；不宣稱正常開場／晚期可達。",
+    "failure_policy": "未知數量仍拒收；不刪原始rows、不提前append群組、不改SAV掩蓋差異。"
+  },
+  "spec_review": {
+    "status": "READY",
+    "basis": "固定原版同狀態42筆直接反證；現有slot_counts欄位與原始caller消費端已有主證據。"
+  },
+  "verification": {
+    "original_run": "work/parity-slot-ch23/full-original-r1",
+    "original_final": 327,
+    "steps": 3256517888,
+    "plan": "docs/data/parity-plans/ch23-sample-r1.jsonl",
+    "bootstrap_sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+    "original_save_sha256": "eab7665b117d44e355157fa5501a677dc192a2e5301669bc2cb2560d6616e279",
+    "failed_replay": "work/parity-slot-ch23/diagnostic-remake-r1.log",
+    "files": {
+      "work/parity-slot-ch23/full-original-r1/current.json": "dcd992377db346b336457c90e7052dafe16337d3a083fe78701420aa25eb65db",
+      "work/parity-slot-ch23/full-original-r1/actions.jsonl": "3bbff43675664282e621c5ae816c14912b9013249873444c290a73a45438ea46",
+      "work/parity-slot-ch23/diagnostic-remake-r1.log": "50dd18f2330b787c9edea8bfa9bcd0376491179d5294737bf3a1249540d7fda9"
+    },
+    "commands": {
+      "original": "timeout 900 docker run --rm --name fd2-ch23-diagnostic-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --log-opt max-size=10m --log-opt max-file=3 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23/full-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23/full-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch23-sample-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nimport hashlib,json,datetime\nfrom pathlib import Path\nexpected=\"222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f\"\nassert hashlib.sha256(Path(\"/orig/FD2.EXE\").read_bytes()).hexdigest()==expected\nassert hashlib.sha256(Path(\"/state/FD2.SAV\").read_bytes()).hexdigest()==\"3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1\"\np={\"schema_version\":1,\"kind\":\"fd2_oracle_runner_provenance\",\"runner\":\"dosgolem apps/fd2/cmd/oracle\",\"dosgolem_root\":\"/home/anr2/cht/dosgolem-fd2-oracle\",\"dosgolem_commit\":\"1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74\",\"dosgolem_branch\":\"feat/fd2-oracle-input-chain\",\"dosgolem_tracked_dirty_files\":0,\"dosgolem_untracked_files\":0,\"original_root\":\"/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2\",\"generated_at\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"control_plan\":\"docs/data/parity-plans/ch23-sample-r1.jsonl\",\"eip_trace_window\":{\"from_step\":0,\"to_step\":0,\"max_entries\":200000},\"lock_ally_hp\":False,\"force_enemy_clear_declared\":True,\"original_fd2_exe_sha256\":expected,\"original_reference_manifest\":\"docs/data/fd2-reference-files.json\",\"state_directory\":\"/home/anr2/cht/fd2/work/parity-slot-ch23/full-state-r1\",\"state_injections\":[],\"evidence_note\":\"第23章T2有界玩家路徑診斷；同源第22章正式SAV，正常戰鬥及敵方回合後T2清敵一次。晚期event52未抽樣，不作整章驗收；不鎖HP、不追加強化或治療。\",\"runtime_image\":\"sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac\",\"driver_sha256\":hashlib.sha256(Path(\"/drive.py\").read_bytes()).hexdigest()}\nPath(\"/out/runner.json\").write_text(json.dumps(p,ensure_ascii=False,indent=2)+\"\\n\")\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x1E54A,0x2CC71,0x2CCB6,0x30012,0x30550,0x30158 -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 200000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /drive.py | tee /out/driver.log'",
+      "failed_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch23/diagnostic-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/diagnostic-remake-r1.log 2>&1"
+    },
+    "finite_receipt": "docs/data/ui-traces/ch23-post-frontier.json",
+    "related_tests": "work/parity-slot-ch23/post-view-tests-r2.log",
+    "regression": "work/parity-slot-ch23/prior-ch22-verify-r2.json",
+    "full_go_status": "passed",
+    "full_go": "work/parity-slot-ch23/ch23-all-go-r6.log",
+    "full_go_packages": 19,
+    "full_go_top_level_pass": 2298,
+    "full_go_skip": 27,
+    "scope": "有限T2診斷；不提升整章，不宣稱特效中間幀逐像素一致。"
+  },
+  "acceptance": [
+    "同源T2正常戰後到四槽保存、14張全RGB依111上限比較及22987-byte完整SAV；不含特效逐幀RGB。",
+    "相關Go驗證42／86接受、未知數量拒收、正常42不由fixture append代替。",
+    "第22章四項／全檔SAV回歸；#133整章與#138晚期事件仍另驗。"
+  ],
+  "limits": [
+    "T2清敵一次，只作有界診斷，不作晚期事件或第23章整章PLAYER-E2。",
+    "其他晚期前沿數量尚未驗，不依capacity或群組算式先加入候選。"
+  ],
+  "evidence_level": "RUNTIME-E1"
+}
