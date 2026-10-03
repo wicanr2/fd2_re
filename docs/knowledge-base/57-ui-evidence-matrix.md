@@ -1507,3 +1507,7 @@ sample-verify-r6的61張戰場完整RGB與66行為點仍通過，但節點／交
 舊章比較器的原版序列複製重製UI，舊 `nodes=true` 不能當作獨立介面證據。[新契約](../data/fd2-chapter-node-comparison-contract.json)使用原版動作與輸入鏈；未知來源拒收，跨時序點明列未比較。共用服務對話僅比較家族，不證明酒店／教會／一般或秘密商店身分。
 
 [回歸收據](../data/ui-traces/parity-node-source-regression-20261003.json)確認第十九章四項仍通過；第二十章r2的target／cursor及shop／town兩點被節點判準拒收，三個原有RGB差異保留，沒有遮罩或改640px預算。歷史原始收據及其餘證據保留，第二十章仍未通過整章。
+
+### 第二十章物理確認畫面（#115）
+
+[有限RUNTIME-E1收據](../data/ui-traces/ch20-physical-target-confirmation.json)保留原版r2，以補正正式0x115B6 consumer及取消／待機按鍵owner的重播r2比較。seq593目標等待與seq612後續選人兩張完整RGB皆0px，獨立節點判準一致；64筆AI及全檔酒店SAV不變。第十九章54張／四項與Go19套件回歸通過。沒有注入原版視圖或遮罩；商店錯選由#116追查，第二十章仍未新增PLAYER-E2。

@@ -2102,3 +2102,7 @@ Go r3消費293筆AI入口且順序零分岔；四項通過，194個行為與金�
 [整理過的工具回歸與診斷](../data/ui-traces/parity-node-source-regression-20261003.json)保存第二十章r2原版、重製r1及新比較器r3的hash。原版有1095檢查點，正常一個敵方階段後seq800一次清敵，戰後進town21；64筆AI零順序分岔，酒店22987 bytes SAV SHA49f00f95…完全相同。31張完整RGB的seq593／612／1094分別差2621／15422／62123px，整章拒收。#115追查攻擊目標等待與後續鏡頭；#116追查神秘商店抽測，r2一個left進selection1的一般店，不證明selection4／Ctrl+F10入口。
 
 舊 `verify_chapter_parity.py` 將重製UI複製成原版序列，過去 `nodes=true` 只表示舊工具未檢出差異，不是獨立原版介面證據。本次[CONFORMED契約](../data/fd2-chapter-node-comparison-contract.json)獨立使用原版動作及 `input_chain`，未知來源拒收，跨時序點明列未比較。第二十章seq593的target／cursor及seq1094的shop／town確實拒收；第十九章同原始收據以新版四項通過。歷史收據保留，其他已完成章未在本批重新驗證；不得外推新節點證據。章台帳仍16／30，#112／#115／#116未完成。
+
+#115的[原生物理確認主證據與READY](../data/ida/fd2_player_physical_target_confirmation_20261003.json)由IDA9.4唯讀DB重生，固定EXE雜湊與原始名稱／bytes保留。重開範圍是正式physical consumer漏用既有0x115B6確認閘門；不重新解射程或共享指令規則。seq578..593確認我方自身格未通過，原版target持續，直到ESC及指令環待機才提交acted。#116另以[ch20-sample-r3](../data/parity-plans/ch20-sample-r3.jsonl)更正正常方向鍵，舊r2不改寫；兩項均尚未驗收。
+
+#115已以[有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)達RUNTIME-E1，主規格限該scope列CONFORMED。原版r2／重播r2／比較r4的seq593、612完整RGB皆0px；64筆AI零分岔、全檔SAV不變。第十九章新重播r9／比較r11四項、54張RGB與全檔SAV通過；乾淨Go r5共19套件PASS，game219.956秒。前一輪只有事件61 fixture漏正式target前置，補已裝備武器、raw target及射程writer後同image乾淨重跑通過，沒有放寬閘門。97筆字串review按同簽名重綁，原始處置及數量不變。r3新原版正在驗證，#112／#115／#116尚未整章結案，16／30保持。

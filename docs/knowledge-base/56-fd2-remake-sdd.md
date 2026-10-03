@@ -9253,3 +9253,9 @@ BIOS tick與2ms DAC等待沿既有規格近似；不改正式規則、存檔格�
 舊比較器將重製 `kind/ui` 同時寫進原版序列，`nodes=true` 沒有獨立原版介面證據。已依[CONFORMED契約](../data/fd2-chapter-node-comparison-contract.json)改讀原版動作與 `input_chain`，未知來源拒收；跨時序點列 `not_comparable`，不計為介面一致。酒店、教會、商店只比較共用服務家族，不宣稱具體建築一致。
 
 [工具回歸](../data/ui-traces/parity-node-source-regression-20261003.json)以相同原始收據重驗，第十九章四項與全檔SAV通過。第二十章r2的seq593原版仍為target、seq1094原版為shop而重製為town，節點拒收；31張RGB中三張超標。歷史原始報告不改寫，過去節點通過敘述依本段限制閱讀；第二十章未新增PLAYER-E2。
+
+### 第二十章物理確認 consumer（#115）
+
+[CONFORMED主證據](../data/ida/fd2_player_physical_target_confirmation_20261003.json)確認物理攻擊以targetCode0進既有0x115B6。正式確認補用同一原生閘門，來源不足或目標不合法時保留選擇、射程、HP、RNG與acted，自己的格子不再直接提交待機。正式待機仍由指令環第四項；Escape返回owner由Update與重播共用。
+
+[有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)驗同一原版r2的seq593／612完整RGB皆0px，64筆AI零分岔及全檔SAV相同。重播保留拒收時target畫面，再消費原版ESC／down／Enter，該down不重播成地圖移動。第十九章最新完整重播／四項及Go19套件通過，97筆字串處置保持。原r2商店錯選仍拒收，第二十章整章未完成。

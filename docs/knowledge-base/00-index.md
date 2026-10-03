@@ -396,3 +396,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [章比較器獨立原版介面契約](../data/fd2-chapter-node-comparison-contract.json)：#117，原版輸入鏈分類、跨時序限制與假通過的拒收條件；入口為 `tools/verify_chapter_parity.py`，在 `fd2-assets-local:20260829-sfx` 執行。
 
 - [章比較器原版來源回歸](../data/ui-traces/parity-node-source-regression-20261003.json)：#117，第二十章兩個介面差異拒收、第十九章四項重新通過，以及舊節點欄位的證據限制。
+
+- [原生物理攻擊目標確認 CONFORMED](../data/ida/fd2_player_physical_target_confirmation_20261003.json)：#115，sub_18D8C／sub_115B6保留原始名稱與bytes，補正式確認consumer與重播按鍵邊界。
+- [第二十章商店方向鍵訂正計畫r3](../data/parity-plans/ch20-sample-r3.jsonl)：#112／#116，保留r2首回合與同源SAV，酒店選擇0以right到4，再Ctrl+F10；尚待新原版收據。
+
+- [第二十章物理確認有限收據](../data/ui-traces/ch20-physical-target-confirmation.json)：#115，seq593／612完整RGB0px、原版正常取消／待機鍵序、完整Go19套件及第十九章完整回歸。整章未在此驗收。

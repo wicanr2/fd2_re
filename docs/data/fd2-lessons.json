@@ -1208,6 +1208,21 @@
         ],
         "pattern": "original_ui = oracle_ui_mode\\(oracle_cp\\)"
       }
+    },
+    {
+      "id": "native-physical-target-rejection-preserves-owner",
+      "date": "2026-10-03",
+      "area": "原生物理確認與重播",
+      "rule": "物理攻擊目標確認使用既有0x115B6閘門，拒收時保留target與acted；待機走指令環。重播按原版取消／待機owner消費按鍵，已消費的指令環方向不再當地圖移動。入口為remake/cmd/fd2/native_player_movement.go的nativePhysicalAttackConfirmationAllowed、chapter_parity_replay_test.go的finishRejectedAttackFromKeys及docs/data/ida/fd2_player_physical_target_confirmation_20261003.json。原生攻擊fixture先建立已裝備武器、完整raw target及正式射程field。",
+      "why": "第二十章原版自己的格Enter拒收，重製卻直接待機；後續指令環down又當地圖down，造成兩個畫面差異。補產品閘門後事件61舊fixture漏target前置而拒收。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/115；docs/data/ui-traces/ch20-physical-target-confirmation.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "g\\.nativePhysicalAttackConfirmationAllowed\\(\\)"
+      }
     }
   ]
 }

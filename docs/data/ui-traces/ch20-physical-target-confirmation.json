@@ -1,0 +1,166 @@
+{
+  "kind": "fd2_physical_target_confirmation_receipt",
+  "date": "2026-10-03",
+  "issue": 115,
+  "status": "passed_limited_scope",
+  "evidence_level": "RUNTIME-E1",
+  "source": "docs/data/ida/fd2_player_physical_target_confirmation_20261003.json",
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "original": {
+    "run": "work/parity-slot-ch20/full-original-r2",
+    "control_plan": "docs/data/parity-plans/ch20-sample-r2.jsonl",
+    "control_plan_sha256": "0bdec94e2aececdb427b13d6552e415be49f0dccddb400c9cb8f0423dbc0486a",
+    "rejected_target": [
+      29,
+      29
+    ],
+    "rejected_result_seq": 593,
+    "normal_completion_keys": [
+      {
+        "seq": 594,
+        "key": "esc"
+      },
+      {
+        "seq": 595,
+        "key": "down"
+      },
+      {
+        "seq": 596,
+        "key": "enter"
+      }
+    ]
+  },
+  "comparison": {
+    "report": "work/parity-slot-ch20/full-r2-verify-r4.json",
+    "report_sha256": "2eb85dd414d75fb400cc44716488b633ee8f94377e1a22816deb3f2adf78e5fb",
+    "limited_frames": [
+      {
+        "seq": 593,
+        "kind": "attack_result",
+        "oracle": "checkpoint-0593.png",
+        "remake": "remake-0021-p51.png",
+        "phases": 88,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "b80011f14f99f5dd9dd810f4e818ef42d94064d0c140e4b92228e318c8276e85",
+        "remake_sha256": "b80011f14f99f5dd9dd810f4e818ef42d94064d0c140e4b92228e318c8276e85",
+        "palette_cycle_phase": 12,
+        "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+      },
+      {
+        "seq": 612,
+        "kind": "select",
+        "oracle": "checkpoint-0612.png",
+        "remake": "remake-0022-p34.png",
+        "phases": 88,
+        "diff_pixels": 0,
+        "box": [],
+        "ok": true,
+        "oracle_sha256": "d1843d7f44e8e16fb7475b1104c5348a0f919aa71381c629815b92e3fb39a925",
+        "remake_sha256": "d1843d7f44e8e16fb7475b1104c5348a0f919aa71381c629815b92e3fb39a925",
+        "palette_cycle_phase": 2,
+        "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+      }
+    ],
+    "node_points": [
+      {
+        "seq": 593,
+        "kind": "attack_result",
+        "remake_ui": "target",
+        "oracle_ui": "target",
+        "oracle_kind": "attack_result",
+        "oracle_comparable_kind": "attack_result",
+        "oracle_family": "target",
+        "remake_family": "target",
+        "status": "ok"
+      },
+      {
+        "seq": 612,
+        "kind": "select",
+        "remake_ui": "target",
+        "oracle_ui": "target",
+        "oracle_kind": "select",
+        "oracle_comparable_kind": "select",
+        "oracle_family": "target",
+        "remake_family": "target",
+        "status": "ok"
+      }
+    ],
+    "ai": {
+      "original": 64,
+      "consumed": 64,
+      "order_divergences": 0
+    },
+    "save": {
+      "oracle_save_sha256": "49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+      "remake_save_sha256": "49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+      "remake_note": "save_sha256=49f00f95ae1201b071cab7a28770f557484ff98eb496015e7628989eb82eb200",
+      "blocked_by": null,
+      "status": "ok"
+    },
+    "remaining_failure": "原r2錯選一般店seq1094，完整章#112未通過；#116已準備新r3但尚未驗收"
+  },
+  "go": {
+    "image": "fd2-go-test-local:20260909",
+    "full_log": "work/parity-slot-ch20/chapter20-go-regression-r5.log",
+    "log_sha256": "b2f56fec11aa7ec04a1aafa77f2e52813d849c9ab53161d69f594782a4bf0b3b",
+    "packages_passed": 19,
+    "focused_log": "work/parity-slot-ch20/physical-target-focused-r2.log",
+    "focused_log_sha256": "c94559da2e72177920b85831fb8b2c97d83dcdbe399b291c776429a72547c4b6",
+    "failed_attempt": {
+      "log": "work/parity-slot-ch20/chapter20-go-regression-r4.log",
+      "reason": "事件61fixture漏原生已裝備武器、raw敵兵及正式射程writer；補前置，同image同完整命令乾淨r5通過"
+    }
+  },
+  "prior_chapter": {
+    "chapter": 19,
+    "oracle_run": "work/parity-slot-ch19/full-original-r4",
+    "remake_run": "work/parity-slot-ch19/full-r4-remake-r9",
+    "report": "work/parity-slot-ch19/full-r4-verify-r11.json",
+    "report_sha256": "e9280fe4eeb3c51037f742bf026bb1714a658470b32c84c4a8d1343d000571f7",
+    "status": "passed",
+    "gates": {
+      "behavior": true,
+      "nodes": true,
+      "transaction": true,
+      "frames": true
+    },
+    "frames": 54,
+    "ai": {
+      "original": 264,
+      "consumed": 264,
+      "order_divergences": 0
+    },
+    "save": {
+      "oracle_save_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+      "remake_save_sha256": "f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+      "remake_note": "save_sha256=f738de3c191c058b28da0e85bf3aac29d4c818271bb2cee1d2380bce64b640a8",
+      "blocked_by": null,
+      "status": "ok"
+    }
+  },
+  "runtime_source_sha256": {
+    "remake/cmd/fd2/main.go": "705fc3b48073f2844ffa00e0a9d3c39a2165b6c03285173f724366a5669f9833",
+    "remake/cmd/fd2/native_player_movement.go": "5faa4552bf98295cd0bf343baecf33727178d77a11205e3bdeaea75d18e12c53",
+    "remake/cmd/fd2/native_player_movement_test.go": "3ac2a2c1fb08e0aee735bedcd589b70bdf82e36c05daeaa9e7d744fc3978505f",
+    "remake/cmd/fd2/chapter_parity_replay_test.go": "5721b6d1ebe8825949569c81a210b0bb354f815531fb920d08f429bbebe8af78",
+    "remake/cmd/fd2/native_field_event61_test.go": "e4afdff89d9f4ff0f1218972d55f8d18e3ce1fa0ff397ffa82e01616683de08f"
+  },
+  "string_review": {
+    "preserved": 97,
+    "inventory_sha256": "dc99ef137985448c2f0646be2b3cebb1ca65b3583589ea570a0869d7a36816fe"
+  },
+  "limits": [
+    "只證明物理確認拒收與相同按鍵owner；不新增整章PLAYER-E2。",
+    "沒有camera、cursor、HP或原版畫面注入；剩餘商店另驗。",
+    "原版完整物理傷害、存活、敵方選目標與所有target分支不外推。"
+  ]
+}

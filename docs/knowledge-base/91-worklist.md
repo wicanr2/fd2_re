@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -252,15 +252,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 章比較器的節點序列直接複製重製UI造成假通過
-
-`parity-nodes-oracle-ui-source` · 缺陷 · [#117](https://github.com/wicanr2/fd2_re/issues/117) · 仍未完成 · 要人判
-
-verify_chapter_parity.py 258..269將重製kind/ui同時写入oracle和remake節點序列，實際未核對原版UI。第二十章r2 seq1094原版action ui=shop、重製ui=town且note=gate 未開，nodes仍true；behavior只收divergence前綴，也未拒收。影像gate拒收使本章沒有整體假passed，但原版節點序列標示需要訂正。
-
-怎樣算做完：['節點比較從原版actions與原生input owner取得獨立來源；無來源的點明示未核對，不複製重製UI。', '原版shop／重製town或gate未開必須拒收，有意義的正反例測試；同一章20、19原版收據回歸，舊收據限制與現況同步。']
-
-證據：`['tools/verify_chapter_parity.py', 'work/parity-slot-ch20/full-r2-verify-r1.json', 'work/parity-slot-ch20/full-original-r2/actions.jsonl', 'work/parity-slot-ch20/full-r2-remake-r1/checkpoints.jsonl']`
 
 <!-- END fd2_worklist.py render -->

@@ -119,8 +119,10 @@ type parityReplay struct {
 	growthCursor  int
 	// keys 是原版側 control-history.jsonl 的逐序號按鍵；move 用它重走驅動端在 select
 	// 與 move 之間真正按過的方向鍵與被拒絕的 enter，鏡頭才會跟原版走到同一格。
-	keys    map[int]string
-	prevSeq int // 上一個語意動作的 seq
+	keys                map[int]string
+	prevSeq             int // 上一個語意動作的 seq
+	keysConsumedThrough int // 已依正式owner消費的取消／指令環鍵，不再當地圖方向
+	rejectedAttack      bool
 	// walkStartedEarly：重走按鍵時原版接受移動的那個 enter 早於 move 紀錄的 seq，走行已開始。
 	walkStartedEarly bool
 	// stoppedBeforeAI：上一個 END 停在敵方回合開始（下一個動作是 force_enemy_clear）。
@@ -1691,11 +1693,12 @@ func (r *parityReplay) replayCursorKeys(action parityAction) bool {
 // r13 seq 793）從別處走同樣的鍵會把鏡頭推歪，那種情況照舊直接定位。
 func (r *parityReplay) replayDirectionKeys(action parityAction) {
 	g := r.g
+	previous := max(r.prevSeq, r.keysConsumedThrough)
 	// 前提檢查取第一個方向鍵之前那一格的檢查點：上一個動作的檢查點可能在 0x1A30B 換手
 	// 中途取樣（第十章 r4 seq 3613 游標還在 (10,27)，之後回合開頭聚焦才到 (16,28)），拿它
 	// 比會把整段鍵跳過、瞬移到選取格，漏掉途中 HUD 翻邊（seq 3645 起約 4300 px）。
 	firstKey := -1
-	for seq := r.prevSeq + 1; seq < action.Seq; seq++ {
+	for seq := previous + 1; seq < action.Seq; seq++ {
 		switch r.keys[seq] {
 		case "up", "down", "left", "right":
 			firstKey = seq
@@ -1720,7 +1723,7 @@ func (r *parityReplay) replayDirectionKeys(action parityAction) {
 	if json.Unmarshal(raw, &cp) != nil || cp.View.CursorX != g.curX || cp.View.CursorY != g.curY {
 		return
 	}
-	for seq := r.prevSeq + 1; seq < action.Seq; seq++ {
+	for seq := previous + 1; seq < action.Seq; seq++ {
 		switch r.keys[seq] {
 		case "up":
 			g.moveMapCursor(0, -1)
@@ -1779,6 +1782,7 @@ func (r *parityReplay) stayUnit(action parityAction, actor *battle.Unit) {
 
 func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.Unit {
 	t, g := r.t, r.g
+	r.rejectedAttack = false
 	if actor == nil {
 		t.Fatalf("attack(seq %d)：沒有先 select", action.Seq)
 	}
@@ -1822,6 +1826,12 @@ func (r *parityReplay) attack(action parityAction, actor *battle.Unit) *battle.U
 	}
 	r.checkpoint("attack_armed", action.Seq, "target", true, extra...)
 	g.confirm()
+	if g.st.HasNativeMapViewState && target == actor && g.sel == actor &&
+		g.moved && !g.ring && !actor.Acted && g.atk == nil && g.loadErr == "" {
+		// #115：原版自己的格不通過0x115B6，仍在target等鍵；不得強推acted。
+		r.rejectedAttack = true
+		return target
+	}
 	hp := target.HP
 	pump(t, g, ch01FrameBudget, func() bool {
 		return g.atk == nil && g.walk == nil && !g.ring && (target.HP != hp || target.HP <= 0 || actor.Acted)
@@ -1859,8 +1869,38 @@ func (r *parityReplay) waitInsteadOfAttack(actor *battle.Unit) {
 	}
 }
 
-func (r *parityReplay) checkpointAttackResult(action parityAction, _ *battle.Unit, _ *battle.Unit, _ [2]int) {
+// #115：只承接受版控oracle已記錄的取消→待機鍵序。未匹配就拒收，不補猜測鍵。
+func (r *parityReplay) finishRejectedAttackFromKeys(action parityAction, actor *battle.Unit) {
+	var keys []string
+	last := action.Seq
+	for seq := action.Seq + 1; seq <= action.Seq+64 && len(keys) < 3; seq++ {
+		if key := r.keys[seq]; key != "" {
+			keys = append(keys, key)
+			last = seq
+		}
+	}
+	if len(keys) != 3 || keys[0] != "esc" || keys[1] != "down" || keys[2] != "enter" {
+		r.t.Fatalf("rejected attack(seq %d)：沒有原版取消／待機鍵序 %v", action.Seq, keys)
+	}
+	if actor == nil || actor != r.g.sel || !r.g.returnPlayerAttackTargetToRing() {
+		r.t.Fatalf("rejected attack(seq %d)：正式取消owner拒收", action.Seq)
+	}
+	r.settleActionOverlay(action)
+	r.waitInsteadOfAttack(actor)
+	if !actor.Acted {
+		r.t.Fatalf("rejected attack(seq %d)：正常指令環待機未完成", action.Seq)
+	}
+	r.keysConsumedThrough = last
+}
+
+func (r *parityReplay) checkpointAttackResult(action parityAction, actor *battle.Unit, _ *battle.Unit, _ [2]int) {
 	g := r.g
+	if r.rejectedAttack {
+		r.checkpoint("attack_result", action.Seq, r.ui(), true)
+		r.finishRejectedAttackFromKeys(action, actor)
+		r.rejectedAttack = false
+		return
+	}
 	// 攻擊收尾之後可能接 0x1AA1D 的掉落訊息（等鍵）、0x1E292 的經驗／升級對話（每個 FFFD
 	// 等鍵；只有經驗那一頁走 0x1E5C0 計時自己關）、死亡對白；推到玩家再度有操作權、停在
 	// 等鍵處或戰鬥結束。原版側的 attack_result 就是在第一個等鍵處拍的。

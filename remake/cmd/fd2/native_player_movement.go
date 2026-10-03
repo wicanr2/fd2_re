@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"image"
 )
 
@@ -99,6 +100,39 @@ func (g *Game) beginPlayerAttackTargeting() {
 	if message, ok := g.localeMessage("battle.attack.choose_target"); ok {
 		g.msg = message
 	}
+}
+
+// 0x18F76以targetCode0進0x115B6。未通過確認仍留在目標選擇，不能提交待機。
+func (g *Game) nativePhysicalAttackConfirmationAllowed() bool {
+	if g == nil || g.st == nil || g.sel == nil ||
+		g.curX < 0 || g.curX >= g.st.W || g.curY < 0 || g.curY >= g.st.H ||
+		len(g.st.NativeTileBlitModes) != g.st.W*g.st.H {
+		return false
+	}
+	allowed, err := battle.NativeCursorConfirmationAllowed(
+		battle.Cell{X: g.curX, Y: g.curY},
+		g.st.NativeTileBlitModes[g.curY*g.st.W+g.curX],
+		g.st.NativeMapRangeMode, 0, g.st.Units,
+	)
+	if err != nil {
+		g.loadErr = err.Error()
+	}
+	return err == nil && allowed
+}
+
+// Update與重播共用既有Escape owner；0x115B6回-1後，0x18F86清掉射程。
+func (g *Game) returnPlayerAttackTargetToRing() bool {
+	if g == nil || g.st == nil || g.sel == nil || !g.moved {
+		return false
+	}
+	g.resetNativeTargetField()
+	if fdother.ActionOverlayAcceptsDirection(g.actionOverlayAvailability(), g.ringSel) {
+		g.beginActionOverlayOpen(g.ringSel)
+	} else {
+		g.beginBattleActionOverlay()
+	}
+	g.msg = ""
+	return true
 }
 
 // markNativePlayerAttackField 在指令環選攻擊收合後，把 0x18f6a 那次 0x14818 的

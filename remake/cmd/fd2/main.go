@@ -7721,7 +7721,11 @@ func (g *Game) confirm() {
 		}
 		return
 	}
-	// 攻擊階段:游標在攻擊範圍內的敵 → 攻擊;在自己格 → 待命
+	// 原生0x18F76共用0x115B6確認閘門。自己格不能在攻擊目標階段直接待機。
+	if g.st.HasNativeMapViewState && !g.nativePhysicalAttackConfirmationAllowed() {
+		return
+	}
+	// 攻擊階段：合法敵方格進攻擊；無raw來源的相容場景保留原地待機。
 	if tgt := g.st.UnitAt(g.curX, g.curY); tgt != nil && tgt != g.sel &&
 		tgt.Camp != battle.Own && g.st.InAttackRange(g.sel, g.curX, g.curY) {
 		// 0x115b6 確認回來，0x18f86 的 0x4dbfc 先於攻擊演出清掉射程標記。
@@ -8565,17 +8569,7 @@ func (g *Game) Update() error {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) || inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
 		if g.sel != nil && g.moved { // 已移動、正在選攻擊目標:退回指令環(取消一層,doc13;ring 的 ESC 才真正退回原位)
-			// 0x115b6 回 -1 之後 0x18f86 先 0x4dbfc 清掉攻擊射程標記。
-			g.resetNativeTargetField()
-			// 退回時沿用上一個選擇；它若已不可用就依 sub_173E7 回到第一個
-			// 可用方向，否則方向鍵閘門會把選擇鎖死在不可用格上。
-			// 0x18890 的完整重進場語意尚未閉合，不在此宣稱每次退回都重設。
-			if fdother.ActionOverlayAcceptsDirection(g.actionOverlayAvailability(), g.ringSel) {
-				g.beginActionOverlayOpen(g.ringSel)
-			} else {
-				g.beginBattleActionOverlay()
-			}
-			g.msg = ""
+			g.returnPlayerAttackTargetToRing()
 		} else if g.sel == nil && g.st.HasNativeMapViewState && inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 			g.cycleNativePlayerUnit()
 		} else {
