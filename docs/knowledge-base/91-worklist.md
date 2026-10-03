@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -262,15 +262,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 第24章舞台相位檢查誤拒絕正常 VGA 來源指標重綁
-
-`ch24-stage-vga-source-rebind` · 缺陷 · [#150](https://github.com/wicanr2/fd2_re/issues/150) · 仍未完成 · 要人判
-
-維護中的正常r6重播在T4 attack_result seq2100以「stage VGA source不一致」停止。原版canonical9b05369的完整trace141850筆未截斷，0x11EED返回caller仍是0x11D3B，六copy參數仍符合312×192／stride456／VGA目的0xA0504，但source由0x14CCC4改為0x1920E8；已閉合IDA9.4證據固定sub_11CAC讀dword_53A49+0x8088作來源，未保證pointer在LOADCH後永遠不變。Go重播與Python獨立比較器把新source當錯誤。只修驗證方法，不調DP或遊戲規則；保留其他caller未知copy及原版T5敗北限制。
-
-怎樣算做完：['先以原版固定EXEhash、完整trace、既有IDA9.4 sub_11CAC ABI及實際0x11D3B完成copy反證建立READY契約；未證實來源生命週期不猜命名。', 'Go與Python驗證器只在0x11D3B且完整viewport參數見證時接受來源重新綁定，保留其他caller不同來源的相位未知、loader重設、順序／參數／截斷拒收。', '同源r6正常重播越過seq2100；相關Go／Python回歸及既有第24章有限對拍、第23章回歸通過，保留新差異與整章限制。']
-
-證據：`['work/parity-slot-ch24/fresh-full-original-r6/eip-trace.jsonl', 'work/parity-slot-ch24/fresh-full-remake-r1.log', 'docs/data/ida/fd2_ch24_stage_runtime_20261003.json', 'docs/data/ida/fd2_ch23_post_ida.txt']`
 
 <!-- END fd2_worklist.py render -->
