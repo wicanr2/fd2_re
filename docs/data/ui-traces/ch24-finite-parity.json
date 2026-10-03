@@ -1787,5 +1787,45 @@
       "work/parity-slot-ch24/full-r5-command6-verify-r1.json",
       "work/parity-slot-ch24/startup-command6-verify-r1.json"
     ]
+  },
+  "command7_rng_investigation": {
+    "issue": 152,
+    "status": "CONFORMED",
+    "chapter_completion": false,
+    "plan": "docs/data/parity-plans/ch24-command7-rng-r1.jsonl",
+    "plan_sha256": "4153c2627f203d08e6ee5d0bf1c0abfa98fb73a20259004d7bb362dd4dd648ab",
+    "original": "work/parity-slot-ch24/command7-rng-original-r1",
+    "state_source": "work/parity-slot-ch24/fresh-policy-r1/FD2.SAV",
+    "limits": [
+      "同一seed4與AP+200/DP+0/DX+60政策；未改章內狀態。",
+      "正常LOAD至第4回合入口即停止，僅定位指令7首次分歧。",
+      "原版逐次trace已核對；正式重製驗收仍待。"
+    ],
+    "primary": "docs/data/ida/fd2_command7_target_rng_20261004.json",
+    "original_trace_confirmed": true,
+    "scope": "指令7數值亂數交錯及首次T4狀態；完整章未完成。",
+    "remake": "work/parity-slot-ch24/fresh-full-remake-r5",
+    "independent_report": "work/parity-slot-ch24/fresh-full-verify-r5.json",
+    "behavior_ok": true,
+    "completed_nodes_equal": true,
+    "normal_replay_exit": 1,
+    "stop_issue": 155,
+    "T4_records_equal": 26,
+    "full_go": {
+      "packages": 19,
+      "passed": 2308,
+      "skipped": 27,
+      "failed": 0
+    },
+    "regressions": [
+      "work/parity-slot-ch23/ch24-command7-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-command7-verify-r1.json"
+    ],
+    "open_followups": [
+      142,
+      153,
+      154,
+      155
+    ]
   }
 }

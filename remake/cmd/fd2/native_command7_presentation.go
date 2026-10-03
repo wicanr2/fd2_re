@@ -62,15 +62,30 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
 		return errors.New("native command7 raw actor provenance unavailable")
 	}
+	effectResource := 37
+	if actor.NativeRecordByte6 == 0 {
+		effectResource = 38
+	}
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
+	if err != nil {
+		return err
+	}
+	schedule, err := figani.BuildNativeCommand7PresentationSchedule(actor.NativeRecordByte6, effect)
+	if err != nil {
+		return err
+	}
+	rngBefore := g.nativeRNGState
+	walk := func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+		return figani.WalkNativeCommand7RNG(rngBefore, schedule, actor.NativeRecordByte6, targetCount, resolve)
+	}
 	var plan *battle.NativeCommandDamagePlan
-	var err error
 	if actor.Camp == battle.Enemy {
 		var origin battle.Cell
 		if origin, err = g.nativeAIActionOrigin(actor); err == nil {
-			plan, err = g.st.PlanNativeAICommandDamage(actor, origin, 7, g.st.NativeCommandResistances, g.nativeRNGState)
+			plan, err = g.st.PlanNativeAICommandDamageWalk(actor, origin, 7, g.st.NativeCommandResistances, rngBefore, walk)
 		}
 	} else {
-		plan, err = g.st.PlanNativeCommandDamage(actor, confirmed, 7, g.st.NativeCommandResistances, g.nativeRNGState)
+		plan, err = g.st.PlanNativeCommandDamageWalk(actor, confirmed, 7, g.st.NativeCommandResistances, rngBefore, walk)
 	}
 	if err != nil {
 		return err
@@ -140,18 +155,6 @@ func (g *Game) startNativeCommand7Presentation(actor, confirmed *battle.Unit, th
 		if err != nil {
 			return err
 		}
-	}
-	effectResource := 37
-	if actor.NativeRecordByte6 == 0 {
-		effectResource = 38
-	}
-	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", effectResource)
-	if err != nil {
-		return err
-	}
-	schedule, err := figani.BuildNativeCommand7PresentationSchedule(actor.NativeRecordByte6, effect)
-	if err != nil {
-		return err
 	}
 	if err := g.requireSeparatedCommandSounds(schedule.SoundResource, 0, 1); err != nil {
 		return fmt.Errorf("native command7 sounds: %w", err)
@@ -410,7 +413,7 @@ func (g *Game) stepNativeCommand7Presentation() {
 			g.failNativeCommand7Presentation(err)
 			return
 		}
-		// 數值計畫發布自身 RNGAfter；handler 軌道本身沒有額外亂數來源。
+		// 計畫已包含命中數字段抖動與傷害擲骰的交錯，整段完成後才發布。
 		g.nativeRNGState = j.plan.RNGAfter
 		then, results := j.then, append([]battle.NativeCommandDamageResult(nil), j.plan.Results...)
 		g.nativeCmd7Presentation = nil

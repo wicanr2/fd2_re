@@ -6,6 +6,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
+	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
 func nativeCommand7PresentationTestPlan(t *testing.T) (*battle.NativeCommandDamagePlan, *battle.Unit, *battle.Unit) {
@@ -73,5 +74,47 @@ func TestNativeCommand7PresentationRollsBackRuntimeFailure(t *testing.T) {
 	if g.nativeCmd7Presentation != nil || actor.MP != plan.MPBefore || actor.Acted ||
 		target.HP != plan.Results[0].HPBefore || g.nativeRNGState != plan.RNGBefore || g.loadErr == "" {
 		t.Fatalf("失敗回復不完整：mp=%d acted=%v hp=%d rng=%#x err=%q", actor.MP, actor.Acted, target.HP, g.nativeRNGState, g.loadErr)
+	}
+}
+
+func TestNativeCommand7RNGMatchesOriginalChapter24Targets(t *testing.T) {
+	// #152: canonical dosgolem command7-rng-original-r1, 0x1C75E entries
+	// and 0x2AF40 markers. The third target remains alive for the second cast.
+	book, err := battle.LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, side := range []byte{0, 1} {
+		resource := 37
+		if side == 0 {
+			resource = 38
+		}
+		schedule := figani.NativeCommand7PresentationSchedule{EffectResource: resource}
+		for _, tc := range []struct {
+			seed, final uint16
+			before      []uint16
+			damage      []int
+			hit         []bool
+		}{
+			{10947, 61757, []uint16{10947, 16895, 42561}, []int{433, 416, 409}, []bool{true, true, true}},
+			{61757, 6897, []uint16{61757, 37706}, []int{419, 0}, []bool{true, false}},
+		} {
+			calls := 0
+			final, err := figani.WalkNativeCommand7RNG(tc.seed, schedule, side, len(tc.before),
+				func(index int, rng uint16) (uint16, bool, error) {
+					if index != calls || rng != tc.before[index] {
+						t.Fatalf("side=%d target=%d entry RNG=%d want=%d", side, index, rng, tc.before[index])
+					}
+					calls++
+					result, next, err := battle.ResolveNativeCommandDamage(book[7].Damage, book[7].Hit, 10, rng)
+					if result.Damage != tc.damage[index] || result.Hit != tc.hit[index] {
+						t.Fatalf("side=%d target=%d result=%+v want damage=%d hit=%v", side, index, result, tc.damage[index], tc.hit[index])
+					}
+					return next, result.Hit, err
+				})
+			if err != nil || final != tc.final || calls != len(tc.before) {
+				t.Fatalf("side=%d final=%d want=%d calls=%d err=%v", side, final, tc.final, calls, err)
+			}
+		}
 	}
 }

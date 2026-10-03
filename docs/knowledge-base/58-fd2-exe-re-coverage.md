@@ -2369,3 +2369,17 @@ READY限定完整0x11D3B copy可重新綁定source並發布當時raw offset；�
 真實原始資產測試先重現#33 step6的(334,153,143,110)錯誤，修正後配置內影格與獨立FIGANI嚴格blit／viewport一致，270末列可寫、下一列及跨stride仍拒收。測試另發現#32 frame9負列(141,-1,143,111)，已先登記[#154](https://github.com/wicanr2/fd2_re/issues/154)並返回規格審查；它仍拒收，不以270列掩蓋或聲稱指令6所有資產已驗。
 
 第23章24張、第24章既有有限13張與另一選人分支5張回歸通過，完整Go19套件2306項通過、27項略過。主契約保存命令、輸出及實作雜湊，Docker工作容器清理。#151限RE-CLOSED／DATA-READY／RUNTIME-E1；#152／#153／#154及#142仍未完成，固定DP政策與正式20/30章台帳不變。
+
+### 2026-10-04 #152：指令7首次分歧 DRAFT
+
+[主證據與規格](../data/ida/fd2_command7_target_rng_20261004.json)沿既有sub_272B8及共用caller補亂數consumer，不重解傷害公式。首次反例在T3 actor16對record12的HP478→原版69／重製51；下一次actor17施放讓重製record12消失，原版仍69。T4同座標HP400/440實為不同record21/20，不能稱同一單位傷害差。命中數字段抖動會消耗process RNG，miss仍推進handler但不消耗抖動。按既有排程推導候選damage433/416/409與結束RNG61757、第二次419/未命中與6897，均與既有snapshot吻合；新正常短路徑trace待核對。只有達READY才修改正式owner；#152與整章#142仍未完成。
+
+#152 規格審查：原始caller與既有handler排程足以支持上述亂數交錯契約，主規格提升READY。逐次trace與正式owner驗收仍待，derived_candidates保持強推論，不先稱CONFORMED。
+
+### 2026-10-04 #152：指令7首次分歧有限 CONFORMED
+
+[主契約](../data/ida/fd2_command7_target_rng_20261004.json)保存新IDA 9.4 caller原始指令、canonical dosgolem 951cb55f的受版控正常短計畫與逐次trace。T3三目標數值入口RNG10947／16895／42561，命中抖動marker7／8／8；下一次施放的入口61757／37706、最後目標roll97未命中，下一AI入口RNG6897。這證實漏掉目標間數字段抖動是首次HP差異的成因，不重解已閉合傷害公式。
+
+正式玩家與AI owner均接WalkNativeCommand7RNG，保留預建失敗零交易及既有Draw發布／回復。正常r6→remake-r5的T4 seq1775全部26筆存活record之camp／座標／HP一致，record12保留69HP，並能正常選取與移動。獨立39張報告的已完成行為通過、已完成節點序列相等；整體仍failed，晚期計畫／保存未達且#153早期RGB仍差14772px。seq1840攻擊比較點因原版stage copy未完成而驗證fatal，另登錄#155，不能將此假定為遊戲崩潰，也不略過該點稱完整通過。
+
+完整Go19套件2308項通過、27項既有略過、零失敗；第23章24張與整檔SAV、第24章有限13張與整檔SAV皆通過。#152只閉合首次指令7數值交錯及T4狀態，限RE-CLOSED／DATA-READY／RUNTIME-E1；建構槽政策限制保留，不提升自然傷害、存活、敵方選目標或新的PLAYER-E2。#142／#153／#154／#155保持未完成，正式章台帳仍20/30。

@@ -75,3 +75,7 @@ step `1,7,13,15,21,27,29`，HP stage1..5只用`1,7,13,15,21`；channel0 sample
   消耗RNG。正式owner若沿用既有整批damage plan而未重現shake RNG交錯，必須列為
   視覺RNG近似，不得宣稱原版RNG parity。
 - 尚缺正式Game owner與未修改一般玩家／敵方同狀態逐幀、逐音訊 E2。
+
+## 2026-10-04 補正：正式owner與數值亂數交錯
+
+第77行是本證據建立時的範圍快照。正式owner已由58的indexed RUNTIME-E1紀錄接通；本次#152再依[共用caller及正常trace](fd2_command7_target_rng_20261004.json)補齊命中marker的共用亂數交錯。mode5每次回傳1都計入，超過五段HP上限亦同；miss仍推進handler但不追加抖動亂數。舊整批傷害plan的近似不再適用於正式指令7數值計畫。此補正不提升逐幀抖動像素、音訊或自然傷害E2；入口與限制依58。

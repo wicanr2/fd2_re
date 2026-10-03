@@ -5136,3 +5136,9 @@ r7使用已推送6903fe83的正常避敵r2計畫、canonical951cb55、同SAV／s
 IDA9.4直接指令與Capstone核對sub_2A6BD的0x2A300-byte配置，640列距得270列。重製260列拒收#33底端263的正常特效；本輪先READY，再改共用work高度與真實原始資產回歸。正常r6重播完成56筆AI入口，沒有runtime_error；7筆AI分歧與65張failed獨立報告保留在#152／#153，沒有提高整章驗收。真實#32負列另開#154，返回規格並保留拒收。
 
 第23章24張與第24章13／5張回歸通過。完整Go19套件2306項通過、27項略過。只提交可審查metadata與程式，不加入完整原始資產。證據、命令與雜湊見[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
+
+## 2026-10-04：#152 指令7首次分歧修正
+
+以新IDA 9.4直接caller與canonical dosgolem 951cb55f正常短路徑逐次trace確認漏掉命中數字段抖動RNG。READY後才接正式玩家／AI的WalkNativeCommand7RNG；全部marker計入，miss仍推進state。正常fresh-full-remake-r5在T4入口全部26筆存活record之camp／位置／HP與原版一致，已完成節點相等，record12由51修正為69且下一次施放未命中。主證據、命令、來源與輸出雜湊見fd2_command7_target_rng_20261004.json，正式現況入口為58。
+
+完整Go19套件2308項通過、27項略過；第23章24張／整檔SAV與第24章有限13張／整檔SAV回歸通過。完整r6重播在seq1840的stage copy比較點驗證fatal，另登錄#155；獨立39張報告只證明已完成行為，整體仍failed。#153早期RGB、#154負列與#142整章仍未完成；未改DP、未清敵或鎖HP，正式章台帳仍20/30。#152只按首次分歧的有限範圍收束，不宣稱整章或新的傷害E2。

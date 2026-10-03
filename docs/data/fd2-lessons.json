@@ -573,10 +573,10 @@
     {
       "id": "command-presentation-rng-shares-the-global-stream",
       "area": "對拍",
-      "rule": "指令演出的擲骰（0x269D3 六槽相位、0x2AF40 marker 抖動）和 0x1C75E 的命中／傷害走同一條 0x4E893 序列，順序是 handler mode 0 → 每個目標 mode 3 之後擲命中／傷害 → 目標畫格裡重置與抖動交錯；未命中走 0x2AF61 不抖動。演出亂數不能用「局部視覺 RNG」近似，也不能只在 plan 之後補固定步數：要用 FD2_ORACLE_EIP_TRACE=0x4E893 拿到呼叫端序列，照序列走。",
-      "why": "2026-09-16 第六章 r9：同一個入口亂數 28590，原版指令 4 的傷害擲骰在第 8 步（39），重製端在第 2 步（36）；r4 的 0x4E893 追蹤一次就看出 6 次 0x26A5A 在 0x1C7F2 之前。",
+      "rule": "指令演出的擲骰（0x269D3 六槽相位、0x2AF40 marker 抖動）和 0x1C75E 的命中／傷害走同一條 0x4E893 序列，順序是 handler mode 0 → 每個目標 mode 3 之後擲命中／傷害 → 目標畫格裡重置與抖動交錯；未命中走 0x2AF61 不抖動。演出亂數不能用「局部視覺 RNG」近似，也不能只在 plan 之後補固定步數：要用 FD2_ORACLE_EIP_TRACE=0x4E893 拿到呼叫端序列，照序列走。 指令7入口是remake/internal/figani/native_command7.go的WalkNativeCommand7RNG；命中的全部NumericMarker都計入，超過HPStage上限仍消耗，miss只推進handler。",
+      "why": "2026-09-16 第六章 r9：同一個入口亂數 28590，原版指令 4 的傷害擲骰在第 8 步（39），重製端在第 2 步（36）；r4 的 0x4E893 追蹤一次就看出 6 次 0x26A5A 在 0x1C7F2 之前。 2026-10-04 #152指令7缺交錯使record12提前死亡；直接trace確認7／8／8個marker，數量超過各目標五段HP。",
       "date": "2026-09-16",
-      "evidence": "remake/internal/figani/native_command_rng_walk_test.go；remake/internal/figani/native_command5.go WalkNativeCommand5RNG"
+      "evidence": "remake/internal/figani/native_command_rng_walk_test.go；remake/internal/figani/native_command5.go WalkNativeCommand5RNG；docs/data/ida/fd2_command7_target_rng_20261004.json；remake/cmd/fd2/native_command7_presentation_test.go"
     },
     {
       "id": "typical-move-hold-until-the-event",

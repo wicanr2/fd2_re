@@ -1,0 +1,2008 @@
+{
+  "input": "FD2.EXE",
+  "size": 357074,
+  "md5": "b97caf2239a27a896069d03549d96e1e",
+  "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "tool": "IDA Pro 9.4",
+  "address_space": "IDA LE linear",
+  "kind": "fd2_command7_target_rng_evidence_and_spec",
+  "date": "2026-10-04",
+  "issues": [
+    152,
+    142
+  ],
+  "source": {
+    "path": "work/parity-slot-ch24/command7-rng-ida-r1.json",
+    "sha256": "da0379b19ac113a2dea1bc83f1803581edfafcec1be66d408c84052db8c88b49",
+    "exporter": "tools/ida_opening_input_probe.py",
+    "exporter_sha256": "8da51d5be86c93e2dac7d9d89c3df44824c907af081c350d9bf11c4cd7e8ec07",
+    "original_name": "sub_2A6BD",
+    "function_start": "0x2a6bd",
+    "function_end": "0x2b5e1",
+    "xrefs": [
+      "0x15400",
+      "0x1d43c"
+    ],
+    "handler": {
+      "original_name": "sub_272B8",
+      "address": "0x272b8",
+      "end": "0x274b0"
+    }
+  },
+  "instructions": [
+    {
+      "address": "0x2ae0a",
+      "bytes": "85c0",
+      "original": "test    eax, eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2ae0a",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2ae0c",
+      "bytes": "0f854f010000",
+      "original": "jnz     loc_2AF61",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2ae0c",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aeb6",
+      "bytes": "ff1485b9230500",
+      "original": "call    funcs_2AC25[eax*4]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aeb6",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aebd",
+      "bytes": "83c414",
+      "original": "add     esp, 14h",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aebd",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aec0",
+      "bytes": "83f801",
+      "original": "cmp     eax, 1",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aec0",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aec3",
+      "bytes": "0f85ce000000",
+      "original": "jnz     loc_2AF97",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aec3",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aec9",
+      "bytes": "0fb69c2c98000000",
+      "original": "movzx   ebx, [esp+ebp+140h+var_A8]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aec9",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aed1",
+      "bytes": "3b9c241c010000",
+      "original": "cmp     ebx, [esp+140h+var_24]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aed1",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2aed8",
+      "bytes": "7c5b",
+      "original": "jl      short loc_2AF35",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2aed8",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af35",
+      "bytes": "c784242401000000000000",
+      "original": "mov     [esp+140h+var_1C], 0",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af35",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af40",
+      "bytes": "e84e390200",
+      "original": "call    sub_4E893",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af40",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af45",
+      "bytes": "89c2",
+      "original": "mov     edx, eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af45",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af47",
+      "bytes": "bb03000000",
+      "original": "mov     ebx, 3",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af47",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af4c",
+      "bytes": "c1fa1f",
+      "original": "sar     edx, 1Fh",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af4c",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af4f",
+      "bytes": "f7fb",
+      "original": "idiv    ebx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af4f",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af51",
+      "bytes": "b801000000",
+      "original": "mov     eax, 1",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af51",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af56",
+      "bytes": "29d0",
+      "original": "sub     eax, edx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af56",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af58",
+      "bytes": "89842404010000",
+      "original": "mov     [esp+140h+var_3C], eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af58",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af5f",
+      "bytes": "eb36",
+      "original": "jmp     short loc_2AF97",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af5f",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af75",
+      "bytes": "89e8",
+      "original": "mov     eax, ebp",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af75",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af77",
+      "bytes": "6a05",
+      "original": "push    5",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af77",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af79",
+      "bytes": "6880020000",
+      "original": "push    280h",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af79",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af7e",
+      "bytes": "53",
+      "original": "push    ebx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af7e",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af7f",
+      "bytes": "ffb42420010000",
+      "original": "push    [esp+14Ch+var_2C]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af7f",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af86",
+      "bytes": "ffb42454010000",
+      "original": "push    [esp+150h+arg_0]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af86",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af8d",
+      "bytes": "ff1485b9230500",
+      "original": "call    funcs_2AC25[eax*4]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af8d",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2af94",
+      "bytes": "83c414",
+      "original": "add     esp, 14h",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2af94",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b01b",
+      "bytes": "8b84244c010000",
+      "original": "mov     eax, [esp+140h+arg_8]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b01b",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b022",
+      "bytes": "48",
+      "original": "dec     eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b022",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b023",
+      "bytes": "3b84240c010000",
+      "original": "cmp     eax, [esp+140h+var_34]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b023",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b02a",
+      "bytes": "7457",
+      "original": "jz      short loc_2B083",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b02a",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b02c",
+      "bytes": "55",
+      "original": "push    ebp",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b02c",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b02d",
+      "bytes": "8b842410010000",
+      "original": "mov     eax, [esp+144h+var_34]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b02d",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b034",
+      "bytes": "ff748408",
+      "original": "push    [esp+eax*4+144h+var_13C]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b034",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b038",
+      "bytes": "ffb42420010000",
+      "original": "push    [esp+148h+var_28]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b038",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b03f",
+      "bytes": "56",
+      "original": "push    esi",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b03f",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b040",
+      "bytes": "ff748410",
+      "original": "push    [esp+eax*4+150h+var_140]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b040",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b044",
+      "bytes": "ffb42414010000",
+      "original": "push    [esp+154h+var_40]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b044",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b04b",
+      "bytes": "ffb4242c010000",
+      "original": "push    [esp+158h+var_2C]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b04b",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b052",
+      "bytes": "ffb42460010000",
+      "original": "push    [esp+15Ch+arg_0]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b052",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b059",
+      "bytes": "e8c4090000",
+      "original": "call    sub_2BA22",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b059",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b05e",
+      "bytes": "83c420",
+      "original": "add     esp, 20h",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b05e",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0dd",
+      "bytes": "8b842450010000",
+      "original": "mov     eax, [esp+140h+arg_C]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0dd",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0e4",
+      "bytes": "0384240c010000",
+      "original": "add     eax, [esp+140h+var_34]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0e4",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0eb",
+      "bytes": "0fb610",
+      "original": "movzx   edx, byte ptr [eax]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0eb",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0ee",
+      "bytes": "89d0",
+      "original": "mov     eax, edx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0ee",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0f0",
+      "bytes": "c1e002",
+      "original": "shl     eax, 2",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0f0",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0f3",
+      "bytes": "01d0",
+      "original": "add     eax, edx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0f3",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0f5",
+      "bytes": "c1e004",
+      "original": "shl     eax, 4",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0f5",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0f8",
+      "bytes": "8b1d453a0500",
+      "original": "mov     ebx, dword_53A45",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0f8",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b0fe",
+      "bytes": "01c3",
+      "original": "add     ebx, eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b0fe",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b100",
+      "bytes": "899c24fc000000",
+      "original": "mov     [esp+140h+var_44], ebx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b100",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b107",
+      "bytes": "0fbf4340",
+      "original": "movsx   eax, word ptr [ebx+40h]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b107",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b10b",
+      "bytes": "89842408010000",
+      "original": "mov     [esp+140h+var_38], eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b10b",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b112",
+      "bytes": "55",
+      "original": "push    ebp",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b112",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b113",
+      "bytes": "52",
+      "original": "push    edx",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b113",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b114",
+      "bytes": "e84516ffff",
+      "original": "call    sub_1C75E",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b114",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b119",
+      "bytes": "83c408",
+      "original": "add     esp, 8",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b119",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b11c",
+      "bytes": "85c0",
+      "original": "test    eax, eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b11c",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b11e",
+      "bytes": "0f94c0",
+      "original": "setz    al",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b11e",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b121",
+      "bytes": "8884242c010000",
+      "original": "mov     [esp+140h+var_14], al",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b121",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b128",
+      "bytes": "0fbf4340",
+      "original": "movsx   eax, word ptr [ebx+40h]",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b128",
+      "semantic_annotations": []
+    },
+    {
+      "address": "0x2b12c",
+      "bytes": "898424f0000000",
+      "original": "mov     [esp+140h+var_50], eax",
+      "semantic": "未附加推測語意",
+      "level": "unknown",
+      "warning": "語意未經本次審查",
+      "source": "FD2.EXE IDA LE 0x2b12c",
+      "semantic_annotations": []
+    }
+  ],
+  "prior_evidence": [
+    "docs/data/ida/fd2_command7_presentation_ida.txt",
+    "docs/data/ida/fd2_command2_target_rng_20261002.json",
+    "docs/data/ida/fd2_command_damage_raw_class_20261002.json"
+  ],
+  "claims": [
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x2B0DD..0x2B114 / sub_2A6BD",
+      "semantic": "每個target在其目標畫格之前呼叫sub_1C75E；完整目標陣列順序不可改。"
+    },
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x2AE0A..0x2AE0C、0x2AF75..0x2AF94",
+      "semantic": "miss仍呼叫handler mode5並推進counter，但不查看其回傳marker，也不走0x2AF40的抖動亂數。"
+    },
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x2AEB6..0x2AED8、0x2AF35..0x2AF40",
+      "semantic": "hit的mode5每次回傳1都消耗一個sub_4E893步驟；即使已超過五段HP更新上限仍會消耗，不能只數HPStage。"
+    },
+    {
+      "level": "confirmed",
+      "source": "fd2_command7_presentation_ida.txt；IDA sub_272B8；0x2B01B..0x2B059",
+      "semantic": "handler本身無亂數；toggle／counter跨兩張front、每target32張、九張boundary與16張tail持續。front、boundary與tail的marker不觸發caller的抖動步驟。"
+    },
+    {
+      "level": "confirmed",
+      "source": "work/parity-slot-ch24/command7-rng-original-r1/eip-trace.jsonl：0x1C75E／0x1C7F2／0x1C86E／0x2AF40與AI入口",
+      "semantic": "正常T3五次數值入口RNG10947／16895／42561／61757／37706；hit marker7／8／8／7／0，damage433／416／409／419／miss。下一AI入口RNG6897，record12保留HP69。damage由已證公式與直接variance RNG推導，不冒稱被clamp遮蔽的原始HP差。"
+    }
+  ],
+  "normal_counterexample": {
+    "original": "work/parity-slot-ch24/fresh-full-original-r6",
+    "remake": "work/parity-slot-ch24/fresh-full-remake-r4",
+    "first_ai_entry": 16,
+    "first_original_seq": 1757,
+    "actor_record": 16,
+    "target_records": [
+      9,
+      10,
+      12
+    ],
+    "entry_rng": 10947,
+    "original_hp_before": [
+      503,
+      320,
+      478
+    ],
+    "original_hp_after": [
+      70,
+      0,
+      69
+    ],
+    "old_remake_damage": [
+      433,
+      445,
+      427
+    ],
+    "old_remake_hp_after": [
+      70,
+      0,
+      51
+    ],
+    "second_actor_record": 17,
+    "second_target_records": [
+      2,
+      12
+    ],
+    "second_entry_rng": 61757,
+    "second_original_record12_hp": 69,
+    "second_old_remake_record12_hp": 0,
+    "after_second_original_rng": 6897,
+    "coordinate_comparison_correction": "T4同座標HP400/440是record21/20，並非同一record傷害反例。"
+  },
+  "derived_candidates": {
+    "level": "strong inference",
+    "method": "READY審查時以既有RNG公式與已證toggle排程推導；現行逐次原版證據見normal_trace。",
+    "first_target_marker_counts": [
+      7,
+      8,
+      8
+    ],
+    "first_numeric_entry_rng": [
+      10947,
+      16895,
+      42561
+    ],
+    "first_damage": [
+      433,
+      416,
+      409
+    ],
+    "first_final_rng": 61757,
+    "second_damage": [
+      419,
+      0
+    ],
+    "second_hit": [
+      true,
+      false
+    ],
+    "second_final_rng": 6897
+  },
+  "spec_review": {
+    "status": "CONFORMED",
+    "contract": [
+      "指令7正式玩家與AI owner共用typed亂數walk。",
+      "依原始target順序先resolve命中／傷害，推進32張handler state；只有hit才按每個NumericMarker消耗全域亂數。",
+      "handler state跨front／target／boundary／tail持續；其餘phase不追加抖動亂數。",
+      "保留既有raw class抗性、公式、target geometry、分段HP與Draw交易；預建失敗零交易。",
+      "這次修正數值亂數交錯；數字段抖動的實際像素位移仍是未驗證視覺範圍。"
+    ],
+    "acceptance": [
+      "原版短路徑直接trace核對目標與亂數。",
+      "重製正常r6重播修正T3 record12並核對T4首次state。",
+      "原版反例、miss不消耗抖動、跨target state、失敗與正式Draw回復回歸。",
+      "已接受第23章及第24章有限13張回歸保持通過；整章#142不因局部修正提升。"
+    ],
+    "review": {
+      "decision": "READY",
+      "basis": [
+        "原始caller直接指令確定hit／miss都推進mode5，只有hit numeric marker呼叫全域亂數。",
+        "既有指令7主證據已閉合toggle、counter、跨target state及每phase預算。",
+        "原版r6同一建構槽的HP／下一AI入口RNG與規格推導吻合；沒有猜補公式、target geometry或新資料格式。"
+      ],
+      "reviewed_at": "2026-10-03T20:54:37.600193+00:00",
+      "pending_acceptance": "原版trace、首次分歧修正與相關回歸均通過；CONFORMED只限指令7數值亂數交錯，整章與逐幀仍拒收。"
+    }
+  },
+  "limits": [
+    "建槽seed4與AP+200/DP+0/DX+60政策不變；這是111/114建構槽條件。",
+    "#153的早期RGB與#154負列仍未完成。",
+    "不重解已閉合的傷害公式、RNG內部實作或外層音訊硬體時序。",
+    "#155 seq1840尚未完成的原版stage copy使完整重播驗證中止；不稱完整r6通過。",
+    "新短路徑只對拍首次T3指令7與T4入口。建構槽政策限制仍適用，不宣稱自然傷害／存活／敵方選目標或新的PLAYER-E2。"
+  ],
+  "normal_trace": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "runner_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+    "address_space": "dosgolem relocated LE linear",
+    "run": "work/parity-slot-ch24/command7-rng-original-r1",
+    "exit_code": 0,
+    "last_seq": 1775,
+    "last_round": 4,
+    "checkpoint_prefix_check_against_r6": [
+      {
+        "seq": 1756,
+        "units_equal": true,
+        "view_equal": true,
+        "injections": []
+      },
+      {
+        "seq": 1758,
+        "units_equal": true,
+        "view_equal": true,
+        "injections": []
+      },
+      {
+        "seq": 1759,
+        "units_equal": true,
+        "view_equal": true,
+        "injections": []
+      },
+      {
+        "seq": 1775,
+        "units_equal": true,
+        "view_equal": true,
+        "injections": []
+      }
+    ],
+    "target_numeric_trace": [
+      {
+        "record": 9,
+        "command": 7,
+        "seq": 1757,
+        "entry_rng": 10947,
+        "raw_entry": {
+          "step": 5371118202,
+          "control_seq": 1757,
+          "eip": "0x1C75E",
+          "eax": "0x1F7",
+          "edx": "0x9",
+          "ebx": "0x173C2C",
+          "ecx": "0x0",
+          "esi": "0x18A060",
+          "edi": "0x2",
+          "esp": "0x55438",
+          "rng_word": 10947,
+          "stack": [
+            "0x2B119",
+            "0x9",
+            "0x7",
+            "0x1644BC",
+            "0x17575C",
+            "0x1B4360",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "rng_calls": [
+          {
+            "step": 5371118255,
+            "control_seq": 1757,
+            "eip": "0x4E893",
+            "eax": "0x50",
+            "edx": "0x0",
+            "ebx": "0x61A2E",
+            "ecx": "0x0",
+            "esi": "0x1C2",
+            "edi": "0x55428",
+            "esp": "0x553B4",
+            "rng_word": 10947,
+            "stack": [
+              "0x1C7F2",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0x7",
+              "0x7",
+              "0xA"
+            ]
+          },
+          {
+            "step": 5371118310,
+            "control_seq": 1757,
+            "eip": "0x4E893",
+            "eax": "0x195",
+            "edx": "0x0",
+            "ebx": "0x64",
+            "ecx": "0x0",
+            "esi": "0x173C2C",
+            "edi": "0x1F7",
+            "esp": "0x55390",
+            "rng_word": 54973,
+            "stack": [
+              "0x1C86E",
+              "0x1F7",
+              "0x65",
+              "0x7",
+              "0x55428",
+              "0x1C2",
+              "0x64",
+              "0x1C811"
+            ]
+          },
+          {
+            "step": 5371381923,
+            "control_seq": 1757,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x1",
+            "esp": "0x55440",
+            "rng_word": 13963,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5372045246,
+            "control_seq": 1757,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x7",
+            "esp": "0x55440",
+            "rng_word": 13566,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5372713513,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0xD",
+            "esp": "0x55440",
+            "rng_word": 10390,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5373014593,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0xF",
+            "esp": "0x55440",
+            "rng_word": 50517,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5373710868,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x15",
+            "esp": "0x55440",
+            "rng_word": 43850,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5374308956,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x245",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1B",
+            "esp": "0x55440",
+            "rng_word": 56049,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5374551690,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x25B",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1D",
+            "esp": "0x55440",
+            "rng_word": 22571,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          }
+        ],
+        "markers": 7,
+        "hit_rng": 54973,
+        "hit_roll": 73,
+        "hit": true,
+        "variance_rng": 13963,
+        "damage": 433
+      },
+      {
+        "record": 10,
+        "command": 7,
+        "seq": 1758,
+        "entry_rng": 16895,
+        "raw_entry": {
+          "step": 5375657072,
+          "control_seq": 1758,
+          "eip": "0x1C75E",
+          "eax": "0x140",
+          "edx": "0xA",
+          "ebx": "0x173C7C",
+          "ecx": "0x0",
+          "esi": "0x18A060",
+          "edi": "0x20",
+          "esp": "0x55438",
+          "rng_word": 16895,
+          "stack": [
+            "0x2B119",
+            "0xA",
+            "0x7",
+            "0x1644BC",
+            "0x17575C",
+            "0x1B4360",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "rng_calls": [
+          {
+            "step": 5375657125,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x50",
+            "edx": "0x0",
+            "ebx": "0x61A2E",
+            "ecx": "0x0",
+            "esi": "0x1C2",
+            "edi": "0x55428",
+            "esp": "0x553B4",
+            "rng_word": 16895,
+            "stack": [
+              "0x1C7F2",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0x7",
+              "0x7",
+              "0xA"
+            ]
+          },
+          {
+            "step": 5375657180,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x195",
+            "edx": "0x0",
+            "ebx": "0x64",
+            "ecx": "0x0",
+            "esi": "0x173C7C",
+            "edi": "0x140",
+            "esp": "0x55390",
+            "rng_word": 37022,
+            "stack": [
+              "0x1C86E",
+              "0x140",
+              "0x2F",
+              "0x7",
+              "0x55428",
+              "0x1C2",
+              "0x64",
+              "0x1C811"
+            ]
+          },
+          {
+            "step": 5375833518,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x0",
+            "esp": "0x55440",
+            "rng_word": 1425,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5376165297,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x2",
+            "esp": "0x55440",
+            "rng_word": 44332,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5376946325,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x8",
+            "esp": "0x55440",
+            "rng_word": 59905,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5377694296,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0xE",
+            "esp": "0x55440",
+            "rng_word": 53419,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5378028758,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x10",
+            "esp": "0x55440",
+            "rng_word": 1531,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5378752720,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x1",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x16",
+            "esp": "0x55440",
+            "rng_word": 45180,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5379442186,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x245",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1C",
+            "esp": "0x55440",
+            "rng_word": 1154,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5379715087,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x25B",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1E",
+            "esp": "0x55440",
+            "rng_word": 42164,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          }
+        ],
+        "markers": 8,
+        "hit_rng": 37022,
+        "hit_roll": 22,
+        "hit": true,
+        "variance_rng": 1425,
+        "damage": 416
+      },
+      {
+        "record": 12,
+        "command": 7,
+        "seq": 1758,
+        "entry_rng": 42561,
+        "raw_entry": {
+          "step": 5380781968,
+          "control_seq": 1758,
+          "eip": "0x1C75E",
+          "eax": "0x1DE",
+          "edx": "0xC",
+          "ebx": "0x173D1C",
+          "ecx": "0x0",
+          "esi": "0x18A060",
+          "edi": "0x20",
+          "esp": "0x55438",
+          "rng_word": 42561,
+          "stack": [
+            "0x2B119",
+            "0xC",
+            "0x7",
+            "0x1644BC",
+            "0x17575C",
+            "0x1B4360",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "rng_calls": [
+          {
+            "step": 5380782021,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x50",
+            "edx": "0x0",
+            "ebx": "0x61A2E",
+            "ecx": "0x0",
+            "esi": "0x1C2",
+            "edi": "0x55428",
+            "esp": "0x553B4",
+            "rng_word": 42561,
+            "stack": [
+              "0x1C7F2",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0x7",
+              "0x7",
+              "0xA"
+            ]
+          },
+          {
+            "step": 5380782076,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x195",
+            "edx": "0x0",
+            "ebx": "0x64",
+            "ecx": "0x0",
+            "esi": "0x173D1C",
+            "edi": "0x1DE",
+            "esp": "0x55390",
+            "rng_word": 45737,
+            "stack": [
+              "0x1C86E",
+              "0x1DE",
+              "0x31",
+              "0x7",
+              "0x55428",
+              "0x1C2",
+              "0x64",
+              "0x1C811"
+            ]
+          },
+          {
+            "step": 5381107951,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x1",
+            "esp": "0x55440",
+            "rng_word": 5610,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5381463848,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x3",
+            "esp": "0x55440",
+            "rng_word": 12277,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5382315449,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x9",
+            "esp": "0x55440",
+            "rng_word": 78,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5383133235,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0xF",
+            "esp": "0x55440",
+            "rng_word": 33556,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5383489801,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x148B88",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x11",
+            "esp": "0x55440",
+            "rng_word": 39232,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5384280868,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x1",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x17",
+            "esp": "0x55440",
+            "rng_word": 19105,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5385040195,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x245",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1D",
+            "esp": "0x55440",
+            "rng_word": 54702,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5385333241,
+            "control_seq": 1758,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x25B",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1F",
+            "esp": "0x55440",
+            "rng_word": 11795,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x1B4360",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          }
+        ],
+        "markers": 8,
+        "hit_rng": 45737,
+        "hit_roll": 37,
+        "hit": true,
+        "variance_rng": 5610,
+        "damage": 409
+      },
+      {
+        "record": 2,
+        "command": 7,
+        "seq": 1759,
+        "entry_rng": 61757,
+        "raw_entry": {
+          "step": 5404293699,
+          "control_seq": 1759,
+          "eip": "0x1C75E",
+          "eax": "0x181",
+          "edx": "0x2",
+          "ebx": "0x1739FC",
+          "ecx": "0x0",
+          "esi": "0x18A060",
+          "edi": "0x2",
+          "esp": "0x55438",
+          "rng_word": 61757,
+          "stack": [
+            "0x2B119",
+            "0x2",
+            "0x7",
+            "0x1644BC",
+            "0x17575C",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "rng_calls": [
+          {
+            "step": 5404293752,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x50",
+            "edx": "0x0",
+            "ebx": "0x61A2E",
+            "ecx": "0x0",
+            "esi": "0x1C2",
+            "edi": "0x55428",
+            "esp": "0x553B4",
+            "rng_word": 61757,
+            "stack": [
+              "0x1C7F2",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0x7",
+              "0x7",
+              "0xA"
+            ]
+          },
+          {
+            "step": 5404293807,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x195",
+            "edx": "0x0",
+            "ebx": "0x64",
+            "ecx": "0x0",
+            "esi": "0x1739FC",
+            "edi": "0x181",
+            "esp": "0x55390",
+            "rng_word": 2700,
+            "stack": [
+              "0x1C86E",
+              "0x181",
+              "0x65",
+              "0x7",
+              "0x55428",
+              "0x1C2",
+              "0x64",
+              "0x1C811"
+            ]
+          },
+          {
+            "step": 5404589647,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x148B98",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x1",
+            "esp": "0x55440",
+            "rng_word": 54532,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5405353651,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x148B98",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x7",
+            "esp": "0x55440",
+            "rng_word": 10435,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5406116563,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x148B98",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0xD",
+            "esp": "0x55440",
+            "rng_word": 50877,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5406457577,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x148B98",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0xF",
+            "esp": "0x55440",
+            "rng_word": 46730,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5407266886,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x148B98",
+            "edx": "0x0",
+            "ebx": "0x5",
+            "ecx": "0x2",
+            "esi": "0x18A060",
+            "edi": "0x15",
+            "esp": "0x55440",
+            "rng_word": 13554,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5407971310,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x245",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1B",
+            "esp": "0x55440",
+            "rng_word": 10294,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          {
+            "step": 5408243897,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x1",
+            "edx": "0x25B",
+            "ebx": "0x5",
+            "ecx": "0x8",
+            "esi": "0x18A060",
+            "edi": "0x1D",
+            "esp": "0x55440",
+            "rng_word": 49749,
+            "stack": [
+              "0x2AF45",
+              "0x1644BC",
+              "0x17575C",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          }
+        ],
+        "markers": 7,
+        "hit_rng": 2700,
+        "hit_roll": 0,
+        "hit": true,
+        "variance_rng": 54532,
+        "damage": 419
+      },
+      {
+        "record": 12,
+        "command": 7,
+        "seq": 1759,
+        "entry_rng": 37706,
+        "raw_entry": {
+          "step": 5409449998,
+          "control_seq": 1759,
+          "eip": "0x1C75E",
+          "eax": "0x45",
+          "edx": "0xC",
+          "ebx": "0x173D1C",
+          "ecx": "0x0",
+          "esi": "0x18A060",
+          "edi": "0x20",
+          "esp": "0x55438",
+          "rng_word": 37706,
+          "stack": [
+            "0x2B119",
+            "0xC",
+            "0x7",
+            "0x1644BC",
+            "0x17575C",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "rng_calls": [
+          {
+            "step": 5409450051,
+            "control_seq": 1759,
+            "eip": "0x4E893",
+            "eax": "0x50",
+            "edx": "0x0",
+            "ebx": "0x61A2E",
+            "ecx": "0x0",
+            "esi": "0x1C2",
+            "edi": "0x55428",
+            "esp": "0x553B4",
+            "rng_word": 37706,
+            "stack": [
+              "0x1C7F2",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0xA",
+              "0x7",
+              "0x7",
+              "0xA"
+            ]
+          }
+        ],
+        "markers": 0,
+        "hit_rng": 6897,
+        "hit_roll": 97,
+        "hit": false,
+        "damage": 0
+      }
+    ],
+    "trace_entries": 125,
+    "artifact_sha256": {
+      "runner.json": "392b8266ad8ea7d4341927ad95382127292b451e60d14b7a54c67ab518cbff09",
+      "actions.jsonl": "2171eb82af8f4486cc235cfcbbfd68b244c844e0ebaa38a4770321ac534467c9",
+      "control-history.jsonl": "f4b5684274035f94f5b10e60d79bf132079add577a36b239201edd3bd68ac76c",
+      "driver.log": "2e0cb0fc941db1b2921b8ea77c33c55ede5a979261f2649f205c9511d87d1b50",
+      "eip-trace.jsonl": "27c5a05ee6e6d4ebc819e2fb26561ec3aeeefeb9057b0b53311505b080069fa6"
+    },
+    "inputs": {
+      "plan": "docs/data/parity-plans/ch24-command7-rng-r1.jsonl",
+      "plan_at_launch_sha256": "2708262bedf3474f75ab1f78684be087d0672f076b3111f55d38906335ec7f22",
+      "plan_final_sha256": "4153c2627f203d08e6ee5d0bf1c0abfa98fb73a20259004d7bb362dd4dd648ab",
+      "comment_correction": "執行期間只修正首行註解的改写→改寫；所有31筆JSON輸入未變。",
+      "save_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+      "build_seed": 4,
+      "original_initial_rng": 22661,
+      "boost_base": {
+        "ap": 200,
+        "dp": 0,
+        "dx": 60
+      }
+    }
+  },
+  "validation": {
+    "layers": [
+      "RE-CLOSED",
+      "DATA-READY",
+      "RUNTIME-E1"
+    ],
+    "full_go": {
+      "packages": 19,
+      "passed": 2308,
+      "skipped": 27,
+      "failed": 0
+    },
+    "full_go_log": "work/parity-slot-ch24/ch24-command7-all-go-r1.log",
+    "normal_replay": {
+      "run": "work/parity-slot-ch24/fresh-full-remake-r5",
+      "exit_code": 1,
+      "completed_behavior_ok": true,
+      "completed_node_sequences_equal": true,
+      "T4_seq1775_active_records": 26,
+      "T4_same_camp_position_hp": true,
+      "T3_record12_hp": 69,
+      "RNG_after_actor17": 6897,
+      "go_failure_classification": "seq1840 frame()讀原版stage copy未完成，登錄#155；未把驗證fatal當成遊戲崩潰。",
+      "first_runtime_error": null
+    },
+    "independent_report": {
+      "path": "work/parity-slot-ch24/fresh-full-verify-r5.json",
+      "status": "failed",
+      "behavior": true,
+      "nodes": false,
+      "transaction": false,
+      "frames": false,
+      "compared_frames": 39,
+      "reason": "完整計畫晚期未達／未保存；#153早期RGB仍差14772px。"
+    },
+    "regressions": [
+      "work/parity-slot-ch23/ch24-command7-regression-verify-r1.json",
+      "work/parity-slot-ch24/full-r5-command7-verify-r1.json"
+    ],
+    "source_sha256": {
+      "remake/internal/figani/native_command7.go": "754acaf7d45874f1f1eb98e8bac011b7f1106ac27123ca4013015bcf54728671",
+      "remake/cmd/fd2/native_command7_presentation.go": "e9d864517945afdd5d2003b8bcca56b958ddf8b2e277535fca440f78e26b2117",
+      "remake/internal/figani/native_command7_test.go": "6db30bea145dec4f55a33ba0c5f02a90821d5097d2acf64effb1919a8daaa929",
+      "remake/cmd/fd2/native_command7_presentation_test.go": "dd0145726dc21ab466abb2fa48872f0e7a6f3a3966b936c91cc05fd1c7f264ae"
+    },
+    "artifact_sha256": {
+      "work/parity-slot-ch23/ch24-command7-regression-verify-r1.json": "f3c6b18ddf289cd8848cb44646e843652350a1591acc602fc13fd57dda7503d6",
+      "work/parity-slot-ch24/full-r5-command7-verify-r1.json": "02403d64cfe8e4f6e2ab484a498aac6ba46c85fdc00bf2bc3d1f06f8d073512e",
+      "work/parity-slot-ch24/ch24-command7-all-go-r1.log": "7c35045dcc2b4a86aeb7b5558d3c8c9908ef2918de889037c9bfa5b3ff6ad452",
+      "work/parity-slot-ch24/fresh-full-remake-r5.log": "1b22bd37169b6e6a14128d2f778a2b28573a31687592df8206cc3b517733fdba",
+      "work/parity-slot-ch24/fresh-full-verify-r5.json": "cca219071deb218a320f8cf61d20d05a577624d73b708fa50e6c88e422432638"
+    },
+    "reproduction_commands": {
+      "original": "test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command7-rng-original-r1 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command7-rng-state-r1 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch24-command7-rng-r1.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-ch24-command7-rng-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command7-rng-original-r1,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command7-rng-state-r1,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-command7-rng-r1.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch24-command7-rng-r1.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/command7-rng-state-r1'\\'',eip_trace_window={'\\''from_step'\\'':5352355600,'\\''to_step'\\'':5432355700,'\\''max_entries'\\'':20000},evidence_note='\\''#152 指令7首次分歧；固定seed4、原始fresh-policy槽AP+200/DP+0/DX+60，正常LOAD與鍵盤至round4入口即停，零章內狀態注入。不宣稱整章或傷害自然政策驗收。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x1C75E,0x1C7F2,0x1C86E,0x1C81F,0x2AF40,0x2AF45,0x2B114,0x4E893 -eip-trace-from 5352355600 -eip-trace-to 5432355700 -eip-trace-max 20000 -steps 6000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+      "ida": "test -f /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2/FD2.EXE && test -d /home/anr2/cht/fd2/work/parity-slot-ch24 && timeout 360 docker run --rm --name fd2-command7-rng-ida --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24,dst=/out -e PROBE_ADDRESSES=\"0x2A6BD 0x272B8 0x1C75E\" -e PROBE_OUTPUT=/out/command7-rng-ida-r1.json --workdir /tmp --entrypoint timeout ida-pro-9.4-idapython:locked-v1 330 idat -A -o/tmp/fd2.i64 -S/src/tools/ida_opening_input_probe.py /input/FD2.EXE > work/parity-slot-ch24/command7-rng-ida-r1.log 2>&1",
+      "selected_go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'gofmt -w internal/figani/native_command7.go internal/figani/native_command7_test.go cmd/fd2/native_command7_presentation.go cmd/fd2/native_command7_presentation_test.go; with-xvfb go test ./internal/figani ./cmd/fd2 -run \"TestNativeCommand7|TestOriginalFDOTHERCommand7\" -count=1 -timeout 90s -v'",
+      "full_go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s -v' > work/parity-slot-ch24/ch24-command7-all-go-r1.log 2>&1",
+      "normal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --name fd2-ch24-r6-work-bounds-replay --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/fresh-full-original-r6 FD2_PARITY_OUT=/src/work/parity-slot-ch24/fresh-full-remake-r5 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/fresh-full-remake-r5.log 2>&1",
+      "independent_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/fresh-full-original-r6 --remake work/parity-slot-ch24/fresh-full-remake-r5 --slot-manifest docs/data/parity-slots/ch24-fresh-policy-manifest.json --plan docs/data/parity-plans/ch24-fresh-sample-r1.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/fresh-full-verify-r5.json",
+      "ch23_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r4 FD2_PARITY_OUT=/src/work/parity-slot-ch23/ch24-command7-regression-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch24-command7-regression-remake-r1.log 2>&1",
+      "finite_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/full-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch24/full-r5-command7-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/full-r5-command7-remake-r1.log 2>&1",
+      "regression_verify": [
+        "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/full-original-r4 --remake work/parity-slot-ch23/ch24-command7-regression-remake-r1 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-sample-r4.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/ch24-command7-regression-verify-r1.json",
+        "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/full-original-r5 --remake work/parity-slot-ch24/full-r5-command7-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-sample-r3.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/full-r5-command7-verify-r1.json"
+      ]
+    }
+  }
+}

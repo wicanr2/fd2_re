@@ -1,6 +1,10 @@
 package figani
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+)
 
 const (
 	NativeCommand7EffectFrameCount = 5
@@ -190,4 +194,51 @@ func BuildNativeCommand7TailSequence(state NativeCommand7State, schedule NativeC
 		state = frame.Next
 	}
 	return frames, state, nil
+}
+
+// WalkNativeCommand7RNG preserves sub_2A6BD's per-target numeric call followed
+// by one 0x2AF40 roll for every hit's mode-5 marker, including markers after
+// the five HP stages. Misses still advance the handler but skip those rolls.
+// Evidence: docs/data/ida/fd2_command7_target_rng_20261004.json.
+func WalkNativeCommand7RNG(rng uint16, schedule NativeCommand7PresentationSchedule, rawSide byte, targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
+	if targetCount <= 0 || resolve == nil {
+		return rng, fmt.Errorf("figani: command7 RNG walk needs targets and a resolver")
+	}
+	state := NewNativeCommand7State()
+	for index := 0; index < NativeCommand7FrontFrames; index++ {
+		frame, err := PlanNativeCommand7DrawFrame(state, schedule, rawSide)
+		if err != nil {
+			return rng, err
+		}
+		state = frame.Next
+	}
+	for index := 0; index < targetCount; index++ {
+		next, hit, err := resolve(index, rng)
+		if err != nil {
+			return rng, err
+		}
+		rng = next
+		frames, after, err := BuildNativeCommand7TargetSequence(state, schedule, rawSide)
+		if err != nil {
+			return rng, err
+		}
+		state = after
+		if hit {
+			for _, frame := range frames {
+				if frame.NumericMarker {
+					rng = fdother.NativeRNGStep(rng)
+				}
+			}
+		}
+		if index+1 < targetCount {
+			_, state, err = BuildNativeCommand7TransitionSequence(state, schedule, rawSide)
+			if err != nil {
+				return rng, err
+			}
+		}
+	}
+	if _, _, err := BuildNativeCommand7TailSequence(state, schedule, rawSide); err != nil {
+		return rng, err
+	}
+	return rng, nil
 }

@@ -1,6 +1,7 @@
 package figani
 
 import (
+	"errors"
 	"os"
 	"testing"
 
@@ -140,5 +141,25 @@ func TestOriginalFDOTHERCommand7ResourcesMatchRecoveredSignatures(t *testing.T) 
 		if err != nil || len(raw) == 0 {
 			t.Fatalf("resource 88 sample %d len=%d err=%v", sample, len(raw), err)
 		}
+	}
+}
+
+func TestNativeCommand7RNGWalkRejectsUnavailableInputs(t *testing.T) {
+	schedule, _ := BuildNativeCommand7PresentationSchedule(1, command7TestAnimation())
+	resolve := func(_ int, rng uint16) (uint16, bool, error) { return rng, false, nil }
+	for _, tc := range []struct {
+		count int
+		side  byte
+		fn    func(int, uint16) (uint16, bool, error)
+	}{{0, 1, resolve}, {1, 0, resolve}, {1, 1, nil}} {
+		if _, err := WalkNativeCommand7RNG(10947, schedule, tc.side, tc.count, tc.fn); err == nil {
+			t.Fatalf("unavailable inputs accepted: count=%d side=%d", tc.count, tc.side)
+		}
+	}
+	want := errors.New("resolver unavailable")
+	_, err := WalkNativeCommand7RNG(10947, schedule, 1, 2,
+		func(_ int, rng uint16) (uint16, bool, error) { return rng, false, want })
+	if !errors.Is(err, want) {
+		t.Fatalf("resolver error lost: %v", err)
 	}
 }
