@@ -2160,7 +2160,11 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.beatAdvance()
 	case "reactivate_nonzero_hp":
-		if b.Source != "0x33cea" || b.Count <= 0 {
+		knownLoop := b.Source == "0x33cea" && b.Dir == nil
+		if b.Source == "0x336ed" {
+			knownLoop = b.Count == 16 && b.Dir != nil && *b.Dir == 2
+		}
+		if !knownLoop || b.Count <= 0 {
 			g.loadErr = "beat reactivate_nonzero_hp:缺少已證實的 counted-loop 來源"
 			return
 		}
@@ -2179,6 +2183,9 @@ func (g *Game) beatStart(b campaign.Beat) {
 			if u.HP != 0 {
 				u.OnField = true
 				u.NativeRecordByte5 = 0
+				if b.Dir != nil {
+					u.SetMapPose(*b.Dir)
+				}
 			}
 		}
 		g.beatAdvance()

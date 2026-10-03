@@ -28,10 +28,22 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 26 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
+
+## re — 原版證據還沒閉合
+
+### 第二十三章第13至22回合事件52尚缺具型別動作與正常對拍
+
+`ch23-turn-event52-native-program` · RE待解 · [#138](https://github.com/wicanr2/fd2_re/issues/138) · 仍未完成 · 要人判
+
+#133開場稽核發現docs/data/turn_events.json明示map22於T13／15／18／22 enemy event52→0x352E2；正式ch23 scenario目前只有opening，native_death_events也沒有52轉寫。gen_campaign會跳過無直接spawn列，不能將typed events缺項當原版沒有事件。先查58／00與既有event table證據，不重做shared constructor；以IDA原始條件與writer／consumer建立READY，補完整可編輯動作及一般回合路徑，正常來源對拍事件回合及戰後保存。T2診斷不可冒稱已抽晚期事件。
+
+怎樣算做完：['固定EXEhash、IDA9.4原始handler／跳表／間接spawn或event writer及consumer，推論分級，READY先於實作。', '同源原版事件回合正常輸入、具型別scenario及canonical；未知行為仍拒收。', '正式#133章收據分別驗行為／獨立節點／交易／完整RGB與SAV，明列未抽範圍；不靠提前登場群組或猜補完成。']
+
+證據：`['docs/data/turn_events.json', 'remake/assets/data/native_death_events.json', 'remake/assets/scenarios/ch23.json']`
 
 ## data — 可編輯資料還沒就緒
 
@@ -111,6 +123,36 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
+### 第二十三章整備缺希爾法必出檢查與完整record前置
+
+`ch23-required-character-and-front-order` · 缺陷 · [#134](https://github.com/wicanr2/fd2_re/issues/134) · 仍未完成 · 要人判
+
+#133讀取正式preparation_ch23，尚無required_party_identities／preparation_front_identities。已閉合#124原始分支0x31CA0 raw22與raw21共用push24→31DBE，0x31D12 raw22共用push24→321C8；#124明示raw22未接。本項重用已閉合caller／callee證據，不重解helper。先建立本章READY契約，驗原版缺24拒收及合法選人完整record1排序，再補producer／正式資料／canonical與原版起手比較。
+
+怎樣算做完：['固定原版hash與原始raw22條件bytes、caller／consumer及推論等級；先READY再實作。', '正常non-city整備缺24拒收，合法選入後完整record移到1，record0與其餘順序保留。', '原版／重製同源有限起手、相關Go與第22章回歸；完整章由#133另驗。']
+
+證據：`['docs/data/ida/fd2_ch22_required_character_20261003.json', 'docs/data/ida/fd2_ch21_required_character_20261003.json', 'remake/assets/scenarios/campaign_full.json', 'tools/gen_campaign.py']`
+
+### 第二十三章開場缺原生HUD來源與玩家游標交接
+
+`ch23-native-startup-view-and-hud` · 缺陷 · [#136](https://github.com/wicanr2/fd2_re/issues/136) · 仍未完成 · 要人判
+
+#133／#134同源正常選入24後，原版startup-original-r2 seq153已至cursor19,35／camera14,29／visible5,6／selector1、42筆有效前沿。重製startup-r2-remake-r2無HUD資料而拒收，停cursor20,32，不能組battle_start整幀。先沿58與00索引核對336AB／33596已有主證據，只窄查本章writer／consumer，不猜原始HUD B，不以重播注入正式UI。補READY、可編輯資料與正常交接後，有限起手完整RGB及上一章回歸。
+
+怎樣算做完：['固定EXEhash、IDA9.4原始定位、bytes及caller／consumer；復用已閉合helper，READY先於正式runtime。', '原版／重製同源正常LOAD／NO／必出選人／開場至第一回合，完整RGB與單位／view比較；HUD未知精確raw值保留等級。', '相關Go及第22章完整四項與SAV回歸；#133整章另驗。']
+
+證據：`['docs/data/parity-plans/ch23-startup-r2.jsonl', 'work/parity-slot-ch23/startup-r2-remake-r2.log', 'docs/data/ida/fd2_ch22_pre_ida.txt', 'docs/data/ida/fd2_ch22_pre_view_reset_ida.txt']`
+
+### 第二十三章開場漏存活隊員復位並提前登場後續群組
+
+`ch23-pre-reactivation-and-pending-groups` · 缺陷 · [#137](https://github.com/wicanr2/fd2_re/issues/137) · 仍未完成 · 要人判
+
+#136補typed view／HUD後startup-r2-remake-r4可取完整畫面，但行為比較拒收：原版有效42筆、9名存活我方；重製前16隊員仍deactivate且把後續raw groups全部登場。新IDA9.4原始sub_336A0包含33709非零HP→33710 byte+5=0、33714 byte+3=2，既有handler轉寫漏此inline loop。正式scenario initial_groups0..9與原版僅group0+1矛盾。先查58／既有constructor和完整raw轉錄、建立READY再窄補typed counted loop及pending groups，不能用renderer或重播遮差。
+
+怎樣算做完：['固定EXEhash、原始inline loop bytes、writer與消費端、推論等級及READY；保留已閉合helper。', '前16只有HP非零者復位，HP0保留inactive，pose2；未呼叫的群組留pending，不能提早出現或刪資料。', '同源正常起手行為／view與完整RGB；相關Go、第22章完整四項與SAV回歸，整章另驗#133。']
+
+證據：`['work/parity-slot-ch23/ch23-pre-focus-r1.json', 'work/parity-slot-ch23/startup-r2-verify-r4.json', 'remake/assets/cutscenes/handlers/ch22_pre.json', 'remake/assets/scenarios/ch23.json']`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -150,6 +192,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
+
+### 第二十三章整章原版／重製對拍與收尾
+
+`ch23-full-chapter-parity` · 工作 · [#133](https://github.com/wicanr2/fd2_re/issues/133) · 仍未完成 · 要人判
+
+接續已驗收第22章非城鎮記錄SAV，SHA-256 3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1。依111／114例外，保持相同起始槽與seed4，不追加治療、強化、金幣或道具。先核對正常整備／選人／起手與既有閉合來源，再抽樣章內節拍、一次清敵後正常戰後與實際保存邊界。發現反證另開缺陷／RE待解，不放寬四gate。
+
+怎樣算做完：['固定FD2.EXE、dosgolem commit、同源SAV與受版控計畫／清冊，正常章路徑可重跑。', '行為、獨立原版節點、交易／完整SAV、完整RGB四項通過，相關Go與第22章回歸通過。', '同步56／57／58、索引、正式台帳與產生現況；保留敗北、注入與未抽樣限制。']
+
+證據：`['docs/data/ui-traces/parity-ch22.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/data/parity-campaign-progress.json']`
 
 ## release — 發行、平台與封包
 
@@ -222,5 +274,15 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 章對拍重播缺非城鎮選人來源及拒收返回橋接
+
+`parity-noncity-preparation-selection-bridge` · 缺陷 · [#135](https://github.com/wicanr2/fd2_re/issues/135) · 仍未完成 · 要人判
+
+#133正常NO→選人原版r1 seq47已有31A2E，重播record_party_selection未設定partySelectionSeq，後續departure_confirmation會拒收。原版缺24拒收seq75為31E65，Enter後76／84回31A2E選人，不是城鎮；現有replay拒收分支只等待town。本項先以固定owner、既有2CAD7外層caller建立READY，正常輸入消費，不直接改節點或selected欄位。
+
+怎樣算做完：['record_party_selection保留固定owner與零勾選檢查，建立正常選人輸入來源；錯來源拒收。', '有Cancel的城鎮拒收仍回城鎮；無Cancel的非城鎮按原版返回選人，零勾選／source owner與完整RGB核對。', '合法第23章起手、拒收有限收據、第22章四gate及完整Go回歸，不提升未知UI。']
+
+證據：`['work/parity-slot-ch23/startup-original-r1/actions.jsonl', 'work/parity-slot-ch23/startup-original-r1/checkpoint-0075.json', 'work/parity-slot-ch23/startup-original-r1/checkpoint-0084.json', 'remake/cmd/fd2/chapter_parity_replay_test.go']`
 
 <!-- END fd2_worklist.py render -->

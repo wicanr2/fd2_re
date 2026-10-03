@@ -1,0 +1,19 @@
+# #133／#134：同源第22章非城鎮SAV，正常LOAD及NO；候選index0=record1 identity24。r3與r1鍵序相同，只訂正末尾mark；r2正常首15選入，零注入。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 10000000, "repeat": 20}
+{"mark": "record_question", "steps": 1000000}
+{"key": "right", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "record_party_selection", "steps": 1000000}
+{"key": "right", "steps": 20000000}
+{"key": "enter", "steps": 20000000, "repeat": 15}
+{"key": "", "steps": 10000000, "repeat": 12}
+{"mark": "departure_confirmation", "steps": 1000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "required_rejection_return", "steps": 1000000}

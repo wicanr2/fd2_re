@@ -2184,6 +2184,23 @@ func TestCompileChapter27PreBindingClosesExactLateGameOwner(t *testing.T) {
 	}
 }
 
+func TestCompileChapter23PrePreservesCountedReactivationBeforeRedraw(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch22_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("binding err=%v issues=%v", err, issues)
+	}
+	for i, beat := range beats {
+		if beat.Op == "reactivate_nonzero_hp" {
+			if beat.Source != "0x336ed" || beat.Count != 16 || beat.Dir == nil || *beat.Dir != 2 ||
+				i+1 >= len(beats) || beats[i+1].Source != "0x3371c" {
+				t.Fatalf("非零HP復位契約或位置失真：%+v", beat)
+			}
+			return
+		}
+	}
+	t.Fatal("binding遺漏非零HP復位")
+}
+
 func TestCompileChapter28PreLowersStagingHelper(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch28_pre.json")
 	if err != nil {

@@ -31,13 +31,13 @@ func newChapter23RuntimeBattle(t *testing.T) (*Game, []int) {
 	return g, order
 }
 
-func TestChapter23PersistentPartyPrecedesAllAuthoredMapGroups(t *testing.T) {
+func TestChapter23PersistentPartyPrecedesInitialGroupsAndRetainsPendingRows(t *testing.T) {
 	g, _ := newChapter23RuntimeBattle(t)
 	if g.loadErr != "" || g.st == nil || g.sc == nil || !g.sc.RuntimeAppendGroups {
 		t.Fatalf("chapter23 setup err=%q state=%v scenario=%v", g.loadErr, g.st != nil, g.sc != nil && g.sc.RuntimeAppendGroups)
 	}
-	if got := len(g.st.Units); got != 86 {
-		t.Fatalf("chapter23 runtime frontier=%d, want persistent16+map70=86", got)
+	if got := len(g.st.Units); got != 42 {
+		t.Fatalf("chapter23 runtime frontier=%d, want persistent16+group0/1=42", got)
 	}
 	for slot, unit := range g.st.Units[:16] {
 		if unit == nil || unit.Camp != battle.Own {
@@ -50,7 +50,7 @@ func TestChapter23PersistentPartyPrecedesAllAuthoredMapGroups(t *testing.T) {
 			t.Fatalf("chapter23 raw group0 slot%d=%#v", slot, unit)
 		}
 	}
-	wantGroups := map[int]int{0: 2, 1: 24, 2: 6, 3: 6, 4: 6, 5: 6, 6: 6, 7: 6, 8: 4, 9: 4}
+	wantGroups := map[int]int{0: 2, 1: 24}
 	gotGroups := make(map[int]int, len(wantGroups))
 	for _, unit := range g.st.Units[16:] {
 		if unit != nil {
@@ -62,8 +62,19 @@ func TestChapter23PersistentPartyPrecedesAllAuthoredMapGroups(t *testing.T) {
 			t.Fatalf("chapter23 raw group%d count=%d, want %d (all=%v)", group, got, want, gotGroups)
 		}
 	}
-	if len(g.st.PendingGroups) != 0 {
-		t.Fatalf("chapter23 current authored approximation left pending groups: %v", g.st.PendingGroups)
+	if len(gotGroups) != 2 {
+		t.Fatalf("chapter23 initial groups=%v", gotGroups)
+	}
+	for group, want := range map[int]int{2: 6, 3: 6, 4: 6, 5: 6, 6: 6, 7: 6, 8: 4, 9: 4} {
+		count := 0
+		for _, row := range g.st.Roster {
+			if row != nil && row.Group == group {
+				count++
+			}
+		}
+		if count != want {
+			t.Fatalf("chapter23 pending group%d source rows=%d, want %d", group, count, want)
+		}
 	}
 }
 
@@ -82,6 +93,11 @@ func TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoun
 	t.Setenv("FD2_ORIGINAL_DATO", filepath.Join(base, "DATO.DAT"))
 	t.Setenv("FD2_MUTE", "1")
 	g, order := newChapter23RuntimeBattle(t)
+	// 此局部post測試明示建構完整86筆fixture；晚期event52可達性另驗。
+	// 正常開場保持42筆，不能把本fixture當作初始群組來源。
+	for group := 2; group <= 9; group++ {
+		g.st.AppendGroup(group)
+	}
 	shared, err := loadNativeClassUIAssets()
 	if err != nil {
 		t.Fatal(err)

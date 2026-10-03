@@ -8890,3 +8890,11 @@ mode8「共同成功收尾」的舊交接、歷史工作項說法已失效；直
 #129事件50漏PAN／tick／JOIN20／九句，已由IDA原始指令與共享尾段補回typed data及正式scenario；#131前16筆XY各差6源於hex byte被抄成decimal，+31差異則由LOADCH 10AB1 writer定位，233C6沒有該writer。三byte先保留來源，再只禁用首byte，後兩byte不改。READY及同狀態SAV證據閉合後才列有限CONFORMED，主入口58。
 
 #128來源mark前綴、#130正常非城鎮戰果／故事橋接及#132缺圖統計均有正反回歸。完整Go19套件2294測試，第21章四項／完整SAV與局部保存probe四點0px通過。現況由正式台帳工具列19／30，不代表整款remake完成。
+
+### 2026-10-03 第二十三章有限起手與拓撲勘誤
+
+本段追加訂正較早map22全70筆rows均在開場、86-slot frontier的說法。canonical dosgolem正常同源LOAD seq153只物化16持續隊員、group0兩筆及group1二十四筆，共42筆；其餘44筆只保留原始rows。86筆仍是全量容量及明示post局部建構fixture，不是正常開場或已證實戰後前沿。原主證據與歷史保留，主入口[58](58-fd2-exe-re-coverage.md)。
+
+#134至#137有限CONFORMED見[起手收據](../data/ui-traces/ch23-native-startup.json)。合法四張與拒收五張完整RGB0px；31E65收框後依2CCE7重進31A2E、清勾選並用已stable-pack名冊重建候選。336ED首16筆僅非零HP寫byte5=0與pose2。正式typed view／HUD補齊，raw B精確值未知；HP0不外推raw全欄位。
+
+全Go r2舊拓撲斷言、related r1錯索引假設及更早畫面差異均保留。乾淨完整Go r3、第22章四項與完整SAV、四槽保存四張0px／全檔SAV通過。27個略過含缺archive的post局部測試，明列於收據。拒收通用nodes失敗仍保留，不豁免章gate。#133整章與#138事件52未完成，台帳19／30不變；未執行T2診斷計畫不作整章驗收。

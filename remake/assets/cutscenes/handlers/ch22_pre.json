@@ -38,7 +38,9 @@
       "native_target": "0x24618",
       "native_semantic": "native_indexed_transition",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+      "native_evidence": [
+        "docs/data/ida/fd2_ch21_post_ida.txt"
+      ],
       "raw_args": [
         8,
         10,
@@ -48,6 +50,18 @@
       "source": {
         "addr": "0x336e5",
         "target": "0x24618"
+      }
+    },
+    {
+      "op": "reactivate_nonzero_hp",
+      "source": {
+        "addr": "0x336ed"
+      },
+      "unit_slot_expr": "ebx",
+      "direction": 2,
+      "repeat_hint": {
+        "loop_back_to": "0x336f1",
+        "limit": 16
       }
     },
     {
@@ -65,7 +79,9 @@
       "native_target": "0x11df2",
       "native_semantic": "native_palette_update",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "native_evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "raw_args": [
         0,
         255,
@@ -184,7 +200,9 @@
       "native_target": "0x11df2",
       "native_semantic": "native_palette_update",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "native_evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "raw_args": [
         255,
         255,
@@ -218,7 +236,9 @@
       "native_target": "0x11df2",
       "native_semantic": "native_palette_update",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "native_evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "raw_args": [
         0,
         255,

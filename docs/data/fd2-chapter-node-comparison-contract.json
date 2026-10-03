@@ -110,6 +110,31 @@
         "report": "work/parity-slot-ch22/full-r2-verify-r3.json",
         "regressions": "verifier20；第21章四項；保存probe四點0px；完整Go19套件"
       }
+    },
+    {
+      "issue": 135,
+      "status": "CONFORMED",
+      "scope": "非城鎮record_party_selection作正常選人來源及拒收返回owner；純重播，不注入selected或節點。",
+      "evidence": [
+        {
+          "level": "confirmed",
+          "source": "work/parity-slot-ch23/startup-original-r1 seq47／75／76／84；docs/data/ida/fd2_ch23_required_character_20261003.json",
+          "claim": "正常NO至31A2E，缺24訊息31E65確認後回31A2E零勾選。"
+        }
+      ],
+      "rules": [
+        "record_party_selection先驗固定EXE／31A2E與零勾選，再設定partySelectionSeq，後續消費原版完整鍵序。",
+        "拒收後先核對原版acknowledge_seq的owner；有Cancel需town，無Cancel需preparation的31A2E，不依重製UI推導來源。",
+        "只呼叫handleNativePreparationInput並等待正常owner，無Cancel以正式restart後清勾選驗證；拒收不足、未知owner或缺控制鍵均停止。"
+      ],
+      "acceptance": [
+        "原版及重製非城鎮合法選人／拒收返回完整RGB、正常正式API及實際owner。",
+        "第22章、保存probe及完整Go回歸；錯source仍拒收。"
+      ],
+      "verification": {
+        "receipt": "docs/data/ui-traces/ch23-native-startup.json",
+        "scope": "合法分支四項通過；拒收分支以實際owner與五張完整RGB驗有限行為，通用nodes=false保留，沒有豁免。"
+      }
     }
   ]
 }

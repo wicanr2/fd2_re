@@ -272,3 +272,7 @@ helper 已存在就直接解除 campaign gate。
   也尚未證明 `town_ch23` 的實際節點。原有戰間邊界保持 fail-closed，待
   raw indexed adapter 依 SDD 通過 E1 後才可建立正式 binding；一般玩家路徑
   仍另列 PLAYER-E2，不反向抹除已證實的靜態資料流。
+
+勘誤（2026-10-03，#137）
+----------------------
+本檔86筆拓撲是全量原始容量與局部post建構fixture。canonical dosgolem同源第23章正常開場seq153只物化16持續隊員、group0兩筆及group1二十四筆，共42筆；其餘44筆保留pending。舊測試將全部群組初始登場的做法已由此同狀態反證否定。主證據與原始位址保留；入口：fd2_ch23_startup_20261003.json的#137延伸及ui-traces/ch23-native-startup.json。晚期event52來源由#138另驗，不用86容量推斷時序。

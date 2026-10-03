@@ -5054,3 +5054,13 @@ r1缺希爾法seq71拒收，72正常Enter回城鎮，確認後停止無效await�
 #123及新增#128／#129／#130／#131／#132形成有界批次。[正式收據](../data/ui-traces/parity-ch22.json)四項、完整SAV、第21章與保存probe回歸通過，完整Go19套件2294測試。章PLAYER-E2限111／114例外，T5清敵一次，T7未抽樣；正式台帳由工具列19／30。舊r1敗北、T5鏡頭51740px與33-byte SAV差異保留，規格、型別資料及正式consumer訂正後才驗收。
 
 第22章批次已提交並推送f4f6e310978bbc7b9a96b8cc55bfbfc63e3d77b4，遠端HEAD相同。#123／#128／#129／#130／#131／#132皆已關閉並留下收據與提交；主機gh重新列舉後，maintained解析器快照為20個開啟worklist Issue。其他未完成項維持遠端現況，未以舊歷史方框重開工作。
+
+### 2026-10-03 第二十三章開場修正與有限驗收
+
+#134至#137先RE／READY再實作。正常非城鎮必出24、record1前置與拒收返回已接；開場補typed view／HUD、16筆非零HP復位，改為42筆有效前沿，44筆後續來源保留。[有限收據](../data/ui-traces/ch23-native-startup.json)合法四張與拒收五張完整RGB皆0px；通用拒收nodes仍false，未加豁免。
+
+完整Go r2只有舊86筆開場斷言失敗，related r1錯把未接事件的PendingGroups索引當來源保留；依原版與既有資料生命週期訂正測試。乾淨r3全Go、第22章四項／全檔SAV及四槽保存回歸通過。post局部fixture改為明示追加group2..9，原始archive缺失略過另列，不外推正常戰後可達。
+
+第23章章內及event52由#133／#138繼續。352E2直接低位元組減14／加倍及兩次35822證據已在#138留言；live控制列與counter對應尚待查證，不猜補正式路徑。正式現況以[58](58-fd2-exe-re-coverage.md)與遠端Issue為準，整章台帳19／30不變。
+
+本批提交前核對：fresh canonical exporter候選68檔與正式資料相同，本批新增本地連結20個全有效；128條教訓的35個guard通過，git diff --check通過。抽查變更UID/GID為1000:1000，work/parity-slot-ch23沒有root檔或Markdown目錄；本輪Go與FD2命名容器皆已退出／移除，工具鏈未變更。

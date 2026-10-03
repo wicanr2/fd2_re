@@ -457,3 +457,15 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第二十二章原版record欄位有限CONFORMED契約](../data/ida/fd2_ch22_record_fields_20261003.json)：#131，24512原始16-byte布局表與LOADCH 10AB1死亡效果禁用writer；不在SAV或重播猜補。
 
 - [第二十二章正式四項章收據](../data/ui-traces/parity-ch22.json)：#123／#128至132，PLAYER-E2限111／114例外；原975點、42動作、212筆AI零分岔，34張完整RGB、全檔SAV相同。T7與延後PNG限制如實保存。
+
+- [第二十三章接續清冊](../data/parity-slots/ch23-manifest.json)：#133，沿用第22章正式SAV3c7298cd，不追加強化或治療。
+- [第二十三章raw22必出／前置有限CONFORMED](../data/ida/fd2_ch23_required_character_20261003.json)：#134，重用已有31CA0／31D12原始條件與checker／writer，未外推整章。
+- [第二十三章缺希爾法探查](../data/parity-plans/ch23-startup-r1.jsonl)與[合法首15起手探查](../data/parity-plans/ch23-startup-r2.jsonl)：正常非城鎮NO→選人；r1保留誤標診斷，r2有限驗收通過。
+
+- [第二十三章拒收返回選人計畫r3](../data/parity-plans/ch23-startup-r3.jsonl)：#134／#135，同源r1鍵序，僅訂正最後來源標籤；保留r1誤標診斷。
+
+- [第二十三章原生起手契約（#136）](../data/ida/fd2_ch23_startup_20261003.json)：原始caller、typed view／HUD及有限驗收。
+
+- [第二十三章第二回合診斷計畫r1](../data/parity-plans/ch23-sample-r1.jsonl)：#133，同源SAV、正常攻擊／移動、敵方回合與一次清敵，尚未執行。不涵蓋晚期事件52，不作整章驗收。
+
+- [第二十三章有限原生起手收據](../data/ui-traces/ch23-native-startup.json)：#134／#135／#136／#137，合法四點與拒收返回五張RGB；整章及事件52另驗。

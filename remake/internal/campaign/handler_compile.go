@@ -787,13 +787,15 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			beat.Slot = input.UnitSlot
 			beats = append(beats, beat)
 		case "reactivate_nonzero_hp":
-			// ch27_pre directly scans the first twenty runtime records, tests
-			// current-HP word +0x40, and clears byte +5 only when it is nonzero.
-			// Keep this as a bounded source-specific primitive: it is not a
-			// generic resurrection or an authored roster shortcut.
-			if input.Source.Addr != "0x33cea" || input.Source.Target != "" ||
+			// 兩個原生counted loop只復位非零HP。336ED另寫pose2。
+			knownLoop := input.Source.Addr == "0x33cea" && input.Direction == nil
+			if input.Source.Addr == "0x336ed" {
+				knownLoop = input.RepeatHint != nil && input.RepeatHint.Limit == 16 &&
+					input.Direction != nil && *input.Direction == 2
+			}
+			if !knownLoop || input.Source.Target != "" ||
 				input.UnitSlotExpr != "ebx" || input.RepeatHint == nil || input.RepeatHint.Limit <= 0 {
-				issue(i, input, "reactivate_nonzero_hp requires the proven 0x33cea counted record loop")
+				issue(i, input, "reactivate_nonzero_hp requires a proven counted record loop")
 				continue
 			}
 			if activeSlotCount <= 0 || input.RepeatHint.Limit > activeSlotCount {
@@ -802,6 +804,7 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 			}
 			beat := runtime(input, "reactivate_nonzero_hp")
 			beat.Count = input.RepeatHint.Limit
+			beat.Dir = input.Direction
 			beats = append(beats, beat)
 		case "reset_pose":
 			// 0x134e4 writes pose=0 to every materialized unit and waits 20ms.

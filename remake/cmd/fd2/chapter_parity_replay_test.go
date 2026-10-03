@@ -799,8 +799,9 @@ func (r *parityReplay) mark(action parityAction) {
 		}
 		r.replayPreparationRecordKeys(r.prevSeq, action.Seq)
 		if !g.prepSelecting || g.prepRecordSlots || g.preparationSelected() != 0 {
-			t.Fatal("四槽ESC沒有回零勾選選人")
+			t.Fatal("非城鎮NO／四槽ESC沒有回零勾選選人")
 		}
+		r.partySelectionSeq = action.Seq
 		r.checkpoint("record_party_selection", action.Seq, r.ui(), true)
 	case "town_loaded":
 		r.settleTown()
@@ -873,10 +874,25 @@ func (r *parityReplay) mark(action parityAction) {
 			if r.keys[action.Seq+1] != "enter" || !g.handleNativePreparationInput(nativePreparationInput{enter: true}) {
 				t.Fatal("原版拒收確認鍵缺少來源或未由正式owner消費")
 			}
-			if !pump(t, g, 600, func() bool { return g.camp.NodeID() == r.town && !g.nativeClassUIBlocksInput() }) {
-				t.Fatal("必出角色拒收沒有返回原城鎮")
+			if g.camp.Node().Cancel != "" {
+				if err := verifyParityPreparationOwner(r.run, action.Seq+1, "0x2D170"); err != nil {
+					t.Fatal(err)
+				}
+				if !pump(t, g, 600, func() bool { return g.camp.NodeID() == r.town && !g.nativeClassUIBlocksInput() }) {
+					t.Fatal("必出角色拒收沒有返回原城鎮")
+				}
+				r.checkpoint("town_after_required_rejection", action.Seq+1, "town", true)
+			} else {
+				if err := verifyParityPreparationOwner(r.run, action.Seq+1, "0x31A2E"); err != nil {
+					t.Fatal(err)
+				}
+				if !pump(t, g, 600, func() bool {
+					return g.prepSelecting && g.preparationSelected() == 0 && !g.nativeClassUIBlocksInput()
+				}) {
+					t.Fatal("非城鎮必出拒收沒有重回零勾選選人")
+				}
+				r.checkpoint("selection_after_required_rejection", action.Seq+1, "preparation", true)
 			}
-			r.checkpoint("town_after_required_rejection", action.Seq+1, "town", true)
 			return
 		}
 		if !g.prepConfirm || g.prepSelecting || selected != g.prepLimit || g.prepConfirmSel != 0 {

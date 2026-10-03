@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_native_startup_receipt",
+  "date": "2026-10-03",
+  "chapter": 23,
+  "issues": [
+    134,
+    135,
+    136,
+    137
+  ],
+  "status": "finite_passed",
+  "evidence_level": "RUNTIME-E1",
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "sources": [
+    "docs/data/ida/fd2_ch23_required_character_20261003.json",
+    "docs/data/ida/fd2_ch23_startup_20261003.json",
+    "docs/data/fd2-chapter-node-comparison-contract.json"
+  ],
+  "original": {
+    "run": "work/parity-slot-ch23/startup-original-r2",
+    "runner": {
+      "schema_version": 1,
+      "kind": "fd2_oracle_runner_provenance",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+      "dosgolem_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+      "dosgolem_branch": "feat/fd2-oracle-input-chain",
+      "dosgolem_tracked_dirty_files": 0,
+      "dosgolem_untracked_files": 0,
+      "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+      "generated_at": "2026-10-03T07:38:48.607487+00:00",
+      "control_plan": "docs/data/parity-plans/ch23-startup-r2.jsonl",
+      "eip_trace_window": {
+        "from_step": 0,
+        "to_step": 0,
+        "max_entries": 200000
+      },
+      "lock_ally_hp": false,
+      "force_enemy_clear_declared": false,
+      "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "original_reference_manifest": "docs/data/fd2-reference-files.json",
+      "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch23/startup-state-r2",
+      "state_injections": [],
+      "evidence_note": "第23章同源SAV的有限起手探查；正常NO與選人，零章內狀態注入，不代表整章或自然難度。",
+      "runtime_image": "sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac",
+      "driver_sha256": "4ed33e6e48ee34f31821dcf18c784c128e2e49111c7dff5dfae38a8b76acce9f"
+    },
+    "checkpoints": 156,
+    "steps": 1615353812,
+    "bootstrap_sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+    "state_injections_used": 0,
+    "normal_inputs": "標題LOAD→非城鎮NO→首15候選含24→確認→正常開場所有對白→第一回合"
+  },
+  "remake": {
+    "run": "work/parity-slot-ch23/startup-r2-remake-r5",
+    "normal_inputs": "正式LOAD及handleNativePreparationInput；正常原生開場，不直接設定節點、勾選、view或畫面。"
+  },
+  "comparison": {
+    "scope": "記錄問題、零勾選選人、最終確認與第一回合四點；不含章內、戰後或保存。",
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "status": "ok"
+        },
+        {
+          "seq": 74,
+          "kind": "departure_confirmation",
+          "status": "ok"
+        },
+        {
+          "seq": 153,
+          "kind": "battle_start",
+          "status": "ok"
+        }
+      ]
+    },
+    "independent_nodes": {
+      "ok": true,
+      "oracle": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor"
+      ],
+      "remake": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor"
+      ],
+      "plan_completion": {
+        "ok": true,
+        "required": {
+          "mark:record_question": 1,
+          "mark:record_party_selection": 1,
+          "mark:departure_confirmation": 1,
+          "mark:battle_start": 1
+        },
+        "missing": {},
+        "remake_missing": {}
+      },
+      "comparison_version": 2,
+      "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
+      "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "remake_ui": "record_question",
+          "oracle_ui": "record_question",
+          "oracle_kind": "record_question",
+          "oracle_comparable_kind": "record_question",
+          "oracle_family": "record_question",
+          "remake_family": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_kind": "record_party_selection",
+          "oracle_comparable_kind": "record_party_selection",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 74,
+          "kind": "departure_confirmation",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_kind": "departure_confirmation",
+          "oracle_comparable_kind": "departure_confirmation",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 153,
+          "kind": "battle_start",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_kind": "battle_start",
+          "oracle_comparable_kind": "battle_start",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": null,
+          "kind": "end",
+          "remake_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "衍生重製點沒有原版配對"
+        }
+      ]
+    },
+    "frames": {
+      "ok": true,
+      "pixel_budget": 0,
+      "min_frames": 4,
+      "compared": 4,
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "oracle": "checkpoint-0037.png",
+          "remake": "remake-0000-p0.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2ad0dfaf2b07620d06518394ec72895023a2053b36f3bbc7a90b6870a00cf65b",
+          "remake_sha256": "99bcc1bf45a2deee7097fde9308d6f28c4e8f24adff8ebf56f289ff4ece70677"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "oracle": "checkpoint-0047.png",
+          "remake": "remake-0001-p1.png",
+          "phases": 3,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f1be1f196fbc6f5e6eed339055305fb513d53e57180f83656071a1c6dcab353b",
+          "remake_sha256": "31676979f50ee78a625ed12665d3f46aebcc7ca95d48397d0acc11ef102a8197"
+        },
+        {
+          "seq": 74,
+          "kind": "departure_confirmation",
+          "oracle": "checkpoint-0074.png",
+          "remake": "remake-0002-p1.png",
+          "phases": 6,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "6fcc5a3e27a79179f75859b02994e377eeb69399122c01d8c89147e012bc7a0d",
+          "remake_sha256": "57563eaa708a6f5b1ac938ebc8540b7d3f7cffbd75fbcac6dd687339b022f924"
+        },
+        {
+          "seq": 153,
+          "kind": "battle_start",
+          "oracle": "checkpoint-0153.png",
+          "remake": "remake-0003-p0.png",
+          "phases": 8,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "a90a82d2a83ebaf92ea1f5c421db501c15c79241194fa02581709496c309c32e",
+          "remake_sha256": "a90a82d2a83ebaf92ea1f5c421db501c15c79241194fa02581709496c309c32e",
+          "palette_cycle_phase": 10,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選"
+        }
+      ]
+    },
+    "save": "not_sampled，不稱全檔SAV或交易已驗收。",
+    "original_materialized_records": 42,
+    "serialized_active_records": 33,
+    "view": {
+      "aux_phase": 0,
+      "camera_x": 14,
+      "camera_y": 29,
+      "cursor_x": 19,
+      "cursor_y": 35,
+      "gold": 2009,
+      "overlay_selector": 1,
+      "rng_word": 20729,
+      "round": 1,
+      "visible_x": 5,
+      "visible_y": 6
+    },
+    "required_front": {
+      "record0": 0,
+      "record1": 24,
+      "record2": 21
+    }
+  },
+  "required_rejection": {
+    "original_run": "work/parity-slot-ch23/startup-original-r3",
+    "remake_run": "work/parity-slot-ch23/startup-r3-remake-r2",
+    "checkpoints": 85,
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "status": "ok"
+        },
+        {
+          "seq": 75,
+          "kind": "required_party_rejection",
+          "status": "ok"
+        },
+        {
+          "seq": 76,
+          "kind": "selection_after_required_rejection",
+          "status": "ok"
+        },
+        {
+          "seq": 84,
+          "kind": "mark:required_rejection_return",
+          "status": "ok"
+        }
+      ]
+    },
+    "frames": {
+      "ok": true,
+      "pixel_budget": 0,
+      "min_frames": 5,
+      "compared": 5,
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "oracle": "checkpoint-0037.png",
+          "remake": "remake-0000-p0.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "2ad0dfaf2b07620d06518394ec72895023a2053b36f3bbc7a90b6870a00cf65b",
+          "remake_sha256": "99bcc1bf45a2deee7097fde9308d6f28c4e8f24adff8ebf56f289ff4ece70677"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "oracle": "checkpoint-0047.png",
+          "remake": "remake-0001-p1.png",
+          "phases": 3,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "f1be1f196fbc6f5e6eed339055305fb513d53e57180f83656071a1c6dcab353b",
+          "remake_sha256": "31676979f50ee78a625ed12665d3f46aebcc7ca95d48397d0acc11ef102a8197"
+        },
+        {
+          "seq": 75,
+          "kind": "required_party_rejection",
+          "oracle": "checkpoint-0075.png",
+          "remake": "remake-0002-p0.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "babd1fcabf4f9350c864302a8e8da87e6441ae5f0cdb2d149d6fca0e0749e2d1",
+          "remake_sha256": "32edee26189091c553ec4fe9e6c1a1d485b711f6762245dc26c2e523949406f1"
+        },
+        {
+          "seq": 76,
+          "kind": "selection_after_required_rejection",
+          "oracle": "checkpoint-0076.png",
+          "remake": "remake-0003-p0.png",
+          "phases": 3,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "9f6715f4599304b8c8b1fe5ce2e72067e23dd82aafeaf4f46db153a307d7f763",
+          "remake_sha256": "90d8b4c7de9d690e7f2b2ed2a0456d00408f88d996ec3bff28561bde5d47fe9e"
+        },
+        {
+          "seq": 84,
+          "kind": "mark:required_rejection_return",
+          "oracle": "checkpoint-0084.png",
+          "remake": "remake-0004-p1.png",
+          "phases": 3,
+          "diff_pixels": 0,
+          "box": [],
+          "ok": true,
+          "oracle_sha256": "57881e10f396f9687b43c09351daa82c889e1af7d848e6d14bd78268493d9ee4",
+          "remake_sha256": "d5244e276aeeb01d67be25a7357448108419bd3e7696137fd93f5161b81fc067"
+        }
+      ]
+    },
+    "owners": [
+      {
+        "seq": 47,
+        "owner": "0x31A2E",
+        "result": "正常NO後零勾選選人"
+      },
+      {
+        "seq": 75,
+        "owner": "0x31E65",
+        "result": "缺identity24訊息"
+      },
+      {
+        "seq": 76,
+        "owner": "0x31A2E",
+        "result": "Enter正常收框後重新選人、零勾選、候選順序已重建"
+      },
+      {
+        "seq": 84,
+        "owner": "0x31A2E",
+        "result": "settle後原版及重製完整RGB0px"
+      }
+    ],
+    "source_owner_checks": "正式replay按固定EXE hash與獨立input_chain驗47／75／76；實際選人與零勾選由正常API推進後驗證。",
+    "generic_verifier_status": "failed",
+    "generic_nodes": {
+      "ok": false,
+      "oracle": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:dialogue",
+        "None:None",
+        "mark:required_rejection_return:preparation"
+      ],
+      "remake": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "required_party_rejection:preparation",
+        "selection_after_required_rejection:None",
+        "mark:required_rejection_return:preparation"
+      ],
+      "plan_completion": {
+        "ok": false,
+        "required": {
+          "mark:record_question": 1,
+          "mark:record_party_selection": 1,
+          "mark:departure_confirmation": 1,
+          "mark:required_rejection_return": 1
+        },
+        "missing": {},
+        "remake_missing": {
+          "mark:departure_confirmation": 1
+        }
+      },
+      "comparison_version": 2,
+      "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
+      "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "remake_ui": "record_question",
+          "oracle_ui": "record_question",
+          "oracle_kind": "record_question",
+          "oracle_comparable_kind": "record_question",
+          "oracle_family": "record_question",
+          "remake_family": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_kind": "record_party_selection",
+          "oracle_comparable_kind": "record_party_selection",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 75,
+          "kind": "required_party_rejection",
+          "remake_ui": "preparation",
+          "oracle_ui": "dialogue",
+          "oracle_kind": "departure_confirmation",
+          "oracle_comparable_kind": "departure_confirmation",
+          "oracle_family": "dialogue",
+          "remake_family": "preparation",
+          "status": "node_differ"
+        },
+        {
+          "seq": 76,
+          "kind": "selection_after_required_rejection",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "status": "missing_oracle_action"
+        },
+        {
+          "seq": 84,
+          "kind": "mark:required_rejection_return",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_kind": "required_rejection_return",
+          "oracle_comparable_kind": "mark:required_rejection_return",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": null,
+          "kind": "end",
+          "remake_ui": "preparation",
+          "status": "not_comparable",
+          "reason": "衍生重製點沒有原版配對"
+        }
+      ]
+    },
+    "scope": "通用節點仍拒收departure_confirmation錯標籤與衍生seq76缺action；保留failed報告，只以31E65／31A2E及5張完整RGB驗有限分支，不豁免通用章gate。"
+  },
+  "regressions": {
+    "status": "passed",
+    "all_go": {
+      "log": "work/parity-slot-ch23/ch23-all-go-r3.log",
+      "sha256": "289e0066ee1e55f715a6f8f9cf27f99daef3588be555a07abaf920b9a56567f0",
+      "packages": 19,
+      "passed_top_level_tests": 2297,
+      "skipped_top_level_tests": 27,
+      "skipped": [
+        "--- SKIP: TestChapter22PostbattleBindingReachesPreparation23ForMaterializedFrontiers (0.00s)",
+        "--- SKIP: TestChapter22BattleResultPreparationSaveLoadUsesProductionBoundaries (0.00s)",
+        "--- SKIP: TestChapter22PreHandlerReachesBattle23WithLoadCHView (0.00s)",
+        "--- SKIP: TestChapter23BattleResultRunsBoundPostbattleAndReachesPreparation24SaveBoundary (0.00s)",
+        "--- SKIP: TestChapter24BattleResultPostbattlePreparationSaveLoadUsesProductionBoundaries (0.00s)",
+        "--- SKIP: TestChapter26BattleResultNativePostbattleBranchesReachTownAndColdSave (0.00s)",
+        "--- SKIP: TestChapter28BattleResultNativePostbattleReachesPreparationAndColdSave (0.00s)",
+        "--- SKIP: TestLatePreHandlersReachTheirPlayerNumberedBattles (0.00s)",
+        "--- SKIP: TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding (0.00s)",
+        "--- SKIP: TestChapterParityReplay (0.00s)",
+        "--- SKIP: TestModernThemePrivateCatalogAdmitsAllMaps (0.00s)",
+        "--- SKIP: TestChapterTwentyOneSkyKeyInsufficientBranchUsesNativeDialogueAndTownSave (0.00s)",
+        "--- SKIP: TestPlayChapterOneToVictory (0.00s)",
+        "--- SKIP: TestConfirmTitleLoadSlotRestoresExternalLateSlotToFinalPreparation (0.00s)",
+        "--- SKIP: TestReviewedLatePreparationShotUsesProductionLoadOwner (0.00s)",
+        "--- SKIP: TestReviewedLatePreparationShotRejectsInvalidSpritePhase (0.00s)",
+        "--- SKIP: TestExternalLateSlotUsesProductionTitleAndPreparationInputOwners (0.00s)",
+        "--- SKIP: TestNativeContinueTitleCallerPublishesLateBattleCandidate (0.00s)",
+        "--- SKIP: TestNativeContinueTitleCallerPublishesChapter29Candidate (0.00s)",
+        "--- SKIP: TestNativeContinueLateBattleIndexedStages (0.00s)",
+        "--- SKIP: TestNativeDeathProgramsRunInEveryChapter (0.00s)",
+        "--- SKIP: TestDumpChapterOneMoveAttackFrames (0.00s)",
+        "--- SKIP: TestDumpChapterOneMoveFrames (0.00s)",
+        "--- SKIP: TestPlayTitleStartThroughChapterOneToTown (0.00s)",
+        "--- SKIP: TestDecodeANIDump (0.00s)",
+        "--- SKIP: TestMaterializeNativeContinueRuntimeUnitsOriginalSnapshot (0.00s)",
+        "--- SKIP: TestMaterializeNativePersistentPartyOriginalSnapshot (0.00s)"
+      ],
+      "scope": "略過包括缺少原始archive的post局部測試；正式有限開場／拒收對拍以分離資產跑通，不外推第23章戰後。"
+    },
+    "related_go": {
+      "log": "work/parity-slot-ch23/ch23-related-go-r2.log",
+      "sha256": "18c040c8a312dac38f5151193716cef7672c0eed4b5f98f1f24857850fc58bc8",
+      "passed_top_level_tests": 10
+    },
+    "reports": {
+      "chapter22": {
+        "report": "work/parity-slot-ch23/prior-ch22-verify-r1.json",
+        "sha256": "69365322fadccf572c8d2224abac0b1f4a9879a9b2ff9d8ab49853a6a5a14be7",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "frames_compared": 34,
+        "save": {
+          "oracle_save_sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+          "remake_save_sha256": "3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+          "remake_note": "save_sha256=3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1",
+          "blocked_by": null,
+          "status": "ok"
+        }
+      },
+      "record_save": {
+        "report": "work/parity-slot-ch23/record-save-verify-r1.json",
+        "sha256": "a28fa95fb2021bcbf67e42965716cc60279e027f341916216576ca244c7a486e",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "frames_compared": 4,
+        "save": {
+          "oracle_save_sha256": "e6b5efc131710cf71d0b040451348777d06414dfd33efb960907bd7d73cf3ce3",
+          "remake_save_sha256": "e6b5efc131710cf71d0b040451348777d06414dfd33efb960907bd7d73cf3ce3",
+          "remake_note": "save_sha256=e6b5efc131710cf71d0b040451348777d06414dfd33efb960907bd7d73cf3ce3",
+          "blocked_by": null,
+          "status": "ok"
+        }
+      }
+    },
+    "string_review": {
+      "proof": "work/parity-slot-ch23/string-review-r1/proof.json",
+      "proof_sha256": "1762121d2342b357dcf79fb3d3b4fc4dc8f84d5b96409c818f372a8c42b9e7ae",
+      "inventory_sha256": "6a966e70db9df687c2ca097a6c92a2c5005a7077673f8ad34ae739aa520d2509",
+      "go_dispositions_unchanged": 97
+    },
+    "canonical": {
+      "command": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 240 docker run --rm -i --network none --memory 2g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src fd2-go-test-local:20260909 timeout 180 python3 tools/export_editor_canonical.py --output work/parity-slot-ch23/canonical-r4 --without-animations",
+      "output": "work/parity-slot-ch23/canonical-r4",
+      "files_identical": 68,
+      "scope": "同一exporter輸出的animation0／campaign1／scenario30／story35與正式canonical逐位元組相同；legacy與編輯schema不直接互比。"
+    },
+    "new_document_links": {
+      "checked": 20,
+      "broken": 0,
+      "scope": "本批新增索引與追加段落；歷史交付包的本機連結不列本輪產物。"
+    }
+  },
+  "files": {
+    "work/parity-slot-ch23/startup-r2-verify-r5.json": "16b495829626e78079eceabf204514730e1aa79d3876f152269461b11d8b7803",
+    "work/parity-slot-ch23/startup-r3-verify-r2.json": "28cb409432b198152c7e7f9ba591a87d5e515ef2c87ba4f695e6c68d4bd627ba",
+    "docs/data/parity-plans/ch23-startup-r2.jsonl": "472687926c057537aab4137573df8928acb61f493393a480cc2da1d1cf710e53",
+    "docs/data/parity-plans/ch23-startup-r3.jsonl": "2cd9daeb679e7d7f3ce3abe263abd2c48b656640d8b5266c042e267579428d00",
+    "docs/data/parity-slots/ch23-manifest.json": "6a9a0ac8f9f2d192086bb08cde62485032e467d83bf735d6351cade2a7abc5bd",
+    "work/parity-slot-ch23/ch23-all-go-r3.log": "289e0066ee1e55f715a6f8f9cf27f99daef3588be555a07abaf920b9a56567f0",
+    "work/parity-slot-ch23/prior-ch22-remake-r1.log": "fed82bb676d05910fe188ddbbf054ad7bfc1b44035d7378c4f9d8d9bac0fadb2",
+    "work/parity-slot-ch23/record-save-remake-r1.log": "aa5e8aff67f80f06ac6218d9a1fb4cbe838d20ce090fc6e1dd8265ef1752f640",
+    "work/parity-slot-ch23/prior-ch22-verify-r1.json": "69365322fadccf572c8d2224abac0b1f4a9879a9b2ff9d8ab49853a6a5a14be7",
+    "work/parity-slot-ch23/record-save-verify-r1.json": "a28fa95fb2021bcbf67e42965716cc60279e027f341916216576ca244c7a486e"
+  },
+  "runtime_source_sha256": {
+    "remake/cmd/fd2/native_preparation_input.go": "36abc70a5f3fe05d78d3e2dcdf2d4dfed697c26a78e91a73bd4f95860e18ca2b",
+    "remake/cmd/fd2/main.go": "f129b96487b326aa0ed7a390b555eeaf08bfcb4dbd74696478d9d2167a0ce53e",
+    "remake/cmd/fd2/chapter_parity_replay_test.go": "79bd195ec81d52681f848bbb66a3f749ab84468093f37bd160c4d9a7a9ae273e",
+    "remake/internal/campaign/campaign.go": "65d5c79f499c7cc8d91149fbb81e41f4fecbcb213285691e88d3360298fdc171",
+    "remake/internal/campaign/handler_compile.go": "b2b86e7f7a509326996cde1ce1434a11b43c035eb9d216d04b71e13a6494096d",
+    "remake/assets/scenarios/campaign_full.json": "3ef82a271bc0f33c69789410d8ce54ca5b70e145cd44174e00d84937954462be",
+    "remake/assets/scenarios/ch23.json": "3029c6705d449bc63cb9523b8839d74c186678cdf07129f208fde3958649f2f0",
+    "remake/assets/cutscenes/handlers/ch22_pre.json": "4f29d386b112631b7eb7b0ffb99d872d7b50a00ca8ccdd398f706fbc9db7a6c5",
+    "remake/cmd/fd2/ch23_runtime_topology_test.go": "3e42eeb436ba3dbefe6adc64aa63a80d94147c9775a40aa777992e073a57efb3",
+    "remake/cmd/fd2/ch28_runtime_seam_test.go": "286feae80cab71a6ef7acf02832d69d8fbb9792a1e3a6c6b147e41f87462e0ef",
+    "remake/internal/campaign/campaign_test.go": "e06712c068c80fe93c2446605a0aa61d3b5ffd02c09f13ae9f299408f09632ca",
+    "remake/internal/campaign/handler_compile_test.go": "35cb13634bee639eeeee5941e8bbc00baa06f474ed31581a85429017521a2cc6",
+    "tools/gen_campaign.py": "c5868e52c1a1c820cbb6b1e6961ed584a614b090544f005e073e6dcb5c9f3a93",
+    "remake/assets/editor-canonical/campaign/campaign_full.json": "f7a1bef3b33a3795d7422c178d70d72a624424318abd5b8028f7ebd541f878ae",
+    "remake/assets/editor-canonical/scenarios/ch23.json": "0b92cc689ad3c3f33c514b09ae1ae98adab13e2fa13b4ddf39786d1adc0d54f5",
+    "remake/assets/editor-canonical/bundle-summary.json": "0403d03f69cad508dfe75af97b30131d061757ed9ab88b734eaa89b36e80bcb7"
+  },
+  "commands": {
+    "original": "timeout 900 docker run --rm --name fd2-ch23-startup-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --log-opt max-size=10m --log-opt max-file=3 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23/startup-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23/startup-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch23-startup-r2.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nimport hashlib,json,datetime\nfrom pathlib import Path\nexpected=\"222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f\"\nassert hashlib.sha256(Path(\"/orig/FD2.EXE\").read_bytes()).hexdigest()==expected\nassert hashlib.sha256(Path(\"/state/FD2.SAV\").read_bytes()).hexdigest()==\"3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1\"\np={\"schema_version\":1,\"kind\":\"fd2_oracle_runner_provenance\",\"runner\":\"dosgolem apps/fd2/cmd/oracle\",\"dosgolem_root\":\"/home/anr2/cht/dosgolem-fd2-oracle\",\"dosgolem_commit\":\"1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74\",\"dosgolem_branch\":\"feat/fd2-oracle-input-chain\",\"dosgolem_tracked_dirty_files\":0,\"dosgolem_untracked_files\":0,\"original_root\":\"/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2\",\"generated_at\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"control_plan\":\"docs/data/parity-plans/ch23-startup-r2.jsonl\",\"eip_trace_window\":{\"from_step\":0,\"to_step\":0,\"max_entries\":200000},\"lock_ally_hp\":False,\"force_enemy_clear_declared\":False,\"original_fd2_exe_sha256\":expected,\"original_reference_manifest\":\"docs/data/fd2-reference-files.json\",\"state_directory\":\"/home/anr2/cht/fd2/work/parity-slot-ch23/startup-state-r2\",\"state_injections\":[],\"evidence_note\":\"第23章同源SAV的有限起手探查；正常NO與選人，零章內狀態注入，不代表整章或自然難度。\",\"runtime_image\":\"sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac\",\"driver_sha256\":hashlib.sha256(Path(\"/drive.py\").read_bytes()).hexdigest()}\nPath(\"/out/runner.json\").write_text(json.dumps(p,ensure_ascii=False,indent=2)+\"\\n\")\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x1E54A,0x31CA0,0x31D12,0x336AB,0x32975,0x33596 -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 200000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /drive.py | tee /out/driver.log' > work/parity-slot-ch23/startup-original-r2.log 2>&1",
+    "rejection_original": "timeout 480 docker run --rm --name fd2-ch23-startup-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --log-opt max-size=10m --log-opt max-file=3 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23/startup-original-r3,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23/startup-state-r3,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch23-startup-r3.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 450 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nimport hashlib,json,datetime\nfrom pathlib import Path\nexpected=\"222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f\"\nassert hashlib.sha256(Path(\"/orig/FD2.EXE\").read_bytes()).hexdigest()==expected\nassert hashlib.sha256(Path(\"/state/FD2.SAV\").read_bytes()).hexdigest()==\"3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1\"\np={\"schema_version\":1,\"kind\":\"fd2_oracle_runner_provenance\",\"runner\":\"dosgolem apps/fd2/cmd/oracle\",\"dosgolem_root\":\"/home/anr2/cht/dosgolem-fd2-oracle\",\"dosgolem_commit\":\"1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74\",\"dosgolem_branch\":\"feat/fd2-oracle-input-chain\",\"dosgolem_tracked_dirty_files\":0,\"dosgolem_untracked_files\":0,\"original_root\":\"/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2\",\"generated_at\":datetime.datetime.now(datetime.timezone.utc).isoformat(),\"control_plan\":\"docs/data/parity-plans/ch23-startup-r3.jsonl\",\"eip_trace_window\":{\"from_step\":0,\"to_step\":0,\"max_entries\":200000},\"lock_ally_hp\":False,\"force_enemy_clear_declared\":False,\"original_fd2_exe_sha256\":expected,\"original_reference_manifest\":\"docs/data/fd2-reference-files.json\",\"state_directory\":\"/home/anr2/cht/fd2/work/parity-slot-ch23/startup-state-r3\",\"state_injections\":[],\"evidence_note\":\"第23章同源SAV的有限起手探查；正常NO與選人，零章內狀態注入，不代表整章或自然難度。\",\"runtime_image\":\"sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac\",\"driver_sha256\":hashlib.sha256(Path(\"/drive.py\").read_bytes()).hexdigest()}\nPath(\"/out/runner.json\").write_text(json.dumps(p,ensure_ascii=False,indent=2)+\"\\n\")\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x1E54A,0x31CA0,0x31D12,0x336AB,0x32975,0x33596 -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 200000 -steps 2000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /drive.py | tee /out/driver.log' > work/parity-slot-ch23/startup-original-r3.log 2>&1",
+    "ida": "test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-io.i64 && test -d /home/anr2/cht/fd2/work/parity-slot-ch23 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 300 docker run --rm -i --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch23,dst=/shots -e PROBE_ADDRESSES='0x336A0 0x33596' -e PROBE_OUTPUT=/shots/ch23-pre-focus-r1.json --workdir /tmp ida-pro-9.4-idapython:locked-v1 timeout 240 bash -c 'cp /src/work/ch01-town-parity-20260908/ida/fd2-io.i64 /tmp/probe.i64 && idat -A -S/src/tools/ida_opening_input_probe.py /tmp/probe.i64 > /shots/ch23-pre-focus-r1.log 2>&1'",
+    "remake": "timeout 960 test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/startup-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch23/startup-r2-remake-r5 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/startup-r2-remake-r5.log 2>&1",
+    "rejection_remake": "timeout 960 test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/startup-original-r3 FD2_PARITY_OUT=/src/work/parity-slot-ch23/startup-r3-remake-r2 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/startup-r3-remake-r2.log 2>&1",
+    "verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/startup-original-r2 --remake work/parity-slot-ch23/startup-r2-remake-r5 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-startup-r2.jsonl --min-frames 4 --pixel-budget 0 --out work/parity-slot-ch23/startup-r2-verify-r5.json",
+    "rejection_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/startup-original-r3 --remake work/parity-slot-ch23/startup-r3-remake-r2 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-startup-r3.jsonl --min-frames 5 --pixel-budget 0 --out work/parity-slot-ch23/startup-r3-verify-r2.json",
+    "all_go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch23-all-go-r3.log 2>&1",
+    "related_go": "timeout 960 test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2 ./internal/campaign ./internal/editorcanonical -run \"Test.*(Chapter23Persistent|Chapter23PreReactivation|PreparationRequiredRoster|CompileChapter23Pre|Canonical)\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/ch23-related-go-r2.log 2>&1",
+    "prior_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=22 FD2_PARITY_SLOT=/src/work/parity-slot-ch22/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch22/full-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch23/prior-ch22-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/prior-ch22-remake-r1.log 2>&1",
+    "prior_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 22 --oracle work/parity-slot-ch22/full-original-r2 --remake work/parity-slot-ch23/prior-ch22-remake-r1 --slot-manifest docs/data/parity-slots/ch22-manifest.json --plan docs/data/parity-plans/ch22-sample-r2.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/prior-ch22-verify-r1.json",
+    "save_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch22/record-probe-slot-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch22/record-save-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch23/record-save-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/record-save-remake-r1.log 2>&1",
+    "save_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch22/record-save-original-r5 --remake work/parity-slot-ch23/record-save-remake-r1 --slot-manifest docs/data/parity-slots/preparation-record-probe-manifest.json --plan docs/data/parity-plans/preparation-record-save-r3.jsonl --min-frames 4 --pixel-budget 0 --out work/parity-slot-ch23/record-save-verify-r1.json"
+  },
+  "limits": [
+    "本章只起手RUNTIME-E1；#133整章與#138晚期event52未驗，正式台帳保持19／30。",
+    "同源SAV保留死亡隊員，零額外治療／強化／狀態注入；不談自然難度。",
+    "九筆HP0不由active比較提升逐raw全欄位parity；raw HUD B精確值仍未知。",
+    "r1誤標record_question計畫與原版diagnostic保留；r3同鍵序改真實返回標籤，不代換收據。"
+  ]
+}

@@ -619,6 +619,9 @@ def build_scenario_stub(
     occupied = {(u["x"], u["y"]) for u in real_units}
     cells, source = pick_deploy_cells(md.get("own_deploy", []), occupied, md["w"], md["h"], len(party))
     groups = sorted({u["group"] for u in real_units})
+    if c == 23:
+        # #137：LOADCH group0與33820 group1；其他群組留待原生append。
+        groups = [0, 1]
 
     scenario = {
         "chapter": c,
@@ -776,14 +779,14 @@ def build_campaign(
                 "prompt": "要記錄戰況嗎？",
                 "next": next_story_id,
             }
-            # #108／#119／#124：raw18／20／21 caller→31DBE，
+            # #108／#119／#124／#134：raw18／20／21／22 caller→31DBE，
             # 額滿後檢查selected record +8；排序依各章321C8 caller。
             if intermission_cid == "19":
                 nodes[preparation_id]["required_party_identities"] = [16]
             elif intermission_cid == "21":
                 nodes[preparation_id]["required_party_identities"] = [21]
                 nodes[preparation_id]["preparation_front_identities"] = [21]
-            elif intermission_cid == "22":
+            elif intermission_cid in {"22", "23"}:
                 nodes[preparation_id]["required_party_identities"] = [24]
                 nodes[preparation_id]["preparation_front_identities"] = [24]
         shop_node_ids: list[str] = []
@@ -976,6 +979,15 @@ def build_campaign(
             "on_win": after_battle_id,
             "on_lose": retreat_id,
         }
+        if c == 23:
+            # #136：336AB／338BF→33596，正常原版seq153的玩家入口。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 14, "camera_y": 29,
+                "cursor_x": 19, "cursor_y": 35,
+                "visible_cursor_x": 5, "visible_cursor_y": 6,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
 
         retry_flag = f"retried_ch{cid}"
         flags[retry_flag] = False

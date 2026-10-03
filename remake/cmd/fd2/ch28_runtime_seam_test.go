@@ -191,6 +191,53 @@ func TestLatePreHandlersReachTheirPlayerNumberedBattles(t *testing.T) {
 	}
 }
 
+func TestChapter23PreReactivationIsBoundedAndPublishesAtomically(t *testing.T) {
+	for _, name := range []string{"正常", "錯來源", "錯數量", "缺方向", "錯方向", "末筆缺raw"} {
+		t.Run(name, func(t *testing.T) {
+			actors := make([]battle.Unit, 17)
+			for i := range actors {
+				actors[i] = battle.Unit{Camp: battle.Own, HP: 10, Dir: 3,
+					NativeRecordByte5: 1, HasNativeRecordByte5: true}
+			}
+			actors[7].HP = 0
+			direction := 2
+			beat := campaign.Beat{Op: "reactivate_nonzero_hp", Source: "0x336ed", Count: 16, Dir: &direction}
+			switch name {
+			case "錯來源":
+				beat.Source = "0x33709"
+			case "錯數量":
+				beat.Count = 15
+			case "缺方向":
+				beat.Dir = nil
+			case "錯方向":
+				direction = 1
+			case "末筆缺raw":
+				actors[15].HasNativeRecordByte5 = false
+			}
+			g := newBeatTestGame(t, []campaign.Beat{beat})
+			g.storyActors = actors
+			g.beatAdvance()
+			if (g.loadErr == "") != (name == "正常") {
+				t.Fatalf("loadErr=%q，case=%s", g.loadErr, name)
+			}
+			for i, u := range g.storyActors {
+				active := name == "正常" && i < 16 && i != 7
+				wantByte, wantPose := byte(1), 3
+				if active {
+					wantByte, wantPose = 0, 2
+				}
+				wantHP := 10
+				if i == 7 {
+					wantHP = 0
+				}
+				if u.OnField != active || u.NativeRecordByte5 != wantByte || u.Dir != wantPose || u.HP != wantHP {
+					t.Fatalf("slot%d active/raw5/pose/HP=%v/%d/%d/%d", i, u.OnField, u.NativeRecordByte5, u.Dir, u.HP)
+				}
+			}
+		})
+	}
+}
+
 func TestChapter27PreReactivatesOnlyNonzeroHPPartyRecords(t *testing.T) {
 	actors := make([]battle.Unit, 20)
 	for i := range actors {

@@ -9304,3 +9304,13 @@ PLAYER-E2限111／114建構槽例外：本章不再次升級、強化、補血�
 [record契約](../data/ida/fd2_ch22_record_fields_20261003.json)修正兩個來源。244B6布局取原始16-byte表值，不能將hex16抄成decimal16。持續record先保留+31/+32/+33三byte；1088D的LOADCH constructor在複製80 bytes後只將+31寫FF，後兩byte不改，關閉舊death effect／reward。來源缺失即拒收，不在SAVwriter補差分。
 
 [節點契約](../data/fd2-chapter-node-comparison-contract.json)限原版mark來源逐字相同時對照mark:前綴，UI仍由原版input_chain獨立取得。非城鎮記錄重播先經正常戰果確認與11句故事，走到preparation_ch23，再YES／Enter／ESC保存。整章四項、完整SAV與第21章／局部保存回歸通過，完整Go19套件2294測試通過。PLAYER-E2限111／114例外；T7、延後PNG及中途raw欄位限制見收據，唯一統計依58。
+
+### 2026-10-03 第二十三章開場與非城鎮必出拒收
+
+[有限收據](../data/ui-traces/ch23-native-startup.json)與[必出契約](../data/ida/fd2_ch23_required_character_20261003.json)、[起手契約](../data/ida/fd2_ch23_startup_20261003.json)限定本批CONFORMED／RUNTIME-E1。整備資料加入identity24必出與record1前置；preparation可無Cancel，驗證仍拒絕錯type、越界、重複及非required的front。正常拒收收框後依2CCE7重進同一選人節點，以320FC已發布的持續隊伍順序重建候選並清勾選。
+
+- 正式battle_ch23消費typed camera、cursor與繼承HUD，不在重播注入視圖。HUD B精確raw值仍未知。
+- 336ED的16筆迴圈只復位非零HP，寫byte+5=0與pose2。compiler及runtime限制來源、數量與方向，整批預檢後才發布。HP0不變；原33CEA來源不改pose。
+- 開場只物化group0／1，42筆前沿與原版一致；group2..9的44筆原始rows保留，尚未接事件52，不虛構PendingGroups索引。原86筆post局部fixture明示建構與E1範圍。
+
+[重播延伸](../data/fd2-chapter-node-comparison-contract.json)先驗31A2E及零勾選，再消費正常鍵序；拒收確認需獨立原版31E65→31A2E證據。拒收通用節點比較仍失敗，有限owner／RGB驗證不豁免整章gate。完整Go、第22章四項及完整SAV、四槽保存回歸通過；現況數字與限制統一見[58](58-fd2-exe-re-coverage.md)。#133整章、#138晚期事件仍未完成。

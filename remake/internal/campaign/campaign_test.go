@@ -97,6 +97,32 @@ func TestLoadValidation(t *testing.T) {
 	}
 }
 
+func TestPreparationRequiredRosterAcceptsNoncityOwnerAndRejectsInvalidData(t *testing.T) {
+	for _, tc := range []struct {
+		name, fields string
+		valid        bool
+	}{
+		{"非城鎮", `"type":"preparation","required_party_identities":[24],"preparation_front_identities":[24]`, true},
+		{"城鎮", `"type":"preparation","cancel":"end","required_party_identities":[24],"preparation_front_identities":[24]`, true},
+		{"錯節點", `"type":"story","required_party_identities":[24]`, false},
+		{"身份越界", `"type":"preparation","required_party_identities":[32]`, false},
+		{"身份重複", `"type":"preparation","required_party_identities":[24,24]`, false},
+		{"前置未必出", `"type":"preparation","required_party_identities":[24],"preparation_front_identities":[21]`, false},
+		{"前置重複", `"type":"preparation","required_party_identities":[24],"preparation_front_identities":[24,24]`, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "campaign.json")
+			raw := `{"start":"prep","nodes":{"prep":{` + tc.fields + `,"next":"end"},"end":{"type":"ending"}}}`
+			if err := os.WriteFile(path, []byte(raw), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := Load(path); (err == nil) != tc.valid {
+				t.Fatalf("Load err=%v，預期合法=%v", err, tc.valid)
+			}
+		})
+	}
+}
+
 func TestNativeEndingPrefixRejectsUnprovenCampaignAdmission(t *testing.T) {
 	for name, raw := range map[string]string{
 		"wrong node type": `{"start":"end","nodes":{"end":{"type":"story","native_ending_prefix":{"timeline":"assets/endings/native_2bce5.json","handler":"0x2bce5","chapter":29,"mode":"source_bound_e1_terminal_hold"}}}}`,

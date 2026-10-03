@@ -724,7 +724,7 @@ raw chapter 11 的 `sub_2073D`，本輪先前未將它接進劇本。IDA 9.4 核
 | `0x24E80..0x25052`、`0x24F43`、`0x24F7E`、`0x24FC4`、`0x24FFF`、`0x2503A` | [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt)、[`fd2_ch25_post_native_dialogue_ida.txt`](../data/ida/fd2_ch25_post_native_dialogue_ida.txt)、[`ch25-post-native-dialogue-e1.json`](../data/ui-traces/ch25-post-native-dialogue-e1.json) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：玩家第26戰戰後由`event_state[12]`選`5/6`與`8/9`，共同`7/10/11`；七個tuple共41句原始control／operand已綁定固定版`FDTXT.DAT`第26項。正常57-slot正式勝利路徑分別只消費18或33句，再走ACTING77–80、同步隊伍、chapter26、`town_ch27`與全新`Game`冷讀。舊唯一70-slot斷言已撤回：正常重製入口為16部署者＋group0 41筆＝57，原函式只讀動態count | 70只保留完整資料形狀相容；不重解`sub_24E80`，未修改同狀態逐幀／音訊另列E2 |
 | `0x25464..0x2548C`、`0x231DF..0x231F8`、`0x231E5` | [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt)、[`fd2_ch27_post_native_dialogue_ida.txt`](../data/ida/fd2_ch27_post_native_dialogue_ida.txt)、[`ch27-post-native-dialogue-e1.json`](../data/ui-traces/ch27-post-native-dialogue-e1.json) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：玩家第28戰戰後入口跳往真實共享尾端；`0x231E5#7`唯一消費`FDTXT_028`五句`FFEE`原生對話，再sync與chapter28。正常`story_ch28`讀入map27全60筆來源，但只有groups1..7共44筆與20部署者形成64-slot戰況；group255的16筆保留在source roster。正式勝利、五句具型別輸入、`preparation_ch29`與全新`Game`冷讀均通過；舊80-slot斷言已撤回 | 五句說話者螢幕座標未由handler保存，99%模式保留五階段收框／背景還原但省略無來源額外滑動；未修改同狀態逐幀／音訊另列E2，低位址及共享尾端不重解 |
 | `0x24C1E`／`0x24D22`／`0x11EEE` case 23 | [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt) | raw ch23／玩家第24戰的 stage 2..14 先寫後畫、`[0x46c] != [0x539f8]` tick gate、312×192 row rotation、#42 staging、零 transient offset、indexed copy ABI 與正式 E1 adapter | 補未修改一般玩家同狀態逐幀／時序 E2；不得重開入口 latch 或把移動中 offset 外推到 handler |
-| `0x24754`／`0x247B4`／`0x1088D`／`0x15F84`／`0x2189A`／`0x219AD`／`0x24B4D`／`0x10652`／`0x4DBFC`（raw ch22 post） | [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)、[`fd2_ch22_post_dialogue_binding.txt`](../data/ida/fd2_ch22_post_dialogue_binding.txt) | layout已閉合為table slots0..16＋special slot17、camera(14,14)；LOADCH先16個persistent slots再append map22 records，完整materialized frontier為16＋70＝86，舊70-slot說法撤回。三實參 unit/radius/step、FDOTHER #3 LUT0..9 與 `0x2189A` typed E1；FDFIELD #69、FDSHAP #46/#47 由 `0x11EEE` 直接消費；`0x24B4D` 的13×9 staging→steady draw→兩列交替30×20ms typed E1 已通過30幀與缺第九列零修改回歸；chapter23 `0x10652` 另建 FDOTHER #42／59904-byte staging，三次ACT73經`0x1366A→0x11CAC→0x11EEE`消費；完整四位元組raw grid已在State保存。十個`0x15F84` caller現把FDTXT_023 index8..17正確展開為56句，不再誤用整檔89句；四種raw control各自保存13／15／14／14 glyph上限。正式可達分支以具型別輸入完成35句後才沿原位置同步隊伍，再由記錄提示存檔、全新`Game`冷讀、15人選取、取消重選及最終肯定進`story_ch24`，達連續`RUNTIME-E1` | event52增援時序、高階畫面名稱、互斥分支的未修改原版動態路徑與一般玩家 E2仍另列；不重解已閉合 helper |
+| `0x24754`／`0x247B4`／`0x1088D`／`0x15F84`／`0x2189A`／`0x219AD`／`0x24B4D`／`0x10652`／`0x4DBFC`（raw ch22 post） | [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)、[`fd2_ch22_post_dialogue_binding.txt`](../data/ida/fd2_ch22_post_dialogue_binding.txt) | layout已閉合為table slots0..16＋special slot17、camera(14,14)；原始容量為16個persistent slots＋70個map22 rows；#137同狀態反證已訂正開場為42筆，剩餘44筆pending，不能把86筆局部post fixture當正常開場前沿。舊70-slot說法仍撤回。三實參 unit/radius/step、FDOTHER #3 LUT0..9 與 `0x2189A` typed E1；FDFIELD #69、FDSHAP #46/#47 由 `0x11EEE` 直接消費；`0x24B4D` 的13×9 staging→steady draw→兩列交替30×20ms typed E1 已通過30幀與缺第九列零修改回歸；chapter23 `0x10652` 另建 FDOTHER #42／59904-byte staging，三次ACT73經`0x1366A→0x11CAC→0x11EEE`消費；完整四位元組raw grid已在State保存。十個`0x15F84` caller現把FDTXT_023 index8..17正確展開為56句，不再誤用整檔89句；四種raw control各自保存13／15／14／14 glyph上限。正式可達分支以具型別輸入完成35句後才沿原位置同步隊伍，再由記錄提示存檔、全新`Game`冷讀、15人選取、取消重選及最終肯定進`story_ch24`，達連續`RUNTIME-E1` | event52增援時序、高階畫面名稱、互斥分支的未修改原版動態路徑與一般玩家 E2仍另列；不重解已閉合 helper |
 | `0x135DD`、`0x20421`、`0x4DFCC` | 同上及既有 palette／AFM 證據 | `0x24336` 使用的鏡頭移動、全螢幕 AFM 與高色階相位循環窄角色 | 新 caller 另證參數與時序；不可把 `0x20421` 誤稱音訊或把 `0x4DFCC` 推成一般調色盤 API |
 | `0x2BCE5` | [`fd2_ch29_terminal_body_ida.txt`](../data/ida/fd2_ch29_terminal_body_ida.txt)、[`montage tail`](../data/ida/fd2_ch29_post_montage_tail_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：終局前綴、角色蒙太奇、20段尾段、定格與隊伍回顧已由正式`battle_ch30→ending`消費 | 只補一般玩家原版owner／E2與精確音訊；不重解已閉合前綴、尾段或重製handoff |
 | `0x2C39B`／`0x1956B` | [`fd2_ending_dialogue_owner_ida.txt`](../data/ida/fd2_ending_dialogue_owner_ida.txt) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：19×5框caller、initial DATO portrait與FDTXT逐句speaker／pages已分層；正式ending逐Draw owner消費19×5 base、`0x1974C`六段opening、四列逐glyph、right-edge DATO mouth overlay與`0x2D31B`五段closing＋source restore，完成後才resume timeline。兩個chapter26文字閘門與chapter29五block原始資產預建均有回歸 | 只補精確時序及一般玩家E2；不得再把block `portrait_id`套給全部台詞，也不得借用ch24三列validator或一般RGBA對話框 |
@@ -2217,3 +2217,36 @@ full-original-r2正常記錄保存與full-r2-remake-r2的checksum-valid SAV，�
 #128名稱對照仍核對原版mark來源及UI；#130只補正常戰果／故事輸入橋接；#132進度renderer不把缺圖算已比較或0px。原敗北、缺輸入橋接、33-byte SAV矛盾及投影未補齊的拒收均保留，不重寫歷史。完整Go第一次因文字清冊更新順序而拒收，清冊97筆文字／分類未變，同一容器命令乾淨重跑通過。
 
 本輪以tools/fd2_parity_progress.py verify及tools/render_parity_progress.py重生統計，輸入docs/data/parity-campaign-progress.json與正式收據，日期2026-10-03。現為19／30，第4至22章passed，all_chapters_passed=false；上文18／30是已失效的當時快照。其他章與開啟Issue仍未完成。
+
+### 2026-10-03 第二十三章接續與已閉合caller資料缺項（#133／#134）
+
+[清冊](../data/parity-slots/ch23-manifest.json)沿用第22章非城鎮SAV3c7298cd，26人、seed4，不追加治療或強化。[READY契約](../data/ida/fd2_ch23_required_character_20261003.json)直接重用#124已保存raw22的31CA0、31D12條件bytes與共享push24，typed consumer先穩定分組，再必出檢查／record1排序。主證據已有writer／consumer，本輪不重開callee；只補正式preparation_ch23缺項。原版[拒收r1](../data/parity-plans/ch23-startup-r1.jsonl)與[合法r2](../data/parity-plans/ch23-startup-r2.jsonl)尚待實測，台帳19／30不變。
+
+#134追加原版拒收consumer：r1 seq75為31E65，正常Enter後76／84回31A2E零勾選；2CAD7的2CCE7以EAX0回2CCCC重新呼叫318AD。runtime無Cancel時收框後應restartSelection，不能回記錄問題。r1最後mark誤標record_question，原始計畫／收據保留為診斷，不按標籤提升。#135的[READY重播延伸](../data/fd2-chapter-node-comparison-contract.json)先驗來源owner再接正常選人與拒收返回；第23章起手及整章仍待驗。
+
+#136：[第二十三章起手READY](../data/ida/fd2_ch23_startup_20261003.json)重用336AB／三段PAN／ACT與33596的runtime0 focus。IDA9.4直接338BF跳33594，原版seq153為camera14,29、cursor19,35、visible5,6、selector1。正式battle節點缺typed view／HUD，重製r2因此拒收；先補入口資料再完整RGB驗證，raw HUD B仍只保留nonzero強推論。
+
+#137新增READY延伸於同一[起手契約](../data/ida/fd2_ch23_startup_20261003.json)：336ED..33718的16筆非零HP復位與pose2漏轉寫；已查明LOADCH group0及33820 group1，scenario全group初始登場與seq153矛盾。保留後續group pending與全部raw資料，event52尚未轉寫，不猜補。
+
+#138：原版map22控制列有T13／15／18／22 enemy事件52→352E2，typed scenario只有opening；native_death_events尚無52轉寫。起手有限對拍不涵蓋這些晚期事件，T2診斷不作#133整章驗收。原始欄位與後續群組保留，不以全group提前出場取代事件。
+
+#137追加測試勘誤：完整Go r2只有舊topology測試拒收，它要求開場全86筆；seq153已直接反證。新版測試核對42筆前沿及各pending group的44筆原始來源，未刪資料。既有post測試的86筆局部建構fixture明示注入與E1範圍，不宣稱正常玩家可達。
+
+#137的pending指44筆尚未物化的Roster來源。既有materializePendingGroups只索引已接的回合事件；事件52尚未接上，不能要求此map已有八個key，或為測試塞入虛構事件。本批僅核對原始rows全部保留且42筆正式前沿不含它們。
+
+### 2026-10-03 第二十三章開場有限CONFORMED
+
+[正式有限收據](../data/ui-traces/ch23-native-startup.json)取代上文本批仍待起手驗證的狀態，保留先前失敗與READY紀錄。原版合法r2共156點、拒收r3共85點，皆由canonical dosgolem1694cde正常LOAD與鍵盤輸入重生；同源SAV3c7298cd、seed4，不追加治療或強化。
+
+| Issue | 現況 | 驗證範圍 |
+|---|---|---|
+| #134 | 有限CONFORMED／RUNTIME-E1 | raw22必出24與record1前置、無Cancel資料合法性、31E65確認後回31A2E零勾選 |
+| #135 | tooling CONFORMED | 正常NO／選人鍵序與獨立拒收owner橋接；通用nodes失敗保留 |
+| #136 | 有限CONFORMED／RUNTIME-E1 | typed view／繼承HUD，合法分支四項與四張完整RGB0px |
+| #137 | 有限CONFORMED／RUNTIME-E1 | 首16筆非零HP復位／pose2、42筆開場，44筆原始rows未提前物化 |
+| #133 | 未完成 | 第23章章內、晚期事件、戰後與完整SAV |
+| #138 | RE待解 | event52的低位元組counter運算、live control及增援時序 |
+
+拒收返回另有五張完整RGB0px，31E65／31A2E來源與正常正式API通過；通用nodes仍拒收錯標departure_confirmation及衍生seq76缺action，不改比較器或稱四項全過。原r1誤標、r4開場460px差異、完整Go r2舊86筆斷言及related r1錯誤PendingGroups假設均保留診斷。
+
+乾淨完整Go r3通過19套件、2297個頂層測試，27項略過逐條列入收據。缺原始archive的第23章post局部測試不稱已跑；正式起手使用分離資產已驗。第22章正常重播212筆AI零分岔，34張RGB、四項與完整22987-byte SAV通過；四槽保存四張0px與全檔SAV回歸通過。字串清冊97筆處置不變，只重綁定位；原舊inventory須取先前正式綁定版本，缺command_labels的archive清冊不作完整hash基準。正式章台帳仍19／30，不能以有限起手增加。

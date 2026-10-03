@@ -67,7 +67,15 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 		if input.enter || input.escape {
 			if !g.beginNativePreparationRequiredClosing(func() {
 				g.prepRequiredMissing = nil
-				leavePreparation("cancel")
+				if townBacked {
+					leavePreparation("cancel")
+				} else {
+					// 2CCE7：零回傳重進318AD，同一節點重新選人。
+					// 320FC已發布分組順序；318AD重新以record1開始。
+					g.prepIDs = append(g.prepIDs[:0], g.partyJoinOrder[1:]...)
+					g.prepSel = 0
+					g.restartPreparationSelection()
+				}
 			}) {
 				g.loadErr = "preparation required-character closing assets unavailable"
 			}

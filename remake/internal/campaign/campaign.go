@@ -768,7 +768,7 @@ func Decode(raw []byte) (*Campaign, error) {
 		if len(n.RequiredPartyIdentities) != 0 {
 			seen := map[int]bool{}
 			for _, identity := range n.RequiredPartyIdentities {
-				if n.Type != "preparation" || n.Cancel == "" || identity < 1 || identity > 31 || seen[identity] {
+				if n.Type != "preparation" || identity < 1 || identity > 31 || seen[identity] {
 					return nil, fmt.Errorf("preparation node %q has invalid required_party_identities", id)
 				}
 				seen[identity] = true
@@ -781,7 +781,7 @@ func Decode(raw []byte) (*Campaign, error) {
 				for _, member := range n.RequiredPartyIdentities {
 					required = required || member == identity
 				}
-				if n.Type != "preparation" || n.Cancel == "" || !required || identity < 1 || identity > 31 || seen[identity] {
+				if n.Type != "preparation" || !required || identity < 1 || identity > 31 || seen[identity] {
 					return nil, fmt.Errorf("preparation node %q has invalid preparation_front_identities", id)
 				}
 				seen[identity] = true

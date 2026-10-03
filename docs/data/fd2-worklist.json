@@ -328,6 +328,142 @@
         "note": "固定原版與計畫的記憶體邊界證據、工具回歸及正式原版前綴重生。"
       },
       "issue": 102
+    },
+    {
+      "id": "ch23-full-chapter-parity",
+      "layer": "player",
+      "category": "工作",
+      "title": "第二十三章整章原版／重製對拍與收尾",
+      "body": "接續已驗收第22章非城鎮記錄SAV，SHA-256 3c7298cd30221a4220656f77e7676bc89b9002aa02b793de2cc16e0491585db1。依111／114例外，保持相同起始槽與seed4，不追加治療、強化、金幣或道具。先核對正常整備／選人／起手與既有閉合來源，再抽樣章內節拍、一次清敵後正常戰後與實際保存邊界。發現反證另開缺陷／RE待解，不放寬四gate。",
+      "acceptance": [
+        "固定FD2.EXE、dosgolem commit、同源SAV與受版控計畫／清冊，正常章路徑可重跑。",
+        "行為、獨立原版節點、交易／完整SAV、完整RGB四項通過，相關Go與第22章回歸通過。",
+        "同步56／57／58、索引、正式台帳與產生現況；保留敗北、注入與未抽樣限制。"
+      ],
+      "evidence": [
+        "docs/data/ui-traces/parity-ch22.json",
+        "docs/goal/111-goal-original-parity-campaign-20260915.md",
+        "docs/data/parity-campaign-progress.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對第23章正式四gate、實際保存完整SAV、正常章路徑與回歸。"
+      },
+      "issue": 133
+    },
+    {
+      "id": "ch23-required-character-and-front-order",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第二十三章整備缺希爾法必出檢查與完整record前置",
+      "body": "#133讀取正式preparation_ch23，尚無required_party_identities／preparation_front_identities。已閉合#124原始分支0x31CA0 raw22與raw21共用push24→31DBE，0x31D12 raw22共用push24→321C8；#124明示raw22未接。本項重用已閉合caller／callee證據，不重解helper。先建立本章READY契約，驗原版缺24拒收及合法選人完整record1排序，再補producer／正式資料／canonical與原版起手比較。",
+      "acceptance": [
+        "固定原版hash與原始raw22條件bytes、caller／consumer及推論等級；先READY再實作。",
+        "正常non-city整備缺24拒收，合法選入後完整record移到1，record0與其餘順序保留。",
+        "原版／重製同源有限起手、相關Go與第22章回歸；完整章由#133另驗。"
+      ],
+      "evidence": [
+        "docs/data/ida/fd2_ch22_required_character_20261003.json",
+        "docs/data/ida/fd2_ch21_required_character_20261003.json",
+        "remake/assets/scenarios/campaign_full.json",
+        "tools/gen_campaign.py"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對raw22 READY、正常拒收／合法選人、record排序及正式canonical起手對拍。"
+      },
+      "issue": 134
+    },
+    {
+      "id": "parity-noncity-preparation-selection-bridge",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "章對拍重播缺非城鎮選人來源及拒收返回橋接",
+      "body": "#133正常NO→選人原版r1 seq47已有31A2E，重播record_party_selection未設定partySelectionSeq，後續departure_confirmation會拒收。原版缺24拒收seq75為31E65，Enter後76／84回31A2E選人，不是城鎮；現有replay拒收分支只等待town。本項先以固定owner、既有2CAD7外層caller建立READY，正常輸入消費，不直接改節點或selected欄位。",
+      "acceptance": [
+        "record_party_selection保留固定owner與零勾選檢查，建立正常選人輸入來源；錯來源拒收。",
+        "有Cancel的城鎮拒收仍回城鎮；無Cancel的非城鎮按原版返回選人，零勾選／source owner與完整RGB核對。",
+        "合法第23章起手、拒收有限收據、第22章四gate及完整Go回歸，不提升未知UI。"
+      ],
+      "evidence": [
+        "work/parity-slot-ch23/startup-original-r1/actions.jsonl",
+        "work/parity-slot-ch23/startup-original-r1/checkpoint-0075.json",
+        "work/parity-slot-ch23/startup-original-r1/checkpoint-0084.json",
+        "remake/cmd/fd2/chapter_parity_replay_test.go"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對非城鎮正常鍵序、owner、零勾選與合法／拒收收據及城鎮回歸。"
+      },
+      "issue": 135
+    },
+    {
+      "id": "ch23-native-startup-view-and-hud",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第二十三章開場缺原生HUD來源與玩家游標交接",
+      "body": "#133／#134同源正常選入24後，原版startup-original-r2 seq153已至cursor19,35／camera14,29／visible5,6／selector1、42筆有效前沿。重製startup-r2-remake-r2無HUD資料而拒收，停cursor20,32，不能組battle_start整幀。先沿58與00索引核對336AB／33596已有主證據，只窄查本章writer／consumer，不猜原始HUD B，不以重播注入正式UI。補READY、可編輯資料與正常交接後，有限起手完整RGB及上一章回歸。",
+      "acceptance": [
+        "固定EXEhash、IDA9.4原始定位、bytes及caller／consumer；復用已閉合helper，READY先於正式runtime。",
+        "原版／重製同源正常LOAD／NO／必出選人／開場至第一回合，完整RGB與單位／view比較；HUD未知精確raw值保留等級。",
+        "相關Go及第22章完整四項與SAV回歸；#133整章另驗。"
+      ],
+      "evidence": [
+        "docs/data/parity-plans/ch23-startup-r2.jsonl",
+        "work/parity-slot-ch23/startup-r2-remake-r2.log",
+        "docs/data/ida/fd2_ch22_pre_ida.txt",
+        "docs/data/ida/fd2_ch22_pre_view_reset_ida.txt"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對本章READY與有限起手同狀態完整RGB／view、正常player接續及回歸。"
+      },
+      "issue": 136
+    },
+    {
+      "id": "ch23-pre-reactivation-and-pending-groups",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第二十三章開場漏存活隊員復位並提前登場後續群組",
+      "body": "#136補typed view／HUD後startup-r2-remake-r4可取完整畫面，但行為比較拒收：原版有效42筆、9名存活我方；重製前16隊員仍deactivate且把後續raw groups全部登場。新IDA9.4原始sub_336A0包含33709非零HP→33710 byte+5=0、33714 byte+3=2，既有handler轉寫漏此inline loop。正式scenario initial_groups0..9與原版僅group0+1矛盾。先查58／既有constructor和完整raw轉錄、建立READY再窄補typed counted loop及pending groups，不能用renderer或重播遮差。",
+      "acceptance": [
+        "固定EXEhash、原始inline loop bytes、writer與消費端、推論等級及READY；保留已閉合helper。",
+        "前16只有HP非零者復位，HP0保留inactive，pose2；未呼叫的群組留pending，不能提早出現或刪資料。",
+        "同源正常起手行為／view與完整RGB；相關Go、第22章完整四項與SAV回歸，整章另驗#133。"
+      ],
+      "evidence": [
+        "work/parity-slot-ch23/ch23-pre-focus-r1.json",
+        "work/parity-slot-ch23/startup-r2-verify-r4.json",
+        "remake/assets/cutscenes/handlers/ch22_pre.json",
+        "remake/assets/scenarios/ch23.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對inline loop READY、原生存活／pending／pose資料及正常起手完整對拍。"
+      },
+      "issue": 137
+    },
+    {
+      "id": "ch23-turn-event52-native-program",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "第二十三章第13至22回合事件52尚缺具型別動作與正常對拍",
+      "body": "#133開場稽核發現docs/data/turn_events.json明示map22於T13／15／18／22 enemy event52→0x352E2；正式ch23 scenario目前只有opening，native_death_events也沒有52轉寫。gen_campaign會跳過無直接spawn列，不能將typed events缺項當原版沒有事件。先查58／00與既有event table證據，不重做shared constructor；以IDA原始條件與writer／consumer建立READY，補完整可編輯動作及一般回合路徑，正常來源對拍事件回合及戰後保存。T2診斷不可冒稱已抽晚期事件。",
+      "acceptance": [
+        "固定EXEhash、IDA9.4原始handler／跳表／間接spawn或event writer及consumer，推論分級，READY先於實作。",
+        "同源原版事件回合正常輸入、具型別scenario及canonical；未知行為仍拒收。",
+        "正式#133章收據分別驗行為／獨立節點／交易／完整RGB與SAV，明列未抽範圍；不靠提前登場群組或猜補完成。"
+      ],
+      "evidence": [
+        "docs/data/turn_events.json",
+        "remake/assets/data/native_death_events.json",
+        "remake/assets/scenarios/ch23.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對事件52主證據／READY、正式typed consumer與本章正常回合／保存收據。"
+      },
+      "issue": 138
     }
   ]
 }
