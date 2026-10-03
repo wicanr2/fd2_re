@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -252,15 +252,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 第24章 seq1840 攻擊比較點的 stage copy 尚未完成
-
-`ch24-attack-1840-partial-stage-copy` · RE待解 · [#155](https://github.com/wicanr2/fd2_re/issues/155) · 仍未完成 · 要人判
-
-#152 指令7亂數修正後，fresh-full-remake-r5 的 T4入口seq1775 全部26筆存活record之camp／位置／HP與原版一致；原版record12得以正常選取與移動。接著正常攻擊seq1840時，重播端frame()報「stage copy尚未完成」並以驗證fatal停止，尚未分類為遊戲產品缺陷。舊r4因record12過早消失而略過該玩家操作，未碰到此驗證點。#150已閉合完整viewport caller之來源重綁，這次先檢查現在的dosgolem copy trace與控制邊界是否位於原版partial copy；不以追加特例、取相近畫面或放寬像素門檻通過。
-
-怎樣算做完：['核對seq1840原版現行trace、viewport參數、已發布列與比較點，分類為原版中間畫面、驗證設定或正式重製差異。', '建立可審查READY契約後修正維護中的收據／比較工具或正式消費端；未知來源維持拒收。', '同一正常玩家攻擊不再因驗證工具假失敗中止，獨立比較保持真實差異且既有stage來源回歸通過；完整第24章由#142驗收。']
-
-證據：`['work/parity-slot-ch24/fresh-full-remake-r5.log', 'work/parity-slot-ch24/fresh-full-original-r6', 'remake/cmd/fd2/chapter_parity_replay_test.go', 'docs/data/ida/fd2_ch24_stage_runtime_20261003.json']`
 
 <!-- END fd2_worklist.py render -->

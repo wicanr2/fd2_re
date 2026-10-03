@@ -394,29 +394,6 @@
         "note": "原始資產／直接指令、READY與正式consumer回歸。"
       },
       "issue": 154
-    },
-    {
-      "id": "ch24-attack-1840-partial-stage-copy",
-      "layer": "tooling",
-      "category": "RE待解",
-      "title": "第24章 seq1840 攻擊比較點的 stage copy 尚未完成",
-      "body": "#152 指令7亂數修正後，fresh-full-remake-r5 的 T4入口seq1775 全部26筆存活record之camp／位置／HP與原版一致；原版record12得以正常選取與移動。接著正常攻擊seq1840時，重播端frame()報「stage copy尚未完成」並以驗證fatal停止，尚未分類為遊戲產品缺陷。舊r4因record12過早消失而略過該玩家操作，未碰到此驗證點。#150已閉合完整viewport caller之來源重綁，這次先檢查現在的dosgolem copy trace與控制邊界是否位於原版partial copy；不以追加特例、取相近畫面或放寬像素門檻通過。",
-      "acceptance": [
-        "核對seq1840原版現行trace、viewport參數、已發布列與比較點，分類為原版中間畫面、驗證設定或正式重製差異。",
-        "建立可審查READY契約後修正維護中的收據／比較工具或正式消費端；未知來源維持拒收。",
-        "同一正常玩家攻擊不再因驗證工具假失敗中止，獨立比較保持真實差異且既有stage來源回歸通過；完整第24章由#142驗收。"
-      ],
-      "evidence": [
-        "work/parity-slot-ch24/fresh-full-remake-r5.log",
-        "work/parity-slot-ch24/fresh-full-original-r6",
-        "remake/cmd/fd2/chapter_parity_replay_test.go",
-        "docs/data/ida/fd2_ch24_stage_runtime_20261003.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "原版partial-copy與控制邊界證據、維護中驗證工具及正常攻擊重播。"
-      },
-      "issue": 155
     }
   ]
 }
