@@ -1554,6 +1554,14 @@
         ],
         "pattern": "clear\\(g\\.nativeMapVGA\\) // 0x290AC"
       }
+    },
+    {
+      "id": "normal-probe-selection-uses-current-unit-set",
+      "date": "2026-10-05",
+      "area": "正常鍵盤探針",
+      "rule": "針對指定隊員建立正常鍵盤探針時，先核對出戰後checkpoint的目前index／camp／raw+6集合，再排除其他全部可操作隊員；不以舊槽摘要或FIG名稱推定友軍身分。入口tools/dosgolem_oracle_drive.py的do_sweep_round與docs/data/ida/fd2_physical_background_selection_20261004.json的physical_opposite_side_probe。",
+      "why": "#166首版漏排除出戰後record28，max_units1先選較近隊員，未取得指定FIG8首擊。r2只修選取名單，保留同一槽與起始RNG。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5983020981"
     }
   ]
 }

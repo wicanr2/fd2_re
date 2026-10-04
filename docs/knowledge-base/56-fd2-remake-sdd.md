@@ -9473,3 +9473,10 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 重新malloc的map work初值仍未知，本修法不改寫它。VGA回歸與完整演出／GPU通過，正常重播與存檔結果只見[58](58-fd2-exe-re-coverage.md)；不外推完整map work或整章PLAYER-E2。
 
 VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回歸的完整範圍見58及主契約。
+
+
+### 2026-10-05 #166：非零攻方側別的有限演出驗收
+
+[physical_tail_spec.opposite_side_acceptance_extension](../data/ida/fd2_physical_background_selection_20261004.json)已依正常BIOS鍵盤取得的首擊達有限CONFORMED／RUNTIME-E1。正式結算器從同源原始記錄及既有具型別資料結算一次，場景呈現控制未修改；只擴充固定來源測試與收據，未改正式規則、資料格式或存檔。
+
+固定色盤時序與呼叫端分界先審查為READY。原版完整擷取保留後續地圖重畫，但其驗收範圍另屬工作緩衝交接，不隨演出通過。oracle的normal_player_path_verified維持false；建構槽加成數值只核對演出輸入，不升級PLAYER-E2。唯一統計、完整命令與限制見[58](58-fd2-exe-re-coverage.md)及上列主契約。此節取代先前所有相反原始側別非零影格尚缺的現況；連擊、命中反擊、DAC0／音訊與工作緩衝仍待驗收。

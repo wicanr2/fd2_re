@@ -596,3 +596,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 
 - #168 [正式finishAttackPresentation](../../remake/cmd/fd2/main.go)與[原生VGA收尾回歸](../../remake/cmd/fd2/native_physical_body_test.go)：沿用已閉合290AC..290BD直接bytes，證據與READY契約見[physical_map_return_spec](../data/ida/fd2_physical_background_selection_20261004.json)，目前驗證只見[58](58-fd2-exe-re-coverage.md)。map work初值限制仍在#166／#167。
+
+- #166 [第八章攻方非零側別的固定四輪探針](../data/parity-plans/physical-own-nonzero-ch08-r1.jsonl)：正常LOAD前74步沿用r7，首次射擊與窗口政策記錄於[physical_opposite_side_probe](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+- #166 [第八章攻方非零側別探針 r2](../data/parity-plans/physical-own-nonzero-ch08-r2.jsonl)：排除實測第28筆普通我方隊員，只修正常輸入名單；r1失敗與同槽限制保留於上述physical_opposite_side_probe。
+
+- #166 [第八章弓手首擊的固定控制窗口](../data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl)：r2首次record5→11射擊的controls1..201，不挑結果；READY驗收見上述physical_tail_spec.opposite_side_acceptance_extension。
+
+- #166 [弓手首擊完整畫面測試](../../remake/cmd/fd2/native_physical_body_test.go)：TestNativePhysicalBodyOwnNonzeroNormalOracle與既有GPU入口共用正式resolver；caller分界及有限CONFORMED見[physical_opposite_side_validation](../data/ida/fd2_physical_background_selection_20261004.json)，唯一現況見[58](58-fd2-exe-re-coverage.md)。

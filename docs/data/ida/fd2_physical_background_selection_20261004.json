@@ -30474,13 +30474,13 @@
       "純排程涵蓋MISS/多命中血量/overkill/delay0/idle wrap/相反raw side/layer bit/DAC雙脈衝。",
       "正式固定BIOS原版ch12 raw-side-zero nonzero場景首尾49格indexed+RGB無遮蔽對拍。",
       "獨立真實GPU完整影格與Draw阻塞；玩家/AI/mode11交易與章內正常Game到postbattle/SAV回歸。",
-      "其它raw-side與counter、多揮缺少正式同狀態收據時維持E1，不外推完整166或20/30章E2。"
+      "未取樣的raw值、連擊、命中反擊、DAC0／音訊與work仍待正式原版收據，不外推完整166或章E2。"
     ],
     "review": {
       "ready_date": "2026-10-04",
       "validation_date": "2026-10-05",
       "basis": "原始2939D、29164、2BC9A直接指令與三張原始表審查；傷害producer沿用106。",
-      "remaining": "其他raw方向、命中／連擊／反擊／DAC0需各自原版影格；work與ending不在本子契約。"
+      "remaining": "未取樣的非零連擊／返回轉場、命中反擊、DAC0、逐cue／人耳音訊與地圖work交接；raw0非零MISS、raw2非零單次HIT與零header主攻HIT／counterMISS已有有限完整收據。"
     },
     "counter_acceptance_extension": {
       "date": "2026-10-05",
@@ -30508,6 +30508,110 @@
       },
       "capture_policy": "固定兩個phase邊界：前導用同狀態r2的11EB0入口，逐揮與最後恢復用r3的11EED出口。兩份control-history及checkpoint0156／0157必須逐byte相同；前導9個唯一indexed frame固定取entry，尾段與restore固定取exit。禁止候選搜尋、遮罩、RGB忽略。",
       "evidence_restriction": "固定加成建構槽，收據只驗收演出；Damage／HP／RNG核對固定演出輸入，不宣稱傷害、存活或敵方選目標parity。"
+    },
+    "opposite_side_acceptance_extension": {
+      "date": "2026-10-05",
+      "state": "CONFORMED-finite-own-header1-single-hit",
+      "scope": "record5→11正常首次射擊，raw+6=2／FIG8 attack25 header1=1；同輸入合成的正式resolver與場景owner，不提升章PLAYER-E2。",
+      "basis": [
+        "沿用已閉合28A6C／29164／2939D與雙背景捲動直接指令，不重開既有RE。",
+        "目前正式oracle951cb55固定槽與正常LOAD，control186／187與2939D trace確認caller、原始80-byte輸入和結算後狀態。"
+      ],
+      "settlement_inputs": {
+        "before_seq": 186,
+        "after_seq": 187,
+        "actor_index": 5,
+        "target_index": 11,
+        "map_id": 7,
+        "rng_before": 29178,
+        "rng_after": 36609,
+        "actor_hp": [
+          205,
+          205
+        ],
+        "target_hp": [
+          184,
+          41
+        ],
+        "damage": 143,
+        "counter": false
+      },
+      "capture_policy": "固定window1428400000..1438355503。前導使用同鍵盤／狀態的11EB0入口post-DAC；其餘使用11EED複製出口，包含最後非零header尾格。影格依原序及相鄰indexed去重，不搜尋候選、不遮罩、不忽略RGB。",
+      "acceptance": [
+        "兩個捕捉執行與scout的controls1..201、checkpoint186／187／201逐byte相同。",
+        "解碼兩筆raw記錄與原生typed資料，正式resolver一次結算；HP／RNG／EXP僅核對演出輸入。",
+        "完整320x200 indexed與每格原生DAC的RGB零差異。",
+        "正式GPU完成所有present、Draw確認與最後續行；既有兩種完整對拍和交易反例保持。"
+      ],
+      "restrictions": [
+        "建構槽含已授權AP／DP／DX政策值，不作傷害、存活或敵方選目標parity。",
+        "既有近堆替代政策保留#167限制。",
+        "本探針不提升章PLAYER-E2。"
+      ],
+      "capture_scope_review": {
+        "state": "READY",
+        "basis": "既有11EB0／11EED證據及目前正式oracle直接stack trace；判斷caller，不比對像素選格。",
+        "window_contains": [
+          {
+            "scope": "initial previous VGA",
+            "frames": [
+              0,
+              0
+            ],
+            "caller": "0x2922F"
+          },
+          {
+            "scope": "post-DAC prelude",
+            "frames": [
+              1,
+              9
+            ],
+            "caller": "0x291F6"
+          },
+          {
+            "scope": "departure",
+            "frames": [
+              10,
+              23
+            ],
+            "caller": "0x295B2"
+          },
+          {
+            "scope": "left scroll",
+            "frames": [
+              24,
+              43
+            ],
+            "callers": [
+              "0x29CF7",
+              "0x29DE1"
+            ]
+          },
+          {
+            "scope": "attack body through final present",
+            "frames": [
+              44,
+              50
+            ],
+            "caller": "0x2987F"
+          },
+          {
+            "scope": "following map redraw, outside this body acceptance",
+            "frames": [
+              51,
+              71
+            ],
+            "caller": "0x11D3B"
+          }
+        ],
+        "policy": "先由exit逐格step連至原始trace，first caller11D3B是地圖起點，其後必須全部保持同caller；其前只准READY列出的演出caller且control187相同。完整body仍逐序取1..50，原資料72格全部保留。不得從重製unique數決定切點，不能依像素差異縮範圍。",
+        "last_body_step": 1431956944,
+        "first_map_step": 1433399615,
+        "trace_sha256": "ade44fddf94147e9cab16af244c700fb6255ccce78b76de8b81434e69dc0793d",
+        "capture_exit_metadata_sha256": "ee06043131a6430e2f99ca542c7dae727484af8aeae0a9dedd1864b4972bd6a0",
+        "restriction": "地圖work與返回圖像仍屬#166未驗收，這21格不宣稱通過。"
+      },
+      "validation_date": "2026-10-05"
     }
   },
   "physical_tail_validation": {
@@ -32066,6 +32170,578 @@
           "sha256": "4a876cd21f752def5c54dd1a2e873f41d520397e6bbbfbfe58ce0e1c67e33ce0"
         }
       ]
+    }
+  },
+  "physical_opposite_side_probe": {
+    "status": "CONFORMED-finite-own-header1-presentation",
+    "issue": 166,
+    "date": "2026-10-05",
+    "plan": "docs/data/parity-plans/physical-own-nonzero-ch08-r1.jsonl",
+    "plan_sha256": "6c13ff1c492047672640d6d10f18292503a025f585d53ecacd903ff5b7ee81f9",
+    "normal_load_prefix": {
+      "source": "docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl",
+      "source_sha256": "079eecf19c2a1df78fe74a034b20f8c3a6b14769b92703644b4a334a09952ffd",
+      "commands": 74
+    },
+    "initial_slot": {
+      "path": "work/parity-slot-ch08/FD2.SAV",
+      "sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0"
+    },
+    "fixed_selection": {
+      "record": 5,
+      "raw_side_plus6": 2,
+      "fig_plus7": 8,
+      "attack_animation": 25,
+      "header_byte1": 1
+    },
+    "procedure": [
+      "正常LOAD與固定鍵盤前綴，僅record5正常走位／射擊，最多四輪。",
+      "只採本次首次射擊，不改亂數、不搜尋命中結果。",
+      "caller與狀態確認後，以同一計畫與槽固定窗口重生完整影格；通過READY審查後才擴充測試或runtime。"
+    ],
+    "restrictions": [
+      "建構槽含已授權AP／DP／DX政策值，不作傷害、存活或敵方選目標parity。",
+      "既有近堆替代政策保留#167限制。",
+      "本探針不提升章PLAYER-E2。"
+    ],
+    "input_plan_correction": {
+      "r1_failure": "skip_indices漏排除record28，max_units1優先選較近的FIG5，未取得record5射擊。",
+      "classification": "input-plan defect, not remake defect",
+      "r1_source": "work/parity-slot-ch08/physical-own-nonzero-original-r1",
+      "r1_checkpoint74_sha256": "4ff21ad23163a59e602851ff772b5b722f30970d85f4889a0708e56d09cac681",
+      "evidence": [
+        {
+          "index": 5,
+          "camp": 2,
+          "raw_side": 2,
+          "fig": 8
+        },
+        {
+          "index": 28,
+          "camp": 2,
+          "raw_side": 2,
+          "fig": 5
+        }
+      ],
+      "r2_plan": "docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl",
+      "r2_sha256": "c8bc625dc285bd161fda7f154046ba5a38c699b01e89f792f4b1e166f6de7717",
+      "unchanged": "同一初始槽與boot RNG，不搜索結果；只修skip_indices。"
+    },
+    "first_attack": {
+      "source": "work/parity-slot-ch08/physical-own-nonzero-original-r2",
+      "attack": {
+        "kind": "attack",
+        "seq": 186,
+        "round": 3,
+        "rng_word": 29178,
+        "gold": 2000,
+        "frm": [
+          15,
+          25
+        ],
+        "target": [
+          14,
+          24
+        ],
+        "target_hp_before": 184,
+        "actor_hp_before": 205
+      },
+      "result": {
+        "kind": "attack_result",
+        "seq": 201,
+        "round": 3,
+        "rng_word": 36609,
+        "gold": 2000,
+        "frm": [
+          15,
+          25
+        ],
+        "target": [
+          14,
+          24
+        ],
+        "target_hp_after": 41,
+        "actor_hp_after": 205,
+        "enemy_total_hp_before": 3080,
+        "enemy_total_hp_after": 2937,
+        "enemy_alive_before": 20,
+        "enemy_alive_after": 20
+      },
+      "checkpoints": {
+        "186": {
+          "view": {
+            "aux_phase": 0,
+            "camera_x": 8,
+            "camera_y": 23,
+            "cursor_x": 14,
+            "cursor_y": 24,
+            "gold": 2000,
+            "overlay_selector": 1,
+            "rng_word": 29178,
+            "round": 3,
+            "visible_x": 6,
+            "visible_y": 1
+          },
+          "units": [
+            {
+              "byte5": 0,
+              "camp": 2,
+              "exp": 0,
+              "fig": 8,
+              "hp": 205,
+              "identity": 8,
+              "index": 5,
+              "level": 33,
+              "motion": 0,
+              "pose": 0,
+              "raw_hex": "0f190500000002080800402c408180ff80ff80ff80ff80ff80ff0000000000010421000000000000000000000000000000ff0000000000c30051000400014200cd00fa0000000000d7005b00a1004200",
+              "x": 15,
+              "y": 25
+            },
+            {
+              "byte5": 0,
+              "camp": 0,
+              "exp": 255,
+              "fig": 78,
+              "hp": 184,
+              "identity": 78,
+              "index": 11,
+              "level": 8,
+              "motion": 0,
+              "pose": 0,
+              "raw_hex": "0e180b000000004e4e004003409180ff80ff80ff80ff80ff80ff0000000000010208000000000000000000000000000000ff00000200005000280003ff011000b800b800000000009100500065001000",
+              "x": 14,
+              "y": 24
+            }
+          ],
+          "sha256": "4178b2148749885ac181c117db830f88d70ff0ce510c2f12f01f50138121384e",
+          "normal_player_path_verified": false,
+          "state_injections": []
+        },
+        "187": {
+          "view": {
+            "aux_phase": 0,
+            "camera_x": 8,
+            "camera_y": 23,
+            "cursor_x": 14,
+            "cursor_y": 24,
+            "gold": 2000,
+            "overlay_selector": 1,
+            "rng_word": 36609,
+            "round": 3,
+            "visible_x": 6,
+            "visible_y": 1
+          },
+          "units": [
+            {
+              "byte5": 128,
+              "camp": 2,
+              "exp": 12,
+              "fig": 8,
+              "hp": 205,
+              "identity": 8,
+              "index": 5,
+              "level": 33,
+              "motion": 0,
+              "pose": 0,
+              "raw_hex": "0f190500008002080800402c408180ff80ff80ff80ff80ff80ff0000000000010421000000000000000000000000000000ff0000000000c3005100040c014200cd00fa0000000000d7005b00a1004200",
+              "x": 15,
+              "y": 25
+            },
+            {
+              "byte5": 0,
+              "camp": 0,
+              "exp": 255,
+              "fig": 78,
+              "hp": 41,
+              "identity": 78,
+              "index": 11,
+              "level": 8,
+              "motion": 0,
+              "pose": 0,
+              "raw_hex": "0e180b000000004e4e004003409180ff80ff80ff80ff80ff80ff0000000000010208000000000000000000000000000000ff00000200005000280003ff0110002900b800000000009100500065001000",
+              "x": 14,
+              "y": 24
+            }
+          ],
+          "sha256": "3c3c61e50a728a1a64b32b28957a77ff674efc12ed8ebb8e5ac2d360c8fa538e",
+          "normal_player_path_verified": false,
+          "state_injections": []
+        },
+        "201": {
+          "view": {
+            "aux_phase": 0,
+            "camera_x": 8,
+            "camera_y": 23,
+            "cursor_x": 14,
+            "cursor_y": 24,
+            "gold": 2000,
+            "overlay_selector": 1,
+            "rng_word": 36609,
+            "round": 3,
+            "visible_x": 6,
+            "visible_y": 1
+          },
+          "units": [
+            {
+              "byte5": 128,
+              "camp": 2,
+              "exp": 12,
+              "fig": 8,
+              "hp": 205,
+              "identity": 8,
+              "index": 5,
+              "level": 33,
+              "motion": 0,
+              "pose": 0,
+              "raw_hex": "0f190500008002080800402c408180ff80ff80ff80ff80ff80ff0000000000010421000000000000000000000000000000ff0000000000c3005100040c014200cd00fa0000000000d7005b00a1004200",
+              "x": 15,
+              "y": 25
+            },
+            {
+              "byte5": 0,
+              "camp": 0,
+              "exp": 255,
+              "fig": 78,
+              "hp": 41,
+              "identity": 78,
+              "index": 11,
+              "level": 8,
+              "motion": 0,
+              "pose": 0,
+              "raw_hex": "0e180b000000004e4e004003409180ff80ff80ff80ff80ff80ff0000000000010208000000000000000000000000000000ff00000200005000280003ff0110002900b800000000009100500065001000",
+              "x": 14,
+              "y": 24
+            }
+          ],
+          "sha256": "142d3b472894e430e3ef09c590fb9c1bb7dc62e7fbcef9476e040e503e10d65d",
+          "normal_player_path_verified": false,
+          "state_injections": []
+        }
+      },
+      "normal_player_inputs": true,
+      "plan": "docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl",
+      "plan_sha256": "657183c567128a1afeab6e1c4918ea4603a9a14925b9ec261dcedd286acec8a9",
+      "control_prefix_count": 201,
+      "fixed_window": {
+        "from": 1428400000,
+        "to": 1438355503
+      },
+      "trace": {
+        "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/eip-trace.jsonl",
+        "sha256": "c9bfd2c9c8e7d665053f7857bdc5fc6f65a495b571523b94b2da5f7936b508f6"
+      }
+    }
+  },
+  "physical_opposite_side_validation": {
+    "date": "2026-10-05",
+    "state": "CONFORMED-finite-own-header1-single-hit",
+    "runtime_level": "RUNTIME-E1",
+    "issue": 166,
+    "scope": "第八章record5→11，raw+6=2與header1=1的單次主攻命中，無counter。兩筆同源raw與既有typed資料經正式resolver結算一次，再由正式Game場景owner呈現。",
+    "basis": "RE與READY入口沿用physical_tail_evidence／spec及opposite_side_acceptance_extension；未新增猜測語意或正式程式修改。",
+    "original_input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "original_source": {
+      "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "scout_plan": {
+        "path": "docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl",
+        "sha256": "c8bc625dc285bd161fda7f154046ba5a38c699b01e89f792f4b1e166f6de7717"
+      },
+      "fixed_plan": {
+        "path": "docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl",
+        "sha256": "657183c567128a1afeab6e1c4918ea4603a9a14925b9ec261dcedd286acec8a9"
+      },
+      "slot": {
+        "path": "work/parity-slot-ch08/FD2.SAV",
+        "sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0"
+      },
+      "slot_manifest": {
+        "path": "work/parity-slot-ch08/manifest.json",
+        "sha256": "990686ba32d60336b229d3873bbaa1688d6e79c4ab8516c84fce26dc16c94fa6"
+      },
+      "runners": [
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/runner.json",
+          "sha256": "0bdc5de784beba0a16971a952634bbe3ae47e80f6445626773c476e01d356b0a"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/runner.json",
+          "sha256": "e75cb91b6376cf20c5f711328140678b5e7d17a87fa827b7f6ecd8a6a8ca9d31"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/runner.json",
+          "sha256": "0b706ba391295fe009220d321ae95f124ae7da21b9874d56eac83e5aa3cc4672"
+        }
+      ],
+      "control_sources": [
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/control-history.jsonl",
+          "sha256": "327c4d94e77f1d2e3d09786b3663fe3c83456b5bfb4c5ca1f1a4e28080aee95f"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/control-history.jsonl",
+          "sha256": "c29b676408ecfc6188dc5a779aeae543977df0f606421f55e0e271db8cf7db18"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/control-history.jsonl",
+          "sha256": "c29b676408ecfc6188dc5a779aeae543977df0f606421f55e0e271db8cf7db18"
+        }
+      ],
+      "fixed_control_count": 201,
+      "scout_control_count": 308,
+      "fixed_controls_equal_scout_prefix": true,
+      "exact_selected_state_identical": true,
+      "checkpoints": [
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/checkpoint-0000.json",
+          "sha256": "cfb48b7d40d9dd4d4f3537f676728f6bc792d8a18d342753f413f73e055c6c4c"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/checkpoint-0186.json",
+          "sha256": "4178b2148749885ac181c117db830f88d70ff0ce510c2f12f01f50138121384e"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/checkpoint-0187.json",
+          "sha256": "3c3c61e50a728a1a64b32b28957a77ff674efc12ed8ebb8e5ac2d360c8fa538e"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/checkpoint-0201.json",
+          "sha256": "142d3b472894e430e3ef09c590fb9c1bb7dc62e7fbcef9476e040e503e10d65d"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/checkpoint-0000.json",
+          "sha256": "cfb48b7d40d9dd4d4f3537f676728f6bc792d8a18d342753f413f73e055c6c4c"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/checkpoint-0186.json",
+          "sha256": "4178b2148749885ac181c117db830f88d70ff0ce510c2f12f01f50138121384e"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/checkpoint-0187.json",
+          "sha256": "3c3c61e50a728a1a64b32b28957a77ff674efc12ed8ebb8e5ac2d360c8fa538e"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/checkpoint-0201.json",
+          "sha256": "142d3b472894e430e3ef09c590fb9c1bb7dc62e7fbcef9476e040e503e10d65d"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/checkpoint-0000.json",
+          "sha256": "cfb48b7d40d9dd4d4f3537f676728f6bc792d8a18d342753f413f73e055c6c4c"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/checkpoint-0186.json",
+          "sha256": "4178b2148749885ac181c117db830f88d70ff0ce510c2f12f01f50138121384e"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/checkpoint-0187.json",
+          "sha256": "3c3c61e50a728a1a64b32b28957a77ff674efc12ed8ebb8e5ac2d360c8fa538e"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/checkpoint-0201.json",
+          "sha256": "142d3b472894e430e3ef09c590fb9c1bb7dc62e7fbcef9476e040e503e10d65d"
+        }
+      ],
+      "traces": [
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/eip-trace.jsonl",
+          "sha256": "c9bfd2c9c8e7d665053f7857bdc5fc6f65a495b571523b94b2da5f7936b508f6"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/eip-trace.jsonl",
+          "sha256": "ade44fddf94147e9cab16af244c700fb6255ccce78b76de8b81434e69dc0793d"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/eip-trace.jsonl",
+          "sha256": "ade44fddf94147e9cab16af244c700fb6255ccce78b76de8b81434e69dc0793d"
+        }
+      ],
+      "input_kind": "normal BIOS keys",
+      "state_injections": [],
+      "normal_player_path_verified": false,
+      "flag_definition": "oracle/main.go:464明寫false，且保留evidence_restrictions；正常BIOS輸入不自動提升成PLAYER-E2。",
+      "readonly_original": true,
+      "initial_rng": 22661,
+      "slot_unchanged_in_all_overlays": true
+    },
+    "presentation_inputs": {
+      "actor": 5,
+      "target": 11,
+      "map": 7,
+      "actor_raw6": 2,
+      "target_raw6": 0,
+      "fig": 8,
+      "attack_resource": 25,
+      "header1": 1,
+      "strikes": 1,
+      "miss": false,
+      "crit": false,
+      "status": false,
+      "counter": false,
+      "actor_hp": [
+        205,
+        205
+      ],
+      "target_hp": [
+        184,
+        41
+      ],
+      "damage": 143,
+      "actor_exp": [
+        0,
+        12
+      ],
+      "rng": [
+        29178,
+        36609
+      ]
+    },
+    "sampling": {
+      "entry": "work/parity-slot-ch08/physical-own-nonzero-original-r3",
+      "exit": "work/parity-slot-ch08/physical-own-nonzero-original-r4",
+      "metadata": [
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r3/frames/frames.jsonl",
+          "sha256": "f521fc3416b47ae34d68bceed971ede27fe20d6912da66db676cc67ba2ce0795"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-own-nonzero-original-r4/frames/frames.jsonl",
+          "sha256": "ee06043131a6430e2f99ca542c7dae727484af8aeae0a9dedd1864b4972bd6a0"
+        }
+      ],
+      "entry_eip": "0x11EB0",
+      "exit_eip": "0x11EED",
+      "captured_frames_per_run": 72,
+      "initial_previous_vga": 1,
+      "prelude_frames": [
+        1,
+        9
+      ],
+      "departure_frames": [
+        10,
+        23
+      ],
+      "left_scroll_frames": [
+        24,
+        43
+      ],
+      "body_through_final_present": [
+        44,
+        50
+      ],
+      "following_map_redraw_frames": [
+        51,
+        71
+      ],
+      "fixed_mapping": "1..9取同狀態entry post-DAC；10..50取exit；trace的first11D3B caller明確結束演出scope，後21格完整保留但不驗收map。",
+      "policy": "逐序完整320x200，依相鄰indexed去重，固定caller／phase映射；沒有遮罩、候選搜尋或RGB略過。"
+    },
+    "indexed_rgb": {
+      "receipt": {
+        "path": "work/physical-own-nonzero-final/comparison.json",
+        "sha256": "82ea1f74a2a0574a5fcd2889b5625691dabae63464f6b6924cb480767937a5de"
+      },
+      "log": {
+        "path": "work/physical-own-nonzero-final-focused-r1.log",
+        "sha256": "133aff9f198eb76b30599f17c7e5e9a2427ab7fe11248002cbbfbde0b74ff514"
+      },
+      "unique_frames": 50,
+      "presents": 53,
+      "pixels_per_frame": 64000,
+      "indexed_difference": 0,
+      "rgb_difference": 0,
+      "includes_last_body_present": true
+    },
+    "gpu": {
+      "log": {
+        "path": "work/physical-own-nonzero-gpu-final-r1.log",
+        "sha256": "45639bafcedb5b4d26dbd04d22616dfb1789a92b8e0c62928f10de452f0ca36d"
+      },
+      "presents": 53,
+      "shape": [
+        640,
+        400
+      ],
+      "checks": "正式drawBattleScene逐pixel RGB與alpha、每個Draw確認、未Draw阻塞及最後續行"
+    },
+    "regression": {
+      "packages": [
+        "internal/battlepresent",
+        "internal/fdother",
+        "cmd/fd2"
+      ],
+      "focused_log": {
+        "path": "work/physical-own-nonzero-final-focused-r1.log",
+        "sha256": "133aff9f198eb76b30599f17c7e5e9a2427ab7fe11248002cbbfbde0b74ff514"
+      },
+      "existing_nonzero_miss_frames": 49,
+      "existing_zero_header_main_counter_frames": 34,
+      "all_indexed_rgb_difference": 0,
+      "counter_gpu_presents": 54,
+      "counter_gpu_log": {
+        "path": "work/physical-own-final-counter-gpu-r1.log",
+        "sha256": "171940acc23c563485ce6487db522433070d5446f9e77d518b1e756554c2210d"
+      },
+      "scope": "資產來源／透明index0、缺raw與缺素材原子拒收、供值multi與DAC0排程、VGA收尾；純測試擴充，本輪未重跑不受影響的全19套件或全章。"
+    },
+    "failures_corrected": [
+      {
+        "classification": "input plan",
+        "source": "work/parity-slot-ch08/physical-own-nonzero-original-r1",
+        "failure": "漏排除第28筆可操作我方，max_units1選錯人；保留失敗並停止容器。",
+        "fix": "r2只加入skip index28，初始槽／RNG不變。"
+      },
+      {
+        "classification": "capture scope",
+        "log": {
+          "path": "work/physical-own-nonzero-full-r1.log",
+          "sha256": "f2f2e5ef837b67683ba49cef47afd50af302f667c44a4f4a19a0c4c5049a9260"
+        },
+        "failure": "固定窗口另外捕到後續21次地圖重畫，原門檻如實拒收72格對51格。",
+        "fix": "審查逐格直接stack caller，在READY記錄11D3B開始的地圖分界，r2及最終版完整演出通過。"
+      }
+    ],
+    "evidence_restriction": "AP／DP／DX政策加成建構槽。同源E1合成只核對演出輸入；不驗收傷害、存活或敵方選目標，不新增章PLAYER-E2，不外推DOS硬體時序。",
+    "remaining": [
+      "非零連擊與返回轉場原版影格",
+      "命中反擊原版完整影格",
+      "DAC0與逐cue／人耳音訊驗收",
+      "battle→map work與返回地圖畫面",
+      "#166 OPEN；#167工具配置器政策、#52可選像素、#154待決及章台帳20／30不變"
+    ],
+    "commands": {
+      "scout": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-original-r2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r2' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-nonzero-original-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=12000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D' -e 'FD2_ORACLE_EIP_TRACE_FROM=0' -e 'FD2_ORACLE_EIP_TRACE_TO=12000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-nonzero-original-r2.log 2>&1",
+      "original_entry": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-original-r3' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r3' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-nonzero-original-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-original-r3,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r3,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r3' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED' -e 'FD2_ORACLE_EIP_TRACE_FROM=1428400000' -e 'FD2_ORACLE_EIP_TRACE_TO=1438355503' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EB0 -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-nonzero-original-r3.log 2>&1",
+      "original_exit": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-original-r4' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r4' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-nonzero-original-r4 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-original-r4,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r4,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-nonzero-state-r4' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED' -e 'FD2_ORACLE_EIP_TRACE_FROM=1428400000' -e 'FD2_ORACLE_EIP_TRACE_TO=1438355503' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-nonzero-original-r4.log 2>&1",
+      "first_window_rejection": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-own-nonzero-full-r1; mkdir /src/work/physical-own-nonzero-full-r1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_OWN_OUT=/src/work/physical-own-nonzero-full-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyOwnNonzeroNormalOracle$'\\'' -count=1 -timeout 120s -v' > work/physical-own-nonzero-full-r1.log 2>&1",
+      "finite_comparison": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; test ! -e /src/work/physical-own-nonzero-full-r2; mkdir /src/work/physical-own-nonzero-full-r2; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_OWN_OUT=/src/work/physical-own-nonzero-full-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyOwnNonzeroNormalOracle$'\\'' -count=1 -timeout 120s -v' > work/physical-own-nonzero-full-r2.log 2>&1",
+      "focused_final": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; test ! -e /src/work/physical-own-nonzero-final; mkdir /src/work/physical-own-nonzero-final; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_OWN_OUT=/src/work/physical-own-nonzero-final with-xvfb go test ./internal/battlepresent ./internal/fdother ./cmd/fd2 -run '\\''^TestNativePhysical(Body|Scene|Terrain|Surface|DepartureMissingLayer|Return)|TestCompatiblePhysicalReturn|TestLoadSeparatedSoundBank'\\'' -count=1 -timeout 120s -v' > work/physical-own-nonzero-final-focused-r1.log 2>&1",
+      "gpu_final": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=own-nonzero with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-own-nonzero-gpu-final-r1.log 2>&1",
+      "counter_gpu_final": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r1 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=counter with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-own-final-counter-gpu-r1.log 2>&1"
+    },
+    "reproduction_precondition": "沿命令的唯讀source mount使用目前原版與受版控計畫；從已記錄FD2.SAV建立全新空out與state目錄，核對UID／GID1000。重跑改output／state根後保持plan、seed與window不變，不重用已寫過的收據目錄。",
+    "closeout_audit": {
+      "evidence_hashes": 32,
+      "new_local_links": 16,
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "root_owned_historical": 2811,
+      "new_root_owned": 0,
+      "md_directories": 0,
+      "index_positive_control": true,
+      "readme_cultural_entry": true,
+      "lessons": 150,
+      "guards": 48,
+      "github_worklist_open": 23,
+      "possibly_completed": 0,
+      "host_verified": true,
+      "unexpected_fd2_containers": 0
     }
   }
 }

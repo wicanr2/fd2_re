@@ -1742,3 +1742,13 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 這是VGA寫入的有限範圍。map work配置初值、完整返回地圖圖像及#166其他演出收據仍未驗收；章門檻、#167政策與PLAYER-E2分級不變。
 
 VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回歸的完整範圍見58及主契約。
+
+
+### 2026-10-05 #166：弓手首擊的非零側別完整畫面
+
+| 介面範圍 | 分層 | 已驗與剩餘 |
+|---|---|---|
+| raw+6=2、header1=1的正常首次射擊 | 有限CONFORMED／RUNTIME-E1 | 完整前導、射擊起手、左向捲動與逐揮末格及正式GPU通過；唯一數字與來源見[58](58-fd2-exe-re-coverage.md)及[physical_opposite_side_validation](../data/ida/fd2_physical_background_selection_20261004.json)。 |
+| 非零連擊、命中反擊、DAC0／音訊、工作緩衝 | 尚待驗收 | 後續地圖原版影格保留，不由這次演出驗收外推；#166保持開啟。 |
+
+本節取代前段「非零相反原始側別全部尚待」的現況。只驗建構槽同源演出輸入，normal_player_path_verified及原限制保持，不增加章PLAYER-E2或傷害／存活／敵方選目標聲明。
