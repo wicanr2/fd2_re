@@ -403,11 +403,15 @@
         "remake/internal/battle/native_physical_scene.go",
         "remake/cmd/fd2/native_physical_scene.go",
         "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
-        "tools/ida_probe_physical_presentation.py"
+        "tools/ida_probe_physical_presentation.py",
+        "remake/internal/battlepresent/native_physical_body.go",
+        "remake/cmd/fd2/native_physical_body.go",
+        "remake/cmd/fd2/native_physical_body_test.go",
+        "tools/export_sfx.py"
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-04：正常玩家、一般AI與mode11已接原生panel、BG／TAI與九格前導；首次非零raw+6零場景已接13格departure與19格29DED雙BG捲動，41張完整indexed／RGB及GPU驗證通過。仍需相反raw-side非零影格、完整2939D尾段／連擊／counter／DAC音效與戰鬥→地圖work續接；完整影格不得遮罩。#167近堆工具限制與20/30章門檻不變。"
+        "note": "2026-10-05：完整逐揮main／counter演出已接正常Game；actor31→target14單次MISS非零場景59次present、相鄰indexed去重49張完整indexed／RGB均0差異，正式GPU59張通過。Go19套件與既有音效／清冊7項測試通過。其他命中／連擊／counter／相反raw側／DAC音效仍需原版收據；戰鬥→地圖work續接未驗收。#167工具政策、完整章unknown wait拒收與20/30章台帳不變。"
       },
       "issue": 166
     }

@@ -53,11 +53,15 @@ SEPARATED_SOURCE_SIZE = 3382481
 SEPARATED_SOURCE_MD5 = "22f56e5027edc7c766ad34ca4e5aca93"
 SEPARATED_SOURCE_SHA256 = "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
 SEPARATED_TOP_RESOURCE_COUNT = 104
-SEPARATED_RESOURCES = (31, 50, 53, 77, 78, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
+SEPARATED_RESOURCES = (31, 48, 49, 50, 51, 52, 53, 77, 78, 80, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 94, 95)
 # 值為巢狀 container 的非空 sample 數；directory 另有一筆 0-byte 尾哨兵。
 SEPARATED_SAMPLE_COUNTS = {
     31: 13,
+    48: 6,
+    49: 7,
     50: 5,
+    51: 5,
+    52: 6,
     53: 4,
     77: 4,
     78: 1,
@@ -311,6 +315,9 @@ def export_separated_pack(source: Path, output: Path) -> list[Path]:
                         "source_pcm_sha256": hashlib.sha256(pcm).hexdigest(),
                         "path": sample_name,
                         "cue_evidence": (
+                            "physical_2939d_raw_descriptor"
+                            if resource in (48, 49, 51, 52)
+                            else
                             "title_sub_1f894_selector"
                             if resource == 77
                             else "ani1_frame0_companion"
@@ -322,6 +329,9 @@ def export_separated_pack(source: Path, output: Path) -> list[Path]:
                             else "typed_schedule"
                         ),
                         "classification_evidence": (
+                            "strong_inference"
+                            if resource in (48, 49, 51, 52)
+                            else
                             "confirmed"
                             if resource in (77, 78)
                             else "strong_inference"

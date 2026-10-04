@@ -109,12 +109,13 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 	g.aiFocusCursor(target.X, target.Y)
 	actor.SetMapPose(dirToward(actor.X, actor.Y, target.X, target.Y))
 	defHP0 := target.HP
-	attackResult, err := g.resolvePhysicalAttack(actor, target)
+	fullResult, err := g.resolvePhysicalAttackFull(actor, target)
 	if err != nil {
 		g.loadErr = "native AI mode 11 0x1548e: " + err.Error()
 		g.aiBusy = false
 		return
 	}
+	attackResult := fullResult.Attack
 	g.awardDeathReward(target, actor)
 	message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, actor, target, attackResult)
 	if messageErr != nil {
@@ -141,6 +142,12 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		return
 	}
 	g.atk.nativeScene = scene
+	if err := g.attachNativePhysicalBody(scene, fullResult); err != nil {
+		g.loadErr = "native AI mode 11 physical body: " + err.Error()
+		g.atk = nil
+		g.aiBusy = false
+		return
+	}
 	g.atk.after = func() {
 		g.finishSuccessfulUnitAction(actor, after)
 	}

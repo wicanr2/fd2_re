@@ -532,7 +532,8 @@ var ch23JourneyScreen *ebiten.Image
 func ackPresents(g *Game) {
 	if g.atk != nil && g.atk.nativeScene != nil &&
 		(g.atk.nativeScene.preludeFrame < len(g.atk.nativeScene.preludeImages) ||
-			g.atk.nativeScene.leadFrame < len(g.atk.nativeScene.leadImages)) {
+			g.atk.nativeScene.leadFrame < len(g.atk.nativeScene.leadImages) ||
+			g.atk.nativeScene.body != nil) {
 		if ch23JourneyScreen == nil {
 			ch23JourneyScreen = ebiten.NewImage(640, 400)
 		}

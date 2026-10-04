@@ -81,14 +81,15 @@ type MapData struct {
 
 type Game struct {
 	m                           *MapData
-	nativeMapAssets             *nativeMapAssets      // all original map HUD resources, nil on any missing/malformed asset
-	modernMapTilesetLoaded      bool                  // 本次 loadMap 已原子採用現代圖集
-	baseMapTileset              image.Image           // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
-	currentMapID                int                   // 目前地圖 selector；-1 表示尚未載入
-	nativeMapWork               []byte                // persistent 456-stride original tactical framebuffer
-	nativeMapVGA                []byte                // persistent 320x200 indexed VGA surface
-	nativeMapDAC                []byte                // current 256xRGB six-bit DAC state for handler palette ramps
-	nativePaletteRamp           *nativePaletteRampJob // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativeMapAssets             *nativeMapAssets       // all original map HUD resources, nil on any missing/malformed asset
+	modernMapTilesetLoaded      bool                   // 本次 loadMap 已原子採用現代圖集
+	baseMapTileset              image.Image            // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
+	currentMapID                int                    // 目前地圖 selector；-1 表示尚未載入
+	nativeMapWork               []byte                 // persistent 456-stride original tactical framebuffer
+	nativeMapVGA                []byte                 // persistent 320x200 indexed VGA surface
+	nativeMapDAC                []byte                 // current 256xRGB six-bit DAC state for handler palette ramps
+	nativePhysicalSoundBanks    map[int]map[int][]byte // 2BC9A 的 FIGANI sound banks，獨立於完整 command bank cache。
+	nativePaletteRamp           *nativePaletteRampJob  // exact 0x1f882/0x1f525 indexed DAC presentation
 	nativeDefeat                *nativeDefeatJob
 	nativeChapterResult         *nativeChapterResultJob
 	nativeResultMatchedRules    []string
@@ -6585,6 +6586,9 @@ func (g *Game) stepAttackPresentationTick() error {
 		}
 		return nil
 	}
+	if scene := a.nativeScene; scene != nil && scene.body != nil {
+		return g.stepNativePhysicalBodyMillis(scene, attackPresentationTickMillis(a.fpt))
+	}
 	if scene := a.nativeScene; scene != nil && scene.leadFrame < len(scene.leadImages) {
 		if !scene.leadDrawn {
 			return nil
@@ -6688,6 +6692,19 @@ func (a *atkAnim) beginCounterStage() {
 func (g *Game) finishAttackPresentation() {
 	if g.atk == nil {
 		return
+	}
+	if scene := g.atk.nativeScene; scene != nil {
+		if scene.body != nil && scene.body.image != nil {
+			scene.body.image.Dispose()
+		}
+		for _, images := range [][]*ebiten.Image{scene.preludeImages, scene.leadImages} {
+			for _, img := range images {
+				img.Dispose()
+			}
+		}
+		if scene.baseImage != nil {
+			scene.baseImage.Dispose()
+		}
 	}
 	after := g.atk.after
 	g.atk = nil
@@ -7916,11 +7933,12 @@ func (g *Game) confirm() {
 			anm = g.sel.ClsName
 		}
 		defHP0 := tgt.HP
-		attackResult, err := g.resolvePhysicalAttack(g.sel, tgt)
+		fullResult, err := g.resolvePhysicalAttackFull(g.sel, tgt)
 		if err != nil {
 			g.msg = "攻擊：" + err.Error()
 			return
 		}
+		attackResult := fullResult.Attack
 		g.awardDeathReward(tgt, g.sel)
 		message, messageErr := playerPhysicalAttackMessage(g.localeCatalog, g.sel, tgt, attackResult)
 		if messageErr != nil {
@@ -7937,6 +7955,11 @@ func (g *Game) confirm() {
 		g.attachCounterPresentation(g.atk, actor, tgt, attackResult)
 		if g.atk != nil {
 			g.atk.nativeScene = scene
+			if err := g.attachNativePhysicalBody(scene, fullResult); err != nil {
+				g.loadErr = "physical attack body: " + err.Error()
+				g.atk = nil
+				return
+			}
 			g.atk.after = func() {
 				g.finishSuccessfulUnitAction(actor, nil)
 			}
@@ -8206,11 +8229,17 @@ func (g *Game) Update() error {
 	// docs/knowledge-base/105-phase-banner-timing-20260910.md。
 	if g.atk != nil {
 		a := g.atk
-		ticks, rest := attackPresentationTicks(a.accumMillis+1000.0/60, a.fpt)
-		a.accumMillis = rest
-		for ; ticks > 0 && g.atk != nil; ticks-- {
-			if err := g.stepAttackPresentationTick(); err != nil {
+		if scene := a.nativeScene; scene != nil && scene.body != nil && scene.preludeFrame >= len(scene.preludeImages) {
+			if err := g.stepNativePhysicalBodyMillis(scene, 1000.0/60); err != nil {
 				return nil
+			}
+		} else {
+			ticks, rest := attackPresentationTicks(a.accumMillis+1000.0/60, a.fpt)
+			a.accumMillis = rest
+			for ; ticks > 0 && g.atk != nil; ticks-- {
+				if err := g.stepAttackPresentationTick(); err != nil {
+					return nil
+				}
 			}
 		}
 	}
@@ -12777,6 +12806,12 @@ func (g *Game) aiStep() {
 			g.attachCounterPresentation(g.atk, u, tgt, attackResult)
 			if g.atk != nil {
 				g.atk.nativeScene = scene
+				if err := g.attachNativePhysicalBody(scene, fullResult); err != nil {
+					g.loadErr = "AI physical attack body: " + err.Error()
+					g.atk = nil
+					g.aiBusy = false
+					return
+				}
 				g.atk.after = finish
 			} else {
 				g.loadErr = fmt.Sprintf("AI FIGANI attack presentation unavailable: %d -> %d", u.BattleFig, tgt.BattleFig)

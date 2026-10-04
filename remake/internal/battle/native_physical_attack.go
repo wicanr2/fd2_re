@@ -184,6 +184,13 @@ func (s *State) counterattackDefender(d *Unit) NativeCounterattackDefender {
 	}
 }
 
+// NativePhysicalCounterattackEligible 供呈現預檢沿用結算的資格來源。
+// 這裡使用攻擊前HP；主攻結束後仍由結算端重新檢查生存條件。
+func (s *State) NativePhysicalCounterattackEligible(actor, target *Unit) bool {
+	return s != nil && actor != nil && target != nil &&
+		NativeCounterattackEligible(actor.X, actor.Y, s.counterattackDefender(target))
+}
+
 // AttackNativePhysical 依原版結算一次物理攻擊，含反擊。rngState 是原版的全域
 // `0x627B8`；呼叫者要把回傳的新狀態存回去，否則之後每一次結算都會偏掉。
 //

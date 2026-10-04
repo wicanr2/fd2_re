@@ -1,13 +1,13 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-## 2026-10-04 本輪目前狀態
+## 2026-10-05 本輪目前狀態
 
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
-| #166物理背景選擇 | 有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費raw地形及BG／TAI快照；[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。整場景與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
+| #166原生物理演出 | 單次MISS有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -2683,3 +2683,32 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 首次raw+6零的非零旗標prefix列有限CONFORMED及RUNTIME-E1。相反raw-side的非零影格、完整2939D尾段／連擊／counter／DAC音效及戰鬥→地圖work續接仍在#166。章台帳20／30、#154與#167限制不變。
 
 本批最終回歸：Go19套件通過，98筆字串處置不變；原版與GPU範圍、完整章拒收理由保留於主契約。 147條教訓的46條guard通過，本地連結與README文化保存入口有效；變更檔UID／GID1000，新增root-owned為0，.md目錄0，無非預期FD2容器。
+
+
+### 2026-10-05 #166：逐揮物理尾段與原生反擊排程
+
+本節取代上一節「首次scroll後接既有尾段」的目前狀態。[主契約 physical_tail_evidence／spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)保存READY審查、IDA9.4直接指令、原始表、分級與可重跑命令。傷害與反擊資格沿用[106](106-physical-attack-counterattack-20260910.md)，演出只消費已結算的Roll，不再次推進亂數。
+
+正式玩家、一般AI與mode11現在使用逐descriptor的HP、idle byte計數、位移、opaque index33、raw+7圖層順序及cue。每揮依非零header重播departure與雙BG轉場；counter重設idle／phase，保留caller的54103／54107與共享base。零header最後恢復TAI及雙方idle。20／40ms的DAC0脈衝與BIOS等待由60Hz平台步進呈現，每張畫面需要正式Draw確認。這些時序屬平台近似，不稱DOS硬體wall-clock一致。
+
+| 驗證範圍 | 結果與限制 |
+|---|---|
+| 目前951cb55f原版的actor31→target14單次MISS | 既有固定BIOS計畫與正常原版狀態不變，無注入。重製消費同一決策點rng60777及已閉合roll輸入；完整前導、departure、scroll與尾段共59次present，相鄰indexed去重後49張逐序完整320×200的indexed／RGB均0差異。不遮罩、不搜尋最佳格。 |
+| 正式Game的GPU owner | 59張640×400完整RGB／alpha、Draw閘門與最後續接通過；不是新增章PLAYER-E2。 |
+| 命中、多揮、counter、DAC0與缺資產 | 純規則及正式Game供值fixture通過；缺音效銀行在方向、HP與RNG前拒收。供值fixture不證明原版命中／反擊影格一致。 |
+| 歷史a9原版來源的第12章正常LOAD→戰後回歸 | AI155／155、順序分岔0；22987-byte存檔SHA-256仍為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。275張比較的behavior與transaction通過，1528／2030 unknown wait及完整節點／影像gate仍拒收。 |
+| 標準回歸 | Go19套件與音效／清冊7項Python測試通過；98項字串處置保持，定位已重綁。 |
+
+![單次未命中尾段的有限比較](../figures/physical-tail-scoped-compare.png)
+
+各排依序為原版擷取、同輸入重製合成、完整未遮差異，對應原版43／46／49。全畫布差異均為0；此圖不涵蓋palette-only脈衝、其他命中／連擊／counter或戰後work。
+
+新增FDOTHER48／49／51／52四個分離音效銀行，共24筆非空樣本。來源固定FDOTHER.DAT的size／MD5／SHA-256見主契約，11025Hz mono unsigned8標為hardware-spec_approximation；技術解碼與非靜音通過，不冒稱人耳或逐cue原版驗收。原始OGG只同步私人保存庫，公開庫保存工具、metadata及來源／輸出雜湊。
+
+目前素材統計由 tools/generate_separated_asset_manifest.py 重生，命令與輸入見主契約validation.commands.manifest，機器結果見[resource覆蓋摘要](../data/fd2-source-resource-coverage-summary.json)。2026-10-05清冊共39894筆，其中38889筆非raw與1005筆raw；1005個來源resource分為905 standardized、11 confirmed_empty、0 blocked與89 unknown。這是素材清冊覆蓋，不是玩家功能完成率；較早日期的清冊數字不再代表目前結果。
+
+私人保存庫e80b6d7f已推送並核對遠端HEAD。差量36筆清冊項目含34個新檔及2個既有未索引檔，既有內容變更0；完整39894筆檔案雜湊通過。只按清冊allow-list同步，未混入現代主題或未登錄草稿。
+
+單次MISS非零場景列有限CONFORMED。相反raw側非零影格、命中／連擊／原生counter／DAC音效的原版收據及battle→map work續接仍在#166。#167近堆工具政策限制、20／30章台帳與#154待決不變。
+
+本批收尾檢查：147條教訓的46條guard通過，遠端pull／render／verify維持23項，可能已完成0項；118個本地連結及README文化入口有效。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。

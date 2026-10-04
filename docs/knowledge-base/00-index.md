@@ -585,3 +585,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - #166 [非零旗標首次轉場固定輸入](../data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl)與[IDA9.4非破壞匯出工具](../../tools/ida_probe_physical_presentation.py)：首次departure與29C90／29DED的caller、bytes及分級合併至[場景主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
 - [物理首次捲動比較圖](../figures/physical-scroll-scoped-compare.png)：原版、同輸入合成與完整未遮差異；不外推完整攻擊或章PLAYER-E2。
+
+
+- #166 [逐揮物理演出計畫](../../remake/internal/battlepresent/native_physical_body.go)與[規則反例](../../remake/internal/battlepresent/native_physical_body_test.go)、[正式Game owner](../../remake/cmd/fd2/native_physical_body.go)與[完整合成／GPU及原子性測試](../../remake/cmd/fd2/native_physical_body_test.go)：READY及有限CONFORMED範圍見[場景主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+- [單次未命中物理尾段比較圖](../figures/physical-tail-scoped-compare.png)：原版、同輸入合成與完整未遮差異，不外推連擊、counter或章PLAYER-E2。
+- #166 分離音效[可重跑匯出工具](../../tools/export_sfx.py)與[strict銀行consumer](../../remake/internal/fdother/separated_sound.go)：來源、硬體規格近似、私人清冊同步及目前覆蓋只見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)與[58](58-fd2-exe-re-coverage.md)。

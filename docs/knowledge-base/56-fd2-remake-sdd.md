@@ -9448,3 +9448,12 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 [首次轉場契約](../data/ida/fd2_physical_background_selection_20261004.json)已接入正式物理場景。actor panel→actor BG的前導base、header2個departure及雙方向helper保留原始raw+6分支；29DED是9+10格且target base包含TAI，29C90為10+10格且不加TAI。全部來源在結算前驗證，Draw確認才推進，完成後從header2接續尾段。快照不新增存檔格式。
 
 有限CONFORMED只涵蓋首次raw+6零場景的完整prefix。相反方向非零影格、完整2939D、連擊、counter與work交接仍待驗收。前節「非零scroll未實作」的現況由本節取代；唯一測試數字與來源見[58](58-fd2-exe-re-coverage.md)。
+
+
+### 2026-10-05 #166：正常物理演出的逐揮owner
+
+[逐揮子契約](../data/ida/fd2_physical_background_selection_20261004.json)的READY審查先於正式接入。正式場景的HP、idle byte計數、index33、raw圖層順序與cue由結算一次的AttackStrikes／CounterStrikes產生，演出不讀寫戰鬥RNG。反擊沿用caller的雙BG與共享base，重設本次2939D的idle／phase。非零header按每揮重播departure，header1等於1且尚有揮次時返回actor背景；零header最後恢復TAI與雙方idle。
+
+所有分離FIGANI、BG／TAI、panel與可能counter音效銀行在方向／HP／RNG前預檢。header4依原始六byte表選FDOTHER48..53，禁止archive fallback。cue-only descriptor不要求Draw；每個present須由Draw確認，GPU資源在游標前進及結束時釋放。counter需要caller未準備的非零BG layers時明確拒收，不猜造緩衝。無原生地圖場景的既有相容呈現維持原scope。
+
+平台播放以60Hz消費20／40ms及BIOS等待，不宣稱DOS硬體wall-clock一致。原始PCM取樣率依既有硬體規格近似，來源與公式沿用[聲音契約](../data/ida/fd2_physical_background_selection_20261004.json)的validation.separated_sfx；不深入硬體driver或ISR。本次單次MISS有限CONFORMED，其他原版影格及work仍待驗；唯一統計與回歸結果見[58](58-fd2-exe-re-coverage.md)。本節取代前節完整尾段尚未接入的目前狀態，不增加存檔欄位或章PLAYER-E2。

@@ -9079,3 +9079,16 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 本節取代前段非零header僅觀察來源的現況。正式Game已消費13格departure、19格29DED捲動與原生目標base；完整41格prefix核對範圍及可重跑命令見[58](58-fd2-exe-re-coverage.md)與[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
 
 r1章回歸漏了新增owner的Draw確認，屬驗證helper問題。改用正式drawNativePhysicalPrelude後，以同一歷史原版來源乾淨重跑r2通過LOAD→戰後→存檔。完整章圖像與未知wait gate仍拒收，不列新PLAYER-E2。首次raw+6零prefix有限CONFORMED；完整2939D、相反方向、連擊、counter及work仍為下一切片。
+
+
+### 2026-10-05 #166：逐揮尾段、反擊排程與音效銀行
+
+[58目前狀態](58-fd2-exe-re-coverage.md)與[主契約 physical_tail_validation](../data/ida/fd2_physical_background_selection_20261004.json)取代前段完整尾段尚未接入的接手狀態。正式Game現在消費一次結算的逐揮結果，保留原生idle、HP、圖層、DAC0、cue及main／counter base；不在演出重擲亂數。單次MISS非零完整場景有限CONFORMED，其他命中／連擊／反擊原版收據仍待補；#166保持OPEN。
+
+首次focused因既有strict provider尚未登錄四個物理音效銀行拒收。修正既有可重跑exporter與provider後通過，不退回原archive。全套r1在字串定位重綁前啟動，只剩string-inventory的舊hash拒收；98項處置不變，標準環境r2乾淨通過。私人差量兩個FDOTHER15檔早已存在但未索引，以hash確認後保留，不覆寫。
+
+原始音效與清冊已同步私人保存庫e80b6d7f，本機／遠端HEAD一致。公開庫只保存來源／輸出雜湊、工具與使用者已允許的總覽圖。歷史來源正常LOAD→戰後與存檔回歸保持，完整章的未知wait、節點與影像gate仍拒收，未增加PLAYER-E2。
+
+下一步限定#166剩餘原版影格與work交接，不重開傷害規則或原版實體近堆初值。#167工具政策限制、#52最後可選像素、#154待決與現行章台帳不變。
+
+本批收尾檢查：147條教訓的46條guard通過，遠端pull／render／verify維持23項，可能已完成0項；118個本地連結及README文化入口有效。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。

@@ -42,6 +42,8 @@ type nativePhysicalScene struct {
 	targetBackground          fdother.Frame
 	platformFrame             fdother.Frame
 	rawSide                   byte
+	bodyResources             *nativePhysicalBodyResources
+	body                      *nativePhysicalBodyPlayback
 }
 
 func (g *Game) nativePhysicalTerrainControl(unit *battle.Unit) ([4]byte, error) {
@@ -152,6 +154,9 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 	}
 	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal}
 	if err := g.prepareNativePhysicalPrelude(scene, actor, target, animation, bg, tai); err != nil {
+		return nil, err
+	}
+	if err := g.prepareNativePhysicalBodyResources(scene, actor, target, animation); err != nil {
 		return nil, err
 	}
 	return scene, nil
@@ -322,9 +327,21 @@ func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool {
 		img = scene.preludeImages[scene.preludeFrame]
 		scene.preludeDrawn = true
 	} else if scene.leadFrame < len(scene.leadImages) {
+		if scene.body != nil {
+			if err := g.drawNativePhysicalBody(screen, scene); err != nil {
+				g.loadErr = "native physical body: " + err.Error()
+			}
+			return true
+		}
 		img = scene.leadImages[scene.leadFrame]
 		scene.leadDrawn = true
 	} else {
+		if scene.body != nil {
+			if err := g.drawNativePhysicalBody(screen, scene); err != nil {
+				g.loadErr = "native physical body: " + err.Error()
+			}
+			return true
+		}
 		return false
 	}
 	op := &ebiten.DrawImageOptions{}
