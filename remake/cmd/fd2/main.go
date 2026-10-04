@@ -6713,7 +6713,7 @@ func (g *Game) finishAttackPresentation() {
 		// 290C2的11CAC(1)在290D4停止音效之前返回。
 		// nil bundle保留既有PNG相容路徑；已宣告bundle不得略過合成失敗。
 		if g.nativeMapAssets != nil {
-			if err := g.composeNativeMapFrame(); err != nil {
+			if err := g.composeNativeMapFrameForPhysicalReturn(); err != nil {
 				g.stopNativePhysicalSound()
 				g.atk = nil
 				g.loadErr = fmt.Sprintf("native physical map return: %v", err)
@@ -12052,6 +12052,16 @@ func (g *Game) composeNativeMapFrame() error {
 // 取寶提示底圖；依 17643 的背景恢復與 seq3820 的同狀態畫面，保留原始
 // selector，省略互動 range／selection。契約見 SDD #53，不能套用其他對話。
 func (g *Game) composeNativeMapFrameForActionBackground(closedAction bool) error {
+	return g.composeNativeMapFrameForCaller(closedAction, true)
+}
+
+// 正常物理返回呼叫11CAC(1)，只略過4DFCC；其他地圖層及時鐘照常。
+// 契約見physical_return_palette_spec，不用closedAction省略range／selection。
+func (g *Game) composeNativeMapFrameForPhysicalReturn() error {
+	return g.composeNativeMapFrameForCaller(false, false)
+}
+
+func (g *Game) composeNativeMapFrameForCaller(closedAction, updateSteadyPalette bool) error {
 	now := time.Now()
 	if g != nil && g.nativeMapFrozenNow != nil {
 		now = g.nativeMapFrozenNow()
@@ -12061,7 +12071,7 @@ func (g *Game) composeNativeMapFrameForActionBackground(closedAction bool) error
 		// 時鐘。這避免 Xvfb 排程差異把同一狀態存成不同動畫幀。
 		now = time.Unix(0, int64(g.frame)*int64(time.Second/60))
 	}
-	return g.composeNativeMapFrameAtForActionBackground(now, closedAction)
+	return g.composeNativeMapFrameAtWithPaletteCycle(now, closedAction, updateSteadyPalette)
 }
 
 // composeNativeMapFrameAt owns one complete 0x11CAC-style transaction:
@@ -12074,6 +12084,10 @@ func (g *Game) composeNativeMapFrameAt(now time.Time) error {
 }
 
 func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedAction bool) error {
+	return g.composeNativeMapFrameAtWithPaletteCycle(now, closedAction, true)
+}
+
+func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedAction, updateSteadyPalette bool) error {
 	a := g.nativeMapAssets
 	if g.st == nil {
 		return errors.New("native map frame: battle state is unavailable")
@@ -12121,11 +12135,15 @@ func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedA
 		return errors.New("native map frame: current DAC unavailable")
 	}
 	candidateDAC := append([]byte(nil), currentDAC...)
-	candidatePalettePhase, candidatePaletteTick, _, err := fdother.AdvanceNativeDACPaletteCycleE0EF(
-		candidateDAC, g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick, rawTick,
-	)
-	if err != nil {
-		return fmt.Errorf("native map frame: steady DAC cycle: %w", err)
+	candidatePalettePhase, candidatePaletteTick := g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick
+	if updateSteadyPalette {
+		var err error
+		candidatePalettePhase, candidatePaletteTick, _, err = fdother.AdvanceNativeDACPaletteCycleE0EF(
+			candidateDAC, candidatePalettePhase, candidatePaletteTick, rawTick,
+		)
+		if err != nil {
+			return fmt.Errorf("native map frame: steady DAC cycle: %w", err)
+		}
 	}
 	in, err := buildNativeMapFrameInput(
 		a, g.m, &candidateState, nativeMapFrameRuntime{HUD: hud, ChapterAuxPhase: auxPhase},

@@ -5436,3 +5436,13 @@ DRAFT核對完整結算後，READY先於新增受版控測試。測試第一次�
 返回影格與後一停點的selector不同，READY後在唯一oracle補預設停用的唯讀逐格原始列。dosgolem來源04ac5e169b6c160565b2afe790f6868954fecf8f已提交推送，遠端HEAD核對相同，再以固定原存檔／種子／輸入重生。wrapper r1的容器根目錄連結權限失敗保留；修正掛載後r2乾淨重跑通過。唯一結果與限制見[58](58-fd2-exe-re-coverage.md)，完整命令及雜湊見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。本工具切片不關閉#166或新增章PLAYER-E2。
 
 本批收尾：真正主機GitHub已關閉#171，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、12個新增本地連結及來源／輸出雜湊通過，索引正對照與README文化入口有效。變更檔及新原版收據UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。
+
+### 2026-10-05 #172：返回地圖色盤閘門修正
+
+在[#166](https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5985050624)登記完整返回驗收後，發現原版push1與正式普通composer矛盾，另建[#172](https://github.com/wicanr2/fd2_re/issues/172)。先重用已閉合IDA branch／caller寫入RE與READY，再取得正式時鐘反例，修正預檢與返回的caller入口。
+
+完整演出、GPU、Go與正常章重播保持；章比較仍按原門檻拒收，不因leaf修正新增PLAYER-E2。首次Issue標籤、章檢視鍵名及Go統計事件型別的腳本錯誤均已訂正，沒有改原始收據或測試結果。唯一數字、命令與雜湊見[58](58-fd2-exe-re-coverage.md)及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+原版frame現在有單位raw，但仍缺週期／HUD／色盤同時點來源，已登記[#173](https://github.com/wicanr2/fd2_re/issues/173)。這是#166後續必要工具切片；目前DRAFT，不以候選像素選phase，不重開原版配置器或硬體driver。
+
+本批收尾：真正主機GitHub已關閉#172，#166與#173保持開啟；pull／render／verify為24項、可能已完成0項。154條教訓的50條guard、4份實作來源雜湊、13份收據雜湊及13個新增本地連結通過。索引正對照與README文化入口有效，變更檔及新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

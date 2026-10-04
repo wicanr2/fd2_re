@@ -614,3 +614,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - #166 [零旗標敵方主攻與友軍命中反擊的完整演出驗收](../data/ida/fd2_physical_background_selection_20261004.json)：physical_counter_hit_probe／validation與counter_hit_acceptance_extension；[受版控測試](../../remake/cmd/fd2/native_physical_body_test.go)沿用106與固定輸入，保留raw camp 1為Ally、同控制移動座標及原始caller界線。唯一現況見[58](58-fd2-exe-re-coverage.md)。
 
 - #171 [逐格同時點單位原始記錄的已驗工具契約](../data/ida/fd2_physical_background_selection_20261004.json)：physical_frame_unit_records_spec／validation；[既有oracle包裝入口](../../tools/dosgolem_oracle_container.sh)傳遞可選旗標，完整來源與範圍見[58](58-fd2-exe-re-coverage.md)。
+
+- #172 [正常物理返回11CAC(1)色盤閘門證據與限定CONFORMED](../data/ida/fd2_physical_background_selection_20261004.json)：physical_return_palette_evidence／spec／validation重用已閉合caller及palette gate原始bytes；正式來源見[58](58-fd2-exe-re-coverage.md)。
+
+- #173 [完整地圖同時點週期／HUD／色盤來源缺口](../data/ida/fd2_physical_background_selection_20261004.json)：physical_map_runtime_observation_gap維持DRAFT；原版既有欄位與寬度須複核，正式consumer未驗收，現況見[58](58-fd2-exe-re-coverage.md)。

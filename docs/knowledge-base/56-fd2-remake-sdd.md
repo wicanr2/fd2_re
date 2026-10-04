@@ -9506,3 +9506,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 [physical_frame_unit_records_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。既有oracle以預設停用的唯讀旗標，在接受PNG的同一指令時點保存單位原始列；無效來源明示false。正式控制、原版記憶體及擷取時序未修改。
 
 這補齊#166返回地圖的同時點單位來源，未驗收重製端完整地圖。唯一驗證數字與限制見[58](58-fd2-exe-re-coverage.md)。舊近堆政策收據保留；新增來源只經唯讀差異審查，不提高原版配置器或PLAYER-E2等級。
+
+### 2026-10-05 #172：物理返回的11CAC(1)色盤閘門
+
+[physical_return_palette_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。正常物理返回與候選預檢改用同一caller入口，只略過4DFCC的steady palette cycle，保留其他地圖層、時鐘及map→stop→after。普通重繪與取寶背景仍走原有更新。
+
+這補正#170以普通composer接回原版11CAC(1)時漏掉的參數閘門。原版直接branch與stack writer已由既有IDA證據複核；正式反例先紅後綠。唯一數字與分層現況見[58](58-fd2-exe-re-coverage.md)。#173仍DRAFT，完整返回地圖不得用候選phase冒充同時點來源，章與配置器限制保持。

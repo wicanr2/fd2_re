@@ -1593,6 +1593,21 @@
         ],
         "pattern": "func \\(g \\*Game\\) playNativePhysicalSound"
       }
+    },
+    {
+      "id": "native-redraw-caller-keeps-palette-gate",
+      "date": "2026-10-05",
+      "area": "地圖合成caller",
+      "rule": "原版共用合成器的參數控制副作用時，正式caller保留該閘門，預檢與執行使用同一入口。先以原始stack writer及consumer branch審查，不把普通重繪套到所有返回。入口docs/data/ida/fd2_physical_background_selection_20261004.json的physical_return_palette_evidence／spec；實作main.go的composeNativeMapFrameForPhysicalReturn，僅支援已證實正常物理11CAC(1)，其餘普通重繪保持。",
+      "why": "#172原版290C0 push1略過4DFCC，#170接普通composer卻多做steady DAC cycle。固定時鐘反例phase3變4，修正後保留且普通重繪仍更新。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/172",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "if err := g\\.composeNativeMapFrameForPhysicalReturn\\(\\); err != nil"
+      }
     }
   ]
 }

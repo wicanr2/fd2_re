@@ -177,7 +177,7 @@ func (g *Game) preflightNativePhysicalMapReturn() error {
 	probe.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
 	probe.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
 	probe.nativeMapDAC = append([]byte(nil), g.nativeMapDAC...)
-	return probe.composeNativeMapFrame()
+	return probe.composeNativeMapFrameForPhysicalReturn()
 }
 
 // nativePhysicalBase 保留 0x28CE7→0x28D48→0x28D62 的順序。

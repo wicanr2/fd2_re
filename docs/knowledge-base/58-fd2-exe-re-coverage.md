@@ -8,6 +8,8 @@
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
+| #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
+| #173同時點地圖runtime | DRAFT | 缺週期／HUD／色盤來源，唯一oracle待補；#166完整map未驗收。 |
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -2875,3 +2877,15 @@ READY先核對原版停點與完整結算，再用已審查IDA原始call bytes�
 目前受版控dosgolem04ac5e169b6c160565b2afe790f6868954fecf8f固定第十二章1,539次輸入，control-history.jsonl、四停點與269筆trace逐byte一致；44張完整320×200 PNG及新增欄位之外的metadata全部一致。每張具33筆合法80-byte raw。返回影格43在4000799496步、caller11D3B、RNG60777，保留actor23 HP121與target14 HP185。這些只限定同時點來源，不驗收重製地圖或傷害。五項oracle測試、96項控制器與9項來源鏈回歸通過；parity package無測試檔。完整命令、輸入及輸出雜湊由主契約保存。
 
 本批收尾：真正主機GitHub已關閉#171，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、12個新增本地連結及來源／輸出雜湊通過，索引正對照與README文化入口有效。變更檔及新原版收據UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。
+
+### 2026-10-05 #172：正常物理返回色盤閘門
+
+[physical_return_palette_evidence／spec](../data/ida/fd2_physical_background_selection_20261004.json)先RE-CLOSED／READY，現已限定CONFORMED／RUNTIME-E1。重用既有IDA raw bytes確認290C0 push1、290C2 call11CAC，以及11CBC／11CC1只在參數0執行4DFCC；修正前的正式返回與預檢無條件走普通palette cycle，另登記[#172](https://github.com/wicanr2/fd2_re/issues/172)。不重解原版位址或配置器；完整返回地圖仍在#166。
+
+正式返回與預檢共用physical caller，只略過4DFCC；普通重繪、地形／單位時鐘、原子拒收及map→stop→after保持。完整Go為2361個頂層測試通過，含子案例2859個pass事件、46條件式skip，19套件通過、11無測試套件；98筆字串審查決定保持。四條完整320×200索引／RGB為49／34／50／42張，每張0差異，GPU全部Draw與續行通過。正常第十二章155筆AI入口無順序分岔，SAV兩側SHA-256同為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821；新舊三個非影像gate與275點圖像數值保持，unknown節點及全畫面gate仍拒收。沒有新增PLAYER-E2。完整命令與輸出雜湊見主契約。
+
+### 2026-10-05 #173：完整地圖的runtime來源仍缺
+
+[physical_map_runtime_observation_gap](../data/ida/fd2_physical_background_selection_20261004.json)為DRAFT，來源04ac5e1的frame43已有33筆raw及view，但沒有週期／latches、HUD gate／anchor與palette state。先複核已閉合欄位寬度與來源，再在唯一oracle加入可選唯讀觀測，取得正常11CAC(1)前後資料。#166完整返回仍未驗收；不依像素枚舉出最像的phase。
+
+本批收尾：真正主機GitHub已關閉#172，#166與#173保持開啟；pull／render／verify為24項、可能已完成0項。154條教訓的50條guard、4份實作來源雜湊、13份收據雜湊及13個新增本地連結通過。索引正對照與README文化入口有效，變更檔及新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

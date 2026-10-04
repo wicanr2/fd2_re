@@ -9168,3 +9168,13 @@ oracle明寫normal_player_path_verified=false，仍保留原限制。正常BIOS�
 下一個#166切片可由physical_frame_unit_records_validation所列返回影格、view及units開始；需用正式具型別選擇器／地圖consumer驗證，不從PNG推導資料，不以checkpoint替代同時點raw。特殊分支、完整map work、DAC0／人耳及PLAYER-E2限制保持。唯一統計及來源見[58](58-fd2-exe-re-coverage.md)與[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
 
 本批收尾：真正主機GitHub已關閉#171，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、12個新增本地連結及來源／輸出雜湊通過，索引正對照與README文化入口有效。變更檔及新原版收據UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。
+
+### 2026-10-05 #172：較晚的caller參數勘誤
+
+#170的有限收據閉合音效生命周期與map→stop→after，但接回普通composer漏掉原版11CAC(1)的4DFCC閘門。本輪用既有IDA raw branch／push1複核後，READY先於正式反例與修正。預檢與正常返回現在只略過steady palette cycle，其他地圖層與時鐘保持，已限定CONFORMED／RUNTIME-E1。
+
+完整演出／GPU、Go、正常第十二章AI與存檔保持，章unknown節點與畫面gate仍拒收。唯一統計、來源、命令及輸出雜湊見[58](58-fd2-exe-re-coverage.md)與[physical_return_palette_validation](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+下一步由#173補physical_map_runtime_observation_gap所列的同時點週期／HUD／色盤來源，再回到#166完整map consumer。#171的單位來源保留；不用最相近phase代替原始state，不猜清work，不新增PLAYER-E2。
+
+本批收尾：真正主機GitHub已關閉#172，#166與#173保持開啟；pull／render／verify為24項、可能已完成0項。154條教訓的50條guard、4份實作來源雜湊、13份收據雜湊及13個新增本地連結通過。索引正對照與README文化入口有效，變更檔及新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

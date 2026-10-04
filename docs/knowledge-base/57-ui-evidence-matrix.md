@@ -1778,3 +1778,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 逐格PNG現在可取得同時點的完整單位原始列，工具已限定CONFORMED。原始11D3B返回影格的selector仍為1，下一停點已為0，不得混用。原始呼叫端與完整畫面保持；[主契約](../data/ida/fd2_physical_background_selection_20261004.json)及[58](58-fd2-exe-re-coverage.md)保存來源、命令及唯一驗證數字。
 
 #166完整返回地圖仍待正式consumer比較。本項只補觀測來源，不新增RUNTIME-E1地圖或PLAYER-E2。
+
+### 2026-10-05 #172：物理返回保留steady色盤
+
+正常物理返回不再錯走11CAC(0)的DAC週期。固定時鐘驗收同時確認地圖／單位仍合成，普通重繪仍推進色盤，候選預檢與正式返回使用同一入口。已限定CONFORMED／RUNTIME-E1，來源與唯一數字見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)和[58](58-fd2-exe-re-coverage.md)。
+
+四條完整演出／GPU及正常第十二章保持；完整map work與返回圖像仍在#166，#173需補同時點週期／HUD／色盤來源。沒有新增整章PLAYER-E2。

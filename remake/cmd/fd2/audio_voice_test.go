@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
@@ -195,6 +196,34 @@ func TestNativePhysicalReturnComposesMapBeforeContinuation(t *testing.T) {
 	g.finishAttackPresentation()
 	if !called || g.loadErr != "" {
 		t.Fatalf("continuation=%v error=%q", called, g.loadErr)
+	}
+}
+
+func TestNativePhysicalReturnSkipsSteadyPaletteCycle(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	frozen := time.Unix(1000, 0)
+	before := bytes.Repeat([]byte{7}, 256*3)
+	g := &Game{nativeMapAssets: assets, m: field, st: state,
+		nativeMapDAC: append([]byte(nil), before...), nativeFDOTHERPalettePhase: 3,
+		nativeMapFrozenNow: func() time.Time { return frozen }}
+	if !g.nativeMapClock.Seed(10, frozen) {
+		t.Fatal("BIOS seed")
+	}
+	continued := false
+	g.atk = &atkAnim{nativeScene: &nativePhysicalScene{}, after: func() { continued = true }}
+	g.finishAttackPresentation()
+	if !continued || g.loadErr != "" || g.st.NativeMapCycleState.Moving != 1 {
+		t.Fatalf("map return incomplete: continued=%v error=%q moving=%d", continued, g.loadErr, g.st.NativeMapCycleState.Moving)
+	}
+	if !bytes.Equal(g.nativeMapDAC, before) || g.nativeFDOTHERPalettePhase != 3 || g.nativeFDOTHERPaletteTick != 0 {
+		t.Fatalf("11CAC(1) changed steady palette: phase=%d tick=%d", g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick)
+	}
+	// 同一BIOS tick的普通11CAC(0)仍須通過4DFCC gate。
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Equal(g.nativeMapDAC, before) || g.nativeFDOTHERPalettePhase != 4 || g.nativeFDOTHERPaletteTick != 10 {
+		t.Fatalf("ordinary redraw lost palette cycle: phase=%d tick=%d", g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick)
 	}
 }
 
