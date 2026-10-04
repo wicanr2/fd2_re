@@ -238,12 +238,13 @@ type Game struct {
 	spawnIntroTransition        *nativeSpawnIntroJob
 	nativeTurnStaging           *nativeTurnStagingJob
 	nativeFieldEvent61          *nativeFieldEvent61Job
-	nativeAIIdleRecovery        *nativeAIIdleRecoveryJob // direct 0x13FD4 indexed/audio owner
-	nativeEnding                *nativeEndingPreview     // FD2_ENDING_PREFIX 或來源約束 campaign ending；缺原始資料時走明示 fallback
-	endingNotice                string                   // 原始素材不足或來源約束終局無法發布時的玩家提示
-	walk                        *walkAnim                // 移動動畫(沿路徑逐格走,FDICON 方向幀)
-	camp                        *campaign.Runner         // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
-	campSel                     int                      // choice 節點游標
+	nativeAIIdleRecovery        *nativeAIIdleRecoveryJob  // direct 0x13FD4 indexed/audio owner
+	nativeEndTurnRecovery       *nativeEndTurnRecoveryJob // 0x1A30B two-pass indexed owner
+	nativeEnding                *nativeEndingPreview      // FD2_ENDING_PREFIX 或來源約束 campaign ending；缺原始資料時走明示 fallback
+	endingNotice                string                    // 原始素材不足或來源約束終局無法發布時的玩家提示
+	walk                        *walkAnim                 // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp                        *campaign.Runner          // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel                     int                       // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
 	titleAssets    *titleAssets
 	titlePhase     string  // "scroll"→"menu"→""(進遊戲)
@@ -8067,6 +8068,10 @@ func (g *Game) Update() error {
 		}
 		return nil
 	}
+	if g.nativeEndTurnRecovery != nil {
+		g.stepNativeEndTurnRecovery(time.Now())
+		return nil
+	}
 	if g.nativeAIIdleRecovery != nil {
 		g.stepNativeAIIdleRecovery()
 		if g.shotPath != "" && g.shotTaken {
@@ -9238,6 +9243,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.Fill(color.Black)
 		if !g.drawNativeFieldEvent61(screen) {
 			ebitenutil.DebugPrint(screen, "native event61 presentation unavailable")
+		}
+		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
+			g.captureShot(screen)
+		}
+		return
+	}
+	if g.nativeEndTurnRecovery != nil {
+		screen.Fill(color.Black)
+		if !g.drawNativeEndTurnRecovery(screen) {
+			g.cancelNativeEndTurnRecovery(fmt.Errorf("native END recovery: Draw unavailable"))
+			ebitenutil.DebugPrint(screen, g.loadErr)
 		}
 		if g.shotPath != "" && !g.shotTaken && g.frame >= g.shotFrame {
 			g.captureShot(screen)
@@ -12025,7 +12041,15 @@ func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedA
 // 可編輯的回合事件依 NativeTurnPhaseSelector 插在對應位置；沒有 selector 的手寫
 // 事件仍留在敵方回合之後（finishTurn）。
 func (g *Game) endTurn() {
-	if g.st == nil || g.result != "" || g.aiBusy || g.nativeTurnStaging != nil || g.battleEvent != nil {
+	if g.st == nil || g.result != "" || g.aiBusy || g.nativeEndTurnRecovery != nil || g.nativeTurnStaging != nil || g.battleEvent != nil {
+		return
+	}
+	if g.st.HasNativeRuntimeUnitProjection || g.st.HasNativeMapViewState {
+		if err := g.beginNativeEndTurnRecovery(func() {
+			g.runEditableTurnEvents(1, g.endTurnAfterSelector1Events)
+		}); err != nil {
+			g.loadErr = err.Error()
+		}
 		return
 	}
 	// 兩條 END 路徑（系統選單 0x1726B、全員行動完 0x135B4）進 0x1A30B 之前都把 HUD
@@ -12034,9 +12058,7 @@ func (g *Game) endTurn() {
 	if g.st.HasNativeMapHUDState {
 		g.st.NativeMapHUDState.DisplayGateB = 0
 	}
-	// 0x1A332..0x1A484：進 0x1A30B 先讓沒行動、沒狀態的我方單位回 MaxHP/5，
-	// 之後才跑 selector 1 的回合事件。原版還會在每個回復的單位上畫圖示並播音效 4，
-	// 那段演出尚未接（只有數值）。
+	// 沒有正式原版 runtime/view 的舊可編輯劇本保留同步數值路徑。
 	for _, rec := range g.st.ApplyNativeEndTurnRecovery() {
 		if os.Getenv("FD2_SHOT_AI") != "" {
 			log.Printf("END recovery: %s(%d,%d) hp %d→%d", rec.Unit.ClsName, rec.Unit.X, rec.Unit.Y, rec.Before, rec.After)
@@ -12435,7 +12457,7 @@ func (g *Game) aiStep() {
 			}
 		}
 	}
-	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeAIIdleRecovery != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
+	if !g.aiBusy || g.walk != nil || g.atk != nil || g.nativeAIIdleRecovery != nil || g.nativeEndTurnRecovery != nil || g.nativeHealPresentation != nil || g.nativeModifierPresentation != nil || g.nativeAICommandModifier != nil || g.nativeAIItemPresentation != nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil || g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9Player != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd1012 != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeCmd32Presentation != nil || g.nativeCmd33Presentation != nil || g.nativeCmd34Presentation != nil || g.nativeCmd35Presentation != nil || g.result != "" {
 		if g.result != "" {
 			g.aiBusy = false
 		}

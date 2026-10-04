@@ -218,7 +218,11 @@ func TestEvent63RunsBeforeEnemyAIWithTwoAtomicStagingCalls(t *testing.T) {
 	if countActiveGroup(g.st, 1) != 0 || countActiveGroup(g.st, 2) != 0 {
 		t.Fatal("event63 groups were active before their live row")
 	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
 	g.endTurn()
+	finishNativeEndTurnRecoveryTest(t, g)
 	if g.nativeTurnStaging == nil || g.loadErr != "" {
 		t.Fatalf("end-turn event63 job=%v err=%q", g.nativeTurnStaging, g.loadErr)
 	}
@@ -279,7 +283,11 @@ func TestEvent63UnknownMatchingRowFailsClosedBeforeAI(t *testing.T) {
 		Turn: byte(g.st.NativeRoundCounter), EventID: 65, RawCamp: 0,
 	}
 	before := cloneBattleUnitPointers(g.st.Units)
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
 	g.endTurn()
+	finishNativeEndTurnRecoveryTest(t, g)
 	if g.loadErr == "" || g.aiBusy || g.nativeTurnStaging != nil || !reflect.DeepEqual(g.st.Units, before) {
 		t.Fatalf("unknown row err=%q ai=%v job=%v", g.loadErr, g.aiBusy, g.nativeTurnStaging)
 	}
@@ -379,7 +387,11 @@ func TestEvent79RunsInRawCamp0BeforeEnemyPhase(t *testing.T) {
 	g.st.NativeRoundCounter = 12
 	g.st.NativeTurnEventControls[2] = battle.NativeTurnEventControl{Turn: 12, EventID: 79, RawCamp: 0}
 	beforeRNG := g.nativeRNGState
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
+	}
 	g.endTurn()
+	finishNativeEndTurnRecoveryTest(t, g)
 	if g.loadErr != "" || !g.aiBusy || g.nativeRNGState == beforeRNG ||
 		g.st.NativeTurnEventControls[2] != (battle.NativeTurnEventControl{Turn: 13, EventID: 79, RawCamp: 0}) {
 		t.Fatalf("event79 phase err=%q ai=%v rng=%#x row=%#v", g.loadErr, g.aiBusy, g.nativeRNGState, g.st.NativeTurnEventControls[2])

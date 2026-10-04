@@ -5213,3 +5213,14 @@ READY審查後沿既有typed四槽交易接正式酒店UI，成功保留服務2�
 三個固定停點的完整索引／RGB在合法相位均相同，不宣稱時間同步。原版傳聞角色列表與內容未新增，不增加章PLAYER-E2。唯一現況與驗證見58及[主契約](../data/ida/fd2_hotel_load_20261004.json)；#154待決及其他未完成Issue不變。本批已獲commit／push授權，驗收後提交並關閉#32。
 
 本批由dcc44254提交推送，遠端HEAD已核對一致；[#32結案留言](https://github.com/wicanr2/fd2_re/issues/32#issuecomment-5976503951)保存驗收與限制。主機gh回讀CLOSED，工具重新pull／render為23條開啟工單。原版傳聞角色列表／內容、#154待決及其他限制不由本次結案消除。
+
+
+## 2026-10-04 #29 END回復收尾
+
+主契約先重用原scheduler，IDA9.4補驗consumer的mode2填C8與tailFD無reader；Issue逐單位cue的舊描述已修正。正常原版r1只有無候選，r2第三回合移動選單等待逾時；r3改成五次普通END，不移動、不攻擊、不注入，取得三候選的兩輪發布與單次sample4。這些失敗與新證據保留在[主契約](../data/ida/fd2_end_turn_recovery_20261004.json)。
+
+READY後接正式END owner，HP/flags/Acted在兩張發布間原子提交，第二張Draw後才11CAC與事件。完整Go首次因三個舊同步夾具及字串review漂移失敗，更新驗證入口後同命令r2通過。舊inventory樹缺ignored command_labels.json；補同一輸入、核對舊hash再遷移98項原處置。外層40秒擋下第七章完整比較及Python ownership traversal，屬驗證命令上限；同來源有界220秒比較與原生find完成。
+
+正式同源夾具三張完整索引／RGB全0差異，不複製原版像素。第七章current remake重播179/179 AI入口、零順序分岔；行為、交易、228張畫面通過，levelup seq1836的dialogue與完整畫面0差異。其餘四個mark與seq1894未知owner節點拒收已開#164，整章本輪不宣稱通過。另mode2檢查發現AI owner缺陷已開#163。#29限END演出及既有升級owner回歸；#154待決、章台帳與政策不變。完整驗證數字及來源只引用58與主契約。
+
+變更檔UID/GID1000:1000；root-owned既有基線2811未增，沒有.md目錄；本批一次性FD2容器均退出移除，其他專案容器未動。提交推送完成後再以host gh關閉#29並更新唯一Issue快照。

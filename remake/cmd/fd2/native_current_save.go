@@ -21,6 +21,9 @@ func nativeCurrentSavePath() string {
 // performs no filesystem mutation; the confirmation owner may therefore
 // preflight all raw state and indexed assets before closing the nested menu.
 func (g *Game) buildNativeCurrentSaveStored() (string, []byte, error) {
+	if g != nil && g.nativeEndTurnRecovery != nil {
+		return "", nil, errors.New("原版目前戰況存檔：END 回復尚未發布完成")
+	}
 	if g == nil || g.st == nil || g.sc == nil || len(g.nativeCurrentSavePlain) != fdsave.FileSize {
 		return "", nil, errors.New("原版目前戰況存檔：缺少 CONTINUE raw baseline")
 	}

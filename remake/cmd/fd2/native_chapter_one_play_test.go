@@ -530,6 +530,17 @@ func ch01UnitDump(g *Game) string {
 var ch23JourneyScreen *ebiten.Image
 
 func ackPresents(g *Game) {
+	if g.nativeEndTurnRecovery != nil {
+		if ch23JourneyScreen == nil {
+			ch23JourneyScreen = ebiten.NewImage(640, 400)
+		}
+		g.Draw(ch23JourneyScreen)
+		// 離屏測試以明示虛擬時間跨過 initial BIOS tick；兩個零 tick
+		// 發布仍由正式 Draw/Update 分別確認，不依 CPU 速度等待。
+		if job := g.nativeEndTurnRecovery; job != nil && job.frame == 0 {
+			g.stepNativeEndTurnRecovery(job.readyAt)
+		}
+	}
 	// 正式Draw會重建被對白或record_bytes失效的地圖快取；離屏pump也要
 	// 走同一合成器，讓下一次Update的狀態到期提示取得完整底圖（#80）。
 	if len(g.nativeMapVGA) == 0 && g.st != nil && g.st.HasNativeMapViewState &&

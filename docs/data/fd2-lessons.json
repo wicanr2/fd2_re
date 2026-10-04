@@ -1398,6 +1398,21 @@
         ],
         "pattern": "RoundToEven"
       }
+    },
+    {
+      "id": "mode2-mask-consumes-helper-stride",
+      "date": "2026-10-04",
+      "area": "原版索引遮罩",
+      "rule": "解讀mode2時追到實際RLE helper的參數reader，從寫入Mask保留opaque source0。入口docs/data/ida/fd2_end_turn_recovery_20261004.json：1DA16→4DDD7的第三參數同時是stride與色盤索引，1C8填C8；tailFD無reader。其他caller需另查其stride。",
+      "why": "#29 END補驗發現既有#163 AI owner用raw sprite代替mode2 Mask；尾參數FD也不能當填色。原版正常三候選END與完整索引畫面證實C8。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/29",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_end_turn_recovery.go"
+        ],
+        "pattern": "0xc8"
+      }
     }
   ]
 }

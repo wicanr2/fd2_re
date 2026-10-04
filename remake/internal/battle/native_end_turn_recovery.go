@@ -1,8 +1,10 @@
 package battle
 
+import "fmt"
+
 // native_end_turn_recovery.go — 0x1A30B 開頭的我方回復掃描。
 //
-// 0x1A332..0x1A3A2 先掃一次找出要回復的單位（畫圖示 0x1DA16、播 0x25A96(…,4,1)），
+// 0x1A332..0x1A3A2 先掃所有候選並畫 0x1DA16(mode2)；整輪發布後只播一次 sample4。
 // 0x1A3F2..0x1A484 再掃一次把數值寫回：`+6`＝2、`(+5 & 0x81)`＝0、`+0x25`＝0、
 // `+0x26`＝0、且 `+0x40`≠`+0x42` 的記錄，`+0x40 += +0x42 / 5`，超過就取 `+0x42`。
 // 這段在 selector 1 的回合事件（0x1A813(1)）之前，玩家按 END、全員行動完的 0x13565
@@ -15,12 +17,13 @@ type NativeEndTurnRecovery struct {
 	Unit   *Unit
 	Before int
 	After  int
+	MaxHP  int
 }
 
-// ApplyNativeEndTurnRecovery 對場上所有符合 0x1A30B 閘門的我方單位回復 MaxHP/5，
-// 回傳有變動的單位（依記錄順序）。沒有原版 `+6`／`+5` 的舊可編輯單位用 Camp／Acted
+// PlanNativeEndTurnRecovery 計算符合 0x1A30B 閘門的我方單位回復 MaxHP/5 後的狀態，
+// 依記錄順序回傳計畫，不寫入單位。沒有原版 `+6`／`+5` 的舊可編輯單位用 Camp／Acted
 // ／Alive 對應同一組條件。
-func (s *State) ApplyNativeEndTurnRecovery() []NativeEndTurnRecovery {
+func (s *State) PlanNativeEndTurnRecovery() []NativeEndTurnRecovery {
 	if s == nil {
 		return nil
 	}
@@ -60,15 +63,47 @@ func (s *State) ApplyNativeEndTurnRecovery() []NativeEndTurnRecovery {
 		if next > u.MaxHP {
 			next = u.MaxHP
 		}
-		u.HP = next
-		// 0x1A477：每個回復的單位接著 0x13512 把 +5 bit7 設起來（橫幅下畫成灰色，
-		// r10 收據 seq 934），0x13536 在橫幅之後才整批清掉。
-		if u.HasNativeRecordByte5 {
-			u.NativeRecordByte5 |= 0x80
-		}
-		out = append(out, NativeEndTurnRecovery{Unit: u, Before: before, After: next})
+		out = append(out, NativeEndTurnRecovery{Unit: u, Before: before, After: next, MaxHP: u.MaxHP})
 	}
 	return out
+}
+
+// CommitNativeEndTurnRecovery rechecks the whole scan before the first write.
+// A changed gate or HP rejects every candidate, including preceding records.
+func (s *State) CommitNativeEndTurnRecovery(plan []NativeEndTurnRecovery) error {
+	if err := s.ValidateNativeEndTurnRecovery(plan); err != nil {
+		return err
+	}
+	for _, rec := range plan {
+		rec.Unit.HP = rec.After
+		if rec.Unit.HasNativeRecordByte5 {
+			rec.Unit.NativeRecordByte5 |= 0x80 // 0x1A477 → 0x13512
+			rec.Unit.Acted = true              // live projection of the same bit; no extra raw write
+		}
+	}
+	return nil
+}
+
+func (s *State) ValidateNativeEndTurnRecovery(plan []NativeEndTurnRecovery) error {
+	current := s.PlanNativeEndTurnRecovery()
+	if len(current) != len(plan) {
+		return fmt.Errorf("native END recovery: candidate set changed")
+	}
+	for i := range current {
+		if current[i] != plan[i] {
+			return fmt.Errorf("native END recovery: candidate %d changed", i)
+		}
+	}
+	return nil
+}
+
+// ApplyNativeEndTurnRecovery preserves the synchronous legacy caller.
+func (s *State) ApplyNativeEndTurnRecovery() []NativeEndTurnRecovery {
+	plan := s.PlanNativeEndTurnRecovery()
+	if err := s.CommitNativeEndTurnRecovery(plan); err != nil {
+		return nil
+	}
+	return plan
 }
 
 // MarkNativeDeadRecords 是 0x1DB65 的狀態部分：每次行動結算後（玩家路徑與敵方

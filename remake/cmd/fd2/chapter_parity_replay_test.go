@@ -1212,7 +1212,7 @@ func (r *parityReplay) playerHasControl() bool {
 		g.bannerT == 0 && len(g.dialog) == 0 && g.walk == nil && g.atk == nil && !g.ring &&
 		g.nativeClassUIJob == nil && g.spawnIntroTransition == nil && g.indexedTransition == nil &&
 		g.nativeUnitPresent == nil && g.actJob == nil && g.camPan == nil && g.focusJob == nil &&
-		g.nativePlayerFocus == nil
+		g.nativePlayerFocus == nil && g.nativeEndTurnRecovery == nil
 }
 
 func (r *parityReplay) settleTown() {

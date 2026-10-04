@@ -13,6 +13,9 @@ import (
 // FD2.SAV plaintext 為底，把目前持續隊伍與金幣寫進 slot，重算校驗和後原子取代
 // FD2_NATIVE_SAVE。寫成功後同一份 plaintext 成為下一次存檔的基底。
 func (g *Game) saveNativeChapterSlot(slot int) error {
+	if g != nil && g.nativeEndTurnRecovery != nil {
+		return errors.New("原版章節槽存檔：END 回復尚未發布完成")
+	}
 	if g == nil || g.nativeChapterSlotBaseline == nil || len(g.nativeChapterSlotPlain) != fdsave.FileSize {
 		return errors.New("原版章節槽存檔：缺少四槽 LOAD 的 raw 基底")
 	}

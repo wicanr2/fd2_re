@@ -243,7 +243,9 @@ func TestEndTurnTicksRawSelectorsOneThenZeroBeforeEnemyPhase(t *testing.T) {
 	g.st.Units = append(g.st.Units, second)
 	g.st.NativeRuntimeRecords = append(g.st.NativeRuntimeRecords, secondRaw)
 
-	g.endTurn()
+	// 此夾具只建立存檔／狀態欄位。END 的索引發布由專用測試驗證；
+	// 這裡從 selector1 事件之後驗既有兩個 countdown phase。
+	g.endTurnAfterSelector1Events()
 	g.aiStep() // 0x1A30B 先跑友軍 AI（0x1D80B）那一遍，跑完才進橫幅
 	// sub_1A866(1) 在友軍 AI 之前；sub_1A866(0) 要等橫幅、0x13536 與 selector 0 回合事件之後
 	// 才跑，橫幅還在時 camp 0 的 +0x23 仍是 2。

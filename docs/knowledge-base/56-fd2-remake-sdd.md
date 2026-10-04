@@ -7791,7 +7791,7 @@ seq 935 的 force_enemy_clear 原版 checkpoint 落在 `0x1A30B` 換手處理裡
 `oracle_mid_end_turn` 規則不比單位、回合與畫面，r57 之前這三點是在換手處理中途拍到
 恰好相同才算過）。
 
-2026-09-16當時尚未閉合：升級與 END 回復的圖示演出（#29；`0x1DA16` 在橫幅之前播完，checkpoint拍不到，這一章的樣本也沒有抽到升級幀）、酒店服務2讀檔與傳聞後回酒店。後兩項已由2026-10-04 #32有限閉合；#29及原第四章收據範圍不變。
+2026-09-16當時尚未閉合：升級與 END 回復的圖示演出（#29；`0x1DA16` 在橫幅之前播完，checkpoint拍不到，這一章的樣本也沒有抽到升級幀）、酒店服務2讀檔與傳聞後回酒店。後兩項已由2026-10-04 #32有限閉合；#29的END演出已由本檔後方2026-10-04補充有限閉合；原第四章章收據範圍不變。
 
 ## 第五章章工作單元：回合事件處理器與敵方回合順序（2026-09-16）
 
@@ -9375,3 +9375,10 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 2026-10-04 #161：已審查caller組圖接入正式LUT15、actor末幀、packed target色調／pose與持續base。Shade／Pose／Jitter只在施法開頭初始化，跨目標落空與轉場保留；display只消耗已證numeric marker，末端RNG須等於damage plan。HP marker先更新持續base，下一張才顯示新HP。全序列預建、失敗零交易及嚴格工作區guard維持。
 
 同源固定槽探針的11張正式composer完整影格與dosgolem原版索引／RGB全0差異；第7張仍按#154負列拒收。12張全圖一致是隔離原型，未證明正式非零側全程施法或新增PLAYER-E2。#161／#160／#154保持開啟，章台帳與既有隊伍政策不變。唯一分層現況見[58](58-fd2-exe-re-coverage.md)。
+
+
+### 2026-10-04 END 回復的正式兩輪發布
+
+已證實的原版writer／consumer及READY審查見[主契約](../data/ida/fd2_end_turn_recovery_20261004.json)。正式END與自動END先計畫候選及完整預建兩張索引畫面，不先改HP。mode2的4DDD7以第三引數stride低byte填C8，保留opaque source0與透明孔；第四引數FD未消費。第一輪所有候選共用一次viewport／sample4，第二輪原子提交HP與bit7及Acted投影，mode0 raw sprite恢復後發布第二張，再正式11CAC與selector1事件。
+
+等待期間由專用owner持有Draw／Update，阻擋輸入、AI、重入END與存檔。缺素材或計畫過期則零HP／flags寫入，HUD gate復原；有原版runtime/view出處時禁止退回舊數值路徑。initial BIOS tick採既有54.925493ms近似，兩個零tick各保留Draw邊界，不宣稱DOS wall-clock一致。原版初始畫面的HUD與游標已在work內，即使gateB寫0仍保留到下一次重畫。完整相位比較及限制見[介面矩陣](57-ui-evidence-matrix.md)與[58](58-fd2-exe-re-coverage.md)。

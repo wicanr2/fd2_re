@@ -115,6 +115,9 @@ func validateSavePartyTopology(d saveData) error {
 func (g *Game) saveGame() { g.saveGameToSlot(0) }
 
 func (g *Game) saveGameToSlot(slot int) error {
+	if g.nativeEndTurnRecovery != nil {
+		return fmt.Errorf("save blocked during native END recovery")
+	}
 	if g.camp == nil {
 		if message, ok := g.localeMessage("save.unsupported"); ok {
 			g.msg = message

@@ -188,15 +188,16 @@
       "layer": "runtime",
       "category": "缺陷",
       "title": "升級五行訊息與 END 回復圖示／音效只有數值沒有演出",
-      "body": "原版 `0x1E292` 升級時以 `0x15F84` 逐行顯示「升級！」與 AP／DP／DX／HP／MP 增量（FDTXT #0x1E8..#0x1EE），每行之間 `0x16559`／`0x16E24` 等待按鍵；`0x1A30B` 開頭的我方回復在每個回復的單位上畫 `0x1DA16` 圖示並播音效 4。重製端 `AwardExpNative` 與 `ApplyNativeEndTurnRecovery` 只改數值（第四章對拍已靠這兩條把回合 4 的行為 gate 推到只剩 RNG 時序差），畫面與等待節奏沒有接，所以原版側這幾格的幀在重製側對不到同狀態。要做：升級訊息用 indexed 資源逐行顯示與等待；END 回復加圖示與音效；重播測試的 `ackPresents` 收進這兩種工作。",
-      "acceptance": "第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。",
+      "body": "升級對話已由native_level_up_dialogue.go接入正式玩家／AI行動收尾，並有第七章等正常章收據。END回復仍只有數值，缺原版兩輪indexed演出。\n\n2026-10-04訂正：固定IDA直接bytes顯示1A30B先整輪以1DA16(mode2,tailFD)改work，再發布viewport；有候選時sample4只播一次。第二輪提交HP與raw sprite恢復及bit7，完成整輪才再次發布，再11CAC與selector1事件。原先「每單位播音效」及第四章seq644..649作升級證據的敘述不成立，2026-09-16既有留言已指出該樣本沒有抽到升級。\n\n本Issue接續完成END圖示／一次cue／Draw與交易順序，並回歸正式升級對話，不重做已閉合數值規則。主證據與目前DRAFT：docs/data/ida/fd2_end_turn_recovery_20261004.json。",
+      "acceptance": "同固定EXE與同源槽的正常鍵盤END原版收據，核對兩輪viewport發布、一次sample4 cue、HP／bit7提交、無候選分支與selector1事件順序。正式END與自動換手共用已證owner，動畫期間阻止玩家／AI／保存越過交易，缺資產零交易。完整indexed／RGB圖對照且保持既定像素門檻，未同步的相位如實記錄。既有升級owner以含升級的正常章收據與正式玩家／AI回歸驗證；相關及完整回歸通過。",
+      "evidence": [
+        "docs/data/ida/fd2_end_turn_recovery_20261004.json",
+        "docs/data/parity-plans/end-recovery-ch04-r1.jsonl",
+        "remake/cmd/fd2/native_level_up_dialogue.go"
+      ],
       "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/main.go"
-        ],
-        "pattern": "那段演出尚未接（只有數值）",
-        "note": "endTurn 裡的自承註解；接上演出後拿掉。"
+        "kind": "manual",
+        "note": "直接caller順序／正常原版密集影格／正式END與升級consumer的同源回歸；舊自承字串消失不算完成。"
       },
       "issue": 29
     },
@@ -404,6 +405,42 @@
         "reason": "需完整dosgolem12影格與正式非零側演出驗收；重製端綠色測試不足以關閉。"
       },
       "issue": 161
+    },
+    {
+      "id": "ai-idle-recovery-mode2-mask",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "AI原地回復的mode2影格未依4DDD7的stride低byte寫入mask",
+      "body": "#29核對END回復時發現另一個正式consumer缺口。固定FD2.EXE的1DA16(mode2,tailFD)呼4DDD7；IDA直接bytes 4DDE3／4DDEB讀同一arg8作stride與raw寫入index，其低byte為1C8&FF=C8，額外tail參數未讀取。既有docs/data/ida/fd2_command_numeric_tail_ida.txt已記錄這個helper契約。\n\nnative_ai_idle_recovery.go的buildNativeAIIdleRecoveryFrames第一輪卻呼BlitForNativeFlagsAtOffset，未依寫入Mask填C8。AI原地回復已接數值與三Draw，但不能以此宣稱第一輪indexed效果一致。這個consumer與END caller分開驗收，不重做已閉合AI gate／maxHP/5規則。主證據：docs/data/ida/fd2_end_turn_recovery_20261004.json的1DA16與4DDD7直接bytes；完整正常AI影格待取得。",
+      "acceptance": "依已證1DA16／4DDD7引數與RLE Mask契約建立READY caller spec，修正正式AI原地回復第一輪indexed consumer，保留既有三次wait／Draw及HP最後交易順序。固定同源normal AI回復完整索引／RGB與原版對照，source value0寫入格及非法／缺資產零交易測試通過。只閉合已驗caller，其他command mask caller獨立核對，未知不猜補。",
+      "evidence": [
+        "docs/data/ida/fd2_end_turn_recovery_20261004.json",
+        "docs/data/ida/fd2_command_numeric_tail_ida.txt",
+        "remake/cmd/fd2/native_ai_idle_recovery.go"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "已證4DDD7像素契約與正常同源AI回復正式consumer影格；三Draw／數值測試不能替代mask影格。"
+      },
+      "issue": 163
+    },
+    {
+      "id": "ch07-regression-node-pairing-20261004",
+      "layer": "player",
+      "category": "缺陷",
+      "title": "第七章回歸節點配對拒收游標mark與原版attack_result介面",
+      "body": "#29 END回復收尾的第七章現行remake回歸：正式重播179/179 AI入口、零順序分岔；行為／交易／228張畫面通過，節點失敗。固定原版sample-r6同EXE，seq1277/1455/1634/1809的mark與wait兩側都是cursor仍node_differ；seq1894的attack_result原版ui unknown。先核對實際owner、caller及mark配對，不放寬unknown gate，不用舊章通過紀錄覆蓋本次拒收。此工單處理比對工具與必要原版owner證據，不預設是遊戲runtime缺陷。",
+      "acceptance": "查明四個mark的語意動作配對及seq1894的原版實際owner；以固定輸入、直接caller或當前收據審查窄契約，再修正工具並加入真正的反例測試。第七章現行重播全部節點通過，既有unknown拒收保持；如來源仍未知，保留具體限制與開啟狀態。不得把歷史oracle收據冒稱新工具重生或新增PLAYER-E2。",
+      "evidence": [
+        "work/parity-slot-ch07/end-recovery-regression-r1-verified.json",
+        "tools/verify_chapter_parity.py",
+        "docs/data/fd2-chapter-node-comparison-contract.json",
+        "docs/data/ui-traces/parity-ch07.json"
+      ],
+      "verify": {
+        "kind": "manual"
+      },
+      "issue": 164
     }
   ]
 }

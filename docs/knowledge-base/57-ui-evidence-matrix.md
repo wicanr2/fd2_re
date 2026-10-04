@@ -1629,3 +1629,10 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 [酒店主契約](../data/ida/fd2_hotel_load_20261004.json)達有限CONFORMED／RUNTIME-E1。原版301F4的302BF gate先拒絕整備槽，合法槽沿原roster／metadata交易載入；1DE確認後回24A及服務2，ESC才回loaded town。正式酒店UI、既有四槽reader與canonical戰役已接入，23條傳聞返回邊與旗標驗證通過。
 
 固定同源槽、三個停點的完整320×200索引／RGB在合法相位均0差異，不遮罩；這是相位等價，未同步原版與重製頭像／游標時間。原版普通鍵盤零章內注入，重製城鎮酒店邊使用authored opt0；不新增章PLAYER-E2。原版傳聞角色列表／內容及gate1提示畫面未在本探針比較。驗證數字、失敗分類與來源只見[58](58-fd2-exe-re-coverage.md)及主契約。
+
+
+### 2026-10-04 #29：END 回復與升級回歸
+
+[END 主契約](../data/ida/fd2_end_turn_recovery_20261004.json)經READY審查達有限CONFORMED／RUNTIME-E1。正式END／YES與自動END共用兩輪索引發布，第一輪候選Mask填C8，sample4一次；第二輪才寫HP與bit7，raw sprite恢復及Draw完成後接回合事件。缺素材、來源變動或過期計畫均拒收，演出期間不能保存中間狀態。
+
+[完整收據](../data/ui-traces/end-recovery-20261004.json)固定原版925／926／927三張320×200，索引與RGB均0差異，不遮罩。原版是同一ch04建構槽的正常五次END；重製是正常LOAD／出戰後匯入原版raw狀態的E1夾具，合法相位列舉未同步時間，不新增章PLAYER-E2。既有正式升級owner的第七章seq1836也以目前remake通過dialogue及完整畫面比較；其餘五個節點拒收另由#164追蹤。#163 AI Mask仍開啟，唯一分層現況與驗證數字見[58](58-fd2-exe-re-coverage.md)。

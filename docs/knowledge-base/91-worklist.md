@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -63,11 +63,17 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 
 ### 升級五行訊息與 END 回復圖示／音效只有數值沒有演出
 
-`levelup-and-end-recovery-presentation` · 缺陷 · [#29](https://github.com/wicanr2/fd2_re/issues/29) · 仍未完成 · 自承還在 remake/cmd/fd2/main.go
+`levelup-and-end-recovery-presentation` · 缺陷 · [#29](https://github.com/wicanr2/fd2_re/issues/29) · 仍未完成 · 要人判
 
-原版 `0x1E292` 升級時以 `0x15F84` 逐行顯示「升級！」與 AP／DP／DX／HP／MP 增量（FDTXT #0x1E8..#0x1EE），每行之間 `0x16559`／`0x16E24` 等待按鍵；`0x1A30B` 開頭的我方回復在每個回復的單位上畫 `0x1DA16` 圖示並播音效 4。重製端 `AwardExpNative` 與 `ApplyNativeEndTurnRecovery` 只改數值（第四章對拍已靠這兩條把回合 4 的行為 gate 推到只剩 RNG 時序差），畫面與等待節奏沒有接，所以原版側這幾格的幀在重製側對不到同狀態。要做：升級訊息用 indexed 資源逐行顯示與等待；END 回復加圖示與音效；重播測試的 `ackPresents` 收進這兩種工作。
+升級對話已由native_level_up_dialogue.go接入正式玩家／AI行動收尾，並有第七章等正常章收據。END回復仍只有數值，缺原版兩輪indexed演出。
 
-怎樣算做完：第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。
+2026-10-04訂正：固定IDA直接bytes顯示1A30B先整輪以1DA16(mode2,tailFD)改work，再發布viewport；有候選時sample4只播一次。第二輪提交HP與raw sprite恢復及bit7，完成整輪才再次發布，再11CAC與selector1事件。原先「每單位播音效」及第四章seq644..649作升級證據的敘述不成立，2026-09-16既有留言已指出該樣本沒有抽到升級。
+
+本Issue接續完成END圖示／一次cue／Draw與交易順序，並回歸正式升級對話，不重做已閉合數值規則。主證據與目前DRAFT：docs/data/ida/fd2_end_turn_recovery_20261004.json。
+
+怎樣算做完：同固定EXE與同源槽的正常鍵盤END原版收據，核對兩輪viewport發布、一次sample4 cue、HP／bit7提交、無候選分支與selector1事件順序。正式END與自動換手共用已證owner，動畫期間阻止玩家／AI／保存越過交易，缺資產零交易。完整indexed／RGB圖對照且保持既定像素門檻，未同步的相位如實記錄。既有升級owner以含升級的正常章收據與正式玩家／AI回歸驗證；相關及完整回歸通過。
+
+證據：`['docs/data/ida/fd2_end_turn_recovery_20261004.json', 'docs/data/parity-plans/end-recovery-ch04-r1.jsonl', 'remake/cmd/fd2/native_level_up_dialogue.go']`
 
 ### 出口／整備確認提示：原版停在 YES 上畫的是 action cell 49，重製端畫 cell 48（每章 departure_prompt／town_enter 固定差 60 像素）
 
@@ -137,6 +143,18 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
 
+### AI原地回復的mode2影格未依4DDD7的stride低byte寫入mask
+
+`ai-idle-recovery-mode2-mask` · 缺陷 · [#163](https://github.com/wicanr2/fd2_re/issues/163) · 仍未完成 · 要人判
+
+#29核對END回復時發現另一個正式consumer缺口。固定FD2.EXE的1DA16(mode2,tailFD)呼4DDD7；IDA直接bytes 4DDE3／4DDEB讀同一arg8作stride與raw寫入index，其低byte為1C8&FF=C8，額外tail參數未讀取。既有docs/data/ida/fd2_command_numeric_tail_ida.txt已記錄這個helper契約。
+
+native_ai_idle_recovery.go的buildNativeAIIdleRecoveryFrames第一輪卻呼BlitForNativeFlagsAtOffset，未依寫入Mask填C8。AI原地回復已接數值與三Draw，但不能以此宣稱第一輪indexed效果一致。這個consumer與END caller分開驗收，不重做已閉合AI gate／maxHP/5規則。主證據：docs/data/ida/fd2_end_turn_recovery_20261004.json的1DA16與4DDD7直接bytes；完整正常AI影格待取得。
+
+怎樣算做完：依已證1DA16／4DDD7引數與RLE Mask契約建立READY caller spec，修正正式AI原地回復第一輪indexed consumer，保留既有三次wait／Draw及HP最後交易順序。固定同源normal AI回復完整索引／RGB與原版對照，source value0寫入格及非法／缺資產零交易測試通過。只閉合已驗caller，其他command mask caller獨立核對，未知不猜補。
+
+證據：`['docs/data/ida/fd2_end_turn_recovery_20261004.json', 'docs/data/ida/fd2_command_numeric_tail_ida.txt', 'remake/cmd/fd2/native_ai_idle_recovery.go']`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -186,6 +204,16 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['固定EXEhash、dosgolem commit、同源SAV與受版控計畫／清冊，正常章路徑可重跑。', '四gate與完整SAV通過，相關Go及第23章回歸通過。', '同步56／57／58、索引、正式台帳與產生現況，保留注入、敗北及未抽範圍。']
 
 證據：`['docs/data/ui-traces/parity-ch23.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/data/parity-campaign-progress.json']`
+
+### 第七章回歸節點配對拒收游標mark與原版attack_result介面
+
+`ch07-regression-node-pairing-20261004` · 缺陷 · [#164](https://github.com/wicanr2/fd2_re/issues/164) · 仍未完成 · 要人判
+
+#29 END回復收尾的第七章現行remake回歸：正式重播179/179 AI入口、零順序分岔；行為／交易／228張畫面通過，節點失敗。固定原版sample-r6同EXE，seq1277/1455/1634/1809的mark與wait兩側都是cursor仍node_differ；seq1894的attack_result原版ui unknown。先核對實際owner、caller及mark配對，不放寬unknown gate，不用舊章通過紀錄覆蓋本次拒收。此工單處理比對工具與必要原版owner證據，不預設是遊戲runtime缺陷。
+
+怎樣算做完：查明四個mark的語意動作配對及seq1894的原版實際owner；以固定輸入、直接caller或當前收據審查窄契約，再修正工具並加入真正的反例測試。第七章現行重播全部節點通過，既有unknown拒收保持；如來源仍未知，保留具體限制與開啟狀態。不得把歷史oracle收據冒稱新工具重生或新增PLAYER-E2。
+
+證據：`['work/parity-slot-ch07/end-recovery-regression-r1-verified.json', 'tools/verify_chapter_parity.py', 'docs/data/fd2-chapter-node-comparison-contract.json', 'docs/data/ui-traces/parity-ch07.json']`
 
 ## release — 發行、平台與封包
 

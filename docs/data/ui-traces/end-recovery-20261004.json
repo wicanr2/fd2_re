@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_end_recovery_full_frame_parity",
+  "status": "passed",
+  "original_runner": "dosgolem",
+  "runner_sha256": "adb85d73e6e900457de69a492ce1f58177f1af8959cca6bd4bc711adaa3f19ac",
+  "original_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+  "trace_sha256": "f3e0070bd5254899753bc5b4d28bd113182ca0def4b1e12b24f1237eb032af52",
+  "checkpoint_sha256": "35b2d99d422bddefea876e2168f33ed6295068865ca3b44b75fe8d18f0511b2d",
+  "runtime_probe_sha256": "e2c7dd8b9623cb025d4b5dbf48ac8b0891cc50701229c3a470f686fc9350a6bf",
+  "original_frames": [
+    {
+      "index": 925,
+      "return": "0x1A32F",
+      "step": 1317279551,
+      "file": "work/parity-slot-ch04/end-recovery-original-r3/frames/frame-000925.png",
+      "sha256": "196f1190b371242f37ba8eaf1632743b35cbaf352d81fe4a203a0778825924fd",
+      "indexed_sha256": "836de57374e32d400f5c5333a91aed76c1cec37b13ea3fa89e645ad82b2d405f"
+    },
+    {
+      "index": 926,
+      "return": "0x1A3EF",
+      "step": 1317300310,
+      "file": "work/parity-slot-ch04/end-recovery-original-r3/frames/frame-000926.png",
+      "sha256": "ce81e8da9ee06cce01648e11a724fbec1fe169e86ed7b9612e73794b71f53811",
+      "indexed_sha256": "ffaf58a172e292588e60cf8415a42db64d5a5bd8dbe9ef478c1621c92109e4f9"
+    },
+    {
+      "index": 927,
+      "return": "0x1A4B8",
+      "step": 1317312224,
+      "file": "work/parity-slot-ch04/end-recovery-original-r3/frames/frame-000927.png",
+      "sha256": "196f1190b371242f37ba8eaf1632743b35cbaf352d81fe4a203a0778825924fd",
+      "indexed_sha256": "836de57374e32d400f5c5333a91aed76c1cec37b13ea3fa89e645ad82b2d405f"
+    }
+  ],
+  "frame_size": [
+    320,
+    200
+  ],
+  "mask": null,
+  "phase_method": "同一 terrain/idle 相位組合比較全部三張；合法狀態列舉，沒有同步兩側時間",
+  "passing_phases": [
+    {
+      "terrain_phase": 0,
+      "idle_cycle": 0
+    },
+    {
+      "terrain_phase": 1,
+      "idle_cycle": 0
+    },
+    {
+      "terrain_phase": 2,
+      "idle_cycle": 0
+    },
+    {
+      "terrain_phase": 3,
+      "idle_cycle": 0
+    }
+  ],
+  "candidates": [
+    {
+      "terrain_phase": 0,
+      "idle_cycle": 0,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i0-f0.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i0-f1.png",
+          "remake_sha256": "8c281892260da686a476ec9bb0bdfbc898fcaedd8be7b97e5af9b354dd2f5da6",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i0-f2.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        }
+      ]
+    },
+    {
+      "terrain_phase": 0,
+      "idle_cycle": 1,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i1-f0.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i1-f1.png",
+          "remake_sha256": "221b4e6d76e69fe4e395e0b6840fd8b892e29c76af52444c340e709a895b71ea",
+          "indexed_diff_pixels": 6549,
+          "rgb_diff_pixels": 6549
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i1-f2.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        }
+      ]
+    },
+    {
+      "terrain_phase": 0,
+      "idle_cycle": 2,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i2-f0.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i2-f1.png",
+          "remake_sha256": "be1323bdc76aa152085ea5fb1773c56bd0748884867732cfe2d976597e7a3d5a",
+          "indexed_diff_pixels": 2091,
+          "rgb_diff_pixels": 2090
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t0-i2-f2.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        }
+      ]
+    },
+    {
+      "terrain_phase": 1,
+      "idle_cycle": 0,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i0-f0.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i0-f1.png",
+          "remake_sha256": "8c281892260da686a476ec9bb0bdfbc898fcaedd8be7b97e5af9b354dd2f5da6",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i0-f2.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        }
+      ]
+    },
+    {
+      "terrain_phase": 1,
+      "idle_cycle": 1,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i1-f0.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i1-f1.png",
+          "remake_sha256": "221b4e6d76e69fe4e395e0b6840fd8b892e29c76af52444c340e709a895b71ea",
+          "indexed_diff_pixels": 6549,
+          "rgb_diff_pixels": 6549
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i1-f2.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        }
+      ]
+    },
+    {
+      "terrain_phase": 1,
+      "idle_cycle": 2,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i2-f0.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i2-f1.png",
+          "remake_sha256": "be1323bdc76aa152085ea5fb1773c56bd0748884867732cfe2d976597e7a3d5a",
+          "indexed_diff_pixels": 2091,
+          "rgb_diff_pixels": 2090
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t1-i2-f2.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        }
+      ]
+    },
+    {
+      "terrain_phase": 2,
+      "idle_cycle": 0,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i0-f0.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i0-f1.png",
+          "remake_sha256": "8c281892260da686a476ec9bb0bdfbc898fcaedd8be7b97e5af9b354dd2f5da6",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i0-f2.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        }
+      ]
+    },
+    {
+      "terrain_phase": 2,
+      "idle_cycle": 1,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i1-f0.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i1-f1.png",
+          "remake_sha256": "221b4e6d76e69fe4e395e0b6840fd8b892e29c76af52444c340e709a895b71ea",
+          "indexed_diff_pixels": 6549,
+          "rgb_diff_pixels": 6549
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i1-f2.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        }
+      ]
+    },
+    {
+      "terrain_phase": 2,
+      "idle_cycle": 2,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i2-f0.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i2-f1.png",
+          "remake_sha256": "be1323bdc76aa152085ea5fb1773c56bd0748884867732cfe2d976597e7a3d5a",
+          "indexed_diff_pixels": 2091,
+          "rgb_diff_pixels": 2090
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t2-i2-f2.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        }
+      ]
+    },
+    {
+      "terrain_phase": 3,
+      "idle_cycle": 0,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i0-f0.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i0-f1.png",
+          "remake_sha256": "8c281892260da686a476ec9bb0bdfbc898fcaedd8be7b97e5af9b354dd2f5da6",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i0-f2.png",
+          "remake_sha256": "c5450af84cb23d65f993aab7a5aac058cb3382d00e162f142afa2703fdb7f271",
+          "indexed_diff_pixels": 0,
+          "rgb_diff_pixels": 0
+        }
+      ]
+    },
+    {
+      "terrain_phase": 3,
+      "idle_cycle": 1,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i1-f0.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i1-f1.png",
+          "remake_sha256": "221b4e6d76e69fe4e395e0b6840fd8b892e29c76af52444c340e709a895b71ea",
+          "indexed_diff_pixels": 6549,
+          "rgb_diff_pixels": 6549
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i1-f2.png",
+          "remake_sha256": "0b803cc13e1052b146881d863a5d9aae8f9e6d9c3d88f7ee401fe17269bd81ed",
+          "indexed_diff_pixels": 7385,
+          "rgb_diff_pixels": 7385
+        }
+      ]
+    },
+    {
+      "terrain_phase": 3,
+      "idle_cycle": 2,
+      "frames": [
+        {
+          "original_index": 925,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i2-f0.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        },
+        {
+          "original_index": 926,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i2-f1.png",
+          "remake_sha256": "be1323bdc76aa152085ea5fb1773c56bd0748884867732cfe2d976597e7a3d5a",
+          "indexed_diff_pixels": 2091,
+          "rgb_diff_pixels": 2090
+        },
+        {
+          "original_index": 927,
+          "remake_file": "work/parity-slot-ch04/end-recovery-same-source-r6-t3-i2-f2.png",
+          "remake_sha256": "44f7fd1d784a656544a85fd8414d90fc03cdac8787a3b8bc221fd8104fc6a6fc",
+          "indexed_diff_pixels": 2279,
+          "rgb_diff_pixels": 2278
+        }
+      ]
+    }
+  ],
+  "sample": {
+    "index": 4,
+    "loop_count": 1,
+    "call_count": 1
+  },
+  "limit": "原版固定建構槽正常 BIOS END；重製正常 LOAD/出戰後匯入 seq196 raw 狀態的 E1 夾具。原版像素只作比較目標。未宣稱全流程 E2、wall-clock 或人耳音色確認。"
+}

@@ -2,6 +2,20 @@ package battle
 
 import "testing"
 
+func TestNativeEndTurnRecoveryPlanAndWholeBatchRejection(t *testing.T) {
+	a := &Unit{OnField: true, Camp: Own, HP: 10, MaxHP: 50}
+	b := &Unit{OnField: true, Camp: Own, HP: 20, MaxHP: 100}
+	s := &State{Units: []*Unit{a, b}}
+	plan := s.PlanNativeEndTurnRecovery()
+	if len(plan) != 2 || a.HP != 10 || b.HP != 20 {
+		t.Fatal("計畫已寫入或排序錯誤")
+	}
+	b.MaxHP = 101 // same quotient; invalidates the captured input nonetheless
+	if err := s.CommitNativeEndTurnRecovery(plan); err == nil || a.HP != 10 || b.HP != 20 {
+		t.Fatal("後筆過期仍部分提交前筆")
+	}
+}
+
 func TestNativeEndTurnRecoveryFollows1A30BGates(t *testing.T) {
 	mk := func(hp, maxHP int, byte5 byte) *Unit {
 		u := completeNativeAIScoringUnit()

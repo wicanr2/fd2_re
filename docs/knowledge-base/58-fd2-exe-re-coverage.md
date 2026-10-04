@@ -2522,3 +2522,13 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 原版固定第4章建構槽，普通鍵盤LOAD、酒店讀檔、確認與ESC，零章內注入。r1多按一次Enter重開列表，修訂r2保持45份registers／view等前綴相同，seq49正常回城鎮。正式canonical戰役23條傳聞返回邊已同步，文字與旗標保留。空槽、六個整備gate、壞來源與缺少已編寫返回邊的零交易測試通過；標題LOAD／CONTINUE與既有保存回歸通過。
 
 三個固定停點的320×200完整索引及RGB，在正式composer合法相位均0差異，不遮罩；不宣稱頭像／游標時間同步或原版傳聞角色列表、內容已完成。完整Go19套件、2791項含父／子案例通過、32項條件略過；同源探針另通過，Python26項通過。命令、輸入／工具／來源／輸出雜湊與各次失敗分類見主契約implementation。#32已由dcc44254提交推送並關閉，主機gh回讀CLOSED；工具重新pull的現行worklist為23條。#154待決與20/30章台帳不變。
+
+### 2026-10-04 #29：END 回復演出有限閉合
+
+[主契約](../data/ida/fd2_end_turn_recovery_20261004.json)重用已閉合的 1A30B，補足 1DA16／4DDD7 reader。兩輪都掃全部名冊，第一輪完成才發布 viewport 與單次 sample4。mode2 依 stride 低 byte填 `0xC8`，opaque source0 也寫入；tailFD沒有reader。第二輪提交HP、raw bit7及其Acted投影，恢復raw sprite後發布，再11CAC與selector1事件。經READY審查接入正式END／YES與自動END，達有限CONFORMED／RUNTIME-E1。
+
+固定ch04建構槽、五次普通BIOS END、零章內注入，在seq197得到三候選正例。初始／遮罩／恢復三張固定320×200影格，在同源E1夾具的正式composer完整索引及RGB均0差異，不遮罩；時間未同步。第一次正常正例計畫在第三回合移動選單逾時，已保留失敗資料；簡化為不移動的正常END後取得正例。原版畫面從目前dosgolem 951cb55f重生。
+
+驗證：完整Go19套件、2802項含父／子案例通過、33項條件略過、零失敗；相關發布、Mask、無候選、畫面外候選、過期全批拒絕及current-save欄位保存通過；Python worklist19項通過。第七章現行remake重播消費179/179原版AI入口、零順序分岔；行為／交易／228張畫面通過，升級seq1836兩側dialogue及完整畫面0差異。該章另有五個節點拒收，已登記[#164](https://github.com/wicanr2/fd2_re/issues/164)，不宣稱本輪整章四項通過或新PLAYER-E2。升級原版source為已保存的sample-r6，未冒稱新oracle重生。
+
+[#163](https://github.com/wicanr2/fd2_re/issues/163)獨立追蹤AI原地回復的mode2 Mask缺陷，尚未修正。#154待決、章台帳20/30與既有隊伍政策不變。命令、工具／輸入／來源／輸出雜湊、時序近似及各失敗分類見主契約。

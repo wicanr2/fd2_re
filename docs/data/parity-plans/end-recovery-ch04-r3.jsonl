@@ -1,0 +1,39 @@
+# #29 固定同一ch04槽，正常LOAD→出戰。五次END不移動、不攻擊、不注入，抽樣敵軍接近後的回復。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":120}
+{"await_ui":"cursor","steps":10000000,"max":60}
+{"mark":"battle_start","steps":1000000}
+{"sweep_round": true, "advance": false, "skip_indices": [0, 1, 2, 3, 4, 5, 6], "steps": 2000000}
+{"await": "round>=2", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 240}
+{"await_ui": "cursor", "steps": 1000000, "max": 60}
+{"mark": "END_to_round_2", "steps": 1000000}
+{"sweep_round": true, "advance": false, "skip_indices": [0, 1, 2, 3, 4, 5, 6], "steps": 2000000}
+{"await": "round>=3", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 240}
+{"await_ui": "cursor", "steps": 1000000, "max": 60}
+{"mark": "END_to_round_3", "steps": 1000000}
+{"sweep_round": true, "advance": false, "skip_indices": [0, 1, 2, 3, 4, 5, 6], "steps": 2000000}
+{"await": "round>=4", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 240}
+{"await_ui": "cursor", "steps": 1000000, "max": 60}
+{"mark": "END_to_round_4", "steps": 1000000}
+{"sweep_round": true, "advance": false, "skip_indices": [0, 1, 2, 3, 4, 5, 6], "steps": 2000000}
+{"await": "round>=5", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 240}
+{"await_ui": "cursor", "steps": 1000000, "max": 60}
+{"mark": "END_to_round_5", "steps": 1000000}
+{"sweep_round": true, "advance": false, "skip_indices": [0, 1, 2, 3, 4, 5, 6], "steps": 2000000}
+{"await": "round>=6", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 240}
+{"await_ui": "cursor", "steps": 1000000, "max": 60}
+{"mark": "END_to_round_6", "steps": 1000000}

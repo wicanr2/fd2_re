@@ -537,3 +537,14 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
   #32 計畫多送鍵的勘誤及[修訂計畫r2](../data/parity-plans/hotel-load-ch04-r2.jsonl)由同一酒店主契約承載，r1不覆寫。
 
   [酒店 LOAD 完整影格比較工具](../../tools/verify_hotel_load_parity.py)只驗固定停點的合法相位等價；用法與收據見酒店主契約。
+
+- [END回復演出主契約](../data/ida/fd2_end_turn_recovery_20261004.json)：#29，原版兩輪work發布／一次sample4／HP與bit7 writer；[正常END探針](../data/parity-plans/end-recovery-ch04-r1.jsonl)固定第4章建構槽，無章內注入。
+
+  #29 [END有候選探針r2](../data/parity-plans/end-recovery-ch04-r2.jsonl)完整沿既有第4章輸入，第一／二輪無候選與後續正例均由同一主契約承載；#163為另已登記的AI consumer缺口。
+
+- [END 正常探針 r3](../data/parity-plans/end-recovery-ch04-r3.jsonl)：Issue #29，固定槽五次正常 END，不移動與不注入。
+
+- [END 回復正式演出](../../remake/cmd/fd2/native_end_turn_recovery.go)：Issue #29，依上述 READY 規格執行兩輪發布。
+- [END 回復演出驗證](../../remake/cmd/fd2/native_end_turn_recovery_test.go)：發布、交易拒絕、遮罩與畫面外候選。
+- [END 同源探針](../../remake/cmd/fd2/native_end_turn_recovery_probe_test.go)：固定正常原版收據的 E1 狀態夾具與正式 END／YES。
+- [END 完整畫面比較工具](../../tools/verify_end_recovery_parity.py)與[收據](../data/ui-traces/end-recovery-20261004.json)：固定三張原版影格、單次 sample4、完整索引與 RGB。
