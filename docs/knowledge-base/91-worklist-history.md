@@ -5311,3 +5311,17 @@ r1 trace達200000上限，只引用截斷前的具體row；r2 writer窗口有界
 IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680-byte地圖work，再進11CAC(1)。這不證明malloc初值為0，故3152不以清緩衝猜補，後段原版有界trace另記於同一主證據。此切片只列有限CONFORMED，父#52、#154及20／30章台帳維持原狀。
 
 本輪六回合原版trace已完成，106121筆未封頂，控制3132／3134／3149的PNG與現行951來源逐位元組相同。原版在同一0x18BEB4位址重用地圖work與戰鬥copy plane；28F4D→11EB0覆蓋目標0x19CF8B，之後仍有4E63D／2935B寫入。這排除整塊清零的修法，3152來源仍列DRAFT；詳見主證據buffer_reuse_trace。
+
+### 2026-10-04 #167：近堆政策勘誤與收據符合規格
+
+[主證據 oracle_heap_policy_correction](../data/ida/fd2_terrain_mode3_review_20261001.json)已 CONFORMED。目前 dosgolem 951cb55f 的 WatcomNearHeap.allocate 在重用配置時清零；release 保留內容。oracle 呼叫端明確安裝這個替代實作。既有原版 trace 的 0x29070 返回同一 0x18BEB4，故工作偏移 0x110D7 的 0 在工具配置返回前已產生，無須再從戰鬥 copy 尋找最後零值 writer。
+
+這直接更正前一節「基址重用排除空白緩衝」的推論。原始 EXE 指令只證明 malloc 呼叫與重畫，原版實體配置器的重用位址及初值仍未知。原17點保持16點一致、3152一像素差異；最後一點列 ORACLE-POLICY-LIMIT，不清 remake、不稱17／17通過，也不改整章門檻。#52保持開啟，章台帳20／30及#154待決不變。
+
+受版控 Docker 入口的 runner.json 新增 near_heap_policy，綁定配置器與 oracle 呼叫端兩份 SHA-256；任一來源變更或缺失均列 unknown，original_allocator_parity 固定 unverified。三項既有近堆／free／DPMI隔離測試、95項驅動測試與實際EXE的完整metadata煙霧試驗通過；舊runner欄位及錯EXE、commit、定位拒收保持。煙霧試驗沒有重播遊戲或生成新章收據。未修改Go引擎及dosgolem來源。
+
+另已登記[#166](https://github.com/wicanr2/fd2_re/issues/166)：物理攻擊仍固定載入BG與TAI，未消費原版地形選擇。此缺陷與配置器清零獨立，仍待READY及正常caller驗收；不能以3152黑色要求戰鬥renderer清零。
+
+#167本批收尾檢查：95項驅動、9項前綴及3項近堆測試通過；145條教訓的45條guard通過。新增21個本地連結全數有效，變更檔UID／GID皆1000。歷史root-owned仍2811，新增0，.md目錄0；FD2容器0，其他專案容器未動。Go引擎未變更，不重跑無關完整套件；原版章收據及PLAYER-E2未增加。
+
+#167已經主機gh結案並回讀CLOSED。工具重新pull／render／verify的遠端現況為23項，可能已完成0項；#52、#166及#154仍開啟。

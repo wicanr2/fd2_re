@@ -263,3 +263,9 @@ Capstone 的 LE fixup 清單一致），證據檔
 ### 2026-10-04：#52 截圖游標消費逐格重繪
 
 positionScreenshotCursor改用FocusNativeMapCursorSteps與nativeCursorStepHUD，保留camera21→20→19的tile82 literal116。原版12CEA／11C59呼叫契約沿用既有證據；檔案偏移與正常LOAD診斷詳見[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)的late_attack_work_writer.cursor_helper。歷史第12章3137整張零差異，原17點16點地形一致；3152仍未閉合，不改正式走行、range規則或驗收預算。
+
+### 2026-10-04 #167：透明底色的工具政策限制
+
+[主證據 oracle_heap_policy_correction](../data/ida/fd2_terrain_mode3_review_20261001.json)更正前節「基址重用排除空白緩衝」：目前dosgolem配置器在reuse時clear整段，原版實體malloc初值仍未知。3152保持一像素差異，列ORACLE-POLICY-LIMIT；不把工具清零接入正式remake或稱17／17通過。16點已相同的有限驗證保留，#52仍開啟。
+
+正式Docker入口的runner.json已記錄near_heap_policy與配置器／caller雙來源hash；未知來源標unknown，原版配置器parity標unverified。工具驗證通過，未修改引擎、dosgolem配置器、章門檻或#154政策。唯一數字、來源及目前狀態見[58](58-fd2-exe-re-coverage.md)。#166固定BG／TAI缺陷獨立處理。

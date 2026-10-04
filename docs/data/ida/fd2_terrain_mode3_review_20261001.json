@@ -4695,7 +4695,7 @@
           "source": "本followup原版writer／mode3及重製端diagnostic"
         }
       ],
-      "next_gate": "補證第十二章原生故事背景／對白聚焦與同一工作緩衝交接。先形成可審查READY契約，再修正式路徑並重新驗證完整17點及相關章回歸。",
+      "next_gate": "#52最近狀態以late_attack_work_writer.oracle_heap_policy_correction為準：16點一致、3152為工具政策限制。下一個正式consumer缺陷是已登記#166的BG／TAI選擇；不重解已有限CONFORMED的故事／走行／游標。",
       "commands": {
         "oracle_r1": "timeout 900 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-probe-state-r1 FD2_ORACLE_STEPS=1500000000 FD2_ORACLE_EIP_TRACE=0x1220C,0x12220,0x4DF39,0x4DD40,0x11EB0 FD2_ORACLE_EIP_TRACE_FROM=500000000 FD2_ORACLE_EIP_TRACE_TO=700000000 FD2_ORACLE_EIP_TRACE_MAX=200000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-original-r1 docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl > work/parity-slot-ch12/terrain-original-r1-driver.log 2>&1",
         "oracle_r2": "timeout 900 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-probe-state-r2 FD2_ORACLE_STEPS=1500000000 FD2_ORACLE_EIP_TRACE=0x1220C,0x12220,0x4DF05,0x4DF2C,0x11EB0 FD2_ORACLE_EIP_TRACE_FROM=437000000 FD2_ORACLE_EIP_TRACE_TO=455000000 FD2_ORACLE_EIP_TRACE_MAX=200000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-original-r2 docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl > work/parity-slot-ch12/terrain-original-r2-driver.log 2>&1",
@@ -10813,10 +10813,10 @@
           "to": 10093348844,
           "max_rows": 200000
         },
-        "next_gate": "只追3152對應戰鬥copy來源与後續4E63D／2935B寫入，并用typed原版資產建立READY交接；不深挖通用heap或清零猜補。",
+        "next_gate": "3152先依oracle_heap_policy_correction列工具政策限制；#166另證原版BG／TAI正常consumer。不再把本點黑色當戰鬥copy最後writer。",
         "limits": [
-          "目前未修改Go、驗收預算、亂數政策或20/30台帳。",
-          "原版後段writer仍未知；父#52維持開啟。"
+          "父#52保持開啟；原17點16個相同，最後1px保留為oracle配置器政策限制。",
+          "正式章台帳20/30、章驗收預算與#154待決不變。"
         ],
         "first_attempt": {
           "status": "aborted_environment_limit",
@@ -12509,7 +12509,207 @@
           "confirmed_scope": "free的工作基址、戰鬥拷貝目的基址與重新malloc的工作基址相同；28F4D的11EB0確實覆蓋此目標位址。",
           "not_confirmed": "本次只記錄選定EIP。28F6B之後另有4E63D／2935B寫入，不把已記錄的最後copy稱為整體最後writer；來源像素及後續寫入尚待閉合。",
           "correction": "新證據否定「重新malloc即新空白緩衝」的解法。保留既有初值未知記錄，禁止用整塊清零猜補。"
-        }
+        },
+        "oracle_heap_policy_correction": {
+          "date": "2026-10-04",
+          "issue": 167,
+          "related_issues": [
+            52,
+            166
+          ],
+          "status": "CONFORMED",
+          "scope": "oracle近堆重用清零政策及3152證據等級；不修改遊戲配置器或remake工作緩衝。",
+          "input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "original_address_space": "IDA LE linear／dosgolem relocated LE linear，各筆分別標明",
+          "original_evidence": "buffer_lifetime_ida及buffer_reuse_trace保留原始bytes／位址。0x29068呼叫malloc、0x29070得到0x18BEB4，不足以證明原版近堆初值。",
+          "oracle_source": {
+            "commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+            "tracked_dirty_files": 0,
+            "untracked_files": 0,
+            "files": [
+              {
+                "path": "internal/machine/watcom_runtime.go",
+                "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+              },
+              {
+                "path": "apps/fd2/cmd/oracle/main.go",
+                "sha256": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"
+              }
+            ],
+            "installed_function": "InstallFD2WatcomRuntimeWithHeapCapacity",
+            "allocation_hook": "WatcomNearHeap.Handle / allocate",
+            "free_hook": "WatcomNearHeap.handleFree / release",
+            "reviewed_source": "allocate的freeRanges分支執行clear(h.machine.Mem[addr : addr+n])；release保留內容。oracle main.go安裝該runtime，入口固定-heap-mib 32。",
+            "existing_test": "TestWatcomHeapFreeReuseAndCoalesce要求release後保留0x55，reuse後0，同時鄰接live物件仍0xAA。"
+          },
+          "claims": [
+            {
+              "level": "confirmed",
+              "domain": "dosgolem工具政策",
+              "source": "上述兩份固定SHA-256來源及現行既有測試",
+              "semantic": "重用配置時整段清零是dosgolem近堆替代實作的明示行為，與實體Watcom配置器內容無關。"
+            },
+            {
+              "level": "confirmed",
+              "domain": "目前oracle執行",
+              "source": "buffer_reuse_trace step9947758179，EIP0x29070，EAX0x18BEB4；同一hook來源",
+              "semantic": "重新配置0x25680-byte地圖work返回已釋放基址；工具allocate的reuse分支使offset0x110D7、linear0x19CF8B在返回前變0。此清零不出現在EXE指令trace。"
+            },
+            {
+              "level": "unknown",
+              "domain": "原版實體配置器",
+              "source": "未執行原版_nmalloc／_nfree本體的同狀態校準",
+              "semantic": "原版實體配置器的重用位址與初值未知；工具0不能升格為原版已證實。"
+            }
+          ],
+          "spec": {
+            "status": "CONFORMED",
+            "typed_input": "固定EXE與runner來源檔案SHA-256、入口32MiB配置",
+            "rule": "runner.json保存near_heap_policy及兩份來源hash。僅兩份hash都等於本次審查值時宣告zeroed；任何缺檔、未知hash或只吻合一份均標unknown。original_allocator_parity固定unverified。",
+            "failure_mode": "原EXE、commit與來源定位的現有拒收條件保持；未知heap政策僅記未知，不自動校準或變更runner行為。",
+            "outputs": "保留所有舊runner欄位，追加可審查政策與證據限制。",
+            "vertical_chain": "原版malloc call → oracle hook → 重用配置初值 → mode3透明保留 → 螢幕像素；存檔及正式remake規則未改。",
+            "acceptance": [
+              "既有三項heap/free/DPMI隔離測試通過",
+              "已審來源／變更caller／變更heap／缺檔均正確分類",
+              "完整META煙霧試驗保存來源hash，原有錯EXE／commit／定位仍拒收",
+              "同步56／57／58與時間序列勘誤，不冒稱17/17或新增PLAYER-E2"
+            ]
+          },
+          "correction": "取代buffer_reuse_trace.correction「新證據否定重新malloc即新空白緩衝」及舊後續writer追查gate。地址別名不排除工具clear；最後黑色由host配置器政策解釋，不能再以戰鬥copy來源推定原版最後writer。",
+          "classification": {
+            "historical_seq": 3152,
+            "current_seq": 3149,
+            "screen_xy": [
+              11,
+              85
+            ],
+            "oracle_index": 0,
+            "remake_index": 116,
+            "status": "ORACLE-POLICY-LIMIT",
+            "original_allocator_parity": "unknown",
+            "blocking_111": false,
+            "note": "仍如實保留1px差異與原報告；不改預算、不清remake、不稱17/17通過。#52保持開啟。#166背景選擇缺陷與此政策獨立。"
+          },
+          "stop_line": "不為這個非阻塞像素深挖通用heap或再重跑六回合。若新同狀態證據直接反證工具政策解釋，另以獨立窄Issue重開。",
+          "validation": {
+            "existing_heap_tests": {
+              "command": "see commands.existing_heap_tests",
+              "tests": 3,
+              "failures": 0,
+              "terminal_exit": 0
+            },
+            "metadata_smoke": {
+              "kind": "oracle_metadata_smoke_only",
+              "game_replayed": false,
+              "source_sha256": "2072692f6f8f02935e439de0d3d180f0d363f50455623c3d7b8e77fe475c4b43",
+              "runner_sha256": "be17436a87c1e24f18e45fe5bebbf2c8db4618ea0fd2572147eef0d07bcf3bdf",
+              "old_runner_fields_preserved": true,
+              "near_heap_policy": {
+                "kind": "dosgolem_runtime_approximation",
+                "status": "reviewed",
+                "sources": [
+                  {
+                    "path": "internal/machine/watcom_runtime.go",
+                    "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+                  },
+                  {
+                    "path": "apps/fd2/cmd/oracle/main.go",
+                    "sha256": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"
+                  }
+                ],
+                "heap_mib": 32,
+                "allocation_hook": "WatcomNearHeap.Handle / allocate",
+                "free_hook": "WatcomNearHeap.handleFree / release",
+                "reused_allocation_contents": "zeroed",
+                "original_allocator_parity": "unverified",
+                "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+                "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"
+              },
+              "guards": [
+                {
+                  "case": "wrong_commit",
+                  "rejected": true,
+                  "reason": "oracle entry 來源 commit 無效"
+                },
+                {
+                  "case": "missing_source",
+                  "rejected": true,
+                  "reason": "oracle entry 缺少來源 Git／原版定位資料"
+                },
+                {
+                  "case": "wrong_exe",
+                  "rejected": true,
+                  "reason": "oracle entry 原版 EXE 身分不符"
+                }
+              ],
+              "bash_syntax": true
+            },
+            "driver_tests": {
+              "total": 95,
+              "failures": 0,
+              "skipped": 0,
+              "new_tests": 4,
+              "red_before_change": 4,
+              "command": "python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py"
+            },
+            "environment_correction": "完整metadata煙霧試驗首次patch pathlib.Path影響其內部類別判斷，改用PosixPath後相同容器與來源乾淨重跑通過；不是產品缺陷。",
+            "prefix_tests": {
+              "total": 9,
+              "failures": 0,
+              "skipped": 0
+            },
+            "lesson_guards": {
+              "lessons": 145,
+              "guards": 45,
+              "failures": 0
+            },
+            "hygiene": {
+              "root_owned_total": 2811,
+              "new_root_owned": 0,
+              "md_directories": 0,
+              "changed_file_uid_gid": [
+                1000,
+                1000
+              ],
+              "fd2_containers_remaining": 0,
+              "unrelated_containers_untouched": [
+                "kol",
+                "moo2"
+              ]
+            },
+            "new_local_links": {
+              "checked": 21,
+              "missing": 0
+            },
+            "remote_issue": {
+              "number": 167,
+              "state": "CLOSED",
+              "host_gh_verified": true
+            }
+          },
+          "commands": {
+            "existing_heap_tests": "Docker golang:1.24-bookworm；/dos唯讀、GOCACHE可寫；go test ./internal/machine -run ^Test(WatcomHeapFreeReuseAndCoalesce|WatcomNFreeCdeclAndFailure|FD2HeapDOSAndLinearIsolation)$ -count=1 -v",
+            "metadata_smoke": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 60 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 40  python3 -c 'from pathlib import Path\nfrom unittest import mock\nimport os,json,hashlib,subprocess\nentry=Path('\\''tools/dosgolem_oracle_container.sh'\\'')\ncode=entry.read_text().split(\"python3 - <<'\\''META'\\''\\n\",1)[1].split(\"\\nMETA\",1)[0]\nenv={'\\''FD2_ORACLE_SOURCE_COMMIT'\\'':'\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'','\\''FD2_ORACLE_SOURCE_BRANCH'\\'':'\\''feat/fd2-oracle-input-chain'\\'','\\''FD2_ORACLE_SOURCE_DIRTY'\\'':'\\''0'\\'','\\''FD2_ORACLE_SOURCE_UNTRACKED'\\'':'\\''0'\\'','\\''FD2_ORACLE_SOURCE_ROOT'\\'':'\\''/home/anr2/cht/dosgolem-fd2-oracle'\\'','\\''FD2_ORACLE_ORIGINAL_ROOT'\\'':'\\''/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2'\\'','\\''FD2_ORACLE_EIP_TRACE_FROM'\\'':'\\''9936348844'\\'','\\''FD2_ORACLE_EIP_TRACE_TO'\\'':'\\''10093348844'\\'','\\''FD2_ORACLE_EIP_TRACE_MAX'\\'':'\\''200000'\\'','\\''FD2_ORACLE_CONTROL_PLAN'\\'':'\\''docs/data/parity-plans/ch12-terrain-late-probe.jsonl'\\'','\\''FD2_ORACLE_SOURCE_STATE'\\'':'\\''/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-late-state-r2'\\''}\nrealPath=type(Path.cwd())\noriginal=Path('\\''org_game/炎龍騎士團/FLAME2/FD2.EXE'\\'')\nout=Path('\\''/hosttmp/fd2-heap-policy-metadata-r1.json'\\'')\ndef execute(e,wrong_exe=False):\n def mapped(s):\n  if str(s)=='\\''/orig/FD2.EXE'\\'':return realPath('\\''/hosttmp/fd2-heap-policy-wrong-exe.bin'\\'') if wrong_exe else original\n  if str(s)=='\\''/out/runner.json'\\'':return out\n  return realPath(s)\n with mock.patch.dict(os.environ,e,clear=True),mock.patch('\\''pathlib.Path'\\'',side_effect=mapped):\n  exec(compile(code,str(entry),'\\''exec'\\''),{})\nexecute(env)\nr=json.loads(out.read_text())\nassert r['\\''near_heap_policy'\\'']['\\''status'\\'']=='\\''reviewed'\\''\nassert r['\\''near_heap_policy'\\'']['\\''reused_allocation_contents'\\'']=='\\''zeroed'\\''\nassert r['\\''near_heap_policy'\\'']['\\''original_allocator_parity'\\'']=='\\''unverified'\\''\nold=json.loads(Path('\\''work/parity-slot-ch12/terrain-late-original-r2/runner.json'\\'').read_text())\nassert all(r[k]==v for k,v in old.items() if k!='\\''generated_at'\\''),[(k,r.get(k),v) for k,v in old.items() if k!='\\''generated_at'\\'' and r.get(k)!=v]\nguards=[]\nfor name,updates,wrong in [('\\''wrong_commit'\\'',{'\\''FD2_ORACLE_SOURCE_COMMIT'\\'':'\\''wrong'\\''},False),('\\''missing_source'\\'',{'\\''FD2_ORACLE_SOURCE_ROOT'\\'':'\\'''\\''},False),('\\''wrong_exe'\\'',{},True)]:\n if wrong:Path('\\''/hosttmp/fd2-heap-policy-wrong-exe.bin'\\'').write_bytes(b'\\''bad'\\'')\n try:execute(dict(env,**updates),wrong)\n except SystemExit as e:guards.append({'\\''case'\\'':name,'\\''rejected'\\'':True,'\\''reason'\\'':str(e)})\n else:raise AssertionError(name)\nsubprocess.run(['\\''bash'\\'','\\''-n'\\'',str(entry)],check=True)\nreport={'\\''kind'\\'':'\\''oracle_metadata_smoke_only'\\'','\\''game_replayed'\\'':False,'\\''source_sha256'\\'':hashlib.sha256(entry.read_bytes()).hexdigest(),'\\''runner_sha256'\\'':hashlib.sha256(out.read_bytes()).hexdigest(),'\\''old_runner_fields_preserved'\\'':True,'\\''near_heap_policy'\\'':r['\\''near_heap_policy'\\''],'\\''guards'\\'':guards,'\\''bash_syntax'\\'':True}\nPath('\\''/hosttmp/fd2-heap-policy-smoke-r1.json'\\'').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nprint(json.dumps(report,ensure_ascii=False,indent=2))\n'"
+          },
+          "tools": {
+            "python": "Python3.11 in fd2-go-test-local:20260909",
+            "near_heap_tests": "Go1.24 / golang:1.24-bookworm",
+            "address_basis": "工具Go來源位址非EXE線性位址，原始EXE與dosgolem線性位址逐筆明示。"
+          }
+        },
+        "state_history": [
+          {
+            "date": "2026-10-04",
+            "status": "ORACLE-POLICY-LIMIT",
+            "superseded_fields": [
+              "buffer_reuse_trace.correction",
+              "buffer_reuse_trace.not_confirmed",
+              "next_gate"
+            ],
+            "source": "oracle_heap_policy_correction"
+          }
+        ]
       }
     }
   ]

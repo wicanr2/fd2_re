@@ -34,6 +34,30 @@ done
 python3 - <<'META'
 import datetime, hashlib, json, os, re
 from pathlib import Path
+
+def near_heap_policy(root):
+    # #167：綁定已審查配置器與呼叫端；不從檔名或 commit 猜政策。
+    reviewed = {
+        "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
+        "apps/fd2/cmd/oracle/main.go": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
+    sources = []
+    for name in reviewed:
+        path = root / name
+        sha = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+        sources.append({"path": name, "sha256": sha})
+    known = all(source["sha256"] == reviewed[source["path"]] for source in sources)
+    return {
+        "kind": "dosgolem_runtime_approximation",
+        "status": "reviewed" if known else "unknown",
+        "sources": sources,
+        "heap_mib": 32,
+        "allocation_hook": "WatcomNearHeap.Handle / allocate",
+        "free_hook": "WatcomNearHeap.handleFree / release",
+        "reused_allocation_contents": "zeroed" if known else "unknown",
+        "original_allocator_parity": "unverified",
+        "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+        "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"}
+
 env = os.environ
 required = ["FD2_ORACLE_SOURCE_COMMIT", "FD2_ORACLE_SOURCE_BRANCH",
             "FD2_ORACLE_SOURCE_DIRTY", "FD2_ORACLE_SOURCE_UNTRACKED",
@@ -65,6 +89,7 @@ runner = {
     "force_enemy_clear_declared": bool(env.get("FD2_ORACLE_FORCE_ENEMY_CLEAR")),
     "original_fd2_exe_sha256": sha,
     "original_reference_manifest": "docs/data/fd2-reference-files.json",
+    "near_heap_policy": near_heap_policy(Path("/dos")),
     "state_directory": env.get("FD2_ORACLE_SOURCE_STATE", ""),
     "state_injections": [
         "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",

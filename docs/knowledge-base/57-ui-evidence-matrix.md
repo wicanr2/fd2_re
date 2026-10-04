@@ -1682,3 +1682,9 @@ r1 trace達200000上限，只引用截斷前的具體row；r2 writer窗口有界
 IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680-byte地圖work，再進11CAC(1)。這不證明malloc初值為0，故3152不以清緩衝猜補，後段原版有界trace另記於同一主證據。此切片只列有限CONFORMED，父#52、#154及20／30章台帳維持原狀。
 
 本輪六回合原版trace已完成，106121筆未封頂，控制3132／3134／3149的PNG與現行951來源逐位元組相同。原版在同一0x18BEB4位址重用地圖work與戰鬥copy plane；28F4D→11EB0覆蓋目標0x19CF8B，之後仍有4E63D／2935B寫入。這排除整塊清零的修法，3152來源仍列DRAFT；詳見主證據buffer_reuse_trace。
+
+### 2026-10-04 #167：透明底色的工具政策限制
+
+[主證據 oracle_heap_policy_correction](../data/ida/fd2_terrain_mode3_review_20261001.json)更正前節「基址重用排除空白緩衝」：目前dosgolem配置器在reuse時clear整段，原版實體malloc初值仍未知。3152保持一像素差異，列ORACLE-POLICY-LIMIT；不把工具清零接入正式remake或稱17／17通過。16點已相同的有限驗證保留，#52仍開啟。
+
+正式Docker入口的runner.json已記錄near_heap_policy與配置器／caller雙來源hash；未知來源標unknown，原版配置器parity標unverified。工具驗證通過，未修改引擎、dosgolem配置器、章門檻或#154政策。唯一數字、來源及目前狀態見[58](58-fd2-exe-re-coverage.md)。#166固定BG／TAI缺陷獨立處理。

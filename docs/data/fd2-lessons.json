@@ -1483,6 +1483,22 @@
         ],
         "pattern": "FocusNativeMapCursorSteps\\(x, y, g\\.nativeCursorStepHUD\\)"
       }
+    },
+    {
+      "id": "oracle-runtime-policy-before-residue-writer",
+      "date": "2026-10-04",
+      "area": "對拍證據",
+      "rule": "追查配置重用或透明殘留前，先核對oracle的runtime替代政策；可重現的工具像素不能單獨證明原版malloc初值。檢查tools/dosgolem_oracle_container.sh產生的runner.json near_heap_policy，範圍與來源在docs/data/ida/fd2_terrain_mode3_review_20261001.json的oracle_heap_policy_correction。",
+      "why": "第12章3152的黑色來自dosgolem近堆reuse時clear整段；原版trace的同址malloc不排除host清零。若只追EXE內copy writer，會把工具近似當remake缺陷。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/167",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle_container.sh"
+        ],
+        "pattern": "\"near_heap_policy\": near_heap_policy",
+        "note": "正式收據保留替代配置器政策。"
+      }
     }
   ]
 }

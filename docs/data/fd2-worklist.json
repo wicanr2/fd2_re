@@ -387,6 +387,24 @@
         "reason": "需完整dosgolem12影格與正式非零側演出驗收；重製端綠色測試不足以關閉。"
       },
       "issue": 161
+    },
+    {
+      "id": "physical-attack-native-background-and-work-continuation",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "物理攻擊背景與台座仍固定載入，未消費原版地形選擇器",
+      "acceptance": "依固定FD2.EXE雜湊的0x28A6C原始BG／TAI選擇建立READY規格，讓正常物理攻擊消費typed地形及分離原始素材。至少抽測玩家／敵方正常物理攻擊與零旗標分支，特殊旗標未閉合時明示範圍。工作緩衝交接依writer／consumer證據驗證，不清整塊猜補；#52的3152已由#167確認為oracle近堆清零政策結果，不能當背景render清零的原版判準。保留整張影格差異、原20/30與章門檻。",
+      "evidence": [
+        "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "docs/data/ida/fd2_physical_counterattack_ida.txt",
+        "remake/cmd/fd2/main.go",
+        "https://github.com/wicanr2/fd2_re/issues/52"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "main.go loadSprites只載assets/bg/bg.png及tai_004.png，drawBattleScene消費g.bg/g.tai，atkAnim.terrain沒有renderer consumer。原版第12章3134 actor2／target22的地形控制byte+2分別5／50，正常28A6C分支實際使用BG50與TAI5。需要原版writer／consumer與正常路徑驗收。 #167已分離工具近堆初值限制；正式背景renderer缺陷仍存在。"
+      },
+      "issue": 166
     }
   ]
 }

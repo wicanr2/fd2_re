@@ -802,3 +802,9 @@ FD2_ATTACK_DUMP=<輸出> go test ./cmd/fd2 -run TestDumpChapterOneMoveAttackFram
 | 執行 | 工作目錄 /dos；bash /oracle-entry.sh；GOCACHE=/gocache、GOMODCACHE=/gomodcache、HOME=/tmp |
 
 可重跑的完整 docker run 命令與五停點雜湊見[主證據 oracle_direct_entry](../data/ida/fd2_terrain_mode3_review_20261001.json)。掛載前確認來源存在，指定 UID、記憶體、CPU、PID、外層逾時與 --rm --network none。來源 commit 是對目前掛載工作樹的主機 Git 檢查結果，不能任填。
+
+## 近堆替代實作的證據限制
+
+涉及malloc後透明保留、配置基址別名或負列寫入時，先核對收據runner.json的near_heap_policy，再查[近堆政策主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)的oracle_heap_policy_correction。檢查入口為[受版控Docker入口](../../tools/dosgolem_oracle_container.sh)，反例在[驅動測試](../../tools/test_dosgolem_oracle_drive.py)的OracleNearHeapPolicy。
+
+目前已審查的配置器與oracle呼叫端雙SHA-256只證明dosgolem近堆reuse清零；原版Watcom配置器的內容與位址仍未校準。來源不吻合時列unknown。不要把可重現的工具近似像素升格為原版已證實，也不要為透明殘留直接清remake整段work。原版指令writer與資料literal的既有證據仍可獨立成立。#167驗證與限制見[58](58-fd2-exe-re-coverage.md)，歷史收據不覆寫。

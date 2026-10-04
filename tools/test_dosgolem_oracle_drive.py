@@ -9,6 +9,8 @@
 """
 
 import importlib.util
+import ast
+import hashlib
 import json
 import os
 import pathlib
@@ -29,6 +31,73 @@ def load():
 
 
 drive = load()
+
+
+class OracleNearHeapPolicy(unittest.TestCase):
+    """#167：兩份已審查來源同時吻合，才宣告配置器政策。"""
+
+    def setUp(self):
+        entry = (ROOT / "dosgolem_oracle_container.sh").read_text()
+        metadata = entry.split("python3 - <<'META'\n", 1)[1].split("\nMETA", 1)[0]
+        functions = [node for node in ast.parse(metadata).body
+                     if isinstance(node, ast.FunctionDef) and node.name == "near_heap_policy"]
+        self.assertEqual(len(functions), 1, "入口須附近堆政策分類器")
+        namespace = {"Path": pathlib.Path, "hashlib": hashlib}
+        exec(compile(ast.Module(body=functions, type_ignores=[]), str(ROOT), "exec"), namespace)
+        self.policy = namespace["near_heap_policy"]
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = pathlib.Path(self.directory.name)
+        self.sources = {
+            "internal/machine/watcom_runtime.go": b"heap fixture",
+            "apps/fd2/cmd/oracle/main.go": b"caller fixture"}
+        for name, content in self.sources.items():
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+
+    def reviewed_hashes(self, content):
+        digests = {
+            b"heap fixture": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
+            b"caller fixture": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
+        return mock.Mock(hexdigest=lambda: digests.get(content, "f" * 64))
+
+    def test_both_reviewed_sources_declare_zero_and_limit(self):
+        with mock.patch.object(hashlib, "sha256", side_effect=self.reviewed_hashes):
+            policy = self.policy(self.root)
+        self.assertEqual(policy["status"], "reviewed")
+        self.assertEqual(policy["reused_allocation_contents"], "zeroed")
+        self.assertEqual(policy["original_allocator_parity"], "unverified")
+        self.assertEqual(policy["heap_mib"], 32)
+        self.assertEqual(len(policy["sources"]), 2)
+        self.assertIn("原版", policy["evidence_restriction"])
+
+    def test_changed_caller_or_allocator_is_unknown(self):
+        for name in self.sources:
+            with self.subTest(name=name):
+                path = self.root / name
+                path.write_bytes(b"changed source")
+                with mock.patch.object(hashlib, "sha256", side_effect=self.reviewed_hashes):
+                    policy = self.policy(self.root)
+                self.assertEqual(policy["status"], "unknown")
+                self.assertEqual(policy["reused_allocation_contents"], "unknown")
+                self.assertEqual(policy["original_allocator_parity"], "unverified")
+                path.write_bytes(self.sources[name])
+
+    def test_missing_source_is_unknown_and_recorded(self):
+        path = self.root / next(iter(self.sources))
+        path.unlink()
+        with mock.patch.object(hashlib, "sha256", side_effect=self.reviewed_hashes):
+            policy = self.policy(self.root)
+        self.assertEqual(policy["status"], "unknown")
+        self.assertIsNone(policy["sources"][0]["sha256"])
+
+    def test_unreviewed_real_hashes_are_preserved(self):
+        policy = self.policy(self.root)
+        self.assertEqual(policy["status"], "unknown")
+        for source in policy["sources"]:
+            self.assertEqual(source["sha256"], hashlib.sha256(
+                self.sources[source["path"]]).hexdigest())
 
 
 def unit(x, y, camp, hp=10, acted=False, identity=None):

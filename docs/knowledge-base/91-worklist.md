@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -128,6 +128,14 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。', '正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。', '#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
+
+### 物理攻擊背景與台座仍固定載入，未消費原版地形選擇器
+
+`physical-attack-native-background-and-work-continuation` · 缺陷 · [#166](https://github.com/wicanr2/fd2_re/issues/166) · 仍未完成 · 要人判
+
+怎樣算做完：依固定FD2.EXE雜湊的0x28A6C原始BG／TAI選擇建立READY規格，讓正常物理攻擊消費typed地形及分離原始素材。至少抽測玩家／敵方正常物理攻擊與零旗標分支，特殊旗標未閉合時明示範圍。工作緩衝交接依writer／consumer證據驗證，不清整塊猜補；#52的3152已由#167確認為oracle近堆清零政策結果，不能當背景render清零的原版判準。保留整張影格差異、原20/30與章門檻。
+
+證據：`['docs/data/ida/fd2_terrain_mode3_review_20261001.json', 'docs/data/ida/fd2_physical_counterattack_ida.txt', 'remake/cmd/fd2/main.go', 'https://github.com/wicanr2/fd2_re/issues/52']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
