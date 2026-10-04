@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -144,16 +144,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。', '正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。', '#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
-
-### 指令6圓周座標忽略__CHP截斷，造成完整影格偏移
-
-`command6-coordinate-chp-truncation` · 缺陷 · [#162](https://github.com/wicanr2/fd2_re/issues/162) · 仍未完成 · 要人判
-
-#161完整12影格原型在恢復LUT15／施法者／命中色調後，前3張仍有559–562個索引像素差異。既有正常dosgolem trace直接反證NativeCommand6Coordinates的RoundToEven：原版channel3=(0,4)、channel4=(0,42)，目前typed結果是(1,5)、(1,42)。IDA LE 0x26FF1與0x2703F在fistp前呼叫__CHP，需核對該函式與控制字並修正。#156已閉合的mode3 X2↔X4／Y2←Y4仍有效，不重做或否定該段。
-
-怎樣算做完：['核對__CHP直接指令、原始名稱與控制字，以及固定hash原版正常trace的5通道座標。', '達READY後修正typed取整方式；抽樣front／target／tail正負座標與side0／非零側。', '以同源完整12影格比較證實座標差異消失；#154／#161的其他層差異分開記錄，不冒稱完整parity。']
-
-證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/figani/native_command6.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

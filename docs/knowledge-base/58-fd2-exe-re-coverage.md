@@ -2504,3 +2504,5 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 [#161主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)已保存共同actor LUT15、mode4後actor末幀、packed target色調／位移與延後HP base的直接writer／consumer。正式仍有這些缺口；它的READY只允許已證組圖，不能自動授權#154未知heap近似。受版控同源探針以正常原版12張完整PNG比較，全部indexed／RGB零差異，無遮罩。#154負opaque寫入只有frame7一筆offset -422；原型前置列是隔離空間，未稱原版配置。正式非零側仍拒收，#154方案待使用者決定、#161／#160保持未完成。
 
 #162最終驗證：完整Go19個套件、2776項包含父與子案例通過，31項條件略過，零失敗；多出的同源CONTINUE探針已另以固定槽r5通過。#162限座標規則CONFORMED／RUNTIME-E1；#161全圖一致仍是隔離原型，未增加正式玩家E2。命令、輸入／工具／輸出雜湊與每張完整比較均見主契約。
+
+#162已由923ee058提交推送後關閉，主機gh回讀CLOSED；#154／#161／#160維持開啟，遠端snapshot按工具重新同步。正式章台帳20/30，AP+200／DP+0／DX+60與既有待決政策不變。
