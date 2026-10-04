@@ -354,7 +354,9 @@ func TestNativePhysicalBodyGPU(t *testing.T) {
 	requirePhysicalScenePack(t)
 	var g *Game
 	var scene *nativePhysicalScene
-	if os.Getenv("FD2_PHYSICAL_BODY_CASE") == "own-nonzero" {
+	if os.Getenv("FD2_PHYSICAL_BODY_CASE") == "counter-hit" {
+		g, scene = physicalCounterHitBodyFromOracle(t, run)
+	} else if os.Getenv("FD2_PHYSICAL_BODY_CASE") == "own-nonzero" {
 		g, scene = physicalOwnNonzeroBodyFromOracle(t, run)
 	} else if os.Getenv("FD2_PHYSICAL_BODY_CASE") == "counter" {
 		g, scene = physicalCounterBodyFromOracle(t, run)
@@ -392,7 +394,7 @@ func TestNativePhysicalBodyGPU(t *testing.T) {
 
 // physicalSettledBodyFromOracle 沿用既有raw欄位解碼，正式resolver只呼叫一次。
 // 各caller另核對其固定HP／RNG／EXP；這些只驗演出輸入，不外推傷害parity。
-func physicalSettledBodyFromOracle(t *testing.T, run string, beforeSeq, actorIndex, targetIndex, mapID int, rngBefore uint16) (*Game, *nativePhysicalScene, battle.NativePhysicalAttackResult) {
+func physicalSettledBodyFromOracle(t *testing.T, run string, beforeSeq, actorIndex, targetIndex, mapID int, rngBefore uint16, afterSeq ...int) (*Game, *nativePhysicalScene, battle.NativePhysicalAttackResult) {
 	t.Helper()
 	configure := func(g *Game) {
 		raw, err := os.ReadFile(filepath.Join(run, fmt.Sprintf("checkpoint-%04d.json", beforeSeq)))
@@ -422,6 +424,8 @@ func physicalSettledBodyFromOracle(t *testing.T, run string, beforeSeq, actorInd
 			u.Camp, u.OnField = battle.Enemy, true
 			if record[6] == 2 {
 				u.Camp = battle.Own
+			} else if record[6] == 1 {
+				u.Camp = battle.Ally
 			}
 			u.ClassID = int(record[32])
 			u.Exp = float64(record[0x3c]) // fdsave.PersistentRecord.View 的已閉合 EXP 欄位。
@@ -466,7 +470,14 @@ func physicalSettledBodyFromOracle(t *testing.T, run string, beforeSeq, actorInd
 		g.nativeRNGState = rngBefore
 	}
 
-	g, scene := physicalSceneFromOracle(t, run, beforeSeq, 0, actorIndex, targetIndex, mapID, configure)
+	movedSeq := 0
+	if len(afterSeq) > 1 {
+		t.Fatal("physical diagnostic has ambiguous movement checkpoint")
+	}
+	if len(afterSeq) != 0 {
+		movedSeq = afterSeq[0]
+	}
+	g, scene := physicalSceneFromOracle(t, run, beforeSeq, movedSeq, actorIndex, targetIndex, mapID, configure)
 	result, err := g.resolvePhysicalAttackFull(g.st.Units[actorIndex], g.st.Units[targetIndex])
 	if err != nil {
 		t.Fatal(err)
@@ -874,4 +885,113 @@ func TestNativePhysicalReturnWaitSixBIOSTicks(t *testing.T) {
 			}
 		})
 	}
+}
+
+// physicalCounterHitBodyFromOracle 沿用106的完整結算，原始camp 1保留為Ally。
+// READY入口：physical_tail_spec.counter_hit_acceptance_extension。
+// 座標取同一控制1533的移動結果，其餘raw取1532，僅作演出合成診斷。
+func physicalCounterHitBodyFromOracle(t *testing.T, run string) (*Game, *nativePhysicalScene) {
+	t.Helper()
+	g, scene, result := physicalSettledBodyFromOracle(t, run, 1532, 23, 14, 11, 15766, 1533)
+	if len(result.AttackStrikes) != 1 || result.Counter == nil || len(result.CounterStrikes) != 1 {
+		t.Fatalf("enemy/counter HIT strike count differs: %+v", result)
+	}
+	main, counter := result.AttackStrikes[0].Roll, result.CounterStrikes[0].Roll
+	if main.Missed || main.Crit || main.Status || main.Extra || main.Damage != 33 || main.RNGState != 23419 ||
+		counter.Missed || counter.Crit || counter.Status || counter.Extra || counter.Damage != 119 || counter.RNGState != 60777 ||
+		g.nativeRNGState != 60777 || g.st.Units[23].HP != 121 || g.st.Units[14].HP != 185 ||
+		g.st.Units[23].Exp != 255 || g.st.Units[14].Exp != 255 || g.st.Units[14].Camp != battle.Ally ||
+		scene.bodyResources.actorSide != 0 || scene.bodyResources.attack.HeaderByte1 != 0 {
+		t.Fatalf("enemy/counter HIT settlement differs: %+v actor%+v target%+v RNG%d", result, g.st.Units[23], g.st.Units[14], g.nativeRNGState)
+	}
+	t.Logf("native enemy/counter HIT settlement: %+v; counter header%d", result, scene.bodyResources.counter.HeaderByte1)
+	return g, scene
+}
+
+func TestNativePhysicalBodyCounterHitNormalOracle(t *testing.T) {
+	run := os.Getenv("FD2_PHYSICAL_COUNTER_HIT_ORIGINAL")
+	if run == "" {
+		t.Skip("fixed enemy/counter HIT oracle receipt is required")
+	}
+	preludeRun := os.Getenv("FD2_PHYSICAL_COUNTER_HIT_PRELUDE_ORIGINAL")
+	if preludeRun == "" {
+		t.Fatal("post-DAC prelude oracle receipt is required")
+	}
+	for _, name := range []string{"control-history.jsonl", "checkpoint-1532.json", "checkpoint-1533.json", "eip-trace.jsonl"} {
+		a, err := os.ReadFile(filepath.Join(run, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		b, err := os.ReadFile(filepath.Join(preludeRun, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !bytes.Equal(a, b) {
+			t.Fatalf("enemy/counter HIT entry/exit source differs: %s", name)
+		}
+	}
+	requirePhysicalScenePack(t)
+	g, scene := physicalCounterHitBodyFromOracle(t, run)
+	verifyPhysicalCompleteFrames(t, g, scene, run, preludeRun, os.Getenv("FD2_PHYSICAL_COUNTER_HIT_OUT"), 15766, 60777, physicalCounterHitSceneCopyPrefix(t, run))
+}
+
+// 固定caller界線先於像素比較；後續地圖完整保留，未知caller拒收。
+func physicalCounterHitSceneCopyPrefix(t *testing.T, run string) int {
+	t.Helper()
+	raw, err := os.ReadFile(filepath.Join(run, "eip-trace.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	callers := map[uint64]string{}
+	for _, line := range bytes.Split(bytes.TrimSpace(raw), []byte("\n")) {
+		var row struct {
+			Step       uint64
+			EIP        string
+			ControlSeq int `json:"control_seq"`
+			Stack      []string
+		}
+		if err := json.Unmarshal(line, &row); err != nil {
+			t.Fatal(err)
+		}
+		if row.EIP == "0x11EED" {
+			if row.ControlSeq != 1533 || len(row.Stack) == 0 {
+				t.Fatal("enemy/counter HIT copy lacks control1533 caller")
+			}
+			callers[row.Step] = row.Stack[0]
+		}
+	}
+	raw, err = os.ReadFile(filepath.Join(run, "frames/frames.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	lines := bytes.Split(bytes.TrimSpace(raw), []byte("\n"))
+	prefix := 0
+	allowed := map[string]bool{"0x29315": true, "0x292D2": true, "0x2987F": true, "0x28FBE": true}
+	for i, line := range lines {
+		var f struct {
+			Step uint64
+			EIP  string
+		}
+		if err := json.Unmarshal(line, &f); err != nil {
+			t.Fatal(err)
+		}
+		caller := callers[f.Step]
+		if f.EIP != "0x11EED" {
+			t.Fatal("enemy/counter HIT frame lacks copy-exit boundary")
+		}
+		if caller == "0x11D3B" {
+			if prefix == 0 {
+				prefix = i
+			}
+			continue
+		}
+		if prefix != 0 || !allowed[caller] {
+			t.Fatalf("unreviewed or interleaved enemy/counter HIT caller at frame%d: %s", i, caller)
+		}
+	}
+	if prefix != 43 || len(lines)-prefix != 1 {
+		t.Fatalf("fixed enemy/counter HIT scene/map boundary changed: %d/%d", prefix, len(lines))
+	}
+	t.Logf("enemy/counter HIT source caller partition: %d scene / %d map frames", prefix, len(lines)-prefix)
+	return prefix
 }

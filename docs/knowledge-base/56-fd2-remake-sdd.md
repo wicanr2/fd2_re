@@ -9494,3 +9494,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 [physical_sound_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已有限CONFORMED／RUNTIME-E1。正式body以專屬PCM owner替換同通道聲音；已宣告原生map在結算前預檢，正常返回先執行普通11CAC合成，再stop、清atk與after。來源失效禁止續行；一般UI、title與nil bundle相容範圍保持。
 
 這閉合既有map consumer的呼叫順序，未驗收重新malloc的work初值或完整返回影格。平台PCM生命周期不提升人耳、硬體波形或章PLAYER-E2。唯一驗證數字、失敗修正及目前狀態見[58](58-fd2-exe-re-coverage.md)；#166的完整map work、DAC／人耳及其餘演出仍待驗收。
+
+### 2026-10-05 #166：零旗標命中反擊的驗收擴充
+
+[主契約counter_hit_acceptance_extension／physical_counter_hit_validation](../data/ida/fd2_physical_background_selection_20261004.json)已有限CONFORMED／RUNTIME-E1。原版第十二章首次敵方主攻與友軍命中反擊，從80-byte資料、明示的同控制移動結果及既有具型別規則結算一次，再由完整原版畫面與正式GPU驗收。原始camp 1映射Ally；HP與RNG只固定演出輸入。READY先於新增測試，正式程式未修改。
+
+本節取代前段「命中反擊全部尚缺」的現況。完整數字、來源、命令與唯一分層狀態見[58](58-fd2-exe-re-coverage.md)。非零連擊／返回轉場、DAC0／人耳音訊與完整地圖工作緩衝仍未驗收；章台帳、存檔主線、#167工具政策與PLAYER-E2保持。

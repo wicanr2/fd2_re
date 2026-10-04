@@ -610,3 +610,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 
 - #170 [正常物理同通道PCM與返回順序的正式實作](../../remake/cmd/fd2/audio.go)、[回歸與原子拒收](../../remake/cmd/fd2/audio_voice_test.go)：physical_sound_spec／validation的有限CONFORMED見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)，唯一現況與原版限制見[58](58-fd2-exe-re-coverage.md)。事件61的追加敵兵回歸見[既有測試](../../remake/cmd/fd2/native_field_event61_test.go)。
+
+- #166 [零旗標敵方主攻與友軍命中反擊的完整演出驗收](../data/ida/fd2_physical_background_selection_20261004.json)：physical_counter_hit_probe／validation與counter_hit_acceptance_extension；[受版控測試](../../remake/cmd/fd2/native_physical_body_test.go)沿用106與固定輸入，保留raw camp 1為Ally、同控制移動座標及原始caller界線。唯一現況見[58](58-fd2-exe-re-coverage.md)。

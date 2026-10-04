@@ -9150,3 +9150,13 @@ oracle明寫normal_player_path_verified=false，仍保留原限制。正常BIOS�
 #170只閉合物理聲音與呼叫順序；不同bank pointer不證明不同hardware handle。完整map work／返回圖像、DAC／人耳、非零連擊與命中反擊保持在#166；下一個窄切片由該Issue的目前證據選定。章台帳、#167工具政策、#52與#154保持。提交、推送與遠端HEAD核對結果記錄於[#170](https://github.com/wicanr2/fd2_re/issues/170)。
 
 本批收尾：真正主機GitHub已關閉#170，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、26份輸出雜湊、6份實作來源雜湊與19個新增本地連結通過，索引正對照有效。變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。Go／assets／IDA本批容器已清理，其他專案未更動。
+
+### 2026-10-05 #166：零旗標命中反擊的較晚勘誤
+
+本節取代先前「命中反擊所有原版影格尚缺」的現況。既有第十二章首次敵方record23→友軍record14的固定輸入，由目前oracle重生入口／出口收據。完整resolver與原始raw停點一致，READY後新增完整影格及正式GPU測試，已有限CONFORMED／RUNTIME-E1。正式結算器、呈現控制、亂數種子及原版狀態保持。
+
+同控制移動座標及原始camp欄位1明示保留，來源呼叫端分界先於像素比較。DRAFT測試誤用battle.Friendly的編譯失敗及Ally訂正保存在主契約。唯一驗證數字、目前分層與章限制見[58](58-fd2-exe-re-coverage.md)，完整命令與雜湊見[physical_counter_hit_validation](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+非零連擊／返回轉場、DAC0的原版畫面與人耳音訊、戰鬥返回地圖的完整工作緩衝及畫面仍在#166。正式來源未改，本輪不重播整章或存檔，不增加PLAYER-E2。#52可選像素、#154待決、#167近堆替代政策與章台帳保持。
+
+本批收尾：真正主機GitHub的pull／render／verify維持23項、可能已完成0項，#166保持開啟。153條教訓的49條guard、23份輸出雜湊及13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。兩份oracle與Go測試容器已清理，其他專案未更動。

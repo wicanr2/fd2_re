@@ -30613,6 +30613,212 @@
         "restriction": "地圖work與返回圖像仍屬#166未驗收，這21格不宣稱通過。"
       },
       "validation_date": "2026-10-05"
+    },
+    "counter_hit_acceptance_extension": {
+      "date": "2026-10-05",
+      "state": "CONFORMED-zero-header-enemy-main-hit-ally-counter-hit-subset",
+      "issue": 166,
+      "scope": "第十二章首個enemy23→Ally14物理攻擊，零header主攻與命中反擊。",
+      "re_basis": [
+        "docs/knowledge-base/106-physical-attack-counterattack-20260910.md",
+        "physical_tail_evidence",
+        "physical_counter_capture_evidence",
+        "physical_sound_evidence"
+      ],
+      "inputs": {
+        "before_seq": 1532,
+        "after_seq": 1533,
+        "actor": 23,
+        "target": 14,
+        "map_id": 11,
+        "rng_before": 15766,
+        "rng_counter": 23419,
+        "rng_after": 60777,
+        "raw_side": [
+          0,
+          1
+        ],
+        "actor_attack_position": [
+          13,
+          10
+        ],
+        "target_position": [
+          13,
+          11
+        ]
+      },
+      "acceptance": [
+        "正式resolver從80-byte raw、既有typed物品及地形結算一次，不供值Damage／Missed／Counter。",
+        "主攻33／反擊119、HP121／185、EXP255／255及兩段RNG一致，只核對演出輸入。",
+        "entry／exit兩份原版control-history、checkpoint1532／1533及caller trace逐byte相同；既有原版控制前綴保持。",
+        "完整320x200 indexed及RGB逐格零差異，不遮罩或搜尋相似影格。",
+        "沿用固定前導post-DAC entry、body／restore copy-exit邊界；若窗口含地圖，必須以原始11D3B caller界線分開，未知或交错caller拒收，全部原版影格保留。",
+        "正式GPU每格Draw及最後6BIOS等待與after通過；既有三個演出case維持。"
+      ],
+      "review": {
+        "state": "READY",
+        "basis": "原版1532／1533兩單位raw與目前正式resolver結果一致，既有106和copy-exit主證據足以驗收此窄演出，無須重開物理規則。",
+        "before_implementation": true
+      },
+      "limits": [
+        "只採既有首次攻擊，不改seed、不重擲、不改原版狀態。",
+        "先驗完整結算；只有DRAFT測試可調整診斷欄位。",
+        "原始camp 0/1需保留；camp 1是Friendly，不得解碼為Own。",
+        "敵方同控制先移動再攻擊，診斷座標明示取1533、HP與其他raw取1532。",
+        "不外推整章E2、傷害或生存parity、非零連擊、暴擊DAC0與地圖work初值。"
+      ],
+      "caller_review": {
+        "address_space": "IDA Pro 9.4 LE線性位址",
+        "input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "reused_copy_callers": [
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x29573",
+            "bytes": "e83889feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x29578",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x295ad",
+            "bytes": "e8fe88feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x295b2",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x29649",
+            "bytes": "e86288feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x2964e",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x29689",
+            "bytes": "e82288feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x2968e",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x2987a",
+            "bytes": "e83186feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x2987f",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x29a91",
+            "bytes": "e81a84feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x29a96",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x29bb7",
+            "bytes": "e8f482feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x29bbc",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x29c37",
+            "bytes": "e87482feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x29c3c",
+            "level": "已證實",
+            "source": [
+              "physical_tail_evidence.reviewed_functions",
+              "work/physical-tail-ida-r2.json"
+            ]
+          }
+        ],
+        "policy": "2939D已審查copy caller，加既有29164的2922F／291F6及28A6C restore28FBE；不將允許caller列舉視為未觀察分支驗收。",
+        "observed_copy_callers": [
+          {
+            "original_function": "sub_29164",
+            "ida_linear_address": "0x292cd",
+            "bytes": "e8de8bfeff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x292d2",
+            "level": "已證實",
+            "source": [
+              "work/physical-tail-ida-r2.json",
+              "physical_tail_evidence"
+            ]
+          },
+          {
+            "original_function": "sub_29164",
+            "ida_linear_address": "0x29310",
+            "bytes": "e89b8bfeff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x29315",
+            "level": "已證實",
+            "source": [
+              "work/physical-tail-ida-r2.json",
+              "physical_tail_evidence"
+            ]
+          },
+          {
+            "original_function": "sub_2939D",
+            "ida_linear_address": "0x2987a",
+            "bytes": "e83186feff",
+            "original_instruction": "call    sub_11EB0",
+            "copy_return": "0x2987f",
+            "level": "已證實",
+            "source": [
+              "work/physical-tail-ida-r2.json",
+              "physical_tail_evidence"
+            ]
+          }
+        ],
+        "fixed_scene_copy_frames": 43,
+        "fixed_trailing_map_frames": 1,
+        "actual_frame_callers": [
+          "0x29315",
+          "0x292D2",
+          "0x2987F",
+          "0x28FBE",
+          "0x11D3B"
+        ],
+        "review": "先核對原始call bytes與新收據caller，再固定43／1分界。沒有讀取像素差異來挑候選；前導不同側別改走292CD／29310，沿用已閉合29164證據。"
+      },
+      "conformance_scope": "有限RUNTIME-E1完整演出；不外推全章PLAYER-E2、map work、特殊分支或傷害規則。"
     }
   },
   "physical_tail_validation": {
@@ -30822,6 +31028,11 @@
       "lessons": 147,
       "guards": 46,
       "fd2_containers": 0
+    },
+    "current_scope_update": {
+      "date": "2026-10-05",
+      "entry": "physical_counter_hit_validation",
+      "note": "較晚的零header敵方主攻HIT／友軍counter HIT已有限CONFORMED；此段歷史remaining不再單獨作為命中反擊全部尚缺的現況。其餘特殊分支與map work仍依58。"
     }
   },
   "physical_counter_capture_evidence": {
@@ -31644,6 +31855,11 @@
       "unexpected_fd2_containers": 0,
       "verification_scope": "current focused, original full-canvas and GPU receipts; standard Go19 baseline remains 4fbaf345; no fresh all-package claim",
       "link_scope": "new lines only; historical dated handoff delivery links are not current delivery gates"
+    },
+    "current_scope_update": {
+      "date": "2026-10-05",
+      "entry": "physical_counter_hit_validation",
+      "note": "較晚的零header敵方主攻HIT／友軍counter HIT已有限CONFORMED；此段歷史remaining不再單獨作為命中反擊全部尚缺的現況。其餘特殊分支與map work仍依58。"
     }
   },
   "physical_map_return_evidence": {
@@ -32748,6 +32964,11 @@
       "possibly_completed": 0,
       "host_verified": true,
       "unexpected_fd2_containers": 0
+    },
+    "current_scope_update": {
+      "date": "2026-10-05",
+      "entry": "physical_counter_hit_validation",
+      "note": "較晚的零header敵方主攻HIT／友軍counter HIT已有限CONFORMED；此段歷史remaining不再單獨作為命中反擊全部尚缺的現況。其餘特殊分支與map work仍依58。"
     }
   },
   "physical_second_shot_probe": {
@@ -34669,6 +34890,11 @@
       "new_root_owned": 0,
       "md_dirs": 0,
       "docker": "Go／assets／IDA三種本批image的docker ps -a結果空；其他專案未更動。"
+    },
+    "current_scope_update": {
+      "date": "2026-10-05",
+      "entry": "physical_counter_hit_validation",
+      "note": "較晚的零header敵方主攻HIT／友軍counter HIT已有限CONFORMED；此段歷史remaining不再單獨作為命中反擊全部尚缺的現況。其餘特殊分支與map work仍依58。"
     }
   },
   "physical_sound_spec": {
@@ -35009,6 +35235,469 @@
       "parent_open": 166,
       "docker": "本批Go／assets／IDA的docker ps -a均空；其他專案未更動。",
       "list_state_note": "首次open list含單筆state=CLOSED的170；工具依真實單筆state略過，未以本機手改快照。"
+    },
+    "current_scope_update": {
+      "date": "2026-10-05",
+      "entry": "physical_counter_hit_validation",
+      "note": "較晚的零header敵方主攻HIT／友軍counter HIT已有限CONFORMED；此段歷史remaining不再單獨作為命中反擊全部尚缺的現況。其餘特殊分支與map work仍依58。"
+    }
+  },
+  "physical_counter_hit_probe": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "REUSED-RE-CLOSED-input-validated",
+    "source": "work/parity-slot-ch12/physical-background-enemy-original-ch12-r1",
+    "plan": "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
+    "source_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+    "source_before": 1532,
+    "source_after": 1533,
+    "actor_index": 23,
+    "target_index": 14,
+    "map_id": 11,
+    "rng_before": 15766,
+    "rng_counter_entry": 23419,
+    "rng_after": 60777,
+    "scope": "主攻與反擊均命中的完整物理演出診斷，既有106與tail證據不重開。",
+    "restrictions": [
+      "只採既有首次攻擊，不改seed、不重擲、不改原版狀態。",
+      "先驗完整結算；只有DRAFT測試可調整診斷欄位。",
+      "原始camp 0/1需保留；camp 1是Friendly，不得解碼為Own。",
+      "敵方同控制先移動再攻擊，診斷座標明示取1533、HP與其他raw取1532。",
+      "不外推整章E2、傷害或生存parity、非零連擊、暴擊DAC0與地圖work初值。"
+    ],
+    "draft_result": {
+      "log": "work/physical-counter-hit-draft-r2.log",
+      "main": {
+        "strikes": 1,
+        "damage": 33,
+        "missed": false,
+        "crit": false,
+        "status": false,
+        "extra": false,
+        "rng_after": 23419
+      },
+      "counter": {
+        "strikes": 1,
+        "damage": 119,
+        "missed": false,
+        "crit": false,
+        "status": false,
+        "extra": false,
+        "rng_after": 60777
+      },
+      "actor_hp": 121,
+      "target_hp": 185,
+      "actor_exp": 255,
+      "target_exp": 255,
+      "header": 0,
+      "actor_raw_side": 0,
+      "result": "完整結算與原版停點及2939D入口RNG一致；只固定演出輸入。"
+    },
+    "failures": [
+      {
+        "log": "work/physical-counter-hit-draft-r1.log",
+        "kind": "test-compilation",
+        "reason": "camp 1名稱誤用battle.Friendly；既有型別是battle.Ally。只修測試解碼，未改正式行為。"
+      }
+    ],
+    "plan_sha256": "9871650279e1ebae3c077b07372a420a8c0ff5b09490a54acaa58f608cf8db09",
+    "initial_slot": {
+      "path": "work/parity-slot-ch12/FD2.SAV",
+      "sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+      "initialization": "啟動前核對雜湊，以UID1000容器各複製至兩份空白state的FD2.SAV；未複製上一輪終態FD2.TMP。"
+    },
+    "issue_registration": "https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5984410891",
+    "ready_registration": "https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5984477552",
+    "input_equivalence": {
+      "entry_exit": [
+        "control-history.jsonl",
+        "checkpoint-0000.json",
+        "checkpoint-1532.json",
+        "checkpoint-1533.json",
+        "checkpoint-1539.json",
+        "eip-trace.jsonl"
+      ],
+      "existing_scroll_source": [
+        "control-history.jsonl",
+        "checkpoint-0000.json",
+        "checkpoint-1532.json",
+        "checkpoint-1533.json",
+        "checkpoint-1539.json"
+      ],
+      "result": "all-byte-identical"
+    },
+    "source_runs": {
+      "entry": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1",
+      "exit": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1"
+    }
+  },
+  "physical_counter_hit_validation": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "CONFORMED-limited",
+    "runtime_level": "RUNTIME-E1",
+    "baseline_runtime_commit": "2ad9013d6db54dc142c7b906fc94c9f28c5bcff9",
+    "scope": "第十二章首個enemy23→Ally14物理攻擊，零header主攻與命中反擊。",
+    "spec": "physical_tail_spec.counter_hit_acceptance_extension",
+    "source": {
+      "entry": {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1",
+        "frame_eip": "0x11EB0",
+        "window": [
+          3993986292,
+          4002022912
+        ],
+        "captured_frames": 43,
+        "png_count": 43,
+        "png_digest": {
+          "method": "SHA256 of sorted filename + NUL + PNG SHA256 hex + newline",
+          "sha256": "7bf54aa1e0a631cb07e7b06f8bdd7fb9aba4032bd5d0682395b0241d41a69cc7"
+        },
+        "runner": {
+          "schema_version": 1,
+          "kind": "fd2_oracle_runner_provenance",
+          "runner": "dosgolem apps/fd2/cmd/oracle",
+          "container_entry": "tools/dosgolem_oracle_container.sh",
+          "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+          "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "dosgolem_branch": "feat/fd2-oracle-input-chain",
+          "dosgolem_tracked_dirty_files": 0,
+          "dosgolem_untracked_files": 0,
+          "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+          "generated_at": "2026-10-04T21:12:14.442152+00:00",
+          "control_plan": "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
+          "eip_trace_window": {
+            "from_step": 3993986292,
+            "to_step": 4002022912,
+            "max_entries": 20000
+          },
+          "lock_ally_hp": false,
+          "force_enemy_clear_declared": false,
+          "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "original_reference_manifest": "docs/data/fd2-reference-files.json",
+          "near_heap_policy": {
+            "kind": "dosgolem_runtime_approximation",
+            "status": "reviewed",
+            "sources": [
+              {
+                "path": "internal/machine/watcom_runtime.go",
+                "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+              },
+              {
+                "path": "apps/fd2/cmd/oracle/main.go",
+                "sha256": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"
+              }
+            ],
+            "heap_mib": 32,
+            "allocation_hook": "WatcomNearHeap.Handle / allocate",
+            "free_hook": "WatcomNearHeap.handleFree / release",
+            "reused_allocation_contents": "zeroed",
+            "original_allocator_parity": "unverified",
+            "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+            "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"
+          },
+          "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-entry-r1",
+          "state_injections": [
+            "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+            "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+          ],
+          "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+        },
+        "control_seq": 1533
+      },
+      "exit": {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1",
+        "frame_eip": "0x11EED",
+        "window": [
+          3993986292,
+          4002022912
+        ],
+        "captured_frames": 44,
+        "png_count": 44,
+        "png_digest": {
+          "method": "SHA256 of sorted filename + NUL + PNG SHA256 hex + newline",
+          "sha256": "5ecbff4a5cc66f6296955d53874253cc49841c429f962f1df981a2e1d3221735"
+        },
+        "runner": {
+          "schema_version": 1,
+          "kind": "fd2_oracle_runner_provenance",
+          "runner": "dosgolem apps/fd2/cmd/oracle",
+          "container_entry": "tools/dosgolem_oracle_container.sh",
+          "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+          "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "dosgolem_branch": "feat/fd2-oracle-input-chain",
+          "dosgolem_tracked_dirty_files": 0,
+          "dosgolem_untracked_files": 0,
+          "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+          "generated_at": "2026-10-04T21:12:20.366545+00:00",
+          "control_plan": "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
+          "eip_trace_window": {
+            "from_step": 3993986292,
+            "to_step": 4002022912,
+            "max_entries": 20000
+          },
+          "lock_ally_hp": false,
+          "force_enemy_clear_declared": false,
+          "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "original_reference_manifest": "docs/data/fd2-reference-files.json",
+          "near_heap_policy": {
+            "kind": "dosgolem_runtime_approximation",
+            "status": "reviewed",
+            "sources": [
+              {
+                "path": "internal/machine/watcom_runtime.go",
+                "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+              },
+              {
+                "path": "apps/fd2/cmd/oracle/main.go",
+                "sha256": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"
+              }
+            ],
+            "heap_mib": 32,
+            "allocation_hook": "WatcomNearHeap.Handle / allocate",
+            "free_hook": "WatcomNearHeap.handleFree / release",
+            "reused_allocation_contents": "zeroed",
+            "original_allocator_parity": "unverified",
+            "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+            "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"
+          },
+          "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-exit-r1",
+          "state_injections": [
+            "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+            "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+          ],
+          "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+        },
+        "control_seq": 1533
+      }
+    },
+    "input_equivalence": {
+      "entry_exit": [
+        "control-history.jsonl",
+        "checkpoint-0000.json",
+        "checkpoint-1532.json",
+        "checkpoint-1533.json",
+        "checkpoint-1539.json",
+        "eip-trace.jsonl"
+      ],
+      "existing_scroll_source": [
+        "control-history.jsonl",
+        "checkpoint-0000.json",
+        "checkpoint-1532.json",
+        "checkpoint-1533.json",
+        "checkpoint-1539.json"
+      ],
+      "result": "all-byte-identical"
+    },
+    "presentation_inputs": {
+      "log": "work/physical-counter-hit-draft-r2.log",
+      "main": {
+        "strikes": 1,
+        "damage": 33,
+        "missed": false,
+        "crit": false,
+        "status": false,
+        "extra": false,
+        "rng_after": 23419
+      },
+      "counter": {
+        "strikes": 1,
+        "damage": 119,
+        "missed": false,
+        "crit": false,
+        "status": false,
+        "extra": false,
+        "rng_after": 60777
+      },
+      "actor_hp": 121,
+      "target_hp": 185,
+      "actor_exp": 255,
+      "target_exp": 255,
+      "header": 0,
+      "actor_raw_side": 0,
+      "result": "完整結算與原版停點及2939D入口RNG一致；只固定演出輸入。"
+    },
+    "sampling": {
+      "policy": "固定post-DAC entry前導／copy-exit body與restore；以原始caller分界，無遮罩、候選搜尋或差異忽略。",
+      "scene_copy_frames": 43,
+      "trailing_map_frames": 1,
+      "trace_entries": 269,
+      "trace_capped": false
+    },
+    "indexed_rgb": {
+      "report": "work/physical-counter-hit-full-r1/comparison.json",
+      "log": "work/physical-counter-hit-oracle-r1.log",
+      "presents": 64,
+      "unique_frames": 42,
+      "indexed_difference": 0,
+      "rgb_difference": 0
+    },
+    "gpu": {
+      "log": "work/physical-counter-hit-gpu-r1.log",
+      "presents": 64,
+      "caller_wait_redraws": 18,
+      "draw_acknowledgements": true,
+      "after_verified": true
+    },
+    "regression": {
+      "log": "work/physical-counter-hit-focused-r1.log",
+      "result": "PASS",
+      "previous_complete_cases": [
+        "raw0 nonzero MISS",
+        "zero-header main HIT / counter MISS",
+        "raw2 nonzero main HIT"
+      ],
+      "new_case": "新收據另由indexed_rgb驗證；focused未設新case環境，其SKIP不列驗收。",
+      "full_go": "未重跑；正式來源未改，本批只新增測試與證據。既有2ad9013d的19套件結果仍限於其原驗證範圍。",
+      "normal_chapter": "未重播；正式來源未改，20／30及原章gate維持。"
+    },
+    "commands": {
+      "original_entry": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-original-entry-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-entry-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-counter-hit-original-entry-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-original-entry-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-entry-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-entry-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4500000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2939D,0x29F72,0x28F4D,0x11EED,0x11EB0,0x25A96,0x2BC9A' -e 'FD2_ORACLE_EIP_TRACE_FROM=3993986292' -e 'FD2_ORACLE_EIP_TRACE_TO=4002022912' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000' -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EB0 -e FD2_ORACLE_FRAME_MAX=200 -e FD2_ORACLE_FRAME_FROM=3993986292 -e FD2_ORACLE_FRAME_TO=4002022912 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/parity-slot-ch12/physical-counter-hit-original-entry-r1.log 2>&1",
+      "original_exit": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-original-exit-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-exit-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-counter-hit-original-exit-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-original-exit-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-exit-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-counter-hit-state-exit-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4500000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2939D,0x29F72,0x28F4D,0x11EED,0x11EB0,0x25A96,0x2BC9A' -e 'FD2_ORACLE_EIP_TRACE_FROM=3993986292' -e 'FD2_ORACLE_EIP_TRACE_TO=4002022912' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000' -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=200 -e FD2_ORACLE_FRAME_FROM=3993986292 -e FD2_ORACLE_FRAME_TO=4002022912 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/parity-slot-ch12/physical-counter-hit-original-exit-r1.log 2>&1",
+      "draft": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_HIT_ORIGINAL=/src/work/parity-slot-ch12/physical-background-enemy-original-ch12-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalCounterHitDraft$'\\'' -count=1 -timeout 120s -v' > work/physical-counter-hit-draft-r2.log 2>&1",
+      "indexed_rgb": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; test ! -e /src/work/physical-counter-hit-full-r1; mkdir /src/work/physical-counter-hit-full-r1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_HIT_ORIGINAL=/src/work/parity-slot-ch12/physical-counter-hit-original-exit-r1 FD2_PHYSICAL_COUNTER_HIT_PRELUDE_ORIGINAL=/src/work/parity-slot-ch12/physical-counter-hit-original-entry-r1 FD2_PHYSICAL_COUNTER_HIT_OUT=/src/work/physical-counter-hit-full-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyCounterHitNormalOracle$'\\'' -count=1 -timeout 120s -v' > work/physical-counter-hit-oracle-r1.log 2>&1",
+      "gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-background-enemy-original-ch12-r1 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=counter-hit with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-counter-hit-gpu-r1.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-counter-hit-own-regression-r1; mkdir /src/work/physical-counter-hit-own-regression-r1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_OWN_OUT=/src/work/physical-counter-hit-own-regression-r1 with-xvfb go test ./internal/battlepresent ./internal/fdother ./cmd/fd2 -run '\\''^TestNativePhysical(Body|Scene|Terrain|Surface|DepartureMissingLayer|Return)|TestCompatiblePhysicalReturn|TestLoadSeparatedSoundBank'\\'' -count=1 -timeout 120s -v' > work/physical-counter-hit-focused-r1.log 2>&1",
+      "worklist_pull": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 150 sh -c 'set -eu; python3 -c '\\''from pathlib import Path\nimport json,sys\nsys.path.insert(0,\"tools\")\nimport fd2_worklist_issues as wi\nfeed=json.loads(Path(\"/hosttmp/fd2-worklist-counter-hit-final.json\").read_text())\nparent=json.loads(Path(\"/hosttmp/fd2-issue166-counter-hit-final.json\").read_text())\nassert parent[\"state\"]==\"OPEN\" and \"命中反擊\" in parent[\"body\"] and \"physical_counter_hit_validation\" in parent[\"body\"]\nwi.fetch_issues=lambda state=\"open\":feed\nwi.cmd_pull()\n'\\''; python3 tools/fd2_worklist.py render; python3 tools/fd2_worklist.py verify > work/physical-counter-hit-worklist-final-r1.log; tail -n 4 work/physical-counter-hit-worklist-final-r1.log'"
+    },
+    "output_hashes": [
+      {
+        "path": "work/physical-counter-hit-draft-r1.log",
+        "sha256": "452d48347e2974caac5b2f28ad00914c9cf2a684bb1c0924f2721c75edd3e921"
+      },
+      {
+        "path": "work/physical-counter-hit-draft-r2.log",
+        "sha256": "bf904dc2c9b2de8bf5eb854819bb39c26abe04ee233acbe263bad5ae7a3d6eee"
+      },
+      {
+        "path": "work/physical-counter-hit-gpu-r1.log",
+        "sha256": "e6514f08dc60d6ee5590a2b326bcc42dd8e665cd1d4cd00a6fff3d3a308cb779"
+      },
+      {
+        "path": "work/physical-counter-hit-focused-r1.log",
+        "sha256": "a5ca5bf446beb5307f07c2f71f2297bbcb2d94257b364f7e26fcf36d43585abc"
+      },
+      {
+        "path": "work/physical-counter-hit-oracle-r1.log",
+        "sha256": "bd47e4f19cf9af2dffa50fbc6c8941519929879fe49c587d92e04b1f971c3124"
+      },
+      {
+        "path": "work/physical-counter-hit-full-r1/comparison.json",
+        "sha256": "534e3b3369512b821769ca1fa9be3340cdef282664c914dc83eeca25e38d730f"
+      },
+      {
+        "path": "work/physical-counter-hit-lessons-r1.log",
+        "sha256": "8bf738127e5c365da0697306c05b09614acc2d02fa6d725d48290affa2f28278"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/runner.json",
+        "sha256": "31dbddf0da0f73d2d88361bba3cd42a9c8de4791876f1e098857e2934d43c4fe"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/control-history.jsonl",
+        "sha256": "a82bc942b55dc7131cda168a3da4491bb0fb83fe2cdf8865fb9312578ab1991e"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/checkpoint-0000.json",
+        "sha256": "8e67e6bfeb8ab7f8be2fe17971a1bd564e6b40db87be9c0b509bea0bbd73a16b"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/checkpoint-1532.json",
+        "sha256": "20ab3bf001274d051690e7f3e0d0090df9ab091cbf69c1d06ea2d703e3541bbc"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/checkpoint-1533.json",
+        "sha256": "dffd4cd77bdf498835021007729f1e5dcd52651fc446c7cd43f3aec522b9d714"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/checkpoint-1539.json",
+        "sha256": "03e4c0cf74c0fb9aa3cc0425ca5a3a38ee4742d2f2751af20dd46211f768e092"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/eip-trace.jsonl",
+        "sha256": "1299ea80778843afbcb6947a9f7ddcbbc31374a9a44dd9a06eb6a19fe8a0a643"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-entry-r1/frames/frames.jsonl",
+        "sha256": "92b17963094cc5ea8150432a7e07e27bf1be6c3966312ee6641019608a91eab2"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/runner.json",
+        "sha256": "dafce2bb77b2f4b9e7d90d60537717a470050f002f2d0ffb2ed29cedfe0edabf"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/control-history.jsonl",
+        "sha256": "a82bc942b55dc7131cda168a3da4491bb0fb83fe2cdf8865fb9312578ab1991e"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/checkpoint-0000.json",
+        "sha256": "8e67e6bfeb8ab7f8be2fe17971a1bd564e6b40db87be9c0b509bea0bbd73a16b"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/checkpoint-1532.json",
+        "sha256": "20ab3bf001274d051690e7f3e0d0090df9ab091cbf69c1d06ea2d703e3541bbc"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/checkpoint-1533.json",
+        "sha256": "dffd4cd77bdf498835021007729f1e5dcd52651fc446c7cd43f3aec522b9d714"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/checkpoint-1539.json",
+        "sha256": "03e4c0cf74c0fb9aa3cc0425ca5a3a38ee4742d2f2751af20dd46211f768e092"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/eip-trace.jsonl",
+        "sha256": "1299ea80778843afbcb6947a9f7ddcbbc31374a9a44dd9a06eb6a19fe8a0a643"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-counter-hit-original-exit-r1/frames/frames.jsonl",
+        "sha256": "d5e9645bfd26d3f8789d1ecd7bdbd711626c2d58812fa63da5adb6470aa056e0"
+      }
+    ],
+    "failures_corrected": [
+      {
+        "log": "work/physical-counter-hit-draft-r1.log",
+        "kind": "test-compilation",
+        "reason": "camp 1名稱誤用battle.Friendly；既有型別是battle.Ally。只修測試解碼，未改正式行為。"
+      }
+    ],
+    "limits": [
+      "只採既有首次攻擊，不改seed、不重擲、不改原版狀態。",
+      "先驗完整結算；只有DRAFT測試可調整診斷欄位。",
+      "原始camp 0/1需保留；camp 1是Friendly，不得解碼為Own。",
+      "敵方同控制先移動再攻擊，診斷座標明示取1533、HP與其他raw取1532。",
+      "不外推整章E2、傷害或生存parity、非零連擊、暴擊DAC0與地圖work初值。"
+    ],
+    "remaining": [
+      "非零連擊與返回轉場",
+      "DAC0的原版畫面與人耳音訊",
+      "完整battle→map工作緩衝與返回畫面",
+      "#52可選像素與#154待決保持"
+    ],
+    "closeout_audit": {
+      "date": "2026-10-05",
+      "output_hashes_checked": 23,
+      "new_links_checked": 13,
+      "index_positive_control": true,
+      "readme_culture_entry": true,
+      "root_owned_baseline": 2811,
+      "root_owned_new": 0,
+      "md_directories": 0,
+      "uid_gid": "1000:1000",
+      "old_claim_search_count": 36,
+      "old_claim_disposition": "唯一現況58及SDD／矩陣已追加較晚窄範圍勘誤；時間序列不改寫，canonical歷史remaining明示current_scope_update。全專案命中反擊不等於本次零header唯一案例，其餘特殊分支仍保留限制。",
+      "docker": "兩份oracle及Go測試容器均已清理；其他專案未更動。",
+      "worklist": {
+        "count": 23,
+        "potential_complete": 0,
+        "parent_state": "OPEN"
+      },
+      "lesson_count": 153,
+      "guard_count": 49
+    },
+    "test_source_hash": {
+      "path": "remake/cmd/fd2/native_physical_body_test.go",
+      "sha256": "72eccc9b2bdb0e7814141f650e5f63f840a1778c7c353660ddf932e620060aaa"
     }
   }
 }
