@@ -724,3 +724,39 @@ func TestComposeNativeStepFrameOmitsRangeAndHUD(t *testing.T) {
 		t.Fatal("測試素材畫不出範圍圖示，這個比較沒有鑑別力")
 	}
 }
+
+// Invalid recovered step tuples must not partially publish terrain or VGA.
+func TestNativeUpStepRejectsInvalidInputAtomically(t *testing.T) {
+	valid := FrameInput{
+		TerrainBank: bank(12, 31), UnitBank: bank(12, 42), ForegroundBank: bank(12, 53),
+		SelectorCache: &fdicon.NativeSelectorCache{}, MapWidth: 13,
+		Cells: make([]fdicon.NativeTerrainCell, 13*12), Controls: make([]byte, 4), LUT: make([]byte, 256),
+		CameraY: 1,
+	}
+	for _, c := range []struct {
+		name   string
+		motion int
+		mutate func(*FrameInput)
+	}{
+		{"motion0", 0, func(*FrameInput) {}},
+		{"motion7", 7, func(*FrameInput) {}},
+		{"missingbank", 6, func(i *FrameInput) { i.TerrainBank = nil }},
+		{"negativecamera", 6, func(i *FrameInput) { i.CameraY = -1 }},
+		{"aux", 6, func(i *FrameInput) { i.ChapterAux = &fdother.NativeChapterAuxSurface{} }},
+		{"parallax", 6, func(i *FrameInput) { i.Parallax = &fdother.NativeMapParallaxSurface{} }},
+	} {
+		t.Run(c.name, func(t *testing.T) {
+			in := valid
+			c.mutate(&in)
+			work := bytes.Repeat([]byte{69}, NativeUnitPresentWorkSize)
+			vga := bytes.Repeat([]byte{87}, NativeMapVGASize)
+			oldWork, oldVGA := append([]byte(nil), work...), append([]byte(nil), vga...)
+			if err := ComposeNativeUpStepFrame(work, vga, in, 2, c.motion); err == nil {
+				t.Fatal("invalid input accepted")
+			}
+			if !bytes.Equal(work, oldWork) || !bytes.Equal(vga, oldVGA) {
+				t.Fatal("invalid input partly published")
+			}
+		})
+	}
+}

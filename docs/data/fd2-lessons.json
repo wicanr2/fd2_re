@@ -1453,6 +1453,21 @@
       "rule": "關閉GitHub Issue後，以主機gh issue view核對個別state；搜尋列表若短暫仍含該Issue，重新取得遠端列表，不能據此推定結案失敗或重開。快照仍用tools/fd2_worklist_issues.py的cmd_pull／build_snapshot重生，不手改。入口AGENTS.md的GitHub Issue主機控制面與主機/home/anr2/.local/bin/gh。",
       "why": "#164關閉後個別view已CLOSED，第一次open搜尋仍列出164，下一次遠端搜尋才移除。沒有改遠端狀態或手工刪快照。",
       "evidence": "docs/knowledge-base/91-worklist-history.md"
+    },
+    {
+      "id": "retained-terrain-consumes-each-motion",
+      "date": "2026-10-04",
+      "area": "原版保留型地形",
+      "rule": "遇到mode3透明保留殘差，追到真正literal writer及caller的地形底址、相機與copy範圍；正式動作每拍保存工作緩衝，不只在抵達或Draw重組。入口docs/data/ida/fd2_terrain_mode3_review_20261001.json的walk_terrain_writer，現有限於第12章正常玩家向上walk；其他caller另查。",
+      "why": "#52原13x8穩態合成遺漏13185的13x9偏移pass，tile41 literal118沒有寫入。逐拍重現後原17點增至15點一致；無Draw的正常玩家移動也保留118。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/52",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "nativeCh12UpWalkFrame"
+      }
     }
   ]
 }

@@ -88,6 +88,49 @@ func TestNativeTerrainWorkHandoffDiagnostic(t *testing.T) {
 			t.Fatalf("首次戰場合成改寫 mode3 保留值：draw=%v got=%d", draw, got)
 		}
 		points = append(points, map[string]interface{}{"node": "battle_ch12_composed", "draw": draw, "index": g.nativeMapWork[0x8088+105*456+7]})
+		// 同原版短探針接受的兩條正常玩家路徑。只讀 literal 留下的底色，
+		// 不注入原版像素，不直接指定單位抵達座標。
+		for _, route := range [][4]int{{15, 44, 15, 40}, {17, 48, 17, 41}} {
+			if !g.positionScreenshotCursor(route[0], route[1]) {
+				t.Fatal("移動起點")
+			}
+			g.confirm()
+			if g.sel == nil || !g.positionScreenshotCursor(route[2], route[3]) {
+				t.Fatal("移動選取")
+			}
+			g.confirm()
+			if g.walk == nil {
+				t.Fatalf("正常移動被拒：%v", route)
+			}
+			for i := 0; i < 240 && g.walk != nil; i++ {
+				if err := g.Update(); err != nil {
+					t.Fatal(err)
+				}
+				if draw {
+					g.Draw(screen)
+				}
+				if g.loadErr != "" {
+					t.Fatal(g.loadErr)
+				}
+			}
+			if g.walk != nil || !g.ring {
+				t.Fatal("移動抵達／指令環")
+			}
+			r.settleActionOverlay(parityAction{})
+			r.waitInsteadOfAttack(g.sel)
+		}
+		const walkOffset = 0x19117
+		if got := g.nativeMapWork[walkOffset]; got != 118 {
+			t.Fatalf("逐拍向上地形writer未保留：draw=%v got=%d", draw, got)
+		}
+		if err := g.composeNativeMapFrame(); err != nil {
+			t.Fatal(err)
+		}
+		if g.nativeMapWork[walkOffset] != 118 {
+			t.Fatal("一般透明地形改寫移動底色")
+		}
+		points = append(points, map[string]interface{}{"node": "battle_ch12_after_up_walk", "draw": draw, "work_offset": walkOffset, "index": g.nativeMapWork[walkOffset]})
+
 		if err := os.MkdirAll(out, 0755); err != nil {
 			t.Fatal(err)
 		}

@@ -9023,3 +9023,12 @@ r1 trace達200000上限，只引用截斷前的具體row；r2 writer窗口有界
 [主證據 oracle_direct_entry](../data/ida/fd2_terrain_mode3_review_20261001.json)已 CONFORMED。wrapper 與直接 Docker 共用受版控容器入口；原版、dosgolem與計畫唯讀，UID1000、4GB、2CPU、256PID、900秒、無網路。runner.json改在容器產生，Go oracle與Python控制器主體未改。相同槽／計畫的57、60、84、94、100五張PNG逐檔相同；100項控制器／前綴回歸及缺來源、錯commit、錯EXE拒收通過。自動審查先前無法確認主機wrapper隔離，明確docker run入口已通過並完成追蹤。
 
 #52取得9730筆未截斷移動writer：末拍13×9地形區起點14A204，tile41的固定檔案0x64FA byte118寫入15DD53。偏移地形與後續透明保留的runtime規格仍DRAFT，未先接正式程式。#52保持開啟，原17點仍12個一致、5個未閉合，章台帳20/30不變。本輪容器已退出；無新增原版執行器。
+
+
+### 2026-10-04 #52：向上移動地形有限驗收
+
+[walk_terrain_writer.runtime_spec及validation](../data/ida/fd2_terrain_mode3_review_20261001.json)已有限CONFORMED／RUNTIME-E1，取代上一節READY現況。正式第12章正常玩家向上walk每拍合成13×9偏移地形與既有單位／前景，按原始camera判準複製viewport。正常LOAD→城鎮→整備→故事→戰場→兩次移動，有／無Draw都保留原版tile41 literal118；mode3的一般重繪不改寫它。motion0/7、缺bank、負相機、aux／parallax六種非法輸入均原子拒收。
+
+目前951cb55f原版短探針九張均在640px內，行為／節點／交易通過；100的完整圖0差異，94的完整圖仍210px、65仍88px，均如實保留。九張未達完整章12張門檻，存檔未抽樣，不宣稱全章或六拍全部畫面一致。
+
+歷史a9bcd621的完整來源重播155／155 AI入口、零順序分岔；兩側22987-byte存檔SHA-256仍同為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。原17點現15個地形像素相同，3137／3152仍各一像素未閉合；其他完整畫面殘差不遮罩。1528／2030原版未知wait仍嚴格拒收，沒有冒稱新oracle完整章通過。完整Go19套件最終回歸通過，字串98項處置不變，教訓guard通過。父#52、#154與章台帳20/30不變，下一步只追後段兩點的有界writer。

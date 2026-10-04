@@ -6275,6 +6275,14 @@ func (g *Game) stepBattleWalkSegment(w *walkAnim, finish func(pose int)) bool {
 		w.u.OffX = float64(b.X-a.X) * float64(g.m.TileW) * float64(w.tick) / nativeMapGridMotionFrames
 		w.u.OffY = float64(b.Y-a.Y) * float64(g.m.TileH) * float64(w.tick) / nativeMapGridMotionFrames
 		w.u.SetNativeMapGridMotion(pose, w.tick)
+		// 13185 redraws each motion before committing the next grid position.
+		// Keep the work writer even when Update runs without a subsequent Draw.
+		if _, _, ok := g.nativeCh12UpWalkFrame(); ok {
+			if err := g.composeNativeMapFrame(); err != nil {
+				g.loadErr = "native up-step redraw: " + err.Error()
+				g.walk = nil
+			}
+		}
 		return false
 	}
 	if !w.u.FinishNativeMapGridStep(pose, b.X, b.Y) {
@@ -12049,7 +12057,11 @@ func (g *Game) composeNativeMapFrameAtForActionBackground(now time.Time, closedA
 	// 緩衝區（地形、單位、前景）整塊搬到 VGA (4,4)，蓋掉左下 HUD；游標白框也不
 	// 在裡面（第四章 r9 收據 seq 636／913：全員行動完自動換手，橫幅下沒有白框
 	// 與地形面板）。橫幅本身對這張快照做馬賽克，之後不重繪。
-	if g.walk != nil || g.bannerT > 0 {
+	if unitY, motion, ok := g.nativeCh12UpWalkFrame(); ok {
+		if err := indexedmap.ComposeNativeUpStepFrame(work, vga, in.Frame, unitY, motion); err != nil {
+			return err
+		}
+	} else if g.walk != nil || g.bannerT > 0 {
 		if err := indexedmap.ComposeNativeStepFrame(work, vga, in.Frame); err != nil {
 			return err
 		}

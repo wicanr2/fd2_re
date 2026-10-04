@@ -463,6 +463,29 @@ func ComposeNativeFrameObserved(work, vga []byte, in NativeFrameInput, observer 
 // 視窗複製沒有單獨量到位址，但走行期間畫面確實在更新，所以保留與整幀排程
 // 相同的 312×192 複製。章節輔助表面同樣沒有單獨量到，保留原本行為。
 func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
+	return composeNativeStepFrame(work, vga, in, workBase, in.CameraY, 8, workBase)
+}
+
+// ComposeNativeUpStepFrame preserves 0x13185's six terrain/copy passes.
+// The terrain camera and destination differ from the unit/foreground camera.
+// Source: fd2_terrain_mode3_review_20261001.json, walk_terrain_writer.
+func ComposeNativeUpStepFrame(work, vga []byte, in FrameInput, unitY, motion int) error {
+	if len(work) != NativeUnitPresentWorkSize || motion < 1 || motion > 6 ||
+		in.CameraY < 0 || in.MapWidth <= 0 || unitY < 0 || unitY >= len(in.Cells)/in.MapWidth ||
+		in.Parallax != nil || in.ChapterAux != nil {
+		return errors.New("indexedmap: invalid native up-step input")
+	}
+	terrainBase, terrainCameraY, viewportBase := workBase, in.CameraY, workBase
+	if in.CameraY > 0 {
+		terrainBase, terrainCameraY = 0x55C8, in.CameraY-1
+		if unitY-in.CameraY < 2 {
+			viewportBase -= motion * fdicon.NativeMotionPixels * workStride
+		}
+	}
+	return composeNativeStepFrame(work, vga, in, terrainBase, terrainCameraY, 9, viewportBase)
+}
+
+func composeNativeStepFrame(work, vga []byte, in FrameInput, terrainBase, terrainCameraY, terrainRows, viewportBase int) error {
 	if len(work)%workStride != 0 || len(vga) < NativeMapVGASize ||
 		in.MapWidth <= 0 || len(in.Cells)%in.MapWidth != 0 {
 		return errors.New("indexedmap: incomplete native step frame input")
@@ -471,7 +494,7 @@ func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
 		return errors.New("indexedmap: missing native step frame bank")
 	}
 	frame := append([]byte(nil), work...)
-	baseX, baseY := workBase%workStride, workBase/workStride
+	baseX, baseY := terrainBase%workStride, terrainBase/workStride
 	if in.ChapterAux != nil {
 		if err := fdother.BlitNativeChapterAuxViewport(frame[workBase:], workStride, in.ChapterAux, in.ChapterAuxPhase); err != nil {
 			return fmt.Errorf("indexedmap: step chapter auxiliary surface: %w", err)
@@ -480,7 +503,7 @@ func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
 	if err := seedNativeMapParallax(frame, in.Parallax, in.CameraX, in.CameraY, in.ParallaxScrollX, in.ParallaxScrollY); err != nil {
 		return err
 	}
-	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, in.Cells, in.Controls, in.CameraX, in.CameraY, 13, 8, in.Flip, in.TerrainCycle, in.LUT); err != nil {
+	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, in.Cells, in.Controls, in.CameraX, terrainCameraY, 13, terrainRows, in.Flip, in.TerrainCycle, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: step terrain: %w", err)
 	}
 	if err := in.UnitBank.BlitNativeUnitLayer(frame, workStride, in.SelectorCache, in.Units, in.CameraX, in.CameraY, 12, 7, in.IdleCycle, in.MovingCycle, in.PixelShift); err != nil {
@@ -492,7 +515,7 @@ func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
 	copyFrame := append([]byte(nil), vga...)
 	if err := fdicon.CopyNativeIndexedRegion(
 		copyFrame[steadyViewportOffset:], viewWidth,
-		frame[workBase:], workStride,
+		frame[viewportBase:], workStride,
 		steadyViewportWidth, viewHeight,
 	); err != nil {
 		return fmt.Errorf("indexedmap: step viewport copy: %w", err)

@@ -87,3 +87,21 @@ func buildNativeMapFrameInput(
 		HUDCache: state.NativeMapSelectorCache,
 	}, nil
 }
+
+// nativeCh12UpWalkFrame limits the recovered 0x13185 geometry to the reviewed
+// player caller. Other chapters, AI, directions and story owners stay separate.
+func (g *Game) nativeCh12UpWalkFrame() (unitY, motion int, ok bool) {
+	if g == nil || g.st == nil || !g.st.HasNativeMapViewState || g.camp == nil ||
+		g.camp.NodeID() != "battle_ch12" || g.hasStoryNativeMapView ||
+		g.nativeMapAssets == nil || g.nativeMapAssets.MapIndex != 11 ||
+		g.walk == nil || g.walk.u == nil || g.walk.then != nil ||
+		g.walk.tick < 1 || g.walk.tick > nativeMapGridMotionFrames ||
+		g.walk.seg < 0 || g.walk.seg+1 >= len(g.walk.path) {
+		return 0, 0, false
+	}
+	a, b := g.walk.path[g.walk.seg], g.walk.path[g.walk.seg+1]
+	if b.X != a.X || b.Y != a.Y-1 {
+		return 0, 0, false
+	}
+	return a.Y, g.walk.tick, true
+}

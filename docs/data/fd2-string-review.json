@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "fd2_string_review",
-  "inventory_sha256": "2f57f7cea727807ab2fad865db78976322d2c47871433b3c63f9e7437f48e331",
+  "inventory_sha256": "9dc953a549813ae39644afc402fce68c1790d17d2295bd24102f06d56156f2b1",
   "reviewed_role": "go_review",
   "dispositions": {
     "player_visible": {
@@ -12,10 +12,10 @@
         "legacy.go.remake.cmd.fd2.ai_spell_execute.l80-c22",
         "legacy.go.remake.cmd.fd2.ending_preview.l788-c10",
         "legacy.go.remake.cmd.fd2.ending_preview.l791-c10",
-        "legacy.go.remake.cmd.fd2.main.l11451-c30",
-        "legacy.go.remake.cmd.fd2.main.l11451-c49",
-        "legacy.go.remake.cmd.fd2.main.l12560-c17",
-        "legacy.go.remake.cmd.fd2.main.l12736-c36",
+        "legacy.go.remake.cmd.fd2.main.l11459-c30",
+        "legacy.go.remake.cmd.fd2.main.l11459-c49",
+        "legacy.go.remake.cmd.fd2.main.l12572-c17",
+        "legacy.go.remake.cmd.fd2.main.l12748-c36",
         "legacy.go.remake.cmd.fd2.main.l1735-c10",
         "legacy.go.remake.cmd.fd2.main.l1737-c10",
         "legacy.go.remake.cmd.fd2.main.l1739-c10",
@@ -23,7 +23,7 @@
         "legacy.go.remake.cmd.fd2.main.l1743-c10",
         "legacy.go.remake.cmd.fd2.main.l1745-c10",
         "legacy.go.remake.cmd.fd2.main.l1747-c10",
-        "legacy.go.remake.cmd.fd2.main.l7913-c13",
+        "legacy.go.remake.cmd.fd2.main.l7921-c13",
         "legacy.go.remake.cmd.fd2.native_defeat.l152-c16",
         "legacy.go.remake.cmd.fd2.native_defeat.l35-c15",
         "legacy.go.remake.cmd.fd2.player_shortcuts.l32-c10",
@@ -36,14 +36,14 @@
     "internal_diagnostic": {
       "rationale": "只供 loadErr、資料契約拒絕或內部一致性診斷，不進正式語言包。",
       "string_ids": [
-        "legacy.go.remake.cmd.fd2.main.l11761-c31",
-        "legacy.go.remake.cmd.fd2.main.l11769-c32",
-        "legacy.go.remake.cmd.fd2.main.l11775-c32",
-        "legacy.go.remake.cmd.fd2.main.l11801-c5",
-        "legacy.go.remake.cmd.fd2.main.l12249-c34",
-        "legacy.go.remake.cmd.fd2.main.l12269-c34",
-        "legacy.go.remake.cmd.fd2.main.l12275-c34",
-        "legacy.go.remake.cmd.fd2.main.l12294-c34",
+        "legacy.go.remake.cmd.fd2.main.l11769-c31",
+        "legacy.go.remake.cmd.fd2.main.l11777-c32",
+        "legacy.go.remake.cmd.fd2.main.l11783-c32",
+        "legacy.go.remake.cmd.fd2.main.l11809-c5",
+        "legacy.go.remake.cmd.fd2.main.l12261-c34",
+        "legacy.go.remake.cmd.fd2.main.l12281-c34",
+        "legacy.go.remake.cmd.fd2.main.l12287-c34",
+        "legacy.go.remake.cmd.fd2.main.l12306-c34",
         "legacy.go.remake.cmd.fd2.main.l1771-c16",
         "legacy.go.remake.cmd.fd2.main.l1800-c16",
         "legacy.go.remake.cmd.fd2.main.l1803-c15",
@@ -102,15 +102,15 @@
     "development": {
       "rationale": "只供除錯、自我檢查或截圖追蹤，不進正式語言包。",
       "string_ids": [
-        "legacy.go.remake.cmd.fd2.main.l12097-c15",
-        "legacy.go.remake.cmd.fd2.main.l12671-c16",
-        "legacy.go.remake.cmd.fd2.main.l12704-c15",
-        "legacy.go.remake.cmd.fd2.main.l12731-c14",
-        "legacy.go.remake.cmd.fd2.main.l8426-c25",
-        "legacy.go.remake.cmd.fd2.main.l8426-c38",
-        "legacy.go.remake.cmd.fd2.main.l8432-c25",
-        "legacy.go.remake.cmd.fd2.main.l8432-c35",
-        "legacy.go.remake.cmd.fd2.main.l9696-c16"
+        "legacy.go.remake.cmd.fd2.main.l12109-c15",
+        "legacy.go.remake.cmd.fd2.main.l12683-c16",
+        "legacy.go.remake.cmd.fd2.main.l12716-c15",
+        "legacy.go.remake.cmd.fd2.main.l12743-c14",
+        "legacy.go.remake.cmd.fd2.main.l8434-c25",
+        "legacy.go.remake.cmd.fd2.main.l8434-c38",
+        "legacy.go.remake.cmd.fd2.main.l8440-c25",
+        "legacy.go.remake.cmd.fd2.main.l8440-c35",
+        "legacy.go.remake.cmd.fd2.main.l9704-c16"
       ]
     },
     "unknown": {
@@ -119,7 +119,7 @@
         "legacy.go.remake.cmd.fd2.action_overlay_runtime.l674-c19",
         "legacy.go.remake.cmd.fd2.main.l3173-c16",
         "legacy.go.remake.cmd.fd2.main.l3173-c47",
-        "legacy.go.remake.cmd.fd2.main.l7768-c26"
+        "legacy.go.remake.cmd.fd2.main.l7776-c26"
       ]
     }
   }
