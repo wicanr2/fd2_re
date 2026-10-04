@@ -2514,3 +2514,11 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 同源固定槽探針的11張正式composer完整影格與dosgolem原版索引／RGB全0差異；第7張仍按#154負列拒收。12張全圖一致是隔離原型，未證明正式非零側全程施法或新增PLAYER-E2。#161／#160／#154保持開啟，章台帳與既有隊伍政策不變。
 
 驗證：相關Go、4組正式confirm及同源CONTINUE局部探針通過；完整Go19套件、2778項含父／子案例通過、31項條件略過，零失敗。原版輸入／工具／影格雜湊、可重跑命令與限制見[主契約followup161](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
+
+### 2026-10-04 #32：酒店讀檔與傳聞返回有限閉合
+
+[主契約](../data/ida/fd2_hotel_load_20261004.json)保存IDA9.4固定輸入、原始bytes／名字／xrefs。301F4直接指令反證「酒店可照標題LOAD無條件載入」：526B9 gate非零顯示1DF且不複製roster，合法槽才複製roster與metadata+0..9、顯示1DE。caller之後顯示24A並回酒店選單，仍選服務2；傳聞返回也走同一邊界。RE-CLOSED後經READY審查，再接正式酒店input／composer及既有typed restore，達本切片CONFORMED／RUNTIME-E1。
+
+原版固定第4章建構槽，普通鍵盤LOAD、酒店讀檔、確認與ESC，零章內注入。r1多按一次Enter重開列表，修訂r2保持45份registers／view等前綴相同，seq49正常回城鎮。正式canonical戰役23條傳聞返回邊已同步，文字與旗標保留。空槽、六個整備gate、壞來源與缺少已編寫返回邊的零交易測試通過；標題LOAD／CONTINUE與既有保存回歸通過。
+
+三個固定停點的320×200完整索引及RGB，在正式composer合法相位均0差異，不遮罩；不宣稱頭像／游標時間同步或原版傳聞角色列表、內容已完成。完整Go19套件、2791項含父／子案例通過、32項條件略過；同源探針另通過，Python26項通過。命令、輸入／工具／來源／輸出雜湊與各次失敗分類見主契約implementation。#32待本批提交推送後關閉；#154待決與20/30章台帳不變。

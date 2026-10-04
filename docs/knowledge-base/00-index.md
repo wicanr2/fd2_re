@@ -531,3 +531,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [#154 玩家槽原地範圍指令6探針](../data/parity-plans/ch30-command6-side1-player-r2.jsonl)：同源正常CONTINUE、不經過敵軍回合；檢驗既有selection／effect與空格確認，非章E2。
 
 - [#160 玩家指令6範圍中心 RE 與草案](../data/ida/fd2_player_command6_cursor_center_20261004.json)：固定IDA caller／bytes、正常原地範圍確認收據；修正直接enemy候選假設及指令6白名單漏接；READY與有限RUNTIME-E1、同源CONTINUE探針、#154阻擋及剩餘驗收在同一主證據。
+
+- [酒店讀檔與傳聞返回契約](../data/ida/fd2_hotel_load_20261004.json)：#32，服務2的整備槽拒絕／成功提示及酒店返回直接bytes；[正常酒店讀檔計畫](../data/parity-plans/hotel-load-ch04-r1.jsonl)只使用已登記第4章固定槽。
+
+  #32 計畫多送鍵的勘誤及[修訂計畫r2](../data/parity-plans/hotel-load-ch04-r2.jsonl)由同一酒店主契約承載，r1不覆寫。
+
+  [酒店 LOAD 完整影格比較工具](../../tools/verify_hotel_load_parity.py)只驗固定停點的合法相位等價；用法與收據見酒店主契約。

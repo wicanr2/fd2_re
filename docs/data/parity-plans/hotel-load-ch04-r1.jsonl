@@ -1,0 +1,29 @@
+# #32 固定已登記ch04建構槽，普通LOAD→酒店服務2→有效槽0→提示／返回→ESC。無狀態注入。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"await_ui": "town", "steps": 20000000, "max": 30}
+{"mark": "hotel-source-town"}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 4}
+{"key": "right", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 3}
+{"key": "right", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 3}
+{"mark": "hotel-service2"}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 4}
+{"mark": "hotel-load-slots"}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 4}
+{"mark": "hotel-loaded-message"}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 3}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 3}
+{"mark": "hotel-loaded-return"}
+{"key": "esc", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 4}
+{"mark": "hotel-load-exit"}

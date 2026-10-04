@@ -205,15 +205,18 @@
       "layer": "runtime",
       "category": "缺陷",
       "title": "酒店服務 2 讀檔（0x301F4）與傳聞後回酒店選單尚未接",
-      "body": "酒店 `0x2FC85` 的原生介面（資源 13 框與四圖示、DATO 0x81 店主、存檔槽列表 `0x30550`、「記錄儲存完畢」）已在 `remake/cmd/fd2/native_hotel_ui.go` 接上（#27），第四章收據 seq 1198 逐像素相同。還缺兩項：服務 2 讀檔（`0x301F4`，四槽列表載入後直接進該存檔的城鎮）目前仍只把 raw selector 對成 `fdother.ResolveNativeHotelServiceRoute` 的路由並回一句「原生介面尚未接這一項」；服務 0 打聽消息的 story 播完，原版回到酒店選單，重製端經 `hotel_chNN.rumor` 播完回城鎮。要做：讀檔走標題 LOAD 同一條載入路徑但回城鎮節點；傳聞 story 結束後回酒店選單（戰役資料的 story `next` 指回 `hotel_chNN`，或酒店節點自己接 story）。",
-      "acceptance": "酒店選服務 2 能列四槽並載入存檔進該章城鎮；傳聞播完回酒店選單；`applyHotelServiceSelection` 的自承訊息拿掉。",
+      "body": "既有酒店原生介面與保存由#27接入。本項補服務2讀檔與既有傳聞story返回酒店。\n\n2026-10-04訂正：原先「照標題LOAD載入後直接到城鎮」的工單敘述已由IDA9.4直接bytes与正常dosgolem收據反證。酒店301F4在302BF先查526B9 gate；整備槽顯示FDTXT 1DF而不複製roster。成功槽顯示1DE，確認後以24A回酒店且保持服務2；ESC才回loaded town。空槽重新選、取消回酒店。\n\n主證據與READY規格：docs/data/ida/fd2_hotel_load_20261004.json。原版正常r2與r1前45份狀態完全相同，最後seq49已普通ESC回城鎮，無章內狀態注入。原r1多送Enter重新開列表保留為計畫失敗，不當產品缺陷。\n\n不新增原版2FFA5的角色挑選或傳聞內容。本次只修既有authored rumor story的返回邊及flags持續。正式載入、完整影格與回歸尚待驗收，不因舊自承字串消失就結案。",
+      "acceptance": "服務2四槽依原版302BF gate拒絕整備槽、空槽及取消保持正確返回；允許槽沿既有typed restore載入隊伍與metadata，在酒店顯示1DE，確認後以24A保持服務2，ESC回對應城鎮。壞來源及未編寫返回邊零交易；標題LOAD/CONTINUE不變。既有rumor story結束回來源酒店並保留flags。正常原版r2的slots／loaded／menu完整影格與正式compositor對照，紀錄相位與限制，相關及全套回歸通過。",
+      "evidence": [
+        "docs/data/ida/fd2_hotel_load_20261004.json",
+        "docs/data/parity-plans/hotel-load-ch04-r2.jsonl",
+        "remake/cmd/fd2/native_hotel_ui.go",
+        "remake/cmd/fd2/native_load_slots_ui.go",
+        "tools/gen_campaign.py"
+      ],
       "verify": {
-        "kind": "present",
-        "paths": [
-          "remake/cmd/fd2/main.go"
-        ],
-        "pattern": "原生介面尚未接這一項",
-        "note": "applyHotelServiceSelection 目前回給玩家的自承訊息；讀檔接上後這句會消失。"
+        "kind": "manual",
+        "note": "依原版酒店caller、同源三狀態全影格及正式載入／flags／失敗原子回歸判定；旧自承字串消失不足以結案。"
       },
       "issue": 32
     },

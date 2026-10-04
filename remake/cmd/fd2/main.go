@@ -297,7 +297,8 @@ type Game struct {
 	nativeChurchTextIndex    int
 	nativeShopUI             *nativeShopUIAssets
 	nativeHotelUI            *nativeHotelUIAssets
-	nativeHotelMode          string // ""＝舊版面；menu／slots／saved
+	nativeHotelMode          string // ""＝舊版面；menu／slots／saved／loadslots／loaded／load_blocked
+	nativeHotelPromptReturn  bool
 	nativeHotelSlotSel       int
 	nativeShopUIJob          *nativeClassUIJob
 	nativeShopUIClock        nativeBIOSClock
@@ -5372,11 +5373,7 @@ func (g *Game) applyHotelServiceSelection(selector byte) bool {
 		return false
 	}
 	g.hotelRoute, g.hotelHasRoute = route, true
-	if route.Secondary != 0 {
-		g.msg = fmt.Sprintf("旅館 raw selector %d：%05X→%05X（原生介面尚未接這一項）", selector, route.Primary, route.Secondary)
-	} else {
-		g.msg = fmt.Sprintf("旅館 raw selector %d：%05X（原生介面尚未接這一項）", selector, route.Primary)
-	}
+	g.msg = "酒店介面素材不完整，保留目前狀態"
 	return true
 }
 
@@ -5387,6 +5384,7 @@ func (g *Game) leaveHotel() {
 		return
 	}
 	g.nativeHotelMode = ""
+	g.nativeHotelPromptReturn = false
 	g.camp.Advance("")
 	g.nativeTownHubReturn = true
 	g.enterNode()

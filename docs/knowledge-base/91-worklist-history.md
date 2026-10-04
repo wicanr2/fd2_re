@@ -5202,3 +5202,12 @@ Python及相關Go回歸通過；第23章與第24章有限收據四gate／整檔S
 驗證：相關Go、4組正式confirm及同源CONTINUE局部探針通過；完整Go19套件、2778項含父／子案例通過、31項條件略過，零失敗。原版輸入／工具／影格雜湊、可重跑命令與限制見[主契約followup161](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
 
 本批最終審閱補強畸形HP stage測試欄位，相關4套件r2再次通過；production與同源探針來源未改。24條Issue機器訊號仍在，沒有應結案而未關的條目；教訓檢查通過。變更檔UID/GID1000:1000，既有root-owned基線2811未增、沒有.md目錄；一次性FD2容器均已退出移除。
+
+
+## 2026-10-04 #32酒店LOAD與傳聞返回收尾
+
+先由固定IDA bytes確認酒店caller多一道整備gate，修正Issue的「照標題LOAD無條件讀取」假設；未猜補新章或資料格式。正常原版r1於提示確認後多按Enter重開列表，保留失敗計畫；r2只移除多送鍵，45份實際registers／view等前綴重驗相同，正常ESC返回城鎮。較早草稿的cpu欄位名稱已更正為收據實際registers。
+
+READY審查後沿既有typed四槽交易接正式酒店UI，成功保留服務2／1DE／24A，再ESC回所載城鎮。23條既有傳聞返回來源酒店，文字及旗標保留；正式editor-canonical由維護工具同步。完整Go首次發現canonical尚未同步及字串review漂移，修正後乾淨重跑通過。相關測試素材包、JSON測試catalog、同源探針campaign未配置均分類為驗證環境問題，沒有將其登記成產品缺陷。
+
+三個固定停點的完整索引／RGB在合法相位均相同，不宣稱時間同步。原版傳聞角色列表與內容未新增，不增加章PLAYER-E2。唯一現況與驗證見58及[主契約](../data/ida/fd2_hotel_load_20261004.json)；#154待決及其他未完成Issue不變。本批已獲commit／push授權，驗收後提交並關閉#32。

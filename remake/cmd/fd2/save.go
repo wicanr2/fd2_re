@@ -177,35 +177,51 @@ func (g *Game) saveGameToSlot(slot int) error {
 func (g *Game) loadGame() { g.loadGameFromSlot(0) }
 
 func (g *Game) loadGameFromSlot(slot int) {
+	g.loadJSONGameFromSlot(slot, false)
+}
+
+func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 	if g.camp == nil {
-		return
+		return false
 	}
 	raw, err := os.ReadFile(saveSlotPath(slot))
 	if err != nil {
 		if message, ok := g.localeMessage("save.none"); ok {
 			g.msg = message
 		}
-		return
+		return false
 	}
 	var d saveData
 	if json.Unmarshal(raw, &d) != nil {
-		return
+		return false
 	}
 	if _, ok := g.camp.C.Nodes[d.Node]; !ok {
 		if message, formatted := g.localeMessage("save.node_missing", d.Node); formatted {
 			g.msg = message
 		}
-		return
+		return false
+	}
+	if inHotel {
+		town := d.Node
+		if node := g.camp.C.Nodes[d.Node]; node.Type == "hotel" {
+			town = node.Next
+		}
+		hotel, err := nativeHotelNodeForTown(g.camp.C, town)
+		if err != nil {
+			g.msg = err.Error()
+			return false
+		}
+		d.Node = hotel
 	}
 	if err := validateSavePartyTopology(d); err != nil {
 		g.msg = err.Error()
-		return
+		return false
 	}
 	options := g.currentNativeSystemOptions()
 	if d.NativeHUDGateA != nil {
 		if *d.NativeHUDGateA < 0 || *d.NativeHUDGateA > 1 {
 			g.msg = "存檔 native HUD gate A 超出原始布林範圍"
-			return
+			return false
 		}
 		options.Raw51AAB = byte(*d.NativeHUDGateA)
 	}
@@ -222,13 +238,13 @@ func (g *Game) loadGameFromSlot(slot int) {
 		}
 		if *field.value < 0 || *field.value > 1 {
 			g.msg = "存檔 native 系統設定超出原始布林範圍"
-			return
+			return false
 		}
 		*field.target = byte(*field.value)
 	}
 	if err := options.Validate(); err != nil {
 		g.msg = "存檔 native 系統設定無效"
-		return
+		return false
 	}
 	g.captureNativeMapHUDPersistence()
 	g.camp.Cur = d.Node
@@ -248,10 +264,13 @@ func (g *Game) loadGameFromSlot(slot int) {
 	g.nativeChapterRestore = nil
 	g.clearChurchTransientStateForLoad()
 	g.clearShopTransientStateForLoad()
+	g.nativeHotelPromptReturn = false
+	g.loadErr = ""
 	g.enterNode()
 	if message, ok := g.localeMessage("save.loaded", slot+1, d.Node); ok {
 		g.msg = message
 	}
+	return g.loadErr == ""
 }
 
 func (g *Game) clearShopTransientStateForLoad() {

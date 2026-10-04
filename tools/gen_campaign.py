@@ -842,7 +842,7 @@ def build_campaign(
                         }
                     ],
                     "set_flags": {flag_name: True},
-                    "next": town_id,
+                    "next": hotel_id,
                 }
             shop_by_kind = {s["kind"]: sid for sid, s in zip(shop_node_ids, normal_rows)}
             town_options.append({"label": "武器店", "to": shop_by_kind["weapon"]})

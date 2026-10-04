@@ -149,6 +149,36 @@ func (g *Game) confirmTitleLoadSlot(selected int) bool {
 // loadNativeGameFromSlot owns the original four-slot LOAD transaction. It is
 // deliberately separate from title CONTINUE/current-snapshot restore.
 func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
+	return g.restoreNativeChapterSlot(path, slot, false)
+}
+
+var errNativeHotelPreparationSlot = errors.New("本章不能由商店內讀取！")
+
+// nativeHotelNodeForTown只沿已編寫的城鎮選項找酒店，不猜節點名稱或建立返回邊。
+func nativeHotelNodeForTown(graph *campaign.Campaign, town string) (string, error) {
+	if graph == nil || graph.Nodes[town] == nil || graph.Nodes[town].Type != "town" {
+		return "", errors.New("酒店讀檔：存檔沒有城鎮返回入口")
+	}
+	found := ""
+	for _, option := range graph.Nodes[town].Options {
+		node := graph.Nodes[option.To]
+		if node == nil || node.Type != "hotel" || node.Next != town {
+			continue
+		}
+		if found != "" {
+			return "", errors.New("酒店讀檔：城鎮酒店入口不唯一")
+		}
+		found = option.To
+	}
+	if found == "" {
+		return "", errors.New("酒店讀檔：城鎮未編寫酒店返回邊")
+	}
+	return found, nil
+}
+
+// restoreNativeChapterSlot共用四槽資料交易。酒店caller先查302BF的gate，
+// 成功後仍在酒店顯示1DE；標題LOAD則沿原plan進城鎮／整備。
+func (g *Game) restoreNativeChapterSlot(path string, slot int, inHotel bool) error {
 	if g.camp == nil || g.camp.C == nil {
 		return errors.New("原版四槽讀檔：戰役圖尚未載入")
 	}
@@ -176,11 +206,27 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 	if err != nil {
 		return fmt.Errorf("原版四槽讀檔：%w", err)
 	}
+	if inHotel {
+		chapter := int(snapshot.Verified.Chapter)
+		if chapter >= len(gates.Entries) {
+			return errors.New("酒店讀檔：原版章節超出gate資料")
+		}
+		if gates.Entries[chapter] != 0 {
+			return errNativeHotelPreparationSlot
+		}
+	}
 	plan, err := campaign.BuildNativeChapterSlotRestorePlan(
 		snapshot, catalog, gates, g.camp.C,
 	)
 	if err != nil {
 		return err
+	}
+	entryNode := plan.EntryNode
+	if inHotel {
+		entryNode, err = nativeHotelNodeForTown(g.camp.C, entryNode)
+		if err != nil {
+			return err
+		}
 	}
 	options := fdother.NativeSystemOptions{
 		Raw53AF9: plan.Raw53AF9, Raw51AAB: plan.HUDGateA,
@@ -204,7 +250,7 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 		plan.PartyRoster[id] = unit
 	}
 	runner := campaign.NewRunner(g.camp.C)
-	runner.Cur = plan.EntryNode
+	runner.Cur = entryNode
 	g.camp = runner
 	g.gold = int(plan.Currency)
 	g.items = nil
@@ -224,10 +270,18 @@ func (g *Game) loadNativeGameFromSlot(path string, slot int) error {
 	// plaintext 與槽快照就是那次寫回的 byte 基底（沒有 raw 來源的 byte 照抄）。
 	g.nativeChapterSlotPlain = append([]byte(nil), plain...)
 	g.nativeChapterSlotBaseline = &snapshot
+	g.clearChurchTransientStateForLoad()
+	g.clearShopTransientStateForLoad()
+	g.nativeHotelPromptReturn = false
 	g.loadErr = ""
 	g.enterNode()
 	if g.loadErr != "" {
 		return fmt.Errorf("原版四槽讀檔：進入 %s 失敗：%s", plan.EntryNode, g.loadErr)
+	}
+	if inHotel {
+		g.hotelSel = nativeHotelServiceLoad
+		g.nativeHotelMode = "loaded"
+		g.nativeHotelPromptReturn = true
 	}
 	g.msg = fmt.Sprintf(
 		"已讀取原版槽位%d（第%d章：%s）",

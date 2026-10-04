@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -15,14 +16,14 @@ import (
 // 用 [0x52659] 的 DATO 0x81 當店主頭像，0x15F84 在對話框寫文字 0x249「有什麼事嗎？」，
 // 0x2D669／0x2D7BD 的四格圖示選單（0 傳聞 0x2FFA5、1 存檔 0x30012、2 讀檔 0x301F4、
 // 3 離開）。存檔 0x30012 走 0x30550 的四槽列表（與標題 LOAD 同一支），寫完檔再開一次
-// 對話框寫文字 0x294「記錄儲存完畢！」等按鍵。這裡接 1（存檔）與 3（離開）；0／2 的
-// 內容仍失敗即關閉回舊版面。
+// 對話框寫文字 0x294「記錄儲存完畢！」等按鍵。四項服務由酒店UI承接；服務2沿302BF gate與同四槽交易，成功後仍回酒店。
 const (
 	nativeHotelPortraitID  = 0x81
 	nativeHotelPromptText  = 0x249
 	nativeHotelSavedText   = 0x294
 	nativeHotelResourceID  = 13
 	nativeHotelServiceSave = 1
+	nativeHotelServiceLoad = 2
 	nativeHotelServiceExit = 3
 )
 
@@ -50,6 +51,16 @@ func loadNativeHotelUIAssets(shared *nativeClassUIAssets) (*nativeHotelUIAssets,
 	slotsBox, err := fdother.LoadSeparatedLoadSlotsFrame(separatedAssetPath("ui"))
 	if err != nil {
 		return nil, err
+	}
+	// 預驗服務後提示，避免還原資料後才發現1DE／1DF／24A文字或字模不足。
+	for _, text := range []int{nativeHotelPromptText, 0x24a, nativeHotelSavedText, 0x1de, 0x1df} {
+		frame, err := campaign.ComposeNativeChurchDialogueOverlayAt(assets.Background, shared.dialogue, portraits[0], campaign.NativeFacilityPortraitOffset(nativeHotelPortraitID))
+		if err != nil {
+			return nil, err
+		}
+		if _, err := campaign.ComposeNativeChurchTextAt(frame, shared.strings, shared.font, text, campaign.NativeShopTextOffset); err != nil {
+			return nil, err
+		}
 	}
 	return &nativeHotelUIAssets{assets: assets, portraits: portraits, slotsBox: slotsBox}, nil
 }
@@ -80,8 +91,12 @@ func (g *Game) composeNativeHotelStable(portraitFrame int) ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
+	prompt := nativeHotelPromptText
+	if g.nativeHotelPromptReturn {
+		prompt = 0x24a
+	}
 	frame, err = campaign.ComposeNativeChurchTextAt(
-		frame, shared.strings, shared.font, nativeHotelPromptText, campaign.NativeShopTextOffset,
+		frame, shared.strings, shared.font, prompt, campaign.NativeShopTextOffset,
 	)
 	return frame, err == nil
 }
@@ -103,7 +118,7 @@ func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool) {
 			stable, ui.assets, g.hotelSel, g.nativeShopUIPulse,
 		)
 		return frame, err == nil
-	case "slots":
+	case "slots", "loadslots":
 		slots, ok := nativeLoadSlotMetadata()
 		if !ok {
 			return nil, false
@@ -112,7 +127,7 @@ func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool) {
 			stable, ui.slotsBox, shared.strings, shared.font, slots, g.nativeHotelSlotSel,
 		)
 		return frame, err == nil
-	case "saved":
+	case "saved", "loaded", "load_blocked":
 		frame, err := campaign.ComposeNativeChurchDialogueOverlayAt(
 			ui.assets.Background, shared.dialogue, ui.portraits[portraitFrame],
 			campaign.NativeFacilityPortraitOffset(nativeHotelPortraitID),
@@ -120,8 +135,14 @@ func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool) {
 		if err != nil {
 			return nil, false
 		}
+		text := nativeHotelSavedText
+		if g.nativeHotelMode == "loaded" {
+			text = 0x1de
+		} else if g.nativeHotelMode == "load_blocked" {
+			text = 0x1df
+		}
 		frame, err = campaign.ComposeNativeChurchTextAt(
-			frame, shared.strings, shared.font, nativeHotelSavedText, campaign.NativeShopTextOffset,
+			frame, shared.strings, shared.font, text, campaign.NativeShopTextOffset,
 		)
 		return frame, err == nil
 	}
@@ -181,12 +202,16 @@ func (g *Game) handleNativeHotelInput(in nativeHotelInput) bool {
 			case nativeHotelServiceSave:
 				g.nativeHotelMode = "slots"
 				g.nativeHotelSlotSel = 0
+			case nativeHotelServiceLoad:
+				g.nativeHotelMode = "loadslots"
+				g.nativeHotelSlotSel = 0
 			case nativeHotelServiceExit:
 				g.leaveHotel()
 			case 0:
 				// 0x2FFA5 打聽消息：進本章的傳聞 story 節點（沒有就留在選單）。
 				if n := g.camp.Node(); n != nil && n.Rumor != "" {
 					g.nativeHotelMode = ""
+					g.nativeHotelPromptReturn = true
 					g.camp.Advance("rumor")
 					g.enterNode()
 				}
@@ -195,7 +220,7 @@ func (g *Game) handleNativeHotelInput(in nativeHotelInput) bool {
 			}
 		}
 		return true
-	case "slots":
+	case "slots", "loadslots":
 		if in.up && g.nativeHotelSlotSel > 0 {
 			g.nativeHotelSlotSel--
 		}
@@ -204,18 +229,54 @@ func (g *Game) handleNativeHotelInput(in nativeHotelInput) bool {
 		}
 		if in.esc {
 			g.nativeHotelMode = "menu"
+			g.nativeHotelPromptReturn = true
 			return true
 		}
 		if in.enter {
-			g.saveGameToSlot(g.nativeHotelSlotSel)
-			g.nativeHotelMode = "saved"
+			if g.nativeHotelMode == "loadslots" {
+				g.confirmNativeHotelLoadSlot(g.nativeHotelSlotSel)
+			} else if g.saveGameToSlot(g.nativeHotelSlotSel) == nil {
+				g.nativeHotelMode = "saved"
+			}
 		}
 		return true
-	case "saved":
+	case "saved", "loaded":
 		if in.enter || in.esc {
 			g.nativeHotelMode = "menu"
+			g.nativeHotelPromptReturn = true
+		}
+		return true
+	case "load_blocked":
+		if in.enter || in.esc {
+			g.nativeHotelMode = "loadslots"
 		}
 		return true
 	}
 	return false
+}
+
+func (g *Game) confirmNativeHotelLoadSlot(slot int) bool {
+	confirmable, native := nativeLoadSlotConfirmable(slot)
+	if !confirmable {
+		return false
+	}
+	if native {
+		err := g.restoreNativeChapterSlot(os.Getenv("FD2_NATIVE_SAVE"), slot, true)
+		if errors.Is(err, errNativeHotelPreparationSlot) {
+			g.nativeHotelMode = "load_blocked"
+			return false
+		}
+		if err != nil {
+			g.msg = err.Error()
+			return false
+		}
+		return true
+	}
+	if !g.loadJSONGameFromSlot(slot, true) {
+		return false
+	}
+	g.nativeHotelMode = "loaded"
+	g.nativeHotelPromptReturn = true
+	g.hotelSel = nativeHotelServiceLoad
+	return true
 }
