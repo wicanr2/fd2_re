@@ -8943,3 +8943,5 @@ r2於T18索爾死亡；r3正常到T19玩家游標、再END才死亡。標題新u
 READY審查後沿既有typed四槽交易接正式酒店UI，成功保留服務2／1DE／24A，再ESC回所載城鎮。23條既有傳聞返回來源酒店，文字及旗標保留；正式editor-canonical由維護工具同步。完整Go首次發現canonical尚未同步及字串review漂移，修正後乾淨重跑通過。相關測試素材包、JSON測試catalog、同源探針campaign未配置均分類為驗證環境問題，沒有將其登記成產品缺陷。
 
 三個固定停點的完整索引／RGB在合法相位均相同，不宣稱時間同步。原版傳聞角色列表與內容未新增，不增加章PLAYER-E2。唯一現況與驗證見58及[主契約](../data/ida/fd2_hotel_load_20261004.json)；#154待決及其他未完成Issue不變。本批已獲commit／push授權，驗收後提交並關閉#32。
+
+本批由dcc44254提交推送，遠端HEAD已核對一致；[#32結案留言](https://github.com/wicanr2/fd2_re/issues/32#issuecomment-5976503951)保存驗收與限制。主機gh回讀CLOSED，工具重新pull／render為23條開啟工單。原版傳聞角色列表／內容、#154待決及其他限制不由本次結案消除。

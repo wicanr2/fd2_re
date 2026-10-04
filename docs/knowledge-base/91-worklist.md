@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -68,22 +68,6 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 原版 `0x1E292` 升級時以 `0x15F84` 逐行顯示「升級！」與 AP／DP／DX／HP／MP 增量（FDTXT #0x1E8..#0x1EE），每行之間 `0x16559`／`0x16E24` 等待按鍵；`0x1A30B` 開頭的我方回復在每個回復的單位上畫 `0x1DA16` 圖示並播音效 4。重製端 `AwardExpNative` 與 `ApplyNativeEndTurnRecovery` 只改數值（第四章對拍已靠這兩條把回合 4 的行為 gate 推到只剩 RNG 時序差），畫面與等待節奏沒有接，所以原版側這幾格的幀在重製側對不到同狀態。要做：升級訊息用 indexed 資源逐行顯示與等待；END 回復加圖示與音效；重播測試的 `ackPresents` 收進這兩種工作。
 
 怎樣算做完：第四章收據裡升級（seq 644..649）與 END 回復（seq 665..671）的原版幀在重製側有同狀態幀且落在像素預算內。
-
-### 酒店服務 2 讀檔（0x301F4）與傳聞後回酒店選單尚未接
-
-`hotel-load-service-0x301f4` · 缺陷 · [#32](https://github.com/wicanr2/fd2_re/issues/32) · 仍未完成 · 要人判
-
-既有酒店原生介面與保存由#27接入。本項補服務2讀檔與既有傳聞story返回酒店。
-
-2026-10-04訂正：原先「照標題LOAD載入後直接到城鎮」的工單敘述已由IDA9.4直接bytes与正常dosgolem收據反證。酒店301F4在302BF先查526B9 gate；整備槽顯示FDTXT 1DF而不複製roster。成功槽顯示1DE，確認後以24A回酒店且保持服務2；ESC才回loaded town。空槽重新選、取消回酒店。
-
-主證據與READY規格：docs/data/ida/fd2_hotel_load_20261004.json。原版正常r2與r1前45份狀態完全相同，最後seq49已普通ESC回城鎮，無章內狀態注入。原r1多送Enter重新開列表保留為計畫失敗，不當產品缺陷。
-
-不新增原版2FFA5的角色挑選或傳聞內容。本次只修既有authored rumor story的返回邊及flags持續。正式載入、完整影格與回歸尚待驗收，不因舊自承字串消失就結案。
-
-怎樣算做完：服務2四槽依原版302BF gate拒絕整備槽、空槽及取消保持正確返回；允許槽沿既有typed restore載入隊伍與metadata，在酒店顯示1DE，確認後以24A保持服務2，ESC回對應城鎮。壞來源及未編寫返回邊零交易；標題LOAD/CONTINUE不變。既有rumor story結束回來源酒店並保留flags。正常原版r2的slots／loaded／menu完整影格與正式compositor對照，紀錄相位與限制，相關及全套回歸通過。
-
-證據：`['docs/data/ida/fd2_hotel_load_20261004.json', 'docs/data/parity-plans/hotel-load-ch04-r2.jsonl', 'remake/cmd/fd2/native_hotel_ui.go', 'remake/cmd/fd2/native_load_slots_ui.go', 'tools/gen_campaign.py']`
 
 ### 出口／整備確認提示：原版停在 YES 上畫的是 action cell 49，重製端畫 cell 48（每章 departure_prompt／town_enter 固定差 60 像素）
 

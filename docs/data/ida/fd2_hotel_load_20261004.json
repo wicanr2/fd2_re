@@ -5465,7 +5465,7 @@
   },
   "implementation": {
     "status": "CONFORMED / RUNTIME-E1",
-    "issue_state": "驗收通過，待本批提交推送後關閉#32",
+    "issue_state": "CLOSED，主機gh已回讀確認；closure在提交推送與遠端HEAD一致之後進行。",
     "runtime": "服務2真正開四槽；gate1先拒收／提示回列表，合法槽typed restore於相應酒店顯示1DE、確認後24A及selector2、ESC到loaded town；空槽／壞來源／缺少返回邊不發布交易。",
     "data": "23條既有傳聞story.Next返回來源酒店，文字與set_flags保留；gen_campaign、legacy與正式editor-canonical同步。原版傳聞挑角色UI與內容未新增。",
     "source_sha256": {
@@ -5985,6 +5985,13 @@
       "root_owned_current": 2811,
       "md_directories": [],
       "fd2_containers_remaining": 0
+    },
+    "closure": {
+      "commit": "dcc442549d1d3e2dfedc47535cc778f46612673b",
+      "issue": "https://github.com/wicanr2/fd2_re/issues/32",
+      "comment": "https://github.com/wicanr2/fd2_re/issues/32#issuecomment-5976503951",
+      "closed_at": "2026-10-04T04:17:24Z",
+      "open_worklist_after_pull": 23
     }
   }
 }
