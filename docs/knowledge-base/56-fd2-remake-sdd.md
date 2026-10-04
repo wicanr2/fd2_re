@@ -9512,3 +9512,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 [physical_return_palette_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。正常物理返回與候選預檢改用同一caller入口，只略過4DFCC的steady palette cycle，保留其他地圖層、時鐘及map→stop→after。普通重繪與取寶背景仍走原有更新。
 
 這補正#170以普通composer接回原版11CAC(1)時漏掉的參數閘門。原版直接branch與stack writer已由既有IDA證據複核；正式反例先紅後綠。唯一數字與分層現況見[58](58-fd2-exe-re-coverage.md)。#173仍DRAFT，完整返回地圖不得用候選phase冒充同時點來源，章與配置器限制保持。
+
+### 2026-10-05 #173：同時點工具與clock邊界
+
+[physical_map_runtime_spec／tool_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。既有IDA欄位寬度先複核為RE-CLOSED／READY，再改唯一oracle；clean來源提交推送後，以原槽／seed／輸入與窗口重生，原控制、停點、trace欄位、完整PNG及metadata保持。唯一數字與來源見[58](58-fd2-exe-re-coverage.md)。
+
+這補齊#166完整map消費端的raw globals／view／units／palette來源，未驗收重製map或PLAYER-E2。入口與copy出口BIOS已有不同，不能以凍結單一刻度替代各層clock來源，也不由output反推input。#171舊收據與#167工具政策保持。首次wrapper缺掛載與收尾計數含子案例的診斷已訂正，原日誌保留；本批沒有修改正式引擎。

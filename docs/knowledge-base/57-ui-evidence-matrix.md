@@ -1784,3 +1784,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 正常物理返回不再錯走11CAC(0)的DAC週期。固定時鐘驗收同時確認地圖／單位仍合成，普通重繪仍推進色盤，候選預檢與正式返回使用同一入口。已限定CONFORMED／RUNTIME-E1，來源與唯一數字見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)和[58](58-fd2-exe-re-coverage.md)。
 
 四條完整演出／GPU及正常第十二章保持；完整map work與返回圖像仍在#166，#173需補同時點週期／HUD／色盤來源。沒有新增整章PLAYER-E2。
+
+### 2026-10-05 #173：地圖原始狀態來源
+
+[physical_map_runtime_spec／tool_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。既有IDA欄位寬度先複核為RE-CLOSED／READY，再改唯一oracle；clean來源提交推送後，以原槽／seed／輸入與窗口重生，原控制、停點、trace欄位、完整PNG及metadata保持。唯一數字與來源見[58](58-fd2-exe-re-coverage.md)。
+
+這補齊#166完整map消費端的raw globals／view／units／palette來源，未驗收重製map或PLAYER-E2。入口與copy出口BIOS已有不同，不能以凍結單一刻度替代各層clock來源，也不由output反推input。#171舊收據與#167工具政策保持。首次wrapper缺掛載與收尾計數含子案例的診斷已訂正，原日誌保留；本批沒有修改正式引擎。

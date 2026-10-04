@@ -9178,3 +9178,11 @@ oracle明寫normal_player_path_verified=false，仍保留原限制。正常BIOS�
 下一步由#173補physical_map_runtime_observation_gap所列的同時點週期／HUD／色盤來源，再回到#166完整map consumer。#171的單位來源保留；不用最相近phase代替原始state，不猜清work，不新增PLAYER-E2。
 
 本批收尾：真正主機GitHub已關閉#172，#166與#173保持開啟；pull／render／verify為24項、可能已完成0項。154條教訓的50條guard、4份實作來源雜湊、13份收據雜湊及13個新增本地連結通過。索引正對照與README文化入口有效，變更檔及新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。
+
+### 2026-10-05 #173：同時點地圖來源的較晚補充
+
+[physical_map_runtime_spec／tool_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。既有IDA欄位寬度先複核為RE-CLOSED／READY，再改唯一oracle；clean來源提交推送後，以原槽／seed／輸入與窗口重生，原控制、停點、trace欄位、完整PNG及metadata保持。唯一數字與來源見[58](58-fd2-exe-re-coverage.md)。
+
+這補齊#166完整map消費端的raw globals／view／units／palette來源，未驗收重製map或PLAYER-E2。入口與copy出口BIOS已有不同，不能以凍結單一刻度替代各層clock來源，也不由output反推input。#171舊收據與#167工具政策保持。首次wrapper缺掛載與收尾計數含子案例的診斷已訂正，原日誌保留；本批沒有修改正式引擎。
+
+本批收尾：真正主機已關閉#173，#166保持開啟；pull／render／verify為23項、可能已完成0項。155條教訓的51條guard、15份輸出雜湊、2份包裝來源雜湊、7份證據來源雜湊及14個新增本地連結通過。索引正對照與README文化入口有效；變更檔及新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

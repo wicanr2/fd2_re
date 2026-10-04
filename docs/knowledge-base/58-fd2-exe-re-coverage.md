@@ -9,7 +9,7 @@
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
-| #173同時點地圖runtime | DRAFT | 缺週期／HUD／色盤來源，唯一oracle待補；#166完整map未驗收。 |
+| #173同時點地圖runtime | 限定工具CONFORMED | 16全域／view／units／獨立palette來源已補；#166完整map consumer未驗收。 |
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -2889,3 +2889,13 @@ READY先核對原版停點與完整結算，再用已審查IDA原始call bytes�
 [physical_map_runtime_observation_gap](../data/ida/fd2_physical_background_selection_20261004.json)為DRAFT，來源04ac5e1的frame43已有33筆raw及view，但沒有週期／latches、HUD gate／anchor與palette state。先複核已閉合欄位寬度與來源，再在唯一oracle加入可選唯讀觀測，取得正常11CAC(1)前後資料。#166完整返回仍未驗收；不依像素枚舉出最像的phase。
 
 本批收尾：真正主機GitHub已關閉#172，#166與#173保持開啟；pull／render／verify為24項、可能已完成0項。154條教訓的50條guard、4份實作來源雜湊、13份收據雜湊及13個新增本地連結通過。索引正對照與README文化入口有效，變更檔及新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。
+
+#173的[physical_map_runtime_evidence／spec](../data/ida/fd2_physical_background_selection_20261004.json)已複核既有IDA欄位與HUD dword指令，為RE-CLOSED／READY。只授權唯一oracle可選唯讀觀測；完整map與PLAYER-E2未驗收。
+
+### 2026-10-05 #173：同時點地圖來源已補
+
+[physical_map_runtime_spec／tool_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。來源a01ff084f038ddd1d133480f08d32e3b2e6f98c0保持clean並先推送，固定原槽／seed／1539次輸入重生；四停點、原269筆trace的欄位與原bytes前綴、44張PNG及原metadata全相同。271筆新trace與44影格皆具33筆units、16個原始global及768-byte獨立RGB／DAC6。8項oracle頂層測試、96項控制器與9項來源鏈回歸通過。完整命令及雜湊見主契約。
+
+290C2在4000640341步保留arg1，下一步11CAC入口caller290C7／arg1；4000799496步11EED的caller11D3B與frame43資料相同，色盤phase4／tick12333及全palette保持。BIOS入口13696、copy出口13728，unit pixel shift latch為13725；不得把整個合成當同一clock sample，也不依候選像素補phase。這取代#173待READY／待來源的接手狀態；#166正式完整map與PLAYER-E2未驗收，章台帳20/30保持。
+
+本批收尾：真正主機已關閉#173，#166保持開啟；pull／render／verify為23項、可能已完成0項。155條教訓的51條guard、15份輸出雜湊、2份包裝來源雜湊、7份證據來源雜湊及14個新增本地連結通過。索引正對照與README文化入口有效；變更檔及新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

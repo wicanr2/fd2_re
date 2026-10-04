@@ -1608,6 +1608,21 @@
         ],
         "pattern": "if err := g\\.composeNativeMapFrameForPhysicalReturn\\(\\); err != nil"
       }
+    },
+    {
+      "id": "redraw-entry-exit-clock-is-not-one-sample",
+      "date": "2026-10-05",
+      "area": "同時點地圖時鐘",
+      "rule": "原版重繪內有多個時鐘讀取端時，逐層保存原始刻度與latch，不把入口與copy出口當成同一次取樣。consumer依已證實讀取端採樣，不由output反推input或以候選phase代替來源。入口docs/data/ida/fd2_physical_background_selection_20261004.json的physical_map_runtime_tool_validation.clock_observation與physical_map_runtime_spec；tools/dosgolem_oracle.sh以FD2_ORACLE_MAP_STATE=1在有界EIP_TRACE／接受frame讀取，目前已驗正常11CAC(1)前後，完整map consumer仍在#166。",
+      "why": "#173固定原版入口BIOS13696、copy出口13728，unit pixel shift latch13725。前後同一呼叫不保證consumer讀同tick，現有來源只閉合觀測工具。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/173",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_physical_background_selection_20261004.json"
+        ],
+        "pattern": "\"clock_observation\":"
+      }
     }
   ]
 }

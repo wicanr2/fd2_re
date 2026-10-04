@@ -16,6 +16,7 @@ FD2_ORACLE_FRAME_SETTLE=${FD2_ORACLE_FRAME_SETTLE:-0}
 FD2_ORACLE_FRAME_MAX=${FD2_ORACLE_FRAME_MAX:-4000}
 FD2_ORACLE_FRAME_EIP=${FD2_ORACLE_FRAME_EIP:-}
 FD2_ORACLE_FRAME_UNITS=${FD2_ORACLE_FRAME_UNITS:-}
+FD2_ORACLE_MAP_STATE=${FD2_ORACLE_MAP_STATE:-}
 FD2_ORACLE_FRAME_FROM=${FD2_ORACLE_FRAME_FROM:-0}
 FD2_ORACLE_FRAME_TO=${FD2_ORACLE_FRAME_TO:-0}
 FD2_ORACLE_EIP_WATCH=${FD2_ORACLE_EIP_WATCH:-}
@@ -31,6 +32,13 @@ fi
 if [ "$FD2_ORACLE_FRAME_UNITS" = "1" ] && [ -z "$FD2_ORACLE_FRAMES" ]; then
   echo "FRAME_UNITS需要FRAMES" >&2; exit 2
 fi
+if [ -n "$FD2_ORACLE_MAP_STATE" ] && [ "$FD2_ORACLE_MAP_STATE" != "1" ]; then
+  echo "MAP_STATE只接受空值或1" >&2; exit 2
+fi
+if [ "$FD2_ORACLE_MAP_STATE" = "1" ] && [ -z "$FD2_ORACLE_FRAMES" ] && [ -z "$FD2_ORACLE_EIP_TRACE" ]; then
+  echo "MAP_STATE需要FRAMES或EIP_TRACE" >&2; exit 2
+fi
+export FD2_ORACLE_MAP_STATE
 export FD2_ORACLE_EIP_TRACE_FROM FD2_ORACLE_EIP_TRACE_TO FD2_ORACLE_EIP_TRACE_MAX
 for trace_bound in "$FD2_ORACLE_EIP_TRACE_FROM" "$FD2_ORACLE_EIP_TRACE_TO"; do
   [[ "$trace_bound" =~ ^(0|[1-9][0-9]{0,11})$ ]] || { echo "EIP 追蹤指令範圍格式無效" >&2; exit 2; }
@@ -92,6 +100,9 @@ runner = {
     "original_root": env["FD2_ORACLE_ORIGINAL_ROOT"],
     "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     "control_plan": env.get("FD2_ORACLE_CONTROL_PLAN", ""),
+    "map_runtime_records": {"enabled": env.get("FD2_ORACLE_MAP_STATE") == "1",
+                            "globals": 16, "palette_bytes": 768,
+                            "scope": "same-instruction read-only map globals/view/units/palette; invalid source false"},
     "frame_unit_records": {"enabled": env.get("FD2_ORACLE_FRAME_UNITS") == "1",
                            "row_bytes": 80, "max_units": 128,
                            "scope": "accepted PNG same-instruction read-only units; invalid source marked false"},
@@ -129,6 +140,9 @@ if [ -n "$FD2_ORACLE_FRAMES" ]; then
   if [ -n "$FD2_ORACLE_EIP_WATCH" ]; then
     frameargs+=(-eip-watch "$FD2_ORACLE_EIP_WATCH")
   fi
+fi
+if [ "$FD2_ORACLE_MAP_STATE" = "1" ]; then
+  frameargs+=(-map-state)
 fi
 if [ -n "$FD2_ORACLE_EIP_TRACE" ]; then
   frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE"

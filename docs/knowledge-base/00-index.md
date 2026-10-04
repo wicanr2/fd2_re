@@ -617,4 +617,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - #172 [正常物理返回11CAC(1)色盤閘門證據與限定CONFORMED](../data/ida/fd2_physical_background_selection_20261004.json)：physical_return_palette_evidence／spec／validation重用已閉合caller及palette gate原始bytes；正式來源見[58](58-fd2-exe-re-coverage.md)。
 
-- #173 [完整地圖同時點週期／HUD／色盤來源缺口](../data/ida/fd2_physical_background_selection_20261004.json)：physical_map_runtime_observation_gap維持DRAFT；原版既有欄位與寬度須複核，正式consumer未驗收，現況見[58](58-fd2-exe-re-coverage.md)。
+- #173 [完整地圖同時點週期／HUD／色盤來源缺口](../data/ida/fd2_physical_background_selection_20261004.json)：physical_map_runtime_spec／tool_validation已限定工具CONFORMED；原缺口歷史保持，正式consumer未驗收，現況見[58](58-fd2-exe-re-coverage.md)。
+
+#173的[physical_map_runtime_evidence／spec](../data/ida/fd2_physical_background_selection_20261004.json)已複核既有IDA欄位與HUD dword指令，為RE-CLOSED／READY。只授權唯一oracle可選唯讀觀測；完整map與PLAYER-E2未驗收。
+
+- #173 [16個原始地圖全域與獨立色盤的已驗工具](../data/ida/fd2_physical_background_selection_20261004.json)：physical_map_runtime_tool_validation；[包裝入口](../../tools/dosgolem_oracle.sh)以FD2_ORACLE_MAP_STATE=1啟用，支援既有有界trace／接受frame，來源與限制見[58](58-fd2-exe-re-coverage.md)。

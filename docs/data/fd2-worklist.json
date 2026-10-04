@@ -422,31 +422,6 @@
         "note": "2026-10-05目前狀態：正常物理BG／TAI、前導、逐揮與counter已接正式Game；raw0非零單次MISS、零header主攻HIT／counterMISS、raw2非零單次HIT及本輪enemy23主攻HIT／Ally14反擊HIT均有限CONFORMED／RUNTIME-E1。#168 VGA明確清除、#169六BIOS等待、#170專屬PCM替換與普通map→stop→after已有限CONFORMED。最新原版固定輸入與停點逐byte相同；完整indexed／RGB及GPU通過，不新增PLAYER-E2，不驗收槽加成下傷害、存活或敵方選目標。非零連擊／返回轉場、DAC0／人耳音訊、完整battle→map work及返回畫面仍未驗收；#167工具政策、20／30章台帳與章gate保持。唯一數字、命令與現況見58及physical_counter_hit_validation；歷史驗證沿用physical_sound_validation等主證據。"
       },
       "issue": 166
-    },
-    {
-      "id": "oracle-map-runtime-same-instruction-state",
-      "layer": "tooling",
-      "category": "工作",
-      "title": "完整地圖對拍缺同時點週期、HUD與色盤來源，不能以候選相位代替",
-      "body": "#171已補單位raw；#166的完整返回地圖還需相同指令時點的已閉合runtime globals。目前frames只有view、units，既有idle／END探針只能枚舉相位。新增可選唯讀觀測至唯一oracle，捕捉地圖重繪前後的已證實時序／HUD／palette，原始記憶體值保留位址與寬度，不重開已閉合RE或新建執行器。#172色盤gate另修，不能用候選phase掩蓋它。",
-      "acceptance": "先以受版控IDA證據核對每個原始global位址及寬度，DRAFT／READY後擴充唯一oracle。預設停用；有界trace及已接受frame同步保存可用性、原始值、同時點view／units及色盤來源，純觀測且越界拒收。工具來源先提交，再固定同一槽／seed／1539輸入／窗口重跑，既有control-history、停點、trace原欄位及44張PNG保持。取得正常物理290C2→11CAC(1)前後狀態，供166正式consumer全畫布驗收；工具通過不自行新增map parity／PLAYER-E2。",
-      "evidence": [
-        "https://github.com/wicanr2/fd2_re/issues/166",
-        "https://github.com/wicanr2/fd2_re/issues/171",
-        "https://github.com/wicanr2/fd2_re/issues/172",
-        "docs/data/ida/fd2_physical_background_selection_20261004.json",
-        "docs/data/fd2_continue_map_timing_seed_ida.txt",
-        "docs/data/fd2_hud_persistence_ida.txt",
-        "docs/data/ida/fd2_palette_cycle_table_20261001.json",
-        "docs/data/ida/fd2_steady_palette_cycle_4dfcc_ida.txt",
-        "remake/cmd/fd2/native_bios_clock.go",
-        "tools/dosgolem_oracle_container.sh"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "DRAFT；本輪已確認現有frame缺cycle／terrain timer／HUD gate與palette state，不據候選像素選相位。先核对既有已閉合raw來源、READY及唯讀工具測試，再以固定輸入重生，166與章門檻保持。"
-      },
-      "issue": 173
     }
   ]
 }

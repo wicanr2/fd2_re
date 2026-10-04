@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -258,15 +258,5 @@ ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
-
-### 完整地圖對拍缺同時點週期、HUD與色盤來源，不能以候選相位代替
-
-`oracle-map-runtime-same-instruction-state` · 工作 · [#173](https://github.com/wicanr2/fd2_re/issues/173) · 仍未完成 · 要人判
-
-#171已補單位raw；#166的完整返回地圖還需相同指令時點的已閉合runtime globals。目前frames只有view、units，既有idle／END探針只能枚舉相位。新增可選唯讀觀測至唯一oracle，捕捉地圖重繪前後的已證實時序／HUD／palette，原始記憶體值保留位址與寬度，不重開已閉合RE或新建執行器。#172色盤gate另修，不能用候選phase掩蓋它。
-
-怎樣算做完：先以受版控IDA證據核對每個原始global位址及寬度，DRAFT／READY後擴充唯一oracle。預設停用；有界trace及已接受frame同步保存可用性、原始值、同時點view／units及色盤來源，純觀測且越界拒收。工具來源先提交，再固定同一槽／seed／1539輸入／窗口重跑，既有control-history、停點、trace原欄位及44張PNG保持。取得正常物理290C2→11CAC(1)前後狀態，供166正式consumer全畫布驗收；工具通過不自行新增map parity／PLAYER-E2。
-
-證據：`['https://github.com/wicanr2/fd2_re/issues/166', 'https://github.com/wicanr2/fd2_re/issues/171', 'https://github.com/wicanr2/fd2_re/issues/172', 'docs/data/ida/fd2_physical_background_selection_20261004.json', 'docs/data/fd2_continue_map_timing_seed_ida.txt', 'docs/data/fd2_hud_persistence_ida.txt', 'docs/data/ida/fd2_palette_cycle_table_20261001.json', 'docs/data/ida/fd2_steady_palette_cycle_4dfcc_ida.txt', 'remake/cmd/fd2/native_bios_clock.go', 'tools/dosgolem_oracle_container.sh']`
 
 <!-- END fd2_worklist.py render -->

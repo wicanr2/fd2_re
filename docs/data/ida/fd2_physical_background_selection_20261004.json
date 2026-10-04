@@ -36595,6 +36595,1201 @@
       "docs/data/ida/fd2_steady_palette_cycle_4dfcc_ida.txt"
     ],
     "next": "逐欄複核已閉合位址／寬度後READY，在唯一oracle有界frame／trace增加預設停用唯讀觀測；同原槽／seed／1539輸入重生，取得11CAC(1)前後來源，才驗正式map consumer。",
-    "limits": "未接正式產品，不重解配置器／硬體driver，不宣稱map parity／PLAYER-E2。"
+    "limits": "未接正式產品，不重解配置器／硬體driver，不宣稱map parity／PLAYER-E2。",
+    "current_resolution": {
+      "state": "CONFORMED",
+      "spec": "physical_map_runtime_spec",
+      "validation": "physical_map_runtime_tool_validation",
+      "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+      "note": "原04ac5e1來源缺口歷史保持；新來源已具16全域、view／units及獨立palette。166 consumer未驗。"
+    }
+  },
+  "physical_map_runtime_evidence": {
+    "date": "2026-10-05",
+    "issue": 173,
+    "state": "RE-CLOSED",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": "既有IDA Pro 9.4匯出複核；本輪未重跑或改寫資料庫",
+    "address_space": "FD2.EXE DOS LE／IDA linear；oracle直接LE線性記憶體",
+    "fields": [
+      {
+        "address": "0x53C07",
+        "width_bytes": 4,
+        "navigation": "moving",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53C0B",
+        "width_bytes": 4,
+        "navigation": "idle",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53C0F",
+        "width_bytes": 4,
+        "navigation": "idle_tick",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53C1F",
+        "width_bytes": 4,
+        "navigation": "terrain_phase",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x539F4",
+        "width_bytes": 4,
+        "navigation": "terrain_tick",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53A40",
+        "width_bytes": 4,
+        "navigation": "terrain_flip",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53A00",
+        "width_bytes": 4,
+        "navigation": "terrain_flip_tick",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53A04",
+        "width_bytes": 4,
+        "navigation": "unit_pixel_shift",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x53A08",
+        "width_bytes": 4,
+        "navigation": "unit_pixel_shift_tick",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x51A93",
+        "width_bytes": 4,
+        "navigation": "terrain_override",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x046C",
+        "width_bytes": 2,
+        "navigation": "bios_low_word",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x51AAB",
+        "width_bytes": 1,
+        "navigation": "hud_gate_a",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x51AAC",
+        "width_bytes": 1,
+        "navigation": "hud_gate_b",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x51A0C",
+        "width_bytes": 4,
+        "navigation": "hud_anchor",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x60000",
+        "width_bytes": 2,
+        "navigation": "palette_tick",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      },
+      {
+        "address": "0x60002",
+        "width_bytes": 1,
+        "navigation": "palette_phase",
+        "level": "已證實",
+        "source": "既有IDA writer／consumer及原始指令；navigation不取代raw"
+      }
+    ],
+    "raw_evidence": [
+      {
+        "source_file": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "original_row": {
+          "address": "0x4dfd3",
+          "bytes": "662b0500000600",
+          "original": "sub     ax, ds:word_60000",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfd3",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "original_row": {
+          "address": "0x4dfe0",
+          "bytes": "fe0502000600",
+          "original": "inc     ds:byte_60002",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfe0",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "original_row": {
+          "address": "0x4dfe6",
+          "bytes": "803d0200060010",
+          "original": "cmp     ds:byte_60002, 10h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfe6",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "original_row": {
+          "address": "0x4dfef",
+          "bytes": "c6050200060000",
+          "original": "mov     ds:byte_60002, 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfef",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "original_row": {
+          "address": "0x4dff8",
+          "bytes": "a002000600",
+          "original": "mov     al, ds:byte_60002",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dff8",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "original_row": {
+          "address": "0x4e028",
+          "bytes": "66a300000600",
+          "original": "mov     ds:word_60000, ax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4e028",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x11f07",
+          "bytes": "3b05003a0500",
+          "original": "cmp     eax, dword_53A00",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x11f07",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x11f0f",
+          "bytes": "8035403a050001",
+          "original": "xor     byte ptr dword_53A40, 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x11f0f",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x11f1e",
+          "bytes": "a3003a0500",
+          "original": "mov     dword_53A00, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x11f1e",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12106",
+          "bytes": "833d931a0500ff",
+          "original": "cmp     dword_51A93, 0FFFFFFFFh",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12106",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12117",
+          "bytes": "2b05f4390500",
+          "original": "sub     eax, dword_539F4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12117",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x1212a",
+          "bytes": "3b05f4390500",
+          "original": "cmp     eax, dword_539F4",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1212a",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12132",
+          "bytes": "ff051f3c0500",
+          "original": "inc     dword_53C1F",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12132",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12138",
+          "bytes": "833d1f3c050014",
+          "original": "cmp     dword_53C1F, 14h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12138",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12141",
+          "bytes": "c7051f3c050000000000",
+          "original": "mov     dword_53C1F, 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12141",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12153",
+          "bytes": "a3f4390500",
+          "original": "mov     dword_539F4, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12153",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x1215a",
+          "bytes": "a1931a0500",
+          "original": "mov     eax, dword_51A93",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1215a",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x1215f",
+          "bytes": "a31f3c0500",
+          "original": "mov     dword_53C1F, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1215f",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12164",
+          "bytes": "a11f3c0500",
+          "original": "mov     eax, dword_53C1F",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12164",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x121cf",
+          "bytes": "a10b3c0500",
+          "original": "mov     eax, dword_53C0B",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x121cf",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x121e6",
+          "bytes": "031d403a0500",
+          "original": "add     ebx, dword_53A40",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x121e6",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12258",
+          "bytes": "a1403a0500",
+          "original": "mov     eax, dword_53A40",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12258",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x127f9",
+          "bytes": "3b05083a0500",
+          "original": "cmp     eax, dword_53A08",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x127f9",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12801",
+          "bytes": "8035043a050001",
+          "original": "xor     byte ptr dword_53A04, 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12801",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12810",
+          "bytes": "a3083a0500",
+          "original": "mov     dword_53A08, eax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12810",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x128ef",
+          "bytes": "031d043a0500",
+          "original": "add     ebx, dword_53A04",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x128ef",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x128fc",
+          "bytes": "8b150b3c0500",
+          "original": "mov     edx, dword_53C0B",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x128fc",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12904",
+          "bytes": "8b15073c0500",
+          "original": "mov     edx, dword_53C07",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12904",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12b61",
+          "bytes": "8b0d403a0500",
+          "original": "mov     ecx, dword_53A40",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12b61",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "original_row": {
+          "address": "0x12b80",
+          "bytes": "a11f3c0500",
+          "original": "mov     eax, dword_53C1F",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x12b80",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "original_row": {
+          "address": "0x1ad0c",
+          "bytes": "0fb605ab1a0500",
+          "original": "movzx   eax, byte_51AAB",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1ad0c",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "original_row": {
+          "address": "0x1ad1b",
+          "bytes": "0fb605ac1a0500",
+          "original": "movzx   eax, byte_51AAC",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1ad1b",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "original_row": {
+          "address": "0x1ad3c",
+          "bytes": "c7050c1a0500f2000000",
+          "original": "mov     dword_51A0C, 0F2h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1ad3c",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "original_row": {
+          "address": "0x1ad5a",
+          "bytes": "c7050c1a050001000000",
+          "original": "mov     dword_51A0C, 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1ad5a",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "original_row": {
+          "address": "0x1ad6c",
+          "bytes": "032d0c1a0500",
+          "original": "add     ebp, dword_51A0C",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1ad6c",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "original_row": {
+          "address": "0x1ae54",
+          "bytes": "a10b3c0500",
+          "original": "mov     eax, dword_53C0B",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x1ae54",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "original_row": {
+          "address": "0x4dfd3",
+          "bytes": "662b0500000600",
+          "original": "sub     ax, ds:word_60000",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfd3",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "original_row": {
+          "address": "0x4dfe0",
+          "bytes": "fe0502000600",
+          "original": "inc     ds:byte_60002",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfe0",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "original_row": {
+          "address": "0x4dfe6",
+          "bytes": "803d0200060010",
+          "original": "cmp     ds:byte_60002, 10h",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfe6",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "original_row": {
+          "address": "0x4dfef",
+          "bytes": "c6050200060000",
+          "original": "mov     ds:byte_60002, 0",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dfef",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "original_row": {
+          "address": "0x4dff8",
+          "bytes": "a002000600",
+          "original": "mov     al, ds:byte_60002",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4dff8",
+          "semantic_annotations": []
+        }
+      },
+      {
+        "source_file": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "original_row": {
+          "address": "0x4e028",
+          "bytes": "66a300000600",
+          "original": "mov     ds:word_60000, ax",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x4e028",
+          "semantic_annotations": []
+        }
+      }
+    ],
+    "sources": [
+      {
+        "path": "docs/data/fd2_continue_map_timing_seed_ida.txt",
+        "sha256": "3d57aec5e72a0e016b01df0c69d3f3079af789c21cf73f94d316f9353b31762c"
+      },
+      {
+        "path": "docs/data/fd2_hud_persistence_ida.txt",
+        "sha256": "29ce47f2adeef724c2672d0f7f6f6b87f74d4098c37b8270c8f6236ea7002910"
+      },
+      {
+        "path": "docs/data/ida/fd2_palette_cycle_table_20261001.json",
+        "sha256": "414e794c8e67eb476973bcf931f0e9d89f82fbf92fc4cf9119269d52ededa41d"
+      },
+      {
+        "path": "docs/data/ida/fd2_steady_palette_cycle_4dfcc_ida.txt",
+        "sha256": "e57622d85e7625082c264adf5ca75d802a241f049100fd0505bbdc132c209394"
+      },
+      {
+        "path": "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
+        "sha256": "d6f6a6a74782daebebd31cc79a528ca67e3247792507752c325db7f2e4b6d120"
+      },
+      {
+        "path": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "sha256": "6e5db9566cb1ff8d29ec89835a5f6a6d495687b08c40f9f831e7f1a951ccd344"
+      },
+      {
+        "path": "docs/data/ida/fd2_ch15_palette_writer_20261002.json",
+        "sha256": "5673dd582f4f0006b0be82e39b93b4c4b6ad4142105920ea6a7489a74c0d7e67"
+      }
+    ],
+    "reviewed_claims": [
+      {
+        "level": "已證實",
+        "claim": "HUD anchor為dword；1AD3C／1AD5A C705與1AD6C 032D原始bytes確認。",
+        "source": "fd2_player_chest_hud_20261001.json"
+      },
+      {
+        "level": "已證實",
+        "claim": "timing dword、HUD兩byte及palette word／byte沿既有closed證據；53A40／53A04低byte XOR保留完整dword。原exporter unknown保持。",
+        "source": "所列sources與raw_evidence；53C0F由25D83／25D88／25D8B writer既有IDA紀錄閉合"
+      },
+      {
+        "level": "已證實",
+        "claim": "Palette API v<<2|v>>4由DAC6轉RGB8，右移2還原合法0..63。保存獨立色盤，不從像素推導。",
+        "source": "dosgolem internal/machine/le_video.go及machine.go，04ac5e1"
+      }
+    ]
+  },
+  "physical_map_runtime_spec": {
+    "date": "2026-10-05",
+    "issue": 173,
+    "parent": 166,
+    "state": "CONFORMED",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "evidence": "physical_map_runtime_evidence",
+    "scope": "唯一oracle預設停用唯讀來源，供166完整map consumer；不改正式規則。",
+    "flag": "-map-state；FD2_ORACLE_MAP_STATE=1",
+    "dependencies": "至少frame-dir或eip-trace；trace沿既有run-dir，非法值拒收。",
+    "schema": {
+      "map_runtime_valid": "全部16globals、mode13 palette及units可用才true",
+      "map_runtime": {
+        "address_space": "FD2.EXE LE linear",
+        "globals": "16列address、width_bytes、raw_hex、unsigned value；signed bits保持",
+        "palette_rgb_hex": "768-byte獨立RGB8",
+        "palette_dac6_hex": "768-byte無損還原DAC6；0..63"
+      },
+      "units": "171完整80-byte raw及valid，frame與trace皆同步",
+      "view": "trace新增同時點view；frame沿既有view"
+    },
+    "failure": "nil、任一越界、缺mode13 video、units非法或RGB不能無損映射時false，不發布半份globals／palette。",
+    "timing": "既有bounded trace與已接受frame同步；不改settle／去重／窗口／上限、CPU／state writes。",
+    "default": "停用時trace／frame原metadata位元組保持；runner開關只表示政策。",
+    "verification": [
+      "16欄寬度／signed bits、合法端點、越界、palette round-trip、guest memory與port counters不變、停用metadata",
+      "來源先提交推送且clean，同slot／seed／1539controls重生，四停點、44PNG及既有trace原欄位保持",
+      "新增290C2及11CAC唯讀；取得11CAC入口stack arg1與11EED出口11D3B的map／view／units／palette",
+      "正式consumer使用前狀態合成、後狀態核對，不對後狀態重推cycle"
+    ],
+    "limits": [
+      "工具不驗收map parity／PLAYER-E2／傷害／存活／選目標",
+      "111／114槽與167近堆工具政策保持，不重開配置器／硬體driver",
+      "raw與palette只留本地work，公開Git保存工具、hash與已審摘要"
+    ],
+    "conformed_scope": "限定#173唯讀工具；166正式完整map、clock consumer與PLAYER-E2仍待驗。"
+  },
+  "physical_map_runtime_tool_validation": {
+    "date": "2026-10-05",
+    "issue": 173,
+    "state": "CONFORMED",
+    "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+    "source_implementation_commit": "81df503",
+    "source_clean": true,
+    "remote_head_equal": true,
+    "unit_tests": {
+      "top_level_passed": 8,
+      "new_top_level": 3,
+      "parity_package": "no test files"
+    },
+    "wrapper": {
+      "terminal_exit": 0,
+      "driver_tests": 96,
+      "source_chain_tests": 9,
+      "bash_syntax": true,
+      "both_entrypoints_forward_flag": true
+    },
+    "diagnostics": [
+      "首次wrapper檢查缺/orig與/drive.py，入口提前退出；掛載修正，r2／r3相同命令乾淨通過。",
+      "首次收尾test計數包含縮排子案例；依行首重新分類同一成功log得到8個頂層。",
+      "容器內git無法循host worktree gitdir；改依允許的host git核對，沒有修改gitdir或另複製source。",
+      "gh close不支援comment-file，首次命令未修改Issue；依正式解析id改用body-file留言，再close並核對遠端CLOSED。"
+    ],
+    "outputs": [
+      {
+        "path": "work/oracle-map-state-tests-r1.log",
+        "sha256": "a7abcd55a58d3834a27113e6934d1bbeca3c0ee47029c69f6221832c55e10bda"
+      },
+      {
+        "path": "work/oracle-map-state-wrapper-r1.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "work/oracle-map-state-wrapper-r2.log",
+        "sha256": "4c0acc1704538335d9162b84dd7597aaf8d5171d0e6e236f2c53461bc2e6be7b"
+      },
+      {
+        "path": "work/oracle-map-state-wrapper-r3.log",
+        "sha256": "d1b4cdf323ee77759ebac707c01a7452d1e7031b519e1329c9b19ea06c07c9c4"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1.log",
+        "sha256": "31f161b8d183d42fe9a430d0f3377620bc22b3a87edf97e7002f0a34380c57f6"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/runner.json",
+        "sha256": "1011e646906527bb5d903bfa0a1259fa859ba0f4d69b9683c115e7ce9f6e18a4"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/control-history.jsonl",
+        "sha256": "a82bc942b55dc7131cda168a3da4491bb0fb83fe2cdf8865fb9312578ab1991e"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/eip-trace.jsonl",
+        "sha256": "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/frames/frames.jsonl",
+        "sha256": "1e7de6dd79397e723e553b8dc7295a20fcb7b63f7ae505c319d906cf200c6039"
+      },
+      {
+        "path": "work/oracle-map-state-comparison-r1.log",
+        "sha256": "888f1b7d62c518e2f78d5029934cdc3c95589957e19b85642b2126dd446781c0"
+      },
+      {
+        "path": "work/oracle-map-state-validation-r1.json",
+        "sha256": "2b6e15115c7fa9a569a39e7b253a2e126b33d5e7033686ebb089cad5afff3463"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/checkpoint-0000.json",
+        "sha256": "8e67e6bfeb8ab7f8be2fe17971a1bd564e6b40db87be9c0b509bea0bbd73a16b"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/checkpoint-1532.json",
+        "sha256": "20ab3bf001274d051690e7f3e0d0090df9ab091cbf69c1d06ea2d703e3541bbc"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/checkpoint-1533.json",
+        "sha256": "dffd4cd77bdf498835021007729f1e5dcd52651fc446c7cd43f3aec522b9d714"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-state-original-r1/checkpoint-1539.json",
+        "sha256": "03e4c0cf74c0fb9aa3cc0425ca5a3a38ee4742d2f2751af20dd46211f768e092"
+      }
+    ],
+    "scope": "#173限定觀測工具CONFORMED；完整map parity／PLAYER-E2／硬體時序未由此提升。",
+    "commands": {
+      "unit_tests": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 240 docker run --rm --name fd2-oracle-map-state-tests-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache --workdir /dos -e HOME=/tmp -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache golang:1.24-bookworm timeout 210 sh -c 'set -eu; gofmt -w apps/fd2/cmd/oracle/main.go apps/fd2/cmd/oracle/main_test.go; go test ./apps/fd2/cmd/oracle ./apps/fd2/cmd/parity -count=1 -timeout 120s -v' > work/oracle-map-state-tests-r1.log 2>&1",
+      "wrapper": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/cht/fd2/work,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly --workdir /src fd2-go-test-local:20260909 timeout 150 sh -c 'set -eu; bash -n tools/dosgolem_oracle.sh tools/dosgolem_oracle_container.sh; set +e; FD2_ORACLE_MAP_STATE=0 bash tools/dosgolem_oracle_container.sh >/tmp/invalid-map.log 2>&1; result=$?; test \"$result\" = 2 || exit 1; FD2_ORACLE_MAP_STATE=1 FD2_ORACLE_FRAMES= FD2_ORACLE_EIP_TRACE= bash tools/dosgolem_oracle_container.sh >/tmp/missing-map.log 2>&1; result=$?; test \"$result\" = 2 || exit 1; cat /tmp/invalid-map.log /tmp/missing-map.log; set -e; python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py; python3 -m unittest discover -s tools -p test_verify_oracle_prefix.py; tail -n 25 work/oracle-map-state-tests-r1.log' > work/oracle-map-state-wrapper-r3.log 2>&1",
+      "oracle": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-map-state-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-map-state-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-map-state-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-map-state-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-map-state-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-map-state-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4500000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2939D,0x29F72,0x28F4D,0x11EED,0x11EB0,0x25A96,0x2BC9A,0x290C2,0x11CAC' -e 'FD2_ORACLE_EIP_TRACE_FROM=3993986292' -e 'FD2_ORACLE_EIP_TRACE_TO=4002022912' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000' -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=200 -e FD2_ORACLE_FRAME_FROM=3993986292 -e FD2_ORACLE_FRAME_TO=4002022912 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/parity-slot-ch12/physical-map-state-original-r1.log 2>&1",
+      "comparison": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 150 python3 -c 'from pathlib import Path\nimport json,hashlib\na=Path('\\''/src/work/parity-slot-ch12/physical-frame-units-original-r1'\\'')\nb=Path('\\''/src/work/parity-slot-ch12/physical-map-state-original-r1'\\'')\ndigest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\nrows=lambda p:[json.loads(x) for x in p.read_text().splitlines() if x.strip()]\nequal=[]\nfor name in ['\\''control-history.jsonl'\\'']+[f'\\''checkpoint-{n:04d}.json'\\'' for n in [0,1532,1533,1539]]:\n assert (a/name).read_bytes()==(b/name).read_bytes(),name\n equal.append({'\\''path'\\'':name,'\\''sha256'\\'':digest(b/name)})\noldframes,newframes=rows(a/'\\''frames/frames.jsonl'\\''),rows(b/'\\''frames/frames.jsonl'\\'')\nassert len(oldframes)==len(newframes)==44\nexpected={'\\''0x53C07'\\'':4,'\\''0x53C0B'\\'':4,'\\''0x53C0F'\\'':4,'\\''0x53C1F'\\'':4,'\\''0x539F4'\\'':4,'\\''0x53A40'\\'':4,'\\''0x53A00'\\'':4,'\\''0x53A04'\\'':4,'\\''0x53A08'\\'':4,'\\''0x51A93'\\'':4,'\\''0x46C'\\'':2,'\\''0x51AAB'\\'':1,'\\''0x51AAC'\\'':1,'\\''0x51A0C'\\'':4,'\\''0x60000'\\'':2,'\\''0x60002'\\'':1}\ndef validate(r):\n assert r['\\''map_runtime_valid'\\''] is True and r['\\''frame_units_valid'\\''] is True\n assert r['\\''unit_count'\\'']==33 and len(r['\\''units'\\''])==33\n for i,u in enumerate(r['\\''units'\\'']):\n  raw=bytes.fromhex(u['\\''raw_hex'\\'']); assert len(raw)==80 and u['\\''index'\\'']==i\n  assert u['\\''hp'\\'']==int.from_bytes(raw[0x40:0x42],'\\''little'\\'')\n rt=r['\\''map_runtime'\\'']; assert rt['\\''address_space'\\'']=='\\''FD2.EXE LE linear'\\''\n fields=rt['\\''globals'\\''];assert len(fields)==16\n assert {f['\\''address'\\'']:f['\\''width_bytes'\\''] for f in fields}==expected\n for f in fields:\n  raw=bytes.fromhex(f['\\''raw_hex'\\''])\n  assert len(raw)==f['\\''width_bytes'\\''] and int.from_bytes(raw,'\\''little'\\'')==f['\\''value'\\'']\n rgb,dac=bytes.fromhex(rt['\\''palette_rgb_hex'\\'']),bytes.fromhex(rt['\\''palette_dac6_hex'\\''])\n assert len(rgb)==len(dac)==768\n assert all(0<=d<=63 and c==(d<<2|d>>4) for c,d in zip(rgb,dac))\n return {f['\\''address'\\'']:f['\\''value'\\''] for f in fields}\npngs=[]\nfor old,new in zip(oldframes,newframes):\n validate(new)\n original={k:v for k,v in new.items() if k not in ['\\''map_runtime_valid'\\'','\\''map_runtime'\\'']}\n assert original==old,('\\''metadata'\\'',old['\\''index'\\''])\n name=old['\\''file'\\''];assert (a/'\\''frames'\\''/name).read_bytes()==(b/'\\''frames'\\''/name).read_bytes(),name\n pngs.append({'\\''file'\\'':name,'\\''sha256'\\'':digest(b/'\\''frames'\\''/name)})\noldlines=(a/'\\''eip-trace.jsonl'\\'').read_text().splitlines()\nnewlines=(b/'\\''eip-trace.jsonl'\\'').read_text().splitlines()\noldtrace=[json.loads(x) for x in oldlines];newtrace=[json.loads(x) for x in newlines]\noldaddrs={r['\\''eip'\\''] for r in oldtrace}\nsame=[(line,r) for line,r in zip(newlines,newtrace) if r['\\''eip'\\''] in oldaddrs]\nassert len(same)==len(oldtrace)\nfor oldline,old,(line,new) in zip(oldlines,oldtrace,same):\n validate(new)\n assert line.startswith(oldline[:-1]+'\\'','\\''),('\\''trace prefix bytes'\\'',old['\\''step'\\''],old['\\''eip'\\''])\n original={k:v for k,v in new.items() if k not in ['\\''map_runtime'\\'','\\''map_runtime_valid'\\'','\\''frame_units_valid'\\'','\\''unit_base'\\'','\\''unit_count'\\'','\\''units'\\'','\\''view'\\'']}\n assert original==old\nfor r in newtrace:validate(r)\nlast=newframes[-1]\nassert last['\\''index'\\'']==43 and last['\\''step'\\'']==4000799496 and last['\\''eip'\\'']=='\\''0x11EED'\\''\nret=[r for r in newtrace if r['\\''step'\\'']==last['\\''step'\\''] and r['\\''eip'\\'']==last['\\''eip'\\'']]\nassert len(ret)==1 and ret[0]['\\''stack'\\''][0]=='\\''0x11D3B'\\''\nassert ret[0]['\\''map_runtime'\\'']==last['\\''map_runtime'\\''] and ret[0]['\\''view'\\'']==last['\\''view'\\''] and ret[0]['\\''units'\\'']==last['\\''units'\\'']\nentry=[r for r in newtrace if r['\\''eip'\\'']=='\\''0x11CAC'\\'' and r['\\''stack'\\''][0]=='\\''0x290C7'\\'']\nassert len(entry)==1 and entry[0]['\\''stack'\\''][1]=='\\''0x1'\\''\npre=[r for r in newtrace if r['\\''eip'\\'']=='\\''0x290C2'\\'' and r['\\''step'\\'']+1==entry[0]['\\''step'\\'']]\nassert len(pre)==1 and pre[0]['\\''stack'\\''][0]=='\\''0x1'\\''\npre,entry,ret=pre[0],entry[0],ret[0]\nv0,v1=validate(entry),validate(ret)\nassert pre['\\''map_runtime'\\'']==entry['\\''map_runtime'\\''] and pre['\\''units'\\'']==entry['\\''units'\\''] and pre['\\''view'\\'']==entry['\\''view'\\'']\nassert entry['\\''map_runtime'\\'']['\\''palette_rgb_hex'\\'']==ret['\\''map_runtime'\\'']['\\''palette_rgb_hex'\\'']\nassert entry['\\''map_runtime'\\'']['\\''palette_dac6_hex'\\'']==ret['\\''map_runtime'\\'']['\\''palette_dac6_hex'\\'']\nassert all(v0[a]==v1[a] for a in ['\\''0x60000'\\'','\\''0x60002'\\''])\nrunner=json.loads((b/'\\''runner.json'\\'').read_text())\nassert runner['\\''dosgolem_commit'\\'']=='\\''a01ff084f038ddd1d133480f08d32e3b2e6f98c0'\\''\nassert runner['\\''dosgolem_tracked_dirty_files'\\'']==runner['\\''dosgolem_untracked_files'\\'']==0\nassert runner['\\''map_runtime_records'\\'']['\\''enabled'\\''] is True\nassert runner['\\''near_heap_policy'\\'']['\\''original_allocator_parity'\\'']=='\\''unverified'\\''\nreport={'\\''date'\\'':'\\''2026-10-05'\\'','\\''issue'\\'':173,'\\''state'\\'':'\\''CONFORMED'\\'','\\''scope'\\'':'\\''read-only oracle map state only; no remake map parity or PLAYER-E2'\\'','\\''source_commit'\\'':runner['\\''dosgolem_commit'\\''],'\\''source_clean'\\'':True,'\\''controls'\\'':1539,'\\''equal_files'\\'':equal,'\\''frames'\\'':44,'\\''png_equal'\\'':pngs,'\\''old_frame_metadata_equal'\\'':True,'\\''old_trace_rows'\\'':len(oldtrace),'\\''new_trace_rows'\\'':len(newtrace),'\\''original_trace_fields_and_bytes_equal'\\'':True,'\\''valid_units_per_row'\\'':33,'\\''map_globals_per_row'\\'':16,'\\''palette_bytes'\\'':768,'\\''pre_call'\\'':{'\\''step'\\'':pre['\\''step'\\''],'\\''eip'\\'':pre['\\''eip'\\''],'\\''argument'\\'':pre['\\''stack'\\''][0]},'\\''entry'\\'':{'\\''step'\\'':entry['\\''step'\\''],'\\''eip'\\'':entry['\\''eip'\\''],'\\''caller'\\'':entry['\\''stack'\\''][0],'\\''argument'\\'':entry['\\''stack'\\''][1],'\\''globals'\\'':v0},'\\''return'\\'':{'\\''step'\\'':ret['\\''step'\\''],'\\''eip'\\'':ret['\\''eip'\\''],'\\''caller'\\'':ret['\\''stack'\\''][0],'\\''globals'\\'':v1,'\\''view'\\'':ret['\\''view'\\'']},'\\''palette_unchanged_11cac1'\\'':True,'\\''frame_trace_state_equal'\\'':True,'\\''runner_sha256'\\'':digest(b/'\\''runner.json'\\''),'\\''frames_sha256'\\'':digest(b/'\\''frames/frames.jsonl'\\''),'\\''trace_sha256'\\'':digest(b/'\\''eip-trace.jsonl'\\'')}\nPath('\\''/src/work/oracle-map-state-validation-r1.json'\\'').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nprint(json.dumps({k:v for k,v in report.items() if k not in ['\\''png_equal'\\'','\\''equal_files'\\'']},ensure_ascii=False,indent=2))\n' > work/oracle-map-state-comparison-r1.log 2>&1"
+    },
+    "original_terminal_exit": 0,
+    "original_validation": {
+      "date": "2026-10-05",
+      "issue": 173,
+      "state": "CONFORMED",
+      "scope": "read-only oracle map state only; no remake map parity or PLAYER-E2",
+      "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+      "source_clean": true,
+      "controls": 1539,
+      "equal_files": [
+        {
+          "path": "control-history.jsonl",
+          "sha256": "a82bc942b55dc7131cda168a3da4491bb0fb83fe2cdf8865fb9312578ab1991e"
+        },
+        {
+          "path": "checkpoint-0000.json",
+          "sha256": "8e67e6bfeb8ab7f8be2fe17971a1bd564e6b40db87be9c0b509bea0bbd73a16b"
+        },
+        {
+          "path": "checkpoint-1532.json",
+          "sha256": "20ab3bf001274d051690e7f3e0d0090df9ab091cbf69c1d06ea2d703e3541bbc"
+        },
+        {
+          "path": "checkpoint-1533.json",
+          "sha256": "dffd4cd77bdf498835021007729f1e5dcd52651fc446c7cd43f3aec522b9d714"
+        },
+        {
+          "path": "checkpoint-1539.json",
+          "sha256": "03e4c0cf74c0fb9aa3cc0425ca5a3a38ee4742d2f2751af20dd46211f768e092"
+        }
+      ],
+      "frames": 44,
+      "png_equal": [
+        {
+          "file": "frame-000000.png",
+          "sha256": "7f1c0b6128ee78cb275ecccf24adbefe62a93314109cd5f9cfd68a7460d7554c"
+        },
+        {
+          "file": "frame-000001.png",
+          "sha256": "0592a39c2e1d301d399bd96fc6ec3f60e5841e099817742a85a3b12ce04938b2"
+        },
+        {
+          "file": "frame-000002.png",
+          "sha256": "c963f5bbb74feca136cfa421f6a3e753c5eff28f6fb0565a6149388caf2edf82"
+        },
+        {
+          "file": "frame-000003.png",
+          "sha256": "9218a423bcac51aa650d44b4b8cdd419ac9a2c8e464c31d5d2dd717f5b8633e9"
+        },
+        {
+          "file": "frame-000004.png",
+          "sha256": "2b02885d975e2b1c41f66a999c5cea1c6692a9afeccd91067a848ed9ece646d1"
+        },
+        {
+          "file": "frame-000005.png",
+          "sha256": "3a2c39e2c3c12af70aa998ecc2014fc0de3b7828dafab2e93c357052c64bcba5"
+        },
+        {
+          "file": "frame-000006.png",
+          "sha256": "7e2eee61913b576da1d459bc15c0ce33a867433716063ce089bceb245709c9a4"
+        },
+        {
+          "file": "frame-000007.png",
+          "sha256": "d12df636e5918176ee95809689c30d6e393b4d59c3a928a9ebce15bd1c747899"
+        },
+        {
+          "file": "frame-000008.png",
+          "sha256": "297d3868429c9f6f8b244211441c774603d9a36ecedd662f77acc5212a8c373e"
+        },
+        {
+          "file": "frame-000009.png",
+          "sha256": "dce858be91963688a589d2228319a38c9547f2bbfcf852e8b61ad6a3896cdec6"
+        },
+        {
+          "file": "frame-000010.png",
+          "sha256": "a188531a8be9ed3a05f73b221c5ee0f5e65e4955d1c02accede96cd90bc405d9"
+        },
+        {
+          "file": "frame-000011.png",
+          "sha256": "2112c19b603fd4735ffb06e699dd8c1fbb644b48edfa81216941834f5aba38e5"
+        },
+        {
+          "file": "frame-000012.png",
+          "sha256": "af918d1e7f5760df64d7c9b3e8c96f723cff6bea225dce239445cb0d7d413afe"
+        },
+        {
+          "file": "frame-000013.png",
+          "sha256": "2585719b48d77dec9fb6434888d16554f29f39920556d4ef1000e13349e65afb"
+        },
+        {
+          "file": "frame-000014.png",
+          "sha256": "c595633b0119bfca1fa177a33ae8b8e6e29e313d805ec5b5e74a187c1e88724a"
+        },
+        {
+          "file": "frame-000015.png",
+          "sha256": "996d1cbf7fb874d3e46c4155b94f85b8d94584d49d307fa6ec169eda6fa71d19"
+        },
+        {
+          "file": "frame-000016.png",
+          "sha256": "c595633b0119bfca1fa177a33ae8b8e6e29e313d805ec5b5e74a187c1e88724a"
+        },
+        {
+          "file": "frame-000017.png",
+          "sha256": "0721c9c6fac81f5c7fe46262437db83fae48b114454ddfa0e850c1c20652339c"
+        },
+        {
+          "file": "frame-000018.png",
+          "sha256": "a55fe1212d75298db6920176b1287e07d0b0a84610bbec6150cb77c2ad2e7ae6"
+        },
+        {
+          "file": "frame-000019.png",
+          "sha256": "8ac9eed49ee3ac93956c8c15b822afefd83bcc1074377c92c090c281cf44346c"
+        },
+        {
+          "file": "frame-000020.png",
+          "sha256": "b1ca2c961660f8805d670ceea6e445dc50524055aab4ca2f2439b3944bf24326"
+        },
+        {
+          "file": "frame-000021.png",
+          "sha256": "30318832d33335d89dc87982e16f2b30260e7ae831f7d0869e807cf97295817d"
+        },
+        {
+          "file": "frame-000022.png",
+          "sha256": "b8777ef7c5a12e996b3beee68f14d6e0d93eb759e1d1c2b998c13df5b0c315dc"
+        },
+        {
+          "file": "frame-000023.png",
+          "sha256": "7fe65c2e1e5d48f9b27e1c38924627ef556ead3487b0d98c64c9d033dd130bf1"
+        },
+        {
+          "file": "frame-000024.png",
+          "sha256": "ef3d69cb2846f6808512b7aa5ae2580b472f3fca08192a105e50626b937daf20"
+        },
+        {
+          "file": "frame-000025.png",
+          "sha256": "9a04f230df4bc7be01bf9e59016c6da64848803abd046b672464118578fde519"
+        },
+        {
+          "file": "frame-000026.png",
+          "sha256": "58856c0ddec40b30c7eeec41c1f3ad0149d1164e6895e9c186de4b84cff0812b"
+        },
+        {
+          "file": "frame-000027.png",
+          "sha256": "427155df026ae92c5fa3595b862040bef6e87d7faaadae2b939d173c03ded139"
+        },
+        {
+          "file": "frame-000028.png",
+          "sha256": "e7efa76a5171af6dbb7b774978a657aafe6e00d99beb3331012fd00aa6f499f4"
+        },
+        {
+          "file": "frame-000029.png",
+          "sha256": "e73c5d9f0b4f7fa173a7f97cf6da57c8c9004e36bb2753cb79cd07ef01e5c088"
+        },
+        {
+          "file": "frame-000030.png",
+          "sha256": "cb0490763d084639f78567b4ee52ae3e556cfbec2ce1d4dadd0b49d46666b488"
+        },
+        {
+          "file": "frame-000031.png",
+          "sha256": "7626f920e7cd292aeb69631fd92a5168d37e278e21df90032d639f0023b1139f"
+        },
+        {
+          "file": "frame-000032.png",
+          "sha256": "d4e090afad0ded33ca960cced70f40a11711b0e02d2986ea41b168fa8427b9cc"
+        },
+        {
+          "file": "frame-000033.png",
+          "sha256": "ff01639e1dda1a0974f330f1d52e3cccf6d75e2f44befc84a82053dcc9655f2a"
+        },
+        {
+          "file": "frame-000034.png",
+          "sha256": "5fffaafe0ddcff291e37f73b3fef35dd331f697d9d89458869580eae4e7a4021"
+        },
+        {
+          "file": "frame-000035.png",
+          "sha256": "74f5c27178a2e253b455d9dba1bd4b469a9f5ea75addc87723428a3e313e1a3c"
+        },
+        {
+          "file": "frame-000036.png",
+          "sha256": "d504433060be39260251fc74edf5c48856f7df334f6aad7716022d5b8e79d357"
+        },
+        {
+          "file": "frame-000037.png",
+          "sha256": "9fb959d3f156ec955111f149bd629f526edeb476ecc16aa3c217c1d2f0aa5ff2"
+        },
+        {
+          "file": "frame-000038.png",
+          "sha256": "d7c4bc6119eaf927be7c930f7dcefd8a416291a395bb4aab8d250a47c9c43179"
+        },
+        {
+          "file": "frame-000039.png",
+          "sha256": "0e24594575cc7f5bf389003b3f7159fa9b5f2e9b88730177ef7abb7284dd39a4"
+        },
+        {
+          "file": "frame-000040.png",
+          "sha256": "7cf96c72aef231c9c4285dffe956fbe11b01066763467c9b5ecfb0b4b7e25e96"
+        },
+        {
+          "file": "frame-000041.png",
+          "sha256": "6dfb6b8c28e75f2cec201e179750e23f6a347d725dd30a0ed24f0d7cd50ea121"
+        },
+        {
+          "file": "frame-000042.png",
+          "sha256": "47c4a49208533ef5aa6b6911723255245877767fa94318ba3bfe9985aa41b06b"
+        },
+        {
+          "file": "frame-000043.png",
+          "sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df"
+        }
+      ],
+      "old_frame_metadata_equal": true,
+      "old_trace_rows": 269,
+      "new_trace_rows": 271,
+      "original_trace_fields_and_bytes_equal": true,
+      "valid_units_per_row": 33,
+      "map_globals_per_row": 16,
+      "palette_bytes": 768,
+      "pre_call": {
+        "step": 4000640341,
+        "eip": "0x290C2",
+        "argument": "0x1"
+      },
+      "entry": {
+        "step": 4000640342,
+        "eip": "0x11CAC",
+        "caller": "0x290C7",
+        "argument": "0x1",
+        "globals": {
+          "0x53C07": 3,
+          "0x53C0B": 3,
+          "0x53C0F": 12333,
+          "0x53C1F": 13,
+          "0x539F4": 12333,
+          "0x53A40": 1,
+          "0x53A00": 12333,
+          "0x53A04": 1,
+          "0x53A08": 12362,
+          "0x51A93": 4294967295,
+          "0x46C": 13696,
+          "0x51AAB": 1,
+          "0x51AAC": 0,
+          "0x51A0C": 1,
+          "0x60000": 12333,
+          "0x60002": 4
+        }
+      },
+      "return": {
+        "step": 4000799496,
+        "eip": "0x11EED",
+        "caller": "0x11D3B",
+        "globals": {
+          "0x53C07": 0,
+          "0x53C0B": 0,
+          "0x53C0F": 13696,
+          "0x53C1F": 14,
+          "0x539F4": 13696,
+          "0x53A40": 0,
+          "0x53A00": 13696,
+          "0x53A04": 0,
+          "0x53A08": 13725,
+          "0x51A93": 4294967295,
+          "0x46C": 13728,
+          "0x51AAB": 1,
+          "0x51AAC": 0,
+          "0x51A0C": 1,
+          "0x60000": 12333,
+          "0x60002": 4
+        },
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 7,
+          "camera_y": 5,
+          "cursor_x": 13,
+          "cursor_y": 11,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 60777,
+          "round": 1,
+          "visible_x": 6,
+          "visible_y": 6
+        }
+      },
+      "palette_unchanged_11cac1": true,
+      "frame_trace_state_equal": true,
+      "runner_sha256": "1011e646906527bb5d903bfa0a1259fa859ba0f4d69b9683c115e7ce9f6e18a4",
+      "frames_sha256": "1e7de6dd79397e723e553b8dc7295a20fcb7b63f7ae505c319d906cf200c6039",
+      "trace_sha256": "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b"
+    },
+    "implementation_sources": [
+      {
+        "path": "tools/dosgolem_oracle.sh",
+        "sha256": "35d6f05bd7c82de0e4907a288377f1b90fd70b4c529e4e41897fc03cdefb31d6"
+      },
+      {
+        "path": "tools/dosgolem_oracle_container.sh",
+        "sha256": "12c22ad1261936fe7e6a972c5942b5da6ae817b98ed0a04b6843ead58583f936"
+      }
+    ],
+    "clock_observation": {
+      "level": "已證實",
+      "entry_bios_low_word": 13696,
+      "copy_exit_bios_low_word": 13728,
+      "entry_idle_latch": 12333,
+      "exit_idle_latch": 13696,
+      "exit_unit_pixel_shift_latch": 13725,
+      "source": "同一受版控oracle trace／frame原始16全域",
+      "limit": "不由前後值推定所有consumer讀同tick；正式map需尊重各層已閉合時鐘契約，不能從畫面挑phase或回填outputs當inputs。"
+    },
+    "closeout_audit": {
+      "date": "2026-10-05",
+      "remote_issue173": "CLOSED",
+      "remote_parent166": "OPEN",
+      "open_worklist": 23,
+      "possibly_completed": 0,
+      "lessons": 155,
+      "guards": 51,
+      "outputs_hashed": 15,
+      "implementation_sources_hashed": 2,
+      "evidence_sources_hashed": 7,
+      "new_local_links": 14,
+      "index_positive_control": true,
+      "readme_culture_entry": true,
+      "uid_gid": "1000:1000",
+      "historical_root_owned": 2811,
+      "new_root_owned": 0,
+      "md_directories": 0,
+      "unexpected_fd2_containers": 0
+    }
   }
 }
