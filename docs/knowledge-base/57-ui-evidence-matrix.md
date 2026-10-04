@@ -1696,3 +1696,10 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 | 正常物理BG／TAI來源與座標 | RUNTIME-E1，選擇有限CONFORMED | 玩家、一般AI與mode11持有raw／mutable terrain場景快照，反擊沿用；完整影格、雙BG滑入與work續接仍在#166。[主契約](../data/ida/fd2_physical_background_selection_20261004.json)及[58現況](58-fd2-exe-re-coverage.md)。 |
 
 本輪沒有新增整章PLAYER-E2，也沒有以局部素材測試取代完整物理演出對拍。
+
+### 2026-10-04 #166：雙向前導有限對拍
+
+| 介面範圍 | 分層 | 已驗與剩餘 |
+|---|---|---|
+| 零header物理panel、BG與29164前導 | 有限CONFORMED、RUNTIME-E1 | 正常玩家及獨立敵方的完整末格，正式GPU九次Draw與DAC；同輸入合成與GPU診斷，不外推完整攻擊或整章E2。主證據與唯一現況見[58](58-fd2-exe-re-coverage.md)及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。 |
+| 非零header與戰後work | 尚待驗收 | 原版獨立敵方來源已觀察；雙BGscroll、完整counter影格、work續接仍在#166。 |

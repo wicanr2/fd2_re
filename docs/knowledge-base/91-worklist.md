@@ -129,7 +129,7 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
 
-### 物理攻擊場景尚待雙向對拍與工作緩衝續接
+### 物理攻擊場景尚待完整影格與工作緩衝續接
 
 `physical-attack-native-background-and-work-continuation` · 缺陷 · [#166](https://github.com/wicanr2/fd2_re/issues/166) · 仍未完成 · 要人判
 

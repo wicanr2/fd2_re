@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"image"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
@@ -16,8 +18,19 @@ import (
 // READY 子規格見 docs/data/ida/fd2_physical_background_selection_20261004.json。
 // 非零 header 的滑入與完整 DAC 演出仍由既有 E1 owner 處理。
 type nativePhysicalScene struct {
-	selection            battle.NativePhysicalSceneSelection
-	background, pedestal *ebiten.Image
+	selection                 battle.NativePhysicalSceneSelection
+	background, pedestal      *ebiten.Image
+	backgroundFrame           fdother.Frame
+	panelAssets               battle.NativeItemPanelDataAssets
+	actorRecord, targetRecord []byte
+	actorIndex, targetIndex   int
+	prelude                   []battlepresent.NativeCommand24PreludeFrame
+	preludeImages             []*ebiten.Image
+	preludeFrame              int
+	preludeDrawn              bool
+	counterActive             bool
+	baseImage                 *ebiten.Image
+	baseActorHP, baseTargetHP int
 }
 
 func (g *Game) nativePhysicalTerrainControl(unit *battle.Unit) ([4]byte, error) {
@@ -126,5 +139,141 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 	if err != nil {
 		return nil, err
 	}
-	return &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal}, nil
+	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal}
+	if selection.HasSeparateBackgrounds {
+		return scene, nil
+	}
+	if err := g.prepareNativePhysicalPrelude(scene, actor, target, bg, tai); err != nil {
+		return nil, err
+	}
+	return scene, nil
+}
+
+// nativePhysicalBase 保留 0x28CE7→0x28D48→0x28D62 的順序。
+// 320×200 base 的清零來自 0x28B41..0x28B4E 明確 memset。
+func (g *Game) nativePhysicalBase(scene *nativePhysicalScene, actorRecord, targetRecord []byte) ([]byte, error) {
+	base := make([]byte, 320*200)
+	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, actorRecord, base, scene.actorIndex, g.handlerChapter); err != nil {
+		return nil, err
+	}
+	bg := scene.backgroundFrame
+	bg.X, bg.Y = 0, 50
+	if err := bg.Blit(base, 320, -1); err != nil {
+		return nil, err
+	}
+	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, targetRecord, base, scene.targetIndex, g.handlerChapter); err != nil {
+		return nil, err
+	}
+	return base, nil
+}
+
+func (g *Game) prepareNativePhysicalPrelude(scene *nativePhysicalScene, actor, target *battle.Unit, bg, tai fdother.Frame) error {
+	var err error
+	scene.backgroundFrame = bg
+	scene.actorRecord, err = battle.NativeBattlePanelRecordForUnit(actor)
+	if err != nil {
+		return err
+	}
+	scene.targetRecord, err = battle.NativeBattlePanelRecordForUnit(target)
+	if err != nil {
+		return err
+	}
+	scene.actorIndex, err = nativeCommand24RuntimeUnitIndex(g.st, actor)
+	if err != nil {
+		return err
+	}
+	scene.targetIndex, err = nativeCommand24RuntimeUnitIndex(g.st, target)
+	if err != nil {
+		return err
+	}
+	scene.panelAssets, err = battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
+	if err != nil {
+		return err
+	}
+	base, err := g.nativePhysicalBase(scene, scene.actorRecord, scene.targetRecord)
+	if err != nil {
+		return err
+	}
+	actorIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), actor.BattleFig*3)
+	if err != nil {
+		return err
+	}
+	targetIdle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3)
+	if err != nil {
+		return err
+	}
+	if len(actorIdle.Frames) == 0 || len(targetIdle.Frames) == 0 {
+		return errors.New("native physical prelude idle unavailable")
+	}
+	dac, _, err := loadNativeBattlePalette()
+	if err != nil {
+		return err
+	}
+	scene.prelude, err = battlepresent.BuildNativeCommandPreludeFrames(battlepresent.NativeCommandPreludeInput{
+		Base: base, ActorIdle: actorIdle.Frames[0], FirstTargetIdle: targetIdle.Frames[0],
+		Platform: &tai, RawSide: actor.NativeRecordByte6, Mode: 0, BaselineDAC: dac,
+	})
+	if err != nil {
+		return err
+	}
+	scene.preludeImages, err = nativeCommand24PreludeImages(scene.prelude)
+	return err
+}
+
+func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool {
+	if g.atk == nil || g.atk.nativeScene == nil {
+		return false
+	}
+	scene := g.atk.nativeScene
+	if scene.preludeFrame >= len(scene.preludeImages) {
+		return false
+	}
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(2, 2)
+	screen.DrawImage(scene.preludeImages[scene.preludeFrame], op)
+	scene.preludeDrawn = true
+	return true
+}
+
+func (g *Game) drawNativePhysicalBase(screen *ebiten.Image, defenderHP int) (bool, error) {
+	a := g.atk
+	if a == nil || a.nativeScene == nil || len(a.nativeScene.prelude) == 0 {
+		return false, nil
+	}
+	scene := a.nativeScene
+	actorHP, targetHP := a.atkHP, defenderHP
+	if scene.counterActive {
+		actorHP, targetHP = defenderHP, a.atkHP
+	}
+	if scene.baseImage != nil && scene.baseActorHP == actorHP && scene.baseTargetHP == targetHP {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(2, 2)
+		screen.DrawImage(scene.baseImage, op)
+		return true, nil
+	}
+	actorRecord := append([]byte(nil), scene.actorRecord...)
+	targetRecord := append([]byte(nil), scene.targetRecord...)
+	currentActor, currentTarget := actorRecord, targetRecord
+	if scene.counterActive {
+		currentActor, currentTarget = targetRecord, actorRecord
+	}
+	binary.LittleEndian.PutUint16(currentActor[0x40:], uint16(int16(a.atkHP)))
+	binary.LittleEndian.PutUint16(currentTarget[0x40:], uint16(int16(defenderHP)))
+	base, err := g.nativePhysicalBase(scene, actorRecord, targetRecord)
+	if err != nil {
+		return false, err
+	}
+	images, err := nativeCommand24IndexedImages([][]byte{base}, g.nativeUIPalette)
+	if err != nil {
+		return false, err
+	}
+	if scene.baseImage != nil {
+		scene.baseImage.Dispose()
+	}
+	scene.baseImage = images[0]
+	scene.baseActorHP, scene.baseTargetHP = actorHP, targetHP
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(2, 2)
+	screen.DrawImage(images[0], op)
+	return true, nil
 }

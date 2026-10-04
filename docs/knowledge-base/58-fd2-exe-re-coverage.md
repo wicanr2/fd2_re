@@ -2657,3 +2657,15 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 #166仍待獨立敵方場景載入、非零header雙BG滑入及戰鬥→地圖work續接。完整戰鬥GPU影格尚未驗收，現有DAC／剪影演出維持E1限制；不清緩衝猜補、不增加PLAYER-E2，#167與#154政策不變。
 
 #166本批檢查：Go19套件完整回歸通過，98筆字串處置不變；146條教訓的46條guard通過。新增18個本地連結與README→58正對照有效，變更檔UID／GID為1000。歷史root-owned仍2811、新增0，.md目錄0。
+
+### 2026-10-04 #166：雙向原生狀態欄與九張前導
+
+[主契約 physical_prelude_evidence／spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)保存原始IDA9.4定位與bytes。28B41..28B4E明確memset清320×200 base，與#167的malloc初值限制分開。正式零header物理入口現在依actor panel→BG→target panel建立indexed base，保留raw+6／+8與原始單位index；HP演出沿用原owner的E1步進。mode0的29164九張前導已接drawBattleScene與Draw確認，反擊沿用同一場景，不再進場。
+
+第八章r1延伸誤用未支援end_turn，exit7，沒有送END；r2改用既有goto與鍵盤，seq228正常回第5回合，但敵方用法術，沒有獨立28A6C。前181輸入的檢查點與原正常r1相同，未改seed或原版狀態。正式第十二章新來源951cb55f以既定建構槽及ch12-sample前35行正常到第3回合，seq2044、5,596,348,844步、trace134筆未封頂，無狀態注入。seq1533由15624呼叫(23,14)，實際BG5／TAI3、header1=0；seq1538由同caller呼叫(31,14)，primary BG49／TAI3、header1=1。後者只證明來源，雙BGscroll仍待實作。
+
+玩家與獨立敵方的前導末格各以完整320×200 RGB比較，兩者皆0／64000像素差異。敵方合成明示以攻擊前raw與同一行動移動後座標配對；原版像素只用於比較。獨立RunGame測試的九張640×400 GPU畫面逐pixel核對indexed像素、alpha及stage DAC，未Draw不推進，反擊不重播。這些只列前導有限CONFORMED，不宣稱完整2939D或整章PLAYER-E2。
+
+同一歷史原版來源的正式第十二章LOAD至戰後重播r2消費155／155 AI入口、順序分岔0；22987-byte存檔SHA-256仍為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。275張完整比較behavior／transaction通過，1528／2030 unknown wait仍拒收，所有差異保留。新951原版與歷史a9來源的時序／RNG不同，沒有混成同狀態收據。#166保持OPEN，剩餘非零header、完整攻擊／counter GPU與work續接；#154及20／30台帳不變。
+
+#166本批收尾：Go19套件通過，98筆字串處置保持；147條教訓的46條guard通過。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0。Docker原版與測試容器均已退出。README圖說明示合成診斷，完整攻擊與章台帳仍未增加。

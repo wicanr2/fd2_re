@@ -5335,3 +5335,11 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 #166更新為剩餘雙向對拍與work續接，保持OPEN；遠端工具pull／render／verify仍23項，可能已完成0項。#52、#154與章台帳不變。
 
 #166本批檢查：Go19套件完整回歸通過，98筆字串處置不變；146條教訓的46條guard通過。新增18個本地連結與README→58正對照有效，變更檔UID／GID為1000。歷史root-owned仍2811、新增0，.md目錄0。
+
+### 2026-10-04 #166：雙向前導批次
+
+正常物理零header現在使用indexed原生panel與九張29164前導，缺raw+8或素材在方向／RNG／HP前拒收。前導等待正式Draw，反擊不重播。玩家與獨立敵方完整末格比較及GPU範圍見[58](58-fd2-exe-re-coverage.md)；#166未關閉，整章台帳不增加。
+
+第八章延伸r1沒有main dispatcher支援end_turn，空等到預算退出；修正r2用實際鍵盤後正常END，敵方此輪為法術。第十二章沿用既有前段計畫取得獨立物理零／非零header；未改seed、槽或HP。章重播r1則因離屏ackPresents漏新Draw owner而停住，補正式drawNativePhysicalPrelude後同來源r2通過。字串review需重綁定位；一次編譯誤用目前Ebiten2.6.6沒有的Deallocate，改用既有Dispose。這些是驗證與API問題，沒有放寬規則或章門檻。
+
+#166本批收尾：Go19套件通過，98筆字串處置保持；147條教訓的46條guard通過。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0。Docker原版與測試容器均已退出。README圖說明示合成診斷，完整攻擊與章台帳仍未增加。

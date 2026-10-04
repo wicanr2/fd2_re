@@ -116,6 +116,7 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 		// map0/map0_units.json 的 selector96 原始欄位，與下列建構列相同來源。
 		NativeRecordRace: 1, HasNativeRecordRace: true,
 		NativeRecordClass: 7, HasNativeRecordClass: true,
+		NativeRecordByte8: 96, HasNativeRecordByte8: true,
 		// 原生 EXP 預檢需要實際 selector96 的 high_class 建構列。
 		NativeConstructor: &battle.NativeConstructorTable{Branch: "high_class", Index: 28,
 			Record: []byte{1, 7, 14, 0, 0, 7, 1, 1, 4, 21}},

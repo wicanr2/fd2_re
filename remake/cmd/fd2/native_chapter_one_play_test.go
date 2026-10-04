@@ -530,6 +530,13 @@ func ch01UnitDump(g *Game) string {
 var ch23JourneyScreen *ebiten.Image
 
 func ackPresents(g *Game) {
+	if g.atk != nil && g.atk.nativeScene != nil &&
+		g.atk.nativeScene.preludeFrame < len(g.atk.nativeScene.preludeImages) {
+		if ch23JourneyScreen == nil {
+			ch23JourneyScreen = ebiten.NewImage(640, 400)
+		}
+		g.drawNativePhysicalPrelude(ch23JourneyScreen)
+	}
 	if g.nativeEndTurnRecovery != nil {
 		if ch23JourneyScreen == nil {
 			ch23JourneyScreen = ebiten.NewImage(640, 400)

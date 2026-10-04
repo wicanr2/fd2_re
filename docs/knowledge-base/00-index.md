@@ -577,3 +577,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [物理攻擊背景與台座選擇契約](../data/ida/fd2_physical_background_selection_20261004.json)：#166，保留28A6C與12E38的原始位址、bytes、推論等級及正常第八章dosgolem收據。選擇規則有限CONFORMED，正式BG／TAI快照列RUNTIME-E1；剩餘整場景與工作緩衝驗收見[58](58-fd2-exe-re-coverage.md)。
 - #166 程式與測試：[具型別選擇](../../remake/internal/battle/native_physical_scene.go)、[選擇反例](../../remake/internal/battle/native_physical_scene_test.go)、[正式素材consumer](../../remake/cmd/fd2/native_physical_scene.go)、[Game來源及原子性測試](../../remake/cmd/fd2/native_physical_scene_test.go)。
+
+- #166 [正常敵方場景輸入計畫](../data/parity-plans/physical-background-ch08-enemy-r1.jsonl)：完整沿用第八章r7前綴；此版end_turn未受支援，失敗紀錄保留於上列主契約。
+- [第八章敵方物理場景正常 END 修正版計畫](../data/parity-plans/physical-background-ch08-enemy-r2.jsonl)：同一前段輸入，以實際按鍵送 END；證據同上。
+
+- #166 [第十二章雙敵方回合場景計畫](../data/parity-plans/physical-background-ch12-enemy-r1.jsonl)：沿用既有抽樣前35行，實測見[場景主契約](../data/ida/fd2_physical_background_selection_20261004.json)。

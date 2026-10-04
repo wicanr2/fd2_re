@@ -9436,3 +9436,9 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 正常玩家、一般AI與mode11改由[READY子契約](../data/ida/fd2_physical_background_selection_20261004.json)預檢raw record、可變地圖control、攻方FIGANI header與分離BG／TAI，再發布演出快照。缺來源時不寫方向、HP或RNG；反擊沿用場景。BG原生座標(0,50)，TAI為(164,157)，index0及透明mask分開處理，不依素材寬高置中。快照不增存檔欄位，演出保存限制沿用原owner。
 
 此項只達正常BG／TAI來源的RUNTIME-E1與有限選擇CONFORMED。獨立敵方場景、非零header滑入、完整GPU影格及work續接仍在#166；目前驗證與停止線只見[58](58-fd2-exe-re-coverage.md)。#167配置器未知不由BG清零補值。
+
+### 2026-10-04 #166：零header物理前導與原生狀態欄
+
+[有限CONFORMED子契約](../data/ida/fd2_physical_background_selection_20261004.json)新增明確memset base、actor panel→BG→target panel及mode0九次present。正式Game先原子預檢panel raw+6／+8、單位index、完整分離UI、兩側idle、TAI與六位DAC，再發布快照。前導須Draw確認才推進，counter不重播；兩側HP仍使用現有演出步進，更新原始panel record，沒有猜補新的傷害時序。
+
+正常玩家與獨立敵方的完整前導末格，以及正式GPU九張畫面的驗證範圍見[58](58-fd2-exe-re-coverage.md)。非零header雙BGscroll、完整2939D與戰後work仍未CONFORMED；這段不增加章驗收，也不變更原版實體近堆未知政策。

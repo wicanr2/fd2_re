@@ -392,7 +392,7 @@
       "id": "physical-attack-native-background-and-work-continuation",
       "layer": "runtime",
       "category": "缺陷",
-      "title": "物理攻擊場景尚待雙向對拍與工作緩衝續接",
+      "title": "物理攻擊場景尚待完整影格與工作緩衝續接",
       "acceptance": "依固定FD2.EXE雜湊的0x28A6C原始BG／TAI選擇建立READY規格，讓正常物理攻擊消費typed地形及分離原始素材。至少抽測玩家／敵方正常物理攻擊與零旗標分支，特殊旗標未閉合時明示範圍。工作緩衝交接依writer／consumer證據驗證，不清整塊猜補；#52的3152已由#167確認為oracle近堆清零政策結果，不能當背景render清零的原版判準。保留整張影格差異、原20/30與章門檻。",
       "evidence": [
         "docs/data/ida/fd2_terrain_mode3_review_20261001.json",

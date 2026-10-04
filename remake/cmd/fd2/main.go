@@ -6578,6 +6578,13 @@ func (g *Game) stepAttackPresentationTick() error {
 	if a == nil {
 		return nil
 	}
+	if scene := a.nativeScene; scene != nil && scene.preludeFrame < len(scene.preludeImages) {
+		if scene.preludeDrawn {
+			scene.preludeDrawn = false
+			scene.preludeFrame++
+		}
+		return nil
+	}
 	a.timer--
 	prog := a.total - a.timer
 	if a.figaniTimeline != nil && prog <= a.bodyTicks {
@@ -6628,6 +6635,9 @@ func (a *atkAnim) beginCounterStage() {
 		return
 	}
 	a.counter = nil
+	if a.nativeScene != nil {
+		a.nativeScene.counterActive = true
+	}
 	a.atkFig, a.defFig = next.atkFig, next.defFig
 	a.atkName, a.defName = a.defName, a.atkName
 	a.atkLV, a.defLV = a.defLV, a.atkLV
@@ -10702,6 +10712,9 @@ func saveShot(img *ebiten.Image, path string) {
 // drawBattleScene 全螢幕戰鬥演出(對照原版 orig_05:守方左面右/攻方右土台/斬擊弧/血條/命中閃紅抽血)。
 func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	a := g.atk
+	if g.drawNativePhysicalPrelude(screen) {
+		return
+	}
 	prog := a.total - a.timer
 	// 原版 320×200 精確 layout(網格量測)→ 本畫布 ×2。黑底(畫面外圍黑邊)
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
@@ -10743,8 +10756,13 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	}
 	impactE := impactS + 8
 	// (1) 狀態欄先畫(會被 figure 蓋住一部分,如原版)
-	if g.font != nil {
-		dhp := battleImpactHP(prog, impactS, a.defHP0, a.defHP1)
+	dhp := battleImpactHP(prog, impactS, a.defHP0, a.defHP1)
+	nativeBase, err := g.drawNativePhysicalBase(screen, dhp)
+	if err != nil {
+		g.loadErr = "native physical panel: " + err.Error()
+		return
+	}
+	if !nativeBase && g.font != nil {
 		// 位置=模板匹配 orig:我方 (171,4)@320、敵方 (0,154)@320(下欄匹配 err=0 像素全等)
 		// 欄位按「陣營」分:我方欄右上、敵方欄左下(atkOwn=false 表敵攻我,資料對調)
 		if a.atkOwn {

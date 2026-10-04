@@ -187,6 +187,13 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 
 *同一存檔、鏡頭與回合的戰場比較；此圖只證明標示狀態，不外推全戰役。*
 
+![物理攻擊前導的原版、重製合成與完整畫面差異](docs/figures/physical-attack-prelude-scoped-compare.png)
+
+*各排依序為原版擷取、重製同輸入合成、完整畫面差異。上排是玩家攻擊，下排是獨立
+敵方攻擊；只比較零旗標前導末格。這是合成診斷圖，正式 GPU 前導驗證另記於
+[場景契約](docs/data/ida/fd2_physical_background_selection_20261004.json)。完整攻擊、
+非零旗標捲動與戰後畫面恢復的現況見[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。*
+
 ![重製端正式開場的漢堂發行商畫面](docs/figures/title-publisher-remake.png)
 
 *重製正常啟動路徑的執行期畫面；美術來自玩家自備原版資料。*
