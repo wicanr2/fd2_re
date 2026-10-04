@@ -265,6 +265,26 @@ func (g *Game) playPCMVoice(b []byte) {
 	player.Play()
 }
 
+// playNativePhysicalSound 保留25A96的同通道替換契約。
+// 證據入口：fd2_physical_background_selection_20261004.json的physical_sound_spec。
+func (g *Game) playNativePhysicalSound(b []byte) {
+	if g == nil || len(b) == 0 || audioCtx == nil ||
+		!g.currentNativeSystemOptions().SFXEnabled() || os.Getenv("FD2_MUTE") != "" || g.shotPath != "" {
+		return
+	}
+	g.stopNativePhysicalSound()
+	player := audio.NewPlayerFromBytes(audioCtx, b)
+	g.nativePhysicalVoice = player
+	player.Play()
+}
+
+func (g *Game) stopNativePhysicalSound() {
+	if g != nil && g.nativePhysicalVoice != nil {
+		_ = g.nativePhysicalVoice.Close()
+		g.nativePhysicalVoice = nil
+	}
+}
+
 // startTitleANI1Sound 建立 ANI #1 專用 voice；原版不把 #78 放入一般疊播池，
 // 而是在第一幀啟動並於動畫自然結束或略過時明確停止。
 func (g *Game) startTitleANI1Sound() {
@@ -317,6 +337,7 @@ func (g *Game) closeAudioPlayers() {
 		g.bgm = nil
 	}
 	g.stopTitleANI1Sound()
+	g.stopNativePhysicalSound()
 	for _, voice := range g.sfxVoices {
 		if voice != nil {
 			_ = voice.Close()

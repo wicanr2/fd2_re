@@ -1578,6 +1578,21 @@
       "rule": "JavaScript組裝工具命令時，字面替換用split／join或replacement回呼；含美元符號的文字不直接當String.replace的replacement字串。Shell命令用完整引用函式組裝，先核對命令再執行。入口tools/rebind_string_review.sh示範既有命令與字串遷移；本輪可重跑命令見場景主契約physical_return_wait_validation.commands。",
       "why": "#169測試正規表示式含美元符號與後方單引號，JavaScript將replacement中的美元加單引號解讀為原字串後綴，造成命令重複並覆寫本機舊log。原始影格與JSON未變，失敗log與歷史雜湊保留，乾淨重跑另用新log。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/169"
+    },
+    {
+      "id": "sound-bank-pointer-does-not-identify-channel",
+      "date": "2026-10-05",
+      "area": "音效生命週期",
+      "rule": "音效bank pointer只定位樣本來源；播放通道依wrapper的handle讀寫與stop／start consumer判定。返回停止放在後續caller啟動UI音效之前，不以bank不同推定硬體handle不同。入口docs/data/ida/fd2_physical_background_selection_20261004.json的physical_sound_evidence／spec，實作remake/cmd/fd2/audio.go的playNativePhysicalSound與main.go的finishAttackPresentation。",
+      "why": "#170的25A96對不同bank仍使用同一53EE4；一般疊播池漏掉物理cue替換與map返回停止。新owner按物理呼叫生命週期管理，不把後續1654B的UI音效一起關閉。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/170",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/audio.go"
+        ],
+        "pattern": "func \\(g \\*Game\\) playNativePhysicalSound"
+      }
     }
   ]
 }

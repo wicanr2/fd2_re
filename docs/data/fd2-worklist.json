@@ -413,32 +413,15 @@
         "docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl",
         "docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl",
         "https://github.com/wicanr2/fd2_re/issues/169",
-        "https://github.com/wicanr2/fd2_re/issues/170"
+        "https://github.com/wicanr2/fd2_re/issues/170",
+        "remake/cmd/fd2/audio.go",
+        "remake/cmd/fd2/audio_voice_test.go"
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-05：正常Game逐揮main／counter已接入。原raw0非零單次MISS與零header主攻HIT／counterMISS有限完整驗證保持；ec0d3e54補齊raw+6=2、header1=1的弓手首次射擊完整索引像素與RGB、正式GPU。原版同控制與停點逐byte相同，固定色盤／copy phase及直接caller分界，沒有候選搜尋或遮罩。建構槽只核對演出輸入，不驗收傷害／存活／敵方選目標。normal_player_path_verified仍false，不新增PLAYER-E2。仍需非零連擊／返回轉場、命中反擊、DAC0／音效及戰鬥到地圖work；#167工具政策與20/30章台帳不變。#168的VGA明確清除已有限CONFORMED，地圖work初值不猜補。唯一統計與現況見58及physical_opposite_side_validation。 2026-10-05：#169已有限CONFORMED，正常物理body後保留最後影格六BIOS刻度才清VGA並續行；#168時點補正。既有完整演出與GPU、19套件、第十二章正常重播及SAV保持；章門檻仍拒收，不提升PLAYER-E2。#170另追同通道音效替換與map返回停止，wrapper RE-CLOSED但正式交接尚未READY。其餘非零連擊、命中反擊、DAC0／人耳音訊與map work仍未驗收。唯一現況與命令見58及physical_return_wait_validation。"
+        "note": "2026-10-05：正常Game逐揮main／counter已接入。原raw0非零單次MISS與零header主攻HIT／counterMISS有限完整驗證保持；ec0d3e54補齊raw+6=2、header1=1的弓手首次射擊完整索引像素與RGB、正式GPU。原版同控制與停點逐byte相同，固定色盤／copy phase及直接caller分界，沒有候選搜尋或遮罩。建構槽只核對演出輸入，不驗收傷害／存活／敵方選目標。normal_player_path_verified仍false，不新增PLAYER-E2。仍需非零連擊／返回轉場、命中反擊、DAC0／音效及戰鬥到地圖work；#167工具政策與20/30章台帳不變。#168的VGA明確清除已有限CONFORMED，地圖work初值不猜補。唯一統計與現況見58及physical_opposite_side_validation。 2026-10-05：#169已有限CONFORMED，正常物理body後保留最後影格六BIOS刻度才清VGA並續行；#168時點補正。既有完整演出與GPU、19套件、第十二章正常重播及SAV保持；章門檻仍拒收，不提升PLAYER-E2。#170已有限CONFORMED／RUNTIME-E1：專屬PCM同通道替換及普通map→stop→after通過，未把完整map work或人耳提升為已驗收。其餘非零連擊、命中反擊、DAC0／人耳音訊與map work仍未驗收。唯一現況與命令見58及physical_return_wait_validation。 2026-10-05：目前首擊oracle六份檔案逐byte相同；完整演出與GPU、完整Go r2全部19套件、正常第十二章AI／SAV保持，章比較所有gates與前版相同且原拒收保持。事件61只補齊同源測試資料與slot分配，正式預檢未放寬。唯一現況與命令見58及physical_sound_validation。"
       },
       "issue": 166
-    },
-    {
-      "id": "physical-sound-single-handle-and-return-stop",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "正常物理攻擊音效缺少同通道替換與地圖返回停止",
-      "acceptance": "以固定原版首擊控制187核對FDOTHER50 selector2→1→-1與同bank pointer、正常mapcopy11D3B後290D9停止；25A96先停止53EE4再依selector播放。建立READY生命週期後，正式physical cue同通道替換，地圖回傳停止只影響physical owner，不關閉後續1654B一般UI音效或標題voice。原生音效、Draw／回呼顺序及shutdown反例驗證；不以cue一致宣稱人耳或硬體波形一致。",
-      "evidence": [
-        "docs/data/ida/fd2_physical_background_selection_20261004.json",
-        "tools/ida_probe_physical_presentation.py",
-        "remake/cmd/fd2/native_physical_body.go",
-        "remake/cmd/fd2/native_physical_body_test.go",
-        "https://github.com/wicanr2/fd2_re/issues/166"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "2026-10-05：固定原版trace已確認2→1→-1；25A96正常wrapper的停止consumer已取得。重製仍使用一般sfxVoices疊播池，未設physical專屬owner；map work／repaint仍由#166追查，停止交接尚未達READY。"
-      },
-      "issue": 170
     }
   ]
 }

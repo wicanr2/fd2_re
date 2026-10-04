@@ -386,7 +386,7 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 		job := &p.jobs[p.index]
 		if !p.cued {
 			if job.cue >= 0 {
-				g.playRaw(job.sounds[job.cue])
+				g.playNativePhysicalSound(job.sounds[job.cue])
 			}
 			p.cued = true
 		}

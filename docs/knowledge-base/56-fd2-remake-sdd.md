@@ -9486,4 +9486,11 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 
 正常body owner在所有逐揮job完成後保留最後影格，依17AA9(6)等待六個BIOS刻度，才清VGA與after續行。等待期不新增present、重播cue或消耗RNG；cue-only尾項保持順序。原版控制流及READY審查見主契約，時間沿用既有BIOS規格近似。
 
-[主契約physical_return_wait_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)保存完整命令與限制；唯一驗證數字及目前狀態見[58](58-fd2-exe-re-coverage.md)。本節補足#168的caller等待，未驗收map work。#170音效wrapper證據已閉合，但正式地圖／聲音交接尚未READY；章門檻與PLAYER-E2保持。
+[主契約physical_return_wait_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)保存完整命令與限制；唯一驗證數字及目前狀態見[58](58-fd2-exe-re-coverage.md)。本節補足#168的caller等待，未驗收map work。#170現已有限CONFORMED，見後文；完整map work、章門檻與PLAYER-E2保持。
+
+
+### 2026-10-05 #170：物理音效與正常返回順序
+
+[physical_sound_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已有限CONFORMED／RUNTIME-E1。正式body以專屬PCM owner替換同通道聲音；已宣告原生map在結算前預檢，正常返回先執行普通11CAC合成，再stop、清atk與after。來源失效禁止續行；一般UI、title與nil bundle相容範圍保持。
+
+這閉合既有map consumer的呼叫順序，未驗收重新malloc的work初值或完整返回影格。平台PCM生命周期不提升人耳、硬體波形或章PLAYER-E2。唯一驗證數字、失敗修正及目前狀態見[58](58-fd2-exe-re-coverage.md)；#166的完整map work、DAC／人耳及其餘演出仍待驗收。

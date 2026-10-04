@@ -1,19 +1,30 @@
 package main
 
 import (
+	"bytes"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"reflect"
+	"strings"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
 type fakeSFXVoice struct {
 	playing bool
 	closed  bool
+	onClose func()
 }
 
 func (v *fakeSFXVoice) IsPlaying() bool { return v.playing }
 func (v *fakeSFXVoice) Close() error {
 	v.closed = true
+	if v.onClose != nil {
+		v.onClose()
+	}
 	return nil
 }
 
@@ -111,5 +122,158 @@ func TestUnknownCatalogTrackDoesNotMutateCurrentBGM(t *testing.T) {
 	g.playBGMCount("FDMUS_999", 0)
 	if g.bgm != nil || g.bgmCur != "FDMUS_004" {
 		t.Fatalf("failed track changed player=%p current=%q", g.bgm, g.bgmCur)
+	}
+}
+
+func TestNativePhysicalBodyCueKeepsGeneralVoicesIndependent(t *testing.T) {
+	t.Setenv("FD2_MUTE", "")
+	requirePhysicalScenePack(t)
+	g, actor, target := physicalSceneTestGame(t)
+	scene, err := g.prepareNativePhysicalScene(actor, target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sounds := scene.bodyResources.mainSounds
+	var cue int
+	for id, pcm := range sounds {
+		if len(pcm) != 0 {
+			cue = id
+			break
+		}
+	}
+	if len(sounds[cue]) == 0 || audioCtx == nil {
+		t.Fatal("physical sound fixture did not decode PCM")
+	}
+	ui := &fakeSFXVoice{playing: true}
+	g.sfxVoices = []sfxVoice{ui}
+	scene.body = &nativePhysicalBodyPlayback{jobs: []nativePhysicalBodyJob{{cue: cue, sounds: sounds, pixels: []byte{1}}}}
+	defer g.closeAudioPlayers()
+	if err := g.stepNativePhysicalBodyMillis(scene, 1); err != nil {
+		t.Fatal(err)
+	}
+	if len(g.sfxVoices) != 1 || g.sfxVoices[0] != ui || ui.closed {
+		t.Fatalf("physical cue joined or interrupted general voices: count=%d UI closed=%v", len(g.sfxVoices), ui.closed)
+	}
+	if g.nativePhysicalVoice == nil {
+		t.Fatal("physical cue lost its player owner")
+	}
+	// 第二個正式cue必須先關閉舊通道，不能關閉獨立UI／title。
+	g.stopNativePhysicalSound()
+	previous := &fakeSFXVoice{playing: true}
+	title := &fakeSFXVoice{playing: true}
+	g.nativePhysicalVoice, g.titleANI1Voice = previous, title
+	scene.body.cued = false
+	if err := g.stepNativePhysicalBodyMillis(scene, 1); err != nil {
+		t.Fatal(err)
+	}
+	if !previous.closed || g.nativePhysicalVoice == nil || g.nativePhysicalVoice == previous || title.closed || ui.closed {
+		t.Fatal("replacement did not close only the previous physical player")
+	}
+}
+
+func TestNativePhysicalReturnComposesMapBeforeContinuation(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	g := &Game{nativeMapAssets: assets, m: field, st: state, nativeMapVGA: make([]byte, 320*200)}
+	called := false
+	ui := &fakeSFXVoice{playing: true}
+	voice := &fakeSFXVoice{playing: true, onClose: func() {
+		if called || g.nativeMapVGA[4*320+4] != 3 {
+			t.Error("physical stop did not follow map composition and precede continuation")
+		}
+	}}
+	g.sfxVoices = []sfxVoice{ui}
+	g.nativePhysicalVoice = voice
+	g.atk = &atkAnim{nativeScene: &nativePhysicalScene{}, after: func() {
+		called = true
+		if g.nativeMapVGA[4*320+4] != 3 {
+			t.Error("normal physical return continued before the ordinary map composer")
+		}
+		if !voice.closed || g.nativePhysicalVoice != nil || ui.closed {
+			t.Error("continuation preceded physical stop or lost independent UI voice")
+		}
+	}}
+	g.finishAttackPresentation()
+	if !called || g.loadErr != "" {
+		t.Fatalf("continuation=%v error=%q", called, g.loadErr)
+	}
+}
+
+func TestNativePhysicalMapReturnPreflightIsAtomic(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	g := &Game{nativeMapAssets: assets, m: field, st: state,
+		nativeMapWork: bytes.Repeat([]byte{55}, indexedmap.NativeUnitPresentWorkSize),
+		nativeMapVGA:  bytes.Repeat([]byte{77}, indexedmap.NativeMapVGASize),
+		atk:           &atkAnim{nativeScene: &nativePhysicalScene{}}}
+	before, unit, clock := *state, *state.Units[0], g.nativeMapClock
+	if err := g.preflightNativePhysicalMapReturn(); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(before, *state) || !reflect.DeepEqual(unit, *state.Units[0]) || clock != g.nativeMapClock || g.nativeMapDAC != nil ||
+		!bytes.Equal(g.nativeMapWork, bytes.Repeat([]byte{55}, len(g.nativeMapWork))) || !bytes.Equal(g.nativeMapVGA, bytes.Repeat([]byte{77}, len(g.nativeMapVGA))) {
+		t.Fatal("preflight published candidate state, clock or buffers")
+	}
+	assets.Frames = indexedmap.NativeMapHUDFrames{}
+	if err := g.preflightNativePhysicalMapReturn(); err == nil {
+		t.Fatal("declared incomplete map bundle was silently accepted")
+	}
+	if !reflect.DeepEqual(before, *state) || clock != g.nativeMapClock {
+		t.Fatal("rejected preflight changed live state")
+	}
+}
+
+func TestNativePhysicalMapReturnFailureSuppressesContinuation(t *testing.T) {
+	assets, field, state := completeNativeMapFrameFixture(t)
+	assets.Frames = indexedmap.NativeMapHUDFrames{}
+	voice := &fakeSFXVoice{playing: true}
+	g := &Game{nativeMapAssets: assets, m: field, st: state, nativePhysicalVoice: voice}
+	called := false
+	g.atk = &atkAnim{nativeScene: &nativePhysicalScene{}, after: func() { called = true }}
+	g.finishAttackPresentation()
+	if called || !voice.closed || g.nativePhysicalVoice != nil || g.atk != nil || g.loadErr == "" {
+		t.Fatalf("failed return continued=%v closed=%v attack=%v error=%q", called, voice.closed, g.atk, g.loadErr)
+	}
+}
+
+func TestNativePhysicalSoundShutdownAndCompatibilityReturn(t *testing.T) {
+	physical, ui, title := &fakeSFXVoice{playing: true}, &fakeSFXVoice{playing: true}, &fakeSFXVoice{playing: true}
+	g := &Game{nativePhysicalVoice: physical, titleANI1Voice: title, sfxVoices: []sfxVoice{ui}}
+	called := false
+	g.atk = &atkAnim{nativeScene: &nativePhysicalScene{}, after: func() { called = true }}
+	g.finishAttackPresentation()
+	if !called || !physical.closed || ui.closed || title.closed {
+		t.Fatal("nil map bundle return did not retain compatibility and independent voices")
+	}
+	physical = &fakeSFXVoice{playing: true}
+	g.nativePhysicalVoice = physical
+	g.closeAudioPlayers()
+	if !physical.closed || !ui.closed || !title.closed || g.nativePhysicalVoice != nil {
+		t.Fatal("shutdown retained a player")
+	}
+}
+
+func TestNativePhysicalMapReturnMissingSourceStopsBeforeSettlement(t *testing.T) {
+	requirePhysicalScenePack(t)
+	for _, owner := range []string{"player", "mode11"} {
+		t.Run(owner, func(t *testing.T) {
+			g, actor, target := physicalSceneTestGame(t)
+			if err := g.ensureNativeAttackPresentation(actor.BattleFig, target.BattleFig); err != nil {
+				t.Fatal(err)
+			}
+			g.nativeMapAssets = &nativeMapAssets{}
+			beforeActor, beforeTarget := *actor, *target
+			if owner == "player" {
+				g.confirm()
+			} else {
+				g.aiBusy = true
+				g.executeNativeAIMode11Physical(&battle.AIPlan{U: actor, Target: target}, nil)
+			}
+			if !strings.Contains(g.loadErr, "map return preflight") || g.atk != nil || g.nativeRNGState != 17791 ||
+				!reflect.DeepEqual(beforeActor, *actor) || !reflect.DeepEqual(beforeTarget, *target) {
+				t.Fatalf("rejected map source changed attack transaction: %s", g.loadErr)
+			}
+			if got, want := g.rng.Int63(), rand.New(rand.NewSource(73)).Int63(); got != want {
+				t.Fatal("rejected map source consumed legacy RNG")
+			}
+		})
 	}
 }

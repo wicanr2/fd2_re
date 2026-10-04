@@ -2787,7 +2787,7 @@ r1排除名單漏掉record28，誤選普通我方隊員，已保留失敗並停�
 
 [主契約physical_sound_evidence與physical_return_wait_spec](../data/ida/fd2_physical_background_selection_20261004.json)補足正常尾端的窄writer／consumer。IDA Pro 9.4以原始函式名、LE線性位址、bytes與固定EXE雜湊確認540FF==0分支的17AA9(6)，以及地圖11CAC(1)返回後25A96(bank,-1,1)。固定第八章首擊trace與既有controls／四個停點逐byte相同。只補缺少的呼叫端，不重開演出或硬體driver。
 
-#169等待契約已有限CONFORMED；最終驗證見下節。#170同通道音效替換與停止的原版wrapper列RE-CLOSED；正式停止需保留地圖與UI聲音順序，尚未READY。完整map work及人耳驗收保留在#166。
+#169等待契約已有限CONFORMED；最終驗證見下節。#170同通道音效替換與停止的原版wrapper列RE-CLOSED；該輪正式停止尚未READY；目前#170的有限CONFORMED見後文。完整map work及人耳驗收保留在#166。
 
 
 ### 2026-10-05 #169：正常物理返回的六個 BIOS 刻度
@@ -2799,7 +2799,7 @@ r1排除名單漏掉record28，誤選普通我方隊員，已保留失敗並停�
 | remake已完成 | #169六刻度等待反例先紅後綠；未Draw不計等待，期滿才清VGA與續行，包含cue-only尾項。 |
 | 原版有限對拍 | 既有49／34／50張完整indexed與RGB仍0差異；GPU59／54／53次present通過，等待中分別核對15／18／12次完整最後影格重畫。 |
 | 最近回歸 | 完整19套件同一命令通過；字串處置98項重綁後內容不變。第十二章155筆AI入口全部消費且順序分岔0；22,987-byte SAV與前次逐byte相同。 |
-| 原版oracle未知 | 第十二章275張章畫面差異逐項保持，1528／2030的unknown_oracle_ui仍拒收；#170聲音停止的正式map順序未READY，#166 work仍未驗收。 |
+| 原版oracle未知 | 第十二章275張章畫面差異逐項保持，1528／2030的unknown_oracle_ui仍拒收；#170當時尚未READY，目前有限CONFORMED見後文；#166 work仍未驗收。 |
 | 可選polish | #52最後1px保持既有分級；章台帳20／30與#154不變。 |
 
 正常首擊同狀態trace確認FDOTHER50的selector2→1→-1。25A96先停止同一53EE4通道；mapcopy11D3B返回後才停止物理聲音，後續1654B使用另一bank pointer。這份窄wrapper證據列RE-CLOSED，尚未把停止位置猜接到runtime，也不宣稱人耳或硬體波形一致。
@@ -2807,3 +2807,35 @@ r1排除名單漏掉record28，誤選普通我方隊員，已保留失敗並停�
 第一版驗證命令誤用JavaScript replacement，覆寫本機舊focused log；失敗內容另存，前輪提交的雜湊保留為歷史，原始影格與JSON未變。本輪用新log重跑有限對拍。測試的GPU隊列與盤點來源錯配都先分類為驗證環境問題，修正後才取得產品紅燈及完整綠燈。章比較首次無收據中斷；同一界線重跑取得正式拒收報告，已與前次逐項核對。可重跑命令與雜湊只見主契約。
 
 本批收尾：主機GitHub已關閉#169，#166／#170保持開啟。真實pull／render／verify為24項、可能已完成0項；152條教訓的48條guard通過。18份證據雜湊與13個新增本地連結核對通過，索引正對照有效。UID／GID1000，歷史root-owned2811、新增0、.md目錄0；本批Go、assets與IDA容器已清理。
+
+
+### 2026-10-05 #170：同通道音效與正常map返回的READY審查
+
+[physical_sound_spec](../data/ida/fd2_physical_background_selection_20261004.json)在實作前已READY；本段記錄當時審查，最終驗收見下節。固定首擊目前oracle收據與前輪controls、四個停點及trace逐byte相同；原版明確先11CAC(1)、再25A96(bank,-1,1)、再caller。既有map候選交易在live攻擊owner下可成功，State／Unit／clock／work／VGA／DAC原值不變。
+
+正式cue將使用專屬PCM owner，同通道替換；原生map bundle已宣告時，以既有普通11CAC composer重組，再停止聲音、續行。已宣告但不完整的map在結算前拒收。nil bundle沿用現有PNG／body-only相容scope，不冒稱原版map。這次不套用取寶限定的closedAction，也不推定malloc初值；#166完整map work、人耳與章門檻保持。
+
+
+### 2026-10-05 #170：正常物理的同通道音效與地圖返回
+
+[主契約physical_sound_evidence／spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已有限CONFORMED／RUNTIME-E1。IDA Pro 9.4窄匯出保留原始函式名、LE線性位址、bytes、EXE雜湊及證據等級，直接確認25A96使用53EE4停止前一個聲音，以及290C2的11CAC(1)先於290D4停止呼叫。不同bank pointer只定位樣本，不證明硬體handle不同。未深入硬體driver。
+
+正式body cue現在使用專屬PCM owner，替換前先關閉舊voice。全部演出與六BIOS刻度等待完成後清VGA，已宣告原生map bundle時執行既有普通11CAC合成，再stop owner、清atk與after續行。後續UI回呼不被停止，title及一般voice保持自身生命週期。shutdown釋放全部owner。
+
+地圖預檢使用候選Game／State與work／VGA／DAC複本，不發布候選。已宣告但來源不足的map在方向、HP與RNG改動前拒收；返回期間來源意外失效則停止聲音、禁止after並明示loadErr。nil bundle沿用既有PNG／部分演出相容範圍，不當原版map驗收。不套用取寶限定投影，也不推定重新malloc的work初值。
+
+| 目前狀態 | 最近驗證與交付 |
+|---|---|
+| remake已完成 | 兩項產品反例先紅後綠；真PCM通道替換、map→stop→after、player／mode11原子拒收、返回途中失效與shutdown通過。 |
+| 原版有限對拍 | 目前oracle重生固定首擊，controls、四個停點與trace六份檔案逐byte相同；FDOTHER50 selector2→1→mapcopy→-1與count1、同bank pointer保持。 |
+| 完整演出與GPU | 49／34／50張完整320x200 indexed與RGB零差異；MISS／counter／非零側別GPU分別59／54／53次present，等待末格重畫分別13／13／18次通過。 |
+| 正常第十二章重播 | 原155筆AI全部消費、順序分岔0；22987-byte SAV與前版逐byte相同，SHA-256為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。 |
+| 相稱回歸 | r2的完整19套件同一命令通過；98項字串處置不變，只重綁來源。 |
+| 原版oracle未知 | 章比較所有gates與前版逐項相同，275張畫面及1528／2030的unknown UI仍如實拒收；完整map work、返回圖像、DAC／人耳在#166。 |
+| 可選polish | #52最後1px分級與#154待決保持；章台帳20／30不變。 |
+
+完整Go的r1如實留下18套件通過及事件61的一項拒收。該測試手動append敵兵缺map selector slot與raw+42；按既有map0同源selector96、word42=28補齊，改走AppendNativeMapSelectorBatch後單項通過，再以同一Docker命令乾淨重跑完整r2。正式預檢未放寬。早期音效綠燈測試誤將HUD struct設nil，也保留型別失敗後重跑。
+
+本切片只驗聲音呼叫生命週期與既有map consumer順序。平台PCM不代表人耳、逐波形或硬體wall-clock相同；普通map合成已接回，不代表完整原版工作緩衝已驗收。oracle的normal_player_path_verified仍為false；本批不新增PLAYER-E2。命令、輸出雜湊與失敗紀錄只保存在上列主契約。
+
+本批收尾：真正主機GitHub已關閉#170，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、26份輸出雜湊、6份實作來源雜湊與19個新增本地連結通過，索引正對照有效。變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。Go／assets／IDA本批容器已清理，其他專案未更動。

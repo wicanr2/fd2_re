@@ -5407,3 +5407,14 @@ oracle明寫normal_player_path_verified=false，仍保留原限制。正常BIOS�
 本輪窄補2909D／2909F的17AA9(6)，取代先前只在body完成後直接VGA清除的時間敘述。正式owner保持最後影格六BIOS刻度再續行，已按READY取得反例紅綠、完整演出與GPU、完整Go及正常章重播。唯一分層、命令、雜湊與章限制見[58](58-fd2-exe-re-coverage.md)及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
 
 #166調查同時發現一般sfxVoices疊播不符合25A96同通道替換與mapcopy後停止，已另登記#170。wrapper證據列RE-CLOSED，正式停止尚未READY。第二次射擊的重製診斷未出現暴擊，原版結算未在同一停點驗收；DRAFT探針不提升驗收。驗證命令覆寫舊focused log、一般測試誤讀GPU與舊盤點錯配均保留失敗及訂正；原始影格／JSON未變，所有正式結果用新日誌乾淨重跑。章比較首次中斷無收據，第二次正式報告維持原有拒收。
+
+
+### 2026-10-05 #170：原生物理聲音的生命週期
+
+以f189ee6bb3354d915d49e56408f14f70bd3c7016為工作基底。原版窄writer／consumer與目前固定首擊收據先核對，候選map prototype與READY先於正式實作。加入專屬PCM owner及普通map→stop→after，兩項產品反例先紅後綠。完整演出、GPU、正常章重播與章比較保持，唯一統計、命令、輸出雜湊及有限CONFORMED見[58](58-fd2-exe-re-coverage.md)和[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+完整Go r1唯一失敗來自事件61測試手動append的敵兵缺selector slot／raw+42，新的來源預檢正確拒收。依既有map0 selector96／word42=28及AppendNativeMapSelectorBatch補齊測試資料，單項後以相同命令重跑完整r2通過。未把失敗改成nil map bundle或略過正式預檢。HUD struct誤設nil的測試型別錯誤也保留失敗紀錄。
+
+#170只閉合物理聲音與呼叫順序；不同bank pointer不證明不同hardware handle。完整map work／返回圖像、DAC／人耳、非零連擊與命中反擊保持在#166；下一個窄切片由該Issue的目前證據選定。章台帳、#167工具政策、#52與#154保持。提交、推送與遠端HEAD核對結果記錄於[#170](https://github.com/wicanr2/fd2_re/issues/170)。
+
+本批收尾：真正主機GitHub已關閉#170，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、26份輸出雜湊、6份實作來源雜湊與19個新增本地連結通過，索引正對照有效。變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。Go／assets／IDA本批容器已清理，其他專案未更動。

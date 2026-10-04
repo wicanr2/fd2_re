@@ -112,6 +112,9 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 	if !g.st.HasNativeMapViewState {
 		return nil, nil
 	}
+	if err := g.preflightNativePhysicalMapReturn(); err != nil {
+		return nil, fmt.Errorf("native physical map return preflight: %w", err)
+	}
 	initial, err := g.nativeCommandScene.InitialBackground(g.handlerChapter)
 	if err != nil {
 		return nil, err
@@ -160,6 +163,21 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 		return nil, err
 	}
 	return scene, nil
+}
+
+// preflightNativePhysicalMapReturn 用候選資料驗證既有11CAC合成器。
+// 不發布候選的State、clock或畫布；資產與單位保持唯讀。
+func (g *Game) preflightNativePhysicalMapReturn() error {
+	if g.nativeMapAssets == nil {
+		return nil
+	}
+	probe := *g
+	state := *g.st
+	probe.st = &state
+	probe.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
+	probe.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
+	probe.nativeMapDAC = append([]byte(nil), g.nativeMapDAC...)
+	return probe.composeNativeMapFrame()
 }
 
 // nativePhysicalBase 保留 0x28CE7→0x28D48→0x28D62 的順序。

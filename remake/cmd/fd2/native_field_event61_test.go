@@ -111,9 +111,11 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 	trigger.NativeInventoryFlags[0] = 0x40
 	target := &battle.Unit{
 		Name: "測試敵兵", BattleFig: 96, Camp: battle.Enemy, X: 2, Y: 46,
-		HP: 20, MaxHP: 20, OnField: true, HasBattleFig: true, Lv: 2,
+		HP: 20, MaxHP: 28, OnField: true, HasBattleFig: true, Lv: 2,
 		HasNativeRecordByte5: true, NativeRecordByte6: 0, HasNativeRecordByte6: true,
 		// map0/map0_units.json 的 selector96 原始欄位，與下列建構列相同來源。
+		MapSelectorKey: 96, HasMapSelectorKey: true,
+		NativeRecordWord42: 28, HasNativeRecordWord42: true,
 		NativeRecordRace: 1, HasNativeRecordRace: true,
 		NativeRecordClass: 7, HasNativeRecordClass: true,
 		NativeRecordByte8: 96, HasNativeRecordByte8: true,
@@ -121,7 +123,10 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 		NativeConstructor: &battle.NativeConstructorTable{Branch: "high_class", Index: 28,
 			Record: []byte{1, 7, 14, 0, 0, 7, 1, 1, 4, 21}},
 	}
-	g.st.Units = append(g.st.Units, target)
+	// 手動建構的敵兵也走既有selector slot分配，才能驗攻擊返回的完整地圖。
+	if err := g.st.AppendNativeMapSelectorBatch([]*battle.Unit{target}); err != nil {
+		t.Fatal(err)
+	}
 	g.beginPlayerAttackTargeting()
 	g.curX, g.curY = target.X, target.Y
 	g.confirm()

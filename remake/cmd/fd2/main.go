@@ -414,6 +414,7 @@ type Game struct {
 	bannerFrame               []byte                 // 橫幅進場時凍結的 320×200 索引畫面(對應 0x1F1CC 開頭的 memcpy(0xA0000))
 	sfx                       map[int][]byte         // SFX PCM（doc36 FDOTHER#31：14個目錄項目／13個非空樣本）
 	sfxVoices                 []sfxVoice             // 保留疊播播放器至自然結束，避免 Play 後立即失去生命週期
+	nativePhysicalVoice       sfxVoice               // 25A96的53EE4同通道；地圖返回後、caller續行前停止
 	separatedCommandSFX       map[int]map[int][]byte // 已納入契約的 FDOTHER 指令音效；只讀分離 OGG
 	sfxTitleMove              []byte                 // FDOTHER #77 sub2: sub_1F894 H／P 標題選單移動分支
 	sfxTitleConfirm           []byte                 // FDOTHER #77 sub1: sub_1F894 標題選單確認分支
@@ -6709,6 +6710,17 @@ func (g *Game) finishAttackPresentation() {
 		// 契約見fd2_physical_background_selection_20261004.json的physical_map_return_spec；
 		// 不推定重新malloc的地圖work初值。
 		clear(g.nativeMapVGA) // 0x290AC..0x290BD: memset(0xA0000,0,0xFA00)。
+		// 290C2的11CAC(1)在290D4停止音效之前返回。
+		// nil bundle保留既有PNG相容路徑；已宣告bundle不得略過合成失敗。
+		if g.nativeMapAssets != nil {
+			if err := g.composeNativeMapFrame(); err != nil {
+				g.stopNativePhysicalSound()
+				g.atk = nil
+				g.loadErr = fmt.Sprintf("native physical map return: %v", err)
+				return
+			}
+		}
+		g.stopNativePhysicalSound()
 	}
 	after := g.atk.after
 	g.atk = nil

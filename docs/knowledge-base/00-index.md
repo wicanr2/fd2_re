@@ -607,3 +607,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 
 - #169／#170 [正常物理尾端等待與聲音wrapper契約](../data/ida/fd2_physical_background_selection_20261004.json)：physical_sound_evidence／physical_return_wait_spec；IDA窄匯出由[既有工具](../../tools/ida_probe_physical_presentation.py)的FD2_IDA_PHYSICAL_SOUND=1重生，正常17AA9(6)與25A96停止保留原始定位；目前分層與限制只見[58](58-fd2-exe-re-coverage.md)。
+
+
+- #170 [正常物理同通道PCM與返回順序的正式實作](../../remake/cmd/fd2/audio.go)、[回歸與原子拒收](../../remake/cmd/fd2/audio_voice_test.go)：physical_sound_spec／validation的有限CONFORMED見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)，唯一現況與原版限制見[58](58-fd2-exe-re-coverage.md)。事件61的追加敵兵回歸見[既有測試](../../remake/cmd/fd2/native_field_event61_test.go)。
