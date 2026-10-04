@@ -1468,6 +1468,21 @@
         ],
         "pattern": "nativeCh12UpWalkFrame"
       }
+    },
+    {
+      "id": "screenshot-cursor-consumes-key-redraws",
+      "date": "2026-10-04",
+      "area": "對拍游標重繪",
+      "rule": "對拍輔助函式移動游標時，逐格消費與鍵盤相同的重繪callback；mode3地形會保留中間鏡頭的literal，端點狀態相同不足以證明像素相同。入口remake/cmd/fd2/main.go的positionScreenshotCursor及docs/data/ida/fd2_terrain_mode3_review_20261001.json的late_attack_work_writer.cursor_helper。",
+      "why": "第12章cameraY21→20→19時，tile37 literal118先被tile82 literal116覆寫，tile27再保留。輔助函式原只合成camera19，造成3137的一像素假殘差。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/52",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "FocusNativeMapCursorSteps\\(x, y, g\\.nativeCursorStepHUD\\)"
+      }
     }
   ]
 }

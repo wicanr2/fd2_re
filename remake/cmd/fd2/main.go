@@ -8847,7 +8847,9 @@ func (g *Game) positionScreenshotCursor(x, y int) bool {
 	}
 	// 與玩家確認移動同一條路（0x12CEA：先 X 後 Y，逐格走鍵盤處理器），
 	// 所以截圖與正式路徑產生的視圖狀態一致。
-	if !g.st.FocusNativeMapCursor(x, y) {
+	// 原版逐格重繪會留下 mode3 後續消費的底色。只合成終點會漏掉
+	// 中間鏡頭的 literal writer；#52 主證據的 cursor_helper 記錄此契約。
+	if !g.st.FocusNativeMapCursorSteps(x, y, g.nativeCursorStepHUD) {
 		return false
 	}
 	if g.st.HasNativeMapHUDState {

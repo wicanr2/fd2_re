@@ -258,3 +258,8 @@ Capstone 的 LE fixup 清單一致），證據檔
   沒有解出語意，也沒有接進重製端。
 - 節點常數該不該同時涵蓋 START 與 CONTINUE 兩條入口的視圖，見
   [104](104-regression-baseline-review-20260909.md)。
+
+
+### 2026-10-04：#52 截圖游標消費逐格重繪
+
+positionScreenshotCursor改用FocusNativeMapCursorSteps與nativeCursorStepHUD，保留camera21→20→19的tile82 literal116。原版12CEA／11C59呼叫契約沿用既有證據；檔案偏移與正常LOAD診斷詳見[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)的late_attack_work_writer.cursor_helper。歷史第12章3137整張零差異，原17點16點地形一致；3152仍未閉合，不改正式走行、range規則或驗收預算。

@@ -24,6 +24,8 @@
 > `99` 與 `SESSION-HANDOFF-*` 因保有玩家實測或錯誤形成脈絡而保留；其中的
 > 「下一輪」「全章可玩」「已完成」等歷史字樣不覆蓋現況。
 
+第12章後段地形追蹤使用 [六回合有界輸入](../data/parity-plans/ch12-terrain-late-probe.jsonl)。它逐字保留 ch12-sample 前50行，停止於第六回合抽樣；原版使用[官方容器入口](../../tools/dosgolem_oracle_container.sh)。追蹤歸入 #52 與 [mode3 主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)，尚未證實的寫入來源不接正式執行期。
+
 ### 現況文件與歷史文件
 
 | 需求 | 唯一入口 | 不可取代它的文件 |

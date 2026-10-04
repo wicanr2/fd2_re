@@ -130,6 +130,53 @@ func TestNativeTerrainWorkHandoffDiagnostic(t *testing.T) {
 			t.Fatal("一般透明地形改寫移動底色")
 		}
 		points = append(points, map[string]interface{}{"node": "battle_ch12_after_up_walk", "draw": draw, "work_offset": walkOffset, "index": g.nativeMapWork[walkOffset]})
+		if os.Getenv("FD2_TERRAIN_LATE_DIAGNOSTIC") == "1" {
+			// 僅觀察 #52 後段鏡頭的 writer；不改正式路徑或注入像素。
+			for g.curX > 6 {
+				g.moveMapCursor(-1, 0)
+			}
+			for g.curX < 16 {
+				g.moveMapCursor(1, 0)
+			}
+			for g.curY > 22 {
+				g.moveMapCursor(0, -1)
+			}
+			const lateOffset = 0x8088 + 81*456 + 7
+			tiles, ok := g.st.NativeMapDrawTiles()
+			if !ok {
+				t.Fatal("後段地形資料")
+			}
+			for row := 22; row <= 24; row++ {
+				cell := row*g.st.W + 5
+				tile := tiles[cell] & 0x3ff
+				sprite := g.nativeMapAssets.Terrain.Sprites[tile]
+				const pixel = 9*24 + 7
+				points = append(points, map[string]interface{}{"node": "late_source_tile", "draw": draw, "world": [2]int{5, row}, "tile": tile, "pixel": sprite.Pixels[pixel], "mask": sprite.Mask[pixel], "remap_mask": sprite.RemapMask[pixel], "blit_mode": g.st.NativeTileBlitModes[cell]})
+			}
+			points = append(points, map[string]interface{}{"node": "late_cursor_start", "draw": draw, "view": g.st.NativeMapViewState, "index": g.nativeMapWork[lateOffset]})
+			endpoint := *g
+			endpointState := *g.st
+			endpoint.st = &endpointState
+			endpoint.nativeMapWork = append([]byte(nil), g.nativeMapWork...)
+			endpoint.nativeMapVGA = append([]byte(nil), g.nativeMapVGA...)
+			if !endpoint.positionScreenshotCursor(16, 20) {
+				t.Fatal("後段游標診斷")
+			}
+			if err := endpoint.composeNativeMapFrame(); err != nil {
+				t.Fatal(err)
+			}
+			points = append(points, map[string]interface{}{"node": "late_endpoint", "draw": draw, "view": endpoint.st.NativeMapViewState, "index": endpoint.nativeMapWork[lateOffset]})
+			if endpoint.nativeMapWork[lateOffset] != 116 {
+				t.Fatal("游標端點未保留中間鏡頭的 literal 116")
+			}
+			for step := 0; step < 2; step++ {
+				g.moveMapCursor(0, -1)
+				if g.nativeMapWork[lateOffset] != 116 {
+					t.Fatal("鍵盤步未保留 literal 116")
+				}
+				points = append(points, map[string]interface{}{"node": "late_keyboard_step", "step": step + 1, "draw": draw, "view": g.st.NativeMapViewState, "index": g.nativeMapWork[lateOffset]})
+			}
+		}
 
 		if err := os.MkdirAll(out, 0755); err != nil {
 			t.Fatal(err)
