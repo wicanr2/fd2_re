@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"image"
+	"image/png"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,6 +17,8 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
@@ -359,6 +364,9 @@ func TestNativeCommand6OriginalContinueCursorProbe(t *testing.T) {
 	if len(plan.Results) != 1 || plan.Results[0].Target != target || plan.Results[0].HPAfter != 4 || plan.MPAfter != 1071 || plan.RNGAfter != 33552 {
 		t.Fatalf("same-source planner differs: plan=%+v results=%+v", plan, plan.Results)
 	}
+	if prefix := os.Getenv("FD2_COMMAND6_PROTOTYPE_PREFIX"); prefix != "" {
+		command6SignedArenaPrototype(t, g, actor, plan, effect, schedule, prefix)
+	}
 	g.confirm()
 	if !strings.Contains(g.msg, "work frame bounds (141,-1 143x111)") || g.nativeCmd6Presentation != nil || actor.MP != 1101 || target.HP != 83 || actor.Acted || g.nativeRNGState != 3473 || !g.nativeCommand0Targeting {
 		t.Fatalf("expected #154 atomic refusal, msg=%s", g.msg)
@@ -376,5 +384,262 @@ func TestNativeCommand6OriginalContinueCursorProbe(t *testing.T) {
 		if err := os.WriteFile(out, append(raw, '\n'), 0644); err != nil {
 			t.Fatal(err)
 		}
+	}
+}
+
+// #154 可撤回原型。額外一列只保存已觀測的負位移寫入，不映射原版其他 heap。
+// 正式組圖仍拒收負列；此探針不更新 MP、HP、RNG 或玩家演出 owner。
+func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, plan *battle.NativeCommandDamagePlan, effect *figani.Animation, schedule figani.NativeCommand6PresentationSchedule, prefix string) {
+	t.Helper()
+	if len(plan.Results) != 1 {
+		t.Fatal("prototype needs the fixed single target")
+	}
+	target := plan.Results[0].Target
+	initial, err := g.nativeCommandScene.InitialBackground(g.handlerChapter)
+	if err != nil {
+		t.Fatal(err)
+	}
+	actorControl, err := nativeCommand0Control(g.m, actor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	targetControl, err := nativeCommand0Control(g.m, target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	actorGate, err := battle.NativeCommandBackgroundGate(actor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	targetGate, err := battle.NativeCommandBackgroundGate(target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	actorSelector := initial
+	if !actorGate || actorSelector == 0 {
+		actorSelector = actorControl[2]
+	}
+	targetSelector := fdicon.NativeCommandBackgroundSelector(initial, []fdicon.NativeCommandBackgroundTarget{{Gate: targetGate, Control: targetControl}})
+	bgSelector, taiSelector := targetSelector, actorSelector
+	if actor.NativeRecordByte6 == 0 {
+		bgSelector, taiSelector = actorSelector, targetSelector
+	}
+	background, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "BG.DAT", int(bgSelector))
+	if err != nil {
+		t.Fatal(err)
+	}
+	platform, err := fdother.LoadSeparatedSingleFrame(separatedAssetPath("surfaces"), "TAI.DAT", int(taiSelector))
+	if err != nil {
+		t.Fatal(err)
+	}
+	panels, err := battle.LoadNativeItemPanelDataAssets(separatedAssetPath(""))
+	if err != nil {
+		t.Fatal(err)
+	}
+	actorIndex, err := nativeCommand24RuntimeUnitIndex(g.st, actor)
+	if err != nil {
+		t.Fatal(err)
+	}
+	targetIndex, err := nativeCommand24RuntimeUnitIndex(g.st, target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	after := *actor
+	after.MP = plan.MPAfter
+	actorRecord, err := battle.NativeBattlePanelRecordForUnit(&after)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bases := make([][]byte, figani.NativeCommand6DamageStages+1)
+	for stage := range bases {
+		staged := *target
+		staged.HP = plan.Results[0].HPBefore - (plan.Results[0].HPBefore-plan.Results[0].HPAfter)*stage/figani.NativeCommand6DamageStages
+		record, err := battle.NativeBattlePanelRecordForUnit(&staged)
+		if err != nil {
+			t.Fatal(err)
+		}
+		bases[stage], err = g.localizedNativeCommand0Base(background, panels, actorRecord, record, actorIndex, targetIndex, g.handlerChapter, &platform)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		bg, tai := background, platform
+		bg.X, bg.Y, tai.X, tai.Y = 0, 50, 164, 157
+		if err := bg.BlitLUTAt(bases[stage], 320, 0, g.nativeMapAssets.LUTs[15]); err != nil {
+			t.Fatal(err)
+		}
+		if err := tai.BlitLUTAt(bases[stage], 320, 0, g.nativeMapAssets.LUTs[15]); err != nil {
+			t.Fatal(err)
+		}
+	}
+	actorEffect, err := nativeCommand6ActorEffect(separatedAssetPath("animations"), actor.BattleFig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	idle, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), target.BattleFig*3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	points := figani.NativeCommand6TargetCoordinates(figani.NativeCommand6Coordinates(36, schedule.BaseByte), 42)
+	planned, err := figani.BuildNativeCommand6TargetSequence(schedule, points, actor.NativeRecordByte6)
+	if err != nil {
+		t.Fatal(err)
+	}
+	reports := make([]map[string]interface{}, 0, len(planned))
+	hpStage, idleFrame, idleRepeat := 0, 0, 0
+	shade, pose, jitter := 8, 3, -1
+	_, numericRNG, err := battle.ResolveNativeCommandDamage(g.st.NativeCommandBook[6].Damage, g.st.NativeCommandBook[6].Hit, g.st.NativeCommandResistances[int(target.NativeRecordClass)], 3473)
+	if err != nil {
+		t.Fatal(err)
+	}
+	xPose, yPose := [4]int{6, 4, 2, 0}, [4]int{-3, -2, -1, 0}
+	for index, frame := range planned {
+		// guard 是原型專用的獨立前置列，不是原版0x2A300配置的一部分。
+		const guard, stride, height, viewport = 640, 640, 270, 19360
+		arena := make([]byte, guard+stride*height)
+		for i := 0; i < guard; i++ {
+			arena[i] = 0xa5
+		}
+		for y := 0; y < 200; y++ {
+			at := guard + viewport + y*stride
+			copy(arena[at:at+320], bases[hpStage][y*320:(y+1)*320])
+		}
+		spillCount, firstSpill := 0, 0
+		blit := func(sprite figani.Frame, dx, dy int) {
+			x0, y0 := 160+sprite.X+dx, 30+sprite.Y+dy
+			if sprite.Width <= 0 || sprite.Height <= 0 || len(sprite.Pixels) != sprite.Width*sprite.Height || len(sprite.Mask) != len(sprite.Pixels) ||
+				x0 < 0 || x0+sprite.Width > stride || y0 < -1 || y0+sprite.Height > height {
+				t.Fatalf("prototype bounds index=%d (%d,%d %dx%d)", index, x0, y0, sprite.Width, sprite.Height)
+			}
+			for y := 0; y < sprite.Height; y++ {
+				for x := 0; x < sprite.Width; x++ {
+					src := y*sprite.Width + x
+					if sprite.Mask[src] == 0 {
+						continue
+					}
+					logical := (y0+y)*stride + x0 + x
+					if logical < 0 {
+						if spillCount == 0 {
+							firstSpill = logical
+						}
+						spillCount++
+					}
+					arena[guard+logical] = sprite.Pixels[src]
+				}
+			}
+		}
+		for _, layer := range frame.Mode4 {
+			blit(effect.Frames[layer.Frame], layer.X, layer.Y)
+		}
+		blit(actorEffect.Frames[len(actorEffect.Frames)-1], 0, 0)
+		shaded := idle.Frames[idleFrame]
+		shaded.Pixels = append([]byte(nil), shaded.Pixels...)
+		for i, c := range shaded.Pixels {
+			shaded.Pixels[i] = byte((int(c)+shade)&7) + 0xb0
+		}
+		blit(shaded, xPose[pose]*jitter, yPose[pose])
+		shade--
+		if shade == 1 {
+			shade = 8
+		}
+		if pose != 3 {
+			pose++
+		}
+		for _, layer := range frame.Mode5 {
+			blit(effect.Frames[layer.Frame], layer.X, layer.Y)
+		}
+		pixels := make([]byte, 320*200)
+		for y := 0; y < 200; y++ {
+			at := guard + viewport + y*stride
+			copy(pixels[y*320:(y+1)*320], arena[at:at+320])
+		}
+		file := fmt.Sprintf("%s-frame-%02d.idx", prefix, index)
+		if err := os.WriteFile(file, pixels, 0644); err != nil {
+			t.Fatal(err)
+		}
+
+		sum := sha256.Sum256(pixels)
+		entry := map[string]interface{}{"index": index, "path": file, "indexed_sha256": hex.EncodeToString(sum[:]),
+			"hp_stage": hpStage, "idle_frame": idleFrame, "negative_opaque_writes": spillCount, "first_negative_offset": firstSpill}
+		pic := image.NewPaletted(image.Rect(0, 0, 320, 200), g.nativeUIPalette)
+		copy(pic.Pix, pixels)
+		var encoded bytes.Buffer
+		if err := png.Encode(&encoded, pic); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(fmt.Sprintf("%s-frame-%02d.png", prefix, index), encoded.Bytes(), 0644); err != nil {
+			t.Fatal(err)
+		}
+		if originalDir := os.Getenv("FD2_COMMAND6_PROTOTYPE_ORIGINAL"); originalDir != "" {
+			originalPath := filepath.Join(originalDir, fmt.Sprintf("frame-%06d.png", index))
+			originalRaw, err := os.ReadFile(originalPath)
+			if err != nil {
+				t.Fatal(err)
+			}
+			decoded, err := png.Decode(bytes.NewReader(originalRaw))
+			if err != nil {
+				t.Fatal(err)
+			}
+			original, ok := decoded.(*image.Paletted)
+			if !ok || original.Bounds() != pic.Bounds() {
+				t.Fatalf("original indexed shape invalid: %s", originalPath)
+			}
+			indexedDifferences, rgbDifferences := 0, 0
+			for y := 0; y < 200; y++ {
+				for x := 0; x < 320; x++ {
+					if pic.ColorIndexAt(x, y) != original.ColorIndexAt(x, y) {
+						indexedDifferences++
+					}
+					ar, ag, ab, aa := pic.At(x, y).RGBA()
+					br, bg, bb, ba := original.At(x, y).RGBA()
+					if ar != br || ag != bg || ab != bb || aa != ba {
+						rgbDifferences++
+					}
+				}
+			}
+			originalSum := sha256.Sum256(originalRaw)
+			entry["original_png"] = originalPath
+			entry["original_png_sha256"] = hex.EncodeToString(originalSum[:])
+			entry["indexed_differences"] = indexedDifferences
+			entry["rgb_differences"] = rgbDifferences
+			if indexedDifferences != 0 || rgbDifferences != 0 {
+				t.Errorf("full frame%d indexed=%d RGB=%d; no masks", index, indexedDifferences, rgbDifferences)
+			}
+		}
+		reports = append(reports, entry)
+		if frame.HPStage != 0 {
+			hpStage = frame.HPStage
+		}
+		if frame.NumericMarker {
+			pose = 0
+			numericRNG = fdother.NativeRNGStep(numericRNG)
+			jitter = 1 - int(numericRNG%3)
+		}
+		idleRepeat++
+		if idle.Frames[idleFrame].Delay <= 0 {
+			t.Fatal("prototype idle delay missing")
+		}
+		if idleRepeat >= idle.Frames[idleFrame].Delay {
+			idleRepeat = 0
+			idleFrame = (idleFrame + 1) % len(idle.Frames)
+		}
+	}
+	palette := make([]byte, 0, 256*3)
+	for _, c := range g.nativeUIPalette {
+		r, gg, b, _ := c.RGBA()
+		palette = append(palette, byte(r>>8), byte(gg>>8), byte(b>>8))
+	}
+	if err := os.WriteFile(prefix+"-palette.rgb", palette, 0644); err != nil {
+		t.Fatal(err)
+	}
+	report := map[string]interface{}{"status": "DRAFT test-only signed arena and #161 caller composition; not production or heap parity", "work_allocation_bytes": 640 * 270,
+		"prototype_guard_bytes": 640, "background_selector": bgSelector, "platform_selector": taiSelector,
+		"raw_side": actor.NativeRecordByte6, "actor_battle_fig": actor.BattleFig, "target_battle_fig": target.BattleFig, "frames": reports}
+	raw, err := json.MarshalIndent(report, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(prefix+".json", append(raw, '\n'), 0644); err != nil {
+		t.Fatal(err)
 	}
 }

@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -130,6 +130,30 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['固定 EXE、IDA 原始位址／bytes／caller 與正常玩家收據，證實 selection 欄位、游標確認及 effect 名單的資料流，登記 RE 後形成 READY；保留原證據索引。', 'READY 後玩家正式目標確認傳遞游標 Cell，依已證範圍及 effect 名單施法；中心可為我方格或空格。MP／HP／Acted／RNG 完整預檢後發布，未知指令和非法範圍仍拒收。', '正常案例 actor(20,22)／center(22,20)／enemy(22,18) 的玩家 UI 與規則測試通過；抽測直接敵格、空格、我方格、無敵範圍、格外中心、取消及 AI 路徑。不提升未完成章的 E2。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl', 'remake/cmd/fd2/main.go', 'remake/internal/battle/native_command_target.go', 'docs/data/ida/fd2_player_command6_cursor_center_20261004.json']`
+
+### 指令6完整target影格缺施法者、命中色調與背景持續狀態
+
+`command6-target-full-frame-composition` · 缺陷 · [#161](https://github.com/wicanr2/fd2_re/issues/161) · 仍未完成 · 要人判
+
+#154的同源隔離原型曾有33,282–36,706索引像素差異。IDA已證實正式caller組圖缺口：command6共同actor應用LUT15，正式Game傳LUT11；target每張須在mode4後重畫actor末幀，命中target使用packed palette與pose，HP更新持續base後下一張才顯示。規格在canonical followup161已達READY。
+#162的__CHP取整修正後，受版控同源探針r5的12張完整indexed／RGB全部0差異，沒有遮罩。原版此段沒有另畫傷害數字，最初標題「數值層」改以實際已證consumer描述。
+這仍是測試隔離原型，正式runtime尚未修正；#154的負列隔離方案待使用者決定，原版其他配置外heap consumer未知。第三方固定SAV、受控施法entry RNG3473、正常原版輸入與重製局部CONTINUE的分類保留，不稱章PLAYER-E2。
+
+卡在：['#154負列正式仍拒收']
+
+怎樣算做完：['canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。', '正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。', '#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。']
+
+證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
+
+### 指令6圓周座標忽略__CHP截斷，造成完整影格偏移
+
+`command6-coordinate-chp-truncation` · 缺陷 · [#162](https://github.com/wicanr2/fd2_re/issues/162) · 仍未完成 · 要人判
+
+#161完整12影格原型在恢復LUT15／施法者／命中色調後，前3張仍有559–562個索引像素差異。既有正常dosgolem trace直接反證NativeCommand6Coordinates的RoundToEven：原版channel3=(0,4)、channel4=(0,42)，目前typed結果是(1,5)、(1,42)。IDA LE 0x26FF1與0x2703F在fistp前呼叫__CHP，需核對該函式與控制字並修正。#156已閉合的mode3 X2↔X4／Y2←Y4仍有效，不重做或否定該段。
+
+怎樣算做完：['核對__CHP直接指令、原始名稱與控制字，以及固定hash原版正常trace的5通道座標。', '達READY後修正typed取整方式；抽樣front／target／tail正負座標與side0／非零側。', '以同源完整12影格比較證實座標差異消失；#154／#161的其他層差異分開記錄，不冒稱完整parity。']
+
+證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/figani/native_command6.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

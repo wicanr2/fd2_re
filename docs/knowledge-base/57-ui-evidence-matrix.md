@@ -1616,3 +1616,5 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 2026-10-04 #159 CONFORMED：法術等待正常收據與整份計畫送鍵前檢查已通過；主契約保留115項Python回歸、1774/1774原版前綴與正常spell seq22。#154已取得真實負列與12個原版target viewport，正式compositor仍拒收。另[玩家範圍中心主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)證實#160的直接enemy中心限制過嚴，達RE-CLOSED／DRAFT；正式UI實作與#154獨立，驗證數字、未知consumer與章層級見[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-04 #160：經[玩家中心主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)的READY審查，正式指令6白名單與confirm已改用游標Cell；先驗selection field／cursor gate，再從中心建effect名單。共用field分支原已允許空名單，但白名單缺6，先前「指令6selection UI已可進target」由本次直接反例補正。既有AI、其他指令及演出交易沿用。驗證範圍見[58](58-fd2-exe-re-coverage.md)：#160有限RUNTIME-E1，正常非零側演出仍由#154原子拒收，章台帳不變。
+
+2026-10-04 #161／#162：[#161](https://github.com/wicanr2/fd2_re/issues/161)登記指令6完整target組圖consumer缺口；[#162](https://github.com/wicanr2/fd2_re/issues/162)修正被__CHP反證的取整假設。同源隔離原型12張完整索引／RGB相同，不使用遮罩；它仍是局部prototype，沒有正式非零側confirm全程演出或PLAYER-E2。正式#154負列拒收、#160未關閉，完成數與驗證只引用[58](58-fd2-exe-re-coverage.md)。

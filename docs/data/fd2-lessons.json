@@ -1380,9 +1380,24 @@
       "id": "verification-output-paths-are-distinct",
       "area": "驗證工具",
       "date": "2026-10-04",
-      "rule": "每輪驗證同時更換所有JSON與log輸出路徑，執行前核對它們不覆寫上一輪；替換命令文字時逐項檢查全部輸出參數及重新導向。",
-      "why": "#160同源探針的JavaScript replace只替換第一個輸出參數，第二輪log覆寫第一輪。第二輪原log已保留；第一次只能回查工具輸出，不能重建文字冒稱原log。",
-      "evidence": "docs/data/ida/fd2_player_command6_cursor_center_20261004.json implementation.validation.probe_failure"
+      "rule": "每輪驗證所有JSON、PNG與log輸出彼此不同，且不覆寫上一輪；執行前核對完整參數與重新導向。原型清冊與玩家狀態收據也使用各自路徑。",
+      "why": "#160同源探針的JavaScript replace只替換第一個輸出參數，第二輪log覆寫第一輪。第二輪原log已保留；第一次只能回查工具輸出，不能重建文字冒稱原log。 本輪#154原型r1的清冊與cursor JSON同名，後者覆寫前者；r2起分開，正式受版控全圖收據r5可重跑。",
+      "evidence": "docs/data/ida/fd2_player_command6_cursor_center_20261004.json implementation.validation.probe_failure；docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json followups issue161 prototype local_diagnostic_attempts"
+    },
+    {
+      "id": "fistp-checks-chp-control-word",
+      "date": "2026-10-04",
+      "area": "浮點轉整數與對拍",
+      "rule": "分析fistp前先核對控制字與鄰近helper，保留原始名稱、bytes與caller；不從指令名稱推定nearest-even。入口docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json followups issue162；目前只閉合指令6的__CHP向零截斷，其他caller另查。",
+      "why": "指令6每張幾百至數千像素差異源於遺漏__CHP，原版channel3=(0,4)卻被RoundToEven寫成(1,5)。直接控制字與12張完整圖反證舊假設。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/162",
+      "guard": {
+        "kind": "absent",
+        "paths": [
+          "remake/internal/figani/native_command6.go"
+        ],
+        "pattern": "RoundToEven"
+      }
     }
   ]
 }

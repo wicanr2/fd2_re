@@ -516,7 +516,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第24章正常避敵計畫r2](../data/parity-plans/ch24-fresh-sample-r2.jsonl)：#142同槽／seed鍵盤輸入；現況與限制見[58](58-fd2-exe-re-coverage.md)。
 
-- [第24章指令6工作緩衝與目標演出契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)：#151 的0x2A300-byte／640-byte列距配置；#156 首次mode3座標、分層與跨目標state有限CONFORMED；#154負列仍拒收；#157正常命中／落空亂數交錯達有限CONFORMED。
+- [第24章指令6工作緩衝與目標演出契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)：#151 的0x2A300-byte／640-byte列距配置；#156 首次mode3座標、分層與跨目標state有限CONFORMED；#154負列仍拒收；#157正常命中／落空亂數交錯及#162的__CHP向零取整達有限CONFORMED；#161完整caller組圖達READY，12張隔離原型indexed／RGB相同，正式尚未修正。
 
 - [指令7跨目標亂數交錯](../data/ida/fd2_command7_target_rng_20261004.json)：#152，有界原版trace及規格入口。
 

@@ -1062,7 +1062,7 @@ mode4／5完整per-side圖層與外層數值發布未完成typed compositor前�
 `DATA-READY`，禁止採用已被原始指令否定的六槽／十項座標解釋。
 浮點座標另固定為五個`channel*72°`：`0x3C885→fcos`、`0x3C898→fsin`，
 X=`fistp(cos*radius+baseByte)`，Y=`fistp(sin*radius*1.2+30)`；角度轉換常數
-保留原始single-precision `0x3C8EFA2D`，轉整數使用nearest-even。mode2／8只在
+保留原始single-precision `0x3C8EFA2D`，轉整數依__CHP向零截斷；直接指令與原版指標見[主契約#162](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。mode2／8只在
 本輪五點繪製後分別將radius加／減6。此純函式可供未來compositor使用，但不
 自行發布global state。
 
@@ -9372,3 +9372,5 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 2026-10-04 #159 CONFORMED：法術等待正常收據與整份計畫送鍵前檢查已通過；主契約保留115項Python回歸、1774/1774原版前綴與正常spell seq22。#154已取得真實負列與12個原版target viewport，正式compositor仍拒收。另[玩家範圍中心主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)證實#160的直接enemy中心限制過嚴，達RE-CLOSED／DRAFT；正式UI實作與#154獨立，驗證數字、未知consumer與章層級見[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-04 #160：經[玩家中心主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)的READY審查，正式指令6白名單與confirm已改用游標Cell；先驗selection field／cursor gate，再從中心建effect名單。共用field分支原已允許空名單，但白名單缺6，先前「指令6selection UI已可進target」由本次直接反例補正。既有AI、其他指令及演出交易沿用。驗證範圍見[58](58-fd2-exe-re-coverage.md)：#160有限RUNTIME-E1，正常非零側演出仍由#154原子拒收，章台帳不變。
+
+2026-10-04 #161／#162 補正：完整target影格原型已揭露正式指令6固定LUT11、缺actor與packed命中色調／pose及HP持續base的缺口。#161具型別窄規格達READY，正式尚未修正。#162依__CHP控制字修正向零取整；同源原型12張索引與RGB全0差異，沒有遮罩。隔離前置列不等於原版heap，#154方案待共同決策，正式仍拒收，#160仍未完成。唯一驗證及狀態見[58](58-fd2-exe-re-coverage.md)。

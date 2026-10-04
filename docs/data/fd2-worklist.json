@@ -396,6 +396,52 @@
         "note": "原版正常游標／effect 收據、已證 READY 與正式玩家 UI 回歸；#154 嚴格拒收與章驗收保持獨立。"
       },
       "issue": 160
+    },
+    {
+      "id": "command6-target-full-frame-composition",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "指令6完整target影格缺施法者、命中色調與背景持續狀態",
+      "body": "#154的同源隔離原型曾有33,282–36,706索引像素差異。IDA已證實正式caller組圖缺口：command6共同actor應用LUT15，正式Game傳LUT11；target每張須在mode4後重畫actor末幀，命中target使用packed palette與pose，HP更新持續base後下一張才顯示。規格在canonical followup161已達READY。\n#162的__CHP取整修正後，受版控同源探針r5的12張完整indexed／RGB全部0差異，沒有遮罩。原版此段沒有另畫傷害數字，最初標題「數值層」改以實際已證consumer描述。\n這仍是測試隔離原型，正式runtime尚未修正；#154的負列隔離方案待使用者決定，原版其他配置外heap consumer未知。第三方固定SAV、受控施法entry RNG3473、正常原版輸入與重製局部CONTINUE的分類保留，不稱章PLAYER-E2。",
+      "acceptance": [
+        "canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。",
+        "正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。",
+        "#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。"
+      ],
+      "evidence": [
+        "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+        "remake/cmd/fd2/native_command6_presentation_test.go",
+        "remake/internal/battlepresent/native_command6.go"
+      ],
+      "blocked_by": [
+        "#154負列正式仍拒收"
+      ],
+      "verify": {
+        "kind": "manual",
+        "reason": "需完整dosgolem12影格與正式非零側演出驗收；重製端綠色測試不足以關閉。"
+      },
+      "issue": 161
+    },
+    {
+      "id": "command6-coordinate-chp-truncation",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "指令6圓周座標忽略__CHP截斷，造成完整影格偏移",
+      "body": "#161完整12影格原型在恢復LUT15／施法者／命中色調後，前3張仍有559–562個索引像素差異。既有正常dosgolem trace直接反證NativeCommand6Coordinates的RoundToEven：原版channel3=(0,4)、channel4=(0,42)，目前typed結果是(1,5)、(1,42)。IDA LE 0x26FF1與0x2703F在fistp前呼叫__CHP，需核對該函式與控制字並修正。#156已閉合的mode3 X2↔X4／Y2←Y4仍有效，不重做或否定該段。",
+      "acceptance": [
+        "核對__CHP直接指令、原始名稱與控制字，以及固定hash原版正常trace的5通道座標。",
+        "達READY後修正typed取整方式；抽樣front／target／tail正負座標與side0／非零側。",
+        "以同源完整12影格比較證實座標差異消失；#154／#161的其他層差異分開記錄，不冒稱完整parity。"
+      ],
+      "evidence": [
+        "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
+        "remake/internal/figani/native_command6.go"
+      ],
+      "verify": {
+        "kind": "manual",
+        "reason": "需__CHP控制字、雙側座標與完整影格比較。"
+      },
+      "issue": 162
     }
   ]
 }

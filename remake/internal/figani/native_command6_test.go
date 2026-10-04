@@ -36,11 +36,11 @@ func TestNativeCommand6SchedulePreservesRawSideTables(t *testing.T) {
 }
 
 func TestNativeCommand6CoordinatesPreserveFivePointFormula(t *testing.T) {
-	want := [5]NativeCommand6Point{{40, 30}, {33, 41}, {22, 37}, {22, 23}, {33, 19}}
+	want := [5]NativeCommand6Point{{40, 30}, {33, 41}, {21, 37}, {21, 22}, {33, 18}}
 	if got := NativeCommand6Coordinates(10, 30); got != want {
 		t.Fatalf("radius10 coordinates=%v want=%v", got, want)
 	}
-	wantZeroSide := [5]NativeCommand6Point{{100, 30}, {93, 41}, {82, 37}, {82, 23}, {93, 19}}
+	wantZeroSide := [5]NativeCommand6Point{{100, 30}, {93, 41}, {81, 37}, {81, 22}, {93, 18}}
 	if got := NativeCommand6Coordinates(10, 90); got != wantZeroSide {
 		t.Fatalf("zero-side coordinates=%v want=%v", got, wantZeroSide)
 	}
@@ -48,9 +48,9 @@ func TestNativeCommand6CoordinatesPreserveFivePointFormula(t *testing.T) {
 
 func TestNativeCommand6TargetsPreserveMode3GeometryAndState(t *testing.T) {
 	// 手算對照原始 0x26F13..0x26F3A；保留負 Y，不猜補裁切。
-	front := [5]NativeCommand6Point{{66, 30}, {41, 71}, {1, 55}, {1, 5}, {41, -11}}
-	want := [5]NativeCommand6Point{{66, 30}, {41, 71}, {41, -11}, {1, 5}, {1, 42}}
-	if got := NativeCommand6TargetCoordinates(front, 42); got != want || front[2] != (NativeCommand6Point{1, 55}) {
+	front := [5]NativeCommand6Point{{66, 30}, {41, 71}, {0, 55}, {0, 4}, {41, -11}}
+	want := [5]NativeCommand6Point{{66, 30}, {41, 71}, {41, -11}, {0, 4}, {0, 42}}
+	if got := NativeCommand6TargetCoordinates(front, 42); got != want || front[2] != (NativeCommand6Point{0, 55}) {
 		t.Fatalf("mode3 coordinates=%v want=%v", got, want)
 	}
 	for _, side := range []byte{0, 1} {
@@ -276,5 +276,39 @@ func TestNativeCommand6RNGRejectsInvalidInputBeforeResolve(t *testing.T) {
 	final, err := WalkNativeCommand6RNG(14047, schedule, 0, 1, func(int, uint16) (uint16, bool, error) { return 15766, true, sentinel })
 	if !errors.Is(err, sentinel) || final != 14047 {
 		t.Fatalf("resolver failure final=%d err=%v", final, err)
+	}
+}
+
+// #162 原版正常cast的五通道目的指標，包含兩個被nearest-even改錯的座標。
+// 第0通道frame0加表格(10,10)，其餘frame4偏移0；不使用重製畫面猜期望值。
+func TestNativeCommand6CoordinatesMatchOriginalPlayerTargets(t *testing.T) {
+	schedule, err := BuildNativeCommand6PresentationSchedule(2, command6TestAnimation())
+	if err != nil {
+		t.Fatal(err)
+	}
+	points := NativeCommand6TargetCoordinates(NativeCommand6Coordinates(36, schedule.BaseByte), 42)
+	frame, err := PlanNativeCommand6TargetFrame(NewNativeCommand6TargetState(), schedule, points, 2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	layers := append(append([]NativeCommand6Layer(nil), frame.Mode4...), frame.Mode5...)
+	want := [5]NativeCommand6Point{{76, 40}, {41, 71}, {41, -11}, {0, 4}, {0, 42}}
+	if len(layers) != 5 {
+		t.Fatalf("layers=%v", layers)
+	}
+	for _, layer := range layers {
+		if got := (NativeCommand6Point{layer.X, layer.Y}); got != want[layer.Channel] {
+			t.Fatalf("channel%d=%v want%v", layer.Channel, got, want[layer.Channel])
+		}
+	}
+	// radius42的負X截斷為-3，正Y截斷為0；兩側保留同一__CHP契約。
+	for _, tc := range []struct {
+		base byte
+		x    int
+	}{{30, -3}, {90, 56}} {
+		got := NativeCommand6Coordinates(42, tc.base)
+		if got[3] != (NativeCommand6Point{tc.x, 0}) || got[4].Y != -17 {
+			t.Fatalf("base%d radius42=%v", tc.base, got)
+		}
 	}
 }

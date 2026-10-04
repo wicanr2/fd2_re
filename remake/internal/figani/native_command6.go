@@ -65,16 +65,17 @@ type NativeCommand6PresentationSchedule struct {
 }
 
 // NativeCommand6Coordinates reproduces 0x26F99..0x2704C. The degree
-// conversion remains the original single-precision constant; fistp uses the
-// default nearest-even rounding mode.
+// conversion remains the original single-precision constant. The __CHP
+// control-word helper (0x377A4) truncates toward zero before fistp.
+// Evidence: fd2_ch24_command6_work_bounds_20261004.json, issue162.
 func NativeCommand6Coordinates(radius int, baseByte byte) [NativeCommand6ChannelCount]NativeCommand6Point {
 	const degree = float64(float32(0.017453292519943295))
 	var points [NativeCommand6ChannelCount]NativeCommand6Point
 	for channel := range points {
 		angle := float64(channel*72) * degree
 		points[channel] = NativeCommand6Point{
-			X: int(math.RoundToEven(math.Cos(angle)*float64(radius) + float64(baseByte))),
-			Y: int(math.RoundToEven(math.Sin(angle)*float64(radius)*1.2 + 30)),
+			X: int(math.Cos(angle)*float64(radius) + float64(baseByte)),
+			Y: int(math.Sin(angle)*float64(radius)*1.2 + 30),
 		}
 	}
 	return points

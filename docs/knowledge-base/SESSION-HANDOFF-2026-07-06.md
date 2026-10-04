@@ -8920,3 +8920,9 @@ r5離屏沒有2189A drawn回報造成假卡關，補與正式Draw相同的回報
 r2於T18索爾死亡；r3正常到T19玩家游標、再END才死亡。標題新unit_base不能據此判成全隊死亡。r4保留r3同源SAV／seed與完整前綴，T19玩家游標清敵一次，不刷關、不治療或重擲。T22及特效中間幀未抽樣。r4 launcher繼承r2的T23說明，已在runner保存文字訂正與理由，原plan／actions／checkpoint／SAV未改。新測試opening When誤讀及第15章限定defeat-tail誤用均為測試方法失敗，修正後另有乾淨回歸；不記成產品缺陷。
 
 #133／#138／#141已以cdcd512fb2794fcfe6cd8aa8fe9da3dacc845e57推送後結案，主機gh重新核對均CLOSED；正式台帳20／30章。
+
+## 2026-10-04 #162取整勘誤與#161完整組圖
+
+較早的command6 nearest-even轉整數結論已失效。IDA LE __CHP 0x377A4..0x377C3保存控制字、設定高byte 0x1F、frndint向零截斷，再恢復控制字；0x26FF1與0x2703F兩個caller消費整數。正常原版channel3=(0,4)、channel4=(0,42)直接反證RoundToEven。保留舊段供追溯，新證據、原始bytes與取代關係見[主契約followup162](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
+
+完整同源原型另恢復LUT15、actor末幀、target packed shader與pose、下一幀HP背景。12張完整索引與RGB均零差異，受版控探針可重生，不加原版沒有的傷害數字圖層。這是隔離prototype，正式#161未實作、#154負列仍拒收；未知heap consumer不外推。唯一現況見[58](58-fd2-exe-re-coverage.md)。
