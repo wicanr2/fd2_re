@@ -5373,3 +5373,17 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 下一步限定#166相反raw側非零影格、連擊、命中反擊、DAC0／音效與work；#167工具政策、#52可選像素、#154待決及章台帳不變。所有工作已登記於[Issue](https://github.com/wicanr2/fd2_re/issues/166)。
 
 本批收尾檢查：148條教訓的47條guard通過；真實遠端pull／render／verify維持23項，可能已完成0項。14份新證據雜湊、13個新增本地連結、索引正對照及README文化入口有效。變更檔及新產物UID／GID1000；歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。
+
+
+### 2026-10-05 #166／#168：區分 VGA 清除與未知 work 初值
+
+本輪先沿用地形主證據的原版生命週期，確認目前正式物理owner仍保留map work；#167已限制malloc初值，沒有用整塊清零補洞。另由同一IDA原始指令發現290AC..290BD明確清除VGA，現行finishAttackPresentation缺少這段。回歸重現紅燈後，以受版控cmd_new產生格式，再由真實主機gh建立[缺陷#168](https://github.com/wicanr2/fd2_re/issues/168)。
+
+RE-CLOSED證據與READY規格保存後，正式owner在最後Draw完成、續行前清除VGA。回歸轉綠，原完整演出及GPU保持；正常第十二章AI順序與完整存檔一致，既有unknown wait與畫面門檻仍拒收。唯一數字及分層現況見[58](58-fd2-exe-re-coverage.md)，完整命令與雜湊見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+第一次把第八章固定BIOS收據交給整章semantic重播，因沒有actions.jsonl而停止。查證工具契約後改用既有第十二章semantic來源，沒有造actions；未把這次工具輸入問題寫成產品缺陷。未使用的raw helper抽取已移除，沒有留下第二份重播工具。#166保持開啟，#167、#52、#154與章台帳不變。
+
+VGA切片已有限CONFORMED。完整Go回歸唯一失敗來自先啟動回歸、後更新字串審核的時序；其餘套件已通過，清冊完成後乾淨重跑字串套件通過。所有章比較gate與上一輪逐項相同，不增加章通過聲明。
+
+本批收尾：149條教訓、48條guard通過，17份新證據雜湊、14個新增本地連結與索引正對照有效。UID／GID1000、歷史root-owned2811、新增0，.md目錄0。真實主機核對#168已CLOSED；pull／render／verify回到23項、可能已完成0項，#166保持開啟。
+沒有非預期FD2容器；其他專案容器未更動。

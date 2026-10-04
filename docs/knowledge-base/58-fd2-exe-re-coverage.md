@@ -8,6 +8,7 @@
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
+| #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -2734,3 +2735,27 @@ r1測試誤用EXP +3D，依既有fdsave decoder修正為+3C；r2前導誤套固�
 本次零header單次主攻命中／counter未命中列有限CONFORMED。相反raw側的非零header、非零連擊與返回轉場、反擊命中、DAC0／逐cue及人耳音訊、battle→map work仍未驗收。#166保持開啟，20／30章台帳與#154待決不變。
 
 本批收尾檢查：148條教訓的47條guard通過；真實遠端pull／render／verify維持23項，可能已完成0項。14份新證據雜湊、13個新增本地連結、索引正對照及README文化入口有效。變更檔及新產物UID／GID1000；歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。
+
+
+### 2026-10-05 #168：原生物理演出的 VGA 收尾
+
+[主契約physical_map_return_evidence／spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)是本切片的唯一證據。沿用[地形主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)已閉合的IDA9.4指令，不重做28A6C或配置器考古。正常540FF==0尾段在290AC..290BD明確執行memset(0xA0000,0,0xFA00)，290C2才呼叫11CAC(1)。這證明VGA清除，不證明重新malloc的map work初值。
+
+正式finishAttackPresentation已在最後present的Draw與等待完成後、續行前清除nativeMapVGA。VGA回歸先紅後綠，確認中途畫面不清除、callback看見清除結果、work未被本修法改寫；相容owner維持原流程。此項只限明確VGA寫入，#166完整map work與返回圖像仍待驗收。
+
+| 驗證範圍 | 本輪結果 |
+|---|---|
+| 既有完整演出對拍 | 非零單次MISS49張、零旗標主攻／counter34張完整indexed與RGB均0差異；使用既有已審dosgolem來源，修正後重生重製影格。 |
+| 正式GPU | 主攻59次、counter54次呈現與最後續行通過。 |
+| 正常第十二章重播 | 原155筆AI入口全部消費、零順序分岔；完整22987-byte存檔SHA-256仍為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。 |
+| 章門檻 | 行為與交易通過；原1528／2030的unknown wait與275張完整畫面門檻仍拒收，不新增PLAYER-E2。 |
+| 字串來源 | 98項處置內容不變，只更新來源雜湊與位移後ID。 |
+
+第八章固定BIOS收據沒有actions.jsonl，首次套用整章重播因此停止。改用具真正語意actions的既有第十二章來源，不造actions或放寬門檻。這是驗證輸入格式問題。
+
+#167工具政策、#52最後可選像素、#154待決與20／30章台帳不變。#168的VGA收尾與#166的未知work分開驗收。
+
+本切片有限CONFORMED。Go完整回歸18套件通過，唯一字串套件在清冊更新前讀到舊hash而失敗；重綁完成後用同一Docker工具鏈乾淨重跑通過，共19套件有有效結果，不稱單次完整命令全綠。275張章比較的所有gate結果與4fbaf345基準逐項相同。
+
+本批收尾：149條教訓、48條guard通過，17份新證據雜湊、14個新增本地連結與索引正對照有效。UID／GID1000、歷史root-owned2811、新增0，.md目錄0。真實主機核對#168已CLOSED；pull／render／verify回到23項、可能已完成0項，#166保持開啟。
+沒有非預期FD2容器；其他專案容器未更動。

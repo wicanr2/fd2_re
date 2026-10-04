@@ -6705,6 +6705,10 @@ func (g *Game) finishAttackPresentation() {
 		if scene.baseImage != nil {
 			scene.baseImage.Dispose()
 		}
+		// 正常原生演出在11CAC(1)／caller續行前明確清除VGA。
+		// 契約見fd2_physical_background_selection_20261004.json的physical_map_return_spec；
+		// 不推定重新malloc的地圖work初值。
+		clear(g.nativeMapVGA) // 0x290AC..0x290BD: memset(0xA0000,0,0xFA00)。
 	}
 	after := g.atk.after
 	g.atk = nil

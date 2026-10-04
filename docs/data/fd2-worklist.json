@@ -413,7 +413,7 @@
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-05：原生逐揮main／counter已接正常Game。非零單次MISS有限驗證保持；新增零header單次主攻命中／counter未命中完整34張indexed／RGB零差異、GPU54次present。固定前導after-DAC entry、逐揮與restore copy-exit取樣，兩份原版輸入／狀態逐byte相同，無候選搜尋或遮罩。建構槽只驗收演出，不驗收傷害／存活／敵方選目標。仍需相反raw側非零影格、非零連擊／返回轉場、反擊命中、DAC0／音效與battle→map work；#167工具政策及20/30章台帳不變。"
+        "note": "2026-10-05：原生逐揮main／counter已接正常Game。非零單次MISS有限驗證保持；新增零header單次主攻命中／counter未命中完整34張indexed／RGB零差異、GPU54次present。固定前導after-DAC entry、逐揮與restore copy-exit取樣，兩份原版輸入／狀態逐byte相同，無候選搜尋或遮罩。建構槽只驗收演出，不驗收傷害／存活／敵方選目標。仍需相反raw側非零影格、非零連擊／返回轉場、反擊命中、DAC0／音效與battle→map work；#167工具政策及20/30章台帳不變。 #168原版明寫VGA清除已有限CONFORMED；最後Draw後續行前清除VGA，地圖work初值未由此修法猜補。既有完整演出／GPU與正常章重播、存檔保持；完整map work仍未驗收。"
       },
       "issue": 166
     }

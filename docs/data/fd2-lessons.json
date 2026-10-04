@@ -1539,6 +1539,21 @@
         ],
         "pattern": "CONFORMED-zero-header-main-hit-counter-miss-subset"
       }
+    },
+    {
+      "id": "physical-return-vga-has-explicit-writer",
+      "date": "2026-10-05",
+      "area": "原生演出交接",
+      "rule": "區分原版明確memset的VGA與malloc初值未知的map work；依writer／consumer把VGA清除放在最後Draw完成後、續行前。入口docs/data/ida/fd2_physical_background_selection_20261004.json的physical_map_return_spec，實作remake/cmd/fd2/main.go的finishAttackPresentation與驗證native_physical_body_test.go的TestNativePhysicalReturnClearsVGA。",
+      "why": "#168沿用已閉合290AC..290BD bytes發現正式物理owner漏掉64000-byte VGA清除；#167仍限制work近堆初值，兩者不能混成整塊work清零。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/168",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "clear\\(g\\.nativeMapVGA\\) // 0x290AC"
+      }
     }
   ]
 }

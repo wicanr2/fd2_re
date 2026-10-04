@@ -1733,3 +1733,12 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 | 非零相反raw側、連擊、命中反擊、DAC0／音效、work | 尚待驗收 | 仍在#166，不由這次有限收據外推。 |
 
 此項是建構槽同輸入演出診斷，保留政策加成限制；不驗收傷害、存活或敵方選目標，不新增章PLAYER-E2。本節取代前段counter全部原版影格尚缺的現況。
+
+
+### 2026-10-05 #168：原生物理演出返回的 VGA 收尾
+
+正常owner已接回原版明寫的VGA清除，時點在最後Draw完成後、地圖續行前。原版指令、回歸及目前驗證見[主契約physical_map_return_validation](../data/ida/fd2_physical_background_selection_20261004.json)與[58](58-fd2-exe-re-coverage.md)。
+
+這是VGA寫入的有限範圍。map work配置初值、完整返回地圖圖像及#166其他演出收據仍未驗收；章門檻、#167政策與PLAYER-E2分級不變。
+
+VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回歸的完整範圍見58及主契約。

@@ -9105,3 +9105,17 @@ r1章回歸漏了新增owner的Draw確認，屬驗證helper問題。改用正式
 下一步限定#166相反raw側非零影格、連擊、命中反擊、DAC0／音效與work；#167工具政策、#52可選像素、#154待決及章台帳不變。所有工作已登記於[Issue](https://github.com/wicanr2/fd2_re/issues/166)。
 
 本批收尾檢查：148條教訓的47條guard通過；真實遠端pull／render／verify維持23項，可能已完成0項。14份新證據雜湊、13個新增本地連結、索引正對照及README文化入口有效。變更檔及新產物UID／GID1000；歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。
+
+
+### 2026-10-05 #168：正常物理演出的 VGA 收尾勘誤
+
+本輪沿用已閉合IDA LE 290AC..290BD發現原版正常演出明確清除64000-byte VGA，正式finishAttackPresentation漏掉此寫入。先在[父#166](https://github.com/wicanr2/fd2_re/issues/166)登記，回歸紅燈後建立[缺陷#168](https://github.com/wicanr2/fd2_re/issues/168)。RE-CLOSED與READY契約保存在[場景主證據](../data/ida/fd2_physical_background_selection_20261004.json)，再接正式收尾。
+
+最後Draw完成後、續行前清除VGA，地圖work不由此修法改寫。回歸轉綠，既有完整演出／GPU及正常第十二章AI與完整存檔保持；unknown wait與全章畫面門檻仍拒收，不新增PLAYER-E2。唯一統計與目前現況見[58](58-fd2-exe-re-coverage.md)。
+
+第八章原始BIOS收據缺少actions.jsonl，首次整章重播停止，改用具真正semantic actions的第十二章既有來源後通過。這是工具輸入契約問題，沒有造actions或改原門檻；未使用的raw helper重構已移除。#166完整work仍待驗收，#167工具政策、#52可選像素、#154待決與20／30章台帳保持。
+
+VGA切片已有限CONFORMED。完整Go回歸唯一失敗來自先啟動回歸、後更新字串審核的時序；其餘套件已通過，清冊完成後乾淨重跑字串套件通過。所有章比較gate與上一輪逐項相同，不增加章通過聲明。
+
+本批收尾：149條教訓、48條guard通過，17份新證據雜湊、14個新增本地連結與索引正對照有效。UID／GID1000、歷史root-owned2811、新增0，.md目錄0。真實主機核對#168已CLOSED；pull／render／verify回到23項、可能已完成0項，#166保持開啟。
+沒有非預期FD2容器；其他專案容器未更動。

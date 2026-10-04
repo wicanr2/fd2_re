@@ -9464,3 +9464,12 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 [主契約counter子規格](../data/ida/fd2_physical_background_selection_20261004.json)新增零header主攻命中／counter未命中的有限CONFORMED。重製端由原版攻擊前raw記錄及既有typed地形、物品、建構資料結算一次，再使用正式main／counter owner；沒有供值Damage、Missed或反擊資格。建構槽加成限制仍適用，只驗收演出，不驗收傷害、存活或敵方選目標。
 
 原版逐幀取樣分成固定兩個phase邊界。前導在DAC更新後比較，逐揮與最後恢復在已審查的copy出口比較。兩份控制與checkpoint狀態須逐byte相同；不能以搜尋候選格或忽略RGB代替這個條件。正式Game的copy、色盤及時序未改，GPU驗證沿用同一owner。唯一數字與剩餘gate見[58](58-fd2-exe-re-coverage.md)，較早「counter原版影格全部未驗」的現況由本節取代；不新增存檔格式或章PLAYER-E2。
+
+
+### 2026-10-05 #168：正常物理演出返回的 VGA 寫入
+
+[主契約physical_map_return_spec](../data/ida/fd2_physical_background_selection_20261004.json)以既有IDA LE 290AC..290BD的明確memset定義正常原生owner收尾。最後Draw與delay完成後、after續行前清除VGA，之後由原有地圖／行動收尾consumer重繪。非原生相容owner沿用原流程。
+
+重新malloc的map work初值仍未知，本修法不改寫它。VGA回歸與完整演出／GPU通過，正常重播與存檔結果只見[58](58-fd2-exe-re-coverage.md)；不外推完整map work或整章PLAYER-E2。
+
+VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回歸的完整範圍見58及主契約。

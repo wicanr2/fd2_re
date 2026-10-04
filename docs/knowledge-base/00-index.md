@@ -593,3 +593,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 
 - #166 正常零旗標主攻／counter的完整對拍：[既有測試檔的TestNativePhysicalBodyCounterNormalOracle](../../remake/cmd/fd2/native_physical_body_test.go)，由正式resolver解碼raw記錄並結算一次。固定copy／DAC取樣契約、IDA11EED返回證據及同輸入限制見[主契約physical_counter_validation](../data/ida/fd2_physical_background_selection_20261004.json)，唯一結果見[58](58-fd2-exe-re-coverage.md)。
+
+
+- #168 [正式finishAttackPresentation](../../remake/cmd/fd2/main.go)與[原生VGA收尾回歸](../../remake/cmd/fd2/native_physical_body_test.go)：沿用已閉合290AC..290BD直接bytes，證據與READY契約見[physical_map_return_spec](../data/ida/fd2_physical_background_selection_20261004.json)，目前驗證只見[58](58-fd2-exe-re-coverage.md)。map work初值限制仍在#166／#167。

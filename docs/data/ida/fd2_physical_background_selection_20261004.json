@@ -31540,5 +31540,532 @@
       "verification_scope": "current focused, original full-canvas and GPU receipts; standard Go19 baseline remains 4fbaf345; no fresh all-package claim",
       "link_scope": "new lines only; historical dated handoff delivery links are not current delivery gates"
     }
+  },
+  "physical_map_return_evidence": {
+    "date": "2026-10-05",
+    "issue": 168,
+    "parent_issue": 166,
+    "state": "RE-CLOSED-VGA-only",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "reused_canonical": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#buffer_lifetime_ida",
+    "raw_export": {
+      "path": "work/parity-slot-ch12/terrain-late-ida-r1.json",
+      "sha256": "667f183ac811358dd72f82f5b187312b0e46a05c1b7e4307bc76f87c6981d213"
+    },
+    "original_function": {
+      "address": "0x28a6c",
+      "end": "0x29117",
+      "original_name": "sub_28A6C",
+      "xrefs": [
+        "0x1561f",
+        "0x18fc6",
+        "0x2c2aa",
+        "0x35435"
+      ]
+    },
+    "instructions": [
+      {
+        "address": "0x29056",
+        "bytes": "833dff40050000",
+        "original": "cmp     dword_540FF, 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29056",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2905d",
+        "bytes": "0f85ac000000",
+        "original": "jnz     loc_2910F",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2905d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29063",
+        "bytes": "6880560200",
+        "original": "push    (offset loc_2567F+1)",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29063",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29068",
+        "bytes": "e8a9dc0000",
+        "original": "call    malloc",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29068",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2906d",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2906d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29070",
+        "bytes": "a3493a0500",
+        "original": "mov     dword_53A49, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29070",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29075",
+        "bytes": "a1553a0500",
+        "original": "mov     eax, dword_53A55",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29075",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2907a",
+        "bytes": "0fb600",
+        "original": "movzx   eax, byte ptr [eax]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2907a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2907d",
+        "bytes": "01c0",
+        "original": "add     eax, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2907d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2907f",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2907f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29080",
+        "bytes": "ff355d3a0500",
+        "original": "push    dword_53A5D",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29080",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29086",
+        "bytes": "68651a0500",
+        "original": "push    offset aFdshapDat; \"FDSHAP.DAT\"",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29086",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2908b",
+        "bytes": "e82a81feff",
+        "original": "call    sub_111BA",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2908b",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29090",
+        "bytes": "83c40c",
+        "original": "add     esp, 0Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29090",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29093",
+        "bytes": "a35d3a0500",
+        "original": "mov     dword_53A5D, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29093",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x29098",
+        "bytes": "e87a000000",
+        "original": "call    sub_29117",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x29098",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2909d",
+        "bytes": "6a06",
+        "original": "push    6",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2909d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x2909f",
+        "bytes": "e805eafeff",
+        "original": "call    sub_17AA9",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x2909f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290a4",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290a4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290a7",
+        "bytes": "e8d667ffff",
+        "original": "call    sub_1F882",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290a7",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290ac",
+        "bytes": "6800fa0000",
+        "original": "push    0FA00h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290ac",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290b1",
+        "bytes": "6a00",
+        "original": "push    0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290b1",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290b3",
+        "bytes": "6800000a00",
+        "original": "push    0A0000h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290b3",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290b8",
+        "bytes": "e803e50000",
+        "original": "call    memset",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290b8",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290bd",
+        "bytes": "83c40c",
+        "original": "add     esp, 0Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290bd",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290c0",
+        "bytes": "6a01",
+        "original": "push    1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290c0",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290c2",
+        "bytes": "e8e58bfeff",
+        "original": "call    sub_11CAC",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290c2",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x290c7",
+        "bytes": "83c404",
+        "original": "add     esp, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x290c7",
+        "semantic_annotations": []
+      }
+    ],
+    "claims": [
+      {
+        "level": "confirmed",
+        "original_location": "IDA LE 0x29056..0x290C7；sub_28A6C",
+        "semantic": "540FF==0正常物理演出尾段先以memset(0xA0000,0,0xFA00)清除VGA，再呼叫11CAC(1)。這是明確的VGA寫入，不證明53A49重新malloc的work初值。",
+        "source": "docs/data/ida/fd2_terrain_mode3_review_20261001.json followups[0].late_attack_work_writer.buffer_lifetime_ida；直接bytes與caller"
+      }
+    ],
+    "remake_before": {
+      "source_commit": "4d5698962c24e45561d82ae618063a9fc8e9238f",
+      "function": "finishAttackPresentation",
+      "missing": "正常nativeScene owner釋放圖像後立即after()，沒有原版明確VGA memset。",
+      "red_log": {
+        "path": "work/physical-map-return-red-r1.log",
+        "sha256": "17488ba35e3e1a2b940ad1a35913e13067e0fc8ae9710d0cb3d802b426fba485"
+      }
+    },
+    "stop_line": "不重開近堆配置器或#52的3152。work初值未知保留；不以清空work修正。"
+  },
+  "physical_map_return_spec": {
+    "state": "CONFORMED-VGA-write-only",
+    "date": "2026-10-05",
+    "issue": 168,
+    "scope": "正式正常原生物理owner的VGA尾端生命周期；#166的完整map work仍未驗收。",
+    "typed_input": "Game.atk.nativeScene的正常物理owner及Game.nativeMapVGA索引畫布；若尚未建立畫布，nil不新增猜測素材。",
+    "transition": "最後body present經真實Draw確認與delay完成後，在finishAttackPresentation續行after之前clear原生VGA畫布；無nativeScene的相容攻擊保持原owner。",
+    "bounds": "正式原生map畫布為320×200＝64000 bytes；不清Game.nativeMapWork，不假設malloc初值。",
+    "failure_policy": "沿用演出資產／來源預檢及Draw閘門，不提前提交callback。",
+    "vertical_chain": "固定EXE normal branch → VGA memset bytes → 原生owner完成 → map VGA consumer／續行；不改typed資料或存檔格式。",
+    "acceptance": [
+      "VGA收尾回歸目前紅燈，修正後在同一命令通過",
+      "最後present Draw之前不清除，callback看到完整64000-byte畫布已清除",
+      "非原生owner不清除；work不由本修法改寫",
+      "既有正常主攻／counter完整原版indexed+RGB與正式GPU重跑",
+      "相稱Go回歸；56／57／58、工單及交接同步"
+    ],
+    "limits": "VGA字節寫入CONFORMED不外推整張返回地圖pixel parity、work或章PLAYER-E2。"
+  },
+  "physical_map_return_validation": {
+    "date": "2026-10-05",
+    "state": "CONFORMED-VGA-write-only;RUNTIME-E1",
+    "scope": "#168明寫的VGA收尾；完整map work仍在#166，不改原版配置器或章PLAYER-E2。",
+    "red": {
+      "path": "work/physical-map-return-red-r1.log",
+      "sha256": "17488ba35e3e1a2b940ad1a35913e13067e0fc8ae9710d0cb3d802b426fba485"
+    },
+    "focused": {
+      "path": "work/physical-map-return-focused-r1.log",
+      "sha256": "7e943844b13a3981d7b5d398422bf6ead431c181ff9bb000f23bddb533661a44"
+    },
+    "oracle_regression": {
+      "log": {
+        "path": "work/physical-map-return-oracle-r1.log",
+        "sha256": "e39fe00fb3e459762de7c253d2aa928396213019465ce2501a43c685fe52c4ca"
+      },
+      "nonzero_miss": {
+        "path": "work/physical-map-return-main-r1/comparison.json",
+        "sha256": "ed80453c53af4db6c8610bdfa5ffd2eaa0dc4b4b6e2352b6d314cc9c130f8781"
+      },
+      "zero_main_counter": {
+        "path": "work/physical-map-return-counter-r1/comparison.json",
+        "sha256": "160737de8da5b02868ad20286cf84d978bc312d4dab56ee2d69db31bccc6253c"
+      },
+      "unique_frames": [
+        49,
+        34
+      ],
+      "all_indexed_rgb_differences": 0,
+      "method": "原版來源與固定phase映射沿用既有已審收據，修正後以目前正式Game重生；原版像素不注入。",
+      "restriction": "建構槽政策加成只固定演出輸入，不驗收傷害、存活或敵方選目標。"
+    },
+    "gpu": {
+      "log": {
+        "path": "work/physical-map-return-gpu-r1.log",
+        "sha256": "66ab5a9fa621aa3fb4648b4d763f574082a126e380336df0eff8191b7793c363"
+      },
+      "presents": [
+        59,
+        54
+      ],
+      "real_draw": true,
+      "last_continuation": true
+    },
+    "normal_game_replay": {
+      "log": {
+        "path": "work/parity-slot-ch12/physical-map-return-full-remake-r2.log",
+        "sha256": "f160374b424e73961de8d384fe0b43139f6341fb6d3f15360984f89cc6600a84"
+      },
+      "original": "work/parity-slot-ch12/treasure-original-r2",
+      "original_ai_entries": 155,
+      "remake_consumed_ai_entries": 155,
+      "order_divergence": 0,
+      "comparison": {
+        "report": {
+          "path": "work/parity-slot-ch12/physical-map-return-full-verified-r2.json",
+          "sha256": "093f581a6dcbc7ca83cc7590f7941044bb38dab8e400e975a5004487168f206a"
+        },
+        "baseline": {
+          "path": "work/parity-slot-ch12/physical-tail-full-verified-r1.json",
+          "sha256": "093f581a6dcbc7ca83cc7590f7941044bb38dab8e400e975a5004487168f206a"
+        },
+        "all_gate_results_identical_to_baseline": true,
+        "behavior": true,
+        "transaction": true,
+        "nodes": false,
+        "frames": false,
+        "complete_frames": 275,
+        "unknown_wait_seq": [
+          1528,
+          2030
+        ],
+        "budget": 640,
+        "minimum_frames": 12
+      },
+      "save": {
+        "path": "work/parity-slot-ch12/physical-map-return-full-remake-r2/FD2.SAV",
+        "sha256": "6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821",
+        "size": 22987
+      }
+    },
+    "verification_tool_correction": {
+      "attempt": "work/parity-slot-ch08/physical-work-full-remake-r1.log",
+      "reason": "固定raw BIOS計畫沒有actions.jsonl，不符合TestChapterParityReplay語意輸入契約；沒有造actions或用此失敗判定產品缺陷。",
+      "resolution": "沿用具真正semantic actions的第十二章treasure-original-r2，原門檻不變。"
+    },
+    "remaining": "map work初值／完整返回圖像仍不由#168 VGA契約外推；#166其他raw側、連擊、反擊命中、DAC0／音效及work保持未驗收。",
+    "commands": {
+      "red": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go cmd/fd2/native_ai_idle_recovery_probe_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalReturnClearsVGA$'\\'' -count=1 -timeout 120s -v' > work/physical-map-return-red-r1.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/main.go cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 with-xvfb go test ./cmd/fd2 -run '\\''^Test(NativePhysicalReturnClearsVGA|CompatiblePhysicalReturnKeepsOwnVGA|NativePhysicalBodyMultiStrikeCounterAndPulse|NativePhysicalBodyMissingSoundStopsBeforeSettlement)$'\\'' -count=1 -timeout 120s -v' > work/physical-map-return-focused-r1.log 2>&1",
+      "oracle": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-map-return-main-r1; test ! -e /src/work/physical-map-return-counter-r1; mkdir /src/work/physical-map-return-main-r1 /src/work/physical-map-return-counter-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_BODY_OUT=/src/work/physical-map-return-main-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_COUNTER_OUT=/src/work/physical-map-return-counter-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBody(NormalOracle|CounterNormalOracle)$'\\'' -count=1 -timeout 120s -v' > work/physical-map-return-oracle-r1.log 2>&1",
+      "gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_BODY_GPU=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_CASE=counter FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_BODY_GPU=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-map-return-gpu-r1.log 2>&1",
+      "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > work/physical-map-return-go-all-r1.log 2>&1",
+      "normal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/treasure-original-r2; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/physical-map-return-full-remake-r2; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/treasure-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch12/physical-map-return-full-remake-r2 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/physical-map-return-full-remake-r2.log 2>&1",
+      "chapter_comparison": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/treasure-original-r2 --remake work/parity-slot-ch12/physical-map-return-full-remake-r2 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-sample.jsonl --out work/parity-slot-ch12/physical-map-return-full-verified-r2.json",
+      "string_review_rebind": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 4g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly -e HOME=/tmp/home -e GOCACHE=/tmp/gocache -e GOFLAGS=-mod=mod --workdir /src fd2-go-test-local:20260909 timeout 260 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /hosttmp/fd2-physical-map-return-rebind-r1; cp /hosttmp/fd2-physical-tail-rebind-r1/inv-new.json /hosttmp/fd2-physical-map-return-rebind-r1/inv-old.json; cd /src/remake/cmd/fd2-string-inventory; go run . -repo ../../.. -output /hosttmp/fd2-physical-map-return-rebind-r1/inv-new.json; cd /src; python3 tools/migrate_string_review.py --old-inventory /hosttmp/fd2-physical-map-return-rebind-r1/inv-old.json --new-inventory /hosttmp/fd2-physical-map-return-rebind-r1/inv-new.json --review docs/data/fd2-string-review.json --output /hosttmp/fd2-physical-map-return-rebind-r1/review-new.json\npython3 - <<'\\''PY'\\''\nimport json\nfrom pathlib import Path\nroot=Path('\\''/hosttmp/fd2-physical-map-return-rebind-r1'\\'')\ni=json.loads((root/'\\''inv-new.json'\\'').read_text()); m=json.loads((root/'\\''review-new.json'\\'').read_text()); o=json.loads(Path('\\''docs/data/fd2-string-review.json'\\'').read_text())\nids={s for g in m['\\''dispositions'\\''].values() for s in g['\\''string_ids'\\'']}\nassert ids=={e['\\''string_id'\\''] for e in i['\\''entries'\\''] if e['\\''role'\\'']==m['\\''reviewed_role'\\'']}\nfor k,g in m['\\''dispositions'\\''].items():\n assert len(g['\\''string_ids'\\''])==len(o['\\''dispositions'\\''][k]['\\''string_ids'\\''])\n assert {k:v for k,v in g.items() if k!='\\''string_ids'\\''}=={k:v for k,v in o['\\''dispositions'\\''][k].items() if k!='\\''string_ids'\\''}\nPath('\\''docs/data/fd2-string-review.json'\\'').write_bytes((root/'\\''review-new.json'\\'').read_bytes())\nprint('\\''string review rebind:'\\'',len(ids),'\\''dispositions unchanged'\\'')\nPY'",
+      "string_final": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2-string-inventory -count=1 -timeout 120s -v' > work/physical-map-return-string-final-r1.log 2>&1"
+    },
+    "full_go": {
+      "initial_log": {
+        "path": "work/physical-map-return-go-all-r1.log",
+        "sha256": "4e15dc6b9c54e5fd36f46480665bb2388767a69c8ecfae953b34a8e624d43ff5"
+      },
+      "initial_terminal_exit": 1,
+      "initial_passed_packages": [
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2",
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2-chapter-slot",
+        "github.com/wicanr2/fd2_re/remake/cmd/fd2-save-audit",
+        "github.com/wicanr2/fd2_re/remake/internal/afm",
+        "github.com/wicanr2/fd2_re/remake/internal/battle",
+        "github.com/wicanr2/fd2_re/remake/internal/battlepresent",
+        "github.com/wicanr2/fd2_re/remake/internal/campaign",
+        "github.com/wicanr2/fd2_re/remake/internal/dato",
+        "github.com/wicanr2/fd2_re/remake/internal/editorcanonical",
+        "github.com/wicanr2/fd2_re/remake/internal/ending",
+        "github.com/wicanr2/fd2_re/remake/internal/fdicon",
+        "github.com/wicanr2/fd2_re/remake/internal/fdother",
+        "github.com/wicanr2/fd2_re/remake/internal/fdsave",
+        "github.com/wicanr2/fd2_re/remake/internal/fdtxt",
+        "github.com/wicanr2/fd2_re/remake/internal/figani",
+        "github.com/wicanr2/fd2_re/remake/internal/indexedmap",
+        "github.com/wicanr2/fd2_re/remake/internal/localization",
+        "github.com/wicanr2/fd2_re/remake/internal/musiccatalog"
+      ],
+      "initial_failed_package": "cmd/fd2-string-inventory",
+      "failure": "完整回歸在字串審核重綁完成前讀到17e9舊hash；唯一失敗是TestReviewedGoCandidatesMatchCurrentInventory。",
+      "corrected_log": {
+        "path": "work/physical-map-return-string-final-r1.log",
+        "sha256": "15b45402157e82e7f0e2827a1e388f084e1b9d472a84081d31182df40496a75b"
+      },
+      "corrected_terminal_exit": 0,
+      "packages_verified": 19,
+      "scope": "同一來源的18套件已通過；重綁後以同一Docker工具鏈乾淨重跑唯一受影響字串套件通過。未宣稱單次19套件命令全綠。"
+    },
+    "string_review": {
+      "dispositions": 98,
+      "review": {
+        "path": "docs/data/fd2-string-review.json",
+        "sha256": "a096112f124b711cbea091a495c582422bc384ded987b09b8269fa0e13638fce"
+      },
+      "inventory_sha256": "9afdcb873a34ec749134b05a2fccbbb785212ba6d0e2fb3c3ce761ca6f2ac818",
+      "disposition_content_changed": false
+    },
+    "closeout_audit": {
+      "evidence_hashes": 17,
+      "new_local_links": 14,
+      "uid_gid": [
+        1000,
+        1000
+      ],
+      "root_owned_historical": 2811,
+      "new_root_owned": 0,
+      "md_directories": 0,
+      "index_positive_control": true,
+      "readme_cultural_entry": true,
+      "lessons": 149,
+      "guards": 48,
+      "github_worklist_open": 23,
+      "possibly_completed": 0,
+      "issue168_state": "CLOSED",
+      "host_verified": true,
+      "unexpected_fd2_containers": 0
+    },
+    "remake_source": {
+      "base_commit": "4d5698962c24e45561d82ae618063a9fc8e9238f",
+      "files": [
+        {
+          "path": "remake/cmd/fd2/main.go",
+          "sha256": "db6291860f7befdf3af14d0bf3431a70027da931c1509041f0e494fed865e836"
+        },
+        {
+          "path": "remake/cmd/fd2/native_physical_body_test.go",
+          "sha256": "4a876cd21f752def5c54dd1a2e873f41d520397e6bbbfbfe58ce0e1c67e33ce0"
+        }
+      ]
+    }
   }
 }

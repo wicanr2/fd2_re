@@ -611,3 +611,52 @@ func TestNativePhysicalBodyCounterNormalOracle(t *testing.T) {
 	}
 	t.Logf("%d ordered complete indexed/RGB frames / %d presents; main HIT129, counter MISS; RNG11065→44258", len(unique), presents)
 }
+
+// TestNativePhysicalReturnClearsVGA 對應已閉合290AC..290BD memset，
+// 只驗原版明寫的VGA，不推定重新malloc地圖work的初值。
+func TestNativePhysicalReturnClearsVGA(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	run := os.Getenv("FD2_PHYSICAL_COUNTER_ORIGINAL")
+	if run == "" {
+		t.Skip("需要正常主攻／counter收據")
+	}
+	requirePhysicalScenePack(t)
+	g, scene := physicalCounterBodyFromOracle(t, run)
+	g.nativeMapVGA = bytes.Repeat([]byte{77}, 320*200)
+	work := []byte{51, 116, 138}
+	g.nativeMapWork = append([]byte(nil), work...)
+	returned := false
+	g.atk = &atkAnim{nativeScene: scene, fpt: 1, after: func() {
+		returned = true
+		if !bytes.Equal(g.nativeMapWork, work) {
+			t.Fatal("VGA return must not invent map work initialization")
+		}
+		if !bytes.Equal(g.nativeMapVGA, make([]byte, 320*200)) {
+			t.Fatal("normal physical return did not apply original 64000-byte VGA memset before continuation")
+		}
+	}}
+	screen := ebiten.NewImage(640, 400)
+	defer screen.Dispose()
+	for tick := 0; tick < 2000 && g.atk != nil; tick++ {
+		if !bytes.Equal(g.nativeMapVGA, bytes.Repeat([]byte{77}, 320*200)) {
+			t.Fatal("VGA cleared before final Draw and continuation")
+		}
+		g.Draw(screen)
+		if err := g.stepAttackPresentationTick(); err != nil && err != errAttackPresentationYield {
+			t.Fatal(err)
+		}
+	}
+	if g.atk != nil || !returned {
+		t.Fatal("native presentation did not reach map continuation")
+	}
+}
+
+func TestCompatiblePhysicalReturnKeepsOwnVGA(t *testing.T) {
+	g := &Game{nativeMapVGA: []byte{77, 88}}
+	continued := false
+	g.atk = &atkAnim{after: func() { continued = true }}
+	g.finishAttackPresentation()
+	if !continued || !bytes.Equal(g.nativeMapVGA, []byte{77, 88}) {
+		t.Fatal("compatible owner must retain its existing return path")
+	}
+}
