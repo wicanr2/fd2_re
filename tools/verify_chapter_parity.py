@@ -335,6 +335,18 @@ def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
     return following["seq"]
 
 
+def comparable_action_kind(action: dict, remake_kind: str | None) -> str | None:
+    """只沿用已審查的名稱對照；不以 UI 或原版動作順序推定來源。"""
+    kind = action.get("label") if action.get("kind") == "mark" else action.get("kind")
+    if (isinstance(remake_kind, str) and remake_kind.startswith("mark:") and
+            action.get("kind") != "mark"):
+        return None
+    if (action.get("kind") == "mark" and isinstance(kind, str) and kind and
+            remake_kind == "mark:" + kind):
+        return remake_kind
+    return "attack_armed" if kind == "attack" else kind
+
+
 def compare_node(actions: list[dict], remake_cp: dict, oracle_cp: dict | None,
                  seq: int | None) -> dict:
     """#117：從原版動作及輸入owner獨立取值；契約見fd2-chapter-node-comparison-contract.json。"""
@@ -344,7 +356,7 @@ def compare_node(actions: list[dict], remake_cp: dict, oracle_cp: dict | None,
         return {**entry, "status": "not_comparable", "reason": "衍生重製點沒有原版配對"}
     if oracle_cp is None:
         return {**entry, "status": "missing_oracle_checkpoint"}
-    action = next((a for a in actions if a.get("seq") == seq), None)
+    candidates = [a for a in actions if a.get("seq") == seq]
     original_ui = oracle_ui_mode(oracle_cp)
     entry["oracle_ui"] = original_ui
     if kind in ("after_enemy_phase", "shop_menu", "end_turn", "enemy_phase_start", "town_save"):
@@ -355,16 +367,22 @@ def compare_node(actions: list[dict], remake_cp: dict, oracle_cp: dict | None,
             "enemy_phase_start": "重製換手橫幅與原版END按鍵後checkpoint不同時序",
             "town_save": "SAVE動作在DOS寫入完成點；服務框／確認訊息時序不同",
         }[kind]}
-    if action is None:
+    if not candidates:
         return {**entry, "status": "missing_oracle_action"}
+    matches = [a for a in candidates if comparable_action_kind(a, kind) == kind]
+    entry["oracle_action_candidates"] = len(candidates)
+    entry["oracle_matching_actions"] = len(matches)
+    if len(matches) > 1:
+        return {**entry, "status": "ambiguous_oracle_action"}
+    if not matches and len(candidates) > 1:
+        return {**entry, "status": "missing_matching_oracle_action"}
+    action = matches[0] if matches else candidates[0]
     original_kind = action.get("label") if action.get("kind") == "mark" else action.get("kind")
+    entry["oracle_action_kind"] = action.get("kind")
+    if action.get("kind") == "mark":
+        entry["oracle_action_label"] = action.get("label")
     entry["oracle_kind"] = original_kind
-    # 驅動器do_engage用armed快照記attack；這是目標確認前的配對點。
-    comparable_kind = "attack_armed" if original_kind == "attack" else original_kind
-    # #128：普通mark由正式重播加mark:前綴，必須逐字符合原版來源label。
-    if (action.get("kind") == "mark" and isinstance(original_kind, str) and
-            original_kind and kind == "mark:" + original_kind):
-        comparable_kind = kind
+    comparable_kind = comparable_action_kind(action, kind)
     entry["oracle_comparable_kind"] = comparable_kind
     if oracle_mid_end_turn(oracle_cp, remake_cp):
         return {**entry, "status": "not_comparable", "reason": "原版已在換手處理，並非同一輸入邊界"}
@@ -535,7 +553,7 @@ def main() -> int:
         "gates": {
             "behavior": {"ok": behavior_ok, "points": behavior},
             "nodes": {"ok": nodes_ok, "oracle": node_seq_oracle, "remake": node_seq_remake,
-                       "plan_completion": completion, "comparison_version": 2,
+                       "plan_completion": completion, "comparison_version": 3,
                        "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
                        "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
                        "points": node_points},

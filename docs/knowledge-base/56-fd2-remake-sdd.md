@@ -9388,3 +9388,9 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 [caller規格](../data/ida/fd2_ai_idle_recovery_20261004.json)經READY審查、實作及同源比較已CONFORMED／RUNTIME-E1。既有13FD4／1DA16／4DDD7 bytes決定三個邊界：初始畫面、C8寫入Mask、mode0原圖恢復。正式consumer依序發布，sample4在初次Draw之後，第三Draw之後才提交HP。保留raw gate／maxHP/5。舊「三張為decode、reset、重複reset」的consumer說明由本節更正，不重做數值與caller路由。
 
 正常原版接受分支與同源raw E1的三張完整索引／RGB均0差異，HP只在最後182→184。證據、相位與時間限制見[介面矩陣](57-ui-evidence-matrix.md)及[58](58-fd2-exe-re-coverage.md)。不新增整章PLAYER-E2，不把其他mode2 caller一併宣稱已驗收。
+
+## 2026-10-04 #164：獨立節點來源的唯一動作配對
+
+[節點主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)已 CONFORMED。同一 seq 的原版 actions 全部保留，依既有 kind／mark label 映射取唯一相符者；零匹配與多匹配拒收，不依 UI 或紀錄順序挑選。報告保留原始 kind／label、候選數與匹配數，節點比較版本為3。
+
+原版停在已閉合 sub_16C57 的精確 EIP16D0A，且固定 EXE／原始返回1ACEE同時成立才分類對白。既有外層 owner 優先與 unknown 拒收保留，不改正式 runtime、亂數或畫面閾值。第七章目前 Game 同源完整重播通過，歷史原版來源與未比較點見[58](58-fd2-exe-re-coverage.md)及[回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)，不新增章 PLAYER-E2。

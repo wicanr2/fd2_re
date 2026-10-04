@@ -1096,6 +1096,387 @@
           "note": "保留無關歷史root檔案；未全庫chown。"
         }
       }
+    },
+    {
+      "issue": 164,
+      "date": "2026-10-04",
+      "status": "CONFORMED",
+      "scope": "原版同序號多動作的唯一語意配對及sub_16C57已知活動停點分類；不改正式runtime／原版oracle／畫面閾值。",
+      "input": {
+        "name": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "tool": "IDA Pro 9.4既有raw export及dosgolem原版sample-r6收據；未重新反組譯閉合函式。",
+      "address_space": "raw為IDA LE線性位址；checkpoint為dosgolem relocated LE linear，保留各自基準。",
+      "primary_source": "docs/data/ida/fd2_dialogue_cause_20260908.json",
+      "primary_source_sha256": "8842fb8b05d472108250ff72e74fd3fa85ba0bfa7a0498b99fe34ee9085842ed",
+      "raw_functions": [
+        {
+          "original_name": "sub_16C57",
+          "address": "0x16c57",
+          "end": "0x16e24",
+          "instructions": [
+            {
+              "address": "0x16cf3",
+              "bytes": "e82899ffff",
+              "original": "call    sub_10620",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16cf3"
+            },
+            {
+              "address": "0x16cf8",
+              "bytes": "85c0",
+              "original": "test    eax, eax",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16cf8"
+            },
+            {
+              "address": "0x16cfa",
+              "bytes": "0f85ab000000",
+              "original": "jnz     loc_16DAB",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16cfa"
+            },
+            {
+              "address": "0x16d00",
+              "bytes": "e8c7720300",
+              "original": "call    sub_4DFCC",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d00"
+            },
+            {
+              "address": "0x16d05",
+              "bytes": "ba6c040000",
+              "original": "mov     edx, 46Ch",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d05"
+            },
+            {
+              "address": "0x16d0a",
+              "bytes": "668b02",
+              "original": "mov     ax, [edx]",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d0a"
+            },
+            {
+              "address": "0x16d0d",
+              "bytes": "98",
+              "original": "cwde",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d0d"
+            },
+            {
+              "address": "0x16d0e",
+              "bytes": "0fbf542408",
+              "original": "movsx   edx, word ptr [esp+20h+var_18]",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d0e"
+            },
+            {
+              "address": "0x16d13",
+              "bytes": "29d0",
+              "original": "sub     eax, edx",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d13"
+            },
+            {
+              "address": "0x16d15",
+              "bytes": "83f802",
+              "original": "cmp     eax, 2",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d15"
+            },
+            {
+              "address": "0x16d18",
+              "bytes": "7cd9",
+              "original": "jl      short loc_16CF3",
+              "semantic": "未附加推測語意",
+              "level": "unknown",
+              "warning": "語意未經本次審查",
+              "source": "FD2.EXE IDA LE 0x16d18"
+            }
+          ]
+        }
+      ],
+      "normal_checkpoints": [
+        {
+          "seq": 1277,
+          "path": "work/parity-slot-ch07/sample-r6/checkpoint-1277.json",
+          "sha256": "ea99025d1610e6ee5f89a6bee320977f55bf72a756b70c721e56ce285f25cdfe",
+          "address_space": "dosgolem relocated LE linear",
+          "eip": "0x4DF09",
+          "input_chain": [
+            "0x1295F",
+            "0x127D4",
+            "0x11CFA",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "actions": [
+            {
+              "kind": "wait",
+              "seq": 1277,
+              "round": 7,
+              "rng_word": 2588,
+              "gold": 2000,
+              "at": [
+                12,
+                15
+              ]
+            },
+            {
+              "kind": "mark",
+              "seq": 1277,
+              "round": 7,
+              "rng_word": 2588,
+              "gold": 2000,
+              "label": "step_round7",
+              "ui": "cursor"
+            }
+          ]
+        },
+        {
+          "seq": 1455,
+          "path": "work/parity-slot-ch07/sample-r6/checkpoint-1455.json",
+          "sha256": "b2c3021545f8f9ed1bce6169c14d5b84b984bbe17b770fe34997f210e649335c",
+          "address_space": "dosgolem relocated LE linear",
+          "eip": "0x4DEF5",
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "actions": [
+            {
+              "kind": "wait",
+              "seq": 1455,
+              "round": 8,
+              "rng_word": 45432,
+              "gold": 5500,
+              "at": [
+                13,
+                15
+              ]
+            },
+            {
+              "kind": "mark",
+              "seq": 1455,
+              "round": 8,
+              "rng_word": 45432,
+              "gold": 5500,
+              "label": "step_round8",
+              "ui": "cursor"
+            }
+          ]
+        },
+        {
+          "seq": 1634,
+          "path": "work/parity-slot-ch07/sample-r6/checkpoint-1634.json",
+          "sha256": "e5f1ca4fe6371ec9855cb8b78949eeeebb06373e673f9e6c28519a1eda28b9e9",
+          "address_space": "dosgolem relocated LE linear",
+          "eip": "0x373C6",
+          "input_chain": [
+            "0x11ED9",
+            "0x11D3B",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "actions": [
+            {
+              "kind": "wait",
+              "seq": 1634,
+              "round": 9,
+              "rng_word": 47676,
+              "gold": 5500,
+              "at": [
+                11,
+                14
+              ]
+            },
+            {
+              "kind": "mark",
+              "seq": 1634,
+              "round": 9,
+              "rng_word": 47676,
+              "gold": 5500,
+              "label": "step_round9",
+              "ui": "cursor"
+            }
+          ]
+        },
+        {
+          "seq": 1809,
+          "path": "work/parity-slot-ch07/sample-r6/checkpoint-1809.json",
+          "sha256": "1c9b93f828fc2b927522cc4f57150a4342ea0e2da11251664627899f9ab65951",
+          "address_space": "dosgolem relocated LE linear",
+          "eip": "0x4DEF7",
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "actions": [
+            {
+              "kind": "wait",
+              "seq": 1809,
+              "round": 10,
+              "rng_word": 36816,
+              "gold": 5500,
+              "at": [
+                13,
+                15
+              ]
+            },
+            {
+              "kind": "mark",
+              "seq": 1809,
+              "round": 10,
+              "rng_word": 36816,
+              "gold": 5500,
+              "label": "step_round10",
+              "ui": "cursor"
+            }
+          ]
+        },
+        {
+          "seq": 1894,
+          "path": "work/parity-slot-ch07/sample-r6/checkpoint-1894.json",
+          "sha256": "42b1e6ee6051a70700842518436e5fab455dfff1bd2f4e4dc9922ea516575610",
+          "address_space": "dosgolem relocated LE linear",
+          "eip": "0x16D0A",
+          "input_chain": [
+            "0x1ACEE",
+            "0x1B71C",
+            "0x18FEF",
+            "0x25B3D",
+            "0x11ED9",
+            "0x36CE0",
+            "0x13A61",
+            "0x1317A",
+            "0x18A87",
+            "0x11948"
+          ],
+          "actions": [
+            {
+              "kind": "attack_result",
+              "seq": 1894,
+              "round": 10,
+              "rng_word": 16106,
+              "gold": 5500,
+              "frm": [
+                11,
+                10
+              ],
+              "target": [
+                12,
+                10
+              ],
+              "target_hp_after": 0,
+              "actor_hp_after": 328,
+              "enemy_total_hp_before": 1180,
+              "enemy_total_hp_after": 1060,
+              "enemy_alive_before": 8,
+              "enemy_alive_after": 7
+            }
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "level": "confirmed",
+          "source": "normal_checkpoints1277／1455／1634／1809、現行compare_node的next(seq)",
+          "claim": "相同seq先有wait再有mark；原版與重製UI都是cursor，第一筆匹配會錯把mark配為wait。"
+        },
+        {
+          "level": "confirmed",
+          "source": "既有sub_16C57 0x16CF3..0x16D18 raw bytes；#158等待期已閉合；normal_checkpoint1894 EIP16D0A",
+          "claim": "實際EIP16D0A位於sub_16C57等待迴圈的668B02指令，不是input_chain裡的返回位址。當時原版鏈含原始返回1ACEE，頁面等待owner已知；不附加1ACEE所屬遊戲語意。"
+        }
+      ],
+      "spec": {
+        "status": "READY",
+        "rules": [
+          "同seq先保留全部原版動作，以既有attack→attack_armed及mark label映射取唯一語意相符者；零匹配或多匹配均拒收，禁止依UI或順序挑一筆。單一錯動作保留node_differ。",
+          "正常wait與mark在同一seq時，各自獨立配對；重製標記須逐字符合原版非空label。保留原始kind／label與候選數，來源身份不得抹掉。",
+          "原版UI分類保持既有owner優先。新增只接受固定EXE SHA-256、實際EIP精確16D0A與input_chain原始1ACEE返回同時成立；分類dialogue。",
+          "缺hash／錯hash、缺caller、單獨返回marker、相鄰未知EIP及偽造mark仍拒收；未知來源不得從重製UI推定。",
+          "四gate、計畫完整性、640px及保存界線沿用；不覆寫舊失敗報告。"
+        ],
+        "acceptance": [
+          "真實四個wait／mark同seq兩者均正常配對；逆序來源不影響結果，錯label／UI／多來源反例拒收。",
+          "1894正常對白與錯UI反例；錯hash／EIP／caller拒收，既有158 portrait配對及known owner優先保留。",
+          "目前remake重新重播同一固定第七章來源；全節點、行為、交易、完整畫面通過及完整SAV核對，說明歷史原版來源。"
+        ]
+      },
+      "review": {
+        "decision": "既有直接raw bytes及當前失敗收據已充分決定兩處工具修正，READY後才實作。不重開基本對白RE或猜補runtime。",
+        "new_binary_reopen": false
+      },
+      "limits": [
+        "原版sample-r6為歷史已保存收據，不能稱為目前oracle重生或新增PLAYER-E2。",
+        "只閉合此活動停點及目前語意映射；不以整個函式range分類，不改亂數或音訊。"
+      ],
+      "validation": {
+        "receipt": "docs/data/ui-traces/parity-ch07-node-regression-20261004.json",
+        "receipt_sha256": "1edc1bf950ca2890c5f521418677e529a7f2578b352ea01e6d7c912c48e2327f",
+        "scope": "tooling CONFORMED；目前Game重播同源第七章四gate passed，不新增整章PLAYER-E2。",
+        "reports": {
+          "initial_failure": "work/parity-slot-ch07/end-recovery-regression-r1-verified.json",
+          "current": "work/parity-slot-ch07/node-pairing-full-verified-r2.json"
+        },
+        "tests": {
+          "comparison": 26,
+          "driver": 91,
+          "skipped": 0
+        },
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "source_hashes": {
+          "tools/verify_chapter_parity.py": "71d305aa3847b5f859cc473ccfaeb60d97aca55a5f9d123612e6479f4d5b5ec6",
+          "tools/dosgolem_oracle_drive.py": "79f34063023e3a155e22cc620d92211f80e91316a28cf9fc48d5c4f9ef7376ab",
+          "tools/test_verify_chapter_parity.py": "2774a1b29771135041de12214acca978c46eaecf55cece509c42034f418552c9"
+        }
+      }
     }
   ]
 }

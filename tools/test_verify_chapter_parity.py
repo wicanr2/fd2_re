@@ -9,6 +9,60 @@ import verify_chapter_parity as vp  # noqa: E402
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_same_seq_wait_and_mark_use_unique_source_action(self):
+        owner = {"input_chain": ["0x117F8"]}
+        wait = {"kind": "wait", "seq": 1277}
+        mark = {"kind": "mark", "label": "step_round7", "seq": 1277}
+        for actions in ([wait, mark], [mark, wait]):
+            for kind in ("wait", "mark:step_round7"):
+                with self.subTest(order=actions, kind=kind):
+                    cp = {"kind": kind, "ui": "cursor"}
+                    point = vp.compare_node(actions, cp, owner, 1277)
+                    self.assertEqual(point["status"], "ok")
+                    self.assertEqual(point["oracle_action_candidates"], 2)
+                    self.assertEqual(point["oracle_matching_actions"], 1)
+                    self.assertEqual(point["oracle_action_kind"], "mark" if kind.startswith("mark:") else "wait")
+                    if kind.startswith("mark:"):
+                        self.assertEqual(point["oracle_action_label"], "step_round7")
+                    wrong_ui = vp.compare_node(actions, {**cp, "ui": "town"}, owner, 1277)
+                    self.assertEqual(wrong_ui["status"], "node_differ")
+        cp = {"kind": "mark:step_round7", "ui": "cursor"}
+        forged = vp.compare_node([{"kind": "mark:step_round7", "seq": 1277}], cp, owner, 1277)
+        self.assertEqual(forged["status"], "node_differ")
+        for actions in ([wait, {**mark, "label": "step_round8"}],
+                        [wait, {**mark, "kind": "wait"}]):
+            point = vp.compare_node(actions, cp, owner, 1277)
+            self.assertEqual(point["status"], "missing_matching_oracle_action")
+            self.assertFalse(vp.node_gate_ok([point], {"ok": True}, [cp]))
+        for actions in ([wait, mark, dict(mark)], [wait, dict(wait), mark]):
+            kind = "mark:step_round7" if actions[1]["kind"] == "mark" else "wait"
+            point = vp.compare_node(actions, {"kind": kind, "ui": "cursor"}, owner, 1277)
+            self.assertEqual(point["status"], "ambiguous_oracle_action")
+            self.assertFalse(vp.node_gate_ok([point], {"ok": True}, []))
+
+    def test_active_dialogue_wait_pc_requires_fingerprint_and_caller(self):
+        # 原版第七章sample-r6 seq1894；EIP與返回鏈分別核對。
+        cp = {"exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+              "eip": "0x16D0A", "input_chain": ["0x1ACEE", "0x1B71C", "0x18FEF"]}
+        action = {"kind": "attack_result", "seq": 1894}
+        remake = {"kind": "attack_result", "ui": "dialogue"}
+        point = vp.compare_node([action], remake, cp, 1894)
+        self.assertEqual(point["status"], "ok")
+        self.assertEqual(point["oracle_ui"], "dialogue")
+        for bad in ({**cp, "exe_sha256": "wrong"}, {**cp, "exe_sha256": None},
+                    {**cp, "eip": "0x16D0D"}, {**cp, "eip": None},
+                    {**cp, "input_chain": ["0x1B71C"]},
+                    {**cp, "eip": "0x4DFCC", "input_chain": ["0x1ACEE", "0x16D0A"]}):
+            point = vp.compare_node([action], remake, bad, 1894)
+            self.assertEqual(point["status"], "unknown_oracle_ui")
+            self.assertFalse(vp.node_gate_ok([point], {"ok": True}, [remake]))
+        point = vp.compare_node([action], {**remake, "ui": "cursor"}, cp, 1894)
+        self.assertEqual(point["status"], "node_differ")
+        for marker, ui in [("0x117AE", "target"), ("0x17B0B", "status"), ("0x2CE08", "town")]:
+            point = vp.compare_node([action], remake, {**cp, "input_chain": cp["input_chain"] + [marker]}, 1894)
+            self.assertEqual(point["oracle_ui"], ui)
+            self.assertEqual(point["status"], "node_differ")
+
     def test_attack_result_dialogue_owner_is_independent_of_remake_ui(self):
         # 原版正常r6 seq2254。此處保留精確來源鏈，不能直接採remake的ui。
         cp = {"exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",

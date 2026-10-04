@@ -5240,3 +5240,13 @@ READY後接正式END owner，HP/flags/Acted在兩張發布間原子提交，第�
 變更檔與新收據 UID/GID 均為1000:1000。既有 root-owned 基線2811未增加，沒有.md目錄；本批 FD2 容器已全部退出並移除。固定 ch04／ch08 輸入槽雜湊不變，新文件與工具均有索引入口，來源／輸出雜湊及差異檢查通過。
 
 - 本批已提交並推送 a9d261a561d8c294c3c4363a81d02225dfbd5e4e，本機與遠端 HEAD 相同。[#163 已有限結案](https://github.com/wicanr2/fd2_re/issues/163#issuecomment-5977566171)。重新讀取真實遠端後剩23條開啟；#164、#154與章台帳20/30不變。
+
+## 2026-10-04 #164：第七章節點工具回歸
+
+先核對真實 GitHub Issue 與工作樹，再從現行失敗報告追來源。四個 seq 同時有 wait 與 mark，比較器 next 只取第一筆；1894 的實際 EIP16D0A在已閉合等待 owner，不能以 input_chain 缺返回標記斷言未知。重用既有 IDA raw bytes，READY 審查後修唯一語意來源與精確 PC／caller 分類，不改正式 Game、原版 oracle 或畫面閾值。
+
+新增真實來源與反例測試，before-r2確實重現兩項工具缺陷。最初測試記錄重導向未置於命令行，修正後才保存有效基準；收據組裝誤指run內SAV及張數斷言，改按runner.state_directory與實際配對集核對。這些屬驗證腳本問題，產品及原版輸入未改。
+
+目前 Game 由固定槽完整重播第七章，正式四 gate、完整 SAV、既有升級對白及受影響畫面通過。[主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)與[回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)達 tooling CONFORMED。第22／23章只重驗既有來源的節點判準。原版歷史sample-r6、未比較跨時序點與相位限制如實保留，不新增章PLAYER-E2或改變台帳；唯一數字見[58](58-fd2-exe-re-coverage.md)。
+
+變更檔與收據UID/GID1000:1000，既有root-owned基線2811未增、沒有.md目錄。所有本批FD2程序及一次性容器已退出移除；其他專案容器未動。固定第七章輸入槽雜湊未變，來源／輸出雜湊、文件入口、工單及教訓檢查通過。

@@ -2544,3 +2544,11 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 重製由正常LOAD／出戰後匯入原版raw停點的E1夾具取得，不讀取原版像素。相位枚舉未同步時間，三次1tick等待映射到Draw確認；精確DOS wall-clock與音訊人耳驗收不在本收據。source0／透明孔、raw恢復、三Draw HP最後提交、非法tuple與缺資產零交易通過。完整Go回歸2807項通過、34條件式skip，19套件通過、11無測試套件；原版注入與提前HP的收據反例均拒收。其他mode2 caller仍獨立核對，#164／#154與章台帳20/30未改。
 
 - 本批已提交並推送 a9d261a561d8c294c3c4363a81d02225dfbd5e4e，本機與遠端 HEAD 相同。[#163 已有限結案](https://github.com/wicanr2/fd2_re/issues/163#issuecomment-5977566171)。重新讀取真實遠端後剩23條開啟；#164、#154與章台帳20/30不變。
+
+### 2026-10-04 #164：第七章節點配對符合規格
+
+[節點主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)經 READY 審查、實作及驗證已 CONFORMED。同序號四組 wait／mark 的原版來源完整，比較器只取第一筆造成錯配。現按既有名稱映射選取唯一來源，保留原始 kind／label 與候選數；零匹配、多匹配或錯 UI 均拒收。1894 的實際 EIP16D0A 位於已閉合 sub_16C57 等待迴圈，只在固定 EXE 與原始返回1ACEE同時成立時辨識對白；缺條件、相鄰未知 EIP 與偽造標記仍拒收。只修工具，不重開基本 RE，不猜 caller 的遊戲語意。
+
+[目前完整回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)由目前正式 Game 重播同一槽與原版動作取得。179/179 AI 入口消費、零順序分岔；行為、節點、交易、228張畫面均通過。229個可比較節點相同，15個跨時序點仍未比較；四組 wait／mark 及1836／1894對白共十張完整索引與RGB均0差異。兩側實際22987-byte FD2.SAV的SHA-256同為5e5cb9dac3bc974742667c8f8395691a565ebd79d50b3fa34222cf10a446767e。
+
+26項比較器與91項驅動器測試通過、零略過，包含逆序來源、錯label／UI、零／多匹配、偽造標記、錯hash／EIP／caller與既有owner優先反例。第22／23章既有來源的獨立節點判準回歸通過，沒有重跑兩章Game。原版仍是歷史sample-r6，未冒稱目前oracle重生，不新增PLAYER-E2；章台帳20/30不變。較早#29／#163的五個節點拒收由本收據補正。

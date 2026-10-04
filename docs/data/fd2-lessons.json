@@ -1437,6 +1437,14 @@
       "rule": "原版EIP追蹤先限定已知caller／writer，或用from／to範圍排除啟動期熱reader。解讀缺項前核對trace筆數與MAX，並檢查尾端指令時點。入口tools/dosgolem_oracle.sh的FD2_ORACLE_EIP_TRACE_FROM／TO／MAX及docs/data/ida/fd2_ai_idle_recovery_20261004.json。",
       "why": "4DEDA在啟動期重複解碼使20000筆trace滿額，早於13FD4實驗。移除兩個熱reader後同計畫得到真正caller與拒絕分支。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/163"
+    },
+    {
+      "id": "node-pairing-matches-unique-action",
+      "date": "2026-10-04",
+      "area": "對拍工具",
+      "rule": "同一原版控制序號有多個語意動作時，以已審查的kind／mark label映射選取唯一來源；不依紀錄順序或UI挑選。零匹配與多匹配拒收，保留原始kind／label及候選數。入口tools/verify_chapter_parity.py的comparable_action_kind／compare_node與docs/data/fd2-chapter-node-comparison-contract.json extension164。",
+      "why": "第七章四次待機與章標記共用seq，next只取第一筆wait，使同狀態cursor的mark誤報node_differ。",
+      "evidence": "docs/data/ui-traces/parity-ch07-node-regression-20261004.json"
     }
   ]
 }

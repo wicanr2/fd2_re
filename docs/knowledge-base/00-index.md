@@ -565,3 +565,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [AI 原地回復完整索引與 RGB 核對工具](../../tools/verify_ai_idle_recovery_parity.py)：在 Docker 內核對 #163 的 r7 三停點、HP 尾端及合法相位；不遮罩像素。
 
 - [AI 原地回復三次顯示與 HP 尾端收據](../data/ui-traces/ai-idle-recovery-20261004.json)：#163，正常原版重生、同源 raw E1、完整索引／RGB 0 差異；不提升章台帳。
+
+- [第七章目前重播的節點配對回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)：#164，唯一語意來源與實際對白 EIP 判準；歷史原版 sample-r6、目前 Game 四 gate 通過，不新增章 PLAYER-E2。規格沿用[節點主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)。

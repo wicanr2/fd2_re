@@ -647,6 +647,10 @@ DIALOGUE_RANGE = (0x1E400, 0x1E5FF)
 DIALOGUE_PORTRAIT_WAIT_RETURNS = ("0x16D66", "0x16D92")
 DIALOGUE_PORTRAIT_BLIT_RETURNS = ("0x16596", "0x165A7")
 DIALOGUE_PORTRAIT_EXE_SHA256 = "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+# #164：已閉合 sub_16C57 等待迴圈的實際 PC，原版 ch07 seq1894。
+# PC 與返回鏈分開核對，不把整個函式範圍或單獨 caller 當成對白。
+DIALOGUE_ACTIVE_WAIT_PC = "0x16D0A"
+DIALOGUE_ACTIVE_WAIT_CALLER = "0x1ACEE"
 
 
 # 方向鍵會移動地圖游標的模式。其餘模式送方向鍵是在選選項，不會動游標。
@@ -688,6 +692,10 @@ def ui_mode(current):
     for name, marker in UI_MODES:
         if marker in chain:
             return name
+    if (current.get("exe_sha256") == DIALOGUE_PORTRAIT_EXE_SHA256 and
+            current.get("eip") == DIALOGUE_ACTIVE_WAIT_PC and
+            DIALOGUE_ACTIVE_WAIT_CALLER in chain):
+        return "dialogue"
     if (current.get("exe_sha256") == DIALOGUE_PORTRAIT_EXE_SHA256 and
             any(marker in chain for marker in DIALOGUE_PORTRAIT_WAIT_RETURNS) and
             any(marker in chain for marker in DIALOGUE_PORTRAIT_BLIT_RETURNS)):
