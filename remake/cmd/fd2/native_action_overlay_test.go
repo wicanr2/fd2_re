@@ -426,7 +426,7 @@ func TestNativeActionSelectableRejectsDisabledWordAndInvalidDirection(t *testing
 
 func TestNativeCommandTargetWhitelistKeepsUnresolvedIDsFailClosed(t *testing.T) {
 	g := &Game{}
-	for _, id := range []int{0, 1, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35} {
+	for _, id := range []int{0, 1, 6, 13, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35} {
 		if !g.nativeCommandTargetSupported(id) {
 			t.Fatalf("verified target/effect id %d was rejected", id)
 		}

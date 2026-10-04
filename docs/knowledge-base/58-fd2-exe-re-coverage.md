@@ -2475,3 +2475,17 @@ Python驅動89項與獨立比較24項全部通過，零略過；相關Go17項通
 #154的bank32 frame9相對RLE offset11757與runtime source pointer相符，channel2的dest在work前499位元組，首opaque x77實際落在work前422位元組。work=0x1CECE8、背景=0x1486B0，本次兩配置距550456，不別名到64000-byte背景；不能因此外推沒有其他配置前consumer。原版12次target viewport完整copy後由既有oracle frame-eip=0x2AFBF捕獲。觀察前後233/233檢查點一致，零差異，不遮蔽像素。配置前consumer與重製整段影格比較仍待，正式負列保持原子拒收，不把這份原版收據稱為#154 runtime完成。
 
 第三方來源及當時HP／MP均留在收據，不當自然成長、傷害oracle或第30章PLAYER-E2。本輪章台帳仍20/30；#142／#154／#160未完成，AP+200／DP+0／DX+60及待決DP政策不變。前述r2「重跑中」與未取得normal負列的舊狀態由本段取代，歷史不回寫。
+
+### 2026-10-04 #160：玩家指令6中心與正式白名單
+
+[主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)已補指令6一般分支的原始指令：0x1D2BF建立selection、0x1D2E3確認游標、0x1D32A依確認中心建立effect名單。0x1D1B0..0x1D229屬command23特殊分支，保留供回查，不能代替指令6正常caller。規格經審查為READY，再新增反例，先重現confirmed unit不是第一段候選的拒收。
+
+正式白名單另缺6。共用field分支允許空名單成立，但未代表指令6正式入口已開放。現在補白名單，confirm把游標Cell交給指令6presentation與planner；effect名單不再以中心格單位為損傷目標。其他指令的直接單位入口與AI winner-cell取目標維持既有範圍，未宣稱一併修復。
+
+9組範圍／raw欄位／預檢案例及4組正式confirm回歸通過。受控side0的我方格、空格中心完成MP1101→1071、敵HP83→4、RNG3473→33552與modal回復；非零side1兩中心均在target frame7的(141,-1 143x111)拒收，MP／HP／Acted／RNG不變。
+
+同一SHA f46d9c54玩家槽經正式CONTINUE owner載入，原地選取record6並以既有modal owner窄交接後，在我方record18格(22,20)確認。施法前明示固定原版entry RNG3473；具型別名單只含敵record24，預計MP／HP／RNG末值與原版一致。正式渲染仍於#154負列拒收；這是同源局部資料流比對，沒有全程正常鍵盤、完整重製影格或章E2宣稱。
+
+完整Go回歸19個有測試套件通過，2775項包含父案例與子案例，30項條件略過，零失敗；同源窄探針另跑通過。初次完整測試錯用90秒上限且缺封包locales連結，依既有full_go契約乾淨重跑；窄探針漏Draw承認造成opening停住，沿用既有開合helper修正，均不是產品缺陷。
+
+#160達DATA-READY及有限RUNTIME-E1，保持開啟。#154的完整12張target viewport重製比較與非零側端到端施法仍待；章台帳20/30與第24章隊伍政策不變。

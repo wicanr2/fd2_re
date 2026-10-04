@@ -1,12 +1,19 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/battlepresent"
+	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
@@ -140,6 +147,234 @@ func TestNativeCommand6RNGMatchesOriginalChapter24Targets(t *testing.T) {
 					t.Fatalf("final=%d want=%d calls=%d err=%v", final, tc.final, calls, err)
 				}
 			})
+		}
+	}
+}
+
+// #160 的 UI 回歸使用已證座標與固定 RNG；side0 是受控演出資料，
+// 非零側仍依 #154 拒收，不能把本測試稱為原版完整影格對拍。
+func TestPlayerNativeCommand6CursorCentersThroughConfirm(t *testing.T) {
+	for _, side := range []byte{0, 1} {
+		for _, empty := range []bool{false, true} {
+			t.Run(fmt.Sprintf("side%d/empty%v", side, empty), func(t *testing.T) {
+				assets, field, state := completeNativeMapFrameFixture(t)
+				pack := filepath.Clean("../../generated-assets/fd2-original-b97caf22")
+				if !fileExists(filepath.Join(pack, "animations", "FDOTHER_032", "animation.json")) {
+					t.Skip("separated command6 pack unavailable")
+				}
+				t.Setenv("FD2_ASSET_PACK", pack)
+				t.Setenv("FD2_MUTE", "1")
+				base := filepath.Clean("../../../org_game/炎龍騎士團/FLAME2")
+				t.Setenv("FD2_ORIGINAL_FDTXT", filepath.Join(base, "FDTXT.DAT"))
+				field.W, field.H = 30, 30
+				field.Tiles = make([]int, 900)
+				state.W, state.H = 30, 30
+				state.NativeTileBlitModes = make([]byte, 900)
+				state.NativeCompositionEventBytes = make([]byte, 900)
+				actor := state.Units[0]
+				actor.Camp, actor.OnField, actor.X, actor.Y = battle.Own, true, 20, 22
+				actor.HP, actor.MaxHP, actor.MP, actor.MaxMP = 331, 331, 1101, 1101
+				actor.NativeRecordByte6 = side
+				actor.NativeRecordByte8 = 0
+				actor.HasNativeRecordByte8 = true
+				actor.InventorySlots, actor.NativeInventoryFlags = make([]int, 8), make([]int, 8)
+				actor.NativeCommandMask = [5]byte{0x40}
+				center := *actor
+				center.X, center.Y, center.HP, center.MaxHP = 22, 20, 877, 877
+				target := &battle.Unit{Camp: battle.Enemy, X: 22, Y: 18, HP: 83, MaxHP: 83, ClassID: 4, OnField: true,
+					BattleFig: 0, HasBattleFig: true, HasNativeRecordByte5: true, NativeRecordByte6: 1, HasNativeRecordByte6: true,
+					NativeRecordByte8: 1, HasNativeRecordByte8: true, NativeRecordRace: 1, HasNativeRecordRace: true,
+					NativeRecordClass: 4, HasNativeRecordClass: true, InventorySlots: make([]int, 8), NativeInventoryFlags: make([]int, 8)}
+				state.Units = []*battle.Unit{actor, &center, target}
+				book, err := battle.LoadNativeCommandRecords("../../assets/spells.json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				state.NativeCommandBook = book
+				state.NativeCommandResistances = map[int]int{4: 4}
+				scene, err := battle.LoadNativeCommandSceneTable("../../assets/data/native_command_scene.json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				flash, err := battle.LoadNativeCommandPaletteFlashTable("../../assets/data/native_command_palette_flash.json")
+				if err != nil {
+					t.Fatal(err)
+				}
+				for len(assets.LUTs) <= 14 {
+					lut := make([]byte, 256)
+					for i := range lut {
+						lut[i] = byte(i)
+					}
+					assets.LUTs = append(assets.LUTs, lut)
+				}
+				g := &Game{m: field, st: state, sel: actor, curX: 22, curY: 20, nativeCommand0Targeting: true, nativeCommandTargetID: 6,
+					nativeMapAssets: assets, nativeUIPalette: loadNativeUIPalette(), nativeCommandScene: scene, nativeCommandPaletteFlash: flash, nativeRNGState: 3473}
+				attachOfficialLocale(t, g)
+				if empty {
+					g.curX, g.curY = 21, 19
+				}
+				if candidates, err := g.nativeCommandTargetUnitsFor(6); err != nil || len(candidates) != 0 {
+					t.Fatalf("initial candidates=%v err=%v", candidates, err)
+				}
+				if err := g.materializeNativeCommandTargetField(book[6]); err != nil {
+					t.Fatal(err)
+				}
+				g.confirm()
+				if actor.MP != 1101 || actor.Acted || target.HP != 83 || center.HP != 877 || g.nativeRNGState != 3473 {
+					t.Fatal("confirm crossed prebuild boundary")
+				}
+				if side != 0 {
+					if g.nativeCmd6Presentation != nil || !strings.Contains(g.msg, "work frame bounds (141,-1 143x111)") {
+						t.Fatalf("expected #154 refusal after valid center, msg=%q", g.msg)
+					}
+					if !g.nativeCommand0Targeting || g.sel != actor {
+						t.Fatal("prebuild failure lost target modal")
+					}
+					return
+				}
+				if g.nativeCmd6Presentation == nil {
+					t.Fatalf("valid cursor did not start command6: %s", g.msg)
+				}
+				if len(g.nativeCmd6Presentation.plan.Results) != 1 || g.nativeCmd6Presentation.plan.Results[0].Target != target {
+					t.Fatal("cursor occupant became damage target")
+				}
+				g.stepNativeCommand6Presentation()
+				if actor.MP != 1101 || target.HP != 83 {
+					t.Fatal("undrawn frame published state")
+				}
+				screen := ebiten.NewImage(640, 400)
+				for steps := 0; g.nativeCmd6Presentation != nil && steps < 256; steps++ {
+					if !g.drawNativeCommand6Presentation(screen) {
+						t.Fatal("command6 draw failed")
+					}
+					g.stepNativeCommand6Presentation()
+				}
+				if g.nativeCmd6Presentation != nil || actor.MP != 1071 || !actor.Acted || target.HP != 4 || center.HP != 877 || g.nativeRNGState != 33552 {
+					t.Fatalf("transaction MP=%d HP=%d center=%d RNG=%d acted=%v err=%s", actor.MP, target.HP, center.HP, g.nativeRNGState, actor.Acted, g.loadErr)
+				}
+				if g.nativeCommand0Targeting || g.sel != nil || state.NativeMapRangeMode != 1 {
+					t.Fatal("command6 did not restore player modal")
+				}
+			})
+		}
+	}
+}
+
+// 與 #154 正常原版使用同一固定玩家槽，經正式 CONTINUE owner 載入。
+// 游標／modal 使用公開玩家處理器作窄測試；施法入口 RNG 明示固定為3473。
+// 這是局部資料流比對，沒有全程鍵盤或影像一致的宣稱。
+func TestNativeCommand6OriginalContinueCursorProbe(t *testing.T) {
+	savePath := os.Getenv("FD2_COMMAND6_CURSOR_SAVE")
+	if savePath == "" {
+		t.Skip("未提供#154固定玩家槽")
+	}
+	stored, err := os.ReadFile(savePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sum := sha256.Sum256(stored)
+	hash := hex.EncodeToString(sum[:])
+	if hash != "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f" {
+		t.Fatalf("unreviewed source SHA256=%s", hash)
+	}
+	t.Setenv("FD2_NATIVE_SAVE", savePath)
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
+	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_MUTE", "1")
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	g.camp, g.titlePhase, g.titleSel = campaign.NewRunner(graph), "menu", 0
+	if !g.applyTitleMenuEvent(TitleMenuDown) || !g.applyTitleMenuEvent(TitleMenuDown) || !g.applyTitleMenuEvent(TitleMenuConfirm) {
+		t.Fatal("CONTINUE owner rejected")
+	}
+	for tick := 0; tick < 24; tick++ {
+		if !g.applyTitleMenuEvent(TitleMenuTick) {
+			t.Fatal("CONTINUE tick rejected")
+		}
+	}
+	if g.camp.NodeID() != "battle_ch30" || g.st == nil || len(g.st.Units) != 27 || g.st.NativeRoundCounter != 4 {
+		t.Fatalf("wrong CONTINUE state node=%s", g.camp.NodeID())
+	}
+	actor, center, target := g.st.Units[6], g.st.Units[18], g.st.Units[24]
+	if actor.X != 20 || actor.Y != 22 || actor.MP != 1101 || target.X != 22 || target.Y != 18 || target.HP != 83 || center.X != 22 || center.Y != 20 {
+		t.Fatalf("source records differ actor=%+v target=%+v center=%+v", actor, target, center)
+	}
+	if !g.positionScreenshotCursor(20, 22) {
+		t.Fatal("normal cursor could not reach caster")
+	}
+	g.confirm()
+	if g.sel != actor {
+		t.Fatal("normal selection did not choose record6")
+	}
+	g.confirm()
+	r := &parityReplay{t: t, g: g}
+	r.settleActionOverlay(parityAction{Kind: "stay"})
+	if !g.ring || g.actionOverlayBlocksInput() {
+		t.Fatal("stationary ring did not settle")
+	}
+
+	if !nativeActionSelectable(g.actionOverlayAvailability(), 1) {
+		t.Fatal("stationary spell action unavailable")
+	}
+	// 此窄探針以既有 owner 交接 modal，沒有新增狀態注入、移動單位或改槽。
+	if !closeRing(t, g, func() { g.nativeCommandOpen = true; g.nativeCommandSel = 0 }) {
+		t.Fatal("spell UI handoff did not complete")
+	}
+
+	if candidates, err := g.nativeCommandTargetUnitsFor(6); err != nil || len(candidates) != 0 {
+		t.Fatalf("selection list=%v err=%v", candidates, err)
+	}
+	cursor := battle.Cell{X: 22, Y: 20}
+	g.nativeCommandOpen = false
+	g.nativeCommand0Targeting = true
+	g.nativeCommandTargetID = 6
+	if err := g.materializeNativeCommandTargetField(g.st.NativeCommandBook[6]); err != nil {
+		t.Fatal(err)
+	}
+	if !g.positionScreenshotCursor(cursor.X, cursor.Y) {
+		t.Fatal("normal target cursor rejected center")
+	}
+	effect, err := figani.LoadSeparatedArchiveResource(separatedAssetPath("animations"), "FDOTHER.DAT", 32)
+	if err != nil {
+		t.Fatal(err)
+	}
+	schedule, err := figani.BuildNativeCommand6PresentationSchedule(actor.NativeRecordByte6, effect)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeRNGState = 3473
+	walk := func(n int, resolve func(int, uint16) (uint16, bool, error)) (uint16, error) {
+		return figani.WalkNativeCommand6RNG(3473, schedule, actor.NativeRecordByte6, n, resolve)
+	}
+	plan, err := g.st.PlanNativeCommand6DamageAtCursor(actor, cursor, g.st.NativeCommandResistances, 3473, walk)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Results) != 1 || plan.Results[0].Target != target || plan.Results[0].HPAfter != 4 || plan.MPAfter != 1071 || plan.RNGAfter != 33552 {
+		t.Fatalf("same-source planner differs: plan=%+v results=%+v", plan, plan.Results)
+	}
+	g.confirm()
+	if !strings.Contains(g.msg, "work frame bounds (141,-1 143x111)") || g.nativeCmd6Presentation != nil || actor.MP != 1101 || target.HP != 83 || actor.Acted || g.nativeRNGState != 3473 || !g.nativeCommand0Targeting {
+		t.Fatalf("expected #154 atomic refusal, msg=%s", g.msg)
+	}
+	report := map[string]interface{}{"source_save_sha256": hash, "source_classification": "既有固定第三方玩家槽；同源CONTINUE局部資料流，不是全程正常鍵盤或章E2",
+		"actor_record": 6, "center": cursor, "center_record": 18, "effect_targets": []int{24}, "mp_before": 1101, "planned_mp_after": plan.MPAfter,
+		"hp_before": 83, "planned_hp_after": plan.Results[0].HPAfter, "controlled_rng_at_cast": 3473, "planned_rng_after": plan.RNGAfter,
+		"rng_method":    "執行施法規劃前固定原版0x1C75E entry3473，隔離中心與作用名單，不宣稱選單跨段骰序一致",
+		"render_result": "#154負列原子拒收", "error": g.msg, "state_unchanged": true, "original_runner": "dosgolem apps/fd2/cmd/oracle 951cb55f7834311fccbce208fde6bc48d57f1c5a"}
+	if out := os.Getenv("FD2_COMMAND6_CURSOR_OUT"); out != "" {
+		raw, err := json.MarshalIndent(report, "", "  ")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(out, append(raw, '\n'), 0644); err != nil {
+			t.Fatal(err)
 		}
 	}
 }

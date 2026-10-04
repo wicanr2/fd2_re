@@ -125,7 +125,7 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 `player-command-area-empty-cursor` · 缺陷 · [#160](https://github.com/wicanr2/fd2_re/issues/160) · 仍未完成 · 要人判
 
-#154 固定第三方 fd2last.sav 的 dosgolem 正常 CONTINUE／原地法術選單收據：actor record6=(20,22)，command6 selection4／effect2，在我方record18所在格(22,20)確認，原版 0x1D441→0x2A6BD(actor6,command6,count1) 對敵record24=(22,18)施法並扣MP1101→1071。敵人距actor6、中心距actor4。既有Go selection UI沒有因第一段名單空而拒收，field與selector writer已正確；正式confirm將中心格UnitAt交給presentation，NativeCommandEffectTargets要求confirmed unit是第一段直接敵軍候選，導致這個合法中心被planner拒收。先以固定 IDA 一般分支 0x1D2BF／0x1D2E3／0x1D32A 的原始 caller／bytes和新正常收據形成RE與DRAFT，不以猜測接production。#154負列渲染獨立；第三方槽不新增章E2或自然傷害驗收。
+#154 固定第三方 fd2last.sav 的 dosgolem 正常 CONTINUE／原地法術選單收據：actor record6=(20,22)，command6 selection4／effect2，在我方record18所在格(22,20)確認，原版 0x1D441→0x2A6BD(actor6,command6,count1) 對敵record24=(22,18)施法並扣MP1101→1071。敵人距actor6、中心距actor4。既有共用 selection 分支允許空候選名單，field 與 selector writer 正確；但正式指令白名單缺6，正常選單尚不能進入該分支。正式confirm將中心格UnitAt交給presentation，NativeCommandEffectTargets要求confirmed unit是第一段直接敵軍候選，導致這個合法中心被planner拒收。先以固定 IDA 一般分支 0x1D2BF／0x1D2E3／0x1D32A 的原始 caller／bytes和新正常收據形成RE與DRAFT，不以猜測接production。#154負列渲染獨立；第三方槽不新增章E2或自然傷害驗收。
 
 怎樣算做完：['固定 EXE、IDA 原始位址／bytes／caller 與正常玩家收據，證實 selection 欄位、游標確認及 effect 名單的資料流，登記 RE 後形成 READY；保留原證據索引。', 'READY 後玩家正式目標確認傳遞游標 Cell，依已證範圍及 effect 名單施法；中心可為我方格或空格。MP／HP／Acted／RNG 完整預檢後發布，未知指令和非法範圍仍拒收。', '正常案例 actor(20,22)／center(22,20)／enemy(22,18) 的玩家 UI 與規則測試通過；抽測直接敵格、空格、我方格、無敵範圍、格外中心、取消及 AI 路徑。不提升未完成章的 E2。']
 

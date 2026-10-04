@@ -57,7 +57,18 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 	if !g.nativeFullPresentationEnabled() {
 		return errors.New("native abbreviated presentation owner unavailable")
 	}
-	if g == nil || g.st == nil || actor == nil || confirmed == nil || g.nativeCommandScene == nil ||
+	if confirmed == nil {
+		return errors.New("native command6 confirmed unit unavailable")
+	}
+	return g.startNativeCommand6PresentationAtCursor(actor, battle.Cell{X: confirmed.X, Y: confirmed.Y}, then)
+}
+
+// 玩家確認保留 cursor Cell；AI 的既有 origin／名單路徑沿用。
+func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, cursor battle.Cell, then func([]battle.NativeCommandDamageResult)) error {
+	if !g.nativeFullPresentationEnabled() {
+		return errors.New("native abbreviated presentation owner unavailable")
+	}
+	if g == nil || g.st == nil || actor == nil || g.nativeCommandScene == nil ||
 		g.nativeCommandPaletteFlash == nil || g.nativeCmd0Presentation != nil || g.nativeCmd1Presentation != nil || g.nativeCmd2Presentation != nil || g.nativeCmd3Presentation != nil || g.nativeCmd5Presentation != nil || g.nativeCmd6Presentation != nil ||
 		g.nativeCmd7Presentation != nil || g.nativeCmd8Presentation != nil || g.nativeCmd9AIPresentation != nil || g.nativeCmd24Presentation != nil || g.nativeCmd29Presentation != nil || g.nativeHealPresentation != nil ||
 		g.nativeModifierPresentation != nil || g.atk != nil {
@@ -89,7 +100,7 @@ func (g *Game) startNativeCommand6Presentation(actor, confirmed *battle.Unit, th
 			plan, err = g.st.PlanNativeAICommandDamageWalk(actor, origin, 6, g.st.NativeCommandResistances, rngBefore, walk)
 		}
 	} else {
-		plan, err = g.st.PlanNativeCommandDamageWalk(actor, confirmed, 6, g.st.NativeCommandResistances, rngBefore, walk)
+		plan, err = g.st.PlanNativeCommand6DamageAtCursor(actor, cursor, g.st.NativeCommandResistances, rngBefore, walk)
 	}
 	if err != nil {
 		return err

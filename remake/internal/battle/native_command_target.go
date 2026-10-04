@@ -440,11 +440,9 @@ func NativeAttackCandidates(w, h int, origin Cell, mode, innerRadius, targetCode
 	return targets, nil
 }
 
-// NativeCommandEffectTargets mirrors the generic two-stage 0x1cff0 path.
-// The first 0x14818 call originates at actor with record+3; 0x115b6 confirms
-// one member of that list; the second call originates at the confirmed unit's
-// cell with record+4 and supplies the effect list to 0x2a6bd.  It deliberately
-// excludes the command 0x17/0x1e special branches and all presentation.
+// NativeCommandEffectTargets 保留既有直接單位入口的候選檢查。
+// 它不能表示空格或我方格的範圍中心；玩家指令6改用 AtCursor 入口。
+// 原版 caller 與取代原因見 fd2_player_command6_cursor_center_20261004.json。
 func NativeCommandEffectTargets(w, h int, actor, confirmed *Unit, selectionMode, effectMode, targetCode int, flags []byte, units []*Unit) ([]*Unit, error) {
 	rawComplete := nativeTargetRosterRawComplete(units)
 	if !nativeTargetActorUsable(actor, rawComplete) || !nativeTargetActorUsable(confirmed, rawComplete) {
@@ -465,6 +463,37 @@ func NativeCommandEffectTargets(w, h int, actor, confirmed *Unit, selectionMode,
 		return nil, fmt.Errorf("confirmed unit is not a native command candidate")
 	}
 	return NativeCommandTargets(w, h, Cell{X: confirmed.X, Y: confirmed.Y}, effectMode, targetCode, flags, units)
+}
+
+// NativeCommandEffectTargetsAtCursor 依 sub_1CFF0 的一般分支驗證游標中心。
+// 0x1D2BF 建 actor selection field，0x1D2E3 確認游標，0x1D32A 再以
+// cursor、record+4 建作用名單。中心格可為空格或我方格，不能先當成目標單位。
+// 證據：docs/data/ida/fd2_player_command6_cursor_center_20261004.json。
+func NativeCommandEffectTargetsAtCursor(w, h int, actor *Unit, cursor Cell, selectionMode, effectMode, targetCode int, flags []byte, units []*Unit) ([]*Unit, error) {
+	if !nativeTargetRosterRawComplete(units) || !nativeTargetActorUsable(actor, true) ||
+		cursor.X < 0 || cursor.Y < 0 || cursor.X >= w || cursor.Y >= h || effectMode < 0 || effectMode > 0xff {
+		return nil, fmt.Errorf("invalid native command cursor/raw roster")
+	}
+	field, err := NativeCommandTargetFieldBytes(w, h, Cell{X: actor.X, Y: actor.Y}, selectionMode, 0, flags)
+	if err != nil {
+		return nil, err
+	}
+	allowed, err := NativeCursorConfirmationAllowed(cursor, field[cursor.Y*w+cursor.X],
+		NativeMapOverlaySelectorFromRecordByte(byte(effectMode)), targetCode, units)
+	if err != nil {
+		return nil, err
+	}
+	if !allowed {
+		return nil, fmt.Errorf("native command cursor confirmation refused")
+	}
+	targets, err := NativeCommandTargets(w, h, cursor, effectMode, targetCode, flags, units)
+	if err != nil {
+		return nil, err
+	}
+	if len(targets) == 0 {
+		return nil, fmt.Errorf("native command cursor effect list is empty")
+	}
+	return targets, nil
 }
 
 // NativeCommand30Targets mirrors the special 0x149F8 selector used only by

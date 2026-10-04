@@ -96,6 +96,28 @@ func (s *State) PlanNativeCommandDamageWalk(actor, confirmed *Unit, commandID in
 	if err != nil {
 		return nil, err
 	}
+	return s.planNativeCommandDamageTargets(actor, commandID, record, targets, resistByClass, rngState, walk)
+}
+
+// PlanNativeCommand6DamageAtCursor 驗證玩家游標中心並沿用完整損傷預檢交易。
+// 指令6的其他演出與發布時點仍由原有 owner 處理。
+func (s *State) PlanNativeCommand6DamageAtCursor(actor *Unit, cursor Cell, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {
+	if s == nil || actor == nil || actor.Camp == Enemy || len(s.NativeCommandBook) != NativeCommandRecordCount || s.NativeCommandBook[6].ID != 6 {
+		return nil, fmt.Errorf("native player command6 record/actor unavailable")
+	}
+	record := s.NativeCommandBook[6]
+	flags, err := s.NativeCommandBaseFlags()
+	if err != nil {
+		return nil, err
+	}
+	targets, err := NativeCommandEffectTargetsAtCursor(s.W, s.H, actor, cursor, record.SelectionMode, record.EffectMode, record.TargetCode, flags, s.Units)
+	if err != nil {
+		return nil, err
+	}
+	return s.planNativeCommandDamageTargets(actor, 6, record, targets, resistByClass, rngState, walk)
+}
+
+func (s *State) planNativeCommandDamageTargets(actor *Unit, commandID int, record NativeCommandRecord, targets []*Unit, resistByClass map[int]int, rngState uint16, walk NativeCommandDamageRNGWalk) (*NativeCommandDamagePlan, error) {
 	// The original table is total for valid runtime class IDs.  Validate every
 	// target before 0x1CA89-equivalent MP mutation to keep a missing editable
 	// table entry fail-closed rather than making a partial command transaction.

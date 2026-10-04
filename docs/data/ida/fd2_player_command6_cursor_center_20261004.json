@@ -3,11 +3,11 @@
   "kind": "fd2_player_command6_cursor_center",
   "date": "2026-10-04",
   "issue": 160,
-  "status": "RE-CLOSED / DRAFT",
+  "status": "RE-CLOSED / DATA-READY / limited RUNTIME-E1; player cast blocked by #154",
   "layers": {
     "RE-CLOSED": true,
-    "DATA-READY": false,
-    "RUNTIME-E1": false,
+    "DATA-READY": true,
+    "RUNTIME-E1": true,
     "PLAYER-E2": false
   },
   "input": {
@@ -1642,12 +1642,12 @@
     "reopen_reason": "正常同狀態caller／consumer直接反證既有typed confirmed-unit限制；保留舊helper與原證據，僅修正玩家consumer，不重新命名函式或覆蓋歷史。"
   },
   "draft_spec": {
-    "status": "DRAFT",
+    "status": "READY",
     "scope": "先修指令6玩家原地範圍center，selection field與cursor gate保留，effect名單由center構成。AI直接target路徑另保留既有驗證。",
     "contract": [
       "confirmed cursor是具型別Cell，可為空格或我方單位格，仍需selection field非ff且cursor gate成立。",
       "只以已證record+4／target code從center建effect list；不以中心單位當損傷對象或假造unit。",
-      "既有selection field與UI開啟邏輯保留；空候選名單可正常開target UI，正式確認與planner應傳遞cursor Cell。",
+      "保留既有selection field與空候選UI分支；白名單補指令6。正式確認與planner傳遞cursor Cell，完整資產預檢保持拒收未知負列。",
       "非法center、範圍無目標、未知資產／指令仍原子拒收，MP／HP／Acted／RNG發布依既有完整演出交易。",
       "現有#154負列尚未READY，不能以這個UI修正略過compositor拒收。"
     ],
@@ -1655,7 +1655,23 @@
       "正常case actor20,22／center22,20／enemy22,18可開target modal並生成正確effect名單。",
       "直接敵格、空格、己方格中心、格外中心、無enemy effect、取消及AI既有路徑回歸。",
       "先補正式玩家UI測試，再與dosgolem同一狀態確認；未取得端到端演出不稱runtime完成。"
-    ]
+    ],
+    "review": {
+      "date": "2026-10-04",
+      "result": "READY",
+      "basis": [
+        "IDA 一般分支 0x1D2BF／0x1D2E3／0x1D32A 原始 bytes",
+        "normal checkpoint31 返回0x1D2E8及 0x1D441→0x2A6BD count1",
+        "既有 selection field 與 cursor gate writer／consumer"
+      ],
+      "decisions": [
+        "只新增指令6玩家的 Cell 規劃入口，不修改其他指令的舊直接單位入口或 AI 取目標。",
+        "中心先驗 selection field 與 record+4+2 的 cursor gate，再依 record+4 建 effect 名單。",
+        "演出沿既有完整預建與發布交易；#154 bank32 負列繼續拒收。",
+        "正式nativeCommandTargetSupported補指令6；既有共用field分支本身正確，但漏白名單造成正式入口不可達。"
+      ],
+      "limits": "範圍中心修正可實作；正常非零側端到端演出依賴#154，不先宣稱完成。"
+    }
   },
   "limits": [
     "第三方槽不證明自然成長、傷害平衡或整章PLAYER-E2。",
@@ -1663,8 +1679,8 @@
     "未審查的原始instructions語意保留unknown警示。"
   ],
   "current_ui_already_correct": {
-    "source": "remake/cmd/fd2/main.go 5743..5751、materializeNativeCommandTargetField",
-    "finding": "既有UI僅要求nativeCommandTargetUnitsFor沒有error，不因list長度0拒收；selection field／overlay selector已按record構成。#160修正consumer的confirmedUnit限制，不把既有UI開啟當缺陷。"
+    "source": "remake/cmd/fd2/main.go nativeCommandTargetSupported、5743..5751、materializeNativeCommandTargetField",
+    "finding": "共用selection分支不因候選數0拒收，field／selector writer已正確；但nativeCommandTargetSupported白名單漏指令6，使正常選單尚不能進該分支。#160同時修補白名單和confirmedUnit消費端。"
   },
   "branch_review": {
     "level": "已證實",
@@ -1684,5 +1700,89 @@
       "normal_original.before.input_chain 0x1D2E8",
       "normal_original.runtime_entries 0x1D441→0x2A6BD"
     ]
+  },
+  "corrections": [
+    {
+      "date": "2026-10-04",
+      "old_claim": "指令6selection UI已可進target分支。",
+      "new_evidence": "正式UI回歸直接得到native target command context unavailable；nativeCommandTargetSupported目前只含0／1／2／8等，缺6。",
+      "replacement": "共用selection分支允許空名單成立；指令6還需要白名單漏接修正。正式演出仍完整預檢。"
+    }
+  ],
+  "validation_environment": {
+    "failed_run": "work/parity-slot-ch24/player-command6-cursor-full-go-r1.jsonl",
+    "problem": "錯用窄測試90秒上限且未建既有完整回歸/tmp/fd2-pack/locales連結。cmd/fd2在90秒中止；戰役介面部分斷言失敗，不能當產品回歸結論。",
+    "recovery": "沿用指令6主證據既有full_go的封包語系連結與600秒上限，以相同維護image乾淨重跑；沒有修改遊戲或放寬斷言。"
+  },
+  "implementation": {
+    "status": "DATA-READY / limited RUNTIME-E1",
+    "date": "2026-10-04",
+    "paths": [
+      "remake/cmd/fd2/main.go nativeCommandTargetSupported／confirm id6",
+      "remake/cmd/fd2/native_command6_presentation.go startNativeCommand6PresentationAtCursor",
+      "remake/internal/battle/native_command0.go PlanNativeCommand6DamageAtCursor",
+      "remake/internal/battle/native_command_target.go NativeCommandEffectTargetsAtCursor"
+    ],
+    "validation": {
+      "status": "有限RUNTIME-E1；#160仍開啟，正常非零側完整演出依賴#154",
+      "negative": {
+        "path": "work/parity-slot-ch24/player-command6-cursor-negative-r1.log",
+        "sha256": "193437681252099ef259d1b9f338329cb867d727f0e06676dbcc923d004aee3f"
+      },
+      "targeted": {
+        "path": "work/parity-slot-ch24/player-command6-cursor-go-r4.log",
+        "sha256": "8954e047aa886322578865f920d388ebe746959568ed554aabc69fe237d6466e"
+      },
+      "same_source": {
+        "path": "work/parity-slot-ch24/player-command6-cursor-same-source-r3.json",
+        "sha256": "3856de881846cb8791663e2344ff53e506d378fa41df92e19b2789d6d8fba6c6"
+      },
+      "same_source_log": {
+        "path": "work/parity-slot-ch24/player-command6-cursor-same-source-r3.log",
+        "sha256": "5b594cfb3c3ee69f301bb6eb359edc3a04d0094c9b5a7f47fc46f7650fd5d066"
+      },
+      "full_go": {
+        "path": "work/parity-slot-ch24/player-command6-cursor-full-go-r2.jsonl",
+        "sha256": "ca17fe6e56ac775cc5e76901eda3a0581189763e8dca615c6da1e62efe2e7634",
+        "counts": {
+          "package_skip": 11,
+          "test_pass": 2775,
+          "package_pass": 19,
+          "test_skip": 30
+        },
+        "scope": "完整 production source 回歸；2775含父案例與子案例，30項條件略過，19個有測試套件通過。後補同源CONTINUE探針另跑，沒有用略過來驗收探針。"
+      },
+      "commands": {
+        "negative": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 with-xvfb go test ./internal/battle -run TestNativeCommand6PlayerCursorCenterOutsideDirectCandidates -count=1 -timeout 60s -v > work/parity-slot-ch24/player-command6-cursor-negative-r1.log 2>&1",
+        "targeted": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'gofmt -w cmd/fd2/native_command6_presentation_test.go cmd/fd2/native_action_overlay_test.go; with-xvfb go test ./internal/battle ./cmd/fd2 -run \"Test.*(NativeCommand6|NativeCommandTargetWhitelist|NativeCommandEffectTargets|NativeCursorConfirmation)\" -count=1 -timeout 90s -v' > work/parity-slot-ch24/player-command6-cursor-go-r4.log 2>&1",
+        "full_go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -json -count=1 -timeout 600s' > work/parity-slot-ch24/player-command6-cursor-full-go-r2.jsonl 2>&1",
+        "same_source": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_command6_presentation_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_COMMAND6_CURSOR_SAVE=/src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav FD2_COMMAND6_CURSOR_OUT=/src/work/parity-slot-ch24/player-command6-cursor-same-source-r3.json with-xvfb go test ./cmd/fd2 -run ^TestNativeCommand6OriginalContinueCursorProbe$ -count=1 -timeout 120s -v' > work/parity-slot-ch24/player-command6-cursor-same-source-r3.log 2>&1"
+      },
+      "source_hashes": {
+        "remake/internal/battle/native_command_target.go": "c6023cf08317d7b897a038261d1c5c154913eb181b20dcff3671fc8fad6fae8f",
+        "remake/internal/battle/native_command0.go": "019c13229fbc9f565d6974d67496e65a44dbe3e97561cfe388ea8997d6760130",
+        "remake/cmd/fd2/main.go": "65d192f74892defb3124ced812a2b95d9013418c78c2e5fdd34d57e989c089b4",
+        "remake/cmd/fd2/native_command6_presentation.go": "e1ca509d4088f946628892370182cf67137eb4ab82728b0ef1b23305be46c90b"
+      },
+      "controlled_ui": {
+        "cases": 4,
+        "result": "side0的我方／空格中心完成MP1101→1071、敵HP83→4、RNG3473→33552及玩家modal回復；side1兩中心在target frame7負列預檢拒收，MP／HP／Acted／RNG不變。",
+        "classification": "受控重製端UI／GL演出測試，非原版逐像素或章PLAYER-E2。"
+      },
+      "same_source_comparison": {
+        "method": "正常原版第三方SAV f46d9c54同源；重製正式CONTINUE owner→合法游標選取與原地開環→既有modal owner窄交接→正式confirm。施法前RNG固定3473，對照原版0x1C75E entry，不宣稱跨選單的逐骰同步。",
+        "result": "actor6／center18／target24、預計MP1071／targetHP4／RNG33552對上原版；正式負列拒收，尚無整段重製viewport影格。",
+        "ui_handoff": "法術menu到target的窄交接明示，不是全程正常鍵盤收據。"
+      },
+      "probe_failure": {
+        "second_run": {
+          "path": "work/parity-slot-ch24/player-command6-cursor-same-source-r2.log",
+          "sha256": "4d3f70e440886cc10c6644f8b235a0098904668b9e2931b5a00357f933739757"
+        },
+        "cause": "窄探針pump漏標指令環Draw確認，ring已開而停opening；改用既有parityReplay.settleActionOverlay與closeRing，同來源、預算與政策重跑通過。",
+        "first_run_limit": "初次失敗log被第二輪同一路徑覆寫，只保留當時工具輸出與本輪診斷來源；不將重建文字冒稱原log。"
+      }
+    },
+    "remaining": "#154正常非零側渲染、12張完整原版target viewport比對及正式玩家端到端驗收仍待，#160不關閉。"
   }
 }

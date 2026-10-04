@@ -5893,7 +5893,7 @@ func (g *Game) ringInput() bool {
 // transaction owner; other command labels remain visible but fail closed at confirm.
 func (g *Game) nativeCommandTargetSupported(id int) bool {
 	switch id {
-	case 0, 1, 2, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35:
+	case 0, 1, 2, 6, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35:
 		return true
 	default:
 		return false
@@ -7689,7 +7689,7 @@ func (g *Game) confirm() {
 			return
 		case id == 6:
 			actor := g.sel
-			err := g.startNativeCommand6Presentation(actor, tgt, func(results []battle.NativeCommandDamageResult) {
+			err := g.startNativeCommand6PresentationAtCursor(actor, battle.Cell{X: g.curX, Y: g.curY}, func(results []battle.NativeCommandDamageResult) {
 				hit, total := 0, 0
 				for _, result := range results {
 					if result.Hit {

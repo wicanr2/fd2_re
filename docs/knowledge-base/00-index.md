@@ -530,4 +530,4 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [#154 玩家槽原地範圍指令6探針](../data/parity-plans/ch30-command6-side1-player-r2.jsonl)：同源正常CONTINUE、不經過敵軍回合；檢驗既有selection／effect與空格確認，非章E2。
 
-- [#160 玩家指令6範圍中心 RE 與草案](../data/ida/fd2_player_command6_cursor_center_20261004.json)：固定IDA caller／bytes、正常原地範圍確認收據；修正直接enemy候選假設，正式實作未開始。
+- [#160 玩家指令6範圍中心 RE 與草案](../data/ida/fd2_player_command6_cursor_center_20261004.json)：固定IDA caller／bytes、正常原地範圍確認收據；修正直接enemy候選假設及指令6白名單漏接；READY與有限RUNTIME-E1、同源CONTINUE探針、#154阻擋及剩餘驗收在同一主證據。

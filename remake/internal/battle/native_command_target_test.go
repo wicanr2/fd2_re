@@ -441,3 +441,76 @@ func TestNativeCommandEffectTargetsRequiresOriginalTwoStages(t *testing.T) {
 		t.Fatal("a non-selection candidate must not become the effect origin")
 	}
 }
+
+// #160：正常原版 actor(20,22)、我方中心(22,20)、敵目標(22,18)。
+func TestNativeCommand6PlayerCursorCenterOutsideDirectCandidates(t *testing.T) {
+	actor := &Unit{Camp: Own, X: 20, Y: 22, HP: 331, MP: 1101, OnField: true, HasNativeRecordByte5: true}
+	center := &Unit{Camp: Own, X: 22, Y: 20, HP: 877, OnField: true, HasNativeRecordByte5: true}
+	target := &Unit{Camp: Enemy, X: 22, Y: 18, HP: 83, ClassID: 4, OnField: true, HasNativeRecordByte5: true}
+	book, err := LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	st := &State{W: 30, H: 30, Units: []*Unit{actor, center, target}, NativeCommandBook: book, NativeCompositionEventBytes: make([]byte, 900)}
+	plan, err := st.PlanNativeCommand6DamageAtCursor(actor, Cell{X: center.X, Y: center.Y}, map[int]int{4: 4}, 3473, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Results) != 1 || plan.Results[0].Target != target || plan.MPAfter != 1071 {
+		t.Fatalf("plan=%+v", plan)
+	}
+	if actor.MP != 1101 || actor.Acted || target.HP != 83 || center.HP != 877 {
+		t.Fatal("planning mutated state")
+	}
+}
+
+func TestNativeCommand6CursorAdmissionAndAtomicPreflight(t *testing.T) {
+	book, err := LoadNativeCommandRecords("../../assets/spells.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct {
+		name                 string
+		actor, cursor        Cell
+		inactive, missingRaw bool
+		want                 bool
+	}{
+		{"own-center", Cell{20, 22}, Cell{22, 20}, false, false, true},
+		{"empty-center", Cell{20, 22}, Cell{21, 19}, false, false, true},
+		{"direct-enemy", Cell{20, 20}, Cell{22, 18}, false, false, true},
+		{"outside-selection", Cell{20, 22}, Cell{22, 17}, false, false, false},
+		{"outside-grid", Cell{20, 22}, Cell{30, 20}, false, false, false},
+		{"strict-radius-boundary", Cell{20, 22}, Cell{22, 21}, false, false, false},
+		{"no-enemy-nearby", Cell{20, 22}, Cell{20, 22}, false, false, false},
+		{"inactive-enemy", Cell{20, 22}, Cell{22, 20}, true, false, false},
+		{"missing-raw", Cell{20, 22}, Cell{22, 20}, false, true, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			actor := &Unit{Camp: Own, X: tc.actor.X, Y: tc.actor.Y, HP: 331, MP: 1101, OnField: true, HasNativeRecordByte5: true}
+			center := &Unit{Camp: Own, X: 22, Y: 20, HP: 877, OnField: true, HasNativeRecordByte5: true}
+			target := &Unit{Camp: Enemy, X: 22, Y: 18, HP: 83, ClassID: 4, OnField: true, HasNativeRecordByte5: !tc.missingRaw}
+			if tc.inactive {
+				target.NativeRecordByte5 = 1
+			}
+			st := &State{W: 30, H: 30, Units: []*Unit{actor, center, target}, NativeCommandBook: book, NativeCompositionEventBytes: make([]byte, 900)}
+			beforeActor, beforeCenter, beforeTarget := *actor, *center, *target
+			plan, err := st.PlanNativeCommand6DamageAtCursor(actor, tc.cursor, map[int]int{4: 4}, 3473, nil)
+			if (err == nil) != tc.want {
+				t.Fatalf("plan=%+v err=%v want=%v", plan, err, tc.want)
+			}
+			if !reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*center, beforeCenter) || !reflect.DeepEqual(*target, beforeTarget) {
+				t.Fatal("preflight changed units")
+			}
+			if tc.want && (len(plan.Results) != 1 || plan.Results[0].Target != target) {
+				t.Fatalf("targets=%+v", plan.Results)
+			}
+			if tc.want {
+				called := false
+				_, err = st.PlanNativeCommand6DamageAtCursor(actor, tc.cursor, nil, 3473, func(int, func(int, uint16) (uint16, bool, error)) (uint16, error) { called = true; return 0, nil })
+				if err == nil || called {
+					t.Fatal("missing resistance reached RNG walk")
+				}
+			}
+		})
+	}
+}
