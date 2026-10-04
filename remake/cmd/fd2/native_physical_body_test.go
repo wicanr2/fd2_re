@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 	"image"
 	"image/color"
 	"image/png"
@@ -264,10 +265,11 @@ func TestNativePhysicalBodyNormalOracle(t *testing.T) {
 }
 
 type physicalBodyGPUProbe struct {
-	g     *Game
-	seen  []bool
-	err   error
-	steps int
+	g           *Game
+	seen        []bool
+	err         error
+	steps       int
+	returnDraws int
 }
 
 func (p *physicalBodyGPUProbe) Update() error {
@@ -297,12 +299,16 @@ func (p *physicalBodyGPUProbe) Draw(screen *ebiten.Image) {
 		pixels = scene.prelude[index].Pixels
 		palette, p.err = fdother.VGAPaletteFromDAC(scene.prelude[index].DAC)
 	} else {
-		if scene.body.index >= len(scene.body.jobs) {
-			p.err = fmt.Errorf("finished body retained a live attack owner")
+		bodyIndex := scene.body.index
+		if bodyIndex == len(scene.body.jobs) && scene.body.returnWaitMillis > 0 {
+			bodyIndex = scene.body.lastPresent
+		}
+		if bodyIndex < 0 || bodyIndex >= len(scene.body.jobs) {
+			p.err = fmt.Errorf("finished body retained a live attack owner without a final present")
 			return
 		}
-		index = len(scene.preludeImages) + scene.body.index
-		job := &scene.body.jobs[scene.body.index]
+		index = len(scene.preludeImages) + bodyIndex
+		job := &scene.body.jobs[bodyIndex]
 		pixels, p.err = job.indexed()
 		palette = append(color.Palette(nil), p.g.nativeUIPalette...)
 		if job.palette0 != nil {
@@ -330,6 +336,9 @@ func (p *physicalBodyGPUProbe) Draw(screen *ebiten.Image) {
 		}
 	}
 	p.seen[index] = true
+	if scene.body.index == len(scene.body.jobs) {
+		p.returnDraws++
+	}
 }
 
 func (p *physicalBodyGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
@@ -375,7 +384,10 @@ func TestNativePhysicalBodyGPU(t *testing.T) {
 			t.Fatalf("native GPU job%d skipped", i)
 		}
 	}
-	t.Logf("%d complete GPU presents; all Draw acknowledgements and final continuation verified", len(p.seen))
+	if p.returnDraws == 0 {
+		t.Fatal("native GPU skipped the final image during caller return wait")
+	}
+	t.Logf("%d complete GPU presents; %d caller-wait redraws; all Draw acknowledgements and final continuation verified", len(p.seen), p.returnDraws)
 }
 
 // physicalSettledBodyFromOracle 沿用既有raw欄位解碼，正式resolver只呼叫一次。
@@ -784,5 +796,82 @@ func TestCompatiblePhysicalReturnKeepsOwnVGA(t *testing.T) {
 	g.finishAttackPresentation()
 	if !continued || !bytes.Equal(g.nativeMapVGA, []byte{77, 88}) {
 		t.Fatal("compatible owner must retain its existing return path")
+	}
+}
+
+// TestNativePhysicalReturnWaitSixBIOSTicks 對應正常2909D／2909F。
+// 最後descriptor等待與caller的六刻度停留分開，不另造畫面或重播cue。
+func TestNativePhysicalReturnWaitSixBIOSTicks(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	run := os.Getenv("FD2_PHYSICAL_COUNTER_ORIGINAL")
+	if run == "" {
+		t.Skip("需要正常主攻／counter收據")
+	}
+	requirePhysicalScenePack(t)
+	for _, cueTail := range []bool{false, true} {
+		t.Run(fmt.Sprintf("cue-only-tail=%v", cueTail), func(t *testing.T) {
+			g, scene := physicalCounterBodyFromOracle(t, run)
+			p := scene.body
+			last := len(p.jobs) - 1
+			if cueTail {
+				p.jobs = append(p.jobs, nativePhysicalBodyJob{cue: -1})
+			}
+			g.nativeMapVGA = bytes.Repeat([]byte{77}, 320*200)
+			returned := false
+			g.atk = &atkAnim{nativeScene: scene, fpt: 3, after: func() { returned = true }}
+			screen := ebiten.NewImage(640, 400)
+			defer screen.Dispose()
+			for p.index < last {
+				if err := g.drawNativePhysicalBody(screen, scene); err != nil {
+					t.Fatal(err)
+				}
+				if err := g.stepNativePhysicalBodyMillis(scene, p.jobs[p.index].waitMillis); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if p.index != last {
+				t.Fatal("did not reach final native body job")
+			}
+			// 沒有最後Draw的Update不能先算caller等待。
+			if err := g.stepNativePhysicalBodyMillis(scene, 10000); err != nil {
+				t.Fatal(err)
+			}
+			if g.atk == nil || returned {
+				t.Fatal("native owner returned before final Draw")
+			}
+			if err := g.drawNativePhysicalBody(screen, scene); err != nil {
+				t.Fatal(err)
+			}
+			screen.Clear()
+			if err := g.drawNativePhysicalBody(screen, scene); err != nil {
+				t.Fatal(err)
+			}
+			heldImage := p.image
+			if err := g.stepNativePhysicalBodyMillis(scene, p.jobs[last].waitMillis); err != nil {
+				t.Fatal(err)
+			}
+			if g.atk == nil || returned {
+				t.Fatal("native owner skipped six BIOS ticks after final descriptor")
+			}
+			screen.Clear()
+			if err := g.drawNativePhysicalBody(screen, scene); err != nil {
+				t.Fatal(err)
+			}
+			if p.image == nil || p.image != heldImage {
+				t.Fatal("caller return wait changed the final complete image")
+			}
+			if err := g.stepNativePhysicalBodyMillis(scene, 6*indexedmap.PhaseBannerStepMillis-0.25); err != nil {
+				t.Fatal(err)
+			}
+			if g.atk == nil || returned || g.nativeMapVGA[0] != 77 {
+				t.Fatal("map return happened before all six BIOS ticks")
+			}
+			if err := g.stepNativePhysicalBodyMillis(scene, 0.25); err != nil {
+				t.Fatal(err)
+			}
+			if g.atk != nil || !returned || !bytes.Equal(g.nativeMapVGA, make([]byte, 320*200)) {
+				t.Fatal("six BIOS ticks did not release the owner and clear VGA")
+			}
+		})
 	}
 }

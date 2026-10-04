@@ -35,7 +35,8 @@ result = {
 def annotations_at(ea):
     annotations = []
     for claim in (canonical.get("physical_scroll_evidence", {}).get("claims", []) +
-                  canonical.get("physical_tail_evidence", {}).get("claims", [])):
+                  canonical.get("physical_tail_evidence", {}).get("claims", []) +
+                  canonical.get("physical_sound_evidence", {}).get("claims", [])):
         assert claim["level"] in ("已證實", "強推論", "假說", "未知")
         for location in claim["original"]:
             bounds = [int(part, 16) for part in location.split("..")]
@@ -46,11 +47,20 @@ def annotations_at(ea):
     return annotations
 
 
-for target in (0x11EB0, 0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A):
+# 音效補證只匯出正常tail及既有wrapper，不重做場景RE或硬體driver。
+sound_probe = os.environ.get("FD2_IDA_PHYSICAL_SOUND") == "1"
+targets = (0x28A6C, 0x25A96) if sound_probe else (0x11EB0, 0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A)
+sound_ranges = {0x28A6C: (0x29050, 0x29117), 0x25A96: (0x25A96, 0x25B45)}
+if sound_probe:
+    result["scope"] = {"kind": "physical-sound-owner", "ranges": {
+        hex(target): [hex(lo), hex(hi)] for target, (lo, hi) in sound_ranges.items()}}
+for target in targets:
     fn = ida_funcs.get_func(target)
     assert fn is not None and fn.start_ea == target
     rows = []
     for ea in idautils.FuncItems(target):
+        if sound_probe and not (sound_ranges[target][0] <= ea < sound_ranges[target][1]):
+            continue
         if not ida_bytes.is_code(ida_bytes.get_full_flags(ea)):
             continue
         annotations = annotations_at(ea)
@@ -69,7 +79,8 @@ for target in (0x11EB0, 0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A):
                      "bytes": ida_bytes.get_bytes(x.frm, idc.get_item_size(x.frm)).hex(),
                      "level": "未知", "warning": "呼叫定位；語意另見 canonical claims",
                      "source": ["tools/ida_probe_physical_presentation.py"]}
-                    for x in idautils.XrefsTo(target) if x.iscode],
+                    for x in idautils.XrefsTo(target) if x.iscode and
+                    (not sound_probe or target != 0x25A96 or 0x28A6C <= x.frm < 0x29C90)],
     })
 result["tables"] = []
 for ea, size in ((0x5255F, 24), (0x52577, 24), (0x525D6, 6)):

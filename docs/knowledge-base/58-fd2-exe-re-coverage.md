@@ -2781,3 +2781,29 @@ r1排除名單漏掉record28，誤選普通我方隊員，已保留失敗並停�
 本節取代前段「相反原始側別非零影格全部尚缺」的現況。原始側別2的非零單次命中已有限CONFORMED／RUNTIME-E1；非零連擊與返回轉場、命中反擊、DAC0／逐cue及人耳音訊、戰鬥到地圖工作緩衝仍在#166。#167配置器工具政策、#52可選像素、#154待決與章台帳20／30不變。
 
 本批收尾：150條教訓的48條guard通過，32份新證據雜湊、16個新增本地連結及索引正對照有效。UID／GID1000，歷史root-owned2811、新增0，.md目錄0。真實主機pull／render／verify維持23項、可能已完成0項；#166保持開啟。沒有非預期FD2容器，其他專案容器未更動。
+
+
+### 2026-10-05 #169／#170：正常物理尾端的等待與音效交接
+
+[主契約physical_sound_evidence與physical_return_wait_spec](../data/ida/fd2_physical_background_selection_20261004.json)補足正常尾端的窄writer／consumer。IDA Pro 9.4以原始函式名、LE線性位址、bytes與固定EXE雜湊確認540FF==0分支的17AA9(6)，以及地圖11CAC(1)返回後25A96(bank,-1,1)。固定第八章首擊trace與既有controls／四個停點逐byte相同。只補缺少的呼叫端，不重開演出或硬體driver。
+
+#169等待契約已有限CONFORMED；最終驗證見下節。#170同通道音效替換與停止的原版wrapper列RE-CLOSED；正式停止需保留地圖與UI聲音順序，尚未READY。完整map work及人耳驗收保留在#166。
+
+
+### 2026-10-05 #169：正常物理返回的六個 BIOS 刻度
+
+[主契約physical_return_wait_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已達有限CONFORMED／RUNTIME-E1。正常540FF==0分支在最後body返回後執行2909D push6、2909F call17AA9，再清VGA與重畫地圖。正式body owner現在分開descriptor等待與caller等待，保留最後影格，等候期滿才進finishAttackPresentation。cue-only尾項先消費，不重播音效或增加present。時間沿用既有BIOS規格換算，屬hardware-spec approximation。
+
+| 目前狀態 | 驗證與交付 |
+|---|---|
+| remake已完成 | #169六刻度等待反例先紅後綠；未Draw不計等待，期滿才清VGA與續行，包含cue-only尾項。 |
+| 原版有限對拍 | 既有49／34／50張完整indexed與RGB仍0差異；GPU59／54／53次present通過，等待中分別核對15／18／12次完整最後影格重畫。 |
+| 最近回歸 | 完整19套件同一命令通過；字串處置98項重綁後內容不變。第十二章155筆AI入口全部消費且順序分岔0；22,987-byte SAV與前次逐byte相同。 |
+| 原版oracle未知 | 第十二章275張章畫面差異逐項保持，1528／2030的unknown_oracle_ui仍拒收；#170聲音停止的正式map順序未READY，#166 work仍未驗收。 |
+| 可選polish | #52最後1px保持既有分級；章台帳20／30與#154不變。 |
+
+正常首擊同狀態trace確認FDOTHER50的selector2→1→-1。25A96先停止同一53EE4通道；mapcopy11D3B返回後才停止物理聲音，後續1654B使用另一bank pointer。這份窄wrapper證據列RE-CLOSED，尚未把停止位置猜接到runtime，也不宣稱人耳或硬體波形一致。
+
+第一版驗證命令誤用JavaScript replacement，覆寫本機舊focused log；失敗內容另存，前輪提交的雜湊保留為歷史，原始影格與JSON未變。本輪用新log重跑有限對拍。測試的GPU隊列與盤點來源錯配都先分類為驗證環境問題，修正後才取得產品紅燈及完整綠燈。章比較首次無收據中斷；同一界線重跑取得正式拒收報告，已與前次逐項核對。可重跑命令與雜湊只見主契約。
+
+本批收尾：主機GitHub已關閉#169，#166／#170保持開啟。真實pull／render／verify為24項、可能已完成0項；152條教訓的48條guard通過。18份證據雜湊與13個新增本地連結核對通過，索引正對照有效。UID／GID1000，歷史root-owned2811、新增0、.md目錄0；本批Go、assets與IDA容器已清理。

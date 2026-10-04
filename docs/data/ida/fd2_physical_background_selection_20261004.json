@@ -30464,7 +30464,8 @@
       "正式玩家、一般AI、模式11保留full result；正式原生場景不再走估算impact與四格尾停。",
       "每個present由真實Draw確認後前進；BIOS等待使用同源PhaseBannerStepMillis，DOS delay使用20/40ms宣告值並保留60Hz解析度限制。",
       "資產、frame shape及counter輸入在結算前預檢；失敗時保持HP/dir/acted/RNG。",
-      "圖像按需產生與釋放；不為每個idle tick建立永久GPU貼圖。"
+      "圖像按需產生與釋放；不為每個idle tick建立永久GPU貼圖。",
+      "正常body返回的六BIOS刻度caller等待與VGA交接見physical_return_wait_spec；不計為額外FIGANI present。"
     ],
     "fail_closed": [
       "資產缺失/形狀不符/header2越界不能進交易",
@@ -31981,7 +31982,7 @@
     "issue": 168,
     "scope": "正式正常原生物理owner的VGA尾端生命周期；#166的完整map work仍未驗收。",
     "typed_input": "Game.atk.nativeScene的正常物理owner及Game.nativeMapVGA索引畫布；若尚未建立畫布，nil不新增猜測素材。",
-    "transition": "最後body present經真實Draw確認與delay完成後，在finishAttackPresentation續行after之前clear原生VGA畫布；無nativeScene的相容攻擊保持原owner。",
+    "transition": "最後body Draw與descriptor等待完成後，依physical_return_wait_spec保留最後影格六BIOS刻度，才在finishAttackPresentation續行after之前clear原生VGA；無nativeScene的相容攻擊保持原owner。",
     "bounds": "正式原生map畫布為320×200＝64000 bytes；不清Game.nativeMapWork，不假設malloc初值。",
     "failure_policy": "沿用演出資產／來源預檢及Draw閘門，不提前提交callback。",
     "vertical_chain": "固定EXE normal branch → VGA memset bytes → 原生owner完成 → map VGA consumer／續行；不改typed資料或存檔格式。",
@@ -31992,7 +31993,12 @@
       "既有正常主攻／counter完整原版indexed+RGB與正式GPU重跑",
       "相稱Go回歸；56／57／58、工單及交接同步"
     ],
-    "limits": "VGA字節寫入CONFORMED不外推整張返回地圖pixel parity、work或章PLAYER-E2。"
+    "limits": "VGA字節寫入CONFORMED不外推整張返回地圖pixel parity、work或章PLAYER-E2。",
+    "timing_correction": {
+      "date": "2026-10-05",
+      "issue": 169,
+      "reason": "#168已閉合VGA memset，但未實作前方2909D／2909F的17AA9(6)；本窄切片補足caller等待，未更動map work初值。"
+    }
   },
   "physical_map_return_validation": {
     "date": "2026-10-05",
@@ -32742,6 +32748,1708 @@
       "possibly_completed": 0,
       "host_verified": true,
       "unexpected_fd2_containers": 0
+    }
+  },
+  "physical_second_shot_probe": {
+    "status": "DRAFT-diagnostic-only",
+    "issue": 166,
+    "date": "2026-10-05",
+    "source_plan": "docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl",
+    "source_run": "work/parity-slot-ch08/physical-own-nonzero-original-r2",
+    "source_checkpoints": [
+      {
+        "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/checkpoint-0256.json",
+        "sha256": "d85f6662c9c83da0abd2945174fbf6196bf7446ab6717f86724099b528fb9d56"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-nonzero-original-r2/checkpoint-0257.json",
+        "sha256": "3be6bab065997072e6cd6fc99cc171becc0674e624f0661fe3e05f50a8c70e53"
+      }
+    ],
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "address_space": "dosgolem relocated LE linear",
+    "trace_before": {
+      "control_seq": 257,
+      "eip": "0x28A6C",
+      "step": 1879533885,
+      "rng_word": 10848,
+      "caller_return": "0x18FCB",
+      "actor": 5,
+      "target": 20
+    },
+    "purpose": "查明既有固定四輪的第二次射擊是否有暴擊DAC0／cue。只診斷既有正式結算器與原始記錄，不供值或修改正式路徑。",
+    "restrictions": [
+      "首輪原版尚無暴擊旗標收據；結算器輸出只能提示取樣，不可據此稱原版證實。",
+      "原版攻擊後進入拾取物與對白，HP／EXP／RNG整段不可未審查便當同一結算邊界。",
+      "同一來源與控制序列，不改seed、不重擲；不外推章E2或DOS硬體時序。"
+    ],
+    "diagnostic": {
+      "log": "work/physical-second-shot-draft-r1.log",
+      "sha256": "07e281e09b4458c6322a7777ef1016c471f996c6e942967660fe317fb26b8a94",
+      "remake_only": true,
+      "crit": false,
+      "status": false,
+      "extra": false,
+      "roll_damage": 164,
+      "applied_damage": 110,
+      "rng_after_settlement": 63631,
+      "cues": [
+        2,
+        1
+      ],
+      "decision": "沒有重製暴擊，且原版後續拾取／對白不提供乾淨整段RNG邊界。音效呼叫改用同一r2較早的固定首擊187，保持既有控制與種子；不搜尋新的結果。"
+    }
+  },
+  "physical_sound_probe": {
+    "state": "DRAFT-diagnostic-only",
+    "issue": 166,
+    "date": "2026-10-05",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "source_plan": "docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl",
+    "control_prefix": 201,
+    "control_seq": 187,
+    "source_initial_slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+    "trace_window": [
+      1428400000,
+      1438355503
+    ],
+    "targets": [
+      "0x28A6C",
+      "0x2BC9A",
+      "0x25A96",
+      "0x11EED",
+      "0x2939D"
+    ],
+    "source_evidence": [
+      "physical_tail_evidence:29791..297C5",
+      "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt",
+      "docs/data/ida/fd2_physical_counterattack_ida.txt"
+    ],
+    "purpose": "逐cue核對正常物理演出原始樣本selector與收尾停止交接；不深挖driver／ISR／DAC硬體時序。",
+    "procedure": [
+      "同一固定首擊controls1..201重生原版EIP trace，不改原始資料／seed／輸入。",
+      "從原始stack辨識bank pointer、selector、loop count與caller，對照原生job與已閉合FDOTHER bank。",
+      "正常收尾停止的直接caller bytes未完整入索引，先取得正式原版trace再用IDA9.4補該窄writer／consumer，不重做整個28A6C。",
+      "RE審查與READY後才能修改正式owner，且PCM硬體時序保持規格近似。"
+    ],
+    "restrictions": [
+      "逐cue選擇／順序與停止不是人耳驗收或DOS逐週期 parity。",
+      "#167工具政策與章PLAYER-E2不變。"
+    ]
+  },
+  "physical_sound_evidence": {
+    "state": "RE-CLOSED-wrapper-only",
+    "date": "2026-10-05",
+    "issues": [
+      166,
+      169,
+      170
+    ],
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "claims": [
+      {
+        "original": [
+          "0x29056..0x2905D",
+          "0x2909D..0x2909F"
+        ],
+        "semantic": "540FF==0的正常物理演出在body返回後呼叫17AA9(6)，再重建map VGA。",
+        "level": "已證實",
+        "source": [
+          "work/physical-sound-ida-r2.json",
+          "remake/internal/indexedmap/mosaic.go",
+          "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+        ]
+      },
+      {
+        "original": [
+          "0x25ABE..0x25ADA"
+        ],
+        "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+        "level": "已證實",
+        "source": [
+          "work/physical-sound-ida-r2.json",
+          "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+        ]
+      },
+      {
+        "original": [
+          "0x290CA..0x290D9"
+        ],
+        "semantic": "正常11CAC(1)返回後，用54117同bank pointer、selector -1與count1呼叫25A96，停止物理樣本。",
+        "level": "已證實",
+        "source": [
+          "work/physical-sound-ida-r2.json",
+          "work/parity-slot-ch08/physical-sound-original-r1/eip-trace.jsonl"
+        ]
+      }
+    ],
+    "raw_export": {
+      "path": "work/physical-sound-ida-r2.json",
+      "sha256": "d3020c92b7d9df4c26bb3acfd9d17b33313f2e8b5e8f751b5fe04ae92a0c4a61",
+      "command": "test -d /home/anr2/cht/fd2 && test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-io.i64 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 180 docker run --rm --name fd2-physical-sound-ida-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida,dst=/database,readonly -e FD2_IDA_PHYSICAL_SOUND=1 -e FD2_IDA_INPUT=/input/FD2.EXE -e FD2_IDA_OUTPUT=/src/work/physical-sound-ida-r2.json ida-pro-9.4-idapython:locked-v1 bash -c 'set -eu; test -f /.dockerenv; cp /database/fd2-io.i64 /tmp/fd2.i64; timeout 150 idat -A -S/src/tools/ida_probe_physical_presentation.py /tmp/fd2.i64 > /src/work/physical-sound-ida-r2.log 2>&1; test -s /src/work/physical-sound-ida-r2.json; stat -c \"%u:%g %n\" /src/work/physical-sound-ida-r2.json'"
+    },
+    "raw_instructions": [
+      {
+        "original_name": "sub_28A6C",
+        "address": "0x28a6c",
+        "rows": [
+          {
+            "address": "0x29053",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29056",
+            "bytes": "833dff40050000",
+            "original": "cmp     dword_540FF, 0",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "540FF==0的正常物理演出在body返回後呼叫17AA9(6)，再重建map VGA。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "remake/internal/indexedmap/mosaic.go",
+                  "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x2905d",
+            "bytes": "0f85ac000000",
+            "original": "jnz     loc_2910F",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "540FF==0的正常物理演出在body返回後呼叫17AA9(6)，再重建map VGA。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "remake/internal/indexedmap/mosaic.go",
+                  "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x29063",
+            "bytes": "6880560200",
+            "original": "push    (offset loc_2567F+1)",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29068",
+            "bytes": "e8a9dc0000",
+            "original": "call    malloc",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2906d",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29070",
+            "bytes": "a3493a0500",
+            "original": "mov     dword_53A49, eax",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29075",
+            "bytes": "a1553a0500",
+            "original": "mov     eax, dword_53A55",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2907a",
+            "bytes": "0fb600",
+            "original": "movzx   eax, byte ptr [eax]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2907d",
+            "bytes": "01c0",
+            "original": "add     eax, eax",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2907f",
+            "bytes": "50",
+            "original": "push    eax",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29080",
+            "bytes": "ff355d3a0500",
+            "original": "push    dword_53A5D",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29086",
+            "bytes": "68651a0500",
+            "original": "push    offset aFdshapDat; \"FDSHAP.DAT\"",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2908b",
+            "bytes": "e82a81feff",
+            "original": "call    sub_111BA",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29090",
+            "bytes": "83c40c",
+            "original": "add     esp, 0Ch",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29093",
+            "bytes": "a35d3a0500",
+            "original": "mov     dword_53A5D, eax",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29098",
+            "bytes": "e87a000000",
+            "original": "call    sub_29117",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2909d",
+            "bytes": "6a06",
+            "original": "push    6",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "540FF==0的正常物理演出在body返回後呼叫17AA9(6)，再重建map VGA。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "remake/internal/indexedmap/mosaic.go",
+                  "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x2909f",
+            "bytes": "e805eafeff",
+            "original": "call    sub_17AA9",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "540FF==0的正常物理演出在body返回後呼叫17AA9(6)，再重建map VGA。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "remake/internal/indexedmap/mosaic.go",
+                  "docs/knowledge-base/105-phase-banner-timing-20260910.md"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x290a4",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290a7",
+            "bytes": "e8d667ffff",
+            "original": "call    sub_1F882",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290ac",
+            "bytes": "6800fa0000",
+            "original": "push    0FA00h",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290b1",
+            "bytes": "6a00",
+            "original": "push    0",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290b3",
+            "bytes": "6800000a00",
+            "original": "push    0A0000h",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290b8",
+            "bytes": "e803e50000",
+            "original": "call    memset",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290bd",
+            "bytes": "83c40c",
+            "original": "add     esp, 0Ch",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290c0",
+            "bytes": "6a01",
+            "original": "push    1",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290c2",
+            "bytes": "e8e58bfeff",
+            "original": "call    sub_11CAC",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290c7",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290ca",
+            "bytes": "6a01",
+            "original": "push    1",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常11CAC(1)返回後，用54117同bank pointer、selector -1與count1呼叫25A96，停止物理樣本。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "work/parity-slot-ch08/physical-sound-original-r1/eip-trace.jsonl"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x290cc",
+            "bytes": "6aff",
+            "original": "push    0FFFFFFFFh",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常11CAC(1)返回後，用54117同bank pointer、selector -1與count1呼叫25A96，停止物理樣本。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "work/parity-slot-ch08/physical-sound-original-r1/eip-trace.jsonl"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x290ce",
+            "bytes": "ff3517410500",
+            "original": "push    dword_54117",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常11CAC(1)返回後，用54117同bank pointer、selector -1與count1呼叫25A96，停止物理樣本。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "work/parity-slot-ch08/physical-sound-original-r1/eip-trace.jsonl"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x290d4",
+            "bytes": "e8bdc9ffff",
+            "original": "call    sub_25A96",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常11CAC(1)返回後，用54117同bank pointer、selector -1與count1呼叫25A96，停止物理樣本。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "work/parity-slot-ch08/physical-sound-original-r1/eip-trace.jsonl"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x290d9",
+            "bytes": "83c40c",
+            "original": "add     esp, 0Ch",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常11CAC(1)返回後，用54117同bank pointer、selector -1與count1呼叫25A96，停止物理樣本。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "work/parity-slot-ch08/physical-sound-original-r1/eip-trace.jsonl"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x290dc",
+            "bytes": "833d1741050000",
+            "original": "cmp     dword_54117, 0",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290e3",
+            "bytes": "740e",
+            "original": "jz      short loc_290F3",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290e5",
+            "bytes": "ff3517410500",
+            "original": "push    dword_54117",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290eb",
+            "bytes": "e826e30000",
+            "original": "call    free",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290f0",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290f3",
+            "bytes": "833d1b41050000",
+            "original": "cmp     dword_5411B, 0",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290fa",
+            "bytes": "740e",
+            "original": "jz      short loc_2910A",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x290fc",
+            "bytes": "ff351b410500",
+            "original": "push    dword_5411B",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29102",
+            "bytes": "e80fe30000",
+            "original": "call    free",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29107",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2910a",
+            "bytes": "e81664ffff",
+            "original": "call    sub_1F525",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x2910f",
+            "bytes": "83c430",
+            "original": "add     esp, 30h",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29112",
+            "bytes": "5d",
+            "original": "pop     ebp",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29113",
+            "bytes": "5f",
+            "original": "pop     edi",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29114",
+            "bytes": "5e",
+            "original": "pop     esi",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29115",
+            "bytes": "5b",
+            "original": "pop     ebx",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x29116",
+            "bytes": "c3",
+            "original": "retn",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          }
+        ],
+        "warning": "只閉合已審查的 caller-specific claims",
+        "level": "未知",
+        "source": [
+          "tools/ida_probe_physical_presentation.py"
+        ]
+      },
+      {
+        "original_name": "sub_25A96",
+        "address": "0x25a96",
+        "rows": [
+          {
+            "address": "0x25a96",
+            "bytes": "681c000000",
+            "original": "push    1Ch",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25a9b",
+            "bytes": "e837120100",
+            "original": "call    sub_36CD7",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25aa0",
+            "bytes": "53",
+            "original": "push    ebx",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25aa1",
+            "bytes": "83ec08",
+            "original": "sub     esp, 8",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25aa4",
+            "bytes": "803df13e050000",
+            "original": "cmp     byte_53EF1, 0",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25aab",
+            "bytes": "0f848f000000",
+            "original": "jz      loc_25B40",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25ab1",
+            "bytes": "803d621e050000",
+            "original": "cmp     byte_51E62, 0",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25ab8",
+            "bytes": "0f8482000000",
+            "original": "jz      loc_25B40",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25abe",
+            "bytes": "833dff40050000",
+            "original": "cmp     dword_540FF, 0",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25ac5",
+            "bytes": "7579",
+            "original": "jnz     short loc_25B40",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25ac7",
+            "bytes": "ff35e43e0500",
+            "original": "push    dword_53EE4",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25acd",
+            "bytes": "e8e3390100",
+            "original": "call    sub_394B5",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25ad2",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25ad5",
+            "bytes": "837c2414ff",
+            "original": "cmp     [esp+0Ch+arg_4], 0FFFFFFFFh",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25ada",
+            "bytes": "7464",
+            "original": "jz      short loc_25B40",
+            "semantic": "",
+            "level": "已證實",
+            "warning": "",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": [
+              {
+                "semantic": "正常25A96先對53EE4呼叫既有停止API 394B5；selector為FFFFFFFF時直接返回，否則接續樣本選擇。只閉合wrapper生命週期，不延伸硬體driver。",
+                "level": "已證實",
+                "source": [
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                  "work/physical-sound-ida-r2.json",
+                  "docs/data/ida/fd2_title_fdother77_sound_bank_ida.txt"
+                ]
+              }
+            ]
+          },
+          {
+            "address": "0x25adc",
+            "bytes": "8b442414",
+            "original": "mov     eax, [esp+0Ch+arg_4]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25ae0",
+            "bytes": "c1e002",
+            "original": "shl     eax, 2",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25ae3",
+            "bytes": "03442410",
+            "original": "add     eax, [esp+0Ch+arg_0]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25ae7",
+            "bytes": "8b542410",
+            "original": "mov     edx, [esp+0Ch+arg_0]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25aeb",
+            "bytes": "035006",
+            "original": "add     edx, [eax+6]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25aee",
+            "bytes": "89542404",
+            "original": "mov     [esp+0Ch+var_8], edx",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25af2",
+            "bytes": "8b5006",
+            "original": "mov     edx, [eax+6]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25af5",
+            "bytes": "8b400a",
+            "original": "mov     eax, [eax+0Ah]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25af8",
+            "bytes": "29d0",
+            "original": "sub     eax, edx",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25afa",
+            "bytes": "890424",
+            "original": "mov     [esp+0Ch+var_C], eax",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25afd",
+            "bytes": "ff35e43e0500",
+            "original": "push    dword_53EE4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b03",
+            "bytes": "e8c9360100",
+            "original": "call    sub_391D1",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b08",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b0b",
+            "bytes": "ff3424",
+            "original": "push    [esp+0Ch+var_C]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b0e",
+            "bytes": "ff742408",
+            "original": "push    [esp+10h+var_8]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b12",
+            "bytes": "ff35e43e0500",
+            "original": "push    dword_53EE4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b18",
+            "bytes": "e827380100",
+            "original": "call    sub_39344",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b1d",
+            "bytes": "83c40c",
+            "original": "add     esp, 0Ch",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b20",
+            "bytes": "ff742418",
+            "original": "push    [esp+0Ch+arg_8]",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b24",
+            "bytes": "ff35e43e0500",
+            "original": "push    dword_53EE4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b2a",
+            "bytes": "e82f3c0100",
+            "original": "call    sub_3975E",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b2f",
+            "bytes": "83c408",
+            "original": "add     esp, 8",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b32",
+            "bytes": "ff35e43e0500",
+            "original": "push    dword_53EE4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b38",
+            "bytes": "e80b390100",
+            "original": "call    sub_39448",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b3d",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b40",
+            "bytes": "83c408",
+            "original": "add     esp, 8",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b43",
+            "bytes": "5b",
+            "original": "pop     ebx",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x25b44",
+            "bytes": "c3",
+            "original": "retn",
+            "semantic": "",
+            "level": "未知",
+            "warning": "未審查語意；原始指令僅作定位",
+            "source": [
+              "tools/ida_probe_physical_presentation.py"
+            ],
+            "semantic_annotations": []
+          }
+        ],
+        "warning": "只閉合已審查的 caller-specific claims",
+        "level": "未知",
+        "source": [
+          "tools/ida_probe_physical_presentation.py"
+        ]
+      }
+    ],
+    "oracle": {
+      "run": "work/parity-slot-ch08/physical-sound-original-r1",
+      "runner": "apps/fd2/cmd/oracle",
+      "version": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "command": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-sound-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-sound-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-sound-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-sound-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-sound-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-sound-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2BC9A,0x25A96,0x11EED,0x2939D' -e 'FD2_ORACLE_EIP_TRACE_FROM=1428400000' -e 'FD2_ORACLE_EIP_TRACE_TO=1438355503' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'   --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-sound-original-r1.log 2>&1",
+      "control_seq": 187,
+      "same_state_files": {
+        "control-history.jsonl": "c29b676408ecfc6188dc5a779aeae543977df0f606421f55e0e271db8cf7db18",
+        "checkpoint-0000.json": "cfb48b7d40d9dd4d4f3537f676728f6bc792d8a18d342753f413f73e055c6c4c",
+        "checkpoint-0186.json": "4178b2148749885ac181c117db830f88d70ff0ce510c2f12f01f50138121384e",
+        "checkpoint-0187.json": "3c3c61e50a728a1a64b32b28957a77ff674efc12ed8ebb8e5ac2d360c8fa538e",
+        "checkpoint-0201.json": "142d3b472894e430e3ef09c590fb9c1bb7dc62e7fbcef9476e040e503e10d65d"
+      },
+      "trace_sha256": "4556f1b965d060dc278a6212a37e30d4dd2df540c544eae41e60f96868df5114",
+      "trace_entries": 123,
+      "normal_player_path_verified": false,
+      "events": [
+        {
+          "step": 1430779638,
+          "original_caller": "0x295F0",
+          "bank_pointer": "0x1ACBB4",
+          "selector": 2,
+          "count": 1
+        },
+        {
+          "step": 1431569959,
+          "original_caller": "0x297C5",
+          "bank_pointer": "0x1ACBB4",
+          "selector": 1,
+          "count": 1
+        },
+        {
+          "step": 1433399615,
+          "original_caller": "0x11D3B",
+          "event": "first map copy return 11EED"
+        },
+        {
+          "step": 1433399624,
+          "original_caller": "0x290D9",
+          "bank_pointer": "0x1ACBB4",
+          "selector": -1,
+          "count": 1
+        }
+      ],
+      "bank": 50,
+      "later_ui_caller": "0x1654B",
+      "later_ui_bank_pointer": "0x10F494"
+    },
+    "limits": [
+      "25A96已證實的cue替換與停止不能證明人耳、波形或硬體wall-clock一致。",
+      "地圖repaint／work完整交接未CONFORMED；#170尚未READY，不先接猜測的停止位置。",
+      "舊第二次射擊探針仍為DRAFT；沒有暴擊原版收據。"
+    ],
+    "probe_failures": {
+      "second_shot": "physical_second_shot_probe：control256的重製診斷未出現暴擊，原版結算尚未在同一停點驗收；以DRAFT保留，不作DAC或聲音驗收。",
+      "red_script": "red-r1引號構造錯誤，並缺indexedmap匯入；red-r2只剩匯入問題。兩者都是驗證腳本／測試編譯問題，不是產品缺陷。",
+      "historical_log": "本輪錯誤命令覆寫本機舊physical-own-nonzero-final-focused-r1.log；內容另存physical-return-wait-shell-failure-r1.log。前輪已提交的收據雜湊保留為歷史，不再聲稱該舊log仍在原路徑；完整JSON與原版影格未變，本輪用新log重跑相同有限對拍。",
+      "red_gpu": "red-r3因未啟動Ebiten命令隊列而ReadPixels失敗；修正後red-r4真正重現六刻度等待缺陷。完整像素仍由專用RunGame GPU驗證。",
+      "string_environment": "第一次盤點因容器HOME／GOCACHE未設定而受阻；補齊後同命令乾淨重跑。"
+    },
+    "annotated_export": {
+      "path": "work/physical-sound-ida-r3.json",
+      "sha256": "272549644d474d684c4463187fffbed2eb5a09bc7b86823bac8a1883b357fe38",
+      "command": "test -d /home/anr2/cht/fd2 && test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-io.i64 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 180 docker run --rm --name fd2-physical-sound-ida-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida,dst=/database,readonly -e FD2_IDA_PHYSICAL_SOUND=1 -e FD2_IDA_INPUT=/input/FD2.EXE -e FD2_IDA_OUTPUT=/src/work/physical-sound-ida-r3.json ida-pro-9.4-idapython:locked-v1 bash -c 'set -eu; test -f /.dockerenv; cp /database/fd2-io.i64 /tmp/fd2.i64; timeout 150 idat -A -S/src/tools/ida_probe_physical_presentation.py /tmp/fd2.i64 > /src/work/physical-sound-ida-r3.log 2>&1; test -s /src/work/physical-sound-ida-r3.json; stat -c \"%u:%g %n\" /src/work/physical-sound-ida-r3.json'"
+    }
+  },
+  "physical_return_wait_spec": {
+    "state": "CONFORMED-normal-caller-delay",
+    "date": "2026-10-05",
+    "issue": 169,
+    "re_basis": "physical_sound_evidence.claims[0]",
+    "typed_input": "正常nativePhysicalBodyPlayback的最後可見job、Draw確認、descriptor等待，以及獨立caller returnWaitMillis。",
+    "transition": [
+      "所有body job按既有順序完成；最後可見影像保留，cue-only尾項先消費。",
+      "body完成後獨立等候6×PhaseBannerStepMillis；最後畫面保持可由正式Draw重畫，不新增present或cue。",
+      "等待期滿才finishAttackPresentation，清VGA、after續行沿用#168；相容owner不變。"
+    ],
+    "time_basis": {
+      "ticks": 6,
+      "tick_hz": 18.2065097,
+      "source": "remake/internal/indexedmap/mosaic.go:PhaseBannerStepMillis",
+      "level": "hardware-spec approximation",
+      "resolution": "平台60Hz，保留既有小於一步的餘數，不做DOS逐週期聲明。"
+    },
+    "failure_policy": "既有資產與body來源預檢在結算前拒收；未Draw不能進等待或續行；等待不消耗RNG。",
+    "acceptance": [
+      "同命令紅綠反例，包含沒有Draw、完整body後未滿6tick、剛滿6tick、VGA時點與cue-only尾項。",
+      "49／34／50張完整indexed及RGB與正式GPU保持；正常第十二章重播、AI、postbattle與SAV保持。",
+      "Go完整回歸與字串盤點重綁，文件／Issue／雜湊／UID與容器清理。"
+    ],
+    "limits": "只完成caller延遲，不提升章E2或map work／音訊驗收。"
+  },
+  "physical_return_wait_validation": {
+    "date": "2026-10-05",
+    "issue": 169,
+    "state": "CONFORMED-normal-caller-delay",
+    "runtime_level": "RUNTIME-E1",
+    "spec": "physical_return_wait_spec",
+    "red": "red-r4：兩種尾項都缺六tick；之前腳本／編譯／GPU初始化失敗另列sound evidence，不算產品紅燈。",
+    "green": "同一命令通過正常及cue-only尾項；未Draw不計等待，最後畫面資源保留，期滿才清VGA與續行。",
+    "full_indexed_rgb": {
+      "nonzero_miss": 49,
+      "zero_header_main_counter": 34,
+      "own_nonzero_hit": 50,
+      "all_difference": 0,
+      "log": "work/physical-return-wait-focused-r1.log"
+    },
+    "gpu": {
+      "own": {
+        "log": "work/physical-return-wait-own-gpu-r1.log",
+        "presents": 53,
+        "return_redraws": 12,
+        "full_rgb_alpha": true,
+        "draw_ack_and_after": true
+      },
+      "counter": {
+        "log": "work/physical-return-wait-counter-gpu-r1.log",
+        "presents": 54,
+        "return_redraws": 18,
+        "full_rgb_alpha": true,
+        "draw_ack_and_after": true
+      },
+      "miss": {
+        "log": "work/physical-return-wait-miss-gpu-r1.log",
+        "presents": 59,
+        "return_redraws": 15,
+        "full_rgb_alpha": true,
+        "draw_ack_and_after": true
+      }
+    },
+    "go_all": {
+      "packages": 19,
+      "passed": true,
+      "log": "work/physical-return-wait-go-all-r1.log"
+    },
+    "string_review": {
+      "entries": 98,
+      "dispositions_unchanged": true,
+      "old_inventory": "/tmp/fd2-physical-return-wait-strings-r1/inv-old.json",
+      "old_source": "git archive ec0d3e54958e1eba20043d0cecdda8507315c417，避免前輪盤點錯配。",
+      "new_inventory": "/tmp/fd2-physical-return-wait-strings-r1/inv-new.json"
+    },
+    "normal_replay": {
+      "chapter": 12,
+      "log": "work/parity-slot-ch12/physical-return-wait-full-remake-r1.log",
+      "ai_original": 155,
+      "ai_consumed": 155,
+      "order_differences": 0,
+      "sav_bytes": 22987,
+      "sav_sha256": "6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821",
+      "same_previous_replay": true
+    },
+    "commands": {
+      "red": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  gofmt -w cmd/fd2/native_physical_body_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalReturnWaitSixBIOSTicks$'\\'' -count=1 -timeout 120s -v' > work/physical-return-wait-red-r4.log 2>&1",
+      "green": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  gofmt -w cmd/fd2/native_physical_body_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalReturnWaitSixBIOSTicks$'\\'' -count=1 -timeout 120s -v' > work/physical-return-wait-green-r1.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-return-wait-own-frames-r1; mkdir /src/work/physical-return-wait-own-frames-r1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_OWN_OUT=/src/work/physical-return-wait-own-frames-r1 with-xvfb go test ./internal/battlepresent ./internal/fdother ./cmd/fd2 -run '\\''^TestNativePhysical(Body|Scene|Terrain|Surface|DepartureMissingLayer|Return)|TestCompatiblePhysicalReturn|TestLoadSeparatedSoundBank'\\'' -count=1 -timeout 120s -v' > work/physical-return-wait-focused-r1.log 2>&1",
+      "gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL='\\''/src/work/parity-slot-ch08/physical-own-nonzero-original-r4'\\'' FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE='\\''own-nonzero'\\'' with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v > /src/work/physical-return-wait-own-gpu-r1.log 2>&1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL='\\''/src/work/parity-slot-ch08/physical-hit-counter-original-r3'\\'' FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE='\\''counter'\\'' with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v > /src/work/physical-return-wait-counter-gpu-r1.log 2>&1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL='\\''/src/work/parity-slot-ch12/physical-scroll-original-r1'\\'' FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE='\\'''\\'' with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v > /src/work/physical-return-wait-miss-gpu-r1.log 2>&1'",
+      "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > work/physical-return-wait-go-all-r1.log 2>&1",
+      "strings": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 260 sh -c 'set -eu; test -f /.dockerenv; export HOME=/tmp/home GOCACHE=/src/work/gocache GOFLAGS=-mod=mod; mkdir -p /hosttmp/fd2-physical-return-wait-strings-r1 /tmp/home; gofmt -w /src/remake/cmd/fd2/native_physical_body.go /src/remake/cmd/fd2/native_physical_body_test.go; mkdir -p /tmp/fd2-before-return-wait; git -C /src archive HEAD | tar -x -C /tmp/fd2-before-return-wait; cd /src/remake/cmd/fd2-string-inventory; go run . -repo /tmp/fd2-before-return-wait -output /hosttmp/fd2-physical-return-wait-strings-r1/inv-old.json; cd /src/remake/cmd/fd2-string-inventory; go run . -repo ../../.. -output /hosttmp/fd2-physical-return-wait-strings-r1/inv-new.json; cd /src; python3 tools/migrate_string_review.py --old-inventory /hosttmp/fd2-physical-return-wait-strings-r1/inv-old.json --new-inventory /hosttmp/fd2-physical-return-wait-strings-r1/inv-new.json --review docs/data/fd2-string-review.json --output /hosttmp/fd2-physical-return-wait-strings-r1/review-new.json; python3 -c '\\''import json\nfrom pathlib import Path\nr=Path('\\''\\'\\'''\\''/hosttmp/fd2-physical-return-wait-strings-r1'\\''\\'\\'''\\'');i=json.loads((r/'\\''\\'\\'''\\''inv-new.json'\\''\\'\\'''\\'').read_text());m=json.loads((r/'\\''\\'\\'''\\''review-new.json'\\''\\'\\'''\\'').read_text());o=json.loads(Path('\\''\\'\\'''\\''docs/data/fd2-string-review.json'\\''\\'\\'''\\'').read_text());ids={s for g in m['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''].values() for s in g['\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\'']};assert ids=={e['\\''\\'\\'''\\''string_id'\\''\\'\\'''\\''] for e in i['\\''\\'\\'''\\''entries'\\''\\'\\'''\\''] if e['\\''\\'\\'''\\''role'\\''\\'\\'''\\'']==m['\\''\\'\\'''\\''reviewed_role'\\''\\'\\'''\\'']}\nfor k,g in m['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''].items():\n assert len(g['\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''])==len(o['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''][k]['\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''])\n assert {k:v for k,v in g.items() if k!='\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''}=={k:v for k,v in o['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''][k].items() if k!='\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''}\nPath('\\''\\'\\'''\\''docs/data/fd2-string-review.json'\\''\\'\\'''\\'').write_bytes((r/'\\''\\'\\'''\\''review-new.json'\\''\\'\\'''\\'').read_bytes());print('\\''\\'\\'''\\''rebound'\\''\\'\\'''\\'',len(ids),'\\''\\'\\'''\\''unchanged dispositions'\\''\\'\\'''\\'')\n'\\'''",
+      "normal_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/treasure-original-r2; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/physical-return-wait-full-remake-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/treasure-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch12/physical-return-wait-full-remake-r1 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/physical-return-wait-full-remake-r1.log 2>&1",
+      "normal_comparison_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/treasure-original-r2 --remake work/parity-slot-ch12/physical-return-wait-full-remake-r1 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-sample.jsonl --out work/parity-slot-ch12/physical-return-wait-full-verified-r1.json",
+      "normal_comparison_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --name fd2-physical-return-wait-compare-r2 -e PYTHONUNBUFFERED=1 --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/treasure-original-r2 --remake work/parity-slot-ch12/physical-return-wait-full-remake-r1 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-sample.jsonl --out work/parity-slot-ch12/physical-return-wait-full-verified-r2.json > work/physical-return-wait-ch12-compare-r2.log 2>&1"
+    },
+    "output_hashes": {
+      "work/physical-return-wait-red-r4.log": "156b938a6ca31957996bea332eb56c9d4ce8bba390d0cf47c5c5f414481f4adc",
+      "work/physical-return-wait-green-r1.log": "f1ab4c12892f0a501e6e987ee5341ce7359b991daccf3bd663fc9b2c55ea8cd9",
+      "work/physical-return-wait-focused-r1.log": "01d9bc3ae6f1b1a9ece2b03687cb6bb1ee0e12d59f795227db1a5a9a99a41572",
+      "work/physical-return-wait-go-all-r1.log": "bbd0af7d325b20dcf3e1f00b65214223c08eef50f8b48026191b922d3baeeb8d",
+      "work/parity-slot-ch12/physical-return-wait-full-remake-r1.log": "2908536b84972084959b779c850018c123584e6f54a16f3921a57fc4e22266eb",
+      "work/parity-slot-ch12/physical-return-wait-full-remake-r1/FD2.SAV": "6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821",
+      "work/physical-return-wait-own-frames-r1/comparison.json": "82ea1f74a2a0574a5fcd2889b5625691dabae63464f6b6924cb480767937a5de",
+      "work/physical-return-wait-own-gpu-r1.log": "8cd639c6ad8052160a2f3f64add4243000b6ad119245c16fe26758468aacd0f8",
+      "work/physical-return-wait-counter-gpu-r1.log": "a32cb37366f1055d5267084d346f99e28e90fc0f8c38701c3c3c804f0d9501fe",
+      "work/physical-return-wait-miss-gpu-r1.log": "340d7aebaa9502c8f2e4455979e793d4c50313b9d83eb684126c2fea6ac5509c",
+      "work/parity-slot-ch12/physical-return-wait-full-verified-r2.json": "093f581a6dcbc7ca83cc7590f7941044bb38dab8e400e975a5004487168f206a"
+    },
+    "limits": [
+      "正常17AA9(6)只按既有BIOS規格轉換，解析度60Hz，不稱DOS逐週期或同硬體wall-clock一致。",
+      "#170尚未READY；#166 map work及音訊未CONFORMED。",
+      "完整演出有限原版對拍不提升章PLAYER-E2。"
+    ],
+    "normal_comparison": {
+      "path": "work/parity-slot-ch12/physical-return-wait-full-verified-r2.json",
+      "sha256": "093f581a6dcbc7ca83cc7590f7941044bb38dab8e400e975a5004487168f206a",
+      "baseline": "work/parity-slot-ch12/physical-tail-full-verified-r1.json",
+      "behavior": true,
+      "transaction": true,
+      "nodes": false,
+      "frames": false,
+      "compared_frames": 275,
+      "frame_deltas_to_baseline": 0,
+      "remaining_nodes": [
+        1528,
+        2030
+      ],
+      "scope": "原版章門檻仍如實failed；本修法維持既有結果，不提升第十二章或全戰役PLAYER-E2。",
+      "attempts": [
+        {
+          "r": 1,
+          "exit": 143,
+          "receipt_written": false,
+          "classification": "比較工具／執行環境中斷，沒有產品結論。"
+        },
+        {
+          "r": 2,
+          "exit": 1,
+          "receipt_written": true,
+          "classification": "相同輸入與260秒界線乾淨重跑，正式工具因既有nodes／frames門檻拒收。"
+        }
+      ]
+    },
+    "closeout_audit": {
+      "date": "2026-10-05",
+      "verified_output_hashes": 18,
+      "new_local_links": 13,
+      "index_positive_control": true,
+      "lessons": 152,
+      "lesson_guards": 48,
+      "issue_authority": "真正host gh的open worklist feed；cmd_pull／render／verify",
+      "open_items": 24,
+      "potentially_completed": 0,
+      "closed_issue": 169,
+      "parent_open": 166,
+      "sound_defect_open": 170,
+      "uid_gid": "1000:1000",
+      "historical_root_owned": 2811,
+      "new_root_owned": 0,
+      "md_dirs": 0,
+      "docker": "Go／assets／IDA三種本批image的docker ps -a結果空；其他專案未更動。"
     }
   }
 }

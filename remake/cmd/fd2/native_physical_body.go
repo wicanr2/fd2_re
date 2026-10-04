@@ -42,11 +42,13 @@ type nativePhysicalBodyJob struct {
 }
 
 type nativePhysicalBodyPlayback struct {
-	jobs          []nativePhysicalBodyJob
-	index         int
-	drawn, cued   bool
-	elapsedMillis float64
-	image         *ebiten.Image
+	jobs             []nativePhysicalBodyJob
+	index            int
+	drawn, cued      bool
+	elapsedMillis    float64
+	image            *ebiten.Image
+	lastPresent      int
+	returnWaitMillis float64 // 正常2909D／2909F的17AA9(6)，與descriptor等待分開。
 }
 
 func (g *Game) prepareNativePhysicalBodyResources(scene *nativePhysicalScene, actor, target *battle.Unit, attack *figani.Animation) error {
@@ -197,7 +199,7 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 	if r == nil {
 		return errors.New("native physical body resources not preflighted")
 	}
-	p := &nativePhysicalBodyPlayback{}
+	p := &nativePhysicalBodyPlayback{lastPresent: -1, returnWaitMillis: 6 * indexedmap.PhaseBannerStepMillis}
 	base := r.base
 	actorRecord, targetRecord := append([]byte(nil), scene.actorRecord...), append([]byte(nil), scene.targetRecord...)
 	appendPixels := func(frames [][]byte) {
@@ -321,6 +323,11 @@ func (g *Game) attachNativePhysicalBody(scene *nativePhysicalScene, result battl
 		}
 		appendPixels([][]byte{pixels}) // 28F4D..28FD6的final restore，不加估算四格尾停。
 	}
+	for i := range p.jobs {
+		if len(p.jobs[i].pixels) != 0 || p.jobs[i].present != nil {
+			p.lastPresent = i
+		}
+	}
 	scene.body = p
 	return nil
 }
@@ -334,10 +341,17 @@ func (job *nativePhysicalBodyJob) indexed() ([]byte, error) {
 
 func (g *Game) drawNativePhysicalBody(screen *ebiten.Image, scene *nativePhysicalScene) error {
 	p := scene.body
-	if p == nil || p.index >= len(p.jobs) {
+	if p == nil {
 		return errors.New("native physical body has no current present")
 	}
-	job := &p.jobs[p.index]
+	index := p.index
+	if index == len(p.jobs) && p.returnWaitMillis > 0 {
+		index = p.lastPresent // caller等待保留最後影格，不重播cue或新增present。
+	}
+	if index < 0 || index >= len(p.jobs) {
+		return errors.New("native physical body has no current present")
+	}
+	job := &p.jobs[index]
 	if p.image == nil {
 		pixels, err := job.indexed()
 		if err != nil {
@@ -365,6 +379,9 @@ func (g *Game) drawNativePhysicalBody(screen *ebiten.Image, scene *nativePhysica
 // 每個實際present必須由Draw確認；不累積缺畫面的時間、不跨格追趕。
 func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed float64) error {
 	p := scene.body
+	if p.index == len(p.jobs) {
+		p.elapsedMillis += elapsed
+	}
 	for p.index < len(p.jobs) {
 		job := &p.jobs[p.index]
 		if !p.cued {
@@ -382,7 +399,7 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 				return nil
 			}
 		}
-		if p.image != nil {
+		if p.image != nil && p.index < p.lastPresent && (len(job.pixels) != 0 || job.present != nil) {
 			p.image.Dispose()
 			p.image = nil
 		}
@@ -398,6 +415,9 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 				return nil
 			}
 		}
+	}
+	if p.elapsedMillis < p.returnWaitMillis {
+		return nil
 	}
 	g.finishAttackPresentation()
 	if g.nativeFieldEvent61 != nil || g.battleEvent != nil {

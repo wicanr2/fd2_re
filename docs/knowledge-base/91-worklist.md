@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -135,7 +135,15 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 
 怎樣算做完：依固定FD2.EXE雜湊的0x28A6C原始BG／TAI選擇建立READY規格，讓正常物理攻擊消費typed地形及分離原始素材。至少抽測玩家／敵方正常物理攻擊與零旗標分支，特殊旗標未閉合時明示範圍。工作緩衝交接依writer／consumer證據驗證，不清整塊猜補；#52的3152已由#167確認為oracle近堆清零政策結果，不能當背景render清零的原版判準。保留整張影格差異、原20/30與章門檻。
 
-證據：`['docs/data/ida/fd2_terrain_mode3_review_20261001.json', 'docs/data/ida/fd2_physical_counterattack_ida.txt', 'remake/cmd/fd2/main.go', 'https://github.com/wicanr2/fd2_re/issues/52', 'docs/data/ida/fd2_physical_background_selection_20261004.json', 'remake/internal/battle/native_physical_scene.go', 'remake/cmd/fd2/native_physical_scene.go', 'docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl', 'tools/ida_probe_physical_presentation.py', 'remake/internal/battlepresent/native_physical_body.go', 'remake/cmd/fd2/native_physical_body.go', 'remake/cmd/fd2/native_physical_body_test.go', 'tools/export_sfx.py', 'remake/cmd/fd2/native_physical_scene_test.go', 'docs/data/fd2-lessons.json']`
+證據：`['docs/data/ida/fd2_terrain_mode3_review_20261001.json', 'docs/data/ida/fd2_physical_counterattack_ida.txt', 'remake/cmd/fd2/main.go', 'https://github.com/wicanr2/fd2_re/issues/52', 'docs/data/ida/fd2_physical_background_selection_20261004.json', 'remake/internal/battle/native_physical_scene.go', 'remake/cmd/fd2/native_physical_scene.go', 'docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl', 'tools/ida_probe_physical_presentation.py', 'remake/internal/battlepresent/native_physical_body.go', 'remake/cmd/fd2/native_physical_body.go', 'remake/cmd/fd2/native_physical_body_test.go', 'tools/export_sfx.py', 'remake/cmd/fd2/native_physical_scene_test.go', 'docs/data/fd2-lessons.json', 'docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl', 'docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl', 'https://github.com/wicanr2/fd2_re/issues/169', 'https://github.com/wicanr2/fd2_re/issues/170']`
+
+### 正常物理攻擊音效缺少同通道替換與地圖返回停止
+
+`physical-sound-single-handle-and-return-stop` · 缺陷 · [#170](https://github.com/wicanr2/fd2_re/issues/170) · 仍未完成 · 要人判
+
+怎樣算做完：以固定原版首擊控制187核對FDOTHER50 selector2→1→-1與同bank pointer、正常mapcopy11D3B後290D9停止；25A96先停止53EE4再依selector播放。建立READY生命週期後，正式physical cue同通道替換，地圖回傳停止只影響physical owner，不關閉後續1654B一般UI音效或標題voice。原生音效、Draw／回呼顺序及shutdown反例驗證；不以cue一致宣稱人耳或硬體波形一致。
+
+證據：`['docs/data/ida/fd2_physical_background_selection_20261004.json', 'tools/ida_probe_physical_presentation.py', 'remake/cmd/fd2/native_physical_body.go', 'remake/cmd/fd2/native_physical_body_test.go', 'https://github.com/wicanr2/fd2_re/issues/166']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

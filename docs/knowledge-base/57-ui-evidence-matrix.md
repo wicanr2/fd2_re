@@ -1752,3 +1752,10 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 | 非零連擊、命中反擊、DAC0／音訊、工作緩衝 | 尚待驗收 | 後續地圖原版影格保留，不由這次演出驗收外推；#166保持開啟。 |
 
 本節取代前段「非零相反原始側別全部尚待」的現況。只驗建構槽同源演出輸入，normal_player_path_verified及原限制保持，不增加章PLAYER-E2或傷害／存活／敵方選目標聲明。
+
+
+### 2026-10-05 #169：正常物理尾端停留
+
+六刻度等待的最後畫面持有與續行時點已有限CONFORMED／RUNTIME-E1。完整GPU核對等待中的原始最後畫面，既有演出與正常章重播保持。
+
+[主契約physical_return_wait_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)保存完整命令與限制；唯一驗證數字及目前狀態見[58](58-fd2-exe-re-coverage.md)。本節補足#168的caller等待，未驗收map work。#170音效wrapper證據已閉合，但正式地圖／聲音交接尚未READY；章門檻與PLAYER-E2保持。

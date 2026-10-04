@@ -1562,6 +1562,22 @@
       "rule": "針對指定隊員建立正常鍵盤探針時，先核對出戰後checkpoint的目前index／camp／raw+6集合，再排除其他全部可操作隊員；不以舊槽摘要或FIG名稱推定友軍身分。入口tools/dosgolem_oracle_drive.py的do_sweep_round與docs/data/ida/fd2_physical_background_selection_20261004.json的physical_opposite_side_probe。",
       "why": "#166首版漏排除出戰後record28，max_units1先選較近隊員，未取得指定FIG8首擊。r2只修選取名單，保留同一槽與起始RNG。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5983020981"
+    },
+    {
+      "id": "gpu-readpixels-requires-live-rungame",
+      "date": "2026-10-05",
+      "area": "驗證",
+      "rule": "Ebiten完整像素驗證只在已啟動RunGame的Draw回呼讀取ReadPixels；一般owner單元測試驗Draw確認、資源持有與續行時點。入口remake/cmd/fd2/native_physical_body_test.go的physicalBodyGPUProbe，Docker命令見場景主契約physical_return_wait_validation.commands.gpu。",
+      "why": "#169尾端反例在一般單元測試讀GPU像素，因命令隊列尚未啟動而panic。移回既有RunGame驗證後，三種演出及等待中的完整最後影格通過。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/169"
+    },
+    {
+      "id": "tool-command-replacements-use-literal-segments",
+      "date": "2026-10-05",
+      "area": "驗證工具",
+      "rule": "JavaScript組裝工具命令時，字面替換用split／join或replacement回呼；含美元符號的文字不直接當String.replace的replacement字串。Shell命令用完整引用函式組裝，先核對命令再執行。入口tools/rebind_string_review.sh示範既有命令與字串遷移；本輪可重跑命令見場景主契約physical_return_wait_validation.commands。",
+      "why": "#169測試正規表示式含美元符號與後方單引號，JavaScript將replacement中的美元加單引號解讀為原字串後綴，造成命令重複並覆寫本機舊log。原始影格與JSON未變，失敗log與歷史雜湊保留，乾淨重跑另用新log。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/169"
     }
   ]
 }

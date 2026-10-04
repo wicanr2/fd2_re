@@ -604,3 +604,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - #166 [第八章弓手首擊的固定控制窗口](../data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl)：r2首次record5→11射擊的controls1..201，不挑結果；READY驗收見上述physical_tail_spec.opposite_side_acceptance_extension。
 
 - #166 [弓手首擊完整畫面測試](../../remake/cmd/fd2/native_physical_body_test.go)：TestNativePhysicalBodyOwnNonzeroNormalOracle與既有GPU入口共用正式resolver；caller分界及有限CONFORMED見[physical_opposite_side_validation](../data/ida/fd2_physical_background_selection_20261004.json)，唯一現況見[58](58-fd2-exe-re-coverage.md)。
+
+
+- #169／#170 [正常物理尾端等待與聲音wrapper契約](../data/ida/fd2_physical_background_selection_20261004.json)：physical_sound_evidence／physical_return_wait_spec；IDA窄匯出由[既有工具](../../tools/ida_probe_physical_presentation.py)的FD2_IDA_PHYSICAL_SOUND=1重生，正常17AA9(6)與25A96停止保留原始定位；目前分層與限制只見[58](58-fd2-exe-re-coverage.md)。
