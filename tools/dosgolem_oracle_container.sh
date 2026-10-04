@@ -15,6 +15,7 @@ FD2_ORACLE_FRAME_STRIDE=${FD2_ORACLE_FRAME_STRIDE:-20000}
 FD2_ORACLE_FRAME_SETTLE=${FD2_ORACLE_FRAME_SETTLE:-0}
 FD2_ORACLE_FRAME_MAX=${FD2_ORACLE_FRAME_MAX:-4000}
 FD2_ORACLE_FRAME_EIP=${FD2_ORACLE_FRAME_EIP:-}
+FD2_ORACLE_FRAME_UNITS=${FD2_ORACLE_FRAME_UNITS:-}
 FD2_ORACLE_FRAME_FROM=${FD2_ORACLE_FRAME_FROM:-0}
 FD2_ORACLE_FRAME_TO=${FD2_ORACLE_FRAME_TO:-0}
 FD2_ORACLE_EIP_WATCH=${FD2_ORACLE_EIP_WATCH:-}
@@ -24,6 +25,12 @@ FD2_ORACLE_EIP_TRACE_TO=${FD2_ORACLE_EIP_TRACE_TO:-0}
 FD2_ORACLE_EIP_TRACE_MAX=${FD2_ORACLE_EIP_TRACE_MAX:-200000}
 FD2_ORACLE_LOCK_ALLY_HP=${FD2_ORACLE_LOCK_ALLY_HP:-}
 FD2_ORACLE_STATE=${FD2_ORACLE_STATE:-}
+if [ -n "$FD2_ORACLE_FRAME_UNITS" ] && [ "$FD2_ORACLE_FRAME_UNITS" != "1" ]; then
+  echo "FRAME_UNITS只接受空值或1" >&2; exit 2
+fi
+if [ "$FD2_ORACLE_FRAME_UNITS" = "1" ] && [ -z "$FD2_ORACLE_FRAMES" ]; then
+  echo "FRAME_UNITS需要FRAMES" >&2; exit 2
+fi
 export FD2_ORACLE_EIP_TRACE_FROM FD2_ORACLE_EIP_TRACE_TO FD2_ORACLE_EIP_TRACE_MAX
 for trace_bound in "$FD2_ORACLE_EIP_TRACE_FROM" "$FD2_ORACLE_EIP_TRACE_TO"; do
   [[ "$trace_bound" =~ ^(0|[1-9][0-9]{0,11})$ ]] || { echo "EIP 追蹤指令範圍格式無效" >&2; exit 2; }
@@ -40,12 +47,15 @@ def near_heap_policy(root):
     reviewed = {
         "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
         "apps/fd2/cmd/oracle/main.go": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
+    reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234"}
     sources = []
     for name in reviewed:
         path = root / name
         sha = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
         sources.append({"path": name, "sha256": sha})
-    known = all(source["sha256"] == reviewed[source["path"]] for source in sources)
+    known = all(source["sha256"] in reviewed_main_revisions
+                if source["path"] == "apps/fd2/cmd/oracle/main.go"
+                else source["sha256"] == reviewed[source["path"]] for source in sources)
     return {
         "kind": "dosgolem_runtime_approximation",
         "status": "reviewed" if known else "unknown",
@@ -82,6 +92,9 @@ runner = {
     "original_root": env["FD2_ORACLE_ORIGINAL_ROOT"],
     "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     "control_plan": env.get("FD2_ORACLE_CONTROL_PLAN", ""),
+    "frame_unit_records": {"enabled": env.get("FD2_ORACLE_FRAME_UNITS") == "1",
+                           "row_bytes": 80, "max_units": 128,
+                           "scope": "accepted PNG same-instruction read-only units; invalid source marked false"},
     "eip_trace_window": {"from_step": int(env["FD2_ORACLE_EIP_TRACE_FROM"]),
                          "to_step": int(env["FD2_ORACLE_EIP_TRACE_TO"]),
                          "max_entries": int(env["FD2_ORACLE_EIP_TRACE_MAX"])},
@@ -109,6 +122,9 @@ if [ -n "$FD2_ORACLE_FRAMES" ]; then
              -frame-to "$FD2_ORACLE_FRAME_TO")
   if [ -n "$FD2_ORACLE_FRAME_EIP" ]; then
     frameargs+=(-frame-eip "$FD2_ORACLE_FRAME_EIP")
+  fi
+  if [ "$FD2_ORACLE_FRAME_UNITS" = "1" ]; then
+    frameargs+=(-frame-units)
   fi
   if [ -n "$FD2_ORACLE_EIP_WATCH" ]; then
     frameargs+=(-eip-watch "$FD2_ORACLE_EIP_WATCH")

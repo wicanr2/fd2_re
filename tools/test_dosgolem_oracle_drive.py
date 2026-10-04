@@ -59,6 +59,7 @@ class OracleNearHeapPolicy(unittest.TestCase):
     def reviewed_hashes(self, content):
         digests = {
             b"heap fixture": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
+            b"frame-unit caller fixture": "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234",
             b"caller fixture": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
         return mock.Mock(hexdigest=lambda: digests.get(content, "f" * 64))
 
@@ -83,6 +84,21 @@ class OracleNearHeapPolicy(unittest.TestCase):
                 self.assertEqual(policy["reused_allocation_contents"], "unknown")
                 self.assertEqual(policy["original_allocator_parity"], "unverified")
                 path.write_bytes(self.sources[name])
+
+    def test_readonly_frame_unit_caller_preserves_policy_and_allocator_guard(self):
+        caller = self.root / "apps/fd2/cmd/oracle/main.go"
+        caller.write_bytes(b"frame-unit caller fixture")
+        with mock.patch.object(hashlib, "sha256", side_effect=self.reviewed_hashes):
+            policy = self.policy(self.root)
+        self.assertEqual(policy["status"], "reviewed")
+        self.assertEqual(policy["reused_allocation_contents"], "zeroed")
+        self.assertEqual(policy["original_allocator_parity"], "unverified")
+        allocator = self.root / "internal/machine/watcom_runtime.go"
+        allocator.write_bytes(b"changed source")
+        with mock.patch.object(hashlib, "sha256", side_effect=self.reviewed_hashes):
+            policy = self.policy(self.root)
+        self.assertEqual(policy["status"], "unknown")
+        self.assertEqual(policy["reused_allocation_contents"], "unknown")
 
     def test_missing_source_is_unknown_and_recorded(self):
         path = self.root / next(iter(self.sources))

@@ -9160,3 +9160,11 @@ oracle明寫normal_player_path_verified=false，仍保留原限制。正常BIOS�
 非零連擊／返回轉場、DAC0的原版畫面與人耳音訊、戰鬥返回地圖的完整工作緩衝及畫面仍在#166。正式來源未改，本輪不重播整章或存檔，不增加PLAYER-E2。#52可選像素、#154待決、#167近堆替代政策與章台帳保持。
 
 本批收尾：真正主機GitHub的pull／render／verify維持23項、可能已完成0項，#166保持開啟。153條教訓的49條guard、23份輸出雜湊及13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。兩份oracle與Go測試容器已清理，其他專案未更動。
+
+### 2026-10-05 #171：同時點來源的較晚補充
+
+本節取代本輪READY工具待驗的狀態。原版11D3B返回影格及下一停點存在selector差異，不能據後者拼同狀態畫面。已由受版控dosgolem04ac5e1補同一指令時點的單位原始列，固定輸入等價驗證通過，限定工具CONFORMED。
+
+下一個#166切片可由physical_frame_unit_records_validation所列返回影格、view及units開始；需用正式具型別選擇器／地圖consumer驗證，不從PNG推導資料，不以checkpoint替代同時點raw。特殊分支、完整map work、DAC0／人耳及PLAYER-E2限制保持。唯一統計及來源見[58](58-fd2-exe-re-coverage.md)與[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+本批收尾：真正主機GitHub已關閉#171，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、12個新增本地連結及來源／輸出雜湊通過，索引正對照與README文化入口有效。變更檔及新原版收據UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

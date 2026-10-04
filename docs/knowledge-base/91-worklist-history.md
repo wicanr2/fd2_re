@@ -5428,3 +5428,11 @@ DRAFT核對完整結算後，READY先於新增受版控測試。測試第一次�
 本節取代前段命中反擊全部尚缺的接手狀態，未外推特殊分支、完整地圖工作緩衝、加成槽的傷害或PLAYER-E2。下一步仍由#166的非零連擊／返回轉場、DAC0／人耳音訊或完整map返回證據選一個窄切片；#52、#154、#167與章台帳保持。
 
 本批收尾：真正主機GitHub的pull／render／verify維持23項、可能已完成0項，#166保持開啟。153條教訓的49條guard、23份輸出雜湊及13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。兩份oracle與Go測試容器已清理，其他專案未更動。
+
+### 2026-10-05 #171：原版逐格單位來源
+
+先於[Issue #166](https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5984639919)登記有界候選調查，再建立[#171](https://github.com/wicanr2/fd2_re/issues/171)。既有六個入口不構成特殊分支收據；ch08 DRAFT的敵方反擊EXP資料缺口屬測試夾具，已還原測試，不接入正式路徑。
+
+返回影格與後一停點的selector不同，READY後在唯一oracle補預設停用的唯讀逐格原始列。dosgolem來源04ac5e169b6c160565b2afe790f6868954fecf8f已提交推送，遠端HEAD核對相同，再以固定原存檔／種子／輸入重生。wrapper r1的容器根目錄連結權限失敗保留；修正掛載後r2乾淨重跑通過。唯一結果與限制見[58](58-fd2-exe-re-coverage.md)，完整命令及雜湊見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。本工具切片不關閉#166或新增章PLAYER-E2。
+
+本批收尾：真正主機GitHub已關閉#171，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、12個新增本地連結及來源／輸出雜湊通過，索引正對照與README文化入口有效。變更檔及新原版收據UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

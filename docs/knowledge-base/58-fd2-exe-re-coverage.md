@@ -2867,3 +2867,11 @@ READY先核對原版停點與完整結算，再用已審查IDA原始call bytes�
 工作登記、READY及結果均在[Issue #166](https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5984410891)。完整可重跑命令、來源Git／EXE雜湊、觀察窗口、輸出雜湊與限制見主契約。#166仍開啟；#154待決與20／30章台帳保持。
 
 本批收尾：真正主機GitHub的pull／render／verify維持23項、可能已完成0項，#166保持開啟。153條教訓的49條guard、23份輸出雜湊及13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。兩份oracle與Go測試容器已清理，其他專案未更動。
+
+### 2026-10-05 #171：返回地圖的同時點來源閘門
+
+[physical_frame_unit_records_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。原11D3B返回影格在4000799496步、overlay_selector為1；checkpoint1533在4004348844步、selector已為0，不能據後者拼同狀態畫面。原版資料讀取沿用既有checkpoint的80-byte欄位，不重開原版位址語意。工具先補可選逐格單位原始記錄，再驗證同控制、停點、trace及PNG保持；目前#166完整返回仍未驗收，六個既有物理入口也不構成連擊／DAC0證據。
+
+目前受版控dosgolem04ac5e169b6c160565b2afe790f6868954fecf8f固定第十二章1,539次輸入，control-history.jsonl、四停點與269筆trace逐byte一致；44張完整320×200 PNG及新增欄位之外的metadata全部一致。每張具33筆合法80-byte raw。返回影格43在4000799496步、caller11D3B、RNG60777，保留actor23 HP121與target14 HP185。這些只限定同時點來源，不驗收重製地圖或傷害。五項oracle測試、96項控制器與9項來源鏈回歸通過；parity package無測試檔。完整命令、輸入及輸出雜湊由主契約保存。
+
+本批收尾：真正主機GitHub已關閉#171，#166保持開啟；pull／render／verify為23項、可能已完成0項。153條教訓的49條guard、12個新增本地連結及來源／輸出雜湊通過，索引正對照與README文化入口有效。變更檔及新原版收據UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。

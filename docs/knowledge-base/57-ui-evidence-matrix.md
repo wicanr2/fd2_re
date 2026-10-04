@@ -1772,3 +1772,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 [主契約physical_counter_hit_validation](../data/ida/fd2_physical_background_selection_20261004.json)以既有固定輸入重生當前oracle，零旗標主攻與命中反擊、最後恢復的完整索引像素／RGB及正式GPU已有限CONFORMED／RUNTIME-E1。前導取DAC更新後入口，攻擊與恢復畫面取複製出口；原始呼叫端固定演出／地圖界線，完整原圖保留，無遮罩或候選搜尋。
 
 本節取代前段「命中反擊全部待驗收」的現況，僅覆蓋本次零header敵方／友軍案例。其餘非零連擊、DAC0／人耳音訊與完整地圖工作緩衝仍在#166。唯一數字、命令、同源診斷限制及目前狀態見[58](58-fd2-exe-re-coverage.md)，不新增PLAYER-E2。
+
+### 2026-10-05 #171：返回地圖來源可用
+
+逐格PNG現在可取得同時點的完整單位原始列，工具已限定CONFORMED。原始11D3B返回影格的selector仍為1，下一停點已為0，不得混用。原始呼叫端與完整畫面保持；[主契約](../data/ida/fd2_physical_background_selection_20261004.json)及[58](58-fd2-exe-re-coverage.md)保存來源、命令及唯一驗證數字。
+
+#166完整返回地圖仍待正式consumer比較。本項只補觀測來源，不新增RUNTIME-E1地圖或PLAYER-E2。

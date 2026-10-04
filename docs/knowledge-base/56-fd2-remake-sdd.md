@@ -9500,3 +9500,9 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 [主契約counter_hit_acceptance_extension／physical_counter_hit_validation](../data/ida/fd2_physical_background_selection_20261004.json)已有限CONFORMED／RUNTIME-E1。原版第十二章首次敵方主攻與友軍命中反擊，從80-byte資料、明示的同控制移動結果及既有具型別規則結算一次，再由完整原版畫面與正式GPU驗收。原始camp 1映射Ally；HP與RNG只固定演出輸入。READY先於新增測試，正式程式未修改。
 
 本節取代前段「命中反擊全部尚缺」的現況。完整數字、來源、命令與唯一分層狀態見[58](58-fd2-exe-re-coverage.md)。非零連擊／返回轉場、DAC0／人耳音訊與完整地圖工作緩衝仍未驗收；章台帳、存檔主線、#167工具政策與PLAYER-E2保持。
+
+### 2026-10-05 #171：逐格同時點單位收據
+
+[physical_frame_unit_records_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。既有oracle以預設停用的唯讀旗標，在接受PNG的同一指令時點保存單位原始列；無效來源明示false。正式控制、原版記憶體及擷取時序未修改。
+
+這補齊#166返回地圖的同時點單位來源，未驗收重製端完整地圖。唯一驗證數字與限制見[58](58-fd2-exe-re-coverage.md)。舊近堆政策收據保留；新增來源只經唯讀差異審查，不提高原版配置器或PLAYER-E2等級。

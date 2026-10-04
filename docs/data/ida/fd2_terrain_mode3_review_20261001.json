@@ -12565,7 +12565,7 @@
           "spec": {
             "status": "CONFORMED",
             "typed_input": "固定EXE與runner來源檔案SHA-256、入口32MiB配置",
-            "rule": "runner.json保存near_heap_policy及兩份來源hash。僅兩份hash都等於本次審查值時宣告zeroed；任何缺檔、未知hash或只吻合一份均標unknown。original_allocator_parity固定unverified。",
+            "rule": "runner.json保存near_heap_policy及兩份來源hash。watcom來源須吻合原審查值，main來源須吻合原審查值或reviewed_readonly_oracle_revisions明列版本；否則標unknown。original_allocator_parity固定unverified。歷史收據與原版配置器限制保留。",
             "failure_mode": "原EXE、commit與來源定位的現有拒收條件保持；未知heap政策僅記未知，不自動校準或變更runner行為。",
             "outputs": "保留所有舊runner欄位，追加可審查政策與證據限制。",
             "vertical_chain": "原版malloc call → oracle hook → 重用配置初值 → mode3透明保留 → 螢幕像素；存檔及正式remake規則未改。",
@@ -12696,7 +12696,17 @@
             "python": "Python3.11 in fd2-go-test-local:20260909",
             "near_heap_tests": "Go1.24 / golang:1.24-bookworm",
             "address_basis": "工具Go來源位址非EXE線性位址，原始EXE與dosgolem線性位址逐筆明示。"
-          }
+          },
+          "reviewed_readonly_oracle_revisions": [
+            {
+              "date": "2026-10-05",
+              "issue": 171,
+              "commit": "04ac5e169b6c160565b2afe790f6868954fecf8f",
+              "main_sha256": "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234",
+              "watcom_sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
+              "review": "main只新增可選唯讀單位收據及共用既有checkpoint解碼；runtime安裝與配置器來源不變。配對此main hash與既有watcom hash仍列工具清零政策，原版配置器parity仍unverified。"
+            }
+          ]
         },
         "state_history": [
           {

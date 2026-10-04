@@ -35699,5 +35699,462 @@
       "path": "remake/cmd/fd2/native_physical_body_test.go",
       "sha256": "72eccc9b2bdb0e7814141f650e5f63f840a1778c7c353660ddf932e620060aaa"
     }
+  },
+  "physical_special_existing_range_probe": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "DRAFT-no-oracle-special-flag",
+    "issue_registration": "https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5984639919",
+    "reused_basis": "106與nativePhysicalExchange／NativeRNGStep；只作固定入口診斷，不新增原版暴擊／狀態旗標證據。",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "cases": [
+      {
+        "run": "work/parity-slot-ch08/physical-own-nonzero-original-r2",
+        "control_seq": 187,
+        "step": 1430343380,
+        "rng_before": 29178,
+        "initial_roll_mod100": 8,
+        "initial_double": false
+      },
+      {
+        "run": "work/parity-slot-ch08/physical-own-nonzero-original-r2",
+        "control_seq": 221,
+        "step": 1696117162,
+        "rng_before": 19427,
+        "initial_roll_mod100": 78,
+        "initial_double": false
+      },
+      {
+        "run": "work/parity-slot-ch08/physical-own-nonzero-original-r2",
+        "control_seq": 257,
+        "step": 1881466526,
+        "rng_before": 10848,
+        "initial_roll_mod100": 81,
+        "initial_double": false
+      },
+      {
+        "run": "work/parity-slot-ch12/physical-background-enemy-original-ch12-r1",
+        "control_seq": 1533,
+        "step": 3996073697,
+        "rng_before": 15766,
+        "initial_roll_mod100": 90,
+        "initial_double": false
+      },
+      {
+        "run": "work/parity-slot-ch12/physical-background-enemy-original-ch12-r1",
+        "control_seq": 1533,
+        "step": 3998006462,
+        "rng_before": 23419,
+        "initial_roll_mod100": 79,
+        "initial_double": false
+      },
+      {
+        "run": "work/parity-slot-ch12/physical-background-enemy-original-ch12-r1",
+        "control_seq": 1538,
+        "step": 4075119728,
+        "rng_before": 60777,
+        "initial_roll_mod100": 95,
+        "initial_double": false
+      }
+    ],
+    "diagnostic": {
+      "log": "work/physical-special-draft-r1.log",
+      "sha256": "ccc857ff8afbeaf255d81ef891ebc4d69ecde805044bfa8e9250e2e9c1c8c504",
+      "result": "測試解码未複製actor建構來源，counter EXP预檢拒收；正式正常Game未出現此錯誤。暫存測試已還原，不因此稱原版沒有反擊／暴擊。"
+    },
+    "decision": "六個既有入口未觸發初始二連擊，其他特殊旗標仍未知。停止本固定範圍，不新增刷關或重擲；轉入171補齊地圖返回同一時點來源。"
+  },
+  "physical_frame_unit_records_spec": {
+    "date": "2026-10-05",
+    "issue": 171,
+    "parent": 166,
+    "state": "CONFORMED",
+    "scope": "既有dosgolem oracle的可選唯讀逐格單位資料，不改原版、CPU、RNG、按鍵、VGA或擷取範圍。",
+    "source_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+    "source_sha256": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "address_space": "dosgolem relocated LE linear；沿用既有checkpoint的53A45單位指標、53BEB筆數及80-byte stride，無新語意。",
+    "typed_input": "-frame-units預設false，FD2_ORACLE_FRAME_UNITS只接受空值或1；啟用需frame-dir／FRAMES。",
+    "output": "只有已接受的PNG對應frames.jsonl附加units與frame_units_valid；units與既有checkpoint相同欄位，index保持原順序，raw_hex為80-byte精確複製。view、step、EIP、unit_base/count與同一張PNG同時點。",
+    "bounds": "0..128筆；uint64(base)+uint64(count)*80不得超出Mem；讀不到全域或越界時units=[]、frame_units_valid=false。消費端需拒收false，不推測缺列。",
+    "transition": "沿既有frame dedup／settle／窗口／上限接受PNG後讀取資料，未接受的幀不新增資料。無延後至checkpoint或另一時間點的讀取。",
+    "acceptance": [
+      "實作前READY；單位欄位／raw、128筆端點、無效指標／筆數及不變原記憶體測試。",
+      "未啟用時frames格式及checkpoint保持；啟用時新增欄位之外原metadata保持。",
+      "目前工具提交後同固定第十二章計畫重跑：controls、四停點、trace、44個PNG及其原metadata欄位與1003cefe來源一致。",
+      "返回地圖的原始11D3B caller影格具33筆合法同時點raw，可用作166下一步consumer來源。",
+      "工具通過不等於完整map／傷害／PLAYER-E2通過，近堆工具政策需依新來源diff重新審查且不變。"
+    ],
+    "review": {
+      "state": "READY",
+      "basis": "目前原始觀測讀取端及checkpoint已有相同80-byte欄位；純資料讀取可共用，沒有原版語意缺口或資料注入。",
+      "source_observation": "frame-000043是4000799496步，view overlay_selector=1；checkpoint1533在4004348844步是0。這個直接差異證明不能以不同停點拼成同狀態。",
+      "conformance": "READY先於實作；受版控dosgolem04ac5e1固定輸入重生，限定唯讀工具驗收。"
+    }
+  },
+  "physical_frame_unit_records_validation": {
+    "date": "2026-10-05",
+    "issue": 171,
+    "state": "CONFORMED",
+    "scope": "oracle read-only frame units only; no remake map parity or PLAYER-E2",
+    "source_commit": "04ac5e169b6c160565b2afe790f6868954fecf8f",
+    "baseline": "1003cefe counter-hit exit source / dosgolem951cb55f",
+    "fixed_controls": 1539,
+    "equal_files": [
+      {
+        "file": "control-history.jsonl",
+        "sha256": "a82bc942b55dc7131cda168a3da4491bb0fb83fe2cdf8865fb9312578ab1991e"
+      },
+      {
+        "file": "eip-trace.jsonl",
+        "sha256": "1299ea80778843afbcb6947a9f7ddcbbc31374a9a44dd9a06eb6a19fe8a0a643"
+      },
+      {
+        "file": "checkpoint-0000.json",
+        "sha256": "8e67e6bfeb8ab7f8be2fe17971a1bd564e6b40db87be9c0b509bea0bbd73a16b"
+      },
+      {
+        "file": "checkpoint-1532.json",
+        "sha256": "20ab3bf001274d051690e7f3e0d0090df9ab091cbf69c1d06ea2d703e3541bbc"
+      },
+      {
+        "file": "checkpoint-1533.json",
+        "sha256": "dffd4cd77bdf498835021007729f1e5dcd52651fc446c7cd43f3aec522b9d714"
+      },
+      {
+        "file": "checkpoint-1539.json",
+        "sha256": "03e4c0cf74c0fb9aa3cc0425ca5a3a38ee4742d2f2751af20dd46211f768e092"
+      }
+    ],
+    "frames": 44,
+    "png_equal": [
+      {
+        "file": "frame-000000.png",
+        "sha256": "7f1c0b6128ee78cb275ecccf24adbefe62a93314109cd5f9cfd68a7460d7554c"
+      },
+      {
+        "file": "frame-000001.png",
+        "sha256": "0592a39c2e1d301d399bd96fc6ec3f60e5841e099817742a85a3b12ce04938b2"
+      },
+      {
+        "file": "frame-000002.png",
+        "sha256": "c963f5bbb74feca136cfa421f6a3e753c5eff28f6fb0565a6149388caf2edf82"
+      },
+      {
+        "file": "frame-000003.png",
+        "sha256": "9218a423bcac51aa650d44b4b8cdd419ac9a2c8e464c31d5d2dd717f5b8633e9"
+      },
+      {
+        "file": "frame-000004.png",
+        "sha256": "2b02885d975e2b1c41f66a999c5cea1c6692a9afeccd91067a848ed9ece646d1"
+      },
+      {
+        "file": "frame-000005.png",
+        "sha256": "3a2c39e2c3c12af70aa998ecc2014fc0de3b7828dafab2e93c357052c64bcba5"
+      },
+      {
+        "file": "frame-000006.png",
+        "sha256": "7e2eee61913b576da1d459bc15c0ce33a867433716063ce089bceb245709c9a4"
+      },
+      {
+        "file": "frame-000007.png",
+        "sha256": "d12df636e5918176ee95809689c30d6e393b4d59c3a928a9ebce15bd1c747899"
+      },
+      {
+        "file": "frame-000008.png",
+        "sha256": "297d3868429c9f6f8b244211441c774603d9a36ecedd662f77acc5212a8c373e"
+      },
+      {
+        "file": "frame-000009.png",
+        "sha256": "dce858be91963688a589d2228319a38c9547f2bbfcf852e8b61ad6a3896cdec6"
+      },
+      {
+        "file": "frame-000010.png",
+        "sha256": "a188531a8be9ed3a05f73b221c5ee0f5e65e4955d1c02accede96cd90bc405d9"
+      },
+      {
+        "file": "frame-000011.png",
+        "sha256": "2112c19b603fd4735ffb06e699dd8c1fbb644b48edfa81216941834f5aba38e5"
+      },
+      {
+        "file": "frame-000012.png",
+        "sha256": "af918d1e7f5760df64d7c9b3e8c96f723cff6bea225dce239445cb0d7d413afe"
+      },
+      {
+        "file": "frame-000013.png",
+        "sha256": "2585719b48d77dec9fb6434888d16554f29f39920556d4ef1000e13349e65afb"
+      },
+      {
+        "file": "frame-000014.png",
+        "sha256": "c595633b0119bfca1fa177a33ae8b8e6e29e313d805ec5b5e74a187c1e88724a"
+      },
+      {
+        "file": "frame-000015.png",
+        "sha256": "996d1cbf7fb874d3e46c4155b94f85b8d94584d49d307fa6ec169eda6fa71d19"
+      },
+      {
+        "file": "frame-000016.png",
+        "sha256": "c595633b0119bfca1fa177a33ae8b8e6e29e313d805ec5b5e74a187c1e88724a"
+      },
+      {
+        "file": "frame-000017.png",
+        "sha256": "0721c9c6fac81f5c7fe46262437db83fae48b114454ddfa0e850c1c20652339c"
+      },
+      {
+        "file": "frame-000018.png",
+        "sha256": "a55fe1212d75298db6920176b1287e07d0b0a84610bbec6150cb77c2ad2e7ae6"
+      },
+      {
+        "file": "frame-000019.png",
+        "sha256": "8ac9eed49ee3ac93956c8c15b822afefd83bcc1074377c92c090c281cf44346c"
+      },
+      {
+        "file": "frame-000020.png",
+        "sha256": "b1ca2c961660f8805d670ceea6e445dc50524055aab4ca2f2439b3944bf24326"
+      },
+      {
+        "file": "frame-000021.png",
+        "sha256": "30318832d33335d89dc87982e16f2b30260e7ae831f7d0869e807cf97295817d"
+      },
+      {
+        "file": "frame-000022.png",
+        "sha256": "b8777ef7c5a12e996b3beee68f14d6e0d93eb759e1d1c2b998c13df5b0c315dc"
+      },
+      {
+        "file": "frame-000023.png",
+        "sha256": "7fe65c2e1e5d48f9b27e1c38924627ef556ead3487b0d98c64c9d033dd130bf1"
+      },
+      {
+        "file": "frame-000024.png",
+        "sha256": "ef3d69cb2846f6808512b7aa5ae2580b472f3fca08192a105e50626b937daf20"
+      },
+      {
+        "file": "frame-000025.png",
+        "sha256": "9a04f230df4bc7be01bf9e59016c6da64848803abd046b672464118578fde519"
+      },
+      {
+        "file": "frame-000026.png",
+        "sha256": "58856c0ddec40b30c7eeec41c1f3ad0149d1164e6895e9c186de4b84cff0812b"
+      },
+      {
+        "file": "frame-000027.png",
+        "sha256": "427155df026ae92c5fa3595b862040bef6e87d7faaadae2b939d173c03ded139"
+      },
+      {
+        "file": "frame-000028.png",
+        "sha256": "e7efa76a5171af6dbb7b774978a657aafe6e00d99beb3331012fd00aa6f499f4"
+      },
+      {
+        "file": "frame-000029.png",
+        "sha256": "e73c5d9f0b4f7fa173a7f97cf6da57c8c9004e36bb2753cb79cd07ef01e5c088"
+      },
+      {
+        "file": "frame-000030.png",
+        "sha256": "cb0490763d084639f78567b4ee52ae3e556cfbec2ce1d4dadd0b49d46666b488"
+      },
+      {
+        "file": "frame-000031.png",
+        "sha256": "7626f920e7cd292aeb69631fd92a5168d37e278e21df90032d639f0023b1139f"
+      },
+      {
+        "file": "frame-000032.png",
+        "sha256": "d4e090afad0ded33ca960cced70f40a11711b0e02d2986ea41b168fa8427b9cc"
+      },
+      {
+        "file": "frame-000033.png",
+        "sha256": "ff01639e1dda1a0974f330f1d52e3cccf6d75e2f44befc84a82053dcc9655f2a"
+      },
+      {
+        "file": "frame-000034.png",
+        "sha256": "5fffaafe0ddcff291e37f73b3fef35dd331f697d9d89458869580eae4e7a4021"
+      },
+      {
+        "file": "frame-000035.png",
+        "sha256": "74f5c27178a2e253b455d9dba1bd4b469a9f5ea75addc87723428a3e313e1a3c"
+      },
+      {
+        "file": "frame-000036.png",
+        "sha256": "d504433060be39260251fc74edf5c48856f7df334f6aad7716022d5b8e79d357"
+      },
+      {
+        "file": "frame-000037.png",
+        "sha256": "9fb959d3f156ec955111f149bd629f526edeb476ecc16aa3c217c1d2f0aa5ff2"
+      },
+      {
+        "file": "frame-000038.png",
+        "sha256": "d7c4bc6119eaf927be7c930f7dcefd8a416291a395bb4aab8d250a47c9c43179"
+      },
+      {
+        "file": "frame-000039.png",
+        "sha256": "0e24594575cc7f5bf389003b3f7159fa9b5f2e9b88730177ef7abb7284dd39a4"
+      },
+      {
+        "file": "frame-000040.png",
+        "sha256": "7cf96c72aef231c9c4285dffe956fbe11b01066763467c9b5ecfb0b4b7e25e96"
+      },
+      {
+        "file": "frame-000041.png",
+        "sha256": "6dfb6b8c28e75f2cec201e179750e23f6a347d725dd30a0ed24f0d7cd50ea121"
+      },
+      {
+        "file": "frame-000042.png",
+        "sha256": "47c4a49208533ef5aa6b6911723255245877767fa94318ba3bfe9985aa41b06b"
+      },
+      {
+        "file": "frame-000043.png",
+        "sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df"
+      }
+    ],
+    "old_metadata_equal": true,
+    "valid_rows_per_frame": 33,
+    "return_map": {
+      "index": 43,
+      "step": 4000799496,
+      "eip": "0x11EED",
+      "overlay_selector": 1,
+      "unit_count": 33,
+      "rng_word": 60777,
+      "actor23_hp": 121,
+      "target14_hp": 185,
+      "caller": "0x11D3B",
+      "units_sha256": "0064552ed2f00de630837b276227b6e5dce18f27d65d10488e1bf3d16c6b7b6a"
+    },
+    "trace_rows": 269,
+    "runner_sha256": "9afe617987083c7d296a79184b3dbd1e9a9a1cdd0db0e7dbda16a73b4dde3c51",
+    "frame_metadata_sha256": "51e9a25852a0ae9fac59d290ec624c9758a1385aacb356840d5ee61f5375ff42",
+    "near_heap_policy": {
+      "kind": "dosgolem_runtime_approximation",
+      "status": "reviewed",
+      "sources": [
+        {
+          "path": "internal/machine/watcom_runtime.go",
+          "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        {
+          "path": "apps/fd2/cmd/oracle/main.go",
+          "sha256": "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234"
+        }
+      ],
+      "heap_mib": 32,
+      "allocation_hook": "WatcomNearHeap.Handle / allocate",
+      "free_hook": "WatcomNearHeap.handleFree / release",
+      "reused_allocation_contents": "zeroed",
+      "original_allocator_parity": "unverified",
+      "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+      "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"
+    },
+    "commands": {
+      "oracle": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-frame-units-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/physical-frame-units-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-frame-units-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-frame-units-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-frame-units-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=04ac5e169b6c160565b2afe790f6868954fecf8f' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/physical-frame-units-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4500000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2939D,0x29F72,0x28F4D,0x11EED,0x11EB0,0x25A96,0x2BC9A' -e 'FD2_ORACLE_EIP_TRACE_FROM=3993986292' -e 'FD2_ORACLE_EIP_TRACE_TO=4002022912' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000' -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=200 -e FD2_ORACLE_FRAME_FROM=3993986292 -e FD2_ORACLE_FRAME_TO=4002022912 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/parity-slot-ch12/physical-frame-units-original-r1.log 2>&1",
+      "unit_tests": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/work && timeout 240 docker run --rm --name fd2-oracle-frame-units-tests-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache --workdir /dos -e HOME=/tmp -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache golang:1.24-bookworm timeout 210 sh -c 'set -eu; gofmt -w apps/fd2/cmd/oracle/main.go apps/fd2/cmd/oracle/main_test.go; go test ./apps/fd2/cmd/oracle ./apps/fd2/cmd/parity -count=1 -timeout 120s -v' > work/oracle-frame-units-tests-r1.log 2>&1",
+      "wrapper_guard": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/cht/fd2/work,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly --workdir /src fd2-go-test-local:20260909 timeout 150  sh -c 'set -eu; bash -n tools/dosgolem_oracle.sh tools/dosgolem_oracle_container.sh; set +e; FD2_ORACLE_FRAME_UNITS=0 FD2_ORACLE_FRAMES=1 bash tools/dosgolem_oracle_container.sh >/tmp/invalid.log 2>&1; result=$?; test \"$result\" = 2 || exit 1; FD2_ORACLE_FRAME_UNITS=1 FD2_ORACLE_FRAMES= bash tools/dosgolem_oracle_container.sh >/tmp/missing.log 2>&1; result=$?; test \"$result\" = 2 || exit 1; cat /tmp/invalid.log /tmp/missing.log; python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py' > work/oracle-frame-units-wrapper-r2.log 2>&1",
+      "comparison": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 150  python3 -c 'from pathlib import Path\nimport json,hashlib\na=Path('\\''work/parity-slot-ch12/physical-counter-hit-original-exit-r1'\\'')\nb=Path('\\''work/parity-slot-ch12/physical-frame-units-original-r1'\\'')\ndigest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\nfiles=['\\''control-history.jsonl'\\'','\\''eip-trace.jsonl'\\'']+[f'\\''checkpoint-{n:04d}.json'\\'' for n in [0,1532,1533,1539]]\nsame=[]\nfor name in files:\n assert (a/name).read_bytes()==(b/name).read_bytes(),name\n same.append({'\\''file'\\'':name,'\\''sha256'\\'':digest(b/name)})\nold=[json.loads(l) for l in (a/'\\''frames/frames.jsonl'\\'').read_text().splitlines()]\nnew=[json.loads(l) for l in (b/'\\''frames/frames.jsonl'\\'').read_text().splitlines()]\nassert len(old)==len(new)==44,(len(old),len(new))\npng=[]\nfor x,y in zip(old,new):\n orig=dict(y); rows=orig.pop('\\''units'\\''); valid=orig.pop('\\''frame_units_valid'\\'')\n assert orig==x,('\\''metadata'\\'',x['\\''index'\\''])\n assert valid is True and len(rows)==y['\\''unit_count'\\'']==33\n for i,row in enumerate(rows):\n  raw=bytes.fromhex(row['\\''raw_hex'\\'']); assert len(raw)==80 and row['\\''index'\\'']==i\n  assert all(row[k]==raw[o] for k,o in [('\\''x'\\'',0),('\\''y'\\'',1),('\\''pose'\\'',3),('\\''motion'\\'',4),('\\''byte5'\\'',5),('\\''camp'\\'',6),('\\''fig'\\'',7),('\\''identity'\\'',8),('\\''level'\\'',0x21),('\\''exp'\\'',0x3c)])\n  assert row['\\''hp'\\'']==int.from_bytes(raw[0x40:0x42],'\\''little'\\'')\n name=x['\\''file'\\'']; assert (a/'\\''frames'\\''/name).read_bytes()==(b/'\\''frames'\\''/name).read_bytes(),name\n png.append({'\\''file'\\'':name,'\\''sha256'\\'':digest(b/'\\''frames'\\''/name)})\nlast=new[-1]; assert last['\\''step'\\'']==4000799496 and last['\\''view'\\'']['\\''overlay_selector'\\'']==1 and last['\\''view'\\'']['\\''rng_word'\\'']==60777\ncp=json.loads((b/'\\''checkpoint-1533.json'\\'').read_text()); assert cp['\\''view'\\'']['\\''overlay_selector'\\'']==0\ntrace=[json.loads(l) for l in (b/'\\''eip-trace.jsonl'\\'').read_text().splitlines()]\nret=[x for x in trace if x['\\''step'\\'']==last['\\''step'\\''] and x['\\''eip'\\'']=='\\''0x11EED'\\'']\nassert len(ret)==1 and ret[0]['\\''stack'\\''][0]=='\\''0x11D3B'\\''\nprint('\\''RETURN TRACE'\\'',ret[0])\nrunner=json.loads((b/'\\''runner.json'\\'').read_text())\nassert runner['\\''dosgolem_commit'\\'']=='\\''04ac5e169b6c160565b2afe790f6868954fecf8f'\\'' and runner['\\''dosgolem_tracked_dirty_files'\\'']==0 and runner['\\''dosgolem_untracked_files'\\'']==0\nassert runner['\\''frame_unit_records'\\'']['\\''enabled'\\''] and runner['\\''near_heap_policy'\\'']['\\''status'\\'']=='\\''reviewed'\\'' and runner['\\''near_heap_policy'\\'']['\\''original_allocator_parity'\\'']=='\\''unverified'\\''\nreport={'\\''date'\\'':'\\''2026-10-05'\\'','\\''issue'\\'':171,'\\''state'\\'':'\\''CONFORMED'\\'','\\''scope'\\'':'\\''oracle read-only frame units only; no remake map parity or PLAYER-E2'\\'','\\''source_commit'\\'':runner['\\''dosgolem_commit'\\''],'\\''baseline'\\'':'\\''1003cefe counter-hit exit source / dosgolem951cb55f'\\'','\\''fixed_controls'\\'':1539,'\\''equal_files'\\'':same,'\\''frames'\\'':44,'\\''png_equal'\\'':png,'\\''old_metadata_equal'\\'':True,'\\''valid_rows_per_frame'\\'':33,'\\''return_map'\\'':{'\\''index'\\'':last['\\''index'\\''],'\\''step'\\'':last['\\''step'\\''],'\\''eip'\\'':last['\\''eip'\\''],'\\''overlay_selector'\\'':last['\\''view'\\'']['\\''overlay_selector'\\''],'\\''unit_count'\\'':last['\\''unit_count'\\''],'\\''rng_word'\\'':last['\\''view'\\'']['\\''rng_word'\\''],'\\''actor23_hp'\\'':last['\\''units'\\''][23]['\\''hp'\\''],'\\''target14_hp'\\'':last['\\''units'\\''][14]['\\''hp'\\''],'\\''caller'\\'':ret[0]['\\''stack'\\''][0],'\\''units_sha256'\\'':hashlib.sha256(json.dumps(last['\\''units'\\''],sort_keys=True,separators=('\\'','\\'','\\'':'\\'')).encode()).hexdigest()},'\\''trace_rows'\\'':len(trace),'\\''runner_sha256'\\'':digest(b/'\\''runner.json'\\''),'\\''frame_metadata_sha256'\\'':digest(b/'\\''frames/frames.jsonl'\\''),'\\''near_heap_policy'\\'':runner['\\''near_heap_policy'\\'']}\nPath('\\''work/oracle-frame-units-validation-r1.json'\\'').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nprint(json.dumps({k:v for k,v in report.items() if k not in ['\\''png_equal'\\'','\\''near_heap_policy'\\'']},ensure_ascii=False,indent=2))\n' > work/oracle-frame-units-comparison-r2.log 2>&1",
+      "driver_tests": "Docker fd2-go-test-local:20260909；python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py；python3 -m unittest discover -s tools -p test_verify_oracle_prefix.py"
+    },
+    "unit_tests": {
+      "top_level_tests": 5,
+      "new_tests": 3,
+      "failures": 0,
+      "parity_package": "no test files"
+    },
+    "driver_tests": {
+      "tests": 96,
+      "failures": 0,
+      "prefix_tests": 9,
+      "prefix_failures": 0
+    },
+    "source_files": [
+      {
+        "path": "tools/dosgolem_oracle.sh",
+        "sha256": "84aa139517e305ad9ac0bb22fe1d6195f8e9f2ec577bf86c8b1557b2d57809e2"
+      },
+      {
+        "path": "tools/dosgolem_oracle_container.sh",
+        "sha256": "fdcecc52a4d0617a600ff34486175c567501f40fe84fc75d0975f682f34ed84a"
+      },
+      {
+        "path": "tools/test_dosgolem_oracle_drive.py",
+        "sha256": "8fe397ecc524e5e7cb292b63837ee5ab28555319efcc0369c90ced7a5eb0fb63"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "work/oracle-frame-units-tests-r1.log",
+        "sha256": "5f6b8b456a10acfc0d9418f73a9aebed32ddf3026b3d744664f9b0a0df5a45f2"
+      },
+      {
+        "path": "work/oracle-frame-units-wrapper-r2.log",
+        "sha256": "ff832d555e3978cfdb6b30a23bc66ff7fe67216273ab69ddf7b637f93c949545"
+      },
+      {
+        "path": "work/oracle-frame-units-driver-r1.log",
+        "sha256": "d41ba2c0966d827f8e6fb85161b63b8f7474d73ec128f8e0d157c4d4a9094dd1"
+      },
+      {
+        "path": "work/oracle-frame-units-validation-r1.json",
+        "sha256": "dcbe9908eb32f06941f90e8fe54d6365e84b8bfb2605719d204ac356dd202e70"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-frame-units-original-r1/runner.json",
+        "sha256": "9afe617987083c7d296a79184b3dbd1e9a9a1cdd0db0e7dbda16a73b4dde3c51"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-frame-units-original-r1/frames/frames.jsonl",
+        "sha256": "51e9a25852a0ae9fac59d290ec624c9758a1385aacb356840d5ee61f5375ff42"
+      },
+      {
+        "path": "work/oracle-frame-units-comparison-r2.log",
+        "sha256": "dcf8d387b1570a69ae308b46a10d3872685194a0bdcbf104d860cab21c0af270"
+      }
+    ],
+    "environment_correction": "wrapper r1試圖以非root UID在容器根目錄建立/out符號連結，未啟動oracle即權限拒收。r2改為已存在路徑bind mount後相同來源乾淨重跑，非產品缺陷。comparison r1誤用controls.jsonl，原收據名稱為control-history.jsonl；訂正後r2以同一原始收據重跑通過。",
+    "restriction": "僅觀測工具CONFORMED；#166完整map work與返回圖像、特殊分支、DAC0與人耳音訊未驗收。不改章台帳、存檔與PLAYER-E2。近堆替代政策仍original_allocator_parity=unverified。",
+    "initial_state": {
+      "kind": "111/114既有加成建構槽；同原存檔，不新增注入／改seed／鎖HP",
+      "source": "work/parity-slot-ch12/FD2.SAV",
+      "sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+      "prepare": "新建明確可寫state目錄，核對上述來源SHA-256，再複製FD2.SAV；原版資料RO、state覆蓋層RW。不要以已執行state代替乾淨輸入。",
+      "rng_method": "沿用存檔／固定輸入1539項，不重擲；目標影格RNG60777，僅演出狀態來源。",
+      "plan": "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
+      "plan_sha256": "9871650279e1ebae3c077b07372a420a8c0ff5b09490a54acaa58f608cf8db09"
+    },
+    "hygiene": {
+      "historical_root_owned": 2811,
+      "new_root_owned": 0,
+      "md_directories": 0,
+      "changed_file_uid_gid": [
+        1000,
+        1000
+      ],
+      "oracle_outputs_uid_gid": [
+        1000,
+        1000
+      ],
+      "fd2_containers_remaining": 0
+    },
+    "local_links": {
+      "checked": 12,
+      "missing": 0,
+      "index_positive_control": true,
+      "readme_culture_entry": true
+    },
+    "worklist": {
+      "remote_host_gh": true,
+      "open": 23,
+      "possibly_done": 0,
+      "issue171": "CLOSED",
+      "issue166": "OPEN",
+      "lessons": 153,
+      "guards": 49
+    }
   }
 }
