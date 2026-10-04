@@ -9092,3 +9092,16 @@ r1章回歸漏了新增owner的Draw確認，屬驗證helper問題。改用正式
 下一步限定#166剩餘原版影格與work交接，不重開傷害規則或原版實體近堆初值。#167工具政策限制、#52最後可選像素、#154待決與現行章台帳不變。
 
 本批收尾檢查：147條教訓的46條guard通過，遠端pull／render／verify維持23項，可能已完成0項；118個本地連結及README文化入口有效。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。
+
+
+### 2026-10-05 #166：零旗標主攻與原生counter收據
+
+[58現況](58-fd2-exe-re-coverage.md)與[主契約physical_counter_validation](../data/ida/fd2_physical_background_selection_20261004.json)取代前段counter所有影格尚未驗收的接手狀態。正式resolver從攻擊前80-byte記錄結算一次，完整零header主攻命中／counter未命中與最後恢復已有限CONFORMED；建構槽加成只固定演出輸入，不驗收傷害、存活或敵方選目標。
+
+入口取樣r1／擴大窗口r2都漏最後copy，原因是11EB0入口保存前一張VGA，最後present後沒有下一個入口。IDA9.4確認11EED的c3位於copy完成後，r3出口取得最後恢復；前導在copy之後另更新DAC，r4因此如實留下前導RGB暫態差異。固定以前導entry、逐揮與restore exit比較，且兩側控制與狀態逐byte相同，r5完整通過。沒有候選搜尋、遮罩或略過RGB。
+
+測試初版EXP偏移誤用+3D，依fdsave既有decoder改為+3C；另修正前導使用各格原生DAC。這些是測試及觀察邊界問題，正式Game未修改。既有場景與原子性回歸、正式GPU均通過；本輪未重跑不受影響的全19套件。
+
+下一步限定#166相反raw側非零影格、連擊、命中反擊、DAC0／音效與work；#167工具政策、#52可選像素、#154待決及章台帳不變。所有工作已登記於[Issue](https://github.com/wicanr2/fd2_re/issues/166)。
+
+本批收尾檢查：148條教訓的47條guard通過；真實遠端pull／render／verify維持23項，可能已完成0項。14份新證據雜湊、13個新增本地連結、索引正對照及README文化入口有效。變更檔及新產物UID／GID1000；歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。

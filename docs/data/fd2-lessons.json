@@ -1524,6 +1524,21 @@
       "why": "零header物理前導接入後，第十二章重播因helper漏Draw而停在aiBusy；正式GPU九格已通過，補同一Draw函式後重播恢復。 非零departure／scroll新增後，原字串替換未命中g.atk.nativeScene條件，helper仍只認prelude；核對差異後擴大條件，同來源r2再次通過。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/166",
       "guard_note": "目前guard掃描器排除_test.go，故此測試helper訊號不掛失真的guard；正式GPU與章重播命令是驗證入口。"
+    },
+    {
+      "id": "frame-copy-observation-needs-final-boundary",
+      "date": "2026-10-05",
+      "area": "對拍擷取",
+      "rule": "用畫面copy常式入口逐幀取樣時，明示收據保存copy前的VGA；完整尾段另在已確認的copy出口取最後present。DAC後更新的前導使用phase完成邊界，固定映射及兩側輸入／狀態一致性寫進收據，不搜尋最佳候選或反覆加步數。入口tools/ida_probe_physical_presentation.py、remake/cmd/fd2/native_physical_body_test.go的TestNativePhysicalBodyCounterNormalOracle及docs/data/ida/fd2_physical_background_selection_20261004.json的physical_counter_validation。",
+      "why": "第八章counter入口窗口兩次均缺最後恢復；11EB0入口只看前一格。IDA確認11EED的c3後，出口保留最後present，但前導copy與DAC是兩步，需依原指令固定phase來源。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/166",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_physical_background_selection_20261004.json"
+        ],
+        "pattern": "CONFORMED-zero-header-main-hit-counter-miss-subset"
+      }
     }
   ]
 }

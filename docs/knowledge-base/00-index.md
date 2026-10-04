@@ -590,3 +590,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - #166 [逐揮物理演出計畫](../../remake/internal/battlepresent/native_physical_body.go)與[規則反例](../../remake/internal/battlepresent/native_physical_body_test.go)、[正式Game owner](../../remake/cmd/fd2/native_physical_body.go)與[完整合成／GPU及原子性測試](../../remake/cmd/fd2/native_physical_body_test.go)：READY及有限CONFORMED範圍見[場景主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
 - [單次未命中物理尾段比較圖](../figures/physical-tail-scoped-compare.png)：原版、同輸入合成與完整未遮差異，不外推連擊、counter或章PLAYER-E2。
 - #166 分離音效[可重跑匯出工具](../../tools/export_sfx.py)與[strict銀行consumer](../../remake/internal/fdother/separated_sound.go)：來源、硬體規格近似、私人清冊同步及目前覆蓋只見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)與[58](58-fd2-exe-re-coverage.md)。
+
+
+- #166 正常零旗標主攻／counter的完整對拍：[既有測試檔的TestNativePhysicalBodyCounterNormalOracle](../../remake/cmd/fd2/native_physical_body_test.go)，由正式resolver解碼raw記錄並結算一次。固定copy／DAC取樣契約、IDA11EED返回證據及同輸入限制見[主契約physical_counter_validation](../data/ida/fd2_physical_background_selection_20261004.json)，唯一結果見[58](58-fd2-exe-re-coverage.md)。

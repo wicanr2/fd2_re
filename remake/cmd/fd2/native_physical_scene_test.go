@@ -241,7 +241,7 @@ func TestNativePhysicalDepartureMissingLayerStopsBeforeSettlement(t *testing.T) 
 
 // 這是完整畫布的同輸入合成診斷；原版像素只用於比較，不供 Game 合成。
 // 正常玩家路徑與完整 0x2939D 演出仍由章收據另行驗證。
-func physicalSceneFromOracle(t *testing.T, run string, beforeSeq, afterSeq, actorIndex, targetIndex, mapID int) (*Game, *nativePhysicalScene) {
+func physicalSceneFromOracle(t *testing.T, run string, beforeSeq, afterSeq, actorIndex, targetIndex, mapID int, configure ...func(*Game)) (*Game, *nativePhysicalScene) {
 	t.Helper()
 	raw, err := os.ReadFile(filepath.Join(run, fmt.Sprintf("checkpoint-%04d.json", beforeSeq)))
 	if err != nil {
@@ -309,6 +309,9 @@ func physicalSceneFromOracle(t *testing.T, run string, beforeSeq, afterSeq, acto
 			}
 			g.st.Units[actorIndex].X, g.st.Units[actorIndex].Y = int(record[0]), int(record[1])
 		}
+	}
+	for _, apply := range configure {
+		apply(g)
 	}
 	scene, err := g.prepareNativePhysicalScene(g.st.Units[actorIndex], g.st.Units[targetIndex])
 	if err != nil {

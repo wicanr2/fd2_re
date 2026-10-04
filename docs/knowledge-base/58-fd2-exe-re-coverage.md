@@ -7,7 +7,7 @@
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
-| #166原生物理演出 | 單次MISS有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
+| #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -2712,3 +2712,25 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 單次MISS非零場景列有限CONFORMED。相反raw側非零影格、命中／連擊／原生counter／DAC音效的原版收據及battle→map work續接仍在#166。#167近堆工具政策限制、20／30章台帳與#154待決不變。
 
 本批收尾檢查：147條教訓的46條guard通過，遠端pull／render／verify維持23項，可能已完成0項；118個本地連結及README文化入口有效。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。
+
+
+### 2026-10-05 #166：零旗標主攻命中與原生反擊有限對拍
+
+[主契約 physical_counter_capture_evidence／physical_counter_validation](../data/ida/fd2_physical_background_selection_20261004.json)及counter_acceptance_extension取代上一節「counter所有原版影格尚缺」的現況。原版從固定第八章建構槽正常LOAD與鍵盤操作到actor0→target11；重製從攻擊前80-byte記錄解碼，由正式resolver結算一次，再消費同一正式場景owner。這是同輸入合成診斷，沒有新增章PLAYER-E2。
+
+| 範圍 | 目前結果 |
+|---|---|
+| 完整零header主攻命中及counter未命中 | 54次present，相鄰indexed去重34張；每張320×200完整indexed及RGB均0差異，包含最後TAI與雙idle恢復。沒有遮罩、候選搜尋或RGB略過。 |
+| 正式GPU | 54張640×400完整RGB／alpha、每格Draw確認、正常owner最後續接通過。 |
+| 原版控制與狀態 | entry r2、exit r3及原baseline的181筆control-history一致。checkpoint0／156／157／181的單位、視圖、步數、EIP、暫存器及注入旗標一致；沒有開啟鎖HP或force-enemy-clear。 |
+| 相稱回歸 | 既有場景、terrain、透明index0、raw來源與素材缺失原子性、multi／counter／DAC0供值反例通過。只有測試與匯出器變更，正式Game未改；上一輪標準Go19套件基準仍為4fbaf345。 |
+
+建構槽保留政策加成。主攻、反擊、HP、EXP與RNG的核對只固定演出輸入，不用此收據驗收傷害、存活或敵方選目標。源槽manifest、完整雜湊與原版工具政策保存在主契約，#167配置器初值限制不變。
+
+取樣邊界已由IDA9.4直接指令審查。11EB0入口看copy前的VGA，最後恢復後沒有下一次入口，單純延長窗口仍會漏格；11EED的c3在逐列memmove完成後返回，因此能取得最後present。29164的copy與2935B的DAC更新是兩步，出口的前導RGB還在更新前。比較固定使用entry來源的前導1..9與exit來源的逐揮／最後恢復10..34；兩份checkpoint156／157及control-history必須逐byte相同，不依差異挑選來源。入口與出口的暫態差異保留於主契約，不改正式色盤規則。
+
+r1測試誤用EXP +3D，依既有fdsave decoder修正為+3C；r2前導誤套固定palette，改用原生DAC。r3觀察窗口仍漏最後copy，r4出口捕到DAC更新前的前導暫態；按原指令建立上述固定phase契約後，r5完整通過。這些是收據與測試問題，沒有以產品改動補償取樣誤差。
+
+本次零header單次主攻命中／counter未命中列有限CONFORMED。相反raw側的非零header、非零連擊與返回轉場、反擊命中、DAC0／逐cue及人耳音訊、battle→map work仍未驗收。#166保持開啟，20／30章台帳與#154待決不變。
+
+本批收尾檢查：148條教訓的47條guard通過；真實遠端pull／render／verify維持23項，可能已完成0項。14份新證據雜湊、13個新增本地連結、索引正對照及README文化入口有效。變更檔及新產物UID／GID1000；歷史root-owned2811、新增0，.md目錄0，沒有遺留FD2容器。

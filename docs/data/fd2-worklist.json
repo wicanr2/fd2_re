@@ -407,11 +407,13 @@
         "remake/internal/battlepresent/native_physical_body.go",
         "remake/cmd/fd2/native_physical_body.go",
         "remake/cmd/fd2/native_physical_body_test.go",
-        "tools/export_sfx.py"
+        "tools/export_sfx.py",
+        "remake/cmd/fd2/native_physical_scene_test.go",
+        "docs/data/fd2-lessons.json"
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-05：完整逐揮main／counter演出已接正常Game；actor31→target14單次MISS非零場景59次present、相鄰indexed去重49張完整indexed／RGB均0差異，正式GPU59張通過。Go19套件與既有音效／清冊7項測試通過。其他命中／連擊／counter／相反raw側／DAC音效仍需原版收據；戰鬥→地圖work續接未驗收。#167工具政策、完整章unknown wait拒收與20/30章台帳不變。"
+        "note": "2026-10-05：原生逐揮main／counter已接正常Game。非零單次MISS有限驗證保持；新增零header單次主攻命中／counter未命中完整34張indexed／RGB零差異、GPU54次present。固定前導after-DAC entry、逐揮與restore copy-exit取樣，兩份原版輸入／狀態逐byte相同，無候選搜尋或遮罩。建構槽只驗收演出，不驗收傷害／存活／敵方選目標。仍需相反raw側非零影格、非零連擊／返回轉場、反擊命中、DAC0／音效與battle→map work；#167工具政策及20/30章台帳不變。"
       },
       "issue": 166
     }

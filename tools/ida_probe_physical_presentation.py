@@ -46,7 +46,7 @@ def annotations_at(ea):
     return annotations
 
 
-for target in (0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A):
+for target in (0x11EB0, 0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A):
     fn = ida_funcs.get_func(target)
     assert fn is not None and fn.start_ea == target
     rows = []

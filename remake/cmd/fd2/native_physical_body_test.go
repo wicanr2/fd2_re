@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"image"
@@ -342,7 +343,13 @@ func TestNativePhysicalBodyGPU(t *testing.T) {
 		t.Fatal("fixed-input oracle is required")
 	}
 	requirePhysicalScenePack(t)
-	g, scene := physicalBodyFromOracle(t, run)
+	var g *Game
+	var scene *nativePhysicalScene
+	if os.Getenv("FD2_PHYSICAL_BODY_CASE") == "counter" {
+		g, scene = physicalCounterBodyFromOracle(t, run)
+	} else {
+		g, scene = physicalBodyFromOracle(t, run)
+	}
 	finished := false
 	g.atk = &atkAnim{nativeScene: scene, fpt: 1, after: func() { finished = true }}
 	for i := 0; i < 3; i++ {
@@ -367,4 +374,240 @@ func TestNativePhysicalBodyGPU(t *testing.T) {
 		}
 	}
 	t.Logf("%d complete GPU presents; all Draw acknowledgements and final continuation verified", len(p.seen))
+}
+
+// physicalCounterBodyFromOracle 由正常玩家攻擊前的80-byte records結算一次。
+// 不供值Damage／Missed／Counter；所有roll及反擊資格走正式resolver。
+// 建構槽加成條件只固定演出輸入，不驗收傷害、存活或敵方選目標。
+func physicalCounterBodyFromOracle(t *testing.T, run string) (*Game, *nativePhysicalScene) {
+	t.Helper()
+	configure := func(g *Game) {
+		raw, err := os.ReadFile(filepath.Join(run, "checkpoint-0156.json"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var cp struct {
+			Units []struct {
+				Index  int
+				RawHex string `json:"raw_hex"`
+			} `json:"units"`
+		}
+		if err := json.Unmarshal(raw, &cp); err != nil {
+			t.Fatal(err)
+		}
+		for _, entry := range cp.Units {
+			if entry.Index != 0 && entry.Index != 11 {
+				continue
+			}
+			record, err := hex.DecodeString(entry.RawHex)
+			if err != nil || len(record) != 80 {
+				t.Fatal("invalid native counter source record")
+			}
+			u := g.st.Units[entry.Index]
+			word := func(at int) int { return int(int16(binary.LittleEndian.Uint16(record[at:]))) }
+			u.NativeRecordByte5, u.HasNativeRecordByte5 = record[5], true
+			u.Camp, u.OnField = battle.Enemy, true
+			if record[6] == 2 {
+				u.Camp = battle.Own
+			}
+			u.ClassID = int(record[32])
+			u.Exp = float64(record[0x3c]) // fdsave.PersistentRecord.View 的已閉合 EXP 欄位。
+			u.AP, u.DP, u.HIT, u.EV = word(72), word(74), word(76), word(78)
+			u.DX = word(62)
+			u.Inventory, u.InventorySlots = make([]int, 8), make([]int, 8)
+			u.NativeInventoryFlags, u.Equipped = make([]int, 8), make([]bool, 8)
+			for slot := 0; slot < 8; slot++ {
+				u.Inventory[slot], u.InventorySlots[slot] = int(record[11+2*slot]), int(record[11+2*slot])
+				u.NativeInventoryFlags[slot] = int(record[10+2*slot])
+				u.Equipped[slot] = record[10+2*slot]&0x40 != 0
+			}
+		}
+		template, err := battle.Load(assetPath("assets/maps/map7/map7_units.json"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, u := range template.Units {
+			if u.HasBattleFig && u.BattleFig == 78 {
+				g.st.Units[11].NativeConstructor = u.NativeConstructor
+				break
+			}
+		}
+		if g.st.Units[11].NativeConstructor == nil {
+			t.Fatal("native target constructor missing")
+		}
+		rows, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := g.st.BindNativeFutureItemRows(rows); err != nil {
+			t.Fatal(err)
+		}
+		g.st.NativeTerrainMoveCodes = make([]byte, len(g.m.Tiles))
+		for i, tile := range g.m.Tiles {
+			if tile < 0 || tile*4+1 >= len(g.m.NativeTerrainControl) {
+				t.Fatal("native terrain source missing")
+			}
+			g.st.NativeTerrainMoveCodes[i] = g.m.NativeTerrainControl[tile*4+1]
+		}
+		g.sel = g.st.Units[0]
+		g.nativeRNGState = 11065
+	}
+	g, scene := physicalSceneFromOracle(t, run, 156, 0, 0, 11, 7, configure)
+	result, err := g.resolvePhysicalAttackFull(g.st.Units[0], g.st.Units[11])
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.AttackStrikes) != 1 || result.Counter == nil || len(result.CounterStrikes) != 1 ||
+		result.AttackStrikes[0].Roll.Missed || result.AttackStrikes[0].Roll.Damage != 129 ||
+		!result.CounterStrikes[0].Roll.Missed || g.nativeRNGState != 44258 ||
+		g.st.Units[0].HP != 341 || g.st.Units[11].HP != 55 || g.st.Units[0].Exp != 55 {
+		t.Fatalf("normal main/counter settlement differs: %+v actor%+v target%+v RNG%d", result, g.st.Units[0], g.st.Units[11], g.nativeRNGState)
+	}
+	if err := g.attachNativePhysicalBody(scene, result); err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("native main/counter settlement: %+v", result)
+	return g, scene
+}
+
+func TestNativePhysicalBodyCounterNormalOracle(t *testing.T) {
+	run := os.Getenv("FD2_PHYSICAL_COUNTER_ORIGINAL")
+	if run == "" {
+		t.Skip("normal chapter8 main/counter oracle receipt is required")
+	}
+	preludeRun := os.Getenv("FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL")
+	if preludeRun == "" {
+		t.Fatal("post-DAC prelude oracle receipt is required")
+	}
+	for _, name := range []string{"control-history.jsonl", "checkpoint-0156.json", "checkpoint-0157.json"} {
+		a, err := os.ReadFile(filepath.Join(run, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		b, err := os.ReadFile(filepath.Join(preludeRun, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		// checkpoint輸出不含觀察窗口欄位；來源控制及狀態必須逐byte相同。
+		if !bytes.Equal(a, b) {
+			t.Fatalf("copy-exit/post-DAC oracle input or state differs: %s", name)
+		}
+	}
+	requirePhysicalScenePack(t)
+	g, scene := physicalCounterBodyFromOracle(t, run)
+	type completeFrame struct {
+		pixels  []byte
+		palette color.Palette
+	}
+	var frames []completeFrame
+	for _, f := range scene.prelude {
+		palette, err := fdother.VGAPaletteFromDAC(f.DAC)
+		if err != nil {
+			t.Fatal(err)
+		}
+		frames = append(frames, completeFrame{f.Pixels, palette})
+	}
+	for _, job := range scene.body.jobs {
+		if job.palette0 != nil {
+			t.Fatal("this normal oracle case must not have a palette-only pulse")
+		}
+		pixels, err := job.indexed()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(pixels) != 0 {
+			frames = append(frames, completeFrame{pixels, g.nativeUIPalette})
+		}
+	}
+	presents := len(frames)
+	var unique []completeFrame
+	for _, f := range frames {
+		if len(unique) == 0 || !bytes.Equal(f.pixels, unique[len(unique)-1].pixels) {
+			unique = append(unique, f)
+		}
+	}
+	t.Logf("normal counter scene: %d presents, %d unique indexed frames", presents, len(unique))
+	var comparisons []map[string]any
+	// 固定phase契約：29164先copy後更新DAC。前導取11EB0入口的更新後
+	// 畫面，逐揮與final restore取11EED copy出口。兩側同輸入、同狀態；
+	// 不依差異搜尋候選影格，也不遮罩或略過任何像素。
+	metadata, err := os.ReadFile(filepath.Join(run, "frames/frames.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	lines := bytes.Split(bytes.TrimSpace(metadata), []byte("\n"))
+	if len(lines) != len(unique)+1 {
+		t.Fatalf("copy-exit oracle has %d frames, want initial map + %d complete scene frames", len(lines), len(unique))
+	}
+	for _, line := range lines {
+		var frame struct {
+			EIP string `json:"eip"`
+		}
+		if err := json.Unmarshal(line, &frame); err != nil || frame.EIP != "0x11EED" {
+			t.Fatal("full counter receipt must use verified 11EED copy exit")
+		}
+	}
+	for i, full := range unique {
+		pixels := full.pixels
+		sourceRun := run
+		if i < len(scene.prelude) {
+			sourceRun = preludeRun
+		}
+		path := filepath.Join(sourceRun, fmt.Sprintf("frames/frame-%06d.png", i+1))
+		f, err := os.Open(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		img, err := png.Decode(f)
+		f.Close()
+		if err != nil {
+			t.Fatal(err)
+		}
+		original, ok := img.(*image.Paletted)
+		if !ok || original.Bounds() != image.Rect(0, 0, 320, 200) {
+			t.Fatal("normal counter oracle canvas invalid")
+		}
+		actual := image.NewPaletted(image.Rect(0, 0, 320, 200), full.palette)
+		copy(actual.Pix, pixels)
+		indexedDiff, rgbDiff := 0, 0
+		for y := 0; y < 200; y++ {
+			for x := 0; x < 320; x++ {
+				if pixels[y*320+x] != original.Pix[y*original.Stride+x] {
+					indexedDiff++
+				}
+				r, g, b, _ := actual.At(x, y).RGBA()
+				wr, wg, wb, _ := original.At(x, y).RGBA()
+				if r != wr || g != wg || b != wb {
+					rgbDiff++
+				}
+			}
+		}
+		comparisons = append(comparisons, map[string]any{"original_frame": i + 1, "original_source": sourceRun, "indexed_difference": indexedDiff, "rgb_difference": rgbDiff})
+		if out := os.Getenv("FD2_PHYSICAL_COUNTER_OUT"); out != "" {
+			f, err := os.Create(filepath.Join(out, fmt.Sprintf("full-%02d.png", i)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			err = png.Encode(f, actual)
+			f.Close()
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	if out := os.Getenv("FD2_PHYSICAL_COUNTER_OUT"); out != "" {
+		raw, err := json.MarshalIndent(map[string]any{"presents": presents, "unique_frames": len(unique), "frames": comparisons, "rng_before": 11065, "rng_after": 44258, "method": "ordered-adjacent-indexed-dedup; fixed phase boundary: post-DAC prelude / copy-exit body+restore; no masks or best-frame search", "prelude_source": preludeRun, "body_source": run, "evidence_restriction": "boosted constructed slot; presentation only, no damage/survival/target-selection parity"}, "", "  ")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(out, "comparison.json"), append(raw, '\n'), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, cmp := range comparisons {
+		if cmp["indexed_difference"].(int) != 0 || cmp["rgb_difference"].(int) != 0 {
+			t.Fatalf("normal counter frame differs: %+v; %d unique frames / %d presents", cmp, len(unique), presents)
+		}
+	}
+	t.Logf("%d ordered complete indexed/RGB frames / %d presents; main HIT129, counter MISS; RNG11065→44258", len(unique), presents)
 }

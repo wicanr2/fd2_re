@@ -3,7 +3,7 @@
   "kind": "fd2_physical_background_selection_contract",
   "date": "2026-10-04",
   "issue": 166,
-  "status": "RUNTIME-E1-native-physical-body; CONFORMED-single-miss-nonzero-subset",
+  "status": "RUNTIME-E1-native-physical-body; CONFORMED-single-miss-nonzero-and-zero-main-hit-counter-miss-subsets",
   "input": {
     "input": "FD2.EXE",
     "size": 357074,
@@ -13431,6 +13431,30 @@
           "work/physical-tail-ida-r1.json",
           "docs/data/ida/fd2_command24_presentation_ida.txt",
           "docs/data/ida/fd2_battle_impact_displacement_ida.txt"
+        ]
+      },
+      {
+        "original": [
+          "0x11ECE..0x11EED"
+        ],
+        "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+        "level": "已證實",
+        "source": [
+          "work/physical-counter-capture-ida-r1.json",
+          "tools/dosgolem_oracle_container.sh"
+        ]
+      },
+      {
+        "original": [
+          "0x291F1..0x2924B",
+          "0x292CD..0x2932D"
+        ],
+        "semantic": "29164的11EB0複製與後續2935B的DAC更新是分開步驟；copy出口的同indexed前導圖尚未完成該phase的DAC。前導採更新後穩定邊界，逐揮／final restore採copy出口；不能把palette暫態當renderer錯誤。",
+        "level": "已證實",
+        "source": [
+          "work/physical-counter-capture-ida-r2.json",
+          "work/parity-slot-ch08/physical-hit-counter-original-r2",
+          "work/parity-slot-ch08/physical-hit-counter-original-r3"
         ]
       }
     ],
@@ -30457,6 +30481,33 @@
       "validation_date": "2026-10-05",
       "basis": "原始2939D、29164、2BC9A直接指令與三張原始表審查；傷害producer沿用106。",
       "remaining": "其他raw方向、命中／連擊／反擊／DAC0需各自原版影格；work與ending不在本子契約。"
+    },
+    "counter_acceptance_extension": {
+      "date": "2026-10-05",
+      "state": "CONFORMED-zero-header-main-hit-counter-miss-subset",
+      "scope": "正常第八章actor0→target11，header0主攻HIT後原生counter；固定原版RNG11065，正式resolver從80-byte raw records與既有typed地形、建構／物品資料結算一次。",
+      "source": "checkpoint0156與0157、2939D／28F4D直接追蹤及11EB0完整窗口；既有傷害producer與EXP欄位沿用106、fdsave.PersistentRecord.View。",
+      "acceptance": [
+        "正常輸入與checkpoint0156／0157狀態保持",
+        "主攻Damage129；counterMISS；HP341／55與RNG44258",
+        "逐序完整320x200 indexed與每格DAC轉RGB零差異；原版最後恢復必須在窗口內",
+        "正式GPU全部main／counter present與Draw確認、最後續接",
+        "不增加PLAYER-E2，不外推命中反擊／連擊／DAC0／work"
+      ],
+      "capture_review": {
+        "raw_export": "work/physical-counter-capture-ida-r1.json",
+        "sha256": "2397bb8e2f00b1d7772be2424905ab1f96abd33a5b1453267a32acaccc44dad0",
+        "eip": "0x11EED",
+        "bytes": "c3",
+        "caller_observed": [
+          "0x2987F",
+          "0x28FBE"
+        ],
+        "reason": "原11EB0入口取樣保存前一張VGA；final present後沒有下一次入口，扩大步數窗口不足以取得最後copy。",
+        "review_date": "2026-10-05"
+      },
+      "capture_policy": "固定兩個phase邊界：前導用同狀態r2的11EB0入口，逐揮與最後恢復用r3的11EED出口。兩份control-history及checkpoint0156／0157必須逐byte相同；前導9個唯一indexed frame固定取entry，尾段與restore固定取exit。禁止候選搜尋、遮罩、RGB忽略。",
+      "evidence_restriction": "固定加成建構槽，收據只驗收演出；Damage／HP／RNG核對固定演出輸入，不宣稱傷害、存活或敵方選目標parity。"
     }
   },
   "physical_tail_validation": {
@@ -30666,6 +30717,828 @@
       "lessons": 147,
       "guards": 46,
       "fd2_containers": 0
+    }
+  },
+  "physical_counter_capture_evidence": {
+    "status": "RE-CLOSED",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "export": {
+      "path": "work/physical-counter-capture-ida-r2.json",
+      "sha256": "fe154518dfc624855cb95ff13fde880b24ad7bd97e6a8d786e96049cfbf3655f"
+    },
+    "function": {
+      "address": "0x11eb0",
+      "end": "0x11eee",
+      "original_name": "sub_11EB0",
+      "instructions": [
+        {
+          "address": "0x11eb0",
+          "bytes": "6820000000",
+          "original": "push    20h ; ' '",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11eb5",
+          "bytes": "e81d4e0200",
+          "original": "call    sub_36CD7",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11eba",
+          "bytes": "53",
+          "original": "push    ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ebb",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ebc",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ebd",
+          "bytes": "55",
+          "original": "push    ebp",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ebe",
+          "bytes": "8b742414",
+          "original": "mov     esi, [esp+10h+arg_0]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ec2",
+          "bytes": "8b6c2418",
+          "original": "mov     ebp, [esp+10h+arg_4]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ec6",
+          "bytes": "8b7c241c",
+          "original": "mov     edi, [esp+10h+arg_8]",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11eca",
+          "bytes": "31db",
+          "original": "xor     ebx, ebx",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ecc",
+          "bytes": "eb15",
+          "original": "jmp     short loc_11EE3",
+          "semantic": "",
+          "level": "未知",
+          "warning": "原始定位；語意未審查",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x11ece",
+          "bytes": "ff742424",
+          "original": "push    [esp+10h+arg_10]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ed2",
+          "bytes": "57",
+          "original": "push    edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ed3",
+          "bytes": "56",
+          "original": "push    esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ed4",
+          "bytes": "e8eb540200",
+          "original": "call    memmove",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ed9",
+          "bytes": "83c40c",
+          "original": "add     esp, 0Ch",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11edc",
+          "bytes": "01ee",
+          "original": "add     esi, ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ede",
+          "bytes": "037c2420",
+          "original": "add     edi, [esp+10h+arg_C]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ee2",
+          "bytes": "43",
+          "original": "inc     ebx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ee3",
+          "bytes": "3b5c2428",
+          "original": "cmp     ebx, [esp+10h+arg_14]",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ee7",
+          "bytes": "7ce5",
+          "original": "jl      short loc_11ECE",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11ee9",
+          "bytes": "5d",
+          "original": "pop     ebp",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11eea",
+          "bytes": "5f",
+          "original": "pop     edi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11eeb",
+          "bytes": "5e",
+          "original": "pop     esi",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11eec",
+          "bytes": "5b",
+          "original": "pop     ebx",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        },
+        {
+          "address": "0x11eed",
+          "bytes": "c3",
+          "original": "retn",
+          "semantic": "",
+          "level": "已證實",
+          "warning": "",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "semantic_annotations": [
+            {
+              "semantic": "11EB0逐列memmove；11EE3..11EE7循環完成全部列後，11EED的retn之前已完成該次copy。VGA觀察在這個出口能包括最後present，不再只看入口的舊畫面。",
+              "level": "已證實",
+              "source": [
+                "docs/data/ida/fd2_physical_background_selection_20261004.json",
+                "work/physical-counter-capture-ida-r1.json",
+                "tools/dosgolem_oracle_container.sh"
+              ]
+            }
+          ]
+        }
+      ],
+      "semantic": "",
+      "level": "未知",
+      "warning": "只閉合已審查的 caller-specific claims",
+      "source": [
+        "tools/ida_probe_physical_presentation.py"
+      ],
+      "callers": [
+        {
+          "address": "0x28f4d",
+          "original": "call    sub_11EB0",
+          "bytes": "e85e8ffeff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x28fb9",
+          "original": "call    sub_11EB0",
+          "bytes": "e8f28efeff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x291f1",
+          "original": "call    sub_11EB0",
+          "bytes": "e8ba8cfeff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x2922a",
+          "original": "call    sub_11EB0",
+          "bytes": "e8818cfeff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x292cd",
+          "original": "call    sub_11EB0",
+          "bytes": "e8de8bfeff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29310",
+          "original": "call    sub_11EB0",
+          "bytes": "e89b8bfeff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29573",
+          "original": "call    sub_11EB0",
+          "bytes": "e83889feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x295ad",
+          "original": "call    sub_11EB0",
+          "bytes": "e8fe88feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29649",
+          "original": "call    sub_11EB0",
+          "bytes": "e86288feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29689",
+          "original": "call    sub_11EB0",
+          "bytes": "e82288feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x2987a",
+          "original": "call    sub_11EB0",
+          "bytes": "e83186feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29a91",
+          "original": "call    sub_11EB0",
+          "bytes": "e81a84feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29bb7",
+          "original": "call    sub_11EB0",
+          "bytes": "e8f482feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        },
+        {
+          "address": "0x29c37",
+          "original": "call    sub_11EB0",
+          "bytes": "e87482feff",
+          "level": "未知",
+          "warning": "呼叫定位；語意另見 canonical claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ]
+        }
+      ]
+    },
+    "capture_policy": "前導entry觀察after-DAC；逐揮與restore的11EED exit觀察copy完成；兩個固定phase來源的控制與狀態完全相同。"
+  },
+  "physical_counter_validation": {
+    "date": "2026-10-05",
+    "state": "CONFORMED-zero-header-main-hit-counter-miss-subset",
+    "issue": 166,
+    "scope": "建構槽正常鍵盤取得的原版actor0→target11單次主攻命中及counter未命中；重製從攻擊前80-byte記錄解碼、正式resolver結算一次並使用正式場景owner。屬同輸入合成診斷，不新增章PLAYER-E2。",
+    "evidence_restriction": "固定加成建構槽。HP、Damage、EXP與RNG只固定演出輸入，不用此收據驗收傷害、存活或敵方選目標。",
+    "source": {
+      "runner": {
+        "path": "work/parity-slot-ch08/physical-hit-counter-original-r3/runner.json",
+        "sha256": "0e0ac8e4f6d7649da4f5d9efab1d2574e1868586e15024e259e9c4296a533c7a"
+      },
+      "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "plan": {
+        "path": "docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl",
+        "sha256": "079eecf19c2a1df78fe74a034b20f8c3a6b14769b92703644b4a334a09952ffd"
+      },
+      "slot": {
+        "path": "work/parity-slot-ch08/FD2.SAV",
+        "sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0"
+      },
+      "slot_manifest": {
+        "path": "work/parity-slot-ch08/manifest.json",
+        "sha256": "990686ba32d60336b229d3873bbaa1688d6e79c4ab8516c84fce26dc16c94fa6"
+      },
+      "slot_level_policy": "levels-per-chapter=6 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+      "slot_assumptions": [
+        {
+          "chapter": 3,
+          "kind": "if",
+          "detail": "any_unit_inactive→false（假設無人陣亡）"
+        },
+        {
+          "chapter": 7,
+          "kind": "if",
+          "detail": "native_event_state_eq(state17)→true（第 7 章戰場狀態 17＝1，-event-states 明示）"
+        },
+        {
+          "chapter": 7,
+          "kind": "if",
+          "detail": "any_unit_inactive→false（假設無人陣亡）"
+        }
+      ],
+      "control_history": {
+        "path": "work/parity-slot-ch08/physical-hit-counter-original-r3/control-history.jsonl",
+        "sha256": "59b1d07f3fbc793f50d417a273c22ac54662c55b33c03e69c4c333101f2a4466"
+      },
+      "control_count": 181,
+      "state_injections_enabled": [],
+      "raw_checkpoints": [
+        {
+          "path": "work/parity-slot-ch08/physical-hit-counter-original-r3/checkpoint-0000.json",
+          "sha256": "cfb48b7d40d9dd4d4f3537f676728f6bc792d8a18d342753f413f73e055c6c4c"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-hit-counter-original-r3/checkpoint-0156.json",
+          "sha256": "9c3c8514791b2b9dbacac2547c17d928d24a95bc9e9f534371200a583ef0cd19"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-hit-counter-original-r3/checkpoint-0157.json",
+          "sha256": "e8b42520ae08c1516578bb02c03ffd903ef6ce57230b12b4cec76a128da8f18f"
+        },
+        {
+          "path": "work/parity-slot-ch08/physical-hit-counter-original-r3/checkpoint-0181.json",
+          "sha256": "b5d36d66b3df5431c976586e3f4683b0c7675ce4343497d79fc72b701ac9333b"
+        }
+      ],
+      "baseline_controls_identical": true,
+      "baseline_selected_state_identical": true
+    },
+    "sampling": {
+      "entry": "work/parity-slot-ch08/physical-hit-counter-original-r2",
+      "exit": "work/parity-slot-ch08/physical-hit-counter-original-r3",
+      "entry_eip": "0x11EB0",
+      "exit_eip": "0x11EED",
+      "exit_original_unique_frames": 35,
+      "initial_map_frames": 1,
+      "prelude_unique_frames": 9,
+      "body_and_restore_unique_frames": 25,
+      "fixed_mapping": "unique scene1..9→entry frame1..9；scene10..34→exit frame10..34。兩份controls／checkpoint0156與0157逐byte相同。沒有候選搜尋、遮罩、跳過或忽略RGB差異。",
+      "limitation": "copy出口的前導RGB仍在DAC更新前；其暫態差異明示保留，不當作phase完成畫面。"
+    },
+    "presentation_inputs": {
+      "actor_index": 0,
+      "target_index": 11,
+      "header1": 0,
+      "actor_raw6": 2,
+      "target_raw6": 0,
+      "main_strikes": 1,
+      "counter_strikes": 1,
+      "main": "hit/no status/no crit",
+      "counter": "miss/no status/no crit",
+      "actor_hp": [
+        341,
+        341
+      ],
+      "target_hp": [
+        184,
+        55
+      ],
+      "rng": [
+        11065,
+        34973,
+        44258
+      ],
+      "actor_exp": [
+        44,
+        55
+      ],
+      "scope": "僅演出輸入一致性，不為傷害規則驗收"
+    },
+    "indexed_rgb": {
+      "receipt": {
+        "path": "work/physical-counter-full-r5/comparison.json",
+        "sha256": "160737de8da5b02868ad20286cf84d978bc312d4dab56ee2d69db31bccc6253c"
+      },
+      "log": {
+        "path": "work/physical-counter-oracle-r5.log",
+        "sha256": "5ff118597d87fdfaf9add8530f1e8b23630af639ee7bca3c7df64647369897d5"
+      },
+      "unique_frames": 34,
+      "presents": 54,
+      "pixels_per_frame": 64000,
+      "indexed_difference": 0,
+      "rgb_difference": 0,
+      "complete_final_restore": true
+    },
+    "gpu": {
+      "log": {
+        "path": "work/physical-counter-gpu-r1.log",
+        "sha256": "f025f69a4290bfc9326fcb313cf83b96386876f7ce6d14161bfff4195355f570"
+      },
+      "presents": 54,
+      "shape": [
+        640,
+        400
+      ],
+      "checks": "正式drawBattleScene完整RGB／alpha、Draw確認與最後續接",
+      "source": "work/parity-slot-ch08/physical-hit-counter-original-r1",
+      "source_initial_state_matches_final_oracle": true
+    },
+    "focused": {
+      "log": {
+        "path": "work/physical-counter-focused-r1.log",
+        "sha256": "9acafd37c9c5302233a4ead00c9dcee89c8b91e02d0481e5e6b44afb01d5a22f"
+      },
+      "scope": "既有場景來源、透明index0、raw缺失／音效缺失原子拒收、供值multi／counter／DAC0"
+    },
+    "failures_corrected": [
+      "r1測試把EXP讀成+3D；依fdsave.PersistentRecord.View修正為+3C，正式程式未改。",
+      "r2測試將前導套固定palette；修正為原生各格DAC。",
+      "原版entry r1／擴大窗口r2仍缺最後恢復，因取樣點在copy之前且無後續入口。改用IDA確認的11EED出口。",
+      "exit r3的前導圖在copy後、DAC前；r4如實留下RGB差異。按原始copy→DAC次序建立固定兩phase取樣，r5完整通過。"
+    ],
+    "remaining": [
+      "相反raw側非零header的完整影格",
+      "非零header連擊／返回轉場與命中反擊的原版收據",
+      "DAC0與逐cue／人耳音訊原版驗收",
+      "battle→map work交接；#167近堆工具政策限制保持",
+      "#166 OPEN；20/30章台帳及#154待決不變"
+    ],
+    "commands": {
+      "original_entry": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-original-r2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-state-r2' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-hit-counter-original-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2939D,0x294A9,0x294E9,0x2971C,0x297B0,0x29882,0x28F4D,0x11EB0' -e 'FD2_ORACLE_EIP_TRACE_FROM=1324430000' -e 'FD2_ORACLE_EIP_TRACE_TO=1330600000' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000' -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EB0 -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1324430000 -e FD2_ORACLE_FRAME_TO=1330600000 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh",
+      "original_exit": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-original-r3' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-state-r3' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-hit-counter-original-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-original-r3,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-state-r3,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-hit-counter-state-r3' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x2939D,0x294A9,0x294E9,0x2971C,0x297B0,0x29882,0x28F4D,0x11EB0' -e 'FD2_ORACLE_EIP_TRACE_FROM=1324430000' -e 'FD2_ORACLE_EIP_TRACE_TO=1330600000' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000' -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1324430000 -e FD2_ORACLE_FRAME_TO=1330600000 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-counter-original-r3.log 2>&1",
+      "ida": "test -d /home/anr2/cht/fd2 && test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-io.i64 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 180 docker run --rm --name fd2-physical-counter-capture-ida-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida,dst=/database,readonly -e FD2_IDA_INPUT=/input/FD2.EXE -e FD2_IDA_OUTPUT=/src/work/physical-counter-capture-ida-r2.json ida-pro-9.4-idapython:locked-v1 bash -c 'set -eu; test -f /.dockerenv; cp /database/fd2-io.i64 /tmp/fd2.i64; timeout 150 idat -A -S/src/tools/ida_probe_physical_presentation.py /tmp/fd2.i64 > /src/work/physical-counter-capture-ida-r2.log 2>&1; test -s /src/work/physical-counter-capture-ida-r2.json; stat -c \"%u:%g %n\" /src/work/physical-counter-capture-ida-r2.json'",
+      "cpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  gofmt -w cmd/fd2/native_physical_body_test.go cmd/fd2/native_physical_scene_test.go; test ! -e /src/work/physical-counter-full-r5; mkdir /src/work/physical-counter-full-r5; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_COUNTER_OUT=/src/work/physical-counter-full-r5 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyCounterNormalOracle$'\\'' -count=1 -timeout 120s -v' > work/physical-counter-oracle-r5.log 2>&1",
+      "gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r1 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=counter with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-counter-gpu-r1.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  gofmt -w cmd/fd2/native_physical_body_test.go cmd/fd2/native_physical_scene_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2 -run '\\''TestNativePhysical(Scene|Terrain|Surface|BodyMultiStrikeCounterAndPulse|BodyMissingSoundStopsBeforeSettlement)'\\'' -count=1 -timeout 120s -v' > work/physical-counter-focused-r1.log 2>&1"
+    },
+    "closeout_audit": {
+      "lessons": 148,
+      "guards_passed": 47,
+      "github_open_worklist": 23,
+      "possibly_completed": 0,
+      "evidence_hashes_verified": 14,
+      "new_local_links_verified": 13,
+      "readme_culture_entry_verified": true,
+      "index_positive_control_verified": true,
+      "modified_file_uid_gid": [
+        1000,
+        1000
+      ],
+      "historical_root_owned": 2811,
+      "new_root_owned": 0,
+      "md_directories": 0,
+      "unexpected_fd2_containers": 0,
+      "verification_scope": "current focused, original full-canvas and GPU receipts; standard Go19 baseline remains 4fbaf345; no fresh all-package claim",
+      "link_scope": "new lines only; historical dated handoff delivery links are not current delivery gates"
     }
   }
 }

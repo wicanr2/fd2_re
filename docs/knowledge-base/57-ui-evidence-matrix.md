@@ -1723,3 +1723,13 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 | 戰鬥到地圖work | 尚待驗收 | #167配置器工具政策限制保持，完整章unknown wait與影像gate仍拒收。 |
 
 本節取代先前完整2939D尾段未接入的現況。早期表格的固定全屏戰鬥／raw owner未實作描述是當時狀態，現在由本節與58判定。新圖[有限比較](../figures/physical-tail-scoped-compare.png)保留完整畫布；不新增章PLAYER-E2。
+
+
+### 2026-10-05 #166：零旗標主攻與counter完整畫面
+
+| 介面範圍 | 分層 | 已驗與剩餘 |
+|---|---|---|
+| 零header單次主攻命中／counter未命中及最後恢復 | 有限CONFORMED、RUNTIME-E1 | 固定兩個phase邊界的完整indexed／RGB及正式GPU通過；來源與唯一數字見[58](58-fd2-exe-re-coverage.md)及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。 |
+| 非零相反raw側、連擊、命中反擊、DAC0／音效、work | 尚待驗收 | 仍在#166，不由這次有限收據外推。 |
+
+此項是建構槽同輸入演出診斷，保留政策加成限制；不驗收傷害、存活或敵方選目標，不新增章PLAYER-E2。本節取代前段counter全部原版影格尚缺的現況。

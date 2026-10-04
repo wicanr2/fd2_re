@@ -9457,3 +9457,10 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 所有分離FIGANI、BG／TAI、panel與可能counter音效銀行在方向／HP／RNG前預檢。header4依原始六byte表選FDOTHER48..53，禁止archive fallback。cue-only descriptor不要求Draw；每個present須由Draw確認，GPU資源在游標前進及結束時釋放。counter需要caller未準備的非零BG layers時明確拒收，不猜造緩衝。無原生地圖場景的既有相容呈現維持原scope。
 
 平台播放以60Hz消費20／40ms及BIOS等待，不宣稱DOS硬體wall-clock一致。原始PCM取樣率依既有硬體規格近似，來源與公式沿用[聲音契約](../data/ida/fd2_physical_background_selection_20261004.json)的validation.separated_sfx；不深入硬體driver或ISR。本次單次MISS有限CONFORMED，其他原版影格及work仍待驗；唯一統計與回歸結果見[58](58-fd2-exe-re-coverage.md)。本節取代前節完整尾段尚未接入的目前狀態，不增加存檔欄位或章PLAYER-E2。
+
+
+### 2026-10-05 #166：原生counter的固定phase驗收
+
+[主契約counter子規格](../data/ida/fd2_physical_background_selection_20261004.json)新增零header主攻命中／counter未命中的有限CONFORMED。重製端由原版攻擊前raw記錄及既有typed地形、物品、建構資料結算一次，再使用正式main／counter owner；沒有供值Damage、Missed或反擊資格。建構槽加成限制仍適用，只驗收演出，不驗收傷害、存活或敵方選目標。
+
+原版逐幀取樣分成固定兩個phase邊界。前導在DAC更新後比較，逐揮與最後恢復在已審查的copy出口比較。兩份控制與checkpoint狀態須逐byte相同；不能以搜尋候選格或忽略RGB代替這個條件。正式Game的copy、色盤及時序未改，GPU驗證沿用同一owner。唯一數字與剩餘gate見[58](58-fd2-exe-re-coverage.md)，較早「counter原版影格全部未驗」的現況由本節取代；不新增存檔格式或章PLAYER-E2。
