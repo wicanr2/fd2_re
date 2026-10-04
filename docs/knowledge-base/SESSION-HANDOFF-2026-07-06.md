@@ -9073,3 +9073,9 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 下一步只補#166非零header雙BGscroll、完整2939D／counter影格及戰鬥→地圖work續接。前導合成診斷不得升格為整章E2；新951與歷史a9來源不混作同狀態。#154待決、#167近堆限制及章台帳不變。
 
 #166本批收尾：Go19套件通過，98筆字串處置保持；147條教訓的46條guard通過。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0。Docker原版與測試容器均已退出。README圖說明示合成診斷，完整攻擊與章台帳仍未增加。
+
+### 2026-10-04 追加：#166 首次雙背景捲動
+
+本節取代前段非零header僅觀察來源的現況。正式Game已消費13格departure、19格29DED捲動與原生目標base；完整41格prefix核對範圍及可重跑命令見[58](58-fd2-exe-re-coverage.md)與[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+r1章回歸漏了新增owner的Draw確認，屬驗證helper問題。改用正式drawNativePhysicalPrelude後，以同一歷史原版來源乾淨重跑r2通過LOAD→戰後→存檔。完整章圖像與未知wait gate仍拒收，不列新PLAYER-E2。首次raw+6零prefix有限CONFORMED；完整2939D、相反方向、連擊、counter及work仍為下一切片。

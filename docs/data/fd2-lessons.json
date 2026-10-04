@@ -1521,7 +1521,7 @@
       "date": "2026-10-04",
       "area": "驗證",
       "rule": "加入等待Draw確認的演出owner時，同步把正式Draw接入離屏玩家路徑的ackPresents，並保留獨立RunGame像素驗證。入口remake/cmd/fd2/native_chapter_one_play_test.go的ackPresents；GPU命令見docs/data/ida/fd2_physical_background_selection_20261004.json的commands.prelude_gpu_r1，範圍限前導。",
-      "why": "零header物理前導接入後，第十二章重播因helper漏Draw而停在aiBusy；正式GPU九格已通過，補同一Draw函式後重播恢復。",
+      "why": "零header物理前導接入後，第十二章重播因helper漏Draw而停在aiBusy；正式GPU九格已通過，補同一Draw函式後重播恢復。 非零departure／scroll新增後，原字串替換未命中g.atk.nativeScene條件，helper仍只認prelude；核對差異後擴大條件，同來源r2再次通過。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/166",
       "guard_note": "目前guard掃描器排除_test.go，故此測試helper訊號不掛失真的guard；正式GPU與章重播命令是驗證入口。"
     }

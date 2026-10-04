@@ -1703,3 +1703,12 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 |---|---|---|
 | 零header物理panel、BG與29164前導 | 有限CONFORMED、RUNTIME-E1 | 正常玩家及獨立敵方的完整末格，正式GPU九次Draw與DAC；同輸入合成與GPU診斷，不外推完整攻擊或整章E2。主證據與唯一現況見[58](58-fd2-exe-re-coverage.md)及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。 |
 | 非零header與戰後work | 尚待驗收 | 原版獨立敵方來源已觀察；雙BGscroll、完整counter影格、work續接仍在#166。 |
+
+### 2026-10-04 #166：非零旗標首次轉場有限對拍
+
+| 介面範圍 | 分層 | 已驗與剩餘 |
+|---|---|---|
+| 非零旗標首次前導、攻方departure、雙BG捲動 | 有限CONFORMED、RUNTIME-E1 | 正式consumer已接線；raw+6零的完整indexed／RGB及GPU prefix通過，來源見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)，唯一數字見[58](58-fd2-exe-re-coverage.md)。 |
+| 完整物理演出及戰後work | 尚待驗收 | 相反raw-side非零影格、2939D尾段、連擊、counter與工作緩衝續接仍在#166；沒有新增整章PLAYER-E2。 |
+
+本節取代前節「非零header只觀察來源，首次scroll仍待實作」的現況，不擴張有限收據的範圍。

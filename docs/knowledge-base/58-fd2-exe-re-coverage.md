@@ -2669,3 +2669,17 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 同一歷史原版來源的正式第十二章LOAD至戰後重播r2消費155／155 AI入口、順序分岔0；22987-byte存檔SHA-256仍為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。275張完整比較behavior／transaction通過，1528／2030 unknown wait仍拒收，所有差異保留。新951原版與歷史a9來源的時序／RNG不同，沒有混成同狀態收據。#166保持OPEN，剩餘非零header、完整攻擊／counter GPU與work續接；#154及20／30台帳不變。
 
 #166本批收尾：Go19套件通過，98筆字串處置保持；147條教訓的46條guard通過。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0。Docker原版與測試容器均已退出。README圖說明示合成診斷，完整攻擊與章台帳仍未增加。
+
+### 2026-10-04 #166：非零旗標的首次雙背景捲動
+
+[主契約 physical_scroll_evidence／spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)取代前節「非零header只觀察來源」的現況。IDA9.4直接指令閉合2939D的首次departure caller、29C90與29DED；後者是9+10格，不鏡射成20格。目標base按BG→TAI→panel建立，TAI只出現在29DED分支；兩個helper各自有明確memset，沒有借用#167的malloc清零假設。
+
+正式Game先驗證雙BG、BG0..2、panel、idle及完整attack，再發布九格前導、攻方departure及scroll。每格需要Draw確認；departure保留descriptor +6及fpt，scroll逐Draw呈現。這是平台顯示步進，不宣稱DOS硬體wall-clock一致。首次scroll之後從header2接續既有E1尾段，原生目標base取代單背景，缺BG2在玩家／mode11的方向、HP及RNG寫入前拒絕。
+
+951cb55f的第十二章固定BIOS序列1..1539與上一原版run逐筆相同，槽及seed不變；檢查點1／1537／1538／1539的單位、視圖、步數及暫存器一致，無狀態注入。110筆trace未封頂；11EB0窗口收51個完整畫面，首格是前導前的map。actor31→target14的九格前導、13格departure及19格scroll，共41張320×200完整indexed與RGB比較均0差異，不遮罩、不選最佳候選格。獨立GPU的41張640×400畫面完整RGB／alpha、Draw閘門及header2續接通過。
+
+同一歷史a9原版來源的第十二章正式LOAD→戰後→存檔重播r2消費155／155 AI入口，順序分岔0；22987-byte存檔SHA-256仍為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。275張完整比較behavior／transaction通過；1528／2030 unknown wait、節點及完整畫面gate仍拒收。驗證helper最初未確認新增departure Draw的r1失敗已保留並分類為腳本問題，以同一來源r2乾淨重跑。
+
+首次raw+6零的非零旗標prefix列有限CONFORMED及RUNTIME-E1。相反raw-side的非零影格、完整2939D尾段／連擊／counter／DAC音效及戰鬥→地圖work續接仍在#166。章台帳20／30、#154與#167限制不變。
+
+本批最終回歸：Go19套件通過，98筆字串處置不變；原版與GPU範圍、完整章拒收理由保留於主契約。 147條教訓的46條guard通過，本地連結與README文化保存入口有效；變更檔UID／GID1000，新增root-owned為0，.md目錄0，無非預期FD2容器。

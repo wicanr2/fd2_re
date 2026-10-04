@@ -16,7 +16,7 @@ import (
 
 // nativePhysicalScene 是一次正常 0x28A6C 的場景快照，反擊沿用同一份。
 // READY 子規格見 docs/data/ida/fd2_physical_background_selection_20261004.json。
-// 非零 header 的滑入與完整 DAC 演出仍由既有 E1 owner 處理。
+// 首次非零 header departure／scroll 已接線；完整 DAC 與尾段仍屬 E1。
 type nativePhysicalScene struct {
 	selection                 battle.NativePhysicalSceneSelection
 	background, pedestal      *ebiten.Image
@@ -31,6 +31,17 @@ type nativePhysicalScene struct {
 	counterActive             bool
 	baseImage                 *ebiten.Image
 	baseActorHP, baseTargetHP int
+	departure                 [][]byte
+	transition                [][]byte
+	leadImages                []*ebiten.Image
+	leadDelays                []int
+	leadFrame, leadTicks      int
+	leadDrawn                 bool
+	leadBodyTicks             int
+	attackStart               int
+	targetBackground          fdother.Frame
+	platformFrame             fdother.Frame
+	rawSide                   byte
 }
 
 func (g *Game) nativePhysicalTerrainControl(unit *battle.Unit) ([4]byte, error) {
@@ -140,10 +151,7 @@ func (g *Game) prepareNativePhysicalScene(actor, target *battle.Unit) (*nativePh
 		return nil, err
 	}
 	scene := &nativePhysicalScene{selection: selection, background: background, pedestal: pedestal}
-	if selection.HasSeparateBackgrounds {
-		return scene, nil
-	}
-	if err := g.prepareNativePhysicalPrelude(scene, actor, target, bg, tai); err != nil {
+	if err := g.prepareNativePhysicalPrelude(scene, actor, target, animation, bg, tai); err != nil {
 		return nil, err
 	}
 	return scene, nil
@@ -161,13 +169,15 @@ func (g *Game) nativePhysicalBase(scene *nativePhysicalScene, actorRecord, targe
 	if err := bg.Blit(base, 320, -1); err != nil {
 		return nil, err
 	}
-	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, targetRecord, base, scene.targetIndex, g.handlerChapter); err != nil {
-		return nil, err
+	if !scene.selection.HasSeparateBackgrounds {
+		if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, targetRecord, base, scene.targetIndex, g.handlerChapter); err != nil {
+			return nil, err
+		}
 	}
 	return base, nil
 }
 
-func (g *Game) prepareNativePhysicalPrelude(scene *nativePhysicalScene, actor, target *battle.Unit, bg, tai fdother.Frame) error {
+func (g *Game) prepareNativePhysicalPrelude(scene *nativePhysicalScene, actor, target *battle.Unit, attack *figani.Animation, bg, tai fdother.Frame) error {
 	var err error
 	scene.backgroundFrame = bg
 	scene.actorRecord, err = battle.NativeBattlePanelRecordForUnit(actor)
@@ -209,14 +219,96 @@ func (g *Game) prepareNativePhysicalPrelude(scene *nativePhysicalScene, actor, t
 	if err != nil {
 		return err
 	}
+	mode := byte(0)
+	if scene.selection.HasSeparateBackgrounds {
+		mode = 1
+	}
 	scene.prelude, err = battlepresent.BuildNativeCommandPreludeFrames(battlepresent.NativeCommandPreludeInput{
 		Base: base, ActorIdle: actorIdle.Frames[0], FirstTargetIdle: targetIdle.Frames[0],
-		Platform: &tai, RawSide: actor.NativeRecordByte6, Mode: 0, BaselineDAC: dac,
+		Platform: &tai, RawSide: actor.NativeRecordByte6, Mode: mode, BaselineDAC: dac,
 	})
 	if err != nil {
 		return err
 	}
 	scene.preludeImages, err = nativeCommand24PreludeImages(scene.prelude)
+	if err != nil || !scene.selection.HasSeparateBackgrounds {
+		return err
+	}
+	return g.prepareNativePhysicalDeparture(scene, actor, attack, targetIdle, base, tai)
+}
+
+func (g *Game) nativePhysicalTargetBase(scene *nativePhysicalScene, record []byte) ([]byte, error) {
+	base := make([]byte, 320*200) // 29C90／29DED 明確清除 base。
+	bg := scene.targetBackground
+	bg.X, bg.Y = 0, 50
+	if err := bg.Blit(base, 320, -1); err != nil {
+		return nil, err
+	}
+	if scene.rawSide == 0 {
+		platform := scene.platformFrame
+		platform.X, platform.Y = 164, 157
+		if err := platform.Blit(base, 320, -1); err != nil {
+			return nil, err
+		}
+	}
+	if err := g.renderLocalizedNativeBattlePanel(scene.panelAssets, record, base, scene.targetIndex, g.handlerChapter); err != nil {
+		return nil, err
+	}
+	return base, nil
+}
+
+func (g *Game) prepareNativePhysicalDeparture(scene *nativePhysicalScene, actor *battle.Unit, attack, targetIdle *figani.Animation, base []byte, tai fdother.Frame) error {
+	if attack == nil || int(attack.HeaderByte2) > len(attack.Frames) {
+		return errors.New("native physical departure header unavailable")
+	}
+	scene.attackStart = int(attack.HeaderByte2)
+	scene.rawSide, scene.platformFrame = actor.NativeRecordByte6, tai
+	root := separatedAssetPath("surfaces")
+	targetBG := scene.selection.PrimaryBG
+	if scene.rawSide == 0 {
+		targetBG = scene.selection.SecondaryBG
+	}
+	var err error
+	scene.targetBackground, err = fdother.LoadSeparatedSingleFrame(root, "BG.DAT", int(targetBG))
+	if err != nil {
+		return err
+	}
+	targetBase, err := g.nativePhysicalTargetBase(scene, scene.targetRecord)
+	if err != nil {
+		return err
+	}
+	var layers [3]fdother.Frame
+	for i := range layers {
+		layers[i], err = fdother.LoadSeparatedSingleFrame(root, "BG.DAT", i)
+		if err != nil {
+			return err
+		}
+	}
+	source := make([]byte, 320*200) // 2952A 明確清除 work；header2=0 時保持零。
+	for i := 0; i < scene.attackStart; i++ {
+		frame := attack.Frames[i]
+		pixels := append([]byte(nil), base...)
+		if err := frame.BlitAt(pixels, 320); err != nil {
+			return err
+		}
+		scene.departure = append(scene.departure, pixels)
+		scene.leadDelays = append(scene.leadDelays, frame.Delay)
+		source = pixels
+	}
+	in := battlepresent.NativeCommand24BackgroundInputs{Layers: layers, Source: source, Target: targetBase, TargetIdle: targetIdle.Frames[0]}
+	if scene.rawSide == 0 {
+		scene.transition, err = battlepresent.BuildNativePhysicalRightBackgroundFrames(in)
+	} else {
+		scene.transition, err = battlepresent.BuildNativeCommand24BackgroundFrames(in)
+	}
+	if err != nil {
+		return err
+	}
+	for range scene.transition {
+		scene.leadDelays = append(scene.leadDelays, 0)
+	}
+	frames := append(append([][]byte(nil), scene.departure...), scene.transition...)
+	scene.leadImages, err = nativeCommand24IndexedImages(frames, g.nativeUIPalette)
 	return err
 }
 
@@ -225,13 +317,19 @@ func (g *Game) drawNativePhysicalPrelude(screen *ebiten.Image) bool {
 		return false
 	}
 	scene := g.atk.nativeScene
-	if scene.preludeFrame >= len(scene.preludeImages) {
+	var img *ebiten.Image
+	if scene.preludeFrame < len(scene.preludeImages) {
+		img = scene.preludeImages[scene.preludeFrame]
+		scene.preludeDrawn = true
+	} else if scene.leadFrame < len(scene.leadImages) {
+		img = scene.leadImages[scene.leadFrame]
+		scene.leadDrawn = true
+	} else {
 		return false
 	}
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(2, 2)
-	screen.DrawImage(scene.preludeImages[scene.preludeFrame], op)
-	scene.preludeDrawn = true
+	screen.DrawImage(img, op)
 	return true
 }
 
@@ -259,7 +357,13 @@ func (g *Game) drawNativePhysicalBase(screen *ebiten.Image, defenderHP int) (boo
 	}
 	binary.LittleEndian.PutUint16(currentActor[0x40:], uint16(int16(a.atkHP)))
 	binary.LittleEndian.PutUint16(currentTarget[0x40:], uint16(int16(defenderHP)))
-	base, err := g.nativePhysicalBase(scene, actorRecord, targetRecord)
+	var base []byte
+	var err error
+	if scene.selection.HasSeparateBackgrounds {
+		base, err = g.nativePhysicalTargetBase(scene, targetRecord)
+	} else {
+		base, err = g.nativePhysicalBase(scene, actorRecord, targetRecord)
+	}
 	if err != nil {
 		return false, err
 	}

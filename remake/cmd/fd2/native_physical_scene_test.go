@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
@@ -18,6 +19,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
 func physicalSceneTestGame(t *testing.T) (*Game, *battle.Unit, *battle.Unit) {
@@ -178,18 +180,69 @@ func TestNativePhysicalSceneMissingRawNameStopsBeforeSettlement(t *testing.T) {
 	}
 }
 
+func TestNativePhysicalDepartureMissingLayerStopsBeforeSettlement(t *testing.T) {
+	requirePhysicalScenePack(t)
+	root, err := filepath.Abs(separatedAssetPath(""))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, owner := range []string{"player", "mode11"} {
+		t.Run(owner, func(t *testing.T) {
+			g, actor, target := physicalSceneTestGame(t)
+			actor.NativeRecordByte6, actor.NativeRecordByte8, actor.BattleFig = 0, 88, 88
+			target.NativeRecordByte6, target.NativeRecordByte8, target.BattleFig = 1, 14, 17
+			if err := g.ensureNativeAttackPresentation(actor.BattleFig, target.BattleFig); err != nil {
+				t.Fatal(err)
+			}
+			pack := t.TempDir()
+			entries, err := os.ReadDir(root)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, entry := range entries {
+				if entry.Name() != "surfaces" {
+					if err := os.Symlink(filepath.Join(root, entry.Name()), filepath.Join(pack, entry.Name())); err != nil {
+						t.Fatal(err)
+					}
+				}
+			}
+			if err := os.Mkdir(filepath.Join(pack, "surfaces"), 0700); err != nil {
+				t.Fatal(err)
+			}
+			entries, err = os.ReadDir(filepath.Join(root, "surfaces"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, entry := range entries {
+				if entry.Name() != "BG_002" {
+					if err := os.Symlink(filepath.Join(root, "surfaces", entry.Name()), filepath.Join(pack, "surfaces", entry.Name())); err != nil {
+						t.Fatal(err)
+					}
+				}
+			}
+			t.Setenv("FD2_ASSET_PACK", pack)
+			beforeActor, beforeTarget := *actor, *target
+			if owner == "player" {
+				g.confirm()
+			} else {
+				g.aiBusy = true
+				g.executeNativeAIMode11Physical(&battle.AIPlan{U: actor, Target: target}, nil)
+			}
+			if !strings.Contains(g.loadErr, "BG_002") || g.atk != nil || g.nativeRNGState != 17791 ||
+				!reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*target, beforeTarget) {
+				t.Fatalf("missing scroll layer changed transaction: %s", g.loadErr)
+			}
+			if got, want := g.rng.Int63(), rand.New(rand.NewSource(73)).Int63(); got != want {
+				t.Fatal("missing scroll layer consumed RNG")
+			}
+		})
+	}
+}
+
 // 這是完整畫布的同輸入合成診斷；原版像素只用於比較，不供 Game 合成。
 // 正常玩家路徑與完整 0x2939D 演出仍由章收據另行驗證。
-func TestNativePhysicalPreludeNormalOracle(t *testing.T) {
-	run := os.Getenv("FD2_PHYSICAL_PRELUDE_ORIGINAL")
-	if run == "" {
-		t.Skip("explicit normal oracle receipt is required")
-	}
-	requirePhysicalScenePack(t)
-	beforeSeq, afterSeq, actorIndex, targetIndex, mapID := 156, 0, 0, 11, 7
-	if os.Getenv("FD2_PHYSICAL_PRELUDE_CASE") == "ch12_enemy" {
-		beforeSeq, afterSeq, actorIndex, targetIndex, mapID = 1532, 1533, 23, 14, 11
-	}
+func physicalSceneFromOracle(t *testing.T, run string, beforeSeq, afterSeq, actorIndex, targetIndex, mapID int) (*Game, *nativePhysicalScene) {
+	t.Helper()
 	raw, err := os.ReadFile(filepath.Join(run, fmt.Sprintf("checkpoint-%04d.json", beforeSeq)))
 	if err != nil {
 		t.Fatal(err)
@@ -261,10 +314,28 @@ func TestNativePhysicalPreludeNormalOracle(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	return g, scene
+}
+
+func TestNativePhysicalPreludeNormalOracle(t *testing.T) {
+	run := os.Getenv("FD2_PHYSICAL_PRELUDE_ORIGINAL")
+	if run == "" {
+		t.Skip("explicit normal oracle receipt is required")
+	}
+	requirePhysicalScenePack(t)
+	beforeSeq, afterSeq, actorIndex, targetIndex, mapID := 156, 0, 0, 11, 7
+	wantFrame := 0
+	if os.Getenv("FD2_PHYSICAL_PRELUDE_CASE") == "ch12_enemy" {
+		beforeSeq, afterSeq, actorIndex, targetIndex, mapID = 1532, 1533, 23, 14, 11
+	}
+	if os.Getenv("FD2_PHYSICAL_PRELUDE_CASE") == "ch12_enemy_nonzero" {
+		beforeSeq, afterSeq, actorIndex, targetIndex, mapID, wantFrame = 1537, 1538, 31, 14, 11, 2
+	}
+	_, scene := physicalSceneFromOracle(t, run, beforeSeq, afterSeq, actorIndex, targetIndex, mapID)
 	if len(scene.prelude) != 9 || scene.prelude[8].Stage != 0 {
 		t.Fatal("physical prelude schedule unavailable")
 	}
-	wantFile, err := os.Open(filepath.Join(run, "frames/frame-000000.png"))
+	wantFile, err := os.Open(filepath.Join(run, fmt.Sprintf("frames/frame-%06d.png", wantFrame)))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -311,6 +382,219 @@ func TestNativePhysicalPreludeNormalOracle(t *testing.T) {
 		t.Fatalf("complete physical prelude RGB difference: %d / 64000 pixels", different)
 	}
 	t.Log("complete physical prelude RGB: 0 / 64000 pixels")
+}
+
+// 原版同一個固定 BIOS 輸入中的非零物理場景。完整 indexed/RGB 比較，
+// 不選最佳候選格、不遮蔽差異，也不外推後續攻擊與 counter。
+func TestNativePhysicalDepartureNormalOracle(t *testing.T) {
+	run := os.Getenv("FD2_PHYSICAL_SCROLL_ORIGINAL")
+	if run == "" {
+		t.Skip("explicit fixed-input oracle receipt is required")
+	}
+	requirePhysicalScenePack(t)
+	g, scene := physicalSceneFromOracle(t, run, 1537, 1538, 31, 14, 11)
+	if !scene.selection.HasSeparateBackgrounds || scene.selection.BaseBG != 49 ||
+		len(scene.prelude) != 9 || len(scene.departure) != 13 || len(scene.transition) != 19 {
+		t.Fatalf("independent enemy prefix changed: %+v", scene.selection)
+	}
+	type frameInput struct {
+		pixels  []byte
+		palette color.Palette
+	}
+	var expected []frameInput
+	for _, frame := range scene.prelude {
+		palette, err := fdother.VGAPaletteFromDAC(frame.DAC)
+		if err != nil {
+			t.Fatal(err)
+		}
+		expected = append(expected, frameInput{frame.Pixels, palette})
+	}
+	for _, part := range [][][]byte{scene.departure, scene.transition} {
+		for _, frame := range part {
+			expected = append(expected, frameInput{frame, g.nativeUIPalette})
+		}
+	}
+	// oracle 以 indexed hash 去除相鄰重複 present；同一契約套在重製端。
+	var unique []frameInput
+	for _, frame := range expected {
+		if len(unique) == 0 || !bytes.Equal(unique[len(unique)-1].pixels, frame.pixels) {
+			unique = append(unique, frame)
+		}
+	}
+	metadata, err := os.ReadFile(filepath.Join(run, "frames/frames.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	lines := bytes.Split(bytes.TrimSpace(metadata), []byte{'\n'})
+	if len(lines) < len(unique)+1 {
+		t.Fatal("oracle did not capture the complete prefix")
+	}
+	for i, frame := range unique {
+		// frame0 是前導開始前的原版地圖；從第一個完整 present 循序比較。
+		var receipt struct {
+			File string `json:"file"`
+			EIP  string `json:"eip"`
+		}
+		if err := json.Unmarshal(lines[i+1], &receipt); err != nil || receipt.EIP != "0x11EB0" {
+			t.Fatal("oracle present anchor mismatch")
+		}
+		file, err := os.Open(filepath.Join(run, "frames", receipt.File))
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := png.Decode(file)
+		file.Close()
+		if err != nil {
+			t.Fatal(err)
+		}
+		indexed, ok := want.(*image.Paletted)
+		if !ok || indexed.Bounds() != image.Rect(0, 0, 320, 200) || !bytes.Equal(indexed.Pix, frame.pixels) {
+			t.Fatalf("prefix present %d (%s) indexed pixels differ", i, receipt.File)
+		}
+		actual := image.NewPaletted(image.Rect(0, 0, 320, 200), frame.palette)
+		copy(actual.Pix, frame.pixels)
+		for y := 0; y < 200; y++ {
+			for x := 0; x < 320; x++ {
+				r, gr, b, _ := actual.At(x, y).RGBA()
+				wr, wg, wb, _ := want.At(x, y).RGBA()
+				if r != wr || gr != wg || b != wb {
+					t.Fatalf("prefix present %d RGB differs at %d,%d", i, x, y)
+				}
+			}
+		}
+		if out := os.Getenv("FD2_PHYSICAL_SCROLL_OUT"); out != "" {
+			f, err := os.Create(filepath.Join(out, fmt.Sprintf("prefix-%02d.png", i)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			encodeErr, closeErr := png.Encode(f, actual), f.Close()
+			if encodeErr != nil || closeErr != nil {
+				t.Fatalf("write prefix: %v %v", encodeErr, closeErr)
+			}
+		}
+	}
+	t.Logf("9 prelude + 13 departure + 19 scroll: %d unique full 320x200 indexed/RGB presents match", len(unique))
+}
+
+type physicalDepartureGPUProbe struct {
+	g        *Game
+	seen     []bool
+	err      error
+	finished bool
+}
+
+func (p *physicalDepartureGPUProbe) Update() error {
+	if p.err != nil || p.finished {
+		return ebiten.Termination
+	}
+	scene := p.g.atk.nativeScene
+	if scene.preludeFrame == len(scene.prelude) && scene.leadFrame == len(scene.leadImages) {
+		if p.g.atk.frameIndex != scene.attackStart || p.g.atk.total-p.g.atk.timer != scene.leadBodyTicks {
+			p.err = fmt.Errorf("departure timeline did not resume at header2")
+		}
+		p.finished = true
+		return ebiten.Termination
+	}
+	return p.g.stepAttackPresentationTick()
+}
+
+func (p *physicalDepartureGPUProbe) Draw(screen *ebiten.Image) {
+	if p.err != nil || p.finished {
+		return
+	}
+	scene := p.g.atk.nativeScene
+	i := scene.preludeFrame
+	var pixels []byte
+	palette := p.g.nativeUIPalette
+	if i < len(scene.prelude) {
+		pixels = scene.prelude[i].Pixels
+		var err error
+		palette, err = fdother.VGAPaletteFromDAC(scene.prelude[i].DAC)
+		if err != nil {
+			p.err = err
+			return
+		}
+	} else {
+		i = len(scene.prelude) + scene.leadFrame
+		if scene.leadFrame >= len(scene.leadImages) {
+			if p.g.atk.frameIndex != scene.attackStart || p.g.atk.total-p.g.atk.timer != scene.leadBodyTicks {
+				p.err = fmt.Errorf("departure timeline did not resume at header2")
+			}
+			p.finished = true
+			return
+		}
+		if scene.leadFrame < len(scene.departure) {
+			pixels = scene.departure[scene.leadFrame]
+		} else {
+			pixels = scene.transition[scene.leadFrame-len(scene.departure)]
+		}
+	}
+	p.g.drawBattleScene(screen)
+	actual := make([]byte, 640*400*4)
+	screen.ReadPixels(actual)
+	for y := 0; y < 400; y++ {
+		for x := 0; x < 640; x++ {
+			r, gr, b, _ := palette[pixels[(y/2)*320+x/2]].RGBA()
+			at := (y*640 + x) * 4
+			if actual[at] != byte(r>>8) || actual[at+1] != byte(gr>>8) || actual[at+2] != byte(b>>8) || actual[at+3] != 255 {
+				p.err = fmt.Errorf("physical prefix GPU frame%d differs at %d,%d", i, x, y)
+				return
+			}
+		}
+	}
+	p.seen[i] = true
+}
+
+func (p *physicalDepartureGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
+
+func TestNativePhysicalDepartureGPU(t *testing.T) {
+	if os.Getenv("FD2_PHYSICAL_SCROLL_GPU") != "1" {
+		t.Skip("dedicated GPU lifecycle invocation is required")
+	}
+	requirePhysicalScenePack(t)
+	g, actor, target := physicalSceneTestGame(t)
+	actor.NativeRecordByte6, actor.NativeRecordByte8, actor.BattleFig = 0, 88, 88
+	target.NativeRecordByte6, target.NativeRecordByte8, target.BattleFig = 1, 14, 17
+	scene, err := g.prepareNativePhysicalScene(actor, target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	animation, err := figani.LoadSeparatedResource(separatedAssetPath("animations"), 265)
+	if err != nil {
+		t.Fatal(err)
+	}
+	delays := make([]int, len(animation.Frames))
+	for i, frame := range animation.Frames {
+		delays[i] = frame.Delay
+	}
+	timeline, err := figani.NewDisplayScheduler(delays, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.atk = &atkAnim{nativeScene: scene, figaniTimeline: timeline, fpt: 1,
+		total: timeline.BodyTicks() + 4, timer: timeline.BodyTicks() + 4, bodyTicks: timeline.BodyTicks()}
+	// 九格前導與首次 departure 都不得在無 Draw 時前進。
+	for j := 0; j < 3; j++ {
+		if err := g.stepAttackPresentationTick(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if scene.preludeFrame != 0 || scene.leadFrame != 0 || g.atk.timer != g.atk.total {
+		t.Fatal("physical prefix advanced without Draw")
+	}
+	probe := &physicalDepartureGPUProbe{g: g, seen: make([]bool, len(scene.prelude)+len(scene.leadImages))}
+	if err := ebiten.RunGame(probe); err != nil {
+		t.Fatal(err)
+	}
+	if probe.err != nil {
+		t.Fatal(probe.err)
+	}
+	for i, seen := range probe.seen {
+		if !seen {
+			t.Fatalf("physical prefix GPU frame%d skipped", i)
+		}
+	}
+	t.Log("41 complete GPU frames; Draw acknowledgement and header2 continuation pass")
 }
 
 type physicalPreludeGPUProbe struct {

@@ -6585,6 +6585,39 @@ func (g *Game) stepAttackPresentationTick() error {
 		}
 		return nil
 	}
+	if scene := a.nativeScene; scene != nil && scene.leadFrame < len(scene.leadImages) {
+		if !scene.leadDrawn {
+			return nil
+		}
+		scene.leadTicks++
+		wait := 1
+		if scene.leadFrame < len(scene.departure) {
+			wait = scene.leadDelays[scene.leadFrame]
+			if wait < 1 {
+				wait = 1
+			}
+			wait *= a.fpt
+			scene.leadBodyTicks++
+		}
+		if scene.leadTicks >= wait {
+			scene.leadFrame++
+			scene.leadTicks, scene.leadDrawn = 0, false
+			if scene.leadFrame == len(scene.leadImages) {
+				// E1 尾段從 header2 接續；首次 departure 不再重播。
+				for i := 0; i < scene.leadBodyTicks; i++ {
+					if a.figaniTimeline == nil {
+						return errors.New("native physical departure timeline unavailable")
+					}
+					if _, _, _, err := a.figaniTimeline.Step(); err != nil {
+						return err
+					}
+				}
+				a.timer -= scene.leadBodyTicks
+				a.frameIndex = scene.attackStart
+			}
+		}
+		return nil
+	}
 	a.timer--
 	prog := a.total - a.timer
 	if a.figaniTimeline != nil && prog <= a.bodyTicks {
@@ -10832,7 +10865,10 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 		case battleLayerOwnPedestal:
 			if a.nativeScene != nil {
 				// 0x28F6B／0x29164 固定座標，不按 TAI 寬高重新置中。
-				blit(a.nativeScene.pedestal, 164, 157)
+				// 非零 header 的 TAI 已由29DED目標base按原始分支處理。
+				if !a.nativeScene.selection.HasSeparateBackgrounds {
+					blit(a.nativeScene.pedestal, 164, 157)
+				}
 			} else if g.tai != nil {
 				tb := g.tai.Bounds()
 				tw, th := float64(tb.Dx())*sc, float64(tb.Dy())*sc

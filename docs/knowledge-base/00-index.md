@@ -582,3 +582,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第八章敵方物理場景正常 END 修正版計畫](../data/parity-plans/physical-background-ch08-enemy-r2.jsonl)：同一前段輸入，以實際按鍵送 END；證據同上。
 
 - #166 [第十二章雙敵方回合場景計畫](../data/parity-plans/physical-background-ch12-enemy-r1.jsonl)：沿用既有抽樣前35行，實測見[場景主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+- #166 [非零旗標首次轉場固定輸入](../data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl)與[IDA9.4非破壞匯出工具](../../tools/ida_probe_physical_presentation.py)：首次departure與29C90／29DED的caller、bytes及分級合併至[場景主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+- [物理首次捲動比較圖](../figures/physical-scroll-scoped-compare.png)：原版、同輸入合成與完整未遮差異；不外推完整攻擊或章PLAYER-E2。

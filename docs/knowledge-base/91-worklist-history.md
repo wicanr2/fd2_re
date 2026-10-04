@@ -5343,3 +5343,7 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 第八章延伸r1沒有main dispatcher支援end_turn，空等到預算退出；修正r2用實際鍵盤後正常END，敵方此輪為法術。第十二章沿用既有前段計畫取得獨立物理零／非零header；未改seed、槽或HP。章重播r1則因離屏ackPresents漏新Draw owner而停住，補正式drawNativePhysicalPrelude後同來源r2通過。字串review需重綁定位；一次編譯誤用目前Ebiten2.6.6沒有的Deallocate，改用既有Dispose。這些是驗證與API問題，沒有放寬規則或章門檻。
 
 #166本批收尾：Go19套件通過，98筆字串處置保持；147條教訓的46條guard通過。變更檔UID／GID1000，歷史root-owned2811、新增0，.md目錄0。Docker原版與測試容器均已退出。README圖說明示合成診斷，完整攻擊與章台帳仍未增加。
+
+### 2026-10-04 #166：非零旗標首次轉場
+
+正式Game接入首次departure及29DED的19格雙BG捲動；原版固定輸入與完整indexed／RGB／GPU prefix有限驗收見[58](58-fd2-exe-re-coverage.md)與[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。#166保持開啟，剩相反方向非零影格、完整尾段／連擊／counter／DAC音效與work續接。章台帳及#154政策不變。

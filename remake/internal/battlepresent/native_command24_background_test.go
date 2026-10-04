@@ -62,3 +62,39 @@ func TestBuildNativeCommand24BackgroundFramesRejectsBeforePartialOutput(t *testi
 		t.Fatal("malformed BG layer was accepted")
 	}
 }
+
+func TestNativePhysicalRightBackgroundKeeps29DEDAsymmetry(t *testing.T) {
+	source, target := make([]byte, 320*200), make([]byte, 320*200)
+	for i := range source {
+		source[i], target[i] = 40, 50
+	}
+	in := NativeCommand24BackgroundInputs{
+		Layers: [3]fdother.Frame{solidNativeCommand24Layer(10), solidNativeCommand24Layer(20), solidNativeCommand24Layer(30)},
+		Source: source, Target: target,
+		TargetIdle: figani.Frame{X: 10, Y: 10, Width: 1, Height: 1, Pixels: []byte{99}, Mask: []byte{1}},
+	}
+	frames, err := BuildNativePhysicalRightBackgroundFrames(in)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(frames) != 19 {
+		t.Fatalf("29DED presents=%d; original is 9+10", len(frames))
+	}
+	row := 50 * 320
+	// 第一段 i=1：offset32，因此前288 pixels仍是source，末32為BG1。
+	if frames[0][row+287] != 40 || frames[0][row+288] != 20 || frames[0][row+319] != 20 {
+		t.Fatal("29DED first source boundary or BG1 changed")
+	}
+	// 第一段沒有offset320；最後仍有32 pixels的source。
+	if frames[8][row+31] != 40 || frames[8][row+32] != 10 {
+		t.Fatal("29DED unexpectedly gained a tenth first slide")
+	}
+	if frames[9][row+287] != 30 || frames[9][row+288] != 50 ||
+		frames[18][10+10*320] != 99 || frames[18][319] != 50 {
+		t.Fatal("29DED target viewport or idle origin changed")
+	}
+	in.Layers[2] = fdother.Frame{}
+	if partial, err := BuildNativePhysicalRightBackgroundFrames(in); err == nil || partial != nil {
+		t.Fatal("malformed physical scroll returned a partial schedule")
+	}
+}

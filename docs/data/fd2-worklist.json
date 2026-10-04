@@ -401,11 +401,13 @@
         "https://github.com/wicanr2/fd2_re/issues/52",
         "docs/data/ida/fd2_physical_background_selection_20261004.json",
         "remake/internal/battle/native_physical_scene.go",
-        "remake/cmd/fd2/native_physical_scene.go"
+        "remake/cmd/fd2/native_physical_scene.go",
+        "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
+        "tools/ida_probe_physical_presentation.py"
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-04：正常玩家、一般AI與mode11已接typed raw／mutable terrain／FIGANI header的BG／TAI快照，反擊沿用，缺來源在方向／HP／RNG前拒收。仍需獨立敵方28A6C載入與整場景對拍、非零header雙BG scroll、戰鬥→地圖work續接；完整影格不得遮罩。#167的近堆工具限制獨立。"
+        "note": "2026-10-04：正常玩家、一般AI與mode11已接原生panel、BG／TAI與九格前導；首次非零raw+6零場景已接13格departure與19格29DED雙BG捲動，41張完整indexed／RGB及GPU驗證通過。仍需相反raw-side非零影格、完整2939D尾段／連擊／counter／DAC音效與戰鬥→地圖work續接；完整影格不得遮罩。#167近堆工具限制與20/30章門檻不變。"
       },
       "issue": 166
     }

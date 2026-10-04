@@ -9442,3 +9442,9 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 [有限CONFORMED子契約](../data/ida/fd2_physical_background_selection_20261004.json)新增明確memset base、actor panel→BG→target panel及mode0九次present。正式Game先原子預檢panel raw+6／+8、單位index、完整分離UI、兩側idle、TAI與六位DAC，再發布快照。前導須Draw確認才推進，counter不重播；兩側HP仍使用現有演出步進，更新原始panel record，沒有猜補新的傷害時序。
 
 正常玩家與獨立敵方的完整前導末格，以及正式GPU九張畫面的驗證範圍見[58](58-fd2-exe-re-coverage.md)。非零header雙BGscroll、完整2939D與戰後work仍未CONFORMED；這段不增加章驗收，也不變更原版實體近堆未知政策。
+
+### 2026-10-04 #166：非零旗標首次轉場
+
+[首次轉場契約](../data/ida/fd2_physical_background_selection_20261004.json)已接入正式物理場景。actor panel→actor BG的前導base、header2個departure及雙方向helper保留原始raw+6分支；29DED是9+10格且target base包含TAI，29C90為10+10格且不加TAI。全部來源在結算前驗證，Draw確認才推進，完成後從header2接續尾段。快照不新增存檔格式。
+
+有限CONFORMED只涵蓋首次raw+6零場景的完整prefix。相反方向非零影格、完整2939D、連擊、counter與work交接仍待驗收。前節「非零scroll未實作」的現況由本節取代；唯一測試數字與來源見[58](58-fd2-exe-re-coverage.md)。

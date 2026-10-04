@@ -194,6 +194,12 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 [場景契約](docs/data/ida/fd2_physical_background_selection_20261004.json)。完整攻擊、
 非零旗標捲動與戰後畫面恢復的現況見[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。*
 
+![物理攻擊首次捲動的原版、同輸入合成與完整差異](docs/figures/physical-scroll-scoped-compare.png)
+
+*各排依序為原版擷取、重製同輸入合成、完整未遮差異。上至下展示非零旗標的前導末格、
+捲動中段與目標末格。正式GPU已驗證這段首次轉場；完整攻擊、連擊、反擊與戰後
+工作緩衝的現況見[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。*
+
 ![重製端正式開場的漢堂發行商畫面](docs/figures/title-publisher-remake.png)
 
 *重製正常啟動路徑的執行期畫面；美術來自玩家自備原版資料。*

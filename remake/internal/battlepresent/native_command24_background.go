@@ -67,6 +67,49 @@ func BuildNativeCommand24BackgroundFrames(in NativeCommand24BackgroundInputs) ([
 	return frames, nil
 }
 
+// BuildNativePhysicalRightBackgroundFrames 實作 0x29DED 的右向捲動。
+// Source 是 caller 留在 work640 左半的完整畫面。Target 已按 BG→TAI→panel
+// 建立；0x29DED 的明確 memset 後才複製到右半。兩段共 9+10 presents。
+// 證據與 READY 契約：docs/data/ida/fd2_physical_background_selection_20261004.json。
+func BuildNativePhysicalRightBackgroundFrames(in NativeCommand24BackgroundInputs) ([][]byte, error) {
+	const frameBytes = NativeCommand24BackgroundWidth * NativeCommand24BackgroundHeight
+	if len(in.Source) != frameBytes || len(in.Target) != frameBytes {
+		return nil, errors.New("battlepresent: physical background bases must be 320x200")
+	}
+	for i, layer := range in.Layers {
+		if layer.Width != NativeCommand24BackgroundWidth || layer.Height != 100 {
+			return nil, errors.New("battlepresent: physical BG layer geometry mismatch")
+		}
+		layer.X, layer.Y = 0, 50
+		in.Layers[i] = layer
+	}
+	work := make([]byte, nativeCommand24WorkStride*NativeCommand24BackgroundHeight)
+	for y := 0; y < NativeCommand24BackgroundHeight; y++ {
+		copy(work[y*nativeCommand24WorkStride:], in.Source[y*320:(y+1)*320])
+	}
+	frames := make([][]byte, 0, 19)
+	for i := 1; i < 10; i++ {
+		if err := in.Layers[i%3].BlitAt(work, nativeCommand24WorkStride, 320, -1); err != nil {
+			return nil, err
+		}
+		frames = append(frames, nativeCommand24Viewport(work, 32*i))
+	}
+	clear(work)
+	for y := 0; y < NativeCommand24BackgroundHeight; y++ {
+		copy(work[y*nativeCommand24WorkStride+320:], in.Target[y*320:(y+1)*320])
+	}
+	if err := in.TargetIdle.BlitAtBase(work, nativeCommand24WorkStride, 320); err != nil {
+		return nil, err
+	}
+	for i := 1; i <= 10; i++ {
+		if err := in.Layers[(i+1)%3].BlitAt(work, nativeCommand24WorkStride, 0, -1); err != nil {
+			return nil, err
+		}
+		frames = append(frames, nativeCommand24Viewport(work, 32*i))
+	}
+	return frames, nil
+}
+
 func nativeCommand24Viewport(work []byte, base int) []byte {
 	out := make([]byte, NativeCommand24BackgroundWidth*NativeCommand24BackgroundHeight)
 	for y := 0; y < NativeCommand24BackgroundHeight; y++ {
