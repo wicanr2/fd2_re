@@ -1413,6 +1413,14 @@
         ],
         "pattern": "0xc8"
       }
+    },
+    {
+      "id": "docker-wrapper-no-host-fallthrough",
+      "date": "2026-10-04",
+      "area": "Docker命令隔離",
+      "rule": "串接Docker wrapper與容器命令時，把timeout及其命令保持在同一行。容器腳本開頭使用set -eu與test -f /.dockerenv；組裝後先核對第一行確實包含容器命令，再執行。規則入口AGENTS.md的Docker-only。",
+      "why": "收尾文件同步的串接字串以換行開頭，Docker內timeout因缺命令退出，後面的sh改在主機執行。文件渲染誤跑一次；Issue快照載入因/hosttmp不存在立即失敗。改正串接後在Docker重跑，原版與產品驗證未受影響。",
+      "evidence": "docs/knowledge-base/91-worklist-history.md"
     }
   ]
 }

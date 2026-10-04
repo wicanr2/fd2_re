@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -60,20 +60,6 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 怎樣算做完：tools/sync_native_turn_events.py --check（不帶 --chapters）通過，報告裡「尚未轉寫的回合事件」為 0，且每一章的擴充都有該章 111 收據。
 
 ## runtime — 還沒接進正式執行期
-
-### 升級五行訊息與 END 回復圖示／音效只有數值沒有演出
-
-`levelup-and-end-recovery-presentation` · 缺陷 · [#29](https://github.com/wicanr2/fd2_re/issues/29) · 仍未完成 · 要人判
-
-升級對話已由native_level_up_dialogue.go接入正式玩家／AI行動收尾，並有第七章等正常章收據。END回復仍只有數值，缺原版兩輪indexed演出。
-
-2026-10-04訂正：固定IDA直接bytes顯示1A30B先整輪以1DA16(mode2,tailFD)改work，再發布viewport；有候選時sample4只播一次。第二輪提交HP與raw sprite恢復及bit7，完成整輪才再次發布，再11CAC與selector1事件。原先「每單位播音效」及第四章seq644..649作升級證據的敘述不成立，2026-09-16既有留言已指出該樣本沒有抽到升級。
-
-本Issue接續完成END圖示／一次cue／Draw與交易順序，並回歸正式升級對話，不重做已閉合數值規則。主證據與目前DRAFT：docs/data/ida/fd2_end_turn_recovery_20261004.json。
-
-怎樣算做完：同固定EXE與同源槽的正常鍵盤END原版收據，核對兩輪viewport發布、一次sample4 cue、HP／bit7提交、無候選分支與selector1事件順序。正式END與自動換手共用已證owner，動畫期間阻止玩家／AI／保存越過交易，缺資產零交易。完整indexed／RGB圖對照且保持既定像素門檻，未同步的相位如實記錄。既有升級owner以含升級的正常章收據與正式玩家／AI回歸驗證；相關及完整回歸通過。
-
-證據：`['docs/data/ida/fd2_end_turn_recovery_20261004.json', 'docs/data/parity-plans/end-recovery-ch04-r1.jsonl', 'remake/cmd/fd2/native_level_up_dialogue.go']`
 
 ### 出口／整備確認提示：原版停在 YES 上畫的是 action cell 49，重製端畫 cell 48（每章 departure_prompt／town_enter 固定差 60 像素）
 

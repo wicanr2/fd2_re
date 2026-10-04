@@ -2325,6 +2325,14 @@
       "chapter7_verifier": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 250 docker run --rm -i --network none --memory 2g --cpus 2 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 220  python3 tools/verify_chapter_parity.py --chapter 7 --oracle work/parity-slot-ch07/sample-r6 --remake work/parity-slot-ch07/end-recovery-regression-r1 --slot-manifest work/parity-slot-ch07/manifest.json --plan docs/data/parity-plans/ch07-sample.jsonl --out work/parity-slot-ch07/end-recovery-regression-r1-verified.json",
       "end_frame_verifier": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 60 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 40  python3 tools/verify_end_recovery_parity.py --original work/parity-slot-ch04/end-recovery-original-r3 --prefix work/parity-slot-ch04/end-recovery-same-source-r6 --output docs/data/ui-traces/end-recovery-20261004.json"
     },
-    "reproduce": "使用維護中的Docker image；原版及oracle來源唯讀。重跑前建立新的user-owned output/state並由固定ch04槽複製FD2.SAV，將命令中同一r3輸出/state名稱一致替換為新revision，保留舊收據。所有bind來源先驗存在，repo可寫只用於Go/比較收據；原版程序只有state overlay可寫。"
+    "reproduce": "使用維護中的Docker image；原版及oracle來源唯讀。重跑前建立新的user-owned output/state並由固定ch04槽複製FD2.SAV，將命令中同一r3輸出/state名稱一致替換為新revision，保留舊收據。所有bind來源先驗存在，repo可寫只用於Go/比較收據；原版程序只有state overlay可寫。",
+    "closure": {
+      "date": "2026-10-04",
+      "commit": "92c1eb3737a0f6b104f6e44f9af2f9014750b897",
+      "issue": 29,
+      "state": "CLOSED",
+      "comment": "https://github.com/wicanr2/fd2_re/issues/29#issuecomment-5977067874",
+      "scope": "END RUNTIME-E1 與既有升級 seq1836 呈現回歸；#163／#164 仍開著，章台帳 20/30 不變。"
+    }
   }
 }

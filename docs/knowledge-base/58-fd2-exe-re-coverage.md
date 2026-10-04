@@ -2532,3 +2532,5 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 驗證：完整Go19套件、2802項含父／子案例通過、33項條件略過、零失敗；相關發布、Mask、無候選、畫面外候選、過期全批拒絕及current-save欄位保存通過；Python worklist19項通過。第七章現行remake重播消費179/179原版AI入口、零順序分岔；行為／交易／228張畫面通過，升級seq1836兩側dialogue及完整畫面0差異。該章另有五個節點拒收，已登記[#164](https://github.com/wicanr2/fd2_re/issues/164)，不宣稱本輪整章四項通過或新PLAYER-E2。升級原版source為已保存的sample-r6，未冒稱新oracle重生。
 
 [#163](https://github.com/wicanr2/fd2_re/issues/163)獨立追蹤AI原地回復的mode2 Mask缺陷，尚未修正。#154待決、章台帳20/30與既有隊伍政策不變。命令、工具／輸入／來源／輸出雜湊、時序近似及各失敗分類見主契約。
+
+- 本批已提交並推送 `92c1eb3737a0f6b104f6e44f9af2f9014750b897`，遠端 HEAD 核對相同。Issue [#29](https://github.com/wicanr2/fd2_re/issues/29#issuecomment-5977067874) 已有限結案；重新拉取真實遠端後剩 24 項開啟，#163／#164 仍未完成。

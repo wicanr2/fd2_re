@@ -8956,3 +8956,7 @@ READY後接正式END owner，HP/flags/Acted在兩張發布間原子提交，第�
 正式同源夾具三張完整索引／RGB全0差異，不複製原版像素。第七章current remake重播179/179 AI入口、零順序分岔；行為、交易、228張畫面通過，levelup seq1836的dialogue與完整畫面0差異。其餘四個mark與seq1894未知owner節點拒收已開#164，整章本輪不宣稱通過。另mode2檢查發現AI owner缺陷已開#163。#29限END演出及既有升級owner回歸；#154待決、章台帳與政策不變。完整驗證數字及來源只引用58與主契約。
 
 變更檔UID/GID1000:1000；root-owned既有基線2811未增，沒有.md目錄；本批一次性FD2容器均退出移除，其他專案容器未動。提交推送完成後再以host gh關閉#29並更新唯一Issue快照。
+
+- 本批已提交並推送 `92c1eb3737a0f6b104f6e44f9af2f9014750b897`，遠端 HEAD 核對相同。Issue [#29](https://github.com/wicanr2/fd2_re/issues/29#issuecomment-5977067874) 已有限結案；重新拉取真實遠端後剩 24 項開啟，#163／#164 仍未完成。
+
+- 文件同步時wrapper與sh之間多一個換行，Docker內timeout缺命令退出，文件渲染誤在主機執行一次。程序已結束；快照因/hosttmp不存在未載入。修正串接後在Docker重跑，24項快照與verify正常；已記錄Docker隔離教訓。產品測試及原版對拍仍由原先Docker收據支持。
