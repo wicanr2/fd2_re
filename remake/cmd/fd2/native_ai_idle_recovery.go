@@ -22,8 +22,8 @@ const (
 )
 
 // nativeAIIdleRecoveryJob owns the asynchronous presentation portion of
-// 0x13FD4.  The job presents three indexed frames (the two raw decode/copy
-// boundaries plus the final acknowledged frame), one frame per verified
+// 0x13FD4. The job presents initial, mode2 mask and mode0 raw-restore frames,
+// as specified by docs/data/ida/fd2_ai_idle_recovery_20261004.json, one per
 // 0x17AA9(1) wait.  HP is committed only after the third present acknowledgement
 // and a fresh raw-record preflight.
 type nativeAIIdleRecoveryJob struct {
@@ -157,16 +157,13 @@ func (g *Game) beginNativeAIIdleRecovery(
 	// Keep a restoration snapshot so a renderer/runtime failure cannot leak a
 	// partially consumed range state.
 	g.nativeAIIdleRecovery = job
-	if !osMuteOrShot(g) {
-		g.playSFX(int(presentation.SampleIndex))
-	}
 	return nil
 }
 
 // buildNativeAIIdleRecoveryFrames consumes the proven 24×24 FDICON raw
-// decoder and the corrected 312×192 viewport-copy ABI.  The first frame is a
-// raw selector redraw; the second restores the compositor snapshot, matching
-// the observed decode/reset call order without naming either visual mode.
+// decoder and the corrected 312×192 viewport-copy ABI. The 0x1402B wait
+// presents the initial source; 0x14094 presents the C8 write mask, and
+// 0x140EA presents the mode0 raw restore before HP is committed.
 func (g *Game) buildNativeAIIdleRecoveryFrames(
 	actor *battle.Unit, presentation battle.NativeAIIdleRecoveryPresentation,
 ) ([][]byte, error) {
@@ -219,22 +216,25 @@ func (g *Game) buildNativeAIIdleRecoveryFrames(
 		return nil, fmt.Errorf("native AI 0x13fd4: indexed buffers are incomplete")
 	}
 	firstWork := append([]byte(nil), baseWork...)
-	if err := sprite.BlitForNativeFlagsAtOffset(firstWork, nativeAIIdleRecoveryStride, offset, entry.Flags); err != nil {
+	// 4DDD7 uses arg8 as both stride and fill index; tailFD has no reader.
+	if err := sprite.BlitConstantMaskAt(firstWork, nativeAIIdleRecoveryStride,
+		offset%nativeAIIdleRecoveryStride, offset/nativeAIIdleRecoveryStride, byte(nativeAIIdleRecoveryStride&0xff)); err != nil {
 		return nil, fmt.Errorf("native AI 0x13fd4: first 24x24 decode: %w", err)
 	}
 	firstVGA, err := nativeAIIdleRecoveryViewport(firstWork, baseVGA)
 	if err != nil {
 		return nil, err
 	}
-	secondVGA, err := nativeAIIdleRecoveryViewport(baseWork, baseVGA)
+	secondWork := append([]byte(nil), baseWork...)
+	// 4DEDA restores raw pixels without the steady compositor's flag LUT.
+	if err := sprite.BlitForNativeFlagsAtOffset(secondWork, nativeAIIdleRecoveryStride, offset, 0); err != nil {
+		return nil, fmt.Errorf("native AI 0x13fd4: second 24x24 decode: %w", err)
+	}
+	secondVGA, err := nativeAIIdleRecoveryViewport(secondWork, baseVGA)
 	if err != nil {
 		return nil, err
 	}
-	// The third frame is the acknowledged post-reset copy. Keeping it as a
-	// separate buffer makes the three raw wait boundaries observable and avoids
-	// committing HP on the second copy's draw callback.
-	thirdVGA := append([]byte(nil), secondVGA...)
-	return [][]byte{firstVGA, secondVGA, thirdVGA}, nil
+	return [][]byte{baseVGA, firstVGA, secondVGA}, nil
 }
 
 func nativeAIIdleRecoveryViewport(work, baseVGA []byte) ([]byte, error) {
@@ -277,6 +277,10 @@ func (g *Game) stepNativeAIIdleRecovery() {
 	job := g.nativeAIIdleRecovery
 	if job == nil || !job.drawn {
 		return
+	}
+	// 0x1403D starts sample4 after the initial 0x1402B wait, before mode2.
+	if job.frame == 0 && !osMuteOrShot(g) {
+		g.playSFX(int(job.plan.SampleIndex))
 	}
 	job.drawn = false
 	job.frame++

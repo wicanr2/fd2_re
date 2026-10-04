@@ -9382,3 +9382,9 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 已證實的原版writer／consumer及READY審查見[主契約](../data/ida/fd2_end_turn_recovery_20261004.json)。正式END與自動END先計畫候選及完整預建兩張索引畫面，不先改HP。mode2的4DDD7以第三引數stride低byte填C8，保留opaque source0與透明孔；第四引數FD未消費。第一輪所有候選共用一次viewport／sample4，第二輪原子提交HP與bit7及Acted投影，mode0 raw sprite恢復後發布第二張，再正式11CAC與selector1事件。
 
 等待期間由專用owner持有Draw／Update，阻擋輸入、AI、重入END與存檔。缺素材或計畫過期則零HP／flags寫入，HUD gate復原；有原版runtime/view出處時禁止退回舊數值路徑。initial BIOS tick採既有54.925493ms近似，兩個零tick各保留Draw邊界，不宣稱DOS wall-clock一致。原版初始畫面的HUD與游標已在work內，即使gateB寫0仍保留到下一次重畫。完整相位比較及限制見[介面矩陣](57-ui-evidence-matrix.md)與[58](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-04 #163 AI原地回復caller符合規格
+
+[caller規格](../data/ida/fd2_ai_idle_recovery_20261004.json)經READY審查、實作及同源比較已CONFORMED／RUNTIME-E1。既有13FD4／1DA16／4DDD7 bytes決定三個邊界：初始畫面、C8寫入Mask、mode0原圖恢復。正式consumer依序發布，sample4在初次Draw之後，第三Draw之後才提交HP。保留raw gate／maxHP/5。舊「三張為decode、reset、重複reset」的consumer說明由本節更正，不重做數值與caller路由。
+
+正常原版接受分支與同源raw E1的三張完整索引／RGB均0差異，HP只在最後182→184。證據、相位與時間限制見[介面矩陣](57-ui-evidence-matrix.md)及[58](58-fd2-exe-re-coverage.md)。不新增整章PLAYER-E2，不把其他mode2 caller一併宣稱已驗收。

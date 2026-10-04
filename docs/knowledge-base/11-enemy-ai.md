@@ -754,3 +754,7 @@ table 時在狀態變更前失敗即關閉。這只提升一個已核對 row 的
 並以33圖全量測試確保任何新producer缺indexed owner時立即失敗。這只關閉固定資產
 的`RUNTIME-E1`覆蓋；動態writer、新原版trace、狀態高階名稱及逐幀／音訊E2仍可
 各自重開，不能宣稱完整敵方AI已達原版等價。
+
+### 2026-10-04 AI 原地回復呈現勘誤
+
+0x13FD4 的正式呈現已依 READY caller 規格修正為初始畫面、C8 Mask、mode0 原圖恢復，第三 Draw 後才提交 HP；舊「呈現仍分離」只描述當時狀態。[主契約](../data/ida/fd2_ai_idle_recovery_20261004.json)與[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)已達 CONFORMED／RUNTIME-E1。原版接受分支由目前 dosgolem 正常鍵盤輸入重生，不重做已閉合數值規則；相位、時鐘與玩家層級限制見 [58](58-fd2-exe-re-coverage.md)。

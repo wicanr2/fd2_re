@@ -5228,3 +5228,13 @@ READY後接正式END owner，HP/flags/Acted在兩張發布間原子提交，第�
 - 本批已提交並推送 `92c1eb3737a0f6b104f6e44f9af2f9014750b897`，遠端 HEAD 核對相同。Issue [#29](https://github.com/wicanr2/fd2_re/issues/29#issuecomment-5977067874) 已有限結案；重新拉取真實遠端後剩 24 項開啟，#163／#164 仍未完成。
 
 - 文件同步時wrapper與sh之間多一個換行，Docker內timeout缺命令退出，文件渲染誤在主機執行一次。程序已結束；快照因/hosttmp不存在未載入。修正串接後在Docker重跑，24項快照與verify正常；已記錄Docker隔離教訓。產品測試及原版對拍仍由原先Docker收據支持。
+
+## 2026-10-04 #163 AI 原地回復呈現有限驗收
+
+先登記 Issue，再以已閉合 13FD4／1DA16／4DDD7 直接證據建立 READY caller 規格。正式 consumer 改為初始畫面、C8 Mask、mode0 原圖恢復；sample4 在初次 Draw 後，HP 在第三 Draw 後才提交。主契約及本輪唯一數字見 [58](58-fd2-exe-re-coverage.md)與[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)。只閉合此 caller，不重新反組譯已閉合數值規則。
+
+原版探針 r1 的熱 reader trace 在啟動期填滿；r2 只有滿 HP 拒絕。ch08 r3 耗盡原版步數預算；r4 把演出中途座標當成穩定起點而拒收；r5 有正常傷害，但敵方移動反擊，沒有走回復。這些都未被當成產品缺陷或回復語意反證。r6 改用同一既有隊伍中的索爾正常接戰，取得接受分支；r7 重播完全相同的實際 BIOS 輸入，只切割空鍵區間取得精確停點，沒有重擲或章內狀態注入。相同來源的四個先前停點一致。
+
+正常原版三張與重製同源 raw E1 三張的完整索引／RGB 均 0 差異。HP 只在尾端 182→184。原版注入與提前 HP 的核對反例均拒收。完整 Go 及聚焦測試通過；目前僅限 CONFORMED／RUNTIME-E1，不新增整章 PLAYER-E2。#164、#154、章台帳及正式隊伍政策不變。Issue 提交後再有限結案。
+
+變更檔與新收據 UID/GID 均為1000:1000。既有 root-owned 基線2811未增加，沒有.md目錄；本批 FD2 容器已全部退出並移除。固定 ch04／ch08 輸入槽雜湊不變，新文件與工具均有索引入口，來源／輸出雜湊及差異檢查通過。

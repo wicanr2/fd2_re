@@ -548,3 +548,20 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [END 回復演出驗證](../../remake/cmd/fd2/native_end_turn_recovery_test.go)：發布、交易拒絕、遮罩與畫面外候選。
 - [END 同源探針](../../remake/cmd/fd2/native_end_turn_recovery_probe_test.go)：固定正常原版收據的 E1 狀態夾具與正式 END／YES。
 - [END 完整畫面比較工具](../../tools/verify_end_recovery_parity.py)與[收據](../data/ui-traces/end-recovery-20261004.json)：固定三張原版影格、單次 sample4、完整索引與 RGB。
+
+- #163 [AI原地回復caller規格](../data/ida/fd2_ai_idle_recovery_20261004.json)與[正常ch04探針](../data/parity-plans/ai-idle-recovery-ch04-r1.jsonl)：重用13FD4／1DA16／4DDD7證據，補三個indexed邊界；已CONFORMED／RUNTIME-E1；正常原版接受分支三張完整畫面已閉合，範圍限此caller。
+
+- #163 [正常ch08探針](../data/parity-plans/ai-idle-recovery-ch08-r3.jsonl)改選既有mode2守軍章，原政策不變；結果回填同一caller規格。
+
+- #163 [AI同源E1探針](../../remake/cmd/fd2/native_ai_idle_recovery_probe_test.go)：正常LOAD／出戰後匯入原版停點raw狀態，經正式AI呈現consumer輸出三張完整影格，原版像素只供比較。
+
+- #163 [正常洛娜原地攻擊探針](../data/parity-plans/ai-idle-recovery-ch08-r4.jsonl)：依已裝item22的range[1,2]選取正常鍵盤路徑，回填同一caller規格。
+
+- #163 [ACTING末端起點的正常洛娜路徑](../data/parity-plans/ai-idle-recovery-ch08-r5.jsonl)：修正r4使用演出中途座標的輸入計畫，完整來源與限制見同一caller規格。
+
+- #163 [索爾正常接戰探針](../data/parity-plans/ai-idle-recovery-ch08-r6.jsonl)：依raw AP／DP與已證mode2分支取得受傷敵方停點，不修改正式隊伍政策，回填同一caller規格。
+
+- [AI 原地回復 r6 輸入的精確停點重播](../data/parity-plans/ai-idle-recovery-ch08-r7.jsonl)：#163 的三次顯示入點與 HP 尾端；不改鍵盤輸入或亂數。
+- [AI 原地回復完整索引與 RGB 核對工具](../../tools/verify_ai_idle_recovery_parity.py)：在 Docker 內核對 #163 的 r7 三停點、HP 尾端及合法相位；不遮罩像素。
+
+- [AI 原地回復三次顯示與 HP 尾端收據](../data/ui-traces/ai-idle-recovery-20261004.json)：#163，正常原版重生、同源 raw E1、完整索引／RGB 0 差異；不提升章台帳。

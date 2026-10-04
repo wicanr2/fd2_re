@@ -1636,3 +1636,9 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 [END 主契約](../data/ida/fd2_end_turn_recovery_20261004.json)經READY審查達有限CONFORMED／RUNTIME-E1。正式END／YES與自動END共用兩輪索引發布，第一輪候選Mask填C8，sample4一次；第二輪才寫HP與bit7，raw sprite恢復及Draw完成後接回合事件。缺素材、來源變動或過期計畫均拒收，演出期間不能保存中間狀態。
 
 [完整收據](../data/ui-traces/end-recovery-20261004.json)固定原版925／926／927三張320×200，索引與RGB均0差異，不遮罩。原版是同一ch04建構槽的正常五次END；重製是正常LOAD／出戰後匯入原版raw狀態的E1夾具，合法相位列舉未同步時間，不新增章PLAYER-E2。既有正式升級owner的第七章seq1836也以目前remake通過dialogue及完整畫面比較；其餘五個節點拒收另由#164追蹤。#163 AI Mask仍開啟，唯一分層現況與驗證數字見[58](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-04 #163 AI回復完整畫面符合規格
+
+[單一caller狀態](../data/ida/fd2_ai_idle_recovery_20261004.json)已CONFORMED／RUNTIME-E1。正式consumer發布初始畫面、C8 Mask、mode0原圖恢復，sample4在初次Draw後，HP在第三Draw後才提交。RLE source0、透明span、raw恢復與缺資產／非法tuple零交易測試通過。
+
+[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)來自目前dosgolem正常BIOS輸入的接受分支；同源raw E1三張完整索引／RGB均0差異，不遮罩。原版與重製HP尾端一致。合法idle0及terrain0..3相符，沒有同步時間；重製夾具只讀raw狀態，不讀原版像素。這取代前一節「#163仍開啟」所指的未修正狀態；Issue待提交後有限結案，不新增章PLAYER-E2。唯一數字與目前限制見[58](58-fd2-exe-re-coverage.md)。

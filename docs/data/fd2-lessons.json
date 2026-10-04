@@ -1421,6 +1421,22 @@
       "rule": "串接Docker wrapper與容器命令時，把timeout及其命令保持在同一行。容器腳本開頭使用set -eu與test -f /.dockerenv；組裝後先核對第一行確實包含容器命令，再執行。規則入口AGENTS.md的Docker-only。",
       "why": "收尾文件同步的串接字串以換行開頭，Docker內timeout因缺命令退出，後面的sh改在主機執行。文件渲染誤跑一次；Issue快照載入因/hosttmp不存在立即失敗。改正串接後在Docker重跑，原版與產品驗證未受影響。",
       "evidence": "docs/knowledge-base/91-worklist-history.md"
+    },
+    {
+      "id": "oracle-plan-uses-settled-raw-actor",
+      "date": "2026-10-04",
+      "area": "正常原版輸入探針",
+      "rule": "規劃原版移動座標前，在正式cursor input_chain停點依actor的raw索引核對位置、MV與已裝武器。ACTING中途的記錄與cursor／camera各自保存，不能取代該actor的末端位置。入口docs/data/ida/fd2_ai_idle_recovery_20261004.json及tools/dosgolem_oracle_drive.py的resume_battle／do_goto。",
+      "why": "ch08的NPC在ACTING中途位於14,26，末端實際為14,30、MV7；cursor14,37屬slot0。錯用演出中途位置的r4找不到NPC。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/163"
+    },
+    {
+      "id": "oracle-trace-checks-hot-reader-cap",
+      "date": "2026-10-04",
+      "area": "原版唯讀追蹤",
+      "rule": "原版EIP追蹤先限定已知caller／writer，或用from／to範圍排除啟動期熱reader。解讀缺項前核對trace筆數與MAX，並檢查尾端指令時點。入口tools/dosgolem_oracle.sh的FD2_ORACLE_EIP_TRACE_FROM／TO／MAX及docs/data/ida/fd2_ai_idle_recovery_20261004.json。",
+      "why": "4DEDA在啟動期重複解碼使20000筆trace滿額，早於13FD4實驗。移除兩個熱reader後同計畫得到真正caller與拒絕分支。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/163"
     }
   ]
 }

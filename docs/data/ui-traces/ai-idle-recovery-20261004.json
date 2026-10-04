@@ -1,0 +1,212 @@
+{
+  "schema": 1,
+  "issue": 163,
+  "status": "CONFORMED",
+  "runtime_level": "RUNTIME-E1",
+  "date": "2026-10-04",
+  "input": {
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+    "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a"
+  },
+  "original": {
+    "run": "work/parity-slot-ch08/ai-idle-recovery-original-r7",
+    "plan": "docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl",
+    "plan_sha256": "079eecf19c2a1df78fe74a034b20f8c3a6b14769b92703644b4a334a09952ffd",
+    "accepted": {
+      "step": 1446903498,
+      "control_seq": 178,
+      "eip": "0x14018",
+      "eax": "0x0",
+      "edx": "0xFFFFFFFF",
+      "ebx": "0x16F39C",
+      "ecx": "0x0",
+      "esi": "0xB8",
+      "edi": "0xB6",
+      "esp": "0x555EC",
+      "rng_word": 38491,
+      "stack": [
+        "0x0",
+        "0xB",
+        "0x16F39C",
+        "0x13C14",
+        "0xB",
+        "0x0",
+        "0x0",
+        "0xF"
+      ]
+    },
+    "input_kind": "normal BIOS keys",
+    "state_injections": 0,
+    "r6_r7_prefix_equal_checkpoints": [
+      63,
+      90,
+      150,
+      177
+    ]
+  },
+  "remake_fixture": {
+    "actor": 11,
+    "after_hp": 184,
+    "before_hp": 182,
+    "checkpoint_sha256": "c7320e05f8ee689c54cfbfdf3acd486bca99b70c183ff3552ae6f235500d845c",
+    "kind": "AI idle recovery same-source E1 fixture",
+    "limit": "正常LOAD／出戰後匯入原版raw停點的E1，不宣稱整章PLAYER-E2",
+    "phase_method": "terrain0..3 × idle0..2；未同步時間，原版像素只供比較",
+    "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+    "status": "passed",
+    "three_real_draws_before_commit": true
+  },
+  "indexed_report": {
+    "path": "work/parity-slot-ch08/ai-idle-recovery-same-source-r1/indexed-parity.json",
+    "sha256": "57a20fa47610aad1c0916df1e8d554a42bc48529603e71a9890af2ace9a77f5a",
+    "passing_phases": [
+      {
+        "terrain": 0,
+        "idle": 0
+      },
+      {
+        "terrain": 1,
+        "idle": 0
+      },
+      {
+        "terrain": 2,
+        "idle": 0
+      },
+      {
+        "terrain": 3,
+        "idle": 0
+      }
+    ],
+    "frames": [
+      {
+        "frame": 0,
+        "original": "frame-001021.png",
+        "remake": "work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe-t0-i0-f0.png",
+        "indexed_different": 0,
+        "rgb_different": 0,
+        "remake_sha256": "c9e3c963787fcf9f72a5142e5df1be7e77776ac4c24ba1bfecf9d46679d92666"
+      },
+      {
+        "frame": 1,
+        "original": "frame-001022.png",
+        "remake": "work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe-t0-i0-f1.png",
+        "indexed_different": 0,
+        "rgb_different": 0,
+        "remake_sha256": "ed21d5f72f2a181ccd7a8d3c0816e139c522715c6b86b953497bf36e4601f922"
+      },
+      {
+        "frame": 2,
+        "original": "frame-001023.png",
+        "remake": "work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe-t0-i0-f2.png",
+        "indexed_different": 0,
+        "rgb_different": 0,
+        "remake_sha256": "c9e3c963787fcf9f72a5142e5df1be7e77776ac4c24ba1bfecf9d46679d92666"
+      }
+    ],
+    "hp": [
+      182,
+      182,
+      182,
+      184
+    ],
+    "wait_steps": [
+      1447060369,
+      1447075147,
+      1447086515
+    ]
+  },
+  "official_rgb_reports": [
+    {
+      "schema": 2,
+      "game": "fd2",
+      "scenario": "ai-idle-recovery-13fd4-frame0",
+      "state": "same-state",
+      "original_runner": "dosgolem",
+      "executable": {
+        "path": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "input_sha256": "6fa89dde856718afe0fbedb2dbfd9fc01da3232a6c538bd9f5c850975c336cc3",
+      "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "remake_commit": "79f580a785962f51181d5f0e980c18b7a2077f7d+source-c7796fe1067955c59c7591ea8a8278b98abd37f68f9d1b3f8c5a81bc7684f26e",
+      "original_capture": "frame-001021.png",
+      "original_capture_sha256": "74c0343aba96c1c1c914719352002b66c7116e159b0963fdbc85711f31b7b330",
+      "remake_capture": "probe-t0-i0-f0.png",
+      "remake_capture_sha256": "c9e3c963787fcf9f72a5142e5df1be7e77776ac4c24ba1bfecf9d46679d92666",
+      "remake_normalization": "native_320x200",
+      "comparison": {
+        "equal_pixels": 64000,
+        "total_pixels": 64000,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      }
+    },
+    {
+      "schema": 2,
+      "game": "fd2",
+      "scenario": "ai-idle-recovery-13fd4-frame1",
+      "state": "same-state",
+      "original_runner": "dosgolem",
+      "executable": {
+        "path": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "input_sha256": "14f939c4e3d419295c7d810cd27974baa81e3ccd053b5fe43250037c3bfd82eb",
+      "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "remake_commit": "79f580a785962f51181d5f0e980c18b7a2077f7d+source-c7796fe1067955c59c7591ea8a8278b98abd37f68f9d1b3f8c5a81bc7684f26e",
+      "original_capture": "frame-001022.png",
+      "original_capture_sha256": "165adcad25e316c17ee0abcc9c60901d01aae97d1fdcc8645f2d442bba6f3701",
+      "remake_capture": "probe-t0-i0-f1.png",
+      "remake_capture_sha256": "ed21d5f72f2a181ccd7a8d3c0816e139c522715c6b86b953497bf36e4601f922",
+      "remake_normalization": "native_320x200",
+      "comparison": {
+        "equal_pixels": 64000,
+        "total_pixels": 64000,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      }
+    },
+    {
+      "schema": 2,
+      "game": "fd2",
+      "scenario": "ai-idle-recovery-13fd4-frame2",
+      "state": "same-state",
+      "original_runner": "dosgolem",
+      "executable": {
+        "path": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "input_sha256": "a2f89e4c6b4c4df945765a62b6ce56dcebacf21c057189352bc3d2375be44fb9",
+      "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+      "remake_commit": "79f580a785962f51181d5f0e980c18b7a2077f7d+source-c7796fe1067955c59c7591ea8a8278b98abd37f68f9d1b3f8c5a81bc7684f26e",
+      "original_capture": "frame-001023.png",
+      "original_capture_sha256": "74c0343aba96c1c1c914719352002b66c7116e159b0963fdbc85711f31b7b330",
+      "remake_capture": "probe-t0-i0-f2.png",
+      "remake_capture_sha256": "c9e3c963787fcf9f72a5142e5df1be7e77776ac4c24ba1bfecf9d46679d92666",
+      "remake_normalization": "native_320x200",
+      "comparison": {
+        "equal_pixels": 64000,
+        "total_pixels": 64000,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      }
+    }
+  ],
+  "negative_checks": [
+    "state_injection拒收",
+    "HP在第一張提前更新拒收"
+  ],
+  "limitations": [
+    "原版固定既有111建構槽與隊伍政策，章內零注入；未新增整章PLAYER-E2。",
+    "重製正常LOAD／出戰後匯入原版raw停點的E1，沒有讀取原版像素。",
+    "idle0、terrain0..3完整相符；合法相位枚舉，不宣稱時鐘同步。",
+    "三個1tick等待映射到Draw確認，不宣稱精確DOS wall-clock或音訊人耳確認。"
+  ]
+}

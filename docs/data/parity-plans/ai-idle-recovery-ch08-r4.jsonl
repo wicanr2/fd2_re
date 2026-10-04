@@ -1,0 +1,22 @@
+# #163：固定既有ch08槽。洛娜slot28起點(14,26)，已裝item22的range[1,2]由固定item表證實；正常原地攻擊後END至T2。原隊伍政策不變，零章內注入。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":160}
+{"await_ui":"cursor","steps":10000000,"max":80}
+{"mark":"battle_start","steps":1000000}
+{"engage":[14,26],"reach":2,"typical_move":4,"steps":2000000}
+{"sweep_round":true,"advance":false,"skip_indices":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],"steps":2000000}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":240}

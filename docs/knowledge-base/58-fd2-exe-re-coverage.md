@@ -2534,3 +2534,11 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 [#163](https://github.com/wicanr2/fd2_re/issues/163)獨立追蹤AI原地回復的mode2 Mask缺陷，尚未修正。#154待決、章台帳20/30與既有隊伍政策不變。命令、工具／輸入／來源／輸出雜湊、時序近似及各失敗分類見主契約。
 
 - 本批已提交並推送 `92c1eb3737a0f6b104f6e44f9af2f9014750b897`，遠端 HEAD 核對相同。Issue [#29](https://github.com/wicanr2/fd2_re/issues/29#issuecomment-5977067874) 已有限結案；重新拉取真實遠端後剩 24 項開啟，#163／#164 仍未完成。
+
+### 2026-10-04 #163：AI原地回復三張畫面已符合規格
+
+[單一狀態與caller規格](../data/ida/fd2_ai_idle_recovery_20261004.json)已CONFORMED／RUNTIME-E1。既有13FD4 writer、gate與maxHP/5不重做；正式consumer依序發布初始畫面、C8 RLE Mask、mode0原圖恢復，第三Draw後才提交HP。sample4在初次Draw後、遮罩前播放。這取代上一節「#163尚未修正」的歷史狀態。
+
+[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)由目前dosgolem `951cb55f`重生。同一ch08既有建構槽，以正常索爾移動／攻擊／END使slot11走`0x13C14→0x13FD4`；章內零注入。r7重播r6的實際鍵盤輸入，只分割空鍵區間，四個先前停點的units／view／EIP／steps相同。三次`17AA9(1)`在1447060369／1447075147／1447086515步；HP分別182／182／182，尾端才184。三張320×200索引與RGB全0差異，不遮罩；合法idle0、terrain0..3都相符。
+
+重製由正常LOAD／出戰後匯入原版raw停點的E1夾具取得，不讀取原版像素。相位枚舉未同步時間，三次1tick等待映射到Draw確認；精確DOS wall-clock與音訊人耳驗收不在本收據。source0／透明孔、raw恢復、三Draw HP最後提交、非法tuple與缺資產零交易通過。完整Go回歸2807項通過、34條件式skip，19套件通過、11無測試套件；原版注入與提前HP的收據反例均拒收。其他mode2 caller仍獨立核對，#164／#154與章台帳20/30未改。

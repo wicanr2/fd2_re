@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ai_idle_recovery_caller_spec",
+  "date": "2026-10-04",
+  "issue": 163,
+  "status": "CONFORMED",
+  "input": {
+    "name": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": "IDA Pro 9.4.0.260610；重用已閉合caller／helper證據，未重新反組譯",
+  "address_space": "IDA DOS LE loader線性位址；不是檔案偏移",
+  "reused_evidence": {
+    "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt": "84691fbf3a8859136fe78cbaf40bf859114142ea42f1cc9bfedc1c0dd4e923e9",
+    "docs/data/ida/fd2_end_turn_recovery_20261004.json": "d8492c8698eb25b9e1c6b78958e0abd30da9fe84a6e7b12be092a74439a7a8d0",
+    "docs/data/ida/fd2_command_numeric_tail_ida.txt": "e212bed5318f1b7aee4ae8510031ef5cd44362ef8a7ec417b7bdc97b62de14bc"
+  },
+  "claims": [
+    {
+      "level": "已證實",
+      "locator": "sub_13FD4: 0x1402B→0x1403D→0x14060→0x1408C→0x14094→0x140B6→0x140E2→0x140EA→0x1410A",
+      "semantic": "三次17AA9(1)分別在initial、mode2 mask、mode0 raw restore後；sample4在初次wait之後且mask之前；最後wait之後才寫HP。",
+      "source": "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"
+    },
+    {
+      "level": "已證實",
+      "locator": "sub_1DA16→sub_4DDD7: 0x1DB58; 0x4DDE3/0x4DDEB",
+      "semantic": "mode2用RLE寫入Mask，opaque source0也寫入；第三引數stride=1C8，低byte填C8，額外tailFD沒有reader。",
+      "source": "docs/data/ida/fd2_end_turn_recovery_20261004.json"
+    },
+    {
+      "level": "已證實",
+      "locator": "0x140B6→sub_1DA16(mode0)→sub_4DEDA",
+      "semantic": "第二次decode恢復raw sprite，不能用目前帶flag或foreground的composer快照代替。",
+      "source": "docs/data/ida/fd2_end_turn_recovery_20261004.json"
+    }
+  ],
+  "current_state": {
+    "remake": "已按READY規格修正initial／C8 Mask／raw restore；三Draw HP最後交易與完整回歸通過。",
+    "original_oracle": "目前oracle以正常BIOS輸入重生accepted13FD4；三張完整indexed／RGB均0差異，HP最後182→184。原版來源與重製raw E1範圍見ui-traces收據。",
+    "optional_polish": "精確DOS wall-clock與sample4音色名稱不在本次gate。"
+  },
+  "spec": {
+    "status": "READY",
+    "scope": "已登記#163的正式AI 13FD4 consumer，三個完整索引畫面與最後HP交易。",
+    "input": "已接受NativeAIIdleRecoveryDecision、raw selector/cache、source work/VGA/DAC、兩個decode tuple、viewport ABI與sample4。",
+    "frames": [
+      "initial正常focus後source",
+      "RLE write Mask填C8",
+      "raw mode0 restore，flags不參與"
+    ],
+    "commit": "第三次Draw確認且raw plan未變，才HP與range1，再AI收尾；缺素材或非法tuple零HP/Acted。",
+    "vertical_chain": "原版固定檔／raw record→FDICON Mask→buildNativeAIIdleRecoveryFrames→Game Draw/Update→AI continuation→current-save穩定HP。",
+    "acceptance": [
+      "固定同源正常AI回復原版三邊界完整indexed／RGB，不遮罩；記錄合法相位限制。",
+      "source0寫入、transparent span保留、非法／缺資產零交易與三Draw HP最後提交。",
+      "相關與完整Go回歸；END #29不回退。"
+    ],
+    "limits": "不改已閉合gate/maxHP/5；不猜其他mode2 caller，不提升整章PLAYER-E2。",
+    "review": {
+      "date": "2026-10-04",
+      "basis": "13FD4三個17AA9的直接caller順序、1DA16 mode2/0 reader與4DDD7/4DEDA原始bytes已充分決定全部修改。沒有用視覺名稱或未知規則填補。",
+      "test_before": "work/parity-slot-ch04/ai-idle-recovery-tests-before-r2.log",
+      "test_before_result": "initial boundary失敗；三Draw HP最後提交、缺資產／非法tuple零交易及viewport通過。首輪測試夾具缺item panel raw provenance，補齊後才能驗證產品。",
+      "runtime_changes": [
+        "保留初次wait的initial source",
+        "mode2用Mask填stride低byteC8",
+        "mode0恢復raw sprite並發布",
+        "保留既有三Draw HP最後交易；正常完整oracle比較尚待驗收"
+      ],
+      "phase_note": "以上為實作前READY審查；目前驗收狀態以conformance欄位為準。"
+    }
+  },
+  "original_probe": {
+    "plan": "docs/data/parity-plans/ai-idle-recovery-ch04-r1.jsonl",
+    "plan_sha256": "38eaf9ad3f9d134c0bda9af3759be8e4d6095c715d82f822aa7289cc1104259a",
+    "slot": "work/parity-slot-ch04/FD2.SAV",
+    "slot_sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+    "run": "work/parity-slot-ch04/ai-idle-recovery-original-r1",
+    "status": "exit0; frame trace saturated before battle",
+    "state_injections": 0,
+    "trace_limit": "20000筆被啟動期4DEDA熱點填滿。普通計畫本身通過T5；沒有據此宣稱未呼13FD4。r2移除兩個熱解碼helper的重複trace，保留原計畫與所有caller停點，未修改oracle來源。",
+    "next_run": "work/parity-slot-ch04/ai-idle-recovery-original-r2",
+    "r2_result": {
+      "status": "exit0",
+      "run": "work/parity-slot-ch04/ai-idle-recovery-original-r2",
+      "trace_rows": 2144,
+      "13FD4_calls": 1,
+      "accepted_calls": 0,
+      "limit": "唯一13C14 caller為fullHP記錄22，證實正常拒絕分支；原版影格正例尚未取得。"
+    },
+    "r3": {
+      "plan": "docs/data/parity-plans/ai-idle-recovery-ch08-r3.jsonl",
+      "slot": "work/parity-slot-ch08/FD2.SAV",
+      "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+      "status": "oracle total budget 2e9 exhausted; driver seq320 timed out",
+      "reason": "既有正常ch08 sample-r1 seq1486→1487有AI mode2 HP87→113的max132/5旁證；固定既有slot，選較低AP記錄7接戰，保留原隊伍政策。未借舊run冒稱本輪驗收。"
+    },
+    "r3_result": {
+      "status": "oracle total budget 2e9 exhausted; driver seq320 timed out",
+      "accepted_before_budget": 0,
+      "limit": "環境／探針預算，不當成13FD4語意失敗；在停止前未取得接受分支，先核對已裝武器的正常射程，改走較短原地攻擊路徑。",
+      "actual_strike": {
+        "seq": 249,
+        "target_hp": 110,
+        "result_seq": 264,
+        "target_after": 75,
+        "actor_before": 98,
+        "actor_after": 83,
+        "limit": "有傷害但沒有accepted 13FD4；不得推測為一擊清除或回血程式沒被使用。"
+      }
+    },
+    "r4": {
+      "plan": "docs/data/parity-plans/ai-idle-recovery-ch08-r4.jsonl",
+      "run": "work/parity-slot-ch08/ai-idle-recovery-original-r4",
+      "status": "exit8; engage cannot find actor at(14,26)",
+      "basis": "原版raw slot28(14,26)已裝item22；固定item row0x542A6 range[1,2]，正對slot11(14,24)的mode2敵方。保持普通原地攻擊與END，沒有猜測或改寫AI狀態。"
+    },
+    "r4_result": {
+      "status": "exit8; engage cannot find actor at(14,26)",
+      "reason": "早期checkpoint仍在ACTING 32；r4 seq63真正游標停點已查得slot28在14,30、MV7。14,37是cursor／slot0，不能當slot28座標。不是actor缺失或AI缺陷。",
+      "stable_checkpoint": "work/parity-slot-ch08/ai-idle-recovery-original-r4/checkpoint-0063.json"
+    },
+    "r5": {
+      "plan": "docs/data/parity-plans/ai-idle-recovery-ch08-r5.jsonl",
+      "run": "work/parity-slot-ch08/ai-idle-recovery-original-r5",
+      "status": "exit0, T2, zero injections",
+      "basis": "直接raw記錄證實NPC正常演出末端14,30、MV7及item22射程1..2；正常UI走14,26後攻14,24。"
+    },
+    "r5_result": {
+      "status": "exit0, T2, zero injections",
+      "accepted_calls": 0,
+      "observed": "正常strike使slot11 HP184→138；敵方正常移動14,24→14,25後反擊，HP再降至92，未走13FD4。洛娜HP138→6。",
+      "reason": "兩格射程不代表mode2敵方不能移動再攻擊；這個正常分支是14EF0成功，不是回復語意拒絕。"
+    },
+    "r6": {
+      "plan": "docs/data/parity-plans/ai-idle-recovery-ch08-r6.jsonl",
+      "run": "work/parity-slot-ch08/ai-idle-recovery-original-r6",
+      "status": "exit0; T4; one accepted 13FD4, actor11, zero injections",
+      "basis": "索爾DP153大於守軍AP145；同一原始隊伍policy下普通索爾AP213對敵DP80、HP184。改用已證守方條件，不以range隔離可移動的mode2。總預算依目前oracle interactive maxBudget契約明示4e9。",
+      "accepted": {
+        "step": 1446903498,
+        "actor": 11,
+        "caller": "0x13C14",
+        "wait_steps": [
+          1447060369,
+          1447075147,
+          1447086515
+        ],
+        "wait_returns": [
+          "0x14030",
+          "0x1409B",
+          "0x140F1"
+        ],
+        "hp_tail_step": 1447088583,
+        "rng_word": 38491
+      }
+    },
+    "r7": {
+      "plan": "docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl",
+      "run": "work/parity-slot-ch08/ai-idle-recovery-original-r7",
+      "status": "exit0; three exact 17AA9 checkpoints; HP182/182/182/184",
+      "method": "重播r6的實際BIOS key/steps；只切割同一空鍵區間於三個wait入點，未更換seed或政策。",
+      "prefix_checks_equal": [
+        63,
+        90,
+        150,
+        177
+      ],
+      "state_injections": 0
+    }
+  },
+  "implementation": {
+    "status": "CONFORMED / RUNTIME-E1",
+    "files": [
+      "remake/cmd/fd2/native_ai_idle_recovery.go"
+    ],
+    "source_hashes": {
+      "remake/cmd/fd2/native_ai_idle_recovery.go": "c7796fe1067955c59c7591ea8a8278b98abd37f68f9d1b3f8c5a81bc7684f26e",
+      "remake/cmd/fd2/native_ai_idle_recovery_test.go": "2e24f4f608f72428fb243709426d786f5946b75d9f77edca58be86b8b72ea597",
+      "remake/cmd/fd2/native_ai_idle_recovery_probe_test.go": "69dd42417a2ee6e49507084def85b943d294af319a73691ffc1a34031ed00781"
+    },
+    "focused_log": "work/parity-slot-ch04/ai-idle-recovery-tests-after-r1.log",
+    "focused_sha256": "a9cf204c5749b3e6799db245aa95d89e32f9213090b37d9f2257c4c1a6268619",
+    "full_go_log": "work/parity-slot-ch04/ai-idle-recovery-full-go-r2.jsonl",
+    "full_go_sha256": "ae48c962dbe8d5d725fa1399e7ae04cddc686396b8591bf1545df11df4f60832",
+    "full_go_test_actions": {
+      "run": 2841,
+      "output": 5738,
+      "pass": 2807,
+      "skip": 34
+    },
+    "full_go_package_actions": {
+      "start": 30,
+      "output": 53,
+      "skip": 11,
+      "pass": 19
+    },
+    "review_migration": "98項原處置保留，以HEAD與同一ignored command_labels.json輸入核對舊hash再重綁。",
+    "full_go_limit": "2807通過、34條件式skip、19套件通過、11無測試套件；same-source輸入必須另外顯式執行，這個skip不算原版對拍。"
+  },
+  "commands": {
+    "original_r6": "test -d '/home/anr2/cht/fd2' && test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-original-r6' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r6' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && test -d '/home/anr2/cht/fd2/work/gocache' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r6.jsonl' && timeout 900 docker run --rm --name fd2-ai-idle-recovery-original-r6 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-original-r6,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r6,dst=/state' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r6.jsonl,dst=/plan.jsonl,readonly' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/player-command6-original-r2/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0'\\''\np.update(generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ai-idle-recovery-ch08-r6.jsonl'\\'',state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r6'\\'',eip_trace_window={'\\''from_step'\\'':0,'\\''to_step'\\'':0,'\\''max_entries'\\'':20000},evidence_note='\\''#163 固定既有ch08槽，索爾slot0三輪正常接戰；raw DP153>守軍AP145，零章內注入，隊伍政策不變。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13FD4,0x14018,0x1402B,0x14060,0x14094,0x140EA,0x1410A,0x17AA9,0x1DA16,0x25A96,0x13A9F -eip-trace-max 20000 -frame-dir /out/frames -frame-stride 0 -frame-eip 0x17AA9 -frame-from 250000000 -frame-max 4000 -steps 4000000000 -heap-mib 32 > /out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 60); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py > /out/driver.log 2>&1\n'",
+    "focused_after": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_ai_idle_recovery.go cmd/fd2/native_ai_idle_recovery_test.go; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2 -run ^TestNativeAIIdleRecovery -count=1 -timeout 90s -v' > work/parity-slot-ch04/ai-idle-recovery-tests-after-r1.log 2>&1",
+    "full_go_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -json -count=1 -timeout 600s' > work/parity-slot-ch04/ai-idle-recovery-full-go-r2.jsonl 2>&1",
+    "inventory_same_inputs": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -s <<'REVIEW'\nset -eu\nmkdir -p /tmp/ai-idle-recovery-oldtree\ncd /src\ngit archive HEAD | tar -x -C /tmp/ai-idle-recovery-oldtree\ntest -f /src/remake/assets/data/command_labels.json\ncp /src/remake/assets/data/command_labels.json /tmp/ai-idle-recovery-oldtree/remake/assets/data/command_labels.json\ncd /src/remake\ngo run ./cmd/fd2-string-inventory -repo /tmp/ai-idle-recovery-oldtree -output /src/work/parity-slot-ch04/ai-idle-recovery-inventory-old.json\ngo run ./cmd/fd2-string-inventory -repo /src -output /src/work/parity-slot-ch04/ai-idle-recovery-inventory-new.json\npython3 /src/tools/migrate_string_review.py --old-inventory /src/work/parity-slot-ch04/ai-idle-recovery-inventory-old.json --new-inventory /src/work/parity-slot-ch04/ai-idle-recovery-inventory-new.json --review /src/docs/data/fd2-string-review.json --output /src/work/parity-slot-ch04/ai-idle-recovery-review-new.json\npython3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib\nbase=Path('/src/work/parity-slot-ch04');new=json.loads((base/'ai-idle-recovery-inventory-new.json').read_text());p=Path('/src/docs/data/fd2-string-review.json');before=json.loads(p.read_text());after=json.loads((base/'ai-idle-recovery-review-new.json').read_text());assert before['inventory_sha256']==hashlib.sha256((base/'ai-idle-recovery-inventory-old.json').read_bytes()).hexdigest()\nrole=after['reviewed_role'];ids={e['string_id'] for e in new['entries'] if e['role']==role};got={i for g in after['dispositions'].values() for i in g['string_ids']};assert ids==got,(ids-got,got-ids)\nassert {k:len(v['string_ids']) for k,v in before['dispositions'].items()}=={k:len(v['string_ids']) for k,v in after['dispositions'].items()};assert p.stat().st_uid==1000;p.write_bytes((base/'ai-idle-recovery-review-new.json').read_bytes());print('review rebind:',len(ids),'same dispositions')\nPY\nREVIEW",
+    "original_r7": "test -d '/home/anr2/cht/fd2' && test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-original-r7' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r7' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && test -d '/home/anr2/cht/fd2/work/gocache' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl' && timeout 900 docker run --rm --name fd2-ai-idle-recovery-original-r7 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-original-r7,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r7,dst=/state' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl,dst=/plan.jsonl,readonly' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/player-command6-original-r2/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0'\\''\np.update(generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl'\\'',state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r7'\\'',eip_trace_window={'\\''from_step'\\'':0,'\\''to_step'\\'':0,'\\''max_entries'\\'':20000},evidence_note='\\''#163 固定既有ch08槽，索爾slot0三輪正常接戰；raw DP153>守軍AP145，零章內注入，隊伍政策不變。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13FD4,0x14018,0x1402B,0x14060,0x14094,0x140EA,0x1410A,0x17AA9,0x1DA16,0x25A96,0x13A9F -eip-trace-max 20000 -frame-dir /out/frames -frame-stride 0 -frame-eip 0x17AA9 -frame-from 250000000 -frame-max 4000 -steps 4000000000 -heap-mib 32 > /out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 60); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py > /out/driver.log 2>&1\n'",
+    "same_source_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -f /src/work/parity-slot-ch08/ai-idle-recovery-original-r7/checkpoint-0178.json; mkdir /src/work/parity-slot-ch08/ai-idle-recovery-same-source-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_AI_IDLE_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_AI_IDLE_CHECKPOINT=/src/work/parity-slot-ch08/ai-idle-recovery-original-r7/checkpoint-0178.json FD2_AI_IDLE_PREFIX=/src/work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe FD2_AI_IDLE_ACTOR=11 with-xvfb go test ./cmd/fd2 -run ^TestNativeAIIdleRecoverySameSourceProbe$ -count=1 -timeout 90s -v' > work/parity-slot-ch08/ai-idle-recovery-same-source-r1.log 2>&1",
+    "full_indexed_rgb": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 60 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 40 python3 tools/verify_ai_idle_recovery_parity.py --original work/parity-slot-ch08/ai-idle-recovery-original-r7 --prefix work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe --report work/parity-slot-ch08/ai-idle-recovery-same-source-r1/indexed-parity.json",
+    "official_rgb": "test -d '/home/anr2/cht/fd2' && test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-original-r7' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r7' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && test -d '/home/anr2/cht/fd2/work/gocache' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl' && timeout 900 docker run --rm --name fd2-ai-idle-recovery-parity-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-original-r7,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/ai-idle-recovery-state-r7,dst=/state' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ai-idle-recovery-ch08-r7.jsonl,dst=/plan.jsonl,readonly' -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash -c 'set -euo pipefail\nfor n in 0 1 2; do\n i=$((1021+n))\n go run ./apps/fd2/cmd/parity -exe /orig/FD2.EXE -original /out/frames/frame-00${i}.png -remake /src/work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe-t0-i0-f${n}.png -input /out/parity-input-f${n}.json -dosgolem-commit 951cb55f7834311fccbce208fde6bc48d57f1c5a -remake-commit 79f580a785962f51181d5f0e980c18b7a2077f7d+source-c7796fe1067955c59c7591ea8a8278b98abd37f68f9d1b3f8c5a81bc7684f26e -report /out/rgb-report-f${n}.json -diff /out/rgb-diff-f${n}.png\ndone'",
+    "verifier_negative": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 60 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 40 sh -s <<'READ'\nset -eu\ntest -f /.dockerenv\npython3 - <<'PY'\nimport pathlib,json,tempfile,subprocess\nsrc=pathlib.Path('/src/work/parity-slot-ch08/ai-idle-recovery-original-r7')\nwith tempfile.TemporaryDirectory() as tmp:\n d=pathlib.Path(tmp)\n for p in src.iterdir(): (d/p.name).symlink_to(p)\n (d/'checkpoint-0178.json').unlink()\n r=json.loads((src/'checkpoint-0178.json').read_text())\n for name,mutate in [('injected',lambda r:r.update(state_injections=[{'fake':True}])),('early-hp',lambda r:r['units'][11].update(hp=184))]:\n  v=json.loads(json.dumps(r));mutate(v);(d/'checkpoint-0178.json').write_text(json.dumps(v))\n  result=subprocess.run(['python3','tools/verify_ai_idle_recovery_parity.py','--original',str(d),'--prefix','work/parity-slot-ch08/ai-idle-recovery-same-source-r1/probe','--report',str(d/'report.json')],capture_output=True,text=True,timeout=20)\n  assert result.returncode!=0,(name,result.stdout)\n  print(name,'rejected',result.returncode)\nPY\nREAD"
+  },
+  "reproduce": "使用原先固定slot及相同原版／oracle commit，原版與oracle唯讀掛載，user1000:1000、有界且network none。重跑建立新的output／state revision，由固定槽複製FD2.SAV到state overlay，一致替換command中的output／state路徑；既有收據不覆寫。單一caller規格與索引保存於本庫，private原始素材不入Git。",
+  "conformance": {
+    "receipt": "docs/data/ui-traces/ai-idle-recovery-20261004.json",
+    "receipt_sha256": "dbb003d3fd3aaf4c1321e529be823b82da41031a5cbc435f9ab976558412bfc9",
+    "indexed_rgb_differences": [
+      0,
+      0,
+      0
+    ],
+    "hp": [
+      182,
+      182,
+      182,
+      184
+    ],
+    "scope": "正式13FD4 owner；不提升章台帳，其他mode2 caller獨立核對。",
+    "verifier": "tools/verify_ai_idle_recovery_parity.py",
+    "verifier_sha256": "79a14a457a6658fff8970fb089cab9cf7d8b3404903c43fee9ccde62d917c848"
+  }
+}
