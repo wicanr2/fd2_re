@@ -748,7 +748,7 @@
     {
       "issue": 154,
       "date": "2026-10-04",
-      "status": "RE-CLOSED / 原版可見契約未知",
+      "status": "RE-CLOSED / normal viewport captured / spill consumer UNKNOWN",
       "level": "已證實",
       "scope": "mode3座標搬移至typed sequence的writer／consumer映射；保留#151配置與歷史",
       "primary_reused": [
@@ -1833,8 +1833,10 @@
           -1
         ],
         "first_opaque_linear_offset": -422,
-        "level": "強推論",
-        "source": "固定原始FDOTHER.DAT bank32直接parse_anim／decode_rle_layers核對首列x77；既有座標契約與IDA dest算式。正常原版#32逐幀仍未取得。"
+        "level": "已證實",
+        "source": "normal_probe.dynamic_negative_row：固定bank32 frame9相對offset與runtime pointer一致；正常非零側channel2，work前422位元組第一個opaque寫入。原始bytes与wrapper／renderer合同沿既有consumer。",
+        "previous_level": "強推論",
+        "previous_source": "固定原始FDOTHER.DAT bank32直接parse_anim／decode_rle_layers核對首列x77；既有座標契約與IDA dest算式。正常原版#32逐幀仍未取得。"
       },
       "consumer": {
         "level": "已證實",
@@ -1843,7 +1845,707 @@
         "source": "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json binary_observations.function",
         "finding": "wrapper與RLE renderer計算線性dest後直接寫入，未有負列裁切或allocation bounds檢查。caller var_18只有0x2AC4A寫4BA0。"
       },
-      "conclusion": "mode3搬移不能消除負列；#156修正式typed差異，#154保留嚴格拒收。未將原版配置前寫入當合法安全契約，也未加halo或clip。"
+      "conclusion": "mode3不能消除負列。正常非零側#32寫入及12 target viewport已捕獲；本次不alias背景，但配置前其他consumer未知。#154正式仍拒收，未用halo或clip猜補；#160範圍center另先RE。",
+      "normal_probe": {
+        "status": "tool-input-failure-before-cast",
+        "plan": "docs/data/parity-plans/ch24-command6-side1-r1.jsonl",
+        "plan_sha256": "630e67e7f63d1b2946f09e3881830da7541fbf06e71e474e43b017ccdc74cad1",
+        "runner_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+        "source_slot_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+        "output": "work/parity-slot-ch24/command6-side1-original-r1",
+        "trace_window": {
+          "from_step": 5732355500,
+          "to_step": 6302355700,
+          "max_entries": 20000
+        },
+        "caster_record": 13,
+        "input_basis": "正常r1 cp1775：record13 HP309／MP227，+1a..+1e [1,4,5,6,10]，MV4；敵record20=(13,15)。計畫保留同源prefix，以正常選移動與法術選單施放。",
+        "policy": "AP+200/DP+0/DX+60，seed4建構槽；正常鍵盤、零章內注入。",
+        "limits": "僅窄施法／寫入與可見消費實驗，未知契約前不改production。",
+        "result": {
+          "exit_code": 1,
+          "control_seq": 1773,
+          "steps": 5658355608,
+          "reason": "await_ui:spell 未列入允許清單。正常到ring，未施法；非產品缺陷，不是#32寫入收據。",
+          "trace_entries": 0,
+          "driver_sha256": "a2cd8e90ffd7263d78ff1b873017b15c2b33e55b6c53165a2d4dc20e0308bc82"
+        },
+        "tool_repair": {
+          "issue": 159,
+          "spec_status": "READY",
+          "problem": "ui_mode既有spell與await_ui允許清單不一致；無效名稱在送鍵後才發現。",
+          "source": "tools/dosgolem_oracle_drive.py UI_MODES 0x1D0D4；do_await_ui允許清單；main逐項執行。",
+          "contract": [
+            "await_ui支援既有spell分類，等待期間僅既有dialogue送enter，其他只前進。",
+            "未知await_ui名稱維持拒收，整份計畫在第一次send前檢查名稱。",
+            "不增加新的UI分類、不改原版或遊戲狀態、保留既有等待逾時行為。"
+          ],
+          "validation": [
+            "ring→spell只送空鍵，命中spell即停。",
+            "帶有效前綴、無效末項的main計畫在send前拒收。",
+            "重跑同槽同政策#154窄施法，原失敗樣本保留。"
+          ],
+          "validation_result": {
+            "status": "CONFORMED",
+            "tests": {
+              "driver": 91,
+              "independent_node_comparison": 24,
+              "skipped": 0,
+              "failed": 0
+            },
+            "negative": {
+              "path": "work/parity-slot-ch24/await-spell-negative-r1.log",
+              "sha256": "3eaa9160697731b18a8b4e35cf00477566d43f0855d814b7df22f7f0bc57f641",
+              "result": "新增spell等待先ERROR；無效末項已有send enter反例先FAIL。"
+            },
+            "positive": {
+              "path": "work/parity-slot-ch24/await-spell-python-r1.log",
+              "sha256": "0ea628d0fc003819779127edce868d0acb605477048f084ef34dd7fb4a513466"
+            },
+            "registered_plan_audit": {
+              "path": "work/parity-slot-ch24/await-spell-plan-audit-r1.json",
+              "entries": 529,
+              "invalid": 0
+            },
+            "original_prefix": {
+              "path": "work/parity-slot-ch24/await-spell-prefix-r1.json",
+              "sha256": "7915f6aa8afe837ef64a3e10cd8bb0b0ede698d063f2b65d8366bf9fd90a4d3d",
+              "checkpoints": 1774,
+              "differences": 0,
+              "limits": "原版同槽r1／r2 CPU、記錄、視圖與controls；排程PNG另不比較。"
+            },
+            "commands": [
+              "python3 -m unittest discover -s tools -p test_dosgolem_oracle_drive.py",
+              "python3 -m unittest discover -s tools -p test_verify_chapter_parity.py",
+              "python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch24/command6-side1-original-r1 --full work/parity-slot-ch24/command6-side1-original-r2 --out work/parity-slot-ch24/await-spell-prefix-r1.json"
+            ],
+            "source_sha256": "0cdae32dc472e3021bdee744bd26db522b447e65d0ceb612879be38afa1ddf64",
+            "normal_spell": {
+              "path": "work/parity-slot-ch24/player-command6-original-r2/checkpoint-0022.json",
+              "sha256": "89074d47e7bd5d1524c07ec9050a0cf3afef68498832e71d6c050d3af7943d4b",
+              "control_seq": 22,
+              "steps": 126481773,
+              "input_chain": [
+                "0x36CE0",
+                "0x1062A",
+                "0x16CF8",
+                "0x1D56E",
+                "0x1D0D4",
+                "0x168B1",
+                "0x1887E",
+                "0x18791",
+                "0x11ED9",
+                "0x11D3B"
+              ],
+              "observed_ui": "spell",
+              "wait_result": "await_ui=spell 成立；mark同seq22。等待不額外送鍵。",
+              "source_save_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+              "state_injections": []
+            }
+          },
+          "status": "CONFORMED"
+        },
+        "rerun": {
+          "status": "plan-confirmation-missing-before-cast",
+          "issue_tool_repair": 159,
+          "output": "work/parity-slot-ch24/command6-side1-original-r2",
+          "plan": "docs/data/parity-plans/ch24-command6-side1-r1.jsonl",
+          "plan_sha256": "630e67e7f63d1b2946f09e3881830da7541fbf06e71e474e43b017ccdc74cad1",
+          "trace_window": {
+            "from_step": 5500000000,
+            "to_step": 6302355700,
+            "max_entries": 20000
+          },
+          "note": "新#158分類讓prefix對白較早回到cursor；r1 round4在seq1763。擴大追蹤起點，不調整seed或隊伍、不挑成功結果；同計畫、同槽乾淨重跑修正工具。",
+          "result": {
+            "exit_code": 15,
+            "control_seq": 1793,
+            "steps": 5758355608,
+            "input_chain": [
+              "0x12211",
+              "0x17927",
+              "0x17815",
+              "0x18EEF"
+            ],
+            "reason": "left只選取指令圖示，未Enter確認，仍ring；工具spell等待已被接受。非遊戲缺陷，沒有#32施法收據。"
+          }
+        },
+        "next_rerun": {
+          "status": "normal-move-gate-rejects-command-before-cast",
+          "output": "work/parity-slot-ch24/command6-side1-original-r3",
+          "plan": "docs/data/parity-plans/ch24-command6-side1-r2.jsonl",
+          "plan_sha256": "f88ba525f44a4d1c9849b752aadb2be921a74534ed22cfa2feb3953fcb496493",
+          "trace_window": {
+            "from_step": 5500000000,
+            "to_step": 6500000000,
+            "max_entries": 100000
+          },
+          "input_correction": {
+            "level": "已證實",
+            "source": "docs/data/ida/fd2_action_overlay_selection_20260908.json sub_177FC、sub_18D8C；docs/knowledge-base/95-action-overlay-selection-20260908.md；既有tools/dosgolem_oracle_drive.py engage先up後enter。",
+            "change": "僅在left後加Enter；原槽、政策、seed與其他controls不變。",
+            "source_sha256": "b2ee1f50a9f981520493d272114866dbddf79ac7337c20fcffbb80613ba57c5c"
+          },
+          "result": {
+            "exit_code": 15,
+            "control_seq": 1794,
+            "steps": 5768355608,
+            "input_chain": [
+              "0x12211",
+              "0x11CED",
+              "0x12DD9",
+              "0x117AE",
+              "0x18F7B"
+            ],
+            "reason": "record13 raw+7=14；移動後指令格禁用，left被原版0x177FC拒絕，Enter仍進物理target。未有指令6入口。",
+            "production_consumer": "remake/cmd/fd2/main.go actionOverlayAvailability與nativeCommandAllowedAfterMove，已證0x18A5F..0x18A70僅raw+7 0x12／0x13／0x22允許。",
+            "t4_feasibility": "直接敵人不在selection4內且移動後禁用；空格中心+effect2是否可行仍待原版確認，不能僅用Manhattan距離否定整體範圍施法。"
+          }
+        },
+        "plan_correction_limits": "三個失敗輪次皆未施法；不反覆調等待時長、不改規則讓路徑通過。第24章T4探針停止，改查已登記第三方玩家槽作窄原版來源，非新增章PLAYER-E2。",
+        "player_probe": {
+          "status": "returned-title-before-player-round5",
+          "plan": "docs/data/parity-plans/ch30-command6-side1-player-r1.jsonl",
+          "plan_sha256": "8a21fd7629fc14ede5329c956f32c8814f2b2d4c104b72ddb6c92826f679ec7c",
+          "source": {
+            "primary": "docs/data/ui-traces/native-load-ch29-slot-to-ch30-original-candidate.json source",
+            "local": "work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav",
+            "sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+            "zip_sha256": "6968a02be61fd76a64a7b1142c7752ee3d11ef035d59c1cc9badede16b2a93a5",
+            "classification": "第三方滿級玩家槽；有checksum，來源鏈非本專案章勝利writer。",
+            "actual_current_runtime_chapter": 29,
+            "actual_current_runtime_round": 4
+          },
+          "output": "work/parity-slot-ch24/player-command6-original-r1",
+          "trace_window": {
+            "from_step": 0,
+            "to_step": 0,
+            "max_entries": 100000
+          },
+          "caster": {
+            "record": 6,
+            "identity": 14,
+            "fig": 46,
+            "pos": [
+              20,
+              22
+            ],
+            "hp": 331,
+            "mp": 1101,
+            "mv": 5,
+            "command_ids": [
+              1,
+              2,
+              4,
+              5,
+              6,
+              7,
+              10,
+              11
+            ],
+            "move_then_spell_allowed": false,
+            "plan": "前回合正常移到空格(21,20)並待機；END後原地開環。原敵record24=(22,18)，距新位置3；法術選單down4選6，依原版預設合法目標確認。"
+          },
+          "limits": [
+            "存檔未改byte、zero章內注入。",
+            "僅正常CONTINUE與鍵盤窄實驗，非第30章PLAYER-E2、自然成長或傷害oracle。",
+            "測試初態固定原SAV與決定性clock；記錄RNG但本probe只論寫入／消費，不做兩側RND結果比較。"
+          ],
+          "registered_candidates_checked": {
+            "fd2004_save_sha256": "6f7095eca2c424bad60c37d2ce1f651a1d13f27d3342413c143369a8c99c46f8",
+            "reason_not_run": "已驗原SAV；唯一持有6的存活record14距最近敵7，原地不可達，不進行試跑。"
+          },
+          "result": {
+            "exit_code": 15,
+            "control_seq": 222,
+            "steps": 310590415,
+            "normal_continue_cp": 11,
+            "loaded_player_alive": 20,
+            "normal_move_completed": true,
+            "observed_enemy_cast": [
+              20,
+              7,
+              5
+            ],
+            "player_command6_seen": false,
+            "reason": "END後敵軍回合結束前返回title；正常CONTINUE／移動成功，不據此判定emulator缺能力。"
+          }
+        },
+        "player_probe2": {
+          "status": "normal-command6-cast-observed",
+          "output": "work/parity-slot-ch24/player-command6-original-r2",
+          "plan": "docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl",
+          "plan_sha256": "fe998177ddd273571f4d336d8242924bc9f5d761c56ba9c57e4357e66965f0bc",
+          "source_save_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+          "input_hypothesis": {
+            "level": "假說",
+            "basis": "固定command6 raw dc005004021e00：selection4／effect2；NativeMapOverlaySelectorFromRecordByte=effect+2，NativeCursorConfirmationAllowed strict距<selector-1可接受距2敵人。原地20,22至中心22,20距4，敵record24在22,18距中心2。是否前置constructor要求直接候選仍以normal收據判定。",
+            "source": [
+              "remake/internal/battle/native_map_view.go",
+              "remake/internal/battle/native_command_target.go",
+              "remake/assets/spells.json"
+            ]
+          },
+          "limits": "同一未改玩家槽，僅正常CONTINUE與原地UI；不以假說接production、不增加章E2。",
+          "result": {
+            "exit_code": 0,
+            "last_control_seq": 232,
+            "last_steps": 594481773,
+            "cast_entry": {
+              "step": 184795502,
+              "control_seq": 32,
+              "eip": "0x2A6BD",
+              "stack": [
+                "0x1D441",
+                "0x6",
+                "0x6",
+                "0x1",
+                "0x554A8"
+              ]
+            },
+            "damage_consumer": {
+              "step": 189513184,
+              "eip": "0x1C75E",
+              "stack": [
+                "0x2B119",
+                "0x18",
+                "0x6"
+              ],
+              "rng_word": 3473
+            },
+            "caster_mp": [
+              1101,
+              1071
+            ],
+            "target_hp": [
+              83,
+              4
+            ],
+            "target_record": 24,
+            "zero_state_injections": true,
+            "note": "正式畫面數值觀察；第三方槽不作自然傷害或新的章E2。"
+          }
+        },
+        "dynamic_negative_row": {
+          "level": "已證實",
+          "tool": "dosgolem apps/fd2/cmd/oracle commit951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "address_space": "eip為DOS LE loader linear；堆疊資源／緩衝指標為VM runtime linear，不是IDA資料庫或檔案offset。",
+          "trace": "work/parity-slot-ch24/player-command6-original-r2/eip-trace.jsonl",
+          "trace_sha256": "21cf9ea820224f48c7e843085351fb042eedad995da6272762a909b765e11a9c",
+          "work_base": "0x1CECE8",
+          "background_base": "0x1486B0",
+          "background_size": 64000,
+          "allocation_distance": 550456,
+          "negative_wrapper": {
+            "step": 191207506,
+            "eip": "0x2935B",
+            "stack": [
+              "0x27263",
+              "0x164DDC",
+              "0x9",
+              "0x1CEAF5",
+              "0x280",
+              "0xFFFFFFFF"
+            ]
+          },
+          "rle_entry": {
+            "step": 191207536,
+            "eip": "0x4E63D",
+            "stack": [
+              "0x29398",
+              "0x167BC9",
+              "0x0",
+              "0x0",
+              "0x1CEAF5",
+              "0x280",
+              "0xFFFFFFFF"
+            ]
+          },
+          "static_resource_binding": {
+            "bank": 32,
+            "bank_sha256": "e6da6dcb8b90125c542cf0f160efdd4362d1bc6be8294e21125c31024853697b",
+            "frame": 9,
+            "rle_relative_offset": 11757,
+            "source": "既有固定FDOTHER bank32 frame9 descriptor offset1085170 minus bank offset1073422 plus9 =11757；runtime 0x167BC9-0x164DDC同值。"
+          },
+          "computed_first_write": {
+            "work_xy": [
+              218,
+              -1
+            ],
+            "offset_from_work": -422,
+            "vm_linear": "0x1CEB42",
+            "source": "既有frame9原始RLE首列firstopaque x77，加runtime dest-work=-499。sub_4E63D無clip原始bytes重用原consumer。"
+          },
+          "viewport_copy": {
+            "eip": "0x2AFBA",
+            "stack": [
+              "0xA0000",
+              "0x140",
+              "0x1D3888",
+              "0x280",
+              "0x140",
+              "0xC8"
+            ],
+            "source_minus_work": 19360,
+            "target_frames": 12
+          },
+          "conclusion": "正常非零側channel2 frame9確實負列；本次不別名到64000-byte背景。本次寫入與viewport分離，配置前記憶體的其他consumer未知，不能外推clip或halo保真。"
+        },
+        "player_frames": {
+          "status": "captured / source-prefix-passed",
+          "output": "work/parity-slot-ch24/player-command6-original-r3/frames",
+          "runner_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "capture_eip": "0x2AFBF",
+          "capture_scope": "原版target viewport完整copy後，不是DOSBox輔助圖；12張，不遮蔽像素。",
+          "count": 12,
+          "max": 24,
+          "from_step": 189500000,
+          "to_step": 192500000,
+          "prefix": {
+            "path": "work/parity-slot-ch24/player-command6-frame-prefix-r1.json",
+            "checkpoints": 233,
+            "differences": 0
+          },
+          "frames": [
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000000.png",
+              "index": 0,
+              "indexed_sha256": "7416cf08e45e261b4977e0904907b9ba775f25f11e171f9b508ba384e16e2dc5",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 189656198,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 59907,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "674ab679458af54e75f55f5770a666851e5874fc0e626e186b6816eeb6b06e7e"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000001.png",
+              "index": 1,
+              "indexed_sha256": "aa73d59fa71aab89fcfebb44f7c7437b23ba521ce385cad150191f0107107450",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 189874269,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 53435,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "74d72e73e18890aac91b097405dbda15b4ed0d9268550b6728ed8bc9d1abd05a"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000002.png",
+              "index": 2,
+              "indexed_sha256": "086d7e04805941aa34437a998ebf34983c02614a9a2b1b021ac51e1f9f8d0fe8",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 190107628,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 1659,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "afee767ed313aed1fc14a0da70d0f9b7418311bfe1c965357b91d6cc9ea2dfa0"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000003.png",
+              "index": 3,
+              "indexed_sha256": "2dd01faaf7e887c552416336fc588b47cd5d518b294d52f6e0e3ff37398d8cf7",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 190347876,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 46204,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "034ce1267a5400f5b25b4906f7ef139ea0312e365f7fd69382682ab6dbf9b06f"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000004.png",
+              "index": 4,
+              "indexed_sha256": "58c5bd21d6f7199ddbbe6ce21703bfb0b2fd4586d95021b28ea43d5308ce0233",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 190595121,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 9346,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "ee5945f4bf53f4b91f482b39ffa1fe1c998313619f4d2ea7c03103aad7836c7b"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000005.png",
+              "index": 5,
+              "indexed_sha256": "8567fb4f51017dff440ce36a1cee2ff9ce2afe397195e1faa465610afe94a320",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 190851669,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 42165,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "103e34d26f80df77bb40c4aa443ca440f3f563928a24e7db55b18138dd9f9112"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000006.png",
+              "index": 6,
+              "indexed_sha256": "46ce1bab4b9fc59dc692460949976ace9db0690772e358fd3772f5a0757a5a50",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 191045898,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 42569,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "778eb539a47d84e8422cdfab6b3115e317ba8224dbc6b755511cc11f9c1ec374"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000007.png",
+              "index": 7,
+              "indexed_sha256": "04bf0ff1a9465edca2deb1550f9000caa29bcc4bbf96e04296366530104758e5",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 191240902,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 45801,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "607f9d568ae0a5d0a7452a80c3c9bbdb544ecca70a287b5e343afe83c59130c5"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000008.png",
+              "index": 8,
+              "indexed_sha256": "c29f5babddcdd40c5e45690648cd4a2dccb393cb351a66745e013e02c2aef95d",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 191435900,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 6122,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "c4afd1f0b7e997b425206cc4dc84e4fb3e999af2c6506f5775a26f8e45e5f327"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000009.png",
+              "index": 9,
+              "indexed_sha256": "cfd43cb70ed834ab981919adb63599471bb6880b24f942d99ffb96de90d44188",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 191630912,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 16373,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "545d3a4249bf383625be9be301f085de14d338451f5309c0273dbea5f5a3c9c3"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000010.png",
+              "index": 10,
+              "indexed_sha256": "6d05a70b28062f87b64417950f57f356ec7b3c07575db7ee8e4fb2f7d2aa09b5",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 191825900,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 32846,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "2ae8ca316dde101ba2ff88cc377e5017e7a3a22a13ad113e66deb6fe0c7d8926"
+            },
+            {
+              "eip": "0x2AFBF",
+              "file": "frame-000011.png",
+              "index": 11,
+              "indexed_sha256": "e0a60ca277bbecff8005f0aa35b44265cb95f51ff0b8898f1ff094b67342c8e2",
+              "palette_writes": 1720830,
+              "port_3da_reads": 519,
+              "reason": "eip",
+              "step": 192020919,
+              "unit_base": 1537484,
+              "unit_count": 27,
+              "view": {
+                "aux_phase": 11,
+                "camera_x": 17,
+                "camera_y": 16,
+                "cursor_x": 22,
+                "cursor_y": 20,
+                "gold": 60,
+                "overlay_selector": 0,
+                "rng_word": 33552,
+                "round": 4,
+                "visible_x": 5,
+                "visible_y": 4
+              },
+              "png_sha256": "b285dbf4ff15fbf25098c71798e289c6f44d4473d450bb903ee03aaadffa10b9"
+            }
+          ]
+        },
+        "discovered_remake_difference": {
+          "issue": 160,
+          "id": "player-command-area-empty-cursor",
+          "status": "RE-CLOSED / DRAFT",
+          "actual": "中心22,20由正常cursor確認，敵22,18距actor6、距center2；原版已進6。",
+          "current_go": "selection UI已可在第一段直接enemy名單空時開啟；confirm把中心格UnitAt交给presentation，NativeCommandEffectTargets要求confirmed unit在第一段enemy名單內，使己方／空格中心遭planner拒收。",
+          "next": "IDA0x1CFF0／0x115B6／0x14818／0x14742與READY，再實作；#154 renderer仍獨立。",
+          "primary": "docs/data/ida/fd2_player_command6_cursor_center_20261004.json"
+        },
+        "commands": {
+          "side1_r1": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2/remake/assets/maps && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-original-r1 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r1 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch24-command6-side1-r1.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-ch24-command6-side1-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-original-r1,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r1,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-command6-side1-r1.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch24-command6-side1-r1.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r1'\\'',eip_trace_window={'\\''from_step'\\'':5732355500,'\\''to_step'\\'':6302355700,'\\''max_entries'\\'':20000},evidence_note='\\''#154 指令6非零側正常施法；固定seed4、fresh-policy槽AP+200/DP+0/DX+60，正常LOAD與第4回合記錄13移動／法術選單施法，零章內注入。不宣稱整章或傷害自然政策驗收。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E -eip-trace-from 5732355500 -eip-trace-to 6302355700 -eip-trace-max 20000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+          "side1_r2": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2/remake/assets/maps && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-original-r2 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r2 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch24-command6-side1-r1.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-ch24-command6-side1-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-original-r2,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r2,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-command6-side1-r1.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch24-command6-side1-r1.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r2'\\'',eip_trace_window={'\\''from_step'\\'':5500000000,'\\''to_step'\\'':6302355700,'\\''max_entries'\\'':20000},evidence_note='\\''#154 指令6非零側正常施法；固定seed4、fresh-policy槽AP+200/DP+0/DX+60，正常LOAD與第4回合記錄13移動／法術選單施法，零章內注入。不宣稱整章或傷害自然政策驗收。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E -eip-trace-from 5500000000 -eip-trace-to 6302355700 -eip-trace-max 20000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+          "side1_r3": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2/remake/assets/maps && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-original-r3 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r3 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch24-command6-side1-r2.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-ch24-command6-side1-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-original-r3,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r3,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-command6-side1-r2.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch24-command6-side1-r2.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/command6-side1-state-r3'\\'',eip_trace_window={'\\''from_step'\\'':5500000000,'\\''to_step'\\'':6500000000,'\\''max_entries'\\'':100000},evidence_note='\\''#154 指令6非零側正常施法；固定seed4、fresh-policy槽AP+200/DP+0/DX+60，正常LOAD與第4回合記錄13移動／法術選單施法，零章內注入。不宣稱整章或傷害自然政策驗收。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E -eip-trace-from 5500000000 -eip-trace-to 6500000000 -eip-trace-max 100000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+          "player_r1": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2/remake/assets/maps && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-original-r1 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r1 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r1.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-player-command6-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-original-r1,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r1,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r1.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch30-command6-side1-player-r1.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r1'\\'',eip_trace_window={'\\''from_step'\\'':0,'\\''to_step'\\'':0,'\\''max_entries'\\'':100000},evidence_note='\\''#154 固定既有第三方fd2last.sav普通CONTINUE，raw current chapter29／round4、record6前回合移動待機，下回合原地指令6；zero章內注入。非建構AP／DP政策、非章E2／傷害oracle；只驗負列寫入與可見消費。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 100000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+          "player_r2": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2/remake/assets/maps && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-original-r2 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r2 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-player-command6-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-original-r2,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r2,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r2'\\'',eip_trace_window={'\\''from_step'\\'':0,'\\''to_step'\\'':0,'\\''max_entries'\\'':100000},evidence_note='\\''#154 固定既有第三方fd2last.sav普通CONTINUE，raw current chapter29／round4、record6原地開法術選單、檢驗空格selection4與effect2确认假說；zero章內注入。非建構AP／DP政策、非章E2／傷害oracle；只驗負列寫入與可見消費。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 100000 -steps 8000000000 -heap-mib 32 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+          "player_frames_r3": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2/remake/assets/maps && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-original-r3 && test -d /home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r3 && test -f /home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 1800 docker run --rm --name fd2-player-command6-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-original-r3,dst=/out --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r3,dst=/state --mount type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl,dst=/plan.jsonl,readonly --mount type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache -e FD2_ORACLE_STATE=/state -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1740 bash -c 'set -euo pipefail\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,hashlib,datetime\np=json.loads(Path('\\''/src/work/parity-slot-ch24/fresh-full-original-r6/runner.json'\\'').read_text())\nassert hashlib.sha256(Path('\\''/orig/FD2.EXE'\\'').read_bytes()).hexdigest()==p['\\''original_fd2_exe_sha256'\\'']\nassert hashlib.sha256(Path('\\''/state/FD2.SAV'\\'').read_bytes()).hexdigest()=='\\''f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f'\\''\np.update(dosgolem_commit='\\''951cb55f7834311fccbce208fde6bc48d57f1c5a'\\'',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),control_plan='\\''docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl'\\'',force_enemy_clear_declared=False,state_directory='\\''/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-state-r3'\\'',eip_trace_window={'\\''from_step'\\'':0,'\\''to_step'\\'':0,'\\''max_entries'\\'':100000},evidence_note='\\''#154 固定既有第三方fd2last.sav普通CONTINUE，raw current chapter29／round4、record6原地開法術選單、檢驗空格selection4與effect2确认假說；zero章內注入。非建構AP／DP政策、非章E2／傷害oracle；只驗負列寫入與可見消費。'\\'',driver_sha256=hashlib.sha256(Path('\\''/src/tools/dosgolem_oracle_drive.py'\\'').read_bytes()).hexdigest())\nPath('\\''/out/runner.json'\\'').write_text(json.dumps(p,ensure_ascii=False,indent=2)+'\\''\\n'\\'')\nPY\ngo run ./apps/fd2/cmd/oracle -exe /orig/FD2.EXE -root /orig -run-dir /out -state /state -eip-trace 0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E -eip-trace-from 0 -eip-trace-to 0 -eip-trace-max 100000 -steps 8000000000 -heap-mib 32 -frame-dir /out/frames -frame-stride 0 -frame-eip 0x2AFBF -frame-from 189500000 -frame-to 192500000 -frame-max 24 >/out/oracle.log 2>&1 &\noracle=$!\ncleanup() { kill \"$oracle\" 2>/dev/null || true; wait \"$oracle\" 2>/dev/null || true; }\ntrap cleanup EXIT\ntrap '\\''exit 124'\\'' TERM INT\nfor _ in $(seq 1 300); do\n test -f /out/current.json && break\n kill -0 \"$oracle\" 2>/dev/null || { tail -20 /out/oracle.log >&2; exit 3; }\n sleep 1\ndone\ntest -f /out/current.json\npython3 /src/tools/dosgolem_oracle_drive.py | tee /out/driver.log'",
+          "area_ida": "test -f /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2/FD2.EXE && test -d /home/anr2/cht/fd2/work/parity-slot-ch24 && timeout 360 docker run --rm --name fd2-player-area-ida --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24,dst=/out -e PROBE_ADDRESSES=\"0x1CFF0 0x115B6 0x14818 0x14742\" -e PROBE_OUTPUT=/out/player-command-area-ida-r1.json --workdir /tmp --entrypoint timeout ida-pro-9.4-idapython:locked-v1 330 idat -A -o/tmp/fd2.i64 -S/src/tools/ida_opening_input_probe.py /input/FD2.EXE > work/parity-slot-ch24/player-command-area-ida-r1.log 2>&1"
+        },
+        "reproduce_notes": [
+          "每次選新的original／state輸出目錄，先驗目錄存在、1000:1000且沒有舊current.json；由明示SAV SHA建立覆蓋層。",
+          "原始EXE與資料一律readonly；同樣計畫和runner commit產生收據，命令不改任何執行器source。",
+          "新玩家素材輸入ZIP／SAV保留本機work，未入Git；來源固定hash由既有第三方source metadata驗證。"
+        ]
+      }
     }
   ],
   "corrections": [
@@ -2161,6 +2863,14 @@
         "DATA-READY",
         "RUNTIME-E1"
       ]
+    },
+    {
+      "date": "2026-10-04",
+      "issue": 154,
+      "old_claim": "原版正常#32逐幀與實際負列尚未取得。",
+      "replacement": "同源玩家槽normal CONTINUE／鍵盤原地範圍施法取得runtime寫入及12個完整viewport。233/233前綴比較證明frame觀察不改CPU／狀態。",
+      "evidence": "investigations[-1].normal_probe dynamic_negative_row／player_frames",
+      "limits": "配置前其他consumer未閉合；不把觀察到幀直接當renderer已修正。"
     }
   ],
   "followups": [

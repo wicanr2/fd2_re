@@ -1,0 +1,51 @@
+# #154：同槽第4回合正常法術；方向鍵選圖示後Enter確認，依95／sub_177FC，零章內注入。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 10000000, "repeat": 20}
+{"mark": "record_question", "steps": 1000000}
+{"key": "right", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "record_party_selection", "steps": 1000000}
+{"key": "enter", "steps": 20000000, "repeat": 15}
+{"key": "", "steps": 10000000, "repeat": 12}
+{"mark": "departure_confirmation", "steps": 1000000}
+{"key": "enter", "steps": 20000000}
+{"await": "enemy_alive>=1", "steps": 10000000, "max": 300}
+{"await_ui": "cursor", "steps": 10000000, "max": 180}
+{"mark": "battle_start", "steps": 1000000}
+{"key": "", "steps": 10000000, "repeat": 2}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=2", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_2", "steps": 1000000}
+{"sweep_round": true, "max_units": 2, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=3", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_3", "steps": 1000000}
+{"sweep_round": true, "max_units": 4, "skip_indices": [0, 1, 5, 7, 8, 11, 13], "stop_on_auto_end": true, "steps": 2000000, "typical_move": 6, "reach": 1, "max_tries": 8, "finish_wait": 120}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=4", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_4", "steps": 1000000}
+{"goto": [18, 18], "steps": 2000000, "max": 100}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "target", "steps": 2000000, "max": 20}
+{"goto": [14, 18], "steps": 2000000, "max": 40}
+{"key": "enter", "steps": 20000000}
+{"await_ui": "ring", "steps": 5000000, "max": 20}
+{"key": "left", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "spell", "steps": 5000000, "max": 20}
+{"mark": "command6_spell_list", "steps": 1000000}
+{"key": "down", "steps": 10000000, "repeat": 3}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "target", "steps": 2000000, "max": 20}
+{"goto": [13, 15], "steps": 2000000, "max": 40}
+{"mark": "command6_target_armed", "steps": 1000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 2000000, "repeat": 150}
+{"await_ui": "cursor", "steps": 10000000, "max": 50}
+{"mark": "command6_side1_done", "steps": 1000000}

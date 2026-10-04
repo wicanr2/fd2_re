@@ -2455,3 +2455,23 @@ Go11項與Python22項相關回歸通過。相同SAV／原版r6→fresh-full-rema
 Python驅動89項與獨立比較24項全部通過，零略過；相關Go17項通過、1項既有條件略過。第23章24張及第24章有限13張與整檔SAV四gate回歸通過。以相同r6原版及r9重製收據重算r10，seq2254獨立節點為ok，全部69個可比較節點一致，6個跨時序點仍不比較；69張影像通過640px門檻，最大282px。
 
 完整r10報告仍failed：原版正常T5敗北，T6..T11、一次清敵與保存未達，使計畫與交易gate未完成。此前的unknown_oracle_ui診斷保留為修正前收據，現在不再列為這條r6路徑的未解題。#158限工具與RUNTIME-E1，不增加PLAYER-E2或章台帳；#142／#154／#38及DP決定維持，AP+200/DP+0/DX+60不變。
+
+### 2026-10-04 #154：非零側正常施法探針
+
+[新受版控計畫](../data/parity-plans/ch24-command6-side1-r1.jsonl)沿相同fresh-policy槽至第4回合，再用記錄13的正常移動與法術選單選指令6。既有raw record證實HP309／MP227、MV4與指令列，敵軍已近射程。canonical 951cb55f有界追蹤wrapper、RLE寫入與sub_11EB0 viewport複製，原版結果與READY仍待；不重解已閉合座標或把負列先接入正式路徑。
+
+### 2026-10-04 #154／#159：工具輸入失敗與乾淨重跑
+
+窄試驗r1在正常第4回合seq1773、5658355608 steps因await_ui:spell不支援而exit1，沒有施法及RLE trace；這是輸入工具契約缺漏，不是遊戲缺陷。主證據保留失敗樣本。[#159](https://github.com/wicanr2/fd2_re/issues/159)先登記、READY後補既有spell與main送鍵前檢查；新反例先失敗，驅動91與獨立比較24項通過、零略過。相同計畫與槽r2重跑中；#158分類讓舊前綴較早離開對白，已依r1實際T4時間擴大trace起點，沒有重擲或選結果。#154仍未取得負列可見契約，正式拒收與章台帳不變。
+
+### 2026-10-04 #154／#159／#160：正常非零側施法與範圍中心補正
+
+[指令6主證據](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)保留第24章三個失敗輪次。r1是漏收spell，r2漏確認鍵，r3則由已證移動後指令禁用拒絕left，Enter仍進物理target。沒有因此改等待預算、遊戲規則或隊伍政策。固定第三方玩家槽已依既有source重新取得並核對ZIP／SAV完整SHA；一條經敵軍回合的計畫返回title，另一條普通CONTINUE／原地法術選單與範圍中心合法施法成功。
+
+#159的正常spell等待在seq22停止，沒有額外送鍵；驅動91、獨立比較24項通過，零略過。修正前後1774/1774原版檢查點一致。此工具修正達有限CONFORMED，未改新的UI分類、原版或重製規則。
+
+原版record6=(20,22)、command6，確認中心(22,20)為我方record18所在格；敵record24在(22,18)，距actor6、距center2，仍以0x1D441→0x2A6BD傳count1並扣MP1101→1071。#160已登記；[新主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)保存IDA9.4 sub_1CFF0／sub_115B6／sub_14818／sub_14742原始名稱、bytes、xrefs及normal caller。第一段count直接進游標確認，第二段effect constructor以確認後全域cursor為中心。這直接否定舊typed helper要求confirmed enemy在第一段名單內的限制；保留舊索引與helper作取代紀錄，不重做無關helper。#160達RE-CLOSED／DRAFT，正式實作未開始。
+
+#154的bank32 frame9相對RLE offset11757與runtime source pointer相符，channel2的dest在work前499位元組，首opaque x77實際落在work前422位元組。work=0x1CECE8、背景=0x1486B0，本次兩配置距550456，不別名到64000-byte背景；不能因此外推沒有其他配置前consumer。原版12次target viewport完整copy後由既有oracle frame-eip=0x2AFBF捕獲。觀察前後233/233檢查點一致，零差異，不遮蔽像素。配置前consumer與重製整段影格比較仍待，正式負列保持原子拒收，不把這份原版收據稱為#154 runtime完成。
+
+第三方來源及當時HP／MP均留在收據，不當自然成長、傷害oracle或第30章PLAYER-E2。本輪章台帳仍20/30；#142／#154／#160未完成，AP+200／DP+0／DX+60及待決DP政策不變。前述r2「重跑中」與未取得normal負列的舊狀態由本段取代，歷史不回寫。

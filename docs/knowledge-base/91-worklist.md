@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,6 +120,26 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['核對固定原始資產及既有座標／consumer直接指令，定位負列位置的來源與原版可見契約。', '形成 READY 並依證據修正正式 typed sequence／compositor，未知資產與交易拒收保留。', '真實#32完整sequence與相關命令回歸通過，必要時由維護中dosgolem正常原版收據核對可見輸出；不以局部資產測試代替E2。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/battlepresent/native_command6_test.go', 'docs/data/ida/fd2_command1_8_entries_ida.txt']`
+
+### 原版輸入工具漏收法術等待，無效計畫應在送鍵前拒收
+
+`oracle-await-ui-spell-preflight` · 缺陷 · [#159](https://github.com/wicanr2/fd2_re/issues/159) · 仍未完成 · 要人判
+
+#154 command6-side1-r1 正常到第4回合 seq1773 後，await_ui:spell 被工具允許清單拒收，exit1。ui_mode 已以 0x1D0D4 辨識 spell，等待清單未列入。此為驗證工具輸入契約錯誤，尚未施法，不能列為遊戲缺陷或原版 #32 寫入收據。保留失敗樣本，修正等待法術清單及送鍵前檢查無效等待名稱，重跑同槽同政策。
+
+怎樣算做完：['既有 ui_mode 的 spell 可由 await_ui 等待，僅在既有對白等待送 enter，其他介面只前進；未知等待名稱仍拒收。', '整份計畫在第一次送鍵前检查 await_ui 名稱；有效前綴加無效末項不得先送鍵。', 'Python 正負測試與 #154 正常法術清單收據通過，保留失敗輪次及重跑來源。']
+
+證據：`['tools/dosgolem_oracle_drive.py', 'tools/test_dosgolem_oracle_drive.py', 'docs/data/parity-plans/ch24-command6-side1-r1.jsonl', 'docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json']`
+
+### 玩家指令6範圍中心被直接敵軍候選限制拒收
+
+`player-command-area-empty-cursor` · 缺陷 · [#160](https://github.com/wicanr2/fd2_re/issues/160) · 仍未完成 · 要人判
+
+#154 固定第三方 fd2last.sav 的 dosgolem 正常 CONTINUE／原地法術選單收據：actor record6=(20,22)，command6 selection4／effect2，在我方record18所在格(22,20)確認，原版 0x1D441→0x2A6BD(actor6,command6,count1) 對敵record24=(22,18)施法並扣MP1101→1071。敵人距actor6、中心距actor4。既有Go selection UI沒有因第一段名單空而拒收，field與selector writer已正確；正式confirm將中心格UnitAt交給presentation，NativeCommandEffectTargets要求confirmed unit是第一段直接敵軍候選，導致這個合法中心被planner拒收。先以固定 IDA 一般分支 0x1D2BF／0x1D2E3／0x1D32A 的原始 caller／bytes和新正常收據形成RE與DRAFT，不以猜測接production。#154負列渲染獨立；第三方槽不新增章E2或自然傷害驗收。
+
+怎樣算做完：['固定 EXE、IDA 原始位址／bytes／caller 與正常玩家收據，證實 selection 欄位、游標確認及 effect 名單的資料流，登記 RE 後形成 READY；保留原證據索引。', 'READY 後玩家正式目標確認傳遞游標 Cell，依已證範圍及 effect 名單施法；中心可為我方格或空格。MP／HP／Acted／RNG 完整預檢後發布，未知指令和非法範圍仍拒收。', '正常案例 actor(20,22)／center(22,20)／enemy(22,18) 的玩家 UI 與規則測試通過；抽測直接敵格、空格、我方格、無敵範圍、格外中心、取消及 AI 路徑。不提升未完成章的 E2。']
+
+證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl', 'remake/cmd/fd2/main.go', 'remake/internal/battle/native_command_target.go', 'docs/data/ida/fd2_player_command6_cursor_center_20261004.json']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

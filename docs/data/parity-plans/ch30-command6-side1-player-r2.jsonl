@@ -1,0 +1,24 @@
+# #154：固定第三方玩家槽普通CONTINUE，record6原地開法術清單，檢驗selection4／effect2的空格確認；假說探針，零章內注入、非章E2。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000, "repeat": 2}
+{"key": "enter", "steps": 20000000}
+{"await_ui": "cursor", "steps": 10000000, "max": 100}
+{"mark": "player_current_runtime", "steps": 1000000}
+{"goto": [20, 22], "steps": 2000000, "max": 80}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "target", "steps": 2000000, "max": 20}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "ring", "steps": 5000000, "max": 20}
+{"key": "left", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "spell", "steps": 5000000, "max": 30}
+{"mark": "command6_spell_list", "steps": 1000000}
+{"key": "down", "steps": 10000000, "repeat": 4}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "target", "steps": 2000000, "max": 30}
+{"goto": [22, 20], "steps": 2000000, "max": 20}
+{"mark": "command6_target_armed", "steps": 1000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 2000000, "repeat": 200}
+{"await_ui": "cursor", "steps": 10000000, "max": 100}
+{"mark": "command6_side1_done", "steps": 1000000}

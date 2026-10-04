@@ -521,3 +521,13 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [指令7跨目標亂數交錯](../data/ida/fd2_command7_target_rng_20261004.json)：#152，有界原版trace及規格入口。
 
 - [指令6亂數有界正常計畫](../data/parity-plans/ch24-command6-rng-r1.jsonl)：#157，同fresh-r1至第5回合入口，命中／miss逐次trace；主證據與狀態在[指令6契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
+
+- [指令6非零側正常施法計畫](../data/parity-plans/ch24-command6-side1-r1.jsonl)：#154，同固定槽第4回合記錄13，原版寫入／viewport消費端追蹤；主證據仍為指令6工作契約。
+
+- [#154 非零側正常指令6輸入修正版](../data/parity-plans/ch24-command6-side1-r2.jsonl)：同槽同政策；指令環方向鍵後確認，再等待法術清單。主證據見fd2_ch24_command6_work_bounds_20261004.json的normal_probe。
+
+- [#154 玩家槽原地指令6短路徑](../data/parity-plans/ch30-command6-side1-player-r1.jsonl)：既有固定第三方槽普通CONTINUE、前回合移動待機，下回合原地施法；不增加章E2。來源與實驗收據見指令6主證據normal_probe。
+
+- [#154 玩家槽原地範圍指令6探針](../data/parity-plans/ch30-command6-side1-player-r2.jsonl)：同源正常CONTINUE、不經過敵軍回合；檢驗既有selection／effect與空格確認，非章E2。
+
+- [#160 玩家指令6範圍中心 RE 與草案](../data/ida/fd2_player_command6_cursor_center_20261004.json)：固定IDA caller／bytes、正常原地範圍確認收據；修正直接enemy候選假設，正式實作未開始。

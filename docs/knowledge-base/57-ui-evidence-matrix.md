@@ -1610,3 +1610,7 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 
 
 2026-10-04 #158：原版分類器依[節點主契約](../data/fd2-chapter-node-comparison-contract.json)補足sub_16C57等待期的頭像巢狀返回配對。固定EXE指紋、mouth owner與portrait helper同時成立才辨識dialogue，保持既有外層owner優先與unknown拒收。正常r6 seq2254已獨立對上重製dialogue；前述「原版未知介面造成節點拒收」由此補正取代，整章計畫與保存仍未達。驗證數字與範圍見[58](58-fd2-exe-re-coverage.md)；#38像素相位、#154負列與#142章驗收不變。
+
+2026-10-04 #159 READY：#154窄原版試驗在施法前因工具漏收await_ui:spell退出。等待清單補既有spell，main先驗整份計畫再送鍵；新分類、原版狀態與遊戲規則未改。失敗樣本與修正契約見[指令6主證據](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)的normal_probe；實測與範圍依[58](58-fd2-exe-re-coverage.md)。
+
+2026-10-04 #159 CONFORMED：法術等待正常收據與整份計畫送鍵前檢查已通過；主契約保留115項Python回歸、1774/1774原版前綴與正常spell seq22。#154已取得真實負列與12個原版target viewport，正式compositor仍拒收。另[玩家範圍中心主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)證實#160的直接enemy中心限制過嚴，達RE-CLOSED／DRAFT；正式UI實作與#154獨立，驗證數字、未知consumer與章層級見[58](58-fd2-exe-re-coverage.md)。

@@ -348,14 +348,22 @@ def do_step_into(command):
     return True
 
 
+AWAIT_UI_MODES = frozenset({
+    "title", "cursor", "dialogue", "grid", "ring", "shop", "status", "spell",
+    "system", "target", "town", "unknown", "preparation", "record_question",
+    "record_slots",
+})
+
+
+def validate_await_ui(want):
+    if want not in AWAIT_UI_MODES:
+        raise SystemExit(f"await_ui 不支援介面：{want!r}")
+
+
 def do_await_ui(command):
     """以可觀測輸入鏈等待介面，僅在對白狀態送 enter。"""
     want = command["await_ui"]
-    allowed = {"title", "cursor", "dialogue", "grid", "ring", "shop", "status",
-               "system", "target", "town", "unknown", "preparation",
-               "record_question", "record_slots"}
-    if want not in allowed:
-        raise SystemExit(f"await_ui 不支援介面：{want!r}")
+    validate_await_ui(want)
     steps = int(command.get("steps", 10_000_000))
     for _ in range(int(command.get("max", 100))):
         current = state()
@@ -1900,6 +1908,8 @@ def main():
     plan = []
     for line in lines:
         command = json.loads(line)
+        if "await_ui" in command:
+            validate_await_ui(command["await_ui"])
         plan.extend([command] * int(command.get("repeat", 1)))
     for command in plan:
         current = state()

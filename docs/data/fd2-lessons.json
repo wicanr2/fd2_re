@@ -1360,6 +1360,21 @@
         ],
         "pattern": "figani.WalkNativeCommand6RNG"
       }
+    },
+    {
+      "id": "oracle-await-ui-validates-plan-before-send",
+      "date": "2026-10-04",
+      "area": "對拍工具",
+      "rule": "新增原版等待計畫時，先核對tools/dosgolem_oracle_drive.py的AWAIT_UI_MODES；main在第一次send前驗整份計畫的await_ui名稱，未知名稱拒收。辨識UI與等待UI沿用同一已證分類，不用固定空鍵取代缺漏。",
+      "why": "#154正常試驗已推進至seq1773才發現spell未列入等待清單，未能施法。#159補清單與前置檢查，保留失敗樣本並乾淨重跑。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/159；docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json investigations normal_probe tool_repair",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle_drive.py"
+        ],
+        "pattern": "validate_await_ui\\(command\\[\"await_ui\"\\]\\)"
+      }
     }
   ]
 }

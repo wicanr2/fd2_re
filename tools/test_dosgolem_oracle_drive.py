@@ -40,6 +40,32 @@ def unit(x, y, camp, hp=10, acted=False, identity=None):
     return made
 
 
+class AwaitUIPlanValidation(unittest.TestCase):
+    def test_wait_for_spell_sends_no_choice_key(self):
+        states = [{"input_chain": ["0x18EEF"]},
+                  {"input_chain": ["0x1D0D4"]}]
+        with mock.patch.object(drive, "state", side_effect=states), \
+                mock.patch.object(drive, "send", return_value=(1, states[1])) as send, \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_await_ui(
+                {"await_ui": "spell", "steps": 123, "max": 3}))
+        send.assert_called_once_with("", 123)
+
+    def test_invalid_late_wait_rejects_plan_before_first_key(self):
+        with tempfile.TemporaryDirectory() as directory:
+            plan = pathlib.Path(directory) / "plan.jsonl"
+            plan.write_text('{"key":"enter","steps":123}\n'
+                            '{"await_ui":"not-a-ui"}\n')
+            with mock.patch.object(drive, "PLAN", str(plan)), \
+                    mock.patch.object(drive, "state", return_value={
+                        "control_seq": 0, "eip": "0x13A9F", "view": {}}), \
+                    mock.patch.object(drive, "report"), \
+                    mock.patch.object(drive, "send", return_value=(1, {})) as send:
+                with self.assertRaisesRegex(SystemExit, "await_ui 不支援介面"):
+                    drive.main()
+                send.assert_not_called()
+
+
 class DialoguePortraitOwner(unittest.TestCase):
     def test_closed_and_open_portrait_wait_returns(self):
         # #158 正常 r6 seq2254／2253；IDA sub_16C57 與 sub_16559。

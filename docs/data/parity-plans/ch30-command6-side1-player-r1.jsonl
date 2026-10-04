@@ -1,0 +1,28 @@
+# #154：固定第三方fd2last.sav普通CONTINUE，record6先移動待機，下回合原地指令6；正常鍵盤，未修改槽，非章E2。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000, "repeat": 2}
+{"key": "enter", "steps": 20000000}
+{"await_ui": "cursor", "steps": 10000000, "max": 180}
+{"mark": "player_current_runtime", "steps": 1000000}
+{"move_unit": {"from_index": 6, "to": [21, 20]}, "steps": 2000000, "finish_wait": 120}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 180}
+{"await": "round>=5", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 20}
+{"mark": "player_round5", "steps": 1000000}
+{"goto": [21, 20], "steps": 2000000, "max": 80}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "target", "steps": 2000000, "max": 20}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "ring", "steps": 5000000, "max": 20}
+{"key": "left", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "spell", "steps": 5000000, "max": 30}
+{"mark": "command6_spell_list", "steps": 1000000}
+{"key": "down", "steps": 10000000, "repeat": 4}
+{"key": "enter", "steps": 10000000}
+{"await_ui": "target", "steps": 2000000, "max": 30}
+{"mark": "command6_target_armed", "steps": 1000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 2000000, "repeat": 200}
+{"await_ui": "cursor", "steps": 10000000, "max": 100}
+{"mark": "command6_side1_done", "steps": 1000000}
