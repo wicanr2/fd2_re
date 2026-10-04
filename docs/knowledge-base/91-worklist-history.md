@@ -5250,3 +5250,7 @@ READY後接正式END owner，HP/flags/Acted在兩張發布間原子提交，第�
 目前 Game 由固定槽完整重播第七章，正式四 gate、完整 SAV、既有升級對白及受影響畫面通過。[主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)與[回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)達 tooling CONFORMED。第22／23章只重驗既有來源的節點判準。原版歷史sample-r6、未比較跨時序點與相位限制如實保留，不新增章PLAYER-E2或改變台帳；唯一數字見[58](58-fd2-exe-re-coverage.md)。
 
 變更檔與收據UID/GID1000:1000，既有root-owned基線2811未增、沒有.md目錄。所有本批FD2程序及一次性容器已退出移除；其他專案容器未動。固定第七章輸入槽雜湊未變，來源／輸出雜湊、文件入口、工單及教訓檢查通過。
+
+- 本批已提交並推送8134ef002f42c82897592a6604b5c918823b7b36，本機與遠端HEAD相同。[#164已有限結案](https://github.com/wicanr2/fd2_re/issues/164#issuecomment-5977747815)。重新讀取真實遠端後剩22條開啟；章台帳20/30及#154待決不變。
+
+關閉#164後第一次open列表仍暫列該Issue，主機個別view已CLOSED；重新讀取列表後工具正確重生開啟快照。未依暫時列表推定結案失敗，未重開或手改快照；已登記可重用教訓。

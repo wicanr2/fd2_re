@@ -1445,6 +1445,14 @@
       "rule": "同一原版控制序號有多個語意動作時，以已審查的kind／mark label映射選取唯一來源；不依紀錄順序或UI挑選。零匹配與多匹配拒收，保留原始kind／label及候選數。入口tools/verify_chapter_parity.py的comparable_action_kind／compare_node與docs/data/fd2-chapter-node-comparison-contract.json extension164。",
       "why": "第七章四次待機與章標記共用seq，next只取第一筆wait，使同狀態cursor的mark誤報node_differ。",
       "evidence": "docs/data/ui-traces/parity-ch07-node-regression-20261004.json"
+    },
+    {
+      "id": "issue-closure-rechecks-live-state",
+      "date": "2026-10-04",
+      "area": "GitHub工單",
+      "rule": "關閉GitHub Issue後，以主機gh issue view核對個別state；搜尋列表若短暫仍含該Issue，重新取得遠端列表，不能據此推定結案失敗或重開。快照仍用tools/fd2_worklist_issues.py的cmd_pull／build_snapshot重生，不手改。入口AGENTS.md的GitHub Issue主機控制面與主機/home/anr2/.local/bin/gh。",
+      "why": "#164關閉後個別view已CLOSED，第一次open搜尋仍列出164，下一次遠端搜尋才移除。沒有改遠端狀態或手工刪快照。",
+      "evidence": "docs/knowledge-base/91-worklist-history.md"
     }
   ]
 }

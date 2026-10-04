@@ -387,24 +387,6 @@
         "reason": "需完整dosgolem12影格與正式非零側演出驗收；重製端綠色測試不足以關閉。"
       },
       "issue": 161
-    },
-    {
-      "id": "ch07-regression-node-pairing-20261004",
-      "layer": "player",
-      "category": "缺陷",
-      "title": "第七章回歸節點配對拒收游標mark與原版attack_result介面",
-      "body": "#29 END回復收尾的第七章現行remake回歸：正式重播179/179 AI入口、零順序分岔；行為／交易／228張畫面通過，節點失敗。固定原版sample-r6同EXE，seq1277/1455/1634/1809的mark與wait兩側都是cursor仍node_differ；seq1894的attack_result原版ui unknown。先核對實際owner、caller及mark配對，不放寬unknown gate，不用舊章通過紀錄覆蓋本次拒收。此工單處理比對工具與必要原版owner證據，不預設是遊戲runtime缺陷。",
-      "acceptance": "查明四個mark的語意動作配對及seq1894的原版實際owner；以固定輸入、直接caller或當前收據審查窄契約，再修正工具並加入真正的反例測試。第七章現行重播全部節點通過，既有unknown拒收保持；如來源仍未知，保留具體限制與開啟狀態。不得把歷史oracle收據冒稱新工具重生或新增PLAYER-E2。",
-      "evidence": [
-        "work/parity-slot-ch07/end-recovery-regression-r1-verified.json",
-        "tools/verify_chapter_parity.py",
-        "docs/data/fd2-chapter-node-comparison-contract.json",
-        "docs/data/ui-traces/parity-ch07.json"
-      ],
-      "verify": {
-        "kind": "manual"
-      },
-      "issue": 164
     }
   ]
 }

@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -178,16 +178,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['固定EXEhash、dosgolem commit、同源SAV與受版控計畫／清冊，正常章路徑可重跑。', '四gate與完整SAV通過，相關Go及第23章回歸通過。', '同步56／57／58、索引、正式台帳與產生現況，保留注入、敗北及未抽範圍。']
 
 證據：`['docs/data/ui-traces/parity-ch23.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/data/parity-campaign-progress.json']`
-
-### 第七章回歸節點配對拒收游標mark與原版attack_result介面
-
-`ch07-regression-node-pairing-20261004` · 缺陷 · [#164](https://github.com/wicanr2/fd2_re/issues/164) · 仍未完成 · 要人判
-
-#29 END回復收尾的第七章現行remake回歸：正式重播179/179 AI入口、零順序分岔；行為／交易／228張畫面通過，節點失敗。固定原版sample-r6同EXE，seq1277/1455/1634/1809的mark與wait兩側都是cursor仍node_differ；seq1894的attack_result原版ui unknown。先核對實際owner、caller及mark配對，不放寬unknown gate，不用舊章通過紀錄覆蓋本次拒收。此工單處理比對工具與必要原版owner證據，不預設是遊戲runtime缺陷。
-
-怎樣算做完：查明四個mark的語意動作配對及seq1894的原版實際owner；以固定輸入、直接caller或當前收據審查窄契約，再修正工具並加入真正的反例測試。第七章現行重播全部節點通過，既有unknown拒收保持；如來源仍未知，保留具體限制與開啟狀態。不得把歷史oracle收據冒稱新工具重生或新增PLAYER-E2。
-
-證據：`['work/parity-slot-ch07/end-recovery-regression-r1-verified.json', 'tools/verify_chapter_parity.py', 'docs/data/fd2-chapter-node-comparison-contract.json', 'docs/data/ui-traces/parity-ch07.json']`
 
 ## release — 發行、平台與封包
 

@@ -2552,3 +2552,5 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 [目前完整回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)由目前正式 Game 重播同一槽與原版動作取得。179/179 AI 入口消費、零順序分岔；行為、節點、交易、228張畫面均通過。229個可比較節點相同，15個跨時序點仍未比較；四組 wait／mark 及1836／1894對白共十張完整索引與RGB均0差異。兩側實際22987-byte FD2.SAV的SHA-256同為5e5cb9dac3bc974742667c8f8395691a565ebd79d50b3fa34222cf10a446767e。
 
 26項比較器與91項驅動器測試通過、零略過，包含逆序來源、錯label／UI、零／多匹配、偽造標記、錯hash／EIP／caller與既有owner優先反例。第22／23章既有來源的獨立節點判準回歸通過，沒有重跑兩章Game。原版仍是歷史sample-r6，未冒稱目前oracle重生，不新增PLAYER-E2；章台帳20/30不變。較早#29／#163的五個節點拒收由本收據補正。
+
+- 本批已提交並推送8134ef002f42c82897592a6604b5c918823b7b36，本機與遠端HEAD相同。[#164已有限結案](https://github.com/wicanr2/fd2_re/issues/164#issuecomment-5977747815)。重新讀取真實遠端後剩22條開啟；章台帳20/30及#154待決不變。
