@@ -113,6 +113,9 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 		Name: "測試敵兵", BattleFig: 96, Camp: battle.Enemy, X: 2, Y: 46,
 		HP: 20, MaxHP: 20, OnField: true, HasBattleFig: true, Lv: 2,
 		HasNativeRecordByte5: true, NativeRecordByte6: 0, HasNativeRecordByte6: true,
+		// map0/map0_units.json 的 selector96 原始欄位，與下列建構列相同來源。
+		NativeRecordRace: 1, HasNativeRecordRace: true,
+		NativeRecordClass: 7, HasNativeRecordClass: true,
 		// 原生 EXP 預檢需要實際 selector96 的 high_class 建構列。
 		NativeConstructor: &battle.NativeConstructorTable{Branch: "high_class", Index: 28,
 			Record: []byte{1, 7, 14, 0, 0, 7, 1, 1, 4, 21}},
@@ -122,7 +125,10 @@ func TestNativeEvent61AttackWaitsForPresentationCompletion(t *testing.T) {
 	g.curX, g.curY = target.X, target.Y
 	g.confirm()
 	if g.atk == nil || g.atk.after == nil {
-		t.Fatal("successful attack did not retain the deferred selector1 owner")
+		t.Fatalf("successful attack did not retain the deferred selector1 owner: %s", g.loadErr)
+	}
+	if g.atk.nativeScene == nil {
+		t.Fatal("normal player attack did not publish its native scene snapshot")
 	}
 	if g.battleEvent != nil {
 		t.Fatal("attack committed selector1 before the full-screen presentation")

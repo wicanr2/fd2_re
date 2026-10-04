@@ -1499,6 +1499,22 @@
         "pattern": "\"near_heap_policy\": near_heap_policy",
         "note": "正式收據保留替代配置器政策。"
       }
+    },
+    {
+      "id": "full-regression-preserves-sound-preflight",
+      "area": "驗證",
+      "rule": "全套Go回歸保留各測試自己的音訊政策，不在容器設定全域FD2_MUTE=1。單一測試需要靜音時用t.Setenv隔離。完整Docker命令見docs/data/ida/fd2_physical_background_selection_20261004.json的commands.go_all_final，適用分離素材及locales齊備的fd2-go-test-local:20260909。",
+      "why": "2026-10-04全套回歸命令加入全域FD2_MUTE=1，使command17缺sample反例略過聲音預檢而失敗。正式音訊規則未變更，修正驗證命令後在同一映像檔乾淨重跑。",
+      "date": "2026-10-04",
+      "evidence": "docs/data/ida/fd2_physical_background_selection_20261004.json",
+      "guard": {
+        "kind": "absent",
+        "paths": [
+          "tools/remake_go_test.sh"
+        ],
+        "pattern": "FD2_MUTE=1",
+        "note": "標準全套回歸入口不強制全域靜音；個別測試的靜音政策另由t.Setenv管理。"
+      }
     }
   ]
 }

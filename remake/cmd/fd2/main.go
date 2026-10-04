@@ -591,6 +591,7 @@ type atkAnim struct {
 	terrain         int                      // 攻擊格地形索引(戰鬥背景 = 戰場地形,跟 FDFIELD 戰場資料有關)
 	figaniTimeline  *figani.DisplayScheduler // 已證實 FIGANI 幀延遲；不承載命中／傷害語意
 	nativeImpactRaw *nativeImpactDACInput    // 尚未接線；缺 raw provenance 時保持 nil
+	nativeScene     *nativePhysicalScene     // 正常物理入口的 BG／TAI；反擊不重選
 	frameIndex      int                      // 目前已呈現的 FIGANI 幀
 	bodyTicks       int                      // 幀本體的精確延遲總長，尾段停格另計
 	// counter 是反擊那一段。原版一次攻擊的兩次結算共用一段演出（`sub_29164` 只
@@ -7856,6 +7857,11 @@ func (g *Game) confirm() {
 			g.loadErr = fmt.Sprintf("FIGANI attack presentation unavailable: %d -> %d: %v", g.sel.BattleFig, tgt.BattleFig, err)
 			return
 		}
+		scene, err := g.prepareNativePhysicalScene(g.sel, tgt)
+		if err != nil {
+			g.loadErr = "physical attack scene unavailable: " + err.Error()
+			return
+		}
 		// 攻擊者面向目標(FDICON 方向幀)
 		g.sel.SetMapPose(dirToward(g.sel.X, g.sel.Y, g.curX, g.curY))
 		nm := tgt.Name
@@ -7883,10 +7889,11 @@ func (g *Game) confirm() {
 		g.atk = g.newAtkAnim(actor.BattleFig, tgt.BattleFig, anm, nm,
 			actor.HP, actor.MaxHP, actor.Lv, actor.MP, actor.MaxMP,
 			tgt.Lv, tgt.MP, tgt.MaxMP,
-			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true) // 戰鬥背景 = 守方格地形
+			defHP0, tgt.HP, tgt.MaxHP, g.terrainAt(g.curX, g.curY), true)
 		// 反擊接成同一段演出的第二半，與原版一樣不重新滑入。
 		g.attachCounterPresentation(g.atk, actor, tgt, attackResult)
 		if g.atk != nil {
+			g.atk.nativeScene = scene
 			g.atk.after = func() {
 				g.finishSuccessfulUnitAction(actor, nil)
 			}
@@ -10698,11 +10705,15 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 	prog := a.total - a.timer
 	// 原版 320×200 精確 layout(網格量測)→ 本畫布 ×2。黑底(畫面外圍黑邊)
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
-	if g.bg != nil { // BG(doc35:320×100 原生貼 (0,50) → ×2 貼 (0,100))
+	background := g.bg
+	if a.nativeScene != nil {
+		background = a.nativeScene.background
+	}
+	if background != nil { // BG 原生貼 (0,50) → ×2 貼 (0,100)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Scale(2, 2)
 		op.GeoM.Translate(0, 100)
-		screen.DrawImage(g.bg, op)
+		screen.DrawImage(background, op)
 	}
 	// 繪製順序(doc35 §4 RE:演出 0x28a6c 內「狀態欄 0x2a289(0x28ce7/0x28d62)先畫、
 	// figure(0x28e76 起 0x29164/0x2939d)後畫」→ figure z-order 高於狀態欄，
@@ -10801,8 +10812,10 @@ func (g *Game) drawBattleScene(screen *ebiten.Image) {
 				blit(defImg, defX, defY)
 			}
 		case battleLayerOwnPedestal:
-			// 我方台座(TAI_004;模板匹配 orig 台座左上=(165,157)@320 → ×2=(330,314))
-			if g.tai != nil {
+			if a.nativeScene != nil {
+				// 0x28F6B／0x29164 固定座標，不按 TAI 寬高重新置中。
+				blit(a.nativeScene.pedestal, 164, 157)
+			} else if g.tai != nil {
 				tb := g.tai.Bounds()
 				tw, th := float64(tb.Dx())*sc, float64(tb.Dy())*sc
 				op := &ebiten.DrawImageOptions{}
@@ -12657,6 +12670,12 @@ func (g *Game) aiStep() {
 				g.aiBusy = false
 				return
 			}
+			scene, err := g.prepareNativePhysicalScene(u, tgt)
+			if err != nil {
+				g.loadErr = "AI physical scene unavailable: " + err.Error()
+				g.aiBusy = false
+				return
+			}
 			// 0x1548E：聚焦自己（0x154AD）→ 0x14B78 移動 → 聚焦目標（0x154DE）再進 0x1F04A
 			// 演出。有走路時自己的聚焦已在走之前做過（原位），走完不再聚焦自己（第八章 c3
 			// eip-trace seq 1692：(20,18) 0x154B2 → (16,22) 0x154E3，中間沒有 (18,20)）。
@@ -12703,6 +12722,7 @@ func (g *Game) aiStep() {
 				hp0, tgt.HP, tgt.MaxHP, g.terrainAt(tgt.X, tgt.Y), u.Camp == battle.Own)
 			g.attachCounterPresentation(g.atk, u, tgt, attackResult)
 			if g.atk != nil {
+				g.atk.nativeScene = scene
 				g.atk.after = finish
 			} else {
 				g.loadErr = fmt.Sprintf("AI FIGANI attack presentation unavailable: %d -> %d", u.BattleFig, tgt.BattleFig)

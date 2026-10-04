@@ -96,6 +96,12 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		g.aiBusy = false
 		return
 	}
+	scene, err := g.prepareNativePhysicalScene(actor, target)
+	if err != nil {
+		g.loadErr = "native AI mode 11 physical scene unavailable: " + err.Error()
+		g.aiBusy = false
+		return
+	}
 	// 0x154AD 聚焦自己在 0x14B78 移動之前；有走路時呼叫端已在原位聚焦過。
 	if len(plan.Path) < 2 {
 		g.aiFocusCursor(actor.X, actor.Y)
@@ -134,6 +140,7 @@ func (g *Game) executeNativeAIMode11Physical(plan *battle.AIPlan, after func()) 
 		g.aiBusy = false
 		return
 	}
+	g.atk.nativeScene = scene
 	g.atk.after = func() {
 		g.finishSuccessfulUnitAction(actor, after)
 	}

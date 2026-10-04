@@ -574,3 +574,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第七章目前重播的節點配對回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)：#164，唯一語意來源與實際對白 EIP 判準；歷史原版 sample-r6、目前 Game 四 gate 通過，不新增章 PLAYER-E2。規格沿用[節點主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)。
 
 - [原版近堆替代政策與透明底色勘誤](../data/ida/fd2_terrain_mode3_review_20261001.json)：#167，oracle_heap_policy_correction；檢查方式見[對拍工具鏈](96-parity-toolchain-20260909.md)，入口[Docker收據](../../tools/dosgolem_oracle_container.sh)與[來源反例](../../tools/test_dosgolem_oracle_drive.py)。原版配置器未知，#52最後1px保留，不改章門檻。
+
+- [物理攻擊背景與台座選擇契約](../data/ida/fd2_physical_background_selection_20261004.json)：#166，保留28A6C與12E38的原始位址、bytes、推論等級及正常第八章dosgolem收據。選擇規則有限CONFORMED，正式BG／TAI快照列RUNTIME-E1；剩餘整場景與工作緩衝驗收見[58](58-fd2-exe-re-coverage.md)。
+- #166 程式與測試：[具型別選擇](../../remake/internal/battle/native_physical_scene.go)、[選擇反例](../../remake/internal/battle/native_physical_scene_test.go)、[正式素材consumer](../../remake/cmd/fd2/native_physical_scene.go)、[Game來源及原子性測試](../../remake/cmd/fd2/native_physical_scene_test.go)。

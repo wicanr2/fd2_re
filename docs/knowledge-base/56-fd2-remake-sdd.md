@@ -9430,3 +9430,9 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 [主證據 oracle_heap_policy_correction](../data/ida/fd2_terrain_mode3_review_20261001.json)更正前節「基址重用排除空白緩衝」：目前dosgolem配置器在reuse時clear整段，原版實體malloc初值仍未知。3152保持一像素差異，列ORACLE-POLICY-LIMIT；不把工具清零接入正式remake或稱17／17通過。16點已相同的有限驗證保留，#52仍開啟。
 
 正式Docker入口的runner.json已記錄near_heap_policy與配置器／caller雙來源hash；未知來源標unknown，原版配置器parity標unverified。工具驗證通過，未修改引擎、dosgolem配置器、章門檻或#154政策。唯一數字、來源及目前狀態見[58](58-fd2-exe-re-coverage.md)。#166固定BG／TAI缺陷獨立處理。
+
+### 2026-10-04 #166：正常物理場景素材快照
+
+正常玩家、一般AI與mode11改由[READY子契約](../data/ida/fd2_physical_background_selection_20261004.json)預檢raw record、可變地圖control、攻方FIGANI header與分離BG／TAI，再發布演出快照。缺來源時不寫方向、HP或RNG；反擊沿用場景。BG原生座標(0,50)，TAI為(164,157)，index0及透明mask分開處理，不依素材寬高置中。快照不增存檔欄位，演出保存限制沿用原owner。
+
+此項只達正常BG／TAI來源的RUNTIME-E1與有限選擇CONFORMED。獨立敵方場景、非零header滑入、完整GPU影格及work續接仍在#166；目前驗證與停止線只見[58](58-fd2-exe-re-coverage.md)。#167配置器未知不由BG清零補值。

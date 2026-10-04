@@ -7,7 +7,7 @@
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
-| #166物理背景選擇 | 尚未修正 | 固定BG／TAI未消費typed地形；[遠端Issue](https://github.com/wicanr2/fd2_re/issues/166)。 |
+| #166物理背景選擇 | 有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費raw地形及BG／TAI快照；[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。整場景與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -2636,3 +2636,24 @@ IDA LE 28AFD..28B08與29063..290C7證實物理攻擊釋放並重新配置0x25680
 受版控 Docker 入口的 runner.json 新增 near_heap_policy，綁定配置器與 oracle 呼叫端兩份 SHA-256；任一來源變更或缺失均列 unknown，original_allocator_parity 固定 unverified。三項既有近堆／free／DPMI隔離測試、95項驅動測試與實際EXE的完整metadata煙霧試驗通過；舊runner欄位及錯EXE、commit、定位拒收保持。煙霧試驗沒有重播遊戲或生成新章收據。未修改Go引擎及dosgolem來源。
 
 另已登記[#166](https://github.com/wicanr2/fd2_re/issues/166)：物理攻擊仍固定載入BG與TAI，未消費原版地形選擇。此缺陷與配置器清零獨立，仍待READY及正常caller驗收；不能以3152黑色要求戰鬥renderer清零。
+
+### 2026-10-04 #166：背景選擇DRAFT開工快照
+
+[主契約](../data/ida/fd2_physical_background_selection_20261004.json)沿用已閉合28A6C及12E38原始IDA9.4 bytes，不重開整個renderer。正常actor raw+6決定雙BG角色；secondary gate成立且chapter initial為0時，secondary BG取地形、TAI仍為0，直接指令與EAX流支持這個分別。FIGANI byte1決定base BG與額外背景分支。現行固定BG／TAI缺陷仍存在，有界正常第八章同一鍵盤輸入的實測與READY待完成；#167近堆初值限制、#154與20/30台帳不變。
+
+#166選擇規則已依直接指令達READY，正式Game整合仍DRAFT；分層規格與後續實測見[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。
+
+
+### 2026-10-04 #166：正常背景與台座來源有限修正
+
+[主契約](../data/ida/fd2_physical_background_selection_20261004.json)取代前節開工狀態。28B51..28E35及12E38直接指令支持raw+6雙側選擇、章初值／種族／職業gate、FIGANI byte1與base BG。零章初值時TAI與secondary BG保留不同輸出，純選擇規格有限CONFORMED。固定BG與TAI archive各57項，其中56為空尾項；實際BG／TAI寬高並不一致，正式分離loader逐項驗證來源與shape。
+
+目前951cb55f原版正常第八章181項鍵盤輸入完成，trace140筆未封頂。玩家28A6C實際載入BG55／TAI55，FIGANI1 byte1為0；2939D主攻與反擊共用場景。末端0178／0181的單位、視圖、步數、EIP及暫存器與既有r7相同。此輪沒有獨立敵方28A6C入口，不把反擊當成另一條敵方場景來源。
+
+正式Game的玩家、一般AI與mode11在方向、HP及RNG寫入前預檢raw record、目前可變FDFIELD tile、地形control、攻方FIGANI header及分離BG／TAI。演出持有選擇快照，反擊沿用；BG貼(0,50)，TAI貼(164,157)，不依寬高置中。新增純選擇四組及Game來源、可變格子、index0／遮罩、缺BG玩家／mode11原子性測試通過。event61正常確認仍保留演出後才進selector1，測試原缺少的selector96 race／class已依同來源資料補齊。
+
+第12章正式LOAD至戰後的歷史來源回歸消費155／155 AI入口，順序分岔0；22987-byte存檔SHA-256保持6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。275張完整比較的behavior與transaction通過，1528／2030的unknown wait仍嚴格拒收，影格差異完整保留。這份地圖／章流程回歸不能代替完整物理演出逐幀比較。
+
+#166仍待獨立敵方場景載入、非零header雙BG滑入及戰鬥→地圖work續接。完整戰鬥GPU影格尚未驗收，現有DAC／剪影演出維持E1限制；不清緩衝猜補、不增加PLAYER-E2，#167與#154政策不變。
+
+#166本批檢查：Go19套件完整回歸通過，98筆字串處置不變；146條教訓的46條guard通過。新增18個本地連結與README→58正對照有效，變更檔UID／GID為1000。歷史root-owned仍2811、新增0，.md目錄0。
