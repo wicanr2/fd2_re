@@ -1648,3 +1648,17 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 [回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)已依[節點主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)驗收。目前正式 Game 重播同一固定來源，四項 gate 與完整 SAV 相符。四組 wait／mark 的來源改為唯一語意配對，1894 的原版活動 EIP 已由閉合等待 owner 獨立分類，受影響完整畫面也通過。
 
 這取代較早 END 回歸所述的五個節點拒收。原版仍是歷史 sample-r6，沒有冒稱目前 oracle 重生；跨時序點仍未比較，不新增 PLAYER-E2。唯一數字與來源限制見[58](58-fd2-exe-re-coverage.md)。
+
+
+## 2026-10-04 #52：起手底色 writer 與正式故事緩衝診斷
+
+[主證據追加 followup](../data/ida/fd2_terrain_mode3_review_20261001.json)保留舊17點定位。以目前乾淨951cb55 dosgolem、同一建構槽及正常鍵盤前兩名單位操作重跑兩次，五個受影響抽樣PNG雜湊相同。原版0x4DF2C在step445652335從固定FDSHAP_022.bin的tile21 literal span複製byte138到0x1587D3。三個來源指標交叉核對同一資源基址；其後tile27的0x1220C實際走raw，0x4DF39只前移、保留該底色。這是起手觀測，不外推完整17點。
+
+目前正式Game同輸入短重播的行為、節點與金幣相同。九張抽樣各自在640px內，但整章畫面gate要求12張，短探針未通過樣本數；存檔未抽樣。正常LOAD→城鎮→整備→故事→戰場的純觀察診斷，分別呼叫完整Draw與既有離屏方式，兩者進場前後沒有nativeMapWork，第一次完整合成目標index為0。第十二章正式ch11_pre binding尚無原生對白附加資料；原生故事背景與工作緩衝交接是強推論候選，未達READY。這不是GUI PLAYER-E2，正式程式未改，不用固定色、遮罩或原版像素注入。#52維持開啟，下一步補證原生故事繪圖及交接，再驗完整17點。
+
+r1 trace達200000上限，只引用截斷前的具體row；r2 writer窗口有界且未截斷。腳本參數／引號修正僅屬驗證工具執行問題，沒有主機分析或原檔變更。
+
+
+## 2026-10-04 #52：第十二章故事背景與起手交接有限驗收
+
+正式第十二章已接回11句原生對白版面，並依已證實聚焦重繪及同一LOADCH交接工作緩衝。正常路徑起手及方向鍵第二次選取完整畫面一致，達有限RUNTIME-E1。後續移動殘差未閉合，#52仍開啟；整章及PLAYER-E2門檻不變。唯一現況、回歸與限制見[58的本節](58-fd2-exe-re-coverage.md#2026-10-04-52第十二章故事背景與起手交接有限驗收)，來源與雜湊見[主證據validation](../data/ida/fd2_terrain_mode3_review_20261001.json)。

@@ -9394,3 +9394,8 @@ FDOTHER #42的舞台owner沿LOADCH、正常重繪到戰後共用。正式重繪�
 [節點主契約 extension164](../data/fd2-chapter-node-comparison-contract.json)已 CONFORMED。同一 seq 的原版 actions 全部保留，依既有 kind／mark label 映射取唯一相符者；零匹配與多匹配拒收，不依 UI 或紀錄順序挑選。報告保留原始 kind／label、候選數與匹配數，節點比較版本為3。
 
 原版停在已閉合 sub_16C57 的精確 EIP16D0A，且固定 EXE／原始返回1ACEE同時成立才分類對白。既有外層 owner 優先與 unknown 拒收保留，不改正式 runtime、亂數或畫面閾值。第七章目前 Game 同源完整重播通過，歷史原版來源與未比較點見[58](58-fd2-exe-re-coverage.md)及[回歸收據](../data/ui-traces/parity-ch07-node-regression-20261004.json)，不新增章 PLAYER-E2。
+
+
+## 2026-10-04 #52：第十二章故事背景與起手交接有限驗收
+
+正式第十二章已接回11句原生對白版面，並依已證實聚焦重繪及同一LOADCH交接工作緩衝。正常路徑起手及方向鍵第二次選取完整畫面一致，達有限RUNTIME-E1。後續移動殘差未閉合，#52仍開啟；整章及PLAYER-E2門檻不變。唯一現況、回歸與限制見[58的本節](58-fd2-exe-re-coverage.md#2026-10-04-52第十二章故事背景與起手交接有限驗收)，來源與雜湊見[主證據validation](../data/ida/fd2_terrain_mode3_review_20261001.json)。

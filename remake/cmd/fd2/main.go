@@ -1185,6 +1185,7 @@ func (g *Game) stepFocusUnit() {
 	// 戰場視圖上的聚焦（0x13FD4 原地回復的 0x12D7B 等）與 AI 聚焦是同一支 0x12CEA：開頭重繪
 	// 一次，逐步照游標鍵處理器的重繪規則；故事視圖另有自己的 HUD，不動戰場的 anchor。
 	battleView := j.nativeView && !g.hasStoryNativeMapView && g.st != nil && g.st.HasNativeMapViewState
+	storyView := j.nativeView && g.nativeCh12StoryFocus()
 	if !j.started {
 		j.started = true
 		if battleView {
@@ -1193,10 +1194,19 @@ func (g *Game) stepFocusUnit() {
 			}
 			g.redrawNativeMapHUD()
 		}
+		if storyView {
+			if err := g.composeNativeStoryMapFrame(); err != nil {
+				g.loadErr = "native story focus: " + err.Error()
+				g.focusJob = nil
+				return
+			}
+		}
 	}
 	var stepBefore battle.NativeMapViewState
 	if battleView {
 		stepBefore = g.st.NativeMapViewState
+	} else if storyView {
+		stepBefore = g.storyNativeMapView
 	}
 	finish := func() {
 		g.focusJob = nil
@@ -1271,6 +1281,13 @@ func (g *Game) stepFocusUnit() {
 	}
 	if battleView {
 		g.nativeCursorStepHUD(stepBefore, g.st.NativeMapViewState)
+	}
+	if storyView && g.storyNativeMapState.NativeMapCursorStepRedraws(stepBefore, g.storyNativeMapView) {
+		if err := g.composeNativeStoryMapFrame(); err != nil {
+			g.loadErr = "native story focus step: " + err.Error()
+			g.focusJob = nil
+			return
+		}
 	}
 	if g.curX == j.targetX && g.curY == j.targetY {
 		finish()
@@ -3299,6 +3316,10 @@ func (g *Game) enterNode() {
 	stageHandoff := g.camp.NodeID() == "battle_ch24" && g.nativeMapAssets != nil &&
 		g.nativeMapAssets.MapIndex == 23 && g.hasStoryNativeMapView &&
 		g.storyRosterPath == n.Units && g.storyPartyScenario == n.Scenario
+	var storyWork, storyVGA []byte
+	if g.nativeCh12StoryWorkHandoff(n.Units, n.Scenario) {
+		storyWork, storyVGA = g.nativeMapWork, g.nativeMapVGA
+	}
 	// campaign 結局尚無已證實的場景→曲目對映；空白 ending BGM 先停止前一場景，
 	// 避免戰鬥音樂漏到終局頁。若資料明確填入 BGM，仍保留可編輯的曲目入口，
 	// 待證據閉合後即可使用。
@@ -3454,6 +3475,9 @@ func (g *Game) enterNode() {
 		g.applyFieldOwnAttackRanges()
 		if !g.materializeNativeMapRuntime(n) {
 			return
+		}
+		if storyWork != nil {
+			g.nativeMapWork, g.nativeMapVGA = storyWork, storyVGA
 		}
 	case "inventory_gate":
 		if n.ItemID == nil { // Load 已拒絕；保留 runtime fail-closed 防線給手工測試 Campaign。
@@ -8715,6 +8739,15 @@ func (g *Game) nativeCursorStepHUD(before, after battle.NativeMapViewState) {
 		return
 	}
 	g.redrawNativeMapHUD()
+	// 第十二章的 mode3 會保留前一鏡頭底色；11CAC 不只更新 HUD。
+	// 已證實 caller／literal writer 見 terrain review 的 battle_cursor_redraw。
+	if g.camp != nil && g.camp.NodeID() == "battle_ch12" &&
+		g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 11 &&
+		!g.hasStoryNativeMapView && g.st.HasNativeMapViewState {
+		if err := g.composeNativeMapFrame(); err != nil {
+			g.loadErr = "native cursor redraw: " + err.Error()
+		}
+	}
 }
 
 // redrawNativeMapHUD 是一次原版 0x11CAC 重繪裡 0x1ACF3→0x1AD2A 的 HUD anchor 評估：閘 A／閘 B

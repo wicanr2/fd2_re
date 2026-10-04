@@ -197,6 +197,8 @@ remake 每關的劇本檔 `remake/assets/scenarios/chNN.json` = **事件骨架 +
 
 #52 地圖tile27殘差定位勘誤：[58入口](58-fd2-exe-re-coverage.md) →
 [17點座標與既有raw／LUT指令契約](../data/ida/fd2_terrain_mode3_review_20261001.json)。
+[正常操作前綴唯讀探針](../data/parity-plans/ch12-terrain-mode3-probe.jsonl)。
+[正常 LOAD 的工作緩衝交接診斷](../../remake/cmd/fd2/native_terrain_work_handoff_test.go)。
 原版底色寫入來源仍未知，不重開已閉合的解碼器。
 
 第十三章正常LOAD：[58入口](58-fd2-exe-re-coverage.md) → [有限收據](../data/parity-slots/ch13-load-validation.json)；

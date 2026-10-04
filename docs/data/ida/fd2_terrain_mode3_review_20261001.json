@@ -4238,5 +4238,1526 @@
   "query_environment": {
     "PROBE_ADDRESSES": "0x11EEE 0x4DEDA 0x4DCC6",
     "PROBE_OUTPUT": "/src/work/parity-slot-ch12/terrain-mode3-ida.json"
-  }
+  },
+  "followups": [
+    {
+      "date": "2026-10-04",
+      "issue": "https://github.com/wicanr2/fd2_re/issues/52",
+      "status": "DRAFT",
+      "scope": "先閉合目前第十二章起手底色 writer；完整17點與正式修法仍未驗收。",
+      "fd2_source_commit": "bd2718ef6dd82729d40f0e5e9f08f1497056fb97",
+      "input_hashes": {
+        "docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl": "7a431d07dcdef1250e1e7cc86b9126fcb53d0ddb421d660062c80ba980a10e76",
+        "work/parity-slot-ch12/FD2.SAV": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+        "tools/dosgolem_oracle.sh": "b1c45e135a65478b4580a0847df31ad7e6399a45932da71f51c0da656d7d2b16",
+        "tools/dosgolem_oracle_drive.py": "79f34063023e3a155e22cc620d92211f80e91316a28cf9fc48d5c4f9ef7376ab",
+        "tools/verify_chapter_parity.py": "71d305aa3847b5f859cc473ccfaeb60d97aca55a5f9d123612e6479f4d5b5ec6",
+        "remake/generated-assets/fd2-original-b97caf22/raw/FDSHAP/FDSHAP_022.bin": "01fa2a01f29d8f9b9559db0847ce1963f8c67abd302cfd111de05f7126d5a2e3",
+        "remake/assets/cutscenes/bindings/ch11_pre.json": "536ce0a47565762a1131d326c2f3882d0a729785eb6567cced2ad6eef9a03a6f",
+        "remake/cmd/fd2/native_story_map.go": "92489e227f83e6f272237578ac2f150b199caa7b8b962e5534be93299d62f20f",
+        "remake/cmd/fd2/native_story_dialogue.go": "af0d780237af51d3382d5948ab9f885ddd79c3fb39ffbca1af8cacecc9d6db06",
+        "remake/cmd/fd2/main.go": "67aad575bdef705313fafd5d289bf401cb569ed76327dbde7ab1ee049676f692",
+        "remake/cmd/fd2/native_terrain_work_handoff_test.go": "d5e7a75d0aed25bc37b0613ed4f91428447da1fa8f020b61bc74e407b5bb626b",
+        "work/parity-slot-ch12/terrain-probe-verified-r1.json": "594be81b13a658d8c0db68b99274e8abd9846aaacdc4566bcb56d8391c7d0321",
+        "work/parity-slot-ch12/terrain-remake-r1.log": "0182b82901c0fa3a242d39eddf41ea24d2a5e42f63657737f31b3c5bdea18f97",
+        "work/parity-slot-ch12/terrain-handoff-diagnostic-r1.log": "f181a5d30695206d529391c6eb96924eb67becb94a1be5f315153a96ad70659a",
+        "work/parity-slot-ch12/terrain-handoff-diagnostic-r1/with-draw.json": "7e90a84667d1514b37476969acf34f58a4086c5c1232ce2c54b5a4a498141247",
+        "work/parity-slot-ch12/terrain-handoff-diagnostic-r1/without-draw.json": "6276a599e6ed4fbd45f058e73d78c835d9e6b6d6f19d7bb4676b6e00d7e7a2b7",
+        "work/parity-slot-ch12/terrain-original-r1/runner.json": "c58c533667306ba5aee7cb1a9a88985a999fca178a65540cb5f88bef4315372a",
+        "work/parity-slot-ch12/terrain-original-r1/actions.jsonl": "10730b858cce0b2aa1384b89efab6dd8b60ce61037aaad3511d3371c4a911f1e",
+        "work/parity-slot-ch12/terrain-original-r1/eip-trace.jsonl": "ec1ba02f2032b79fffcba1a1524447f3c0b9adf1d0b219d84571ff8461048aee",
+        "work/parity-slot-ch12/terrain-original-r1/control-history.jsonl": "96e44647cb259be52a7e51868ea1c40480c28cf549c50d9e1f48bb0271fd794a",
+        "work/parity-slot-ch12/terrain-original-r1/current.json": "cf3fa39ac4ba287bb04bb2a2f08ad494878f02615d713a0f0c063acbb181755a",
+        "work/parity-slot-ch12/terrain-original-r2/runner.json": "bc1c1e8d98a1bbb1aa7874e2a883fb34105947dc636e0ce59bbba58ce47d2277",
+        "work/parity-slot-ch12/terrain-original-r2/actions.jsonl": "10730b858cce0b2aa1384b89efab6dd8b60ce61037aaad3511d3371c4a911f1e",
+        "work/parity-slot-ch12/terrain-original-r2/eip-trace.jsonl": "365afcdf67c3aa1c7cdd7b4eb90126494cd37d3239e21bb535d27a3f990f897b",
+        "work/parity-slot-ch12/terrain-original-r2/control-history.jsonl": "96e44647cb259be52a7e51868ea1c40480c28cf549c50d9e1f48bb0271fd794a",
+        "work/parity-slot-ch12/terrain-original-r2/current.json": "cf3fa39ac4ba287bb04bb2a2f08ad494878f02615d713a0f0c063acbb181755a"
+      },
+      "tools": {
+        "original_runner": "dosgolem apps/fd2/cmd/oracle",
+        "dosgolem_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+        "tracked_dirty_files": 0,
+        "address_space": "dosgolem relocated LE linear",
+        "instruction_contract": "本檔既有 IDA Pro 9.4 LE linear raw bytes；未重做已閉合函式"
+      },
+      "original_trace": {
+        "r1": {
+          "entries": 200000,
+          "limit": 200000,
+          "truncated": true,
+          "last_step": 543360103,
+          "restriction": "只使用截斷前的具體 call／mode3 row，不推定全探針或後续完整性"
+        },
+        "r2": {
+          "entries": 26332,
+          "limit": 200000,
+          "from_step": 437000000,
+          "to_step": 455000000,
+          "truncated": false,
+          "restriction": "有界窗口只證實其中writer；未宣稱窗口外沒有其他writer"
+        },
+        "viewport_source": "0x14CCC4",
+        "viewport_stride": 456,
+        "target_destination": "0x1587D3",
+        "work_base": "0x144C3C",
+        "work_relative_offset": 80791,
+        "target_screen": [
+          11,
+          109
+        ],
+        "target_local": [
+          7,
+          9
+        ],
+        "writers": [
+          {
+            "instruction": {
+              "step": 445501453,
+              "control_seq": 53,
+              "eip": "0x4DF2C",
+              "eax": "0x1D1787",
+              "edx": "0x1B0",
+              "ebx": "0x100F",
+              "ecx": "0x8",
+              "esi": "0x1D18B0",
+              "edi": "0x1587CC",
+              "esp": "0x55588",
+              "rng_word": 23870,
+              "stack": [
+                "0x9",
+                "0x16E794",
+                "0x1577C4",
+                "0x0",
+                "0x12211",
+                "0x1D17CF",
+                "0x1577C4",
+                "0x1C8"
+              ]
+            },
+            "source_cell_call": {
+              "step": 445501203,
+              "control_seq": 53,
+              "eip": "0x1220C",
+              "eax": "0x1D17CF",
+              "edx": "0xFF",
+              "ebx": "0x9",
+              "ecx": "0x0",
+              "esi": "0x16E794",
+              "edi": "0x1577C4",
+              "esp": "0x5559C",
+              "rng_word": 23870,
+              "stack": [
+                "0x1D17CF",
+                "0x1577C4",
+                "0x1C8",
+                "0x4",
+                "0x120D46",
+                "0x4",
+                "0x30",
+                "0x11"
+              ]
+            },
+            "span_offset": 7
+          },
+          {
+            "instruction": {
+              "step": 445652335,
+              "control_seq": 53,
+              "eip": "0x4DF2C",
+              "eax": "0x1D3392",
+              "edx": "0x1B0",
+              "ebx": "0x50F",
+              "ecx": "0x13",
+              "esi": "0x1D34B3",
+              "edi": "0x1587CC",
+              "esp": "0x55584",
+              "rng_word": 23870,
+              "stack": [
+                "0x15",
+                "0x16E804",
+                "0x1577C4",
+                "0x0",
+                "0x12211",
+                "0x1D33D2",
+                "0x1577C4",
+                "0x1C8"
+              ]
+            },
+            "source_cell_call": {
+              "step": 445652135,
+              "control_seq": 53,
+              "eip": "0x1220C",
+              "eax": "0x1D33D2",
+              "edx": "0xFF",
+              "ebx": "0x15",
+              "ecx": "0x0",
+              "esi": "0x16E804",
+              "edi": "0x1577C4",
+              "esp": "0x55598",
+              "rng_word": 23870,
+              "stack": [
+                "0x1D33D2",
+                "0x1577C4",
+                "0x1C8",
+                "0x4",
+                "0x120C46",
+                "0x4",
+                "0x30",
+                "0x11"
+              ]
+            },
+            "span_offset": 7
+          }
+        ],
+        "raw_image_resource": 22,
+        "loaded_source_base": "0x1CFE50",
+        "source_base_crosscheck": {
+          "tiles": [
+            9,
+            21,
+            27
+          ],
+          "resource_offsets": [
+            6527,
+            13698,
+            17285
+          ],
+          "linear_sources": [
+            "0x1D17CF",
+            "0x1D33D2",
+            "0x1D41D5"
+          ]
+        },
+        "last_observed_literal_source_offset": 13930,
+        "last_observed_literal_byte": 138,
+        "raw_mode3_skip": {
+          "step": 500025545,
+          "control_seq": 58,
+          "eip": "0x4DF39",
+          "eax": "0x1D41C0",
+          "edx": "0x1B0",
+          "ebx": "0x110F",
+          "ecx": "0x1",
+          "esi": "0x1D42BE",
+          "edi": "0x1587D3",
+          "esp": "0x55618",
+          "rng_word": 15766,
+          "stack": [
+            "0x1B",
+            "0x16E874",
+            "0x1577C4",
+            "0x0",
+            "0x12211",
+            "0x1D41D5",
+            "0x1577C4",
+            "0x1C8"
+          ]
+        },
+        "viewport_presents": [
+          {
+            "step": 445584804,
+            "control_seq": 53,
+            "eip": "0x11EB0",
+            "eax": "0x14CCC4",
+            "edx": "0x780",
+            "ebx": "0x18DB8B",
+            "ecx": "0x10EE94",
+            "esi": "0x11",
+            "edi": "0x30",
+            "esp": "0x555C0",
+            "rng_word": 23870,
+            "stack": [
+              "0x11D3B",
+              "0xA0504",
+              "0x140",
+              "0x14CCC4",
+              "0x1C8",
+              "0x138",
+              "0xC0",
+              "0x18DB8B"
+            ]
+          },
+          {
+            "step": 445734310,
+            "control_seq": 53,
+            "eip": "0x11EB0",
+            "eax": "0x14CCC4",
+            "edx": "0x780",
+            "ebx": "0x18DB8B",
+            "ecx": "0x10EE94",
+            "esi": "0x11",
+            "edi": "0x30",
+            "esp": "0x555BC",
+            "rng_word": 23870,
+            "stack": [
+              "0x11D3B",
+              "0xA0504",
+              "0x140",
+              "0x14CCC4",
+              "0x1C8",
+              "0x138",
+              "0xC0",
+              "0x18DB8B"
+            ]
+          },
+          {
+            "step": 445882891,
+            "control_seq": 53,
+            "eip": "0x11EB0",
+            "eax": "0x14CCC4",
+            "edx": "0x780",
+            "ebx": "0x18DB8B",
+            "ecx": "0x10EE94",
+            "esi": "0x11",
+            "edi": "0x30",
+            "esp": "0x555BC",
+            "rng_word": 23870,
+            "stack": [
+              "0x11D3B",
+              "0xA0504",
+              "0x140",
+              "0x14CCC4",
+              "0x1C8",
+              "0x138",
+              "0xC0",
+              "0x18DB8B"
+            ]
+          }
+        ]
+      },
+      "current_probe_comparison": {
+        "report": "work/parity-slot-ch12/terrain-probe-verified-r1.json",
+        "behavior": true,
+        "nodes": true,
+        "transaction_gold": true,
+        "save": "not_sampled",
+        "frames_gate": false,
+        "frames": 9,
+        "minimum_frames": 12,
+        "pixel_budget": 640,
+        "all_individual_frames_within_budget": true,
+        "interpretation": "有界短探針，未達整章畫面樣本數；未調門檻。"
+      },
+      "affected_points": [
+        {
+          "seq": 100,
+          "original": "work/parity-slot-ch12/terrain-original-r1/checkpoint-0100.png",
+          "original_sha256": "46a7d5248bcfecf525ecbdf21c763083093a61c9604377ae9971c4911cd37b0f",
+          "remake": "work/parity-slot-ch12/terrain-remake-r1/remake-0008-p1.png",
+          "remake_sha256": "5f91b4cd44c56e309e46bca5803408f173ab72bee843a9062a4a29525b332b66",
+          "camera": [
+            9,
+            40
+          ],
+          "screen": [
+            11,
+            157
+          ],
+          "original_index": 118,
+          "remake_index": 68,
+          "original_rgb": [
+            60,
+            36,
+            8
+          ],
+          "remake_rgb": [
+            117,
+            150,
+            36
+          ],
+          "full_rgb_difference_pixels": 1
+        }
+      ],
+      "repeat_oracle": {
+        "same_plan": true,
+        "same_slot": true,
+        "checkpoint_png_matches": [
+          100
+        ],
+        "note": "目前951基底同一輸入兩次重現；不要求與歷史a9bcd原版控制序號一致。"
+      },
+      "remake_diagnostic": {
+        "test": "TestNativeTerrainWorkHandoffDiagnostic",
+        "result": "PASS",
+        "production_mutated": false,
+        "injected_work_buffer": false,
+        "observations": {
+          "without_draw": [
+            {
+              "beat": 1,
+              "draw": false,
+              "has_story_view": true,
+              "index": -1,
+              "node": "story_ch12",
+              "story_view": {
+                "CameraX": 1,
+                "CameraY": 0,
+                "CursorX": 1,
+                "CursorY": 0,
+                "VisibleCursorX": 0,
+                "VisibleCursorY": 0
+              },
+              "work_offset": 80791,
+              "work_size": 0
+            },
+            {
+              "beat": -1,
+              "draw": false,
+              "has_story_view": false,
+              "index": -1,
+              "node": "battle_ch12",
+              "story_view": {
+                "CameraX": 0,
+                "CameraY": 0,
+                "CursorX": 0,
+                "CursorY": 0,
+                "VisibleCursorX": 0,
+                "VisibleCursorY": 0
+              },
+              "work_offset": 80791,
+              "work_size": 0
+            },
+            {
+              "draw": false,
+              "index": 0,
+              "node": "battle_ch12_composed"
+            }
+          ],
+          "with_draw": [
+            {
+              "beat": 1,
+              "draw": true,
+              "has_story_view": true,
+              "index": -1,
+              "node": "story_ch12",
+              "story_view": {
+                "CameraX": 1,
+                "CameraY": 0,
+                "CursorX": 1,
+                "CursorY": 0,
+                "VisibleCursorX": 0,
+                "VisibleCursorY": 0
+              },
+              "work_offset": 80791,
+              "work_size": 0
+            },
+            {
+              "beat": -1,
+              "draw": true,
+              "has_story_view": false,
+              "index": -1,
+              "node": "battle_ch12",
+              "story_view": {
+                "CameraX": 0,
+                "CameraY": 0,
+                "CursorX": 0,
+                "CursorY": 0,
+                "VisibleCursorX": 0,
+                "VisibleCursorY": 0
+              },
+              "work_offset": 80791,
+              "work_size": 0
+            },
+            {
+              "draw": true,
+              "index": 0,
+              "node": "battle_ch12_composed"
+            }
+          ]
+        },
+        "restriction": "完整Draw consumer及正常LOAD語意輸入的診斷；不是Ebiten RunGame真GUI或PLAYER-E2。"
+      },
+      "claims": [
+        {
+          "level": "confirmed",
+          "original_location": "dosgolem 0x4DF2C step445652335；FDSHAP_022.bin file offset 0x366a",
+          "semantic": "已觀測底色來自tile21的literal span，offset7複製byte138到0x1587D3；原始tile9／21／27指標與同一raw資源基址交叉相符。",
+          "source": "本followup original_trace及固定原始FDSHAP雜湊"
+        },
+        {
+          "level": "confirmed",
+          "original_location": "dosgolem 0x1220C及0x4DF39 step500025545",
+          "semantic": "本起手tile27實際走raw branch，byte+3=FF，mode3對同一目的位址只前移、保留底色；沒有使用LUT重映射。",
+          "source": "本followup raw_mode3_skip及本檔已閉合IDA raw契約"
+        },
+        {
+          "level": "confirmed",
+          "original_location": "目前正式Game正常LOAD診斷；main.go resetBattle及native_story_dialogue.go prepareNativeDialogueFrames",
+          "semantic": "本測試兩種繪圖方式在進場前後沒有nativeMapWork，第一張完整戰場合成的目標index為0；目前第十二章binding沒有native_dialogue附加資料，故事原生工作緩衝尚未由已知consumer建立。",
+          "source": "診斷source、log與兩份JSON；只限目前路徑"
+        },
+        {
+          "level": "strong inference",
+          "warning": "未達READY，不接正式修法",
+          "original_location": "story_ch12→battle_ch12",
+          "semantic": "缺少原生故事背景及緩衝交接可解釋起手138→0差異；尚未驗證完整故事相機中間幀、交接後寫入規則與全部17點，不用固定色或注入原版像素補洞。",
+          "source": "本followup原版writer／mode3及重製端diagnostic"
+        }
+      ],
+      "next_gate": "補證第十二章原生故事背景／對白聚焦與同一工作緩衝交接。先形成可審查READY契約，再修正式路徑並重新驗證完整17點及相關章回歸。",
+      "commands": {
+        "oracle_r1": "timeout 900 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-probe-state-r1 FD2_ORACLE_STEPS=1500000000 FD2_ORACLE_EIP_TRACE=0x1220C,0x12220,0x4DF39,0x4DD40,0x11EB0 FD2_ORACLE_EIP_TRACE_FROM=500000000 FD2_ORACLE_EIP_TRACE_TO=700000000 FD2_ORACLE_EIP_TRACE_MAX=200000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-original-r1 docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl > work/parity-slot-ch12/terrain-original-r1-driver.log 2>&1",
+        "oracle_r2": "timeout 900 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-probe-state-r2 FD2_ORACLE_STEPS=1500000000 FD2_ORACLE_EIP_TRACE=0x1220C,0x12220,0x4DF05,0x4DF2C,0x11EB0 FD2_ORACLE_EIP_TRACE_FROM=437000000 FD2_ORACLE_EIP_TRACE_TO=455000000 FD2_ORACLE_EIP_TRACE_MAX=200000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-original-r2 docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl > work/parity-slot-ch12/terrain-original-r2-driver.log 2>&1",
+        "remake": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/terrain-original-r1; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/terrain-remake-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/terrain-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch12/terrain-remake-r1 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-remake-r1.log 2>&1",
+        "comparison": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/terrain-original-r1 --remake work/parity-slot-ch12/terrain-remake-r1 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl --out work/parity-slot-ch12/terrain-probe-verified-r1.json",
+        "diagnostic": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/terrain-original-r1; test -f /src/work/parity-slot-ch12/FD2.SAV;  FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/terrain-original-r1 FD2_TERRAIN_HANDOFF_OUT=/src/work/parity-slot-ch12/terrain-handoff-diagnostic-r1 with-xvfb go test ./cmd/fd2 -run ^TestNativeTerrainWorkHandoffDiagnostic$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-handoff-diagnostic-r1.log 2>&1"
+      },
+      "limits": [
+        "未修改正式Game、解碼器、素材、seed政策或640px預算。",
+        "原版兩輪未鎖HP、未清場；建構槽政策如既有manifest，未新增PLAYER-E2或修改20/30台帳。",
+        "窗口外writer、後續四組camera狀態及故事完整視覺仍未知；本項未CONFORMED。"
+      ],
+      "native_dialogue_binding": {
+        "status": "CONFORMED",
+        "review_date": "2026-10-04",
+        "issue": 52,
+        "scope": "玩家第十二章，raw chapter11 pre 的0x3320C#0共11句；不改其他caller、故事內容、正式規則或未知交接。",
+        "source_hashes": {
+          "remake/assets/cutscenes/bindings/ch11_pre.json": "536ce0a47565762a1131d326c2f3882d0a729785eb6567cced2ad6eef9a03a6f",
+          "remake/assets/cutscenes/handlers/ch11_pre.json": "8cb6bdd2831a5ab322abe43cff8c7770abad1e28759a7c94510b8061729747db",
+          "remake/assets/cutscenes/dialogue-index/count-aligned.json": "77c2bd6341bb60c54a7403a2226db5fe86a599a5fd4943bb51e2722e3e40fa78",
+          "remake/assets/story/ch12.json": "7b6db541343e2d9fafdc433caa5a61099b6c791e762f38c8d7dc7a6ad9311059",
+          "docs/data/glyph_map.json": "fff424b819d50bae7e2570c7fca1fec27dc670cf4832aeed7a32c2c2b4144731",
+          "docs/data/ida/fd2_story_dialogue_layout_ida.txt": "1c16e8eeb61f10b043c59a5dc4a01989d08de0291e0097ab04e3139b882bcd31",
+          "remake/generated-assets/fd2-original-b97caf22/raw/FDTXT/FDTXT_012.bin": "e869c003755a3c6b1a9cd5e169dd04693f6d59ffeb11533f8272121439050fab",
+          "tools/generate_native_story_dialogue.py": "ab2c7a2c86bf79537c702c74e7ccf70433db9d0edb89ea3682872cacafffeb51",
+          "work/parity-slot-ch12/terrain-native-dialogue-candidate-r1.json": "5a5e51a010a59b9b55046700e77714fcaa5f93a38dd4537154d938d259c9986d"
+        },
+        "source_address_spaces": {
+          "shared_caller": "固定FD2.EXE IDA LE線性0x3320C；handler0x333F5經loadch0x333FF、ACT40/41、reset_pose0x33448，沿已閉合shared tail",
+          "tokens": "FDTXT_012.bin檔案偏移，以原始word定位，不与IDA線性位址混用"
+        },
+        "raw_string0": {
+          "start": "0xa",
+          "end_exclusive": "0x294",
+          "speaker_controls": [
+            {
+              "file_offset": "0xa",
+              "word": "0xffee",
+              "operand_word": 14
+            },
+            {
+              "file_offset": "0x60",
+              "word": "0xffee",
+              "operand_word": 1
+            },
+            {
+              "file_offset": "0x7a",
+              "word": "0xffee",
+              "operand_word": 13
+            },
+            {
+              "file_offset": "0xa4",
+              "word": "0xffef",
+              "operand_word": 17
+            },
+            {
+              "file_offset": "0xce",
+              "word": "0xffee",
+              "operand_word": 14
+            },
+            {
+              "file_offset": "0x110",
+              "word": "0xffef",
+              "operand_word": 17
+            },
+            {
+              "file_offset": "0x172",
+              "word": "0xffee",
+              "operand_word": 14
+            },
+            {
+              "file_offset": "0x19c",
+              "word": "0xffee",
+              "operand_word": 13
+            },
+            {
+              "file_offset": "0x1c4",
+              "word": "0xffee",
+              "operand_word": 4
+            },
+            {
+              "file_offset": "0x22c",
+              "word": "0xffee",
+              "operand_word": 0
+            },
+            {
+              "file_offset": "0x27c",
+              "word": "0xffee",
+              "operand_word": 4
+            }
+          ]
+        },
+        "claims": [
+          {
+            "level": "confirmed",
+            "original_location": "FDTXT_012.bin string0原始offset/control；ch11_pre handler原名／source定位保留",
+            "semantic": "11個原生utterance依兩scene原順序對應2+9行，逐句control／operand／pages／glyph IDs由既有產生器保存；9句FFEE與2句FFEF。",
+            "source": "raw tokens、count-aligned及candidate hash"
+          },
+          {
+            "level": "confirmed",
+            "original_location": "0x15F84及0x165D6／0x16C57／0x16B43既有閉合契約",
+            "semantic": "typed版面沿既有原生focus／background／逐字／mouth／closing consumer，不另猜視覺或timing規則。",
+            "source": "docs/data/ida/fd2_story_dialogue_layout_ida.txt及58不要重做索引"
+          }
+        ],
+        "typed_input": "ch11_pre binding dialogue_overrides[0x3320c#0].segments；每line帶一份native_dialogue。",
+        "rules": [
+          "保留原始script、scene_index、line索引與handler source，完整生成11句，不刪或重排。",
+          "保留loadch、pan、ACT及其他overrides；control、operand、pages或raw glyph不可从现代文本反推。",
+          "依既有renderer驗證raw說話者與scene state；缺來源、未知control、非法pages仍失敗即關閉。",
+          "原生背景只由現有prepareNativeDialogueFrames/composeNativeStoryMapFrame建立；本子契約不授權固定色、原版像素注入或story→battle猜測緩衝。"
+        ],
+        "vertical_chain": "固定FDTXT raw → existing generator → typed handler binding → formal dialogue owner → native story background → normal scene/input；存檔格式與writer不改。",
+        "acceptance": [
+          "生成器--check可重生，11個compiler輸出NativeDialogue均具有原source/control/operand；兩scene及原順序不變。",
+          "固定第十二章正常LOAD→城鎮→整備→故事→戰場可完成11句，缺口回到RE，不略過失敗或加入猜測。",
+          "重跑同原版短探針與交接診斷；結果只限實際驗證，完整17點與整章gate未通過不稱CONFORMED整章。"
+        ],
+        "expected_failure_modes": [
+          "原生說話者／presentation／raw record來源缺失",
+          "生成數量或glyph mapping不符",
+          "正式renderer工作緩衝或phase不足"
+        ],
+        "limits": [
+          "只是binding子契約READY；父#52修法仍DRAFT。",
+          "0x3320C／共用對白renderer不重做RE。",
+          "未改RNG、HP、DP、640px或PLAYER-E2政策。"
+        ],
+        "conformance_scope": "有限RUNTIME-E1；只限11句資料綁定與story_ch12→battle_ch12起手交接，不涵蓋父#52全部17點或PLAYER-E2。"
+      },
+      "story_frame_continuity": {
+        "status": "CONFORMED",
+        "date": "2026-10-04",
+        "scope": "只限story_ch12的已具型別聚焦重繪及同一LOADCH的battle_ch12交接。",
+        "evidence": [
+          {
+            "path": "docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt",
+            "sha256": "78015e37d5a8d4336f46cfcf5767de33045481458e0be84f961cb206c1f5ae36",
+            "space": "IDA9.4 LE線性",
+            "location": "0x12CEA／0x12D01與四個鍵盤處理器",
+            "level": "confirmed",
+            "semantic": "聚焦起手一次0x11CAC，鏡頭變更或raw51A83非零時再重繪；不重新解基本helper。"
+          },
+          {
+            "path": "work/parity-slot-ch12/terrain-original-r2/eip-trace.jsonl",
+            "space": "dosgolem relocated LE linear",
+            "location": "step445501203／445652135／445882891",
+            "level": "confirmed",
+            "semantic": "相同destination依camera列的tile9、tile21、tile27沿同一work viewport14CCC4重繪，literal138後mode3保留。"
+          },
+          {
+            "path": "work/parity-slot-ch12/terrain-handoff-diagnostic-r2/without-draw.json",
+            "space": "remake work byte offset80791",
+            "level": "confirmed",
+            "semantic": "11句原生對白建立153216-byte work，但故事focus只發布端點，且battle reset清掉work。完整Draw診斷同樣如此。"
+          }
+        ],
+        "input": {
+          "native_focus": "已具型別focusUnitJob＋LOADCH storyNativeMapState；既有六全域、raw range selector與同一map11資產。",
+          "handoff": "目的battle_ch12且來源map11／storyNativeMapState、story_view、roster path及scenario完全匹配、work及VGA完整。"
+        },
+        "rules": [
+          "本caller聚焦起手合成一次原生故事frame；每步沿既有NativeMapCursorStepRedraws判準合成，HUD閘A/B保持故事值0。",
+          "禁止以每幀Draw數或固定色代替原生consumer呼叫。",
+          "同一第十二章LOADCH進battle，保留已合成work/VGA；場景身份、來源路徑、尺寸不符時沿原來重建邊界，不承接不明資料。",
+          "不得跨別章泛化緩衝持續性、修改原版檔或注入原版像素。",
+          "失敗時停止focus並設loadErr，不用近似背景繼續。"
+        ],
+        "vertical_chain": "raw tile source writer→typed sprites/control→story focus camera→原生work→battle第一張frame；battle數值及存檔格式不改。",
+        "acceptance": [
+          "正常LOAD診斷在故事raw聚焦鏡頭列40→41→42後留下來源byte138；進battle首次合成仍138，與原版具體writer一致。",
+          "新原版同輸入短probe受影響起手點完整畫面一致，未知後續點如實拒收／保留，完整17點另驗。",
+          "保留wrong map／roster／scenario／incomplete buffer反例，不改其他章runtime gate。",
+          "完成正式故事11句與相關故事/phase/renderer回歸後才宣稱有限CONFORMED。"
+        ],
+        "limits": [
+          "NativeMapWork保留只證實此LOADCHcaller。",
+          "父#52完整17點仍待驗；此子規格不得宣稱完整章PLAYER-E2。"
+        ],
+        "conformance_scope": "有限RUNTIME-E1；只限11句資料綁定與story_ch12→battle_ch12起手交接，不涵蓋父#52全部17點或PLAYER-E2。"
+      },
+      "validation": {
+        "date": "2026-10-04",
+        "status": "partial; parent issue remains open",
+        "remake_source_commit_before_changes": "bd2718ef6dd82729d40f0e5e9f08f1497056fb97",
+        "native_dialogue": {
+          "generated_check": true,
+          "utterances": 11,
+          "segments": [
+            2,
+            9
+          ],
+          "controls": {
+            "FFEE": 9,
+            "FFEF": 2
+          },
+          "existing_authored_fields_unchanged": true,
+          "normal_path": "LOAD→town_ch12→preparation→story_ch12→battle_ch12"
+        },
+        "story_handoff": {
+          "diagnostic": "work/parity-slot-ch12/terrain-handoff-diagnostic-r5",
+          "with_and_without_Draw": true,
+          "retained_work_offset": 80791,
+          "final_story_index": 138,
+          "battle_entry_index": 138,
+          "first_battle_composition_index": 138,
+          "original_literal_source": "FDSHAP_022.bin offset0x366A；r2 step445652335，IDA LE對應4DF2C raw literal consumer",
+          "negative_cases": [
+            "other chapter",
+            "other map",
+            "other roster",
+            "other scenario",
+            "missing story view",
+            "missing story state",
+            "missing actors",
+            "short work buffer",
+            "short VGA",
+            "empty input path"
+          ],
+          "method": "正式Game語意輸入與原生composer；不是RunGame GUI驗收"
+        },
+        "short_probe": {
+          "receipt": "work/parity-slot-ch12/terrain-probe-verified-r3.json",
+          "status": "failed",
+          "original_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "gate_results": {
+            "behavior": true,
+            "nodes": true,
+            "transaction": true,
+            "frames": false
+          },
+          "frames_compared": 9,
+          "required_min_frames": 12,
+          "pixel_budget": 640,
+          "frame_points": [
+            {
+              "seq": 17,
+              "kind": "town_loaded",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+              "remake_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e"
+            },
+            {
+              "seq": 38,
+              "kind": "departure_prompt",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "eab9dcaa1bf6e8472dd764c225c21e165d2e46beac3895c3be7a3e95eb60663f",
+              "remake_sha256": "ba73cbba395f27e10d7bcacfa434d24d9c5fa789cf0d5b6c408f8a6e9dc0108d"
+            },
+            {
+              "seq": 57,
+              "kind": "battle_start",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "d52741cecefcee642da6847622c2fb6f3d2f767ffd1ebc21b334b8fbc8643c4f",
+              "remake_sha256": "d52741cecefcee642da6847622c2fb6f3d2f767ffd1ebc21b334b8fbc8643c4f"
+            },
+            {
+              "seq": 60,
+              "kind": "select",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "ba8bef7a9da773672e6798bd01c1e980ad65ff1053a236f138a5414dab2bf306",
+              "remake_sha256": "ba8bef7a9da773672e6798bd01c1e980ad65ff1053a236f138a5414dab2bf306"
+            },
+            {
+              "seq": 65,
+              "kind": "move",
+              "diff_pixels": 88,
+              "box": [
+                149,
+                23,
+                170,
+                27
+              ],
+              "oracle_sha256": "5bd80077973a92875e5885b02771c78cfad1a819cb00904e49cfb2987f663423",
+              "remake_sha256": "78a47d9032668daf41d0ecbb872d8e60537941a6976509fce20e82de361ba1fb"
+            },
+            {
+              "seq": 71,
+              "kind": "wait",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "3c657c98fb2bd9ad76f2bab6443d764557e763e597ee288f2e8c2f26e1adba9f",
+              "remake_sha256": "3c657c98fb2bd9ad76f2bab6443d764557e763e597ee288f2e8c2f26e1adba9f"
+            },
+            {
+              "seq": 84,
+              "kind": "select",
+              "diff_pixels": 1,
+              "box": [
+                11,
+                109,
+                11,
+                109
+              ],
+              "oracle_sha256": "3035edd2fbc187e2a3224fd9469bd0fa45fe59a27ee8db5cbd6717f84594e2dd",
+              "remake_sha256": "f82611e2f60f62b1c258e6441c27d4c6e480e80c99f211d08cb0cb6c12d49e2e"
+            },
+            {
+              "seq": 94,
+              "kind": "move",
+              "diff_pixels": 211,
+              "box": [
+                11,
+                22,
+                238,
+                157
+              ],
+              "oracle_sha256": "c855ea1ecd73156e92cd1aa48d6df625568f73597be4a04ad8d7ae98050eee84",
+              "remake_sha256": "7dca93b5f8cc1795695395888fc028448f666c83607a0427e29320b8df716b18"
+            },
+            {
+              "seq": 100,
+              "kind": "wait",
+              "diff_pixels": 1,
+              "box": [
+                11,
+                157,
+                11,
+                157
+              ],
+              "oracle_sha256": "46a7d5248bcfecf525ecbdf21c763083093a61c9604377ae9971c4911cd37b0f",
+              "remake_sha256": "5f91b4cd44c56e309e46bca5803408f173ab72bee843a9062a4a29525b332b66"
+            }
+          ],
+          "save": "not_sampled"
+        },
+        "string_review": {
+          "inventory": "/tmp/fd2-terrain-rebind-cursor/inv-new.json",
+          "migrated_candidates": 98,
+          "dispositions_unchanged": true,
+          "inventory_sha256": "2f57f7cea727807ab2fad865db78976322d2c47871433b3c63f9e7437f48e331"
+        },
+        "remaining": "新原版短probe select84已0差異；move94及wait100仍保留tile27局部(7,9)殘差。完整17點尚未閉合，下一步依walk局部consumer及已取得短路徑追查；不反覆刷原版完整章。",
+        "commands": {
+          "diag": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/terrain-original-r1; test -f /src/work/parity-slot-ch12/FD2.SAV;  FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/terrain-original-r1 FD2_TERRAIN_HANDOFF_OUT=/src/work/parity-slot-ch12/terrain-handoff-diagnostic-r5 with-xvfb go test ./cmd/fd2 -run TestNative.*Handoff -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-handoff-diagnostic-r5.log 2>&1",
+          "short": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/terrain-original-r1; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/terrain-remake-r3; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/terrain-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch12/terrain-remake-r3 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-remake-r3.log 2>&1",
+          "short_compare": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/terrain-original-r1 --remake work/parity-slot-ch12/terrain-remake-r3 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl --out work/parity-slot-ch12/terrain-probe-verified-r3.json",
+          "full_historical": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/treasure-original-r2; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/terrain-full-remake-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/treasure-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch12/terrain-full-remake-r1 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-full-remake-r1.log 2>&1",
+          "full_historical_compare": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/treasure-original-r2 --remake work/parity-slot-ch12/terrain-full-remake-r1 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-sample.jsonl --out work/parity-slot-ch12/terrain-full-verified-r1.json",
+          "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > work/parity-slot-ch12/terrain-go-all-r1.log 2>&1",
+          "oracle_full": "timeout 1800 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-full-state-r1 FD2_ORACLE_STEPS=20000000000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-full-original-r1 docs/data/parity-plans/ch12-sample.jsonl > work/parity-slot-ch12/terrain-full-original-r1-driver.log 2>&1",
+          "short_after_cursor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/terrain-original-r1; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/terrain-remake-r4; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/terrain-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch12/terrain-remake-r4 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-remake-r4.log 2>&1",
+          "short_compare_after_cursor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/terrain-original-r1 --remake work/parity-slot-ch12/terrain-remake-r4 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl --out work/parity-slot-ch12/terrain-probe-verified-r4.json",
+          "full_historical_after_cursor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/treasure-original-r2; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/terrain-full-remake-r2; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/treasure-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch12/terrain-full-remake-r2 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/terrain-full-remake-r2.log 2>&1",
+          "go_all_after_cursor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > work/parity-slot-ch12/terrain-go-all-r2.log 2>&1",
+          "full_historical_compare_after_cursor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/treasure-original-r2 --remake work/parity-slot-ch12/terrain-full-remake-r2 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-sample.jsonl --out work/parity-slot-ch12/terrain-full-verified-r2.json",
+          "go_all_final": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > work/parity-slot-ch12/terrain-go-all-r3.log 2>&1"
+        },
+        "document_validation": {
+          "checked_local_links": 1975,
+          "new_broken_links": 0,
+          "existing_historical_artifact_links": 2,
+          "existing_links": "handoff原有v.1.0.13本機產物連結，HEAD已存在；未作現行交付聲明。",
+          "root_owned_count": 2811,
+          "new_root_owned": 0,
+          "markdown_directories": 0,
+          "git_diff_check": "passed"
+        },
+        "short_probe_after_cursor": {
+          "receipt": "work/parity-slot-ch12/terrain-probe-verified-r4.json",
+          "status": "failed",
+          "gate_results": {
+            "behavior": true,
+            "nodes": true,
+            "transaction": true,
+            "frames": false
+          },
+          "frames_compared": 9,
+          "required_min_frames": 12,
+          "pixel_budget": 640,
+          "frame_points": [
+            {
+              "seq": 17,
+              "kind": "town_loaded",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e",
+              "remake_sha256": "eb80cb5c51f8a7d5d63352e09090f4819244ab36d366f8f285db1fb0be79dd7e"
+            },
+            {
+              "seq": 38,
+              "kind": "departure_prompt",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "eab9dcaa1bf6e8472dd764c225c21e165d2e46beac3895c3be7a3e95eb60663f",
+              "remake_sha256": "ba73cbba395f27e10d7bcacfa434d24d9c5fa789cf0d5b6c408f8a6e9dc0108d"
+            },
+            {
+              "seq": 57,
+              "kind": "battle_start",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "d52741cecefcee642da6847622c2fb6f3d2f767ffd1ebc21b334b8fbc8643c4f",
+              "remake_sha256": "d52741cecefcee642da6847622c2fb6f3d2f767ffd1ebc21b334b8fbc8643c4f"
+            },
+            {
+              "seq": 60,
+              "kind": "select",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "ba8bef7a9da773672e6798bd01c1e980ad65ff1053a236f138a5414dab2bf306",
+              "remake_sha256": "ba8bef7a9da773672e6798bd01c1e980ad65ff1053a236f138a5414dab2bf306"
+            },
+            {
+              "seq": 65,
+              "kind": "move",
+              "diff_pixels": 88,
+              "box": [
+                149,
+                23,
+                170,
+                27
+              ],
+              "oracle_sha256": "5bd80077973a92875e5885b02771c78cfad1a819cb00904e49cfb2987f663423",
+              "remake_sha256": "78a47d9032668daf41d0ecbb872d8e60537941a6976509fce20e82de361ba1fb"
+            },
+            {
+              "seq": 71,
+              "kind": "wait",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "3c657c98fb2bd9ad76f2bab6443d764557e763e597ee288f2e8c2f26e1adba9f",
+              "remake_sha256": "3c657c98fb2bd9ad76f2bab6443d764557e763e597ee288f2e8c2f26e1adba9f"
+            },
+            {
+              "seq": 84,
+              "kind": "select",
+              "diff_pixels": 0,
+              "box": [],
+              "oracle_sha256": "3035edd2fbc187e2a3224fd9469bd0fa45fe59a27ee8db5cbd6717f84594e2dd",
+              "remake_sha256": "3035edd2fbc187e2a3224fd9469bd0fa45fe59a27ee8db5cbd6717f84594e2dd"
+            },
+            {
+              "seq": 94,
+              "kind": "move",
+              "diff_pixels": 211,
+              "box": [
+                11,
+                22,
+                238,
+                157
+              ],
+              "oracle_sha256": "c855ea1ecd73156e92cd1aa48d6df625568f73597be4a04ad8d7ae98050eee84",
+              "remake_sha256": "7dca93b5f8cc1795695395888fc028448f666c83607a0427e29320b8df716b18"
+            },
+            {
+              "seq": 100,
+              "kind": "wait",
+              "diff_pixels": 1,
+              "box": [
+                11,
+                157,
+                11,
+                157
+              ],
+              "oracle_sha256": "46a7d5248bcfecf525ecbdf21c763083093a61c9604377ae9971c4911cd37b0f",
+              "remake_sha256": "5f91b4cd44c56e309e46bca5803408f173ab72bee843a9062a4a29525b332b66"
+            }
+          ]
+        },
+        "current_full_oracle_attempt": {
+          "directory": "work/parity-slot-ch12/terrain-full-original-r1",
+          "command": "timeout 1800 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-full-state-r1 FD2_ORACLE_STEPS=20000000000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-full-original-r1 docs/data/parity-plans/ch12-sample.jsonl > work/parity-slot-ch12/terrain-full-original-r1-driver.log 2>&1",
+          "original_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+          "initial_slot_sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+          "driver_exit": 15,
+          "last_seq": 4056,
+          "last_steps": 12482720235,
+          "last_ui": "title",
+          "last_round": 8,
+          "ally_alive": 0,
+          "enemy_alive": 4,
+          "status": "未完成計畫；await_ui=cursor逾時，原版敗北回標題。",
+          "policy": "未鎖HP、未反覆刷關、未調整建構槽；未到清場、戰後與存檔，不作完整章收據。",
+          "hashes": {
+            "work/parity-slot-ch12/terrain-full-original-r1/driver.log": "0ad5ad97438055cb360d5dbbd3afece6040c2ba066c8399b6f7c4eabe973bdb8",
+            "work/parity-slot-ch12/terrain-full-original-r1/oracle.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "work/parity-slot-ch12/terrain-full-original-r1/runner.json": "481b5e59b0cae13734688857bb7410cb9f1ec35c41f7a28fed7ddb0f272ef31a",
+            "work/parity-slot-ch12/terrain-full-original-r1/current.json": "9a70a519ab99f29d6ebc5376a5099a88159ce3a33890f753d6394b7c03a9bb7a",
+            "work/parity-slot-ch12/terrain-full-original-r1/actions.jsonl": "a7b33c790b0e0ac154d0e1c66b1b8403e202aaee35eaa8bb985637548d5cc0b8"
+          }
+        },
+        "before_cursor_hashes": {
+          "remake/assets/cutscenes/bindings/ch11_pre.json": "5a5e51a010a59b9b55046700e77714fcaa5f93a38dd4537154d938d259c9986d",
+          "remake/cmd/fd2/main.go": "7fbe783534a60920a0d048df4bd607c4a736a3dd4ffac621be7734c7693826e3",
+          "remake/cmd/fd2/native_story_map.go": "927d30fec6b790c99b639cbf58938354e3ca4401b224e6be576f43514a5496b6",
+          "remake/cmd/fd2/native_terrain_work_handoff_test.go": "588671c56aa4300e8bc64645498991f641050468091e324325b78034bc9a0af3",
+          "docs/data/fd2-string-review.json": "f79945a6eb1c78b8f6de5dfd995ab2115c72552446d482a019f7d4d0b02d9f98",
+          "work/parity-slot-ch12/terrain-remake-r3.log": "5e39017ef9b82a85e492f379fbbd35c7bc0352e279e62ceeac9e286b2bf78ca7",
+          "work/parity-slot-ch12/terrain-probe-verified-r3.json": "534bfc9ace68b7b91b77f91726f4f9e679552817a49af1b95988c985b8f1afea",
+          "work/parity-slot-ch12/terrain-full-remake-r1.log": "f093782a667ad9fbd031dea3d8efe5cb978f24e9ee9528b308d725b44b009e19",
+          "work/parity-slot-ch12/terrain-full-verified-r1.json": "b45f56c1d43708f7b16fcda3258a0e92ac74d73fa922263fedb9df150eb55ccb",
+          "work/parity-slot-ch12/terrain-go-all-r1.log": "174087d359b085fa0383f3ac9612c05ce7ed719ee9ec88b5e41c0e8e243fcdc2",
+          "work/parity-slot-ch12/terrain-handoff-diagnostic-r5.log": "0d337dfab7229078f2aa321f6e8110a3c27a0badf833a65db0fcd38828a5a33f",
+          "work/parity-slot-ch12/terrain-handoff-diagnostic-r5/without-draw.json": "ff792a428e078d918a8458212ebc6a65b384ce6de508f7f6eedd181b9b5ac8e8",
+          "work/parity-slot-ch12/terrain-handoff-diagnostic-r5/with-draw.json": "9f5f2ea014e8c35e8539100fca42e2dc409666a684793dc5fe6d42ab3292cbe2"
+        },
+        "hashes": {
+          "remake/assets/cutscenes/bindings/ch11_pre.json": "5a5e51a010a59b9b55046700e77714fcaa5f93a38dd4537154d938d259c9986d",
+          "remake/cmd/fd2/main.go": "72440618e5e2e83e423ab7b4a6208d2cef53813408db1a56565c08d2fb71d63d",
+          "remake/cmd/fd2/native_story_map.go": "927d30fec6b790c99b639cbf58938354e3ca4401b224e6be576f43514a5496b6",
+          "remake/cmd/fd2/native_terrain_work_handoff_test.go": "588671c56aa4300e8bc64645498991f641050468091e324325b78034bc9a0af3",
+          "docs/data/fd2-string-review.json": "a8182123e65e610c437f7813e7254d805c268ea4e1764438838f26d78f33df7f",
+          "docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl": "7a431d07dcdef1250e1e7cc86b9126fcb53d0ddb421d660062c80ba980a10e76",
+          "work/parity-slot-ch12/terrain-remake-r4.log": "d07e9fbd99ab168c2541a2343fe3d4261fd0534f00f3bffa0d02bcb13a2db7e2",
+          "work/parity-slot-ch12/terrain-probe-verified-r4.json": "7a93122709fe488fa74fc1939d2355f859465f972a6204674b898a884ad70ce4",
+          "work/parity-slot-ch12/terrain-full-remake-r2.log": "f973d939be23c7e04511786c389f700281a2d69b1c79046bad554a1bf7d34040",
+          "work/parity-slot-ch12/terrain-full-verified-r2.json": "d40543c4019e30e985b069444b9acfaf191b1c849fc58e1cde5f8c6c430a3364",
+          "work/parity-slot-ch12/terrain-go-all-r3.log": "11eb3ef9d987b421b32f3dcf70442c7d048a88dbf1f71cb8c1cf22b851db7b21",
+          "work/parity-slot-ch12/terrain-focus-original-r3/eip-trace.jsonl": "629a446cfe594fb95f40649ca24003a7c3173985fa3a8aacd6945b86ad9ba930",
+          "work/parity-slot-ch12/terrain-focus-original-r3/runner.json": "e6a31f8abb9c8acd5a716d9875dbd78ac4c318673bd7f831b09823634a40be93",
+          "work/parity-slot-ch12/terrain-handoff-diagnostic-r5.log": "0d337dfab7229078f2aa321f6e8110a3c27a0badf833a65db0fcd38828a5a33f",
+          "work/parity-slot-ch12/terrain-handoff-diagnostic-r5/without-draw.json": "ff792a428e078d918a8458212ebc6a65b384ce6de508f7f6eedd181b9b5ac8e8",
+          "work/parity-slot-ch12/terrain-handoff-diagnostic-r5/with-draw.json": "9f5f2ea014e8c35e8539100fca42e2dc409666a684793dc5fe6d42ab3292cbe2"
+        },
+        "historical_17_point_recheck": {
+          "original_source": "treasure-original-r2, dosgolem a9bcd621",
+          "receipt": "work/parity-slot-ch12/terrain-full-verified-r2.json",
+          "method": "原17點原座標逐點RGB比較；完整畫面差異同時保留，不遮罩",
+          "points": [
+            {
+              "seq": 60,
+              "screen": [
+                11,
+                109
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "8cdb259aabb84192e8f25f70d4bde6c1b42e55099c30fac373b9c9ffb1de0c3d",
+              "remake_sha256": "8cdb259aabb84192e8f25f70d4bde6c1b42e55099c30fac373b9c9ffb1de0c3d"
+            },
+            {
+              "seq": 63,
+              "screen": [
+                11,
+                109
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "a649663fede96e8a12848dcddf4ec20ca2a71ce8b8caf7258f0652cdd094f6f6",
+              "remake_sha256": "a649663fede96e8a12848dcddf4ec20ca2a71ce8b8caf7258f0652cdd094f6f6"
+            },
+            {
+              "seq": 87,
+              "screen": [
+                11,
+                109
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "d96fa32e15d03e7e667502df819f0e653b55e16110721c9d1bb1b36c933b3eb5",
+              "remake_sha256": "d96fa32e15d03e7e667502df819f0e653b55e16110721c9d1bb1b36c933b3eb5"
+            },
+            {
+              "seq": 97,
+              "screen": [
+                11,
+                157
+              ],
+              "original_rgb": [
+                60,
+                36,
+                8
+              ],
+              "remake_rgb": [
+                117,
+                150,
+                36
+              ],
+              "terrain_pixel_equal": false,
+              "full_frame_diff_pixels": 211,
+              "oracle_sha256": "1905dbc7c899478d6f52609ad6a135d698e4b6e4c5ff4ae90ae28fd6655718fc",
+              "remake_sha256": "099ba7b0a712441fb8e3b55ecc233baedf5fcc68fb2d914acacc48567a1f0ab4"
+            },
+            {
+              "seq": 103,
+              "screen": [
+                11,
+                157
+              ],
+              "original_rgb": [
+                60,
+                36,
+                8
+              ],
+              "remake_rgb": [
+                117,
+                150,
+                36
+              ],
+              "terrain_pixel_equal": false,
+              "full_frame_diff_pixels": 1,
+              "oracle_sha256": "887ee0c08bcd5ff2c28bbc3457e221d040677749da280dad11d6e17afa1b4c21",
+              "remake_sha256": "a6ee04c6ea0e2a0449e54d2965b085e0957f0805de52b7d0240fb80fd7aed954"
+            },
+            {
+              "seq": 111,
+              "screen": [
+                11,
+                157
+              ],
+              "original_rgb": [
+                60,
+                36,
+                8
+              ],
+              "remake_rgb": [
+                117,
+                150,
+                36
+              ],
+              "terrain_pixel_equal": false,
+              "full_frame_diff_pixels": 1,
+              "oracle_sha256": "e56912a9d479a2d9008dd70e907c1c458b503016eb75d6b360a88f30b350d8c8",
+              "remake_sha256": "a339f6aa23bbf9d360c1c470bc880441120a9bbb8e6e45d603a042fe9ccf30d3"
+            },
+            {
+              "seq": 229,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "8100d73307ae8e6ffb8a471a79c7972dd7103e756e0233d455f006104f30a427",
+              "remake_sha256": "8100d73307ae8e6ffb8a471a79c7972dd7103e756e0233d455f006104f30a427"
+            },
+            {
+              "seq": 430,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 94,
+              "oracle_sha256": "122fd5ad5601078eb27b4775fbd88db55e0566dbd713da1834fdb466351b95a5",
+              "remake_sha256": "8871df09bb2d4f3c0603ceab94fd5fe20b7ff71b012a74c170d11f44a258b1cc"
+            },
+            {
+              "seq": 436,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "968c93e30b3d80b4f28ecfcdb87a76d0ad74659f5ab449607aa4cd83eeb1fb59",
+              "remake_sha256": "968c93e30b3d80b4f28ecfcdb87a76d0ad74659f5ab449607aa4cd83eeb1fb59"
+            },
+            {
+              "seq": 443,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "9d14d8acb2ec09e20b536e35e84186b64d2c55ff21c18623c4cbb46bb8360365",
+              "remake_sha256": "9d14d8acb2ec09e20b536e35e84186b64d2c55ff21c18623c4cbb46bb8360365"
+            },
+            {
+              "seq": 616,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 73,
+              "oracle_sha256": "b81b059490783315cc3ccc0689bdfd3dd14a2fd4fda1cb962d482116db47c9e9",
+              "remake_sha256": "829c0d56528bed486b409069209f9bef0926e88485c55720ba786269abee51cf"
+            },
+            {
+              "seq": 622,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "5178d5fc3a5ed77c05cffb146f96926def2bf047cd78c10fde1d6b68f84f9630",
+              "remake_sha256": "5178d5fc3a5ed77c05cffb146f96926def2bf047cd78c10fde1d6b68f84f9630"
+            },
+            {
+              "seq": 630,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "10690349f999e2cfc4a589ccafbbd46ded88710688f4402e3a26bd28b1e3fafd",
+              "remake_sha256": "10690349f999e2cfc4a589ccafbbd46ded88710688f4402e3a26bd28b1e3fafd"
+            },
+            {
+              "seq": 741,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 90,
+              "oracle_sha256": "76f15beb63a4505df55c73c182cfccbdfe794ee6e2f4733a3ccfe59052657875",
+              "remake_sha256": "db3e6f6ac51dcf113176779f63ad885fe43c114fbd4dd44e41c417ca32818a6b"
+            },
+            {
+              "seq": 747,
+              "screen": [
+                11,
+                133
+              ],
+              "original_rgb": [
+                73,
+                101,
+                24
+              ],
+              "remake_rgb": [
+                73,
+                101,
+                24
+              ],
+              "terrain_pixel_equal": true,
+              "full_frame_diff_pixels": 0,
+              "oracle_sha256": "6c549b0380aff159b61493c2f76662fdeaf01dc747810b6ebdbe19f0d9baa12a",
+              "remake_sha256": "6c549b0380aff159b61493c2f76662fdeaf01dc747810b6ebdbe19f0d9baa12a"
+            },
+            {
+              "seq": 3137,
+              "screen": [
+                11,
+                85
+              ],
+              "original_rgb": [
+                89,
+                60,
+                24
+              ],
+              "remake_rgb": [
+                60,
+                36,
+                8
+              ],
+              "terrain_pixel_equal": false,
+              "full_frame_diff_pixels": 1,
+              "oracle_sha256": "6245f35bee8eec7a8a377b6de1d3b70410da00f246c4f13602c4277fc1e869cb",
+              "remake_sha256": "92acbe615d01099ebb0f0c720a5122c79a2f2e19ed66c56c2918e05bb12d77c8"
+            },
+            {
+              "seq": 3152,
+              "screen": [
+                11,
+                85
+              ],
+              "original_rgb": [
+                0,
+                0,
+                0
+              ],
+              "remake_rgb": [
+                60,
+                36,
+                8
+              ],
+              "terrain_pixel_equal": false,
+              "full_frame_diff_pixels": 1,
+              "oracle_sha256": "32b23e000897580b1a5076910f737fc01a7741a14982fb3f47f8d08308631a26",
+              "remake_sha256": "a8ba7b87784f637ab34747301190e21afca5087a483645083db8fb93895492e4"
+            }
+          ],
+          "terrain_pixels_resolved": 12,
+          "remaining": [
+            97,
+            103,
+            111,
+            3137,
+            3152
+          ],
+          "limits": "12個地形像素相同不表示12張完整畫面均0差異；指令環殘差另依既有Issue。"
+        },
+        "before_cursor_go_regression": {
+          "command": "go test ./... -count=1 -timeout 600s",
+          "image": "fd2-go-test-local:20260909",
+          "tested_packages": 19,
+          "status": "passed",
+          "log": "work/parity-slot-ch12/terrain-go-all-r1.log"
+        },
+        "before_cursor_full_regression": {
+          "original_runner": "dosgolem apps/fd2/cmd/oracle",
+          "original_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+          "original_directory": "work/parity-slot-ch12/treasure-original-r2",
+          "remake_directory": "work/parity-slot-ch12/terrain-full-remake-r1",
+          "go_replay": "passed",
+          "ai_entries_consumed": 155,
+          "ai_order_divergences": 0,
+          "receipt": "work/parity-slot-ch12/terrain-full-verified-r1.json",
+          "behavior": true,
+          "transaction": true,
+          "node_gate": false,
+          "frame_gate": false,
+          "rejected_points": [
+            1528,
+            2030
+          ],
+          "reason": "兩筆歷史原版wait收據UI未知且畫面未穩定；不降低節點或畫面門檻，不冒稱目前oracle重生。"
+        },
+        "historical_full_regression": {
+          "original_runner": "dosgolem apps/fd2/cmd/oracle",
+          "original_commit": "a9bcd621e93e7e5b132832f98f931077658e7b21",
+          "original_directory": "work/parity-slot-ch12/treasure-original-r2",
+          "remake_directory": "work/parity-slot-ch12/terrain-full-remake-r2",
+          "go_replay": "passed",
+          "ai_entries_consumed": 155,
+          "ai_order_divergences": 0,
+          "receipt": "work/parity-slot-ch12/terrain-full-verified-r2.json",
+          "behavior": true,
+          "transaction": true,
+          "node_gate": false,
+          "frame_gate": false,
+          "rejected_points": [
+            1528,
+            2030
+          ],
+          "reason": "兩筆歷史原版wait收據UI未知且畫面未穩定；不降低節點或畫面門檻，不冒稱目前oracle重生。",
+          "save_sha256": "6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821",
+          "save_equal": true
+        },
+        "validation_execution_correction": {
+          "log": "work/parity-slot-ch12/terrain-go-all-r2.log",
+          "reason": "測試與字串座標遷移並行啟動，只有字串稽核讀到前一盤點；不是產品缺陷。",
+          "correction": "遷移完成後同一Docker及同一Go命令乾淨重跑r3；未修改產品來迎合錯誤快照。"
+        },
+        "go_regression": {
+          "command": "go test ./... -count=1 -timeout 600s",
+          "image": "fd2-go-test-local:20260909",
+          "tested_packages": 19,
+          "status": "passed after final cursor change and completed review migration",
+          "log": "work/parity-slot-ch12/terrain-go-all-r3.log"
+        },
+        "docker_cleanup": "本輪oracle、短重播、歷史完整重播與完整測試均已結束；無非預期FD2執行中容器。"
+      },
+      "state_history": {
+        "initial_probe": "DRAFT；當時未改runtime；claims、remake_diagnostic及limits保留該輪原意。",
+        "current": "native_dialogue_binding與story_frame_continuity有限CONFORMED；validation為目前正式程式結果；父#52仍未完成。"
+      },
+      "battle_cursor_redraw": {
+        "status": "CONFORMED",
+        "date": "2026-10-04",
+        "scope": "只限battle_ch12、map11原生視圖的既有NativeMapCursorStepRedraws正例；不改其他章與walk局部繪圖。",
+        "source_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "tool": "受版控dosgolem oracle 951cb55f；IDA9.4已閉合caller契約",
+        "trace_path": "work/parity-slot-ch12/terrain-focus-original-r3/eip-trace.jsonl",
+        "trace_sha256": "629a446cfe594fb95f40649ca24003a7c3173985fa3a8aacd6945b86ad9ba930",
+        "trace_window": [
+          561348844,
+          561848844
+        ],
+        "rows": 27733,
+        "capped": false,
+        "raw_redraw": {
+          "step": 561456372,
+          "control_seq": 82,
+          "eip": "0x11CAC",
+          "eax": "0x2A",
+          "edx": "0x1",
+          "ebx": "0x328000",
+          "ecx": "0x10F4D2",
+          "esi": "0x0",
+          "edi": "0x0",
+          "esp": "0x55674",
+          "rng_word": 15766,
+          "stack": [
+            "0x11BF6",
+            "0x0",
+            "0x11A61",
+            "0x0",
+            "0x328000",
+            "0x25DD3",
+            "0x546B0",
+            "0x546B1"
+          ]
+        },
+        "literal_writer": {
+          "step": 561517040,
+          "control_seq": 82,
+          "eip": "0x4DF2C",
+          "eax": "0x1D3392",
+          "edx": "0x1B0",
+          "ebx": "0x50F",
+          "ecx": "0x13",
+          "esi": "0x1D34B3",
+          "edi": "0x1587CC",
+          "esp": "0x5561C",
+          "rng_word": 15766,
+          "stack": [
+            "0x15",
+            "0x16E804",
+            "0x1577C4",
+            "0x0",
+            "0x12211",
+            "0x1D33D2",
+            "0x1577C4",
+            "0x1C8"
+          ]
+        },
+        "source_file_offset": "固定FDSHAP_022.bin 0x366A byte138；與前述資源基址及tile21相同。",
+        "claims": [
+          {
+            "level": "confirmed",
+            "location": "IDA LE 11BF1→11CAC，原版trace返回11BF6、control82；work absolute1587D3",
+            "semantic": "相機Y40→41的正常down鍵會完整重繪，tile21 literal138重新写入既有work。只更新HUD anchor不能滿足此consumer。",
+            "source": "fd2_redraw_callers_hud_gates_ida.txt及未截斷r3具體row"
+          }
+        ],
+        "typed_input": "battle.State既有raw視圖與range selector，完整nativeMapAssets map11",
+        "rules": [
+          "沿原有NativeMapCursorStepRedraws正例先更新HUD anchor，再調既有composeNativeMapFrame。",
+          "只在battle_ch12/map11/正式battle視圖執行；其他章、故事視圖或不完整來源不新增合成。",
+          "合成失敗設loadErr，不注入literal色值、原版像素或新增Draw次數政策。",
+          "不改walk局部繪圖、RNG、存檔格式或任何驗收預算。"
+        ],
+        "acceptance": [
+          "同固定原版probe的select84畫面完整比較；94/100及舊17點如實驗證，未符合就保留父issue。",
+          "正常故事交接仍138；完整Go回歸及相關實際章重播無新分岔。"
+        ],
+        "limits": [
+          "r2大窗口200000筆在control72截斷，不拿來證明control82。",
+          "只限已證實鍵盤重繪consumer；本規格不宣稱walk全鏈或完整PLAYER-E2。"
+        ],
+        "conformance_scope": "有限RUNTIME-E1；相同短probe select84完整畫面0差異；walk 94/100未符合。",
+        "command": "timeout 900 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-focus-state-r1 FD2_ORACLE_STEPS=1500000000 FD2_ORACLE_EIP_TRACE=0x11CAC,0x1220C,0x12220,0x4DF05,0x4DF2C,0x4DD40,0x11EB0 FD2_ORACLE_EIP_TRACE_FROM=561348844 FD2_ORACLE_EIP_TRACE_TO=561848844 FD2_ORACLE_EIP_TRACE_MAX=200000 bash tools/dosgolem_oracle.sh work/parity-slot-ch12/terrain-focus-original-r3 docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl > work/parity-slot-ch12/terrain-focus-original-r3-driver.log 2>&1",
+        "rejected_broad_trace": {
+          "path": "work/parity-slot-ch12/terrain-focus-original-r2/eip-trace.jsonl",
+          "rows": 200000,
+          "last_step": 538684701,
+          "last_control_seq": 72,
+          "limitation": "已截斷；不當作control82證據。"
+        },
+        "short_probe_receipt": "work/parity-slot-ch12/terrain-probe-verified-r4.json",
+        "short_probe_sha256": "7a93122709fe488fa74fc1939d2355f859465f972a6204674b898a884ad70ce4",
+        "reproducible_affected_checkpoints": [
+          57,
+          60,
+          84,
+          94,
+          100
+        ]
+      }
+    }
+  ]
 }

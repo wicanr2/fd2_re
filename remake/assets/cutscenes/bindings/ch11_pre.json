@@ -4,7 +4,10 @@
   "acting_resources": "../acting/map32.json",
   "story_index_map": "../dialogue-index/count-aligned.json",
   "dialogue_contexts": {
-    "0x3320c": { "source_dat": "FDTXT_012", "script": "ch12.json" }
+    "0x3320c": {
+      "source_dat": "FDTXT_012",
+      "script": "ch12.json"
+    }
   },
   "overrides": {
     "0x333ff": {
@@ -17,9 +20,382 @@
         "party_scenario": "assets/scenarios/ch12.json"
       }
     },
-    "0x33408": { "pan": { "x": 96, "y": 96, "tile_step": true } },
-    "0x33436": { "pan": { "x": 264, "y": 960, "tile_step": true } },
-    "0x3342a": { "act": { "resource": 40 } },
-    "0x33440": { "act": { "resource": 41 } }
+    "0x33408": {
+      "pan": {
+        "x": 96,
+        "y": 96,
+        "tile_step": true
+      }
+    },
+    "0x33436": {
+      "pan": {
+        "x": 264,
+        "y": 960,
+        "tile_step": true
+      }
+    },
+    "0x3342a": {
+      "act": {
+        "resource": 40
+      }
+    },
+    "0x33440": {
+      "act": {
+        "resource": 41
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x3320c#0": {
+      "segments": [
+        {
+          "script": "ch12.json",
+          "scene": null,
+          "scene_index": 0,
+          "lines": [
+            {
+              "line": 0,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 0,
+                "control": "FFEE",
+                "operand": 14,
+                "pages": [
+                  [
+                    "『過了這山道，就到我們位在",
+                    "　北森林的城鎮了。你們可以",
+                    "　先在那裡休息一下．．』"
+                  ]
+                ],
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      563,
+                      341,
+                      462,
+                      506,
+                      300,
+                      370,
+                      345,
+                      387,
+                      568,
+                      569,
+                      751,
+                      395
+                    ],
+                    [
+                      181,
+                      505,
+                      503,
+                      504,
+                      367,
+                      497,
+                      490,
+                      341,
+                      581,
+                      605,
+                      569,
+                      65,
+                      401
+                    ],
+                    [
+                      181,
+                      199,
+                      395,
+                      151,
+                      613,
+                      356,
+                      357,
+                      486,
+                      559,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 1,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 1,
+                "control": "FFEE",
+                "operand": 1,
+                "pages": [
+                  [
+                    "『瞧，前面有人呢！』"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "script": "ch12.json",
+          "scene": "米亞斯多德求救",
+          "scene_index": 1,
+          "lines": [
+            {
+              "line": 0,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 2,
+                "control": "FFEE",
+                "operand": 13,
+                "pages": [
+                  [
+                    "『咦？又是一大群獸人，",
+                    "　還有．．』"
+                  ]
+                ],
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      701,
+                      180,
+                      712,
+                      343,
+                      486,
+                      125,
+                      611,
+                      139,
+                      98,
+                      370
+                    ],
+                    [
+                      181,
+                      465,
+                      400,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 1,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 3,
+                "control": "FFEF",
+                "operand": 17,
+                "pages": [
+                  [
+                    "『哎呀，有救了有救了！",
+                    "　救命啊！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 2,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 4,
+                "control": "FFEE",
+                "operand": 14,
+                "pages": [
+                  [
+                    "『你為什麼會被獸人追殺呢？",
+                    "　我好想知道，",
+                    "　趕快告訴我！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 3,
+              "upper": true,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 5,
+                "control": "FFEF",
+                "operand": 17,
+                "pages": [
+                  [
+                    "『如果你能打敗這些獸人救我",
+                    "　一命，我不但告訴你為什麼",
+                    "　還可以額外告訴你一個大秘"
+                  ],
+                  [
+                    "　密！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 4,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 6,
+                "control": "FFEE",
+                "operand": 14,
+                "pages": [
+                  [
+                    "『呀！聽起來很有趣，",
+                    "　我答應．．』"
+                  ]
+                ],
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      657,
+                      342,
+                      561,
+                      381,
+                      579,
+                      738,
+                      400,
+                      956,
+                      370
+                    ],
+                    [
+                      181,
+                      568,
+                      981,
+                      866,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 5,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 7,
+                "control": "FFEE",
+                "operand": 13,
+                "pages": [
+                  [
+                    "『喂！",
+                    "　不要給大夥兒找麻煩．．』"
+                  ]
+                ],
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      644,
+                      342
+                    ],
+                    [
+                      181,
+                      346,
+                      334,
+                      468,
+                      125,
+                      1016,
+                      571,
+                      876,
+                      316,
+                      720,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 6,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 8,
+                "control": "FFEE",
+                "operand": 4,
+                "pages": [
+                  [
+                    "『沒關係，反正我們急著要過",
+                    "　這山道，順便擺平這些獸人",
+                    "　也沒什麼不好。"
+                  ],
+                  [
+                    "　索爾，我說的沒錯吧？』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 7,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 9,
+                "control": "FFEE",
+                "operand": 0,
+                "pages": [
+                  [
+                    "『亞雷斯，你越來越瞭解我了",
+                    "　不過何必這麼囉唆─咱們說",
+                    "　上就上！殺啊！』"
+                  ]
+                ]
+              }
+            },
+            {
+              "line": 8,
+              "upper": false,
+              "native_dialogue": {
+                "source_dat": "FDTXT_012",
+                "string_index": 0,
+                "utterance": 10,
+                "control": "FFEE",
+                "operand": 4,
+                "pages": [
+                  [
+                    "『這小子真是．．』"
+                  ]
+                ],
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      462,
+                      188,
+                      291,
+                      589,
+                      343,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
   }
 }

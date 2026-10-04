@@ -1,0 +1,21 @@
+# #52 原版唯讀地形探針；沿 ch12-sample 相同前綴與前兩名單位正常操作。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"town","steps":20000000,"max":80}
+{"mark":"town_loaded","steps":1000000}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"left","steps":10000000}
+{"key":"","steps":10000000,"repeat":2}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":14}
+{"mark":"departure_prompt","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":200}
+{"await_ui":"cursor","steps":10000000,"max":120}
+{"mark":"battle_start","steps":1000000}
+{"move_unit":{"from_index":0,"toward":[16,15],"map":11,"mv":4,"max_tries":8,"stay_if_blocked":false},"steps":2000000}
+{"move_unit":{"from_index":2,"toward":[17,27],"map":11,"mv":7,"max_tries":24,"stay_if_blocked":false},"steps":2000000}

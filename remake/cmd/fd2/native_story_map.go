@@ -5,7 +5,26 @@ import (
 	"fmt"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
+
+// 第十二章的原生聚焦沿 0x12CEA 重繪，不能只發布六個視圖全域。
+// 已證實範圍見 fd2_terrain_mode3_review_20261001.json story_frame_continuity。
+func (g *Game) nativeCh12StoryFocus() bool {
+	return g != nil && g.camp != nil && g.camp.NodeID() == "story_ch12" &&
+		g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 11 &&
+		g.st == nil && g.hasStoryNativeMapView && g.storyNativeMapState != nil
+}
+
+func (g *Game) nativeCh12StoryWorkHandoff(unitsPath, scenarioPath string) bool {
+	return g != nil && g.camp != nil && g.camp.NodeID() == "battle_ch12" &&
+		g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 11 &&
+		g.hasStoryNativeMapView && g.storyNativeMapState != nil &&
+		len(g.storyActors) > 0 && unitsPath != "" && scenarioPath != "" &&
+		g.storyRosterPath == unitsPath && g.storyPartyScenario == scenarioPath &&
+		len(g.nativeMapWork) == indexedmap.NativeUnitPresentWorkSize &&
+		len(g.nativeMapVGA) == indexedmap.NativeMapVGASize
+}
 
 // materializeNativeStoryMapState 建立 LOADCH 場景專用的索引地圖載體。
 // 場景沿用原始 terrain/unit constructor 與 raw view，但明確不顯示戰鬥 HUD；
