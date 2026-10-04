@@ -781,3 +781,24 @@ FD2_ATTACK_DUMP=<輸出> go test ./cmd/fd2 -run TestDumpChapterOneMoveAttackFram
 一次：驗證跑完幾分鐘後，`internal/cpu` 與 `internal/machine` 出現九個未提交的
 改動。跑對拍前先看 `runner.json` 的 dirty 計數，不要拿別人改到一半的樹當基底；
 也不要為了「乾淨」去 stash 或 checkout 別人的工作區。
+
+
+## 原版容器入口
+
+原版執行與控制器共用受版控入口 [dosgolem_oracle_container.sh](../../tools/dosgolem_oracle_container.sh)。
+它由 [dosgolem_oracle.sh](../../tools/dosgolem_oracle.sh) 掛入 Docker；需要直接啟動時，
+同樣以 Docker 掛載原版、dosgolem、控制器、計畫及來源元資料，不在主機執行入口。
+入口先驗固定 EXE 雜湊及來源 commit，再在容器產生 runner.json、執行正式 oracle
+與控制器。缺來源或錯 EXE 時拒絕；本入口不新增原版執行器。
+
+直接 Docker 所需掛載與來源欄位：
+
+| 種類 | 容器位置或環境變數 |
+|---|---|
+| 唯讀輸入 | /orig、/dos、/oracle-entry.sh、/drive.py、/maps、選用 /plan.jsonl |
+| 可寫輸出 | /out、選用 /state、/gocache、/gomodcache |
+| Git 出處 | FD2_ORACLE_SOURCE_COMMIT、FD2_ORACLE_SOURCE_BRANCH、FD2_ORACLE_SOURCE_DIRTY、FD2_ORACLE_SOURCE_UNTRACKED |
+| 原始路徑 | FD2_ORACLE_SOURCE_ROOT、FD2_ORACLE_ORIGINAL_ROOT、選用 FD2_ORACLE_SOURCE_STATE、FD2_ORACLE_CONTROL_PLAN |
+| 執行 | 工作目錄 /dos；bash /oracle-entry.sh；GOCACHE=/gocache、GOMODCACHE=/gomodcache、HOME=/tmp |
+
+可重跑的完整 docker run 命令與五停點雜湊見[主證據 oracle_direct_entry](../data/ida/fd2_terrain_mode3_review_20261001.json)。掛載前確認來源存在，指定 UID、記憶體、CPU、PID、外層逾時與 --rm --network none。來源 commit 是對目前掛載工作樹的主機 Git 檢查結果，不能任填。

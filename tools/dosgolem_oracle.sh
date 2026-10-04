@@ -70,9 +70,7 @@ cpus=${FD2_ORACLE_CPUS:-2}
 budget=${FD2_ORACLE_STEPS:-20000000000}
 state_dir=${FD2_ORACLE_STATE:-}
 lock_ally_hp=${FD2_ORACLE_LOCK_ALLY_HP:-}
-if [ -n "$lock_ally_hp" ]; then lock_ally_hp_json=true; else lock_ally_hp_json=false; fi
 force_enemy_clear=${FD2_ORACLE_FORCE_ENEMY_CLEAR:-}
-if [ -n "$force_enemy_clear" ]; then force_enemy_clear_json=true; else force_enemy_clear_json=false; fi
 frames=${FD2_ORACLE_FRAMES:-}
 frame_stride=${FD2_ORACLE_FRAME_STRIDE:-20000}
 frame_settle=${FD2_ORACLE_FRAME_SETTLE:-0}
@@ -104,32 +102,7 @@ dos_head=$(git -C "$dos" rev-parse HEAD 2>/dev/null || echo unknown)
 dos_branch=$(git -C "$dos" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)
 dos_dirty=$(git -C "$dos" status --porcelain --untracked-files=no 2>/dev/null | wc -l)
 dos_untracked=$(git -C "$dos" status --porcelain --untracked-files=all 2>/dev/null | grep -c '^??' || true)
-cat > "$out/runner.json" <<JSON
-{
-  "schema_version": 1,
-  "kind": "fd2_oracle_runner_provenance",
-  "runner": "dosgolem apps/fd2/cmd/oracle",
-  "dosgolem_root": "$dos",
-  "dosgolem_commit": "$dos_head",
-  "dosgolem_branch": "$dos_branch",
-  "dosgolem_tracked_dirty_files": $dos_dirty,
-  "dosgolem_untracked_files": $dos_untracked,
-  "original_root": "$orig",
-  "generated_at": "$(date -Iseconds)",
-  "control_plan": "$plan",
-  "eip_trace_window": {"from_step": $eip_trace_from, "to_step": $eip_trace_to, "max_entries": $eip_trace_max},
-  "lock_ally_hp": $lock_ally_hp_json,
-  "force_enemy_clear_declared": $force_enemy_clear_json,
-  "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
-  "original_reference_manifest": "docs/data/fd2-reference-files.json",
-  "state_directory": "${state_dir}",
-  "state_injections": [
-    "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
-    "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
-  ],
-  "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
-}
-JSON
+
 if [ "$dos_dirty" -ne 0 ]; then
   echo "⚠ dosgolem 有 $dos_dirty 個已追蹤檔案被改過，這一輪的收據無法由 commit 重現" >&2
 fi
@@ -141,7 +114,8 @@ if [ -n "$state_dir" ]; then
   state_dir=$(cd "$state_dir" && pwd)
 fi
 test -d "$repo/remake/assets/maps" || { echo "找不到地圖成本格目錄：$repo/remake/assets/maps" >&2; exit 2; }
-mounts=(-v "$dos:/dos:ro" -v "$orig:/orig:ro" -v "$out:/out:rw"
+test -f "$repo/tools/dosgolem_oracle_container.sh" || { echo "找不到受版控容器入口" >&2; exit 2; }
+mounts=(-v "$repo/tools/dosgolem_oracle_container.sh:/oracle-entry.sh:ro" -v "$dos:/dos:ro" -v "$orig:/orig:ro" -v "$out:/out:rw"
         -v "$repo/tools/dosgolem_oracle_drive.py:/drive.py:ro"
         -v "$repo/remake/assets/maps:/maps:ro"
         -v "$cache/gocache:/gocache" -v "$cache/gomodcache:/gomodcache")
@@ -157,6 +131,11 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   --log-opt max-size=10m --log-opt max-file=3 \
   -u "$(id -u):$(id -g)" "${mounts[@]}" \
   -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp \
+  -e FD2_ORACLE_SOURCE_COMMIT="$dos_head" -e FD2_ORACLE_SOURCE_BRANCH="$dos_branch" \
+  -e FD2_ORACLE_SOURCE_DIRTY="$dos_dirty" -e FD2_ORACLE_SOURCE_UNTRACKED="$dos_untracked" \
+  -e FD2_ORACLE_SOURCE_ROOT="$dos" -e FD2_ORACLE_ORIGINAL_ROOT="$orig" \
+  -e FD2_ORACLE_CONTROL_PLAN="$plan" -e FD2_ORACLE_SOURCE_STATE="$state_dir" \
+  -e FD2_ORACLE_FORCE_ENEMY_CLEAR="$force_enemy_clear" \
   -e FD2_ORACLE_BUDGET="$budget" \
   -e FD2_ORACLE_FRAMES="$frames" \
   -e FD2_ORACLE_FRAME_STRIDE="$frame_stride" \
@@ -173,50 +152,5 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
   -e FD2_ORACLE_STATE="${state_dir:+/state}" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
-  bash -c '
-set -euo pipefail
-frameargs=()
-if [ -n "$FD2_ORACLE_FRAMES" ]; then
-  frameargs=(-frame-dir /out/frames
-             -frame-stride "$FD2_ORACLE_FRAME_STRIDE"
-             -frame-settle "$FD2_ORACLE_FRAME_SETTLE"
-             -frame-max "$FD2_ORACLE_FRAME_MAX"
-             -frame-from "$FD2_ORACLE_FRAME_FROM"
-             -frame-to "$FD2_ORACLE_FRAME_TO")
-  if [ -n "$FD2_ORACLE_FRAME_EIP" ]; then
-    frameargs+=(-frame-eip "$FD2_ORACLE_FRAME_EIP")
-  fi
-  if [ -n "$FD2_ORACLE_EIP_WATCH" ]; then
-    frameargs+=(-eip-watch "$FD2_ORACLE_EIP_WATCH")
-  fi
-fi
-if [ -n "$FD2_ORACLE_EIP_TRACE" ]; then
-  frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE"
-             -eip-trace-from "$FD2_ORACLE_EIP_TRACE_FROM"
-             -eip-trace-to "$FD2_ORACLE_EIP_TRACE_TO"
-             -eip-trace-max "$FD2_ORACLE_EIP_TRACE_MAX")
-fi
-cheatargs=()
-if [ -n "$FD2_ORACLE_LOCK_ALLY_HP" ]; then
-  cheatargs=(-lock-ally-hp)
-fi
-if [ -n "$FD2_ORACLE_STATE" ]; then
-  cheatargs+=(-state "$FD2_ORACLE_STATE")
-fi
-go run ./apps/fd2/cmd/oracle \
-  -exe /orig/FD2.EXE -root /orig -run-dir /out \
-  "${cheatargs[@]+"${cheatargs[@]}"}" \
-  "${frameargs[@]+"${frameargs[@]}"}" \
-  -steps "$FD2_ORACLE_BUDGET" -heap-mib 32 >/out/oracle.log 2>&1 &
-oracle=$!
-cleanup() { kill "$oracle" 2>/dev/null || true; wait "$oracle" 2>/dev/null || true; }
-trap cleanup EXIT
-for _ in $(seq 1 900); do
-  test -f /out/current.json && break
-  kill -0 "$oracle" 2>/dev/null || { echo "oracle 已結束" >&2; tail -20 /out/oracle.log >&2; exit 3; }
-  sleep 1
-done
-test -f /out/current.json || { echo "等待第一個控制邊界逾時" >&2; exit 4; }
-python3 /drive.py | tee /out/driver.log
-'
+  bash /oracle-entry.sh
 echo "$out"

@@ -5757,6 +5757,228 @@
           94,
           100
         ]
+      },
+      "oracle_direct_entry": {
+        "issue": 165,
+        "date": "2026-10-04",
+        "status": "CONFORMED",
+        "scope": "只抽取原版受版控容器入口；Go oracle、Python控制器、遊戲規則、狀態注入及驗收預算不變。",
+        "source_commit": "951cb55f7834311fccbce208fde6bc48d57f1c5a",
+        "source_tracked_dirty": 0,
+        "source_untracked": 0,
+        "original_runner": "dosgolem apps/fd2/cmd/oracle",
+        "entry": "tools/dosgolem_oracle_container.sh",
+        "image": "golang:1.24-bookworm",
+        "command": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-walk-original-r2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-walk-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 900 docker run --rm --name fd2-terrain-walk-writer-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-walk-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-walk-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=951cb55f7834311fccbce208fde6bc48d57f1c5a' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch12-terrain-mode3-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-walk-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=1500000000' -e 'FD2_ORACLE_EIP_TRACE=0x11EEE,0x11EB0,0x1220C,0x4DF05,0x4DF18,0x4DF2C' -e 'FD2_ORACLE_EIP_TRACE_FROM=588574260' -e 'FD2_ORACLE_EIP_TRACE_TO=588740000' -e 'FD2_ORACLE_EIP_TRACE_MAX=200000' --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh",
+        "resources": {
+          "memory": "4g",
+          "cpus": 2,
+          "pids_limit": 256,
+          "timeout_seconds": 900,
+          "network": "none",
+          "uid": 1000,
+          "gid": 1000,
+          "remove_on_exit": true
+        },
+        "read_only_inputs": [
+          "original assets",
+          "dosgolem worktree",
+          "entry",
+          "controller",
+          "maps",
+          "plan"
+        ],
+        "input_slot_sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+        "plan_sha256": "7a431d07dcdef1250e1e7cc86b9126fcb53d0ddb421d660062c80ba980a10e76",
+        "runner": {
+          "path": "work/parity-slot-ch12/terrain-walk-original-r2/runner.json",
+          "sha256": "44d6e720adf31937dd2f0e196dd69b04e7f598e472dea389ce43a4de1b400af5"
+        },
+        "trace": {
+          "path": "work/parity-slot-ch12/terrain-walk-original-r2/eip-trace.jsonl",
+          "sha256": "e875a3c4610faad9a701cd6aab8c01a90de27022c8bcd0e7c97a377134db1c06",
+          "rows": 9730,
+          "capped": false
+        },
+        "checkpoint_reproduction": [
+          {
+            "seq": 57,
+            "sha256": "d52741cecefcee642da6847622c2fb6f3d2f767ffd1ebc21b334b8fbc8643c4f",
+            "same_png_bytes": true
+          },
+          {
+            "seq": 60,
+            "sha256": "ba8bef7a9da773672e6798bd01c1e980ad65ff1053a236f138a5414dab2bf306",
+            "same_png_bytes": true
+          },
+          {
+            "seq": 84,
+            "sha256": "3035edd2fbc187e2a3224fd9469bd0fa45fe59a27ee8db5cbd6717f84594e2dd",
+            "same_png_bytes": true
+          },
+          {
+            "seq": 94,
+            "sha256": "c855ea1ecd73156e92cd1aa48d6df625568f73597be4a04ad8d7ae98050eee84",
+            "same_png_bytes": true
+          },
+          {
+            "seq": 100,
+            "sha256": "46a7d5248bcfecf525ecbdf21c763083093a61c9604377ae9971c4911cd37b0f",
+            "same_png_bytes": true
+          }
+        ],
+        "controller_regression": {
+          "command": "PYTHONPATH=tools python3 -m unittest tools/test_dosgolem_oracle_drive.py tools/test_verify_oracle_prefix.py",
+          "passed": 100,
+          "skipped": 0,
+          "image": "fd2-go-test-local:20260909"
+        },
+        "entry_rejection_tests": [
+          {
+            "case": "missing_source",
+            "exit": 1,
+            "before_oracle": true
+          },
+          {
+            "case": "invalid_commit",
+            "exit": 1,
+            "before_oracle": true
+          },
+          {
+            "case": "wrong_exe",
+            "exit": 1,
+            "before_oracle": true
+          }
+        ],
+        "validation_command_correction": "首次 unittest 缺 PYTHONPATH，prefix 模組匯入失敗；同 Docker 加上既有 tools 模組路徑後100項通過，未改測試或產品。",
+        "review_rejection_resolution": "主機 shell wrapper 入口兩次遭自動審查拒絕，理由是無法確認隔離；改成明確 docker run 及受版控容器入口後已允許執行。未退回主機工作負載。",
+        "cleanup": "oracle 已退出；一次性 --rm 容器已移除。"
+      },
+      "walk_terrain_writer": {
+        "date": "2026-10-04",
+        "status": "RE-CLOSED writer / DRAFT runtime geometry",
+        "issue": 52,
+        "tool": "受版控 dosgolem oracle 951cb55f；沿用 IDA9.4 LE raw blitter 契約",
+        "address_space": "固定 FD2.EXE 的 DOS/4GW LE 線性位址；素材另標檔案偏移",
+        "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "trace": {
+          "path": "work/parity-slot-ch12/terrain-walk-original-r2/eip-trace.jsonl",
+          "sha256": "e875a3c4610faad9a701cd6aab8c01a90de27022c8bcd0e7c97a377134db1c06",
+          "rows": 9730,
+          "capped": false
+        },
+        "geometry_trace": {
+          "path": "work/parity-slot-ch12/terrain-walk-original-r1/eip-trace.jsonl",
+          "sha256": "9539cf9ad0580b0730d380408bb6ead66fa63d96743754e81384b37e8edf3a7f",
+          "rows": 61,
+          "capped": false
+        },
+        "terrain_entry": {
+          "step": 588574260,
+          "control_seq": 94,
+          "eip": "0x11EEE",
+          "eax": "0x14A204",
+          "edx": "0x2",
+          "ebx": "0x6",
+          "ecx": "0x0",
+          "esi": "0x16EAB0",
+          "edi": "0x5CE8",
+          "esp": "0x555DC",
+          "rng_word": 15766,
+          "stack": [
+            "0x132E3",
+            "0x14A204",
+            "0x1C8",
+            "0xD",
+            "0x9",
+            "0x9",
+            "0x28",
+            "0x6"
+          ]
+        },
+        "literal_writer": {
+          "step": 588676176,
+          "control_seq": 94,
+          "eip": "0x4DF2C",
+          "eax": "0x1D6292",
+          "edx": "0x1B0",
+          "ebx": "0x50F",
+          "ecx": "0x13",
+          "esi": "0x1D6343",
+          "edi": "0x15DD4C",
+          "esp": "0x555A4",
+          "rng_word": 15766,
+          "stack": [
+            "0x29",
+            "0x16E8E4",
+            "0x15CD44",
+            "0x0",
+            "0x12211",
+            "0x1D6263",
+            "0x15CD44",
+            "0x1C8"
+          ]
+        },
+        "raw_source_call": {
+          "step": 588675876,
+          "control_seq": 94,
+          "eip": "0x1220C",
+          "eax": "0x1D6263",
+          "edx": "0xFF",
+          "ebx": "0x29",
+          "ecx": "0x0",
+          "esi": "0x16E8E4",
+          "edi": "0x15CD44",
+          "esp": "0x555B8",
+          "rng_word": 15766,
+          "stack": [
+            "0x1D6263",
+            "0x15CD44",
+            "0x1C8",
+            "0x7",
+            "0x120D46",
+            "0xFFFFF8E0",
+            "0x5CE8",
+            "0x16EAB0"
+          ]
+        },
+        "target": {
+          "work_base": "0x144C3C",
+          "absolute": "0x15DD53",
+          "work_offset": "0x19117",
+          "steady_screen": [
+            11,
+            157
+          ]
+        },
+        "source": {
+          "path": "remake/generated-assets/fd2-original-b97caf22/raw/FDSHAP/FDSHAP_022.bin",
+          "sha256": "01fa2a01f29d8f9b9559db0847ce1963f8c67abd302cfd111de05f7126d5a2e3",
+          "resource_base": "0x1CFE50",
+          "tile": 41,
+          "tile_offset": "0x6413",
+          "literal_file_offset": "0x64FA",
+          "literal_value": 118
+        },
+        "claims": [
+          {
+            "level": "confirmed",
+            "location": "LE 11EEE caller return132E3; 4DF2C return12211; FDSHAP_022 file0x64FA",
+            "semantic": "向上移動末拍使用14A204、stride456、13×9地形區；tile41 literal118寫入15DD53。末拍11EB0返回13269，由14A204複製312×192至A0504。",
+            "source": "上述未截斷窗口、raw暫存器／stack與固定素材 byte"
+          },
+          {
+            "level": "strong inference",
+            "location": "work15DD53→穩態screen11,157；tile27 mode3透明",
+            "semantic": "九列偏移地形pass留下118，後續一般cameraY40的透明圖塊保留底色；Go現有固定13×8、8088底址不足此caller。",
+            "source": "原版實際writer、固定素材與既有raw mode3契約；完整移動consumer規格尚未READY"
+          }
+        ],
+        "next_gate": "檢查已閉合移動caller與正式walk消費端，完成偏移地形、物件與viewport的可審查契約後才改 runtime。",
+        "limits": [
+          "不注入118常數，不以arrival單點補色；不宣稱完整移動規格已READY。",
+          "本輪未修改 remake；原17點仍12個相同、5個不同。"
+        ]
       }
     }
   ]

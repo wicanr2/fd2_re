@@ -103,6 +103,7 @@
 | 我想做… | 查 |
 |---|---|
 | **dosbox-x debugger**(建置/BP trace/dump/BPLM 判死) | **`48`** |
+| 原版 dosgolem 對拍、直接 Docker 入口與出處收據 | [96 對拍工具鏈](96-parity-toolchain-20260909.md)，入口 [dosgolem_oracle_container.sh](../../tools/dosgolem_oracle_container.sh) |
 | Call-graph 反組譯方法紀錄 | `24` |
 | Watcom `push N; call helper` stack check／probe/runtime 辨識 | [`59`](59-watcom-stack-runtime-patterns.md) |
 | 原作 compiler／linker／DOS extender／Miles AIL／AFM 工具鏈指紋 | [`04`](04-original-toolchain.md)、[`0x3EEDA` AIL 證據](../data/ida/fd2_ail_background_3eeda_ida.txt) |

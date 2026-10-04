@@ -5284,3 +5284,10 @@ r1 trace達200000上限，只引用截斷前的具體row；r2 writer窗口有界
 第十二章最新正式Game已重驗原17個地形像素：12個已一致，97／103／111／3137／3152仍不同。完整畫面差異一併保留，不遮罩；像素消除不等於整張畫面一致。完整歷史來源重播仍155／155 AI入口、零順序分岔，兩側FD2.SAV的SHA-256同為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。原版仍是a9bcd621的treasure-original-r2，兩個未知wait來源依舊拒收，不宣稱全章四gate或新PLAYER-E2。詳見主證據historical_17_point_recheck及historical_full_regression。
 
 最終游標修正與字串遷移完成後，完整Go19套件已乾淨重跑通過。字串稽核98個座標處置不變；較早並行啟動造成的盤點失配僅屬驗證次序問題。本輪原版與重製容器均已結束，未留下非預期FD2背景程序。
+
+
+### 2026-10-04 #165：原版直接 Docker 入口已驗證
+
+[主證據 oracle_direct_entry](../data/ida/fd2_terrain_mode3_review_20261001.json)已 CONFORMED。wrapper 與直接 Docker 共用受版控容器入口；原版、dosgolem與計畫唯讀，UID1000、4GB、2CPU、256PID、900秒、無網路。runner.json改在容器產生，Go oracle與Python控制器主體未改。相同槽／計畫的57、60、84、94、100五張PNG逐檔相同；100項控制器／前綴回歸及缺來源、錯commit、錯EXE拒收通過。自動審查先前無法確認主機wrapper隔離，明確docker run入口已通過並完成追蹤。
+
+#52取得9730筆未截斷移動writer：末拍13×9地形區起點14A204，tile41的固定檔案0x64FA byte118寫入15DD53。偏移地形與後續透明保留的runtime規格仍DRAFT，未先接正式程式。#52保持開啟，原17點仍12個一致、5個未閉合，章台帳20/30不變。本輪容器已退出；無新增原版執行器。
