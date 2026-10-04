@@ -1641,4 +1641,4 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 
 [單一caller狀態](../data/ida/fd2_ai_idle_recovery_20261004.json)已CONFORMED／RUNTIME-E1。正式consumer發布初始畫面、C8 Mask、mode0原圖恢復，sample4在初次Draw後，HP在第三Draw後才提交。RLE source0、透明span、raw恢復與缺資產／非法tuple零交易測試通過。
 
-[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)來自目前dosgolem正常BIOS輸入的接受分支；同源raw E1三張完整索引／RGB均0差異，不遮罩。原版與重製HP尾端一致。合法idle0及terrain0..3相符，沒有同步時間；重製夾具只讀raw狀態，不讀原版像素。這取代前一節「#163仍開啟」所指的未修正狀態；Issue待提交後有限結案，不新增章PLAYER-E2。唯一數字與目前限制見[58](58-fd2-exe-re-coverage.md)。
+[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)來自目前dosgolem正常BIOS輸入的接受分支；同源raw E1三張完整索引／RGB均0差異，不遮罩。原版與重製HP尾端一致。合法idle0及terrain0..3相符，沒有同步時間；重製夾具只讀raw狀態，不讀原版像素。這取代前一節「#163仍開啟」所指的未修正狀態；[#163已有限結案](https://github.com/wicanr2/fd2_re/issues/163#issuecomment-5977566171)，不新增章PLAYER-E2。唯一數字與目前限制見[58](58-fd2-exe-re-coverage.md)。

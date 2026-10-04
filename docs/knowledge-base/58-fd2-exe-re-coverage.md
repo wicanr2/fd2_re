@@ -2542,3 +2542,5 @@ READY後正式NativeCommand6Coordinates改用向零截斷，兩側正負邊界�
 [完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)由目前dosgolem `951cb55f`重生。同一ch08既有建構槽，以正常索爾移動／攻擊／END使slot11走`0x13C14→0x13FD4`；章內零注入。r7重播r6的實際鍵盤輸入，只分割空鍵區間，四個先前停點的units／view／EIP／steps相同。三次`17AA9(1)`在1447060369／1447075147／1447086515步；HP分別182／182／182，尾端才184。三張320×200索引與RGB全0差異，不遮罩；合法idle0、terrain0..3都相符。
 
 重製由正常LOAD／出戰後匯入原版raw停點的E1夾具取得，不讀取原版像素。相位枚舉未同步時間，三次1tick等待映射到Draw確認；精確DOS wall-clock與音訊人耳驗收不在本收據。source0／透明孔、raw恢復、三Draw HP最後提交、非法tuple與缺資產零交易通過。完整Go回歸2807項通過、34條件式skip，19套件通過、11無測試套件；原版注入與提前HP的收據反例均拒收。其他mode2 caller仍獨立核對，#164／#154與章台帳20/30未改。
+
+- 本批已提交並推送 a9d261a561d8c294c3c4363a81d02225dfbd5e4e，本機與遠端 HEAD 相同。[#163 已有限結案](https://github.com/wicanr2/fd2_re/issues/163#issuecomment-5977566171)。重新讀取真實遠端後剩23條開啟；#164、#154與章台帳20/30不變。

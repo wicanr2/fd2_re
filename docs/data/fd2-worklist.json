@@ -389,24 +389,6 @@
       "issue": 161
     },
     {
-      "id": "ai-idle-recovery-mode2-mask",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "AI原地回復的mode2影格未依4DDD7的stride低byte寫入mask",
-      "body": "#29核對END回復時發現另一個正式consumer缺口。固定FD2.EXE的1DA16(mode2,tailFD)呼4DDD7；IDA直接bytes 4DDE3／4DDEB讀同一arg8作stride與raw寫入index，其低byte為1C8&FF=C8，額外tail參數未讀取。既有docs/data/ida/fd2_command_numeric_tail_ida.txt已記錄這個helper契約。\n\nnative_ai_idle_recovery.go的buildNativeAIIdleRecoveryFrames第一輪卻呼BlitForNativeFlagsAtOffset，未依寫入Mask填C8。AI原地回復已接數值與三Draw，但不能以此宣稱第一輪indexed效果一致。這個consumer與END caller分開驗收，不重做已閉合AI gate／maxHP/5規則。主證據：docs/data/ida/fd2_end_turn_recovery_20261004.json的1DA16與4DDD7直接bytes；完整正常AI影格待取得。",
-      "acceptance": "依已證1DA16／4DDD7引數與RLE Mask契約建立READY caller spec，修正正式AI原地回復第一輪indexed consumer，保留既有三次wait／Draw及HP最後交易順序。固定同源normal AI回復完整索引／RGB與原版對照，source value0寫入格及非法／缺資產零交易測試通過。只閉合已驗caller，其他command mask caller獨立核對，未知不猜補。",
-      "evidence": [
-        "docs/data/ida/fd2_end_turn_recovery_20261004.json",
-        "docs/data/ida/fd2_command_numeric_tail_ida.txt",
-        "remake/cmd/fd2/native_ai_idle_recovery.go"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "已證4DDD7像素契約與正常同源AI回復正式consumer影格；三Draw／數值測試不能替代mask影格。"
-      },
-      "issue": 163
-    },
-    {
       "id": "ch07-regression-node-pairing-20261004",
       "layer": "player",
       "category": "缺陷",

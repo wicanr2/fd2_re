@@ -230,5 +230,12 @@
     "scope": "正式13FD4 owner；不提升章台帳，其他mode2 caller獨立核對。",
     "verifier": "tools/verify_ai_idle_recovery_parity.py",
     "verifier_sha256": "79a14a457a6658fff8970fb089cab9cf7d8b3404903c43fee9ccde62d917c848"
+  },
+  "issue_resolution": {
+    "status": "CLOSED",
+    "commit": "a9d261a561d8c294c3c4363a81d02225dfbd5e4e",
+    "comment": "https://github.com/wicanr2/fd2_re/issues/163#issuecomment-5977566171",
+    "remote_head_verified": true,
+    "scope": "CONFORMED / RUNTIME-E1；只限13FD4 caller"
   }
 }

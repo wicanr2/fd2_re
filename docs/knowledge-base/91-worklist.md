@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -128,18 +128,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。', '正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。', '#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
-
-### AI原地回復的mode2影格未依4DDD7的stride低byte寫入mask
-
-`ai-idle-recovery-mode2-mask` · 缺陷 · [#163](https://github.com/wicanr2/fd2_re/issues/163) · 仍未完成 · 要人判
-
-#29核對END回復時發現另一個正式consumer缺口。固定FD2.EXE的1DA16(mode2,tailFD)呼4DDD7；IDA直接bytes 4DDE3／4DDEB讀同一arg8作stride與raw寫入index，其低byte為1C8&FF=C8，額外tail參數未讀取。既有docs/data/ida/fd2_command_numeric_tail_ida.txt已記錄這個helper契約。
-
-native_ai_idle_recovery.go的buildNativeAIIdleRecoveryFrames第一輪卻呼BlitForNativeFlagsAtOffset，未依寫入Mask填C8。AI原地回復已接數值與三Draw，但不能以此宣稱第一輪indexed效果一致。這個consumer與END caller分開驗收，不重做已閉合AI gate／maxHP/5規則。主證據：docs/data/ida/fd2_end_turn_recovery_20261004.json的1DA16與4DDD7直接bytes；完整正常AI影格待取得。
-
-怎樣算做完：依已證1DA16／4DDD7引數與RLE Mask契約建立READY caller spec，修正正式AI原地回復第一輪indexed consumer，保留既有三次wait／Draw及HP最後交易順序。固定同源normal AI回復完整索引／RGB與原版對照，source value0寫入格及非法／缺資產零交易測試通過。只閉合已驗caller，其他command mask caller獨立核對，未知不猜補。
-
-證據：`['docs/data/ida/fd2_end_turn_recovery_20261004.json', 'docs/data/ida/fd2_command_numeric_tail_ida.txt', 'remake/cmd/fd2/native_ai_idle_recovery.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
