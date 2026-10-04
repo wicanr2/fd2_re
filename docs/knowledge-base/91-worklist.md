@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 24 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -120,16 +120,6 @@ ch04 與 ch05 收據的 departure_prompt 與 town_enter 四個點都差 60 像�
 怎樣算做完：['核對固定原始資產及既有座標／consumer直接指令，定位負列位置的來源與原版可見契約。', '形成 READY 並依證據修正正式 typed sequence／compositor，未知資產與交易拒收保留。', '真實#32完整sequence與相關命令回歸通過，必要時由維護中dosgolem正常原版收據核對可見輸出；不以局部資產測試代替E2。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/internal/battlepresent/native_command6_test.go', 'docs/data/ida/fd2_command1_8_entries_ida.txt']`
-
-### 原版輸入工具漏收法術等待，無效計畫應在送鍵前拒收
-
-`oracle-await-ui-spell-preflight` · 缺陷 · [#159](https://github.com/wicanr2/fd2_re/issues/159) · 仍未完成 · 要人判
-
-#154 command6-side1-r1 正常到第4回合 seq1773 後，await_ui:spell 被工具允許清單拒收，exit1。ui_mode 已以 0x1D0D4 辨識 spell，等待清單未列入。此為驗證工具輸入契約錯誤，尚未施法，不能列為遊戲缺陷或原版 #32 寫入收據。保留失敗樣本，修正等待法術清單及送鍵前檢查無效等待名稱，重跑同槽同政策。
-
-怎樣算做完：['既有 ui_mode 的 spell 可由 await_ui 等待，僅在既有對白等待送 enter，其他介面只前進；未知等待名稱仍拒收。', '整份計畫在第一次送鍵前检查 await_ui 名稱；有效前綴加無效末項不得先送鍵。', 'Python 正負測試與 #154 正常法術清單收據通過，保留失敗輪次及重跑來源。']
-
-證據：`['tools/dosgolem_oracle_drive.py', 'tools/test_dosgolem_oracle_drive.py', 'docs/data/parity-plans/ch24-command6-side1-r1.jsonl', 'docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json']`
 
 ### 玩家指令6範圍中心被直接敵軍候選限制拒收
 

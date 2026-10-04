@@ -374,29 +374,6 @@
       "issue": 154
     },
     {
-      "id": "oracle-await-ui-spell-preflight",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "原版輸入工具漏收法術等待，無效計畫應在送鍵前拒收",
-      "body": "#154 command6-side1-r1 正常到第4回合 seq1773 後，await_ui:spell 被工具允許清單拒收，exit1。ui_mode 已以 0x1D0D4 辨識 spell，等待清單未列入。此為驗證工具輸入契約錯誤，尚未施法，不能列為遊戲缺陷或原版 #32 寫入收據。保留失敗樣本，修正等待法術清單及送鍵前檢查無效等待名稱，重跑同槽同政策。",
-      "acceptance": [
-        "既有 ui_mode 的 spell 可由 await_ui 等待，僅在既有對白等待送 enter，其他介面只前進；未知等待名稱仍拒收。",
-        "整份計畫在第一次送鍵前检查 await_ui 名稱；有效前綴加無效末項不得先送鍵。",
-        "Python 正負測試與 #154 正常法術清單收據通過，保留失敗輪次及重跑來源。"
-      ],
-      "evidence": [
-        "tools/dosgolem_oracle_drive.py",
-        "tools/test_dosgolem_oracle_drive.py",
-        "docs/data/parity-plans/ch24-command6-side1-r1.jsonl",
-        "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "等待已辨識法術清單、未知名稱拒收及送鍵前驗證；#154 同槽正常輸入實測。"
-      },
-      "issue": 159
-    },
-    {
       "id": "player-command-area-empty-cursor",
       "layer": "runtime",
       "category": "缺陷",
