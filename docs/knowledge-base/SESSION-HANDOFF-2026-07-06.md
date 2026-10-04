@@ -8926,3 +8926,11 @@ r2於T18索爾死亡；r3正常到T19玩家游標、再END才死亡。標題新u
 較早的command6 nearest-even轉整數結論已失效。IDA LE __CHP 0x377A4..0x377C3保存控制字、設定高byte 0x1F、frndint向零截斷，再恢復控制字；0x26FF1與0x2703F兩個caller消費整數。正常原版channel3=(0,4)、channel4=(0,42)直接反證RoundToEven。保留舊段供追溯，新證據、原始bytes與取代關係見[主契約followup162](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
 
 完整同源原型另恢復LUT15、actor末幀、target packed shader與pose、下一幀HP背景。12張完整索引與RGB均零差異，受版控探針可重生，不加原版沒有的傷害數字圖層。這是隔離prototype，正式#161未實作、#154負列仍拒收；未知heap consumer不外推。唯一現況見[58](58-fd2-exe-re-coverage.md)。
+
+## 2026-10-04 #161正式caller組圖補正
+
+前段「正式#161未實作」只代表該輪時點，已由本輪有限實作取代。2026-10-04 #161：已審查caller組圖接入正式LUT15、actor末幀、packed target色調／pose與持續base。Shade／Pose／Jitter只在施法開頭初始化，跨目標落空與轉場保留；display只消耗已證numeric marker，末端RNG須等於damage plan。HP marker先更新持續base，下一張才顯示新HP。全序列預建、失敗零交易及嚴格工作區guard維持。
+
+同源固定槽探針的11張正式composer完整影格與dosgolem原版索引／RGB全0差異；第7張仍按#154負列拒收。12張全圖一致是隔離原型，未證明正式非零側全程施法或新增PLAYER-E2。#161／#160／#154保持開啟，章台帳與既有隊伍政策不變。唯一現況見[58](58-fd2-exe-re-coverage.md)。
+
+本批最終審閱補強畸形HP stage測試欄位，相關4套件r2再次通過；production與同源探針來源未改。24條Issue機器訊號仍在，沒有應結案而未關的條目；教訓檢查通過。變更檔UID/GID1000:1000，既有root-owned基線2811未增、沒有.md目錄；一次性FD2容器均已退出移除。

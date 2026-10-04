@@ -350,3 +350,51 @@ func WalkNativeCommand6RNG(rng uint16, schedule NativeCommand6PresentationSchedu
 	}
 	return rng, nil
 }
+
+// NativeCommand6DisplayState 是 sub_2A6BD 的caller局部命中狀態。
+// 它不隨target／sub_2BA22重設；miss保留全部狀態。主契約followup161。
+type NativeCommand6DisplayState struct {
+	Shade, Pose, Jitter int
+}
+type NativeCommand6TargetDisplayFrame struct {
+	Shader           int
+	OffsetX, OffsetY int
+	RNGAfter         uint16
+	Next             NativeCommand6DisplayState
+}
+
+func NewNativeCommand6DisplayState() NativeCommand6DisplayState {
+	return NativeCommand6DisplayState{Shade: 8, Pose: 3, Jitter: -1}
+}
+
+// BuildNativeCommand6TargetDisplayFrames 消費已規劃的marker和damage後RNG。
+// 只產生繪圖參數，不重新resolve damage或發布Game狀態。
+func BuildNativeCommand6TargetDisplayFrames(state NativeCommand6DisplayState, planned []NativeCommand6TargetFrame, hit bool, numericRNG uint16) ([]NativeCommand6TargetDisplayFrame, error) {
+	if len(planned) != NativeCommand6TargetFrames || state.Shade < 2 || state.Shade > 8 || state.Pose < 0 || state.Pose > 3 || state.Jitter < -1 || state.Jitter > 1 {
+		return nil, fmt.Errorf("figani: command6 caller display state unavailable")
+	}
+	xPose, yPose := [4]int{6, 4, 2, 0}, [4]int{-3, -2, -1, 0}
+	out := make([]NativeCommand6TargetDisplayFrame, 0, len(planned))
+	for _, frame := range planned {
+		draw := NativeCommand6TargetDisplayFrame{Shader: -1}
+		if hit {
+			draw.Shader = state.Shade<<8 | 0xb0
+			draw.OffsetX, draw.OffsetY = xPose[state.Pose]*state.Jitter, yPose[state.Pose]
+			state.Shade--
+			if state.Shade == 1 {
+				state.Shade = 8
+			}
+			if state.Pose != 3 {
+				state.Pose++
+			}
+			if frame.NumericMarker {
+				state.Pose = 0
+				numericRNG = fdother.NativeRNGStep(numericRNG)
+				state.Jitter = 1 - int(numericRNG%3)
+			}
+		}
+		draw.Next, draw.RNGAfter = state, numericRNG
+		out = append(out, draw)
+	}
+	return out, nil
+}

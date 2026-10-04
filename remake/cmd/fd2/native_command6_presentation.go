@@ -74,7 +74,7 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 		g.nativeModifierPresentation != nil || g.atk != nil {
 		return errors.New("native command6 presentation context unavailable")
 	}
-	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 14 {
+	if !actor.HasBattleFig || !actor.HasNativeRecordByte6 || len(g.nativeUIPalette) != 256 || len(g.nativeMapAssets.LUTs) <= 15 {
 		return errors.New("native command6 raw actor provenance unavailable")
 	}
 	effectResource := 32
@@ -90,8 +90,19 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 		return err
 	}
 	rngBefore := g.nativeRNGState
+
+	var targetHits []bool
+	var targetNumericRNG []uint16
 	walk := func(targetCount int, resolve func(index int, rng uint16) (uint16, bool, error)) (uint16, error) {
-		return figani.WalkNativeCommand6RNG(rngBefore, schedule, actor.NativeRecordByte6, targetCount, resolve)
+		targetHits = make([]bool, targetCount)
+		targetNumericRNG = make([]uint16, targetCount)
+		return figani.WalkNativeCommand6RNG(rngBefore, schedule, actor.NativeRecordByte6, targetCount, func(index int, rng uint16) (uint16, bool, error) {
+			next, hit, err := resolve(index, rng)
+			if err == nil {
+				targetHits[index], targetNumericRNG[index] = hit, next
+			}
+			return next, hit, err
+		})
 	}
 	var plan *battle.NativeCommandDamagePlan
 	if actor.Camp == battle.Enemy {
@@ -199,25 +210,10 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 	if err != nil {
 		return err
 	}
-	targetBases := make([][][]byte, len(plan.Results))
-	for targetIndex, result := range plan.Results {
-		runtimeIndex, err := nativeCommand24RuntimeUnitIndex(g.st, result.Target)
-		if err != nil {
-			return err
-		}
-		targetBases[targetIndex] = make([][]byte, figani.NativeCommand6DamageStages+1)
-		for stage := 0; stage <= figani.NativeCommand6DamageStages; stage++ {
-			staged := *result.Target
-			staged.HP = result.HPBefore - (result.HPBefore-result.HPAfter)*stage/figani.NativeCommand6DamageStages
-			record, err := battle.NativeBattlePanelRecordForUnit(&staged)
-			if err != nil {
-				return err
-			}
-			targetBases[targetIndex][stage], err = g.localizedNativeCommand0Base(background, panelAssets, actorAfterRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
-			if err != nil {
-				return err
-			}
-		}
+
+	targetBases, err := g.nativeCommand6StageBases(background, platform, panelAssets, actorAfterRecord, actorIndex, plan)
+	if err != nil {
+		return err
 	}
 	transitionBases := make([][]byte, len(plan.Results)-1)
 	for index := range transitionBases {
@@ -253,7 +249,7 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 	actorSpecs, err := battlepresent.BuildNativeCommand0ActorFrames(battlepresent.NativeCommand0ActorInput{
 		BaseBefore: actorBaseBefore, BaseAfter: targetBases[0][0], ActorEffect: actorEffect,
 		FirstTargetIdle: targetIdle[0], RawSide: actor.NativeRecordByte6,
-		Background: background, Platform: platform, LUT: g.nativeMapAssets.LUTs[11],
+		Background: background, Platform: platform, LUT: g.nativeMapAssets.LUTs[15],
 	})
 	if err != nil {
 		return err
@@ -283,9 +279,13 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 		FrontBase: targetBases[0][0], TailBase: targetBases[len(targetBases)-1][figani.NativeCommand6DamageStages],
 		TargetBases: targetBases, TransitionBases: transitionBases, ActorEffect: actorEffect,
 		TargetIdle: targetIdle, Effect: effect, Schedule: schedule, RawSide: actor.NativeRecordByte6,
+		TargetHits: targetHits, TargetNumericRNG: targetNumericRNG,
 	})
 	if err != nil {
 		return err
+	}
+	if effectSequence.RNGAfter != plan.RNGAfter {
+		return errors.New("native command6 display RNG disagrees with damage plan")
 	}
 	handler := make([]nativeCommand6HandlerFrame, 0)
 	appendPixels := func(pixels [][]byte, template nativeCommand6HandlerFrame) error {
@@ -334,6 +334,44 @@ func (g *Game) startNativeCommand6PresentationAtCursor(actor *battle.Unit, curso
 		g.nativeCmd6Presentation.targetHPBefore[index] = result.Target.HP
 	}
 	return nil
+}
+
+// nativeCommand6StageBases 保留sub_2B659的LUT15與每段HP對應的持續base。
+// actor sprite由每張caller組圖重畫，不烘入背景或改寫來源frame。
+func (g *Game) nativeCommand6StageBases(background, platform fdother.Frame, panels battle.NativeItemPanelDataAssets, actorRecord []byte, actorIndex int, plan *battle.NativeCommandDamagePlan) ([][][]byte, error) {
+	if g == nil || g.st == nil || plan == nil || len(plan.Results) == 0 || len(g.nativeMapAssets.LUTs) <= 15 || len(g.nativeMapAssets.LUTs[15]) != 256 {
+		return nil, errors.New("native command6 base LUT15 unavailable")
+	}
+	bases := make([][][]byte, len(plan.Results))
+	for targetIndex, result := range plan.Results {
+		runtimeIndex, err := nativeCommand24RuntimeUnitIndex(g.st, result.Target)
+		if err != nil {
+			return nil, err
+		}
+		bases[targetIndex] = make([][]byte, figani.NativeCommand6DamageStages+1)
+		for stage := range bases[targetIndex] {
+			staged := *result.Target
+			staged.HP = result.HPBefore - (result.HPBefore-result.HPAfter)*stage/figani.NativeCommand6DamageStages
+			record, err := battle.NativeBattlePanelRecordForUnit(&staged)
+			if err != nil {
+				return nil, err
+			}
+			base, err := g.localizedNativeCommand0Base(background, panels, actorRecord, record, actorIndex, runtimeIndex, g.handlerChapter, &platform)
+			if err != nil {
+				return nil, err
+			}
+			bg, tai := background, platform
+			bg.X, bg.Y, tai.X, tai.Y = 0, 50, 164, 157
+			if err := bg.BlitLUTAt(base, 320, 0, g.nativeMapAssets.LUTs[15]); err != nil {
+				return nil, err
+			}
+			if err := tai.BlitLUTAt(base, 320, 0, g.nativeMapAssets.LUTs[15]); err != nil {
+				return nil, err
+			}
+			bases[targetIndex][stage] = base
+		}
+	}
+	return bases, nil
 }
 
 func (g *Game) failNativeCommand6Presentation(err error) {

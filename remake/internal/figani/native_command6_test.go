@@ -312,3 +312,55 @@ func TestNativeCommand6CoordinatesMatchOriginalPlayerTargets(t *testing.T) {
 		}
 	}
 }
+
+// #161 正常原版12張viewport及target wrapper指標直接給出的shade／pose／RNG。
+// 起始RNG59907是已證damage後state，這裡不重擲命中或傷害。
+func TestNativeCommand6TargetDisplayMatchesOriginalPlayerCast(t *testing.T) {
+	schedule, err := BuildNativeCommand6PresentationSchedule(2, command6TestAnimation())
+	if err != nil {
+		t.Fatal(err)
+	}
+	points := NativeCommand6TargetCoordinates(NativeCommand6Coordinates(36, schedule.BaseByte), 42)
+	planned, err := BuildNativeCommand6TargetSequence(schedule, points, 2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	draws, err := BuildNativeCommand6TargetDisplayFrames(NewNativeCommand6DisplayState(), planned, true, 59907)
+	if err != nil {
+		t.Fatal(err)
+	}
+	shade := []int{8, 7, 6, 5, 4, 3, 2, 8, 7, 6, 5, 4}
+	x := []int{0, 0, -6, 6, 0, 0, 6, -6, 6, -6, -6, -6}
+	y := []int{0, 0, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3}
+	rng := []uint16{59907, 53435, 1659, 46204, 9346, 42165, 42569, 45801, 6122, 16373, 32846, 33552}
+	for i, draw := range draws {
+		if draw.Shader != (shade[i]<<8|0xb0) || draw.OffsetX != x[i] || draw.OffsetY != y[i] || draw.RNGAfter != rng[i] {
+			t.Fatalf("frame%d=%+v", i, draw)
+		}
+	}
+	next := draws[11].Next
+	if next != (NativeCommand6DisplayState{Shade: 3, Pose: 0, Jitter: 1}) {
+		t.Fatalf("next=%+v", next)
+	}
+	missed, err := BuildNativeCommand6TargetDisplayFrames(next, planned, false, 1234)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, draw := range missed {
+		if draw.Shader != -1 || draw.OffsetX != 0 || draw.OffsetY != 0 || draw.RNGAfter != 1234 || draw.Next != next {
+			t.Fatalf("miss advanced=%+v", draw)
+		}
+	}
+	follow, err := BuildNativeCommand6TargetDisplayFrames(missed[11].Next, planned, true, 1234)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if follow[0].Shader != 0x3b0 || follow[0].OffsetX != 6 || follow[0].OffsetY != -3 {
+		t.Fatalf("next hit reset caller=%+v", follow[0])
+	}
+	for _, state := range []NativeCommand6DisplayState{{Shade: 1}, {Shade: 9}, {Shade: 2, Pose: 4}, {Shade: 2, Jitter: 2}} {
+		if partial, err := BuildNativeCommand6TargetDisplayFrames(state, planned, true, 59907); err == nil || partial != nil {
+			t.Fatal("invalid caller state accepted")
+		}
+	}
+}

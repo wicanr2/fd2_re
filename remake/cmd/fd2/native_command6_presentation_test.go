@@ -205,7 +205,7 @@ func TestPlayerNativeCommand6CursorCentersThroughConfirm(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				for len(assets.LUTs) <= 14 {
+				for len(assets.LUTs) <= 15 {
 					lut := make([]byte, 256)
 					for i := range lut {
 						lut[i] = byte(i)
@@ -440,38 +440,18 @@ func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, pla
 	if err != nil {
 		t.Fatal(err)
 	}
-	targetIndex, err := nativeCommand24RuntimeUnitIndex(g.st, target)
-	if err != nil {
-		t.Fatal(err)
-	}
 	after := *actor
 	after.MP = plan.MPAfter
 	actorRecord, err := battle.NativeBattlePanelRecordForUnit(&after)
 	if err != nil {
 		t.Fatal(err)
 	}
-	bases := make([][]byte, figani.NativeCommand6DamageStages+1)
-	for stage := range bases {
-		staged := *target
-		staged.HP = plan.Results[0].HPBefore - (plan.Results[0].HPBefore-plan.Results[0].HPAfter)*stage/figani.NativeCommand6DamageStages
-		record, err := battle.NativeBattlePanelRecordForUnit(&staged)
-		if err != nil {
-			t.Fatal(err)
-		}
-		bases[stage], err = g.localizedNativeCommand0Base(background, panels, actorRecord, record, actorIndex, targetIndex, g.handlerChapter, &platform)
-		if err != nil {
-			t.Fatal(err)
-		}
 
-		bg, tai := background, platform
-		bg.X, bg.Y, tai.X, tai.Y = 0, 50, 164, 157
-		if err := bg.BlitLUTAt(bases[stage], 320, 0, g.nativeMapAssets.LUTs[15]); err != nil {
-			t.Fatal(err)
-		}
-		if err := tai.BlitLUTAt(bases[stage], 320, 0, g.nativeMapAssets.LUTs[15]); err != nil {
-			t.Fatal(err)
-		}
+	stageBases, err := g.nativeCommand6StageBases(background, platform, panels, actorRecord, actorIndex, plan)
+	if err != nil {
+		t.Fatal(err)
 	}
+	bases := stageBases[0]
 	actorEffect, err := nativeCommand6ActorEffect(separatedAssetPath("animations"), actor.BattleFig)
 	if err != nil {
 		t.Fatal(err)
@@ -493,6 +473,12 @@ func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, pla
 		t.Fatal(err)
 	}
 	xPose, yPose := [4]int{6, 4, 2, 0}, [4]int{-3, -2, -1, 0}
+	displays, err := figani.BuildNativeCommand6TargetDisplayFrames(figani.NewNativeCommand6DisplayState(), planned, true, numericRNG)
+	if err != nil {
+		t.Fatal(err)
+	}
+	formalCheck := os.Getenv("FD2_COMMAND6_FORMAL_TARGET_CHECK") == "1"
+
 	for index, frame := range planned {
 		// guard 是原型專用的獨立前置列，不是原版0x2A300配置的一部分。
 		const guard, stride, height, viewport = 640, 640, 270, 19360
@@ -558,9 +544,41 @@ func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, pla
 			t.Fatal(err)
 		}
 
+		var formal []byte
+		var formalErr error
+		if formalCheck {
+			formal, formalErr = battlepresent.ComposeNativeCommand6TargetFrame(bases[hpStage], actorEffect.Frames[len(actorEffect.Frames)-1], idle.Frames[idleFrame], effect, frame, displays[index])
+			if index == 7 {
+				if formalErr == nil || formal != nil || !strings.Contains(formalErr.Error(), "work frame bounds (141,-1 143x111)") {
+					t.Fatalf("formal guard changed frame%d err=%v", index, formalErr)
+				}
+			} else {
+				if formalErr != nil {
+					t.Fatal(formalErr)
+				}
+				if !bytes.Equal(formal, pixels) {
+					t.Fatalf("formal caller differs from original-matched prototype frame%d", index)
+				}
+				if err := os.WriteFile(fmt.Sprintf("%s-formal-frame-%02d.idx", prefix, index), formal, 0644); err != nil {
+					t.Fatal(err)
+				}
+			}
+		}
 		sum := sha256.Sum256(pixels)
 		entry := map[string]interface{}{"index": index, "path": file, "indexed_sha256": hex.EncodeToString(sum[:]),
 			"hp_stage": hpStage, "idle_frame": idleFrame, "negative_opaque_writes": spillCount, "first_negative_offset": firstSpill}
+
+		if formalCheck {
+			if formalErr != nil {
+				entry["formal_result"] = "rejected #154"
+				entry["formal_error"] = formalErr.Error()
+			} else {
+				entry["formal_result"] = "full-frame matched"
+				entry["formal_indexed_differences"] = 0
+				entry["formal_rgb_differences"] = 0
+			}
+			entry["display"] = displays[index]
+		}
 		pic := image.NewPaletted(image.Rect(0, 0, 320, 200), g.nativeUIPalette)
 		copy(pic.Pix, pixels)
 		var encoded bytes.Buffer
@@ -634,7 +652,9 @@ func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, pla
 	}
 	report := map[string]interface{}{"status": "DRAFT test-only signed arena and #161 caller composition; not production or heap parity", "work_allocation_bytes": 640 * 270,
 		"prototype_guard_bytes": 640, "background_selector": bgSelector, "platform_selector": taiSelector,
-		"raw_side": actor.NativeRecordByte6, "actor_battle_fig": actor.BattleFig, "target_battle_fig": target.BattleFig, "frames": reports}
+		"raw_side": actor.NativeRecordByte6, "actor_battle_fig": actor.BattleFig, "target_battle_fig": target.BattleFig, "frames": reports,
+		"formal_caller_checked": formalCheck, "strict_frame7_rejected": formalCheck,
+		"comparison_scope": "12 prototype frames / 11 formal accepted frames, frame7 strict rejected; not complete formal cast"}
 	raw, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)

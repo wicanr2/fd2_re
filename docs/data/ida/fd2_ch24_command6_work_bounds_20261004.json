@@ -7950,7 +7950,7 @@
     {
       "issue": 161,
       "id": "command6-target-full-frame-composition",
-      "status": "RE-CLOSED / DATA-READY / runtime未實作",
+      "status": "RE-CLOSED / DATA-READY / limited RUNTIME-E1; #154完整非零側仍拒收",
       "evidence_level": "已證實於固定hash、單target正常原版可見viewport；其他case待測",
       "input": {
         "input": "FD2.EXE",
@@ -9791,6 +9791,36 @@
           "warning": "語意未經本次審查",
           "source": "FD2.EXE IDA LE 0x2b016",
           "semantic_annotations": []
+        },
+        {
+          "address": "0x2b13e",
+          "bytes": "c784241c01000001000000",
+          "original": "mov     [esp+140h+var_24], 1",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x2b13e",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x2b149",
+          "bytes": "31ff",
+          "original": "xor     edi, edi",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x2b149",
+          "semantic_annotations": []
+        },
+        {
+          "address": "0x2b14b",
+          "bytes": "e97dfeffff",
+          "original": "jmp     loc_2AFCD",
+          "semantic": "未附加推測語意",
+          "level": "unknown",
+          "warning": "語意未經本次審查",
+          "source": "FD2.EXE IDA LE 0x2b14b",
+          "semantic_annotations": []
         }
       ],
       "actor_producer_and_target_wrapper": [
@@ -11466,7 +11496,10 @@
         "hit_shader": "初始0x8B0，shade每張減1，減到1改8。opaque palette=((source+shade)&7)+0xB0，mask不變；不是RGB濾鏡。",
         "pose": "x=[6,4,2,0]*jitter，y=[-3,-2,-1,0]；初始pose3/jitter-1，marker後pose0與已證共用RNG的1-RND%3，下一張生效。",
         "scope": "本次完整target12張已由原型與原版一致。front／tail／transition、正式正常confirm及其他目標仍需回歸；不另加原版不存在的傷害數字圖層。",
-        "fail_closed": "保留全序列預建／零交易拒收；#154未知資源guard不可由此放寬。"
+        "fail_closed": "保留全序列預建／零交易拒收；#154未知資源guard不可由此放寬。",
+        "typed_state": "NativeCommand6DisplayState保存Shade／Pose／Jitter，初始化只在sub_2A6BD開頭，不逐target重設；2B13E..2B14B只重設HP stage／frame counter。miss分支不推進hit shader／pose，也不消耗numeric RNG；轉場不改caller局部display state。",
+        "runtime_inputs": "從正式damage walker的resolver回傳值保存每個target的命中結果與damage後RNG，純display builder只推進已證numeric marker；最後RNG必須等於plan.RNGAfter，否則MP前拒收。",
+        "review_addendum": "既有2A70F..2A753初始化、2AE68..2AE95命中shade／pose、2AF35..2AF58 marker及2B13E..2B14B每target reset直接指令已核對；沒有新增遊戲規則、存檔或schema。#154正式guard維持。"
       },
       "prototype": {
         "path": "work/parity-slot-ch24/player-command6-signed-prototype-r5.json",
@@ -11661,6 +11694,408 @@
         "proposal": "only fingerprinted FDOTHER32 use separate bounded signed prefix; preserve known -422 write; unknown resources retain strict rejection",
         "basis": "full12viewport exact; other outside-allocation heap consumers unknown",
         "limits": "not original heap parity; no save/schema change; no production implementation before user decision"
+      },
+      "implementation": {
+        "date": "2026-10-04",
+        "spec_status": "READY for verified caller composition; #154隔離待使用者決策",
+        "scope": "正式LUT15／actor末幀／packed target／跨目標caller display state／延後HP base已接；11張正式component全圖一致，第7張仍嚴格拒收；不是完整非零側正式施法或新PLAYER-E2。",
+        "state_inputs": "保存damage resolver逐target hit／postdamage RNG，純display builder按已證marker推進，末端須等於plan.RNGAfter；miss及transition不重設display state。",
+        "source_sha256": {
+          "remake/cmd/fd2/native_command6_presentation.go": "b4e58e78f449fac0863f08e1f355250de9916e2ca4ca980201f8864c5e360c93",
+          "remake/cmd/fd2/native_command6_presentation_test.go": "384fb6ccb3815d1ee7c974fe4b7e0a170f5ff42b0542b9e6f48166acdd5234fc",
+          "remake/internal/battlepresent/native_command6.go": "0d866c5824f37f34d5f0355ac849aca9b453055fd12decc3a2c779a538b03221",
+          "remake/internal/battlepresent/native_command6_sequence.go": "4c5de1221bd117b369c91311225528680855250a7c27c1af2b2a85bd923e8cea",
+          "remake/internal/battlepresent/native_command6_sequence_test.go": "4dcc40b483ed59f6fc91be7ade32811b87bd0b1787b300276f969646e7a6f4c0",
+          "remake/internal/battlepresent/native_command6_test.go": "e60720fbd6e64de9aa84a2c517a9034b76544b837c097bd00acdeb86d9f46bf2",
+          "remake/internal/figani/native_command6.go": "91735dab95067595ad6088e820d1b50cf35252f0088a4daa66a35a1b391b5840",
+          "remake/internal/figani/native_command6_test.go": "433bbedd699cab7b69380caa2a70759943f13dd9c57222162a57fdc4a0943cff"
+        },
+        "same_source": {
+          "path": "work/parity-slot-ch24/player-command6-caller-composition-same-source-r1.json",
+          "sha256": "69e1dc866f6f28e8cfd8ae2ec04f4e990c06b70956117bd49043f81653115be3",
+          "cursor_path": "work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-cursor.json",
+          "cursor_sha256": "3856de881846cb8791663e2344ff53e506d378fa41df92e19b2789d6d8fba6c6",
+          "frames": [
+            {
+              "display": {
+                "Shader": 2224,
+                "OffsetX": 0,
+                "OffsetY": 0,
+                "RNGAfter": 59907,
+                "Next": {
+                  "Shade": 7,
+                  "Pose": 3,
+                  "Jitter": -1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 0,
+              "idle_frame": 0,
+              "index": 0,
+              "indexed_differences": 0,
+              "indexed_sha256": "7416cf08e45e261b4977e0904907b9ba775f25f11e171f9b508ba384e16e2dc5",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000000.png",
+              "original_png_sha256": "674ab679458af54e75f55f5770a666851e5874fc0e626e186b6816eeb6b06e7e",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-00.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1968,
+                "OffsetX": 0,
+                "OffsetY": 0,
+                "RNGAfter": 53435,
+                "Next": {
+                  "Shade": 6,
+                  "Pose": 0,
+                  "Jitter": -1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 0,
+              "idle_frame": 0,
+              "index": 1,
+              "indexed_differences": 0,
+              "indexed_sha256": "aa73d59fa71aab89fcfebb44f7c7437b23ba521ce385cad150191f0107107450",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000001.png",
+              "original_png_sha256": "74d72e73e18890aac91b097405dbda15b4ed0d9268550b6728ed8bc9d1abd05a",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-01.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1712,
+                "OffsetX": -6,
+                "OffsetY": -3,
+                "RNGAfter": 1659,
+                "Next": {
+                  "Shade": 5,
+                  "Pose": 0,
+                  "Jitter": 1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 1,
+              "idle_frame": 0,
+              "index": 2,
+              "indexed_differences": 0,
+              "indexed_sha256": "086d7e04805941aa34437a998ebf34983c02614a9a2b1b021ac51e1f9f8d0fe8",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000002.png",
+              "original_png_sha256": "afee767ed313aed1fc14a0da70d0f9b7418311bfe1c965357b91d6cc9ea2dfa0",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-02.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1456,
+                "OffsetX": 6,
+                "OffsetY": -3,
+                "RNGAfter": 46204,
+                "Next": {
+                  "Shade": 4,
+                  "Pose": 0,
+                  "Jitter": 0
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 2,
+              "idle_frame": 0,
+              "index": 3,
+              "indexed_differences": 0,
+              "indexed_sha256": "2dd01faaf7e887c552416336fc588b47cd5d518b294d52f6e0e3ff37398d8cf7",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000003.png",
+              "original_png_sha256": "034ce1267a5400f5b25b4906f7ef139ea0312e365f7fd69382682ab6dbf9b06f",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-03.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1200,
+                "OffsetX": 0,
+                "OffsetY": -3,
+                "RNGAfter": 9346,
+                "Next": {
+                  "Shade": 3,
+                  "Pose": 0,
+                  "Jitter": 0
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 3,
+              "idle_frame": 0,
+              "index": 4,
+              "indexed_differences": 0,
+              "indexed_sha256": "58c5bd21d6f7199ddbbe6ce21703bfb0b2fd4586d95021b28ea43d5308ce0233",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000004.png",
+              "original_png_sha256": "ee5945f4bf53f4b91f482b39ffa1fe1c998313619f4d2ea7c03103aad7836c7b",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-04.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 944,
+                "OffsetX": 0,
+                "OffsetY": -3,
+                "RNGAfter": 42165,
+                "Next": {
+                  "Shade": 2,
+                  "Pose": 0,
+                  "Jitter": 1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 4,
+              "idle_frame": 0,
+              "index": 5,
+              "indexed_differences": 0,
+              "indexed_sha256": "8567fb4f51017dff440ce36a1cee2ff9ce2afe397195e1faa465610afe94a320",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000005.png",
+              "original_png_sha256": "103e34d26f80df77bb40c4aa443ca440f3f563928a24e7db55b18138dd9f9112",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-05.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 688,
+                "OffsetX": 6,
+                "OffsetY": -3,
+                "RNGAfter": 42569,
+                "Next": {
+                  "Shade": 8,
+                  "Pose": 0,
+                  "Jitter": -1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 5,
+              "idle_frame": 0,
+              "index": 6,
+              "indexed_differences": 0,
+              "indexed_sha256": "46ce1bab4b9fc59dc692460949976ace9db0690772e358fd3772f5a0757a5a50",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000006.png",
+              "original_png_sha256": "778eb539a47d84e8422cdfab6b3115e317ba8224dbc6b755511cc11f9c1ec374",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-06.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 2224,
+                "OffsetX": -6,
+                "OffsetY": -3,
+                "RNGAfter": 45801,
+                "Next": {
+                  "Shade": 7,
+                  "Pose": 0,
+                  "Jitter": 1
+                }
+              },
+              "first_negative_offset": -422,
+              "formal_error": "battlepresent: command6 mode5 channel2: work frame bounds (141,-1 143x111)",
+              "formal_result": "rejected #154",
+              "hp_stage": 5,
+              "idle_frame": 0,
+              "index": 7,
+              "indexed_differences": 0,
+              "indexed_sha256": "04bf0ff1a9465edca2deb1550f9000caa29bcc4bbf96e04296366530104758e5",
+              "negative_opaque_writes": 1,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000007.png",
+              "original_png_sha256": "607f9d568ae0a5d0a7452a80c3c9bbdb544ecca70a287b5e343afe83c59130c5",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-07.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1968,
+                "OffsetX": 6,
+                "OffsetY": -3,
+                "RNGAfter": 6122,
+                "Next": {
+                  "Shade": 6,
+                  "Pose": 0,
+                  "Jitter": -1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 5,
+              "idle_frame": 0,
+              "index": 8,
+              "indexed_differences": 0,
+              "indexed_sha256": "c29f5babddcdd40c5e45690648cd4a2dccb393cb351a66745e013e02c2aef95d",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000008.png",
+              "original_png_sha256": "c4afd1f0b7e997b425206cc4dc84e4fb3e999af2c6506f5775a26f8e45e5f327",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-08.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1712,
+                "OffsetX": -6,
+                "OffsetY": -3,
+                "RNGAfter": 16373,
+                "Next": {
+                  "Shade": 5,
+                  "Pose": 0,
+                  "Jitter": -1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 5,
+              "idle_frame": 0,
+              "index": 9,
+              "indexed_differences": 0,
+              "indexed_sha256": "cfd43cb70ed834ab981919adb63599471bb6880b24f942d99ffb96de90d44188",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000009.png",
+              "original_png_sha256": "545d3a4249bf383625be9be301f085de14d338451f5309c0273dbea5f5a3c9c3",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-09.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1456,
+                "OffsetX": -6,
+                "OffsetY": -3,
+                "RNGAfter": 32846,
+                "Next": {
+                  "Shade": 4,
+                  "Pose": 0,
+                  "Jitter": -1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 5,
+              "idle_frame": 0,
+              "index": 10,
+              "indexed_differences": 0,
+              "indexed_sha256": "6d05a70b28062f87b64417950f57f356ec7b3c07575db7ee8e4fb2f7d2aa09b5",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000010.png",
+              "original_png_sha256": "2ae8ca316dde101ba2ff88cc377e5017e7a3a22a13ad113e66deb6fe0c7d8926",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-10.idx",
+              "rgb_differences": 0
+            },
+            {
+              "display": {
+                "Shader": 1200,
+                "OffsetX": -6,
+                "OffsetY": -3,
+                "RNGAfter": 33552,
+                "Next": {
+                  "Shade": 3,
+                  "Pose": 0,
+                  "Jitter": 1
+                }
+              },
+              "first_negative_offset": 0,
+              "formal_indexed_differences": 0,
+              "formal_result": "full-frame matched",
+              "formal_rgb_differences": 0,
+              "hp_stage": 5,
+              "idle_frame": 0,
+              "index": 11,
+              "indexed_differences": 0,
+              "indexed_sha256": "e0a60ca277bbecff8005f0aa35b44265cb95f51ff0b8898f1ff094b67342c8e2",
+              "negative_opaque_writes": 0,
+              "original_png": "/src/work/parity-slot-ch24/player-command6-original-r3/frames/frame-000011.png",
+              "original_png_sha256": "b285dbf4ff15fbf25098c71798e289c6f44d4473d450bb903ee03aaadffa10b9",
+              "path": "/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-frame-11.idx",
+              "rgb_differences": 0
+            }
+          ],
+          "classification": "12 prototype frames / 11 formal accepted frames, frame7 strict rejected; not complete formal cast",
+          "method": "已登記f46d9c54玩家槽CONTINUE探針；局部modal交接／controlled RNG3473，11張正式composer對照同源原版12張完整PNG，無遮罩；完整確認仍在frame7零交易拒收。"
+        },
+        "full_go": {
+          "path": "work/parity-slot-ch24/command6-caller-composition-full-go-r1.jsonl",
+          "sha256": "b95d8cca98983a5b1c10af408dba36562f679e47fb47ecc860e05f1bbce7d9ea",
+          "exit_code": 0,
+          "passed_packages": 19,
+          "passed_tests_including_parent_subtests": 2778,
+          "conditional_skips": 31,
+          "failures": 0,
+          "source_sha256": {
+            "remake/cmd/fd2/native_command6_presentation.go": "b4e58e78f449fac0863f08e1f355250de9916e2ca4ca980201f8864c5e360c93",
+            "remake/cmd/fd2/native_command6_presentation_test.go": "384fb6ccb3815d1ee7c974fe4b7e0a170f5ff42b0542b9e6f48166acdd5234fc",
+            "remake/internal/battlepresent/native_command6.go": "0d866c5824f37f34d5f0355ac849aca9b453055fd12decc3a2c779a538b03221",
+            "remake/internal/battlepresent/native_command6_sequence.go": "4c5de1221bd117b369c91311225528680855250a7c27c1af2b2a85bd923e8cea",
+            "remake/internal/battlepresent/native_command6_sequence_test.go": "ccf3b031b5dd2663ae655c2343c61242f39e94cb115aaa22270666225be16d8f",
+            "remake/internal/battlepresent/native_command6_test.go": "e60720fbd6e64de9aa84a2c517a9034b76544b837c097bd00acdeb86d9f46bf2",
+            "remake/internal/figani/native_command6.go": "91735dab95067595ad6088e820d1b50cf35252f0088a4daa66a35a1b391b5840",
+            "remake/internal/figani/native_command6_test.go": "433bbedd699cab7b69380caa2a70759943f13dd9c57222162a57fdc4a0943cff"
+          },
+          "source_scope": "全套於測試fixture欄位補強前執行，production與same-source probe來源未改；補強後相關4套件r2另通過。"
+        },
+        "related_go": {
+          "path": "work/parity-slot-ch24/command6-caller-composition-go-r1.log",
+          "sha256": "2797ae2213c4434eb6a86f667b7c47c81c9aaa3ba52f2b92420487ed079eb5c9",
+          "exit_code": 0,
+          "scope": "跨target hit→miss→hit caller state／HP base延後一幀／LUT與actor／real assets strict guard／4組正式confirm交易與回復。"
+        },
+        "same_source_log": {
+          "path": "work/parity-slot-ch24/player-command6-caller-composition-same-source-r1.log",
+          "sha256": "f6757127669e1cbf7f01bb37985428086486e39ea3d65668c4a2f77e9124e9da",
+          "exit_code": 0
+        },
+        "limits": "#154隔離近似仍待先前共同決策；全球嚴格工作區guard未變；#161、#160與#154保持開啟，章台帳與隊伍政策不變。",
+        "commands": [
+          "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120  sh -c 'mkdir -p /tmp/home; gofmt -w internal/figani/native_command6.go internal/figani/native_command6_test.go internal/battlepresent/native_command6.go internal/battlepresent/native_command6_test.go internal/battlepresent/native_command6_sequence.go internal/battlepresent/native_command6_sequence_test.go cmd/fd2/native_command6_presentation.go cmd/fd2/native_command6_presentation_test.go; with-xvfb go test ./internal/figani ./internal/battlepresent ./internal/battle ./cmd/fd2 -run \"Command6|NativeCommandWorkBounds\" -count=1 -timeout 120s -v' > work/parity-slot-ch24/command6-caller-composition-go-r1.log 2>&1",
+          "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_command6_presentation_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_COMMAND6_CURSOR_SAVE=/src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav FD2_COMMAND6_FORMAL_TARGET_CHECK=1 FD2_COMMAND6_PROTOTYPE_ORIGINAL=/src/work/parity-slot-ch24/player-command6-original-r3/frames FD2_COMMAND6_PROTOTYPE_PREFIX=/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1 FD2_COMMAND6_CURSOR_OUT=/src/work/parity-slot-ch24/player-command6-caller-composition-same-source-r1-cursor.json with-xvfb go test ./cmd/fd2 -run ^TestNativeCommand6OriginalContinueCursorProbe$ -count=1 -timeout 120s -v' > work/parity-slot-ch24/player-command6-caller-composition-same-source-r1.log 2>&1",
+          "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -json -count=1 -timeout 600s' > work/parity-slot-ch24/command6-caller-composition-full-go-r1.jsonl 2>&1",
+          "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 120  sh -c 'mkdir -p /tmp/home; gofmt -w internal/figani/native_command6.go internal/figani/native_command6_test.go internal/battlepresent/native_command6.go internal/battlepresent/native_command6_test.go internal/battlepresent/native_command6_sequence.go internal/battlepresent/native_command6_sequence_test.go cmd/fd2/native_command6_presentation.go cmd/fd2/native_command6_presentation_test.go; with-xvfb go test ./internal/figani ./internal/battlepresent ./internal/battle ./cmd/fd2 -run \"Command6|NativeCommandWorkBounds\" -count=1 -timeout 120s -v' > work/parity-slot-ch24/command6-caller-composition-go-r2.log 2>&1"
+        ],
+        "related_go_final": {
+          "path": "work/parity-slot-ch24/command6-caller-composition-go-r2.log",
+          "sha256": "550e751ce3b84312eaf70cd70e2df60710a107e851fcc55438af4ce56b7a35ff",
+          "exit_code": 0,
+          "reason": "最終審閱把既有malformed stage fixture的hit/RNG欄位收窄至1個target，確實測stage guard；production未改。相關4套件乾淨重跑通過。"
+        },
+        "hygiene": {
+          "uid_gid": "1000:1000",
+          "changed_files_checked": 15,
+          "legacy_root_owned_count": 2811,
+          "md_directories": 0,
+          "unexpected_fd2_containers": "none; one-shot tests exited with --rm",
+          "original_inputs": "readonly; no original assets staged",
+          "worklist": "true-host gh auth+list r112; cmd_pull/render/verify24 open, zero stale; lessons136/41guards"
+        }
       }
     }
   ]

@@ -34,7 +34,7 @@ func TestBuildNativeCommand6EffectSequencePrebuildsEveryTarget(t *testing.T) {
 	sequence, err := BuildNativeCommand6EffectSequence(NativeCommand6EffectInput{
 		FrontBase: base, TailBase: base, TargetBases: targetBases, TransitionBases: [][]byte{base},
 		ActorEffect: command6SequenceAnimation(2), TargetIdle: []*figani.Animation{command6SequenceAnimation(2), command6SequenceAnimation(2)},
-		Effect: effect, Schedule: schedule, RawSide: 1,
+		Effect: effect, Schedule: schedule, RawSide: 1, TargetHits: []bool{false, false}, TargetNumericRNG: []uint16{1, 1},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -76,8 +76,47 @@ func TestBuildNativeCommand6EffectSequenceFailsBeforePartialOutput(t *testing.T)
 	base := make([]byte, 320*200)
 	if got, err := BuildNativeCommand6EffectSequence(NativeCommand6EffectInput{
 		FrontBase: base, TailBase: base, TargetBases: [][][]byte{{base}},
-		ActorEffect: command6SequenceAnimation(1), TargetIdle: []*figani.Animation{command6SequenceAnimation(1)}, Effect: effect, Schedule: schedule, RawSide: 1,
+		ActorEffect: command6SequenceAnimation(1), TargetIdle: []*figani.Animation{command6SequenceAnimation(1)}, Effect: effect, Schedule: schedule, RawSide: 1, TargetHits: []bool{false}, TargetNumericRNG: []uint16{1},
 	}); err == nil || len(got.Front) != 0 {
 		t.Fatalf("malformed stage bases accepted: %+v err=%v", got, err)
+	}
+}
+
+// #161 stage marker更新持續base，下一張viewport才顯示新HP背景。
+// 對第三方原版槽的同狀態全圖另由cmd/fd2探針驗，不以此fixture宣稱parity。
+func TestNativeCommand6SequenceRetainsPreviousHPBaseForMarkerFrame(t *testing.T) {
+	effect := command6SequenceAnimation(10)
+	for i := range effect.Frames {
+		effect.Frames[i].Y = 20
+	}
+	schedule, err := figani.BuildNativeCommand6PresentationSchedule(0, effect)
+	if err != nil {
+		t.Fatal(err)
+	}
+	base := make([]byte, 320*200)
+	stages := make([][]byte, 6)
+	for stage := range stages {
+		stages[stage] = append([]byte(nil), base...)
+		stages[stage][319+199*320] = byte(10 + stage)
+	}
+	in := NativeCommand6EffectInput{FrontBase: base, TailBase: stages[5], TargetBases: [][][]byte{stages},
+		ActorEffect: command6SequenceAnimation(1), TargetIdle: []*figani.Animation{command6SequenceAnimation(1)},
+		Effect: effect, Schedule: schedule, RawSide: 0, TargetHits: []bool{true}, TargetNumericRNG: []uint16{59907}}
+	out, err := BuildNativeCommand6EffectSequence(in)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []byte{10, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15}
+	for frame, value := range want {
+		if got := out.Targets[0].Frames[frame][319+199*320]; got != value {
+			t.Fatalf("frame%d base%d want%d", frame, got, value)
+		}
+	}
+	if out.RNGAfter != 33552 {
+		t.Fatalf("RNG=%d want33552", out.RNGAfter)
+	}
+	in.TargetNumericRNG = nil
+	if partial, err := BuildNativeCommand6EffectSequence(in); err == nil || len(partial.Front) != 0 {
+		t.Fatal("missing numeric provenance published output")
 	}
 }

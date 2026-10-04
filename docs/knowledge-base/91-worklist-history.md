@@ -5192,3 +5192,13 @@ Python及相關Go回歸通過；第23章與第24章有限收據四gate／整檔S
 ## 2026-10-04 #154隔離原型、#161組圖與#162取整
 
 同源12張完整影格先反證負列處理不足以修復正式組圖，分別登記#161與#162後查證。__CHP控制字反證nearest-even，READY後修正typed座標與兩個舊測試斷言。隔離原型依直接指令恢復LUT15／actor／packed target／pose／HP持續base，受版控探針的12張indexed及RGB全部0差異。原型仍保存一筆offset -422；未知heap consumer不宣稱exact，#154正式隔離方案待共同決策。#161與#160未完成；章台帳與AP／DP／DX政策不變，現況與驗證只見58。
+
+## 2026-10-04 #161正式caller組圖
+
+2026-10-04 #161：已審查caller組圖接入正式LUT15、actor末幀、packed target色調／pose與持續base。Shade／Pose／Jitter只在施法開頭初始化，跨目標落空與轉場保留；display只消耗已證numeric marker，末端RNG須等於damage plan。HP marker先更新持續base，下一張才顯示新HP。全序列預建、失敗零交易及嚴格工作區guard維持。
+
+同源固定槽探針的11張正式composer完整影格與dosgolem原版索引／RGB全0差異；第7張仍按#154負列拒收。12張全圖一致是隔離原型，未證明正式非零側全程施法或新增PLAYER-E2。#161／#160／#154保持開啟，章台帳與既有隊伍政策不變。
+
+驗證：相關Go、4組正式confirm及同源CONTINUE局部探針通過；完整Go19套件、2778項含父／子案例通過、31項條件略過，零失敗。原版輸入／工具／影格雜湊、可重跑命令與限制見[主契約followup161](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
+
+本批最終審閱補強畸形HP stage測試欄位，相關4套件r2再次通過；production與同源探針來源未改。24條Issue機器訊號仍在，沒有應結案而未關的條目；教訓檢查通過。變更檔UID/GID1000:1000，既有root-owned基線2811未增、沒有.md目錄；一次性FD2容器均已退出移除。

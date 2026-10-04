@@ -19,7 +19,7 @@ func TestComposeNativeCommand6TargetFramePreservesModeOrder(t *testing.T) {
 		Mode4: []figani.NativeCommand6Layer{{Mode: 4, Channel: 0, Frame: 4}},
 		Mode5: []figani.NativeCommand6Layer{{Mode: 5, Channel: 0, Frame: 5}},
 	}
-	got, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), target, effect, frame)
+	got, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), target, target, effect, frame, figani.NativeCommand6TargetDisplayFrame{Shader: -1})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func TestComposeNativeCommand6TargetFramePreservesModeOrder(t *testing.T) {
 func TestComposeNativeCommand6TargetFrameRejectsInvalidLayer(t *testing.T) {
 	effect := &figani.Animation{Frames: make([]figani.Frame, 10), HeaderByte2: 10}
 	frame := figani.NativeCommand6TargetFrame{Mode4: []figani.NativeCommand6Layer{{Frame: 10}}}
-	if _, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), figani.Frame{}, effect, frame); err == nil {
+	if _, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), figani.Frame{}, figani.Frame{}, effect, frame, figani.NativeCommand6TargetDisplayFrame{Shader: -1}); err == nil {
 		t.Fatal("out-of-range command6 layer accepted")
 	}
 }
@@ -119,6 +119,7 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 			t.Fatal(err)
 		}
 		target := figani.Frame{Width: 1, Height: 1, Pixels: []byte{99}, Mask: []byte{1}}
+		actor := figani.Frame{X: 300, Width: 1, Height: 1, Pixels: []byte{42}, Mask: []byte{1}}
 		for step, planned := range sequence {
 			// 獨立參照：用既有FIGANI嚴格blit寫原版大小，依原始viewport擷取。
 			work := make([]byte, 0x2A300)
@@ -133,6 +134,7 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 			for _, layer := range planned.Mode4 {
 				blit(effect.Frames[layer.Frame], layer.X, layer.Y)
 			}
+			blit(actor, 0, 0)
 			blit(target, 0, 0)
 			for _, layer := range planned.Mode5 {
 				blit(effect.Frames[layer.Frame], layer.X, layer.Y)
@@ -141,7 +143,7 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 			for y := 0; y < 200; y++ {
 				copy(expected[y*320:(y+1)*320], work[0x4BA0+y*640:0x4BA0+y*640+320])
 			}
-			got, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), target, effect, planned)
+			got, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), actor, target, effect, planned, figani.NativeCommand6TargetDisplayFrame{Shader: -1})
 			if referenceErr != nil {
 				// #154：負列位置仍未知，保留零partial-output拒收，不稱已修正。
 				if err == nil || got != nil {
@@ -168,7 +170,7 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 		idle := &figani.Animation{Frames: []figani.Frame{target}}
 		all, err := BuildNativeCommand6EffectSequence(NativeCommand6EffectInput{
 			FrontBase: base, TailBase: base, TargetBases: [][][]byte{stages, stages}, TransitionBases: [][]byte{base},
-			ActorEffect: idle, TargetIdle: []*figani.Animation{idle, idle}, Effect: effect, Schedule: schedule, RawSide: side,
+			ActorEffect: idle, TargetIdle: []*figani.Animation{idle, idle}, Effect: effect, Schedule: schedule, RawSide: side, TargetHits: []bool{false, false}, TargetNumericRNG: []uint16{1, 1},
 		})
 		if side == 0 {
 			if err != nil || len(all.Targets) != 2 || len(all.Targets[1].Frames) != 12 || len(all.Transitions) != 1 {

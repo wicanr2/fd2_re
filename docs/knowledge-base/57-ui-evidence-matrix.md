@@ -1618,3 +1618,7 @@ PLAYER-E2限111／114例外。沿用第21章SAV，T3／T5正常抽樣後seq916�
 2026-10-04 #160：經[玩家中心主證據](../data/ida/fd2_player_command6_cursor_center_20261004.json)的READY審查，正式指令6白名單與confirm已改用游標Cell；先驗selection field／cursor gate，再從中心建effect名單。共用field分支原已允許空名單，但白名單缺6，先前「指令6selection UI已可進target」由本次直接反例補正。既有AI、其他指令及演出交易沿用。驗證範圍見[58](58-fd2-exe-re-coverage.md)：#160有限RUNTIME-E1，正常非零側演出仍由#154原子拒收，章台帳不變。
 
 2026-10-04 #161／#162：[#161](https://github.com/wicanr2/fd2_re/issues/161)登記指令6完整target組圖consumer缺口；[#162](https://github.com/wicanr2/fd2_re/issues/162)修正被__CHP反證的取整假設。同源隔離原型12張完整索引／RGB相同，不使用遮罩；它仍是局部prototype，沒有正式非零側confirm全程演出或PLAYER-E2。正式#154負列拒收、#160未關閉，完成數與驗證只引用[58](58-fd2-exe-re-coverage.md)。
+
+2026-10-04 #161：已審查caller組圖接入正式LUT15、actor末幀、packed target色調／pose與持續base。Shade／Pose／Jitter只在施法開頭初始化，跨目標落空與轉場保留；display只消耗已證numeric marker，末端RNG須等於damage plan。HP marker先更新持續base，下一張才顯示新HP。全序列預建、失敗零交易及嚴格工作區guard維持。
+
+同源固定槽探針的11張正式composer完整影格與dosgolem原版索引／RGB全0差異；第7張仍按#154負列拒收。12張全圖一致是隔離原型，未證明正式非零側全程施法或新增PLAYER-E2。#161／#160／#154保持開啟，章台帳與既有隊伍政策不變。唯一分層現況見[58](58-fd2-exe-re-coverage.md)。

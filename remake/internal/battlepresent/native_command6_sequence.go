@@ -13,6 +13,7 @@ type NativeCommand6TargetSequence struct {
 }
 
 type NativeCommand6EffectSequence struct {
+	RNGAfter    uint16
 	Front       [][]byte
 	Targets     []NativeCommand6TargetSequence
 	Transitions [][][]byte
@@ -20,6 +21,8 @@ type NativeCommand6EffectSequence struct {
 }
 
 type NativeCommand6EffectInput struct {
+	TargetHits          []bool
+	TargetNumericRNG    []uint16
 	FrontBase, TailBase []byte
 	TargetBases         [][][]byte
 	TransitionBases     [][]byte
@@ -37,6 +40,7 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 	if len(in.FrontBase) != nativeCommand0SurfaceSize || len(in.TailBase) != nativeCommand0SurfaceSize ||
 		in.ActorEffect == nil || len(in.ActorEffect.Frames) == 0 || in.Effect == nil ||
 		len(in.TargetIdle) == 0 || len(in.TargetBases) != len(in.TargetIdle) ||
+		len(in.TargetHits) != len(in.TargetIdle) || len(in.TargetNumericRNG) != len(in.TargetIdle) ||
 		len(in.TransitionBases) != len(in.TargetIdle)-1 || in.Schedule.EffectResource == 0 {
 		return NativeCommand6EffectSequence{}, errors.New("battlepresent: incomplete command6 effect sequence input")
 	}
@@ -81,22 +85,30 @@ func BuildNativeCommand6EffectSequence(in NativeCommand6EffectInput) (NativeComm
 	state := figani.NewNativeCommand6TargetState()
 
 	lastTargetFrame := 0
+	displayState := figani.NewNativeCommand6DisplayState()
 	for targetIndex, idle := range in.TargetIdle {
 		planned, err := figani.BuildNativeCommand6TargetSequenceFromState(state, in.Schedule, points, in.RawSide)
 		if err != nil {
 			return NativeCommand6EffectSequence{}, err
 		}
+
+		displays, err := figani.BuildNativeCommand6TargetDisplayFrames(displayState, planned, in.TargetHits[targetIndex], in.TargetNumericRNG[targetIndex])
+		if err != nil {
+			return NativeCommand6EffectSequence{}, err
+		}
+		displayState = displays[len(displays)-1].Next
+		out.RNGAfter = displays[len(displays)-1].RNGAfter
 		idleFrame, idleRepeat, hpStage := 0, 0, 0
 		for frameIndex, frame := range planned {
-			if frame.HPStage != 0 {
-				hpStage = frame.HPStage
-			}
-			pixels, err := ComposeNativeCommand6TargetFrame(in.TargetBases[targetIndex][hpStage], idle.Frames[idleFrame], in.Effect, frame)
+			pixels, err := ComposeNativeCommand6TargetFrame(in.TargetBases[targetIndex][hpStage], in.ActorEffect.Frames[len(in.ActorEffect.Frames)-1], idle.Frames[idleFrame], in.Effect, frame, displays[frameIndex])
 			if err != nil {
 				return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 target %d frame %d: %w", targetIndex, frameIndex, err)
 			}
 			out.Targets[targetIndex].Frames = append(out.Targets[targetIndex].Frames, pixels)
 			out.Targets[targetIndex].HPStages = append(out.Targets[targetIndex].HPStages, frame.HPStage)
+			if frame.HPStage != 0 {
+				hpStage = frame.HPStage
+			}
 			idleRepeat++
 			if idle.Frames[idleFrame].Delay <= 0 {
 				return NativeCommand6EffectSequence{}, fmt.Errorf("battlepresent: command6 target %d idle delay unavailable", targetIndex)
