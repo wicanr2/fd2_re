@@ -2922,3 +2922,36 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 原版入口及返回copy的固定來源、影像、測試、命令與輸出雜湊只在主契約保存。正式程式未改，不重跑整章、不把先前完整Go驗證算成本輪結果。
 
 本批收尾：真正主機Issue #166保持開啟；pull／render／verify為23項、可能已完成0項。155條教訓的51條guard、11份輸出及1份測試來源雜湊、13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。一次性FD2容器已退出，其他專案未更動。提交與推送結果見[Issue #166](https://github.com/wicanr2/fd2_re/issues/166)。
+
+#166的[physical_own_map_return_probe](../data/ida/fd2_physical_background_selection_20261004.json)為DRAFT；固定第八章弓手首擊後返回地圖，沿原槽／控制／窗口補同時點來源，尚未提高驗收層級。
+
+#166的[physical_own_map_return_acceptance_spec](../data/ida/fd2_physical_background_selection_20261004.json)已READY：固定原版輸入、caller與同時點來源已核對，授權共用完整畫布驗收；重製結果仍待實跑。
+
+#174的[physical_map_hud_cycle_evidence／spec](../data/ida/fd2_physical_background_selection_20261004.json)已RE-CLOSED／READY；optional HUD讀取更新前idle，先建立產品反例再修正候選交易來源。#166其餘索引差異仍待分類。
+
+#175的[physical_own_map_selector_probe](../data/ida/fd2_physical_background_selection_20261004.json)為DRAFT；固定首次返回窄追原始cycle與sprite pointer，不用候選像素挑幀。
+
+#175的[physical_own_map_raw_restore_spec](../data/ida/fd2_physical_background_selection_20261004.json)已READY：正式oracle確認slot5／pose2／cycle2與指標，308差異來自驗收constructor重設raw姿勢。修正限測試輸入，未證明正式blitter有缺陷。
+
+### 2026-10-05 #174／#175：HUD週期與弓手返回地圖
+
+[主契約physical_map_hud_cycle_validation／physical_own_map_return_acceptance_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。原版1297D先推進idle，1ACF3再讀取；正式HUD曾在推進前取得舊快照，現改讀本次候選idle。兩個caller與拒收原子性均有反例與通過收據。
+
+弓手的選幀指標與B24來源一致。剩餘差異來自驗收工具在raw匯入後呼叫新單位constructor，把姿勢重設；現於constructor後恢復原始呈現資料並逐筆核對。正式unit blitter保持。原先拒收收據保留，#175的「正式弓手選幀尚未閉合」診斷由原版指標與測試資料流反證取代。
+
+我方弓手與既有敵方／友軍反擊的普通返回完整畫布通過。原版弓手首次copy的DAC全黑，驗收另檢查indexed資料與整份色盤，不能單靠RGB相等。時鐘仍為hardware-spec approximation，原版配置器與一般work生命週期未證明。正常章重播的行為與存檔保持，整章節點／畫面仍按既有門檻拒收；不新增PLAYER-E2。唯一數字與命令見[58](58-fd2-exe-re-coverage.md)，父項[#166](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。
+
+本批目前狀態以以下有限驗收表及主契約為準；原#175選幀未知診斷已失效，不重開已閉合的127E0或11019。
+
+| 層級／項目 | 目前結果 | 主證據 |
+|---|---|---|
+| RE-CLOSED：HUD reader／caller | 1297D→1ACF3；reader原始0x1AE54保留 | physical_map_hud_cycle_evidence |
+| RUNTIME-E1：HUD修正 | 普通／物理返回均使用candidate idle，快照及拒收原子性通過 | physical_map_hud_cycle_validation |
+| 限定驗收：弓手普通返回 | 201 controls、31 raw records，64000索引與RGB及256色盤差異皆0；原版／重製PNG SHA同為7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc | physical_own_map_return_acceptance_validation |
+| #175測試輸入勘誤 | 原版slot5／pose2／cycle2；constructor後恢復raw，308差異歸零 | physical_own_map_selector_probe.result／physical_own_map_raw_restore_validation |
+| 抽樣／Go | 38頂層案例、兩份完整map、四演出49／34／50／42幀；19套件2362測試通過 | physical_map_hud_cycle_validation |
+| GPU | 我方53 presents／40 caller waits；命中反擊64／35，Draw確認與續行通過 | physical_map_hud_cycle_validation.gpu |
+| 正常第十二章複核 | AI155入口全部消費、順序分歧0；275畫面。行為與交易通過、存檔SHA一致；節點與畫面整章閘門仍拒收 | physical_map_hud_cycle_validation.chapter_regression |
+| 未驗收與可選事項 | #166特殊返回／連擊與音訊、#167工具政策、#52／#154及原章台帳保持 | GitHub worklist Issues |
+
+命令、固定輸入及本批來源／輸出SHA在主契約physical_map_hud_cycle_validation.commands／source_hashes／output_hashes；統計由Go JSON事件及完整原始收據重生，日期2026-10-05。字串清冊98項分類保留，僅重新綁定行號與清冊雜湊。

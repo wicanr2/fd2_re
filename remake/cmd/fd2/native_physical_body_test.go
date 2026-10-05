@@ -1001,14 +1001,37 @@ func physicalCounterHitSceneCopyPrefix(t *testing.T, run string) int {
 
 // READY #166限定驗收：正常LOAD／出戰後匯入#173入口資料，合成後才讀原版像素。
 // 範圍與時鐘近似見physical_map_return_acceptance_spec；不宣稱PLAYER-E2。
+type physicalMapReturnAcceptance struct {
+	battle, slotSHA, traceSHA, pngSHA  string
+	entryStep                          uint64
+	unitCount, frameIndex              int
+	palettePhase, paletteTick          int
+	idle, moving, terrain, flip, shift int
+	scope                              string
+}
+
 func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
+	verifyNativePhysicalMapReturn(t, physicalMapReturnAcceptance{
+		battle:    "battle_ch12",
+		slotSHA:   "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+		traceSHA:  "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b",
+		pngSHA:    "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+		entryStep: 4000640342, unitCount: 33, frameIndex: 43,
+		palettePhase: 4, paletteTick: 12333, idle: 0, moving: 0, terrain: 14, flip: 0, shift: 0,
+		scope: "固定ch12正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升",
+	})
+}
+
+// 共用既有READY驗收步驟。新案例需先有同源證據與READY規格才可呼叫。
+func verifyNativePhysicalMapReturn(t *testing.T, cfg physicalMapReturnAcceptance) {
+	t.Helper()
 	slot, run, prefix := os.Getenv("FD2_PHYSICAL_MAP_SLOT"), os.Getenv("FD2_PHYSICAL_MAP_ORIGINAL"), os.Getenv("FD2_PHYSICAL_MAP_OUT")
 	if slot == "" || run == "" || prefix == "" {
 		t.Skip("需要#166固定槽、同時點來源與輸出路徑")
 	}
 	stored, err := os.ReadFile(slot)
-	if err != nil || fmt.Sprintf("%x", sha256.Sum256(stored)) != "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b" {
-		t.Fatal("ch12固定槽", err)
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(stored)) != cfg.slotSHA {
+		t.Fatal("固定槽", err)
 	}
 	t.Setenv("FD2_TITLE", "1")
 	t.Setenv("FD2_MUTE", "1")
@@ -1021,7 +1044,7 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 	if g.loadErr != "" || !g.confirmTitleLoadSlot(0) {
 		t.Fatal("正常 LOAD", g.loadErr)
 	}
-	r := &parityReplay{t: t, g: g, battle: "battle_ch12"}
+	r := &parityReplay{t: t, g: g, battle: cfg.battle}
 	r.settleTown()
 	for g.campSel != 2 {
 		if !g.moveNativeTownSelection(1) {
@@ -1078,7 +1101,7 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 		} `json:"map_runtime"`
 	}
 	raw, err := os.ReadFile(filepath.Join(run, "eip-trace.jsonl"))
-	if err != nil || fmt.Sprintf("%x", sha256.Sum256(raw)) != "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b" {
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(raw)) != cfg.traceSHA {
 		t.Fatal("固定trace", err)
 	}
 	found := 0
@@ -1098,7 +1121,7 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 			found++
 		}
 	}
-	if found != 1 || entry.Step != 4000640342 || entry.Stack[1] != "0x1" || !entry.Valid || !entry.UnitsValid || len(entry.Units) != 33 {
+	if found != 1 || entry.Step != cfg.entryStep || entry.Stack[1] != "0x1" || !entry.Valid || !entry.UnitsValid || len(entry.Units) != cfg.unitCount {
 		t.Fatal("entry不符", found, entry.Step)
 	}
 	units := make([]*battle.Unit, len(entry.Units))
@@ -1146,8 +1169,18 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 	}
 	for i, u := range units {
 		b, _ := hex.DecodeString(entry.Units[i].Raw)
-		if u.MapSelectorSlot != int(b[2]) {
-			t.Fatal("selector slot", i)
+		key, err := cache.KeyForSlot(u.MapSelectorSlot)
+		if err != nil || u.MapSelectorSlot != int(b[2]) || key != int(b[7]) {
+			t.Fatal("selector slot/key", i, err)
+		}
+		// 快取constructor會初始化pose/motion；同狀態匯入須在其後恢復raw。
+		// READY契約：physical_own_map_raw_restore_spec。不可用輸出phase猜補。
+		u.Dir = int(b[3])
+		u.NativeMapPresentation = battle.NativeMapPresentationState{X: b[0], Y: b[1], Pose: b[3], Motion: b[4]}
+		layer, ok := u.NativeUnitLayerEntry()
+		if !ok || layer.X != int(b[0]) || layer.Y != int(b[1]) || layer.Slot != int(b[2]) ||
+			layer.Pose != int(b[3]) || layer.MotionOffset != int(b[4]) || layer.Flags != b[5] || layer.ForceBase != (b[0x26] != 0) {
+			t.Fatal("raw unit layer input", i)
 		}
 	}
 
@@ -1215,10 +1248,10 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 	if err != nil || !bytes.Equal(beforeUnits, afterUnits) {
 		t.Fatal("返回地圖改寫單位", err)
 	}
-	if g.nativeFDOTHERPalettePhase != 4 || g.nativeFDOTHERPaletteTick != 12333 ||
-		g.st.NativeMapCycleState.Idle != 0 || g.st.NativeMapCycleState.Moving != 0 ||
-		g.st.NativeTerrainPhaseState.Phase != 14 || g.st.NativeTerrainFlipState.Value != 0 ||
-		g.st.NativeUnitPixelShiftState.Value != 0 {
+	if g.nativeFDOTHERPalettePhase != cfg.palettePhase || g.nativeFDOTHERPaletteTick != cfg.paletteTick ||
+		g.st.NativeMapCycleState.Idle != cfg.idle || g.st.NativeMapCycleState.Moving != cfg.moving ||
+		g.st.NativeTerrainPhaseState.Phase != cfg.terrain || g.st.NativeTerrainFlipState.Value != cfg.flip ||
+		g.st.NativeUnitPixelShiftState.Value != cfg.shift {
 		t.Fatal("返回地圖可見phase不符")
 	}
 	if len(g.nativeMapVGA) != 64000 {
@@ -1231,8 +1264,8 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 	pic := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
 	copy(pic.Pix, g.nativeMapVGA)
 	// 原版PNG只在正式合成完成後讀取，禁止用作合成輸入。
-	originalPNG, err := os.ReadFile(filepath.Join(run, "frames/frame-000043.png"))
-	if err != nil || fmt.Sprintf("%x", sha256.Sum256(originalPNG)) != "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df" {
+	originalPNG, err := os.ReadFile(filepath.Join(run, "frames", fmt.Sprintf("frame-%06d.png", cfg.frameIndex)))
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(originalPNG)) != cfg.pngSHA {
 		t.Fatal("固定原版返回畫面", err)
 	}
 	decoded, err := png.Decode(bytes.NewReader(originalPNG))
@@ -1263,10 +1296,10 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 			paletteDiff++
 		}
 	}
+	status := "limited-CONFORMED"
 	if indexedDiff != 0 || rgbDiff != 0 || paletteDiff != 0 {
-		t.Fatalf("全畫面差異 index=%d RGB=%d palette=%d", indexedDiff, rgbDiff, paletteDiff)
+		status = "rejected-full-frame-difference"
 	}
-	t.Logf("完整返回地圖：64000索引與RGB、256色盤皆零差異；單位與色盤phase/tick保留")
 	output, err := os.Create(prefix + ".png")
 	if err != nil {
 		t.Fatal(err)
@@ -1277,7 +1310,7 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 	if err := output.Close(); err != nil {
 		t.Fatal(err)
 	}
-	receipt := map[string]any{"state": "limited-CONFORMED", "kind": "physical-map-full-frame RUNTIME-E1", "indexed_difference_pixels": indexedDiff, "rgb_difference_pixels": rgbDiff, "palette_difference_entries": paletteDiff, "units_unchanged": true, "source_entry_step": entry.Step, "source_trace_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "input_bios_tick": fields["0x46C"], "work_policy": "formal Game retained work; no original allocator assumption", "input_work_sha256": beforeWork, "clock_method": "existing single transaction hardware-spec approximation; original later latch not fed as input", "output_cycles": g.st.NativeMapCycleState, "output_terrain": g.st.NativeTerrainPhaseState, "output_flip": g.st.NativeTerrainFlipState, "output_shift": g.st.NativeUnitPixelShiftState, "palette_phase": g.nativeFDOTHERPalettePhase, "palette_tick": g.nativeFDOTHERPaletteTick, "after_called": continued, "limit": "固定ch12正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升"}
+	receipt := map[string]any{"state": status, "kind": "physical-map-full-frame RUNTIME-E1", "indexed_difference_pixels": indexedDiff, "rgb_difference_pixels": rgbDiff, "palette_difference_entries": paletteDiff, "units_unchanged": true, "source_entry_step": entry.Step, "source_trace_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "input_bios_tick": fields["0x46C"], "work_policy": "formal Game retained work; no original allocator assumption", "input_work_sha256": beforeWork, "clock_method": "existing single transaction hardware-spec approximation; original later latch not fed as input", "output_cycles": g.st.NativeMapCycleState, "output_terrain": g.st.NativeTerrainPhaseState, "output_flip": g.st.NativeTerrainFlipState, "output_shift": g.st.NativeUnitPixelShiftState, "palette_phase": g.nativeFDOTHERPalettePhase, "palette_tick": g.nativeFDOTHERPaletteTick, "after_called": continued, "limit": cfg.scope}
 	encoded, err := json.MarshalIndent(receipt, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -1285,4 +1318,30 @@ func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
 	if err := os.WriteFile(prefix+".json", append(encoded, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}
+	if indexedDiff != 0 || rgbDiff != 0 || paletteDiff != 0 {
+		t.Fatalf("全畫面差異 index=%d RGB=%d palette=%d；已保留拒收產物", indexedDiff, rgbDiff, paletteDiff)
+	}
+	t.Logf("完整返回地圖：64000索引與RGB、256色盤皆零差異；單位與色盤phase/tick保留")
+
+}
+
+// READY入口：physical_own_map_return_acceptance_spec。
+// 正常LOAD後匯入原版入口raw，只驗本次普通返回，不提升PLAYER-E2。
+func TestNativePhysicalOwnMapReturnCompleteFrameFromOracle(t *testing.T) {
+	slot, run, prefix := os.Getenv("FD2_PHYSICAL_OWN_MAP_SLOT"), os.Getenv("FD2_PHYSICAL_OWN_MAP_ORIGINAL"), os.Getenv("FD2_PHYSICAL_OWN_MAP_OUT")
+	if slot == "" || run == "" || prefix == "" {
+		t.Skip("需要#166固定ch08槽、同時點來源與輸出路徑")
+	}
+	t.Setenv("FD2_PHYSICAL_MAP_SLOT", slot)
+	t.Setenv("FD2_PHYSICAL_MAP_ORIGINAL", run)
+	t.Setenv("FD2_PHYSICAL_MAP_OUT", prefix)
+	verifyNativePhysicalMapReturn(t, physicalMapReturnAcceptance{
+		battle:    "battle_ch08",
+		slotSHA:   "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+		traceSHA:  "e468d124ebf94089fe048feb7c1d4ef5f6175980d504baef41dc7ce5540a7f4f",
+		pngSHA:    "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc",
+		entryStep: 1433248707, unitCount: 31, frameIndex: 51,
+		palettePhase: 10, paletteTick: 23505, idle: 2, moving: 2, terrain: 18, flip: 0, shift: 0,
+		scope: "固定ch08弓手正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升",
+	})
 }

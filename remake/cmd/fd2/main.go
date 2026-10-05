@@ -12145,6 +12145,13 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 			return fmt.Errorf("native map frame: steady DAC cycle: %w", err)
 		}
 	}
+	// 1297D先於1ACF3；預檢的HUD圖示需讀本次candidate idle。
+	// 複製optional值，保留前置快照與失敗交易的原子性。契約見physical_map_hud_cycle_spec。
+	if hud.OptionalUnit != nil {
+		candidateHUDUnit := *hud.OptionalUnit
+		candidateHUDUnit.RawState = candidateState.NativeMapCycleState.Idle
+		hud.OptionalUnit = &candidateHUDUnit
+	}
 	in, err := buildNativeMapFrameInput(
 		a, g.m, &candidateState, nativeMapFrameRuntime{HUD: hud, ChapterAuxPhase: auxPhase},
 	)

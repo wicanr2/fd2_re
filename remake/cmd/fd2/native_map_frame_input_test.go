@@ -414,3 +414,51 @@ func TestBuildNativeMapFrameInputRejectsControlDriftAndMissingRawRoster(t *testi
 		t.Fatalf("partial frame=%+v err=%v", got.Frame, err)
 	}
 }
+
+// #174 READY：1297D先於1ACF3，HUD使用本次candidate idle，而非預檢舊值。
+func TestComposeNativeMapHUDUsesAdvancedCycle(t *testing.T) {
+	for _, steadyPalette := range []bool{true, false} {
+		name := "physical-return"
+		if steadyPalette {
+			name = "steady"
+		}
+		t.Run(name, func(t *testing.T) {
+			a, m, st := completeNativeMapFrameFixture(t)
+			u := st.Units[0]
+			u.OnField = true
+			a.Units.Sprites[7*12+1] = nativeFrameTestSprite(0x33)
+			a.Units.Sprites[7*12+2] = nativeFrameTestSprite(0x44)
+			st.NativeMapCycleState = fdicon.NativeMapSpriteCycleState{Idle: 1, Moving: 1, LastTimerTick: 0}
+			g := &Game{nativeMapAssets: a, m: m, st: st}
+			now := time.Unix(500, 0)
+			if !g.nativeMapClock.Seed(5, now) {
+				t.Fatal("BIOS seed")
+			}
+			hud, ok := g.nativeMapHUDInput()
+			if !ok || hud.OptionalUnit == nil || hud.OptionalUnit.RawState != 1 {
+				t.Fatal("HUD前置資料")
+			}
+			if err := g.composeNativeMapFrameAtWithPaletteCycle(now, false, steadyPalette); err != nil {
+				t.Fatal(err)
+			}
+			layout, err := fdicon.NativeMapHUDLayoutFor(1, fdicon.NativeMapStride)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if st.NativeMapCycleState.Idle != 2 || g.nativeMapWork[0x8088+layout.Unit] != 0x44 {
+				t.Fatalf("idle=%d HUD index=%d，應用本次cycle2／index68", st.NativeMapCycleState.Idle, g.nativeMapWork[0x8088+layout.Unit])
+			}
+			if hud.OptionalUnit.RawState != 1 {
+				t.Fatal("候選合成污染前置HUD快照")
+			}
+			beforeVGA, beforeCycle, beforeClock := append([]byte(nil), g.nativeMapVGA...), st.NativeMapCycleState, g.nativeMapClock
+			u.HasNativeRecordWord42 = false
+			if err := g.composeNativeMapFrameAtWithPaletteCycle(now.Add(6*nativeBIOSTickPeriod), false, steadyPalette); err == nil {
+				t.Fatal("缺raw被接受")
+			}
+			if !bytes.Equal(beforeVGA, g.nativeMapVGA) || st.NativeMapCycleState != beforeCycle || g.nativeMapClock != beforeClock {
+				t.Fatal("拒收發布了時序或畫面")
+			}
+		})
+	}
+}

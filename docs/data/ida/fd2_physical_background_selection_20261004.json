@@ -38080,5 +38080,1186 @@
       "new_root_owned": 0,
       "md_directories": 0
     }
+  },
+  "physical_own_map_return_probe": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "DRAFT",
+    "baseline_commit": "e45c25709398bf5a545ad14f3dc31572707f1bc2",
+    "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+    "scope": "第八章record5→11正常首擊後返回地圖；已驗演出與201控制保持。",
+    "evidence": [
+      "physical_opposite_side_validation",
+      "physical_map_runtime_evidence",
+      "physical_map_return_acceptance_validation"
+    ],
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+    "method": "固定原控制與窗口，由clean唯一oracle補同時點raw globals／units／palette；正式consumer不得使用PNG作input。",
+    "limits": [
+      "DRAFT不接production或宣稱parity",
+      "clock hardware-spec approximation、167政策與章台帳保持"
+    ],
+    "registration": "https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5985866056",
+    "commands": {
+      "original": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-map-state-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED,0x290C2,0x11CAC' -e 'FD2_ORACLE_EIP_TRACE_FROM=1428400000' -e 'FD2_ORACLE_EIP_TRACE_TO=1438355503' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-map-state-original-r1.log 2>&1",
+      "refactor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-consumer-remake-refactor-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-refactor-r1.log 2>&1",
+      "own_acceptance_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r1.log 2>&1",
+      "own_rejected_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r2.log 2>&1",
+      "own_after_hud_r3": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r3 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r3.log 2>&1",
+      "red": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_map_frame_input_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestComposeNativeMapHUDUsesAdvancedCycle$'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-red-r1.log 2>&1",
+      "red_corrected": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_map_frame_input_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestComposeNativeMapHUDUsesAdvancedCycle$'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-red-r2.log 2>&1",
+      "green": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/main.go cmd/fd2/native_map_frame_input_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestComposeNativeMapHUDUsesAdvancedCycle$'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-green-r1.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-map-hud-cycle-own-regression-r1; mkdir /src/work/physical-map-hud-cycle-own-regression-r1; FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-hud-cycle-ch12-regression-r1 FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_COUNTER_HIT_ORIGINAL=/src/work/parity-slot-ch12/physical-frame-units-original-r1 FD2_PHYSICAL_COUNTER_HIT_PRELUDE_ORIGINAL=/src/work/parity-slot-ch12/physical-counter-hit-original-entry-r1 FD2_PHYSICAL_OWN_OUT=/src/work/physical-map-hud-cycle-own-regression-r1 with-xvfb go test ./internal/battlepresent ./internal/fdother ./cmd/fd2 -run '\\''^TestNativePhysical(Body|Scene|Terrain|Surface|DepartureMissingLayer|Return)|TestCompatiblePhysicalReturn|TestLoadSeparatedSoundBank|TestComposeNativeMap|TestBuildNativeMapFrameInput|TestDrawNativeMapFrame|TestNativeMap|TestNativePhysicalMapReturnCompleteFrameFromOracle'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-focused-r1.log 2>&1",
+      "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test -json ./... -count=1 -timeout 600s' > work/physical-map-hud-cycle-go-all-r1.jsonl 2>&1",
+      "selector_original": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-map-selector-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED,0x290C2,0x11CAC,0x127E0,0x128FC,0x12932,0x12935,0x1295A,0x1AE54' -e 'FD2_ORACLE_EIP_TRACE_FROM=1433248700' -e 'FD2_ORACLE_EIP_TRACE_TO=1433399630' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-map-selector-original-r1.log 2>&1"
+    },
+    "source_validation": {
+      "date": "2026-10-05",
+      "issue": 166,
+      "state": "RE-CLOSED-source-only",
+      "controls": 201,
+      "equal_files": [
+        {
+          "path": "control-history.jsonl",
+          "sha256": "c29b676408ecfc6188dc5a779aeae543977df0f606421f55e0e271db8cf7db18"
+        },
+        {
+          "path": "checkpoint-0000.json",
+          "sha256": "cfb48b7d40d9dd4d4f3537f676728f6bc792d8a18d342753f413f73e055c6c4c"
+        },
+        {
+          "path": "checkpoint-0186.json",
+          "sha256": "4178b2148749885ac181c117db830f88d70ff0ce510c2f12f01f50138121384e"
+        },
+        {
+          "path": "checkpoint-0187.json",
+          "sha256": "3c3c61e50a728a1a64b32b28957a77ff674efc12ed8ebb8e5ac2d360c8fa538e"
+        },
+        {
+          "path": "checkpoint-0201.json",
+          "sha256": "142d3b472894e430e3ef09c590fb9c1bb7dc62e7fbcef9476e040e503e10d65d"
+        }
+      ],
+      "frames": 72,
+      "all_pngs_and_original_metadata_equal": true,
+      "pngs": [
+        {
+          "path": "frame-000000.png",
+          "sha256": "b9fd755b9a9bf48d77723e5abf9b8cf8e1b6054a0409bd1aa9d0030806573c3d"
+        },
+        {
+          "path": "frame-000001.png",
+          "sha256": "62753fa866d2a44775591556cf34712e9c3cdf2cd372142304ded23bd9344320"
+        },
+        {
+          "path": "frame-000002.png",
+          "sha256": "c593238185694253c9d17396fe59dc4509cc3af9874fa40ebfae5d8c2b38ede0"
+        },
+        {
+          "path": "frame-000003.png",
+          "sha256": "bfa1910c401791daa8544c97e968c417894b03ae507bd3df1ed404228a8cb2e2"
+        },
+        {
+          "path": "frame-000004.png",
+          "sha256": "a1869b7ecbcf29f982866adae424cbda3539aa2de5ffb90cecc07625474bcc0f"
+        },
+        {
+          "path": "frame-000005.png",
+          "sha256": "bd8f9408c5687ea8c7eb9deeee61fbf4be93d73b30ffbf33f5099556fdfafb83"
+        },
+        {
+          "path": "frame-000006.png",
+          "sha256": "db926dc696a2f8f578eef9278890ec9e7c7ed431ed84d7c2ec9445eef09bcaf7"
+        },
+        {
+          "path": "frame-000007.png",
+          "sha256": "b6ba3551c171a358edbc324fc3880a63c9643d5780cc2db37498b495d4639bd7"
+        },
+        {
+          "path": "frame-000008.png",
+          "sha256": "879a2a7879c6d51d9331d052cdd5e5fa6204435d375d8e2fb08969a3481ce291"
+        },
+        {
+          "path": "frame-000009.png",
+          "sha256": "8e53d0061cd8b0293af44c9b77c18b36996131d0e51243108f288ccff0be8d7d"
+        },
+        {
+          "path": "frame-000010.png",
+          "sha256": "6830d79dad23728b6ba14b295ab1bf860d106c1d210ecd0090435925d1e7d514"
+        },
+        {
+          "path": "frame-000011.png",
+          "sha256": "cfed929e468c2db23b4cd4645335a94d15cae78a8da767b135430bec1cefa294"
+        },
+        {
+          "path": "frame-000012.png",
+          "sha256": "6dd1ccddff8fd3195ecc8f09073f42e01c0b332c154e305cbda54c5534dc942d"
+        },
+        {
+          "path": "frame-000013.png",
+          "sha256": "b53343ce0a96077c6190448c7bea48c2b344147a3afedb4920b6386ddf4a658e"
+        },
+        {
+          "path": "frame-000014.png",
+          "sha256": "7daa910144d16dc60546bdcce72ff76ab646d94154e3a047e7daf0320f99c4a0"
+        },
+        {
+          "path": "frame-000015.png",
+          "sha256": "5e69322b8d78b6a540b02ec1b9ca77d0f230d5ec05f0fd578d960ca395731da5"
+        },
+        {
+          "path": "frame-000016.png",
+          "sha256": "3225e7196ae35b966cd92292d86709477ca15f6b895d946e99d32c2644fb443d"
+        },
+        {
+          "path": "frame-000017.png",
+          "sha256": "ac9b9239b3c552aaafc42d8a89bbcf1df236dca96177b5f75e59e5b1b90523bf"
+        },
+        {
+          "path": "frame-000018.png",
+          "sha256": "c1504be58114de1b535f12d101a366c7e0144a8c1a2e0577cba5b01769b4787d"
+        },
+        {
+          "path": "frame-000019.png",
+          "sha256": "d2962dd809a640d420a437ae3acd01f183e8b29dbaecec97b260d2a29b2cb359"
+        },
+        {
+          "path": "frame-000020.png",
+          "sha256": "27b95e1e9fdfa8383449e0a585588681eb44f4cd06e51f94b36096871cd0d72c"
+        },
+        {
+          "path": "frame-000021.png",
+          "sha256": "2b6833f1fae68204f61396d3350d95365bbf6f6e03b713c8c9db935749aa7e5a"
+        },
+        {
+          "path": "frame-000022.png",
+          "sha256": "e5a70ce7ee0222d912af264fa5d73c8683cc285c3c05bb41b25b88bf979e22e0"
+        },
+        {
+          "path": "frame-000023.png",
+          "sha256": "09ec830c6015212df73601d6d12b6caed076c6ceaaafd871c06d220a52bfa7ae"
+        },
+        {
+          "path": "frame-000024.png",
+          "sha256": "457806fbadc4e6fb86bcf65aa583ecfa2ca011b4999388fe977de6a57bd00974"
+        },
+        {
+          "path": "frame-000025.png",
+          "sha256": "4d726da782e5921942afcf72e5a3677866c910fe843a874b609e34097dc07945"
+        },
+        {
+          "path": "frame-000026.png",
+          "sha256": "81a77e282e5bf204981bb1e648dd9572bef14af844b6abf7b14eb438ba466046"
+        },
+        {
+          "path": "frame-000027.png",
+          "sha256": "cd601fbd0ed66b3f1528e787d8b86bf8bd92d244a4710080d36777d5474d2fc8"
+        },
+        {
+          "path": "frame-000028.png",
+          "sha256": "8207e6494c36309772772d6e34418e3b250d712d2ffc8de8d0d6e819bcb0c932"
+        },
+        {
+          "path": "frame-000029.png",
+          "sha256": "e40590c74fa66b3a6d0896f253a7267cc583db9b41ce277e94486c818b35cfa8"
+        },
+        {
+          "path": "frame-000030.png",
+          "sha256": "50404333a195c43ad25cbe3142447e2a094c6f93113f962077e589303675f635"
+        },
+        {
+          "path": "frame-000031.png",
+          "sha256": "826f11c2487b67f8251e5f414dd0c19cc8d4a36f7af626af0c91ffa1a4b4caaf"
+        },
+        {
+          "path": "frame-000032.png",
+          "sha256": "0e9ab0af16f11cdb35f70e9649f2ba4f83ee3d62ed35d09353bead7e36440ec0"
+        },
+        {
+          "path": "frame-000033.png",
+          "sha256": "53b16eaeb2f0a7440438c32df5f8306c78a7a41ac4036b9844e21e64d48802ce"
+        },
+        {
+          "path": "frame-000034.png",
+          "sha256": "427ad32079a5987569b080964230ecf2a9c603c514b22fc40e33bb631e631480"
+        },
+        {
+          "path": "frame-000035.png",
+          "sha256": "50811616dabe98e27e5e6eeb58a4c6bcab8f09f55c2e6ffe8959f9be898195b1"
+        },
+        {
+          "path": "frame-000036.png",
+          "sha256": "51a1c2cb9c7f08c7a5eab1487c361e5987f63bafab5b87bdced3516211ccd214"
+        },
+        {
+          "path": "frame-000037.png",
+          "sha256": "dbc993af873eb332c141e988ab8ee05854619ad8f0d58129b6ad922f1cd42e9f"
+        },
+        {
+          "path": "frame-000038.png",
+          "sha256": "e1587e658eee00cf973a97fcbed32aec1d07e247a3657a732d0fc8bad3d8f41c"
+        },
+        {
+          "path": "frame-000039.png",
+          "sha256": "8878a684ec5c561a14efa51e9eac6121476943baea0ede30dd1646fd33283452"
+        },
+        {
+          "path": "frame-000040.png",
+          "sha256": "d93492da4a88d045492e8075926f8d448c84f9837fd667772498d6e7afeb6aab"
+        },
+        {
+          "path": "frame-000041.png",
+          "sha256": "1501edc9db1435d8d7645974a486cdc962d37244f37ffb7f0b0abcf10d45dc6b"
+        },
+        {
+          "path": "frame-000042.png",
+          "sha256": "35ffc8fd4fa889019f26f809fc2c94fd0062e740731d53c5b6c6e5be039862b6"
+        },
+        {
+          "path": "frame-000043.png",
+          "sha256": "e9d8d372ab431b40ba29d10181ef08713ecbf1a563402996a5dc2f072668ca8c"
+        },
+        {
+          "path": "frame-000044.png",
+          "sha256": "2257163394e2596c7a1453926c41934e76c607577444c87c19c91d3177881268"
+        },
+        {
+          "path": "frame-000045.png",
+          "sha256": "4be2d9136e669742f232082fda74bf4e2154bcd8d6ceaf58e957d7463112d57c"
+        },
+        {
+          "path": "frame-000046.png",
+          "sha256": "70c45ade0e1cf716569ee81f9c36ee4e7cc1a65318f32ab4869f9deeac0bbd28"
+        },
+        {
+          "path": "frame-000047.png",
+          "sha256": "e84c14c5e4e5aabc66a7ab20d6c2b6d5cf8a496afd32e75100895877dbdf1df6"
+        },
+        {
+          "path": "frame-000048.png",
+          "sha256": "4766bbc00e89e5f847cd4ef72f0a528070cdc98edcd385259b50d4772dd3d8dd"
+        },
+        {
+          "path": "frame-000049.png",
+          "sha256": "93260508410e743b736d8fc82668a474d28dd421b8c152c9d67207ba74374473"
+        },
+        {
+          "path": "frame-000050.png",
+          "sha256": "958bee5df6850e88a93311bd54eda4c85355334f16306bde9a5b0e0a154366fe"
+        },
+        {
+          "path": "frame-000051.png",
+          "sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+        },
+        {
+          "path": "frame-000052.png",
+          "sha256": "a20e7badf4bf216d57da2c8a754af2f1ab088209fae71c012f93359f500beabd"
+        },
+        {
+          "path": "frame-000053.png",
+          "sha256": "98fa1dcd9307572cf925cd9cc567f4302b37880622dc158e75c5a4979dd6eeb3"
+        },
+        {
+          "path": "frame-000054.png",
+          "sha256": "13983e97c62f81440e8d2353d04d6441f8e80ce5027c80461f116c18c8fb00f5"
+        },
+        {
+          "path": "frame-000055.png",
+          "sha256": "779dfd53c726a3d2837b2ece9417aba0d5078368097fe1489de5b647a4d0d96f"
+        },
+        {
+          "path": "frame-000056.png",
+          "sha256": "21141f72203568a902bf93fe3273a66b55b3dbbe229501148765ea08de6e0ed8"
+        },
+        {
+          "path": "frame-000057.png",
+          "sha256": "41dfa046916d34b4ba13277717829a41f4e9b0370c0f791808a2f45284176b9e"
+        },
+        {
+          "path": "frame-000058.png",
+          "sha256": "b950eb886969aca34d40fb43a76a384dead771f926aa978cac25d80660579351"
+        },
+        {
+          "path": "frame-000059.png",
+          "sha256": "40b59e3ca4bb01451b21539f412e54ff817abac7ed6526e6d906312ddc25b4bb"
+        },
+        {
+          "path": "frame-000060.png",
+          "sha256": "c83f55e5bed8ae597498528cc281cc2799cb19feb7fd395aa5989ba3ad913575"
+        },
+        {
+          "path": "frame-000061.png",
+          "sha256": "d71591f72029d438ee420f3d44c9ea69fceb8a3a28d222edc6dd3f7b5574104e"
+        },
+        {
+          "path": "frame-000062.png",
+          "sha256": "a20e7badf4bf216d57da2c8a754af2f1ab088209fae71c012f93359f500beabd"
+        },
+        {
+          "path": "frame-000063.png",
+          "sha256": "9aaa2d08251c0ed2edc28f2f89f6de92a5d36c1a51aaad81d8fe8211d76ea353"
+        },
+        {
+          "path": "frame-000064.png",
+          "sha256": "39240b2a8ab702e3be619cef231eddacc1f5705b2acadc6c4c2888dbc632ebdf"
+        },
+        {
+          "path": "frame-000065.png",
+          "sha256": "a402af394c5d09fec2e35025e370bc82fc55feb38396a25ea3f943d4e3f50415"
+        },
+        {
+          "path": "frame-000066.png",
+          "sha256": "cd51d77b1bfcd44f8b3a5edd7f663b22257413f1a5e3f29babbbbe05db0587e4"
+        },
+        {
+          "path": "frame-000067.png",
+          "sha256": "470cbd5ed19dc6674eb2feab2017ba7c8518cb4f59cd59680b94a2209722f3be"
+        },
+        {
+          "path": "frame-000068.png",
+          "sha256": "c2d642b32fe53b492896edbb6d168377166ab6e2909920989b21cff9a45bba1b"
+        },
+        {
+          "path": "frame-000069.png",
+          "sha256": "98fa1dcd9307572cf925cd9cc567f4302b37880622dc158e75c5a4979dd6eeb3"
+        },
+        {
+          "path": "frame-000070.png",
+          "sha256": "13983e97c62f81440e8d2353d04d6441f8e80ce5027c80461f116c18c8fb00f5"
+        },
+        {
+          "path": "frame-000071.png",
+          "sha256": "779dfd53c726a3d2837b2ece9417aba0d5078368097fe1489de5b647a4d0d96f"
+        }
+      ],
+      "old_trace_rows": 219,
+      "new_trace_rows": 242,
+      "old_trace_fields_equal": true,
+      "entry_step": 1433248707,
+      "return_step": 1433399615,
+      "entry_globals": {
+        "0x53C07": 1,
+        "0x53C0B": 1,
+        "0x53C0F": 23506,
+        "0x53C1F": 17,
+        "0x539F4": 23506,
+        "0x53A40": 1,
+        "0x53A00": 23506,
+        "0x53A04": 1,
+        "0x53A08": 23539,
+        "0x51A93": 4294967295,
+        "0x46C": 24514,
+        "0x51AAB": 1,
+        "0x51AAC": 1,
+        "0x51A0C": 1,
+        "0x60000": 23505,
+        "0x60002": 10
+      },
+      "return_globals": {
+        "0x53C07": 2,
+        "0x53C0B": 2,
+        "0x53C0F": 24514,
+        "0x53C1F": 18,
+        "0x539F4": 24514,
+        "0x53A40": 0,
+        "0x53A00": 24514,
+        "0x53A04": 0,
+        "0x53A08": 24540,
+        "0x51A93": 4294967295,
+        "0x46C": 24544,
+        "0x51AAB": 1,
+        "0x51AAC": 1,
+        "0x51A0C": 1,
+        "0x60000": 23505,
+        "0x60002": 10
+      },
+      "view": {
+        "aux_phase": 0,
+        "camera_x": 8,
+        "camera_y": 23,
+        "cursor_x": 14,
+        "cursor_y": 24,
+        "gold": 2000,
+        "overlay_selector": 1,
+        "rng_word": 36609,
+        "round": 3,
+        "visible_x": 6,
+        "visible_y": 1
+      },
+      "units": 31,
+      "palette_unchanged": true,
+      "trace_sha256": "e468d124ebf94089fe048feb7c1d4ef5f6175980d504baef41dc7ce5540a7f4f",
+      "frames_sha256": "6ba6669fa00f3324973efa53212f8d74f17413aba2e8e4c02d57143a8d539933",
+      "runner_sha256": "13b0a4f57412dc3c7b9befc4c92534ca4df5f56cd27f6aca2757a72a2cd71171",
+      "target_png_sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+    },
+    "current_result": {
+      "state": "limited-CONFORMED",
+      "indexed_diff": 0,
+      "rgb_diff": 0,
+      "palette_diff": 0,
+      "reason": "修正已證實HUD來源與測試constructor覆寫姿勢；保留兩個拒收產物。",
+      "scope": "固定我方弓手普通返回；RUNTIME-E1"
+    },
+    "historical_rejected_result": {
+      "state": "REJECTED",
+      "issue": 175,
+      "before_hud_fix": {
+        "indexed_difference": 572,
+        "rgb_difference": 0,
+        "palette_difference": 0
+      },
+      "after_hud_fix": {
+        "indexed_difference": 308,
+        "rgb_difference": 0,
+        "palette_difference": 0
+      },
+      "diagnosis": "首次copy的768個RGB component均0，RGB無差異不能證明內容。HUD已消去264個索引差異；剩餘record5圖示差異仍拒收。",
+      "receipts": [
+        "work/physical-own-map-acceptance-r1.log",
+        "work/physical-own-map-acceptance-r2.log",
+        "work/physical-own-map-acceptance-r3.log",
+        "work/physical-own-map-indexed-diagnosis-r2.json"
+      ],
+      "next": "physical_own_map_selector_probe"
+    }
+  },
+  "physical_own_map_return_acceptance_spec": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "limited-CONFORMED",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": "dosgolem a01ff084 clean、已閉合IDA9.4來源及正式Go consumer",
+    "address_space": "FD2.EXE LE linear；Go型別獨立",
+    "evidence": [
+      "physical_own_map_return_probe.source_validation",
+      "physical_return_palette_evidence",
+      "physical_map_runtime_evidence",
+      "physical_map_return_acceptance_spec"
+    ],
+    "scope": "固定ch08 record5→11弓手命中後普通11CAC(1)返回；不外推連擊或mode11。",
+    "inputs": {
+      "slot_sha256": "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+      "trace_sha256": "e468d124ebf94089fe048feb7c1d4ef5f6175980d504baef41dc7ce5540a7f4f",
+      "entry_step": 1433248707,
+      "unit_count": 31,
+      "frame": 51,
+      "return_step": 1433399615,
+      "png_sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+    },
+    "claims": [
+      {
+        "level": "已證實",
+        "source": "固定oracle raw入口／copy caller及獨立palette",
+        "semantic": "290C7 caller arg1、31raw／16globals；首個11D3B為frame51，palette phase10／tick23505保持。"
+      },
+      {
+        "level": "已證實",
+        "source": "固定copy raw＋既有typed clock consumer",
+        "semantic": "moving／idle1→2、terrain17→18、flip／shift1→0；入口tick24514。"
+      },
+      {
+        "level": "未知",
+        "source": "本例工具近堆政策與未校準wall-clock",
+        "semantic": "原版shift latch24540、copyBIOS24544；單次取样consumer不宣稱逐時鐘或配置器exact。"
+      }
+    ],
+    "method": "共用已驗收helper，正常LOAD／整備／出戰後以同一入口raw輸入typed units、selector cache、view、globals及獨立DAC；正式finish合成後才讀原版PNG。",
+    "verification": [
+      "固定來源SHA、入口caller與arg1、31筆80-byte及typed selector slots；缺來源拒收",
+      "完整64000indexed／RGB及256palette assertion；單位／palette phase與tick保持、after續行",
+      "正式dosgolem parity全畫布near-state／零誤差；不遮罩、不枚舉phase、不清work猜補",
+      "既有ch12返回、完整演出與兩側GPU回歸"
+    ],
+    "save_scope": "原始槽保持、物理結算已驗；本項僅map consumer，不重跑存檔或整章。",
+    "limits": [
+      "limited E1；正常LOAD後同源raw匯入，不提升PLAYER-E2",
+      "111／114槽與167工具政策保持；不驗收傷害、存活或敵方選目標",
+      "BIOS單次採樣為hardware-spec approximation；一般work生命週期與其他分支保持166 OPEN"
+    ],
+    "current_validation": "physical_own_map_return_acceptance_validation"
+  },
+  "physical_map_hud_cycle_evidence": {
+    "date": "2026-10-05",
+    "issue": 174,
+    "parent": 166,
+    "state": "RE-CLOSED",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": "既有IDA Pro 9.4原始指令與caller匯出複核；未重做已閉合位址",
+    "address_space": "FD2.EXE LE／IDA linear；Go型別独立",
+    "sources": [
+      {
+        "path": "docs/data/fd2_continue_map_timing_seed_ida.txt",
+        "sha256": "3d57aec5e72a0e016b01df0c69d3f3079af789c21cf73f94d316f9353b31762c"
+      },
+      {
+        "path": "docs/data/ida/fd2_player_chest_hud_20261001.json",
+        "sha256": "6e5db9566cb1ff8d29ec89835a5f6a6d495687b08c40f9f831e7f1a951ccd344"
+      }
+    ],
+    "raw_reader": {
+      "address": "0x1AE54",
+      "bytes": "a10b3c0500",
+      "original": "mov eax,dword_53C0B",
+      "semantic": "HUD圖示讀取目前idle cycle",
+      "level": "已證實",
+      "source": "docs/data/ida/fd2_player_chest_hud_20261001.json"
+    },
+    "caller_order": {
+      "level": "已證實",
+      "original": "0x11CB7 call1297D → 0x11CF5 call127A9 → 0x11D0A call1ACF3",
+      "semantic": "本次idle writer先於HUD consumer",
+      "source": "docs/data/fd2_continue_map_timing_seed_ida.txt"
+    },
+    "defect": {
+      "level": "已證實",
+      "original": "Game.composeNativeMapFrameAtWithPaletteCycle在advanceNativeMapClock前取hud；nativeMapHUDInput.OptionalUnit.RawState保存舊state.NativeMapCycleState.Idle",
+      "semantic": "unit層使用candidate新週期，HUD仍用旧週期。",
+      "source": "remake/cmd/fd2/main.go"
+    },
+    "full_frame_failure": {
+      "scope": "ch08固定來源拒收，其他差異尚未全部分類",
+      "indexed": 572,
+      "rgb": 0,
+      "palette": 0,
+      "palette_all_black": true,
+      "artifacts": [
+        "work/physical-own-map-acceptance-r1.log",
+        "work/physical-own-map-acceptance-r2.log",
+        "work/physical-own-map-indexed-diagnosis-r2.json"
+      ]
+    }
+  },
+  "physical_map_hud_cycle_spec": {
+    "date": "2026-10-05",
+    "issue": 174,
+    "state": "limited-CONFORMED",
+    "evidence": "physical_map_hud_cycle_evidence",
+    "scope": "所有同一11CAC式交易的optional HUD單位圖示；正常與物理返回都使用candidate已推進idle，前置HUD素材／raw預檢及原子發布保持。",
+    "input": "nativeMapHUDInput已預檢的raw roster／selector／gates，加本次candidateState.NativeMapCycleState.Idle；不從PNG／palette選phase。",
+    "rule": "建FrameInput前，用候選idle值重建optionalHUD值；深copy optional內容，不能改寫事前HUD來源或live state。",
+    "failure": "任何素材／raw／clock／range錯誤不得發布候選時序與畫面。",
+    "verification": [
+      "區分1／2週期的fixture HUD sprite，兩種caller同次2必須畫2；修正前紅",
+      "缺HUD raw欄位回歸與既有原子交易拒收保持",
+      "ch12及ch08完整indexed／RGB結果分開記錄，不以全黑RGB通過宣稱572都已閉合",
+      "map frame consumer／HUD／演出與正常章回歸；其餘unit差異另外追查"
+    ],
+    "limits": [
+      "只閉合HUD來源，未宣稱完整返回或PLAYER-E2",
+      "BIOS hardware-spec approximation、167工作緩衝政策與章門檻保持"
+    ],
+    "implementation": "正式HUD改讀candidate idle；先紅後綠，兩caller、快照保持與拒收原子性通過。",
+    "diagnostics": [
+      "red r1驗證位置漏掉viewportBase0x8088，屬測試座標錯誤；只修座標後r2正確讀到舊index51，與應用新cycle2／index68矛盾。正式修正後兩caller皆綠。"
+    ]
+  },
+  "physical_own_map_selector_probe": {
+    "date": "2026-10-05",
+    "issue": 175,
+    "parent": 166,
+    "state": "RE-CLOSED",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+    "known_addresses": [
+      "0x127E0",
+      "0x128FC",
+      "0x12932",
+      "0x12935",
+      "0x1295A",
+      "0x1AE54"
+    ],
+    "address_space": "FD2.EXE LE linear；原始register／stack保留，實際bank指標另記",
+    "evidence": "既有fd2_terrain_mode3_review_20261001.json的127E0原始selector與raw bytes；沒有新改名",
+    "method": "固定原槽／201 controls，唯一oracle在11CAC入口→frame51狹窄窗口唯讀記錄sprite cycle／pointer的原始register。逐角色只追已發現差異的record5。",
+    "limits": [
+      "不枚舉phase或由PNG反推index",
+      "DRAFT診斷已由原始寄存器與constructor資料流取代；READY及驗收見physical_own_map_raw_restore_spec／validation",
+      "clock／allocator停止線保持"
+    ],
+    "command": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-map-selector-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED,0x290C2,0x11CAC,0x127E0,0x128FC,0x12932,0x12935,0x1295A,0x1AE54' -e 'FD2_ORACLE_EIP_TRACE_FROM=1433248700' -e 'FD2_ORACLE_EIP_TRACE_TO=1433399630' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-map-selector-original-r1.log 2>&1",
+    "result": {
+      "date": "2026-10-05",
+      "issue": 175,
+      "state": "RE-CLOSED",
+      "input": {
+        "input": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "tool": "dosgolem a01ff084 clean及既有IDA9.4匯出；Go測試consumer檢查",
+      "address_space": "原版FD2.EXE LE linear；B24 file offsets另標；Go typed state獨立",
+      "trace": "work/parity-slot-ch08/physical-own-map-selector-original-r1/eip-trace.jsonl",
+      "trace_sha256": "9449e6c432b10ffe2de6baf9c49fde1e10096b2a2a97ac38cbbaaab53206b86d",
+      "frames_sha256": "6ba6669fa00f3324973efa53212f8d74f17413aba2e8e4c02d57143a8d539933",
+      "runner_sha256": "21555236551860c3eed9213810a91e61869e9c98b6e7da8bbf99479154518b19",
+      "original_checks": {
+        "controls": 201,
+        "checkpoint_bytes_equal": [
+          0,
+          186,
+          187,
+          201
+        ],
+        "frames": 72,
+        "all_frame_metadata_and_png_equal": true,
+        "rows": 64,
+        "source_clean": true
+      },
+      "raw_selection": {
+        "step": 1433366448,
+        "eip": "0x12932",
+        "eax": "0x44",
+        "edx": "0x1E1B00",
+        "ebx": "0x5628",
+        "esi": "0x2",
+        "edi": "0x3C",
+        "stack": [
+          "0x0",
+          "0x0",
+          "0x144C3C",
+          "0x18A060",
+          "0x16F1BC",
+          "0x5",
+          "0x127D4",
+          "0x5"
+        ]
+      },
+      "raw_pointer": {
+        "step": 1433366449,
+        "eip": "0x12935",
+        "eax": "0x743D",
+        "edx": "0x1E1B00",
+        "stack": [
+          "0x0",
+          "0x0",
+          "0x144C3C",
+          "0x18A060",
+          "0x16F1BC",
+          "0x5",
+          "0x127D4",
+          "0x5"
+        ]
+      },
+      "raw_blit": {
+        "step": 1433366460,
+        "eip": "0x1295A",
+        "eax": "0x1E8F3D",
+        "edx": "0x144C3C",
+        "ebx": "0x15183C",
+        "stack": [
+          "0x1E8F3D",
+          "0x15183C",
+          "0x1C8",
+          "0x0",
+          "0x0",
+          "0x144C3C",
+          "0x18A060",
+          "0x16F1BC"
+        ]
+      },
+      "claims": [
+        {
+          "level": "已證實",
+          "source": "原始record5、12932／12935／1295A寄存器和既有selector raw bytes",
+          "semantic": "slot5×12＋pose2×3＋cycle2=68；cache+0x743D=0x1E8F3D；dst0x15183C／stride456。"
+        },
+        {
+          "level": "已證實",
+          "source": "B24固定SHA 7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44；file sprite104 offset0xC558；原版畫面mask424位置全部符合其indexed pixels",
+          "semantic": "原版畫面使用key8、pose2、cycle2；沒有幀枚舉。"
+        },
+        {
+          "level": "已證實",
+          "source": "remake/internal/battle/model.go MaterializeNativeMapSelectorSlots→MaterializeNativeMapPresentation及native_physical_body_test.go匯入順序",
+          "semantic": "驗收工具在raw匯入後呼叫新單位constructor，使每筆pose／motion回到0；record5是唯一非零pose，造成308indexed差異。這是測試輸入缺陷，未發現正式unit blitter缺陷。"
+        }
+      ],
+      "correction": "保留既有失敗收據；原先「弓手選幀未閉合」降為失效診斷，原因為輸入在constructor後遭覆寫。#175以相同原始輸入的修正驗收關閉。"
+    }
+  },
+  "physical_own_map_raw_restore_spec": {
+    "date": "2026-10-05",
+    "issue": 175,
+    "state": "limited-CONFORMED",
+    "evidence": "physical_own_map_selector_probe.result",
+    "scope": "僅修正完整地圖返回驗收helper；不改正式selector或blitter",
+    "contract": [
+      "先以raw＋7重建selector cache，核對slot與key。",
+      "constructor完成後，恢復原版raw＋0..＋4的typed presentation與Dir，逐筆核對unit layer輸入包含flags／forceBase。",
+      "以原有來源SHA、controls、caller、seed與完整64000索引閘門重跑；保留原先572／308拒收產物。"
+    ],
+    "limits": [
+      "測試仍限同源raw匯入的RUNTIME-E1，不提升正常玩家E2",
+      "禁止圖示phase枚舉、RGB黑畫面取代indexed驗收或修改原版來源"
+    ]
+  },
+  "physical_map_hud_cycle_validation": {
+    "date": "2026-10-05",
+    "issue": 174,
+    "state": "limited-CONFORMED",
+    "layer": "RUNTIME-E1",
+    "evidence": "physical_map_hud_cycle_evidence；RE-CLOSED→READY→紅→正式實作→綠",
+    "red": "兩caller錯用舊idle1的index51，本次idle2應為68。",
+    "green": "兩caller改讀candidate idle2、HUD快照保持、缺raw拒收不發布時鐘或VGA；固定ch08原HUD264indexed差異消失。",
+    "full_go": {
+      "packages": 19,
+      "top_level_passed": 2362,
+      "failed": 0,
+      "source_note": "正式引擎最終版本；後續僅opt-in raw匯入測試修正，另有38案例編譯實跑。"
+    },
+    "focused": {
+      "top_level_passed": 38,
+      "complete_scene_frames": [
+        49,
+        34,
+        50,
+        42
+      ],
+      "full_map_cases": [
+        "ch12敵方主攻／友軍反擊普通返回",
+        "ch08我方弓手普通返回"
+      ],
+      "all_indexed_rgb_palette_difference": 0
+    },
+    "gpu": {
+      "own_complete_presents": 53,
+      "own_caller_wait_redraws": 40,
+      "counter_hit_complete_presents": 64,
+      "counter_hit_caller_wait_redraws": 35,
+      "all_draw_ack_and_continuation": true
+    },
+    "chapter_regression": {
+      "replay_pass": true,
+      "ai_entries": 155,
+      "sequence_divergence": 0,
+      "compared_frames": 275,
+      "behavior": true,
+      "transaction": true,
+      "save_sha256": "6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821",
+      "nodes": false,
+      "frames": false,
+      "chapter_gate": "failed，保持原有拒收，不新增PLAYER-E2",
+      "source": "work/parity-slot-ch12/physical-map-hud-cycle-full-verified-r1.json",
+      "source_limit": "使用既有輔助章收據複核，不宣稱新原版整章收據。"
+    },
+    "strings": "98項分類原樣，僅重新綁定Go行號／inventory hash",
+    "commands": {
+      "source_original": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-map-state-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-state-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED,0x290C2,0x11CAC' -e 'FD2_ORACLE_EIP_TRACE_FROM=1428400000' -e 'FD2_ORACLE_EIP_TRACE_TO=1438355503' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-map-state-original-r1.log 2>&1",
+      "source_selector": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-original-r1' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-physical-own-map-selector-original-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch08/physical-own-map-selector-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=4000000000' -e 'FD2_ORACLE_EIP_TRACE=0x28A6C,0x29164,0x2939D,0x28F4D,0x11EB0,0x11EED,0x290C2,0x11CAC,0x127E0,0x128FC,0x12932,0x12935,0x1295A,0x1AE54' -e 'FD2_ORACLE_EIP_TRACE_FROM=1433248700' -e 'FD2_ORACLE_EIP_TRACE_TO=1433399630' -e 'FD2_ORACLE_EIP_TRACE_MAX=20000'  -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x11EED -e FD2_ORACLE_FRAME_MAX=500 -e FD2_ORACLE_FRAME_FROM=1428400000 -e FD2_ORACLE_FRAME_TO=1438355503 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/physical-own-map-selector-original-r1.log 2>&1",
+      "refactor": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-consumer-remake-refactor-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-refactor-r1.log 2>&1",
+      "own_red": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r1.log 2>&1",
+      "own_rejected": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r2.log 2>&1",
+      "hud_red": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_map_frame_input_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestComposeNativeMapHUDUsesAdvancedCycle$'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-red-r2.log 2>&1",
+      "hud_green": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/main.go cmd/fd2/native_map_frame_input_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 with-xvfb go test ./cmd/fd2 -run '\\''^TestComposeNativeMapHUDUsesAdvancedCycle$'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-green-r1.log 2>&1",
+      "own_after_hud": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r3 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r3.log 2>&1",
+      "own_green": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r4 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalOwnMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-own-map-acceptance-r4.log 2>&1",
+      "own_parity": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 180 docker run --rm --network none --memory 2g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache --workdir /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp golang:1.24-bookworm timeout 150 go run ./apps/fd2/cmd/parity -exe /orig/FD2.EXE -original /src/work/parity-slot-ch08/physical-own-map-state-original-r1/frames/frame-000051.png -remake /src/work/parity-slot-ch08/physical-own-map-consumer-remake-r4.png -input /src/work/parity-slot-ch08/physical-own-map-consumer-scenario-r4.json -dosgolem-commit a01ff084f038ddd1d133480f08d32e3b2e6f98c0 -remake-commit e45c25709398bf5a545ad14f3dc31572707f1bc2+READY-test-recorded-by-sha256 -report /src/work/physical-own-map-acceptance-parity-r4.json -diff /src/work/parity-slot-ch08/physical-own-map-acceptance-parity-diff-r4.png > work/physical-own-map-acceptance-parity-r4.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-map-hud-cycle-own-regression-r2; mkdir /src/work/physical-map-hud-cycle-own-regression-r2; FD2_PHYSICAL_OWN_MAP_SLOT=/src/work/parity-slot-ch08/FD2.SAV FD2_PHYSICAL_OWN_MAP_ORIGINAL=/src/work/parity-slot-ch08/physical-own-map-state-original-r1 FD2_PHYSICAL_OWN_MAP_OUT=/src/work/parity-slot-ch08/physical-own-map-consumer-remake-r5 FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-hud-cycle-ch12-regression-r2 FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_COUNTER_HIT_ORIGINAL=/src/work/parity-slot-ch12/physical-frame-units-original-r1 FD2_PHYSICAL_COUNTER_HIT_PRELUDE_ORIGINAL=/src/work/parity-slot-ch12/physical-counter-hit-original-entry-r1 FD2_PHYSICAL_OWN_OUT=/src/work/physical-map-hud-cycle-own-regression-r2 with-xvfb go test ./internal/battlepresent ./internal/fdother ./cmd/fd2 -run '\\''^TestNativePhysical(Body|Scene|Terrain|Surface|DepartureMissingLayer|Return)|TestCompatiblePhysicalReturn|TestLoadSeparatedSoundBank|TestComposeNativeMap|TestBuildNativeMapFrameInput|TestDrawNativeMapFrame|TestNativeMap|TestNativePhysical(Map|OwnMap)ReturnCompleteFrameFromOracle'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-focused-r2.log 2>&1",
+      "strings": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 260 sh -c 'set -eu; test -f /.dockerenv; export HOME=/tmp/home GOCACHE=/src/work/gocache GOFLAGS=-mod=mod; mkdir -p /hosttmp/fd2-physical-map-hud-cycle-strings-r1 /tmp/home; mkdir -p /tmp/fd2-before-sound; git -C /src archive HEAD | tar -x -C /tmp/fd2-before-sound; cd /src/remake/cmd/fd2-string-inventory; go run . -repo /tmp/fd2-before-sound -output /hosttmp/fd2-physical-map-hud-cycle-strings-r1/inv-old.json; cd /src/remake/cmd/fd2-string-inventory; go run . -repo ../../.. -output /hosttmp/fd2-physical-map-hud-cycle-strings-r1/inv-new.json; cd /src; python3 tools/migrate_string_review.py --old-inventory /hosttmp/fd2-physical-map-hud-cycle-strings-r1/inv-old.json --new-inventory /hosttmp/fd2-physical-map-hud-cycle-strings-r1/inv-new.json --review docs/data/fd2-string-review.json --output /hosttmp/fd2-physical-map-hud-cycle-strings-r1/review-new.json; python3 -c '\\''import json\nfrom pathlib import Path\nr=Path('\\''\\'\\'''\\''/hosttmp/fd2-physical-map-hud-cycle-strings-r1'\\''\\'\\'''\\'');i=json.loads((r/'\\''\\'\\'''\\''inv-new.json'\\''\\'\\'''\\'').read_text());m=json.loads((r/'\\''\\'\\'''\\''review-new.json'\\''\\'\\'''\\'').read_text());o=json.loads(Path('\\''\\'\\'''\\''docs/data/fd2-string-review.json'\\''\\'\\'''\\'').read_text());ids={s for g in m['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''].values() for s in g['\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\'']};assert ids=={e['\\''\\'\\'''\\''string_id'\\''\\'\\'''\\''] for e in i['\\''\\'\\'''\\''entries'\\''\\'\\'''\\''] if e['\\''\\'\\'''\\''role'\\''\\'\\'''\\'']==m['\\''\\'\\'''\\''reviewed_role'\\''\\'\\'''\\'']}\nfor k,g in m['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''].items():\n assert len(g['\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''])==len(o['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''][k]['\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''])\n assert {k:v for k,v in g.items() if k!='\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''}=={k:v for k,v in o['\\''\\'\\'''\\''dispositions'\\''\\'\\'''\\''][k].items() if k!='\\''\\'\\'''\\''string_ids'\\''\\'\\'''\\''}\nPath('\\''\\'\\'''\\''docs/data/fd2-string-review.json'\\''\\'\\'''\\'').write_bytes((r/'\\''\\'\\'''\\''review-new.json'\\''\\'\\'''\\'').read_bytes());print('\\''\\'\\'''\\''rebound'\\''\\'\\'''\\'',len(ids),'\\''\\'\\'''\\''unchanged dispositions'\\''\\'\\'''\\'')\n'\\''' > work/physical-map-hud-cycle-strings-r1.log 2>&1",
+      "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test -json ./... -count=1 -timeout 600s' > work/physical-map-hud-cycle-go-all-r2.jsonl 2>&1",
+      "own_gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=own-nonzero with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-own-map-gpu-r1.log 2>&1",
+      "replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales;  test -d /src/work/parity-slot-ch12/treasure-original-r2; test -f /src/work/parity-slot-ch12/FD2.SAV; test ! -e /src/work/parity-slot-ch12/physical-map-hud-cycle-full-remake-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/treasure-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch12/physical-map-hud-cycle-full-remake-r1 with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -timeout 600s -v' > work/parity-slot-ch12/physical-map-hud-cycle-full-remake-r1.log 2>&1",
+      "chapter_compare": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 300 docker run --rm -i --name fd2-physical-map-hud-cycle-compare-r1 -e PYTHONUNBUFFERED=1 --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 260 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/treasure-original-r2 --remake work/parity-slot-ch12/physical-map-hud-cycle-full-remake-r1 --slot-manifest work/parity-slot-ch12/manifest.json --plan docs/data/parity-plans/ch12-sample.jsonl --out work/parity-slot-ch12/physical-map-hud-cycle-full-verified-r1.json > work/physical-map-hud-cycle-ch12-compare-r1.log 2>&1",
+      "counter_hit_gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-frame-units-original-r1 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=counter-hit with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-map-hud-cycle-counter-hit-gpu-r1.log 2>&1"
+    },
+    "source_hashes": [
+      {
+        "path": "remake/cmd/fd2/main.go",
+        "sha256": "a6ecfbe62c5f42ed3ad88eecc3ce27e5e5eb3add016f49f440d67f5da51288af"
+      },
+      {
+        "path": "remake/cmd/fd2/native_physical_body_test.go",
+        "sha256": "5af6fdc8964b7c475c248a2773915f6fd236b3ecfaa87087d7511b9756a42663"
+      },
+      {
+        "path": "remake/cmd/fd2/native_map_frame_input_test.go",
+        "sha256": "0da3e3bdbe953e83e7515389a3d9b7712ac5269e79edf5e6a54cba6823ec9f31"
+      },
+      {
+        "path": "docs/data/fd2-string-review.json",
+        "sha256": "28cfd6febdd3b46536155c838b9fdfa364809165dbe32c6764b3fe91199c5a9c"
+      }
+    ],
+    "output_hashes": [
+      {
+        "path": "work/physical-own-map-source-validation-r1.json",
+        "sha256": "faf4420bf67801ee8851929827e959413a04142bcb05e5e39445e33d87863d1b"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-red-r2.log",
+        "sha256": "b674e2959b73819c8e6e0a360410d2819dd15dd358f18fc9abc4c348e0a9e15f"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-green-r1.log",
+        "sha256": "73385edc9038b103f81ecc955836cab2dd2dd1a6b8ac61df6404553293f48a16"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-r2.log",
+        "sha256": "d9516e38e1f813a7221a2390f6a5a2b6b99341439bed7eb754daf88fb09b4008"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-r3.log",
+        "sha256": "a0ef44f0089d43ef1a471c47744b52f27ce7220389abbfdebb412e77440f7512"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-r4.log",
+        "sha256": "9ac07b087ca8f7ded700dbbb6e8360dfbe436ae0e1760c9c0939f4b07fe13eb7"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r2.json",
+        "sha256": "842b483c2ae2eb2927ba72aa42e5782c6feab77edd3ac75da35d0b805763f8b5"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r3.json",
+        "sha256": "034976467839c80fccdc8bfc613cad2a7379e03551b0fa0f18059e919c608942"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r4.json",
+        "sha256": "52d34c02648d0938067c573430d3ab898e5f8e03bf0ff672739fdb315c28223c"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r4.png",
+        "sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r5.json",
+        "sha256": "52d34c02648d0938067c573430d3ab898e5f8e03bf0ff672739fdb315c28223c"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r5.png",
+        "sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-parity-r4.json",
+        "sha256": "9233512ed019fae4153abd9d9cae0804477a48ae07d4ef46ba622a1919f8d8fa"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-scenario-r4.json",
+        "sha256": "18a55fd61d42d77ad8707517759c4441cc44e596f62af6058dc8fb72e2c3e0be"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-focused-r2.log",
+        "sha256": "2291085a87ff6df87e114d6c7aa67410a94b7e4f191f7c629b25fc83f9afd061"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-go-all-r2.jsonl",
+        "sha256": "718a181916a52a9f2afd46b05d801d98de95dfaa5baeb8ab5a428a5118b20618"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-strings-r1.log",
+        "sha256": "cd86795c95ebb5a8791b6b63a0f5121f6dba316767883bb903e3ea60d77f5690"
+      },
+      {
+        "path": "work/physical-own-map-gpu-r1.log",
+        "sha256": "5373961cd37efc95cde5c215eecef1631ccacab03826ebaef159ec2ce59f6f1e"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-counter-hit-gpu-r1.log",
+        "sha256": "a39215d221dcf58d36a9d425001bbb702215786728dd66a6b17dd1f1bdd5c3ba"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-full-remake-r1.log",
+        "sha256": "bd4b933c9996d6bc70cfc84ee62f1bc421d1cd488e9db1cedbaf128395eaa10f"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-full-verified-r1.json",
+        "sha256": "9fcfc8e9d2c5e28d7457d611d430014b0f3c00f388eda73a481cb5221e4d3afa"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-ch12-compare-r1.log",
+        "sha256": "2c1983dc0dbb4b433a03481a78319c5cd3018b8e4e8d35536b5b889e7945c2fd"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-ch12-regression-r2.json",
+        "sha256": "dd934e3f98d1238de768657204c22d407e80dd83864e51ad057858f66a9180b6"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-ch12-regression-r2.png",
+        "sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-go-all-r1.jsonl",
+        "sha256": "7df0fe7097b9d502e1858440e171aeb55a65466c8c5ecad61e905b4d47cf686d"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-lessons-r1.log",
+        "sha256": "095e6aec7539d69c22f2ba5f38c76b94c0068328d41ac356859886d9f44458d0"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-lessons-r2.log",
+        "sha256": "60629ecd3fb17da16072ac3514da3087b2bf237fe5d99c184be3999b817c8f91"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-lessons-r3.log",
+        "sha256": "32914dd6062d00bd0df4532e64b3b448d451bccabe1b09b84cffd727b89aa1ec"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-worklist-r1.log",
+        "sha256": "1fe67c26ab8a9ab5926e674bfcfe5637bdd59962c9cee320fda65ccad63a4004"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-final-audit-r1.json",
+        "sha256": "2e15a166594c80ba354fc68cff45f923a0c4362ed10516322827cf939858843b"
+      }
+    ],
+    "limits": [
+      "一般work生命週期、逐時鐘及其他返回分支未證明",
+      "#166／#52／#154／#167與章台帳保持，不新增PLAYER-E2"
+    ],
+    "diagnostics": {
+      "full_go_r1": "字串清冊綁定舊main.go行號雜湊，既有工具保留98分類後同容器／命令r2全套通過；屬清冊維護，未改產品規則。",
+      "lesson_guard_r1_r2": "guard的first_hit.scannable刻意排除測試檔；首次誤判regex後已讀實作確認，不改工具，改綁主契約欄位，r3的53guard全通過。",
+      "command_payload": "首次命令字串過長未啟動容器；完整命令改從/tmp JSON唯讀輸入，正式收據與來源保持。"
+    },
+    "close_state": {
+      "issue174": "CLOSED",
+      "issue175": "CLOSED",
+      "open_worklist_items": 23,
+      "possible_finished_items": 0,
+      "lesson_guards": 53,
+      "lessons": 157,
+      "docker_cleanup": "host ps-a確認無FD2／oracle／Go一次性容器；其他專案保持",
+      "ownership": "historical root-owned2811、new0、.md directories0，變更與新產物UID/GID1000"
+    }
+  },
+  "physical_own_map_raw_restore_validation": {
+    "date": "2026-10-05",
+    "issue": 175,
+    "state": "limited-CONFORMED",
+    "source": "physical_own_map_selector_probe.result",
+    "before": "驗收constructor將pose2重設0，308indexed差異；正式unit blitter未改。",
+    "after": "constructor後恢復raw＋0..＋4，逐筆核對slot/key、pose/motion、flags/forceBase；同原槽／seed／201controls／caller／window完整64000indexed與256palette零差異。",
+    "same_inputs": true,
+    "source_png_sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc",
+    "output_png_sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc",
+    "rejected_evidence": [
+      "work/parity-slot-ch08/physical-own-map-consumer-remake-r2.json",
+      "work/parity-slot-ch08/physical-own-map-consumer-remake-r3.json"
+    ],
+    "verification": "兩個完整map、四演出38測試及正式parity通過；只改測試匯入。"
+  },
+  "physical_own_map_return_acceptance_validation": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "limited-CONFORMED",
+    "layer": "RUNTIME-E1",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "method": "正式LOAD／整備／出戰、同一11CAC入口raw輸入、finishAttackPresentation合成後讀原版PNG；無mask／crop／phase枚舉",
+    "source": "physical_own_map_return_probe.source_validation及physical_own_map_selector_probe.result",
+    "receipt": {
+      "after_called": true,
+      "clock_method": "existing single transaction hardware-spec approximation; original later latch not fed as input",
+      "indexed_difference_pixels": 0,
+      "input_bios_tick": 24514,
+      "input_work_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "physical-map-full-frame RUNTIME-E1",
+      "limit": "固定ch08弓手正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升",
+      "output_cycles": {
+        "Idle": 2,
+        "Moving": 2,
+        "LastTimerTick": 24514
+      },
+      "output_flip": {
+        "Value": 0,
+        "LastTimerTick": 24514
+      },
+      "output_shift": {
+        "Value": 0,
+        "LastTimerTick": 24514
+      },
+      "output_terrain": {
+        "Phase": 18,
+        "LastTimerTick": 24514
+      },
+      "palette_difference_entries": 0,
+      "palette_phase": 10,
+      "palette_tick": 23505,
+      "rgb_difference_pixels": 0,
+      "source_entry_step": 1433248707,
+      "source_trace_sha256": "e468d124ebf94089fe048feb7c1d4ef5f6175980d504baef41dc7ce5540a7f4f",
+      "state": "limited-CONFORMED",
+      "units_unchanged": true,
+      "work_policy": "formal Game retained work; no original allocator assumption"
+    },
+    "formal_parity": {
+      "schema": 2,
+      "game": "fd2",
+      "scenario": "ch08-own5-enemy11-normal-map-return",
+      "state": "near-state",
+      "original_runner": "dosgolem",
+      "executable": {
+        "path": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "input_sha256": "18a55fd61d42d77ad8707517759c4441cc44e596f62af6058dc8fb72e2c3e0be",
+      "dosgolem_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+      "remake_commit": "e45c25709398bf5a545ad14f3dc31572707f1bc2+READY-test-recorded-by-sha256",
+      "original_capture": "frame-000051.png",
+      "original_capture_sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc",
+      "remake_capture": "physical-own-map-consumer-remake-r4.png",
+      "remake_capture_sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc",
+      "remake_normalization": "native_320x200",
+      "comparison": {
+        "equal_pixels": 64000,
+        "total_pixels": 64000,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      }
+    },
+    "work_observation": "本次Game合成前work未配置，SHA為空輸入SHA；由正式composer配置，不以原版配置器假設填值。此例不能證明一般work生命週期。",
+    "palette_observation": "首個返回copy的DAC全部為0，RGB相等單獨不足；完整indexed與palette各自通過零差異gate。",
+    "regressions": "physical_map_hud_cycle_validation",
+    "source_hashes": [
+      {
+        "path": "remake/cmd/fd2/main.go",
+        "sha256": "a6ecfbe62c5f42ed3ad88eecc3ce27e5e5eb3add016f49f440d67f5da51288af"
+      },
+      {
+        "path": "remake/cmd/fd2/native_physical_body_test.go",
+        "sha256": "5af6fdc8964b7c475c248a2773915f6fd236b3ecfaa87087d7511b9756a42663"
+      },
+      {
+        "path": "remake/cmd/fd2/native_map_frame_input_test.go",
+        "sha256": "0da3e3bdbe953e83e7515389a3d9b7712ac5269e79edf5e6a54cba6823ec9f31"
+      },
+      {
+        "path": "docs/data/fd2-string-review.json",
+        "sha256": "28cfd6febdd3b46536155c838b9fdfa364809165dbe32c6764b3fe91199c5a9c"
+      }
+    ],
+    "output_hashes": [
+      {
+        "path": "work/physical-own-map-source-validation-r1.json",
+        "sha256": "faf4420bf67801ee8851929827e959413a04142bcb05e5e39445e33d87863d1b"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-red-r2.log",
+        "sha256": "b674e2959b73819c8e6e0a360410d2819dd15dd358f18fc9abc4c348e0a9e15f"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-green-r1.log",
+        "sha256": "73385edc9038b103f81ecc955836cab2dd2dd1a6b8ac61df6404553293f48a16"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-r2.log",
+        "sha256": "d9516e38e1f813a7221a2390f6a5a2b6b99341439bed7eb754daf88fb09b4008"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-r3.log",
+        "sha256": "a0ef44f0089d43ef1a471c47744b52f27ce7220389abbfdebb412e77440f7512"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-r4.log",
+        "sha256": "9ac07b087ca8f7ded700dbbb6e8360dfbe436ae0e1760c9c0939f4b07fe13eb7"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r2.json",
+        "sha256": "842b483c2ae2eb2927ba72aa42e5782c6feab77edd3ac75da35d0b805763f8b5"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r3.json",
+        "sha256": "034976467839c80fccdc8bfc613cad2a7379e03551b0fa0f18059e919c608942"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r4.json",
+        "sha256": "52d34c02648d0938067c573430d3ab898e5f8e03bf0ff672739fdb315c28223c"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r4.png",
+        "sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r5.json",
+        "sha256": "52d34c02648d0938067c573430d3ab898e5f8e03bf0ff672739fdb315c28223c"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-remake-r5.png",
+        "sha256": "7112ee15b5b7b76cf541ed8eb78f2e6c166c48d8e78b84cf73b8180c876fe0bc"
+      },
+      {
+        "path": "work/physical-own-map-acceptance-parity-r4.json",
+        "sha256": "9233512ed019fae4153abd9d9cae0804477a48ae07d4ef46ba622a1919f8d8fa"
+      },
+      {
+        "path": "work/parity-slot-ch08/physical-own-map-consumer-scenario-r4.json",
+        "sha256": "18a55fd61d42d77ad8707517759c4441cc44e596f62af6058dc8fb72e2c3e0be"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-focused-r2.log",
+        "sha256": "2291085a87ff6df87e114d6c7aa67410a94b7e4f191f7c629b25fc83f9afd061"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-go-all-r2.jsonl",
+        "sha256": "718a181916a52a9f2afd46b05d801d98de95dfaa5baeb8ab5a428a5118b20618"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-strings-r1.log",
+        "sha256": "cd86795c95ebb5a8791b6b63a0f5121f6dba316767883bb903e3ea60d77f5690"
+      },
+      {
+        "path": "work/physical-own-map-gpu-r1.log",
+        "sha256": "5373961cd37efc95cde5c215eecef1631ccacab03826ebaef159ec2ce59f6f1e"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-counter-hit-gpu-r1.log",
+        "sha256": "a39215d221dcf58d36a9d425001bbb702215786728dd66a6b17dd1f1bdd5c3ba"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-full-remake-r1.log",
+        "sha256": "bd4b933c9996d6bc70cfc84ee62f1bc421d1cd488e9db1cedbaf128395eaa10f"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-full-verified-r1.json",
+        "sha256": "9fcfc8e9d2c5e28d7457d611d430014b0f3c00f388eda73a481cb5221e4d3afa"
+      },
+      {
+        "path": "work/physical-map-hud-cycle-ch12-compare-r1.log",
+        "sha256": "2c1983dc0dbb4b433a03481a78319c5cd3018b8e4e8d35536b5b889e7945c2fd"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-ch12-regression-r2.json",
+        "sha256": "dd934e3f98d1238de768657204c22d407e80dd83864e51ad057858f66a9180b6"
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-hud-cycle-ch12-regression-r2.png",
+        "sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df"
+      }
+    ],
+    "limits": [
+      "一般work生命週期、逐時鐘及其他返回分支未證明",
+      "#166／#52／#154／#167與章台帳保持，不新增PLAYER-E2",
+      "near-state，單次BIOS採樣為hardware-spec approximation",
+      "111／114建構槽與#167政策保持，不驗傷害、存活或敵方選目標"
+    ]
   }
 }

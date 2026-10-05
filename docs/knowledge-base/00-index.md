@@ -626,3 +626,15 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 #166的[physical_map_consumer_probe](../data/ida/fd2_physical_background_selection_20261004.json)保留DRAFT診斷歷史；正式限定驗收見後文。
 
 #166的[physical_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1；同源完整返回畫布與色盤通過，時鐘近似及一般work生命週期限制保持。正式測試入口為[物理演出測試](../../remake/cmd/fd2/native_physical_body_test.go)，目前數字見[58](58-fd2-exe-re-coverage.md)，不升PLAYER-E2。
+
+#166的[physical_own_map_return_probe](../data/ida/fd2_physical_background_selection_20261004.json)為DRAFT；固定第八章弓手首擊後返回地圖，沿原槽／控制／窗口補同時點來源，尚未提高驗收層級。
+
+#166的[physical_own_map_return_acceptance_spec](../data/ida/fd2_physical_background_selection_20261004.json)已READY：固定原版輸入、caller與同時點來源已核對，授權共用完整畫布驗收；重製結果仍待實跑。
+
+#174的[physical_map_hud_cycle_evidence／spec](../data/ida/fd2_physical_background_selection_20261004.json)已RE-CLOSED／READY；optional HUD讀取更新前idle，先建立產品反例再修正候選交易來源。#166其餘索引差異仍待分類。
+
+#175的[physical_own_map_selector_probe](../data/ida/fd2_physical_background_selection_20261004.json)為DRAFT；固定首次返回窄追原始cycle與sprite pointer，不用候選像素挑幀。
+
+#175的[physical_own_map_raw_restore_spec](../data/ida/fd2_physical_background_selection_20261004.json)已READY：正式oracle確認slot5／pose2／cycle2與指標，308差異來自驗收constructor重設raw姿勢。修正限測試輸入，未證明正式blitter有缺陷。
+
+目前#174 HUD來源與#175驗收raw匯入勘誤已限定CONFORMED；入口為[physical_map_hud_cycle_validation／physical_own_map_return_acceptance_validation](../data/ida/fd2_physical_background_selection_20261004.json)及[58現況表](58-fd2-exe-re-coverage.md)。先前READY與拒收段落保留形成過程，不再作現況待辦。

@@ -1623,6 +1623,36 @@
         ],
         "pattern": "\"clock_observation\":"
       }
+    },
+    {
+      "id": "indexed-parity-requires-raw-index-gate",
+      "date": "2026-10-05",
+      "area": "索引畫面驗收",
+      "rule": "比較索引畫面時，同時檢查完整indexed資料與色盤，不以RGB相等單獨驗收。全黑或重複顏色會掩蓋索引差異。入口remake/cmd/fd2/native_physical_body_test.go的verifyNativePhysicalMapReturn與主契約physical_own_map_return_acceptance_validation；目前驗兩個普通物理返回完整畫布。",
+      "why": "ch08首次返回DAC全黑，572indexed差異的RGB仍為0；獨立索引閘門暴露HUD來源與測試姿勢問題。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/174",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_physical_background_selection_20261004.json"
+        ],
+        "pattern": "\"palette_observation\":"
+      }
+    },
+    {
+      "id": "same-state-import-survives-constructor",
+      "date": "2026-10-05",
+      "area": "同狀態輸入",
+      "rule": "原版raw匯入後若呼叫constructor，核對它會重設的欄位，完成快取物化後恢復原始資料，再逐筆檢查真正consumer輸入。入口remake/cmd/fd2/native_physical_body_test.go的verifyNativePhysicalMapReturn及主契約physical_own_map_raw_restore_spec；目前涵蓋slot/key、座標、pose/motion、flags/forceBase。",
+      "why": "MaterializeNativeMapSelectorSlots會初始化pose/motion；驗收工具把弓手raw pose2改成0，造成308差異，正式unit blitter沒有該缺陷。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/175",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_physical_background_selection_20261004.json"
+        ],
+        "pattern": "\"physical_own_map_raw_restore_spec\":"
+      }
     }
   ]
 }

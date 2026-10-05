@@ -9196,3 +9196,11 @@ oracle明寫normal_player_path_verified=false，仍保留原限制。正常BIOS�
 DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字、目前狀態及完整命令見[58](58-fd2-exe-re-coverage.md)與主契約；#167及章台帳保持。
 
 本批收尾：真正主機Issue #166保持開啟；pull／render／verify為23項、可能已完成0項。155條教訓的51條guard、11份輸出及1份測試來源雜湊、13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。一次性FD2容器已退出，其他專案未更動。提交與推送結果見[Issue #166](https://github.com/wicanr2/fd2_re/issues/166)。
+
+### 2026-10-05 #174／#175：HUD週期與弓手返回地圖
+
+[主契約physical_map_hud_cycle_validation／physical_own_map_return_acceptance_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。原版1297D先推進idle，1ACF3再讀取；正式HUD曾在推進前取得舊快照，現改讀本次候選idle。兩個caller與拒收原子性均有反例與通過收據。
+
+弓手的選幀指標與B24來源一致。剩餘差異來自驗收工具在raw匯入後呼叫新單位constructor，把姿勢重設；現於constructor後恢復原始呈現資料並逐筆核對。正式unit blitter保持。原先拒收收據保留，#175的「正式弓手選幀尚未閉合」診斷由原版指標與測試資料流反證取代。
+
+我方弓手與既有敵方／友軍反擊的普通返回完整畫布通過。原版弓手首次copy的DAC全黑，驗收另檢查indexed資料與整份色盤，不能單靠RGB相等。時鐘仍為hardware-spec approximation，原版配置器與一般work生命週期未證明。正常章重播的行為與存檔保持，整章節點／畫面仍按既有門檻拒收；不新增PLAYER-E2。唯一數字與命令見[58](58-fd2-exe-re-coverage.md)，父項[#166](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。
