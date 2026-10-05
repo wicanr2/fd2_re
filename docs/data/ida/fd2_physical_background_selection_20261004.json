@@ -37791,5 +37791,294 @@
       "md_directories": 0,
       "unexpected_fd2_containers": 0
     }
+  },
+  "physical_map_consumer_probe": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "DRAFT",
+    "baseline_commit": "a7b61fbac94539bf84956fa46376e2f53071cbc6",
+    "source": "physical_map_runtime_tool_validation",
+    "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+    "entry_step": 4000640342,
+    "target_frame": 43,
+    "target_step": 4000799496,
+    "method": "正常LOAD／出戰後匯入同源entry raw units／view／16globals與獨立DAC，正式finishAttackPresentation消費11CAC(1)，完整indexed／RGB比較。",
+    "clock": "入口BIOS13696為輸入；現有single transaction屬hardware-spec approximation，不以出口latch回填input。",
+    "work": "正式Game保留work；不為對圖猜清原版配置器初值。",
+    "limits": [
+      "DRAFT僅蒐證，不接正式runtime或升級map parity／PLAYER-E2",
+      "差異分類後另登記缺陷／RE，先READY才修正式程式"
+    ],
+    "result": {
+      "state": "DRAFT",
+      "output": "work/physical-map-consumer-comparison-r2.json",
+      "comparison": {
+        "state": "DRAFT",
+        "status": "passed",
+        "source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+        "original_frame": 43,
+        "source_step": 4000799496,
+        "size": [
+          320,
+          200
+        ],
+        "indexed_diff": 0,
+        "rgb_diff": 0,
+        "indexed_bounds": null,
+        "rgb_bounds": null,
+        "palette_component_differences": 0,
+        "original_sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+        "remake_sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+        "by_rows": {},
+        "limit": "DRAFT same-source raw import after normal LOAD; hardware-spec approximation clock; work lifetime unresolved, no map parity or PLAYER-E2"
+      },
+      "observed": "正常LOAD／出戰後正式物理返回compositor生成的完整PNG與原版frame43 bytes完全相同。未改正式引擎、未枚舉phase或清work。",
+      "diagnostics": [
+        "初版test將現有int palette tick設為uint16而編譯失敗；僅訂正測試型別，r2同命令通過。",
+        "比較的Go test容器沒有Pillow，未執行比較；沿用fd2-assets-local:20260829-sfx鎖版Pillow11.3.0後通過。"
+      ]
+    },
+    "commands": {
+      "prototype_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-consumer-remake-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalMapReturnSameSourceProbe$'\\'' -count=1 -timeout 180s -v' > work/physical-map-consumer-probe-r1.log 2>&1",
+      "prototype_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-consumer-remake-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalMapReturnSameSourceProbe$'\\'' -count=1 -timeout 180s -v' > work/physical-map-consumer-probe-r2.log 2>&1",
+      "comparison": "test -d /home/anr2/cht/fd2 && timeout 120 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 90 python3 - <<'PY'\nfrom pathlib import Path\nfrom PIL import Image\nimport json,hashlib\np=Path('/src')\norig=p/'work/parity-slot-ch12/physical-map-state-original-r1/frames/frame-000043.png'\nremake=p/'work/parity-slot-ch12/physical-map-consumer-remake-r2.png'\na,b=Image.open(orig),Image.open(remake)\nassert a.size==b.size==(320,200) and a.mode==b.mode=='P',(a.size,a.mode,b.mode)\nia,ib=list(a.getdata()),list(b.getdata())\nra,rb=list(a.convert('RGB').getdata()),list(b.convert('RGB').getdata())\nindices=[i for i,(x,y) in enumerate(zip(ia,ib)) if x!=y]\nrgb=[i for i,(x,y) in enumerate(zip(ra,rb)) if x!=y]\ndef bounds(xs):\n return None if not xs else [min(i%320 for i in xs),min(i//320 for i in xs),max(i%320 for i in xs),max(i//320 for i in xs)]\nrgb_set=set(rgb)\nmask=Image.new('RGB',(320,200));mask.putdata([(255,0,0) if i in rgb_set else (0,0,0) for i in range(64000)])\nmask.save(p/'work/parity-slot-ch12/physical-map-consumer-diff-r2.png')\npalette_a=a.getpalette()[:768];palette_b=b.getpalette()[:768]\nreport={'state':'DRAFT','status':'passed' if not rgb and not indices else 'failed','source_commit':'a01ff084f038ddd1d133480f08d32e3b2e6f98c0','original_frame':43,'source_step':4000799496,'size':[320,200],'indexed_diff':len(indices),'rgb_diff':len(rgb),'indexed_bounds':bounds(indices),'rgb_bounds':bounds(rgb),'palette_component_differences':sum(x!=y for x,y in zip(palette_a,palette_b)),'original_sha256':hashlib.sha256(orig.read_bytes()).hexdigest(),'remake_sha256':hashlib.sha256(remake.read_bytes()).hexdigest(),'by_rows':{str(y):sum(i//320==y for i in indices) for y in range(200) if any(i//320==y for i in indices)},'limit':'DRAFT same-source raw import after normal LOAD; hardware-spec approximation clock; work lifetime unresolved, no map parity or PLAYER-E2'}\n(p/'work/physical-map-consumer-comparison-r2.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\\n')\nprint(json.dumps({k:v for k,v in report.items() if k!='by_rows'},ensure_ascii=False,indent=2))\nprint('INPUT/OUTPUT', (p/'work/parity-slot-ch12/physical-map-consumer-remake-r2.json').read_text())\n\nPY"
+    },
+    "current_resolution": "保留DRAFT診斷歷史；正式限定驗收見physical_map_return_acceptance_validation。"
+  },
+  "physical_map_return_acceptance_spec": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "state": "limited-CONFORMED",
+    "scope": "第12章固定enemy23→Ally14命中反擊後正常11CAC(1)返回，限定同源完整VGA／palette consumer；非零及mode11另驗。",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "evidence": [
+      "physical_map_runtime_evidence",
+      "physical_map_runtime_tool_validation",
+      "physical_map_consumer_probe.result"
+    ],
+    "input_sources": {
+      "slot_sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b",
+      "trace_sha256": "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b",
+      "entry": 4000640342,
+      "frame": 43,
+      "copy_exit": 4000799496,
+      "png_sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df"
+    },
+    "method": "正式LOAD／整備／出戰取得地圖bundle；原版入口33筆raw經既有fdsave.View及Battle typed fields轉接。重建selector cache並驗證每列raw+2，使用原view、16globals及獨立DAC。finishAttackPresentation合成、stop、after續行。比較原圖只發生在產物生成後，任何原版pixels不作render input。",
+    "clock": "入口13696推動既有hardware-spec approximation；可見cycle／terrain／flip／shift輸出與原來源相符。後一shift latch13696與原13725不同，保留限制，不稱逐時鐘exact。",
+    "work": "沿正式Game保留work；此例完整VGA通過，不從原版PNG推work、不一般化malloc／free初值政策。",
+    "verification": [
+      "固定入口／copy caller界線、33raw及selector、獨立palette來源明確；不能從checkpoint拼state",
+      "正式probe改為完整64000 indexed／RGB及256色palette assertion，缺来源／shape拒收",
+      "原始units在map return前後保持；palette／phase／tick保留、moving／idle3→0、terrain13→14、flip1→0、shift1→0，由已證實consumer推導，不輸入output",
+      "既有完整演出、正常返回／候選拒收及GPU最小回歸"
+    ],
+    "limits": [
+      "只限定同源E1 map consumer，不升PLAYER-E2或傷害／存活／選目標",
+      "111／114槽政策與167工具政策保持；不重開硬體driver或原版配置器",
+      "166其他完整返回與特殊branch仍OPEN"
+    ],
+    "ready_before_implementation": true,
+    "validation": "physical_map_return_acceptance_validation"
+  },
+  "physical_map_return_acceptance_validation": {
+    "date": "2026-10-05",
+    "issue": 166,
+    "status": "limited-CONFORMED",
+    "layer": "RUNTIME-E1",
+    "baseline_commit": "a7b61fbac94539bf84956fa46376e2f53071cbc6",
+    "original_source_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+    "source_test": {
+      "path": "remake/cmd/fd2/native_physical_body_test.go",
+      "sha256": "e11ba5ba9eb588ebbf464aca19eb9663e3032eb199435c04222ba358728449e5",
+      "size": 47869
+    },
+    "source_reference": "physical_map_runtime_tool_validation",
+    "test": "TestNativePhysicalMapReturnCompleteFrameFromOracle",
+    "scope": "第12章固定enemy23→Ally14命中反擊後正常11CAC(1)返回，限定同源完整VGA／palette consumer；非零及mode11另驗。",
+    "original_runner": "dosgolem",
+    "state": "near-state",
+    "comparison": {
+      "schema": 2,
+      "game": "fd2",
+      "scenario": "ch12-enemy23-ally14-normal-map-return",
+      "state": "near-state",
+      "original_runner": "dosgolem",
+      "executable": {
+        "path": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "input_sha256": "3c9fa634cbc2bfef6c3e92426fab8bd004549c2d51a9c891e855c2dcd8158b27",
+      "dosgolem_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+      "remake_commit": "a7b61fbac94539bf84956fa46376e2f53071cbc6+READY-test-recorded-by-sha256",
+      "original_capture": "frame-000043.png",
+      "original_capture_sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+      "remake_capture": "physical-map-consumer-remake-r3.png",
+      "remake_capture_sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+      "remake_normalization": "native_320x200",
+      "comparison": {
+        "equal_pixels": 64000,
+        "total_pixels": 64000,
+        "equal_ratio": 1,
+        "mean_abs_rgb": 0
+      }
+    },
+    "consumer_receipt": {
+      "after_called": true,
+      "clock_method": "existing single transaction hardware-spec approximation; original later latch not fed as input",
+      "indexed_difference_pixels": 0,
+      "input_bios_tick": 13696,
+      "input_work_sha256": "73ab90e8913d70ab278a13255c8a730fc0c59e40a070cfe4c42294ceaea3a502",
+      "kind": "physical-map-full-frame RUNTIME-E1",
+      "limit": "固定ch12正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升",
+      "output_cycles": {
+        "Idle": 0,
+        "Moving": 0,
+        "LastTimerTick": 13696
+      },
+      "output_flip": {
+        "Value": 0,
+        "LastTimerTick": 13696
+      },
+      "output_shift": {
+        "Value": 0,
+        "LastTimerTick": 13696
+      },
+      "output_terrain": {
+        "Phase": 14,
+        "LastTimerTick": 13696
+      },
+      "palette_difference_entries": 0,
+      "palette_phase": 4,
+      "palette_tick": 12333,
+      "rgb_difference_pixels": 0,
+      "source_entry_step": 4000640342,
+      "source_trace_sha256": "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b",
+      "state": "limited-CONFORMED",
+      "units_unchanged": true,
+      "work_policy": "formal Game retained work; no original allocator assumption"
+    },
+    "scenario_input": {
+      "schema": 2,
+      "game": "fd2",
+      "scenario": "ch12-enemy23-ally14-normal-map-return",
+      "state": "near-state",
+      "original_runner": "dosgolem",
+      "cycles": "固定1539 controls與原instruction-budget；重製clock hardware-spec approximation",
+      "timeline": "正常LOAD／整備／出戰後匯入唯一11CAC入口33raw、16globals及獨立DAC；原版PNG只於正式finish後比較",
+      "expected_capture": "11EED caller11D3B frame43 step4000799496，全部320x200，無mask／crop"
+    },
+    "checks": {
+      "full_indexed_pixels": 64000,
+      "full_rgb_pixels": 64000,
+      "palette_entries": 256,
+      "all_differences": 0,
+      "units_unchanged": true,
+      "after_called": true,
+      "focused_top_level_tests": 31,
+      "focused_packages": 3,
+      "counter_hit_gpu_presents": 64,
+      "caller_wait_redraws": 36
+    },
+    "artifacts": [
+      {
+        "path": "work/physical-map-consumer-acceptance-r3.log",
+        "sha256": "ff6c7caf20809b1853c66363e690fdcc6bd6a86aac5aff8620e1739fb0958be4",
+        "size": 650
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-consumer-remake-r3.png",
+        "sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+        "size": 13580
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-consumer-remake-r3.json",
+        "sha256": "dd934e3f98d1238de768657204c22d407e80dd83864e51ad057858f66a9180b6",
+        "size": 1142
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-consumer-scenario-r3.json",
+        "sha256": "3c9fa634cbc2bfef6c3e92426fab8bd004549c2d51a9c891e855c2dcd8158b27",
+        "size": 488
+      },
+      {
+        "path": "work/physical-map-acceptance-parity-r3.log",
+        "sha256": "626dcc37b51891a3bee80c24b0fce38133abf77c722dcc97f87524c1b9a4da7d",
+        "size": 53
+      },
+      {
+        "path": "work/physical-map-acceptance-parity-r3.json",
+        "sha256": "2339458df88844db1b822ba2484261f27c831c462972b38d3d92173a01fb0bb9",
+        "size": 1044
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-acceptance-parity-diff-r3.png",
+        "sha256": "57a72d0a4cc1b3387c7aedd3b4518923d1fd527ef6e8c00bb17a9b6fb822018c",
+        "size": 635
+      },
+      {
+        "path": "work/physical-map-acceptance-focused-r1.log",
+        "sha256": "0731ff84406e5cc097b8d173465101f5e78374f8cdf55a698b94a63cc05e4fb8",
+        "size": 11506
+      },
+      {
+        "path": "work/physical-map-acceptance-counter-hit-gpu-r1.log",
+        "sha256": "303c3dc69659320ec328b112d5b7d7268d03c1078ad36272160b336388d99809",
+        "size": 1143
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-consumer-remake-regression-r1.png",
+        "sha256": "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df",
+        "size": 13580
+      },
+      {
+        "path": "work/parity-slot-ch12/physical-map-consumer-remake-regression-r1.json",
+        "sha256": "dd934e3f98d1238de768657204c22d407e80dd83864e51ad057858f66a9180b6",
+        "size": 1142
+      }
+    ],
+    "commands": {
+      "acceptance": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_physical_body_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_MUTE=1 FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-consumer-remake-r3 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalMapReturnCompleteFrameFromOracle$'\\'' -count=1 -timeout 180s -v' > work/physical-map-consumer-acceptance-r3.log 2>&1",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/physical-map-acceptance-own-regression-r1; mkdir /src/work/physical-map-acceptance-own-regression-r1; FD2_PHYSICAL_MAP_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PHYSICAL_MAP_ORIGINAL=/src/work/parity-slot-ch12/physical-map-state-original-r1 FD2_PHYSICAL_MAP_OUT=/src/work/parity-slot-ch12/physical-map-consumer-remake-regression-r1 FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-scroll-original-r1 FD2_PHYSICAL_COUNTER_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r3 FD2_PHYSICAL_COUNTER_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-hit-counter-original-r2 FD2_PHYSICAL_OWN_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r4 FD2_PHYSICAL_OWN_PRELUDE_ORIGINAL=/src/work/parity-slot-ch08/physical-own-nonzero-original-r3 FD2_PHYSICAL_COUNTER_HIT_ORIGINAL=/src/work/parity-slot-ch12/physical-frame-units-original-r1 FD2_PHYSICAL_COUNTER_HIT_PRELUDE_ORIGINAL=/src/work/parity-slot-ch12/physical-counter-hit-original-entry-r1 FD2_PHYSICAL_OWN_OUT=/src/work/physical-map-acceptance-own-regression-r1 with-xvfb go test ./internal/battlepresent ./internal/fdother ./cmd/fd2 -run '\\''^TestNativePhysical(Body|Scene|Terrain|Surface|DepartureMissingLayer|Return)|TestCompatiblePhysicalReturn|TestLoadSeparatedSoundBank|TestNativeMap|TestNativePhysicalMapReturnCompleteFrameFromOracle'\\'' -count=1 -timeout 120s -v' > work/physical-map-acceptance-focused-r1.log 2>&1",
+      "gpu": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PHYSICAL_BODY_ORIGINAL=/src/work/parity-slot-ch12/physical-frame-units-original-r1 FD2_PHYSICAL_BODY_GPU=1 FD2_PHYSICAL_BODY_CASE=counter-hit with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePhysicalBodyGPU$'\\'' -count=1 -timeout 120s -v' > work/physical-map-acceptance-counter-hit-gpu-r1.log 2>&1",
+      "parity": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 180 docker run --rm --network none --memory 2g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache --workdir /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp golang:1.24-bookworm timeout 150 go run ./apps/fd2/cmd/parity -exe /orig/FD2.EXE -original /src/work/parity-slot-ch12/physical-map-state-original-r1/frames/frame-000043.png -remake /src/work/parity-slot-ch12/physical-map-consumer-remake-r3.png -input /src/work/parity-slot-ch12/physical-map-consumer-scenario-r3.json -dosgolem-commit a01ff084f038ddd1d133480f08d32e3b2e6f98c0 -remake-commit a7b61fbac94539bf84956fa46376e2f53071cbc6+READY-test-recorded-by-sha256 -report /src/work/physical-map-acceptance-parity-r3.json -diff /src/work/parity-slot-ch12/physical-map-acceptance-parity-diff-r3.png > work/physical-map-acceptance-parity-r3.log 2>&1",
+      "final_worklist_check": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 150  sh -c 'set -eu\npython3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json,sys\nsys.path.insert(0,\"tools\")\nimport fd2_worklist_issues as wi\nfeed=json.loads(Path(\"/hosttmp/fd2-worklist-map-acceptance-final.json\").read_text())\nassert any(x[\"number\"]==166 and x[\"state\"]==\"OPEN\" for x in feed)\nwi.fetch_issues=lambda state=\"open\":feed\nwi.cmd_pull()\n\nPY\npython3 tools/fd2_worklist.py render\npython3 tools/fd2_worklist.py verify\npython3 tools/fd2_lessons.py check\n' > work/physical-map-acceptance-final-check-r1.log 2>&1\n"
+    },
+    "production_change": "沒有；現行正式合成器已通過本例。新增固定來源測試及證據。",
+    "clock_limit": "原版入口BIOS13696，出口13728，shift latch13725；既有單次採樣重製shift latch13696。可見phase與完整畫面相同，仍標hardware-spec approximation，不宣稱逐時鐘exact。",
+    "work_limit": "正式LOAD取得地圖資料及保留work；本例input_work_sha256可回查，完整VGA一致不能證明一般malloc／free初值或生命週期。",
+    "limits": [
+      "只限定同源E1 map consumer，不升PLAYER-E2或傷害／存活／選目標",
+      "111／114槽政策與167工具政策保持；不重開硬體driver或原版配置器",
+      "166其他完整返回與特殊branch仍OPEN"
+    ],
+    "diagnostics": [
+      "初版test將現有int palette tick設為uint16而編譯失敗；僅訂正測試型別，r2同命令通過。",
+      "比較的Go test容器沒有Pillow，未執行比較；沿用fd2-assets-local:20260829-sfx鎖版Pillow11.3.0後通過。"
+    ],
+    "closeout_audit": {
+      "date": "2026-10-05",
+      "parent_issue166": "OPEN",
+      "open_worklist": 23,
+      "possibly_completed": 0,
+      "lessons": 155,
+      "guards": 51,
+      "output_hashes": 11,
+      "test_source_hashes": 1,
+      "new_local_links": 13,
+      "index_positive_control": true,
+      "readme_culture_entry": true,
+      "uid_gid": "1000:1000",
+      "historical_root_owned": 2811,
+      "new_root_owned": 0,
+      "md_directories": 0
+    }
   }
 }

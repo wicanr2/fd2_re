@@ -1790,3 +1790,11 @@ VGA寫入切片已有限CONFORMED，原始work與整章限制保持；相稱回�
 [physical_map_runtime_spec／tool_validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定工具CONFORMED。既有IDA欄位寬度先複核為RE-CLOSED／READY，再改唯一oracle；clean來源提交推送後，以原槽／seed／輸入與窗口重生，原控制、停點、trace欄位、完整PNG及metadata保持。唯一數字與來源見[58](58-fd2-exe-re-coverage.md)。
 
 這補齊#166完整map消費端的raw globals／view／units／palette來源，未驗收重製map或PLAYER-E2。入口與copy出口BIOS已有不同，不能以凍結單一刻度替代各層clock來源，也不由output反推input。#171舊收據與#167工具政策保持。首次wrapper缺掛載與收尾計數含子案例的診斷已訂正，原日誌保留；本批沒有修改正式引擎。
+
+### 2026-10-05 #166：完整返回地圖的限定驗收
+
+[physical_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。正常LOAD／整備／出戰取得正式地圖資料，再匯入唯一11CAC入口的raw units／view／globals與獨立DAC。正式finishAttackPresentation走合成、停止與續行；原版PNG只在合成後供比較，不作輸入。此節取代前段「返回地圖所有正式consumer尚未驗收」的接手狀態，範圍限本次第十二章enemy23→Ally14命中反擊的普通返回。
+
+完整畫面與色盤通過；單位保持。BIOS單次採樣仍屬hardware-spec approximation，原版後一shift latch與重製不同，不宣稱逐時鐘一致。正式Game保留work，本例通過不證明一般配置器初值或生命週期。其餘返回分支、非零連擊與DAC0／人耳音訊保持在[#166](https://github.com/wicanr2/fd2_re/issues/166)，不新增PLAYER-E2。
+
+DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字、目前狀態及完整命令見[58](58-fd2-exe-re-coverage.md)與主契約；#167及章台帳保持。

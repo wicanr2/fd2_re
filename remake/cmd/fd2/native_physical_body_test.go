@@ -17,10 +17,13 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
 
@@ -994,4 +997,292 @@ func physicalCounterHitSceneCopyPrefix(t *testing.T, run string) int {
 	}
 	t.Logf("enemy/counter HIT source caller partition: %d scene / %d map frames", prefix, len(lines)-prefix)
 	return prefix
+}
+
+// READY #166限定驗收：正常LOAD／出戰後匯入#173入口資料，合成後才讀原版像素。
+// 範圍與時鐘近似見physical_map_return_acceptance_spec；不宣稱PLAYER-E2。
+func TestNativePhysicalMapReturnCompleteFrameFromOracle(t *testing.T) {
+	slot, run, prefix := os.Getenv("FD2_PHYSICAL_MAP_SLOT"), os.Getenv("FD2_PHYSICAL_MAP_ORIGINAL"), os.Getenv("FD2_PHYSICAL_MAP_OUT")
+	if slot == "" || run == "" || prefix == "" {
+		t.Skip("需要#166固定槽、同時點來源與輸出路徑")
+	}
+	stored, err := os.ReadFile(slot)
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(stored)) != "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b" {
+		t.Fatal("ch12固定槽", err)
+	}
+	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_MUTE", "1")
+	t.Setenv("FD2_CAMPAIGN", canonicalCampaignReference)
+	t.Setenv("FD2_NATIVE_SAVE", slot)
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = "" })
+	g := loadGame()
+	if g.loadErr != "" || !g.confirmTitleLoadSlot(0) {
+		t.Fatal("正常 LOAD", g.loadErr)
+	}
+	r := &parityReplay{t: t, g: g, battle: "battle_ch12"}
+	r.settleTown()
+	for g.campSel != 2 {
+		if !g.moveNativeTownSelection(1) {
+			t.Fatal("城鎮出口")
+		}
+	}
+	r.enterTownOption(2)
+	if !pump(t, g, 600, func() bool { return !g.nativeClassUIBlocksInput() }) || !g.handleNativePreparationInput(nativePreparationInput{enter: true}) {
+		t.Fatal("正常出戰 YES")
+	}
+	if !pump(t, g, 600, func() bool { return g.camp.Node().Type != "preparation" }) {
+		t.Fatal("出戰提示未收尾")
+	}
+	driveStory(t, g, newJourneyTrace(), func() bool { return g.camp.NodeID() == r.battle })
+	if !pump(t, g, journeyStoryFrames, func() bool {
+		if r.playerHasControl() {
+			return true
+		}
+		if len(g.dialog) > 0 && storyEnterReady(g) {
+			g.handleBattleEventDialogueInput(true)
+		}
+		return false
+	}) {
+		t.Fatal("正常戰場控制", g.loadErr)
+	}
+
+	var entry struct {
+		EIP   string
+		Step  uint64
+		Stack []string
+		Units []struct {
+			Raw string `json:"raw_hex"`
+		}
+		Valid      bool `json:"map_runtime_valid"`
+		UnitsValid bool `json:"frame_units_valid"`
+		View       struct {
+			CameraX  int `json:"camera_x"`
+			CameraY  int `json:"camera_y"`
+			CursorX  int `json:"cursor_x"`
+			CursorY  int `json:"cursor_y"`
+			VisibleX int `json:"visible_x"`
+			VisibleY int `json:"visible_y"`
+			Overlay  int `json:"overlay_selector"`
+			Aux      int `json:"aux_phase"`
+		}
+		Runtime struct {
+			Globals []struct {
+				Address string
+				Width   int    `json:"width_bytes"`
+				Raw     string `json:"raw_hex"`
+				Value   uint32
+			}
+			DAC string `json:"palette_dac6_hex"`
+		} `json:"map_runtime"`
+	}
+	raw, err := os.ReadFile(filepath.Join(run, "eip-trace.jsonl"))
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(raw)) != "7321bba60aca729b1e000648ccc900688d78e7a63c8f2484126c0763401cbd0b" {
+		t.Fatal("固定trace", err)
+	}
+	found := 0
+	for _, line := range strings.Split(strings.TrimSpace(string(raw)), "\n") {
+		var row struct {
+			EIP   string
+			Step  uint64
+			Stack []string
+		}
+		if json.Unmarshal([]byte(line), &row) != nil {
+			t.Fatal("trace JSON")
+		}
+		if row.EIP == "0x11CAC" && len(row.Stack) > 1 && row.Stack[0] == "0x290C7" {
+			if err := json.Unmarshal([]byte(line), &entry); err != nil {
+				t.Fatal(err)
+			}
+			found++
+		}
+	}
+	if found != 1 || entry.Step != 4000640342 || entry.Stack[1] != "0x1" || !entry.Valid || !entry.UnitsValid || len(entry.Units) != 33 {
+		t.Fatal("entry不符", found, entry.Step)
+	}
+	units := make([]*battle.Unit, len(entry.Units))
+	for i, row := range entry.Units {
+		b, err := hex.DecodeString(row.Raw)
+		if err != nil || len(b) != 80 {
+			t.Fatal("raw record", i, err)
+		}
+		var record fdsave.PersistentRecord
+		copy(record.Raw[:], b)
+		v := record.View()
+		word := func(offset int) int { return int(binary.LittleEndian.Uint16(b[offset : offset+2])) }
+		u := &battle.Unit{
+			X: int(b[0]), Y: int(b[1]), Dir: int(b[3]), HP: word(0x40), MaxHP: word(0x42), MP: word(0x44), MaxMP: word(0x46),
+			AP: word(0x48), DP: word(0x4a), HIT: word(0x4c), EV: word(0x4e), DX: word(0x3e), MV: int(b[0x3b]), Lv: int(b[0x21]),
+			OnField: b[5]&1 == 0, Acted: b[5]&0x80 != 0, NativeRecordByte5: b[5], HasNativeRecordByte5: true,
+			NativeRecordByte6: b[6], HasNativeRecordByte6: true, NativeRecordByte8: b[8], HasNativeRecordByte8: true,
+			NativeRecordByte34: b[0x34], HasNativeRecordByte34: true, NativeRecordByte35: b[0x35], HasNativeRecordByte35: true,
+			NativeRecordByte36: b[0x36], HasNativeRecordByte36: true, NativeRecordWord42: uint16(word(0x42)), HasNativeRecordWord42: true,
+			NativeRecordWord46: uint16(word(0x46)), HasNativeRecordWord46: true, NativeTransient: v.Transient,
+			MapSelectorKey: int(b[7]), HasMapSelectorKey: true, BattleFig: int(b[7]), HasBattleFig: true,
+			NativeRecordRace: v.Race, HasNativeRecordRace: true, NativeRecordClass: v.Class, HasNativeRecordClass: true,
+			NativeMapPresentation: battle.NativeMapPresentationState{X: b[0], Y: b[1], Pose: b[3], Motion: b[4]}, HasNativeMapPresentation: true,
+			InventorySlots: make([]int, 8), NativeInventoryFlags: make([]int, 8),
+		}
+		copy(u.NativeCommandMask[:], b[0x1a:0x1f])
+		for j := 0; j < 8; j++ {
+			u.NativeInventoryFlags[j], u.InventorySlots[j] = int(b[0x0a+2*j]), int(b[0x0b+2*j])
+		}
+		switch b[6] {
+		case 0:
+			u.Camp = battle.Enemy
+		case 1:
+			u.Camp = battle.Ally
+		case 2:
+			u.Camp = battle.Own
+		default:
+			t.Fatal("raw camp", b[6])
+		}
+		units[i] = u
+	}
+	cache := &fdicon.NativeSelectorCache{}
+	if err := battle.MaterializeNativeMapSelectorSlots(units, cache); err != nil {
+		t.Fatal(err)
+	}
+	for i, u := range units {
+		b, _ := hex.DecodeString(entry.Units[i].Raw)
+		if u.MapSelectorSlot != int(b[2]) {
+			t.Fatal("selector slot", i)
+		}
+	}
+
+	g.st.Units, g.st.NativeMapSelectorCache = units, cache
+	v := entry.View
+	if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{CameraX: v.CameraX, CameraY: v.CameraY, CursorX: v.CursorX, CursorY: v.CursorY, VisibleCursorX: v.VisibleX, VisibleCursorY: v.VisibleY}); err != nil {
+		t.Fatal(err)
+	}
+	g.camX, g.camY = float64(v.CameraX*24), float64(v.CameraY*24)
+	g.curX, g.curY = v.CursorX, v.CursorY
+	if !g.st.MaterializeNativeMapRangeMode(v.Overlay) {
+		t.Fatal("overlay")
+	}
+	fields := map[string]uint32{}
+	for _, f := range entry.Runtime.Globals {
+		b, err := hex.DecodeString(f.Raw)
+		if err != nil || len(b) != f.Width {
+			t.Fatal("global width", f.Address)
+		}
+		var value uint32
+		for i, c := range b {
+			value |= uint32(c) << uint(8*i)
+		}
+		if value != f.Value {
+			t.Fatal("global bits", f.Address)
+		}
+		fields[f.Address] = value
+	}
+	if len(fields) != 16 || fields["0x51A93"] != 0xffffffff {
+		t.Fatal("globals")
+	}
+	signed := func(a string) int { return int(int32(fields[a])) }
+	g.st.NativeMapCycleState = fdicon.NativeMapSpriteCycleState{Idle: signed("0x53C0B"), Moving: signed("0x53C07"), LastTimerTick: signed("0x53C0F")}
+	g.st.NativeTerrainPhaseState = fdother.NativeTerrainPhaseState{Phase: signed("0x53C1F"), LastTimerTick: signed("0x539F4")}
+	g.st.NativeTerrainFlipState = fdicon.NativeBinaryTickState{Value: signed("0x53A40"), LastTimerTick: signed("0x53A00")}
+	g.st.NativeUnitPixelShiftState = fdicon.NativeBinaryTickState{Value: signed("0x53A04"), LastTimerTick: signed("0x53A08")}
+	g.st.HasNativeMapCycleState, g.st.HasNativeTerrainPhaseState, g.st.HasNativeMapBinaryTimingState = true, true, true
+	if !g.st.MaterializeNativeMapHUDState(byte(fields["0x51AAB"]), byte(fields["0x51AAC"]), signed("0x51A0C")) {
+		t.Fatal("HUD")
+	}
+	g.nativeMapDAC, err = hex.DecodeString(entry.Runtime.DAC)
+	if err != nil || len(g.nativeMapDAC) != 768 {
+		t.Fatal("DAC", err)
+	}
+	g.nativeFDOTHERPalettePhase, g.nativeFDOTHERPaletteTick = int(fields["0x60002"]), int(fields["0x60000"])
+	aux := v.Aux
+	g.nativeChapterAuxPhaseOverride = &aux
+	frozen := time.Unix(1000, 0)
+	g.nativeMapFrozenNow = func() time.Time { return frozen }
+	if !g.nativeMapClock.Seed(int(int16(uint16(fields["0x46C"]))), frozen) {
+		t.Fatal("BIOS")
+	}
+	beforeUnits, err := json.Marshal(g.st.Units)
+	if err != nil {
+		t.Fatal(err)
+	}
+	continued := false
+	beforeWork := fmt.Sprintf("%x", sha256.Sum256(g.nativeMapWork))
+	g.atk = &atkAnim{nativeScene: &nativePhysicalScene{}, after: func() { continued = true }}
+	g.finishAttackPresentation()
+	if !continued || g.loadErr != "" {
+		t.Fatal("正式物理返回", continued, g.loadErr)
+	}
+	afterUnits, err := json.Marshal(g.st.Units)
+	if err != nil || !bytes.Equal(beforeUnits, afterUnits) {
+		t.Fatal("返回地圖改寫單位", err)
+	}
+	if g.nativeFDOTHERPalettePhase != 4 || g.nativeFDOTHERPaletteTick != 12333 ||
+		g.st.NativeMapCycleState.Idle != 0 || g.st.NativeMapCycleState.Moving != 0 ||
+		g.st.NativeTerrainPhaseState.Phase != 14 || g.st.NativeTerrainFlipState.Value != 0 ||
+		g.st.NativeUnitPixelShiftState.Value != 0 {
+		t.Fatal("返回地圖可見phase不符")
+	}
+	if len(g.nativeMapVGA) != 64000 {
+		t.Fatal("返回畫布大小")
+	}
+	palette, err := fdother.VGAPaletteFromDAC(g.nativeMapDAC)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pic := image.NewPaletted(image.Rect(0, 0, 320, 200), palette)
+	copy(pic.Pix, g.nativeMapVGA)
+	// 原版PNG只在正式合成完成後讀取，禁止用作合成輸入。
+	originalPNG, err := os.ReadFile(filepath.Join(run, "frames/frame-000043.png"))
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(originalPNG)) != "757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df" {
+		t.Fatal("固定原版返回畫面", err)
+	}
+	decoded, err := png.Decode(bytes.NewReader(originalPNG))
+	if err != nil {
+		t.Fatal(err)
+	}
+	original, ok := decoded.(*image.Paletted)
+	if !ok || original.Bounds() != pic.Bounds() || len(original.Palette) != 256 || len(pic.Palette) != 256 {
+		t.Fatal("原版返回畫面格式")
+	}
+	indexedDiff, rgbDiff, paletteDiff := 0, 0, 0
+	for y := 0; y < 200; y++ {
+		for x := 0; x < 320; x++ {
+			if original.ColorIndexAt(x, y) != pic.ColorIndexAt(x, y) {
+				indexedDiff++
+			}
+			ar, ag, ab, aa := original.At(x, y).RGBA()
+			br, bg, bb, ba := pic.At(x, y).RGBA()
+			if ar != br || ag != bg || ab != bb || aa != ba {
+				rgbDiff++
+			}
+		}
+	}
+	for i := 0; i < 256; i++ {
+		ar, ag, ab, aa := original.Palette[i].RGBA()
+		br, bg, bb, ba := pic.Palette[i].RGBA()
+		if ar != br || ag != bg || ab != bb || aa != ba {
+			paletteDiff++
+		}
+	}
+	if indexedDiff != 0 || rgbDiff != 0 || paletteDiff != 0 {
+		t.Fatalf("全畫面差異 index=%d RGB=%d palette=%d", indexedDiff, rgbDiff, paletteDiff)
+	}
+	t.Logf("完整返回地圖：64000索引與RGB、256色盤皆零差異；單位與色盤phase/tick保留")
+	output, err := os.Create(prefix + ".png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := png.Encode(output, pic); err != nil {
+		t.Fatal(err)
+	}
+	if err := output.Close(); err != nil {
+		t.Fatal(err)
+	}
+	receipt := map[string]any{"state": "limited-CONFORMED", "kind": "physical-map-full-frame RUNTIME-E1", "indexed_difference_pixels": indexedDiff, "rgb_difference_pixels": rgbDiff, "palette_difference_entries": paletteDiff, "units_unchanged": true, "source_entry_step": entry.Step, "source_trace_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)), "input_bios_tick": fields["0x46C"], "work_policy": "formal Game retained work; no original allocator assumption", "input_work_sha256": beforeWork, "clock_method": "existing single transaction hardware-spec approximation; original later latch not fed as input", "output_cycles": g.st.NativeMapCycleState, "output_terrain": g.st.NativeTerrainPhaseState, "output_flip": g.st.NativeTerrainFlipState, "output_shift": g.st.NativeUnitPixelShiftState, "palette_phase": g.nativeFDOTHERPalettePhase, "palette_tick": g.nativeFDOTHERPaletteTick, "after_called": continued, "limit": "固定ch12正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升"}
+	encoded, err := json.MarshalIndent(receipt, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(prefix+".json", append(encoded, '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
 }

@@ -7,9 +7,9 @@
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
-| #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。其他原版影格與work續接仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
+| #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。固定命中反擊的完整返回圖已驗；其他分支及一般work生命週期仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
-| #173同時點地圖runtime | 限定工具CONFORMED | 16全域／view／units／獨立palette來源已補；#166完整map consumer未驗收。 |
+| #173同時點地圖runtime | 限定工具CONFORMED | 16全域／view／units／獨立palette來源已補；限定consumer結果見本頁最新#166節。 |
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -2899,3 +2899,26 @@ READY先核對原版停點與完整結算，再用已審查IDA原始call bytes�
 290C2在4000640341步保留arg1，下一步11CAC入口caller290C7／arg1；4000799496步11EED的caller11D3B與frame43資料相同，色盤phase4／tick12333及全palette保持。BIOS入口13696、copy出口13728，unit pixel shift latch為13725；不得把整個合成當同一clock sample，也不依候選像素補phase。這取代#173待READY／待來源的接手狀態；#166正式完整map與PLAYER-E2未驗收，章台帳20/30保持。
 
 本批收尾：真正主機已關閉#173，#166保持開啟；pull／render／verify為23項、可能已完成0項。155條教訓的51條guard、15份輸出雜湊、2份包裝來源雜湊、7份證據來源雜湊及14個新增本地連結通過。索引正對照與README文化入口有效；變更檔及新產物UID／GID1000，歷史root-owned2811、新增0、.md目錄0。本批FD2容器已清理，其他專案未更動。
+
+#166的[physical_map_consumer_probe](../data/ida/fd2_physical_background_selection_20261004.json)保留DRAFT診斷歷史；正式限定驗收見後文。
+
+#166的[physical_map_return_acceptance_spec](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED，READY先於正式assertion。單次clock近似與work政策保持，不升PLAYER-E2。
+
+### 2026-10-05 #166：完整返回地圖的限定驗收
+
+[physical_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。正常LOAD／整備／出戰取得正式地圖資料，再匯入唯一11CAC入口的raw units／view／globals與獨立DAC。正式finishAttackPresentation走合成、停止與續行；原版PNG只在合成後供比較，不作輸入。此節取代前段「返回地圖所有正式consumer尚未驗收」的接手狀態，範圍限本次第十二章enemy23→Ally14命中反擊的普通返回。
+
+完整畫面與色盤通過；單位保持。BIOS單次採樣仍屬hardware-spec approximation，原版後一shift latch與重製不同，不宣稱逐時鐘一致。正式Game保留work，本例通過不證明一般配置器初值或生命週期。其餘返回分支、非零連擊與DAC0／人耳音訊保持在[#166](https://github.com/wicanr2/fd2_re/issues/166)，不新增PLAYER-E2。
+
+DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字、目前狀態及完整命令見[58](58-fd2-exe-re-coverage.md)與主契約；#167及章台帳保持。
+
+| 本次驗證 | 結果 |
+|---|---|
+| 固定返回frame43 | 320×200的64000索引與RGB、256色盤全部0差異；兩側PNG SHA-256同為757cbe030a03860d99a1d32f14a9915b24d205ee6faa569497280fcb13a820df。 |
+| 正式dosgolem parity | 全畫布64000／64000相同，RGB平均絕對誤差0；無遮罩或縮放，state保留near-state。 |
+| 正式consumer | 33個單位前後保持，palette phase4／tick12333保持，after續行通過。 |
+| 相稱回歸 | 三套件31個頂層測試；既有49／34／50／42張完整演出皆0差異；counter HIT GPU64次呈現、36次caller等待重畫與最後續行通過。 |
+
+原版入口及返回copy的固定來源、影像、測試、命令與輸出雜湊只在主契約保存。正式程式未改，不重跑整章、不把先前完整Go驗證算成本輪結果。
+
+本批收尾：真正主機Issue #166保持開啟；pull／render／verify為23項、可能已完成0項。155條教訓的51條guard、11份輸出及1份測試來源雜湊、13個新增本地連結通過；索引正對照與README文化入口有效。變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。一次性FD2容器已退出，其他專案未更動。提交與推送結果見[Issue #166](https://github.com/wicanr2/fd2_re/issues/166)。

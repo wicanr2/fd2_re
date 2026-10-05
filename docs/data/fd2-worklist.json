@@ -419,7 +419,7 @@
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-05目前狀態：正常物理BG／TAI、前導、逐揮與counter已接正式Game；raw0非零單次MISS、零header主攻HIT／counterMISS、raw2非零單次HIT及本輪enemy23主攻HIT／Ally14反擊HIT均有限CONFORMED／RUNTIME-E1。#168 VGA明確清除、#169六BIOS等待、#170專屬PCM替換與普通map→stop→after已有限CONFORMED。最新原版固定輸入與停點逐byte相同；完整indexed／RGB及GPU通過，不新增PLAYER-E2，不驗收槽加成下傷害、存活或敵方選目標。非零連擊／返回轉場、DAC0／人耳音訊、完整battle→map work及返回畫面仍未驗收；#167工具政策、20／30章台帳與章gate保持。唯一數字、命令與現況見58及physical_counter_hit_validation；歷史驗證沿用physical_sound_validation等主證據。"
+        "note": "2026-10-05目前狀態：既有四種有限物理演出及#168／#169／#170／#172保持。固定第十二章enemy23→Ally14命中反擊後普通11CAC(1)返回，正式consumer完整VGA／色盤已有限CONFORMED／RUNTIME-E1；原版像素僅合成後比較，單位／palette phase與tick保持。時鐘單次採樣近似、一般work生命週期與其他返回分支仍未知；非零連擊、DAC0／人耳保持未驗收。#167政策、20／30章台帳及章gate保持，不新增PLAYER-E2或槽加成傷害／存活／選目標驗收。唯一數字與命令見58及physical_map_return_acceptance_validation。"
       },
       "issue": 166
     }
