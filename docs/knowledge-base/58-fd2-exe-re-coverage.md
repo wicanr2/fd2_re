@@ -13,6 +13,7 @@
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
 | #39城鎮出發→LOADCH過場 | 限定CONFORMED／RUNTIME-E1 | 十步定點縮放與全黑、65步淡入已接正式town owner；同源完整畫布／DAC、76張GPU及正常玩家控制通過。[主契約](../data/ida/fd2_town_departure_20261005.json)。 |
 | #35確認框共享相位 | 限定CONFORMED／RUNTIME-E1 | 已修正signed BIOS負差值及兩次讀取規則；指定四點完整RGB與合法兩相位GPU通過。[主證據](../data/ida/fd2_confirmation_pulse_20261005.json)。 |
+| #38確認嘴型／DAC候選 | 限定工具CONFORMED | 第六章指定三點完整RGB0、兩次勝出PNG雜湊相同；正式mouth另在#177。[主契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -3045,3 +3046,25 @@ map indexed不變被oracle去重成一張PNG，65份DAC由1F544取得，不能�
 [四點收據產生器](../../tools/fd2_confirmation_pulse_receipts.py)重生。
 首次mark少一控制格、素材包環境變數及BIOS兩次讀取的驗收拒收保留於主證據diagnostics，
 沒有把環境／腳本問題記成產品缺陷。
+
+
+## 2026-10-05 #38 確認嘴型與循環色候選
+
+[主契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)限定工具CONFORMED。seq1603原版返回鏈
+4E91E→19BC4→2D11D，重製為preparation_ch07；舊「酒店／16C57」分類由這項直接來源反證取代。
+19953初態取rand%30+2；開嘴一個合格tick，閉合再取rand%30+10。這與16C57不同。
+本輪沿既有完整IDA9.4指令，沒有重解函式或硬體driver。
+
+| 驗證 | 結果 |
+|---|---|
+| 指定完整RGB | seq1603由歷史335／現行基準275降到0；seq1053及留言新增619由歷史8降到0。 |
+| 合法候選 | 確認等待只枚舉DATO4B的0／3乘兩個選項相位，共4張；存檔槽／選人維持既有路徑。私有UI owner還原，RNG、金幣與source不改。 |
+| DAC來源 | 現行既有16色raw窗口契約已閉合seq619 phase3／seq1053 phase6；只修改候選私有palette，沒有只抄index224／225。 |
+| 可重跑性 | 第六章重製側兩次四gate均通過，各比較58張完整畫面；原版232筆AI入口全消費，順序分岔0。三點勝出PNG雜湊兩輪相同。 |
+| 完整Go回歸 | 19套件，2367頂層／含子案例2883項通過，53條件Test略過，0失敗；160教訓／56guard通過。 |
+| 範圍 | 原版保留sample-r4 clean 50a3b476，lock_ally_hp=false、宣告清敵。只更新章收據三點，其餘章來源與結論保持；未重跑長章原版，不新增PLAYER-E2。 |
+
+[有限候選與狀態還原](../../remake/cmd/fd2/chapter_parity_preparation_mouth_test.go)及
+[三點收據工具](../../tools/fd2_mouth_cycle_receipts.py)可依主契約命令重生。
+正式確認框仍只畫第0幀的缺口已在[#177](https://github.com/wicanr2/fd2_re/issues/177)登記；
+本次候選通過不證明正式嘴型時序。第七章祕密商店的歷史69像素不在本次三點補驗範圍。

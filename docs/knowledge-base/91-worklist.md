@@ -61,14 +61,6 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 
 ## runtime — 還沒接進正式執行期
 
-### 重播端在 town_enter／attack_armed 沒出 DATO 嘴型相位與 DAC 循環色相位的變體（ch06 seq 1603 335 px、seq 1053 8 px）
-
-`parity-replay-dato-mouth-and-dac-cycle-variants` · 缺陷 · [#38](https://github.com/wicanr2/fd2_re/issues/38) · 仍未完成 · 要人判
-
-第六章收據 parity-ch06.json 的 18 個 diff_pixels>0 點裡有兩個新形狀，不屬於 #34（指令環開啟步）與 #35（YES pulse）：(1) seq 1603 town_enter（酒店入口對白）335 px，框 [25,146,252,179]：左側 x 24–47、y 146–158 是店主 DATO 頭像的嘴型／眼部幀不同（原版 sub_16C57 的嘴型倒數吃 rand()%30，r4 eip-trace 在對白期間 0x16C9E 呼叫 0x4E893 21 次），右側 x 240–252 是 YES 的 pulse（#35 同一形狀）；重播端 town_enter 只出一張（phases 1）。(2) seq 1053 attack_armed 8 px，框 [106,110,115,115]：8 個像素都是調色盤 index 225，原版 DAC (44,73,142)、重製 (48,77,146)，是循環色差一步（0x11d40 DAC 寫入的相位），44 個 idle 變體都取不到；ch04／ch05 沒出現這個形狀。兩個都是「原版沒記錄的時間相位，重播端沒出對應變體」，和 #34 同一類處置：重播端在這兩種點多出變體（嘴型倒數 0..N／閉合、DAC 循環相位），verifier 取最小；或證明原版在 checkpoint 當下的相位由什麼決定（rand%30 的序列、BIOS tick）直接算出來。
-
-怎樣算做完：重跑 ch06 remake 側後 parity-ch06.json 的 seq 1603 只剩 #35 的 60 px、seq 1053 為 0；56 記下嘴型倒數與 index 225 循環色在 checkpoint 當下的相位規則。
-
 ### 攻擊演出收尾、0x1DEAE 與訊息關框三類重繪還沒經過 HUD anchor 入口
 
 `hud-anchor-attack-and-message-redraws` · 缺陷 · [#41](https://github.com/wicanr2/fd2_re/issues/41) · 仍未完成 · 自承還在 docs/knowledge-base/56-fd2-remake-sdd.md
@@ -112,6 +104,18 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 怎樣算做完：['canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。', '正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。', '#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
+
+### 正式整備／END確認框缺少19953的DATO嘴型與倒數owner
+
+`confirmation-mouth-runtime-owner` · 缺陷 · [#177](https://github.com/wicanr2/fd2_re/issues/177) · 仍未完成 · 要人判
+
+#38現行第六章補驗確認 seq1603 是 preparation_ch07 的19953確認框，原始input_chain包含0x19BC4→0x2D11D。#35保存的完整IDA指令顯示19953自身有DATO frame0／3、post-decrement與重新取亂數的mouth分支。現行native_preparation_ui.go只保存／繪製DATO4B第0幀，沒有正式等待期mouth owner；有限重播候選不能證明正式Game會呈現第3幀。
+
+已有完整原始指令，不重解16C57或19953。特別注意兩個callee的倒數不同：19953初態為rand%30+2，開嘴後閉合為rand%30+10；不能套16C57的+2契約。只有正常確認輸入等待期推進，opening／closing／存檔槽／選人均須保持各自owner。時鐘採既有hardware-spec approximation；不追DOS全局RNG逐tick一致。
+
+怎樣算做完：依固定雜湊19953原始writer／consumer建立READY typed嘴型規格；正式整備／END等實際確認caller在等待期呈現DATO0／3，開嘴一個合格tick、閉合重新取10..39，初態2..31；正常Game.Update／Draw與取消／接受／SAV不改格式及狀態原子性回歸通過；以dosgolem受版控短探針驗證倒數邊界與完整畫面，原版clock精度及未驗caller限制如實保留。
+
+證據：`['docs/data/ida/fd2_confirmation_pulse_20261005.json', 'remake/cmd/fd2/native_preparation_ui.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

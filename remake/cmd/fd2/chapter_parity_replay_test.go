@@ -1527,35 +1527,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		g.nativeShopUIPulse = saved
 		palette = g.nativeClassUI.palette
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "preparation":
-		savedCycle, savedPulse := g.prepIdleCycle, g.nativeClassUIPulse
-		defer func() { g.prepIdleCycle, g.nativeClassUIPulse = savedCycle, savedPulse }()
-		for cycle := 0; cycle < 3; cycle++ {
-			for pulse := 0; pulse < 2; pulse++ {
-				g.prepIdleCycle, g.nativeClassUIPulse = cycle, pulse*2
-				var source []byte
-				var ok bool
-				switch {
-				case g.prepRecordSlots:
-					source, ok = g.composeNativePreparationRecordSlotsFrame()
-				case g.prepConfirm:
-					source, ok = g.composeNativePreparationConfirmationFrame()
-				case g.prepSelecting:
-					source, ok = g.composeNativePreparationFrame()
-				default:
-					source, ok = g.composeNativePreparationPromptFrame()
-				}
-				if !ok {
-					return "", ""
-				}
-				variants = append(variants, frameVariant{pix: append([]byte(nil), source...)})
-				if g.prepSelecting {
-					break
-				}
-			}
-			if !g.prepSelecting && !g.prepConfirm {
-				break
-			}
-		}
+		variants = r.preparationFrameVariants()
 		palette = g.nativeClassUI.palette
 	case g.camp != nil && g.camp.Node() != nil && g.camp.Node().Type == "shop":
 		saved := g.nativeShopUIPulse

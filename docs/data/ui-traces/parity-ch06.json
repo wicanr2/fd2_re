@@ -1347,17 +1347,17 @@
           "kind": "attack_armed",
           "oracle": "checkpoint-0619.png",
           "remake": "remake-0027-p18.png",
-          "phases": 44,
-          "diff_pixels": 8,
-          "box": [
-            108,
-            61,
-            115,
-            68
-          ],
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "86ed746be4e694cdb5625fc37b0d19402888d271156afc84f3c6871cc35b81aa",
-          "remake_sha256": "659d395c411bb1372b59c63c132b26f9bf2df127d16f68dde21ce8659cc57572"
+          "remake_sha256": "86ed746be4e694cdb5625fc37b0d19402888d271156afc84f3c6871cc35b81aa",
+          "palette_cycle_phase": 3,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_mouth_cycle_20261005.json",
+          "verification_run": "work/parity-slot-ch06/mouth-cycle-remake-r3",
+          "verification_scope": "有限嘴型與完整DAC窗口候選；正式mouth owner仍在#177"
         },
         {
           "seq": 634,
@@ -1569,17 +1569,17 @@
           "kind": "attack_armed",
           "oracle": "checkpoint-1053.png",
           "remake": "remake-0044-p29.png",
-          "phases": 44,
-          "diff_pixels": 8,
-          "box": [
-            106,
-            110,
-            115,
-            115
-          ],
+          "phases": 88,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "28cb0deebcfa05c543fee9b172ea3ea2d7414c54b5a07ce4124598fbd124507f",
-          "remake_sha256": "043065f60d1f9958b127da82215d9d33387ce031c5d64ed8bd63dfd220589bb0"
+          "remake_sha256": "28cb0deebcfa05c543fee9b172ea3ea2d7414c54b5a07ce4124598fbd124507f",
+          "palette_cycle_phase": 6,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_mouth_cycle_20261005.json",
+          "verification_run": "work/parity-slot-ch06/mouth-cycle-remake-r3",
+          "verification_scope": "有限嘴型與完整DAC窗口候選；正式mouth owner仍在#177"
         },
         {
           "seq": 1068,
@@ -1826,18 +1826,16 @@
           "seq": 1603,
           "kind": "town_enter",
           "oracle": "checkpoint-1603.png",
-          "remake": "remake-0068-p0.png",
-          "phases": 1,
-          "diff_pixels": 335,
-          "box": [
-            25,
-            146,
-            252,
-            179
-          ],
+          "remake": "remake-0068-p3.png",
+          "phases": 4,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "cc8013a8002f377912c1f37f3728c67ceb97e6a5c8ee4a703450f4fc6c76f4b4",
-          "remake_sha256": "ab96d01f464cc5514405b38fee697ad69740782bb991a407eede47dc58cf2d22"
+          "remake_sha256": "6b0a7dec416a6b916080564b02c2030313c760b8bc43202e8cf99dfaed986562",
+          "verification_source": "docs/data/ida/fd2_parity_mouth_cycle_20261005.json",
+          "verification_run": "work/parity-slot-ch06/mouth-cycle-remake-r3",
+          "verification_scope": "有限嘴型與完整DAC窗口候選；正式mouth owner仍在#177"
         },
         {
           "seq": 1618,
@@ -1893,5 +1891,12 @@
   "limitations": [
     "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
     "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。"
-  ]
+  ],
+  "followup_verifications": {
+    "issue38": {
+      "date": "2026-10-05",
+      "source": "docs/data/ida/fd2_parity_mouth_cycle_20261005.json",
+      "scope": "只補驗seq619／1053／1603；其他原版、行為、節點、交易與畫面結論保持歷史來源"
+    }
+  }
 }

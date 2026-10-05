@@ -9255,3 +9255,17 @@ mark少一格、素材包變數及不同BIOS讀取的驗收問題保留診斷，
 遠端結案、提交與清理結果於本段後追加。
 
 本批收尾：真正主機已核對[#35結案](https://github.com/wicanr2/fd2_re/issues/35#issuecomment-5991079508)，正式pull／render保存剩餘20項，verify無可能已完成項。159條教訓／55個guard、8份來源與25份產物SHA、2303個本地連結通過；兩個歷史dist缺檔保持原註記。變更檔UID／GID1000；歷史root-owned2811、新增0、.md目錄0。FD2容器均已退出，其他專案未更動。提交與真正遠端HEAD核對結果回填#35。
+
+
+## 2026-10-05 #38 確認嘴型與DAC有限候選
+
+先在[#38](https://github.com/wicanr2/fd2_re/issues/38#issuecomment-5991179290)登記，再核對現行工具。
+第六章原樣重播已消除兩個DAC點；確認框剩嘴型。原始返回鏈及已保存19953指令反證舊酒店／16C57分類，
+READY有限規格先保存，再實作0／3私有UI候選與狀態還原，沒有改正式Game時鐘、RNG、SAV或像素預算。
+兩次第六章重製重播、完整RGB三點、完整Go回歸與字串審查通過；數字與分層引用[58](58-fd2-exe-re-coverage.md)。
+[主契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)保留原始三點與章雜湊，只閉合工具。
+正式確認mouth缺口已登記[#177](https://github.com/wicanr2/fd2_re/issues/177)，後續依同一原始證據走新READY規格。
+新guard起初綁測試檔被既有scanner拒收，改綁主契約分層欄位後通過，沒有修改scanner規則。
+遠端結案、提交與清理結果於本段後追加。
+
+本批收尾：真正主機已核對[#38結案](https://github.com/wicanr2/fd2_re/issues/38#issuecomment-5991591309)，正式pull／render保存20項，包含新登記且未完成的#177；verify無可能已完成項。160教訓／56guard、12份來源及36份產物SHA、2320個本地連結通過；兩個歷史dist缺檔保持原註記。變更檔UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器均已退出，其他專案未更動。提交與真正遠端HEAD核對結果回填#38。

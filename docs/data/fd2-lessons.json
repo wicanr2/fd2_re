@@ -1683,6 +1683,21 @@
         ],
         "pattern": "stepNativeClassUIPulseTicks"
       }
+    },
+    {
+      "id": "confirmation-mouth-caller-and-candidate-scope",
+      "date": "2026-10-05",
+      "area": "嘴型caller與驗收分層",
+      "rule": "嘴型規則依原始caller及返回鏈取初始化、倒數與重新取值；19953的閉合10..39不套用16C57的2..31。有限相位候選只證明重播完整畫面，不當作正式嘴型owner。入口docs/data/ida/fd2_parity_mouth_cycle_20261005.json與remake/cmd/fd2/chapter_parity_preparation_mouth_test.go；目前支援整備確認的0／3候選，正式等待owner見#177。",
+      "why": "第六章seq1603最初被稱酒店入口並套16C57解釋；實際4E91E→19BC4→2D11D是確認框自身嘴型，現行候選仍只保存DATO4B第0幀。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/38",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_parity_mouth_cycle_20261005.json"
+        ],
+        "pattern": "formal_followup_issue"
+      }
     }
   ]
 }

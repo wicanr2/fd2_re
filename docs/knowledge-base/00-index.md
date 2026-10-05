@@ -660,3 +660,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [#35四點有限驗收](../../remake/cmd/fd2/native_confirmation_pulse_oracle_test.go)由正常LOAD及出口／ESC取得兩個合法相位；戰後兩點只比較排版，不取代章收據。
 
 [#35四點收據產生器](../../tools/fd2_confirmation_pulse_receipts.py)只補驗已知確認框並保存歷史四點，不重跑或重寫整章來源。
+
+[#38確認嘴型與循環色候選契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)沿既有19953／4DFCC原始證據；正式嘴型owner另見[#177](https://github.com/wicanr2/fd2_re/issues/177)。
+
+[#38整備嘴型候選與狀態還原測試](../../remake/cmd/fd2/chapter_parity_preparation_mouth_test.go)及[三點收據補驗工具](../../tools/fd2_mouth_cycle_receipts.py)只閉合工具層，不代替#177正式等待owner。

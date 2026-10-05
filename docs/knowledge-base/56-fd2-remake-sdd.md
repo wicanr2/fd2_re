@@ -9574,3 +9574,16 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 正常LOAD→提示→ESC與正式GPU通過；戰後兩點只比較排版，沒有重跑長章、隊伍、交易或存檔，
 沒有增加PLAYER-E2。唯一數字與目前驗收結果引用[58](58-fd2-exe-re-coverage.md)。
 第6章及其他章的舊YES差異保留為歷史觀測，不因四點補驗改寫其他章數字。
+
+
+## 2026-10-05 #38 嘴型與循環色候選勘誤
+
+[主契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)與[有限候選](../../remake/cmd/fd2/chapter_parity_preparation_mouth_test.go)
+已限定工具CONFORMED。seq1603的原始返回鏈證明是下一章整備確認框，舊酒店／16C57分類失效；
+19953自身的初態、post-decrement與閉合重新取值沿既有IDA直接指令，不能套用16C57的倒數。
+
+第六章指定嘴型及DAC三點已完整RGB補驗，兩次重製重播勝出PNG雜湊一致。
+原版DAC循環caller為4DFCC；只使用16色完整匹配raw窗口的私有候選，不改正式時鐘或原版像素。
+原始三點及章來源雜湊保留；其他章與第七章祕密商店的歷史觀測不由此次更新外推。
+正式確認框缺少嘴型owner已另登記[#177](https://github.com/wicanr2/fd2_re/issues/177)。
+唯一數字與完整結果引用[58](58-fd2-exe-re-coverage.md)，不新增PLAYER-E2。
