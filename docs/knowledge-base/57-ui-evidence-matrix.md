@@ -1900,3 +1900,11 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 原版中間非零EAX不當作完整配置回傳。正式近堆政策、#102同r3到T8及章分級保持。
 唯一現況、數字及重生命令見[58](58-fd2-exe-re-coverage.md)與
 [#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+
+2026-10-05 #188／#189：已由同源受版控自然入口找到啟動GS合法還原漏項，
+原始首次caller與合法非零指標／ABI已通過，兩案結案。這取代前述首次返回阻塞現況，
+歷史收據保留。GS一般位址仍未知；目前只需已設定值的保存／還原，不建立假Descriptor。
+原生配置／釋放整合及#102同r3到T8尚未完成，不外推全heap或章PLAYER-E2。
+唯一數字與重生命令見[58](58-fd2-exe-re-coverage.md)與
+[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_first_return。

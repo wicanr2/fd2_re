@@ -264,40 +264,6 @@
         "note": "核對第24章正式四gate、實際保存完整SAV、正常章路徑及回歸。"
       },
       "issue": 142
-    },
-    {
-      "id": "dosgolem-native-heap-pop-gs",
-      "layer": "tooling",
-      "category": "缺陷",
-      "title": "原生近堆首次配置返回缺 POP GS 指令",
-      "body": "#186／#187 修正後，自然 LE entry 第805步在原始 _nmalloc 返回鏈 0x36D90 停止，raw 0F A9，EAX=0x100018。原始配置尚未回到 caller 0x4CC51，不以非零暫存器值宣稱成功。",
-      "acceptance": "固定雜湊原始 _nmalloc bytes／caller 與 Intel 平台契約審查為 READY。只補無前綴 0F A9 dword POP GS，讀取 SS 四 bytes、截取 selector 低16 bits、合法載入後 ESP+4。非法 selector／短 stack／ESP overflow／prefix 無狀態交易；完整 CPU／machine／oracle 回歸。自然 entry 越過 0x36D90，記錄 first caller 實際返回或後續停止，不改正式 heap 政策及 #102 同 r3 T8 gate。",
-      "evidence": [
-        "tools/fd2_watcom_heap_probe.go",
-        "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "受版控自然首次配置診斷、固定 bytes 及完整回歸，來源／限制如實記錄。"
-      },
-      "issue": 188
-    },
-    {
-      "id": "dosgolem-native-heap-gs-selector",
-      "layer": "tooling",
-      "category": "RE待解",
-      "title": "原生近堆返回 GS=0x0020 的段映射尚未確認",
-      "body": "#188 已補 0F A9 並通過平台回歸，但自然 LE entry 第805步的原始 _nmalloc 0x36D90 仍停止：GS selector 0020 未登錄。原始 EAX=0x100018 尚未返回 caller 0x4CC51。不得以任意登錄平坦 descriptor 或略過 POP 掩蓋。",
-      "acceptance": "受版控診斷記錄初始 GS、_nmalloc PUSH GS／POP GS 的堆疊值、途中段設定與 stack 變化。核對既有 LE／DOS extender 入口契約或可取得的原版 descriptor 證據，判斷 0x0020 來源及合法映射；只有充分證據與 READY spec 才實作。自然初次配置需回到原始 caller 並核對非零合法指標；未通過則保持 #188、#102 開啟，不改正式 heap 政策、不注入章狀態。",
-      "evidence": [
-        "tools/fd2_watcom_heap_probe.go",
-        "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "以目前程式重生原始入口及 GS／stack 資料流，不用舊人工 heap 或任意 descriptor 代替證據。"
-      },
-      "issue": 189
     }
   ]
 }

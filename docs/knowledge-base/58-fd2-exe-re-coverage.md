@@ -20,7 +20,7 @@
 | #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
-| #102原生近堆局部診斷 | 工具CONFORMED／原生整合BLOCKED | #186／#187已關閉；六項人工helper回傳，正式啟動前綴相同。#188／#189保留自然返回及GS段映射缺口；同r3到T8未通過。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
+| #102原生近堆局部診斷 | 首次配置CONFORMED／原生整合DRAFT | #188／#189已關閉，原始首次caller／合法指標與ABI通過；正式近堆適配尚未取代，同r3到T8未通過。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -3182,3 +3182,27 @@ EAX=0x100018只是中間值，#188及段映射待解#189保持開啟。
 SHA-256 4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39。
 本輪取代「#186仍是現行SBB停止」說法，保留歷史收據。
 不任意登錄descriptor，不改正式近堆政策；#102同r3到T8、完整heap與章PLAYER-E2保持。
+
+
+## 2026-10-05 原始首次配置回傳（#188／#189）
+
+目前程式dosgolem 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db。
+受版控tools/fd2_watcom_heap_probe.go以同一工具來源、兩個乾淨提交重生
+修正前後自然入口，命令、輸入及來源／收據雜湊見
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_first_return。
+既有IDA9.4原始_nmalloc身分／caller與344筆指令bytes保持，不重做已閉合RE。
+
+自然GS writer是第11步0x3CA03的既有FD2StartupDOS服務；第489步原始PUSH GS
+保存0x20，直到POP GS槽值未改寫。根因是SegmentLoadOK漏登記服務自己已設定的GS。
+只允許0x0020還原至GS；不建立未知Descriptor，一般記憶體與其他目的端拒收。
+這取代「首次返回須先補未知段位址映射」的現況假設，原版一般base／limit仍未知。
+新增實際解參照consumer時依既有證據重開規則處理。
+
+自然入口第811步回到原始caller0x4CC51，request1回0x100018、block tag13，
+payload backing、可寫DS span與cdecl／保存暫存器／段還原皆通過。
+人工六fixture保持回傳；新增服務回歸先FAIL後PASS，三相關套件完整PASS。
+正式oracle自然啟動1,000,000步JSON與feb0e355基底全檔bytes相同，
+SHA-256 4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39。
+
+#188／#189已結案，原始首次配置達有限CONFORMED。原生配置／釋放整合仍DRAFT，
+目前正式近堆適配未取代；#102同r3到T8、後續重用、完整heap與章PLAYER-E2尚未驗收。

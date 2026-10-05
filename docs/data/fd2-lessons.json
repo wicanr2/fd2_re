@@ -1751,6 +1751,14 @@
       "rule": "重生同源對拍收據時，由實際runner.json讀取commit、固定EXE、dirty及runtime政策並保存hash，不硬編碼舊runner。入口remake/cmd/fd2/native_command6_presentation_test.go的command6OriginalProvenance；可重跑命令在docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json isolation_validation。",
       "why": "#154／#160／#161同源正式探針已切換目前oracle，舊硬編碼commit會使新收據誤指歷史來源；r8與GPU r3以真實provenance重生。既有guard檢查器排除測試檔，故不把無法被掃描的測試函式當作檢查訊號。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/154"
+    },
+    {
+      "id": "initialized-selector-needs-reload-contract",
+      "area": "段狀態與原版診斷",
+      "date": "2026-10-05",
+      "rule": "原始保存／還原鏈因selector拒收時，先追初始化服務、保存槽及合法載入判定；服務已設定值不代表其還原規則已登記。合法還原與一般記憶體映射分開驗證，不任意補未知Descriptor。入口tools/fd2_watcom_heap_probe.go的naturalFirstAllocation及docs/data/ida/fd2_ch18_oracle_stosb_20261003.json的allocator_first_return保存可重生writer／consumer證據。",
+      "why": "#189自然入口由FD2StartupDOS設定GS=0x0020，PUSH／POP槽值未變，但SegmentLoadOK漏登記GS而拒收。限定還原修正讓原始_nmalloc首次回caller，不必猜base／limit。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/189"
     }
   ]
 }

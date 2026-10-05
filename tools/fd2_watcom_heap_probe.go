@@ -160,6 +160,7 @@ func currentHook(data []byte) map[string]any {
 func naturalFirstAllocation(data []byte) map[string]any {
 	m, err := machine.LoadLE(data)
 	must(err)
+	initialSegments := m.CPU.Seg
 	services := machine.NewFD2StartupDOS(nil)
 	defer services.Close()
 	m.CPU.IntHook = services.Handle
@@ -174,6 +175,27 @@ func naturalFirstAllocation(data []byte) map[string]any {
 		}
 		return installed(c)
 	}
+	var events []map[string]any
+	var savedGSLinear uint32
+	var savedGSValid bool
+	snapshot := func() map[string]any {
+		c := m.CPU
+		state := map[string]any{"eip": c.EIP, "registers": c.R, "segments": c.Seg, "flags": c.EFlags}
+		if desc, ok := c.Descriptors[c.Seg[cpu386.SegSS]]; ok {
+			at := uint64(desc.Base) + uint64(c.R[cpu386.ESP])
+			state["ss_descriptor"] = desc
+			state["stack_linear"] = at
+			if at+32 <= uint64(len(m.Mem)) {
+				state["stack_next32_hex"] = fmt.Sprintf("%x", m.Mem[at:at+32])
+			}
+		}
+		if savedGSValid {
+			state["saved_gs_linear"] = savedGSLinear
+			state["saved_gs_dword"] = binary.LittleEndian.Uint32(m.Mem[savedGSLinear : savedGSLinear+4])
+		}
+		return state
+	}
+	entryState := snapshot()
 	steps := 0
 	var tail []uint32
 	var stopped string
@@ -182,7 +204,31 @@ func naturalFirstAllocation(data []byte) map[string]any {
 		if len(tail) > 32 {
 			tail = tail[len(tail)-32:]
 		}
-		if err := m.CPU.Step(); err != nil {
+		before := snapshot()
+		oldSeg, at := m.CPU.Seg, m.CPU.EIP
+		raw := ""
+		if uint64(at)+8 <= uint64(len(m.Mem)) {
+			raw = fmt.Sprintf("%x", m.Mem[at:at+8])
+		}
+		err := m.CPU.Step()
+		if err == nil && at == 0x36d2b {
+			if desc, ok := m.CPU.Descriptors[m.CPU.Seg[cpu386.SegSS]]; ok {
+				linear := uint64(desc.Base) + uint64(m.CPU.R[cpu386.ESP])
+				if linear+4 <= uint64(len(m.Mem)) {
+					savedGSLinear, savedGSValid = uint32(linear), true
+				}
+			}
+		}
+		after := snapshot()
+		changedSavedGS := savedGSValid && before["saved_gs_dword"] != after["saved_gs_dword"]
+		if err != nil || oldSeg != m.CPU.Seg || changedSavedGS || at == 0x36d26 || at == 0x36d2b || at == 0x36d90 {
+			event := map[string]any{"steps_before": steps, "instruction_eip": at, "next8_hex": raw, "before": before, "after": after}
+			if err != nil {
+				event["error"] = err.Error()
+			}
+			events = append(events, event)
+		}
+		if err != nil {
 			stopped = err.Error()
 			break
 		}
@@ -200,7 +246,40 @@ func naturalFirstAllocation(data []byte) map[string]any {
 	if m.CPU.EIP == 0x4cc51 {
 		status = "first_caller_returned"
 	}
+	returnedState := snapshot()
+	pointerCheck := map[string]any{"attempted": false}
+	if status == "first_caller_returned" {
+		ptr := m.CPU.R[cpu386.EAX]
+		pointerCheck["attempted"] = true
+		pointerCheck["request"] = 1
+		pointerCheck["pointer_nonzero"] = ptr != 0
+		if desc, ok := m.CPU.Descriptors[m.CPU.Seg[cpu386.SegDS]]; ok {
+			pointerCheck["ds_descriptor"] = desc
+			pointerCheck["ds_flat_writable_span"] = desc.Base == 0 && desc.Writable && ptr <= desc.Limit && 7 <= desc.Limit-ptr
+		}
+		if ptr >= 4 && uint64(ptr)+8 <= uint64(len(m.Mem)) {
+			tag := binary.LittleEndian.Uint32(m.Mem[ptr-4 : ptr])
+			pointerCheck["block_tag"] = tag
+			pointerCheck["block_tag_live"] = tag&1 == 1
+			pointerCheck["payload_first8_hex"] = fmt.Sprintf("%x", m.Mem[ptr:ptr+8])
+			pointerCheck["payload_backed"] = true
+			before := m.Mem[ptr]
+			pointerCheck["idempotent_payload_write_ok"] = m.Write8(ptr, before) == nil && m.Mem[ptr] == before
+		}
+		for _, event := range events {
+			if event["instruction_eip"] == uint32(0x36d26) {
+				before := event["before"].(map[string]any)
+				regs := before["registers"].([8]uint32)
+				seg := before["segments"].([6]uint16)
+				pointerCheck["cdecl_esp_restored"] = m.CPU.R[cpu386.ESP] == regs[cpu386.ESP]+4
+				pointerCheck["saved_registers_restored"] = m.CPU.R[cpu386.EBX] == regs[cpu386.EBX] && m.CPU.R[cpu386.ESI] == regs[cpu386.ESI] && m.CPU.R[cpu386.EBP] == regs[cpu386.EBP]
+				pointerCheck["saved_segments_restored"] = m.CPU.Seg[cpu386.SegGS] == seg[cpu386.SegGS] && m.CPU.Seg[cpu386.SegFS] == seg[cpu386.SegFS] && m.CPU.Seg[cpu386.SegES] == seg[cpu386.SegES]
+			}
+		}
+	}
 	return map[string]any{"classification": "natural LE entry diagnostic; first allocation only; not chapter oracle",
+		"returned_state": returnedState, "first_pointer_check": pointerCheck,
+		"initial_segments_after_load": initialSegments, "entry_state_after_runtime_install": entryState, "segment_and_saved_gs_events": events,
 		"status": status, "steps": steps, "eip": m.CPU.EIP, "eax": m.CPU.R[cpu386.EAX], "esp": m.CPU.R[cpu386.ESP],
 		"error": stopped, "stopped_eip": stoppedEIP, "stopped_next8_hex": stoppedBytes,
 		"tail_eip": tail, "omitted_hooks": []string{"_nmalloc", "_nfree", "__Init_Argv"}, "fixture_heap": false}
@@ -271,7 +350,7 @@ func main() {
 		cases = append(cases, originalAllocation(data, c.name, c.size, c.prefix))
 	}
 	sources := map[string]string{}
-	for _, name := range []string{"internal/cpu386/cpu.go", "internal/machine/watcom_runtime.go", "internal/machine/le_machine.go", "apps/fd2/cmd/oracle/main.go"} {
+	for _, name := range []string{"internal/cpu386/cpu.go", "internal/machine/watcom_runtime.go", "internal/machine/le_machine.go", "internal/machine/le_startup.go", "apps/fd2/cmd/oracle/main.go"} {
 		b, err := os.ReadFile(filepath.Join(*sourceRoot, name))
 		must(err)
 		sources[name] = digest(b)

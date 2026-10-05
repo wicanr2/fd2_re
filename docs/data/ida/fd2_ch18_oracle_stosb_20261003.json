@@ -15506,7 +15506,7 @@
     ],
     "superseded_by": "allocator_cpu_followup for current CPU-gap / fixture status; preserve original receipts"
   },
-  "current_allocator_probe": "allocator_return_chain_followup",
+  "current_allocator_probe": "allocator_first_return",
   "allocator_cpu_followup": {
     "recorded_at": "2026-10-05",
     "issues": {
@@ -16144,7 +16144,7 @@
       "path": "tools/fd2_watcom_heap_probe.go",
       "sha256": "6ce6235fbadb69eb6483a98ab1f719f9909ab3bb8a1ab481f6ac85271655ec13",
       "command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit feb0e35512cc2903eb8eba96d1f87fde3c36e4da -out /src/work/parity-slot-ch18/heap-allocator-local-r10.json'",
-      "source_commit": "dddbb0ab652d4f8b81e41ae03ad825250c82505d"
+      "source_commit": "67809d0d826067cb2ac029f774f7793c3f13234f"
     },
     "receipt": {
       "path": "work/parity-slot-ch18/heap-allocator-local-r10.json",
@@ -16855,6 +16855,768 @@
       "人工helper不當章oracle；沒有取代正式_nmalloc／_nfree",
       "第十八章r4章驗收保持；#102同r3到T8仍未通過",
       "原版完整heap及章PLAYER-E2不由有限CPU回歸外推"
+    ],
+    "superseded_by": "allocator_first_return"
+  },
+  "allocator_first_return": {
+    "recorded_at": "2026-10-05",
+    "issues": {
+      "completed": [
+        188,
+        189
+      ],
+      "parent_open": 102
+    },
+    "status": "原始首次配置／有限GS還原CONFORMED；自然配置釋放整合DRAFT；同r3到T8未通過",
+    "inference_level": "confirmed in the specified dosgolem FD2 startup profile; original full GDT mapping remains unknown",
+    "dosgolem_commit": "012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tools": {
+      "ida": "IDA Pro9.4既有固定EXE函式身分／caller及344筆allocator bytes，不重做RE",
+      "dynamic": "dosgolem relocated LE linear；Go go1.24.13"
+    },
+    "spec": "dosgolem docs/spec/186-fd2-platform-gap-continuation.md 批次152／153 CONFORMED；既有009／010的opaque GS啟動契約",
+    "root_cause": {
+      "writer": "FD2StartupDOS.Handle第一個固定查詢；自然第11步0x3CA03 raw CD21 設定GS=0x0020",
+      "save": "第489步0x36D2B raw 0F A8；SS:0x55660保存dword0x20",
+      "consumer": "第805步0x36D90 raw0F A9；保存槽未被寫壞，SegmentLoadOK漏掉既有GS",
+      "fix": "selector0x0020只可還原至GS；沒有新增Descriptor／base／limit，一般記憶體與其他目的端仍拒收",
+      "prior_interpretation": "上一輪將阻塞描述為段映射待解；新trace確定所需consumer只是保存／還原，真正缺陷是既有啟動服務的載入判定漏項",
+      "full_mapping": "unknown；目前consumer不解參照此selector，不成為本次還原契約的阻塞；新增實際解參照時另以證據重開"
+    },
+    "probe_tool": {
+      "path": "tools/fd2_watcom_heap_probe.go",
+      "sha256": "fe6d0f07606eb64f7c721fa2fdbc93f29e163d8a9abb676bc0378b7d78fdf479",
+      "before_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit feb0e35512cc2903eb8eba96d1f87fde3c36e4da -out /src/work/parity-slot-ch18/heap-allocator-gs-r5.json'",
+      "after_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db -out /src/work/parity-slot-ch18/heap-allocator-gs-r6.json'",
+      "replay_note": "各掛指定乾淨dosgolem提交及本節tool hash；輸出使用新檔名，O_EXCL拒絕覆寫。before／after使用相同最終工具來源。"
+    },
+    "before": {
+      "path": "work/parity-slot-ch18/heap-allocator-gs-r5.json",
+      "sha256": "4d7ed7fecc1ea6e88c7977621ed9213b2ef5d8cd2f0774efa063f9e58223df57",
+      "content_excerpt": {
+        "natural_first_allocation": {
+          "classification": "natural LE entry diagnostic; first allocation only; not chapter oracle",
+          "eax": 1048600,
+          "eip": 224658,
+          "entry_state_after_runtime_install": {
+            "eip": 248164,
+            "flags": 2,
+            "registers": [
+              0,
+              0,
+              0,
+              0,
+              349872,
+              0,
+              0,
+              0
+            ],
+            "segments": [
+              8,
+              16,
+              16,
+              0,
+              0,
+              16
+            ],
+            "ss_descriptor": {
+              "Base": 0,
+              "Limit": 4294967295,
+              "Writable": true
+            },
+            "stack_linear": 349872,
+            "stack_next32_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "error": "cpu386: EIP=00036D90 opcode=0F：GS selector 0020 未登錄",
+          "esp": 349792,
+          "first_pointer_check": {
+            "attempted": false
+          },
+          "fixture_heap": false,
+          "initial_segments_after_load": [
+            8,
+            16,
+            16,
+            0,
+            0,
+            16
+          ],
+          "omitted_hooks": [
+            "_nmalloc",
+            "_nfree",
+            "__Init_Argv"
+          ],
+          "returned_state": {
+            "eip": 224658,
+            "flags": 518,
+            "registers": [
+              1048600,
+              0,
+              4056,
+              1048600,
+              349792,
+              349824,
+              1,
+              342496
+            ],
+            "saved_gs_dword": 32,
+            "saved_gs_linear": 349792,
+            "segments": [
+              8,
+              352,
+              48,
+              48,
+              32,
+              352
+            ],
+            "ss_descriptor": {
+              "Base": 0,
+              "Limit": 4294967295,
+              "Writable": true
+            },
+            "stack_linear": 349792,
+            "stack_next32_hex": "20000000300000003000000000000000da39050051cc04000100000000000000"
+          },
+          "status": "stopped",
+          "steps": 805,
+          "stopped_eip": 224656,
+          "stopped_next8_hex": "0fa90fa1075e5bc3",
+          "tail_eip": [
+            250571,
+            250574,
+            250577,
+            250580,
+            250583,
+            250585,
+            250587,
+            250589,
+            250592,
+            250594,
+            250596,
+            250599,
+            250602,
+            250605,
+            250608,
+            250610,
+            250613,
+            250636,
+            250639,
+            250641,
+            250646,
+            250647,
+            250648,
+            250649,
+            250650,
+            224600,
+            224602,
+            224604,
+            224646,
+            224653,
+            224655,
+            224656
+          ],
+          "gs_writer_save_restore_events": [
+            {
+              "after": {
+                "eip": 248325,
+                "flags": 582,
+                "registers": [
+                  5638,
+                  0,
+                  0,
+                  1346912594,
+                  349872,
+                  0,
+                  0,
+                  0
+                ],
+                "segments": [
+                  8,
+                  352,
+                  40,
+                  0,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349872,
+                "stack_next32_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "before": {
+                "eip": 248323,
+                "flags": 582,
+                "registers": [
+                  12288,
+                  0,
+                  0,
+                  1346912594,
+                  349872,
+                  0,
+                  0,
+                  0
+                ],
+                "segments": [
+                  8,
+                  16,
+                  16,
+                  0,
+                  0,
+                  16
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349872,
+                "stack_next32_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "instruction_eip": 248323,
+              "next8_hex": "cd21a23a28050088",
+              "steps_before": 11
+            },
+            {
+              "after": {
+                "eip": 224557,
+                "flags": 582,
+                "registers": [
+                  1,
+                  0,
+                  452,
+                  342490,
+                  349792,
+                  349824,
+                  0,
+                  342496
+                ],
+                "saved_gs_dword": 32,
+                "saved_gs_linear": 349792,
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349792,
+                "stack_next32_hex": "20000000300000003000000000000000da39050051cc04000100000000000000"
+              },
+              "before": {
+                "eip": 224555,
+                "flags": 582,
+                "registers": [
+                  1,
+                  0,
+                  452,
+                  342490,
+                  349796,
+                  349824,
+                  0,
+                  342496
+                ],
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349796,
+                "stack_next32_hex": "300000003000000000000000da39050051cc0400010000000000000000000000"
+              },
+              "instruction_eip": 224555,
+              "next8_hex": "0fa85589e583ec04",
+              "steps_before": 489
+            },
+            {
+              "after": {
+                "eip": 224658,
+                "flags": 518,
+                "registers": [
+                  1048600,
+                  0,
+                  4056,
+                  1048600,
+                  349792,
+                  349824,
+                  1,
+                  342496
+                ],
+                "saved_gs_dword": 32,
+                "saved_gs_linear": 349792,
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349792,
+                "stack_next32_hex": "20000000300000003000000000000000da39050051cc04000100000000000000"
+              },
+              "before": {
+                "eip": 224656,
+                "flags": 518,
+                "registers": [
+                  1048600,
+                  0,
+                  4056,
+                  1048600,
+                  349792,
+                  349824,
+                  1,
+                  342496
+                ],
+                "saved_gs_dword": 32,
+                "saved_gs_linear": 349792,
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349792,
+                "stack_next32_hex": "20000000300000003000000000000000da39050051cc04000100000000000000"
+              },
+              "error": "cpu386: EIP=00036D90 opcode=0F：GS selector 0020 未登錄",
+              "instruction_eip": 224656,
+              "next8_hex": "0fa90fa1075e5bc3",
+              "steps_before": 805
+            }
+          ]
+        },
+        "source_sha256": {
+          "apps/fd2/cmd/oracle/main.go": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea",
+          "internal/cpu386/cpu.go": "8ed1b1cdbbb9ec527e093eaaabc7f98411d127ccec2ecb0fc7a4ff2b282953cc",
+          "internal/machine/le_machine.go": "6f97e999d71eca908b77b2841271ae479104b03c0df6a9daa949ca433de309f4",
+          "internal/machine/le_startup.go": "e2d3bcf9ac38f33c31e1960fc68164c97d084dcf263a11e764d48411aa943bdc",
+          "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        "dosgolem_commit": "feb0e35512cc2903eb8eba96d1f87fde3c36e4da",
+        "dirty": false
+      }
+    },
+    "after": {
+      "path": "work/parity-slot-ch18/heap-allocator-gs-r6.json",
+      "sha256": "fb35c8fabac0c1984b76dfca92bf482734d5a602733ab9bb3a28793bb9359448",
+      "content_excerpt": {
+        "natural_first_allocation": {
+          "classification": "natural LE entry diagnostic; first allocation only; not chapter oracle",
+          "eax": 1048600,
+          "eip": 314449,
+          "entry_state_after_runtime_install": {
+            "eip": 248164,
+            "flags": 2,
+            "registers": [
+              0,
+              0,
+              0,
+              0,
+              349872,
+              0,
+              0,
+              0
+            ],
+            "segments": [
+              8,
+              16,
+              16,
+              0,
+              0,
+              16
+            ],
+            "ss_descriptor": {
+              "Base": 0,
+              "Limit": 4294967295,
+              "Writable": true
+            },
+            "stack_linear": 349872,
+            "stack_next32_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "error": "",
+          "esp": 349816,
+          "first_pointer_check": {
+            "attempted": true,
+            "block_tag": 13,
+            "block_tag_live": true,
+            "cdecl_esp_restored": true,
+            "ds_descriptor": {
+              "Base": 0,
+              "Limit": 4294967295,
+              "Writable": true
+            },
+            "ds_flat_writable_span": true,
+            "idempotent_payload_write_ok": true,
+            "payload_backed": true,
+            "payload_first8_hex": "cc270500cc270500",
+            "pointer_nonzero": true,
+            "request": 1,
+            "saved_registers_restored": true,
+            "saved_segments_restored": true
+          },
+          "fixture_heap": false,
+          "initial_segments_after_load": [
+            8,
+            16,
+            16,
+            0,
+            0,
+            16
+          ],
+          "omitted_hooks": [
+            "_nmalloc",
+            "_nfree",
+            "__Init_Argv"
+          ],
+          "returned_state": {
+            "eip": 314449,
+            "flags": 518,
+            "registers": [
+              1048600,
+              0,
+              4056,
+              342490,
+              349816,
+              349824,
+              0,
+              342496
+            ],
+            "saved_gs_dword": 32,
+            "saved_gs_linear": 349792,
+            "segments": [
+              8,
+              352,
+              48,
+              48,
+              32,
+              352
+            ],
+            "ss_descriptor": {
+              "Base": 0,
+              "Limit": 4294967295,
+              "Writable": true
+            },
+            "stack_linear": 349816,
+            "stack_next32_hex": "0100000000000000000000000000000060010000e0390500e0390500da390500"
+          },
+          "status": "first_caller_returned",
+          "steps": 811,
+          "stopped_eip": 0,
+          "stopped_next8_hex": "",
+          "tail_eip": [
+            250585,
+            250587,
+            250589,
+            250592,
+            250594,
+            250596,
+            250599,
+            250602,
+            250605,
+            250608,
+            250610,
+            250613,
+            250636,
+            250639,
+            250641,
+            250646,
+            250647,
+            250648,
+            250649,
+            250650,
+            224600,
+            224602,
+            224604,
+            224646,
+            224653,
+            224655,
+            224656,
+            224658,
+            224660,
+            224661,
+            224662,
+            224663
+          ],
+          "gs_writer_save_restore_events": [
+            {
+              "after": {
+                "eip": 248325,
+                "flags": 582,
+                "registers": [
+                  5638,
+                  0,
+                  0,
+                  1346912594,
+                  349872,
+                  0,
+                  0,
+                  0
+                ],
+                "segments": [
+                  8,
+                  352,
+                  40,
+                  0,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349872,
+                "stack_next32_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "before": {
+                "eip": 248323,
+                "flags": 582,
+                "registers": [
+                  12288,
+                  0,
+                  0,
+                  1346912594,
+                  349872,
+                  0,
+                  0,
+                  0
+                ],
+                "segments": [
+                  8,
+                  16,
+                  16,
+                  0,
+                  0,
+                  16
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349872,
+                "stack_next32_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "instruction_eip": 248323,
+              "next8_hex": "cd21a23a28050088",
+              "steps_before": 11
+            },
+            {
+              "after": {
+                "eip": 224557,
+                "flags": 582,
+                "registers": [
+                  1,
+                  0,
+                  452,
+                  342490,
+                  349792,
+                  349824,
+                  0,
+                  342496
+                ],
+                "saved_gs_dword": 32,
+                "saved_gs_linear": 349792,
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349792,
+                "stack_next32_hex": "20000000300000003000000000000000da39050051cc04000100000000000000"
+              },
+              "before": {
+                "eip": 224555,
+                "flags": 582,
+                "registers": [
+                  1,
+                  0,
+                  452,
+                  342490,
+                  349796,
+                  349824,
+                  0,
+                  342496
+                ],
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349796,
+                "stack_next32_hex": "300000003000000000000000da39050051cc0400010000000000000000000000"
+              },
+              "instruction_eip": 224555,
+              "next8_hex": "0fa85589e583ec04",
+              "steps_before": 489
+            },
+            {
+              "after": {
+                "eip": 224658,
+                "flags": 518,
+                "registers": [
+                  1048600,
+                  0,
+                  4056,
+                  1048600,
+                  349796,
+                  349824,
+                  1,
+                  342496
+                ],
+                "saved_gs_dword": 32,
+                "saved_gs_linear": 349792,
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349796,
+                "stack_next32_hex": "300000003000000000000000da39050051cc0400010000000000000000000000"
+              },
+              "before": {
+                "eip": 224656,
+                "flags": 518,
+                "registers": [
+                  1048600,
+                  0,
+                  4056,
+                  1048600,
+                  349792,
+                  349824,
+                  1,
+                  342496
+                ],
+                "saved_gs_dword": 32,
+                "saved_gs_linear": 349792,
+                "segments": [
+                  8,
+                  352,
+                  48,
+                  48,
+                  32,
+                  352
+                ],
+                "ss_descriptor": {
+                  "Base": 0,
+                  "Limit": 4294967295,
+                  "Writable": true
+                },
+                "stack_linear": 349792,
+                "stack_next32_hex": "20000000300000003000000000000000da39050051cc04000100000000000000"
+              },
+              "instruction_eip": 224656,
+              "next8_hex": "0fa90fa1075e5bc3",
+              "steps_before": 805
+            }
+          ]
+        },
+        "source_sha256": {
+          "apps/fd2/cmd/oracle/main.go": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea",
+          "internal/cpu386/cpu.go": "8ed1b1cdbbb9ec527e093eaaabc7f98411d127ccec2ecb0fc7a4ff2b282953cc",
+          "internal/machine/le_machine.go": "6f97e999d71eca908b77b2841271ae479104b03c0df6a9daa949ca433de309f4",
+          "internal/machine/le_startup.go": "bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206",
+          "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        "dosgolem_commit": "012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db",
+        "dirty": false
+      }
+    },
+    "confirmed_results": {
+      "original_first_return": "自然第811步回原始caller0x4CC51；_nmalloc／_nfree／__Init_Argv合成hook撤除，其他既有DOS服務保持；不是全裸硬體或章oracle",
+      "pointer": "EAX0x100018、request1、原始tag13；完整8-byte payload backing、base0且可寫DS span、原值寫回通過",
+      "abi": "cdecl ESP=入口ESP+4；EBX／ESI／EBP與GS／FS／ES恢復",
+      "artificial_fixtures": "既有六項局部人工free-list helper回傳；不當正常玩家路徑"
+    },
+    "regression": {
+      "command": "GOCACHE=/src/work/gocache GOPROXY=off go test ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle -count=1",
+      "logs": {
+        "gs-load-before-r1.log": "0c7a135050f39baba3b147464d1b7dc77ef50d31cb98659ce019d1eb9a1ff969",
+        "gs-load-go-regression-r1.log": "051a42dc2d8681cd1a576aa4a8db132ea3c0688dcf802c7d0773b2f05b2d8583"
+      },
+      "log_directory": "work/parity-slot-ch18",
+      "result": "新增GS服務回歸在實作前FAIL，限定修正後三相關套件全部PASS；其他目的端及未知記憶體拒收保持"
+    },
+    "boot_prefix": {
+      "runner": "apps/fd2/cmd/oracle",
+      "steps": 1000000,
+      "before": "feb0e35512cc2903eb8eba96d1f87fde3c36e4da",
+      "after": "012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db",
+      "path": "work/parity-slot-ch18/gs-load-boot-r1.json",
+      "sha256": "4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39",
+      "result": "前後JSON全檔bytes相同",
+      "command": "沿probe_tool的Docker掛載與限制，cd /dos；GOCACHE=/src/work/gocache GOPROXY=off go run ./apps/fd2/cmd/oracle -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -root /src/org_game/炎龍騎士團/FLAME2 -steps 1000000，輸出至新JSON"
+    },
+    "next_gate": {
+      "issue": 102,
+      "status": "OPEN",
+      "acceptance": "自然原生配置／釋放及consumer整合，再以原ch18-guard-r3前綴越過STOSB並達T8；未通過",
+      "production_heap": "目前正式_nmalloc／_nfree近堆適配未取代，兩側watcom_runtime.go SHA相同"
+    },
+    "limits": [
+      "GS一般base／limit與原版完整GDT仍未知",
+      "首次配置不證明之後釋放、coalescing、重用或全原版heap",
+      "沒有重跑第十八章同r3輸入，不提升PLAYER-E2；已驗收r4保持",
+      "正式oracle一百萬步相同不代表全章不受影響"
     ]
   }
 }
