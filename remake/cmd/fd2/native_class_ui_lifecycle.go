@@ -202,19 +202,28 @@ func (g *Game) resetNativeClassUIPulse() {
 	g.nativeClassUIHasTick = false
 }
 
-// 0x19953 increments its two-bit counter when the signed BIOS low-word delta
-// reaches two ticks. The selected choice uses counter/2 as its cell variant.
+// 0x19B1E sign-extends the BIOS word before a 32-bit subtraction. A negative
+// delta also advances once; only deltas zero and one wait. See #35 evidence
+// docs/data/ida/fd2_confirmation_pulse_20261005.json.
 func (g *Game) stepNativeClassUIPulseTick(rawTick int) {
+	g.stepNativeClassUIPulseTicks(rawTick, rawTick)
+}
+
+// The DOS loop reads again at 0x19B4E before storing the latch at 0x19B51.
+// The host-time adapter approximates that short gap with the same sample.
+func (g *Game) stepNativeClassUIPulseTicks(rawTick, latchTick int) {
+	rawTick = int(int16(uint16(rawTick)))
+	latchTick = int(int16(uint16(latchTick)))
 	if !g.nativeClassUIHasTick {
 		g.nativeClassUILastTick = rawTick
 		g.nativeClassUIHasTick = true
 		return
 	}
-	delta := int16(uint16(rawTick) - uint16(g.nativeClassUILastTick))
-	if delta < 2 {
+	delta := rawTick - g.nativeClassUILastTick
+	if delta >= 0 && delta < 2 {
 		return
 	}
-	g.nativeClassUILastTick = rawTick
+	g.nativeClassUILastTick = latchTick
 	g.nativeClassUIPulse = (g.nativeClassUIPulse + 1) & 3
 }
 

@@ -973,18 +973,16 @@
           "seq": 38,
           "kind": "departure_prompt",
           "oracle": "checkpoint-0038.png",
-          "remake": "remake-0001-p0.png",
-          "phases": 1,
-          "diff_pixels": 60,
-          "box": [
-            235,
-            173,
-            252,
-            179
-          ],
+          "remake": "ch04-departure_prompt-38-p1.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "62fc7a767ef5dcb0f0a0042c6bf592fcf8888488730a2bcccfe71229d5c48a4c",
-          "remake_sha256": "7388e21461c84123a14d853dedae468f6498c4a5aaf054a4b86e4018db4f6508"
+          "remake_sha256": "b9b5538791d759e7d9f69b52fe88baa82a24576f716d8b082aef921c6186b0ab",
+          "verification_source": "docs/data/ida/fd2_confirmation_pulse_20261005.json",
+          "verification_run": "work/confirmation-phase-four-points-r4",
+          "verification_scope": "正常LOAD確認框合法兩相位完整RGB與GPU；戰後點只比較排版，未重跑整章"
         },
         {
           "seq": 55,
@@ -1641,18 +1639,16 @@
           "seq": 1105,
           "kind": "town_enter",
           "oracle": "checkpoint-1105.png",
-          "remake": "remake-0058-p0.png",
-          "phases": 1,
-          "diff_pixels": 60,
-          "box": [
-            235,
-            173,
-            252,
-            179
-          ],
+          "remake": "ch04-town_enter-1105-p1.png",
+          "phases": 2,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "b87687c8ccfc19f44d8056a06e12dc7e8d05b7963c660e7c09daf02d5bb04140",
-          "remake_sha256": "7388e21461c84123a14d853dedae468f6498c4a5aaf054a4b86e4018db4f6508"
+          "remake_sha256": "b9b5538791d759e7d9f69b52fe88baa82a24576f716d8b082aef921c6186b0ab",
+          "verification_source": "docs/data/ida/fd2_confirmation_pulse_20261005.json",
+          "verification_run": "work/confirmation-phase-four-points-r4",
+          "verification_scope": "正常LOAD確認框合法兩相位完整RGB與GPU；戰後點只比較排版，未重跑整章"
         },
         {
           "seq": 1120,
@@ -1708,5 +1704,12 @@
   "limitations": [
     "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
     "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。"
-  ]
+  ],
+  "followup_verifications": {
+    "issue35": {
+      "date": "2026-10-05",
+      "source": "docs/data/ida/fd2_confirmation_pulse_20261005.json",
+      "scope": "只更新兩個確認框畫面點；其他原版、行為、節點、交易與畫面結論保持歷史來源"
+    }
+  }
 }

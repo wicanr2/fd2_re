@@ -8601,7 +8601,7 @@ bit7 的已行動狀態不得觸發；正常玩家驗收須在原版允許的輸
 | 類別 | 點數（ch04／ch05） | 像素 | 成因 | 處置 |
 |---|---|---|---|---|
 | 指令環四步開啟動畫中途：原版 checkpoint 拍在 `0x1741c` 圖示逐列揭示到一半，重播端只出開完的幀 | 14（7 move＋7 stay）／16（15 move＋1 stay） | 66–628 | checkpoint 時機；重製端 `beginActionOverlayOpen` 有這四步，重播沒出這些變體 | #34：重播端 ring 點加開啟步 0–3 變體（seq 859 已到 628，預算 640） |
-| 出口／整備確認提示的 YES：原版畫 action cell 49（選中、pulse 1），重製畫 cell 48 | 2／2（departure_prompt、town_enter） | 60（四點相同） | 逐格對 78 個 cell：cell 49 差 0、cell 48 差 60；`nativeClassUIPulse/2` 在 checkpoint 當下是 0 | #35：查 `0x19953` 起始相位再改 |
+| 出口／整備確認提示的 YES：原版畫 action cell 49（選中、pulse 1），重製畫 cell 48 | 2／2（departure_prompt、town_enter） | 60（四點相同） | 逐格對 78 個 cell：cell 49 差 0、cell 48 差 60；`nativeClassUIPulse/2` 在 checkpoint 當下是 0 | #35歷史單相位結果；2026-10-05四點已補驗，見最新節 |
 | ENEMY PHASE 橫幅期間馬賽克取樣的兩個 8×8 塊 | 1／0（ch04 seq 934 enemy_phase_start） | 162 | 兩格取樣色不同，其餘 154 個相位變體都一樣 | 記錄；第六章再出現才開 issue |
 | 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 3／2（wait、force_enemy_clear） | — | verifier 規則 `oracle_mid_end_turn`，不比單位、回合與畫面 | 無（規則已寫在 verifier） |
 
@@ -9560,3 +9560,17 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 章重播的離屏helper現依正式Draw優先序，避免在map漸亮時繪製已dispose body。標準Go、既有完整物理場景／map返回、章AI順序及存檔保持。章節點／畫面仍按既有門檻拒收，時鐘保持hardware-spec approximation，不新增PLAYER-E2。唯一數字、命令與雜湊見[58](58-fd2-exe-re-coverage.md)。特殊旗標／非零連擊補驗與人耳音訊維持原限制；#167及#154未決方案不變。
 
 本輪[#176](https://github.com/wicanr2/fd2_re/issues/176)完整DAC交接與[#166](https://github.com/wicanr2/fd2_re/issues/166)指定正常物理抽樣／work交接接受條件已滿足，遠端均已結案；提交結果另追加。這不代表整個戰役或所有戰鬥分支已驗收。
+
+
+## 2026-10-05 #35 確認框共享相位補驗
+
+[主證據](../data/ida/fd2_confirmation_pulse_20261005.json)與[有限驗收入口](../../remake/cmd/fd2/native_confirmation_pulse_oracle_test.go)
+已限定CONFORMED／RUNTIME-E1。原版19953入口只重設53C57；53C13與53C17由確認框／17898共用，
+接受／取消才把53C13歸零。選中圖格取計數器除二，沒有固定cell49的起始契約。
+19B21先sign-extend BIOS低字，再以32位減53C17；差值0或1才等候，負差值也進一次。
+19B51保存第二次讀值，不能與比較讀值混用。正式host-time adapter的短間距仍為硬體規格近似。
+
+第4、5章指定四個確認框已由受版控工具補驗為0；原單相位60及完整章來源雜湊保存在主證據。
+正常LOAD→提示→ESC與正式GPU通過；戰後兩點只比較排版，沒有重跑長章、隊伍、交易或存檔，
+沒有增加PLAYER-E2。唯一數字與目前驗收結果引用[58](58-fd2-exe-re-coverage.md)。
+第6章及其他章的舊YES差異保留為歷史觀測，不因四點補驗改寫其他章數字。

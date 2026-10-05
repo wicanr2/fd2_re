@@ -567,6 +567,36 @@
     }
   ],
   "instruction_entries": [
+      {
+        "address": "0x19b30",
+        "classification": "product",
+        "semantic": "共享確認選項計數器加一",
+        "confidence": "已證實",
+        "evidence": [
+          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+        ],
+        "scope": "19953的0<=signed BIOS delta<2等待；其他差值進一次，計數到4歸零。"
+      },
+      {
+        "address": "0x19b51",
+        "classification": "product",
+        "semantic": "保存第二次signed BIOS低字讀值至53C17",
+        "confidence": "已證實",
+        "evidence": [
+          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+        ],
+        "scope": "19B49／19B4E再次讀取，不能拿19B21比較read代替。"
+      },
+      {
+        "address": "0x19d1e",
+        "classification": "product",
+        "semantic": "選中確認選項讀共享53C13以除二取得图格相位",
+        "confidence": "已證實",
+        "evidence": [
+          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+        ],
+        "scope": "19D23..19D2C signed除2後加selected base；不宣稱固定起始cell49。"
+      },
     {
       "address": "0x122cd",
       "classification": "product",

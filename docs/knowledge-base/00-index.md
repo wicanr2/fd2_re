@@ -654,3 +654,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [城鎮過場完整來源／正常owner驗收](../../remake/cmd/fd2/native_town_departure_test.go)使用#39的固定槽與原版兩個取樣窗口；沒有收據時明示略過。
 
 [城鎮過場總覽產生器](../../tools/fd2_town_departure_sheet.py)由原版indexed及同時點DAC重建左欄、正式GPU擷取作中欄，僅輸出壓平總覽；命令與範圍見主契約。
+
+- [確認框共享相位證據](../data/ida/fd2_confirmation_pulse_20261005.json)：#35的原始writer／consumer；共享相位規格已限定CONFORMED，現行原版及GPU通過。[有界38格正常鍵盤探針](../data/parity-plans/ch04-confirmation-pulse-probe.jsonl)使用既有第四章槽。
+
+[#35四點有限驗收](../../remake/cmd/fd2/native_confirmation_pulse_oracle_test.go)由正常LOAD及出口／ESC取得兩個合法相位；戰後兩點只比較排版，不取代章收據。
+
+[#35四點收據產生器](../../tools/fd2_confirmation_pulse_receipts.py)只補驗已知確認框並保存歷史四點，不重跑或重寫整章來源。

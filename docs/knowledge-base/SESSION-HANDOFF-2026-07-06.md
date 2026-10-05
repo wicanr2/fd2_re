@@ -9240,3 +9240,18 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 遠端工單結案、提交與清理結果於本段後追加。
 
 本批收尾：真正主機已核對[#39結案](https://github.com/wicanr2/fd2_re/issues/39#issuecomment-5990314613)，正式pull／render保存剩餘21項，verify無可能已完成項。教訓guard、本批8份來源與28份產物SHA、2378個本地連結通過；兩個歷史dist連結維持原註記。變更檔UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器均已退出，其他專案未更動。提交與真正遠端HEAD核對結果回填#39。
+
+
+## 2026-10-05 #35 確認框相位與BIOS負差值
+
+[工單#35](https://github.com/wicanr2/fd2_re/issues/35#issuecomment-5990398486)先登記再追查。
+既有選項幾何與兩相位候選保持；由完整IDA指令補上共享計數器的writer／consumer、
+32位signed BIOS差值與第二次latch讀取。READY規格先保存，正式core再修正負差值等待錯誤。
+現行clean oracle短探針及四點正常LOAD／提示／ESC與正式GPU通過，完整Go回歸、字串審查已通過。
+[主證據](../data/ida/fd2_confirmation_pulse_20261005.json)限定CONFORMED／RUNTIME-E1；數字引用[58](58-fd2-exe-re-coverage.md)。
+四個歷史確認框由受版控工具補驗；原單相位60與完整章雜湊保留。
+mark少一格、素材包變數及不同BIOS讀取的驗收問題保留診斷，沒有放寬像素或改正式初始相位來湊圖。
+戰後兩點只比較排版，未重跑已通過的長章；章數、SAV格式、隊伍與交易聲明不增加。
+遠端結案、提交與清理結果於本段後追加。
+
+本批收尾：真正主機已核對[#35結案](https://github.com/wicanr2/fd2_re/issues/35#issuecomment-5991079508)，正式pull／render保存剩餘20項，verify無可能已完成項。159條教訓／55個guard、8份來源與25份產物SHA、2303個本地連結通過；兩個歷史dist缺檔保持原註記。變更檔UID／GID1000；歷史root-owned2811、新增0、.md目錄0。FD2容器均已退出，其他專案未更動。提交與真正遠端HEAD核對結果回填#35。

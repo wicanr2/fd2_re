@@ -81,10 +81,57 @@ func TestNativeClassUIPulseUsesTwoBIOSTickCadenceAndWrap(t *testing.T) {
 	check(0x7ffd, 0)
 	check(0x7ffe, 0)
 	check(0x7fff, 1)
-	check(-0x8000, 1)
+	check(-0x8000, 2)
 	check(-0x7fff, 2)
-	check(-0x7ffd, 3)
-	check(-0x7ffb, 0)
+	check(-0x7ffe, 3)
+	check(-0x7ffc, 0)
+}
+
+func TestNativeClassUIPulseMatchesSignedBIOSBranch(t *testing.T) {
+	for _, test := range []struct {
+		name                           string
+		previous, current, pulse, want int
+	}{
+		{"same", 9, 9, 2, 2},
+		{"one", 9, 10, 2, 2},
+		{"two", 9, 11, 2, 3},
+		{"large", 9, 100, 2, 3},
+		{"backward", 9, 8, 2, 3},
+		{"signed-crossing", 0x7fff, 0x8000, 3, 0},
+		{"unsigned-wrap-one", -1, 0, 3, 3},
+		{"unsigned-wrap-two", -1, 1, 3, 0},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			g := &Game{nativeClassUIPulse: test.pulse, nativeClassUILastTick: test.previous, nativeClassUIHasTick: true}
+			g.stepNativeClassUIPulseTick(test.current)
+			if g.nativeClassUIPulse != test.want {
+				t.Fatalf("pulse=%d want %d", g.nativeClassUIPulse, test.want)
+			}
+			wantTick := test.previous
+			if test.want != test.pulse {
+				wantTick = int(int16(uint16(test.current)))
+			}
+			if g.nativeClassUILastTick != wantTick {
+				t.Fatalf("latch=%d want %d", g.nativeClassUILastTick, wantTick)
+			}
+		})
+	}
+}
+
+func TestNativeClassUIPulseUsesSecondBIOSReadForLatch(t *testing.T) {
+	g := &Game{nativeClassUIHasTick: true, nativeClassUILastTick: 7}
+	g.stepNativeClassUIPulseTicks(9, 10)
+	if g.nativeClassUIPulse != 1 || g.nativeClassUILastTick != 10 {
+		t.Fatal("second read was not saved")
+	}
+	g.stepNativeClassUIPulseTicks(11, 12)
+	if g.nativeClassUIPulse != 1 || g.nativeClassUILastTick != 10 {
+		t.Fatal("waiting branch published a new latch")
+	}
+	g.stepNativeClassUIPulseTicks(12, 13)
+	if g.nativeClassUIPulse != 2 || g.nativeClassUILastTick != 13 {
+		t.Fatal("second update did not preserve separate samples")
+	}
 }
 
 func TestNativeClassUITimelineRequiresFinalFramePresentation(t *testing.T) {

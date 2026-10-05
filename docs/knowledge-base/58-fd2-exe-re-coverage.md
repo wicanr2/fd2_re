@@ -12,6 +12,7 @@
 | #173同時點地圖runtime | 限定工具CONFORMED | 16全域／view／units／獨立palette來源已補；限定consumer結果見本頁最新#166節。 |
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
 | #39城鎮出發→LOADCH過場 | 限定CONFORMED／RUNTIME-E1 | 十步定點縮放與全黑、65步淡入已接正式town owner；同源完整畫布／DAC、76張GPU及正常玩家控制通過。[主契約](../data/ida/fd2_town_departure_20261005.json)。 |
+| #35確認框共享相位 | 限定CONFORMED／RUNTIME-E1 | 已修正signed BIOS負差值及兩次讀取規則；指定四點完整RGB與合法兩相位GPU通過。[主證據](../data/ida/fd2_confirmation_pulse_20261005.json)。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -3020,3 +3021,27 @@ map indexed不變被oracle去重成一張PNG，65份DAC由1F544取得，不能�
 
 短暫owner不改persistent party、SAV欄位或格式。DOS硬體等待保持hardware-spec approximation；
 只閉合town-backed出發與下一LOADCH，不外推其他caller、音訊或PLAYER-E2。
+
+
+## 2026-10-05 #35 確認框共享相位
+
+[主證據](../data/ida/fd2_confirmation_pulse_20261005.json)已限定CONFORMED／RUNTIME-E1。
+既有確認框幾何不重做；本輪補上53C13／53C17寫入端與兩次BIOS讀取。
+19953入口重設選項53C57，不重設53C13或53C17；接受／取消才把計數器歸零。
+19B21以有號低字作32位相減，只有差值0或1等候；負差值或至少2皆進一次。
+19B51保存第二次讀值。正式adapter近似短讀取間距，不宣稱原版硬體時鐘一致。
+
+| 驗證 | 結果 |
+|---|---|
+| 現行原版短探針 | clean dosgolem a01ff084、固定EXE／第四章槽、受版控38格正常鍵；追蹤完整70835筆，低於100000上限，無狀態注入。 |
+| 相位規則 | 一筆原始初態及11785次轉移／圖格全部一致，包含一次負差值。原始counter的0、1、2、3依序選48、48、49、49，不能固定為49。 |
+| #35指定四點 | 第4章seq38／1105、第5章seq38／1335，完整RGB的合法兩相位差異各為60／0。收據已補驗成0，原單相位60及章收據雜湊保存於主證據。 |
+| 正式GPU | 同四個正常LOAD→出發提示owner，兩相位共八張640×400完整RGBA全部0；每個owner最後經正常ESC返回城鎮。 |
+| 完整Go回歸 | 19套件、2366項頂層／含子案例2882項通過，53項條件略過、0失敗。條件原版與GPU已另實跑。 |
+| 保存與限制 | persistent party與SAV格式不變。原版長章、戰後隊伍／金錢未重跑；戰後兩點只比較排版。不增加PLAYER-E2，其他章舊YES差異仍屬歷史收據。 |
+
+原版資料流與現行工具由[確認框證據](../data/ida/fd2_confirmation_pulse_20261005.json)、
+[有限驗收](../../remake/cmd/fd2/native_confirmation_pulse_oracle_test.go)及
+[四點收據產生器](../../tools/fd2_confirmation_pulse_receipts.py)重生。
+首次mark少一控制格、素材包環境變數及BIOS兩次讀取的驗收拒收保留於主證據diagnostics，
+沒有把環境／腳本問題記成產品缺陷。

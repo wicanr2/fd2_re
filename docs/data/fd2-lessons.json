@@ -1668,6 +1668,21 @@
         ],
         "pattern": "\"fade_in_steps\":"
       }
+    },
+    {
+      "id": "confirmation-bios-signed-width-and-second-read",
+      "date": "2026-10-05",
+      "area": "確認框BIOS差值",
+      "rule": "確認框時鐘依MOVSX與SUB的原始寬度計算signed差值，分別取比較read與保存read；consumer由原始EAX核對，不以較晚runtime快照代替。入口docs/data/ida/fd2_confirmation_pulse_20261005.json與remake/cmd/fd2/native_class_ui_lifecycle.go的stepNativeClassUIPulseTicks；目前驗19953的BIOS負差值與兩次讀取，host-time adapter維持硬體近似。",
+      "why": "int16相減把7FFF→8000誤作正一而等候；第一次追蹤把19B30的較晚BIOS快照當19B21／19B51共同read，latch邊界拒收。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/35",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_class_ui_lifecycle.go"
+        ],
+        "pattern": "stepNativeClassUIPulseTicks"
+      }
     }
   ]
 }
