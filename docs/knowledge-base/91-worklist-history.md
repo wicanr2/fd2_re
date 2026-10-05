@@ -5539,3 +5539,27 @@ READY有限規格先保存，再實作0／3私有UI候選與狀態還原，沒�
 遠端結案、提交與清理結果於本段後追加。
 
 本批收尾：真正主機已核對[#38結案](https://github.com/wicanr2/fd2_re/issues/38#issuecomment-5991591309)，正式pull／render保存20項，包含新登記且未完成的#177；verify無可能已完成項。160教訓／56guard、12份來源及36份產物SHA、2320個本地連結通過；兩個歷史dist缺檔保持原註記。變更檔UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器均已退出，其他專案未更動。提交與真正遠端HEAD核對結果回填#38。
+
+## 2026-10-05 #177 正式確認等待嘴型
+
+先登記[工單#177](https://github.com/wicanr2/fd2_re/issues/177)，再依19953已存原始指令建立DRAFT／READY。
+修正正式整備與共享戰場YESNO局部嘴型，保留各caller的頭像來源及輸入等待邊界。
+現行dosgolem短鏈、兩輪正式Game.Update／Draw完整畫面、END接受取消及完整Go回歸通過。
+[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)與[58](58-fd2-exe-re-coverage.md)保存唯一統計與限制。
+建構槽、受控亂數餘數與未完成尾tick均明示；未增加章PLAYER-E2。
+結案、提交及Docker清理結果在本段後追加。
+
+## 2026-10-05 #178 衍生函式清冊漂移
+
+#177索引檢查揭露基準HEAD既有未排序與68／69註記漂移，先登記[178](https://github.com/wicanr2/fd2_re/issues/178)再修正。
+離線重綁保留所有IDA metadata，沒有重解函式；相關11測試、錯來源拒收及重跑位元組相等通過。
+目前分類與指紋只引用[58](58-fd2-exe-re-coverage.md)及[#177主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。
+結案、提交及清理結果在本段後追加。
+
+
+本批收尾：[177已結案](https://github.com/wicanr2/fd2_re/issues/177#issuecomment-5992670705)，
+[178已結案](https://github.com/wicanr2/fd2_re/issues/178#issuecomment-5992673444)，真正主機 gh 核對兩案 CLOSED。
+正式 pull／render 保存19項；verify無可能已完成項，11項要人判仍保留。
+最終稽核核對30份來源與26份產物SHA、264份傳遞PNG雜湊、1305個原始函式metadata及本地連結；
+兩個歷史dist缺檔維持原註記。變更檔UID／GID1000，歷史root-owned2811、新增0、.md目錄0。
+本批FD2容器均已退出；其他專案未更動。提交與遠端HEAD核對結果回填兩案。

@@ -9,7 +9,6 @@ import (
 )
 
 // #38 enumerates only the two DATO timing states proven by 0x19953.
-// This private owner does not implement the production mouth clock (#177).
 func (r *parityReplay) preparationFrameVariants() []frameVariant {
 	g := r.g
 	original := g.nativePreparationUI
@@ -28,9 +27,12 @@ func (r *parityReplay) preparationFrameVariants() []frameVariant {
 	private := *original
 	g.nativePreparationUI = &private
 	savedCycle, savedPulse := g.prepIdleCycle, g.nativeClassUIPulse
+	savedMouthOwner := g.nativeConfirmationMouthOwner
+	g.nativeConfirmationMouthOwner = nil // Explicit candidate raster; never advance the formal owner.
 	defer func() {
 		g.nativePreparationUI = original
 		g.prepIdleCycle, g.nativeClassUIPulse = savedCycle, savedPulse
+		g.nativeConfirmationMouthOwner = savedMouthOwner
 	}()
 	var variants []frameVariant
 	for _, portrait := range portraits {

@@ -212,6 +212,12 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 重製正式GPU、完整未遮差異。原版欄不冒稱三張寫後擷取；來源與限定驗收見
 [城鎮過場契約](docs/data/ida/fd2_town_departure_20261005.json)及[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。*
 
+![確認等待嘴型的原版與正式重製對照](docs/figures/confirmation-mouth-original-vs-remake.png)
+
+*左為dosgolem原版，右為正式GPU；上為DATO第0幀，下為第3幀。兩側使用同一建構槽與
+受控時鐘、原版亂數餘數，經正常LOAD及城鎮出發進入等待。完整章與精確硬體時間不由此圖驗收。
+來源與限制見[確認等待契約](docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json)。*
+
 ![重製端正式開場的漢堂發行商畫面](docs/figures/title-publisher-remake.png)
 
 *重製正常啟動路徑的執行期畫面；美術來自玩家自備原版資料。*

@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fd2_semantic_index import (
     build_compact_report,
     load_semantic_index,
+    refresh_compact_annotations,
     validate_input_identity,
 )
 
@@ -40,7 +41,7 @@ class SemanticIndexTest(unittest.TestCase):
         self.assertEqual(inventory["function_count"], 1305)
         self.assertEqual(
             inventory["classification_counts"],
-            {"product": 62, "runtime": 175, "unknown": 1068},
+            {"product": 63, "runtime": 175, "unknown": 1067},
         )
         self.assertEqual(inventory["semantic_annotation_count"], len(entries))
 
@@ -127,6 +128,37 @@ class SemanticIndexTest(unittest.TestCase):
         }
         with self.assertRaisesRegex(ValueError, "inconsistent bounds"):
             build_compact_report(inventory)
+
+    def test_offline_refresh_preserves_every_ida_metadata_field(self):
+        document, annotations = load_semantic_index(INDEX, ROOT)
+        inventory = json.loads(INVENTORY.read_text(encoding="utf-8"))
+        original = copy.deepcopy(inventory)
+        refreshed = refresh_compact_annotations(inventory, document["input"], annotations)
+        self.assertEqual(inventory, original)
+        self.assertEqual(refreshed["semantic_annotation_count"], len(annotations))
+        for before, after in zip(original["functions"], refreshed["functions"]):
+            for key, value in before.items():
+                if key not in ("classification", "semantic_annotations"):
+                    self.assertEqual(after[key], value, (before["start"], key))
+        self.assertEqual(refreshed["tool"], original["tool"])
+        self.assertEqual(refreshed["input"], original["input"])
+        self.assertEqual(refreshed["imagebase"], original["imagebase"])
+
+    def test_offline_refresh_rejects_wrong_input_missing_functions_and_bounds(self):
+        document, annotations = load_semantic_index(INDEX, ROOT)
+        inventory = json.loads(INVENTORY.read_text(encoding="utf-8"))
+        wrong = copy.deepcopy(document["input"])
+        wrong["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "input mismatch"):
+            refresh_compact_annotations(inventory, wrong, annotations)
+        extra = copy.deepcopy(annotations)
+        extra[0xFFFFFF] = extra[0x13FD4]
+        with self.assertRaisesRegex(ValueError, "lack function starts"):
+            refresh_compact_annotations(inventory, document["input"], extra)
+        bad = copy.deepcopy(inventory)
+        bad["functions"][0]["size"] += 1
+        with self.assertRaisesRegex(ValueError, "inconsistent compact"):
+            refresh_compact_annotations(bad, document["input"], annotations)
 
 
 if __name__ == "__main__":

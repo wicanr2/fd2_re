@@ -573,6 +573,10 @@ type Game struct {
 	// actionOverlayBlink 保存 sub_17898 直接讀寫的 [0x53c13]／[0x53c17]：
 	// 穩態重繪時選中格每四個 BIOS tick 在 base 與 base+1 之間閃爍。
 	actionOverlayBlink fdother.ActionOverlaySelectionBlink
+
+	nativeConfirmationMouth      dato.ConfirmationMouthState
+	nativeConfirmationMouthOwner any
+	nativeConfirmationMouthRNG   *rand.Rand
 }
 
 // atkAnim 是重製端 E1 全螢幕戰鬥演出；土台、角色、斬擊弧與血條使用

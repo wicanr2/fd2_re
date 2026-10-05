@@ -13,12 +13,13 @@ import (
 )
 
 type nativePreparationUIAssets struct {
-	roster   *fdother.NativePreparationAssets
-	status   battle.NativeItemPanelDataAssets
-	choices  []fdother.RawCell
-	dialogue []fdother.RawCell
-	portrait dato.Frame
-	slotsBox fdother.LMI1Entry
+	roster    *fdother.NativePreparationAssets
+	status    battle.NativeItemPanelDataAssets
+	choices   []fdother.RawCell
+	dialogue  []fdother.RawCell
+	portrait  dato.Frame
+	portraits []dato.Frame
+	slotsBox  fdother.LMI1Entry
 }
 
 func (g *Game) stepNativePreparationCycleTick(rawTick int) {
@@ -72,11 +73,11 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 		}
 	}
 	portraits, err := loadNativeSeparatedPortrait(0x4b)
-	if err != nil || len(portraits) == 0 {
+	if err != nil || len(portraits) <= 3 {
 		if err != nil {
 			return nil, err
 		}
-		return nil, errors.New("native preparation UI: DATO#75 has no frames")
+		return nil, errors.New("native preparation UI: DATO#75 mouth frames are incomplete")
 	}
 	slotsBox, err := fdother.LoadSeparatedLoadSlotsFrame(separatedAssetPath("ui"))
 	if err != nil {
@@ -84,7 +85,7 @@ func loadNativePreparationUIAssets() (*nativePreparationUIAssets, error) {
 	}
 	return &nativePreparationUIAssets{
 		roster: roster, status: status, choices: choices,
-		dialogue: dialogue, portrait: portraits[0], slotsBox: slotsBox,
+		dialogue: dialogue, portrait: portraits[0], portraits: portraits, slotsBox: slotsBox,
 	}, nil
 }
 
@@ -166,7 +167,7 @@ func (g *Game) composeNativePreparationConfirmationFrame() ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
-	return frame, true
+	return g.composeNativeConfirmationMouth(frame, g.nativePreparationUI.portraits)
 }
 
 func (g *Game) nativePreparationPromptActive() bool {
@@ -233,6 +234,10 @@ func (g *Game) composeNativePreparationPromptFrame() ([]byte, bool) {
 	}
 	if g.prepRequiredMissing != nil {
 		return question, true
+	}
+	question, ok = g.composeNativeConfirmationMouth(question, g.nativePreparationUI.portraits)
+	if !ok {
+		return nil, false
 	}
 	frame, err := campaign.ComposeNativeConfirmationChoices(
 		question,

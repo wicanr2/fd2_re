@@ -22,7 +22,7 @@ func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treas
 		return fmt.Errorf("native treasure: dialogue assets or actor provenance unavailable")
 	}
 	portraits, err := loadNativeSeparatedPortrait(u.BattleFig)
-	if err != nil || len(portraits) == 0 {
+	if err != nil || len(portraits) <= 3 {
 		return fmt.Errorf("native treasure: actor portrait unavailable")
 	}
 	if err := g.composeNativeMapFrameForActionBackground(true); err != nil {
@@ -59,7 +59,8 @@ func (g *Game) beginNativeTreasureItemPrompt(u *battle.Unit, reward battle.Treas
 		return err
 	}
 	g.nativeSystemEndTurnUI = &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question, accepted: accepted, canceled: canceled,
+		portraits: portraits,
+		source:    source, dialogue: dialogue, question: question, accepted: accepted, canceled: canceled,
 		treasure: &nativeTreasurePrompt{actor: u, reward: reward, x: u.X, y: u.Y},
 	}
 	g.nativeSystemEndTurnConfirm = true

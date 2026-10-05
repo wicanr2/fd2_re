@@ -47,7 +47,7 @@ func (g *Game) runPendingNativeDeathRewards(then func()) bool {
 		}
 	}
 	portraits, err := loadNativeSeparatedPortrait(pending.killer.BattleFig)
-	if err != nil || len(portraits) == 0 {
+	if err != nil || len(portraits) <= 3 {
 		g.loadErr = "native death reward: killer portrait unavailable"
 		return true
 	}
@@ -99,7 +99,8 @@ func (g *Game) runPendingNativeDeathRewards(then func()) bool {
 	g.nativeDeathRewardUI = prompt
 	g.nativeDeathRewardThen = then
 	g.nativeSystemEndTurnUI = &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question,
+		portraits: portraits,
+		source:    source, dialogue: dialogue, question: question,
 		canceled: canceled, deathReward: prompt,
 	}
 	g.nativeSystemEndTurnConfirm = true

@@ -13,7 +13,10 @@
       "classification": "product",
       "semantic": "依 FDFIELD group 索引追加物化戰場單位",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "group constructor 與 unit-count consumer；個別 caller 的章節語意及後續演出仍須另證"
     },
     {
@@ -21,7 +24,10 @@
       "classification": "product",
       "semantic": "由 FDFIELD source record 建立完整 0x50-byte runtime unit record",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch24_post_ida.txt", "docs/knowledge-base/50-cutscene-script-system-design.md"],
+      "evidence": [
+        "docs/data/ida/fd2_ch24_post_ida.txt",
+        "docs/knowledge-base/50-cutscene-script-system-design.md"
+      ],
       "scope": "0x10B4E 的唯一直接 callee 與 raw record writers；欄位高階名稱仍依各 writer／consumer 分別證實"
     },
     {
@@ -29,7 +35,10 @@
       "classification": "product",
       "semantic": "FDICON raw key 快取查找與十二個圖像指標附加",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_preparation_gray_roster_ida.txt", "docs/knowledge-base/31-map-unit-sprites-fdicon.md"],
+      "evidence": [
+        "docs/data/ida/fd2_preparation_gray_roster_ida.txt",
+        "docs/knowledge-base/31-map-unit-sprites-fdicon.md"
+      ],
       "scope": "raw key、cache hit／append 與 unit consumer；不得把 key 泛化成所有場景的角色身分"
     },
     {
@@ -37,7 +46,10 @@
       "classification": "product",
       "semantic": "JOIN persistent record constructor",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "constructor 的 raw record writers；角色劇情身分與各 caller 的入隊條件仍須另證"
     },
     {
@@ -45,7 +57,10 @@
       "classification": "product",
       "semantic": "戰後 runtime record 到 persistent roster 的配對、複製與暫態清理",
       "confidence": "已證實",
-      "evidence": ["docs/data/fd2_persistent_roster_ida.txt", "docs/knowledge-base/50-cutscene-script-system-design.md"],
+      "evidence": [
+        "docs/data/fd2_persistent_roster_ida.txt",
+        "docs/knowledge-base/50-cutscene-script-system-design.md"
+      ],
       "scope": "完整 0x50-byte copy 與已列 raw mutation；ID 0 特例及 caller-specific 分支不可外推成通用存檔規則"
     },
     {
@@ -53,7 +68,10 @@
       "classification": "product",
       "semantic": "戰場玩家操作與指令選擇主迴圈",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_117e7_empty_cursor_system_overlay_ida.txt", "docs/knowledge-base/25-battle-event-system.md"],
+      "evidence": [
+        "docs/data/ida/fd2_117e7_empty_cursor_system_overlay_ida.txt",
+        "docs/knowledge-base/25-battle-event-system.md"
+      ],
       "scope": "正式戰場 controller 與已列 selector／overlay caller；不宣稱每個指令、音訊或畫面分支均已達 E2"
     },
     {
@@ -61,7 +79,10 @@
       "classification": "product",
       "semantic": "原生戰場索引畫面組合與發布排程",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "已證實的 buffer、stride、overlay 與 selector 路徑；各 caller 的畫面狀態及逐幀一致性仍須另證"
     },
     {
@@ -69,7 +90,10 @@
       "classification": "product",
       "semantic": "基準 DAC 色盤範圍減算與下限夾限",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch23_post_ida.txt", "docs/data/ida/fd2_battle_impact_pulse_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch23_post_ida.txt",
+        "docs/data/ida/fd2_battle_impact_pulse_ida.txt"
+      ],
       "scope": "callee；個別 caller 的範圍、delta、畫面與時序仍須另證"
     },
     {
@@ -77,7 +101,9 @@
       "classification": "product",
       "semantic": "索引色 DAC 範圍／delta 寫入 helper",
       "confidence": "已證實",
-      "evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "scope": "callee；個別 caller 的時序與畫面仍須另證"
     },
     {
@@ -85,7 +111,10 @@
       "classification": "product",
       "semantic": "X-first／Y-second 地圖捲動至指定格",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch28_post_ida.txt", "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch28_post_ida.txt",
+        "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"
+      ],
       "scope": "callee；caller 的座標來源與玩家可見時序仍須另證"
     },
     {
@@ -93,7 +122,10 @@
       "classification": "product",
       "semantic": "依 runtime unit 座標聚焦並委派地圖捲動",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "runtime unit 到 0x12CEA 的座標橋接與安全條件；caller 的演出意圖仍須另證"
     },
     {
@@ -101,7 +133,10 @@
       "classification": "product",
       "semantic": "清除移動／演出姿態後觸發戰場重繪",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/13-battle-menu-system.md", "docs/knowledge-base/50-cutscene-script-system-design.md"],
+      "evidence": [
+        "docs/knowledge-base/13-battle-menu-system.md",
+        "docs/knowledge-base/50-cutscene-script-system-design.md"
+      ],
       "scope": "callee 的 raw pose reset 與 redraw；不將所有 caller 統稱為同一個高階事件"
     },
     {
@@ -109,7 +144,10 @@
       "classification": "product",
       "semantic": "逐筆清除 materialized runtime record byte+5 bit7",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch09_post_ida.txt", "docs/data/ida/fd2_ch19_post_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch09_post_ida.txt",
+        "docs/data/ida/fd2_ch19_post_ida.txt"
+      ],
       "scope": "窄 raw bit mutation；不等同重製端通用 acted reset"
     },
     {
@@ -117,7 +155,9 @@
       "classification": "product",
       "semantic": "X-first／Y-second 的絕對地圖相機與游標同步平移",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+      ],
       "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
     },
     {
@@ -125,7 +165,10 @@
       "classification": "product",
       "semantic": "ACTING 資源逐步播放與單位 pose／位置更新迴圈",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/54-acting-pose-semantics.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/54-acting-pose-semantics.md"
+      ],
       "scope": "已證實的資源、tick、pose writer 與 redraw consumer；個別 ACTING 索引的劇情含義仍須另證"
     },
     {
@@ -133,7 +176,9 @@
       "classification": "product",
       "semantic": "敵方人工智慧 raw gate、回復與窄呈現 owner",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"
+      ],
       "scope": "函式邊界與已列資料流；完整回合交易與 E2 未閉合"
     },
     {
@@ -141,7 +186,9 @@
       "classification": "product",
       "semantic": "敵方人工智慧物理候選評分切片",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_physical_score_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_physical_score_ida.txt"
+      ],
       "scope": "窄評分切片；不是完整 planner"
     },
     {
@@ -149,7 +196,9 @@
       "classification": "product",
       "semantic": "敵方人工智慧 producer 順序與尾端 dispatch",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_14ef0_dispatch_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_14ef0_dispatch_ida.txt"
+      ],
       "scope": "已列 dispatch；未知 command／效果仍未閉合"
     },
     {
@@ -157,7 +206,9 @@
       "classification": "product",
       "semantic": "人工智慧 mode 11 第一段 owner",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"
+      ],
       "scope": "兩段順序的一部分；完整演出與 E2 未閉合"
     },
     {
@@ -165,7 +216,9 @@
       "classification": "product",
       "semantic": "人工智慧 mode 11 第二段物理／FIGANI owner",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt"
+      ],
       "scope": "兩段順序的一部分；完整演出與 E2 未閉合"
     },
     {
@@ -173,7 +226,10 @@
       "classification": "product",
       "semantic": "FDTXT 劇情對話版面、控制碼與逐字 glyph renderer",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_story_dialogue_layout_ida.txt", "docs/knowledge-base/09-story-and-dialogue.md"],
+      "evidence": [
+        "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+        "docs/knowledge-base/09-story-and-dialogue.md"
+      ],
       "scope": "文字控制碼、版面與 glyph 發布；caller 的說話者、背景、嘴型與完整視窗生命週期仍須另證"
     },
     {
@@ -181,7 +237,10 @@
       "classification": "product",
       "semantic": "以 raw timer delta 計數的等待 helper",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch29_input_cleanup_ida.txt", "docs/data/ida/fd2_ch23_post_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch29_input_cleanup_ida.txt",
+        "docs/data/ida/fd2_ch23_post_ida.txt"
+      ],
       "scope": "timer delta 契約；重製 60Hz 近似不等於 DOS wall-clock parity"
     },
     {
@@ -189,7 +248,9 @@
       "classification": "product",
       "semantic": "indexed 戰鬥狀態欄框、HP／MP、等級與姓名的完整窄 compositor",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_battle_status_panel_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_battle_status_panel_ida.txt"
+      ],
       "scope": "callee 繪製順序與 raw record 欄位；panel 上下方位置由 0x2a289 caller 決定"
     },
     {
@@ -197,7 +258,10 @@
       "classification": "product",
       "semantic": "八格 inventory cell 左移壓縮並將尾 flag 設為 0x80",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/56-fd2-remake-sdd.md", "docs/knowledge-base/91-worklist.md"],
+      "evidence": [
+        "docs/knowledge-base/56-fd2-remake-sdd.md",
+        "docs/knowledge-base/91-worklist.md"
+      ],
       "scope": "callee raw mutation；移除原因由 caller 決定"
     },
     {
@@ -205,7 +269,10 @@
       "classification": "product",
       "semantic": "indexed item presentation 的 target blit 與五次 restore/present",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/56-fd2-remake-sdd.md", "docs/knowledge-base/91-worklist.md"],
+      "evidence": [
+        "docs/knowledge-base/56-fd2-remake-sdd.md",
+        "docs/knowledge-base/91-worklist.md"
+      ],
       "scope": "呈現 ABI／順序；item effect、frame asset 與 target producer 未命名"
     },
     {
@@ -213,7 +280,9 @@
       "classification": "product",
       "semantic": "64 段原生調色盤淡出",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/91-worklist.md"],
+      "evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
       "scope": "callee；caller 畫面與時序仍須另證"
     },
     {
@@ -221,7 +290,9 @@
       "classification": "product",
       "semantic": "ANI.DAT AFM 資源播放器，具每幀 delay 與可選輸入略過",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+      ],
       "scope": "通用 callee；resource、delay、skippable 與相鄰畫面由 caller 決定"
     },
     {
@@ -229,7 +300,10 @@
       "classification": "product",
       "semantic": "LOADCH 章節資源與戰場狀態載入入口",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "章節載入、共用尾端與 caller context；不把後續 group constructor、演出或戰役路由併入此函式"
     },
     {
@@ -248,7 +322,10 @@
       "classification": "product",
       "semantic": "十輪 LUT／radius／snapshot／object redraw／viewport copy 的索引呈現原語",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt", "docs/data/ida/fd2_command10_12_presentation_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch22_post_ida.txt",
+        "docs/data/ida/fd2_command10_12_presentation_ida.txt"
+      ],
       "scope": "三實參 ABI 與十輪資料流；caller 的高階畫面名稱、精確時序與 E2 另證"
     },
     {
@@ -256,7 +333,10 @@
       "classification": "product",
       "semantic": "共用 11＋6＋10 次索引呈現排程",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt", "docs/knowledge-base/54-acting-pose-semantics.md"],
+      "evidence": [
+        "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
+        "docs/knowledge-base/54-acting-pose-semantics.md"
+      ],
       "scope": "callee 排程；caller payload 形狀不同，完整 ABI／renderer 組合仍未閉合"
     },
     {
@@ -264,7 +344,9 @@
       "classification": "product",
       "semantic": "raw ch20 post 成功分支的固定 FDOTHER／ANI／DAC 合成演出",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+      ],
       "scope": "唯一 caller 0x240FA@0x242C9；一般玩家 E2 與 0x4DFCC 首相位仍未閉合"
     },
     {
@@ -272,7 +354,10 @@
       "classification": "product",
       "semantic": "多階段索引色轉場核心",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch22_pre_ida.txt", "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch22_pre_ida.txt",
+        "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt"
+      ],
       "scope": "callee 與部分 caller payload；新 caller 仍須另證參數"
     },
     {
@@ -280,7 +365,9 @@
       "classification": "product",
       "semantic": "天空之鑰物品搜尋 gate",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/91-worklist.md"],
+      "evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
       "scope": "搜尋條件；成功／失敗兩臂的畫面效果未閉合"
     },
     {
@@ -288,7 +375,10 @@
       "classification": "product",
       "semantic": "stride-456 雙緩衝列呈現迴圈，每輪等待 20ms",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt", "docs/data/ida/fd2_ch28_post_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch22_post_ida.txt",
+        "docs/data/ida/fd2_ch28_post_ida.txt"
+      ],
       "scope": "raw indexed 時序；完整工作區來源與玩家可見 visual adapter 未閉合"
     },
     {
@@ -296,7 +386,10 @@
       "classification": "product",
       "semantic": "persistent records raw +8 identity exact-match lookup",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/data/ida/fd2_ch22_post_ida.txt",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "caller-supplied count、0x50 stride、first match與boolean結果；raw +8不得泛化命名為portrait或NPC"
     },
     {
@@ -304,7 +397,10 @@
       "classification": "product",
       "semantic": "raw stage latch setter與312-byte staging列旋轉消費端",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch23_post_ida.txt", "docs/data/fd2_chapter_aux_graphics_10652_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch23_post_ida.txt",
+        "docs/data/fd2_chapter_aux_graphics_10652_ida.txt"
+      ],
       "scope": "非零arg只寫latch、零arg執行copy／rotation；高階畫面名稱與DOS tick parity另證"
     },
     {
@@ -312,7 +408,9 @@
       "classification": "product",
       "semantic": "含起始 delta 與延遲的調色盤 ramp",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/91-worklist.md"],
+      "evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
       "scope": "callee；caller 畫面與時序仍須另證"
     },
     {
@@ -320,7 +418,10 @@
       "classification": "product",
       "semantic": "persistent roster 暫態清理並由 max HP／MP 回填 current HP／MP",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/91-worklist.md", "docs/data/ida/fd2_ch29_terminal_callers_ida.txt"],
+      "evidence": [
+        "docs/knowledge-base/91-worklist.md",
+        "docs/data/ida/fd2_ch29_terminal_callers_ida.txt"
+      ],
       "scope": "callee mutation；與 sync_party 分離，campaign owner 由 caller 決定"
     },
     {
@@ -328,7 +429,10 @@
       "classification": "product",
       "semantic": "第一組 AIL PCM sample 播放包裝器",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt", "docs/data/ida/fd2_command7_presentation_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt",
+        "docs/data/ida/fd2_command7_presentation_ida.txt"
+      ],
       "scope": "AIL sample API handoff 與 raw tuple；sample index、cue 高階名稱及精確音訊時序由 caller 另證"
     },
     {
@@ -336,7 +440,10 @@
       "classification": "product",
       "semantic": "第二組 AIL PCM sample 播放包裝器",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt", "docs/data/ida/fd2_command7_presentation_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt",
+        "docs/data/ida/fd2_command7_presentation_ida.txt"
+      ],
       "scope": "與 0x25A96 同形狀的另一播放邊界；不可依 caller 猜成固定爆炸或事件音效"
     },
     {
@@ -344,7 +451,9 @@
       "classification": "product",
       "semantic": "command 0 的 28 幀、7 元素錯開 FDOTHER indexed compositor entry",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_command0_presentation_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_command0_presentation_ida.txt"
+      ],
       "scope": "funcs_2AC25[0] entry；mode3/4/5、#18/#20 frame bank 與 #82/sub1 owner 已閉合；正式 Game 已接 0x2A6BD actor/target scene 為 RUNTIME-E1，精確音訊與同狀態 E2 仍缺"
     },
     {
@@ -352,7 +461,10 @@
       "classification": "product",
       "semantic": "雙 runtime-record 索引演出 renderer；含戰鬥、事件與終局 caller",
       "confidence": "強推論",
-      "evidence": ["docs/knowledge-base/35-battle-animation-rendering.md", "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt"],
+      "evidence": [
+        "docs/knowledge-base/35-battle-animation-rendering.md",
+        "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt"
+      ],
       "scope": "共用 callee；終局 call 0x2c2a6 的 records/globals、精確輸出與輸入時序未閉合"
     },
     {
@@ -360,7 +472,10 @@
       "classification": "product",
       "semantic": "依 raw side 分支的九段 indexed figure／TAI 滑入與基準 DAC 減算 compositor",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_command24_presentation_ida.txt", "docs/data/ida/fd2_ch29_montage_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_command24_presentation_ida.txt",
+        "docs/data/ida/fd2_ch29_montage_ida.txt"
+      ],
       "scope": "callee兩分支與command24／終局caller實參；個別caller的資產來源、後續owner與E2另證"
     },
     {
@@ -368,7 +483,9 @@
       "classification": "product",
       "semantic": "兩段各十次的 BG 三層 640-stride viewport 滑動合成器",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_command24_background_transition_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_command24_background_transition_ida.txt"
+      ],
       "scope": "command24 與 header byte1 caller 可重用的 callee 排程；caller 預建 source／target base 與高階畫面語意另證"
     },
     {
@@ -376,7 +493,9 @@
       "classification": "product",
       "semantic": "以 runtime record raw +6 與 chapter24 unit17 例外選擇狀態欄上下方 origin",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_battle_status_panel_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_battle_status_panel_ida.txt"
+      ],
       "scope": "座標 owner 與 0x18c6d handoff；raw +6 不得命名為 normalized Camp"
     },
     {
@@ -384,7 +503,9 @@
       "classification": "product",
       "semantic": "FIGANI idle frame scheduler 的雙 counter reset／delay advance helper",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_command24_presentation_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_command24_presentation_ida.txt"
+      ],
       "scope": "a2==0只清零全域 frame/repeat；非零才繪製並依 raw frame +6推進，caller的透明參數與時序另證"
     },
     {
@@ -392,7 +513,10 @@
       "classification": "product",
       "semantic": "終局前綴與部分尾段 owner",
       "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch29_terminal_body_ida.txt", "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt"],
+      "evidence": [
+        "docs/data/ida/fd2_ch29_terminal_body_ida.txt",
+        "docs/data/ida/fd2_ch29_post_montage_tail_ida.txt"
+      ],
       "scope": "已證實前綴／尾段；正式 caller handoff 與一般玩家 E2 未閉合"
     },
     {
@@ -400,160 +524,11 @@
       "classification": "product",
       "semantic": "戰後戰間 raw gate 與章節路由表消費端",
       "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/56-fd2-remake-sdd.md"],
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/56-fd2-remake-sdd.md"
+      ],
       "scope": "gate、0x526B9 table 與 preparation-first 分支；不等同完整 town／shop／menu 場景 owner"
-    },
-    {
-      "address": "0x31860",
-      "classification": "product",
-      "semantic": "指定 runtime unit 的八格 inventory exact-item 搜尋",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt", "docs/knowledge-base/91-worklist.md"],
-      "scope": "callee 搜尋；caller 決定 item 的玩法語意"
-    },
-    {
-      "address": "0x32975",
-      "classification": "product",
-      "semantic": "將指定 runtime record 的 raw byte +5 整 byte 設為 1",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt", "docs/knowledge-base/27-combat-rules-and-validation-checklist.md"],
-      "scope": "窄 raw writer；不得泛化命名為 acted、turn-complete 或存活狀態"
-    },
-    {
-      "address": "0x32999",
-      "classification": "product",
-      "semantic": "事件單位 append constructor 與固定十二次 indexed 呈現",
-      "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/scene-decode/ch1-throne.md"],
-      "scope": "constructor body、append 與呈現次數；個別 handler 的角色及劇情含義仍須另證"
-    },
-    {
-      "address": "0x33f78",
-      "classification": "product",
-      "semantic": "保留 raw [y,x,slot] 的 indexed staging wrapper",
-      "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/50-cutscene-script-system-design.md", "docs/knowledge-base/91-worklist.md"],
-      "scope": "wrapper 順序；下游 0x22253 renderer adapter 仍失敗即關閉"
-    },
-    {
-      "address": "0x35822",
-      "classification": "product",
-      "semantic": "raw (group,y,x) 的 pan→spawn→等待→palette→redraw staging",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt", "docs/data/fd2_current_field_control_mutations_ida.txt"],
-      "scope": "callee choreography；不可誤改為 (group,x,y)"
-    },
-    {
-      "address": "0x35bba",
-      "classification": "product",
-      "semantic": "由指定 runtime index 起清除每筆 record byte+0x40",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch28_post_ida.txt"],
-      "scope": "窄 raw mutation；不是完整 record reset"
-    },
-    {
-      "address": "0x35e5a",
-      "classification": "product",
-      "semantic": "0→63、hold、62→0 的全 DAC palette pulse",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch28_post_ida.txt", "docs/knowledge-base/91-worklist.md"],
-      "scope": "無參數 callee；不等同 generic fade"
-    },
-    {
-      "address": "0x36cd7",
-      "classification": "runtime",
-      "semantic": "保留 EAX 的 Watcom stack-demand／overflow-check wrapper",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt", "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"],
-      "scope": "541個 prologue callers 共用的 runtime wrapper；不是遊戲事件 helper，也沒有逐頁 page-touch loop"
-    },
-    {
-      "address": "0x36cea",
-      "classification": "runtime",
-      "semantic": "Watcom prospective ESP、stack lower limit 與 SS selector 檢查",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt", "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"],
-      "scope": "stack overflow 判定核心；process globals 的初始化 owner 不在此函式"
-    },
-    {
-      "address": "0x36d07",
-      "classification": "runtime",
-      "semantic": "Stack Overflow 訊息與 exit code 1 消費端",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt", "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"],
-      "scope": "overflow failure arm；不是一般遊戲結束或錯誤對話"
-    },
-    {
-      "address": "0x37416",
-      "classification": "runtime",
-      "semantic": "Watcom runtime free",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch23_post_ida.txt", "docs/data/ida/fd2_xrefs.json"],
-      "scope": "IDA FLIRT 命名與 caller cleanup；不是遊戲 renderer"
-    },
-    {
-      "address": "0x375b2",
-      "classification": "runtime",
-      "semantic": "轉跳至 0x3DCCD 的 busy-wait delay thunk",
-      "confidence": "已證實",
-      "evidence": ["docs/knowledge-base/39-ani-afm-format.md"],
-      "scope": "IDA thunk j___delay 與直接目標；重製採硬體規格近似，不追求 DOS wall-clock 逐週期一致"
-    },
-    {
-      "address": "0x3eeda",
-      "classification": "runtime",
-      "semantic": "回傳 Miles AIL timer IRQ 背景中斷巢狀計數／狀態",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ail_background_3eeda_ida.txt", "docs/knowledge-base/04-original-toolchain.md"],
-      "scope": "窄中介層 runtime 語意；精確 API 名稱 AIL_background 仍為強推論，不是遊戲玩法或音訊 cue helper"
-    },
-    {
-      "address": "0x4dbfc",
-      "classification": "product",
-      "semantic": "raw cell +1/+2 遮罩與 +3=0xff 初始化",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
-      "scope": "callee raw mutation；完整原始陣列與高階 consumer 未閉合"
-    },
-    {
-      "address": "0x4dfcc",
-      "classification": "product",
-      "semantic": "兩 BIOS tick 閘門的程序全域16相 DAC entries E0..EF 循環",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
-      "scope": "callee raw DAC 排程；caller 初始 phase、tick latch 與視覺 E2 仍須另證"
-    },
-    {
-      "address": "0x4e031",
-      "classification": "product",
-      "semantic": "複製 BIOS keyboard-buffer 兩個 raw word 的輸入清理 helper",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_ch29_input_cleanup_ida.txt", "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"],
-      "scope": "直接 word copy 與 caller；不是完整 BIOS 鍵盤 API，也不是終局專用 consumer"
-    },
-    {
-      "address": "0x4e893",
-      "classification": "product",
-      "semantic": "程序全域亂數值取得 helper",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_map28_runtime_topology_ida.txt", "docs/data/ida/fd2_ch29_montage_ida.txt"],
-      "scope": "process-wide RNG consumer 邊界；各 caller 的 modulo、消耗順序與玩法／裝飾性影響仍須另證"
-    },
-    {
-      "address": "0x4e8af",
-      "classification": "product",
-      "semantic": "上框 DATO portrait indexed blitter",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_story_dialogue_layout_ida.txt", "docs/knowledge-base/14-text-control-codes.md"],
-      "scope": "上框資源、目的端與 blit 方向；portrait record bytes 的高階身分語意仍須另證"
-    },
-    {
-      "address": "0x4e8e1",
-      "classification": "product",
-      "semantic": "下框 DATO portrait 由右向左 indexed blitter",
-      "confidence": "已證實",
-      "evidence": ["docs/data/ida/fd2_story_dialogue_layout_ida.txt", "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"],
-      "scope": "下框右端錨點、stride 與寫入方向；portrait record bytes 的高階身分語意仍須另證"
     },
     {
       "address": "0x2fb9f",
@@ -564,39 +539,214 @@
         "docs/data/ida/fd2_town_departure_20261005.json"
       ],
       "scope": "完整bounded indexed重採樣；參數語意限定已證城鎮2D228 caller，其他caller另查。"
+    },
+    {
+      "address": "0x31860",
+      "classification": "product",
+      "semantic": "指定 runtime unit 的八格 inventory exact-item 搜尋",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch22_post_ida.txt",
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "scope": "callee 搜尋；caller 決定 item 的玩法語意"
+    },
+    {
+      "address": "0x32975",
+      "classification": "product",
+      "semantic": "將指定 runtime record 的 raw byte +5 整 byte 設為 1",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+        "docs/knowledge-base/27-combat-rules-and-validation-checklist.md"
+      ],
+      "scope": "窄 raw writer；不得泛化命名為 acted、turn-complete 或存活狀態"
+    },
+    {
+      "address": "0x32999",
+      "classification": "product",
+      "semantic": "事件單位 append constructor 與固定十二次 indexed 呈現",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/scene-decode/ch1-throne.md"
+      ],
+      "scope": "constructor body、append 與呈現次數；個別 handler 的角色及劇情含義仍須另證"
+    },
+    {
+      "address": "0x33f78",
+      "classification": "product",
+      "semantic": "保留 raw [y,x,slot] 的 indexed staging wrapper",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/knowledge-base/50-cutscene-script-system-design.md",
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "scope": "wrapper 順序；下游 0x22253 renderer adapter 仍失敗即關閉"
+    },
+    {
+      "address": "0x35822",
+      "classification": "product",
+      "semantic": "raw (group,y,x) 的 pan→spawn→等待→palette→redraw staging",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+        "docs/data/fd2_current_field_control_mutations_ida.txt"
+      ],
+      "scope": "callee choreography；不可誤改為 (group,x,y)"
+    },
+    {
+      "address": "0x35bba",
+      "classification": "product",
+      "semantic": "由指定 runtime index 起清除每筆 record byte+0x40",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch28_post_ida.txt"
+      ],
+      "scope": "窄 raw mutation；不是完整 record reset"
+    },
+    {
+      "address": "0x35e5a",
+      "classification": "product",
+      "semantic": "0→63、hold、62→0 的全 DAC palette pulse",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch28_post_ida.txt",
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "scope": "無參數 callee；不等同 generic fade"
+    },
+    {
+      "address": "0x36cd7",
+      "classification": "runtime",
+      "semantic": "保留 EAX 的 Watcom stack-demand／overflow-check wrapper",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt",
+        "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"
+      ],
+      "scope": "541個 prologue callers 共用的 runtime wrapper；不是遊戲事件 helper，也沒有逐頁 page-touch loop"
+    },
+    {
+      "address": "0x36cea",
+      "classification": "runtime",
+      "semantic": "Watcom prospective ESP、stack lower limit 與 SS selector 檢查",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt",
+        "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"
+      ],
+      "scope": "stack overflow 判定核心；process globals 的初始化 owner 不在此函式"
+    },
+    {
+      "address": "0x36d07",
+      "classification": "runtime",
+      "semantic": "Stack Overflow 訊息與 exit code 1 消費端",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_watcom_stack_check_36cd7_ida.txt",
+        "docs/knowledge-base/59-watcom-stack-runtime-patterns.md"
+      ],
+      "scope": "overflow failure arm；不是一般遊戲結束或錯誤對話"
+    },
+    {
+      "address": "0x37416",
+      "classification": "runtime",
+      "semantic": "Watcom runtime free",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch23_post_ida.txt",
+        "docs/data/ida/fd2_xrefs.json"
+      ],
+      "scope": "IDA FLIRT 命名與 caller cleanup；不是遊戲 renderer"
+    },
+    {
+      "address": "0x375b2",
+      "classification": "runtime",
+      "semantic": "轉跳至 0x3DCCD 的 busy-wait delay thunk",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/knowledge-base/39-ani-afm-format.md"
+      ],
+      "scope": "IDA thunk j___delay 與直接目標；重製採硬體規格近似，不追求 DOS wall-clock 逐週期一致"
+    },
+    {
+      "address": "0x3eeda",
+      "classification": "runtime",
+      "semantic": "回傳 Miles AIL timer IRQ 背景中斷巢狀計數／狀態",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ail_background_3eeda_ida.txt",
+        "docs/knowledge-base/04-original-toolchain.md"
+      ],
+      "scope": "窄中介層 runtime 語意；精確 API 名稱 AIL_background 仍為強推論，不是遊戲玩法或音訊 cue helper"
+    },
+    {
+      "address": "0x4dbfc",
+      "classification": "product",
+      "semantic": "raw cell +1/+2 遮罩與 +3=0xff 初始化",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch22_post_ida.txt"
+      ],
+      "scope": "callee raw mutation；完整原始陣列與高階 consumer 未閉合"
+    },
+    {
+      "address": "0x4dfcc",
+      "classification": "product",
+      "semantic": "兩 BIOS tick 閘門的程序全域16相 DAC entries E0..EF 循環",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+      ],
+      "scope": "callee raw DAC 排程；caller 初始 phase、tick latch 與視覺 E2 仍須另證"
+    },
+    {
+      "address": "0x4e031",
+      "classification": "product",
+      "semantic": "複製 BIOS keyboard-buffer 兩個 raw word 的輸入清理 helper",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_ch29_input_cleanup_ida.txt",
+        "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+      ],
+      "scope": "直接 word copy 與 caller；不是完整 BIOS 鍵盤 API，也不是終局專用 consumer"
+    },
+    {
+      "address": "0x4e893",
+      "classification": "product",
+      "semantic": "程序全域亂數值取得 helper",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_map28_runtime_topology_ida.txt",
+        "docs/data/ida/fd2_ch29_montage_ida.txt"
+      ],
+      "scope": "process-wide RNG consumer 邊界；各 caller 的 modulo、消耗順序與玩法／裝飾性影響仍須另證"
+    },
+    {
+      "address": "0x4e8af",
+      "classification": "product",
+      "semantic": "上框 DATO portrait indexed blitter",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+        "docs/knowledge-base/14-text-control-codes.md"
+      ],
+      "scope": "上框資源、目的端與 blit 方向；portrait record bytes 的高階身分語意仍須另證"
+    },
+    {
+      "address": "0x4e8e1",
+      "classification": "product",
+      "semantic": "下框 DATO portrait 由右向左 indexed blitter",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_story_dialogue_layout_ida.txt",
+        "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"
+      ],
+      "scope": "下框右端錨點、stride 與寫入方向；portrait record bytes 的高階身分語意仍須另證"
     }
   ],
   "instruction_entries": [
-      {
-        "address": "0x19b30",
-        "classification": "product",
-        "semantic": "共享確認選項計數器加一",
-        "confidence": "已證實",
-        "evidence": [
-          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
-        ],
-        "scope": "19953的0<=signed BIOS delta<2等待；其他差值進一次，計數到4歸零。"
-      },
-      {
-        "address": "0x19b51",
-        "classification": "product",
-        "semantic": "保存第二次signed BIOS低字讀值至53C17",
-        "confidence": "已證實",
-        "evidence": [
-          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
-        ],
-        "scope": "19B49／19B4E再次讀取，不能拿19B21比較read代替。"
-      },
-      {
-        "address": "0x19d1e",
-        "classification": "product",
-        "semantic": "選中確認選項讀共享53C13以除二取得图格相位",
-        "confidence": "已證實",
-        "evidence": [
-          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
-        ],
-        "scope": "19D23..19D2C signed除2後加selected base；不宣稱固定起始cell49。"
-      },
     {
       "address": "0x122cd",
       "classification": "product",
@@ -651,6 +801,80 @@
         "docs/knowledge-base/56-fd2-remake-sdd.md"
       ],
       "scope": "0x194DE 關框；0x194E8 金庫加款；0x194F7 跳 0x19268"
+    },
+    {
+      "address": "0x1998d",
+      "classification": "product",
+      "semantic": "確認框局部嘴型初始化倒數為rand()%30+2",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json",
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "IDA LE linear；19953局部EBP初態2..31；原始lea ebp,[edx+2]，原版入口remainder5與首舊值7一致。"
+    },
+    {
+      "address": "0x19b30",
+      "classification": "product",
+      "semantic": "共享確認選項計數器加一",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "19953的0<=signed BIOS delta<2等待；其他差值進一次，計數到4歸零。"
+    },
+    {
+      "address": "0x19b51",
+      "classification": "product",
+      "semantic": "保存第二次signed BIOS低字讀值至53C17",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "19B49／19B4E再次讀取，不能拿19B21比較read代替。"
+    },
+    {
+      "address": "0x19bf1",
+      "classification": "product",
+      "semantic": "確認框重新閉嘴倒數為rand()%30+10",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json",
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "IDA LE linear；保留原始lea ebp,[edx+0Ah]；只在open分支取得新remainder，下一closed舊值consumer核對，範圍10..39。"
+    },
+    {
+      "address": "0x19bfd",
+      "classification": "product",
+      "semantic": "確認框閉嘴倒數post-decrement",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json",
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "IDA LE linear；保留原始dec ebp；19BFE測舊EAX，舊0才開DATO3，原版暫態EBP=-1。"
+    },
+    {
+      "address": "0x19c07",
+      "classification": "product",
+      "semantic": "確認框等待期取DATO第3幀來源",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json",
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "IDA LE linear；保留原始add eax,[eax+0Ch]，隨後依53A51走lower／upper blitter；不得外推開框、收框或16C57的倒數。"
+    },
+    {
+      "address": "0x19d1e",
+      "classification": "product",
+      "semantic": "選中確認選項讀共享53C13以除二取得图格相位",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+      ],
+      "scope": "19D23..19D2C signed除2後加selected base；不宣稱固定起始cell49。"
     },
     {
       "address": "0x1ad9d",

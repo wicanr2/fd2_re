@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 19 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -104,18 +104,6 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 怎樣算做完：['canonical保存固定EXE／資產雜湊、IDA原始writer／consumer與READY spec。', '正式修正LUT15、actor、packed target／pose與HP持續base，保留全序列預建與未知資產拒收。', '#154正式處理後，同源12張完整影格indexed／RGB無遮蔽對拍，並驗證正式非零側confirm到演出結束。']
 
 證據：`['docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json', 'remake/cmd/fd2/native_command6_presentation_test.go', 'remake/internal/battlepresent/native_command6.go']`
-
-### 正式整備／END確認框缺少19953的DATO嘴型與倒數owner
-
-`confirmation-mouth-runtime-owner` · 缺陷 · [#177](https://github.com/wicanr2/fd2_re/issues/177) · 仍未完成 · 要人判
-
-#38現行第六章補驗確認 seq1603 是 preparation_ch07 的19953確認框，原始input_chain包含0x19BC4→0x2D11D。#35保存的完整IDA指令顯示19953自身有DATO frame0／3、post-decrement與重新取亂數的mouth分支。現行native_preparation_ui.go只保存／繪製DATO4B第0幀，沒有正式等待期mouth owner；有限重播候選不能證明正式Game會呈現第3幀。
-
-已有完整原始指令，不重解16C57或19953。特別注意兩個callee的倒數不同：19953初態為rand%30+2，開嘴後閉合為rand%30+10；不能套16C57的+2契約。只有正常確認輸入等待期推進，opening／closing／存檔槽／選人均須保持各自owner。時鐘採既有hardware-spec approximation；不追DOS全局RNG逐tick一致。
-
-怎樣算做完：依固定雜湊19953原始writer／consumer建立READY typed嘴型規格；正式整備／END等實際確認caller在等待期呈現DATO0／3，開嘴一個合格tick、閉合重新取10..39，初態2..31；正常Game.Update／Draw與取消／接受／SAV不改格式及狀態原子性回歸通過；以dosgolem受版控短探針驗證倒數邊界與完整畫面，原版clock精度及未驗caller限制如實保留。
-
-證據：`['docs/data/ida/fd2_confirmation_pulse_20261005.json', 'remake/cmd/fd2/native_preparation_ui.go']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

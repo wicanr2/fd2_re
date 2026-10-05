@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 
@@ -191,3 +192,49 @@ def build_compact_report(inventory: dict) -> dict:
         ),
         "functions": compact_functions,
     }
+
+
+def refresh_compact_annotations(inventory: dict, index_input: dict,
+                                annotations_by_address: dict[int, list[dict]]) -> dict:
+    """離線重綁分級語意，保留既有 IDA 函式、caller、xref 與旗標快照。"""
+    validate_input_identity(index_input, inventory.get("input"))
+    functions = inventory.get("functions")
+    if inventory.get("schema_version") != 1 or not isinstance(functions, list) or inventory.get("function_count") != len(functions):
+        raise ValueError("invalid compact function inventory")
+    starts = set()
+    for function in functions:
+        start, end = int(function["start"], 0), int(function["end"], 0)
+        if start in starts or end <= start or function.get("size") != end - start:
+            raise ValueError("duplicate or inconsistent compact function bounds")
+        starts.add(start)
+    missing = set(annotations_by_address) - starts
+    if missing:
+        raise ValueError(f"semantic annotations lack function starts: {sorted(missing)}")
+    result = copy.deepcopy(inventory)
+    counts = {}
+    annotation_count = 0
+    for function in result["functions"]:
+        annotations = copy.deepcopy(annotations_by_address.get(int(function["start"], 0), []))
+        if annotations:
+            values = {row["classification"] for row in annotations}
+            if len(values) != 1 or not values <= CLASSIFICATIONS:
+                raise ValueError("semantic annotations disagree on classification")
+            classification = {
+                "value": values.pop(),
+                "confidence": min((row["confidence"] for row in annotations),
+                                  key=("已證實", "強推論", "假說", "未知").index),
+                "source": "versioned semantic index",
+            }
+        elif "library" in function.get("ida_function_flags", []):
+            classification = {"value": "runtime", "confidence": "強推論",
+                              "source": "IDA FUNC_LIB after configured FLIRT signatures"}
+        else:
+            classification = {"value": "unknown", "confidence": "未知", "source": "not yet classified"}
+        function["semantic_annotations"] = annotations
+        function["classification"] = classification
+        annotation_count += len(annotations)
+        value = classification["value"]
+        counts[value] = counts.get(value, 0) + 1
+    result["classification_counts"] = counts
+    result["semantic_annotation_count"] = annotation_count
+    return result

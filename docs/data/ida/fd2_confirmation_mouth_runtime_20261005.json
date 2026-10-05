@@ -1,0 +1,1527 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_confirmation_mouth_runtime_spec",
+  "date": "2026-10-05",
+  "issue": 177,
+  "status": "RE-CLOSED / DATA-READY / limited CONFORMED / RUNTIME-E1",
+  "input": {
+    "input": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear"
+  },
+  "primary": {
+    "path": "docs/data/ida/fd2_confirmation_pulse_20261005.json",
+    "sha256": "6a3ef39c9d2600538a3fe596692dc1ba93297ad8a4fc6d8c035ec2bd594e31a8",
+    "original_name": "sub_19953",
+    "instructions": [
+      {
+        "address": "0x1996d",
+        "bytes": "c644241400",
+        "original": "mov     [esp+28h+var_14], 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1996d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19972",
+        "bytes": "c705573c050000000000",
+        "original": "mov     dword_53C57, 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19972",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x1997c",
+        "bytes": "e8124f0300",
+        "original": "call    sub_4E893",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1997c",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19981",
+        "bytes": "89c2",
+        "original": "mov     edx, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19981",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19983",
+        "bytes": "bb1e000000",
+        "original": "mov     ebx, 1Eh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19983",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19988",
+        "bytes": "c1fa1f",
+        "original": "sar     edx, 1Fh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19988",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x1998b",
+        "bytes": "f7fb",
+        "original": "idiv    ebx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1998b",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x1998d",
+        "bytes": "8d6a02",
+        "original": "lea     ebp, [edx+2]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1998d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b19",
+        "bytes": "b86c040000",
+        "original": "mov     eax, 46Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b19",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b1e",
+        "bytes": "0fbf00",
+        "original": "movsx   eax, word ptr [eax]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b1e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b21",
+        "bytes": "2b05173c0500",
+        "original": "sub     eax, dword_53C17",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b21",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b27",
+        "bytes": "83f802",
+        "original": "cmp     eax, 2",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b27",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b2a",
+        "bytes": "7d04",
+        "original": "jge     short loc_19B30",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b2a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b2c",
+        "bytes": "85c0",
+        "original": "test    eax, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b2c",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b2e",
+        "bytes": "7dd7",
+        "original": "jge     short loc_19B07",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b2e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b30",
+        "bytes": "ff05133c0500",
+        "original": "inc     dword_53C13",
+        "semantic": "共享確認選項計數器加一",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+        ],
+        "semantic_annotations": [
+          {
+            "address": "0x19b30",
+            "classification": "product",
+            "semantic": "共享確認選項計數器加一",
+            "confidence": "已證實",
+            "evidence": [
+              "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+            ],
+            "scope": "19953的0<=signed BIOS delta<2等待；其他差值進一次，計數到4歸零。"
+          }
+        ]
+      },
+      {
+        "address": "0x19b36",
+        "bytes": "833d133c050004",
+        "original": "cmp     dword_53C13, 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b36",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b3d",
+        "bytes": "750a",
+        "original": "jnz     short loc_19B49",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b3d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b3f",
+        "bytes": "c705133c050000000000",
+        "original": "mov     dword_53C13, 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b3f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b49",
+        "bytes": "b86c040000",
+        "original": "mov     eax, 46Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b49",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b4e",
+        "bytes": "0fbf00",
+        "original": "movsx   eax, word ptr [eax]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b4e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b51",
+        "bytes": "a3173c0500",
+        "original": "mov     dword_53C17, eax",
+        "semantic": "保存第二次signed BIOS低字讀值至53C17",
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+        ],
+        "semantic_annotations": [
+          {
+            "address": "0x19b51",
+            "classification": "product",
+            "semantic": "保存第二次signed BIOS低字讀值至53C17",
+            "confidence": "已證實",
+            "evidence": [
+              "docs/data/ida/fd2_confirmation_pulse_20261005.json"
+            ],
+            "scope": "19B49／19B4E再次讀取，不能拿19B21比較read代替。"
+          }
+        ]
+      },
+      {
+        "address": "0x19b56",
+        "bytes": "833d513a050001",
+        "original": "cmp     dword_53A51, 1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b56",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b5d",
+        "bytes": "7632",
+        "original": "jbe     short loc_19B91",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b5d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b5f",
+        "bytes": "e8198effff",
+        "original": "call    sub_1297D",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b5f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b64",
+        "bytes": "ff35ad3a0500",
+        "original": "push    dword_53AAD",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b64",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b6a",
+        "bytes": "ff35a93a0500",
+        "original": "push    dword_53AA9",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b6a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b70",
+        "bytes": "6a08",
+        "original": "push    8",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b70",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b72",
+        "bytes": "6a0d",
+        "original": "push    0Dh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b72",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b74",
+        "bytes": "68c8010000",
+        "original": "push    1C8h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b74",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b79",
+        "bytes": "a1493a0500",
+        "original": "mov     eax, dword_53A49",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b79",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b7e",
+        "bytes": "0588800000",
+        "original": "add     eax, 8088h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b7e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b83",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b83",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b84",
+        "bytes": "e86583ffff",
+        "original": "call    sub_11EEE",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b84",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b89",
+        "bytes": "83c418",
+        "original": "add     esp, 18h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b89",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b8c",
+        "bytes": "e8188cffff",
+        "original": "call    sub_127A9",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b8c",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b91",
+        "bytes": "0fb6442414",
+        "original": "movzx   eax, [esp+28h+var_14]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b91",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b96",
+        "bytes": "85c0",
+        "original": "test    eax, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b96",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b98",
+        "bytes": "7461",
+        "original": "jz      short loc_19BFB",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b98",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b9a",
+        "bytes": "a1853a0500",
+        "original": "mov     eax, dword_53A85",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b9a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19b9f",
+        "bytes": "0fb610",
+        "original": "movzx   edx, byte ptr [eax]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19b9f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19ba2",
+        "bytes": "01d0",
+        "original": "add     eax, edx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19ba2",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19ba4",
+        "bytes": "833d513a050000",
+        "original": "cmp     dword_53A51, 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19ba4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bab",
+        "bytes": "7419",
+        "original": "jz      short loc_19BC6",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bab",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bad",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bad",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bb2",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bb2",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bb3",
+        "bytes": "a1633c0500",
+        "original": "mov     eax, dword_53C63",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bb3",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bb8",
+        "bytes": "0305673c0500",
+        "original": "add     eax, dword_53C67",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bb8",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bbe",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bbe",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bbf",
+        "bytes": "e81d4d0300",
+        "original": "call    sub_4E8E1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bbf",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bc4",
+        "bytes": "eb17",
+        "original": "jmp     short loc_19BDD",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bc4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bc6",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bc6",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bcb",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bcb",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bcc",
+        "bytes": "a1633c0500",
+        "original": "mov     eax, dword_53C63",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bcc",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bd1",
+        "bytes": "0305673c0500",
+        "original": "add     eax, dword_53C67",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bd1",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bd7",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bd7",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bd8",
+        "bytes": "e8d24c0300",
+        "original": "call    sub_4E8AF",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bd8",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bdd",
+        "bytes": "83c40c",
+        "original": "add     esp, 0Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bdd",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19be0",
+        "bytes": "e8ae4c0300",
+        "original": "call    sub_4E893",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19be0",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19be5",
+        "bytes": "89c2",
+        "original": "mov     edx, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19be5",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19be7",
+        "bytes": "bb1e000000",
+        "original": "mov     ebx, 1Eh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19be7",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bec",
+        "bytes": "c1fa1f",
+        "original": "sar     edx, 1Fh",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bec",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bef",
+        "bytes": "f7fb",
+        "original": "idiv    ebx",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bef",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bf1",
+        "bytes": "8d6a0a",
+        "original": "lea     ebp, [edx+0Ah]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bf1",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bf4",
+        "bytes": "c644241400",
+        "original": "mov     [esp+28h+var_14], 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bf4",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bf9",
+        "bytes": "eb50",
+        "original": "jmp     short loc_19C4B",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bf9",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bfb",
+        "bytes": "89e8",
+        "original": "mov     eax, ebp",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bfb",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bfd",
+        "bytes": "4d",
+        "original": "dec     ebp",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bfd",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19bfe",
+        "bytes": "85c0",
+        "original": "test    eax, eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19bfe",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c00",
+        "bytes": "7549",
+        "original": "jnz     short loc_19C4B",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c00",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c02",
+        "bytes": "a1853a0500",
+        "original": "mov     eax, dword_53A85",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c02",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c07",
+        "bytes": "03400c",
+        "original": "add     eax, [eax+0Ch]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c07",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c0a",
+        "bytes": "833d513a050000",
+        "original": "cmp     dword_53A51, 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c0a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c11",
+        "bytes": "7419",
+        "original": "jz      short loc_19C2C",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c11",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c13",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c13",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c18",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c18",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c19",
+        "bytes": "a1633c0500",
+        "original": "mov     eax, dword_53C63",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c19",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c1e",
+        "bytes": "0305673c0500",
+        "original": "add     eax, dword_53C67",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c1e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c24",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c24",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c25",
+        "bytes": "e8b74c0300",
+        "original": "call    sub_4E8E1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c25",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c2a",
+        "bytes": "eb17",
+        "original": "jmp     short loc_19C43",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c2a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c2c",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c2c",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c31",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c31",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c32",
+        "bytes": "a1633c0500",
+        "original": "mov     eax, dword_53C63",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c32",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c37",
+        "bytes": "0305673c0500",
+        "original": "add     eax, dword_53C67",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c37",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c3d",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c3d",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c3e",
+        "bytes": "e86c4c0300",
+        "original": "call    sub_4E8AF",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c3e",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c43",
+        "bytes": "83c40c",
+        "original": "add     esp, 0Ch",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c43",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19c46",
+        "bytes": "c644241401",
+        "original": "mov     [esp+28h+var_14], 1",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19c46",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d30",
+        "bytes": "68c0000000",
+        "original": "push    0C0h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d30",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d35",
+        "bytes": "6838010000",
+        "original": "push    138h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d35",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d3a",
+        "bytes": "68c8010000",
+        "original": "push    1C8h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d3a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d3f",
+        "bytes": "a1493a0500",
+        "original": "mov     eax, dword_53A49",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d3f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d44",
+        "bytes": "0588800000",
+        "original": "add     eax, 8088h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d44",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d49",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d49",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d4a",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d4a",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d4f",
+        "bytes": "6804050a00",
+        "original": "push    0A0504h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d4f",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d54",
+        "bytes": "e85781ffff",
+        "original": "call    sub_11EB0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d54",
+        "semantic_annotations": []
+      },
+      {
+        "address": "0x19d59",
+        "bytes": "83c418",
+        "original": "add     esp, 18h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x19d59",
+        "semantic_annotations": []
+      }
+    ]
+  },
+  "claims": [
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x1996D..0x1998D",
+      "semantic": "局部嘴型初態closed，rand()%30+2作倒數。"
+    },
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x19B19..0x19B51→0x19B91",
+      "semantic": "沿用#35兩次signed BIOS讀取；只有合格delta才進嘴型分支。"
+    },
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x19BFB..0x19C46",
+      "semantic": "閉嘴倒數先讀舊值再減一；舊值0時呈現DATO3並置open，下一合格tick閉回DATO0。原版開嘴期間EBP為-1，typed規則明示保留此暫態。"
+    },
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x19B9A..0x19BF4",
+      "semantic": "open分支先畫DATO0，再取新的rand()%30+10，狀態closed。"
+    },
+    {
+      "level": "confirmed",
+      "source": "IDA LE 0x19D30..0x19D59",
+      "semantic": "選項畫入work後由11EB0整個viewport發布，19D59可保存完整VGA。"
+    }
+  ],
+  "scope": {
+    "runtime": "已證實19953的整備出發／保存／額滿確認與現行共享戰場YESNO caller；各caller保存自己的DATO frame array，不由UI state名稱推定角色。",
+    "excluded": [
+      "required-character任意鍵訊息",
+      "非YESNO rewardMessage",
+      "教會class/revive caller本輪不新增嘴型",
+      "全局亂數逐tick序列",
+      "原版硬體逐週期時間",
+      "新的章PLAYER-E2"
+    ]
+  },
+  "typed_contract": {
+    "state": "ConfirmationMouthState{Open bool, Countdown int}；closed合法0..39，open合法-1。",
+    "initial": "NewConfirmationMouthState(randomMod30)驗0..29，closed countdown=random+2。",
+    "step": "一個合格tick：closed正值減一；closed0→open/-1/frame3；open→closed/(新random+10)/frame0。重新取亂數只在entry或open→closed。",
+    "clock": "嘴型與nativeClassUIPulse共享同一合格tick；無補跑落後tick；signed負差值沿用#35。",
+    "owner": "等待owner首次取得輸入權建立局部狀態；開收框暫停。新owner、重新開框或離開確認等待重設局部owner；Left/Right只變選項，不重建嘴型。",
+    "render": "原始indexed frame source保持唯讀；frame0/3按原版portrait blitter覆蓋，再畫choices；正式Draw不推進或取亂數。",
+    "failure": "分離素材loader須有DATO0及3。來源或幾何不足失敗即關閉；沒有原版archive fallback。",
+    "save": "暫態嘴型不寫入SAV，不改record格式、金錢、名冊、回合或accept/cancel原子性。",
+    "timing_grade": "hardware-spec approximation；沿用nativeBIOSTickPeriod，同刻度模擬兩次read，不追driver或DOS wall-clock。",
+    "random": "每個Game局部cosmetic RNG；正常執行從現行非固定來源初始化，測試固定seed177；不觸及原生戰鬥RNG。原版短trace把實際rand%30輸入直接餵typed規則。"
+  },
+  "vertical_chain": [
+    "固定雜湊DATO→既有分離素材loader→typed倒數→Game.Update確認owner→正式indexed compositor／Game.Draw→既有SAV writer不改"
+  ],
+  "review": {
+    "state": "reviewed",
+    "date": "2026-10-05",
+    "checks": [
+      "原版19BFD減一後19BFE測舊EAX，故open期間Countdown=-1；已明示。",
+      "19953嘴型consumer在同一已證signed時鐘閘門後；只推一次。",
+      "現行共享YESNO的DATO4B、group march、treasure及death reward均由各builder明示保存自己的frame array；非YESNO rewardMessage排除。",
+      "教會caller不在本輪動態驗證，未新增嘴型。",
+      "開收框沿用預建closed source，steady compositor才覆寫mouth；資料包缺frame3 loader拒收。",
+      "新探針r1缺初始建構槽，僅停標題；修正工具前置狀態，r2沿用#35完全相同slot/controls。"
+    ],
+    "result": "原始writer與consumer足以建立READY；新probe負責CONFORMED驗收，不重解已閉合函式。"
+  },
+  "validation_plan": [
+    "未修版正式確認等待反例",
+    "typed全30亂數邊界、post-decrement、非法輸入拒收",
+    "現行dosgolem以相同建構第4章槽正常title LOAD／城鎮出發短plan，逐條比對初態、舊倒數、開閉與重新取值",
+    "同槽title LOAD→城鎮出口，正常Game.Update與RunGame.Draw完整frame0/3，取消返回與保存交易回歸",
+    "原版短收據完整畫布與色盤，不遮罩、不放寬差異",
+    "完整Go回歸、worklist verify、lesson check、來源與輸出SHA、UID及Docker清理"
+  ],
+  "rights": "只版控規格、程式與雜湊。原版檔與完整資產留本機；不新增公開素材包。",
+  "limits": [
+    "相同受控亂數輸入比較局部規則，不宣稱不同RNG實作同seed產生相同序列。",
+    "教會及未取得動態收據的caller不提升原版parity。",
+    "原版entry亂數在choices opening前，host局部RNG初始化於waiting取得owner；非全局亂數時序parity。",
+    "原版最後一個tick停在consumer未完成前；只計1561個19D59完整發布，尾段不佯稱完成。"
+  ],
+  "initial_slot": {
+    "path": "work/parity-slot-ch04/FD2.SAV",
+    "sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+    "origin": "既有受版控攻略校準建構第4章槽，copy到state overlay，再正常title LOAD；不是原版START自然戰役。",
+    "lock_ally_hp": false,
+    "force_enemy_clear": false
+  },
+  "state_history": [
+    {
+      "state": "DRAFT",
+      "date": "2026-10-05",
+      "reason": "先保存原始指令與owner邊界"
+    },
+    {
+      "state": "READY",
+      "date": "2026-10-05",
+      "reason": "指令、caller持有的DATO、輸入等待與保存影響已審查"
+    },
+    {
+      "state": "CONFORMED",
+      "date": "2026-10-05",
+      "reason": "DRAFT→審查→READY→正式接線；現行dosgolem倒數、兩輪正常Game.Update/Draw完整indexed/RGBA、必要交易與完整Go回歸均通過。只限本契約scope。"
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/data/ida/fd2_confirmation_pulse_20261005.json",
+      "sha256": "6a3ef39c9d2600538a3fe596692dc1ba93297ad8a4fc6d8c035ec2bd594e31a8"
+    },
+    {
+      "path": "docs/data/ida/fd2_parity_mouth_cycle_20261005.json",
+      "sha256": "ea3689f155022571d9d220cd8b02977d06a381d49d3ffa8eeb6e70f3a7ee3840"
+    },
+    {
+      "path": "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt",
+      "sha256": "f905a5ab642412c4ffec01d6c09e381787885e064eeb5139b086af6c9163972a"
+    },
+    {
+      "path": "docs/data/ida/fd2_system_exit_and_group_march_ida.txt",
+      "sha256": "37100fb9c0d5d410a7793402a29f6f4c73701757b3030b69f1be7413485efab5"
+    },
+    {
+      "path": "docs/data/ida/fd2_death_reward_full_inventory_ida.txt",
+      "sha256": "424d4ffa34174a980c65b8ce146f34481e66e4f8840bf870b83829dcbea03c3b"
+    },
+    {
+      "path": "docs/data/ida/fd2_treasure_input_20260907.json",
+      "sha256": "dadb32cdb186aa67794371422f43dc732110d42dc22fad30578cc437107063fe"
+    },
+    {
+      "path": "docs/data/ida/fd2_town_preparation_background_20261002.json",
+      "sha256": "208bb2cffefe8706a9d4f701faad06950081ed2e18954bd87c7d653d6f79722a"
+    },
+    {
+      "path": "docs/data/ida/fd2_preparation_record_save_20261003.json",
+      "sha256": "ccdfb7197dd297eb74a8e9278cb17f20dd48de0d121a8a49760317566ae0fb25"
+    },
+    {
+      "path": "docs/data/fd2_current_snapshot_ida.txt",
+      "sha256": "921abbd773a3cd3882b79d5826144d3026fd2786530d4015e7d848c1292924bd"
+    },
+    {
+      "path": "docs/data/parity-plans/ch04-confirmation-mouth-probe.jsonl",
+      "sha256": "ec52fcec8e62673a447b57c5c836bfe25139115f8f37abdf5e3552b032ab7ab5"
+    },
+    {
+      "path": "work/parity-slot-ch04/FD2.SAV",
+      "sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5"
+    },
+    {
+      "path": "remake/cmd/fd2/native_confirmation_mouth.go",
+      "sha256": "d73d9c5372787461b3ecf5c2ba4b62a2a96ee3013fe85d89695cccef3b3137f0"
+    },
+    {
+      "path": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+      "sha256": "3abd10408266480546a988ded458ab1b680563b5bde287af4161d41d4bfdf709"
+    },
+    {
+      "path": "remake/cmd/fd2/native_preparation_ui.go",
+      "sha256": "3e0e5754f1d39d73cc5ae003f3ec8b5c35f265b0f5e492f631b5442ab2e9f627"
+    },
+    {
+      "path": "remake/cmd/fd2/action_overlay_runtime.go",
+      "sha256": "772c69b3af1702dc1ba6253a87ecca82d64c47f93fbdfc21f44f918d98bbb91b"
+    },
+    {
+      "path": "remake/cmd/fd2/native_treasure_input.go",
+      "sha256": "fc99b6507263e03859cde317ce41a58a2831e5042a7a8d14e8d2756e523666d8"
+    },
+    {
+      "path": "remake/cmd/fd2/native_death_reward_ui.go",
+      "sha256": "86adeb77d092e90792b1cfeb8f2c620b279ca8b532cb112d5a7edcfa096ca87b"
+    },
+    {
+      "path": "remake/internal/dato/confirmation_mouth.go",
+      "sha256": "f6b7999ae19fbb218bf4a32e1a958c599022c43d024c474ad63aeff93112b48d"
+    },
+    {
+      "path": "remake/internal/campaign/native_class_confirm.go",
+      "sha256": "76b9d7392c76e8e25d634a6ee1eedaa9768bcdc455ee7273ac5a170ae5308b87"
+    },
+    {
+      "path": "remake/cmd/fd2/native_confirmation_mouth_oracle_test.go",
+      "sha256": "16d10e8455ccf40cfe5c33b8d92ef86e8e0eed0d3ec04162a6e14b8d50f1a11e"
+    },
+    {
+      "path": "remake/cmd/fd2/native_confirmation_mouth_test.go",
+      "sha256": "eb468d59564178aa09dbd55b5ede82175744146b78f398814258ceb25c28977f"
+    },
+    {
+      "path": "remake/internal/dato/confirmation_mouth_test.go",
+      "sha256": "9864de8217a37422a8a88aeed7b060ffa08dde40e7c622c306c60d0f3b473eb0"
+    },
+    {
+      "path": "tools/fd2_confirmation_mouth_receipts.py",
+      "sha256": "b005bd5f57e7da1068303a33b0d62babcc6bd0871da7a96c5850b59e53546d73"
+    },
+    {
+      "path": "remake/cmd/fd2/main.go",
+      "sha256": "1726ad6c23ba1ce47d172cb376c9ff096632019912f9a18e978964d8246a0b3a"
+    },
+    {
+      "path": "remake/cmd/fd2/chapter_parity_preparation_mouth_test.go",
+      "sha256": "6090690c6dcaf17edb68f481b5f7d9a46f3f9979b083830516dfee63add7a0e8"
+    },
+    {
+      "path": "docs/data/ida/fd2_semantic_index.json",
+      "sha256": "6d957c82b480a17ae5d07b97e6cc7c1c82e28afbb3751dd93dcb188ea15f8209"
+    },
+    {
+      "path": "tools/fd2_semantic_index.py",
+      "sha256": "e781f3162fc66d13b1c22da25a010e73ad415eda2b6ab0133feeed155af86c1c"
+    },
+    {
+      "path": "tools/compact_fd2_function_inventory.py",
+      "sha256": "6d55132ecdeb512ef2793a5b5fb381479eb997c3192c764e32337d792930c135"
+    },
+    {
+      "path": "tools/test_fd2_semantic_index.py",
+      "sha256": "46e39ce176b988011c7f1c2b4f11db17c6404b85472c4bc68c5122f33f52ac05"
+    },
+    {
+      "path": "docs/data/ida/fd2_function_inventory.json",
+      "sha256": "c3cc5e5e99be6d333c557578f3e1e432f8986cfabc1dfe27d39165e78df57944"
+    }
+  ],
+  "caller_binding": {
+    "primary_xrefs": [
+      "0x17047",
+      "0x1720e",
+      "0x1917e",
+      "0x192d6",
+      "0x19f58",
+      "0x1a1e8",
+      "0x1a299",
+      "0x1aaba",
+      "0x2cc71",
+      "0x2d118",
+      "0x2f2a0",
+      "0x2f469",
+      "0x2f82a",
+      "0x2fdf7",
+      "0x30f1f",
+      "0x314e8",
+      "0x31d89"
+    ],
+    "runtime_covered": [
+      "prep record/departure/excess confirmation: DATO4B",
+      "END/exit/current-save/current-load: DATO4B",
+      "groupMarch: unit0.BattleFig",
+      "treasure: actor.BattleFig",
+      "deathReward YESNO: killer.BattleFig"
+    ],
+    "render_source": "每個shared state保存各builder已載入的portraits；steady Draw覆寫frame3，預建question／opening／closing仍使用frame0。",
+    "oracle_scope": "新的dosgolem動態對拍只驗第4章城鎮出發等待。其他已知共享caller驗正式接線及既有交易回歸，不增加動態原版parity。"
+  },
+  "diagnostics": [
+    {
+      "run": "work/confirmation-mouth-before-r1.log",
+      "kind": "environment",
+      "result": "login shell重設PATH，with-xvfb找不到go；改同image非登入sh乾淨重跑。"
+    },
+    {
+      "run": "work/confirmation-mouth-before-r2.log",
+      "kind": "remake regression counterexample",
+      "result": "修正前80次合格刻度仍只有frame0。"
+    },
+    {
+      "run": "work/confirmation-mouth-original-r1.log",
+      "kind": "verification precondition",
+      "result": "新state覆蓋層漏放既有第4章建構槽，未進LOAD；不計收據。r2沿用#35完整相同SAV與控制前綴。"
+    },
+    {
+      "run": "work/confirmation-mouth-oracle-gpu-r1.log",
+      "kind": "success",
+      "result": "1561 complete ticks; 58 opens/closes; 88 indexed/full GPU frames exact。"
+    },
+    {
+      "run": "work/confirmation-mouth-oracle-gpu-r2.log",
+      "kind": "success",
+      "result": "同88完整frame及實際RNG輸入，額外END等待/不同portrait/缺幀/接受取消回歸通過。"
+    },
+    {
+      "kind": "verification script",
+      "result": "獨立RGBA差分改用完整位元組等式，不依alpha通道getbbox；r2與正式Go檢查均零差異。"
+    },
+    {
+      "kind": "preexisting tooling defect",
+      "issue": 178,
+      "result": "兩個semantic-index檢查失敗已證實在基準HEAD；先登記178，再修正排序與69條函式語意清冊同步。11個相關Python測試與重複重生位元組相等通過。"
+    }
+  ],
+  "validation": {
+    "independent": "work/confirmation-mouth-independent-r3.json",
+    "oracle": "work/parity-slot-ch04/confirmation-mouth-original-r2",
+    "normal_game": "work/confirmation-mouth-gpu-r2/validation.json",
+    "complete_ticks": 1561,
+    "complete_frames": 88,
+    "opens": 58,
+    "closes": 58,
+    "random_reads": 59,
+    "initial_remainder": 5,
+    "two_runs_equal": true,
+    "indexed_and_full_gpu_rgba_diff_pixels": 0,
+    "final_partial_tick_excluded": true,
+    "test_seed": 177,
+    "oracle_rng_method": "實際原版IDIV remainder作受控輸入，不能以相同seed數字宣稱序列相同。",
+    "full_go": {
+      "log": "work/confirmation-mouth-full-go-r1.jsonl",
+      "sha256": "76fdb881e441d1632026e86a2e47e06584190b8c77f6e9145317b04e30385803",
+      "packages_pass": 19,
+      "top_tests_pass": 2372,
+      "all_test_cases_pass": 2888,
+      "test_cases_skip": 55,
+      "packages_without_tests": 11,
+      "failures": 0
+    },
+    "mouth_frame_counts": {
+      "0": 82,
+      "3": 6
+    },
+    "figure": {
+      "path": "docs/figures/confirmation-mouth-original-vs-remake.png",
+      "sha256": "e8430b5929fabb45691456ca37455f6d419ca37a2ae3d6385a52757b06074351",
+      "layout": "左原版、右正式GPU；上frame0、下frame3。有限總攬，非可回填完整素材。"
+    },
+    "skips": "完整Go中55個測試case略過含52個頂層與3子案例；外部#177兩個probe已用明示收據獨立跑過。11無測試套件另計。其他原有外部／平台限制維持。",
+    "end_fixture_method": "END由正式begin/input owner進入；DATO26 array替換僅隔離驗證caller來源持有，不稱該替換為正常玩家路徑或原版對拍。"
+  },
+  "base_commit": "a6444b374ae7a99296c48a2a3437916d311451cc",
+  "outputs": [
+    {
+      "path": "work/confirmation-mouth-before-r1.log",
+      "sha256": "2beb21b28d4b8f8d7b0b433d74770e020a1ce249119128b0d47921f8206d044f"
+    },
+    {
+      "path": "work/confirmation-mouth-before-r2.log",
+      "sha256": "d58913a265c591ccb5171a03542c7e4e3e2f4db2df4904e4cea1f9276b3a537d"
+    },
+    {
+      "path": "work/confirmation-mouth-focused-r1.log",
+      "sha256": "3bb91ac4acde28f3a8684450b39dfe554be0c6e837497ea19e61dc1fabb14e32"
+    },
+    {
+      "path": "work/confirmation-mouth-oracle-gpu-r1.log",
+      "sha256": "1a7999e018218673c7ced69d00804767bded285baf6c8f7c85ab856f9e7a6411"
+    },
+    {
+      "path": "work/confirmation-mouth-oracle-gpu-r2.log",
+      "sha256": "f43b447e42b2d9c7c03c10ae115bd5a918e423cf40edd8b5a36a9243a54d1cf9"
+    },
+    {
+      "path": "work/confirmation-mouth-full-go-r1.jsonl",
+      "sha256": "76fdb881e441d1632026e86a2e47e06584190b8c77f6e9145317b04e30385803"
+    },
+    {
+      "path": "work/confirmation-mouth-strings-r1.log",
+      "sha256": "0e3e59ff5c66d22d46e06b80b642a0f466682c992d1024daf004267ec8d10d21"
+    },
+    {
+      "path": "work/confirmation-mouth-original-r1.log",
+      "sha256": "e3d5d4348d2698416b87b06f4ddde62925d742e786e237c544d81efae7f4a46c"
+    },
+    {
+      "path": "work/confirmation-mouth-original-r2.log",
+      "sha256": "f635f2939f4c981638bd44b0fc71bb397b0a2213c0207761312cfa57a7528113"
+    },
+    {
+      "path": "work/confirmation-mouth-gpu-r1/validation.json",
+      "sha256": "07b2147f188a5d2238df927f5f1b961f8bf23021ac2a38e473e4b610b5b29e00"
+    },
+    {
+      "path": "work/confirmation-mouth-gpu-r2/validation.json",
+      "sha256": "07b2147f188a5d2238df927f5f1b961f8bf23021ac2a38e473e4b610b5b29e00"
+    },
+    {
+      "path": "work/confirmation-mouth-independent-r3.json",
+      "sha256": "597eb67f47b6181b531977284110dffe0f091819e522d2e64de3c06f7b3dd875"
+    },
+    {
+      "path": "work/parity-slot-ch04/confirmation-mouth-original-r2/runner.json",
+      "sha256": "bc99625590e8166b4b4ed7d2ced839bb26734b3c0a4630948fd32bf964d062a7"
+    },
+    {
+      "path": "work/parity-slot-ch04/confirmation-mouth-original-r2/eip-trace.jsonl",
+      "sha256": "832f162f52ef13ec2f6510dafdda35f5cd29006996b3fc225011130b8f9d1b6e"
+    },
+    {
+      "path": "work/parity-slot-ch04/confirmation-mouth-original-r2/control-history.jsonl",
+      "sha256": "1a93de187dfcb4b9c635389ee2506098d71065602852f399bd37ca94c536a1ac"
+    },
+    {
+      "path": "work/parity-slot-ch04/confirmation-mouth-original-r2/frames/frames.jsonl",
+      "sha256": "548795725ad71301e1ff99ea25b85e6c8805bc19d1fa2b509ae0df4229a2d122"
+    },
+    {
+      "path": "work/parity-slot-ch04/confirmation-mouth-state-r2/FD2.SAV",
+      "sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5"
+    },
+    {
+      "path": "docs/figures/confirmation-mouth-original-vs-remake.png",
+      "sha256": "e8430b5929fabb45691456ca37455f6d419ca37a2ae3d6385a52757b06074351"
+    },
+    {
+      "path": "work/semantic-index-before-r1.log",
+      "sha256": "77847e6c6a80ad02e556a2d0b5998295ce2f3a209c6b8d36d33a533014371caf"
+    },
+    {
+      "path": "work/semantic-index-tests-r1.log",
+      "sha256": "5847e3778622e9f75ba8d9778d8dd20baac36d707086b00b372e60d35baad06e"
+    },
+    {
+      "path": "work/semantic-index-refresh-r1.log",
+      "sha256": "01c0b6aa506d96c7b279511221f3ecb6646a2f00e8157588f9b6e73bd6a143ca"
+    },
+    {
+      "path": "work/semantic-index-repeat-r1.log",
+      "sha256": "6f34562974cc8a1bf67992584b3b6525a21199e3336ab174b6833382dbe7f9dd"
+    },
+    {
+      "path": "work/semantic-inventory-source-before-r1.json",
+      "sha256": "ef5bc0198d18d6f65ba2689a3464394354946ac3d81e82e2fdfeee4370a9cdfa"
+    },
+    {
+      "path": "work/semantic-inventory-repeat-r1.json",
+      "sha256": "c3cc5e5e99be6d333c557578f3e1e432f8986cfabc1dfe27d39165e78df57944"
+    },
+    {
+      "path": "work/confirmation-mouth-lessons-r1.log",
+      "sha256": "75ebad93b1ed925da8e78235ebd24ade572c4baff7c5624cdf30ba50367ec50e"
+    },
+    {
+      "path": "work/confirmation-mouth-preclose-verify-r1.log",
+      "sha256": "65a94518bf6df4b075128663b3982a3346db40e917820008afb6d5f3bbcad72f"
+    }
+  ],
+  "commands": {
+    "original_r2": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch04/confirmation-mouth-original-r2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch04/confirmation-mouth-state-r2' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/ch04-confirmation-mouth-probe.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-confirmation-mouth-original-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch04/confirmation-mouth-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch04/confirmation-mouth-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch04-confirmation-mouth-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch04-confirmation-mouth-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch04/confirmation-mouth-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=800000000' -e 'FD2_ORACLE_EIP_TRACE=0x1998D,0x19B96,0x19BFE,0x19BF1,0x19BF4,0x19C46,0x19D23,0x19D59' -e 'FD2_ORACLE_EIP_TRACE_FROM=130000000' -e 'FD2_ORACLE_EIP_TRACE_TO=190000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=25000' -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x19D59 -e FD2_ORACLE_FRAME_MAX=100 -e FD2_ORACLE_FRAME_FROM=135700000 -e FD2_ORACLE_FRAME_TO=140000000 -e FD2_ORACLE_EIP_WATCH=0x19D59 --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/confirmation-mouth-original-r2.log 2>&1",
+    "regression_before_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; export FD2_ASSET_PACK=/tmp/fd2-pack; with-xvfb go test ./cmd/fd2 -run '\\''^TestNativePreparationConfirmationMouthWaitShowsBothFrames$'\\'' -count=1 -v > /src/work/confirmation-mouth-before-r2.log 2>&1'",
+    "focused_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/main.go cmd/fd2/native_class_ui_lifecycle.go cmd/fd2/native_preparation_ui.go cmd/fd2/action_overlay_runtime.go cmd/fd2/native_confirmation_mouth.go cmd/fd2/native_confirmation_mouth_test.go cmd/fd2/native_treasure_input.go cmd/fd2/native_death_reward_ui.go cmd/fd2/chapter_parity_preparation_mouth_test.go internal/dato/confirmation_mouth.go internal/campaign/native_class_confirm.go; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2 ./internal/dato ./internal/campaign -run '\\''TestNativePreparation|TestNativeConfirmationPulse|TestParityPreparationMouthVariants|TestNativeSystem.*(Turn|Save|Load|Exit|Group)|TestNativeClassUI|TestNativeTreasure|TestNativeDeathReward'\\'' -count=1 -v > /src/work/confirmation-mouth-focused-r1.log 2>&1'",
+    "normal_update_draw_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/main.go cmd/fd2/native_class_ui_lifecycle.go cmd/fd2/native_preparation_ui.go cmd/fd2/action_overlay_runtime.go cmd/fd2/native_confirmation_mouth.go cmd/fd2/native_confirmation_mouth_test.go cmd/fd2/native_treasure_input.go cmd/fd2/native_death_reward_ui.go cmd/fd2/chapter_parity_preparation_mouth_test.go internal/dato/confirmation_mouth.go internal/campaign/native_class_confirm.go cmd/fd2/native_confirmation_mouth_oracle_test.go internal/dato/confirmation_mouth_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_CONFIRMATION_MOUTH_ORIGINAL=/src/work/parity-slot-ch04/confirmation-mouth-original-r2 FD2_CONFIRMATION_MOUTH_OUT=/src/work/confirmation-mouth-gpu-r2 with-xvfb go test ./cmd/fd2 ./internal/dato -run '\\''^Test(NativeConfirmationMouth|NativePreparationConfirmationMouth|ConfirmationMouth|NativeSystemDownEndYes|NativeSystemEndTurn|ParityPreparationMouthVariants)'\\'' -count=1 -v > /src/work/confirmation-mouth-oracle-gpu-r2.log 2>&1'",
+    "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test -json ./... -count=1 -timeout 600s' > work/confirmation-mouth-full-go-r1.jsonl 2>&1",
+    "string_review": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --workdir /src fd2-go-test-local:20260909 timeout 150  sh -c 'set -eu; export HOME=/tmp/home GOCACHE=/src/work/gocache GOFLAGS=-mod=mod; mkdir -p /hosttmp/fd2-confirmation-mouth-strings-r1 /tmp/home /tmp/fd2-before-confirmation-mouth; git -C /src archive HEAD | tar -x -C /tmp/fd2-before-confirmation-mouth; cd /src/remake/cmd/fd2-string-inventory; go run . -repo /tmp/fd2-before-confirmation-mouth -output /hosttmp/fd2-confirmation-mouth-strings-r1/inv-old.json; go run . -repo ../../.. -output /hosttmp/fd2-confirmation-mouth-strings-r1/inv-new.json; cd /src; python3 tools/migrate_string_review.py --old-inventory /hosttmp/fd2-confirmation-mouth-strings-r1/inv-old.json --new-inventory /hosttmp/fd2-confirmation-mouth-strings-r1/inv-new.json --review docs/data/fd2-string-review.json --output /hosttmp/fd2-confirmation-mouth-strings-r1/review-new.json; python3 -c '\\''import json,pathlib\nr=pathlib.Path(\"/hosttmp/fd2-confirmation-mouth-strings-r1\")\ni=json.loads((r/\"inv-new.json\").read_text());m=json.loads((r/\"review-new.json\").read_text());o=json.loads(pathlib.Path(\"docs/data/fd2-string-review.json\").read_text())\nids={s for g in m[\"dispositions\"].values() for s in g[\"string_ids\"]}\nassert ids=={e[\"string_id\"] for e in i[\"entries\"] if e[\"role\"]==m[\"reviewed_role\"]}\nfor key,g in m[\"dispositions\"].items():\n assert len(g[\"string_ids\"])==len(o[\"dispositions\"][key][\"string_ids\"])\n assert {k:v for k,v in g.items() if k!=\"string_ids\"}=={k:v for k,v in o[\"dispositions\"][key].items() if k!=\"string_ids\"}\nassert pathlib.Path(\"docs/data/fd2-string-review.json\").stat().st_uid==1000\npathlib.Path(\"docs/data/fd2-string-review.json\").write_bytes((r/\"review-new.json\").read_bytes())\nprint(\"重新綁定\",len(ids),\"項，原分類與審查理由全部保留\")\n'\\''' > work/confirmation-mouth-strings-r1.log 2>&1",
+    "independent": "test -d /home/anr2/cht/fd2 && timeout 120 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 90 python3 tools/fd2_confirmation_mouth_receipts.py --original work/parity-slot-ch04/confirmation-mouth-original-r2 --first work/confirmation-mouth-gpu-r1 --second work/confirmation-mouth-gpu-r2 --output work/confirmation-mouth-independent-r3.json --figure docs/figures/confirmation-mouth-original-vs-remake.png --go-log work/confirmation-mouth-full-go-r1.jsonl",
+    "semantic_refresh": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src fd2-go-test-local:20260909 timeout 150 sh -c 'set -eu; test -f /.dockerenv; python3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json\np=Path(\"docs/data/ida/fd2_semantic_index.json\");j=json.loads(p.read_text())\nj[\"entries\"].sort(key=lambda x:int(x[\"address\"],16))\nassert p.stat().st_uid==1000 and Path(\"docs/data/ida/fd2_function_inventory.json\").stat().st_uid==1000\np.write_text(json.dumps(j,ensure_ascii=False,indent=2)+\"\\n\")\nPY\ngit show a6444b374ae7a99296c48a2a3437916d311451cc:docs/data/ida/fd2_function_inventory.json > work/semantic-inventory-source-before-r1.json\npython3 tools/compact_fd2_function_inventory.py work/semantic-inventory-source-before-r1.json docs/data/ida/fd2_function_inventory.json --refresh-semantic-index docs/data/ida/fd2_semantic_index.json > work/semantic-index-refresh-r1.log\npython3 tools/compact_fd2_function_inventory.py docs/data/ida/fd2_function_inventory.json work/semantic-inventory-repeat-r1.json --refresh-semantic-index docs/data/ida/fd2_semantic_index.json > work/semantic-index-repeat-r1.log\ncmp docs/data/ida/fd2_function_inventory.json work/semantic-inventory-repeat-r1.json\npython3 tools/test_fd2_semantic_index.py > work/semantic-index-tests-r1.log 2>&1\ncat work/semantic-index-refresh-r1.log\ncat work/semantic-index-tests-r1.log\n'"
+  },
+  "reproduction_policy": "命令保留實際輪號與完整Docker參數；重生時換所有對應的新輪號，不覆寫原收據。開始原版前先在Docker把initial_slot原樣複製至state的FD2.SAV，再核對SHA；原版遊戲唯讀。新state不能省略此步。",
+  "semantic_index": "已審查的1998D／19BFD／19BF1／19C07以instruction_entries附加；保留原始指令、位址及證據等級，不改IDA名字或覆蓋原註記。",
+  "runtime_tools": {
+    "remake_go": "go1.22.12 linux/amd64；fd2-go-test-local:20260909",
+    "original_oracle_image": "golang:1.24-bookworm",
+    "original_oracle": "dosgolem apps/fd2/cmd/oracle a01ff084，clean",
+    "independent_image": "fd2-assets-local:20260829-sfx；Pillow",
+    "primary_static": "既有IDA Pro 9.4，IDA LE linear；本輪未重解閉合函式。"
+  },
+  "related_issue_178": {
+    "id": "semantic-index-compact-inventory-sync",
+    "url": "https://github.com/wicanr2/fd2_re/issues/178",
+    "status": "verified and CLOSED",
+    "base_commit": "a6444b374ae7a99296c48a2a3437916d311451cc",
+    "failure_before": "a6444b37已有entries未排序、函式註記68/69不一致；177新增instruction entries未改原函式entries。",
+    "repair": "機械式排序；既有compact metadata離線重綁，沒有重新跑IDA或更動函式邊界／名字／caller／xref／flags。",
+    "function_count": 1305,
+    "classification_counts": {
+      "unknown": 1067,
+      "product": 63,
+      "runtime": 175
+    },
+    "semantic_annotation_count": 69,
+    "annotation_refresh": {
+      "method": "offline versioned semantic-index binding; original IDA metadata retained",
+      "input_inventory_sha256": "ef5bc0198d18d6f65ba2689a3464394354946ac3d81e82e2fdfeee4370a9cdfa",
+      "source_metadata_sha256": "c0473a29e9a1e32f849542fceb4c0c76ac20c61df03857ce5c98eb22b19ca56e",
+      "semantic_index_sha256": "6d957c82b480a17ae5d07b97e6cc7c1c82e28afbb3751dd93dcb188ea15f8209",
+      "ida_rerun": false
+    },
+    "tests": {
+      "passed": 11,
+      "failed": 0,
+      "repeat_byte_equal": true
+    },
+    "metadata_source": "work/semantic-inventory-source-before-r1.json"
+  },
+  "issue_closure": {
+    "177": "https://github.com/wicanr2/fd2_re/issues/177#issuecomment-5992670705",
+    "178": "https://github.com/wicanr2/fd2_re/issues/178#issuecomment-5992673444",
+    "states": "CLOSED; actual host gh verified"
+  }
+}

@@ -9587,3 +9587,13 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 原始三點及章來源雜湊保留；其他章與第七章祕密商店的歷史觀測不由此次更新外推。
 正式確認框缺少嘴型owner已另登記[#177](https://github.com/wicanr2/fd2_re/issues/177)。
 唯一數字與完整結果引用[58](58-fd2-exe-re-coverage.md)，不新增PLAYER-E2。
+
+## 2026-10-05 #177 確認等待的獨立嘴型狀態
+
+正式19953等待改以ConfirmationMouthState保存局部Open與Countdown。
+初態取2..31，closed舊值0經post-decrement轉為open/-1，下一合格tick閉回frame0並重新取10..39。
+不共用16C57的MouthState.Tick；嘴型只由native_class_ui_lifecycle.go的同一合格BIOS更新推進。
+共享YESNO state保存各caller的portraits，steady compositor只覆寫caller頭像；預建問句與開收框保持獨立。
+每個Game的嘴型亂數與原生戰鬥RNG、SAV分離，Draw不取值；資產缺frame3於發布前拒收。
+原版動態scope、host初始化與DOS取值時點的限制、完整驗證均見[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)與[58](58-fd2-exe-re-coverage.md)。
+不以這條短鏈宣稱教會、全caller、逐週期或整章PLAYER-E2。

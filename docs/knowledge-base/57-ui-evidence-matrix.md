@@ -1861,3 +1861,13 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 原始三點及章來源雜湊保留；其他章與第七章祕密商店的歷史觀測不由此次更新外推。
 正式確認框缺少嘴型owner已另登記[#177](https://github.com/wicanr2/fd2_re/issues/177)。
 唯一數字與完整結果引用[58](58-fd2-exe-re-coverage.md)，不新增PLAYER-E2。
+
+## 2026-10-05 #177 正式確認等待嘴型
+
+| 原版owner／正式消費端 | 分層 | 驗證與限制 |
+|---|---|---|
+| 19953／整備出發prompt | RE-CLOSED／DATA-READY／限定CONFORMED／RUNTIME-E1 | 現行dosgolem與正常Game.Update/Draw完整索引、RGBA及倒數通過；建構槽與受控實際RNG餘數如實保留。[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。 |
+| END及現行共享戰場YESNO | RUNTIME-E1 | caller保存自有DATO0／3、等待／開收框、缺幀拒收與既有接受／取消／交易回歸通過；本輪未增加這些caller的動態原版對拍。 |
+| 教會與未抽樣caller | 維持原有證據 | 不由共用19953推定已完成mouth接線或原版動態parity。 |
+
+目前統計只引用[58](58-fd2-exe-re-coverage.md)，PLAYER-E2章台帳保持。

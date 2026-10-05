@@ -103,6 +103,9 @@ func (g *Game) beginNativeClassConfirmationClosing(after func()) bool {
 // The continuation runs after the final closing frame has been presented.
 func (g *Game) stepNativeClassUILifecycle(now time.Time) {
 	job := g.nativeClassUIJob
+	if job != nil {
+		g.nativeConfirmationMouthOwner = nil
+	}
 	if job != nil && len(job.timeline) != 0 {
 		if job.started.IsZero() {
 			job.started = now
@@ -148,7 +151,12 @@ func (g *Game) stepNativeClassUILifecycle(now time.Time) {
 	if g.nativeClassUIJob == nil &&
 		(g.churchMode == "class_confirm" || g.churchMode == "revive_confirm" ||
 			preparationConfirm || preparationPrompt || g.nativeSystemEndTurnConfirm) {
-		g.stepNativeClassUIPulseTick(g.nativeClassUIClock.Sample(now))
+		owner := g.nativeConfirmationMouthWaitingOwner()
+		g.stepNativeConfirmationMouth(owner, false)
+		advanced := g.stepNativeClassUIPulseTick(g.nativeClassUIClock.Sample(now))
+		g.stepNativeConfirmationMouth(owner, advanced)
+	} else {
+		g.stepNativeConfirmationMouth(nil, false)
 	}
 }
 
@@ -205,26 +213,27 @@ func (g *Game) resetNativeClassUIPulse() {
 // 0x19B1E sign-extends the BIOS word before a 32-bit subtraction. A negative
 // delta also advances once; only deltas zero and one wait. See #35 evidence
 // docs/data/ida/fd2_confirmation_pulse_20261005.json.
-func (g *Game) stepNativeClassUIPulseTick(rawTick int) {
-	g.stepNativeClassUIPulseTicks(rawTick, rawTick)
+func (g *Game) stepNativeClassUIPulseTick(rawTick int) bool {
+	return g.stepNativeClassUIPulseTicks(rawTick, rawTick)
 }
 
 // The DOS loop reads again at 0x19B4E before storing the latch at 0x19B51.
 // The host-time adapter approximates that short gap with the same sample.
-func (g *Game) stepNativeClassUIPulseTicks(rawTick, latchTick int) {
+func (g *Game) stepNativeClassUIPulseTicks(rawTick, latchTick int) bool {
 	rawTick = int(int16(uint16(rawTick)))
 	latchTick = int(int16(uint16(latchTick)))
 	if !g.nativeClassUIHasTick {
 		g.nativeClassUILastTick = rawTick
 		g.nativeClassUIHasTick = true
-		return
+		return false
 	}
 	delta := rawTick - g.nativeClassUILastTick
 	if delta >= 0 && delta < 2 {
-		return
+		return false
 	}
 	g.nativeClassUILastTick = latchTick
 	g.nativeClassUIPulse = (g.nativeClassUIPulse + 1) & 3
+	return true
 }
 
 func (g *Game) returnToNativeClassList() {

@@ -1688,7 +1688,7 @@
       "id": "confirmation-mouth-caller-and-candidate-scope",
       "date": "2026-10-05",
       "area": "嘴型caller與驗收分層",
-      "rule": "嘴型規則依原始caller及返回鏈取初始化、倒數與重新取值；19953的閉合10..39不套用16C57的2..31。有限相位候選只證明重播完整畫面，不當作正式嘴型owner。入口docs/data/ida/fd2_parity_mouth_cycle_20261005.json與remake/cmd/fd2/chapter_parity_preparation_mouth_test.go；目前支援整備確認的0／3候選，正式等待owner見#177。",
+      "rule": "嘴型規則依原始caller及返回鏈取初始化、倒數與重新取值；19953的閉合10..39不套用16C57的2..31。有限相位候選只證明重播完整畫面，不當作正式嘴型owner。候選入口docs/data/ida/fd2_parity_mouth_cycle_20261005.json；正式等待入口docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json與remake/cmd/fd2/native_confirmation_mouth.go，目前支援整備及現行共享戰場YESNO，不外推全caller動態parity。",
       "why": "第六章seq1603最初被稱酒店入口並套16C57解釋；實際4E91E→19BC4→2D11D是確認框自身嘴型，現行候選仍只保存DATO4B第0幀。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/38",
       "guard": {
@@ -1697,6 +1697,21 @@
           "docs/data/ida/fd2_parity_mouth_cycle_20261005.json"
         ],
         "pattern": "formal_followup_issue"
+      }
+    },
+    {
+      "id": "normal-probe-initial-slot-provenance",
+      "date": "2026-10-05",
+      "area": "原版短探針初態",
+      "rule": "沿用正常LOAD控制前綴時，先核對原probe初始SAV來源與SHA，再複製到新的可寫state覆蓋層；空state不能視為相同初態。入口tools/dosgolem_oracle.sh及docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json的initial_slot；原始遊戲唯讀，輸出各輪分開。",
+      "why": "#177原版短探針r1新建state卻漏放#35既有建構槽，正常LOAD停在標題；r2按相同SAV雜湊補齊後進確認等待。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/177",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_confirmation_mouth_runtime_20261005.json"
+        ],
+        "pattern": "initial_slot"
       }
     }
   ]

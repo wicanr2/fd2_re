@@ -14,6 +14,8 @@
 | #39城鎮出發→LOADCH過場 | 限定CONFORMED／RUNTIME-E1 | 十步定點縮放與全黑、65步淡入已接正式town owner；同源完整畫布／DAC、76張GPU及正常玩家控制通過。[主契約](../data/ida/fd2_town_departure_20261005.json)。 |
 | #35確認框共享相位 | 限定CONFORMED／RUNTIME-E1 | 已修正signed BIOS負差值及兩次讀取規則；指定四點完整RGB與合法兩相位GPU通過。[主證據](../data/ida/fd2_confirmation_pulse_20261005.json)。 |
 | #38確認嘴型／DAC候選 | 限定工具CONFORMED | 第六章指定三點完整RGB0、兩次勝出PNG雜湊相同；正式mouth另在#177。[主契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)。 |
+| #177正式確認框嘴型 | 限定CONFORMED／RUNTIME-E1 | 整備及共享戰場YESNO已接caller自有DATO0／3；1561完整刻度、兩輪88張indexed／正式GPU全等，SAV與完整Go回歸通過。[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。 |
+| #178語意清冊同步 | 工具範圍CONFORMED | 離線重綁保留IDA metadata；69條函式註記逐筆一致、11個索引測試與重生位元組相等通過。詳見本頁最新節及[#177主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -3068,3 +3070,38 @@ map indexed不變被oracle去重成一張PNG，65份DAC由1F544取得，不能�
 [三點收據工具](../../tools/fd2_mouth_cycle_receipts.py)可依主契約命令重生。
 正式確認框仍只畫第0幀的缺口已在[#177](https://github.com/wicanr2/fd2_re/issues/177)登記；
 本次候選通過不證明正式嘴型時序。第七章祕密商店的歷史69像素不在本次三點補驗範圍。
+
+## 2026-10-05 #177 正式確認等待嘴型
+
+[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)依既有完整19953指令先寫DRAFT，再審查READY。
+新增ConfirmationMouthState保留初態2..31、舊倒數為零才開嘴且暫態-1、下一合格tick閉合重新取10..39。
+正式整備提示／額滿確認與共享戰場YESNO使用自己的DATO0／3，與選項共享同一合格BIOS刻度。
+END、離開、目前保存／讀取使用DATO4B；集體行軍、取寶與掉落滿欄使用各caller已載入的頭像。
+開收框、槽列表、選人及任意鍵訊息不消耗此局部亂數，Draw不推進狀態；SAV格式與交易提交時點維持。
+
+現行clean dosgolem正常標題LOAD→城鎮出發短探針，使用既有第4章建構槽及固定控制前綴。
+初始餘數5、1561次完整刻度、58次開閉及59次亂數輸入符合原版；末尾未完成tick不計完整發布。
+正式Game.Update／RunGame.Draw兩輪88張完整索引及RGBA零差異，其中82張frame0、6張frame3。
+[受版控獨立驗證工具](../../tools/fd2_confirmation_mouth_receipts.py)另核對兩輪PNG雜湊及原版索引SHA；
+完整Go統計由該工具的--go-log重生：19套件、2372頂層測試通過，含子案例2888通過，零失敗。
+55個外部條件略過與11無測試套件另計；#177外部探針已明示提供收據獨立通過。
+
+只對本槽出發等待增加動態原版對拍；其他共享caller為正式接線及交易回歸，不增加全caller或整章PLAYER-E2。
+教會、其他尚未抽樣caller、全局RNG序列與硬體逐週期仍不在此契約內。
+時鐘沿用既有硬體規格近似，兩次read短間距仍用同一host sample；不追driver。
+修正前反例只有frame0。新原版r1漏初始SAV、測試login shell PATH及RGBA差分通道問題均分類為驗證工具問題，
+主契約保留診斷；沒有調角色能力、挑重擲結果、遮像素或放寬預算。
+
+## 2026-10-05 #178 語意索引與函式清冊同步
+
+[工單#178](https://github.com/wicanr2/fd2_re/issues/178)處理現行a6444b37既有漂移：
+2FB9F註記在entries尾端未排序，既有清冊仍68條函式語意而索引已69條。
+177新增的instruction_entries不影響函式數，兩項失敗在基準已存在。
+[現行重綁工具](../../tools/compact_fd2_function_inventory.py)以--refresh-semantic-index讀既有compact清冊，
+沿用原始IDA1305函式的名稱、邊界、caller、xref、旗標與固定輸入指紋，只重套已分級語意。
+annotation_refresh明示離線重綁、源metadata雜湊與未重新跑IDA，不將它冒稱新的IDA分析。
+
+由consumer重算的現行分類為product63、runtime175、unknown1067，函式語意69條。
+11個索引／清冊測試通過；錯指紋、缺函式與壞邊界拒收，全部metadata逐欄不變，重跑產物位元組相等。
+命令、源清冊與雜湊保存在[#177主契約的相關工單節](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。
+本輪沒有重解2FB9F或以unknown數量開新RE切片；舊68／62分類數值只作當時快照，不是目前統計。

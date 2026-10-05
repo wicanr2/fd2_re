@@ -5,6 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/dato"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
@@ -13,6 +14,7 @@ const nativeSystemEndTurnDelayFrames = 12 // 0x17259: delay(0xC8 ms)；60 Hz 約
 
 type nativeSystemEndTurnUIState struct {
 	source, dialogue, question []byte
+	portraits                  []dato.Frame
 	accepted, canceled         [][]byte
 	choice                     int
 	acceptedOutcome            bool
@@ -243,6 +245,9 @@ func (g *Game) beginNativeSystemEndTurn() bool {
 		return false
 	}
 	ui := g.nativePreparationUI
+	if len(ui.portraits) <= 3 {
+		return false
+	}
 	source := append([]byte(nil), g.nativeMapVGA...)
 	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
 	if err != nil {
@@ -267,7 +272,8 @@ func (g *Game) beginNativeSystemEndTurn() bool {
 		return false
 	}
 	state := &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question,
+		portraits: ui.portraits,
+		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled,
 	}
 	g.beginActionOverlayClose(func() {
@@ -290,6 +296,9 @@ func (g *Game) beginNativeNestedSystemExit() bool {
 		return false
 	}
 	ui := g.nativePreparationUI
+	if len(ui.portraits) <= 3 {
+		return false
+	}
 	source := append([]byte(nil), g.nativeMapVGA...)
 	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
 	if err != nil {
@@ -314,7 +323,8 @@ func (g *Game) beginNativeNestedSystemExit() bool {
 		return false
 	}
 	state := &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question,
+		portraits: ui.portraits,
+		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled, exitProgram: true,
 	}
 	g.beginActionOverlayClose(func() {
@@ -343,6 +353,9 @@ func (g *Game) beginNativeNestedCurrentSave() bool {
 		return false
 	}
 	ui := g.nativePreparationUI
+	if len(ui.portraits) <= 3 {
+		return false
+	}
 	source := append([]byte(nil), g.nativeMapVGA...)
 	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
 	if err != nil {
@@ -371,7 +384,8 @@ func (g *Game) beginNativeNestedCurrentSave() bool {
 		return false
 	}
 	state := &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question,
+		portraits: ui.portraits,
+		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled,
 		saveCurrent: true, savePath: path, saveStored: append([]byte(nil), stored...),
 	}
@@ -406,6 +420,9 @@ func (g *Game) beginNativeNestedCurrentLoad() bool {
 		return false
 	}
 	ui := g.nativePreparationUI
+	if len(ui.portraits) <= 3 {
+		return false
+	}
 	source := append([]byte(nil), g.nativeMapVGA...)
 	dialogue, err := campaign.ComposeNativePreparationConfirmationDialogue(source, ui.dialogue, ui.portrait)
 	if err != nil {
@@ -434,7 +451,8 @@ func (g *Game) beginNativeNestedCurrentLoad() bool {
 		return false
 	}
 	state := &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question,
+		portraits: ui.portraits,
+		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled,
 		loadCurrent: true, loadCandidate: &candidate,
 	}
@@ -466,7 +484,7 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 		return false
 	}
 	portraits, err := loadNativeSeparatedPortrait(g.st.Units[0].BattleFig)
-	if err != nil || len(portraits) == 0 {
+	if err != nil || len(portraits) <= 3 {
 		return false
 	}
 	ui := g.nativePreparationUI
@@ -494,7 +512,8 @@ func (g *Game) beginNativeSystemGroupMarch() bool {
 		return false
 	}
 	state := &nativeSystemEndTurnUIState{
-		source: source, dialogue: dialogue, question: question,
+		portraits: portraits,
+		source:    source, dialogue: dialogue, question: question,
 		accepted: accepted, canceled: canceled, groupMarch: true, groupMarchPlan: plan,
 	}
 	g.beginActionOverlayClose(func() {
@@ -770,8 +789,12 @@ func (g *Game) drawNativeSystemEndTurn(screen *ebiten.Image) bool {
 	var frame []byte
 	if g.nativeSystemEndTurnConfirm {
 		var err error
+		question, ok := g.composeNativeConfirmationMouth(state.question, state.portraits)
+		if !ok {
+			return false
+		}
 		frame, err = campaign.ComposeNativeConfirmationChoices(
-			state.question, g.nativePreparationUI.choices,
+			question, g.nativePreparationUI.choices,
 			state.choice, g.nativeClassUIPulse/2,
 		)
 		if err != nil {

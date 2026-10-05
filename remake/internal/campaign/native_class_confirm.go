@@ -598,6 +598,19 @@ func ComposeNativePreparationConfirmationDialogue(
 	)
 }
 
+// ComposeNativeConfirmationPortrait reproduces the lower-frame mouth write
+// in sub_19953 without changing the caller-owned question or source buffer.
+func ComposeNativeConfirmationPortrait(frame []byte, portrait dato.Frame) ([]byte, error) {
+	if len(frame) != 320*200 {
+		return nil, errors.New("campaign: confirmation portrait source is incomplete")
+	}
+	result := append([]byte(nil), frame...)
+	if err := blitNativeDialoguePortraitAt(result, portrait, nativeFacilityPortraitOffset(0x4b)); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
 // ComposeNativePreparationConfirmationFrame adds the stable 0x19953 choice
 // state to the caller-owned preparation screen. Opening/closing presentation
 // remains caller-owned and is not implied by this compositor.

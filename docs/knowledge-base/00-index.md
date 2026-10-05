@@ -664,3 +664,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [#38確認嘴型與循環色候選契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)沿既有19953／4DFCC原始證據；正式嘴型owner另見[#177](https://github.com/wicanr2/fd2_re/issues/177)。
 
 [#38整備嘴型候選與狀態還原測試](../../remake/cmd/fd2/chapter_parity_preparation_mouth_test.go)及[三點收據補驗工具](../../tools/fd2_mouth_cycle_receipts.py)只閉合工具層，不代替#177正式等待owner。
+
+- [#177 正式確認框嘴型規格](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)：限定CONFORMED／RUNTIME-E1，19953局部倒數與正式等待owner；[獨立收據工具](../../tools/fd2_confirmation_mouth_receipts.py)、[typed規則](../../remake/internal/dato/confirmation_mouth.go)、[正常Update／Draw驗證](../../remake/cmd/fd2/native_confirmation_mouth_oracle_test.go)。
+
+- [#178 語意清冊離線重綁](../../tools/compact_fd2_function_inventory.py)：以--refresh-semantic-index更新既有[IDA函式清冊](../data/ida/fd2_function_inventory.json)，保留原始metadata；來源指紋與命令見[#177主契約相關工單節](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。
