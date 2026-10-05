@@ -111,3 +111,11 @@ DONE:
 接目前正規化的 `NextAIPlan`。缺少 raw 欄位或 tie branch 的 command word 時
 會失敗即關閉。完整 AI turn、target transaction、movement/effect/UI、六個
 caller 的一般玩家路徑仍未閉合。
+
+## 2026-10-06 回傳契約勘誤（#194）
+
+上述 NoTail 是 handler 選擇，不表示函式回0。新直接指令補證：三個分數全小於6時，
+0x14F7D xor eax,eax；接受門檻後即使三者同分沒有handler，仍經0x15041清[0x51A83]，
+再0x1504B mov eax,1。0x13AFD的mode0 caller非零便跳0x13E5A，不進0x14121。
+原本handler決策樹保持；raw bytes、caller及重製修正見
+[回傳主證據](fd2_ai_14ef0_return_20261006.json)。

@@ -20475,6 +20475,20 @@
         "完整原版計畫可重生，不代表remake四gate通過",
         "既有r4章驗收保持，#102的舊adapter同前綴要求仍未符合"
       ]
+    },
+    "remake_replay_followup": {
+      "recorded_at": "2026-10-06",
+      "issue": 194,
+      "contract": "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+      "status": "CONFORMED-14ef0-return；原版T6三score／return1／caller與同native完整Game四閘門通過",
+      "original": "work/parity-slot-ch18/guard-native-original-r2",
+      "remake": "work/parity-slot-ch18/guard-native-remake-ai194-fixed-r2",
+      "report": {
+        "path": "work/parity-slot-ch18/ai194-fixed-verify-r2.json",
+        "sha256": "fd93420251a4d00bf3b105e49bcb8931a1ce5bfccc6085b00326bcd017f56caa",
+        "size": 253012
+      },
+      "historical_failure": "remake_replay保留修正前T6位置分岔與BG拒收；由此followup取代現況。"
     }
   }
 }

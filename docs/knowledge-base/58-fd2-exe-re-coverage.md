@@ -21,6 +21,7 @@
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
 | #102正式原生近堆模式 | 原版T8已達；舊前綴不符 | 同r3的native計畫已到戰後／買賣／存檔／秘密商店，word ADD缺口#192閉合；舊adapter前綴RNG／殘值不同，父題保持。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_native_chapter。 |
+| #194 AI 三者同分回傳 | 限定CONFORMED／RE-CLOSED／DATA-READY／RUNTIME-E1 | 原版0x1504B回1與mode0 caller已補證，正式Game不再多走一格；完整存檔相同。原版三score=8與return1、mode0 caller及1636點前綴已通過。[主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -3280,10 +3281,22 @@ CPU／machine／oracle 完整回歸通過；乾淨第二次同 r3 原版計畫�
 既有 r4 章 PLAYER-E2 保持，本批不增加章驗收。
 
 
-同一 native 來源接回目前正式 Game 的重播後，四閘門未通過。
+修正前的同一 native 來源接回正式 Game，四閘門未通過；此段保留首次缺陷的形成紀錄，現況由 #194 回傳主契約及頁首狀態表取代。
 第一個行為差異為 seq1638、T6 敵方換手後的兩名敵方位置／身份互換，
 登記 [#194](https://github.com/wicanr2/fd2_re/issues/194)，優先追第一個 AI entry 分岔。
 其後 actor28／target8 的背景預檢拒收登記
 [#193](https://github.com/wicanr2/fd2_re/issues/193)，只證明分岔後重製狀態，
 目前不是原版同狀態 caller，不移除拒收、不猜補 BG。
 完整四閘門與 log 雜湊由 allocator_native_chapter 的 remake_replay 保存。
+
+
+2026-10-06 #194 窄重開：同native狀態的記錄40在T6原版留原地、Game移動。
+0x14EF0 既有handler選擇已閉合；新直接指令補 0x1504B 回1與mode0 caller消費，
+推翻「NoTail必定進mode後備」的runtime註解。候選及尋路證據不重開。
+原始名稱、bytes、caller、回傳與CONFORMED規格見[主證據](../data/ida/fd2_ai_14ef0_return_20261006.json)。
+修正後同來源Game及原版正常T6 trace已通過，既有章PLAYER-E2保持。
+
+
+第十八章 #194 最終驗收（2026-10-06）：原版T6記錄40三score=8，0x15050與0x13AFD的EAX=1，未進尾端動作或移動後備。兩份有界正常前綴各1636點狀態／完整PNG相符。同native完整Game重播282筆AI順序無分岔，四閘門通過；182畫面點中179點0px，三個既有前段move點330／342／335px保持既定門檻。酒店SAV整檔SHA-256 940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1一致。完整Go19套件通過。這取代修正前T6位置分岔與後續BG拒收的現況；舊收據保留在allocator_native_chapter.remake_replay。
+
+#193以舊同狀態前提被推翻處置，不宣稱新BG指標／payload RE完成，拒收保護保持。#102的舊adapter前綴gate未達，仍未完成。完整命令、來源與輸出雜湊只存[回傳主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)，章台帳不重算。

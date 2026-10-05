@@ -28,26 +28,10 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
-
-## re — 原版證據還沒閉合
-
-### 第十八章原生近堆來源的零旗標主攻／非零旗標反擊缺 caller BG 接續證據
-
-`ch18-native-zero-main-counter-bg-continuation` · RE待解 · [#193](https://github.com/wicanr2/fd2_re/issues/193) · 仍未完成 · 要人判
-
-在 #102 的固定槽、原生近堆同 r3 原版收據到 T8 後，用目前正式 Game 重播。guard-native-remake-r1 的 T6 AI actor28 對 target8 原始物理演出被 native_physical_body.go 預檢拒收：native physical counter requires unavailable caller BG layers。attack.HeaderByte1==0 且 counter.HeaderByte1!=0。這個拒收保護尚未證實的原版 BG 指標／釋放後 payload，不能直接移除或一律重載 BG#0..2。既有 #166 的限定驗收與第十八章 r4 PLAYER-E2 保持；本題只補新來源實际觸發的垂直接續。
-
-2026-10-06 四閘門勘誤：seq1638 的 T6 敵方換手後先發生位置／身份分岔，已登記 #194。上述 actor28/target8 目前只描述已分岔的重製端預檢，不是原版同狀態 caller。先解 #194，再重新確認這條 BG 切片是否仍是玩家阻塞。
-
-卡在：['ch18-native-t6-ai-order-divergence']
-
-怎樣算做完：沿 #102 原生正式來源與固定 EXE，以受版控 readonly 觀測重生相同 actor28／target8 caller 的主攻／反擊 BG pointer、writer、header／payload 和 render consumer，明確區分原版記憶體、平台近似與畫面相容。證據審查後達 READY 才接 typed runtime；正常 Game 同来源重播越過此處，驗規則、UI 與 SAV，不把缺證據的背景素材猜補進正式路徑。若需未證實行為或忠實度取捨，先展示具體選項並依共同決策規則確認。
-
-證據：`['remake/cmd/fd2/native_physical_body.go', 'docs/data/ida/fd2_physical_background_selection_20261004.json', 'docs/data/ida/fd2_ch18_oracle_stosb_20261003.json', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 ## data — 可編輯資料還沒就緒
 
@@ -86,16 +70,6 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
-
-### 第十八章原生近堆收據在 T6 敵方回合後首次 AI 位置／身份分岔
-
-`ch18-native-t6-ai-order-divergence` · 缺陷 · [#194](https://github.com/wicanr2/fd2_re/issues/194) · 仍未完成 · 要人判
-
-父題 #102 的新 native 原版與目前 Game 重播，四閘門首次行為失敗在 seq1638 after_enemy_phase：兩個敵方 (22,7)/(22,8) 的 HP 232/506 對調，後續角色畫面和目標選擇分岔。此前行為比較點通過。不是挑 seed 的問題；兩側初始固定槽相同，RNG 比較點已明示同步。#193 的 actor28/target8 BG 預檢拒收出現在這次已分岔的重製狀態，目前不能聲稱它是原版同狀態 caller；先解本題。
-
-怎樣算做完：從固定 native 原版和正式 Game 最後共同狀態定位第一個 actor／target／move entry 差異，核對原始 runtime-record、AI 選擇與動態增援 writer/consumer。已有 RE 不重做，只補矛盾缺口；證據→READY→runtime 修正，同來源重播此前比較點保持並越過 seq1638。四閘門與正常 Game 結果保留，不以 RNG 重擲或狀態注入掩蓋差異。#193 另以修正後可比狀態再驗。
-
-證據：`['docs/data/ida/fd2_ch18_oracle_stosb_20261003.json', 'remake/cmd/fd2/chapter_parity_replay_test.go', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

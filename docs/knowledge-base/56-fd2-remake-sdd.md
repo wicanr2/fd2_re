@@ -9661,3 +9661,13 @@ BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
 既有 r4 章驗收保持，不新增 PLAYER-E2。唯一現況、來源、收據與下一 gate 見
 [58](58-fd2-exe-re-coverage.md)及
 [主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的 allocator_native_chapter。
+
+
+### 第十八章 #194：AI 無尾端動作與回傳分離（2026-10-06）
+
+狀態 CONFORMED-14ef0-return。原版局部caller及同native完整Game已驗證；既有handler選擇保持。
+三個 signed score 全部小於6才回0。三者同分且至少6時沒有尾端動作，
+但 0x15041 清 [0x51A83]、0x1504B 回1；mode0 caller因此不進 0x14121。
+具型別結果分開保存 Tail 與 Accepted。接受但無動作時原地交共用成功收尾，
+不聚焦、不尋路、不回血；未接受才進既有mode後備。來源閘門及存檔格式保持。
+驗收與未完成限制見[主證據](../data/ida/fd2_ai_14ef0_return_20261006.json)。

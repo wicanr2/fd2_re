@@ -1933,3 +1933,13 @@ BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
 既有 r4 章驗收保持，不新增 PLAYER-E2。唯一現況、來源、收據與下一 gate 見
 [58](58-fd2-exe-re-coverage.md)及
 [主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的 allocator_native_chapter。
+
+
+### 第十八章 #194 同來源回傳修正（2026-10-06）
+
+0x14EF0 三者同分但達門檻時回1，正式Game原地進共用收尾。
+同native完整重播的行為、節點、交易與畫面閘門已通過，酒店存檔整檔相同。
+#193的BG拒收來自修正前分岔狀態，修正後未再出現；其BG保護未修改，
+不推定該舊caller的原版記憶體語意已證實。既有第18章PLAYER-E2保持。
+原版三score及return1的正常局部追蹤亦通過。唯一數字、來源與命令見[58](58-fd2-exe-re-coverage.md)及
+[回傳主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)。

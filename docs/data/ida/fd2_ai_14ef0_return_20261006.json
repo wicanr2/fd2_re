@@ -1,0 +1,2057 @@
+{
+  "schema": 1,
+  "date": "2026-10-06",
+  "issue": "https://github.com/wicanr2/fd2_re/issues/194",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "address_space": "IDA DOS LE linear",
+  "tool": "IDA Pro 9.4 / ida-pro-9.4-idapython:locked-v1",
+  "sources": [
+    "docs/data/ida/fd2_ai_14ef0_dispatch_ida.txt",
+    "tools/ida_probe_functions.py",
+    "tools/ida_dump_bytes.py"
+  ],
+  "re_open_reason": "同 native 初始狀態的 T6 記錄40位置矛盾；舊證據已閉合尾端 handler 選擇，但未保留 0x1504B 的 EAX=1 與 caller 的非零消費。只補回傳契約，不改候選／排序。",
+  "claims": [
+    {
+      "original": "0x14F62..0x14F7F",
+      "level": "已證實",
+      "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+      "source": [
+        "IDA 直接指令與 bytes",
+        "0x13AFD test eax,eax → 非零跳0x13E5A"
+      ]
+    },
+    {
+      "original": "0x15022..0x15050",
+      "level": "已證實",
+      "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+      "source": [
+        "IDA 直接比較與 bytes",
+        "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+      ]
+    },
+    {
+      "original": "0x13AFA..0x13B0F",
+      "level": "已證實",
+      "semantic": "mode0在0x14EF0返回非零後跳0x13E5A；只有回0才進0x14121。",
+      "source": [
+        "IDA caller 直接指令",
+        "docs/data/ida/fd2_ai_mode_dispatch_ida.txt"
+      ]
+    }
+  ],
+  "spec": {
+    "status": "CONFORMED-14ef0-return",
+    "typed_output": {
+      "Tail": "沿既有 NativeAI14EF0Tail",
+      "Accepted": "任一已具來源的 signed score >=6；與 Tail 是否有 handler 分開"
+    },
+    "runtime": "Accepted=true且Tail=NoTail產生原地、無目標、無法術、無恢復的計畫；清raw range，再交既有成功收尾設+5 bit7及selector1事件。Accepted=false才交mode後備。",
+    "failure": "原始score、record、target、command tie provenance仍由既有選擇器拒收；不得以正規化分數補入。",
+    "save_impact": "不新增存檔欄位；只保存既有原地座標與正常行動收尾。",
+    "acceptance": [
+      "5/5/5拒絕，6/6/6與8/8/8接受但無handler；原有routes與缺來源拒收保持。",
+      "同native來源正常Game保持此前行為點並越過seq1638；不改seed或注入單位。",
+      "原版正常LOAD前綴在T6 actor40讀三score與return1、未進movement；四閘門與後續缺口如實保留。"
+    ],
+    "limitation": "限定原版回傳、mode0 caller與同native正常Game垂直接續；既有章PLAYER-E2保持。硬體時序與建構槽政策限制仍在，不推定自然傷害、存活或敵方選目標。#102舊adapter前綴不符仍未完成。"
+  },
+  "ida_export": {
+    "dispatch_original": "=== target 0x14ef0 ===\nfunction=0x14ef0..0x15055 name=sub_14EF0\nxref=0x13af5 caller=0x13a9f..0x13e9c instruction=call    sub_14EF0\nxref=0x13b2d caller=0x13a9f..0x13e9c instruction=call    sub_14EF0\nxref=0x13b4d caller=0x13a9f..0x13e9c instruction=call    sub_14EF0\nxref=0x13b6d caller=0x13a9f..0x13e9c instruction=call    sub_14EF0\nxref=0x13c24 caller=0x13a9f..0x13e9c instruction=call    sub_14EF0\nxref=0x13dec caller=0x13a9f..0x13e9c instruction=call    sub_14EF0\ninstructions:\n0x14ef0 push    20h ; ' '\n0x14ef5 call    sub_36CD7\n0x14efa push    ebx\n0x14efb push    esi\n0x14efc push    edi\n0x14efd push    ebp\n0x14efe sub     esp, 4\n0x14f01 mov     esi, [esp+14h+arg_0]\n0x14f05 mov     edi, [esp+14h+arg_4]\n0x14f09 push    edi\n0x14f0a push    esi\n0x14f0b call    sub_14237\n0x14f10 add     esp, 8\n0x14f13 push    edi\n0x14f14 push    esi\n0x14f15 call    sub_1598A\n0x14f1a add     esp, 8\n0x14f1d push    edi\n0x14f1e push    esi\n0x14f1f call    sub_1567E\n0x14f24 add     esp, 8\n0x14f27 mov     eax, esi\n0x14f29 shl     eax, 2\n0x14f2c add     eax, esi\n0x14f2e shl     eax, 4\n0x14f31 mov     ebx, dword_53A45\n0x14f37 lea     edx, [ebx+eax]\n0x14f3a mov     ecx, dword_53C4B\n0x14f40 mov     eax, ecx\n0x14f42 shl     eax, 2\n0x14f45 add     eax, ecx\n0x14f47 shl     eax, 4\n0x14f4a add     eax, ebx\n0x14f4c mov     bl, [edx+34h]\n0x14f4f and     bl, 40h\n0x14f52 movzx   ebp, bl\n0x14f55 movzx   edx, word ptr [edx+48h]\n0x14f59 movzx   eax, word ptr [eax+4Ah]\n0x14f5d sub     edx, eax\n0x14f5f mov     [esp+14h+var_14], edx\n0x14f62 cmp     dword_53C4F, 6\n0x14f69 jge     short loc_14F84\n0x14f6b cmp     dword_53C23, 6\n0x14f72 jge     short loc_14F84\n0x14f74 cmp     dword_53C33, 6\n0x14f7b jge     short loc_14F84\n0x14f7d xor     eax, eax\n0x14f7f jmp     loc_22BBE\n0x14f84 mov     eax, dword_53C4F\n0x14f89 cmp     eax, dword_53C23\n0x14f8f jle     short loc_14FA5\n0x14f91 cmp     eax, dword_53C33\n0x14f97 jle     short loc_14FA5\n0x14f99 push    edi\n0x14f9a push    esi\n0x14f9b call    sub_1548E\n0x14fa0 jmp     loc_1503E\n0x14fa5 mov     eax, dword_53C4F\n0x14faa cmp     eax, dword_53C23\n0x14fb0 jnz     short loc_14FEB\n0x14fb2 cmp     eax, dword_53C33\n0x14fb8 jle     short loc_14FEB\n0x14fba push    dword_53C2F\n0x14fc0 call    sub_4E516\n0x14fc5 add     esp, 4\n0x14fc8 cmp     dword_53C2F, 0Bh\n0x14fcf jge     short loc_14FE5\n0x14fd1 movzx   eax, word ptr [eax]\n0x14fd4 cmp     eax, [esp+14h+var_14]\n0x14fd7 jl      short loc_14F99\n0x14fd9 push    edi\n0x14fda push    esi\n0x14fdb call    sub_15311\n0x14fe0 jmp     loc_1503E\n0x14fe5 test    ebp, ebp\n0x14fe7 jz      short loc_14FD9\n0x14fe9 jmp     short loc_14F99\n0x14feb mov     eax, dword_53C4F\n0x14ff0 cmp     eax, dword_53C33\n0x14ff6 jnz     short loc_1500D\n0x14ff8 cmp     eax, dword_53C23\n0x14ffe jle     short loc_1500D\n0x15000 test    ebp, ebp\n0x15002 jnz     short loc_14F99\n0x15004 push    edi\n0x15005 push    esi\n0x15006 call    sub_15055\n0x1500b jmp     short loc_1503E\n0x1500d mov     eax, dword_53C23\n0x15012 cmp     eax, dword_53C4F\n0x15018 jle     short loc_15022\n0x1501a cmp     eax, dword_53C33\n0x15020 jge     short loc_14FD9\n0x15022 mov     eax, dword_53C33\n0x15027 cmp     eax, dword_53C4F\n0x1502d jle     short loc_15041\n0x1502f cmp     eax, dword_53C23\n0x15035 jle     short loc_15041\n0x15037 push    edi\n0x15038 push    esi\n0x15039 call    sub_15055\n0x1503e add     esp, 8\n0x15041 mov     dword_51A83, 0\n0x1504b mov     eax, 1\n0x15050 jmp     loc_22BBE\n",
+    "mode0_caller_original": "0x13ab0 mov     esi, [esp+1Ch+arg_0]\n0x13af1 jnz     short loc_13B26\n0x13af3 push    edi\n0x13af4 push    esi\n0x13af5 call    sub_14EF0\n0x13afa add     esp, 8\n0x13afd test    eax, eax\n0x13aff jnz     loc_13E5A",
+    "raw_ranges": {
+      "0x14ef0:0x165": "6820000000e8dd1d02005356575583ec048b7424188b7c241c5756e827f3ffff83c4085756e8700a000083c4085756e85a07000083c40889f0c1e00201f0c1e0048b1d453a05008d14038b0d4b3c050089c8c1e00201c8c1e00401d88a5a3480e3400fb6eb0fb752480fb7404a29c2891424833d4f3c0500067d19833d233c0500067d10833d333c0500067d0731c0e93adc0000a14f3c05003b05233c05007e143b05333c05007e0c5756e8ee040000e999000000a14f3c05003b05233c050075393b05333c05007e31ff352f3c0500e85195030083c404833d2f3c05000b7d140fb7003b04247cc05756e831030000e95900000085ed74f0ebaea14f3c05003b05333c050075153b05233c05007e0d85ed75955756e84a000000eb31a1233c05003b054f3c05007e083b05333c05007db7a1333c05003b054f3c05007e123b05233c05007e0a5756e81700000083c408c705831a050000000000b801000000e969db0000",
+      "0x22bbe:0x20": "83c4045d5f5e5bc36818000000e8074101006a26ff742410ff7424106a15e9ba"
+    },
+    "export_sha256": {
+      "ai194-dispatch-functions.txt": "38cec92daf2457f64f85703f2ab701698b6edc3b19d0edf945264b78d63ad616",
+      "ai194-dispatch-bytes.txt": "f0215034747947ed3cd4c325d6d676c84cf760c9f67f638fee4ccd10d9d17116"
+    },
+    "unreviewed_instruction_level": "未知；dispatch_original其餘指令只保留定位，不新增語意",
+    "instructions": [
+      {
+        "address": "0x14ef0",
+        "original_name": "sub_14EF0",
+        "original": "push    20h ; ' '",
+        "bytes": "6820000000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14ef5",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_36CD7",
+        "bytes": "e8dd1d0200",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14efa",
+        "original_name": "sub_14EF0",
+        "original": "push    ebx",
+        "bytes": "53",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14efb",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14efc",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14efd",
+        "original_name": "sub_14EF0",
+        "original": "push    ebp",
+        "bytes": "55",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14efe",
+        "original_name": "sub_14EF0",
+        "original": "sub     esp, 4",
+        "bytes": "83ec04",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f01",
+        "original_name": "sub_14EF0",
+        "original": "mov     esi, [esp+14h+arg_0]",
+        "bytes": "8b742418",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f05",
+        "original_name": "sub_14EF0",
+        "original": "mov     edi, [esp+14h+arg_4]",
+        "bytes": "8b7c241c",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f09",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f0a",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f0b",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_14237",
+        "bytes": "e827f3ffff",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f10",
+        "original_name": "sub_14EF0",
+        "original": "add     esp, 8",
+        "bytes": "83c408",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f13",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f14",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f15",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_1598A",
+        "bytes": "e8700a0000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f1a",
+        "original_name": "sub_14EF0",
+        "original": "add     esp, 8",
+        "bytes": "83c408",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f1d",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f1e",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f1f",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_1567E",
+        "bytes": "e85a070000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f24",
+        "original_name": "sub_14EF0",
+        "original": "add     esp, 8",
+        "bytes": "83c408",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f27",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, esi",
+        "bytes": "89f0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f29",
+        "original_name": "sub_14EF0",
+        "original": "shl     eax, 2",
+        "bytes": "c1e002",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f2c",
+        "original_name": "sub_14EF0",
+        "original": "add     eax, esi",
+        "bytes": "01f0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f2e",
+        "original_name": "sub_14EF0",
+        "original": "shl     eax, 4",
+        "bytes": "c1e004",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f31",
+        "original_name": "sub_14EF0",
+        "original": "mov     ebx, dword_53A45",
+        "bytes": "8b1d453a0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f37",
+        "original_name": "sub_14EF0",
+        "original": "lea     edx, [ebx+eax]",
+        "bytes": "8d1403",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f3a",
+        "original_name": "sub_14EF0",
+        "original": "mov     ecx, dword_53C4B",
+        "bytes": "8b0d4b3c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f40",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, ecx",
+        "bytes": "89c8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f42",
+        "original_name": "sub_14EF0",
+        "original": "shl     eax, 2",
+        "bytes": "c1e002",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f45",
+        "original_name": "sub_14EF0",
+        "original": "add     eax, ecx",
+        "bytes": "01c8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f47",
+        "original_name": "sub_14EF0",
+        "original": "shl     eax, 4",
+        "bytes": "c1e004",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f4a",
+        "original_name": "sub_14EF0",
+        "original": "add     eax, ebx",
+        "bytes": "01d8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f4c",
+        "original_name": "sub_14EF0",
+        "original": "mov     bl, [edx+34h]",
+        "bytes": "8a5a34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f4f",
+        "original_name": "sub_14EF0",
+        "original": "and     bl, 40h",
+        "bytes": "80e340",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f52",
+        "original_name": "sub_14EF0",
+        "original": "movzx   ebp, bl",
+        "bytes": "0fb6eb",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f55",
+        "original_name": "sub_14EF0",
+        "original": "movzx   edx, word ptr [edx+48h]",
+        "bytes": "0fb75248",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f59",
+        "original_name": "sub_14EF0",
+        "original": "movzx   eax, word ptr [eax+4Ah]",
+        "bytes": "0fb7404a",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f5d",
+        "original_name": "sub_14EF0",
+        "original": "sub     edx, eax",
+        "bytes": "29c2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f5f",
+        "original_name": "sub_14EF0",
+        "original": "mov     [esp+14h+var_14], edx",
+        "bytes": "891424",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f62",
+        "original_name": "sub_14EF0",
+        "original": "cmp     dword_53C4F, 6",
+        "bytes": "833d4f3c050006",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f69",
+        "original_name": "sub_14EF0",
+        "original": "jge     short loc_14F84",
+        "bytes": "7d19",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f6b",
+        "original_name": "sub_14EF0",
+        "original": "cmp     dword_53C23, 6",
+        "bytes": "833d233c050006",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f72",
+        "original_name": "sub_14EF0",
+        "original": "jge     short loc_14F84",
+        "bytes": "7d10",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f74",
+        "original_name": "sub_14EF0",
+        "original": "cmp     dword_53C33, 6",
+        "bytes": "833d333c050006",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f7b",
+        "original_name": "sub_14EF0",
+        "original": "jge     short loc_14F84",
+        "bytes": "7d07",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f7d",
+        "original_name": "sub_14EF0",
+        "original": "xor     eax, eax",
+        "bytes": "31c0",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f7f",
+        "original_name": "sub_14EF0",
+        "original": "jmp     loc_22BBE",
+        "bytes": "e93adc0000",
+        "semantic_annotations": [
+          {
+            "semantic": "三個 signed score 全部 <6 時 xor eax,eax，回0，允許 caller 的 mode 後備。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接指令與 bytes",
+              "0x13AFD test eax,eax → 非零跳0x13E5A"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f84",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, dword_53C4F",
+        "bytes": "a14f3c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f89",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C23",
+        "bytes": "3b05233c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f8f",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_14FA5",
+        "bytes": "7e14",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f91",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C33",
+        "bytes": "3b05333c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f97",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_14FA5",
+        "bytes": "7e0c",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f99",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f9a",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14f9b",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_1548E",
+        "bytes": "e8ee040000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fa0",
+        "original_name": "sub_14EF0",
+        "original": "jmp     loc_1503E",
+        "bytes": "e999000000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fa5",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, dword_53C4F",
+        "bytes": "a14f3c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14faa",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C23",
+        "bytes": "3b05233c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fb0",
+        "original_name": "sub_14EF0",
+        "original": "jnz     short loc_14FEB",
+        "bytes": "7539",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fb2",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C33",
+        "bytes": "3b05333c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fb8",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_14FEB",
+        "bytes": "7e31",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fba",
+        "original_name": "sub_14EF0",
+        "original": "push    dword_53C2F",
+        "bytes": "ff352f3c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fc0",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_4E516",
+        "bytes": "e851950300",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fc5",
+        "original_name": "sub_14EF0",
+        "original": "add     esp, 4",
+        "bytes": "83c404",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fc8",
+        "original_name": "sub_14EF0",
+        "original": "cmp     dword_53C2F, 0Bh",
+        "bytes": "833d2f3c05000b",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fcf",
+        "original_name": "sub_14EF0",
+        "original": "jge     short loc_14FE5",
+        "bytes": "7d14",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fd1",
+        "original_name": "sub_14EF0",
+        "original": "movzx   eax, word ptr [eax]",
+        "bytes": "0fb700",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fd4",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, [esp+14h+var_14]",
+        "bytes": "3b0424",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fd7",
+        "original_name": "sub_14EF0",
+        "original": "jl      short loc_14F99",
+        "bytes": "7cc0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fd9",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fda",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fdb",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_15311",
+        "bytes": "e831030000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fe0",
+        "original_name": "sub_14EF0",
+        "original": "jmp     loc_1503E",
+        "bytes": "e959000000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fe5",
+        "original_name": "sub_14EF0",
+        "original": "test    ebp, ebp",
+        "bytes": "85ed",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fe7",
+        "original_name": "sub_14EF0",
+        "original": "jz      short loc_14FD9",
+        "bytes": "74f0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14fe9",
+        "original_name": "sub_14EF0",
+        "original": "jmp     short loc_14F99",
+        "bytes": "ebae",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14feb",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, dword_53C4F",
+        "bytes": "a14f3c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14ff0",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C33",
+        "bytes": "3b05333c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14ff6",
+        "original_name": "sub_14EF0",
+        "original": "jnz     short loc_1500D",
+        "bytes": "7515",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14ff8",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C23",
+        "bytes": "3b05233c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x14ffe",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_1500D",
+        "bytes": "7e0d",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15000",
+        "original_name": "sub_14EF0",
+        "original": "test    ebp, ebp",
+        "bytes": "85ed",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15002",
+        "original_name": "sub_14EF0",
+        "original": "jnz     short loc_14F99",
+        "bytes": "7595",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15004",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15005",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15006",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_15055",
+        "bytes": "e84a000000",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1500b",
+        "original_name": "sub_14EF0",
+        "original": "jmp     short loc_1503E",
+        "bytes": "eb31",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1500d",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, dword_53C23",
+        "bytes": "a1233c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15012",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C4F",
+        "bytes": "3b054f3c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15018",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_15022",
+        "bytes": "7e08",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1501a",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C33",
+        "bytes": "3b05333c0500",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15020",
+        "original_name": "sub_14EF0",
+        "original": "jge     short loc_14FD9",
+        "bytes": "7db7",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "未附加新語意；原始指令只作定位",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15022",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, dword_53C33",
+        "bytes": "a1333c0500",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15027",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C4F",
+        "bytes": "3b054f3c0500",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1502d",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_15041",
+        "bytes": "7e12",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1502f",
+        "original_name": "sub_14EF0",
+        "original": "cmp     eax, dword_53C23",
+        "bytes": "3b05233c0500",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15035",
+        "original_name": "sub_14EF0",
+        "original": "jle     short loc_15041",
+        "bytes": "7e0a",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15037",
+        "original_name": "sub_14EF0",
+        "original": "push    edi",
+        "bytes": "57",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15038",
+        "original_name": "sub_14EF0",
+        "original": "push    esi",
+        "bytes": "56",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15039",
+        "original_name": "sub_14EF0",
+        "original": "call    sub_15055",
+        "bytes": "e817000000",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1503e",
+        "original_name": "sub_14EF0",
+        "original": "add     esp, 8",
+        "bytes": "83c408",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15041",
+        "original_name": "sub_14EF0",
+        "original": "mov     dword_51A83, 0",
+        "bytes": "c705831a050000000000",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x1504b",
+        "original_name": "sub_14EF0",
+        "original": "mov     eax, 1",
+        "bytes": "b801000000",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      },
+      {
+        "address": "0x15050",
+        "original_name": "sub_14EF0",
+        "original": "jmp     loc_22BBE",
+        "bytes": "e969db0000",
+        "semantic_annotations": [
+          {
+            "semantic": "三者同分且 >=6 不呼叫尾端 handler，仍在0x15041寫[0x51A83]=0，再0x1504B回1。",
+            "level": "已證實",
+            "source": [
+              "docs/data/ida/fd2_ai_14ef0_return_20261006.json",
+              "IDA 直接比較與 bytes",
+              "0x22BBE只回收堆疊並pop callee-saved registers，保留EAX"
+            ]
+          }
+        ],
+        "level": "已證實",
+        "warning": "",
+        "source": [
+          "tools/ida_probe_functions.py",
+          "tools/ida_dump_bytes.py"
+        ]
+      }
+    ]
+  },
+  "commands": {
+    "original_t6": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch18/native-ai194-state-r3 -e FD2_ORACLE_HEAP_PROFILE=native -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=30000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=0 -e FD2_ORACLE_EIP_TRACE_FROM=7901100000 -e FD2_ORACLE_EIP_TRACE_TO=7912800000 -e FD2_ORACLE_EIP_TRACE_MAX=1000 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_EIP_TRACE=0x13A9F,0x14EF0,0x14F89,0x15012,0x15027,0x15041,0x15050,0x13AFD,0x14121,0x13E9C,0x14B78,0x13E77,0x1548E,0x15311,0x15055,0x14EC4 fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch18/native-ai194-original-r3; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 5400 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch18-native-ai194-t6.jsonl >work/parity-slot-ch18/native-ai194-original-r3.log 2>&1'",
+    "original_t6_short_window": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch18/native-ai194-state-r2 -e FD2_ORACLE_HEAP_PROFILE=native -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=30000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=0 -e FD2_ORACLE_EIP_TRACE_FROM=7901100000 -e FD2_ORACLE_EIP_TRACE_TO=7903000000 -e FD2_ORACLE_EIP_TRACE_MAX=1000 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_EIP_TRACE=0x13A9F,0x14EF0,0x14F89,0x15012,0x15027,0x15041,0x15050,0x13AFD,0x14121,0x13E9C,0x14B78,0x13E77,0x1548E,0x15311,0x15055,0x14EC4 fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch18/native-ai194-original-r2; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 5400 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch18-native-ai194-t6.jsonl >work/parity-slot-ch18/native-ai194-original-r2.log 2>&1'",
+    "ida_return": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 240 docker run --rm --network none --memory 4g --cpus 2 --pids-limit 256 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --workdir /tmp -e FD2_IDA_ADDRESSES=\"0x14EF0 0x13A9F\" -e FD2_IDA_OUTPUT=/src/work/parity-slot-ch18/ai194-dispatch-functions.txt ida-pro-9.4-idapython:locked-v1 bash -c 'python3 - <<'\\''PY'\\''\nimport hashlib\nfrom pathlib import Path\nb=Path('\\''/input/FD2.EXE'\\'').read_bytes()\nassert len(b)==357074 and hashlib.sha256(b).hexdigest()=='\\''222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f'\\''\nprint('\\''input verified'\\'')\nPY\nidat -A -o/tmp/fd2.i64 -S/src/tools/ida_probe_functions.py /input/FD2.EXE >/src/work/parity-slot-ch18/ai194-dispatch-ida-functions.log 2>&1\ntest -s /src/work/parity-slot-ch18/ai194-dispatch-functions.txt\nFD2_IDA_OUTPUT=/src/work/parity-slot-ch18/ai194-dispatch-bytes.txt FD2_IDA_BYTE_RANGES='\\''0x14EF0:0x165 0x22BBE:0x20'\\'' idat -A -S/src/tools/ida_dump_bytes.py /tmp/fd2.i64 >/src/work/parity-slot-ch18/ai194-dispatch-ida-bytes.log 2>&1\ntest -s /src/work/parity-slot-ch18/ai194-dispatch-bytes.txt'",
+    "remake_before": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_AI_RECORDS=1 FD2_PARITY_CHAPTER=18 FD2_PARITY_SLOT=/src/work/parity-slot-ch18/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch18/guard-native-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch18/guard-native-remake-ai194-r2 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch18/guard-native-remake-ai194-r2.log 2>&1",
+    "remake_prefix": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_AI_RECORDS=1 FD2_PARITY_CHAPTER=18 FD2_PARITY_SLOT=/src/work/parity-slot-ch18/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch18/guard-native-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch18/guard-native-remake-ai194-fixed-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch18/guard-native-remake-ai194-fixed-r1.log 2>&1",
+    "remake_full": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_AI_RECORDS=1 FD2_PARITY_CHAPTER=18 FD2_PARITY_SLOT=/src/work/parity-slot-ch18/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch18/guard-native-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch18/guard-native-remake-ai194-fixed-r2 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch18/guard-native-remake-ai194-fixed-r2.log 2>&1",
+    "verify_prefix": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 18 --oracle work/parity-slot-ch18/guard-native-original-r1 --remake work/parity-slot-ch18/guard-native-remake-ai194-fixed-r1 --slot-manifest docs/data/parity-slots/ch18-manifest.json --plan docs/data/parity-plans/ch18-guard-r3.jsonl --out work/parity-slot-ch18/ai194-fixed-verify-r1.json",
+    "verify_full": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 18 --oracle work/parity-slot-ch18/guard-native-original-r2 --remake work/parity-slot-ch18/guard-native-remake-ai194-fixed-r2 --slot-manifest docs/data/parity-slots/ch18-manifest.json --plan docs/data/parity-plans/ch18-guard-r3.jsonl --out work/parity-slot-ch18/ai194-fixed-verify-r2.json",
+    "go_all": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > work/parity-slot-ch18/ai194-go-all-r1.log 2>&1",
+    "verify_t6_prefix": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch18/native-ai194-original-r3 --full work/parity-slot-ch18/guard-native-original-r2 --prefix-commit 97584ed4fac97f9098bf788200e380eabb7b1c79 --full-commit 5f97a2531dd4faaeafc965266f3870e19137788e --max-seq 1635 --compare-frames --out work/parity-slot-ch18/ai194-prefix-full-window-r3.json"
+  },
+  "ida_image": "sha256:6f6d59af49d0008c4109a5295b5f374bdc007e2d1ab28cb9de08779584de2780",
+  "validation": {
+    "prefix": {
+      "report": {
+        "path": "work/parity-slot-ch18/ai194-fixed-verify-r1.json",
+        "sha256": "9e9d06e9ca1e2a2e9146a606e470febc6679b6717996d33063a6c63114bded87",
+        "size": 243030
+      },
+      "remake_log": {
+        "path": "work/parity-slot-ch18/guard-native-remake-ai194-fixed-r1.log",
+        "sha256": "c1c1e20410ee53a151c7493b7c2a9f3d418ad13438f2c37515c32ca3db1bb7bb",
+        "size": 2513584
+      },
+      "checkpoints": {
+        "path": "work/parity-slot-ch18/guard-native-remake-ai194-fixed-r1/checkpoints.jsonl",
+        "sha256": "d54ec2777e2d003fec5443db72e7a19c62971a8e26e22e80de6634c688f7757c",
+        "size": 891057
+      },
+      "status": "failed",
+      "gates": {
+        "behavior": true,
+        "nodes": false,
+        "transaction": false,
+        "frames": true
+      },
+      "frames": {
+        "compared": 176,
+        "zero": 173,
+        "max_pixels": 342,
+        "pixel_budget": 640
+      },
+      "save": {
+        "oracle_save_sha256": null,
+        "remake_save_sha256": null,
+        "remake_note": null,
+        "blocked_by": null,
+        "status": "planned_save_missing"
+      }
+    },
+    "full": {
+      "report": {
+        "path": "work/parity-slot-ch18/ai194-fixed-verify-r2.json",
+        "sha256": "fd93420251a4d00bf3b105e49bcb8931a1ce5bfccc6085b00326bcd017f56caa",
+        "size": 253012
+      },
+      "remake_log": {
+        "path": "work/parity-slot-ch18/guard-native-remake-ai194-fixed-r2.log",
+        "sha256": "af6080f6fca54d9b842a6d8e14eb111e6d91374797538d863e497481663f45a0",
+        "size": 3078721
+      },
+      "checkpoints": {
+        "path": "work/parity-slot-ch18/guard-native-remake-ai194-fixed-r2/checkpoints.jsonl",
+        "sha256": "385511386c744fc915f1b709548401b13f678dc89519852bf2dc74cd7d935091",
+        "size": 891133
+      },
+      "status": "passed",
+      "gates": {
+        "behavior": true,
+        "nodes": true,
+        "transaction": true,
+        "frames": true
+      },
+      "frames": {
+        "compared": 182,
+        "zero": 179,
+        "max_pixels": 342,
+        "pixel_budget": 640
+      },
+      "save": {
+        "oracle_save_sha256": "940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1",
+        "remake_save_sha256": "940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1",
+        "remake_note": "save_sha256=940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1",
+        "blocked_by": null,
+        "status": "ok"
+      }
+    },
+    "go_all": {
+      "log": {
+        "path": "work/parity-slot-ch18/ai194-go-all-r1.log",
+        "sha256": "dbe718d6f12b703fe576e90e3db56c6bf33af533d3b2201d81523488c0e5187e",
+        "size": 2084
+      },
+      "tested_packages": 19,
+      "exit_code": 0
+    },
+    "source_hashes": [
+      {
+        "path": "remake/internal/battle/native_ai_14ef0_dispatch.go",
+        "sha256": "231c47fc4e4d8d85ed333acf8061206248f72ae3f7bce1b6295b02e18990cf94",
+        "size": 4054
+      },
+      {
+        "path": "remake/internal/battle/native_ai_action_runtime.go",
+        "sha256": "4106be29fcf92eb26e272db46fd0e3e3b24f0dcc1def35d5d5f1c31af732f106",
+        "size": 32020
+      },
+      {
+        "path": "remake/internal/battle/native_ai_14ef0_dispatch_test.go",
+        "sha256": "0c72b874941a24d03a5d960f02d0cc68eb3ed995bfc4b958eea5c90fefbc33a6",
+        "size": 4081
+      },
+      {
+        "path": "remake/cmd/fd2/chapter_parity_replay_test.go",
+        "sha256": "d6ddeeca12c576999122bdba5f911bdb3c2756ab444ea7cb273371aa2f4acd1e",
+        "size": 122205
+      }
+    ],
+    "first_divergence": {
+      "turn": 6,
+      "actor": 40,
+      "original_position": [
+        22,
+        7
+      ],
+      "before_position": [
+        22,
+        8
+      ],
+      "after_position": [
+        22,
+        7
+      ],
+      "remake_scores": [
+        8,
+        8,
+        8
+      ],
+      "entry_rng": 56049,
+      "first_compare_seq": 1638,
+      "original_source": "work/parity-slot-ch18/guard-native-original-r2/checkpoint-1638.json",
+      "same_native_index_positions": {
+        "28": [
+          22,
+          8
+        ],
+        "40": [
+          22,
+          7
+        ]
+      }
+    },
+    "bg_followup": {
+      "issue": 193,
+      "status": "修正後同native正常Game完整重播未再拒收",
+      "guard_changed": false,
+      "claim": "舊actor28/target8只來自已分岔的重製狀態；不再把它當作原版caller。不推定其原版BG pointer／payload語意已閉合。"
+    },
+    "original_trace": {
+      "status": "passed",
+      "dosgolem_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+      "runner": "apps/fd2/cmd/oracle",
+      "heap_profile": "native",
+      "plan": {
+        "path": "docs/data/parity-plans/ch18-native-ai194-t6.jsonl",
+        "size": 4545,
+        "sha256": "27fc1f01c41e3d19c88abbba4ca1b3d43f6f0cac9f3d849caf75d0b4e301cd25"
+      },
+      "slot": {
+        "path": "work/parity-slot-ch18/FD2.SAV",
+        "size": 22987,
+        "sha256": "98d64cd594b8d22c2eaf2c26eaffa8485952be537d35bf2643521a898ddbc1b5"
+      },
+      "trace": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r3/eip-trace.jsonl",
+        "size": 221447,
+        "sha256": "c5bd1bb401f449101882c76b6135a90764ad056c000ca3baabed4aa41112b486"
+      },
+      "control_history": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r3/control-history.jsonl",
+        "size": 72448,
+        "sha256": "bd72d0ebb4f2184c3d72d34934c5c414f2d254ac2237498babf4b54cc4ff8c27"
+      },
+      "final": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r3/current.json",
+        "size": 101635,
+        "sha256": "f1f23bb9b9b5571b5cc36f2de425b829f6707ea24208d1f76da482d3d335264d"
+      },
+      "run_log": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r3.log",
+        "size": 183399,
+        "sha256": "eba8112cf6f684331cc525ed0b0bda3a8b0d556026e9f684ec61b982ad5b51c3"
+      },
+      "oracle_log": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r3/oracle.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "prefix_report": {
+        "path": "work/parity-slot-ch18/ai194-prefix-full-window-r3.json",
+        "size": 1109,
+        "sha256": "d667aa1ef2e3c056d87d2aace5f38838eba582055708c7df4f094db248e6c7ee"
+      },
+      "trace_range": [
+        7901100000,
+        7912800000
+      ],
+      "max_rows": 1000,
+      "actor_scope": [
+        7901172462,
+        7912744340
+      ],
+      "actor": 40,
+      "rng_word": 56049,
+      "observed": [
+        {
+          "step": 7901172462,
+          "control_seq": 1622,
+          "eip": "0x13A9F",
+          "eax": "0x0",
+          "rng_word": 56049,
+          "stack": [
+            "0x1D947",
+            "0x28",
+            "0x0",
+            "0x35",
+            "0x13",
+            "0x1A594",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "step": 7901172503,
+          "control_seq": 1622,
+          "eip": "0x14EF0",
+          "eax": "0x0",
+          "rng_word": 56049,
+          "stack": [
+            "0x13AFA",
+            "0x28",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x9",
+            "0x5",
+            "0x1E0"
+          ]
+        },
+        {
+          "step": 7904280740,
+          "control_seq": 1622,
+          "eip": "0x14F89",
+          "eax": "0x8",
+          "rng_word": 56049,
+          "stack": [
+            "0x69",
+            "0x1",
+            "0x0",
+            "0x28",
+            "0x177028",
+            "0x13AFA",
+            "0x28",
+            "0x0"
+          ]
+        },
+        {
+          "step": 7904280753,
+          "control_seq": 1622,
+          "eip": "0x15012",
+          "eax": "0x8",
+          "rng_word": 56049,
+          "stack": [
+            "0x69",
+            "0x1",
+            "0x0",
+            "0x28",
+            "0x177028",
+            "0x13AFA",
+            "0x28",
+            "0x0"
+          ]
+        },
+        {
+          "step": 7904280756,
+          "control_seq": 1622,
+          "eip": "0x15027",
+          "eax": "0x8",
+          "rng_word": 56049,
+          "stack": [
+            "0x69",
+            "0x1",
+            "0x0",
+            "0x28",
+            "0x177028",
+            "0x13AFA",
+            "0x28",
+            "0x0"
+          ]
+        },
+        {
+          "step": 7904280758,
+          "control_seq": 1622,
+          "eip": "0x15041",
+          "eax": "0x8",
+          "rng_word": 56049,
+          "stack": [
+            "0x69",
+            "0x1",
+            "0x0",
+            "0x28",
+            "0x177028",
+            "0x13AFA",
+            "0x28",
+            "0x0"
+          ]
+        },
+        {
+          "step": 7904280760,
+          "control_seq": 1622,
+          "eip": "0x15050",
+          "eax": "0x1",
+          "rng_word": 56049,
+          "stack": [
+            "0x69",
+            "0x1",
+            "0x0",
+            "0x28",
+            "0x177028",
+            "0x13AFA",
+            "0x28",
+            "0x0"
+          ]
+        },
+        {
+          "step": 7904280768,
+          "control_seq": 1622,
+          "eip": "0x13AFD",
+          "eax": "0x1",
+          "rng_word": 56049,
+          "stack": [
+            "0x0",
+            "0x0",
+            "0x9",
+            "0x5",
+            "0x1E0",
+            "0x28",
+            "0x13",
+            "0x1D947"
+          ]
+        },
+        {
+          "step": 7904280781,
+          "control_seq": 1622,
+          "eip": "0x13E77",
+          "eax": "0x16",
+          "rng_word": 56049,
+          "stack": [
+            "0x16",
+            "0x7",
+            "0x1",
+            "0x0",
+            "0x0",
+            "0x9",
+            "0x5",
+            "0x1E0"
+          ]
+        }
+      ],
+      "no_tail_or_movement_calls": true,
+      "return_value": 1,
+      "scores": [
+        8,
+        8,
+        8
+      ],
+      "injections": "只有執行前已登錄建構槽；章內正常鍵盤、唯讀觀測，未清敵或改寫狀態。",
+      "seed": "4只屬槽建構器；原版沒有額外RNG seed override。兩侧入口RNG56049明示對齊；不重擲。",
+      "exit_code": 0,
+      "runner_metadata": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r3/runner.json",
+        "size": 3652,
+        "sha256": "bc059522bedc661d60aef824884f9ab03ef1fd8feb3a2ec84dc2a64802aee075"
+      },
+      "source_policy": {
+        "lock_ally_hp": false,
+        "force_enemy_clear_declared": true,
+        "actual_state_injections": [],
+        "note": "runner宣告清敵能力為true；這份前綴控制序列沒有清敵命令，實際state_injections為空。宣告能力不代表本次有注入。"
+      }
+    },
+    "trace_window_correction": {
+      "classification": "驗證腳本的觀測窗口不足，非產品缺陷",
+      "short_trace": {
+        "path": "work/parity-slot-ch18/native-ai194-original-r2/eip-trace.jsonl",
+        "size": 40259,
+        "sha256": "a06430e4f751a6c31e2135b0a3a9fc3f62e320afe75a654da93e174bd5cda86d"
+      },
+      "short_prefix": {
+        "path": "work/parity-slot-ch18/ai194-prefix-short-window-r2.json",
+        "size": 1109,
+        "sha256": "13b4a879ba1ae80efbfcd499167a07eb596a4b6d578742de56f1d741defe5211"
+      },
+      "reason": "終點7903000000早於候選計算返回7904280760，因此只有入口兩筆；依同一actor到下一actor既有step界線擴大觀測窗口，同槽同輸入乾淨重跑。",
+      "discarded_diagnostic": "native-ai194-original-r1在到觀測窗口前主動停止；只用於重新選定回傳watch點，不作缺陷或完成證據。"
+    },
+    "cleanup": {
+      "task_containers": "完成後以docker ps與docker ps -a檢查，不保留本輪容器。",
+      "ownership": "修改檔與本輪收據為1000:1000；歷史root-owned檔不變。"
+    }
+  },
+  "rights": "只保存規則、原始定位與收據／輸入雜湊；完整原版畫面、EXE、SAV留在本機work及唯讀原版目錄。"
+}

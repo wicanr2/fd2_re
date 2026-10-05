@@ -52,7 +52,29 @@ func TestSelectNativeAI14EF0TailPreservesRawRoutes(t *testing.T) {
 			if got != tt.want {
 				t.Fatalf("SelectNativeAI14EF0Tail() = %d, want %d", got, tt.want)
 			}
+			decision, err := PlanNativeAI14EF0Dispatch(in)
+			wantAccepted := tt.name != "below threshold"
+			if err != nil || decision.Tail != tt.want || decision.Accepted != wantAccepted {
+				t.Fatalf("dispatch=%+v err=%v want tail=%d accepted=%t", decision, err, tt.want, wantAccepted)
+			}
 		})
+	}
+}
+
+func TestNativeAI14EF0NoTailReturnBoundary(t *testing.T) {
+	for _, score := range []int32{-1, 0, 5, 6, 8} {
+		in := nativeAI14EF0TestInput()
+		in.ScoreC4F, in.ScoreC23, in.ScoreC33 = score, score, score
+		decision, err := PlanNativeAI14EF0Dispatch(in)
+		if err != nil || decision.Tail != NativeAI14EF0NoTail || decision.Accepted != (score >= 6) {
+			t.Fatalf("score=%d decision=%+v err=%v", score, decision, err)
+		}
+	}
+	in := nativeAI14EF0TestInput()
+	in.ScoreC4F, in.ScoreC23, in.ScoreC33 = 8, 8, 8
+	in.HasRawScoreC23 = false
+	if decision, err := PlanNativeAI14EF0Dispatch(in); err == nil || decision.Accepted {
+		t.Fatalf("missing score admitted: decision=%+v err=%v", decision, err)
 	}
 }
 

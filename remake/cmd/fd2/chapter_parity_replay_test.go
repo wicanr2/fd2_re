@@ -685,6 +685,14 @@ func (r *parityReplay) observeAIPlan(plan *battle.AIPlan) {
 			}
 		}
 		r.t.Logf("AI plan diagnostic: turn=%d entry=%d seq=%d actor=%d target=%d kind=%d command=%d item=%d route=%+v destination=%+v path=%+v rng_before=%d rng_entry=%d", r.g.st.Turn, r.aiCursor, entry.ControlSeq, index, targetIndex, plan.NativeActionKind, plan.NativeCommandID, plan.NativeItemID, plan.NativeAI14EF0Route, plan.NativeActionDestination, plan.Path, r.g.nativeRNGState, entry.RNGWord)
+		r.t.Logf("AI movement diagnostic: turn=%d entry=%d actor=%d fallback=%t mode=%d intended=%+v blocked=%+v blocked_found=%t candidates=%+v opposite=%+v", r.g.st.Turn, r.aiCursor, index, plan.NativeModeFallbackActive, plan.NativeModeFallback, plan.NativeModeIntended, plan.NativeModeBlockedCell, plan.NativeModeBlockedFound, plan.NativeModeCandidates, plan.NativeModeOpposite)
+		if os.Getenv("FD2_PARITY_AI_RECORDS") == "1" {
+			records, err := battle.NativeAIScoringRecords(r.g.st.Units)
+			if err != nil {
+				r.t.Fatalf("AI record diagnostic: %v", err)
+			}
+			r.t.Logf("AI record diagnostic: turn=%d entry=%d actor=%d records=%x", r.g.st.Turn, r.aiCursor, index, records)
+		}
 	}
 	if entry.Unit == index {
 		r.aiCursor++

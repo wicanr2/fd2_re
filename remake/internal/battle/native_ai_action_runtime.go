@@ -151,9 +151,13 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 		in.CommandWord = uint16(s.NativeCommandBook[id].Damage)
 		in.HasRawCommandID, in.HasRawCommandWord = true, true
 	}
-	route, err := SelectNativeAI14EF0Tail(in)
+	decision, err := PlanNativeAI14EF0Dispatch(in)
 	if err != nil {
 		return nil, true, err
+	}
+	route := decision.Tail
+	if DebugAI != nil {
+		DebugAI("0x14ef0 dispatch actor=%d C4F=%d C23=%d C33=%d route=%d accepted=%t", actor, in.ScoreC4F, in.ScoreC23, in.ScoreC33, route, decision.Accepted)
 	}
 	switch route {
 	case NativeAI14EF0Call1548E:
@@ -211,10 +215,16 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 		plan.NativeActionScore = item.MaxScore
 		return plan, true, nil
 	default:
-		// A no-tail result is the native mode's documented fallback boundary;
-		// it is not evidence for an arbitrary physical attack.  Let the raw
-		// mode bridge consume it, or fail closed if that mode is not closed.
-		return nil, false, nil
+		if !decision.Accepted {
+			// 0x14F7D回0才讓caller進入mode後備。
+			return nil, false, nil
+		}
+		// 0x15041→0x1504B：沒有handler仍清range、回1。
+		// 原地交共用成功收尾，不聚焦、不尋路、不呼叫0x13FD4。
+		return &AIPlan{
+			U: u, SpellID: -1, NativeModeWriteRangeZero: true,
+			NativeActionDestination: Cell{X: int(actorRecord[0]), Y: int(actorRecord[1])},
+		}, true, nil
 	}
 }
 

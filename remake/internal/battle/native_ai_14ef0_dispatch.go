@@ -40,6 +40,24 @@ type NativeAI14EF0Input struct {
 	HasRawTargetWord4A bool
 }
 
+// NativeAI14EF0Decision 分開保存尾端動作與 caller 消費的回傳值。
+// 三者同分且至少6時，0x1504B仍回1，不能因 NoTail 進入移動後備。
+// 證據：docs/data/ida/fd2_ai_14ef0_return_20261006.json。
+type NativeAI14EF0Decision struct {
+	Tail     NativeAI14EF0Tail
+	Accepted bool
+}
+
+func PlanNativeAI14EF0Dispatch(in NativeAI14EF0Input) (NativeAI14EF0Decision, error) {
+	tail, err := SelectNativeAI14EF0Tail(in)
+	if err != nil {
+		return NativeAI14EF0Decision{}, err
+	}
+	return NativeAI14EF0Decision{
+		Tail: tail, Accepted: in.ScoreC4F >= 6 || in.ScoreC23 >= 6 || in.ScoreC33 >= 6,
+	}, nil
+}
+
 // SelectNativeAI14EF0Tail 只保存 0x14ef0 的 raw 尾端決策樹。呼叫端必須
 // 另行執行並驗證前置的 0x14237、0x1598a、0x1567e producer。本函式不修改
 // 狀態，刻意不接 NextAIPlan 或正式 AI 執行器。

@@ -758,3 +758,12 @@ table 時在狀態變更前失敗即關閉。這只提升一個已核對 row 的
 ### 2026-10-04 AI 原地回復呈現勘誤
 
 0x13FD4 的正式呈現已依 READY caller 規格修正為初始畫面、C8 Mask、mode0 原圖恢復，第三 Draw 後才提交 HP；舊「呈現仍分離」只描述當時狀態。[主契約](../data/ida/fd2_ai_idle_recovery_20261004.json)與[完整收據](../data/ui-traces/ai-idle-recovery-20261004.json)已達 CONFORMED／RUNTIME-E1。原版接受分支由目前 dosgolem 正常鍵盤輸入重生，不重做已閉合數值規則；相位、時鐘與玩家層級限制見 [58](58-fd2-exe-re-coverage.md)。
+
+
+### 0x14EF0 無尾端動作的回傳勘誤（2026-10-06，#194）
+
+NoTail 只表示沒有選到尾端handler。三種候選同分且達門檻時，原版仍回1，
+mode0 caller因此直接完成行動。只有三個分數全小於6才回0、進mode後備。
+既有handler選擇、尋路及評分規則保持；[回傳主證據](../data/ida/fd2_ai_14ef0_return_20261006.json)
+保存原始指令、bytes及同來源重播。較早的純E0／未接NextAIPlan段落是當時紀錄，
+目前接線及完成分層以[58](58-fd2-exe-re-coverage.md)為準。
