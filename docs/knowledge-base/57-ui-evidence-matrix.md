@@ -1923,3 +1923,13 @@ BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
 預設adapter保持，周邊沿既有硬體近似；#102同r3到T8尚未重跑，章分級不升。
 來源、模式、可重跑命令與唯一數字見[58](58-fd2-exe-re-coverage.md)及
 [主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_formal_native_profile。
+
+
+2026-10-06 #102／#192／#193／#194：正式 native 同 r3 到 T8，原版 T8 END
+另遇 word ADD 83 缺口；#192 的CPU與此前native前綴接續通過，同r3原版計畫已走完戰後及酒店存檔。
+舊 adapter 前綴與 native 的 RNG／殘值不同，父 #102 保持。
+正式 Game 新來源重播的首個行為分岔是 T6 敵方換手後，登記 #194；
+後續 BG 預檢拒收 #193 屬分岔後狀態，尚非原版同狀態 caller。
+既有 r4 章驗收保持，不新增 PLAYER-E2。唯一現況、來源、收據與下一 gate 見
+[58](58-fd2-exe-re-coverage.md)及
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的 allocator_native_chapter。

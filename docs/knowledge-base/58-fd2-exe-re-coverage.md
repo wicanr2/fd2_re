@@ -20,7 +20,7 @@
 | #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
-| #102正式原生近堆模式 | BOOT／正常標題有限CONFORMED | #191已關閉，唯一oracle／wrapper可明示native；預設adapter保持，同r3到T8尚未重跑。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
+| #102正式原生近堆模式 | 原版T8已達；舊前綴不符 | 同r3的native計畫已到戰後／買賣／存檔／秘密商店，word ADD缺口#192閉合；舊adapter前綴RNG／殘值不同，父題保持。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_native_chapter。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -3254,3 +3254,36 @@ CLI未知模式／錯版本／native容量並用，以及wrapper來源清冊拒�
 #191有限CONFORMED，取代「正式整合DRAFT」的現況，舊局部與adapter收據保留。
 #102同ch18-guard-r3前綴到T8尚未重跑；全heap／原始GDT及實機仍未證實，
 周邊仍hardware-spec approximation，不新增章PLAYER-E2。
+
+
+## 2026-10-06 #102／#192：原生近堆同 r3 到 T8，保留前綴差異
+
+受版控 dosgolem 3d2ca72a 明示 native，以固定原版、同建構槽、
+同 ch18-guard-r3 計畫正常按鍵到 T8。原版在 T8 END 的
+10,084,671,521 步因 0x22A47 的 raw 66 83 46 4C 0F 未支援而退出。
+配置／釋放／重用及第一個 T8 檢查點等唯一數字見
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的 allocator_native_chapter。
+
+舊 adapter 與 native 的標題／LOAD 畫面一致，但進戰場 RNG 不同；
+我方16筆 raw record 相同，敵方／NPC 37筆只差 +0x28..+0x30 殘值。
+這些未知欄位不另取語意名稱。超過舊停止步數或到 T8，
+不能證明同一 FIG 配對／懸空背景 consumer 已重現，#102 不關閉。
+#192 只補 READY 規格的 CPU word ADD 記憶體形狀。
+CPU／machine／oracle 完整回歸通過；乾淨第二次同 r3 原版計畫已完成，
+停止前完整 JSON／PNG／trace 相同，#192 閉合，父 #102 原有舊前綴要求保持。
+
+[前綴核對工具](../../tools/verify_oracle_prefix.py)沿用既有完整狀態比較，
+另以明示選項核對完整 PNG 與相同步數內 EIP trace。只排除兩項 PNG 排程欄位，
+不忽略 RNG 或殘值；
+用法見工具檔首。[工具回歸](../../tools/test_verify_oracle_prefix.py)
+涵蓋隱藏狀態／輸入／trace差異及缺檔／錯版本拒收。
+既有 r4 章 PLAYER-E2 保持，本批不增加章驗收。
+
+
+同一 native 來源接回目前正式 Game 的重播後，四閘門未通過。
+第一個行為差異為 seq1638、T6 敵方換手後的兩名敵方位置／身份互換，
+登記 [#194](https://github.com/wicanr2/fd2_re/issues/194)，優先追第一個 AI entry 分岔。
+其後 actor28／target8 的背景預檢拒收登記
+[#193](https://github.com/wicanr2/fd2_re/issues/193)，只證明分岔後重製狀態，
+目前不是原版同狀態 caller，不移除拒收、不猜補 BG。
+完整四閘門與 log 雜湊由 allocator_native_chapter 的 remake_replay 保存。

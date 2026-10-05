@@ -1759,6 +1759,22 @@
       "rule": "原始保存／還原鏈因selector拒收時，先追初始化服務、保存槽及合法載入判定；服務已設定值不代表其還原規則已登記。合法還原與一般記憶體映射分開驗證，不任意補未知Descriptor。入口tools/fd2_watcom_heap_probe.go的naturalFirstAllocation及docs/data/ida/fd2_ch18_oracle_stosb_20261003.json的allocator_first_return保存可重生writer／consumer證據。",
       "why": "#189自然入口由FD2StartupDOS設定GS=0x0020，PUSH／POP槽值未變，但SegmentLoadOK漏登記GS而拒收。限定還原修正讓原始_nmalloc首次回caller，不必猜base／limit。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/189"
+    },
+    {
+      "id": "first-behavior-drift-before-resource-rejection",
+      "area": "對拍根因",
+      "date": "2026-10-06",
+      "rule": "重播遇到素材預檢拒收時，先用tools/verify_chapter_parity.py找最早行為分岔，再從最後共同狀態追writer／consumer。分岔後的actor／target只作診斷，不當作原版同狀態證據；來源入口在docs/data/ida/fd2_ch18_oracle_stosb_20261003.json的allocator_native_chapter.remake_replay。",
+      "why": "新native來源重播先在seq1638把兩名敵方位置／身份對調，之後才遇到caller BG拒收。#193已追加勘誤，#194先追首個AI分岔，避免為後續假情境猜補正式BG。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/194"
+    },
+    {
+      "id": "existing-tool-contract-before-new-file",
+      "area": "工具維護",
+      "date": "2026-10-06",
+      "rule": "新增工具前先核對Git與工作樹是否已有同名檔案；已有工具保留API、證據檢查和回歸，只增加任務必要選項。前綴檢查入口為tools/verify_oracle_prefix.py，完整既有與新增測試為tools/test_verify_oracle_prefix.py。",
+      "why": "#192驗證時誤把已受版控前綴工具當成新檔覆寫。提交前已還原原有契約，只加入明示上界、完整PNG及trace比較，12個回歸通過。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/192"
     }
   ]
 }

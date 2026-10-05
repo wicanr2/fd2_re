@@ -121,5 +121,39 @@ class PrefixVerificationTests(unittest.TestCase):
                 path.write_text(saved)
 
 
+    def exact_inputs(self):
+        for root in [self.prefix, self.full]:
+            for seq in [0, 1]:
+                (root / f"checkpoint-{seq:04}.png").write_bytes(b"same-frame")
+            (root / "eip-trace.jsonl").write_text('{"step":5,"eax":42}\n')
+
+    def test_optional_full_frames_and_trace(self):
+        self.exact_inputs()
+        report = verify(self.prefix, self.full, max_seq=1, compare_frames=True, compare_trace=True)
+        self.assertEqual(report["status"], "passed")
+        self.assertEqual(report["equal_png_pairs"], 2)
+        self.assertTrue(report["trace_comparison"]["equal"])
+
+    def test_optional_frame_and_trace_changes_fail(self):
+        self.exact_inputs()
+        for filename, content in [("checkpoint-0001.png", b"different-frame"),
+                                  ("eip-trace.jsonl", b'{"step":5,"eax":43}\n')]:
+            with self.subTest(filename=filename):
+                path = self.full / filename
+                original = path.read_bytes()
+                path.write_bytes(content)
+                report = verify(self.prefix, self.full, max_seq=1, compare_frames=True, compare_trace=True)
+                self.assertEqual(report["status"], "failed")
+                path.write_bytes(original)
+
+    def test_optional_missing_frame_and_invalid_max_seq_fail(self):
+        self.exact_inputs()
+        (self.full / "checkpoint-0001.png").unlink()
+        self.assertEqual(verify(self.prefix, self.full, compare_frames=True)["status"], "failed")
+        for bound in [-1, 2]:
+            with self.assertRaises(ValueError):
+                verify(self.prefix, self.full, max_seq=bound)
+
+
 if __name__ == "__main__":
     unittest.main()

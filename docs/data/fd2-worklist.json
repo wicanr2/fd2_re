@@ -264,6 +264,46 @@
         "note": "核對第24章正式四gate、實際保存完整SAV、正常章路徑及回歸。"
       },
       "issue": 142
+    },
+    {
+      "id": "ch18-native-zero-main-counter-bg-continuation",
+      "layer": "re",
+      "category": "RE待解",
+      "title": "第十八章原生近堆來源的零旗標主攻／非零旗標反擊缺 caller BG 接續證據",
+      "body": "在 #102 的固定槽、原生近堆同 r3 原版收據到 T8 後，用目前正式 Game 重播。guard-native-remake-r1 的 T6 AI actor28 對 target8 原始物理演出被 native_physical_body.go 預檢拒收：native physical counter requires unavailable caller BG layers。attack.HeaderByte1==0 且 counter.HeaderByte1!=0。這個拒收保護尚未證實的原版 BG 指標／釋放後 payload，不能直接移除或一律重載 BG#0..2。既有 #166 的限定驗收與第十八章 r4 PLAYER-E2 保持；本題只補新來源實际觸發的垂直接續。\n\n2026-10-06 四閘門勘誤：seq1638 的 T6 敵方換手後先發生位置／身份分岔，已登記 #194。上述 actor28/target8 目前只描述已分岔的重製端預檢，不是原版同狀態 caller。先解 #194，再重新確認這條 BG 切片是否仍是玩家阻塞。",
+      "acceptance": "沿 #102 原生正式來源與固定 EXE，以受版控 readonly 觀測重生相同 actor28／target8 caller 的主攻／反擊 BG pointer、writer、header／payload 和 render consumer，明確區分原版記憶體、平台近似與畫面相容。證據審查後達 READY 才接 typed runtime；正常 Game 同来源重播越過此處，驗規則、UI 與 SAV，不把缺證據的背景素材猜補進正式路徑。若需未證實行為或忠實度取捨，先展示具體選項並依共同決策規則確認。",
+      "evidence": [
+        "remake/cmd/fd2/native_physical_body.go",
+        "docs/data/ida/fd2_physical_background_selection_20261004.json",
+        "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "blocked_by": [
+        "ch18-native-t6-ai-order-divergence"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "正式原版同狀態 BG writer/consumer 及 actor28/target8 的正常 Game 接續；尚未 READY，不能只移除拒收。"
+      },
+      "issue": 193
+    },
+    {
+      "id": "ch18-native-t6-ai-order-divergence",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "第十八章原生近堆收據在 T6 敵方回合後首次 AI 位置／身份分岔",
+      "body": "父題 #102 的新 native 原版與目前 Game 重播，四閘門首次行為失敗在 seq1638 after_enemy_phase：兩個敵方 (22,7)/(22,8) 的 HP 232/506 對調，後續角色畫面和目標選擇分岔。此前行為比較點通過。不是挑 seed 的問題；兩側初始固定槽相同，RNG 比較點已明示同步。#193 的 actor28/target8 BG 預檢拒收出現在這次已分岔的重製狀態，目前不能聲稱它是原版同狀態 caller；先解本題。",
+      "acceptance": "從固定 native 原版和正式 Game 最後共同狀態定位第一個 actor／target／move entry 差異，核對原始 runtime-record、AI 選擇與動態增援 writer/consumer。已有 RE 不重做，只補矛盾缺口；證據→READY→runtime 修正，同來源重播此前比較點保持並越過 seq1638。四閘門與正常 Game 結果保留，不以 RNG 重擲或狀態注入掩蓋差異。#193 另以修正後可比狀態再驗。",
+      "evidence": [
+        "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json",
+        "remake/cmd/fd2/chapter_parity_replay_test.go",
+        "docs/knowledge-base/58-fd2-exe-re-coverage.md"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "同 native source 的第一個 AI entry 差異、此前行為前綴與 seq1638 後正常 Game 四閘門。"
+      },
+      "issue": 194
     }
   ]
 }

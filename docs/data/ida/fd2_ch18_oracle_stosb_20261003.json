@@ -15506,7 +15506,7 @@
     ],
     "superseded_by": "allocator_cpu_followup for current CPU-gap / fixture status; preserve original receipts"
   },
-  "current_allocator_probe": "allocator_formal_native_profile",
+  "current_allocator_probe": "allocator_native_chapter",
   "allocator_cpu_followup": {
     "recorded_at": "2026-10-05",
     "issues": {
@@ -19285,5 +19285,1196 @@
       "既有r4章驗收保持，本批不增加章PLAYER-E2"
     ],
     "replay_note": "固定dosgolem 3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88及本節wrapper兩檔hash；必要時以git worktree在獨立目錄恢復該提交，再由FD2_DOSGOLEM_ROOT選取。所有原版輸入唯讀。重生改用新輸出檔名／目錄，不覆寫r1..r3。title計畫從本節commands在Docker內重建；BOOT／回歸亦由唯一受版控oracle與其測試執行。"
+  },
+  "allocator_native_chapter": {
+    "recorded_at": "2026-10-06",
+    "timezone": "Asia/Taipei",
+    "issues": [
+      102,
+      192
+    ],
+    "status": "原版native同r3計畫完成；#192閉合；舊adapter前綴不符、remake分岔待#194",
+    "inference_level": "已證實，限定這次受版控正式原版重跑",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "address_space": "dosgolem relocated LE linear",
+    "dosgolem_commit": "3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88",
+    "heap_profile": "native",
+    "runner": {
+      "path": "work/parity-slot-ch18/guard-native-original-r1/runner.json",
+      "sha256": "2e284b13451908e2cb9a1c0e5bfa03d6e5cef9c3a363ea5e8851e4ff5a2ff43d",
+      "size": 3630
+    },
+    "plan": {
+      "path": "docs/data/parity-plans/ch18-guard-r3.jsonl",
+      "sha256": "628d8457056ba1dbb5db8c85fe5856cceebce5ddb84320369cf1fa7ef7eb911a",
+      "size": 6520
+    },
+    "slot": {
+      "path": "work/parity-slot-ch18/FD2.SAV",
+      "sha256": "98d64cd594b8d22c2eaf2c26eaffa8485952be537d35bf2643521a898ddbc1b5",
+      "size": 22987
+    },
+    "slot_manifest": "docs/data/parity-slots/ch18-manifest.json",
+    "overlay": "work/parity-slot-ch18/guard-native-state-r1",
+    "random_control": {
+      "slot_constructor_seed": 4,
+      "oracle_seed_override": null,
+      "method": "相同固定槽、全新LE程序與現有決定性虛擬時钟；不重擲、不挑seed。槽建構seed不是原版RNG seed。",
+      "old_title_rng_word": 22661,
+      "native_title_rng_word": 22661,
+      "old_battle_start_rng_word": 419,
+      "native_battle_start_rng_word": 16464
+    },
+    "trace": {
+      "path": "work/parity-slot-ch18/guard-native-original-r1/eip-trace.jsonl",
+      "sha256": "2ee30681d29e85af6a031818509743fe43f8431ca2ad3066f8574c9c6d3befb4",
+      "size": 348485
+    },
+    "actions": {
+      "path": "work/parity-slot-ch18/guard-native-original-r1/actions.jsonl",
+      "sha256": "f037b5fb9c7df49e1a9d32aa054fd572bc5dd08a7170e58b3ee11f48494f368a",
+      "size": 23800
+    },
+    "control_history": {
+      "path": "work/parity-slot-ch18/guard-native-original-r1/control-history.jsonl",
+      "sha256": "3a98572be56423486374937e3c680bc90233faf7a44b556e25dee49ecf17beea",
+      "size": 90022
+    },
+    "terminal": {
+      "report": {
+        "path": "work/parity-slot-ch18/guard-native-original-r1/oracle.log",
+        "sha256": "f2a63ebb1a6a1fe9bfc9d2b44a972b743f4b8cd87863aa5732038da4d92c4a6a",
+        "size": 456642
+      },
+      "error": "cpu386: EIP=00022A47 opcode=83：16-bit 83 形狀尚未支援",
+      "stop_eip": "0x22A47",
+      "steps_completed": 10084671521,
+      "next_bytes": "66 83 46 4C 0F 66 83 46 4E 0F 0F B6 17 52 6A 69",
+      "registers": [
+        5605,
+        0,
+        3,
+        4,
+        349540,
+        0,
+        1534120,
+        349592
+      ],
+      "state_injections": [],
+      "last_checkpoint": {
+        "path": "work/parity-slot-ch18/guard-native-original-r1/current.json",
+        "sha256": "789cb67ee44498025b4a061dd6a73f3c780c9c99da84620a213ecd5d6cb645e5",
+        "size": 101645
+      },
+      "last_view": {
+        "aux_phase": 0,
+        "camera_x": 13,
+        "camera_y": 4,
+        "cursor_x": 21,
+        "cursor_y": 7,
+        "gold": 2000,
+        "overlay_selector": 0,
+        "rng_word": 6878,
+        "round": 8,
+        "visible_x": 8,
+        "visible_y": 3
+      },
+      "wrapper_exit": 5,
+      "control_timeout": "seq2024逾時是CPU已退出的後果；不列為第二個缺陷"
+    },
+    "heap_summary": {
+      "allocation_returns": 6294,
+      "free_returns": 5996,
+      "exact_pointer_reuse_count": 5741,
+      "invalid_allocation_pointers": 0,
+      "pending_frames": 0
+    },
+    "first_t8": {
+      "receipt": {
+        "path": "work/parity-slot-ch18/guard-native-original-r1/checkpoint-1811.json",
+        "sha256": "b1978a04080a0db58906b8f9379e5143ebae933afa76d087b86b73f1391f7e7f",
+        "size": 101659
+      },
+      "control_seq": 1811,
+      "steps": 9160400840,
+      "eip": "0x4E83E",
+      "view": {
+        "aux_phase": 0,
+        "camera_x": 13,
+        "camera_y": 4,
+        "cursor_x": 17,
+        "cursor_y": 7,
+        "gold": 2000,
+        "overlay_selector": 0,
+        "rng_word": 29910,
+        "round": 8,
+        "visible_x": 4,
+        "visible_y": 3
+      }
+    },
+    "prefix": {
+      "status": "FAIL：舊adapter前綴不等於native，不改父#102驗收",
+      "old_runner": {
+        "path": "work/parity-slot-ch18/guard-original-r3/runner.json",
+        "sha256": "9df713cceb23f630fac0529d9c22f31a51c2e93ddb87335750cd3a127c69644f",
+        "size": 1357
+      },
+      "marks": [
+        {
+          "label": "town_loaded",
+          "old": {
+            "kind": "mark",
+            "seq": 17,
+            "round": 0,
+            "rng_word": 22661,
+            "gold": 2000,
+            "label": "town_loaded",
+            "ui": "town"
+          },
+          "native": {
+            "kind": "mark",
+            "seq": 18,
+            "round": 0,
+            "rng_word": 22661,
+            "gold": 2000,
+            "label": "town_loaded",
+            "ui": "town"
+          }
+        },
+        {
+          "label": "departure_prompt",
+          "old": {
+            "kind": "mark",
+            "seq": 38,
+            "round": 0,
+            "rng_word": 50606,
+            "gold": 2000,
+            "label": "departure_prompt",
+            "ui": "preparation"
+          },
+          "native": {
+            "kind": "mark",
+            "seq": 39,
+            "round": 0,
+            "rng_word": 50606,
+            "gold": 2000,
+            "label": "departure_prompt",
+            "ui": "preparation"
+          }
+        },
+        {
+          "label": "party_selection",
+          "old": {
+            "kind": "mark",
+            "seq": 43,
+            "round": 0,
+            "rng_word": 50606,
+            "gold": 2000,
+            "label": "party_selection",
+            "ui": "preparation"
+          },
+          "native": {
+            "kind": "mark",
+            "seq": 44,
+            "round": 0,
+            "rng_word": 50606,
+            "gold": 2000,
+            "label": "party_selection",
+            "ui": "preparation"
+          }
+        },
+        {
+          "label": "departure_confirmation",
+          "old": {
+            "kind": "mark",
+            "seq": 70,
+            "round": 0,
+            "rng_word": 49187,
+            "gold": 2000,
+            "label": "departure_confirmation",
+            "ui": "preparation"
+          },
+          "native": {
+            "kind": "mark",
+            "seq": 71,
+            "round": 0,
+            "rng_word": 49187,
+            "gold": 2000,
+            "label": "departure_confirmation",
+            "ui": "preparation"
+          }
+        },
+        {
+          "label": "battle_start",
+          "old": {
+            "kind": "mark",
+            "seq": 136,
+            "round": 1,
+            "rng_word": 419,
+            "gold": 2000,
+            "label": "battle_start",
+            "ui": "cursor"
+          },
+          "native": {
+            "kind": "mark",
+            "seq": 106,
+            "round": 1,
+            "rng_word": 16464,
+            "gold": 2000,
+            "label": "battle_start",
+            "ui": "cursor"
+          }
+        }
+      ],
+      "battle_start_old_checkpoint": {
+        "path": "work/parity-slot-ch18/guard-original-r3/checkpoint-0136.json",
+        "sha256": "2da3f208e9918120a9d73b38c4556c4af786c3148834ccaa3c110be5f113e7e9",
+        "size": 28332
+      },
+      "battle_start_native_checkpoint": {
+        "path": "work/parity-slot-ch18/guard-native-original-r1/checkpoint-0106.json",
+        "sha256": "532501eda046ffd4ee3d2dadd7541d2103a3c51ce769034cbdee188abde2ebdc",
+        "size": 101755
+      },
+      "view_except_rng_equal": true,
+      "equal_friendly_records": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "different_records": [
+        {
+          "record": 16,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "16071000000001151500403940a980ff80ff80ff80ff80ff80ff00c17c00000116050000000000000000000000000000000303008900007800700004ff012d0004010401bc00bc000e01f00087003700",
+          "native_raw_hex": "16071000000001151500403940a980ff80ff80ff80ff80ff80ff00c17c000001160500000000000089bfbebebdbdbcbdbd0303008900007800700004ff012d0004010401bc00bc000e01f00087003700"
+        },
+        {
+          "record": 17,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "16081100000001070700401e409680ff80ff80ff80ff80ff80ff0000000000010b04000000000000000000000000000000030400891500ed00920008ff013c00400140010000000083010a01a0003c00",
+          "native_raw_hex": "16081100000001070700401e409680ff80ff80ff80ff80ff80ff0000000000010b04000000000000bd04be03bf076001bf030400891500ed00920008ff013c00400140010000000083010a01a0003c00"
+        },
+        {
+          "record": 18,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "230712000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "230712000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000004be02bd02bc83bdbcff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 19,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "240612000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "240612000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000bfbfbebe06bd02be81ff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 20,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "250512000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "250512000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000bd02be80bd05bc82bdff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 21,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "240812000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000000000000000000000000c200000000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "240812000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000083bebebdbd02bc82bd00c200000000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 22,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "250912000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "250912000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000005bd07bc86bebebcbdff0000000000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 23,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2c0812000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "2c0812000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000bdbdbc07bd02bc09bdff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 24,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2d0712000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "2d0712000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000003bf08be84bdbdbebdff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 25,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2e0612000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "2e0612000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000003be80bd02be03bd03ff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 26,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2d0912000000005353004019409680ff80ff80ff80ff80ff80ff000000000001031500000000000000000000000000000000c200020000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "2d0912000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000bcbebe6003bf01be0300c200020000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 27,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2e0a12000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000000000000000000000ff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00",
+          "native_raw_hex": "2e0a12000000005353004019409680ff80ff80ff80ff80ff80ff0000000000010315000000000000bcbdbd07be80bd02beff0000020000a8002a0008ff012a00a401a401000000003e01a2008e002a00"
+        },
+        {
+          "record": 28,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "260613000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000000000000000000000ff0000000000dc006e0003ff012c00fa01fa010000000063010e0186002c00",
+          "native_raw_hex": "260613000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000bcbd02bc01bd04bc82ff0000000000dc006e0003ff012c00fa01fa010000000063010e0186002c00"
+        },
+        {
+          "record": 29,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "260813000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000000000000000000000ff0000000000dc006e0003ff012c00fa01fa010000000063010e0186002c00",
+          "native_raw_hex": "260813000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000846160bfbebe03bd06ff0000000000dc006e0003ff012c00fa01fa010000000063010e0186002c00"
+        },
+        {
+          "record": 30,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2f0713000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000000000000000000000ff0000020000dc006e0003ff012c00fa01fa010000000063010e0186002c00",
+          "native_raw_hex": "2f0713000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000bebf026080bf02bd84ff0000020000dc006e0003ff012c00fa01fa010000000063010e0186002c00"
+        },
+        {
+          "record": 31,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2f0913000000004e4e004006409e80ff80ff80ff80ff80ff80ff000000000001021600000000000000000000000000000000c200020000dc006e0003ff012c00fa01fa010000000063010e0186002c00",
+          "native_raw_hex": "2f0913000000004e4e004006409e80ff80ff80ff80ff80ff80ff000000000001021600000000000060026103620361026000c200020000dc006e0003ff012c00fa01fa010000000063010e0186002c00"
+        },
+        {
+          "record": 32,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "281813000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000000000000000000000ff0000020000dc006e0003ff012c00fa01fa010000000063010e0186002c00",
+          "native_raw_hex": "281813000000004e4e004006409e80ff80ff80ff80ff80ff80ff000000000001021600000000000001be02608061046203ff0000020000dc006e0003ff012c00fa01fa010000000063010e0186002c00"
+        },
+        {
+          "record": 33,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "261613000000004e4e004006409e80ff80ff80ff80ff80ff80ff0000000000010216000000000000000000000000000000ff0000020000dc006e0003ff012c00fa01fa010000000063010e0186002c00",
+          "native_raw_hex": "261613000000004e4e004006409e80ff80ff80ff80ff80ff80ff000000000001021600000000000010bd06bc03bd03bc02ff0000020000dc006e0003ff012c00fa01fa010000000063010e0186002c00"
+        },
+        {
+          "record": 34,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "270714000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000000000000000000000ff0000000000a000500005ff013000f000f000000000002201b00094003500",
+          "native_raw_hex": "270714000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000bc02bd01be02608061ff0000000000a000500005ff013000f000f000000000002201b00094003500"
+        },
+        {
+          "record": 35,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "281614000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c0800000000000000000000000000000000c200020000a000500005ff013000f000f000000000002201b00094003500",
+          "native_raw_hex": "281614000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000bc8cbdbdbcbcbebebd00c200020000a000500005ff013000f000f000000000002201b00094003500"
+        },
+        {
+          "record": 36,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "261814000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000000000000000000000ff0000020000a000500005ff013000f000f000000000002201b00094003500",
+          "native_raw_hex": "261814000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c0800000000000003be02bd0abc05bd03ff0000020000a000500005ff013000f000f000000000002201b00094003500"
+        },
+        {
+          "record": 37,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2b0514000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000000000000000000000ff0000020000a000500005ff013000f000f000000000002201b00094003500",
+          "native_raw_hex": "2b0514000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000bc8cbdbdbcbcbebebdff0000020000a000500005ff013000f000f000000000002201b00094003500"
+        },
+        {
+          "record": 38,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2b0a14000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000000000000000000000ff0000020000a000500005ff013000f000f000000000002201b00094003500",
+          "native_raw_hex": "2b0a14000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c0800000000000002bd84be6060616103ff0000020000a000500005ff013000f000f000000000002201b00094003500"
+        },
+        {
+          "record": 39,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2e0814000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000000000000000000000ff0000020000a000500005ff013000f000f000000000002201b00094003500",
+          "native_raw_hex": "2e0814000000005959004030408a80ff80ff80ff80ff80ff80ff0000000000010c08000000000000bc04bd06bc85bdbebeff0000020000a000500005ff013000f000f000000000002201b00094003500"
+        },
+        {
+          "record": 40,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "250715000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d0800000000000000000000000000000000c2000000007000300004ff012000e800e800c000c000e800b0007a002a00",
+          "native_raw_hex": "250715000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d0800000000000084be6060616103620600c2000000007000300004ff012000e800e800c000c000e800b0007a002a00"
+        },
+        {
+          "record": 41,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "270515000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000000000000000000000ff00000200007000300004ff012000e800e800c000c000e800b0007a002a00",
+          "native_raw_hex": "270515000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d080000000000006161620361036001bfff00000200007000300004ff012000e800e800c000c000e800b0007a002a00"
+        },
+        {
+          "record": 42,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "270a15000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d0800000000000000000000000000000000cf000200007000300004ff012000e800e800c000c000e800b0007a002a00",
+          "native_raw_hex": "270a15000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000bd82bebebd0cbc83bd00cf000200007000300004ff012000e800e800c000c000e800b0007a002a00"
+        },
+        {
+          "record": 43,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "271715000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000000000000000000000ff00000200007000300004ff012000e800e800c000c000e800b0007a002a00",
+          "native_raw_hex": "271715000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000608261616203610360ff00000200007000300004ff012000e800e800c000c000e800b0007a002a00"
+        },
+        {
+          "record": 44,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2a0d15000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000000000000000000000ff00000200007000300004ff012000e800e800c000c000e800b0007a002a00",
+          "native_raw_hex": "2a0d15000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d0800000000000004bd0abc03bd80be02ff00000200007000300004ff012000e800e800c000c000e800b0007a002a00"
+        },
+        {
+          "record": 45,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "2d0d15000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000000000000000000000ff00000200007000300004ff012000e800e800c000c000e800b0007a002a00",
+          "native_raw_hex": "2d0d15000000005c5c00403840a980ff80ff80ff80ff80ff80ff0400000400010d08000000000000be01bf026007bf80beff00000200007000300004ff012000e800e800c000c000e800b0007a002a00"
+        },
+        {
+          "record": 46,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "220e16000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a07000000000000000000000000000000ff0000000000c400700005ff012a000a010a011c001c002801700084002a00",
+          "native_raw_hex": "220e16000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a0700000000000003be84bdbdbebe600aff0000000000c400700005ff012a000a010a011c001c002801700084002a00"
+        },
+        {
+          "record": 47,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "250e16000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a0700000000000000000000000000000000cf00000000c400700005ff012a000a010a011c001c002801700084002a00",
+          "native_raw_hex": "250e16000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a0700000000000002bd83bebe606006bf00cf00000000c400700005ff012a000a010a011c001c002801700084002a00"
+        },
+        {
+          "record": 48,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "231116000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a07000000000000000000000000000000ff0000000000c400700005ff012a000a010a011c001c002801700084002a00",
+          "native_raw_hex": "231116000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a07000000000000bf02be02bf0e6080bfff0000000000c400700005ff012a000a010a011c001c002801700084002a00"
+        },
+        {
+          "record": 49,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "260116000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a07000000000000000000000000000000ff0000000000c400700005ff012a000a010a011c001c002801700084002a00",
+          "native_raw_hex": "260116000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a070000000000006002bf02be02bd80beff0000000000c400700005ff012a000a010a011c001c002801700084002a00"
+        },
+        {
+          "record": 50,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "280216000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a07000000000000000000000000000000ff0000000000c400700005ff012a000a010a011c001c002801700084002a00",
+          "native_raw_hex": "280216000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a07000000000000bf03600161026005bfff0000000000c400700005ff012a000a010a011c001c002801700084002a00"
+        },
+        {
+          "record": 51,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "280016000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a0700000000000000000000000000000000c300000000c400700005ff012a000a010a011c001c002801700084002a00",
+          "native_raw_hex": "280016000000006c6c00404140ca80ff80ff80ff80ff80ff80ff2000000000051a070000000000006105bf02be05bf11be00c300000000c400700005ff012a000a010a011c001c002801700084002a00"
+        },
+        {
+          "record": 52,
+          "offsets": [
+            "0x28",
+            "0x29",
+            "0x2A",
+            "0x2B",
+            "0x2C",
+            "0x2D",
+            "0x2E",
+            "0x2F",
+            "0x30"
+          ],
+          "old_raw_hex": "300817000000005555004019409880ff80ff80ff80ff80ff80ff000000000001030a000000000000000000000000000000030500020000dc003c0008ff013200e001e001000000007201e80096003200",
+          "native_raw_hex": "300817000000005555004019409880ff80ff80ff80ff80ff80ff000000000001030a000000000000bebf6061616060bf03030500020000dc003c0008ff013200e001e001000000007201e80096003200"
+        }
+      ],
+      "opaque_byte_limit": "NPC／敵方16..52只差+0x28..+0x30；不命名未知欄位。native保留payload不等於新版錯誤；既有JOIN殘值契約僅作限制旁證，不外推敵方writer。",
+      "residual_reference": "remake/internal/campaign/native_join_constructor.go MaterializePersistentRecordOn；既有persistent JOIN殘值保存，不宣稱這次敵方欄位語意",
+      "title_and_load_pngs": [
+        {
+          "seq": 0,
+          "old": {
+            "path": "work/parity-slot-ch18/guard-original-r3/checkpoint-0000.png",
+            "sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025",
+            "size": 15453
+          },
+          "native": {
+            "path": "work/parity-slot-ch18/guard-native-original-r1/checkpoint-0000.png",
+            "sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025",
+            "size": 15453
+          },
+          "equal": true
+        },
+        {
+          "seq": 16,
+          "old": {
+            "path": "work/parity-slot-ch18/guard-original-r3/checkpoint-0016.png",
+            "sha256": "b09f27f6d024ac97cea23a3fe51c98341b98314c42199ae40773edbb8fcdf624",
+            "size": 2427
+          },
+          "native": {
+            "path": "work/parity-slot-ch18/guard-native-original-r1/checkpoint-0016.png",
+            "sha256": "b09f27f6d024ac97cea23a3fe51c98341b98314c42199ae40773edbb8fcdf624",
+            "size": 2427
+          },
+          "equal": true
+        }
+      ]
+    },
+    "cpu_gap": {
+      "issue": 192,
+      "raw": "66 83 46 4C 0F",
+      "next_raw": "66 83 46 4E 0F",
+      "decoded": "ADD word [ESI+0x4C], sign_extended imm8(15)",
+      "source": "固定EXE實際CPU next_bytes，機械式指令解碼；不推測0x22A47玩家函式語意",
+      "public_contract": "Intel SDM Volume2A ADD 3-31..3-32"
+    },
+    "limits": [
+      "只有到T8的新原版收據；未取得完整章或remake重播",
+      "超過舊9.34b步數不證明相同FIG配对／BG懸空情境已經执行",
+      "前綴RNG及残值不同，不證明#102已修复，不关闭父题",
+      "原始近堆所有分支／GDT与周边實机时序未知",
+      "既有r4完整章PLAYER-E2保持；不增加新章驗收"
+    ],
+    "commands": {
+      "original_r1": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch18/guard-native-state-r1 -e FD2_ORACLE_HEAP_PROFILE=native -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=30000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=1 -e FD2_ORACLE_EIP_TRACE=0x335DA,0x205DA,0x1088D,0x10B4E,0x13A9F,0x1E54A,0x208CF,0x35091,0x3505F,0x3506B,0x23CD5 fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch18/guard-native-original-r1; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 5400 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch18-guard-r3.jsonl >work/parity-slot-ch18/guard-native-original-r1.log 2>&1'",
+      "remake_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=18 FD2_PARITY_SLOT=/src/work/parity-slot-ch18/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch18/guard-native-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch18/guard-native-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch18/guard-native-remake-r1.log 2>&1",
+      "verify_remake_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 18 --oracle work/parity-slot-ch18/guard-native-original-r1 --remake work/parity-slot-ch18/guard-native-remake-r1 --slot-manifest docs/data/parity-slots/ch18-manifest.json --plan docs/data/parity-plans/ch18-guard-r3.jsonl --out work/parity-slot-ch18/guard-native-verify-r1.json",
+      "original_r2": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -f /usr/bin/docker && test -S /var/run/docker.sock && docker run --rm --network none --memory 768m --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --group-add 984 --mount type=bind,src=/home/anr2/cht/fd2,dst=/home/anr2/cht/fd2 --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/home/anr2/cht/dosgolem-fd2-oracle,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/home/anr2/cht/dosgolem,readonly --mount type=bind,src=/usr/bin/docker,dst=/opt/docker-client,readonly --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --workdir /home/anr2/cht/fd2 -e FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle -e FD2_ORACLE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch18/guard-native-state-r2 -e FD2_ORACLE_HEAP_PROFILE=native -e FD2_ORACLE_CPUS=1 -e FD2_ORACLE_STEPS=30000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=1 -e FD2_ORACLE_EIP_TRACE=0x335DA,0x205DA,0x1088D,0x10B4E,0x13A9F,0x1E54A,0x208CF,0x35091,0x3505F,0x3506B,0x23CD5 fd2-go-test-local:20260909 bash -c 'docker() { /lib64/ld-linux-x86-64.so.2 /opt/docker-client \"$@\"; }; export -f docker; out=/home/anr2/cht/fd2/work/parity-slot-ch18/guard-native-original-r2; cleanup() { docker ps -aq --filter volume=\"$out\" | xargs -r docker stop -t 10 >/dev/null; }; trap cleanup EXIT; timeout --signal=TERM --kill-after=30s 5400 tools/dosgolem_oracle.sh \"$out\" docs/data/parity-plans/ch18-guard-r3.jsonl >work/parity-slot-ch18/guard-native-original-r2.log 2>&1'",
+      "native_prefix_r2": "python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch18/guard-native-original-r1 --full work/parity-slot-ch18/guard-native-original-r2 --prefix-commit 3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88 --full-commit 5f97a2531dd4faaeafc965266f3870e19137788e --max-seq 2023 --compare-frames --compare-trace --out work/parity-slot-ch18/native-prefix-through-stop-r2.json"
+    },
+    "cpu_followup": {
+      "issue": 192,
+      "dosgolem_commit": "5f97a2531dd4faaeafc965266f3870e19137788e",
+      "spec": "dosgolem docs/spec/186-fd2-platform-gap-continuation.md 批次156",
+      "status": "CONFORMED：CPU回歸、此前native完整前綴與原停止點接續",
+      "cpu_sha256": "3059653f53fe37a44be270184cb9cb0dc4ee5ba4c309f79d79b77e70c8e11267",
+      "before": {
+        "path": "work/parity-slot-ch18/word-add83-before-r2.log",
+        "sha256": "815330f260321ade983c98304f7e0a539f5d0e736a0c804e4686fe8eb1fb533d",
+        "size": 6643
+      },
+      "after": {
+        "path": "work/parity-slot-ch18/word-add83-after-r2.log",
+        "sha256": "11c1d24c389ec0144c47f95c8ce54ca3e87ec9a17254cb8ff5dece2122092fa8",
+        "size": 173
+      },
+      "verification_corrections": [
+        "before-r1驗證程式TF名稱未定義；改用0x100",
+        "after-r1預期值漏PF；只訂正測試，add16演算法保持"
+      ],
+      "next_gate": "父#102舊adapter前綴不等保持；同native來源的remake AI分岔#194優先，BG#193待可比狀態",
+      "prefix_validation": {
+        "path": "work/parity-slot-ch18/native-prefix-through-stop-r2.json",
+        "sha256": "84c5274c719e2997a36d1305906e5825901e2b98b20a005bc9f2705409365b4d",
+        "size": 1206
+      },
+      "runner_r2": {
+        "path": "work/parity-slot-ch18/guard-native-original-r2/runner.json",
+        "sha256": "5ab5e01ab772d5b7beb69c653f0e9a71963a546eac42e54dac6b2c715a85d7ce",
+        "size": 3630
+      },
+      "passed_stop": {
+        "checkpoint": {
+          "path": "work/parity-slot-ch18/guard-native-original-r2/checkpoint-2024.json",
+          "sha256": "d4019ad89c0ff7ed13c1171b53f80a44e8fd1e093eca7524a9caebcc6703e613",
+          "size": 101627
+        },
+        "steps": 10097400840,
+        "old_failure_step": 10084671521,
+        "state_injections": [],
+        "scope": "前綴逐項保持，完整span／flags回歸與新控制邊界正常接續；不以步數單獨證明舊STOSB情境"
+      },
+      "serialized_json_comparison": {
+        "pairs": 2024,
+        "unequal_sequences": [],
+        "method": "除既有semantic工具外，另核對完整JSON bytes，不排除排程欄位"
+      },
+      "spec_validation_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+      "issue_state": "CLOSED，2026-10-06主機gh核對",
+      "wrapper_sources": [
+        {
+          "path": "tools/dosgolem_oracle.sh",
+          "sha256": "38ffa6f1074552640f306109f9e7ae5db28fce8b7b7226f0502a4c3d7eb257a9"
+        },
+        {
+          "path": "tools/dosgolem_oracle_container.sh",
+          "sha256": "ecda64cd72fdd657bc7dc09e51cf90f8c941641b68426d0ecd810987d3a38a10"
+        }
+      ]
+    },
+    "remake_replay": {
+      "issue": 193,
+      "status": "BLOCKED：caller BG接續尚未READY，正式預檢保持",
+      "source": "目前FD2 e9fef70b正式Game；本批尚未修改remake規則",
+      "log": {
+        "path": "work/parity-slot-ch18/guard-native-remake-r1.log",
+        "sha256": "ec934ab6b44a3ad0cde0d0630a71a03f78e213dba14af4d43de2f30be4139e4a",
+        "size": 320458
+      },
+      "checkpoints": {
+        "path": "work/parity-slot-ch18/guard-native-remake-r1/checkpoints.jsonl",
+        "sha256": "4fdfed1de74518e5b0bfa610ad3f440b094da8cd83703b28455eb9cde6583f60",
+        "size": 882566
+      },
+      "error": "AI physical scene unavailable: native physical counter requires unavailable caller BG layers",
+      "observed": "T6 AI actor28對target8；主攻header1=0、反擊header1非0的既有拒收條件",
+      "consumer": "remake/cmd/fd2/native_physical_body.go prepareNativePhysicalBodyResources",
+      "evidence_contract": "docs/data/ida/fd2_physical_background_selection_20261004.json",
+      "limits": "目前只證明正式Game拒收；原版同caller的BG指標／payload未捕捉，不能移除拒收或猜補背景。不是新的整章驗收。",
+      "first_behavior_issue": 194,
+      "first_behavior_failure": {
+        "seq": 1638,
+        "kind": "after_enemy_phase",
+        "status": "hp_differ",
+        "hp_diff": {
+          "(0, 22, 7)": [
+            232,
+            506
+          ],
+          "(0, 22, 8)": [
+            506,
+            232
+          ]
+        },
+        "hp_diff_class": "rng_synced_point"
+      },
+      "comparison_report": {
+        "path": "work/parity-slot-ch18/guard-native-verify-r1.json",
+        "sha256": "0a9d80f763f1bc6d32b9d0c14c309557b4ce57e2bab729fab120eeb0d2380d00",
+        "size": 256842
+      },
+      "bg_source_correction": "actor28/target8是分岔後重製狀態，只證明預檢拒收；不是原版同狀態caller。先修#194再判定#193。",
+      "four_gates": {
+        "behavior": false,
+        "nodes": false,
+        "transaction": false,
+        "frames": false
+      }
+    },
+    "fresh_overlay_policy": {
+      "source": "work/parity-slot-ch18/FD2.SAV",
+      "source_sha256": "98d64cd594b8d22c2eaf2c26eaffa8485952be537d35bf2643521a898ddbc1b5",
+      "method": "Docker內核對manifest與SHA，拒收已存在的輸出目錄；建立state-r1／r2，只複製FD2.SAV，不繼承TMP或先前程序。",
+      "input_immutable": true
+    },
+    "original_r2": {
+      "recorded_at": "2026-10-06",
+      "status": "ORIGINAL_PLAN_COMPLETED；remake未通過，非新增章PLAYER-E2",
+      "wrapper_exit": 0,
+      "runner": {
+        "path": "work/parity-slot-ch18/guard-native-original-r2/runner.json",
+        "sha256": "5ab5e01ab772d5b7beb69c653f0e9a71963a546eac42e54dac6b2c715a85d7ce",
+        "size": 3630
+      },
+      "dosgolem_commit": "5f97a2531dd4faaeafc965266f3870e19137788e",
+      "heap_profile": "native",
+      "source_sha256": [
+        {
+          "path": "internal/machine/watcom_runtime.go",
+          "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        {
+          "path": "apps/fd2/cmd/oracle/main.go",
+          "sha256": "dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925"
+        },
+        {
+          "path": "internal/cpu386/cpu.go",
+          "sha256": "3059653f53fe37a44be270184cb9cb0dc4ee5ba4c309f79d79b77e70c8e11267"
+        },
+        {
+          "path": "internal/machine/le_startup.go",
+          "sha256": "bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206"
+        }
+      ],
+      "actions": {
+        "path": "work/parity-slot-ch18/guard-native-original-r2/actions.jsonl",
+        "sha256": "1114ebd19457965e502145c82c80b20eb2371dce519b7d7c96d929f85fd3ddce",
+        "size": 25063
+      },
+      "control_history": {
+        "path": "work/parity-slot-ch18/guard-native-original-r2/control-history.jsonl",
+        "sha256": "2ef1e3596b11636d6e3785facc7d0f288a26f179bdd945c007d8fef2ccac0a25",
+        "size": 103081
+      },
+      "eip_trace": {
+        "path": "work/parity-slot-ch18/guard-native-original-r2/eip-trace.jsonl",
+        "sha256": "1f7f6c47468399edb1363e8b082ee1337c16e7c4ce05774e01e56a49781df786",
+        "size": 406170
+      },
+      "current": {
+        "path": "work/parity-slot-ch18/guard-native-original-r2/current.json",
+        "sha256": "e3af7a60414571f7d6e8604f62521a84981f057eb59734255d4982f2c80bddfd",
+        "size": 109018
+      },
+      "final_seq": 2312,
+      "final_steps": 13717400840,
+      "final_view": {
+        "aux_phase": 0,
+        "camera_x": 18,
+        "camera_y": 4,
+        "cursor_x": 22,
+        "cursor_y": 7,
+        "gold": 1957,
+        "overlay_selector": 1,
+        "rng_word": 52677,
+        "round": 9,
+        "visible_x": 4,
+        "visible_y": 3
+      },
+      "state_injections": [
+        "force-enemy-clear：控制邊界依 0x53A45 單位陣列基底與 0x53BEB 筆數，將 camp 0 record +0x40 HP 寫為 0；至此執行 1 次、寫入 44 筆。這是修改路徑，只能驗證戰後節點、介面與存檔閉環，不得用來談傷害、存活、戰鬥結果或一般玩家路徑。"
+      ],
+      "plan_endpoints": [
+        {
+          "kind": "force_enemy_clear",
+          "seq": 2052,
+          "round": 9,
+          "rng_word": 38525,
+          "gold": 2000,
+          "cleared": 44,
+          "modified_path": true
+        },
+        {
+          "kind": "mark",
+          "seq": 2105,
+          "round": 9,
+          "rng_word": 46185,
+          "gold": 2000,
+          "label": "town_after_battle",
+          "ui": "town"
+        },
+        {
+          "kind": "shop_sell",
+          "seq": 2174,
+          "round": 9,
+          "rng_word": 62805,
+          "gold": 2037,
+          "building": 1,
+          "gold_before": 2000,
+          "gold_after": 2037,
+          "sold": true
+        },
+        {
+          "kind": "shop_buy",
+          "seq": 2231,
+          "round": 9,
+          "rng_word": 8455,
+          "gold": 1957,
+          "building": 3,
+          "gold_before": 2037,
+          "gold_after": 1957,
+          "bought": true
+        },
+        {
+          "kind": "town_save",
+          "seq": 2288,
+          "round": 9,
+          "rng_word": 30444,
+          "gold": 1957,
+          "slot": 0,
+          "save_sha256": "940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1",
+          "proof": "內容雜湊已更新"
+        },
+        {
+          "kind": "secret_shop",
+          "seq": 2312,
+          "round": 9,
+          "rng_word": 52677,
+          "gold": 1957,
+          "moves": [
+            "left",
+            "left"
+          ],
+          "key": "alt-f8",
+          "ui": "shop"
+        }
+      ],
+      "save": {
+        "path": "work/parity-slot-ch18/guard-native-state-r2/FD2.SAV",
+        "sha256": "940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1",
+        "size": 22987
+      },
+      "heap_summary": {
+        "allocation_returns": 8486,
+        "free_returns": 8125,
+        "exact_pointer_reuse_count": 7787,
+        "invalid_allocation_pointers": 0,
+        "pending_frames": 0
+      },
+      "limitations": [
+        "111建構槽與114加成政策；槽seed4不當作原版RNG seed",
+        "T9一次force-enemy-clear；其他章內狀態注入未啟用",
+        "周邊沿現有hardware-spec approximation",
+        "完整原版計畫可重生，不代表remake四gate通過",
+        "既有r4章驗收保持，#102的舊adapter同前綴要求仍未符合"
+      ]
+    }
   }
 }

@@ -59,7 +59,7 @@ def near_heap_policy(root):
         "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
         "apps/fd2/cmd/oracle/main.go": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
     reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234", 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925'}
-    native_reviewed = {'internal/machine/watcom_runtime.go': '00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f', 'apps/fd2/cmd/oracle/main.go': 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', 'internal/cpu386/cpu.go': 'bc183cf75d554b2f2ff4b5097693efeac86a88a4e179e4d3d7a4460683cb844d', 'internal/machine/le_startup.go': 'bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206'}
+    native_reviewed = {'internal/machine/watcom_runtime.go': '00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f', 'apps/fd2/cmd/oracle/main.go': 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', 'internal/cpu386/cpu.go': '3059653f53fe37a44be270184cb9cb0dc4ee5ba4c309f79d79b77e70c8e11267', 'internal/machine/le_startup.go': 'bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206'}
     profile = os.environ["FD2_ORACLE_HEAP_PROFILE"]
     sources = []
     for name in reviewed:
