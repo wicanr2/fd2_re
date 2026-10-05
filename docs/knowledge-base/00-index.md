@@ -521,7 +521,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第24章正常避敵計畫r2](../data/parity-plans/ch24-fresh-sample-r2.jsonl)：#142同槽／seed鍵盤輸入；現況與限制見[58](58-fd2-exe-re-coverage.md)。
 
-- [第24章指令6工作緩衝與目標演出契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)：#151 的0x2A300-byte／640-byte列距配置；#156 首次mode3座標、分層與跨目標state有限CONFORMED；#154負列仍拒收；#157正常命中／落空亂數交錯及#162的__CHP向零取整達有限CONFORMED；#161已證caller組圖接入正式路徑，11張正式component全圖indexed／RGB相同，第7張按#154拒收；12張一致仍屬隔離原型，完整正式施法未完成。
+- [第24章指令6工作緩衝與目標演出契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)：#151配置、#156分層與跨目標state、#157亂數及#162取整沿用；#154固定hash有界隔離已由使用者批准，#161正式12張全幅與#160正常鍵盤取消／施法通過。isolation_validation保存完整命令、三輪GPU及既有章／SAV回歸；原版完整heap與整章PLAYER-E2未宣稱。
 
 - [指令7跨目標亂數交錯](../data/ida/fd2_command7_target_rng_20261004.json)：#152，有界原版trace及規格入口。
 
@@ -535,7 +535,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [#154 玩家槽原地範圍指令6探針](../data/parity-plans/ch30-command6-side1-player-r2.jsonl)：同源正常CONTINUE、不經過敵軍回合；檢驗既有selection／effect與空格確認，非章E2。
 
-- [#160 玩家指令6範圍中心 RE 與草案](../data/ida/fd2_player_command6_cursor_center_20261004.json)：固定IDA caller／bytes、正常原地範圍確認收據；修正直接enemy候選假設及指令6白名單漏接；READY與有限RUNTIME-E1、同源CONTINUE探針、#154阻擋及剩餘驗收在同一主證據。
+- [#160 玩家指令6範圍中心契約](../data/ida/fd2_player_command6_cursor_center_20261004.json)：固定IDA caller／bytes及正常收據，游標Cell與effect名單達CONFORMED／RUNTIME-E1；completion_validation連至本輪正式取消／施法驗收，歷史限制保留。
 
 - [酒店讀檔與傳聞返回契約](../data/ida/fd2_hotel_load_20261004.json)：#32，服務2的整備槽拒絕／成功提示及酒店返回直接bytes；[正常酒店讀檔計畫](../data/parity-plans/hotel-load-ch04-r1.jsonl)只使用已登記第4章固定槽。
 
@@ -681,3 +681,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - 指令環有限公開總覽：[README繪圖順序](../../README.md#指令環與角色的繪圖順序)與[局部圖](../figures/ring-cursor-original-remake-overview.png)。完整原版／GPU留本機，來源雜湊見[主契約](../data/ida/fd2_parity_ring_open_20261005.json)。
 - #182 字串來源重綁：[清冊](../data/fd2-string-inventory.json)、[逐項處置](../data/fd2-string-review.json)，證據見同一份指令環主契約的inventory_rebind。
+
+- [指令6正常鍵盤GPU驗收](../../remake/cmd/fd2/native_command6_presentation_test.go)：TestNativeCommand6NormalKeyboardGPU由標題選單CONTINUE驅動正式Update／Draw，runner.json與固定EXE／SAV來源核對；命令見[主契約isolation_validation](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -9,9 +10,10 @@ import (
 	"image"
 	"image/png"
 	"os"
+	"os/exec"
 	"path/filepath"
-	"strings"
 	"testing"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -157,7 +159,7 @@ func TestNativeCommand6RNGMatchesOriginalChapter24Targets(t *testing.T) {
 }
 
 // #160 的 UI 回歸使用已證座標與固定 RNG；side0 是受控演出資料，
-// 非零側仍依 #154 拒收，不能把本測試稱為原版完整影格對拍。
+// 固定非零側採#154有界隔離；此規則抽樣不單獨證明原版影格對拍。
 func TestPlayerNativeCommand6CursorCentersThroughConfirm(t *testing.T) {
 	for _, side := range []byte{0, 1} {
 		for _, empty := range []bool{false, true} {
@@ -228,15 +230,7 @@ func TestPlayerNativeCommand6CursorCentersThroughConfirm(t *testing.T) {
 				if actor.MP != 1101 || actor.Acted || target.HP != 83 || center.HP != 877 || g.nativeRNGState != 3473 {
 					t.Fatal("confirm crossed prebuild boundary")
 				}
-				if side != 0 {
-					if g.nativeCmd6Presentation != nil || !strings.Contains(g.msg, "work frame bounds (141,-1 143x111)") {
-						t.Fatalf("expected #154 refusal after valid center, msg=%q", g.msg)
-					}
-					if !g.nativeCommand0Targeting || g.sel != actor {
-						t.Fatal("prebuild failure lost target modal")
-					}
-					return
-				}
+
 				if g.nativeCmd6Presentation == nil {
 					t.Fatalf("valid cursor did not start command6: %s", g.msg)
 				}
@@ -368,14 +362,27 @@ func TestNativeCommand6OriginalContinueCursorProbe(t *testing.T) {
 		command6SignedArenaPrototype(t, g, actor, plan, effect, schedule, prefix)
 	}
 	g.confirm()
-	if !strings.Contains(g.msg, "work frame bounds (141,-1 143x111)") || g.nativeCmd6Presentation != nil || actor.MP != 1101 || target.HP != 83 || actor.Acted || g.nativeRNGState != 3473 || !g.nativeCommand0Targeting {
-		t.Fatalf("expected #154 atomic refusal, msg=%s", g.msg)
+	if g.nativeCmd6Presentation == nil || actor.MP != 1101 || target.HP != 83 || actor.Acted || g.nativeRNGState != 3473 {
+		t.Fatalf("formal prebuild or transaction boundary differs, msg=%s", g.msg)
+	}
+	screen := ebiten.NewImage(640, 400)
+	for steps := 0; g.nativeCmd6Presentation != nil && steps < 256; steps++ {
+		if !g.drawNativeCommand6Presentation(screen) {
+			t.Fatal("formal command6 draw unavailable")
+		}
+		g.stepNativeCommand6Presentation()
+	}
+	if g.nativeCmd6Presentation != nil || actor.MP != 1071 || target.HP != 4 || !actor.Acted || g.nativeRNGState != 33552 || g.nativeCommand0Targeting || g.sel != nil {
+		t.Fatalf("formal command6 failed to return MP=%d HP=%d RNG=%d acted=%v err=%s", actor.MP, target.HP, g.nativeRNGState, actor.Acted, g.loadErr)
 	}
 	report := map[string]interface{}{"source_save_sha256": hash, "source_classification": "既有固定第三方玩家槽；同源CONTINUE局部資料流，不是全程正常鍵盤或章E2",
 		"actor_record": 6, "center": cursor, "center_record": 18, "effect_targets": []int{24}, "mp_before": 1101, "planned_mp_after": plan.MPAfter,
 		"hp_before": 83, "planned_hp_after": plan.Results[0].HPAfter, "controlled_rng_at_cast": 3473, "planned_rng_after": plan.RNGAfter,
 		"rng_method":    "執行施法規劃前固定原版0x1C75E entry3473，隔離中心與作用名單，不宣稱選單跨段骰序一致",
-		"render_result": "#154負列原子拒收", "error": g.msg, "state_unchanged": true, "original_runner": "dosgolem apps/fd2/cmd/oracle 951cb55f7834311fccbce208fde6bc48d57f1c5a"}
+		"render_result": "#154限定隔離完整施法返回", "error": g.loadErr, "actual_mp_after": actor.MP, "actual_hp_after": target.HP, "actual_rng_after": g.nativeRNGState, "actual_acted": actor.Acted}
+	if originalDir := os.Getenv("FD2_COMMAND6_PROTOTYPE_ORIGINAL"); originalDir != "" {
+		report["original_provenance"] = command6OriginalProvenance(t, filepath.Dir(originalDir))
+	}
 	if out := os.Getenv("FD2_COMMAND6_CURSOR_OUT"); out != "" {
 		raw, err := json.MarshalIndent(report, "", "  ")
 		if err != nil {
@@ -388,7 +395,7 @@ func TestNativeCommand6OriginalContinueCursorProbe(t *testing.T) {
 }
 
 // #154 可撤回原型。額外一列只保存已觀測的負位移寫入，不映射原版其他 heap。
-// 正式組圖仍拒收負列；此探針不更新 MP、HP、RNG 或玩家演出 owner。
+// 此獨立組圖參考不更新 MP、HP、RNG 或玩家演出 owner。
 func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, plan *battle.NativeCommandDamagePlan, effect *figani.Animation, schedule figani.NativeCommand6PresentationSchedule, prefix string) {
 	t.Helper()
 	if len(plan.Results) != 1 {
@@ -548,20 +555,14 @@ func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, pla
 		var formalErr error
 		if formalCheck {
 			formal, formalErr = battlepresent.ComposeNativeCommand6TargetFrame(bases[hpStage], actorEffect.Frames[len(actorEffect.Frames)-1], idle.Frames[idleFrame], effect, frame, displays[index])
-			if index == 7 {
-				if formalErr == nil || formal != nil || !strings.Contains(formalErr.Error(), "work frame bounds (141,-1 143x111)") {
-					t.Fatalf("formal guard changed frame%d err=%v", index, formalErr)
-				}
-			} else {
-				if formalErr != nil {
-					t.Fatal(formalErr)
-				}
-				if !bytes.Equal(formal, pixels) {
-					t.Fatalf("formal caller differs from original-matched prototype frame%d", index)
-				}
-				if err := os.WriteFile(fmt.Sprintf("%s-formal-frame-%02d.idx", prefix, index), formal, 0644); err != nil {
-					t.Fatal(err)
-				}
+			if formalErr != nil {
+				t.Fatal(formalErr)
+			}
+			if !bytes.Equal(formal, pixels) {
+				t.Fatalf("formal caller differs from original-matched prototype frame%d", index)
+			}
+			if err := os.WriteFile(fmt.Sprintf("%s-formal-frame-%02d.idx", prefix, index), formal, 0644); err != nil {
+				t.Fatal(err)
 			}
 		}
 		sum := sha256.Sum256(pixels)
@@ -650,16 +651,371 @@ func command6SignedArenaPrototype(t *testing.T, g *Game, actor *battle.Unit, pla
 	if err := os.WriteFile(prefix+"-palette.rgb", palette, 0644); err != nil {
 		t.Fatal(err)
 	}
-	report := map[string]interface{}{"status": "DRAFT test-only signed arena and #161 caller composition; not production or heap parity", "work_allocation_bytes": 640 * 270,
+	report := map[string]interface{}{"status": "independent test-only signed arena reference; formal composition checked separately; no heap parity claim", "work_allocation_bytes": 640 * 270,
 		"prototype_guard_bytes": 640, "background_selector": bgSelector, "platform_selector": taiSelector,
 		"raw_side": actor.NativeRecordByte6, "actor_battle_fig": actor.BattleFig, "target_battle_fig": target.BattleFig, "frames": reports,
-		"formal_caller_checked": formalCheck, "strict_frame7_rejected": formalCheck,
-		"comparison_scope": "12 prototype frames / 11 formal accepted frames, frame7 strict rejected; not complete formal cast"}
+		"formal_caller_checked": formalCheck, "strict_frame7_rejected": false,
+		"comparison_scope": "12 prototype and formal target frames; formal transaction checked separately"}
 	raw, err := json.MarshalIndent(report, "", "  ")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(prefix+".json", append(raw, '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+// 此測試由 X11 正常鍵盤驅動 Game.Update／Game.Draw，不設 modal 旗標。
+// 起點明示為標題選單；僅施法入口一次承接原版 RNG3473。
+const command6X11Keys = `
+import ctypes as c,json,os,time,sys
+from pathlib import Path
+x=c.CDLL('libX11.so.6');t=c.CDLL('libXtst.so.6')
+x.XOpenDisplay.restype=c.c_void_p;x.XOpenDisplay.argtypes=[c.c_char_p]
+d=x.XOpenDisplay(os.environ['DISPLAY'].encode())
+if not d:raise RuntimeError('X display unavailable')
+x.XDefaultRootWindow.argtypes=[c.c_void_p];x.XDefaultRootWindow.restype=c.c_ulong
+x.XQueryTree.argtypes=[c.c_void_p,c.c_ulong,c.POINTER(c.c_ulong),c.POINTER(c.c_ulong),c.POINTER(c.POINTER(c.c_ulong)),c.POINTER(c.c_uint)]
+x.XFetchName.argtypes=[c.c_void_p,c.c_ulong,c.POINTER(c.c_char_p)]
+x.XFree.argtypes=[c.c_void_p]
+x.XSetInputFocus.argtypes=[c.c_void_p,c.c_ulong,c.c_int,c.c_ulong]
+x.XStringToKeysym.argtypes=[c.c_char_p];x.XStringToKeysym.restype=c.c_ulong
+x.XKeysymToKeycode.argtypes=[c.c_void_p,c.c_ulong];x.XKeysymToKeycode.restype=c.c_uint
+x.XFlush.argtypes=[c.c_void_p]
+t.XTestFakeKeyEvent.argtypes=[c.c_void_p,c.c_uint,c.c_int,c.c_ulong]
+def find(w):
+ name=c.c_char_p()
+ if x.XFetchName(d,w,c.byref(name)) and name:
+  match=name.value==b'FD2 command6 keyboard parity';x.XFree(name)
+  if match:return w
+ root=c.c_ulong();parent=c.c_ulong();children=c.POINTER(c.c_ulong)();n=c.c_uint()
+ if not x.XQueryTree(d,w,c.byref(root),c.byref(parent),c.byref(children),c.byref(n)):return 0
+ ids=[children[i] for i in range(n.value)]
+ if children:x.XFree(children)
+ for child in ids:
+  got=find(child)
+  if got:return got
+ return 0
+root=Path(sys.argv[1]);seq=0;names={'down':'Down','up':'Up','left':'Left','right':'Right','enter':'Return','escape':'Escape'}
+while True:
+ request=root/f'request-{seq:03d}.json'
+ if not request.exists():time.sleep(.01);continue
+ window=find(x.XDefaultRootWindow(d))
+ if not window:time.sleep(.01);continue
+ p=json.loads(request.read_text());assert p['seq']==seq
+ x.XSetInputFocus(d,window,2,0)
+ key=x.XKeysymToKeycode(d,x.XStringToKeysym(names[p['key']].encode()))
+ assert key
+ assert t.XTestFakeKeyEvent(d,key,1,0);x.XFlush(d);time.sleep(.06)
+ assert t.XTestFakeKeyEvent(d,key,0,0);x.XFlush(d);time.sleep(.06)
+ (root/f'ack-{seq:03d}').write_text(p['key'])
+ print(json.dumps(p),flush=True);seq+=1
+`
+
+type command6KeyboardGPUProbe struct {
+	g                             *Game
+	dir, original, out            string
+	stage, seq, ticks, waitTicks  int
+	pending                       string
+	drawn, cancelled, castStarted bool
+	cancelRNG                     uint16
+	err                           error
+	seen                          [12]bool
+	frames                        []map[string]any
+}
+
+func (p *command6KeyboardGPUProbe) key(key string, ready func() bool) bool {
+	if p.err != nil {
+		return false
+	}
+	if p.pending == "" {
+		p.pending = key
+		p.waitTicks = 0
+		raw, _ := json.Marshal(map[string]any{"seq": p.seq, "stage": p.stage, "key": key})
+		p.err = os.WriteFile(filepath.Join(p.dir, fmt.Sprintf("request-%03d.json", p.seq)), raw, 0644)
+		return false
+	}
+	p.waitTicks++
+	if p.waitTicks > 240 {
+		p.err = fmt.Errorf("keyboard stage%d key%s timeout: title%s/%d cursor%d,%d ring%v/%s command%v/%d target%v msg%s",
+			p.stage, p.pending, p.g.titlePhase, p.g.titleSel, p.g.curX, p.g.curY, p.g.ring, p.g.actionOverlayPhase, p.g.nativeCommandOpen, p.g.nativeCommandSel, p.g.nativeCommand0Targeting, p.g.msg)
+		return false
+	}
+	if fileExists(filepath.Join(p.dir, fmt.Sprintf("ack-%03d", p.seq))) && ready() {
+		p.pending = ""
+		p.seq++
+		return true
+	}
+	return false
+}
+
+func (p *command6KeyboardGPUProbe) gotoCell(x, y int) bool {
+	g := p.g
+	if p.pending == "" && g.curX == x && g.curY == y {
+		return true
+	}
+	key := "down"
+	switch {
+	case g.curX < x:
+		key = "right"
+	case g.curX > x:
+		key = "left"
+	case g.curY > y:
+		key = "up"
+	}
+	return p.key(key, func() bool { return true }) && g.curX == x && g.curY == y
+}
+
+func (p *command6KeyboardGPUProbe) Update() error {
+	p.ticks++
+	if p.err != nil {
+		return p.err
+	}
+	if p.ticks > 3600 {
+		return fmt.Errorf("normal command6 keyboard owner timeout stage%d", p.stage)
+	}
+	if err := p.g.Update(); err != nil {
+		return err
+	}
+	g := p.g
+	if !p.drawn {
+		return nil
+	}
+	switch p.stage {
+	case 0:
+		if p.key("down", func() bool { return g.titleSel == 1 }) {
+			p.stage++
+		}
+	case 1:
+		if p.key("down", func() bool { return g.titleSel == 2 }) {
+			p.stage++
+		}
+	case 2:
+		if p.key("enter", func() bool { return g.st != nil && g.camp.NodeID() == "battle_ch30" && g.titlePhase == "" }) {
+			p.stage++
+		}
+	case 3:
+		if p.gotoCell(20, 22) {
+			p.stage++
+		}
+	case 4:
+		if p.key("enter", func() bool { return g.sel == g.st.Units[6] }) {
+			p.stage++
+		}
+	case 5:
+		if p.key("enter", func() bool { return g.ring && !g.actionOverlayBlocksInput() }) {
+			p.stage++
+		}
+	case 6:
+		if p.key("left", func() bool { return g.ringSel == 1 }) {
+			p.stage++
+		}
+	case 7:
+		if p.key("enter", func() bool { return g.nativeCommandOpen }) {
+			p.stage++
+		}
+	case 8:
+		ids := g.sel.NativeCommandIDs()
+		if p.pending == "" && ids[g.nativeCommandSel] == 6 {
+			p.stage++
+		} else {
+			p.key("down", func() bool { return true })
+		}
+	case 9:
+		if p.key("enter", func() bool { return g.nativeCommand0Targeting && g.nativeCommandTargetID == 6 }) {
+			p.stage++
+		}
+	case 10:
+		if p.gotoCell(22, 20) {
+			p.cancelRNG = g.nativeRNGState
+			p.stage++
+		}
+	case 11:
+		if p.key("escape", func() bool { return g.nativeCommandOpen && !g.nativeCommand0Targeting }) {
+			if g.st.Units[6].MP != 1101 || g.st.Units[24].HP != 83 || g.st.Units[6].Acted || g.nativeRNGState != p.cancelRNG {
+				return fmt.Errorf("normal command6 cancel mutated transaction")
+			}
+			p.cancelled = true
+			p.stage++
+		}
+	case 12:
+		if p.key("enter", func() bool { return g.nativeCommand0Targeting && g.nativeCommandTargetID == 6 }) {
+			p.stage++
+		}
+	case 13:
+		if p.gotoCell(22, 20) {
+			g.nativeRNGState = 3473
+			p.stage++
+		}
+	case 14:
+		if p.key("enter", func() bool { return g.nativeCmd6Presentation != nil }) {
+			p.castStarted = true
+			p.stage++
+		}
+	case 15:
+		if p.castStarted && g.nativeCmd6Presentation == nil {
+			if g.st.Units[6].MP != 1071 || g.st.Units[24].HP != 4 || !g.st.Units[6].Acted || g.nativeRNGState != 33552 || g.nativeCommand0Targeting || g.sel != nil || g.loadErr != "" {
+				return fmt.Errorf("normal command6 final transaction differs MP%d HP%d RNG%d error%s", g.st.Units[6].MP, g.st.Units[24].HP, g.nativeRNGState, g.loadErr)
+			}
+			return ebiten.Termination
+		}
+	}
+	return p.err
+}
+
+func (p *command6KeyboardGPUProbe) Draw(screen *ebiten.Image) {
+	if p.err != nil {
+		return
+	}
+	job := p.g.nativeCmd6Presentation
+	index := -1
+	if job != nil && job.phase == nativeCommand6Handler && job.frame >= 7 && job.frame < 19 {
+		index = job.frame - 7
+	}
+	p.g.Draw(screen)
+	p.drawn = true
+	if index < 0 || p.seen[index] {
+		return
+	}
+	path := filepath.Join(p.original, "frames", fmt.Sprintf("frame-%06d.png", index))
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		p.err = err
+		return
+	}
+	decoded, err := png.Decode(bytes.NewReader(raw))
+	if err != nil {
+		p.err = err
+		return
+	}
+	original, ok := decoded.(*image.Paletted)
+	if !ok || original.Bounds() != image.Rect(0, 0, 320, 200) {
+		p.err = fmt.Errorf("original frame%d shape invalid", index)
+		return
+	}
+	actual := make([]byte, 640*400*4)
+	screen.ReadPixels(actual)
+	diff := 0
+	for y := 0; y < 400; y++ {
+		for x := 0; x < 640; x++ {
+			r, g, b, _ := original.At(x/2, y/2).RGBA()
+			at := (y*640 + x) * 4
+			if actual[at] != byte(r>>8) || actual[at+1] != byte(g>>8) || actual[at+2] != byte(b>>8) || actual[at+3] != 255 {
+				diff++
+			}
+		}
+	}
+	if diff != 0 {
+		p.err = fmt.Errorf("normal Game.Draw target%d full GPU differs%d", index, diff)
+		return
+	}
+	pic := &image.NRGBA{Pix: actual, Stride: 640 * 4, Rect: image.Rect(0, 0, 640, 400)}
+	var encoded bytes.Buffer
+	if err := png.Encode(&encoded, pic); err != nil {
+		p.err = err
+		return
+	}
+	target := fmt.Sprintf("%s-frame-%02d.png", p.out, index)
+	if err := os.WriteFile(target, encoded.Bytes(), 0644); err != nil {
+		p.err = err
+		return
+	}
+	p.frames = append(p.frames, map[string]any{"index": index, "original": path, "original_png_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)),
+		"gpu": target, "gpu_png_sha256": fmt.Sprintf("%x", sha256.Sum256(encoded.Bytes())), "full_rgba_differences": diff})
+	p.seen[index] = true
+}
+
+func (p *command6KeyboardGPUProbe) Layout(int, int) (int, int) { return 640, 400 }
+
+func command6OriginalProvenance(t *testing.T, dir string) map[string]any {
+	t.Helper()
+	raw, err := os.ReadFile(filepath.Join(dir, "runner.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var runner map[string]any
+	if err := json.Unmarshal(raw, &runner); err != nil {
+		t.Fatal(err)
+	}
+	if runner["runner"] != "dosgolem apps/fd2/cmd/oracle" ||
+		runner["container_entry"] != "tools/dosgolem_oracle_container.sh" ||
+		runner["original_fd2_exe_sha256"] != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" ||
+		runner["dosgolem_tracked_dirty_files"] != float64(0) || runner["dosgolem_untracked_files"] != float64(0) ||
+		runner["lock_ally_hp"] != false || runner["force_enemy_clear_declared"] != false {
+		t.Fatal("command6 original runner provenance invalid")
+	}
+	commit, ok := runner["dosgolem_commit"].(string)
+	if !ok || len(commit) != 40 {
+		t.Fatal("command6 original runner commit missing")
+	}
+	return map[string]any{"runner_path": filepath.Join(dir, "runner.json"), "runner_sha256": fmt.Sprintf("%x", sha256.Sum256(raw)),
+		"runner": runner["runner"], "commit": commit, "exe_sha256": runner["original_fd2_exe_sha256"], "near_heap_policy": runner["near_heap_policy"]}
+}
+
+func TestNativeCommand6NormalKeyboardGPU(t *testing.T) {
+	if os.Getenv("FD2_COMMAND6_KEYBOARD_GPU") != "1" {
+		t.Skip("dedicated normal keyboard GPU invocation required")
+	}
+	save := os.Getenv("FD2_COMMAND6_CURSOR_SAVE")
+	stored, err := os.ReadFile(save)
+	if err != nil || fmt.Sprintf("%x", sha256.Sum256(stored)) != "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f" {
+		t.Fatal("fixed player source unavailable", err)
+	}
+	original := os.Getenv("FD2_COMMAND6_GPU_ORIGINAL")
+	out := os.Getenv("FD2_COMMAND6_GPU_OUT")
+	if original == "" || out == "" {
+		t.Fatal("original and output paths required")
+	}
+	provenance := command6OriginalProvenance(t, original)
+	t.Setenv("FD2_NATIVE_SAVE", save)
+	t.Setenv("FD2_NATIVE_TITLE_TICK", "")
+	t.Setenv("FD2_TITLE", "1")
+	t.Setenv("FD2_MUTE", "1")
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := loadGame()
+	if g.loadErr != "" {
+		t.Fatal(g.loadErr)
+	}
+	g.camp, g.titlePhase, g.titleSel = campaign.NewRunner(graph), "menu", 0
+	p := &command6KeyboardGPUProbe{g: g, dir: t.TempDir(), original: original, out: out}
+	ctx, cancel := context.WithTimeout(context.Background(), 65*time.Second)
+	cmd := exec.CommandContext(ctx, "python3", "-c", command6X11Keys, p.dir)
+	var log bytes.Buffer
+	cmd.Stdout, cmd.Stderr = &log, &log
+	if err := cmd.Start(); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	ebiten.SetWindowTitle("FD2 command6 keyboard parity")
+	ebiten.SetWindowSize(640, 400)
+	runErr := ebiten.RunGame(p)
+	cancel()
+	cmd.Wait()
+	if err := os.WriteFile(out+"-keys.jsonl", log.Bytes(), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if runErr != nil || p.err != nil || !p.cancelled || !p.castStarted {
+		t.Fatalf("normal keyboard failed: %v / %v\n%s", runErr, p.err, log.String())
+	}
+	for i, seen := range p.seen {
+		if !seen {
+			t.Fatalf("normal GPU frame%d skipped", i)
+		}
+	}
+	report := map[string]any{"status": "passed", "source_save_sha256": fmt.Sprintf("%x", sha256.Sum256(stored)), "original_provenance": provenance,
+		"source_classification":  "固定第三方槽，標題選單CONTINUE至正常鍵盤法術選單、取消、完整施法；非章PLAYER-E2",
+		"input":                  "X11 XTest keyboard through production Game.Update; no modal handoff or coordinate injection",
+		"controlled_rng_at_cast": 3473, "mp_after": g.st.Units[6].MP, "target_hp_after": g.st.Units[24].HP, "rng_after": g.nativeRNGState,
+		"acted": g.st.Units[6].Acted, "cancel_unchanged": p.cancelled, "normal_player_modal_restored": g.sel == nil && !g.nativeCommand0Targeting,
+		"frames": p.frames, "key_count": p.seq, "ticks": p.ticks, "limits": "12 target GPU frames; other presentation phases and audio not original-matched"}
+	raw, err := json.MarshalIndent(report, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(out+".json", append(raw, '\n'), 0644); err != nil {
 		t.Fatal(err)
 	}
 }

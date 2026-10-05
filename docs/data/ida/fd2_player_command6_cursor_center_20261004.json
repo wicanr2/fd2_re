@@ -3,7 +3,7 @@
   "kind": "fd2_player_command6_cursor_center",
   "date": "2026-10-04",
   "issue": 160,
-  "status": "RE-CLOSED / DATA-READY / limited RUNTIME-E1; player cast blocked by #154",
+  "status": "RE-CLOSED / DATA-READY / CONFORMED RUNTIME-E1；限定正常鍵盤指令6施法，非章PLAYER-E2",
   "layers": {
     "RE-CLOSED": true,
     "DATA-READY": true,
@@ -1675,7 +1675,7 @@
   },
   "limits": [
     "第三方槽不證明自然成長、傷害平衡或整章PLAYER-E2。",
-    "不把原版heap配置前負列寫入當安全語意；#154獨立。",
+    "負列只採用#154經使用者批准的固定hash有界隔離，仍不證明原版完整heap語意。",
     "未審查的原始instructions語意保留unknown警示。"
   ],
   "current_ui_already_correct": {
@@ -1783,6 +1783,19 @@
         "first_run_limit": "初次失敗log被第二輪同一路徑覆寫，只保留當時工具輸出與本輪診斷來源；不將重建文字冒稱原log。"
       }
     },
-    "remaining": "#154正常非零側渲染、12張完整原版target viewport比對及正式玩家端到端驗收仍待，#160不關閉。"
+    "remaining": "#154正常非零側渲染、12張完整原版target viewport比對及正式玩家端到端驗收仍待，#160不關閉。",
+    "historical_scope": "2026-10-04有限驗證保留；目前驗收由completion_validation取代。"
+  },
+  "completion_validation": {
+    "date": "2026-10-05",
+    "status": "CONFORMED / RUNTIME-E1",
+    "canonical": "docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json#isolation_validation",
+    "issues": [
+      154,
+      160,
+      161
+    ],
+    "scope": "真實CONTINUE、正常鍵盤法術選單、我方中心、取消不改交易及正式非零側演出返回；原有直接敵格、空格、無敵範圍、格外中心與AI測試完整回歸。",
+    "remaining": "整章PLAYER-E2、其他演出階段逐幀與人耳音訊不由此驗收。"
   }
 }

@@ -9606,3 +9606,11 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 此前以殘差形狀推斷「開框中途」的說法已失效。第四、五章的原版返回鏈在17898等待／角色重繪，增加四步開框候選未改善任何點。真正差異是游標角色重繪與53C13閃爍。51A83的overlay_selector不能代替53C13。其他章沿用的歷史差異數仍保留，但不再據此宣稱同一成因或已補驗。
 
 第五章舊end_turn缺before_seq，由原版同回合117F8→118C6／16FAE唯一正常Enter來源恢復，原始actions與SAV不改。完整章回歸、有限像素及正式GPU的統計只見[58](58-fd2-exe-re-coverage.md)；本輪沒有新增章PLAYER-E2。
+
+## 2026-10-05 指令6限定隔離驗收（#154／#160／#161）
+
+使用者已採用#154的限定隔離方案。正式組圖只對固定FDOTHER #32的完整具型別內容雜湊、Mode5／channel2／frame9／secondary及已證實座標保留一個前置寫入。獨立640-byte前置列不與背景、heap或存檔共用；其他負列與普通actor／target仍嚴格拒收。全序列預建及失敗零交易沿用。
+
+#161的正式組圖與#160的正常游標確認已連成完整施法路徑，達限定CONFORMED／DATA-READY／RUNTIME-E1。正常鍵盤由標題CONTINUE進法術選單、我方中心、Escape取消，再確認施法至操作權返回；施法入口一次承接RNG3473。這取代前述「第7張仍拒收」、「12張只屬原型」及「#154待使用者決策」的現況說法，歷史證據與失敗成因保留。
+
+固定第三方槽不增加章PLAYER-E2。目前dosgolem配置器政策仍標unknown，原版malloc與完整heap consumer未證實；雙目標轉場、演出其他階段及音訊不由12張target影格外推。唯一數字、完整命令、來源與產物雜湊見[指令6主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)的isolation_validation及[58目前狀態](58-fd2-exe-re-coverage.md)。

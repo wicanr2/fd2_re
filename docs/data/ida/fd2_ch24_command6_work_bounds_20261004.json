@@ -7950,7 +7950,7 @@
     {
       "issue": 161,
       "id": "command6-target-full-frame-composition",
-      "status": "RE-CLOSED / DATA-READY / limited RUNTIME-E1; #154完整非零側仍拒收",
+      "status": "CONFORMED / DATA-READY / RUNTIME-E1；限定畫面相容契約，非完整heap或章PLAYER-E2",
       "evidence_level": "已證實於固定hash、單target正常原版可見viewport；其他case待測",
       "input": {
         "input": "FD2.EXE",
@@ -11690,10 +11690,13 @@
         "ida_chp": "test -f /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2/FD2.EXE && test -d /home/anr2/cht/fd2/work/parity-slot-ch24 && timeout 360 docker run --rm --name fd2-command6-chp-ida --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24,dst=/out -e PROBE_ADDRESSES=\"0x377A4\" -e PROBE_OUTPUT=/out/command6-chp-ida-r1.json --workdir /tmp --entrypoint timeout ida-pro-9.4-idapython:locked-v1 330 idat -A -o/tmp/fd2.i64 -S/src/tools/ida_opening_input_probe.py /input/FD2.EXE > work/parity-slot-ch24/command6-chp-ida-r1.log 2>&1"
       },
       "decision": {
-        "status": "pending user",
+        "status": "confirmed",
         "proposal": "only fingerprinted FDOTHER32 use separate bounded signed prefix; preserve known -422 write; unknown resources retain strict rejection",
         "basis": "full12viewport exact; other outside-allocation heap consumers unknown",
-        "limits": "not original heap parity; no save/schema change; no production implementation before user decision"
+        "limits": "只採用已批准有限畫面相容處理；原版完整heap parity仍未知。",
+        "date": "2026-10-05",
+        "user_answer": "採用限定隔離方案（建議）",
+        "scope": "僅固定FDOTHER32以有界signed prefix保留前置寫入；其他來源維持嚴格拒收。不宣稱原版完整heap parity。"
       },
       "implementation": {
         "date": "2026-10-04",
@@ -12095,8 +12098,929 @@
           "unexpected_fd2_containers": "none; one-shot tests exited with --rm",
           "original_inputs": "readonly; no original assets staged",
           "worklist": "true-host gh auth+list r112; cmd_pull/render/verify24 open, zero stale; lessons136/41guards"
+        },
+        "historical_scope": "2026-10-04，已由2026-10-05 isolation_validation取代；保留當時11張及第7張拒收成因。"
+      },
+      "current_validation": "isolation_validation"
+    }
+  ],
+  "isolation_spec": {
+    "issue": 154,
+    "status": "CONFORMED",
+    "date": "2026-10-05",
+    "authorization": "使用者明確採用限定隔離方案",
+    "source_raw_sha256": "e6da6dcb8b90125c542cf0f160efdd4362d1bc6be8294e21125c31024853697b",
+    "typed_sha256": "3ebd12dfb0cb4fec35e968551672d6c644e1475dc2ac8a3353b523e3d05005d3",
+    "typed_serialization": "fd2-command6-typed-v1 NUL, headers byte1/2/4, count uint32 LE, each X/Y/Width/Height/Delay int32 LE, bytes4/5/7, indexed bytes, binary masks",
+    "contract": [
+      "只在指令6target及transition的相同mode5 secondary effect層套用；整份decoded animation的headers／descriptor／pixels／mask指紋精確匹配，無來源名稱猜測。",
+      "只允許frame9 mode5 secondary channel2的已觀測矩形(141,-1,143,111)，負opaque offset須唯一為-422；以獨立640-byte前置列保留，所有其他負範圍／來源拒收。",
+      "普通actor／target／其他caller及270列後端、640列距與畸形frame仍嚴格拒收。signed prefix不映射到背景、其他heap或存檔。",
+      "完整序列及全部資產預建後才發布，MP／HP／Acted／RNG沿既有交易與Draw生命周期。",
+      "固定原版正常CONTINUE計畫、233點前綴、12張target全幅indexed／RGB、正式正常modal交接、GPU與相關回歸驗證。"
+    ],
+    "limits": [
+      "畫面相容處理；配置前其他heap consumer仍unknown。",
+      "固定第三方存檔與controlled施法RNG3473明示，不外推章PLAYER-E2、自然傷害或選目標。"
+    ],
+    "review": {
+      "status": "READY",
+      "basis": [
+        "既有IDA直接dest／writer證據",
+        "既有12張無遮罩原型全圖一致",
+        "2026-10-05目前oracle同計畫233/233 CPU／raw／view前綴零差異",
+        "使用者明確定案"
+      ]
+    },
+    "revisions": [
+      {
+        "status": "READY",
+        "reason": "真實兩目標預建顯示transition首幀沿同一mode5/channel2/frame9/Secondary writer與(141,-1,143,111)幾何；復用相同指紋、唯一-422與隔離列，沒有擴大資源或負寫入範圍。",
+        "basis": "既有#156 transition layer consumer；全序列typed state保留同一effect writer。",
+        "limits": "多目標完整原版畫面未抽驗，只驗writer邊界及內部一致，不外推新原版parity。"
+      }
+    ]
+  },
+  "isolation_validation": {
+    "date": "2026-10-05",
+    "status": "CONFORMED / DATA-READY / RUNTIME-E1，限定已批准畫面相容契約",
+    "issues": [
+      154,
+      160,
+      161
+    ],
+    "spec_review": "使用者採用限定隔離方案；先完成READY與GitHub登記再接production。",
+    "decision_comment": "https://github.com/wicanr2/fd2_re/issues/154#issuecomment-5994343114",
+    "original": {
+      "path": "work/parity-slot-ch24/player-command6-current-original-r4",
+      "runner": {
+        "path": "work/parity-slot-ch24/player-command6-current-original-r4/runner.json",
+        "sha256": "f7cad3b1a7b157557409d7b9c7146c717799684f88d853bd1e59d45a01a9c063"
+      },
+      "commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+      "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "tracked_dirty": 0,
+      "untracked": 0,
+      "near_heap_policy": {
+        "kind": "dosgolem_runtime_approximation",
+        "status": "unknown",
+        "sources": [
+          {
+            "path": "internal/machine/watcom_runtime.go",
+            "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+          },
+          {
+            "path": "apps/fd2/cmd/oracle/main.go",
+            "sha256": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea"
+          }
+        ],
+        "heap_mib": 32,
+        "allocation_hook": "WatcomNearHeap.Handle / allocate",
+        "free_hook": "WatcomNearHeap.handleFree / release",
+        "reused_allocation_contents": "unknown",
+        "original_allocator_parity": "unverified",
+        "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+        "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"
+      },
+      "state_injections_enabled": false,
+      "frame_eip": "0x2AFBF",
+      "frames": 12,
+      "prefix_comparison": {
+        "path": "work/parity-slot-ch24/player-command6-current-prefix-r1.json",
+        "sha256": "24e8c2a55e7a617ab91cee339f5dd5421d94a366c41472888cb582297dde6a70"
+      },
+      "prefix_points": 233,
+      "prefix_difference_count": 0
+    },
+    "fixed_save": {
+      "path": "work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav",
+      "sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f"
+    },
+    "random_control": {
+      "entry": 3473,
+      "method": "施法入口一次承接原版entry；不宣稱跨選單RND內部次數一致。",
+      "final": 33552
+    },
+    "formal_components": {
+      "path": "work/parity-slot-ch24/player-command6-signed-formal-r8.json",
+      "sha256": "5dec70add3f222b12f90ddcbef00e802fa703412363fb96b6dbdf788ce3d67ab",
+      "cursor": {
+        "path": "work/parity-slot-ch24/player-command6-signed-formal-r8-cursor.json",
+        "sha256": "12aa76dcd5a78de5932359fe6c1174584f1293e2ed3b85c02395bbee194b6c4f"
+      },
+      "frames": [
+        {
+          "display": {
+            "Shader": 2224,
+            "OffsetX": 0,
+            "OffsetY": 0,
+            "RNGAfter": 59907,
+            "Next": {
+              "Shade": 7,
+              "Pose": 3,
+              "Jitter": -1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 0,
+          "idle_frame": 0,
+          "index": 0,
+          "indexed_differences": 0,
+          "indexed_sha256": "7416cf08e45e261b4977e0904907b9ba775f25f11e171f9b508ba384e16e2dc5",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000000.png",
+          "original_png_sha256": "674ab679458af54e75f55f5770a666851e5874fc0e626e186b6816eeb6b06e7e",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-00.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1968,
+            "OffsetX": 0,
+            "OffsetY": 0,
+            "RNGAfter": 53435,
+            "Next": {
+              "Shade": 6,
+              "Pose": 0,
+              "Jitter": -1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 0,
+          "idle_frame": 0,
+          "index": 1,
+          "indexed_differences": 0,
+          "indexed_sha256": "aa73d59fa71aab89fcfebb44f7c7437b23ba521ce385cad150191f0107107450",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000001.png",
+          "original_png_sha256": "74d72e73e18890aac91b097405dbda15b4ed0d9268550b6728ed8bc9d1abd05a",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-01.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1712,
+            "OffsetX": -6,
+            "OffsetY": -3,
+            "RNGAfter": 1659,
+            "Next": {
+              "Shade": 5,
+              "Pose": 0,
+              "Jitter": 1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 1,
+          "idle_frame": 0,
+          "index": 2,
+          "indexed_differences": 0,
+          "indexed_sha256": "086d7e04805941aa34437a998ebf34983c02614a9a2b1b021ac51e1f9f8d0fe8",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000002.png",
+          "original_png_sha256": "afee767ed313aed1fc14a0da70d0f9b7418311bfe1c965357b91d6cc9ea2dfa0",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-02.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1456,
+            "OffsetX": 6,
+            "OffsetY": -3,
+            "RNGAfter": 46204,
+            "Next": {
+              "Shade": 4,
+              "Pose": 0,
+              "Jitter": 0
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 2,
+          "idle_frame": 0,
+          "index": 3,
+          "indexed_differences": 0,
+          "indexed_sha256": "2dd01faaf7e887c552416336fc588b47cd5d518b294d52f6e0e3ff37398d8cf7",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000003.png",
+          "original_png_sha256": "034ce1267a5400f5b25b4906f7ef139ea0312e365f7fd69382682ab6dbf9b06f",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-03.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1200,
+            "OffsetX": 0,
+            "OffsetY": -3,
+            "RNGAfter": 9346,
+            "Next": {
+              "Shade": 3,
+              "Pose": 0,
+              "Jitter": 0
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 3,
+          "idle_frame": 0,
+          "index": 4,
+          "indexed_differences": 0,
+          "indexed_sha256": "58c5bd21d6f7199ddbbe6ce21703bfb0b2fd4586d95021b28ea43d5308ce0233",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000004.png",
+          "original_png_sha256": "ee5945f4bf53f4b91f482b39ffa1fe1c998313619f4d2ea7c03103aad7836c7b",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-04.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 944,
+            "OffsetX": 0,
+            "OffsetY": -3,
+            "RNGAfter": 42165,
+            "Next": {
+              "Shade": 2,
+              "Pose": 0,
+              "Jitter": 1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 4,
+          "idle_frame": 0,
+          "index": 5,
+          "indexed_differences": 0,
+          "indexed_sha256": "8567fb4f51017dff440ce36a1cee2ff9ce2afe397195e1faa465610afe94a320",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000005.png",
+          "original_png_sha256": "103e34d26f80df77bb40c4aa443ca440f3f563928a24e7db55b18138dd9f9112",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-05.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 688,
+            "OffsetX": 6,
+            "OffsetY": -3,
+            "RNGAfter": 42569,
+            "Next": {
+              "Shade": 8,
+              "Pose": 0,
+              "Jitter": -1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 5,
+          "idle_frame": 0,
+          "index": 6,
+          "indexed_differences": 0,
+          "indexed_sha256": "46ce1bab4b9fc59dc692460949976ace9db0690772e358fd3772f5a0757a5a50",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000006.png",
+          "original_png_sha256": "778eb539a47d84e8422cdfab6b3115e317ba8224dbc6b755511cc11f9c1ec374",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-06.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 2224,
+            "OffsetX": -6,
+            "OffsetY": -3,
+            "RNGAfter": 45801,
+            "Next": {
+              "Shade": 7,
+              "Pose": 0,
+              "Jitter": 1
+            }
+          },
+          "first_negative_offset": -422,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 5,
+          "idle_frame": 0,
+          "index": 7,
+          "indexed_differences": 0,
+          "indexed_sha256": "04bf0ff1a9465edca2deb1550f9000caa29bcc4bbf96e04296366530104758e5",
+          "negative_opaque_writes": 1,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000007.png",
+          "original_png_sha256": "607f9d568ae0a5d0a7452a80c3c9bbdb544ecca70a287b5e343afe83c59130c5",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-07.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1968,
+            "OffsetX": 6,
+            "OffsetY": -3,
+            "RNGAfter": 6122,
+            "Next": {
+              "Shade": 6,
+              "Pose": 0,
+              "Jitter": -1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 5,
+          "idle_frame": 0,
+          "index": 8,
+          "indexed_differences": 0,
+          "indexed_sha256": "c29f5babddcdd40c5e45690648cd4a2dccb393cb351a66745e013e02c2aef95d",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000008.png",
+          "original_png_sha256": "c4afd1f0b7e997b425206cc4dc84e4fb3e999af2c6506f5775a26f8e45e5f327",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-08.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1712,
+            "OffsetX": -6,
+            "OffsetY": -3,
+            "RNGAfter": 16373,
+            "Next": {
+              "Shade": 5,
+              "Pose": 0,
+              "Jitter": -1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 5,
+          "idle_frame": 0,
+          "index": 9,
+          "indexed_differences": 0,
+          "indexed_sha256": "cfd43cb70ed834ab981919adb63599471bb6880b24f942d99ffb96de90d44188",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000009.png",
+          "original_png_sha256": "545d3a4249bf383625be9be301f085de14d338451f5309c0273dbea5f5a3c9c3",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-09.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1456,
+            "OffsetX": -6,
+            "OffsetY": -3,
+            "RNGAfter": 32846,
+            "Next": {
+              "Shade": 4,
+              "Pose": 0,
+              "Jitter": -1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 5,
+          "idle_frame": 0,
+          "index": 10,
+          "indexed_differences": 0,
+          "indexed_sha256": "6d05a70b28062f87b64417950f57f356ec7b3c07575db7ee8e4fb2f7d2aa09b5",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000010.png",
+          "original_png_sha256": "2ae8ca316dde101ba2ff88cc377e5017e7a3a22a13ad113e66deb6fe0c7d8926",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-10.idx",
+          "rgb_differences": 0
+        },
+        {
+          "display": {
+            "Shader": 1200,
+            "OffsetX": -6,
+            "OffsetY": -3,
+            "RNGAfter": 33552,
+            "Next": {
+              "Shade": 3,
+              "Pose": 0,
+              "Jitter": 1
+            }
+          },
+          "first_negative_offset": 0,
+          "formal_indexed_differences": 0,
+          "formal_result": "full-frame matched",
+          "formal_rgb_differences": 0,
+          "hp_stage": 5,
+          "idle_frame": 0,
+          "index": 11,
+          "indexed_differences": 0,
+          "indexed_sha256": "e0a60ca277bbecff8005f0aa35b44265cb95f51ff0b8898f1ff094b67342c8e2",
+          "negative_opaque_writes": 0,
+          "original_png": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000011.png",
+          "original_png_sha256": "b285dbf4ff15fbf25098c71798e289c6f44d4473d450bb903ee03aaadffa10b9",
+          "path": "/src/work/parity-slot-ch24/player-command6-signed-formal-r8-frame-11.idx",
+          "rgb_differences": 0
+        }
+      ],
+      "scope": "正式12張全幅indexed及RGB，無遮罩；獨立signed arena參考分離。"
+    },
+    "normal_keyboard_gpu": [
+      {
+        "path": "work/parity-slot-ch24/command6-normal-keyboard-gpu-r1.json",
+        "sha256": "18804daeb20dd22e9a5762293c71cd14e976ddc3e1db3c350c12a186313197bc",
+        "key_count": 26,
+        "ticks": 313,
+        "frames": [
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-00.png",
+            "gpu_png_sha256": "9971e2743cd540ad99b3e0b29a11a0cd84e458a9e74a6a38873755de31a3a701",
+            "index": 0,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000000.png",
+            "original_png_sha256": "674ab679458af54e75f55f5770a666851e5874fc0e626e186b6816eeb6b06e7e"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-01.png",
+            "gpu_png_sha256": "0a32fdf44536ddc7965ed752f30ef537a18995b6aa4dfbe3267aa5bcec3b15da",
+            "index": 1,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000001.png",
+            "original_png_sha256": "74d72e73e18890aac91b097405dbda15b4ed0d9268550b6728ed8bc9d1abd05a"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-02.png",
+            "gpu_png_sha256": "5b08a7b133268719357ba4bcd69785262101672702efd14b570e6c9f2c966558",
+            "index": 2,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000002.png",
+            "original_png_sha256": "afee767ed313aed1fc14a0da70d0f9b7418311bfe1c965357b91d6cc9ea2dfa0"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-03.png",
+            "gpu_png_sha256": "c00427c063aa24496eb3a89c535e13cd76ffaf035c6dd5e5649a95400407e49a",
+            "index": 3,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000003.png",
+            "original_png_sha256": "034ce1267a5400f5b25b4906f7ef139ea0312e365f7fd69382682ab6dbf9b06f"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-04.png",
+            "gpu_png_sha256": "d2a6a71144ce9fe04a022e59a181bb13bb72d3ac42362fbfbdec474684186236",
+            "index": 4,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000004.png",
+            "original_png_sha256": "ee5945f4bf53f4b91f482b39ffa1fe1c998313619f4d2ea7c03103aad7836c7b"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-05.png",
+            "gpu_png_sha256": "76759c7580e137042cdd3586b9e688d3b0f4f889dac92b1d140265c797dcfe4b",
+            "index": 5,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000005.png",
+            "original_png_sha256": "103e34d26f80df77bb40c4aa443ca440f3f563928a24e7db55b18138dd9f9112"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-06.png",
+            "gpu_png_sha256": "8299448427dd606df231be02957b1d74b07779ef88a3328679eab7a3b32422a4",
+            "index": 6,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000006.png",
+            "original_png_sha256": "778eb539a47d84e8422cdfab6b3115e317ba8224dbc6b755511cc11f9c1ec374"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-07.png",
+            "gpu_png_sha256": "ef1745edcc0c36084a73b01cebc0f219a9606958635e35054de36fac9867e4f3",
+            "index": 7,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000007.png",
+            "original_png_sha256": "607f9d568ae0a5d0a7452a80c3c9bbdb544ecca70a287b5e343afe83c59130c5"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-08.png",
+            "gpu_png_sha256": "b1547f57e8b3da0352c421f8d2045f52d7f37252d59a1a7d5bdd43384bbdb6e3",
+            "index": 8,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000008.png",
+            "original_png_sha256": "c4afd1f0b7e997b425206cc4dc84e4fb3e999af2c6506f5775a26f8e45e5f327"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-09.png",
+            "gpu_png_sha256": "3c3e38837a417f1ef2db778853f1c166e10bc2bc6320d58ee56063a271d1678c",
+            "index": 9,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000009.png",
+            "original_png_sha256": "545d3a4249bf383625be9be301f085de14d338451f5309c0273dbea5f5a3c9c3"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-10.png",
+            "gpu_png_sha256": "1645047c5b4645eba5b47a2a074d09fbfe5514c72b57ca226ac44c62c19c8d90",
+            "index": 10,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000010.png",
+            "original_png_sha256": "2ae8ca316dde101ba2ff88cc377e5017e7a3a22a13ad113e66deb6fe0c7d8926"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-frame-11.png",
+            "gpu_png_sha256": "45abfb7bdb8eec819e5ea01c191bfbb5b21a966dbbdeb13d71dff423086dbd1b",
+            "index": 11,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000011.png",
+            "original_png_sha256": "b285dbf4ff15fbf25098c71798e289c6f44d4473d450bb903ee03aaadffa10b9"
+          }
+        ],
+        "key_log": {
+          "path": "work/parity-slot-ch24/command6-normal-keyboard-gpu-r1-keys.jsonl",
+          "sha256": "2fc1914cea37d5c492abb39cbbc2d5c328f68cf53ee778d6d335632b5681268f"
+        }
+      },
+      {
+        "path": "work/parity-slot-ch24/command6-normal-keyboard-gpu-r2.json",
+        "sha256": "f5ffd009eb906748bdfd6c6133119ce01c7979ba40370dde298a1c7b283aa41e",
+        "key_count": 26,
+        "ticks": 324,
+        "frames": [
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-00.png",
+            "gpu_png_sha256": "9971e2743cd540ad99b3e0b29a11a0cd84e458a9e74a6a38873755de31a3a701",
+            "index": 0,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000000.png",
+            "original_png_sha256": "674ab679458af54e75f55f5770a666851e5874fc0e626e186b6816eeb6b06e7e"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-01.png",
+            "gpu_png_sha256": "0a32fdf44536ddc7965ed752f30ef537a18995b6aa4dfbe3267aa5bcec3b15da",
+            "index": 1,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000001.png",
+            "original_png_sha256": "74d72e73e18890aac91b097405dbda15b4ed0d9268550b6728ed8bc9d1abd05a"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-02.png",
+            "gpu_png_sha256": "5b08a7b133268719357ba4bcd69785262101672702efd14b570e6c9f2c966558",
+            "index": 2,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000002.png",
+            "original_png_sha256": "afee767ed313aed1fc14a0da70d0f9b7418311bfe1c965357b91d6cc9ea2dfa0"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-03.png",
+            "gpu_png_sha256": "c00427c063aa24496eb3a89c535e13cd76ffaf035c6dd5e5649a95400407e49a",
+            "index": 3,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000003.png",
+            "original_png_sha256": "034ce1267a5400f5b25b4906f7ef139ea0312e365f7fd69382682ab6dbf9b06f"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-04.png",
+            "gpu_png_sha256": "d2a6a71144ce9fe04a022e59a181bb13bb72d3ac42362fbfbdec474684186236",
+            "index": 4,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000004.png",
+            "original_png_sha256": "ee5945f4bf53f4b91f482b39ffa1fe1c998313619f4d2ea7c03103aad7836c7b"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-05.png",
+            "gpu_png_sha256": "76759c7580e137042cdd3586b9e688d3b0f4f889dac92b1d140265c797dcfe4b",
+            "index": 5,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000005.png",
+            "original_png_sha256": "103e34d26f80df77bb40c4aa443ca440f3f563928a24e7db55b18138dd9f9112"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-06.png",
+            "gpu_png_sha256": "8299448427dd606df231be02957b1d74b07779ef88a3328679eab7a3b32422a4",
+            "index": 6,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000006.png",
+            "original_png_sha256": "778eb539a47d84e8422cdfab6b3115e317ba8224dbc6b755511cc11f9c1ec374"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-07.png",
+            "gpu_png_sha256": "ef1745edcc0c36084a73b01cebc0f219a9606958635e35054de36fac9867e4f3",
+            "index": 7,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000007.png",
+            "original_png_sha256": "607f9d568ae0a5d0a7452a80c3c9bbdb544ecca70a287b5e343afe83c59130c5"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-08.png",
+            "gpu_png_sha256": "b1547f57e8b3da0352c421f8d2045f52d7f37252d59a1a7d5bdd43384bbdb6e3",
+            "index": 8,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000008.png",
+            "original_png_sha256": "c4afd1f0b7e997b425206cc4dc84e4fb3e999af2c6506f5775a26f8e45e5f327"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-09.png",
+            "gpu_png_sha256": "3c3e38837a417f1ef2db778853f1c166e10bc2bc6320d58ee56063a271d1678c",
+            "index": 9,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000009.png",
+            "original_png_sha256": "545d3a4249bf383625be9be301f085de14d338451f5309c0273dbea5f5a3c9c3"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-10.png",
+            "gpu_png_sha256": "1645047c5b4645eba5b47a2a074d09fbfe5514c72b57ca226ac44c62c19c8d90",
+            "index": 10,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000010.png",
+            "original_png_sha256": "2ae8ca316dde101ba2ff88cc377e5017e7a3a22a13ad113e66deb6fe0c7d8926"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-frame-11.png",
+            "gpu_png_sha256": "45abfb7bdb8eec819e5ea01c191bfbb5b21a966dbbdeb13d71dff423086dbd1b",
+            "index": 11,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000011.png",
+            "original_png_sha256": "b285dbf4ff15fbf25098c71798e289c6f44d4473d450bb903ee03aaadffa10b9"
+          }
+        ],
+        "key_log": {
+          "path": "work/parity-slot-ch24/command6-normal-keyboard-gpu-r2-keys.jsonl",
+          "sha256": "2fc1914cea37d5c492abb39cbbc2d5c328f68cf53ee778d6d335632b5681268f"
+        }
+      },
+      {
+        "path": "work/parity-slot-ch24/command6-normal-keyboard-gpu-r3.json",
+        "sha256": "aac96248ca72d12d7c4dad6cae1a251c20ab63bcdca51766e11917678bc5962d",
+        "key_count": 26,
+        "ticks": 362,
+        "frames": [
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-00.png",
+            "gpu_png_sha256": "9971e2743cd540ad99b3e0b29a11a0cd84e458a9e74a6a38873755de31a3a701",
+            "index": 0,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000000.png",
+            "original_png_sha256": "674ab679458af54e75f55f5770a666851e5874fc0e626e186b6816eeb6b06e7e"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-01.png",
+            "gpu_png_sha256": "0a32fdf44536ddc7965ed752f30ef537a18995b6aa4dfbe3267aa5bcec3b15da",
+            "index": 1,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000001.png",
+            "original_png_sha256": "74d72e73e18890aac91b097405dbda15b4ed0d9268550b6728ed8bc9d1abd05a"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-02.png",
+            "gpu_png_sha256": "5b08a7b133268719357ba4bcd69785262101672702efd14b570e6c9f2c966558",
+            "index": 2,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000002.png",
+            "original_png_sha256": "afee767ed313aed1fc14a0da70d0f9b7418311bfe1c965357b91d6cc9ea2dfa0"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-03.png",
+            "gpu_png_sha256": "c00427c063aa24496eb3a89c535e13cd76ffaf035c6dd5e5649a95400407e49a",
+            "index": 3,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000003.png",
+            "original_png_sha256": "034ce1267a5400f5b25b4906f7ef139ea0312e365f7fd69382682ab6dbf9b06f"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-04.png",
+            "gpu_png_sha256": "d2a6a71144ce9fe04a022e59a181bb13bb72d3ac42362fbfbdec474684186236",
+            "index": 4,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000004.png",
+            "original_png_sha256": "ee5945f4bf53f4b91f482b39ffa1fe1c998313619f4d2ea7c03103aad7836c7b"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-05.png",
+            "gpu_png_sha256": "76759c7580e137042cdd3586b9e688d3b0f4f889dac92b1d140265c797dcfe4b",
+            "index": 5,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000005.png",
+            "original_png_sha256": "103e34d26f80df77bb40c4aa443ca440f3f563928a24e7db55b18138dd9f9112"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-06.png",
+            "gpu_png_sha256": "8299448427dd606df231be02957b1d74b07779ef88a3328679eab7a3b32422a4",
+            "index": 6,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000006.png",
+            "original_png_sha256": "778eb539a47d84e8422cdfab6b3115e317ba8224dbc6b755511cc11f9c1ec374"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-07.png",
+            "gpu_png_sha256": "ef1745edcc0c36084a73b01cebc0f219a9606958635e35054de36fac9867e4f3",
+            "index": 7,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000007.png",
+            "original_png_sha256": "607f9d568ae0a5d0a7452a80c3c9bbdb544ecca70a287b5e343afe83c59130c5"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-08.png",
+            "gpu_png_sha256": "b1547f57e8b3da0352c421f8d2045f52d7f37252d59a1a7d5bdd43384bbdb6e3",
+            "index": 8,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000008.png",
+            "original_png_sha256": "c4afd1f0b7e997b425206cc4dc84e4fb3e999af2c6506f5775a26f8e45e5f327"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-09.png",
+            "gpu_png_sha256": "3c3e38837a417f1ef2db778853f1c166e10bc2bc6320d58ee56063a271d1678c",
+            "index": 9,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000009.png",
+            "original_png_sha256": "545d3a4249bf383625be9be301f085de14d338451f5309c0273dbea5f5a3c9c3"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-10.png",
+            "gpu_png_sha256": "1645047c5b4645eba5b47a2a074d09fbfe5514c72b57ca226ac44c62c19c8d90",
+            "index": 10,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000010.png",
+            "original_png_sha256": "2ae8ca316dde101ba2ff88cc377e5017e7a3a22a13ad113e66deb6fe0c7d8926"
+          },
+          {
+            "full_rgba_differences": 0,
+            "gpu": "/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-frame-11.png",
+            "gpu_png_sha256": "45abfb7bdb8eec819e5ea01c191bfbb5b21a966dbbdeb13d71dff423086dbd1b",
+            "index": 11,
+            "original": "/src/work/parity-slot-ch24/player-command6-current-original-r4/frames/frame-000011.png",
+            "original_png_sha256": "b285dbf4ff15fbf25098c71798e289c6f44d4473d450bb903ee03aaadffa10b9"
+          }
+        ],
+        "key_log": {
+          "path": "work/parity-slot-ch24/command6-normal-keyboard-gpu-r3-keys.jsonl",
+          "sha256": "2fc1914cea37d5c492abb39cbbc2d5c328f68cf53ee778d6d335632b5681268f"
         }
       }
+    ],
+    "formal_transaction": {
+      "mp_before": 1101,
+      "mp_after": 1071,
+      "target_hp_before": 83,
+      "target_hp_after": 4,
+      "acted": true,
+      "rng_after": 33552,
+      "cancel_zero_mutation": true,
+      "owner_returned": true
+    },
+    "full_go": {
+      "path": "work/parity-slot-ch24/command6-signed-full-go-r1.jsonl",
+      "sha256": "4b3089994e9494ad725d75c38ca59e245bd05b288606cee527bb2f2a3a61b9ef",
+      "stderr": {
+        "path": "work/parity-slot-ch24/command6-signed-full-go-r1.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "counts": {
+        "packages": {
+          "pass": 19,
+          "skip": 11,
+          "fail": 0
+        },
+        "all_test_events": {
+          "pass": 2922,
+          "skip": 56,
+          "fail": 0
+        },
+        "top_level_tests": {
+          "pass": 2378,
+          "skip": 53,
+          "fail": 0
+        }
+      },
+      "scope": "完整production source回歸；其後只有收據來源metadata修正，r8及GPU r3已獨立重跑。53個頂層條件略過不算驗收。"
+    },
+    "focused": {
+      "path": "work/parity-slot-ch24/command6-signed-formal-focused-r2.log",
+      "sha256": "d7de8b5a1fffff5ee369ffec2b0c2cb48abee28faaf98e7f4b78fd4fa25bf11c"
+    },
+    "regressions": {
+      "work/parity-slot-ch23/command6-signed-regression-verify-r1.json": {
+        "sha256": "d05b947dfbf0b573daf7d466a0278922b7b09575b2eaac2f90e50b62cba070a3",
+        "status": "passed",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "frames": 24,
+        "original_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+        "scope": "既有有界章／SAV回歸，不增加章PLAYER-E2。"
+      },
+      "work/parity-slot-ch24/full-r5-command6-signed-verify-r1.json": {
+        "sha256": "a0d2b672fefb432612d096431aae075e8a737971cff3fae3b1b3aee9db4269e4",
+        "status": "passed",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "frames": 13,
+        "original_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+        "scope": "既有有界章／SAV回歸，不增加章PLAYER-E2。"
+      },
+      "work/parity-slot-ch24/startup-command6-signed-verify-r1.json": {
+        "sha256": "ecd463e9957175b4f52fd106e62f6463b160bf95b90ef488075fd7ae4d4fc759",
+        "status": "passed",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "frames": 5,
+        "original_commit": "1694cde973bd3f5b4d2c3c88ff0e4b15e7a1cc74",
+        "scope": "既有有界章／SAV回歸，不增加章PLAYER-E2。"
+      }
+    },
+    "string_inventory": {
+      "path": "work/parity-slot-ch24/command6-string-inventory-r1.json",
+      "sha256": "bba089ef90272e287c20260b037d3a26805aae7effc1a71fe4ee2ef1d6dd4ac3"
+    },
+    "implementation_sha256": {
+      "remake/internal/battlepresent/native_command6.go": "65ca8048be102f19252e4f32b881a5120df336a5f626a4886fb810e8eff6d6f6",
+      "remake/internal/battlepresent/native_command6_test.go": "ef06feed5467d41f5b1471679cbf3ead08215fcd68b9f5119ea19f3cc527dceb",
+      "remake/cmd/fd2/native_command6_presentation_test.go": "082f3a7afb465e9cfe276a061b8d59c975468078ecee45b87ee2ba44b61f191e",
+      "remake/cmd/fd2/native_command6_presentation.go": "b4e58e78f449fac0863f08e1f355250de9916e2ca4ca980201f8864c5e360c93",
+      "remake/internal/battlepresent/native_command6_sequence.go": "4c5de1221bd117b369c91311225528680855250a7c27c1af2b2a85bd923e8cea",
+      "remake/internal/figani/native_command6.go": "91735dab95067595ad6088e820d1b50cf35252f0088a4daa66a35a1b391b5840",
+      "tools/verify_oracle_prefix.py": "1cd737da78c65e62c12b74a0573fe2d5a5f586e787aa856be4c6d4b52059e2d0",
+      "tools/verify_chapter_parity.py": "71d305aa3847b5f859cc473ccfaeb60d97aca55a5f9d123612e6479f4d5b5ec6",
+      "tools/dosgolem_oracle_container.sh": "12c22ad1261936fe7e6a972c5942b5da6ae817b98ed0a04b6843ead58583f936",
+      "docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl": "fe998177ddd273571f4d336d8242924bc9f5d761c56ba9c57e4357e66965f0bc"
+    },
+    "commands": {
+      "original": "test -d '/home/anr2/cht/fd2' && test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-current-original-r4' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-current-state-r4' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl' && timeout 900 docker run --rm --name fd2-command6-current-original-r4 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-current-original-r4,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-current-state-r4,dst=/state' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl,dst=/plan.jsonl,readonly' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/player-command6-current-state-r4' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl' -e 'FD2_ORACLE_BUDGET=8000000000' -e 'FD2_ORACLE_FRAMES=1' -e 'FD2_ORACLE_FRAME_STRIDE=0' -e 'FD2_ORACLE_FRAME_EIP=0x2AFBF' -e 'FD2_ORACLE_FRAME_FROM=189500000' -e 'FD2_ORACLE_FRAME_TO=192500000' -e 'FD2_ORACLE_FRAME_MAX=24' -e 'FD2_ORACLE_EIP_TRACE=0x13A9F,0x2A6BD,0x2AC4A,0x26E39,0x27191,0x2725E,0x2935B,0x4E63D,0x2AFBA,0x2B114,0x1C75E' -e 'FD2_ORACLE_EIP_TRACE_MAX=100000' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash /oracle-entry.sh > work/parity-slot-ch24/player-command6-current-original-r4.log 2>&1",
+      "original_prefix": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src fd2-go-test-local:20260909 timeout 150  sh -c 'set -eu; test -f /.dockerenv; python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch24/player-command6-original-r3 --full work/parity-slot-ch24/player-command6-current-original-r4 --prefix-commit 951cb55f7834311fccbce208fde6bc48d57f1c5a --full-commit a01ff084f038ddd1d133480f08d32e3b2e6f98c0 --out work/parity-slot-ch24/player-command6-current-prefix-r1.json'",
+      "focused": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/home /tmp/fd2-pack; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w internal/battlepresent/native_command6.go internal/battlepresent/native_command6_test.go cmd/fd2/native_command6_presentation_test.go; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./internal/battlepresent ./internal/figani ./internal/battle ./cmd/fd2 -run '\\''Command6|NativeCommandWorkBounds|NativeCommandTargetWhitelist|NativeCursorConfirmation'\\'' -count=1 -timeout 180s -v' > work/parity-slot-ch24/command6-signed-formal-focused-r2.log 2>&1",
+      "formal_same_source": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; test -f /src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav; test -d /src/work/parity-slot-ch24/player-command6-current-original-r4/frames; test ! -e /src/work/parity-slot-ch24/player-command6-signed-formal-r8.json; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_COMMAND6_CURSOR_SAVE=/src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav FD2_COMMAND6_FORMAL_TARGET_CHECK=1 FD2_COMMAND6_PROTOTYPE_ORIGINAL=/src/work/parity-slot-ch24/player-command6-current-original-r4/frames FD2_COMMAND6_PROTOTYPE_PREFIX=/src/work/parity-slot-ch24/player-command6-signed-formal-r8 FD2_COMMAND6_CURSOR_OUT=/src/work/parity-slot-ch24/player-command6-signed-formal-r8-cursor.json with-xvfb go test ./cmd/fd2 -run '\\''^TestNativeCommand6OriginalContinueCursorProbe$'\\'' -count=1 -timeout 120s -v' > work/parity-slot-ch24/player-command6-signed-formal-r8.log 2>&1",
+      "normal_keyboard_gpu_r1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/home /tmp/fd2-pack; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_command6_presentation_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_COMMAND6_KEYBOARD_GPU=1 FD2_COMMAND6_CURSOR_SAVE=/src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav FD2_COMMAND6_GPU_ORIGINAL=/src/work/parity-slot-ch24/player-command6-current-original-r4 FD2_COMMAND6_GPU_OUT=/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativeCommand6NormalKeyboardGPU$'\\'' -count=1 -timeout 120s -v' > work/parity-slot-ch24/command6-normal-keyboard-gpu-r1.log 2>&1",
+      "normal_keyboard_gpu_r2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/home /tmp/fd2-pack; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_command6_presentation_test.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_COMMAND6_KEYBOARD_GPU=1 FD2_COMMAND6_CURSOR_SAVE=/src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav FD2_COMMAND6_GPU_ORIGINAL=/src/work/parity-slot-ch24/player-command6-current-original-r4 FD2_COMMAND6_GPU_OUT=/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativeCommand6NormalKeyboardGPU$'\\'' -count=1 -timeout 120s -v' > work/parity-slot-ch24/command6-normal-keyboard-gpu-r2.log 2>&1",
+      "normal_keyboard_gpu_r3": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/home /tmp/fd2-pack; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_COMMAND6_KEYBOARD_GPU=1 FD2_COMMAND6_CURSOR_SAVE=/src/work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav FD2_COMMAND6_GPU_ORIGINAL=/src/work/parity-slot-ch24/player-command6-current-original-r4 FD2_COMMAND6_GPU_OUT=/src/work/parity-slot-ch24/command6-normal-keyboard-gpu-r3 with-xvfb go test ./cmd/fd2 -run '\\''^TestNativeCommand6NormalKeyboardGPU$'\\'' -count=1 -timeout 120s -v' > work/parity-slot-ch24/command6-normal-keyboard-gpu-r3.log 2>&1",
+      "full_go": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 720s -json > /src/work/parity-slot-ch24/command6-signed-full-go-r1.jsonl 2> /src/work/parity-slot-ch24/command6-signed-full-go-r1.stderr'",
+      "string_inventory": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; go run ./cmd/fd2-string-inventory -repo /src -output /src/work/parity-slot-ch24/command6-string-inventory-r1.json'",
+      "ch23_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=23 FD2_PARITY_SLOT=/src/work/parity-slot-ch23/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch23/full-original-r4 FD2_PARITY_OUT=/src/work/parity-slot-ch23/command6-signed-regression-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch23/command6-signed-regression-remake-r1.log 2>&1",
+      "ch23_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 23 --oracle work/parity-slot-ch23/full-original-r4 --remake work/parity-slot-ch23/command6-signed-regression-remake-r1 --slot-manifest docs/data/parity-slots/ch23-manifest.json --plan docs/data/parity-plans/ch23-sample-r4.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch23/command6-signed-regression-verify-r1.json",
+      "finite_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/full-original-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch24/full-r5-command6-signed-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/full-r5-command6-signed-remake-r1.log 2>&1",
+      "finite_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/full-original-r5 --remake work/parity-slot-ch24/full-r5-command6-signed-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-sample-r3.jsonl --min-frames 12 --pixel-budget 640 --out work/parity-slot-ch24/full-r5-command6-signed-verify-r1.json",
+      "first15_replay": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_AI_DIAGNOSTICS=1 FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/startup-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch24/startup-command6-signed-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > work/parity-slot-ch24/startup-command6-signed-remake-r1.log 2>&1",
+      "first15_verify": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i -e TZ=Asia/Taipei --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 120 python3 tools/verify_chapter_parity.py --chapter 24 --oracle work/parity-slot-ch24/startup-original-r2 --remake work/parity-slot-ch24/startup-command6-signed-remake-r1 --slot-manifest docs/data/parity-slots/ch24-manifest.json --plan docs/data/parity-plans/ch24-startup-r1.jsonl --min-frames 5 --pixel-budget 640 --out work/parity-slot-ch24/startup-command6-signed-verify-r1.json"
+    },
+    "limitations": [
+      "畫面相容契約，不證明配置區外writer的原版完整heap consumer、生命週期或malloc初值。",
+      "目前runner的near_heap_policy保守標unknown／original_allocator_parity unverified；233控制點及指定12全幅只支持窄可見結果。",
+      "固定第三方槽；標題選單CONTINUE起的正常鍵盤、取消及完整施法可重跑，非整章PLAYER-E2。",
+      "12個target影格逐圖對拍；完整owner其他階段、雙目標transition及音訊未宣稱原版逐幀或人耳一致。",
+      "雙側、雙目標、transition只由真實資產嚴格預建與既有回歸抽驗；所有其他負列／未知資產及普通actor／target仍拒收。"
+    ],
+    "failure_corrections": [
+      {
+        "path": "work/parity-slot-ch24/command6-signed-formal-focused-r1.log",
+        "classification": "雙目標transition復用同一已批准secondary Mode5 Frame9 writer；補同一精確gate，不放寬其他層。誤改普通work size的測試已恢復。"
+      },
+      {
+        "classification": "新增GPU探針來源欄位曾沿用舊runner硬編碼；改讀真實runner.json及hash，r8與GPU r3重生，舊產物不覆寫。"
+      }
+    ],
+    "closure": {
+      "date": "2026-10-05",
+      "issue_comments": {
+        "154": "https://github.com/wicanr2/fd2_re/issues/154#issuecomment-5994940560",
+        "160": "https://github.com/wicanr2/fd2_re/issues/160#issuecomment-5994944973",
+        "161": "https://github.com/wicanr2/fd2_re/issues/161#issuecomment-5994954748"
+      },
+      "remote_states": "CLOSED; actual host gh issue view verified",
+      "worklist": {
+        "open": 15,
+        "manual": 7,
+        "possibly_complete": 0
+      },
+      "owner_audit": {
+        "historical_root_entries": 2811,
+        "root_files": 2786,
+        "root_directories": 25,
+        "new_root_outputs": 0,
+        "md_directories": 0
+      },
+      "containers": "No unexpected FD2 container remains after tests; shared other-project containers untouched.",
+      "audit": {
+        "source_sha256_checked": 10,
+        "receipt_sha256_checked": 17,
+        "transitive_sha256_checked": 96,
+        "gpu_full_rgba_checked": 36,
+        "original_full_indexed_rgb_checked": 12
+      },
+      "public_assets": "No new original/full GPU PNG published; local work receipts retained."
     }
-  ]
+  }
 }

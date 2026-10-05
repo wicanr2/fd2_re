@@ -1,6 +1,7 @@
 package battlepresent
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"fmt"
 	"os"
@@ -8,6 +9,71 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/figani"
 )
+
+func TestCommand6SignedPrefixRequiresExactResourceAndWriter(t *testing.T) {
+	path := "../../../org_game/炎龍騎士團/FLAME2/FDOTHER.DAT"
+	effect, err := figani.DecodeResource(path, 32)
+	if os.IsNotExist(err) {
+		t.Skip("原版資產未提供")
+	}
+	if err != nil || !command6Bank32Fingerprint(effect) {
+		t.Fatalf("固定資源 typed 指紋不符：%v", err)
+	}
+	separated, err := figani.LoadSeparatedArchiveResource("../../generated-assets/fd2-original-b97caf22/animations", "FDOTHER.DAT", 32)
+	if err != nil || !command6Bank32Fingerprint(separated) {
+		t.Fatalf("分離資源 typed 指紋不符：%v", err)
+	}
+	for _, name := range []string{"accepted", "pixel", "mask", "header", "delay", "x", "y", "mode", "channel", "primary", "actor"} {
+		t.Run(name, func(t *testing.T) {
+			changed := *effect
+			changed.Frames = append([]figani.Frame(nil), effect.Frames...)
+			changed.Frames[0].Pixels = append([]byte(nil), effect.Frames[0].Pixels...)
+			changed.Frames[0].Mask = append([]byte(nil), effect.Frames[0].Mask...)
+			layer := figani.NativeCommand6Layer{Mode: 5, Channel: 2, Frame: 9, X: -19, Y: -31, Secondary: true}
+			switch name {
+			case "pixel":
+				changed.Frames[0].Pixels[0] ^= 1
+			case "mask":
+				changed.Frames[0].Mask[0] ^= 1
+			case "header":
+				changed.HeaderByte4 ^= 1
+			case "delay":
+				changed.Frames[0].Delay++
+			case "x":
+				layer.X--
+			case "y":
+				layer.Y--
+			case "mode":
+				layer.Mode = 4
+			case "channel":
+				layer.Channel = 4
+			case "primary":
+				layer.Secondary = false
+			}
+			work := make([]byte, 640*270)
+			prefix := make([]byte, 640)
+			if name == "actor" {
+				frame := effect.Frames[9]
+				err = blitCommand0WorkFrame(work, frame, -19, -31)
+			} else {
+				err = blitCommand6EffectWorkFrame(work, prefix, &changed, layer)
+			}
+			if name != "accepted" {
+				if err == nil || !bytes.Equal(work, make([]byte, len(work))) || !bytes.Equal(prefix, make([]byte, len(prefix))) {
+					t.Fatal("未知寫入獲准或修改了工作緩衝")
+				}
+				return
+			}
+			if err != nil || prefix[218] != effect.Frames[9].Pixels[77] {
+				t.Fatalf("已觀測 -422 寫入未保留：%v", err)
+			}
+			prefix[218] = 0
+			if !bytes.Equal(prefix, make([]byte, len(prefix))) {
+				t.Fatal("前置列有未觀測寫入")
+			}
+		})
+	}
+}
 
 func TestComposeNativeCommand6TargetFramePreservesModeOrder(t *testing.T) {
 	effect := &figani.Animation{Frames: make([]figani.Frame, 10), HeaderByte2: 10}
@@ -122,11 +188,11 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 		actor := figani.Frame{X: 300, Width: 1, Height: 1, Pixels: []byte{42}, Mask: []byte{1}}
 		for step, planned := range sequence {
 			// 獨立參照：用既有FIGANI嚴格blit寫原版大小，依原始viewport擷取。
-			work := make([]byte, 0x2A300)
+			work := make([]byte, 640+0x2A300)
 			var referenceErr error
 			blit := func(frame figani.Frame, x, y int) {
 				frame.X += 160 + x
-				frame.Y += 30 + y
+				frame.Y += 31 + y
 				if err := frame.BlitAt(work, 640); err != nil {
 					referenceErr = err
 				}
@@ -141,11 +207,11 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 			}
 			expected := make([]byte, 320*200)
 			for y := 0; y < 200; y++ {
-				copy(expected[y*320:(y+1)*320], work[0x4BA0+y*640:0x4BA0+y*640+320])
+				copy(expected[y*320:(y+1)*320], work[640+0x4BA0+y*640:640+0x4BA0+y*640+320])
 			}
 			got, err := ComposeNativeCommand6TargetFrame(make([]byte, 320*200), actor, target, effect, planned, figani.NativeCommand6TargetDisplayFrame{Shader: -1})
 			if referenceErr != nil {
-				// #154：負列位置仍未知，保留零partial-output拒收，不稱已修正。
+				// 未知範圍仍零發布；固定#32的已證前置列由獨立BlitAt參照保留。
 				if err == nil || got != nil {
 					t.Fatalf("原版resource%d step%d未知邊界被發布", resource, step)
 				}
@@ -160,7 +226,7 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 				}
 			}
 		}
-		// 完整兩目標 owner：#33 必須可預建，#32 的 #154 負列仍零發布。
+		// 完整兩目標 owner：兩個固定原始資源均須可預建。
 		base := make([]byte, 320*200)
 		stages := make([][]byte, figani.NativeCommand6DamageStages+1)
 		for i := range stages {
@@ -172,12 +238,8 @@ func TestComposeNativeCommand6RealResourcesMatchNativeWorkAllocation(t *testing.
 			FrontBase: base, TailBase: base, TargetBases: [][][]byte{stages, stages}, TransitionBases: [][]byte{base},
 			ActorEffect: idle, TargetIdle: []*figani.Animation{idle, idle}, Effect: effect, Schedule: schedule, RawSide: side, TargetHits: []bool{false, false}, TargetNumericRNG: []uint16{1, 1},
 		})
-		if side == 0 {
-			if err != nil || len(all.Targets) != 2 || len(all.Targets[1].Frames) != 12 || len(all.Transitions) != 1 {
-				t.Fatalf("原始#33完整兩目標預建失敗：%v", err)
-			}
-		} else if err == nil || len(all.Front) != 0 || len(all.Targets) != 0 || len(all.Transitions) != 0 || len(all.Tail) != 0 {
-			t.Fatalf("原始#32負列發布部分sequence：%+v err=%v", all, err)
+		if err != nil || len(all.Targets) != 2 || len(all.Targets[1].Frames) != 12 || len(all.Transitions) != 1 {
+			t.Fatalf("原始#%d完整兩目標預建失敗：%v", resource, err)
 		}
 		for _, pixel := range base {
 			if pixel != 0 {

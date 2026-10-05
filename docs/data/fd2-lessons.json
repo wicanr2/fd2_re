@@ -1335,7 +1335,7 @@
       "id": "native-work-bounds-follow-allocation",
       "date": "2026-10-04",
       "area": "原生特效工作緩衝",
-      "rule": "原生特效work的容量與列距從caller配置值及consumer取證，不用只夠viewport的估計高度；未知起點或超出已證容量仍拒收。入口docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json及remake/internal/battlepresent/native_command0.go；目前sub_2A6BD共用work已證0x2A300 bytes／640列距＝270列，負列#154仍未知。",
+      "rule": "原生特效work的容量與列距從caller配置值及consumer取證，不用只夠viewport的估計高度；未知起點或超出已證容量仍拒收。入口docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json及remake/internal/battlepresent/native_command0.go；目前sub_2A6BD共用work已證0x2A300 bytes／640列距＝270列，負列#154僅允許使用者批准的固定hash有界隔離，契約在同一主證據isolation_spec；原版完整heap仍未知。",
       "why": "第24章正常敵方指令6的#33 frame9底端263在原版270列內，重製260列假設誤拒並中止；原始資產回歸另發現#32負列，不以增高緩衝掩蓋它。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/151；docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json",
       "guard": {
@@ -1743,6 +1743,14 @@
         ],
         "pattern": "nativeActionOverlayInMapFrame"
       }
+    },
+    {
+      "id": "parity-receipt-reads-runner-provenance",
+      "area": "收據來源",
+      "date": "2026-10-05",
+      "rule": "重生同源對拍收據時，由實際runner.json讀取commit、固定EXE、dirty及runtime政策並保存hash，不硬編碼舊runner。入口remake/cmd/fd2/native_command6_presentation_test.go的command6OriginalProvenance；可重跑命令在docs/data/ida/fd2_ch24_command6_work_bounds_20261004.json isolation_validation。",
+      "why": "#154／#160／#161同源正式探針已切換目前oracle，舊硬編碼commit會使新收據誤指歷史來源；r8與GPU r3以真實provenance重生。既有guard檢查器排除測試檔，故不把無法被掃描的測試函式當作檢查訊號。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/154"
     }
   ]
 }

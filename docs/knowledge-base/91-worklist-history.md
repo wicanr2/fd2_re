@@ -5576,3 +5576,17 @@ READY有限規格先保存，再實作0／3私有UI候選與狀態還原，沒�
 本批收尾：真正主機已結案[34](https://github.com/wicanr2/fd2_re/issues/34#issuecomment-5993996072)、[179](https://github.com/wicanr2/fd2_re/issues/179#issuecomment-5994002250)、[180](https://github.com/wicanr2/fd2_re/issues/180#issuecomment-5994007961)、[181](https://github.com/wicanr2/fd2_re/issues/181#issuecomment-5994012764)及[182](https://github.com/wicanr2/fd2_re/issues/182#issuecomment-5994016336)。正式pull／render保存18條未完成項；驗證與限制見主契約。28份來源、22份產物及90筆傳遞PNG／checkpoint雜湊已核對；163條教訓與59個guard、新連結及索引正對照通過。歷史兩個dist缺檔保留原註記。變更檔UID／GID1000，root-owned仍2811、新增0、.md目錄0。提交與真正遠端HEAD核對結果回填各案。
 
 最終工作清單驗證：18條未完成、10條需人工判讀、可能已完成0條。收尾前再次確認沒有本批FD2容器殘留。
+
+## 2026-10-05 指令6限定隔離驗收（#154／#160／#161）
+
+本輪沿已登記#154／#160／#161恢復，使用目前乾淨dosgolem重生同源原版，並以既有受版控前綴驗證器核對歷史來源。使用者明示採用限定隔離，先更新READY與#154決策留言，再接正式有界前置寫入。普通actor／target與其他資產維持嚴格界限。
+
+正式完整組圖、真實鍵盤CONTINUE／取消／施法、GPU及既有章／SAV回歸均通過。原先單目標通過後雙目標transition觸及同一writer，依已審查的相同hash／Mode5／channel2／frame9／secondarygate處理。曾誤改普通work容量的測試恢復；Docker掛載不存在造成的指紋產物寫入失敗屬環境問題。測試曾硬編碼舊runner，改讀實際runner.json後重生r8及GPU r3；不覆寫舊收據。
+
+目前數字與分級只引用[58](58-fd2-exe-re-coverage.md)及[指令6主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)的isolation_validation。固定第三方槽、一次受控RNG與原版near_heap_policy unknown均明示；不增加章PLAYER-E2、不改#142的DP政策。結案、提交、遠端HEAD與Docker清理結果另追加。
+
+本批結案：[154](https://github.com/wicanr2/fd2_re/issues/154#issuecomment-5994940560)、[160](https://github.com/wicanr2/fd2_re/issues/160#issuecomment-5994944973)、[161](https://github.com/wicanr2/fd2_re/issues/161#issuecomment-5994954748)均由真正主機gh核對CLOSED。官方pull／render同步遠端15條，verify無可能已完成項，7條保留人工判讀。
+
+獨立稽核核對10份來源、17份收據及96筆傳遞檔案SHA，36張GPU全幅與目前原版相同；新舊原版12張完整indexed／RGB相同。新增文件連結與索引正對照通過。教訓檢查器排除測試檔，新增來源規則保留可回查入口而不掛無效guard；164條教訓、59個既有guard通過。歷史root-owned共2811項（2786檔、25目錄），本輪來源與產物UID／GID1000，.md目錄0。本批FD2容器已退出，其他專案未更動。
+
+README只補穩定玩家功能及證據入口，文化保存內容保留；完整原版與GPU截圖留本機work，沒有增加未授權公開素材。提交與真正遠端HEAD核對結果回填三案。
