@@ -387,41 +387,6 @@
         "reason": "需完整dosgolem12影格與正式非零側演出驗收；重製端綠色測試不足以關閉。"
       },
       "issue": 161
-    },
-    {
-      "id": "physical-attack-native-background-and-work-continuation",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "物理攻擊場景尚待完整影格與工作緩衝續接",
-      "acceptance": "依固定FD2.EXE雜湊的0x28A6C原始BG／TAI選擇建立READY規格，讓正常物理攻擊消費typed地形及分離原始素材。至少抽測玩家／敵方正常物理攻擊與零旗標分支，特殊旗標未閉合時明示範圍。工作緩衝交接依writer／consumer證據驗證，不清整塊猜補；#52的3152已由#167確認為oracle近堆清零政策結果，不能當背景render清零的原版判準。保留整張影格差異、原20/30與章門檻。",
-      "evidence": [
-        "docs/data/ida/fd2_terrain_mode3_review_20261001.json",
-        "docs/data/ida/fd2_physical_counterattack_ida.txt",
-        "remake/cmd/fd2/main.go",
-        "https://github.com/wicanr2/fd2_re/issues/52",
-        "docs/data/ida/fd2_physical_background_selection_20261004.json",
-        "remake/internal/battle/native_physical_scene.go",
-        "remake/cmd/fd2/native_physical_scene.go",
-        "docs/data/parity-plans/physical-scroll-ch12-fixed-r1.jsonl",
-        "tools/ida_probe_physical_presentation.py",
-        "remake/internal/battlepresent/native_physical_body.go",
-        "remake/cmd/fd2/native_physical_body.go",
-        "remake/cmd/fd2/native_physical_body_test.go",
-        "tools/export_sfx.py",
-        "remake/cmd/fd2/native_physical_scene_test.go",
-        "docs/data/fd2-lessons.json",
-        "docs/data/parity-plans/physical-own-nonzero-ch08-fixed-r1.jsonl",
-        "docs/data/parity-plans/physical-own-nonzero-ch08-r2.jsonl",
-        "https://github.com/wicanr2/fd2_re/issues/169",
-        "https://github.com/wicanr2/fd2_re/issues/170",
-        "remake/cmd/fd2/audio.go",
-        "remake/cmd/fd2/audio_voice_test.go"
-      ],
-      "verify": {
-        "kind": "manual",
-        "note": "2026-10-05目前狀態：固定玩家／敵方正常物理演出及三種普通11CAC(1)返回已限定CONFORMED／RUNTIME-E1；最新主攻命中反擊MISS返回的原版同時點來源與完整indexed／RGB／palette通過。來源、命令與唯一數字見58及physical_counter_miss_map_return_acceptance_validation。三種返回helper合成前work未配置，不能證明一般保留工作緩衝的生命週期；特殊分支、非零連擊與人耳音訊未驗收。167政策、20/30章台帳與PLAYER-E2閘門保持。"
-      },
-      "issue": 166
     }
   ]
 }

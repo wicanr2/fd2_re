@@ -180,6 +180,39 @@ func TestNativePhysicalSceneMissingRawNameStopsBeforeSettlement(t *testing.T) {
 	}
 }
 
+func TestNativePhysicalSceneReturnDACStopsBeforeSettlement(t *testing.T) {
+	requirePhysicalScenePack(t)
+	for _, owner := range []string{"player", "mode11"} {
+		for _, failure := range []string{"busy", "baseline"} {
+			t.Run(owner+"/"+failure, func(t *testing.T) {
+				g, actor, target := physicalSceneTestGame(t)
+				g.nativeMapAssets = &nativeMapAssets{PaletteDAC: make([]byte, 768)}
+				if failure == "busy" {
+					g.nativePaletteRamp = &nativePaletteRampJob{}
+				} else {
+					g.nativeMapAssets.PaletteDAC = nil
+				}
+				if err := g.ensureNativeAttackPresentation(actor.BattleFig, target.BattleFig); err != nil {
+					t.Fatal(err)
+				}
+				beforeActor, beforeTarget := *actor, *target
+				if owner == "player" {
+					g.confirm()
+				} else {
+					g.aiBusy = true
+					g.executeNativeAIMode11Physical(&battle.AIPlan{U: actor, Target: target}, nil)
+				}
+				if !strings.Contains(g.loadErr, "DAC owner or baseline unavailable") || g.atk != nil || g.nativeRNGState != 17791 || !reflect.DeepEqual(*actor, beforeActor) || !reflect.DeepEqual(*target, beforeTarget) {
+					t.Fatalf("DAC預檢改寫交易：%s", g.loadErr)
+				}
+				if g.rng.Int63() != rand.New(rand.NewSource(73)).Int63() {
+					t.Fatal("DAC預檢消耗Go RNG")
+				}
+			})
+		}
+	}
+}
+
 func TestNativePhysicalDepartureMissingLayerStopsBeforeSettlement(t *testing.T) {
 	requirePhysicalScenePack(t)
 	root, err := filepath.Abs(separatedAssetPath(""))

@@ -640,3 +640,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 目前#174 HUD來源與#175驗收raw匯入勘誤已限定CONFORMED；入口為[physical_map_hud_cycle_validation／physical_own_map_return_acceptance_validation](../data/ida/fd2_physical_background_selection_20261004.json)及[58現況表](58-fd2-exe-re-coverage.md)。先前READY與拒收段落保留形成過程，不再作現況待辦。
 
 #166反擊MISS的[physical_counter_miss_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1；完整返回畫布與色盤通過，原版caller、固定來源與限制見[58現況表](58-fd2-exe-re-coverage.md)。一般保留work生命週期尚未驗收。
+
+#166的[physical_owner_map_handoff_probe](../data/ida/fd2_physical_background_selection_20261004.json)保存DRAFT反例；正式正常Game保留work交接與DAC caller已限定CONFORMED，見physical_owner_return_dac_validation，未宣稱PLAYER-E2。
+
+- [正常物理owner的DAC返回交接](../data/ida/fd2_physical_background_selection_20261004.json)：#176的physical_owner_return_dac_evidence／physical_owner_return_dac_spec，IDA9.4與正常caller漸暗／漸亮已閉合；正常完整Game保留work與GPU已限定CONFORMED，驗收見physical_owner_return_dac_validation。
+
+[完整正常物理owner驗收測試](../../remake/cmd/fd2/native_physical_owner_test.go)核對固定前置map、完整兩段DAC／GPU、保留work與最後caller返回；主契約physical_owner_return_dac_spec／validation限定RUNTIME-E1。

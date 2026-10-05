@@ -1653,6 +1653,21 @@
         ],
         "pattern": "\"physical_own_map_raw_restore_spec\":"
       }
+    },
+    {
+      "id": "normal-owner-compare-through-final-caller",
+      "date": "2026-10-05",
+      "area": "正常owner交接驗收",
+      "rule": "驗收正常owner時，從上游輸入追到最終caller續行，分別核對中間畫面、DAC與最後可操作畫面。離屏helper走正式Draw優先序。入口remake/cmd/fd2/native_physical_owner_test.go與主契約physical_owner_return_dac_spec，目前涵蓋正常物理body→漸暗→map→停音→漸亮→after。",
+      "why": "孤立map helper漏掉上游DAC交接；第一次只核對黑map又漏掉後方1F525漸亮。章helper直接重畫body時讀到已dispose貼圖。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/176",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_physical_background_selection_20261004.json"
+        ],
+        "pattern": "\"fade_in_steps\":"
+      }
     }
   ]
 }

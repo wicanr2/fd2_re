@@ -57,6 +57,19 @@ func (g *Game) startNativePaletteRamp(start, end, delayMs int, then func()) erro
 	if err := g.ensureNativePaletteFrame(); err != nil {
 		return err
 	}
+	return g.startNativePaletteRampOnFrame(g.nativeMapVGA, start, end, delayMs, then)
+}
+
+// startNativePaletteRampOnFrame accepts the caller's current indexed VGA.
+// Normal physical returns fade their last body present, before the map VGA
+// is cleared. Contract: physical_owner_return_dac_spec in the canonical evidence.
+func (g *Game) startNativePaletteRampOnFrame(vga []byte, start, end, delayMs int, then func()) error {
+	if g.nativePaletteRamp != nil || len(vga) != indexedmap.NativeMapVGASize {
+		return errors.New("native palette ramp owner or indexed frame unavailable")
+	}
+	if delayMs != 2 || !nativeMapAssetsAvailable(g.nativeMapAssets) {
+		return errors.New("native indexed framebuffer or DAC baseline unavailable")
+	}
 	deltas, err := buildInclusivePaletteDeltas(start, end)
 	if err != nil {
 		return err
@@ -68,7 +81,7 @@ func (g *Game) startNativePaletteRamp(start, end, delayMs int, then func()) erro
 	}
 	job := &nativePaletteRampJob{
 		deltas: deltas, delayMs: delayMs,
-		vga: append([]byte(nil), g.nativeMapVGA...),
+		vga: append([]byte(nil), vga...),
 		dac: dac, baseline: baseline, then: then,
 	}
 	if err := job.applyCurrent(); err != nil {

@@ -537,7 +537,9 @@ func ackPresents(g *Game) {
 		if ch23JourneyScreen == nil {
 			ch23JourneyScreen = ebiten.NewImage(640, 400)
 		}
-		g.drawNativePhysicalPrelude(ch23JourneyScreen)
+		// 同一攻擊owner在body後仍持有兩段palette ramp；依正式Draw優先序確認。
+		// 直接呼叫body繪圖會在map漸亮時讀到已dispose的最後body image。
+		g.Draw(ch23JourneyScreen)
 	}
 	if g.nativeEndTurnRecovery != nil {
 		if ch23JourneyScreen == nil {

@@ -6721,6 +6721,22 @@ func (g *Game) finishAttackPresentation() {
 			}
 		}
 		g.stopNativePhysicalSound()
+		if scene.body != nil && scene.body.returnRampStarted && g.nativeMapAssets != nil {
+			// 2910A→1F525在重建map後以delta64..0漸亮；最後Draw才返回caller。
+			// READY：physical_owner_return_dac_spec。孤立map helper未走body，不外推owner。
+			if err := g.startNativePaletteRamp(64, 0, 2, g.completeAttackPresentation); err != nil {
+				g.atk = nil
+				g.loadErr = fmt.Sprintf("native physical return fade-in: %v", err)
+			}
+			return
+		}
+	}
+	g.completeAttackPresentation()
+}
+
+func (g *Game) completeAttackPresentation() {
+	if g.atk == nil {
+		return
 	}
 	after := g.atk.after
 	g.atk = nil

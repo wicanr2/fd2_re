@@ -7,7 +7,7 @@
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
-| #166原生物理演出 | 單次MISS及零header主攻／counter有限CONFORMED／RUNTIME-E1 | 正常玩家、一般AI與mode11消費逐揮與counter排程；有限收據見本頁最新節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)。固定命中反擊的完整返回圖已驗；其他分支及一般work生命週期仍待驗收，[Issue](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。 |
+| #166原生物理演出 | 正常物理抽樣CONFORMED／RUNTIME-E1 | 玩家／敵方、零旗標與已明示非零抽樣、完整DAC caller及保留work返回已驗。範圍與特殊分支限制見本頁最新#176節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)；不宣稱原版heap生命週期或全戰鬥PLAYER-E2。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
 | #173同時點地圖runtime | 限定工具CONFORMED | 16全域／view／units／獨立palette來源已補；限定consumer結果見本頁最新#166節。 |
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
@@ -2975,3 +2975,23 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 | 限制 | 入口BIOS4145、重製shift latch4145、原版4171；本例work合成前未配置，不能證明一般生命週期；#166保持OPEN | physical_counter_miss_map_return_acceptance_validation.limits |
 
 統計由原trace、frames及Go日誌重生，日期2026-10-05；輸入、命令及來源／產物SHA在主契約。已完成的三種普通返回不因舊DRAFT文字重開。
+
+本輪原型checkpoint：[physical_owner_map_handoff_probe](../data/ida/fd2_physical_background_selection_20261004.json)當時為DRAFT，consumer尚未驗收；反例與拒收保留，現已由下方#176完整caller驗收取代。
+
+### 2026-10-05：#176正常物理owner的DAC返回交接
+
+本輪初期來源checkpoint：RE-CLOSED、規格READY，當時尚未驗收正式實作；最新結果見下節。主證據為[physical_owner_return_dac_evidence／spec](../data/ida/fd2_physical_background_selection_20261004.json)。固定EXE的IDA9.4原始290A7→sub_1F882、1F503..1F524→sub_11D40(0,255,delta)閉合delta0..63與delay2 caller。唯一dosgolem來源work/parity-slot-ch08/physical-owner-dac-original-r1保留181控制、533既有trace；新增64份正常return寫後DAC與公式逐byte一致，末端全零。原版按indexed去重保存兩張PNG，不能稱為64張原版擷取；return首張64000索引與先前最後body相同。來源驗證命令及雜湊見主證據。
+
+重製DRAFT完整Game owner保留既有work，返回indexed全零差異，但RGB差異56475、palette差異254。此反例登記[#176](https://github.com/wicanr2/fd2_re/issues/176)，不能用孤立返回helper的通過外推完整owner。規格重用既有全DAC ramp並明示最後body畫布、Draw閘門、map→stop→after順序。此切片不重開#52配置器政策、不增加章PLAYER-E2；#154仍待使用者確認。
+
+### 2026-10-05：#176／#166正常owner有限驗收結果
+
+目前狀態：CONFORMED-normal-owner-sample／RUNTIME-E1。主證據[physical_owner_return_dac_validation](../data/ida/fd2_physical_background_selection_20261004.json)保存完整命令、固定來源與產物雜湊。正常caller包含漸暗64份delta0..63、map／stop、漸亮65份delta64..0才after；兩段均有每步Draw閘門。真正oracle按indexed去重只存漸暗兩張、漸亮一張PNG，完整129份DAC由caller限定trace取得，不稱為129張原版擷取。
+
+正式CPU／GPU完整Game的pre-map、黑map與最終返回map均為64000 indexed／RGB差異0、256 palette差異0；153216-byte work storage保持，preflight候選未發布。停音與after各一次，palette phase5／tick2716保持。兩段GPU共129次全畫面RGB比較通過。真正dosgolem parity對黑map中間時點回報near-state完整0差異；最終漸亮由65份原版DAC與固定map索引驗證。測試不以原版PNG供renderer，不注入中途輸出phase。
+
+標準Go 19套件、2363頂層測試通過；含子測試2867個pass、0 fail。相稱聚焦43頂層pass，獨立GPU opt-in跳過1項，本輪完整owner GPU另行通過。四種完整物理場景與三種map返回保持。原子拒收涵蓋player／mode11的busy DAC owner與baseline缺項。字串清冊98項原分類與理由不變，僅重新綁定inventory／行號。
+
+第十二章正常輸入重播通過，155項原版AI入口全部消費且0分岔，存檔SHA256為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。比較275張畫面，behavior／transaction通過，nodes／frames仍拒收，wait1528／2030的既有差異保留，不新增PLAYER-E2，20/30章台帳保持。重製端的兩次Go環境拒收與離屏helper繞過Draw造成的已dispose影像失敗，均保留於validation.diagnostics；修正後在原容器重跑，沒有登記成新產品缺陷。
+
+本輪接受條件已滿足，遠端#176／#166均已CLOSED。有限結論不宣稱原版heap初值／生命週期、特殊旗標／非零連擊補驗、人耳音訊或硬體wall-clock一致；#167政策與#154尚待回覆的決策不變。

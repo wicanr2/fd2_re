@@ -171,6 +171,9 @@ func (g *Game) preflightNativePhysicalMapReturn() error {
 	if g.nativeMapAssets == nil {
 		return nil
 	}
+	if g.nativePaletteRamp != nil || len(g.nativeMapAssets.PaletteDAC) != 256*3 {
+		return errors.New("native physical return DAC owner or baseline unavailable")
+	}
 	probe := *g
 	state := *g.st
 	probe.st = &state

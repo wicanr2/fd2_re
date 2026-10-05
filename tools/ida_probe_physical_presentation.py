@@ -36,7 +36,8 @@ def annotations_at(ea):
     annotations = []
     for claim in (canonical.get("physical_scroll_evidence", {}).get("claims", []) +
                   canonical.get("physical_tail_evidence", {}).get("claims", []) +
-                  canonical.get("physical_sound_evidence", {}).get("claims", [])):
+                  canonical.get("physical_sound_evidence", {}).get("claims", []) +
+                  canonical.get("physical_owner_return_dac_evidence", {}).get("claims", [])):
         assert claim["level"] in ("已證實", "強推論", "假說", "未知")
         for location in claim["original"]:
             bounds = [int(part, 16) for part in location.split("..")]
@@ -49,8 +50,15 @@ def annotations_at(ea):
 
 # 音效補證只匯出正常tail及既有wrapper，不重做場景RE或硬體driver。
 sound_probe = os.environ.get("FD2_IDA_PHYSICAL_SOUND") == "1"
+owner_dac_probe = os.environ.get("FD2_IDA_PHYSICAL_OWNER_DAC") == "1"
+assert not (sound_probe and owner_dac_probe)
 targets = (0x28A6C, 0x25A96) if sound_probe else (0x11EB0, 0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A)
 sound_ranges = {0x28A6C: (0x29050, 0x29117), 0x25A96: (0x25A96, 0x25B45)}
+if owner_dac_probe:
+    targets = (0x28A6C, 0x1F882, 0x1F525, 0x11D40)
+    result["scope"] = {"kind": "physical-owner-DAC-176",
+                       "ranges": {"0x28a6c": ["0x29090", "0x29117"]},
+                       "limits": "只複核已知全DAC ramp與正常caller；不解硬體時序或原版配置器。"}
 if sound_probe:
     result["scope"] = {"kind": "physical-sound-owner", "ranges": {
         hex(target): [hex(lo), hex(hi)] for target, (lo, hi) in sound_ranges.items()}}
@@ -60,6 +68,8 @@ for target in targets:
     rows = []
     for ea in idautils.FuncItems(target):
         if sound_probe and not (sound_ranges[target][0] <= ea < sound_ranges[target][1]):
+            continue
+        if owner_dac_probe and target == 0x28A6C and not (0x29090 <= ea < 0x29117):
             continue
         if not ida_bytes.is_code(ida_bytes.get_full_flags(ea)):
             continue
@@ -83,7 +93,7 @@ for target in targets:
                     (not sound_probe or target != 0x25A96 or 0x28A6C <= x.frm < 0x29C90)],
     })
 result["tables"] = []
-for ea, size in ((0x5255F, 24), (0x52577, 24), (0x525D6, 6)):
+for ea, size in (() if owner_dac_probe else ((0x5255F, 24), (0x52577, 24), (0x525D6, 6))):
     annotations = annotations_at(ea)
     confirmed = bool(annotations) and all(a["level"] == "已證實" for a in annotations)
     result["tables"].append({

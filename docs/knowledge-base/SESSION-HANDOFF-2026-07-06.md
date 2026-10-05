@@ -9214,3 +9214,15 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 本例Game合成前work未配置，因此仍不能驗收一般保留工作緩衝的生命週期。時鐘沿既有hardware-spec approximation；特殊分支、音訊人耳確認、#167工具政策及20/30章台帳保持，不新增PLAYER-E2。唯一數字與命令見[58](58-fd2-exe-re-coverage.md)；[#166](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。
 
 本批收尾：遠端#166更新後，真正主機pull／render及本地verify保持23項，可能已完成0項。教訓guard、本批來源／產物SHA及本地連結通過，變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已退出，其他專案未更動。提交結果追加於[Issue #166](https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5988461386)。#154方案等待使用者決定，尚未改正式指令6。
+
+### 2026-10-05 #176：正常物理owner完整DAC與工作緩衝返回
+
+[physical_owner_return_dac_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。原版正常caller在最後body漸暗後重建map，停止音效，再將map漸亮才續行。正式Game重用既有palette ramp，分別使用最後body與重新合成的map索引畫布；最後Draw後才交接after。
+
+固定ch08正常Game在進場後同步一次原版輸入，resolver只結算一次；已有work storage持續沿用，preflight未發布candidate。前置map、黑map中間時點、最終可操作map、完整DAC序列及GPU通過。舊孤立helper不能證明一般owner交接的限制，現由這條有限垂直鏈補足；原版heap重新配置的生命週期仍未宣稱已知。先前r1只驗黑map的收據保留為中間時點，不冒稱完整caller返回。
+
+章重播的離屏helper現依正式Draw優先序，避免在map漸亮時繪製已dispose body。標準Go、既有完整物理場景／map返回、章AI順序及存檔保持。章節點／畫面仍按既有門檻拒收，時鐘保持hardware-spec approximation，不新增PLAYER-E2。唯一數字、命令與雜湊見[58](58-fd2-exe-re-coverage.md)。特殊旗標／非零連擊補驗與人耳音訊維持原限制；#167及#154未決方案不變。
+
+本輪[#176](https://github.com/wicanr2/fd2_re/issues/176)完整DAC交接與[#166](https://github.com/wicanr2/fd2_re/issues/166)指定正常物理抽樣／work交接接受條件已滿足，遠端均已結案；提交結果另追加。這不代表整個戰役或所有戰鬥分支已驗收。
+
+本批收尾：真正主機已核對#176／#166均關閉，pull／render保存剩餘22項，verify無可能已完成項。教訓guard、來源／產物SHA與本批本地連結核對通過；兩個歷史dist連結維持原註記。變更檔UID／GID1000，歷史root-owned未增加，沒有.md目錄。本批FD2容器皆已清理。提交與遠端HEAD結果追加於兩個已結案Issue；#154仍待既有選擇回覆。

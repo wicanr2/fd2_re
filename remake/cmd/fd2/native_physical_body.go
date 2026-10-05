@@ -42,13 +42,14 @@ type nativePhysicalBodyJob struct {
 }
 
 type nativePhysicalBodyPlayback struct {
-	jobs             []nativePhysicalBodyJob
-	index            int
-	drawn, cued      bool
-	elapsedMillis    float64
-	image            *ebiten.Image
-	lastPresent      int
-	returnWaitMillis float64 // 正常2909D／2909F的17AA9(6)，與descriptor等待分開。
+	jobs              []nativePhysicalBodyJob
+	index             int
+	drawn, cued       bool
+	elapsedMillis     float64
+	image             *ebiten.Image
+	lastPresent       int
+	returnWaitMillis  float64 // 正常2909D／2909F的17AA9(6)，與descriptor等待分開。
+	returnRampStarted bool
 }
 
 func (g *Game) prepareNativePhysicalBodyResources(scene *nativePhysicalScene, actor, target *battle.Unit, attack *figani.Animation) error {
@@ -379,6 +380,9 @@ func (g *Game) drawNativePhysicalBody(screen *ebiten.Image, scene *nativePhysica
 // 每個實際present必須由Draw確認；不累積缺畫面的時間、不跨格追趕。
 func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed float64) error {
 	p := scene.body
+	if p.returnRampStarted {
+		return nil // 既有全DAC owner等待最後Draw後，才交接map與after。
+	}
 	if p.index == len(p.jobs) {
 		p.elapsedMillis += elapsed
 	}
@@ -417,6 +421,22 @@ func (g *Game) stepNativePhysicalBodyMillis(scene *nativePhysicalScene, elapsed 
 		}
 	}
 	if p.elapsedMillis < p.returnWaitMillis {
+		return nil
+	}
+	if g.nativeMapAssets != nil {
+		// 290A7→1F882在最後body畫布上依序寫64份DAC；不能用舊map VGA。
+		// READY：physical_owner_return_dac_spec。沿既有Draw確認與delay2近似。
+		if p.lastPresent < 0 || p.lastPresent >= len(p.jobs) {
+			return errors.New("native physical return present unavailable")
+		}
+		pixels, err := p.jobs[p.lastPresent].indexed()
+		if err != nil {
+			return err
+		}
+		if err := g.startNativePaletteRampOnFrame(pixels, 0, 63, 2, g.finishAttackPresentation); err != nil {
+			return fmt.Errorf("native physical return DAC: %w", err)
+		}
+		p.returnRampStarted = true
 		return nil
 	}
 	g.finishAttackPresentation()
