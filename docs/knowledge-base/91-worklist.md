@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 17 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -185,13 +185,23 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
-### 原生近堆自然入口在 SBB EAX,EAX 停止
+### 原生近堆首次配置返回缺 POP GS 指令
 
-`dosgolem-native-heap-sbb-return` · 缺陷 · [#186](https://github.com/wicanr2/fd2_re/issues/186) · 仍未完成 · 要人判
+`dosgolem-native-heap-pop-gs` · 缺陷 · [#188](https://github.com/wicanr2/fd2_re/issues/188) · 仍未完成 · 要人判
 
-#184／#185 修正後，六項原始 __MemAllocator 人工fixture已回傳；自然 LE entry 在第595步停於 dosgolem relocated LE 0x3D467，raw 19 C0 F7 D0 75 09 66 89，未支援19 C0 SBB EAX,EAX。原生首次配置尚未返回，不能啟用正式原生近堆。
+#186／#187 修正後，自然 LE entry 第805步在原始 _nmalloc 返回鏈 0x36D90 停止，raw 0F A9，EAX=0x100018。原始配置尚未回到 caller 0x4CC51，不以非零暫存器值宣稱成功。
 
-怎樣算做完：核對固定EXE bytes、caller與CPU平台契約，READY後補已觀察到的SBB形狀；驗證CF兩初值、全寬邊界／來源別名與其他狀態保存，全部cpu386／machine／FD2 oracle回歸通過。有界自然LE entry越過0x3D467，記錄首次caller結果或實際下一缺口；未到非零合法指標不得宣稱原生配置可用。#102同r3到T8獨立驗收，近堆正式政策不改。
+怎樣算做完：固定雜湊原始 _nmalloc bytes／caller 與 Intel 平台契約審查為 READY。只補無前綴 0F A9 dword POP GS，讀取 SS 四 bytes、截取 selector 低16 bits、合法載入後 ESP+4。非法 selector／短 stack／ESP overflow／prefix 無狀態交易；完整 CPU／machine／oracle 回歸。自然 entry 越過 0x36D90，記錄 first caller 實際返回或後續停止，不改正式 heap 政策及 #102 同 r3 T8 gate。
+
+證據：`['tools/fd2_watcom_heap_probe.go', 'docs/data/ida/fd2_ch18_oracle_stosb_20261003.json']`
+
+### 原生近堆返回 GS=0x0020 的段映射尚未確認
+
+`dosgolem-native-heap-gs-selector` · RE待解 · [#189](https://github.com/wicanr2/fd2_re/issues/189) · 仍未完成 · 要人判
+
+#188 已補 0F A9 並通過平台回歸，但自然 LE entry 第805步的原始 _nmalloc 0x36D90 仍停止：GS selector 0020 未登錄。原始 EAX=0x100018 尚未返回 caller 0x4CC51。不得以任意登錄平坦 descriptor 或略過 POP 掩蓋。
+
+怎樣算做完：受版控診斷記錄初始 GS、_nmalloc PUSH GS／POP GS 的堆疊值、途中段設定與 stack 變化。核對既有 LE／DOS extender 入口契約或可取得的原版 descriptor 證據，判斷 0x0020 來源及合法映射；只有充分證據與 READY spec 才實作。自然初次配置需回到原始 caller 並核對非零合法指標；未通過則保持 #188、#102 開啟，不改正式 heap 政策、不注入章狀態。
 
 證據：`['tools/fd2_watcom_heap_probe.go', 'docs/data/ida/fd2_ch18_oracle_stosb_20261003.json']`
 

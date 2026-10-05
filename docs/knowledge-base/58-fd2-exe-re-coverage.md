@@ -20,7 +20,7 @@
 | #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
-| #102原生近堆局部診斷 | 工具CONFORMED／原生整合BLOCKED | #183／#184／#185 CPU切片已關閉；六項人工helper回傳，有限啟動前綴相同。#186保留自然入口SBB缺口；同r3到T8未通過。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
+| #102原生近堆局部診斷 | 工具CONFORMED／原生整合BLOCKED | #186／#187已關閉；六項人工helper回傳，正式啟動前綴相同。#188／#189保留自然返回及GS段映射缺口；同r3到T8未通過。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -3162,3 +3162,23 @@ READY在實作前已登記[#154決策紀錄](https://github.com/wicanr2/fd2_re/i
 原版__MemAllocator六項人工free-list案例均回傳，與目前適配的選洞／payload初值確有不同。#184／#185已關閉，正式oracle採乾淨7c6ad7a1；自然首次配置仍在SBB停止，由#186處理。這取代前一節的AND／PUSH GS未支援現況，原始失敗收據保留。主證據的current_allocator_probe指向allocator_cpu_followup。
 
 本切片只解CPU形狀與局部入口，不接猜測配置政策，不外推第十八章實際重用，不重開已驗收r4，也不提升章PLAYER-E2。唯一命令、來源雜湊與人工／自然結果見[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+
+## 2026-10-05 原生近堆返回鏈補驗（#186／#187／#188／#189）
+
+目前程式dosgolem feb0e35512cc2903eb8eba96d1f87fde3c36e4da。
+固定FD2.EXE／IDA9.4既有bytes的局部入口、平台來源、可重跑Docker命令與收據，
+統一見[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的
+allocator_return_chain_followup。受版控tools/fd2_watcom_heap_probe.go產生統計，
+本輪六項人工fixture均回傳；344筆原始IDA指令bytes逐筆吻合。
+
+限定SBB19與XCHG87先重現回歸FAIL，修正後三個相關套件完整PASS，
+原始自然入口依序越過0x3D467及0x3D3E3；#186／#187已關閉。
+POP GS平台回歸也先FAIL後PASS，但第805步原始_nmalloc的0x36D90
+因GS selector 0x0020未登錄拒收，尚未回到caller0x4CC51。
+EAX=0x100018只是中間值，#188及段映射待解#189保持開啟。
+
+正式oracle自然啟動1,000,000步JSON與7c6ad7a1基底全檔bytes相同，
+SHA-256 4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39。
+本輪取代「#186仍是現行SBB停止」說法，保留歷史收據。
+不任意登錄descriptor，不改正式近堆政策；#102同r3到T8、完整heap與章PLAYER-E2保持。

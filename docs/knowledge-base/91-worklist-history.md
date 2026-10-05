@@ -5600,3 +5600,18 @@ README只補穩定玩家功能及證據入口，文化保存內容保留；完�
 2026-10-05 #184／#185：原始配置器六項人工helper回傳，有限CPU契約CONFORMED；自然原生配置首次回傳仍未取得，#186保留SBB缺口。取代前述AND／PUSH GS未支援的現況，保留舊收據。人工free list不作章oracle，近堆正式政策、#102同r3至T8與章分級保持。唯一現況及完整命令見[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
 
 本輪dosgolem提交7c6ad7a1已推送、遠端相同，正式oracle工作樹乾淨；#184／#185已關閉，#186與#102保持開啟。最新遠端快照16條，worklist verify與59個教訓guard通過。本輪FD2容器均已刪除，歷史root-owned維持2786檔／25目錄，沒有新增。
+
+
+2026-10-05 #186／#187返回鏈補驗：限定SBB19與XCHG87已通過平台回歸及原始入口，
+取代前述「#186保留SBB缺口」的現況。#188的POP GS平台回歸通過，
+自然返回仍因未知GS selector阻塞，段映射另登記#189；不任意登錄descriptor。
+原版中間非零EAX不當作完整配置回傳。正式近堆政策、#102同r3到T8及章分級保持。
+唯一現況、數字及重生命令見[58](58-fd2-exe-re-coverage.md)與
+[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+本輪dosgolem feb0e355已推送且遠端相同，正式oracle工作樹乾淨。
+#186／#187已結案；#188／#189與#102保持開啟。真正host Issue feed經官方pull／render
+保存17條，verify無可能已完成項，9條保留人工判讀；59個教訓guard通過。
+本輪canonical來源、收據、回歸logs及本地連結／索引正對照核對通過。
+變更檔與新增產物UID／GID1000，歷史root-owned2786檔／25目錄，.md目錄0。
+所有本批FD2容器已退出；FD2提交及真正遠端HEAD結果另回填各案。

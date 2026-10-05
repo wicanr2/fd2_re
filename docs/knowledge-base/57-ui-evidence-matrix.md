@@ -1892,3 +1892,11 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 
 
 2026-10-05 #184／#185：原始配置器六項人工helper回傳，有限CPU契約CONFORMED；自然原生配置首次回傳仍未取得，#186保留SBB缺口。取代前述AND／PUSH GS未支援的現況，保留舊收據。人工free list不作章oracle，近堆正式政策、#102同r3至T8與章分級保持。唯一現況及完整命令見[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+
+2026-10-05 #186／#187返回鏈補驗：限定SBB19與XCHG87已通過平台回歸及原始入口，
+取代前述「#186保留SBB缺口」的現況。#188的POP GS平台回歸通過，
+自然返回仍因未知GS selector阻塞，段映射另登記#189；不任意登錄descriptor。
+原版中間非零EAX不當作完整配置回傳。正式近堆政策、#102同r3到T8及章分級保持。
+唯一現況、數字及重生命令見[58](58-fd2-exe-re-coverage.md)與
+[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
