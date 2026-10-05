@@ -189,12 +189,21 @@ func naturalFirstAllocation(data []byte) map[string]any {
 		steps++
 	}
 	status := "stopped"
+	var stoppedEIP uint32
+	var stoppedBytes string
+	if stopped != "" && len(tail) > 0 {
+		stoppedEIP = tail[len(tail)-1]
+		if uint64(stoppedEIP)+8 <= uint64(len(m.Mem)) {
+			stoppedBytes = fmt.Sprintf("%x", m.Mem[stoppedEIP:stoppedEIP+8])
+		}
+	}
 	if m.CPU.EIP == 0x4cc51 {
 		status = "first_caller_returned"
 	}
 	return map[string]any{"classification": "natural LE entry diagnostic; first allocation only; not chapter oracle",
 		"status": status, "steps": steps, "eip": m.CPU.EIP, "eax": m.CPU.R[cpu386.EAX], "esp": m.CPU.R[cpu386.ESP],
-		"error": stopped, "tail_eip": tail, "omitted_hooks": []string{"_nmalloc", "_nfree", "__Init_Argv"}, "fixture_heap": false}
+		"error": stopped, "stopped_eip": stoppedEIP, "stopped_next8_hex": stoppedBytes,
+		"tail_eip": tail, "omitted_hooks": []string{"_nmalloc", "_nfree", "__Init_Argv"}, "fixture_heap": false}
 }
 
 func main() {

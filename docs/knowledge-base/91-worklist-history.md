@@ -5595,3 +5595,8 @@ README只補穩定玩家功能及證據入口，文化保存內容保留；完�
 2026-10-05 #102局部診斷：[#183](https://github.com/wicanr2/fd2_re/issues/183)的CMC CPU缺口已修正並通過有限原版helper及正式啟動前綴。原生近堆首次配置仍停止，#184保留後續CPU缺口。局部人工free list、自然LE entry與章oracle分級保留；正式_nmalloc／_nfree政策、同r3到T8與既有章PLAYER-E2不由這項結果外推。現況及來源只引用[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
 
 本輪#183已關閉，#184保持開啟；正式遠端快照16條。dosgolem def0b231已推送並核對遠端相同，專用oracle工作樹乾淨。Docker一次性工作均使用--rm；root-owned舊產物數量保持，未新增root-owned輸出。
+
+
+2026-10-05 #184／#185：原始配置器六項人工helper回傳，有限CPU契約CONFORMED；自然原生配置首次回傳仍未取得，#186保留SBB缺口。取代前述AND／PUSH GS未支援的現況，保留舊收據。人工free list不作章oracle，近堆正式政策、#102同r3至T8與章分級保持。唯一現況及完整命令見[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+本輪dosgolem提交7c6ad7a1已推送、遠端相同，正式oracle工作樹乾淨；#184／#185已關閉，#186與#102保持開啟。最新遠端快照16條，worklist verify與59個教訓guard通過。本輪FD2容器均已刪除，歷史root-owned維持2786檔／25目錄，沒有新增。

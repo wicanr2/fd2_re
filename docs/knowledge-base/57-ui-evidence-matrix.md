@@ -1889,3 +1889,6 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 
 
 2026-10-05 #102局部診斷：[#183](https://github.com/wicanr2/fd2_re/issues/183)的CMC CPU缺口已修正並通過有限原版helper及正式啟動前綴。原生近堆首次配置仍停止，#184保留後續CPU缺口。局部人工free list、自然LE entry與章oracle分級保留；正式_nmalloc／_nfree政策、同r3到T8與既有章PLAYER-E2不由這項結果外推。現況及來源只引用[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+
+2026-10-05 #184／#185：原始配置器六項人工helper回傳，有限CPU契約CONFORMED；自然原生配置首次回傳仍未取得，#186保留SBB缺口。取代前述AND／PUSH GS未支援的現況，保留舊收據。人工free list不作章oracle，近堆正式政策、#102同r3至T8與章分級保持。唯一現況及完整命令見[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。

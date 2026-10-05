@@ -185,13 +185,13 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
-### 原生近堆探針仍缺 AND 暫存器與 PUSH GS 指令
+### 原生近堆自然入口在 SBB EAX,EAX 停止
 
-`dosgolem-native-heap-and-gs` · 缺陷 · [#184](https://github.com/wicanr2/fd2_re/issues/184) · 仍未完成 · 要人判
+`dosgolem-native-heap-sbb-return` · 缺陷 · [#186](https://github.com/wicanr2/fd2_re/issues/186) · 仍未完成 · 要人判
 
-#102 的有界探針在 #183 CMC 修正後，人工 free list 停於 IDA LE 0x3D28D 的 23 C1 AND EAX,ECX；自然 LE entry 首次 _nmalloc 停於 0x36D2B 的 0F A8 PUSH GS。兩者如實記錄在局部探針，尚未證明原版自然配置器可用。
+#184／#185 修正後，六項原始 __MemAllocator 人工fixture已回傳；自然 LE entry 在第595步停於 dosgolem relocated LE 0x3D467，raw 19 C0 F7 D0 75 09 66 89，未支援19 C0 SBB EAX,EAX。原生首次配置尚未返回，不能啟用正式原生近堆。
 
-怎樣算做完：先核對原始 bytes 與 CPU 平台契約，READY 規格後補實際觀測指令形狀。驗證邏輯旗標／來源別名與 GS 堆疊原子性；CPU、machine、oracle 回歸全通過。固定原版局部探針越過兩點；未支援的後續形式仍嚴格拒收並另外登記，不修改正式近堆政策或第十八章 T8 閘門。
+怎樣算做完：核對固定EXE bytes、caller與CPU平台契約，READY後補已觀察到的SBB形狀；驗證CF兩初值、全寬邊界／來源別名與其他狀態保存，全部cpu386／machine／FD2 oracle回歸通過。有界自然LE entry越過0x3D467，記錄首次caller結果或實際下一缺口；未到非零合法指標不得宣稱原生配置可用。#102同r3到T8獨立驗收，近堆正式政策不改。
 
 證據：`['tools/fd2_watcom_heap_probe.go', 'docs/data/ida/fd2_ch18_oracle_stosb_20261003.json']`
 
