@@ -554,6 +554,16 @@
       "confidence": "已證實",
       "evidence": ["docs/data/ida/fd2_story_dialogue_layout_ida.txt", "docs/data/ida/fd2_end_turn_confirmation_ui_ida.txt"],
       "scope": "下框右端錨點、stride 與寫入方向；portrait record bytes 的高階身分語意仍須另證"
+    },
+    {
+      "address": "0x2fb9f",
+      "classification": "product",
+      "semantic": "128定點間距重採樣完整320x200來源至清零candidate",
+      "confidence": "已證實",
+      "evidence": [
+        "docs/data/ida/fd2_town_departure_20261005.json"
+      ],
+      "scope": "完整bounded indexed重採樣；參數語意限定已證城鎮2D228 caller，其他caller另查。"
     }
   ],
   "instruction_entries": [

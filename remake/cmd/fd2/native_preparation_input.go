@@ -22,7 +22,7 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 	if n == nil || n.Type != "preparation" {
 		return false
 	}
-	if g.nativeClassUIBlocksInput() {
+	if g.nativeClassUIBlocksInput() || g.nativeTownDeparture != nil {
 		return true
 	}
 	townBacked := n.Cancel != ""
@@ -150,8 +150,10 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 			} else {
 				closeThen(func() {
 					if g.acceptTownDeparturePrompt() {
-						g.prepPromptSource = nil
-						leavePreparation("confirm")
+						g.finishNativePreparationDeparture(func() {
+							g.prepPromptSource = nil
+							leavePreparation("confirm")
+						})
 					}
 				})
 			}

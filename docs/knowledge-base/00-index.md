@@ -646,3 +646,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [正常物理owner的DAC返回交接](../data/ida/fd2_physical_background_selection_20261004.json)：#176的physical_owner_return_dac_evidence／physical_owner_return_dac_spec，IDA9.4與正常caller漸暗／漸亮已閉合；正常完整Game保留work與GPU已限定CONFORMED，驗收見physical_owner_return_dac_validation。
 
 [完整正常物理owner驗收測試](../../remake/cmd/fd2/native_physical_owner_test.go)核對固定前置map、完整兩段DAC／GPU、保留work與最後caller返回；主契約physical_owner_return_dac_spec／validation限定RUNTIME-E1。
+
+- [城鎮出發與LOADCH過場主證據](../data/ida/fd2_town_departure_20261005.json)：#39 的限定CONFORMED／RUNTIME-E1；[可重跑原版鍵盤序列](../data/parity-plans/ch07-town-departure-probe.jsonl)。正式現況見[58](58-fd2-exe-re-coverage.md)。
+
+#39 的正式接線入口為 [城鎮出發擁有者](../../remake/cmd/fd2/native_town_departure.go)及[定點採樣器](../../remake/internal/campaign/native_town_departure.go)；READY 範圍與驗收仍依主證據。
+
+[城鎮過場完整來源／正常owner驗收](../../remake/cmd/fd2/native_town_departure_test.go)使用#39的固定槽與原版兩個取樣窗口；沒有收據時明示略過。
+
+[城鎮過場總覽產生器](../../tools/fd2_town_departure_sheet.py)由原版indexed及同時點DAC重建左欄、正式GPU擷取作中欄，僅輸出壓平總覽；命令與範圍見主契約。

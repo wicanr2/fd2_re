@@ -1030,7 +1030,7 @@ ACTING 之後凱麗的朝向、暫時狀態掃描換掉 Unit 指標；收尾順�
 [`parity-ch07-town-fade-probe.png`](../figures/parity-ch07-town-fade-probe.png)（非 gate：出口 YES
 之後 `0x2D1CB..0x2D275` 十步縮放＋DAC 暗化到全黑，再由 `0x1F544` 淡入戰場；index
 [`parity-ch07-town-fade-probe.json`](../data/ui-traces/parity-ch07-town-fade-probe.json)；
-重製端尚未接這段過場，見 #37 的後續 issue）。
+此為歷史輔助基準；現行正式接線與原版收據見下方#39勘誤）。
 
 第八章整章收據 [`parity-ch08.json`](../data/ui-traces/parity-ch08.json)（2026-09-17，
 remake-c3e，原版側 sample-c3、dosgolem `f57c23d`；槽由 `fd2_chapter_slot.py` 從 ch02-cleared 建到
@@ -1824,3 +1824,13 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 章重播的離屏helper現依正式Draw優先序，避免在map漸亮時繪製已dispose body。標準Go、既有完整物理場景／map返回、章AI順序及存檔保持。章節點／畫面仍按既有門檻拒收，時鐘保持hardware-spec approximation，不新增PLAYER-E2。唯一數字、命令與雜湊見[58](58-fd2-exe-re-coverage.md)。特殊旗標／非零連擊補驗與人耳音訊維持原限制；#167及#154未決方案不變。
 
 本輪[#176](https://github.com/wicanr2/fd2_re/issues/176)完整DAC交接與[#166](https://github.com/wicanr2/fd2_re/issues/166)指定正常物理抽樣／work交接接受條件已滿足，遠端均已結案；提交結果另追加。這不代表整個戰役或所有戰鬥分支已驗收。
+
+
+### 2026-10-05 #39 城鎮過場補齊
+
+正式town-backed preparation的首次YES及超額選人後YES共用[城鎮出發owner](../../remake/cmd/fd2/native_town_departure.go)。
+[主契約](../data/ida/fd2_town_departure_20261005.json)及[驗收入口](../../remake/cmd/fd2/native_town_departure_test.go)
+已限定CONFORMED／RUNTIME-E1。定點十步、全黑、LOADCH的65步淡入與最後caller皆通過，
+完整畫布、DAC與正式GPU結果引用[58現況表](58-fd2-exe-re-coverage.md)。
+舊「64步」與「尚未接」不再作現況；舊輔助基準及形成過程保存。
+來源phase由正常2D010暫存器同步一次，60Hz時序仍為硬體規格近似，不增加PLAYER-E2。

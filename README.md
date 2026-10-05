@@ -206,6 +206,12 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 這個有限案例已核對完整畫面及正式GPU呈現。命中、連擊、反擊、音效與戰後工作
 緩衝的驗收範圍見[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。*
 
+![城鎮出發縮放與戰場淡入的原版來源、正式重製GPU及完整差異](docs/figures/town-departure-original-vs-remake.png)
+
+*上至下為縮放首步、末步與淡入完成的戰場。每排依序為原版索引畫面加同時點DAC重建、
+重製正式GPU、完整未遮差異。原版欄不冒稱三張寫後擷取；來源與限定驗收見
+[城鎮過場契約](docs/data/ida/fd2_town_departure_20261005.json)及[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。*
+
 ![重製端正式開場的漢堂發行商畫面](docs/figures/title-publisher-remake.png)
 
 *重製正常啟動路徑的執行期畫面；美術來自玩家自備原版資料。*

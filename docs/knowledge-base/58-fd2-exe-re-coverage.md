@@ -11,6 +11,7 @@
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
 | #173同時點地圖runtime | 限定工具CONFORMED | 16全域／view／units／獨立palette來源已補；限定consumer結果見本頁最新#166節。 |
 | #168正常物理VGA收尾 | 有限CONFORMED／RUNTIME-E1 | 原版明確memset已接最後Draw後、續行前；map work不由此修法猜補。證據見本頁最新節。 |
+| #39城鎮出發→LOADCH過場 | 限定CONFORMED／RUNTIME-E1 | 十步定點縮放與全黑、65步淡入已接正式town owner；同源完整畫布／DAC、76張GPU及正常玩家控制通過。[主契約](../data/ida/fd2_town_departure_20261005.json)。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -1033,10 +1034,10 @@ byte 是 `0x10010` 整槽還原的殘值、`0x1A30B` 裡 `sub_1A866(0)` 在橫�
 呼叫 `0x13A44(x, y, 1)` 記進同一個 `[0x51A8F]`、
 dosgolem 補 `0A`／`32` 的 SIB 記憶體形式）記在
 [56 §第七章章工作單元](56-fd2-remake-sdd.md#第七章章工作單元格子事件分派掉落訊息與-step_into2026-09-16)。
-城鎮進戰場的過場（`0x2D190..0x2D275` 十步縮放＋DAC 暗化、`0x1F544` 64 步淡入）由探針幀與
-`0x11D40` 呼叫序列閉合為 RE-CLOSED，但**不在重製端路徑上**：正式重製端從城鎮出發直接進戰場，
-兩段動畫都還沒接（`BLOCKED`，issue 見 91 worklist）；章收據的 departure_prompt／battle_start
-兩端都在這段之外，不受影響。
+城鎮進戰場的過場已限定CONFORMED／RUNTIME-E1：正式town-backed出發保留caller底圖，
+依0x2D190..0x2D275做十步縮放暗化與全黑；下一LOADCH沿0x20669→0x1F525呈現65步淡入。
+原64步與0x1F42D caller說法由直接bytes及正常trace勘誤，原探針保存。
+主契約為[城鎮出發證據](../data/ida/fd2_town_departure_20261005.json)；本輪不增加章PLAYER-E2。
 第八章的整章收據見 [`parity-ch08.json`](../data/ui-traces/parity-ch08.json)（114 強化槽 AP+200／
 DP+0／DX+60，remake-c3e／原版側 sample-c3、dosgolem `f57c23d`，四個 gate 全過：179 個畫面比較點全在
 預算內、127 點逐像素相同、酒店存檔整檔 sha256 相同、`ai_order` 分岔 0，狀態 `passed`；第 6 回合擊倒
@@ -2995,3 +2996,27 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 第十二章正常輸入重播通過，155項原版AI入口全部消費且0分岔，存檔SHA256為6e8823cae90191bcf7813841a5e9a514f119a717be3a24762231c8a6de8af821。比較275張畫面，behavior／transaction通過，nodes／frames仍拒收，wait1528／2030的既有差異保留，不新增PLAYER-E2，20/30章台帳保持。重製端的兩次Go環境拒收與離屏helper繞過Draw造成的已dispose影像失敗，均保留於validation.diagnostics；修正後在原容器重跑，沒有登記成新產品缺陷。
 
 本輪接受條件已滿足，遠端#176／#166均已CLOSED。有限結論不宣稱原版heap初值／生命週期、特殊旗標／非零連擊補驗、人耳音訊或硬體wall-clock一致；#167政策與#154尚待回覆的決策不變。
+
+
+## 2026-10-05 #39 城鎮出發與LOADCH過場
+
+[主契約](../data/ida/fd2_town_departure_20261005.json)保存固定EXE與IDA9.4原始bytes、
+2D228 caller、完整2FB9F採樣規則、18筆座標表及CONFORMED範圍。
+現行clean dosgolem a01ff084使用[受版控60鍵序列](../data/parity-plans/ch07-town-departure-probe.jsonl)
+及85b080cb固定第七章槽，重生source、十步及65個正常1F544 DAC。
+
+| 驗證 | 結果 |
+|---|---|
+| 純來源十步與正常LOAD owner十步 | 各64000 indexed／RGB及256palette全部0差異；正常owner只同步原版最後2D010 EAX=1，不匯入PNG。 |
+| LOADCH淡入 | 64→0含兩端65步，全部indexed／RGB／palette 0差異；最後才發布對白，正常劇情續行至battle_ch07玩家控制。 |
+| 正式GPU | 十步加全黑11張、map65張，逐張640×400 RGBA全部0差異；使用同一Game正式Update／Draw。 |
+| 完整Go回歸 | 19個有測試套件、2364項頂層測試通過；含子案例2872項，51項條件略過、0失敗。條件收據測試另以CPU／GPU實跑。 |
+| 相容性與原子預檢 | 城鎮／整備既有回歸通過；缺source、variant、palette或忙碌owner都不advance，沒有Draw不前進、重複YES不建立第二份工作。 |
+
+首次不同clock使24×24人物游標有364個indexed底圖差異；縮放後末幀4125 indexed／1669 RGB。
+原版2D010暫存器提供唯一選幀輸入後，全步0差異。不是以圖片試選phase或放寬640預算。
+原probe在11D40寫入前取PNG，寫後palette由同時點2D25A trace補證；
+map indexed不變被oracle去重成一張PNG，65份DAC由1F544取得，不能稱有65張原版PNG。
+
+短暫owner不改persistent party、SAV欄位或格式。DOS硬體等待保持hardware-spec approximation；
+只閉合town-backed出發與下一LOADCH，不外推其他caller、音訊或PLAYER-E2。

@@ -8111,7 +8111,7 @@ kind 第一點、全部 `diff_pixels>0`、指定的點；每列「原版 checkpo
 第四／五／六章用同一支工具回補（`docs/figures/parity-ch04-samples-p{1,2}.png`、
 `parity-ch05-samples.png`、`parity-ch06-samples.png`）。
 
-### 城鎮進戰場的過場（#37）
+### 城鎮進戰場的過場（#37，2026-09-16歷史探針）
 
 原版側探針（`work/parity-slot-ch07/probe-fade`：`FD2_ORACLE_FRAME_EIP=0x11D40`，每次進 DAC 寫入
 迴圈取一幀，`FD2_ORACLE_EIP_TRACE=0x1F882,0x11D40`）定出出口 YES 之後到 battle_start 之間的
@@ -8132,6 +8132,14 @@ kind 第一點、全部 `diff_pixels>0`、指定的點；每列「原版 checkpo
 selector 2。第七章 gate 的兩端（departure_prompt 在 YES 之前、battle_start 在游標）都不含這段過場，
 所以收據看不到它；重製端 `beginNativeTransientPhases` 不是這段動畫的擁有者，城鎮縮放暗化與戰場淡入
 兩段都還沒接（另開 issue，見 58）。
+
+2026-10-05 #39勘誤：上述「64步」、0x1F42D caller與「還沒接」已失效。
+IDA9.4直接bytes及現行dosgolem trace證實，真正LOADCH為205DA→20669→1F525，
+delta64..0共65次；2FB9F定點採樣也已閉合。正式town-backed YES現先呈現十步、
+全黑，再LOADCH map與65步淡入，最後才對白與後續SPAWN。
+[主證據與CONFORMED規格](../data/ida/fd2_town_departure_20261005.json)保存完整來源與勘誤。
+沒有Draw不前進，兩個YES入口共用caller；短暫工作不改存檔格式。
+唯一驗收數字見[58](58-fd2-exe-re-coverage.md)，不增加PLAYER-E2或claim硬體wall-clock。
 
 ### 建槽工具 JOIN 殘值勘誤（2026-10-01，#23）
 

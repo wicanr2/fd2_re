@@ -5496,3 +5496,17 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 本輪[#176](https://github.com/wicanr2/fd2_re/issues/176)完整DAC交接與[#166](https://github.com/wicanr2/fd2_re/issues/166)指定正常物理抽樣／work交接接受條件已滿足，遠端均已結案；提交結果另追加。這不代表整個戰役或所有戰鬥分支已驗收。
 
 本批收尾：真正主機已核對#176／#166均關閉，pull／render保存剩餘22項，verify無可能已完成項。教訓guard、來源／產物SHA與本批本地連結核對通過；兩個歷史dist連結維持原註記。變更檔UID／GID1000，歷史root-owned未增加，沒有.md目錄。本批FD2容器皆已清理。提交與遠端HEAD結果追加於兩個已結案Issue；#154仍待既有選擇回覆。
+
+
+## 2026-10-05 #39 城鎮出發與LOADCH過場
+
+本輪以[工單#39](https://github.com/wicanr2/fd2_re/issues/39)登記後完成RE→READY→implementation→CONFORMED。
+主證據為[城鎮出發契約](../data/ida/fd2_town_departure_20261005.json)，唯一數字引用[58](58-fd2-exe-re-coverage.md)。
+正式小名冊／超額選人YES共用十步定點採樣與全黑；下一LOADCH map再65步淡入，最後才對白。
+原32位signed IDIV向零截斷、界外index0、256色盤公式與每Draw閘門保持。
+正常LOAD→YES→story→battle_ch07玩家控制、純來源／正式owner完整畫布與GPU通過。
+原「64步」及1F42D caller由直接bytes否定，歷史probe保留；詳見主契約diagnostics。
+不改SAV格式或台帳章數；其他LOADCH caller、人耳音訊與硬體wall-clock限制保持。
+遠端工單結案、提交與清理結果於本段後追加。
+
+本批收尾：真正主機已核對[#39結案](https://github.com/wicanr2/fd2_re/issues/39#issuecomment-5990314613)，正式pull／render保存剩餘21項，verify無可能已完成項。教訓guard、本批8份來源與28份產物SHA、2378個本地連結通過；兩個歷史dist連結維持原註記。變更檔UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器均已退出，其他專案未更動。提交與真正遠端HEAD核對結果回填#39。

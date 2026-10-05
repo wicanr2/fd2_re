@@ -90,6 +90,8 @@ type Game struct {
 	nativeMapDAC                []byte                 // current 256xRGB six-bit DAC state for handler palette ramps
 	nativePhysicalSoundBanks    map[int]map[int][]byte // 2BC9A 的 FIGANI sound banks，獨立於完整 command bank cache。
 	nativePaletteRamp           *nativePaletteRampJob  // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativeTownDeparture         *nativeTownDepartureJob
+	nativeTownLoadPending       bool
 	nativeDefeat                *nativeDefeatJob
 	nativeChapterResult         *nativeChapterResultJob
 	nativeResultMatchedRules    []string
@@ -1994,6 +1996,22 @@ func (g *Game) beatStart(b campaign.Beat) {
 		if err := g.applyLoadCH(b.LoadCH); err != nil {
 			g.loadErr = "beat loadch: " + err.Error()
 			return // fail closed rather than continuing on the old map/roster.
+		}
+		if g.nativeTownLoadPending {
+			if err := g.materializeNativeStoryMapState(g.storyNativeMapSource); err != nil {
+				g.loadErr = "town LOADCH state: " + err.Error()
+				return
+			}
+			if err := g.composeNativeStoryMapFrame(); err != nil {
+				g.loadErr = "town LOADCH frame: " + err.Error()
+				return
+			}
+			if err := g.startNativePaletteRamp(64, 0, 2, g.beatAdvance); err != nil {
+				g.loadErr = "town LOADCH fade-in: " + err.Error()
+				return
+			}
+			g.nativeTownLoadPending = false
+			return
 		}
 		g.beatAdvance()
 	case "pan":
@@ -4588,9 +4606,11 @@ func (g *Game) confirmPreparationDeparture() bool {
 		return false
 	}
 	after := func() {
-		if g.camp.Advance("confirm") != "" {
-			g.enterNode()
-		}
+		g.finishNativePreparationDeparture(func() {
+			if g.camp.Advance("confirm") != "" {
+				g.enterNode()
+			}
+		})
 	}
 	if !g.beginNativePreparationConfirmationClosing(after) {
 		after()
@@ -8618,6 +8638,7 @@ func (g *Game) Update() error {
 	g.stepNativeCommand34Presentation()          // native 0x27FC9→0x22721/0x22866/0x22997 player command34 presentation
 	g.stepNativeCommand35Presentation()          // native 0x27FC9→0x22D1B×3 player command35 presentation
 	g.stepNativeAIItemPresentation()             // native 0x15055→0x211A4 AI item type5/13 tail
+	g.stepNativeTownDeparture()                  // native 0x2d190 town caller
 	g.stepNativePaletteRamp()                    // native 0x1f882/0x1f525 whole-DAC ramps
 	g.stepNativePalettePulse()                   // native 0x35E5A whole-DAC pulse
 	g.stepNativeSpawnIntro()                     // native 0x32999 twelve-pass indexed spawn transition
@@ -9351,6 +9372,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		if !g.drawNativeAIItemPresentation(screen) {
 			g.failNativeAIItemPresentation(errors.New("draw input unavailable"))
 		}
+		return
+	}
+	if g.nativeTownDeparture != nil {
+		screen.Fill(color.Black)
+		g.drawNativeTownDeparture(screen)
 		return
 	}
 	if g.nativePaletteRamp != nil {
