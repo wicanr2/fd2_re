@@ -15506,7 +15506,7 @@
     ],
     "superseded_by": "allocator_cpu_followup for current CPU-gap / fixture status; preserve original receipts"
   },
-  "current_allocator_probe": "allocator_natural_lifecycle",
+  "current_allocator_probe": "allocator_formal_native_profile",
   "allocator_cpu_followup": {
     "recorded_at": "2026-10-05",
     "issues": {
@@ -17794,7 +17794,8 @@
       "sha256": "7fdfd09bec9af699cbeb91f3e54df72653d6c9edfbef98014480c631e1cc2a8b",
       "before_command": "test -d /home/anr2/.codex/skills && test -d /tmp/fd2-lifecycle-before && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/tmp/fd2-lifecycle-before,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db -root /src/org_game/炎龍騎士團/FLAME2 -asset-manifest /src/docs/data/fd2-reference-files.json -natural-lifecycle -out /src/work/parity-slot-ch18/heap-allocator-lifecycle-r6.json'",
       "after_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit 6f6b1d7a931c8f4f0da0731e2b8112ed0948b640 -root /src/org_game/炎龍騎士團/FLAME2 -asset-manifest /src/docs/data/fd2-reference-files.json -natural-lifecycle -out /src/work/parity-slot-ch18/heap-allocator-lifecycle-r7.json'",
-      "replay_note": "使用相同最終工具hash、相同20檔固定唯讀原版與既有平台設定；/dos分別掛乾淨012defb2／6f6b1d7a。輸出新檔名，O_EXCL拒絕覆寫。 重建before工作樹：git -C /home/anr2/cht/dosgolem-fd2-oracle worktree add --detach /tmp/fd2-lifecycle-before 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db；after可沿乾淨6f6b1d7a或僅追加規格勘誤的56d05bf，程式來源hash逐項相同。工具與所有輸入均須符合記錄hash。"
+      "replay_note": "使用相同最終工具hash、相同20檔固定唯讀原版與既有平台設定；/dos分別掛乾淨012defb2／6f6b1d7a。輸出新檔名，O_EXCL拒絕覆寫。 重建before工作樹：git -C /home/anr2/cht/dosgolem-fd2-oracle worktree add --detach /tmp/fd2-lifecycle-before 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db；after可沿乾淨6f6b1d7a或僅追加規格勘誤的56d05bf，程式來源hash逐項相同。工具與所有輸入均須符合記錄hash。",
+      "source_commit": "13f956a766e83655a287edc661eb0adfd266c361"
     },
     "before": {
       "path": "work/parity-slot-ch18/heap-allocator-lifecycle-r6.json",
@@ -18662,6 +18663,627 @@
       "rootless／缺IO未用於通過或判定正式原版",
       "第十八章同r3到T8沒有重跑，既有r4章驗收保持"
     ],
-    "spec_correction_commit": "56d05bf；僅規格與WORKLOG追加相同平台前後皆通過的勘誤，程式來源仍為6f6b1d7a"
+    "spec_correction_commit": "56d05bf；僅規格與WORKLOG追加相同平台前後皆通過的勘誤，程式來源仍為6f6b1d7a",
+    "superseded_by": "allocator_formal_native_profile"
+  },
+  "allocator_formal_native_profile": {
+    "recorded_at": "2026-10-06",
+    "timezone": "Asia/Taipei",
+    "issues": {
+      "completed": [
+        191
+      ],
+      "parent_open": 102
+    },
+    "status": "唯一正式oracle／wrapper明示native模式及BOOT／正常標題輸入有限CONFORMED；同r3至T8未驗收",
+    "inference_level": "confirmed original instruction execution for this bounded profile; existing hardware-spec approximation; no full heap or chapter parity claim",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "asset_manifest": {
+      "files": [
+        {
+          "File": "FD2.EXE",
+          "Size": 357074,
+          "MD5": "b97caf2239a27a896069d03549d96e1e",
+          "SHA256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        },
+        {
+          "File": "DOS4GW.EXE",
+          "Size": 244716,
+          "MD5": "a75fdc120ae2fbb4cb2fd9e7b6a94858",
+          "SHA256": "bcba1fc7ea48469fcd97f7d33f2781db8903d90d93cda03505860177259dfaec"
+        },
+        {
+          "File": "SETSOUND.EXE",
+          "Size": 320037,
+          "MD5": "acd891d19b109a068f05aa03236dbe95",
+          "SHA256": "e337ab8b41044f94f26c50eb388d72393833980f032c6d0745704b6a28a2f349"
+        },
+        {
+          "File": "DIG.INI",
+          "Size": 216,
+          "MD5": "6ea1dd6cfc3c6ef697d890606a2900b9",
+          "SHA256": "ff4a599b6970cb02f4e8348b3ee72777a156fd067038c9d72fe5788f7c3224e6"
+        },
+        {
+          "File": "MDI.INI",
+          "Size": 218,
+          "MD5": "1eb7d3bb2f1f781b306c3a580fe3273d",
+          "SHA256": "d42a9f90e09585eee203db863c664d5cae763e00749325c91b028ee3bcac55d1"
+        },
+        {
+          "File": "SAMPLE.AD",
+          "Size": 3242,
+          "MD5": "b04ce567e1fb40e8c1a2002b23027dfd",
+          "SHA256": "87ddb683096b504bcaea693f8a84d1d36fd431df0c576eaafcf0bf8e21e3ed5b"
+        },
+        {
+          "File": "SAMPLE.OPL",
+          "Size": 3242,
+          "MD5": "b04ce567e1fb40e8c1a2002b23027dfd",
+          "SHA256": "87ddb683096b504bcaea693f8a84d1d36fd431df0c576eaafcf0bf8e21e3ed5b"
+        },
+        {
+          "File": "ADRV688.DIG",
+          "Size": 11278,
+          "MD5": "feabc78729e3a458ae2f6ab40146f0d9",
+          "SHA256": "294a7de77d88a7f38f58b32fc7166ced87a4c44e6c9be760f78b1724744d7161"
+        },
+        {
+          "File": "ANI.DAT",
+          "Size": 2437547,
+          "MD5": "81315bcbb78764361c5137ab0f714f7e",
+          "SHA256": "be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963"
+        },
+        {
+          "File": "BG.DAT",
+          "Size": 624564,
+          "MD5": "4b5414c92b40ef25ba0ee10c80f9e149",
+          "SHA256": "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"
+        },
+        {
+          "File": "DATO.DAT",
+          "Size": 1979029,
+          "MD5": "f15093e5bff4e5f3334a076ab2a7d130",
+          "SHA256": "dff859783606ee95d9811e1e564bcb230ef53c4df9130e8b6d42ad37bc8c27bd"
+        },
+        {
+          "File": "FDFIELD.DAT",
+          "Size": 243169,
+          "MD5": "ecdb0436d26adfe5d107f2713fa7e9a2",
+          "SHA256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+        },
+        {
+          "File": "FDICON.B24",
+          "Size": 624010,
+          "MD5": "46f793540209a063ea73a5373ca14bf4",
+          "SHA256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
+        },
+        {
+          "File": "FDMUS.DAT",
+          "Size": 80367,
+          "MD5": "4dfa214125edcc4658acbba2e1201a28",
+          "SHA256": "4105ebde543fe1c497e852728f6bc333bda80edeb7fb3671e487504bee74e998"
+        },
+        {
+          "File": "FDOTHER.DAT",
+          "Size": 3382481,
+          "MD5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "SHA256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        {
+          "File": "FDSHAP.DAT",
+          "Size": 3557794,
+          "MD5": "9b0d356074f57cc27aebf3bb89aae247",
+          "SHA256": "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c"
+        },
+        {
+          "File": "FDTXT.DAT",
+          "Size": 120502,
+          "MD5": "fe5c487ce4313485f1da9d48d35b05f9",
+          "SHA256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+        },
+        {
+          "File": "FIGANI.DAT",
+          "Size": 15279582,
+          "MD5": "7da21ec0ad9917455459f1acb970bdf4",
+          "SHA256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+        },
+        {
+          "File": "TAI.DAT",
+          "Size": 94917,
+          "MD5": "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa",
+          "SHA256": "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"
+        },
+        {
+          "File": "TITLE.DAT",
+          "Size": 23377,
+          "MD5": "69bdd788a579d945ec754a4b12bfc7c0",
+          "SHA256": "06120a4605e054f2ff1e08f882661b9b345b39978aabf5126ec137e1207815b3"
+        }
+      ],
+      "fixed_files_matched": 20,
+      "path": "/src/docs/data/fd2-reference-files.json",
+      "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+    },
+    "address_spaces": {
+      "dynamic": "dosgolem relocated LE linear",
+      "ida": "IDA Pro9.4 IDA LE linear；既有原始allocator入口、caller、consumer與344筆bytes，不重做RE"
+    },
+    "evidence_basis": "allocator_natural_lifecycle；與其98筆返回、GPR及末端EIP逐項相同",
+    "dosgolem_commit": "3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88",
+    "source_sha256": {
+      "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
+      "apps/fd2/cmd/oracle/main.go": "dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925",
+      "internal/cpu386/cpu.go": "bc183cf75d554b2f2ff4b5097693efeac86a88a4e179e4d3d7a4460683cb844d",
+      "internal/machine/le_startup.go": "bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206"
+    },
+    "spec": "dosgolem docs/spec/186-fd2-platform-gap-continuation.md 批次155 CONFORMED",
+    "selection": {
+      "oracle_flag": "-heap-profile native",
+      "wrapper_environment": "FD2_ORACLE_HEAP_PROFILE=native",
+      "default": "adapter",
+      "native_entries": {
+        "_nmalloc": "0x36D26",
+        "_nfree": "0x37426",
+        "__Init_Argv": "0x46114"
+      },
+      "preserved_hooks": [
+        "memset 0x375C0",
+        "int386 0x36D98",
+        "LEVideo",
+        "BIOS clock",
+        "BIOS keyboard",
+        "FD2StartupDOS/DPMI"
+      ],
+      "capacity": "native拒收明示heap-mib，不把adapter容量當作原始近堆capacity",
+      "source_mismatch": "native拒收未審查來源，adapter標unknown"
+    },
+    "wrapper": {
+      "files": {
+        "tools/dosgolem_oracle.sh": "38ffa6f1074552640f306109f9e7ae5db28fce8b7b7226f0502a4c3d7eb257a9",
+        "tools/dosgolem_oracle_container.sh": "8c71536ea58d4f032a8fa8025602dcc23622d522092c3b88c6977215942d8d37"
+      },
+      "runner_path": "work/parity-slot-ch18/native-profile-title-r3/runner.json",
+      "runner_sha256": "6a7952af313e3928da6ae3ac13c2a382252925d1062ce47aa8cebff39142ae4c",
+      "runner_excerpt": {
+        "runner": "dosgolem apps/fd2/cmd/oracle",
+        "container_entry": "tools/dosgolem_oracle_container.sh",
+        "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+        "dosgolem_commit": "3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88",
+        "dosgolem_branch": "feat/fd2-oracle-input-chain",
+        "dosgolem_tracked_dirty_files": 0,
+        "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "heap_profile": "native",
+        "near_heap_policy": {
+          "kind": "original_instructions_with_existing_platform_adapters",
+          "status": "reviewed",
+          "profile": "native",
+          "sources": [
+            {
+              "path": "internal/machine/watcom_runtime.go",
+              "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+            },
+            {
+              "path": "apps/fd2/cmd/oracle/main.go",
+              "sha256": "dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925"
+            },
+            {
+              "path": "internal/cpu386/cpu.go",
+              "sha256": "bc183cf75d554b2f2ff4b5097693efeac86a88a4e179e4d3d7a4460683cb844d"
+            },
+            {
+              "path": "internal/machine/le_startup.go",
+              "sha256": "bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206"
+            }
+          ],
+          "original_entries": {
+            "_nmalloc": "0x36D26",
+            "_nfree": "0x37426",
+            "__Init_Argv": "0x46114"
+          },
+          "preserved_hooks": [
+            "memset 0x375C0",
+            "int386 0x36D98",
+            "LEVideo",
+            "BIOS clock",
+            "BIOS keyboard",
+            "FD2StartupDOS/DPMI"
+          ],
+          "capacity": "original instructions request growth from existing DPMI profile; adapter heap-mib is not a native capacity",
+          "allocation_hook": null,
+          "free_hook": null,
+          "reused_allocation_contents": "determined by original instructions; no adapter clearing",
+          "original_allocator_parity": "bounded original execution; all branches and real hardware unverified",
+          "evidence_contract": "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json#allocator_formal_native_profile",
+          "evidence_restriction": "原始近堆指令仍搭配既有DOS/DPMI與周邊硬體近似；有界BOOT不代表完整章或全原版硬體一致。"
+        }
+      }
+    },
+    "boot": {
+      "adapter": {
+        "path": "work/parity-slot-ch18/native-profile-adapter-boot-r2.json",
+        "sha256": "4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39",
+        "result": "與既有一百萬步JSON全檔bytes相同"
+      },
+      "native": {
+        "path": "work/parity-slot-ch18/native-profile-native-boot-r2.json",
+        "sha256": "868b33ce626311c9e26a759999e34a224172fa5f0288691ad80b193dd920577d",
+        "summary": {
+          "steps_completed": 1000000,
+          "stop_eip": "0x11D85",
+          "cpu_eip_after_error": "0x11D87",
+          "registers": [
+            453,
+            0,
+            968,
+            151,
+            349672,
+            0,
+            20,
+            255
+          ],
+          "error": "step budget exhausted",
+          "main_entry_step": 2113,
+          "heap_profile": "native"
+        },
+        "near_heap_execution": {
+          "allocation_returns": 59,
+          "entries": {
+            "__Init_Argv": "0x46114",
+            "_nfree": "0x37426",
+            "_nmalloc": "0x36D26"
+          },
+          "entry_hits": {
+            "__Init_Argv": 1,
+            "_nfree": 39,
+            "_nmalloc": 59
+          },
+          "event_sample_limit": 256,
+          "exact_pointer_reuse_count": 26,
+          "free_returns": 39,
+          "invalid_allocation_pointers": 0,
+          "kind": "original_instructions_with_existing_platform_adapters",
+          "limits": "bounded read-only observation; existing DPMI/device hardware-spec approximation; not all heap branches, real hardware, or chapter PLAYER-E2",
+          "pending_frames": 0,
+          "preserved_hooks": [
+            "memset 0x375C0",
+            "int386 0x36D98",
+            "LEVideo",
+            "BIOS clock",
+            "BIOS keyboard",
+            "FD2StartupDOS/DPMI"
+          ]
+        },
+        "events_excerpt": [
+          {
+            "block_tag": 4068,
+            "caller": 251622,
+            "eax": 337868,
+            "entry": 226342,
+            "entry_esp": 349756,
+            "kind": "free",
+            "parameter": 1048600,
+            "payload_first8_hex": "cc270500cc270500",
+            "pointer": 1048600,
+            "return_esp": 349760,
+            "steps_entry": 656,
+            "steps_return": 719
+          },
+          {
+            "allocation_pointer_valid": true,
+            "block_tag": 13,
+            "caller": 314449,
+            "eax": 1048600,
+            "entry": 224550,
+            "entry_esp": 349812,
+            "kind": "allocation",
+            "parameter": 1,
+            "payload_first8_hex": "cc270500cc270500",
+            "pointer": 1048600,
+            "return_esp": 349816,
+            "steps_entry": 485,
+            "steps_return": 811
+          },
+          {
+            "allocation_pointer_valid": true,
+            "block_tag": 13,
+            "caller": 314480,
+            "eax": 1048612,
+            "entry": 224550,
+            "entry_esp": 349812,
+            "kind": "allocation",
+            "parameter": 4,
+            "payload_first8_hex": "cc270500cc270500",
+            "pointer": 1048612,
+            "return_esp": 349816,
+            "steps_entry": 822,
+            "steps_return": 903
+          },
+          {
+            "allocation_pointer_valid": true,
+            "block_tag": 13,
+            "caller": 289045,
+            "eax": 1048624,
+            "entry": 224550,
+            "entry_esp": 349836,
+            "kind": "allocation",
+            "parameter": 8,
+            "payload_first8_hex": "cc270500cc270500",
+            "pointer": 1048624,
+            "return_esp": 349840,
+            "steps_entry": 1027,
+            "steps_return": 1108
+          },
+          {
+            "block_tag": 572,
+            "caller": 226337,
+            "eax": 337868,
+            "entry": 226342,
+            "entry_esp": 349660,
+            "kind": "free",
+            "parameter": 1051640,
+            "payload_first8_hex": "cc2705005c0e1000",
+            "pointer": 1051640,
+            "return_esp": 349664,
+            "steps_entry": 125576,
+            "steps_return": 125643
+          },
+          {
+            "allocation_pointer_valid": true,
+            "block_tag": 6593,
+            "caller": 224545,
+            "eax": 1320080,
+            "entry": 224550,
+            "entry_esp": 349660,
+            "kind": "allocation",
+            "parameter": 6585,
+            "payload_first8_hex": "b0dc1300a0e21400",
+            "pointer": 1320080,
+            "return_esp": 349664,
+            "steps_entry": 125653,
+            "steps_return": 125806
+          },
+          {
+            "block_tag": 4556,
+            "caller": 226337,
+            "eax": 1074880,
+            "entry": 226342,
+            "entry_esp": 349588,
+            "kind": "free",
+            "parameter": 1080880,
+            "payload_first8_hex": "c463100058191100",
+            "pointer": 1080880,
+            "return_esp": 349592,
+            "steps_entry": 126302,
+            "steps_return": 126370
+          }
+        ],
+        "first_exact_reuse": {
+          "allocation_return_step": 21109,
+          "block_tag": 15125,
+          "free_return_step": 20575,
+          "pointer": 1052696,
+          "request": 15118
+        }
+      },
+      "docker_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\ncd /dos\nGOCACHE=/src/work/gocache GOPROXY=off go build -o /tmp/fd2-oracle ./apps/fd2/cmd/oracle\n/tmp/fd2-oracle -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -root /src/org_game/炎龍騎士團/FLAME2 -steps 1000000 > /src/work/parity-slot-ch18/native-profile-adapter-boot-r2.json\n/tmp/fd2-oracle -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -root /src/org_game/炎龍騎士團/FLAME2 -steps 1000000 -heap-profile native > /src/work/parity-slot-ch18/native-profile-native-boot-r2.json'"
+    },
+    "title_input_plan": {
+      "path": "work/parity-slot-ch18/native-profile-title-plan-r1.jsonl",
+      "sha256": "3c47ce4616e5796f2b10f93cf63ca7145a2a6c8ecf5d7f96e58ece123a7a9615",
+      "commands": [
+        {
+          "await_ui": "title",
+          "steps": 1000000,
+          "max": 4
+        },
+        {
+          "mark": "native-title-start"
+        },
+        {
+          "key": "down",
+          "steps": 1000000
+        },
+        {
+          "mark": "native-title-load"
+        },
+        {
+          "key": "up",
+          "steps": 1000000
+        },
+        {
+          "mark": "native-title-start-return"
+        }
+      ],
+      "recreate_note": "在Docker內逐條以json.dumps(command,ensure_ascii=False)加換行輸出到新plan檔；這是輸入資料，不改oracle來源。"
+    },
+    "normal_title_validation": {
+      "command": "timeout 180 env FD2_DOSGOLEM_ROOT=/home/anr2/cht/dosgolem-fd2-oracle FD2_ORACLE_HEAP_PROFILE=native FD2_ORACLE_STEPS=200000000 FD2_ORACLE_CPUS=1 tools/dosgolem_oracle.sh work/parity-slot-ch18/native-profile-title-r3 work/parity-slot-ch18/native-profile-title-plan-r1.jsonl",
+      "checkpoints": [
+        {
+          "path": "work/parity-slot-ch18/native-profile-title-r3/checkpoint-0000.json",
+          "sha256": "9fbaa63f7c8108fcc82c46e19a837e4dbe7a333aa8e5168fab6644bc328262f8",
+          "png_path": "work/parity-slot-ch18/native-profile-title-r3/checkpoint-0000.png",
+          "png_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025",
+          "observed_choice": "START",
+          "summary": {
+            "steps": 52520401,
+            "control_seq": 0,
+            "kbd_reads": 0,
+            "input_chain": [
+              "0x1FE60",
+              "0x25ECD",
+              "0x25DC2",
+              "0x45D91",
+              "0x3CB91"
+            ],
+            "state_injections": [],
+            "normal_player_path_verified": false,
+            "near_heap_execution": {
+              "allocation_returns": 246,
+              "entries": {
+                "__Init_Argv": "0x46114",
+                "_nfree": "0x37426",
+                "_nmalloc": "0x36D26"
+              },
+              "entry_hits": {
+                "__Init_Argv": 1,
+                "_nfree": 226,
+                "_nmalloc": 246
+              },
+              "event_sample_limit": 256,
+              "exact_pointer_reuse_count": 204,
+              "free_returns": 226,
+              "invalid_allocation_pointers": 0,
+              "kind": "original_instructions_with_existing_platform_adapters",
+              "limits": "bounded read-only observation; existing DPMI/device hardware-spec approximation; not all heap branches, real hardware, or chapter PLAYER-E2",
+              "pending_frames": 0,
+              "preserved_hooks": [
+                "memset 0x375C0",
+                "int386 0x36D98",
+                "LEVideo",
+                "BIOS clock",
+                "BIOS keyboard",
+                "FD2StartupDOS/DPMI"
+              ]
+            }
+          }
+        },
+        {
+          "path": "work/parity-slot-ch18/native-profile-title-r3/checkpoint-0001.json",
+          "sha256": "c5e43936032cdbd930092d1b61ececf6b387db710307171cc7b920cf5b2880b8",
+          "png_path": "work/parity-slot-ch18/native-profile-title-r3/checkpoint-0001.png",
+          "png_sha256": "29987a3bbd7eb1e2dcf9907a0db456abd1e3f3b83e8ffb4274f25a501fabbc38",
+          "observed_choice": "LOAD",
+          "summary": {
+            "steps": 52524468,
+            "control_seq": 1,
+            "kbd_reads": 1,
+            "input_chain": [
+              "0x1FE60",
+              "0x25ECD",
+              "0x25DC2",
+              "0x45D91",
+              "0x3CB91"
+            ],
+            "state_injections": [],
+            "normal_player_path_verified": false,
+            "near_heap_execution": {
+              "allocation_returns": 246,
+              "entries": {
+                "__Init_Argv": "0x46114",
+                "_nfree": "0x37426",
+                "_nmalloc": "0x36D26"
+              },
+              "entry_hits": {
+                "__Init_Argv": 1,
+                "_nfree": 226,
+                "_nmalloc": 246
+              },
+              "event_sample_limit": 256,
+              "exact_pointer_reuse_count": 204,
+              "free_returns": 226,
+              "invalid_allocation_pointers": 0,
+              "kind": "original_instructions_with_existing_platform_adapters",
+              "limits": "bounded read-only observation; existing DPMI/device hardware-spec approximation; not all heap branches, real hardware, or chapter PLAYER-E2",
+              "pending_frames": 0,
+              "preserved_hooks": [
+                "memset 0x375C0",
+                "int386 0x36D98",
+                "LEVideo",
+                "BIOS clock",
+                "BIOS keyboard",
+                "FD2StartupDOS/DPMI"
+              ]
+            }
+          }
+        },
+        {
+          "path": "work/parity-slot-ch18/native-profile-title-r3/checkpoint-0002.json",
+          "sha256": "108423230a6e8703be7c64ca71518fde13fc715871886f5078f0a3ac3a64c333",
+          "png_path": "work/parity-slot-ch18/native-profile-title-r3/checkpoint-0002.png",
+          "png_sha256": "885edd19347628bdbe823bbf25d9de6180be59e766bdc9840a631083f44ec025",
+          "observed_choice": "START",
+          "summary": {
+            "steps": 52528532,
+            "control_seq": 2,
+            "kbd_reads": 2,
+            "input_chain": [
+              "0x1FE60",
+              "0x25ECD",
+              "0x25DC2",
+              "0x45D91",
+              "0x3CB91"
+            ],
+            "state_injections": [],
+            "normal_player_path_verified": false,
+            "near_heap_execution": {
+              "allocation_returns": 246,
+              "entries": {
+                "__Init_Argv": "0x46114",
+                "_nfree": "0x37426",
+                "_nmalloc": "0x36D26"
+              },
+              "entry_hits": {
+                "__Init_Argv": 1,
+                "_nfree": 226,
+                "_nmalloc": 246
+              },
+              "event_sample_limit": 256,
+              "exact_pointer_reuse_count": 204,
+              "free_returns": 226,
+              "invalid_allocation_pointers": 0,
+              "kind": "original_instructions_with_existing_platform_adapters",
+              "limits": "bounded read-only observation; existing DPMI/device hardware-spec approximation; not all heap branches, real hardware, or chapter PLAYER-E2",
+              "pending_frames": 0,
+              "preserved_hooks": [
+                "memset 0x375C0",
+                "int386 0x36D98",
+                "LEVideo",
+                "BIOS clock",
+                "BIOS keyboard",
+                "FD2StartupDOS/DPMI"
+              ]
+            }
+          }
+        }
+      ],
+      "driver_log": {
+        "path": "work/parity-slot-ch18/native-profile-title-r3/driver.log",
+        "sha256": "8b3b47dfa05ce67e387b0fd89cde24c43b2013e75aab772506ff43638825d885"
+      },
+      "prototype_comparison": "r1如實標dirty4；乾淨r2／最終wrapper r3的三張完整PNG與JSON全檔相同，r3 runner政策引用正式canonical",
+      "classification": "正常原始LE入口與BIOS按鍵；有限標題輸入，不是章PLAYER-E2"
+    },
+    "regression": {
+      "command": "GOCACHE=/src/work/gocache GOPROXY=off go test ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle -count=1",
+      "logs": {
+        "native-profile-go-regression-r3.log": "26b37aaf6d0e3d65f79b21a1f6bb57dda036ea48bf8f309a4f872520ca1a775d",
+        "native-profile-rejection-policy-r1.log": "04d77d6747831d2ce62c157f7e5fac6277b8ef480d946e783780bb6bb5457db8",
+        "native-profile-formal-vs-probe-r1.log": "ab5efa129ac0cf4bace228d3cc2579d826a4767d702b17d7eae052fc537d8d6f"
+      },
+      "log_directory": "work/parity-slot-ch18",
+      "result": "三套件完整PASS，routing／wrong hash／未知模式／native容量並用／唯讀觀測／短span／樣本上限通過；真實CLI與wrapper清冊拒收通過",
+      "rejection_policy_replay_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\ntest -f /.dockerenv\ncd /dos\nGOCACHE=/src/work/gocache GOPROXY=off go build -o /tmp/native-profile-oracle ./apps/fd2/cmd/oracle\npython3 - <<'\\''PY'\\''\nimport ast,hashlib,os,subprocess,tempfile\nfrom pathlib import Path\nlog=[]\nargs=['\\''-exe'\\'','\\''/src/org_game/炎龍騎士團/FLAME2/FD2.EXE'\\'','\\''-root'\\'','\\''/src/org_game/炎龍騎士團/FLAME2'\\'','\\''-steps'\\'','\\''1'\\'']\nfor extra in [['\\''-heap-profile'\\'','\\''other'\\''],['\\''-heap-profile'\\'','\\''Native'\\''],['\\''-heap-profile'\\'','\\''native'\\'','\\''-heap-mib'\\'','\\''32'\\'']]:\n p=subprocess.run(['\\''/tmp/native-profile-oracle'\\'']+args+extra,capture_output=True,text=True);assert p.returncode and not p.stdout;log.append(f'\\''REJECT {extra}: '\\''+p.stderr.splitlines()[0])\nPath('\\''/tmp/wrong-FD2.EXE'\\'').write_bytes(b'\\''not FD2'\\'')\np=subprocess.run(['\\''/tmp/native-profile-oracle'\\'','\\''-exe'\\'','\\''/tmp/wrong-FD2.EXE'\\'','\\''-heap-profile'\\'','\\''native'\\''],capture_output=True,text=True);assert p.returncode and '\\''FD2 hash mismatch'\\'' in p.stderr and not p.stdout\nlog.append('\\''REJECT wrong EXE before load'\\'')\nentry=Path('\\''/src/tools/dosgolem_oracle_container.sh'\\'').read_text()\nsource=entry.split(\"python3 - <<'\\''META'\\''\\n\",1)[1].split('\\''\\nMETA'\\'',1)[0]\nnode=next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef) and n.name=='\\''near_heap_policy'\\'')\nns={'\\''hashlib'\\'':hashlib,'\\''os'\\'':os,'\\''Path'\\'':Path};exec(compile(ast.Module(body=[node],type_ignores=[]),'\\''<versioned near_heap_policy>'\\'','\\''exec'\\''),ns)\npolicy=ns['\\''near_heap_policy'\\''];os.environ['\\''FD2_ORACLE_HEAP_PROFILE'\\'']='\\''native'\\''\np=policy(Path('\\''/dos'\\''));assert p['\\''status'\\'']=='\\''reviewed'\\'' and len(p['\\''sources'\\''])==4 and p['\\''allocation_hook'\\''] is None\nlog.append('\\''native source-bound policy reviewed: four actual source hashes; no heap hook'\\'')\nwith tempfile.TemporaryDirectory() as directory:\n root=Path(directory)\n for e in p['\\''sources'\\'']:\n  q=root/e['\\''path'\\''];q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes((Path('\\''/dos'\\'')/e['\\''path'\\'']).read_bytes())\n q=root/'\\''apps/fd2/cmd/oracle/main.go'\\'';q.write_bytes(q.read_bytes()+b'\\''\\n'\\'')\n try: policy(root);raise AssertionError('\\''native accepted unreviewed source'\\'')\n except SystemExit: pass\n os.environ['\\''FD2_ORACLE_HEAP_PROFILE'\\'']='\\''adapter'\\'';assert policy(root)['\\''status'\\'']=='\\''unknown'\\''\nlog.append('\\''native rejects source mismatch; adapter labels mismatch unknown'\\'')\nos.environ['\\''FD2_ORACLE_HEAP_PROFILE'\\'']='\\''adapter'\\'';assert policy(Path('\\''/dos'\\''))['\\''status'\\'']=='\\''reviewed'\\''\nlog.append('\\''adapter current policy remains reviewed'\\'')\nPath('\\''/src/work/parity-slot-ch18/native-profile-rejection-policy-r1.log'\\'').write_text('\\''\\n'\\''.join(log)+'\\''\\n'\\'')\nprint('\\''\\n'\\''.join(log))\nPY'"
+    },
+    "verification_script_correction": "r2測試把已存在cpu386.Descriptor誤寫為SegmentDescriptor而編譯失敗；只修測試名稱，同一Docker／命令r3乾淨重跑，保留失敗log，不列產品缺陷",
+    "next_gate": {
+      "issue": 102,
+      "acceptance": "使用明示native模式重跑同ch18-guard-r3計畫，核對既有前綴並到T8；本批尚未執行",
+      "default_runtime": "預設adapter保持；正式明示native已可執行，舊僅局部診斷的整合DRAFT被本批取代"
+    },
+    "limits": [
+      "僅BOOT與標題正常按鍵；未重跑第十八章同r3到T8",
+      "原始allocator所有分支及完整GDT未知",
+      "DOS／DPMI／顯示音訊等周邊維持hardware-spec approximation",
+      "固定EXE及來源清冊，不從選項或commit本身推定完整原版一致",
+      "既有r4章驗收保持，本批不增加章PLAYER-E2"
+    ],
+    "replay_note": "固定dosgolem 3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88及本節wrapper兩檔hash；必要時以git worktree在獨立目錄恢復該提交，再由FD2_DOSGOLEM_ROOT選取。所有原版輸入唯讀。重生改用新輸出檔名／目錄，不覆寫r1..r3。title計畫從本節commands在Docker內重建；BOOT／回歸亦由唯一受版控oracle與其測試執行。"
   }
 }

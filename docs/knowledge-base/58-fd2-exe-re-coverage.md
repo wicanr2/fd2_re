@@ -20,7 +20,7 @@
 | #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
-| #102原生近堆局部診斷 | 自然生命週期有限CONFORMED／正式整合DRAFT | #190已關閉，自然原始配置／釋放／指標再配置通過；#191整合正式原生profile，近堆適配尚未取代，同r3到T8未通過。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
+| #102正式原生近堆模式 | BOOT／正常標題有限CONFORMED | #191已關閉，唯一oracle／wrapper可明示native；預設adapter保持，同r3到T8尚未重跑。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -3231,3 +3231,26 @@ SHA-256 4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39。
 #190已結案，#191保留唯一正式oracle／wrapper的原生profile整合；
 局部探針不能當章oracle，正式近堆適配尚未取代。#102同r3到T8與章分級保持，
 周邊時序仍為hardware-spec approximation，不宣稱全heap或硬體exact。
+
+
+## 2026-10-06 正式原生近堆模式（#191）
+
+目前dosgolem 3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88，
+唯一apps/fd2/cmd/oracle新增-heap-profile native，wrapper以
+FD2_ORACLE_HEAP_PROFILE=native選用。原始_nmalloc／_nfree／__Init_Argv
+三入口交回CPU，其餘既有平台服務保持；預設adapter不變。
+原生模式拒收明示heap-mib與未審查來源，不把替代堆容量套給原始近堆。
+來源四檔SHA、入口／caller、規格186批次155、指標及實際收據見
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_formal_native_profile。
+
+正式native一百萬步重現59次配置、39次釋放、26次同指標再配置，
+98筆返回、GPR與末端EIP和自然探針相同；非法指標及pending皆0。
+adapter一百萬步JSON仍為原SHA。三相關套件完整PASS，
+CLI未知模式／錯版本／native容量並用，以及wrapper來源清冊拒收通過。
+
+正常LE入口到0x1FE60標題等待鏈，以BIOS down／up切LOAD再回START，
+實際消費兩鍵且無heap／章狀態注入。乾淨提交與原型三張完整PNG及JSON相同，
+最終runner記錄乾淨提交、實際來源與原生政策；沒有第二份執行器。
+#191有限CONFORMED，取代「正式整合DRAFT」的現況，舊局部與adapter收據保留。
+#102同ch18-guard-r3前綴到T8尚未重跑；全heap／原始GDT及實機仍未證實，
+周邊仍hardware-spec approximation，不新增章PLAYER-E2。

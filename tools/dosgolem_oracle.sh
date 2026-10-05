@@ -16,6 +16,8 @@
 #   FD2_ORIG_ROOT         原版資料目錄（預設本儲存庫的 org_game/…/FLAME2）
 #   FD2_ORACLE_CPUS       容器 CPU 上限（預設 2）
 #   FD2_ORACLE_STEPS      指令預算上限（預設 20000000000）
+#   FD2_ORACLE_HEAP_PROFILE adapter或native，預設adapter。native讓固定EXE的
+#                         _nmalloc／_nfree／__Init_Argv執行原始指令；周邊仍為既有近似。
 #   FD2_ORACLE_STATE      可寫檔案覆蓋目錄（接 oracle 的 -state）。原版目錄仍是
 #                         唯讀掛載，遊戲的寫入（FD2.SAV／FD2.TMP）落在這個目錄。
 #                         用它建立續跑點：打完一關在城鎮存檔，之後從標題 LOAD
@@ -70,6 +72,8 @@ fi
 orig=${FD2_ORIG_ROOT:-$repo/org_game/炎龍騎士團/FLAME2}
 cpus=${FD2_ORACLE_CPUS:-2}
 budget=${FD2_ORACLE_STEPS:-20000000000}
+heap_profile=${FD2_ORACLE_HEAP_PROFILE:-adapter}
+case "$heap_profile" in adapter|native) ;; *) echo "未知近堆模式" >&2; exit 2 ;; esac
 state_dir=${FD2_ORACLE_STATE:-}
 lock_ally_hp=${FD2_ORACLE_LOCK_ALLY_HP:-}
 force_enemy_clear=${FD2_ORACLE_FORCE_ENEMY_CLEAR:-}
@@ -140,6 +144,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_SOURCE_ROOT="$dos" -e FD2_ORACLE_ORIGINAL_ROOT="$orig" \
   -e FD2_ORACLE_CONTROL_PLAN="$plan" -e FD2_ORACLE_SOURCE_STATE="$state_dir" \
   -e FD2_ORACLE_FORCE_ENEMY_CLEAR="$force_enemy_clear" \
+  -e FD2_ORACLE_HEAP_PROFILE="$heap_profile" \
   -e FD2_ORACLE_BUDGET="$budget" \
   -e FD2_ORACLE_FRAMES="$frames" \
   -e FD2_ORACLE_FRAME_STRIDE="$frame_stride" \

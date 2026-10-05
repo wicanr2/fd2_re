@@ -10,6 +10,9 @@ test -d /dos/apps/fd2/cmd/oracle
 test -f /drive.py
 test -d /out
 FD2_ORACLE_BUDGET=${FD2_ORACLE_BUDGET:-20000000000}
+FD2_ORACLE_HEAP_PROFILE=${FD2_ORACLE_HEAP_PROFILE:-adapter}
+case "$FD2_ORACLE_HEAP_PROFILE" in adapter|native) ;; *) echo "未知近堆模式" >&2; exit 2 ;; esac
+export FD2_ORACLE_HEAP_PROFILE
 FD2_ORACLE_FRAMES=${FD2_ORACLE_FRAMES:-}
 FD2_ORACLE_FRAME_STRIDE=${FD2_ORACLE_FRAME_STRIDE:-20000}
 FD2_ORACLE_FRAME_SETTLE=${FD2_ORACLE_FRAME_SETTLE:-0}
@@ -55,7 +58,9 @@ def near_heap_policy(root):
     reviewed = {
         "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
         "apps/fd2/cmd/oracle/main.go": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
-    reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234"}
+    reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234", 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925'}
+    native_reviewed = {'internal/machine/watcom_runtime.go': '00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f', 'apps/fd2/cmd/oracle/main.go': 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', 'internal/cpu386/cpu.go': 'bc183cf75d554b2f2ff4b5097693efeac86a88a4e179e4d3d7a4460683cb844d', 'internal/machine/le_startup.go': 'bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206'}
+    profile = os.environ["FD2_ORACLE_HEAP_PROFILE"]
     sources = []
     for name in reviewed:
         path = root / name
@@ -64,6 +69,22 @@ def near_heap_policy(root):
     known = all(source["sha256"] in reviewed_main_revisions
                 if source["path"] == "apps/fd2/cmd/oracle/main.go"
                 else source["sha256"] == reviewed[source["path"]] for source in sources)
+    if profile == "native":
+        native_sources = [{"path": name, "sha256": hashlib.sha256((root/name).read_bytes()).hexdigest()}
+                          for name in native_reviewed]
+        if any(source["sha256"] != native_reviewed[source["path"]] for source in native_sources):
+            raise SystemExit("native原生近堆來源未通過已審查清冊")
+        return {
+            "kind": "original_instructions_with_existing_platform_adapters",
+            "status": "reviewed", "profile": "native", "sources": native_sources,
+            "original_entries": {"_nmalloc": "0x36D26", "_nfree": "0x37426", "__Init_Argv": "0x46114"},
+            "preserved_hooks": ["memset 0x375C0", "int386 0x36D98", "LEVideo", "BIOS clock", "BIOS keyboard", "FD2StartupDOS/DPMI"],
+            "capacity": "original instructions request growth from existing DPMI profile; adapter heap-mib is not a native capacity",
+            "allocation_hook": None, "free_hook": None,
+            "reused_allocation_contents": "determined by original instructions; no adapter clearing",
+            "original_allocator_parity": "bounded original execution; all branches and real hardware unverified",
+            "evidence_contract": "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json#allocator_formal_native_profile",
+            "evidence_restriction": "原始近堆指令仍搭配既有DOS/DPMI與周邊硬體近似；有界BOOT不代表完整章或全原版硬體一致。"}
     return {
         "kind": "dosgolem_runtime_approximation",
         "status": "reviewed" if known else "unknown",
@@ -113,6 +134,7 @@ runner = {
     "force_enemy_clear_declared": bool(env.get("FD2_ORACLE_FORCE_ENEMY_CLEAR")),
     "original_fd2_exe_sha256": sha,
     "original_reference_manifest": "docs/data/fd2-reference-files.json",
+    "heap_profile": env["FD2_ORACLE_HEAP_PROFILE"],
     "near_heap_policy": near_heap_policy(Path("/dos")),
     "state_directory": env.get("FD2_ORACLE_SOURCE_STATE", ""),
     "state_injections": [
@@ -157,11 +179,14 @@ fi
 if [ -n "$FD2_ORACLE_STATE" ]; then
   cheatargs+=(-state "$FD2_ORACLE_STATE")
 fi
+heapargs=(-heap-profile "$FD2_ORACLE_HEAP_PROFILE")
+if [ "$FD2_ORACLE_HEAP_PROFILE" = adapter ]; then heapargs+=(-heap-mib 32); fi
 go run ./apps/fd2/cmd/oracle \
+  "${heapargs[@]}" \
   -exe /orig/FD2.EXE -root /orig -run-dir /out \
   "${cheatargs[@]+"${cheatargs[@]}"}" \
   "${frameargs[@]+"${frameargs[@]}"}" \
-  -steps "$FD2_ORACLE_BUDGET" -heap-mib 32 >/out/oracle.log 2>&1 &
+  -steps "$FD2_ORACLE_BUDGET" >/out/oracle.log 2>&1 &
 oracle=$!
 cleanup() { kill "$oracle" 2>/dev/null || true; wait "$oracle" 2>/dev/null || true; }
 trap cleanup EXIT

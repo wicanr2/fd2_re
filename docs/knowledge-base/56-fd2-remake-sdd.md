@@ -9644,3 +9644,10 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 rootless／缺IO的診斷結果不當正式對拍。正式近堆、#102同r3到T8及章PLAYER-E2未提升。
 唯一數字、命令與來源見[58](58-fd2-exe-re-coverage.md)及
 [#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_natural_lifecycle。
+
+
+2026-10-06 #191已結案：唯一正式oracle／wrapper可明示原生近堆模式，
+BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
+預設adapter保持，周邊沿既有硬體近似；#102同r3到T8尚未重跑，章分級不升。
+來源、模式、可重跑命令與唯一數字見[58](58-fd2-exe-re-coverage.md)及
+[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_formal_native_profile。
