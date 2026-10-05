@@ -61,10 +61,10 @@
     {
       "id": "probe-is-not-oracle",
       "area": "工具鏈",
-      "rule": "`cmd/probe` 跑得動 FD2，但它不帶 apps/fd2 的平台設定，不能拿它的環境代表 oracle。",
-      "why": "用 probe 讀 0000:046C 想量 BIOS tick，全程都是 0——那條路徑根本沒裝 LE BIOS 時鐘，而 oracle 裡的等待迴圈明明會通過。",
+      "rule": "局部FD2探針先核對唯一apps/fd2/cmd/oracle的檔案服務、BIOS data、顯示、音訊IO、時鐘與鍵盤設定；缺件環境不代表正式oracle。比較修正效果時，在兩個乾淨提交使用相同完整平台與輸入重跑。入口tools/dosgolem_oracle.sh、tools/fd2_watcom_heap_probe.go及docs/data/ida/fd2_ch18_oracle_stosb_20261003.json的allocator_natural_lifecycle。",
+      "why": "用 probe 讀 0000:046C 想量 BIOS tick，全程都是 0——那條路徑根本沒裝 LE BIOS 時鐘，而 oracle 裡的等待迴圈明明會通過。 2026-10-06追加：#190初版rootless與缺RealModeIO探針各走退出或INT66h拒收；補齊平台後，012defb2與6f6b1d7a兩個乾淨提交的生命週期全欄位相同。完整啟動成功不能歸因於TEST修正；CPU缺口另由先FAIL後PASS回歸證明。",
       "date": "2026-09-10",
-      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md"
+      "evidence": "docs/knowledge-base/96-parity-toolchain-20260909.md；docs/data/ida/fd2_ch18_oracle_stosb_20261003.json allocator_natural_lifecycle；https://github.com/wicanr2/fd2_re/issues/190"
     },
     {
       "id": "string-review-rebinding",

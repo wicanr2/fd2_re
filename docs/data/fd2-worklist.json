@@ -264,6 +264,24 @@
         "note": "核對第24章正式四gate、實際保存完整SAV、正常章路徑及回歸。"
       },
       "issue": 142
+    },
+    {
+      "id": "dosgolem-native-heap-oracle-profile",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "正式 FD2 oracle 原生近堆 profile 整合與來源標示",
+      "body": "#102 第七回合錯誤的現行first-fit近堆近似已找到原始選洞／payload差異。受版控自然LE entry在完整既有平台及固定唯讀20檔資產下，原始_nmalloc／_nfree／__Init_Argv跑完一百萬步，59次配置、39次釋放與26次已配置後釋放指標的再配置，未注入heap或章狀態。局部探針不能當章oracle；需要在唯一受版控apps/fd2/cmd/oracle提供明示的原生近堆profile。",
+      "acceptance": "證據及READY後在唯一oracle提供明示選項，只讓固定EXE的_nmalloc／_nfree／__Init_Argv執行原始指令，其他已證實平台服務保持。預設現有profile不改；收據／wrapper如實標示原生入口、參與hooks、source SHA與近堆政策，不冒稱全原版硬體parity。錯版本與非法選項拒收，既有profile回歸及原生自然BOOT合法指標、釋放／重用、有限標題正常输入驗證。不能由人工helper當章PLAYER-E2；#102同ch18-guard-r3前綴至T8仍獨立。",
+      "evidence": [
+        "tools/fd2_watcom_heap_probe.go",
+        "tools/dosgolem_oracle.sh",
+        "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "正式受版控oracle／wrapper原生profile、真實原版BOOT與正常輸入收據，metadata如實標示原始heap與既有硬體近似。"
+      },
+      "issue": 191
     }
   ]
 }

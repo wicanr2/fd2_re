@@ -9636,3 +9636,11 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 原生配置／釋放整合及#102同r3到T8尚未完成，不外推全heap或章PLAYER-E2。
 唯一數字與重生命令見[58](58-fd2-exe-re-coverage.md)與
 [#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_first_return。
+
+
+2026-10-06 #190／#191：原始近堆在完整既有平台與固定唯讀資料下，
+自然配置／釋放／已釋放指標再配置已通過有界診斷。#190限定TEST契約結案，
+#191保留正式oracle原生profile整合。取代前述僅首次配置已驗的現況，保留舊收據；
+rootless／缺IO的診斷結果不當正式對拍。正式近堆、#102同r3到T8及章PLAYER-E2未提升。
+唯一數字、命令與來源見[58](58-fd2-exe-re-coverage.md)及
+[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_natural_lifecycle。

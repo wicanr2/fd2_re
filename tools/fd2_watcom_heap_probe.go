@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/md5"
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/json"
@@ -285,11 +286,143 @@ func naturalFirstAllocation(data []byte) map[string]any {
 		"tail_eip": tail, "omitted_hooks": []string{"_nmalloc", "_nfree", "__Init_Argv"}, "fixture_heap": false}
 }
 
+// 自然LE入口的有界生命週期診斷；沒有人工heap、輸入或章狀態注入。
+func naturalAllocationLifecycle(data []byte, root string) map[string]any {
+	m, err := machine.LoadLE(data)
+	must(err)
+	must(machine.InstallDOS4GWBIOSData(m))
+	files, err := machine.OpenDirectoryReadOnlyFiles(root)
+	must(err)
+	defer files.Close()
+	services := machine.NewFD2StartupDOS(files)
+	defer services.Close()
+	m.CPU.IntHook = services.Handle
+	opl := machine.NewLEOPLPorts()
+	services.DPMI.RealModeIO = opl
+	m.CPU.PortIn, m.CPU.PortOut = opl.In8, opl.Out8
+	if !machine.InstallLEVideo(m, opl) {
+		panic("LEVideo install failed")
+	}
+	_, err = machine.InstallFD2WatcomRuntimeWithHeapCapacity(m, 32*1024*1024, services.DPMI)
+	must(err)
+	if !machine.InstallLEBIOSClock(m, opl) {
+		panic("BIOS clock install failed")
+	}
+	if !machine.InstallLEBIOSKeyboard(m) {
+		panic("BIOS keyboard install failed")
+	}
+	installed := m.CPU.StepHook
+	m.CPU.StepHook = func(c *cpu386.CPU) (bool, error) {
+		if c.EIP == 0x36d26 || c.EIP == 0x37426 || c.EIP == 0x46114 {
+			return false, nil
+		}
+		return installed(c)
+	}
+	type frame struct {
+		entry, caller, esp, param uint32
+		started                   int
+	}
+	var pending []frame
+	var episodes []map[string]any
+	var reuseEvents []map[string]any
+	allocations, frees, reuses := 0, 0, 0
+	allocatedBefore := map[uint32]bool{}
+	freedAfterAllocation := map[uint32]int{}
+	var tail []uint32
+	var stopped string
+	var stoppedEIP uint32
+	var stoppedBytes string
+	steps := 0
+	for steps < 1000000 && !services.Exited {
+		c := m.CPU
+		if len(pending) > 0 {
+			f := pending[len(pending)-1]
+			if c.EIP == f.caller && c.R[cpu386.ESP] == f.esp+4 {
+				kind := "allocation"
+				ptr := c.R[cpu386.EAX]
+				if f.entry == 0x37426 {
+					kind = "free"
+					ptr = f.param
+				}
+				e := map[string]any{"kind": kind, "entry": f.entry, "caller": f.caller, "entry_esp": f.esp, "return_esp": c.R[cpu386.ESP], "parameter": f.param, "eax": c.R[cpu386.EAX], "steps_entry": f.started, "steps_return": steps, "status": "returned"}
+				if ptr >= 4 && uint64(ptr)+8 <= uint64(len(m.Mem)) {
+					e["pointer"] = ptr
+					e["block_tag"] = binary.LittleEndian.Uint32(m.Mem[ptr-4 : ptr])
+					e["payload_first8_hex"] = fmt.Sprintf("%x", m.Mem[ptr:ptr+8])
+				}
+				if kind == "allocation" {
+					allocations++
+					if ptr != 0 {
+						if freeStep, ok := freedAfterAllocation[ptr]; ok {
+							reuses++
+							if len(reuseEvents) < 64 {
+								reuseEvents = append(reuseEvents, map[string]any{"pointer": ptr, "free_return_step": freeStep, "allocation_return_step": steps, "request": f.param, "allocation_caller": f.caller, "block_tag": e["block_tag"]})
+							}
+							delete(freedAfterAllocation, ptr)
+						}
+						allocatedBefore[ptr] = true
+					}
+				} else {
+					frees++
+					if allocatedBefore[ptr] {
+						freedAfterAllocation[ptr] = steps
+					}
+				}
+				if len(episodes) < 256 {
+					episodes = append(episodes, e)
+				}
+				pending = pending[:len(pending)-1]
+			}
+		}
+		if c.EIP == 0x36d26 || c.EIP == 0x37426 {
+			desc, ok := c.Descriptors[c.Seg[cpu386.SegSS]]
+			if !ok || c.R[cpu386.ESP] > desc.Limit || 7 > desc.Limit-c.R[cpu386.ESP] {
+				panic("native lifecycle stack unavailable")
+			}
+			at := uint64(desc.Base) + uint64(c.R[cpu386.ESP])
+			if at+8 > uint64(len(m.Mem)) {
+				panic("native lifecycle stack backing unavailable")
+			}
+			pending = append(pending, frame{c.EIP, binary.LittleEndian.Uint32(m.Mem[at : at+4]), c.R[cpu386.ESP], binary.LittleEndian.Uint32(m.Mem[at+4 : at+8]), steps})
+		}
+		tail = append(tail, c.EIP)
+		if len(tail) > 32 {
+			tail = tail[len(tail)-32:]
+		}
+		before := c.EIP
+		if err := c.Step(); err != nil {
+			stopped, stoppedEIP = err.Error(), before
+			if uint64(before)+8 <= uint64(len(m.Mem)) {
+				stoppedBytes = fmt.Sprintf("%x", m.Mem[before:before+8])
+			}
+			break
+		}
+		steps++
+	}
+	var unfinished []map[string]any
+	for _, f := range pending {
+		unfinished = append(unfinished, map[string]any{"entry": f.entry, "caller": f.caller, "entry_esp": f.esp, "parameter": f.param, "steps_entry": f.started, "status": "pending_at_stop"})
+	}
+	status := "bounded_limit"
+	if stopped != "" {
+		status = "stopped"
+	}
+	if services.Exited {
+		status = "program_exited"
+	}
+	return map[string]any{"platform_profile": "same exported BIOS data / LEVideo / LEOPLPorts / BIOS clock / keyboard setup as versioned apps/fd2/cmd/oracle; existing hardware-spec approximations",
+		"file_profile": "OpenDirectoryReadOnlyFiles; pristine root; no writable overlay", "program_exited": services.Exited, "exit_code": services.ExitCode, "console_hex": fmt.Sprintf("%x", services.Console),
+		"classification": "natural LE entry allocator lifecycle diagnostic; not chapter oracle", "fixture_heap": false, "omitted_hooks": []string{"_nmalloc", "_nfree", "__Init_Argv"}, "steps": steps, "step_limit": 1000000, "episode_sample_limit": 256, "allocation_returns": allocations, "free_returns": frees, "exact_pointer_reuse_count": reuses, "exact_pointer_reuse_samples": reuseEvents, "status": status, "eip": m.CPU.EIP, "registers": m.CPU.R, "segments": m.CPU.Seg, "episodes": episodes, "unfinished": unfinished, "tail_eip": tail, "error": stopped, "stopped_eip": stoppedEIP, "stopped_next8_hex": stoppedBytes}
+}
+
 func main() {
 	exe := flag.String("exe", "", "唯讀固定版本原版檔")
 	ida := flag.String("ida", "", "同版本IDA原始指令JSON")
 	sourceRoot := flag.String("dosgolem-root", "", "唯讀dosgolem來源")
 	commit := flag.String("dosgolem-commit", "", "由主機git核對的來源提交")
+	gameRoot := flag.String("root", "", "生命週期診斷的原版唯讀資料目錄")
+	assetManifest := flag.String("asset-manifest", "", "固定原版資產清單")
+	lifecycle := flag.Bool("natural-lifecycle", false, "有界自然配置／釋放鏈診斷，不是章oracle")
 	dirty := flag.Bool("dosgolem-dirty", false, "來源工作樹是否有未提交變更")
 	out := flag.String("out", "", "新JSON輸出，不覆寫")
 	flag.Parse()
@@ -360,6 +493,36 @@ func main() {
 		"ida_sha256": digest(idaBytes), "ida_instruction_bytes_matched": matched, "allocator_cases": cases,
 		"current_hook": currentHook(data), "natural_first_allocation": naturalFirstAllocation(data),
 		"limitations": "局部人工free list與初次配置診斷；未重跑ch18原計畫、未改production、未取得實機或章PLAYER-E2。"}
+	if *lifecycle {
+		if *gameRoot == "" || *assetManifest == "" {
+			panic("lifecycle requires original root and fixed asset manifest")
+		}
+		manifestBytes, err := os.ReadFile(*assetManifest)
+		must(err)
+		var manifest struct {
+			Files []struct {
+				File        string
+				Size        int
+				MD5, SHA256 string
+			}
+		}
+		must(json.Unmarshal(manifestBytes, &manifest))
+		if len(manifest.Files) == 0 {
+			panic("empty asset manifest")
+		}
+		for _, f := range manifest.Files {
+			if filepath.Base(f.File) != f.File || f.File == "FD2.SAV" || f.File == "FD2.TMP" {
+				panic("invalid fixed asset name")
+			}
+			raw, err := os.ReadFile(filepath.Join(*gameRoot, f.File))
+			must(err)
+			if len(raw) != f.Size || digest(raw) != f.SHA256 || fmt.Sprintf("%x", md5.Sum(raw)) != f.MD5 {
+				panic("fixed asset mismatch: " + f.File)
+			}
+		}
+		report["asset_manifest"] = map[string]any{"path": *assetManifest, "sha256": digest(manifestBytes), "fixed_files_matched": len(manifest.Files), "files": manifest.Files}
+		report["natural_allocation_lifecycle"] = naturalAllocationLifecycle(data, *gameRoot)
+	}
 	raw, err := json.MarshalIndent(report, "", "  ")
 	must(err)
 	f, err := os.OpenFile(*out, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)

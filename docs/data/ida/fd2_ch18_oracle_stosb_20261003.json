@@ -15506,7 +15506,7 @@
     ],
     "superseded_by": "allocator_cpu_followup for current CPU-gap / fixture status; preserve original receipts"
   },
-  "current_allocator_probe": "allocator_first_return",
+  "current_allocator_probe": "allocator_natural_lifecycle",
   "allocator_cpu_followup": {
     "recorded_at": "2026-10-05",
     "issues": {
@@ -16894,7 +16894,8 @@
       "sha256": "fe6d0f07606eb64f7c721fa2fdbc93f29e163d8a9abb676bc0378b7d78fdf479",
       "before_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit feb0e35512cc2903eb8eba96d1f87fde3c36e4da -out /src/work/parity-slot-ch18/heap-allocator-gs-r5.json'",
       "after_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db -out /src/work/parity-slot-ch18/heap-allocator-gs-r6.json'",
-      "replay_note": "各掛指定乾淨dosgolem提交及本節tool hash；輸出使用新檔名，O_EXCL拒絕覆寫。before／after使用相同最終工具來源。"
+      "replay_note": "各掛指定乾淨dosgolem提交及本節tool hash；輸出使用新檔名，O_EXCL拒絕覆寫。before／after使用相同最終工具來源。",
+      "source_commit": "241a5f9aae71007a3601c68f20c9ca6880122a53"
     },
     "before": {
       "path": "work/parity-slot-ch18/heap-allocator-gs-r5.json",
@@ -17617,6 +17618,1050 @@
       "首次配置不證明之後釋放、coalescing、重用或全原版heap",
       "沒有重跑第十八章同r3輸入，不提升PLAYER-E2；已驗收r4保持",
       "正式oracle一百萬步相同不代表全章不受影響"
-    ]
+    ],
+    "superseded_by": "allocator_natural_lifecycle"
+  },
+  "allocator_natural_lifecycle": {
+    "recorded_at": "2026-10-06",
+    "timezone": "Asia/Taipei",
+    "issues": {
+      "completed": [
+        190
+      ],
+      "next": 191,
+      "parent_open": 102
+    },
+    "status": "原始近堆自然配置／釋放／可觀察重用有限CONFORMED；正式oracle原生profile尚未整合；同r3到T8未通過",
+    "inference_level": "confirmed for this bounded natural LE execution using the existing dosgolem hardware-spec approximation profile; not full hardware or chapter parity",
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "asset_manifest": {
+      "files": [
+        {
+          "File": "FD2.EXE",
+          "Size": 357074,
+          "MD5": "b97caf2239a27a896069d03549d96e1e",
+          "SHA256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+        },
+        {
+          "File": "DOS4GW.EXE",
+          "Size": 244716,
+          "MD5": "a75fdc120ae2fbb4cb2fd9e7b6a94858",
+          "SHA256": "bcba1fc7ea48469fcd97f7d33f2781db8903d90d93cda03505860177259dfaec"
+        },
+        {
+          "File": "SETSOUND.EXE",
+          "Size": 320037,
+          "MD5": "acd891d19b109a068f05aa03236dbe95",
+          "SHA256": "e337ab8b41044f94f26c50eb388d72393833980f032c6d0745704b6a28a2f349"
+        },
+        {
+          "File": "DIG.INI",
+          "Size": 216,
+          "MD5": "6ea1dd6cfc3c6ef697d890606a2900b9",
+          "SHA256": "ff4a599b6970cb02f4e8348b3ee72777a156fd067038c9d72fe5788f7c3224e6"
+        },
+        {
+          "File": "MDI.INI",
+          "Size": 218,
+          "MD5": "1eb7d3bb2f1f781b306c3a580fe3273d",
+          "SHA256": "d42a9f90e09585eee203db863c664d5cae763e00749325c91b028ee3bcac55d1"
+        },
+        {
+          "File": "SAMPLE.AD",
+          "Size": 3242,
+          "MD5": "b04ce567e1fb40e8c1a2002b23027dfd",
+          "SHA256": "87ddb683096b504bcaea693f8a84d1d36fd431df0c576eaafcf0bf8e21e3ed5b"
+        },
+        {
+          "File": "SAMPLE.OPL",
+          "Size": 3242,
+          "MD5": "b04ce567e1fb40e8c1a2002b23027dfd",
+          "SHA256": "87ddb683096b504bcaea693f8a84d1d36fd431df0c576eaafcf0bf8e21e3ed5b"
+        },
+        {
+          "File": "ADRV688.DIG",
+          "Size": 11278,
+          "MD5": "feabc78729e3a458ae2f6ab40146f0d9",
+          "SHA256": "294a7de77d88a7f38f58b32fc7166ced87a4c44e6c9be760f78b1724744d7161"
+        },
+        {
+          "File": "ANI.DAT",
+          "Size": 2437547,
+          "MD5": "81315bcbb78764361c5137ab0f714f7e",
+          "SHA256": "be909c71d0f1121b6632ae931d978e990f6d54c830f4e0509cd6862187c4d963"
+        },
+        {
+          "File": "BG.DAT",
+          "Size": 624564,
+          "MD5": "4b5414c92b40ef25ba0ee10c80f9e149",
+          "SHA256": "b9fc21d019d6256a4bb7e6da1cefcb0bfe331d8ff74a52a8201570afc98b56de"
+        },
+        {
+          "File": "DATO.DAT",
+          "Size": 1979029,
+          "MD5": "f15093e5bff4e5f3334a076ab2a7d130",
+          "SHA256": "dff859783606ee95d9811e1e564bcb230ef53c4df9130e8b6d42ad37bc8c27bd"
+        },
+        {
+          "File": "FDFIELD.DAT",
+          "Size": 243169,
+          "MD5": "ecdb0436d26adfe5d107f2713fa7e9a2",
+          "SHA256": "b0cf75d94f58603f091c7462c0494f0e83bd6edfb04c1acbf83ed4d938c7a513"
+        },
+        {
+          "File": "FDICON.B24",
+          "Size": 624010,
+          "MD5": "46f793540209a063ea73a5373ca14bf4",
+          "SHA256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
+        },
+        {
+          "File": "FDMUS.DAT",
+          "Size": 80367,
+          "MD5": "4dfa214125edcc4658acbba2e1201a28",
+          "SHA256": "4105ebde543fe1c497e852728f6bc333bda80edeb7fb3671e487504bee74e998"
+        },
+        {
+          "File": "FDOTHER.DAT",
+          "Size": 3382481,
+          "MD5": "22f56e5027edc7c766ad34ca4e5aca93",
+          "SHA256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+        },
+        {
+          "File": "FDSHAP.DAT",
+          "Size": 3557794,
+          "MD5": "9b0d356074f57cc27aebf3bb89aae247",
+          "SHA256": "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c"
+        },
+        {
+          "File": "FDTXT.DAT",
+          "Size": 120502,
+          "MD5": "fe5c487ce4313485f1da9d48d35b05f9",
+          "SHA256": "a4555f8a0e61e884b4f504d56a8bdde11672583bbbbc6506281ae10dcdfb1f69"
+        },
+        {
+          "File": "FIGANI.DAT",
+          "Size": 15279582,
+          "MD5": "7da21ec0ad9917455459f1acb970bdf4",
+          "SHA256": "e909314ce37b70701238fd24febc8f61603bbe8d81a9ecbf8f289c97a5b67a1f"
+        },
+        {
+          "File": "TAI.DAT",
+          "Size": 94917,
+          "MD5": "7cfe4b9ad2cbff44b2ebd7ab2f94e4aa",
+          "SHA256": "d56fea9c43f8bb59aad89ad76698885d7e07f380d12a4547888a0b60ea5e0410"
+        },
+        {
+          "File": "TITLE.DAT",
+          "Size": 23377,
+          "MD5": "69bdd788a579d945ec754a4b12bfc7c0",
+          "SHA256": "06120a4605e054f2ff1e08f882661b9b345b39978aabf5126ec137e1207815b3"
+        }
+      ],
+      "fixed_files_matched": 20,
+      "path": "/src/docs/data/fd2-reference-files.json",
+      "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+    },
+    "dosgolem_commit": "6f6b1d7a931c8f4f0da0731e2b8112ed0948b640",
+    "tool_versions": {
+      "go": "go1.24.13",
+      "ida": "IDA Pro9.4既有allocator／caller證據；344筆bytes保持，不重做RE"
+    },
+    "address_spaces": {
+      "dynamic": "dosgolem relocated LE linear",
+      "ida": "IDA Pro9.4 IDA LE linear；既有_nmalloc與__MemAllocator／__MemFree／__ExpandDGROUP入口證據"
+    },
+    "spec": "dosgolem docs/spec/186-fd2-platform-gap-continuation.md 批次154 CONFORMED；native profile下一步由#191走READY後整合",
+    "baseline_correction": {
+      "full_platform": "相同完整平台的乾淨012defb2與6f6b1d7a自然生命週期全欄位相同，皆跑滿1,000,000步；不能把完成歸因於TEST修正",
+      "minimal_diagnostic": "舊r1缺檔案／周邊的平台設定在5650步觸及3DC7D；r2補TEST後越過但走退出路徑，均是局部診斷，非正式oracle",
+      "cpu_proof": "TEST memory支援由先FAIL後PASS的CPU回歸證明"
+    },
+    "test_instruction": {
+      "address": "0x3DC7D",
+      "address_space": "dosgolem relocated LE linear",
+      "bytes": "85 73 0C",
+      "operation": "TEST dword [EBX+0x0C],ESI",
+      "source": "目前固定映像機械式raw擷取；依Intel TEST平台契約，不推論未知檔案服務語意"
+    },
+    "platform_source": "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-2b-manual.pdf TEST 4-679／4-680",
+    "probe_tool": {
+      "path": "tools/fd2_watcom_heap_probe.go",
+      "sha256": "7fdfd09bec9af699cbeb91f3e54df72653d6c9edfbef98014480c631e1cc2a8b",
+      "before_command": "test -d /home/anr2/.codex/skills && test -d /tmp/fd2-lifecycle-before && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/tmp/fd2-lifecycle-before,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db -root /src/org_game/炎龍騎士團/FLAME2 -asset-manifest /src/docs/data/fd2-reference-files.json -natural-lifecycle -out /src/work/parity-slot-ch18/heap-allocator-lifecycle-r6.json'",
+      "after_command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nset -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit 6f6b1d7a931c8f4f0da0731e2b8112ed0948b640 -root /src/org_game/炎龍騎士團/FLAME2 -asset-manifest /src/docs/data/fd2-reference-files.json -natural-lifecycle -out /src/work/parity-slot-ch18/heap-allocator-lifecycle-r7.json'",
+      "replay_note": "使用相同最終工具hash、相同20檔固定唯讀原版與既有平台設定；/dos分別掛乾淨012defb2／6f6b1d7a。輸出新檔名，O_EXCL拒絕覆寫。 重建before工作樹：git -C /home/anr2/cht/dosgolem-fd2-oracle worktree add --detach /tmp/fd2-lifecycle-before 012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db；after可沿乾淨6f6b1d7a或僅追加規格勘誤的56d05bf，程式來源hash逐項相同。工具與所有輸入均須符合記錄hash。"
+    },
+    "before": {
+      "path": "work/parity-slot-ch18/heap-allocator-lifecycle-r6.json",
+      "sha256": "2141627ffea88c41c5501bac9a4e1541e64b3793822053543ef9629a2853043f",
+      "content_excerpt": {
+        "natural_allocation_lifecycle": {
+          "allocation_returns": 59,
+          "classification": "natural LE entry allocator lifecycle diagnostic; not chapter oracle",
+          "console_hex": "",
+          "eip": 73095,
+          "episode_sample_limit": 256,
+          "error": "",
+          "exact_pointer_reuse_count": 26,
+          "exact_pointer_reuse_samples": [
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 21109,
+              "block_tag": 15125,
+              "free_return_step": 20575,
+              "pointer": 1052696,
+              "request": 15118
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 24192,
+              "block_tag": 13989,
+              "free_return_step": 22573,
+              "pointer": 1052696,
+              "request": 13984
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 58674,
+              "block_tag": 141,
+              "free_return_step": 58008,
+              "pointer": 1049224,
+              "request": 136
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 59868,
+              "block_tag": 4101,
+              "free_return_step": 56145,
+              "pointer": 1066684,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 82230,
+              "block_tag": 13,
+              "free_return_step": 80835,
+              "pointer": 1049364,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 82412,
+              "block_tag": 4101,
+              "free_return_step": 81771,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 82823,
+              "block_tag": 2241,
+              "free_return_step": 82730,
+              "pointer": 1049364,
+              "request": 2235
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 83888,
+              "block_tag": 4101,
+              "free_return_step": 83249,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 85636,
+              "block_tag": 13,
+              "free_return_step": 84206,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 85818,
+              "block_tag": 4101,
+              "free_return_step": 85177,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 87244,
+              "block_tag": 13,
+              "free_return_step": 86136,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 87422,
+              "block_tag": 4101,
+              "free_return_step": 86785,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 89124,
+              "block_tag": 13,
+              "free_return_step": 87740,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 89302,
+              "block_tag": 4101,
+              "free_return_step": 88665,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 91133,
+              "block_tag": 13,
+              "free_return_step": 89620,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 91311,
+              "block_tag": 4101,
+              "free_return_step": 90674,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 93136,
+              "block_tag": 13,
+              "free_return_step": 91629,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 93314,
+              "block_tag": 4101,
+              "free_return_step": 92677,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 94874,
+              "block_tag": 37,
+              "free_return_step": 93632,
+              "pointer": 1051604,
+              "request": 32
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 95579,
+              "block_tag": 2565,
+              "free_return_step": 94734,
+              "pointer": 1070784,
+              "request": 2560
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 102221,
+              "block_tag": 13,
+              "free_return_step": 98942,
+              "pointer": 1051640,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 102415,
+              "block_tag": 4101,
+              "free_return_step": 99669,
+              "pointer": 1080880,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 104298,
+              "block_tag": 13,
+              "free_return_step": 102732,
+              "pointer": 1051640,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 104492,
+              "block_tag": 4101,
+              "free_return_step": 103833,
+              "pointer": 1080880,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 125132,
+              "block_tag": 13,
+              "free_return_step": 104809,
+              "pointer": 1051640,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 125326,
+              "block_tag": 4101,
+              "free_return_step": 105442,
+              "pointer": 1080880,
+              "request": 4096
+            }
+          ],
+          "exit_code": 0,
+          "file_profile": "OpenDirectoryReadOnlyFiles; pristine root; no writable overlay",
+          "fixture_heap": false,
+          "free_returns": 39,
+          "omitted_hooks": [
+            "_nmalloc",
+            "_nfree",
+            "__Init_Argv"
+          ],
+          "platform_profile": "same exported BIOS data / LEVideo / LEOPLPorts / BIOS clock / keyboard setup as versioned apps/fd2/cmd/oracle; existing hardware-spec approximations",
+          "program_exited": false,
+          "registers": [
+            453,
+            0,
+            968,
+            151,
+            349672,
+            0,
+            20,
+            255
+          ],
+          "segments": [
+            8,
+            352,
+            352,
+            0,
+            32,
+            352
+          ],
+          "status": "bounded_limit",
+          "step_limit": 1000000,
+          "steps": 1000000,
+          "stopped_eip": 0,
+          "stopped_next8_hex": "",
+          "tail_eip": [
+            73180,
+            73185,
+            73187,
+            73189,
+            73051,
+            73052,
+            73057,
+            227221,
+            227222,
+            227224,
+            227227,
+            227230,
+            227231,
+            227232,
+            73062,
+            73065,
+            73066,
+            73068,
+            73074,
+            73075,
+            73080,
+            227221,
+            227222,
+            227224,
+            227227,
+            227230,
+            227231,
+            227232,
+            73085,
+            73088,
+            73090,
+            73093
+          ],
+          "unfinished": null,
+          "episodes_excerpt": [
+            {
+              "block_tag": 4068,
+              "caller": 251622,
+              "eax": 337868,
+              "entry": 226342,
+              "entry_esp": 349756,
+              "kind": "free",
+              "parameter": 1048600,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048600,
+              "return_esp": 349760,
+              "status": "returned",
+              "steps_entry": 656,
+              "steps_return": 719
+            },
+            {
+              "block_tag": 13,
+              "caller": 314449,
+              "eax": 1048600,
+              "entry": 224550,
+              "entry_esp": 349812,
+              "kind": "allocation",
+              "parameter": 1,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048600,
+              "return_esp": 349816,
+              "status": "returned",
+              "steps_entry": 485,
+              "steps_return": 811
+            },
+            {
+              "block_tag": 13,
+              "caller": 314480,
+              "eax": 1048612,
+              "entry": 224550,
+              "entry_esp": 349812,
+              "kind": "allocation",
+              "parameter": 4,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048612,
+              "return_esp": 349816,
+              "status": "returned",
+              "steps_entry": 822,
+              "steps_return": 903
+            },
+            {
+              "block_tag": 13,
+              "caller": 289045,
+              "eax": 1048624,
+              "entry": 224550,
+              "entry_esp": 349836,
+              "kind": "allocation",
+              "parameter": 8,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048624,
+              "return_esp": 349840,
+              "status": "returned",
+              "steps_entry": 1027,
+              "steps_return": 1108
+            },
+            {
+              "block_tag": 572,
+              "caller": 226337,
+              "eax": 337868,
+              "entry": 226342,
+              "entry_esp": 349660,
+              "kind": "free",
+              "parameter": 1051640,
+              "payload_first8_hex": "cc2705005c0e1000",
+              "pointer": 1051640,
+              "return_esp": 349664,
+              "status": "returned",
+              "steps_entry": 125576,
+              "steps_return": 125643
+            },
+            {
+              "block_tag": 6593,
+              "caller": 224545,
+              "eax": 1320080,
+              "entry": 224550,
+              "entry_esp": 349660,
+              "kind": "allocation",
+              "parameter": 6585,
+              "payload_first8_hex": "b0dc1300a0e21400",
+              "pointer": 1320080,
+              "return_esp": 349664,
+              "status": "returned",
+              "steps_entry": 125653,
+              "steps_return": 125806
+            },
+            {
+              "block_tag": 4556,
+              "caller": 226337,
+              "eax": 1074880,
+              "entry": 226342,
+              "entry_esp": 349588,
+              "kind": "free",
+              "parameter": 1080880,
+              "payload_first8_hex": "c463100058191100",
+              "pointer": 1080880,
+              "return_esp": 349592,
+              "status": "returned",
+              "steps_entry": 126302,
+              "steps_return": 126370
+            }
+          ]
+        },
+        "source_sha256": {
+          "apps/fd2/cmd/oracle/main.go": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea",
+          "internal/cpu386/cpu.go": "8ed1b1cdbbb9ec527e093eaaabc7f98411d127ccec2ecb0fc7a4ff2b282953cc",
+          "internal/machine/le_machine.go": "6f97e999d71eca908b77b2841271ae479104b03c0df6a9daa949ca433de309f4",
+          "internal/machine/le_startup.go": "bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206",
+          "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        "dosgolem_commit": "012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db",
+        "dirty": false
+      }
+    },
+    "after": {
+      "path": "work/parity-slot-ch18/heap-allocator-lifecycle-r7.json",
+      "sha256": "c3a3a16fd93a44911fb96ad8311e3514cc449ca030f149c41698b87848f0955b",
+      "content_excerpt": {
+        "natural_allocation_lifecycle": {
+          "allocation_returns": 59,
+          "classification": "natural LE entry allocator lifecycle diagnostic; not chapter oracle",
+          "console_hex": "",
+          "eip": 73095,
+          "episode_sample_limit": 256,
+          "error": "",
+          "exact_pointer_reuse_count": 26,
+          "exact_pointer_reuse_samples": [
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 21109,
+              "block_tag": 15125,
+              "free_return_step": 20575,
+              "pointer": 1052696,
+              "request": 15118
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 24192,
+              "block_tag": 13989,
+              "free_return_step": 22573,
+              "pointer": 1052696,
+              "request": 13984
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 58674,
+              "block_tag": 141,
+              "free_return_step": 58008,
+              "pointer": 1049224,
+              "request": 136
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 59868,
+              "block_tag": 4101,
+              "free_return_step": 56145,
+              "pointer": 1066684,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 82230,
+              "block_tag": 13,
+              "free_return_step": 80835,
+              "pointer": 1049364,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 82412,
+              "block_tag": 4101,
+              "free_return_step": 81771,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 82823,
+              "block_tag": 2241,
+              "free_return_step": 82730,
+              "pointer": 1049364,
+              "request": 2235
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 83888,
+              "block_tag": 4101,
+              "free_return_step": 83249,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 85636,
+              "block_tag": 13,
+              "free_return_step": 84206,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 85818,
+              "block_tag": 4101,
+              "free_return_step": 85177,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 87244,
+              "block_tag": 13,
+              "free_return_step": 86136,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 87422,
+              "block_tag": 4101,
+              "free_return_step": 86785,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 89124,
+              "block_tag": 13,
+              "free_return_step": 87740,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 89302,
+              "block_tag": 4101,
+              "free_return_step": 88665,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 91133,
+              "block_tag": 13,
+              "free_return_step": 89620,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 91311,
+              "block_tag": 4101,
+              "free_return_step": 90674,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 93136,
+              "block_tag": 13,
+              "free_return_step": 91629,
+              "pointer": 1051604,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 93314,
+              "block_tag": 4101,
+              "free_return_step": 92677,
+              "pointer": 1070784,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 94874,
+              "block_tag": 37,
+              "free_return_step": 93632,
+              "pointer": 1051604,
+              "request": 32
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 95579,
+              "block_tag": 2565,
+              "free_return_step": 94734,
+              "pointer": 1070784,
+              "request": 2560
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 102221,
+              "block_tag": 13,
+              "free_return_step": 98942,
+              "pointer": 1051640,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 102415,
+              "block_tag": 4101,
+              "free_return_step": 99669,
+              "pointer": 1080880,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 104298,
+              "block_tag": 13,
+              "free_return_step": 102732,
+              "pointer": 1051640,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 104492,
+              "block_tag": 4101,
+              "free_return_step": 103833,
+              "pointer": 1080880,
+              "request": 4096
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 125132,
+              "block_tag": 13,
+              "free_return_step": 104809,
+              "pointer": 1051640,
+              "request": 8
+            },
+            {
+              "allocation_caller": 224545,
+              "allocation_return_step": 125326,
+              "block_tag": 4101,
+              "free_return_step": 105442,
+              "pointer": 1080880,
+              "request": 4096
+            }
+          ],
+          "exit_code": 0,
+          "file_profile": "OpenDirectoryReadOnlyFiles; pristine root; no writable overlay",
+          "fixture_heap": false,
+          "free_returns": 39,
+          "omitted_hooks": [
+            "_nmalloc",
+            "_nfree",
+            "__Init_Argv"
+          ],
+          "platform_profile": "same exported BIOS data / LEVideo / LEOPLPorts / BIOS clock / keyboard setup as versioned apps/fd2/cmd/oracle; existing hardware-spec approximations",
+          "program_exited": false,
+          "registers": [
+            453,
+            0,
+            968,
+            151,
+            349672,
+            0,
+            20,
+            255
+          ],
+          "segments": [
+            8,
+            352,
+            352,
+            0,
+            32,
+            352
+          ],
+          "status": "bounded_limit",
+          "step_limit": 1000000,
+          "steps": 1000000,
+          "stopped_eip": 0,
+          "stopped_next8_hex": "",
+          "tail_eip": [
+            73180,
+            73185,
+            73187,
+            73189,
+            73051,
+            73052,
+            73057,
+            227221,
+            227222,
+            227224,
+            227227,
+            227230,
+            227231,
+            227232,
+            73062,
+            73065,
+            73066,
+            73068,
+            73074,
+            73075,
+            73080,
+            227221,
+            227222,
+            227224,
+            227227,
+            227230,
+            227231,
+            227232,
+            73085,
+            73088,
+            73090,
+            73093
+          ],
+          "unfinished": null,
+          "episodes_excerpt": [
+            {
+              "block_tag": 4068,
+              "caller": 251622,
+              "eax": 337868,
+              "entry": 226342,
+              "entry_esp": 349756,
+              "kind": "free",
+              "parameter": 1048600,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048600,
+              "return_esp": 349760,
+              "status": "returned",
+              "steps_entry": 656,
+              "steps_return": 719
+            },
+            {
+              "block_tag": 13,
+              "caller": 314449,
+              "eax": 1048600,
+              "entry": 224550,
+              "entry_esp": 349812,
+              "kind": "allocation",
+              "parameter": 1,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048600,
+              "return_esp": 349816,
+              "status": "returned",
+              "steps_entry": 485,
+              "steps_return": 811
+            },
+            {
+              "block_tag": 13,
+              "caller": 314480,
+              "eax": 1048612,
+              "entry": 224550,
+              "entry_esp": 349812,
+              "kind": "allocation",
+              "parameter": 4,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048612,
+              "return_esp": 349816,
+              "status": "returned",
+              "steps_entry": 822,
+              "steps_return": 903
+            },
+            {
+              "block_tag": 13,
+              "caller": 289045,
+              "eax": 1048624,
+              "entry": 224550,
+              "entry_esp": 349836,
+              "kind": "allocation",
+              "parameter": 8,
+              "payload_first8_hex": "cc270500cc270500",
+              "pointer": 1048624,
+              "return_esp": 349840,
+              "status": "returned",
+              "steps_entry": 1027,
+              "steps_return": 1108
+            },
+            {
+              "block_tag": 572,
+              "caller": 226337,
+              "eax": 337868,
+              "entry": 226342,
+              "entry_esp": 349660,
+              "kind": "free",
+              "parameter": 1051640,
+              "payload_first8_hex": "cc2705005c0e1000",
+              "pointer": 1051640,
+              "return_esp": 349664,
+              "status": "returned",
+              "steps_entry": 125576,
+              "steps_return": 125643
+            },
+            {
+              "block_tag": 6593,
+              "caller": 224545,
+              "eax": 1320080,
+              "entry": 224550,
+              "entry_esp": 349660,
+              "kind": "allocation",
+              "parameter": 6585,
+              "payload_first8_hex": "b0dc1300a0e21400",
+              "pointer": 1320080,
+              "return_esp": 349664,
+              "status": "returned",
+              "steps_entry": 125653,
+              "steps_return": 125806
+            },
+            {
+              "block_tag": 4556,
+              "caller": 226337,
+              "eax": 1074880,
+              "entry": 226342,
+              "entry_esp": 349588,
+              "kind": "free",
+              "parameter": 1080880,
+              "payload_first8_hex": "c463100058191100",
+              "pointer": 1080880,
+              "return_esp": 349592,
+              "status": "returned",
+              "steps_entry": 126302,
+              "steps_return": 126370
+            }
+          ]
+        },
+        "source_sha256": {
+          "apps/fd2/cmd/oracle/main.go": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea",
+          "internal/cpu386/cpu.go": "bc183cf75d554b2f2ff4b5097693efeac86a88a4e179e4d3d7a4460683cb844d",
+          "internal/machine/le_machine.go": "6f97e999d71eca908b77b2841271ae479104b03c0df6a9daa949ca433de309f4",
+          "internal/machine/le_startup.go": "bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206",
+          "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        "dosgolem_commit": "6f6b1d7a931c8f4f0da0731e2b8112ed0948b640",
+        "dirty": false
+      }
+    },
+    "diagnostic_setup_correction": {
+      "file_service": "初版未接檔案服務會走退出路徑；沿正式oracle使用OpenDirectoryReadOnlyFiles後重跑",
+      "platform": "只接檔案但缺RealModeIO時INT66h模擬拒收；沿正式oracle已有BIOS data／LEVideo／LEOPLPorts／clock／keyboard後重跑",
+      "classification": "診斷環境缺件；rootless或缺IO的舊結果不當作正式對拍或現行近堆阻塞",
+      "source_mutation": "沒有動態改寫正式oracle來源，沒有原始資料或章狀態注入"
+    },
+    "confirmed_results": {
+      "allocations": 59,
+      "frees": 39,
+      "exact_pointer_reuses": 26,
+      "reuses_rule": "只在原始_nmalloc已回傳指標、後來_nfree回傳同參數，之後_nmalloc再回同指標才計數；__ExpandDGROUP初建free block不當再配置",
+      "first_reuse": "0x101018，free返回20575步，request15118配置返回21109步，tag15125",
+      "first_return": "原始caller0x4CC51及先前合法近指標／ABI保持；六人工fixture均返回",
+      "error_free_scope": "1,000,000原始步與98筆配置／釋放回傳；不是完整章或所有heap分支"
+    },
+    "regression": {
+      "command": "GOCACHE=/src/work/gocache GOPROXY=off go test ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle -count=1",
+      "logs": {
+        "test-memory-before-r1.log": "dc06c4f9bc55671768db1fd3634e6ffaafff05290a6cc92a12030f0ee2fa997f",
+        "test-memory-go-regression-r1.log": "33dab4965053649e71268eea513501e18a7880748a779113346f9873194f23ca"
+      },
+      "log_directory": "work/parity-slot-ch18",
+      "result": "新增TEST回歸先FAIL，限定修正後三相關套件全部PASS；唯讀memory、DS／SS／SIB、全寬flags及非法零交易通過"
+    },
+    "boot_prefix": {
+      "runner": "apps/fd2/cmd/oracle",
+      "steps": 1000000,
+      "before": "012defb2d39ddcdeeb10ad7e8f2f0c8e15d137db",
+      "after": "6f6b1d7a931c8f4f0da0731e2b8112ed0948b640",
+      "path": "work/parity-slot-ch18/test-memory-boot-r1.json",
+      "sha256": "4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39",
+      "result": "現有正式近堆profile的前後JSON全檔bytes相同",
+      "command": "沿probe_tool的Docker掛載限制，以對應乾淨commit執行cd /dos；GOCACHE=/src/work/gocache GOPROXY=off go run ./apps/fd2/cmd/oracle -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -root /src/org_game/炎龍騎士團/FLAME2 -steps 1000000，輸出新JSON"
+    },
+    "next_gate": {
+      "issue": 191,
+      "acceptance": "唯一受版控oracle與wrapper的明示native profile、來源／近堆政策標示、有限正常標題輸入；#102同原ch18-guard-r3前綴到T8仍另驗",
+      "production_heap": "正式近堆適配未取代；before／after watcom_runtime.go source SHA相同"
+    },
+    "limits": [
+      "局部探針不是章oracle，不能提升PLAYER-E2",
+      "既有周邊時序保持hardware-spec approximation",
+      "原始GDT與所有allocator硬體情境未證實",
+      "rootless／缺IO未用於通過或判定正式原版",
+      "第十八章同r3到T8沒有重跑，既有r4章驗收保持"
+    ],
+    "spec_correction_commit": "56d05bf；僅規格與WORKLOG追加相同平台前後皆通過的勘誤，程式來源仍為6f6b1d7a"
   }
 }

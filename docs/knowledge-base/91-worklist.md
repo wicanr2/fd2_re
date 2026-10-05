@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -184,5 +184,15 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 正式 FD2 oracle 原生近堆 profile 整合與來源標示
+
+`dosgolem-native-heap-oracle-profile` · 缺陷 · [#191](https://github.com/wicanr2/fd2_re/issues/191) · 仍未完成 · 要人判
+
+#102 第七回合錯誤的現行first-fit近堆近似已找到原始選洞／payload差異。受版控自然LE entry在完整既有平台及固定唯讀20檔資產下，原始_nmalloc／_nfree／__Init_Argv跑完一百萬步，59次配置、39次釋放與26次已配置後釋放指標的再配置，未注入heap或章狀態。局部探針不能當章oracle；需要在唯一受版控apps/fd2/cmd/oracle提供明示的原生近堆profile。
+
+怎樣算做完：證據及READY後在唯一oracle提供明示選項，只讓固定EXE的_nmalloc／_nfree／__Init_Argv執行原始指令，其他已證實平台服務保持。預設現有profile不改；收據／wrapper如實標示原生入口、參與hooks、source SHA與近堆政策，不冒稱全原版硬體parity。錯版本與非法選項拒收，既有profile回歸及原生自然BOOT合法指標、釋放／重用、有限標題正常输入驗證。不能由人工helper當章PLAYER-E2；#102同ch18-guard-r3前綴至T8仍獨立。
+
+證據：`['tools/fd2_watcom_heap_probe.go', 'tools/dosgolem_oracle.sh', 'docs/data/ida/fd2_ch18_oracle_stosb_20261003.json']`
 
 <!-- END fd2_worklist.py render -->
