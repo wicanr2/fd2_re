@@ -264,6 +264,23 @@
         "note": "核對第24章正式四gate、實際保存完整SAV、正常章路徑及回歸。"
       },
       "issue": 142
+    },
+    {
+      "id": "dosgolem-native-heap-and-gs",
+      "layer": "tooling",
+      "category": "缺陷",
+      "title": "原生近堆探針仍缺 AND 暫存器與 PUSH GS 指令",
+      "body": "#102 的有界探針在 #183 CMC 修正後，人工 free list 停於 IDA LE 0x3D28D 的 23 C1 AND EAX,ECX；自然 LE entry 首次 _nmalloc 停於 0x36D2B 的 0F A8 PUSH GS。兩者如實記錄在局部探針，尚未證明原版自然配置器可用。",
+      "acceptance": "先核對原始 bytes 與 CPU 平台契約，READY 規格後補實際觀測指令形狀。驗證邏輯旗標／來源別名與 GS 堆疊原子性；CPU、machine、oracle 回歸全通過。固定原版局部探針越過兩點；未支援的後續形式仍嚴格拒收並另外登記，不修改正式近堆政策或第十八章 T8 閘門。",
+      "evidence": [
+        "tools/fd2_watcom_heap_probe.go",
+        "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "固定原版局部探針及自然 LE entry 的有界重生，明示原生近堆是否到達首次合法回傳。"
+      },
+      "issue": 184
     }
   ]
 }

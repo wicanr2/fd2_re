@@ -20,6 +20,7 @@
 | #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
+| #102原生近堆局部診斷 | 工具CONFORMED／原生整合BLOCKED | #183 CMC已修正並關閉；正式有限啟動前綴相同。#184保留AND／PUSH GS缺口；同r3到T8未通過。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
@@ -3147,3 +3148,10 @@ annotation_refresh明示離線重綁、源metadata雜湊與未重新跑IDA，不
 | 字串來源清冊 | 5169條、98候選不變，重生SHA與官方清冊相同 | 主契約string_inventory |
 
 READY在實作前已登記[#154決策紀錄](https://github.com/wicanr2/fd2_re/issues/154#issuecomment-5994343114)。原版near_heap_policy目前保守標unknown，233點及指定影格只支持有限可見結果。整章台帳、#142的DP政策及其他未完成項保持原狀。
+
+
+## 2026-10-05 第十八章原生近堆局部診斷
+
+[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)追加allocator_probe。#183的原始CMC缺口已由READY契約、CPU回歸與固定原版helper驗證後修正，正式oracle工作樹更新至def0b231。原版配置器和目前適配的完整關係仍未知；局部探針及自然LE入口尚未完成首次配置，後續CPU缺口登記於#184。
+
+章台帳、第十八章r4與PLAYER-E2保持。#102同r3越過停止／到T8尚未通過，不把有限啟動前綴提升為完整章結果。所有命令、輸入／輸出雜湊、原始bytes與限制以主證據為準。

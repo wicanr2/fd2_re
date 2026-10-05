@@ -1886,3 +1886,6 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 #161的正式組圖與#160的正常游標確認已連成完整施法路徑，達限定CONFORMED／DATA-READY／RUNTIME-E1。正常鍵盤由標題CONTINUE進法術選單、我方中心、Escape取消，再確認施法至操作權返回；施法入口一次承接RNG3473。這取代前述「第7張仍拒收」、「12張只屬原型」及「#154待使用者決策」的現況說法，歷史證據與失敗成因保留。
 
 固定第三方槽不增加章PLAYER-E2。目前dosgolem配置器政策仍標unknown，原版malloc與完整heap consumer未證實；雙目標轉場、演出其他階段及音訊不由12張target影格外推。唯一數字、完整命令、來源與產物雜湊見[指令6主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)的isolation_validation及[58目前狀態](58-fd2-exe-re-coverage.md)。
+
+
+2026-10-05 #102局部診斷：[#183](https://github.com/wicanr2/fd2_re/issues/183)的CMC CPU缺口已修正並通過有限原版helper及正式啟動前綴。原生近堆首次配置仍停止，#184保留後續CPU缺口。局部人工free list、自然LE entry與章oracle分級保留；正式_nmalloc／_nfree政策、同r3到T8與既有章PLAYER-E2不由這項結果外推。現況及來源只引用[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。

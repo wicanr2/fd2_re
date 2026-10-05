@@ -5590,3 +5590,8 @@ READY有限規格先保存，再實作0／3私有UI候選與狀態還原，沒�
 獨立稽核核對10份來源、17份收據及96筆傳遞檔案SHA，36張GPU全幅與目前原版相同；新舊原版12張完整indexed／RGB相同。新增文件連結與索引正對照通過。教訓檢查器排除測試檔，新增來源規則保留可回查入口而不掛無效guard；164條教訓、59個既有guard通過。歷史root-owned共2811項（2786檔、25目錄），本輪來源與產物UID／GID1000，.md目錄0。本批FD2容器已退出，其他專案未更動。
 
 README只補穩定玩家功能及證據入口，文化保存內容保留；完整原版與GPU截圖留本機work，沒有增加未授權公開素材。提交與真正遠端HEAD核對結果回填三案。
+
+
+2026-10-05 #102局部診斷：[#183](https://github.com/wicanr2/fd2_re/issues/183)的CMC CPU缺口已修正並通過有限原版helper及正式啟動前綴。原生近堆首次配置仍停止，#184保留後續CPU缺口。局部人工free list、自然LE entry與章oracle分級保留；正式_nmalloc／_nfree政策、同r3到T8與既有章PLAYER-E2不由這項結果外推。現況及來源只引用[58](58-fd2-exe-re-coverage.md)與[#102主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+本輪#183已關閉，#184保持開啟；正式遠端快照16條。dosgolem def0b231已推送並核對遠端相同，專用oracle工作樹乾淨。Docker一次性工作均使用--rm；root-owned舊產物數量保持，未新增root-owned輸出。

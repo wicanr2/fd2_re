@@ -363,6 +363,8 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [第十八章原版素材解碼停止與唯讀追蹤](../data/ida/fd2_ch18_oracle_stosb_20261003.json)：#102，固定原版r3的STOSB停止、IDA sub_4E63D與有限重製前綴；目前oracle有限生命週期根因閉合，原生配置器重用未知；同r3仍停止，#102保持開啟。
 
+- [第十八章配置器局部診斷工具](../../tools/fd2_watcom_heap_probe.go)：#102，原始CPU helper的人工free list與自然LE啟動首次配置分開記錄；不取代章oracle。契約與命令登記於[同一主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
 - [第十八章第7／8輪正常後撤計畫r4](../data/parity-plans/ch18-guard-r4.jsonl)：#94，前六輪保持r3，record8正常鍵盤後撤；不改slot、seed、NPC或原版記憶體契約，完整章已驗收。
 
 - [第十八章增援後戰後槽數契約](../data/ida/fd2_ch18_postbattle_slots_20261003.json)：#103，正常T8的53→75及11506 reader，舊55保留建構E1來源；CONFORMED，完整章通過。

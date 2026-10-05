@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 16 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -184,5 +184,15 @@ FDFIELD 回合事件（docs/data/turn_events.json）在 gen_campaign.py 只降�
 怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
 
 證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
+
+### 原生近堆探針仍缺 AND 暫存器與 PUSH GS 指令
+
+`dosgolem-native-heap-and-gs` · 缺陷 · [#184](https://github.com/wicanr2/fd2_re/issues/184) · 仍未完成 · 要人判
+
+#102 的有界探針在 #183 CMC 修正後，人工 free list 停於 IDA LE 0x3D28D 的 23 C1 AND EAX,ECX；自然 LE entry 首次 _nmalloc 停於 0x36D2B 的 0F A8 PUSH GS。兩者如實記錄在局部探針，尚未證明原版自然配置器可用。
+
+怎樣算做完：先核對原始 bytes 與 CPU 平台契約，READY 規格後補實際觀測指令形狀。驗證邏輯旗標／來源別名與 GS 堆疊原子性；CPU、machine、oracle 回歸全通過。固定原版局部探針越過兩點；未支援的後續形式仍嚴格拒收並另外登記，不修改正式近堆政策或第十八章 T8 閘門。
+
+證據：`['tools/fd2_watcom_heap_probe.go', 'docs/data/ida/fd2_ch18_oracle_stosb_20261003.json']`
 
 <!-- END fd2_worklist.py render -->

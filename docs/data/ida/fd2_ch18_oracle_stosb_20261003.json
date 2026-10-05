@@ -15151,5 +15151,357 @@
     },
     "trace_sha256": "6e8d955d458a987ad5b07f9df3a5bd08e21c376a05988ed3525ebc192857e163",
     "trace_size": 640586
+  },
+  "allocator_probe": {
+    "recorded_at": "2026-10-05",
+    "issues": [
+      102,
+      183,
+      184
+    ],
+    "status": "局部CPU能力修正CONFORMED；原生近堆整合DRAFT／BLOCKED；同r3至T8尚未通過",
+    "contract": {
+      "status": "CONFORMED for local diagnostic only",
+      "scope": "固定EXE原始指令局部探針。人工free list與自然LE entry首次配置分開記錄，明示注入位置。禁止作章oracle、PLAYER-E2或原版實機配置器結果。",
+      "gates": [
+        "固定EXE size／SHA與IDA Pro 9.4位址空間吻合",
+        "344筆IDA原始指令bytes與dosgolem relocated LE memory逐筆相同",
+        "人工helper無StepHook，512步上限；自然LE entry只撤近堆／argv hooks，100000步上限",
+        "停止如實保留error／EIP與trace，不放寬記憶體、不猜配置策略、不覆寫輸出"
+      ],
+      "native_integration_status": "DRAFT，尚不能取代正式_nmalloc／_nfree適配。原生首次配置未到合法caller回傳。"
+    },
+    "input": {
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "ida_export": {
+      "path": "work/parity-slot-ch18/heap-allocator-ida-r1.json",
+      "sha256": "60792875572c56ef7a66d1da20a7bcdcca2b055c17d5e005a4e3546fc11ff903",
+      "tool": "IDA Pro 9.4",
+      "address_space": "IDA LE linear",
+      "functions": [
+        {
+          "start": "0x3d270",
+          "original_name": "__MemAllocator",
+          "instruction_count": 73
+        },
+        {
+          "start": "0x3d320",
+          "original_name": "__MemFree",
+          "instruction_count": 120
+        },
+        {
+          "start": "0x3d4f2",
+          "original_name": "__ExpandDGROUP",
+          "instruction_count": 151
+        }
+      ]
+    },
+    "probe_tool": {
+      "path": "tools/fd2_watcom_heap_probe.go",
+      "sha256": "23739993c7e76b3ef06b731b6161ca3a70bb5c17c6b57e12776b189fbe95f3ce",
+      "command": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\nmkdir -p /tmp/fd2-heap-probe\nprintf '\\''module github.com/wicanr2/dosgolem/fd2-heap-probe\\n\\ngo 1.24\\n\\nrequire github.com/wicanr2/dosgolem v0.0.0\\nreplace github.com/wicanr2/dosgolem => /dos\\n'\\'' >/tmp/fd2-heap-probe/go.mod\ncp /src/tools/fd2_watcom_heap_probe.go /tmp/fd2-heap-probe/main.go\ncd /tmp/fd2-heap-probe\nFD2_HEAP_PROBE_DOCKER=1 GOCACHE=/src/work/gocache GOPROXY=off go run main.go -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -ida /src/work/parity-slot-ch18/heap-allocator-ida-r1.json -dosgolem-root /dos -dosgolem-commit def0b2317fae8b48e169f6f90d7a39ad2760989d -out /src/work/parity-slot-ch18/heap-allocator-local-r2.json'"
+    },
+    "ida_command": "test -f /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2/FD2.EXE && test -d /home/anr2/cht/fd2/work/parity-slot-ch18 && timeout 360 docker run --rm --name fd2-ch18-allocator-ida-r1 --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch18,dst=/out -e PROBE_ADDRESSES='0x3D270 0x3D320 0x3D4F2' -e PROBE_OUTPUT=/out/heap-allocator-ida-r1.json --workdir /tmp --entrypoint timeout ida-pro-9.4-idapython:locked-v1 330 idat -A -o/tmp/fd2.i64 -S/src/tools/ida_opening_input_probe.py /input/FD2.EXE > work/parity-slot-ch18/heap-allocator-ida-r1.log 2>&1",
+    "receipt": {
+      "path": "work/parity-slot-ch18/heap-allocator-local-r2.json",
+      "sha256": "4599bfd9438a2da04f86e50c5c55021375c365a2e6236a03b7e5c6604d0a05bc",
+      "content": {
+        "allocator_cases": [
+          {
+            "classification": "direct-entry artificial heap fixture; not normal player path",
+            "eip_after_step": 250510,
+            "error": "cpu386: EIP=0003D28D opcode=23：opcode 尚未支援",
+            "input_prefix_max": 0,
+            "input_rover": 1574144,
+            "name": "rover",
+            "request": 24,
+            "status": "stopped",
+            "trace_eip": [
+              250480,
+              250481,
+              250482,
+              250483,
+              250484,
+              250486,
+              250488,
+              250490,
+              250495,
+              250497,
+              250499,
+              250504,
+              250506,
+              250507,
+              250509
+            ]
+          },
+          {
+            "classification": "direct-entry artificial heap fixture; not normal player path",
+            "eip_after_step": 250510,
+            "error": "cpu386: EIP=0003D28D opcode=23：opcode 尚未支援",
+            "input_prefix_max": 128,
+            "input_rover": 1574144,
+            "name": "prefix_reset",
+            "request": 24,
+            "status": "stopped",
+            "trace_eip": [
+              250480,
+              250481,
+              250482,
+              250483,
+              250484,
+              250486,
+              250488,
+              250490,
+              250495,
+              250497,
+              250499,
+              250504,
+              250506,
+              250507,
+              250509
+            ]
+          },
+          {
+            "classification": "direct-entry artificial heap fixture; not normal player path",
+            "eip_after_step": 250510,
+            "error": "cpu386: EIP=0003D28D opcode=23：opcode 尚未支援",
+            "input_prefix_max": 0,
+            "input_rover": 1574144,
+            "name": "minimum_block",
+            "request": 1,
+            "status": "stopped",
+            "trace_eip": [
+              250480,
+              250481,
+              250482,
+              250483,
+              250484,
+              250486,
+              250488,
+              250490,
+              250495,
+              250497,
+              250499,
+              250504,
+              250506,
+              250507,
+              250509
+            ]
+          },
+          {
+            "classification": "direct-entry artificial heap fixture; not normal player path",
+            "eip_after_step": 250510,
+            "error": "cpu386: EIP=0003D28D opcode=23：opcode 尚未支援",
+            "input_prefix_max": 0,
+            "input_rover": 1574144,
+            "name": "whole_block",
+            "request": 124,
+            "status": "stopped",
+            "trace_eip": [
+              250480,
+              250481,
+              250482,
+              250483,
+              250484,
+              250486,
+              250488,
+              250490,
+              250495,
+              250497,
+              250499,
+              250504,
+              250506,
+              250507,
+              250509
+            ]
+          },
+          {
+            "classification": "direct-entry artificial heap fixture; not normal player path",
+            "eip_after_step": 250510,
+            "error": "cpu386: EIP=0003D28D opcode=23：opcode 尚未支援",
+            "input_prefix_max": 0,
+            "input_rover": 1574144,
+            "name": "no_fit",
+            "request": 129,
+            "status": "stopped",
+            "trace_eip": [
+              250480,
+              250481,
+              250482,
+              250483,
+              250484,
+              250486,
+              250488,
+              250490,
+              250495,
+              250497,
+              250499,
+              250504,
+              250506,
+              250507,
+              250509
+            ]
+          },
+          {
+            "address_space": "dosgolem relocated LE linear; injected lab 0x170000..0x200000",
+            "after_sha256": "f95b06c61deb41f3715781c6d63fc602300366fde04dc546ba41658d1107d3ae",
+            "allocated_tag": 0,
+            "before_sha256": "f95b06c61deb41f3715781c6d63fc602300366fde04dc546ba41658d1107d3ae",
+            "classification": "direct-entry artificial heap fixture; not normal player path",
+            "input_ebx": 1572864,
+            "input_edx": 16,
+            "input_holes": [
+              1573120,
+              1574144,
+              1575168
+            ],
+            "input_prefix_max": 0,
+            "input_rover": 1574144,
+            "name": "zero",
+            "prefix_max_after": 0,
+            "request": 0,
+            "result": 0,
+            "result_first8_hex": "",
+            "rover_after": 1574144,
+            "status": "returned",
+            "trace_eip": [
+              250480,
+              250481,
+              250482,
+              250483,
+              250484,
+              250486,
+              250488,
+              250565,
+              250567,
+              250646,
+              250647,
+              250648,
+              250649,
+              250650
+            ]
+          }
+        ],
+        "current_hook": {
+          "classification": "current runtime approximation; not native allocator",
+          "holes": [
+            2097152,
+            2098176,
+            2099200
+          ],
+          "policy": "lowest-address first-fit; reused payload cleared; no native block header",
+          "request": 24,
+          "result": 2097152,
+          "result_first8_hex": "0000000000000000"
+        },
+        "dosgolem_commit_supplied_by_host": "def0b2317fae8b48e169f6f90d7a39ad2760989d",
+        "dosgolem_dirty_supplied_by_host": false,
+        "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "go_version": "go1.24.13",
+        "ida_instruction_bytes_matched": 344,
+        "ida_sha256": "60792875572c56ef7a66d1da20a7bcdcca2b055c17d5e005a4e3546fc11ff903",
+        "kind": "fd2_original_allocator_local_probe",
+        "limitations": "局部人工free list與初次配置診斷；未重跑ch18原計畫、未改production、未取得實機或章PLAYER-E2。",
+        "natural_first_allocation": {
+          "classification": "natural LE entry diagnostic; first allocation only; not chapter oracle",
+          "eax": 1,
+          "eip": 224557,
+          "error": "cpu386: EIP=00036D2B opcode=0F：0F A8 尚未支援",
+          "esp": 349796,
+          "fixture_heap": false,
+          "omitted_hooks": [
+            "_nmalloc",
+            "_nfree",
+            "__Init_Argv"
+          ],
+          "status": "stopped",
+          "steps": 489,
+          "tail_eip": [
+            286157,
+            286159,
+            286160,
+            286161,
+            314365,
+            314366,
+            314367,
+            314368,
+            314369,
+            314371,
+            314372,
+            314374,
+            314377,
+            314384,
+            314390,
+            314397,
+            314400,
+            314402,
+            314404,
+            314406,
+            314409,
+            314413,
+            314433,
+            314436,
+            314438,
+            314443,
+            314444,
+            224550,
+            224551,
+            224552,
+            224553,
+            224555
+          ]
+        },
+        "schema_version": 1,
+        "source_sha256": {
+          "apps/fd2/cmd/oracle/main.go": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea",
+          "internal/cpu386/cpu.go": "587dca53268da9b241dd43ddfbb908aa93c675f5234e0562ed9f1efb9346ea98",
+          "internal/machine/le_machine.go": "6f97e999d71eca908b77b2841271ae479104b03c0df6a9daa949ca433de309f4",
+          "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        }
+      }
+    },
+    "cmc_fix": {
+      "level": "confirmed within cpu386/platform contract",
+      "source": "Intel SDM Volume 2A CMC 3-174 https://cdrdv2-public.intel.com/812383/253666-sdm-vol-2a.pdf",
+      "bytes": "F5",
+      "ida_le_address": "0x3D28A",
+      "original_caller": "__MemAllocator 0x3D270",
+      "dosgolem_commit": "def0b2317fae8b48e169f6f90d7a39ad2760989d",
+      "spec": "dosgolem docs/spec/186-fd2-platform-gap-continuation.md 批次147 CONFORMED",
+      "regression": {
+        "command": "GOCACHE=/src/work/gocache GOPROXY=off go test ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle -count=1",
+        "log": "work/parity-slot-ch18/cmc-go-regression-r1.log",
+        "sha256": "d00ec6cdd073033f8b6a43ba6d1f07fdc348e29d6a7e0c9b476c0528e97641a0",
+        "result": "全部3套件PASS；新增測試在修正前實際FAIL"
+      },
+      "boot_prefix": {
+        "runner": "apps/fd2/cmd/oracle",
+        "steps": 1000000,
+        "result": "兩份正式JSON全檔bytes相同",
+        "sha256": "4a1152605f09128d7e70a8259587329c0039bd8c990e6d6f3b1802607d565b39",
+        "before": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+        "after": "def0b2317fae8b48e169f6f90d7a39ad2760989d",
+        "commands": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\ncd /dos\nGOCACHE=/src/work/gocache GOPROXY=off go run ./apps/fd2/cmd/oracle -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -root /src/org_game/炎龍騎士團/FLAME2 -steps 1000000 > /src/work/parity-slot-ch18/cmc-boot-baseline-r1.json'\ntest -d /home/anr2/.codex/skills && test -d /tmp/fd2-cmc-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/tmp/fd2-cmc-oracle,dst=/dos --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src golang:1.24-bookworm timeout 150 sh -c 'set -eu\ncd /dos\nGOCACHE=/src/work/gocache GOPROXY=off go run ./apps/fd2/cmd/oracle -exe /src/org_game/炎龍騎士團/FLAME2/FD2.EXE -root /src/org_game/炎龍騎士團/FLAME2 -steps 1000000 > /src/work/parity-slot-ch18/cmc-boot-cmc-r1.json'",
+        "limitation": "有限自然啟動前綴；不是同r3、T7／T8或章通過。",
+        "replay_setup": "在獨立git工作樹準備before a01ff084與after def0b231，再將兩份命令的/dos掛載來源指向對應工作樹。原採樣時專用oracle尚在before，隔離工作樹為after；現行專用oracle已更新至after，不可拿同一現行工作樹假稱重跑before。兩側仍用受版控apps/fd2/cmd/oracle。"
+      },
+      "issue_state": "CLOSED"
+    },
+    "next_gap": {
+      "issue": 184,
+      "artificial_helper": "IDA LE 0x3D28D raw 23 C1 AND EAX,ECX",
+      "natural_entry": "dosgolem relocated LE 0x36D2B raw 0F A8 PUSH GS",
+      "classification": "CPU形狀未支援；原生配置器重用／初值與遊戲stale pointer行為仍unknown"
+    },
+    "limits": [
+      "不重解已閉合BG0／FDMUS生命週期",
+      "人工helper尚未完成正size配置，不將IDA靜態形狀當作動態配置結果",
+      "不以目前hook清零與人工free list推論DOS原版實機heap",
+      "第十八章r4已通過的PLAYER-E2維持；#102同r3停止與T8門檻保持"
+    ]
   }
 }
