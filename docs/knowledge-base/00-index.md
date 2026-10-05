@@ -668,3 +668,16 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [#177 正式確認框嘴型規格](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)：限定CONFORMED／RUNTIME-E1，19953局部倒數與正式等待owner；[獨立收據工具](../../tools/fd2_confirmation_mouth_receipts.py)、[typed規則](../../remake/internal/dato/confirmation_mouth.go)、[正常Update／Draw驗證](../../remake/cmd/fd2/native_confirmation_mouth_oracle_test.go)。
 
 - [#178 語意清冊離線重綁](../../tools/compact_fd2_function_inventory.py)：以--refresh-semantic-index更新既有[IDA函式清冊](../data/ida/fd2_function_inventory.json)，保留原始metadata；來源指紋與命令見[#177主契約相關工單節](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。
+
+- [#34 指令環四步開框候選契約](../data/ida/fd2_parity_ring_open_20261005.json)：只補章重播工具的已證實開框相位，正式動畫與章驗收維持原分層。
+
+- [#34 完整候選收據工具](../../tools/fd2_ring_open_receipts.py)與[重播候選測試](../../remake/cmd/fd2/chapter_parity_ring_open_test.go)：同時核對完整索引、RGB、候選來源及玩家狀態。
+
+- [#179 舊版 END 來源承接](../../remake/cmd/fd2/chapter_parity_legacy_end_test.go)：從原始鍵盤與相鄰 cursor／system owner 嚴格補 before_seq；契約見[#34相關規格](../data/ida/fd2_parity_ring_open_20261005.json)。
+
+- #180 指令環游標角色 consumer：[native_map_unit_window.go](../../remake/cmd/fd2/native_map_unit_window.go)；正常原版短路徑為 [ch04-ring-cursor-probe.jsonl](../data/parity-plans/ch04-ring-cursor-probe.jsonl)，規格與工具入口見 [fd2_parity_ring_open_20261005.json](../data/ida/fd2_parity_ring_open_20261005.json)。
+
+- #181 正式Draw指令環單次呈現：同一份[指令環規格](../data/ida/fd2_parity_ring_open_20261005.json)的 draw_layer_spec；[正常GPU與邊界測試](../../remake/cmd/fd2/chapter_parity_ring_open_test.go)。
+
+- 指令環有限公開總覽：[README繪圖順序](../../README.md#指令環與角色的繪圖順序)與[局部圖](../figures/ring-cursor-original-remake-overview.png)。完整原版／GPU留本機，來源雜湊見[主契約](../data/ida/fd2_parity_ring_open_20261005.json)。
+- #182 字串來源重綁：[清冊](../data/fd2-string-inventory.json)、[逐項處置](../data/fd2-string-review.json)，證據見同一份指令環主契約的inventory_rebind。

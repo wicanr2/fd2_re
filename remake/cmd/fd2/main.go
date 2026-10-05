@@ -9796,7 +9796,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		return
 	}
 	if !g.drawNativeSystemEndTurn(screen) {
-		g.drawRing(screen)
+		if g.nativeActionOverlayInMapFrame(nativeMapPresented) {
+			// The admitted indexed frame already owns icons then cursor unit.
+			// A second drawRing changes their placement and covers that unit.
+			g.markActionOverlayDrawn()
+		} else {
+			g.drawRing(screen)
+		}
 		g.drawNativeCommandGrid(screen)
 		g.drawSpellMenu(screen)
 		g.drawItemMenu(screen)

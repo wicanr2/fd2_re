@@ -1012,18 +1012,18 @@
           "seq": 115,
           "kind": "move",
           "oracle": "checkpoint-0115.png",
-          "remake": "remake-0006-p2.png",
-          "phases": 4,
-          "diff_pixels": 151,
-          "box": [
-            126,
-            10,
-            145,
-            27
-          ],
+          "remake": "remake-0006-p18.png",
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0",
-          "remake_sha256": "73bad3d58b50bc9161e3ec985ecc5467c18b015c284507993fbc904213ccff92"
+          "remake_sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 117,
@@ -1065,18 +1065,18 @@
           "seq": 208,
           "kind": "move",
           "oracle": "checkpoint-0208.png",
-          "remake": "remake-0010-p1.png",
-          "phases": 4,
-          "diff_pixels": 179,
-          "box": [
-            149,
-            47,
-            190,
-            71
-          ],
+          "remake": "remake-0010-p17.png",
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "0ddf369d66a5f43c5a97c167b99b6e3f458a33823f585c08caa6aeb391374ee8",
-          "remake_sha256": "2e2fd75918497b09c42d5f9a7ffd04a82b73fa9033e2fe849c9f71e44fa90625"
+          "remake_sha256": "0ddf369d66a5f43c5a97c167b99b6e3f458a33823f585c08caa6aeb391374ee8",
+          "palette_cycle_phase": 8,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 214,
@@ -1107,17 +1107,17 @@
           "kind": "move",
           "oracle": "checkpoint-0290.png",
           "remake": "remake-0013-p1.png",
-          "phases": 4,
-          "diff_pixels": 74,
-          "box": [
-            174,
-            47,
-            193,
-            51
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "de13ae74dc8fe332a133563c6a18b5b52b649f9a08f41bd3fc871cb0b96bdbfa",
-          "remake_sha256": "9f96883c51f1de1683f6818c45f7b075ed5cdc4c910c08f5bf1a06ccc82debd7"
+          "remake_sha256": "de13ae74dc8fe332a133563c6a18b5b52b649f9a08f41bd3fc871cb0b96bdbfa",
+          "palette_cycle_phase": 8,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 296,
@@ -1147,18 +1147,18 @@
           "seq": 375,
           "kind": "move",
           "oracle": "checkpoint-0375.png",
-          "remake": "remake-0016-p1.png",
-          "phases": 4,
-          "diff_pixels": 161,
-          "box": [
-            103,
-            71,
-            142,
-            95
-          ],
+          "remake": "remake-0016-p17.png",
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "2931fcd6e9a0c06a1d1b804094882c5c5cfd758bdc646c295aca8040726ae4e6",
-          "remake_sha256": "c9b9180855e1f86bef6168a3018cdbceb44ee70643b903a82ad2520d3262ba8d"
+          "remake_sha256": "2931fcd6e9a0c06a1d1b804094882c5c5cfd758bdc646c295aca8040726ae4e6",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 381,
@@ -1189,17 +1189,17 @@
           "kind": "move",
           "oracle": "checkpoint-0459.png",
           "remake": "remake-0019-p2.png",
-          "phases": 4,
-          "diff_pixels": 81,
-          "box": [
-            151,
-            46,
-            168,
-            51
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "c2709882c1c90719b71c13ce8618ba7477ee95648ab90d167d82f11d6ed1f120",
-          "remake_sha256": "3528cb38093069f5e2e02c6fcff3b2854c0b89744141eb2f4fb1322974297384"
+          "remake_sha256": "c2709882c1c90719b71c13ce8618ba7477ee95648ab90d167d82f11d6ed1f120",
+          "palette_cycle_phase": 14,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 465,
@@ -1230,17 +1230,17 @@
           "kind": "move",
           "oracle": "checkpoint-0541.png",
           "remake": "remake-0022-p1.png",
-          "phases": 4,
-          "diff_pixels": 74,
-          "box": [
-            175,
-            47,
-            192,
-            51
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "7f18372e0c20b275cd9f8c9be918b52ad013daa508bee52ed80e5044e9a604cf",
-          "remake_sha256": "a8243926336940f9da0873060979388ee50950344cd5e01e25b4d3aa05997004"
+          "remake_sha256": "7f18372e0c20b275cd9f8c9be918b52ad013daa508bee52ed80e5044e9a604cf",
+          "palette_cycle_phase": 5,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 547,
@@ -1271,17 +1271,17 @@
           "kind": "move",
           "oracle": "checkpoint-0630.png",
           "remake": "remake-0025-p1.png",
-          "phases": 4,
-          "diff_pixels": 85,
-          "box": [
-            149,
-            47,
-            168,
-            51
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "30f8534b20b3ecaf2fbc57bcd29832fb25141b34748d999b6aeaf28cc9b9eae6",
-          "remake_sha256": "0b8c299ab6ce5a623a78a11d1668cb80147362d26578e97fb2d697b1b23065e6"
+          "remake_sha256": "30f8534b20b3ecaf2fbc57bcd29832fb25141b34748d999b6aeaf28cc9b9eae6",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 720,
@@ -1300,17 +1300,17 @@
           "kind": "stay",
           "oracle": "checkpoint-0721.png",
           "remake": "remake-0029-p2.png",
-          "phases": 4,
-          "diff_pixels": 81,
-          "box": [
-            247,
-            46,
-            264,
-            51
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "790f9a8696bb45e25f2ae5956f79b540522d0f9057066e942d0d419588a5aecf",
-          "remake_sha256": "c8950782001eb39f5eb43aee46326f8cf17d0f9c8b2b20adf538ea88eeed7bff"
+          "remake_sha256": "790f9a8696bb45e25f2ae5956f79b540522d0f9057066e942d0d419588a5aecf",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 742,
@@ -1341,17 +1341,17 @@
           "kind": "stay",
           "oracle": "checkpoint-0750.png",
           "remake": "remake-0032-p1.png",
-          "phases": 4,
-          "diff_pixels": 96,
-          "box": [
-            222,
-            23,
-            241,
-            27
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "bc05302af6cd09eec76066ebdf4c413e0649bf2b159b9dcf9a8254bfcb7d29fd",
-          "remake_sha256": "aaa6b2003581e7d03e4d5da0656504a20a77704d6ce38f51e5e75a5d669fc3b5"
+          "remake_sha256": "bc05302af6cd09eec76066ebdf4c413e0649bf2b159b9dcf9a8254bfcb7d29fd",
+          "palette_cycle_phase": 15,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 752,
@@ -1394,17 +1394,17 @@
           "kind": "stay",
           "oracle": "checkpoint-0776.png",
           "remake": "remake-0036-p2.png",
-          "phases": 4,
-          "diff_pixels": 109,
-          "box": [
-            245,
-            70,
-            264,
-            75
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "9c2a73bfb3cce92bb335009ce5094389f23e58a2d99b73e99b03a0bd36c1c53e",
-          "remake_sha256": "fa324c6d240e96c73f61908377873fcba08e569e21f071e2db67fd3525488e45"
+          "remake_sha256": "9c2a73bfb3cce92bb335009ce5094389f23e58a2d99b73e99b03a0bd36c1c53e",
+          "palette_cycle_phase": 12,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 778,
@@ -1447,17 +1447,17 @@
           "kind": "stay",
           "oracle": "checkpoint-0801.png",
           "remake": "remake-0040-p1.png",
-          "phases": 4,
-          "diff_pixels": 74,
-          "box": [
-            271,
-            71,
-            288,
-            75
-          ],
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "71a30a4d695edb6f8e36e696227e5416b376b70a06dc91ea3eb088a949314bc4",
-          "remake_sha256": "85e29cfdc2ac100bb2672715ed086b60956d375fd3484c0bcf3f819f3fabe1d0"
+          "remake_sha256": "71a30a4d695edb6f8e36e696227e5416b376b70a06dc91ea3eb088a949314bc4",
+          "palette_cycle_phase": 9,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 803,
@@ -1499,18 +1499,18 @@
           "seq": 831,
           "kind": "stay",
           "oracle": "checkpoint-0831.png",
-          "remake": "remake-0044-p2.png",
-          "phases": 4,
-          "diff_pixels": 179,
-          "box": [
-            175,
-            94,
-            214,
-            119
-          ],
+          "remake": "remake-0044-p18.png",
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "5c3a7252dfd11837f25eca8e67a87e6143ec12140f0f2732882e343c62a1109a",
-          "remake_sha256": "1443f334f6d95d3198274e5add4ae26cdb3a6456ce5bb304c7d5bcb39e6160b8"
+          "remake_sha256": "5c3a7252dfd11837f25eca8e67a87e6143ec12140f0f2732882e343c62a1109a",
+          "palette_cycle_phase": 2,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 852,
@@ -1540,18 +1540,18 @@
           "seq": 863,
           "kind": "stay",
           "oracle": "checkpoint-0863.png",
-          "remake": "remake-0047-p2.png",
-          "phases": 4,
-          "diff_pixels": 201,
-          "box": [
-            221,
-            22,
-            262,
-            47
-          ],
+          "remake": "remake-0047-p18.png",
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "0d9de3c82a77c394d37334202c578f489b1fa28052c1b4b123f88629e2d74b1a",
-          "remake_sha256": "6280d1bad830ec101df3be98b5803c1c77352ed5f92b37fdcca7036877621ddb"
+          "remake_sha256": "0d9de3c82a77c394d37334202c578f489b1fa28052c1b4b123f88629e2d74b1a",
+          "palette_cycle_phase": 11,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 884,
@@ -1581,18 +1581,18 @@
           "seq": 892,
           "kind": "stay",
           "oracle": "checkpoint-0892.png",
-          "remake": "remake-0050-p2.png",
-          "phases": 4,
-          "diff_pixels": 185,
-          "box": [
-            246,
-            46,
-            286,
-            71
-          ],
+          "remake": "remake-0050-p18.png",
+          "phases": 48,
+          "diff_pixels": 0,
+          "box": [],
           "ok": true,
           "oracle_sha256": "dae0d6969c274da462e6972b96ca51b60d92696f5e8e04a53d9485be5ffffe04",
-          "remake_sha256": "d7b92414de2288db66df541c0a41c950bb6478f76a2ee6f31a85ed184dfb8a2a"
+          "remake_sha256": "dae0d6969c274da462e6972b96ca51b60d92696f5e8e04a53d9485be5ffffe04",
+          "palette_cycle_phase": 7,
+          "palette_cycle_source": "原版索引PNG的DAC E0..EF完整匹配已證實raw窗口；僅測試候選",
+          "verification_source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+          "verification_run": "work/parity-slot-ch04/ring-redraw-after-r3",
+          "verification_scope": "正常章LOAD與原有語意輸入；完整320x200 RGB及indexed；有限blink/idle/terrain候選，不新增全章PLAYER-E2"
         },
         {
           "seq": 934,
@@ -1710,6 +1710,11 @@
       "date": "2026-10-05",
       "source": "docs/data/ida/fd2_confirmation_pulse_20261005.json",
       "scope": "只更新兩個確認框畫面點；其他原版、行為、節點、交易與畫面結論保持歷史來源"
+    },
+    "issue34": {
+      "date": "2026-10-05",
+      "source": "docs/data/ida/fd2_parity_ring_open_20261005.json",
+      "scope": "只更新move/stay的14／16個畫面點。原版來源保持sample-r13／r5；#35既有確認框補驗、其他行為／節點／交易及畫面來源保留。正式完整重跑四gate見主契約。"
     }
   }
 }

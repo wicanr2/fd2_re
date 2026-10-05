@@ -4,8 +4,17 @@ import (
 	"fmt"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
+
+// #181 uses this Draw's admission, matching nativeMapSelectionOverlay's ring
+// branch. Stale buffers cannot witness presentation. Modern themes retain their
+// catalog icons. Contract: fd2_parity_ring_open_20261005.json/draw_layer_spec.
+func (g *Game) nativeActionOverlayInMapFrame(presented bool) bool {
+	return presented && g != nil && g.ring && g.sel != nil && g.walk == nil &&
+		len(g.nativeActionCellsRaw) == nativeActionOverlayCellCount && !g.usesModernBattleActionIcons()
+}
 
 // nativeMapSelectionOverlay 決定這一幀比 0x11CAC 多畫什麼：
 //   - 玩家選了自己還沒行動的單位、正在挑目的地（移動範圍亮著、還沒移動、指令環
@@ -88,6 +97,28 @@ func (g *Game) nativeMapActionOverlay(state *battle.State) func([]byte, int, int
 			}
 			if err := cells[index].BlitAt(buf, stride, pos%stride, pos/stride); err != nil {
 				return err
+			}
+		}
+		if !closing {
+			// sub_179D5 (0x17A9C) and sub_1741C (0x17544) redraw the
+			// first active raw unit at the cursor after all four icons.
+			// Contract: fd2_parity_ring_open_20261005.json, issue #180.
+			for _, unit := range state.Units {
+				entry, ok := unit.NativeUnitLayerEntry()
+				if !ok {
+					return fmt.Errorf("native action overlay: cursor unit provenance is incomplete")
+				}
+				if entry.Inactive || entry.X != view.CursorX || entry.Y != view.CursorY {
+					continue
+				}
+				if g.nativeMapAssets == nil || g.nativeMapAssets.Units == nil {
+					return fmt.Errorf("native action overlay: cursor unit bank is absent")
+				}
+				cycles := state.NativeMapCycleState
+				return g.nativeMapAssets.Units.BlitNativeUnitLayer(buf, stride,
+					state.NativeMapSelectorCache, []fdicon.NativeUnitLayerEntry{entry},
+					view.CameraX, view.CameraY, 12, 7, cycles.Idle, cycles.Moving,
+					state.NativeUnitPixelShiftState.Value)
 			}
 		}
 		return nil

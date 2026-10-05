@@ -1713,6 +1713,36 @@
         ],
         "pattern": "initial_slot"
       }
+    },
+    {
+      "id": "ring-difference-requires-raw-owner",
+      "area": "指令環對拍",
+      "date": "2026-10-05",
+      "rule": "指令環殘差先查原版等待返回鏈與完整差異位置，再檢查consumer和raw相位；不從差異形狀認定開框中途。51A83的overlay_selector不能當53C13閃爍。入口docs/data/ida/fd2_parity_ring_open_20261005.json保留1741C／179D5／12C0D／127E0原始定位及本次有限範圍。",
+      "why": "#34增加四步開框候選未改30點；原版實際在17898等待，圖示後游標角色重繪與blink候選才是兩章差異原因。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/34",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/ida/fd2_parity_ring_open_20261005.json"
+        ],
+        "pattern": "draw_layer_spec"
+      }
+    },
+    {
+      "id": "indexed-match-requires-final-draw",
+      "area": "正式畫面驗證",
+      "date": "2026-10-05",
+      "rule": "完整indexed一致後，仍核對正式Game.Draw最終GPU畫布；只有本次成功呈現能證明圖層已畫，舊buffer存在不能代替。入口remake/cmd/fd2/native_map_unit_window.go的nativeActionOverlayInMapFrame限定原版ring／sel／完整raw來源，現代主題與未呈現分支仍走既有owner。",
+      "why": "#181索引0而GPU6344，正式Draw在完整地圖後又重貼一次指令環，既有私有候選PNG無法暴露。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/181",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_map_unit_window.go"
+        ],
+        "pattern": "nativeActionOverlayInMapFrame"
+      }
     }
   ]
 }

@@ -77,24 +77,25 @@ type parityUnit struct {
 }
 
 type parityCheckpoint struct {
-	Index             int                      `json:"index"`
-	Kind              string                   `json:"kind"`
-	OracleSeq         int                      `json:"oracle_seq"`
-	Node              string                   `json:"node"`
-	UI                string                   `json:"ui"`
-	Round             int                      `json:"round"`
-	Gold              int                      `json:"gold"`
-	RNGWord           int                      `json:"rng_word"`
-	RNGSynced         bool                     `json:"rng_synced"`
-	Cursor            []int                    `json:"cursor"`
-	Camera            []int                    `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
-	Units             []parityUnit             `json:"units"`
-	Frame             string                   `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
-	FrameHash         string                   `json:"indexed_sha256,omitempty"`
-	PaletteCyclePhase *int                     `json:"palette_cycle_phase,omitempty"` // 原版PNG的E0..EF與raw表完整匹配
-	PaletteCycleWrite *parityPaletteCycleWrite `json:"palette_cycle_write,omitempty"`
-	StageRowOffset    *int                     `json:"stage_row_offset,omitempty"`
-	Note              string                   `json:"note,omitempty"`
+	Index                   int                            `json:"index"`
+	Kind                    string                         `json:"kind"`
+	OracleSeq               int                            `json:"oracle_seq"`
+	Node                    string                         `json:"node"`
+	UI                      string                         `json:"ui"`
+	Round                   int                            `json:"round"`
+	Gold                    int                            `json:"gold"`
+	RNGWord                 int                            `json:"rng_word"`
+	RNGSynced               bool                           `json:"rng_synced"`
+	Cursor                  []int                          `json:"cursor"`
+	Camera                  []int                          `json:"camera,omitempty"` // 原生地圖視圖的 camera（與 oracle view.camera_x/y 同義）
+	Units                   []parityUnit                   `json:"units"`
+	Frame                   string                         `json:"frame,omitempty"` // 相位 0；同名 -pK 為其他相位
+	FrameHash               string                         `json:"indexed_sha256,omitempty"`
+	PaletteCyclePhase       *int                           `json:"palette_cycle_phase,omitempty"` // 原版PNG的E0..EF與raw表完整匹配
+	PaletteCycleWrite       *parityPaletteCycleWrite       `json:"palette_cycle_write,omitempty"`
+	StageRowOffset          *int                           `json:"stage_row_offset,omitempty"`
+	ActionOverlayCandidates []parityActionOverlayCandidate `json:"action_overlay_candidates,omitempty"`
+	Note                    string                         `json:"note,omitempty"`
 }
 
 type parityReplay struct {
@@ -131,10 +132,11 @@ type parityReplay struct {
 	// stoppedBeforeAI：上一個 END 停在敵方回合開始（下一個動作是 force_enemy_clear）。
 	stoppedBeforeAI bool
 	// currentSeq：正在寫畫面的檢查點對應的原版 seq。
-	currentSeq        int
-	paletteCyclePhase *int
-	paletteCycleWrite *parityPaletteCycleWrite
-	stageRowOffset    *int
+	currentSeq                        int
+	paletteCyclePhase                 *int
+	paletteCycleWrite                 *parityPaletteCycleWrite
+	stageRowOffset                    *int
+	actionOverlayCandidatesProvenance []parityActionOverlayCandidate
 }
 
 // #144：只計已證實0x24D48的raw列旋轉，不讀影像或搜尋相位。
@@ -717,6 +719,10 @@ func TestChapterParityReplay(t *testing.T) {
 	if len(actions) == 0 {
 		t.Fatal("actions.jsonl 是空的")
 	}
+	legacyENDSources, err := recoverParityLegacyENDSources(run, actions, readParityControlKeys(t, filepath.Join(run, "control-history.jsonl")))
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := os.MkdirAll(out, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -750,6 +756,7 @@ func TestChapterParityReplay(t *testing.T) {
 		"go_seed":            4,
 		"native_rng_initial": g.nativeRNGState,
 		"method":             "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+		"legacy_end_sources": legacyENDSources,
 	}, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -897,6 +904,13 @@ func TestChapterParityReplay(t *testing.T) {
 			t.Fatalf("動作 %s(seq %d) 之後執行期錯誤：%s\n阻塞：%s", action.Kind, action.Seq, g.loadErr, ch01Blockers(g))
 		}
 		r.prevSeq = action.Seq
+		if requested := os.Getenv("FD2_PARITY_RING_GPU_SEQ"); requested != "" && requested == strconv.Itoa(action.Seq) {
+			if skipUnit || (action.Kind != "move" && action.Kind != "stay") || !g.ring {
+				t.Fatal("GPU prefix lacks the requested normal ring owner")
+			}
+			r.verifyRingGPU(action)
+			return // Explicit prefix receipt; never publish a complete chapter receipt.
+		}
 	}
 	t.Logf("AI 入口比較：原版 %d 筆、已消費 %d 筆、順序分岔 %d 筆", len(r.aiEntries), r.aiCursor, r.aiOrderDivergences)
 	if len(r.aiEntries) > 0 && r.aiCursor != len(r.aiEntries) {
@@ -1335,6 +1349,7 @@ func (r *parityReplay) frame(kind string) (string, string) {
 	r.paletteCyclePhase = nil
 	r.paletteCycleWrite = nil
 	r.stageRowOffset = nil
+	r.actionOverlayCandidatesProvenance = nil
 	var stageTime *time.Time
 	if r.currentSeq > 0 && g.nativeMapAssets != nil && g.nativeMapAssets.MapIndex == 23 && g.st != nil && g.st.HasNativeMapViewState {
 		offset, err := r.oracleCh23RowOffset()
@@ -1412,24 +1427,28 @@ func (r *parityReplay) frame(kind string) (string, string) {
 		if stageTime != nil {
 			frozen = *stageTime
 		}
+		savedFrozenNow := g.nativeMapFrozenNow
+		if savedFrozenNow != nil {
+			frozen = savedFrozenNow()
+		}
 		g.nativeMapFrozenNow = func() time.Time { return frozen }
 		restore := func() {
 			g.st.NativeMapCycleState = saved
 			g.st.NativeTerrainPhaseState = savedPhase
 			g.st.NativeTerrainFlipState = savedFlip
-			g.nativeMapFrozenNow = nil
+			g.nativeMapFrozenNow = savedFrozenNow
 		}
 		// 指令環穩態的檢查點：原版 0x179D5 可能在第一次穩態重繪前就讀鍵，畫面還是 0x1741C
 		// 最後一張展開幀（第十章 r2 seq 1328 上／下圖示各差 2 列），兩種位置各出一組。
-		openFrameVariants := []bool{false}
-		if g.ring && !g.actionOverlayBlocksInput() {
-			openFrameVariants = []bool{false, true}
-		}
-		defer func() { g.nativeActionOverlayOpenFrameVariant = false }()
+		savedOverlay := parityActionOverlayCandidate{Phase: g.actionOverlayPhase, Frame: g.actionOverlayFrame,
+			OpenVariant: g.nativeActionOverlayOpenFrameVariant, BlinkPhase: g.actionOverlayBlink.Phase}
+		overlayCandidates := r.actionOverlayCandidates(kind)
+		defer r.applyActionOverlayCandidate(savedOverlay)
 		for _, auxPhase := range auxPhases {
 			g.nativeChapterAuxPhaseOverride = auxPhase
-			for _, openFrame := range openFrameVariants {
-				g.nativeActionOverlayOpenFrameVariant = openFrame
+			for _, overlayCandidate := range overlayCandidates {
+				r.applyActionOverlayCandidate(overlayCandidate)
+				overlayCandidate.FirstVariant = len(variants)
 				for _, flip := range flips {
 					for _, phase := range phases {
 						for idle := 0; idle < 4; idle++ {
@@ -1470,6 +1489,10 @@ func (r *parityReplay) frame(kind string) (string, string) {
 							variants = append(variants, r.bannerVariants()...)
 						}
 					}
+				}
+				if g.ring {
+					overlayCandidate.VariantCount = len(variants) - overlayCandidate.FirstVariant
+					r.actionOverlayCandidatesProvenance = append(r.actionOverlayCandidatesProvenance, overlayCandidate)
 				}
 			}
 		}
@@ -1926,6 +1949,7 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 		cp.PaletteCyclePhase = r.paletteCyclePhase
 		cp.PaletteCycleWrite = r.paletteCycleWrite
 		cp.StageRowOffset = r.stageRowOffset
+		cp.ActionOverlayCandidates = r.actionOverlayCandidatesProvenance
 	}
 	r.write(cp)
 	return cp
@@ -2157,7 +2181,8 @@ func (r *parityReplay) onlyIdleKeysUntil(from, to int) bool {
 }
 
 // settleActionOverlay 把指令環推到穩態（0x1741C 的四張展開幀播完、進 0x179D5 的
-// 停留迴圈）再抓幀：原版側的 move／stay checkpoint 都是在圖示停好之後取的。
+// 停留迴圈）再繼續重播。frame 另列舉 raw 規格的開框與閃爍候選，
+// 不由殘差形狀判斷原版 owner，也不讓候選推進正式輸入。
 // 展開幀靠「這一幀被畫過」推進，離屏測試用 markActionOverlayDrawn 承認。
 func (r *parityReplay) settleActionOverlay(action parityAction) {
 	t, g := r.t, r.g

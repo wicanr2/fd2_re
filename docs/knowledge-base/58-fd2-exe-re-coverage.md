@@ -16,6 +16,10 @@
 | #38確認嘴型／DAC候選 | 限定工具CONFORMED | 第六章指定三點完整RGB0、兩次勝出PNG雜湊相同；正式mouth另在#177。[主契約](../data/ida/fd2_parity_mouth_cycle_20261005.json)。 |
 | #177正式確認框嘴型 | 限定CONFORMED／RUNTIME-E1 | 整備及共享戰場YESNO已接caller自有DATO0／3；1561完整刻度、兩輪88張indexed／正式GPU全等，SAV與完整Go回歸通過。[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。 |
 | #178語意清冊同步 | 工具範圍CONFORMED | 離線重綁保留IDA metadata；69條函式註記逐筆一致、11個索引測試與重生位元組相等通過。詳見本頁最新節及[#177主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。 |
+| #34指令環有限候選 | 工具範圍CONFORMED | 第四、五章30點完整RGB／indexed0，兩輪winner雜湊一致。主證據見本頁最新節。 |
+| #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
+| #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
+| #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
@@ -3105,3 +3109,20 @@ annotation_refresh明示離線重綁、源metadata雜湊與未重新跑IDA，不
 11個索引／清冊測試通過；錯指紋、缺函式與壞邊界拒收，全部metadata逐欄不變，重跑產物位元組相等。
 命令、源清冊與雜湊保存在[#177主契約的相關工單節](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)。
 本輪沒有重解2FB9F或以unknown數量開新RE切片；舊68／62分類數值只作當時快照，不是目前統計。
+
+
+## 2026-10-05 指令環consumer、正式Draw與歷史來源收尾
+
+唯一主證據為[fd2_parity_ring_open_20261005.json](../data/ida/fd2_parity_ring_open_20261005.json)，範圍分為[34](https://github.com/wicanr2/fd2_re/issues/34)、[179](https://github.com/wicanr2/fd2_re/issues/179)、[180](https://github.com/wicanr2/fd2_re/issues/180)、[181](https://github.com/wicanr2/fd2_re/issues/181)及[182](https://github.com/wicanr2/fd2_re/issues/182)。規格先READY，再接正式consumer；目前為限定CONFORMED／RUNTIME-E1，沒有新增章PLAYER-E2。
+
+原版EXE固定SHA與IDA9.4線性位址、原始名稱、caller／consumer、raw bytes均在主證據。1741C的17544及179D5的17A9C於四圖示後呼叫127E0，由12C0D找同游標座標第一個active raw角色。現行runtime與直接呼叫及同狀態影像矛盾，補齊消費端；沒有重解closing或整個程式。開框中途舊假說被返回鏈及四步候選無效反證，保留為SUPERSEDED。
+
+| 本輪驗證 | 結果 | 可重跑入口 |
+|---|---|---|
+| ch04／ch05指定move／stay | 14／16點，全幅RGB與indexed皆0；兩輪30個winner雜湊相同 | tools/fd2_ring_open_receipts.py及主證據commands |
+| 完整章重播 | 兩章behavior／nodes／transaction／frames全過，畫面55／58點；非本slice殘差另存主證據，不宣稱113點全0 | TestChapterParityReplay與tools/verify_chapter_parity.py |
+| 目前原版短鏈 | a01ff084乾淨oracle，同建構槽正常鍵盤前115格；447條窄trace含5次17A9C、4次17544及432次127E0，5張事件幀 | ch04-ring-cursor-probe.jsonl與tools/dosgolem_oracle.sh |
+| 正式GPU | 正常LOAD／城鎮出發／選人／行走；48個有限候選中2個320×200 indexed與640×400 RGBA同時0，取消經正式closing owner返回 | FD2_PARITY_RING_GPU_SEQ=115，加FD2_PARITY_RING_GPU_ORIGINAL指向目前oracle run |
+| 完整Go與清冊 | 2377個頂層測試、19套件通過；98字串候選語意與處置相同，17個source ID更新，官方遷移器結果相同 | 主證據commands／inventory_rebind |
+
+原版歷史兩章source caa9ee8及builder／force-clear註記保留；官方JSON只補30點，#35既有確認框與其他來源不覆寫。目前短鏈未鎖HP或清敵；建構槽、受控相位／DAC與semantic cancel均明示。不由有限GPU候選宣稱實機時序、全章新PLAYER-E2或未抽樣章已歸零。有限總覽由[README](../../README.md#指令環與角色的繪圖順序)連入，完整原版及GPU留work。

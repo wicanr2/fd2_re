@@ -5563,3 +5563,16 @@ READY有限規格先保存，再實作0／3私有UI候選與狀態還原，沒�
 最終稽核核對30份來源與26份產物SHA、264份傳遞PNG雜湊、1305個原始函式metadata及本地連結；
 兩個歷史dist缺檔維持原註記。變更檔UID／GID1000，歷史root-owned2811、新增0、.md目錄0。
 本批FD2容器均已退出；其他專案未更動。提交與遠端HEAD核對結果回填兩案。
+
+
+## 2026-10-05 指令環收尾與舊假說勘誤
+
+先沿[34](https://github.com/wicanr2/fd2_re/issues/34)核對現行兩章重播。四步候選未改善任何點，原版等待返回鏈反證開框中途成因。新IDA9.4直接指令閉合圖示後127E0游標角色重繪，先登記[180](https://github.com/wicanr2/fd2_re/issues/180)再審查READY與實作。正式GPU暴露索引後重貼圖示，另登記[181](https://github.com/wicanr2/fd2_re/issues/181)，先審查單次呈現契約再修。
+
+第五章歷史END缺少前置游標序號，先登記[179](https://github.com/wicanr2/fd2_re/issues/179)，只從同回合唯一正常Enter及raw owner恢復，不改舊actions或存檔。完整回歸發現字串定位清冊漂移，先登記[182](https://github.com/wicanr2/fd2_re/issues/182)；以已提交基準加同一份既有生成command_labels重生，逐筆確認內容、函式與處置後重綁來源。
+
+目前數字及驗證範圍統一見[58](58-fd2-exe-re-coverage.md)與[主契約](../data/ida/fd2_parity_ring_open_20261005.json)。早期歷史的開框中途說法保留為成因紀錄，不作現行事實；本輪沒有新增章PLAYER-E2。最終結案、提交、遠端核對與清理結果另追加。
+
+本批收尾：真正主機已結案[34](https://github.com/wicanr2/fd2_re/issues/34#issuecomment-5993996072)、[179](https://github.com/wicanr2/fd2_re/issues/179#issuecomment-5994002250)、[180](https://github.com/wicanr2/fd2_re/issues/180#issuecomment-5994007961)、[181](https://github.com/wicanr2/fd2_re/issues/181#issuecomment-5994012764)及[182](https://github.com/wicanr2/fd2_re/issues/182#issuecomment-5994016336)。正式pull／render保存18條未完成項；驗證與限制見主契約。28份來源、22份產物及90筆傳遞PNG／checkpoint雜湊已核對；163條教訓與59個guard、新連結及索引正對照通過。歷史兩個dist缺檔保留原註記。變更檔UID／GID1000，root-owned仍2811、新增0、.md目錄0。提交與真正遠端HEAD核對結果回填各案。
+
+最終工作清單驗證：18條未完成、10條需人工判讀、可能已完成0條。收尾前再次確認沒有本批FD2容器殘留。

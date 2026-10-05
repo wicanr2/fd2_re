@@ -110,6 +110,13 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
   狀態共同形成的序列。重製端目前會停在經典終局畫面，並可循環回顧隊伍；這是
   來源約束的 `RUNTIME-E1`，未修改原版同狀態 `PLAYER-E2` 仍待抽驗。
 
+### 指令環與角色的繪圖順序
+
+![原版與重製正式Game.Draw的指令環局部總覽](docs/figures/ring-cursor-original-remake-overview.png)
+
+左側是dosgolem原版擷取，右側是正常載入後的重製正式Game.Draw。原版先貼四張圖示，再重繪游標上的角色；重製也保留這個順序，避免後續再貼圖示蓋住角色。
+完整畫面已在明示的有限顯示相位下核對，這張圖只展示局部。驗證範圍與來源見[現況矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)及[指令環主契約](docs/data/ida/fd2_parity_ring_open_20261005.json)，不代表整章逐幀一致。
+
 ### 原版美術與目前重製畫面總覽
 
 ![原版人物肖像、重製對話畫面與第一戰戰場圖示總覽](docs/figures/original-remake-portrait-battle-overview.png)

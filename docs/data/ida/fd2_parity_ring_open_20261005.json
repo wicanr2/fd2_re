@@ -1,0 +1,3505 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_parity_ring_open_spec",
+  "date": "2026-10-05",
+  "issue": {
+    "id": "parity-replay-ring-open-step-variants",
+    "number": 34,
+    "url": "https://github.com/wicanr2/fd2_re/issues/34"
+  },
+  "status": "CONFORMED; finite #34/#179/#180/#181/#182 scopes",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tools": {
+    "primary": "IDA Pro 9.4 retained 1741C plus current 179D5/12C0D/127E0 query; fixed EXE hash",
+    "address_space": "IDA LE linear; not file offsets",
+    "remake": "Go 1.22.12; fd2-go-test-local:20260909"
+  },
+  "primary": {
+    "path": "docs/data/ida/fd2_opening_input_20260907.json",
+    "sha256": "c475a1d1f7ebcc5b767340fc7ed15ec67c6791c7f7888450a811327834ff6b94",
+    "original_name": "sub_1741C",
+    "start": "0x1741c",
+    "end": "0x175a9",
+    "instructions": [
+      {
+        "address": "0x1746c",
+        "bytes": "c7042490030000",
+        "original": "mov     [esp+28h+var_28], 390h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1746c"
+      },
+      {
+        "address": "0x17473",
+        "bytes": "c744240490030000",
+        "original": "mov     [esp+28h+var_24], 390h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17473"
+      },
+      {
+        "address": "0x1747b",
+        "bytes": "c744240890030000",
+        "original": "mov     [esp+28h+var_20], 390h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1747b"
+      },
+      {
+        "address": "0x17483",
+        "bytes": "c744240c90030000",
+        "original": "mov     [esp+28h+var_1C], 390h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17483"
+      },
+      {
+        "address": "0x174e7",
+        "bytes": "e8bd000000",
+        "original": "call    sub_175A9",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x174e7"
+      },
+      {
+        "address": "0x174ec",
+        "bytes": "c744241400000000",
+        "original": "mov     [esp+arg_10], 0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x174ec"
+      },
+      {
+        "address": "0x174f4",
+        "bytes": "e983000000",
+        "original": "jmp     loc_1757C",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x174f4"
+      },
+      {
+        "address": "0x1754c",
+        "bytes": "68c0000000",
+        "original": "push    0C0h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1754c"
+      },
+      {
+        "address": "0x17551",
+        "bytes": "6838010000",
+        "original": "push    138h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17551"
+      },
+      {
+        "address": "0x17556",
+        "bytes": "68c8010000",
+        "original": "push    1C8h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17556"
+      },
+      {
+        "address": "0x1755b",
+        "bytes": "a1493a0500",
+        "original": "mov     eax, dword_53A49",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1755b"
+      },
+      {
+        "address": "0x17560",
+        "bytes": "0588800000",
+        "original": "add     eax, 8088h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17560"
+      },
+      {
+        "address": "0x17565",
+        "bytes": "50",
+        "original": "push    eax",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17565"
+      },
+      {
+        "address": "0x17566",
+        "bytes": "6840010000",
+        "original": "push    140h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17566"
+      },
+      {
+        "address": "0x1756b",
+        "bytes": "6804050a00",
+        "original": "push    0A0504h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1756b"
+      },
+      {
+        "address": "0x17570",
+        "bytes": "e83ba9ffff",
+        "original": "call    sub_11EB0",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17570"
+      },
+      {
+        "address": "0x17575",
+        "bytes": "83c418",
+        "original": "add     esp, 18h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17575"
+      },
+      {
+        "address": "0x17578",
+        "bytes": "ff442414",
+        "original": "inc     [esp+arg_10]",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17578"
+      },
+      {
+        "address": "0x1757c",
+        "bytes": "837c241404",
+        "original": "cmp     [esp+arg_10], 4",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1757c"
+      },
+      {
+        "address": "0x17581",
+        "bytes": "0f8d45caffff",
+        "original": "jge     loc_13FCC",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17581"
+      },
+      {
+        "address": "0x17587",
+        "bytes": "812c24e8080000",
+        "original": "sub     dword ptr [esp+0], 8E8h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17587"
+      },
+      {
+        "address": "0x1758e",
+        "bytes": "836c240406",
+        "original": "sub     [esp+arg_0], 6",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x1758e"
+      },
+      {
+        "address": "0x17593",
+        "bytes": "8344240806",
+        "original": "add     [esp+arg_4], 6",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17593"
+      },
+      {
+        "address": "0x17598",
+        "bytes": "8144240ce8080000",
+        "original": "add     [esp+arg_8], 8E8h",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x17598"
+      },
+      {
+        "address": "0x175a0",
+        "bytes": "e89e000000",
+        "original": "call    sub_17643",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x175a0"
+      },
+      {
+        "address": "0x175a5",
+        "bytes": "31f6",
+        "original": "xor     esi, esi",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x175a5"
+      },
+      {
+        "address": "0x175a7",
+        "bytes": "eb8b",
+        "original": "jmp     short loc_17534",
+        "semantic": "未附加推測語意",
+        "level": "unknown",
+        "warning": "語意未經本次審查",
+        "source": "FD2.EXE IDA LE 0x175a7"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "level": "已證實",
+      "statement": "四個offset初始0x390，174F4先跳1757C，再由17587..17598修改，故第0..3幀為390+(frame+1)*[-8E8,-6,+6,+8E8]。",
+      "evidence": "retained IDA 1746C..17483,174EC..174F4,1757C..175A7"
+    },
+    {
+      "level": "已證實",
+      "statement": "每步四個cell畫完，17570以11EB0完整viewport present，隨後17578推進；沒有明示delay。",
+      "evidence": "retained IDA 1752B..17581; existing renderer fdother.ActionOverlayFrameOffsets"
+    },
+    {
+      "level": "已證實",
+      "statement": "穩態selected cell閃爍與opening不同；opening不加53C13。",
+      "evidence": "fd2_action_overlay_selection_20260908.json original sub_179D5, globals53C13/53C57"
+    },
+    {
+      "level": "強推論",
+      "statement": "歷史第四、五章30個move/stay殘差與缺少0..2 opening候選有關；完整重播後逐點驗，不保證未驗證原因。",
+      "evidence": "issue34 and dated parity-ch04/ch05 receipts",
+      "status": "SUPERSEDED",
+      "refutation": "四步候選未改善任何30點，原版返回鏈在穩態等待／角色重繪；consumer修正及53C13候選才歸零。保留原假說供追溯。"
+    },
+    {
+      "level": "已證實",
+      "statement": "穩態選中方向cell加53C13，0／1兩相位；shape差異不可由idle或opening補齊。",
+      "evidence": "IDA17A7D..17A8B，178D7..178F8及fd2_action_overlay_selection_20260908.json。"
+    }
+  ],
+  "scope": "#34有限重播相位，#179歷史END前置游標來源恢复，#180正式圖示後游標raw角色consumer，#181正式Draw一次呈現。動畫步數、輸入規則、角色、RNG、SAV與640預算不改。",
+  "typed_contract": {
+    "inputs": [
+      "目前ring且無opening/closing job的Game",
+      "checkpoint kind move/stay",
+      "既有raw78 cells、availability、visible cursor、完整map source與既有相位"
+    ],
+    "candidates": "move/stay ring包含兩個已證實steady blink相位與四個opening幀；其他kind保留原兩候選。53C13未記入歷史view，不能把51A83的overlay_selector誤用。",
+    "implementation": "測試專用phase/frame/openFrameVariant/blink phase，defer恢復；不呼叫Update、Draw閘門、lifecycle或亂數。",
+    "provenance": "checkpoint保存每組候選的phase/frame與variant索引範圍；winner由原有完整RGB verifier選取，另核對完整indexed。",
+    "failure_modes": [
+      "原有renderer資產／位址錯誤仍拒收",
+      "closing或其他kind不增加opening候選",
+      "原版PNG或歷史run來源缺失即不能驗收"
+    ],
+    "state_and_save": "候選工具不變更角色／規則／SAV；正式像素consumer变更分別由runtime_spec與draw_layer_spec審查。"
+  },
+  "acceptance": [
+    "修正前目前程式重播兩章，保留30點完整畫面殘差。",
+    "修正後兩章完整replay正常LOAD與原有語意動作，move/stay所有點完整RGB／indexed比較；不重跑原版通關。",
+    "兩次有限候選產物與winner可重生；針對#34說明每個無法對上的點與原因。",
+    "其他state/behavior/node/transaction門檻由正式verifier報告，新的失敗需先登記Issue，不因未涉及本slice而略過。"
+  ],
+  "not_claimed": [
+    "精確原版動畫wall-clock",
+    "新章PLAYER-E2或未取樣章",
+    "由有限候選推出正式runtime逐幀時序",
+    "1741C／176B4不逐行重解；179D5／12C0D／127E0只補圖示後consumer證據，直接指令與同狀態畫面矛盾為重開依據。"
+  ],
+  "rights": "公開只有程式、原始指令小片段、來源／輸出hash及使用者允許的有限總覽；完整原版資產與截圖留work。",
+  "sources": [
+    {
+      "path": "docs/data/ida/fd2_opening_input_20260907.json",
+      "sha256": "c475a1d1f7ebcc5b767340fc7ed15ec67c6791c7f7888450a811327834ff6b94"
+    },
+    {
+      "path": "docs/data/ida/fd2_action_overlay_selection_20260908.json",
+      "sha256": "b2ee1f50a9f981520493d272114866dbddf79ac7337c20fcffbb80613ba57c5c"
+    },
+    {
+      "path": "docs/data/ida/fd2_continue_action_overlay_ida.txt",
+      "sha256": "685f381820de7b641554f1725cc5d8b2092b5520d535e30062f87f30eafbcd3a"
+    },
+    {
+      "path": "docs/data/ida/fd2_action_overlay_snapshot_ida.txt",
+      "sha256": "2977e2c3e452f4ff6b91874ac46d7d78670b5283db7f443d3494cf31c791b989"
+    },
+    {
+      "path": "work/ring-open-wait-ida-r1.json",
+      "sha256": "40e57f20b2e58bc63fd13b882b51feaca195e24205f2179772e92db75864b59a"
+    },
+    {
+      "path": "work/ring-open-wait-ida-r2.json",
+      "sha256": "1122e145488e4b7326139f7524a91ffbc31c10b229fb17de62c03e4774b845c8"
+    },
+    {
+      "path": "docs/data/parity-plans/ch04-ring-cursor-probe.jsonl",
+      "sha256": "97ee22aaa5bc54d4e1466a002dc15c057e54b3930c98088cff205589164585f9"
+    },
+    {
+      "path": "docs/data/fd2-reference-files.json",
+      "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+    },
+    {
+      "path": "docs/data/fd2-string-review.json",
+      "sha256": "175635c0244f5794c742a9c61f4df931c21c8b5691dbcf73038a4b64928c845c"
+    },
+    {
+      "path": "remake/assets/data/command_labels.json",
+      "sha256": "326a0ec1dd71e601f5352d1cd6b7ea28dbd22e321814dd9e6124f86f0b1820e0"
+    },
+    {
+      "path": "remake/cmd/fd2/main.go",
+      "sha256": "5f683bbcfc1cd653f570f3a9740c75d496683a08f852095477370c01e6262aef"
+    },
+    {
+      "path": "remake/cmd/fd2/native_map_unit_window.go",
+      "sha256": "48c772f0950c75905f93063f6640f5b96508f870d28dfc21d6ef94f5cf1d9d5a"
+    },
+    {
+      "path": "remake/cmd/fd2/chapter_parity_replay_test.go",
+      "sha256": "60d97884d7305ce4a34a5dcd10dfdbe117a8612626421f7c9e38cae3b459bb96"
+    },
+    {
+      "path": "remake/cmd/fd2/chapter_parity_ring_open_test.go",
+      "sha256": "8188add09319df51aa6f5075672269c6af621bc3494f96a7dbc9d5e8c7713233"
+    },
+    {
+      "path": "remake/cmd/fd2/chapter_parity_legacy_end_test.go",
+      "sha256": "71a960e06311bb4e8bb881e0a7a46c43313d1872cda6d7703ed1beb08856c62e"
+    },
+    {
+      "path": "tools/fd2_ring_open_receipts.py",
+      "sha256": "1670fcfc1b8f95afb2dc3491265ac226d189bc36a7b09e47e09320ad2ab844cf"
+    },
+    {
+      "path": "tools/migrate_string_review.py",
+      "sha256": "23f13cccaab098d0497572fb3d6e65f93423eb6bb5272603954fe3dfe7184f6d"
+    },
+    {
+      "path": "tools/verify_chapter_parity.py",
+      "sha256": "71d305aa3847b5f859cc473ccfaeb60d97aca55a5f9d123612e6479f4d5b5ec6"
+    },
+    {
+      "path": "work/parity-slot-ch04/sample-r13/runner.json",
+      "sha256": "37c2cd30d8888a0556e44bf52b30a85c6cb2508d1f6b51b0f6dde94079b893de"
+    },
+    {
+      "path": "work/parity-slot-ch04/sample-r13/actions.jsonl",
+      "sha256": "40a8cd1315cb99e9edd039738cd1a76a74a2e1d1e91786cd2eb9289bd7fc8c1d"
+    },
+    {
+      "path": "work/parity-slot-ch04/sample-r13/control-history.jsonl",
+      "sha256": "fb2c40d59eeae2ddd36aff694cb7632638f4ad3f50c6f09cda84923330a882fe"
+    },
+    {
+      "path": "work/parity-slot-ch05/sample-r5/runner.json",
+      "sha256": "1bea0b6fff1d07583e193648a3fef6d0ad8577c608a24d94dcd476641b97d9b6"
+    },
+    {
+      "path": "work/parity-slot-ch05/sample-r5/actions.jsonl",
+      "sha256": "c4841f223162ec639f75f01a63fd5d178cf959f46f8f121ceddff86f3b5bd3da"
+    },
+    {
+      "path": "work/parity-slot-ch05/sample-r5/control-history.jsonl",
+      "sha256": "2c8762d75906f60d41c415d6e340b32a9845d56d3608805dd0a03f7033a45bdd"
+    },
+    {
+      "path": "work/parity-slot-ch04/manifest.json",
+      "sha256": "a02507c6bc3aaaa98e080736d1be9cae8c81c9627632376f7274d99b73277234"
+    },
+    {
+      "path": "work/parity-slot-ch05/manifest.json",
+      "sha256": "7b700846767036b3724467c4bc6f0ef3a2ff13eb32fa2fe9ca4788d0ed0df619"
+    },
+    {
+      "path": "work/parity-slot-ch04/FD2.SAV",
+      "sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5"
+    },
+    {
+      "path": "work/parity-slot-ch05/FD2.SAV",
+      "sha256": "c01e220e69532604cb2f78e5a8be2b7977e92f2c9faec37b20d143c28bd0d99a"
+    }
+  ],
+  "validation": {
+    "state": "passed",
+    "base_commit": "c2e0641496f3163bb98b06107329b73ebfb85a4b",
+    "complete_rgb_zero": 30,
+    "complete_indexed_zero": 30,
+    "repeat_winner_hash_equal": 30,
+    "points": [
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 115,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0115.png",
+        "source_sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0",
+        "source_checkpoint_sha256": "414a6a4d685a6be363b4eda0fddaac8f346dde85ee00c8ed7e751db8d30b4e91",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0006-p18.png",
+          "png_sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0",
+          "indexed_sha256": "267512af97edb65652e1efca4bcea8a2f5d3bdeb0dde139bcb79b68bdd78a56a",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 208,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0208.png",
+        "source_sha256": "0ddf369d66a5f43c5a97c167b99b6e3f458a33823f585c08caa6aeb391374ee8",
+        "source_checkpoint_sha256": "340d19a6879022091cbcd9fa760f2ded5469ad565e56e7a8e020f6bc144fb9da",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0010-p17.png",
+          "png_sha256": "0ddf369d66a5f43c5a97c167b99b6e3f458a33823f585c08caa6aeb391374ee8",
+          "indexed_sha256": "d1bd880504548ddc376e75e97a20e409ac559f3b2bc7688dc2a75789272cf1aa",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 290,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0290.png",
+        "source_sha256": "de13ae74dc8fe332a133563c6a18b5b52b649f9a08f41bd3fc871cb0b96bdbfa",
+        "source_checkpoint_sha256": "e7cf342c3fe8bbd4dbad404e447c703fdd263df923a270e5b314628524fdc2f3",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0013-p1.png",
+          "png_sha256": "de13ae74dc8fe332a133563c6a18b5b52b649f9a08f41bd3fc871cb0b96bdbfa",
+          "indexed_sha256": "c098b208237cb40c75ba06c5c0d5f8137c145781ee5224a3868c116a185d930f",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 375,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0375.png",
+        "source_sha256": "2931fcd6e9a0c06a1d1b804094882c5c5cfd758bdc646c295aca8040726ae4e6",
+        "source_checkpoint_sha256": "df5a25dcd9eea7c8b1a143d56de83959b592ee45e28e981a9083f1a1760c0142",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0016-p17.png",
+          "png_sha256": "2931fcd6e9a0c06a1d1b804094882c5c5cfd758bdc646c295aca8040726ae4e6",
+          "indexed_sha256": "ff6b5ac5fea36529e12bcd627c7474f5e95481c64d9568e23cfb3d29f9e9eff1",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 459,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0459.png",
+        "source_sha256": "c2709882c1c90719b71c13ce8618ba7477ee95648ab90d167d82f11d6ed1f120",
+        "source_checkpoint_sha256": "012df4c7c10d2ce2352d19aa63a7a5ea6d2023edbfd300848e6a60e41d3c1573",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0019-p2.png",
+          "png_sha256": "c2709882c1c90719b71c13ce8618ba7477ee95648ab90d167d82f11d6ed1f120",
+          "indexed_sha256": "97523bda72a1a9b90ff1970f777a008fda0a54999386cca44084e396372eaf08",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 541,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0541.png",
+        "source_sha256": "7f18372e0c20b275cd9f8c9be918b52ad013daa508bee52ed80e5044e9a604cf",
+        "source_checkpoint_sha256": "0309a92b92ba813ac936392977fb5b27eb5ee4a5b971e6a76e9d5056d90d6cf4",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0022-p1.png",
+          "png_sha256": "7f18372e0c20b275cd9f8c9be918b52ad013daa508bee52ed80e5044e9a604cf",
+          "indexed_sha256": "58bdef0d8ac79d8a7b607430d5ceeab2ac07338ce0f4221cd539fb5e89dd4be4",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "move",
+        "seq": 630,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0630.png",
+        "source_sha256": "30f8534b20b3ecaf2fbc57bcd29832fb25141b34748d999b6aeaf28cc9b9eae6",
+        "source_checkpoint_sha256": "4e944931c0b2cdeadb890add919b183b448c35301a6c09b589e6c20768b2cf8d",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0025-p1.png",
+          "png_sha256": "30f8534b20b3ecaf2fbc57bcd29832fb25141b34748d999b6aeaf28cc9b9eae6",
+          "indexed_sha256": "89934892169c5e44c2a97254dd4ae8332b070998d05b7316645242a24e1ee06f",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 721,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0721.png",
+        "source_sha256": "790f9a8696bb45e25f2ae5956f79b540522d0f9057066e942d0d419588a5aecf",
+        "source_checkpoint_sha256": "a90cf7636279cc2e1b9adecc0eff277552d1b1d521f668e9b47393a6d88dc1f0",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0029-p2.png",
+          "png_sha256": "790f9a8696bb45e25f2ae5956f79b540522d0f9057066e942d0d419588a5aecf",
+          "indexed_sha256": "482d62e5397e38e76b87efecf0f444aff9b696c2c0ede6d11c7320915064fbd1",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 750,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0750.png",
+        "source_sha256": "bc05302af6cd09eec76066ebdf4c413e0649bf2b159b9dcf9a8254bfcb7d29fd",
+        "source_checkpoint_sha256": "9275e6822d98f6f0305cb9efe3ea810dba0dbe548d927603779a65cc0ebf61c6",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0032-p1.png",
+          "png_sha256": "bc05302af6cd09eec76066ebdf4c413e0649bf2b159b9dcf9a8254bfcb7d29fd",
+          "indexed_sha256": "277421c583a7b7eb437ddf935de47fcede9a4b93907ebb161bf86403d1923f82",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 776,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0776.png",
+        "source_sha256": "9c2a73bfb3cce92bb335009ce5094389f23e58a2d99b73e99b03a0bd36c1c53e",
+        "source_checkpoint_sha256": "e8e00157a1daba558a80e4f5c03b9c6a51f61dbf72999e81d0823a464f19b341",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0036-p2.png",
+          "png_sha256": "9c2a73bfb3cce92bb335009ce5094389f23e58a2d99b73e99b03a0bd36c1c53e",
+          "indexed_sha256": "c119fd4c63badf9f2546d8d8922ccbe8ec22dc0866de8cacaf91f6278f0f26cd",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 801,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0801.png",
+        "source_sha256": "71a30a4d695edb6f8e36e696227e5416b376b70a06dc91ea3eb088a949314bc4",
+        "source_checkpoint_sha256": "3d6a4a5d0cd2b0f16e64b6144f1c553dad27b487054ce880a1dd2e43b1b3a02b",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0040-p1.png",
+          "png_sha256": "71a30a4d695edb6f8e36e696227e5416b376b70a06dc91ea3eb088a949314bc4",
+          "indexed_sha256": "a8e07acd190285ae3cdd2bc5c9481137765e3e6c686fd8ac7663f56090b2ef70",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 831,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0831.png",
+        "source_sha256": "5c3a7252dfd11837f25eca8e67a87e6143ec12140f0f2732882e343c62a1109a",
+        "source_checkpoint_sha256": "eea0cba59baeaea2d5a14525140560762228e8a9bd026e32f6c4974805b268f6",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0044-p18.png",
+          "png_sha256": "5c3a7252dfd11837f25eca8e67a87e6143ec12140f0f2732882e343c62a1109a",
+          "indexed_sha256": "26c110949a483b7bbbc8e813ecaf44ac218d94a5b917e6d4864fc354e1cef4b9",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 863,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0863.png",
+        "source_sha256": "0d9de3c82a77c394d37334202c578f489b1fa28052c1b4b123f88629e2d74b1a",
+        "source_checkpoint_sha256": "26480abe01c596cca0bb42bb84fe76d84157b6554c20f9f592a958835392104c",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0047-p18.png",
+          "png_sha256": "0d9de3c82a77c394d37334202c578f489b1fa28052c1b4b123f88629e2d74b1a",
+          "indexed_sha256": "22740b549edc6c6cfe43613ed2a01d72bc0017028358807ca298ff359541568f",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 4,
+        "kind": "stay",
+        "seq": 892,
+        "source": "work/parity-slot-ch04/sample-r13/checkpoint-0892.png",
+        "source_sha256": "dae0d6969c274da462e6972b96ca51b60d92696f5e8e04a53d9485be5ffffe04",
+        "source_checkpoint_sha256": "f8875788b4af2e36872773694fb4f078d8f4227eb7c14abc3e8b836558a319b2",
+        "winner": {
+          "file": "work/parity-slot-ch04/ring-redraw-after-r3/remake-0050-p18.png",
+          "png_sha256": "dae0d6969c274da462e6972b96ca51b60d92696f5e8e04a53d9485be5ffffe04",
+          "indexed_sha256": "8d0295e02b8d27cbfbed77bf388e87d89b6820ef547b1d645e17afa62a041534",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 239,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0239.png",
+        "source_sha256": "860dcc2233b29969551580efcd2a05d54c743d561507ef8272ca1ccd7568176c",
+        "source_checkpoint_sha256": "b8884fdb7bd05f471ff67ab1c9c7c8e86c626c52b8c99e7c6b73262a64040dc2",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0006-p2.png",
+          "png_sha256": "860dcc2233b29969551580efcd2a05d54c743d561507ef8272ca1ccd7568176c",
+          "indexed_sha256": "6373dbd403938efb2082ef0264f28d48deb0ab3351404fe323645b3af45850df",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 325,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0325.png",
+        "source_sha256": "8eaa1c253a21be89fdb0eddc0b444b3d4e0748c82817fe8b496c87a07faa304d",
+        "source_checkpoint_sha256": "526e7e1c868b14db76f1f25197f29b9d124875948c72608a5e49f49739fe33f3",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0009-p17.png",
+          "png_sha256": "8eaa1c253a21be89fdb0eddc0b444b3d4e0748c82817fe8b496c87a07faa304d",
+          "indexed_sha256": "5dd32ac23129685e8dd85b5d64c05d18f152b8c506d72fff2499f1a9b88a8dbe",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 407,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0407.png",
+        "source_sha256": "09a70bb458d097918bc6de857e02ceccf170a388c454da3851f290b4dae14692",
+        "source_checkpoint_sha256": "5957b4011833489aa42fc76f74334137c6b30379b5b6d4d38a39fd28406f716c",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0012-p16.png",
+          "png_sha256": "09a70bb458d097918bc6de857e02ceccf170a388c454da3851f290b4dae14692",
+          "indexed_sha256": "e816026a6f0ca3f8dd9290660619e6073315cd65506e2da8a8924a138225b68a",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 494,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0494.png",
+        "source_sha256": "dc70810a369e1257b9de80c4e32f6fbae3b1c5cab42432090231d0c3b5b289c4",
+        "source_checkpoint_sha256": "15f90cf274a23ffb823edd245d3d8faa5b6d986a35281eecfc61e0f92bbc2346",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0015-p16.png",
+          "png_sha256": "dc70810a369e1257b9de80c4e32f6fbae3b1c5cab42432090231d0c3b5b289c4",
+          "indexed_sha256": "62b12691dd1dfd8f3d497d688d2ad460ed266a59119a321bc2d15d6f9d628b4e",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 578,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0578.png",
+        "source_sha256": "17599d708d261fe22463a88ee06625af6e61b6ef02277ab56853bbc440d6e66e",
+        "source_checkpoint_sha256": "8dc811e53c272b85b559c283e0e96e36ddd2adbdf59bf3807b7239591481ac4b",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0018-p2.png",
+          "png_sha256": "17599d708d261fe22463a88ee06625af6e61b6ef02277ab56853bbc440d6e66e",
+          "indexed_sha256": "daa5b6a912838af44f2645ec33948b2030b0f2f977d10726a02e47d6cac9d043",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 602,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0602.png",
+        "source_sha256": "5782e452101d82eb9ae67fbb16c47e4bd9b9e2fc4eb94f4d1cda0e9c40e1ab87",
+        "source_checkpoint_sha256": "0b543c7bba9942d4638e4e42563849baf6fb8056dccda07025cc487bde9cfd66",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0021-p1.png",
+          "png_sha256": "5782e452101d82eb9ae67fbb16c47e4bd9b9e2fc4eb94f4d1cda0e9c40e1ab87",
+          "indexed_sha256": "e9173def9ce98376ef2c53b4be73cba4b203c124bbe6df7390f14ca70033a60c",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 690,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0690.png",
+        "source_sha256": "13ed9931ada27be6d0f25b51f3a68ad1b0741b5c4561b119e20e45d0de502999",
+        "source_checkpoint_sha256": "eb69120199abb6ab86e12e9a9c32b6a7256e7b4abb299cce0949b876d756483b",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0024-p1.png",
+          "png_sha256": "13ed9931ada27be6d0f25b51f3a68ad1b0741b5c4561b119e20e45d0de502999",
+          "indexed_sha256": "779d6d31524e2a2728d2adb05a1af560c659ef79e262691752643afd4c1f2f85",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 783,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0783.png",
+        "source_sha256": "e39a2a30cd290d47054e95d5d75360350238a01a384ab87b171a765d12a06733",
+        "source_checkpoint_sha256": "67117aaaa721c41b274660cbe4695f7a34b35ccffab04ee0d1d605ee677a20d5",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0027-p2.png",
+          "png_sha256": "e39a2a30cd290d47054e95d5d75360350238a01a384ab87b171a765d12a06733",
+          "indexed_sha256": "6bd50d6c92f82e569961b48f10d127b0556618b5ca5ac498f3d2529c84287481",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "stay",
+        "seq": 824,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0824.png",
+        "source_sha256": "ce627a9062c7562d7daf8332d334f8861f34cd81a902ee8e9dff49630135bb48",
+        "source_checkpoint_sha256": "5889cda2310fd5962c96b08f1adaca7c096d6923a6d5f9ab031b62ee7fe8ce57",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0030-p18.png",
+          "png_sha256": "ce627a9062c7562d7daf8332d334f8861f34cd81a902ee8e9dff49630135bb48",
+          "indexed_sha256": "4c339ffbe092ee31150b9395a05711b8535a40618ffc7dd2deac381e8cb3bbeb",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 859,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0859.png",
+        "source_sha256": "944cc76d1a960678cc4f39e84c2c31fbd8bd57f4de93daea086af0ca8f98f44b",
+        "source_checkpoint_sha256": "1129dfa7c34e06bcfc2f6b9cc58c7ab28de4b96876a9bdc4643940cb8eabe0c4",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0034-p11.png",
+          "png_sha256": "944cc76d1a960678cc4f39e84c2c31fbd8bd57f4de93daea086af0ca8f98f44b",
+          "indexed_sha256": "9e8ad22d84493f461afb16706a32441e636d9598049a8a5c54cd6a8698824a3c",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 8,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 943,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-0943.png",
+        "source_sha256": "75e50e736ecc7e59fd20b21c0edb28a45bdbfe6c98a645fcf2771bcf8cb4cc9c",
+        "source_checkpoint_sha256": "c06623d607580816c8f9a825ea3501669818075ca1b962b592baf0213f47c735",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0038-p17.png",
+          "png_sha256": "75e50e736ecc7e59fd20b21c0edb28a45bdbfe6c98a645fcf2771bcf8cb4cc9c",
+          "indexed_sha256": "2cec8f8b35f1c98876e2c1a52bb0b9d21e486cc2751bde127b9d4fe1b0af5ab8",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 1014,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-1014.png",
+        "source_sha256": "da946e9ff78cee1362e885651dd711b3e6aac05820fa2c226d37ba9949ba2571",
+        "source_checkpoint_sha256": "ddd552cee865bec4fafb7548bc3b5facd6922ec5ada188408aedd5347b7b4ead",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0041-p1.png",
+          "png_sha256": "da946e9ff78cee1362e885651dd711b3e6aac05820fa2c226d37ba9949ba2571",
+          "indexed_sha256": "f5982424f27af3ba0b8a2c91317e2bc0587d24f0f96c28d72d665e363489c5ae",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 1069,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-1069.png",
+        "source_sha256": "e3c37a4e7a110992b43ac6f13dc7e355fbb5af4b528fcaa7957c4b204d87f07e",
+        "source_checkpoint_sha256": "71a4812f1938b7a2e1454ba41c3869db800257f2c2c06e7aaef6c6c7c0906951",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0044-p18.png",
+          "png_sha256": "e3c37a4e7a110992b43ac6f13dc7e355fbb5af4b528fcaa7957c4b204d87f07e",
+          "indexed_sha256": "6979f0cdc921b8b208f994c64e28067e0a5eb792acc1e611a573b7a8b9ebc923",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 1108,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-1108.png",
+        "source_sha256": "b81b8fa75bb0df04a1dce94aea68f26860e5ac1d9be939ad533a61b54530e849",
+        "source_checkpoint_sha256": "2c1f3f2486ffbbbbc8a2b24b195a90469c26d06822433f2b3b8a89e80e384ea8",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0047-p17.png",
+          "png_sha256": "b81b8fa75bb0df04a1dce94aea68f26860e5ac1d9be939ad533a61b54530e849",
+          "indexed_sha256": "b6809c320548531be278d348305056ec5ba1b8957b84db1b41dd802efde1cc75",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 1129,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-1129.png",
+        "source_sha256": "147914de413066d8304022f8e74ccc7e93f2efa7a6c35ad833751e8d30674f40",
+        "source_checkpoint_sha256": "cfe639aa12275292ba6d57de890879d88866a49e930a7b6a6ed1c8a57e63d1a5",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0050-p1.png",
+          "png_sha256": "147914de413066d8304022f8e74ccc7e93f2efa7a6c35ad833751e8d30674f40",
+          "indexed_sha256": "657ea0cb8f472260d8b2b8988cb19b0248dd2eb94241aea30db03c12cfc246b4",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      },
+      {
+        "chapter": 5,
+        "kind": "move",
+        "seq": 1150,
+        "source": "work/parity-slot-ch05/sample-r5/checkpoint-1150.png",
+        "source_sha256": "1e751f165623e9bd4478a28dcc35513fde409275906b14354fd573753a67f812",
+        "source_checkpoint_sha256": "ce69c57e4602f3d2478318fa0cd14a553a4b109b85c6b87055706d4b8b807563",
+        "winner": {
+          "file": "work/parity-slot-ch05/ring-redraw-after-r3/remake-0053-p17.png",
+          "png_sha256": "1e751f165623e9bd4478a28dcc35513fde409275906b14354fd573753a67f812",
+          "indexed_sha256": "50435575e6c169c9c6923ac8b00c5fb5d61b235ed2eb77a47ceebd0a92d12224",
+          "diff_pixels": 0,
+          "box": null,
+          "indexed_diff_pixels": 0,
+          "indexed_box": null,
+          "candidate": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 16,
+            "variant_count": 8
+          }
+        },
+        "variants": 48
+      }
+    ],
+    "chapter_regressions": [
+      {
+        "chapter": 4,
+        "status": "passed",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "ring_points": 14,
+        "compared_frames": 55,
+        "outside_slice_remaining": [
+          {
+            "seq": 934,
+            "kind": "enemy_phase_start",
+            "oracle": "checkpoint-0934.png",
+            "remake": "remake-0052-p14.png",
+            "phases": 312,
+            "diff_pixels": 162,
+            "box": [
+              148,
+              31,
+              156,
+              57
+            ],
+            "ok": true,
+            "oracle_sha256": "3fa15e040298704b578177a38e50331d3518c1b6dbb02b1f9ce2eb1f11ebaa67",
+            "remake_sha256": "55194d498b909e83c92d81fb32e2fb3cdb28485a8a9cacc4b2af12528e389794"
+          }
+        ]
+      },
+      {
+        "chapter": 5,
+        "status": "passed",
+        "gates": {
+          "behavior": true,
+          "nodes": true,
+          "transaction": true,
+          "frames": true
+        },
+        "ring_points": 16,
+        "compared_frames": 58,
+        "outside_slice_remaining": []
+      }
+    ],
+    "gpu": {
+      "candidates": [
+        {
+          "file": "ring-gpu-00.png",
+          "gpu_rgba_diff_pixels": 2880,
+          "gpu_rgba_sha256": "9bc8209b29638b1a95adc88287722dbf8fb45c3c8e305a0d0400dbb99c7424ef",
+          "idle": 0,
+          "indexed_diff_pixels": 720,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-01.png",
+          "gpu_rgba_diff_pixels": 11168,
+          "gpu_rgba_sha256": "31ea9a7a7e64330e7aa90e25c2f907517e10a70609a6dc84bd9b2c8a41284bab",
+          "idle": 1,
+          "indexed_diff_pixels": 2792,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-02.png",
+          "gpu_rgba_diff_pixels": 156,
+          "gpu_rgba_sha256": "0190c1b3129f0b625e712367273964512eb69e63bf67186b0142e443390d2811",
+          "idle": 2,
+          "indexed_diff_pixels": 39,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-03.png",
+          "gpu_rgba_diff_pixels": 11168,
+          "gpu_rgba_sha256": "31ea9a7a7e64330e7aa90e25c2f907517e10a70609a6dc84bd9b2c8a41284bab",
+          "idle": 3,
+          "indexed_diff_pixels": 2792,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-04.png",
+          "gpu_rgba_diff_pixels": 2880,
+          "gpu_rgba_sha256": "9bc8209b29638b1a95adc88287722dbf8fb45c3c8e305a0d0400dbb99c7424ef",
+          "idle": 0,
+          "indexed_diff_pixels": 720,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-05.png",
+          "gpu_rgba_diff_pixels": 11168,
+          "gpu_rgba_sha256": "31ea9a7a7e64330e7aa90e25c2f907517e10a70609a6dc84bd9b2c8a41284bab",
+          "idle": 1,
+          "indexed_diff_pixels": 2792,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-06.png",
+          "gpu_rgba_diff_pixels": 156,
+          "gpu_rgba_sha256": "0190c1b3129f0b625e712367273964512eb69e63bf67186b0142e443390d2811",
+          "idle": 2,
+          "indexed_diff_pixels": 39,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-07.png",
+          "gpu_rgba_diff_pixels": 11168,
+          "gpu_rgba_sha256": "31ea9a7a7e64330e7aa90e25c2f907517e10a70609a6dc84bd9b2c8a41284bab",
+          "idle": 3,
+          "indexed_diff_pixels": 2792,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-08.png",
+          "gpu_rgba_diff_pixels": 4844,
+          "gpu_rgba_sha256": "ab43edc2c09784e93f8c44b1d741f7c1df5218ea6c1140617852ee35eee5cb5a",
+          "idle": 0,
+          "indexed_diff_pixels": 1211,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-09.png",
+          "gpu_rgba_diff_pixels": 13132,
+          "gpu_rgba_sha256": "931c259c3a2e02b5c5582e1ba43fe370258c4ad8f1551e050cff5c7a2524b87c",
+          "idle": 1,
+          "indexed_diff_pixels": 3283,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-10.png",
+          "gpu_rgba_diff_pixels": 2120,
+          "gpu_rgba_sha256": "2070acfe505fe864a7569909a7d463efe7cc65529f30f7d5c1acb148d69f471a",
+          "idle": 2,
+          "indexed_diff_pixels": 530,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-11.png",
+          "gpu_rgba_diff_pixels": 13132,
+          "gpu_rgba_sha256": "931c259c3a2e02b5c5582e1ba43fe370258c4ad8f1551e050cff5c7a2524b87c",
+          "idle": 3,
+          "indexed_diff_pixels": 3283,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-12.png",
+          "gpu_rgba_diff_pixels": 4844,
+          "gpu_rgba_sha256": "ab43edc2c09784e93f8c44b1d741f7c1df5218ea6c1140617852ee35eee5cb5a",
+          "idle": 0,
+          "indexed_diff_pixels": 1211,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-13.png",
+          "gpu_rgba_diff_pixels": 13132,
+          "gpu_rgba_sha256": "931c259c3a2e02b5c5582e1ba43fe370258c4ad8f1551e050cff5c7a2524b87c",
+          "idle": 1,
+          "indexed_diff_pixels": 3283,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-14.png",
+          "gpu_rgba_diff_pixels": 2120,
+          "gpu_rgba_sha256": "2070acfe505fe864a7569909a7d463efe7cc65529f30f7d5c1acb148d69f471a",
+          "idle": 2,
+          "indexed_diff_pixels": 530,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-15.png",
+          "gpu_rgba_diff_pixels": 13132,
+          "gpu_rgba_sha256": "931c259c3a2e02b5c5582e1ba43fe370258c4ad8f1551e050cff5c7a2524b87c",
+          "idle": 3,
+          "indexed_diff_pixels": 3283,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": true,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-16.png",
+          "gpu_rgba_diff_pixels": 2724,
+          "gpu_rgba_sha256": "c0428bbef84c7659a0be1a6dc910d7c5c32b1f53ad118d86451b166b527dcb30",
+          "idle": 0,
+          "indexed_diff_pixels": 681,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-17.png",
+          "gpu_rgba_diff_pixels": 11012,
+          "gpu_rgba_sha256": "871bd1e53f550bea2cd543ab7e8153643eab16bb71d75f8118c1c2c4ce360e47",
+          "idle": 1,
+          "indexed_diff_pixels": 2753,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-18.png",
+          "gpu_rgba_diff_pixels": 0,
+          "gpu_rgba_sha256": "ef8ef17e525b5ee4f94746857d7520b9f45350269307d7443a978a7d7555b947",
+          "idle": 2,
+          "indexed_diff_pixels": 0,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-19.png",
+          "gpu_rgba_diff_pixels": 11012,
+          "gpu_rgba_sha256": "871bd1e53f550bea2cd543ab7e8153643eab16bb71d75f8118c1c2c4ce360e47",
+          "idle": 3,
+          "indexed_diff_pixels": 2753,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-20.png",
+          "gpu_rgba_diff_pixels": 2724,
+          "gpu_rgba_sha256": "c0428bbef84c7659a0be1a6dc910d7c5c32b1f53ad118d86451b166b527dcb30",
+          "idle": 0,
+          "indexed_diff_pixels": 681,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-21.png",
+          "gpu_rgba_diff_pixels": 11012,
+          "gpu_rgba_sha256": "871bd1e53f550bea2cd543ab7e8153643eab16bb71d75f8118c1c2c4ce360e47",
+          "idle": 1,
+          "indexed_diff_pixels": 2753,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-22.png",
+          "gpu_rgba_diff_pixels": 0,
+          "gpu_rgba_sha256": "ef8ef17e525b5ee4f94746857d7520b9f45350269307d7443a978a7d7555b947",
+          "idle": 2,
+          "indexed_diff_pixels": 0,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-23.png",
+          "gpu_rgba_diff_pixels": 11012,
+          "gpu_rgba_sha256": "871bd1e53f550bea2cd543ab7e8153643eab16bb71d75f8118c1c2c4ce360e47",
+          "idle": 3,
+          "indexed_diff_pixels": 2753,
+          "overlay": {
+            "phase": "open",
+            "frame": 3,
+            "open_variant": false,
+            "blink_phase": 1,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-24.png",
+          "gpu_rgba_diff_pixels": 10224,
+          "gpu_rgba_sha256": "20e31436e5f4b9a1b0705161169e7dab34c222618d8bb9b7c6cee528793f949a",
+          "idle": 0,
+          "indexed_diff_pixels": 2556,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-25.png",
+          "gpu_rgba_diff_pixels": 18440,
+          "gpu_rgba_sha256": "0ac083fee99895cb3fa5eafea2d4491415d6845a50ffd47535f2b5cebe28e3f1",
+          "idle": 1,
+          "indexed_diff_pixels": 4610,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-26.png",
+          "gpu_rgba_diff_pixels": 7556,
+          "gpu_rgba_sha256": "8f0a6c9480aec481fd016fefe4b19be65cf7e9f72f6123d8b83fd43fd1b6038f",
+          "idle": 2,
+          "indexed_diff_pixels": 1889,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-27.png",
+          "gpu_rgba_diff_pixels": 18440,
+          "gpu_rgba_sha256": "0ac083fee99895cb3fa5eafea2d4491415d6845a50ffd47535f2b5cebe28e3f1",
+          "idle": 3,
+          "indexed_diff_pixels": 4610,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-28.png",
+          "gpu_rgba_diff_pixels": 10224,
+          "gpu_rgba_sha256": "20e31436e5f4b9a1b0705161169e7dab34c222618d8bb9b7c6cee528793f949a",
+          "idle": 0,
+          "indexed_diff_pixels": 2556,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-29.png",
+          "gpu_rgba_diff_pixels": 18440,
+          "gpu_rgba_sha256": "0ac083fee99895cb3fa5eafea2d4491415d6845a50ffd47535f2b5cebe28e3f1",
+          "idle": 1,
+          "indexed_diff_pixels": 4610,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-30.png",
+          "gpu_rgba_diff_pixels": 7556,
+          "gpu_rgba_sha256": "8f0a6c9480aec481fd016fefe4b19be65cf7e9f72f6123d8b83fd43fd1b6038f",
+          "idle": 2,
+          "indexed_diff_pixels": 1889,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-31.png",
+          "gpu_rgba_diff_pixels": 18440,
+          "gpu_rgba_sha256": "0ac083fee99895cb3fa5eafea2d4491415d6845a50ffd47535f2b5cebe28e3f1",
+          "idle": 3,
+          "indexed_diff_pixels": 4610,
+          "overlay": {
+            "phase": "opening",
+            "frame": 0,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-32.png",
+          "gpu_rgba_diff_pixels": 9564,
+          "gpu_rgba_sha256": "75d26ddf99e0faf6b7eb2df1c2ec4da02d4dba7d6fdd1a111e221a3452fa66fa",
+          "idle": 0,
+          "indexed_diff_pixels": 2391,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-33.png",
+          "gpu_rgba_diff_pixels": 17780,
+          "gpu_rgba_sha256": "65747b99f28ffa82d7fc3d0e4ef4c1366601c10f95a840e4e6f24c81f1f26e0c",
+          "idle": 1,
+          "indexed_diff_pixels": 4445,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-34.png",
+          "gpu_rgba_diff_pixels": 6896,
+          "gpu_rgba_sha256": "e63e6923ffe6ff83ac6b90d1df9b3f49d598726379fc56e27c5f6a6aac540ab6",
+          "idle": 2,
+          "indexed_diff_pixels": 1724,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-35.png",
+          "gpu_rgba_diff_pixels": 17780,
+          "gpu_rgba_sha256": "65747b99f28ffa82d7fc3d0e4ef4c1366601c10f95a840e4e6f24c81f1f26e0c",
+          "idle": 3,
+          "indexed_diff_pixels": 4445,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-36.png",
+          "gpu_rgba_diff_pixels": 9564,
+          "gpu_rgba_sha256": "75d26ddf99e0faf6b7eb2df1c2ec4da02d4dba7d6fdd1a111e221a3452fa66fa",
+          "idle": 0,
+          "indexed_diff_pixels": 2391,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-37.png",
+          "gpu_rgba_diff_pixels": 17780,
+          "gpu_rgba_sha256": "65747b99f28ffa82d7fc3d0e4ef4c1366601c10f95a840e4e6f24c81f1f26e0c",
+          "idle": 1,
+          "indexed_diff_pixels": 4445,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-38.png",
+          "gpu_rgba_diff_pixels": 6896,
+          "gpu_rgba_sha256": "e63e6923ffe6ff83ac6b90d1df9b3f49d598726379fc56e27c5f6a6aac540ab6",
+          "idle": 2,
+          "indexed_diff_pixels": 1724,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-39.png",
+          "gpu_rgba_diff_pixels": 17780,
+          "gpu_rgba_sha256": "65747b99f28ffa82d7fc3d0e4ef4c1366601c10f95a840e4e6f24c81f1f26e0c",
+          "idle": 3,
+          "indexed_diff_pixels": 4445,
+          "overlay": {
+            "phase": "opening",
+            "frame": 1,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-40.png",
+          "gpu_rgba_diff_pixels": 8576,
+          "gpu_rgba_sha256": "ae4614aa28a2d331dca19f1c864840ef692213da3a22c247534a59fbd604f9be",
+          "idle": 0,
+          "indexed_diff_pixels": 2144,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-41.png",
+          "gpu_rgba_diff_pixels": 16792,
+          "gpu_rgba_sha256": "96d6794299d144ccd26c626e5fa9b93f5a65e07d540cbe7ff6e15245259d49f2",
+          "idle": 1,
+          "indexed_diff_pixels": 4198,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-42.png",
+          "gpu_rgba_diff_pixels": 5900,
+          "gpu_rgba_sha256": "95ea94e7d3ef5f45bceb0465326627b6f99c2a4c6687e4d794b9b70512aa4364",
+          "idle": 2,
+          "indexed_diff_pixels": 1475,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-43.png",
+          "gpu_rgba_diff_pixels": 16792,
+          "gpu_rgba_sha256": "96d6794299d144ccd26c626e5fa9b93f5a65e07d540cbe7ff6e15245259d49f2",
+          "idle": 3,
+          "indexed_diff_pixels": 4198,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 0
+        },
+        {
+          "file": "ring-gpu-44.png",
+          "gpu_rgba_diff_pixels": 8576,
+          "gpu_rgba_sha256": "ae4614aa28a2d331dca19f1c864840ef692213da3a22c247534a59fbd604f9be",
+          "idle": 0,
+          "indexed_diff_pixels": 2144,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-45.png",
+          "gpu_rgba_diff_pixels": 16792,
+          "gpu_rgba_sha256": "96d6794299d144ccd26c626e5fa9b93f5a65e07d540cbe7ff6e15245259d49f2",
+          "idle": 1,
+          "indexed_diff_pixels": 4198,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-46.png",
+          "gpu_rgba_diff_pixels": 5900,
+          "gpu_rgba_sha256": "95ea94e7d3ef5f45bceb0465326627b6f99c2a4c6687e4d794b9b70512aa4364",
+          "idle": 2,
+          "indexed_diff_pixels": 1475,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        },
+        {
+          "file": "ring-gpu-47.png",
+          "gpu_rgba_diff_pixels": 16792,
+          "gpu_rgba_sha256": "96d6794299d144ccd26c626e5fa9b93f5a65e07d540cbe7ff6e15245259d49f2",
+          "idle": 3,
+          "indexed_diff_pixels": 4198,
+          "overlay": {
+            "phase": "opening",
+            "frame": 2,
+            "open_variant": false,
+            "blink_phase": 0,
+            "first_variant": 0,
+            "variant_count": 0
+          },
+          "palette_cycle_phase": 11,
+          "terrain_flip": 1
+        }
+      ],
+      "full_indexed_and_gpu_zero": 2,
+      "kind": "move",
+      "method": "normal LOAD/town/selection/movement; actual Game.Draw; finite presentation phases and validated raw DAC phase; no pixel injection; prefix only",
+      "oracle_seq": 115,
+      "semantic_cancel_return": true,
+      "source": "/src/work/parity-slot-ch04/ring-cursor-original-r2/checkpoint-0115.png",
+      "source_checkpoint_sha256": "66d6d2dc680a720adb21f449df051a9482c6786b124e43c6c58d05209ef193e9",
+      "source_sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0"
+    },
+    "current_original_runner": {
+      "schema_version": 1,
+      "kind": "fd2_oracle_runner_provenance",
+      "runner": "dosgolem apps/fd2/cmd/oracle",
+      "container_entry": "tools/dosgolem_oracle_container.sh",
+      "dosgolem_root": "/home/anr2/cht/dosgolem-fd2-oracle",
+      "dosgolem_commit": "a01ff084f038ddd1d133480f08d32e3b2e6f98c0",
+      "dosgolem_branch": "feat/fd2-oracle-input-chain",
+      "dosgolem_tracked_dirty_files": 0,
+      "dosgolem_untracked_files": 0,
+      "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+      "generated_at": "2026-10-05T11:28:43.568985+00:00",
+      "control_plan": "docs/data/parity-plans/ch04-ring-cursor-probe.jsonl",
+      "map_runtime_records": {
+        "enabled": true,
+        "globals": 16,
+        "palette_bytes": 768,
+        "scope": "same-instruction read-only map globals/view/units/palette; invalid source false"
+      },
+      "frame_unit_records": {
+        "enabled": true,
+        "row_bytes": 80,
+        "max_units": 128,
+        "scope": "accepted PNG same-instruction read-only units; invalid source marked false"
+      },
+      "eip_trace_window": {
+        "from_step": 946000000,
+        "to_step": 960000000,
+        "max_entries": 25000
+      },
+      "lock_ally_hp": false,
+      "force_enemy_clear_declared": false,
+      "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "original_reference_manifest": "docs/data/fd2-reference-files.json",
+      "near_heap_policy": {
+        "kind": "dosgolem_runtime_approximation",
+        "status": "unknown",
+        "sources": [
+          {
+            "path": "internal/machine/watcom_runtime.go",
+            "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+          },
+          {
+            "path": "apps/fd2/cmd/oracle/main.go",
+            "sha256": "a5dd8784bfc4588a6968b6fa65eb20cc5a2c3d6ad6e20955f03da1369668deea"
+          }
+        ],
+        "heap_mib": 32,
+        "allocation_hook": "WatcomNearHeap.Handle / allocate",
+        "free_hook": "WatcomNearHeap.handleFree / release",
+        "reused_allocation_contents": "unknown",
+        "original_allocator_parity": "unverified",
+        "evidence_contract": "docs/data/ida/fd2_terrain_mode3_review_20261001.json#oracle_heap_policy_correction",
+        "evidence_restriction": "近堆替代實作的重用位址與初值未經原版配置器校準；受此影響的透明底色只能列工具政策結果，不能單獨證明原版 malloc 語意。"
+      },
+      "state_directory": "/home/anr2/cht/fd2/work/parity-slot-ch04/ring-cursor-state-r2",
+      "state_injections": [
+        "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+        "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+      ],
+      "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+    },
+    "current_original_calls": {
+      "0x127E0": 432,
+      "0x1741C": 1,
+      "0x17544": 4,
+      "0x179D5": 5,
+      "0x17A9C": 5
+    },
+    "current_original_event_frames": 5,
+    "initial_slot": {
+      "path": "work/parity-slot-ch04/FD2.SAV",
+      "sha256": "ee9e412c0df245672e1644689f922cecb01e1b3abfd97a3d3334081921a963e5",
+      "method": "same constructed slot copied into distinct writable overlay; original root read-only"
+    },
+    "go": {
+      "top_level_tests": 2377,
+      "packages": 19,
+      "failures": 0,
+      "source": "work/ring-full-go-r2.jsonl"
+    },
+    "limitations": [
+      "兩章歷史source caa9ee8保持原版／builder／force-clear metadata；更新30點不重寫其他歷史來源。",
+      "目前a01ff084短鏈使用同建構槽；正常鍵盤前115步無HP鎖定或force-clear，正式GPU為有限clock／blink／idle／terrain／raw DAC輸入，不宣稱任意clock逐幀一致。",
+      "GPU取消由既有章重播semantic cancel走正式closing owner；沒有作OS鍵盤ESC自動化。",
+      "其他章未重算；不外推所有chapter或新的PLAYER-E2。"
+    ]
+  },
+  "diagnostics": [
+    {
+      "path": "work/ring-open-ch04-before-r1.log",
+      "kind": "environment",
+      "cause": "with-xvfb入口名稱誤加.sh；r2乾淨重跑已通過，不是產品缺陷。"
+    },
+    {
+      "kind": "hypothesis rejected",
+      "reason": "目前兩章有限opening0..3候選未改任何30個殘差；原版checkpoint input_chain是17898等待／127D4角色重繪而非1741C。",
+      "source": [
+        "work/ring-open-ch04-independent-r1.json",
+        "work/ring-open-ch05-independent-r1.json"
+      ],
+      "original_scope": "READY只允許開框候選，不授權猜補新的重繪順序。"
+    },
+    {
+      "kind": "verified partial cause",
+      "source": "work/ring-redraw-ch04-independent-r1.json",
+      "result": "游標角色重繪讓8/14點完整indexed與RGB歸零，剩6點為已證實選中cell閃爍；不是unit／terrain差異。"
+    },
+    {
+      "kind": "environment",
+      "source": "work/ring-cursor-original-r1.log",
+      "cause": "trace窗口1190M晚於實際948M；目前runner正常抵达ring。相同plan以946M..960M乾淨重跑。"
+    },
+    {
+      "kind": "confirmed runtime defect",
+      "issue": 181,
+      "source": "work/ring-gpu-diagnostic-r4.png",
+      "cause": "索引0而GPU6344，Game.Draw在indexed frame後重貼四圖示；色盤窗口並非這次差異來源。"
+    }
+  ],
+  "review": {
+    "date": "2026-10-05",
+    "state": "reviewed",
+    "checks": [
+      "既有IDA明示初態／前置offset更新／4步與present，與既有renderer一致。",
+      "只補原Issue授權的重播候選，沒有新增正式規則。",
+      "有限候選恢復owner且不推進輸入、RNG或SAV，需測試與完整重播證明。",
+      "殘差未知不能猜補；回到DRAFT或另登記狹窄工單。"
+    ],
+    "result": "初始四步成因已否定。179歷史來源、180游標角色、181本次Draw單次呈現及182字串來源分開登記／審查；以下全部驗收通過，限定CONFORMED／RUNTIME-E1，不新增章PLAYER-E2。"
+  },
+  "cursor_redraw_evidence": {
+    "issue": 180,
+    "state": "RE-CLOSED",
+    "input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "tool": "IDA Pro 9.4",
+    "address_space": "IDA LE linear",
+    "original_names_preserved": true,
+    "new_export": [
+      "work/ring-open-wait-ida-r1.json",
+      "work/ring-open-wait-ida-r2.json"
+    ],
+    "functions": [
+      {
+        "original_name": "sub_179D5",
+        "start": "0x179d5",
+        "end": "0x17aa9",
+        "xrefs": [
+          "0x17949"
+        ],
+        "instructions": [
+          {
+            "address": "0x17a60",
+            "bytes": "89f3",
+            "original": "mov     ebx, esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a60",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a62",
+            "bytes": "8b44242c",
+            "original": "mov     eax, [esp+28h+arg_0]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a62",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a66",
+            "bytes": "8b1498",
+            "original": "mov     edx, [eax+ebx*4]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a66",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a69",
+            "bytes": "89d0",
+            "original": "mov     eax, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a69",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a6b",
+            "bytes": "c1e002",
+            "original": "shl     eax, 2",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a6b",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a6e",
+            "bytes": "29d0",
+            "original": "sub     eax, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a6e",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a70",
+            "bytes": "89c2",
+            "original": "mov     edx, eax",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a70",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a72",
+            "bytes": "8b442430",
+            "original": "mov     eax, [esp+28h+arg_4]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a72",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a76",
+            "bytes": "8b0498",
+            "original": "mov     eax, [eax+ebx*4]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a76",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a79",
+            "bytes": "01c0",
+            "original": "add     eax, eax",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a79",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a7b",
+            "bytes": "01d0",
+            "original": "add     eax, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a7b",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a7d",
+            "bytes": "3b35573c0500",
+            "original": "cmp     esi, dword_53C57",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a7d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a83",
+            "bytes": "75a9",
+            "original": "jnz     short loc_17A2E",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a83",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a85",
+            "bytes": "0305133c0500",
+            "original": "add     eax, dword_53C13",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a85",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a8b",
+            "bytes": "eba1",
+            "original": "jmp     short loc_17A2E",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a8b",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a8d",
+            "bytes": "837c2410ff",
+            "original": "cmp     [esp+28h+var_18], 0FFFFFFFFh",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a8d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a92",
+            "bytes": "0f8434c5ffff",
+            "original": "jz      loc_13FCC",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a92",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a98",
+            "bytes": "ff742410",
+            "original": "push    [esp+28h+var_18]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a98",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17a9c",
+            "bytes": "e83fadffff",
+            "original": "call    sub_127E0",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17a9c",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17aa1",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17aa1",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x17aa4",
+            "bytes": "e923c5ffff",
+            "original": "jmp     loc_13FCC",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x17aa4",
+            "semantic_annotations": []
+          }
+        ]
+      },
+      {
+        "original_name": "sub_12C0D",
+        "start": "0x12c0d",
+        "end": "0x12c60",
+        "xrefs": [
+          "0x118b3",
+          "0x119dc",
+          "0x14ac2",
+          "0x17431",
+          "0x176db",
+          "0x179e6",
+          "0x18fb3",
+          "0x1ae0a",
+          "0x1bee7"
+        ],
+        "instructions": [
+          {
+            "address": "0x12c0d",
+            "bytes": "6810000000",
+            "original": "push    10h",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c0d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c12",
+            "bytes": "e8c0400200",
+            "original": "call    sub_36CD7",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c12",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c17",
+            "bytes": "53",
+            "original": "push    ebx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c17",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c18",
+            "bytes": "56",
+            "original": "push    esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c18",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c19",
+            "bytes": "8b1d453a0500",
+            "original": "mov     ebx, dword_53A45",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c19",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c1f",
+            "bytes": "31f6",
+            "original": "xor     esi, esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c1f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c21",
+            "bytes": "eb04",
+            "original": "jmp     short loc_12C27",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c21",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c23",
+            "bytes": "83c350",
+            "original": "add     ebx, 50h ; 'P'",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c23",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c26",
+            "bytes": "46",
+            "original": "inc     esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c26",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c27",
+            "bytes": "3b35eb3b0500",
+            "original": "cmp     esi, dword_53BEB",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c27",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c2d",
+            "bytes": "7d29",
+            "original": "jge     short loc_12C58",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c2d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c2f",
+            "bytes": "0fb613",
+            "original": "movzx   edx, byte ptr [ebx]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c2f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c32",
+            "bytes": "0fb64301",
+            "original": "movzx   eax, byte ptr [ebx+1]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c32",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c36",
+            "bytes": "3b15b13a0500",
+            "original": "cmp     edx, dword_53AB1",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c36",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c3c",
+            "bytes": "75e5",
+            "original": "jnz     short loc_12C23",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c3c",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c3e",
+            "bytes": "3b05b53a0500",
+            "original": "cmp     eax, dword_53AB5",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c3e",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c44",
+            "bytes": "75dd",
+            "original": "jnz     short loc_12C23",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c44",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c46",
+            "bytes": "56",
+            "original": "push    esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c46",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c47",
+            "bytes": "e8f2180200",
+            "original": "call    sub_3453E",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c47",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c4c",
+            "bytes": "83c404",
+            "original": "add     esp, 4",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c4c",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c4f",
+            "bytes": "85c0",
+            "original": "test    eax, eax",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c4f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c51",
+            "bytes": "75d0",
+            "original": "jnz     short loc_12C23",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c51",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c53",
+            "bytes": "89f0",
+            "original": "mov     eax, esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c53",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c55",
+            "bytes": "5e",
+            "original": "pop     esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c55",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c56",
+            "bytes": "5b",
+            "original": "pop     ebx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c56",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c57",
+            "bytes": "c3",
+            "original": "retn",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c57",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c58",
+            "bytes": "b8ffffffff",
+            "original": "mov     eax, 0FFFFFFFFh",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c58",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c5d",
+            "bytes": "5e",
+            "original": "pop     esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c5d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c5e",
+            "bytes": "5b",
+            "original": "pop     ebx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c5e",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12c5f",
+            "bytes": "c3",
+            "original": "retn",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12c5f",
+            "semantic_annotations": []
+          }
+        ]
+      },
+      {
+        "original_name": "sub_127E0",
+        "start": "0x127e0",
+        "end": "0x1297d",
+        "xrefs": [
+          "0x127cf",
+          "0x1374b",
+          "0x17544",
+          "0x1778c",
+          "0x17a9c",
+          "0x1dd1b",
+          "0x2173a",
+          "0x32b31",
+          "0x32b6d",
+          "0x32c5b",
+          "0x32c97"
+        ],
+        "instructions": [
+          {
+            "address": "0x128fc",
+            "bytes": "8b150b3c0500",
+            "original": "mov     edx, dword_53C0B",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x128fc",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12902",
+            "bytes": "eb06",
+            "original": "jmp     short loc_1290A",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12902",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12904",
+            "bytes": "8b15073c0500",
+            "original": "mov     edx, dword_53C07",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12904",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1290a",
+            "bytes": "83fa03",
+            "original": "cmp     edx, 3",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1290a",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1290d",
+            "bytes": "7505",
+            "original": "jnz     short loc_12914",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1290d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1290f",
+            "bytes": "ba01000000",
+            "original": "mov     edx, 1",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1290f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12914",
+            "bytes": "0fb64026",
+            "original": "movzx   eax, byte ptr [eax+26h]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12914",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12918",
+            "bytes": "85c0",
+            "original": "test    eax, eax",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12918",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1291a",
+            "bytes": "7402",
+            "original": "jz      short loc_1291E",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1291a",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1291c",
+            "bytes": "31d2",
+            "original": "xor     edx, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1291c",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1291e",
+            "bytes": "6bff0c",
+            "original": "imul    edi, 0Ch",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1291e",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12921",
+            "bytes": "89f0",
+            "original": "mov     eax, esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12921",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12923",
+            "bytes": "c1e002",
+            "original": "shl     eax, 2",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12923",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12926",
+            "bytes": "29f0",
+            "original": "sub     eax, esi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12926",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12928",
+            "bytes": "01f8",
+            "original": "add     eax, edi",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12928",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1292a",
+            "bytes": "01d0",
+            "original": "add     eax, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1292a",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1292c",
+            "bytes": "8b15613a0500",
+            "original": "mov     edx, dword_53A61",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1292c",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12932",
+            "bytes": "8b0482",
+            "original": "mov     eax, [edx+eax*4]",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12932",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12935",
+            "bytes": "01d0",
+            "original": "add     eax, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12935",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12937",
+            "bytes": "81c3d8750000",
+            "original": "add     ebx, 75D8h",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12937",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1293d",
+            "bytes": "85db",
+            "original": "test    ebx, ebx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1293d",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1293f",
+            "bytes": "0f8c01e2ffff",
+            "original": "jl      loc_10B46",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1293f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12945",
+            "bytes": "f6042480",
+            "original": "test    byte ptr [esp+18h+var_18], 80h",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12945",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12949",
+            "bytes": "7516",
+            "original": "jnz     short loc_12961",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12949",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1294b",
+            "bytes": "68c8010000",
+            "original": "push    1C8h",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1294b",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12950",
+            "bytes": "8b15493a0500",
+            "original": "mov     edx, dword_53A49",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12950",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12956",
+            "bytes": "01d3",
+            "original": "add     ebx, edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12956",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12958",
+            "bytes": "53",
+            "original": "push    ebx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12958",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12959",
+            "bytes": "50",
+            "original": "push    eax",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12959",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1295a",
+            "bytes": "e87bb50300",
+            "original": "call    sub_4DEDA",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1295a",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1295f",
+            "bytes": "eb14",
+            "original": "jmp     short loc_12975",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1295f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12961",
+            "bytes": "68c8010000",
+            "original": "push    1C8h",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12961",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12966",
+            "bytes": "8b15493a0500",
+            "original": "mov     edx, dword_53A49",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12966",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1296c",
+            "bytes": "01da",
+            "original": "add     edx, ebx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1296c",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1296e",
+            "bytes": "52",
+            "original": "push    edx",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1296e",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x1296f",
+            "bytes": "50",
+            "original": "push    eax",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x1296f",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12970",
+            "bytes": "e8e1b40300",
+            "original": "call    sub_4DE56",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12970",
+            "semantic_annotations": []
+          },
+          {
+            "address": "0x12975",
+            "bytes": "83c40c",
+            "original": "add     esp, 0Ch",
+            "semantic": "未附加推測語意",
+            "level": "unknown",
+            "warning": "語意未經本次審查",
+            "source": "FD2.EXE IDA LE 0x12975",
+            "semantic_annotations": []
+          }
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "level": "已證實",
+        "statement": "179D5畫四圖示後，17A8D測cursor lookup!= -1，17A9C呼叫127E0重繪；opening17539..17544也有此caller。",
+        "source": "上述直接指令與既有完整1741C。"
+      },
+      {
+        "level": "已證實",
+        "statement": "12C0D依raw+0/+1與53AB1/53AB5、原陣列順序查第一個active單位；無匹配回-1。",
+        "source": "12C2F..12C57；3453E inactive契約沿用既有typed engine。"
+      },
+      {
+        "level": "已證實",
+        "statement": "127E0使用既有selector slot、pose/motion、idle、moving、flags與framebuffer writer，不重新合成地形或全部角色。",
+        "source": "128FC..12975；既有fdicon.BlitNativeUnitLayer契約。"
+      }
+    ]
+  },
+  "runtime_spec": {
+    "state": "CONFORMED",
+    "issue": 180,
+    "scope": "正式nativeMapActionOverlay的opening與steady，保留closing獨立序列；不改動畫步數、時間、輸入或存檔。",
+    "typed_input": "原版raw角色座標／byte5、materialized view.CursorX/Y、selector cache與本次map cycles／pixelShift。",
+    "rule": "四圖示後，依原陣列順序找raw座標相同且byte5 bit0==0之unit，再用既有127E0 typed blitter只畫該unit。不用g.sel名字、HP或Camp代替lookup。",
+    "failure": "缺raw來源、selector或資產拒收；無active cursor unit時不重繪。closing不接新consumer。",
+    "verification": [
+      "兩章30點完整indexed與RGB",
+      "missing/raw inactive／重複座標first-match／closing邊界",
+      "正常LOAD與正式Draw的獨立GPU抽樣",
+      "既有opening/closing及完整Go回歸"
+    ],
+    "save_impact": "SAV格式、交易提交、角色資料與RNG不改。",
+    "gpu_contract": {
+      "state": "CONFORMED",
+      "method": "正常標題LOAD／城鎮出發／選人／行走至指定move或stay；正式Game.Draw逐一合成6組overlay×2個terrain flip×4個idle。色盤只承接與raw表完整相符的已知cycle phase，由正式算法生成；不複製原版RGB或indexed pixels。",
+      "limits": "凍結BIOS取樣與有限相位為明示受控條件，不宣稱實機clock或新的全章PLAYER-E2；一個GPU程序只跑一次RunGame。",
+      "acceptance": "完整640x400 RGBA與320x200 indexed同時為0，原版raw/frame雜湊入收據；章重播semantic cancel經正式closing owner返回游標；不改單位、RNG、SAV。"
+    }
+  },
+  "commands": {
+    "ida_wait": "test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-exp-read.i64 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 240 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work,dst=/shots --workdir /tmp -e HOME=/tmp/ida-home -e PROBE_OUTPUT=/shots/ring-open-wait-ida-r1.json -e 'PROBE_ADDRESSES=0x127D4 0x1297D 0x17898 0x179D5 0x12211 0x127E0' fd2-ida-authorized-local:latest timeout 210 sh -c 'set -eu; test -f /.dockerenv; cp /src/work/ch01-town-parity-20260908/ida/fd2-exp-read.i64 /tmp/fd2-query.i64; idat -A -S/src/tools/ida_opening_input_probe.py /tmp/fd2-query.i64 > /shots/ring-open-wait-ida-r1.log 2>&1; test -s /shots/ring-open-wait-ida-r1.json'",
+    "ida_cursor": "test -f /home/anr2/cht/fd2/work/ch01-town-parity-20260908/ida/fd2-exp-read.i64 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 240 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --mount type=bind,src=/home/anr2/cht/fd2/work,dst=/shots --workdir /tmp -e HOME=/tmp/ida-home -e PROBE_OUTPUT=/shots/ring-open-wait-ida-r2.json -e 'PROBE_ADDRESSES=0x12C0D' fd2-ida-authorized-local:latest timeout 210 sh -c 'set -eu; test -f /.dockerenv; cp /src/work/ch01-town-parity-20260908/ida/fd2-exp-read.i64 /tmp/fd2-query.i64; idat -A -S/src/tools/ida_opening_input_probe.py /tmp/fd2-query.i64 > /shots/ring-open-wait-ida-r2.log 2>&1; test -s /shots/ring-open-wait-ida-r2.json'",
+    "gpu_pending": "FD2_PARITY_RING_GPU_SEQ=<move/stay seq> 與既有TestChapterParityReplay正常LOAD入口",
+    "ringCursorOriginalCmdR2": "test -e '/home/anr2/cht/dosgolem-fd2-oracle' && test -e '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch04/ring-cursor-original-r2' && test -e '/home/anr2/cht/fd2/work/parity-slot-ch04/ring-cursor-state-r2' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -e '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -e '/home/anr2/cht/fd2/remake/assets/maps' && test -e '/home/anr2/cht/fd2/docs/data/parity-plans/ch04-ring-cursor-probe.jsonl' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -e '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-ring-cursor-original-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch04/ring-cursor-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch04/ring-cursor-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch04-ring-cursor-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=a01ff084f038ddd1d133480f08d32e3b2e6f98c0' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch04-ring-cursor-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch04/ring-cursor-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_BUDGET=1250000000' -e 'FD2_ORACLE_EIP_TRACE=0x1741C,0x17544,0x179D5,0x17A9C,0x127E0' -e 'FD2_ORACLE_EIP_TRACE_FROM=946000000' -e 'FD2_ORACLE_EIP_TRACE_TO=960000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=25000' -e FD2_ORACLE_FRAME_UNITS=1 -e FD2_ORACLE_MAP_STATE=1 -e FD2_ORACLE_FRAMES=1 -e FD2_ORACLE_FRAME_STRIDE=0 -e FD2_ORACLE_FRAME_EIP=0x17A9C -e FD2_ORACLE_FRAME_MAX=100 -e FD2_ORACLE_FRAME_FROM=946000000 -e FD2_ORACLE_FRAME_TO=960000000 -e FD2_ORACLE_EIP_WATCH=0x17A9C --workdir /dos golang:1.24-bookworm bash /oracle-entry.sh > work/ring-cursor-original-r2.log 2>&1",
+    "ringGPUCurrentCmdR1": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/chapter_parity_ring_open_test.go cmd/fd2/chapter_parity_replay_test.go cmd/fd2/native_map_unit_window.go cmd/fd2/main.go; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=4 FD2_PARITY_SLOT=/src/work/parity-slot-ch04/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch04/sample-r13 FD2_PARITY_OUT=/src/work/parity-slot-ch04/ring-gpu-current-r1 FD2_PARITY_RING_GPU_SEQ=115 FD2_PARITY_RING_GPU_ORIGINAL=/src/work/parity-slot-ch04/ring-cursor-original-r2 with-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -timeout 180s > /src/work/ring-gpu-ch04-current-r1.log 2>&1'",
+    "ringRedrawCh04CmdR3": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; export FD2_ASSET_PACK=/tmp/fd2-pack; export FD2_PARITY_CHAPTER=4 FD2_PARITY_SLOT=/src/work/parity-slot-ch04/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch04/sample-r13 FD2_PARITY_OUT=/src/work/parity-slot-ch04/ring-redraw-after-r3; with-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -timeout 600s > /src/work/ring-redraw-ch04-after-r3.log 2>&1'",
+    "ringRedrawCh05CmdR3": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; export FD2_ASSET_PACK=/tmp/fd2-pack; export FD2_PARITY_CHAPTER=5 FD2_PARITY_SLOT=/src/work/parity-slot-ch05/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch05/sample-r5 FD2_PARITY_OUT=/src/work/parity-slot-ch05/ring-redraw-after-r3; with-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -timeout 600s > /src/work/ring-redraw-ch05-after-r3.log 2>&1'",
+    "ringRedrawIndependentCh04CmdR3": "test -d /home/anr2/cht/fd2 && timeout 120 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 90 sh -c 'set -eu; test -f /.dockerenv; python3 tools/fd2_ring_open_receipts.py --chapter 4 --oracle work/parity-slot-ch04/sample-r13 --before work/parity-slot-ch04/ring-open-before-r2 --after work/parity-slot-ch04/ring-redraw-after-r3 --output work/ring-redraw-ch04-independent-r3.json'",
+    "ringRedrawIndependentCh05CmdR3": "test -d /home/anr2/cht/fd2 && timeout 120 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 90 sh -c 'set -eu; test -f /.dockerenv; python3 tools/fd2_ring_open_receipts.py --chapter 5 --oracle work/parity-slot-ch05/sample-r5 --before work/parity-slot-ch05/ring-open-before-r1 --after work/parity-slot-ch05/ring-redraw-after-r3 --output work/ring-redraw-ch05-independent-r3.json'",
+    "ringFullGoCmdR2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 720s -json > /src/work/ring-full-go-r2.jsonl 2> /src/work/ring-full-go-r2.stderr'",
+    "ringInventoryGenerateCmd": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; go run ./cmd/fd2-string-inventory -repo /src -output /src/work/ring-string-inventory-r1.json'",
+    "ringInventoryBaselineCmdR2": "test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 960 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --workdir /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900  sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-base; git -C /src archive c2e0641496f3163bb98b06107329b73ebfb85a4b remake/assets remake/cmd/fd2 | tar -x -C /tmp/fd2-base; cp /src/remake/assets/data/command_labels.json /tmp/fd2-base/remake/assets/data/command_labels.json; go run ./cmd/fd2-string-inventory -repo /tmp/fd2-base -output /src/work/ring-string-inventory-baseline.json'",
+    "ringOfficialInventoryReviewCmd": "test -d /home/anr2/.codex/skills && test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/.codex/knowledge-base && test -d /home/anr2/ida_94_official && test -d /home/anr2/cht/dosgolem && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/fd2 && timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user \"$(id -u):$(id -g)\" --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/src/org_game/炎龍騎士團/FLAME2,readonly --mount type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly --mount type=bind,src=/tmp,dst=/hosttmp --mount type=bind,src=/home/anr2/.codex/knowledge-base,dst=/kb,readonly --mount type=bind,src=/home/anr2/ida_94_official,dst=/ida-project,readonly --mount type=bind,src=/home/anr2/cht/dosgolem,dst=/dos-reference,readonly --mount type=bind,src=/home/anr2/.codex/skills,dst=/skills,readonly --workdir /src fd2-go-test-local:20260909 timeout 150  sh -c 'set -eu; test -f /.dockerenv; git show c2e0641496f3163bb98b06107329b73ebfb85a4b:docs/data/fd2-string-review.json > /tmp/fd2-review-baseline.json; python3 tools/migrate_string_review.py --old-inventory work/ring-string-inventory-baseline.json --new-inventory work/ring-string-inventory-r1.json --review /tmp/fd2-review-baseline.json --output work/ring-string-review-official.json; python3 - <<'\\''PY'\\''\nfrom pathlib import Path\nimport json\na=json.loads(Path('\\''work/ring-string-review-official.json'\\'').read_text());b=json.loads(Path('\\''docs/data/fd2-string-review.json'\\'').read_text());assert a['\\''dispositions'\\'']==b['\\''dispositions'\\''] and a['\\''inventory_sha256'\\'']==b['\\''inventory_sha256'\\''];print('\\''official migration dispositions/hash identical'\\'')\nPY\npython3 tools/check_markdown_links.py docs/knowledge-base > work/ring-doc-links-r1.log 2>&1'",
+    "formal_verify_r3": "test -d /home/anr2/cht/fd2 && timeout 120 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --workdir /src --entrypoint timeout fd2-assets-local:20260829-sfx 90  sh -c 'set -eu; test -f /.dockerenv; python3 tools/verify_chapter_parity.py --chapter 4 --oracle work/parity-slot-ch04/sample-r13 --remake work/parity-slot-ch04/ring-redraw-after-r3 --slot-manifest work/parity-slot-ch04/manifest.json --plan docs/data/parity-plans/ch04-sample.jsonl --out work/ring-redraw-ch04-verifier-r3.json; python3 tools/verify_chapter_parity.py --chapter 5 --oracle work/parity-slot-ch05/sample-r5 --remake work/parity-slot-ch05/ring-redraw-after-r3 --slot-manifest work/parity-slot-ch05/manifest.json --plan docs/data/parity-plans/ch05-sample.jsonl --out work/ring-redraw-ch05-verifier-r3.json'"
+  },
+  "legacy_end_spec": {
+    "issue": 179,
+    "state": "CONFORMED",
+    "scope": "補舊actions.jsonl缺少before_seq的clear→END metadata，不改原版run或SAV。",
+    "cause": "原始normal cursor與system owner均存在；只有較早driver的end_turn未寫before_seq。",
+    "source": [
+      {
+        "path": "work/parity-slot-ch05/sample-r5/checkpoint-1192.json",
+        "sha256": "3857981f60f8a9dff4ba65da5f1a16be195fb3e30c71658c9ea2f3434790b73f",
+        "seq": 1192,
+        "input_chain": [
+          "0x12211",
+          "0x11CED",
+          "0x11AE4",
+          "0x117F8",
+          "0x25DD3",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "view": {
+          "camera_x": 14,
+          "camera_y": 6,
+          "cursor_x": 15,
+          "cursor_y": 12,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 56069,
+          "round": 5,
+          "visible_x": 1,
+          "visible_y": 6
+        }
+      },
+      {
+        "path": "work/parity-slot-ch05/sample-r5/checkpoint-1202.json",
+        "sha256": "1bbe82d94596eb550e7ad70e14d16826782d5567ad92dfc0318c02ba246b55d2",
+        "seq": 1202,
+        "input_chain": [
+          "0x1295F",
+          "0x127D4",
+          "0x11CFA",
+          "0x11AE4",
+          "0x117F8",
+          "0x25DD3",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "view": {
+          "camera_x": 12,
+          "camera_y": 6,
+          "cursor_x": 13,
+          "cursor_y": 12,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 56069,
+          "round": 5,
+          "visible_x": 1,
+          "visible_y": 6
+        }
+      },
+      {
+        "path": "work/parity-slot-ch05/sample-r5/checkpoint-1203.json",
+        "sha256": "c7859cae06b41632bbb9e1bd3c0dc4995211f9a9897a99881d7f9035f9d11463",
+        "seq": 1203,
+        "input_chain": [
+          "0x12211",
+          "0x17927",
+          "0x17815",
+          "0x16FAE",
+          "0x118C6",
+          "0x25DD3",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "view": {
+          "camera_x": 12,
+          "camera_y": 6,
+          "cursor_x": 13,
+          "cursor_y": 12,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 56069,
+          "round": 5,
+          "visible_x": 1,
+          "visible_y": 6
+        }
+      },
+      {
+        "path": "work/parity-slot-ch05/sample-r5/checkpoint-1212.json",
+        "sha256": "fc7e927217f6df6c54bd3725927fe5baeb937c9dee4b80c2ea00a0a817b52044",
+        "seq": 1212,
+        "input_chain": [
+          "0x1062A",
+          "0x16CF8",
+          "0x16039",
+          "0x23278",
+          "0x45D91",
+          "0x3CB91"
+        ],
+        "view": {
+          "camera_x": 6,
+          "camera_y": 4,
+          "cursor_x": 6,
+          "cursor_y": 4,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 14095,
+          "round": 5,
+          "visible_x": 0,
+          "visible_y": 0
+        }
+      }
+    ],
+    "rule": "只在相鄰force_enemy_clear／同回合end_turn且before_seq缺失時，掃原始control-history的Enter／Space；前一checkpoint必須有117F8，當前必須有118C6與16FAE，固定EXE、同回合、cursor符合end_turn.at；恰一匹配才承接。",
+    "reject": [
+      "錯EXE",
+      "缺checkpoint／controls",
+      "不同回合／座標",
+      "零或多匹配",
+      "原本before_seq保留，不覆寫"
+    ],
+    "provenance": "replay-settings記錄承接seq及兩側checkpoint SHA，source從原版bytes取得。",
+    "acceptance": "第五章完整重播及原verifier三類非畫面gate；加入來源拒收測試；不能以guess cursor或改owner gate通過。"
+  },
+  "draw_layer_spec": {
+    "state": "CONFORMED",
+    "issue": 181,
+    "level": "confirmed",
+    "problem": "正常Game.Draw先呈現含四圖示與游標角色的完整indexed map，後續drawRing又以另一anchor重貼四圖示。完整差異只在指令環192,8..336,136，6344個GPU像素；DAC假說被全圖位置與顏色反證。",
+    "evidence": [
+      "work/ring-gpu-diagnostic-r4.png",
+      "work/parity-slot-ch04/ring-gpu-r4/ring-gpu-candidates.json",
+      "remake/cmd/fd2/main.go:drawNativeMapFrame/Draw/drawRing",
+      "work/parity-slot-ch04/ring-cursor-original-r2/eip-trace.jsonl"
+    ],
+    "contract": "僅當本次nativeMapFrame已成功呈現且與nativeMapSelectionOverlay相同ring/sel/walk/raw78条件，原版主題省略第二次drawRing並仍markActionOverlayDrawn。未呈現、缺raw、游標系統及modern分支維持既有drawRing，不吞失敗。",
+    "inputs": "本次nativeMapPresented結果，不用上一幀nativeMapVGA存在或normalized座標推斷。",
+    "save_impact": "只決定本次呈現圖層，SAV／角色／RNG／輸入規則不改。",
+    "acceptance": [
+      "實際正常LOAD prefix Game.Draw完整indexed／GPU同為0",
+      "first/active/raw/closing邊界及6種本次呈現gate",
+      "兩章正常完整replay與完整Go回歸"
+    ]
+  },
+  "inventory_rebind": {
+    "issue": 182,
+    "baseline_commit": "c2e0641496f3163bb98b06107329b73ebfb85a4b",
+    "baseline_inventory_sha256": "98c62cb7a999e5567eb9793f66a63a1c0d697d07780a12db710b9d9fc489a21e",
+    "current_inventory_sha256": "bba089ef90272e287c20260b037d3a26805aae7effc1a71fe4ee2ef1d6dd4ac3",
+    "reviewed_candidates": 98,
+    "same_file_function_text_confidence_variables": true,
+    "changed_source_ids": 17,
+    "disposition_policy": "preserve reviewed semantic identity; only line/column-based IDs rebound",
+    "state": "CONFORMED",
+    "evidence": "work/ring-string-review-rebind.json"
+  },
+  "artifacts": [
+    {
+      "path": "work/ring-redraw-ch04-independent-r2.json",
+      "sha256": "fcb9a4801eee61a3e3717485af1be93d06d6c5f6536c4fec1c7c1711139f392c"
+    },
+    {
+      "path": "work/ring-redraw-ch05-independent-r2.json",
+      "sha256": "70fa8e76cdb73ac6efe439c066f325df7527656ca0378a64e683d88cde921ede"
+    },
+    {
+      "path": "work/ring-redraw-ch04-independent-r3.json",
+      "sha256": "61a32787a01e3ebc705add251ccea86451026abeff3019d288e580f354f1399c"
+    },
+    {
+      "path": "work/ring-redraw-ch05-independent-r3.json",
+      "sha256": "430f1cd623f8db1947b3f7887c25a748042a6ef3d78c1f186bf12db1d36eada7"
+    },
+    {
+      "path": "work/ring-redraw-ch04-verifier-r3.json",
+      "sha256": "8bd91d411f8cda4a77deddd8b4f9f04c8dff4cb605d68b8facdc147e1b7970b6"
+    },
+    {
+      "path": "work/ring-redraw-ch05-verifier-r3.json",
+      "sha256": "b2a3ec84e3b758646d530ba9d77d96d51909cd3e9de3b28fced20e5774df848d"
+    },
+    {
+      "path": "work/ring-full-go-r2.jsonl",
+      "sha256": "6639ff1a190fec7b5846132692a03bc2421cdddb9b12247f48c93309d90e473a"
+    },
+    {
+      "path": "work/ring-string-inventory-baseline.json",
+      "sha256": "98c62cb7a999e5567eb9793f66a63a1c0d697d07780a12db710b9d9fc489a21e"
+    },
+    {
+      "path": "work/ring-string-inventory-r1.json",
+      "sha256": "bba089ef90272e287c20260b037d3a26805aae7effc1a71fe4ee2ef1d6dd4ac3"
+    },
+    {
+      "path": "work/ring-string-review-rebind.json",
+      "sha256": "ff10593d1e940a5b94e9795139088bd3a98617a3bbf6a20a84af6a5e9aae98da"
+    },
+    {
+      "path": "work/ring-string-review-official.json",
+      "sha256": "175635c0244f5794c742a9c61f4df931c21c8b5691dbcf73038a4b64928c845c"
+    },
+    {
+      "path": "work/ring-public-overview.json",
+      "sha256": "4eeccb9b857126b532a75e32fa341040db8bfbf687d62d71a9508d9e5fbe4952"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-cursor-original-r2/runner.json",
+      "sha256": "d8cda82176936cd0078de9e0fa442ad200700c01ec48d498dca712e9ea4d996a"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-cursor-original-r2/control-history.jsonl",
+      "sha256": "5d828b19a2145b9003b76953027a6c873b2c1fc3957121dfbf9219942fe04716"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-cursor-original-r2/checkpoint-0115.json",
+      "sha256": "66d6d2dc680a720adb21f449df051a9482c6786b124e43c6c58d05209ef193e9"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-cursor-original-r2/checkpoint-0115.png",
+      "sha256": "d0b3dfb87bd3a407109f29468895eea75022434839441a5afa3c37292f7bd3f0"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-cursor-original-r2/eip-trace.jsonl",
+      "sha256": "783522705879fad22075ac76b3c3168b85a48bcd0cd0fb0f102508ea53b3fabf"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-cursor-original-r2/frames/frames.jsonl",
+      "sha256": "89b5b8042721bc75f06a0341d64b24cd8ec65d03efd4364936b6f478f742c833"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-gpu-current-r1/ring-gpu.json",
+      "sha256": "1aaf31599c428b813a5486b8083f2a527f3056b139e14b3aac1c628e6f45d262"
+    },
+    {
+      "path": "docs/figures/ring-cursor-original-remake-overview.png",
+      "sha256": "908100466f0adab262aa9c62c0caad036abcf3d6b889be242095edc5b6c42c95"
+    },
+    {
+      "path": "work/parity-slot-ch04/ring-redraw-after-r3/replay-settings.json",
+      "sha256": "5933a48713345689093648440e1182ac06b380a4ab1243849de1244936ff10e0"
+    },
+    {
+      "path": "work/parity-slot-ch05/ring-redraw-after-r3/replay-settings.json",
+      "sha256": "f33a41528991ad13ae889419976834790740586932114a76773918ec4b362b35"
+    }
+  ],
+  "public_overview": {
+    "method": "finite flattened public overview; full input frames private",
+    "source_original": "work/parity-slot-ch04/ring-cursor-original-r2/checkpoint-0115.png",
+    "source_gpu": "work/parity-slot-ch04/ring-gpu-current-r1/ring-gpu-18.png",
+    "crop_from_640x400": [
+      184,
+      0,
+      352,
+      152
+    ],
+    "output": "docs/figures/ring-cursor-original-remake-overview.png",
+    "sha256": "908100466f0adab262aa9c62c0caad036abcf3d6b889be242095edc5b6c42c95",
+    "full_comparison": "full 320x200 indexed and 640x400 GPU RGBA are identical before crop"
+  }
+}

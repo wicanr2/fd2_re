@@ -197,19 +197,6 @@
       "issue": 33
     },
     {
-      "id": "parity-replay-ring-open-step-variants",
-      "layer": "tooling",
-      "category": "缺陷",
-      "title": "章對拍：指令環四步開啟中途的原版 checkpoint 沒有對應的重播變體（每個 move／stay 點殘留 66–628 像素）",
-      "body": "ch04（14 點）與 ch05（16 點）收據裡所有 move／stay 畫面點的殘差都是同一類：原版 checkpoint 拍在 0x1741c 的四步指令環開啟動畫中途（圖示逐列揭示到一半），重製端 beginActionOverlayOpen 也有這四步，但 chapter_parity_replay_test.go 只對 idle 相位出變體、指令環一律是開完的那一幀，所以 verifier 比到的最小差就是揭示中途與開完之間的差。ch05 seq 859 已到 628 像素，預算 640，第六章敵人更多、圖示更大時很可能直接爆預算變成假失敗。要做的是重播端在 ring 狀態的點多出開啟步 0–3 的變體（乘上 idle 相位），verifier 照現有規則取最小；不改引擎的開啟動畫本身。收據：docs/data/ui-traces/parity-ch04.json、parity-ch05.json 的 frames.points（kind=move／stay）；56 §第六章的五章回顧表。",
-      "acceptance": "重跑 ch04 r13／ch05 r5 的重製側，parity-ch04.json 與 parity-ch05.json 裡 kind=move／stay 的 diff_pixels 全部為 0（或明寫剩餘的點是哪一個開啟步都對不上、為什麼）。",
-      "verify": {
-        "kind": "manual",
-        "note": "看 docs/data/ui-traces/parity-ch05.json frames.points 裡 kind=move 的 diff_pixels；仍有 >0 就未完成。"
-      },
-      "issue": 34
-    },
-    {
       "id": "hud-anchor-attack-and-message-redraws",
       "layer": "runtime",
       "category": "缺陷",

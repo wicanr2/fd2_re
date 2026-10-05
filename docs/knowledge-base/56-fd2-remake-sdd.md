@@ -8084,7 +8084,7 @@ r2 騎士第 3 回合先衝踏格、第 6 回合陣亡；r3 守到第 7 回合�
 checkpoint、34 個亂數同步點）對 remake-r8：四個 gate 全過（`docs/data/ui-traces/parity-ch07.json`）。
 `ai_order` 分岔 0；ch06_post 的 `runtime_context.slot_counts=[34, 44]` 由收據核過（battle_start 34
 筆、event 25 之後 44 筆）；金幣 2000→5500→5537、酒店存檔整檔 sha256 相同（10 人）。228 張畫面
-164 張 0 px，64 張有差全在預算內：63 張 move／stay 是指令環開啟動畫中途（52–255 px，#34）、
+164 張 0 px，64 張有差全在預算內：63 張 move／stay 是指令環畫面殘差（52–255 px，#34）、
 1 張祕密商店店主眨眼（69 px，#38）。同一份重製端重跑第四／五／六章（remake-r14／r10／r10）全過，
 差異像素數逐點相同，只有第六章 seq 619 attack_armed 由 0 變 8 px：調色盤 index 224 的 DAC 循環色
 差一步，重製端的循環相位每次重跑不一定落在同一步（第四章 remake-r59／r14 與 r60／r61 的 PLTE
@@ -8094,7 +8094,7 @@ checkpoint、34 個亂數同步點）對 remake-r8：四個 gate 全過（`docs/
 
 | 類別 | 點數 | 像素 | 處置 |
 |---|---|---|---|
-| 指令環開啟動畫中途 | 63（43 move＋20 stay） | 52–255 | #34 |
+| 指令環畫面殘差 | 63（43 move＋20 stay） | 52–255 | #34 |
 | 店主 DATO 眨眼（祕密商店） | 1（seq 2232 secret_shop） | 69 | #38 |
 | 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 10 個 `after_enemy_phase`＋`ai_order` | — | 規則 `oracle_mid_end_turn` |
 
@@ -8247,7 +8247,7 @@ sha `768a561e…`，名冊 10 人）。建槽工具原本把戰後 handler 讀�
 對 remake-reg2：四個 gate 全過（`docs/data/ui-traces/parity-ch08.json`），`ai_order` 分岔 0；
 戰後 `ch07_post` 的 `runtime_context.slot_counts` 由收據核過 frontier 41（第 2～7 回合六次 event 27 都登場）；
 金幣 2000→7000→7037（出售）→7027（買入）、酒店存檔整檔 sha256 相同（10 人，洛娜 JOIN5 之後）。263 張
-畫面 186 張 0 px，77 張有差全在預算內：76 張 move／stay 是指令環開啟動畫中途（61–624 px，#34）、1 張
+畫面 186 張 0 px，77 張有差全在預算內：76 張 move／stay 是指令環畫面殘差（61–624 px，#34）、1 張
 departure_prompt 的 YES pulse（60 px，#35）。r1d 曾有 1 張 select（seq 508）因幾個單位的 idle 相位
 不一致差 619 px，reg2 重跑是 0 px，屬於重播端取樣時機，沒有再現。同一份重製端重跑第四／五／六／七章
 （remake-reg2）全過，每個畫面點的差異像素數與既有收據逐點相同。
@@ -8265,7 +8265,7 @@ work/parity-slot-ch08/sample-r1 --remake work/parity-slot-ch08/remake-reg2 --out
 
 | 類別 | 點數 | 像素 | 處置 |
 |---|---|---|---|
-| 指令環開啟動畫中途 | 76（52 move＋24 stay） | 61–624（seq 2529 已到 624，預算 640） | #34 |
+| 指令環畫面殘差 | 76（52 move＋24 stay） | 61–624（seq 2529 已到 624，預算 640） | #34 |
 | 出口確認 YES pulse（cell 48／49） | 1（seq 38 departure_prompt） | 60 | #35 |
 | 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 9 | — | 規則 `oracle_mid_end_turn` |
 
@@ -8319,7 +8319,7 @@ assumption。定案值 AP+200、DP+0、DX+60（校準紀錄見 114 §2 的表）
   用來對照原版 eip-trace（`0x13FD4` 原地回復走 `focusUnitJob`，不經過掛勾）。
 
 結果：c3 對 remake-c3e 四個 gate 全過（`docs/data/ui-traces/parity-ch08.json`）：179 個畫面點 127 點
-0 px，其餘 41 move＋9 stay 指令環開啟中途（#34，最大 629 px）、1 點出口 YES pulse（#35）、1 點攻擊結果
+0 px，其餘 41 move＋9 stay 指令環畫面殘差（#34，最大 629 px）、1 點出口 YES pulse（#35）、1 點攻擊結果
 4 px；死亡程式 29 對白 seq 1452 0 px；金幣 2000→4800→4837→4827、
 酒店存檔整檔 sha256 相同。同一份重製端重跑第四～七章（remake-reg5，原版側 ch04 r13、ch05 r5、ch06 r4、
 ch07 r6）與未強化第八章 r1 全過，每個畫面點的差異像素數與各自的收據逐點相同。抽樣截圖 `tools/parity_sample_sheet.py --receipt
@@ -8374,7 +8374,7 @@ DX 10、EV 70）在停手期間第 9 回合陣亡，使用者 2026-09-17 同意�
 結果：r1（原版側 `work/parity-slot-ch09/sample-r1`，dosgolem `f57c23d`，298 個動作、40 個亂數同步點）
 對 remake-r2 四個 gate 全過（`docs/data/ui-traces/parity-ch09.json`）：`ai_order` 分岔 0、金幣
 2000→3000→3037（出售）→3027（買入）、酒店存檔整檔 sha256 相同；286 個畫面點 203 點 0 px，其餘 64 move＋
-17 stay 指令環開啟中途（#34，最大 627 px）、1 點出口 YES pulse（#35）、1 點事件 30 對白底圖（seq 924，
+17 stay 指令環畫面殘差（#34，最大 627 px）、1 點出口 YES pulse（#35）、1 點事件 30 對白底圖（seq 924，
 地圖上方單位 101 px）。事件 30 對白「唔．．公主殿下」的兩點字模由 `glyph_ids` 畫出。同一份重製端重跑
 第四～八章（remake-reg5，強化第八章 remake-c3f、未強化第八章 r1）全過，每個畫面點與各自收據逐點相同。抽樣截圖 `tools/parity_sample_sheet.py --receipt
 docs/data/ui-traces/parity-ch09.json --oracle work/parity-slot-ch09/sample-r1 --remake
@@ -8469,7 +8469,7 @@ IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x1
 
 結果：原版側 `work/parity-slot-ch10/sample-r4`（dosgolem `a9bcd62`，280 動作）對 remake-r6 四個 gate 全過
 （`docs/data/ui-traces/parity-ch10.json`）：行為 281 點一致、金額 2000→12000→22000→22037→22027、
-酒店存檔整檔 sha256 相同；268 個畫面點 174 點 0 px，其餘在 640 px 內（最大 428 px，指令環開啟中途 #34）。
+酒店存檔整檔 sha256 相同；268 個畫面點 174 點 0 px，其餘在 640 px 內（最大 428 px，指令環畫面殘差 #34）。
 抽樣截圖 `docs/figures/parity-ch10-samples-p1..p5.png`（113 列，含 1525 熔岩底面、1561 寶物提問、
 1853 事件 32 之後、2403、3645、4345 戰後城鎮）。
 
@@ -8518,7 +8518,7 @@ IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x1
 結果：原版側 `work/parity-slot-ch11/sample-r2`（dosgolem `a9bcd62`，240 動作、7074 個 checkpoint）
 對 remake-r3 四個 gate 全過（`docs/data/ui-traces/parity-ch11.json`）：行為 241 點一致、
 金額 2000→12000→12037→12027、酒店存檔整檔 sha256 相同；231 個畫面點 157 點 0 px，其餘在 640 px 內
-（最大 489 px，單位動畫相位與指令環開啟中途 #34）。接上可變地圖緩衝之後 0 px 的點由 121 增為 157、
+（最大 489 px，單位動畫相位與指令環畫面殘差 #34）。接上可變地圖緩衝之後 0 px 的點由 121 增為 157、
 差異總和由 18375 降為 11561。抽樣截圖 `docs/figures/parity-ch11-samples-p1..p5.png`（91 列，含
 101 戰場開場、4687／4702 撿到寶箱的敵人被擊倒、5797 打開的箱子、6870 戰後城鎮、7073 祕密商店）。
 
@@ -8600,7 +8600,7 @@ bit7 的已行動狀態不得觸發；正常玩家驗收須在原版允許的輸
 
 | 類別 | 點數（ch04／ch05） | 像素 | 成因 | 處置 |
 |---|---|---|---|---|
-| 指令環四步開啟動畫中途：原版 checkpoint 拍在 `0x1741c` 圖示逐列揭示到一半，重播端只出開完的幀 | 14（7 move＋7 stay）／16（15 move＋1 stay） | 66–628 | checkpoint 時機；重製端 `beginActionOverlayOpen` 有這四步，重播沒出這些變體 | #34：重播端 ring 點加開啟步 0–3 變體（seq 859 已到 628，預算 640） |
+| 指令環畫面殘差，歷史開框中途假說已否定 | 14（7 move＋7 stay）／16（15 move＋1 stay） | 歷史66–628；目前30點皆0 | 漏掉圖示後127E0游標角色consumer，加上53C13閃爍候選缺項 | #34／#180補驗；正式GPU重貼圖示由#181修正。主證據見本檔最新勘誤。 |
 | 出口／整備確認提示的 YES：原版畫 action cell 49（選中、pulse 1），重製畫 cell 48 | 2／2（departure_prompt、town_enter） | 60（四點相同） | 逐格對 78 個 cell：cell 49 差 0、cell 48 差 60；`nativeClassUIPulse/2` 在 checkpoint 當下是 0 | #35歷史單相位結果；2026-10-05四點已補驗，見最新節 |
 | ENEMY PHASE 橫幅期間馬賽克取樣的兩個 8×8 塊 | 1／0（ch04 seq 934 enemy_phase_start） | 162 | 兩格取樣色不同，其餘 154 個相位變體都一樣 | 記錄；第六章再出現才開 issue |
 | 原版 checkpoint 落在 `0x1A30B` 換手處理裡 | 3／2（wait、force_enemy_clear） | — | verifier 規則 `oracle_mid_end_turn`，不比單位、回合與畫面 | 無（規則已寫在 verifier） |
@@ -8612,7 +8612,7 @@ bit7 的已行動狀態不得觸發；正常玩家驗收須在原版允許的輸
 
 | 類別 | 點數 | 像素 | 處置 |
 |---|---|---|---|
-| 指令環開啟動畫中途 | 15（12 move＋3 stay） | 70–618（seq 1257 已到 618） | #34 |
+| 指令環畫面殘差 | 15（12 move＋3 stay） | 70–618（seq 1257 已到 618） | #34 |
 | YES pulse（cell 48／49） | 1（seq 39 departure_prompt）＋ seq 1603 的右半 | 60 | #35 |
 | 店主 DATO 頭像嘴型／眼部幀（`sub_16C57` 嘴型倒數吃 `rand()%30`，對白期間 `0x16C9E` 呼叫 `0x4E893` 21 次） | 1（seq 1603 town_enter，左半） | 275 | #38 |
 | 調色盤 index 225 循環色差一步（DAC (44,73,142) 對 (48,77,146)，`0x11d40` 相位） | 1（seq 1053 attack_armed） | 8 | #38 |
@@ -9597,3 +9597,12 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 每個Game的嘴型亂數與原生戰鬥RNG、SAV分離，Draw不取值；資產缺frame3於發布前拒收。
 原版動態scope、host初始化與DOS取值時點的限制、完整驗證均見[主契約](../data/ida/fd2_confirmation_mouth_runtime_20261005.json)與[58](58-fd2-exe-re-coverage.md)。
 不以這條短鏈宣稱教會、全caller、逐週期或整章PLAYER-E2。
+
+
+## 指令環游標角色與正式呈現勘誤（2026-10-05，#34／#179／#180／#181）
+
+原版179D5在17A9C、1741C在17544於四圖示後呼叫127E0，角色由12C0D取第一個同游標座標且byte5 bit0為0的raw記錄。現行indexed合成已接此consumer，正式Game.Draw也保留單次呈現與繪製生命週期。閉合順序、原始名稱、位元組、IDA9.4線性位址及固定EXE雜湊見[主契約](../data/ida/fd2_parity_ring_open_20261005.json)。
+
+此前以殘差形狀推斷「開框中途」的說法已失效。第四、五章的原版返回鏈在17898等待／角色重繪，增加四步開框候選未改善任何點。真正差異是游標角色重繪與53C13閃爍。51A83的overlay_selector不能代替53C13。其他章沿用的歷史差異數仍保留，但不再據此宣稱同一成因或已補驗。
+
+第五章舊end_turn缺before_seq，由原版同回合117F8→118C6／16FAE唯一正常Enter來源恢復，原始actions與SAV不改。完整章回歸、有限像素及正式GPU的統計只見[58](58-fd2-exe-re-coverage.md)；本輪沒有新增章PLAYER-E2。
