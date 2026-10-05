@@ -419,7 +419,7 @@
       ],
       "verify": {
         "kind": "manual",
-        "note": "2026-10-05目前狀態：既有四種有限物理演出及#168／#169／#170／#172保持。固定第十二章enemy23→Ally14命中反擊後普通11CAC(1)返回，正式consumer完整VGA／色盤已有限CONFORMED／RUNTIME-E1；原版像素僅合成後比較，單位／palette phase與tick保持。時鐘單次採樣近似、一般work生命週期與其他返回分支仍未知；非零連擊、DAC0／人耳保持未驗收。#167政策、20／30章台帳及章gate保持，不新增PLAYER-E2或槽加成傷害／存活／選目標驗收。唯一數字與命令見58及physical_map_return_acceptance_validation。"
+        "note": "2026-10-05目前狀態：固定玩家／敵方正常物理演出及三種普通11CAC(1)返回已限定CONFORMED／RUNTIME-E1；最新主攻命中反擊MISS返回的原版同時點來源與完整indexed／RGB／palette通過。來源、命令與唯一數字見58及physical_counter_miss_map_return_acceptance_validation。三種返回helper合成前work未配置，不能證明一般保留工作緩衝的生命週期；特殊分支、非零連擊與人耳音訊未驗收。167政策、20/30章台帳與PLAYER-E2閘門保持。"
       },
       "issue": 166
     }

@@ -2955,3 +2955,23 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 | 未驗收與可選事項 | #166特殊返回／連擊與音訊、#167工具政策、#52／#154及原章台帳保持 | GitHub worklist Issues |
 
 命令、固定輸入及本批來源／輸出SHA在主契約physical_map_hud_cycle_validation.commands／source_hashes／output_hashes；統計由Go JSON事件及完整原始收據重生，日期2026-10-05。字串清冊98項分類保留，僅重新綁定行號與清冊雜湊。
+
+#166反擊MISS的[physical_counter_miss_map_return_acceptance_spec](../data/ida/fd2_physical_background_selection_20261004.json)已READY：固定181控制及舊35畫面保持，普通返回為第35張，完整畫布結果待驗。
+
+### 2026-10-05 #166：主攻命中、反擊MISS的普通地圖返回
+
+[physical_counter_miss_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。原版固定槽、seed與正常鍵盤輸入保持；新收據只延長擷取窗口並補同時點raw。caller區分了演出最後一次copy與普通11CAC(1)返回，原版PNG只於正式合成後比較。
+
+完整indexed、RGB與色盤通過；單位與palette phase／tick保持，after續行。本例DAC全黑，indexed閘門另行通過。前段「此分支返回尚未驗收」由本節取代；其餘歷史失敗與原始收據保留。正式引擎未改，只新增經READY授權的固定案例wrapper。
+
+本例Game合成前work未配置，因此仍不能驗收一般保留工作緩衝的生命週期。時鐘沿既有hardware-spec approximation；特殊分支、音訊人耳確認、#167工具政策及20/30章台帳保持，不新增PLAYER-E2。唯一數字與命令見[58](58-fd2-exe-re-coverage.md)；[#166](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。
+
+| 層級／項目 | 目前結果 | 主證據 |
+|---|---|---|
+| RE-CLOSED：固定原版來源 | 181 controls、4停點、舊35完整PNG／metadata與192 trace原欄位保持；新37影格、307 trace | physical_counter_miss_map_return_probe.source_validation |
+| RUNTIME-E1：普通返回 | entry1331402171、copy1331553841，31筆raw／16globals，原版frame35 | physical_counter_miss_map_return_acceptance_spec |
+| 完整畫布驗收 | 64000索引／RGB、256色盤差異皆0；兩側PNG SHA同為bd373631baacbc874352c9a01dd40f2928272c477cb3a30c8280576a86115a36 | physical_counter_miss_map_return_acceptance_validation |
+| 回歸 | 39頂層測試通過、3個完整map、4個完整演出49／34／50／42幀；GPU需選配，本輪未重跑 | physical_counter_miss_map_return_acceptance_validation.regressions |
+| 限制 | 入口BIOS4145、重製shift latch4145、原版4171；本例work合成前未配置，不能證明一般生命週期；#166保持OPEN | physical_counter_miss_map_return_acceptance_validation.limits |
+
+統計由原trace、frames及Go日誌重生，日期2026-10-05；輸入、命令及來源／產物SHA在主契約。已完成的三種普通返回不因舊DRAFT文字重開。

@@ -638,3 +638,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 #175的[physical_own_map_raw_restore_spec](../data/ida/fd2_physical_background_selection_20261004.json)已READY：正式oracle確認slot5／pose2／cycle2與指標，308差異來自驗收constructor重設raw姿勢。修正限測試輸入，未證明正式blitter有缺陷。
 
 目前#174 HUD來源與#175驗收raw匯入勘誤已限定CONFORMED；入口為[physical_map_hud_cycle_validation／physical_own_map_return_acceptance_validation](../data/ida/fd2_physical_background_selection_20261004.json)及[58現況表](58-fd2-exe-re-coverage.md)。先前READY與拒收段落保留形成過程，不再作現況待辦。
+
+#166反擊MISS的[physical_counter_miss_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1；完整返回畫布與色盤通過，原版caller、固定來源與限制見[58現況表](58-fd2-exe-re-coverage.md)。一般保留work生命週期尚未驗收。

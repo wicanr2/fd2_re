@@ -9204,3 +9204,13 @@ DRAFT診斷與READY先於正式assertion；正式程式未修改。唯一數字�
 弓手的選幀指標與B24來源一致。剩餘差異來自驗收工具在raw匯入後呼叫新單位constructor，把姿勢重設；現於constructor後恢復原始呈現資料並逐筆核對。正式unit blitter保持。原先拒收收據保留，#175的「正式弓手選幀尚未閉合」診斷由原版指標與測試資料流反證取代。
 
 我方弓手與既有敵方／友軍反擊的普通返回完整畫布通過。原版弓手首次copy的DAC全黑，驗收另檢查indexed資料與整份色盤，不能單靠RGB相等。時鐘仍為hardware-spec approximation，原版配置器與一般work生命週期未證明。正常章重播的行為與存檔保持，整章節點／畫面仍按既有門檻拒收；不新增PLAYER-E2。唯一數字與命令見[58](58-fd2-exe-re-coverage.md)，父項[#166](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。
+
+### 2026-10-05 #166：主攻命中、反擊MISS的普通地圖返回
+
+[physical_counter_miss_map_return_acceptance_spec／validation](../data/ida/fd2_physical_background_selection_20261004.json)已限定CONFORMED／RUNTIME-E1。原版固定槽、seed與正常鍵盤輸入保持；新收據只延長擷取窗口並補同時點raw。caller區分了演出最後一次copy與普通11CAC(1)返回，原版PNG只於正式合成後比較。
+
+完整indexed、RGB與色盤通過；單位與palette phase／tick保持，after續行。本例DAC全黑，indexed閘門另行通過。前段「此分支返回尚未驗收」由本節取代；其餘歷史失敗與原始收據保留。正式引擎未改，只新增經READY授權的固定案例wrapper。
+
+本例Game合成前work未配置，因此仍不能驗收一般保留工作緩衝的生命週期。時鐘沿既有hardware-spec approximation；特殊分支、音訊人耳確認、#167工具政策及20/30章台帳保持，不新增PLAYER-E2。唯一數字與命令見[58](58-fd2-exe-re-coverage.md)；[#166](https://github.com/wicanr2/fd2_re/issues/166)保持開啟。
+
+本批收尾：遠端#166更新後，真正主機pull／render及本地verify保持23項，可能已完成0項。教訓guard、本批來源／產物SHA及本地連結通過，變更檔與新產物UID／GID1000；歷史root-owned2811、新增0、.md目錄0。本批FD2容器已退出，其他專案未更動。提交結果追加於[Issue #166](https://github.com/wicanr2/fd2_re/issues/166#issuecomment-5988461386)。#154方案等待使用者決定，尚未改正式指令6。

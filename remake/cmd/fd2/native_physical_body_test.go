@@ -1345,3 +1345,24 @@ func TestNativePhysicalOwnMapReturnCompleteFrameFromOracle(t *testing.T) {
 		scope: "固定ch08弓手正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升",
 	})
 }
+
+// READY入口：physical_counter_miss_map_return_acceptance_spec。
+// 固定原版caller後完整索引驗收；不提升PLAYER-E2。
+func TestNativePhysicalCounterMissMapReturnCompleteFrameFromOracle(t *testing.T) {
+	slot, run, prefix := os.Getenv("FD2_PHYSICAL_COUNTER_MISS_MAP_SLOT"), os.Getenv("FD2_PHYSICAL_COUNTER_MISS_MAP_ORIGINAL"), os.Getenv("FD2_PHYSICAL_COUNTER_MISS_MAP_OUT")
+	if slot == "" || run == "" || prefix == "" {
+		t.Skip("需要#166固定ch08槽、同時點來源與輸出路徑")
+	}
+	t.Setenv("FD2_PHYSICAL_MAP_SLOT", slot)
+	t.Setenv("FD2_PHYSICAL_MAP_ORIGINAL", run)
+	t.Setenv("FD2_PHYSICAL_MAP_OUT", prefix)
+	verifyNativePhysicalMapReturn(t, physicalMapReturnAcceptance{
+		battle:    "battle_ch08",
+		slotSHA:   "768a561e8a713cd4f7f6fa6f36e553c7330bd60cc122bca03d8654a037d723a0",
+		traceSHA:  "bdf36a29a9efe54328a7cf47a6a83bd47d3904c3ed58989b20e1839114714e53",
+		pngSHA:    "bd373631baacbc874352c9a01dd40f2928272c477cb3a30c8280576a86115a36",
+		entryStep: 1331402171, unitCount: 31, frameIndex: 35,
+		palettePhase: 5, paletteTick: 2716, idle: 0, moving: 0, terrain: 8, flip: 0, shift: 1,
+		scope: "固定ch08主攻命中反擊MISS後正常11CAC(1)返回案例；單次BIOS時鐘近似、一般work生命週期未知；無PLAYER-E2提升",
+	})
+}
