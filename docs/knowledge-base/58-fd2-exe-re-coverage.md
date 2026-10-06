@@ -1,13 +1,15 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-## 2026-10-06 本輪目前狀態
+## 2026-10-06 本輪目前狀態（使用者要求暫停）
+
+本週依使用者要求暫停。接續順序維持 #41 畫面重繪、#52 像素差異及 #197 必要工具驗證，再回 #33 回合事件；#102 已依批准的原生模式驗收關閉。第12章中止收據與重跑條件見主契約 memory_observation.target_probe.pause。
 
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #41指定HUD重繪caller | PARTIAL-RUNTIME-E1／其他owner待補 | 死亡steady第26幀與196CB戰場關框已接同一入口；局部與Go全套回歸、新章T5完整Game前綴通過。未全部接齊，不關閉。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |
 | #52最後地形像素 | NATIVE-VISUAL-DIFFERENCE／RE待補 | 原生同槽六回合前綴3146仍1px，原版118、重製116；舊adapter的0不能解釋目前差異。保持非111阻擋，[主證據native_profile_recheck](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
-| #197原始byte觀察工具 | READY／正常收據待補 | 正式dosgolem來源fa25f6e已推送；1058項平台零失敗零略過，BOOT百萬步前後全狀態與PNG相同。pixel writer未知；[主契約memory_observation](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
+| #197原始byte觀察工具 | READY／正常短前綴通過，目標追蹤暫停 | 正式dosgolem來源fa25f6e、FD2驅動器0734838e已推送；1058項平台通過，正常短前綴233份狀態／232張PNG相同。第12章目標追蹤依使用者要求中止，未達觀察窗口，pixel writer未知；[主契約memory_observation](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 正常物理抽樣CONFORMED／RUNTIME-E1 | 玩家／敵方、零旗標與已明示非零抽樣、完整DAC caller及保留work返回已驗。範圍與特殊分支限制見本頁最新#176節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)；不宣稱原版heap生命週期或全戰鬥PLAYER-E2。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |

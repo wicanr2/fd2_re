@@ -12853,7 +12853,7 @@
     }
   },
   "memory_observation": {
-    "state": "READY-TOOL; LOCAL-REGRESSION-PASS; NORMAL-PROBE-PENDING",
+    "state": "READY; NORMAL-SHORT-INVARIANCE-PASS; TARGET-PAUSED-BY-USER",
     "issue": 197,
     "purpose": "限定目前native目標byte的變更writer，現有EIP／map_state不含目標內容。",
     "scope": "既有oracle的選用有界LE byte變更觀察，成功instruction後唯讀baseline／change；最多16位址，沿trace window／max，預設停用；沒有同值寫入證據，不外推全heap。",
@@ -12868,7 +12868,9 @@
       "focused": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 660 docker run --rm -i --network none --memory 6g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp -e DOSGOLEM_FD2_EXE=/orig/FD2.EXE -e DOSGOLEM_FD2_ROOT=/orig --entrypoint timeout golang:1.24-bookworm 600 sh -c 'go test ./apps/fd2/cmd/oracle -run TestFD2MemoryChange -count=1 -timeout 120s -v' > /home/anr2/cht/fd2/work/memory197-focused-replay.log 2> /home/anr2/cht/fd2/work/memory197-focused-replay.stderr",
       "platform": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 660 docker run --rm -i --network none --memory 6g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp -e DOSGOLEM_FD2_EXE=/orig/FD2.EXE -e DOSGOLEM_FD2_ROOT=/orig --entrypoint timeout golang:1.24-bookworm 600 sh -c 'go test ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle -count=1 -timeout 480s -json' > /home/anr2/cht/fd2/work/memory197-platform-r1.jsonl 2> /home/anr2/cht/fd2/work/memory197-platform-r1.stderr",
       "boot_initial": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 180 docker run --rm -i --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos:ro -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -v /home/anr2/cht/fd2/work:/out -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --entrypoint timeout golang:1.24-bookworm 160 sh -c 'set -eu\ntest -f /orig/FD2.EXE\ntest ! -e /out/memory197-boot-disabled-r1.json\ntest ! -e /out/memory197-boot-enabled-r1.json\ngo build -o /tmp/fd2-oracle ./apps/fd2/cmd/oracle\nmkdir -p /tmp/memory-enabled /tmp/memory-disabled\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-disabled -steps 1000000 -first-chunk 1000000 -frame /out/memory197-boot-disabled-r1.png > /out/memory197-boot-disabled-r1.json\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-enabled -steps 1000000 -first-chunk 1000000 -memory-change 0x53A49,0x53A4A,0x53A4B,0x53A4C,0x1A30EF,0x1600EF -eip-trace-max 4000 -frame /out/memory197-boot-enabled-r1.png > /out/memory197-boot-enabled-r1.json\ncp /tmp/memory-enabled/memory-change.jsonl /out/memory197-boot-observation-r1.jsonl\n' > /home/anr2/cht/fd2/work/memory197-boot-r1.log 2>&1",
-      "boot_valid": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 180 docker run --rm -i --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos:ro -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -v /home/anr2/cht/fd2/work:/out -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --entrypoint timeout golang:1.24-bookworm 160 sh -c 'set -eu\ntest -f /orig/FD2.EXE\ntest ! -e /out/memory197-boot-disabled-r2.json\ntest ! -e /out/memory197-boot-enabled-r2.json\ngo build -o /tmp/fd2-oracle ./apps/fd2/cmd/oracle\nmkdir -p /tmp/memory-enabled /tmp/memory-disabled\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-disabled -steps 1000000 -first-chunk 1000000 -frame /out/memory197-boot-disabled-r2.png > /out/memory197-boot-disabled-r2.json\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-enabled -steps 1000000 -first-chunk 1000000 -memory-change 0x53A49,0x51AAB,0x51AAC,0x554A4 -frame /out/memory197-boot-enabled-r2.png > /out/memory197-boot-enabled-r2.json\ncp /tmp/memory-enabled/memory-change.jsonl /out/memory197-boot-observation-r2.jsonl\n' > /home/anr2/cht/fd2/work/memory197-boot-r2.log 2>&1"
+      "boot_valid": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 180 docker run --rm -i --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos:ro -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -v /home/anr2/cht/fd2/work:/out -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --entrypoint timeout golang:1.24-bookworm 160 sh -c 'set -eu\ntest -f /orig/FD2.EXE\ntest ! -e /out/memory197-boot-disabled-r2.json\ntest ! -e /out/memory197-boot-enabled-r2.json\ngo build -o /tmp/fd2-oracle ./apps/fd2/cmd/oracle\nmkdir -p /tmp/memory-enabled /tmp/memory-disabled\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-disabled -steps 1000000 -first-chunk 1000000 -frame /out/memory197-boot-disabled-r2.png > /out/memory197-boot-disabled-r2.json\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-enabled -steps 1000000 -first-chunk 1000000 -memory-change 0x53A49,0x51AAB,0x51AAC,0x554A4 -frame /out/memory197-boot-enabled-r2.png > /out/memory197-boot-enabled-r2.json\ncp /tmp/memory-enabled/memory-change.jsonl /out/memory197-boot-observation-r2.jsonl\n' > /home/anr2/cht/fd2/work/memory197-boot-r2.log 2>&1",
+      "normal_short": "test -d '/home/anr2/cht/fd2' && test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/memory197-command-native-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/memory197-command-native-state-r1' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl' && timeout 900 docker run --rm --name fd2-memory197-normal-short-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/memory197-command-native-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/memory197-command-native-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl,dst=/plan.jsonl,readonly' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/memory197-command-native-state-r1' -e 'FD2_ORACLE_SOURCE_COMMIT=fa25f6e7d7f6be399b6563b7df6a55995daba77b' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl' -e 'FD2_ORACLE_BUDGET=8000000000' -e 'FD2_ORACLE_EIP_TRACE=0x1D3FF,0x1D404,0x1DEAE,0x19742,0x2A6BD' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_MEMORY_CHANGE=0x53A49,0x53A4A,0x53A4B,0x53A4C,0x51A0C' -e 'FD2_ORACLE_EIP_TRACE_FROM=180000000' -e 'FD2_ORACLE_EIP_TRACE_TO=600000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=100000' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash /oracle-entry.sh > /home/anr2/cht/fd2/work/parity-slot-ch24/memory197-command-native-original-r1.log 2>&1",
+      "target_original": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-memory197-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-memory197-state-r1' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 7260 docker run --rm --name fd2-ch12-terrain-memory197-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-memory197-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-memory197-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=fa25f6e7d7f6be399b6563b7df6a55995daba77b' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch12-terrain-late-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-memory197-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=15000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_MEMORY_CHANGE=0x1600EF,0x1A30EF,0x53A49,0x53A4A,0x53A4B,0x53A4C' -e 'FD2_ORACLE_EIP_TRACE=0x28B03,0x28B49,0x29068,0x29070,0x290C0,0x1D3FF,0x1D404,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=6789579299' -e 'FD2_ORACLE_EIP_TRACE_TO=15000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=4000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#52原生模式同槽六回合正常前綴，保持111/114政策，無鎖HP、清敵、治療或狀態注入；不新增PLAYER-E2，不保證與舊adapter跨時序同狀態' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 7200 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-memory197-original-r1/wrapper.log' 2>&1"
     },
     "validation": {
       "focused": {
@@ -12970,6 +12972,117 @@
         "path": "tools/dosgolem_oracle_container.sh",
         "sha256": "f12d11270c33b057d525a1a0c1386c2108ab48d93d245443159c6aa91c06e732"
       }
-    ]
+    ],
+    "normal_short": {
+      "state": "PASS-NORMAL-INPUT-INVARIANCE",
+      "out": "work/parity-slot-ch24/memory197-command-native-original-r1",
+      "overlay": "work/parity-slot-ch24/memory197-command-native-state-r1",
+      "slot_sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f",
+      "plan": "docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl",
+      "comparison": "完整checkpoint／PNG與hud-command-native-original-r1逐檔bytes核對；控鍵／actions與共有EIP記錄保持。",
+      "limits": "當窗宣告全域未改，只有合法baseline；真正writer能力由BOOT52次變更與CPU指令回歸證明。非第12章target或章PLAYER-E2。",
+      "source_commit": "fa25f6e7d7f6be399b6563b7df6a55995daba77b",
+      "wrapper_commit": "0734838e61941788da9ed749f7388d0b2567388a",
+      "json_points": 233,
+      "png_points": 232,
+      "differences": 0,
+      "actions_equal": true,
+      "control_history_equal": true,
+      "eip_trace_equal": true,
+      "final_steps": 594528292,
+      "memory_records": 1,
+      "memory_valid": true,
+      "memory_value_changes": 0,
+      "runner": {
+        "path": "work/parity-slot-ch24/memory197-command-native-original-r1/runner.json",
+        "size": 4110,
+        "sha256": "bef99be40d23b4ae6497db02335e787b998b9126aa359b51bfbebdd0e3f22edf"
+      },
+      "current": {
+        "path": "work/parity-slot-ch24/memory197-command-native-original-r1/current.json",
+        "size": 94330,
+        "sha256": "2eec17dedb176d45ee91a6dd0550b9789e18ced91d88fbe8e8966f7d35446989"
+      },
+      "trace": {
+        "path": "work/parity-slot-ch24/memory197-command-native-original-r1/eip-trace.jsonl",
+        "size": 37979,
+        "sha256": "2bbbdae3a2136ff35ec994d0488ae15bd2b2cf767a9f2f69cbbd9c999e6db92e"
+      },
+      "observation": {
+        "path": "work/parity-slot-ch24/memory197-command-native-original-r1/memory-change.jsonl",
+        "size": 430,
+        "sha256": "dd8160641ddbed483fedabc947a2d4352233e6041c3684a51e89218d4440fa4b"
+      }
+    },
+    "target_probe": {
+      "state": "PAUSED-BY-USER; INCOMPLETE-TARGET-RECEIPT",
+      "out": "work/parity-slot-ch12/terrain-memory197-original-r1",
+      "overlay": "work/parity-slot-ch12/terrain-memory197-state-r1",
+      "slot": {
+        "path": "work/parity-slot-ch12/FD2.SAV",
+        "size": 22987,
+        "sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b"
+      },
+      "plan": "docs/data/parity-plans/ch12-terrain-late-probe.jsonl",
+      "source_commit": "fa25f6e7d7f6be399b6563b7df6a55995daba77b",
+      "wrapper_commit": "0734838e61941788da9ed749f7388d0b2567388a",
+      "window_from": 6789579299,
+      "reason": "既有native seq2396的28B49前已完成copy plane128000配置，EDI/EAX=0x192018；0x1A30EF在其內。cdecl memset的stack目的為0x14F018、長度0xFA00，不用EAX誤認clear destination。",
+      "addresses": [
+        "0x1600EF",
+        "0x1A30EF",
+        "0x53A49",
+        "0x53A4A",
+        "0x53A4B",
+        "0x53A4C"
+      ],
+      "compare": "與terrain-native-original-r1完整checkpoint／PNG／controls核對；只定位觀察窗口中最後value-change，不推定同值寫入或全heap。",
+      "limits": "同固定六回合前綴、槽seed4、AP200/DP0/DX60，不改設定或RNG，不注入HP／清敵／治療，不新增章PLAYER-E2，不改pixel budget。",
+      "setup_correction": "第一次命令建構誤查commands.original，尚未啟動原版；核對實際command鍵與空輸出、固定SAV後沿用同一目錄，沒有Game或RNG重跑。",
+      "pause": {
+        "date": "2026-10-06",
+        "reason": "使用者要求本週暫停並先更新狀態。",
+        "control_seq": 1110,
+        "steps": 2900397260,
+        "round": 1,
+        "eip": "0x4DD2A",
+        "checkpoint_json": 1111,
+        "checkpoint_png": 1111,
+        "prefix_byte_differences": 0,
+        "baseline": "work/parity-slot-ch12/terrain-native-original-r1",
+        "state_injections": [],
+        "memory_records": 0,
+        "observation_window_reached": false,
+        "process_exit": 143,
+        "container_stopped_and_removed": true,
+        "limits": "只有已保存前綴；未完成六回合計畫，沒有target writer或新的逐像素驗收。current.json不是CPU記憶體checkpoint，不可宣稱能從此步數續跑。",
+        "resume": "使用既有commands.target_original命令，同一固定槽與計畫，改用新的獨立輸出目錄及全新覆蓋層重跑；保留r1中止證據，不覆寫。不得調seed、HP、DP或像素預算。",
+        "current.json": {
+          "path": "work/parity-slot-ch12/terrain-memory197-original-r1/current.json",
+          "size": 93818,
+          "sha256": "7b32ecfbe1be31dcfd7de579447073123ab4bae817f0c672f4f64f1e0938ac38"
+        },
+        "runner.json": {
+          "path": "work/parity-slot-ch12/terrain-memory197-original-r1/runner.json",
+          "size": 4118,
+          "sha256": "2332b860bfdee4f9782f3e7069b0ecbec26fb3cfc9598200a43dc0efb8c9170c"
+        },
+        "memory-change.jsonl": {
+          "path": "work/parity-slot-ch12/terrain-memory197-original-r1/memory-change.jsonl",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "actions.jsonl": {
+          "path": "work/parity-slot-ch12/terrain-memory197-original-r1/actions.jsonl",
+          "size": 3512,
+          "sha256": "6fa8a11901437c7460d5fd9b812a1b7c4327c49666072c21e992643abee1f421"
+        },
+        "control-history.jsonl": {
+          "path": "work/parity-slot-ch12/terrain-memory197-original-r1/control-history.jsonl",
+          "size": 48081,
+          "sha256": "7f86280366f236b1552f835ad2417fbcaa2cdea377ba4c7444f129ed05a582b6"
+        }
+      }
+    }
   }
 }
