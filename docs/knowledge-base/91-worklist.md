@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -182,13 +182,5 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 卡在：依使用者 2026-09-14 裁定，排在所有非「優先級:最後」worklist 完成之後。
 
 怎樣算做完：其餘非最後處理 worklist 完成後，在 Docker／非 headless 瀏覽器中用編輯器對可丟棄複本新增一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支，透過正式 save API 存回、重生 canonical，並由正式引擎以決定性輸入分別走通兩個分支首尾；還原來源零差異。保存 docs/data/ui-traces/campaign-editor-custom-route-e1.json 並由自動測試驗證。
-
-### 第十八章第七回合 dosgolem 的 STOSB 寫入未處理
-
-`ch18-oracle-stosb-memory-boundary` · 缺陷 · [#102](https://github.com/wicanr2/fd2_re/issues/102) · 仍未完成 · 要人判
-
-怎樣算做完：釐清原始指令與記憶體writer/consumer及dosgolem邊界契約，登記證據與READY規格後修正適當工具層。以隔離Docker執行有界回歸；同一ch18-guard-r3計畫重跑前綴必須與既有收據相同，原版越過停止點並到第八回合。正式runner保持受版控與可重跑，不得動態改寫來源或以原版遊戲狀態注入掩蓋錯誤。第十八章完整收據仍依#94驗收。
-
-證據：`['tools/dosgolem_oracle.sh', 'docs/data/parity-plans/ch18-guard-r3.jsonl', 'docs/knowledge-base/58-fd2-exe-re-coverage.md']`
 
 <!-- END fd2_worklist.py render -->

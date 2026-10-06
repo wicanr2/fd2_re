@@ -5,7 +5,8 @@
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
-| #52最後地形像素 | 原版配置器未知，工具政策限制 | 本輪#167勘誤；原17點16點一致，3152仍1px；不是111阻擋。 |
+| #41指定HUD重繪caller | DRAFT／正常新章探針中 | 六個指定caller與返回採raw gate／view／anchor；首輪T2等待熱點封頂，不當caller完成證據。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |
+| #52最後地形像素 | 舊adapter政策限制；新native核對中 | 舊17點16點一致，3152仍1px；保持非111阻擋。依使用者優先序只做一次同槽正常前綴，[主證據native_profile_recheck](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 正常物理抽樣CONFORMED／RUNTIME-E1 | 玩家／敵方、零旗標與已明示非零抽樣、完整DAC caller及保留work返回已驗。範圍與特殊分支限制見本頁最新#176節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)；不宣稱原版heap生命週期或全戰鬥PLAYER-E2。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
@@ -20,7 +21,7 @@
 | #180／#181指令環正式呈現 | 有限CONFORMED／RUNTIME-E1 | 已接四圖示後raw游標角色consumer，正式Draw只呈現一次；目前dosgolem短鏈及實際GPU全幅相同。 |
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
-| #102正式原生近堆模式 | 原版T8已達；舊前綴不符 | 同r3的native計畫已到戰後／買賣／存檔／秘密商店，word ADD缺口#192閉合；舊adapter前綴RNG／殘值不同，父題保持。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_native_chapter。 |
+| #102正式原生近堆模式 | 限定CONFORMED；使用者採用native驗收 | 同r3正常到T8及戰後，兩次native前綴2024完整JSON／PNG與1445 trace一致；#194後完整Game四閘門與SAV通過。舊adapter差異保留。[主契約acceptance_decision](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。 |
 | #33 第17章event40 | 限定CONFORMED／RE-CLOSED／DATA-READY／RUNTIME-E1 | group2後鏡頭(17,37)與text1三句已補正式劇本；全域未轉寫27筆，#33仍開啟。[主契約](../data/ida/fd2_turn_event40_20261006.json)。 |
 | #194 AI 三者同分回傳 | 限定CONFORMED／RE-CLOSED／DATA-READY／RUNTIME-E1 | 原版0x1504B回1與mode0 caller已補證，正式Game不再多走一格；完整存檔相同。原版三score=8與return1、mode0 caller及1636點前綴已通過。[主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
@@ -3315,3 +3316,7 @@ CPU／machine／oracle 完整回歸通過；乾淨第二次同 r3 原版計畫�
 event40已由原始資料轉寫到具型別清冊、正式劇本與canonical，正常Game重播實際消費三句對白；以前只做spawn。全可達指令及參數check、全域sync check通過，未轉寫由28降為27。兩次正式Game各消費124筆AI，零順序分歧；#195修正後兩份同源四gate皆通過，98畫面點與酒店SAV保持。酒店整檔SHA-256 bce3b7e5967d354d23444ce2da75b163e905d7e58914b80be44f77c237033333一致。既有章PLAYER-E2保持，不重跑原版或新增章驗收。
 
 #195只增加固定EXE／1ACEE caller的16D05直接PC，保留16D0A、外層owner優先與錯來源拒收。#196只修測試namespace與adapter明示環境，正式near_heap_policy未改。96個driver、26個verifier零失敗零略過，campaign與editorcanonical的Go回歸通過。主契約保存初次nodes拒收、測試環境失敗及最終命令／雜湊。#142的DP校準仍待使用者確認，未改114政策。
+
+### 2026-10-06 #102 使用者採用原生驗收
+
+使用者明確選擇原生模式驗收，取代舊adapter前綴相同要求；舊前綴比較的FAIL與原因仍保留。前綴2024份原始JSON bytes再次逐檔相同，既有完整PNG及1445筆trace收據通過；同r3 T8／戰後接續與#194後正式Game四閘門、整檔SAV已通過，符合新定案。不重跑原版章、不新增PLAYER-E2，不證明全malloc分支或真實硬體。日期化決策與證據鏈存於[主契約](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的acceptance_decision。

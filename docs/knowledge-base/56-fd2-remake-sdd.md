@@ -9675,3 +9675,7 @@ BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
 ### 2026-10-06 #33／#195／#196 第十七章event40完整資料流
 
 event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower完整保留。正常Game已消費對白並保持同來源四gate及酒店整檔SAV，限定CONFORMED／RUNTIME-E1，章PLAYER-E2保持。原版死亡獎勵訊息的16D05＋1ACEE由固定EXE直接指令補分類，未知來源仍拒收。測試環境補真正os與明示adapter，正式政策未改。唯一現況、數字及限制見[58](58-fd2-exe-re-coverage.md)、[event40主契約](../data/ida/fd2_turn_event40_20261006.json)及[節點契約](../data/fd2-chapter-node-comparison-contract.json)的issue195；#33整體仍未完成。
+
+### 2026-10-06 #102 原生oracle驗收定案
+
+使用者採用同native前綴一致、T8接續及完整Game四閘門／存檔驗收，取代舊adapter前綴相同要求。舊RNG／殘值差異保留，不宣稱兩profile一致；既有章PLAYER-E2保持。唯一證據、數字及限制見[58](58-fd2-exe-re-coverage.md)與[主契約acceptance_decision](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。

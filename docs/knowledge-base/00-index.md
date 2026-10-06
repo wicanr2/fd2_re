@@ -689,3 +689,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [#194 AI 尾端回傳契約](../data/ida/fd2_ai_14ef0_return_20261006.json)：補 0x14EF0 三者同分無動作仍回1；[T6 正常輸入前綴](../data/parity-plans/ch18-native-ai194-t6.jsonl)只作唯讀原版定位。
 
 - [#33 第十七章event40轉寫契約](../data/ida/fd2_turn_event40_20261006.json)：既有group2後補鏡頭(17,37)與text1，READY先於正式資料轉寫，現已有限CONFORMED。
+
+- [#41 HUD重繪caller契約](../data/ida/fd2_hud_redraw_20261006.json)：既有IDA來源與第二十四章[正常T2短探針](../data/parity-plans/ch24-hud-redraw-probe.jsonl)，DRAFT，未接正式路徑。
+- #41 第二輪[六caller窄探針](../data/parity-plans/ch24-hud-redraw-probe-r2.jsonl)：保持同槽與原計畫前綴，修正首輪等待熱點封頂的觀察限制。

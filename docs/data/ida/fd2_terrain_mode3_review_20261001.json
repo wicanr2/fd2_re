@@ -12722,5 +12722,38 @@
         ]
       }
     }
-  ]
+  ],
+  "native_profile_recheck": {
+    "date": "2026-10-06",
+    "issue": 52,
+    "state": "work/parity-slot-ch12/terrain-native-state-r1",
+    "reason": "使用者指定優先處理#52；#102原生近堆已符合使用者採用的正式驗收。舊3152黑像素的clear來自adapter，依新來源核對同一正常案例，不再追通用heap。",
+    "plan": {
+      "path": "docs/data/parity-plans/ch12-terrain-late-probe.jsonl",
+      "size": 3753,
+      "sha256": "ae456434964a5cf93fb7c55d1028efc5d8b90c69f0c79d90baa4e4ae8115667a"
+    },
+    "source_slot": {
+      "path": "work/parity-slot-ch12/FD2.SAV",
+      "size": 22987,
+      "sha256": "ca736a55c710fe77276a692cc96f31ec812394754ded4520007fb69ce0e86b3b"
+    },
+    "slot_manifest": {
+      "path": "docs/data/parity-slots/ch12-manifest.json",
+      "size": 113417,
+      "sha256": "705c496293b4a03ec81e3f0ab60771e4acd50647c1a65d8d3b0fed8cbc64751d"
+    },
+    "out": "work/parity-slot-ch12/terrain-native-original-r1",
+    "dosgolem_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+    "heap_profile": "native",
+    "input_policy": "保持AP200／DP0／DX60及建槽seed4；原版RNG沿LE決定性虛擬時鐘，無重擲／狀態注入；只切正式near_heap profile，不保證與舊adapter跨步數／RNG一致。",
+    "stop_line": "只跑一次受版控六回合正常前綴。若同caller未重现，只列新來源限制；不為這個非阻塞像素深挖一般配置器、猜補常數或反覆刷關。",
+    "acceptance": [
+      "新source runner清潔、固定EXE及同初始SAV／既有控制計畫。",
+      "新原版source接正式Game，記錄可比完整畫面及目標world tile27 (7,9)；不同狀態不合併成17/17。",
+      "舊17點／3152與adapter政策紀錄保留；有新產品差異先登Issue、RE及READY，不調預算或mask。",
+      "不新增整章PLAYER-E2，不修改存檔格式或正式規則。"
+    ],
+    "command": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 7260 docker run --rm --name fd2-ch12-terrain-native-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch12-terrain-late-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=15000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x28B03,0x28B49,0x29068,0x29070,0x290C0,0x1D3FF,0x1D404,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=5000000000' -e 'FD2_ORACLE_EIP_TRACE_TO=15000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=4000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#52原生模式同槽六回合正常前綴，保持111/114政策，無鎖HP、清敵、治療或狀態注入；不新增PLAYER-E2，不保證與舊adapter跨時序同狀態' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 7200 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1/wrapper.log' 2>&1"
+  }
 }

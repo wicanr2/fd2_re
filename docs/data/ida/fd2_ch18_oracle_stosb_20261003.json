@@ -20489,6 +20489,40 @@
         "size": 253012
       },
       "historical_failure": "remake_replay保留修正前T6位置分岔與BG拒收；由此followup取代現況。"
+    },
+    "acceptance_decision": {
+      "date": "2026-10-06",
+      "state": "CONFORMED-user-approved-native-acceptance",
+      "authorization": "使用者明確選擇「採用原生模式驗收（建議）」；只取代舊adapter前綴相同要求。",
+      "old_gate": "舊adapter與native的RNG／37筆記錄殘值不同，舊前綴比較仍FAIL；不宣稱兩profile相同。",
+      "new_gate": [
+        "固定EXE、同ch18-guard-r3及同初始SAV，以受版控正式native模式執行。",
+        "兩次native前綴完整2024筆狀態JSON與PNG、1445筆EIP trace一致；修正後越過原停止點，到T8。",
+        "同native原版來源接正式Game，行為／節點／交易／畫面四閘門及酒店存檔整檔相同。"
+      ],
+      "evidence": [
+        "allocator_native_chapter.cpu_followup.prefix_validation",
+        "allocator_native_chapter.original_r2",
+        "allocator_native_chapter.remake_replay_followup",
+        "docs/data/ida/fd2_ai_14ef0_return_20261006.json#validation.full"
+      ],
+      "current_recheck": {
+        "serialized_checkpoint_pairs": 2024,
+        "different_json_pairs": 0,
+        "full_replay_artifact_size_sha256": "PASS",
+        "prefix_report": {
+          "path": "work/parity-slot-ch18/native-acceptance102-prefix-20261006.json",
+          "size": 1206,
+          "sha256": "84c5274c719e2997a36d1305906e5825901e2b98b20a005bc9f2705409365b4d"
+        },
+        "command": "timeout 180 docker run --rm -i --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -v /home/anr2/.codex/knowledge-base:/kb:ro -v /home/anr2/.codex/skills:/skills:ro -v /tmp:/hosttmp -w /src fd2-go-test-local:20260909 timeout 150 sh -c 'python3 tools/verify_oracle_prefix.py --prefix work/parity-slot-ch18/guard-native-original-r1 --full work/parity-slot-ch18/guard-native-original-r2 --prefix-commit 3d2ca72a5d41f684f807e9ec22f7936b8f5c7c88 --full-commit 5f97a2531dd4faaeafc965266f3870e19137788e --max-seq 2023 --compare-frames --compare-trace --out work/parity-slot-ch18/native-acceptance102-prefix-20261006.json'"
+      },
+      "limits": [
+        "舊收據／原失敗、工具適配政策及原生平台近似均保留。",
+        "本次不重跑原版章，不新增PLAYER-E2，不證明全原版malloc分支或真實硬體。",
+        "T9一次清敵及111／114建槽限制保持。"
+      ],
+      "remote_issue_state": "CLOSED；主機gh於2026-10-06核對"
     }
   }
 }

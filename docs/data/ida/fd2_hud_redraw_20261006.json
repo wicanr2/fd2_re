@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_hud_redraw_caller_contract",
+  "date": "2026-10-06",
+  "issue": 41,
+  "state": "DRAFT",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": "沿用IDA Pro9.4直接caller／HUD gate索引；新探針使用受版控dosgolem oracle",
+  "address_space": "IDA LE linear／dosgolem relocated LE linear，來源各自標示",
+  "sources": [
+    {
+      "path": "docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt",
+      "size": 29736,
+      "sha256": "78015e37d5a8d4336f46cfcf5767de33045481458e0be84f961cb206c1f5ae36"
+    },
+    {
+      "path": "docs/data/ida/fd2_physical_background_selection_20261004.json",
+      "size": 2198796,
+      "sha256": "baa1dbbc78513796e21767ae10b73a79a2184c04fe0dfd7057d303efd515f71a"
+    }
+  ],
+  "claims": [
+    {
+      "level": "已證實",
+      "original": "0x11D0A call sub_1ACF3；0x1AD0C/0x1AD1B讀51AAB/51AAC",
+      "semantic": "anchor只在真實11CAC重繪且雙gate非零時更新。",
+      "source": "既有IDA9.4 caller／gate匯出及56 §40。"
+    },
+    {
+      "level": "未知",
+      "original": "0x1D3FF、0x15510/0x1563B/0x1565C、0x1DEAE、0x19742",
+      "semantic": "正式Game對應消費時點及當時gate／view尚待新章短探針。",
+      "source": "遠端#41；不從每幀Draw推定原版呼叫。"
+    }
+  ],
+  "probe": {
+    "plan": {
+      "path": "docs/data/parity-plans/ch24-hud-redraw-probe.jsonl",
+      "size": 1378,
+      "sha256": "914afd601ad76bfe287e9f8eae80eb9f24750eb26d95654d9b9ad14a44e41467"
+    },
+    "source_plan": {
+      "path": "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl",
+      "size": 5095,
+      "sha256": "4e8c75a8ab5cd8b0a5d25c4ba5acf73fc7758f85e5cf2d56e87dd91d14833fb6"
+    },
+    "source_slot": {
+      "path": "work/parity-slot-ch24/fresh-policy-r1/FD2.SAV",
+      "size": 22987,
+      "sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810"
+    },
+    "slot_manifest": {
+      "path": "docs/data/parity-slots/ch24-fresh-policy-manifest.json",
+      "size": 209249,
+      "sha256": "b958a69aa23b35008ef993f8b57f6473d5d9878872efcc5762d72e6a48fe18f8"
+    },
+    "out": "work/parity-slot-ch24/hud-redraw-original-r1",
+    "state": "work/parity-slot-ch24/hud-redraw-state-r1",
+    "source_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+    "heap_profile": "native",
+    "end": "正常到第二回合，無清敵、無鎖HP、無治療、無原版狀態注入。",
+    "rng": "沿原版決定性LE平台時鐘；固定初始SAV，seed4是槽工具seed，不冒稱原版相同seed序列。",
+    "limits": "本次限定caller觀察，不重跑已passed整章，不修改114 DP政策，不增加PLAYER-E2。"
+  },
+  "spec": {
+    "state": "DRAFT",
+    "rule": "重用redrawNativeMapHUD；只有已證實的原版重繪點能接正式caller。",
+    "failure": "任何未知caller、gate或view不猜補；缺收據保持未覆蓋。",
+    "save": "不改格式、隊伍規則或存檔內容。",
+    "acceptance": [
+      "同一raw trace記錄caller、雙gate、visible cursor及前後anchor。",
+      "RE/READY先於正式實作；最小owner與拒收回歸，正常新章短路徑或同源實際畫面比較。",
+      "完整caller列表中未抽到者保持未覆蓋，不宣稱整體#41完成。"
+    ]
+  },
+  "probe_r1": {
+    "status": "ORIGINAL_T2_REACHED; HUD caller未抽到",
+    "trace": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r1/eip-trace.jsonl",
+      "size": 52943388,
+      "sha256": "b7f8663dfae588b49c8138a8378a94e4ee374774fa49a5187776958baf631711"
+    },
+    "runner": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r1/runner.json",
+      "size": 3651,
+      "sha256": "49b32124c07751e11102826398895fb4660a0aba55f00fe20677f4de265152dc"
+    },
+    "actions": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r1/actions.jsonl",
+      "size": 2073,
+      "sha256": "b132b019dc08a8a5bc747ad3f07600faedf09f79e4ae43118f60e9fbd1b51057"
+    },
+    "current": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r1/current.json",
+      "size": 92282,
+      "sha256": "17cb60a63c9eeadbc0e4ead45d949e70448e9440eb7452c5a7168ab49c1a1fac"
+    },
+    "rows": 5000,
+    "capped": true,
+    "diagnosis": "等待迴圈的11CAC／1AD2A使trace在5000筆封頂，沒有三類caller；此輪不當作caller缺席或完成證據。T2前無玩家attack。",
+    "restrictions": "正常建槽前綴、零state injection。第二輪維持同SAV及同初始native profile，不挑seed；只取六個目標caller及各自return，避免hot wait封頂。"
+  },
+  "probe_r2": {
+    "plan": {
+      "path": "docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl",
+      "size": 2495,
+      "sha256": "a76d79874d1ac54938718e7e3f7fea724670afdc7cb0152fb1ea89520fc0c68b"
+    },
+    "source_plan": {
+      "path": "docs/data/parity-plans/ch24-fresh-sample-r1.jsonl",
+      "size": 5095,
+      "sha256": "4e8c75a8ab5cd8b0a5d25c4ba5acf73fc7758f85e5cf2d56e87dd91d14833fb6"
+    },
+    "out": "work/parity-slot-ch24/hud-redraw-original-r2",
+    "state": "work/parity-slot-ch24/hud-redraw-state-r2",
+    "heap_profile": "native",
+    "source_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+    "sampling": "只在1D3FF/15510/1563B/1565C/1DEAE/19742及各自+5返回觀察raw gate／view／anchor，不抽hot迴圈。",
+    "input": "控制prefix逐項與既有fresh-sample-r1相同；只延伸觀察，不改Game或原版狀態。"
+  },
+  "commands": {
+    "original_r1": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r1' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-ch24-hud-redraw-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch24-hud-redraw-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=5000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x11CAC,0x1AD2A,0x11D3B,0x1D3FF,0x15510,0x1563B,0x1565C,0x1DEAE,0x19742' -e 'FD2_ORACLE_EIP_TRACE_FROM=600000000' -e 'FD2_ORACLE_EIP_TRACE_TO=5000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=5000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#41正常新章短probe，既有建槽AP200/DP0/DX60，未改政策、無鎖HP、清敵或治療，原始map_state唯讀；不增加PLAYER-E2' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1440 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r1/wrapper.log' 2>&1",
+    "original_r2": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 3660 docker run --rm --name fd2-ch24-hud-redraw-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=11000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x1D3FF,0x1D404,0x15510,0x15515,0x1563B,0x15640,0x1565C,0x15661,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=600000000' -e 'FD2_ORACLE_EIP_TRACE_TO=11000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=2000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#41正常新章短probe，既有建槽AP200/DP0/DX60，未改政策、無鎖HP、清敵或治療，原始map_state唯讀；不增加PLAYER-E2' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 3600 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2/wrapper.log' 2>&1"
+  }
+}
