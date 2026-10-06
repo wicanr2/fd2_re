@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
@@ -43,6 +44,46 @@ func completeNativeCh28PostGame(t *testing.T) *Game {
 		t.Fatal(err)
 	}
 	return g
+}
+
+func TestNativeUnitDeathRedrawsHUDOnlyInFinalSteadyFrame(t *testing.T) {
+	t.Setenv("FD2_MUTE", "1")
+	for _, gateB := range []byte{0, 1} {
+		g := completeNativeCh28PostGame(t)
+		g.st.NativeMapHUDState.DisplayGateB = gateB
+		if err := g.st.MaterializeNativeMapViewState(battle.NativeMapViewState{
+			CursorX: 2, CursorY: 6, VisibleCursorX: 2, VisibleCursorY: 6,
+		}); err != nil {
+			t.Fatal(err)
+		}
+		if err := g.startNativeCh28PostPresent(nil); err != nil {
+			t.Fatal(err)
+		}
+		job := g.nativeCh28PostPresent
+		for frame, state := range job.stateFrames {
+			want := 1
+			if frame == 25 && gateB != 0 {
+				want = 242
+			}
+			if state.NativeMapHUDState.AnchorX != want {
+				t.Fatalf("gateB=%d frame=%d anchor=%d want=%d", gateB, frame, state.NativeMapHUDState.AnchorX, want)
+			}
+		}
+		if g.st.NativeMapHUDState.AnchorX != 1 {
+			t.Fatal("預算第26幀提前發布到正式狀態")
+		}
+		for frame := 0; frame < 25; frame++ {
+			job.drawn, job.wait = true, 0
+			g.stepNativeCh28PostPresent()
+		}
+		if gateB != 0 && g.st.NativeMapHUDState.AnchorX != 242 {
+			t.Fatal("最後steady frame沒有發布anchor")
+		}
+		g.failNativeCh28PostPresent(fmt.Errorf("測試晚期輸出失敗"))
+		if g.st.NativeMapHUDState.AnchorX != 1 {
+			t.Fatal("晚期失敗沒有回復原anchor")
+		}
+	}
 }
 
 func TestNativeCh28PostPresentPrecomputesExactScheduleAndCommits(t *testing.T) {

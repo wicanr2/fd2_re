@@ -2,10 +2,73 @@ package main
 
 import (
 	"testing"
+	"time"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
+
+func TestNativeMessageCloseRedrawsHUDAfterRestoreDraw(t *testing.T) {
+	for _, owner := range []string{"end_cancel", "reward"} {
+		for _, gateB := range []byte{0, 1} {
+			t.Run(owner+string(rune('0'+gateB)), func(t *testing.T) {
+				g := newNativeHUDRedrawGame(t, gateB)
+				source := make([]byte, 320*200)
+				g.nativeSystemEndTurnUI = &nativeSystemEndTurnUIState{source: source, dialogue: source}
+				continued := 0
+				if owner == "reward" {
+					g.nativeSystemEndTurnUI.rewardMessage = &nativeDeathRewardMessageState{
+						awaitAck: true, final: source, kind: 1, value: 7,
+						then: func() {
+							continued++
+							if g.st.NativeMapHUDState.AnchorX != map[byte]int{0: 1, 1: 242}[gateB] {
+								t.Fatal("續行早於重繪")
+							}
+						},
+					}
+					g.acknowledgeNativeDeathRewardMessage()
+				} else {
+					g.nativeSystemEndTurnDelay = 1
+					g.stepNativeSystemEndTurn()
+				}
+				job := g.nativeClassUIJob
+				if job == nil || len(job.frames) != 5 || len(job.restore) != len(source) {
+					t.Fatal("關框 owner 未建立")
+				}
+				for frame := 0; frame < 5; frame++ {
+					g.stepNativeClassUILifecycle(time.Time{})
+					if job.frame != frame {
+						t.Fatal("未 Draw 卻前進")
+					}
+					job.drawn = true
+					g.stepNativeClassUILifecycle(time.Time{})
+					if g.st.NativeMapHUDState.AnchorX != 1 || continued != 0 || g.gold != 0 {
+						t.Fatal("restore 前提前評估或續行")
+					}
+				}
+				job.drawn = true
+				g.stepNativeClassUILifecycle(time.Time{})
+				want := map[byte]int{0: 1, 1: 242}[gateB]
+				if g.nativeClassUIJob != nil || g.nativeSystemEndTurnUI != nil || g.st.NativeMapHUDState.AnchorX != want {
+					t.Fatalf("關框結果 anchor=%d want=%d", g.st.NativeMapHUDState.AnchorX, want)
+				}
+				g.stepNativeClassUILifecycle(time.Time{})
+				if owner == "reward" && (continued != 1 || g.gold != 7) {
+					t.Fatalf("重複續行或金額錯誤：%d %d", continued, g.gold)
+				}
+			})
+		}
+	}
+}
+
+func TestNativeSharedCloseDoesNotRedrawBattleHUD(t *testing.T) {
+	g := newNativeHUDRedrawGame(t, 1)
+	g.nativeClassUIJob = &nativeClassUIJob{restore: make([]byte, 320*200), drawn: true}
+	g.stepNativeClassUILifecycle(time.Time{})
+	if g.st.NativeMapHUDState.AnchorX != 1 {
+		t.Fatal("無原版重繪契約的共用關框改了 anchor")
+	}
+}
 
 func TestChapter24MapEntryKeepsBothNormalSelectionViews(t *testing.T) {
 	mode := 1

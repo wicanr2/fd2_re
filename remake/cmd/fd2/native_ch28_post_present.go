@@ -173,6 +173,14 @@ func (g *Game) startNativeUnitDeathPresent(prelude func(*battle.State) error, th
 	}
 	steadyWork := append([]byte(nil), work...)
 	steadyVGA := append([]byte(nil), vga...)
+	// 0x1DEAE 只在最後 steady redraw 評估。candidate 不發布到前25幀，
+	// 任何合成失敗仍由既有預檢／rollback 保留正式狀態。
+	redraw := Game{st: candidate}
+	redraw.redrawNativeMapHUD()
+	afterInput, err = g.nativeCh28PostFrameInput(candidate)
+	if err != nil {
+		return err
+	}
 	if err := indexedmap.ComposeNativeFrame(steadyWork, steadyVGA, afterInput); err != nil {
 		return fmt.Errorf("native 0x1DB65 final steady redraw: %w", err)
 	}

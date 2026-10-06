@@ -28,7 +28,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 14 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 15 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -75,6 +75,8 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 2026-09-18 定案：不為了這條重跑已 passed 的章；等之後排程到的新章收據順帶驗收。
 
+2026-10-06 部分接線：死亡最後steady candidate與已證實196CB戰場END／獎勵closing，在原版指定時點經redrawNativeMapHUD評估。局部紅／綠測試及正常第24章同槽原生T5前綴四閘門已通過，54畫面點完整0px；存檔未抽測，不增加章PLAYER-E2。兩次原版2076份JSON及PNG bytes相同。玩家1D3FF已由IDA與窄正常指令收據更正定位為演出前重繪，15510屬簡略演出且正式仍拒收。物理1563B／1565C、玩家指令與劇情closing仍待接齊，本案保持開啟。來源、命令及限制：docs/data/ida/fd2_hud_redraw_20261006.json。
+
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
@@ -114,6 +116,8 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 原版IDA 9.4既有解碼契約核對：0x11EEE的0x1220C／0x12220分別呼叫raw 0x4DEDA及LUT 0x4DCC6。mode3在raw路徑保留目的底色，在LUT路徑讀目的像素並映射。每張殘差的實際分支及底色寫入來源尚未知，不能用archive byte+3推論runtime分支，也不能改成固定色。
 
 主證據：docs/data/ida/fd2_terrain_mode3_review_20261001.json（輸入雜湊、工具／位址空間、原始bytes、分級與17點影像雜湊）。舊HUD解釋保留於Issue歷史與專案交接，新增證據以未遮罩座標及camera→world tile對照否定該定位；不宣稱根因已閉合。
+
+2026-10-06 原生來源勘誤：使用正式native近堆模式、同固定槽及受版控六回合前綴，原版seq3146 attack_result在(11,85)為索引118，正式Game為116，完整差異仍1px。舊adapter索引0只解釋舊收據，不能宣稱目前差異僅由工具清零造成。253畫面點中246點完整0px，整體行為／節點／畫面比較仍未通過，跨同步HP與unknown UI限制保留。下一步只追必要copy plane／map work的writer，不填固定色或改容差。來源、命令及限制：主契約native_profile_recheck。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
@@ -182,5 +186,15 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 卡在：依使用者 2026-09-14 裁定，排在所有非「優先級:最後」worklist 完成之後。
 
 怎樣算做完：其餘非最後處理 worklist 完成後，在 Docker／非 headless 瀏覽器中用編輯器對可丟棄複本新增一條 battle.on_lose 敗北路線與一個依旗標過濾的 choice 分支，透過正式 save API 存回、重生 canonical，並由正式引擎以決定性輸入分別走通兩個分支首尾；還原來源零差異。保存 docs/data/ui-traces/campaign-editor-custom-route-e1.json 並由自動測試驗證。
+
+### 為單一地形像素補正式 oracle 的有界唯讀記憶體變更收據
+
+`oracle-bounded-memory-change-observation` · 工作 · [#197](https://github.com/wicanr2/fd2_re/issues/197) · 仍未完成 · 要人判
+
+父項#52。正式native第12章seq3146像素仍118對116，現有EIP／map_state只有配置回傳與16項全域，沒有原始目標byte的改變來源；不能用位址重用或舊adapter清零推定最後writer。只擴充既有受版控apps/fd2/cmd/oracle，預設停用、宣告固定最多16個LE線性byte位址、既有追蹤窗口及筆數上限，每次成功instruction後唯讀觀察，記錄baseline或value change與原始指令定位。未變同值寫入不宣稱已觀察；不改CPU、heap、RNG、鍵盤、畫面或遊戲檔案。輸出留本地work，公開庫只存來源／收據雜湊。READY規格先於實作，wrapper明示參數與來源審查。
+
+怎樣算做完：bounded參數與越界拒收、disabled原metadata保持、原始記憶體／CPU不變；同固定槽native正常計畫重生，既有完整checkpoint／PNG／controls一致後確認原生byte變更定位，不用新觀察放寬#52比較。
+
+證據：`['docs/data/ida/fd2_terrain_mode3_review_20261001.json#native_profile_recheck', 'tools/dosgolem_oracle_container.sh']`
 
 <!-- END fd2_worklist.py render -->

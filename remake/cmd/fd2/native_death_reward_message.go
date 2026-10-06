@@ -138,7 +138,7 @@ func (g *Game) acknowledgeNativeDeathRewardMessage() {
 		g.loadErr = "native death reward message: dialogue close frames unavailable"
 		return
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{frames: closing, restore: state.source, after: func() {
+	g.nativeClassUIJob = &nativeClassUIJob{frames: closing, restore: state.source, redrawNativeMapAfterRestore: true, after: func() {
 		g.nativeSystemEndTurnUI = nil
 		g.nativeSystemEndTurnDelay = 0
 		if message.kind == 1 {

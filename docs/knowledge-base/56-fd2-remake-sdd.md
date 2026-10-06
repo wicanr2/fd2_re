@@ -8411,7 +8411,9 @@ IDA Pro 9.4 匯出；Capstone 逐指令核對 `0x12CEA..0x12D7B`、`0x11B48..0x1
 | `0x1A30B` 返回後輸入迴圈的重繪 | `restoreNativeDisplayGateB` → `redrawNativeMapHUD` | 接上 |
 | 戰場節點進場第一次重繪 | `materializeNativeMapRuntime` | 接上 |
 | 走行步進 `0x12EAA` 家族 | 不評估（只 `0x1297D` 局部重繪） | 照原版 |
-| 攻擊演出前後 `0x1D3FF`、`0x15510`／`0x1563B`／`0x1565C`；`0x1DB65` 的 `0x1DEAE`；訊息關框 `0x19742` | 死亡程式／掉落訊息／升級對話的整幀重組 | **未接**：對應時機未逐點證明，不為收斂差異自行加評估點 |
+| 玩家指令演出前 `0x1D3FF`、簡略攻擊前 `0x15510`、完整攻擊收尾 `0x1563B`／`0x1565C` | 玩家指令／物理攻擊owner | **未接**：對應時機未逐點證明，不為收斂差異自行加評估點 |
+| `0x1DB65` 的 `0x1DEAE` | `startNativeUnitDeathPresent` 最後steady候選 → `redrawNativeMapHUD` | READY實作，candidate回歸與新章前綴通過；正常物理死亡consumer仍待接 |
+| 戰場END／獎勵訊息關框 `0x19742` | 明示196CB的closing job在restore最後Draw後 → `redrawNativeMapHUD` | READY實作，Draw／gate回歸通過；劇情／升級owner尚未覆蓋 |
 
 `redrawNativeMapHUD` 只做 anchor 評估（閘門由 `AdvanceNativeMapHUDAnchor` 判），不重組畫面；每幀 Draw 的
 整幀重組不是原版重繪，不經過它。`finishNativeTransientPlayerPhaseInput` 照 `0x1A79F` 在聚焦前寫
@@ -9679,3 +9681,18 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 ### 2026-10-06 #102 原生oracle驗收定案
 
 使用者採用同native前綴一致、T8接續及完整Game四閘門／存檔驗收，取代舊adapter前綴相同要求。舊RNG／殘值差異保留，不宣稱兩profile一致；既有章PLAYER-E2保持。唯一證據、數字及限制見[58](58-fd2-exe-re-coverage.md)與[主契約acceptance_decision](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+### 2026-10-06 #41 最小重繪 owner 與 #52 原生勘誤
+
+死亡演出的最後steady frame只對私有candidate經既有redrawNativeMapHUD評估，
+前段及rollback不提前發布。已證實196CB的戰場END／死亡獎勵closing在最後restore已Draw後、
+原continuation前評估；共用城鎮job、開框與choice不推定重繪。
+兩項READY先於實作，局部拒收及正常新章短前綴驗證已通過；
+未覆蓋owner仍保留40節的未接狀態，#41不關閉。
+
+IDA原始bytes確認1D3FF屬玩家command確認前重繪，15510屬簡略演出，
+不能歸到普通物理完成。新短原版收據已補1D3FF雙gate／view，正式consumer尚待規格。
+#52的新native來源仍有地形像素差異，舊adapter清零只能解釋舊收據；
+不由目前remake已有116推定原版118最後writer。
+唯一數字、來源與限制見[58](58-fd2-exe-re-coverage.md)、[HUD契約](../data/ida/fd2_hud_redraw_20261006.json)及
+[地形契約](../data/ida/fd2_terrain_mode3_review_20261001.json)。

@@ -17,6 +17,8 @@ type nativeClassUIJob struct {
 	timeline []nativeClassUITimelineStep
 	started  time.Time
 	elapsed  time.Duration
+	// 0x196CB 的戰場關框 owner 才宣告 0x19742；城鎮共用 job 不推定重繪。
+	redrawNativeMapAfterRestore bool
 }
 
 type nativeClassUITimelineStep struct {
@@ -135,6 +137,9 @@ func (g *Game) stepNativeClassUILifecycle(now time.Time) {
 		if job.frame >= len(job.frames) {
 			after := job.after
 			g.nativeClassUIJob = nil
+			if job.redrawNativeMapAfterRestore && len(job.restore) != 0 {
+				g.redrawNativeMapHUD()
+			}
 			if after != nil {
 				after()
 			}

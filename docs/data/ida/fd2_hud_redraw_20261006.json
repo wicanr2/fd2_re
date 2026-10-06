@@ -3,7 +3,7 @@
   "kind": "fd2_hud_redraw_caller_contract",
   "date": "2026-10-06",
   "issue": 41,
-  "state": "DRAFT",
+  "state": "PARTIAL-RUNTIME-E1; #41 OPEN",
   "input": {
     "file": "FD2.EXE",
     "size": 357074,
@@ -34,8 +34,20 @@
     {
       "level": "未知",
       "original": "0x1D3FF、0x15510/0x1563B/0x1565C、0x1DEAE、0x19742",
-      "semantic": "正式Game對應消費時點及當時gate／view尚待新章短探針。",
+      "semantic": "正式Game owner仍未全部覆蓋；1DEAE/19742兩處READY及最小實作已驗，1D3FF已取得窄正常指令原版證據；15510/1563B/1565C及劇情closing整合仍未閉合。",
       "source": "遠端#41；不從每幀Draw推定原版呼叫。"
+    },
+    {
+      "level": "已證實",
+      "original": "0x1DEAE/0x1DEB3；0x19742/0x19747",
+      "semantic": "正常新章probe在死亡移除尾端與END／獎勵訊息關框尾端抵達11CAC(0)。1DEAE包含gate B=0及1；19742在本輪gate A/B都為1。雙gate契約沿用既有IDA。",
+      "source": "probe_r2 raw trace同instruction map_runtime／view／units；既有caller索引與fd2_end_turn_confirmation_ui_ida.txt。"
+    },
+    {
+      "level": "已證實",
+      "original": "IDA 0x1D3F3..0x1D4BB；sub_1CFF0",
+      "semantic": "1D3FF是玩家指令確認成功後、range gate寫0時的指令演出前重繪；之後2A6BD或handler跳表、1B6B7、1DB65、1AA1D，再range gate寫1。它不等於普通物理攻擊的完成回呼，也不是Raw53AF9簡略分支。15510才由53AF9!=0選用；正式簡略演出仍失敗即關閉。",
+      "source": "本檔ida_followup raw bytes／caller；1548E既有fd2_shared_physical_exp_20261001.json。"
     }
   ],
   "probe": {
@@ -68,7 +80,7 @@
     "limits": "本次限定caller觀察，不重跑已passed整章，不修改114 DP政策，不增加PLAYER-E2。"
   },
   "spec": {
-    "state": "DRAFT",
+    "state": "PARTIAL-READY",
     "rule": "重用redrawNativeMapHUD；只有已證實的原版重繪點能接正式caller。",
     "failure": "任何未知caller、gate或view不猜補；缺收據保持未覆蓋。",
     "save": "不改格式、隊伍規則或存檔內容。",
@@ -76,7 +88,34 @@
       "同一raw trace記錄caller、雙gate、visible cursor及前後anchor。",
       "RE/READY先於正式實作；最小owner與拒收回歸，正常新章短路徑或同源實際畫面比較。",
       "完整caller列表中未抽到者保持未覆蓋，不宣稱整體#41完成。"
-    ]
+    ],
+    "ready_owners": [
+      {
+        "original": "0x1DEAE",
+        "consumer": "startNativeUnitDeathPresent最後steady frame",
+        "rule": "第26幀合成之前只在私有candidate經redrawNativeMapHUD評估，再重建HUD input；前25幀保留原anchor。預檢或中途失敗不發布／回復原state。"
+      },
+      {
+        "original": "0x19742",
+        "consumer": "nativeSystemEndTurn與nativeDeathRewardMessage已證實196CB關框owner",
+        "rule": "只有這些戰場關框job明示重繪旗標，最後restore已Draw後、原after之前經同一入口。開框、choice關框、城鎮共用job不新增評估。"
+      }
+    ],
+    "pending_owners": [
+      "1563B／1565C需保留death/reward前後順序，再接physical continuation。",
+      "1D3FF定位已更正為玩家command確認前重繪；待窄原版receipt及玩家controller一次接入。15510屬簡略演出，正式owner目前拒收，不偷接普通full path。",
+      "劇情／升級的196CB owner須另核對closing consumer。"
+    ],
+    "review": {
+      "date": "2026-10-06",
+      "decision": "以上兩個owner READY；其他維持DRAFT",
+      "basis": [
+        "固定FD2.EXE雜湊及IDA原始caller定位",
+        "正常建槽LOAD／鍵盤前綴T5、零injection、trace42筆未封頂",
+        "私有candidate／Draw後continuation生命週期已核對",
+        "不改存檔schema、不加入通用Draw評估"
+      ]
+    }
   },
   "probe_r1": {
     "status": "ORIGINAL_T2_REACHED; HUD caller未抽到",
@@ -121,10 +160,4667 @@
     "heap_profile": "native",
     "source_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
     "sampling": "只在1D3FF/15510/1563B/1565C/1DEAE/19742及各自+5返回觀察raw gate／view／anchor，不抽hot迴圈。",
-    "input": "控制prefix逐項與既有fresh-sample-r1相同；只延伸觀察，不改Game或原版狀態。"
+    "input": "控制prefix逐項與既有fresh-sample-r1相同；只延伸觀察，不改Game或原版狀態。",
+    "status": "NORMAL-T5；四個caller已抽到，兩個未抽到",
+    "trace": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r2/eip-trace.jsonl",
+      "size": 618518,
+      "sha256": "61708fc19906ced71d9091ac3ff75f447fee315b4ca7a4c239d0060a79ab52e2"
+    },
+    "runner": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r2/runner.json",
+      "size": 3655,
+      "sha256": "76d41c60ff6f0a80c6e8cc488f20a66070874dac3017f17beca73f60febb142b"
+    },
+    "actions": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r2/actions.jsonl",
+      "size": 7457,
+      "sha256": "0f81d76b20bf95597546addaef31ab08bb8dbfa4a90f369c2ee6f4d960851697"
+    },
+    "current": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r2/current.json",
+      "size": 97995,
+      "sha256": "0c2daf981ab54569d10c471ef95da14566bd04f46b3a371e0414ed8b7ee54623"
+    },
+    "rows": 42,
+    "capped": false,
+    "counts": {
+      "0x19742": 5,
+      "0x19747": 5,
+      "0x1DEAE": 8,
+      "0x1DEB3": 8,
+      "0x1563B": 4,
+      "0x15640": 4,
+      "0x1565C": 4,
+      "0x15661": 4
+    },
+    "observations": [
+      {
+        "step": 1883286595,
+        "control_seq": 453,
+        "original": "0x19742",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 9,
+          "camera_y": 13,
+          "cursor_x": 15,
+          "cursor_y": 14,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 40882,
+          "round": 1,
+          "visible_x": 6,
+          "visible_y": 1
+        }
+      },
+      {
+        "step": 1883438082,
+        "control_seq": 453,
+        "original": "0x19747",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 9,
+          "camera_y": 13,
+          "cursor_x": 15,
+          "cursor_y": 14,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 40882,
+          "round": 1,
+          "visible_x": 6,
+          "visible_y": 1
+        }
+      },
+      {
+        "step": 2996182822,
+        "control_seq": 897,
+        "original": "0x19742",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 9,
+          "camera_y": 12,
+          "cursor_x": 14,
+          "cursor_y": 15,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 4005,
+          "round": 2,
+          "visible_x": 5,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 2996328342,
+        "control_seq": 897,
+        "original": "0x19747",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 9,
+          "camera_y": 12,
+          "cursor_x": 14,
+          "cursor_y": 15,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 4005,
+          "round": 2,
+          "visible_x": 5,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 5210305612,
+        "control_seq": 1743,
+        "original": "0x19742",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 10,
+          "camera_y": 15,
+          "cursor_x": 13,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 63687,
+          "round": 3,
+          "visible_x": 3,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 5210471952,
+        "control_seq": 1743,
+        "original": "0x19747",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 10,
+          "camera_y": 15,
+          "cursor_x": 13,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 63687,
+          "round": 3,
+          "visible_x": 3,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 5254873343,
+        "control_seq": 1746,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 10,
+          "camera_y": 13,
+          "cursor_x": 14,
+          "cursor_y": 14,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 61220,
+          "round": 3,
+          "visible_x": 4,
+          "visible_y": 1
+        }
+      },
+      {
+        "step": 5255019836,
+        "control_seq": 1746,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 10,
+          "camera_y": 13,
+          "cursor_x": 14,
+          "cursor_y": 14,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 61220,
+          "round": 3,
+          "visible_x": 4,
+          "visible_y": 1
+        }
+      },
+      {
+        "step": 5284058915,
+        "control_seq": 1747,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 10,
+          "camera_y": 14,
+          "cursor_x": 13,
+          "cursor_y": 17,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 58553,
+          "round": 3,
+          "visible_x": 3,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 5284205598,
+        "control_seq": 1747,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 10,
+          "camera_y": 14,
+          "cursor_x": 13,
+          "cursor_y": 17,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 58553,
+          "round": 3,
+          "visible_x": 3,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 5913037339,
+        "control_seq": 1898,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 11,
+          "camera_y": 13,
+          "cursor_x": 13,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 15841,
+          "round": 4,
+          "visible_x": 2,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 5913200289,
+        "control_seq": 1898,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 242,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 11,
+          "camera_y": 13,
+          "cursor_x": 13,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 15841,
+          "round": 4,
+          "visible_x": 2,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6116977855,
+        "control_seq": 1931,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 23,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2944,
+          "round": 4,
+          "visible_x": 11,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6117142773,
+        "control_seq": 1931,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 23,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2944,
+          "round": 4,
+          "visible_x": 11,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6257416608,
+        "control_seq": 1946,
+        "original": "0x19742",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 23,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 37150,
+          "round": 4,
+          "visible_x": 11,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6257582410,
+        "control_seq": 1946,
+        "original": "0x19747",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 23,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 37150,
+          "round": 4,
+          "visible_x": 11,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6745330290,
+        "control_seq": 2045,
+        "original": "0x19742",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 13,
+          "cursor_x": 23,
+          "cursor_y": 14,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 3603,
+          "round": 4,
+          "visible_x": 10,
+          "visible_y": 1
+        }
+      },
+      {
+        "step": 6745504423,
+        "control_seq": 2045,
+        "original": "0x19747",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 1,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 13,
+          "cursor_x": 23,
+          "cursor_y": 14,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 3603,
+          "round": 4,
+          "visible_x": 10,
+          "visible_y": 1
+        }
+      },
+      {
+        "step": 6808613495,
+        "control_seq": 2048,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 21,
+          "camera_y": 9,
+          "cursor_x": 22,
+          "cursor_y": 15,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 4497,
+          "round": 4,
+          "visible_x": 1,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6808703004,
+        "control_seq": 2048,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 21,
+          "camera_y": 9,
+          "cursor_x": 22,
+          "cursor_y": 15,
+          "gold": 2000,
+          "overlay_selector": 0,
+          "rng_word": 4497,
+          "round": 4,
+          "visible_x": 1,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6826650180,
+        "control_seq": 2049,
+        "original": "0x1563B",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 10,
+          "cursor_x": 18,
+          "cursor_y": 16,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2235,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6826778569,
+        "control_seq": 2049,
+        "original": "0x15640",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 10,
+          "cursor_x": 18,
+          "cursor_y": 16,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2235,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6829179005,
+        "control_seq": 2049,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 10,
+          "cursor_x": 18,
+          "cursor_y": 16,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2235,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6829306302,
+        "control_seq": 2049,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 10,
+          "cursor_x": 18,
+          "cursor_y": 16,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2235,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6829306343,
+        "control_seq": 2049,
+        "original": "0x1565C",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 10,
+          "cursor_x": 18,
+          "cursor_y": 16,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2235,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6829433069,
+        "control_seq": 2050,
+        "original": "0x15661",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 13,
+          "camera_y": 10,
+          "cursor_x": 18,
+          "cursor_y": 16,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 2235,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 6
+        }
+      },
+      {
+        "step": 6849013755,
+        "control_seq": 2050,
+        "original": "0x1563B",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 18,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 42549,
+          "round": 4,
+          "visible_x": 6,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 6849164116,
+        "control_seq": 2050,
+        "original": "0x15640",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 18,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 42549,
+          "round": 4,
+          "visible_x": 6,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 6851844547,
+        "control_seq": 2051,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 18,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 42549,
+          "round": 4,
+          "visible_x": 6,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 6851992715,
+        "control_seq": 2051,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 18,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 42549,
+          "round": 4,
+          "visible_x": 6,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 6851992756,
+        "control_seq": 2051,
+        "original": "0x1565C",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 18,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 42549,
+          "round": 4,
+          "visible_x": 6,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 6852141395,
+        "control_seq": 2051,
+        "original": "0x15661",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 13,
+          "cursor_x": 18,
+          "cursor_y": 18,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 42549,
+          "round": 4,
+          "visible_x": 6,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 6873458975,
+        "control_seq": 2052,
+        "original": "0x1563B",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 14,
+          "camera_y": 16,
+          "cursor_x": 21,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 16461,
+          "round": 4,
+          "visible_x": 7,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 6873609463,
+        "control_seq": 2052,
+        "original": "0x15640",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 14,
+          "camera_y": 16,
+          "cursor_x": 21,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 16461,
+          "round": 4,
+          "visible_x": 7,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 6876290136,
+        "control_seq": 2052,
+        "original": "0x1DEAE",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 14,
+          "camera_y": 16,
+          "cursor_x": 21,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 16461,
+          "round": 4,
+          "visible_x": 7,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 6876439176,
+        "control_seq": 2052,
+        "original": "0x1DEB3",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 14,
+          "camera_y": 16,
+          "cursor_x": 21,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 16461,
+          "round": 4,
+          "visible_x": 7,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 6876439217,
+        "control_seq": 2052,
+        "original": "0x1565C",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 14,
+          "camera_y": 16,
+          "cursor_x": 21,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 16461,
+          "round": 4,
+          "visible_x": 7,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 6876588681,
+        "control_seq": 2052,
+        "original": "0x15661",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 14,
+          "camera_y": 16,
+          "cursor_x": 21,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 16461,
+          "round": 4,
+          "visible_x": 7,
+          "visible_y": 3
+        }
+      },
+      {
+        "step": 7007348216,
+        "control_seq": 2058,
+        "original": "0x1563B",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 14,
+          "cursor_x": 20,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 37534,
+          "round": 4,
+          "visible_x": 8,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 7007504996,
+        "control_seq": 2058,
+        "original": "0x15640",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 14,
+          "cursor_x": 20,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 37534,
+          "round": 4,
+          "visible_x": 8,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 7007506174,
+        "control_seq": 2058,
+        "original": "0x1565C",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 14,
+          "cursor_x": 20,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 37534,
+          "round": 4,
+          "visible_x": 8,
+          "visible_y": 5
+        }
+      },
+      {
+        "step": 7007663164,
+        "control_seq": 2058,
+        "original": "0x15661",
+        "level": "已證實",
+        "gate_a": 1,
+        "gate_b": 0,
+        "anchor": 1,
+        "view": {
+          "aux_phase": 0,
+          "camera_x": 12,
+          "camera_y": 14,
+          "cursor_x": 20,
+          "cursor_y": 19,
+          "gold": 2000,
+          "overlay_selector": 1,
+          "rng_word": 37534,
+          "round": 4,
+          "visible_x": 8,
+          "visible_y": 5
+        }
+      }
+    ]
   },
   "commands": {
     "original_r1": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r1' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 1500 docker run --rm --name fd2-ch24-hud-redraw-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch24-hud-redraw-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=5000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x11CAC,0x1AD2A,0x11D3B,0x1D3FF,0x15510,0x1563B,0x1565C,0x1DEAE,0x19742' -e 'FD2_ORACLE_EIP_TRACE_FROM=600000000' -e 'FD2_ORACLE_EIP_TRACE_TO=5000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=5000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#41正常新章短probe，既有建槽AP200/DP0/DX60，未改政策、無鎖HP、清敵或治療，原始map_state唯讀；不增加PLAYER-E2' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 1440 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r1/wrapper.log' 2>&1",
-    "original_r2": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 3660 docker run --rm --name fd2-ch24-hud-redraw-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=11000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x1D3FF,0x1D404,0x15510,0x15515,0x1563B,0x15640,0x1565C,0x15661,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=600000000' -e 'FD2_ORACLE_EIP_TRACE_TO=11000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=2000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#41正常新章短probe，既有建槽AP200/DP0/DX60，未改政策、無鎖HP、清敵或治療，原始map_state唯讀；不增加PLAYER-E2' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 3600 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2/wrapper.log' 2>&1"
+    "original_r2": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 3660 docker run --rm --name fd2-ch24-hud-redraw-r2 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r2' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=11000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x1D3FF,0x1D404,0x15510,0x15515,0x1563B,0x15640,0x1565C,0x15661,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=600000000' -e 'FD2_ORACLE_EIP_TRACE_TO=11000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=2000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#41正常新章短probe，既有建槽AP200/DP0/DX60，未改政策、無鎖HP、清敵或治療，原始map_state唯讀；不增加PLAYER-E2' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 3600 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r2/wrapper.log' 2>&1",
+    "baseline_game": "test -d /home/anr2/cht/fd2/remake/generated-assets/fd2-original-b97caf22 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 960 docker run --rm --name fd2-hud-baseline-game --network none --memory 6g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/parity-slot-ch24/hud-redraw-baseline-remake-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/hud-redraw-original-r2 FD2_PARITY_OUT=/src/work/parity-slot-ch24/hud-redraw-baseline-remake-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -timeout 600s -v' > /home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-baseline-remake-r1.log 2>&1",
+    "original_r3": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r3' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r3' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 3660 docker run --rm --name fd2-ch24-hud-redraw-r3 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r3,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r3,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-state-r3' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=11000000000' -e 'FD2_ORACLE_MAP_STATE=' -e 'FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x24D48,0x11EED,0x11D3B,0x1D3FF,0x1D404,0x15510,0x15515,0x1563B,0x15640,0x1565C,0x15661,0x1DEAE,0x19742' -e 'FD2_ORACLE_EIP_TRACE_FROM=0' -e 'FD2_ORACLE_EIP_TRACE_TO=0' -e 'FD2_ORACLE_EIP_TRACE_MAX=200000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#41正常新章短probe，既有建槽AP200/DP0/DX60，未改政策、無鎖HP、清敵或治療，原始map_state唯讀；不增加PLAYER-E2' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 3600 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-original-r3/wrapper.log' 2>&1",
+    "ida": "test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -f /home/anr2/cht/fd2/tools/ida_probe_physical_presentation.py && timeout 660 docker run --rm --name fd2-hud-redraw-ida --network none --memory 6g --cpus 2 --pids-limit 256 --user 1000:1000 --tmpfs /tmp:rw,exec,uid=1000,gid=1000 -v /home/anr2/cht/fd2:/src:ro -v /home/anr2/cht/fd2/work:/out -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/input:ro -w /tmp -e FD2_IDA_INPUT=/input/FD2.EXE -e FD2_IDA_OUTPUT=/out/hud-redraw-ida-r1.json -e FD2_IDA_HUD_REDRAW=1 ida-pro-9.4-idapython:locked-v1 timeout 600 idat -A -o/tmp/hud-redraw.i64 -L/out/hud-redraw-ida-r1.log -S/src/tools/ida_probe_physical_presentation.py /input/FD2.EXE > /home/anr2/cht/fd2/work/hud-redraw-ida-r1.stdout.log 2>&1",
+    "owner_red": "timeout 240 docker run --rm --name fd2-hud-owner-red --network none --memory 4g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 210 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_hud_redraw_test.go cmd/fd2/native_ch28_post_present_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2 -run '\\''TestNativeMessageCloseRedrawsHUD|TestNativeSharedCloseDoesNotRedrawBattleHUD|TestNativeUnitDeathRedrawsHUD'\\'' -count=1 -timeout 120s -v' > /home/anr2/cht/fd2/work/hud-owner-red-r1.log 2>&1",
+    "owner_green": "timeout 240 docker run --rm --name fd2-hud-owner-green --network none --memory 4g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 210 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/native_hud_redraw_test.go cmd/fd2/native_ch28_post_present_test.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./cmd/fd2 -run '\\''TestNativeMessageCloseRedrawsHUD|TestNativeSharedCloseDoesNotRedrawBattleHUD|TestNativeUnitDeathRedrawsHUD'\\'' -count=1 -timeout 120s -v' > /home/anr2/cht/fd2/work/hud-owner-green-r1.log 2>&1",
+    "command_original": "test -d '/home/anr2/cht/fd2' && test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-command-native-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch24/hud-command-native-state-r1' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl' && timeout 900 docker run --rm --name fd2-hud-command-native-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/fd2,dst=/src,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-command-native-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-command-native-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl,dst=/plan.jsonl,readonly' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch24/hud-command-native-state-r1' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl' -e 'FD2_ORACLE_BUDGET=8000000000' -e 'FD2_ORACLE_EIP_TRACE=0x1D3FF,0x1D404,0x1DEAE,0x19742,0x2A6BD' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE_MAX=100000' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 840 bash /oracle-entry.sh > /home/anr2/cht/fd2/work/parity-slot-ch24/hud-command-native-original-r1.log 2>&1",
+    "normal_game": "test -d /home/anr2/cht/fd2/remake/generated-assets/fd2-original-b97caf22 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/parity-slot-ch24/hud-redraw-native-remake-r1; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=24 FD2_PARITY_SLOT=/src/work/parity-slot-ch24/fresh-policy-r1/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch24/hud-redraw-original-r3 FD2_PARITY_OUT=/src/work/parity-slot-ch24/hud-redraw-native-remake-r1 with-xvfb go test ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -timeout 600s -v' > /home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-native-remake-r1.log 2>&1",
+    "normal_verify": "timeout 300 docker run --rm --network none --memory 2g --cpus 2 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/src:ro -v /home/anr2/cht/fd2/work:/out -w /src --entrypoint timeout fd2-assets-local:20260829-sfx 270 python3 tools/verify_chapter_parity.py --chapter 24 --oracle /src/work/parity-slot-ch24/hud-redraw-original-r3 --remake /src/work/parity-slot-ch24/hud-redraw-native-remake-r1 --slot-manifest docs/data/parity-slots/ch24-fresh-policy-manifest.json --plan docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl --out /out/parity-slot-ch24/hud-redraw-native-verified-r1.json --pixel-budget 0 --min-frames 12 > /home/anr2/cht/fd2/work/parity-slot-ch24/hud-redraw-native-verified-r1.log 2>&1",
+    "full_go_bad": "test -d /home/anr2/cht/fd2/remake/generated-assets/fd2-original-b97caf22 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/action_overlay_runtime.go cmd/fd2/native_ch28_post_present.go cmd/fd2/native_class_ui_lifecycle.go cmd/fd2/native_death_reward_message.go; FD2_MUTE=1 FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > /home/anr2/cht/fd2/work/hud-full-regression-r1.log 2>&1",
+    "full_go": "test -d /home/anr2/cht/fd2/remake/generated-assets/fd2-original-b97caf22 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 960 docker run --rm --network none --memory 6g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; gofmt -w cmd/fd2/action_overlay_runtime.go cmd/fd2/native_ch28_post_present.go cmd/fd2/native_class_ui_lifecycle.go cmd/fd2/native_death_reward_message.go; FD2_ASSET_PACK=/tmp/fd2-pack with-xvfb go test ./... -count=1 -timeout 600s' > /home/anr2/cht/fd2/work/hud-full-regression-r2.log 2>&1",
+    "ida_annotations": "test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -f /home/anr2/cht/fd2/tools/ida_probe_physical_presentation.py && timeout 660 docker run --rm --name fd2-hud-redraw-ida --network none --memory 6g --cpus 2 --pids-limit 256 --user 1000:1000 --tmpfs /tmp:rw,exec,uid=1000,gid=1000 -v /home/anr2/cht/fd2:/src:ro -v /home/anr2/cht/fd2/work:/out -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/input:ro -w /tmp -e FD2_IDA_INPUT=/input/FD2.EXE -e FD2_IDA_OUTPUT=/out/hud-redraw-ida-r2.json -e FD2_IDA_HUD_REDRAW=1 ida-pro-9.4-idapython:locked-v1 timeout 600 idat -A -o/tmp/hud-redraw.i64 -L/out/hud-redraw-ida-r2.log -S/src/tools/ida_probe_physical_presentation.py /input/FD2.EXE > /home/anr2/cht/fd2/work/hud-redraw-ida-r2.stdout.log 2>&1"
+  },
+  "probe_r3": {
+    "state": "NORMAL-T5-REPEAT-CONFIRMED",
+    "plan": {
+      "path": "docs/data/parity-plans/ch24-hud-redraw-probe-r2.jsonl",
+      "size": 2495,
+      "sha256": "a76d79874d1ac54938718e7e3f7fea724670afdc7cb0152fb1ea89520fc0c68b"
+    },
+    "source_slot": {
+      "path": "work/parity-slot-ch24/fresh-policy-r1/FD2.SAV",
+      "size": 22987,
+      "sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810"
+    },
+    "source_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+    "reason": "r2的窄窗不含24D48／11EED背景發布，完整Game frame驗證如實拒絕stage trace不完整；屬驗證設定缺口。",
+    "method": "同SAV、同native執行器、同控制計畫重生；加入已CONFORMED的stage完整trace及AI RNG entry。HUD雙gate證據仍由r2取得，r3停用每筆map_state以避免大量等待copy trace輸出171units。",
+    "acceptance": "raw checkpoint JSON/PNG與r2逐點核對一致後才橋接r2 HUD observations；原版未改碼、未選seed、未改狀態。",
+    "limits": "只補齊同一正常T5前綴；不是重跑已passed整章，不新增PLAYER-E2。",
+    "initial_environment_failure": "wrapper接受MAP_STATE空值／1；錯設0在原版啟動前exit2。改空值後同一命令重跑，不算產品缺陷。",
+    "second_environment_failure": "oracle在執行原版前拒絕19個trace address。核對目前16個上限後，保留15個必要stage、AI及caller地址；既有r2兩類return收據不重複加。SAV與狀態目錄未改。",
+    "rows": 125164,
+    "capped": false,
+    "counts": {
+      "0x11EED": 72714,
+      "0x24D48": 27710,
+      "0x11D3B": 24660,
+      "0x19742": 5,
+      "0x13A9F": 51,
+      "0x1DEAE": 8,
+      "0x1563B": 4,
+      "0x15640": 4,
+      "0x1565C": 4,
+      "0x15661": 4
+    },
+    "repeat": {
+      "json_points": 2076,
+      "png_points": 2076,
+      "differences": 0,
+      "method": "相同檔名的完整檔案 bytes 逐份核對，不忽略RNG、隱藏單位欄位或像素。"
+    },
+    "final_steps": 7349404024,
+    "round": 5,
+    "state_injections": [],
+    "runner": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r3/runner.json",
+      "size": 3640,
+      "sha256": "ebc8803ce67a4e3c1e38f114181bf1a97f49ecd797f38b354934059b09947c03"
+    },
+    "actions": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r3/actions.jsonl",
+      "size": 7457,
+      "sha256": "0f81d76b20bf95597546addaef31ab08bb8dbfa4a90f369c2ee6f4d960851697"
+    },
+    "current": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r3/current.json",
+      "size": 97995,
+      "sha256": "0c2daf981ab54569d10c471ef95da14566bd04f46b3a371e0414ed8b7ee54623"
+    },
+    "eip-trace": {
+      "path": "work/parity-slot-ch24/hud-redraw-original-r3/eip-trace.jsonl",
+      "size": 31360146,
+      "sha256": "8ff9c9fb149bf4b7ff6677ab631d9e252655f63ac3cef1360624efa0efee0810"
+    }
+  },
+  "validation": {
+    "baseline_game": {
+      "state": "VALIDATION-CONFIG-LIMIT",
+      "log": "work/parity-slot-ch24/hud-redraw-baseline-remake-r1.log",
+      "reason": "stage trace不是完整追蹤；r2故意窄窗，不是產品缺陷。"
+    },
+    "owner_red": {
+      "state": "FAIL-as-expected",
+      "log": "work/hud-owner-red-r1.log",
+      "cases": "death final frame、END取消、reward closing gateB=1都缺anchor；gateB=0與共用job保留通過。"
+    },
+    "owner_green": {
+      "state": "PASS",
+      "log": "work/hud-owner-green-r1.log",
+      "scope": "死亡第26幀發布／rollback、END取消與獎勵closing在restore最後Draw後、B0保持，共用job不評估。"
+    },
+    "normal_prefix": {
+      "state": "PASS-BOUNDED-T5",
+      "report": {
+        "path": "work/parity-slot-ch24/hud-redraw-native-verified-r1.json",
+        "size": 102401,
+        "sha256": "3daea8ec5da710d038195b17454ea65d370c0a122d7c1f50c352ed1699942966"
+      },
+      "game_log": {
+        "path": "work/parity-slot-ch24/hud-redraw-native-remake-r1.log",
+        "size": 81355,
+        "sha256": "52e2451b6dd87a8313105efa97f699b5f7ab6a236c35029c35aec642aaf89ed5"
+      },
+      "gates": {
+        "behavior": true,
+        "nodes": true,
+        "transaction": true,
+        "frames": true
+      },
+      "behavior_points": 58,
+      "frames": 54,
+      "full_zero_pixels": 54,
+      "max_diff_pixels": 0,
+      "ai_entries": 51,
+      "ai_consumed": 51,
+      "ai_order_divergences": 0,
+      "save": "not_sampled",
+      "limits": "只驗已採樣T5前綴；既有stage及palette證據候選保持明示，不新增章PLAYER-E2。其他caller尚未接入，通過不能關閉#41。"
+    },
+    "full_go_first": {
+      "state": "VALIDATION-CONFIG-LIMIT",
+      "log": {
+        "path": "work/hud-full-regression-r1.log",
+        "size": 6110,
+        "sha256": "3af926acf681b4ac4958bda79e522a1652719e75937781e478d46e28eaa40b33"
+      },
+      "reason": "錯加全域FD2_MUTE=1，使本來驗missing exact sample的TestPlayerNativeCommand17WaitsForEightPalettePhasesBeforeTransaction繞過拒收。上次成功全套環境沒有全域mute；移除此設定按同image／同命令乾淨重跑，不改測試或產品拒收。"
+    },
+    "full_go": {
+      "state": "PASS",
+      "packages": 19,
+      "log": {
+        "path": "work/hud-full-regression-r2.log",
+        "size": 2084,
+        "sha256": "5242ec96943300a93bccbf5c2248e5ac11f8e527cbcf0eceb79096c70d481075"
+      },
+      "environment": "FD2_ASSET_PACK沿前輪成功設定；沒有全域FD2_MUTE，缺音效拒收測試自行設定其需要的環境。"
+    },
+    "implementation": [
+      {
+        "path": "remake/cmd/fd2/action_overlay_runtime.go",
+        "size": 27532,
+        "sha256": "7a200fb599ae3ba2a00357cdb1192006d33b13f5120e52f10c12ea9f67358546"
+      },
+      {
+        "path": "remake/cmd/fd2/native_ch28_post_present.go",
+        "size": 9066,
+        "sha256": "537ca532b220885f131e0d1f8a4af790af9a18f0d5617584065f878102ff2705"
+      },
+      {
+        "path": "remake/cmd/fd2/native_class_ui_lifecycle.go",
+        "size": 6728,
+        "sha256": "3a3d55b577ec470517f7c81dc75d706133809ea3a20f906fd6f798d9b7e06377"
+      },
+      {
+        "path": "remake/cmd/fd2/native_death_reward_message.go",
+        "size": 6303,
+        "sha256": "7613af149ee7cd6a37a6b130f8a0f8d08fd875b3c41389e9d08cb294d641ec8d"
+      },
+      {
+        "path": "remake/cmd/fd2/native_hud_redraw_test.go",
+        "size": 6592,
+        "sha256": "10a7cd7ee37c9a690697f8a0add233c90af0adf5dd93f56b7b661e7c25c599b2"
+      },
+      {
+        "path": "remake/cmd/fd2/native_ch28_post_present_test.go",
+        "size": 5250,
+        "sha256": "485dfeed6af040ccca3ddd72c1bb6b0a40d392fdbb573e7b4d62ce6d609a7fd2"
+      },
+      {
+        "path": "tools/ida_probe_physical_presentation.py",
+        "size": 6127,
+        "sha256": "ceff2e914adc602b1f086f25282a852ae8cf6dd0f822785f0b3b0a8cb776815b"
+      }
+    ],
+    "ida_annotations": {
+      "state": "PASS",
+      "export": {
+        "path": "work/hud-redraw-ida-r2.json",
+        "size": 249865,
+        "sha256": "f99bec7150a3e64734cc4c94a379ae7fafa3026cfc97875a40ed1e1de9a761bf"
+      },
+      "functions": 3,
+      "instructions": 608,
+      "graded_instructions": 24,
+      "result": "r1/r2三函式每筆原始name／address／bytes／instruction相同；r2依canonical索引自動合併分級語意與source，未知範圍仍保留warning。"
+    }
+  },
+  "ida_followup": {
+    "state": "RE-CLOSED-locator",
+    "scope": "只補既有caller分支／結尾的raw bytes與xref；未知逐條保留，不從反編譯器取語意。",
+    "export": {
+      "path": "work/hud-redraw-ida-r1.json",
+      "size": 240778,
+      "sha256": "883ea3fa5dc5c0148a080969aafcdb073355100213b3d649749663d4c5f099e0"
+    },
+    "data": {
+      "schema_version": 1,
+      "input": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "tool": "IDA Pro 9.4",
+      "address_space": "IDA LE linear",
+      "functions": [
+        {
+          "address": "0x1cff0",
+          "end": "0x1d4cb",
+          "original_name": "sub_1CFF0",
+          "instructions": [
+            {
+              "address": "0x1d37a",
+              "bytes": "6a00",
+              "original": "push    0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d37c",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d37d",
+              "bytes": "8d44240c",
+              "original": "lea     eax, [esp+0F4h+var_E8]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d381",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d382",
+              "bytes": "ff35b53a0500",
+              "original": "push    dword_53AB5",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d388",
+              "bytes": "ff35b13a0500",
+              "original": "push    dword_53AB1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d38e",
+              "bytes": "e88574ffff",
+              "original": "call    sub_14818",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d393",
+              "bytes": "83c418",
+              "original": "add     esp, 18h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d396",
+              "bytes": "89c6",
+              "original": "mov     esi, eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d398",
+              "bytes": "bf04000000",
+              "original": "mov     edi, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d39d",
+              "bytes": "85c0",
+              "original": "test    eax, eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d39f",
+              "bytes": "7505",
+              "original": "jnz     short loc_1D3A6",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3a1",
+              "bytes": "bf05000000",
+              "original": "mov     edi, 5",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3a6",
+              "bytes": "89e0",
+              "original": "mov     eax, esp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3a8",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3a9",
+              "bytes": "6a00",
+              "original": "push    0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3ab",
+              "bytes": "57",
+              "original": "push    edi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3ac",
+              "bytes": "e80542ffff",
+              "original": "call    sub_115B6",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3b1",
+              "bytes": "83c40c",
+              "original": "add     esp, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3b4",
+              "bytes": "89c7",
+              "original": "mov     edi, eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3b6",
+              "bytes": "ff35513a0500",
+              "original": "push    dword_53A51",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3bc",
+              "bytes": "e83b080300",
+              "original": "call    sub_4DBFC",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3c1",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3c4",
+              "bytes": "83ffff",
+              "original": "cmp     edi, 0FFFFFFFFh",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3c7",
+              "bytes": "752a",
+              "original": "jnz     short loc_1D3F3",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3c9",
+              "bytes": "c705831a050000000000",
+              "original": "mov     dword_51A83, 0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3d3",
+              "bytes": "ffb424ec000000",
+              "original": "push    [esp+0E8h+arg_0]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3da",
+              "bytes": "e89c59ffff",
+              "original": "call    sub_12D7B",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3df",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3e2",
+              "bytes": "c705831a050001000000",
+              "original": "mov     dword_51A83, 1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3ec",
+              "bytes": "31c0",
+              "original": "xor     eax, eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3ee",
+              "bytes": "e9cd000000",
+              "original": "jmp     loc_1D4C0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3f3",
+              "bytes": "c705831a050000000000",
+              "original": "mov     dword_51A83, 0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3fd",
+              "bytes": "6a00",
+              "original": "push    0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d3ff",
+              "bytes": "e8a848ffff",
+              "original": "call    sub_11CAC",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d404",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d407",
+              "bytes": "a1573c0500",
+              "original": "mov     eax, dword_53C57",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d40c",
+              "bytes": "0fb68404c8000000",
+              "original": "movzx   eax, [esp+eax+0E8h+var_20]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d414",
+              "bytes": "83f809",
+              "original": "cmp     eax, 9",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d417",
+              "bytes": "7c0a",
+              "original": "jl      short loc_1D423",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d419",
+              "bytes": "83f818",
+              "original": "cmp     eax, 18h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d41c",
+              "bytes": "7405",
+              "original": "jz      short loc_1D423",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d41e",
+              "bytes": "83f81b",
+              "original": "cmp     eax, 1Bh",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d421",
+              "bytes": "7e23",
+              "original": "jle     short loc_1D446",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d423",
+              "bytes": "89e0",
+              "original": "mov     eax, esp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d425",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d426",
+              "bytes": "56",
+              "original": "push    esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d427",
+              "bytes": "a1573c0500",
+              "original": "mov     eax, dword_53C57",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d42c",
+              "bytes": "0fb68404d0000000",
+              "original": "movzx   eax, [esp+eax+0F0h+var_20]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d434",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d435",
+              "bytes": "ffb424f8000000",
+              "original": "push    [esp+0F4h+arg_0]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d43c",
+              "bytes": "e87cd20000",
+              "original": "call    sub_2A6BD",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d441",
+              "bytes": "83c410",
+              "original": "add     esp, 10h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d444",
+              "bytes": "eb42",
+              "original": "jmp     short loc_1D488",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d446",
+              "bytes": "e880000000",
+              "original": "call    sub_1D4CB",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d44b",
+              "bytes": "a1573c0500",
+              "original": "mov     eax, dword_53C57",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d450",
+              "bytes": "0fb68404c8000000",
+              "original": "movzx   eax, [esp+eax+0E8h+var_20]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d458",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d459",
+              "bytes": "e86a020000",
+              "original": "call    sub_1D6C8",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d45e",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d461",
+              "bytes": "a1573c0500",
+              "original": "mov     eax, dword_53C57",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d466",
+              "bytes": "0fb68404c8000000",
+              "original": "movzx   eax, [esp+eax+0E8h+var_20]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d46e",
+              "bytes": "89e3",
+              "original": "mov     ebx, esp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d470",
+              "bytes": "53",
+              "original": "push    ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d471",
+              "bytes": "56",
+              "original": "push    esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d472",
+              "bytes": "ffb424f4000000",
+              "original": "push    [esp+0F0h+arg_0]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d479",
+              "bytes": "ff1485011d0500",
+              "original": "call    funcs_1541F[eax*4]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d480",
+              "bytes": "83c40c",
+              "original": "add     esp, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d483",
+              "bytes": "e86e000000",
+              "original": "call    sub_1D4F6",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d488",
+              "bytes": "8d442464",
+              "original": "lea     eax, [esp+0E8h+var_84]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d48c",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d48d",
+              "bytes": "e825e2ffff",
+              "original": "call    sub_1B6B7",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d492",
+              "bytes": "89c3",
+              "original": "mov     ebx, eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d494",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d497",
+              "bytes": "e8c9060000",
+              "original": "call    sub_1DB65",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d49c",
+              "bytes": "8d442464",
+              "original": "lea     eax, [esp+0E8h+var_84]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4a0",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4a1",
+              "bytes": "53",
+              "original": "push    ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4a2",
+              "bytes": "ffb424f4000000",
+              "original": "push    [esp+0F0h+arg_0]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4a9",
+              "bytes": "e86fd5ffff",
+              "original": "call    sub_1AA1D",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4ae",
+              "bytes": "83c40c",
+              "original": "add     esp, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4b1",
+              "bytes": "c705831a050001000000",
+              "original": "mov     dword_51A83, 1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4bb",
+              "bytes": "b801000000",
+              "original": "mov     eax, 1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4c0",
+              "bytes": "81c4d8000000",
+              "original": "add     esp, 0D8h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4c6",
+              "bytes": "5d",
+              "original": "pop     ebp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4c7",
+              "bytes": "5f",
+              "original": "pop     edi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4c8",
+              "bytes": "5e",
+              "original": "pop     esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4c9",
+              "bytes": "5b",
+              "original": "pop     ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1d4ca",
+              "bytes": "c3",
+              "original": "retn",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            }
+          ],
+          "semantic": "",
+          "level": "未知",
+          "warning": "只閉合已審查的 caller-specific claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "callers": [
+            {
+              "address": "0x1900f",
+              "original": "call    sub_1CFF0",
+              "bytes": "e8dc3f0000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            }
+          ],
+          "exported_instruction_count": 318,
+          "canonical_scope": "保留本輪必要分支與tail；完整raw export及SHA-256另可回查。"
+        },
+        {
+          "address": "0x1db65",
+          "end": "0x1debe",
+          "original_name": "sub_1DB65",
+          "instructions": [
+            {
+              "address": "0x1db65",
+              "bytes": "68a8000000",
+              "original": "push    0A8h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db6a",
+              "bytes": "e868910100",
+              "original": "call    sub_36CD7",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db6f",
+              "bytes": "53",
+              "original": "push    ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db70",
+              "bytes": "56",
+              "original": "push    esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db71",
+              "bytes": "57",
+              "original": "push    edi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db72",
+              "bytes": "55",
+              "original": "push    ebp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db73",
+              "bytes": "83ec7c",
+              "original": "sub     esp, 7Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db76",
+              "bytes": "31ed",
+              "original": "xor     ebp, ebp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db78",
+              "bytes": "31f6",
+              "original": "xor     esi, esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db7a",
+              "bytes": "eb01",
+              "original": "jmp     short loc_1DB7D",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db7c",
+              "bytes": "46",
+              "original": "inc     esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db7d",
+              "bytes": "3b35eb3b0500",
+              "original": "cmp     esi, dword_53BEB",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db83",
+              "bytes": "0f8da9000000",
+              "original": "jge     loc_1DC32",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db89",
+              "bytes": "89f2",
+              "original": "mov     edx, esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db8b",
+              "bytes": "c1e202",
+              "original": "shl     edx, 2",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db8e",
+              "bytes": "01f2",
+              "original": "add     edx, esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db90",
+              "bytes": "c1e204",
+              "original": "shl     edx, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db93",
+              "bytes": "8b1d453a0500",
+              "original": "mov     ebx, dword_53A45",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db99",
+              "bytes": "01d3",
+              "original": "add     ebx, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db9b",
+              "bytes": "0fb60b",
+              "original": "movzx   ecx, byte ptr [ebx]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1db9e",
+              "bytes": "0fb67b01",
+              "original": "movzx   edi, byte ptr [ebx+1]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dba2",
+              "bytes": "f6430501",
+              "original": "test    byte ptr [ebx+5], 1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dba6",
+              "bytes": "75d4",
+              "original": "jnz     short loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dba8",
+              "bytes": "0fb75340",
+              "original": "movzx   edx, word ptr [ebx+40h]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbac",
+              "bytes": "85d2",
+              "original": "test    edx, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbae",
+              "bytes": "75cc",
+              "original": "jnz     short loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbb0",
+              "bytes": "8b15a93a0500",
+              "original": "mov     edx, dword_53AA9",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbb6",
+              "bytes": "4a",
+              "original": "dec     edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbb7",
+              "bytes": "39d1",
+              "original": "cmp     ecx, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbb9",
+              "bytes": "7cc1",
+              "original": "jl      short loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbbb",
+              "bytes": "8b15a93a0500",
+              "original": "mov     edx, dword_53AA9",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbc1",
+              "bytes": "0315871a0500",
+              "original": "add     edx, dword_51A87",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbc7",
+              "bytes": "39d1",
+              "original": "cmp     ecx, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbc9",
+              "bytes": "7fb1",
+              "original": "jg      short loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbcb",
+              "bytes": "8b15ad3a0500",
+              "original": "mov     edx, dword_53AAD",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbd1",
+              "bytes": "4a",
+              "original": "dec     edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbd2",
+              "bytes": "39d7",
+              "original": "cmp     edi, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbd4",
+              "bytes": "7ca6",
+              "original": "jl      short loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbd6",
+              "bytes": "8b15ad3a0500",
+              "original": "mov     edx, dword_53AAD",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbdc",
+              "bytes": "03158b1a0500",
+              "original": "add     edx, dword_51A8B",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbe2",
+              "bytes": "42",
+              "original": "inc     edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbe3",
+              "bytes": "39d7",
+              "original": "cmp     edi, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbe5",
+              "bytes": "7f95",
+              "original": "jg      short loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbe7",
+              "bytes": "8d51ff",
+              "original": "lea     edx, [ecx-1]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbea",
+              "bytes": "2b15a93a0500",
+              "original": "sub     edx, dword_53AA9",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbf0",
+              "bytes": "6bda18",
+              "original": "imul    ebx, edx, 18h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbf3",
+              "bytes": "8b15493a0500",
+              "original": "mov     edx, dword_53A49",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbf9",
+              "bytes": "81c288800000",
+              "original": "add     edx, 8088h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dbff",
+              "bytes": "8d0c1a",
+              "original": "lea     ecx, [edx+ebx]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc02",
+              "bytes": "8d5fff",
+              "original": "lea     ebx, [edi-1]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc05",
+              "bytes": "2b1dad3a0500",
+              "original": "sub     ebx, dword_53AAD",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc0b",
+              "bytes": "89da",
+              "original": "mov     edx, ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc0d",
+              "bytes": "c1e202",
+              "original": "shl     edx, 2",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc10",
+              "bytes": "01da",
+              "original": "add     edx, ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc12",
+              "bytes": "c1e202",
+              "original": "shl     edx, 2",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc15",
+              "bytes": "29da",
+              "original": "sub     edx, ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc17",
+              "bytes": "c1e206",
+              "original": "shl     edx, 6",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc1a",
+              "bytes": "89d3",
+              "original": "mov     ebx, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc1c",
+              "bytes": "c1e203",
+              "original": "shl     edx, 3",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc1f",
+              "bytes": "01da",
+              "original": "add     edx, ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc21",
+              "bytes": "01d1",
+              "original": "add     ecx, edx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc23",
+              "bytes": "81e9b00a0000",
+              "original": "sub     ecx, 0AB0h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc29",
+              "bytes": "890cac",
+              "original": "mov     [esp+ebp*4+8Ch+var_8C], ecx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc2c",
+              "bytes": "45",
+              "original": "inc     ebp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc2d",
+              "bytes": "e94affffff",
+              "original": "jmp     loc_1DB7C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc32",
+              "bytes": "85ed",
+              "original": "test    ebp, ebp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc34",
+              "bytes": "7531",
+              "original": "jnz     short loc_1DC67",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc36",
+              "bytes": "31f6",
+              "original": "xor     esi, esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc38",
+              "bytes": "eb01",
+              "original": "jmp     short loc_1DC3B",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc3a",
+              "bytes": "46",
+              "original": "inc     esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc3b",
+              "bytes": "3b35eb3b0500",
+              "original": "cmp     esi, dword_53BEB",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc41",
+              "bytes": "0f8d6f020000",
+              "original": "jge     loc_1DEB6",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc47",
+              "bytes": "89f2",
+              "original": "mov     edx, esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dc49",
+              "bytes": "c1e202",
+              "original": "shl     edx, 2",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de72",
+              "bytes": "83c418",
+              "original": "add     esp, 18h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de75",
+              "bytes": "6a01",
+              "original": "push    1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de77",
+              "bytes": "e82d9cffff",
+              "original": "call    sub_17AA9",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de7c",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de7f",
+              "bytes": "47",
+              "original": "inc     edi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de80",
+              "bytes": "83ff0c",
+              "original": "cmp     edi, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de83",
+              "bytes": "7d1b",
+              "original": "jge     short loc_1DEA0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de85",
+              "bytes": "6880560200",
+              "original": "push    (offset loc_2567F+1)",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de8a",
+              "bytes": "ff74247c",
+              "original": "push    [esp+90h+var_14]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de8e",
+              "bytes": "ff35493a0500",
+              "original": "push    dword_53A49",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de94",
+              "bytes": "e82b950100",
+              "original": "call    memmove",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de99",
+              "bytes": "83c40c",
+              "original": "add     esp, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de9c",
+              "bytes": "31f6",
+              "original": "xor     esi, esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1de9e",
+              "bytes": "eba3",
+              "original": "jmp     short loc_1DE43",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dea0",
+              "bytes": "ff742478",
+              "original": "push    [esp+8Ch+var_14]",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dea4",
+              "bytes": "e86d950100",
+              "original": "call    free",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1dea9",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1deac",
+              "bytes": "6a00",
+              "original": "push    0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1deae",
+              "bytes": "e8f93dffff",
+              "original": "call    sub_11CAC",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1deb3",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1deb6",
+              "bytes": "83c47c",
+              "original": "add     esp, 7Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1deb9",
+              "bytes": "5d",
+              "original": "pop     ebp",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1deba",
+              "bytes": "5f",
+              "original": "pop     edi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1debb",
+              "bytes": "5e",
+              "original": "pop     esi",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1debc",
+              "bytes": "5b",
+              "original": "pop     ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1debd",
+              "bytes": "c3",
+              "original": "retn",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            }
+          ],
+          "semantic": "",
+          "level": "未知",
+          "warning": "只閉合已審查的 caller-specific claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "callers": [
+            {
+              "address": "0x15447",
+              "original": "call    sub_1DB65",
+              "bytes": "e819870000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x15643",
+              "original": "call    sub_1DB65",
+              "bytes": "e81d850000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x18fe0",
+              "original": "call    sub_1DB65",
+              "bytes": "e8804b0000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1a941",
+              "original": "call    sub_1DB65",
+              "bytes": "e81f320000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1d497",
+              "original": "call    sub_1DB65",
+              "bytes": "e8c9060000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x21062",
+              "original": "call    sub_1DB65",
+              "bytes": "e8fecaffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x3543d",
+              "original": "call    sub_1DB65",
+              "bytes": "e82387feff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x35beb",
+              "original": "call    sub_1DB65",
+              "bytes": "e8757ffeff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            }
+          ],
+          "exported_instruction_count": 256,
+          "canonical_scope": "保留本輪必要分支與tail；完整raw export及SHA-256另可回查。"
+        },
+        {
+          "address": "0x196cb",
+          "end": "0x1974c",
+          "original_name": "sub_196CB",
+          "instructions": [
+            {
+              "address": "0x196cb",
+              "bytes": "6814000000",
+              "original": "push    14h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196d0",
+              "bytes": "e802d60100",
+              "original": "call    sub_36CD7",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196d5",
+              "bytes": "53",
+              "original": "push    ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196d6",
+              "bytes": "bb01000000",
+              "original": "mov     ebx, 1",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196db",
+              "bytes": "eb1c",
+              "original": "jmp     short loc_196F9",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196dd",
+              "bytes": "ff35633c0500",
+              "original": "push    dword_53C63",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196e3",
+              "bytes": "ff355b3c0500",
+              "original": "push    dword_53C5B",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196e9",
+              "bytes": "6bc30d",
+              "original": "imul    eax, ebx, 0Dh",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196ec",
+              "bytes": "83c070",
+              "original": "add     eax, 70h ; 'p'",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196ef",
+              "bytes": "50",
+              "original": "push    eax",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196f0",
+              "bytes": "e857000000",
+              "original": "call    sub_1974C",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196f5",
+              "bytes": "83c40c",
+              "original": "add     esp, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196f8",
+              "bytes": "43",
+              "original": "inc     ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196f9",
+              "bytes": "83fb06",
+              "original": "cmp     ebx, 6",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196fc",
+              "bytes": "7cdf",
+              "original": "jl      short loc_196DD",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x196fe",
+              "bytes": "6800fa0000",
+              "original": "push    0FA00h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19703",
+              "bytes": "ff355f3c0500",
+              "original": "push    dword_53C5F",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19709",
+              "bytes": "6800000a00",
+              "original": "push    0A0000h",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1970e",
+              "bytes": "e8b1dc0100",
+              "original": "call    memmove",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19713",
+              "bytes": "83c40c",
+              "original": "add     esp, 0Ch",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19716",
+              "bytes": "ff355b3c0500",
+              "original": "push    dword_53C5B",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1971c",
+              "bytes": "e8f5dc0100",
+              "original": "call    free",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19721",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19724",
+              "bytes": "ff355f3c0500",
+              "original": "push    dword_53C5F",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1972a",
+              "bytes": "e8e7dc0100",
+              "original": "call    free",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1972f",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19732",
+              "bytes": "ff35633c0500",
+              "original": "push    dword_53C63",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19738",
+              "bytes": "e8d9dc0100",
+              "original": "call    free",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1973d",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19740",
+              "bytes": "6a00",
+              "original": "push    0",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19742",
+              "bytes": "e86585ffff",
+              "original": "call    sub_11CAC",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x19747",
+              "bytes": "83c404",
+              "original": "add     esp, 4",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1974a",
+              "bytes": "5b",
+              "original": "pop     ebx",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            },
+            {
+              "address": "0x1974b",
+              "bytes": "c3",
+              "original": "retn",
+              "semantic": "",
+              "level": "未知",
+              "warning": "未審查語意；原始指令僅作定位",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ],
+              "semantic_annotations": []
+            }
+          ],
+          "semantic": "",
+          "level": "未知",
+          "warning": "只閉合已審查的 caller-specific claims",
+          "source": [
+            "tools/ida_probe_physical_presentation.py"
+          ],
+          "callers": [
+            {
+              "address": "0x10105",
+              "original": "call    sub_196CB",
+              "bytes": "e8c1950000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1709f",
+              "original": "call    sub_196CB",
+              "bytes": "e827260000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x171a6",
+              "original": "call    sub_196CB",
+              "bytes": "e820250000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x17266",
+              "original": "call    sub_196CB",
+              "bytes": "e860240000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x19263",
+              "original": "call    sub_196CB",
+              "bytes": "e863040000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x19286",
+              "original": "call    sub_196CB",
+              "bytes": "e840040000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x192fc",
+              "original": "call    sub_196CB",
+              "bytes": "e8ca030000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x194de",
+              "original": "call    sub_196CB",
+              "bytes": "e8e8010000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x19509",
+              "original": "call    sub_196CB",
+              "bytes": "e8bd010000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x19564",
+              "original": "call    sub_196CB",
+              "bytes": "e862010000",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1a18e",
+              "original": "call    sub_196CB",
+              "bytes": "e838f5ffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1a240",
+              "original": "call    sub_196CB",
+              "bytes": "e886f4ffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1a2fc",
+              "original": "call    sub_196CB",
+              "bytes": "e8caf3ffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1a937",
+              "original": "call    sub_196CB",
+              "bytes": "e88fedffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1aa0a",
+              "original": "call    sub_196CB",
+              "bytes": "e8bcecffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1aa6a",
+              "original": "call    sub_196CB",
+              "bytes": "e85cecffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1aade",
+              "original": "call    sub_196CB",
+              "bytes": "e8e8ebffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1ab6d",
+              "original": "call    sub_196CB",
+              "bytes": "e859ebffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1abf3",
+              "original": "call    sub_196CB",
+              "bytes": "e8d3eaffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x1e50e",
+              "original": "call    sub_196CB",
+              "bytes": "e8b8b1ffff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x3558e",
+              "original": "call    sub_196CB",
+              "bytes": "e83841feff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x35618",
+              "original": "call    sub_196CB",
+              "bytes": "e8ae40feff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x35745",
+              "original": "call    sub_196CB",
+              "bytes": "e8813ffeff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x3578b",
+              "original": "call    sub_196CB",
+              "bytes": "e83b3ffeff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            },
+            {
+              "address": "0x35d03",
+              "original": "jmp     sub_196CB",
+              "bytes": "e9c339feff",
+              "level": "未知",
+              "warning": "呼叫定位；語意另見 canonical claims",
+              "source": [
+                "tools/ida_probe_physical_presentation.py"
+              ]
+            }
+          ],
+          "exported_instruction_count": 34,
+          "canonical_scope": "保留本輪必要分支與tail；完整raw export及SHA-256另可回查。"
+        }
+      ],
+      "scope": {
+        "kind": "hud-redraw-callers-41",
+        "limits": "只補既有caller的分支與收尾順序，不重做HUD或物理演出RE。"
+      },
+      "tables": []
+    }
+  },
+  "ida_claims": [
+    {
+      "original": [
+        "0x1D3F3..0x1D404"
+      ],
+      "level": "已證實",
+      "semantic": "sub_1CFF0接受確認後range gate寫0，再11CAC(0)；這是玩家指令演出前，不是物理演出完成回呼。",
+      "source": [
+        "work/hud-redraw-ida-r1.json",
+        "docs/data/ida/fd2_redraw_callers_hud_gates_ida.txt"
+      ]
+    },
+    {
+      "original": [
+        "0x1DEAC..0x1DEB3"
+      ],
+      "level": "已證實",
+      "semantic": "sub_1DB65移除尾端釋放暫存後11CAC(0)，雙gate／view見probe_r2。",
+      "source": [
+        "work/hud-redraw-ida-r1.json",
+        "work/parity-slot-ch24/hud-redraw-original-r2/eip-trace.jsonl"
+      ]
+    },
+    {
+      "original": [
+        "0x196FE..0x19747"
+      ],
+      "level": "已證實",
+      "semantic": "sub_196CB五幀關框後memmove復原VGA，釋放三個暫存，再11CAC(0)。",
+      "source": [
+        "work/hud-redraw-ida-r1.json",
+        "work/parity-slot-ch24/hud-redraw-original-r2/eip-trace.jsonl"
+      ]
+    }
+  ],
+  "command_probe": {
+    "state": "RE-CLOSED-PRELUDE; RUNTIME-DRAFT",
+    "out": "work/parity-slot-ch24/hud-command-native-original-r1",
+    "overlay": "work/parity-slot-ch24/hud-command-native-state-r1",
+    "source_slot": {
+      "path": "work/parity-slot-ch24/ch29-command6-max-input-r1/fd2last.sav",
+      "sha256": "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f"
+    },
+    "plan": "docs/data/parity-plans/ch30-command6-side1-player-r2.jsonl",
+    "scope": "沿#154固定第三方槽CONTINUE正常鍵盤到指令6；只觀察已證實1D3FF prelude原始gate及view。不是整章重跑、不增加PLAYER-E2、不改資料與RNG。",
+    "source_commit": "97584ed4fac97f9098bf788200e380eabb7b1c79",
+    "trace": {
+      "path": "work/parity-slot-ch24/hud-command-native-original-r1/eip-trace.jsonl",
+      "size": 37979,
+      "sha256": "2bbbdae3a2136ff35ec994d0488ae15bd2b2cf767a9f2f69cbbd9c999e6db92e"
+    },
+    "runner": {
+      "path": "work/parity-slot-ch24/hud-command-native-original-r1/runner.json",
+      "size": 3652,
+      "sha256": "432f5fb18ef8d65f4f52212baf67bf859c05cb551e119e43940741cff2734c1e"
+    },
+    "current": {
+      "path": "work/parity-slot-ch24/hud-command-native-original-r1/current.json",
+      "size": 94330,
+      "sha256": "2eec17dedb176d45ee91a6dd0550b9789e18ced91d88fbe8e8966f7d35446989"
+    },
+    "observations": [
+      {
+        "original": "0x1D3FF",
+        "step": 184709374,
+        "control_seq": 32,
+        "rng_word": 3473,
+        "view": {
+          "aux_phase": 10,
+          "camera_x": 17,
+          "camera_y": 16,
+          "cursor_x": 22,
+          "cursor_y": 20,
+          "gold": 60,
+          "overlay_selector": 0,
+          "rng_word": 3473,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 4
+        },
+        "map_runtime_valid": true,
+        "globals": [
+          {
+            "address": "0x53C07",
+            "raw_hex": "02000000",
+            "value": 2,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C0B",
+            "raw_hex": "02000000",
+            "value": 2,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C0F",
+            "raw_hex": "2890ffff",
+            "value": 4294938664,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C1F",
+            "raw_hex": "12000000",
+            "value": 18,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x539F4",
+            "raw_hex": "2990ffff",
+            "value": 4294938665,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A40",
+            "raw_hex": "00000000",
+            "value": 0,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A00",
+            "raw_hex": "2890ffff",
+            "value": 4294938664,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A04",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A08",
+            "raw_hex": "4190ffff",
+            "value": 4294938689,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x51A93",
+            "raw_hex": "ffffffff",
+            "value": 4294967295,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x46C",
+            "raw_hex": "4d90",
+            "value": 36941,
+            "width_bytes": 2
+          },
+          {
+            "address": "0x51AAB",
+            "raw_hex": "01",
+            "value": 1,
+            "width_bytes": 1
+          },
+          {
+            "address": "0x51AAC",
+            "raw_hex": "01",
+            "value": 1,
+            "width_bytes": 1
+          },
+          {
+            "address": "0x51A0C",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x60000",
+            "raw_hex": "2790",
+            "value": 36903,
+            "width_bytes": 2
+          },
+          {
+            "address": "0x60002",
+            "raw_hex": "0d",
+            "value": 13,
+            "width_bytes": 1
+          }
+        ]
+      },
+      {
+        "original": "0x1D404",
+        "step": 184838864,
+        "control_seq": 32,
+        "rng_word": 3473,
+        "view": {
+          "aux_phase": 11,
+          "camera_x": 17,
+          "camera_y": 16,
+          "cursor_x": 22,
+          "cursor_y": 20,
+          "gold": 60,
+          "overlay_selector": 0,
+          "rng_word": 3473,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 4
+        },
+        "map_runtime_valid": true,
+        "globals": [
+          {
+            "address": "0x53C07",
+            "raw_hex": "03000000",
+            "value": 3,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C0B",
+            "raw_hex": "03000000",
+            "value": 3,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C0F",
+            "raw_hex": "4d90ffff",
+            "value": 4294938701,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C1F",
+            "raw_hex": "13000000",
+            "value": 19,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x539F4",
+            "raw_hex": "4f90ffff",
+            "value": 4294938703,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A40",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A00",
+            "raw_hex": "4d90ffff",
+            "value": 4294938701,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A04",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A08",
+            "raw_hex": "6390ffff",
+            "value": 4294938723,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x51A93",
+            "raw_hex": "ffffffff",
+            "value": 4294967295,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x46C",
+            "raw_hex": "6790",
+            "value": 36967,
+            "width_bytes": 2
+          },
+          {
+            "address": "0x51AAB",
+            "raw_hex": "01",
+            "value": 1,
+            "width_bytes": 1
+          },
+          {
+            "address": "0x51AAC",
+            "raw_hex": "01",
+            "value": 1,
+            "width_bytes": 1
+          },
+          {
+            "address": "0x51A0C",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x60000",
+            "raw_hex": "4d90",
+            "value": 36941,
+            "width_bytes": 2
+          },
+          {
+            "address": "0x60002",
+            "raw_hex": "0e",
+            "value": 14,
+            "width_bytes": 1
+          }
+        ]
+      },
+      {
+        "original": "0x2A6BD",
+        "step": 184838877,
+        "control_seq": 32,
+        "rng_word": 3473,
+        "view": {
+          "aux_phase": 11,
+          "camera_x": 17,
+          "camera_y": 16,
+          "cursor_x": 22,
+          "cursor_y": 20,
+          "gold": 60,
+          "overlay_selector": 0,
+          "rng_word": 3473,
+          "round": 4,
+          "visible_x": 5,
+          "visible_y": 4
+        },
+        "map_runtime_valid": true,
+        "globals": [
+          {
+            "address": "0x53C07",
+            "raw_hex": "03000000",
+            "value": 3,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C0B",
+            "raw_hex": "03000000",
+            "value": 3,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C0F",
+            "raw_hex": "4d90ffff",
+            "value": 4294938701,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53C1F",
+            "raw_hex": "13000000",
+            "value": 19,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x539F4",
+            "raw_hex": "4f90ffff",
+            "value": 4294938703,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A40",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A00",
+            "raw_hex": "4d90ffff",
+            "value": 4294938701,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A04",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x53A08",
+            "raw_hex": "6390ffff",
+            "value": 4294938723,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x51A93",
+            "raw_hex": "ffffffff",
+            "value": 4294967295,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x46C",
+            "raw_hex": "6790",
+            "value": 36967,
+            "width_bytes": 2
+          },
+          {
+            "address": "0x51AAB",
+            "raw_hex": "01",
+            "value": 1,
+            "width_bytes": 1
+          },
+          {
+            "address": "0x51AAC",
+            "raw_hex": "01",
+            "value": 1,
+            "width_bytes": 1
+          },
+          {
+            "address": "0x51A0C",
+            "raw_hex": "01000000",
+            "value": 1,
+            "width_bytes": 4
+          },
+          {
+            "address": "0x60000",
+            "raw_hex": "4d90",
+            "value": 36941,
+            "width_bytes": 2
+          },
+          {
+            "address": "0x60002",
+            "raw_hex": "0e",
+            "value": 14,
+            "width_bytes": 1
+          }
+        ]
+      }
+    ],
+    "result": "1D3FF／1D404同一正常確認；雙gate1、visible(5,4)、anchor1、RNG3473；2A6BD後續入口一致。限固定第三方槽，不當完整戰役PLAYER-E2。"
   }
 }

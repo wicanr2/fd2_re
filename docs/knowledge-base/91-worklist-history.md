@@ -5707,3 +5707,21 @@ FD2提交／遠端與擁有權、Docker最後清理結果在各案回填。
 2026-10-06 #102 使用者明確採用native驗收。再次核對2024份完整JSON bytes及#194完整重播收據雜湊通過，舊adapter差異保留；正式Game及T8接續符合新定案。不重跑整章、無新PLAYER-E2。遠端內文依官方format_body生成，結案及提交接續登錄。
 
 2026-10-06 #52依新正式native profile做一次同槽、同受版控六回合前綴的原版來源核對。舊adapter黑像素及1px收據保留；不深挖通用heap、不清work、不調預算，不保證兩profile的跨步數／RNG一致。輸出沿work/parity-slot-ch12獨立r1目錄，源檔唯讀。
+
+## 2026-10-06 畫面優先批次：#41部分接線與#52原生勘誤
+
+依使用者排序先處理畫面，未回到#33補資料。#41正常新章前綴補完整stage trace後，
+兩次原版完整狀態／PNG核對相同，正式Game四閘門及完整像素通過。
+死亡最後candidate、END／獎勵closing最後Draw後兩處經既有HUD入口，
+其餘owner仍未完成。短第三方槽正常指令probe補1D3FF證據，不新增PLAYER-E2。
+IDA定位更正與唯一數字見[58](58-fd2-exe-re-coverage.md)及[HUD主契約](../data/ida/fd2_hud_redraw_20261006.json)。
+
+#52改用正式native仍有一個地形像素，原版118對重製116，不能只歸因舊adapter清零。
+舊收據及成因索引保留；不改固定色、不清work或增加容差。
+首次完整Go回歸誤加全域mute，令缺音效拒收測試繞過預檢，已依前輪成功環境乾淨重跑。
+trace MAP_STATE與地址上限的前置設定失敗保留，不當產品缺陷。
+來源、命令與正式最終結果由主契約保存，提交與遠端HEAD回填Issue。
+
+本批兩處重繪修正的全套Go19套件回歸通過；首次全域靜音設定失敗保留於HUD主契約。其餘owner與單像素writer仍未閉合。
+
+#52的必要原始byte觀察缺口已先登記工具工單[#197](https://github.com/wicanr2/fd2_re/issues/197)，規格DRAFT，不先改CPU或推定pixel writer。IDA／來源註記再次匯出核對通過，原始位址與bytes保持。

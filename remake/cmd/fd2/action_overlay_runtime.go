@@ -618,7 +618,7 @@ func (g *Game) finishNativeSystemEndTurnChoice(accepted bool) {
 				return
 			}
 			prompt := state.deathReward
-			g.nativeClassUIJob = &nativeClassUIJob{frames: closing, restore: state.source, after: func() {
+			g.nativeClassUIJob = &nativeClassUIJob{frames: closing, restore: state.source, redrawNativeMapAfterRestore: true, after: func() {
 				g.nativeSystemEndTurnUI = nil
 				g.nativeSystemEndTurnDelay = 0
 				g.sel = prompt.killer
@@ -676,7 +676,7 @@ func (g *Game) stepNativeSystemEndTurn() {
 		if err != nil || len(frames) != 5 {
 			return
 		}
-		g.nativeClassUIJob = &nativeClassUIJob{frames: frames, restore: state.source, after: func() {
+		g.nativeClassUIJob = &nativeClassUIJob{frames: frames, restore: state.source, redrawNativeMapAfterRestore: true, after: func() {
 			accepted := state.acceptedOutcome
 			g.nativeSystemEndTurnUI = nil
 			if state.treasure != nil {

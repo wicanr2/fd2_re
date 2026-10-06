@@ -5,8 +5,8 @@
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
-| #41指定HUD重繪caller | DRAFT／正常新章探針中 | 六個指定caller與返回採raw gate／view／anchor；首輪T2等待熱點封頂，不當caller完成證據。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |
-| #52最後地形像素 | 舊adapter政策限制；新native核對中 | 舊17點16點一致，3152仍1px；保持非111阻擋。依使用者優先序只做一次同槽正常前綴，[主證據native_profile_recheck](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
+| #41指定HUD重繪caller | PARTIAL-RUNTIME-E1／其他owner待補 | 死亡steady第26幀與196CB戰場關框已接同一入口；局部與Go全套回歸、新章T5完整Game前綴通過。未全部接齊，不關閉。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |
+| #52最後地形像素 | NATIVE-VISUAL-DIFFERENCE／RE待補 | 原生同槽六回合前綴3146仍1px，原版118、重製116；舊adapter的0不能解釋目前差異。保持非111阻擋，[主證據native_profile_recheck](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 正常物理抽樣CONFORMED／RUNTIME-E1 | 玩家／敵方、零旗標與已明示非零抽樣、完整DAC caller及保留work返回已驗。範圍與特殊分支限制見本頁最新#176節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)；不宣稱原版heap生命週期或全戰鬥PLAYER-E2。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
@@ -3320,3 +3320,36 @@ event40已由原始資料轉寫到具型別清冊、正式劇本與canonical，�
 ### 2026-10-06 #102 使用者採用原生驗收
 
 使用者明確選擇原生模式驗收，取代舊adapter前綴相同要求；舊前綴比較的FAIL與原因仍保留。前綴2024份原始JSON bytes再次逐檔相同，既有完整PNG及1445筆trace收據通過；同r3 T8／戰後接續與#194後正式Game四閘門、整檔SAV已通過，符合新定案。不重跑原版章、不新增PLAYER-E2，不證明全malloc分支或真實硬體。日期化決策與證據鏈存於[主契約](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的acceptance_decision。
+
+### 2026-10-06 #41 正常第五回合前綴與兩處重繪接線
+
+狀態 PARTIAL-RUNTIME-E1；#41保持開啟。第24章同固定fresh槽、同正常LOAD／鍵盤計畫，
+兩次native原版重跑各2076份完整狀態與PNG逐檔bytes相同。r2保留42筆同instruction gate／view／anchor；
+r3補125164筆未封頂完整stage與AI追蹤，沒有狀態注入或seed重選。
+正式Game消費51筆AI入口，零順序分岔；58行為點與54畫面點的四閘門通過，
+54張均完整0px。存檔未抽測，不新增整章PLAYER-E2。
+
+0x1DEAE只在死亡演出最後steady candidate合成時評估，前25幀及失敗rollback保留原anchor。
+0x19742只由已證實196CB的戰場END與死亡獎勵closing明示，在最後restore已Draw後、續行前評估。
+雙gate零值及城鎮共用job保留；局部紅／綠回歸已驗。
+普通物理的1563B／1565C、玩家指令與劇情／升級關框仍未全部接齊，正常前綴通過不取代逐點owner驗收。
+
+IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成功後、演出分派前。
+15510由Raw53AF9簡略分支選用，正式簡略演出仍拒收；不可把它接到普通full攻擊。
+固定第三方槽的短正常指令6探針已在1D3FF／1D404量到雙gate1、visible(5,4)、anchor1與RNG3473，
+此項RE已閉合，正式consumer規格仍DRAFT。來源與所有命令、雜湊只存於
+[HUD主契約](../data/ida/fd2_hud_redraw_20261006.json)。
+
+### 2026-10-06 #52 原生來源勘誤與單一像素缺口
+
+正式native同槽、同受版控六回合計畫已重生至seq3673／T6，零injection。
+正式Game重播通過；嚴格比較253畫面點中246點完整0px，整體行為／節點／畫面閘門未過。
+其間沒有AI入口逐筆亂數收據，跨同步HP漂移及原版unknown UI保留拒收，不冒稱同狀態整段驗收。
+
+原版seq3146 attack_result在(11,85)為索引118，重製端116，完整差異仍1px；
+來源是世界(5,22)、tile27的(7,9)。這直接推翻「最後差異僅由舊adapter清零造成」的現況解釋。
+舊adapter索引0的收據保留，不移作native結果；不填固定色、不清work、不加遮罩或像素預算。
+後續僅追必要畫面緩衝的writer／consumer，不深入通用近堆或硬體時序。
+完整來源、比較結果與限制見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的native_profile_recheck。
+
+本批兩處重繪修正的全套Go19套件回歸通過；首次全域靜音設定失敗保留於HUD主契約。其餘owner與單像素writer仍未閉合。

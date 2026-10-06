@@ -12726,7 +12726,7 @@
   "native_profile_recheck": {
     "date": "2026-10-06",
     "issue": 52,
-    "state": "work/parity-slot-ch12/terrain-native-state-r1",
+    "state": "NATIVE-VISUAL-DIFFERENCE; RE未閉合",
     "reason": "使用者指定優先處理#52；#102原生近堆已符合使用者採用的正式驗收。舊3152黑像素的clear來自adapter，依新來源核對同一正常案例，不再追通用heap。",
     "plan": {
       "path": "docs/data/parity-plans/ch12-terrain-late-probe.jsonl",
@@ -12754,6 +12754,109 @@
       "舊17點／3152與adapter政策紀錄保留；有新產品差異先登Issue、RE及READY，不調預算或mask。",
       "不新增整章PLAYER-E2，不修改存檔格式或正式規則。"
     ],
-    "command": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 7260 docker run --rm --name fd2-ch12-terrain-native-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch12-terrain-late-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=15000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x28B03,0x28B49,0x29068,0x29070,0x290C0,0x1D3FF,0x1D404,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=5000000000' -e 'FD2_ORACLE_EIP_TRACE_TO=15000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=4000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#52原生模式同槽六回合正常前綴，保持111/114政策，無鎖HP、清敵、治療或狀態注入；不新增PLAYER-E2，不保證與舊adapter跨時序同狀態' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 7200 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1/wrapper.log' 2>&1"
+    "command": "test -d '/home/anr2/cht/dosgolem-fd2-oracle' && test -d '/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1' && test -d '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh' && test -f '/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py' && test -d '/home/anr2/cht/fd2/remake/assets/maps' && test -f '/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache' && test -d '/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache' && timeout 7260 docker run --rm --name fd2-ch12-terrain-native-r1 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle,dst=/dos,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/orig,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1,dst=/out' --mount 'type=bind,src=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1,dst=/state' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,dst=/oracle-entry.sh,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,dst=/drive.py,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/remake/assets/maps,dst=/maps,readonly' --mount 'type=bind,src=/home/anr2/cht/fd2/docs/data/parity-plans/ch12-terrain-late-probe.jsonl,dst=/plan.jsonl,readonly' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache,dst=/gocache' --mount 'type=bind,src=/home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache,dst=/gomodcache' -e 'GOCACHE=/gocache' -e 'GOMODCACHE=/gomodcache' -e 'HOME=/tmp' -e 'FD2_ORACLE_SOURCE_COMMIT=97584ed4fac97f9098bf788200e380eabb7b1c79' -e 'FD2_ORACLE_SOURCE_BRANCH=feat/fd2-oracle-input-chain' -e 'FD2_ORACLE_SOURCE_DIRTY=0' -e 'FD2_ORACLE_SOURCE_UNTRACKED=0' -e 'FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/dosgolem-fd2-oracle' -e 'FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2' -e 'FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch12-terrain-late-probe.jsonl' -e 'FD2_ORACLE_SOURCE_STATE=/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-state-r1' -e 'FD2_ORACLE_STATE=/state' -e 'FD2_ORACLE_HEAP_PROFILE=native' -e 'FD2_ORACLE_BUDGET=15000000000' -e 'FD2_ORACLE_MAP_STATE=1' -e 'FD2_ORACLE_EIP_TRACE=0x28B03,0x28B49,0x29068,0x29070,0x290C0,0x1D3FF,0x1D404,0x1DEAE,0x1DEB3,0x19742,0x19747' -e 'FD2_ORACLE_EIP_TRACE_FROM=5000000000' -e 'FD2_ORACLE_EIP_TRACE_TO=15000000000' -e 'FD2_ORACLE_EIP_TRACE_MAX=4000' -e 'FD2_ORACLE_EVIDENCE_NOTE=#52原生模式同槽六回合正常前綴，保持111/114政策，無鎖HP、清敵、治療或狀態注入；不新增PLAYER-E2，不保證與舊adapter跨時序同狀態' --workdir /dos golang:1.24-bookworm timeout --signal=TERM --kill-after=10 7200 bash /oracle-entry.sh > '/home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-original-r1/wrapper.log' 2>&1",
+    "original": {
+      "runner.json": {
+        "path": "work/parity-slot-ch12/terrain-native-original-r1/runner.json",
+        "size": 3659,
+        "sha256": "a2fe4eb72f7556362aff1757b0de62c91c02b08dc7f3b21071e4dda505bf3e77"
+      },
+      "current.json": {
+        "path": "work/parity-slot-ch12/terrain-native-original-r1/current.json",
+        "size": 99541,
+        "sha256": "835b8beedfc88761cb435c75322a430f431e4519d77c44413540ac4f463f651c"
+      },
+      "actions.jsonl": {
+        "path": "work/parity-slot-ch12/terrain-native-original-r1/actions.jsonl",
+        "size": 30924,
+        "sha256": "b5242400bc47c9a3e212eb2c2fd2c0cbe87d186147c8c546ad7eb22fcbccc1e3"
+      },
+      "eip-trace.jsonl": {
+        "path": "work/parity-slot-ch12/terrain-native-original-r1/eip-trace.jsonl",
+        "size": 2293665,
+        "sha256": "e35a1f88e910c6b32e77960b7ac215045de64955861ad5887962a75ffc2e67e1"
+      }
+    },
+    "final": {
+      "seq": 3673,
+      "steps": 11579397260,
+      "view": {
+        "aux_phase": 0,
+        "camera_x": 7,
+        "camera_y": 26,
+        "cursor_x": 16,
+        "cursor_y": 28,
+        "gold": 7000,
+        "overlay_selector": 0,
+        "rng_word": 803,
+        "round": 6,
+        "visible_x": 9,
+        "visible_y": 2
+      },
+      "state_injections": []
+    },
+    "game_log": {
+      "path": "work/parity-slot-ch12/terrain-native-remake-r1.log",
+      "size": 138417,
+      "sha256": "57a60e2d70f40d183c0eccc1605e24c49e31ad3ca61f21c947573b33c7580692"
+    },
+    "report": {
+      "path": "work/parity-slot-ch12/terrain-native-verified-r1.json",
+      "size": 387333,
+      "sha256": "92dab5eebb2eef0bd8cdafb667ac80f8d41a7102e9695e7e5d9993f29c4eea92"
+    },
+    "gate_summary": {
+      "behavior": false,
+      "nodes": false,
+      "transaction": true,
+      "frames": false
+    },
+    "frames": {
+      "count": 253,
+      "zero": 246
+    },
+    "current_point": {
+      "seq": 3146,
+      "screen": [
+        11,
+        85
+      ],
+      "camera": [
+        5,
+        19
+      ],
+      "world_tile": [
+        5,
+        22
+      ],
+      "tile": 27,
+      "local_pixel": [
+        7,
+        9
+      ],
+      "original_index": 118,
+      "remake_index": 116,
+      "full_frame_differences": 1,
+      "original": "work/parity-slot-ch12/terrain-native-original-r1/checkpoint-3146.png",
+      "remake": "work/parity-slot-ch12/terrain-native-remake-r1/remake-0223-p1.png"
+    },
+    "correction": "原生模式仍有地形殘差；原版index118，不是舊adapter的0。舊清零政策只能解釋舊0結果，不能單獨解釋目前118與116差異。保留旧證據，不填固定色。",
+    "limitations": [
+      "本窄trace沒有13A9F，因此Game的AI亂數只在既有動作點同步；整段behavior有HP漂移，不能宣稱完整same-state或PLAYER-E2。",
+      "1524／2026原版UI未知wait仍嚴格拒收，不能把253畫面全部宣稱合格。",
+      "片段trace16次重新配置map work，後段返回值192018與combat copy plane相同；尚未找到目标index118的最後writer，不用指標重用代替位元組證據。"
+    ],
+    "next": "限定到目前原生案例的畫面work／combat copy plane資料流，不重開一般Watcom配置器、ISR或driver。",
+    "commands": {
+      "game": "timeout 960 docker run --rm --name fd2-terrain-native-game --network none --memory 6g --cpus 2 --pids-limit 512 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src/remake -e GOCACHE=/src/work/gocache -e HOME=/tmp/home -e GOFLAGS=-mod=mod --entrypoint timeout fd2-go-test-local:20260909 900 sh -c 'set -eu; test -f /.dockerenv; mkdir -p /tmp/fd2-pack /tmp/home; for asset_entry in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$asset_entry\" /tmp/fd2-pack/\"$(basename \"$asset_entry\")\"; done; ln -s /src/remake/assets/locales /tmp/fd2-pack/locales; test ! -e /src/work/parity-slot-ch12/terrain-native-remake-r1; FD2_ASSET_PACK=/tmp/fd2-pack FD2_PARITY_CHAPTER=12 FD2_PARITY_SLOT=/src/work/parity-slot-ch12/FD2.SAV FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch12/terrain-native-original-r1 FD2_PARITY_OUT=/src/work/parity-slot-ch12/terrain-native-remake-r1 with-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -timeout 600s -v' > /home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-remake-r1.log 2>&1",
+      "verify": "timeout 300 docker run --rm --name fd2-terrain-native-verify --network none --memory 2g --cpus 2 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -w /src --entrypoint timeout fd2-assets-local:20260829-sfx 240 python3 tools/verify_chapter_parity.py --chapter 12 --oracle work/parity-slot-ch12/terrain-native-original-r1 --remake work/parity-slot-ch12/terrain-native-remake-r1 --slot-manifest docs/data/parity-slots/ch12-manifest.json --plan docs/data/parity-plans/ch12-terrain-late-probe.jsonl --out work/parity-slot-ch12/terrain-native-verified-r1.json > /home/anr2/cht/fd2/work/parity-slot-ch12/terrain-native-verified-r1.log 2>&1"
+    }
+  },
+  "memory_observation": {
+    "state": "DRAFT",
+    "issue": 197,
+    "purpose": "限定目前native目標byte的變更writer，現有EIP／map_state不含目標內容。",
+    "scope": "既有oracle的選用有界LE byte變更觀察，成功instruction後唯讀baseline／change；最多16位址，沿trace window／max，預設停用；沒有同值寫入證據，不外推全heap。",
+    "review_pending": "核對目前machine.Step與oracleloop、guest-state不變、CLI／wrapper及012規格後才READY／implementation。"
   }
 }

@@ -21,7 +21,9 @@ with open(os.environ.get("FD2_IDA_INPUT", "/input/FD2.EXE"), "rb") as source:
 assert len(raw) == 357074
 assert hashlib.sha256(raw).hexdigest() == "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
 assert ida_nalt.retrieve_input_file_md5().hex() == hashlib.md5(raw).hexdigest()
-canonical_path = "docs/data/ida/fd2_physical_background_selection_20261004.json"
+hud_probe = os.environ.get("FD2_IDA_HUD_REDRAW") == "1"
+canonical_path = ("docs/data/ida/fd2_hud_redraw_20261006.json" if hud_probe else
+                  "docs/data/ida/fd2_physical_background_selection_20261004.json")
 with open("/src/" + canonical_path, encoding="utf-8") as source:
     canonical = json.load(source)
 result = {
@@ -34,10 +36,12 @@ result = {
 
 def annotations_at(ea):
     annotations = []
-    for claim in (canonical.get("physical_scroll_evidence", {}).get("claims", []) +
+    claims = (canonical.get("ida_claims", []) if hud_probe else
+              canonical.get("physical_scroll_evidence", {}).get("claims", []) +
                   canonical.get("physical_tail_evidence", {}).get("claims", []) +
                   canonical.get("physical_sound_evidence", {}).get("claims", []) +
-                  canonical.get("physical_owner_return_dac_evidence", {}).get("claims", [])):
+                  canonical.get("physical_owner_return_dac_evidence", {}).get("claims", []))
+    for claim in claims:
         assert claim["level"] in ("已證實", "強推論", "假說", "未知")
         for location in claim["original"]:
             bounds = [int(part, 16) for part in location.split("..")]
@@ -51,7 +55,7 @@ def annotations_at(ea):
 # 音效補證只匯出正常tail及既有wrapper，不重做場景RE或硬體driver。
 sound_probe = os.environ.get("FD2_IDA_PHYSICAL_SOUND") == "1"
 owner_dac_probe = os.environ.get("FD2_IDA_PHYSICAL_OWNER_DAC") == "1"
-assert not (sound_probe and owner_dac_probe)
+assert sum((sound_probe, owner_dac_probe, hud_probe)) <= 1
 targets = (0x28A6C, 0x25A96) if sound_probe else (0x11EB0, 0x29164, 0x2939D, 0x29C90, 0x29DED, 0x2BC9A)
 sound_ranges = {0x28A6C: (0x29050, 0x29117), 0x25A96: (0x25A96, 0x25B45)}
 if owner_dac_probe:
@@ -62,6 +66,10 @@ if owner_dac_probe:
 if sound_probe:
     result["scope"] = {"kind": "physical-sound-owner", "ranges": {
         hex(target): [hex(lo), hex(hi)] for target, (lo, hi) in sound_ranges.items()}}
+if hud_probe:
+    targets = (0x1CFF0, 0x1DB65, 0x196CB)
+    result["scope"] = {"kind": "hud-redraw-callers-41",
+                       "limits": "只補既有caller的分支與收尾順序，不重做HUD或物理演出RE。"}
 for target in targets:
     fn = ida_funcs.get_func(target)
     assert fn is not None and fn.start_ea == target
@@ -93,7 +101,7 @@ for target in targets:
                     (not sound_probe or target != 0x25A96 or 0x28A6C <= x.frm < 0x29C90)],
     })
 result["tables"] = []
-for ea, size in (() if owner_dac_probe else ((0x5255F, 24), (0x52577, 24), (0x525D6, 6))):
+for ea, size in (() if owner_dac_probe or hud_probe else ((0x5255F, 24), (0x52577, 24), (0x525D6, 6))):
     annotations = annotations_at(ea)
     confirmed = bool(annotations) and all(a["level"] == "已證實" for a in annotations)
     result["tables"].append({

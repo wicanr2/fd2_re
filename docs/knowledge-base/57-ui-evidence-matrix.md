@@ -1951,3 +1951,15 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 ### 2026-10-06 #102 第十八章原生oracle驗收定案
 
 使用者採用同native前綴一致、T8接續及完整Game四閘門／存檔驗收，取代舊adapter前綴相同要求。舊RNG／殘值差異保留，不宣稱兩profile一致；既有章PLAYER-E2保持。唯一證據、數字及限制見[58](58-fd2-exe-re-coverage.md)與[主契約acceptance_decision](../data/ida/fd2_ch18_oracle_stosb_20261003.json)。
+
+### 2026-10-06 #41／#52 有界原生畫面核對
+
+#41兩項最小owner已由READY接入，死亡最後candidate與END／獎勵最後restore後評估HUD；
+未覆蓋指令、物理前後及劇情closing保持未完成。正常新章第五回合前綴的行為與完整像素已通過，
+存檔未抽樣，不新增章PLAYER-E2，不用通過前綴替代owner抽樣。
+
+#52原生來源仍有單一地形像素不同，舊adapter的0不再作現況解釋。
+跨同步HP漂移、unknown UI與整體比較失敗均保留，沒有遮罩、固定色或放寬預算。
+唯一數字及證據只引用[58](58-fd2-exe-re-coverage.md)、
+[HUD主契約](../data/ida/fd2_hud_redraw_20261006.json)與
+[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)。
