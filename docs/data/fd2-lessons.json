@@ -1791,6 +1791,14 @@
         "pattern": "if !decision\\.Accepted",
         "note": "正式consumer仍由Accepted決定是否進mode後備，而非NoTail。"
       }
+    },
+    {
+      "id": "extracted-test-keeps-runtime-environment",
+      "area": "測試環境",
+      "date": "2026-10-06",
+      "rule": "從正式入口抽取函式做測試時，提供它實際使用的module與明示環境值，並在案例結束恢復環境。near_heap_policy的測試入口為tools/test_dosgolem_oracle_drive.py，正式契約由tools/dosgolem_oracle_container.sh宣告。",
+      "why": "正式近堆入口新增os及HEAP_PROFILE後，舊AST抽取測試只注入Path與hashlib，在政策檢查之前就NameError。補真正os與隔離adapter後原96項全部通過，未改正式政策。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/196"
     }
   ]
 }

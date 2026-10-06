@@ -710,7 +710,6 @@
           "groups": [
             2
           ],
-          "camp": "ally",
           "native_spawns": [
             {
               "group": 2,
@@ -719,7 +718,88 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 40
+          "native_event_id": 40,
+          "camp": "ally"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x34fdf",
+          "grid": [
+            17,
+            37
+          ],
+          "native_event_id": 40,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch17.json",
+            "scene_index": 1,
+            "line": 5,
+            "source_dat": "FDTXT_017",
+            "string_index": 1,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 68,
+            "pages": [
+              [
+                "『密蒂閣下，我們沒有來遲吧",
+                "　！』"
+              ]
+            ]
+          },
+          "native_event_id": 40,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch17.json",
+            "scene_index": 1,
+            "line": 6,
+            "source_dat": "FDTXT_017",
+            "string_index": 1,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 18,
+            "pages": [
+              [
+                "『各位來的正好！敵人兵力強",
+                "　大，請各位盡力作戰，我們",
+                "　務必取得勝利！』"
+              ]
+            ]
+          },
+          "native_event_id": 40,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34bf6",
+          "native_text_index": 1,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch17.json",
+            "scene_index": 1,
+            "line": 7,
+            "source_dat": "FDTXT_017",
+            "string_index": 1,
+            "utterance": 2,
+            "control": "FFEF",
+            "operand": 68,
+            "pages": [
+              [
+                "『是！我們一定不會讓閣下您",
+                "　失望的！』"
+              ]
+            ]
+          },
+          "native_event_id": 40,
+          "camp": "ally"
         }
       ]
     }

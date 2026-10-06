@@ -7817,8 +7817,8 @@ ch04_post 的 join char 10 已套用）。正對照：與第四章對拍實跑�
   `EVENTS`（逐條指令核對、覆蓋檢查），由新的 `tools/sync_native_turn_events.py
   --chapters 4,5` 降成劇本動作（`native_death_op ai_mode_range`／`range_zero`、
   `spawn_group`、`pan`、`native_acting`、`reset_pose`、`dialogue` 帶 `native_dialogue_ref`），
-  每個動作帶 `native_event_id` 與該列 `camp`（phase selector）。其餘 57 筆回合事件仍是
-  gen_campaign 的 spawn 版本，逐章推進時逐章轉寫（#33）。
+  每個動作帶 `native_event_id` 與該列 `camp`（phase selector）。當時其餘 57 筆回合事件仍是
+  gen_campaign 的 spawn 版本，逐章推進時逐章轉寫（#33）。這是當時快照，現況以[58](58-fd2-exe-re-coverage.md)頁首與遠端Issue為準。
 - **`0x1A30B` 的順序在重製端照做（已證實）。** 友軍 AI（`0x1D80B`，raw `+6==1`）在
   ENEMY PHASE 橫幅之前；橫幅 → `0x13536` 清 bit7 → `0x1A813(0)` selector 0 事件 →
   敵軍兩遍。重製端 `beginEnemyPhase` 先設 `aiAllyPhasePending`，`aiStep` 以
@@ -9671,3 +9671,7 @@ BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
 具型別結果分開保存 Tail 與 Accepted。接受但無動作時原地交共用成功收尾，
 不聚焦、不尋路、不回血；未接受才進既有mode後備。來源閘門及存檔格式保持。
 驗收與未完成限制見[主證據](../data/ida/fd2_ai_14ef0_return_20261006.json)。
+
+### 2026-10-06 #33／#195／#196 第十七章event40完整資料流
+
+event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower完整保留。正常Game已消費對白並保持同來源四gate及酒店整檔SAV，限定CONFORMED／RUNTIME-E1，章PLAYER-E2保持。原版死亡獎勵訊息的16D05＋1ACEE由固定EXE直接指令補分類，未知來源仍拒收。測試環境補真正os與明示adapter，正式政策未改。唯一現況、數字及限制見[58](58-fd2-exe-re-coverage.md)、[event40主契約](../data/ida/fd2_turn_event40_20261006.json)及[節點契約](../data/fd2-chapter-node-comparison-contract.json)的issue195；#33整體仍未完成。

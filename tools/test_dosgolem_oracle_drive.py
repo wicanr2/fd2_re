@@ -42,7 +42,11 @@ class OracleNearHeapPolicy(unittest.TestCase):
         functions = [node for node in ast.parse(metadata).body
                      if isinstance(node, ast.FunctionDef) and node.name == "near_heap_policy"]
         self.assertEqual(len(functions), 1, "入口須附近堆政策分類器")
-        namespace = {"Path": pathlib.Path, "hashlib": hashlib}
+        # #196：正式入口明示mode；fixture只測adapter，隔離外層native設定。
+        mode = mock.patch.dict(os.environ, {"FD2_ORACLE_HEAP_PROFILE": "adapter"})
+        mode.start()
+        self.addCleanup(mode.stop)
+        namespace = {"Path": pathlib.Path, "hashlib": hashlib, "os": os}
         exec(compile(ast.Module(body=functions, type_ignores=[]), str(ROOT), "exec"), namespace)
         self.policy = namespace["near_heap_policy"]
         self.directory = tempfile.TemporaryDirectory()

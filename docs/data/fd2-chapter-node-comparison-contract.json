@@ -1483,6 +1483,108 @@
         "comment": "https://github.com/wicanr2/fd2_re/issues/164#issuecomment-5977747815",
         "remote_head_verified": true
       }
+    },
+    {
+      "issue": 195,
+      "date": "2026-10-06",
+      "status": "CONFORMED",
+      "scope": "固定EXE／1ACEE死亡獎勵訊息caller在16D05的既有等待迴圈分類；只補目前被拒收的直接PC，不整段接受16C57。",
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "tool": "IDA Pro9.4 locked-v1",
+      "address_space": "IDA LE linear；dosgolem relocated LE linear，固定版本定位相同，來源分別記錄。",
+      "primary_source": "docs/data/ida/fd2_dialogue_cause_20260908.json",
+      "evidence": [
+        {
+          "path": "work/parity-slot-ch17/dialogue195-functions-20261006.txt",
+          "size": 11949,
+          "sha256": "f7a1222e2beb9fa4b47908ef903560e5fc5363cf7262bd8d4bd56530ee99c7f0"
+        },
+        {
+          "path": "work/parity-slot-ch17/dialogue195-bytes-20261006.txt",
+          "size": 870,
+          "sha256": "69cc4bc3c54609095b4ab6febc8c301309e32da389a186d9105d515a398726c9"
+        },
+        {
+          "path": "work/parity-slot-ch17/guard-original-r1/checkpoint-0677.json",
+          "size": 28312,
+          "sha256": "6e229156557a59a2eb4a7482924b2c0a2e210cbfc2360742670a9c7a63b5494b"
+        }
+      ],
+      "claims": [
+        {
+          "level": "已證實",
+          "original": "sub_1AA1D 0x1ACE7 push0／0x1ACE9 call sub_16C57／return0x1ACEE",
+          "semantic": "死亡獎勵訊息交共享wait owner；保留原始函式及return地址。",
+          "source": "IDA functions與bytes原始匯出。"
+        },
+        {
+          "level": "已證實",
+          "original": "sub_16C57 0x16D00 call sub_4DFCC → 0x16D05 mov edx,46Ch → 0x16D0A mov ax,[edx]",
+          "bytes": "0x16D05=ba6c040000；0x16D0A=668b02",
+          "semantic": "16D05是已閉合等待迴圈中BIOS tick讀取前的直接指令，與既有16D0A共享caller及等待owner。",
+          "source": "IDA原始指令、bytes與既有dialogue_cause。"
+        },
+        {
+          "level": "已證實",
+          "original": "原版ch17 guard-original-r1 seq677 EIP16D05＋input_chain1ACEE",
+          "semantic": "目前工具只有16D0A分支，原版等待訊息被unknown拒收；不能由Go dialogue反推原版分類。",
+          "source": "固定checkpoint與修正前後第17章報告。"
+        }
+      ],
+      "rules": [
+        "已知外層owner優先保持。",
+        "須固定EXE SHA、EIP精確等於16D05或既有16D0A、chain含1ACEE才分類dialogue。",
+        "錯EXE、缺caller、缺PC、其他相鄰PC仍unknown；不改原版輸入、Game、RNG、SAV或比較預算。"
+      ],
+      "acceptance": [
+        "真實seq677所需PC從紅到綠，既有錯來源與其他owner拒收通過。",
+        "分類器及四gate verifier全部既有回歸通過。",
+        "第17章前後同源report節點gate解除，行為、畫面、交易及SAV保持。"
+      ],
+      "limits": [
+        "只分類已證caller的兩個PC；不是整段16C57或無限range。",
+        "不重生原版或增加章PLAYER-E2；既有建構槽限制保持。"
+      ],
+      "commands": {
+        "ida": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 240 docker run --rm --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --workdir /tmp -e FD2_IDA_ADDRESSES='0x1AA1D 0x16C57' -e FD2_IDA_OUTPUT=/src/work/parity-slot-ch17/dialogue195-functions-20261006.txt ida-pro-9.4-idapython:locked-v1 bash -c 'python3 - <<'\\''PY'\\''\nimport hashlib\nfrom pathlib import Path\nb=Path('\\''/input/FD2.EXE'\\'').read_bytes();assert len(b)==357074 and hashlib.md5(b).hexdigest()=='\\''b97caf2239a27a896069d03549d96e1e'\\'' and hashlib.sha256(b).hexdigest()=='\\''222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f'\\''\nPY\nidat -A -o/tmp/fd2.i64 -S/src/tools/ida_probe_functions.py /input/FD2.EXE >/src/work/parity-slot-ch17/dialogue195-ida-20261006.log 2>&1\ntest -s /src/work/parity-slot-ch17/dialogue195-functions-20261006.txt\nFD2_IDA_OUTPUT=/src/work/parity-slot-ch17/dialogue195-bytes-20261006.txt FD2_IDA_BYTE_RANGES='\\''0x1ACBE:0x45 0x16C57:0xCF'\\'' idat -A -S/src/tools/ida_dump_bytes.py /tmp/fd2.i64 >/src/work/parity-slot-ch17/dialogue195-ida-bytes-20261006.log 2>&1\ntest -s /src/work/parity-slot-ch17/dialogue195-bytes-20261006.txt'",
+        "driver_tests": "timeout 180 docker run --rm --network none --memory 2g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/repo -w /repo fd2-assets-local:20260829-sfx -m unittest discover -s tools -p 'test*dosgolem*drive*.py'",
+        "verifier_tests": "timeout 180 docker run --rm --network none --memory 2g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/repo -w /repo fd2-assets-local:20260829-sfx -m unittest discover -s tools -p 'test_verify_chapter_parity.py'",
+        "verify": "timeout 180 docker run --rm --network none --memory 2g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/repo -v /home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1:/oracle:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17:/slot:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17/event40-after-remake-r1:/parity-out:ro -w /repo fd2-assets-local:20260829-sfx tools/verify_chapter_parity.py --chapter 17 --oracle /oracle --remake /parity-out --slot-manifest /slot/manifest.json --plan docs/data/parity-plans/ch17-guard.jsonl --out work/parity-slot-ch17/event40-dialogue195-verify-r2.json"
+      },
+      "validation": {
+        "driver_tests": 96,
+        "verifier_tests": 26,
+        "skipped": 0,
+        "chapter17_report": {
+          "path": "work/parity-slot-ch17/event40-dialogue195-verify-r2.json",
+          "size": 140780,
+          "sha256": "b802470afe00a4aaf1dbdf897a50ab218216e0e0b9d31c7102076d941fbd8442"
+        },
+        "before_data_report_after_classifier": {
+          "path": "work/parity-slot-ch17/event40-before-dialogue195-verify-r2.json",
+          "size": 140780,
+          "sha256": "b802470afe00a4aaf1dbdf897a50ab218216e0e0b9d31c7102076d941fbd8442"
+        },
+        "baseline_before_classifier": "兩份nodes=False，其餘三項True；原始unknown拒收報告保留在event40主契約。",
+        "original_regenerated": false,
+        "source_hashes": [
+          {
+            "path": "tools/dosgolem_oracle_drive.py",
+            "size": 100573,
+            "sha256": "0b4e37e2aca855ccc9b5199c0295609d3e9a7e9b6fe96a397a337eed902d238e"
+          },
+          {
+            "path": "tools/test_verify_chapter_parity.py",
+            "size": 26872,
+            "sha256": "358e0a78471e15d72ae386b12483bf386c1c8d6cc8a04bff3b59f7d157fd959f"
+          }
+        ]
+      }
     }
   ]
 }

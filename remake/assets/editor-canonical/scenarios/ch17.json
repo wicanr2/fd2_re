@@ -40,6 +40,106 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/7ba5d82bdc2a/events/1/1",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "grid": [
+                17,
+                37
+              ],
+              "native_event_id": 40,
+              "native_source": "0x34fdf"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/7ba5d82bdc2a/events/1/2",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 5,
+                "operand": 68,
+                "pages": [
+                  [
+                    "『密蒂閣下，我們沒有來遲吧",
+                    "　！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch17.json",
+                "source_dat": "FDTXT_017",
+                "string_index": 1,
+                "utterance": 0
+              },
+              "native_event_id": 40,
+              "native_source": "0x34bf6",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/7ba5d82bdc2a/events/1/3",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEE",
+                "line": 6,
+                "operand": 18,
+                "pages": [
+                  [
+                    "『各位來的正好！敵人兵力強",
+                    "　大，請各位盡力作戰，我們",
+                    "　務必取得勝利！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch17.json",
+                "source_dat": "FDTXT_017",
+                "string_index": 1,
+                "utterance": 1
+              },
+              "native_event_id": 40,
+              "native_source": "0x34bf6",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/7ba5d82bdc2a/events/1/4",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFEF",
+                "line": 7,
+                "operand": 68,
+                "pages": [
+                  [
+                    "『是！我們一定不會讓閣下您",
+                    "　失望的！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch17.json",
+                "source_dat": "FDTXT_017",
+                "string_index": 1,
+                "utterance": 2
+              },
+              "native_event_id": 40,
+              "native_source": "0x34bf6",
+              "native_text_index": 1
+            }
+          },
+          "type": "dialogue"
         }
       ],
       "event_id": "legacy/event/7ba5d82bdc2a/events/1",

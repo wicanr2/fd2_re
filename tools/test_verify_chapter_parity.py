@@ -49,7 +49,14 @@ class PairingAndUnits(unittest.TestCase):
         point = vp.compare_node([action], remake, cp, 1894)
         self.assertEqual(point["status"], "ok")
         self.assertEqual(point["oracle_ui"], "dialogue")
-        for bad in ({**cp, "exe_sha256": "wrong"}, {**cp, "exe_sha256": None},
+        # #195：第17章seq677在同一wait owner的tick讀取前指令。
+        early_cp = {**cp, "eip": "0x16D05"}
+        early_point = vp.compare_node([action], remake, early_cp, 1894)
+        self.assertEqual(early_point["status"], "ok")
+        self.assertEqual(early_point["oracle_ui"], "dialogue")
+        for bad in ({**early_cp, "exe_sha256": "wrong"},
+                    {**early_cp, "input_chain": ["0x1B71C"]},
+                    {**cp, "exe_sha256": "wrong"}, {**cp, "exe_sha256": None},
                     {**cp, "eip": "0x16D0D"}, {**cp, "eip": None},
                     {**cp, "input_chain": ["0x1B71C"]},
                     {**cp, "eip": "0x4DFCC", "input_chain": ["0x1ACEE", "0x16D0A"]}):

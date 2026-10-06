@@ -687,3 +687,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [指令6正常鍵盤GPU驗收](../../remake/cmd/fd2/native_command6_presentation_test.go)：TestNativeCommand6NormalKeyboardGPU由標題選單CONTINUE驅動正式Update／Draw，runner.json與固定EXE／SAV來源核對；命令見[主契約isolation_validation](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)。
 
 - [#194 AI 尾端回傳契約](../data/ida/fd2_ai_14ef0_return_20261006.json)：補 0x14EF0 三者同分無動作仍回1；[T6 正常輸入前綴](../data/parity-plans/ch18-native-ai194-t6.jsonl)只作唯讀原版定位。
+
+- [#33 第十七章event40轉寫契約](../data/ida/fd2_turn_event40_20261006.json)：既有group2後補鏡頭(17,37)與text1，READY先於正式資料轉寫，現已有限CONFORMED。

@@ -17,7 +17,7 @@ special=2），runtime 由此決定事件在回合裡的時機。
   python3 tools/sync_native_turn_events.py --write --chapters 4,5
 
 --chapters 限定只改哪些章：每一章接上完整回合事件之後都要跑該章的 111 對拍才算數，
-不要一次把 30 章全換掉（例如 ch13 的事件 5 也已轉寫，但那一章還沒對拍）。
+不要一次把 30 章全換掉；未有該章 111 收據的轉寫不接正式路徑。
 """
 
 import argparse

@@ -1943,3 +1943,7 @@ BOOT與正常標題方向鍵有限CONFORMED，取代前述正式整合DRAFT。
 不推定該舊caller的原版記憶體語意已證實。既有第18章PLAYER-E2保持。
 原版三score及return1的正常局部追蹤亦通過。唯一數字、來源與命令見[58](58-fd2-exe-re-coverage.md)及
 [回傳主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)。
+
+### 2026-10-06 #33／#195／#196 第十七章event40與訊息分類
+
+event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower完整保留。正常Game已消費對白並保持同來源四gate及酒店整檔SAV，限定CONFORMED／RUNTIME-E1，章PLAYER-E2保持。原版死亡獎勵訊息的16D05＋1ACEE由固定EXE直接指令補分類，未知來源仍拒收。測試環境補真正os與明示adapter，正式政策未改。唯一現況、數字及限制見[58](58-fd2-exe-re-coverage.md)、[event40主契約](../data/ida/fd2_turn_event40_20261006.json)及[節點契約](../data/fd2-chapter-node-comparison-contract.json)的issue195；#33整體仍未完成。

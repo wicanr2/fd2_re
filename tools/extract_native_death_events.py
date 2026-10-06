@@ -285,6 +285,12 @@ EVENTS = [
         op("reward", [(0x34F83, 0x34F8D), (0x34F8D, 0x34F9E)], rodata=0x52742),
         op("dialogue", [(0x34F9E, 0x34FC5)], text=0xB),
     ]},
+    # 第十七章T4 event40；RE／READY見fd2_turn_event40_20261006.json。
+    {"id": 40, "handler": 0x34FCB, "ops": [
+        op("spawn_group", [(0x34FD5, 0x34FDF)], group=2, gate=0),
+        op("pan", [(0x34FDF, 0x34FEB)], x=17, y=37),
+        op("dialogue", [(0x34BF6, 0x34C1D)], text=1),
+    ]},
     {"id": 41, "handler": 0x34FF0, "ops": [
         op("dialogue", [(0x35009, 0x35030)], text=3),
         op("reward", [(0x34FFF, 0x35009), (0x35030, 0x35041)], rodata=0x52745),

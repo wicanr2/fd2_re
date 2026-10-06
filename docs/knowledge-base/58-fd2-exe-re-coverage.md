@@ -21,6 +21,7 @@
 | #179歷史END來源 | 工具範圍CONFORMED | 只承接唯一同回合正常Enter owner，拒收錯版本與歧義，兩章完整四gate通過。 |
 | #182字串來源定位 | 工具範圍CONFORMED | 98候選內容／函式／處置相同，17定位ID遷移；既有官方遷移器與完整Go通過。 |
 | #102正式原生近堆模式 | 原版T8已達；舊前綴不符 | 同r3的native計畫已到戰後／買賣／存檔／秘密商店，word ADD缺口#192閉合；舊adapter前綴RNG／殘值不同，父題保持。[主證據](../data/ida/fd2_ch18_oracle_stosb_20261003.json)的allocator_native_chapter。 |
+| #33 第17章event40 | 限定CONFORMED／RE-CLOSED／DATA-READY／RUNTIME-E1 | group2後鏡頭(17,37)與text1三句已補正式劇本；全域未轉寫27筆，#33仍開啟。[主契約](../data/ida/fd2_turn_event40_20261006.json)。 |
 | #194 AI 三者同分回傳 | 限定CONFORMED／RE-CLOSED／DATA-READY／RUNTIME-E1 | 原版0x1504B回1與mode0 caller已補證，正式Game不再多走一格；完整存檔相同。原版三score=8與return1、mode0 caller及1636點前綴已通過。[主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)。 |
 | #154／#160／#161指令6 | 限定CONFORMED／DATA-READY／RUNTIME-E1 | 固定#32有界前置寫入已接正式路徑；12張全幅、正常鍵盤取消／施法及三輪GPU通過。[主契約](../data/ida/fd2_ch24_command6_work_bounds_20261004.json)；原版完整heap未知，不增加章PLAYER-E2。 |
 | 正式章驗收 | 保持現行台帳 | [111](../goal/111-goal-original-parity-campaign-20260915.md)及真實遠端worklist；本輪未增加PLAYER-E2。 |
@@ -3300,3 +3301,17 @@ CPU／machine／oracle 完整回歸通過；乾淨第二次同 r3 原版計畫�
 第十八章 #194 最終驗收（2026-10-06）：原版T6記錄40三score=8，0x15050與0x13AFD的EAX=1，未進尾端動作或移動後備。兩份有界正常前綴各1636點狀態／完整PNG相符。同native完整Game重播282筆AI順序無分岔，四閘門通過；182畫面點中179點0px，三個既有前段move點330／342／335px保持既定門檻。酒店SAV整檔SHA-256 940ed8f94c215c8a1ad22404f85bc71c7ab57143d2720213dbdad453006d89d1一致。完整Go19套件通過。這取代修正前T6位置分岔與後續BG拒收的現況；舊收據保留在allocator_native_chapter.remake_replay。
 
 #193以舊同狀態前提被推翻處置，不宣稱新BG指標／payload RE完成，拒收保護保持。#102的舊adapter前綴gate未達，仍未完成。完整命令、來源與輸出雜湊只存[回傳主契約](../data/ida/fd2_ai_14ef0_return_20261006.json)，章台帳不重算。
+
+### 2026-10-06 #33 第十七章event40完整轉寫 READY
+
+全域check仍有28筆未轉寫。第十七章event40原版0x34FD7登場group2後，0x34FE3以(17,37)呼叫135DD，再0x34FEB跳至既有text1共享尾段。現有正式劇本只有spawn，缺鏡頭與對白。固定EXE與IDA9.4直接指令、bytes、caller及最小READY規格見[主契約](../data/ida/fd2_turn_event40_20261006.json)。只補資料轉寫，重用既有lower／正式引擎；章PLAYER-E2及原版現有收據保持，實作與同源重播尚待。
+
+### 2026-10-06 #195 死亡獎勵訊息分類 READY
+
+第17章seq677在原版16D05＋1ACEE等待訊息，現有分類僅接受16D0A，因此修正前後nodes仍拒收。既有16C57／1AA1D不重新命名，只補直接PC的消費範圍。固定EXE、IDA9.4 bytes、原版checkpoint及READY規格存於[節點主契約](../data/fd2-chapter-node-comparison-contract.json)的extensions issue195；不改Game或放寬未知來源。
+
+### 2026-10-06 #33／#195／#196 最終驗證
+
+event40已由原始資料轉寫到具型別清冊、正式劇本與canonical，正常Game重播實際消費三句對白；以前只做spawn。全可達指令及參數check、全域sync check通過，未轉寫由28降為27。兩次正式Game各消費124筆AI，零順序分歧；#195修正後兩份同源四gate皆通過，98畫面點與酒店SAV保持。酒店整檔SHA-256 bce3b7e5967d354d23444ce2da75b163e905d7e58914b80be44f77c237033333一致。既有章PLAYER-E2保持，不重跑原版或新增章驗收。
+
+#195只增加固定EXE／1ACEE caller的16D05直接PC，保留16D0A、外層owner優先與錯來源拒收。#196只修測試namespace與adapter明示環境，正式near_heap_policy未改。96個driver、26個verifier零失敗零略過，campaign與editorcanonical的Go回歸通過。主契約保存初次nodes拒收、測試環境失敗及最終命令／雜湊。#142的DP校準仍待使用者確認，未改114政策。

@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_turn_event_transcription_contract",
+  "date": "2026-10-06",
+  "issue": 33,
+  "scope": "只補第十七章event40完整動作；既有其他事件、引擎及存檔格式保持。",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "version": "IDA Pro 9.4",
+    "image": "ida-pro-9.4-idapython:locked-v1",
+    "image_id": "sha256:6f6d59af49d0008c4109a5295b5f374bdc007e2d1ab28cb9de08779584de2780",
+    "address_space": "FD2.EXE LE／IDA linear"
+  },
+  "sources": [
+    {
+      "path": "work/parity-slot-ch17/event40-full-functions-20261006.txt",
+      "size": 1638,
+      "sha256": "5d6deaf60d53bca9908d1f12dc142ecea306ca4c681d7b785162520f1b102db7"
+    },
+    {
+      "path": "work/parity-slot-ch17/event40-full-bytes-20261006.txt",
+      "size": 270,
+      "sha256": "8a5f2daf321949926501323695f5625ae4ab637e3c6b506dea0d5aed1c0fe0ea"
+    },
+    {
+      "path": "docs/data/event_id_groups.json",
+      "size": 11816,
+      "sha256": "4b472377ac308ba9397a8e92c530f444e9c9c00dfa1cad560e04f48adc7070cc"
+    },
+    {
+      "path": "docs/data/turn_events.json",
+      "size": 10591,
+      "sha256": "48e087d5b981e4150c1d4205a16c072ccd05006b078f10bcc7487511275f71b3"
+    }
+  ],
+  "original_name": "sub_34FCB",
+  "range": [
+    "0x34FCB",
+    "0x34FF0"
+  ],
+  "bytes": {
+    "0x34FCB:0x25": "6828000000e8021d00006a02e872bbfdff83c4046a256a11e8f5e5fdff83c408e906fcffff",
+    "0x34BF6:0x27": "6a016a136a4a6a4c68cd00000068400100006800000a006a01ff35793a0500e86a13feff83c424"
+  },
+  "claims": [
+    {
+      "level": "已證實",
+      "original": "0x34FD5 push2 → 0x34FD7 call sub_10B4E",
+      "semantic": "登場group2；既有event_id_groups保留raw placement gate0。",
+      "source": "IDA直接指令與既有group消費契約。"
+    },
+    {
+      "level": "已證實",
+      "original": "0x34FDF push0x25 → 0x34FE1 push0x11 → 0x34FE3 call sub_135DD",
+      "semantic": "增援後鏡頭移到(17,37)。",
+      "source": "IDA直接指令；sub_135DD已證參數順序。"
+    },
+    {
+      "level": "已證實",
+      "original": "0x34FEB jmp loc_34BF6；0x34BF6..0x34C1D共享對白尾段",
+      "semantic": "共用text1，固定畫布0xA0000、320、205、76、74、19、style1，文字庫[0x53A79]。",
+      "source": "IDA原始bytes；extract_native_death_events已有event5等同尾段參數核對。"
+    },
+    {
+      "level": "已證實",
+      "original": "原版FDFIELD的第十七章T4 camp1 event40；0x1A813在0x1A85A間接分派",
+      "semantic": "回合事件正常分派入口，不把IDA合成table xref當執行收據。",
+      "source": "turn_events.json與58既有dispatcher契約。"
+    },
+    {
+      "level": "未知",
+      "original": "0x34FCB push0x28 → 0x34FD0 call sub_36CD7",
+      "semantic": "編譯器序言沿既有FILLER分類；不新增遊戲動作或自訂名稱。",
+      "warning": "未以本次切片研究runtime helper。",
+      "source": "IDA原始指令與既有extractor序言契約。"
+    }
+  ],
+  "spec": {
+    "state": "CONFORMED-event40-transcription",
+    "review": "固定EXE三雜湊、直接呼叫與跳躍及共享尾段bytes吻合；既有資料型別足以表示，不新增ABI或欄位。",
+    "typed_input": "id40、handler0x34FCB、spawn_group2 gate0、pan17/37、dialogue text1；三項ops各保存原始range/source。",
+    "order": [
+      "spawn_group",
+      "pan",
+      "dialogue"
+    ],
+    "consumer": "sync_native_turn_events只對chapter17降成帶native_event_id40與camp ally的正式劇本。既有lower擴展原文字庫的對白ref；canonical同步走既有import_legacy。",
+    "failure": "全handler可達指令未被認領、參數不符、EXE不符、對白／資產缺來源都拒收；不放寬原版／重製對拍閘門。",
+    "save_impact": "不改格式與存檔寫入；補對白及鏡頭後用正常Game驗酒店SAV整檔。",
+    "acceptance": [
+      "原版轉寫check全可達指令與共享尾端通過。",
+      "sync --check --chapters17及全域check通過；未轉寫由28降到27。",
+      "正式Game重播既有第17章原版source，四gate及SAV保持；舊失敗／差異不可隱藏。"
+    ],
+    "limits": [
+      "既有章PLAYER-E2保持，不新增章驗收。",
+      "原版不重新執行，不稱本次產生新的正常原版章收據。",
+      "不得由歷史的57筆待轉寫快照推算現況。"
+    ]
+  },
+  "commands": {
+    "ida": "test -d /home/anr2/cht/fd2 && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 240 docker run --rm --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,src=/home/anr2/cht/fd2,dst=/src --mount type=bind,src=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,dst=/input,readonly --workdir /tmp -e FD2_IDA_ADDRESSES='0x34FCB 0x34BE2' -e FD2_IDA_OUTPUT=/src/work/parity-slot-ch17/event40-full-functions-20261006.txt ida-pro-9.4-idapython:locked-v1 bash -c 'python3 - <<'\\''PY'\\''\nimport hashlib\nfrom pathlib import Path\nb=Path('\\''/input/FD2.EXE'\\'').read_bytes();assert len(b)==357074 and hashlib.md5(b).hexdigest()=='\\''b97caf2239a27a896069d03549d96e1e'\\'' and hashlib.sha256(b).hexdigest()=='\\''222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f'\\''\nPY\nidat -A -o/tmp/fd2.i64 -S/src/tools/ida_probe_functions.py /input/FD2.EXE >/src/work/parity-slot-ch17/event40-full-ida-20261006.log 2>&1\ntest -s /src/work/parity-slot-ch17/event40-full-functions-20261006.txt\nFD2_IDA_OUTPUT=/src/work/parity-slot-ch17/event40-full-bytes-20261006.txt FD2_IDA_BYTE_RANGES='\\''0x34FCB:0x25 0x34BF6:0x27'\\'' idat -A -S/src/tools/ida_dump_bytes.py /tmp/fd2.i64 >/src/work/parity-slot-ch17/event40-full-ida-bytes-20261006.log 2>&1\ntest -s /src/work/parity-slot-ch17/event40-full-bytes-20261006.txt'",
+    "before_replay": "timeout 660 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user 1000:1000 -e HOME=/tmp/home -e GOCACHE=/src/work/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/tmp/pack -e FD2_PARITY_CHAPTER=17 -e FD2_PARITY_SLOT=/src/work/parity-slot-ch17/FD2.SAV -e FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch17/guard-original-r1 -e FD2_PARITY_OUT=/src/work/parity-slot-ch17/event40-before-remake-r1 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1:/src/work/parity-slot-ch17/guard-original-r1:ro -w /src/remake fd2-go-test-local:20260909 timeout 600 bash -c 'set -e\nmkdir -p /tmp/pack\nfor e in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$e\" /tmp/pack/; done\nln -s /src/remake/assets/locales /tmp/pack/locales\nwith-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -v > /src/work/parity-slot-ch17/event40-before-remake-r1.log 2>&1'",
+    "extract": "timeout 180 docker run --rm --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -w /src fd2-cap-local tools/extract_native_death_events.py --exe /orig/FD2.EXE --write",
+    "extract_check": "timeout 180 docker run --rm --network none --memory 1g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -w /src fd2-cap-local tools/extract_native_death_events.py --exe /orig/FD2.EXE --check",
+    "after_replay": "timeout 660 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user 1000:1000 -e HOME=/tmp/home -e GOCACHE=/src/work/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/tmp/pack -e FD2_PARITY_CHAPTER=17 -e FD2_PARITY_SLOT=/src/work/parity-slot-ch17/FD2.SAV -e FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch17/guard-original-r1 -e FD2_PARITY_OUT=/src/work/parity-slot-ch17/event40-after-remake-r1 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1:/src/work/parity-slot-ch17/guard-original-r1:ro -w /src/remake fd2-go-test-local:20260909 timeout 600 bash -c 'set -e\nmkdir -p /tmp/pack\nfor e in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$e\" /tmp/pack/; done\nln -s /src/remake/assets/locales /tmp/pack/locales\nwith-xvfb go test ./cmd/fd2 -run '\\''^TestChapterParityReplay$'\\'' -count=1 -v > /src/work/parity-slot-ch17/event40-after-remake-r1.log 2>&1'",
+    "verify_after": "timeout 180 docker run --rm --network none --memory 2g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/repo -v /home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1:/oracle:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17:/slot:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17/event40-after-remake-r1:/parity-out:ro -w /repo fd2-assets-local:20260829-sfx tools/verify_chapter_parity.py --chapter 17 --oracle /oracle --remake /parity-out --slot-manifest /slot/manifest.json --plan docs/data/parity-plans/ch17-guard.jsonl --out work/parity-slot-ch17/event40-dialogue195-verify-r2.json",
+    "verify_before_after_classifier": "timeout 180 docker run --rm --network none --memory 2g --cpus 1 --pids-limit 128 --user 1000:1000 -v /home/anr2/cht/fd2:/repo -v /home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1:/oracle:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17:/slot:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17/event40-before-remake-r1:/parity-out:ro -w /repo fd2-assets-local:20260829-sfx tools/verify_chapter_parity.py --chapter 17 --oracle /oracle --remake /parity-out --slot-manifest /slot/manifest.json --plan docs/data/parity-plans/ch17-guard.jsonl --out work/parity-slot-ch17/event40-before-dialogue195-verify-r2.json",
+    "go": "timeout 660 docker run --rm --network none --memory 8g --cpus 2 --pids-limit 512 --user 1000:1000 -e HOME=/tmp/home -e GOCACHE=/src/work/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/tmp/pack -e FD2_PARITY_CHAPTER=17 -e FD2_PARITY_SLOT=/src/work/parity-slot-ch17/FD2.SAV -e FD2_PARITY_ORACLE_RUN=/src/work/parity-slot-ch17/guard-original-r1 -e FD2_PARITY_OUT=/src/work/parity-slot-ch17/event40-after-remake-r1 -v /home/anr2/cht/fd2:/src -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/src/org_game/炎龍騎士團/FLAME2:ro -v /home/anr2/cht/fd2/work/parity-slot-ch17/guard-original-r1:/src/work/parity-slot-ch17/guard-original-r1:ro -w /src/remake fd2-go-test-local:20260909 timeout 600 bash -c 'set -e\nmkdir -p /tmp/pack\nfor e in /src/remake/generated-assets/fd2-original-b97caf22/*; do ln -s \"$e\" /tmp/pack/; done\nln -s /src/remake/assets/locales /tmp/pack/locales\nwith-xvfb go test ./internal/campaign ./internal/editorcanonical -count=1 > /src/work/parity-slot-ch17/event40-data-go-r1.log 2>&1'",
+    "sync": "Docker內python3 tools/sync_native_turn_events.py --write --chapters 17，之後--check --chapters 17與全域--check。"
+  },
+  "validation": {
+    "layer": "RE-CLOSED／DATA-READY／RUNTIME-E1，僅event40",
+    "pending_turn_events_before": 28,
+    "pending_turn_events_after": 27,
+    "chapter_player_e2": "保持既有parity-ch17，不新增原版章收據。",
+    "artifacts": [
+      {
+        "path": "work/parity-slot-ch17/event40-before-verify-r1.json",
+        "size": 140709,
+        "sha256": "d481355c3b62e8c98f1e66094a46c0a369ac1469dac87b15392988ab2c0abdf6"
+      },
+      {
+        "path": "work/parity-slot-ch17/event40-after-verify-r1.json",
+        "size": 140709,
+        "sha256": "d481355c3b62e8c98f1e66094a46c0a369ac1469dac87b15392988ab2c0abdf6"
+      },
+      {
+        "path": "work/parity-slot-ch17/event40-dialogue195-verify-r2.json",
+        "size": 140780,
+        "sha256": "b802470afe00a4aaf1dbdf897a50ab218216e0e0b9d31c7102076d941fbd8442"
+      },
+      {
+        "path": "work/parity-slot-ch17/event40-before-dialogue195-verify-r2.json",
+        "size": 140780,
+        "sha256": "b802470afe00a4aaf1dbdf897a50ab218216e0e0b9d31c7102076d941fbd8442"
+      },
+      {
+        "path": "work/parity-slot-ch17/event40-before-remake-r1.log",
+        "size": 127771,
+        "sha256": "1cb650a2cd5de8120ad9a2ce3a792dab42ff1727840f16514e6a3f5f8a68c1ef"
+      },
+      {
+        "path": "work/parity-slot-ch17/event40-after-remake-r1.log",
+        "size": 128047,
+        "sha256": "126deb3268aa12238e3f23f9f411b66de7ddcbc3d2b4d38f1293d46fb11f0603"
+      },
+      {
+        "path": "work/parity-slot-ch17/event40-data-go-r1.log",
+        "size": 133,
+        "sha256": "5cf95ef5eb64936bae805e4eec29b4cd7e888bcc6a4983577831d1694084b7b4"
+      },
+      {
+        "path": "work/parity-slot-ch17/guard-original-r1/runner.json",
+        "size": 1354,
+        "sha256": "1ddeb5bca1a8c1e4df757ea3c8f273cb98043618c12c200c42841d08906b85c1"
+      },
+      {
+        "path": "work/parity-slot-ch17/FD2.SAV",
+        "size": 22987,
+        "sha256": "dfb1d6bf265cf1592b7666ac5619841e7b35d845d6b9b90d371167252e19f786"
+      }
+    ],
+    "original_plan": {
+      "path": "docs/data/parity-plans/ch17-guard.jsonl",
+      "size": 3836,
+      "sha256": "7fd71aaa28a11294670b3c910e7b798df585e5107b0533e1af368ad34d8014c0"
+    },
+    "original_receipt": "docs/data/ui-traces/parity-ch17.json",
+    "dialogue_log": {
+      "before_count": 0,
+      "after_count": 3,
+      "source": "0x34BF6",
+      "text": 1,
+      "scene": 1,
+      "lines": [
+        5,
+        6,
+        7
+      ]
+    },
+    "ai": {
+      "original": 124,
+      "consumed": 124,
+      "sequence_divergence": 0
+    },
+    "go_packages": [
+      "internal/campaign",
+      "internal/editorcanonical"
+    ],
+    "source_hashes": [
+      {
+        "path": "tools/extract_native_death_events.py",
+        "size": 40894,
+        "sha256": "4cceb7e36a685db612748010619906c6bd30427c7912c44333771dc44a5ef7ff"
+      },
+      {
+        "path": "remake/assets/data/native_death_events.json",
+        "size": 34637,
+        "sha256": "47eabdf8ceb98746ea48cac36f6313df20d5d22cf0c1733c66e074a8e9c61cf4"
+      },
+      {
+        "path": "remake/assets/scenarios/ch17.json",
+        "size": 22089,
+        "sha256": "2334d345082698fa8c8f9385a3a388652dea344a0e4acea2f55453cf4b8ad3a5"
+      },
+      {
+        "path": "remake/assets/editor-canonical/scenarios/ch17.json",
+        "size": 30616,
+        "sha256": "8b1e05a78c42ea288e98a39b4e0f1b2afc454dc86e6dacb9cf7614fb1b02ae8a"
+      },
+      {
+        "path": "remake/assets/editor-canonical/bundle-summary.json",
+        "size": 601171,
+        "sha256": "cce6cdbd31f02aeeccc5ac8a3d184b041b916b811559a8213ac4d5397f8c7452"
+      }
+    ],
+    "gates": {
+      "behavior": true,
+      "nodes": true,
+      "transaction": true,
+      "frames": true
+    },
+    "frames": {
+      "compared": 98,
+      "pixel_budget": 640,
+      "zero": 96,
+      "max_pixels": 193
+    },
+    "save": {
+      "oracle_save_sha256": "bce3b7e5967d354d23444ce2da75b163e905d7e58914b80be44f77c237033333",
+      "remake_save_sha256": "bce3b7e5967d354d23444ce2da75b163e905d7e58914b80be44f77c237033333",
+      "remake_note": "save_sha256=bce3b7e5967d354d23444ce2da75b163e905d7e58914b80be44f77c237033333",
+      "blocked_by": null,
+      "status": "ok"
+    }
+  },
+  "rights": "原版SAV、PNG及執行產物留本機work；公開只保存規格、可重跑工具、轉寫及雜湊。",
+  "test_environment_correction": {
+    "issue": 196,
+    "classification": "測試腳本環境漂移，非產品或原版缺陷",
+    "before": {
+      "path": "work/parity-slot-ch17/nearheap196-before.log",
+      "size": 5507,
+      "sha256": "a01e6fd65c720c29d811fba3c048eb612f4673aa61ba9cb061ba5ad23aacc21d"
+    },
+    "after": {
+      "path": "work/parity-slot-ch17/nearheap196-after.log",
+      "size": 1595,
+      "sha256": "b567dcb47dc7e99b3677e4abdb5dec0bca62c92ed2e449f19afed493ddea80da"
+    },
+    "fix": "抽取函式測試namespace補真正os，mock.patch.dict明示adapter並addCleanup恢復環境；正式near_heap_policy無變更。",
+    "tests": 96,
+    "failed": 0,
+    "skipped": 0,
+    "source": {
+      "path": "tools/test_dosgolem_oracle_drive.py",
+      "size": 58309,
+      "sha256": "bcd646cd728d48d7e66b6ba6325286d11dee27fbd0c110577491c8cdc8746848"
+    },
+    "foreign_native_environment": {
+      "tests": 96,
+      "failed": 0,
+      "skipped": 0,
+      "log": {
+        "path": "work/parity-slot-ch17/nearheap196-native-env.log",
+        "size": 1595,
+        "sha256": "0e68471f1d880f5c849a5ccce82ac8225e409277664503e4554daea2ea99bf69"
+      }
+    }
+  },
+  "validation_script_correction": "第一個Go命令的shell引號使套件替換未生效，只再跑一次正常Game；未當campaign／editorcanonical驗收。修正命令後event40-data-go-r1.log兩套件均PASS。"
+}
