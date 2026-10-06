@@ -39,6 +39,7 @@
 #   FD2_ORACLE_FRAME_SETTLE  內容連續相同幾次才寫出，用來濾掉畫到一半的畫面
 #   FD2_ORACLE_FRAME_MAX     張數上限（預設 4000）
 #   FD2_ORACLE_FRAME_UNITS=1 已接受影格同步記錄單位raw；需要FRAMES，預設停用
+#   FD2_ORACLE_MEMORY_CHANGE 最多16個LE byte位址，成功指令前後唯讀變更；沿EIP窗口／max
 #   FD2_ORACLE_MAP_STATE=1 同時點地圖全域／units／palette；需要FRAMES或EIP_TRACE
 #   FD2_ORACLE_FRAME_EIP     改以遊戲自己的繪圖進入點為邊界，如 0x11CAC
 #   FD2_ORACLE_EIP_TRACE     逗號分隔的位址：每次進入就把暫存器與堆疊頂寫進 <out>/eip-trace.jsonl
@@ -84,6 +85,7 @@ frame_max=${FD2_ORACLE_FRAME_MAX:-4000}
 frame_eip=${FD2_ORACLE_FRAME_EIP:-}
 frame_units=${FD2_ORACLE_FRAME_UNITS:-}
 map_state=${FD2_ORACLE_MAP_STATE:-}
+memory_change=${FD2_ORACLE_MEMORY_CHANGE:-}
 frame_from=${FD2_ORACLE_FRAME_FROM:-0}
 frame_to=${FD2_ORACLE_FRAME_TO:-0}
 eip_watch=${FD2_ORACLE_EIP_WATCH:-}
@@ -153,6 +155,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_FRAME_EIP="$frame_eip" \
   -e FD2_ORACLE_FRAME_UNITS="$frame_units" \
   -e FD2_ORACLE_MAP_STATE="$map_state" \
+  -e FD2_ORACLE_MEMORY_CHANGE="$memory_change" \
   -e FD2_ORACLE_FRAME_FROM="$frame_from" \
   -e FD2_ORACLE_FRAME_TO="$frame_to" \
   -e FD2_ORACLE_EIP_WATCH="$eip_watch" \

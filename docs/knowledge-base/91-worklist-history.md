@@ -5725,3 +5725,7 @@ trace MAP_STATE與地址上限的前置設定失敗保留，不當產品缺陷�
 本批兩處重繪修正的全套Go19套件回歸通過；首次全域靜音設定失敗保留於HUD主契約。其餘owner與單像素writer仍未閉合。
 
 #52的必要原始byte觀察缺口已先登記工具工單[#197](https://github.com/wicanr2/fd2_re/issues/197)，規格DRAFT，不先改CPU或推定pixel writer。IDA／來源註記再次匯出核對通過，原始位址與bytes保持。
+
+### 2026-10-06 #197 原始byte觀察工具READY
+
+唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。

@@ -20,6 +20,7 @@ FD2_ORACLE_FRAME_MAX=${FD2_ORACLE_FRAME_MAX:-4000}
 FD2_ORACLE_FRAME_EIP=${FD2_ORACLE_FRAME_EIP:-}
 FD2_ORACLE_FRAME_UNITS=${FD2_ORACLE_FRAME_UNITS:-}
 FD2_ORACLE_MAP_STATE=${FD2_ORACLE_MAP_STATE:-}
+FD2_ORACLE_MEMORY_CHANGE=${FD2_ORACLE_MEMORY_CHANGE:-}
 FD2_ORACLE_FRAME_FROM=${FD2_ORACLE_FRAME_FROM:-0}
 FD2_ORACLE_FRAME_TO=${FD2_ORACLE_FRAME_TO:-0}
 FD2_ORACLE_EIP_WATCH=${FD2_ORACLE_EIP_WATCH:-}
@@ -41,7 +42,7 @@ fi
 if [ "$FD2_ORACLE_MAP_STATE" = "1" ] && [ -z "$FD2_ORACLE_FRAMES" ] && [ -z "$FD2_ORACLE_EIP_TRACE" ]; then
   echo "MAP_STATE需要FRAMES或EIP_TRACE" >&2; exit 2
 fi
-export FD2_ORACLE_MAP_STATE
+export FD2_ORACLE_MAP_STATE FD2_ORACLE_MEMORY_CHANGE
 export FD2_ORACLE_EIP_TRACE_FROM FD2_ORACLE_EIP_TRACE_TO FD2_ORACLE_EIP_TRACE_MAX
 for trace_bound in "$FD2_ORACLE_EIP_TRACE_FROM" "$FD2_ORACLE_EIP_TRACE_TO"; do
   [[ "$trace_bound" =~ ^(0|[1-9][0-9]{0,11})$ ]] || { echo "EIP 追蹤指令範圍格式無效" >&2; exit 2; }
@@ -58,7 +59,8 @@ def near_heap_policy(root):
     reviewed = {
         "internal/machine/watcom_runtime.go": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f",
         "apps/fd2/cmd/oracle/main.go": "d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3"}
-    reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234", 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925'}
+    reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234", 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', '43f9fece28f9a9fc76e4995b50437663eef6c8686bd3a30f73b4817b48a9bf6b'}
+    native_main_revisions = {'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', '43f9fece28f9a9fc76e4995b50437663eef6c8686bd3a30f73b4817b48a9bf6b'}
     native_reviewed = {'internal/machine/watcom_runtime.go': '00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f', 'apps/fd2/cmd/oracle/main.go': 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', 'internal/cpu386/cpu.go': '3059653f53fe37a44be270184cb9cb0dc4ee5ba4c309f79d79b77e70c8e11267', 'internal/machine/le_startup.go': 'bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206'}
     profile = os.environ["FD2_ORACLE_HEAP_PROFILE"]
     sources = []
@@ -72,7 +74,8 @@ def near_heap_policy(root):
     if profile == "native":
         native_sources = [{"path": name, "sha256": hashlib.sha256((root/name).read_bytes()).hexdigest()}
                           for name in native_reviewed]
-        if any(source["sha256"] != native_reviewed[source["path"]] for source in native_sources):
+        if any(source["sha256"] not in native_main_revisions if source["path"] == "apps/fd2/cmd/oracle/main.go"
+               else source["sha256"] != native_reviewed[source["path"]] for source in native_sources):
             raise SystemExit("native原生近堆來源未通過已審查清冊")
         return {
             "kind": "original_instructions_with_existing_platform_adapters",
@@ -105,6 +108,19 @@ if any(not env.get(key) for key in required):
     raise SystemExit("oracle entry 缺少來源 Git／原版定位資料")
 if not re.fullmatch(r"[0-9a-f]{40}", env["FD2_ORACLE_SOURCE_COMMIT"]):
     raise SystemExit("oracle entry 來源 commit 無效")
+memory_addresses = []
+memory_requested = env.get("FD2_ORACLE_MEMORY_CHANGE", "")
+if memory_requested:
+    parts = memory_requested.split(",")
+    if len(parts) > 16:
+        raise SystemExit("MEMORY_CHANGE位址超過16個")
+    for part in parts:
+        if not re.fullmatch(r"(?:0[xX])?[0-9a-fA-F]+", part.strip()):
+            raise SystemExit("MEMORY_CHANGE不是十六進位位址")
+        value = int(part.strip(), 16)
+        if value > 0xffffffff or value in memory_addresses:
+            raise SystemExit("MEMORY_CHANGE位址越界或重複")
+        memory_addresses.append(value)
 raw = Path("/orig/FD2.EXE").read_bytes()
 sha = hashlib.sha256(raw).hexdigest()
 if len(raw) != 357074 or sha != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f":
@@ -142,6 +158,12 @@ runner = {
         "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"],
     "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
 }
+if memory_addresses:
+    runner["memory_change_observation"] = {
+        "addresses": [f"0x{address:X}" for address in memory_addresses],
+        "window": runner["eip_trace_window"],
+        "scope": "read-only before/after successful instruction bytes; same-value writes unobserved",
+        "contract": "dosgolem docs/spec/012-fd2-parity-capture.md §10; fd2_re #197"}
 Path("/out/runner.json").write_text(json.dumps(runner, ensure_ascii=False, indent=2) + "\n")
 META
 set -euo pipefail
@@ -167,8 +189,13 @@ if [ "$FD2_ORACLE_MAP_STATE" = "1" ]; then
   frameargs+=(-map-state)
 fi
 if [ -n "$FD2_ORACLE_EIP_TRACE" ]; then
-  frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE"
-             -eip-trace-from "$FD2_ORACLE_EIP_TRACE_FROM"
+  frameargs+=(-eip-trace "$FD2_ORACLE_EIP_TRACE")
+fi
+if [ -n "$FD2_ORACLE_MEMORY_CHANGE" ]; then
+  frameargs+=(-memory-change "$FD2_ORACLE_MEMORY_CHANGE")
+fi
+if [ -n "$FD2_ORACLE_EIP_TRACE" ] || [ -n "$FD2_ORACLE_MEMORY_CHANGE" ]; then
+  frameargs+=(-eip-trace-from "$FD2_ORACLE_EIP_TRACE_FROM"
              -eip-trace-to "$FD2_ORACLE_EIP_TRACE_TO"
              -eip-trace-max "$FD2_ORACLE_EIP_TRACE_MAX")
 fi

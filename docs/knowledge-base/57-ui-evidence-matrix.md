@@ -1963,3 +1963,7 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 唯一數字及證據只引用[58](58-fd2-exe-re-coverage.md)、
 [HUD主契約](../data/ida/fd2_hud_redraw_20261006.json)與
 [地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)。
+
+### 2026-10-06 #197 原始byte觀察工具READY
+
+唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。

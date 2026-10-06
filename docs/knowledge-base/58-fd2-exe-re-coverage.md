@@ -7,6 +7,7 @@
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #41指定HUD重繪caller | PARTIAL-RUNTIME-E1／其他owner待補 | 死亡steady第26幀與196CB戰場關框已接同一入口；局部與Go全套回歸、新章T5完整Game前綴通過。未全部接齊，不關閉。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |
 | #52最後地形像素 | NATIVE-VISUAL-DIFFERENCE／RE待補 | 原生同槽六回合前綴3146仍1px，原版118、重製116；舊adapter的0不能解釋目前差異。保持非111阻擋，[主證據native_profile_recheck](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
+| #197原始byte觀察工具 | READY／正常收據待補 | 正式dosgolem來源fa25f6e已推送；1058項平台零失敗零略過，BOOT百萬步前後全狀態與PNG相同。pixel writer未知；[主契約memory_observation](../data/ida/fd2_terrain_mode3_review_20261001.json)。 |
 | #167收據配置器政策 | CONFORMED，工具範圍 | 來源雙hash、三項近堆測試與完整metadata驗證；詳見本頁最新勘誤。 |
 | #166原生物理演出 | 正常物理抽樣CONFORMED／RUNTIME-E1 | 玩家／敵方、零旗標與已明示非零抽樣、完整DAC caller及保留work返回已驗。範圍與特殊分支限制見本頁最新#176節及[主契約](../data/ida/fd2_physical_background_selection_20261004.json)；不宣稱原版heap生命週期或全戰鬥PLAYER-E2。 |
 | #172正常物理色盤閘門 | 有限CONFORMED／RUNTIME-E1 | 正式返回與預檢保留11CAC(1)的4DFCC gate；完整Go／演出／正常章回歸見本頁最新節。 |
@@ -3353,3 +3354,7 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 完整來源、比較結果與限制見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的native_profile_recheck。
 
 本批兩處重繪修正的全套Go19套件回歸通過；首次全域靜音設定失敗保留於HUD主契約。其餘owner與單像素writer仍未閉合。
+
+### 2026-10-06 #197 原始byte觀察工具READY
+
+唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。

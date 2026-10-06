@@ -12853,10 +12853,123 @@
     }
   },
   "memory_observation": {
-    "state": "DRAFT",
+    "state": "READY-TOOL; LOCAL-REGRESSION-PASS; NORMAL-PROBE-PENDING",
     "issue": 197,
     "purpose": "限定目前native目標byte的變更writer，現有EIP／map_state不含目標內容。",
     "scope": "既有oracle的選用有界LE byte變更觀察，成功instruction後唯讀baseline／change；最多16位址，沿trace window／max，預設停用；沒有同值寫入證據，不外推全heap。",
-    "review_pending": "核對目前machine.Step與oracleloop、guest-state不變、CLI／wrapper及012規格後才READY／implementation。"
+    "spec": "dosgolem docs/spec/012-fd2-parity-capture.md §10",
+    "review": {
+      "date": "2026-10-06",
+      "source": "apps/fd2/cmd/oracle/main.go control loop、nativeHeap.observe、CPU.Step成功邊界",
+      "decision": "只包住成功instruction的前後byte讀取；獨立baseline／change，不觀察外部control mutation；不改CPU與平台政策。",
+      "pixel_writer": "unknown"
+    },
+    "commands": {
+      "focused": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 660 docker run --rm -i --network none --memory 6g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp -e DOSGOLEM_FD2_EXE=/orig/FD2.EXE -e DOSGOLEM_FD2_ROOT=/orig --entrypoint timeout golang:1.24-bookworm 600 sh -c 'go test ./apps/fd2/cmd/oracle -run TestFD2MemoryChange -count=1 -timeout 120s -v' > /home/anr2/cht/fd2/work/memory197-focused-replay.log 2> /home/anr2/cht/fd2/work/memory197-focused-replay.stderr",
+      "platform": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && timeout 660 docker run --rm -i --network none --memory 6g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp -e DOSGOLEM_FD2_EXE=/orig/FD2.EXE -e DOSGOLEM_FD2_ROOT=/orig --entrypoint timeout golang:1.24-bookworm 600 sh -c 'go test ./internal/cpu386 ./internal/machine ./apps/fd2/cmd/oracle -count=1 -timeout 480s -json' > /home/anr2/cht/fd2/work/memory197-platform-r1.jsonl 2> /home/anr2/cht/fd2/work/memory197-platform-r1.stderr",
+      "boot_initial": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 180 docker run --rm -i --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos:ro -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -v /home/anr2/cht/fd2/work:/out -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --entrypoint timeout golang:1.24-bookworm 160 sh -c 'set -eu\ntest -f /orig/FD2.EXE\ntest ! -e /out/memory197-boot-disabled-r1.json\ntest ! -e /out/memory197-boot-enabled-r1.json\ngo build -o /tmp/fd2-oracle ./apps/fd2/cmd/oracle\nmkdir -p /tmp/memory-enabled /tmp/memory-disabled\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-disabled -steps 1000000 -first-chunk 1000000 -frame /out/memory197-boot-disabled-r1.png > /out/memory197-boot-disabled-r1.json\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-enabled -steps 1000000 -first-chunk 1000000 -memory-change 0x53A49,0x53A4A,0x53A4B,0x53A4C,0x1A30EF,0x1600EF -eip-trace-max 4000 -frame /out/memory197-boot-enabled-r1.png > /out/memory197-boot-enabled-r1.json\ncp /tmp/memory-enabled/memory-change.jsonl /out/memory197-boot-observation-r1.jsonl\n' > /home/anr2/cht/fd2/work/memory197-boot-r1.log 2>&1",
+      "boot_valid": "test -d /home/anr2/cht/dosgolem-fd2-oracle && test -d /home/anr2/cht/fd2/work && test -d /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache && test -d /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache && timeout 180 docker run --rm -i --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 -v /home/anr2/cht/dosgolem-fd2-oracle:/dos:ro -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gocache:/gocache -v /home/anr2/cht/dosgolem-fd2-oracle/workplace/gomodcache:/gomodcache -v /home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2:/orig:ro -v /home/anr2/cht/fd2/work:/out -w /dos -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e HOME=/tmp --entrypoint timeout golang:1.24-bookworm 160 sh -c 'set -eu\ntest -f /orig/FD2.EXE\ntest ! -e /out/memory197-boot-disabled-r2.json\ntest ! -e /out/memory197-boot-enabled-r2.json\ngo build -o /tmp/fd2-oracle ./apps/fd2/cmd/oracle\nmkdir -p /tmp/memory-enabled /tmp/memory-disabled\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-disabled -steps 1000000 -first-chunk 1000000 -frame /out/memory197-boot-disabled-r2.png > /out/memory197-boot-disabled-r2.json\n/tmp/fd2-oracle -heap-profile native -exe /orig/FD2.EXE -root /orig -run-dir /tmp/memory-enabled -steps 1000000 -first-chunk 1000000 -memory-change 0x53A49,0x51AAB,0x51AAC,0x554A4 -frame /out/memory197-boot-enabled-r2.png > /out/memory197-boot-enabled-r2.json\ncp /tmp/memory-enabled/memory-change.jsonl /out/memory197-boot-observation-r2.jsonl\n' > /home/anr2/cht/fd2/work/memory197-boot-r2.log 2>&1"
+    },
+    "validation": {
+      "focused": {
+        "path": "work/memory197-focused-r2.log",
+        "size": 597,
+        "sha256": "291b181cf1a2e0264fe25331834145db901ecb26a317ceec934a7dd7e95e1053"
+      },
+      "platform": {
+        "path": "work/memory197-platform-r1.jsonl",
+        "size": 826491,
+        "sha256": "d124b761c91df0a1e076346ca53e2c75352218fce168f3b49e7a8288e9c62a6c"
+      },
+      "platform_tests": 1058,
+      "failed": 0,
+      "skipped": 0,
+      "boot_disabled": {
+        "path": "work/memory197-boot-disabled-r2.json",
+        "size": 360200,
+        "sha256": "dc78b14c847570fd2b5fcd8903db14274db14e0d96d76224907bc7bebc1b6e92"
+      },
+      "boot_enabled": {
+        "path": "work/memory197-boot-enabled-r2.json",
+        "size": 360430,
+        "sha256": "10c5291862e0235f97e641d9a8e408d855232b692e7e576e82ccbbc76090818b"
+      },
+      "boot_observation": {
+        "path": "work/memory197-boot-observation-r2.jsonl",
+        "size": 12873,
+        "sha256": "6c16485706ad34b681aab2329328bfd3a7c5e2e7abcd6ef5ff1a55e629977049"
+      },
+      "boot_steps": 1000000,
+      "raw_guest_report_equal": true,
+      "normalization": "只移除啟用時新增memory_change_observation，以及frame.path輸出檔名；其他原始欄位完整相同。兩張PNG檔案bytes相同。",
+      "boot_observations": 53,
+      "boot_value_changes": 52,
+      "boot_invalid": false,
+      "limitations": "BOOT證明觀察不改原生執行與來源byte可定位，不是第12章pixel writer或正常玩家驗收。",
+      "driver": {
+        "path": "work/memory197-validation-r1.log",
+        "sha256": "6a72ecd757b8006f90e47210eedf8ea589228343c8961e0fa0a9d030a22e2a8c",
+        "state": "PASS",
+        "tests": 96
+      }
+    },
+    "failure_corrections": [
+      {
+        "log": {
+          "path": "work/memory197-focused-r1.log",
+          "size": 1021,
+          "sha256": "4ea67402c202f30516a033b8a6c808ad2c9c1693572fc85a985165debf1fa158"
+        },
+        "kind": "test fixture",
+        "reason": "合成LE fixture漏合法DS descriptor，C6因此拒收；只補與LoadLE相同合法描述器，再同image／同測試重跑。CPU未改。"
+      },
+      {
+        "log": {
+          "path": "work/memory197-boot-r1.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "kind": "expected invalid-source negative probe",
+        "reason": "pixel目標在BOOT未配置，正確發布false並停止觀察，guest仍完整百萬步。正向改觀察BOOT已存在的全域與stack，沒有更改像素目標或實際Game。",
+        "receipt": {
+          "path": "work/memory197-boot-enabled-r1.json",
+          "sha256": "f04e22066d8eb7dc5e212aa853682a4ef1d5058f7478f04af507675e3aa501b7",
+          "size": 360454
+        },
+        "observation": {
+          "path": "work/memory197-boot-observation-r1.jsonl",
+          "sha256": "e93974afe7e951db5530111a37c28da4603a58ad2938ce6aec20066595bf18b1",
+          "size": 191
+        }
+      }
+    ],
+    "source_files": [
+      {
+        "path": "apps/fd2/cmd/oracle/main.go",
+        "sha256": "43f9fece28f9a9fc76e4995b50437663eef6c8686bd3a30f73b4817b48a9bf6b"
+      },
+      {
+        "path": "apps/fd2/cmd/oracle/main_test.go",
+        "sha256": "89494755eb0181a349efc138dcab5076107bfae7a89070b61deac3113d13be10"
+      },
+      {
+        "path": "docs/spec/012-fd2-parity-capture.md",
+        "sha256": "e0d95c4ef279e8bfa8b0f2bfa3dc3139676e16338e5dbf77392219ea87fb0cbb"
+      }
+    ],
+    "source_commit": "fa25f6e7d7f6be399b6563b7df6a55995daba77b",
+    "source_branch": "feat/fd2-oracle-input-chain",
+    "source_clean": true,
+    "remote_equal": true,
+    "wrappers": [
+      {
+        "path": "tools/dosgolem_oracle.sh",
+        "sha256": "19cf12d81f6035d84ea56c10e96be94bf650453795d2847455b9f9ae4ce9d62e"
+      },
+      {
+        "path": "tools/dosgolem_oracle_container.sh",
+        "sha256": "f12d11270c33b057d525a1a0c1386c2108ab48d93d245443159c6aa91c06e732"
+      }
+    ]
   }
 }

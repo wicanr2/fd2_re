@@ -193,6 +193,8 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 父項#52。正式native第12章seq3146像素仍118對116，現有EIP／map_state只有配置回傳與16項全域，沒有原始目標byte的改變來源；不能用位址重用或舊adapter清零推定最後writer。只擴充既有受版控apps/fd2/cmd/oracle，預設停用、宣告固定最多16個LE線性byte位址、既有追蹤窗口及筆數上限，每次成功instruction後唯讀觀察，記錄baseline或value change與原始指令定位。未變同值寫入不宣稱已觀察；不改CPU、heap、RNG、鍵盤、畫面或遊戲檔案。輸出留本地work，公開庫只存來源／收據雜湊。READY規格先於實作，wrapper明示參數與來源審查。
 
+2026-10-06 READY工具實作已由dosgolem fa25f6e7d7f6be399b6563b7df6a55995daba77b提交推送，真正遠端相同。1058項平台測試零失敗零略過；原版百萬步啟用／停用的完整報告及PNG一致，除新增觀察欄位及輸出路徑。53筆觀察含52次變更。FD2兩層wrapper傳遞旗標並綁來源清冊，CPU／heap來源保持。BOOT時目標pixel尚未配置的false收據保留，不使用0代替；正向BOOT使用當時已存在全域／stack。首次fixture漏DS descriptor已修正並乾淨重跑。正常短槽及第12章目標觀察仍待，不關閉本案。唯一來源／命令／雜湊：地形主契約memory_observation。
+
 怎樣算做完：bounded參數與越界拒收、disabled原metadata保持、原始記憶體／CPU不變；同固定槽native正常計畫重生，既有完整checkpoint／PNG／controls一致後確認原生byte變更定位，不用新觀察放寬#52比較。
 
 證據：`['docs/data/ida/fd2_terrain_mode3_review_20261001.json#native_profile_recheck', 'tools/dosgolem_oracle_container.sh']`
