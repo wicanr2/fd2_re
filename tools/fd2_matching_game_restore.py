@@ -65,11 +65,14 @@ EXTENDED_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
 MID_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
     0x1F0DC,0x1B932,0x3327D,0x25A96,0x25B45,0x358EA,0x35112,0x286BD,0x334D9,0x2218A,0x24D22,
     0x17EEF,0x1D6C8,0x22470,0x341DB,0x232E8,0x2E0BD,0x1F73F,0x34A7A,0x35C79,0x35D60,0x21DB2))
+SCENE_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
+    0x2CF71,0x1F30A,0x1F1CC,0x354FE,0x13FD4,0x29C90,0x23CD5,0x356B7,
+    0x23B5F,0x29DED,0x31602,0x235F9,0x230F2,0x112A5))
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -170,6 +173,16 @@ BINDINGS.update({'sub_17E0B':0x17E0B,'sub_1B9DE':0x1B9DE,'sub_18409':0x18409,
     'sub_233C6':0x233C6,'sub_2DC55':0x2DC55,'sub_1F882':0x1F882,'sub_1F525':0x1F525,
     'sub_13512':0x13512,'sub_35E5A':0x35E5A,'dbl_501F8':0x501F8,'dbl_50200':0x50200,
     'cos':0x3C885,'sin':0x3C898})
+BINDINGS.update({'sub_4E4B9':0x4E4B9,'sub_4E4E8':0x4E4E8,'sub_4E4D1':0x4E4D1,'sub_4E48D':0x4E48D,
+    'dword_5413B':0x5413B,'dword_5412B':0x5412B,'dword_54133':0x54133,
+    'byte_52635':0x52635,'byte_52647':0x52647,'sub_4E809':0x4E809,
+    'sub_15F0E':0x15F0E,'sub_1F42D':0x1F42D,'unk_5274E':0x5274E,
+    'sub_1DA16':0x1DA16,'dword_5410B':0x5410B,'sub_2A289':0x2A289,
+    'unk_521C3':0x521C3,'unk_521D4':0x521D4,'unk_521E5':0x521E5,
+    'unk_521A3':0x521A3,'unk_521B3':0x521B3,'sub_1E529':0x1E529,
+    'unk_52113':0x52113,'unk_5211E':0x5211E,'sub_13536':0x13536,
+    'unk_520BA':0x520BA,'unk_520C1':0x520C1,'unk_520C8':0x520C8,
+    'unk_520CF':0x520CF,'unk_520D6':0x520D6,'unk_520DD':0x520DD,'sub_1145A':0x1145A})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -189,6 +202,7 @@ SOURCES = {
     "game_short_branches": ("tools/fd2_matching_game_short_branches.c", tuple(macro for macro, _ in SHORT_BRANCH_CASES)),
     "game_extended_flow": ("tools/fd2_matching_game_extended_flow.c", tuple(macro for macro, _ in EXTENDED_FLOW_CASES)),
     "game_mid_flow": ("tools/fd2_matching_game_mid_flow.c", tuple(macro for macro, _ in MID_FLOW_CASES)),
+    "game_scene_flow": ("tools/fd2_matching_game_scene_flow.c", tuple(macro for macro, _ in SCENE_FLOW_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
