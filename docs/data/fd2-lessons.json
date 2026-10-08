@@ -1919,6 +1919,14 @@
       "rule": "編譯與連結期間凍結登錄C及include，等待實際工具handle完成後才修改相依來源。物件與來源SHA不同時，保留失敗輪次並用固定新來源重編譯，不移除來源守衛。入口tools/fd2_matching_game_restore.py的compile_stage／link_stage與docs/data/ida/fd2_matching_full_20261008.json的來源清冊。",
       "why": "本輪處理兩個服務候選時修改共用C宣告，另一輪連結在來源SHA守衛前拒收。該輪沒有產生正式收據；保持來源不變後，同一工具鏈乾淨重編譯與連結。",
       "evidence": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md"
+    },
+    {
+      "id": "matching-new-coverage-subtracts-existing-addresses",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "選新候選及回填覆蓋前，先按固定IDA原始函式位址扣除現行matched_addresses；同一位址的新來源可保存驗證，但不增加函式或bytes。入口docs/knowledge-base/58-fd2-exe-re-coverage.md、docs/data/ida/fd2_matching_full_20261008.json的matching_summary及tools/fd2_matching_bootstrap.py。",
+      "why": "短服務來源八個196 bytes完整匹配，但35EBE／35ED2／3615E／3616E已有C覆蓋。合併清冊守衛抓到八個全算新增的錯誤；以位址集合核對後，只新增四個124 bytes，完整EXE仍相同。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json"
     }
   ]
 }
