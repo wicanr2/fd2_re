@@ -6,7 +6,7 @@
 
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
-| #198 全檔 C 匹配 | PARTIAL；尚未完成 | 已以 Watcom 10.0a 純 C 匹配五個原始區間，共78 bytes，兩輪相同。原始清冊1305筆／175筆函式庫分類保持不變；組合台帳仍有1125個未還原或未完成分類的函式。全檔比較基準的SHA相同來自保留其餘原版bytes，不算C結案。來源、旗標、五個指令／caller及重跑見[主收據](../data/ida/fd2_matching_full_20261008.json)。 |
+| #198 全檔 C 匹配 | PARTIAL；尚未完成 | 已以 Watcom 10.0a 純 C 匹配八個原始區間，共230 bytes。新增`0x127A9`遍歷、`0x134E4`欄位清除及`0x1F525`遞減循環，兩輪物件、機器碼與收據相同，16份程式碼由objcopy獨立核對。原始清冊1305筆／175筆函式庫分類保持不變；組合台帳仍有1122個未還原或未完成分類的函式。全檔SHA相同來自保留其餘原版bytes，不算C結案。來源、旗標、原始指令與重跑見[主收據](../data/ida/fd2_matching_full_20261008.json)的`matching_summary`與`game_matches`。 |
 | 三函式編譯比對試驗 | 有界工具試驗已驗證；函式尚未逐位元組一致 | 固定原檔與 IDA 9.4 匯出、鎖版 Open Watcom 2.0、72 個純 C 候選；三個原始區間均未逐位元組一致。共用返回尾端單獨保留。命令、來源雜湊、重跑與差異見[主證據](../data/ida/fd2_matching_pilot_20261008.json)。不提升原作工具版本、正式執行期或 PLAYER-E2。 |
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #41指定HUD重繪caller | PARTIAL-RUNTIME-E1／其他owner待補 | 死亡steady第26幀與196CB戰場關框已接同一入口；局部與Go全套回歸、新章T5完整Game前綴通過。未全部接齊，不關閉。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |

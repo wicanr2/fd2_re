@@ -23,32 +23,40 @@ def main():
     parser.add_argument("--original", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--restored", type=Path, required=True)
+    parser.add_argument("--additional-restored", type=Path, action="append", default=[])
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if not Path("/.dockerenv").exists():
         raise SystemExit("本工具只在 Docker 執行")
     raw = args.original.read_bytes()
     image = json.loads(args.evidence.read_text(encoding="utf-8"))
-    report = json.loads((args.restored / "report.json").read_text(encoding="utf-8"))
+    report_dirs = [args.restored, *args.additional_restored]
+    reports = [(directory, json.loads((directory / "report.json").read_text(encoding="utf-8")))
+               for directory in report_dirs]
     identity = {"file": "FD2.EXE", "size": len(raw), "md5": hashlib.md5(raw).hexdigest(),
                 "sha256": hashlib.sha256(raw).hexdigest()}
-    if identity != image["input"] or identity != report["input"]:
+    if identity != image["input"] or any(identity != report["input"] for _, report in reports):
         raise ValueError("原版、IDA 與 C 收據不是同一個固定版本")
-    if report["evidence_sha256"] != sha(args.evidence):
+    if any(report["evidence_sha256"] != sha(args.evidence) for _, report in reports):
         raise ValueError("C 收據未綁定此 IDA 證據")
     meta = parse_le(raw)
     fixups = parse_fixups(raw, meta)
     by_address = {f["inventory"]["start"]: f for f in image["functions"]}
     selected = {}
-    for trial in report["trials"]:
-        if trial["exact_interval_bytes"]:
-            selected.setdefault(trial["address"], trial)
+    for directory, report in reports:
+        for trial in report["trials"]:
+            if trial["exact_interval_bytes"]:
+                previous = selected.get(trial["address"])
+                if previous and previous[1]["code_sha256"] != trial["code_sha256"]:
+                    raise ValueError("同一位址的已匹配 C 來源相互矛盾")
+                selected.setdefault(trial["address"], (directory, trial))
     rebuilt = bytearray(raw)
     source_spans = []
-    for address, trial in selected.items():
+    written_offsets = set()
+    for address, (directory, trial) in selected.items():
         function = by_address[address]
         instructions = [i for chunk in function["chunks"] for i in chunk["instructions"]]
-        compiled = (args.restored / trial["stem"] / "candidate.bin").read_bytes()
+        compiled = (directory / trial["stem"] / "candidate.bin").read_bytes()
         if hashlib.sha256(compiled).hexdigest() != trial["code_sha256"]:
             raise ValueError("C 程式碼與連結收據不符")
         if compiled.hex() != "".join(i["loaded_bytes"] for i in instructions):
@@ -61,6 +69,9 @@ def main():
             code = bytearray(compiled[cursor:cursor + len(loaded)])
             if raw[offset:offset + len(file_bytes)] != file_bytes:
                 raise ValueError("原始指令來源不符")
+            target_offsets = set(range(offset, offset + len(code)))
+            if written_offsets & target_offsets:
+                raise ValueError("已匹配 C 區間彼此重疊")
             for location, target in fixups.items():
                 if not offset <= location < offset + len(code):
                     continue
@@ -77,6 +88,7 @@ def main():
             if bytes(code) != file_bytes:
                 raise ValueError("解除已知 LE 重定位後仍有位元組差異")
             rebuilt[offset:offset + len(code)] = code
+            written_offsets.update(target_offsets)
             cursor += len(code)
         if cursor != len(compiled):
             raise ValueError("候選沒有被完整寫入")
@@ -101,6 +113,8 @@ def main():
               "reason": "其餘遊戲／未分類機器碼來自原版，尚未以 C 還原；全檔相同只證明組合基準有效",
               "counts": counts, "restored_spans": source_spans, "functions": ledger,
               "source_report_sha256": sha(args.restored / "report.json"),
+              "source_reports": [{"path": str(directory), "sha256": sha(directory / "report.json")}
+                                 for directory in report_dirs],
               "export_sha256": sha(args.evidence), "driver_sha256": sha(Path(__file__)),
               "rights": "完整 EXE 僅本機研究使用，不加入 Git 或公開發行"}
     (args.output / "bootstrap-receipt.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

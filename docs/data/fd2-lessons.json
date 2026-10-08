@@ -1822,6 +1822,21 @@
       "rule": "重建C呼叫慣例時，以原始堆疊清理、參數位置及活躍暫存器的保存契約為證據；IDA的__cdecl只作導覽。Watcom版本差異讀docs/knowledge-base/04-original-toolchain.md，匹配入口為tools/fd2_matching_legacy_verify.py及docs/data/ida/fd2_matching_full_20261008.json。",
       "why": "舊版Watcom的__cdecl可修改EBX，而原版1B8E7在memmove後仍使用EBX。直接套用導航型別使候選改用ESI；換成Watcom堆疊候選後EBX配置恢復，但整個75-byte函式仍未匹配。",
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json"
+    },
+    {
+      "id": "legacy-omf-source-date-is-reproducible-input",
+      "area": "匹配工具",
+      "date": "2026-10-08",
+      "rule": "用歷史DOS compiler做可重跑物件比較時，固定自己產生的ASCII中間源檔時間，並逐欄位區分OMF依賴紀錄與機器碼。入口tools/fd2_matching_game_restore.py的SOURCE_DATE_EPOCH，收據docs/data/ida/fd2_matching_full_20261008.json的matching_summary。",
+      "why": "兩輪GAME.C生成時間不同只改變OMF的0x88依賴紀錄，程式碼相同。固定DOS可表示的1980-01-01後，兩輪16份原廠物件及完整連結收據相同。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_restore.py"
+        ],
+        "pattern": "os\\.utime\\(dos_source, \\(SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH\\)\\)"
+      }
     }
   ]
 }
