@@ -1799,6 +1799,29 @@
       "rule": "從正式入口抽取函式做測試時，提供它實際使用的module與明示環境值，並在案例結束恢復環境。near_heap_policy的測試入口為tools/test_dosgolem_oracle_drive.py，正式契約由tools/dosgolem_oracle_container.sh宣告。",
       "why": "正式近堆入口新增os及HEAP_PROFILE後，舊AST抽取測試只注入Path與hashlib，在政策檢查之前就NameError。補真正os與隔離adapter後原96項全部通過，未改正式政策。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/196"
+    },
+    {
+      "id": "matching-symbol-check-every-reference",
+      "area": "反編譯工具",
+      "date": "2026-10-08",
+      "rule": "比對重定位或外部符號時，逐筆核對每個讀寫端及呼叫位置的目標位址；同名符號的後一筆不能覆蓋前一筆而掩蓋矛盾。FD2入口為tools/fd2_matching_pilot.py的verify_bindings，驗證收據在docs/data/ida/fd2_matching_pilot_20261008.json。",
+      "why": "第一版以字典保存最後一次出現的亂數種子位址。負向案例只竄改前一個讀取端時，後面的正確寫入端覆蓋錯誤，使驗證器放行。改為逐筆檢查後，錯原檔與單筆錯位址皆在編譯前拒收。",
+      "evidence": "docs/data/ida/fd2_matching_pilot_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_pilot.py"
+        ],
+        "pattern": "if value != LINK_SYMBOLS\\[name\\]:[\\s\\S]*if value != LINK_SYMBOLS\\[symbol\\]:"
+      }
+    },
+    {
+      "id": "decompiler-calling-convention-is-navigation",
+      "area": "反編譯工具",
+      "date": "2026-10-08",
+      "rule": "重建C呼叫慣例時，以原始堆疊清理、參數位置及活躍暫存器的保存契約為證據；IDA的__cdecl只作導覽。Watcom版本差異讀docs/knowledge-base/04-original-toolchain.md，匹配入口為tools/fd2_matching_legacy_verify.py及docs/data/ida/fd2_matching_full_20261008.json。",
+      "why": "舊版Watcom的__cdecl可修改EBX，而原版1B8E7在memmove後仍使用EBX。直接套用導航型別使候選改用ESI；換成Watcom堆疊候選後EBX配置恢復，但整個75-byte函式仍未匹配。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json"
     }
   ]
 }

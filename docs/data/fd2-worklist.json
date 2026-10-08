@@ -264,6 +264,20 @@
         "note": "需要正式來源提交、有界觀察回歸與同固定輸入原版完整狀態／PNG不變的收據；只寫工具helper不算完成。"
       },
       "issue": 197
+    },
+    {
+      "id": "fd2-full-matching-decompilation",
+      "layer": "tooling",
+      "category": "工作",
+      "title": "完成 FD2 全檔位元組一致反編譯與遊戲 C 原始碼覆蓋",
+      "body": "使用者2026-10-08定案：完成固定版 FD2.EXE 的 matching decompilation，遊戲邏輯還原成 C；原作組語與第三方函式庫可保留，覆蓋分列。\n\n主契約：docs/goal/118-goal-fd2-matching-decompilation-20261008.md。原版固定357074 bytes，SHA-256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。\n\n已完成的前置試驗不等於全檔完成；不得以原版 EXE 複製或未知遊戲機器碼回填冒稱 C 還原。",
+      "acceptance": "從受版控來源及明示本機依賴乾淨建置完整 FD2.EXE，全檔大小及 SHA-256 相同；遊戲 C 函式逐一產碼一致；原作組語、第三方函式庫、資料與未知分列，未知不得冒稱已還原；正式 dosgolem 原版入口抽樣啟動。",
+      "evidence": "docs/goal/118-goal-fd2-matching-decompilation-20261008.md",
+      "verify": {
+        "kind": "manual",
+        "note": "全檔 SHA、遊戲 C 覆蓋、保留組語／函式庫依據及正式啟動收據須一起審查；局部或原始 EXE 回填不算完成。"
+      },
+      "issue": 198
     }
   ]
 }

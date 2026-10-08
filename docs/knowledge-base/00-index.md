@@ -37,6 +37,9 @@
 | 全戰役原版一致目標：門檻、章工作單元、開工順序 | [`111` 目標提示詞](../goal/111-goal-original-parity-campaign-20260915.md)，進度台帳 `parity-campaign-progress.json` | 逐章收據自己的散文摘要 |
 | 目前這一章的工作單元（順序、門檻、交付物） | [`117` 寶箱／HUD 修正（#44／#43）＋第十二章（北山道）提示詞](../goal/117-goal-chest-hud-fixes-and-ch12-parity-20260918.md)（做完就換下一章的；目標文件都在 [`docs/goal/`](../goal/README.md)） | 聊天裡貼的舊版提示詞 |
 | 位址／位元組主證據 | `docs/data/ida/`、`docs/data/fd2_*` | 自訂名稱、handoff 重述、generated binding |
+| 位元組一致的反編譯（matching decompilation）可行性 | [三函式試驗](../data/ida/fd2_matching_pilot_20261008.json)、[原始 IDA 匯出](../data/ida/fd2_matching_pilot_original_20261008.json)、[編譯比對工具](../../tools/fd2_matching_pilot.py) | C 能編譯或函式長度相同不代表位元組一致；原作工具版本仍依 [04](04-original-toolchain.md) |
+| 全檔位元組一致反編譯的完成範圍 | [118 全檔目標](../goal/118-goal-fd2-matching-decompilation-20261008.md) | 全檔雜湊與 C／原作組語／第三方函式庫覆蓋分開驗收 |
+| 全檔重建基準與目前 C 匹配 | [匹配收據](../data/ida/fd2_matching_full_20261008.json)、[C 還原驅動器](../../tools/fd2_matching_c_restore.py)、[工具準備](../../tools/fd2_matching_prepare_tools.py)、[全檔組合基準](../../tools/fd2_matching_bootstrap.py) | 基準仍保留未還原的遊戲機器碼；全檔 SHA 相同不能單獨結案 |
 | 歷史錯誤形成與勘誤 | [`SESSION-HANDOFF`](SESSION-HANDOFF-2026-07-06.md)、[`99`](99-reflections-log.md) | 現況矩陣 |
 
 ---
