@@ -1,4 +1,4 @@
-/* sub_21548 的完整 C 產碼候選，尚未逐位元組匹配。
+/* sub_21548 的完整 C 產碼候選，預設3s產碼逐位元組匹配。
  * 依據：fd2_matching_full_20261008.json 綁定的 IDA Pro 9.4 匯出，
  * IDA 線性位址 0x21548..0x2185f；原檔版本見該收據 input。
  * Frame只保存原始堆疊位移；型別與變數名不推定為作者宣告。
@@ -47,6 +47,7 @@ void sub_21548(int unit, int mode, int count, const unsigned char *targets)
 {
     RawFrame frame;
     unsigned char *screen;
+    unsigned char *shape;
     unsigned char **table;
     int column, index, value;
     const unsigned char *target;
@@ -81,7 +82,10 @@ outer_condition:
     goto inner_condition;
 inner_next:
     sub_12E38(column, index, &frame.info);
-    table[index * 64 + column] = dword_53A5D + 6 + frame.info.word_00 * 576;
+    value = frame.info.word_00;
+    shape = dword_53A5D;
+    /* 明示32位元位址整數，保存原始產碼的乘法及加法資料流。 */
+    table[index * 64 + column] = (unsigned char *)(value * 576 + (unsigned)(shape + 6));
     ++column;
 inner_condition:
     if (column < dword_53AC1) goto inner_next;
@@ -106,7 +110,8 @@ unit_next:
     ++index;
 unit_condition:
     if (index >= dword_53BEB) goto phase_next;
-    if ((unsigned char)((index * 80 + dword_53A45)[5] & 1)) goto unit_next;
+    value = index * 80;
+    if ((unsigned char)(dword_53A45[value + 5] & 1)) goto unit_next;
     sub_127E0(index);
     goto unit_next;
 presents:
