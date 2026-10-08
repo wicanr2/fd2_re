@@ -49,11 +49,13 @@ SPARSE_GROUPS = {"INDEXED_PAIR": (0x2111A, 0x21B18),
                  "QUAKE_GROUP": (0x21527, 0x21548, 0x2185F, 0x21A9E),
                  "RADIAL_GROUP": (0x190AC, 0x219AD)}
 TREASURE_CASES = (("F190AC", 0x190AC), ("RADIAL_GROUP", 0x190AC))
+CALL_WRAPPER_CASES = tuple(('F' + format(address,'X'),address) for address in (
+    0x22A85,0x22BE1,0x33F78,0x34A3C,0x34F02,0x350CC,0x35321))
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -119,6 +121,9 @@ BINDINGS.update({'dword_53AD5': 0x53AD5, 'dword_53AD9': 0x53AD9,
     'sub_19953': 0x19953, 'sub_197E5': 0x197E5, 'sub_25B45': 0x25B45,
     'sub_16C57': 0x16C57, 'sub_196CB': 0x196CB, 'sub_12263': 0x12263,
     'sub_1B932': 0x1B932, 'funcs_1199C': 0x51B91, 'dword_53A7D': 0x53A7D})
+BINDINGS.update({'dword_53A79':0x53A79,'sub_22AA8':0x22AA8,'sub_22CDA':0x22CDA,
+    'sub_12CEA':0x12CEA,'sub_22253':0x22253,'sub_34A0E':0x34A0E,
+    'sub_10B4E':0x10B4E,'sub_112A5':0x112A5,'sub_35BBA':0x35BBA,'sub_3419C':0x3419C})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -133,6 +138,7 @@ SOURCES = {
     "game_quake": ("tools/fd2_matching_game_quake.c", tuple(macro for macro, _ in QUAKE_CASES)),
     "game_effect_tail": ("tools/fd2_matching_game_effect_tail.c", tuple(macro for macro, _ in EFFECT_TAIL_CASES)),
     "game_treasure": ("tools/fd2_matching_game_treasure.c", tuple(macro for macro, _ in TREASURE_CASES)),
+    "game_call_wrappers": ("tools/fd2_matching_game_call_wrappers.c", tuple(macro for macro, _ in CALL_WRAPPER_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
