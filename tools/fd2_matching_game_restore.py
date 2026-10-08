@@ -31,6 +31,11 @@ COPY_CASES = (("VIDEO_COPY", 0x16559), ("RESTORE_72", 0x17643),
 QUERY_CASES = (("MEMBER_SIX", 0x1C1C3), ("FACING_BYTES", 0x1F04A),
                ("BOX_POSITION", 0x2A289), ("REVERSE_INFO", 0x2B5E1),
                ("RATIO_WORDS", 0x1E7F6), ("FILL_SQUARE", 0x1F6EF))
+CONTROL_CASES = tuple(("F" + format(address, "X"), address) for address in (
+    0x10620, 0x13460, 0x1685C, 0x16886, 0x173E7, 0x17AA9, 0x1875D, 0x18795,
+    0x1C8ED, 0x1CA89, 0x1F183, 0x206C5, 0x20707, 0x2073D, 0x20822, 0x2084A,
+    0x20926, 0x21206, 0x21396, 0x21527))
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -58,6 +63,16 @@ BINDINGS.update({"dword_53C03": 0x53C03, "byte_52363": 0x52363,
                  "abs": 0x375E2, "sub_18C6D": 0x18C6D,
                  "sub_1F183": 0x1F183, "sub_1E739": 0x1E739,
                  "memset": 0x375C0})
+BINDINGS.update({"dword_53A0C": 0x53A0C, "dword_53A2C": 0x53A2C,
+                 "dword_53C57": 0x53C57, "dword_53ECC": 0x53ECC,
+                 "dword_53BEF": 0x53BEF, "sub_4E9BB": 0x4E9BB,
+                 "sub_4E63D": 0x4E63D, "sub_187D6": 0x187D6,
+                 "sub_17D6F": 0x17D6F, "sub_4E516": 0x4E516,
+                 "sub_1C916": 0x1C916, "loc_205BE": 0x205BE,
+                 "sub_21227": 0x21227, "sub_213B7": 0x213B7,
+                 "sub_21548": 0x21548})
+BINDINGS.update({"_sub_4E9BB": 0x4E9BB, "_sub_4E63D": 0x4E63D,
+                 "_sub_4E516": 0x4E516})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -65,6 +80,7 @@ SOURCES = {
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
     "game_copy": ("tools/fd2_matching_game_copy.c", tuple(macro for macro, _ in COPY_CASES)),
     "game_queries": ("tools/fd2_matching_game_queries.c", tuple(macro for macro, _ in QUERY_CASES)),
+    "game_controls": ("tools/fd2_matching_game_controls.c", tuple(macro for macro, _ in CONTROL_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 COMPILER_INPUTS = {
@@ -93,7 +109,7 @@ def compile_stage(args):
     selected_cases = args.cases or source_cases or [macro for macro, _ in CASES]
     if source_cases and not set(selected_cases).issubset(source_cases):
         raise ValueError("所選來源未提供這些候選")
-    cases = [(macro, address) for macro, address in (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES) if macro in selected_cases]
+    cases = [(macro, address) for macro, address in ALL_CASES if macro in selected_cases]
     dos_source = args.output / "GAME.C"
     dos_source.write_bytes(source.read_text(encoding="utf-8").encode("ascii", "ignore"))
     os.utime(dos_source, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
@@ -217,7 +233,7 @@ def main():
     parser.add_argument("--original", type=Path, default=Path("/input/FD2.EXE"))
     parser.add_argument("--converter", type=Path, default=Path("/work/objconv"))
     parser.add_argument("--source-key", choices=SOURCES, default="game")
-    parser.add_argument("--cases", choices=[macro for macro, _ in (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES)], nargs="+")
+    parser.add_argument("--cases", choices=[macro for macro, _ in ALL_CASES], nargs="+")
     parser.add_argument("--cpus", choices=("3s", "4s", "5s"), nargs="+", default=("3s", "4s", "5s"))
     parser.add_argument("--costs", choices=COSTS, nargs="+", default=tuple(COSTS))
     args = parser.parse_args()
