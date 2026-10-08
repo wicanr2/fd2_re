@@ -68,11 +68,15 @@ MID_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
 SCENE_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
     0x2CF71,0x1F30A,0x1F1CC,0x354FE,0x13FD4,0x29C90,0x23CD5,0x356B7,
     0x23B5F,0x29DED,0x31602,0x235F9,0x230F2,0x112A5))
+COMPOUND_CASES = (("SCENE_REVERSE",0x230F2),)
+COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
+    "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
+    "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -203,6 +207,7 @@ SOURCES = {
     "game_extended_flow": ("tools/fd2_matching_game_extended_flow.c", tuple(macro for macro, _ in EXTENDED_FLOW_CASES)),
     "game_mid_flow": ("tools/fd2_matching_game_mid_flow.c", tuple(macro for macro, _ in MID_FLOW_CASES)),
     "game_scene_flow": ("tools/fd2_matching_game_scene_flow.c", tuple(macro for macro, _ in SCENE_FLOW_CASES)),
+    "game_compound": ("tools/fd2_matching_game_compound.c", tuple(macro for macro, _ in COMPOUND_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
@@ -324,6 +329,37 @@ def verify_original_bindings(functions, original, bindings):
     return references
 
 
+def validate_compound_layout(macro, source_key, function, layout):
+    """驗證同一原始owner內的C入口布局，不另建IDA函式或略過任何bytes。"""
+    registered = COMPOUND_ENTRIES.get(macro)
+    if registered is None or source_key != registered['source_key'] or macro not in SOURCES[source_key][1]:
+        raise ValueError('複合入口來源未登錄')
+    inventory = function['inventory']
+    if int(inventory['start'],16) != registered['owner'] or int(inventory['end'],16) != registered['end'] or inventory['size'] != registered['end']-registered['owner']:
+        raise ValueError('複合入口沒有涵蓋原始owner')
+    instructions = {int(i['ida_linear_address'],16):i for c in function['chunks'] for i in c['instructions']}
+    for entry, limit in registered['prologues'].items():
+        if entry not in instructions or bytes.fromhex(instructions[entry]['loaded_bytes']) != b'\x68'+limit.to_bytes(4,'little'):
+            raise ValueError('複合入口原始prologue未證實')
+    fragments = layout.get('fragments',[])
+    if [int(f['address'],16) for f in fragments] != list(registered['compiler_order']):
+        raise ValueError('複合入口與compiler順序不符')
+    compiler_cursor = 0
+    for n,fragment in enumerate(fragments):
+        if fragment.get('compiler_offset')!=compiler_cursor or fragment.get('section')!='_M'+str(n):
+            raise ValueError('複合入口compiler區段或位移不符')
+        compiler_cursor += fragment['size']
+    placed = sorted(fragments,key=lambda f:int(f['address'],16))
+    cursor = registered['owner']
+    for fragment in placed:
+        if int(fragment['address'],16) != cursor or fragment['size']<=0:
+            raise ValueError('複合入口布局不連續或重疊')
+        cursor += fragment['size']
+    if cursor != registered['end']:
+        raise ValueError('複合入口布局沒有涵蓋完整owner')
+    return placed
+
+
 def link_stage(args):
     from fd2_matching_pilot import checked, linked_text
     from fd2_matching_legacy_verify import OBJCONV_SHA256, text_size
@@ -380,6 +416,7 @@ def link_stage(args):
         addresses = trial.get("addresses", [trial["address"]])
         macro = next((flag[2:] for flag in trial["flags"] if flag.startswith("-d")), None)
         sparse = macro in SPARSE_GROUPS
+        compound = macro in COMPOUND_ENTRIES
         if len(addresses) > 1:
             if macro not in SOURCES[source_key][1] or addresses != [hex(value) for value in (CASE_GROUPS | SPARSE_GROUPS).get(macro, ())]:
                 raise ValueError("多函式區間未依來源登記")
@@ -437,30 +474,40 @@ def link_stage(args):
         script = out / "link.ld"
         definitions = "\n".join(f"{key} = {value:#x};" for key, value in BINDINGS.items())
         sparse_layout = None
-        if sparse:
+        if sparse or compound:
             from fd2_matching_sparse import split_coff, read_sparse_pe
             try:
-                converted, sparse_layout = split_coff(coff.read_bytes(), dis.read_text(), [int(a, 16) for a in addresses])
+                positions = list(COMPOUND_ENTRIES[macro]['compiler_order']) if compound else [int(a,16) for a in addresses]
+                converted, sparse_layout = split_coff(coff.read_bytes(), dis.read_text(), positions)
+                if compound:
+                    validate_compound_layout(macro,source_key,functions[0],sparse_layout)
+                    entry_offsets_equal = True
             except ValueError as error:
-                if str(error) not in ('連結後完整函式彼此重疊', '不能保持跨函式短分支的原始指令寬度'):
+                layout_errors = ('連結後完整函式彼此重疊','不能保持跨函式短分支的原始指令寬度')
+                if compound:
+                    layout_errors += ('複合入口布局不連續或重疊','複合入口布局沒有涵蓋完整owner')
+                if str(error) not in layout_errors:
                     raise
                 results.append({**trial, 'candidate_size': size, 'original_size': len(expected),
                     'exact_interval_bytes': False, 'comparison_performed': False,
-                    'linkable': False, 'layout': 'sparse_functions', 'layout_rejection': str(error),
+                    'linkable': False, 'layout': 'compound_entries' if compound else 'sparse_functions', 'layout_rejection': str(error),
                     'function_intervals': intervals, 'exact_entry_offsets': entry_offsets_equal,
                     'original_classification': functions[0]['inventory']['classification']})
                 continue
             coff = out / 'sparse.cof'
             coff.write_bytes(converted)
-            sections = ' '.join(f".m{n} {p['address']} : SUBALIGN(1) {{ *({p['section']}) }}" for n, p in enumerate(sparse_layout['fragments']))
+            output_fragments = sorted(sparse_layout['fragments'],key=lambda f:int(f['address'],16)) if compound else sparse_layout['fragments']
+            sections = ' '.join(f".m{n} {p['address']} : SUBALIGN(1) {{ *({p['section']}) }}" for n, p in enumerate(output_fragments))
         else:
             sections = f".text {address:#x} : SUBALIGN(1) {{ *(_TEXT) }}"
         script.write_text(definitions + f"\nSECTIONS {{ {sections} "
                           "/DISCARD/ : { *(CONST) *(CONST2) *(_DATA) *(_BSS) *(.depend) *(.reloc) } }\n", encoding="ascii")
         exe = out / "linked.exe"
+        entry_symbol = next(name for offset,name in publics if name.lstrip('_').lower()=='sub_'+format(address,'x')) if compound else symbols[0]
         checked(["ld", "-mi386pe", "--image-base", "0", "--section-alignment", "1", "--file-alignment", "1",
-                 "--no-insert-timestamp", "-T", str(script), "-e", symbols[0], "-o", str(exe), str(coff)])
-        code = read_sparse_pe(exe, sparse_layout['fragments']) if sparse else linked_text(exe, address, size)
+                 "--no-insert-timestamp", "-T", str(script), "-e", entry_symbol, "-o", str(exe), str(coff)])
+        placed_fragments = sorted(sparse_layout['fragments'],key=lambda f:int(f['address'],16)) if compound else sparse_layout['fragments'] if sparse else None
+        code = read_sparse_pe(exe, placed_fragments) if sparse or compound else linked_text(exe, address, size)
         (out / "candidate.bin").write_bytes(code)
         first = next((i for i, pair in enumerate(zip(code, expected)) if pair[0] != pair[1]), min(len(code), len(expected)))
         result = {**trial, "candidate_size": size, "original_size": len(expected), "exact_interval_bytes": code == expected and entry_offsets_equal,
@@ -472,6 +519,10 @@ def link_stage(args):
         if sparse:
             result.update(layout='sparse_functions', sparse_layout=sparse_layout,
                           sparse_transform_sha256=sha(Path(__file__).with_name('fd2_matching_sparse.py')))
+        if compound:
+            result.update(layout='compound_entries',compound_layout=sparse_layout,
+                function_intervals=intervals,exact_entry_offsets=entry_offsets_equal,
+                sparse_transform_sha256=sha(Path(__file__).with_name('fd2_matching_sparse.py')))
         results.append(result)
     report = {"schema_version": 1, "input": reference, "source_key": source_key,
               "source_path": source_path, "source_sha256": compile_report["source_sha256"],

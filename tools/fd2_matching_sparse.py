@@ -32,7 +32,8 @@ def split_coff(raw, disassembly, addresses):
     ends = starts[1:] + [len(text)]
     if starts != sorted(set(starts)) or any(end <= start for start, end in zip(starts, ends)):
         raise ValueError('compiler 函式區間不完整')
-    if list(addresses) != sorted(set(addresses)) or any(addresses[n] + ends[n] - starts[n] > addresses[n + 1] for n in range(len(addresses) - 1)):
+    placed = sorted((address, end - start) for address, start, end in zip(addresses, starts, ends))
+    if len(set(addresses)) != len(addresses) or any(placed[n][0] + placed[n][1] > placed[n + 1][0] for n in range(len(placed) - 1)):
         raise ValueError('連結後完整函式彼此重疊')
 
     def owner(offset):

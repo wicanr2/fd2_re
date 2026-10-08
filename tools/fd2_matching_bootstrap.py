@@ -67,6 +67,13 @@ def main():
                 if len(intervals) > 1 and not trial.get("exact_entry_offsets"):
                     raise ValueError("多函式來源未證明各入口位置相同")
                 sparse = trial.get('layout') == 'sparse_functions'
+                compound = trial.get('layout') == 'compound_entries'
+                if compound:
+                    from fd2_matching_game_restore import validate_compound_layout
+                    macro = next((flag[2:] for flag in trial['flags'] if flag.startswith('-d')),None)
+                    if len(intervals)!=1 or addresses!=[trial['address']] or not trial.get('exact_entry_offsets'):
+                        raise ValueError('複合入口必須只涵蓋一個原始owner')
+                    validate_compound_layout(macro,report.get('source_key'),by_address[trial['address']],trial.get('compound_layout',{}))
                 if sparse:
                     from fd2_matching_game_restore import SPARSE_GROUPS, SOURCES
                     macro = next((flag[2:] for flag in trial['flags'] if flag.startswith('-d')), None)
@@ -145,6 +152,10 @@ def main():
             if trial.get('layout') == 'sparse_functions':
                 source_spans[-1].update(group_layout='sparse_functions',
                     sparse_transform_sha256=trial['sparse_transform_sha256'])
+        if trial.get('layout') == 'compound_entries':
+            source_spans[-1].update(group_layout='compound_entries',
+                compiler_entry_addresses=[f['address'] for f in trial['compound_layout']['fragments']],
+                sparse_transform_sha256=trial['sparse_transform_sha256'])
     args.output.mkdir(parents=True, exist_ok=True)
     output = args.output / "FD2.EXE"
     output.write_bytes(rebuilt)
