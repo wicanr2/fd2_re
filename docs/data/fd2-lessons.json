@@ -1911,6 +1911,14 @@
       "rule": "驗證收據時，以實際物件、函式清冊與完整schema欄位計算數量；修改稽核條件只匹配完整欄位，不以裸數字前綴全文替換。入口tools/fd2_matching_game_restore.py的link_stage、tools/fd2_matching_bootstrap.py與docs/data/ida/fd2_matching_full_20261008.json。先核對獨立輸入與驗證腳本，再判定產品缺陷。",
       "why": "本輪臨時稽核把==17全文改成==20，連1755也被改成2055而誤報候選數。限制到source_groups完整欄位後，同一容器與輸入乾淨重跑通過；編譯物件、產碼及主收據未改。",
       "evidence": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md"
+    },
+    {
+      "id": "matching-source-freezes-until-consumers-complete",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "編譯與連結期間凍結登錄C及include，等待實際工具handle完成後才修改相依來源。物件與來源SHA不同時，保留失敗輪次並用固定新來源重編譯，不移除來源守衛。入口tools/fd2_matching_game_restore.py的compile_stage／link_stage與docs/data/ida/fd2_matching_full_20261008.json的來源清冊。",
+      "why": "本輪處理兩個服務候選時修改共用C宣告，另一輪連結在來源SHA守衛前拒收。該輪沒有產生正式收據；保持來源不變後，同一工具鏈乾淨重編譯與連結。",
+      "evidence": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md"
     }
   ]
 }

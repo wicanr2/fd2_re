@@ -75,6 +75,10 @@ DENSE_BRANCH_CASES = tuple(('F'+format(address,'X'),address) for address in (
 STATE_QUERY_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x18409,0x22C04,0x1E739,0x20765,0x1C75E,0x31DBE,0x32004,0x22AF6,
     0x17E0B,0x111BA,0x2A5D0,0x10B4E,0x24C1E))
+UI_SERVICE_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x17898,0x12AC6,0x2EA90,0x1300D,0x22F37,0x31019,0x1B41D,0x30012))
+AUXILIARY_FLOW_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x1E1DC,0x187D6,0x31793,0x2E19B,0x2E26C,0x2FB9F,0x16E24,0x2C9EC,0x20957))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -82,7 +86,7 @@ CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x211
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES, *DENSE_BRANCH_CASES, *STATE_QUERY_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES, *DENSE_BRANCH_CASES, *STATE_QUERY_CASES, *UI_SERVICE_CASES, *AUXILIARY_FLOW_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -204,6 +208,16 @@ BINDINGS.update({'sub_182AD':0x182AD,'sub_18312':0x18312,'sub_1839B':0x1839B,
     'aRb_12':0x500A9,'aFdiconB24_6':0x500AC,'aFileFdiconB24E':0x500B7,'aFdfieldDat':0x51A59,
     'aWb_2':0x500D3,'aFd2Tmp_1':0x500D6,'aRb_13':0x500DE,'aFileNotFoundS':0x500E1,'aOutOfMemoryAtL':0x500FC,
     'sub_24D22':0x24D22,'fwrite':0x3744B,'fseek':0x375F0})
+BINDINGS.update({'dword_53C17':0x53C17,'dword_53C13':0x53C13,'sub_179D5':0x179D5,
+    'dword_53A40':0x53A40,'dword_53C1F':0x53C1F,'byte_51A97':0x51A97,'sub_4DD52':0x4DD52,
+    'dword_54153':0x54153,'dword_5412F':0x5412F,'sub_4DF4C':0x4DF4C,
+    'dword_53B07':0x53B07,'dword_53AED':0x53AED,'dword_53AF5':0x53AF5,'sub_2C9EC':0x2C9EC,'sub_13A44':0x13A44,
+    'sub_13460':0x13460,'sub_1C220':0x1C220,'sub_1B5F1':0x1B5F1,'sub_4DBD8':0x4DBD8,'sub_4DBB9':0x4DBB9,
+    'sub_30550':0x30550,'byte_51AAB':0x51AAB,'byte_51E61':0x51E61,'byte_526B9':0x526B9,
+    'aRb_5':0x5026C,'aFd2Sav_5':0x5026F,'aWb_1':0x50277,'aFd2Sav_6':0x5027A})
+BINDINGS.update({'dword_5204A':0x5204A,'byte_53DFC':0x53DFC,'byte_53C6C':0x53C6C,'byte_53D34':0x53D34,
+    'a05d':0x51EBF,'sprintf':0x377D9,'_sprintf':0x377D9,'byte_526A7':0x526A7,
+    'unk_52618':0x52618,'byte_540FE':0x540FE})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -227,6 +241,8 @@ SOURCES = {
     "game_compound": ("tools/fd2_matching_game_compound.c", tuple(macro for macro, _ in COMPOUND_CASES)),
     "game_dense_branches": ("tools/fd2_matching_game_dense_branches.c", tuple(macro for macro, _ in DENSE_BRANCH_CASES)),
     "game_state_queries": ("tools/fd2_matching_game_state_queries.c", tuple(macro for macro, _ in STATE_QUERY_CASES)),
+    "game_ui_services": ("tools/fd2_matching_game_ui_services.c", tuple(macro for macro, _ in UI_SERVICE_CASES)),
+    "game_auxiliary_flows": ("tools/fd2_matching_game_auxiliary_flows.c", tuple(macro for macro, _ in AUXILIARY_FLOW_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
