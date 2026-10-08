@@ -1852,6 +1852,29 @@
         ],
         "pattern": "call BUILD\\.BAT[\\s\\S]*Exit to error:"
       }
+    },
+    {
+      "id": "matching-bit-condition-preserves-width",
+      "area": "匹配工具",
+      "date": "2026-10-08",
+      "rule": "還原bitmask條件時，同時核對整數提升與原始TEST寬度；用實際compiler輸出確認候選，不從C運算式的相似外觀判定匹配。入口tools/fd2_matching_game_records.c的DERIVED_WORDS，收據docs/data/ida/fd2_matching_full_20261008.json的game_record_matches。",
+      "why": "0x1145A的byte TEST被第一版C產碼擴成載入、AND、擴展與TEST。明示窄化遮罩結果並恢復四個堆疊槽後，整個172-byte區間匹配。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json"
+    },
+    {
+      "id": "matching-source-binds-actual-dos-file",
+      "area": "匹配工具",
+      "date": "2026-10-08",
+      "rule": "多來源匹配同時綁定來源登記、受版控來源SHA及實際DOS中間C檔；不只核對收據宣告。入口tools/fd2_matching_game_restore.py的link_stage，負向證據在docs/data/ida/fd2_matching_full_20261008.json的validation。",
+      "why": "多來源介面需要區分同位址的來源候選。保留正確來源SHA卻改動GAME.C的案例，現在於輸出前拒收；錯選來源未提供的函式也在compiler啟動前拒收。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_restore.py"
+        ],
+        "pattern": "實際 DOS C 來源與登記來源不符"
+      }
     }
   ]
 }

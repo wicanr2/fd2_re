@@ -42,6 +42,8 @@
 | 全檔重建基準與目前 C 匹配 | [匹配收據](../data/ida/fd2_matching_full_20261008.json)、[C 還原驅動器](../../tools/fd2_matching_c_restore.py)、[工具準備](../../tools/fd2_matching_prepare_tools.py)、[全檔組合基準](../../tools/fd2_matching_bootstrap.py) | 基準仍保留未還原的遊戲機器碼；全檔 SHA 相同不能單獨結案 |
 | 主程式 C 循環及資源呼叫匹配 | [C 來源](../../tools/fd2_matching_game_slices.c)、[編譯及比較驅動器](../../tools/fd2_matching_game_restore.py)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`game_matches` | C 控制流程依原始條件邊及 jmp 排列；呼叫端與被呼叫端的暫存器保存分別核對，缺原始語意的項目維持原分類 |
 | 逐列複製、物品欄左移與記錄旗標 C 匹配 | [C 來源](../../tools/fd2_matching_game_slices.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`compiler_documentation`、`game_matches`及`unmatched_game_candidates` | 原廠預設成本策略與固定來源共同核對；回傳型別只描述EAX結果，不推定作者宣告 |
+| 完整游標控制、座標查找與四槽累加 C 匹配 | [C 來源](../../tools/fd2_matching_game_records.c)、[驅動器](../../tools/fd2_matching_game_restore.py)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`game_record_matches` | 原始跳躍目標、測試寬度與堆疊槽分別核對；可按來源、函式、CPU及成本策略篩選候選 |
+| 80-byte 記錄型別的未匹配布局候選 | [C 候選](../../tools/fd2_matching_record_layout.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`record_layout_attempt` | 27份候選全部未匹配；原作者型別保持未知，不增加覆蓋 |
 | 物品欄結構與堆疊慣例的未匹配候選 | [C 候選](../../tools/fd2_matching_inventory_watstack.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`inventory_watstack_attempt` | 八份候選完整區間皆未匹配；結構欄位只供導航，不增加覆蓋 |
 | 歷史錯誤形成與勘誤 | [`SESSION-HANDOFF`](SESSION-HANDOFF-2026-07-06.md)、[`99`](99-reflections-log.md) | 現況矩陣 |
 

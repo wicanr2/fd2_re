@@ -19,6 +19,11 @@ CASES = (("CLEAR3", 0x134E4), ("REDRAW", 0x127A9), ("CYCLE", 0x1F525), ("MASK", 
          ("SET_BIT7", 0x13512), ("CLEAR_BIT7", 0x13536), ("SLOT_BYTE", 0x1B722),
          ("SET_BYTE5", 0x32975), ("GET_BIT0", 0x3453E), ("RANGE_LOW_BYTE", 0x3419C),
          ("COPY_WORDS", 0x25089), ("COMPARE_VALUE", 0x2EF8F))
+RECORD_CASES = (("CURSOR_Y_DEC", 0x11B48), ("CURSOR_Y_INC", 0x11B9B),
+                ("CURSOR_X_INC", 0x11BFA), ("CURSOR_X_DEC", 0x11C59),
+                ("FIND_RECORD", 0x12C0D), ("SUM_FIELD", 0x15DA2),
+                ("DERIVED_WORDS", 0x1145A), ("BLIT_CELL", 0x126F7),
+                ("READ_INFO", 0x12E38), ("CONDITIONAL_INFO", 0x13A44))
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -27,7 +32,24 @@ BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53B0F": 0x53B0F, "dword_53B13": 0x53B13,
             "aFdotherDat": 0x51A4D, "sub_111BA": 0x111BA,
             "dword_53BF7": 0x53BF7, "dword_53BFB": 0x53BFB}
+BINDINGS.update({"dword_53AB1": 0x53AB1, "dword_53AB5": 0x53AB5,
+                 "dword_53AB9": 0x53AB9, "dword_53ABD": 0x53ABD,
+                 "dword_53AA9": 0x53AA9, "dword_53AAD": 0x53AAD,
+                 "dword_53AC5": 0x53AC5, "dword_51A83": 0x51A83,
+                 "dword_51A87": 0x51A87, "dword_51A8B": 0x51A8B,
+                 "dword_51A8F": 0x51A8F, "dword_53A49": 0x53A49,
+                 "dword_53A4D": 0x53A4D, "dword_53A55": 0x53A55,
+                 "dword_53A69": 0x53A69, "sub_11CAC": 0x11CAC,
+                 "sub_4E56C": 0x4E56C, "sub_4DEDA": 0x4DEDA,
+                 "_sub_4E56C": 0x4E56C, "_sub_4DEDA": 0x4DEDA,
+                 "sub_12E38": 0x12E38})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
+SOURCES = {
+    "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
+    "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
+    "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
+}
+COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 
 
 def sha(path):
@@ -41,7 +63,12 @@ def compile_stage(args):
     args.output.mkdir(parents=True, exist_ok=True)
     if args.output.stat().st_uid != os.getuid():
         raise ValueError("輸出目錄擁有權不符")
-    source = args.repo / "tools/fd2_matching_game_slices.c"
+    source_path, source_cases = SOURCES[args.source_key]
+    source = args.repo / source_path
+    selected_cases = args.cases or source_cases or [macro for macro, _ in CASES]
+    if source_cases and not set(selected_cases).issubset(source_cases):
+        raise ValueError("所選來源未提供這些候選")
+    cases = [(macro, address) for macro, address in (*CASES, *RECORD_CASES) if macro in selected_cases]
     dos_source = args.output / "GAME.C"
     dos_source.write_bytes(source.read_text(encoding="utf-8").encode("ascii", "ignore"))
     os.utime(dos_source, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
@@ -51,9 +78,9 @@ def compile_stage(args):
              "c:", "set PATH=R:\\;Z:\\"]
     commands = []
     trials = []
-    for index, ((macro, address), cpu, opt) in enumerate(itertools.product(CASES, ("3s", "4s", "5s"), ((), ("-os",), ("-ot",)))):
+    for index, ((macro, address), cpu, cost) in enumerate(itertools.product(cases, args.cpus, args.costs)):
         stem = f"G{index:02}"
-        flags = ["-mf", "-" + cpu, *opt, "-d" + macro]
+        flags = ["-mf", "-" + cpu, *COSTS[cost], "-d" + macro]
         commands.append("R:\\WCC386.EXE " + " ".join(flags) + f" -fo={stem}.OBJ GAME.C > {stem}.TXT")
         trials.append({"stem": stem, "address": hex(address), "flags": flags})
     compile_batch = args.output / "BUILD.BAT"
@@ -71,7 +98,8 @@ def compile_stage(args):
         if not obj.is_file() or not re.search(r"\b0 errors\b", text) or "Error!" in text:
             raise ValueError(f"{trial['stem']}: compiler 未成功產生物件")
         trial["object_sha256"] = sha(obj)
-    report = {"schema_version": 1, "source_sha256": sha(source), "compiler_inputs": INPUTS,
+    report = {"schema_version": 1, "source_key": args.source_key,
+              "source_path": source_path, "source_sha256": sha(source), "compiler_inputs": INPUTS,
               "source_date_epoch": SOURCE_DATE_EPOCH,
               "driver_sha256": sha(Path(__file__)), "trials": trials}
     (args.output / "compile-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
@@ -91,8 +119,14 @@ def link_stage(args):
     if identity != reference or image["input"] != reference:
         raise ValueError("原檔或 IDA 版本不符")
     compile_report = json.loads((args.objects / "compile-report.json").read_text(encoding="utf-8"))
-    if compile_report["source_sha256"] != sha(args.repo / "tools/fd2_matching_game_slices.c"):
+    source_key = compile_report.get("source_key", "game")
+    source_path = SOURCES[source_key][0]
+    if compile_report.get("source_path", source_path) != source_path:
+        raise ValueError("C 來源路徑未登記")
+    if compile_report["source_sha256"] != sha(args.repo / source_path):
         raise ValueError("C 來源與編譯收據不符")
+    if (args.objects / "GAME.C").read_bytes() != (args.repo / source_path).read_text(encoding="utf-8").encode("ascii", "ignore"):
+        raise ValueError("實際 DOS C 來源與登記來源不符")
     args.output.mkdir(parents=True, exist_ok=True)
     results = []
     for trial in compile_report["trials"]:
@@ -132,7 +166,9 @@ def link_stage(args):
         results.append({**trial, "candidate_size": size, "original_size": len(expected), "exact_interval_bytes": code == expected,
                         "first_difference_offset": None if code == expected else first, "code_sha256": hashlib.sha256(code).hexdigest(),
                         "original_classification": fn["inventory"]["classification"]})
-    report = {"schema_version": 1, "input": reference, "source_sha256": compile_report["source_sha256"],
+    report = {"schema_version": 1, "input": reference, "source_key": source_key,
+              "source_path": source_path, "source_sha256": compile_report["source_sha256"],
+              "compile_driver_sha256": compile_report["driver_sha256"],
               "driver_sha256": sha(Path(__file__)), "evidence_sha256": sha(args.evidence), "trials": results,
               "matched_addresses": sorted({r["address"] for r in results if r["exact_interval_bytes"]})}
     (args.output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -149,6 +185,10 @@ def main():
     parser.add_argument("--evidence", type=Path)
     parser.add_argument("--original", type=Path, default=Path("/input/FD2.EXE"))
     parser.add_argument("--converter", type=Path, default=Path("/work/objconv"))
+    parser.add_argument("--source-key", choices=SOURCES, default="game")
+    parser.add_argument("--cases", choices=[macro for macro, _ in (*CASES, *RECORD_CASES)], nargs="+")
+    parser.add_argument("--cpus", choices=("3s", "4s", "5s"), nargs="+", default=("3s", "4s", "5s"))
+    parser.add_argument("--costs", choices=COSTS, nargs="+", default=tuple(COSTS))
     args = parser.parse_args()
     if not Path("/.dockerenv").exists():
         raise SystemExit("本工具只在 Docker 執行")

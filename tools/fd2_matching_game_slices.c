@@ -25,8 +25,9 @@ extern int dword_53BFB;
 #ifdef SET_BIT7
 int sub_13512(int unit)
 {
-    int offset = unit << 2;
-    offset += unit;
+    int index = unit;
+    int offset = index << 2;
+    offset += index;
     offset <<= 4;
     dword_53A45[offset + 5] |= 0x80;
     return offset;
@@ -44,13 +45,14 @@ void sub_13536(void)
 #endif
 
 #ifdef SLOT_BYTE
-unsigned sub_1B722(register int unit, int slot)
+unsigned sub_1B722(int unit, int slot)
 {
     unsigned char *record;
     unsigned char *cell;
-    unit *= 80;
+    int offset = unit;
+    offset *= 80;
     record = dword_53A45;
-    record += unit;
+    record += offset;
     cell = record + 2 * slot;
     cell += 11;
     return *cell;
@@ -87,7 +89,7 @@ void sub_3419C(int first, int last, int value)
 #endif
 
 #ifdef COPY_WORDS
-void sub_25089(void)
+unsigned sub_25089(void)
 {
     unsigned char unit;
     for (unit = 0; unit < dword_53BFB; ++unit) {
@@ -99,6 +101,7 @@ void sub_25089(void)
         value = *(unsigned short *)(record + 70);
         *(unsigned short *)(record + 68) = value;
     }
+    return unit;
 }
 #endif
 
