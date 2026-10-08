@@ -58,11 +58,15 @@ SHORT_DATA_CASES = tuple(('F' + format(address,'X'),address) for address in (
 SHORT_BRANCH_CASES = tuple(('F' + format(address,'X'),address) for address in (
     0x203BD,0x20872,0x20A51,0x20A87,0x20B14,0x20B3C,0x22AA8,0x25052,0x2BC9A,0x2D620,
     0x34594,0x347D9,0x3499B,0x34A0E,0x34E3B,0x35641,0x35675,0x35898,0x3599B,0x35B6B,0x35BBA))
+EXTENDED_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
+    0x24B14,0x24BDE,0x33499,0x309FF,0x31860,0x35AB8,0x1E5C0,0x208CF,0x35E5A,0x342B5,
+    0x2C39B,0x1AEB1,0x2FFA5,0x34DCD,0x1297D,0x35A48,0x34E90,0x2D31B,0x34924,0x20BF5,
+    0x1AF1E,0x344C2,0x196CB,0x2B9A1,0x24B4D,0x11CAC,0x22656,0x1E529,0x1DEBE,0x34422))
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -141,6 +145,17 @@ BINDINGS.update({'dword_53ECC':0x53ECC,'sub_33499':0x33499,'sub_22AF6':0x22AF6,
     'sub_11DF2':0x11DF2,'unk_525D6':0x525D6,'aFdotherDat':0x51A4D,
     'sub_111BA':0x111BA,'dword_54147':0x54147,'sub_1DB65':0x1DB65,'_outp':0x37795})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
+BINDINGS.update({'sub_31860':0x31860,'sub_1B8A6':0x1B8A6,'sub_4DFCC':0x4DFCC,
+    'sub_10620':0x10620,'sub_135DD':0x135DD,'sub_32999':0x32999,'sub_1366A':0x1366A,
+    'sub_134E4':0x134E4,'dword_53A81':0x53A81,'sub_2D31B':0x2D31B,
+    'dword_5413F':0x5413F,'sub_2E6B8':0x2E6B8,'sub_17AED':0x17AED,
+    'byte_52659':0x52659,'aDatoDat':0x51A70,'dword_53C0F':0x53C0F,
+    'dword_53C0B':0x53C0B,'dword_53C07':0x53C07,'sub_1297D':0x1297D,
+    'dword_53C63':0x53C63,'dword_53C5B':0x53C5B,'dword_53C5F':0x53C5F,
+    'sub_1974C':0x1974C,'byte_53AFA':0x53AFA,'byte_540FC':0x540FC,
+    'byte_540FD':0x540FD,'sub_2935B':0x2935B,'sub_122DC':0x122DC,
+    'sub_1ACF3':0x1ACF3,'sub_22046':0x22046,'sub_4E893':0x4E893,
+    'sub_16E24':0x16E24,'sub_1B83D':0x1B83D,'free':0x37416})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -158,6 +173,7 @@ SOURCES = {
     "game_global_calls": ("tools/fd2_matching_game_global_calls.c", tuple(macro for macro, _ in GLOBAL_CALL_CASES)),
     "game_short_data": ("tools/fd2_matching_game_short_data.c", tuple(macro for macro, _ in SHORT_DATA_CASES)),
     "game_short_branches": ("tools/fd2_matching_game_short_branches.c", tuple(macro for macro, _ in SHORT_BRANCH_CASES)),
+    "game_extended_flow": ("tools/fd2_matching_game_extended_flow.c", tuple(macro for macro, _ in EXTENDED_FLOW_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
