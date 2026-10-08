@@ -6,7 +6,7 @@
 
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
-| #198 全檔 C 匹配 | PARTIAL；尚未完成 | 已以 Watcom 10.0a 純 C 匹配123個原始函式，共9133 bytes；另重現146-byte未歸屬區塊，合計9279 bytes。本批搜尋與條件呼叫新增十一個函式共1154 bytes，包含byte計數搜尋、條件搜尋、旗標閘門及畫面收尾，全部完整區間相同。兩輪270份物件、完整報告與機器碼相同，objcopy獨立核對及231筆原始具名參照通過；十九個候選仍未匹配。309FF／31860用普通C標籤保留原始迴圈布局，不推定原作型別或callee用途。全檔組合大小及SHA相同，仍保留未還原原版來源，不算結案。現行十九組來源／版本1557份物件重現、1535份連結產碼獨立核對、22份布局拒收分列；C與方法隨GitHub提交。函式台帳仍1007個待還原或分類；原始未歸屬CODE剩37段／3217 bytes未還原，owner及用途未知。來源、旗標與分列覆蓋見[主收據](../data/ida/fd2_matching_full_20261008.json)的`matching_summary`、`game_extended_flow_matches`、`game_treasure_attempt`與`instruction_ownership_audit`。 |
+| #198 全檔 C 匹配 | PARTIAL；尚未完成 | 已以 Watcom 10.0a 純 C 匹配131個原始函式，共10709 bytes；另重現146-byte未歸屬區塊，合計10855 bytes。本批中型函式新增八個完整區間共1576 bytes，包含24D22緩衝旋轉、232E8三份9-byte局部複製、條件呼叫及資料更新，全部bytes相同。兩輪198份物件、完整報告與機器碼相同，objcopy獨立核對及334筆原始具名參照通過；十四個候選仍未匹配。1F0DC指標順序與334D9的byte擴寬位置由產碼確認，不推定原作型別或callee用途。全檔組合大小及SHA相同，仍保留未還原原版來源，不算結案。現行二十組來源／版本1755份物件重現、1733份連結產碼獨立核對、22份布局拒收分列；C與方法隨GitHub提交。函式台帳仍999個待還原或分類；原始未歸屬CODE剩37段／3217 bytes未還原，owner及用途未知。來源、旗標與分列覆蓋見[主收據](../data/ida/fd2_matching_full_20261008.json)的`matching_summary`、`game_mid_flow_matches`、`game_treasure_attempt`與`instruction_ownership_audit`。 |
 | 初始三函式編譯比對試驗 | 有界工具矩陣已驗證；後續匹配見#198 | 固定原檔與 IDA 9.4 匯出、鎖版 Open Watcom 2.0、72 個純 C 候選；這份初始矩陣的三個區間均未逐位元組一致。後續歷史編譯器已匹配其中`0x1B8E7`，不能沿用初始結果判定目前函式狀態。共用返回尾端單獨保留。命令、來源雜湊、重跑與差異見[初始主證據](../data/ida/fd2_matching_pilot_20261008.json)。不提升原作工具版本、正式執行期或 PLAYER-E2。 |
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #41指定HUD重繪caller | PARTIAL-RUNTIME-E1／其他owner待補 | 死亡steady第26幀與196CB戰場關框已接同一入口；局部與Go全套回歸、新章T5完整Game前綴通過。未全部接齊，不關閉。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |

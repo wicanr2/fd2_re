@@ -1903,6 +1903,14 @@
         "paths": ["tools/fd2_matching_game_restore.py"],
         "pattern": "binding_references = verify_original_bindings"
       }
+    },
+    {
+      "id": "matching-audit-field-scoped-numbers",
+      "area": "驗證工具",
+      "date": "2026-10-09",
+      "rule": "驗證收據時，以實際物件、函式清冊與完整schema欄位計算數量；修改稽核條件只匹配完整欄位，不以裸數字前綴全文替換。入口tools/fd2_matching_game_restore.py的link_stage、tools/fd2_matching_bootstrap.py與docs/data/ida/fd2_matching_full_20261008.json。先核對獨立輸入與驗證腳本，再判定產品缺陷。",
+      "why": "本輪臨時稽核把==17全文改成==20，連1755也被改成2055而誤報候選數。限制到source_groups完整欄位後，同一容器與輸入乾淨重跑通過；編譯物件、產碼及主收據未改。",
+      "evidence": "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md"
     }
   ]
 }
