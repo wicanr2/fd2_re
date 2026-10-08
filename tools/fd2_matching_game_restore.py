@@ -40,11 +40,12 @@ BATTLE_CASES = tuple(("F" + format(address, "X"), address) for address in (
     0x1C142, 0x1C220)) + (("COUNTS_GROUP", 0x1B5F1),)
 EVENT_CASES = (("F21082", 0x21082), ("EVENT_PAIR", 0x2111A), ("F214AD", 0x214AD))
 LAYOUT_CASES = (("EVENT_FULL", 0x2111A),)
+QUAKE_CASES = (("F21548", 0x21548),)
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -95,6 +96,10 @@ BINDINGS.update({"dword_53EC4": 0x53EC4, "sub_1C4CC": 0x1C4CC,
                  "sub_1B750": 0x1B750, "sub_1B8E7": 0x1B8E7,
                  "sub_1CA89": 0x1CA89})
 BINDINGS.update({'sub_1CD17': 0x1CD17})
+BINDINGS.update({'unk_52096': 0x52096, 'unk_520A2': 0x520A2, 'unk_520AE': 0x520AE,
+    'dword_53A5D': 0x53A5D, 'sub_1399C': 0x1399C, 'sub_1F558': 0x1F558,
+    'sub_11EB0': 0x11EB0, '_printf': 0x36DC1, 'printf': 0x36DC1,
+    'exit': 0x36DE4, 'aOutOfMemoryAtE': 0x501CF})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -106,6 +111,7 @@ SOURCES = {
     "game_battle_records": ("tools/fd2_matching_game_battle_records.c", tuple(macro for macro, _ in BATTLE_CASES)),
     "game_events": ("tools/fd2_matching_game_events.c", tuple(macro for macro, _ in EVENT_CASES)),
     "game_event_layout": ("tools/fd2_matching_game_event_layout.c", tuple(macro for macro, _ in LAYOUT_CASES)),
+    "game_quake": ("tools/fd2_matching_game_quake.c", tuple(macro for macro, _ in QUAKE_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 COMPILER_INPUTS = {

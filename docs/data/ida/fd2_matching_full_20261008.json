@@ -58,7 +58,7 @@
     },
     {
       "path": "tools/fd2_matching_game_restore.py",
-      "sha256": "06202dcc8a1d1ce0625ff74c30147db051b1595e46eb1b99ddbde08b9f4324b0"
+      "sha256": "6aa1ddeb3f16140e7e23c5807d9eb767570beabd777e5226fe9172990e1fff00"
     },
     {
       "path": "tools/fd2_matching_inventory_watstack.c",
@@ -107,6 +107,10 @@
     {
       "path": "tools/fd2_matching_intervals.py",
       "sha256": "1772defca04389ba1f01e94b534910b66148a82efe359c0e60302475ef2e7d6c"
+    },
+    {
+      "path": "tools/fd2_matching_game_quake.c",
+      "sha256": "4a6064a1c50db4229284772893e8d6c00770acf3ca953723c7b5b48ea5a8e283"
     }
   ],
   "toolchain": {
@@ -15979,9 +15983,9 @@
     "full_ida_function_count": 1305,
     "inventory_boundaries_equal": true,
     "game_full_report_repeat_equal": true,
-    "game_code_independent_objcopy_equal": 765,
+    "game_code_independent_objcopy_equal": 774,
     "omf_source_dependency_time_fixed": 315532800,
-    "game_candidate_count": 765,
+    "game_candidate_count": 774,
     "all_game_omf_objects_repeat_equal": true,
     "autoexec_config_bytes": 238,
     "compile_batch_bytes": 10969,
@@ -16056,7 +16060,11 @@
       "layout-events-linked-r2",
       "layout-events-validation",
       "groups-layout-regression",
-      "bootstrap-layout-events-r1"
+      "bootstrap-layout-events-r1",
+      "quake-final-r1",
+      "quake-final-linked-r1",
+      "quake-final-r2",
+      "quake-final-linked-r2"
     ],
     "actual_dos_source_bound": true,
     "source_mismatch_rejected_before_output": true,
@@ -16124,6 +16132,14 @@
         ],
         "source_report_sha256": "163f1d3734d95d7ce487d4c96d796cc7a9a5df28c670c4ec79e142efcf1c385b"
       }
+    },
+    "quake": {
+      "repeat_complete_report_equal": true,
+      "repeat_all_objects_equal": 9,
+      "independent_objcopy_checks": 9,
+      "actual_dos_source_bound": true,
+      "matched_functions": 0,
+      "all_nine_full_interval_mismatches_recorded": true
     }
   },
   "bootstrap": {
@@ -17394,7 +17410,9 @@
       "work/matching-full-20261008/events-r3/compile-report.json",
       "work/matching-full-20261008/events-r4/compile-report.json",
       "work/matching-full-20261008/layout-events-r1/compile-report.json",
-      "work/matching-full-20261008/layout-events-r2/compile-report.json"
+      "work/matching-full-20261008/layout-events-r2/compile-report.json",
+      "work/matching-full-20261008/quake-final-r1/compile-report.json",
+      "work/matching-full-20261008/quake-final-r2/compile-report.json"
     ],
     "game_link_receipts": [
       "work/matching-full-20261008/slice34-linked-r1/report.json",
@@ -17418,7 +17436,9 @@
       "work/matching-full-20261008/events-linked-r3/report.json",
       "work/matching-full-20261008/events-linked-r4/report.json",
       "work/matching-full-20261008/layout-events-linked-r1/report.json",
-      "work/matching-full-20261008/layout-events-linked-r2/report.json"
+      "work/matching-full-20261008/layout-events-linked-r2/report.json",
+      "work/matching-full-20261008/quake-final-linked-r1/report.json",
+      "work/matching-full-20261008/quake-final-linked-r2/report.json"
     ],
     "control_trial_history": [
       "work/matching-full-20261008/controls-linked-r1/report.json",
@@ -21046,12 +21066,12 @@
     },
     "matched_code_bytes": 4934,
     "all_sources_pure_c": true,
-    "compiled_game_candidates": 765,
+    "compiled_game_candidates": 774,
     "repeat_game_report_equal": true,
     "all_game_omf_objects_repeat_equal": true,
     "source_date_epoch": 315532800,
-    "independent_objcopy_checks": 765,
-    "source_groups": 11,
+    "independent_objcopy_checks": 774,
+    "source_groups": 12,
     "matched_unowned_code_bytes": 146,
     "matched_total_code_bytes": 5080
   },
@@ -23887,7 +23907,10 @@
     "game_events": [
       "0x21082"
     ],
-    "game_event_layout": []
+    "game_event_layout": [],
+    "game_quake": [
+      "0x21548"
+    ]
   },
   "game_copy_matches": {
     "schema_version": 1,
@@ -38036,6 +38059,253 @@
       "0x2147b",
       "0x21494",
       "0x214ad"
+    ]
+  },
+  "game_quake_attempt": {
+    "schema_version": 1,
+    "input": {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "source_key": "game_quake",
+    "source_path": "tools/fd2_matching_game_quake.c",
+    "source_sha256": "4a6064a1c50db4229284772893e8d6c00770acf3ca953723c7b5b48ea5a8e283",
+    "compiler_version": "10.0a",
+    "compiler_inputs": {
+      "WCC386.EXE": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+      "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
+      "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c"
+    },
+    "compile_driver_sha256": "6aa1ddeb3f16140e7e23c5807d9eb767570beabd777e5226fe9172990e1fff00",
+    "driver_sha256": "6aa1ddeb3f16140e7e23c5807d9eb767570beabd777e5226fe9172990e1fff00",
+    "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+    "trials": [
+      {
+        "stem": "G00",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-dF21548"
+        ],
+        "object_sha256": "5b3cfc6592ac60f7502b7a03774470c8193fa23a581b383d32e59c84de1283e3",
+        "candidate_size": 790,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 213,
+        "code_sha256": "d7c2434abf77c36780d44408fb2b4c3f356e5907abb33dfdb8d26bb11414b8c8",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G01",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dF21548"
+        ],
+        "object_sha256": "17b5b0437e1222718ed82936e8fe77a1ad817bc49e4613615fd088c81bda6b53",
+        "candidate_size": 732,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "71d7885f3044b990e544eb7670a91a203cdd5ec99fa0c80e1426ea7b75dafffe",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G02",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dF21548"
+        ],
+        "object_sha256": "21b0af7312f568cb6bfc79ce87a445edaa376f49312b650f5a5b8aef4c923a99",
+        "candidate_size": 810,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 212,
+        "code_sha256": "d55815dc307404cfd8517727d607d024f76c2a7f0ee270266032c29e82820140",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G03",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-dF21548"
+        ],
+        "object_sha256": "a6b951bb18441d6c51c37dcd8f75ec2466e90ab50b256732f94eafdb8c5f732d",
+        "candidate_size": 798,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 72,
+        "code_sha256": "2c268259f126453e0269fa3d3b00cb9a2824968723a6ed48bc9e2b38ed9f8cd7",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G04",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dF21548"
+        ],
+        "object_sha256": "17b5b0437e1222718ed82936e8fe77a1ad817bc49e4613615fd088c81bda6b53",
+        "candidate_size": 732,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "71d7885f3044b990e544eb7670a91a203cdd5ec99fa0c80e1426ea7b75dafffe",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G05",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dF21548"
+        ],
+        "object_sha256": "de98c7f386639e5d54e29787479bbc1edc0097fa5f64948d80fab58693c0874a",
+        "candidate_size": 821,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 72,
+        "code_sha256": "b6e989efd1715b0d38f02764459b98f3f6fa8585965ce6d12d96d3c626a2dc49",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G06",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-5s",
+          "-dF21548"
+        ],
+        "object_sha256": "a6b951bb18441d6c51c37dcd8f75ec2466e90ab50b256732f94eafdb8c5f732d",
+        "candidate_size": 798,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 72,
+        "code_sha256": "2c268259f126453e0269fa3d3b00cb9a2824968723a6ed48bc9e2b38ed9f8cd7",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G07",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-5s",
+          "-os",
+          "-dF21548"
+        ],
+        "object_sha256": "17b5b0437e1222718ed82936e8fe77a1ad817bc49e4613615fd088c81bda6b53",
+        "candidate_size": 732,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "71d7885f3044b990e544eb7670a91a203cdd5ec99fa0c80e1426ea7b75dafffe",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G08",
+        "address": "0x21548",
+        "flags": [
+          "-mf",
+          "-5s",
+          "-ot",
+          "-dF21548"
+        ],
+        "object_sha256": "de98c7f386639e5d54e29787479bbc1edc0097fa5f64948d80fab58693c0874a",
+        "candidate_size": 821,
+        "original_size": 791,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 72,
+        "code_sha256": "b6e989efd1715b0d38f02764459b98f3f6fa8585965ce6d12d96d3c626a2dc49",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      }
+    ],
+    "matched_addresses": [],
+    "status": "UNMATCHED; source archived at user request",
+    "address_space": "IDA Pro 9.4 linear address",
+    "original_interval": {
+      "start": "0x21548",
+      "end_exclusive": "0x2185f",
+      "size": 791
+    },
+    "confidence": "強推論；尚未獨立執行驗證候選的行為等價性",
+    "scope": "C產碼候選，未接入重製正式執行路徑；未匹配區間不增加覆蓋",
+    "c_metadata": {
+      "declaration": "#pragma aux exit aborts;",
+      "purpose": "Watcom不返回宣告，不含組語、暫存器配置或機器碼",
+      "documentation": "https://open-watcom.github.io/open-watcom-1.9/cguide.html",
+      "documentation_section": "32-bit: A Function that Never Returns",
+      "version_limit": "文件說明宣告契約；10.0a實際編譯已驗證，不能據此推定原作精確版本"
+    },
+    "commands": [
+      "python3 /repo/tools/fd2_matching_game_restore.py compile --source-key game_quake --output /work/quake-final-r1",
+      "python /repo/tools/fd2_matching_game_restore.py link --objects /work/quake-final-r1 --evidence /work/ida-full-image.json --output /work/quake-final-linked-r1"
+    ],
+    "public_files": [
+      "tools/fd2_matching_game_quake.c",
+      "tools/fd2_matching_game_restore.py"
+    ]
+  },
+  "source_publication": {
+    "repository": "https://github.com/wicanr2/fd2_re",
+    "source_directory": "tools/",
+    "entry": "README.md#匹配式反編譯原始碼",
+    "user_decision": "matching decompilation重寫程式碼須放上GitHub repo紀錄",
+    "candidate_policy": "完整匹配與未匹配候選分列，來源、旗標、物件與產碼SHA保留，負例不增加覆蓋",
+    "excluded_local_inputs": [
+      "原版FD2.EXE",
+      "原版素材",
+      "歷史商用compiler組件",
+      "授權IDA工具及臨時資料庫"
     ]
   }
 }

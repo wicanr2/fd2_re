@@ -96,6 +96,15 @@ DOS 本身不會替遊戲顯示中文。原版自帶點陣字型，文本也不�
 
 這些文件同時是「1995 年台灣怎麼做遊戲」的技術保存紀錄，不只是工程工作清單。
 
+### 匹配式反編譯原始碼
+
+重寫的 C 原始碼與可重跑工具保存在本倉庫的 [tools/](tools/)，隨 Git 提交記錄。
+[事件布局來源](tools/fd2_matching_game_event_layout.c)已有完整區間匹配；
+[大型事件候選](tools/fd2_matching_game_quake.c)仍未匹配。
+[建置驅動器](tools/fd2_matching_game_restore.py)與
+[匹配主收據](docs/data/ida/fd2_matching_full_20261008.json)保存來源雜湊、編譯旗標與比較結果。
+全檔還原狀態見[覆蓋矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。
+
 ## 重要發現
 
 - 原版使用自製 `.DAT` archive、RLE 圖像、索引色盤、XMIDI、AFM 與 FIGANI 等
