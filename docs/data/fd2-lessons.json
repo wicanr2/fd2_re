@@ -1837,6 +1837,21 @@
         ],
         "pattern": "os\\.utime\\(dos_source, \\(SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH\\)\\)"
       }
+    },
+    {
+      "id": "compiler-batch-keeps-autoexec-bounded",
+      "area": "匹配工具",
+      "date": "2026-10-08",
+      "rule": "大量DOS compiler命令寫入獨立BUILD.BAT，autoexec只掛載及呼叫批次檔；同時檢查執行器錯誤訊息、每份物件及零錯誤診斷。入口tools/fd2_matching_game_restore.py的compile_stage，證據docs/data/ida/fd2_matching_full_20261008.json的validation。",
+      "why": "90份候選直接寫進autoexec時，DOSBox回傳0卻記錄Autoexec.bat file overflow，沒有執行compiler。移到BUILD.BAT後，最終162份候選的兩輪物件及收據相同。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_restore.py"
+        ],
+        "pattern": "call BUILD\\.BAT[\\s\\S]*Exit to error:"
+      }
     }
   ]
 }

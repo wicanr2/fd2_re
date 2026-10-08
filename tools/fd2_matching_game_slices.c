@@ -1,5 +1,6 @@
 /* 主程式區的匹配來源候選，原始定位與用途分類依 IDA 匯出。
  * 只描述直接指令中的 raw 存取，不把候選來源當成原作者宣告。
+ * 回傳型別只描述原始 EAX 結果，不推定原作者的回傳宣告。
  */
 extern unsigned char *dword_53A45;
 extern int dword_53BEB;
@@ -18,6 +19,97 @@ extern void *dword_53B0F;
 extern void *dword_53B13;
 extern const char aFdotherDat[];
 extern void *sub_111BA(const char *name, int mode, int resource);
+extern unsigned char *dword_53BF7;
+extern int dword_53BFB;
+
+#ifdef SET_BIT7
+int sub_13512(int unit)
+{
+    int offset = unit << 2;
+    offset += unit;
+    offset <<= 4;
+    dword_53A45[offset + 5] |= 0x80;
+    return offset;
+}
+#endif
+
+#ifdef CLEAR_BIT7
+void sub_13536(void)
+{
+    int unit;
+    for (unit = 0; unit < dword_53BEB; ++unit) {
+        dword_53A45[80 * unit + 5] &= 0x7f;
+    }
+}
+#endif
+
+#ifdef SLOT_BYTE
+unsigned sub_1B722(register int unit, int slot)
+{
+    unsigned char *record;
+    unsigned char *cell;
+    unit *= 80;
+    record = dword_53A45;
+    record += unit;
+    cell = record + 2 * slot;
+    cell += 11;
+    return *cell;
+}
+#endif
+
+#ifdef SET_BYTE5
+int sub_32975(int unit)
+{
+    int offset = 80 * unit;
+    dword_53A45[offset + 5] = 1;
+    return offset;
+}
+#endif
+
+#ifdef GET_BIT0
+int sub_3453E(int unit)
+{
+    unsigned char value = dword_53A45[80 * unit + 5];
+    value &= 1;
+    return value;
+}
+#endif
+
+#ifdef RANGE_LOW_BYTE
+void sub_3419C(int first, int last, int value)
+{
+    int unit;
+    for (unit = first; unit <= last; ++unit) {
+        unsigned char *record = dword_53A45 + 80 * unit;
+        record[52] = (record[52] & 0xf0) | (unsigned char)value;
+    }
+}
+#endif
+
+#ifdef COPY_WORDS
+void sub_25089(void)
+{
+    unsigned char unit;
+    for (unit = 0; unit < dword_53BFB; ++unit) {
+        unsigned char *record = dword_53BF7 + 80 * unit;
+        unsigned short value;
+        record[5] = 0;
+        value = *(unsigned short *)(record + 66);
+        *(unsigned short *)(record + 64) = value;
+        value = *(unsigned short *)(record + 70);
+        *(unsigned short *)(record + 68) = value;
+    }
+}
+#endif
+
+#ifdef COMPARE_VALUE
+int sub_2EF8F(int a, int b)
+{
+    if (a == b) return 31;
+    if (a < b) return 42;
+    return 119;
+}
+#endif
 
 #ifdef CLEAR3
 void sub_134E4(void)
@@ -67,6 +159,17 @@ condition:
     goto next;
 finished:
     return;
+}
+#endif
+
+#ifdef INVENTORY
+void *sub_1B8E7(int unit, int slot)
+{
+    unsigned char *record = dword_53A45 + 80 * unit;
+    void *result = memmove(record + 2 * slot + 10,
+                          record + 2 * slot + 12, 2 * (7 - slot));
+    record[24] = 0x80;
+    return result;
 }
 #endif
 

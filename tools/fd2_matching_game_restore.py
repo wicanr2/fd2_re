@@ -15,14 +15,18 @@ from fd2_matching_c_restore import INPUTS
 
 CASES = (("CLEAR3", 0x134E4), ("REDRAW", 0x127A9), ("CYCLE", 0x1F525), ("MASK", 0x146A7),
          ("ROWCOPY", 0x11EB0), ("RELEASE", 0x15E71), ("CONDITIONAL_FREE", 0x1A7F1),
-         ("CACHE_INIT", 0x1D4CB), ("CONDITIONAL_INIT", 0x1A7BD))
+         ("CACHE_INIT", 0x1D4CB), ("CONDITIONAL_INIT", 0x1A7BD), ("INVENTORY", 0x1B8E7),
+         ("SET_BIT7", 0x13512), ("CLEAR_BIT7", 0x13536), ("SLOT_BYTE", 0x1B722),
+         ("SET_BYTE5", 0x32975), ("GET_BIT0", 0x3453E), ("RANGE_LOW_BYTE", 0x3419C),
+         ("COPY_WORDS", 0x25089), ("COMPARE_VALUE", 0x2EF8F))
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
             "sub_129EC": 0x129EC, "sub_11D40": 0x11D40, "memmove": 0x373C4,
             "sub_4E92C": 0x4E92C, "_free": 0x37416, "byte_53AF9": 0x53AF9,
             "dword_53B0F": 0x53B0F, "dword_53B13": 0x53B13,
-            "aFdotherDat": 0x51A4D, "sub_111BA": 0x111BA}
+            "aFdotherDat": 0x51A4D, "sub_111BA": 0x111BA,
+            "dword_53BF7": 0x53BF7, "dword_53BFB": 0x53BFB}
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 
 
@@ -45,24 +49,27 @@ def compile_stage(args):
              "cycles=max 90% limit 100000", "[mixer]", "nosound=true", "[midi]", "mpu401=none",
              "mididevice=none", "[autoexec]", f"mount c {args.output}", f"mount r {args.compiler}",
              "c:", "set PATH=R:\\;Z:\\"]
+    commands = []
     trials = []
-    for index, ((macro, address), cpu, opt) in enumerate(itertools.product(CASES, ("3s", "4s"), ("-os", "-ot"))):
+    for index, ((macro, address), cpu, opt) in enumerate(itertools.product(CASES, ("3s", "4s", "5s"), ((), ("-os",), ("-ot",)))):
         stem = f"G{index:02}"
-        flags = ["-mf", "-" + cpu, opt, "-d" + macro]
-        lines.append("R:\\WCC386.EXE " + " ".join(flags) + f" -fo={stem}.OBJ GAME.C > {stem}.TXT")
+        flags = ["-mf", "-" + cpu, *opt, "-d" + macro]
+        commands.append("R:\\WCC386.EXE " + " ".join(flags) + f" -fo={stem}.OBJ GAME.C > {stem}.TXT")
         trials.append({"stem": stem, "address": hex(address), "flags": flags})
-    lines.append("exit")
+    compile_batch = args.output / "BUILD.BAT"
+    compile_batch.write_text("\r\n".join(commands) + "\r\n", encoding="ascii")
+    lines.extend(["call BUILD.BAT", "exit"])
     config = args.output / "RUN.CONF"
     config.write_text("\n".join(lines) + "\n", encoding="ascii")
     result = subprocess.run(["dosbox", "-conf", str(config), "-noconsole"], capture_output=True, text=True, timeout=90)
     (args.output / "runner.log").write_text(result.stdout + result.stderr, encoding="utf-8")
-    if result.returncode:
+    if result.returncode or "Exit to error:" in result.stdout + result.stderr:
         raise ValueError("compiler 執行器失敗")
     for trial in trials:
         obj = args.output / (trial["stem"] + ".OBJ")
         text = (args.output / (trial["stem"] + ".TXT")).read_text(encoding="cp437")
         if not obj.is_file() or not re.search(r"\b0 errors\b", text) or "Error!" in text:
-            raise ValueError("compiler 未成功產生物件")
+            raise ValueError(f"{trial['stem']}: compiler 未成功產生物件")
         trial["object_sha256"] = sha(obj)
     report = {"schema_version": 1, "source_sha256": sha(source), "compiler_inputs": INPUTS,
               "source_date_epoch": SOURCE_DATE_EPOCH,
