@@ -4,7 +4,7 @@
  * fd2_end_turn_command13_owner_ida.txt；本檔不重開既有玩法證據。
  * 宣告與區域名稱只作產碼導覽，不推定為作者原始碼。
  * 共享返回尾段可能在其他函式，完整區間未匹配時不增加覆蓋。
- * sub_21AD9以單函式匹配；sub_21B18以INDEXED_PAIR同單元匹配。
+ * INDEXED_ALL及QUAKE_GROUP保留完整C函式並重現共用呼叫／返回尾段。
  */
 extern unsigned char * volatile dword_53A45;
 extern unsigned char *dword_53A49, *dword_53A6D;
@@ -36,7 +36,7 @@ extern void sub_1CAC7(int, int, int, const unsigned char *);
 extern int sub_1C75E(int, int);
 extern void sub_1E1DC(int);
 
-#ifdef INDEXED_PAIR
+#if defined(INDEXED_PAIR) || defined(INDEXED_ALL)
 void sub_2111A(int unit, int count, const unsigned char *targets, int mode)
 {
     int index;
@@ -63,7 +63,16 @@ done:
 }
 #endif
 
-#ifdef F2185F
+#ifdef QUAKE_GROUP
+void sub_21527(int unit, int count, const unsigned char *targets)
+{
+    sub_21548(unit, 10, count, targets);
+}
+#define F21548
+#include "QUAKE.C"
+#endif
+
+#if defined(F2185F) || defined(QUAKE_GROUP)
 void sub_2185F(int unit, int count, const unsigned char *targets)
 {
     sub_25A96(dword_53B13, 2, 1);
@@ -138,7 +147,7 @@ condition:
 }
 #endif
 
-#ifdef F21A9E
+#if defined(F21A9E) || defined(QUAKE_GROUP)
 void sub_21A9E(int unit, int count, const unsigned char *targets)
 {
     sub_25A96(dword_53B13, 2, 1);
@@ -147,7 +156,7 @@ void sub_21A9E(int unit, int count, const unsigned char *targets)
 }
 #endif
 
-#ifdef F21AD9
+#if defined(F21AD9) || defined(INDEXED_ALL)
 void sub_21AD9(int unit, int count, const unsigned char *targets)
 {
     sub_25A96(dword_53B13, 11, 1);
@@ -156,7 +165,7 @@ void sub_21AD9(int unit, int count, const unsigned char *targets)
 }
 #endif
 
-#if defined(F21B18) || defined(INDEXED_PAIR)
+#if defined(F21B18) || defined(INDEXED_PAIR) || defined(INDEXED_ALL)
 void sub_21B18(int unit, int mode, int count, const unsigned char *targets)
 {
     int index;
@@ -178,7 +187,7 @@ condition:
 }
 #endif
 
-#ifdef F21B99
+#if defined(F21B99) || defined(INDEXED_ALL)
 void sub_21B99(int unit, int count, const unsigned char *targets)
 {
     sub_25A96(dword_53B13, 11, 1);

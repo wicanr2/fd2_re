@@ -42,8 +42,11 @@ EVENT_CASES = (("F21082", 0x21082), ("EVENT_PAIR", 0x2111A), ("F214AD", 0x214AD)
 LAYOUT_CASES = (("EVENT_FULL", 0x2111A),)
 QUAKE_CASES = (("F21548", 0x21548),)
 EFFECT_TAIL_CASES = tuple(("F" + format(address, "X"), address) for address in (
-    0x2185F, 0x2189A, 0x219AD, 0x21A9E, 0x21AD9, 0x21B18, 0x21B99)) + (("INDEXED_PAIR", 0x2111A),)
-SPARSE_GROUPS = {"INDEXED_PAIR": (0x2111A, 0x21B18)}
+    0x2185F, 0x2189A, 0x219AD, 0x21A9E, 0x21AD9, 0x21B18, 0x21B99)) + (
+    ("INDEXED_PAIR", 0x2111A), ("INDEXED_ALL", 0x2111A), ("QUAKE_GROUP", 0x21527))
+SPARSE_GROUPS = {"INDEXED_PAIR": (0x2111A, 0x21B18),
+                 "INDEXED_ALL": (0x2111A, 0x21AD9, 0x21B18, 0x21B99),
+                 "QUAKE_GROUP": (0x21527, 0x21548, 0x2185F, 0x21A9E)}
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
@@ -123,6 +126,7 @@ SOURCES = {
     "game_effect_tail": ("tools/fd2_matching_game_effect_tail.c", tuple(macro for macro, _ in EFFECT_TAIL_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
+SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),)}
 COMPILER_INPUTS = {
     "10.0a": INPUTS,
     "9.5": {
@@ -153,6 +157,14 @@ def compile_stage(args):
     dos_source = args.output / "GAME.C"
     dos_source.write_bytes(source.read_text(encoding="utf-8").encode("ascii", "ignore"))
     os.utime(dos_source, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
+    includes = []
+    for dos_name, source_name in SOURCE_INCLUDES.get(args.source_key, ()):
+        include_source = args.repo / source_name
+        include_file = args.output / dos_name
+        include_file.write_bytes(include_source.read_text(encoding='utf-8').encode('ascii', 'ignore'))
+        os.utime(include_file, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
+        includes.append({'dos_file': dos_name, 'source_path': source_name,
+                         'source_sha256': sha(include_source), 'dos_sha256': sha(include_file)})
     lines = ["[sdl]", "output=surface", "[dosbox]", "memsize=31", "[cpu]", "core=normal",
              "cycles=max 90% limit 100000", "[mixer]", "nosound=true", "[midi]", "mpu401=none",
              "mididevice=none", "[autoexec]", f"mount c {args.output}", f"mount r {args.compiler}",
@@ -187,6 +199,8 @@ def compile_stage(args):
               "compiler_version": args.compiler_version, "compiler_inputs": compiler_inputs,
               "source_date_epoch": SOURCE_DATE_EPOCH,
               "driver_sha256": sha(Path(__file__)), "trials": trials}
+    if includes:
+        report['source_includes'] = includes
     (args.output / "compile-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(f"{len(trials)} 個主程式 C 候選已編譯。", flush=True)
 
@@ -215,6 +229,17 @@ def link_stage(args):
         raise ValueError("C 來源與編譯收據不符")
     if (args.objects / "GAME.C").read_bytes() != (args.repo / source_path).read_text(encoding="utf-8").encode("ascii", "ignore"):
         raise ValueError("實際 DOS C 來源與登記來源不符")
+    expected_includes = []
+    for dos_name, source_name in SOURCE_INCLUDES.get(source_key, ()):
+        include_source = args.repo / source_name
+        expected = include_source.read_text(encoding='utf-8').encode('ascii', 'ignore')
+        include_file = args.objects / dos_name
+        if not include_file.is_file() or include_file.read_bytes() != expected or int(include_file.stat().st_mtime) != SOURCE_DATE_EPOCH:
+            raise ValueError('實際 DOS include 與登錄來源或固定時間不符')
+        expected_includes.append({'dos_file': dos_name, 'source_path': source_name,
+            'source_sha256': sha(include_source), 'dos_sha256': hashlib.sha256(expected).hexdigest()})
+    if compile_report.get('source_includes', []) != expected_includes:
+        raise ValueError('C include 登錄與編譯收據不符')
     args.output.mkdir(parents=True, exist_ok=True)
     results = []
     for trial in compile_report["trials"]:
@@ -293,7 +318,17 @@ def link_stage(args):
         sparse_layout = None
         if sparse:
             from fd2_matching_sparse import split_coff, read_sparse_pe
-            converted, sparse_layout = split_coff(coff.read_bytes(), dis.read_text(), [int(a, 16) for a in addresses])
+            try:
+                converted, sparse_layout = split_coff(coff.read_bytes(), dis.read_text(), [int(a, 16) for a in addresses])
+            except ValueError as error:
+                if str(error) not in ('連結後完整函式彼此重疊', '不能保持跨函式短分支的原始指令寬度'):
+                    raise
+                results.append({**trial, 'candidate_size': size, 'original_size': len(expected),
+                    'exact_interval_bytes': False, 'comparison_performed': False,
+                    'linkable': False, 'layout': 'sparse_functions', 'layout_rejection': str(error),
+                    'function_intervals': intervals, 'exact_entry_offsets': entry_offsets_equal,
+                    'original_classification': functions[0]['inventory']['classification']})
+                continue
             coff = out / 'sparse.cof'
             coff.write_bytes(converted)
             sections = ' '.join(f".m{n} {p['address']} : SUBALIGN(1) {{ *({p['section']}) }}" for n, p in enumerate(sparse_layout['fragments']))
@@ -324,6 +359,8 @@ def link_stage(args):
               "driver_sha256": sha(Path(__file__)), "evidence_sha256": sha(args.evidence), "trials": results,
               "matched_addresses": sorted({part['address'] for r in results if r['exact_interval_bytes']
                     for part in r.get('function_intervals', [{'address': r['address']}]) if part.get('kind', 'ida_function') == 'ida_function'})}
+    if expected_includes:
+        report['source_includes'] = expected_includes
     (args.output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"matched_addresses": report["matched_addresses"], "trials": len(results)}), flush=True)
 

@@ -5,6 +5,7 @@ import argparse
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import struct
 import subprocess
@@ -14,11 +15,11 @@ from fd2_matching_pilot import linked_text
 from fd2_matching_sparse import read_sparse_pe, split_coff
 
 
-def run_link(coff, script, output, sections):
+def run_link(coff, script, output, sections, entry='sub_2111A', defined=('sub_2111a', 'sub_21b18')):
     definitions = '\n'.join(f'{key} = {value:#x};' for key, value in BINDINGS.items()
-                            if key.lower() not in ('sub_2111a', 'sub_21b18'))
+                            if key.lower() not in defined)
     script.write_text(definitions + '\nSECTIONS { ' + sections + ' /DISCARD/ : { *(CONST) *(CONST2) *(_DATA) *(_BSS) *(.depend) *(.reloc) } }\n')
-    subprocess.run(['ld', '-mi386pe', '--image-base', '0', '--section-alignment', '1', '--file-alignment', '1', '--no-insert-timestamp', '-T', str(script), '-e', 'sub_2111A', '-o', str(output), str(coff)], check=True, capture_output=True)
+    subprocess.run(['ld', '-mi386pe', '--image-base', '0', '--section-alignment', '1', '--file-alignment', '1', '--no-insert-timestamp', '-T', str(script), '-e', entry, '-o', str(output), str(coff)], check=True, capture_output=True)
 
 
 def main():
@@ -27,6 +28,7 @@ def main():
     parser.add_argument('--original', type=Path, required=True)
     parser.add_argument('--evidence', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--objects', type=Path)
     args = parser.parse_args()
     if not Path('/.dockerenv').exists():
         raise SystemExit('只在Docker執行')
@@ -113,10 +115,73 @@ def main():
         else:
             assert result.returncode != 0 and not (output / 'FD2.EXE').exists() and not (output / 'bootstrap-receipt.json').exists(), result.stderr
             rejected.append(case)
+    extended = []
+    for macro, size, targets in [('INDEXED_ALL', 385, {'0x21190', '0x21b0b'}),
+                                 ('QUAKE_GROUP', 942, {'0x2153b'})]:
+        found = [t for t in report['trials'] if t['exact_interval_bytes'] and '-d' + macro in t['flags']]
+        if not found:
+            continue
+        t = found[0]
+        assert len(t['addresses']) == 4 and t['candidate_size'] == size
+        assert {b['target_address'] for b in t['sparse_layout']['lifted_branches']} == targets
+        directory = args.output / macro
+        directory.mkdir()
+        source = args.linked / t['stem']
+        entry = 'sub_' + format(int(t['addresses'][0], 16), 'X')
+        defined = tuple('sub_' + a[2:] for a in t['addresses'])
+        original_pe = directory / 'original.exe'
+        run_link(source / 'candidate.cof', directory / 'original.ld', original_pe,
+                 f".text {t['address']} : SUBALIGN(1) {{ *(_TEXT) }}", entry, defined)
+        identity = copy.deepcopy(t['sparse_layout']['fragments'])
+        for p in identity:
+            p['address'] = hex(int(t['address'], 16) + p['compiler_offset'])
+        split_pe = directory / 'split.exe'
+        sections = ' '.join(f".m{n} {p['address']} : SUBALIGN(1) {{ *({p['section']}) }}" for n, p in enumerate(identity))
+        run_link(source / 'sparse.cof', directory / 'split.ld', split_pe, sections, entry, defined)
+        assert read_sparse_pe(split_pe, identity) == linked_text(original_pe, int(t['address'], 16), size)
+        assert read_sparse_pe(source / 'linked.exe', t['sparse_layout']['fragments']) == (source / 'candidate.bin').read_bytes()
+        received = copy.deepcopy(report)
+        received['trials'] = [t]
+        (directory / 'report.json').write_text(json.dumps(received))
+        candidate = directory / t['stem']
+        candidate.mkdir()
+        (candidate / 'candidate.bin').write_bytes((source / 'candidate.bin').read_bytes())
+        output = directory / 'output'
+        check = subprocess.run(['python', str(Path(__file__).with_name('fd2_matching_bootstrap.py')), '--original', str(args.original), '--evidence', str(args.evidence), '--restored', str(directory), '--output', str(output)], capture_output=True, text=True)
+        assert check.returncode == 0, check.stderr
+        assert json.loads((output / 'bootstrap-receipt.json').read_text())['counts']['matched_c'] == 4
+        assert (output / 'FD2.EXE').read_bytes() == args.original.read_bytes()
+        extended.append({'macro': macro, 'complete_functions': 4, 'identity_layout_bytes': size, 'targets': sorted(targets)})
+    include_rejected = []
+    if args.objects is not None:
+        compile_report = json.loads((args.objects / 'compile-report.json').read_text())
+        assert len(compile_report['source_includes']) == 1
+        for case in ('include_missing', 'include_bytes_changed', 'include_time_changed', 'include_hash_changed'):
+            directory = args.output / case
+            directory.mkdir()
+            (directory / 'GAME.C').write_bytes((args.objects / 'GAME.C').read_bytes())
+            include = directory / 'QUAKE.C'
+            if case != 'include_missing':
+                include.write_bytes((args.objects / 'QUAKE.C').read_bytes())
+                os.utime(include, (315532800, 315532800))
+            received = copy.deepcopy(compile_report)
+            if case == 'include_bytes_changed':
+                include.write_bytes(include.read_bytes() + b'\n')
+                os.utime(include, (315532800, 315532800))
+            elif case == 'include_time_changed':
+                os.utime(include, (315532801, 315532801))
+            elif case == 'include_hash_changed':
+                received['source_includes'][0]['source_sha256'] = '0' * 64
+            (directory / 'compile-report.json').write_text(json.dumps(received))
+            output = directory / 'output'
+            check = subprocess.run(['python', str(Path(__file__).with_name('fd2_matching_game_restore.py')), 'link', '--objects', str(directory), '--original', str(args.original), '--evidence', str(args.evidence), '--output', str(output)], capture_output=True, text=True)
+            assert check.returncode != 0 and 'include' in check.stderr and not output.exists(), check.stderr
+            include_rejected.append(case)
     result = {'identity_layout_bytes': 267, 'unshared_identity_layout_bytes': plain['candidate_size'],
               'matched_original_functions': 2, 'lifted_rel32_branches': 1,
               'target_address': '0x21190', 'rejected': rejected,
-              'source_report_sha256': hashlib.sha256((args.linked / 'report.json').read_bytes()).hexdigest()}
+              'source_report_sha256': hashlib.sha256((args.linked / 'report.json').read_bytes()).hexdigest(),
+              'extended_groups': extended, 'include_rejected': include_rejected}
     (args.output / 'result.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(result, ensure_ascii=False))
 
