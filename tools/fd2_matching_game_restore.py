@@ -24,6 +24,10 @@ RECORD_CASES = (("CURSOR_Y_DEC", 0x11B48), ("CURSOR_Y_INC", 0x11B9B),
                 ("FIND_RECORD", 0x12C0D), ("SUM_FIELD", 0x15DA2),
                 ("DERIVED_WORDS", 0x1145A), ("BLIT_CELL", 0x126F7),
                 ("READ_INFO", 0x12E38), ("CONDITIONAL_INFO", 0x13A44))
+COPY_CASES = (("VIDEO_COPY", 0x16559), ("RESTORE_72", 0x17643),
+              ("HCLIP_86", 0x182AD), ("VCLIP_86", 0x18312),
+              ("BOTTOM_102", 0x1839B), ("PANEL_COPY", 0x1AF99),
+              ("INSERT_CELL", 0x1BB8C))
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -43,13 +47,24 @@ BINDINGS.update({"dword_53AB1": 0x53AB1, "dword_53AB5": 0x53AB5,
                  "sub_4E56C": 0x4E56C, "sub_4DEDA": 0x4DEDA,
                  "_sub_4E56C": 0x4E56C, "_sub_4DEDA": 0x4DEDA,
                  "sub_12E38": 0x12E38})
+BINDINGS.update({"dword_53A71": 0x53A71, "dword_53A85": 0x53A85,
+                 "dword_53C67": 0x53C67, "sub_4E8AF": 0x4E8AF,
+                 "sub_4E8E1": 0x4E8E1})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
+    "game_copy": ("tools/fd2_matching_game_copy.c", tuple(macro for macro, _ in COPY_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
+COMPILER_INPUTS = {
+    "10.0a": INPUTS,
+    "9.5": {
+        "WCC386.EXE": "3fe098187af3ed4bccbf184b0f0d1a21a18cf976fe72c6178f19b8eea8b13e78",
+        "DOS4GW.EXE": "b401506365892bd7bcb4362599279504a863f05bf37d323f732fd348bd1ef3c5",
+    },
+}
 
 
 def sha(path):
@@ -57,7 +72,8 @@ def sha(path):
 
 
 def compile_stage(args):
-    for name, digest in INPUTS.items():
+    compiler_inputs = COMPILER_INPUTS[args.compiler_version]
+    for name, digest in compiler_inputs.items():
         if sha(args.compiler / name) != digest:
             raise ValueError("compiler 組件雜湊不符")
     args.output.mkdir(parents=True, exist_ok=True)
@@ -68,7 +84,7 @@ def compile_stage(args):
     selected_cases = args.cases or source_cases or [macro for macro, _ in CASES]
     if source_cases and not set(selected_cases).issubset(source_cases):
         raise ValueError("所選來源未提供這些候選")
-    cases = [(macro, address) for macro, address in (*CASES, *RECORD_CASES) if macro in selected_cases]
+    cases = [(macro, address) for macro, address in (*CASES, *RECORD_CASES, *COPY_CASES) if macro in selected_cases]
     dos_source = args.output / "GAME.C"
     dos_source.write_bytes(source.read_text(encoding="utf-8").encode("ascii", "ignore"))
     os.utime(dos_source, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
@@ -99,7 +115,8 @@ def compile_stage(args):
             raise ValueError(f"{trial['stem']}: compiler 未成功產生物件")
         trial["object_sha256"] = sha(obj)
     report = {"schema_version": 1, "source_key": args.source_key,
-              "source_path": source_path, "source_sha256": sha(source), "compiler_inputs": INPUTS,
+              "source_path": source_path, "source_sha256": sha(source),
+              "compiler_version": args.compiler_version, "compiler_inputs": compiler_inputs,
               "source_date_epoch": SOURCE_DATE_EPOCH,
               "driver_sha256": sha(Path(__file__)), "trials": trials}
     (args.output / "compile-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
@@ -119,6 +136,9 @@ def link_stage(args):
     if identity != reference or image["input"] != reference:
         raise ValueError("原檔或 IDA 版本不符")
     compile_report = json.loads((args.objects / "compile-report.json").read_text(encoding="utf-8"))
+    compiler_version = compile_report.get("compiler_version", "10.0a")
+    if compile_report["compiler_inputs"] != COMPILER_INPUTS[compiler_version]:
+        raise ValueError("compiler 組件登記不符")
     source_key = compile_report.get("source_key", "game")
     source_path = SOURCES[source_key][0]
     if compile_report.get("source_path", source_path) != source_path:
@@ -168,6 +188,7 @@ def link_stage(args):
                         "original_classification": fn["inventory"]["classification"]})
     report = {"schema_version": 1, "input": reference, "source_key": source_key,
               "source_path": source_path, "source_sha256": compile_report["source_sha256"],
+              "compiler_version": compiler_version, "compiler_inputs": compile_report["compiler_inputs"],
               "compile_driver_sha256": compile_report["driver_sha256"],
               "driver_sha256": sha(Path(__file__)), "evidence_sha256": sha(args.evidence), "trials": results,
               "matched_addresses": sorted({r["address"] for r in results if r["exact_interval_bytes"]})}
@@ -179,17 +200,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("stage", choices=("compile", "link"))
     parser.add_argument("--repo", type=Path, default=Path("/repo"))
-    parser.add_argument("--compiler", type=Path, default=Path("/wc10a"))
+    parser.add_argument("--compiler", type=Path)
+    parser.add_argument("--compiler-version", choices=COMPILER_INPUTS, default="10.0a")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--objects", type=Path)
     parser.add_argument("--evidence", type=Path)
     parser.add_argument("--original", type=Path, default=Path("/input/FD2.EXE"))
     parser.add_argument("--converter", type=Path, default=Path("/work/objconv"))
     parser.add_argument("--source-key", choices=SOURCES, default="game")
-    parser.add_argument("--cases", choices=[macro for macro, _ in (*CASES, *RECORD_CASES)], nargs="+")
+    parser.add_argument("--cases", choices=[macro for macro, _ in (*CASES, *RECORD_CASES, *COPY_CASES)], nargs="+")
     parser.add_argument("--cpus", choices=("3s", "4s", "5s"), nargs="+", default=("3s", "4s", "5s"))
     parser.add_argument("--costs", choices=COSTS, nargs="+", default=tuple(COSTS))
     args = parser.parse_args()
+    if args.compiler is None:
+        args.compiler = Path("/wc10a" if args.compiler_version == "10.0a" else "/wc95")
     if not Path("/.dockerenv").exists():
         raise SystemExit("本工具只在 Docker 執行")
     compile_stage(args) if args.stage == "compile" else link_stage(args)

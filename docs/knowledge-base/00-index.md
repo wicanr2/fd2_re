@@ -43,6 +43,8 @@
 | 主程式 C 循環及資源呼叫匹配 | [C 來源](../../tools/fd2_matching_game_slices.c)、[編譯及比較驅動器](../../tools/fd2_matching_game_restore.py)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`game_matches` | C 控制流程依原始條件邊及 jmp 排列；呼叫端與被呼叫端的暫存器保存分別核對，缺原始語意的項目維持原分類 |
 | 逐列複製、物品欄左移與記錄旗標 C 匹配 | [C 來源](../../tools/fd2_matching_game_slices.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`compiler_documentation`、`game_matches`及`unmatched_game_candidates` | 原廠預設成本策略與固定來源共同核對；回傳型別只描述EAX結果，不推定作者宣告 |
 | 完整游標控制、座標查找與四槽累加 C 匹配 | [C 來源](../../tools/fd2_matching_game_records.c)、[驅動器](../../tools/fd2_matching_game_restore.py)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`game_record_matches` | 原始跳躍目標、測試寬度與堆疊槽分別核對；可按來源、函式、CPU及成本策略篩選候選 |
+| 裁切複製及八格寫入 C 匹配 | [C 來源](../../tools/fd2_matching_game_copy.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`game_copy_matches` | 保留參數修改、共同運算與原始呼叫順序；原作者型別仍未知 |
+| Watcom 9.5 同來源版本比較 | [驅動器](../../tools/fd2_matching_game_restore.py)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`compiler_95_inputs`及`compiler_95_comparisons` | `--compiler-version 9.5`預設唯讀`/wc95`，組件逐一驗SHA；所列七函式的63份候選均未匹配，不能辨識原作精確版本 |
 | 80-byte 記錄型別的未匹配布局候選 | [C 候選](../../tools/fd2_matching_record_layout.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`record_layout_attempt` | 27份候選全部未匹配；原作者型別保持未知，不增加覆蓋 |
 | 物品欄結構與堆疊慣例的未匹配候選 | [C 候選](../../tools/fd2_matching_inventory_watstack.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`inventory_watstack_attempt` | 八份候選完整區間皆未匹配；結構欄位只供導航，不增加覆蓋 |
 | 歷史錯誤形成與勘誤 | [`SESSION-HANDOFF`](SESSION-HANDOFF-2026-07-06.md)、[`99`](99-reflections-log.md) | 現況矩陣 |
