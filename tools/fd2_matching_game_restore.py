@@ -53,11 +53,13 @@ CALL_WRAPPER_CASES = tuple(('F' + format(address,'X'),address) for address in (
     0x22A85,0x22BE1,0x33F78,0x34A3C,0x34F02,0x350CC,0x35321))
 GLOBAL_CALL_CASES = tuple(('F' + format(address,'X'),address) for address in (
     0x226EA,0x2282F,0x22960,0x22CDA,0x22EF6,0x33FAF))
+SHORT_DATA_CASES = tuple(('F' + format(address,'X'),address) for address in (
+    0x12D7B,0x29117,0x2935B,0x3415E,0x343E2,0x34C1E,0x34CB3,0x34F74,0x352E2,0x35A2F,0x35C22))
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -128,6 +130,10 @@ BINDINGS.update({'dword_53A79':0x53A79,'sub_22AA8':0x22AA8,'sub_22CDA':0x22CDA,
     'sub_10B4E':0x10B4E,'sub_112A5':0x112A5,'sub_35BBA':0x35BBA,'sub_3419C':0x3419C})
 BINDINGS.update({'sub_22721':0x22721,'sub_22866':0x22866,'sub_22997':0x22997,
     'sub_22D1B':0x22D1B,'sub_11506':0x11506,'byte_53A44':0x53A44})
+BINDINGS.update({'unk_5023B':0x5023B,'aFd2Tmp_0':0x5023E,'fopen':0x36FCC,
+    'fclose':0x37244,'sub_37072':0x37072,'_sub_4E63D':0x4E63D,'sub_4E63D':0x4E63D,
+    'sub_4DEDA':0x4DEDA,'sub_1AA1D':0x1AA1D,'sub_35822':0x35822,'unk_52742':0x52742,
+    'dword_53A61':0x53A61})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -144,6 +150,7 @@ SOURCES = {
     "game_treasure": ("tools/fd2_matching_game_treasure.c", tuple(macro for macro, _ in TREASURE_CASES)),
     "game_call_wrappers": ("tools/fd2_matching_game_call_wrappers.c", tuple(macro for macro, _ in CALL_WRAPPER_CASES)),
     "game_global_calls": ("tools/fd2_matching_game_global_calls.c", tuple(macro for macro, _ in GLOBAL_CALL_CASES)),
+    "game_short_data": ("tools/fd2_matching_game_short_data.c", tuple(macro for macro, _ in SHORT_DATA_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),

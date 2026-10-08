@@ -9569,3 +9569,15 @@ IDA映像已有合法9.4／py312-v1環境；第一次命令路徑錯誤，核對
 最終兩輪54份物件、完整收據及機器碼相同，全部另由objcopy核對。五個新C加入全檔組合後，357074 bytes及SHA與原檔相同，LE重定位逐筆驗證。原始未還原區間仍保留，`decompilation_complete=false`；Goal及#198保持未完成，正式Go／Ebiten及PLAYER-E2不提升，現行數字只引用[58](58-fd2-exe-re-coverage.md)。
 
 本批收尾：真正主機gh於開工及提交前取得官方16項，verify無可能已完成項，8項仍需人工判讀。177條教訓／66個guard、32份來源SHA、92個原始函式與146-byte清冊外來源分列、999份物件／977份連結產碼／22份布局拒收及179個本地連結通過。原檔SHA不變，新產物UID／GID1000；衛生掃描仍為既有2811項，.md目錄0，FD2容器全部退出移除。全域寫入C、原始參照及完整區間證據隨GitHub提交，完整EXE及商用工具鏈留本機，提交與真正遠端HEAD回填#198。
+
+## 2026-10-09 八個短資料C匹配
+
+上一輪已推送`82d906a9`。本輪沿工具鏈路由及固定IDA 9.4完整指令，新增[短資料C來源](../../tools/fd2_matching_game_short_data.c)。原始29117的FD2.TMP讀取77 bytes、343E2欄位寫入／訊息64、34C1E兩筆欄位更新78、34CB3欄位更新25、34F74局部資料複製87、352E2低byte兩次運算63、35A2F byte轉移25、35C22空callback1，八個完整函式共420 bytes逐位元組相同。
+
+原始29117的207360是配置與讀取長度，IDA顯示成loc相對運算元只作導覽，不當資料指標。34F74使用sizeof=3的RawThree，實際compiler產生movsw＋movsb，保留4-byte堆疊槽。352E2以byte讀取53BEF，減14、倍增及第二次加一皆保留低8位元寬度，不改成未窄化整數運算。所有callee及全域位址由直接call／LE fixup逐筆驗證，作者型別與用途不由C導航名稱推定。
+
+35C22原始只有RET，C空函式預設會加stack check，使用[官方Watcom選項pragma](https://open-watcom.github.io/open-watcom-1.9/cguide.html)的check_stack開關，只包住此函式後恢復on，實際10.0a產碼正好一byte。pragma不提供組語或機器碼，文件只說明選項契約，不證明原作精確版本或作者寫法。12D7B／2935B／3415E仍有完整區間差異；不同callee宣告及中間值試驗結果保存，不因語意近似而增加覆蓋。
+
+既有compile handle在接續時已不存在，Docker也已退出，但收據及物件存在，沿同一輸入接續連結，沒有重啟舊程序。最終兩輪99份物件、完整收據及機器碼相同，全部由objcopy獨立核對。新C加入全檔組合後，357074 bytes及SHA與原檔相同，LE重定位逐筆驗證。其餘未還原原版仍保留，`decompilation_complete=false`，Goal與#198未完成；正式Go／Ebiten及PLAYER-E2不提升。現行數字只引用[58](58-fd2-exe-re-coverage.md)。
+
+本批收尾：真正主機gh於開工及提交前取得官方16項，verify無可能已完成項，8項仍需人工判讀。177條教訓／66個guard、33份來源SHA、100個原始函式與146-byte清冊外來源分列、1098份物件／1076份連結產碼／22份布局拒收及182個本地連結通過。原檔SHA不變，新產物UID／GID1000；衛生掃描仍為既有2811項，.md目錄0，FD2容器全部退出移除。短資料C、三項未匹配結果與完整區間證據隨GitHub提交，完整EXE及商用工具鏈留本機，提交與真正遠端HEAD回填#198。
