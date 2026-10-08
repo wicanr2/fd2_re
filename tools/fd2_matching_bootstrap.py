@@ -46,19 +46,40 @@ def main():
     for directory, report in reports:
         for trial in report["trials"]:
             if trial["exact_interval_bytes"]:
-                previous = selected.get(trial["address"])
-                if previous and previous[1]["code_sha256"] != trial["code_sha256"]:
-                    raise ValueError("同一位址的已匹配 C 來源相互矛盾")
-                selected.setdefault(trial["address"], (directory, trial))
+                compiled = (directory / trial["stem"] / "candidate.bin").read_bytes()
+                if hashlib.sha256(compiled).hexdigest() != trial["code_sha256"]:
+                    raise ValueError("C 程式碼與連結收據不符")
+                intervals = trial.get("function_intervals", [{"address": trial["address"], "offset": 0, "size": len(compiled)}])
+                addresses = trial.get("addresses", [trial["address"]])
+                if [part["address"] for part in intervals] != addresses:
+                    raise ValueError("已匹配函式清單與區間不符")
+                if len(intervals) > 1 and not trial.get("exact_entry_offsets"):
+                    raise ValueError("多函式來源未證明各入口位置相同")
+                cursor = 0
+                for part in intervals:
+                    address = part["address"]
+                    function = by_address[address]
+                    start, end = int(address, 16), int(function["inventory"]["end"], 16)
+                    if part["offset"] != cursor or start != int(trial["address"], 16) + cursor or part["size"] != end - start:
+                        raise ValueError("已匹配區間不連續或不符合原始邊界")
+                    code = compiled[cursor:cursor + part["size"]]
+                    previous = selected.get(address)
+                    if previous and previous[3] != code:
+                        raise ValueError("同一位址的已匹配 C 來源相互矛盾")
+                    selected.setdefault(address, (directory, trial, part, code))
+                    cursor += part["size"]
+                if cursor != len(compiled):
+                    raise ValueError("多函式區間未覆蓋完整編譯碼")
     rebuilt = bytearray(raw)
     source_spans = []
     written_offsets = set()
-    for address, (directory, trial) in selected.items():
+    for address, (directory, trial, part, compiled) in selected.items():
         function = by_address[address]
-        instructions = [i for chunk in function["chunks"] for i in chunk["instructions"]]
-        compiled = (directory / trial["stem"] / "candidate.bin").read_bytes()
-        if hashlib.sha256(compiled).hexdigest() != trial["code_sha256"]:
-            raise ValueError("C 程式碼與連結收據不符")
+        start, end = int(address, 16), int(function["inventory"]["end"], 16)
+        instructions = [i for chunk in function["chunks"] for i in chunk["instructions"]
+                        if start <= int(i["ida_linear_address"], 16) < end]
+        if len(trial.get("addresses", [address])) == 1 and len(instructions) != sum(len(chunk["instructions"]) for chunk in function["chunks"]):
+            raise ValueError("單函式來源不能略過共用尾段")
         if compiled.hex() != "".join(i["loaded_bytes"] for i in instructions):
             raise ValueError("C 程式碼沒有完整匹配原始 IDA 指令")
         cursor = 0
@@ -95,6 +116,9 @@ def main():
         source_spans.append({"ida_linear_address": address, "source_kind": "matched_c",
                              "size": len(compiled), "compiler_flags": trial["flags"],
                              "original_classification": function["inventory"]["classification"]})
+        if len(trial.get("addresses", [])) > 1:
+            source_spans[-1].update(compiled_group=trial["address"], group_code_sha256=trial["code_sha256"],
+                                    group_offset=part["offset"])
     args.output.mkdir(parents=True, exist_ok=True)
     output = args.output / "FD2.EXE"
     output.write_bytes(rebuilt)

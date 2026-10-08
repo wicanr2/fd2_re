@@ -35,7 +35,11 @@ CONTROL_CASES = tuple(("F" + format(address, "X"), address) for address in (
     0x10620, 0x13460, 0x1685C, 0x16886, 0x173E7, 0x17AA9, 0x1875D, 0x18795,
     0x1C8ED, 0x1CA89, 0x1F183, 0x206C5, 0x20707, 0x2073D, 0x20822, 0x2084A,
     0x20926, 0x21206, 0x21396, 0x21527))
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES)
+BATTLE_CASES = tuple(("F" + format(address, "X"), address) for address in (
+    0x13565, 0x14625, 0x14B16, 0x164E8, 0x175A9, 0x1B83D, 0x1B8A6,
+    0x1C142, 0x1C220)) + (("COUNTS_GROUP", 0x1B5F1),)
+CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7)}
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -73,6 +77,12 @@ BINDINGS.update({"dword_53A0C": 0x53A0C, "dword_53A2C": 0x53A2C,
                  "sub_21548": 0x21548})
 BINDINGS.update({"_sub_4E9BB": 0x4E9BB, "_sub_4E63D": 0x4E63D,
                  "_sub_4E516": 0x4E516})
+BINDINGS.update({"byte_51AAC": 0x51AAC, "sub_1A30B": 0x1A30B,
+                 "sub_146A7": 0x146A7, "dword_53A10": 0x53A10,
+                 "dword_53A14": 0x53A14, "dword_53EEC": 0x53EEC,
+                 "sub_16559": 0x16559, "sub_25A96": 0x25A96,
+                 "sub_17AA9": 0x17AA9, "malloc": 0x36D16,
+                 "sub_1B722": 0x1B722, "sub_1BB8C": 0x1BB8C})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -81,6 +91,7 @@ SOURCES = {
     "game_copy": ("tools/fd2_matching_game_copy.c", tuple(macro for macro, _ in COPY_CASES)),
     "game_queries": ("tools/fd2_matching_game_queries.c", tuple(macro for macro, _ in QUERY_CASES)),
     "game_controls": ("tools/fd2_matching_game_controls.c", tuple(macro for macro, _ in CONTROL_CASES)),
+    "game_battle_records": ("tools/fd2_matching_game_battle_records.c", tuple(macro for macro, _ in BATTLE_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 COMPILER_INPUTS = {
@@ -123,7 +134,10 @@ def compile_stage(args):
         stem = f"G{index:02}"
         flags = ["-mf", "-" + cpu, *COSTS[cost], "-d" + macro]
         commands.append("R:\\WCC386.EXE " + " ".join(flags) + f" -fo={stem}.OBJ GAME.C > {stem}.TXT")
-        trials.append({"stem": stem, "address": hex(address), "flags": flags})
+        trial = {"stem": stem, "address": hex(address), "flags": flags}
+        if macro in CASE_GROUPS:
+            trial["addresses"] = [hex(value) for value in CASE_GROUPS[macro]]
+        trials.append(trial)
     compile_batch = args.output / "BUILD.BAT"
     compile_batch.write_text("\r\n".join(commands) + "\r\n", encoding="ascii")
     lines.extend(["call BUILD.BAT", "exit"])
@@ -183,12 +197,44 @@ def link_stage(args):
         coff, dis = out / "candidate.cof", out / "candidate.dis"
         checked([str(args.converter), "-fcoff", str(obj), str(coff)])
         checked(["wdis", "-l=" + str(dis), str(obj)])
-        symbols = re.findall(r"^0000\s+([_A-Za-z][_A-Za-z0-9]*):", dis.read_text(), re.M)
+        publics = re.findall(r"^([0-9A-Fa-f]{4,8})\s+([_A-Za-z][_A-Za-z0-9]*):", dis.read_text(), re.M)
+        symbols = [name for offset, name in publics if int(offset, 16) == 0]
         if len(symbols) != 1:
-            raise ValueError("每個候選必須只有一個函式")
+            raise ValueError("候選必須有唯一的起始函式")
         size, address = text_size(coff), int(trial["address"], 16)
-        fn = next(f for f in image["functions"] if int(f["inventory"]["start"], 16) == address)
-        instructions = [i for c in fn["chunks"] for i in c["instructions"]]
+        addresses = trial.get("addresses", [trial["address"]])
+        if len(addresses) > 1:
+            macro = next((flag[2:] for flag in trial["flags"] if flag.startswith("-d")), None)
+            if macro not in SOURCES[source_key][1] or addresses != [hex(value) for value in CASE_GROUPS.get(macro, ())]:
+                raise ValueError("多函式區間未依來源登記")
+        functions = [next(f for f in image["functions"] if f["inventory"]["start"] == target) for target in addresses]
+        if functions[0]["inventory"]["start"] != trial["address"]:
+            raise ValueError("候選起始位址與函式區間不符")
+        group_end = int(functions[-1]["inventory"]["end"], 16)
+        if any(not address <= int(i["ida_linear_address"], 16) < group_end for fn in functions for c in fn["chunks"] for i in c["instructions"]):
+            raise ValueError("候選區間沒有涵蓋所需的共用尾段")
+        intervals = []
+        instructions = []
+        cursor = address
+        for fn in functions:
+            start, end = int(fn["inventory"]["start"], 16), int(fn["inventory"]["end"], 16)
+            if start != cursor:
+                raise ValueError("多函式區間必須連續且不重疊")
+            part = [i for c in fn["chunks"] for i in c["instructions"] if start <= int(i["ida_linear_address"], 16) < end]
+            if len(addresses) == 1 and len(part) != sum(len(c["instructions"]) for c in fn["chunks"]):
+                raise ValueError("單函式候選不能略過共用尾段")
+            for instruction in part:
+                if int(instruction["ida_linear_address"], 16) != cursor:
+                    raise ValueError("原始指令不連續")
+                cursor += len(bytes.fromhex(instruction["loaded_bytes"]))
+            if cursor != end or end - start != fn["inventory"]["size"]:
+                raise ValueError("目標指令不涵蓋完整原始函式區間")
+            intervals.append({"address": hex(start), "offset": start - address, "size": end - start})
+            instructions.extend(part)
+        entry_offsets_equal = len(publics) == len(functions)
+        if len(addresses) > 1:
+            actual_entries = {name.lstrip("_").lower(): int(offset, 16) for offset, name in publics}
+            entry_offsets_equal = entry_offsets_equal and all(actual_entries.get("sub_" + format(int(part["address"], 16), "x")) == part["offset"] for part in intervals)
         expected = bytearray()
         for instruction in instructions:
             offset = int(instruction["file_offset"], 16)
@@ -196,7 +242,7 @@ def link_stage(args):
             if original[offset:offset + len(raw)] != raw:
                 raise ValueError("原始指令版本不符")
             expected.extend(bytes.fromhex(instruction["loaded_bytes"]))
-        if len(expected) != fn["inventory"]["size"]:
+        if len(expected) != sum(part["size"] for part in intervals):
             raise ValueError("目標指令不涵蓋完整連續區間")
         script = out / "link.ld"
         definitions = "\n".join(f"{key} = {value:#x};" for key, value in BINDINGS.items())
@@ -208,15 +254,19 @@ def link_stage(args):
         code = linked_text(exe, address, size)
         (out / "candidate.bin").write_bytes(code)
         first = next((i for i, pair in enumerate(zip(code, expected)) if pair[0] != pair[1]), min(len(code), len(expected)))
-        results.append({**trial, "candidate_size": size, "original_size": len(expected), "exact_interval_bytes": code == expected,
-                        "first_difference_offset": None if code == expected else first, "code_sha256": hashlib.sha256(code).hexdigest(),
-                        "original_classification": fn["inventory"]["classification"]})
+        result = {**trial, "candidate_size": size, "original_size": len(expected), "exact_interval_bytes": code == expected and entry_offsets_equal,
+                  "first_difference_offset": None if code == expected else first, "code_sha256": hashlib.sha256(code).hexdigest(),
+                  "original_classification": functions[0]["inventory"]["classification"]}
+        if len(addresses) > 1:
+            result.update(function_intervals=intervals, exact_entry_offsets=entry_offsets_equal,
+                          original_classifications=[f["inventory"]["classification"] for f in functions])
+        results.append(result)
     report = {"schema_version": 1, "input": reference, "source_key": source_key,
               "source_path": source_path, "source_sha256": compile_report["source_sha256"],
               "compiler_version": compiler_version, "compiler_inputs": compile_report["compiler_inputs"],
               "compile_driver_sha256": compile_report["driver_sha256"],
               "driver_sha256": sha(Path(__file__)), "evidence_sha256": sha(args.evidence), "trials": results,
-              "matched_addresses": sorted({r["address"] for r in results if r["exact_interval_bytes"]})}
+              "matched_addresses": sorted({address for r in results if r["exact_interval_bytes"] for address in r.get("addresses", [r["address"]])})}
     (args.output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"matched_addresses": report["matched_addresses"], "trials": len(results)}), flush=True)
 
