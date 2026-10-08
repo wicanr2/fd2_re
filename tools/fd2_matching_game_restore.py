@@ -118,7 +118,7 @@ BINDINGS.update({'dword_53AD5': 0x53AD5, 'dword_53AD9': 0x53AD9,
     'sub_4E031': 0x4E031, 'sub_1956B': 0x1956B, 'sub_15F84': 0x15F84,
     'sub_19953': 0x19953, 'sub_197E5': 0x197E5, 'sub_25B45': 0x25B45,
     'sub_16C57': 0x16C57, 'sub_196CB': 0x196CB, 'sub_12263': 0x12263,
-    'sub_1B932': 0x1B932, 'funcs_1199C': 0x1199C, 'dword_53A7D': 0x53A7D})
+    'sub_1B932': 0x1B932, 'funcs_1199C': 0x51B91, 'dword_53A7D': 0x53A7D})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -216,6 +216,44 @@ def compile_stage(args):
     print(f"{len(trials)} 個主程式 C 候選已編譯。", flush=True)
 
 
+def verify_original_bindings(functions, original, bindings):
+    """每個具名參照都由直接call目標或原始LE fixup核對，不從名稱推位址。"""
+    from le_xref import parse_le, parse_fixups
+    fixups = parse_fixups(original, parse_le(original))
+    normalized = {}
+    for key in bindings:
+        normalized.setdefault(key.lstrip('_'), []).append(key)
+    normalized.setdefault('sub_36CD7', []).append('__CHK')
+    references = []
+    for function in functions:
+        for chunk in function['chunks']:
+            for instruction in chunk['instructions']:
+                code = bytes.fromhex(instruction['loaded_bytes'])
+                file_bytes = bytes.fromhex(instruction['file_bytes'])
+                offset = int(instruction['file_offset'], 16)
+                if original[offset:offset + len(file_bytes)] != file_bytes:
+                    raise ValueError('綁定驗證的原始指令版本不符')
+                keys = {key for token in re.findall(r'\b[_A-Za-z][_A-Za-z0-9]*\b', instruction['instruction']) for key in normalized.get(token, [])}
+                locations = [(p, value) for p, value in fixups.items() if offset <= p < offset + len(code)]
+                if len(code) == 5 and code[0] in (0xE8, 0xE9):
+                    value = int(instruction['ida_linear_address'], 16) + 5 + int.from_bytes(code[1:], 'little', signed=True)
+                    kind = 'direct_rel32'
+                elif len(locations) == 1:
+                    position, value = locations[0]
+                    relative = position - offset
+                    if relative + 4 > len(code) or int.from_bytes(code[relative:relative + 4], 'little') != value:
+                        raise ValueError('綁定驗證的LE欄位不完整')
+                    kind = 'original_le_fixup'
+                else:
+                    continue
+                for key in sorted(keys):
+                    if bindings[key] != value:
+                        raise ValueError(f'原始參照與綁定位址不符: {key} at {instruction["ida_linear_address"]}')
+                    references.append({'symbol': key, 'ida_linear_address': instruction['ida_linear_address'],
+                                       'value': hex(value), 'kind': kind})
+    return references
+
+
 def link_stage(args):
     from fd2_matching_pilot import checked, linked_text
     from fd2_matching_legacy_verify import OBJCONV_SHA256, text_size
@@ -251,6 +289,8 @@ def link_stage(args):
             'source_sha256': sha(include_source), 'dos_sha256': hashlib.sha256(expected).hexdigest()})
     if compile_report.get('source_includes', []) != expected_includes:
         raise ValueError('C include 登錄與編譯收據不符')
+    target_addresses = {address for trial in compile_report['trials'] for address in trial.get('addresses', [trial['address']])}
+    binding_references = verify_original_bindings([f for f in image['functions'] if f['inventory']['start'] in target_addresses], original, BINDINGS)
     args.output.mkdir(parents=True, exist_ok=True)
     results = []
     for trial in compile_report["trials"]:
@@ -368,6 +408,7 @@ def link_stage(args):
               "compiler_version": compiler_version, "compiler_inputs": compile_report["compiler_inputs"],
               "compile_driver_sha256": compile_report["driver_sha256"],
               "driver_sha256": sha(Path(__file__)), "evidence_sha256": sha(args.evidence), "trials": results,
+              "original_binding_references": binding_references,
               "matched_addresses": sorted({part['address'] for r in results if r['exact_interval_bytes']
                     for part in r.get('function_intervals', [{'address': r['address']}]) if part.get('kind', 'ida_function') == 'ida_function'})}
     if expected_includes:

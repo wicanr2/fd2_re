@@ -83,8 +83,7 @@ full:
     if (frame.saved_item != 1 || dword_53C57 != 0) goto declined;
     sub_196CB();
     if (!sub_1B932(unit, 0)) goto unavailable;
-    frame.saved_item = sub_1B722(unit, dword_53C57);
-    frame.old_item = frame.saved_item;
+    frame.old_item = frame.saved_item = sub_1B722(unit, dword_53C57);
     sub_1B8E7(unit, dword_53C57);
     sub_1BB8C(unit, item);
     *(unsigned short *)(dword_53A55 + grid * 3 + 0x54) = frame.old_item;
@@ -103,6 +102,7 @@ unavailable:
     goto redraw_done;
 declined:
     MESSAGE(424, 0xab6e3);
+    sub_375B2(200);
     goto redraw_done;
 other:
     if (kind != 1) goto dispatch;

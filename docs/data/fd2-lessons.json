@@ -1890,6 +1890,19 @@
         ],
         "pattern": "read_text\\(encoding='utf-8'\\)[\\s\\S]*write_text[\\s\\S]*encoding='utf-8'"
       }
+    },
+    {
+      "id": "matching-bindings-use-original-reference-targets",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "外部位址逐筆由原始rel32目標或LE fixup核對，不從導覽名稱的數字推定；任一矛盾在連結輸出前拒收。入口tools/fd2_matching_game_restore.py的verify_original_bindings，驗證tools/test_fd2_matching_bindings.py，收據docs/data/ida/fd2_matching_full_20261008.json的validation.original_binding_guard。",
+      "why": "funcs_1199C名稱被誤作1199C表址，但19511原始指令與LE fixup證實51B91。新守衛逐筆驗證，早一筆矛盾不會被後一筆正確參照覆蓋；名稱誤推及公開CLI提前拒收已驗證。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": ["tools/fd2_matching_game_restore.py"],
+        "pattern": "binding_references = verify_original_bindings"
+      }
     }
   ]
 }
