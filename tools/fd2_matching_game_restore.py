@@ -72,6 +72,9 @@ COMPOUND_CASES = (("SCENE_REVERSE",0x230F2),)
 DENSE_BRANCH_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x20AAF,0x2D392,0x12263,0x20B72,0x12C60,0x1FF79,0x1B019,0x34716,
     0x177FC,0x17D6F,0x1B14B,0x1EC2A,0x1B0AD,0x11AA8,0x2D7BD,0x1D80B))
+STATE_QUERY_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x18409,0x22C04,0x1E739,0x20765,0x1C75E,0x31DBE,0x32004,0x22AF6,
+    0x17E0B,0x111BA,0x2A5D0,0x10B4E,0x24C1E))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -79,7 +82,7 @@ CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x211
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES, *DENSE_BRANCH_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES, *DENSE_BRANCH_CASES, *STATE_QUERY_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -194,6 +197,13 @@ BINDINGS.update({'dword_54137':0x54137,'dword_53C1B':0x53C1B,'sub_17898':0x17898
     'word_539F0':0x539F0,'word_539F2':0x539F2,'word_53A8D':0x53A8D,
     'int386':0x36D98,'_int386':0x36D98,'sub_2D85F':0x2D85F,'sub_13A9F':0x13A9F,'funcs_1197B':0x51B19,
     'sub_1685C':0x1685C,'sub_16886':0x16886})
+BINDINGS.update({'sub_182AD':0x182AD,'sub_18312':0x18312,'sub_1839B':0x1839B,
+    'unk_51F96':0x51F96,'sub_1C81F':0x1C81F,'dword_54127':0x54127,'sub_31E80':0x31E80,
+    'sub_17EEF':0x17EEF,'sub_184C0':0x184C0,'dword_53BFF':0x53BFF,
+    'dword_53A59':0x53A59,'dword_53BE3':0x53BE3,'sub_10C50':0x10C50,
+    'aRb_12':0x500A9,'aFdiconB24_6':0x500AC,'aFileFdiconB24E':0x500B7,'aFdfieldDat':0x51A59,
+    'aWb_2':0x500D3,'aFd2Tmp_1':0x500D6,'aRb_13':0x500DE,'aFileNotFoundS':0x500E1,'aOutOfMemoryAtL':0x500FC,
+    'sub_24D22':0x24D22,'fwrite':0x3744B,'fseek':0x375F0})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -216,6 +226,7 @@ SOURCES = {
     "game_scene_flow": ("tools/fd2_matching_game_scene_flow.c", tuple(macro for macro, _ in SCENE_FLOW_CASES)),
     "game_compound": ("tools/fd2_matching_game_compound.c", tuple(macro for macro, _ in COMPOUND_CASES)),
     "game_dense_branches": ("tools/fd2_matching_game_dense_branches.c", tuple(macro for macro, _ in DENSE_BRANCH_CASES)),
+    "game_state_queries": ("tools/fd2_matching_game_state_queries.c", tuple(macro for macro, _ in STATE_QUERY_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
