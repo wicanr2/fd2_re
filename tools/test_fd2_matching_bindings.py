@@ -68,6 +68,21 @@ def main():
     rejected.append('public_link_rejects_before_output')
     receipt = {'input_sha256':image['input']['sha256'], 'tool':image['tool'],
                'reference_count':len(references), 'indirect_table_reference':table[0], 'rejected':rejected}
+    key_function=next(f for f in image['functions'] if f['inventory']['start']=='0x11aa8')
+    explicit=verify_original_bindings([key_function],raw,BINDINGS)
+    offsets=[r for r in explicit if r.get('operand_addend')]
+    assert len(offsets)==6 and all(r['symbol']=='word_53A8D' and r['symbol_base']=='0x53a8d' and r['value']=='0x53a8e' and r['operand_addend']==1 for r in offsets)
+    offset_rejected=[]
+    for label in ('base_shifted','offset_changed','offset_omitted'):
+        altered=copy.deepcopy(key_function);binding=dict(BINDINGS)
+        if label=='base_shifted':binding['word_53A8D']+=1
+        else:
+            point=next(i for c in altered['chunks'] for i in c['instructions'] if i['ida_linear_address']=='0x11af7')
+            point['instruction']=point['instruction'].replace('word_53A8D+1','word_53A8D+2' if label=='offset_changed' else 'word_53A8D')
+        try:verify_original_bindings([altered],raw,binding)
+        except ValueError:offset_rejected.append(label)
+        else:raise AssertionError(label)
+    receipt['explicit_addends']={'reference_count':6,'base':'0x53a8d','actual_target':'0x53a8e','operand_addend':1,'rejected':offset_rejected}
     (args.output/'result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(receipt,ensure_ascii=False))
 

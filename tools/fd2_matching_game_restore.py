@@ -69,6 +69,9 @@ SCENE_FLOW_CASES = tuple(('F' + format(address,'X'),address) for address in (
     0x2CF71,0x1F30A,0x1F1CC,0x354FE,0x13FD4,0x29C90,0x23CD5,0x356B7,
     0x23B5F,0x29DED,0x31602,0x235F9,0x230F2,0x112A5))
 COMPOUND_CASES = (("SCENE_REVERSE",0x230F2),)
+DENSE_BRANCH_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x20AAF,0x2D392,0x12263,0x20B72,0x12C60,0x1FF79,0x1B019,0x34716,
+    0x177FC,0x17D6F,0x1B14B,0x1EC2A,0x1B0AD,0x11AA8,0x2D7BD,0x1D80B))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -76,7 +79,7 @@ CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x211
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES, *DENSE_BRANCH_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -187,6 +190,10 @@ BINDINGS.update({'sub_4E4B9':0x4E4B9,'sub_4E4E8':0x4E4E8,'sub_4E4D1':0x4E4D1,'su
     'unk_52113':0x52113,'unk_5211E':0x5211E,'sub_13536':0x13536,
     'unk_520BA':0x520BA,'unk_520C1':0x520C1,'unk_520C8':0x520C8,
     'unk_520CF':0x520CF,'unk_520D6':0x520D6,'unk_520DD':0x520DD,'sub_1145A':0x1145A})
+BINDINGS.update({'dword_54137':0x54137,'dword_53C1B':0x53C1B,'sub_17898':0x17898,
+    'word_539F0':0x539F0,'word_539F2':0x539F2,'word_53A8D':0x53A8D,
+    'int386':0x36D98,'_int386':0x36D98,'sub_2D85F':0x2D85F,'sub_13A9F':0x13A9F,'funcs_1197B':0x51B19,
+    'sub_1685C':0x1685C,'sub_16886':0x16886})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -208,6 +215,7 @@ SOURCES = {
     "game_mid_flow": ("tools/fd2_matching_game_mid_flow.c", tuple(macro for macro, _ in MID_FLOW_CASES)),
     "game_scene_flow": ("tools/fd2_matching_game_scene_flow.c", tuple(macro for macro, _ in SCENE_FLOW_CASES)),
     "game_compound": ("tools/fd2_matching_game_compound.c", tuple(macro for macro, _ in COMPOUND_CASES)),
+    "game_dense_branches": ("tools/fd2_matching_game_dense_branches.c", tuple(macro for macro, _ in DENSE_BRANCH_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
@@ -308,7 +316,8 @@ def verify_original_bindings(functions, original, bindings):
                 offset = int(instruction['file_offset'], 16)
                 if original[offset:offset + len(file_bytes)] != file_bytes:
                     raise ValueError('綁定驗證的原始指令版本不符')
-                keys = {key for token in re.findall(r'\b[_A-Za-z][_A-Za-z0-9]*\b', instruction['instruction']) for key in normalized.get(token, [])}
+                operand_text = instruction['instruction'].split(';',1)[0]
+                keys = {key for token in re.findall(r'\b[_A-Za-z][_A-Za-z0-9]*\b',operand_text) for key in normalized.get(token, [])}
                 locations = [(p, value) for p, value in fixups.items() if offset <= p < offset + len(code)]
                 if len(code) == 5 and code[0] in (0xE8, 0xE9):
                     value = int(instruction['ida_linear_address'], 16) + 5 + int.from_bytes(code[1:], 'little', signed=True)
@@ -322,10 +331,21 @@ def verify_original_bindings(functions, original, bindings):
                 else:
                     continue
                 for key in sorted(keys):
-                    if bindings[key] != value:
+                    # 保留IDA原運算元中的明示常數位移，例如word_53A8D+1。
+                    token = key.lstrip('_')
+                    suffixes = re.findall(r'\b'+re.escape(token)+r'\s*([+-])\s*(0[xX][0-9A-Fa-f]+|[0-9A-Fa-f]+[hH]|[0-9]+)(?![A-Za-z0-9_])',operand_text)
+                    offsets = set()
+                    for sign,number in suffixes:
+                        amount = int(number[:-1],16) if number[-1:] in ('h','H') else int(number,0 if number.lower().startswith('0x') else 10)
+                        offsets.add(-amount if sign=='-' else amount)
+                    if len(offsets)>1:
+                        raise ValueError('原始具名參照含矛盾常數位移')
+                    addend = next(iter(offsets),0)
+                    if bindings[key]+addend != value:
                         raise ValueError(f'原始參照與綁定位址不符: {key} at {instruction["ida_linear_address"]}')
-                    references.append({'symbol': key, 'ida_linear_address': instruction['ida_linear_address'],
-                                       'value': hex(value), 'kind': kind})
+                    reference={'symbol': key,'ida_linear_address':instruction['ida_linear_address'],'value':hex(value),'kind':kind}
+                    if addend:reference.update(symbol_base=hex(bindings[key]),operand_addend=addend,original_operand=instruction['instruction'])
+                    references.append(reference)
     return references
 
 
