@@ -66,12 +66,22 @@ def main():
                     raise ValueError("已匹配函式清單與區間不符")
                 if len(intervals) > 1 and not trial.get("exact_entry_offsets"):
                     raise ValueError("多函式來源未證明各入口位置相同")
+                sparse = trial.get('layout') == 'sparse_functions'
+                if sparse:
+                    from fd2_matching_game_restore import SPARSE_GROUPS, SOURCES
+                    macro = next((flag[2:] for flag in trial['flags'] if flag.startswith('-d')), None)
+                    source_key = report.get('source_key')
+                    if source_key not in SOURCES or macro not in SOURCES[source_key][1] or addresses != [hex(a) for a in SPARSE_GROUPS.get(macro, ())]:
+                        raise ValueError('非連續函式來源未登錄')
+                    fragments = trial.get('sparse_layout', {}).get('fragments', [])
+                    if len(fragments) != len(intervals) or any(f['address'] != p['address'] or f['compiler_offset'] != p['offset'] or f['size'] != p['size'] for f, p in zip(fragments, intervals)):
+                        raise ValueError('非連續函式布局與完整區間不符')
                 cursor = 0
                 for part in intervals:
                     address = part["address"]
                     function = by_address[address]
                     start, end = int(address, 16), int(function["inventory"]["end"], 16)
-                    if part["offset"] != cursor or start != int(trial["address"], 16) + cursor or part["size"] != end - start:
+                    if part["offset"] != cursor or (not sparse and start != int(trial["address"], 16) + cursor) or part["size"] != end - start:
                         raise ValueError("已匹配區間不連續或不符合原始邊界")
                     code = compiled[cursor:cursor + part["size"]]
                     previous = selected.get(address)
@@ -132,6 +142,9 @@ def main():
         if len(trial.get("addresses", [])) > 1:
             source_spans[-1].update(compiled_group=trial["address"], group_code_sha256=trial["code_sha256"],
                                     group_offset=part["offset"])
+            if trial.get('layout') == 'sparse_functions':
+                source_spans[-1].update(group_layout='sparse_functions',
+                    sparse_transform_sha256=trial['sparse_transform_sha256'])
     args.output.mkdir(parents=True, exist_ok=True)
     output = args.output / "FD2.EXE"
     output.write_bytes(rebuilt)

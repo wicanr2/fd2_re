@@ -41,11 +41,14 @@ BATTLE_CASES = tuple(("F" + format(address, "X"), address) for address in (
 EVENT_CASES = (("F21082", 0x21082), ("EVENT_PAIR", 0x2111A), ("F214AD", 0x214AD))
 LAYOUT_CASES = (("EVENT_FULL", 0x2111A),)
 QUAKE_CASES = (("F21548", 0x21548),)
+EFFECT_TAIL_CASES = tuple(("F" + format(address, "X"), address) for address in (
+    0x2185F, 0x2189A, 0x219AD, 0x21A9E, 0x21AD9, 0x21B18, 0x21B99)) + (("INDEXED_PAIR", 0x2111A),)
+SPARSE_GROUPS = {"INDEXED_PAIR": (0x2111A, 0x21B18)}
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -100,6 +103,11 @@ BINDINGS.update({'unk_52096': 0x52096, 'unk_520A2': 0x520A2, 'unk_520AE': 0x520A
     'dword_53A5D': 0x53A5D, 'sub_1399C': 0x1399C, 'sub_1F558': 0x1F558,
     'sub_11EB0': 0x11EB0, '_printf': 0x36DC1, 'printf': 0x36DC1,
     'exit': 0x36DE4, 'aOutOfMemoryAtE': 0x501CF})
+BINDINGS.update({'dword_53A6D': 0x53A6D, 'sub_21548': 0x21548,
+    'sub_2189A': 0x2189A, 'sub_219AD': 0x219AD, 'sub_21B18': 0x21B18,
+    'sub_21EB1': 0x21EB1, 'sub_11EEE': 0x11EEE, 'sub_4DB9C': 0x4DB9C,
+    'sub_127A9': 0x127A9, 'sub_1C8ED': 0x1C8ED,
+    '_abs': 0x375E2, '_sqrt': 0x3C6FC, '__CHP': 0x377A4, 'dbl_501F0': 0x501F0})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -112,6 +120,7 @@ SOURCES = {
     "game_events": ("tools/fd2_matching_game_events.c", tuple(macro for macro, _ in EVENT_CASES)),
     "game_event_layout": ("tools/fd2_matching_game_event_layout.c", tuple(macro for macro, _ in LAYOUT_CASES)),
     "game_quake": ("tools/fd2_matching_game_quake.c", tuple(macro for macro, _ in QUAKE_CASES)),
+    "game_effect_tail": ("tools/fd2_matching_game_effect_tail.c", tuple(macro for macro, _ in EFFECT_TAIL_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 COMPILER_INPUTS = {
@@ -155,8 +164,8 @@ def compile_stage(args):
         flags = ["-mf", "-" + cpu, *COSTS[cost], "-d" + macro]
         commands.append("R:\\WCC386.EXE " + " ".join(flags) + f" -fo={stem}.OBJ GAME.C > {stem}.TXT")
         trial = {"stem": stem, "address": hex(address), "flags": flags}
-        if macro in CASE_GROUPS:
-            trial["addresses"] = [hex(value) for value in CASE_GROUPS[macro]]
+        if macro in CASE_GROUPS or macro in SPARSE_GROUPS:
+            trial["addresses"] = [hex(value) for value in (CASE_GROUPS | SPARSE_GROUPS)[macro]]
         trials.append(trial)
     compile_batch = args.output / "BUILD.BAT"
     compile_batch.write_text("\r\n".join(commands) + "\r\n", encoding="ascii")
@@ -223,9 +232,10 @@ def link_stage(args):
             raise ValueError("候選必須有唯一的起始函式")
         size, address = text_size(coff), int(trial["address"], 16)
         addresses = trial.get("addresses", [trial["address"]])
+        macro = next((flag[2:] for flag in trial["flags"] if flag.startswith("-d")), None)
+        sparse = macro in SPARSE_GROUPS
         if len(addresses) > 1:
-            macro = next((flag[2:] for flag in trial["flags"] if flag.startswith("-d")), None)
-            if macro not in SOURCES[source_key][1] or addresses != [hex(value) for value in CASE_GROUPS.get(macro, ())]:
+            if macro not in SOURCES[source_key][1] or addresses != [hex(value) for value in (CASE_GROUPS | SPARSE_GROUPS).get(macro, ())]:
                 raise ValueError("多函式區間未依來源登記")
         by_address = {f['inventory']['start']: f for f in image['functions']}
         functions = []
@@ -246,6 +256,8 @@ def link_stage(args):
         cursor = address
         for fn in functions:
             start, end = int(fn["inventory"]["start"], 16), int(fn["inventory"]["end"], 16)
+            if sparse:
+                cursor = start
             if start != cursor:
                 raise ValueError("多函式區間必須連續且不重疊")
             part = [i for c in fn["chunks"] for i in c["instructions"] if start <= int(i["ida_linear_address"], 16) < end]
@@ -257,7 +269,7 @@ def link_stage(args):
                 cursor += len(bytes.fromhex(instruction["loaded_bytes"]))
             if cursor != end or end - start != fn["inventory"]["size"]:
                 raise ValueError("目標指令不涵蓋完整原始函式區間")
-            intervals.append({"address": hex(start), "offset": start - address, "size": end - start})
+            intervals.append({"address": hex(start), "offset": sum(p['size'] for p in intervals) if sparse else start - address, "size": end - start})
             if source_key == 'game_event_layout':
                 intervals[-1]['kind'] = fn['inventory'].get('kind', 'ida_function')
                 if intervals[-1]['kind'] == 'unowned_code':
@@ -278,12 +290,21 @@ def link_stage(args):
             raise ValueError("目標指令不涵蓋完整連續區間")
         script = out / "link.ld"
         definitions = "\n".join(f"{key} = {value:#x};" for key, value in BINDINGS.items())
-        script.write_text(definitions + f"\nSECTIONS {{ .text {address:#x} : SUBALIGN(1) {{ *(_TEXT) }} "
+        sparse_layout = None
+        if sparse:
+            from fd2_matching_sparse import split_coff, read_sparse_pe
+            converted, sparse_layout = split_coff(coff.read_bytes(), dis.read_text(), [int(a, 16) for a in addresses])
+            coff = out / 'sparse.cof'
+            coff.write_bytes(converted)
+            sections = ' '.join(f".m{n} {p['address']} : SUBALIGN(1) {{ *({p['section']}) }}" for n, p in enumerate(sparse_layout['fragments']))
+        else:
+            sections = f".text {address:#x} : SUBALIGN(1) {{ *(_TEXT) }}"
+        script.write_text(definitions + f"\nSECTIONS {{ {sections} "
                           "/DISCARD/ : { *(CONST) *(CONST2) *(_DATA) *(_BSS) *(.depend) *(.reloc) } }\n", encoding="ascii")
         exe = out / "linked.exe"
         checked(["ld", "-mi386pe", "--image-base", "0", "--section-alignment", "1", "--file-alignment", "1",
                  "--no-insert-timestamp", "-T", str(script), "-e", symbols[0], "-o", str(exe), str(coff)])
-        code = linked_text(exe, address, size)
+        code = read_sparse_pe(exe, sparse_layout['fragments']) if sparse else linked_text(exe, address, size)
         (out / "candidate.bin").write_bytes(code)
         first = next((i for i, pair in enumerate(zip(code, expected)) if pair[0] != pair[1]), min(len(code), len(expected)))
         result = {**trial, "candidate_size": size, "original_size": len(expected), "exact_interval_bytes": code == expected and entry_offsets_equal,
@@ -292,6 +313,9 @@ def link_stage(args):
         if len(addresses) > 1:
             result.update(function_intervals=intervals, exact_entry_offsets=entry_offsets_equal,
                           original_classifications=[f["inventory"]["classification"] for f in functions])
+        if sparse:
+            result.update(layout='sparse_functions', sparse_layout=sparse_layout,
+                          sparse_transform_sha256=sha(Path(__file__).with_name('fd2_matching_sparse.py')))
         results.append(result)
     report = {"schema_version": 1, "input": reference, "source_key": source_key,
               "source_path": source_path, "source_sha256": compile_report["source_sha256"],

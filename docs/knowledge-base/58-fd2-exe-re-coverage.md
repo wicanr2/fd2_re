@@ -1,12 +1,12 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-## 2026-10-08 目前狀態（全檔 C 匹配，PARTIAL）
+## 2026-10-09 目前狀態（全檔 C 匹配，PARTIAL）
 
 使用者在三函式試驗後要求完成全檔匹配，並確認遊戲邏輯還原成 C；原作組語與第三方函式庫可保留，覆蓋分列。目標見[118](../goal/118-goal-fd2-matching-decompilation-20261008.md)，未完成工作登記[#198](https://github.com/wicanr2/fd2_re/issues/198)。第12章原版追蹤維持先前暫停。原對拍接續順序仍為 #41、#52、#197，再回 #33；本輪不提升既有章驗收。
 
 | 項目 | 分層狀態 | 最近驗證與入口 |
 |---|---|---|
-| #198 全檔 C 匹配 | PARTIAL；尚未完成 | 已以 Watcom 10.0a 純 C 匹配75個原始函式，共5725 bytes；另重現146-byte未歸屬區塊，合計5871 bytes。本批`sub_21548`完整791 bytes匹配，明示中間值及32位元位址整數計算重現乘法、加法與記錄位址資料流；兩輪九份物件及完整收據相同，另由objcopy核對。原始函式與合成C導航符號分開，清冊仍1305筆。現行十二組來源／版本774份候選具兩輪驗證，舊1037-byte布局及305-byte單元證據保留。先前790-byte負例留在`game_quake_attempt`並綁定當時提交，不能沿用為目前狀態。C來源及匹配／負例收據隨GitHub提交保存，穩定入口在README。函式台帳仍有1055個待還原或分類；38段／3363 bytes原始未歸屬CODE中，剩37段／3217 bytes未還原，owner及用途仍未知。全檔組合SHA相同仍依賴保留原版，不算C結案。來源、旗標及分列覆蓋見[主收據](../data/ida/fd2_matching_full_20261008.json)的`matching_summary`、`game_quake_matches`、`game_event_layout_matches`與`instruction_ownership_audit`。 |
+| #198 全檔 C 匹配 | PARTIAL；尚未完成 | 已以 Watcom 10.0a 純 C 匹配77個原始函式，共5917 bytes；另重現146-byte未歸屬區塊，合計6063 bytes。本批新增`sub_21AD9`完整63 bytes及`sub_21B18`完整129 bytes；後者與既有`sub_2111A`同單元共享尾段，兩個完整函式267 bytes經標準COFF REL32連結回原始位址後相同。兩輪72份物件及完整收據相同，另由objcopy逐區段核對；連續布局267 bytes及不共享尾段的279-byte策略皆驗證產碼不變，六項拒收及舊1037-byte單元回歸通過。其餘五個候選仍未匹配，`21B18`單獨產碼也未匹配。原始函式與合成C導航符號分開，清冊仍1305筆。現行十三組來源／版本846份候選具兩輪驗證；先前負例及compiler版本紀錄保留。C來源及工具隨GitHub提交保存，穩定入口在README。函式台帳仍有1053個待還原或分類；38段／3363 bytes原始未歸屬CODE中，剩37段／3217 bytes未還原，owner及用途仍未知。全檔組合SHA相同仍依賴保留原版，不算C結案。來源、旗標及分列覆蓋見[主收據](../data/ida/fd2_matching_full_20261008.json)的`matching_summary`、`game_effect_tail_matches`、`game_quake_matches`與`instruction_ownership_audit`。 |
 | 初始三函式編譯比對試驗 | 有界工具矩陣已驗證；後續匹配見#198 | 固定原檔與 IDA 9.4 匯出、鎖版 Open Watcom 2.0、72 個純 C 候選；這份初始矩陣的三個區間均未逐位元組一致。後續歷史編譯器已匹配其中`0x1B8E7`，不能沿用初始結果判定目前函式狀態。共用返回尾端單獨保留。命令、來源雜湊、重跑與差異見[初始主證據](../data/ida/fd2_matching_pilot_20261008.json)。不提升原作工具版本、正式執行期或 PLAYER-E2。 |
 | 第12章故事、走行與逐格游標 | 有限 CONFORMED／RUNTIME-E1 | 目前程式基準4c6da8dd；[mode3主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)保留原版、正式Game及完整存檔回歸。 |
 | #41指定HUD重繪caller | PARTIAL-RUNTIME-E1／其他owner待補 | 死亡steady第26幀與196CB戰場關框已接同一入口；局部與Go全套回歸、新章T5完整Game前綴通過。未全部接齊，不關閉。[主契約](../data/ida/fd2_hud_redraw_20261006.json)。 |
