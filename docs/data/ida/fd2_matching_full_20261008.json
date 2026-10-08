@@ -9,7 +9,7 @@
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
   },
-  "status": "PARTIAL; 八個C區間匹配，全檔C反編譯尚未完成",
+  "status": "PARTIAL; 十二個C區間匹配，全檔C反編譯尚未完成",
   "decision": "遊戲邏輯還原成 C；原作組語與第三方函式庫可保留並分列覆蓋。",
   "sources": [
     {
@@ -54,11 +54,15 @@
     },
     {
       "path": "tools/fd2_matching_game_slices.c",
-      "sha256": "582dad284092e1e0c7debc11944eb674138d2b6acc65e2f25c2b83504bff8ca8"
+      "sha256": "3b3a9e8686af45cbdc4cb161ea626eb379745f0bf92b9da979d8952b8a494cb3"
     },
     {
       "path": "tools/fd2_matching_game_restore.py",
-      "sha256": "562588005b3babe1bbb866772495066e6ce855915051b5a4f3a15f8962569c3d"
+      "sha256": "0d9fd59d6cf53b6bd8bfe05eb1f50c4e64d0b6c3bd5c06e1756dd2c290e2f43c"
+    },
+    {
+      "path": "tools/fd2_matching_inventory_watstack.c",
+      "sha256": "2080a1497627128a4d56fa320c475851c4e02ecc95617fef86a22e6b0f9b94cd"
     }
   ],
   "toolchain": {
@@ -752,6 +756,492 @@
     },
     {
       "inventory": {
+        "start": "0x15e71",
+        "end": "0x15e9e",
+        "size": 45,
+        "ida_analysis_name": "sub_15E71",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x10010",
+          "0x165ac",
+          "0x16b43",
+          "0x1a30b",
+          "0x1e98c",
+          "0x1eb05",
+          "0x1f42d"
+        ],
+        "direct_code_xref_count": 13,
+        "direct_data_xref_count": 0,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_15E71",
+      "current_ida_linear_end": "0x15e9e",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x15e71",
+          "ida_linear_end": "0x15e9e",
+          "instructions": [
+            {
+              "ida_linear_address": "0x15e71",
+              "file_offset": "0x16c71",
+              "loaded_bytes": "6814000000",
+              "file_bytes": "6814000000",
+              "instruction": "push    14h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e76",
+              "file_offset": "0x16c76",
+              "loaded_bytes": "e85c0e0200",
+              "file_bytes": "e85c0e0200",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e7b",
+              "file_offset": "0x16c7b",
+              "loaded_bytes": "53",
+              "file_bytes": "53",
+              "instruction": "push    ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e7c",
+              "file_offset": "0x16c7c",
+              "loaded_bytes": "ff742410",
+              "file_bytes": "ff742410",
+              "instruction": "push    [esp+4+arg_8]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e80",
+              "file_offset": "0x16c80",
+              "loaded_bytes": "ff742410",
+              "file_bytes": "ff742410",
+              "instruction": "push    [esp+8+arg_4]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e84",
+              "file_offset": "0x16c84",
+              "loaded_bytes": "ff742410",
+              "file_bytes": "ff742410",
+              "instruction": "push    [esp+0Ch+arg_0]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e88",
+              "file_offset": "0x16c88",
+              "loaded_bytes": "e89f8a0300",
+              "file_bytes": "e89f8a0300",
+              "instruction": "call    sub_4E92C",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e8d",
+              "file_offset": "0x16c8d",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e90",
+              "file_offset": "0x16c90",
+              "loaded_bytes": "ff742408",
+              "file_bytes": "ff742408",
+              "instruction": "push    [esp+4+arg_0]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e94",
+              "file_offset": "0x16c94",
+              "loaded_bytes": "e87d150200",
+              "file_bytes": "e87d150200",
+              "instruction": "call    free",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e99",
+              "file_offset": "0x16c99",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e9c",
+              "file_offset": "0x16c9c",
+              "loaded_bytes": "5b",
+              "file_bytes": "5b",
+              "instruction": "pop     ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x15e9d",
+              "file_offset": "0x16c9d",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x1a7bd",
+        "end": "0x1a7f1",
+        "size": 52,
+        "ida_analysis_name": "sub_1A7BD",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x1a30b"
+        ],
+        "direct_code_xref_count": 2,
+        "direct_data_xref_count": 0,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_1A7BD",
+      "current_ida_linear_end": "0x1a7f1",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x1a7bd",
+          "ida_linear_end": "0x1a7f1",
+          "instructions": [
+            {
+              "ida_linear_address": "0x1a7bd",
+              "file_offset": "0x1b5bd",
+              "loaded_bytes": "6810000000",
+              "file_bytes": "6810000000",
+              "instruction": "push    10h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7c2",
+              "file_offset": "0x1b5c2",
+              "loaded_bytes": "e810c50100",
+              "file_bytes": "e810c50100",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7c7",
+              "file_offset": "0x1b5c7",
+              "loaded_bytes": "803df93a050000",
+              "file_bytes": "803df93a000000",
+              "instruction": "cmp     byte_53AF9, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7ce",
+              "file_offset": "0x1b5ce",
+              "loaded_bytes": "7420",
+              "file_bytes": "7420",
+              "instruction": "jz      short locret_1A7F0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7d0",
+              "file_offset": "0x1b5d0",
+              "loaded_bytes": "c7050f3b050000000000",
+              "file_bytes": "c7050f3b000000000000",
+              "instruction": "mov     dword_53B0F, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7da",
+              "file_offset": "0x1b5da",
+              "loaded_bytes": "6a40",
+              "file_bytes": "6a40",
+              "instruction": "push    40h ; '@'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7dc",
+              "file_offset": "0x1b5dc",
+              "loaded_bytes": "6a00",
+              "file_bytes": "6a00",
+              "instruction": "push    0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7de",
+              "file_offset": "0x1b5de",
+              "loaded_bytes": "684d1a0500",
+              "file_bytes": "684d1a0000",
+              "instruction": "push    offset aFdotherDat; \"FDOTHER.DAT\"",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7e3",
+              "file_offset": "0x1b5e3",
+              "loaded_bytes": "e8d269ffff",
+              "file_bytes": "e8d269ffff",
+              "instruction": "call    sub_111BA",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7e8",
+              "file_offset": "0x1b5e8",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7eb",
+              "file_offset": "0x1b5eb",
+              "loaded_bytes": "a30f3b0500",
+              "file_bytes": "a30f3b0000",
+              "instruction": "mov     dword_53B0F, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7f0",
+              "file_offset": "0x1b5f0",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x1a7f1",
+        "end": "0x1a813",
+        "size": 34,
+        "ida_analysis_name": "sub_1A7F1",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x1a30b"
+        ],
+        "direct_code_xref_count": 2,
+        "direct_data_xref_count": 0,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_1A7F1",
+      "current_ida_linear_end": "0x1a813",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x1a7f1",
+          "ida_linear_end": "0x1a813",
+          "instructions": [
+            {
+              "ida_linear_address": "0x1a7f1",
+              "file_offset": "0x1b5f1",
+              "loaded_bytes": "6808000000",
+              "file_bytes": "6808000000",
+              "instruction": "push    8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7f6",
+              "file_offset": "0x1b5f6",
+              "loaded_bytes": "e8dcc40100",
+              "file_bytes": "e8dcc40100",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a7fb",
+              "file_offset": "0x1b5fb",
+              "loaded_bytes": "803df93a050000",
+              "file_bytes": "803df93a000000",
+              "instruction": "cmp     byte_53AF9, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a802",
+              "file_offset": "0x1b602",
+              "loaded_bytes": "740e",
+              "file_bytes": "740e",
+              "instruction": "jz      short locret_1A812",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a804",
+              "file_offset": "0x1b604",
+              "loaded_bytes": "ff350f3b0500",
+              "file_bytes": "ff350f3b0000",
+              "instruction": "push    dword_53B0F",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a80a",
+              "file_offset": "0x1b60a",
+              "loaded_bytes": "e807cc0100",
+              "file_bytes": "e807cc0100",
+              "instruction": "call    free",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a80f",
+              "file_offset": "0x1b60f",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1a812",
+              "file_offset": "0x1b612",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x1d4cb",
+        "end": "0x1d4f6",
+        "size": 43,
+        "ida_analysis_name": "sub_1D4CB",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x15311",
+          "0x1cff0",
+          "0x20c6f",
+          "0x24618",
+          "0x27fc9"
+        ],
+        "direct_code_xref_count": 6,
+        "direct_data_xref_count": 0,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_1D4CB",
+      "current_ida_linear_end": "0x1d4f6",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x1d4cb",
+          "ida_linear_end": "0x1d4f6",
+          "instructions": [
+            {
+              "ida_linear_address": "0x1d4cb",
+              "file_offset": "0x1e2cb",
+              "loaded_bytes": "6810000000",
+              "file_bytes": "6810000000",
+              "instruction": "push    10h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4d0",
+              "file_offset": "0x1e2d0",
+              "loaded_bytes": "e802980100",
+              "file_bytes": "e802980100",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4d5",
+              "file_offset": "0x1e2d5",
+              "loaded_bytes": "c705133b050000000000",
+              "file_bytes": "c705133b000000000000",
+              "instruction": "mov     dword_53B13, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4df",
+              "file_offset": "0x1e2df",
+              "loaded_bytes": "6a50",
+              "file_bytes": "6a50",
+              "instruction": "push    50h ; 'P'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4e1",
+              "file_offset": "0x1e2e1",
+              "loaded_bytes": "6a00",
+              "file_bytes": "6a00",
+              "instruction": "push    0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4e3",
+              "file_offset": "0x1e2e3",
+              "loaded_bytes": "684d1a0500",
+              "file_bytes": "684d1a0000",
+              "instruction": "push    offset aFdotherDat; \"FDOTHER.DAT\"",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4e8",
+              "file_offset": "0x1e2e8",
+              "loaded_bytes": "e8cd3cffff",
+              "file_bytes": "e8cd3cffff",
+              "instruction": "call    sub_111BA",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4ed",
+              "file_offset": "0x1e2ed",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4f0",
+              "file_offset": "0x1e2f0",
+              "loaded_bytes": "a3133b0500",
+              "file_bytes": "a3133b0000",
+              "instruction": "mov     dword_53B13, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x1d4f5",
+              "file_offset": "0x1e2f5",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
         "start": "0x1f525",
         "end": "0x1f558",
         "size": 51,
@@ -1289,8 +1779,9 @@
     "full_ida_function_count": 1305,
     "inventory_boundaries_equal": true,
     "game_full_report_repeat_equal": true,
-    "game_code_independent_objcopy_equal": 16,
-    "omf_source_dependency_time_fixed": 315532800
+    "game_code_independent_objcopy_equal": 36,
+    "omf_source_dependency_time_fixed": 315532800,
+    "all_thirty_six_omf_objects_repeat_equal": true
   },
   "bootstrap": {
     "schema_version": 1,
@@ -1305,9 +1796,9 @@
     "decompilation_complete": false,
     "reason": "其餘遊戲／未分類機器碼來自原版，尚未以 C 還原；全檔相同只證明組合基準有效",
     "counts": {
-      "matched_c": 8,
+      "matched_c": 12,
       "retained_library": 175,
-      "unrestored_original_code": 1122
+      "unrestored_original_code": 1118
     },
     "restored_spans": [
       {
@@ -1440,6 +1931,70 @@
           "confidence": "未知",
           "source": "not yet classified"
         }
+      },
+      {
+        "ida_linear_address": "0x15e71",
+        "source_kind": "matched_c",
+        "size": 45,
+        "compiler_flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dRELEASE"
+        ],
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "ida_linear_address": "0x1a7f1",
+        "source_kind": "matched_c",
+        "size": 34,
+        "compiler_flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dCONDITIONAL_FREE"
+        ],
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "ida_linear_address": "0x1d4cb",
+        "source_kind": "matched_c",
+        "size": 43,
+        "compiler_flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dCACHE_INIT"
+        ],
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "ida_linear_address": "0x1a7bd",
+        "source_kind": "matched_c",
+        "size": 52,
+        "compiler_flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dCONDITIONAL_INIT"
+        ],
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
       }
     ],
     "source_report_sha256": "9055b84e61591508bd0c507510fe652fa05a32ead34031fde305b603e4a7a2d3",
@@ -1449,8 +2004,8 @@
         "sha256": "9055b84e61591508bd0c507510fe652fa05a32ead34031fde305b603e4a7a2d3"
       },
       {
-        "path": "/work/game-linked-r5",
-        "sha256": "079b0cbbffaa2c80270531ae8fa6a3d5b7b3834e86e182ceaf2de4338da27812"
+        "path": "/work/game-resource-init-linked-r2",
+        "sha256": "1e74b8b8707b5095af28719c2f0b8c7f1847bd7b883db87c809d4d5ce568a6d8"
       }
     ],
     "export_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
@@ -1460,8 +2015,16 @@
   "local_outputs": {
     "full_ida_image": "work/matching-full-20261008/ida-full-image.json",
     "full_ida_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
-    "candidate_exe": "work/matching-full-20261008/bootstrap-eight-r2/FD2.EXE",
-    "all_function_ledger": "work/matching-full-20261008/bootstrap-eight-r2/bootstrap-receipt.json"
+    "candidate_exe": "work/matching-full-20261008/bootstrap-twelve-r2/FD2.EXE",
+    "all_function_ledger": "work/matching-full-20261008/bootstrap-twelve-r2/bootstrap-receipt.json",
+    "game_compile_receipts": [
+      "work/matching-full-20261008/game-resource-init-r2/compile-report.json",
+      "work/matching-full-20261008/game-resource-init-r3/compile-report.json"
+    ],
+    "game_link_receipts": [
+      "work/matching-full-20261008/game-resource-init-linked-r2/report.json",
+      "work/matching-full-20261008/game-resource-init-linked-r3/report.json"
+    ]
   },
   "conclusions": [
     {
@@ -1488,14 +2051,24 @@
       "scope": "game_matches列出的來源、旗標與原始指令區間。"
     },
     {
-      "claim": "全檔組合基準仍保留1122個未還原或未完成分類的函式區間；全檔SHA相同不能宣稱反編譯完成。",
+      "claim": "全檔組合基準仍保留1118個未還原或未完成分類的函式區間；全檔SHA相同不能宣稱反編譯完成。",
       "confidence": "已證實",
       "scope": "bootstrap分類台帳。"
+    },
+    {
+      "claim": "新增0x15E71、0x1A7F1、0x1D4CB及0x1A7BD的純C來源，分別完整匹配45、34、43及52 bytes。兩輪36份物件、連結收據及機器碼相同，另以objcopy抽取全部程式碼核對。",
+      "confidence": "已證實",
+      "scope": "game_matches的固定來源、編譯器、旗標、原始位址與完整指令區間。"
+    },
+    {
+      "claim": "0x1A7F1的C候選需將函式本身宣告為舊版Watcom __cdecl；0x15E71仍用預設堆疊慣例，並將free宣告為__cdecl。相同傳參方式不代表相同EBX保存契約。",
+      "confidence": "已證實",
+      "scope": "只證明所列來源宣告能產生完整匹配，不推定原作者宣告或函式語意。"
     }
   ],
   "limits": [
     "完整指令匯出及重建 EXE 僅保存在本機 work，不公開或加入Git。",
-    "C匹配不提升這五個函式的玩法語意或原作作者語言分類。",
+    "C匹配不提升所列函式的玩法語意或原作作者語言分類。",
     "其餘機器碼原樣保留不是C反編譯進度，不能以整檔hash相同結案。",
     "本輪未修改正式 Go/Ebiten 行為、存檔、一般玩家路徑或已暫停的第12章追蹤。"
   ],
@@ -1507,8 +2080,8 @@
       "md5": "b97caf2239a27a896069d03549d96e1e",
       "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
     },
-    "source_sha256": "582dad284092e1e0c7debc11944eb674138d2b6acc65e2f25c2b83504bff8ca8",
-    "driver_sha256": "562588005b3babe1bbb866772495066e6ce855915051b5a4f3a15f8962569c3d",
+    "source_sha256": "3b3a9e8686af45cbdc4cb161ea626eb379745f0bf92b9da979d8952b8a494cb3",
+    "driver_sha256": "0d9fd59d6cf53b6bd8bfe05eb1f50c4e64d0b6c3bd5c06e1756dd2c290e2f43c",
     "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
     "trials": [
       {
@@ -1846,11 +2419,435 @@
           "confidence": "未知",
           "source": "not yet classified"
         }
+      },
+      {
+        "stem": "G16",
+        "address": "0x11eb0",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dROWCOPY"
+        ],
+        "object_sha256": "71120c6cfa4089b386c911c9cfe22ddc8bdeb55ae913c5301128bc94c6cec417",
+        "candidate_size": 56,
+        "original_size": 62,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "c65c23c61c1687541633a280809c4e2c00086ef41e31e947697ff945bc7de378",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G17",
+        "address": "0x11eb0",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dROWCOPY"
+        ],
+        "object_sha256": "7d39c08fe19d5554b2509459e3327b8deb0041a77128c40f92612ae140ce0828",
+        "candidate_size": 71,
+        "original_size": 62,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 28,
+        "code_sha256": "43397eb3733136fbb872dbb6e28075968608f9344f5ae0ef40bc6a5944b5c4b1",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G18",
+        "address": "0x11eb0",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dROWCOPY"
+        ],
+        "object_sha256": "71120c6cfa4089b386c911c9cfe22ddc8bdeb55ae913c5301128bc94c6cec417",
+        "candidate_size": 56,
+        "original_size": 62,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "c65c23c61c1687541633a280809c4e2c00086ef41e31e947697ff945bc7de378",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G19",
+        "address": "0x11eb0",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dROWCOPY"
+        ],
+        "object_sha256": "0f150a76fbee9a0431babf29f57893d18575e8a92e49515a594d16c3c7f22f02",
+        "candidate_size": 72,
+        "original_size": 62,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 28,
+        "code_sha256": "b115ba056c8b3b6ccdd2a3691d913522f59b18a9a90fa23d4f02e6ac3a92de9b",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G20",
+        "address": "0x15e71",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dRELEASE"
+        ],
+        "object_sha256": "69e4b4b866a103b3763d0402da6522e8cacc81ea7d26376c09b6f27a53759769",
+        "candidate_size": 45,
+        "original_size": 45,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "9a3f6eefb5a802b414a163d2472acb52f2389609c235bba033a3929095f379f5",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G21",
+        "address": "0x15e71",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dRELEASE"
+        ],
+        "object_sha256": "c72faca9ea599ec08a1630c33f6b8702969d520f022c2c02708c73f14bb30234",
+        "candidate_size": 45,
+        "original_size": 45,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "ae248cfbded7b1f58e57be8845d3cdff82e2efec9e5c0648946062a15ecf35f6",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G22",
+        "address": "0x15e71",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dRELEASE"
+        ],
+        "object_sha256": "69e4b4b866a103b3763d0402da6522e8cacc81ea7d26376c09b6f27a53759769",
+        "candidate_size": 45,
+        "original_size": 45,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "9a3f6eefb5a802b414a163d2472acb52f2389609c235bba033a3929095f379f5",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G23",
+        "address": "0x15e71",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dRELEASE"
+        ],
+        "object_sha256": "f665ff6119e6786b6b7ce8d2b9df117da7583ce1328e1acb3bee4c5f46128f08",
+        "candidate_size": 51,
+        "original_size": 45,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "eb1d8b99bded516062f6d094d81ca430ce2e0a7685d0b2262bdfa274c28f859e",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G24",
+        "address": "0x1a7f1",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dCONDITIONAL_FREE"
+        ],
+        "object_sha256": "1ab48b53d64121321cb84c79e98a4c09f3c399ff7c00e943b6beefdb9dc82d52",
+        "candidate_size": 34,
+        "original_size": 34,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "12d90673c07db5982de3eec126ba5cdd87404c033a81cc2b97a5b8ecc0ca3377",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G25",
+        "address": "0x1a7f1",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dCONDITIONAL_FREE"
+        ],
+        "object_sha256": "549229cd56295d183a518ab54ef2291fad56c51d6d596d22d7e965bcf2cb9bf0",
+        "candidate_size": 34,
+        "original_size": 34,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "12d90673c07db5982de3eec126ba5cdd87404c033a81cc2b97a5b8ecc0ca3377",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G26",
+        "address": "0x1a7f1",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dCONDITIONAL_FREE"
+        ],
+        "object_sha256": "1ab48b53d64121321cb84c79e98a4c09f3c399ff7c00e943b6beefdb9dc82d52",
+        "candidate_size": 34,
+        "original_size": 34,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "12d90673c07db5982de3eec126ba5cdd87404c033a81cc2b97a5b8ecc0ca3377",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G27",
+        "address": "0x1a7f1",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dCONDITIONAL_FREE"
+        ],
+        "object_sha256": "ab6854eb47980e5013cbef07ee9d90c28de7766ddfd23e8995ce7b9c5acc9459",
+        "candidate_size": 35,
+        "original_size": 34,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 18,
+        "code_sha256": "6bc405d8e3d9817b883f2c808cc79bfbf493fcb0eab1644c6d159b8fb31aa537",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G28",
+        "address": "0x1d4cb",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dCACHE_INIT"
+        ],
+        "object_sha256": "9a94943d408d53415f7cddcaa3048fc2b41aade5ac58983952e8c29d22abb9e4",
+        "candidate_size": 43,
+        "original_size": 43,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "5e7e9f45d7c32b5c4307bd4451beb207601c99b5af36d51881791e201ffd7a7f",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G29",
+        "address": "0x1d4cb",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dCACHE_INIT"
+        ],
+        "object_sha256": "543325f1e8dcddb0ebff7517e8a54f6dcf9d1de2cfc7137247d03a20f30ae0b6",
+        "candidate_size": 43,
+        "original_size": 43,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "5e7e9f45d7c32b5c4307bd4451beb207601c99b5af36d51881791e201ffd7a7f",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G30",
+        "address": "0x1d4cb",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dCACHE_INIT"
+        ],
+        "object_sha256": "9a94943d408d53415f7cddcaa3048fc2b41aade5ac58983952e8c29d22abb9e4",
+        "candidate_size": 43,
+        "original_size": 43,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "5e7e9f45d7c32b5c4307bd4451beb207601c99b5af36d51881791e201ffd7a7f",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G31",
+        "address": "0x1d4cb",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dCACHE_INIT"
+        ],
+        "object_sha256": "2e5aab1146c12356a9849473051fb221da8e857243299e26b0d1ec7da41eef18",
+        "candidate_size": 40,
+        "original_size": 43,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 10,
+        "code_sha256": "9539bcdaed845aaee779aaf28b87d0538024af381970a383d56696c6e18f27e4",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G32",
+        "address": "0x1a7bd",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dCONDITIONAL_INIT"
+        ],
+        "object_sha256": "feb55153ba5a97c332aa6189961f12e7bcac0d2ec7e56a5ba895bfff9e55dbaf",
+        "candidate_size": 52,
+        "original_size": 52,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "0a0c1248b119fce2d2b1baf77d9c5d350a5d0cb1b45006bbff84452cabf900be",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G33",
+        "address": "0x1a7bd",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dCONDITIONAL_INIT"
+        ],
+        "object_sha256": "62cc1b57dcfc97020a8a2d2000ef7e9bbeb829b521fd50dac4fb5d4167f7d5be",
+        "candidate_size": 52,
+        "original_size": 52,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "0a0c1248b119fce2d2b1baf77d9c5d350a5d0cb1b45006bbff84452cabf900be",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G34",
+        "address": "0x1a7bd",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dCONDITIONAL_INIT"
+        ],
+        "object_sha256": "feb55153ba5a97c332aa6189961f12e7bcac0d2ec7e56a5ba895bfff9e55dbaf",
+        "candidate_size": 52,
+        "original_size": 52,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "0a0c1248b119fce2d2b1baf77d9c5d350a5d0cb1b45006bbff84452cabf900be",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G35",
+        "address": "0x1a7bd",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dCONDITIONAL_INIT"
+        ],
+        "object_sha256": "2b2725fd52bf3b9e090b74d9210f7fe918b51ebbb52e1885d935a22df1ee6f1b",
+        "candidate_size": 49,
+        "original_size": 52,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 18,
+        "code_sha256": "8f02727434788f1a0212e6b2236b567f4d8f2fd8e8270bb3d2f1db0cd6dbf2e0",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
       }
     ],
     "matched_addresses": [
       "0x127a9",
       "0x134e4",
+      "0x15e71",
+      "0x1a7bd",
+      "0x1a7f1",
+      "0x1d4cb",
       "0x1f525"
     ]
   },
@@ -1858,6 +2855,10 @@
     "matched_addresses": [
       "0x127a9",
       "0x134e4",
+      "0x15e71",
+      "0x1a7bd",
+      "0x1a7f1",
+      "0x1d4cb",
       "0x1f525",
       "0x35ebe",
       "0x35ed2",
@@ -1866,15 +2867,304 @@
       "0x368fa"
     ],
     "counts": {
-      "matched_c": 8,
+      "matched_c": 12,
       "retained_library": 175,
-      "unrestored_original_code": 1122
+      "unrestored_original_code": 1118
     },
-    "matched_code_bytes": 230,
+    "matched_code_bytes": 404,
     "all_sources_pure_c": true,
     "repeat_game_report_equal": true,
-    "all_sixteen_omf_objects_repeat_equal": true,
+    "all_thirty_six_omf_objects_repeat_equal": true,
     "source_date_epoch": 315532800,
-    "independent_objcopy_checks": 16
+    "independent_objcopy_checks": 36
+  },
+  "inventory_watstack_attempt": {
+    "schema_version": 1,
+    "input": {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "compile_report": {
+      "schema_version": 1,
+      "source_sha256": "2080a1497627128a4d56fa320c475851c4e02ecc95617fef86a22e6b0f9b94cd",
+      "compiler_sha256": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+      "trials": [
+        {
+          "stem": "S00",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os"
+          ],
+          "compiled": true,
+          "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f"
+        },
+        {
+          "stem": "S01",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot"
+          ],
+          "compiled": true,
+          "object_sha256": "6a37c0c9b8c8f4d01ab50c70ac0268f4fc196d91a5e3eeebfbd4bc93890abfa3"
+        },
+        {
+          "stem": "S02",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os"
+          ],
+          "compiled": true,
+          "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f"
+        },
+        {
+          "stem": "S03",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot"
+          ],
+          "compiled": true,
+          "object_sha256": "59795e3fd89232b0b971cbf56cccc6cf981d6d06a544767b32ab4087ef5295f1"
+        },
+        {
+          "stem": "S04",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dRET_VOID"
+          ],
+          "compiled": true,
+          "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f"
+        },
+        {
+          "stem": "S05",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dRET_VOID"
+          ],
+          "compiled": true,
+          "object_sha256": "6a37c0c9b8c8f4d01ab50c70ac0268f4fc196d91a5e3eeebfbd4bc93890abfa3"
+        },
+        {
+          "stem": "S06",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dRET_VOID"
+          ],
+          "compiled": true,
+          "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f"
+        },
+        {
+          "stem": "S07",
+          "case": "I",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dRET_VOID"
+          ],
+          "compiled": true,
+          "object_sha256": "59795e3fd89232b0b971cbf56cccc6cf981d6d06a544767b32ab4087ef5295f1"
+        }
+      ]
+    },
+    "converter_sha256": "5dc2d30a8bba85cff9717408f1a7b16128dbb835cebbd46f40268417ea32b6c1",
+    "driver_sha256": "f7d66f7b884b16ec86dce175623ef761d6c56b31e3f73e1d13ded9fb9837467d",
+    "comparison": "all linked code bytes at original linear address; no masking or instruction patches",
+    "trials": [
+      {
+        "stem": "S00",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os"
+        ],
+        "compiled": true,
+        "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 68,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "candidate_code_sha256": "2bb286782c71fe95fb34def7fa005740db40790921b305dde8e44c7278a7725f",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S00.OBJ, output file: /work/inventory-watstack-linked/S00/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S01",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot"
+        ],
+        "compiled": true,
+        "object_sha256": "6a37c0c9b8c8f4d01ab50c70ac0268f4fc196d91a5e3eeebfbd4bc93890abfa3",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 79,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 15,
+        "candidate_code_sha256": "ea5a109fdd0923799396879d1e7498ef7abc8327316eab3a899dcdc39a2bc67c",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S01.OBJ, output file: /work/inventory-watstack-linked/S01/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S02",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os"
+        ],
+        "compiled": true,
+        "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 68,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "candidate_code_sha256": "2bb286782c71fe95fb34def7fa005740db40790921b305dde8e44c7278a7725f",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S02.OBJ, output file: /work/inventory-watstack-linked/S02/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S03",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot"
+        ],
+        "compiled": true,
+        "object_sha256": "59795e3fd89232b0b971cbf56cccc6cf981d6d06a544767b32ab4087ef5295f1",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 82,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 12,
+        "candidate_code_sha256": "70545a988510f33e4148570161895c985f536439412dbdb74ebfd8ae96e8beef",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S03.OBJ, output file: /work/inventory-watstack-linked/S03/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S04",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dRET_VOID"
+        ],
+        "compiled": true,
+        "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 68,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "candidate_code_sha256": "2bb286782c71fe95fb34def7fa005740db40790921b305dde8e44c7278a7725f",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S04.OBJ, output file: /work/inventory-watstack-linked/S04/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S05",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dRET_VOID"
+        ],
+        "compiled": true,
+        "object_sha256": "6a37c0c9b8c8f4d01ab50c70ac0268f4fc196d91a5e3eeebfbd4bc93890abfa3",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 79,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 15,
+        "candidate_code_sha256": "ea5a109fdd0923799396879d1e7498ef7abc8327316eab3a899dcdc39a2bc67c",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S05.OBJ, output file: /work/inventory-watstack-linked/S05/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S06",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dRET_VOID"
+        ],
+        "compiled": true,
+        "object_sha256": "dac0fe1c28ae38f6d0ca1655c239cc848a49cfa02e74926b910265fb4d91de6f",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 68,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "candidate_code_sha256": "2bb286782c71fe95fb34def7fa005740db40790921b305dde8e44c7278a7725f",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S06.OBJ, output file: /work/inventory-watstack-linked/S06/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      },
+      {
+        "stem": "S07",
+        "case": "I",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dRET_VOID"
+        ],
+        "compiled": true,
+        "object_sha256": "59795e3fd89232b0b971cbf56cccc6cf981d6d06a544767b32ab4087ef5295f1",
+        "address": "0x1b8e7",
+        "original_size": 75,
+        "candidate_size": 82,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 12,
+        "candidate_code_sha256": "70545a988510f33e4148570161895c985f536439412dbdb74ebfd8ae96e8beef",
+        "conversion_diagnostics": "Input file: /work/inventory-watstack-struct/S07.OBJ, output file: /work/inventory-watstack-linked/S07/candidate.cof\nConverting from OMF32 to COFF32\n\n  0 Debug sections removed\n  0 Exception sections removed\n\nWarning 1211: 8 comment records ignored",
+        "candidate_symbol": "sub_1B8E7"
+      }
+    ],
+    "matched_addresses": []
+  },
+  "ida_export_metadata": {
+    "schema_version": 1,
+    "input": {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": {
+      "name": "IDA Pro",
+      "version": "9.4",
+      "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+    },
+    "exporter_sha256": "270c6890eb6cf594fe7f33498754606e6ad69df45a3a886debc86492649dfe04",
+    "inventory_sha256": "c3cc5e5e99be6d333c557578f3e1e432f8986cfabc1dfe27d39165e78df57944",
+    "semantic_index_sha256": "6d957c82b480a17ae5d07b97e6cc7c1c82e28afbb3751dd93dcb188ea15f8209",
+    "function_count": 1305,
+    "rights": "完整指令只保存本機 work，不加入公開儲存庫或發行包"
   }
 }

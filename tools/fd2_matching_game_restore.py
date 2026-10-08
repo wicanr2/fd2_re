@@ -13,11 +13,16 @@ import subprocess
 from fd2_matching_c_restore import INPUTS
 
 
-CASES = (("CLEAR3", 0x134E4), ("REDRAW", 0x127A9), ("CYCLE", 0x1F525), ("MASK", 0x146A7))
+CASES = (("CLEAR3", 0x134E4), ("REDRAW", 0x127A9), ("CYCLE", 0x1F525), ("MASK", 0x146A7),
+         ("ROWCOPY", 0x11EB0), ("RELEASE", 0x15E71), ("CONDITIONAL_FREE", 0x1A7F1),
+         ("CACHE_INIT", 0x1D4CB), ("CONDITIONAL_INIT", 0x1A7BD))
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
-            "sub_129EC": 0x129EC, "sub_11D40": 0x11D40}
+            "sub_129EC": 0x129EC, "sub_11D40": 0x11D40, "memmove": 0x373C4,
+            "sub_4E92C": 0x4E92C, "_free": 0x37416, "byte_53AF9": 0x53AF9,
+            "dword_53B0F": 0x53B0F, "dword_53B13": 0x53B13,
+            "aFdotherDat": 0x51A4D, "sub_111BA": 0x111BA}
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 
 
@@ -63,7 +68,7 @@ def compile_stage(args):
               "source_date_epoch": SOURCE_DATE_EPOCH,
               "driver_sha256": sha(Path(__file__)), "trials": trials}
     (args.output / "compile-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    print("十六個主程式 C 候選已編譯。", flush=True)
+    print(f"{len(trials)} 個主程式 C 候選已編譯。", flush=True)
 
 
 def link_stage(args):
