@@ -42,6 +42,17 @@ def main():
     meta = parse_le(raw)
     fixups = parse_fixups(raw, meta)
     by_address = {f["inventory"]["start"]: f for f in image["functions"]}
+    for directory, report in reports:
+        for trial in report['trials']:
+            for part in trial.get('function_intervals', []):
+                if part.get('kind') == 'unowned_code':
+                    if report.get('source_key') != 'game_event_layout':
+                        raise ValueError('來源未登記清冊外區間')
+                    from fd2_matching_intervals import unowned_interval
+                    extra = unowned_interval(int(part['address'], 16), image, raw, args.evidence.parent)
+                    if part.get('evidence_sha256') != extra['evidence_sha256']:
+                        raise ValueError('清冊外區間收據沒有綁定證據')
+                    by_address[part['address']] = extra
     selected = {}
     for directory, report in reports:
         for trial in report["trials"]:
@@ -116,13 +127,15 @@ def main():
         source_spans.append({"ida_linear_address": address, "source_kind": "matched_c",
                              "size": len(compiled), "compiler_flags": trial["flags"],
                              "original_classification": function["inventory"]["classification"]})
+        if function['inventory'].get('kind') == 'unowned_code':
+            source_spans[-1]['source_kind'] = 'matched_c_unowned_code'
         if len(trial.get("addresses", [])) > 1:
             source_spans[-1].update(compiled_group=trial["address"], group_code_sha256=trial["code_sha256"],
                                     group_offset=part["offset"])
     args.output.mkdir(parents=True, exist_ok=True)
     output = args.output / "FD2.EXE"
     output.write_bytes(rebuilt)
-    matched = set(selected)
+    matched = {address for address in selected if by_address[address]['inventory'].get('kind') != 'unowned_code'}
     ledger = [{"ida_linear_address": f["inventory"]["start"],
                "size": f["inventory"]["size"],
                "source_kind": "matched_c" if f["inventory"]["start"] in matched else
@@ -136,6 +149,7 @@ def main():
               "decompilation_complete": False,
               "reason": "其餘遊戲／未分類機器碼來自原版，尚未以 C 還原；全檔相同只證明組合基準有效",
               "counts": counts, "restored_spans": source_spans, "functions": ledger,
+              "matched_unowned_code_bytes": sum(s['size'] for s in source_spans if s['source_kind'] == 'matched_c_unowned_code'),
               "source_report_sha256": sha(args.restored / "report.json"),
               "source_reports": [{"path": str(directory), "sha256": sha(directory / "report.json")}
                                  for directory in report_dirs],

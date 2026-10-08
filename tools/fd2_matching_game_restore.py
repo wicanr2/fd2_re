@@ -39,8 +39,12 @@ BATTLE_CASES = tuple(("F" + format(address, "X"), address) for address in (
     0x13565, 0x14625, 0x14B16, 0x164E8, 0x175A9, 0x1B83D, 0x1B8A6,
     0x1C142, 0x1C220)) + (("COUNTS_GROUP", 0x1B5F1),)
 EVENT_CASES = (("F21082", 0x21082), ("EVENT_PAIR", 0x2111A), ("F214AD", 0x214AD))
+LAYOUT_CASES = (("EVENT_FULL", 0x2111A),)
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES)
+CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
+    0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
+    0x2147B, 0x21494, 0x214AD)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -90,6 +94,7 @@ BINDINGS.update({"dword_53EC4": 0x53EC4, "sub_1C4CC": 0x1C4CC,
                  "sub_1E1DC": 0x1E1DC, "sub_1DF58": 0x1DF58,
                  "sub_1B750": 0x1B750, "sub_1B8E7": 0x1B8E7,
                  "sub_1CA89": 0x1CA89})
+BINDINGS.update({'sub_1CD17': 0x1CD17})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -100,6 +105,7 @@ SOURCES = {
     "game_controls": ("tools/fd2_matching_game_controls.c", tuple(macro for macro, _ in CONTROL_CASES)),
     "game_battle_records": ("tools/fd2_matching_game_battle_records.c", tuple(macro for macro, _ in BATTLE_CASES)),
     "game_events": ("tools/fd2_matching_game_events.c", tuple(macro for macro, _ in EVENT_CASES)),
+    "game_event_layout": ("tools/fd2_matching_game_event_layout.c", tuple(macro for macro, _ in LAYOUT_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 COMPILER_INPUTS = {
@@ -215,7 +221,15 @@ def link_stage(args):
             macro = next((flag[2:] for flag in trial["flags"] if flag.startswith("-d")), None)
             if macro not in SOURCES[source_key][1] or addresses != [hex(value) for value in CASE_GROUPS.get(macro, ())]:
                 raise ValueError("多函式區間未依來源登記")
-        functions = [next(f for f in image["functions"] if f["inventory"]["start"] == target) for target in addresses]
+        by_address = {f['inventory']['start']: f for f in image['functions']}
+        functions = []
+        for target in addresses:
+            if target not in by_address:
+                if source_key != 'game_event_layout':
+                    raise ValueError('來源未登記清冊外區間')
+                from fd2_matching_intervals import unowned_interval
+                by_address[target] = unowned_interval(int(target, 16), image, original, args.evidence.parent)
+            functions.append(by_address[target])
         if functions[0]["inventory"]["start"] != trial["address"]:
             raise ValueError("候選起始位址與函式區間不符")
         group_end = int(functions[-1]["inventory"]["end"], 16)
@@ -238,6 +252,10 @@ def link_stage(args):
             if cursor != end or end - start != fn["inventory"]["size"]:
                 raise ValueError("目標指令不涵蓋完整原始函式區間")
             intervals.append({"address": hex(start), "offset": start - address, "size": end - start})
+            if source_key == 'game_event_layout':
+                intervals[-1]['kind'] = fn['inventory'].get('kind', 'ida_function')
+                if intervals[-1]['kind'] == 'unowned_code':
+                    intervals[-1]['evidence_sha256'] = fn['evidence_sha256']
             instructions.extend(part)
         entry_offsets_equal = len(publics) == len(functions)
         if len(addresses) > 1:
@@ -274,7 +292,8 @@ def link_stage(args):
               "compiler_version": compiler_version, "compiler_inputs": compile_report["compiler_inputs"],
               "compile_driver_sha256": compile_report["driver_sha256"],
               "driver_sha256": sha(Path(__file__)), "evidence_sha256": sha(args.evidence), "trials": results,
-              "matched_addresses": sorted({address for r in results if r["exact_interval_bytes"] for address in r.get("addresses", [r["address"]])})}
+              "matched_addresses": sorted({part['address'] for r in results if r['exact_interval_bytes']
+                    for part in r.get('function_intervals', [{'address': r['address']}]) if part.get('kind', 'ida_function') == 'ida_function'})}
     (args.output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"matched_addresses": report["matched_addresses"], "trials": len(results)}), flush=True)
 

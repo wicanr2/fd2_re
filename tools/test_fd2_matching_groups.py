@@ -26,8 +26,11 @@ def main():
         raise ValueError('輸出擁有權不符')
     report = json.loads((args.linked / 'report.json').read_text())
     trial = next(t for t in report['trials'] if t['exact_interval_bytes'] and len(t.get('addresses', [])) > 1)
-    assert len(trial['addresses']) == 3 and trial['candidate_size'] == 305
+    expected_functions = sum(p.get('kind', 'ida_function') == 'ida_function' for p in trial['function_intervals'])
+    unowned = [p for p in trial['function_intervals'] if p.get('kind') == 'unowned_code']
     cases = ('valid', 'entry_unproven', 'offset_changed', 'last_function_missing')
+    if unowned:
+        cases += ('unowned_evidence_changed',)
     with tempfile.TemporaryDirectory(dir=args.output, prefix='groups-') as tmp:
         root = Path(tmp)
         for case in cases:
@@ -45,6 +48,8 @@ def main():
             elif case == 'last_function_missing':
                 changed['function_intervals'].pop()
                 changed['addresses'].pop()
+            elif case == 'unowned_evidence_changed':
+                next(p for p in changed['function_intervals'] if p.get('kind') == 'unowned_code')['evidence_sha256'] = '0' * 64
             (directory / 'report.json').write_text(json.dumps(data))
             output = root / (case + '-output')
             result = subprocess.run([sys.executable, str(args.repo / 'tools/fd2_matching_bootstrap.py'),
@@ -53,17 +58,20 @@ def main():
             if case == 'valid':
                 assert result.returncode == 0, result.stderr
                 receipt = json.loads((output / 'bootstrap-receipt.json').read_text())
-                assert receipt['counts']['matched_c'] == 3
-                assert sum(s['size'] for s in receipt['restored_spans']) == 305
+                assert receipt['counts']['matched_c'] == expected_functions
+                assert sum(s['size'] for s in receipt['restored_spans']) == trial['candidate_size']
+                assert receipt.get('matched_unowned_code_bytes', 0) == sum(p['size'] for p in unowned)
                 assert all(s['compiled_group'] == trial['address'] for s in receipt['restored_spans'])
                 assert (output / 'FD2.EXE').read_bytes() == args.original.read_bytes()
                 assert receipt['whole_file_equal'] and not receipt['decompilation_complete']
             else:
                 expected = {'entry_unproven': '未證明各入口', 'offset_changed': '不連續',
-                            'last_function_missing': '未覆蓋完整編譯碼'}[case]
+                            'last_function_missing': '未覆蓋完整編譯碼',
+                            'unowned_evidence_changed': '沒有綁定證據'}[case]
                 assert result.returncode != 0 and expected in result.stderr, result.stderr
                 assert not (output / 'FD2.EXE').exists() and not (output / 'bootstrap-receipt.json').exists()
-    print(json.dumps({'positive_group_bytes': 305, 'positive_functions': 3,
+    print(json.dumps({'positive_group_bytes': trial['candidate_size'], 'positive_functions': expected_functions,
+        'matched_unowned_code_bytes': sum(p['size'] for p in unowned),
         'rejected': list(cases[1:]), 'source_report_sha256': hashlib.sha256((args.linked / 'report.json').read_bytes()).hexdigest()}, ensure_ascii=False))
 
 
