@@ -1875,6 +1875,21 @@
         ],
         "pattern": "實際 DOS C 來源與登記來源不符"
       }
+    },
+    {
+      "id": "ida-json-explicit-utf8",
+      "area": "IDA工具",
+      "date": "2026-10-08",
+      "rule": "IDA批次腳本讀寫含中文的JSON與文字時明示UTF-8，不依賴程序預設codec。入口tools/ida_probe_fd2_matching_coverage.py，按FD2_MATCHING_AUDIT_OUTPUT設定輸出；原版及正式i64唯讀掛載，只查一次性資料庫複本。",
+      "why": "既有py312-v1成功載入FD2資料庫後，Path.read_text預設ASCII，讀fd2-reference-files.json中文內容時失敗。明示UTF-8後同一映像與UID成功匯出；不是IDA授權或分析能力故障。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/ida_probe_fd2_matching_coverage.py"
+        ],
+        "pattern": "read_text\\(encoding='utf-8'\\)[\\s\\S]*write_text[\\s\\S]*encoding='utf-8'"
+      }
     }
   ]
 }

@@ -38,8 +38,9 @@ CONTROL_CASES = tuple(("F" + format(address, "X"), address) for address in (
 BATTLE_CASES = tuple(("F" + format(address, "X"), address) for address in (
     0x13565, 0x14625, 0x14B16, 0x164E8, 0x175A9, 0x1B83D, 0x1B8A6,
     0x1C142, 0x1C220)) + (("COUNTS_GROUP", 0x1B5F1),)
-CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7)}
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES)
+EVENT_CASES = (("F21082", 0x21082), ("EVENT_PAIR", 0x2111A), ("F214AD", 0x214AD))
+CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -83,6 +84,12 @@ BINDINGS.update({"byte_51AAC": 0x51AAC, "sub_1A30B": 0x1A30B,
                  "sub_16559": 0x16559, "sub_25A96": 0x25A96,
                  "sub_17AA9": 0x17AA9, "malloc": 0x36D16,
                  "sub_1B722": 0x1B722, "sub_1BB8C": 0x1BB8C})
+BINDINGS.update({"dword_53EC4": 0x53EC4, "sub_1C4CC": 0x1C4CC,
+                 "sub_1C2DA": 0x1C2DA, "sub_1CAC7": 0x1CAC7,
+                 "sub_1C75E": 0x1C75E, "sub_1E0DB": 0x1E0DB,
+                 "sub_1E1DC": 0x1E1DC, "sub_1DF58": 0x1DF58,
+                 "sub_1B750": 0x1B750, "sub_1B8E7": 0x1B8E7,
+                 "sub_1CA89": 0x1CA89})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -92,6 +99,7 @@ SOURCES = {
     "game_queries": ("tools/fd2_matching_game_queries.c", tuple(macro for macro, _ in QUERY_CASES)),
     "game_controls": ("tools/fd2_matching_game_controls.c", tuple(macro for macro, _ in CONTROL_CASES)),
     "game_battle_records": ("tools/fd2_matching_game_battle_records.c", tuple(macro for macro, _ in BATTLE_CASES)),
+    "game_events": ("tools/fd2_matching_game_events.c", tuple(macro for macro, _ in EVENT_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 COMPILER_INPUTS = {
