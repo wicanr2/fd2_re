@@ -14,7 +14,7 @@ extern void *malloc(unsigned);
 extern void __cdecl free(void *);
 extern void *memmove(void *, const void *, unsigned);
 extern int __cdecl abs(int);
-extern double __cdecl sqrt(double);
+extern double sqrt(double);
 extern void sub_25A96(int, int, int);
 extern void sub_21548(int, int, int, const unsigned char *);
 extern void sub_2189A(int, int, int);
@@ -116,34 +116,36 @@ condition:
 void sub_219AD(int x, int y, int radius, int scale, int row, int end,
                const unsigned char *shape)
 {
+    volatile int total_span;
     int radial;
-    int half_width;
+    int width;
+    int delta;
     int span;
     int left;
     int right;
-    double root;
     goto condition;
+positive:
+    span = width;
+clamp_right:
+    right = width + x;
+    if (right >= 312) right = 312 - x;
+    else right = width;
+    total_span = span + right;
+    sub_4DB9C(shape, total_span, dword_53A49 + 0x8088 + row * 456 + left);
 next:
     ++row;
 condition:
     if (row >= end) return;
     if (row <= y - radius) goto next;
     if (row >= y + radius) goto next;
-    radial = abs(y - row);
-    radial = radius * radius - radial * radial;
-    root = sqrt((double)radial);
-    half_width = (int)(root * scale / dbl_501F0);
-    left = x - half_width;
-    span = half_width;
-    if (left < 0) {
-        left = 0;
-        span = x;
-    }
-    right = half_width;
-    if (right + x >= 312) right = 312 - x;
-    span += right;
-    sub_4DB9C(shape, span, dword_53A49 + 0x8088 + row * 456 + left);
-    goto next;
+    delta = abs(y - row);
+    radial = radius * radius - delta * delta;
+    width = (int)(sqrt((double)radial) * scale / dbl_501F0);
+    left = x - width;
+    if (left >= 0) goto positive;
+    left = 0;
+    span = x;
+    goto clamp_right;
 }
 #endif
 

@@ -46,12 +46,14 @@ EFFECT_TAIL_CASES = tuple(("F" + format(address, "X"), address) for address in (
     ("INDEXED_PAIR", 0x2111A), ("INDEXED_ALL", 0x2111A), ("QUAKE_GROUP", 0x21527))
 SPARSE_GROUPS = {"INDEXED_PAIR": (0x2111A, 0x21B18),
                  "INDEXED_ALL": (0x2111A, 0x21AD9, 0x21B18, 0x21B99),
-                 "QUAKE_GROUP": (0x21527, 0x21548, 0x2185F, 0x21A9E)}
+                 "QUAKE_GROUP": (0x21527, 0x21548, 0x2185F, 0x21A9E),
+                 "RADIAL_GROUP": (0x190AC, 0x219AD)}
+TREASURE_CASES = (("F190AC", 0x190AC), ("RADIAL_GROUP", 0x190AC))
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
-ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES)
+ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
             "sub_375B2": 0x375B2, "sub_3453E": 0x3453E, "sub_127E0": 0x127E0,
@@ -110,7 +112,13 @@ BINDINGS.update({'dword_53A6D': 0x53A6D, 'sub_21548': 0x21548,
     'sub_2189A': 0x2189A, 'sub_219AD': 0x219AD, 'sub_21B18': 0x21B18,
     'sub_21EB1': 0x21EB1, 'sub_11EEE': 0x11EEE, 'sub_4DB9C': 0x4DB9C,
     'sub_127A9': 0x127A9, 'sub_1C8ED': 0x1C8ED,
-    '_abs': 0x375E2, '_sqrt': 0x3C6FC, '__CHP': 0x377A4, 'dbl_501F0': 0x501F0})
+    '_abs': 0x375E2, '_sqrt': 0x3C6FC, 'sqrt': 0x3C6FC, '__CHP': 0x377A4, 'dbl_501F0': 0x501F0})
+BINDINGS.update({'dword_53AD5': 0x53AD5, 'dword_53AD9': 0x53AD9,
+    'dword_53ADD': 0x53ADD, 'dword_53AE1': 0x53AE1, 'dword_53BF3': 0x53BF3,
+    'sub_4E031': 0x4E031, 'sub_1956B': 0x1956B, 'sub_15F84': 0x15F84,
+    'sub_19953': 0x19953, 'sub_197E5': 0x197E5, 'sub_25B45': 0x25B45,
+    'sub_16C57': 0x16C57, 'sub_196CB': 0x196CB, 'sub_12263': 0x12263,
+    'sub_1B932': 0x1B932, 'funcs_1199C': 0x1199C, 'dword_53A7D': 0x53A7D})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
@@ -124,9 +132,12 @@ SOURCES = {
     "game_event_layout": ("tools/fd2_matching_game_event_layout.c", tuple(macro for macro, _ in LAYOUT_CASES)),
     "game_quake": ("tools/fd2_matching_game_quake.c", tuple(macro for macro, _ in QUAKE_CASES)),
     "game_effect_tail": ("tools/fd2_matching_game_effect_tail.c", tuple(macro for macro, _ in EFFECT_TAIL_CASES)),
+    "game_treasure": ("tools/fd2_matching_game_treasure.c", tuple(macro for macro, _ in TREASURE_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
-SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),)}
+SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
+    'game_treasure': (('EFFECT.C', 'tools/fd2_matching_game_effect_tail.c'),
+                     ('QUAKE.C', 'tools/fd2_matching_game_quake.c'))}
 COMPILER_INPUTS = {
     "10.0a": INPUTS,
     "9.5": {

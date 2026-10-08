@@ -105,6 +105,9 @@ def split_coff(raw, disassembly, addresses):
         encoded = bytes.fromhex(match.group(2))
         if text[at:at + len(encoded)] != encoded:
             raise ValueError('wdis 分支 bytes 與 compiler COFF 不符')
+        if encoded[0] == 0xFF and len(encoded) > 1 and (encoded[1] >> 3) & 7 in (2, 3, 4, 5):
+            # 間接call/jmp沒有PC-relative位移；其位址欄只走既有COFF重定位。
+            continue
         if len(encoded) == 5 and encoded[0] in (0xE8, 0xE9):
             field, width = at + 1, 4
         elif len(encoded) == 6 and encoded[0] == 0x0F and 0x80 <= encoded[1] <= 0x8F:

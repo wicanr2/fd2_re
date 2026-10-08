@@ -29,6 +29,7 @@ def main():
     parser.add_argument('--evidence', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--objects', type=Path)
+    parser.add_argument('--additional-linked', type=Path)
     args = parser.parse_args()
     if not Path('/.dockerenv').exists():
         raise SystemExit('只在Docker執行')
@@ -177,11 +178,39 @@ def main():
             check = subprocess.run(['python', str(Path(__file__).with_name('fd2_matching_game_restore.py')), 'link', '--objects', str(directory), '--original', str(args.original), '--evidence', str(args.evidence), '--output', str(output)], capture_output=True, text=True)
             assert check.returncode != 0 and 'include' in check.stderr and not output.exists(), check.stderr
             include_rejected.append(case)
+    indirect = None
+    if args.additional_linked is not None:
+        more = json.loads((args.additional_linked / 'report.json').read_text())
+        t = next(t for t in more['trials'] if '-dRADIAL_GROUP' in t['flags'] and t.get('linkable', True))
+        source = args.additional_linked / t['stem']
+        converted, layout = split_coff((source / 'candidate.cof').read_bytes(),
+                                       (source / 'candidate.dis').read_text(),
+                                       [int(a, 16) for a in t['addresses']])
+        assert converted == (source / 'sparse.cof').read_bytes() and layout == t['sparse_layout']
+        assert 'funcs_1199C' in (source / 'candidate.dis').read_text()
+        directory = args.output / 'indirect-call'
+        directory.mkdir()
+        defined = tuple('sub_' + a[2:] for a in t['addresses'])
+        original_pe = directory / 'original.exe'
+        run_link(source / 'candidate.cof', directory / 'original.ld', original_pe,
+                 f".text {t['address']} : SUBALIGN(1) {{ *(_TEXT) }}", 'sub_190AC', defined)
+        identity = copy.deepcopy(layout['fragments'])
+        for p in identity:
+            p['address'] = hex(int(t['address'], 16) + p['compiler_offset'])
+        split_pe = directory / 'split.exe'
+        sections = ' '.join(f".m{n} {p['address']} : SUBALIGN(1) {{ *({p['section']}) }}" for n, p in enumerate(identity))
+        run_link(source / 'sparse.cof', directory / 'split.ld', split_pe, sections, 'sub_190AC', defined)
+        assert read_sparse_pe(split_pe, identity) == linked_text(original_pe, int(t['address'], 16), t['candidate_size'])
+        assert read_sparse_pe(source / 'linked.exe', layout['fragments']) == (source / 'candidate.bin').read_bytes()
+        indirect = {'source_report_sha256': hashlib.sha256((args.additional_linked / 'report.json').read_bytes()).hexdigest(),
+                    'identity_layout_bytes': t['candidate_size'], 'matched_original': t['exact_interval_bytes'],
+                    'indirect_function_table': 'funcs_1199C', 'all_instruction_bytes_preserved': True}
     result = {'identity_layout_bytes': 267, 'unshared_identity_layout_bytes': plain['candidate_size'],
               'matched_original_functions': 2, 'lifted_rel32_branches': 1,
               'target_address': '0x21190', 'rejected': rejected,
               'source_report_sha256': hashlib.sha256((args.linked / 'report.json').read_bytes()).hexdigest(),
-              'extended_groups': extended, 'include_rejected': include_rejected}
+              'extended_groups': extended, 'include_rejected': include_rejected,
+              'indirect_call_validation': indirect}
     (args.output / 'result.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(result, ensure_ascii=False))
 
