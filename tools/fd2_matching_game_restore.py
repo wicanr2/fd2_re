@@ -122,6 +122,8 @@ DIALOGUE_BACKUP_CASES = tuple(('DIALOGUE_BACKUP_'+str(n),0x165AC) for n in range
 SOUND_TRANSITION_CASES = (('SOUND_TRANSITION',0x3396A),)
 TAIL_EVENT_CASES = (('TAIL_EVENT_34C76',0x34C76),('TAIL_EVENT_35487',0x35487))
 START_LOAD_CASES = tuple(('START_LOAD_'+str(n),0x25EBB) for n in range(5))
+TERMINAL_BODY_CASES = tuple(('TERMINAL_BODY_'+str(n),0x2BCE5) for n in range(8))
+TERMINAL_DIALOGUE_CASES = tuple(('TERMINAL_DIALOGUE_'+str(n),0x2C39B) for n in range(3))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -179,6 +181,8 @@ ALL_CASES += DIALOGUE_BACKUP_CASES
 ALL_CASES += SOUND_TRANSITION_CASES
 ALL_CASES += TAIL_EVENT_CASES
 ALL_CASES += START_LOAD_CASES
+ALL_CASES += TERMINAL_BODY_CASES
+ALL_CASES += TERMINAL_DIALOGUE_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -295,6 +299,8 @@ BINDINGS.update({'dword_53A18':0x53A18,'dword_53A1C':0x53A1C,'dword_53A20':0x53A
     'dword_53A24':0x53A24,'dword_53A28':0x53A28,'sub_15E9E':0x15E9E,'sub_4E96F':0x4E96F})
 BINDINGS.update({'sub_1F894':0x1F894,'funcs_25E3A':0x51D71,'byte_51E63':0x51E63,
     'aFd2Sav_4':0x50223,'unk_50220':0x50220,'sub_2CAD7':0x2CAD7,'sub_10010':0x10010})
+BINDINGS.update({'unk_525DC':0x525DC,'unk_525F0':0x525F0,'unk_52604':0x52604,
+    'sub_2C39B':0x2C39B,'sub_2C405':0x2C405,'sub_20421':0x20421})
 BINDINGS.update({'sub_31860':0x31860,'sub_1B8A6':0x1B8A6,'sub_4DFCC':0x4DFCC,
     'sub_10620':0x10620,'sub_135DD':0x135DD,'sub_32999':0x32999,'sub_1366A':0x1366A,
     'sub_134E4':0x134E4,'dword_53A81':0x53A81,'sub_2D31B':0x2D31B,
@@ -469,6 +475,8 @@ SOURCES = {
     "game_sound_transition": ("tools/fd2_matching_game_sound_transition.c", ('SOUND_TRANSITION',)),
     "game_tail_events": ("tools/fd2_matching_game_tail_calls.c", tuple(macro for macro,_ in TAIL_EVENT_CASES)),
     "game_start_load": ("tools/fd2_matching_game_start_load.c", tuple(macro for macro,_ in START_LOAD_CASES)),
+    "game_terminal_body": ("tools/fd2_matching_game_terminal_body.c", tuple(macro for macro,_ in TERMINAL_BODY_CASES)),
+    "game_terminal_dialogue": ("tools/fd2_matching_game_terminal_dialogue.c", tuple(macro for macro,_ in TERMINAL_DIALOGUE_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
