@@ -9937,3 +9937,19 @@ PRICE_FORM_01以quantity乘price再存dword_53AE1，兩前端均完整匹配598 
 新增1B0AD完整158 bytes後，既有169段來源出處逐項保持，總計170段。C覆蓋169個函式／20420 bytes，另146-byte未歸屬區間，合計20566 bytes；175個保留函式庫與961個待還原函式分列。全檔357074 bytes及SHA仍相同，decompilation_complete=false，Goal及#198保持未完成。70組3345份候選、3315份獨立核對與30份布局拒收由現行工具重算；117份舊初輪探索另列。正式Go／Ebiten、PLAYER-E2與硬體時序沒有提升。
 
 本批收尾：72份來源SHA、140份雙輪連結報告、170段實際C出處及1142個本地連結相符，索引正對照與正式IDA資料庫SHA保持。184條教訓及69個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。兩份C、完整匹配及負例隨提交推送GitHub，提交與遠端HEAD回填#198。
+
+### 2026-10-09 #198：35F6F完整C匹配與間接表項證據
+
+上一輪4f5a7521已推送完整C匹配，本輪沿原目標繼續還原，未重開已閉合玩法。工具鏈／執行期分流及文件職責路由已核對，新增來源均接入[索引](00-index.md)。[主收據](../data/ida/fd2_matching_full_20261008.json)的game_state_bytes_matches、game_slot_address_attempts、game_inventory_count_attempts及validation.inventory_and_state_bytes保存本輪來源、物件、完整旗標與正負結果。
+
+[35F6F C來源](../../tools/fd2_matching_game_state_bytes.c)的STATE_FORM_3／4完整匹配35 bytes，保留53AD5所指記錄+16的byte加一、53BEF低byte讀取及53A55所指記錄+3的byte寫入。以unsigned運算後窄化或明示byte讀取，避免引入signed overflow，產碼重現原始DL與EAX配置。六種C表示只有這兩種在列出的旗標匹配；完整區間、原始名稱及未知玩法語意分開保存，不推定原作者宣告。
+
+[1B722地址來源](../../tools/fd2_matching_game_slot_address.c)保留80-byte記錄、2-byte槽步距、+11及byte讀取。八種指標／整數地址表示均未匹配；整數保存地址限定歷史-mf的32-bit模型，不宣稱portable C。[1B8A6計數來源](../../tools/fd2_matching_game_inventory_count.c)保留八槽、有號上限、+10 bit7測試及累計順序，八種局部生命週期也未匹配。近似長度及局部register相同不增加覆蓋，停止重複本批表示。
+
+三份C及驅動器凍結後，198份候選在兩個獨立容器重建，OMF、完整編譯／連結報告與機器碼相同，198份全部以objcopy獨立核對。35F6F四列具名參照按原始指令驗證；原始符號／LE的68列、四項矛盾拒收及明示+1的六列／三項拒收通過。新增35 bytes後，原有170段來源出處逐項保持，總計171段；C覆蓋170函式／20455 bytes，加146-byte未歸屬區間合計20601 bytes。175個保留函式庫與960個待還原函式分列；SDK的11函式／805 bytes來源子集在新基準重做兩輪與七項拒收，完整357074-byte EXE及SHA仍相同。decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten、PLAYER-E2與硬體時序不提升。
+
+清冊的來源函式關係未出現字面E8 call，所以以受版控ida_probe_fd2_matching_coverage.py在正式IDA資料庫複本核對35F6F完整區間。IDA 9.4實際JSON確認1305個函式及八處間接call；保存其原始指令，執行期所選索引未知。IDA資料xref指向51B91表頭，表頭原檔其實指向341DB。逐筆原始LE fixup找到35F6F在51CD5、零基索引81，原檔偏移51AD5保存25F6F的object-relative值。失敗斷言在文件寫入前停止，修正後保存正確表項；未把表頭xref當成目標表項、直接call或已執行玩家路徑。證據見state_bytes_original_evidence；正式.i64未改寫。
+
+IDA可重跑參數為FD2_MATCHING_AUDIT_START=0x35f6f、FD2_MATCHING_AUDIT_END=0x35f92及FD2_MATCHING_AUDIT_OUTPUT=/out/audit.json，腳本、輸入資料庫及清冊SHA見state_bytes_original_evidence.ida_audit_method。依既有授權IDA image執行資料庫複本，原版及正式資料庫唯讀掛載。
+
+本批收尾：75份來源SHA、146份雙輪連結報告、171段實際C出處及1149個本地連結相符，索引正對照與正式IDA資料庫SHA保持。185條教訓及70個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。三份C、完整匹配、負例與間接表項證據隨提交推送GitHub，提交與真正遠端HEAD回填#198。

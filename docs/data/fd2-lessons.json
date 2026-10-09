@@ -3,6 +3,19 @@
   "note": "踩過的坑寫成規則，不是寫成事件。每一條的 rule 是現在式、可重用、不會因為當時那個 bug 被修好就變成假斷言；why 才放當時發生什麼。由 tools/fd2_lessons.py 在每個工作階段開始時印出來（.claude/settings.json 的 SessionStart hook），不靠任何人記得去讀。",
   "lessons": [
     {
+      "id": "ida-array-xref-head-is-not-target-entry",
+      "area": "逆向證據",
+      "date": "2026-10-09",
+      "rule": "IDA資料xref指向陣列頭時，以原始LE fixup逐項定位真正表項，再以間接指令的scale核對索引。不要把表頭xref當成索引0或把IDA間接call關係當成E8直接呼叫。入口tools/le_xref.py與docs/data/ida/fd2_matching_full_20261008.json的state_bytes_original_evidence。",
+      "why": "35F6F的IDA資料xref為51B91，表頭實際指向341DB；目標在51CD5的索引81，raw檔51AD5保存25F6F的object-relative值，八處引用均為間接call。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": ["docs/data/ida/fd2_matching_full_20261008.json"],
+        "pattern": "zero_based_entry_index"
+      }
+    },
+    {
       "id": "read-constants-from-source",
       "area": "對拍",
       "rule": "節奏與模擬器常數去程式碼裡找，不要從觀測到的數字反推。",
