@@ -2025,6 +2025,19 @@
         ],
         "pattern": "zero_bindings"
       }
+    },
+    {
+      "id": "matching-shared-return-compiles-adjacent-c-functions",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "原始函式跳到相鄰函式的pop／ret尾端時，先核對owner與既有C來源，再驗證同一C編譯單元能否自然共用尾端。比較完整群組及每個入口，不填opcode；群組含既有匹配時，依原位址去重並保留既有出處優先。入口tools/fd2_matching_game_map_group.c與tools/test_fd2_matching_map_group.py。",
+      "why": "12C60與12CEA同單元編譯直接產生12D48的749C到12CE6，完整283 bytes匹配。12C60已有138-byte來源，只新增12CEA的145 bytes；組合器先到來源優先，收據順序需保留舊來源。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": ["tools/fd2_matching_game_map_group.c"],
+        "pattern": "MAP_QUERY_GROUP"
+      }
     }
   ]
 }

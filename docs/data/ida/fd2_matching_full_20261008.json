@@ -9,7 +9,7 @@
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
   },
-  "status": "PARTIAL; 177個歷史Watcom C語法函式及146-byte未歸屬區塊匹配，全檔C反編譯尚未完成",
+  "status": "PARTIAL; 178個歷史Watcom C語法函式及146-byte未歸屬區塊匹配，全檔C反編譯尚未完成",
   "decision": "遊戲邏輯還原成 C；原作組語與第三方函式庫可保留並分列覆蓋。",
   "sources": [
     {
@@ -58,7 +58,7 @@
     },
     {
       "path": "tools/fd2_matching_game_restore.py",
-      "sha256": "f78aa6cf224f1699552ab1db4d1778d95fb7bfb9f36a46d6f925abe94e67e2ce"
+      "sha256": "51d56e48ec4e10d7f1d6e85a58057d27215650dcc41cb1ea985079a97deeec51"
     },
     {
       "path": "tools/fd2_matching_inventory_watstack.c",
@@ -347,6 +347,14 @@
     {
       "path": "tools/test_fd2_matching_library_native_restore.py",
       "sha256": "143237b20d9f4a52af5ae8008b1885273cdb48a371f901962ce6d76a55d3f2cc"
+    },
+    {
+      "path": "tools/fd2_matching_game_map_group.c",
+      "sha256": "d75f4527055cd97cad4b1d281f313aa3e6b0f910eb2b0fd300254244da86ae37"
+    },
+    {
+      "path": "tools/test_fd2_matching_map_group.py",
+      "sha256": "345902a02abc19ce18fc20acd370918658b0eb3935777da39beee4b827d16285"
     }
   ],
   "toolchain": {
@@ -58661,9 +58669,97 @@
       "c_coverage_unchanged": true,
       "whole_file_equal": true,
       "decompilation_complete": false,
-      "build_receipt_sha256": "ecbcde6f333d5fa657ec6fecbae0bccf50cf6c03c75c13e8c1a160ccdcc89192",
+      "build_receipt_sha256": "a713dbc17b75bf871aa22af14437f7763433a2047dae46f2fc18481b7f168b2e",
       "link_tests_sha256": "743583e9811a5c9550a1d2ffbd0cd3d860401ba26d80943d373e88c04a2befc7",
       "bootstrap_tests_sha256": "7e6555d958556d0a5e789aa1be6a10671f118c2dc7ed451ecb53022c5c9a7683"
+    },
+    "map_group": {
+      "candidates": 9,
+      "reports_repeat_equal": true,
+      "objects_repeat_equal": true,
+      "independent_objcopy_checks": 9,
+      "complete_group_bytes": 283,
+      "original_functions": 2,
+      "new_original_functions": 1,
+      "new_original_function_bytes": 145,
+      "old_restored_spans_unchanged": 178,
+      "shared_return_source": "compiler-generated",
+      "branch_address": "0x12d48",
+      "target_address": "0x12ce6",
+      "original_binding_references": 28,
+      "regressions": {
+        "bindings": {
+          "input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "tool": {
+            "name": "IDA Pro",
+            "version": "9.4",
+            "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+          },
+          "reference_count": 68,
+          "indirect_table_reference": {
+            "symbol": "funcs_1199C",
+            "ida_linear_address": "0x19511",
+            "value": "0x51b91",
+            "kind": "original_le_fixup"
+          },
+          "rejected": [
+            "name_digits_used_as_address",
+            "earlier_reference_conflicts_with_later_valid_reference",
+            "original_instruction_changed",
+            "public_link_rejects_before_output"
+          ],
+          "explicit_addends": {
+            "reference_count": 6,
+            "base": "0x53a8d",
+            "actual_target": "0x53a8e",
+            "operand_addend": 1,
+            "rejected": [
+              "base_shifted",
+              "offset_changed",
+              "offset_omitted"
+            ]
+          }
+        },
+        "shared_tail_and_includes": {
+          "schema_version": 1,
+          "complete_group_bytes": 283,
+          "compiled_entries": 2,
+          "shared_return_bytes": "5f5e5bc3",
+          "branch_address": "0x12d48",
+          "branch_target": "0x12ce6",
+          "compiler_generated_branch": true,
+          "source_report_sha256": "4f7c74772ba4f5ee75ae5084784fe80bbd3e1ee99d79cf36a137f957f19b9a86",
+          "rejected_before_output": [
+            {
+              "case": "include_missing",
+              "output_created": false
+            },
+            {
+              "case": "include_bytes",
+              "output_created": false
+            },
+            {
+              "case": "include_time",
+              "output_created": false
+            },
+            {
+              "case": "include_hash",
+              "output_created": false
+            }
+          ]
+        }
+      },
+      "classification_changed": false,
+      "whole_file_equal": true,
+      "decompilation_complete": false,
+      "sdk_source_spans_unchanged": 19,
+      "after_receipt_totals": {
+        "compiled_game_candidates": 3705,
+        "independent_objcopy_checks": 3675,
+        "source_groups": 79,
+        "unlinked_layout_candidates": 30
+      },
+      "scope": "12C60與12CEA完整283-byte編譯單元匹配；只新增12CEA的145 bytes，保留舊12C60出處。"
     }
   },
   "bootstrap": {
@@ -58679,9 +58775,9 @@
     "decompilation_complete": false,
     "reason": "其餘遊戲／未分類機器碼來自原版，尚未以 C 還原；全檔相同只證明組合基準有效",
     "counts": {
-      "matched_c": 177,
+      "matched_c": 178,
       "retained_library": 175,
-      "unrestored_original_code": 953
+      "unrestored_original_code": 952
     },
     "restored_spans": [
       {
@@ -63350,6 +63446,35 @@
         "source_key": "game_presentation_flow",
         "source_path": "tools/fd2_matching_game_presentation_flow.c",
         "source_sha256": "1d6bb61f82b44dfadb5e1c096ad36e7d82fb3474ff606c7406861ebf8dbd192a"
+      },
+      {
+        "ida_linear_address": "0x12cea",
+        "source_kind": "matched_c",
+        "size": 145,
+        "compiler_flags": [
+          "-mf",
+          "-3s",
+          "-dMAP_QUERY_GROUP"
+        ],
+        "original_classification": {
+          "value": "product",
+          "confidence": "已證實",
+          "source": "versioned semantic index"
+        },
+        "source_report_directory": "/work/map-group-final-linked-r1",
+        "source_report_sha256": "4f7c74772ba4f5ee75ae5084784fe80bbd3e1ee99d79cf36a137f957f19b9a86",
+        "compiler_version": "10.0a",
+        "compiler_inputs": {
+          "WCC386.EXE": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+          "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
+          "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c"
+        },
+        "source_key": "game_map_group",
+        "source_path": "tools/fd2_matching_game_map_group.c",
+        "source_sha256": "d75f4527055cd97cad4b1d281f313aa3e6b0f910eb2b0fd300254244da86ae37",
+        "compiled_group": "0x12c60",
+        "group_code_sha256": "04dda8ab9250e356d46e38886bb6d242590746e223ac34853bcef8938fd0887e",
+        "group_offset": 138
       }
     ],
     "matched_unowned_code_bytes": 146,
@@ -63630,6 +63755,10 @@
       {
         "path": "/work/presentation-flow-final-linked-r1",
         "sha256": "00a893165dd86aab872a4dbf7366d56ee4744a8d78420b120f9d2e5d1998d129"
+      },
+      {
+        "path": "/work/map-group-final-linked-r1",
+        "sha256": "4f7c74772ba4f5ee75ae5084784fe80bbd3e1ee99d79cf36a137f957f19b9a86"
       }
     ],
     "export_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
@@ -64117,8 +64246,8 @@
     "sdk_inputs": {
       "library_sha256": "95b423adf7561bd638876fac51108c92243cc057e0084e98b98b7cd032b3edae",
       "probe_sha256": "0f63d386bb9dcf7c8f3e0a2e5553e2041a7eb214e91f5d9a8d0335d1a2d35f16",
-      "review_sha256": "eeacd210bc89abcf381811a5bad7fb4246d6e38e5a5b6255b5a58c1b5fc01b62",
-      "baseline_receipt_sha256": "1245bbe8847970ae3f5649b0bf64f9b6b8ddeb1025fd2713461aeff47b86ea45",
+      "review_sha256": "928fdea8480ea95d0694df7156dc444efe697434e5f62d7f0c560e9b43e43ebf",
+      "baseline_receipt_sha256": "37b46335636137b8fe4a16febe62da47ec8faf5ba4fcb2194ab066731e3a0af9",
       "driver_sha256": "770d05334ac3b32ca2b2e1647b9f74068e2bddd94e0bc0e03631ed80555f83ef",
       "omf_parser_sha256": "84861cdd0fabc440c29e3dbbd8f89edf03d9817ca0394a24fd17b3a8c319e9ff"
     },
@@ -64401,15 +64530,15 @@
       "library_sha256": "95b423adf7561bd638876fac51108c92243cc057e0084e98b98b7cd032b3edae",
       "source_report_sha256": "7ab791c48516f75360a84716bb3e9ad66f8b7ef82b54e8f210914f9744955820",
       "review_sha256": "100b171ec74d7aa6d6cec01a4a70bb27bb1b2ee36112479f480dd19b9bc02e8f",
-      "baseline_receipt_sha256": "51d228414dacffcf63de43f1780718ec7ff23b302c38ed40ac2b36dd5abaee83",
+      "baseline_receipt_sha256": "1375fe2c08b95d36cea09f1f89587d706dc1b67d9d427a72d87a4a0106db2799",
       "driver_sha256": "42afce0560a711d20ab7de286f2744ee00c0a89ed0870e3d673a6d14fe05b432"
     }
   },
   "local_outputs": {
     "full_ida_image": "work/matching-full-20261008/ida-full-image.json",
     "full_ida_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
-    "candidate_exe": "work/matching-full-20261008/bootstrap-presentation-flow-r1/bootstrap/FD2.EXE",
-    "all_function_ledger": "work/matching-full-20261008/bootstrap-presentation-flow-r1/bootstrap/bootstrap-receipt.json",
+    "candidate_exe": "work/matching-full-20261008/bootstrap-map-group-r2/bootstrap/FD2.EXE",
+    "all_function_ledger": "work/matching-full-20261008/bootstrap-map-group-r2/bootstrap/bootstrap-receipt.json",
     "game_compile_receipts": [
       "work/matching-full-20261008/slice34-r1/compile-report.json",
       "work/matching-full-20261008/slice34-r2/compile-report.json",
@@ -64566,7 +64695,9 @@
       "work/matching-full-20261008/record-flow-final-r1/compile-report.json",
       "work/matching-full-20261008/record-flow-final-r2/compile-report.json",
       "work/matching-full-20261008/presentation-flow-final-r1/compile-report.json",
-      "work/matching-full-20261008/presentation-flow-final-r2/compile-report.json"
+      "work/matching-full-20261008/presentation-flow-final-r2/compile-report.json",
+      "work/matching-full-20261008/map-group-final-r1/compile-report.json",
+      "work/matching-full-20261008/map-group-final-r2/compile-report.json"
     ],
     "game_link_receipts": [
       "work/matching-full-20261008/slice34-linked-r1/report.json",
@@ -64724,7 +64855,9 @@
       "work/matching-full-20261008/record-flow-final-linked-r1/report.json",
       "work/matching-full-20261008/record-flow-final-linked-r2/report.json",
       "work/matching-full-20261008/presentation-flow-final-linked-r1/report.json",
-      "work/matching-full-20261008/presentation-flow-final-linked-r2/report.json"
+      "work/matching-full-20261008/presentation-flow-final-linked-r2/report.json",
+      "work/matching-full-20261008/map-group-final-linked-r1/report.json",
+      "work/matching-full-20261008/map-group-final-linked-r2/report.json"
     ],
     "control_trial_history": [
       "work/matching-full-20261008/controls-linked-r1/report.json",
@@ -64747,10 +64880,10 @@
       "work/matching-full-20261008/sweep95-branches-linked-r1/report.json"
     ],
     "loop_digit_95_receipt": "work/matching-full-20261008/loop-digit95-linked-r1/report.json",
-    "sdk_library_candidate_exe": "work/matching-full-20261008/library-native-bootstrap-r5/FD2.EXE",
+    "sdk_library_candidate_exe": "work/matching-full-20261008/library-native-map-group-r1/FD2.EXE",
     "sdk_library_receipts": [
-      "work/matching-full-20261008/library-native-bootstrap-r5/native-library-bootstrap-receipt.json",
-      "work/matching-full-20261008/library-native-bootstrap-r6/native-library-bootstrap-receipt.json"
+      "work/matching-full-20261008/library-native-map-group-r1/native-library-bootstrap-receipt.json",
+      "work/matching-full-20261008/library-native-map-group-r2/native-library-bootstrap-receipt.json"
     ]
   },
   "conclusions": [
@@ -64959,6 +65092,11 @@
       "claim": "35D60完整250-byte函式由純C匹配。明示byte計數器的存取及state在迴圈中的生命週期，保留兩條返回、byte寫入與原始呼叫順序。",
       "confidence": "已證實",
       "scope": "game_presentation_flow_matches的固定來源及旗標；不推定作者volatile宣告、玩法用途或硬體wall-clock。"
+    },
+    {
+      "claim": "12C60／12CEA同一C編譯單元的完整283 bytes匹配。compiler直接產生12D48的749C跳至12CE6共同pop／ret；12C60已有138-byte C覆蓋，僅新增12CEA完整145 bytes。",
+      "confidence": "已證實",
+      "scope": "game_map_group_matches的3s預設策略與固定include來源；不推定原作者編譯單元、宣告或精確compiler版本。"
     }
   ],
   "limits": [
@@ -68369,6 +68507,7 @@
       "0x127a9",
       "0x12c0d",
       "0x12c60",
+      "0x12cea",
       "0x13460",
       "0x134e4",
       "0x13512",
@@ -68537,20 +68676,20 @@
       "0x368fa"
     ],
     "counts": {
-      "matched_c": 177,
+      "matched_c": 178,
       "retained_library": 175,
-      "unrestored_original_code": 953
+      "unrestored_original_code": 952
     },
-    "matched_code_bytes": 21218,
+    "matched_code_bytes": 21363,
     "all_sources_pure_c": true,
-    "compiled_game_candidates": 3696,
+    "compiled_game_candidates": 3705,
     "repeat_game_report_equal": true,
     "all_game_omf_objects_repeat_equal": true,
     "source_date_epoch": 315532800,
-    "independent_objcopy_checks": 3666,
-    "source_groups": 78,
+    "independent_objcopy_checks": 3675,
+    "source_groups": 79,
     "matched_unowned_code_bytes": 146,
-    "matched_total_code_bytes": 21364,
+    "matched_total_code_bytes": 21509,
     "unlinked_layout_candidates": 30
   },
   "inventory_watstack_attempt": {
@@ -212808,5 +212947,1718 @@
     "original_compiler_version": "unknown",
     "function_semantics": "unknown",
     "rights": "完整SDK物件、RAW、CODE、EXE與IDA資料庫只留本機；公開方法、SHA、原始位址與有限caller證據。"
+  },
+  "game_map_group_matches": [
+    {
+      "schema_version": 1,
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "source_key": "game_map_group",
+      "source_path": "tools/fd2_matching_game_map_group.c",
+      "source_sha256": "d75f4527055cd97cad4b1d281f313aa3e6b0f910eb2b0fd300254244da86ae37",
+      "compiler_version": "10.0a",
+      "compiler_inputs": {
+        "WCC386.EXE": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+        "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
+        "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c"
+      },
+      "compile_driver_sha256": "51d56e48ec4e10d7f1d6e85a58057d27215650dcc41cb1ea985079a97deeec51",
+      "driver_sha256": "51d56e48ec4e10d7f1d6e85a58057d27215650dcc41cb1ea985079a97deeec51",
+      "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+      "trials": [
+        {
+          "stem": "G00",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "437a8a5e58aa948f5d24a9bfaa66874b8da70aa572e35efd69bdc30690d06441",
+          "candidate_size": 283,
+          "original_size": 283,
+          "exact_interval_bytes": true,
+          "first_difference_offset": null,
+          "code_sha256": "04dda8ab9250e356d46e38886bb6d242590746e223ac34853bcef8938fd0887e",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": true,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G01",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "9cd87f659273e90173a1d18bbb6f7f804bfab25d22937e8f3ad615a6af66cff8",
+          "candidate_size": 283,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 12,
+          "code_sha256": "880287c02690afb791922ea1e07db77e5ecdacf8a40e3c30e027c9578048f5d4",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G02",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "a9bfb398b8f8817451710e5ceaf539c99c3e29c20c42576d14eb018118832bd9",
+          "candidate_size": 285,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 138,
+          "code_sha256": "972926d169cdf8b9cdfec11cd29fa9cf73417f0940968471b4343919f3ad4e3b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G03",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "03beb7088504f3d2621b28f3b962dd2f19a1255b06606e68ec0fbc42d75313b2",
+          "candidate_size": 284,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "135682ff4cacecb9f69d0d1fef83be275ef193ce3881d267a75172b1f9c24882",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G04",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "9cd87f659273e90173a1d18bbb6f7f804bfab25d22937e8f3ad615a6af66cff8",
+          "candidate_size": 283,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 12,
+          "code_sha256": "880287c02690afb791922ea1e07db77e5ecdacf8a40e3c30e027c9578048f5d4",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G05",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "7f15c0b7dfba5c5a52896dfdc1ece54a0c7ab01c703897c80f16ced16006fa6a",
+          "candidate_size": 286,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "cff3afc9b95e6c452510706b368efe5a831a04e0803fdbcddf77ede585cdd20b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G06",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "03beb7088504f3d2621b28f3b962dd2f19a1255b06606e68ec0fbc42d75313b2",
+          "candidate_size": 284,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "135682ff4cacecb9f69d0d1fef83be275ef193ce3881d267a75172b1f9c24882",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G07",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "9cd87f659273e90173a1d18bbb6f7f804bfab25d22937e8f3ad615a6af66cff8",
+          "candidate_size": 283,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 12,
+          "code_sha256": "880287c02690afb791922ea1e07db77e5ecdacf8a40e3c30e027c9578048f5d4",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        },
+        {
+          "stem": "G08",
+          "address": "0x12c60",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dMAP_QUERY_GROUP"
+          ],
+          "addresses": [
+            "0x12c60",
+            "0x12cea"
+          ],
+          "object_sha256": "7f15c0b7dfba5c5a52896dfdc1ece54a0c7ab01c703897c80f16ced16006fa6a",
+          "candidate_size": 286,
+          "original_size": 283,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "cff3afc9b95e6c452510706b368efe5a831a04e0803fdbcddf77ede585cdd20b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "function_intervals": [
+            {
+              "address": "0x12c60",
+              "offset": 0,
+              "size": 138
+            },
+            {
+              "address": "0x12cea",
+              "offset": 138,
+              "size": 145
+            }
+          ],
+          "exact_entry_offsets": false,
+          "original_classifications": [
+            {
+              "value": "unknown",
+              "confidence": "未知",
+              "source": "not yet classified"
+            },
+            {
+              "value": "product",
+              "confidence": "已證實",
+              "source": "versioned semantic index"
+            }
+          ]
+        }
+      ],
+      "original_binding_references": [
+        {
+          "symbol": "__CHK",
+          "ida_linear_address": "0x12c65",
+          "value": "0x36cd7",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53A45",
+          "ida_linear_address": "0x12c71",
+          "value": "0x53a45",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53C1B",
+          "ida_linear_address": "0x12c77",
+          "value": "0x53c1b",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BEB",
+          "ida_linear_address": "0x12c89",
+          "value": "0x53beb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53C1B",
+          "ida_linear_address": "0x12c99",
+          "value": "0x53c1b",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_3453E",
+          "ida_linear_address": "0x12ca0",
+          "value": "0x3453e",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C1B",
+          "ida_linear_address": "0x12cb2",
+          "value": "0x53c1b",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x12cbb",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x12cc9",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53C1B",
+          "ida_linear_address": "0x12cd9",
+          "value": "0x53c1b",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "__CHK",
+          "ida_linear_address": "0x12cef",
+          "value": "0x36cd7",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_11CAC",
+          "ida_linear_address": "0x12d01",
+          "value": "0x11cac",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53AB1",
+          "ida_linear_address": "0x12d09",
+          "value": "0x53ab1",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_11C59",
+          "ida_linear_address": "0x12d13",
+          "value": "0x11c59",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_11BFA",
+          "ida_linear_address": "0x12d1a",
+          "value": "0x11bfa",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_51A83",
+          "ida_linear_address": "0x12d1f",
+          "value": "0x51a83",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_51A83",
+          "ida_linear_address": "0x12d28",
+          "value": "0x51a83",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_17AA9",
+          "ida_linear_address": "0x12d33",
+          "value": "0x17aa9",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "_sub_4E031",
+          "ida_linear_address": "0x12d3b",
+          "value": "0x4e031",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_4E031",
+          "ida_linear_address": "0x12d3b",
+          "value": "0x4e031",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53AB5",
+          "ida_linear_address": "0x12d42",
+          "value": "0x53ab5",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_11B48",
+          "ida_linear_address": "0x12d4c",
+          "value": "0x11b48",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_11B9B",
+          "ida_linear_address": "0x12d53",
+          "value": "0x11b9b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_51A83",
+          "ida_linear_address": "0x12d58",
+          "value": "0x51a83",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_51A83",
+          "ida_linear_address": "0x12d61",
+          "value": "0x51a83",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_17AA9",
+          "ida_linear_address": "0x12d6c",
+          "value": "0x17aa9",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "_sub_4E031",
+          "ida_linear_address": "0x12d74",
+          "value": "0x4e031",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_4E031",
+          "ida_linear_address": "0x12d74",
+          "value": "0x4e031",
+          "kind": "direct_rel32"
+        }
+      ],
+      "matched_addresses": [
+        "0x12c60",
+        "0x12cea"
+      ],
+      "source_includes": [
+        {
+          "dos_file": "REC.C",
+          "source_path": "tools/fd2_matching_game_record_flow.c",
+          "source_sha256": "a60e576b7ae348a550a66fa2e7bde09e656a903c2aec363038d204324be5e67e",
+          "dos_sha256": "68bd1e04e0a6a5abb93a465753205ea1b2746cda42080abb6fbcec756d491169"
+        }
+      ]
+    }
+  ],
+  "map_group_original_evidence": {
+    "input": {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "tool": {
+      "name": "IDA Pro",
+      "version": "9.4",
+      "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+    },
+    "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+    "functions": [
+      {
+        "inventory": {
+          "start": "0x12c60",
+          "end": "0x12cea",
+          "size": 138,
+          "ida_analysis_name": "sub_12C60",
+          "ida_function_flags": [],
+          "direct_caller_functions": [
+            "0x13a9f",
+            "0x15f84"
+          ],
+          "direct_code_xref_count": 4,
+          "direct_data_xref_count": 0,
+          "classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "semantic_annotations": []
+        },
+        "ida_analysis_name": "sub_12C60",
+        "current_ida_linear_end": "0x12cea",
+        "boundary_matches_inventory": true,
+        "semantic_annotations": [],
+        "chunks": [
+          {
+            "ida_linear_start": "0x12c60",
+            "ida_linear_end": "0x12cea",
+            "instructions": [
+              {
+                "ida_linear_address": "0x12c60",
+                "file_offset": "0x13a60",
+                "loaded_bytes": "6814000000",
+                "file_bytes": "6814000000",
+                "instruction": "push    14h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c65",
+                "file_offset": "0x13a65",
+                "loaded_bytes": "e86d400200",
+                "file_bytes": "e86d400200",
+                "instruction": "call    sub_36CD7",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c6a",
+                "file_offset": "0x13a6a",
+                "loaded_bytes": "53",
+                "file_bytes": "53",
+                "instruction": "push    ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c6b",
+                "file_offset": "0x13a6b",
+                "loaded_bytes": "56",
+                "file_bytes": "56",
+                "instruction": "push    esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c6c",
+                "file_offset": "0x13a6c",
+                "loaded_bytes": "57",
+                "file_bytes": "57",
+                "instruction": "push    edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c6d",
+                "file_offset": "0x13a6d",
+                "loaded_bytes": "8b7c2410",
+                "file_bytes": "8b7c2410",
+                "instruction": "mov     edi, [esp+0Ch+arg_0]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c71",
+                "file_offset": "0x13a71",
+                "loaded_bytes": "8b1d453a0500",
+                "file_bytes": "8b1d453a0000",
+                "instruction": "mov     ebx, dword_53A45",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c77",
+                "file_offset": "0x13a77",
+                "loaded_bytes": "c7051b3c050000000000",
+                "file_bytes": "c7051b3c000000000000",
+                "instruction": "mov     dword_53C1B, 0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c81",
+                "file_offset": "0x13a81",
+                "loaded_bytes": "31f6",
+                "file_bytes": "31f6",
+                "instruction": "xor     esi, esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c83",
+                "file_offset": "0x13a83",
+                "loaded_bytes": "eb04",
+                "file_bytes": "eb04",
+                "instruction": "jmp     short loc_12C89",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c85",
+                "file_offset": "0x13a85",
+                "loaded_bytes": "83c350",
+                "file_bytes": "83c350",
+                "instruction": "add     ebx, 50h ; 'P'",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c88",
+                "file_offset": "0x13a88",
+                "loaded_bytes": "46",
+                "file_bytes": "46",
+                "instruction": "inc     esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c89",
+                "file_offset": "0x13a89",
+                "loaded_bytes": "3b35eb3b0500",
+                "file_bytes": "3b35eb3b0000",
+                "instruction": "cmp     esi, dword_53BEB",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c8f",
+                "file_offset": "0x13a8f",
+                "loaded_bytes": "7d21",
+                "file_bytes": "7d21",
+                "instruction": "jge     short loc_12CB2",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c91",
+                "file_offset": "0x13a91",
+                "loaded_bytes": "0fb64308",
+                "file_bytes": "0fb64308",
+                "instruction": "movzx   eax, byte ptr [ebx+8]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c95",
+                "file_offset": "0x13a95",
+                "loaded_bytes": "39f8",
+                "file_bytes": "39f8",
+                "instruction": "cmp     eax, edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c97",
+                "file_offset": "0x13a97",
+                "loaded_bytes": "75ec",
+                "file_bytes": "75ec",
+                "instruction": "jnz     short loc_12C85",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c99",
+                "file_offset": "0x13a99",
+                "loaded_bytes": "891d1b3c0500",
+                "file_bytes": "891d1b3c0000",
+                "instruction": "mov     dword_53C1B, ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12c9f",
+                "file_offset": "0x13a9f",
+                "loaded_bytes": "56",
+                "file_bytes": "56",
+                "instruction": "push    esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ca0",
+                "file_offset": "0x13aa0",
+                "loaded_bytes": "e899180200",
+                "file_bytes": "e899180200",
+                "instruction": "call    sub_3453E",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ca5",
+                "file_offset": "0x13aa5",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ca8",
+                "file_offset": "0x13aa8",
+                "loaded_bytes": "85c0",
+                "file_bytes": "85c0",
+                "instruction": "test    eax, eax",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12caa",
+                "file_offset": "0x13aaa",
+                "loaded_bytes": "75d9",
+                "file_bytes": "75d9",
+                "instruction": "jnz     short loc_12C85",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cac",
+                "file_offset": "0x13aac",
+                "loaded_bytes": "89f0",
+                "file_bytes": "89f0",
+                "instruction": "mov     eax, esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cae",
+                "file_offset": "0x13aae",
+                "loaded_bytes": "5f",
+                "file_bytes": "5f",
+                "instruction": "pop     edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12caf",
+                "file_offset": "0x13aaf",
+                "loaded_bytes": "5e",
+                "file_bytes": "5e",
+                "instruction": "pop     esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cb0",
+                "file_offset": "0x13ab0",
+                "loaded_bytes": "5b",
+                "file_bytes": "5b",
+                "instruction": "pop     ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cb1",
+                "file_offset": "0x13ab1",
+                "loaded_bytes": "c3",
+                "file_bytes": "c3",
+                "instruction": "retn",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cb2",
+                "file_offset": "0x13ab2",
+                "loaded_bytes": "833d1b3c050000",
+                "file_bytes": "833d1b3c000000",
+                "instruction": "cmp     dword_53C1B, 0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cb9",
+                "file_offset": "0x13ab9",
+                "loaded_bytes": "7526",
+                "file_bytes": "7526",
+                "instruction": "jnz     short loc_12CE1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cbb",
+                "file_offset": "0x13abb",
+                "loaded_bytes": "8b1df73b0500",
+                "file_bytes": "8b1df73b0000",
+                "instruction": "mov     ebx, dword_53BF7",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cc1",
+                "file_offset": "0x13ac1",
+                "loaded_bytes": "31f6",
+                "file_bytes": "31f6",
+                "instruction": "xor     esi, esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cc3",
+                "file_offset": "0x13ac3",
+                "loaded_bytes": "eb04",
+                "file_bytes": "eb04",
+                "instruction": "jmp     short loc_12CC9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cc5",
+                "file_offset": "0x13ac5",
+                "loaded_bytes": "83c350",
+                "file_bytes": "83c350",
+                "instruction": "add     ebx, 50h ; 'P'",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cc8",
+                "file_offset": "0x13ac8",
+                "loaded_bytes": "46",
+                "file_bytes": "46",
+                "instruction": "inc     esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cc9",
+                "file_offset": "0x13ac9",
+                "loaded_bytes": "3b35fb3b0500",
+                "file_bytes": "3b35fb3b0000",
+                "instruction": "cmp     esi, dword_53BFB",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ccf",
+                "file_offset": "0x13acf",
+                "loaded_bytes": "7d10",
+                "file_bytes": "7d10",
+                "instruction": "jge     short loc_12CE1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cd1",
+                "file_offset": "0x13ad1",
+                "loaded_bytes": "0fb64308",
+                "file_bytes": "0fb64308",
+                "instruction": "movzx   eax, byte ptr [ebx+8]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cd5",
+                "file_offset": "0x13ad5",
+                "loaded_bytes": "39f8",
+                "file_bytes": "39f8",
+                "instruction": "cmp     eax, edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cd7",
+                "file_offset": "0x13ad7",
+                "loaded_bytes": "75ec",
+                "file_bytes": "75ec",
+                "instruction": "jnz     short loc_12CC5",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cd9",
+                "file_offset": "0x13ad9",
+                "loaded_bytes": "891d1b3c0500",
+                "file_bytes": "891d1b3c0000",
+                "instruction": "mov     dword_53C1B, ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cdf",
+                "file_offset": "0x13adf",
+                "loaded_bytes": "ebe4",
+                "file_bytes": "ebe4",
+                "instruction": "jmp     short loc_12CC5",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ce1",
+                "file_offset": "0x13ae1",
+                "loaded_bytes": "b8ffffffff",
+                "file_bytes": "b8ffffffff",
+                "instruction": "mov     eax, 0FFFFFFFFh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ce6",
+                "file_offset": "0x13ae6",
+                "loaded_bytes": "5f",
+                "file_bytes": "5f",
+                "instruction": "pop     edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ce7",
+                "file_offset": "0x13ae7",
+                "loaded_bytes": "5e",
+                "file_bytes": "5e",
+                "instruction": "pop     esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ce8",
+                "file_offset": "0x13ae8",
+                "loaded_bytes": "5b",
+                "file_bytes": "5b",
+                "instruction": "pop     ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12ce9",
+                "file_offset": "0x13ae9",
+                "loaded_bytes": "c3",
+                "file_bytes": "c3",
+                "instruction": "retn",
+                "semantic_annotations": []
+              }
+            ]
+          }
+        ],
+        "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+      },
+      {
+        "inventory": {
+          "start": "0x12cea",
+          "end": "0x12d7b",
+          "size": 145,
+          "ida_analysis_name": "sub_12CEA",
+          "ida_function_flags": [],
+          "direct_caller_functions": [
+            "0x12d7b",
+            "0x15055",
+            "0x15311",
+            "0x165ac",
+            "0x16f55",
+            "0x18890",
+            "0x18d8c",
+            "0x1bbdc",
+            "0x2218a",
+            "0x2548c",
+            "0x25757",
+            "0x33f78"
+          ],
+          "direct_code_xref_count": 15,
+          "direct_data_xref_count": 0,
+          "classification": {
+            "value": "product",
+            "confidence": "已證實",
+            "source": "versioned semantic index"
+          },
+          "semantic_annotations": [
+            {
+              "address": "0x12cea",
+              "classification": "product",
+              "semantic": "X-first／Y-second 地圖捲動至指定格",
+              "confidence": "已證實",
+              "evidence": [
+                "docs/data/ida/fd2_ch28_post_ida.txt",
+                "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"
+              ],
+              "scope": "callee；caller 的座標來源與玩家可見時序仍須另證"
+            }
+          ]
+        },
+        "ida_analysis_name": "sub_12CEA",
+        "current_ida_linear_end": "0x12d7b",
+        "boundary_matches_inventory": true,
+        "semantic_annotations": [
+          {
+            "address": "0x12cea",
+            "classification": "product",
+            "semantic": "X-first／Y-second 地圖捲動至指定格",
+            "confidence": "已證實",
+            "evidence": [
+              "docs/data/ida/fd2_ch28_post_ida.txt",
+              "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"
+            ],
+            "scope": "callee；caller 的座標來源與玩家可見時序仍須另證"
+          }
+        ],
+        "chunks": [
+          {
+            "ida_linear_start": "0x12cea",
+            "ida_linear_end": "0x12d7b",
+            "instructions": [
+              {
+                "ida_linear_address": "0x12cea",
+                "file_offset": "0x13aea",
+                "loaded_bytes": "6814000000",
+                "file_bytes": "6814000000",
+                "instruction": "push    14h",
+                "semantic_annotations": [
+                  {
+                    "address": "0x12cea",
+                    "classification": "product",
+                    "semantic": "X-first／Y-second 地圖捲動至指定格",
+                    "confidence": "已證實",
+                    "evidence": [
+                      "docs/data/ida/fd2_ch28_post_ida.txt",
+                      "docs/data/ida/fd2_ai_13fd4_full_ida_20260810.txt"
+                    ],
+                    "scope": "callee；caller 的座標來源與玩家可見時序仍須另證"
+                  }
+                ]
+              },
+              {
+                "ida_linear_address": "0x12cef",
+                "file_offset": "0x13aef",
+                "loaded_bytes": "e8e33f0200",
+                "file_bytes": "e8e33f0200",
+                "instruction": "call    sub_36CD7",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cf4",
+                "file_offset": "0x13af4",
+                "loaded_bytes": "53",
+                "file_bytes": "53",
+                "instruction": "push    ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cf5",
+                "file_offset": "0x13af5",
+                "loaded_bytes": "56",
+                "file_bytes": "56",
+                "instruction": "push    esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cf6",
+                "file_offset": "0x13af6",
+                "loaded_bytes": "57",
+                "file_bytes": "57",
+                "instruction": "push    edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cf7",
+                "file_offset": "0x13af7",
+                "loaded_bytes": "8b742410",
+                "file_bytes": "8b742410",
+                "instruction": "mov     esi, [esp+0Ch+arg_0]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cfb",
+                "file_offset": "0x13afb",
+                "loaded_bytes": "8b7c2414",
+                "file_bytes": "8b7c2414",
+                "instruction": "mov     edi, [esp+0Ch+arg_4]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12cff",
+                "file_offset": "0x13aff",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d01",
+                "file_offset": "0x13b01",
+                "loaded_bytes": "e8a6efffff",
+                "file_bytes": "e8a6efffff",
+                "instruction": "call    sub_11CAC",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d06",
+                "file_offset": "0x13b06",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d09",
+                "file_offset": "0x13b09",
+                "loaded_bytes": "3b35b13a0500",
+                "file_bytes": "3b35b13a0000",
+                "instruction": "cmp     esi, dword_53AB1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d0f",
+                "file_offset": "0x13b0f",
+                "loaded_bytes": "7431",
+                "file_bytes": "7431",
+                "instruction": "jz      short loc_12D42",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d11",
+                "file_offset": "0x13b11",
+                "loaded_bytes": "7d07",
+                "file_bytes": "7d07",
+                "instruction": "jge     short loc_12D1A",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d13",
+                "file_offset": "0x13b13",
+                "loaded_bytes": "e841efffff",
+                "file_bytes": "e841efffff",
+                "instruction": "call    sub_11C59",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d18",
+                "file_offset": "0x13b18",
+                "loaded_bytes": "eb05",
+                "file_bytes": "eb05",
+                "instruction": "jmp     short loc_12D1F",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d1a",
+                "file_offset": "0x13b1a",
+                "loaded_bytes": "e8dbeeffff",
+                "file_bytes": "e8dbeeffff",
+                "instruction": "call    sub_11BFA",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d1f",
+                "file_offset": "0x13b1f",
+                "loaded_bytes": "833d831a050000",
+                "file_bytes": "833d831a000000",
+                "instruction": "cmp     dword_51A83, 0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d26",
+                "file_offset": "0x13b26",
+                "loaded_bytes": "7413",
+                "file_bytes": "7413",
+                "instruction": "jz      short loc_12D3B",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d28",
+                "file_offset": "0x13b28",
+                "loaded_bytes": "833d831a050006",
+                "file_bytes": "833d831a000006",
+                "instruction": "cmp     dword_51A83, 6",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d2f",
+                "file_offset": "0x13b2f",
+                "loaded_bytes": "740a",
+                "file_bytes": "740a",
+                "instruction": "jz      short loc_12D3B",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d31",
+                "file_offset": "0x13b31",
+                "loaded_bytes": "6a01",
+                "file_bytes": "6a01",
+                "instruction": "push    1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d33",
+                "file_offset": "0x13b33",
+                "loaded_bytes": "e8714d0000",
+                "file_bytes": "e8714d0000",
+                "instruction": "call    sub_17AA9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d38",
+                "file_offset": "0x13b38",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d3b",
+                "file_offset": "0x13b3b",
+                "loaded_bytes": "e8f1b20300",
+                "file_bytes": "e8f1b20300",
+                "instruction": "call    sub_4E031",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d40",
+                "file_offset": "0x13b40",
+                "loaded_bytes": "ebc7",
+                "file_bytes": "ebc7",
+                "instruction": "jmp     short loc_12D09",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d42",
+                "file_offset": "0x13b42",
+                "loaded_bytes": "3b3db53a0500",
+                "file_bytes": "3b3db53a0000",
+                "instruction": "cmp     edi, dword_53AB5",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d48",
+                "file_offset": "0x13b48",
+                "loaded_bytes": "749c",
+                "file_bytes": "749c",
+                "instruction": "jz      short loc_12CE6",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d4a",
+                "file_offset": "0x13b4a",
+                "loaded_bytes": "7d07",
+                "file_bytes": "7d07",
+                "instruction": "jge     short loc_12D53",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d4c",
+                "file_offset": "0x13b4c",
+                "loaded_bytes": "e8f7edffff",
+                "file_bytes": "e8f7edffff",
+                "instruction": "call    sub_11B48",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d51",
+                "file_offset": "0x13b51",
+                "loaded_bytes": "eb05",
+                "file_bytes": "eb05",
+                "instruction": "jmp     short loc_12D58",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d53",
+                "file_offset": "0x13b53",
+                "loaded_bytes": "e843eeffff",
+                "file_bytes": "e843eeffff",
+                "instruction": "call    sub_11B9B",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d58",
+                "file_offset": "0x13b58",
+                "loaded_bytes": "833d831a050000",
+                "file_bytes": "833d831a000000",
+                "instruction": "cmp     dword_51A83, 0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d5f",
+                "file_offset": "0x13b5f",
+                "loaded_bytes": "7413",
+                "file_bytes": "7413",
+                "instruction": "jz      short loc_12D74",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d61",
+                "file_offset": "0x13b61",
+                "loaded_bytes": "833d831a050006",
+                "file_bytes": "833d831a000006",
+                "instruction": "cmp     dword_51A83, 6",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d68",
+                "file_offset": "0x13b68",
+                "loaded_bytes": "740a",
+                "file_bytes": "740a",
+                "instruction": "jz      short loc_12D74",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d6a",
+                "file_offset": "0x13b6a",
+                "loaded_bytes": "6a01",
+                "file_bytes": "6a01",
+                "instruction": "push    1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d6c",
+                "file_offset": "0x13b6c",
+                "loaded_bytes": "e8384d0000",
+                "file_bytes": "e8384d0000",
+                "instruction": "call    sub_17AA9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d71",
+                "file_offset": "0x13b71",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d74",
+                "file_offset": "0x13b74",
+                "loaded_bytes": "e8b8b20300",
+                "file_bytes": "e8b8b20300",
+                "instruction": "call    sub_4E031",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x12d79",
+                "file_offset": "0x13b79",
+                "loaded_bytes": "ebc7",
+                "file_bytes": "ebc7",
+                "instruction": "jmp     short loc_12D42",
+                "semantic_annotations": []
+              }
+            ]
+          }
+        ],
+        "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+      }
+    ],
+    "shared_branch": {
+      "ida_linear_address": "0x12d48",
+      "file_offset": "0x13b48",
+      "loaded_bytes": "749c",
+      "file_bytes": "749c",
+      "instruction": "jz      short loc_12CE6",
+      "semantic_annotations": []
+    },
+    "shared_target": "0x12ce6",
+    "shared_tail_owner": "0x12c60",
+    "shared_tail_instructions": [
+      {
+        "ida_linear_address": "0x12ce6",
+        "file_offset": "0x13ae6",
+        "loaded_bytes": "5f",
+        "file_bytes": "5f",
+        "instruction": "pop     edi",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x12ce7",
+        "file_offset": "0x13ae7",
+        "loaded_bytes": "5e",
+        "file_bytes": "5e",
+        "instruction": "pop     esi",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x12ce8",
+        "file_offset": "0x13ae8",
+        "loaded_bytes": "5b",
+        "file_bytes": "5b",
+        "instruction": "pop     ebx",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x12ce9",
+        "file_offset": "0x13ae9",
+        "loaded_bytes": "c3",
+        "file_bytes": "c3",
+        "instruction": "retn",
+        "semantic_annotations": []
+      }
+    ],
+    "direct_caller_windows": [
+      {
+        "caller_start": "0x12d7b",
+        "original_name": "sub_12D7B",
+        "call_address": "0x12da3",
+        "instructions": [
+          {
+            "ida_linear_address": "0x12d9d",
+            "file_offset": "0x13b9d",
+            "loaded_bytes": "0fb64001",
+            "file_bytes": "0fb64001",
+            "instruction": "movzx   eax, byte ptr [eax+1]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x12da1",
+            "file_offset": "0x13ba1",
+            "loaded_bytes": "50",
+            "file_bytes": "50",
+            "instruction": "push    eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x12da2",
+            "file_offset": "0x13ba2",
+            "loaded_bytes": "52",
+            "file_bytes": "52",
+            "instruction": "push    edx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x12da3",
+            "file_offset": "0x13ba3",
+            "loaded_bytes": "e842ffffff",
+            "file_bytes": "e842ffffff",
+            "instruction": "call    sub_12CEA",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x12da8",
+            "file_offset": "0x13ba8",
+            "loaded_bytes": "83c408",
+            "file_bytes": "83c408",
+            "instruction": "add     esp, 8",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x12dab",
+            "file_offset": "0x13bab",
+            "loaded_bytes": "c3",
+            "file_bytes": "c3",
+            "instruction": "retn",
+            "semantic_annotations": []
+          }
+        ],
+        "argument_and_return_semantics": "unknown"
+      },
+      {
+        "caller_start": "0x15055",
+        "original_name": "sub_15055",
+        "call_address": "0x1515b",
+        "instructions": [
+          {
+            "ida_linear_address": "0x1514d",
+            "file_offset": "0x15f4d",
+            "loaded_bytes": "7d19",
+            "file_bytes": "7d19",
+            "instruction": "jge     short loc_15168",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x1514f",
+            "file_offset": "0x15f4f",
+            "loaded_bytes": "ff353b3c0500",
+            "file_bytes": "ff353b3c0000",
+            "instruction": "push    dword_53C3B",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x15155",
+            "file_offset": "0x15f55",
+            "loaded_bytes": "ff35373c0500",
+            "file_bytes": "ff35373c0000",
+            "instruction": "push    dword_53C37",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x1515b",
+            "file_offset": "0x15f5b",
+            "loaded_bytes": "e88adbffff",
+            "file_bytes": "e88adbffff",
+            "instruction": "call    sub_12CEA",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x15160",
+            "file_offset": "0x15f60",
+            "loaded_bytes": "83c408",
+            "file_bytes": "83c408",
+            "instruction": "add     esp, 8",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x15163",
+            "file_offset": "0x15f63",
+            "loaded_bytes": "e97d010000",
+            "file_bytes": "e97d010000",
+            "instruction": "jmp     loc_152E5",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x15168",
+            "file_offset": "0x15f68",
+            "loaded_bytes": "0fb60424",
+            "file_bytes": "0fb60424",
+            "instruction": "movzx   eax, [esp+34h+var_34]",
+            "semantic_annotations": []
+          }
+        ],
+        "argument_and_return_semantics": "unknown"
+      },
+      {
+        "caller_start": "0x15311",
+        "original_name": "sub_15311",
+        "call_address": "0x153c2",
+        "instructions": [
+          {
+            "ida_linear_address": "0x153b1",
+            "file_offset": "0x161b1",
+            "loaded_bytes": "a3831a0500",
+            "file_bytes": "a3831a0000",
+            "instruction": "mov     dword_51A83, eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x153b6",
+            "file_offset": "0x161b6",
+            "loaded_bytes": "ff352b3c0500",
+            "file_bytes": "ff352b3c0000",
+            "instruction": "push    dword_53C2B",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x153bc",
+            "file_offset": "0x161bc",
+            "loaded_bytes": "ff35273c0500",
+            "file_bytes": "ff35273c0000",
+            "instruction": "push    dword_53C27",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x153c2",
+            "file_offset": "0x161c2",
+            "loaded_bytes": "e823d9ffff",
+            "file_bytes": "e823d9ffff",
+            "instruction": "call    sub_12CEA",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x153c7",
+            "file_offset": "0x161c7",
+            "loaded_bytes": "83c408",
+            "file_bytes": "83c408",
+            "instruction": "add     esp, 8",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x153ca",
+            "file_offset": "0x161ca",
+            "loaded_bytes": "c705831a050000000000",
+            "file_bytes": "c705831a000000000000",
+            "instruction": "mov     dword_51A83, 0",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x153d4",
+            "file_offset": "0x161d4",
+            "loaded_bytes": "6a00",
+            "file_bytes": "6a00",
+            "instruction": "push    0",
+            "semantic_annotations": []
+          }
+        ],
+        "argument_and_return_semantics": "unknown"
+      }
+    ],
+    "classification_unchanged": true,
+    "author_declarations": "unknown",
+    "scope": "固定IDA已知位址機械式擷取；原始共享返回邊與compiler產碼直接相同，未填opcode或事後改寫指令。"
   }
 }
