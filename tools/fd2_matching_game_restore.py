@@ -96,6 +96,8 @@ SAVE_SERVICE_CASES = tuple(('F'+format(address,'X'),address) for address in (
 LOAD_LAYOUT_CASES = tuple((macro,0x301F4) for macro in (
     'LOAD_PTR','LOAD_STRUCT','LOAD_SCALE_FIRST'))
 SCREEN_TRANSITION_CASES = (('F2D669',0x2D669),)
+TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
+TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -113,6 +115,8 @@ ALL_CASES += MENU_SEQUENCE_CASES
 ALL_CASES += SAVE_SERVICE_CASES
 ALL_CASES += LOAD_LAYOUT_CASES
 ALL_CASES += SCREEN_TRANSITION_CASES
+ALL_CASES += TEAM_SERVICE_CASES
+ALL_CASES += TEAM_ABI_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -289,6 +293,7 @@ BINDINGS.update({'aRb_6':0x50282,'aFd2Sav_7':0x50285,'aRb_7':0x5028D,
     'sub_2A2E8':0x2A2E8,'sub_2D516':0x2D516,'sub_309FF':0x309FF,
     'sub_30C22':0x30C22,'sub_311DC':0x311DC,'sub_31602':0x31602,'sub_31793':0x31793})
 BINDINGS.update({'unk_526DA':0x526DA})
+BINDINGS.update({'_sub_4E031':0x4E031})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -325,6 +330,8 @@ SOURCES = {
     "game_save_services": ("tools/fd2_matching_game_save_services.c", tuple(macro for macro, _ in SAVE_SERVICE_CASES)),
     "game_load_layout": ("tools/fd2_matching_game_load_layout.c", tuple(macro for macro, _ in LOAD_LAYOUT_CASES)),
     "game_screen_transition": ("tools/fd2_matching_game_screen_transition.c", ('F2D669',)),
+    "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
+    "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
