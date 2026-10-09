@@ -9967,3 +9967,17 @@ IDA可重跑參數為FD2_MATCHING_AUDIT_START=0x35f6f、FD2_MATCHING_AUDIT_END=0
 新增36 bytes後，原有171段來源出處逐項保持，總計172段。C覆蓋171個函式／20491 bytes，另146-byte未歸屬區間，共20637 bytes；175個保留函式庫與959個待還原函式分列。SDK的11函式／805 bytes來源子集在新基準重做兩輪與七項拒收，完整357074-byte EXE及SHA仍相同。75組3615份候選／3585份獨立核對／30份布局拒收由現行工具重算。decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
 
 本批收尾：77份來源SHA、150份雙輪連結報告、172段實際C出處及1154個本地連結相符，索引正對照與正式IDA資料庫SHA保持。185條教訓及70個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。兩份C、完整匹配與負例隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：三個查詢函式的完整C尾端排列
+
+上一輪80fb7850已推送完整C匹配，本輪沿原目標繼續。工具鏈／執行期分流路由已載入，現況仍看[58](58-fd2-exe-re-coverage.md)及[主收據](../data/ida/fd2_matching_full_20261008.json)。三個既有近匹配函式的差異集中在失敗返回區塊排列；未重開它們已閉合的玩法語意，也沒有改正式Go／Ebiten。
+
+[新C來源](../../tools/fd2_matching_game_query_layout.c)依原始jge的目標，將失敗返回區塊放在成功return之後。24B14保留16次搜尋、31860呼叫及1／-1結果；24BDE與33499保留53BFB上限、80-byte步距、raw +8 byte讀取及1／0結果。完整57／64／64 bytes均匹配，合計185 bytes。各函式原始名稱、caller與既有語意分級保持，沒有因兩支body相同便轉移高階用途，也不推定作者寫法。
+
+凍結來源與驅動器後，27份候選在兩個獨立容器重建。OMF、完整編譯／連結報告與機器碼相同，27份全部由objcopy獨立核對。八列原始具名參照及七個caller的E8目標／完整指令視窗保存；這是固定IDA已知位址的機械式擷取，不改正式資料庫。68列符號／LE參照、四項矛盾拒收與明示+1的六列／三項拒收通過。
+
+新來源取代三個函式在全域覆蓋中的未匹配狀態，但舊game_extended_flow候選確實未匹配的事實保留。主收據補上unmatched_game_candidates_scope與unmatched_by_source_scope，明示這些是各來源版本的歷史負例，現況只由matching_summary及bootstrap判定，不把歷史清單當成現在的待還原集合。
+
+新增185 bytes後，原有172段來源出處逐項保持，總計175段。C覆蓋174個函式／20676 bytes，另146-byte未歸屬區塊，共20822 bytes；175個保留函式庫與956個待還原函式分列。SDK的11函式／805 bytes來源子集在新基準重做兩輪與七項拒收，完整357074-byte EXE及SHA仍相同。76組3642份候選／3612份獨立核對／30份布局拒收由現行工具重算。decompilation_complete=false，Goal與#198保持未完成，PLAYER-E2及硬體時序不提升。
+
+本批收尾：78份來源SHA、152份雙輪連結報告、175段實際C出處及1157個本地連結相符，索引正對照與正式IDA資料庫SHA保持。186條教訓及71個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、三個完整匹配與歷史負例範圍隨提交推送GitHub，提交與真正遠端HEAD回填#198。

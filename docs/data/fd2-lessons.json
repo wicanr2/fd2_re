@@ -1995,6 +1995,21 @@
         ],
         "pattern": "EasyOMF signature"
       }
+    },
+    {
+      "id": "matching-return-block-order-follows-original-branches",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "完整函式長度相同但條件分支與返回區塊順序不同時，先依原始跳躍目標排列C控制流程，再比較整個區間。等價的提前返回可能使編譯器把失敗區塊提前，不以補opcode或裁切尾端修正。入口tools/fd2_matching_game_query_layout.c及docs/data/ida/fd2_matching_full_20261008.json的game_query_layout_matches。",
+      "why": "24B14／24BDE／33499舊來源將失敗return寫在上限檢查，產生同長度的不同排列；明示goto unavailable並在成功return後保留失敗尾端，三個完整區間匹配。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_query_layout.c"
+        ],
+        "pattern": "goto unavailable"
+      }
     }
   ]
 }
