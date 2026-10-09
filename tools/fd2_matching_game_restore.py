@@ -113,6 +113,7 @@ STATE_BYTES_CASES = tuple(('STATE_FORM_'+str(n),0x35F6F) for n in range(6))
 BIT_ADDRESS_CASES = tuple(('BIT_FORM_'+str(n),0x13512) for n in range(6))
 SLOT_SCALE_CASES = tuple(('SLOT_SCALE_'+str(n),0x1B722) for n in range(2))
 QUERY_LAYOUT_CASES = tuple(('F'+format(n,'X'),n) for n in (0x24B14,0x24BDE,0x33499))
+RECORD_FLOW_CASES = tuple(('F'+format(n,'X'),n) for n in (0x1F183,0x12C60,0x1DEBE))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -332,6 +333,7 @@ SOURCES = {
     "game_bit_address": ("tools/fd2_matching_game_bit_address.c", tuple(macro for macro, _ in BIT_ADDRESS_CASES)),
     "game_slot_scale": ("tools/fd2_matching_game_slot_scale.c", tuple(macro for macro, _ in SLOT_SCALE_CASES)),
     "game_query_layout": ("tools/fd2_matching_game_query_layout.c", tuple(macro for macro, _ in QUERY_LAYOUT_CASES)),
+    "game_record_flow": ("tools/fd2_matching_game_record_flow.c", tuple(macro for macro, _ in RECORD_FLOW_CASES)),
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
