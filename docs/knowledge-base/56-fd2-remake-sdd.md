@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+匹配反編譯的固定輸入依[118](../goal/118-goal-fd2-matching-decompilation-20261008.md)。[比較驅動器](../../tools/fd2_matching_game_restore.py)從原版指令位元組及真正LE fixup重算載入結果，逐條核對IDA的`loaded_bytes`後才建立連結輸出；不只核對具名符號。三項無重定位的暫存器位元組偽造反例由[回歸](../../tools/test_fd2_matching_state_group.py)保存。正式匯出通過相同重算，既有C覆蓋保持，這項工具修正不提升正式Go／Ebiten、介面或PLAYER-E2。現況與完整來源見[58](58-fd2-exe-re-coverage.md)及[主收據](../data/ida/fd2_matching_full_20261008.json)。
+
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
 
 2026-09-08 最新長鏈勘誤：正常 START 實跑揭露普通物理 EXP 資料邊界與

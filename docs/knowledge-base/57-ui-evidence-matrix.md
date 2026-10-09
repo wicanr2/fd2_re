@@ -1,5 +1,7 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+匹配反編譯的原始載入位元組守衛修正屬於分析工具驗證，依[56](56-fd2-remake-sdd.md)及[58](58-fd2-exe-re-coverage.md)保存。隔離偽造反例不算原版擷取或C還原；既有正式匯出及C覆蓋經重算保持，本矩陣的介面與PLAYER-E2分級不提升。
+
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。
 
 2026-09-08 最新玩家路徑：[94](94-ch01-town-parity-20260908.md) 優先於下列歷史

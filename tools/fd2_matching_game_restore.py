@@ -2,6 +2,7 @@
 """編譯及驗證主程式區的 C 候選，所有完整區間逐位元組比較。"""
 
 import argparse
+import bisect
 import hashlib
 import itertools
 import json
@@ -109,6 +110,8 @@ CLASS_STACK_CASES += tuple(('INPUT_ESI_'+str(n),0x12DAC) for n in (1,0,2))
 DOS_FILE_CASES = tuple((prefix+str(n),address) for prefix,address,count in
     (('RAW_RANGE_',0x36284,3),('RAW_ALLOC_',0x361CC,3),('RAW_LENGTH_',0x36900,3),
      ('RAW_LOAD_',0x36955,3),('RAW_LX_',0x36344,2)) for n in range(count))
+STATE_GROUP_CASES = tuple(('STATE_VALUE_'+str(n),0x22AF6) for n in range(18))
+STATE_GROUP_CASES += tuple(('STATE_GROUP_'+str(n),0x22A85) for n in range(11))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -134,6 +137,7 @@ COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x23
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['MAP_QUERY_GROUP']=(0x12C60,0x12CEA)
 CASE_GROUPS['MAP_QUERY_EXTENDED']=(0x12C60,0x12CEA,0x12D7B)
+CASE_GROUPS.update({('STATE_GROUP_'+str(n)):(0x22A85,0x22AA8,0x22AF6,0x22BC6) for n in range(11)})
 CASE_GROUPS.update({('DOWN_FORM_'+str(n)):(0x2D3FF,0x2D516) for n in range(6)})
 CASE_GROUPS['DIGIT_DRAW_GROUP']=(0x2D3FF,0x2D516,0x2D620)
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
@@ -156,6 +160,7 @@ ALL_CASES += OPERAND_FLOW_CASES
 ALL_CASES += AI_POINT_FLOW_CASES
 ALL_CASES += CLASS_STACK_CASES
 ALL_CASES += DOS_FILE_CASES
+ALL_CASES += STATE_GROUP_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -425,6 +430,7 @@ SOURCES = {
     "game_ai_point_flow": ("tools/fd2_matching_game_ai_point_flow.c", tuple(macro for macro,_ in AI_POINT_FLOW_CASES)),
     "game_class_stack": ("tools/fd2_matching_game_class_stack.c", tuple(macro for macro,_ in CLASS_STACK_CASES)),
     "game_dos_file": ("tools/fd2_matching_game_dos_file.c", tuple(macro for macro,_ in DOS_FILE_CASES)),
+    "game_state_group": ("tools/fd2_matching_game_state_group.c", tuple(macro for macro,_ in STATE_GROUP_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
@@ -539,7 +545,8 @@ def compile_stage(args):
     lines.extend(["call BUILD.BAT", "exit"])
     config = args.output / "RUN.CONF"
     config.write_text("\n".join(lines) + "\n", encoding="ascii")
-    result = subprocess.run(["dosbox", "-conf", str(config), "-noconsole"], capture_output=True, text=True, timeout=90)
+    runner_timeout = max(90, min(600, 30 + len(trials)))
+    result = subprocess.run(["dosbox", "-conf", str(config), "-noconsole"], capture_output=True, text=True, timeout=runner_timeout)
     (args.output / "runner.log").write_text(result.stdout + result.stderr, encoding="utf-8")
     if result.returncode or "Exit to error:" in result.stdout + result.stderr:
         raise ValueError("compiler 執行器失敗")
@@ -552,7 +559,7 @@ def compile_stage(args):
     report = {"schema_version": 1, "source_key": args.source_key,
               "source_path": source_path, "source_sha256": sha(source),
               "compiler_version": args.compiler_version, "compiler_inputs": compiler_inputs,
-              "source_date_epoch": SOURCE_DATE_EPOCH,
+              "source_date_epoch": SOURCE_DATE_EPOCH, "runner_timeout_seconds": runner_timeout,
               "driver_sha256": sha(Path(__file__)), "trials": trials}
     if includes:
         report['source_includes'] = includes
@@ -566,6 +573,7 @@ def verify_original_bindings(functions, original, bindings):
     """每個具名參照都由直接call目標或原始LE fixup核對，不從名稱推位址。"""
     from le_xref import parse_le, parse_fixups
     fixups = parse_fixups(original, parse_le(original))
+    fixup_offsets = sorted(fixups)
     normalized = {}
     for key in bindings:
         normalized.setdefault(key.lstrip('_'), []).append(key)
@@ -579,9 +587,18 @@ def verify_original_bindings(functions, original, bindings):
                 offset = int(instruction['file_offset'], 16)
                 if original[offset:offset + len(file_bytes)] != file_bytes:
                     raise ValueError('綁定驗證的原始指令版本不符')
+                locations = [(p,fixups[p]) for p in fixup_offsets[
+                    bisect.bisect_left(fixup_offsets,offset):bisect.bisect_left(fixup_offsets,offset+len(file_bytes))]]
+                expected = bytearray(file_bytes)
+                for position,value in locations:
+                    relative = position-offset
+                    if relative+4>len(expected):
+                        raise ValueError('原始LE載入欄位不完整')
+                    expected[relative:relative+4] = value.to_bytes(4,'little')
+                if code != expected:
+                    raise ValueError('原始LE載入位元組與匯出不符: '+instruction['ida_linear_address'])
                 operand_text = instruction['instruction'].split(';',1)[0]
                 keys = {key for token in re.findall(r'\b[_A-Za-z][_A-Za-z0-9]*\b',operand_text) for key in normalized.get(token, [])}
-                locations = [(p, value) for p, value in fixups.items() if offset <= p < offset + len(code)]
                 if len(code) == 5 and code[0] in (0xE8, 0xE9):
                     value = int(instruction['ida_linear_address'], 16) + 5 + int.from_bytes(code[1:], 'little', signed=True)
                     kind = 'direct_rel32'
