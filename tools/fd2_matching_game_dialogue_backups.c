@@ -10,6 +10,26 @@ extern void sub_15E71(void *,void *,int),sub_4E96F(void *,int,int,void *,int,int
 extern void sub_168B6(void *,int,int,int,int,int);
 extern void *malloc(unsigned);
 
+/* 允許修改的保守宣告只用來比較產碼。原版4E031實際只改AX，
+ * 15E71保存EBX，4E96F保存所有通用暫存器；此處不宣稱原作者ABI。
+ */
+#if defined(DIALOGUE_BACKUP_9) || defined(DIALOGUE_BACKUP_12) || defined(DIALOGUE_BACKUP_13)
+#define DIALOGUE_BACKUP_6
+#define DIALOGUE_BACKUP_8
+#pragma aux sub_4E031 modify exact [eax ebx ecx edx];
+#endif
+#ifdef DIALOGUE_BACKUP_12
+#pragma aux sub_4E96F modify exact [eax ebx ecx edx];
+#endif
+#ifdef DIALOGUE_BACKUP_10
+#define DIALOGUE_BACKUP_7
+#pragma aux sub_4E031 modify exact [eax ebx ecx edx];
+#endif
+#ifdef DIALOGUE_BACKUP_11
+#define DIALOGUE_BACKUP_7
+#pragma aux sub_15E71 modify exact [eax ebx ecx edx];
+#endif
+
 #define CAPTURE(N) sub_4E96F(dword_53A18[N],310,86,(void *)0xa0000,offset,320)
 #define DRAW(W,N) sub_168B6((void *)0xa0000,320,5,z,W,N)
 #if defined(DIALOGUE_BACKUP_6) || defined(DIALOGUE_BACKUP_7) || defined(DIALOGUE_BACKUP_8)
@@ -39,7 +59,7 @@ move_next:
             {
                 int px=x-(x-5)*step/sum;
                 int py=y-(y-z)*step/sum;
-#if defined(DIALOGUE_BACKUP_5) || defined(DIALOGUE_BACKUP_7)
+#if defined(DIALOGUE_BACKUP_5) || defined(DIALOGUE_BACKUP_7) || defined(DIALOGUE_BACKUP_12) || defined(DIALOGUE_BACKUP_13)
                 void *shape=dword_53A81+*(short *)(dword_53A81+6);
                 dword_53A18[0]=sub_15E9E(shape,(void *)0xa0000,320,px,py);
 #else

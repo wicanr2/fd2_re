@@ -2156,6 +2156,21 @@
         ],
         "pattern": "local.figure_base,local.figure_base"
       }
+    },
+    {
+      "id": "matching-legacy-pack-uses-supported-pragma",
+      "area": "匹配工具",
+      "date": "2026-10-10",
+      "rule": "歷史編譯器的結構布局使用該版本支援的pragma及sizeof斷言；編譯零錯誤且完整收據存在後才連結。10.0a入口tools/fd2_matching_game_start_load.c使用pack(1)／pack()，以10／2600-byte斷言核對布局。",
+      "why": "首版pack(push,1)／pack(pop)被Watcom10.0a以E1054／E1009拒收，沒有完整編譯收據；這類語法失敗不計為產碼負例。改用該版本支援的常數形式後乾淨重跑。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_start_load.c"
+        ],
+        "pattern": "#pragma[ ]+pack[(]1[)]"
+      }
     }
   ]
 }

@@ -118,9 +118,10 @@ ANIMATION_PANEL_CASES = tuple((prefix+str(n),address) for prefix,address,count i
     (('ANIM_LOCAL_',0x28784,4),('PANEL_LOCAL_',0x2EBE0,9)) for n in range(count))
 POST_DIALOGUE_CASES = tuple(('POST_DIALOGUE_'+str(n),0x24754) for n in range(3))
 OVERLAY_DISPATCH_CASES = tuple(('OVERLAY_DISPATCH_'+str(n),0x122DC) for n in (0,2))
-DIALOGUE_BACKUP_CASES = tuple(('DIALOGUE_BACKUP_'+str(n),0x165AC) for n in range(9))
+DIALOGUE_BACKUP_CASES = tuple(('DIALOGUE_BACKUP_'+str(n),0x165AC) for n in range(14))
 SOUND_TRANSITION_CASES = (('SOUND_TRANSITION',0x3396A),)
 TAIL_EVENT_CASES = (('TAIL_EVENT_34C76',0x34C76),('TAIL_EVENT_35487',0x35487))
+START_LOAD_CASES = tuple(('START_LOAD_'+str(n),0x25EBB) for n in range(5))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -177,6 +178,7 @@ ALL_CASES += OVERLAY_DISPATCH_CASES
 ALL_CASES += DIALOGUE_BACKUP_CASES
 ALL_CASES += SOUND_TRANSITION_CASES
 ALL_CASES += TAIL_EVENT_CASES
+ALL_CASES += START_LOAD_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -291,6 +293,8 @@ BINDINGS.update({'unk_522A3':0x522A3,'unk_522B4':0x522B4,'unk_522C5':0x522C5,
 BINDINGS.update({'sub_126F7':0x126F7})
 BINDINGS.update({'dword_53A18':0x53A18,'dword_53A1C':0x53A1C,'dword_53A20':0x53A20,
     'dword_53A24':0x53A24,'dword_53A28':0x53A28,'sub_15E9E':0x15E9E,'sub_4E96F':0x4E96F})
+BINDINGS.update({'sub_1F894':0x1F894,'funcs_25E3A':0x51D71,'byte_51E63':0x51E63,
+    'aFd2Sav_4':0x50223,'unk_50220':0x50220,'sub_2CAD7':0x2CAD7,'sub_10010':0x10010})
 BINDINGS.update({'sub_31860':0x31860,'sub_1B8A6':0x1B8A6,'sub_4DFCC':0x4DFCC,
     'sub_10620':0x10620,'sub_135DD':0x135DD,'sub_32999':0x32999,'sub_1366A':0x1366A,
     'sub_134E4':0x134E4,'dword_53A81':0x53A81,'sub_2D31B':0x2D31B,
@@ -464,6 +468,7 @@ SOURCES = {
     "game_dialogue_backups": ("tools/fd2_matching_game_dialogue_backups.c", tuple(macro for macro,_ in DIALOGUE_BACKUP_CASES)),
     "game_sound_transition": ("tools/fd2_matching_game_sound_transition.c", ('SOUND_TRANSITION',)),
     "game_tail_events": ("tools/fd2_matching_game_tail_calls.c", tuple(macro for macro,_ in TAIL_EVENT_CASES)),
+    "game_start_load": ("tools/fd2_matching_game_start_load.c", tuple(macro for macro,_ in START_LOAD_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
