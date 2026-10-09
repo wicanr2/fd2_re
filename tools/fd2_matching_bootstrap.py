@@ -147,7 +147,7 @@ def main():
         source_report = next(report for source_directory, report in reports if source_directory == directory)
         source_spans[-1].update(source_report_directory=str(directory),
                                source_report_sha256=sha(directory / "report.json"))
-        for key in ("compiler_version", "compiler_inputs", "source_key", "source_path", "source_sha256"):
+        for key in ("compiler_version", "compiler_inputs", "source_key", "source_path", "source_sha256", "compiler_frontend", "cpp_wrapper"):
             if key in source_report:
                 source_spans[-1][key] = source_report[key]
         if function['inventory'].get('kind') == 'unowned_code':

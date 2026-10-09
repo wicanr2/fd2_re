@@ -9855,3 +9855,23 @@ IDA映像已有合法9.4／py312-v1環境；第一次命令路徑錯誤，核對
 加入所有負例後重新組合357074-byte全檔，SHA-256與固定原檔相同，LE重定位逐筆驗證；原有166個完整匹配、167段來源及未歸屬CODE台帳逐項不變，decompilation_complete=false。原始分類及正式Go／Ebiten、PLAYER-E2不提升，不新增driver／timer逐週期研究。Goal及#198仍未完成，現況只引用[58](58-fd2-exe-re-coverage.md)。兩份新C、方法與全部負例隨GitHub提交，完整EXE、商用組件及臨時資料庫留本機。
 
 提交前核對通過：真正主機官方worklist16項、人工判讀8項、可能已完成0項；181條教訓及67個guard保持。58份來源SHA與94份雙輪連結報告逐項相符，47組3042份候選／3012份獨立objcopy核對／30份布局拒收由現行工具重算沒有矛盾。00-index、58及118三份入口的1106個本地連結皆存在。新檔與新產物UID／GID1000，既有root-owned2811項、.md目錄0；FD2一次性容器全部退出移除。提交及真正遠端HEAD回填#198，本輪新增匹配0個，全檔目標不關閉。
+
+## 2026-10-09 數字演出完整C匹配、原廠選項及雙前端來源守衛
+
+上一輪已推送a27ce5e0。本輪依工具鏈與執行期指紋路由，先從固定10.0a原廠compiler本身的無參數usage核對選項。-?及單獨-h不是該版本的help入口，錯誤輸出未作選項證據。第一次簡化DOSBox設定沒產出檔案，原因不推定；沿用已驗證RUN.CONF及相同掛載後，READY／usage實檔皆存在。完整原廠4509-byte說明留本機，公開只保存command、組件及輸出SHA。加入alias／loop／unroll／reorder／intrinsic／optimize；原廠-ox等同-omiler加-s，因此保留堆疊檢查的比較只用-omiler。
+
+既有完整隊伍服務、數字動畫、六byte圖塊複製與交易C的30份選項候選仍未匹配。新[比較操作數C](../../tools/fd2_matching_game_digit_compare.c)保留兩次MOVZX的原順序，測等價相等、零值、序關係與同寬型別；等長279 bytes仍可能改變載入reg，SUB旗標同值也不能代替CMP，全部負例保留。只做已知IDA Pro 9.4原始區間與compiler機械比較，沒有重開已閉合玩法語意或更改原始分類。
+
+同一固定ISO包含WPP386.EXE。探索保持C語法來源，外層以C連結包裝；其no errors診斷與WCC的0 errors不同，補檢四份已完成實際物件後接續連結，沒有重啟已完成compiler。初輪前端、加法次序與同寬型別仍未匹配。新[完整等價算式C](../../tools/fd2_matching_game_digit_arithmetic.c)從原始byte讀取證實base／amount在0..255，16種9*base+amount的中間值皆在int32範圍；未插組語、opcode、無用padding或新增未證實行為。
+
+DIGIT_FORM_11先保存amount，再加9*base，配合before==after後，完整2D3FF的279 bytes在WCC及WPP兩前端皆匹配。其他算式可改變同一函式較早的CMP或較後的加法reg，不能只在差異行猜宣告。兩版前端都產出相同來源的同一原始函式，只新增一份279-byte覆蓋，原作者語言、變數宣告及精確工具版本未知。舊數字C的CMP一byte負例照原貌保留，現況由新來源及matching_summary取代；ROI、時序及正式Go／Ebiten不提升。
+
+[準備工具](../../tools/fd2_matching_prepare_tools.py)新增唯讀source-root及C++前端選擇，從固定來源乾淨重建WPP386、W32RUN及DOS4GW，保留原廠檔名；新converter也重現既有SHA。所有原始archive、ISO及遊戲唯讀，新輸出UID／GID1000。[匹配驅動器](../../tools/fd2_matching_game_restore.py)C預設保持原三種成本，三份F25052舊OMF及產碼逐項相同；C++僅支援鎖版10.0a，GAME.C仍是登錄C來源，GAME.CPP是固定extern C包裝且固定依賴時間。
+
+新[真實物件守衛](../../tools/test_fd2_matching_cpp.py)驗證CPP缺檔、內容、時間、hash、前端、組件及未鎖版版本七項在輸出前拒收。單一CPP來源的真實全檔組合核對前端／組件／包裝出處；正式組合器只原樣保存收據已有欄位，不替舊C收據猜前端。原始參照68列及四項拒收、明示+1三項、稀疏布局六項、include四項、1416-byte間接呼叫保留及420-byte單一owner／逐段來源與八項拒收皆通過。
+
+最終C來源、wrapper、兩前端及驅動器凍結後，新匹配、比較負例、原廠選項、C預設校準及兩個CPP隊伍負例共97份各做兩次獨立重建，OMF物件、完整報告與產碼相同，全部由objcopy獨立核對。新C加入357074-byte全檔，SHA-256與固定原檔相同，LE重定位逐筆驗證，舊166個匹配及167段來源逐項不變，新增2D3FF後總168段出處可回查。其餘原版code仍保留，decompilation_complete=false，Goal及#198保持未完成。唯一現況引用[58](58-fd2-exe-re-coverage.md)，新C、方法、守衛及正負例隨GitHub提交；完整EXE及商用工具鏈留本機。
+
+新增全函式資料流教訓時，守衛先誤報DIGIT_FORM_11不見。實檔兩處都存在，原因是既有教訓掃描器只收Go、Python及文件，沒有收C。補入.c／.h／.cpp後以同一清冊乾淨重驗通過；沒有改已凍結C來源、匹配收據或原始程式，這是驗證入口問題。
+
+本批收尾：真正主機官方worklist16項、人工判讀8項、可能已完成0項；182條教訓及68個guard乾淨重跑通過。61份來源SHA、112份雙輪連結報告、168段實際來源及1118個本地連結相符。56組3139份候選／3109份獨立核對／30份布局拒收由現行工具重算沒有矛盾。新產物與變更檔UID／GID1000，既有root-owned2811項、.md目錄0，FD2容器均退出移除。沿用原有Watcom與DOSBox compiler映像，沒有建立重複image；既有八週前懸空image未由本批產生，沒有清理其他專案。提交與真正遠端HEAD回填#198，全檔目標保持未完成。

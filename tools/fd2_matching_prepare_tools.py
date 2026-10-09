@@ -30,6 +30,9 @@ EXPECTED_TOOLS = {
     "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
     "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c",
 }
+EXPECTED_CPP_TOOLS = {"WPP386.EXE": "647f4e754cd27fc76b3c44a47227ae3baa4ff2e2f253a8ec27216414653b1e6f",
+                      "W32RUN.EXE": EXPECTED_TOOLS["W32RUN.EXE"],
+                      "DOS4GW.EXE": EXPECTED_TOOLS["DOS4GW.EXE"]}
 
 
 def sha(path):
@@ -45,6 +48,8 @@ def run(command, timeout=120):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--compiler-frontend", choices=('c', 'cpp'), default='c')
+    parser.add_argument("--source-root", type=Path, help="唯讀既有來源目錄；提供時不下載")
     args = parser.parse_args()
     if not Path("/.dockerenv").exists():
         raise SystemExit("本工具只在 Docker 執行")
@@ -52,9 +57,14 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     if root.stat().st_uid != os.getuid():
         raise ValueError("輸出目錄擁有權不符")
+    source_root = args.source_root or root
+    if not source_root.is_dir():
+        raise ValueError('來源目錄不存在')
     for name, (url, expected) in SOURCES.items():
-        path = root / name
+        path = source_root / name
         if not path.exists():
+            if args.source_root is not None:
+                raise ValueError('唯讀來源缺少固定輸入：'+name)
             partial = root / (name + ".partial")
             with urllib.request.urlopen(url, timeout=45) as response, partial.open("wb") as output:
                 while data := response.read(1024 * 1024):
@@ -66,32 +76,39 @@ def main():
             raise ValueError(f"既有來源 {name} 與固定版本不符")
     source = root / "objconv-source"
     source.mkdir(exist_ok=True)
-    with tarfile.open(root / "objconv_2.54+ds.orig.tar.xz") as archive:
+    with tarfile.open(source_root / "objconv_2.54+ds.orig.tar.xz") as archive:
         archive.extractall(source, filter="data")
     run(["g++", "-O2", "-o", str(root / "objconv")] +
         [str(p) for p in sorted((source / "objconv-2.54").glob("*.cpp"))])
-    run(["dpkg-deb", "-x", str(root / "p7zip-full_16.02+dfsg-8_amd64.deb"), str(root / "p7zip-root")])
+    run(["dpkg-deb", "-x", str(source_root / "p7zip-full_16.02+dfsg-8_amd64.deb"), str(root / "p7zip-root")])
     seven = root / "p7zip-root/usr/lib/p7zip/7z"
     iso_root = root / "wc10a-iso"
     iso_root.mkdir(exist_ok=True)
     iso = iso_root / "WATCOM_C10A.ISO"
+    existing_iso = source_root / 'wc10a-iso/WATCOM_C10A.ISO'
+    if args.source_root is not None and existing_iso.is_file():
+        iso = existing_iso
     if not iso.exists():
-        run([str(seven), "e", "-y", "-o" + str(iso_root), str(root / "watcom10a.7z"),
+        run([str(seven), "e", "-y", "-o" + str(iso_root), str(source_root / "watcom10a.7z"),
              "Watcom CPP 10.0a/WATCOM_C10A.ISO"])
     if sha(iso) != "f51ed9358e7eaf6a0d292268bbbc15832530489dd8239a98f6938c244f1736fc":
         raise ValueError("工具 ISO 雜湊不符")
-    inputs = root / "wc10a-input"
+    cpp = args.compiler_frontend == 'cpp'
+    expected_tools = EXPECTED_CPP_TOOLS if cpp else EXPECTED_TOOLS
+    inputs = root / ("wc10a-cpp-input" if cpp else "wc10a-input")
     inputs.mkdir(exist_ok=True)
-    run([str(seven), "e", "-y", "-o" + str(inputs), str(iso), "WATCOM/BINB/WCC386.EXE",
+    run([str(seven), "e", "-y", "-o" + str(inputs), str(iso), "WATCOM/BINB/" + ("WPP386.EXE" if cpp else "WCC386.EXE"),
          "WATCOM/BIN/W32RUN.EXE", "WATCOM/BIN/DOS4GW.EXE"])
-    for name, expected in EXPECTED_TOOLS.items():
+    for name, expected in expected_tools.items():
         if sha(inputs / name) != expected:
             raise ValueError(f"compiler 組件 {name} 雜湊不符")
     manifest = {"schema_version": 1, "sources": [{"file": name, "url": url, "sha256": digest}
-                for name, (url, digest) in SOURCES.items()], "compiler_inputs": EXPECTED_TOOLS,
+                for name, (url, digest) in SOURCES.items()], "compiler_inputs": expected_tools,
                 "converter_sha256": sha(root / "objconv"), "driver_sha256": sha(Path(__file__)),
                 "rights": "原廠工具不公開，僅於本機 Docker 內研究使用"}
-    (root / "prepared-tools.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if cpp:
+        manifest.update(compiler_frontend='cpp', source_iso_sha256=sha(iso))
+    (root / ("prepared-cpp-tools.json" if cpp else "prepared-tools.json")).write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(manifest, ensure_ascii=False), flush=True)
 
 

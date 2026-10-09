@@ -1900,7 +1900,9 @@
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
       "guard": {
         "kind": "present",
-        "paths": ["tools/fd2_matching_game_restore.py"],
+        "paths": [
+          "tools/fd2_matching_game_restore.py"
+        ],
         "pattern": "binding_references = verify_original_bindings"
       }
     },
@@ -1937,8 +1939,25 @@
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
       "guard": {
         "kind": "present",
-        "paths": ["tools/fd2_matching_report_totals.py"],
+        "paths": [
+          "tools/fd2_matching_report_totals.py"
+        ],
         "pattern": "unlinked_layout_candidates"
+      }
+    },
+    {
+      "id": "matching-register-differences-use-whole-function-flow",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "匹配只差暫存器編碼時，追查整個函式的活躍區間與求值順序；後段等價算式可能改變前段CMP的配置。以完整原始區間驗證，不只修改差異那一行。入口tools/fd2_matching_game_digit_arithmetic.c的DIGIT_FORM_11及docs/data/ida/fd2_matching_full_20261008.json的game_digit_arithmetic_matches。",
+      "why": "2D3FF舊279-byte候選只差CMP一byte；交換比較、同寬型別、普通宣告與選項未閉合。16種等價算式中先保存amount再加9*base的完整C在兩前端均匹配，不能據此推定原作語言或作者宣告。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_digit_arithmetic.c"
+        ],
+        "pattern": "DIGIT_FORM_11"
       }
     }
   ]

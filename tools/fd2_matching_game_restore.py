@@ -98,6 +98,8 @@ LOAD_LAYOUT_CASES = tuple((macro,0x301F4) for macro in (
 SCREEN_TRANSITION_CASES = (('F2D669',0x2D669),)
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
+DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
+DIGIT_ARITHMETIC_CASES = tuple(('DIGIT_FORM_'+str(n).zfill(2),0x2D3FF) for n in range(16))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -117,6 +119,8 @@ ALL_CASES += LOAD_LAYOUT_CASES
 ALL_CASES += SCREEN_TRANSITION_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
+ALL_CASES += DIGIT_COMPARE_CASES
+ALL_CASES += DIGIT_ARITHMETIC_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -322,6 +326,8 @@ SOURCES = {
     "game_service_wrappers": ("tools/fd2_matching_game_service_wrappers.c", tuple(macro for macro, _ in SERVICE_WRAPPER_CASES)),
     "game_animation_steps": ("tools/fd2_matching_game_animation_steps.c", tuple(macro for macro, _ in ANIMATION_STEP_CASES)),
     "game_digit_roll": ("tools/fd2_matching_game_digit_roll.c", ("F2D3FF",)),
+    "game_digit_compare": ("tools/fd2_matching_game_digit_compare.c", ("F2D3FF", *tuple(macro for macro, _ in DIGIT_COMPARE_CASES))),
+    "game_digit_arithmetic": ("tools/fd2_matching_game_digit_arithmetic.c", tuple(macro for macro, _ in DIGIT_ARITHMETIC_CASES)),
     "game_display_control": ("tools/fd2_matching_game_display_control.c", tuple(macro for macro, _ in DISPLAY_CONTROL_CASES)),
     "game_resource_records": ("tools/fd2_matching_game_resource_records.c", tuple(macro for macro, _ in RESOURCE_RECORD_CASES)),
     "game_ai_sequences": ("tools/fd2_matching_game_ai_sequences.c", tuple(macro for macro, _ in AI_SEQUENCE_CASES)),
@@ -333,7 +339,9 @@ SOURCES = {
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
-COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
+COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",),
+         "alias": ("-oa",), "loop": ("-ol",), "unroll": ("-ol+",),
+         "reorder": ("-or",), "intrinsic": ("-oi",), "optimize": ("-omiler",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
     'game_treasure': (('EFFECT.C', 'tools/fd2_matching_game_effect_tail.c'),
                      ('QUAKE.C', 'tools/fd2_matching_game_quake.c'))}
@@ -348,6 +356,35 @@ COMPILER_INPUTS = {
         "DOS4GW.EXE": "b401506365892bd7bcb4362599279504a863f05bf37d323f732fd348bd1ef3c5",
     },
 }
+CPP_INPUTS = {
+    "10.0a": {
+        "WPP386.EXE": "647f4e754cd27fc76b3c44a47227ae3baa4ff2e2f253a8ec27216414653b1e6f",
+        "W32RUN.EXE": INPUTS["W32RUN.EXE"],
+        "DOS4GW.EXE": INPUTS["DOS4GW.EXE"],
+    },
+}
+CPP_WRAPPER = b'extern "C" {\n#include "GAME.C"\n}\n'
+
+
+def compiler_spec(version, frontend):
+    if frontend == 'cpp':
+        if version not in CPP_INPUTS:
+            raise ValueError('此版本的C++前端尚未鎖版')
+        return CPP_INPUTS[version], 'WPP386.EXE'
+    if frontend != 'c':
+        raise ValueError('未知compiler前端')
+    return COMPILER_INPUTS[version], 'WCC386.EXE'
+
+
+def validate_cpp_wrapper(objects, report):
+    path = objects / 'GAME.CPP'
+    expected = {'dos_file': 'GAME.CPP', 'sha256': hashlib.sha256(CPP_WRAPPER).hexdigest(),
+                'source_date_epoch': SOURCE_DATE_EPOCH}
+    if not path.is_file() or path.read_bytes() != CPP_WRAPPER:
+        raise ValueError('實際C介面包裝與固定來源不符')
+    if int(path.stat().st_mtime) != SOURCE_DATE_EPOCH or report.get('cpp_wrapper') != expected:
+        raise ValueError('C介面包裝的SHA或固定時間不符')
+    return expected
 
 
 def sha(path):
@@ -355,7 +392,8 @@ def sha(path):
 
 
 def compile_stage(args):
-    compiler_inputs = COMPILER_INPUTS[args.compiler_version]
+    frontend = getattr(args, 'compiler_frontend', 'c')
+    compiler_inputs, compiler_exe = compiler_spec(args.compiler_version, frontend)
     for name, digest in compiler_inputs.items():
         if sha(args.compiler / name) != digest:
             raise ValueError("compiler 組件雜湊不符")
@@ -371,6 +409,14 @@ def compile_stage(args):
     dos_source = args.output / "GAME.C"
     dos_source.write_bytes(source.read_text(encoding="utf-8").encode("ascii", "ignore"))
     os.utime(dos_source, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
+    compile_source = 'GAME.C'
+    cpp_wrapper = None
+    if frontend == 'cpp':
+        path = args.output / 'GAME.CPP'
+        path.write_bytes(CPP_WRAPPER)
+        os.utime(path, (SOURCE_DATE_EPOCH, SOURCE_DATE_EPOCH))
+        compile_source = 'GAME.CPP'
+        cpp_wrapper = {'dos_file': 'GAME.CPP', 'sha256': sha(path), 'source_date_epoch': SOURCE_DATE_EPOCH}
     includes = []
     for dos_name, source_name in SOURCE_INCLUDES.get(args.source_key, ()):
         include_source = args.repo / source_name
@@ -388,7 +434,7 @@ def compile_stage(args):
     for index, ((macro, address), cpu, cost) in enumerate(itertools.product(cases, args.cpus, args.costs)):
         stem = f"G{index:02}"
         flags = ["-mf", "-" + cpu, *COSTS[cost], "-d" + macro]
-        commands.append("R:\\WCC386.EXE " + " ".join(flags) + f" -fo={stem}.OBJ GAME.C > {stem}.TXT")
+        commands.append("R:\\" + compiler_exe + " " + " ".join(flags) + f" -fo={stem}.OBJ {compile_source} > {stem}.TXT")
         trial = {"stem": stem, "address": hex(address), "flags": flags}
         if macro in CASE_GROUPS or macro in SPARSE_GROUPS:
             trial["addresses"] = [hex(value) for value in (CASE_GROUPS | SPARSE_GROUPS)[macro]]
@@ -405,7 +451,7 @@ def compile_stage(args):
     for trial in trials:
         obj = args.output / (trial["stem"] + ".OBJ")
         text = (args.output / (trial["stem"] + ".TXT")).read_text(encoding="cp437")
-        if not obj.is_file() or not re.search(r"\b0 errors\b", text) or "Error!" in text:
+        if not obj.is_file() or not re.search(r"\b(?:0|no) errors\b", text) or "Error!" in text:
             raise ValueError(f"{trial['stem']}: compiler 未成功產生物件")
         trial["object_sha256"] = sha(obj)
     report = {"schema_version": 1, "source_key": args.source_key,
@@ -415,6 +461,8 @@ def compile_stage(args):
               "driver_sha256": sha(Path(__file__)), "trials": trials}
     if includes:
         report['source_includes'] = includes
+    if cpp_wrapper is not None:
+        report.update(compiler_frontend='cpp', cpp_wrapper=cpp_wrapper)
     (args.output / "compile-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(f"{len(trials)} 個主程式 C 候選已編譯。", flush=True)
 
@@ -514,7 +562,9 @@ def link_stage(args):
         raise ValueError("原檔或 IDA 版本不符")
     compile_report = json.loads((args.objects / "compile-report.json").read_text(encoding="utf-8"))
     compiler_version = compile_report.get("compiler_version", "10.0a")
-    if compile_report["compiler_inputs"] != COMPILER_INPUTS[compiler_version]:
+    frontend = compile_report.get('compiler_frontend', 'c')
+    compiler_inputs, compiler_exe = compiler_spec(compiler_version, frontend)
+    if compile_report["compiler_inputs"] != compiler_inputs:
         raise ValueError("compiler 組件登記不符")
     source_key = compile_report.get("source_key", "game")
     source_path = SOURCES[source_key][0]
@@ -524,6 +574,10 @@ def link_stage(args):
         raise ValueError("C 來源與編譯收據不符")
     if (args.objects / "GAME.C").read_bytes() != (args.repo / source_path).read_text(encoding="utf-8").encode("ascii", "ignore"):
         raise ValueError("實際 DOS C 來源與登記來源不符")
+    if frontend == 'cpp':
+        validate_cpp_wrapper(args.objects, compile_report)
+    elif 'cpp_wrapper' in compile_report:
+        raise ValueError('C前端不能帶入未驗證的C++包裝')
     expected_includes = []
     for dos_name, source_name in SOURCE_INCLUDES.get(source_key, ()):
         include_source = args.repo / source_name
@@ -674,6 +728,8 @@ def link_stage(args):
                     for part in r.get('function_intervals', [{'address': r['address']}]) if part.get('kind', 'ida_function') == 'ida_function'})}
     if expected_includes:
         report['source_includes'] = expected_includes
+    if frontend == 'cpp':
+        report.update(compiler_frontend='cpp', cpp_wrapper=compile_report['cpp_wrapper'])
     (args.output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"matched_addresses": report["matched_addresses"], "trials": len(results)}), flush=True)
 
@@ -684,6 +740,7 @@ def main():
     parser.add_argument("--repo", type=Path, default=Path("/repo"))
     parser.add_argument("--compiler", type=Path)
     parser.add_argument("--compiler-version", choices=COMPILER_INPUTS, default="10.0a")
+    parser.add_argument("--compiler-frontend", choices=('c', 'cpp'), default='c')
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--objects", type=Path)
     parser.add_argument("--evidence", type=Path)
@@ -692,10 +749,11 @@ def main():
     parser.add_argument("--source-key", choices=SOURCES, default="game")
     parser.add_argument("--cases", choices=[macro for macro, _ in ALL_CASES], nargs="+")
     parser.add_argument("--cpus", choices=("3s", "4s", "5s"), nargs="+", default=("3s", "4s", "5s"))
-    parser.add_argument("--costs", choices=COSTS, nargs="+", default=tuple(COSTS))
+    parser.add_argument("--costs", choices=COSTS, nargs="+", default=("balanced", "space", "speed"))
     args = parser.parse_args()
     if args.compiler is None:
-        args.compiler = Path({"10.0a": "/wc10a", "9.5": "/wc95", "9.01": "/wc901"}[args.compiler_version])
+        args.compiler = Path('/wc10a-cpp' if args.compiler_frontend == 'cpp' else
+                             {"10.0a": "/wc10a", "9.5": "/wc95", "9.01": "/wc901"}[args.compiler_version])
     if not Path("/.dockerenv").exists():
         raise SystemExit("本工具只在 Docker 執行")
     compile_stage(args) if args.stage == "compile" else link_stage(args)
