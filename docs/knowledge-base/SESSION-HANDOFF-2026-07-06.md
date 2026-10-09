@@ -10139,3 +10139,21 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 本輪C仍182函式／22328 bytes，另146-byte未歸屬區間，共22474 bytes；183段C出處、SDK19函式／1200 bytes與bootstrap逐項保持。175個保留函式庫與948個待還原函式分列。既有完整EXE與SDK基準重查大小及SHA相同，沒有把新負例加入組合。C矩陣由工具重算為86組4020份候選／3990份獨立核對／30份布局拒收；decompilation_complete=false，Goal與#198保持未完成。
 
 本批收尾：98份來源SHA、172份雙輪C連結報告及1191個本地連結相符，索引正對照與正式IDA資料庫SHA保持。189條教訓及74個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除，沒有其他子代理在執行。四函式完整C候選與診斷回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：人工智慧點位與16-bit清零完整C匹配
+
+上一輪fdc841b5保存四函式配置負例，本輪改處理1598A的493 bytes與35BBA的56 bytes，避免重複已測過的方向。工具鏈／執行期分流及文件職責路由已核對，[新C來源](../../tools/fd2_matching_game_ai_point_flow.c)與[堆疊／字寬度回歸](../../tools/test_fd2_matching_ai_point_flow.py)接入[索引](00-index.md)。主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_ai_point_flow_matches、ai_point_flow_original_evidence及validation.ai_point_flow。
+
+35BBA沿原始word ptr [ebx+eax+40h]寫零，沒有把16-bit操作縮成byte。原始56-byte區間在角色倍率與全域指標暫存值配置仍不同；RESET_WORD_2明示offset先乘5、再乘16，完整函式匹配。原始函式與已有語意註記保留，寬度另以原始35BDB指令附記，不猜新增欄位高階名稱或完整record reset。
+
+1598A舊493-byte候選已有88-byte區域布局，剩餘12 bytes集中在呼叫結果存放／參數清理順序及兩個座標讀取。整個targetcount欄位加volatile使其他讀取改變，形成501-byte負例；只限定聚合欄位寫入仍未閉合。AI_POINT_3改以80-byte陣列／欄位前綴與兩個獨立暫存值表示同一88-byte布局，限定結果寫入並用comma表示座標讀取，compiler自然產生15AAF的原始存放，再清理參數，完整493 bytes匹配。沒有填opcode、修補分支或推定原作者宣告、volatile用法與來源分檔。
+
+凍結來源與驅動器後，72份候選各在兩個獨立容器重建；OMF、完整編譯／連結報告與產碼相同，全部由objcopy核對。實際四份匹配為AI_POINT_3的3s預設，以及RESET_WORD_2的3s／4s／5s預設，只計兩個原始函式，共新增549 bytes。同一清零函式在三種CPU參數產生相同code，不能用此推定原作CPU；speed策略未列為匹配。
+
+回歸逐一對照每份正例的完整原始區間，再核對88-byte堆疊、回傳值在參數清理前存放、兩個座標讀取、16-bit零寫入與迴圈目標。舊控制保持負例，三項來源缺檔／內容／雜湊在輸出前拒收。33列原始具名參照、兩份完整IDA函式、原始word寫入及七個caller視窗可回查；既有68列符號／LE、四項矛盾拒收及明示+1六列／三項拒收通過。
+
+組合器保留舊183段C出處，新增後185段。C覆蓋184函式／22877 bytes，另146-byte未歸屬區間，共23023 bytes；175個保留函式庫與946個待還原函式分列。SDK11個無重定位來源及九個原生連結來源接回新C基準，兩輪全檔及收據相同，原有19段SDK出處逐項保持，仍19函式／1200 bytes。C矩陣由工具重算為87組4092份候選／4062份獨立核對／30份布局拒收。完整357074-byte EXE及SHA相同，decompilation_complete=false，Goal與#198保持未完成。
+
+既有人工智慧與ch28行為沿原本證據維持，不從raw分類unknown重開；正式Go／Ebiten、PLAYER-E2及硬體時序不提升。索引的舊「其餘五個候選」已限定原來源並指向新1598A匹配，歷史負例不重寫。新增可重用的聚合／獨立暫存值教訓，guard綁定C來源，未修改驗證器。
+
+本批收尾：100份來源SHA、174份雙輪C連結報告及1194個本地連結相符，四份實際CPU策略逐項核對，索引正對照與正式IDA資料庫SHA保持。190條教訓及75個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除，沒有其他子代理在執行。兩個完整C重建與來源回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。

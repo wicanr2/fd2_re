@@ -2053,6 +2053,19 @@
         ],
         "pattern": "index\\^=unit"
       }
+    },
+    {
+      "id": "matching-stack-temporaries-compare-aggregate-and-scalar",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "已知堆疊布局相同但寫入／清理順序不同時，對照聚合欄位與獨立暫存值的C表示，限定需重現的存取，再按原始offset及完整函式驗證。volatile只作相容產碼表示，不推定作者宣告。入口tools/fd2_matching_game_ai_point_flow.c與tools/test_fd2_matching_ai_point_flow.py。",
+      "why": "1598A的88-byte聚合布局已相同，卻在呼叫結果存放與座標讀取仍有12 bytes差異。整個欄位加volatile改變其他讀取；80-byte陣列／欄位前綴配兩個獨立暫存值，再限定結果寫入，完整493 bytes匹配。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": ["tools/fd2_matching_game_ai_point_flow.c"],
+        "pattern": "scalar_dx,scalar_targetcount"
+      }
     }
   ]
 }
