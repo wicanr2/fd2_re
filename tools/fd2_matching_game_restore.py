@@ -121,6 +121,7 @@ COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x23
 CASE_GROUPS = {"COUNTS_GROUP": (0x1B5F1, 0x1B653, 0x1B6B7), "EVENT_PAIR": (0x2111A, 0x211A4)}
 CASE_GROUPS['MAP_QUERY_GROUP']=(0x12C60,0x12CEA)
 CASE_GROUPS['MAP_QUERY_EXTENDED']=(0x12C60,0x12CEA,0x12D7B)
+CASE_GROUPS.update({('DOWN_FORM_'+str(n)):(0x2D3FF,0x2D516) for n in range(6)})
 CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
     0x2134B, 0x21364, 0x2137D, 0x21396, 0x213B7, 0x21449, 0x21462,
     0x2147B, 0x21494, 0x214AD)
@@ -153,6 +154,7 @@ ALL_CASES += SLOT_SCALE_CASES
 ALL_CASES += (('F1F04A',0x1F04A),('F16559',0x16559))
 ALL_CASES += (('MAP_QUERY_GROUP',0x12C60),)
 ALL_CASES += (('MAP_QUERY_EXTENDED',0x12C60),)
+ALL_CASES += tuple(('DOWN_FORM_'+str(n),0x2D3FF) for n in range(6))
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -332,6 +334,7 @@ BINDINGS.update({'unk_526DA':0x526DA})
 BINDINGS.update({'_sub_4E031':0x4E031})
 BINDINGS.update({'sub_11C59':0x11C59,'sub_11BFA':0x11BFA,
                  'sub_11B48':0x11B48,'sub_11B9B':0x11B9B})
+BINDINGS.update({'a08d':0x50260,'a08d_0':0x50266})
 SOURCES = {
     "game_idle_advance": ("tools/fd2_matching_game_idle_advance.c", tuple(macro for macro, _ in IDLE_ADVANCE_CASES)),
     "game_panel_rows": ("tools/fd2_matching_game_panel_rows.c", tuple(macro for macro, _ in PANEL_ROWS_CASES)),
@@ -345,6 +348,7 @@ SOURCES = {
     "game_presentation_flow": ("tools/fd2_matching_game_presentation_flow.c", tuple(macro for macro, _ in PRESENTATION_FLOW_CASES)),
     "game_map_group": ("tools/fd2_matching_game_map_group.c", ('MAP_QUERY_GROUP',)),
     "game_map_extended": ("tools/fd2_matching_game_map_extended.c", ('MAP_QUERY_EXTENDED',)),
+    "game_digit_decrement_group": ("tools/fd2_matching_game_digit_decrement_group.c", tuple('DOWN_FORM_'+str(n) for n in range(6))),
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
@@ -397,6 +401,7 @@ SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_qua
     'game_map_group': (('REC.C','tools/fd2_matching_game_record_flow.c'),),
     'game_map_extended': (('MAP.C','tools/fd2_matching_game_map_group.c'),
                           ('REC.C','tools/fd2_matching_game_record_flow.c')),
+    'game_digit_decrement_group': (('DIGIT.C','tools/fd2_matching_game_digit_arithmetic.c'),),
     'game_treasure': (('EFFECT.C', 'tools/fd2_matching_game_effect_tail.c'),
                      ('QUAKE.C', 'tools/fd2_matching_game_quake.c'))}
 COMPILER_INPUTS = {

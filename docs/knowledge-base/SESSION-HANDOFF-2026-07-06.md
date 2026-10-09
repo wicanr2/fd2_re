@@ -10061,3 +10061,19 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 現行C矩陣80組3714份候選／3684份獨立核對／30份布局拒收由工具重算，SDK九項另列。完整357074-byte EXE及SHA仍相同，decompilation_complete=false，Goal與#198保持未完成，原始語意分級、正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
 
 本批收尾：87份來源SHA、162份雙輪C連結報告、180段C出處、19段SDK出處及1173個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、完整轉發匹配與巢狀include回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：數字減算完整C與60-byte共同清理尾端
+
+上一輪e9f3cb9e已推送完整座標轉發C，本輪依原始rel8／rel32尋找跳入已匹配相鄰函式的尾端，命中2D516到2D3FF的堆疊清理。工具鏈／執行期分流及文件職責路由已核對，[新來源](../../tools/fd2_matching_game_digit_decrement_group.c)與[回歸](../../tools/test_fd2_matching_digit_group.py)接入[索引](00-index.md)。主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_digit_decrement_matches、digit_decrement_original_evidence及validation.digit_decrement。
+
+新2D516保留60-byte局部資料的current／step／old排列、原始兩個格式字串、dword53BF3減算、byte下溢處理、八位比較、九步迴圈及原始繪製／等待呼叫。既有DIGIT_FORM_11的2D3FF以固定DIGIT.C include沿用，沒有改寫舊來源。首輪缺少a08d與a08d_0位址登錄，補入原始LE fixup證實的50260／50266後乾淨重跑；兩個相同內容的格式字串仍保留各自原址。
+
+初輪完整545 bytes與兩入口相同，但索引暫存值不同。六個等價C算式中，DOWN_FORM_2保留pattern，在呼叫參數才減一，完整原始區間在3s預設策略匹配，其餘保持負例。compiler直接產生2D61B的E9到2D50F，目標為既有C的add esp,3Ch／pop／ret共七bytes，沒有填opcode、NOP或事後修補branch。這只證明固定候選的產碼，不推定作者宣告、來源分檔或精確compiler版本。
+
+凍結來源、DIGIT.C與驅動器後，54份候選在兩個獨立容器重建，OMF、完整編譯／連結報告與產碼相同，全部由objcopy獨立核對。22列原始具名參照、兩個caller的原始E8及完整指令視窗保存。共同清理尾端、rel32目標與DIGIT.C缺檔、內容、時間、雜湊四項輸出前拒收通過；既有68列符號／LE、四項矛盾拒收及明示+1六列／三項拒收通過。
+
+組合器保留先到來源優先，原有180段C出處逐項保持，只新增2D516的266 bytes，新增後181段，2D3FF不重複計數。C覆蓋180函式／21678 bytes，另146-byte未歸屬區間，共21824 bytes；175個保留函式庫及950個待還原函式分列。SDK19函式／1200 bytes的出處逐項保持，新C基準兩輪全檔及收據相同。C矩陣81組3768份候選／3738份獨立核對／30份布局拒收由工具重算，SDK九項另列。完整357074-byte EXE及SHA仍相同，decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten、PLAYER-E2與硬體時序不提升。
+
+追加勘誤：前輪三入口地圖收尾及#198留言把雙輪C報告寫成162份，當時80組實際為160份。本輪以local_outputs.game_link_receipts重算為81組162份；候選、C覆蓋、SHA與驗證結果不受這個文字小計影響，歷史原文保留以供追溯。
+
+本批收尾：89份來源SHA、162份雙輪C連結報告、181段C出處、19段SDK出處及1176個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、六算式完整比較與共同清理回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
