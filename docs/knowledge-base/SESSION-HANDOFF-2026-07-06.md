@@ -10047,3 +10047,17 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 本輪worklist verify在packaging/dist的目錄檢查達到較短批次逾時。逐項量測定位android-package，原始rglob列出270176個路徑，並讀取包裝目錄的manifest等文字。保持原始工具、檢查集合與規則，以有界非阻塞程序完成同一verify，結果仍16條、人工8條、可能已完成0條；未改工作清單或產品規則來避開檢查。
 
 本批收尾：86份來源SHA、158份雙輪C連結報告、179段C出處、19段SDK出處及1170個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、共同尾端與include回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：相鄰座標轉發完整C與三入口群組
+
+上一輪f3b348fb已推送地圖C共同返回尾端，本輪沿同一目標擴大相鄰編譯單元。工具鏈／執行期分流路由已載入，[新來源](../../tools/fd2_matching_game_map_extended.c)接入[索引](00-index.md)，主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_map_extended_matches、map_extended_original_evidence及validation.map_extended。
+
+沿用未改寫的MAP.C與REC.C加入12D7B。初輪三個入口已相同，前兩函式保持，但新轉發函式為48 bytes；原始指令需要倍率結果與指標基底分開載入。C明示offset初始化、乘80及指標加法後，完整138＋145＋49＝332 bytes與三入口在3s預設策略相同。12D7B保留原始兩個byte座標讀取、傳參及12CEA呼叫，沒有補opcode或猜用途；作者的來源分檔與宣告未知。
+
+凍結來源、兩份include與驅動器後，九份候選在兩個獨立容器重建。OMF、完整編譯／連結報告與產碼相同，全部由objcopy核對。31列原始具名參照與三個caller的E8／指令視窗保存；既有68列符號／LE、四項矛盾拒收及明示+1六列／三項拒收通過。回歸工具的--extended核對三個入口與共同返回尾端，MAP.C與REC.C各有缺檔、內容、時間、雜湊四項輸出前拒收；雙函式預設模式另重跑通過。
+
+組合器保留先到來源優先，舊179段C出處逐項保持，最後僅補12D7B的49 bytes，新增後180段。12C60與12CEA不重複計數，也未改兩份既有C來源。C覆蓋179函式／21412 bytes，另146-byte未歸屬區間，共21558 bytes；175個保留函式庫與951個待還原函式分列。SDK11個無重定位來源與九個原生連結來源接回新C基準後，兩輪全檔及收據相同，原有19段SDK出處逐項保持，仍19函式／1200 bytes。
+
+現行C矩陣80組3714份候選／3684份獨立核對／30份布局拒收由工具重算，SDK九項另列。完整357074-byte EXE及SHA仍相同，decompilation_complete=false，Goal與#198保持未完成，原始語意分級、正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
+
+本批收尾：87份來源SHA、162份雙輪C連結報告、180段C出處、19段SDK出處及1173個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、完整轉發匹配與巢狀include回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
