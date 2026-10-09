@@ -2038,6 +2038,21 @@
         "paths": ["tools/fd2_matching_game_map_group.c"],
         "pattern": "MAP_QUERY_GROUP"
       }
+    },
+    {
+      "id": "matching-initial-zero-keeps-first-loop-check",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "完整函式只差首次進入迴圈的跳躍時，核對索引初值的表示與原始目標。常數零與計算出的零可能讓歷史編譯器保留不同檢查，不能只按長度或控制流程等價收件。入口tools/fd2_matching_game_item_transaction.c與tools/test_fd2_matching_item_transaction.py；由完整577-byte比較及branch_target驗證。",
+      "why": "2F642的9.5候選只有2F748一byte不同。直接index=0跳至2F673，略過第一次CMP；以unit互斥或清零後跳到原始2F66E。兩個完整C候選雙輪匹配，沒有修補branch或推定作者寫法。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_item_transaction.c"
+        ],
+        "pattern": "index\\^=unit"
+      }
     }
   ]
 }

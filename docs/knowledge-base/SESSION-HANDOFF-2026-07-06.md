@@ -10107,3 +10107,19 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 本輪沒有增加C或SDK覆蓋。182段C出處、19段SDK出處及bootstrap逐項保持，既有完整EXE重查大小及SHA相同。C仍181函式／21751 bytes，另146-byte未歸屬區間，共21897 bytes；SDK仍19函式／1200 bytes，175個保留函式庫與949個待還原函式分列。C矩陣由現行工具重算為84組3876份候選／3846份獨立核對／30份布局拒收。decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten及PLAYER-E2不提升。
 
 本批收尾：94份來源SHA、168份雙輪C連結報告及1185個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。兩份完整C負例、暫存器診斷與拒收回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：賣出交易完整577-byte C匹配
+
+上一輪ada650f8保存整備負例與診斷，本輪由現行全部雙輪收據重算剩餘完整函式差異，命中2F642的9.5候選只差一byte。工具鏈／執行期分流及文件職責路由已核對，[新C來源](../../tools/fd2_matching_game_item_transaction.c)與[回歸](../../tools/test_fd2_matching_item_transaction.py)接入[索引](00-index.md)。主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_item_transaction_matches、item_transaction_original_evidence及validation.item_transaction。
+
+既有menu_sequences來源的常數index=0使2F747跳到2F673，略過第一次CMP；原版2F747的E9指向2F66E。新來源保留兩份12-byte表、八個raw物品槽、80-byte角色步距、空欄、選擇、確認、3／4價格及credit／remove／重算的全部原始呼叫。四種初始化中，ITEM_INDEX_1與ITEM_INDEX_2由unit互斥或清零，Watcom 9.5的3s預設策略自然保留首次比較，完整577 bytes匹配。常數零仍只差2F748一byte，減算初始化也保持負例；沒有修補branch或按控制流程等價收件，不推定作者寫法與原作精確compiler版本。
+
+賣出語意沿用SDD的Native shop sell production owner證據，未重開已閉合的交易鏈。原始IDA inventory仍記unknown，只是其原始分類；它不取代已審查的賣出語意。原始函式名稱、線性位址、file offset與宣告推論等級保持，正式Go／Ebiten、PLAYER-E2及硬體時序不提升。舊menu來源與其負例保存，索引的舊「其餘三個候選」明示限定該來源，並指向新匹配入口。
+
+凍結來源與驅動器後，36份候選各在兩個獨立容器重建，OMF、完整編譯／連結報告及產碼相同，全部由objcopy核對。兩個相同產碼候選只新增一個原始函式。49列原始具名參照、完整IDA函式、初次比較分支及2E341 caller視窗保存。回歸核對完整區間、原始與負例跳躍目標、三項來源輸出前拒收及受損物件在該候選輸出前拒收；受損物件所在批次的較早候選可能已輸出，沒有宣稱整批零輸出。既有68列符號／LE、四項矛盾拒收及明示+1六列／三項拒收通過。
+
+組合器保持舊182段C出處，只新增2F642的577 bytes，新增後183段。C覆蓋182函式／22328 bytes，另146-byte未歸屬區間，共22474 bytes；175個保留函式庫與948個待還原函式分列。SDK11個無重定位來源及九個原生連結來源接回新C基準，兩輪全檔及收據相同，原有19段SDK出處逐項保持，仍19函式／1200 bytes。C矩陣由現行工具重算為85組3912份候選／3882份獨立核對／30份布局拒收。完整357074-byte EXE及SHA相同，decompilation_complete=false，Goal與#198保持未完成。
+
+新增可重用的首次迴圈檢查教訓。初次guard誤指向驗證器排除的test_*檔案，且正規表示式的括號需要跳脫；回查驗證器後，將guard綁定C來源的實際互斥或初始化，同一check通過，沒有改驗證器的搜尋集合或產品程式。
+
+本批收尾：96份來源SHA、170份雙輪C連結報告及1188個本地連結相符，索引正對照與正式IDA資料庫SHA保持。189條教訓及74個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。完整賣出C與來源回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。

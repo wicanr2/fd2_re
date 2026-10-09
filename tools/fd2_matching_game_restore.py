@@ -98,6 +98,7 @@ LOAD_LAYOUT_CASES = tuple((macro,0x301F4) for macro in (
 SCREEN_TRANSITION_CASES = (('F2D669',0x2D669),)
 SCREEN_LAYOUT_CASES = (('SCREEN_LAYOUT',0x2D669),)+tuple(('SCREEN_LAYOUT_'+str(n),0x2D669) for n in range(1,7))
 MENU_BIOS_CASES = tuple(('MENU_BIOS_'+str(n),0x2D85F) for n in range(4))
+ITEM_TRANSACTION_CASES = tuple(('ITEM_INDEX_'+str(n),0x2F642) for n in range(4))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -140,6 +141,7 @@ ALL_CASES += LOAD_LAYOUT_CASES
 ALL_CASES += SCREEN_TRANSITION_CASES
 ALL_CASES += SCREEN_LAYOUT_CASES
 ALL_CASES += MENU_BIOS_CASES
+ALL_CASES += ITEM_TRANSACTION_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -400,6 +402,7 @@ SOURCES = {
     "game_screen_transition": ("tools/fd2_matching_game_screen_transition.c", ('F2D669',)),
     "game_screen_layout": ("tools/fd2_matching_game_screen_layout.c", tuple(macro for macro,_ in SCREEN_LAYOUT_CASES)),
     "game_menu_bios_layout": ("tools/fd2_matching_game_menu_bios_layout.c", tuple(macro for macro,_ in MENU_BIOS_CASES)),
+    "game_item_transaction": ("tools/fd2_matching_game_item_transaction.c", tuple(macro for macro,_ in ITEM_TRANSACTION_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
