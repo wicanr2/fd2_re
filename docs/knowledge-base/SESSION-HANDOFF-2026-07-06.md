@@ -9907,3 +9907,17 @@ PRICE_FORM_01以quantity乘price再存dword_53AE1，兩前端均完整匹配598 
 原始參照68列及四項拒收、明示+1三項、稀疏布局六項、include四項、1416-byte間接呼叫保留、420-byte單一owner／出處及八項拒收、C++包裝七項輸出前拒收與真實source provenance皆通過。加入負例後357074-byte全檔組合SHA仍與固定原檔相同，LE重定位逐筆驗證；168個匹配、169段實際來源及未歸屬CODE台帳全保持。decompilation_complete=false，Goal及#198未完成，正式Go／Ebiten、PLAYER-E2與硬體時序不提升。現況只引用[58](58-fd2-exe-re-coverage.md)，四份C、方法與負例隨GitHub提交；完整EXE及商用組件留本機。
 
 本批收尾：真正主機官方worklist16項、人工判讀8項、可能已完成0項；182條教訓及68個guard通過。66份來源SHA、132份雙輪連結報告、169段實際出處及1133個本地連結相符。66組3219份候選／3189份獨立核對／30份布局拒收由現行工具重算沒有矛盾。新檔與產物UID／GID1000，既有root-owned2811項、.md目錄0，FD2容器全部退出移除。四份C、source registry及完整負例隨提交推送GitHub，提交及真正遠端HEAD回填#198；本輪新增匹配0個，全檔目標保持未完成。
+
+### 2026-10-09 #198：固定SDK完整函式來源與獨立重建
+
+沿工具鏈／執行期分流契約，只核對既有runtime來源，不把鄰近位址或未知code批次改列函式庫。[主收據](../data/ida/fd2_matching_full_20261008.json)的sdk_library_origin保存三份DOS CLIB3S的完整SHA、物件出處、原始IDA名稱及caller視窗。來源工具、IDA匯出器、重建工具與拒收回歸均從[索引](00-index.md)進入，隨GitHub提交。原廠LIB、抽取物件、EXE及授權工具只留本機。
+
+10.0a抽出394個物件，9.5為369個，9.01為351個。三份原生OMF／EasyOMF解析都無格式拒收，完整無重定位候選為55／56／63個，雙輪報告逐byte相同。只有9.5的11個完整函式匹配，共805 bytes；strcmp、div、__getctime、isatty、memcpy、memmove、segread、strcpy、strncmp、strncpy及strnicmp原始名稱全部保留。這證明固定SDK物件與原作完整函式相同，不證明精確原作compiler版本、作者語言或完整遊戲語意。
+
+原生wdis可讀取10.0a的strlen與9.01的memcpy，objconv 2.54對部分多LNAMES組語物件的COFF長名稱字串表超界，未放寬格式檢查；正式工具改讀原生OMF。9.01的80386 COMENT令SEGDEF／PUBDEF／LEDATA使用32-bit numeric；其memcpy尾端C9與原作5D不同，不能按相同42-byte長度算匹配。任何FIXUPP皆排除，不清零、遮罩、裁切、補NOP或猜重定位。
+
+資料掛載到/lib曾遮住容器loader，修正為/sdk後以同一image重跑；這是掛載錯誤，不是工具鏈缺件。IDA的ASCII locale首次讀中文JSON失敗，匯出器改為明示UTF-8後重跑。caller視窗包含LE載入重定位，所以loaded_bytes與file_bytes分欄；直接E8 call及完整SDK目標函式仍嚴格要求原始檔位元組相同。既有正式.i64唯讀，核對只寫複本，實際IDA 9.4 JSON確認11函式、204處直接call及25個抽樣caller視窗。
+
+固定LIB內的完整物件由受版控工具重新解析，SDK code實際寫入本機C基準，全檔及收據雙輪相同。七類錯誤包含符號、完整物件SHA、LIB偏移、未知分類、原檔SHA、probe綁定及SDK內容，均在建立輸出前拒收；另外核對多LNAMES、EasyOMF、FIXUPP排除、截斷、缺口及checksum。既有168個C函式／20262 bytes、146-byte未歸屬區間、169段C出處及原始分類全部保持。11函式／805 bytes另列為175個保留函式庫的SDK來源子集，962個函式仍待還原，decompilation_complete=false，Goal與#198仍未完成。
+
+本批收尾：真正主機重新拉取16條工作清單，render／verify通過，人工判讀8條、可能已完成0條；184條教訓及69個guard通過。70份來源SHA、169段C出處、1137個本地連結與索引正對照相符，正式IDA資料庫SHA保持。66組3219份C候選／3189份獨立核對／30份布局拒收重算無矛盾，SDK掃描另列。新來源與輸出UID／GID1000，既有root-owned2811項、.md目錄0，分析容器已退出移除。工具、有限caller證據與重建紀錄隨本批提交推送GitHub；提交與遠端HEAD回填#198。

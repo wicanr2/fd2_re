@@ -1959,6 +1959,29 @@
         ],
         "pattern": "DIGIT_FORM_11"
       }
+    },
+    {
+      "id": "docker-data-mount-preserves-loader-paths",
+      "area": "工具環境",
+      "date": "2026-10-09",
+      "rule": "資料輸入掛在專用路徑，例如/sdk；不以資料覆蓋/lib、/lib64、/usr、/bin等容器系統目錄。容器回報既有程式不存在時，先檢查掛載是否遮住loader，再判定image缺件。入口AGENTS.md的Docker-only與tools/fd2_matching_library_probe.py。",
+      "why": "原廠CLIB目錄掛到/lib令/usr/bin/timeout無法啟動，改/sdk後原image正常；無須重建或改用主機。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json"
+    },
+    {
+      "id": "sdk-omf-native-format-before-converter-workaround",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "原廠OMF經converter產生不合格COFF時，以原生wdis及完整record格式核對；保留多LNAMES與EasyOMF的80386 numeric規則，不修補名稱、略過超界欄位或遮罩code。入口tools/fd2_matching_library_probe.py的omf_sections及tools/test_fd2_matching_library.py。",
+      "why": "objconv 2.54對部分SDK組語物件的COFF長符號字串表超界；原生解析三份固定DOS CLIB皆成功，只有9.5的11個完整函式相同。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_library_probe.py"
+        ],
+        "pattern": "EasyOMF signature"
+      }
     }
   ]
 }
