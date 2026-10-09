@@ -9921,3 +9921,19 @@ PRICE_FORM_01以quantity乘price再存dword_53AE1，兩前端均完整匹配598 
 固定LIB內的完整物件由受版控工具重新解析，SDK code實際寫入本機C基準，全檔及收據雙輪相同。七類錯誤包含符號、完整物件SHA、LIB偏移、未知分類、原檔SHA、probe綁定及SDK內容，均在建立輸出前拒收；另外核對多LNAMES、EasyOMF、FIXUPP排除、截斷、缺口及checksum。既有168個C函式／20262 bytes、146-byte未歸屬區間、169段C出處及原始分類全部保持。11函式／805 bytes另列為175個保留函式庫的SDK來源子集，962個函式仍待還原，decompilation_complete=false，Goal與#198仍未完成。
 
 本批收尾：真正主機重新拉取16條工作清單，render／verify通過，人工判讀8條、可能已完成0條；184條教訓及69個guard通過。70份來源SHA、169段C出處、1137個本地連結與索引正對照相符，正式IDA資料庫SHA保持。66組3219份C候選／3189份獨立核對／30份布局拒收重算無矛盾，SDK掃描另列。新來源與輸出UID／GID1000，既有root-owned2811項、.md目錄0，分析容器已退出移除。工具、有限caller證據與重建紀錄隨本批提交推送GitHub；提交與遠端HEAD回填#198。
+
+### 2026-10-09 #198：1B0AD完整C匹配與FIGANI比較負例
+
+上一輪SDK來源重建已推送a1de5c44，本輪判定為具體進展，沿原目標繼續C還原。先扣除現行matched_addresses與已嘗試來源，再查固定IDA的完整原始區間。未接新的正式Go／Ebiten路徑，也不重開已閉合相機或動畫語意。[主收據](../data/ida/fd2_matching_full_20261008.json)的game_panel_rows_matches、game_idle_advance_attempts與validation.panel_rows保存本輪完整物件、旗標及報告；來源從[索引](00-index.md)進入。
+
+[1B0AD C來源](../../tools/fd2_matching_game_panel_rows.c)保留phase的5／9分支、16列初值、raw整數運算、memmove方向、170-byte長度及320-byte步距。四種局部宣告／值生命週期中，PANEL_FORM_0及PANEL_FORM_2在4s／5s未指定os或ot時，完整158 bytes與原版相同。這只證明候選C的產碼，不推定原作者宣告、用途或CPU。原始名稱sub_1B0AD、未知語意分級及caller sub_1B1E7的兩處直接call保留，固定IDA既有匯出與原檔機械式核對見panel_rows_original_evidence。
+
+[2B9A1 C來源](../../tools/fd2_matching_game_idle_advance.c)保留雙byte計數器、raw frame讀取、active==0清零、繪製呼叫及比較順序。六種最後比較表示，在10.0a三種CPU／成本、9.5的3s三種成本與同包C++前端的3s三種成本全部未匹配。最近候選仍129 bytes，首差偏移108，不能把同長度、交換比較或volatile提示當成完成。停止重複這六種表示，不猜實體register或填入opcode。
+
+凍結兩份C及驅動器後，四組共126份候選在兩個獨立容器重建。完整編譯／連結報告、OMF物件及機器碼相同，126份全部由objcopy獨立抽取核對。原始memmove、全域基底與stack-check三列具名參照按原始指令驗證。實際DOS來源或來源SHA變動均在建立輸出前拒收；原始符號／LE的68列、四項矛盾拒收及明示+1的六列／三項拒收通過。
+
+來源守衛回歸首次取到較早的radial物件，與目前受版控C不同，工具先拒收source SHA，未進入預期的LE反例。改用已確認SHA相符的treasure-fixed-owner-r1後，以相同容器、工具與守衛乾淨重跑通過；未移除來源守衛或改產品規則。SDK重建的七項拒收在新增C基準重跑，11函式／805 bytes的來源子集保持，兩次全檔及收據相同。
+
+新增1B0AD完整158 bytes後，既有169段來源出處逐項保持，總計170段。C覆蓋169個函式／20420 bytes，另146-byte未歸屬區間，合計20566 bytes；175個保留函式庫與961個待還原函式分列。全檔357074 bytes及SHA仍相同，decompilation_complete=false，Goal及#198保持未完成。70組3345份候選、3315份獨立核對與30份布局拒收由現行工具重算；117份舊初輪探索另列。正式Go／Ebiten、PLAYER-E2與硬體時序沒有提升。
+
+本批收尾：72份來源SHA、140份雙輪連結報告、170段實際C出處及1142個本地連結相符，索引正對照與正式IDA資料庫SHA保持。184條教訓及69個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。兩份C、完整匹配及負例隨提交推送GitHub，提交與遠端HEAD回填#198。

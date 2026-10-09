@@ -105,6 +105,8 @@ CLASS_LIFETIME_CASES = tuple(('CLASS_LIFE_'+str(n).zfill(2),0x31385) for n in ra
 CLASS_RECORD_CASES = tuple(('CLASS_RECORD_'+str(n).zfill(2),0x31385) for n in range(4))
 CLASS_CALL_CASES = tuple(('CLASS_CALL_'+str(n).zfill(2),0x31385) for n in range(4))
 CLASS_REGISTER_CASES = tuple(('CLASS_REGISTER_'+str(n).zfill(2),0x31385) for n in range(4))
+IDLE_ADVANCE_CASES = tuple(('IDLE_FORM_'+str(n),0x2B9A1) for n in range(6))
+PANEL_ROWS_CASES = tuple(('PANEL_FORM_'+str(n),0x1B0AD) for n in range(4))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -131,6 +133,8 @@ ALL_CASES += CLASS_LIFETIME_CASES
 ALL_CASES += CLASS_RECORD_CASES
 ALL_CASES += CLASS_CALL_CASES
 ALL_CASES += CLASS_REGISTER_CASES
+ALL_CASES += IDLE_ADVANCE_CASES
+ALL_CASES += PANEL_ROWS_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -309,6 +313,8 @@ BINDINGS.update({'aRb_6':0x50282,'aFd2Sav_7':0x50285,'aRb_7':0x5028D,
 BINDINGS.update({'unk_526DA':0x526DA})
 BINDINGS.update({'_sub_4E031':0x4E031})
 SOURCES = {
+    "game_idle_advance": ("tools/fd2_matching_game_idle_advance.c", tuple(macro for macro, _ in IDLE_ADVANCE_CASES)),
+    "game_panel_rows": ("tools/fd2_matching_game_panel_rows.c", tuple(macro for macro, _ in PANEL_ROWS_CASES)),
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),
