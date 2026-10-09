@@ -117,6 +117,7 @@ LONG_SEQUENCE_CASES = tuple((prefix+str(n),address) for prefix,address in
 ANIMATION_PANEL_CASES = tuple((prefix+str(n),address) for prefix,address,count in
     (('ANIM_LOCAL_',0x28784,4),('PANEL_LOCAL_',0x2EBE0,9)) for n in range(count))
 POST_DIALOGUE_CASES = tuple(('POST_DIALOGUE_'+str(n),0x24754) for n in range(3))
+OVERLAY_DISPATCH_CASES = tuple(('OVERLAY_DISPATCH_'+str(n),0x122DC) for n in (0,2))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -169,6 +170,7 @@ ALL_CASES += STATE_GROUP_CASES
 ALL_CASES += LONG_SEQUENCE_CASES
 ALL_CASES += ANIMATION_PANEL_CASES
 ALL_CASES += POST_DIALOGUE_CASES
+ALL_CASES += OVERLAY_DISPATCH_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -280,6 +282,7 @@ BINDINGS.update({'dword_54107':0x54107,'dword_54117':0x54117,'aBgDat':0x52381,
     'sub_2EFB7':0x2EFB7,'sub_2EF8F':0x2EF8F,'sub_29164':0x29164,'sub_2BC9A':0x2BC9A})
 BINDINGS.update({'unk_522A3':0x522A3,'unk_522B4':0x522B4,'unk_522C5':0x522C5,
     'sub_24B14':0x24B14,'sub_24BDE':0x24BDE,'sub_10652':0x10652})
+BINDINGS.update({'sub_126F7':0x126F7})
 BINDINGS.update({'sub_31860':0x31860,'sub_1B8A6':0x1B8A6,'sub_4DFCC':0x4DFCC,
     'sub_10620':0x10620,'sub_135DD':0x135DD,'sub_32999':0x32999,'sub_1366A':0x1366A,
     'sub_134E4':0x134E4,'dword_53A81':0x53A81,'sub_2D31B':0x2D31B,
@@ -449,6 +452,7 @@ SOURCES = {
     "game_long_sequences": ("tools/fd2_matching_game_long_sequences.c", tuple(macro for macro,_ in LONG_SEQUENCE_CASES)),
     "game_animation_panel": ("tools/fd2_matching_game_animation_panel.c", tuple(macro for macro,_ in ANIMATION_PANEL_CASES)),
     "game_post_dialogue": ("tools/fd2_matching_game_post_dialogue.c", tuple(macro for macro,_ in POST_DIALOGUE_CASES)),
+    "game_overlay_dispatch": ("tools/fd2_matching_game_overlay_dispatch.c", tuple(macro for macro,_ in OVERLAY_DISPATCH_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
