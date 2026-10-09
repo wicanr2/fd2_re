@@ -114,6 +114,7 @@ BIT_ADDRESS_CASES = tuple(('BIT_FORM_'+str(n),0x13512) for n in range(6))
 SLOT_SCALE_CASES = tuple(('SLOT_SCALE_'+str(n),0x1B722) for n in range(2))
 QUERY_LAYOUT_CASES = tuple(('F'+format(n,'X'),n) for n in (0x24B14,0x24BDE,0x33499))
 RECORD_FLOW_CASES = tuple(('F'+format(n,'X'),n) for n in (0x1F183,0x12C60,0x1DEBE))
+PRESENTATION_FLOW_CASES = tuple(('F'+format(n,'X'),n) for n in (0x1F04A,0x16559,0x35D60))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -147,6 +148,7 @@ ALL_CASES += INVENTORY_COUNT_CASES
 ALL_CASES += STATE_BYTES_CASES
 ALL_CASES += BIT_ADDRESS_CASES
 ALL_CASES += SLOT_SCALE_CASES
+ALL_CASES += (('F1F04A',0x1F04A),('F16559',0x16559))
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -334,6 +336,7 @@ SOURCES = {
     "game_slot_scale": ("tools/fd2_matching_game_slot_scale.c", tuple(macro for macro, _ in SLOT_SCALE_CASES)),
     "game_query_layout": ("tools/fd2_matching_game_query_layout.c", tuple(macro for macro, _ in QUERY_LAYOUT_CASES)),
     "game_record_flow": ("tools/fd2_matching_game_record_flow.c", tuple(macro for macro, _ in RECORD_FLOW_CASES)),
+    "game_presentation_flow": ("tools/fd2_matching_game_presentation_flow.c", tuple(macro for macro, _ in PRESENTATION_FLOW_CASES)),
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),

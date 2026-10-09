@@ -9995,3 +9995,19 @@ IDA可重跑參數為FD2_MATCHING_AUDIT_START=0x35f6f、FD2_MATCHING_AUDIT_END=0
 新增292 bytes後，原有175段出處逐項保持，總計177段。C覆蓋176函式／20968 bytes，另146-byte未歸屬區間，共21114 bytes；175個保留函式庫與954個待還原函式分列。SDK的11函式／805 bytes來源子集在新基準重做兩輪與七項拒收，完整357074-byte EXE及SHA仍相同。77組3669份候選／3639份獨立核對／30份布局拒收由現行工具重算。decompilation_complete=false，Goal與#198保持未完成，PLAYER-E2及硬體時序不提升。
 
 本批收尾：79份來源SHA、154份雙輪連結報告、177段實際C出處及1160個本地連結相符，索引正對照與正式IDA資料庫SHA保持。186條教訓及71個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、兩個完整匹配與負例隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：35D60完整C計數器與間接入口
+
+上一輪39df6315已推送兩個完整記錄查詢C，本輪沿原目標繼續。工具鏈／執行期分流路由已載入，原始函式、基底讀取、計數器及返回邊沿固定IDA 9.4核對，未改正式Go／Ebiten。[新來源](../../tools/fd2_matching_game_presentation_flow.c)接入[索引](00-index.md)，正負收據與來源出處見[主收據](../data/ida/fd2_matching_full_20261008.json)的game_presentation_flow_matches、presentation_flow_original_evidence及validation.presentation_flow。
+
+35D60完整250 bytes匹配。C明示byte計數器的讀寫，將迴圈檢查值與原始state生命週期保持，重現原始stack槽與EBX配置。兩條返回、byte寫入、13512呼叫、兩次原始400參數等待及3到6的迴圈呼叫全部保留。volatile與局部宣告只作產碼表示，不推定作者寫法，也不因程式碼一致新增硬體wall-clock、DAC或PIT聲明。
+
+1F04A與16559依原始基底載入、算式及指標表示做一次窄修正後仍未匹配，初輪與修正輪留本機。最終1F04A雖有146-byte同長候選，完整區間首差偏移14；16559的4s／5s同為83 bytes，首差偏移11。兩個負例不提高覆蓋；整數與指標表示以靜態寬度檢查限定歷史32-bit模型，不宣稱portable C，停止重複本批變體。
+
+凍結來源與驅動器後，27份候選在兩個獨立容器重建，OMF、完整編譯／連結報告與產碼相同，全部由objcopy獨立核對。30列原始具名參照保存；68列符號／LE參照、四項矛盾拒收與明示+1的六列／三項拒收通過。新增250 bytes後，原有177段出處逐項保持，總計178段；C覆蓋177函式／21218 bytes，加146-byte未歸屬區間合計21364 bytes。175個保留函式庫與953個待還原函式分列，SDK的11函式／805 bytes來源子集在新基準重做兩輪與七項拒收，完整357074-byte EXE與SHA仍相同。
+
+受版控ida_probe_fd2_matching_coverage.py在正式.i64複本核對35D60..35E5A，IDA 9.4實際JSON確認1305個函式及八處間接call。原始LE fixup的目標位於IDA線性51CC1，零基表項索引76；檔案偏移51AC1保存object-relative的25D60，載入後指向35D60。資料xref指向51B91表頭，未誤當成索引0或直接E8 call。執行期所選索引與玩法用途未知，不提升玩家路徑證據。
+
+IDA重跑參數、腳本及資料庫SHA保存於presentation_flow_original_evidence.ida_audit_method。正式原版與資料庫唯讀掛載，輸出只寫複本；未改寫正式.i64。現行矩陣78組3696份候選／3666份獨立核對／30份布局拒收由工具重算。decompilation_complete=false，Goal與#198保持未完成，PLAYER-E2及正式規則不提升。
+
+本批收尾：80份來源SHA、156份雙輪連結報告、178段實際C出處及1163個本地連結相符，索引正對照與正式IDA資料庫SHA保持。186條教訓及71個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、完整匹配、負例及IDA間接表項證據隨提交推送GitHub，提交與真正遠端HEAD回填#198。
