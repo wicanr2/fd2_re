@@ -106,6 +106,9 @@ AI_POINT_FLOW_CASES = tuple((prefix+str(n),address) for prefix,address in
 CLASS_STACK_CASES = tuple(('CLASS_STACK_'+str(n),0x31385) for n in range(5))
 CLASS_STACK_CASES += tuple(('SELECTOR_PARAM_'+str(n),0x2DF6B) for n in range(6))
 CLASS_STACK_CASES += tuple(('INPUT_ESI_'+str(n),0x12DAC) for n in (1,0,2))
+DOS_FILE_CASES = tuple((prefix+str(n),address) for prefix,address,count in
+    (('RAW_RANGE_',0x36284,3),('RAW_ALLOC_',0x361CC,3),('RAW_LENGTH_',0x36900,3),
+     ('RAW_LOAD_',0x36955,3),('RAW_LX_',0x36344,2)) for n in range(count))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -152,6 +155,7 @@ ALL_CASES += ITEM_TRANSACTION_CASES
 ALL_CASES += OPERAND_FLOW_CASES
 ALL_CASES += AI_POINT_FLOW_CASES
 ALL_CASES += CLASS_STACK_CASES
+ALL_CASES += DOS_FILE_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -252,6 +256,10 @@ BINDINGS.update({'dword_53ECC':0x53ECC,'sub_33499':0x33499,'sub_22AF6':0x22AF6,
     'sub_11DF2':0x11DF2,'unk_525D6':0x525D6,'aFdotherDat':0x51A4D,
     'sub_111BA':0x111BA,'dword_54147':0x54147,'sub_1DB65':0x1DB65,'_outp':0x37795})
 SOURCE_DATE_EPOCH = 315532800  # DOS 可表示的 1980-01-01 UTC。
+BINDINGS.update({'open':0x3CD24,'close':0x3D01C,'filelength':0x3D056,'strcmp':0x3CF70,
+    'sub_36107':0x36107,'sub_36900':0x36900,'dword_52754':0x52754,
+    'dword_360FF':0x360FF,'aLx':0x502F0,'_open':0x3CD24,'_close':0x3D01C,
+    '_filelength':0x3D056,'_strcmp':0x3CF70,'_sub_36107':0x36107,'_sub_36900':0x36900})
 BINDINGS.update({'sub_31860':0x31860,'sub_1B8A6':0x1B8A6,'sub_4DFCC':0x4DFCC,
     'sub_10620':0x10620,'sub_135DD':0x135DD,'sub_32999':0x32999,'sub_1366A':0x1366A,
     'sub_134E4':0x134E4,'dword_53A81':0x53A81,'sub_2D31B':0x2D31B,
@@ -416,6 +424,7 @@ SOURCES = {
     "game_operand_flow": ("tools/fd2_matching_game_operand_flow.c", tuple(macro for macro,_ in OPERAND_FLOW_CASES)),
     "game_ai_point_flow": ("tools/fd2_matching_game_ai_point_flow.c", tuple(macro for macro,_ in AI_POINT_FLOW_CASES)),
     "game_class_stack": ("tools/fd2_matching_game_class_stack.c", tuple(macro for macro,_ in CLASS_STACK_CASES)),
+    "game_dos_file": ("tools/fd2_matching_game_dos_file.c", tuple(macro for macro,_ in DOS_FILE_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }

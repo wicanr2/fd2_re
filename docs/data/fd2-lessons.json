@@ -2081,6 +2081,21 @@
         ],
         "pattern": "parm caller \\[esi\\] value \\[eax\\] modify exact \\[eax ecx edx gs\\]"
       }
+    },
+    {
+      "id": "matching-cdecl-aliases-verify-every-name",
+      "area": "匹配工具",
+      "date": "2026-10-10",
+      "rule": "CDECL與pragma宣告產生不同外部名稱時，先讀COFF relocation，再將每個修飾別名按原始caller／LE fixup核對；錯誤別名也須在輸出前拒收。入口tools/fd2_matching_game_dos_file.c、tools/fd2_matching_game_restore.py與tools/test_fd2_matching_dos_file.py。",
+      "why": "新檔案流程的open／close／filelength等CDECL呼叫帶前置底線，顯式pragma模型則可輸出原名。缺少別名導致ld未解析；補齊原始位址驗證後，十一項名稱與別名錯址均拒收。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_restore.py"
+        ],
+        "pattern": "_filelength"
+      }
     }
   ]
 }

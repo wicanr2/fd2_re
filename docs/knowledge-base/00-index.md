@@ -40,6 +40,7 @@
 | 位元組一致的反編譯（matching decompilation）可行性 | [三函式試驗](../data/ida/fd2_matching_pilot_20261008.json)、[原始 IDA 匯出](../data/ida/fd2_matching_pilot_original_20261008.json)、[編譯比對工具](../../tools/fd2_matching_pilot.py) | C 能編譯或函式長度相同不代表位元組一致；原作工具版本仍依 [04](04-original-toolchain.md) |
 | 全檔位元組一致反編譯的完成範圍 | [118 全檔目標](../goal/118-goal-fd2-matching-decompilation-20261008.md) | 全檔雜湊與 C／原作組語／第三方函式庫覆蓋分開驗收 |
 | 工作歷程與提交驗證 | [WORKLOG](../../WORKLOG.md) | 本輪變更、可重跑入口與限制；目前分層狀態仍以58及主收據為準 |
+| DOS服務與檔案流程C匹配 | [C來源](../../tools/fd2_matching_game_dos_file.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_dos_file、[完整函式與別名回歸](../../tools/test_fd2_matching_dos_file.py) | 361CC／36284／36344／36900／36955完整815 bytes匹配；保留分支、204-byte局部布局與EBX跨呼叫存活；原始分類及作者宣告保持未知 |
 | 全檔重建基準與目前 C 匹配 | [匹配收據](../data/ida/fd2_matching_full_20261008.json)、[C 還原驅動器](../../tools/fd2_matching_c_restore.py)、[工具準備](../../tools/fd2_matching_prepare_tools.py)、[全檔組合基準](../../tools/fd2_matching_bootstrap.py) | 基準仍保留未還原的遊戲機器碼；全檔 SHA 相同不能單獨結案 |
 | 主程式 C 循環及資源呼叫匹配 | [C 來源](../../tools/fd2_matching_game_slices.c)、[編譯及比較驅動器](../../tools/fd2_matching_game_restore.py)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`game_matches` | C 控制流程依原始條件邊及 jmp 排列；呼叫端與被呼叫端的暫存器保存分別核對，缺原始語意的項目維持原分類 |
 | 逐列複製、物品欄左移與記錄旗標 C 匹配 | [C 來源](../../tools/fd2_matching_game_slices.c)、[主收據](../data/ida/fd2_matching_full_20261008.json)的`compiler_documentation`、`game_matches`及`unmatched_game_candidates` | 原廠預設成本策略與固定來源共同核對；回傳型別只描述EAX結果，不推定作者宣告 |
