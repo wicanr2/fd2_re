@@ -110,6 +110,8 @@ PANEL_ROWS_CASES = tuple(('PANEL_FORM_'+str(n),0x1B0AD) for n in range(4))
 SLOT_ADDRESS_CASES = tuple(('SLOT_FORM_'+str(n),0x1B722) for n in range(8))
 INVENTORY_COUNT_CASES = tuple(('COUNT_FORM_'+str(n),0x1B8A6) for n in range(8))
 STATE_BYTES_CASES = tuple(('STATE_FORM_'+str(n),0x35F6F) for n in range(6))
+BIT_ADDRESS_CASES = tuple(('BIT_FORM_'+str(n),0x13512) for n in range(6))
+SLOT_SCALE_CASES = tuple(('SLOT_SCALE_'+str(n),0x1B722) for n in range(2))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -141,6 +143,8 @@ ALL_CASES += PANEL_ROWS_CASES
 ALL_CASES += SLOT_ADDRESS_CASES
 ALL_CASES += INVENTORY_COUNT_CASES
 ALL_CASES += STATE_BYTES_CASES
+ALL_CASES += BIT_ADDRESS_CASES
+ALL_CASES += SLOT_SCALE_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -324,6 +328,8 @@ SOURCES = {
     "game_slot_address": ("tools/fd2_matching_game_slot_address.c", tuple(macro for macro, _ in SLOT_ADDRESS_CASES)),
     "game_inventory_count": ("tools/fd2_matching_game_inventory_count.c", tuple(macro for macro, _ in INVENTORY_COUNT_CASES)),
     "game_state_bytes": ("tools/fd2_matching_game_state_bytes.c", tuple(macro for macro, _ in STATE_BYTES_CASES)),
+    "game_bit_address": ("tools/fd2_matching_game_bit_address.c", tuple(macro for macro, _ in BIT_ADDRESS_CASES)),
+    "game_slot_scale": ("tools/fd2_matching_game_slot_scale.c", tuple(macro for macro, _ in SLOT_SCALE_CASES)),
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
     "game_records": ("tools/fd2_matching_game_records.c", tuple(macro for macro, _ in RECORD_CASES)),

@@ -9953,3 +9953,17 @@ PRICE_FORM_01以quantity乘price再存dword_53AE1，兩前端均完整匹配598 
 IDA可重跑參數為FD2_MATCHING_AUDIT_START=0x35f6f、FD2_MATCHING_AUDIT_END=0x35f92及FD2_MATCHING_AUDIT_OUTPUT=/out/audit.json，腳本、輸入資料庫及清冊SHA見state_bytes_original_evidence.ida_audit_method。依既有授權IDA image執行資料庫複本，原版及正式資料庫唯讀掛載。
 
 本批收尾：75份來源SHA、146份雙輪連結報告、171段實際C出處及1149個本地連結相符，索引正對照與正式IDA資料庫SHA保持。185條教訓及70個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。三份C、完整匹配、負例與間接表項證據隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：13512完整C匹配與分段倍率負例
+
+上一輪c5d68c6b已推送完整C匹配與間接表項證據，本輪沿原目標繼續，工具鏈／執行期分流及文件職責路由已核對。新增來源接入[索引](00-index.md)，正負結果與固定IDA 9.4原始位址見[主收據](../data/ida/fd2_matching_full_20261008.json)的game_bit_address_matches、game_slot_scale_attempts、bit_address_original_evidence及validation.bit_address_and_slot_scale。
+
+[13512 C來源](../../tools/fd2_matching_game_bit_address.c)保留80-byte記錄、+5與bit7寫入。六種C表示中，BIT_FORM_4將unsigned步距先乘5再乘16，在4s／5s未指定os或ot時，完整36 bytes與原版相同；其他void、直接乘80、typed record及shift表示保持負例。EAX結果雖可由C回傳表示重現，原作者回傳宣告及caller如何使用仍未知，不由匹配提升玩法語意或原作CPU。
+
+依這項新產碼線索另建[1B722來源](../../tools/fd2_matching_game_slot_scale.c)，保留2-byte槽步距、+11與byte讀取，兩種分段倍率C表示仍未完整匹配。整數／指標表示以靜態寬度檢查限定32-bit模型，不宣稱portable C；局部成功不外推其他函式。未改寫上一輪地址來源或其歷史證據。
+
+凍結兩份C與驅動器後，72份候選在兩個獨立容器重建。完整編譯／連結報告、OMF與產碼相同，72份全部由objcopy獨立核對。新增函式的具名參照按原始指令驗證；三個不同caller的原始E8目標及完整指令視窗保存。68列符號／LE參照、四項矛盾拒收與明示+1的六列／三項拒收通過。
+
+新增36 bytes後，原有171段來源出處逐項保持，總計172段。C覆蓋171個函式／20491 bytes，另146-byte未歸屬區間，共20637 bytes；175個保留函式庫與959個待還原函式分列。SDK的11函式／805 bytes來源子集在新基準重做兩輪與七項拒收，完整357074-byte EXE及SHA仍相同。75組3615份候選／3585份獨立核對／30份布局拒收由現行工具重算。decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
+
+本批收尾：77份來源SHA、150份雙輪連結報告、172段實際C出處及1154個本地連結相符，索引正對照與正式IDA資料庫SHA保持。185條教訓及70個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。兩份C、完整匹配與負例隨提交推送GitHub，提交與真正遠端HEAD回填#198。
