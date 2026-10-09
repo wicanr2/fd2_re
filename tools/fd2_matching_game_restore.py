@@ -83,6 +83,8 @@ SERVICE_WRAPPER_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x35EBE,0x35ED2,0x35EE6,0x35F6F,0x36107,0x3615E,0x3616E,0x3617E,0x361A5,0x36316,0x3632D))+(('EMPTY_STACK_GROUP',0x360D8),)
 ANIMATION_STEP_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x1EB05,0x25977,0x274B0,0x275D6,0x2D3FF))
+DISPLAY_CONTROL_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x13E9C,0x15311,0x1956B,0x1D8BA,0x2DF6B))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -93,6 +95,7 @@ CASE_GROUPS['EVENT_FULL'] = (0x2111A, 0x211A4, 0x21206, 0x21227, 0x212B9,
 ALL_CASES = (*CASES, *RECORD_CASES, *COPY_CASES, *QUERY_CASES, *CONTROL_CASES, *BATTLE_CASES, *EVENT_CASES, *LAYOUT_CASES, *QUAKE_CASES, *EFFECT_TAIL_CASES, *TREASURE_CASES, *CALL_WRAPPER_CASES, *GLOBAL_CALL_CASES, *SHORT_DATA_CASES, *SHORT_BRANCH_CASES, *EXTENDED_FLOW_CASES, *MID_FLOW_CASES, *SCENE_FLOW_CASES, *COMPOUND_CASES, *DENSE_BRANCH_CASES, *STATE_QUERY_CASES, *UI_SERVICE_CASES, *AUXILIARY_FLOW_CASES)
 ALL_CASES += SERVICE_WRAPPER_CASES
 ALL_CASES += ANIMATION_STEP_CASES
+ALL_CASES += DISPLAY_CONTROL_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -237,6 +240,12 @@ BINDINGS.update({'dword_53A30':0x53A30,'dword_53A34':0x53A34,'dword_53A38':0x53A
     'dword_540BA':0x540BA,'dword_5411F':0x5411F,'unk_52539':0x52539,
     'byte_540FB':0x540FB,'byte_540FA':0x540FA,'sub_2D620':0x2D620})
 BINDINGS.update({'aFdmusDat':0x51A79,'a08d_1':0x50254,'a08d_2':0x5025A,'sub_15E71':0x15E71})
+BINDINGS.update({'sub_14B78':0x14B78,'sub_14818':0x14818,'sub_1B653':0x1B653,
+    'sub_4DBFC':0x4DBFC,'_sub_4DBFC':0x4DBFC,'funcs_1541F':0x51D01,
+    'sub_1D4F6':0x1D4F6,'sub_1DB65':0x1DB65,'sub_1598A':0x1598A,'sub_1567E':0x1567E})
+BINDINGS.update({'dword_53C23':0x53C23,'dword_53C27':0x53C27,'dword_53C2B':0x53C2B,
+    'dword_53C2F':0x53C2F,'dword_53C33':0x53C33,'dword_53C4B':0x53C4B,
+    'sub_1D4CB':0x1D4CB,'sub_2A6BD':0x2A6BD,'sub_2E19B':0x2E19B,'sub_2E26C':0x2E26C})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -264,6 +273,8 @@ SOURCES = {
     "game_auxiliary_flows": ("tools/fd2_matching_game_auxiliary_flows.c", tuple(macro for macro, _ in AUXILIARY_FLOW_CASES)),
     "game_service_wrappers": ("tools/fd2_matching_game_service_wrappers.c", tuple(macro for macro, _ in SERVICE_WRAPPER_CASES)),
     "game_animation_steps": ("tools/fd2_matching_game_animation_steps.c", tuple(macro for macro, _ in ANIMATION_STEP_CASES)),
+    "game_digit_roll": ("tools/fd2_matching_game_digit_roll.c", ("F2D3FF",)),
+    "game_display_control": ("tools/fd2_matching_game_display_control.c", tuple(macro for macro, _ in DISPLAY_CONTROL_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),

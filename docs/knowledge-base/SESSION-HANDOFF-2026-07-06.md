@@ -9725,3 +9725,19 @@ IDA映像已有合法9.4／py312-v1環境；第一次命令路徑錯誤，核對
 新增C加入全檔組合後，357074 bytes及SHA-256與原檔相同，LE重定位逐筆驗證；其餘未還原原版仍保留，decompilation_complete=false。Goal及#198未完成，正式Go／Ebiten及PLAYER-E2不提升，也不新增DAC／PIT／ISR逐週期研究。現行數字只引用[58](58-fd2-exe-re-coverage.md)。C、方法與完整區間收據隨GitHub提交，完整EXE及商用工具鏈留本機。
 
 本批收尾：真正主機gh於開工及提交前取得官方16項，verify無可能已完成項，8項仍需人工判讀。180條教訓／66個guard、45份來源SHA、156個原始函式與146-byte清冊外來源分列、2457份物件／2427份連結產碼／30份布局拒收及218個本地連結通過。原始參照、明示位移、稀疏布局、include、間接呼叫及複合owner回歸通過；前輪153個原始完整區間逐項未被覆寫。原檔SHA不變，新產物UID／GID1000；衛生掃描仍為既有2811項，.md目錄0，FD2容器全部退出移除。只提交C、方法、主收據及文件，提交與真正遠端HEAD回填#198。
+
+## 2026-10-09 兩個完整顯示及派送C匹配與一byte數字動畫負例
+
+上一輪已推送`53dd587e`。本輪沿工具鏈與執行期指紋路由，從固定IDA Pro 9.4完整匯出挑出五個未試過的較大完整函式，並從現行matched_addresses扣除既有覆蓋。新增[顯示及派送C來源](../../tools/fd2_matching_game_display_control.c)與[數字動畫C來源](../../tools/fd2_matching_game_digit_roll.c)，不改上一輪演出來源。原始版本、IDA線性位址、原名、caller、bytes與各自132／11筆具名參照見[主收據](../data/ida/fd2_matching_full_20261008.json)。只做已知區間的機械式擷取與compiler產碼比較，不重開既有玩法語意。
+
+15311為381 bytes、1956B為352，共兩個完整函式733 bytes逐位元組相同。15311以實際48-byte局部資料區還原目標列表、結算資料與保存的數量；明示原始team條件方向及尾端零返回後，所有分支與間接funcs_1541F派送相同。1541F原始call的LE fixup是51D01，只由原始bytes登錄，不從符號數字推表址。1956B保留三份64000-byte配置、兩次畫面複製、條件位置、DATO讀取及六次逐步呈現。導航型別與變數名稱不推定作者宣告。
+
+13E9C／1D8BA／2DF6B仍有完整區間差異。24-byte局部資料槽、整數中間位址與共用繪圖區塊的各次試驗結果分列；標準register／__cdecl是compiler候選宣告，沒有暫存器pragma，不提升原作者ABI或未分類函式。實際Watcom候選與[04](04-original-toolchain.md)的歷史__cdecl契約一併核對，沒有用新clobber註記補碼。
+
+2D3FF先前279 bytes有三個差異。保持before及after讀取順序，將等號兩側調換後，兩次擴寬的暫存器已相同，只剩offset133的CMP ModRM：原始C2對應cmp edx,eax，候選D0對應cmp eax,edx。差值判零試驗另產生SUB及後續暫存器差異，未採用；保留等號候選的一byte負例。即使目前條件只測零，也不因此遮罩指令或宣稱匹配。完整原始與候選區間、旗標及雜湊保留game_digit_roll_attempt。
+
+第一次顯示連結缺少外部全域與callee符號。一次核對新來源全部外部名稱，按直接call與LE fixup登錄後，以同一compiler物件重跑；沒有改原檔、來源SHA守衛或image。凍結最終來源後，各重建兩輪，共54份OMF物件、完整報告及機器碼相同，全部另由objcopy核對。原始參照四項、明示+1三項、稀疏布局六項、include四項拒收與1416-byte間接呼叫不變驗證通過；420-byte單一owner及八項拒收也通過。
+
+新增C加入全檔組合後，357074 bytes及SHA-256與原檔相同，LE重定位逐筆驗證；其餘未還原原版仍保留，decompilation_complete=false。Goal及#198未完成，正式Go／Ebiten與PLAYER-E2不提升，不新增DAC／PIT／ISR逐週期研究。現行數字只引用[58](58-fd2-exe-re-coverage.md)。兩份C、方法及完整區間收據隨GitHub提交，完整EXE及商用工具鏈留本機。
+
+本批收尾：真正主機gh於開工及提交前取得官方16項，verify無可能已完成項，8項仍需人工判讀。180條教訓／66個guard、47份來源SHA、158個原始函式與146-byte清冊外來源分列、2511份物件／2481份連結產碼／30份布局拒收及224個本地連結通過。原始參照、明示位移、稀疏布局、include、間接呼叫及複合owner回歸通過；前輪156個原始完整區間逐項未被覆寫。原檔SHA不變，新產物UID／GID1000；衛生掃描仍為既有2811項，.md目錄0，FD2容器全部退出移除。只提交兩份C、方法、主收據及文件，提交與真正遠端HEAD回填#198。
