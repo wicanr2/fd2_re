@@ -37,7 +37,7 @@ signature 不能唯一決定 compiler／linker patch level；舊文「約 v9.5/v
 **強推論版本範圍**，不得寫成精確工具版本。LE 格式也不能單獨證明是哪一版 WLINK。
 位元組一致的反編譯（matching decompilation）已有[有界三函式試驗](../data/ida/fd2_matching_pilot_20261008.json)。
 這份收據固定候選編譯器、C 來源、外部符號位址與比較方法；目前的候選差異不能反推原作精確版本。
-較晚的[全檔匹配收據](../data/ida/fd2_matching_full_20261008.json)已證實一組歷史工具可重現有限 C 切片，尚不證明原作精確版本。
+較晚的[全檔匹配收據](../data/ida/fd2_matching_full_20261008.json)已證實歷史 Watcom 10.0a與9.5可重現不同有限 C 切片。240FA的固定C來源由9.5產生完整572-byte匹配，10.0a同矩陣未匹配；這只證明實際來源與工具的相容產碼，尚不證明原作精確版本或混用編譯器。各段實際來源與編譯器記錄於主收據的bootstrap.restored_spans。
 Watcom[官方版本紀錄](https://open-watcom.github.io/open-watcom-v2-wikidocs/c_readme.html)記載，10.0及以前的32位元`__cdecl`可修改EBX，10.5起才改為保存EBX。原版`0x1B8E7`在`memmove`前後使用同一EBX，因此IDA偽碼的呼叫慣例只作導覽；候選ABI須以實際堆疊及暫存器資料流驗證。
 > 意義:遊戲邏輯是 32-bit C 程式碼，反組譯(Ghidra/IDA)可得結構化函式 → 適合「反編當 oracle」。
 

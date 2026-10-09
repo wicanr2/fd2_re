@@ -87,6 +87,8 @@ DISPLAY_CONTROL_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x13E9C,0x15311,0x1956B,0x1D8BA,0x2DF6B))
 RESOURCE_RECORD_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x11019,0x1B9DE,0x1C2DA,0x23A0A,0x2F4C6,0x321C8))
+AI_SEQUENCE_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x1548E,0x1567E,0x1598A,0x15B77,0x23E74,0x240FA))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -99,6 +101,7 @@ ALL_CASES += SERVICE_WRAPPER_CASES
 ALL_CASES += ANIMATION_STEP_CASES
 ALL_CASES += DISPLAY_CONTROL_CASES
 ALL_CASES += RESOURCE_RECORD_CASES
+ALL_CASES += AI_SEQUENCE_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -254,6 +257,16 @@ BINDINGS.update({'dword_539EC':0x539EC,'dword_53B17':0x53B17,'dword_53BDF':0x53B
     'dword_5412B':0x5412B,'sub_11019':0x11019})
 BINDINGS.update({'aRb_10':0x502B7,'aFdiconB24_4':0x502BA,
     'sub_4DDD7':0x4DDD7,'_sub_4DDD7':0x4DDD7})
+BINDINGS.update({'dword_53C37':0x53C37,'dword_53C3B':0x53C3B,'dword_53C3F':0x53C3F,
+    'dword_53C43':0x53C43,'dword_53C47':0x53C47,'sub_1F04A':0x1F04A,
+    'sub_1E856':0x1E856,'sub_1E611':0x1E611,'sub_1E292':0x1E292,'sub_28A6C':0x28A6C,
+    'sub_1B6B7':0x1B6B7,'sub_1B8A6':0x1B8A6,'sub_14B16':0x14B16,
+    'sub_149F8':0x149F8,'sub_15880':0x15880,'sub_1C269':0x1C269,'sub_15B77':0x15B77,
+    'sub_4E555':0x4E555,'_sub_4E555':0x4E555,'sub_4E040':0x4E040,'_sub_4E040':0x4E040,
+    'sub_1F882':0x1F882,'sub_1C220':0x1C220,'sub_24336':0x24336,
+    'unk_521F6':0x521F6,'unk_52206':0x52206,'unk_52216':0x52216,'unk_5221F':0x5221F,
+    'unk_52228':0x52228,'unk_52241':0x52241,'unk_5225A':0x5225A,'dbl_50144':0x50144})
+BINDINGS.update({'sub_1E7F6':0x1E7F6,'sub_1EB05':0x1EB05,'sub_15DA2':0x15DA2})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -284,6 +297,7 @@ SOURCES = {
     "game_digit_roll": ("tools/fd2_matching_game_digit_roll.c", ("F2D3FF",)),
     "game_display_control": ("tools/fd2_matching_game_display_control.c", tuple(macro for macro, _ in DISPLAY_CONTROL_CASES)),
     "game_resource_records": ("tools/fd2_matching_game_resource_records.c", tuple(macro for macro, _ in RESOURCE_RECORD_CASES)),
+    "game_ai_sequences": ("tools/fd2_matching_game_ai_sequences.c", tuple(macro for macro, _ in AI_SEQUENCE_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),

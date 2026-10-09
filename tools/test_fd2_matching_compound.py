@@ -64,6 +64,11 @@ def main():
     receipt=json.loads((positive/'bootstrap-receipt.json').read_text())
     assert receipt['counts']['matched_c']==1 and receipt['whole_file_equal'] and not receipt['decompilation_complete']
     assert (positive/'FD2.EXE').read_bytes()==args.original.read_bytes()
+    span=receipt['restored_spans'][0]
+    assert span['source_report_directory']==str(args.linked)
+    assert span['source_report_sha256']==hashlib.sha256((args.linked/'report.json').read_bytes()).hexdigest()
+    for key in ('compiler_version','compiler_inputs','source_key','source_path','source_sha256'):
+        assert span[key]==report[key]
     bad=args.output/'bad-report';bad.mkdir();modified=copy.deepcopy(report)
     selected=next(t for t in modified['trials'] if t['exact_interval_bytes'])
     selected['exact_entry_offsets']=False
@@ -74,6 +79,7 @@ def main():
     assert result.returncode!=0 and '複合入口' in result.stderr and not (args.output/'must-not-exist').exists()
     rejected.append('bootstrap_missing_entry_proof')
     result={'identity_layout_bytes':420,'original_owners_counted':1,'compiler_entries':3,'lifted_rel32_branches':2,
+        'matched_span_source_provenance_verified':True,
         'target_address':'0x2328a','rejected':rejected,'source_report_sha256':hashlib.sha256((args.linked/'report.json').read_bytes()).hexdigest()}
     (args.output/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n');print(json.dumps(result,ensure_ascii=False))
 
