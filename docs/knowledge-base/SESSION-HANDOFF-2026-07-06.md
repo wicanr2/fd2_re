@@ -9891,3 +9891,19 @@ PRICE_FORM_01以quantity乘price再存dword_53AE1，兩前端均完整匹配598 
 新C加入357074-byte全檔，SHA-256與固定原檔相同，LE重定位逐筆驗證；舊167個匹配、168段來源與未歸屬CODE台帳逐項不變，新增30DC3後總169段出處可回查。其餘原版code仍保留，decompilation_complete=false，Goal及#198保持未完成。原始分類、正式Go／Ebiten與PLAYER-E2不提升，唯一現況引用[58](58-fd2-exe-re-coverage.md)。新C、方法與全部正負例隨GitHub提交，完整EXE及商用工具鏈留本機。
 
 本批收尾：真正主機官方worklist16項、人工判讀8項、可能已完成0項；182條教訓及68個guard通過。62份來源SHA、116份雙輪連結報告、169段實際出處及1121個本地連結相符。58組3163份候選／3133份獨立核對／30份布局拒收由現行工具重算沒有矛盾。新檔與產物UID／GID1000，既有root-owned2811項、.md目錄0，FD2容器全部退出移除。只提交重寫C、來源登錄與整理收據，提交及真正遠端HEAD回填#198；全檔目標保持未完成。
+
+## 2026-10-09 完整隊伍C的基底及生命週期負例
+
+上一輪已推送c33fbe76。本輪沿工具鏈與執行期指紋路由，依目前已匹配清冊避開301F4及30DC3，只回查固定IDA Pro 9.4完整匯出的31385原始637-byte區間。原始名稱、linear位址、file offset、caller及bytes沿用[主收據](../data/ida/fd2_matching_full_20261008.json)的save_service_original_evidence，不重開已閉合玩法語意或修改原始分類。
+
+新增四份完整C：[生命週期](../../tools/fd2_matching_game_class_lifetime.c)、[80-byte記錄](../../tools/fd2_matching_game_class_record.c)、[取槽消費端](../../tools/fd2_matching_game_class_calls.c)及[標準儲存提示](../../tools/fd2_matching_game_class_register.c)。16種生命週期表示保留四種80-byte基底計算與實際重載值；返回碼暫放pointer的候選限定原始-mf的32-bit模型，只轉回int檢查，解參照前依原流程覆寫真正記錄基底，不宣稱portable C或作者宣告。
+
+普通記錄只包原始80 bytes，raw+7與+32的原byte讀寫保持。取槽四種表示保留52／50條件、31860回傳到1B8E7的原順序及實參；直接消費／分開暫存只變資料流表示，沒有加callee或不明ABI。四種標準register提示只對地址不外洩的原局部值使用，沒有指定physical register、修改caller／callee保存或加入無用padding；它們在各自前端產出相同最近負例，停止重複這類提示。
+
+生成器第一次把預處理#endif與下一個實際語句接在同一行，compiler明確拒收。等原handle終止後修正邊界，以相同image及參數乾淨重跑，舊失敗輸出保留；這是來源生成格式問題，未寫正式收據、不列原版或重製產品缺陷。
+
+凍結四份C與驅動器後，兩前端合計56份候選各做兩次獨立重建，OMF物件、完整報告與機器碼相同，全部由objcopy獨立核對。全部仍有完整區間差異：C最近637-byte候選首差偏移228，C++多數首差31；取槽部分640 bytes，生命週期一份638 bytes。55列原始具名綁定包含同一call的標準別名，逐列驗target，不視為不同call數。全部hash、原始分類及flags見game_class_31385_attempts。
+
+原始參照68列及四項拒收、明示+1三項、稀疏布局六項、include四項、1416-byte間接呼叫保留、420-byte單一owner／出處及八項拒收、C++包裝七項輸出前拒收與真實source provenance皆通過。加入負例後357074-byte全檔組合SHA仍與固定原檔相同，LE重定位逐筆驗證；168個匹配、169段實際來源及未歸屬CODE台帳全保持。decompilation_complete=false，Goal及#198未完成，正式Go／Ebiten、PLAYER-E2與硬體時序不提升。現況只引用[58](58-fd2-exe-re-coverage.md)，四份C、方法與負例隨GitHub提交；完整EXE及商用組件留本機。
+
+本批收尾：真正主機官方worklist16項、人工判讀8項、可能已完成0項；182條教訓及68個guard通過。66份來源SHA、132份雙輪連結報告、169段實際出處及1133個本地連結相符。66組3219份候選／3189份獨立核對／30份布局拒收由現行工具重算沒有矛盾。新檔與產物UID／GID1000，既有root-owned2811項、.md目錄0，FD2容器全部退出移除。四份C、source registry及完整負例隨提交推送GitHub，提交及真正遠端HEAD回填#198；本輪新增匹配0個，全檔目標保持未完成。

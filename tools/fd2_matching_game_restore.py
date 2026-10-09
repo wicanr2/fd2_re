@@ -101,6 +101,10 @@ TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
 DIGIT_ARITHMETIC_CASES = tuple(('DIGIT_FORM_'+str(n).zfill(2),0x2D3FF) for n in range(16))
 PRICE_ARITHMETIC_CASES = tuple(('PRICE_FORM_'+str(n).zfill(2),0x30DC3) for n in range(12))
+CLASS_LIFETIME_CASES = tuple(('CLASS_LIFE_'+str(n).zfill(2),0x31385) for n in range(16))
+CLASS_RECORD_CASES = tuple(('CLASS_RECORD_'+str(n).zfill(2),0x31385) for n in range(4))
+CLASS_CALL_CASES = tuple(('CLASS_CALL_'+str(n).zfill(2),0x31385) for n in range(4))
+CLASS_REGISTER_CASES = tuple(('CLASS_REGISTER_'+str(n).zfill(2),0x31385) for n in range(4))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -123,6 +127,10 @@ ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
 ALL_CASES += DIGIT_ARITHMETIC_CASES
 ALL_CASES += PRICE_ARITHMETIC_CASES
+ALL_CASES += CLASS_LIFETIME_CASES
+ALL_CASES += CLASS_RECORD_CASES
+ALL_CASES += CLASS_CALL_CASES
+ALL_CASES += CLASS_REGISTER_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -331,6 +339,10 @@ SOURCES = {
     "game_digit_compare": ("tools/fd2_matching_game_digit_compare.c", ("F2D3FF", *tuple(macro for macro, _ in DIGIT_COMPARE_CASES))),
     "game_digit_arithmetic": ("tools/fd2_matching_game_digit_arithmetic.c", tuple(macro for macro, _ in DIGIT_ARITHMETIC_CASES)),
     "game_price_arithmetic": ("tools/fd2_matching_game_price_arithmetic.c", tuple(macro for macro, _ in PRICE_ARITHMETIC_CASES)),
+    "game_class_lifetime": ("tools/fd2_matching_game_class_lifetime.c", tuple(macro for macro, _ in CLASS_LIFETIME_CASES)),
+    "game_class_record": ("tools/fd2_matching_game_class_record.c", tuple(macro for macro, _ in CLASS_RECORD_CASES)),
+    "game_class_calls": ("tools/fd2_matching_game_class_calls.c", tuple(macro for macro, _ in CLASS_CALL_CASES)),
+    "game_class_register": ("tools/fd2_matching_game_class_register.c", tuple(macro for macro, _ in CLASS_REGISTER_CASES)),
     "game_display_control": ("tools/fd2_matching_game_display_control.c", tuple(macro for macro, _ in DISPLAY_CONTROL_CASES)),
     "game_resource_records": ("tools/fd2_matching_game_resource_records.c", tuple(macro for macro, _ in RESOURCE_RECORD_CASES)),
     "game_ai_sequences": ("tools/fd2_matching_game_ai_sequences.c", tuple(macro for macro, _ in AI_SEQUENCE_CASES)),
