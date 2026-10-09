@@ -10077,3 +10077,17 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 追加勘誤：前輪三入口地圖收尾及#198留言把雙輪C報告寫成162份，當時80組實際為160份。本輪以local_outputs.game_link_receipts重算為81組162份；候選、C覆蓋、SHA與驗證結果不受這個文字小計影響，歷史原文保留以供追溯。
 
 本批收尾：89份來源SHA、162份雙輪C連結報告、181段C出處、19段SDK出處及1176個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、六算式完整比較與共同清理回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：數字逐列繪製完整C與三入口群組
+
+上一輪65c01e09已推送數字減算C，本輪沿用兩個固定include加入相鄰2D620。工具鏈與執行期分流路由已核對，[新來源](../../tools/fd2_matching_game_digit_draw_group.c)及[回歸](../../tools/test_fd2_matching_digit_group.py)的--draw接入[索引](00-index.md)。主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_digit_draw_matches、digit_draw_original_evidence及validation.digit_draw。
+
+2D620保留dword_54147載入、原始+14間接讀取、+4、索引乘6、九次六byte複製及stride前進。使用完整三函式單元避免改動已匹配的相鄰來源。最初參數載入次序不同，直接更新dest參數後只剩ADD與IMUL的次序差異；unsigned地址與volatile值參數重現原始次序，完整279＋266＋73＝618 bytes與三個入口在3s預設策略相同。volatile只作相容產碼表示，原作者型別、宣告、來源分檔與精確compiler版本未知，資產格式與玩家語意仍未提升。
+
+凍結來源與驅動器後，九份候選在兩個獨立容器重建，OMF、完整編譯／連結報告及產碼相同，全部由objcopy獨立核對。25列原始具名參照與兩個caller的E8／指令視窗保存。三入口、完整區間、指令次序及共同清理尾端通過；DOWN.C與DIGIT.C各有缺檔、內容、時間、雜湊四項輸出前拒收，舊雙函式模式另重跑通過。
+
+符號回歸最初使用不存在的物件路徑，第二次誤選未涵蓋190AC的控制函式物件。這兩次屬驗證命令輸入錯誤，沒有改產品或放寬測試。查回既有treasure-fixed-owner-r1正對照後，乾淨重跑同一回歸通過68列符號／LE參照、四項矛盾拒收及明示+1六列／三項拒收。
+
+組合器仍保留先到來源優先，舊181段C出處逐項保持，只新增2D620的73 bytes，新增後182段，前兩函式不重複計數。C覆蓋181函式／21751 bytes，另146-byte未歸屬區間，共21897 bytes；175個保留函式庫與949個待還原函式分列。SDK19函式／1200 bytes的出處逐項保持，新C基準兩輪全檔及收據相同。C矩陣82組3777份候選／3747份獨立核對／30份布局拒收由工具重算，SDK九項另列。完整357074-byte EXE及SHA仍相同，decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
+
+本批收尾：90份來源SHA、164份雙輪C連結報告、182段C出處、19段SDK出處及1179個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、三入口完整匹配與include回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
