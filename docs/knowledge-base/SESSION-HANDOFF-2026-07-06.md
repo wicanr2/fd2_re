@@ -10011,3 +10011,21 @@ IDA可重跑參數為FD2_MATCHING_AUDIT_START=0x35f6f、FD2_MATCHING_AUDIT_END=0
 IDA重跑參數、腳本及資料庫SHA保存於presentation_flow_original_evidence.ida_audit_method。正式原版與資料庫唯讀掛載，輸出只寫複本；未改寫正式.i64。現行矩陣78組3696份候選／3666份獨立核對／30份布局拒收由工具重算。decompilation_complete=false，Goal與#198保持未完成，PLAYER-E2及正式規則不提升。
 
 本批收尾：80份來源SHA、156份雙輪連結報告、178段實際C出處及1163個本地連結相符，索引正對照與正式IDA資料庫SHA保持。186條教訓及71個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、完整匹配、負例及IDA間接表項證據隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：原生SDK重定位與八個完整函式來源
+
+上一輪71fbff9f已推送完整C匹配，本輪補已保留函式庫的可重建來源，不改C目標或未知分類。工具鏈／執行期分流與文件職責路由已核對。新工具與回歸接入[索引](00-index.md)，主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的sdk_library_native_origin、validation.sdk_library_native及bootstrap.sdk_library_spans。
+
+固定9.5 DOS CLIB的七個候選經objconv後，六個COFF長名稱超界，memset的EasyOMF也未正確轉換。沒有放寬檢查；既有WLINK／WDIS可直接讀取原生OMF。RAW的OFFSET要求256對齊，因此用ORDER CLNAME指定真正CODE線性位址。絕對PUBDEF不接受self-relative relocation，改以零長度區段及原廠公開符號宣告真正外部位址，沒有LEDATA、指令或NOP。RAW可能有容器零前綴，逐項核對map與完整SEGDEF大小後才抽取CODE；未裁切SDK程式碼或遮罩差異。
+
+九個完整原生SDK函式各連結兩輪，完整RAW、CODE、零長度綁定物件及穩定JSON相同。memcpy是既有42-byte正對照，不重複計數；新來源為fprintf、setbuf、memset、int386、int386x、__chktty、__qread及fputs。最初人工小計多算100 bytes，被真實收據測試攔下；按實際size重算為八函式395 bytes。SDK總覆蓋從11函式805 bytes增至19函式1200 bytes，都是175個既有保留函式庫的子集，C仍177函式，953個仍待還原或分類。
+
+外部符號以原始精確名稱、直接call目標及LE fixup核對，不把多個前置底線當成相同名字。原始檔到IDA載入bytes也依LE重定位重生核對，偽造loaded bytes與callee位址不能騙過完整比對。原生連結八項CLI輸出前拒收、兩項符號／位址反例通過；全檔重建對偽造收據、CODE修改、review綁定、重複來源、未知分類及C覆蓋重疊等六項，在建立輸出前拒收。
+
+IDA 9.4資料庫複本核對九個完整函式、342處直接call及20個caller視窗，原始名稱、線性位址及檔案偏移保持。caller少於三個的函式保存全部可得來源；函式庫身分不代表玩家不可見，玩法語意未提升。既有匯出器預設路徑另在複本重跑，舊11函式與七項拒收仍通過。新的原生來源用FD2_LIBRARY_REVIEW_SOURCE=/source/library-link-report.json，正式.i64及原版唯讀，不改名、不改型別。
+
+全檔組合前從原廠物件實際重新連結，沒有僅信任已存candidate.bin。兩輪19函式來源全檔及收據相同，舊11個SDK出處及178段C出處逐項保持，C函式台帳與分類不變；memcpy控制函式只計一次。完整357074-byte EXE及SHA仍相同，decompilation_complete=false，Goal與#198保持未完成。原作精確compiler版本未知，正式Go／Ebiten、PLAYER-E2及硬體時序不提升。C矩陣仍78組3696份候選／3666份獨立核對／30份布局拒收，九個SDK試驗另列，不混入C數字。
+
+最終審閱修正IDA原生連結分支沿用的「無重定位」舊文字。原生分支明示連結後完整CODE相同，舊預設分支仍描述無重定位流程；最終IDA來源與兩輪全檔收據重新對應，機器碼與覆蓋不變。
+
+本批收尾：84份來源SHA、C的156份雙輪連結報告、178段C出處、19段SDK出處及1167個本地連結相符，索引正對照與正式IDA資料庫SHA保持。187條教訓及72個guard通過；真正主機官方worklist16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。四個新工具／回歸、IDA支援與有限來源證據隨提交推送GitHub，提交與真正遠端HEAD回填#198。

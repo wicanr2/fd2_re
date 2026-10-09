@@ -2010,6 +2010,21 @@
         ],
         "pattern": "goto unavailable"
       }
+    },
+    {
+      "id": "matching-native-sdk-raw-offset-needs-class-placement",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "原廠SDK的OMF轉COFF不合格時，先用固定原生WLINK／WDIS核對，不放寬字串表或EasyOMF檢查。RAW的OFFSET只設對齊基準，實際CODE及零長度符號段以ORDER CLNAME指定並逐項核對map。入口tools/fd2_matching_library_link.py，目前限固定9.5 DOS CLIB、已分類runtime、單一完整CODE及空資料段。",
+      "why": "七個SDK候選的COFF轉換不合格。原生linker可直接讀取；非256對齊的OFFSET會被調整，絕對PUBDEF不接受rel32。零長度段配合原始外部位址與精確class定位後，九個完整函式匹配，沒有加入指令。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_library_link.py"
+        ],
+        "pattern": "zero_bindings"
+      }
     }
   ]
 }

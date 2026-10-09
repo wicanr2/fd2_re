@@ -41,12 +41,16 @@ def main():
     if sha(original_path) != INPUT_SHA or sha(Path(ida_nalt.get_input_file_path())) != INPUT_SHA:
         raise ValueError('原版或資料庫輸入不符')
     original = original_path.read_bytes()
-    probe_path = Path('/source/library-probe.json')
+    probe_path = Path(os.environ.get('FD2_LIBRARY_REVIEW_SOURCE', '/source/library-probe.json'))
     probe = json.loads(probe_path.read_text(encoding='utf-8'))
-    if probe['input']['sha256'] != INPUT_SHA or probe['representation'] != 'omf':
+    native = 'native_tools' in probe
+    if probe['input']['sha256'] != INPUT_SHA or (not native and probe['representation'] != 'omf'):
         raise ValueError('來源比對輸入不符')
+    if native and (probe['native_tools']['wlink_sha256'] != '97ff1fd068c48de2745d25b0f85057e485b3eee4df0fcf6570f1839e5d315fb5'
+                   or not all(m['exact_interval_bytes'] for m in probe['trials'])):
+        raise ValueError('原生SDK重建來源或完整匹配不符')
     rows = []
-    for match in probe['matches']:
+    for match in probe['trials'] if native else probe['matches']:
         start = int(match['ida_linear_address'], 16)
         function = ida_funcs.get_func(start)
         if not function or function.start_ea != start or list(idautils.Chunks(start)) != [(start, function.end_ea)]:
@@ -69,7 +73,7 @@ def main():
             if not insn['loaded_equals_file'] or len(raw) != 5 or raw[0] != 0xe8 or reference + 5 + int.from_bytes(raw[1:], 'little', signed=True) != start:
                 raise ValueError('直接 call 目標與原始 E8 位元組不符')
             calls.append((caller.start_ea, reference))
-        if sorted({hex(c) for c, _ in calls}) != sorted(match['caller_functions']):
+        if not native and sorted({hex(c) for c, _ in calls}) != sorted(match['caller_functions']):
             raise ValueError('原始 caller 清冊與目前 IDA 直接 call 不符')
         windows = []
         seen = set()
@@ -82,16 +86,19 @@ def main():
             windows.append({'caller_start': hex(caller), 'original_caller_name': idc.get_func_name(caller),
                             'call_address': hex(call), 'instructions': [instruction(ea, original) for ea in items[max(0, n-3):n+4]],
                             'argument_and_return_semantics': 'unknown'})
-        rows.append({**match, 'file_offset': hex(offset), 'ida_function_end': hex(function.end_ea),
+        rows.append({**match, 'caller_functions': sorted({hex(c) for c, _ in calls}),
+                     'file_offset': hex(offset), 'ida_function_end': hex(function.end_ea),
                      'ida_library_flag': bool(function.flags & ida_funcs.FUNC_LIB),
                      'direct_call_count': len(calls), 'caller_windows': windows,
-                     'module_classification': '已證實：固定 SDK 的完整無重定位 code 相同；既有 runtime 分類保留'})
+                     'module_classification': ('已證實：固定SDK經原生連結後完整CODE相同；既有runtime分類保留' if native else
+                                               '已證實：固定 SDK 的完整無重定位 code 相同；既有 runtime 分類保留')})
     output = Path('/out/library-ida-review.json')
     if output.parent.stat().st_uid != os.getuid():
         raise ValueError('輸出擁有權不符')
     result = {'schema_version': 1, 'input': probe['input'], 'tool': {'name': 'IDA Pro', 'version': '9.4', 'address_space': 'IDA database linear address'},
               'probe_sha256': sha(probe_path), 'library': probe['library'], 'driver_sha256': sha(Path(__file__)),
-              'matches': rows, 'classification_changed': False, 'function_semantics': 'unknown',
+              'matches': rows, 'source_kind': 'native_sdk_link' if native else 'native_omf_probe',
+              'classification_changed': False, 'function_semantics': 'unknown',
               'uid': os.getuid(), 'gid': os.getgid()}
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
