@@ -103,6 +103,9 @@ OPERAND_FLOW_CASES = tuple((prefix+str(n),address) for prefix,address in
     (('OPERAND_PANEL_',0x17EEF),('OPERAND_STATE_',0x22AF6),('OPERAND_IDLE_',0x2B9A1),('OPERAND_SLOT_',0x1B722)) for n in range(3))
 AI_POINT_FLOW_CASES = tuple((prefix+str(n),address) for prefix,address in
     (('AI_POINT_',0x1598A),('RESET_WORD_',0x35BBA)) for n in range(4))
+CLASS_STACK_CASES = tuple(('CLASS_STACK_'+str(n),0x31385) for n in range(5))
+CLASS_STACK_CASES += tuple(('SELECTOR_PARAM_'+str(n),0x2DF6B) for n in range(6))
+CLASS_STACK_CASES += tuple(('INPUT_ESI_'+str(n),0x12DAC) for n in (1,0,2))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -148,6 +151,7 @@ ALL_CASES += MENU_BIOS_CASES
 ALL_CASES += ITEM_TRANSACTION_CASES
 ALL_CASES += OPERAND_FLOW_CASES
 ALL_CASES += AI_POINT_FLOW_CASES
+ALL_CASES += CLASS_STACK_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -411,6 +415,7 @@ SOURCES = {
     "game_item_transaction": ("tools/fd2_matching_game_item_transaction.c", tuple(macro for macro,_ in ITEM_TRANSACTION_CASES)),
     "game_operand_flow": ("tools/fd2_matching_game_operand_flow.c", tuple(macro for macro,_ in OPERAND_FLOW_CASES)),
     "game_ai_point_flow": ("tools/fd2_matching_game_ai_point_flow.c", tuple(macro for macro,_ in AI_POINT_FLOW_CASES)),
+    "game_class_stack": ("tools/fd2_matching_game_class_stack.c", tuple(macro for macro,_ in CLASS_STACK_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }

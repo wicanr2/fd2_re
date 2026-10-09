@@ -2066,6 +2066,21 @@
         "paths": ["tools/fd2_matching_game_ai_point_flow.c"],
         "pattern": "scalar_dx,scalar_targetcount"
       }
+    },
+    {
+      "id": "matching-incoming-register-do-not-invent-initializer",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "原始暫存器在區域首次寫入前已被讀取時，明示原始輸入，不猜補初值；相容parm／modify宣告只證明產碼，不證明作者ABI或實際clobber。入口tools/fd2_matching_game_class_stack.c與tools/test_fd2_matching_input_esi.py。",
+      "why": "12DAC第一次CMP ESI,EAX早於MOVSX ESI。明示ESI輸入並允許GS後完整140 bytes匹配；void未初始化控制與允許EBX修改控制皆不匹配，輸入producer仍未知。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_class_stack.c"
+        ],
+        "pattern": "parm caller \\[esi\\] value \\[eax\\] modify exact \\[eax ecx edx gs\\]"
+      }
     }
   ]
 }
