@@ -125,6 +125,8 @@ START_LOAD_CASES = tuple(('START_LOAD_'+str(n),0x25EBB) for n in range(5))
 TERMINAL_BODY_CASES = tuple(('TERMINAL_BODY_'+str(n),0x2BCE5) for n in range(8))
 TERMINAL_DIALOGUE_CASES = tuple(('TERMINAL_DIALOGUE_'+str(n),0x2C39B) for n in range(3))
 AI_ITEM_EXEC_CASES = tuple(('AI_ITEM_EXEC_'+str(n),0x15055) for n in range(10))
+AI_ITEM_SELECT_CASES = tuple(('AI_ITEM_SELECT_'+str(n),0x1567E) for n in range(18))
+INT31_REGS_CASES = tuple(('INT31_REGS_'+str(n),0x36255) for n in range(3))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -185,6 +187,8 @@ ALL_CASES += START_LOAD_CASES
 ALL_CASES += TERMINAL_BODY_CASES
 ALL_CASES += TERMINAL_DIALOGUE_CASES
 ALL_CASES += AI_ITEM_EXEC_CASES
+ALL_CASES += AI_ITEM_SELECT_CASES
+ALL_CASES += INT31_REGS_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -481,6 +485,8 @@ SOURCES = {
     "game_terminal_body": ("tools/fd2_matching_game_terminal_body.c", tuple(macro for macro,_ in TERMINAL_BODY_CASES)),
     "game_terminal_dialogue": ("tools/fd2_matching_game_terminal_dialogue.c", tuple(macro for macro,_ in TERMINAL_DIALOGUE_CASES)),
     "game_ai_item_execute": ("tools/fd2_matching_game_ai_item_execute.c", tuple(macro for macro,_ in AI_ITEM_EXEC_CASES)),
+    "game_ai_item_select": ("tools/fd2_matching_game_ai_item_select.c", tuple(macro for macro,_ in AI_ITEM_SELECT_CASES)),
+    "game_int31_regs": ("tools/fd2_matching_game_int31_regs.c", tuple(macro for macro,_ in INT31_REGS_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
