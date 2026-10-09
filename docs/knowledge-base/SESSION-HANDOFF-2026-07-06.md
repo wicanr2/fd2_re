@@ -9741,3 +9741,19 @@ IDA映像已有合法9.4／py312-v1環境；第一次命令路徑錯誤，核對
 新增C加入全檔組合後，357074 bytes及SHA-256與原檔相同，LE重定位逐筆驗證；其餘未還原原版仍保留，decompilation_complete=false。Goal及#198未完成，正式Go／Ebiten與PLAYER-E2不提升，不新增DAC／PIT／ISR逐週期研究。現行數字只引用[58](58-fd2-exe-re-coverage.md)。兩份C、方法及完整區間收據隨GitHub提交，完整EXE及商用工具鏈留本機。
 
 本批收尾：真正主機gh於開工及提交前取得官方16項，verify無可能已完成項，8項仍需人工判讀。180條教訓／66個guard、47份來源SHA、158個原始函式與146-byte清冊外來源分列、2511份物件／2481份連結產碼／30份布局拒收及224個本地連結通過。原始參照、明示位移、稀疏布局、include、間接呼叫及複合owner回歸通過；前輪156個原始完整區間逐項未被覆寫。原檔SHA不變，新產物UID／GID1000；衛生掃描仍為既有2811項，.md目錄0，FD2容器全部退出移除。只提交兩份C、方法、主收據及文件，提交與真正遠端HEAD回填#198。
+
+## 2026-10-09 三個資源及介面C匹配與拒收總數勘誤
+
+上一輪已推送`bbed4644`。本輪沿工具鏈與執行期指紋路由，從固定IDA Pro 9.4完整匯出挑出六個未試過的原始函式，先扣除matched_addresses。新增[資源及介面C來源](../../tools/fd2_matching_game_resource_records.c)；原版版本、IDA線性位址、原名、caller、bytes與157筆具名參照見[主收據](../data/ida/fd2_matching_full_20261008.json)的game_resource_record_matches。只做已知位址的機械式擷取與compiler產碼比較，既有玩法語意不重開。
+
+1B9DE為430 bytes、23A0A為341、2F4C6為380，共三個完整原始函式1151 bytes逐位元組相同。1B9DE保留八個物品槽的byte旗標計數、四個方向、確認及取消返回。23A0A保留兩份16-byte資料、八個旗標、byte計數與場景分支；count及flag明示低byte讀寫，來源型別不推定原作者宣告。2F4C6保留四種顯示分支、各次動畫與已知callee呼叫、增減色盤與最後present順序，不新增硬體wall-clock或逐週期聲明。
+
+11019／1C2DA／321C8仍未完整匹配。11019保留13個偏移、6720-byte表讀取、207360-byte配置及十二個指標附加；207360由原始立即值取得，不把IDA的loc相對顯示當成資料指標。1C2DA的30-byte資料複製實際由七次movsd及一次movsw產生；使用[官方pack選項契約](https://open-watcom.github.io/open-watcom-1.9/cguide.html)的四byte對齊，局部row／saved位置改到原始32／36，但其餘產碼仍不同。這只證明選項契約與實際候選，不證明作者使用pragma或精確工具版本。321C8保留byte選中槽、2560-byte複本、0x50-byte逐筆複製及FDICON重載，指標求值試驗後仍有差異。三個候選及全部策略分列，不增加覆蓋。
+
+新增[收據總數重算工具](../../tools/fd2_matching_report_totals.py)。現行實際雙輪收據證實30份布局拒收，但根層unlinked_layout_candidates仍是22，漏了八份複合owner拒收。工具先在相同現行收據抓到矛盾；修正根層元資料後，--check通過。原始C區間、分類、已連結bytes及歷史收據不重寫，可重用規則寫入[教訓清冊](../data/fd2-lessons.json)的matching-layout-totals-derive-from-all-receipts。當前候選、連結與拒收數由工具重算，不沿用早期小計。
+
+凍結來源後，兩輪54份OMF物件、完整報告及機器碼相同，全部另由objcopy核對。原始參照四項、明示+1三項、稀疏布局六項、include四項拒收與1416-byte間接呼叫不變驗證通過；420-byte單一owner及八項拒收也通過。
+
+新增C加入全檔組合後，357074 bytes及SHA-256與原檔相同，LE重定位逐筆驗證；其餘未還原原版仍保留，decompilation_complete=false。Goal及#198未完成，正式Go／Ebiten與PLAYER-E2不提升。現行數字只引用[58](58-fd2-exe-re-coverage.md)。C、重算工具、方法與完整區間收據隨GitHub提交，完整EXE及商用工具鏈留本機。
+
+本批收尾：真正主機gh於開工及提交前取得官方16項，verify無可能已完成項，8項仍需人工判讀。181條教訓／67個guard、49份來源SHA、161個原始函式與146-byte清冊外來源分列、2565份物件／2535份連結產碼／30份布局拒收及230個本地連結通過。新重算工具--check沒有矛盾；原始參照、明示位移、稀疏布局、include、間接呼叫及複合owner回歸通過，前輪158個原始完整區間逐項未被覆寫。原檔SHA不變，新產物UID／GID1000；衛生掃描仍為既有2811項，.md目錄0，FD2容器全部退出移除。只提交C、重算工具、方法、主收據、教訓及文件，提交與真正遠端HEAD回填#198。

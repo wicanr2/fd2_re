@@ -1927,6 +1927,19 @@
       "rule": "選新候選及回填覆蓋前，先按固定IDA原始函式位址扣除現行matched_addresses；同一位址的新來源可保存驗證，但不增加函式或bytes。入口docs/knowledge-base/58-fd2-exe-re-coverage.md、docs/data/ida/fd2_matching_full_20261008.json的matching_summary及tools/fd2_matching_bootstrap.py。",
       "why": "短服務來源八個196 bytes完整匹配，但35EBE／35ED2／3615E／3616E已有C覆蓋。合併清冊守衛抓到八個全算新增的錯誤；以位址集合核對後，只新增四個124 bytes，完整EXE仍相同。",
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json"
+    },
+    {
+      "id": "matching-layout-totals-derive-from-all-receipts",
+      "area": "匹配工具",
+      "date": "2026-10-09",
+      "rule": "匹配候選、可連結及布局拒收總數由現行全部雙輪收據重算，包含稀疏函式及複合owner；不沿用早期小計。入口tools/fd2_matching_report_totals.py，在Docker執行python tools/fd2_matching_report_totals.py --check，對照docs/data/ida/fd2_matching_full_20261008.json的matching_summary。",
+      "why": "根層unlinked_layout_candidates仍記22，漏計八個複合入口拒收；現行30組實際收據證實30，既有C匹配及原始分類沒有改變。新重算工具直接抓出矛盾，元資料修正後沿同一批收據重跑。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": ["tools/fd2_matching_report_totals.py"],
+        "pattern": "unlinked_layout_candidates"
+      }
     }
   ]
 }
