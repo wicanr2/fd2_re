@@ -2126,6 +2126,21 @@
         ],
         "pattern": "runner_timeout_seconds"
       }
+    },
+    {
+      "id": "matching-select-by-control-flow-not-only-byte-distance",
+      "area": "匹配工具",
+      "date": "2026-10-10",
+      "rule": "C匹配候選依未覆蓋位址、完整owner邊界與資料流複雜度選取，不只挑短函式或最少差異位元組。較大直線呼叫序列同樣按完整區間驗證，已閉合語意不重做。入口tools/fd2_matching_game_long_sequences.c、tools/test_fd2_matching_long_sequences.py與docs/knowledge-base/58-fd2-exe-re-coverage.md。",
+      "why": "較小22AF6仍差三個暫存器編碼；3231B與2548C雖為1626／715 bytes，主要由直線呼叫及明確計數迴圈組成，完整2341 bytes通過。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_long_sequences.c"
+        ],
+        "pattern": "void sub_3231B"
+      }
     }
   ]
 }

@@ -112,6 +112,8 @@ DOS_FILE_CASES = tuple((prefix+str(n),address) for prefix,address,count in
      ('RAW_LOAD_',0x36955,3),('RAW_LX_',0x36344,2)) for n in range(count))
 STATE_GROUP_CASES = tuple(('STATE_VALUE_'+str(n),0x22AF6) for n in range(18))
 STATE_GROUP_CASES += tuple(('STATE_GROUP_'+str(n),0x22A85) for n in range(11))
+LONG_SEQUENCE_CASES = tuple((prefix+str(n),address) for prefix,address in
+    (('INTRO_SEQ_',0x3231B),('POST_SEQ_',0x2548C)) for n in range(3))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -161,6 +163,7 @@ ALL_CASES += AI_POINT_FLOW_CASES
 ALL_CASES += CLASS_STACK_CASES
 ALL_CASES += DOS_FILE_CASES
 ALL_CASES += STATE_GROUP_CASES
+ALL_CASES += LONG_SEQUENCE_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -265,6 +268,8 @@ BINDINGS.update({'open':0x3CD24,'close':0x3D01C,'filelength':0x3D056,'strcmp':0x
     'sub_36107':0x36107,'sub_36900':0x36900,'dword_52754':0x52754,
     'dword_360FF':0x360FF,'aLx':0x502F0,'_open':0x3CD24,'_close':0x3D01C,
     '_filelength':0x3D056,'_strcmp':0x3CF70,'_sub_36107':0x36107,'_sub_36900':0x36900})
+BINDINGS.update({'sub_13185':0x13185,'sub_24B4D':0x24B4D,'j___delay':0x375B2,'dword_53AFB':0x53AFB,
+    'sub_32975':0x32975})
 BINDINGS.update({'sub_31860':0x31860,'sub_1B8A6':0x1B8A6,'sub_4DFCC':0x4DFCC,
     'sub_10620':0x10620,'sub_135DD':0x135DD,'sub_32999':0x32999,'sub_1366A':0x1366A,
     'sub_134E4':0x134E4,'dword_53A81':0x53A81,'sub_2D31B':0x2D31B,
@@ -431,6 +436,7 @@ SOURCES = {
     "game_class_stack": ("tools/fd2_matching_game_class_stack.c", tuple(macro for macro,_ in CLASS_STACK_CASES)),
     "game_dos_file": ("tools/fd2_matching_game_dos_file.c", tuple(macro for macro,_ in DOS_FILE_CASES)),
     "game_state_group": ("tools/fd2_matching_game_state_group.c", tuple(macro for macro,_ in STATE_GROUP_CASES)),
+    "game_long_sequences": ("tools/fd2_matching_game_long_sequences.c", tuple(macro for macro,_ in LONG_SEQUENCE_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
