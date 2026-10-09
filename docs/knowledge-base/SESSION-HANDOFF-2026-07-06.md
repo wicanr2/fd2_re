@@ -10091,3 +10091,19 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 組合器仍保留先到來源優先，舊181段C出處逐項保持，只新增2D620的73 bytes，新增後182段，前兩函式不重複計數。C覆蓋181函式／21751 bytes，另146-byte未歸屬區間，共21897 bytes；175個保留函式庫與949個待還原函式分列。SDK19函式／1200 bytes的出處逐項保持，新C基準兩輪全檔及收據相同。C矩陣82組3777份候選／3747份獨立核對／30份布局拒收由工具重算，SDK九項另列。完整357074-byte EXE及SHA仍相同，decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
 
 本批收尾：90份來源SHA、164份雙輪C連結報告、182段C出處、19段SDK出處及1179個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。C來源、三入口完整匹配與include回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：整備兩函式完整C負例與暫存器文字診斷
+
+上一輪bd74d7b4已推送數字逐列繪製C。本輪沿用同一目標處理2D669與2D85F，工具鏈／執行期分流及文件職責路由已核對。新增[轉換C候選](../../tools/fd2_matching_game_screen_layout.c)、[選單C候選](../../tools/fd2_matching_game_menu_bios_layout.c)、[診斷工具](../../tools/fd2_matching_register_diagnostic.py)及[回歸](../../tools/test_fd2_matching_register_diagnostic.py)，四份來源皆接入[索引](00-index.md)。主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_screen_layout_attempt、game_menu_bios_layout_attempt、layout_negative_original_evidence、register_allocation_diagnostic及validation.layout_negatives。
+
+2D669保留16-byte表、64000-byte工作緩衝、兩個繪製分支及有號除法。初輪重用索引及分支拆開後仍有配置差異；在第一個呼叫參數中才計算4-frame，可重現完整340 bytes的指令布局，但EBX與ESI中間值不同。型別、名稱、register提示、C++前端及已保存的9.5／9.01候選未解除此差異。C++第一輪缺少void*到unsigned char*轉型而未產生物件，修正後成功編譯但仍不匹配，未把編譯失敗當作位元組負例。由原始4E9E4的PUSHA／POPA確認保存指令後，沒有猜改呼叫慣例。舊C負例與原始分類保持。
+
+2D85F保留原始BIOS字讀取、有號差值比較、繪製、等待與鍵盤輸入順序。四個候選分別比較聚合／獨立局部資料及字寬度，原作者宣告未知，沒有接入正式執行期或新增硬體時序聲明。凍結兩份來源與驅動器後，2D669的63份及2D85F的36份候選各在兩個獨立容器重建；OMF、完整編譯／連結報告及產碼相同，99份全部由objcopy核對，仍沒有新的完整匹配。
+
+新診斷綁定固定原版、IDA完整區間及真實連結收據，保留全部原始差異。2D669的3s預設候選有14 bytes不同，首末不同指令形成IDA線性2D6AC至2D777區間。這段指令文字在EBX／ESI對調後相同，67-byte序言及70-byte尾端逐byte相同。工具最初以全函式單一暫存器對應比較，因共用序言／返回的固定保存暫存器而拒收；修正為明示不同指令區間，同時核對兩側全部bytes，沒有遮蔽差異，也沒有修改匹配器。文字對應不證明ABI、行為等價或原作者宣告，不增加C覆蓋。
+
+兩份診斷逐byte相同。回歸以真實完整340-byte負例、原始產碼身份正對照、立即值／分支／非雙射反例及七項輸出前拒收驗證：變動產碼、假匹配標記、假首差異、假原始大小、IDA雜湊、輸入身份與原檔內容均拒收。17及26列原始具名參照、兩個完整函式與12個caller視窗保存；既有68列符號／LE、四項矛盾拒收及明示+1六列／三項拒收通過。
+
+本輪沒有增加C或SDK覆蓋。182段C出處、19段SDK出處及bootstrap逐項保持，既有完整EXE重查大小及SHA相同。C仍181函式／21751 bytes，另146-byte未歸屬區間，共21897 bytes；SDK仍19函式／1200 bytes，175個保留函式庫與949個待還原函式分列。C矩陣由現行工具重算為84組3876份候選／3846份獨立核對／30份布局拒收。decompilation_complete=false，Goal與#198保持未完成，正式Go／Ebiten及PLAYER-E2不提升。
+
+本批收尾：94份來源SHA、168份雙輪C連結報告及1185個本地連結相符，索引正對照與正式IDA資料庫SHA保持。188條教訓及73個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。兩份完整C負例、暫存器診斷與拒收回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。

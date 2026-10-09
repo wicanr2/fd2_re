@@ -112,6 +112,9 @@
 | 同包C++前端的C語法來源比較 | [輸入準備工具](../../tools/fd2_matching_prepare_tools.py)與[匹配驅動器](../../tools/fd2_matching_game_restore.py)的--compiler-frontend cpp | 只支援已鎖版10.0a的WPP386；C語法來源經固定extern C包裝，逐筆保留實際前端、組件及包裝SHA，不推定原作語言 |
 | C++前端的來源包裝守衛 | [真實物件回歸](../../tools/test_fd2_matching_cpp.py)、[全檔組合器](../../tools/fd2_matching_bootstrap.py) | 缺檔、內容、時間、雜湊、前端、組件及未鎖版版本在輸出前拒收；已匹配區間保留實際前端與固定C包裝，不由全域標題猜版本 |
 | 整備畫面轉換完整C負例 | [C來源](../../tools/fd2_matching_game_screen_transition.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_screen_transition、[主收據](../data/ida/fd2_matching_full_20261008.json)的game_screen_transition_attempt | 2D669保留16-byte表、64000-byte工作緩衝與有號除法；九份候選雙輪及objcopy核對通過，完整340-byte區間仍未匹配 |
+| 整備畫面轉換C布局比較 | [C來源](../../tools/fd2_matching_game_screen_layout.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_screen_layout | 核對2D669完整區間、重用迴圈變數及兩個呼叫分支；未匹配不增加覆蓋，舊負例來源保持 |
+| 整備選單BIOS讀取C布局比較 | [C來源](../../tools/fd2_matching_game_menu_bios_layout.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_menu_bios_layout | 核對2D85F完整區間、局部字寬度、輸入與原始呼叫；未匹配不增加覆蓋，不新增硬體時序聲明 |
+| 完整函式暫存器文字對應診斷 | [診斷工具](../../tools/fd2_matching_register_diagnostic.py)、[真實負例與拒收回歸](../../tools/test_fd2_matching_register_diagnostic.py) | 綁定原始檔、IDA與連結收據，核對全部指令邊界及暫存器對應；診斷不取代逐byte判定，不證明ABI或行為等價 |
 | 本機歷史Watcom DOS輸入核對 | [準備工具](../../tools/fd2_matching_prepare_legacy.py)、[版本驅動器](../../tools/fd2_matching_game_restore.py) | 9.01／9.5組件按固定SHA準備，原廠來源唯讀、本機輸出不入Git；9.01由--compiler-version 9.01與/wc901使用 |
 | 既有C的9.5版本初輪比較 | [主收據](../data/ida/fd2_matching_full_20261008.json)的version_sweep_95_attempts與game_loop_digit_95_attempt、[版本驅動器](../../tools/fd2_matching_game_restore.py) | 12個既有函式108份候選及數字迴圈九份候選皆未完整匹配，117份獨立核對但未重建兩輪，不計入雙輪矩陣 |
 | 使用者授權子代理的匹配審查 | [主收據](../data/ida/fd2_matching_full_20261008.json)的`parallel_review`、[複製來源](../../tools/fd2_matching_game_copy.c) | 子代理只產生有界候選，主代理審查原始證據並重跑整合；未匹配來源不增加覆蓋 |
