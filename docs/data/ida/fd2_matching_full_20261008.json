@@ -9,7 +9,7 @@
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
   },
-  "status": "PARTIAL; 165個歷史Watcom C函式及146-byte未歸屬區塊匹配，全檔C反編譯尚未完成",
+  "status": "PARTIAL; 166個歷史Watcom C函式及146-byte未歸屬區塊匹配，全檔C反編譯尚未完成",
   "decision": "遊戲邏輯還原成 C；原作組語與第三方函式庫可保留並分列覆蓋。",
   "sources": [
     {
@@ -58,7 +58,7 @@
     },
     {
       "path": "tools/fd2_matching_game_restore.py",
-      "sha256": "529baff62c93b1c2f8bf0c4ab7c0a4c94157276404d9a76f99ad1d055f79998c"
+      "sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099"
     },
     {
       "path": "tools/fd2_matching_inventory_watstack.c",
@@ -227,6 +227,14 @@
     {
       "path": "tools/fd2_matching_prepare_legacy.py",
       "sha256": "cac9409dcc4e19a6e255c323193e0f436113f45aef0e6c6050f7b5d56284658b"
+    },
+    {
+      "path": "tools/fd2_matching_game_load_layout.c",
+      "sha256": "a636cf51e63180390929c99816ae462e4c6e2f79e1cc655ac8ac9c529f8568d9"
+    },
+    {
+      "path": "tools/fd2_matching_game_screen_transition.c",
+      "sha256": "b9842355a2c954fe035f24ddcd86ce717f78ae287f3b74363a6a247642fd0d48"
     }
   ],
   "toolchain": {
@@ -52220,6 +52228,1311 @@
         }
       ],
       "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x301f4",
+        "end": "0x30437",
+        "size": 579,
+        "ida_analysis_name": "sub_301F4",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x2fc85"
+        ],
+        "direct_code_xref_count": 1,
+        "direct_data_xref_count": 0,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_301F4",
+      "current_ida_linear_end": "0x30437",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x301f4",
+          "ida_linear_end": "0x30437",
+          "instructions": [
+            {
+              "ida_linear_address": "0x301f4",
+              "file_offset": "0x30ff4",
+              "loaded_bytes": "6834000000",
+              "file_bytes": "6834000000",
+              "instruction": "push    34h ; '4'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x301f9",
+              "file_offset": "0x30ff9",
+              "loaded_bytes": "e8d96a0000",
+              "file_bytes": "e8d96a0000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x301fe",
+              "file_offset": "0x30ffe",
+              "loaded_bytes": "53",
+              "file_bytes": "53",
+              "instruction": "push    ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x301ff",
+              "file_offset": "0x30fff",
+              "loaded_bytes": "56",
+              "file_bytes": "56",
+              "instruction": "push    esi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30200",
+              "file_offset": "0x31000",
+              "loaded_bytes": "57",
+              "file_bytes": "57",
+              "instruction": "push    edi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30201",
+              "file_offset": "0x31001",
+              "loaded_bytes": "68cb590000",
+              "file_bytes": "68cb590000",
+              "instruction": "push    59CBh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30206",
+              "file_offset": "0x31006",
+              "loaded_bytes": "e80b6b0000",
+              "file_bytes": "e80b6b0000",
+              "instruction": "call    malloc",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3020b",
+              "file_offset": "0x3100b",
+              "loaded_bytes": "89c3",
+              "file_bytes": "89c3",
+              "instruction": "mov     ebx, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3020d",
+              "file_offset": "0x3100d",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30210",
+              "file_offset": "0x31010",
+              "loaded_bytes": "89c7",
+              "file_bytes": "89c7",
+              "instruction": "mov     edi, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30212",
+              "file_offset": "0x31012",
+              "loaded_bytes": "6882020500",
+              "file_bytes": "6882020000",
+              "instruction": "push    offset aRb_6; \"rb\"",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30217",
+              "file_offset": "0x31017",
+              "loaded_bytes": "6885020500",
+              "file_bytes": "6885020000",
+              "instruction": "push    offset aFd2Sav_7; \"FD2.SAV\"",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3021c",
+              "file_offset": "0x3101c",
+              "loaded_bytes": "e8ab6d0000",
+              "file_bytes": "e8ab6d0000",
+              "instruction": "call    fopen",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30221",
+              "file_offset": "0x31021",
+              "loaded_bytes": "89c6",
+              "file_bytes": "89c6",
+              "instruction": "mov     esi, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30223",
+              "file_offset": "0x31023",
+              "loaded_bytes": "83c408",
+              "file_bytes": "83c408",
+              "instruction": "add     esp, 8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30226",
+              "file_offset": "0x31026",
+              "loaded_bytes": "85c0",
+              "file_bytes": "85c0",
+              "instruction": "test    eax, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30228",
+              "file_offset": "0x31028",
+              "loaded_bytes": "742a",
+              "file_bytes": "742a",
+              "instruction": "jz      short loc_30254",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3022a",
+              "file_offset": "0x3102a",
+              "loaded_bytes": "50",
+              "file_bytes": "50",
+              "instruction": "push    eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3022b",
+              "file_offset": "0x3102b",
+              "loaded_bytes": "68cb590000",
+              "file_bytes": "68cb590000",
+              "instruction": "push    59CBh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30230",
+              "file_offset": "0x31030",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30232",
+              "file_offset": "0x31032",
+              "loaded_bytes": "53",
+              "file_bytes": "53",
+              "instruction": "push    ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30233",
+              "file_offset": "0x31033",
+              "loaded_bytes": "e83a6e0000",
+              "file_bytes": "e83a6e0000",
+              "instruction": "call    sub_37072",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30238",
+              "file_offset": "0x31038",
+              "loaded_bytes": "83c410",
+              "file_bytes": "83c410",
+              "instruction": "add     esp, 10h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3023b",
+              "file_offset": "0x3103b",
+              "loaded_bytes": "68cb590000",
+              "file_bytes": "68cb590000",
+              "instruction": "push    59CBh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30240",
+              "file_offset": "0x31040",
+              "loaded_bytes": "53",
+              "file_bytes": "53",
+              "instruction": "push    ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30241",
+              "file_offset": "0x31041",
+              "loaded_bytes": "e892d90100",
+              "file_bytes": "e892d90100",
+              "instruction": "call    sub_4DBD8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30246",
+              "file_offset": "0x31046",
+              "loaded_bytes": "83c408",
+              "file_bytes": "83c408",
+              "instruction": "add     esp, 8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30249",
+              "file_offset": "0x31049",
+              "loaded_bytes": "56",
+              "file_bytes": "56",
+              "instruction": "push    esi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3024a",
+              "file_offset": "0x3104a",
+              "loaded_bytes": "e8f56f0000",
+              "file_bytes": "e8f56f0000",
+              "instruction": "call    fclose",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3024f",
+              "file_offset": "0x3104f",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30252",
+              "file_offset": "0x31052",
+              "loaded_bytes": "eb13",
+              "file_bytes": "eb13",
+              "instruction": "jmp     short loc_30267",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30254",
+              "file_offset": "0x31054",
+              "loaded_bytes": "68cb590000",
+              "file_bytes": "68cb590000",
+              "instruction": "push    59CBh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30259",
+              "file_offset": "0x31059",
+              "loaded_bytes": "68ff000000",
+              "file_bytes": "68ff000000",
+              "instruction": "push    0FFh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3025e",
+              "file_offset": "0x3105e",
+              "loaded_bytes": "53",
+              "file_bytes": "53",
+              "instruction": "push    ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3025f",
+              "file_offset": "0x3105f",
+              "loaded_bytes": "e85c730000",
+              "file_bytes": "e85c730000",
+              "instruction": "call    memset",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30264",
+              "file_offset": "0x31064",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30267",
+              "file_offset": "0x31067",
+              "loaded_bytes": "c705573c050000000000",
+              "file_bytes": "c705573c000000000000",
+              "instruction": "mov     dword_53C57, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30271",
+              "file_offset": "0x31071",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30273",
+              "file_offset": "0x31073",
+              "loaded_bytes": "57",
+              "file_bytes": "57",
+              "instruction": "push    edi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30274",
+              "file_offset": "0x31074",
+              "loaded_bytes": "e8d7020000",
+              "file_bytes": "e8d7020000",
+              "instruction": "call    sub_30550",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30279",
+              "file_offset": "0x31079",
+              "loaded_bytes": "89c3",
+              "file_bytes": "89c3",
+              "instruction": "mov     ebx, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3027b",
+              "file_offset": "0x3107b",
+              "loaded_bytes": "83c408",
+              "file_bytes": "83c408",
+              "instruction": "add     esp, 8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3027e",
+              "file_offset": "0x3107e",
+              "loaded_bytes": "89c6",
+              "file_bytes": "89c6",
+              "instruction": "mov     esi, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30280",
+              "file_offset": "0x31080",
+              "loaded_bytes": "e896d0ffff",
+              "file_bytes": "e896d0ffff",
+              "instruction": "call    sub_2D31B",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30285",
+              "file_offset": "0x31085",
+              "loaded_bytes": "83fbff",
+              "file_bytes": "83fbff",
+              "instruction": "cmp     ebx, 0FFFFFFFFh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30288",
+              "file_offset": "0x31088",
+              "loaded_bytes": "0f8493010000",
+              "file_bytes": "0f8493010000",
+              "instruction": "jz      loc_30421",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3028e",
+              "file_offset": "0x3108e",
+              "loaded_bytes": "8b15573c0500",
+              "file_bytes": "8b15573c0000",
+              "instruction": "mov     edx, dword_53C57",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30294",
+              "file_offset": "0x31094",
+              "loaded_bytes": "89d0",
+              "file_bytes": "89d0",
+              "instruction": "mov     eax, edx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30296",
+              "file_offset": "0x31096",
+              "loaded_bytes": "c1e002",
+              "file_bytes": "c1e002",
+              "instruction": "shl     eax, 2",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30299",
+              "file_offset": "0x31099",
+              "loaded_bytes": "01d0",
+              "file_bytes": "01d0",
+              "instruction": "add     eax, edx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3029b",
+              "file_offset": "0x3109b",
+              "loaded_bytes": "c1e003",
+              "file_bytes": "c1e003",
+              "instruction": "shl     eax, 3",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3029e",
+              "file_offset": "0x3109e",
+              "loaded_bytes": "89c2",
+              "file_bytes": "89c2",
+              "instruction": "mov     edx, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302a0",
+              "file_offset": "0x310a0",
+              "loaded_bytes": "c1e006",
+              "file_bytes": "c1e006",
+              "instruction": "shl     eax, 6",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302a3",
+              "file_offset": "0x310a3",
+              "loaded_bytes": "01d0",
+              "file_bytes": "01d0",
+              "instruction": "add     eax, edx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302a5",
+              "file_offset": "0x310a5",
+              "loaded_bytes": "8d9f2b310000",
+              "file_bytes": "8d9f2b310000",
+              "instruction": "lea     ebx, [edi+312Bh]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302ab",
+              "file_offset": "0x310ab",
+              "loaded_bytes": "01c3",
+              "file_bytes": "01c3",
+              "instruction": "add     ebx, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302ad",
+              "file_offset": "0x310ad",
+              "loaded_bytes": "0fb683000a0000",
+              "file_bytes": "0fb683000a0000",
+              "instruction": "movzx   eax, byte ptr [ebx+0A00h]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302b4",
+              "file_offset": "0x310b4",
+              "loaded_bytes": "3dff000000",
+              "file_bytes": "3dff000000",
+              "instruction": "cmp     eax, 0FFh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302b9",
+              "file_offset": "0x310b9",
+              "loaded_bytes": "0f8462010000",
+              "file_bytes": "0f8462010000",
+              "instruction": "jz      loc_30421",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302bf",
+              "file_offset": "0x310bf",
+              "loaded_bytes": "80b8b926050000",
+              "file_bytes": "80b8b926000000",
+              "instruction": "cmp     byte_526B9[eax], 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302c6",
+              "file_offset": "0x310c6",
+              "loaded_bytes": "7431",
+              "file_bytes": "7431",
+              "instruction": "jz      short loc_302F9",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302c8",
+              "file_offset": "0x310c8",
+              "loaded_bytes": "0fb60559260500",
+              "file_bytes": "0fb60559260000",
+              "instruction": "movzx   eax, byte_52659",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302cf",
+              "file_offset": "0x310cf",
+              "loaded_bytes": "50",
+              "file_bytes": "50",
+              "instruction": "push    eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302d0",
+              "file_offset": "0x310d0",
+              "loaded_bytes": "e89692feff",
+              "file_bytes": "e89692feff",
+              "instruction": "call    sub_1956B",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302d5",
+              "file_offset": "0x310d5",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302d8",
+              "file_offset": "0x310d8",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302da",
+              "file_offset": "0x310da",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302dc",
+              "file_offset": "0x310dc",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302de",
+              "file_offset": "0x310de",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302e0",
+              "file_offset": "0x310e0",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302e5",
+              "file_offset": "0x310e5",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302ea",
+              "file_offset": "0x310ea",
+              "loaded_bytes": "68cc940a00",
+              "file_bytes": "68cc940a00",
+              "instruction": "push    0A94CCh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302ef",
+              "file_offset": "0x310ef",
+              "loaded_bytes": "68df010000",
+              "file_bytes": "68df010000",
+              "instruction": "push    1DFh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302f4",
+              "file_offset": "0x310f4",
+              "loaded_bytes": "e901010000",
+              "file_bytes": "e901010000",
+              "instruction": "jmp     loc_303FA",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302f9",
+              "file_offset": "0x310f9",
+              "loaded_bytes": "68000a0000",
+              "file_bytes": "68000a0000",
+              "instruction": "push    0A00h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302fe",
+              "file_offset": "0x310fe",
+              "loaded_bytes": "53",
+              "file_bytes": "53",
+              "instruction": "push    ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x302ff",
+              "file_offset": "0x310ff",
+              "loaded_bytes": "ff35f73b0500",
+              "file_bytes": "ff35f73b0000",
+              "instruction": "push    dword_53BF7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30305",
+              "file_offset": "0x31105",
+              "loaded_bytes": "e8ba700000",
+              "file_bytes": "e8ba700000",
+              "instruction": "call    memmove",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3030a",
+              "file_offset": "0x3110a",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3030d",
+              "file_offset": "0x3110d",
+              "loaded_bytes": "81c3000a0000",
+              "file_bytes": "81c3000a0000",
+              "instruction": "add     ebx, 0A00h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30313",
+              "file_offset": "0x31113",
+              "loaded_bytes": "0fb603",
+              "file_bytes": "0fb603",
+              "instruction": "movzx   eax, byte ptr [ebx]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30316",
+              "file_offset": "0x31116",
+              "loaded_bytes": "a3033c0500",
+              "file_bytes": "a3033c0000",
+              "instruction": "mov     dword_53C03, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3031b",
+              "file_offset": "0x3111b",
+              "loaded_bytes": "0fb64301",
+              "file_bytes": "0fb64301",
+              "instruction": "movzx   eax, byte ptr [ebx+1]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3031f",
+              "file_offset": "0x3111f",
+              "loaded_bytes": "a3fb3b0500",
+              "file_bytes": "a3fb3b0000",
+              "instruction": "mov     dword_53BFB, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30324",
+              "file_offset": "0x31124",
+              "loaded_bytes": "8b4302",
+              "file_bytes": "8b4302",
+              "instruction": "mov     eax, [ebx+2]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30327",
+              "file_offset": "0x31127",
+              "loaded_bytes": "a3f33b0500",
+              "file_bytes": "a3f33b0000",
+              "instruction": "mov     dword_53BF3, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3032c",
+              "file_offset": "0x3112c",
+              "loaded_bytes": "8a4306",
+              "file_bytes": "8a4306",
+              "instruction": "mov     al, [ebx+6]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3032f",
+              "file_offset": "0x3112f",
+              "loaded_bytes": "a2ab1a0500",
+              "file_bytes": "a2ab1a0000",
+              "instruction": "mov     byte_51AAB, al",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30334",
+              "file_offset": "0x31134",
+              "loaded_bytes": "8a4307",
+              "file_bytes": "8a4307",
+              "instruction": "mov     al, [ebx+7]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30337",
+              "file_offset": "0x31137",
+              "loaded_bytes": "a2f93a0500",
+              "file_bytes": "a2f93a0000",
+              "instruction": "mov     byte_53AF9, al",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3033c",
+              "file_offset": "0x3113c",
+              "loaded_bytes": "8a4308",
+              "file_bytes": "8a4308",
+              "instruction": "mov     al, [ebx+8]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3033f",
+              "file_offset": "0x3113f",
+              "loaded_bytes": "a2611e0500",
+              "file_bytes": "a2611e0000",
+              "instruction": "mov     byte_51E61, al",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30344",
+              "file_offset": "0x31144",
+              "loaded_bytes": "8a4309",
+              "file_bytes": "8a4309",
+              "instruction": "mov     al, [ebx+9]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30347",
+              "file_offset": "0x31147",
+              "loaded_bytes": "a2621e0500",
+              "file_bytes": "a2621e0000",
+              "instruction": "mov     byte_51E62, al",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3034c",
+              "file_offset": "0x3114c",
+              "loaded_bytes": "833d613a050000",
+              "file_bytes": "833d613a000000",
+              "instruction": "cmp     dword_53A61, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30353",
+              "file_offset": "0x31153",
+              "loaded_bytes": "740e",
+              "file_bytes": "740e",
+              "instruction": "jz      short loc_30363",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30355",
+              "file_offset": "0x31155",
+              "loaded_bytes": "ff35613a0500",
+              "file_bytes": "ff35613a0000",
+              "instruction": "push    dword_53A61",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3035b",
+              "file_offset": "0x3115b",
+              "loaded_bytes": "e8b6700000",
+              "file_bytes": "e8b6700000",
+              "instruction": "call    free",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30360",
+              "file_offset": "0x31160",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30363",
+              "file_offset": "0x31163",
+              "loaded_bytes": "688d020500",
+              "file_bytes": "688d020000",
+              "instruction": "push    offset aRb_7; \"rb\"",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30368",
+              "file_offset": "0x31168",
+              "loaded_bytes": "6890020500",
+              "file_bytes": "6890020000",
+              "instruction": "push    offset aFdiconB24_1; \"FDICON.B24\"",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3036d",
+              "file_offset": "0x3116d",
+              "loaded_bytes": "e85a6c0000",
+              "file_bytes": "e85a6c0000",
+              "instruction": "call    fopen",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30372",
+              "file_offset": "0x31172",
+              "loaded_bytes": "83c408",
+              "file_bytes": "83c408",
+              "instruction": "add     esp, 8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30375",
+              "file_offset": "0x31175",
+              "loaded_bytes": "89c6",
+              "file_bytes": "89c6",
+              "instruction": "mov     esi, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30377",
+              "file_offset": "0x31177",
+              "loaded_bytes": "c705df3b050000000000",
+              "file_bytes": "c705df3b000000000000",
+              "instruction": "mov     dword_53BDF, 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30381",
+              "file_offset": "0x31181",
+              "loaded_bytes": "31db",
+              "file_bytes": "31db",
+              "instruction": "xor     ebx, ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30383",
+              "file_offset": "0x31183",
+              "loaded_bytes": "eb20",
+              "file_bytes": "eb20",
+              "instruction": "jmp     short loc_303A5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30385",
+              "file_offset": "0x31185",
+              "loaded_bytes": "56",
+              "file_bytes": "56",
+              "instruction": "push    esi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30386",
+              "file_offset": "0x31186",
+              "loaded_bytes": "8b0df73b0500",
+              "file_bytes": "8b0df73b0000",
+              "instruction": "mov     ecx, dword_53BF7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3038c",
+              "file_offset": "0x3118c",
+              "loaded_bytes": "89d8",
+              "file_bytes": "89d8",
+              "instruction": "mov     eax, ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3038e",
+              "file_offset": "0x3118e",
+              "loaded_bytes": "c1e002",
+              "file_bytes": "c1e002",
+              "instruction": "shl     eax, 2",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30391",
+              "file_offset": "0x31191",
+              "loaded_bytes": "01d8",
+              "file_bytes": "01d8",
+              "instruction": "add     eax, ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30393",
+              "file_offset": "0x31193",
+              "loaded_bytes": "c1e004",
+              "file_bytes": "c1e004",
+              "instruction": "shl     eax, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30396",
+              "file_offset": "0x31196",
+              "loaded_bytes": "0fb6440107",
+              "file_bytes": "0fb6440107",
+              "instruction": "movzx   eax, byte ptr [ecx+eax+7]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3039b",
+              "file_offset": "0x3119b",
+              "loaded_bytes": "50",
+              "file_bytes": "50",
+              "instruction": "push    eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3039c",
+              "file_offset": "0x3119c",
+              "loaded_bytes": "e8780cfeff",
+              "file_bytes": "e8780cfeff",
+              "instruction": "call    sub_11019",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303a1",
+              "file_offset": "0x311a1",
+              "loaded_bytes": "83c408",
+              "file_bytes": "83c408",
+              "instruction": "add     esp, 8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303a4",
+              "file_offset": "0x311a4",
+              "loaded_bytes": "43",
+              "file_bytes": "43",
+              "instruction": "inc     ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303a5",
+              "file_offset": "0x311a5",
+              "loaded_bytes": "3b1dfb3b0500",
+              "file_bytes": "3b1dfb3b0000",
+              "instruction": "cmp     ebx, dword_53BFB",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303ab",
+              "file_offset": "0x311ab",
+              "loaded_bytes": "7cd8",
+              "file_bytes": "7cd8",
+              "instruction": "jl      short loc_30385",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303ad",
+              "file_offset": "0x311ad",
+              "loaded_bytes": "56",
+              "file_bytes": "56",
+              "instruction": "push    esi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303ae",
+              "file_offset": "0x311ae",
+              "loaded_bytes": "e8916e0000",
+              "file_bytes": "e8916e0000",
+              "instruction": "call    fclose",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303b3",
+              "file_offset": "0x311b3",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303b6",
+              "file_offset": "0x311b6",
+              "loaded_bytes": "ff35033c0500",
+              "file_bytes": "ff35033c0000",
+              "instruction": "push    dword_53C03",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303bc",
+              "file_offset": "0x311bc",
+              "loaded_bytes": "e8f8e00100",
+              "file_bytes": "e8f8e00100",
+              "instruction": "call    sub_4E4B9",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303c1",
+              "file_offset": "0x311c1",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303c4",
+              "file_offset": "0x311c4",
+              "loaded_bytes": "a337410500",
+              "file_bytes": "a337410000",
+              "instruction": "mov     dword_54137, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303c9",
+              "file_offset": "0x311c9",
+              "loaded_bytes": "beffffffff",
+              "file_bytes": "beffffffff",
+              "instruction": "mov     esi, 0FFFFFFFFh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303ce",
+              "file_offset": "0x311ce",
+              "loaded_bytes": "0fb60559260500",
+              "file_bytes": "0fb60559260000",
+              "instruction": "movzx   eax, byte_52659",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303d5",
+              "file_offset": "0x311d5",
+              "loaded_bytes": "50",
+              "file_bytes": "50",
+              "instruction": "push    eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303d6",
+              "file_offset": "0x311d6",
+              "loaded_bytes": "e89091feff",
+              "file_bytes": "e89091feff",
+              "instruction": "call    sub_1956B",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303db",
+              "file_offset": "0x311db",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303de",
+              "file_offset": "0x311de",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303e0",
+              "file_offset": "0x311e0",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303e2",
+              "file_offset": "0x311e2",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303e4",
+              "file_offset": "0x311e4",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303e6",
+              "file_offset": "0x311e6",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303eb",
+              "file_offset": "0x311eb",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303f0",
+              "file_offset": "0x311f0",
+              "loaded_bytes": "68cc940a00",
+              "file_bytes": "68cc940a00",
+              "instruction": "push    0A94CCh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303f5",
+              "file_offset": "0x311f5",
+              "loaded_bytes": "68de010000",
+              "file_bytes": "68de010000",
+              "instruction": "push    1DEh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x303fa",
+              "file_offset": "0x311fa",
+              "loaded_bytes": "ff357d3a0500",
+              "file_bytes": "ff357d3a0000",
+              "instruction": "push    dword_53A7D",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30400",
+              "file_offset": "0x31200",
+              "loaded_bytes": "e87f5bfeff",
+              "file_bytes": "e87f5bfeff",
+              "instruction": "call    sub_15F84",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30405",
+              "file_offset": "0x31205",
+              "loaded_bytes": "83c424",
+              "file_bytes": "83c424",
+              "instruction": "add     esp, 24h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30408",
+              "file_offset": "0x31208",
+              "loaded_bytes": "6a00",
+              "file_bytes": "6a00",
+              "instruction": "push    0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3040a",
+              "file_offset": "0x3120a",
+              "loaded_bytes": "e84a61feff",
+              "file_bytes": "e84a61feff",
+              "instruction": "call    sub_16559",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3040f",
+              "file_offset": "0x3120f",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30412",
+              "file_offset": "0x31212",
+              "loaded_bytes": "6a00",
+              "file_bytes": "6a00",
+              "instruction": "push    0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30414",
+              "file_offset": "0x31214",
+              "loaded_bytes": "e83e68feff",
+              "file_bytes": "e83e68feff",
+              "instruction": "call    sub_16C57",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30419",
+              "file_offset": "0x31219",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3041c",
+              "file_offset": "0x3121c",
+              "loaded_bytes": "e8faceffff",
+              "file_bytes": "e8faceffff",
+              "instruction": "call    sub_2D31B",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30421",
+              "file_offset": "0x31221",
+              "loaded_bytes": "83feff",
+              "file_bytes": "83feff",
+              "instruction": "cmp     esi, 0FFFFFFFFh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30424",
+              "file_offset": "0x31224",
+              "loaded_bytes": "0f8547feffff",
+              "file_bytes": "0f8547feffff",
+              "instruction": "jnz     loc_30271",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3042a",
+              "file_offset": "0x3122a",
+              "loaded_bytes": "57",
+              "file_bytes": "57",
+              "instruction": "push    edi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x3042b",
+              "file_offset": "0x3122b",
+              "loaded_bytes": "e8e66f0000",
+              "file_bytes": "e8e66f0000",
+              "instruction": "call    free",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30430",
+              "file_offset": "0x31230",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30433",
+              "file_offset": "0x31233",
+              "loaded_bytes": "5f",
+              "file_bytes": "5f",
+              "instruction": "pop     edi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30434",
+              "file_offset": "0x31234",
+              "loaded_bytes": "5e",
+              "file_bytes": "5e",
+              "instruction": "pop     esi",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30435",
+              "file_offset": "0x31235",
+              "loaded_bytes": "5b",
+              "file_bytes": "5b",
+              "instruction": "pop     ebx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x30436",
+              "file_offset": "0x31236",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
     }
   ],
   "validation": {
@@ -52234,9 +53547,9 @@
     "full_ida_function_count": 1305,
     "inventory_boundaries_equal": true,
     "game_full_report_repeat_equal": true,
-    "game_code_independent_objcopy_equal": 2805,
+    "game_code_independent_objcopy_equal": 2877,
     "omf_source_dependency_time_fixed": 315532800,
-    "game_candidate_count": 2835,
+    "game_candidate_count": 2907,
     "all_game_omf_objects_repeat_equal": true,
     "autoexec_config_bytes": 238,
     "compile_batch_bytes": 10969,
@@ -52485,7 +53798,25 @@
       "save-final-901-linked-r1",
       "save-final-901-linked-r2",
       "bootstrap-save-r1",
-      "save-regression"
+      "save-regression",
+      "load-clean-10-r1",
+      "load-clean-10-r2",
+      "load-clean-10-linked-r1",
+      "load-clean-10-linked-r2",
+      "load-clean-95-r1",
+      "load-clean-95-r2",
+      "load-clean-95-linked-r1",
+      "load-clean-95-linked-r2",
+      "load-clean-901-r1",
+      "load-clean-901-r2",
+      "load-clean-901-linked-r1",
+      "load-clean-901-linked-r2",
+      "screen-final-r1",
+      "screen-final-r2",
+      "screen-final-linked-r1",
+      "screen-final-linked-r2",
+      "bootstrap-load-clean-r1",
+      "load-regression"
     ],
     "actual_dos_source_bound": true,
     "source_mismatch_rejected_before_output": true,
@@ -53699,6 +55030,138 @@
         }
       },
       "scope": "三個完整C候選、三版本均未匹配；579-byte讀檔候選仍有兩個暫存器編碼差異。"
+    },
+    "load_layout": {
+      "repeat_complete_reports_equal": true,
+      "repeat_all_objects_equal": 72,
+      "independent_objcopy_checks": 72,
+      "actual_dos_source_bound": true,
+      "new_original_functions": 1,
+      "new_original_function_bytes": 579,
+      "compiler_versions": [
+        "10.0a",
+        "9.5",
+        "9.01"
+      ],
+      "version_matches": {
+        "10.0a": [
+          "0x301f4"
+        ],
+        "9.5": [
+          "0x301f4"
+        ],
+        "9.01": []
+      },
+      "original_binding_references": {
+        "game_load_layout_10.0a": 49,
+        "game_load_layout_9.5": 49,
+        "game_load_layout_9.01": 49,
+        "game_screen_transition_10.0a": 17
+      },
+      "classification_unchanged": true,
+      "hardware_timing_claims_added": false,
+      "regressions": {
+        "bindings": {
+          "input_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "tool": {
+            "name": "IDA Pro",
+            "version": "9.4",
+            "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+          },
+          "reference_count": 67,
+          "indirect_table_reference": {
+            "symbol": "funcs_1199C",
+            "ida_linear_address": "0x19511",
+            "value": "0x51b91",
+            "kind": "original_le_fixup"
+          },
+          "rejected": [
+            "name_digits_used_as_address",
+            "earlier_reference_conflicts_with_later_valid_reference",
+            "original_instruction_changed",
+            "public_link_rejects_before_output"
+          ],
+          "explicit_addends": {
+            "reference_count": 6,
+            "base": "0x53a8d",
+            "actual_target": "0x53a8e",
+            "operand_addend": 1,
+            "rejected": [
+              "base_shifted",
+              "offset_changed",
+              "offset_omitted"
+            ]
+          }
+        },
+        "sparse": {
+          "identity_layout_bytes": 267,
+          "unshared_identity_layout_bytes": 279,
+          "matched_original_functions": 2,
+          "lifted_rel32_branches": 1,
+          "target_address": "0x21190",
+          "rejected": [
+            "entry_name_changed",
+            "branch_opcode_changed",
+            "layout_address_changed",
+            "layout_missing",
+            "fragments_changed",
+            "entry_unproven"
+          ],
+          "source_report_sha256": "2d7c63093be24f1a42b1206b9fc1e0cf680c4ef5968d1be5eb3e3b146fdbfbfc",
+          "extended_groups": [
+            {
+              "macro": "INDEXED_ALL",
+              "complete_functions": 4,
+              "identity_layout_bytes": 385,
+              "targets": [
+                "0x21190",
+                "0x21b0b"
+              ]
+            },
+            {
+              "macro": "QUAKE_GROUP",
+              "complete_functions": 4,
+              "identity_layout_bytes": 942,
+              "targets": [
+                "0x2153b"
+              ]
+            }
+          ],
+          "include_rejected": [
+            "include_missing",
+            "include_bytes_changed",
+            "include_time_changed",
+            "include_hash_changed"
+          ],
+          "indirect_call_validation": {
+            "source_report_sha256": "9845cc12bdc10fa186d030fc8a359c029c88bf6c7211ca1598b97ea6626277b0",
+            "identity_layout_bytes": 1416,
+            "matched_original": false,
+            "indirect_function_table": "funcs_1199C",
+            "all_instruction_bytes_preserved": true
+          }
+        },
+        "compound": {
+          "identity_layout_bytes": 420,
+          "original_owners_counted": 1,
+          "compiler_entries": 3,
+          "lifted_rel32_branches": 2,
+          "matched_span_source_provenance_verified": true,
+          "target_address": "0x2328a",
+          "rejected": [
+            "missing_entry",
+            "address_changed",
+            "owner_split",
+            "prologue_changed",
+            "source_changed",
+            "compiler_offset_changed",
+            "section_changed",
+            "bootstrap_missing_entry_proof"
+          ],
+          "source_report_sha256": "6a17cb3b4df216ebdda5ddea8502a08a9ad727002b1169f6fb81b97ff73e23d4"
+        }
+      },
+      "scope": "301F4原始完整579-byte純C匹配；保留以前兩byte負例。2D669完整候選仍未匹配，作者宣告及原作精確compiler未知。"
     }
   },
   "bootstrap": {
@@ -53714,9 +55177,9 @@
     "decompilation_complete": false,
     "reason": "其餘遊戲／未分類機器碼來自原版，尚未以 C 還原；全檔相同只證明組合基準有效",
     "counts": {
-      "matched_c": 165,
+      "matched_c": 166,
       "retained_library": 175,
-      "unrestored_original_code": 965
+      "unrestored_original_code": 964
     },
     "restored_spans": [
       {
@@ -58073,6 +59536,32 @@
         "source_key": "game_menu_sequences",
         "source_path": "tools/fd2_matching_game_menu_sequences.c",
         "source_sha256": "75f5ad2f731eec9c1faf76045bc2ca6e1562e0ef95f15a36d41b2e2c5c1862d8"
+      },
+      {
+        "ida_linear_address": "0x301f4",
+        "source_kind": "matched_c",
+        "size": 579,
+        "compiler_flags": [
+          "-mf",
+          "-3s",
+          "-dLOAD_STRUCT"
+        ],
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "source_report_directory": "/work/load-clean-10-linked-r1",
+        "source_report_sha256": "1d30102bfe085968ab2fd26dbacbf3087d008e6fb54336186512566ea3ff561c",
+        "compiler_version": "10.0a",
+        "compiler_inputs": {
+          "WCC386.EXE": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+          "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
+          "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c"
+        },
+        "source_key": "game_load_layout",
+        "source_path": "tools/fd2_matching_game_load_layout.c",
+        "source_sha256": "a636cf51e63180390929c99816ae462e4c6e2f79e1cc655ac8ac9c529f8568d9"
       }
     ],
     "matched_unowned_code_bytes": 146,
@@ -58221,6 +59710,22 @@
       {
         "path": "/work/save-final-901-linked-r1",
         "sha256": "0f5989b78e225f7f219208090617ab042b8d3b23ba5f92b4dc8e7638489cd9e7"
+      },
+      {
+        "path": "/work/load-clean-10-linked-r1",
+        "sha256": "1d30102bfe085968ab2fd26dbacbf3087d008e6fb54336186512566ea3ff561c"
+      },
+      {
+        "path": "/work/load-clean-95-linked-r1",
+        "sha256": "b974c23c900ead6bb9afebb103cb7aab30a1278ea054ee02413d682a504a69fb"
+      },
+      {
+        "path": "/work/load-clean-901-linked-r1",
+        "sha256": "7769268a0d44e26fe0d68f79bd239535c50c8e5536cd5b2f8ae6a25b8c0cf24c"
+      },
+      {
+        "path": "/work/screen-final-linked-r1",
+        "sha256": "b2c1bf33bc9b448eacab66758e39720b575e9b508cf363fba1c0de11e7fd0d97"
       }
     ],
     "export_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
@@ -58230,8 +59735,8 @@
   "local_outputs": {
     "full_ida_image": "work/matching-full-20261008/ida-full-image.json",
     "full_ida_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
-    "candidate_exe": "work/matching-full-20261008/bootstrap-save-r1/bootstrap/FD2.EXE",
-    "all_function_ledger": "work/matching-full-20261008/bootstrap-save-r1/bootstrap/bootstrap-receipt.json",
+    "candidate_exe": "work/matching-full-20261008/bootstrap-load-clean-r1/bootstrap/FD2.EXE",
+    "all_function_ledger": "work/matching-full-20261008/bootstrap-load-clean-r1/bootstrap/bootstrap-receipt.json",
     "game_compile_receipts": [
       "work/matching-full-20261008/slice34-r1/compile-report.json",
       "work/matching-full-20261008/slice34-r2/compile-report.json",
@@ -58310,7 +59815,15 @@
       "work/matching-full-20261008/save-final-95-r1/compile-report.json",
       "work/matching-full-20261008/save-final-95-r2/compile-report.json",
       "work/matching-full-20261008/save-final-901-r1/compile-report.json",
-      "work/matching-full-20261008/save-final-901-r2/compile-report.json"
+      "work/matching-full-20261008/save-final-901-r2/compile-report.json",
+      "work/matching-full-20261008/load-clean-10-r1/compile-report.json",
+      "work/matching-full-20261008/load-clean-10-r2/compile-report.json",
+      "work/matching-full-20261008/load-clean-95-r1/compile-report.json",
+      "work/matching-full-20261008/load-clean-95-r2/compile-report.json",
+      "work/matching-full-20261008/load-clean-901-r1/compile-report.json",
+      "work/matching-full-20261008/load-clean-901-r2/compile-report.json",
+      "work/matching-full-20261008/screen-final-r1/compile-report.json",
+      "work/matching-full-20261008/screen-final-r2/compile-report.json"
     ],
     "game_link_receipts": [
       "work/matching-full-20261008/slice34-linked-r1/report.json",
@@ -58390,7 +59903,15 @@
       "work/matching-full-20261008/save-final-95-linked-r1/report.json",
       "work/matching-full-20261008/save-final-95-linked-r2/report.json",
       "work/matching-full-20261008/save-final-901-linked-r1/report.json",
-      "work/matching-full-20261008/save-final-901-linked-r2/report.json"
+      "work/matching-full-20261008/save-final-901-linked-r2/report.json",
+      "work/matching-full-20261008/load-clean-10-linked-r1/report.json",
+      "work/matching-full-20261008/load-clean-10-linked-r2/report.json",
+      "work/matching-full-20261008/load-clean-95-linked-r1/report.json",
+      "work/matching-full-20261008/load-clean-95-linked-r2/report.json",
+      "work/matching-full-20261008/load-clean-901-linked-r1/report.json",
+      "work/matching-full-20261008/load-clean-901-linked-r2/report.json",
+      "work/matching-full-20261008/screen-final-linked-r1/report.json",
+      "work/matching-full-20261008/screen-final-linked-r2/report.json"
     ],
     "control_trial_history": [
       "work/matching-full-20261008/controls-linked-r1/report.json",
@@ -58439,7 +59960,7 @@
       "scope": "game_matches列出的來源、旗標與原始指令區間。"
     },
     {
-      "claim": "函式台帳仍保留1056個未還原或未完成分類的區間；IDA未歸屬3363 bytes中已由C重現146，剩3217 bytes仍未知，不能以全檔SHA或函式數量宣稱完成。",
+      "claim": "現行函式台帳及清冊外CODE覆蓋由matching_summary、bootstrap與instruction_ownership_audit重算；不能以全檔SHA或函式數量宣稱全檔C完成。",
       "confidence": "已證實",
       "scope": "bootstrap分類台帳。"
     },
@@ -58575,7 +60096,12 @@
     "1B9DE／23A0A／2F4C6三個完整原始函式1151 bytes由C匹配，三個資源／記錄候選仍未匹配。新工具由全部雙輪實際收據重算總數，修正根層布局拒收漏計八個複合入口的舊22小計；不增加C覆蓋或改原始分類。",
     "相同C來源的54份9.5候選中240FA完整572 bytes匹配，10.0a同矩陣未匹配；這只證明固定來源與工具的相容產碼，不推定原作精確版本或作者宣告。每段已匹配C另綁定實際收據及已報告的編譯器／來源資訊，避免由全域標題猜版本。其餘五個AI及場景候選仍有完整區間差異。",
     "25052／34A0E完整101 bytes由新C匹配，參數初始化與初始閘門按原始指令保留。既有12個未匹配C的108份9.5初輪比較未新增匹配；數字迴圈的新來源9.5九份候選亦未匹配。117份初輪負例另列，不冒稱雙輪可重現矩陣，不增加C覆蓋或改原始分類。",
-    "2E6B8完整535 bytes由10.0a純C匹配，相同來源9.5矩陣未匹配。四個較大介面函式共72份雙版本候選各重建兩輪，沒有新增硬體時序聲明。三個10.0a及四個9.5未匹配區間分列，原始分類與164個既有匹配保持不變。"
+    "2E6B8完整535 bytes由10.0a純C匹配，相同來源9.5矩陣未匹配。四個較大介面函式共72份雙版本候選各重建兩輪，沒有新增硬體時序聲明。三個10.0a及四個9.5未匹配區間分列，原始分類與164個既有匹配保持不變。",
+    {
+      "claim": "301F4完整579-byte讀檔C由LOAD_STRUCT在Watcom10.0a及9.5匹配，三版本雙輪來源固定。原始兩byte負例仍保留；9.01及另外兩種來源表示未匹配，不推定原作者型別或原作精確版本。",
+      "confidence": "已證實",
+      "scope": "game_load_layout_matches所列來源、旗標、實際物件及完整原始區間。"
+    }
   ],
   "limits": [
     "完整指令匯出及重建 EXE 僅保存在本機 work，不公開或加入Git。",
@@ -62096,6 +63622,7 @@
       "0x2ef8f",
       "0x2f4c6",
       "0x2ffa5",
+      "0x301f4",
       "0x309ff",
       "0x31793",
       "0x31860",
@@ -62141,20 +63668,20 @@
       "0x368fa"
     ],
     "counts": {
-      "matched_c": 165,
+      "matched_c": 166,
       "retained_library": 175,
-      "unrestored_original_code": 965
+      "unrestored_original_code": 964
     },
-    "matched_code_bytes": 18806,
+    "matched_code_bytes": 19385,
     "all_sources_pure_c": true,
-    "compiled_game_candidates": 2835,
+    "compiled_game_candidates": 2907,
     "repeat_game_report_equal": true,
     "all_game_omf_objects_repeat_equal": true,
     "source_date_epoch": 315532800,
-    "independent_objcopy_checks": 2805,
-    "source_groups": 39,
+    "independent_objcopy_checks": 2877,
+    "source_groups": 43,
     "matched_unowned_code_bytes": 146,
-    "matched_total_code_bytes": 18952,
+    "matched_total_code_bytes": 19531,
     "unlinked_layout_candidates": 30
   },
   "inventory_watstack_attempt": {
@@ -65178,6 +66705,14 @@
       "0x301f4",
       "0x30dc3",
       "0x31385"
+    ],
+    "game_load_layout_10.0a": [],
+    "game_load_layout_9.5": [],
+    "game_load_layout_9.01": [
+      "0x301f4"
+    ],
+    "game_screen_transition_10.0a": [
+      "0x2d669"
     ]
   },
   "game_copy_matches": {
@@ -165116,5 +166651,3470 @@
     },
     "original_game_compiler_version": "未知",
     "rights": "原廠工具及完整說明僅本機研究，不加入Git或公開包。"
-  }
+  },
+  "game_load_layout_matches": [
+    {
+      "schema_version": 1,
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "source_key": "game_load_layout",
+      "source_path": "tools/fd2_matching_game_load_layout.c",
+      "source_sha256": "a636cf51e63180390929c99816ae462e4c6e2f79e1cc655ac8ac9c529f8568d9",
+      "compiler_version": "10.0a",
+      "compiler_inputs": {
+        "WCC386.EXE": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+        "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
+        "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c"
+      },
+      "compile_driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+      "driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+      "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+      "trials": [
+        {
+          "stem": "G00",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "40cab4dd20ec9a5dcca19b04e3a79c03c1618a0d9c58c862b384d525bc753578",
+          "candidate_size": 579,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 403,
+          "code_sha256": "6eea1f85d0c24e6ba41bae01ddc7db49610d7f6cbf9473a17785778252b8ffc9",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G01",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "95b34e8411eba3feb74202fe1c8626298ebffb41d6fe465521e81be9fffaeac8",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "22bff092e38cdb3b837a8ca7d8f0118c6171f08e35fe9a8a561150919297b46f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G02",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "c41d326f8c375e4741828c6e962663c59d40a509a8a0724497644c64062b601d",
+          "candidate_size": 587,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "119aca4993c8db49f7c9623f448329cbbb36f2365fb62ace93b201a95cf75a64",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G03",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "48c479449cc6ce53f0c2be8b1ed5f84dcbb99229f7b271800d1d653ff1597e1d",
+          "candidate_size": 589,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "dc03b1105d0c1bc3a2acbd883879de5d3897981d2fdc637dfa0808c3bca01fc7",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G04",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "95b34e8411eba3feb74202fe1c8626298ebffb41d6fe465521e81be9fffaeac8",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "22bff092e38cdb3b837a8ca7d8f0118c6171f08e35fe9a8a561150919297b46f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G05",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "f7d327a1001fef5a43f2bf57efdd0d0a4fbde20cf5fd37b0548448c74b005357",
+          "candidate_size": 597,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "ca46ea6d791cafc1bdcaee779066fbd11aba94f0b7ee9f33f254c199b2bf61c0",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G06",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "48c479449cc6ce53f0c2be8b1ed5f84dcbb99229f7b271800d1d653ff1597e1d",
+          "candidate_size": 589,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "dc03b1105d0c1bc3a2acbd883879de5d3897981d2fdc637dfa0808c3bca01fc7",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G07",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "95b34e8411eba3feb74202fe1c8626298ebffb41d6fe465521e81be9fffaeac8",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "22bff092e38cdb3b837a8ca7d8f0118c6171f08e35fe9a8a561150919297b46f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G08",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "0e355ec48e543df9855ac3d289aed607e6c0805c38235c7d8468be936148158b",
+          "candidate_size": 593,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "65127bd5c4f066cdc7b6d67fba10a22fa87ac9d40d1dc80b56553248eaf7b05a",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G09",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "e5548a735749ed1b2f60d589560c0762bb646f85dd69c9492c1f0a7049b05b94",
+          "candidate_size": 579,
+          "original_size": 579,
+          "exact_interval_bytes": true,
+          "first_difference_offset": null,
+          "code_sha256": "e5c1dff885e04390dc9f5edbb0f212fe634e66f615490e61bd71633596066cd4",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G10",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "c31a6f7b5832c51c18dfee44ca44dd7f99e4ce3d31c520d890a005a415aaa807",
+          "candidate_size": 573,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "026337172420a7aaf97ea4725c06c20fb51b7b4f59c6ea5bc68f56c8f00b5f9b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G11",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "403e266741870a5d2a63c4dec3b5047c31d07edc82aedc5d64255a071798c987",
+          "candidate_size": 587,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "bb91bcf9772629c4e8db20122fd8ca51539aad7d20650be9354e760d3bcea969",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G12",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "0e800e288a38d94548db2edad707c8eb4c9bd58285853bacb22ac42d47b74b85",
+          "candidate_size": 589,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "7e4f0a0458ae63eafc4aa2b2805641700293af27fe3d7b839d92cb268246f182",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G13",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "c31a6f7b5832c51c18dfee44ca44dd7f99e4ce3d31c520d890a005a415aaa807",
+          "candidate_size": 573,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "026337172420a7aaf97ea4725c06c20fb51b7b4f59c6ea5bc68f56c8f00b5f9b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G14",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "07bcf52d4c5f17aafb7cac0d6568411a56c9fc7859736bb1b0eff5a7023c6f5e",
+          "candidate_size": 597,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "2bd7df533561af8c2d79ca9e5edfdfa5b5d2c58818b8eb3dc0107c990fef9555",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G15",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "0e800e288a38d94548db2edad707c8eb4c9bd58285853bacb22ac42d47b74b85",
+          "candidate_size": 589,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "7e4f0a0458ae63eafc4aa2b2805641700293af27fe3d7b839d92cb268246f182",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G16",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "c31a6f7b5832c51c18dfee44ca44dd7f99e4ce3d31c520d890a005a415aaa807",
+          "candidate_size": 573,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "026337172420a7aaf97ea4725c06c20fb51b7b4f59c6ea5bc68f56c8f00b5f9b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G17",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "01b5cc1b040de6905e878f4ea1b4798a3f1097719603aee70ed74cd3071616b6",
+          "candidate_size": 593,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "74a043b05ba36ddea010e9522ec63d6aba4fe9dac7d42cfdef39c8035e2d6356",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G18",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "8d85b5255b61c254a8f473630cabbc4c88bc69eed1ee0bf6461fa1056d5b8032",
+          "candidate_size": 579,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 402,
+          "code_sha256": "004c14b03b5c718aa131759ba4ec6e04f0a07aafbce36fa1dde92509a492443c",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G19",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "dfbf3299ecdebc4caad6666ad0c2b28c12050042b30c819dd62c09e981e37d92",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "158bfe44257881d8c442d47fb83dcbbfb07c43e5f6cf758cbc160df0af970db5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G20",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "840d5f8214121cdab4fb6041463737c9f4f608b2972420fdde18710918f9bd68",
+          "candidate_size": 587,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "b6297946a4daa8714aecdbe93b15348a6ccc8da5b6dcb975e46536788fb4d4dc",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G21",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "fe0b6d157f693442966686a9a0bb2d9c6481fe0ee4209b4aa6b8aafa59629d50",
+          "candidate_size": 589,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "a6e04027cf05b2e9d4e7f7b97346ebe0bb4d2a6bcc123090d42b725e6ce636f6",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G22",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "dfbf3299ecdebc4caad6666ad0c2b28c12050042b30c819dd62c09e981e37d92",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "158bfe44257881d8c442d47fb83dcbbfb07c43e5f6cf758cbc160df0af970db5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G23",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "4099dae101522e5264be090b01b63897621328789f342be3f072bfe806605c3b",
+          "candidate_size": 597,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "9a9eb803606eec09673ad9568c2929be66d2ed6b9950bcc21d9678dfe80966bb",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G24",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "fe0b6d157f693442966686a9a0bb2d9c6481fe0ee4209b4aa6b8aafa59629d50",
+          "candidate_size": 589,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "a6e04027cf05b2e9d4e7f7b97346ebe0bb4d2a6bcc123090d42b725e6ce636f6",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G25",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "dfbf3299ecdebc4caad6666ad0c2b28c12050042b30c819dd62c09e981e37d92",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "158bfe44257881d8c442d47fb83dcbbfb07c43e5f6cf758cbc160df0af970db5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G26",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "53594e7e990429231cb886411e4f849819c3fa3b8e1723308fee75eb620a79dd",
+          "candidate_size": 593,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "0d8ff5f3bcd921d0e36066efa1b5511c350f7457f52f5f25e4458b71a228ccd5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        }
+      ],
+      "original_binding_references": [
+        {
+          "symbol": "__CHK",
+          "ida_linear_address": "0x301f9",
+          "value": "0x36cd7",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "malloc",
+          "ida_linear_address": "0x30206",
+          "value": "0x36d16",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "aRb_6",
+          "ida_linear_address": "0x30212",
+          "value": "0x50282",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "aFd2Sav_7",
+          "ida_linear_address": "0x30217",
+          "value": "0x50285",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fopen",
+          "ida_linear_address": "0x3021c",
+          "value": "0x36fcc",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_37072",
+          "ida_linear_address": "0x30233",
+          "value": "0x37072",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_4DBD8",
+          "ida_linear_address": "0x30241",
+          "value": "0x4dbd8",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "fclose",
+          "ida_linear_address": "0x3024a",
+          "value": "0x37244",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "memset",
+          "ida_linear_address": "0x3025f",
+          "value": "0x375c0",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C57",
+          "ida_linear_address": "0x30267",
+          "value": "0x53c57",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_30550",
+          "ida_linear_address": "0x30274",
+          "value": "0x30550",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_2D31B",
+          "ida_linear_address": "0x30280",
+          "value": "0x2d31b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C57",
+          "ida_linear_address": "0x3028e",
+          "value": "0x53c57",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_526B9",
+          "ida_linear_address": "0x302bf",
+          "value": "0x526b9",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_52659",
+          "ida_linear_address": "0x302c8",
+          "value": "0x52659",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_1956B",
+          "ida_linear_address": "0x302d0",
+          "value": "0x1956b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x302ff",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "memmove",
+          "ida_linear_address": "0x30305",
+          "value": "0x373c4",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C03",
+          "ida_linear_address": "0x30316",
+          "value": "0x53c03",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x3031f",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF3",
+          "ida_linear_address": "0x30327",
+          "value": "0x53bf3",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51AAB",
+          "ida_linear_address": "0x3032f",
+          "value": "0x51aab",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_53AF9",
+          "ida_linear_address": "0x30337",
+          "value": "0x53af9",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51E61",
+          "ida_linear_address": "0x3033f",
+          "value": "0x51e61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51E62",
+          "ida_linear_address": "0x30347",
+          "value": "0x51e62",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53A61",
+          "ida_linear_address": "0x3034c",
+          "value": "0x53a61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53A61",
+          "ida_linear_address": "0x30355",
+          "value": "0x53a61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "_free",
+          "ida_linear_address": "0x3035b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "free",
+          "ida_linear_address": "0x3035b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "aRb_7",
+          "ida_linear_address": "0x30363",
+          "value": "0x5028d",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "aFdiconB24_1",
+          "ida_linear_address": "0x30368",
+          "value": "0x50290",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fopen",
+          "ida_linear_address": "0x3036d",
+          "value": "0x36fcc",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BDF",
+          "ida_linear_address": "0x30377",
+          "value": "0x53bdf",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x30386",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_11019",
+          "ida_linear_address": "0x3039c",
+          "value": "0x11019",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x303a5",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fclose",
+          "ida_linear_address": "0x303ae",
+          "value": "0x37244",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C03",
+          "ida_linear_address": "0x303b6",
+          "value": "0x53c03",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_4E4B9",
+          "ida_linear_address": "0x303bc",
+          "value": "0x4e4b9",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_54137",
+          "ida_linear_address": "0x303c4",
+          "value": "0x54137",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_52659",
+          "ida_linear_address": "0x303ce",
+          "value": "0x52659",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_1956B",
+          "ida_linear_address": "0x303d6",
+          "value": "0x1956b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53A7D",
+          "ida_linear_address": "0x303fa",
+          "value": "0x53a7d",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_15F84",
+          "ida_linear_address": "0x30400",
+          "value": "0x15f84",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_16559",
+          "ida_linear_address": "0x3040a",
+          "value": "0x16559",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_16C57",
+          "ida_linear_address": "0x30414",
+          "value": "0x16c57",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_2D31B",
+          "ida_linear_address": "0x3041c",
+          "value": "0x2d31b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "_free",
+          "ida_linear_address": "0x3042b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "free",
+          "ida_linear_address": "0x3042b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        }
+      ],
+      "matched_addresses": [
+        "0x301f4"
+      ],
+      "unmatched_addresses": []
+    },
+    {
+      "schema_version": 1,
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "source_key": "game_load_layout",
+      "source_path": "tools/fd2_matching_game_load_layout.c",
+      "source_sha256": "a636cf51e63180390929c99816ae462e4c6e2f79e1cc655ac8ac9c529f8568d9",
+      "compiler_version": "9.5",
+      "compiler_inputs": {
+        "WCC386.EXE": "3fe098187af3ed4bccbf184b0f0d1a21a18cf976fe72c6178f19b8eea8b13e78",
+        "DOS4GW.EXE": "b401506365892bd7bcb4362599279504a863f05bf37d323f732fd348bd1ef3c5"
+      },
+      "compile_driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+      "driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+      "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+      "trials": [
+        {
+          "stem": "G00",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "4e6201c7474751be4194e772212e6b92a8c57c436cf852496a3854ecd0021c78",
+          "candidate_size": 579,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 403,
+          "code_sha256": "6eea1f85d0c24e6ba41bae01ddc7db49610d7f6cbf9473a17785778252b8ffc9",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G01",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "3fa70e370cae7cc466c8fcbe625e7457e361193b3f33fd13b99628e54a2bacf7",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "22bff092e38cdb3b837a8ca7d8f0118c6171f08e35fe9a8a561150919297b46f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G02",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "7672525a88fdfb4d95c74f0782f6523c42af9a8c4d63df2207385c2fef676511",
+          "candidate_size": 587,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "119aca4993c8db49f7c9623f448329cbbb36f2365fb62ace93b201a95cf75a64",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G03",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "4b1dd34573aa048a562e21dff4c81dad7aebfdf7a0a41fad6e3ff92c7a2e4b10",
+          "candidate_size": 590,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "81254d572ec3187e193116336c55efad1b509b17e8d7b7eb59fb70ad8fe6032a",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G04",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "3fa70e370cae7cc466c8fcbe625e7457e361193b3f33fd13b99628e54a2bacf7",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "22bff092e38cdb3b837a8ca7d8f0118c6171f08e35fe9a8a561150919297b46f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G05",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "4efd4366443890cd4debc7e9a3a5a87fc7c6db8c17532aa0bd6b92c1c7dd98a1",
+          "candidate_size": 598,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "133d3c4bce6b32fb44e36653a47bcbb78a583739d3bfb018c335f3698561b201",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G06",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "4b1dd34573aa048a562e21dff4c81dad7aebfdf7a0a41fad6e3ff92c7a2e4b10",
+          "candidate_size": 590,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "81254d572ec3187e193116336c55efad1b509b17e8d7b7eb59fb70ad8fe6032a",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G07",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "3fa70e370cae7cc466c8fcbe625e7457e361193b3f33fd13b99628e54a2bacf7",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "22bff092e38cdb3b837a8ca7d8f0118c6171f08e35fe9a8a561150919297b46f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G08",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "0bff7bdac29c2d2516b655e255e5a849686c306194d557a69c88b580ac4a7e4d",
+          "candidate_size": 594,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "9218cb0c2c869bc963c9993b2925cd354df9654f86fa4a38ce97a3c4708b5cd3",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G09",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "a61edabf796022cc0de88d20640b4a8d671c7d5825f0f14c69b2855b64a8a140",
+          "candidate_size": 579,
+          "original_size": 579,
+          "exact_interval_bytes": true,
+          "first_difference_offset": null,
+          "code_sha256": "e5c1dff885e04390dc9f5edbb0f212fe634e66f615490e61bd71633596066cd4",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G10",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "6a9f190679f9115e6c1d697d3798e28651057c7f6880a0742b125c4fedcf0077",
+          "candidate_size": 573,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "2ae5d876145f25c6b73b6b824ac53ec4b6f0c664592d1279397612a629503b3f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G11",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "10efe0df5c7aba3a370c29ecd89b6ee1d0befbaeb018803540988b0231069e34",
+          "candidate_size": 587,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "bb91bcf9772629c4e8db20122fd8ca51539aad7d20650be9354e760d3bcea969",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G12",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "2bd4e574c0c73641f3cd4ff136e2a2c13162b7108f57ebcafa75c9385a84bb23",
+          "candidate_size": 590,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "80deb8918b3b119255df0b060f52e7f708269e3a3cd1b5df951c49c8f1741ae8",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G13",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "6a9f190679f9115e6c1d697d3798e28651057c7f6880a0742b125c4fedcf0077",
+          "candidate_size": 573,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "2ae5d876145f25c6b73b6b824ac53ec4b6f0c664592d1279397612a629503b3f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G14",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "575c20fb1acb536a60eae55970afd7c5ace18938b74436ef49eed7ac9abe4fd3",
+          "candidate_size": 598,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "a1173823ca3a8efaf6f2802b814abca62341011d47c27649185bef95bc79cc33",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G15",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "2bd4e574c0c73641f3cd4ff136e2a2c13162b7108f57ebcafa75c9385a84bb23",
+          "candidate_size": 590,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "80deb8918b3b119255df0b060f52e7f708269e3a3cd1b5df951c49c8f1741ae8",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G16",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "6a9f190679f9115e6c1d697d3798e28651057c7f6880a0742b125c4fedcf0077",
+          "candidate_size": 573,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "2ae5d876145f25c6b73b6b824ac53ec4b6f0c664592d1279397612a629503b3f",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G17",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "6b218bfd3cd82011b4e633d6e8b766d66b6ca3d8ba7fb17cb665a9efbe053eed",
+          "candidate_size": 594,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "95c3407dbde748e5ba15fd48220e6a3d04379569f5940aec4c9dfc78ac8fea48",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G18",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "381ad12dc4bcd937bc87d2f9826deb49720083b3d78a2a94462a4c4fc0e91b04",
+          "candidate_size": 579,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 402,
+          "code_sha256": "004c14b03b5c718aa131759ba4ec6e04f0a07aafbce36fa1dde92509a492443c",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G19",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "95bf02578a654804edd68a8943a1176fbe49b21e3ed743d1168a52e13a68bdda",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "158bfe44257881d8c442d47fb83dcbbfb07c43e5f6cf758cbc160df0af970db5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G20",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "512989c351cca6f0e0faa234132010c20138b83f448998c25249d485e24893cf",
+          "candidate_size": 587,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "b6297946a4daa8714aecdbe93b15348a6ccc8da5b6dcb975e46536788fb4d4dc",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G21",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "6e03dec8f9c0ce973dff505379b031e7fd41fec5e2978fbb8d8179b18cf72af0",
+          "candidate_size": 590,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "f32d13d8d705509c84ac2c0d75ee278ccc11416b5176c0913aa8eaca96962a9b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G22",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "95bf02578a654804edd68a8943a1176fbe49b21e3ed743d1168a52e13a68bdda",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "158bfe44257881d8c442d47fb83dcbbfb07c43e5f6cf758cbc160df0af970db5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G23",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-4s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "3f8d42ad99f1d8b9ab532ca72774a392d859096bf4e0fd3ebeb18cfe63aa6abc",
+          "candidate_size": 598,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "97e85221aaad7359bff88879935c2542ed6a56aec1d36a15e1511c6b452f13ef",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G24",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "6e03dec8f9c0ce973dff505379b031e7fd41fec5e2978fbb8d8179b18cf72af0",
+          "candidate_size": 590,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "f32d13d8d705509c84ac2c0d75ee278ccc11416b5176c0913aa8eaca96962a9b",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G25",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "95bf02578a654804edd68a8943a1176fbe49b21e3ed743d1168a52e13a68bdda",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "158bfe44257881d8c442d47fb83dcbbfb07c43e5f6cf758cbc160df0af970db5",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G26",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-5s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "0425e235b1639b8d72a4f53cd17db5628bb6bb1969ad729159acbbad34c270e4",
+          "candidate_size": 594,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "cac25b061d0281e3b64a7a375af1fea07e40ea77eb914c1a0570fca125674898",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        }
+      ],
+      "original_binding_references": [
+        {
+          "symbol": "__CHK",
+          "ida_linear_address": "0x301f9",
+          "value": "0x36cd7",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "malloc",
+          "ida_linear_address": "0x30206",
+          "value": "0x36d16",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "aRb_6",
+          "ida_linear_address": "0x30212",
+          "value": "0x50282",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "aFd2Sav_7",
+          "ida_linear_address": "0x30217",
+          "value": "0x50285",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fopen",
+          "ida_linear_address": "0x3021c",
+          "value": "0x36fcc",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_37072",
+          "ida_linear_address": "0x30233",
+          "value": "0x37072",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_4DBD8",
+          "ida_linear_address": "0x30241",
+          "value": "0x4dbd8",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "fclose",
+          "ida_linear_address": "0x3024a",
+          "value": "0x37244",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "memset",
+          "ida_linear_address": "0x3025f",
+          "value": "0x375c0",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C57",
+          "ida_linear_address": "0x30267",
+          "value": "0x53c57",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_30550",
+          "ida_linear_address": "0x30274",
+          "value": "0x30550",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_2D31B",
+          "ida_linear_address": "0x30280",
+          "value": "0x2d31b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C57",
+          "ida_linear_address": "0x3028e",
+          "value": "0x53c57",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_526B9",
+          "ida_linear_address": "0x302bf",
+          "value": "0x526b9",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_52659",
+          "ida_linear_address": "0x302c8",
+          "value": "0x52659",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_1956B",
+          "ida_linear_address": "0x302d0",
+          "value": "0x1956b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x302ff",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "memmove",
+          "ida_linear_address": "0x30305",
+          "value": "0x373c4",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C03",
+          "ida_linear_address": "0x30316",
+          "value": "0x53c03",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x3031f",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF3",
+          "ida_linear_address": "0x30327",
+          "value": "0x53bf3",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51AAB",
+          "ida_linear_address": "0x3032f",
+          "value": "0x51aab",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_53AF9",
+          "ida_linear_address": "0x30337",
+          "value": "0x53af9",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51E61",
+          "ida_linear_address": "0x3033f",
+          "value": "0x51e61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51E62",
+          "ida_linear_address": "0x30347",
+          "value": "0x51e62",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53A61",
+          "ida_linear_address": "0x3034c",
+          "value": "0x53a61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53A61",
+          "ida_linear_address": "0x30355",
+          "value": "0x53a61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "_free",
+          "ida_linear_address": "0x3035b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "free",
+          "ida_linear_address": "0x3035b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "aRb_7",
+          "ida_linear_address": "0x30363",
+          "value": "0x5028d",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "aFdiconB24_1",
+          "ida_linear_address": "0x30368",
+          "value": "0x50290",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fopen",
+          "ida_linear_address": "0x3036d",
+          "value": "0x36fcc",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BDF",
+          "ida_linear_address": "0x30377",
+          "value": "0x53bdf",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x30386",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_11019",
+          "ida_linear_address": "0x3039c",
+          "value": "0x11019",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x303a5",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fclose",
+          "ida_linear_address": "0x303ae",
+          "value": "0x37244",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C03",
+          "ida_linear_address": "0x303b6",
+          "value": "0x53c03",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_4E4B9",
+          "ida_linear_address": "0x303bc",
+          "value": "0x4e4b9",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_54137",
+          "ida_linear_address": "0x303c4",
+          "value": "0x54137",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_52659",
+          "ida_linear_address": "0x303ce",
+          "value": "0x52659",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_1956B",
+          "ida_linear_address": "0x303d6",
+          "value": "0x1956b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53A7D",
+          "ida_linear_address": "0x303fa",
+          "value": "0x53a7d",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_15F84",
+          "ida_linear_address": "0x30400",
+          "value": "0x15f84",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_16559",
+          "ida_linear_address": "0x3040a",
+          "value": "0x16559",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_16C57",
+          "ida_linear_address": "0x30414",
+          "value": "0x16c57",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_2D31B",
+          "ida_linear_address": "0x3041c",
+          "value": "0x2d31b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "_free",
+          "ida_linear_address": "0x3042b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "free",
+          "ida_linear_address": "0x3042b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        }
+      ],
+      "matched_addresses": [
+        "0x301f4"
+      ],
+      "unmatched_addresses": []
+    },
+    {
+      "schema_version": 1,
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "source_key": "game_load_layout",
+      "source_path": "tools/fd2_matching_game_load_layout.c",
+      "source_sha256": "a636cf51e63180390929c99816ae462e4c6e2f79e1cc655ac8ac9c529f8568d9",
+      "compiler_version": "9.01",
+      "compiler_inputs": {
+        "WCC386.EXE": "99d79830e8bf2bf04582215583cd6c276e21226d86a9bdea197a99abb75eabe0",
+        "DOS4GW.EXE": "535d649996de16d1e495633a9aaf60244bc717e7d6951a45a8092c3492ce4005"
+      },
+      "compile_driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+      "driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+      "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+      "trials": [
+        {
+          "stem": "G00",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "9435df8b57039c4a27127e7ceb948e6eaa2f159d84433631d8579090318ec6f3",
+          "candidate_size": 566,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "e7c59d34a95259caf5edef99ca5ef94ddbf838381c5b04f4da4178f0f83721a6",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G01",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "ff0b9b5ffd9c254e0503103e80b8e608e14567fa38578c7f0f5e968daf026b33",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "bdfbe1be47ad2810eaa39fc2edc014c1ed41384cf0b5738d7cc35b81a49859fe",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G02",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_PTR"
+          ],
+          "object_sha256": "56c1e3ed633cb62bdbb6eff3ff6d7f405c304d8e2d19f31fdc863cf6ec920506",
+          "candidate_size": 568,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "3e124bd83308eb097d62d588e0083a6d21ef1f50cc989e4b23f572134cfc8132",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G03",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "64df5d78f6080fe4f26ac1a02ac9793e7f6ab79af5541016369b03c742849ab5",
+          "candidate_size": 558,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "cabf82798e22fecaf6161a4a73e67a5bb16086e7d841129050aaceb637f8313d",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G04",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "b4a5d9d3508e116042c5d08bc703f157a0739fefa233cd49c994e92289559639",
+          "candidate_size": 559,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "8fcd3661fc12017d2dc831232981bbc6d83818a0d76c47cb7dbf6a073d82a8e3",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G05",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_STRUCT"
+          ],
+          "object_sha256": "fdf1b5c4f71954d0a18cbf9dc0ca33f4304f84bc4d4dbaef67952566268f22c3",
+          "candidate_size": 558,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "cabf82798e22fecaf6161a4a73e67a5bb16086e7d841129050aaceb637f8313d",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G06",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "5457c178acac708e8815bdaeb6da850bbd7fae095519a6c181a7fd6ecef6bf6c",
+          "candidate_size": 566,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "c6425991578185d7af6e5797764bb399e1399e714e5bcfd55bf714fc7fe389d7",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G07",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-os",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "4655a29ccd53b94dadc264e5243ea60deb164df0e8f80ad26c4f7c43759298a3",
+          "candidate_size": 581,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 1,
+          "code_sha256": "babeddcd23d5d1ce6a4ab1b848d7f95ca3411acb1ce868ebc8a86dd1f35eb7b9",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        },
+        {
+          "stem": "G08",
+          "address": "0x301f4",
+          "flags": [
+            "-mf",
+            "-3s",
+            "-ot",
+            "-dLOAD_SCALE_FIRST"
+          ],
+          "object_sha256": "38b896514f2e4bc2305019ce9a4e01c0696efb6ad1311c647279ac62b34176a2",
+          "candidate_size": 568,
+          "original_size": 579,
+          "exact_interval_bytes": false,
+          "first_difference_offset": 150,
+          "code_sha256": "a03cf36354cc8d5e3c5ffac768a4f246ee3f846d25de4a4c4359fc50ee91dc81",
+          "original_classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          }
+        }
+      ],
+      "original_binding_references": [
+        {
+          "symbol": "__CHK",
+          "ida_linear_address": "0x301f9",
+          "value": "0x36cd7",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "malloc",
+          "ida_linear_address": "0x30206",
+          "value": "0x36d16",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "aRb_6",
+          "ida_linear_address": "0x30212",
+          "value": "0x50282",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "aFd2Sav_7",
+          "ida_linear_address": "0x30217",
+          "value": "0x50285",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fopen",
+          "ida_linear_address": "0x3021c",
+          "value": "0x36fcc",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_37072",
+          "ida_linear_address": "0x30233",
+          "value": "0x37072",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_4DBD8",
+          "ida_linear_address": "0x30241",
+          "value": "0x4dbd8",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "fclose",
+          "ida_linear_address": "0x3024a",
+          "value": "0x37244",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "memset",
+          "ida_linear_address": "0x3025f",
+          "value": "0x375c0",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C57",
+          "ida_linear_address": "0x30267",
+          "value": "0x53c57",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_30550",
+          "ida_linear_address": "0x30274",
+          "value": "0x30550",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_2D31B",
+          "ida_linear_address": "0x30280",
+          "value": "0x2d31b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C57",
+          "ida_linear_address": "0x3028e",
+          "value": "0x53c57",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_526B9",
+          "ida_linear_address": "0x302bf",
+          "value": "0x526b9",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_52659",
+          "ida_linear_address": "0x302c8",
+          "value": "0x52659",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_1956B",
+          "ida_linear_address": "0x302d0",
+          "value": "0x1956b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x302ff",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "memmove",
+          "ida_linear_address": "0x30305",
+          "value": "0x373c4",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C03",
+          "ida_linear_address": "0x30316",
+          "value": "0x53c03",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x3031f",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF3",
+          "ida_linear_address": "0x30327",
+          "value": "0x53bf3",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51AAB",
+          "ida_linear_address": "0x3032f",
+          "value": "0x51aab",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_53AF9",
+          "ida_linear_address": "0x30337",
+          "value": "0x53af9",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51E61",
+          "ida_linear_address": "0x3033f",
+          "value": "0x51e61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_51E62",
+          "ida_linear_address": "0x30347",
+          "value": "0x51e62",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53A61",
+          "ida_linear_address": "0x3034c",
+          "value": "0x53a61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53A61",
+          "ida_linear_address": "0x30355",
+          "value": "0x53a61",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "_free",
+          "ida_linear_address": "0x3035b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "free",
+          "ida_linear_address": "0x3035b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "aRb_7",
+          "ida_linear_address": "0x30363",
+          "value": "0x5028d",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "aFdiconB24_1",
+          "ida_linear_address": "0x30368",
+          "value": "0x50290",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fopen",
+          "ida_linear_address": "0x3036d",
+          "value": "0x36fcc",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BDF",
+          "ida_linear_address": "0x30377",
+          "value": "0x53bdf",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "dword_53BF7",
+          "ida_linear_address": "0x30386",
+          "value": "0x53bf7",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_11019",
+          "ida_linear_address": "0x3039c",
+          "value": "0x11019",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53BFB",
+          "ida_linear_address": "0x303a5",
+          "value": "0x53bfb",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "fclose",
+          "ida_linear_address": "0x303ae",
+          "value": "0x37244",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53C03",
+          "ida_linear_address": "0x303b6",
+          "value": "0x53c03",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_4E4B9",
+          "ida_linear_address": "0x303bc",
+          "value": "0x4e4b9",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_54137",
+          "ida_linear_address": "0x303c4",
+          "value": "0x54137",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "byte_52659",
+          "ida_linear_address": "0x303ce",
+          "value": "0x52659",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_1956B",
+          "ida_linear_address": "0x303d6",
+          "value": "0x1956b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "dword_53A7D",
+          "ida_linear_address": "0x303fa",
+          "value": "0x53a7d",
+          "kind": "original_le_fixup"
+        },
+        {
+          "symbol": "sub_15F84",
+          "ida_linear_address": "0x30400",
+          "value": "0x15f84",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_16559",
+          "ida_linear_address": "0x3040a",
+          "value": "0x16559",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_16C57",
+          "ida_linear_address": "0x30414",
+          "value": "0x16c57",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "sub_2D31B",
+          "ida_linear_address": "0x3041c",
+          "value": "0x2d31b",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "_free",
+          "ida_linear_address": "0x3042b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        },
+        {
+          "symbol": "free",
+          "ida_linear_address": "0x3042b",
+          "value": "0x37416",
+          "kind": "direct_rel32"
+        }
+      ],
+      "matched_addresses": [],
+      "unmatched_addresses": [
+        "0x301f4"
+      ]
+    }
+  ],
+  "game_screen_transition_attempt": {
+    "schema_version": 1,
+    "input": {
+      "file": "FD2.EXE",
+      "size": 357074,
+      "md5": "b97caf2239a27a896069d03549d96e1e",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "source_key": "game_screen_transition",
+    "source_path": "tools/fd2_matching_game_screen_transition.c",
+    "source_sha256": "b9842355a2c954fe035f24ddcd86ce717f78ae287f3b74363a6a247642fd0d48",
+    "compiler_version": "10.0a",
+    "compiler_inputs": {
+      "WCC386.EXE": "c3666de94f6fa6800f452dae8acf45505ecdb62f0ade2cc27cc86c2d9e8e2b6b",
+      "W32RUN.EXE": "d9028582ce7d2d7b0990d677e1947c10e0b0deaefb32d78319fbd2cea603cfcf",
+      "DOS4GW.EXE": "dd9f4f342533f99570475b62e53231a468de2e3d83e4fc31e80c27d3a7d6b49c"
+    },
+    "compile_driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+    "driver_sha256": "28ab00fe56697ab724c970090329f4a72ce7730d5d77a91d89f1fc7fd21a5099",
+    "evidence_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+    "trials": [
+      {
+        "stem": "G00",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-dF2D669"
+        ],
+        "object_sha256": "e5273fe5d273b45c43ae7572105d9e452fe0ced4933699aac317424728d74819",
+        "candidate_size": 328,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 68,
+        "code_sha256": "f82808fc00cb09d2808aefae22f940e3624be63aa8466819413569ae7a9851e8",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G01",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-os",
+          "-dF2D669"
+        ],
+        "object_sha256": "a25a20fa8b39b1b57298c12fc73bd703170837393c8bcd4550a25aa817a2075d",
+        "candidate_size": 309,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "7738cc271077b0d6f1de9a2bb9fb38fe9a768b63a829368d92198be16f5ae730",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G02",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-ot",
+          "-dF2D669"
+        ],
+        "object_sha256": "60d09b3ca34a51ecf132c49c03162b23064d00c1928772caab38c17e523829ba",
+        "candidate_size": 332,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 68,
+        "code_sha256": "03d8f6ee45052229a94ebf2ece84b6225da2d36c14e2ee40ce62210a27458bc8",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G03",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-dF2D669"
+        ],
+        "object_sha256": "cdba3116cb253d0ebdb76423e9e470eb92f52351343906f1f724bf438b88d8e4",
+        "candidate_size": 331,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 17,
+        "code_sha256": "af7d58b4ec31dbd2f03693125d333d3bdde10f09e78be773e3dd281e0c77ea42",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G04",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-os",
+          "-dF2D669"
+        ],
+        "object_sha256": "a25a20fa8b39b1b57298c12fc73bd703170837393c8bcd4550a25aa817a2075d",
+        "candidate_size": 309,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "7738cc271077b0d6f1de9a2bb9fb38fe9a768b63a829368d92198be16f5ae730",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G05",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-4s",
+          "-ot",
+          "-dF2D669"
+        ],
+        "object_sha256": "d1ba97d1e0a03c7248e974752460bf8d00d67a37072d2c4f34ce59b0ff5b2d1b",
+        "candidate_size": 335,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 17,
+        "code_sha256": "ae283e77fc5375cdee6d63061ec9ea5bcadc0acfed151deca91cea8333518aa2",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G06",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-5s",
+          "-dF2D669"
+        ],
+        "object_sha256": "cdba3116cb253d0ebdb76423e9e470eb92f52351343906f1f724bf438b88d8e4",
+        "candidate_size": 331,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 17,
+        "code_sha256": "af7d58b4ec31dbd2f03693125d333d3bdde10f09e78be773e3dd281e0c77ea42",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G07",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-5s",
+          "-os",
+          "-dF2D669"
+        ],
+        "object_sha256": "a25a20fa8b39b1b57298c12fc73bd703170837393c8bcd4550a25aa817a2075d",
+        "candidate_size": 309,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 1,
+        "code_sha256": "7738cc271077b0d6f1de9a2bb9fb38fe9a768b63a829368d92198be16f5ae730",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      {
+        "stem": "G08",
+        "address": "0x2d669",
+        "flags": [
+          "-mf",
+          "-5s",
+          "-ot",
+          "-dF2D669"
+        ],
+        "object_sha256": "d1ba97d1e0a03c7248e974752460bf8d00d67a37072d2c4f34ce59b0ff5b2d1b",
+        "candidate_size": 335,
+        "original_size": 340,
+        "exact_interval_bytes": false,
+        "first_difference_offset": 17,
+        "code_sha256": "ae283e77fc5375cdee6d63061ec9ea5bcadc0acfed151deca91cea8333518aa2",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      }
+    ],
+    "original_binding_references": [
+      {
+        "symbol": "__CHK",
+        "ida_linear_address": "0x2d66e",
+        "value": "0x36cd7",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "unk_526DA",
+        "ida_linear_address": "0x2d681",
+        "value": "0x526da",
+        "kind": "original_le_fixup"
+      },
+      {
+        "symbol": "malloc",
+        "ida_linear_address": "0x2d68d",
+        "value": "0x36d16",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "memmove",
+        "ida_linear_address": "0x2d6a4",
+        "value": "0x373c4",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "memset",
+        "ida_linear_address": "0x2d6ce",
+        "value": "0x375c0",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "dword_53A49",
+        "ida_linear_address": "0x2d6e5",
+        "value": "0x53a49",
+        "kind": "original_le_fixup"
+      },
+      {
+        "symbol": "memmove",
+        "ida_linear_address": "0x2d6eb",
+        "value": "0x373c4",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "dword_53A49",
+        "ida_linear_address": "0x2d6f3",
+        "value": "0x53a49",
+        "kind": "original_le_fixup"
+      },
+      {
+        "symbol": "dword_53A49",
+        "ida_linear_address": "0x2d708",
+        "value": "0x53a49",
+        "kind": "original_le_fixup"
+      },
+      {
+        "symbol": "memmove",
+        "ida_linear_address": "0x2d713",
+        "value": "0x373c4",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "dword_53A49",
+        "ida_linear_address": "0x2d72b",
+        "value": "0x53a49",
+        "kind": "original_le_fixup"
+      },
+      {
+        "symbol": "memmove",
+        "ida_linear_address": "0x2d731",
+        "value": "0x373c4",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "dword_54147",
+        "ida_linear_address": "0x2d74a",
+        "value": "0x54147",
+        "kind": "original_le_fixup"
+      },
+      {
+        "symbol": "sub_4E9E4",
+        "ida_linear_address": "0x2d77a",
+        "value": "0x4e9e4",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "memmove",
+        "ida_linear_address": "0x2d7a1",
+        "value": "0x373c4",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "_free",
+        "ida_linear_address": "0x2d7ad",
+        "value": "0x37416",
+        "kind": "direct_rel32"
+      },
+      {
+        "symbol": "free",
+        "ida_linear_address": "0x2d7ad",
+        "value": "0x37416",
+        "kind": "direct_rel32"
+      }
+    ],
+    "matched_addresses": [],
+    "unmatched_addresses": [
+      "0x2d669"
+    ]
+  },
+  "screen_transition_original_evidence": {
+    "inventory": {
+      "start": "0x2d669",
+      "end": "0x2d7bd",
+      "size": 340,
+      "ida_analysis_name": "sub_2D669",
+      "ida_function_flags": [],
+      "direct_caller_functions": [
+        "0x2e341",
+        "0x2fc85",
+        "0x3072f"
+      ],
+      "direct_code_xref_count": 6,
+      "direct_data_xref_count": 0,
+      "classification": {
+        "value": "unknown",
+        "confidence": "未知",
+        "source": "not yet classified"
+      },
+      "semantic_annotations": []
+    },
+    "ida_analysis_name": "sub_2D669",
+    "current_ida_linear_end": "0x2d7bd",
+    "boundary_matches_inventory": true,
+    "semantic_annotations": [],
+    "chunks": [
+      {
+        "ida_linear_start": "0x2d669",
+        "ida_linear_end": "0x2d7bd",
+        "instructions": [
+          {
+            "ida_linear_address": "0x2d669",
+            "file_offset": "0x2e469",
+            "loaded_bytes": "6834000000",
+            "file_bytes": "6834000000",
+            "instruction": "push    34h ; '4'",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d66e",
+            "file_offset": "0x2e46e",
+            "loaded_bytes": "e864960000",
+            "file_bytes": "e864960000",
+            "instruction": "call    sub_36CD7",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d673",
+            "file_offset": "0x2e473",
+            "loaded_bytes": "53",
+            "file_bytes": "53",
+            "instruction": "push    ebx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d674",
+            "file_offset": "0x2e474",
+            "loaded_bytes": "56",
+            "file_bytes": "56",
+            "instruction": "push    esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d675",
+            "file_offset": "0x2e475",
+            "loaded_bytes": "57",
+            "file_bytes": "57",
+            "instruction": "push    edi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d676",
+            "file_offset": "0x2e476",
+            "loaded_bytes": "55",
+            "file_bytes": "55",
+            "instruction": "push    ebp",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d677",
+            "file_offset": "0x2e477",
+            "loaded_bytes": "83ec14",
+            "file_bytes": "83ec14",
+            "instruction": "sub     esp, 14h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d67a",
+            "file_offset": "0x2e47a",
+            "loaded_bytes": "b904000000",
+            "file_bytes": "b904000000",
+            "instruction": "mov     ecx, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d67f",
+            "file_offset": "0x2e47f",
+            "loaded_bytes": "89e7",
+            "file_bytes": "89e7",
+            "instruction": "mov     edi, esp",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d681",
+            "file_offset": "0x2e481",
+            "loaded_bytes": "beda260500",
+            "file_bytes": "beda260000",
+            "instruction": "mov     esi, offset unk_526DA",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d686",
+            "file_offset": "0x2e486",
+            "loaded_bytes": "f3a5",
+            "file_bytes": "f3a5",
+            "instruction": "rep movsd",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d688",
+            "file_offset": "0x2e488",
+            "loaded_bytes": "6800fa0000",
+            "file_bytes": "6800fa0000",
+            "instruction": "push    0FA00h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d68d",
+            "file_offset": "0x2e48d",
+            "loaded_bytes": "e884960000",
+            "file_bytes": "e884960000",
+            "instruction": "call    malloc",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d692",
+            "file_offset": "0x2e492",
+            "loaded_bytes": "83c404",
+            "file_bytes": "83c404",
+            "instruction": "add     esp, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d695",
+            "file_offset": "0x2e495",
+            "loaded_bytes": "89442410",
+            "file_bytes": "89442410",
+            "instruction": "mov     [esp+24h+var_14], eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d699",
+            "file_offset": "0x2e499",
+            "loaded_bytes": "6800fa0000",
+            "file_bytes": "6800fa0000",
+            "instruction": "push    0FA00h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d69e",
+            "file_offset": "0x2e49e",
+            "loaded_bytes": "6800000a00",
+            "file_bytes": "6800000a00",
+            "instruction": "push    0A0000h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6a3",
+            "file_offset": "0x2e4a3",
+            "loaded_bytes": "50",
+            "file_bytes": "50",
+            "instruction": "push    eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6a4",
+            "file_offset": "0x2e4a4",
+            "loaded_bytes": "e81b9d0000",
+            "file_bytes": "e81b9d0000",
+            "instruction": "call    memmove",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6a9",
+            "file_offset": "0x2e4a9",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6ac",
+            "file_offset": "0x2e4ac",
+            "loaded_bytes": "31f6",
+            "file_bytes": "31f6",
+            "instruction": "xor     esi, esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6ae",
+            "file_offset": "0x2e4ae",
+            "loaded_bytes": "eb27",
+            "file_bytes": "eb27",
+            "instruction": "jmp     short loc_2D6D7",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6b0",
+            "file_offset": "0x2e4b0",
+            "loaded_bytes": "6a68",
+            "file_bytes": "6a68",
+            "instruction": "push    68h ; 'h'",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6b2",
+            "file_offset": "0x2e4b2",
+            "loaded_bytes": "6a4a",
+            "file_bytes": "6a4a",
+            "instruction": "push    4Ah ; 'J'",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6b4",
+            "file_offset": "0x2e4b4",
+            "loaded_bytes": "8d96a9000000",
+            "file_bytes": "8d96a9000000",
+            "instruction": "lea     edx, [esi+0A9h]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6ba",
+            "file_offset": "0x2e4ba",
+            "loaded_bytes": "89d0",
+            "file_bytes": "89d0",
+            "instruction": "mov     eax, edx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6bc",
+            "file_offset": "0x2e4bc",
+            "loaded_bytes": "c1e002",
+            "file_bytes": "c1e002",
+            "instruction": "shl     eax, 2",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6bf",
+            "file_offset": "0x2e4bf",
+            "loaded_bytes": "01d0",
+            "file_bytes": "01d0",
+            "instruction": "add     eax, edx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6c1",
+            "file_offset": "0x2e4c1",
+            "loaded_bytes": "c1e006",
+            "file_bytes": "c1e006",
+            "instruction": "shl     eax, 6",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6c4",
+            "file_offset": "0x2e4c4",
+            "loaded_bytes": "03442418",
+            "file_bytes": "03442418",
+            "instruction": "add     eax, [esp+2Ch+var_14]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6c8",
+            "file_offset": "0x2e4c8",
+            "loaded_bytes": "05c9000000",
+            "file_bytes": "05c9000000",
+            "instruction": "add     eax, 0C9h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6cd",
+            "file_offset": "0x2e4cd",
+            "loaded_bytes": "50",
+            "file_bytes": "50",
+            "instruction": "push    eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6ce",
+            "file_offset": "0x2e4ce",
+            "loaded_bytes": "e8ed9e0000",
+            "file_bytes": "e8ed9e0000",
+            "instruction": "call    memset",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6d3",
+            "file_offset": "0x2e4d3",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6d6",
+            "file_offset": "0x2e4d6",
+            "loaded_bytes": "46",
+            "file_bytes": "46",
+            "instruction": "inc     esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6d7",
+            "file_offset": "0x2e4d7",
+            "loaded_bytes": "83fe14",
+            "file_bytes": "83fe14",
+            "instruction": "cmp     esi, 14h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6da",
+            "file_offset": "0x2e4da",
+            "loaded_bytes": "7cd4",
+            "file_bytes": "7cd4",
+            "instruction": "jl      short loc_2D6B0",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6dc",
+            "file_offset": "0x2e4dc",
+            "loaded_bytes": "6800fa0000",
+            "file_bytes": "6800fa0000",
+            "instruction": "push    0FA00h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6e1",
+            "file_offset": "0x2e4e1",
+            "loaded_bytes": "ff742414",
+            "file_bytes": "ff742414",
+            "instruction": "push    [esp+28h+var_14]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6e5",
+            "file_offset": "0x2e4e5",
+            "loaded_bytes": "ff35493a0500",
+            "file_bytes": "ff35493a0000",
+            "instruction": "push    dword_53A49",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6eb",
+            "file_offset": "0x2e4eb",
+            "loaded_bytes": "e8d49c0000",
+            "file_bytes": "e8d49c0000",
+            "instruction": "call    memmove",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6f0",
+            "file_offset": "0x2e4f0",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6f3",
+            "file_offset": "0x2e4f3",
+            "loaded_bytes": "8b2d493a0500",
+            "file_bytes": "8b2d493a0000",
+            "instruction": "mov     ebp, dword_53A49",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6f9",
+            "file_offset": "0x2e4f9",
+            "loaded_bytes": "81c530d40000",
+            "file_bytes": "81c530d40000",
+            "instruction": "add     ebp, 0D430h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d6ff",
+            "file_offset": "0x2e4ff",
+            "loaded_bytes": "31ff",
+            "file_bytes": "31ff",
+            "instruction": "xor     edi, edi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d701",
+            "file_offset": "0x2e501",
+            "loaded_bytes": "eb1a",
+            "file_bytes": "eb1a",
+            "instruction": "jmp     short loc_2D71D",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d703",
+            "file_offset": "0x2e503",
+            "loaded_bytes": "6800fa0000",
+            "file_bytes": "6800fa0000",
+            "instruction": "push    0FA00h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d708",
+            "file_offset": "0x2e508",
+            "loaded_bytes": "ff35493a0500",
+            "file_bytes": "ff35493a0000",
+            "instruction": "push    dword_53A49",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d70e",
+            "file_offset": "0x2e50e",
+            "loaded_bytes": "6800000a00",
+            "file_bytes": "6800000a00",
+            "instruction": "push    0A0000h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d713",
+            "file_offset": "0x2e513",
+            "loaded_bytes": "e8ac9c0000",
+            "file_bytes": "e8ac9c0000",
+            "instruction": "call    memmove",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d718",
+            "file_offset": "0x2e518",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d71b",
+            "file_offset": "0x2e51b",
+            "loaded_bytes": "89df",
+            "file_bytes": "89df",
+            "instruction": "mov     edi, ebx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d71d",
+            "file_offset": "0x2e51d",
+            "loaded_bytes": "83ff04",
+            "file_bytes": "83ff04",
+            "instruction": "cmp     edi, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d720",
+            "file_offset": "0x2e520",
+            "loaded_bytes": "7d6a",
+            "file_bytes": "7d6a",
+            "instruction": "jge     short loc_2D78C",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d722",
+            "file_offset": "0x2e522",
+            "loaded_bytes": "6800fa0000",
+            "file_bytes": "6800fa0000",
+            "instruction": "push    0FA00h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d727",
+            "file_offset": "0x2e527",
+            "loaded_bytes": "ff742414",
+            "file_bytes": "ff742414",
+            "instruction": "push    [esp+28h+var_14]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d72b",
+            "file_offset": "0x2e52b",
+            "loaded_bytes": "ff35493a0500",
+            "file_bytes": "ff35493a0000",
+            "instruction": "push    dword_53A49",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d731",
+            "file_offset": "0x2e531",
+            "loaded_bytes": "e88e9c0000",
+            "file_bytes": "e88e9c0000",
+            "instruction": "call    memmove",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d736",
+            "file_offset": "0x2e536",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d739",
+            "file_offset": "0x2e539",
+            "loaded_bytes": "31f6",
+            "file_bytes": "31f6",
+            "instruction": "xor     esi, esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d73b",
+            "file_offset": "0x2e53b",
+            "loaded_bytes": "eb01",
+            "file_bytes": "eb01",
+            "instruction": "jmp     short loc_2D73E",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d73d",
+            "file_offset": "0x2e53d",
+            "loaded_bytes": "46",
+            "file_bytes": "46",
+            "instruction": "inc     esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d73e",
+            "file_offset": "0x2e53e",
+            "loaded_bytes": "8d5f01",
+            "file_bytes": "8d5f01",
+            "instruction": "lea     ebx, [edi+1]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d741",
+            "file_offset": "0x2e541",
+            "loaded_bytes": "83fe04",
+            "file_bytes": "83fe04",
+            "instruction": "cmp     esi, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d744",
+            "file_offset": "0x2e544",
+            "loaded_bytes": "7dbd",
+            "file_bytes": "7dbd",
+            "instruction": "jge     short loc_2D703",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d746",
+            "file_offset": "0x2e546",
+            "loaded_bytes": "8d543603",
+            "file_bytes": "8d543603",
+            "instruction": "lea     edx, [esi+esi+3]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d74a",
+            "file_offset": "0x2e54a",
+            "loaded_bytes": "a147410500",
+            "file_bytes": "a147410000",
+            "instruction": "mov     eax, dword_54147",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d74f",
+            "file_offset": "0x2e54f",
+            "loaded_bytes": "03449006",
+            "file_bytes": "03449006",
+            "instruction": "add     eax, [eax+edx*4+6]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d753",
+            "file_offset": "0x2e553",
+            "loaded_bytes": "89f2",
+            "file_bytes": "89f2",
+            "instruction": "mov     edx, esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d755",
+            "file_offset": "0x2e555",
+            "loaded_bytes": "c1e202",
+            "file_bytes": "c1e202",
+            "instruction": "shl     edx, 2",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d758",
+            "file_offset": "0x2e558",
+            "loaded_bytes": "837c242800",
+            "file_bytes": "837c242800",
+            "instruction": "cmp     [esp+24h+arg_0], 0",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d75d",
+            "file_offset": "0x2e55d",
+            "loaded_bytes": "7525",
+            "file_bytes": "7525",
+            "instruction": "jnz     short loc_2D784",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d75f",
+            "file_offset": "0x2e55f",
+            "loaded_bytes": "6840010000",
+            "file_bytes": "6840010000",
+            "instruction": "push    140h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d764",
+            "file_offset": "0x2e564",
+            "loaded_bytes": "50",
+            "file_bytes": "50",
+            "instruction": "push    eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d765",
+            "file_offset": "0x2e565",
+            "loaded_bytes": "bb04000000",
+            "file_bytes": "bb04000000",
+            "instruction": "mov     ebx, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d76a",
+            "file_offset": "0x2e56a",
+            "loaded_bytes": "29fb",
+            "file_bytes": "29fb",
+            "instruction": "sub     ebx, edi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d76c",
+            "file_offset": "0x2e56c",
+            "loaded_bytes": "8b441408",
+            "file_bytes": "8b441408",
+            "instruction": "mov     eax, [esp+edx+2Ch+var_24]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d770",
+            "file_offset": "0x2e570",
+            "loaded_bytes": "89c2",
+            "file_bytes": "89c2",
+            "instruction": "mov     edx, eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d772",
+            "file_offset": "0x2e572",
+            "loaded_bytes": "c1fa1f",
+            "file_bytes": "c1fa1f",
+            "instruction": "sar     edx, 1Fh",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d775",
+            "file_offset": "0x2e575",
+            "loaded_bytes": "f7fb",
+            "file_bytes": "f7fb",
+            "instruction": "idiv    ebx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d777",
+            "file_offset": "0x2e577",
+            "loaded_bytes": "01e8",
+            "file_bytes": "01e8",
+            "instruction": "add     eax, ebp",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d779",
+            "file_offset": "0x2e579",
+            "loaded_bytes": "50",
+            "file_bytes": "50",
+            "instruction": "push    eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d77a",
+            "file_offset": "0x2e57a",
+            "loaded_bytes": "e865120200",
+            "file_bytes": "e865120200",
+            "instruction": "call    sub_4E9E4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d77f",
+            "file_offset": "0x2e57f",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d782",
+            "file_offset": "0x2e582",
+            "loaded_bytes": "ebb9",
+            "file_bytes": "ebb9",
+            "instruction": "jmp     short loc_2D73D",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d784",
+            "file_offset": "0x2e584",
+            "loaded_bytes": "6840010000",
+            "file_bytes": "6840010000",
+            "instruction": "push    140h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d789",
+            "file_offset": "0x2e589",
+            "loaded_bytes": "50",
+            "file_bytes": "50",
+            "instruction": "push    eax",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d78a",
+            "file_offset": "0x2e58a",
+            "loaded_bytes": "ebe0",
+            "file_bytes": "ebe0",
+            "instruction": "jmp     short loc_2D76C",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d78c",
+            "file_offset": "0x2e58c",
+            "loaded_bytes": "837c242800",
+            "file_bytes": "837c242800",
+            "instruction": "cmp     [esp+24h+arg_0], 0",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d791",
+            "file_offset": "0x2e591",
+            "loaded_bytes": "7416",
+            "file_bytes": "7416",
+            "instruction": "jz      short loc_2D7A9",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d793",
+            "file_offset": "0x2e593",
+            "loaded_bytes": "6800fa0000",
+            "file_bytes": "6800fa0000",
+            "instruction": "push    0FA00h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d798",
+            "file_offset": "0x2e598",
+            "loaded_bytes": "ff742414",
+            "file_bytes": "ff742414",
+            "instruction": "push    [esp+28h+var_14]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d79c",
+            "file_offset": "0x2e59c",
+            "loaded_bytes": "6800000a00",
+            "file_bytes": "6800000a00",
+            "instruction": "push    0A0000h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7a1",
+            "file_offset": "0x2e5a1",
+            "loaded_bytes": "e81e9c0000",
+            "file_bytes": "e81e9c0000",
+            "instruction": "call    memmove",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7a6",
+            "file_offset": "0x2e5a6",
+            "loaded_bytes": "83c40c",
+            "file_bytes": "83c40c",
+            "instruction": "add     esp, 0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7a9",
+            "file_offset": "0x2e5a9",
+            "loaded_bytes": "ff742410",
+            "file_bytes": "ff742410",
+            "instruction": "push    [esp+24h+var_14]",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7ad",
+            "file_offset": "0x2e5ad",
+            "loaded_bytes": "e8649c0000",
+            "file_bytes": "e8649c0000",
+            "instruction": "call    free",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7b2",
+            "file_offset": "0x2e5b2",
+            "loaded_bytes": "83c404",
+            "file_bytes": "83c404",
+            "instruction": "add     esp, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7b5",
+            "file_offset": "0x2e5b5",
+            "loaded_bytes": "83c414",
+            "file_bytes": "83c414",
+            "instruction": "add     esp, 14h",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7b8",
+            "file_offset": "0x2e5b8",
+            "loaded_bytes": "5d",
+            "file_bytes": "5d",
+            "instruction": "pop     ebp",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7b9",
+            "file_offset": "0x2e5b9",
+            "loaded_bytes": "5f",
+            "file_bytes": "5f",
+            "instruction": "pop     edi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7ba",
+            "file_offset": "0x2e5ba",
+            "loaded_bytes": "5e",
+            "file_bytes": "5e",
+            "instruction": "pop     esi",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7bb",
+            "file_offset": "0x2e5bb",
+            "loaded_bytes": "5b",
+            "file_bytes": "5b",
+            "instruction": "pop     ebx",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x2d7bc",
+            "file_offset": "0x2e5bc",
+            "loaded_bytes": "c3",
+            "file_bytes": "c3",
+            "instruction": "retn",
+            "semantic_annotations": []
+          }
+        ]
+      }
+    ],
+    "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+  },
+  "conclusion_corrections": [
+    {
+      "date": "2026-10-09",
+      "previous_claim": "函式台帳仍保留1056個未還原或未完成分類的區間；IDA未歸屬3363 bytes中已由C重現146，剩3217 bytes仍未知，不能以全檔SHA或函式數量宣稱完成。",
+      "replacement": "現行函式台帳及清冊外CODE覆蓋由matching_summary、bootstrap與instruction_ownership_audit重算；不能以全檔SHA或函式數量宣稱全檔C完成。",
+      "reason": "逐輪新增完整匹配後，舊1056台帳數不再符合現行bootstrap；保留形成紀錄，現況只由重算入口給出。",
+      "source": "matching_summary及bootstrap.counts",
+      "confidence": "已證實"
+    }
+  ]
 }
