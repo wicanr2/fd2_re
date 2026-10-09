@@ -298,6 +298,7 @@ SOURCES = {
     "game_display_control": ("tools/fd2_matching_game_display_control.c", tuple(macro for macro, _ in DISPLAY_CONTROL_CASES)),
     "game_resource_records": ("tools/fd2_matching_game_resource_records.c", tuple(macro for macro, _ in RESOURCE_RECORD_CASES)),
     "game_ai_sequences": ("tools/fd2_matching_game_ai_sequences.c", tuple(macro for macro, _ in AI_SEQUENCE_CASES)),
+    "game_loop_layout": ("tools/fd2_matching_game_loop_layout.c", ("F25052","F2D620","F34A0E")),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
