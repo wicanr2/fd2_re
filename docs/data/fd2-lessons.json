@@ -2141,6 +2141,21 @@
         ],
         "pattern": "void sub_3231B"
       }
+    },
+    {
+      "id": "matching-stack-arguments-track-push-deltas",
+      "area": "匹配工具",
+      "date": "2026-10-10",
+      "rule": "核對堆疊實參時，按每次PUSH的ESP變化重算有效來源偏移，保留原始運算元並另列caller局部基準；不同esp位移可能讀同一slot。入口tools/test_fd2_matching_animation_panel.py與主收據animation_panel_original_evidence。",
+      "why": "288E5的esp+24h與288E9的esp+28h在不同PUSH之後均讀caller局部+18h，初版C曾將其中一個誤傳saved，已按原始SP追蹤修正為兩個figure來源。",
+      "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_matching_game_animation_panel.c"
+        ],
+        "pattern": "local.figure_base,local.figure_base"
+      }
     }
   ]
 }
