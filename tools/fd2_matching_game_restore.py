@@ -91,6 +91,8 @@ AI_SEQUENCE_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x1548E,0x1567E,0x1598A,0x15B77,0x23E74,0x240FA))
 MENU_SEQUENCE_CASES = tuple(('F'+format(address,'X'),address) for address in (
     0x272B8,0x2D85F,0x2E6B8,0x2F642))
+SAVE_SERVICE_CASES = tuple(('F'+format(address,'X'),address) for address in (
+    0x301F4,0x30DC3,0x31385))
 COMPOUND_ENTRIES = {"SCENE_REVERSE": {"source_key":"game_compound", "owner":0x230F2,
     "end":0x23296, "compiler_order":(0x231F9,0x231BC,0x230F2),
     "prologues":{0x230F2:80,0x231BC:40,0x231F9:80}}}
@@ -105,6 +107,7 @@ ALL_CASES += DISPLAY_CONTROL_CASES
 ALL_CASES += RESOURCE_RECORD_CASES
 ALL_CASES += AI_SEQUENCE_CASES
 ALL_CASES += MENU_SEQUENCE_CASES
+ALL_CASES += SAVE_SERVICE_CASES
 CASE_GROUPS['EMPTY_STACK_GROUP']=(0x360D8,0x360E3,0x360EA,0x360F1,0x360F8)
 BINDINGS = {"dword_53A45": 0x53A45, "dword_53BEB": 0x53BEB,
             "dword_53AC1": 0x53AC1, "dword_53A51": 0x53A51, "__CHK": 0x36CD7,
@@ -275,6 +278,11 @@ BINDINGS.update({'byte_540B7':0x540B7,'byte_540B8':0x540B8,'byte_540B9':0x540B9,
     'sub_2D9FE':0x2D9FE,'sub_2DF6B':0x2DF6B,'sub_2E0BD':0x2E0BD,
     'sub_2EA90':0x2EA90,'sub_2F4C6':0x2F4C6,'sub_4E9E4':0x4E9E4,
     'unk_52511':0x52511,'unk_526EA':0x526EA,'unk_5272A':0x5272A,'unk_52736':0x52736})
+BINDINGS.update({'aRb_6':0x50282,'aFd2Sav_7':0x50285,'aRb_7':0x5028D,
+    'aFdiconB24_1':0x50290,'aRb_8':0x5029B,'aFdiconB24_2':0x5029E,
+    'byte_5265D':0x5265D,'word_52669':0x52669,'sub_25977':0x25977,
+    'sub_2A2E8':0x2A2E8,'sub_2D516':0x2D516,'sub_309FF':0x309FF,
+    'sub_30C22':0x30C22,'sub_311DC':0x311DC,'sub_31602':0x31602,'sub_31793':0x31793})
 SOURCES = {
     "game": ("tools/fd2_matching_game_slices.c", tuple(macro for macro, _ in CASES)),
     "record_layout": ("tools/fd2_matching_record_layout.c", ("SET_BIT7", "SLOT_BYTE", "COPY_WORDS")),
@@ -308,6 +316,7 @@ SOURCES = {
     "game_ai_sequences": ("tools/fd2_matching_game_ai_sequences.c", tuple(macro for macro, _ in AI_SEQUENCE_CASES)),
     "game_loop_layout": ("tools/fd2_matching_game_loop_layout.c", ("F25052","F2D620","F34A0E")),
     "game_menu_sequences": ("tools/fd2_matching_game_menu_sequences.c", tuple(macro for macro, _ in MENU_SEQUENCE_CASES)),
+    "game_save_services": ("tools/fd2_matching_game_save_services.c", tuple(macro for macro, _ in SAVE_SERVICE_CASES)),
 }
 COSTS = {"balanced": (), "space": ("-os",), "speed": ("-ot",)}
 SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_quake.c'),),
@@ -315,6 +324,10 @@ SOURCE_INCLUDES = {'game_effect_tail': (('QUAKE.C', 'tools/fd2_matching_game_qua
                      ('QUAKE.C', 'tools/fd2_matching_game_quake.c'))}
 COMPILER_INPUTS = {
     "10.0a": INPUTS,
+    "9.01": {
+        "WCC386.EXE": "99d79830e8bf2bf04582215583cd6c276e21226d86a9bdea197a99abb75eabe0",
+        "DOS4GW.EXE": "535d649996de16d1e495633a9aaf60244bc717e7d6951a45a8092c3492ce4005",
+    },
     "9.5": {
         "WCC386.EXE": "3fe098187af3ed4bccbf184b0f0d1a21a18cf976fe72c6178f19b8eea8b13e78",
         "DOS4GW.EXE": "b401506365892bd7bcb4362599279504a863f05bf37d323f732fd348bd1ef3c5",
@@ -667,7 +680,7 @@ def main():
     parser.add_argument("--costs", choices=COSTS, nargs="+", default=tuple(COSTS))
     args = parser.parse_args()
     if args.compiler is None:
-        args.compiler = Path("/wc10a" if args.compiler_version == "10.0a" else "/wc95")
+        args.compiler = Path({"10.0a": "/wc10a", "9.5": "/wc95", "9.01": "/wc901"}[args.compiler_version])
     if not Path("/.dockerenv").exists():
         raise SystemExit("本工具只在 Docker 執行")
     compile_stage(args) if args.stage == "compile" else link_stage(args)
