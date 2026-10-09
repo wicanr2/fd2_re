@@ -116,6 +116,7 @@
 | 整備選單BIOS讀取C布局比較 | [C來源](../../tools/fd2_matching_game_menu_bios_layout.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_menu_bios_layout | 核對2D85F完整區間、局部字寬度、輸入與原始呼叫；未匹配不增加覆蓋，不新增硬體時序聲明 |
 | 完整函式暫存器文字對應診斷 | [診斷工具](../../tools/fd2_matching_register_diagnostic.py)、[真實負例與拒收回歸](../../tools/test_fd2_matching_register_diagnostic.py) | 綁定原始檔、IDA與連結收據，核對全部指令邊界及暫存器對應；診斷不取代逐byte判定，不證明ABI或行為等價 |
 | 物品選擇與交易完整C匹配 | [C來源](../../tools/fd2_matching_game_item_transaction.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_item_transaction、[初次檢查與來源回歸](../../tools/test_fd2_matching_item_transaction.py) | 2F642完整577 bytes匹配；Watcom 9.5的3s預設策略由索引互斥或清零保留初次比較，原作者宣告與語意分級保持 |
+| 面板、狀態、FIGANI及物品運算元C比較 | [C來源](../../tools/fd2_matching_game_operand_flow.c)、[驅動器](../../tools/fd2_matching_game_restore.py)的game_operand_flow、[四函式真實負例回歸](../../tools/test_fd2_matching_operand_flow.py) | 核對17EEF／22AF6／2B9A1／1B722完整592 bytes、運算元與入口宣告；未匹配不增加覆蓋，文字對應不證明ABI或行為等價 |
 | 本機歷史Watcom DOS輸入核對 | [準備工具](../../tools/fd2_matching_prepare_legacy.py)、[版本驅動器](../../tools/fd2_matching_game_restore.py) | 9.01／9.5組件按固定SHA準備，原廠來源唯讀、本機輸出不入Git；9.01由--compiler-version 9.01與/wc901使用 |
 | 既有C的9.5版本初輪比較 | [主收據](../data/ida/fd2_matching_full_20261008.json)的version_sweep_95_attempts與game_loop_digit_95_attempt、[版本驅動器](../../tools/fd2_matching_game_restore.py) | 12個既有函式108份候選及數字迴圈九份候選皆未完整匹配，117份獨立核對但未重建兩輪，不計入雙輪矩陣 |
 | 使用者授權子代理的匹配審查 | [主收據](../data/ida/fd2_matching_full_20261008.json)的`parallel_review`、[複製來源](../../tools/fd2_matching_game_copy.c) | 子代理只產生有界候選，主代理審查原始證據並重跑整合；未匹配來源不增加覆蓋 |

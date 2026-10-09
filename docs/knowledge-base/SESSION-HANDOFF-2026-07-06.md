@@ -10123,3 +10123,19 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 新增可重用的首次迴圈檢查教訓。初次guard誤指向驗證器排除的test_*檔案，且正規表示式的括號需要跳脫；回查驗證器後，將guard綁定C來源的實際互斥或初始化，同一check通過，沒有改驗證器的搜尋集合或產品程式。
 
 本批收尾：96份來源SHA、170份雙輪C連結報告及1188個本地連結相符，索引正對照與正式IDA資料庫SHA保持。189條教訓及74個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除。完整賣出C與來源回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+### 2026-10-09 #198：四函式運算元C負例與生命週期診斷
+
+上一輪8dbe5418完成賣出交易C。本輪核對17EEF的209 bytes、22AF6的208 bytes、2B9A1的129 bytes及交易消費端1B722的46 bytes，共592 bytes。工具鏈／執行期分流及文件職責路由已核對，[新C候選](../../tools/fd2_matching_game_operand_flow.c)與[真實負例回歸](../../tools/test_fd2_matching_operand_flow.py)接入[索引](00-index.md)。主證據見[匹配收據](../data/ida/fd2_matching_full_20261008.json)的game_operand_flow_attempt、operand_flow_diagnostics、operand_flow_original_evidence及validation.operand_flow。
+
+先查回既有八種物品指標、兩種倍率與六種FIGANI最後比較候選，沒有把舊負例當成未做。新增試驗比較明示乘法樹、byte與唯讀中間值、較早指標／計數器生命週期、9.5版本及既有alias／loop／reorder／optimize策略，仍未完整匹配；單輪探索不計入雙輪矩陣。明示__cdecl的選定面板、狀態與FIGANI候選在序言即不同，不能據局部運算元相同推定作者ABI。整數保存地址的候選限定-mf的32-bit模型，來源有寬度斷言，不宣稱portable C。
+
+凍結四函式來源、三種各別表示與驅動器後，108份標準候選各在兩個獨立容器重建。OMF、完整編譯／連結報告及產碼相同，108份全部由objcopy核對，仍沒有新的完整匹配。四個3s預設基準各差三bytes，既有C來源與負例出處保持。
+
+兩輪診斷相同。17EEF的IDA線性17F04至17F0D可作EAX／EBX文字對應；22AF6的22B68至22B74可作ESI到EAX對應；1B722的1B73F至1B747可作EAX／EDX對應。2B9A1的2BA0B至2BA17則無一致映射：原始2BA12為MOVZX EAX,[EBX]，候選為MOVZX EBX,[EBX]，同一候選EBX在該指令的來源基底與目的扮演不同角色，不能用單一暫存器映射替代。上述均保留完整raw差異，不證明ABI、行為等價或逐byte匹配，不增加C覆蓋。
+
+回歸以四個完整原始函式驗證三種文字對應、一個非一致映射拒收及三個錯誤序言。37列原始具名參照、四份完整IDA函式與21個caller視窗保存，1B722包含已匹配2F642的直接消費端。既有68列符號／LE、四項矛盾拒收及明示+1六列／三項拒收通過。原有面板、command20–22、FIGANI與物品語意維持，不從raw分類unknown重開；2B9A1的已證實語意註記照原樣保留。正式Go／Ebiten、PLAYER-E2及硬體時序不提升。
+
+本輪C仍182函式／22328 bytes，另146-byte未歸屬區間，共22474 bytes；183段C出處、SDK19函式／1200 bytes與bootstrap逐項保持。175個保留函式庫與948個待還原函式分列。既有完整EXE與SDK基準重查大小及SHA相同，沒有把新負例加入組合。C矩陣由工具重算為86組4020份候選／3990份獨立核對／30份布局拒收；decompilation_complete=false，Goal與#198保持未完成。
+
+本批收尾：98份來源SHA、172份雙輪C連結報告及1191個本地連結相符，索引正對照與正式IDA資料庫SHA保持。189條教訓及74個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除，沒有其他子代理在執行。四函式完整C候選與診斷回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
