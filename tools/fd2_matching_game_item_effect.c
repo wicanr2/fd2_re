@@ -1,6 +1,31 @@
 /* sub_20C6F完整C候選。沿用既有物品owner證據，保持原始欄位與caller。
  * 宣告、局部聚合與pragma僅作相容產碼表示，不推定作者原始C。
  */
+#ifdef ITEM_EFFECT_12
+#define ITEM_EFFECT_3
+#define ITEM_EFFECT_9
+#endif
+#ifdef ITEM_EFFECT_13
+#define ITEM_EFFECT_12
+#define ITEM_EFFECT_3
+#define ITEM_EFFECT_9
+#endif
+#ifdef ITEM_EFFECT_14
+#define ITEM_EFFECT_13
+#define ITEM_EFFECT_12
+#define ITEM_EFFECT_3
+#define ITEM_EFFECT_9
+#endif
+#if defined(ITEM_EFFECT_15) || defined(ITEM_EFFECT_16)
+#define ITEM_EFFECT_12
+#define ITEM_EFFECT_3
+#define ITEM_EFFECT_9
+#endif
+#ifdef ITEM_EFFECT_17
+#define ITEM_EFFECT_12
+#define ITEM_EFFECT_3
+#define ITEM_EFFECT_9
+#endif
 typedef struct {unsigned char raw[100];int saved,power;} RawEffect108;
 typedef char RawEffectMustBe108[sizeof(RawEffect108)==108?1:-1];
 extern unsigned char *dword_53A45;
@@ -47,13 +72,18 @@ void sub_20C6F(int actor,int item,volatile int count,unsigned char *targets)
 #define SAVED local.saved
 #define POWER local.power
 #endif
+#if defined(ITEM_EFFECT_14) || defined(ITEM_EFFECT_15) || defined(ITEM_EFFECT_16)
+    int i,value,selected;
+#endif
     unsigned char *row,*record,*target;
 #ifdef ITEM_EFFECT_1
     int type;
 #else
     unsigned char type;
 #endif
+#if !defined(ITEM_EFFECT_14) && !defined(ITEM_EFFECT_15) && !defined(ITEM_EFFECT_16)
     int i,value,selected;
+#endif
     sub_1D4CB();dword_53EC4=0;
     row=sub_4E56C(sub_1B722(actor,item));
 #ifdef ITEM_EFFECT_7
@@ -93,7 +123,17 @@ revive_check:
         if(i>=count)goto revive_done;
 #endif
         target=targets+i;value=*target;
-#ifdef ITEM_EFFECT_6
+#ifdef ITEM_EFFECT_17
+        record=dword_53A45+value*80;
+        if(*(unsigned short *)(record+70))goto revive_next;
+#elif defined(ITEM_EFFECT_16)
+        if((*(unsigned *)(dword_53A45+value*80+68)>>16)!=0)goto revive_next;
+#elif defined(ITEM_EFFECT_15)
+        if(*(unsigned short *)(dword_53A45+value*80+70)!=0)goto revive_next;
+#elif defined(ITEM_EFFECT_13)
+        record=dword_53A45+value*80;
+        if((*(unsigned *)(record+68)>>16)!=0)goto revive_next;
+#elif defined(ITEM_EFFECT_6)
         {
             int offset=value;offset=(offset<<2)+offset;offset<<=4;
             if(*(volatile unsigned short *)(dword_53A45+offset+70)!=0)goto revive_next;

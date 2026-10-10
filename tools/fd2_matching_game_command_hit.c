@@ -1,6 +1,10 @@
 /* sub_1C75E完整C候選。保留原始112-byte局部表、raw職業索引與signed算式。
  * 既有規則語意不重開；聚合、volatile與pragma不推定作者原始C。
  */
+#ifdef COMMAND_HIT_10
+#define COMMAND_HIT_1
+#define COMMAND_HIT_4
+#endif
 #ifdef COMMAND_HIT_5
 #define COMMAND_HIT_3
 #endif
