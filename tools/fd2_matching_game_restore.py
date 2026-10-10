@@ -127,6 +127,8 @@ TERMINAL_DIALOGUE_CASES = tuple(('TERMINAL_DIALOGUE_'+str(n),0x2C39B) for n in r
 AI_ITEM_EXEC_CASES = tuple(('AI_ITEM_EXEC_'+str(n),0x15055) for n in range(10))
 AI_ITEM_SELECT_CASES = tuple(('AI_ITEM_SELECT_'+str(n),0x1567E) for n in range(18))
 INT31_REGS_CASES = tuple(('INT31_REGS_'+str(n),0x36255) for n in range(3))
+ITEM_EFFECT_CASES = tuple(('ITEM_EFFECT_'+str(n),0x20C6F) for n in range(12))
+COMMAND_HIT_CASES = tuple(('COMMAND_HIT_'+str(n),0x1C75E) for n in range(10))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -189,6 +191,8 @@ ALL_CASES += TERMINAL_DIALOGUE_CASES
 ALL_CASES += AI_ITEM_EXEC_CASES
 ALL_CASES += AI_ITEM_SELECT_CASES
 ALL_CASES += INT31_REGS_CASES
+ALL_CASES += ITEM_EFFECT_CASES
+ALL_CASES += COMMAND_HIT_CASES
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
 ALL_CASES += DIGIT_COMPARE_CASES
@@ -409,6 +413,8 @@ BINDINGS.update({'_sub_4E031':0x4E031})
 BINDINGS.update({'sub_11C59':0x11C59,'sub_11BFA':0x11BFA,
                  'sub_11B48':0x11B48,'sub_11B9B':0x11B9B})
 BINDINGS.update({'a08d':0x50260,'a08d_0':0x50266})
+BINDINGS.update({'sub_211A4':0x211A4,'sub_21082':0x21082,'sub_1C9DD':0x1C9DD,
+                 'sub_2111A':0x2111A,'sub_2218A':0x2218A})
 SOURCES = {
     "game_idle_advance": ("tools/fd2_matching_game_idle_advance.c", tuple(macro for macro, _ in IDLE_ADVANCE_CASES)),
     "game_panel_rows": ("tools/fd2_matching_game_panel_rows.c", tuple(macro for macro, _ in PANEL_ROWS_CASES)),
@@ -487,6 +493,8 @@ SOURCES = {
     "game_ai_item_execute": ("tools/fd2_matching_game_ai_item_execute.c", tuple(macro for macro,_ in AI_ITEM_EXEC_CASES)),
     "game_ai_item_select": ("tools/fd2_matching_game_ai_item_select.c", tuple(macro for macro,_ in AI_ITEM_SELECT_CASES)),
     "game_int31_regs": ("tools/fd2_matching_game_int31_regs.c", tuple(macro for macro,_ in INT31_REGS_CASES)),
+    "game_item_effect": ("tools/fd2_matching_game_item_effect.c", tuple(macro for macro,_ in ITEM_EFFECT_CASES)),
+    "game_command_hit": ("tools/fd2_matching_game_command_hit.c", tuple(macro for macro,_ in COMMAND_HIT_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
