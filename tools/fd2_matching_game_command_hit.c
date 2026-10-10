@@ -5,6 +5,9 @@
 #define COMMAND_HIT_1
 #define COMMAND_HIT_4
 #endif
+#ifdef COMMAND_HIT_11
+#define COMMAND_HIT_4
+#endif
 #ifdef COMMAND_HIT_5
 #define COMMAND_HIT_3
 #endif
@@ -42,7 +45,9 @@ int sub_1C75E(int actor,int command)
 #else
     memcpy(VALUES,unk_51F96,112);
 #endif
-#ifdef COMMAND_HIT_8
+#ifdef COMMAND_HIT_11
+    rawclass=dword_53A45[*(volatile int *)&actor*80+32];
+#elif defined(COMMAND_HIT_8)
     info=dword_53A45+actor*80;rawclass=info[32];
 #elif defined(COMMAND_HIT_9)
     rawclass=((RawActor80 *)dword_53A45)[actor].raw[32];

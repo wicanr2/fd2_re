@@ -128,8 +128,9 @@ AI_ITEM_EXEC_CASES = tuple(('AI_ITEM_EXEC_'+str(n),0x15055) for n in range(10))
 AI_ITEM_SELECT_CASES = tuple(('AI_ITEM_SELECT_'+str(n),0x1567E) for n in range(18))
 INT31_REGS_CASES = tuple(('INT31_REGS_'+str(n),0x36255) for n in range(3))
 ITEM_EFFECT_CASES = tuple(('ITEM_EFFECT_'+str(n),0x20C6F) for n in range(18))
-COMMAND_HIT_CASES = tuple(('COMMAND_HIT_'+str(n),0x1C75E) for n in range(11))
+COMMAND_HIT_CASES = tuple(('COMMAND_HIT_'+str(n),0x1C75E) for n in range(12))
 TITLE_ACTING_CASES = tuple(('TITLE_ACTING_'+str(n),0x1366A) for n in range(6))
+RECORD_RESOLVE_CASES = tuple(('RECORD_RESOLVE_'+str(n),0x1DB65) for n in range(11))
 TEAM_SERVICE_CASES = (('TEAM30_SHARED',0x30DC3),('TEAM30_VOLATILE',0x30DC3),('TEAM30_ACCUM',0x30DC3),('TEAM30_DIRECT',0x30DC3),('TEAM313_TYPED',0x31385),('TEAM313_REUSE',0x31385))
 TEAM_ABI_CASES = (('TEAM313_ABI',0x31385),)
 DIGIT_COMPARE_CASES = tuple((macro,0x2D3FF) for macro in ('DIGIT_SUB','DIGIT_UNSIGNED','DIGIT_INVERSE','DIGIT_ORDERED','DIGIT_SWITCH','DIGIT_ADD_FIRST','DIGIT_AMOUNT_U','DIGIT_BASE_U','DIGIT_BOTH_U'))
@@ -195,6 +196,7 @@ ALL_CASES += INT31_REGS_CASES
 ALL_CASES += ITEM_EFFECT_CASES
 ALL_CASES += COMMAND_HIT_CASES
 ALL_CASES += TITLE_ACTING_CASES
+ALL_CASES += RECORD_RESOLVE_CASES
 SPARSE_GROUPS.update({macro:(0x1366A,0x1F894) for macro,_ in TITLE_ACTING_CASES})
 ALL_CASES += TEAM_SERVICE_CASES
 ALL_CASES += TEAM_ABI_CASES
@@ -502,6 +504,7 @@ SOURCES = {
     "game_item_effect": ("tools/fd2_matching_game_item_effect.c", tuple(macro for macro,_ in ITEM_EFFECT_CASES)),
     "game_command_hit": ("tools/fd2_matching_game_command_hit.c", tuple(macro for macro,_ in COMMAND_HIT_CASES)),
     "game_title_acting_group": ("tools/fd2_matching_game_title_acting_group.c", tuple(macro for macro,_ in TITLE_ACTING_CASES)),
+    "game_record_resolution": ("tools/fd2_matching_game_record_resolution.c", tuple(macro for macro,_ in RECORD_RESOLVE_CASES)),
     "game_team_services": ("tools/fd2_matching_game_team_services.c", tuple(macro for macro, _ in TEAM_SERVICE_CASES)),
     "game_team_abi": ("tools/fd2_matching_game_team_abi.c", ('TEAM313_ABI',)),
 }
