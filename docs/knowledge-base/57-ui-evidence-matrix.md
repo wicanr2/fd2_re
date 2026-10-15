@@ -17,7 +17,10 @@ dosgolem合併後IRQ7正常啟動及鍵盤短鏈已通過兩輪重播。這只�
 第24章T1～T3至戰後整備的短鏈四gate通過，13張完整RGB零差異、完整SAV相同。
 主收據的`chapter24_followup`限定先前短鏈。本輪第一組DP1000槽已到T11，四次增援已觸發，
 重製端280筆AI入口全消費且零順序分岔。清敵一次後原版異常跳至0x1666E8，尚未寫出戰後SAV，
-流程收據保留failed。#142及章台帳保持未完成，阻擋另列[#207](https://github.com/wicanr2/fd2_re/issues/207)。
+這是先前c1失敗，收據仍保留failed。最新r3已用正常方向鍵移開鏡頭，畫面內死亡候選降為3，
+完成全部晚期增援、戰後、記錄、保存與退出列表；[正式收據](../data/ui-traces/parity-ch24.json)通過流程三閘門，
+兩側完整SAV相同，280筆AI入口零順序分岔。frames未擷取，只作參考，不宣稱逐像素一致。
+章台帳第24章改passed，#207及76筆戰後前沿限制均已限定修正，進度以[58](58-fd2-exe-re-coverage.md)為準。
 證據與限制見[event54主契約的validation.dp_c1](../data/ida/fd2_turn_event54_20261015.json)。
 
 匹配反編譯的原始載入位元組守衛修正屬於分析工具驗證，依[56](56-fd2-remake-sdd.md)及[58](58-fd2-exe-re-coverage.md)保存。隔離偽造反例不算原版擷取或C還原；既有正式匯出及C覆蓋經重算保持，本矩陣的介面與PLAYER-E2分級不提升。

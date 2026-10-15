@@ -15,6 +15,19 @@
 官方轉寫與劇本同步檢查通過；全域仍有23筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
 既有短鏈重跑通過行為、節點、完整 SAV 與13張完整 RGB 零差異，完整章仍依正式台帳判定。
 
+#207後續定位：原版`sub_1DB65`的局部畫面指標陣列只有30格，`0x1DC29`沒有數量上限。
+失敗前有40個畫面內死亡候選；五個溢位值同時對上保存暫存器與錯誤返回位址，
+並還原到原生heap紀錄中的同一畫面配置。完整857 bytes由既有IDA9.4、固定原版與Capstone逐指令核對。
+writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實際RET尾端追蹤。
+本輪依READY計畫在T11正常移鏡頭後清敵，避開原版陣列上限；不改CPU或正式玩法。
+可重跑入口為[視野稽核工具](../../tools/fd2_clear_viewport_audit.py)，證據與完整命令見
+[原主契約的postbattle_clear_viewport_spec](../data/ida/fd2_turn_event54_20261015.json)。
+第24章正式流程收據已通過，原版與重製完整SAV SHA-256為e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95。
+本輪另由兩個正常戰後caller直接反證舊角色槽白名單，依READY修訂增加實測76筆，保留28／86與其他未知數量拒收。
+主契約見[戰後前沿修訂](../data/ida/fd2_ch24_post_frontier_20261003.json)的current_revision；不重解loop、對白或sync。
+正常章重播280筆AI全消費、零順序分岔，清敵前游標與鏡頭四座標相同。
+19套件完整Go回歸通過；76筆資料修訂後另通過正常章與相關Context／Frontier／Binding回歸。
+
 使用者要求暫停匹配式反編譯，加速重製完成與 HD 化，並重排工作清單及 GitHub Issues。
 全檔 C 匹配 [#198](https://github.com/wicanr2/fd2_re/issues/198) 保持未完成及暫停，
 不作 Go／Ebiten、章節驗收或現代主題的前置。正式原版行為對拍仍使用
@@ -23,7 +36,7 @@
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 20 章 passed，即第4～23章；第1～3及24～30章共10章 todo。第24章短鏈至戰後保存四gate已過；本輪流程已到T11，四次增援與280筆AI入口全對上，但清敵後原版異常、未保存，不提高章分級 | [#142](https://github.com/wicanr2/fd2_re/issues/142)由[#207](https://github.com/wicanr2/fd2_re/issues/207)戰後異常阻塞；再接[#199](https://github.com/wicanr2/fd2_re/issues/199)及[#200](https://github.com/wicanr2/fd2_re/issues/200)。總項[#14](https://github.com/wicanr2/fd2_re/issues/14)依111／114流程例外，不代表自然難度通關 |
+| 正式章台帳 | 21章passed，即第4～24章；第1～3及25～30章共9章todo。第24章T2／4／7／10增援、T11戰後、記錄／保存與退出列表通過流程三閘門；兩側完整SAV相同，frames為參考且未擷取 | [#14](https://github.com/wicanr2/fd2_re/issues/14)總項保持；下一個[#199](https://github.com/wicanr2/fd2_re/issues/199)，之後[#200](https://github.com/wicanr2/fd2_re/issues/200)。passed限111／114的作弊流程例外，來源見[正式收據](../data/ui-traces/parity-ch24.json) |
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有23筆維持spawn版本，分布於第1／2／3／21／22／25／26章；第24章event54九操作已完整同步 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
@@ -40,13 +53,13 @@
 靜態現代素材候選報告列出九個非負speaker缺頭像宣告，仍須由正式consumer確認可達；負speaker另列，
 不把候選直接當玩家缺陷。重跑入口與限制見[61](61-modern-theme-runtime-spec.md)。
 
-本表於2026-10-15核對FD2 `2975ecb6`、遠端開啟Issue、正式章台帳、現代catalog及目前consumer。
+本表於2026-10-15核對FD2 `b8e7ec37`及本輪已驗差異、遠端開啟Issue、正式章台帳、現代catalog及目前consumer。
 章狀態與素材數由JSON直接重算；事件由全域check產生。具體命令見
 [WORKLOG](../../WORKLOG.md)當日紀錄。初次素材驗證使用既有容器的Python／Pillow，
 後續已恢復FD2專用Go工具鏈；GPU正常路徑與人耳驗收仍未完成。
 dosgolem由合併後 `main` 的 `81c85be` 建立 `fd2-followup-20261015`，
 專用worktree為 `work/dosgolem-fd2-followup-20261015`。IRQ7實作 `e26fb41` 與驗證規格 `2c5c104`
-已推送該分支，遠端HEAD一致；共用main保持。第24章接續同源第23章實際SAV，尚未提高章分級。
+已推送該分支，遠端HEAD一致；共用main保持。工具恢復批次當時接續同源第23章實際SAV，尚未提高章分級；本輪最新第24章流程結果以上方正式收據為準。
 短鏈原版211份狀態與PNG齊全，16筆AI入口零順序分岔；主收據的`chapter24_followup`保存四gate及完整SAV雜湊。
 原r3計畫的連續延後截圖覆寫已登記[#206](https://github.com/wicanr2/fd2_re/issues/206)，
 正常等待版r4取得必要原始圖片，但通用工具缺陷未修；不補圖或放寬閘門。

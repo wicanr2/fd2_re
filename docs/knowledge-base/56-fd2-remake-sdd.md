@@ -1,5 +1,7 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+2026-10-15 #207：清敵測試依原版30格死亡收尾陣列選擇安全視野，以正常鍵盤移鏡頭後才注入HP0。正式死亡規則與CPU不改。來源、強推論限制與READY契約見[event54主契約](../data/ida/fd2_turn_event54_20261015.json)的postbattle_clear_viewport_spec。
+
 2026-10-15 使用者接續定案：允許測試作弊、參考攻略，以流程一致優先，不強求每frame相同。
 後續章依[111最新修訂](../goal/111-goal-original-parity-campaign-20260915.md)採明示的flow收據；
 行為、節點、交易與完整保存仍核對，畫面只作參考。舊strict收據與正式遊戲規則保持。

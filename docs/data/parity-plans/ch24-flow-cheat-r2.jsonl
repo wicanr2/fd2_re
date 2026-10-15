@@ -1,0 +1,74 @@
+# 2026-10-15使用者定案：允許作弊，依攻略驗流程，畫面差異只作參考。
+# 固定fresh槽只加DP1000；AP200／DX60沿用，seed4；不鎖HP、不追加金幣道具。
+# 四角增援以固定原版控制列event54@T2／4／7／10核對；攻略首列T3差異明示。
+# 原版正常LOAD／整備／移動／逐回合END，到T11才一次清敵，再戰後／存檔／退出列表。
+# 本計畫不作所有戰鬥指令、傷害、難度或逐像素parity聲明。
+{"key": "", "steps": 20000000, "repeat": 8}
+{"key": "down", "steps": 3000000}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 20000000, "repeat": 6}
+{"key": "enter", "steps": 20000000}
+{"key": "", "steps": 10000000, "repeat": 20}
+{"mark": "record_question", "steps": 1000000}
+{"key": "right", "steps": 10000000}
+{"key": "enter", "steps": 10000000}
+{"key": "", "steps": 10000000, "repeat": 8}
+{"mark": "record_party_selection", "steps": 1000000}
+{"key": "enter", "steps": 20000000, "repeat": 15}
+{"key": "", "steps": 10000000, "repeat": 12}
+{"mark": "departure_confirmation", "steps": 1000000}
+{"key": "enter", "steps": 20000000}
+{"await": "enemy_alive>=1", "steps": 10000000, "max": 300}
+{"await_ui": "cursor", "steps": 10000000, "max": 180}
+{"mark": "battle_start", "steps": 1000000}
+{"move_unit": {"from_index": 0, "to": [20, 20]}, "steps": 2000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=2", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_2", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=3", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_3", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=4", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_4", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=5", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_5", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=6", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_6", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=7", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_7", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=8", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_8", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=9", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_9", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=10", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_10", "steps": 1000000}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "cursor", "steps": 20000000, "max": 300}
+{"await": "round>=11", "abort_if": "ally_alive<=0", "steps": 10000000, "max": 200}
+{"mark": "round_11", "steps": 1000000}
+{"key": "", "steps": 2000000}
+# #207 READY：正常移開鏡頭，避免原版30格死亡收尾指標陣列溢位。
+{"goto": [0, 0], "steps": 2000000, "max": 80}
+{"await_ui": "cursor", "steps": 20000000, "max": 30}
+{"mark": "before_clear_viewport", "steps": 1000000}
+{"force_enemy_clear": true, "steps": 1, "end_turn": false}
+{"sweep_round": true, "max_units": 0, "steps": 2000000}
+{"await_ui": "record_question", "steps": 20000000, "max": 300}
+{"mark": "record_question", "steps": 1000000}
+{"preparation_save": true, "slot": 0, "steps": 10000000, "settle": 4, "exit_settle": 8, "max": 30}

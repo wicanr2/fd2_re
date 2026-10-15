@@ -46,6 +46,7 @@
 #   FD2_ORACLE_EIP_TRACE_FROM／FD2_ORACLE_EIP_TRACE_TO
 #                            唯讀追蹤的指令範圍，含首尾；終點 0 表示不設上界
 #   FD2_ORACLE_EIP_TRACE_MAX 最多記錄筆數（1至200000），預設 200000
+#   FD2_ORACLE_TRACE_TAIL=1  唯讀記錄總預算末端2000條指令；診斷異常跳轉前先依既有失敗設定預算
 #                            （Watcom 暫存器呼叫慣例，前四個引數在 EAX/EDX/EBX/ECX）
 #   FD2_ORACLE_FRAME_FROM／FD2_ORACLE_FRAME_TO
 #                            只在這段指令區間取樣，用來把輸出限在要看的那一段
@@ -93,6 +94,8 @@ eip_trace=${FD2_ORACLE_EIP_TRACE:-}
 eip_trace_from=${FD2_ORACLE_EIP_TRACE_FROM:-0}
 eip_trace_to=${FD2_ORACLE_EIP_TRACE_TO:-0}
 eip_trace_max=${FD2_ORACLE_EIP_TRACE_MAX:-200000}
+trace_tail=${FD2_ORACLE_TRACE_TAIL:-}
+case "$trace_tail" in ''|1) ;; *) echo "TRACE_TAIL只接受空值或1" >&2; exit 2 ;; esac
 for trace_bound in "$eip_trace_from" "$eip_trace_to"; do
   [[ "$trace_bound" =~ ^(0|[1-9][0-9]{0,11})$ ]] || { echo "EIP 追蹤指令範圍格式無效" >&2; exit 2; }
 done
@@ -163,6 +166,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_EIP_TRACE_FROM="$eip_trace_from" \
   -e FD2_ORACLE_EIP_TRACE_TO="$eip_trace_to" \
   -e FD2_ORACLE_EIP_TRACE_MAX="$eip_trace_max" \
+  -e FD2_ORACLE_TRACE_TAIL="$trace_tail" \
   -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
   -e FD2_ORACLE_STATE="${state_dir:+/state}" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \

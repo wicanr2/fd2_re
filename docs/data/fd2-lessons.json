@@ -2200,6 +2200,21 @@
       "rule": "原版執行器在高位址報未支援opcode時，先核對載入code範圍、next_bytes與異常控制轉移，不直接補opcode或加特例。缺少caller／writer證據時保留unknown及失敗收據。入口tools/dosgolem_oracle.sh與dosgolem apps/fd2/cmd/oracle；第24章實例見docs/data/ida/fd2_turn_event54_20261015.json validation.dp_c1及#207。",
       "why": "第24章本輪正常至T11，清敵後報0x1666E8 opcode67；後續bytes疑似資料，當輪未收指令尾端，不能把資料執行誤當CPU指令能力缺口，也不能拿完整前綴冒充戰後保存成功。",
       "evidence": "docs/data/ida/fd2_turn_event54_20261015.json；https://github.com/wicanr2/fd2_re/issues/207"
+    },
+    {
+      "id": "forced-clear-respects-original-death-viewport-capacity",
+      "date": "2026-10-15",
+      "area": "測試作弊與原版流程",
+      "rule": "HP-only清敵前先核對原版死亡收尾的畫面內容量。固定FD2.EXE的sub_1DB65只有30個畫面指標，正式計畫以正常方向鍵移開鏡頭後再清敵，不能把溢位後的資料執行誤當CPU指令缺口。入口tools/fd2_clear_viewport_audit.py及docs/data/parity-plans/ch24-flow-cheat-r2.jsonl；僅限固定EXE與主契約postbattle_clear_viewport_spec的範圍。",
+      "why": "第24章T11在同畫面一次清掉40個候選，0x1DC29無界寫入覆蓋保存暫存器與返回位址；五項損壞值還原同一原生畫面配置0x14F018。普通單次擊殺不由此推定同樣出錯。",
+      "evidence": "docs/data/ida/fd2_turn_event54_20261015.json；https://github.com/wicanr2/fd2_re/issues/207",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/fd2_clear_viewport_audit.py"
+        ],
+        "pattern": "0x1DC29"
+      }
     }
   ]
 }

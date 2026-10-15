@@ -811,3 +811,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - #41 第二輪[六caller窄探針](../data/parity-plans/ch24-hud-redraw-probe-r2.jsonl)：保持同槽與原計畫前綴，修正首輪等待熱點封頂的觀察限制。
 
 第24章晚期事件的[第一輪失敗流程收據](../data/ui-traces/parity-ch24-flow-c1-failed.json)保留原版戰後異常、缺少保存與三閘門結果，不能當成章通過。
+
+第24章[正常移鏡頭後清敵計畫](../data/parity-plans/ch24-flow-cheat-r2.jsonl)依event54主契約的postbattle_clear_viewport_spec，避開原版死亡收尾30格上限。
+
+[清敵視野稽核工具](../../tools/fd2_clear_viewport_audit.py)重算固定原版30格陣列、失敗前候選與保存暫存器／返回位址覆寫；原始證據見event54主契約。
+
+第24章[正式流程收據](../data/ui-traces/parity-ch24.json)通過行為、節點、交易與完整SAV；畫面只作參考。[戰後76筆前沿修訂](../data/ida/fd2_ch24_post_frontier_20261003.json)以current_revision指定新契約，保留28／86的歷史範圍。

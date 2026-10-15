@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 23 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -76,7 +76,7 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 `turn-event-handlers-partial-transcription` · 缺陷 · [#33](https://github.com/wicanr2/fd2_re/issues/33) · 仍未完成 · 要人判
 
-2026-10-15 更新：第24章event54完整九操作已轉寫，四筆T2／4／7／10控制列同步到正式及canonical劇本。來源為既有IDA9.4與固定EXE的125 bytes核對；補足四角鏡頭與等待，規格先達READY再實作。主契約docs/data/ida/fd2_turn_event54_20261015.json。既有短鏈13張完整RGB、行為／節點／完整SAV回歸通過，本輪已驗T2／4／7／10至T11，280筆AI入口全消費且零順序分岔；原版戰後異常另列#207，完整章流程尚未通過。依使用者最新定案，畫面只作參考，不因逐幀差異阻塞流程；未轉寫事件仍須逐章補足，不能用清敵掩蓋。
+2026-10-15 更新：第24章event54完整九操作已轉寫，四筆T2／4／7／10控制列同步到正式及canonical劇本。來源為既有IDA9.4與固定EXE的125 bytes核對；補足四角鏡頭與等待，規格先達READY再實作。主契約docs/data/ida/fd2_turn_event54_20261015.json。既有短鏈13張完整RGB、行為／節點／完整SAV回歸通過，本輪T2／4／7／10至T11、戰後、記錄／保存及退出列表已通過流程三閘門，兩側完整SAV相同；280筆AI入口零順序分岔。#207／#208已限定修正並關閉，正式收據docs/data/ui-traces/parity-ch24.json。下一個事件為第25章T6 event56，仍須取得該章正常原版收據後接完整劇本。依使用者最新定案，畫面只作參考，不因逐幀差異阻塞流程；未轉寫事件仍須逐章補足，不能用清敵掩蓋。
 
 排程：P0，與相關章的正常玩家路徑一起處理。2026-10-15 容器執行全域 sync --check 通過，但仍有未轉寫事件；唯一數量與分布見 [58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)。
 
@@ -150,13 +150,13 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 排程：P0。這是戰役驗收總項，不與各章工作重複計算完成度。唯一章狀態仍由 [parity-campaign-progress.json](https://github.com/wicanr2/fd2_re/blob/main/docs/data/parity-campaign-progress.json) 與 [58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md) 判定。
 
-先完成 #142 第24章，再按章推進25～30章及結局，最後補齊1～3章。回合事件 #33 與 HUD #41 隨相關章一起收斂。不為非阻擋像素 #52 或已暫停 #198 等待，不重跑已通過章來追求函式數或無關畫面。
+第24章#142已完成流程驗收；接續#199第25～30章及結局，最後#200補齊1～3章。回合事件 #33 與 HUD #41 隨相關章一起收斂。不為非阻擋像素 #52 或已暫停 #198 等待，不重跑已通過章來追求函式數或無關畫面。
 
 已綁定的章節各自有窄 `RUNTIME-E1`，但沒有每一章都以同狀態走過戰前對白、戰鬥節拍、戰後節點、城鎮與存檔邊界並與原版比較。
 
 2026-09-15 決議（取代 2026-08-23 的「交人工遊玩回報」）：由代理程式依 [`111` 目標提示詞](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/111-goal-original-parity-campaign-20260915.md) 用 dosgolem 逐章推進 30 章。起點用受版控工具依攻略校準的建構槽跳關，章內全程正常鍵盤輸入，抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點；這條路徑視同該章 `PLAYER-E2`。依2026-10-15最新使用者定案，允許作弊通關並參考攻略，以行為、節點與交易三閘門驗流程一致；畫面只作參考，不強求每個frame相同，進度台帳是 `docs/data/parity-campaign-progress.json`。
 
-執行子項：#142 第24章、#199 第25～30章、#200 第1～3章；#203環境前置已限定驗收；#207阻塞第24章戰後交接。總項保持30章流程驗收範圍，暫停研究不在依賴內。
+執行子項：#142 第24章、#199 第25～30章、#200 第1～3章；#203環境前置已限定驗收；#207與#208已完成限定修正及第24章流程驗收。總項保持30章流程驗收範圍，暫停研究不在依賴內。
 
 怎樣算做完：30 章各自依 111 的章工作單元取得原版／重製收據，依111最新修訂通過流程三閘門，逐幀畫面只作參考；parity-campaign-progress.json 的 all_chapters_passed 為 true。
 
@@ -188,45 +188,33 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
 
-### P0 第24章：完成增援、戰後與完整存檔流程
-
-`ch24-full-chapter-parity` · 工作 · [#142](https://github.com/wicanr2/fd2_re/issues/142) · 仍未完成 · 要人判
-
-排程：P0，原版戰役流程驗收的下一個垂直切片。
-
-2026-10-15 使用者定案：允許本章最多三輪章前DP校準，並指定『就作弊過關吧』『記得參考攻略喔』『只要流程一致即可 不用強求每個frame一樣』。依111／114最新修訂，驗行為、事件、節點與完整保存。畫面差異保留為參考，不再作完成門檻。不要求本輪覆蓋所有攻擊或自然難度。#198匹配反編譯保持暫停。
-
-原版runner固定dosgolem專用乾淨分支2c5c104c162150fc6440e02fcc95efebb3d914dc，已包含完整IRQ7。既有fresh建構槽SHA256 1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810，原有AP+200／DP+0／DX+60。本輪只在章前加DP1000，seed4，兩側讀同SAV；候選2000／4000，最多三輪，章內不鎖HP。清冊docs/data/parity-slots/ch24-flow-dp1000-manifest.json，計畫docs/data/parity-plans/ch24-flow-cheat-r1.jsonl。
-
-event54已依固定EXE、既有IDA9.4及Capstone補齊四角pan與delay，九項具型別操作經READY後實作。攻略作玩家旁證；攻略增援回合3／4／7／10與固定控制列及實測2／4／7／10不同，沿原版證據並保留差異。主契約docs/data/ida/fd2_turn_event54_20261015.json。
-
-既有T1～T3短鏈以目前劇本重跑通過四閘門，13張完整RGB零差異及完整SAV相同。本輪DP1000第一輪已正常至T11，T2／4／7／10四次增援全觸發，原版280筆AI由重製端全消費且零順序分岔。清敵60筆一次後，正常END在9470673688steps異常跳至0x1666E8，沒有戰後SAV，另列P0 #207。流程驗收保留failed：behavior=true，nodes=false，transaction=false；章台帳保持todo。未使用第二／三輪DP，不重擲seed。畫面不是這次失敗原因。前次敗北與近似限制保留於歷史留言，不重新刷同方案或挑seed。#206延後PNG缺陷維持獨立P1，不阻塞流程驗收。
-
-怎樣算做完：['固定EXEhash、dosgolem commit、同源SAV與受版控計畫／清冊，正常章路徑可重跑。', '流程驗收的行為、節點與交易三閘門及完整SAV通過；畫面只作參考。相關Go及第23章回歸通過。', '同步56／57／58、索引、正式台帳與產生現況，保留注入、敗北及未抽範圍。']
-
-證據：`['docs/data/ui-traces/parity-ch23.json', 'docs/goal/111-goal-original-parity-campaign-20260915.md', 'docs/data/parity-campaign-progress.json', 'docs/data/fd2-remake-toolchain-recovery-20261015.json', 'docs/data/ida/fd2_turn_event54_20261015.json']`
-
 ### P0 完成第25～30章與結局的正常章驗收
 
 `campaign-ch25-ch30-finish` · 工作 · [#199](https://github.com/wicanr2/fd2_re/issues/199) · 仍未完成 · 要人判
+
+第24章已依流程驗收通過，#142／#207／#208已關閉。本項成為下一個P0。可接續的原版實際保存為work/ch24-flow-20261015/state-flow-r3/FD2.SAV，SHA256 e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95；先複製到新覆蓋層，保留此來源。既有章台帳與正式收據保存AP200／DP1000／DX60及注入限制，不將測試槽當自然難度通關。
+
+2026-10-15使用者已定案：允許明示作弊槽及清敵，參考攻略，以流程一致為完成標準，不強求每個frame相同。後續章使用verification_profile=flow，行為／節點／交易及實際保存仍須通過。
+
+第25章準備：攻略第6回合援軍對應event56、sub_35487（IDA LE linear35487..354DD，86 bytes），原始呼叫為鏡頭(6,40)、group1、ACTING74、text5、134E4重設pose。1366A依既有語意索引為ACTING播放器，74不是角色槽；event55屬另一條炎龍劍事件。先取得正式第25章原版收據，再依工具契約接完整劇本，不只spawn，也不提前宣稱E2。原始入口沿既有IDA9.4固定匯出，matching保持暫停。
 
 排程：P0，承接 #142 第24章，屬 #14 的執行子項。逐章追原始資料→typed事件→規則→正常鍵盤→戰後→持續隊伍→存檔／結局，不另設一份章完成台帳。
 
 優先重用已閉合RE與既有引擎；遇到實際差異才開窄RE。25／26章剩餘回合事件與 #33 一起處理。遵守111／114的槽、seed與注入限制，不刷長局、不鎖HP；最後一章以實際結局／終止邊界驗收，沒有城鎮就不虛造城鎮交易。
 
-卡在：先完成 #142 第24章；若揭露玩家阻擋，與其所屬規則／事件Issue一起修正。
-
-怎樣算做完：parity-campaign-progress.json 的25～30章各有正式dosgolem來源、計畫、來源槽、四閘門與實際保存邊界；第30章有結局及隊伍狀態結果。失敗保留，既有passed章不重算。
+怎樣算做完：parity-campaign-progress.json 的25～30章各有正式dosgolem來源、計畫、來源槽、依111最新修訂通過行為／節點／交易三閘門與實際保存邊界，畫面只作參考；第30章有結局及隊伍狀態結果。失敗保留，既有passed章不重算。
 
 ### P0 補齊第1～3章正式驗收與新遊戲入口
 
 `campaign-ch01-ch03-closeout` · 工作 · [#200](https://github.com/wicanr2/fd2_re/issues/200) · 仍未完成 · 要人判
 
+2026-10-15：依使用者最新定案驗流程一致，允許明示測試作弊；行為／節點／交易與實際保存須通過，逐幀畫面只作參考。舊畫面門檻不阻塞本項，匹配研究維持暫停。
+
 排程：P0，與後段章驗收同屬 #14；後段完成後補齊，若新遊戲有玩家阻擋則立即處理。重用既有標題至第一章研究，不把舊RUNTIME-E1或不同來源收據直接提升為111。
 
 從標題START正常輸入覆蓋開場／第一章；各章依111取得戰鬥抽樣、事件、戰後、城鎮與存檔。第1～3章剩餘回合事件由 #33 同步收斂。
 
-怎樣算做完：正式台帳第1～3章均passed，四閘門及存檔來源完整；另有目前正式引擎標題START到第一章可操作的正常鍵盤收據，明示建構槽與注入限制。
+怎樣算做完：正式台帳第1～3章均passed，依111最新修訂的流程三閘門，畫面只作參考及存檔來源完整；另有目前正式引擎標題START到第一章可操作的正常鍵盤收據，明示建構槽與注入限制。
 
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
@@ -353,19 +341,5 @@ event54已依固定EXE、既有IDA9.4及Capstone補齊四角pan與delay，九項
 怎樣算做完：受版控READY規格先於修正；相鄰兩個insideScreenWriter邊界的PNG都不丟失且來源／延後步數可追；保留CPU與輸入時序、不以中途畫面充數。正反向測試及固定原版重跑通過，既有前綴與畫面比較保持。
 
 證據：`docs/data/fd2-remake-toolchain-recovery-20261015.json`
-
-### P0 第24章T11清敵後戰後交接異常跳至0x1666E8
-
-`oracle-ch24-round11-postbattle-high-eip` · 缺陷 · [#207](https://github.com/wicanr2/fd2_re/issues/207) · 仍未完成 · 要人判
-
-2026-10-15正式dosgolem 2c5c104乾淨分支、固定FD2.EXE、本輪DP1000槽與seed4，正常鍵盤已到T11，T2／4／7／10四次event54均觸發。依使用者作弊流程政策清敵一次60筆，正常END後oracle在9470673688steps停止：cpu386 EIP=001666E8 opcode67尚未支援。最後完整checkpoint636，seq637未完成，沒有戰後SAV。
-
-錯誤位址屬dosgolem relocated LE linear；next_bytes64為67 65 64 64 63 62 73 66…，疑似資料執行，真因未知。不能直接加0x67支援或略過錯誤來假通過。IRQ7最後ISR正常返回，不能以此斷言本錯誤由IRQ7造成。須先取得異常控制轉移與writer／consumer證據，必要時作有界局部實驗，不再重跑完整長局或調DP掩蓋。
-
-原始失敗、inputchain、plan、runner與所有雜湊見docs/data/ida/fd2_turn_event54_20261015.json validation.dp_c1。run留work/ch24-flow-20261015/original-c1。第24章#142保持OPEN；畫面只作參考不影響這個流程阻擋。
-
-怎樣算做完：先定位異常轉移的原始caller與資料流，形成READY規格再修；正式受版控oracle正常到戰後記錄與完整SAV。用同輸入核對行為、節點與交易，不以補opcode、略過未知或換seed掩蓋；既有短鏈與晚期事件回歸通過。
-
-證據：`docs/data/ida/fd2_turn_event54_20261015.json`
 
 <!-- END fd2_worklist.py render -->

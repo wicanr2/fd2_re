@@ -28,6 +28,9 @@ FD2_ORACLE_EIP_TRACE=${FD2_ORACLE_EIP_TRACE:-}
 FD2_ORACLE_EIP_TRACE_FROM=${FD2_ORACLE_EIP_TRACE_FROM:-0}
 FD2_ORACLE_EIP_TRACE_TO=${FD2_ORACLE_EIP_TRACE_TO:-0}
 FD2_ORACLE_EIP_TRACE_MAX=${FD2_ORACLE_EIP_TRACE_MAX:-200000}
+FD2_ORACLE_TRACE_TAIL=${FD2_ORACLE_TRACE_TAIL:-}
+case "$FD2_ORACLE_TRACE_TAIL" in ''|1) ;; *) echo "TRACE_TAIL只接受空值或1" >&2; exit 2 ;; esac
+export FD2_ORACLE_TRACE_TAIL
 FD2_ORACLE_LOCK_ALLY_HP=${FD2_ORACLE_LOCK_ALLY_HP:-}
 FD2_ORACLE_STATE=${FD2_ORACLE_STATE:-}
 if [ -n "$FD2_ORACLE_FRAME_UNITS" ] && [ "$FD2_ORACLE_FRAME_UNITS" != "1" ]; then
@@ -165,6 +168,9 @@ runner = {
     "eip_trace_window": {"from_step": int(env["FD2_ORACLE_EIP_TRACE_FROM"]),
                          "to_step": int(env["FD2_ORACLE_EIP_TRACE_TO"]),
                          "max_entries": int(env["FD2_ORACLE_EIP_TRACE_MAX"])},
+    "instruction_tail": {"enabled": env.get("FD2_ORACLE_TRACE_TAIL") == "1",
+                         "max_instructions": 2000,
+                         "scope": "existing oracle -trace-tail: final budget window; read-only EIP positions"},
     "lock_ally_hp": bool(env.get("FD2_ORACLE_LOCK_ALLY_HP")),
     "force_enemy_clear_declared": bool(env.get("FD2_ORACLE_FORCE_ENEMY_CLEAR")),
     "original_fd2_exe_sha256": sha,
@@ -187,6 +193,9 @@ Path("/out/runner.json").write_text(json.dumps(runner, ensure_ascii=False, inden
 META
 set -euo pipefail
 frameargs=()
+if [ "$FD2_ORACLE_TRACE_TAIL" = "1" ]; then
+  frameargs+=(-trace-tail)
+fi
 if [ -n "$FD2_ORACLE_FRAMES" ]; then
   frameargs=(-frame-dir /out/frames
              -frame-stride "$FD2_ORACLE_FRAME_STRIDE"

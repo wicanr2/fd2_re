@@ -971,6 +971,53 @@ func TestParityClearRespectsOraclePhaseBoundary(t *testing.T) {
 func (r *parityReplay) mark(action parityAction) {
 	t, g := r.t, r.g
 	switch action.Label {
+	case "before_clear_viewport":
+		// #207：mark沿用最後完成的seq，故末端方向鍵也要消費。
+		if !r.playerHasControl() || g.st.Turn != action.Round ||
+			verifyParityPreparationOwner(r.run, action.Seq, "0x117F8") != nil {
+			t.Fatal("清敵前視野mark缺少同回合正常游標owner")
+		}
+		for seq := r.prevSeq + 1; seq <= action.Seq; seq++ {
+			key, exists := r.keys[seq]
+			if !exists {
+				t.Fatalf("清敵前方向鍵seq%d缺少來源", seq)
+			}
+			switch key {
+			case "":
+			case "left":
+				g.moveMapCursor(-1, 0)
+			case "right":
+				g.moveMapCursor(1, 0)
+			case "up":
+				g.moveMapCursor(0, -1)
+			case "down":
+				g.moveMapCursor(0, 1)
+			default:
+				t.Fatalf("清敵前視野seq%d包含非方向鍵%s", seq, key)
+			}
+		}
+		data, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", action.Seq)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var original struct {
+			View map[string]int `json:"view"`
+		}
+		if err := json.Unmarshal(data, &original); err != nil {
+			t.Fatal(err)
+		}
+		for _, key := range []string{"cursor_x", "cursor_y", "camera_x", "camera_y"} {
+			if _, exists := original.View[key]; !exists {
+				t.Fatalf("清敵前視野來源缺少%s", key)
+			}
+		}
+		view := g.st.NativeMapViewState
+		if !g.st.HasNativeMapViewState || g.curX != original.View["cursor_x"] || g.curY != original.View["cursor_y"] ||
+			view.CameraX != original.View["camera_x"] || view.CameraY != original.View["camera_y"] {
+			t.Fatalf("清敵前視野不同：重製cursor(%d,%d) camera(%d,%d)，原版%+v",
+				g.curX, g.curY, view.CameraX, view.CameraY, original.View)
+		}
+		r.checkpoint("mark:"+action.Label, action.Seq, r.ui(), true)
 	case "record_question":
 		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x2CC76"); err != nil {
 			t.Fatal(err)

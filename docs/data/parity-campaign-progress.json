@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-10-03",
+  "updated": "2026-10-15",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -653,15 +653,36 @@
     },
     {
       "chapter": 24,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch24.json",
+      "slot_manifest": "docs/data/parity-slots/ch24-flow-dp1000-manifest.json",
+      "slot_sha256": "74cba43cc147b259273d63bf0f777b6e1d3082838f677d0855080ee894c274f0",
+      "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+      "date": "2026-10-15",
+      "verify": "依docs/data/ui-traces/parity-ch24.json verification.commands重跑；流程模式advisory，正常T11→移鏡頭→一次清敵→戰後／完整SAV／退出列表。",
+      "limitations": [
+        "PLAYER-E2限111／114使用者定案的作弊流程例外，AP200／DP1000／DX60與建構成長seed4，不證明自然難度、傷害、存活或選目標。",
+        "T2／4／7／10事件與T11戰後保存已驗；畫面只作參考，frames未擷取，不宣稱逐像素或所有攻擊指令。",
+        "正常移游標至(0,0)再清敵60筆一次，畫面內3筆；兩側完整SAV e67cf23b…相同，原始失敗與環境中止保留。"
+      ],
+      "prior_receipts": [
+        "docs/data/ui-traces/parity-ch24-flow-c1-failed.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 6,
+        "seed": 4,
+        "event_states": {
+          "7:17": 1
+        },
+        "boost": {
+          "base_ap": 200,
+          "base_dp": 1000,
+          "base_dx": 60
+        },
+        "boost_only_recalibration": true,
+        "calibration_levels_per_chapter": 0,
+        "parent_save_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810"
+      }
     },
     {
       "chapter": 25,

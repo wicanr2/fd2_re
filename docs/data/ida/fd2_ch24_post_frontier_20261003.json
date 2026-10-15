@@ -69,5 +69,54 @@
     "receipt": "docs/data/ui-traces/ch24-finite-parity.json",
     "evidence_level": "RUNTIME-E1",
     "scope": "限兩個正常選人分支、T2／T3及28筆正常戰後保存；晚期T4／7／10與整章未驗。"
-  }
+  },
+  "revision_20261015_runtime76": {
+    "status": "CONFORMED",
+    "reopen_reason": "本輪同狀態原版T11戰後兩個已知對話caller均76筆，直接反證舊[28,86]白名單足以涵蓋已驗流程；不重做已閉合loop、對話或sync語意。",
+    "evidence_level": "已證實：原版兩個caller與有效76筆前沿同時出現。",
+    "witnesses": [
+      {
+        "seq": 677,
+        "path": "work/ch24-flow-20261015/original-flow-r3/checkpoint-0677.json",
+        "sha256": "a26f7116577d8003dd13ba06b423612ea682077393656186655067f44e998497",
+        "return_address": "0x24C51",
+        "runtime_slots": 76,
+        "unit_base": 1634612
+      },
+      {
+        "seq": 685,
+        "path": "work/ch24-flow-20261015/original-flow-r3/checkpoint-0685.json",
+        "sha256": "e732fa4349fb25162166cb8fdea5e869b66af30ff5bc9e9a2990263976196825",
+        "return_address": "0x24CB2",
+        "runtime_slots": 76,
+        "unit_base": 1634612
+      }
+    ],
+    "original_completed_save_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+    "remake_failure": {
+      "log": "work/ch24-flow-20261015/remake-flow-r3/replay.log",
+      "sha256": "3b101418ee5fd2c741509279a88d6761b4fb3b207952319b42d8b73b7ff8dffe",
+      "message": "beat runtime_context: runtime slots=76, want exact 0 or one of [28 86]"
+    },
+    "typed_contract": {
+      "binding": "remake/assets/cutscenes/bindings/ch23_post.json",
+      "slot_counts": [
+        28,
+        76,
+        86
+      ],
+      "scope_28": "先前T2短鏈有效前沿，保留。",
+      "scope_76": "本輪同一建構槽、T2／4／7／10全觸發，T11清敵後正常戰後有效前沿。",
+      "scope_86": "歷史全量fixture，保留，不推定正常可達。",
+      "unknown_counts": "仍拒收；不刪guard，不提前append未登場群組，不改slot schema、loop或sync順序。"
+    },
+    "acceptance": "正式同源r3重播通過戰後與完整SAV；相關runtime_context／campaign回歸通過，未知數量仍拒收。",
+    "receipt": "docs/data/ui-traces/parity-ch24.json",
+    "save_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+    "ai_entries": 280,
+    "related_regression": "work/ch24-flow-20261015/frontier76-targeted-go.log",
+    "scope": "只增加正式原版兩caller已驗76筆前沿；28與86歷史範圍保留，其他count仍拒收。",
+    "issue": 208
+  },
+  "current_revision": "revision_20261015_runtime76"
 }

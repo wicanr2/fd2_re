@@ -630,6 +630,674 @@
       "md_directories": 0,
       "unexpected_fd2_containers": 0,
       "matching_decompilation": "paused"
+    },
+    "postbattle_flow_r2": {
+      "status": "environment-terminated",
+      "input_hashes": {
+        "tools/dosgolem_oracle_drive.py": "0b4e37e2aca855ccc9b5199c0295609d3e9a7e9b6fe96a397a337eed902d238e",
+        "tools/dosgolem_oracle_container.sh": "2ec5858f2e5f4b7411e2d68d0fda766c578df97996969bc3d4be1000df824373",
+        "docs/data/parity-plans/ch24-flow-cheat-r2.jsonl": "f38e2a88599584faf42d2571d55bdabe8cae2fd1370cfb00cb39708337e707b4",
+        "work/ch24-flow-20261015/slot-c1/FD2.SAV": "74cba43cc147b259273d63bf0f777b6e1d3082838f677d0855080ee894c274f0"
+      },
+      "original": "work/ch24-flow-20261015/original-flow-r2",
+      "remake": "work/ch24-flow-20261015/remake-flow-r2",
+      "prefix_check": {
+        "from": 0,
+        "through": 300,
+        "full_state_files": 301,
+        "differences": [],
+        "method": "完整原始JSON bytes相等，不忽略view、raw單位、步數、RNG或IRQ欄位。"
+      },
+      "python_tests": 123,
+      "targeted_go_tests": 27,
+      "source_admission": "old／merged／fixed／current接受；六個單檔修改及兩個混合tuple拒收。",
+      "trace_tail": "實際診斷runner enabled=true；非法值2在啟動前拒收；取得更窄證據後停止部分診斷，不當成完整章。",
+      "exit_status": 143,
+      "last_complete_seq": 303,
+      "oracle_error_output": false,
+      "classification": "SIGTERM中斷，oracle.log空；先分類執行環境，不判遊戲敗北或修改校準值。",
+      "next_run": "original-flow-r3：同來源、同槽、同計畫，只將2040秒逾時移入有界Docker擁有程序，避免依賴長時間主機工具session。原run保留。",
+      "ch23_regression": "work/ch24-flow-20261015/ch23-viewport-regression-verify.json"
+    },
+    "postbattle_flow_r3": {
+      "status": "passed",
+      "original": "work/ch24-flow-20261015/original-flow-r3",
+      "remake": "work/ch24-flow-20261015/remake-flow-r3-frontier76",
+      "plan": "docs/data/parity-plans/ch24-flow-cheat-r2.jsonl",
+      "same_inputs_as_r2": true,
+      "lifecycle": "Docker detached --rm，owner=ch24-postbattle-r3，容器內timeout2040；原版及來源唯讀，memory3g／cpus2／pids128／UID1000。",
+      "source_revision": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+      "slot_sha256": "74cba43cc147b259273d63bf0f777b6e1d3082838f677d0855080ee894c274f0",
+      "ch23_regression": "work/ch24-flow-20261015/ch23-viewport-regression-verify.json",
+      "safe_clear": {
+        "checkpoint_seq": 663,
+        "camera": [
+          0,
+          0
+        ],
+        "visible_pending_count": 3,
+        "units": [
+          {
+            "index": 57,
+            "x": 10,
+            "y": 7
+          },
+          {
+            "index": 59,
+            "x": 10,
+            "y": 9
+          },
+          {
+            "index": 60,
+            "x": 9,
+            "y": 9
+          }
+        ],
+        "force_enemy_clear_records": 60,
+        "record_byte5_changed_by_injection": false
+      },
+      "receipt": "docs/data/ui-traces/parity-ch24.json",
+      "receipt_sha256": "7e59a3bc6db4d3ca6cc682a518c817be40a15ecf9ebe84b48bb6a3626be0f4f1",
+      "gates": {
+        "behavior": true,
+        "nodes": true,
+        "transaction": true,
+        "frames": false
+      },
+      "verification_profile": "flow",
+      "complete_save_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+      "original_checkpoints": 710,
+      "original_final_seq": 709,
+      "original_write_count": 2,
+      "prefix_check": {
+        "through": 621,
+        "full_state_files": 622,
+        "differences": [],
+        "method": "完整原始JSON bytes比較，不忽略欄位；到T11改視野前相同。"
+      },
+      "ai_entries": 280,
+      "ai_order_divergences": 0,
+      "frontier_fix": "docs/data/ida/fd2_ch24_post_frontier_20261003.json#revision_20261015_runtime76",
+      "original_parameters": {
+        "entry": "tools/dosgolem_oracle_container.sh",
+        "image": "dosgolem-go-ebiten:1.24-r1",
+        "cwd": "/dos",
+        "env": {
+          "FD2_ORACLE_BUDGET": "40000000000",
+          "FD2_ORACLE_HEAP_PROFILE": "native",
+          "FD2_ORACLE_STATE": "/state",
+          "FD2_ORACLE_MAP_STATE": "1",
+          "FD2_ORACLE_EIP_TRACE": "0x13A9F,0x1E54A,0x3535D,0x35367,0x35375,0x3538E,0x353A7,0x353C0,0x353D9",
+          "FD2_ORACLE_EIP_TRACE_MAX": "200000",
+          "FD2_ORACLE_FORCE_ENEMY_CLEAR": "1",
+          "FD2_ORACLE_SOURCE_COMMIT": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+          "FD2_ORACLE_SOURCE_BRANCH": "fd2-followup-20261015",
+          "FD2_ORACLE_SOURCE_DIRTY": "0",
+          "FD2_ORACLE_SOURCE_UNTRACKED": "0"
+        },
+        "mounts": {
+          "/src": {
+            "host": "/home/anr2/cht/fd2",
+            "mode": "ro"
+          },
+          "/dos": {
+            "host": "/home/anr2/cht/fd2/work/dosgolem-fd2-followup-20261015",
+            "mode": "ro"
+          },
+          "/orig": {
+            "host": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+            "mode": "ro"
+          },
+          "/drive.py": {
+            "host": "/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py",
+            "mode": "ro"
+          },
+          "/plan.jsonl": {
+            "host": "/home/anr2/cht/fd2/docs/data/parity-plans/ch24-flow-cheat-r2.jsonl",
+            "mode": "ro"
+          },
+          "/maps": {
+            "host": "/home/anr2/cht/fd2/remake/assets/maps",
+            "mode": "ro"
+          },
+          "/out": {
+            "host": "/home/anr2/cht/fd2/work/ch24-flow-20261015/original-flow-r3",
+            "mode": "rw"
+          },
+          "/state": {
+            "host": "/home/anr2/cht/fd2/work/ch24-flow-20261015/state-flow-r3",
+            "mode": "rw"
+          },
+          "/recovery": {
+            "host": "/home/anr2/cht/fd2/work/remake-recovery-20261015",
+            "mode": "rw"
+          }
+        },
+        "cache": {
+          "GOCACHE": "/recovery/dos-cache/gocache",
+          "GOMODCACHE": "/recovery/dos-cache/gomodcache"
+        },
+        "reproduce": "使用新的output/state revision及UID1000目錄；先把slot-c1/FD2.SAV複製到新state。將/out、/state及SOURCE_STATE定位一併改為新路徑；來源commit、plan與SAV SHA保持。Docker --rm --network none --user1000:1000 --memory3g --cpus2 --pids-limit128；command timeout2040 bash /src/tools/dosgolem_oracle_container.sh；長工作由Docker自有有界生命週期，完整結果以actions與DOS保存收據核對。"
+      }
+    },
+    "current_go_regression": {
+      "full_packages": 19,
+      "full_log": "work/ch24-flow-20261015/viewport-full-go.log",
+      "scope": "最終Go來源的19套件通過；其後只改76槽binding資料，再跑章Game及相關Context／Frontier／Binding回歸。",
+      "post_binding_targeted_log": "work/ch24-flow-20261015/frontier76-targeted-go.log",
+      "post_binding_targeted_tests": 59,
+      "status": "passed"
+    },
+    "final_checks_current": {
+      "changed_files": 18,
+      "uid_gid": "1000:1000",
+      "local_links": 2262,
+      "broken_links": 0,
+      "historic_root_owned": 2811,
+      "md_directories": 0,
+      "lessons": 200,
+      "lesson_guards": 84,
+      "unexpected_fd2_containers": 0,
+      "campaign_passed": 21,
+      "closed_issues": [
+        142,
+        207,
+        208
+      ]
+    }
+  },
+  "postbattle_diagnostic_spec": {
+    "state": "READY",
+    "scope": "只轉送既有oracle -trace-tail，取得#207異常控制轉移；不改CPU、原始遊戲、鍵盤或正式重製規則。",
+    "evidence": {
+      "oracle_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+      "oracle_main_sha256": "2ec3ae81c539599ac61ef8ac989d262328626f900879f8156fe03a60c33ff0a3",
+      "implementation": "apps/fd2/cmd/oracle/main.go:61,887；tail只於steps>=budget-2000追加當前EIP，不寫原版狀態。",
+      "previous_error_step": 9470673688
+    },
+    "contract": {
+      "env": "FD2_ORACLE_TRACE_TAIL",
+      "accepted": "空值關閉或1開啟，其他值於啟動oracle前拒收",
+      "provenance": "runner.json記錄enabled、2000指令窗口及既有末端預算語意",
+      "budget": 9470674000,
+      "expected_tail_start": 9470672000,
+      "plan": "docs/data/parity-plans/ch24-flow-cheat-r1.jsonl",
+      "slot_sha256": "74cba43cc147b259273d63bf0f777b6e1d3082838f677d0855080ee894c274f0",
+      "seed": 4
+    },
+    "acceptance": "相同原版來源與初始SAV；控制序列／前636點可核對；新run取得異常跳轉前有效LE EIP與來源指令。若差異或窗口未到，保存失敗，不宣稱找出真因。"
+  },
+  "postbattle_clear_viewport_spec": {
+    "state": "CONFORMED",
+    "scope": "第24章測試作弊清敵前，正常鍵盤移游標至(0,0)，使同時死亡的畫面內候選不超過原版30格；不改死亡規則、HP政策、原版或重製引擎。",
+    "evidence": {
+      "function": "sub_1DB65，IDA LE linear 0x1DB65..0x1DEBE；既有IDA9.4匯出",
+      "writer": "0x1DC29 mov [esp+ebp*4],ecx；無count上限檢查",
+      "local_frame": "0x1DB73 sub esp,0x7C；0x1DD61把malloc指標存於[esp+0x78]，故陣列容量30。四個保存暫存器在+0x7C..+0x88，返回位址在+0x8C。",
+      "consumer": "0x1DEB6 add esp,0x7C；依序pop ebp/edi/esi/ebx，0x1DEBD ret。",
+      "raw_viewport_constants": "0x51A87 bytes 0d000000，0x51A8B bytes08000000；Capstone5.0.3 Docker機械擷取固定EXE。",
+      "previous_run": "checkpoint0631含40個符合條件的HP0／byte5 bit0=0候選；第31..35個指標可同時解釋4個保存暫存器及0x1666E8返回位址，計得同一canvas base0x14F018，既有原生heap紀錄可找到此153216-byte配置。",
+      "confidence": "強推論：完整原始writer／consumer、所有五項覆寫值相符；尚未取得實際RET前指令尾端。"
+    },
+    "input_policy": {
+      "slot_sha256": "74cba43cc147b259273d63bf0f777b6e1d3082838f677d0855080ee894c274f0",
+      "seed": 4,
+      "boost_dp": 1000,
+      "normal_input_before_clear": "goto(0,0)，steps2000000，max80；await cursor，mark before_clear_viewport",
+      "state_injections": "仍只在T11清敵一次，不鎖HP，不改byte5",
+      "plan": "docs/data/parity-plans/ch24-flow-cheat-r2.jsonl"
+    },
+    "acceptance": "相同起點與T2／4／7／10增援、T11前綴；核對清敵前鏡頭與待處理數量<=30；正式oracle完成戰後、整備、實際保存及退出列表；同計畫重製端行為／節點／交易通過。",
+    "diagnostic_stop": "已取得更窄的原始指令及狀態覆寫證據，停止trace-tail長重播；保留部分輸出，不當成新的完整原版收據。",
+    "audit": {
+      "schema_version": 1,
+      "kind": "fd2_clear_viewport_stack_audit",
+      "confidence": "強推論：原始 writer／consumer 已證實，五項覆寫與原生配置相符；未取得實際RET指令尾端。",
+      "input": {
+        "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "ida_export_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+        "checkpoint_sha256": "37cf64f66e9ad1a051c05fdb99a40894df9c359d27984c969ddcb8fb29b2db56",
+        "failure_sha256": "686f85cf2e30cfcc8f693e8509d4992357d5a7e551af725a01435688fba613fd"
+      },
+      "warning": "⚠ 崩潰關聯列強推論；原始指令效果已證實，不推定作者的C宣告。",
+      "tools": {
+        "primary": {
+          "name": "IDA Pro",
+          "version": "9.4",
+          "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+        },
+        "cross_check": {
+          "name": "Capstone",
+          "version": "5.0.3",
+          "mode": "32-bit x86"
+        },
+        "audit_sha256": "b5774e12eb7ffa1262370551c776dbbbe339612b0c2e8641c7625830373b6f2e"
+      },
+      "original_function": {
+        "name": "sub_1DB65",
+        "address_space": "IDA LE loader linear",
+        "start": "0x1DB65",
+        "end_exclusive": "0x1DEBE",
+        "bytes": 857,
+        "instructions_verified": 256,
+        "critical_original_instructions": [
+          {
+            "ida_linear_address": "0x1db73",
+            "file_offset": "0x1e973",
+            "loaded_bytes": "83ec7c",
+            "file_bytes": "83ec7c",
+            "instruction": "sub     esp, 7Ch",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "保留124-byte局部堆疊",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1dc29",
+            "file_offset": "0x1ea29",
+            "loaded_bytes": "890cac",
+            "file_bytes": "890cac",
+            "instruction": "mov     [esp+ebp*4+8Ch+var_8C], ecx",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "以EBP索引寫入畫面指標",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1dd61",
+            "file_offset": "0x1eb61",
+            "loaded_bytes": "89442478",
+            "file_bytes": "89442478",
+            "instruction": "mov     [esp+8Ch+var_14], eax",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "將malloc返回指標存於局部偏移0x78",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1deb6",
+            "file_offset": "0x1ecb6",
+            "loaded_bytes": "83c47c",
+            "file_bytes": "83c47c",
+            "instruction": "add     esp, 7Ch",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "釋放124-byte局部堆疊",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1deb9",
+            "file_offset": "0x1ecb9",
+            "loaded_bytes": "5d",
+            "file_bytes": "5d",
+            "instruction": "pop     ebp",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "恢復EBP",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1deba",
+            "file_offset": "0x1ecba",
+            "loaded_bytes": "5f",
+            "file_bytes": "5f",
+            "instruction": "pop     edi",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "恢復EDI",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1debb",
+            "file_offset": "0x1ecbb",
+            "loaded_bytes": "5e",
+            "file_bytes": "5e",
+            "instruction": "pop     esi",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "恢復ESI",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1debc",
+            "file_offset": "0x1ecbc",
+            "loaded_bytes": "5b",
+            "file_bytes": "5b",
+            "instruction": "pop     ebx",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "恢復EBX",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          },
+          {
+            "ida_linear_address": "0x1debd",
+            "file_offset": "0x1ecbd",
+            "loaded_bytes": "c3",
+            "file_bytes": "c3",
+            "instruction": "retn",
+            "semantic_annotations": [],
+            "original_function": "sub_1DB65",
+            "attached_semantic": "由堆疊取得返回EIP",
+            "confidence": "已證實",
+            "evidence": "固定EXE SHA256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f／IDA匯出 cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5；原始bytes及消費端核對"
+          }
+        ]
+      },
+      "frame": {
+        "local_bytes": 124,
+        "pointer_slots": 30,
+        "malloc_pointer_offset": "0x78",
+        "saved_register_offsets": [
+          "0x7C",
+          "0x80",
+          "0x84",
+          "0x88"
+        ],
+        "return_offset": "0x8C"
+      },
+      "viewport": {
+        "camera_x": 16,
+        "camera_y": 14,
+        "width_constant": 13,
+        "height_constant": 8,
+        "constant_address_space": "FD2.EXE LE linear, file-backed initial values"
+      },
+      "selected_count": 40,
+      "selected": [
+        {
+          "unit_index": 16,
+          "x": 20,
+          "y": 19
+        },
+        {
+          "unit_index": 17,
+          "x": 21,
+          "y": 15
+        },
+        {
+          "unit_index": 18,
+          "x": 21,
+          "y": 21
+        },
+        {
+          "unit_index": 19,
+          "x": 22,
+          "y": 17
+        },
+        {
+          "unit_index": 20,
+          "x": 20,
+          "y": 16
+        },
+        {
+          "unit_index": 21,
+          "x": 19,
+          "y": 16
+        },
+        {
+          "unit_index": 22,
+          "x": 19,
+          "y": 17
+        },
+        {
+          "unit_index": 23,
+          "x": 20,
+          "y": 18
+        },
+        {
+          "unit_index": 24,
+          "x": 21,
+          "y": 19
+        },
+        {
+          "unit_index": 25,
+          "x": 21,
+          "y": 20
+        },
+        {
+          "unit_index": 26,
+          "x": 22,
+          "y": 16
+        },
+        {
+          "unit_index": 27,
+          "x": 19,
+          "y": 19
+        },
+        {
+          "unit_index": 28,
+          "x": 19,
+          "y": 18
+        },
+        {
+          "unit_index": 29,
+          "x": 21,
+          "y": 18
+        },
+        {
+          "unit_index": 30,
+          "x": 21,
+          "y": 17
+        },
+        {
+          "unit_index": 31,
+          "x": 23,
+          "y": 16
+        },
+        {
+          "unit_index": 32,
+          "x": 23,
+          "y": 18
+        },
+        {
+          "unit_index": 33,
+          "x": 22,
+          "y": 15
+        },
+        {
+          "unit_index": 34,
+          "x": 19,
+          "y": 21
+        },
+        {
+          "unit_index": 35,
+          "x": 22,
+          "y": 19
+        },
+        {
+          "unit_index": 36,
+          "x": 23,
+          "y": 19
+        },
+        {
+          "unit_index": 37,
+          "x": 23,
+          "y": 17
+        },
+        {
+          "unit_index": 38,
+          "x": 20,
+          "y": 17
+        },
+        {
+          "unit_index": 39,
+          "x": 19,
+          "y": 20
+        },
+        {
+          "unit_index": 40,
+          "x": 18,
+          "y": 19
+        },
+        {
+          "unit_index": 41,
+          "x": 18,
+          "y": 18
+        },
+        {
+          "unit_index": 42,
+          "x": 18,
+          "y": 17
+        },
+        {
+          "unit_index": 43,
+          "x": 19,
+          "y": 15
+        },
+        {
+          "unit_index": 44,
+          "x": 20,
+          "y": 21
+        },
+        {
+          "unit_index": 45,
+          "x": 18,
+          "y": 20
+        },
+        {
+          "unit_index": 46,
+          "x": 20,
+          "y": 22
+        },
+        {
+          "unit_index": 47,
+          "x": 18,
+          "y": 21
+        },
+        {
+          "unit_index": 48,
+          "x": 22,
+          "y": 20
+        },
+        {
+          "unit_index": 49,
+          "x": 23,
+          "y": 20
+        },
+        {
+          "unit_index": 50,
+          "x": 24,
+          "y": 19
+        },
+        {
+          "unit_index": 51,
+          "x": 22,
+          "y": 21
+        },
+        {
+          "unit_index": 52,
+          "x": 17,
+          "y": 19
+        },
+        {
+          "unit_index": 53,
+          "x": 21,
+          "y": 16
+        },
+        {
+          "unit_index": 54,
+          "x": 23,
+          "y": 15
+        },
+        {
+          "unit_index": 55,
+          "x": 24,
+          "y": 17
+        }
+      ],
+      "overwrite_matches": [
+        {
+          "consumer": "EBP",
+          "array_index": 31,
+          "stack_offset": "0x7c",
+          "unit_index": 47,
+          "x": 18,
+          "y": 21,
+          "observed_value": "0x166688",
+          "derived_canvas_base": "0x14f018"
+        },
+        {
+          "consumer": "EDI",
+          "array_index": 32,
+          "stack_offset": "0x80",
+          "unit_index": 48,
+          "x": 22,
+          "y": 20,
+          "observed_value": "0x163c28",
+          "derived_canvas_base": "0x14f018"
+        },
+        {
+          "consumer": "ESI",
+          "array_index": 33,
+          "stack_offset": "0x84",
+          "unit_index": 49,
+          "x": 23,
+          "y": 20,
+          "observed_value": "0x163c40",
+          "derived_canvas_base": "0x14f018"
+        },
+        {
+          "consumer": "EBX",
+          "array_index": 34,
+          "stack_offset": "0x88",
+          "unit_index": 50,
+          "x": 24,
+          "y": 19,
+          "observed_value": "0x161198",
+          "derived_canvas_base": "0x14f018"
+        },
+        {
+          "consumer": "return EIP",
+          "array_index": 35,
+          "stack_offset": "0x8c",
+          "unit_index": 51,
+          "x": 22,
+          "y": 21,
+          "observed_value": "0x1666e8",
+          "derived_canvas_base": "0x14f018"
+        }
+      ],
+      "matching_native_allocations": [
+        {
+          "allocation_pointer_valid": true,
+          "block_tag": 153221,
+          "caller": 224545,
+          "eax": 1372184,
+          "entry": 224550,
+          "entry_esp": 349816,
+          "kind": "allocation",
+          "parameter": 153216,
+          "payload_first8_hex": "a0e21400cc270500",
+          "pointer": 1372184,
+          "return_esp": 349820,
+          "steps_entry": 94885,
+          "steps_return": 95461
+        }
+      ],
+      "limitations": [
+        "只分析指定失敗，不將未執行的局部模型當成正常玩家收據。",
+        "清敵注入同時新增多個HP0角色；不可推定正常攻擊一定觸發相同溢位。"
+      ]
+    },
+    "reproduce": "在fd2-cap-local:latest中執行tools/fd2_clear_viewport_audit.py --exe /orig/FD2.EXE --ida work/matching-full-20261008/ida-full-image.json --checkpoint work/ch24-flow-20261015/original-c1/checkpoint-0631.json --failure work/ch24-flow-20261015/original-c1/oracle.log --out <新的明確輸出JSON>；原版及研究輸入唯讀，輸出UID1000。",
+    "remake_replay_mark": {
+      "state": "CONFORMED",
+      "source": "driver do_goto只送正常方向鍵，mark使用最後已完成control_seq，不另送鍵；故最後一個方向鍵也必須重播。",
+      "contract": "before_clear_viewport mark限定原版117F8游標owner、重製玩家操作權與同回合；由control-history重播(prevSeq,mark.Seq]的方向鍵，空鍵略過，其他鍵拒收；正常moveMapCursor後核對原版cursor／camera四座標，再寫checkpoint。不能靠座標注入配圖。",
+      "validation": "新正式r2 mark必須實際通過；既有前綴與Go回歸保持。"
+    },
+    "audit_prior": {
+      "report": "work/ch24-flow-20261015/clear-viewport-audit-r1.json",
+      "source": "work/ch24-flow-20261015/clear-viewport-audit-tool-r1.py",
+      "note": "早期稽核保留；現行輸出補上每條原始定位的語意、推論等級與來源，實測Capstone版本，沒有改數值算法。"
     }
   }
 }
