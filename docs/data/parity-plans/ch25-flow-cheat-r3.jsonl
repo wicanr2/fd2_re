@@ -1,0 +1,61 @@
+# r3：T5、T6正常自用既有神聖之水raw槽2、3；不添加道具、不注入HP。READY見event56主契約normal_item_driver_spec。
+# r1於T5聖寇拉斯index16／identity26死亡返標題；r2每回合正常向(0,43)退避，不改HP／DP或seed。
+# 第25章主線流程：沿第24章實際SAV，無追加治療、強化或物品。
+# 青衫攻略第6回合己方結束援軍；正常END至T7，抽樣後一次明示清敵。
+# 炎龍劍支線不在此計畫；frames advisory，不證明自然難度或完整戰鬥指令。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"key":"","steps":10000000,"repeat":20}
+{"mark":"record_question","steps":1000000}
+{"key":"right","steps":10000000}
+{"key":"enter","steps":10000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_party_selection","steps":1000000}
+{"key":"enter","steps":20000000,"repeat":15}
+{"key":"","steps":10000000,"repeat":12}
+{"mark":"departure_confirmation","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":300}
+{"await_ui":"cursor","steps":10000000,"max":180}
+{"mark":"battle_start","steps":1000000}
+{"move_unit": {"from_index": 16, "toward": [0, 43], "map": 24, "mv": 7, "max_tries": 14, "stay_if_blocked": true}, "steps": 2000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=2","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"round_2","steps":1000000}
+{"move_unit": {"from_index": 16, "toward": [0, 43], "map": 24, "mv": 7, "max_tries": 14, "stay_if_blocked": true}, "steps": 2000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=3","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"round_3","steps":1000000}
+{"move_unit": {"from_index": 16, "toward": [0, 43], "map": 24, "mv": 7, "max_tries": 14, "stay_if_blocked": true}, "steps": 2000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=4","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"round_4","steps":1000000}
+{"move_unit": {"from_index": 16, "toward": [0, 43], "map": 24, "mv": 7, "max_tries": 14, "stay_if_blocked": true}, "steps": 2000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=5","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"round_5","steps":1000000}
+{"move_unit": {"from_index": 16, "toward": [0, 43], "map": 24, "mv": 7, "max_tries": 14, "stay_if_blocked": true, "use_item_slot": 2, "use_item_id": 195}, "steps": 2000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=6","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"round_6","steps":1000000}
+{"move_unit": {"from_index": 16, "toward": [0, 43], "map": 24, "mv": 7, "max_tries": 14, "stay_if_blocked": true, "use_item_slot": 3, "use_item_id": 195}, "steps": 2000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":300}
+{"await":"round>=7","abort_if":"ally_alive<=0","steps":10000000,"max":200}
+{"mark":"round_7","steps":1000000}
+{"goto":[0,0],"steps":2000000,"max":100}
+{"await_ui":"cursor","steps":20000000,"max":30}
+{"mark":"before_clear_viewport","steps":1000000}
+{"force_enemy_clear":true,"steps":1,"end_turn":false}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"town","steps":20000000,"max":300}
+{"mark": "town_after_battle", "steps": 1000000}
+{"town_save":true,"slot":0,"steps":10000000}

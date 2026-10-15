@@ -166,6 +166,14 @@ func nativeAIIsTerrainSpecialRecord(record []byte) bool {
 		(record[0x20] == 0x13 || record[0x1f] == 4 || record[0x1f] == 5)
 }
 
+// 0x15B77的指令10～12以目標runtime索引呼叫1F183。
+// 評分器先驗證candidate bounds，再消費這份同狀態raw record快照。
+func nativeAI1F183TargetGate(records []byte) func(int) bool {
+	return func(index int) bool {
+		return nativeAIIsTerrainSpecialRecord(records[index*nativeRecordSize : (index+1)*nativeRecordSize])
+	}
+}
+
 func (s *State) nativeAIPhysicalScoreInput(
 	raw NativeAIPhysicalAttackRawCandidate,
 	itemRows []byte,

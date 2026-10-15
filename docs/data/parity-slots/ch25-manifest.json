@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_save_continuation_manifest",
+  "tool": "dosgolem apps/fd2/cmd/oracle正式SAV，直接接續",
+  "base_save": "work/ch24-flow-20261015/state-flow-r3/FD2.SAV",
+  "base_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+  "base_slot": 0,
+  "base_chapter": 24,
+  "target_chapter": 24,
+  "out_slot": 0,
+  "output_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+  "source_receipt": "docs/data/ui-traces/parity-ch24.json",
+  "source_save_seq": 700,
+  "source_original_runner_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+  "source_construction_manifest": "docs/data/parity-slots/ch24-flow-dp1000-manifest.json",
+  "level_policy": "沿用第24章正式SAV，無追加治療、升級、強化、金幣或物品；祖先AP+200／DP+1000／DX+60、levels-per-chapter=6、seed4，event7:17=1。",
+  "seed": 4,
+  "roster_count": 25,
+  "evidence_sources": [
+    "docs/data/ui-traces/parity-ch24.json",
+    "docs/data/parity-slots/ch24-flow-dp1000-manifest.json"
+  ],
+  "assumptions": [
+    {
+      "kind": "continuation",
+      "detail": "來源按111／114例外，本章保持同一SAV，零額外改寫；不宣稱自然難度。"
+    }
+  ],
+  "known_deviations": [
+    "祖先建構政策及前章一次清敵；不證明自然難度、傷害、存活或敵方選目標。",
+    "第25章尚未驗收，依58及正式台帳。"
+  ]
+}

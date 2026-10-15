@@ -27,7 +27,7 @@ func (s *State) nextNativeAIMode11Plan(u *Unit) (*AIPlan, bool, error) {
 	command, err := ScoreNativeAI1598A(
 		s.W, s.H, records, len(s.Units), actor, selector, u,
 		s.NativeCommandBook, baseFlags, s.NativeTerrainMoveCodes,
-		costRow, nil,
+		costRow, nativeAI1F183TargetGate(records),
 	)
 	if err != nil {
 		return nil, true, fmt.Errorf("native AI mode 11 0x1598A: %w", err)

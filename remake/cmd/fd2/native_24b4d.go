@@ -19,6 +19,20 @@ func (g *Game) startNative24B4D(frameCount, delayMs int, then func()) error {
 	if frameCount <= 0 || frameCount > 255 || delayMs != 20 {
 		return errors.New("native 0x24B4D frame count or 20ms delay differs from recovered ABI")
 	}
+	// 第25章在 LOADCH 故事中呼叫 0x24B4D，沿用場景的原生地圖載體。
+	// 借用只限輸入組裝，非同步呈現不把故事角色變成可操作戰鬥。
+	if g.st == nil {
+		if g.storyNativeMapState == nil {
+			if err := g.materializeNativeStoryMapState(g.storyNativeMapSource); err != nil {
+				return fmt.Errorf("native 0x24B4D story state: %w", err)
+			}
+		}
+		if err := g.composeNativeStoryMapFrame(); err != nil {
+			return fmt.Errorf("native 0x24B4D story frame: %w", err)
+		}
+		g.st = g.storyNativeMapState
+		defer func() { g.st = nil }()
+	}
 	if g.st == nil || g.m == nil || !nativeMapAssetsAvailable(g.nativeMapAssets) ||
 		len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize ||
 		len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {

@@ -362,6 +362,15 @@ EVENTS = [
         op("pan", [(0x353C0, 0x353CC)], x=26, y=2),
         op("delay", [(0x353CC, 0x353D9)], ms=400),
     ]},
+    # 第25章T6援軍；READY與完整86-byte來源見fd2_turn_event56_20261015.json。
+    # 0x1366A播放ACTING74，0x354D8尾跳已閉合的姿態重設helper。
+    {"id": 56, "handler": 0x35487, "terminal_jumps": {0x354D8: 0x134E4}, "ops": [
+        op("pan", [(0x35491, 0x3549D)], x=6, y=40),
+        op("spawn_group", [(0x3549D, 0x354A7)], group=1, gate=0),
+        op("acting", [(0x354A7, 0x354B1)], resource=74),
+        op("dialogue", [(0x354B1, 0x354D8)], text=5),
+        op("reset_pose", [(0x354D8, 0x354DD)], tail=True),
+    ]},
     {"id": 64, "handler": 0x358EA, "guards": [
         op("guard_state", [(0x358F4, 0x35902)], index=0x10, equals=1),
         op("guard_state", [(0x3595D, 0x35962)], index=0x10, equals=2, reuse_register=True),

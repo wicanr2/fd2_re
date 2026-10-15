@@ -31,6 +31,7 @@ import sys
 from pathlib import Path
 
 from dosgolem_oracle_drive import ui_mode as oracle_ui_mode
+import fd2save
 
 try:
     from PIL import Image, ImageChops
@@ -165,6 +166,9 @@ def plan_completion(plan: list[dict], actions: list[dict], remake_cps: list[dict
         copies = max(0, int(step.get("repeat", 1)))
         if step.get("mark"):
             required["mark:" + step["mark"]] += copies
+        move = step.get("move_unit")
+        if isinstance(move, dict) and "use_item_slot" in move:
+            required["item_use"] += copies
         for kind in ("force_enemy_clear", "shop_sell", "shop_buy", "town_save", "preparation_save", "secret_shop"):
             if step.get(kind):
                 required[kind] += copies
@@ -233,6 +237,38 @@ def oracle_gold_for(actions: list[dict], seq: int, kind: str, view: dict) -> int
         if action and "gold_before" in action:
             return action["gold_before"]
     return view.get("gold")
+
+
+def save_byte_report(original_path: Path, remake_path: Path, entry: dict) -> dict:
+    """核對實際保存出處並揭露全部明文差異；不改變保存閘門。"""
+    buffers = []
+    for path, key in ((original_path, "oracle_save_sha256"), (remake_path, "remake_save_sha256")):
+        stored = path.read_bytes()
+        if hashlib.sha256(stored).hexdigest() != entry.get(key):
+            raise ValueError(f"save byte report: {key} does not match recorded save")
+        buffers.append(fd2save.decode(stored))
+    original, remake = buffers
+    differences = []
+    for offset, (left, right) in enumerate(zip(original, remake)):
+        if left == right:
+            continue
+        point = {"plain_offset": f"0x{offset:04x}", "oracle": left, "remake": right}
+        if offset >= fd2save.CHECKSUM_OFFSET:
+            point["region"] = "checksum"
+        elif fd2save.SLOT_OFFSET <= offset < fd2save.SLOT_OFFSET + fd2save.SLOT_COUNT * fd2save.SLOT_SIZE:
+            slot, local = divmod(offset - fd2save.SLOT_OFFSET, fd2save.SLOT_SIZE)
+            point["slot"] = slot
+            if local < fd2save.ROSTER_SIZE:
+                record, field = divmod(local, fd2save.UNIT_SIZE)
+                point.update(region="roster", record_index=record, record_offset=f"0x{field:02x}")
+            else:
+                point.update(region="slot_metadata", metadata_offset=local - fd2save.ROSTER_SIZE)
+        else:
+            point["region"] = "outside_chapter_slots"
+        differences.append(point)
+    return {"status": "equal" if not differences else "different", "size": len(original),
+            "difference_count": len(differences), "differences": differences,
+            "policy": "全部明文位元組比較；未排除差異，未改驗收門檻。"}
 
 
 def save_gate_entry(save_actions: list[dict], remake_save: list[dict], blocked_issue: str) -> dict:
@@ -417,6 +453,7 @@ def main() -> int:
     parser.add_argument("--frame-policy", choices=("strict", "advisory"), default="strict",
                         help="strict沿既有畫面閘門；advisory依2026-10-15定案只要求流程，原始畫面結果仍記錄")
     parser.add_argument("--save-blocked-issue", default="", help="重製側尚未寫原版槽 bytes 時引用的 issue")
+    parser.add_argument("--oracle-save", type=Path, help="原版實際保存檔；與重製FD2.SAV核對來源後列出全部byte差異，不放寬閘門")
     args = parser.parse_args()
 
     runner = json.loads((args.oracle / "runner.json").read_text(encoding="utf-8"))
@@ -509,6 +546,8 @@ def main() -> int:
     save_actions = [a for a in actions if a.get("kind") in ("town_save", "preparation_save")]
     remake_save = [cp for cp in remake_cps if cp.get("kind") in ("town_save", "preparation_save")]
     save_entry = save_gate_entry(save_actions, remake_save, args.save_blocked_issue)
+    if args.oracle_save is not None:
+        save_entry["byte_report"] = save_byte_report(args.oracle_save, args.remake / "FD2.SAV", save_entry)
     if any(not preparation_save_proof(a, args.oracle) for a in save_actions
            if a.get("kind") == "preparation_save"):
         save_entry["status"] = "original_save_write_missing"

@@ -25,6 +25,21 @@
           "extensions": {
             "legacy": {
               "camp": "ally",
+              "grid": [
+                6,
+                40
+              ],
+              "native_event_id": 56,
+              "native_source": "0x35491"
+            }
+          },
+          "type": "pan"
+        },
+        {
+          "action_id": "legacy/action/fcd0c18fc3ee/events/1/1",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
               "groups": [
                 1
               ],
@@ -40,6 +55,115 @@
             }
           },
           "type": "spawn_group"
+        },
+        {
+          "action_id": "legacy/action/fcd0c18fc3ee/events/1/2",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_acting": {
+                "resource": 74,
+                "source": "0x354a7"
+              },
+              "native_event_id": 56,
+              "native_source": "0x354a7"
+            }
+          },
+          "type": "native_acting"
+        },
+        {
+          "action_id": "legacy/action/fcd0c18fc3ee/events/1/3",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 19,
+                "operand": 62,
+                "pages": [
+                  [
+                    "『聖寇拉斯陛下，我們來遲了",
+                    "　！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch25.json",
+                "source_dat": "FDTXT_025",
+                "string_index": 5,
+                "utterance": 0
+              },
+              "native_event_id": 56,
+              "native_source": "0x354b1",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/fcd0c18fc3ee/events/1/4",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 20,
+                "operand": 16,
+                "pages": [
+                  [
+                    "『還不晚，先把火魔神打倒再",
+                    "　說吧！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch25.json",
+                "source_dat": "FDTXT_025",
+                "string_index": 5,
+                "utterance": 1
+              },
+              "native_event_id": 56,
+              "native_source": "0x354b1",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/fcd0c18fc3ee/events/1/5",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_dialogue_ref": {
+                "control": "FFED",
+                "line": 21,
+                "operand": 62,
+                "pages": [
+                  [
+                    "『遵命！』"
+                  ]
+                ],
+                "scene_index": 1,
+                "script": "assets/story/ch25.json",
+                "source_dat": "FDTXT_025",
+                "string_index": 5,
+                "utterance": 2
+              },
+              "native_event_id": 56,
+              "native_source": "0x354b1",
+              "native_text_index": 5
+            }
+          },
+          "type": "dialogue"
+        },
+        {
+          "action_id": "legacy/action/fcd0c18fc3ee/events/1/6",
+          "extensions": {
+            "legacy": {
+              "camp": "ally",
+              "native_event_id": 56,
+              "native_source": "0x354d8"
+            }
+          },
+          "type": "reset_pose"
         }
       ],
       "event_id": "legacy/event/fcd0c18fc3ee/events/1",
@@ -173,6 +297,7 @@
       ],
       "map": 24,
       "name": "火焰的審判",
+      "native_acting_resources": "assets/cutscenes/acting/map32.json",
       "native_death_programs": {
         "3:3": [
           {

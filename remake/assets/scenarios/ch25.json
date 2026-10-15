@@ -1090,11 +1090,20 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x35491",
+          "grid": [
+            6,
+            40
+          ],
+          "native_event_id": 56,
+          "camp": "ally"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             1
           ],
-          "camp": "ally",
           "native_spawns": [
             {
               "group": 1,
@@ -1103,7 +1112,92 @@
               "raw_placement_gate": 0
             }
           ],
-          "native_event_id": 56
+          "native_event_id": 56,
+          "camp": "ally"
+        },
+        {
+          "type": "native_acting",
+          "native_source": "0x354a7",
+          "native_acting": {
+            "resource": 74,
+            "source": "0x354a7"
+          },
+          "native_event_id": 56,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x354b1",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch25.json",
+            "scene_index": 1,
+            "line": 19,
+            "source_dat": "FDTXT_025",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 62,
+            "pages": [
+              [
+                "『聖寇拉斯陛下，我們來遲了",
+                "　！』"
+              ]
+            ]
+          },
+          "native_event_id": 56,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x354b1",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch25.json",
+            "scene_index": 1,
+            "line": 20,
+            "source_dat": "FDTXT_025",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 16,
+            "pages": [
+              [
+                "『還不晚，先把火魔神打倒再",
+                "　說吧！』"
+              ]
+            ]
+          },
+          "native_event_id": 56,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x354b1",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch25.json",
+            "scene_index": 1,
+            "line": 21,
+            "source_dat": "FDTXT_025",
+            "string_index": 5,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 62,
+            "pages": [
+              [
+                "『遵命！』"
+              ]
+            ]
+          },
+          "native_event_id": 56,
+          "camp": "ally"
+        },
+        {
+          "type": "reset_pose",
+          "native_source": "0x354d8",
+          "native_event_id": 56,
+          "camp": "ally"
         }
       ]
     }
@@ -1243,5 +1337,6 @@
         }
       }
     ]
-  }
+  },
+  "native_acting_resources": "assets/cutscenes/acting/map32.json"
 }

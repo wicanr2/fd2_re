@@ -1501,10 +1501,17 @@ func TestChapter25PostMaterializesSlot70JoinsPartyAndReachesTown26SaveBoundary(t
 	// pending group before victory so raw ch24_post enters with 70 records.
 	g.st.Turn = 6
 	actions := g.sc.TriggerActions(g.st, "on_turn_end", "")
-	if len(actions) != 1 || actions[0].Type != "spawn_group" {
+	wantTypes := []string{"pan", "spawn_group", "native_acting", "dialogue", "dialogue", "dialogue", "reset_pose"}
+	if len(actions) != len(wantTypes) {
 		t.Fatalf("chapter25 turn6 actions=%#v", actions)
 	}
-	if _, _, err := g.sc.ExecuteActionChecked(g.st, actions[0]); err != nil {
+	for index, want := range wantTypes {
+		if actions[index].Type != want || actions[index].NativeEventID == nil || *actions[index].NativeEventID != 56 {
+			t.Fatalf("chapter25 turn6 action[%d]=%#v, want event56 %s", index, actions[index], want)
+		}
+	}
+	// 此測試只隔離戰後名冊邊界；完整演出與對白由章重播驗證。
+	if _, _, err := g.sc.ExecuteActionChecked(g.st, actions[1]); err != nil {
 		t.Fatal(err)
 	}
 	if got := len(g.st.Units); got != 70 {

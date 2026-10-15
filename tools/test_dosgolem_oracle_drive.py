@@ -33,6 +33,63 @@ def load():
 drive = load()
 
 
+class SelfRestoreItemPreflight(unittest.TestCase):
+    def test_original_compacted_inventory_is_success(self):
+        # 第25章r3 seq370..378的八格物品與caller，省略不影響此控制器的欄位。
+        raw = bytearray(80)
+        raw[0x0a:0x1a] = bytes.fromhex("400a408e00c300c380ff80ff80ff80ff")
+        raw[0x42:0x44] = (600).to_bytes(2, "little")
+        after = bytearray(raw)
+        after[5] = 0x80
+        after[0x0a:0x1a] = bytes.fromhex("400a408e00c380ff80ff80ff80ff80ff")
+
+        def snapshot(chain, healed=False):
+            return {"units": [{"index": 16, "camp": 2, "hp": 600 if healed else 57,
+                               "x": 5, "y": 43, "raw_hex": (after if healed else raw).hex()}],
+                    "input_chain": chain}
+
+        current = [snapshot(["0x18EEF"])]
+        panel = ["0x1BA37", "0x1B961", "0x1BCE6"]
+        replies = iter([snapshot(["0x18EEF"]), snapshot(["0x1BC8E"]),
+                        snapshot(["0x1BC8E"]), snapshot(panel), snapshot(panel),
+                        snapshot(panel), snapshot(["0x117AE"]), snapshot(["0x117F8"], True)])
+        keys = []
+
+        def send(key, steps):
+            keys.append(key)
+            current[0] = next(replies)
+            return 370 + len(keys), current[0]
+
+        with mock.patch.object(drive, "state", side_effect=lambda: current[0]), \
+             mock.patch.object(drive, "send", side_effect=send), \
+             mock.patch.object(drive, "wait_mode", side_effect=["grid", "target"]), \
+             mock.patch.object(drive, "do_goto", return_value=True), \
+             mock.patch.object(drive, "report"), \
+             mock.patch.object(drive, "log_action") as log:
+            self.assertTrue(drive.use_self_restore_item(16, 2, 195, 2_000_000))
+        self.assertEqual(keys, ["right", "enter", "up", "enter", "down", "down", "enter", "enter"])
+        self.assertEqual(log.call_args.kwargs["hp_before"], 57)
+        self.assertEqual(log.call_args.kwargs["hp_after"], 600)
+
+    def test_invalid_or_unneeded_item_never_sends_keys(self):
+        raw = bytearray(80)
+        raw[0x0a + 2 * 2] = 0
+        raw[0x0b + 2 * 2] = 195
+        raw[0x42:0x44] = (600).to_bytes(2, "little")
+        unit = {"index": 16, "camp": 2, "hp": 177, "raw_hex": raw.hex()}
+        for slot, item, hp, mode in [(True, 195, 177, "ring"),
+                                    (2, 194, 177, "ring"),
+                                    (2, 195, 600, "ring"),
+                                    (2, 195, 177, "cursor")]:
+            with self.subTest(slot=slot, item=item, hp=hp, mode=mode):
+                current = {"units": [{**unit, "hp": hp}]}
+                with mock.patch.object(drive, "state", return_value=current), \
+                     mock.patch.object(drive, "ui_mode", return_value=mode), \
+                     mock.patch.object(drive, "send") as send:
+                    self.assertFalse(drive.use_self_restore_item(16, slot, item, 2_000_000))
+                    send.assert_not_called()
+
+
 class OracleNearHeapPolicy(unittest.TestCase):
     """#167：兩份已審查來源同時吻合，才宣告配置器政策。"""
 

@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -76,6 +76,8 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 `turn-event-handlers-partial-transcription` · 缺陷 · [#33](https://github.com/wicanr2/fd2_re/issues/33) · 仍未完成 · 要人判
 
+2026-10-15最新：第25章T6 event56已按READY契約接上完整pan(6,40)、group1、ACTING74、text5及134E4重設pose。正常原版r4及完整Game重播確實消費，240筆AI順序零分歧；全域--check通過，未轉寫22筆。第25章完整保存尚因#212未過，不稱本章PLAYER-E2；下一章26事件待本章驗收後接續。主契約docs/data/ida/fd2_turn_event56_20261015.json。下列記錄保留為歷史。
+
 2026-10-15 更新：第24章event54完整九操作已轉寫，四筆T2／4／7／10控制列同步到正式及canonical劇本。來源為既有IDA9.4與固定EXE的125 bytes核對；補足四角鏡頭與等待，規格先達READY再實作。主契約docs/data/ida/fd2_turn_event54_20261015.json。既有短鏈13張完整RGB、行為／節點／完整SAV回歸通過，本輪T2／4／7／10至T11、戰後、記錄／保存及退出列表已通過流程三閘門，兩側完整SAV相同；280筆AI入口零順序分岔。#207／#208已限定修正並關閉，正式收據docs/data/ui-traces/parity-ch24.json。下一個事件為第25章T6 event56，仍須取得該章正常原版收據後接完整劇本。依使用者最新定案，畫面只作參考，不因逐幀差異阻塞流程；未轉寫事件仍須逐章補足，不能用清敵掩蓋。
 
 排程：P0，與相關章的正常玩家路徑一起處理。2026-10-15 容器執行全域 sync --check 通過，但仍有未轉寫事件；唯一數量與分布見 [58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md)。
@@ -84,7 +86,7 @@ native-0／native-1／native-7／native-96 的多個候選名稱已由資料本�
 
 FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援、AI模式、鏡頭、演出與對白；不得只保留spawn。原始表為0x51B91，工具為tools/extract_native_death_events.py與tools/sync_native_turn_events.py。
 
-2026-10-15現況：全域--check通過，仍有23筆未轉寫。原先「其餘57筆、只有第四／五章」是歷史快照，不能作目前待辦。現已轉寫的章由工具直接列出；其餘依111正常章收據逐章處理，不先批次替換。
+2026-10-15較早快照：當時全域--check通過，仍有23筆未轉寫；現況見本文首段及58。原先「其餘57筆、只有第四／五章」是歷史快照，不能作目前待辦。現已轉寫的章由工具直接列出；其餘依111正常章收據逐章處理，不先批次替換。
 
 本輪補第十七章event40：group2後鏡頭(17,37)與text1三句。固定EXE／IDA9.4全handler與共享尾段經READY審查，再由正式lower同步到scenarios及canonical。正常Game確實消費原先缺失三句，124筆AI零順序分歧，98張畫面與酒店SAV保持。#195／#196工具補正後同來源四gate皆通過。既有第17章PLAYER-E2保持，未重新執行原版或新增章收據。
 
@@ -192,6 +194,8 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `campaign-ch25-ch30-finish` · 工作 · [#199](https://github.com/wicanr2/fd2_re/issues/199) · 仍未完成 · 要人判
 
+2026-10-15目前：第25章原版r4已到T7、完整戰後與酒店保存，重製r2到同邊界，240筆AI順序零分歧。揭幕、HUD與AI閘門已修；event56五項操作已接正式劇本。行為／節點通過，完整SAV僅identity26的+0x28..+0x30區間有七byte差異，另兩byte檢查碼衍生差異。剩餘P0為#212；未放寬111，章台帳blocked，尚未進第26章。正式收據docs/data/ui-traces/parity-ch25.json，主契約docs/data/ida/fd2_turn_event56_20261015.json。
+
 第24章已依流程驗收通過，#142／#207／#208已關閉。本項成為下一個P0。可接續的原版實際保存為work/ch24-flow-20261015/state-flow-r3/FD2.SAV，SHA256 e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95；先複製到新覆蓋層，保留此來源。既有章台帳與正式收據保存AP200／DP1000／DX60及注入限制，不將測試槽當自然難度通關。
 
 2026-10-15使用者已定案：允許明示作弊槽及清敵，參考攻略，以流程一致為完成標準，不強求每個frame相同。後續章使用verification_profile=flow，行為／節點／交易及實際保存仍須通過。
@@ -201,6 +205,8 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 排程：P0，承接 #142 第24章，屬 #14 的執行子項。逐章追原始資料→typed事件→規則→正常鍵盤→戰後→持續隊伍→存檔／結局，不另設一份章完成台帳。
 
 優先重用已閉合RE與既有引擎；遇到實際差異才開窄RE。25／26章剩餘回合事件與 #33 一起處理。遵守111／114的槽、seed與注入限制，不刷長局、不鎖HP；最後一章以實際結局／終止邊界驗收，沒有城鎮就不虛造城鎮交易。
+
+卡在：#212 第25章未解明保存位元組；本章驗收完成後才繼續26～30。
 
 怎樣算做完：parity-campaign-progress.json 的25～30章各有正式dosgolem來源、計畫、來源槽、依111最新修訂通過行為／節點／交易三閘門與實際保存邊界，畫面只作參考；第30章有結局及隊伍狀態結果。失敗保留，既有passed章不重算。
 
@@ -225,6 +231,14 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 沿61核准範圍驗證現代圖層沒有被原版完整indexed幀蓋回，語意結果、座標、存檔與忠實主題相容。現代畫面驗收與忠實原版pixel parity分開。缺圖或未知consumer如實拒收，轉交素材子項；不以現有loader單測或總覽圖代替正常玩家收據。
 
 怎樣算做完：受版控計畫及目前正式runtime的正常鍵盤／GPU收據涵蓋早中晚期與上述主要交界；存檔可冷讀回，忠實主題抽樣回歸通過；已登錄素材顯示與catalog一致，未驗範圍明示。
+
+### P0 釐清第25章新加入角色的存檔 +0x28..+0x30 差異
+
+`ch25-new-join-opaque-save-bytes` · RE待解 · [#212](https://github.com/wicanr2/fd2_re/issues/212) · 仍未完成 · 要人判
+
+第25章 dosgolem 原版r4及正式重製r2均到戰後酒店保存，240筆AI順序零分歧，行為與節點通過。完整SAV不同，逐欄核對只剩identity26的+0x28..+0x30：原版628309007a83090092、重製000000000000000000。這9個位元組的語意仍未知；不得稱為指標、無用欄位或直接把原版常數填入正式runtime。既有IDA9.4 sub_10C50／112A5建構不寫該區，11506整筆80-byte複製；原生／替代近堆第18章亦曾只在該區不同，見58的2026-10-06紀錄。當前111完整存檔相等門檻保持，章收據不可升passed。使用者允許必要時局部matching，但尚未為此編譯；先追有界writer／consumer或確認有界驗收例外。證據入口docs/data/ida/fd2_turn_event56_20261015.json；實際比較work/ch25-flow-20261015/full-flow-verify-r2.json。
+
+怎樣算做完：保留逐byte差異及來源；若維持完整SAV門檻，找到有證據的來源並修正保存後重播通過。若使用者確認有界驗收例外，先同步111及正式比較器，逐筆揭露差異，任何區間外變更仍拒收，不能宣稱完整bytes一致。
 
 ## release — 發行、平台與封包
 
@@ -314,7 +328,7 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `fd2-full-matching-decompilation` · 工作 · [#198](https://github.com/wicanr2/fd2_re/issues/198) · 仍未完成 · 要人判
 
-排程：P3，使用者於 2026-10-15 明確暫停。保留既有成果與原始驗收條件；只有使用者明確重啟才接續。
+排程：P3，使用者於 2026-10-15 明確暫停。保留既有成果與原始驗收條件；使用者本輪補充允許必要時局部匹配確認已重現差異；全面工作仍暫停。每個局部任務先定玩家阻塞點、固定輸入、待驗函式與停止條件，既有證據足夠就不重編。
 
 本題是工具鏈與原始碼保存研究，不是 Go／Ebiten 重製版、HD 主題、章節驗收或封包的前置條件。一般原版行為對拍繼續使用正式 dosgolem oracle；遇到具體玩家缺陷才做最小充分 RE，不重開全檔匹配。
 
@@ -324,7 +338,7 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 已完成的前置試驗不等於全檔完成；不得以原版 EXE 複製或未知遊戲機器碼回填冒稱 C 還原。
 
-卡在：使用者明確要求暫停；不得以 remake 尚未完成或個別畫面差異自行重啟。
+卡在：全檔工作依使用者指示暫停；必要時有界局部匹配已獲允許，不能擴張為全檔重啟。
 
 怎樣算做完：從受版控來源及明示本機依賴乾淨建置完整 FD2.EXE，全檔大小及 SHA-256 相同；遊戲 C 函式逐一產碼一致；原作組語、第三方函式庫、資料與未知分列，未知不得冒稱已還原；正式 dosgolem 原版入口抽樣啟動。
 

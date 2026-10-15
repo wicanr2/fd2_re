@@ -686,14 +686,18 @@
     },
     {
       "chapter": 25,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
+      "status": "blocked",
+      "receipt": "docs/data/ui-traces/parity-ch25.json",
+      "slot_manifest": "docs/data/parity-slots/ch25-manifest.json",
+      "slot_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+      "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+      "date": "2026-10-15",
+      "verify": "Docker tools/verify_chapter_parity.py --chapter 25 --oracle work/ch25-flow-20261015/original-r4 --remake work/ch25-flow-20261015/remake-full-r2 --slot-manifest docs/data/parity-slots/ch25-manifest.json --plan docs/data/parity-plans/ch25-flow-cheat-r4.jsonl --out <新收據路徑> --frame-policy advisory --oracle-save work/ch25-flow-20261015/state-r4/FD2.SAV",
+      "limitations": [
+        "#212：完整流程／240筆AI順序已一致，完整SAV只有identity26 +0x28..+0x30區間七byte及衍生檢查碼兩byte不同，語意未知；交易閘門保持失敗，未提升PLAYER-E2。",
+        "沿第24章實際SAV，T5／6各正常消耗既有神聖之水，T7正常移鏡頭後一次HP-only清敵35筆；無鎖HP、追加物品或章前校準。",
+        "畫面advisory未擷取；event55炎龍劍支線未抽樣，不證明自然難度、傷害、存活或敵方選目標。"
+      ],
       "prior_receipts": []
     },
     {

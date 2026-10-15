@@ -804,9 +804,12 @@ func (s *State) nativeAIPreselected(u *Unit) bool {
 	}
 	command, err := ScoreNativeAI1598A(
 		s.W, s.H, records, len(s.Units), actor, selector, u,
-		s.NativeCommandBook, baseFlags, s.NativeTerrainMoveCodes, costRow, nil,
+		s.NativeCommandBook, baseFlags, s.NativeTerrainMoveCodes, costRow, nativeAI1F183TargetGate(records),
 	)
 	if err != nil {
+		if DebugAI != nil {
+			DebugAI("0x1d8ba preselect actor=%d command scoring error: %v", actor, err)
+		}
 		return false
 	}
 	if DebugAI != nil {
@@ -823,6 +826,9 @@ func (s *State) nativeAIPreselected(u *Unit) bool {
 		s.nativeFutureItemRows, s.NativeCommandBook, baseFlags,
 	)
 	if err != nil {
+		if DebugAI != nil {
+			DebugAI("0x1d8ba preselect actor=%d item scoring error: %v", actor, err)
+		}
 		return false
 	}
 	return item.MaxScore >= 6

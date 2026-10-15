@@ -1017,6 +1017,71 @@ def toward_candidates(spec, current, origin):
     return ranked[:tries]
 
 
+def use_self_restore_item(unit_index, raw_slot, item_id, steps):
+    """以正常物品介面自用回復品；READY見fd2_turn_event56_20261015.json。"""
+    current = state()
+    units = [u for u in current.get("units", []) if u.get("index") == unit_index]
+    if len(units) != 1 or units[0].get("camp") != ALLY_CAMP:
+        return False
+    unit = units[0]
+    raw = bytes.fromhex(unit.get("raw_hex", ""))
+    if (len(raw) != 80 or type(raw_slot) is not int or not 0 <= raw_slot < 8
+            or item_id != 195 or raw[0x0a + raw_slot * 2] & 0x80
+            or raw[0x0b + raw_slot * 2] != item_id or ui_mode(current) != "ring"):
+        print("use_item：raw槽、物品或指令環來源不符", file=sys.stderr)
+        return False
+    before_hp = unit["hp"]
+    if not 0 < before_hp < int.from_bytes(raw[0x42:0x44], "little"):
+        print("use_item：沒有需要回復的我方HP", file=sys.stderr)
+        return False
+    occupied = [s for s in range(8) if not raw[0x0a + 2*s] & 0x80]
+    item_offset = 0x0a + 2 * raw_slot
+    expected_inventory = raw[0x0a:item_offset] + raw[item_offset+2:0x1a] + b"\x80" + raw[0x19:0x1a]
+    for key in ("right", "enter"):
+        seq, current = send(key, max(steps, 5_000_000))
+        report(seq, key, current, " use_item=open-grid")
+    if wait_mode({"grid"}, steps) != "grid":
+        return False
+    for key in ("up", "enter"):
+        seq, current = send(key, max(steps, 5_000_000))
+        report(seq, key, current, " use_item=open-panel")
+    for _ in range(40):
+        chain = current.get("input_chain", [])
+        if "0x1BA37" in chain and "0x1B961" in chain:
+            break
+        seq, current = send("", max(steps, 3_000_000))
+    else:
+        print("use_item：未到caller-owned物品面板", file=sys.stderr)
+        return False
+    for _ in range(occupied.index(raw_slot)):
+        seq, current = send("down", max(steps, 3_000_000))
+        report(seq, "down", current, " use_item=select-slot")
+    seq, current = send("enter", max(steps, 5_000_000))
+    report(seq, "enter", current, " use_item=confirm-slot")
+    if wait_mode({"target"}, steps) != "target":
+        return False
+    if not do_goto({"goto": [unit["x"], unit["y"]], "steps": steps, "max": 80}):
+        return False
+    seq, current = send("enter", max(steps, 5_000_000))
+    report(seq, "enter", current, " use_item=confirm-self")
+    for _ in range(100):
+        found = [u for u in current.get("units", []) if u.get("index") == unit_index]
+        if len(found) == 1:
+            after = found[0]
+            after_raw = bytes.fromhex(after.get("raw_hex", ""))
+            if (len(after_raw) == 80 and after["hp"] > before_hp
+                    and after_raw[0x0a:0x1a] == expected_inventory and acted(after)
+                    and ui_mode(current) == "cursor"):
+                log_action("item_use", current, index=unit_index,
+                           at=[after["x"], after["y"]], slot=raw_slot,
+                           item_id=item_id, hp_before=before_hp, hp_after=after["hp"])
+                return True
+        seq, current = send("", max(steps, 3_000_000))
+        report(seq, "", current, " use_item=finish")
+    print("use_item：沒有完整回復、消耗與行動完成收據", file=sys.stderr)
+    return False
+
+
 def do_move_unit(command):
     """把一個我方單位走到指定格，然後待機。
 
@@ -1120,6 +1185,9 @@ def do_move_unit(command):
                   file=sys.stderr)
             return False
         log_action("move", state(), frm=[ux, uy], to=[tx, ty])
+    if "use_item_slot" in spec:
+        return use_self_restore_item(unit["index"], spec["use_item_slot"],
+                                     spec.get("use_item_id"), steps)
     current = stand_by(steps, f"=({tx},{ty})")
     if ui_mode(current) == "ring":
         print(f"move_unit ({tx},{ty}) 待機失敗，指令環上找不到待機那一項", file=sys.stderr)

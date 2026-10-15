@@ -1,4 +1,5 @@
 import json
+import hashlib
 import sys
 import tempfile
 import unittest
@@ -7,6 +8,54 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import verify_chapter_parity as vp  # noqa: E402
+
+
+class SaveByteReport(unittest.TestCase):
+    def test_all_plain_bytes_and_checksum_are_reported_without_waiver(self):
+        with tempfile.TemporaryDirectory() as directory:
+            original, remake = Path(directory) / "original.SAV", Path(directory) / "remake.SAV"
+            plain = bytearray(vp.fd2save.FILE_SIZE)
+            original.write_bytes(vp.fd2save.encode(plain))
+            offset = vp.fd2save.SLOT_OFFSET + 25 * vp.fd2save.UNIT_SIZE + 0x28
+            plain[offset] = 98
+            remake.write_bytes(vp.fd2save.encode(plain))
+            hashes = {"oracle_save_sha256": hashlib.sha256(original.read_bytes()).hexdigest(),
+                      "remake_save_sha256": hashlib.sha256(remake.read_bytes()).hexdigest(), "status": "fail"}
+            report = vp.save_byte_report(original, remake, hashes)
+            self.assertEqual(report["status"], "different")
+            self.assertEqual(hashes["status"], "fail")
+            self.assertEqual(report["differences"][0], {
+                "plain_offset": f"0x{offset:04x}", "oracle": 0, "remake": 98,
+                "slot": 0, "region": "roster", "record_index": 25, "record_offset": "0x28"})
+            self.assertEqual(report["differences"][1]["region"], "checksum")
+            remake.write_bytes(original.read_bytes())
+            hashes["remake_save_sha256"] = hashes["oracle_save_sha256"]
+            self.assertEqual(vp.save_byte_report(original, remake, hashes)["differences"], [])
+
+    def test_wrong_provenance_and_invalid_checksum_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "FD2.SAV"
+            path.write_bytes(vp.fd2save.encode(bytes(vp.fd2save.FILE_SIZE)))
+            correct = hashlib.sha256(path.read_bytes()).hexdigest()
+            with self.assertRaisesRegex(ValueError, "recorded save"):
+                vp.save_byte_report(path, path, {"oracle_save_sha256": "0" * 64})
+            invalid = bytearray(path.read_bytes())
+            invalid[-1] ^= 1
+            path.write_bytes(invalid)
+            digest = hashlib.sha256(invalid).hexdigest()
+            with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+                vp.save_byte_report(path, path, {"oracle_save_sha256": digest, "remake_save_sha256": correct})
+
+
+class RequiredSelfRestoreItem(unittest.TestCase):
+    def test_missing_item_use_cannot_satisfy_plan(self):
+        plan = [{"move_unit": {"from_index": 16, "use_item_slot": 2, "use_item_id": 195}}]
+        absent = vp.plan_completion(plan, [], [])
+        self.assertFalse(absent["ok"])
+        action = {"kind": "item_use", "seq": 10}
+        checkpoint = {"kind": "item_use", "oracle_seq": 10}
+        present = vp.plan_completion(plan, [action], [checkpoint])
+        self.assertTrue(present["ok"], present)
 
 
 class FramePolicyIntegration(unittest.TestCase):

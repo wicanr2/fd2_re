@@ -22,6 +22,32 @@ func TestScoreNativeAISpellAttackPreservesRawBranches(t *testing.T) {
 	}
 }
 
+func TestNativeAITargetGateFeedsAttackIDsTenThroughTwelve(t *testing.T) {
+	records := make([]byte, 5*nativeRecordSize)
+	for i := 0; i < 5; i++ {
+		record := records[i*nativeRecordSize : (i+1)*nativeRecordSize]
+		record[8] = 1
+		binary.LittleEndian.PutUint16(record[0x40:], 10)
+	}
+	records[0x20] = 19
+	records[nativeRecordSize+0x1f] = 4
+	records[2*nativeRecordSize+0x1f] = 5
+	// +7=0x1C優先回0，不能因race/class成立就略過這一筆。
+	records[3*nativeRecordSize+7] = 0x1c
+	records[3*nativeRecordSize+0x20] = 19
+	records[3*nativeRecordSize+0x1f] = 4
+	gate := nativeAI1F183TargetGate(records)
+	for _, command := range []int{10, 11, 12} {
+		got, err := ScoreNativeAISpellAttack(records, []byte{0, 1, 2, 3, 4}, command, 15, gate)
+		if err != nil || got != 48 {
+			t.Fatalf("command%d score=%d err=%v", command, got, err)
+		}
+	}
+	if _, err := ScoreNativeAISpellAttack(records, []byte{5}, 10, 15, gate); err == nil {
+		t.Fatal("out-of-range target reached the raw record callback")
+	}
+}
+
 func TestScoreNativeAISpellRecoveryUsesHalfAndRawBit(t *testing.T) {
 	records := make([]byte, nativeRecordSize)
 	binary.LittleEndian.PutUint16(records[0x40:], 4)

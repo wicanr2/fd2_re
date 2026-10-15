@@ -55,6 +55,7 @@ type parityAction struct {
 	Probe   *int     `json:"probe_index"`
 	Cleared *int     `json:"cleared"`
 	Slot    *int     `json:"slot"`
+	ItemID  *int     `json:"item_id"`
 	Moves   []string `json:"moves"`
 	Key     string   `json:"key"`
 	Label   string   `json:"label"`
@@ -882,6 +883,8 @@ func TestChapterParityReplay(t *testing.T) {
 			r.checkpointAttackResult(action, actor, target, moveTo)
 		case "wait":
 			r.waitUnit(action, actor)
+		case "item_use":
+			r.useSelfRestoreItem(action, actor)
 		case "cancel":
 			r.cancelUnit(action, actor)
 		case "end_turn":
@@ -2494,6 +2497,71 @@ func (r *parityReplay) waitUnit(action parityAction, actor *battle.Unit) {
 		}
 		r.checkpoint("wait", action.Seq, r.ui(), true)
 	}
+}
+
+// 沿正式物品面板、目標規劃與回復交易消費原有藥水，不直接改HP或物品欄。
+func (r *parityReplay) useSelfRestoreItem(action parityAction, actor *battle.Unit) {
+	t, g := r.t, r.g
+	if actor == nil || action.Index == nil || action.Slot == nil || action.ItemID == nil ||
+		*action.ItemID != 195 || *action.Slot < 0 || *action.Slot >= 8 ||
+		*action.Index < 0 || *action.Index >= len(g.st.Units) || g.st.Units[*action.Index] != actor ||
+		!nativeActionSelectable(g.actionOverlayAvailability(), 2) {
+		t.Fatal("item_use缺少已選角色、原始槽或指令環來源")
+	}
+	occupied, itemID := g.nativeItemMenuSlot(actor, *action.Slot)
+	if !occupied || itemID != *action.ItemID || actor.HP <= 0 || actor.HP >= actor.MaxHP {
+		t.Fatal("item_use原有回復品或受傷狀態不符")
+	}
+	beforeHP := actor.HP
+	beforeFlags := append([]int(nil), actor.NativeInventoryFlags...)
+	beforeSlots := append([]int(nil), actor.InventorySlots...)
+	g.ringSel = 2
+	if !closeRing(t, g, func() {
+		g.itemOpen, g.itemSel = true, 0
+		g.itemAnimStep, g.itemClosing = 0, false
+		g.prepareNativeItemPanel(actor)
+	}) || !pump(t, g, ch01FrameBudget, func() bool {
+		return g.itemOpen && g.nativeItemPanel != nil && g.itemAnimStep == 11
+	}) {
+		t.Fatal("item_use物品面板沒有正常展開")
+	}
+	rawSlots := nativeItemRawSlots(actor)
+	for g.itemSel < len(rawSlots) && rawSlots[g.itemSel] != *action.Slot {
+		selected, _, err := battle.AdvanceNativeItemSelector(g.itemSel, len(rawSlots), 80, true, 1)
+		if err != nil || selected <= g.itemSel {
+			t.Fatal("item_use原始物品槽無法選取")
+		}
+		g.itemSel = selected
+		if !g.refreshNativeItemPanel(actor) {
+			t.Fatal("item_use物品選擇畫面缺失")
+		}
+	}
+	if _, result, err := battle.AdvanceNativeItemSelector(g.itemSel, len(rawSlots), 28, true, 5); err != nil || result != battle.NativeItemSelectorConfirm {
+		t.Fatal("item_use未通過正式物品確認規則")
+	}
+	if started, err := g.beginNativeTargetItem(*action.Slot, itemID); err != nil || !started {
+		t.Fatalf("item_use目標選擇：started=%v err=%v", started, err)
+	}
+	if applied, err := g.applyNativeTargetItem(actor); err != nil || !applied {
+		t.Fatalf("item_use回復交易：applied=%v err=%v", applied, err)
+	}
+	if !pump(t, g, ch01FrameBudget, func() bool { return actor.Acted && r.playerHasControl() }) || actor.HP <= beforeHP {
+		t.Fatal("item_use沒有完整回復、消耗及行動完成")
+	}
+	for slot := 0; slot < 8; slot++ {
+		source := slot
+		if slot >= *action.Slot {
+			source++
+		}
+		flag, item := 0x80, beforeSlots[7]
+		if source < 8 {
+			flag, item = beforeFlags[source], beforeSlots[source]
+		}
+		if actor.NativeInventoryFlags[slot] != flag || actor.InventorySlots[slot] != item {
+			t.Fatalf("item_use消耗後槽%d沒有依原生規則補位", slot)
+		}
+	}
+	r.checkpoint("item_use", action.Seq, r.ui(), true)
 }
 
 func (r *parityReplay) cancelUnit(action parityAction, actor *battle.Unit) {

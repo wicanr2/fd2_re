@@ -999,6 +999,16 @@ def build_campaign(
             }
             nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
 
+        elif c == 25:
+            # 正常原版seq103與HUD來源，見fd2_turn_event56_20261015.json。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 5, "camera_y": 37,
+                "cursor_x": 7, "cursor_y": 43,
+                "visible_cursor_x": 2, "visible_cursor_y": 6,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+
         retry_flag = f"retried_ch{cid}"
         flags[retry_flag] = False
         nodes[retreat_id] = {

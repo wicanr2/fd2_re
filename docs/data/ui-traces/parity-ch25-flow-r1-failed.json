@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_receipt",
+  "chapter": 25,
+  "generated_at": "2026-10-15",
+  "status": "failed",
+  "verification_profile": "flow",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+    "control_plan": "/repo/docs/data/parity-plans/ch25-flow-cheat-r1.jsonl",
+    "control_plan_sha256": "5ebe79ef0a6aa6644e56a7485b32be1d91fc4e9729587f16084a9a3870d91969",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 13,
+    "checkpoints": 555,
+    "random_control": {
+      "initial_checkpoint_rng_word": 22661,
+      "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+    }
+  },
+  "slot": {
+    "manifest": "/repo/docs/data/parity-slots/ch25-manifest.json",
+    "output_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+    "base_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+    "base_chapter": 24,
+    "target_chapter": 24,
+    "level_policy": "沿用第24章正式SAV，無追加治療、升級、強化、金幣或物品；祖先AP+200／DP+1000／DX+60、levels-per-chapter=6、seed4，event7:17=1。",
+    "assumptions": [
+      {
+        "kind": "continuation",
+        "detail": "來源按111／114例外，本章保持同一SAV，零額外改寫；不宣稱自然難度。"
+      }
+    ]
+  },
+  "remake": {
+    "checkpoints": 4,
+    "rng_synced_points": 0,
+    "random_control": {
+      "capture_frames": false,
+      "go_seed": 4,
+      "legacy_end_sources": null,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "native_rng_initial": 0
+    }
+  },
+  "gates": {
+    "behavior": {
+      "ok": false,
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "status": "ok"
+        },
+        {
+          "seq": 74,
+          "kind": "departure_confirmation",
+          "status": "ok"
+        },
+        {
+          "seq": null,
+          "kind": "runtime_error",
+          "status": "remake_runtime_error",
+          "note": "loadErr: beat transition_reveal: native 0x24B4D indexed map state is unavailable"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": false,
+      "oracle": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:preparation"
+      ],
+      "remake": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:preparation"
+      ],
+      "plan_completion": {
+        "ok": false,
+        "required": {
+          "mark:record_question": 1,
+          "mark:record_party_selection": 1,
+          "mark:departure_confirmation": 1,
+          "mark:battle_start": 1,
+          "mark:round_2": 1,
+          "mark:round_3": 1,
+          "mark:round_4": 1,
+          "mark:round_5": 1,
+          "mark:round_6": 1,
+          "mark:round_7": 1,
+          "mark:before_clear_viewport": 1,
+          "force_enemy_clear": 1,
+          "mark:town_after": 1,
+          "town_save": 1
+        },
+        "missing": {
+          "mark:round_6": 1,
+          "mark:round_7": 1,
+          "mark:before_clear_viewport": 1,
+          "force_enemy_clear": 1,
+          "mark:town_after": 1,
+          "town_save": 1
+        },
+        "remake_missing": {
+          "mark:battle_start": 1,
+          "mark:round_2": 1,
+          "mark:round_3": 1,
+          "mark:round_4": 1,
+          "mark:round_5": 1,
+          "mark:round_6": 1,
+          "mark:round_7": 1,
+          "mark:before_clear_viewport": 1,
+          "force_enemy_clear": 1,
+          "mark:town_after": 1,
+          "town_save": 1
+        }
+      },
+      "comparison_version": 3,
+      "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
+      "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+      "points": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "remake_ui": "record_question",
+          "oracle_ui": "record_question",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "record_question",
+          "oracle_kind": "record_question",
+          "oracle_comparable_kind": "record_question",
+          "oracle_family": "record_question",
+          "remake_family": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "record_party_selection",
+          "oracle_kind": "record_party_selection",
+          "oracle_comparable_kind": "record_party_selection",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 74,
+          "kind": "departure_confirmation",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "departure_confirmation",
+          "oracle_kind": "departure_confirmation",
+          "oracle_comparable_kind": "departure_confirmation",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": null,
+          "kind": "runtime_error",
+          "remake_ui": "dialogue",
+          "status": "not_comparable",
+          "reason": "衍生重製點沒有原版配對"
+        }
+      ]
+    },
+    "transaction": {
+      "ok": false,
+      "gold": [
+        {
+          "seq": 37,
+          "kind": "record_question",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 47,
+          "kind": "record_party_selection",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 74,
+          "kind": "departure_confirmation",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": null,
+        "remake_save_sha256": null,
+        "remake_note": null,
+        "blocked_by": null,
+        "status": "planned_save_missing"
+      }
+    },
+    "frames": {
+      "ok": false,
+      "required": false,
+      "policy": "advisory",
+      "pixel_budget": 640,
+      "min_frames": 12,
+      "compared": 0,
+      "points": []
+    }
+  },
+  "limitations": [
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
+    "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
+    "依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點、交易與完整保存仍為必要閘門。"
+  ]
+}

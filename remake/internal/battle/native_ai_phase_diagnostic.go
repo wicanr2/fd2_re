@@ -13,7 +13,7 @@ import (
 type NativeAIPhaseZeroInput struct {
 	UnitIndex int
 	CostRow   []byte
-	Skip      func(commandID int) bool
+	Skip      func(unitIndex int) bool
 }
 
 // NativeAIPhaseZeroDiagnostic preserves both score-producer results computed

@@ -68,3 +68,47 @@ func TestNative24B4DFailsBeforeMutationWithoutNinthTerrainRow(t *testing.T) {
 		t.Fatal("failed 0x24B4D preflight changed indexed state")
 	}
 }
+
+func TestNative24B4DStoryPresentationKeepsBattleStateAbsent(t *testing.T) {
+	for _, missingAssets := range []bool{false, true} {
+		name := "complete"
+		if missingAssets {
+			name = "missing-assets"
+		}
+		t.Run(name, func(t *testing.T) {
+			g := completeNative24B4DGame(t)
+			g.storyNativeMapSource = g.st
+			g.storyNativeMapView = g.st.NativeMapViewState
+			g.hasStoryNativeMapView = true
+			for _, unit := range g.st.Units {
+				g.storyActors = append(g.storyActors, *unit)
+			}
+			g.st = nil
+			if missingAssets {
+				g.nativeMapAssets = nil
+			}
+			continued := 0
+			err := g.startNative24B4D(20, 20, func() { continued++ })
+			if g.st != nil {
+				t.Fatal("story presentation published an active battle state")
+			}
+			if missingAssets {
+				if err == nil || g.transitionReveal != nil || continued != 0 {
+					t.Fatalf("missing assets: err=%v job=%v continued=%d", err, g.transitionReveal, continued)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			for step := 0; g.transitionReveal != nil && step < 20; step++ {
+				g.transitionReveal.drawn = true
+				g.transitionReveal.ticks = 0
+				g.stepTransitionReveal()
+			}
+			if g.st != nil || g.transitionReveal != nil || continued != 1 {
+				t.Fatalf("story completion: battle=%v job=%v continued=%d", g.st, g.transitionReveal, continued)
+			}
+		})
+	}
+}

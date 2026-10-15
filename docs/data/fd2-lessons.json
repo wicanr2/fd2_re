@@ -2215,6 +2215,36 @@
         ],
         "pattern": "0x1DC29"
       }
+    },
+    {
+      "id": "native-item-consumption-validates-compacted-cells",
+      "date": "2026-10-15",
+      "area": "正常輸入與驗證工具",
+      "rule": "正常物品消耗依原版已證實的八格左移、尾flag0x80及尾item保留驗證，不能要求原raw槽一定空掉。入口tools/dosgolem_oracle_drive.py use_self_restore_item及remake/cmd/fd2/chapter_parity_replay_test.go useSelfRestoreItem；此控制只支援既有item195自用回復，不代替其他道具規則。",
+      "why": "第25章r3原版已正常回復，控制器卻因第二瓶補到原槽拒收；r4修正同容器重跑成功。",
+      "evidence": "docs/data/ida/fd2_turn_event56_20261015.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle_drive.py"
+        ],
+        "pattern": "use_self_restore_item"
+      }
+    },
+    {
+      "id": "ai-scoring-callback-must-reach-runtime-callers",
+      "date": "2026-10-15",
+      "area": "AI正式接線",
+      "rule": "AI評分函式需要原生目標閘門時，逐一核對正式caller確實傳入同狀態record的callback；不能只憑孤立公式測試宣稱完整選目標。入口remake/internal/battle/native_ai_runtime.go nativeAI1F183TargetGate，適用已證實1F183及指令10～12，候選界線仍由評分器拒收。",
+      "why": "第25章正式caller傳nil，施法者延後出場造成12筆順序漂移；接回後240筆零分歧。",
+      "evidence": "docs/data/ida/fd2_turn_event56_20261015.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/combat.go"
+        ],
+        "pattern": "nativeAI1F183TargetGate[(]records[)]"
+      }
     }
   ]
 }

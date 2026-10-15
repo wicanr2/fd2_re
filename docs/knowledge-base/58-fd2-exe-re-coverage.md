@@ -12,7 +12,7 @@
 補成九項具型別操作，規格達 READY 後才接入四筆回合事件。
 主證據見[event54契約](../data/ida/fd2_turn_event54_20261015.json)，包含全域表 consumer、原始名稱、
 位址空間與原始位元組。本次不重開匹配式反編譯。
-官方轉寫與劇本同步檢查通過；全域仍有23筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
+官方轉寫與劇本同步檢查通過；第25章event56接線後，全域仍有22筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
 既有短鏈重跑通過行為、節點、完整 SAV 與13張完整 RGB 零差異，完整章仍依正式台帳判定。
 
 #207後續定位：原版`sub_1DB65`的局部畫面指標陣列只有30格，`0x1DC29`沒有數量上限。
@@ -32,12 +32,14 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 全檔 C 匹配 [#198](https://github.com/wicanr2/fd2_re/issues/198) 保持未完成及暫停，
 不作 Go／Ebiten、章節驗收或現代主題的前置。正式原版行為對拍仍使用
 [唯一 oracle 驅動器](../../tools/dosgolem_oracle.sh)，遇到玩家缺陷才開最小充分 RE。
+使用者本輪另允許必要時局部匹配確認已重現差異，界線見[118目前範圍](../goal/118-goal-fd2-matching-decompilation-20261008.md)。
+第25章揭幕、入口HUD、event56與AI閘門均由既有證據定位，本輪沒有新matching編譯。
 章台帳維持原分級；本輪新增event54完整原始證據及正常玩家輸入前綴，不推定完整章已通過。
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 21章passed，即第4～24章；第1～3及25～30章共9章todo。第24章T2／4／7／10增援、T11戰後、記錄／保存與退出列表通過流程三閘門；兩側完整SAV相同，frames為參考且未擷取 | [#14](https://github.com/wicanr2/fd2_re/issues/14)總項保持；下一個[#199](https://github.com/wicanr2/fd2_re/issues/199)，之後[#200](https://github.com/wicanr2/fd2_re/issues/200)。passed限111／114的作弊流程例外，來源見[正式收據](../data/ui-traces/parity-ch24.json) |
-| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有23筆維持spawn版本，分布於第1／2／3／21／22／25／26章；第24章event54九操作已完整同步 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分 |
+| 正式章台帳 | 21章passed，即第4～24章；第25章blocked，其餘8章todo。第25章完整重播到酒店，行為／節點通過、240筆AI順序零分歧；完整SAV未相同，未提升PLAYER-E2 | [#212](https://github.com/wicanr2/fd2_re/issues/212)是[#199](https://github.com/wicanr2/fd2_re/issues/199)目前阻塞；[第25章失敗收據](../data/ui-traces/parity-ch25.json)列出所有明文差異。第24章及更早passed保持 |
+| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有22筆維持spawn版本；第25章event56五項操作已完整同步並實際消費 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分。命令、日期、固定輸入見[event56主契約](../data/ida/fd2_turn_event56_20261015.json) |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
@@ -3429,3 +3431,11 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 ### 2026-10-06 #197 原始byte觀察工具READY
 
 唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。
+
+### 第25章event56接續入口（2026-10-15）
+
+`sub_35487`已有完整C匹配，沿`fd2_matching_full_20261008.json`的game_tail_event_matches與tail_and_backups_original_evidence，不因raw分類unknown重開。新[主契約](../data/ida/fd2_turn_event56_20261015.json)重用IDA9.4完整86 bytes與Capstone核對，五項操作為pan(6,40)、group1、ACTING74、text5及尾跳134E4。RE-CLOSED／spec READY先於正式接線，原版r4及完整Game r2已消費，達限定RUNTIME-E1；章PLAYER-E2仍因保存差異未過。
+
+原版r4以第24章實際SAV正常LOAD與選人，T5／6各用原有神聖之水，T6完整援軍後至T7，正常移鏡頭再一次HP-only清敵35筆，戰後及酒店保存完成。沒有追加道具、強化或鎖HP。揭幕故事載體、battle_ch25原生視圖／HUD與AI指令10～12的1F183目標閘門已接回；240筆AI全消費且零順序分歧，19套件Go、132項Python與第24章完整流程／SAV回歸通過。
+
+第25章交易仍失敗。identity26的`+0x28..+0x30`九位元組區間中七byte不同，另有兩byte檢查碼差異；其餘完整明文相同。既有IDA建構器未寫此區、11506整筆複製，原版本次runtime區間一路保持同值；用途與最初producer仍未知，不稱指標或無用欄位。具體差異、原始名稱／bytes及驗證命令見主契約`opaque_save_gap`，[#212](https://github.com/wicanr2/fd2_re/issues/212)保持開啟。比較器明示`--oracle-save`可驗實檔SHA與checksum後揭露全部明文差異，入口見[工具](../../tools/verify_chapter_parity.py)；它沒有排除差異或改變存檔閘門。

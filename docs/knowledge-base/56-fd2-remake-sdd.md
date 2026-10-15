@@ -9714,6 +9714,19 @@ IDA原始bytes確認1D3FF屬玩家command確認前重繪，15510屬簡略演出�
 唯一數字、來源與限制見[58](58-fd2-exe-re-coverage.md)、[HUD契約](../data/ida/fd2_hud_redraw_20261006.json)及
 [地形契約](../data/ida/fd2_terrain_mode3_review_20261001.json)。
 
+### 2026-10-15 第25章流程接線與保存邊界
+
+第25章四次24B4D揭幕沿LOADCH故事載體組幀，輸入組裝結束恢復`g.st=nil`，不發布可操作戰鬥。
+戰場入口補原版六座標及繼承HUD來源。event56依完整86-byte證據轉寫鏡頭、援軍、ACTING74、
+text5與姿態重設，READY先於正式／canonical接線。AI指令10～12的三個正式評分caller
+傳入已有1F183目標閘門，以同狀態raw record索引判定；缺來源與越界仍拒收。
+
+正常原版及完整Game已走到戰後酒店，行為／節點通過；未知保存區間仍不相等，
+完整存檔閘門保持、章PLAYER-E2未提升。受版控控制器只補正常自用既有神聖之水，
+按八格左移及尾flag驗證，沒有鎖HP或新增物品。原始定位、READY規格、驗證與限制
+只存[event56主契約](../data/ida/fd2_turn_event56_20261015.json)；現況見[58](58-fd2-exe-re-coverage.md)。
+匹配式反編譯依[118目前範圍](../goal/118-goal-fd2-matching-decompilation-20261008.md)允許必要時局部啟動，全面保持暫停，本批無新匹配編譯。
+
 ### 2026-10-06 #197 原始byte觀察工具READY
 
 唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。

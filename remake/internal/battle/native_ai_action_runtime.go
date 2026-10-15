@@ -97,7 +97,7 @@ func (s *State) nextNativeAI14EF0Plan(u *Unit) (*AIPlan, bool, error) {
 	command, err := ScoreNativeAI1598A(
 		s.W, s.H, records, len(s.Units), actor, selector, u,
 		s.NativeCommandBook, baseFlags, s.NativeTerrainMoveCodes,
-		costRow, nil,
+		costRow, nativeAI1F183TargetGate(records),
 	)
 	if err != nil {
 		return nil, true, err

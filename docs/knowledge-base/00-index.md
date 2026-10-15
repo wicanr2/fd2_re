@@ -817,3 +817,17 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 [清敵視野稽核工具](../../tools/fd2_clear_viewport_audit.py)重算固定原版30格陣列、失敗前候選與保存暫存器／返回位址覆寫；原始證據見event54主契約。
 
 第24章[正式流程收據](../data/ui-traces/parity-ch24.json)通過行為、節點、交易與完整SAV；畫面只作參考。[戰後76筆前沿修訂](../data/ida/fd2_ch24_post_frontier_20261003.json)以current_revision指定新契約，保留28／86的歷史範圍。
+
+- 第25章主線流程接續：[槽清冊](../data/parity-slots/ch25-manifest.json)、[鍵盤計畫r1](../data/parity-plans/ch25-flow-cheat-r1.jsonl)。r1是失敗歷史；最新r4已驗援軍與戰後保存邊界，完整SAV差異仍阻塞，現況依58與正式章台帳。
+
+- 第25章event56：[原始86-byte函式、五項操作與READY契約](../data/ida/fd2_turn_event56_20261015.json)。沿已有35487完整匹配，不重做編譯；正式接線與完整流程已驗，未知保存差異獨立列於同契約opaque_save_gap。
+
+- 第25章[主線計畫r2](../data/parity-plans/ch25-flow-cheat-r2.jsonl)：r1聖寇拉斯T5死亡，r2正常退避後核對T6援軍，無追加狀態注入。
+
+- 第25章[首輪失敗流程收據](../data/ui-traces/parity-ch25-flow-r1-failed.json)：原版T5必存角色死亡，重製前綴另被戰前揭幕擋住；兩者分開記錄，不提升章台帳。
+
+- 第25章[主線計畫r3](../data/parity-plans/ch25-flow-cheat-r3.jsonl)：沿同SAV退避，T5／6各正常自用一瓶原有神聖之水。物品控制與完成閘門見event56主契約。
+
+- 第25章[主線計畫r4](../data/parity-plans/ch25-flow-cheat-r4.jsonl)：修正原生物品左移驗證；兩次正常自用補位後的raw槽2。
+
+- 第25章[完整流程失敗收據](../data/ui-traces/parity-ch25.json)：行為／節點通過，240筆AI零順序分歧；存檔九位元組區間有七byte差異，另兩byte檢查碼差異，仍阻塞章驗收。

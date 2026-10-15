@@ -1992,3 +1992,8 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 ### 2026-10-06 #197 原始byte觀察工具READY
 
 唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。
+
+
+### 2026-10-15 第25章完整流程與保存差異
+
+第25章正式揭幕、戰場原生視圖／HUD與T6完整event56已接線。原版r4及完整Game到同一戰後酒店邊界，行為／節點通過；完整SAV未知區間仍不同，不提升章PLAYER-E2。畫面advisory且未擷取重製PNG，不能宣稱逐幀或逐像素一致。原始證據、READY規格及回歸見[event56主契約](../data/ida/fd2_turn_event56_20261015.json)，逐byte差異見[失敗章收據](../data/ui-traces/parity-ch25.json)。唯一數字與目前阻塞見[58](58-fd2-exe-re-coverage.md)，不以已修三項consumer代替整章驗收。
