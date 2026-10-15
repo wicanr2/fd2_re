@@ -15,6 +15,8 @@
 #   FD2_ASSETS_IMAGE       預設 fd2-assets-local:20260829-sfx（有 Pillow）
 #   FD2_PARITY_TRACE_KEYS  非空時重播端把每個游標鍵之後的游標／鏡頭寫進 replay.log（找鏡頭分歧用）
 #   FD2_PARITY_CPUS        重播與判定容器的 --cpus（預設 4；原版側 oracle 同時在跑時調小）
+#   FD2_PARITY_FRAME_POLICY strict（預設）或 advisory（2026-10-15流程驗收）
+#   FD2_PARITY_CAPTURE_FRAMES 0可省略測試圖片輸出；正常Game.Draw完成閘門仍執行
 set -euo pipefail
 
 repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
@@ -31,6 +33,10 @@ go_image=${FD2_GO_TEST_IMAGE:-fd2-go-test-local:latest}
 assets_image=${FD2_ASSETS_IMAGE:-fd2-assets-local:20260829-sfx}
 cache=${FD2_GO_TEST_CACHE:-$repo_root/work/gocache}
 cpus=${FD2_PARITY_CPUS:-4}
+frame_policy=${FD2_PARITY_FRAME_POLICY:-strict}
+capture_frames=${FD2_PARITY_CAPTURE_FRAMES:-1}
+case "$frame_policy" in strict|advisory) ;; *) echo "未知畫面政策：$frame_policy" >&2; exit 2 ;; esac
+case "$capture_frames" in 0|1) ;; *) echo "CAPTURE_FRAMES只允許0或1" >&2; exit 2 ;; esac
 mkdir -p "$cache"
 
 for f in "$slot_dir/FD2.SAV" "$slot_dir/manifest.json" "$oracle_run/actions.jsonl" "$oracle_run/runner.json" "$plan"; do
@@ -51,6 +57,7 @@ docker run --rm --network none --memory 8g --cpus "$cpus" --pids-limit 512 \
   -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack \
   -e FD2_PARITY_CHAPTER="$chapter" -e FD2_PARITY_SLOT=/slot/FD2.SAV \
   -e FD2_PARITY_ORACLE_RUN=/oracle -e FD2_PARITY_OUT=/parity-out \
+  -e FD2_PARITY_CAPTURE_FRAMES="$capture_frames" \
   -e FD2_PARITY_TRACE_KEYS="${FD2_PARITY_TRACE_KEYS:-}" -e FD2_FOCUS_TRACE_OUT="${FD2_FOCUS_TRACE_OUT:-}" \
   -v "$repo_root:/src" -v "$pack:/pack:ro" -v "$cache:/gocache" \
   -v "$slot_dir:/slot:ro" -v "$oracle_run:/oracle:ro" -v "$out_dir:/parity-out" \
@@ -66,6 +73,7 @@ docker run --rm --network none --memory 2g --cpus 1 --pids-limit 128 \
   -w /repo "$assets_image" tools/verify_chapter_parity.py \
   --chapter "$chapter" --oracle /oracle --remake /parity-out \
   --slot-manifest /slot/manifest.json --plan "${plan#$repo_root/}" \
-  --out "${receipt#$repo_root/}" --save-blocked-issue "${FD2_PARITY_SAVE_ISSUE:-}" || status=$?
+  --out "${receipt#$repo_root/}" --save-blocked-issue "${FD2_PARITY_SAVE_ISSUE:-}" \
+  --frame-policy "$frame_policy" || status=$?
 echo "收據：$receipt"
 exit "${status:-0}"

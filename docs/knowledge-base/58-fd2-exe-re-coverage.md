@@ -2,16 +2,29 @@
 
 ## 2026-10-15 目前狀態：重製完成與 HD 優先
 
+使用者本輪定案允許作弊通關、參考攻略，並以流程一致驗收，不強求逐幀一致。
+契約見[111最新修訂](../goal/111-goal-original-parity-campaign-20260915.md)及[114第24章政策](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)。
+`tools/verify_chapter_parity.py --frame-policy advisory` 仍要求行為、節點與交易通過，畫面結果照實保留。
+未抽樣的戰鬥與自然難度不由流程收據推定。
+
+第24章 event54 原有轉寫只登場增援，缺少四角鏡頭及等待。本輪沿固定 EXE、既有 IDA 9.4
+匯出與 Capstone 5.0.3 核對原始 `sub_3535D` 及 `sub_35822` 共用尾端的完整125 bytes，
+補成九項具型別操作，規格達 READY 後才接入四筆回合事件。
+主證據見[event54契約](../data/ida/fd2_turn_event54_20261015.json)，包含全域表 consumer、原始名稱、
+位址空間與原始位元組。本次不重開匹配式反編譯。
+官方轉寫與劇本同步檢查通過；全域仍有23筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
+既有短鏈重跑通過行為、節點、完整 SAV 與13張完整 RGB 零差異，完整章仍依正式台帳判定。
+
 使用者要求暫停匹配式反編譯，加速重製完成與 HD 化，並重排工作清單及 GitHub Issues。
 全檔 C 匹配 [#198](https://github.com/wicanr2/fd2_re/issues/198) 保持未完成及暫停，
 不作 Go／Ebiten、章節驗收或現代主題的前置。正式原版行為對拍仍使用
 [唯一 oracle 驅動器](../../tools/dosgolem_oracle.sh)，遇到玩家缺陷才開最小充分 RE。
-這次調整排程，沒有提高任何章、介面或原版證據分級。
+章台帳維持原分級；本輪新增event54完整原始證據及正常玩家輸入前綴，不推定完整章已通過。
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 20 章 passed，即第4～23章；第1～3及24～30章共10章 todo。第24章T1～T3至戰後保存短鏈四gate已過，13張完整畫面零差異、完整SAV相同；晚期事件及其餘戰鬥未抽，不提高章分級 | [#14](https://github.com/wicanr2/fd2_re/issues/14)總項；先[#142](https://github.com/wicanr2/fd2_re/issues/142)，再[#199](https://github.com/wicanr2/fd2_re/issues/199)及[#200](https://github.com/wicanr2/fd2_re/issues/200)。passed依111／114既有例外，不代表完整無修改通關 |
-| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，但仍有27筆維持spawn版本，分布於第1／2／3／21／22／24／25／26章 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分 |
+| 正式章台帳 | 20 章 passed，即第4～23章；第1～3及24～30章共10章 todo。第24章短鏈至戰後保存四gate已過；本輪流程已到T11，四次增援與280筆AI入口全對上，但清敵後原版異常、未保存，不提高章分級 | [#142](https://github.com/wicanr2/fd2_re/issues/142)由[#207](https://github.com/wicanr2/fd2_re/issues/207)戰後異常阻塞；再接[#199](https://github.com/wicanr2/fd2_re/issues/199)及[#200](https://github.com/wicanr2/fd2_re/issues/200)。總項[#14](https://github.com/wicanr2/fd2_re/issues/14)依111／114流程例外，不代表自然難度通關 |
+| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有23筆維持spawn版本，分布於第1／2／3／21／22／25／26章；第24章event54九操作已完整同步 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |

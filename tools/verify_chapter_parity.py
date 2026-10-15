@@ -414,6 +414,8 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--pixel-budget", type=int, default=640)
     parser.add_argument("--min-frames", type=int, default=12)
+    parser.add_argument("--frame-policy", choices=("strict", "advisory"), default="strict",
+                        help="strict沿既有畫面閘門；advisory依2026-10-15定案只要求流程，原始畫面結果仍記錄")
     parser.add_argument("--save-blocked-issue", default="", help="重製側尚未寫原版槽 bytes 時引用的 issue")
     args = parser.parse_args()
 
@@ -517,13 +519,15 @@ def main() -> int:
     transaction_ok = gold_ok and save_entry["status"] in ("ok", "not_sampled")
     compared_frames = [f for f in frames if "diff_pixels" in f]
     frames_ok = len(compared_frames) >= args.min_frames and all(f["ok"] for f in compared_frames)
+    frames_required = args.frame_policy == "strict"
 
     receipt = {
         "schema_version": 1,
         "kind": "fd2_chapter_parity_receipt",
         "chapter": args.chapter,
         "generated_at": dt.date.today().isoformat(),
-        "status": "passed" if (behavior_ok and nodes_ok and transaction_ok and frames_ok) else "failed",
+        "status": "passed" if (behavior_ok and nodes_ok and transaction_ok and (frames_ok or not frames_required)) else "failed",
+        "verification_profile": "strict" if frames_required else "flow",
         "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
         "original": {
             "runner": "dosgolem apps/fd2/cmd/oracle",
@@ -558,13 +562,15 @@ def main() -> int:
                        "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
                        "points": node_points},
             "transaction": {"ok": transaction_ok, "gold": transactions, "save": save_entry},
-            "frames": {"ok": frames_ok, "pixel_budget": args.pixel_budget, "min_frames": args.min_frames,
+            "frames": {"ok": frames_ok, "required": frames_required, "policy": args.frame_policy,
+                       "pixel_budget": args.pixel_budget, "min_frames": args.min_frames,
                        "compared": len(compared_frames), "points": frames},
         },
         "limitations": [
             "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
             "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
             "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
+            *([] if frames_required else ["依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點、交易與完整保存仍為必要閘門。"]),
         ],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

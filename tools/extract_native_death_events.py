@@ -349,6 +349,19 @@ EVENTS = [
         op("dialogue", [(0x3532B, 0x35352)], text=5),
         op("clear_hp_from", [(0x35352, 0x3535C)], first=0x12),
     ]},
+    # 第24章event54的完整四角鏡頭；353CC..353DA共用尾段由sub_35822持有。
+    # READY與IDA／原始bytes主證據：docs/data/ida/fd2_turn_event54_20261015.json。
+    {"id": 54, "handler": 0x3535D, "ops": [
+        op("spawn_group", [(0x35367, 0x35375)], group_from="round", gate=0),
+        op("pan", [(0x35375, 0x35381)], x=0, y=4),
+        op("delay", [(0x35381, 0x3538E)], ms=400),
+        op("pan", [(0x3538E, 0x3539A)], x=0, y=22),
+        op("delay", [(0x3539A, 0x353A7)], ms=400),
+        op("pan", [(0x353A7, 0x353B3)], x=26, y=24),
+        op("delay", [(0x353B3, 0x353C0)], ms=400),
+        op("pan", [(0x353C0, 0x353CC)], x=26, y=2),
+        op("delay", [(0x353CC, 0x353D9)], ms=400),
+    ]},
     {"id": 64, "handler": 0x358EA, "guards": [
         op("guard_state", [(0x358F4, 0x35902)], index=0x10, equals=1),
         op("guard_state", [(0x3595D, 0x35962)], index=0x10, equals=2, reuse_register=True),

@@ -1,5 +1,9 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+2026-10-15 使用者接續定案：允許測試作弊、參考攻略，以流程一致優先，不強求每frame相同。
+後續章依[111最新修訂](../goal/111-goal-original-parity-campaign-20260915.md)採明示的flow收據；
+行為、節點、交易與完整保存仍核對，畫面只作參考。舊strict收據與正式遊戲規則保持。
+
 2026-10-15 排程定案：使用者要求重製完成與HD優先，匹配式反編譯[#198](https://github.com/wicanr2/fd2_re/issues/198)暫停。
 正式Go／Ebiten實作仍依原版證據、READY規格與正常玩家路徑驗收，不要求先完成全檔C位元組匹配。
 章節、事件與HUD缺口以[58目前狀態](58-fd2-exe-re-coverage.md)及[91排程](91-worklist.md)為準。

@@ -1,5 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+2026-10-15 使用者改以流程一致驗收，依[111修訂](../goal/111-goal-original-parity-campaign-20260915.md)
+及[114本章政策](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)執行。
+`tools/verify_chapter_parity.py --frame-policy advisory` 保留行為、節點與交易的嚴格判定；
+畫面差異與缺圖照實記錄，不作流程完成門檻。既有逐像素收據保持原有範圍。
+第24章 event54 已補四次鏡頭移動與等待，來源見[主契約](../data/ida/fd2_turn_event54_20261015.json)。
+完整章結果另依正式收據與台帳判定，下方短鏈紀錄不能單獨證明完整章。
+
 2026-10-15 現況入口改以[58目前狀態](58-fd2-exe-re-coverage.md)及[91排程](91-worklist.md)接續重製與HD。
 全檔C匹配暫停，不是介面或章驗收的前置；本輪排程及素材清冊檢查不提高E0／E1／E2。
 現代主題的正常玩家與圖層交界驗收列於[#202](https://github.com/wicanr2/fd2_re/issues/202)，
@@ -8,7 +15,10 @@
 dosgolem合併後IRQ7正常啟動及鍵盤短鏈已通過兩輪重播。這只驗原版執行器，
 不提升重製介面或章分級。新舊平台PNG與完整狀態仍有差異，見[工具主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。
 第24章T1～T3至戰後整備的短鏈四gate通過，13張完整RGB零差異、完整SAV相同。
-主收據的`chapter24_followup`限定本次抽樣；晚期事件及其餘戰鬥未抽，#142及章台帳保持未完成。
+主收據的`chapter24_followup`限定先前短鏈。本輪第一組DP1000槽已到T11，四次增援已觸發，
+重製端280筆AI入口全消費且零順序分岔。清敵一次後原版異常跳至0x1666E8，尚未寫出戰後SAV，
+流程收據保留failed。#142及章台帳保持未完成，阻擋另列[#207](https://github.com/wicanr2/fd2_re/issues/207)。
+證據與限制見[event54主契約的validation.dp_c1](../data/ida/fd2_turn_event54_20261015.json)。
 
 匹配反編譯的原始載入位元組守衛修正屬於分析工具驗證，依[56](56-fd2-remake-sdd.md)及[58](58-fd2-exe-re-coverage.md)保存。隔離偽造反例不算原版擷取或C還原；既有正式匯出及C覆蓋經重算保持，本矩陣的介面與PLAYER-E2分級不提升。
 

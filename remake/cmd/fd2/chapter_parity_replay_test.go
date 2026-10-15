@@ -137,6 +137,7 @@ type parityReplay struct {
 	paletteCycleWrite                 *parityPaletteCycleWrite
 	stageRowOffset                    *int
 	actionOverlayCandidatesProvenance []parityActionOverlayCandidate
+	skipFrames                        bool
 }
 
 // #144：只計已證實0x24D48的raw列旋轉，不讀影像或搜尋相位。
@@ -734,6 +735,10 @@ func TestChapterParityReplay(t *testing.T) {
 	if err := os.MkdirAll(out, 0o755); err != nil {
 		t.Fatal(err)
 	}
+	frameSetting := os.Getenv("FD2_PARITY_CAPTURE_FRAMES")
+	if frameSetting != "" && frameSetting != "0" && frameSetting != "1" {
+		t.Fatalf("FD2_PARITY_CAPTURE_FRAMES=%q；只允許0或1", frameSetting)
+	}
 
 	t.Setenv("FD2_TITLE", "1")
 	t.Setenv("FD2_SEED", "4")
@@ -765,6 +770,7 @@ func TestChapterParityReplay(t *testing.T) {
 		"native_rng_initial": g.nativeRNGState,
 		"method":             "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
 		"legacy_end_sources": legacyENDSources,
+		"capture_frames":     frameSetting != "0",
 	}, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -779,6 +785,7 @@ func TestChapterParityReplay(t *testing.T) {
 		preparationAfter: fmt.Sprintf("preparation_ch%02d", chapter+1),
 		aiEntries:        readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x13A9F"),
 		growthEntries:    readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x1E54A"),
+		skipFrames:       frameSetting == "0",
 		keys:             readParityControlKeys(t, filepath.Join(run, "control-history.jsonl"))}
 	g.aiPlanObserver = r.observeAIPlan
 	g.growthRollObserver = r.observeGrowthRoll
@@ -1353,6 +1360,9 @@ type frameVariant struct {
 }
 
 func (r *parityReplay) frame(kind string) (string, string) {
+	if r.skipFrames {
+		return "", ""
+	}
 	g := r.g
 	r.paletteCyclePhase = nil
 	r.paletteCycleWrite = nil

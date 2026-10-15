@@ -1551,6 +1551,63 @@
       ]
     },
     {
+      "id": 54,
+      "handler": "0x3535d",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group_from": "round",
+          "gate": 0,
+          "source": "0x35367"
+        },
+        {
+          "op": "pan",
+          "x": 0,
+          "y": 4,
+          "source": "0x35375"
+        },
+        {
+          "op": "delay",
+          "ms": 400,
+          "source": "0x35381"
+        },
+        {
+          "op": "pan",
+          "x": 0,
+          "y": 22,
+          "source": "0x3538e"
+        },
+        {
+          "op": "delay",
+          "ms": 400,
+          "source": "0x3539a"
+        },
+        {
+          "op": "pan",
+          "x": 26,
+          "y": 24,
+          "source": "0x353a7"
+        },
+        {
+          "op": "delay",
+          "ms": 400,
+          "source": "0x353b3"
+        },
+        {
+          "op": "pan",
+          "x": 26,
+          "y": 2,
+          "source": "0x353c0"
+        },
+        {
+          "op": "delay",
+          "ms": 400,
+          "source": "0x353cc"
+        }
+      ]
+    },
+    {
       "id": 64,
       "handler": "0x358ea",
       "battle_units": [

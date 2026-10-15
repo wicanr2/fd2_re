@@ -2,10 +2,59 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import verify_chapter_parity as vp  # noqa: E402
+
+
+class FramePolicyIntegration(unittest.TestCase):
+    def test_advisory_does_not_hide_flow_or_save_failures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            oracle, remake = root / "oracle", root / "remake"
+            oracle.mkdir()
+            remake.mkdir()
+            manifest, plan, output = root / "manifest.json", root / "plan.jsonl", root / "result.json"
+            manifest.write_text(json.dumps({"output_sha256": "a" * 64}))
+            plan.write_text(json.dumps({"mark": "round_2"}) + "\n")
+            (oracle / "runner.json").write_text(json.dumps({"dosgolem_commit": "a" * 40}))
+            action = {"kind": "mark", "label": "round_2", "seq": 1}
+            (oracle / "actions.jsonl").write_text(json.dumps(action) + "\n")
+            unit = {"camp": 2, "x": 1, "y": 2, "hp": 10}
+            original = {"view": {"round": 2, "gold": 0}, "units": [unit],
+                        "input_chain": ["0x117F8"], "eip": "0x4DEF7"}
+            (oracle / "checkpoint-0001.json").write_text(json.dumps(original))
+            cp = {"kind": "mark:round_2", "oracle_seq": 1, "ui": "cursor", "round": 2,
+                  "gold": 0, "units": [unit], "frame": "missing-p0.png"}
+
+            def run(point, policy=None):
+                (remake / "checkpoints.jsonl").write_text(json.dumps(point) + "\n")
+                args = ["verify", "--chapter", "24", "--oracle", str(oracle), "--remake", str(remake),
+                        "--slot-manifest", str(manifest), "--plan", str(plan), "--out", str(output)]
+                if policy:
+                    args += ["--frame-policy", policy]
+                with patch.object(sys, "argv", args):
+                    status = vp.main()
+                return status, json.loads(output.read_text())
+
+            status, receipt = run(cp)
+            self.assertEqual(status, 1)
+            self.assertTrue(receipt["gates"]["frames"]["required"])
+            status, receipt = run(cp, "advisory")
+            self.assertEqual(status, 0)
+            self.assertEqual(receipt["verification_profile"], "flow")
+            self.assertFalse(receipt["gates"]["frames"]["ok"])
+            self.assertFalse(receipt["gates"]["frames"]["required"])
+            self.assertEqual(receipt["gates"]["frames"]["points"][0]["status"], "frame_missing_or_no_pillow")
+            for changed in ({**cp, "units": [{**unit, "hp": 9}]}, {**cp, "ui": "town"},
+                            {**cp, "gold": 1}, {**cp, "kind": "runtime_error", "note": "failed"}):
+                with self.subTest(changed=changed):
+                    status, receipt = run(changed, "advisory")
+                    self.assertEqual(status, 1)
+            plan.write_text(json.dumps({"mark": "round_3"}) + "\n")
+            self.assertEqual(run(cp, "advisory")[0], 1)
 
 
 class PairingAndUnits(unittest.TestCase):

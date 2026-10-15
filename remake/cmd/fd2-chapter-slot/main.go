@@ -165,6 +165,7 @@ func run() error {
 	boostAP := flag.Int("boost-base-ap", 0, "每筆名冊記錄的基底 AP（+0x37）加值；政策值，114 定案，套完再跑 0x1145A 重算")
 	boostDP := flag.Int("boost-base-dp", 0, "每筆名冊記錄的基底 DP（+0x39）加值；政策值，拉太高會改變敵方評分（0x14237 差值 <= 2 仍以 priority 0 比較）")
 	boostDX := flag.Int("boost-base-dx", 0, "每筆名冊記錄的 DX（+0x3E，HIT 與 EV 共用基底）加值；EV 不可大於等於敵人 HIT")
+	boostOnly := flag.Bool("boost-only", false, "僅強化同章測試槽，不執行戰後、升級、事件狀態或金幣政策")
 	eventStateText := flag.String("event-states", "", "以 章:索引=值 指定戰後 handler 讀到的戰場狀態表值，逗號分隔（政策，非證據；例如 7:17=1 讓 ch06_post 走 JOIN12）")
 	seed := flag.Int64("seed", 0, "成長擲骰種子；0 表示用 target")
 	assetsDir := flag.String("assets", "assets", "remake 資產根（含 data/、cutscenes/handlers/）")
@@ -199,8 +200,8 @@ func run() error {
 	if verified.Chapter == 0xff {
 		return errors.New("基底槽是空槽")
 	}
-	if int(verified.Chapter) >= *target {
-		return fmt.Errorf("基底已是第 %d 章，目標 %d 不在其後", verified.Chapter, *target)
+	if err := validateBuildMode(int(verified.Chapter), *target, *boostOnly, *levelsPer, *overrideText, *eventStateText, *gold); err != nil {
+		return err
 	}
 	if int(verified.RosterCount) > fdsave.RosterUnits {
 		return fmt.Errorf("基底 roster_count=%d 超過 %d", verified.RosterCount, fdsave.RosterUnits)
@@ -241,6 +242,9 @@ func run() error {
 	}
 	if err := b.applyBoost(*target, *boostAP, *boostDP, *boostDX); err != nil {
 		return err
+	}
+	if *boostOnly {
+		b.assumptions = append(b.assumptions, assumption{Chapter: *target, Kind: "boost_only", Detail: "同章測試槽僅套明示強化；未執行戰後、升級、事件狀態或金幣政策。"})
 	}
 	var goldOut *uint32
 	if *gold >= 0 {
@@ -766,6 +770,20 @@ func (b *builder) applyBoost(chapter, ap, dp, dx int) error {
 	b.assumptions = append(b.assumptions, assumption{Chapter: chapter, Kind: "boost", Detail: fmt.Sprintf(
 		"基底 AP +%d、DP +%d、DX +%d（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 %d 筆：%s",
 		ap, dp, dx, b.count, strings.Join(detail, "；"))})
+	return nil
+}
+
+// 同章校準沿2026-10-15流程驗收READY契約；一般建槽的前進限制保持。
+func validateBuildMode(base, target int, boostOnly bool, levels int, overrides, events string, gold int) error {
+	if boostOnly {
+		if base != target || levels != 0 || strings.TrimSpace(overrides) != "" || strings.TrimSpace(events) != "" || gold >= 0 {
+			return errors.New("boost-only只允許同章強化，不可混用戰後、升級、事件狀態或金幣政策")
+		}
+		return nil
+	}
+	if base >= target {
+		return fmt.Errorf("基底已是第 %d 章，目標 %d 不在其後", base, target)
+	}
 	return nil
 }
 

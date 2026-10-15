@@ -1,5 +1,21 @@
 # 111 — 目標提示詞：全戰役原版體驗一致（2026-09-15 定案）
 
+## 2026-10-15 使用者修訂：流程優先，允許測試作弊
+
+使用者明確要求「就作弊過關吧」「記得參考攻略」「只要流程一致即可，不用強求每個frame一樣」。
+後續章可使用明示的章前強化測試槽及清敵，核對原版與重製的事件、劇情、介面節點、隊伍、交易與完整保存。
+攻略只提供玩家流程旁證；回合控制、參數與資料流仍以固定原版為準。
+
+正式入口為[章比較器](../../tools/verify_chapter_parity.py)的`--frame-policy advisory`，
+或[章驅動器](../../tools/chapter_parity.sh)的`FD2_PARITY_FRAME_POLICY=advisory`。
+行為、節點、交易保持必要閘門，圖片差異與缺圖照實記錄但不阻塞流程驗收。
+重播可設定`FD2_PARITY_CAPTURE_FRAMES=0`省略測試圖片；正常Game.Update與Draw完成閘門仍執行。
+工具預設`strict`及舊收據不變，流程收據明示`verification_profile=flow`，不冒稱逐像素或自然難度通關。
+
+第24章最多三輪DP校準，使用[主契約](../data/ida/fd2_turn_event54_20261015.json)、
+[流程計畫](../data/parity-plans/ch24-flow-cheat-r1.jsonl)與[測試槽清冊](../data/parity-slots/ch24-flow-dp1000-manifest.json)。
+本修訂優先於下文較早的強制畫面門檻及戰鬥抽樣範圍；未驗的戰鬥細節保留限制，不拖住劇情流程。
+
 > 這份提示詞是後續每個工作階段的開工指令。接手時先讀 `CLAUDE.md`，再讀本檔，
 > 然後從 [`parity-campaign-progress.json`](../data/parity-campaign-progress.json)
 > 挑最小的未完成章節動工。本檔只定義目標、門檻與工作單元；

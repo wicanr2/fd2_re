@@ -11,7 +11,9 @@
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
       "guard": {
         "kind": "present",
-        "paths": ["docs/data/ida/fd2_matching_full_20261008.json"],
+        "paths": [
+          "docs/data/ida/fd2_matching_full_20261008.json"
+        ],
         "pattern": "zero_based_entry_index"
       }
     },
@@ -2035,7 +2037,9 @@
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
       "guard": {
         "kind": "present",
-        "paths": ["tools/fd2_matching_game_map_group.c"],
+        "paths": [
+          "tools/fd2_matching_game_map_group.c"
+        ],
         "pattern": "MAP_QUERY_GROUP"
       }
     },
@@ -2063,7 +2067,9 @@
       "evidence": "docs/data/ida/fd2_matching_full_20261008.json",
       "guard": {
         "kind": "present",
-        "paths": ["tools/fd2_matching_game_ai_point_flow.c"],
+        "paths": [
+          "tools/fd2_matching_game_ai_point_flow.c"
+        ],
         "pattern": "scalar_dx,scalar_targetcount"
       }
     },
@@ -2176,7 +2182,7 @@
       "id": "deferred-checkpoint-keeps-each-required-frame",
       "date": "2026-10-15",
       "area": "原版收據與控制計畫",
-      "rule": "必要checkpoint的PNG缺失時，先查frame_deferred、後續控制步數與oracle待輸出佇列，不補圖或放寬畫面閘門。連續短控制前先讓必要的延後畫面完成，再送下一操作。入口tools/verify_chapter_parity.py的frame_missing_or_no_pillow、dosgolem apps/fd2/cmd/oracle/main.go的capture／pendingFrame；目前單槽覆寫缺陷與有界正常等待計畫見#206及docs/data/parity-plans/ch24-sample-r4.jsonl。",
+      "rule": "採strict畫面驗收且必要checkpoint的PNG缺失時，先查frame_deferred、後續控制步數與oracle待輸出佇列，不補圖或放寬畫面閘門。連續短控制前先讓必要的延後畫面完成，再送下一操作。入口tools/verify_chapter_parity.py的frame_missing_or_no_pillow、dosgolem apps/fd2/cmd/oracle/main.go的capture／pendingFrame；目前單槽覆寫缺陷與有界正常等待計畫見#206及docs/data/parity-plans/ch24-sample-r4.jsonl。 使用者已指定流程驗收時，依111最新修訂使用advisory，保留缺圖與差異訊號，不能把frames.ok改成true。",
       "why": "第24章兩輪r3計畫的seq162停在11ED9→12103；下一個單步清敵checkpoint覆寫pendingFrame，導致畫面閘門拒收。行為、節點及完整SAV已相同，缺圖不能誤記為重製圖像差異。",
       "evidence": "https://github.com/wicanr2/fd2_re/issues/206；docs/data/fd2-remake-toolchain-recovery-20261015.json",
       "guard": {
@@ -2186,6 +2192,14 @@
         ],
         "pattern": "frame_missing_or_no_pillow"
       }
+    },
+    {
+      "id": "oracle-high-eip-error-needs-control-transfer-proof",
+      "date": "2026-10-15",
+      "area": "原版流程與工具診斷",
+      "rule": "原版執行器在高位址報未支援opcode時，先核對載入code範圍、next_bytes與異常控制轉移，不直接補opcode或加特例。缺少caller／writer證據時保留unknown及失敗收據。入口tools/dosgolem_oracle.sh與dosgolem apps/fd2/cmd/oracle；第24章實例見docs/data/ida/fd2_turn_event54_20261015.json validation.dp_c1及#207。",
+      "why": "第24章本輪正常至T11，清敵後報0x1666E8 opcode67；後續bytes疑似資料，當輪未收指令尾端，不能把資料執行誤當CPU指令能力缺口，也不能拿完整前綴冒充戰後保存成功。",
+      "evidence": "docs/data/ida/fd2_turn_event54_20261015.json；https://github.com/wicanr2/fd2_re/issues/207"
     }
   ]
 }

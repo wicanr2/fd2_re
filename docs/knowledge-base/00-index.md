@@ -28,6 +28,11 @@
 
 ### 現況文件與歷史文件
 
+第24章事件54與流程驗收政策見[2026-10-15主契約](../data/ida/fd2_turn_event54_20261015.json)。
+保存完整handler及共享尾段、四角鏡頭／延遲、攻略旁證，以及使用者允許作弊、畫面改為參考的定案。
+[第24章流程計畫](../data/parity-plans/ch24-flow-cheat-r1.jsonl)使用同章DP強化槽，正常鍵盤走至T11及戰後保存。
+[DP+1000測試槽清冊](../data/parity-slots/ch24-flow-dp1000-manifest.json)保存來源、繼承政策、校準值與雜湊，不包含原版存檔。
+
 FD2工具鏈恢復與合併後oracle來源准入見[2026-10-15主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。
 原Dockerfile、固定指紋tuple、私人素材回歸及BOOT差異分列；准入不代表舊metadata或正常章收據已相同。
 來源准入的[真實bytes拒收回歸](../../tools/test_oracle_native_source_profiles.py)同時驗舊／新tuple與混搭；
@@ -804,3 +809,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [#41 HUD重繪caller契約](../data/ida/fd2_hud_redraw_20261006.json)：既有IDA來源與第二十四章[正常T2短探針](../data/parity-plans/ch24-hud-redraw-probe.jsonl)，DRAFT，未接正式路徑。
 - #41 第二輪[六caller窄探針](../data/parity-plans/ch24-hud-redraw-probe-r2.jsonl)：保持同槽與原計畫前綴，修正首輪等待熱點封頂的觀察限制。
+
+第24章晚期事件的[第一輪失敗流程收據](../data/ui-traces/parity-ch24-flow-c1-failed.json)保留原版戰後異常、缺少保存與三閘門結果，不能當成章通過。

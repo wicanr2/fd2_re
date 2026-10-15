@@ -1,0 +1,635 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_turn_event54_flow_contract",
+  "date": "2026-10-15",
+  "issues": [
+    33,
+    142
+  ],
+  "status": "RE-CLOSED-spec-READY",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+  },
+  "source_export": {
+    "path": "work/matching-full-20261008/ida-full-image.json",
+    "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+    "note": "重用既有IDA9.4完整匯出及原始bytes，未重啟matching編譯或全檔研究。"
+  },
+  "function": {
+    "original_name": "sub_3535D",
+    "start": "0x3535d",
+    "ida_end": "0x353cc",
+    "shared_tail": {
+      "original_owner": "sub_35822",
+      "start": "0x353cc",
+      "end": "0x353da",
+      "return": "0x353d9"
+    }
+  },
+  "table": {
+    "ida_linear": "0x51c69",
+    "event_id": 54,
+    "target": "0x3535d",
+    "capstone_le_parser_verified": true
+  },
+  "instructions": [
+    {
+      "ida_linear_address": "0x3535d",
+      "file_offset": "0x3615d",
+      "loaded_bytes": "680c000000",
+      "file_bytes": "680c000000",
+      "instruction": "push    0Ch",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35362",
+      "file_offset": "0x36162",
+      "loaded_bytes": "e870190000",
+      "file_bytes": "e870190000",
+      "instruction": "call    sub_36CD7",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35367",
+      "file_offset": "0x36167",
+      "loaded_bytes": "ff35ef3b0500",
+      "file_bytes": "ff35ef3b0000",
+      "instruction": "push    dword_53BEF",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x3536d",
+      "file_offset": "0x3616d",
+      "loaded_bytes": "e8dcb7fdff",
+      "file_bytes": "e8dcb7fdff",
+      "instruction": "call    sub_10B4E",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35372",
+      "file_offset": "0x36172",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35375",
+      "file_offset": "0x36175",
+      "loaded_bytes": "6a04",
+      "file_bytes": "6a04",
+      "instruction": "push    4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35377",
+      "file_offset": "0x36177",
+      "loaded_bytes": "6a00",
+      "file_bytes": "6a00",
+      "instruction": "push    0",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35379",
+      "file_offset": "0x36179",
+      "loaded_bytes": "e85fe2fdff",
+      "file_bytes": "e85fe2fdff",
+      "instruction": "call    sub_135DD",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x3537e",
+      "file_offset": "0x3617e",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35381",
+      "file_offset": "0x36181",
+      "loaded_bytes": "6890010000",
+      "file_bytes": "6890010000",
+      "instruction": "push    190h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35386",
+      "file_offset": "0x36186",
+      "loaded_bytes": "e827220000",
+      "file_bytes": "e827220000",
+      "instruction": "call    j___delay",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x3538b",
+      "file_offset": "0x3618b",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x3538e",
+      "file_offset": "0x3618e",
+      "loaded_bytes": "6a16",
+      "file_bytes": "6a16",
+      "instruction": "push    16h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35390",
+      "file_offset": "0x36190",
+      "loaded_bytes": "6a00",
+      "file_bytes": "6a00",
+      "instruction": "push    0",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35392",
+      "file_offset": "0x36192",
+      "loaded_bytes": "e846e2fdff",
+      "file_bytes": "e846e2fdff",
+      "instruction": "call    sub_135DD",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x35397",
+      "file_offset": "0x36197",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x3539a",
+      "file_offset": "0x3619a",
+      "loaded_bytes": "6890010000",
+      "file_bytes": "6890010000",
+      "instruction": "push    190h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x3539f",
+      "file_offset": "0x3619f",
+      "loaded_bytes": "e80e220000",
+      "file_bytes": "e80e220000",
+      "instruction": "call    j___delay",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353a4",
+      "file_offset": "0x361a4",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353a7",
+      "file_offset": "0x361a7",
+      "loaded_bytes": "6a18",
+      "file_bytes": "6a18",
+      "instruction": "push    18h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353a9",
+      "file_offset": "0x361a9",
+      "loaded_bytes": "6a1a",
+      "file_bytes": "6a1a",
+      "instruction": "push    1Ah",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353ab",
+      "file_offset": "0x361ab",
+      "loaded_bytes": "e82de2fdff",
+      "file_bytes": "e82de2fdff",
+      "instruction": "call    sub_135DD",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353b0",
+      "file_offset": "0x361b0",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353b3",
+      "file_offset": "0x361b3",
+      "loaded_bytes": "6890010000",
+      "file_bytes": "6890010000",
+      "instruction": "push    190h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353b8",
+      "file_offset": "0x361b8",
+      "loaded_bytes": "e8f5210000",
+      "file_bytes": "e8f5210000",
+      "instruction": "call    j___delay",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353bd",
+      "file_offset": "0x361bd",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353c0",
+      "file_offset": "0x361c0",
+      "loaded_bytes": "6a02",
+      "file_bytes": "6a02",
+      "instruction": "push    2",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353c2",
+      "file_offset": "0x361c2",
+      "loaded_bytes": "6a1a",
+      "file_bytes": "6a1a",
+      "instruction": "push    1Ah",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353c4",
+      "file_offset": "0x361c4",
+      "loaded_bytes": "e814e2fdff",
+      "file_bytes": "e814e2fdff",
+      "instruction": "call    sub_135DD",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353c9",
+      "file_offset": "0x361c9",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353cc",
+      "file_offset": "0x361cc",
+      "loaded_bytes": "6890010000",
+      "file_bytes": "6890010000",
+      "instruction": "push    190h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353d1",
+      "file_offset": "0x361d1",
+      "loaded_bytes": "e8dc210000",
+      "file_bytes": "e8dc210000",
+      "instruction": "call    j___delay",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353d6",
+      "file_offset": "0x361d6",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353d9",
+      "file_offset": "0x361d9",
+      "loaded_bytes": "c3",
+      "file_bytes": "c3",
+      "instruction": "retn",
+      "semantic_annotations": []
+    }
+  ],
+  "secondary_verification": {
+    "tool": "Capstone 5.0.3 / fd2-cap-local",
+    "address_space": "FD2 LE linear，file_offset另列",
+    "all_original_file_bytes_equal": true,
+    "instruction_boundaries_equal": true
+  },
+  "claims": [
+    {
+      "level": "已證實",
+      "claim": "54表項指向3535D；以[0x53BEF]當群組，呼叫0x10B4E，再依序鏡頭(0,4)／(0,22)／(26,24)／(26,2)，各延遲400；共享tail353CC..353DA返回。",
+      "evidence": "固定EXE、IDA chunks與raw file bytes、Capstone邊界及table交叉核對。"
+    },
+    {
+      "level": "已證實",
+      "claim": "目前正式scenario只有spawn_group，缺四組鏡頭及延遲。",
+      "evidence": "remake/assets/scenarios/ch24.json的四筆reinforce_ch24_e54_t2／4／7／10"
+    }
+  ],
+  "spec": {
+    "state": "READY",
+    "ops": [
+      {
+        "op": "spawn_group",
+        "ranges": [
+          [
+            "0x35367",
+            "0x35375"
+          ]
+        ],
+        "group_from": "round",
+        "gate": 0
+      },
+      {
+        "op": "pan",
+        "ranges": [
+          [
+            "0x35375",
+            "0x35381"
+          ]
+        ],
+        "x": 0,
+        "y": 4
+      },
+      {
+        "op": "delay",
+        "ranges": [
+          [
+            "0x35381",
+            "0x3538e"
+          ]
+        ],
+        "ms": 400
+      },
+      {
+        "op": "pan",
+        "ranges": [
+          [
+            "0x3538e",
+            "0x3539a"
+          ]
+        ],
+        "x": 0,
+        "y": 22
+      },
+      {
+        "op": "delay",
+        "ranges": [
+          [
+            "0x3539a",
+            "0x353a7"
+          ]
+        ],
+        "ms": 400
+      },
+      {
+        "op": "pan",
+        "ranges": [
+          [
+            "0x353a7",
+            "0x353b3"
+          ]
+        ],
+        "x": 26,
+        "y": 24
+      },
+      {
+        "op": "delay",
+        "ranges": [
+          [
+            "0x353b3",
+            "0x353c0"
+          ]
+        ],
+        "ms": 400
+      },
+      {
+        "op": "pan",
+        "ranges": [
+          [
+            "0x353c0",
+            "0x353cc"
+          ]
+        ],
+        "x": 26,
+        "y": 2
+      },
+      {
+        "op": "delay",
+        "ranges": [
+          [
+            "0x353cc",
+            "0x353d9"
+          ]
+        ],
+        "ms": 400
+      }
+    ],
+    "consumer": "extract_native_death_events完整可達指令認領→sync_native_turn_events只降chapter24→既有native_pan／delay與spawn正式consumer；canonical同步。",
+    "format_change": false,
+    "save_format_change": false,
+    "failure": "EXE、table、指令或參數不符拒收；不以攻略推定ABI。",
+    "acceptance": [
+      "全部可達指令與共享tail核對通過，九個typed ops完整。",
+      "第24章四列降階及全域check通過，其他章不批次變更。",
+      "正常Game重播固定原版短鏈及本章晚期流程；同步scope與作弊出處。"
+    ]
+  },
+  "walkthrough": {
+    "path": "references/text/fd2-walkthrough-index.md",
+    "chapter": 24,
+    "role": "玩家可見四角增援旁證",
+    "discrepancy": "攻略列3／4／7／10；固定原版FDFIELD控制列與實測首事件為2／4／7／10，沿原版raw值，不改成3。"
+  },
+  "user_flow_revision": {
+    "state": "READY",
+    "decision": "使用者明確允許本章最多三輪DP校準，接著指定作弊過關、參考攻略、流程一致即可，不強求每frame相同。",
+    "test_slot": {
+      "base": "work/parity-slot-ch24/fresh-policy-r1/FD2.SAV",
+      "target_chapter": 23,
+      "levels_per_chapter": 6,
+      "seed": 4,
+      "event_states": {
+        "7:17": 1
+      },
+      "base_ap_boost": 200,
+      "base_dp_calibration_candidates": [
+        1000,
+        2000,
+        4000
+      ],
+      "base_dx_boost": 60,
+      "limits": "章前透過既有builder設定；最多三輪。正式規則不改，記錄測試政策，不能用於原版傷害或難度parity。",
+      "base_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+      "mode": "boost-only：保留同章及既有AP200／DX60，只加本章DP；維持原有HP／MP、名冊、物品與金幣。",
+      "source_correction": "最早ch02基底在目前工作區不存在；重用已核對的fresh固定產物，不猜補來源或重跑戰後handler。"
+    },
+    "comparison": {
+      "required": [
+        "behavior",
+        "nodes",
+        "transaction"
+      ],
+      "frames": "advisory；照實記錄原始差異與缺圖，不參與流程完成判定；strict預設與舊收據保持。",
+      "scope": "後續章的流程驗收。原版規則、事件、節點、隊伍及保存仍核對；作弊限制入收據，不冒稱逐像素或自然難度通關。",
+      "capture_frames": "流程模式可明示FD2_PARITY_CAPTURE_FRAMES=0；只省略測試圖片檔，Game.Update／正式Draw完成閘門仍執行。預設1及strict舊路徑保持。"
+    },
+    "builder_spec": {
+      "state": "READY",
+      "flag": "-boost-only",
+      "constraints": "只能target等於base已通關章；levels-per-chapter=0、level-overrides空、event-states空、gold<0。其他旗標組合拒收。既有ApplyNativeEquipmentRecalc重算DP衍生欄位，不改正式玩法。",
+      "save_format": "沿既有FD2.SAV及manifest；不新增raw欄位。boost-only只追加manifest assumption。",
+      "verification": "真實固定fresh槽派生後逐欄檢查，只有基底DP及衍生DP允許改變；同章預設仍拒收，非法混用拒收。"
+    }
+  },
+  "validation": {
+    "raw_transcription": {
+      "status": "passed",
+      "events": 53,
+      "full_reachable_instructions": true
+    },
+    "short_regression": {
+      "status": "passed",
+      "original": "work/remake-recovery-20261015/ch24-original-r3",
+      "remake": "work/ch24-flow-20261015/short-regression",
+      "receipt": "work/ch24-flow-20261015/short-regression-verify.json",
+      "ai_entries": 16,
+      "ai_order_divergences": 0,
+      "complete_frames": 13,
+      "diff_pixels_each": 0,
+      "save_equal": true,
+      "limits": "只驗既有T1..T3短鏈，不由此提升完整章。"
+    },
+    "dp_c1": {
+      "status": "oracle-stopped-after-round11",
+      "input_verification": "work/ch24-flow-20261015/slot-c1-byte-verification.json",
+      "source_save": "work/parity-slot-ch24/fresh-policy-r1/FD2.SAV",
+      "source_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810",
+      "output_sha256": "74cba43cc147b259273d63bf0f777b6e1d3082838f677d0855080ee894c274f0",
+      "rounds_attempted": 1,
+      "policy_values": {
+        "base_ap_inherited": 200,
+        "base_dp_added": 1000,
+        "base_dx_inherited": 60,
+        "seed": 4
+      },
+      "initial_diff_scope": "25名冊的基底DP／重算DP，共100資料bytes，另2個checksum bytes改變；HP／MP／物品／金幣／其他槽相同。",
+      "round": 11,
+      "last_checkpoint_seq": 636,
+      "steps_completed": 9470673688,
+      "late_events_observed": [
+        2,
+        4,
+        7,
+        10
+      ],
+      "force_enemy_clear_count": 1,
+      "force_enemy_clear_records": 60,
+      "save_written": false,
+      "error": "cpu386: EIP=001666E8 opcode=67：opcode 尚未支援",
+      "error_address_space": "dosgolem relocated LE linear",
+      "error_classification": "unknown：EIP進入高位址0x1666E8，後續bytes疑似資料。不能僅依opcode=67就判CPU能力缺口；原始控制轉移原因未取得。",
+      "irq7": {
+        "irq7_deliveries": 102002,
+        "irq7_returns": 101989,
+        "irq7_passdowns": 101989
+      },
+      "raw_artifacts": {
+        "oracle.log": {
+          "path": "work/ch24-flow-20261015/original-c1/oracle.log",
+          "sha256": "686f85cf2e30cfcc8f693e8509d4992357d5a7e551af725a01435688fba613fd"
+        },
+        "current.json": {
+          "path": "work/ch24-flow-20261015/original-c1/current.json",
+          "sha256": "58bc73438a3deb6654d384d3fd0c1eb2b6dfa56ec907cd5e35a866903dda32a5"
+        },
+        "actions.jsonl": {
+          "path": "work/ch24-flow-20261015/original-c1/actions.jsonl",
+          "sha256": "5e00863a697b7003c050dfd66e7bdcb040ccdd952e5365e819ce0bbab850ab26"
+        },
+        "control-history.jsonl": {
+          "path": "work/ch24-flow-20261015/original-c1/control-history.jsonl",
+          "sha256": "8c45d7a2ab9bdc25607c035840f6d76a6f5c7fe20d119a7d7799568a1fb416e8"
+        },
+        "eip-trace.jsonl": {
+          "path": "work/ch24-flow-20261015/original-c1/eip-trace.jsonl",
+          "sha256": "dcf822389c8153f928b5d3a03ef67ca6fe1e9972a5f36a3fac5b3ed8d2124cd8"
+        },
+        "runner.json": {
+          "path": "work/ch24-flow-20261015/original-c1/runner.json",
+          "sha256": "d6983a76f9d41a8ca95808f62c7799fd8757cc07b5228db48654b6391273938f"
+        }
+      },
+      "issue": "https://github.com/wicanr2/fd2_re/issues/207",
+      "remake_replay": {
+        "status": "passed-prefix-only",
+        "ai_entries": 280,
+        "ai_consumed": 280,
+        "ai_order_divergences": 0,
+        "output": "work/ch24-flow-20261015/remake-c1"
+      },
+      "flow_verification": {
+        "status": "failed",
+        "receipt": "work/ch24-flow-20261015/c1-verify.json",
+        "gates": {
+          "behavior": true,
+          "nodes": false,
+          "transaction": false,
+          "frames": false
+        },
+        "reason": "原版尚未到計畫record_question／preparation_save；沒有SAV，保留failed，不提升章台帳。",
+        "public_receipt": {
+          "path": "docs/data/ui-traces/parity-ch24-flow-c1-failed.json",
+          "sha256": "eb0f913c503a55b428312d79a14196279283fcd67be4ce1e4d0dbfd5d56dc4b2"
+        }
+      },
+      "event54_entry_control_seqs": [
+        134,
+        192,
+        330,
+        538
+      ],
+      "event54_traced_eips": {
+        "0x3535D": 4,
+        "0x35367": 4,
+        "0x35375": 4,
+        "0x3538E": 4,
+        "0x353A7": 4,
+        "0x353C0": 4,
+        "0x353D9": 4
+      }
+    },
+    "flow_tools": {
+      "python_tests": 31,
+      "builder_and_string_go": "passed",
+      "ch23_flow_regression": "work/ch24-flow-20261015/ch23-regression-verify.json",
+      "locales_validation": "四語結構驗證通過，14項測試通過含1項條件略過；5081筆相同來源簽章的原譯文與審查狀態皆保留。"
+    },
+    "go_all": {
+      "status": "passed",
+      "packages_with_tests": 19,
+      "log": "work/ch24-flow-20261015/go-all.log",
+      "command": "Docker fd2-go-test-local:latest with-xvfb go test ./... -count=1；FD2_ASSET_PACK=/recovery/pack，network none，user1000:1000，cpus4，memory6g，timeout480s"
+    },
+    "final_checks": {
+      "changed_files_uid_gid": "1000:1000",
+      "local_links_checked": 2259,
+      "broken_changed_file_links": 0,
+      "worklist_open": 23,
+      "worklist_manual": 15,
+      "worklist_possible_done": 0,
+      "lessons": 199,
+      "lesson_guards": 83,
+      "historic_root_owned": 2811,
+      "md_directories": 0,
+      "unexpected_fd2_containers": 0,
+      "matching_decompilation": "paused"
+    }
+  }
+}

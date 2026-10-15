@@ -11,6 +11,36 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
+func TestBuildModeKeepsContinuationAndBoostOnlySeparate(t *testing.T) {
+	cases := []struct {
+		name                 string
+		base, target, levels int
+		boostOnly            bool
+		overrides, events    string
+		gold                 int
+		wantOK               bool
+	}{
+		{"continuation", 22, 23, 6, false, "", "7:17=1", -1, true},
+		{"same_default", 23, 23, 0, false, "", "", -1, false},
+		{"backward_default", 24, 23, 0, false, "", "", -1, false},
+		{"same_boost_only", 23, 23, 0, true, "", "", -1, true},
+		{"boost_cannot_advance", 23, 24, 0, true, "", "", -1, false},
+		{"boost_cannot_rewind", 23, 22, 0, true, "", "", -1, false},
+		{"boost_cannot_level", 23, 23, 1, true, "", "", -1, false},
+		{"boost_cannot_override", 23, 23, 0, true, "0=30", "", -1, false},
+		{"boost_cannot_set_event", 23, 23, 0, true, "", "7:17=1", -1, false},
+		{"boost_cannot_set_gold", 23, 23, 0, true, "", "", 0, false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			err := validateBuildMode(c.base, c.target, c.boostOnly, c.levels, c.overrides, c.events, c.gold)
+			if (err == nil) != c.wantOK {
+				t.Fatalf("mode accepted=%t want=%t: %v", err == nil, c.wantOK, err)
+			}
+		})
+	}
+}
+
 // #23：JOIN 不能把 LOAD 載入、建構器未寫的位元組當成全零或固定 ff。
 // 同時驗證輸出槽的序列化，避免只測孤立的建構器。
 func TestBuilderJoinPreservesLoadedResidualThroughSave(t *testing.T) {

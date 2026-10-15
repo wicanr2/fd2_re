@@ -124,6 +124,8 @@ def cmd_build(args: argparse.Namespace) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     if not base.is_file():
         raise SystemExit(f"基底存檔不存在：{base}")
+    if base.name != "FD2.SAV":
+        raise SystemExit("基底檔名必須是 FD2.SAV（容器內以目錄掛載）")
     cache = Path(os.environ.get("FD2_GO_TEST_CACHE", ROOT / "work" / "gocache"))
     cache.mkdir(parents=True, exist_ok=True)
     uid = f"{os.getuid()}:{os.getgid()}"
@@ -138,6 +140,8 @@ def cmd_build(args: argparse.Namespace) -> int:
         inner += ["-level-overrides", args.level_overrides]
     if args.event_states:
         inner += ["-event-states", args.event_states]
+    if args.boost_only:
+        inner += ["-boost-only"]
     for flag, value in (("-boost-base-ap", args.boost_base_ap), ("-boost-base-dp", args.boost_base_dp),
                         ("-boost-base-dx", args.boost_base_dx)):
         if value:
@@ -153,8 +157,6 @@ def cmd_build(args: argparse.Namespace) -> int:
         "-v", f"{ROOT}:/src", "-v", f"{base.parent}:/base:ro", "-v", f"{cache}:/gocache",
         "-v", f"{out_dir}:/out", "-w", "/src/remake", GO_IMAGE, "sh", "-c", script,
     ]
-    if base.name != "FD2.SAV":
-        raise SystemExit("基底檔名必須是 FD2.SAV（容器內以目錄掛載）")
     print(" ".join(command[-3:]))
     result = subprocess.run(command, check=False)
     return result.returncode
@@ -186,7 +188,8 @@ def main() -> int:
     p.add_argument("--levels-per-chapter", type=int, default=0)
     p.add_argument("--level-overrides", default="")
     p.add_argument("--boost-base-ap", type=int, default=0, help="名冊基底 AP 加值（114 政策值）")
-    p.add_argument("--boost-base-dp", type=int, default=0, help="名冊基底 DP 加值（114 政策值，維持小值）")
+    p.add_argument("--boost-base-dp", type=int, default=0, help="名冊基底 DP 加值（114 政策值；流程校準依111最新修訂）")
+    p.add_argument("--boost-only", action="store_true", help="只強化同章測試槽；不能混用升級、事件或金幣政策")
     p.add_argument("--boost-base-dx", type=int, default=0, help="名冊 DX 加值（HIT／EV 共用基底，114 政策值）")
     p.add_argument("--event-states", default="",
                    help="章:索引=值，逗號分隔；戰後 handler 讀的戰場狀態表值（政策，寫進 manifest assumptions）")
