@@ -2171,6 +2171,21 @@
         ],
         "pattern": "#pragma[ ]+pack[(]1[)]"
       }
+    },
+    {
+      "id": "deferred-checkpoint-keeps-each-required-frame",
+      "date": "2026-10-15",
+      "area": "原版收據與控制計畫",
+      "rule": "必要checkpoint的PNG缺失時，先查frame_deferred、後續控制步數與oracle待輸出佇列，不補圖或放寬畫面閘門。連續短控制前先讓必要的延後畫面完成，再送下一操作。入口tools/verify_chapter_parity.py的frame_missing_or_no_pillow、dosgolem apps/fd2/cmd/oracle/main.go的capture／pendingFrame；目前單槽覆寫缺陷與有界正常等待計畫見#206及docs/data/parity-plans/ch24-sample-r4.jsonl。",
+      "why": "第24章兩輪r3計畫的seq162停在11ED9→12103；下一個單步清敵checkpoint覆寫pendingFrame，導致畫面閘門拒收。行為、節點及完整SAV已相同，缺圖不能誤記為重製圖像差異。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/206；docs/data/fd2-remake-toolchain-recovery-20261015.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py"
+        ],
+        "pattern": "frame_missing_or_no_pillow"
+      }
     }
   ]
 }

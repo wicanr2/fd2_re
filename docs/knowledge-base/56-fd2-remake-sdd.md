@@ -1,5 +1,14 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+2026-10-15 排程定案：使用者要求重製完成與HD優先，匹配式反編譯[#198](https://github.com/wicanr2/fd2_re/issues/198)暫停。
+正式Go／Ebiten實作仍依原版證據、READY規格與正常玩家路徑驗收，不要求先完成全檔C位元組匹配。
+章節、事件與HUD缺口以[58目前狀態](58-fd2-exe-re-coverage.md)及[91排程](91-worklist.md)為準。
+現代主題沿用[61](61-modern-theme-runtime-spec.md)已核准範圍；高解析呈現分支尚待範圍確認及READY審查，不能將原生尺寸重繪稱為HD完成。
+
+原版執行器採用dosgolem規格429的實際IRQ7處理器、DSP確認、PIC EOI及IRET返回鏈。
+時鐘與私有堆疊仍沿既有平台近似；不恢復輪詢替代，不修改遊戲規則。
+來源准入綁完整指紋組合；新舊平台嚴格比較的失敗保留，兩輪新版可重播範圍見[主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。
+
 匹配反編譯的固定輸入依[118](../goal/118-goal-fd2-matching-decompilation-20261008.md)。[比較驅動器](../../tools/fd2_matching_game_restore.py)從原版指令位元組及真正LE fixup重算載入結果，逐條核對IDA的`loaded_bytes`後才建立連結輸出；不只核對具名符號。三項無重定位的暫存器位元組偽造反例由[回歸](../../tools/test_fd2_matching_state_group.py)保存。正式匯出通過相同重算，既有C覆蓋保持，這項工具修正不提升正式Go／Ebiten、介面或PLAYER-E2。現況與完整來源見[58](58-fd2-exe-re-coverage.md)及[主收據](../data/ida/fd2_matching_full_20261008.json)。
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。

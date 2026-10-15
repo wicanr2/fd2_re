@@ -1,6 +1,47 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-## 2026-10-10 目前狀態（全檔 C 匹配，PARTIAL）
+## 2026-10-15 目前狀態：重製完成與 HD 優先
+
+使用者要求暫停匹配式反編譯，加速重製完成與 HD 化，並重排工作清單及 GitHub Issues。
+全檔 C 匹配 [#198](https://github.com/wicanr2/fd2_re/issues/198) 保持未完成及暫停，
+不作 Go／Ebiten、章節驗收或現代主題的前置。正式原版行為對拍仍使用
+[唯一 oracle 驅動器](../../tools/dosgolem_oracle.sh)，遇到玩家缺陷才開最小充分 RE。
+這次調整排程，沒有提高任何章、介面或原版證據分級。
+
+| 項目 | 目前可證明的狀態 | 下一個工作 |
+|---|---|---|
+| 正式章台帳 | 20 章 passed，即第4～23章；第1～3及24～30章共10章 todo。第24章T1～T3至戰後保存短鏈四gate已過，13張完整畫面零差異、完整SAV相同；晚期事件及其餘戰鬥未抽，不提高章分級 | [#14](https://github.com/wicanr2/fd2_re/issues/14)總項；先[#142](https://github.com/wicanr2/fd2_re/issues/142)，再[#199](https://github.com/wicanr2/fd2_re/issues/199)及[#200](https://github.com/wicanr2/fd2_re/issues/200)。passed依111／114既有例外，不代表完整無修改通關 |
+| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，但仍有27筆維持spawn版本，分布於第1／2／3／21／22／24／25／26章 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分 |
+| HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
+| 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
+| 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
+| 高解析呈現 | 使用者已要求HD化；本階段範圍正在確認，沒有高解析production契約或完成聲明 | [#204](https://github.com/wicanr2/fd2_re/issues/204)先確認範圍、同狀態原型與READY規格；不以放大現有圖或母稿存在代替完成 |
+| 回歸環境 | FD2原Go／素材映像已恢復；私人現代素材18項及完整Go回歸通過。IRQ7原始ISR鏈已接通，自然啟動504次皆返回；正常鍵盤短鏈兩輪233份完整狀態／PNG及trace一致 | [#203](https://github.com/wicanr2/fd2_re/issues/203)及[#205](https://github.com/wicanr2/fd2_re/issues/205)限定工具範圍驗收；新舊平台嚴格比較仍failed，原始失敗保留。回到第24章，不提升章台帳 |
+| 非阻擋診斷與考古 | #52單像素差異仍已證實，#197目標窗口未取得；第12章追蹤沿用暫停。#198也明確暫停 | 三項保留未完成及來源，不阻塞其他章、HD與後續平台／編輯器工作 |
+
+工具鏈恢復接續：兩個既有FD2映像已由原Dockerfile重建，現代主題含私人完整素材的18項測試零略過通過。
+合併後平台回歸、來源准入、IRQ7鏈及兩輪正式短前綴見[#203／#205主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。
+完整Go19套件通過，平台三套件2021項通過。BOOT完整PNG相同，周邊有新欄位及VirtualMicros差異。
+舊／新233點嚴格比較保留failed；單位raw、鍵盤及DOS檔案呼叫相同，view差異只在163點aux_phase，
+211張PNG不同，不將全部影像差異推定為動畫。沒有增加忽略欄位或宣稱跨平台同狀態。
+靜態現代素材候選報告列出九個非負speaker缺頭像宣告，仍須由正式consumer確認可達；負speaker另列，
+不把候選直接當玩家缺陷。重跑入口與限制見[61](61-modern-theme-runtime-spec.md)。
+
+本表於2026-10-15核對FD2 `2975ecb6`、遠端開啟Issue、正式章台帳、現代catalog及目前consumer。
+章狀態與素材數由JSON直接重算；事件由全域check產生。具體命令見
+[WORKLOG](../../WORKLOG.md)當日紀錄。初次素材驗證使用既有容器的Python／Pillow，
+後續已恢復FD2專用Go工具鏈；GPU正常路徑與人耳驗收仍未完成。
+dosgolem由合併後 `main` 的 `81c85be` 建立 `fd2-followup-20261015`，
+專用worktree為 `work/dosgolem-fd2-followup-20261015`。IRQ7實作 `e26fb41` 與驗證規格 `2c5c104`
+已推送該分支，遠端HEAD一致；共用main保持。第24章接續同源第23章實際SAV，尚未提高章分級。
+短鏈原版211份狀態與PNG齊全，16筆AI入口零順序分岔；主收據的`chapter24_followup`保存四gate及完整SAV雜湊。
+原r3計畫的連續延後截圖覆寫已登記[#206](https://github.com/wicanr2/fd2_re/issues/206)，
+正常等待版r4取得必要原始圖片，但通用工具缺陷未修；不補圖或放寬閘門。
+
+排程見[91](91-worklist.md)，HD契約見[61](61-modern-theme-runtime-spec.md)。
+下列日期化紀錄保留先前證據；排程衝突時以上述現況及遠端Issue為準。
+
+## 2026-10-10 匹配研究快照（PARTIAL，歷史保留）
 
 使用者在三函式試驗後要求完成全檔匹配，並確認遊戲邏輯還原成 C；原作組語與第三方函式庫可保留，覆蓋分列。目標見[118](../goal/118-goal-fd2-matching-decompilation-20261008.md)，未完成工作登記[#198](https://github.com/wicanr2/fd2_re/issues/198)。第12章原版追蹤維持先前暫停。原對拍接續順序仍為 #41、#52、#197，再回 #33；本輪不提升既有章驗收。
 

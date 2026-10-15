@@ -2,6 +2,19 @@
 
 狀態：`RUNTIME-E1-PARTIAL`（2026-09-05）
 
+2026-10-15 接續現況：使用者已要求加速HD化；本檔既有手繪風格、靜態嘴型、幾何與原子預檢契約保持。
+清冊與私人檔檢查通過，不代表完整玩家路徑或高解析呈現完成；唯一數量與缺口見[58目前狀態](58-fd2-exe-re-coverage.md)。
+[#4](https://github.com/wicanr2/fd2_re/issues/4)為總項，
+[#201](https://github.com/wicanr2/fd2_re/issues/201)盤點正式consumer素材覆蓋，
+[#202](https://github.com/wicanr2/fd2_re/issues/202)驗證正常路徑，
+[#204](https://github.com/wicanr2/fd2_re/issues/204)追蹤高解析範圍與原型。
+目前production仍消費原生尺寸候選。未經範圍確認及READY審查，不修改正式繪製架構或素材格式。
+
+素材缺口先用[靜態宣告盤點工具](../../tools/audit_modern_theme_coverage.py)產生候選來源與JSON pointer，
+再查正式consumer或正常玩家路徑。工具用法見檔首；它包含可能不可達的故事資料，零缺件也不代表完整玩家覆蓋。
+負speaker宣告另列，不直接視為缺頭像。此次靜態候選、來源雜湊及18項私人素材回歸結果見
+[工具與素材主收據](../data/fd2-remake-toolchain-recovery-20261015.json)；尚未改變catalog的候選狀態。
+
 ## 範圍
 
 本規格分別定義現代故事頭像、已登錄的九十四組可繪 FDICON 候選，以及依概念稿建立、

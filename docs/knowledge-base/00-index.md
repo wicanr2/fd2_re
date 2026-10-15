@@ -28,6 +28,13 @@
 
 ### 現況文件與歷史文件
 
+FD2工具鏈恢復與合併後oracle來源准入見[2026-10-15主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。
+原Dockerfile、固定指紋tuple、私人素材回歸及BOOT差異分列；准入不代表舊metadata或正常章收據已相同。
+來源准入的[真實bytes拒收回歸](../../tools/test_oracle_native_source_profiles.py)同時驗舊／新tuple與混搭；
+現代素材的[靜態宣告盤點](../../tools/audit_modern_theme_coverage.py)只產生候選，不把未證明可達的說話者算成產品阻擋。
+第24章接續採[正常等待版計畫r4](../data/parity-plans/ch24-sample-r4.jsonl)，
+在既有T3 mark後等延後截圖完成再清敵；r3缺圖與工具缺陷保留於上述主收據，不修改驗收門檻。
+
 | 需求 | 唯一入口 | 不可取代它的文件 |
 |---|---|---|
 | 判斷是否還要 RE、缺實作還是缺 E2 | [`58` 覆蓋矩陣](58-fd2-exe-re-coverage.md) | handoff、raw exporter 的 `unknown` 統計 |

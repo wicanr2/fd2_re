@@ -1,5 +1,15 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+2026-10-15 現況入口改以[58目前狀態](58-fd2-exe-re-coverage.md)及[91排程](91-worklist.md)接續重製與HD。
+全檔C匹配暫停，不是介面或章驗收的前置；本輪排程及素材清冊檢查不提高E0／E1／E2。
+現代主題的正常玩家與圖層交界驗收列於[#202](https://github.com/wicanr2/fd2_re/issues/202)，
+高解析範圍／原型列於[#204](https://github.com/wicanr2/fd2_re/issues/204)。兩者與忠實原版逐像素對拍分別記錄。
+
+dosgolem合併後IRQ7正常啟動及鍵盤短鏈已通過兩輪重播。這只驗原版執行器，
+不提升重製介面或章分級。新舊平台PNG與完整狀態仍有差異，見[工具主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。
+第24章T1～T3至戰後整備的短鏈四gate通過，13張完整RGB零差異、完整SAV相同。
+主收據的`chapter24_followup`限定本次抽樣；晚期事件及其餘戰鬥未抽，#142及章台帳保持未完成。
+
 匹配反編譯的原始載入位元組守衛修正屬於分析工具驗證，依[56](56-fd2-remake-sdd.md)及[58](58-fd2-exe-re-coverage.md)保存。隔離偽造反例不算原版擷取或C還原；既有正式匯出及C覆蓋經重算保持，本矩陣的介面與PLAYER-E2分級不提升。
 
 > 2026-09-15 起，全戰役原版一致依 [111](../goal/111-goal-original-parity-campaign-20260915.md) 由代理程式以 dosgolem 逐章推進；v.1.0.19 完整包與當時修正／未通過項目仍以 [94](94-ch01-town-parity-20260908.md) 為準。

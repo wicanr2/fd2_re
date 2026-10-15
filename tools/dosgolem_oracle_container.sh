@@ -62,6 +62,18 @@ def near_heap_policy(root):
     reviewed_main_revisions = {"d06565caef7252eeb7ad12c1c50e5c4d1961b9b119c33dac3c988ad1265e4bd3", "9509295de415e7c68a1144abd824794c66dfe00ef95e7cbc243a187242b4a234", 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', '43f9fece28f9a9fc76e4995b50437663eef6c8686bd3a30f73b4817b48a9bf6b'}
     native_main_revisions = {'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', '43f9fece28f9a9fc76e4995b50437663eef6c8686bd3a30f73b4817b48a9bf6b'}
     native_reviewed = {'internal/machine/watcom_runtime.go': '00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f', 'apps/fd2/cmd/oracle/main.go': 'dcea1824f58cff63c76f706ac9dc076eb2523919722b8c0412a323f64a625925', 'internal/cpu386/cpu.go': '3059653f53fe37a44be270184cb9cb0dc4ee5ba4c309f79d79b77e70c8e11267', 'internal/machine/le_startup.go': 'bc80372d495a58778ad56b2f5d9e6783d49319e074f1a086a10e334080c1d206'}
+    # #203 READY來源准入：新舊四檔tuple不可混搭；不宣稱舊周邊metadata相同。
+    # 證據與限制：docs/data/fd2-remake-toolchain-recovery-20261015.json。
+    merged_reviewed = {
+        'internal/machine/watcom_runtime.go': '00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f',
+        'apps/fd2/cmd/oracle/main.go': '43f9fece28f9a9fc76e4995b50437663eef6c8686bd3a30f73b4817b48a9bf6b',
+        'internal/cpu386/cpu.go': 'ed6e32dfb4bbde6c6562e838c4d9129e98b48ca623a44625f5a3a5f7bc6695ef',
+        'internal/machine/le_startup.go': '3d04282347ef5c5f5ba4f6e780a4f5b259195863d049489d84b2f71fbb25ff3b'}
+    # #205：429 READY規格；IRQ7接線及派送亦綁來源，不接受只換oracle的混合版本。
+    irq7_reviewed = {**merged_reviewed,
+        'apps/fd2/cmd/oracle/main.go': '2ec3ae81c539599ac61ef8ac989d262328626f900879f8156fe03a60c33ff0a3',
+        'internal/machine/le_dma_clock.go': '2baa4edb15803724a23edb0b2bc081879b7d9431d5aa517caf7a392d0dabc4a1',
+        'internal/machine/le_real_irq7.go': '2a71508109d7a0514acabe69c542769d0e2fef11b6a613f765884296c3bfecab'}
     profile = os.environ["FD2_ORACLE_HEAP_PROFILE"]
     sources = []
     for name in reviewed:
@@ -74,9 +86,16 @@ def near_heap_policy(root):
     if profile == "native":
         native_sources = [{"path": name, "sha256": hashlib.sha256((root/name).read_bytes()).hexdigest()}
                           for name in native_reviewed]
-        if any(source["sha256"] not in native_main_revisions if source["path"] == "apps/fd2/cmd/oracle/main.go"
-               else source["sha256"] != native_reviewed[source["path"]] for source in native_sources):
+        known_native = all(source["sha256"] in native_main_revisions if source["path"] == "apps/fd2/cmd/oracle/main.go"
+                           else source["sha256"] == native_reviewed[source["path"]] for source in native_sources)
+        known_merged = all(source["sha256"] == merged_reviewed[source["path"]] for source in native_sources)
+        irq7_sources = [{"path": name, "sha256": hashlib.sha256((root/name).read_bytes()).hexdigest()
+                        if (root/name).is_file() else None} for name in irq7_reviewed]
+        known_irq7 = all(source["sha256"] == irq7_reviewed[source["path"]] for source in irq7_sources)
+        if not (known_native or known_merged or known_irq7):
             raise SystemExit("native原生近堆來源未通過已審查清冊")
+        if known_irq7:
+            native_sources = irq7_sources
         return {
             "kind": "original_instructions_with_existing_platform_adapters",
             "status": "reviewed", "profile": "native", "sources": native_sources,
