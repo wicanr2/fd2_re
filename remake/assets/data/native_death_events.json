@@ -1641,6 +1641,33 @@
       ]
     },
     {
+      "id": 57,
+      "handler": "0x354dd",
+      "battle_units": [],
+      "ops": [
+        {
+          "op": "spawn_group",
+          "group_from": "round",
+          "gate": 0,
+          "source": "0x354e7"
+        },
+        {
+          "op": "pan",
+          "x": 9,
+          "y": 0,
+          "source": "0x354f5",
+          "tail_sources": [
+            "0x353c4"
+          ]
+        },
+        {
+          "op": "delay",
+          "ms": 400,
+          "source": "0x353cc"
+        }
+      ]
+    },
+    {
       "id": 64,
       "handler": "0x358ea",
       "battle_units": [

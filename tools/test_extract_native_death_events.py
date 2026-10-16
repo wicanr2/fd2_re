@@ -42,6 +42,23 @@ class NativeDeathExtractorTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             extractor.check_coverage(self.image, event)
 
+    def test_ch26_event57_matches_round_spawn_and_shared_pan_delay_tail(self):
+        event = self.events[57]
+        self.assertEqual(self.image.event_table()[57], event["handler"])
+        for action in event["ops"]:
+            extractor.check_op(self.image, 57, action)
+        extractor.check_coverage(self.image, event)
+
+    def test_ch26_event57_rejects_wrong_pan_and_omitted_shared_tail(self):
+        action = copy.deepcopy(self.events[57]["ops"][1])
+        action["x"] = 8
+        with self.assertRaises(SystemExit):
+            extractor.check_op(self.image, 57, action)
+        event = copy.deepcopy(self.events[57])
+        event["ops"] = event["ops"][:1]
+        with self.assertRaises(SystemExit):
+            extractor.check_coverage(self.image, event)
+
     def test_record_loop_rejects_slot_outside_original_inclusive_range(self):
         op = copy.deepcopy(self.events[13]["ops"][1])
         op["unit"] = 74

@@ -165,6 +165,7 @@ func run() error {
 	boostAP := flag.Int("boost-base-ap", 0, "每筆名冊記錄的基底 AP（+0x37）加值；政策值，114 定案，套完再跑 0x1145A 重算")
 	boostDP := flag.Int("boost-base-dp", 0, "每筆名冊記錄的基底 DP（+0x39）加值；政策值，拉太高會改變敵方評分（0x14237 差值 <= 2 仍以 priority 0 比較）")
 	boostDX := flag.Int("boost-base-dx", 0, "每筆名冊記錄的 DX（+0x3E，HIT 與 EV 共用基底）加值；EV 不可大於等於敵人 HIT")
+	boostHP := flag.Int("boost-max-hp", 0, "章前名冊 MaxHP 與存活者 HP 加值；作弊流程政策，不鎖章內 HP，保留傷勢與陣亡")
 	boostOnly := flag.Bool("boost-only", false, "僅強化同章測試槽，不執行戰後、升級、事件狀態或金幣政策")
 	eventStateText := flag.String("event-states", "", "以 章:索引=值 指定戰後 handler 讀到的戰場狀態表值，逗號分隔（政策，非證據；例如 7:17=1 讓 ch06_post 走 JOIN12）")
 	seed := flag.Int64("seed", 0, "成長擲骰種子；0 表示用 target")
@@ -241,6 +242,9 @@ func run() error {
 		}
 	}
 	if err := b.applyBoost(*target, *boostAP, *boostDP, *boostDX); err != nil {
+		return err
+	}
+	if err := b.applyHPBoost(*target, *boostHP); err != nil {
 		return err
 	}
 	if *boostOnly {
@@ -770,6 +774,39 @@ func (b *builder) applyBoost(chapter, ap, dp, dx int) error {
 	b.assumptions = append(b.assumptions, assumption{Chapter: chapter, Kind: "boost", Detail: fmt.Sprintf(
 		"基底 AP +%d、DP +%d、DX +%d（114 政策值，非原版證據；收據不得用來談傷害、存活或敵方選目標），套用 %d 筆：%s",
 		ap, dp, dx, b.count, strings.Join(detail, "；"))})
+	return nil
+}
+
+// 章前HP政策見fd2_turn_event57_20261016.json hp_slot_policy；不接正式遊戲。
+func (b *builder) applyHPBoost(chapter, delta int) error {
+	if delta == 0 {
+		return nil
+	}
+	if delta < 0 || delta > 0x7fff || b.count < 1 || b.count > fdsave.RosterUnits || len(b.roster) < b.count*fdsave.UnitSize {
+		return errors.New("HP強化政策或名冊範圍不合法")
+	}
+	// 完整預檢先於所有寫入，避免後一筆溢位時留下部分強化。
+	for slot := 0; slot < b.count; slot++ {
+		raw := b.record(slot)
+		hp := int(int16(binary.LittleEndian.Uint16(raw[recordHP:])))
+		maxHP := int(int16(binary.LittleEndian.Uint16(raw[recordMaxHP:])))
+		if hp < 0 || maxHP <= 0 || hp > maxHP || maxHP > 0x7fff-delta {
+			return fmt.Errorf("HP強化：名冊%d HP=%d MaxHP=%d 加%d無效", slot, hp, maxHP, delta)
+		}
+	}
+	var detail []string
+	for slot := 0; slot < b.count; slot++ {
+		raw := b.record(slot)
+		hp, maxHP := binary.LittleEndian.Uint16(raw[recordHP:]), binary.LittleEndian.Uint16(raw[recordMaxHP:])
+		addWord(raw, recordMaxHP, delta)
+		if hp > 0 {
+			addWord(raw, recordHP, delta)
+		}
+		detail = append(detail, fmt.Sprintf("roster%d id8=%d HP/MaxHP %d/%d→%d/%d", slot, raw[recordIdentity], hp, maxHP,
+			binary.LittleEndian.Uint16(raw[recordHP:]), binary.LittleEndian.Uint16(raw[recordMaxHP:])))
+	}
+	b.assumptions = append(b.assumptions, assumption{Chapter: chapter, Kind: "boost_hp", Detail: fmt.Sprintf(
+		"章前HP／MaxHP +%d（使用者已允許作弊通關；非原版能力，不證明傷害、存活或敵方選目標；章內不鎖HP）：%s", delta, strings.Join(detail, "；"))})
 	return nil
 }
 

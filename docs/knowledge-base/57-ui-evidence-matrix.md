@@ -1997,3 +1997,8 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 ### 2026-10-15 第25章完整流程與保存差異
 
 第25章正式揭幕、戰場原生視圖／HUD與T6完整event56已接線。原版r4及完整Game到同一戰後酒店邊界，2026-10-15因保存差異首次驗收失敗，歷史收據保留。2026-10-16使用者接受逐筆揭露，READY有界政策接入比較器後，乾淨Game重播的行為／節點／交易通過，依111例外登記PLAYER-E2。bytes_equal=false，完整差異與未知語意保持，其他來源及預設strict仍拒收。畫面advisory且未擷取重製PNG，不能宣稱逐幀或逐像素一致。原始證據、READY規格及回歸見[event56主契約](../data/ida/fd2_turn_event56_20261015.json)，逐byte差異見[正式章收據](../data/ui-traces/parity-ch25.json)。唯一數字與目前阻塞見[58](58-fd2-exe-re-coverage.md)，不以已修三項consumer代替整章驗收。
+
+
+### 2026-10-16 第26章正常流程與敗北返回
+
+第26章正常LOAD／城鎮出發選人、增援鏡頭與等待、戰後對白及酒店保存已由同源完整流程驗證。原版必出前置與重製站位差異已修；同源低HP敗北樣本亦重現原生呈現及完整標題終態。主線按111章前作弊例外登記PLAYER-E2，保存整檔嚴格相同；畫面advisory且未擷取重製PNG，不宣稱逐幀或逐像素一致。寶箱／機甲兵加入及買賣／五處探訪未抽樣。 原始定位、READY規格與限定驗證見[第26章主契約](../data/ida/fd2_turn_event57_20261016.json)；章收據見[parity-ch26](../data/ui-traces/parity-ch26.json)，唯一分層現況與數字見[58](58-fd2-exe-re-coverage.md)。

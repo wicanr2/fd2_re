@@ -49,3 +49,45 @@ func TestNativePreparationRequiredFrontPreservesMembersAndPublishesAtomically(t 
 		t.Fatal("unselected member accepted as required front")
 	}
 }
+
+func TestChapter26RequiresBothMembersAndFrontsCompleteRosterInCallerOrder(t *testing.T) {
+	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	graph.Start = "preparation_ch26"
+	g := &Game{
+		camp: campaign.NewRunner(graph), partyJoinOrder: []int{0, 4, 9, 29},
+		prepIDs: []int{4, 9, 29}, partyDeploy: map[int]bool{},
+		partyRoster: map[int]battle.Unit{},
+	}
+	for _, id := range g.partyJoinOrder {
+		g.partyRoster[id] = battle.Unit{
+			NativeIdentity: id, HasNativeIdentity: true,
+			NativeRecordByte8: byte(id), HasNativeRecordByte8: true, HP: 100 + id,
+		}
+	}
+	for _, missing := range []int{9, 29} {
+		g.partyDeploy = map[int]bool{4: true, 9: true, 29: true}
+		delete(g.partyDeploy, missing)
+		got, err := g.missingPreparationRequiredIdentity()
+		if err != nil || got == nil || *got != missing {
+			t.Fatalf("缺少角色%d沒有拒收：missing=%v err=%v", missing, got, err)
+		}
+	}
+	g.partyDeploy = map[int]bool{9: true, 29: true}
+	if missing, err := g.missingPreparationRequiredIdentity(); err != nil || missing != nil {
+		t.Fatalf("兩名必出角色齊全仍拒收：missing=%v err=%v", missing, err)
+	}
+	before := make(map[int]battle.Unit, len(g.partyRoster))
+	for id, unit := range g.partyRoster {
+		before[id] = unit
+	}
+	if err := g.frontNativePreparationRequiredRoster(); err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(g.partyJoinOrder, []int{0, 29, 9, 4}) ||
+		!reflect.DeepEqual(g.partyRoster, before) || g.partyDeploy[4] {
+		t.Fatal("第26章必出前置未保留索爾、完整角色資料或未出戰隊員順序")
+	}
+}

@@ -5352,26 +5352,16 @@
     "display_gate_b": 1
    },
    "on_win": "postbattle_ch26_persist",
-   "on_lose": "retreat_ch26"
+   "native_defeat_return_title": {
+    "handler": "0x22e5c",
+    "resource": 79,
+    "return": "full_title_sequence"
+   }
   },
   "postbattle_ch26_persist": {
    "type": "cutscene",
    "handler_binding": "assets/cutscenes/bindings/ch25_post.json",
    "next": "town_ch27"
-  },
-  "retreat_ch26": {
-   "type": "story",
-   "bgm": "FDMUS_010",
-   "lines": [
-    {
-     "speaker": -1,
-     "text": "撤退!先回頭整頓,再找機會反攻……"
-    }
-   ],
-   "set_flags": {
-    "retried_ch26": true
-   },
-   "next": "battle_ch26"
   },
   "story_ch27": {
    "type": "cutscene",
@@ -6762,7 +6752,15 @@
    "type": "preparation",
    "prompt": "要進入戰場嗎？",
    "cancel": "town_ch26",
-   "next": "story_ch26"
+   "next": "story_ch26",
+   "required_party_identities": [
+    9,
+    29
+   ],
+   "preparation_front_identities": [
+    9,
+    29
+   ]
   },
   "preparation_ch27": {
    "type": "preparation",

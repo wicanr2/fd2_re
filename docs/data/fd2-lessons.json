@@ -1029,8 +1029,8 @@
       "id": "parity-ledger-renders-public-tables",
       "area": "驗證",
       "date": "2026-10-02",
-      "rule": "戰役台帳切換passed後執行python3 tools/render_parity_progress.py重生README與docs/REMAKE-STATUS的產生區塊；提交前以--check確認兩份現況與台帳一致。入口為tools/render_parity_progress.py；不得手抄章數或只查9／30字串而漏掉章範圍。",
-      "why": "第十三章完整收據與台帳已更新，上一輪漏執行渲染工具，首頁仍寫第4～12章與21章未跑。",
+      "rule": "戰役台帳切換passed後，在Docker執行tools/render_parity_progress.py重生docs/REMAKE-STATUS.md的動態表，提交前以--check核對。README只保留58、章台帳與進度頁的穩定入口，不重新插入動態表；畫面政策與保存差異依各章收據明示。",
+      "why": "第十三章完整收據與台帳已更新，上一輪漏執行渲染工具，首頁仍寫第4～12章與21章未跑。 2026-10-16第26章收尾將README舊動態表改為穩定入口，並移除渲染前言無條件宣稱四gate通過的舊敘述。",
       "evidence": "GitHub #68；docs/data/ui-traces/parity-ch13.json",
       "guard": {
         "kind": "present",
@@ -1518,8 +1518,8 @@
     {
       "id": "full-regression-preserves-sound-preflight",
       "area": "驗證",
-      "rule": "全套Go回歸保留各測試自己的音訊政策，不在容器設定全域FD2_MUTE=1。單一測試需要靜音時用t.Setenv隔離。完整Docker命令見docs/data/ida/fd2_physical_background_selection_20261004.json的commands.go_all_final，適用分離素材及locales齊備的fd2-go-test-local:20260909。",
-      "why": "2026-10-04全套回歸命令加入全域FD2_MUTE=1，使command17缺sample反例略過聲音預檢而失敗。正式音訊規則未變更，修正驗證命令後在同一映像檔乾淨重跑。",
+      "rule": "全套Go回歸保留各測試自己的音訊政策，不在容器設定全域FD2_MUTE=1；單一測試需要靜音時用t.Setenv隔離。容器參數沿tools/remake_go_test.sh的FD2_GO_TEST_IMAGE設定，現行預設fd2-go-test-local:latest；維護來源與素材條件見docs/data/fd2-remake-toolchain-recovery-20261015.json。",
+      "why": "2026-10-04全套回歸命令加入全域FD2_MUTE=1，使command17缺sample反例略過聲音預檢而失敗。正式音訊規則未變更，修正驗證命令後在同一映像檔乾淨重跑。 2026-10-16再次因全域靜音讓command17缺sample反例失敗；移除旗標後同映像檔針對性重測通過，正式規則未改。",
       "date": "2026-10-04",
       "evidence": "docs/data/ida/fd2_physical_background_selection_20261004.json",
       "guard": {
@@ -2259,6 +2259,29 @@
           "tools/verify_chapter_parity.py"
         ],
         "pattern": "accepted_disclosed_difference"
+      }
+    },
+    {
+      "id": "chapter-load-prefix-matches-observed-owner",
+      "date": "2026-10-16",
+      "area": "章對拍輸入",
+      "rule": "換章沿用控制計畫前，先以目前SAV的正常LOAD收據核對城鎮或非城鎮整備owner，再選用相應mark與出發序列。入口tools/dosgolem_oracle_drive.py ui_mode與docs/data/parity-plans/ch26-flow-cheat-r3.jsonl；mark只記錄狀態，不讓它代替實際按鍵。",
+      "why": "第26章r1沿第25章獨立整備前綴，LOAD實際回城鎮，right及連續enter誤入教會狀態窗。保留失敗計畫及收據，修正控制序列後正常選人進戰場。",
+      "evidence": "docs/data/ida/fd2_turn_event57_20261016.json"
+    },
+    {
+      "id": "campaign-reimport-retains-canonical-node-ids",
+      "date": "2026-10-16",
+      "area": "可編輯戰役識別",
+      "rule": "更新既有legacy戰役再匯入canonical時，使用tools/import_editor_legacy.py <legacy> <輸出> --kind campaign --preserve-ids-from <既有canonical>，依legacy_key保留節點ID及引用；僅同一document_id、schema_version=1戰役可用，重複ID／key拒收。初次匯入仍沿預設行為。",
+      "why": "第26章移除錯誤撤退節點時，預設初次匯入規則令其他121個ID漂移。新增選用保留來源後，其餘318個既有ID不變，官方CLI可精確重生目前canonical，正式章收據仍逐bytes相同。",
+      "evidence": "GitHub #217；docs/data/ida/fd2_turn_event57_20261016.json canonical_identity_preservation",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/import_editor_legacy.py"
+        ],
+        "pattern": "--preserve-ids-from"
       }
     }
   ]

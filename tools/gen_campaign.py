@@ -9,7 +9,7 @@
   + remake/assets/maps/mapN/(map.json + tileset.png + mapN_units.json,全 33 圖已匯出)
   → campaign_full.json:每章 story → battle → town hub(酒店/武器店/出口/道具店/教會/隱藏商店)
     或無城鎮 preparation → 下一章;
-    battle 敗北走 retreat 節點重打本章(不是 game over)。
+    未轉寫章保留歷史 retreat 骨架；第26章敗北依已證契約返回標題。
 
 章→map 對應(重要,別誤用別的公式):
   唯一有逐關特徵核對過的資料點是「攻略第1章(bev ch0)= map0」(doc25 §「1章=map0」)。
@@ -733,6 +733,14 @@ def build_campaign(
                             member[field] = generated[field]
                 scenario = authored
             merge_native_spawn_metadata(scenario, turn_events_by_ch.get(c, []), out_scn)
+            if c == 26:
+                # #214：20B3C依record1／2的raw+5 bit0覆寫code1。
+                scenario["native_result_handler"] = "0x20b3c"
+                scenario["native_result_rules"] = [
+                    {"id": f"record{index}_inactive", "source": "0x20b67",
+                     "records_all_inactive": [index], "code": 1, "actions": []}
+                    for index in (1, 2)
+                ]
             with open(out_scn, "w", encoding="utf-8") as f:
                 json.dump(scenario, f, ensure_ascii=False, indent=2)
                 f.write("\n")
@@ -789,6 +797,11 @@ def build_campaign(
             elif intermission_cid in {"22", "23"}:
                 nodes[preparation_id]["required_party_identities"] = [24]
                 nodes[preparation_id]["preparation_front_identities"] = [24]
+            elif intermission_cid == "26":
+                # raw25：31CB6先查9再查29；31D28先前置9再前置29。
+                # #213 READY契約見fd2_turn_event57_20261016.json。
+                nodes[preparation_id]["required_party_identities"] = [9, 29]
+                nodes[preparation_id]["preparation_front_identities"] = [9, 29]
         shop_node_ids: list[str] = []
         if normal_rows:
             for i, s in enumerate(normal_rows):
@@ -1011,6 +1024,13 @@ def build_campaign(
 
         retry_flag = f"retried_ch{cid}"
         flags[retry_flag] = False
+        if c == 26:
+            # #214 READY契約見fd2_turn_event57_20261016.json defeat_contract。
+            nodes[battle_id].pop("on_lose")
+            nodes[battle_id]["native_defeat_return_title"] = {
+                "handler": "0x22e5c", "resource": 79, "return": "full_title_sequence",
+            }
+            continue
         nodes[retreat_id] = {
             "type": "story",
             "bgm": BGM_STORY,

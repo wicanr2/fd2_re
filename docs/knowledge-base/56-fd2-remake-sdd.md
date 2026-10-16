@@ -9732,3 +9732,8 @@ text5與姿態重設，READY先於正式／canonical接線。AI指令10～12的�
 ### 2026-10-06 #197 原始byte觀察工具READY
 
 唯一正式oracle已依012-fd2-parity-capture §10補選用的成功指令前後byte觀察。固定原版BOOT的啟用／停用完整狀態與PNG一致，平台及驅動器回歸通過。未知來源、越界、同值寫入及控制注入限制明示，不改CPU、近堆或遊戲規則；#52最後pixel writer仍未知，#197待正常收據。來源提交、唯一數字、命令與雜湊見[地形主契約](../data/ida/fd2_terrain_mode3_review_20261001.json)的memory_observation。
+
+
+### 2026-10-16 第26章完整增援與必出／敗北接線
+
+第26章event57由原始共享尾段完整轉成spawn／pan／delay，沿既有引擎消費。原版caller證據先達READY，再補悠妮與亞奇梅吉必出及依序前置、原生結果碼與返回標題，以及戰後實測記錄白名單。章前HP／MaxHP作弊政策只改建構槽，正式規則與SAV格式不變；章內不鎖HP。正常原版及完整Game通過流程三閘門與strict整檔保存，按111例外登記PLAYER-E2。低HP同源敗北亦返回完整標題，未宣稱自然難度或逐像素一致。 原始定位、READY規格與限定驗證見[第26章主契約](../data/ida/fd2_turn_event57_20261016.json)；章收據見[parity-ch26](../data/ui-traces/parity-ch26.json)，唯一分層現況與數字見[58](58-fd2-exe-re-coverage.md)。

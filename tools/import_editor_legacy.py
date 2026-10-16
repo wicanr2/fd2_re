@@ -63,7 +63,8 @@ def _base(kind: str, source: str) -> dict[str, Any]:
     }
 
 
-def _campaign(raw: dict[str, Any], source: str, diagnostics: list[dict[str, str]]) -> dict[str, Any]:
+def _campaign(raw: dict[str, Any], source: str, diagnostics: list[dict[str, str]],
+              previous_document: dict[str, Any] | None = None) -> dict[str, Any]:
     doc = _base("campaign", source)
     known = {"nodes"}
     legacy = _unknown(raw, known, "$", diagnostics)
@@ -82,11 +83,33 @@ def _campaign(raw: dict[str, Any], source: str, diagnostics: list[dict[str, str]
     # 編不回可執行的節點——這也是這支工具自己的原則：無法無損映射的值原樣保留。
     fields = {"type", "next", "on_win", "on_lose", "asset_ids"}
     node_ids = {str(key): _id("node", source, key, index) for index, (key, _value) in enumerate(entries)}
+    if previous_document is not None:
+        if (previous_document.get("schema_version") != 1 or previous_document.get("kind") != "campaign"
+                or previous_document.get("document_id") != doc["document_id"]
+                or not isinstance(previous_document.get("nodes"), list)):
+            raise ValueError("既有節點ID來源必須是同一份schema_version=1戰役文件")
+        previous_ids: dict[str, str] = {}
+        seen_ids: set[str] = set()
+        for previous_node in previous_document["nodes"]:
+            if not isinstance(previous_node, dict) or not isinstance(previous_node.get("extensions"), dict):
+                raise ValueError("既有戰役節點缺少extensions")
+            key = previous_node["extensions"].get("legacy_key")
+            node_id = previous_node.get("node_id")
+            if (not isinstance(key, str) or not isinstance(node_id, str) or not node_id
+                    or key in previous_ids or node_id in seen_ids):
+                raise ValueError("既有戰役節點缺少唯一legacy_key／node_id")
+            previous_ids[key] = node_id
+            seen_ids.add(node_id)
+        for key in node_ids:
+            if key in previous_ids:
+                node_ids[key] = previous_ids[key]
+        if len(set(node_ids.values())) != len(node_ids):
+            raise ValueError("重匯入後節點ID重複")
     for index, (key, value) in enumerate(entries):
         if not isinstance(value, dict):
             diagnostics.append(_diag("invalid_node", f"nodes.{key}", "節點不是物件", "error"))
             continue
-        node = {"node_id": _id("node", source, key, index), "type": value.get("type", "event"), "extensions": {}}
+        node = {"node_id": node_ids[str(key)], "type": value.get("type", "event"), "extensions": {}}
         for old, new in (("map", "map_id"), ("scenario", "scenario_id"), ("story", "story_id")):
             if old in value:
                 node[new] = _legacy_ref(old, value[old])
@@ -200,7 +223,8 @@ def _animation(raw: dict[str, Any], source: str, diagnostics: list[dict[str, str
     return doc
 
 
-def import_legacy(raw: dict[str, Any], source_path: str | Path, kind: str | None = None) -> tuple[dict[str, Any], list[dict[str, str]]]:
+def import_legacy(raw: dict[str, Any], source_path: str | Path, kind: str | None = None, *,
+                  previous_document: dict[str, Any] | None = None) -> tuple[dict[str, Any], list[dict[str, str]]]:
     """回傳 ``(canonical_document, machine_readable_diagnostics)``。"""
     if not isinstance(raw, dict): raise TypeError("legacy 文件根節點必須是物件")
     source = _path(source_path); kind = kind or raw.get("kind")
@@ -209,7 +233,12 @@ def import_legacy(raw: dict[str, Any], source_path: str | Path, kind: str | None
         kind = "campaign" if "campaign" in name else "scenario" if "scenario" in name else "story" if "story" in name else "animation" if "animation" in name else None
     if kind not in KINDS: raise ValueError("無法從來源判定文件 kind，請明確指定")
     diagnostics: list[dict[str, str]] = []
-    doc = {"campaign": _campaign, "scenario": _scenario, "story": _story, "animation": _animation}[kind](raw, source, diagnostics)
+    if previous_document is not None and kind != "campaign":
+        raise ValueError("保留既有節點ID只適用戰役重匯入")
+    if kind == "campaign":
+        doc = _campaign(raw, source, diagnostics, previous_document)
+    else:
+        doc = {"scenario": _scenario, "story": _story, "animation": _animation}[kind](raw, source, diagnostics)
     return doc, diagnostics
 
 
@@ -223,8 +252,10 @@ def write_canonical(document: dict[str, Any], destination: str | Path | None = N
     return text
 
 
-def load_legacy(path: str | Path, kind: str | None = None) -> tuple[dict[str, Any], list[dict[str, str]]]:
-    return import_legacy(json.loads(Path(path).read_text(encoding="utf-8")), path, kind)
+def load_legacy(path: str | Path, kind: str | None = None, *,
+                previous_document: dict[str, Any] | None = None) -> tuple[dict[str, Any], list[dict[str, str]]]:
+    return import_legacy(json.loads(Path(path).read_text(encoding="utf-8")), path, kind,
+                         previous_document=previous_document)
 
 
 def load_canonical(path: str | Path) -> dict[str, Any]:
@@ -239,8 +270,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path); parser.add_argument("output", type=Path)
     parser.add_argument("--kind", choices=sorted(KINDS)); parser.add_argument("--diagnostics", type=Path)
+    parser.add_argument("--preserve-ids-from", type=Path, help="重匯入戰役時，依legacy_key保留此既有canonical的節點ID")
     args = parser.parse_args()
-    doc, diagnostics = load_legacy(args.input, args.kind)
+    previous = load_canonical(args.preserve_ids_from) if args.preserve_ids_from else None
+    doc, diagnostics = load_legacy(args.input, args.kind, previous_document=previous)
     write_canonical(doc, args.output)
     if args.diagnostics: args.diagnostics.write_text(json.dumps(diagnostics, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     else: print(json.dumps(diagnostics, ensure_ascii=False, sort_keys=True))

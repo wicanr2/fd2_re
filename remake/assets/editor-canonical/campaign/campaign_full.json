@@ -6570,6 +6570,11 @@
         "legacy": {
           "bgm": "FDMUS_019",
           "map": "assets/maps/map25",
+          "native_defeat_return_title": {
+            "handler": "0x22e5c",
+            "resource": 79,
+            "return": "full_title_sequence"
+          },
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
@@ -6589,7 +6594,6 @@
       },
       "map_id": "map/map25",
       "node_id": "legacy/node/b5c1e4503510/battle_ch26/195",
-      "on_lose": "legacy/node/b5c1e4503510/retreat_ch26/197",
       "on_win": "legacy/node/b5c1e4503510/postbattle_ch26_persist/196",
       "scenario_id": "scenario/ch26",
       "type": "battle"
@@ -6604,26 +6608,6 @@
       "next": "legacy/node/b5c1e4503510/town_ch27/243",
       "node_id": "legacy/node/b5c1e4503510/postbattle_ch26_persist/196",
       "type": "cutscene"
-    },
-    {
-      "extensions": {
-        "legacy": {
-          "bgm": "FDMUS_010",
-          "lines": [
-            {
-              "speaker": -1,
-              "text": "撤退!先回頭整頓,再找機會反攻……"
-            }
-          ],
-          "set_flags": {
-            "retried_ch26": true
-          }
-        },
-        "legacy_key": "retreat_ch26"
-      },
-      "next": "legacy/node/b5c1e4503510/battle_ch26/195",
-      "node_id": "legacy/node/b5c1e4503510/retreat_ch26/197",
-      "type": "story"
     },
     {
       "extensions": {
@@ -8442,7 +8426,15 @@
       "extensions": {
         "legacy": {
           "cancel": "town_ch26",
-          "prompt": "要進入戰場嗎？"
+          "preparation_front_identities": [
+            9,
+            29
+          ],
+          "prompt": "要進入戰場嗎？",
+          "required_party_identities": [
+            9,
+            29
+          ]
         },
         "legacy_key": "preparation_ch26"
       },

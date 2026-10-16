@@ -2,6 +2,7 @@
 """legacy importer 與 deterministic writer 的最小實際資料回歸。"""
 
 import json
+import copy
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,6 +15,43 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class EditorRoundTripTests(unittest.TestCase):
+    def test_campaign_reimport_preserves_existing_ids_after_delete_and_insert(self):
+        source = "legacy/campaign_full.json"
+        raw = {"nodes": {"start": {"type": "story", "next": "end"},
+                         "removed": {"type": "story"}, "end": {"type": "ending"}}}
+        previous, _ = import_legacy(raw, source, "campaign")
+        old_ids = {n["extensions"]["legacy_key"]: n["node_id"] for n in previous["nodes"]}
+        for insert in (False, True):
+            nodes = {"extra": {"type": "story", "next": "start"}} if insert else {}
+            nodes.update({"start": raw["nodes"]["start"], "end": raw["nodes"]["end"]})
+            document, _ = import_legacy({"nodes": nodes}, source, "campaign", previous_document=previous)
+            by_key = {n["extensions"]["legacy_key"]: n for n in document["nodes"]}
+            for key in ("start", "end"):
+                self.assertEqual(by_key[key]["node_id"], old_ids[key])
+            self.assertEqual(by_key["start"]["next"], old_ids["end"])
+            self.assertNotIn("removed", by_key)
+            if insert:
+                self.assertEqual(by_key["extra"]["next"], old_ids["start"])
+            validate_documents([document], set())
+
+    def test_campaign_id_preservation_rejects_wrong_source_and_ambiguous_ids(self):
+        raw = {"nodes": {"a": {"type": "story"}, "b": {"type": "ending"}}}
+        previous, _ = import_legacy(raw, "legacy/campaign_full.json", "campaign")
+        for mutation in ("source", "key", "id", "kind"):
+            bad = copy.deepcopy(previous)
+            if mutation == "source":
+                bad["document_id"] = "another/document"
+            elif mutation == "key":
+                bad["nodes"][1]["extensions"]["legacy_key"] = "a"
+            elif mutation == "id":
+                bad["nodes"][1]["node_id"] = bad["nodes"][0]["node_id"]
+            else:
+                bad["kind"] = "scenario"
+            with self.assertRaises(ValueError):
+                import_legacy(raw, "legacy/campaign_full.json", "campaign", previous_document=bad)
+        with self.assertRaises(ValueError):
+            import_legacy({}, "legacy/ch01.json", "scenario", previous_document=previous)
+
     def _roundtrip(self, raw, source, kind):
         document, diagnostics = import_legacy(raw, source, kind)
         self.assertIsInstance(diagnostics, list)

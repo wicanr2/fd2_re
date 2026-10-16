@@ -25,6 +25,37 @@ func nativeResultRecords(count int) *State {
 	return st
 }
 
+func TestChapter26OnlyRequiredInactiveRecordsOverrideResult(t *testing.T) {
+	sc, err := LoadScenario("../../assets/scenarios/ch26.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sc.NativeResultHandler != "0x20b3c" || len(sc.NativeResultRules) != 2 {
+		t.Fatal("第26章原生結果來源或兩筆必存角色規則缺漏")
+	}
+	for _, tc := range []struct {
+		index int
+		flags byte
+		want  int
+	}{{1, 0x80, 0}, {2, 0x80, 0}, {3, 1, 0}, {1, 1, 1}, {2, 0x81, 1}} {
+		st := nativeResultRecords(57)
+		st.Units[tc.index].NativeRecordByte5 = tc.flags
+		matched := 0
+		for _, rule := range sc.NativeResultRules {
+			ok, err := rule.Match(st)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if ok {
+				matched++
+			}
+		}
+		if matched != tc.want {
+			t.Fatalf("記錄%d flags=%02x命中%d列，預期%d", tc.index, tc.flags, matched, tc.want)
+		}
+	}
+}
+
 func TestNativeDefaultResultUsesRawCampAndBit0Priority(t *testing.T) {
 	st := nativeResultRecords(2)
 	st.Units[1].NativeRecordByte6 = 0

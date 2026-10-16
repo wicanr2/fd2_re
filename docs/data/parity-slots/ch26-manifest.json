@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_save_continuation_manifest",
+  "tool": "dosgolem apps/fd2/cmd/oracle正式SAV，直接接續",
+  "base_save": "work/ch25-flow-20261015/state-r4/FD2.SAV",
+  "base_sha256": "0d420b379a38906b208a5e2a88dd74617b1c9a763010205b5c864f0ff102a9cb",
+  "base_slot": 0,
+  "base_chapter": 25,
+  "target_chapter": 25,
+  "out_slot": 0,
+  "output_sha256": "0d420b379a38906b208a5e2a88dd74617b1c9a763010205b5c864f0ff102a9cb",
+  "source_receipt": "docs/data/ui-traces/parity-ch25.json",
+  "source_original_runner_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+  "source_construction_manifest": "docs/data/parity-slots/ch25-manifest.json",
+  "level_policy": "直接接續第25章原版實際SAV，零追加改寫；祖先AP200／DP1000／DX60、levels-per-chapter6、seed4與event7:17=1。",
+  "seed": 4,
+  "roster_count": 27,
+  "assumptions": [
+    {
+      "kind": "continuation",
+      "detail": "本章沿原版保存，不用第25章重製保存替換，不追加治療、升級、強化、金幣或物品。"
+    }
+  ],
+  "known_deviations": [
+    "保留既有傷亡，悠妮identity9的HP為0；正常LOAD／選人後核對是否阻塞本章必存角色條件，不能在章內鎖HP。",
+    "第25章有界保存例外只適用其既有pair，不套用第26章。",
+    "祖先作弊槽與前章清敵不證明自然難度、傷害、存活或敵方選目標。"
+  ]
+}

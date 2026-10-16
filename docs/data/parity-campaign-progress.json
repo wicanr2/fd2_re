@@ -733,15 +733,48 @@
     },
     {
       "chapter": 26,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch26.json",
+      "slot_manifest": "docs/data/parity-slots/ch26-hp-policy-manifest.json",
+      "slot_sha256": "f04c6761f4dd4aa0a1047dc5d18fbfdbcfdfac94cccf0fd62169ca9895a645ff",
+      "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+      "date": "2026-10-16",
+      "verify": "Docker tools/verify_chapter_parity.py --chapter 26 --oracle work/ch26-flow-20261016/original-r4 --remake work/ch26-flow-20261016/remake-r4 --slot-manifest docs/data/parity-slots/ch26-hp-policy-manifest.json --plan docs/data/parity-plans/ch26-flow-cheat-r4.jsonl --frame-policy advisory --oracle-save work/ch26-flow-20261016/state-r4/FD2.SAV --out <新收據路徑>",
+      "limitations": [
+        "章前全27筆HP／MaxHP+30000，祖先AP／DP／DX及升級政策見清冊；章內正常鍵盤、不鎖HP；T18九波後清敵一次68筆。不能證明自然難度、傷害、存活或敵方選目標。",
+        "行為／節點／交易及完整SAV嚴格相同；frames advisory未擷取重製PNG，不宣稱逐幀或逐像素一致。",
+        "主線增援與戰後／酒店保存已驗；寶箱群組、機甲兵加入、買賣與五處探訪未抽樣。另以r3低HP同源敗北驗證原生返回完整標題，非整章勝利收據。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "kind": "constructed_boost_only",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 30000
+        },
+        "parent_save_sha256": "1ee36343819a598873956b8554de11f0a6f317befba4c0d719164b54133f08e0",
+        "inherited_policy": {
+          "manifest": "docs/data/parity-slots/ch26-fresh-policy-manifest.json",
+          "levels_per_chapter": 6,
+          "seed": 4,
+          "old_25_roster_boost": {
+            "base_ap": 200,
+            "base_dp": 2000,
+            "base_dx": 60
+          },
+          "new_26_29_boost": {
+            "base_ap": 0,
+            "base_dp": 1000,
+            "base_dx": 0
+          }
+        },
+        "note": "本次只加HP／MaxHP；保留既有傷勢及HP0，章內不鎖HP，不證明自然難度、傷害、存活或敵方選目標。"
+      }
     },
     {
       "chapter": 27,

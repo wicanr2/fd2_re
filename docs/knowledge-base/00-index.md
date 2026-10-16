@@ -833,3 +833,21 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第25章[正式流程收據](../data/ui-traces/parity-ch25.json)：2026-10-16依111有界保存政策通過，240筆AI零順序分歧；七byte及衍生檢查碼兩byte差異仍逐筆揭露，bytes_equal=false，不宣稱整檔相同。
 
 - 第25章[完整保存失敗歷史](../data/ui-traces/parity-ch25-flow-r2-save-failed.json)：保留2026-10-15嚴格保存門檻的完整原始結果；2026-10-16有界例外只依111與event56主契約驗收，不重寫此失敗收據。
+
+- 第26章較早接續診斷：[來源槽清冊](../data/parity-slots/ch26-manifest.json)、[r1控制計畫](../data/parity-plans/ch26-flow-cheat-r1.jsonl)、[event57原始函式及契約](../data/ida/fd2_turn_event57_20261016.json)。r1未進戰鬥即取消；正式完整流程與保存見下方r4收據。
+
+- 第26章r2建構槽政策：[清冊](../data/parity-slots/ch26-fresh-policy-manifest.json)、[正常城鎮及九波輸入](../data/parity-plans/ch26-flow-cheat-r2.jsonl)。
+
+- 第26章低HP敗北診斷：[r3原定九波輸入](../data/parity-plans/ch26-flow-cheat-r3.jsonl)。r1／r2保留為已取消的控制計畫診斷。
+
+- 第26章必出及前置缺陷 #213：沿[第26章主契約](../data/ida/fd2_turn_event57_20261016.json)的`preparation_contract`，重用31DBE／321C8已閉合證據。
+
+- 第26章章前HP作弊政策：[逐筆清冊](../data/parity-slots/ch26-hp-policy-manifest.json)、[r4正常輸入](../data/parity-plans/ch26-flow-cheat-r4.jsonl)，契約見第26章主證據`hp_slot_policy`與111最新政策。
+
+- 第26章陣亡返回標題 #214：沿[第26章主契約](../data/ida/fd2_turn_event57_20261016.json)的`defeat_contract`，重用3453E／結果列／22E5C已閉合consumer。
+
+- 第26章戰後84筆前沿 #215：沿[第26章主契約](../data/ida/fd2_turn_event57_20261016.json)的`post_frontier_contract`，只接實測數量。
+
+- 第26章正式流程章收據：[parity-ch26](../data/ui-traces/parity-ch26.json)，章前HP作弊政策、九波與嚴格整檔保存；依111例外登記PLAYER-E2，畫面只作參考。
+
+- 既有戰役重匯入的節點ID保留 #217：[import_editor_legacy工具](../../tools/import_editor_legacy.py)的`--preserve-ids-from`，限同一schema_version=1戰役，驗證見第26章主契約`canonical_identity_preservation`。

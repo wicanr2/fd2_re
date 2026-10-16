@@ -277,42 +277,11 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 
 ## 逐章對拍進度
 
-重製端每一章都拿原版執行結果當基準比對：同一份存檔槽、同一串鍵盤輸入，原版在
-dosgolem 無頭執行器上跑一遍，重製端重播同一串輸入，再逐點比四件事——單位與回合的
-行為、節點流程、金錢與存檔交易、畫面像素。四項全過才算這一章通過。
+重製每章以原版執行結果為基準，兩側載入相同存檔槽並重播等價鍵盤輸入。
+原版由dosgolem執行，驗收記錄行為、節點、交易與畫面。必驗項目、作弊政策與保存例外
+依[111](docs/goal/111-goal-original-parity-campaign-20260915.md)及各章收據；畫面作參考時，不宣稱逐幀或逐像素一致。
 
-<!-- BEGIN tools/render_parity_progress.py render；不要手改這一段 -->
-
-依 [111](docs/goal/111-goal-original-parity-campaign-20260915.md) 的四個 gate（行為、節點、交易、畫面）逐章對拍，第 4～23 章已通過（台帳更新日 2026-10-03）。
-
-| 章 | 通過的 gate | 原版動作 | 行為比較點 | 畫面比較點 | 最大畫面差異 | 完整存檔 | 證據 |
-|---|---|---|---|---|---|---|---|
-| 第 4 章 | 行為、節點、交易、畫面 | 62 | 63 | 55（38 張逐像素相同） | 201 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch04.json) ／ [2 張](docs/figures/parity-ch04-samples-p1.png) |
-| 第 5 章 | 行為、節點、交易、畫面 | 65 | 66 | 58（40 張逐像素相同） | 628 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch05.json) ／ [1 張](docs/figures/parity-ch05-samples.png) |
-| 第 6 章 | 行為、節點、交易、畫面 | 72 | 73 | 58（39 張逐像素相同） | 618 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch06.json) ／ [1 張](docs/figures/parity-ch06-samples.png) |
-| 第 7 章 | 行為、節點、交易、畫面 | 241 | 242 | 228（164 張逐像素相同） | 255 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch07.json) ／ [5 張](docs/figures/parity-ch07-samples-p1.png) |
-| 第 8 章 | 行為、節點、交易、畫面 | 197 | 198 | 179（127 張逐像素相同） | 629 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch08.json) ／ [3 張](docs/figures/parity-ch08-samples-p1.png) |
-| 第 9 章 | 行為、節點、交易、畫面 | 298 | 299 | 286（203 張逐像素相同） | 627 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch09.json) ／ [4 張](docs/figures/parity-ch09-samples-p1.png) |
-| 第 10 章 | 行為、節點、交易、畫面 | 280 | 281 | 268（174 張逐像素相同） | 428 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch10.json) ／ [5 張](docs/figures/parity-ch10-samples-p1.png) |
-| 第 11 章 | 行為、節點、交易、畫面 | 240 | 241 | 231（157 張逐像素相同） | 489 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch11.json) ／ [5 張](docs/figures/parity-ch11-samples-p1.png) |
-| 第 12 章 | 行為、節點、交易、畫面 | 286 | 287 | 275（177 張逐像素相同） | 215 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch12.json) ／ [7 張](docs/figures/parity-ch12-samples-p1.png) |
-| 第 13 章 | 行為、節點、交易、畫面 | 269 | 270 | 259（181 張逐像素相同） | 335 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch13.json) ／ — |
-| 第 14 章 | 行為、節點、交易、畫面 | 70 | 71 | 64（46 張逐像素相同） | 368 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch14.json) ／ [2 張](docs/figures/parity-ch14-samples-p1.png) |
-| 第 15 章 | 行為、節點、交易、畫面 | 168 | 169 | 156（110 張逐像素相同） | 215 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch15.json) ／ [2 張](docs/figures/parity-ch15-samples-p1.png) |
-| 第 16 章 | 行為、節點、交易、畫面 | 82 | 83 | 76（58 張逐像素相同） | 200 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch16.json) ／ [2 張](docs/figures/parity-ch16-samples-p1.png) |
-| 第 17 章 | 行為、節點、交易、畫面 | 105 | 106 | 98（72 張逐像素相同） | 295 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch17.json) ／ [2 張](docs/figures/parity-ch17-samples-p1.png) |
-| 第 18 章 | 行為、節點、交易、畫面 | 193 | 194 | 182（128 張逐像素相同） | 346 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch18.json) ／ — |
-| 第 19 章 | 行為、節點、交易、畫面 | 62 | 63 | 54（39 張逐像素相同） | 215 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch19.json) ／ — |
-| 第 20 章 | 行為、節點、交易、畫面 | 35 | 36 | 31（25 張逐像素相同） | 181 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch20.json) ／ — |
-| 第 21 章 | 行為、節點、交易、畫面 | 34 | 35 | 30（24 張逐像素相同） | 375 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch21.json) ／ — |
-| 第 22 章 | 行為、節點、交易、畫面 | 42 | 43 | 34（28 張逐像素相同） | 185 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch22.json) ／ — |
-| 第 23 章 | 行為、節點、交易、畫面 | 44 | 44 | 24（21 張逐像素相同） | 179 px | 整檔相同 | [收據](docs/data/ui-traces/parity-ch23.json) ／ — |
-
-其餘各章（第 1 章、第 2 章、第 3 章…共 10 章）還沒跑這套逐章對拍；第 1～3 章另有更早的單點證據，不列在這張表裡。
-
-每章的建構槽政策、抽樣範圍與限制寫在台帳 [`parity-campaign-progress.json`](docs/data/parity-campaign-progress.json) 的 `limitations`；這張表由 `tools/render_parity_progress.py` 依台帳與收據產生。
-
-<!-- END tools/render_parity_progress.py render -->
+目前分層現況與接續工作見[重製閉合矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。逐章驗收、章前作弊政策及保存限制見[章台帳](docs/data/parity-campaign-progress.json)與[進度頁](docs/REMAKE-STATUS.md)；各章以自己的收據為準，流程通過不代表逐像素一致。
 
 第十六章已通過同槽戰鬥抽樣、戰後交易與酒店存檔驗收，範圍與限制見[完整章收據](docs/data/ui-traces/parity-ch16.json)。
 下圖五個起手畫面逐像素相同；[整章總覽索引](docs/data/ui-traces/parity-ch16-samples.json)另保留所有非零差異。

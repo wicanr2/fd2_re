@@ -11,6 +11,50 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
+func TestHPBoostPreservesInjuryDeathAndOtherBytes(t *testing.T) {
+	b := &builder{roster: make([]byte, fdsave.RosterSize), count: 2}
+	for slot, hp := range []uint16{70, 0} {
+		binary.LittleEndian.PutUint16(b.record(slot)[recordHP:], hp)
+		binary.LittleEndian.PutUint16(b.record(slot)[recordMaxHP:], 100)
+	}
+	before := append([]byte(nil), b.roster...)
+	if err := b.applyHPBoost(25, 0); err != nil || !bytes.Equal(before, b.roster) || len(b.assumptions) != 0 {
+		t.Fatal("未指定HP政策時改了槽")
+	}
+	if err := b.applyHPBoost(25, 30000); err != nil {
+		t.Fatal(err)
+	}
+	want := append([]byte(nil), before...)
+	binary.LittleEndian.PutUint16(want[recordHP:], 30070)
+	binary.LittleEndian.PutUint16(want[recordMaxHP:], 30100)
+	binary.LittleEndian.PutUint16(want[fdsave.UnitSize+recordMaxHP:], 30100)
+	if !bytes.Equal(want, b.roster) || len(b.assumptions) != 1 || b.assumptions[0].Kind != "boost_hp" {
+		t.Fatal("HP強化未保留傷勢、陣亡、鄰槽或政策紀錄")
+	}
+}
+
+func TestHPBoostRejectsOverflowAndInvalidHPWithoutPartialWrites(t *testing.T) {
+	for _, tc := range []struct {
+		delta     int
+		hp, maxHP uint16
+	}{
+		{-1, 70, 100}, {32768, 70, 100}, {30000, 70, 3000},
+		{30000, 70, 4000}, {1, 101, 100}, {1, 0xffff, 100}, {1, 0, 0},
+	} {
+		b := &builder{roster: make([]byte, fdsave.RosterSize), count: 2}
+		binary.LittleEndian.PutUint16(b.record(0)[recordHP:], 70)
+		binary.LittleEndian.PutUint16(b.record(0)[recordMaxHP:], 100)
+		binary.LittleEndian.PutUint16(b.record(1)[recordHP:], tc.hp)
+		binary.LittleEndian.PutUint16(b.record(1)[recordMaxHP:], tc.maxHP)
+		before := append([]byte(nil), b.roster...)
+		err := b.applyHPBoost(25, tc.delta)
+		// 3000+30000超過32767；所有案例都必須整批拒收。
+		if err == nil || !bytes.Equal(before, b.roster) || len(b.assumptions) != 0 {
+			t.Fatalf("錯誤HP政策部分寫入：%+v err=%v", tc, err)
+		}
+	}
+}
+
 func TestBuildModeKeepsContinuationAndBoostOnlySeparate(t *testing.T) {
 	cases := []struct {
 		name                 string

@@ -16,7 +16,7 @@
 補成九項具型別操作，規格達 READY 後才接入四筆回合事件。
 主證據見[event54契約](../data/ida/fd2_turn_event54_20261015.json)，包含全域表 consumer、原始名稱、
 位址空間與原始位元組。本次不重開匹配式反編譯。
-官方轉寫與劇本同步檢查通過；第25章event56接線後，全域仍有22筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
+官方轉寫與劇本同步檢查通過；第26章event57接線後，全域仍有13筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
 既有短鏈重跑通過行為、節點、完整 SAV 與13張完整 RGB 零差異，完整章仍依正式台帳判定。
 
 #207後續定位：原版`sub_1DB65`的局部畫面指標陣列只有30格，`0x1DC29`沒有數量上限。
@@ -42,13 +42,14 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 22章passed，即第4～25章；其餘8章todo。第25章完整重播到酒店，三項流程閘門依明示保存政策通過、240筆AI順序零分歧；完整SAV差異仍逐筆保留 | [#212](https://github.com/wicanr2/fd2_re/issues/212)依使用者接受證據限制結案；[#199](https://github.com/wicanr2/fd2_re/issues/199)接續第26章。[第25章正式收據](../data/ui-traces/parity-ch25.json)明示accepted_disclosed_difference及bytes_equal=false。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
-| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有22筆維持spawn版本；第25章event56五項操作已完整同步並實際消費 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分。命令、日期、固定輸入見[event56主契約](../data/ida/fd2_turn_event56_20261015.json) |
+| 正式章台帳 | 23章passed，即第4～26章；其餘7章todo。第26章九波至T18、913筆AI零順序分歧、行為／節點／交易及完整SAV嚴格相同 | [#199](https://github.com/wicanr2/fd2_re/issues/199)接續第27章。[第26章收據](../data/ui-traces/parity-ch26.json)與[主契約](../data/ida/fd2_turn_event57_20261016.json)明示章前HP+30000、一次清敵及未抽樣範圍。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
+| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有13筆維持spawn版本；第26章event57完整spawn／pan(9,0)／delay400同步九列並由正常流程消費 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
+| 戰役故事節點稽核 | 移除第26章未證撤退後，工具重算117故事／過場節點、9直接腳本、57handler、51fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-16；輸入SHA及輸出見[event57主契約的defeat_contract](../data/ida/fd2_turn_event57_20261016.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
 | 高解析呈現 | 使用者已要求HD化；本階段範圍正在確認，沒有高解析production契約或完成聲明 | [#204](https://github.com/wicanr2/fd2_re/issues/204)先確認範圍、同狀態原型與READY規格；不以放大現有圖或母稿存在代替完成 |
-| 回歸環境 | FD2原Go／素材映像已恢復；私人現代素材18項及完整Go回歸通過。IRQ7原始ISR鏈已接通，自然啟動504次皆返回；正常鍵盤短鏈兩輪233份完整狀態／PNG及trace一致 | [#203](https://github.com/wicanr2/fd2_re/issues/203)及[#205](https://github.com/wicanr2/fd2_re/issues/205)限定工具範圍驗收；新舊平台嚴格比較仍failed，原始失敗保留。回到第24章，不提升章台帳 |
+| 回歸環境 | FD2原Go／素材映像已恢復；私人現代素材18項及完整Go回歸通過。IRQ7原始ISR鏈已接通，自然啟動504次皆返回；正常鍵盤短鏈兩輪233份完整狀態／PNG及trace一致 | [#203](https://github.com/wicanr2/fd2_re/issues/203)及[#205](https://github.com/wicanr2/fd2_re/issues/205)限定工具範圍驗收；新舊平台嚴格比較仍failed，原始失敗保留。工具驗收本身不提升章台帳；章接續看本表 |
 | 非阻擋診斷與考古 | #52單像素差異仍已證實，#197目標窗口未取得；第12章追蹤沿用暫停。#198也明確暫停 | 三項保留未完成及來源，不阻塞其他章、HD與後續平台／編輯器工作 |
 
 工具鏈恢復接續：兩個既有FD2映像已由原Dockerfile重建，現代主題含私人完整素材的18項測試零略過通過。
@@ -65,13 +66,25 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 後續已恢復FD2專用Go工具鏈；GPU正常路徑與人耳驗收仍未完成。
 dosgolem由合併後 `main` 的 `81c85be` 建立 `fd2-followup-20261015`，
 專用worktree為 `work/dosgolem-fd2-followup-20261015`。IRQ7實作 `e26fb41` 與驗證規格 `2c5c104`
-已推送該分支，遠端HEAD一致；共用main保持。工具恢復批次當時接續同源第23章實際SAV，尚未提高章分級；本輪最新第24章流程結果以上方正式收據為準。
+已推送該分支，遠端HEAD一致；共用main保持。工具恢復批次當時接續同源第23章實際SAV，尚未提高章分級；該輪第24章收據保留；目前章接續以上表正式台帳為準。
 短鏈原版211份狀態與PNG齊全，16筆AI入口零順序分岔；主收據的`chapter24_followup`保存四gate及完整SAV雜湊。
 原r3計畫的連續延後截圖覆寫已登記[#206](https://github.com/wicanr2/fd2_re/issues/206)，
 正常等待版r4取得必要原始圖片，但通用工具缺陷未修；不補圖或放寬閘門。
 
 排程見[91](91-worklist.md)，HD契約見[61](61-modern-theme-runtime-spec.md)。
 下列日期化紀錄保留先前證據；排程衝突時以上述現況及遠端Issue為準。
+
+## 2026-10-16 第26章完整流程與限定敗北接線
+
+第26章沿既有IDA9.4及固定EXE原始bytes補event57共享pan／delay尾段，九列由正式lower同步至劇本與canonical。
+正常原版r3曾因悠妮陣亡返回標題，敗北樣本保留；r4依使用者作弊通關方向，章前HP／MaxHP一次強化，章內不鎖HP。
+正常LOAD、必出選人、九波至T18、清敵一次、戰後及酒店保存完成，依111例外登記PLAYER-E2。
+完整SAV含檢查碼零差異，沒有套用第25章例外；畫面只作參考。
+
+本輪#213補悠妮／亞奇梅吉必出檢查與依序前置，#214補record1／2陣亡後原生敗北返回標題，#215只補戰後實測84筆白名單。
+低HP同源r3已重現悠妮受法術傷害後的敗北、完整開場與標題終態，保存未變；未做9／36tick原版逐像素比較。
+sub_20B3C既有54-byte C匹配與原始caller證據已足夠，本批沒有新matching編譯，也不重解3453E／321C8／一般敗北helper。
+唯一數字、固定來源、READY規格、失敗歷史與驗證命令見[主契約](../data/ida/fd2_turn_event57_20261016.json)及[正式收據](../data/ui-traces/parity-ch26.json)。
 
 ## 2026-10-10 匹配研究快照（PARTIAL，歷史保留）
 

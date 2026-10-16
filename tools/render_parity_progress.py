@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""由台帳與章收據產生「逐章對拍進度」區塊，寫進 README.md 與 docs/REMAKE-STATUS.md。
+"""由台帳與章收據產生「逐章對拍進度」區塊，寫進 docs/REMAKE-STATUS.md。
+
+README.md 若仍有成對標記也會更新；無標記時保留其穩定入口。
 
 數字全部從 docs/data/parity-campaign-progress.json 與 docs/data/ui-traces/parity-chNN.json
 讀出來，文件裡不留手抄統計（手抄的那種下一章跑完就會漂走）。
 
 用法：
-  tools/render_parity_progress.py            重寫兩份文件的產生區塊
+  tools/render_parity_progress.py            重寫現有產生區塊
   tools/render_parity_progress.py --check    只檢查區塊是不是已經和資料一致（CI／提交前用）
 
 區塊以 BEGIN／END 註解標出，和 tools/fd2_worklist.py 的作法一樣；區塊外的敘述由人維護。
@@ -50,8 +52,10 @@ def receipt_stats(chapter: int) -> dict | None:
         "frame_zero": sum(1 for value in diffs if value == 0),
         "frame_max": max(diffs) if diffs else 0,
         "gates": {name: bool(gates.get(name, {}).get("ok")) for name in GATE_ORDER},
+        "required": {name: gates.get(name, {}).get("required", True) for name in GATE_ORDER},
         # 交易 gate 已經涵蓋存檔，這裡另外留一個旗標讓表格可以直接說「整檔相同」。
         "save_match": bool(save) and save.get("oracle_save_sha256") == save.get("remake_save_sha256"),
+        "save_status": save.get("status"),
     }
 
 
@@ -88,24 +92,33 @@ def render_rows(ledger: dict, style: str) -> tuple[list[str], list[int], list[in
         gates = "、".join(
             name for name, ok in zip(("行為", "節點", "交易", "畫面"), stats["gates"].values()) if ok
         )
-        if not all(stats["gates"].values()):
+        required = stats.get("required", {})
+        failed = [name for name, ok in stats["gates"].items() if not ok]
+        if any(required.get(name, True) for name in failed):
             gates += "（其餘未過）"
+        elif failed:
+            gates += "（其餘非必驗）"
+        save_label = "整檔相同" if stats["save_match"] else "未比"
+        if not stats["save_match"] and stats.get("save_status") == "accepted_disclosed_difference":
+            save_label = "差異已揭露並接受"
+        elif not stats["save_match"] and stats.get("save_status") == "failed":
+            save_label = "比較未通過"
         sheets = sample_sheets(chapter)
         sheet_cell = "—"
         if sheets:
             first = sheets[0]
             sheet_cell = f"[{len(sheets)} 張]({doc_link(first, style)})"
         rows.append(
-            "| 第 {chapter} 章 | {gates} | {actions} | {behavior} | {frames}（{zero} 張逐像素相同） | "
-            "{maximum} px | {save} | [收據]({receipt}) ／ {sheet} |".format(
+            "| 第 {chapter} 章 | {gates} | {actions} | {behavior} | {frames} | "
+            "{maximum} | {save} | [收據]({receipt}) ／ {sheet} |".format(
                 chapter=chapter,
                 gates=gates,
                 actions=stats["actions"] if stats["actions"] is not None else "—",
                 behavior=stats["behavior_points"],
-                frames=stats["frame_points"],
-                zero=stats["frame_zero"],
-                maximum=stats["frame_max"],
-                save="整檔相同" if stats["save_match"] else "未比",
+                frames=(f'{stats["frame_points"]}（{stats["frame_zero"]} 張逐像素相同）'
+                        if stats["frame_points"] else "未比"),
+                maximum=f'{stats["frame_max"]} px' if stats["frame_points"] else "—",
+                save=save_label,
                 receipt=doc_link(stats["receipt"], style),
                 sheet=sheet_cell,
             )
@@ -126,7 +139,7 @@ def render_block(ledger: dict, style: str) -> str:
             span = "、".join(f"第 {chapter} 章" for chapter in passed)
         lines.append(
             f"依 [111]({'docs/goal' if style == 'readme' else 'goal'}/111-goal-original-parity-campaign-20260915.md)"
-            f" 的四個 gate（行為、節點、交易、畫面）逐章對拍，{span}已通過（台帳更新日 {updated}）。"
+            f" 的逐章驗收門檻對拍，{span}已通過（台帳更新日 {updated}）；各章必驗項目與畫面政策見收據。"
         )
     else:
         lines.append(f"逐章對拍還沒有通過的章（台帳更新日 {updated}）。")
@@ -173,6 +186,11 @@ def main() -> None:
     ledger = load_ledger()
     stale = []
     for path, style in ((ROOT / "README.md", "readme"), (ROOT / "docs/REMAKE-STATUS.md", "status")):
+        # README依文件職責只保留穩定入口；移除區塊後不重新插入動態台帳。
+        if style == "readme":
+            text = path.read_text(encoding="utf-8")
+            if BEGIN not in text and END not in text:
+                continue
         if write_block(path, render_block(ledger, style), args.check):
             stale.append(path.relative_to(ROOT).as_posix())
     if args.check:

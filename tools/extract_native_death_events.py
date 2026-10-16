@@ -371,6 +371,12 @@ EVENTS = [
         op("dialogue", [(0x354B1, 0x354D8)], text=5),
         op("reset_pose", [(0x354D8, 0x354DD)], tail=True),
     ]},
+    # 第26章九波援軍；READY與共享尾段見fd2_turn_event57_20261016.json。
+    {"id": 57, "handler": 0x354DD, "ops": [
+        op("spawn_group", [(0x354E7, 0x354F5)], group_from="round", gate=0),
+        op("pan", [(0x354F5, 0x354FE), (0x353C4, 0x353CC)], x=9, y=0),
+        op("delay", [(0x353CC, 0x353D9)], ms=400),
+    ]},
     {"id": 64, "handler": 0x358EA, "guards": [
         op("guard_state", [(0x358F4, 0x35902)], index=0x10, equals=1),
         op("guard_state", [(0x3595D, 0x35962)], index=0x10, equals=2, reuse_register=True),

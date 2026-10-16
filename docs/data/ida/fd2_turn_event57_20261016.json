@@ -1,0 +1,1339 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_turn_event57_flow_contract",
+  "date": "2026-10-16",
+  "issues": [
+    33,
+    199
+  ],
+  "status": "CONFORMED-flow / PLAYER-E2依111建構槽例外",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE loader linear; file offsets separately named"
+  },
+  "source_export": {
+    "path": "work/matching-full-20261008/ida-full-image.json",
+    "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5"
+  },
+  "function": {
+    "inventory": {
+      "start": "0x354dd",
+      "end": "0x354fe",
+      "size": 33,
+      "ida_analysis_name": "sub_354DD",
+      "ida_function_flags": [],
+      "direct_caller_functions": [
+        "0x117e7",
+        "0x16f55",
+        "0x190ac",
+        "0x1a813",
+        "0x1aa1d",
+        "0x1d80b",
+        "0x1d8ba"
+      ],
+      "direct_code_xref_count": 8,
+      "direct_data_xref_count": 1,
+      "classification": {
+        "value": "unknown",
+        "confidence": "未知",
+        "source": "not yet classified"
+      },
+      "semantic_annotations": []
+    },
+    "ida_analysis_name": "sub_354DD",
+    "current_ida_linear_end": "0x354fe",
+    "boundary_matches_inventory": true,
+    "semantic_annotations": [],
+    "chunks": [
+      {
+        "ida_linear_start": "0x354dd",
+        "ida_linear_end": "0x354fe",
+        "instructions": [
+          {
+            "ida_linear_address": "0x354dd",
+            "file_offset": "0x362dd",
+            "loaded_bytes": "680c000000",
+            "file_bytes": "680c000000",
+            "instruction": "push    0Ch",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354e2",
+            "file_offset": "0x362e2",
+            "loaded_bytes": "e8f0170000",
+            "file_bytes": "e8f0170000",
+            "instruction": "call    sub_36CD7",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354e7",
+            "file_offset": "0x362e7",
+            "loaded_bytes": "ff35ef3b0500",
+            "file_bytes": "ff35ef3b0000",
+            "instruction": "push    dword_53BEF",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354ed",
+            "file_offset": "0x362ed",
+            "loaded_bytes": "e85cb6fdff",
+            "file_bytes": "e85cb6fdff",
+            "instruction": "call    sub_10B4E",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354f2",
+            "file_offset": "0x362f2",
+            "loaded_bytes": "83c404",
+            "file_bytes": "83c404",
+            "instruction": "add     esp, 4",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354f5",
+            "file_offset": "0x362f5",
+            "loaded_bytes": "6a00",
+            "file_bytes": "6a00",
+            "instruction": "push    0",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354f7",
+            "file_offset": "0x362f7",
+            "loaded_bytes": "6a09",
+            "file_bytes": "6a09",
+            "instruction": "push    9",
+            "semantic_annotations": []
+          },
+          {
+            "ida_linear_address": "0x354f9",
+            "file_offset": "0x362f9",
+            "loaded_bytes": "e9c6feffff",
+            "file_bytes": "e9c6feffff",
+            "instruction": "jmp     loc_353C4",
+            "semantic_annotations": []
+          }
+        ]
+      }
+    ],
+    "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+  },
+  "shared_tail": [
+    {
+      "ida_linear_address": "0x353c4",
+      "file_offset": "0x361c4",
+      "loaded_bytes": "e814e2fdff",
+      "file_bytes": "e814e2fdff",
+      "instruction": "call    sub_135DD",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353c9",
+      "file_offset": "0x361c9",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353cc",
+      "file_offset": "0x361cc",
+      "loaded_bytes": "6890010000",
+      "file_bytes": "6890010000",
+      "instruction": "push    190h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353d1",
+      "file_offset": "0x361d1",
+      "loaded_bytes": "e8dc210000",
+      "file_bytes": "e8dc210000",
+      "instruction": "call    j___delay",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353d6",
+      "file_offset": "0x361d6",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x353d9",
+      "file_offset": "0x361d9",
+      "loaded_bytes": "c3",
+      "file_bytes": "c3",
+      "instruction": "retn",
+      "semantic_annotations": []
+    }
+  ],
+  "claims": [
+    {
+      "level": "已證實",
+      "claim": "354E7從53BEF讀當前round，354ED呼10B4E；354F5／354F7壓入0、9，尾跳353C4既有pan，之後delay400。",
+      "evidence": "既有IDA9.4完整33-byte函式與共用353C4..353DA；callee契約沿event54及既有語意索引。"
+    },
+    {
+      "level": "已證實",
+      "claim": "現有第26章九列只spawn，沒有pan(9,0)及delay400。",
+      "evidence": "remake/assets/scenarios/ch26.json及docs/data/turn_events.json"
+    }
+  ],
+  "spec": {
+    "state": "READY",
+    "ops": [
+      {
+        "op": "spawn_group",
+        "ranges": [
+          [
+            "0x354e7",
+            "0x354f5"
+          ]
+        ],
+        "group_from": "round",
+        "gate": 0
+      },
+      {
+        "op": "pan",
+        "ranges": [
+          [
+            "0x354f5",
+            "0x354fe"
+          ],
+          [
+            "0x353c4",
+            "0x353cc"
+          ]
+        ],
+        "x": 9,
+        "y": 0
+      },
+      {
+        "op": "delay",
+        "ranges": [
+          [
+            "0x353cc",
+            "0x353d9"
+          ]
+        ],
+        "ms": 400
+      }
+    ],
+    "scope": "取得本章正常原版收據後，沿既有producer及lower補全部九列；不猜新ABI、不改正式存檔或規則。",
+    "failure": "固定EXE、table、原始bytes及完整可達coverage不符拒收；source gate及未知group不放寬。",
+    "acceptance": [
+      "producer完整指令覆蓋與共享尾段核對。",
+      "正常原版至T18含九波，正式Game同輸入／受控RNG重播。",
+      "行為／節點／交易與保存strict，frames advisory。"
+    ]
+  },
+  "walkthrough": {
+    "path": "references/text/fd2.md",
+    "chapter": 26,
+    "source": "https://chiuinan.github.io/game/game/intro/ch/c31/fd2/",
+    "role": "未知的迴廊、必出亞奇梅吉及失敗條件／多波敵人旁證，不能判定ABI。"
+  },
+  "matching_policy": "沿既有IDA原始bytes／callee證據；無新matching編譯。",
+  "validation": {
+    "original": "PASS，r4正常LOAD／選人、九波至T18、清敵一次、戰後及酒店保存",
+    "remake": "PASS，完整Game同槽／同輸入，913筆AI全消費、零順序分歧",
+    "source_input_sha256": "f04c6761f4dd4aa0a1047dc5d18fbfdbcfdfac94cccf0fd62169ca9895a645ff",
+    "control_plan_sha256": "eefb6f3791dd4452258167f99ee88ac3f895b37aaa19b3d678becdda0c9fdcd1",
+    "plan_commands": 104,
+    "input_r1": {
+      "original": "not-run",
+      "remake": "not-run",
+      "source_input_sha256": "0d420b379a38906b208a5e2a88dd74617b1c9a763010205b5c864f0ff102a9cb",
+      "control_plan_sha256": "0d58751178a9d23cad047d08a27acb930665df2117fd0018c2be6db1df2c3d8e",
+      "plan_commands": 95,
+      "result": "cancelled-control-plan-mismatch：LOAD為城鎮，誤用獨立整備前綴；cp78為教會狀態窗，未進戰鬥，不作產品缺陷或章收據。"
+    },
+    "manifest": "docs/data/parity-slots/ch26-hp-policy-manifest.json",
+    "input_r2": {
+      "original": "not-run",
+      "remake": "not-run",
+      "source_input_sha256": "1ee36343819a598873956b8554de11f0a6f317befba4c0d719164b54133f08e0",
+      "control_plan_sha256": "72c5d3688dea0979d568c1f05ce6dbdab8af57e5296f83ea590632b0f3542dcd",
+      "plan_commands": 105,
+      "manifest": "docs/data/parity-slots/ch26-fresh-policy-manifest.json",
+      "result": "cancelled-control-plan-mismatch：town_probe在轉場中重複esc，探訪建築未依預定序列，未進戰鬥。保留original-r2診斷，不作章收據。"
+    },
+    "input_r3": {
+      "result": "defeat-at-round13",
+      "steps": 8836253839,
+      "original_dir": "work/ch26-flow-20261016/original-r3",
+      "waves_observed": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12
+      ],
+      "force_enemy_clear_count": 0,
+      "cause": "cp611亞奇梅吉416→207；cp612悠妮272→0、亞雷斯380→0；cp613多名施法目標陣亡，cp617回標題。DP無法抵擋這次範圍法術。",
+      "not_completed": [
+        15,
+        16,
+        17,
+        "postbattle",
+        "save"
+      ]
+    },
+    "receipt": "docs/data/ui-traces/parity-ch26.json",
+    "receipt_sha256": "551dbb6cf59cb28b4bde7d777b8c611bfed027964f60bf882bad702304cfce49",
+    "oracle_dir": "work/ch26-flow-20261016/original-r4",
+    "remake_dir": "work/ch26-flow-20261016/remake-r4",
+    "trace_sha256": "bf99388b7aeb6d7e6f53c9b52f2b93bb4063e12e5520ee2578f1d14c138df4f7",
+    "event57_rounds": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      15,
+      16,
+      17
+    ],
+    "force_enemy_clear": [
+      {
+        "kind": "force_enemy_clear",
+        "seq": 961,
+        "round": 18,
+        "rng_word": 4,
+        "gold": 2000,
+        "cleared": 68,
+        "modified_path": true
+      }
+    ],
+    "gates": {
+      "behavior": true,
+      "nodes": true,
+      "transaction": true
+    },
+    "save": {
+      "sha256": "89a8d7a93f8baae11e2315f9d06c9a979ef5d6d608ee1558ec42ffb198cdbbd8",
+      "size": 22987,
+      "difference_count": 0,
+      "policy": "strict"
+    },
+    "frame_policy": "advisory，未擷取重製PNG，不宣稱逐幀／逐像素一致",
+    "global_turn_check": {
+      "command": "Docker tools/sync_native_turn_events.py --check",
+      "result": "PASS",
+      "untranscribed_rows": 13
+    },
+    "commands": {
+      "build_hp_slot": "Docker fd2-go-test-local:latest，Go1.22.12：go run ./cmd/fd2-chapter-slot -base /base/FD2.SAV -target 25 -out-dir /out -boost-only -boost-max-hp 30000 -seed 4；/base唯讀slot-r2，/out為slot-r4。",
+      "original": "Docker dosgolem-go-ebiten:1.24-r1，Go1.24.13：tools/dosgolem_oracle_container.sh；native近堆、40bn步、5400秒逾時、CPU2／3GiB、原版／dosgolem／計畫唯讀，state-r4／original-r4可寫。",
+      "remake": "Docker fd2-go-test-local:latest with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1；CHAPTER26、SLOT=slot-r4/FD2.SAV、ORACLE_RUN=original-r4、OUT=remake-r4、CAPTURE_FRAMES=0。",
+      "compare": "Docker tools/verify_chapter_parity.py --chapter 26 --oracle work/ch26-flow-20261016/original-r4 --remake work/ch26-flow-20261016/remake-r4 --slot-manifest docs/data/parity-slots/ch26-hp-policy-manifest.json --plan docs/data/parity-plans/ch26-flow-cheat-r4.jsonl --frame-policy advisory --oracle-save work/ch26-flow-20261016/state-r4/FD2.SAV --out docs/data/ui-traces/parity-ch26.json"
+    },
+    "limitations": [
+      "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+      "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
+      "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
+      "依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點與交易仍為必要閘門，保存依明示政策驗收。",
+      "寶箱群組、機甲兵加入、買賣與五處探訪未抽樣。"
+    ],
+    "final_regression": {
+      "go_all": {
+        "packages_passed": 19,
+        "log": "work/ch26-flow-20261016/final-go-r2.log",
+        "global_mute": false,
+        "first_failed_log": "work/ch26-flow-20261016/final-go.log"
+      },
+      "python_related_tests": 85,
+      "locales": {
+        "languages": 4,
+        "entries_each": 5094,
+        "new_translations": 0,
+        "reviewed_go_dispositions": 98,
+        "dispositions_changed": false
+      },
+      "chapter25": {
+        "receipt": "work/ch26-flow-20261016/ch25-regression.json",
+        "status": "passed",
+        "ai_entries": 240,
+        "ai_order_divergences": 0,
+        "save_policy": "ch25-opaque-20261016"
+      },
+      "final_chapter26": {
+        "remake_dir": "work/ch26-flow-20261016/remake-final-r5",
+        "receipt": "work/ch26-flow-20261016/parity-ch26-final-r5.json",
+        "receipt_bytes_equal_to_published": true,
+        "ai_entries": 913,
+        "ai_order_divergences": 0
+      },
+      "render_policy": {
+        "tests_passed": 10,
+        "advisory_frames": "non_required_not_failed",
+        "uncompared_pixels": "no_zero_difference_claim",
+        "ch25_save": "accepted_disclosed_difference"
+      }
+    }
+  },
+  "preparation_contract": {
+    "issue": 213,
+    "status": "CONFORMED，範圍限本契約與正常r4；原生敗北另由r3驗證",
+    "scope": "只補玩家第26章raw25的required／front資料；31DBE與321C8既有helper不重開。",
+    "source_export": {
+      "path": "work/matching-full-20261008/ida-full-image.json",
+      "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5"
+    },
+    "original_name": "sub_318AD",
+    "caller_instructions": [
+      {
+        "ida_linear_address": "0x31cad",
+        "file_offset": "0x32aad",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cad"
+      },
+      {
+        "ida_linear_address": "0x31cb4",
+        "file_offset": "0x32ab4",
+        "loaded_bytes": "751e",
+        "file_bytes": "751e",
+        "instruction": "jnz     short loc_31CD4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cb4"
+      },
+      {
+        "ida_linear_address": "0x31cb6",
+        "file_offset": "0x32ab6",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cb6"
+      },
+      {
+        "ida_linear_address": "0x31cb8",
+        "file_offset": "0x32ab8",
+        "loaded_bytes": "55",
+        "file_bytes": "55",
+        "instruction": "push    ebp",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cb8"
+      },
+      {
+        "ida_linear_address": "0x31cb9",
+        "file_offset": "0x32ab9",
+        "loaded_bytes": "e800010000",
+        "file_bytes": "e800010000",
+        "instruction": "call    sub_31DBE",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cb9"
+      },
+      {
+        "ida_linear_address": "0x31cbe",
+        "file_offset": "0x32abe",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cbe"
+      },
+      {
+        "ida_linear_address": "0x31cc1",
+        "file_offset": "0x32ac1",
+        "loaded_bytes": "89c7",
+        "file_bytes": "89c7",
+        "instruction": "mov     edi, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cc1"
+      },
+      {
+        "ida_linear_address": "0x31cc3",
+        "file_offset": "0x32ac3",
+        "loaded_bytes": "85c0",
+        "file_bytes": "85c0",
+        "instruction": "test    eax, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cc3"
+      },
+      {
+        "ida_linear_address": "0x31cc5",
+        "file_offset": "0x32ac5",
+        "loaded_bytes": "740d",
+        "file_bytes": "740d",
+        "instruction": "jz      short loc_31CD4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cc5"
+      },
+      {
+        "ida_linear_address": "0x31cc7",
+        "file_offset": "0x32ac7",
+        "loaded_bytes": "6a1d",
+        "file_bytes": "6a1d",
+        "instruction": "push    1Dh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cc7"
+      },
+      {
+        "ida_linear_address": "0x31cc9",
+        "file_offset": "0x32ac9",
+        "loaded_bytes": "55",
+        "file_bytes": "55",
+        "instruction": "push    ebp",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cc9"
+      },
+      {
+        "ida_linear_address": "0x31cca",
+        "file_offset": "0x32aca",
+        "loaded_bytes": "e8ef000000",
+        "file_bytes": "e8ef000000",
+        "instruction": "call    sub_31DBE",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cca"
+      },
+      {
+        "ida_linear_address": "0x31ccf",
+        "file_offset": "0x32acf",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31ccf"
+      },
+      {
+        "ida_linear_address": "0x31cd2",
+        "file_offset": "0x32ad2",
+        "loaded_bytes": "89c7",
+        "file_bytes": "89c7",
+        "instruction": "mov     edi, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cd2"
+      },
+      {
+        "ida_linear_address": "0x31cd4",
+        "file_offset": "0x32ad4",
+        "loaded_bytes": "83ff01",
+        "file_bytes": "83ff01",
+        "instruction": "cmp     edi, 1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cd4"
+      },
+      {
+        "ida_linear_address": "0x31cd7",
+        "file_offset": "0x32ad7",
+        "loaded_bytes": "0f85d5000000",
+        "file_bytes": "0f85d5000000",
+        "instruction": "jnz     loc_31DB2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cd7"
+      },
+      {
+        "ida_linear_address": "0x31cdd",
+        "file_offset": "0x32add",
+        "loaded_bytes": "833d033c050011",
+        "file_bytes": "833d033c000011",
+        "instruction": "cmp     dword_53C03, 11h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cdd"
+      },
+      {
+        "ida_linear_address": "0x31ce4",
+        "file_offset": "0x32ae4",
+        "loaded_bytes": "7412",
+        "file_bytes": "7412",
+        "instruction": "jz      short loc_31CF8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31ce4"
+      },
+      {
+        "ida_linear_address": "0x31ce6",
+        "file_offset": "0x32ae6",
+        "loaded_bytes": "833d033c050013",
+        "file_bytes": "833d033c000013",
+        "instruction": "cmp     dword_53C03, 13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31ce6"
+      },
+      {
+        "ida_linear_address": "0x31ced",
+        "file_offset": "0x32aed",
+        "loaded_bytes": "7409",
+        "file_bytes": "7409",
+        "instruction": "jz      short loc_31CF8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31ced"
+      },
+      {
+        "ida_linear_address": "0x31cef",
+        "file_offset": "0x32aef",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cef"
+      },
+      {
+        "ida_linear_address": "0x31cf6",
+        "file_offset": "0x32af6",
+        "loaded_bytes": "7e04",
+        "file_bytes": "7e04",
+        "instruction": "jle     short loc_31CFC",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cf6"
+      },
+      {
+        "ida_linear_address": "0x31cf8",
+        "file_offset": "0x32af8",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cf8"
+      },
+      {
+        "ida_linear_address": "0x31cfa",
+        "file_offset": "0x32afa",
+        "loaded_bytes": "eb38",
+        "file_bytes": "eb38",
+        "instruction": "jmp     short loc_31D34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cfa"
+      },
+      {
+        "ida_linear_address": "0x31cfc",
+        "file_offset": "0x32afc",
+        "loaded_bytes": "833d033c050014",
+        "file_bytes": "833d033c000014",
+        "instruction": "cmp     dword_53C03, 14h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31cfc"
+      },
+      {
+        "ida_linear_address": "0x31d03",
+        "file_offset": "0x32b03",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31D09",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d03"
+      },
+      {
+        "ida_linear_address": "0x31d05",
+        "file_offset": "0x32b05",
+        "loaded_bytes": "6a15",
+        "file_bytes": "6a15",
+        "instruction": "push    15h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d05"
+      },
+      {
+        "ida_linear_address": "0x31d07",
+        "file_offset": "0x32b07",
+        "loaded_bytes": "eb2b",
+        "file_bytes": "eb2b",
+        "instruction": "jmp     short loc_31D34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d07"
+      },
+      {
+        "ida_linear_address": "0x31d09",
+        "file_offset": "0x32b09",
+        "loaded_bytes": "833d033c050015",
+        "file_bytes": "833d033c000015",
+        "instruction": "cmp     dword_53C03, 15h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d09"
+      },
+      {
+        "ida_linear_address": "0x31d10",
+        "file_offset": "0x32b10",
+        "loaded_bytes": "7409",
+        "file_bytes": "7409",
+        "instruction": "jz      short loc_31D1B",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d10"
+      },
+      {
+        "ida_linear_address": "0x31d12",
+        "file_offset": "0x32b12",
+        "loaded_bytes": "833d033c050016",
+        "file_bytes": "833d033c000016",
+        "instruction": "cmp     dword_53C03, 16h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d12"
+      },
+      {
+        "ida_linear_address": "0x31d19",
+        "file_offset": "0x32b19",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31D1F",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d19"
+      },
+      {
+        "ida_linear_address": "0x31d1b",
+        "file_offset": "0x32b1b",
+        "loaded_bytes": "6a18",
+        "file_bytes": "6a18",
+        "instruction": "push    18h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d1b"
+      },
+      {
+        "ida_linear_address": "0x31d1d",
+        "file_offset": "0x32b1d",
+        "loaded_bytes": "eb15",
+        "file_bytes": "eb15",
+        "instruction": "jmp     short loc_31D34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d1d"
+      },
+      {
+        "ida_linear_address": "0x31d1f",
+        "file_offset": "0x32b1f",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d1f"
+      },
+      {
+        "ida_linear_address": "0x31d26",
+        "file_offset": "0x32b26",
+        "loaded_bytes": "7514",
+        "file_bytes": "7514",
+        "instruction": "jnz     short loc_31D3C",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d26"
+      },
+      {
+        "ida_linear_address": "0x31d28",
+        "file_offset": "0x32b28",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d28"
+      },
+      {
+        "ida_linear_address": "0x31d2a",
+        "file_offset": "0x32b2a",
+        "loaded_bytes": "e899040000",
+        "file_bytes": "e899040000",
+        "instruction": "call    sub_321C8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d2a"
+      },
+      {
+        "ida_linear_address": "0x31d2f",
+        "file_offset": "0x32b2f",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d2f"
+      },
+      {
+        "ida_linear_address": "0x31d32",
+        "file_offset": "0x32b32",
+        "loaded_bytes": "6a1d",
+        "file_bytes": "6a1d",
+        "instruction": "push    1Dh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d32"
+      },
+      {
+        "ida_linear_address": "0x31d34",
+        "file_offset": "0x32b34",
+        "loaded_bytes": "e88f040000",
+        "file_bytes": "e88f040000",
+        "instruction": "call    sub_321C8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d34"
+      },
+      {
+        "ida_linear_address": "0x31d39",
+        "file_offset": "0x32b39",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "單筆原始名稱與指令只作定位，語意依本契約claims分級。",
+        "evidence_source": "IDA Pro 9.4 LE linear 0x31d39"
+      }
+    ],
+    "canonical_helper": {
+      "path": "docs/data/ida/fd2_ch21_required_character_20261003.json",
+      "sha256": "4f697ee10775ab057881a00f1ea0b462a53d6ae930de1e8024239311cf07dc05"
+    },
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "raw25於31CAD比較命中後，31CB6／31CB9先以identity9檢查31DBE，成功再31CC7／31CCA以29檢查。",
+        "source": "本檔caller_instructions，IDA9.4 LE linear；既有31DBE selected record +8契約。"
+      },
+      {
+        "level": "已證實",
+        "claim": "raw25於31D1F命中後，31D28／31D2A先front9，31D32／31D34再front29，因此索爾record0後為29、9；其餘完整記錄穩定保留。",
+        "source": "本檔caller_instructions及既有321C8完整80-byte契約；original-r3 cp86。"
+      },
+      {
+        "level": "已證實",
+        "claim": "目前preparation_ch26沒有required及front資料，原版cp86與Game前綴站位／HP配對不同。",
+        "source": "work/ch26-flow-20261016/prefix-r3-comparison.json；不將AI順序一致當行為通過。"
+      }
+    ],
+    "spec": {
+      "state": "READY",
+      "node": "preparation_ch26",
+      "required_party_identities": [
+        9,
+        29
+      ],
+      "preparation_front_identities": [
+        9,
+        29
+      ],
+      "consumer": "既有togglePreparationSelection→missingPreparationRequiredIdentity→frontNativePreparationRequiredRoster；不新增章專用程式分支。",
+      "failure": "缺任一selected identity沿既有拒收訊息，不前置、不出發。",
+      "acceptance": [
+        "同固定槽／同控制鍵前綴行為與完整record排序相等。",
+        "完整章重播與保存嚴格比較。",
+        "既有必出拒收、穩定前置及原版保存回歸保持。"
+      ]
+    },
+    "validation": {
+      "caller_file_bytes": "PASS",
+      "original_prefix": "r3 cp86，round1，record0／1／2為0／29／9",
+      "remake_before": "行為FAIL，176筆AI順序零分歧；not full chapter",
+      "remake_after": {
+        "prefix": "T5",
+        "behavior": true,
+        "ai_entries": 176,
+        "ai_consumed": 176,
+        "ai_order_divergences": 0,
+        "comparison": "work/ch26-flow-20261016/prefix-r3-fixed-comparison.json",
+        "limitation": "前綴不含戰後保存，非完整章驗收。"
+      },
+      "full_remake": "PASS，r4完整SAV與原版相同；兩名必出角色個別缺漏及前置順序回歸PASS"
+    }
+  },
+  "hp_slot_policy": {
+    "status": "CONFORMED-test-policy，非原版能力或正式規則",
+    "authorization": "使用者已明示『就作弊過關吧』；工程選值只用於章前建構槽。章內仍正常鍵盤、不鎖HP，正式遊戲規則與SAV格式不改。",
+    "tool": "remake/cmd/fd2-chapter-slot --boost-only --boost-max-hp 30000",
+    "fields": {
+      "current_hp": "既有record +0x40 signed word",
+      "max_hp": "既有record +0x42 signed word"
+    },
+    "evidence": "同工具recordHP／recordMaxHP、既有升級gains[3]寫recordMaxHP；fdsave及正式NativeRecord編解碼既有契約，非新欄位推測。",
+    "algorithm": "全名冊先驗證原HP／MaxHP及加值均在0..32767；MaxHP加delta，存活者HP加同值，已陣亡者仍HP0。預檢失敗整批不改。未指定delta時完全保留。",
+    "selected_delta": 30000,
+    "scope": "僅本章流程建構政策；由slot-r2唯讀輸入重建，保持等級／隊伍／物品／金幣／事件狀態及其他raw bytes。",
+    "limits": "不證明自然難度、原版一般能力、傷害、存活或敵方選目標。兩側LOAD相同SAV並如實記錄boost_hp assumption。",
+    "acceptance": [
+      "加值、原有傷勢、HP0、溢位／負值及整批原子拒收測試。",
+      "27筆來源最高HP1112，加30000不越signed word；輸出重新解析及原版正常LOAD。",
+      "同計畫至T18含九波、一次清敵、戰後與嚴格SAV比較。"
+    ],
+    "validation": {
+      "builder_tests": "PASS",
+      "output_sha256": "f04c6761f4dd4aa0a1047dc5d18fbfdbcfdfac94cccf0fd62169ca9895a645ff",
+      "roster_count": 27,
+      "base_sha256": "1ee36343819a598873956b8554de11f0a6f317befba4c0d719164b54133f08e0",
+      "original": "PASS，正常LOAD及r4完整流程；沒有章內HP改寫"
+    }
+  },
+  "defeat_contract": {
+    "issue": 214,
+    "status": "CONFORMED，範圍限本契約與正常r4；原生敗北另由r3驗證",
+    "function": {
+      "inventory": {
+        "start": "0x20b3c",
+        "end": "0x20b72",
+        "size": 54,
+        "ida_analysis_name": "sub_20B3C",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x1a866",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 5,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_20B3C",
+      "current_ida_linear_end": "0x20b72",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x20b3c",
+          "ida_linear_end": "0x20b72",
+          "instructions": [
+            {
+              "ida_linear_address": "0x20b3c",
+              "file_offset": "0x2193c",
+              "loaded_bytes": "6808000000",
+              "file_bytes": "6808000000",
+              "instruction": "push    8",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b41",
+              "file_offset": "0x21941",
+              "loaded_bytes": "e891610100",
+              "file_bytes": "e891610100",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b46",
+              "file_offset": "0x21946",
+              "loaded_bytes": "e873faffff",
+              "file_bytes": "e873faffff",
+              "instruction": "call    loc_205BE",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b4b",
+              "file_offset": "0x2194b",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b4d",
+              "file_offset": "0x2194d",
+              "loaded_bytes": "e8ec390100",
+              "file_bytes": "e8ec390100",
+              "instruction": "call    sub_3453E",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b52",
+              "file_offset": "0x21952",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b55",
+              "file_offset": "0x21955",
+              "loaded_bytes": "85c0",
+              "file_bytes": "85c0",
+              "instruction": "test    eax, eax",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b57",
+              "file_offset": "0x21957",
+              "loaded_bytes": "750e",
+              "file_bytes": "750e",
+              "instruction": "jnz     short loc_20B67",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b59",
+              "file_offset": "0x21959",
+              "loaded_bytes": "6a02",
+              "file_bytes": "6a02",
+              "instruction": "push    2",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b5b",
+              "file_offset": "0x2195b",
+              "loaded_bytes": "e8de390100",
+              "file_bytes": "e8de390100",
+              "instruction": "call    sub_3453E",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b60",
+              "file_offset": "0x21960",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b63",
+              "file_offset": "0x21963",
+              "loaded_bytes": "85c0",
+              "file_bytes": "85c0",
+              "instruction": "test    eax, eax",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b65",
+              "file_offset": "0x21965",
+              "loaded_bytes": "740a",
+              "file_bytes": "740a",
+              "instruction": "jz      short locret_20B71",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b67",
+              "file_offset": "0x21967",
+              "loaded_bytes": "c705cc3e050001000000",
+              "file_bytes": "c705cc3e000001000000",
+              "instruction": "mov     dword_53ECC, 1",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            },
+            {
+              "ida_linear_address": "0x20b71",
+              "file_offset": "0x21971",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": [],
+              "level": "未知",
+              "warning": "原始定位保留，語意依claims分級。"
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    "source_export": {
+      "path": "work/matching-full-20261008/ida-full-image.json",
+      "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5"
+    },
+    "canonical_reuse": [
+      {
+        "path": "docs/data/ida/fd2_ch15_result_conditions_20261002.json",
+        "sha256": "5cd6c695e89b3ef3bb0fba7996764939fc31ec82ae877e4f29acb384badb9150"
+      },
+      {
+        "path": "docs/data/ida/fd2_pending_code1_return_title_20261001.json",
+        "sha256": "55fddee5870d372d549c00463575b66678672576243756a54ad7c9a8f74d472e"
+      }
+    ],
+    "table": {
+      "address_space": "IDA LE linear",
+      "address": "0x51b7d",
+      "chapter_raw": 25,
+      "file_pointer_bytes": "3c0b0100",
+      "code_object_base": "0x10000",
+      "loaded_target": "0x20b3c",
+      "evidence": "承襲第15章51B51表項及battle_events.json章索引；Capstone Image.data固定EXE機械核對。"
+    },
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "sub_20B3C完整54bytes先205BE預設結果，再3453E(1)，非零走20B67；否則3453E(2)，非零也寫53ECC=1，沒有對白。",
+        "source": "IDA9.4完整函式及Capstone5.0.3逐指令核對；3453E與code1 consumer沿既有主契約。"
+      },
+      {
+        "level": "已證實",
+        "claim": "原版r3在record2悠妮陣亡後回標題；修正選人排序後的Game缺結果列及原生敗北設定，繼續到T14。",
+        "source": "original-r3 cp612／617；remake-defeat-r3最後end與defeat-r3-comparison.json。behavior=true只涵蓋可比較輸入點，沒有證明未計畫終態。"
+      }
+    ],
+    "spec": {
+      "state": "READY",
+      "scenario": "ch26.json",
+      "native_result_handler": "0x20b3c",
+      "native_result_rules": [
+        {
+          "id": "record1_inactive",
+          "source": "0x20b67",
+          "records_all_inactive": [
+            1
+          ],
+          "code": 1,
+          "actions": []
+        },
+        {
+          "id": "record2_inactive",
+          "source": "0x20b67",
+          "records_all_inactive": [
+            2
+          ],
+          "code": 1,
+          "actions": []
+        }
+      ],
+      "battle_node": "battle_ch26",
+      "native_defeat_return_title": {
+        "handler": "0x22e5c",
+        "resource": 79,
+        "return": "full_title_sequence"
+      },
+      "consumer": "既有NativeResultRule／nativeChapterResultJob及nativeDefeat；不加章專用引擎分支。移除未證實retreat_ch26路由與孤兒節點，保留既有存檔flag。",
+      "acceptance": [
+        "raw+5 bit0的record1／2各自觸發，bit7及其他角色不觸發。",
+        "同原版r3正常流程在T13進敗北呈現，經完整標題序列回menu；保存不變。",
+        "r4完整HP作弊流程仍走戰後與嚴格保存。"
+      ]
+    },
+    "validation": {
+      "fixed_exe_function_bytes": "PASS",
+      "capstone_54bytes": "PASS",
+      "table_target": "PASS",
+      "remake_before": "601筆AI零順序分歧但終態cursor T14，FAIL",
+      "remake_after": {
+        "test": "TestChapterParityReplay，FD2_PARITY_DEFEAT_TAIL=1，章26正常r3同槽／同輸入",
+        "result": "PASS",
+        "ai_entries": 601,
+        "ai_consumed": 601,
+        "ai_order_divergences": 0,
+        "terminal_ui": "title",
+        "title_selection": 0,
+        "matched_rules": [
+          "record2_inactive"
+        ],
+        "native_round": 13,
+        "protected_record": 2,
+        "protected_hp": 0,
+        "protected_raw_byte5": 1,
+        "save_unchanged": true,
+        "presentation": "work/ch26-flow-20261016/remake-defeat-r3-fixed/defeat-presentation.json",
+        "presentation_sha256": "55a3ce71baf6fb29ed3e59bff82260724f2b967335cb38bd137d18eb96524dfe",
+        "limitations": "只驗敗北流程與共同終態；未做原版9／36tick逐像素比較，不增加整章PLAYER-E2。"
+      }
+    },
+    "matching_reuse": {
+      "path": "docs/data/ida/fd2_matching_full_20261008.json",
+      "sha256": "d69eb033d36af1e5481a19aae78e526b2c615cd8487174804567989474fd645a",
+      "section": "game_short_branch_matches",
+      "trial": {
+        "stem": "G45",
+        "address": "0x20b3c",
+        "flags": [
+          "-mf",
+          "-3s",
+          "-dF20B3C"
+        ],
+        "object_sha256": "5b07d40f954c225254ffa369f21cc12c96607070546fd51a5e0ff83bc0effdd9",
+        "candidate_size": 54,
+        "original_size": 54,
+        "exact_interval_bytes": true,
+        "first_difference_offset": null,
+        "code_sha256": "3ac0dc2c4bcd461aca671ec4a5b0db61eb5ef501a0f1e10beca40107794ee62a",
+        "original_classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        }
+      },
+      "new_compilation": false
+    },
+    "campaign_coverage_audit": {
+      "command": "Docker python3 tools/audit_story_script_coverage.py --json",
+      "date": "2026-10-16",
+      "input": "remake/assets/scenarios/campaign_full.json",
+      "input_sha256": "265cae2d8e4e0582b3699cff1f401e51fa221a0e1ee3ca2f458365011349bfa2",
+      "output": "work/ch26-flow-20261016/campaign-coverage.json",
+      "output_sha256": "b4ef6db3ccb9cd148970343f756950624afbb44a0a5a6d1f7fd9ec14ecbb798a",
+      "summary": {
+        "campaign": "remake/assets/scenarios/campaign_full.json",
+        "story_or_cutscene_nodes": 117,
+        "scripted_nodes": 9,
+        "handler_bound_nodes": 57,
+        "fallback_nodes_without_script_or_handler": 51,
+        "generated_binding_skeletons": 24,
+        "unbound_generated_binding_skeletons": 0,
+        "coverage_roles": {
+          "handler_bound": 57,
+          "authored_retreat": 26,
+          "authored_rumor": 23,
+          "direct_script": 9,
+          "generic_story_fallback": 2
+        }
+      }
+    }
+  },
+  "post_frontier_contract": {
+    "issue": 215,
+    "status": "CONFORMED，範圍限本契約與正常r4；原生敗北另由r3驗證",
+    "original": {
+      "path": "work/ch26-flow-20261016/original-r4/eip-trace.jsonl",
+      "entry_sha256": "ab91ca00944da64b0292a0fb6abdfb78e884b86260fcecfec2b33bee8ac38901",
+      "entry": {
+        "step": 13966303127,
+        "control_seq": 972,
+        "eip": "0x24E80",
+        "unit_base": 1538676,
+        "unit_count": 84,
+        "frame_units_valid": true,
+        "stack": [
+          "0x25E2A",
+          "0x546B0",
+          "0x546B1",
+          "0x0",
+          "0x45D91",
+          "0x1",
+          "0x10006D",
+          "0x0"
+        ]
+      },
+      "units_count": 84
+    },
+    "claim": {
+      "level": "已證實",
+      "claim": "正常九波至T18、清敵一次後，原版24E80 caller承接84筆，binding只有57／70不涵蓋此狀態。",
+      "source": "固定EXE／乾淨dosgolem2c5c104的原始trace；battle groups新增九次各三筆與84一致，未重解loop／sync。"
+    },
+    "spec": {
+      "state": "READY",
+      "path": "remake/assets/cutscenes/bindings/ch25_post.json",
+      "slot_counts_before": [
+        57,
+        70
+      ],
+      "slot_counts_after": [
+        57,
+        70,
+        84
+      ],
+      "failure": "保留精確白名單；83／85及其他未知數量不因本次修訂通過。",
+      "acceptance": "正常Game完整r4與嚴格SAV、相關Context／Frontier／Binding回歸通過。"
+    },
+    "validation": {
+      "remake": "PASS，實測84筆完成戰後、酒店及strict整檔SAV"
+    }
+  },
+  "canonical_identity_preservation": {
+    "issue": 217,
+    "status": "CONFORMED-tooling",
+    "existing_nodes_preserved": 318,
+    "avoided_renumbered_ids": 121,
+    "schema_change": false,
+    "command": "Docker tools/import_editor_legacy.py remake/assets/scenarios/campaign_full.json <輸出> --kind campaign --preserve-ids-from remake/assets/editor-canonical/campaign/campaign_full.json",
+    "canonical_sha256": "727ec7653563acd19e43dbc840f4a1b0b5c714384f5e0befdcb8aa46728485e7",
+    "exact_cli_regeneration": true,
+    "tests": "9項editor工具回歸及campaign／editorcanonical／string-inventory三相關Go套件通過；保留ID後完整第26章重播收據bytes與正式收據相同。"
+  }
+}

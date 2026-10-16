@@ -143,7 +143,7 @@ def cmd_build(args: argparse.Namespace) -> int:
     if args.boost_only:
         inner += ["-boost-only"]
     for flag, value in (("-boost-base-ap", args.boost_base_ap), ("-boost-base-dp", args.boost_base_dp),
-                        ("-boost-base-dx", args.boost_base_dx)):
+                        ("-boost-base-dx", args.boost_base_dx), ("-boost-max-hp", args.boost_max_hp)):
         if value:
             inner += [flag, str(value)]
     script = (
@@ -191,6 +191,7 @@ def main() -> int:
     p.add_argument("--boost-base-dp", type=int, default=0, help="名冊基底 DP 加值（114 政策值；流程校準依111最新修訂）")
     p.add_argument("--boost-only", action="store_true", help="只強化同章測試槽；不能混用升級、事件或金幣政策")
     p.add_argument("--boost-base-dx", type=int, default=0, help="名冊 DX 加值（HIT／EV 共用基底，114 政策值）")
+    p.add_argument("--boost-max-hp", type=int, default=0, help="章前HP／MaxHP加值，保留傷勢與陣亡；作弊流程政策，章內不鎖HP")
     p.add_argument("--event-states", default="",
                    help="章:索引=值，逗號分隔；戰後 handler 讀的戰場狀態表值（政策，寫進 manifest assumptions）")
     p.add_argument("--seed", type=int, default=0)

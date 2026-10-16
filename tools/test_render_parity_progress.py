@@ -68,6 +68,19 @@ class RenderBlockTest(unittest.TestCase):
         block = render.render_block(LEDGER, "readme")
         self.assertIn("（其餘未過）", block)
 
+    def test_advisory_frames_and_disclosed_save_are_named(self):
+        self.stats["gates"]["frames"] = False
+        self.stats["required"] = {"frames": False}
+        self.stats["save_match"] = False
+        self.stats["save_status"] = "accepted_disclosed_difference"
+        self.stats["frame_points"] = 0
+        block = render.render_block(LEDGER, "status")
+        self.assertIn("（其餘非必驗）", block)
+        self.assertIn("差異已揭露並接受", block)
+        self.assertNotIn("（其餘未過）", block)
+        self.assertIn("| 未比 | — | 差異已揭露並接受 |", block)
+        self.assertNotIn("0 張逐像素相同", block)
+
     def test_missing_receipt_does_not_invent_numbers(self):
         render.receipt_stats = lambda chapter: None
         block = render.render_block(LEDGER, "readme")

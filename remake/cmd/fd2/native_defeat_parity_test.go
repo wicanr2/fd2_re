@@ -44,8 +44,9 @@ func observedDefeatTitleSequence(raw []byte) (int, error) {
 }
 
 func (r *parityReplay) verifyObservedDefeatTail() {
-	if r.battle != "battle_ch15" {
-		r.t.Fatal("此終態尾端規格只驗第十五章；其他章須使用既有正式 mark")
+	// #214：第26章同源r3確實回標題，契約見event57主證據defeat_contract。
+	if r.battle != "battle_ch15" && r.battle != "battle_ch26" {
+		r.t.Fatal("此終態尾端規格只驗第十五／二十六章；其他章須使用既有正式 mark")
 	}
 	raw, err := os.ReadFile(filepath.Join(r.run, "current.json"))
 	if err != nil {
@@ -124,6 +125,9 @@ func (r *parityReplay) verifyNativeDefeatReturnTitle(action parityAction) {
 	}
 	if r.battle == "battle_ch15" {
 		protectedIndex = 64
+	}
+	if r.battle == "battle_ch26" {
+		protectedIndex = 2 // 正常r3的悠妮；原版cp612先觀測HP0。
 	}
 	protected := g.st.Units[protectedIndex]
 	resultRules := append([]string(nil), g.nativeResultMatchedRules...)
