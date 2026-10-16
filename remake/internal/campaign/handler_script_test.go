@@ -11,8 +11,8 @@ func TestLoadExportedHandlerScripts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(paths) != 60 {
-		t.Fatalf("exported handler scripts = %d, want 60", len(paths))
+	if len(paths) != 62 {
+		t.Fatalf("exported handler scripts = %d, want 62", len(paths))
 	}
 	for _, path := range paths {
 		script, err := LoadHandlerScript(path)
@@ -64,8 +64,8 @@ func TestExportedHandlerNativeCallsUseThreeEvidenceStates(t *testing.T) {
 		visit(script.Beats)
 	}
 
-	if counts["native_call"] != 80 || counts["unresolved_native_call"] != 3 || counts["unknown"] != 0 {
-		t.Fatalf("handler native-call states = %#v, want native=80 unresolved=3 unknown=0", counts)
+	if counts["native_call"] != 88 || counts["unresolved_native_call"] != 3 || counts["unknown"] != 0 {
+		t.Fatalf("handler native-call states = %#v, want native=88 unresolved=3 unknown=0", counts)
 	}
 	if got := targets["unresolved_native_call"]; len(got) != 2 || got["0x22253"] != 1 || got["0x2bce5"] != 2 {
 		t.Fatalf("unresolved native targets = %#v", got)

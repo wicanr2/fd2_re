@@ -143,16 +143,11 @@ func TestMap0CrossFixtureBuildsNativeAIPhaseDiagnosticGate(t *testing.T) {
 		got.CommandMaskResult.PositiveWinner.Y != 14 {
 		t.Fatalf("map0 command-mask diagnostic=%+v", got.CommandMaskResult)
 	}
-	if got.ItemCommandResult.MaxScore != 8 ||
-		!got.ItemCommandResult.HasPositiveWinner ||
-		got.ItemCommandResult.InventorySlot != 0 ||
-		got.ItemCommandResult.ItemID != 79 ||
-		got.ItemCommandResult.X != 19 ||
-		got.ItemCommandResult.Y != 15 {
+	if got.ItemCommandResult.MaxScore != 0 || got.ItemCommandResult.HasPositiveWinner {
 		t.Fatalf("map0 item-command diagnostic=%+v", got.ItemCommandResult)
 	}
 	if got.PhaseGateScorePair.SpellCandidateScore53C23 != 96 ||
-		got.PhaseGateScorePair.ItemCommandScore53C33 != 8 {
+		got.PhaseGateScorePair.ItemCommandScore53C33 != 0 {
 		t.Fatalf("map0 score pair=%+v", got.PhaseGateScorePair)
 	}
 }

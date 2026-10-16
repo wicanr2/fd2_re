@@ -267,16 +267,18 @@ damage、hit 或 spell-effect scorer；selector polarity、LOS／terrain semanti
 ownership 與 command-30 caller contract 仍由各自 evidence gate 控制。
 
 `0x1567E` 的 caller-specific 候選 ABI 現也已閉合。第一個 `0x14818` 從
-actor 座標建立目的地 field：row `+0x10` command 作 mode、
-`command>0x0F` 作 inner marker、target code 固定0；`0x14B16` 依
+actor 座標建立目的地 field：低 command 沿 row `+0x10` 作 mode，
+高 command 改用 mode1／inner1，target code 固定0；`0x14B16` 依
 row-major 匯出非 `0xFF` 座標。逐目的地時，低 command 再以 row `+0x12`
 作 effect mode，target code 在 selector 非零時保留 row `+0x11`，
 selector0 時轉成 `row+0x11==0 ? 1 : 0`。高 command 則呼
-`0x149F8(destination, actor, command-0x10, selector=0)`，固定只收 raw
-camp0。`ScoreNativeAI1567E` 依 slot→destination→target 的原版順序評分，
+`0x149F8(destination, actor, command-0x10, selector=0)`，只收 raw `+6!=0`。
+2026-10-16 第27章同狀態與直接指令反證了先前的高 command mode及camp0敘述，
+勘誤與READY契約見[第27章主證據](../data/ida/fd2_ch27_flow_20261016.json)的`ai_high_item_target_contract`。
+`ScoreNativeAI1567E` 依 slot→destination→target 的原版順序評分，
 strict `score>best` 才保存 `[0x53C33/37/3B/3F]` 對應值；零分不創造勝者。
-map0＋item79 交叉 fixture 固定 score8、`(19,15)`、slot0，屬靜態 E0，
-不是原版玩家路徑 E2。
+map0＋item79 舊fixture的score8／`(19,15)`已撤回。它收進raw0同陣營，
+修正後無正分候選；這仍僅是靜態E0，不是原版玩家路徑E2。
 
 ## 2. 證據分級與反組譯規則
 
@@ -4608,7 +4610,10 @@ provenance 從可編輯資產消失。現在 `native_turn_event_controls.json` �
 設為1。`NativeTurnActivation` 因而明示 slot0、event63、raw camp0、delta1；
 `ApplyNativeFieldTurnActivationEvent` 只有在地圖 selector、可編輯規則、完整
 原始列、once-state 與可選的 CONTINUE raw image 全部一致時才原子提交。
-缺列、重複目錄項、raw/typed 不一致與重複觸發都失敗即關閉。
+缺列、重複目錄項與首次啟用的raw/typed不一致都失敗即關閉。
+2026-10-16同狀態勘誤：event62的state17已非零時，原始35898直接返回；
+重複觸發是零寫入no-op，不是錯誤。首次啟用規格保持，來源反例與READY修訂見
+[第27章主契約](../data/ida/fd2_ch27_flow_20261016.json)的event62_repeat_contract。
 正式 `Game.stepBattleWalk` 在每一格座標提交後由 selector0 辨識 event62 並記進
 `[0x51A8F]`，行動收尾 `dispatchNativeFieldEventPending` 才呼叫這個 transaction（方向
 不是條件；§第七章章工作單元），規則錯誤則寫入既有 `loadErr` 並停止動作。Xvfb 回歸
@@ -9737,3 +9742,16 @@ text5與姿態重設，READY先於正式／canonical接線。AI指令10～12的�
 ### 2026-10-16 第26章完整增援與必出／敗北接線
 
 第26章event57由原始共享尾段完整轉成spawn／pan／delay，沿既有引擎消費。原版caller證據先達READY，再補悠妮與亞奇梅吉必出及依序前置、原生結果碼與返回標題，以及戰後實測記錄白名單。章前HP／MaxHP作弊政策只改建構槽，正式規則與SAV格式不變；章內不鎖HP。正常原版及完整Game通過流程三閘門與strict整檔保存，按111例外登記PLAYER-E2。低HP同源敗北亦返回完整標題，未宣稱自然難度或逐像素一致。 原始定位、READY規格與限定驗證見[第26章主契約](../data/ida/fd2_turn_event57_20261016.json)；章收據見[parity-ch26](../data/ui-traces/parity-ch26.json)，唯一分層現況與數字見[58](58-fd2-exe-re-coverage.md)。
+
+### 2026-10-16 第27章故事與戰後契約
+
+[第27章主契約](../data/ida/fd2_ch27_flow_20261016.json)保存固定EXE、IDA9.4原始定位、415筆獨立交叉核對及各READY修訂。
+揭幕從六caller產生19句原生對白，LOADCH讀來源80筆而初始runtime63筆；不能在loader前虛設runtime context。
+故事背包條件沿已物化raw roster首16筆，戰場與故事各自有明示來源，不從持續隊伍猜補。
+
+250CC共用前綴與持天空之鑰成功臂分成來源約束handler／binding，保留透明inventory gate及缺鑰匙路由。
+story viewport交接先同步當前raw view，避免過時battle carrier覆蓋鏡頭／游標。
+25052既有lower的full-range delta0..63由indexed DAC presenter正式消費：不可變baseline加delta、飽和63，
+Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typed delay負責。
+這些契約已由完整同源Game及嚴格SAV比較達限定CONFORMED；沒有逐frame／硬體wall-clock聲明。
+白／黑VGA memset未轉寫與未抽樣分支列主契約限制，不把來源完整度等同畫面完成。

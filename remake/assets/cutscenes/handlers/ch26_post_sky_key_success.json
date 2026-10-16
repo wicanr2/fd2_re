@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "chapter": 26,
+  "phase": "post",
+  "handler": "0x250cc",
+  "beats": [
+    {
+      "op": "dialog",
+      "text_index": 9,
+      "source": {
+        "addr": "0x251b6",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 83,
+      "source": {
+        "addr": "0x251ca",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 10,
+      "source": {
+        "addr": "0x251f1",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "pan",
+      "grid_x": 9,
+      "grid_y": 8,
+      "source": {
+        "addr": "0x25207",
+        "target": "0x135dd"
+      }
+    },
+    {
+      "op": "act",
+      "acting_id": 84,
+      "source": {
+        "addr": "0x25211",
+        "target": "0x1366a"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 11,
+      "source": {
+        "addr": "0x25238",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [
+        5,
+        80
+      ],
+      "source": {
+        "addr": "0x25244",
+        "target": "0x25052"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 12,
+      "source": {
+        "addr": "0x2526b",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [
+        4,
+        80
+      ],
+      "source": {
+        "addr": "0x25277",
+        "target": "0x25052"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 500,
+      "source": {
+        "addr": "0x25284",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [
+        3,
+        80
+      ],
+      "source": {
+        "addr": "0x25290",
+        "target": "0x25052"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 250,
+      "source": {
+        "addr": "0x2529d",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [
+        2,
+        80
+      ],
+      "source": {
+        "addr": "0x252a9",
+        "target": "0x25052"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 100,
+      "source": {
+        "addr": "0x252b3",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [
+        2,
+        80
+      ],
+      "source": {
+        "addr": "0x252bf",
+        "target": "0x25052"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 50,
+      "source": {
+        "addr": "0x252c9",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25052",
+      "native_semantic": "native_palette_ramp",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [
+        2,
+        80
+      ],
+      "source": {
+        "addr": "0x252d5",
+        "target": "0x25052"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x24618",
+      "native_semantic": "native_indexed_transition",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/data/ida/fd2_ch21_post_ida.txt"
+      ],
+      "raw_args": [
+        10,
+        10,
+        "eax",
+        "dword ptr [0x3ab9]"
+      ],
+      "source": {
+        "addr": "0x252ee",
+        "target": "0x24618"
+      }
+    },
+    {
+      "op": "delay",
+      "ms": 500,
+      "source": {
+        "addr": "0x252fb",
+        "target": "0x375b2"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x1f882",
+      "native_semantic": "native_palette_fade_out",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/data/ida/fd2_ch21_post_ida.txt"
+      ],
+      "raw_args": [],
+      "source": {
+        "addr": "0x2531a",
+        "target": "0x1f882"
+      }
+    },
+    {
+      "op": "sync_party",
+      "source": {
+        "addr": "0x25333",
+        "target": "0x11506"
+      }
+    },
+    {
+      "op": "set_chapter",
+      "chapter": 27,
+      "source": {
+        "addr": "0x25338"
+      }
+    },
+    {
+      "op": "native_call",
+      "native_target": "0x25089",
+      "native_semantic": "native_reset_persistent_roster",
+      "native_confidence": "已證實",
+      "native_evidence": [
+        "docs/knowledge-base/91-worklist.md"
+      ],
+      "raw_args": [],
+      "source": {
+        "addr": "0x2533e",
+        "target": "0x25089"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  },
+  "source_subset": {
+    "parent": "ch26_post.json",
+    "evidence": "docs/data/ida/fd2_ch27_flow_20261016.json#post_success_contract"
+  }
+}

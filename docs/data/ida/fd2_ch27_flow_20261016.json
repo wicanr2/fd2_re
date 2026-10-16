@@ -1,0 +1,4930 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_flow_evidence",
+  "date": "2026-10-16",
+  "status": "CONFORMED selected chapter27 flow",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+  },
+  "source_export": {
+    "path": "work/matching-full-20261008/ida-full-image.json",
+    "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5"
+  },
+  "walkthrough": {
+    "path": "references/text/fd2.md",
+    "chapter": 27,
+    "sources": [
+      "https://chiuinan.github.io/game/game/intro/ch/c31/fd2/",
+      "https://games.sina.com.cn/handbook/9906/0621328_c8.shtml"
+    ],
+    "role": "階梯增援、兩隊長死亡增援、天空之鑰續章與無城鎮旁證；不判定ABI。"
+  },
+  "preparation_contract": {
+    "status": "CONFORMED",
+    "original_name": "sub_318AD",
+    "instructions": [
+      {
+        "ida_linear_address": "0x31c59",
+        "file_offset": "0x32a59",
+        "loaded_bytes": "e96b000000",
+        "file_bytes": "e96b000000",
+        "instruction": "jmp     loc_31CC9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c5e",
+        "file_offset": "0x32a5e",
+        "loaded_bytes": "833d033c050011",
+        "file_bytes": "833d033c000011",
+        "instruction": "cmp     dword_53C03, 11h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c65",
+        "file_offset": "0x32a65",
+        "loaded_bytes": "7412",
+        "file_bytes": "7412",
+        "instruction": "jz      short loc_31C79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c67",
+        "file_offset": "0x32a67",
+        "loaded_bytes": "833d033c050013",
+        "file_bytes": "833d033c000013",
+        "instruction": "cmp     dword_53C03, 13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c6e",
+        "file_offset": "0x32a6e",
+        "loaded_bytes": "7409",
+        "file_bytes": "7409",
+        "instruction": "jz      short loc_31C79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c70",
+        "file_offset": "0x32a70",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c77",
+        "file_offset": "0x32a77",
+        "loaded_bytes": "7e04",
+        "file_bytes": "7e04",
+        "instruction": "jle     short loc_31C7D",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c79",
+        "file_offset": "0x32a79",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c7b",
+        "file_offset": "0x32a7b",
+        "loaded_bytes": "eb4c",
+        "file_bytes": "eb4c",
+        "instruction": "jmp     short loc_31CC9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c7d",
+        "file_offset": "0x32a7d",
+        "loaded_bytes": "833d033c050012",
+        "file_bytes": "833d033c000012",
+        "instruction": "cmp     dword_53C03, 12h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c84",
+        "file_offset": "0x32a84",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31C8A",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c86",
+        "file_offset": "0x32a86",
+        "loaded_bytes": "6a10",
+        "file_bytes": "6a10",
+        "instruction": "push    10h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c88",
+        "file_offset": "0x32a88",
+        "loaded_bytes": "eb3f",
+        "file_bytes": "eb3f",
+        "instruction": "jmp     short loc_31CC9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c8a",
+        "file_offset": "0x32a8a",
+        "loaded_bytes": "833d033c050014",
+        "file_bytes": "833d033c000014",
+        "instruction": "cmp     dword_53C03, 14h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c91",
+        "file_offset": "0x32a91",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31C97",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c93",
+        "file_offset": "0x32a93",
+        "loaded_bytes": "6a15",
+        "file_bytes": "6a15",
+        "instruction": "push    15h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c95",
+        "file_offset": "0x32a95",
+        "loaded_bytes": "eb32",
+        "file_bytes": "eb32",
+        "instruction": "jmp     short loc_31CC9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c97",
+        "file_offset": "0x32a97",
+        "loaded_bytes": "833d033c050015",
+        "file_bytes": "833d033c000015",
+        "instruction": "cmp     dword_53C03, 15h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31c9e",
+        "file_offset": "0x32a9e",
+        "loaded_bytes": "7409",
+        "file_bytes": "7409",
+        "instruction": "jz      short loc_31CA9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ca0",
+        "file_offset": "0x32aa0",
+        "loaded_bytes": "833d033c050016",
+        "file_bytes": "833d033c000016",
+        "instruction": "cmp     dword_53C03, 16h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ca7",
+        "file_offset": "0x32aa7",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31CAD",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ca9",
+        "file_offset": "0x32aa9",
+        "loaded_bytes": "6a18",
+        "file_bytes": "6a18",
+        "instruction": "push    18h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cab",
+        "file_offset": "0x32aab",
+        "loaded_bytes": "eb1c",
+        "file_bytes": "eb1c",
+        "instruction": "jmp     short loc_31CC9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cad",
+        "file_offset": "0x32aad",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cb4",
+        "file_offset": "0x32ab4",
+        "loaded_bytes": "751e",
+        "file_bytes": "751e",
+        "instruction": "jnz     short loc_31CD4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cb6",
+        "file_offset": "0x32ab6",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cb8",
+        "file_offset": "0x32ab8",
+        "loaded_bytes": "55",
+        "file_bytes": "55",
+        "instruction": "push    ebp",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cb9",
+        "file_offset": "0x32ab9",
+        "loaded_bytes": "e800010000",
+        "file_bytes": "e800010000",
+        "instruction": "call    sub_31DBE",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cbe",
+        "file_offset": "0x32abe",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cc1",
+        "file_offset": "0x32ac1",
+        "loaded_bytes": "89c7",
+        "file_bytes": "89c7",
+        "instruction": "mov     edi, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cc3",
+        "file_offset": "0x32ac3",
+        "loaded_bytes": "85c0",
+        "file_bytes": "85c0",
+        "instruction": "test    eax, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cc5",
+        "file_offset": "0x32ac5",
+        "loaded_bytes": "740d",
+        "file_bytes": "740d",
+        "instruction": "jz      short loc_31CD4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cc7",
+        "file_offset": "0x32ac7",
+        "loaded_bytes": "6a1d",
+        "file_bytes": "6a1d",
+        "instruction": "push    1Dh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cc9",
+        "file_offset": "0x32ac9",
+        "loaded_bytes": "55",
+        "file_bytes": "55",
+        "instruction": "push    ebp",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cca",
+        "file_offset": "0x32aca",
+        "loaded_bytes": "e8ef000000",
+        "file_bytes": "e8ef000000",
+        "instruction": "call    sub_31DBE",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ccf",
+        "file_offset": "0x32acf",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cd2",
+        "file_offset": "0x32ad2",
+        "loaded_bytes": "89c7",
+        "file_bytes": "89c7",
+        "instruction": "mov     edi, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cd4",
+        "file_offset": "0x32ad4",
+        "loaded_bytes": "83ff01",
+        "file_bytes": "83ff01",
+        "instruction": "cmp     edi, 1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cd7",
+        "file_offset": "0x32ad7",
+        "loaded_bytes": "0f85d5000000",
+        "file_bytes": "0f85d5000000",
+        "instruction": "jnz     loc_31DB2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cdd",
+        "file_offset": "0x32add",
+        "loaded_bytes": "833d033c050011",
+        "file_bytes": "833d033c000011",
+        "instruction": "cmp     dword_53C03, 11h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ce4",
+        "file_offset": "0x32ae4",
+        "loaded_bytes": "7412",
+        "file_bytes": "7412",
+        "instruction": "jz      short loc_31CF8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ce6",
+        "file_offset": "0x32ae6",
+        "loaded_bytes": "833d033c050013",
+        "file_bytes": "833d033c000013",
+        "instruction": "cmp     dword_53C03, 13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31ced",
+        "file_offset": "0x32aed",
+        "loaded_bytes": "7409",
+        "file_bytes": "7409",
+        "instruction": "jz      short loc_31CF8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cef",
+        "file_offset": "0x32aef",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cf6",
+        "file_offset": "0x32af6",
+        "loaded_bytes": "7e04",
+        "file_bytes": "7e04",
+        "instruction": "jle     short loc_31CFC",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cf8",
+        "file_offset": "0x32af8",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cfa",
+        "file_offset": "0x32afa",
+        "loaded_bytes": "eb38",
+        "file_bytes": "eb38",
+        "instruction": "jmp     short loc_31D34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31cfc",
+        "file_offset": "0x32afc",
+        "loaded_bytes": "833d033c050014",
+        "file_bytes": "833d033c000014",
+        "instruction": "cmp     dword_53C03, 14h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d03",
+        "file_offset": "0x32b03",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31D09",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d05",
+        "file_offset": "0x32b05",
+        "loaded_bytes": "6a15",
+        "file_bytes": "6a15",
+        "instruction": "push    15h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d07",
+        "file_offset": "0x32b07",
+        "loaded_bytes": "eb2b",
+        "file_bytes": "eb2b",
+        "instruction": "jmp     short loc_31D34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d09",
+        "file_offset": "0x32b09",
+        "loaded_bytes": "833d033c050015",
+        "file_bytes": "833d033c000015",
+        "instruction": "cmp     dword_53C03, 15h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d10",
+        "file_offset": "0x32b10",
+        "loaded_bytes": "7409",
+        "file_bytes": "7409",
+        "instruction": "jz      short loc_31D1B",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d12",
+        "file_offset": "0x32b12",
+        "loaded_bytes": "833d033c050016",
+        "file_bytes": "833d033c000016",
+        "instruction": "cmp     dword_53C03, 16h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d19",
+        "file_offset": "0x32b19",
+        "loaded_bytes": "7504",
+        "file_bytes": "7504",
+        "instruction": "jnz     short loc_31D1F",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d1b",
+        "file_offset": "0x32b1b",
+        "loaded_bytes": "6a18",
+        "file_bytes": "6a18",
+        "instruction": "push    18h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d1d",
+        "file_offset": "0x32b1d",
+        "loaded_bytes": "eb15",
+        "file_bytes": "eb15",
+        "instruction": "jmp     short loc_31D34",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d1f",
+        "file_offset": "0x32b1f",
+        "loaded_bytes": "833d033c050019",
+        "file_bytes": "833d033c000019",
+        "instruction": "cmp     dword_53C03, 19h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d26",
+        "file_offset": "0x32b26",
+        "loaded_bytes": "7514",
+        "file_bytes": "7514",
+        "instruction": "jnz     short loc_31D3C",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d28",
+        "file_offset": "0x32b28",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d2a",
+        "file_offset": "0x32b2a",
+        "loaded_bytes": "e899040000",
+        "file_bytes": "e899040000",
+        "instruction": "call    sub_321C8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d2f",
+        "file_offset": "0x32b2f",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d32",
+        "file_offset": "0x32b32",
+        "loaded_bytes": "6a1d",
+        "file_bytes": "6a1d",
+        "instruction": "push    1Dh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d34",
+        "file_offset": "0x32b34",
+        "loaded_bytes": "e88f040000",
+        "file_bytes": "e88f040000",
+        "instruction": "call    sub_321C8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d39",
+        "file_offset": "0x32b39",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      },
+      {
+        "ida_linear_address": "0x31d3c",
+        "file_offset": "0x32b3c",
+        "loaded_bytes": "6a4b",
+        "file_bytes": "6a4b",
+        "instruction": "push    4Bh ; 'K'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；語意分級依本契約claims。",
+        "evidence_source": "既有IDA Pro 9.4 LE linear export"
+      }
+    ],
+    "scope": "玩家27／raw26只補既有必出及完整名冊前置資料，重用31DBE／321C8。",
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "raw26>25於31C70..31C7B沿31CC9呼叫31DBE(ebp,9)，沒有29必出檢查。",
+        "evidence": [
+          "IDA LE linear31C70..31C7B",
+          "31CC9..31CD7",
+          "docs/data/ida/fd2_turn_event57_20261016.json#preparation_contract"
+        ]
+      },
+      {
+        "level": "已證實",
+        "claim": "raw26>25於31CEF..31CFA沿31D34呼叫321C8(9)，完整名冊索爾後前置悠妮。",
+        "evidence": [
+          "IDA LE linear31CEF..31CFA",
+          "31D34..31D39",
+          "既有321C8 helper契約"
+        ]
+      }
+    ],
+    "spec": {
+      "status": "CONFORMED",
+      "typed_input": {
+        "required_party_identities": [
+          9
+        ],
+        "preparation_front_identities": [
+          9
+        ]
+      },
+      "state_transition": "普通選人仍須含9；完整持續名冊依既有helper保留0，前置9。",
+      "failure": "缺少9沿既有拒收路徑，不猜加入29要求；完整角色欄位不改。",
+      "validation": [
+        "缺9拒收／有9通過",
+        "名冊0,29,9,4→0,9,29,4且資料保持",
+        "完整原版／Game同源流程"
+      ]
+    },
+    "issue": 218,
+    "byte_crosscheck": {
+      "tool": "Capstone5.0.3",
+      "raw_exe_file_bytes_equal": true,
+      "instructions": 66
+    }
+  },
+  "existing_consumers": {
+    "event62_63": "docs/knowledge-base/56-fd2-remake-sdd.md §2026-08-02 event62／event63",
+    "event64": "remake/assets/data/native_death_events.json id64及scenario native_death_programs",
+    "sky_key_gate": "docs/knowledge-base/50-cutscene-script-system-design.md ch26 post",
+    "note": "優先重用已閉合RE及正式消費端，只有同狀態矛盾才重開。"
+  },
+  "slot_policy": {
+    "kind": "continued_actual_save",
+    "source": "work/ch26-flow-20261016/state-r4/FD2.SAV",
+    "source_sha256": "89a8d7a93f8baae11e2315f9d06c9a979ef5d6d608ee1558ec42ffb198cdbbd8",
+    "added_levels": 0,
+    "added_boosts": 0,
+    "inherited_manifest": "docs/data/parity-slots/ch26-hp-policy-manifest.json",
+    "seed": 4,
+    "force_clear_limit": 1,
+    "lock_hp": false
+  },
+  "validation": {
+    "status": "passed flow; strict full SAV; frames advisory",
+    "plan": "docs/data/parity-plans/ch27-flow-cheat-r2.jsonl",
+    "scope": "正常LOAD／選人／移動觸發62→63／T9一次HP-only清敵／持天空之鑰戰後／非城鎮保存與返回選人；64未觸發。",
+    "excluded": [
+      "未抽樣寶箱、買賣及缺天空之鑰分支",
+      "不證明自然難度、傷害、存活或敵方選目標",
+      "frames advisory不宣稱逐像素"
+    ],
+    "matching_policy": "廣域matching暫停；本輪目前只重用既有IDA匯出，不啟動新編譯。",
+    "cancelled_r1": {
+      "reason": "呼叫設定漏列0x13A9F／0x1E54A唯讀trace，揭幕對白中、首次敵方行動前取消；非產品缺陷。",
+      "directory": "work/ch27-flow-20261016/original-r1"
+    },
+    "original_r2": {
+      "status": "completed",
+      "end": "第28章非城鎮記錄並返回選人",
+      "save_sha256": "003d0394e1c5d9bb609949830450b4658284501f2d1e94456cbf96ed69b11663",
+      "force_enemy_clear_count": 1,
+      "cleared_enemies": 59,
+      "event63_observed": true,
+      "event64_observed": false,
+      "note": "原計畫預期清敵觸發64，實測沒有358EA；保留這項驗證限制，不宣稱64已驗。"
+    },
+    "receipt": "docs/data/ui-traces/parity-ch27.json",
+    "remake_r8": {
+      "directory": "work/ch27-flow-20261016/remake-r8",
+      "ai_original": 424,
+      "ai_consumed": 424,
+      "ai_order_divergences": 0,
+      "behavior": true,
+      "nodes": true,
+      "transaction": true,
+      "save_policy": "strict",
+      "save_bytes": 22987,
+      "save_difference_count": 0,
+      "save_sha256": "003d0394e1c5d9bb609949830450b4658284501f2d1e94456cbf96ed69b11663",
+      "frames_compared": 0,
+      "frames_required": false,
+      "replay_command": "Docker fd2-go-test-local:latest with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -v; FD2_PARITY_CHAPTER=27 FD2_PARITY_SLOT=/work/input/FD2.SAV FD2_PARITY_ORACLE_RUN=/work/original-r2 FD2_PARITY_OUT=/work/remake-r8 FD2_ASSET_PACK=/pack FD2_PARITY_CAPTURE_FRAMES=0",
+      "verify_command": "Docker tools/verify_chapter_parity.py --chapter 27 --oracle work/ch27-flow-20261016/original-r2 --remake work/ch27-flow-20261016/remake-r8 --slot-manifest docs/data/parity-slots/ch27-manifest.json --plan docs/data/parity-plans/ch27-flow-cheat-r2.jsonl --frame-policy advisory --oracle-save work/ch27-flow-20261016/state-r2/FD2.SAV --out <新收據路徑>",
+      "receipt_sha256": "c3c5675ef57716778da49119fe423a400f9319653ab1697eb63399a50d5b69be"
+    },
+    "failed_replays": {
+      "remake-prefix-r2": "loadErr後舊測試診斷解參照nil；測試改先報原始loadErr。",
+      "remake-prefix-r2-fixed": "對白映射修正後仍缺pan／ACT81／三轉場。",
+      "remake-prefix-r2-fixed2": "錯在LOADCH前要求runtime_context63，尚無roster；撤回該context。",
+      "remake-prefix-r2-fixed3": "loadch宣告70但來源實際80；改用archive形狀80，初始runtime仍63。",
+      "remake-prefix-r2-fixed4": "故事inventory predicate只取battle state，未取已證實story raw roster。",
+      "remake-prefix-r2-fixed5": "來源caller的新cursor-relative offsets未准入。",
+      "remake-r2": "event62重複觸發錯誤拒收。",
+      "remake-r3": "共同前綴direct patch25116缺編譯器准入。",
+      "remake-r4": "25116缺執行期准入。",
+      "remake-r5": "透明inventory gate捕獲過時battle view，後續pan越界。",
+      "remake-r6": "首個delta5缺indexed palette consumer。",
+      "remake-r7": "Game與整檔SAV成功，正式行為／節點仍failed：90筆AI順序分歧，已由#222修正；完整失敗收據保留work/parity-ch27-r7.json。"
+    },
+    "source_crosscheck": {
+      "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+      "tool": "Capstone 5.0.3",
+      "address_space": "FD2.EXE LE linear; file_offset separately mapped by IDA export",
+      "instructions": 415,
+      "raw_bytes_equal": true,
+      "instruction_boundaries_aligned": true
+    },
+    "campaign_coverage": {
+      "campaign": "remake/assets/scenarios/campaign_full.json",
+      "story_or_cutscene_nodes": 118,
+      "scripted_nodes": 9,
+      "handler_bound_nodes": 59,
+      "fallback_nodes_without_script_or_handler": 50,
+      "generated_binding_skeletons": 24,
+      "unbound_generated_binding_skeletons": 0,
+      "coverage_roles": {
+        "handler_bound": 59,
+        "authored_retreat": 26,
+        "authored_rumor": 23,
+        "direct_script": 9,
+        "generic_story_fallback": 1
+      },
+      "input_sha256": "15674a1331e48f62c65283607f6f99ebc0ad3776795255426ab419c106f05b9b"
+    },
+    "canonical_identity": "既有318個legacy_key的ID全保持，僅新增story_ch27_post_intro；由既有--preserve-ids-from工具產生。",
+    "regression": {
+      "full_go": {
+        "status": "passed",
+        "packages": 19,
+        "log": "work/ch27-flow-20261016/full-go-final-r3.log",
+        "log_sha256": "153181067cdb2f7dcb313ae6dd17e44113e4360968959662f7df9cddc9429ce7",
+        "cmd_fd2_seconds": 283.154,
+        "final_production_revision": true
+      },
+      "chapter26": {
+        "status": "passed",
+        "ai_consumed": 913,
+        "ai_order_divergences": 0,
+        "full_save_equal": true,
+        "receipt": "work/ch27-flow-20261016/ch26-regression.json"
+      },
+      "string_review": "98筆處置保持，inventory SHA39cd7d84193c274946b5f30399f8a66a34e0b6151dd9d044a9b5faaf2f2938cd",
+      "locales": "四語各5094筆，by_id4860／by_signature234／new0",
+      "python": {
+        "tests": 81,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "log": "work/ch27-flow-20261016/tools-final.log"
+      },
+      "canonical_identity": {
+        "prior_nodes": 318,
+        "current_nodes": 319,
+        "retained_ids": 318,
+        "new_legacy_key": "story_ch27_post_intro",
+        "official_importer_bytes_equal": true
+      },
+      "initial_full_go_failure": "full-go-final.log漏掛既有分離素材包；另四項舊斷言仍期待未接線、舊handler數與已推翻item79分數。按同工具鏈／完整pack修正重跑r2全通過，最後白屏交接後r3再次全通過。"
+    },
+    "remake_r9": {
+      "directory": "work/ch27-flow-20261016/remake-r9",
+      "ai_consumed": 424,
+      "ai_order_divergences": 0,
+      "official_receipt_bytes_equal_r8": true,
+      "receipt_sha256": "c3c5675ef57716778da49119fe423a400f9319653ab1697eb63399a50d5b69be",
+      "note": "最後legacy白屏交接修正後正常Game完整重跑，三流程閘門及完整SAV仍通過。"
+    }
+  },
+  "opening_dialogue_contract": {
+    "status": "CONFORMED",
+    "scope": "只補六組既有FDTXT_027 caller到可編輯對白的映射，不重解33AF1或演出helper。",
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "既有綁定把死亡事件idx1/2誤併入揭幕idx0，idx6多一行，idx7從13起共9行超出scene0的21行。",
+        "evidence": [
+          "remake/assets/cutscenes/bindings/ch26_pre.json舊override",
+          "同源original-prefix-r2完整Game於battle_start遇未建立st",
+          "FDTXT_027 count-aligned映射與現有story ch27 scene0"
+        ]
+      },
+      {
+        "level": "已證實",
+        "claim": "六個原版caller的字串索引依序0/3/4/5/6/7，對應行0..1、4、5..6、7、8..11、12..20。",
+        "evidence": [
+          "remake/assets/cutscenes/handlers/ch26_pre.json",
+          "remake/assets/cutscenes/dialogue-index/count-aligned.json FDTXT_027",
+          "既有IDA9.4 sub33AF1及33133共享尾段"
+        ]
+      }
+    ],
+    "spec": {
+      "status": "CONFORMED",
+      "caller_text_indices": {
+        "0x33b35": 0,
+        "0x33b6b": 3,
+        "0x33b92": 4,
+        "0x33bf1": 5,
+        "0x33c4b": 6,
+        "0x33133": 7
+      },
+      "lowering": "六組改用既有story_index_map及地址綁定dialogue_contexts；保留loadch／pan／acting覆寫。",
+      "failure": "缺字串、raw控制碼或映射不唯一仍失敗即關閉，不以截掉越界行放行。",
+      "validation": [
+        "編譯無issue且19句原生對白對應原始idx與utterance",
+        "缺死亡事件idx1/2",
+        "同源前綴與完整Game重播"
+      ]
+    },
+    "failed_replay": {
+      "oracle": "work/ch27-flow-20261016/original-prefix-r2",
+      "remake": "work/ch27-flow-20261016/remake-prefix-r2",
+      "end": "battle_start／story_ch27未建立battle state，測試pump碰nil；未取得章通過。"
+    },
+    "issue": 219,
+    "expanded_ready_revision": {
+      "status": "READY",
+      "reason": "正常Game前綴及獨立CompileHandlerBinding反證六項原先未接的操作；原始callers與既有typed helper已足夠，不新增helper。",
+      "instructions": [
+        {
+          "ida_linear_address": "0x33b35",
+          "file_offset": "0x34935",
+          "loaded_bytes": "e84a24feff",
+          "file_bytes": "e84a24feff",
+          "instruction": "call    sub_15F84",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b3a",
+          "file_offset": "0x3493a",
+          "loaded_bytes": "83c424",
+          "file_bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b3d",
+          "file_offset": "0x3493d",
+          "loaded_bytes": "6a64",
+          "file_bytes": "6a64",
+          "instruction": "push    64h ; 'd'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b3f",
+          "file_offset": "0x3493f",
+          "loaded_bytes": "e8d00fffff",
+          "file_bytes": "e8d00fffff",
+          "instruction": "call    sub_24B14",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b44",
+          "file_offset": "0x34944",
+          "loaded_bytes": "83c404",
+          "file_bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b47",
+          "file_offset": "0x34947",
+          "loaded_bytes": "83f8ff",
+          "file_bytes": "83f8ff",
+          "instruction": "cmp     eax, 0FFFFFFFFh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b4a",
+          "file_offset": "0x3494a",
+          "loaded_bytes": "7427",
+          "file_bytes": "7427",
+          "instruction": "jz      short loc_33B73",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b4c",
+          "file_offset": "0x3494c",
+          "loaded_bytes": "6a01",
+          "file_bytes": "6a01",
+          "instruction": "push    1",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b4e",
+          "file_offset": "0x3494e",
+          "loaded_bytes": "6a13",
+          "file_bytes": "6a13",
+          "instruction": "push    13h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b50",
+          "file_offset": "0x34950",
+          "loaded_bytes": "6a4a",
+          "file_bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b52",
+          "file_offset": "0x34952",
+          "loaded_bytes": "6a4c",
+          "file_bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b54",
+          "file_offset": "0x34954",
+          "loaded_bytes": "68cd000000",
+          "file_bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b59",
+          "file_offset": "0x34959",
+          "loaded_bytes": "6840010000",
+          "file_bytes": "6840010000",
+          "instruction": "push    140h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b5e",
+          "file_offset": "0x3495e",
+          "loaded_bytes": "6800000a00",
+          "file_bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b63",
+          "file_offset": "0x34963",
+          "loaded_bytes": "6a03",
+          "file_bytes": "6a03",
+          "instruction": "push    3",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b65",
+          "file_offset": "0x34965",
+          "loaded_bytes": "ff35793a0500",
+          "file_bytes": "ff35793a0000",
+          "instruction": "push    dword_53A79",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b6b",
+          "file_offset": "0x3496b",
+          "loaded_bytes": "e81424feff",
+          "file_bytes": "e81424feff",
+          "instruction": "call    sub_15F84",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b70",
+          "file_offset": "0x34970",
+          "loaded_bytes": "83c424",
+          "file_bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b73",
+          "file_offset": "0x34973",
+          "loaded_bytes": "6a01",
+          "file_bytes": "6a01",
+          "instruction": "push    1",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b75",
+          "file_offset": "0x34975",
+          "loaded_bytes": "6a13",
+          "file_bytes": "6a13",
+          "instruction": "push    13h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b77",
+          "file_offset": "0x34977",
+          "loaded_bytes": "6a4a",
+          "file_bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b79",
+          "file_offset": "0x34979",
+          "loaded_bytes": "6a4c",
+          "file_bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b7b",
+          "file_offset": "0x3497b",
+          "loaded_bytes": "68cd000000",
+          "file_bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b80",
+          "file_offset": "0x34980",
+          "loaded_bytes": "6840010000",
+          "file_bytes": "6840010000",
+          "instruction": "push    140h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b85",
+          "file_offset": "0x34985",
+          "loaded_bytes": "6800000a00",
+          "file_bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b8a",
+          "file_offset": "0x3498a",
+          "loaded_bytes": "6a04",
+          "file_bytes": "6a04",
+          "instruction": "push    4",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b8c",
+          "file_offset": "0x3498c",
+          "loaded_bytes": "ff35793a0500",
+          "file_bytes": "ff35793a0000",
+          "instruction": "push    dword_53A79",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b92",
+          "file_offset": "0x34992",
+          "loaded_bytes": "e8ed23feff",
+          "file_bytes": "e8ed23feff",
+          "instruction": "call    sub_15F84",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b97",
+          "file_offset": "0x34997",
+          "loaded_bytes": "83c424",
+          "file_bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b9a",
+          "file_offset": "0x3499a",
+          "loaded_bytes": "6a31",
+          "file_bytes": "6a31",
+          "instruction": "push    31h ; '1'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b9c",
+          "file_offset": "0x3499c",
+          "loaded_bytes": "6a09",
+          "file_bytes": "6a09",
+          "instruction": "push    9",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33b9e",
+          "file_offset": "0x3499e",
+          "loaded_bytes": "e83afafdff",
+          "file_bytes": "e83afafdff",
+          "instruction": "call    sub_135DD",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33ba3",
+          "file_offset": "0x349a3",
+          "loaded_bytes": "83c408",
+          "file_bytes": "83c408",
+          "instruction": "add     esp, 8",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33ba6",
+          "file_offset": "0x349a6",
+          "loaded_bytes": "6a02",
+          "file_bytes": "6a02",
+          "instruction": "push    2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33ba8",
+          "file_offset": "0x349a8",
+          "loaded_bytes": "6a02",
+          "file_bytes": "6a02",
+          "instruction": "push    2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33baa",
+          "file_offset": "0x349aa",
+          "loaded_bytes": "a1bd3a0500",
+          "file_bytes": "a1bd3a0000",
+          "instruction": "mov     eax, dword_53ABD",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33baf",
+          "file_offset": "0x349af",
+          "loaded_bytes": "83c003",
+          "file_bytes": "83c003",
+          "instruction": "add     eax, 3",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bb2",
+          "file_offset": "0x349b2",
+          "loaded_bytes": "50",
+          "file_bytes": "50",
+          "instruction": "push    eax",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bb3",
+          "file_offset": "0x349b3",
+          "loaded_bytes": "ff35b93a0500",
+          "file_bytes": "ff35b93a0000",
+          "instruction": "push    dword_53AB9",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bb9",
+          "file_offset": "0x349b9",
+          "loaded_bytes": "e85a0affff",
+          "file_bytes": "e85a0affff",
+          "instruction": "call    sub_24618",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bbe",
+          "file_offset": "0x349be",
+          "loaded_bytes": "83c410",
+          "file_bytes": "83c410",
+          "instruction": "add     esp, 10h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bc1",
+          "file_offset": "0x349c1",
+          "loaded_bytes": "6a00",
+          "file_bytes": "6a00",
+          "instruction": "push    0",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bc3",
+          "file_offset": "0x349c3",
+          "loaded_bytes": "68ff000000",
+          "file_bytes": "68ff000000",
+          "instruction": "push    0FFh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bc8",
+          "file_offset": "0x349c8",
+          "loaded_bytes": "6a00",
+          "file_bytes": "6a00",
+          "instruction": "push    0",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bca",
+          "file_offset": "0x349ca",
+          "loaded_bytes": "e823e2fdff",
+          "file_bytes": "e823e2fdff",
+          "instruction": "call    sub_11DF2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bcf",
+          "file_offset": "0x349cf",
+          "loaded_bytes": "83c40c",
+          "file_bytes": "83c40c",
+          "instruction": "add     esp, 0Ch",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bd2",
+          "file_offset": "0x349d2",
+          "loaded_bytes": "6a01",
+          "file_bytes": "6a01",
+          "instruction": "push    1",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bd4",
+          "file_offset": "0x349d4",
+          "loaded_bytes": "6a13",
+          "file_bytes": "6a13",
+          "instruction": "push    13h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bd6",
+          "file_offset": "0x349d6",
+          "loaded_bytes": "6a4a",
+          "file_bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bd8",
+          "file_offset": "0x349d8",
+          "loaded_bytes": "6a4c",
+          "file_bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bda",
+          "file_offset": "0x349da",
+          "loaded_bytes": "68cd000000",
+          "file_bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bdf",
+          "file_offset": "0x349df",
+          "loaded_bytes": "6840010000",
+          "file_bytes": "6840010000",
+          "instruction": "push    140h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33be4",
+          "file_offset": "0x349e4",
+          "loaded_bytes": "6800000a00",
+          "file_bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33be9",
+          "file_offset": "0x349e9",
+          "loaded_bytes": "6a05",
+          "file_bytes": "6a05",
+          "instruction": "push    5",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33beb",
+          "file_offset": "0x349eb",
+          "loaded_bytes": "ff35793a0500",
+          "file_bytes": "ff35793a0000",
+          "instruction": "push    dword_53A79",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bf1",
+          "file_offset": "0x349f1",
+          "loaded_bytes": "e88e23feff",
+          "file_bytes": "e88e23feff",
+          "instruction": "call    sub_15F84",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bf6",
+          "file_offset": "0x349f6",
+          "loaded_bytes": "83c424",
+          "file_bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bf9",
+          "file_offset": "0x349f9",
+          "loaded_bytes": "6a02",
+          "file_bytes": "6a02",
+          "instruction": "push    2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bfb",
+          "file_offset": "0x349fb",
+          "loaded_bytes": "6a02",
+          "file_bytes": "6a02",
+          "instruction": "push    2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33bfd",
+          "file_offset": "0x349fd",
+          "loaded_bytes": "ff35bd3a0500",
+          "file_bytes": "ff35bd3a0000",
+          "instruction": "push    dword_53ABD",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c03",
+          "file_offset": "0x34a03",
+          "loaded_bytes": "ff35b93a0500",
+          "file_bytes": "ff35b93a0000",
+          "instruction": "push    dword_53AB9",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c09",
+          "file_offset": "0x34a09",
+          "loaded_bytes": "e80a0affff",
+          "file_bytes": "e80a0affff",
+          "instruction": "call    sub_24618",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c0e",
+          "file_offset": "0x34a0e",
+          "loaded_bytes": "83c410",
+          "file_bytes": "83c410",
+          "instruction": "add     esp, 10h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c11",
+          "file_offset": "0x34a11",
+          "loaded_bytes": "6a00",
+          "file_bytes": "6a00",
+          "instruction": "push    0",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c13",
+          "file_offset": "0x34a13",
+          "loaded_bytes": "68ff000000",
+          "file_bytes": "68ff000000",
+          "instruction": "push    0FFh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c18",
+          "file_offset": "0x34a18",
+          "loaded_bytes": "6a00",
+          "file_bytes": "6a00",
+          "instruction": "push    0",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c1a",
+          "file_offset": "0x34a1a",
+          "loaded_bytes": "e8d3e1fdff",
+          "file_bytes": "e8d3e1fdff",
+          "instruction": "call    sub_11DF2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c1f",
+          "file_offset": "0x34a1f",
+          "loaded_bytes": "83c40c",
+          "file_bytes": "83c40c",
+          "instruction": "add     esp, 0Ch",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c22",
+          "file_offset": "0x34a22",
+          "loaded_bytes": "6a51",
+          "file_bytes": "6a51",
+          "instruction": "push    51h ; 'Q'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c24",
+          "file_offset": "0x34a24",
+          "loaded_bytes": "e841fafdff",
+          "file_bytes": "e841fafdff",
+          "instruction": "call    sub_1366A",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c29",
+          "file_offset": "0x34a29",
+          "loaded_bytes": "83c404",
+          "file_bytes": "83c404",
+          "instruction": "add     esp, 4",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c2c",
+          "file_offset": "0x34a2c",
+          "loaded_bytes": "6a01",
+          "file_bytes": "6a01",
+          "instruction": "push    1",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c2e",
+          "file_offset": "0x34a2e",
+          "loaded_bytes": "6a13",
+          "file_bytes": "6a13",
+          "instruction": "push    13h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c30",
+          "file_offset": "0x34a30",
+          "loaded_bytes": "6a4a",
+          "file_bytes": "6a4a",
+          "instruction": "push    4Ah ; 'J'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c32",
+          "file_offset": "0x34a32",
+          "loaded_bytes": "6a4c",
+          "file_bytes": "6a4c",
+          "instruction": "push    4Ch ; 'L'",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c34",
+          "file_offset": "0x34a34",
+          "loaded_bytes": "68cd000000",
+          "file_bytes": "68cd000000",
+          "instruction": "push    0CDh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c39",
+          "file_offset": "0x34a39",
+          "loaded_bytes": "6840010000",
+          "file_bytes": "6840010000",
+          "instruction": "push    140h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c3e",
+          "file_offset": "0x34a3e",
+          "loaded_bytes": "6800000a00",
+          "file_bytes": "6800000a00",
+          "instruction": "push    0A0000h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c43",
+          "file_offset": "0x34a43",
+          "loaded_bytes": "6a06",
+          "file_bytes": "6a06",
+          "instruction": "push    6",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c45",
+          "file_offset": "0x34a45",
+          "loaded_bytes": "ff35793a0500",
+          "file_bytes": "ff35793a0000",
+          "instruction": "push    dword_53A79",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c4b",
+          "file_offset": "0x34a4b",
+          "loaded_bytes": "e83423feff",
+          "file_bytes": "e83423feff",
+          "instruction": "call    sub_15F84",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c50",
+          "file_offset": "0x34a50",
+          "loaded_bytes": "83c424",
+          "file_bytes": "83c424",
+          "instruction": "add     esp, 24h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c53",
+          "file_offset": "0x34a53",
+          "loaded_bytes": "6a02",
+          "file_bytes": "6a02",
+          "instruction": "push    2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c55",
+          "file_offset": "0x34a55",
+          "loaded_bytes": "6a02",
+          "file_bytes": "6a02",
+          "instruction": "push    2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c57",
+          "file_offset": "0x34a57",
+          "loaded_bytes": "ff35bd3a0500",
+          "file_bytes": "ff35bd3a0000",
+          "instruction": "push    dword_53ABD",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c5d",
+          "file_offset": "0x34a5d",
+          "loaded_bytes": "a1b93a0500",
+          "file_bytes": "a1b93a0000",
+          "instruction": "mov     eax, dword_53AB9",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c62",
+          "file_offset": "0x34a62",
+          "loaded_bytes": "83c002",
+          "file_bytes": "83c002",
+          "instruction": "add     eax, 2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c65",
+          "file_offset": "0x34a65",
+          "loaded_bytes": "50",
+          "file_bytes": "50",
+          "instruction": "push    eax",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c66",
+          "file_offset": "0x34a66",
+          "loaded_bytes": "e8ad09ffff",
+          "file_bytes": "e8ad09ffff",
+          "instruction": "call    sub_24618",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c6b",
+          "file_offset": "0x34a6b",
+          "loaded_bytes": "83c410",
+          "file_bytes": "83c410",
+          "instruction": "add     esp, 10h",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c6e",
+          "file_offset": "0x34a6e",
+          "loaded_bytes": "6a00",
+          "file_bytes": "6a00",
+          "instruction": "push    0",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c70",
+          "file_offset": "0x34a70",
+          "loaded_bytes": "68ff000000",
+          "file_bytes": "68ff000000",
+          "instruction": "push    0FFh",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c75",
+          "file_offset": "0x34a75",
+          "loaded_bytes": "6a00",
+          "file_bytes": "6a00",
+          "instruction": "push    0",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c77",
+          "file_offset": "0x34a77",
+          "loaded_bytes": "e876e1fdff",
+          "file_bytes": "e876e1fdff",
+          "instruction": "call    sub_11DF2",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        },
+        {
+          "ida_linear_address": "0x33c7c",
+          "file_offset": "0x34a7c",
+          "loaded_bytes": "83c40c",
+          "file_bytes": "83c40c",
+          "instruction": "add     esp, 0Ch",
+          "semantic_annotations": [],
+          "level": "未知",
+          "warning": "單筆定位不代表已證實語意；語意依下列caller claims分級。"
+        }
+      ],
+      "claims": [
+        {
+          "level": "已證實",
+          "claim": "33B3F查item100，33B47比較-1後33B4A跳過idx3；用既有native_inventory_item_present結構分支只包33B6B。",
+          "evidence": [
+            "IDA LE linear33B3D..33B73",
+            "既有24B14／HandlerCondition consumer"
+          ]
+        },
+        {
+          "level": "已證實",
+          "claim": "33B9E重複pan(9,49)，33C24 ACT81由既有map32 resource81解碼，不能省略。",
+          "evidence": [
+            "IDA33B9A..33BA3、33C1F..33C29",
+            "既有acting/map32.json resource81"
+          ]
+        },
+        {
+          "level": "已證實",
+          "claim": "三個24618 caller的半徑起值／步長皆2／2；中心依序為可見游標+(0,3)、+(0,0)、+(2,0)。",
+          "evidence": [
+            "IDA33BA6..33BBE、33BF9..33C0E、33C53..33C6B",
+            "53AB9／53ABD原生可見游標既有契約",
+            "既有24618明示binding模式與compiler"
+          ]
+        }
+      ],
+      "typed_input": {
+        "pan": {
+          "x": 216,
+          "y": 1176,
+          "tile_step": true
+        },
+        "acting81": true,
+        "transitions": [
+          {
+            "source": "0x33bb9",
+            "radial_radius": 2,
+            "radial_radius_step": 2,
+            "cursor_x_offset": 0,
+            "cursor_y_offset": 3
+          },
+          {
+            "source": "0x33c09",
+            "radial_radius": 2,
+            "radial_radius_step": 2,
+            "cursor_x_offset": 0,
+            "cursor_y_offset": 0
+          },
+          {
+            "source": "0x33c66",
+            "radial_radius": 2,
+            "radial_radius_step": 2,
+            "cursor_x_offset": 2,
+            "cursor_y_offset": 0
+          }
+        ]
+      },
+      "validation": [
+        "CompileHandlerBinding零issue",
+        "19句靜態分支原生對白，缺鑰匙不播放idx3",
+        "同源前綴與完整章重播"
+      ],
+      "previous_failed_attempt": "只換對白映射仍拒收六項未綁定操作；work/ch27-flow-20261016/replay-prefix-fixed.log保留。",
+      "runtime_context_correction": {
+        "reason": "前綴從城鎮LOAD，pre handler在loadch前沒有戰場；不可在其前安裝63筆runtime_context。沿既有loadch物化來源，63只記實測battle frontier。",
+        "evidence": "remake-prefix-r2-fixed2於beat runtime_context拒收runtime slots0；保留failed log。"
+      },
+      "native_dialogue_generation": {
+        "tool": "tools/generate_native_story_dialogue.py",
+        "callers": 6,
+        "utterances": 19,
+        "raw_dir": "extracted/raw/FDTXT",
+        "glyph_map": "docs/data/glyph_map.json"
+      },
+      "source_shape_revision": {
+        "status": "READY",
+        "path": "remake/assets/maps/map26/map26_units.json",
+        "sha256": "3b2ae89c20d23ae0658d67c7de9e522aabf3ff9fc3bb9ad29dbe62a30b850e2b",
+        "source_records": 80,
+        "runtime_initial_records": 63,
+        "reason": "正式loadch拒收舊70宣告；現有固定來源有80筆，含未登場groups，與當前63筆runtime分開。"
+      }
+    },
+    "story_inventory_predicate": {
+      "status": "CONFORMED",
+      "level": "已證實",
+      "producer": "33AFB→205DA目前LOADCH物化的runtime記錄陣列",
+      "consumer": "33B3F→24B14掃當前runtime前16筆，與戰鬥前後同一原生陣列；無camp／active過濾，不查persistent roster",
+      "evidence": [
+        "既有24B14原始指令契約",
+        "33AF1完整IDA caller",
+        "remake-prefix-r2-fixed4於if因g.st nil拒收；已存在storyNativeMapState raw records"
+      ],
+      "typed_change": "g.st存在時保持既有戰鬥來源；無g.st且有完整原生故事view/state時，查storyNativeMapState.Units。至少16筆／raw inventory缺失仍拒收，不建立猜測投影。",
+      "validation": [
+        "故事第15槽命中、第16槽不命中",
+        "缺原生view／raw inventory拒收",
+        "戰鬥來源優先保持",
+        "同源前綴與完整章"
+      ]
+    }
+  },
+  "post_success_contract": {
+    "status": "CONFORMED",
+    "scope": "補既有250CC共同前綴及持天空之鑰成功臂；缺鑰匙原終局路由保持，未知callee不猜接。",
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "bf4bdab8基線的成功臂只有sync_party及set_chapter，缺共同idx8／ACT82、成功idx9..12／ACT83..84／色盤與轉場／25089清理。",
+        "evidence": [
+          "既有handler ch26_post.json",
+          "campaign_full story_ch27_post_sky_key_success",
+          "IDA9.4 sub250CC完整匯出"
+        ]
+      }
+    ],
+    "stop_line": "25052、25089、24618、ACTING及原生對白沿既有閉合consumer；不重開硬體時序或matching。",
+    "issue": 220,
+    "original_name": "sub_250CC",
+    "instructions": [
+      {
+        "ida_linear_address": "0x250cc",
+        "file_offset": "0x25ecc",
+        "loaded_bytes": "6860000000",
+        "file_bytes": "6860000000",
+        "instruction": "push    60h ; '`'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250d1",
+        "file_offset": "0x25ed1",
+        "loaded_bytes": "e8011c0100",
+        "file_bytes": "e8011c0100",
+        "instruction": "call    sub_36CD7",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250d6",
+        "file_offset": "0x25ed6",
+        "loaded_bytes": "53",
+        "file_bytes": "53",
+        "instruction": "push    ebx",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250d7",
+        "file_offset": "0x25ed7",
+        "loaded_bytes": "56",
+        "file_bytes": "56",
+        "instruction": "push    esi",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250d8",
+        "file_offset": "0x25ed8",
+        "loaded_bytes": "57",
+        "file_bytes": "57",
+        "instruction": "push    edi",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250d9",
+        "file_offset": "0x25ed9",
+        "loaded_bytes": "83ec24",
+        "file_bytes": "83ec24",
+        "instruction": "sub     esp, 24h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250dc",
+        "file_offset": "0x25edc",
+        "loaded_bytes": "b904000000",
+        "file_bytes": "b904000000",
+        "instruction": "mov     ecx, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250e1",
+        "file_offset": "0x25ee1",
+        "loaded_bytes": "89e7",
+        "file_bytes": "89e7",
+        "instruction": "mov     edi, esp",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250e3",
+        "file_offset": "0x25ee3",
+        "loaded_bytes": "be06230500",
+        "file_bytes": "be06230000",
+        "instruction": "mov     esi, offset unk_52306",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250e8",
+        "file_offset": "0x25ee8",
+        "loaded_bytes": "f3a5",
+        "file_bytes": "f3a5",
+        "instruction": "rep movsd",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250ea",
+        "file_offset": "0x25eea",
+        "loaded_bytes": "b904000000",
+        "file_bytes": "b904000000",
+        "instruction": "mov     ecx, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250ef",
+        "file_offset": "0x25eef",
+        "loaded_bytes": "8d7c2410",
+        "file_bytes": "8d7c2410",
+        "instruction": "lea     edi, [esp+30h+var_20]",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250f3",
+        "file_offset": "0x25ef3",
+        "loaded_bytes": "be16230500",
+        "file_bytes": "be16230000",
+        "instruction": "mov     esi, offset unk_52316",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250f8",
+        "file_offset": "0x25ef8",
+        "loaded_bytes": "f3a5",
+        "file_bytes": "f3a5",
+        "instruction": "rep movsd",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250fa",
+        "file_offset": "0x25efa",
+        "loaded_bytes": "a026230500",
+        "file_bytes": "a026230000",
+        "instruction": "mov     al, byte_52326",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x250ff",
+        "file_offset": "0x25eff",
+        "loaded_bytes": "88442420",
+        "file_bytes": "88442420",
+        "instruction": "mov     [esp+30h+var_10], al",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25103",
+        "file_offset": "0x25f03",
+        "loaded_bytes": "30db",
+        "file_bytes": "30db",
+        "instruction": "xor     bl, bl",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25105",
+        "file_offset": "0x25f05",
+        "loaded_bytes": "eb16",
+        "file_bytes": "eb16",
+        "instruction": "jmp     short loc_2511D",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25107",
+        "file_offset": "0x25f07",
+        "loaded_bytes": "89c2",
+        "file_bytes": "89c2",
+        "instruction": "mov     edx, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25109",
+        "file_offset": "0x25f09",
+        "loaded_bytes": "c1e002",
+        "file_bytes": "c1e002",
+        "instruction": "shl     eax, 2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2510c",
+        "file_offset": "0x25f0c",
+        "loaded_bytes": "01c2",
+        "file_bytes": "01c2",
+        "instruction": "add     edx, eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2510e",
+        "file_offset": "0x25f0e",
+        "loaded_bytes": "c1e204",
+        "file_bytes": "c1e204",
+        "instruction": "shl     edx, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25111",
+        "file_offset": "0x25f11",
+        "loaded_bytes": "a1453a0500",
+        "file_bytes": "a1453a0000",
+        "instruction": "mov     eax, dword_53A45",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25116",
+        "file_offset": "0x25f16",
+        "loaded_bytes": "c644020500",
+        "file_bytes": "c644020500",
+        "instruction": "mov     byte ptr [edx+eax+5], 0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2511b",
+        "file_offset": "0x25f1b",
+        "loaded_bytes": "fec3",
+        "file_bytes": "fec3",
+        "instruction": "inc     bl",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2511d",
+        "file_offset": "0x25f1d",
+        "loaded_bytes": "0fb6c3",
+        "file_bytes": "0fb6c3",
+        "instruction": "movzx   eax, bl",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25120",
+        "file_offset": "0x25f20",
+        "loaded_bytes": "83f810",
+        "file_bytes": "83f810",
+        "instruction": "cmp     eax, 10h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25123",
+        "file_offset": "0x25f23",
+        "loaded_bytes": "7ce2",
+        "file_bytes": "7ce2",
+        "instruction": "jl      short loc_25107",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25125",
+        "file_offset": "0x25f25",
+        "loaded_bytes": "6a08",
+        "file_bytes": "6a08",
+        "instruction": "push    8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25127",
+        "file_offset": "0x25f27",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25129",
+        "file_offset": "0x25f29",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2512b",
+        "file_offset": "0x25f2b",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2512d",
+        "file_offset": "0x25f2d",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2512f",
+        "file_offset": "0x25f2f",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25131",
+        "file_offset": "0x25f31",
+        "loaded_bytes": "6a0f",
+        "file_bytes": "6a0f",
+        "instruction": "push    0Fh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25133",
+        "file_offset": "0x25f33",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25135",
+        "file_offset": "0x25f35",
+        "loaded_bytes": "6a02",
+        "file_bytes": "6a02",
+        "instruction": "push    2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25137",
+        "file_offset": "0x25f37",
+        "loaded_bytes": "8d442434",
+        "file_bytes": "8d442434",
+        "instruction": "lea     eax, [esp+54h+var_20]",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2513b",
+        "file_offset": "0x25f3b",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2513c",
+        "file_offset": "0x25f3c",
+        "loaded_bytes": "8d442428",
+        "file_bytes": "8d442428",
+        "instruction": "lea     eax, [esp+58h+var_30]",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25140",
+        "file_offset": "0x25f40",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25141",
+        "file_offset": "0x25f41",
+        "loaded_bytes": "e880e2ffff",
+        "file_bytes": "e880e2ffff",
+        "instruction": "call    sub_233C6",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25146",
+        "file_offset": "0x25f46",
+        "loaded_bytes": "83c42c",
+        "file_bytes": "83c42c",
+        "instruction": "add     esp, 2Ch",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25149",
+        "file_offset": "0x25f49",
+        "loaded_bytes": "6a01",
+        "file_bytes": "6a01",
+        "instruction": "push    1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2514b",
+        "file_offset": "0x25f4b",
+        "loaded_bytes": "6a13",
+        "file_bytes": "6a13",
+        "instruction": "push    13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2514d",
+        "file_offset": "0x25f4d",
+        "loaded_bytes": "6a4a",
+        "file_bytes": "6a4a",
+        "instruction": "push    4Ah ; 'J'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2514f",
+        "file_offset": "0x25f4f",
+        "loaded_bytes": "6a4c",
+        "file_bytes": "6a4c",
+        "instruction": "push    4Ch ; 'L'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25151",
+        "file_offset": "0x25f51",
+        "loaded_bytes": "68cd000000",
+        "file_bytes": "68cd000000",
+        "instruction": "push    0CDh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25156",
+        "file_offset": "0x25f56",
+        "loaded_bytes": "6840010000",
+        "file_bytes": "6840010000",
+        "instruction": "push    140h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2515b",
+        "file_offset": "0x25f5b",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25160",
+        "file_offset": "0x25f60",
+        "loaded_bytes": "6a08",
+        "file_bytes": "6a08",
+        "instruction": "push    8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25162",
+        "file_offset": "0x25f62",
+        "loaded_bytes": "ff35793a0500",
+        "file_bytes": "ff35793a0000",
+        "instruction": "push    dword_53A79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25168",
+        "file_offset": "0x25f68",
+        "loaded_bytes": "e8170effff",
+        "file_bytes": "e8170effff",
+        "instruction": "call    sub_15F84",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2516d",
+        "file_offset": "0x25f6d",
+        "loaded_bytes": "83c424",
+        "file_bytes": "83c424",
+        "instruction": "add     esp, 24h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25170",
+        "file_offset": "0x25f70",
+        "loaded_bytes": "c705831a050000000000",
+        "file_bytes": "c705831a000000000000",
+        "instruction": "mov     dword_51A83, 0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2517a",
+        "file_offset": "0x25f7a",
+        "loaded_bytes": "6a52",
+        "file_bytes": "6a52",
+        "instruction": "push    52h ; 'R'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2517c",
+        "file_offset": "0x25f7c",
+        "loaded_bytes": "e8e9e4feff",
+        "file_bytes": "e8e9e4feff",
+        "instruction": "call    sub_1366A",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25181",
+        "file_offset": "0x25f81",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25184",
+        "file_offset": "0x25f84",
+        "loaded_bytes": "6a64",
+        "file_bytes": "6a64",
+        "instruction": "push    64h ; 'd'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25186",
+        "file_offset": "0x25f86",
+        "loaded_bytes": "e889f9ffff",
+        "file_bytes": "e889f9ffff",
+        "instruction": "call    sub_24B14",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2518b",
+        "file_offset": "0x25f8b",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2518e",
+        "file_offset": "0x25f8e",
+        "loaded_bytes": "83f8ff",
+        "file_bytes": "83f8ff",
+        "instruction": "cmp     eax, 0FFFFFFFFh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25191",
+        "file_offset": "0x25f91",
+        "loaded_bytes": "0f84b1010000",
+        "file_bytes": "0f84b1010000",
+        "instruction": "jz      loc_25348",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25197",
+        "file_offset": "0x25f97",
+        "loaded_bytes": "6a01",
+        "file_bytes": "6a01",
+        "instruction": "push    1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25199",
+        "file_offset": "0x25f99",
+        "loaded_bytes": "6a13",
+        "file_bytes": "6a13",
+        "instruction": "push    13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2519b",
+        "file_offset": "0x25f9b",
+        "loaded_bytes": "6a4a",
+        "file_bytes": "6a4a",
+        "instruction": "push    4Ah ; 'J'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2519d",
+        "file_offset": "0x25f9d",
+        "loaded_bytes": "6a4c",
+        "file_bytes": "6a4c",
+        "instruction": "push    4Ch ; 'L'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2519f",
+        "file_offset": "0x25f9f",
+        "loaded_bytes": "68cd000000",
+        "file_bytes": "68cd000000",
+        "instruction": "push    0CDh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251a4",
+        "file_offset": "0x25fa4",
+        "loaded_bytes": "6840010000",
+        "file_bytes": "6840010000",
+        "instruction": "push    140h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251a9",
+        "file_offset": "0x25fa9",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251ae",
+        "file_offset": "0x25fae",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251b0",
+        "file_offset": "0x25fb0",
+        "loaded_bytes": "ff35793a0500",
+        "file_bytes": "ff35793a0000",
+        "instruction": "push    dword_53A79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251b6",
+        "file_offset": "0x25fb6",
+        "loaded_bytes": "e8c90dffff",
+        "file_bytes": "e8c90dffff",
+        "instruction": "call    sub_15F84",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251bb",
+        "file_offset": "0x25fbb",
+        "loaded_bytes": "83c424",
+        "file_bytes": "83c424",
+        "instruction": "add     esp, 24h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251be",
+        "file_offset": "0x25fbe",
+        "loaded_bytes": "c705831a050000000000",
+        "file_bytes": "c705831a000000000000",
+        "instruction": "mov     dword_51A83, 0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251c8",
+        "file_offset": "0x25fc8",
+        "loaded_bytes": "6a53",
+        "file_bytes": "6a53",
+        "instruction": "push    53h ; 'S'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251ca",
+        "file_offset": "0x25fca",
+        "loaded_bytes": "e89be4feff",
+        "file_bytes": "e89be4feff",
+        "instruction": "call    sub_1366A",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251cf",
+        "file_offset": "0x25fcf",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251d2",
+        "file_offset": "0x25fd2",
+        "loaded_bytes": "6a01",
+        "file_bytes": "6a01",
+        "instruction": "push    1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251d4",
+        "file_offset": "0x25fd4",
+        "loaded_bytes": "6a13",
+        "file_bytes": "6a13",
+        "instruction": "push    13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251d6",
+        "file_offset": "0x25fd6",
+        "loaded_bytes": "6a4a",
+        "file_bytes": "6a4a",
+        "instruction": "push    4Ah ; 'J'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251d8",
+        "file_offset": "0x25fd8",
+        "loaded_bytes": "6a4c",
+        "file_bytes": "6a4c",
+        "instruction": "push    4Ch ; 'L'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251da",
+        "file_offset": "0x25fda",
+        "loaded_bytes": "68cd000000",
+        "file_bytes": "68cd000000",
+        "instruction": "push    0CDh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251df",
+        "file_offset": "0x25fdf",
+        "loaded_bytes": "6840010000",
+        "file_bytes": "6840010000",
+        "instruction": "push    140h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251e4",
+        "file_offset": "0x25fe4",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251e9",
+        "file_offset": "0x25fe9",
+        "loaded_bytes": "6a0a",
+        "file_bytes": "6a0a",
+        "instruction": "push    0Ah",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251eb",
+        "file_offset": "0x25feb",
+        "loaded_bytes": "ff35793a0500",
+        "file_bytes": "ff35793a0000",
+        "instruction": "push    dword_53A79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251f1",
+        "file_offset": "0x25ff1",
+        "loaded_bytes": "e88e0dffff",
+        "file_bytes": "e88e0dffff",
+        "instruction": "call    sub_15F84",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251f6",
+        "file_offset": "0x25ff6",
+        "loaded_bytes": "83c424",
+        "file_bytes": "83c424",
+        "instruction": "add     esp, 24h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x251f9",
+        "file_offset": "0x25ff9",
+        "loaded_bytes": "c705831a050000000000",
+        "file_bytes": "c705831a000000000000",
+        "instruction": "mov     dword_51A83, 0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25203",
+        "file_offset": "0x26003",
+        "loaded_bytes": "6a08",
+        "file_bytes": "6a08",
+        "instruction": "push    8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25205",
+        "file_offset": "0x26005",
+        "loaded_bytes": "6a09",
+        "file_bytes": "6a09",
+        "instruction": "push    9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25207",
+        "file_offset": "0x26007",
+        "loaded_bytes": "e8d1e3feff",
+        "file_bytes": "e8d1e3feff",
+        "instruction": "call    sub_135DD",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2520c",
+        "file_offset": "0x2600c",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2520f",
+        "file_offset": "0x2600f",
+        "loaded_bytes": "6a54",
+        "file_bytes": "6a54",
+        "instruction": "push    54h ; 'T'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25211",
+        "file_offset": "0x26011",
+        "loaded_bytes": "e854e4feff",
+        "file_bytes": "e854e4feff",
+        "instruction": "call    sub_1366A",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25216",
+        "file_offset": "0x26016",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25219",
+        "file_offset": "0x26019",
+        "loaded_bytes": "6a01",
+        "file_bytes": "6a01",
+        "instruction": "push    1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2521b",
+        "file_offset": "0x2601b",
+        "loaded_bytes": "6a13",
+        "file_bytes": "6a13",
+        "instruction": "push    13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2521d",
+        "file_offset": "0x2601d",
+        "loaded_bytes": "6a4a",
+        "file_bytes": "6a4a",
+        "instruction": "push    4Ah ; 'J'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2521f",
+        "file_offset": "0x2601f",
+        "loaded_bytes": "6a4c",
+        "file_bytes": "6a4c",
+        "instruction": "push    4Ch ; 'L'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25221",
+        "file_offset": "0x26021",
+        "loaded_bytes": "68cd000000",
+        "file_bytes": "68cd000000",
+        "instruction": "push    0CDh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25226",
+        "file_offset": "0x26026",
+        "loaded_bytes": "6840010000",
+        "file_bytes": "6840010000",
+        "instruction": "push    140h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2522b",
+        "file_offset": "0x2602b",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25230",
+        "file_offset": "0x26030",
+        "loaded_bytes": "6a0b",
+        "file_bytes": "6a0b",
+        "instruction": "push    0Bh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25232",
+        "file_offset": "0x26032",
+        "loaded_bytes": "ff35793a0500",
+        "file_bytes": "ff35793a0000",
+        "instruction": "push    dword_53A79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25238",
+        "file_offset": "0x26038",
+        "loaded_bytes": "e8470dffff",
+        "file_bytes": "e8470dffff",
+        "instruction": "call    sub_15F84",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2523d",
+        "file_offset": "0x2603d",
+        "loaded_bytes": "83c424",
+        "file_bytes": "83c424",
+        "instruction": "add     esp, 24h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25240",
+        "file_offset": "0x26040",
+        "loaded_bytes": "6a05",
+        "file_bytes": "6a05",
+        "instruction": "push    5",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25242",
+        "file_offset": "0x26042",
+        "loaded_bytes": "6a50",
+        "file_bytes": "6a50",
+        "instruction": "push    50h ; 'P'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25244",
+        "file_offset": "0x26044",
+        "loaded_bytes": "e809feffff",
+        "file_bytes": "e809feffff",
+        "instruction": "call    sub_25052",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25249",
+        "file_offset": "0x26049",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2524c",
+        "file_offset": "0x2604c",
+        "loaded_bytes": "6a01",
+        "file_bytes": "6a01",
+        "instruction": "push    1",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2524e",
+        "file_offset": "0x2604e",
+        "loaded_bytes": "6a13",
+        "file_bytes": "6a13",
+        "instruction": "push    13h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25250",
+        "file_offset": "0x26050",
+        "loaded_bytes": "6a4a",
+        "file_bytes": "6a4a",
+        "instruction": "push    4Ah ; 'J'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25252",
+        "file_offset": "0x26052",
+        "loaded_bytes": "6a4c",
+        "file_bytes": "6a4c",
+        "instruction": "push    4Ch ; 'L'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25254",
+        "file_offset": "0x26054",
+        "loaded_bytes": "68cd000000",
+        "file_bytes": "68cd000000",
+        "instruction": "push    0CDh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25259",
+        "file_offset": "0x26059",
+        "loaded_bytes": "6840010000",
+        "file_bytes": "6840010000",
+        "instruction": "push    140h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2525e",
+        "file_offset": "0x2605e",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25263",
+        "file_offset": "0x26063",
+        "loaded_bytes": "6a0c",
+        "file_bytes": "6a0c",
+        "instruction": "push    0Ch",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25265",
+        "file_offset": "0x26065",
+        "loaded_bytes": "ff35793a0500",
+        "file_bytes": "ff35793a0000",
+        "instruction": "push    dword_53A79",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2526b",
+        "file_offset": "0x2606b",
+        "loaded_bytes": "e8140dffff",
+        "file_bytes": "e8140dffff",
+        "instruction": "call    sub_15F84",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25270",
+        "file_offset": "0x26070",
+        "loaded_bytes": "83c424",
+        "file_bytes": "83c424",
+        "instruction": "add     esp, 24h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25273",
+        "file_offset": "0x26073",
+        "loaded_bytes": "6a04",
+        "file_bytes": "6a04",
+        "instruction": "push    4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25275",
+        "file_offset": "0x26075",
+        "loaded_bytes": "6a50",
+        "file_bytes": "6a50",
+        "instruction": "push    50h ; 'P'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25277",
+        "file_offset": "0x26077",
+        "loaded_bytes": "e8d6fdffff",
+        "file_bytes": "e8d6fdffff",
+        "instruction": "call    sub_25052",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2527c",
+        "file_offset": "0x2607c",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2527f",
+        "file_offset": "0x2607f",
+        "loaded_bytes": "68f4010000",
+        "file_bytes": "68f4010000",
+        "instruction": "push    1F4h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25284",
+        "file_offset": "0x26084",
+        "loaded_bytes": "e829230100",
+        "file_bytes": "e829230100",
+        "instruction": "call    j___delay",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25289",
+        "file_offset": "0x26089",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2528c",
+        "file_offset": "0x2608c",
+        "loaded_bytes": "6a03",
+        "file_bytes": "6a03",
+        "instruction": "push    3",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2528e",
+        "file_offset": "0x2608e",
+        "loaded_bytes": "6a50",
+        "file_bytes": "6a50",
+        "instruction": "push    50h ; 'P'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25290",
+        "file_offset": "0x26090",
+        "loaded_bytes": "e8bdfdffff",
+        "file_bytes": "e8bdfdffff",
+        "instruction": "call    sub_25052",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25295",
+        "file_offset": "0x26095",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25298",
+        "file_offset": "0x26098",
+        "loaded_bytes": "68fa000000",
+        "file_bytes": "68fa000000",
+        "instruction": "push    0FAh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2529d",
+        "file_offset": "0x2609d",
+        "loaded_bytes": "e810230100",
+        "file_bytes": "e810230100",
+        "instruction": "call    j___delay",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252a2",
+        "file_offset": "0x260a2",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252a5",
+        "file_offset": "0x260a5",
+        "loaded_bytes": "6a02",
+        "file_bytes": "6a02",
+        "instruction": "push    2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252a7",
+        "file_offset": "0x260a7",
+        "loaded_bytes": "6a50",
+        "file_bytes": "6a50",
+        "instruction": "push    50h ; 'P'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252a9",
+        "file_offset": "0x260a9",
+        "loaded_bytes": "e8a4fdffff",
+        "file_bytes": "e8a4fdffff",
+        "instruction": "call    sub_25052",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252ae",
+        "file_offset": "0x260ae",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252b1",
+        "file_offset": "0x260b1",
+        "loaded_bytes": "6a64",
+        "file_bytes": "6a64",
+        "instruction": "push    64h ; 'd'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252b3",
+        "file_offset": "0x260b3",
+        "loaded_bytes": "e8fa220100",
+        "file_bytes": "e8fa220100",
+        "instruction": "call    j___delay",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252b8",
+        "file_offset": "0x260b8",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252bb",
+        "file_offset": "0x260bb",
+        "loaded_bytes": "6a02",
+        "file_bytes": "6a02",
+        "instruction": "push    2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252bd",
+        "file_offset": "0x260bd",
+        "loaded_bytes": "6a50",
+        "file_bytes": "6a50",
+        "instruction": "push    50h ; 'P'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252bf",
+        "file_offset": "0x260bf",
+        "loaded_bytes": "e88efdffff",
+        "file_bytes": "e88efdffff",
+        "instruction": "call    sub_25052",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252c4",
+        "file_offset": "0x260c4",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252c7",
+        "file_offset": "0x260c7",
+        "loaded_bytes": "6a32",
+        "file_bytes": "6a32",
+        "instruction": "push    32h ; '2'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252c9",
+        "file_offset": "0x260c9",
+        "loaded_bytes": "e8e4220100",
+        "file_bytes": "e8e4220100",
+        "instruction": "call    j___delay",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252ce",
+        "file_offset": "0x260ce",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252d1",
+        "file_offset": "0x260d1",
+        "loaded_bytes": "6a02",
+        "file_bytes": "6a02",
+        "instruction": "push    2",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252d3",
+        "file_offset": "0x260d3",
+        "loaded_bytes": "6a50",
+        "file_bytes": "6a50",
+        "instruction": "push    50h ; 'P'",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252d5",
+        "file_offset": "0x260d5",
+        "loaded_bytes": "e878fdffff",
+        "file_bytes": "e878fdffff",
+        "instruction": "call    sub_25052",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252da",
+        "file_offset": "0x260da",
+        "loaded_bytes": "83c408",
+        "file_bytes": "83c408",
+        "instruction": "add     esp, 8",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252dd",
+        "file_offset": "0x260dd",
+        "loaded_bytes": "6a0a",
+        "file_bytes": "6a0a",
+        "instruction": "push    0Ah",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252df",
+        "file_offset": "0x260df",
+        "loaded_bytes": "6a0a",
+        "file_bytes": "6a0a",
+        "instruction": "push    0Ah",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252e1",
+        "file_offset": "0x260e1",
+        "loaded_bytes": "a1bd3a0500",
+        "file_bytes": "a1bd3a0000",
+        "instruction": "mov     eax, dword_53ABD",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252e6",
+        "file_offset": "0x260e6",
+        "loaded_bytes": "48",
+        "file_bytes": "48",
+        "instruction": "dec     eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252e7",
+        "file_offset": "0x260e7",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252e8",
+        "file_offset": "0x260e8",
+        "loaded_bytes": "ff35b93a0500",
+        "file_bytes": "ff35b93a0000",
+        "instruction": "push    dword_53AB9",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252ee",
+        "file_offset": "0x260ee",
+        "loaded_bytes": "e825f3ffff",
+        "file_bytes": "e825f3ffff",
+        "instruction": "call    sub_24618",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252f3",
+        "file_offset": "0x260f3",
+        "loaded_bytes": "83c410",
+        "file_bytes": "83c410",
+        "instruction": "add     esp, 10h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252f6",
+        "file_offset": "0x260f6",
+        "loaded_bytes": "68f4010000",
+        "file_bytes": "68f4010000",
+        "instruction": "push    1F4h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x252fb",
+        "file_offset": "0x260fb",
+        "loaded_bytes": "e8b2220100",
+        "file_bytes": "e8b2220100",
+        "instruction": "call    j___delay",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25300",
+        "file_offset": "0x26100",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25303",
+        "file_offset": "0x26103",
+        "loaded_bytes": "6800fa0000",
+        "file_bytes": "6800fa0000",
+        "instruction": "push    0FA00h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25308",
+        "file_offset": "0x26108",
+        "loaded_bytes": "68ff000000",
+        "file_bytes": "68ff000000",
+        "instruction": "push    0FFh",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2530d",
+        "file_offset": "0x2610d",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25312",
+        "file_offset": "0x26112",
+        "loaded_bytes": "e8a9220100",
+        "file_bytes": "e8a9220100",
+        "instruction": "call    memset",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25317",
+        "file_offset": "0x26117",
+        "loaded_bytes": "83c40c",
+        "file_bytes": "83c40c",
+        "instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2531a",
+        "file_offset": "0x2611a",
+        "loaded_bytes": "e863a5ffff",
+        "file_bytes": "e863a5ffff",
+        "instruction": "call    sub_1F882",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2531f",
+        "file_offset": "0x2611f",
+        "loaded_bytes": "6800fa0000",
+        "file_bytes": "6800fa0000",
+        "instruction": "push    0FA00h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25324",
+        "file_offset": "0x26124",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25326",
+        "file_offset": "0x26126",
+        "loaded_bytes": "6800000a00",
+        "file_bytes": "6800000a00",
+        "instruction": "push    0A0000h",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2532b",
+        "file_offset": "0x2612b",
+        "loaded_bytes": "e890220100",
+        "file_bytes": "e890220100",
+        "instruction": "call    memset",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25330",
+        "file_offset": "0x26130",
+        "loaded_bytes": "83c40c",
+        "file_bytes": "83c40c",
+        "instruction": "add     esp, 0Ch",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25333",
+        "file_offset": "0x26133",
+        "loaded_bytes": "e8cec1feff",
+        "file_bytes": "e8cec1feff",
+        "instruction": "call    sub_11506",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25338",
+        "file_offset": "0x26138",
+        "loaded_bytes": "ff05033c0500",
+        "file_bytes": "ff05033c0000",
+        "instruction": "inc     dword_53C03",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x2533e",
+        "file_offset": "0x2613e",
+        "loaded_bytes": "e846fdffff",
+        "file_bytes": "e846fdffff",
+        "instruction": "call    sub_25089",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      },
+      {
+        "ida_linear_address": "0x25343",
+        "file_offset": "0x26143",
+        "loaded_bytes": "e9a262ffff",
+        "file_bytes": "e9a262ffff",
+        "instruction": "jmp     loc_1B5EA",
+        "semantic_annotations": [],
+        "level": "未知",
+        "warning": "原始定位單列不獨立代表語意；解讀依本契約分級。"
+      }
+    ],
+    "layout_table": {
+      "ida_le_linear": "0x52306..0x52326",
+      "file_offset": "0x52106..0x52126",
+      "bytes": "0f0f0c0d11120d0e10110e0f100e0f100d0b0c0c0c0c0d0d0d0d0e0e0e0f0f0f01",
+      "x": [
+        15,
+        15,
+        12,
+        13,
+        17,
+        18,
+        13,
+        14,
+        16,
+        17,
+        14,
+        15,
+        16,
+        14,
+        15,
+        16
+      ],
+      "y": [
+        13,
+        11,
+        12,
+        12,
+        12,
+        12,
+        13,
+        13,
+        13,
+        13,
+        14,
+        14,
+        14,
+        15,
+        15,
+        15
+      ],
+      "last_byte": {
+        "value": 1,
+        "level": "未知",
+        "note": "caller另複製此byte；本次16筆layout不消費，不替它命名。"
+      },
+      "level": "已證實",
+      "mapping_tool": "tools/le_xref.py parse_le/page_file/file_to_linear",
+      "consumer": "25141→既有233C6，start0/end15/constant pose2，special0停用，camera9,8",
+      "runtime_crosscheck": "original-r2 25186 trace first16 x/y/pose/byte5與table＋ACT82完全相同"
+    },
+    "spec": {
+      "status": "CONFORMED",
+      "common": [
+        "clear raw+5 slots0..15",
+        "layout(16 records,pose2,camera9,8)",
+        "FDTXT_027 idx8兩句",
+        "ACT82",
+        "既有inventory gate100"
+      ],
+      "present": [
+        "idx9十七句",
+        "ACT83",
+        "idx10兩句",
+        "pan9,8",
+        "ACT84",
+        "idx11一句",
+        "25052(5,80)",
+        "idx12一句",
+        "25052(4,80)",
+        "delay500",
+        "25052(3,80)",
+        "delay250",
+        "25052(2,80)",
+        "delay100",
+        "25052(2,80)",
+        "delay50",
+        "25052(2,80)",
+        "24618(center visible_cursor+(0,-1),radius10,step10)",
+        "delay500",
+        "1F882",
+        "sync_party",
+        "chapter27",
+        "25089"
+      ],
+      "runtime_frontiers": [
+        63,
+        75,
+        96
+      ],
+      "frontier_evidence": {
+        "source_records": 80,
+        "party": 16,
+        "groups": {
+          "0": 47,
+          "1": 6,
+          "2": 6,
+          "3": 7,
+          "4": 7,
+          "5": 7
+        },
+        "observed75": "original-r2 25186入口",
+        "63_and96_level": "強推論，既有相同constructor及本地完整group形狀；不是本次原版實測"
+      },
+      "typed_lowering": "共同前綴與成功臂各為來源約束handler/binding；沿既有typed primitives，既有缺鑰匙分支接在共同前綴之後。",
+      "failure": "來源形狀、raw inventory、對白tuple、ACT、layout或indexed transition缺件均拒收，不猜helper。",
+      "validation": [
+        "共同2／成功21句原生對白與ACT82/83/84",
+        "first16座標／pose／raw+5核對",
+        "完整Game同源原版保存",
+        "既有缺鑰匙分支回歸"
+      ],
+      "limits": [
+        "本次清敵不觸發358EA，隊長死亡增援仍E1未抽樣，不稱正常戰鬥已驗。",
+        "25312的白色VGA memset及2532B黑色VGA memset未轉寫，屬本次advisory畫面限制；所有對白、演出選擇、typed色盤時序、狀態與保存仍比。",
+        "畫面未逐像素驗收；不重開硬體時鐘或matching。"
+      ]
+    },
+    "node_view_handoff": {
+      "status": "CONFORMED",
+      "scope": "同地圖story_viewport節點之間保留目前原生視圖，含透明inventory_gate；不新增章節常數。",
+      "source": "250CC共同前綴→25186分支→25207pan在同函式內共用53AB9／53ABD／camera globals，沒有節點歸零writer。",
+      "counterexample": "remake-r5已消費idx9／10，在25207因原生cursor(7,-1)越界；enterNode優先捕獲過時battle carrier，runtime_context也未同步畫面原點。",
+      "typed_change": "離開原生story viewport且仍有battle carrier時，先將當前story raw view同步到共享carrier；runtime_context領回原生view時，同步cam／cursor的現有24px映射。",
+      "failure": "沒有當前原生story view不回填；沒有有效地圖不猜尺寸。原始view界限與其他runtime guards保持。",
+      "validation": [
+        "節點交接採當前story view，不採過時battle view",
+        "完整同源重播及SAV"
+      ]
+    },
+    "indexed_palette_update": {
+      "status": "CONFORMED",
+      "level": "已證實",
+      "source": [
+        "既有handler_compile 25052 lowering及11DF2契約",
+        "既有fdother.ApplyVGAPaletteDelta",
+        "250CC原始caller 25245..252CD六次25052呼叫"
+      ],
+      "counterexample": "remake-r6走到idx11後，首個0..255 delta5被執行期拒收；編譯器已正確產生逐步調色盤與80ms等待。",
+      "typed_change": "full-range delta0..63且具原生indexed framebuffer與DAC baseline時，以不可變baseline逐分量加delta並飽和至63；共用既有indexed presenter作單步呈現，Draw確認後才前進。delta0回復baseline。保持VGA indices不變，80ms由既有delay beat負責。",
+      "failure": "無原生indexed資產或frame不可重建時拒收非既有白屏／復原操作；不建立RGB替代品，不接受部分range或未知delta形狀。",
+      "validation": [
+        "baseline加法、飽和、非累加及delta0復原",
+        "沒有Draw不前進，VGA不變",
+        "既有127步pulse回歸",
+        "第27章完整Game與嚴格SAV比較"
+      ],
+      "limits": "依既有邏輯等待近似顯示，不宣稱硬體wall-clock或逐frame一致。",
+      "legacy_overlay_handoff": "11DF2完整range新值已取代先前DAC255白屏；indexed單步成功發布時清除legacy nativeFullDACWhite，否則Draw的defer會覆蓋新色盤。失敗不改旗標。對照既有main.go palette_update delta0復原語意。"
+    }
+  },
+  "event62_repeat_contract": {
+    "status": "CONFORMED",
+    "original_name": "sub_35898",
+    "instructions": [
+      {
+        "ida_linear_address": "0x35898",
+        "file_offset": "0x36698",
+        "loaded_bytes": "6804000000",
+        "file_bytes": "6804000000",
+        "instruction": "push    4",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x3589d",
+        "file_offset": "0x3669d",
+        "loaded_bytes": "e835140000",
+        "file_bytes": "e835140000",
+        "instruction": "call    sub_36CD7",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358a2",
+        "file_offset": "0x366a2",
+        "loaded_bytes": "a1d53a0500",
+        "file_bytes": "a1d53a0000",
+        "instruction": "mov     eax, dword_53AD5",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358a7",
+        "file_offset": "0x366a7",
+        "loaded_bytes": "80781100",
+        "file_bytes": "80781100",
+        "instruction": "cmp     byte ptr [eax+11h], 0",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358ab",
+        "file_offset": "0x366ab",
+        "loaded_bytes": "7519",
+        "file_bytes": "7519",
+        "instruction": "jnz     short locret_358C6",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358ad",
+        "file_offset": "0x366ad",
+        "loaded_bytes": "8a15ef3b0500",
+        "file_bytes": "8a15ef3b0000",
+        "instruction": "mov     dl, byte ptr dword_53BEF",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358b3",
+        "file_offset": "0x366b3",
+        "loaded_bytes": "fec2",
+        "file_bytes": "fec2",
+        "instruction": "inc     dl",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358b5",
+        "file_offset": "0x366b5",
+        "loaded_bytes": "a1553a0500",
+        "file_bytes": "a1553a0000",
+        "instruction": "mov     eax, dword_53A55",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358ba",
+        "file_offset": "0x366ba",
+        "loaded_bytes": "885003",
+        "file_bytes": "885003",
+        "instruction": "mov     [eax+3], dl",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358bd",
+        "file_offset": "0x366bd",
+        "loaded_bytes": "a1d53a0500",
+        "file_bytes": "a1d53a0000",
+        "instruction": "mov     eax, dword_53AD5",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358c2",
+        "file_offset": "0x366c2",
+        "loaded_bytes": "c6401101",
+        "file_bytes": "c6401101",
+        "instruction": "mov     byte ptr [eax+11h], 1",
+        "semantic_annotations": []
+      },
+      {
+        "ida_linear_address": "0x358c6",
+        "file_offset": "0x366c6",
+        "loaded_bytes": "c3",
+        "file_bytes": "c3",
+        "instruction": "retn",
+        "semantic_annotations": []
+      }
+    ],
+    "reopen_reason": "同狀態原版r2在第一次之後多次進35898並持續至保存；Game在已啟用state17後的敵方移動誤報不可啟用。",
+    "supersedes": "56的2026-08-02段落將重複觸發視為錯誤；writer／首次啟用及typed/raw一致性規則保持。",
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "35898入口先檢查state17；非零直接返回，不重寫live row、不增援、不讀取round作新啟用。",
+        "evidence": [
+          "固定EXE／既有IDA9.4 sub35898直接cmp/jnz/ret",
+          "original-r2重複入口及最終保存",
+          "replay-full-r2.log同狀態反例"
+        ]
+      }
+    ],
+    "original_entries": [
+      {
+        "step": 2187896240,
+        "control_seq": 226,
+        "unit_count": 63
+      },
+      {
+        "step": 3396504103,
+        "control_seq": 335,
+        "unit_count": 75
+      },
+      {
+        "step": 3491925249,
+        "control_seq": 340,
+        "unit_count": 75
+      },
+      {
+        "step": 3887691239,
+        "control_seq": 378,
+        "unit_count": 75
+      },
+      {
+        "step": 3945523084,
+        "control_seq": 381,
+        "unit_count": 75
+      },
+      {
+        "step": 3959968286,
+        "control_seq": 381,
+        "unit_count": 75
+      },
+      {
+        "step": 3975400519,
+        "control_seq": 382,
+        "unit_count": 75
+      },
+      {
+        "step": 3988673333,
+        "control_seq": 383,
+        "unit_count": 75
+      },
+      {
+        "step": 4047297563,
+        "control_seq": 386,
+        "unit_count": 75
+      },
+      {
+        "step": 4061741244,
+        "control_seq": 387,
+        "unit_count": 75
+      },
+      {
+        "step": 4077770359,
+        "control_seq": 387,
+        "unit_count": 75
+      },
+      {
+        "step": 4454225418,
+        "control_seq": 424,
+        "unit_count": 75
+      },
+      {
+        "step": 4551380680,
+        "control_seq": 429,
+        "unit_count": 75
+      }
+    ],
+    "spec": {
+      "status": "CONFORMED",
+      "typed_input": "已驗證event62 selector0／規則與完整turn control的State",
+      "transition": "state17非零時回傳eventID62及nil，零寫入；state17為零時保留既有首次啟用的完整原子預檢及寫入。",
+      "failure": "來源／規則／selector缺失仍拒收；首次啟用的raw/typed不一致、無效round或dormant row仍拒收。",
+      "validation": [
+        "state17=1/2/255全部零寫入",
+        "首次0啟用與既有反例保持",
+        "同源完整Game到記錄保存"
+      ]
+    }
+  },
+  "ai_high_item_target_contract": {
+    "status": "CONFORMED",
+    "scope": "修正1567E高command的第一階段幾何與149F8 selector=0目標極性；不重解14818／12C0D。",
+    "reopen_reason": "相同原版r2首回合及直接指令反證現行producer與56舊敘述。原版前8筆零HP改寫；重製對同陣營使用item79且90筆AI順序分歧。",
+    "claims": [
+      {
+        "level": "已證實",
+        "claim": "1567E 1572E..1573C於row+10大於15時，DL與DH都變1；首個14818距離1／inner1，不傳原command31。",
+        "evidence": "下列IDA9.4指令與固定EXE file bytes"
+      },
+      {
+        "level": "已證實",
+        "claim": "149F8 selector0於14AE4比較raw+6，非零跳14AF4收集；零經14AEC直接跳下一格。因此只收raw+6非零。",
+        "evidence": "14AE0..14AFC直接指令，1567E 1579F傳selector0"
+      }
+    ],
+    "instructions": [
+      {
+        "ida_linear_address": "0x15728",
+        "file_offset": "0x16528",
+        "loaded_bytes": "83c404",
+        "file_bytes": "83c404",
+        "instruction": "add     esp, 4",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1572b",
+        "file_offset": "0x1652b",
+        "loaded_bytes": "89c6",
+        "file_bytes": "89c6",
+        "instruction": "mov     esi, eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1572d",
+        "file_offset": "0x1652d",
+        "loaded_bytes": "30f6",
+        "file_bytes": "30f6",
+        "instruction": "xor     dh, dh",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1572f",
+        "file_offset": "0x1652f",
+        "loaded_bytes": "8a5010",
+        "file_bytes": "8a5010",
+        "instruction": "mov     dl, [eax+10h]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15732",
+        "file_offset": "0x16532",
+        "loaded_bytes": "0fb6c2",
+        "file_bytes": "0fb6c2",
+        "instruction": "movzx   eax, dl",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15735",
+        "file_offset": "0x16535",
+        "loaded_bytes": "83f80f",
+        "file_bytes": "83f80f",
+        "instruction": "cmp     eax, 0Fh",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15738",
+        "file_offset": "0x16538",
+        "loaded_bytes": "7e04",
+        "file_bytes": "7e04",
+        "instruction": "jle     short loc_1573E",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1573a",
+        "file_offset": "0x1653a",
+        "loaded_bytes": "b201",
+        "file_bytes": "b201",
+        "instruction": "mov     dl, 1",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1573c",
+        "file_offset": "0x1653c",
+        "loaded_bytes": "88d6",
+        "file_bytes": "88d6",
+        "instruction": "mov     dh, dl",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1573e",
+        "file_offset": "0x1653e",
+        "loaded_bytes": "0fb6460d",
+        "file_bytes": "0fb6460d",
+        "instruction": "movzx   eax, byte ptr [esi+0Dh]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15742",
+        "file_offset": "0x16542",
+        "loaded_bytes": "85c0",
+        "file_bytes": "85c0",
+        "instruction": "test    eax, eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15744",
+        "file_offset": "0x16544",
+        "loaded_bytes": "74bc",
+        "file_bytes": "74bc",
+        "instruction": "jz      short loc_15702",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15746",
+        "file_offset": "0x16546",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15748",
+        "file_offset": "0x16548",
+        "loaded_bytes": "0fb6c6",
+        "file_bytes": "0fb6c6",
+        "instruction": "movzx   eax, dh",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1574b",
+        "file_offset": "0x1654b",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1574c",
+        "file_offset": "0x1654c",
+        "loaded_bytes": "0fb6c2",
+        "file_bytes": "0fb6c2",
+        "instruction": "movzx   eax, dl",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1574f",
+        "file_offset": "0x1654f",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15750",
+        "file_offset": "0x16550",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15752",
+        "file_offset": "0x16552",
+        "loaded_bytes": "ff742440",
+        "file_bytes": "ff742440",
+        "instruction": "push    [esp+68h+var_28]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15756",
+        "file_offset": "0x16556",
+        "loaded_bytes": "ff742440",
+        "file_bytes": "ff742440",
+        "instruction": "push    [esp+6Ch+var_2C]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1575a",
+        "file_offset": "0x1655a",
+        "loaded_bytes": "e8b9f0ffff",
+        "file_bytes": "e8b9f0ffff",
+        "instruction": "call    sub_14818",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1575f",
+        "file_offset": "0x1655f",
+        "loaded_bytes": "83c418",
+        "file_bytes": "83c418",
+        "instruction": "add     esp, 18h",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15762",
+        "file_offset": "0x16562",
+        "loaded_bytes": "ff742434",
+        "file_bytes": "ff742434",
+        "instruction": "push    [esp+58h+var_24]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15792",
+        "file_offset": "0x16592",
+        "loaded_bytes": "0fb6ea",
+        "file_bytes": "0fb6ea",
+        "instruction": "movzx   ebp, dl",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15795",
+        "file_offset": "0x16595",
+        "loaded_bytes": "83fd0f",
+        "file_bytes": "83fd0f",
+        "instruction": "cmp     ebp, 0Fh",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x15798",
+        "file_offset": "0x16598",
+        "loaded_bytes": "7e25",
+        "file_bytes": "7e25",
+        "instruction": "jle     short loc_157BF",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1579a",
+        "file_offset": "0x1659a",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1579c",
+        "file_offset": "0x1659c",
+        "loaded_bytes": "83ed10",
+        "file_bytes": "83ed10",
+        "instruction": "sub     ebp, 10h",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x1579f",
+        "file_offset": "0x1659f",
+        "loaded_bytes": "55",
+        "file_bytes": "55",
+        "instruction": "push    ebp",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157a0",
+        "file_offset": "0x165a0",
+        "loaded_bytes": "ff742438",
+        "file_bytes": "ff742438",
+        "instruction": "push    [esp+60h+var_28]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157a4",
+        "file_offset": "0x165a4",
+        "loaded_bytes": "ff742438",
+        "file_bytes": "ff742438",
+        "instruction": "push    [esp+64h+var_2C]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157a8",
+        "file_offset": "0x165a8",
+        "loaded_bytes": "8d442410",
+        "file_bytes": "8d442410",
+        "instruction": "lea     eax, [esp+68h+var_58]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157ac",
+        "file_offset": "0x165ac",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157ad",
+        "file_offset": "0x165ad",
+        "loaded_bytes": "ff742458",
+        "file_bytes": "ff742458",
+        "instruction": "push    [esp+6Ch+var_14]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157b1",
+        "file_offset": "0x165b1",
+        "loaded_bytes": "ff742458",
+        "file_bytes": "ff742458",
+        "instruction": "push    [esp+70h+var_18]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157b5",
+        "file_offset": "0x165b5",
+        "loaded_bytes": "e83ef2ffff",
+        "file_bytes": "e83ef2ffff",
+        "instruction": "call    sub_149F8",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157ba",
+        "file_offset": "0x165ba",
+        "loaded_bytes": "83c41c",
+        "file_bytes": "83c41c",
+        "instruction": "add     esp, 1Ch",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157bd",
+        "file_offset": "0x165bd",
+        "loaded_bytes": "eb1d",
+        "file_bytes": "eb1d",
+        "instruction": "jmp     short loc_157DC",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157bf",
+        "file_offset": "0x165bf",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157c0",
+        "file_offset": "0x165c0",
+        "loaded_bytes": "6a00",
+        "file_bytes": "6a00",
+        "instruction": "push    0",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157c2",
+        "file_offset": "0x165c2",
+        "loaded_bytes": "0fb64612",
+        "file_bytes": "0fb64612",
+        "instruction": "movzx   eax, byte ptr [esi+12h]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157c6",
+        "file_offset": "0x165c6",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157c7",
+        "file_offset": "0x165c7",
+        "loaded_bytes": "8d44240c",
+        "file_bytes": "8d44240c",
+        "instruction": "lea     eax, [esp+64h+var_58]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157cb",
+        "file_offset": "0x165cb",
+        "loaded_bytes": "50",
+        "file_bytes": "50",
+        "instruction": "push    eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157cc",
+        "file_offset": "0x165cc",
+        "loaded_bytes": "ff742454",
+        "file_bytes": "ff742454",
+        "instruction": "push    [esp+68h+var_14]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157d0",
+        "file_offset": "0x165d0",
+        "loaded_bytes": "ff742454",
+        "file_bytes": "ff742454",
+        "instruction": "push    [esp+6Ch+var_18]",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157d4",
+        "file_offset": "0x165d4",
+        "loaded_bytes": "e83ff0ffff",
+        "file_bytes": "e83ff0ffff",
+        "instruction": "call    sub_14818",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157d9",
+        "file_offset": "0x165d9",
+        "loaded_bytes": "83c418",
+        "file_bytes": "83c418",
+        "instruction": "add     esp, 18h",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x157dc",
+        "file_offset": "0x165dc",
+        "loaded_bytes": "89c5",
+        "file_bytes": "89c5",
+        "instruction": "mov     ebp, eax",
+        "semantic_annotations": [],
+        "original_name": "sub_1567E",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14ae0",
+        "file_offset": "0x158e0",
+        "loaded_bytes": "85ff",
+        "file_bytes": "85ff",
+        "instruction": "test    edi, edi",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14ae2",
+        "file_offset": "0x158e2",
+        "loaded_bytes": "7506",
+        "file_bytes": "7506",
+        "instruction": "jnz     short loc_14AEA",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14ae4",
+        "file_offset": "0x158e4",
+        "loaded_bytes": "80780600",
+        "file_bytes": "80780600",
+        "instruction": "cmp     byte ptr [eax+6], 0",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14ae8",
+        "file_offset": "0x158e8",
+        "loaded_bytes": "750a",
+        "file_bytes": "750a",
+        "instruction": "jnz     short loc_14AF4",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14aea",
+        "file_offset": "0x158ea",
+        "loaded_bytes": "85ff",
+        "file_bytes": "85ff",
+        "instruction": "test    edi, edi",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14aec",
+        "file_offset": "0x158ec",
+        "loaded_bytes": "7493",
+        "file_bytes": "7493",
+        "instruction": "jz      short loc_14A81",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14aee",
+        "file_offset": "0x158ee",
+        "loaded_bytes": "80780600",
+        "file_bytes": "80780600",
+        "instruction": "cmp     byte ptr [eax+6], 0",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14af2",
+        "file_offset": "0x158f2",
+        "loaded_bytes": "758d",
+        "file_bytes": "758d",
+        "instruction": "jnz     short loc_14A81",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14af4",
+        "file_offset": "0x158f4",
+        "loaded_bytes": "8b442428",
+        "file_bytes": "8b442428",
+        "instruction": "mov     eax, [esp+1Ch+arg_8]",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14af8",
+        "file_offset": "0x158f8",
+        "loaded_bytes": "880c03",
+        "file_bytes": "880c03",
+        "instruction": "mov     [ebx+eax], cl",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14afb",
+        "file_offset": "0x158fb",
+        "loaded_bytes": "43",
+        "file_bytes": "43",
+        "instruction": "inc     ebx",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      },
+      {
+        "ida_linear_address": "0x14afc",
+        "file_offset": "0x158fc",
+        "loaded_bytes": "eb83",
+        "file_bytes": "eb83",
+        "instruction": "jmp     short loc_14A81",
+        "semantic_annotations": [],
+        "original_name": "sub_149F8",
+        "level": "已證實",
+        "claim_scope": "原始指令與既有ABI的直接反證"
+      }
+    ],
+    "typed_change": "高command首階段mode=1、inner=1；第二階段保留command-16長度，cardinal僅收raw+6!=0。低command現有row目標反轉與slot／嚴格大於順序保持。",
+    "failure": "既有raw完整性／座標／shape guards保持，不改oracle或強制AI順序。",
+    "validation": [
+      "synthetic近鄰方向與非零raw陣營，排除actor所在格及raw0",
+      "既有item scorer與其他章正常Game",
+      "第27章424筆AI及完整流程／SAV比較"
+    ],
+    "older_claims": [
+      "56的高command mode原row說法及固定camp0已推翻",
+      "11既有數值producer完成敘述限縮；歷史快照不回寫"
+    ],
+    "stop_line": "重用IDA9.4完整匯出及Capstone核對，不新增matching編譯。",
+    "issue": 222
+  }
+}

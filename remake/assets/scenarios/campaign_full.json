@@ -5497,7 +5497,7 @@
    "native_map_hud_inherited": {
     "display_gate_b": 1
    },
-   "on_win": "inventory_gate_ch27_sky_key",
+   "on_win": "story_ch27_post_intro",
    "on_lose": "retreat_ch27"
   },
   "retreat_ch27": {
@@ -5528,16 +5528,8 @@
   },
   "story_ch27_post_sky_key_success": {
    "type": "cutscene",
-   "beats": [
-    {
-     "op": "sync_party"
-    },
-    {
-     "op": "set_chapter",
-     "chapter": 27
-    }
-   ],
-   "next": "preparation_ch28"
+   "next": "preparation_ch28",
+   "handler_binding": "assets/cutscenes/bindings/ch26_post_sky_key_success.json"
   },
   "ending_ch27_no_sky_key": {
    "type": "ending",
@@ -6766,7 +6758,13 @@
    "type": "preparation",
    "prompt": "要進入戰場嗎？",
    "cancel": "town_ch27",
-   "next": "story_ch27"
+   "next": "story_ch27",
+   "required_party_identities": [
+    9
+   ],
+   "preparation_front_identities": [
+    9
+   ]
   },
   "preparation_ch28": {
    "type": "preparation",
@@ -7384,6 +7382,11 @@
     }
    ],
    "next": "town_ch27"
+  },
+  "story_ch27_post_intro": {
+   "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch26_post_intro.json",
+   "next": "inventory_gate_ch27_sky_key"
   }
  }
 }

@@ -2283,6 +2283,21 @@
         ],
         "pattern": "--preserve-ids-from"
       }
+    },
+    {
+      "id": "ai-cardinal-selector-checks-direct-polarity",
+      "date": "2026-10-16",
+      "area": "AI兩階段幾何與同狀態驗證",
+      "rule": "高command物品候選分開核對選向範圍與射線目標極性；固定FD2.EXE的1567E首階段用mode1／inner1，149F8 selector0收raw+6非零。入口remake/internal/battle/native_ai_item_preselection.go及docs/data/ida/fd2_ch27_flow_20261016.json ai_high_item_target_contract；孤立fixture綠色不能取代正常Game首個AI入口比較。",
+      "why": "第27章Game與SAV可成功，但錯用command31範圍及raw0目標造成敵軍互傷、90筆AI順序分歧。直接指令訂正後424筆零分歧，舊map0 score8被撤回。",
+      "evidence": "docs/data/ida/fd2_ch27_flow_20261016.json；GitHub #222",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/native_ai_item_preselection.go"
+        ],
+        "pattern": "record.+6.+ != 0"
+      }
     }
   ]
 }

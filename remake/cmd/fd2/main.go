@@ -1797,6 +1797,11 @@ func (g *Game) beatStart(b campaign.Beat) {
 			if g.hasHandlerInheritedMapView {
 				g.storyNativeMapView = g.handlerInheritedMapView
 				g.hasStoryNativeMapView = true
+				if g.m != nil && g.m.TileW > 0 && g.m.TileH > 0 {
+					g.camX = float64(g.storyNativeMapView.CameraX * g.m.TileW)
+					g.camY = float64(g.storyNativeMapView.CameraY * g.m.TileH)
+					g.curX, g.curY = g.storyNativeMapView.CursorX, g.storyNativeMapView.CursorY
+				}
 			}
 		}
 		g.beatAdvance()
@@ -1971,7 +1976,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		}
 		g.beatAdvance()
 	case "direct_record_patch":
-		if (b.Source != "0x2362d" && b.Source != "0x23ec4" && b.Source != "0x33346") || b.DirectRecordPatch == nil {
+		if (b.Source != "0x2362d" && b.Source != "0x23ec4" && b.Source != "0x33346" && b.Source != "0x25116") || b.DirectRecordPatch == nil {
 			g.loadErr = "beat direct_record_patch:缺少原版來源或 sparse payload"
 			return
 		}
@@ -2492,10 +2497,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 		g.handlerResource = 0
 		g.beatAdvance()
 	case "palette_update":
+		if b.PaletteStart == 0 && b.PaletteEnd == 255 &&
+			b.PaletteDelta >= 0 && b.PaletteDelta <= 63 && nativeMapAssetsAvailable(g.nativeMapAssets) {
+			if err := g.startNativePaletteUpdate(b.PaletteDelta, g.beatAdvance); err != nil {
+				g.loadErr = "beat palette_update: " + err.Error()
+			}
+			return
+		}
 		// Full range delta=255 is independent of source RGB: every six-bit
 		// component saturates to white. This exact operation can cover legacy
 		// scene presentation without inventing a general RGB approximation.
-		// Delta=0 restores baseline; every other non-zero shape stays closed.
+		// Legacy scenes without an indexed frame retain their white/restore path.
 		switch {
 		case b.PaletteStart == 0 && b.PaletteEnd == 255 && b.PaletteDelta == 255:
 			g.nativeFullDACWhite = true
@@ -2760,13 +2772,19 @@ func (g *Game) evalBeatCondition(condition *campaign.BeatCondition) (bool, error
 		}
 		return false, nil
 	case "native_inventory_item_present":
-		if g.st == nil || condition.NativeInventoryItemID == nil || *condition.NativeInventoryItemID < 0 || *condition.NativeInventoryItemID > 0xff {
-			return false, fmt.Errorf("native_inventory_item_present lacks raw item byte or battle state")
+		// 第27章揭幕的33B3F在LOADCH之後、可操作戰鬥建立前查同一原生陣列。
+		// READY契約：fd2_ch27_flow_20261016.json story_inventory_predicate。
+		state := g.st
+		if state == nil && g.hasStoryNativeMapView {
+			state = g.storyNativeMapState
 		}
-		if len(g.st.Units) < 16 {
-			return false, fmt.Errorf("native_inventory_item_present requires 16 runtime records, got %d", len(g.st.Units))
+		if state == nil || condition.NativeInventoryItemID == nil || *condition.NativeInventoryItemID < 0 || *condition.NativeInventoryItemID > 0xff {
+			return false, fmt.Errorf("native_inventory_item_present lacks raw item byte or runtime state")
 		}
-		records, err := battle.NativeInventoryRecords(g.st.Units, 16)
+		if len(state.Units) < 16 {
+			return false, fmt.Errorf("native_inventory_item_present requires 16 runtime records, got %d", len(state.Units))
+		}
+		records, err := battle.NativeInventoryRecords(state.Units, 16)
 		if err != nil {
 			return false, fmt.Errorf("native_inventory_item_present raw records: %w", err)
 		}
@@ -3316,6 +3334,11 @@ func (g *Game) enterNode() {
 		return
 	}
 	g.captureNativeMapHUDPersistence()
+	// 第27章同一原生handler拆成可編輯節點後，故事視圖仍是目前共享globals。
+	// READY契約見fd2_ch27_flow_20261016.json node_view_handoff。
+	if g.storyBG && g.hasStoryNativeMapView && g.st != nil {
+		g.st.NativeMapViewState, g.st.HasNativeMapViewState = g.storyNativeMapView, true
+	}
 	// 原版故事 renderer 與戰場共用 [0x53AB9]/[0x53ABD] 等視圖全域；在戰果
 	// handler 清除 battle.State 前保存該 raw carrier，只有明示 story_viewport
 	// 的 runtime_context 才能領回，避免一般故事節點繼承陳舊視圖。

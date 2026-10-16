@@ -1390,6 +1390,71 @@ func TestBeatChapter22RawBranchConditionsUseOnlyProvenance(t *testing.T) {
 	}
 }
 
+func TestStoryInventoryPredicateUsesCurrentRawPrefix(t *testing.T) {
+	item := 100
+	condition := &campaign.BeatCondition{Op: "native_inventory_item_present", NativeInventoryItemID: &item}
+	state := &battle.State{Units: make([]*battle.Unit, 17)}
+	for i := range state.Units {
+		state.Units[i] = &battle.Unit{InventorySlots: make([]int, 8), NativeInventoryFlags: make([]int, 8)}
+		for j := range state.Units[i].NativeInventoryFlags {
+			state.Units[i].NativeInventoryFlags[j] = 0x80
+		}
+	}
+	g := &Game{hasStoryNativeMapView: true, storyNativeMapState: state}
+	for _, index := range []int{15, 16} {
+		state.Units[index].NativeInventoryFlags[0] = 0
+		state.Units[index].InventorySlots[0] = item
+		got, err := g.evalBeatCondition(condition)
+		if err != nil || got != (index == 15) {
+			t.Fatalf("故事原生槽%d：got=%v err=%v", index, got, err)
+		}
+		state.Units[index].NativeInventoryFlags[0] = 0x80
+	}
+	state.Units[0].NativeInventoryFlags = nil
+	if _, err := g.evalBeatCondition(condition); err == nil {
+		t.Fatal("故事缺raw inventory仍通過")
+	}
+	g.hasStoryNativeMapView = false
+	if _, err := g.evalBeatCondition(condition); err == nil {
+		t.Fatal("故事缺原生view仍通過")
+	}
+	g.st = &battle.State{Units: state.Units[:16]}
+	g.storyNativeMapState = nil
+	g.st.Units[0].NativeInventoryFlags = make([]int, 8)
+	if got, err := g.evalBeatCondition(condition); err != nil || got {
+		t.Fatalf("戰鬥來源改變：got=%v err=%v", got, err)
+	}
+}
+
+func TestHandlerViewSurvivesTransparentInventoryGate(t *testing.T) {
+	context := &campaign.HandlerRuntimeContext{SlotCount: 16, StoryViewport: true}
+	g := newBeatTestGame(t, []campaign.Beat{
+		{Op: "runtime_context", RuntimeContext: context}, {Op: "delay", Ms: 100},
+	})
+	item := 100
+	g.camp = campaign.NewRunner(&campaign.Campaign{Start: "gate", Nodes: map[string]*campaign.Node{
+		"gate": {Type: "inventory_gate", ItemID: &item, IfPresent: "cs", IfMissing: "cs"},
+		"cs": g.camp.Node(), "end": {Type: "ending", Text: "完"},
+	}})
+	g.m.W, g.m.H = 31, 57
+	g.m.Tiles = make([]int, 31*57)
+	g.st = &battle.State{W: 31, H: 57, Units: make([]*battle.Unit, 16), HasNativeMapViewState: true}
+	for i := range g.st.Units {
+		g.st.Units[i] = &battle.Unit{InventorySlots: make([]int, 8), NativeInventoryFlags: make([]int, 8)}
+		for j := range g.st.Units[i].NativeInventoryFlags {
+			g.st.Units[i].NativeInventoryFlags[j] = 0x80
+		}
+	}
+	want := battle.NativeMapViewState{CameraX: 9, CameraY: 8, CursorX: 15, CursorY: 11, VisibleCursorX: 6, VisibleCursorY: 3}
+	g.storyNativeMapView, g.hasStoryNativeMapView = want, true
+	g.enterNode()
+	if g.loadErr != "" || g.camp.NodeID() != "cs" || g.st.NativeMapViewState != want ||
+		g.storyNativeMapView != want || g.camX != 216 || g.camY != 192 || g.curX != 15 || g.curY != 11 {
+		t.Fatalf("透明分支丟失原生視圖：node=%q view=%+v cam=(%v,%v) cursor=(%d,%d) err=%q",
+			g.camp.NodeID(), g.storyNativeMapView, g.camX, g.camY, g.curX, g.curY, g.loadErr)
+	}
+}
+
 func TestBeatNativeAnyOfCombinesOnlyRawPredicates(t *testing.T) {
 	round, threshold := 18, 4
 	condition := &campaign.BeatCondition{Op: "native_any_of", Any: []campaign.BeatCondition{

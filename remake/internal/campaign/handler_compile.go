@@ -1352,7 +1352,8 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 		case "direct_record_patch":
 			patch := input.DirectRecordPatch
 			provenSource := input.Source.Addr == "0x2362d" || input.Source.Addr == "0x23ec4" ||
-				input.Source.Addr == "0x33346" // 0x3332B 第十章開場：record 50／51 的 +0x26 寫 100
+				input.Source.Addr == "0x33346" || // 0x3332B 第十章開場：record 50／51 的 +0x26 寫 100
+				input.Source.Addr == "0x25116" // 第27章前16筆raw+5歸零；fd2_ch27_flow_20261016.json。
 			if !provenSource || input.Source.Target != "" ||
 				patch == nil || len(patch.Units) == 0 || activeSlotCount <= 0 {
 				issue(i, input, "direct_record_patch requires an active runtime frontier and unit writes")

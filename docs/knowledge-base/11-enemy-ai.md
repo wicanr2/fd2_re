@@ -478,11 +478,14 @@ Manhattan 距離選最近座標，完全同距離保留先出現者，再交 `0x
   bit7-clear count 掃 raw slots `0..count-1`，依 slot item row 建
   row-major 目的地；低 command 以第二個 `0x14818` 產生 roster-ordered
   targets，高 command 以 `0x149F8` 從 actor 朝目的地走
-  `command-0x10` 步且固定只收 raw camp0。每個候選交 `0x15880`，
+  `command-0x10` 步且只收 raw `+6!=0`。高 command 第一階段使用mode1／inner1。
+  2026-10-16第27章同狀態及直接指令反證了舊mode／camp0敘述，
+  勘誤見[第27章主證據](../data/ida/fd2_ch27_flow_20261016.json)的`ai_high_item_target_contract`。
+  每個候選交 `0x15880`，
   只有分數嚴格大於目前最大值才保存 `(score,x,y,slot)`。
-- map0 真實 roster／constructor 後 `+2 & 0x1F` 基底與原始 item79 row 的交叉 fixture固定
-  actor index23 得 score8、目的地 `(19,15)`、raw slot0。fixture 只替 actor
-  注入已追蹤 item79 以關閉 producer；不宣稱一般玩家 map0 原本持有該物品。
+- map0 真實 roster／constructor 與item79的舊score8／`(19,15)`斷言已撤回。
+  它把raw0同陣營收成目標，修正後沒有正分候選。fixture只替actor index23
+  注入item79，不宣稱一般玩家map0原本持有該物品。
 - remake 已先把 editable item 23-byte row 的 K4（raw byte `0x11`）資料化為 `AICommandSpell`（command `>=0x10` → `spell_id=command-0x10`）；這只建立 command inventory，不提前猜測 AI ranking、可用條件或治療目標。
 
 上述勘誤的直接指令、執行端消費者與 inventory bound helper 已保存於
@@ -529,7 +532,7 @@ score、Cast 或 effect；36..39 仍因沒有已驗證 command record 而省略�
   保留 `MaxScore=0` 且不創造命令。
 - `BuildNativeAIPhaseDiagnosticPlan` 現依原版 `0x1D8BA` 順序，對每筆合格
   selector-zero 記錄先執行 `ScoreNativeAI1598A`、再執行
-  `ScoreNativeAI1567E`，並將96／8這類數值分別送入 `[0x53C23]`／
+  `ScoreNativeAI1567E`，並將96／0這類數值分別送入 `[0x53C23]`／
   `[0x53C33]` 的 signed `>=6` 三遍掃描計畫。輸入必須逐單位完整且唯一，
   函式不改寫戰鬥狀態。
 - map0 測試是修改狀態的 E0 交叉夾具：沿用真實名冊、構成格基底、地形、命令

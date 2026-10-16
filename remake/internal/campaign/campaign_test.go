@@ -427,13 +427,14 @@ func TestCampaignFullPrologueFollowsOriginalTextGroups(t *testing.T) {
 		}
 	}
 	battle27 := c.Nodes["battle_ch27"]
+	intro27 := c.Nodes["story_ch27_post_intro"]
 	gate := c.Nodes["inventory_gate_ch27_sky_key"]
 	success := c.Nodes["story_ch27_post_sky_key_success"]
 	badEnding := c.Nodes["ending_ch27_no_sky_key"]
-	if battle27 == nil || battle27.OnWin != "inventory_gate_ch27_sky_key" || gate == nil || gate.Type != "inventory_gate" || gate.ItemID == nil || *gate.ItemID != 0x64 || gate.IfPresent != "story_ch27_post_sky_key_success" || gate.IfMissing != "story_ch27_post_sky_key_missing" {
+	if battle27 == nil || battle27.OnWin != "story_ch27_post_intro" || intro27 == nil || intro27.HandlerBinding != "assets/cutscenes/bindings/ch26_post_intro.json" || intro27.Next != "inventory_gate_ch27_sky_key" || gate == nil || gate.Type != "inventory_gate" || gate.ItemID == nil || *gate.ItemID != 0x64 || gate.IfPresent != "story_ch27_post_sky_key_success" || gate.IfMissing != "story_ch27_post_sky_key_missing" {
 		t.Fatalf("chapter27 must preserve original sky-key inventory branch: battle=%#v gate=%#v", battle27, gate)
 	}
-	if success == nil || success.Type != "cutscene" || success.HandlerBinding != "" || success.Next != "preparation_ch28" || len(success.Beats) != 2 || success.Beats[0].Op != "sync_party" || success.Beats[1].Op != "set_chapter" || success.Beats[1].Chapter == nil || *success.Beats[1].Chapter != 27 {
+	if success == nil || success.Type != "cutscene" || success.HandlerBinding != "assets/cutscenes/bindings/ch26_post_sky_key_success.json" || success.Next != "preparation_ch28" || len(success.Beats) != 0 {
 		t.Fatalf("sky-key success must preserve the proven ch26_post success tail without reusing ch27_post: %#v", success)
 	}
 	post29 := c.Nodes["postbattle_ch29_persist"]
@@ -1226,7 +1227,7 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 	}
 	// #47／#61／#79／#214以原版pending1返回標題取代retreat_ch12／ch13／ch15／ch26；現況統計入口為58，
 	// 可重跑工具 tools/audit_story_script_coverage.py，不把移除的自訂台詞算成證據。
-	if storyNodes != 117 || scripted != 9 || handlerBound != 57 || fallback != 51 || retreat != 26 || rumor != 23 || postbattle != 0 || generic != 2 {
+	if storyNodes != 118 || scripted != 9 || handlerBound != 59 || fallback != 50 || retreat != 26 || rumor != 23 || postbattle != 0 || generic != 1 {
 		t.Fatalf("campaign story coverage changed: nodes=%d scripted=%d handler_bound=%d fallback=%d retreat=%d rumor=%d postbattle=%d generic=%d; update the audit before changing claims", storyNodes, scripted, handlerBound, fallback, retreat, rumor, postbattle, generic)
 	}
 }

@@ -176,8 +176,14 @@ func TestMap26LoadsDormantTurnRowsAndActivatesEvent63(t *testing.T) {
 		t.Fatalf("activated row=%#v state17=%d", got, st.NativeEventState[17])
 	}
 	before := st.NativeTurnEventControls
-	if _, err := ApplyNativeFieldTurnActivationEvent(st, x, y, 0); err == nil || st.NativeTurnEventControls != before {
-		t.Fatalf("repeated event62 must fail without mutation: err=%v rows=%#v", err, st.NativeTurnEventControls)
+	beforeRaw := append([]byte(nil), st.NativeFieldControlRaw...)
+	for _, once := range []byte{1, 2, 255} {
+		st.NativeEventState[17] = once
+		id, err := ApplyNativeFieldTurnActivationEvent(st, x, y, 0)
+		if err != nil || id != 62 || st.NativeTurnEventControls != before ||
+			!reflect.DeepEqual(st.NativeFieldControlRaw, beforeRaw) || st.NativeEventState[17] != once {
+			t.Fatalf("repeated event62 must return without mutation: once=%d id=%d err=%v rows=%#v", once, id, err, st.NativeTurnEventControls)
+		}
 	}
 }
 

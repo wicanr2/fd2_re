@@ -802,6 +802,11 @@ def build_campaign(
                 # #213 READY契約見fd2_turn_event57_20261016.json。
                 nodes[preparation_id]["required_party_identities"] = [9, 29]
                 nodes[preparation_id]["preparation_front_identities"] = [9, 29]
+            elif intermission_cid == "27":
+                # raw26>25：31C79／31CF8要求並前置9，沿既有helper。
+                # READY契約見fd2_ch27_flow_20261016.json。
+                nodes[preparation_id]["required_party_identities"] = [9]
+                nodes[preparation_id]["preparation_front_identities"] = [9]
         shop_node_ids: list[str] = []
         if normal_rows:
             for i, s in enumerate(normal_rows):
@@ -894,7 +899,14 @@ def build_campaign(
         if c == 27:
             gate_id = "inventory_gate_ch27_sky_key"
             success_id = "story_ch27_post_sky_key_success"
+            intro_id = "story_ch27_post_intro"
             bad_ending_id = "ending_ch27_no_sky_key"
+            # #220 READY：250CC共同前綴先於天空之鑰分支。
+            nodes[intro_id] = {
+                "type": "cutscene",
+                "handler_binding": "assets/cutscenes/bindings/ch26_post_intro.json",
+                "next": gate_id,
+            }
             nodes[gate_id] = {
                 "type": "inventory_gate",
                 "item_id": 0x64,
@@ -903,17 +915,14 @@ def build_campaign(
             }
             nodes[success_id] = {
                 "type": "cutscene",
-                "beats": [
-                    {"op": "sync_party"},
-                    {"op": "set_chapter", "chapter": 27},
-                ],
+                "handler_binding": "assets/cutscenes/bindings/ch26_post_sky_key_success.json",
                 "next": preparation_id,
             }
             nodes[bad_ending_id] = {
                 "type": "ending",
                 "text": "未能以天空之鑰開啟通往空中大陸的道路，炎龍騎士團的遠征在巨塔前告終。",
             }
-            after_battle_id = gate_id
+            after_battle_id = intro_id
 
         # 零起算 ch20_post = 玩家第21章戰後。原版不是「六種各一件」：
         # 它對 D1..D6 × runtime slots0..15 計數，每個(item,slot)至多命中一次，

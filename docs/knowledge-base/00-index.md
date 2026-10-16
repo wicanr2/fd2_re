@@ -851,3 +851,9 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第26章正式流程章收據：[parity-ch26](../data/ui-traces/parity-ch26.json)，章前HP作弊政策、九波與嚴格整檔保存；依111例外登記PLAYER-E2，畫面只作參考。
 
 - 既有戰役重匯入的節點ID保留 #217：[import_editor_legacy工具](../../tools/import_editor_legacy.py)的`--preserve-ids-from`，限同一schema_version=1戰役，驗證見第26章主契約`canonical_identity_preservation`。
+
+- 第27章接續：[同源實際保存清冊](../data/parity-slots/ch27-manifest.json)、[正常移動與單次清敵計畫](../data/parity-plans/ch27-flow-cheat-r1.jsonl)、[原版caller與READY契約](../data/ida/fd2_ch27_flow_20261016.json)。正式[流程收據](../data/ui-traces/parity-ch27.json)已通過行為／節點／完整SAV；未抽樣分支與畫面限制見主契約。
+
+- 第27章正式重跑：[r2輸入](../data/parity-plans/ch27-flow-cheat-r2.jsonl)，保留r1為首次敵方行動前取消的trace設定診斷。
+
+- 第27章戰後共同前綴及持鑰匙成功臂 #220：[intro handler](../../remake/assets/cutscenes/handlers/ch26_post_intro.json)、[intro binding](../../remake/assets/cutscenes/bindings/ch26_post_intro.json)、[success handler](../../remake/assets/cutscenes/handlers/ch26_post_sky_key_success.json)、[success binding](../../remake/assets/cutscenes/bindings/ch26_post_sky_key_success.json)。固定原始表、CONFORMED規格、75筆實測與畫面限制見第27章主契約。

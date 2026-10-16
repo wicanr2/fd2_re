@@ -67,7 +67,7 @@ func validateNativeIndexedTransitionSpec(s campaign.HandlerIndexedTransition) er
 
 // resolveNativeIndexedTransitionSpec keeps the dynamic first two arguments
 // of 0x24618 distinct from static authored geometry.  The recovered handlers
-// use three recovered raw cursor expressions: ch21 call-site 0x245ce pushes
+// use recovered raw cursor expressions: ch21 call-site 0x245ce pushes
 // [0x53ab9] and [0x53abd]+3; ch22 pre call-site 0x336e5 pushes
 // [0x53ab9] and [0x53abd]+5; ch27 pre call-site 0x33ce2 pushes
 // [0x53ab9]+6 and [0x53abd]+5.  The call-site is part of Beat.Source so an
@@ -81,7 +81,12 @@ func (g *Game) resolveNativeIndexedTransitionSpec(spec campaign.HandlerIndexedTr
 	}
 	validOffset := (source == "0x245ce" && spec.CursorXOffset == 0 && spec.CursorYOffset == 3) ||
 		(source == "0x336e5" && spec.CursorXOffset == 0 && spec.CursorYOffset == 5) ||
-		(source == "0x33ce2" && spec.CursorXOffset == 6 && spec.CursorYOffset == 5)
+		(source == "0x33ce2" && spec.CursorXOffset == 6 && spec.CursorYOffset == 5) ||
+		// 第27章READY caller資料：fd2_ch27_flow_20261016.json。
+		(source == "0x33bb9" && spec.CursorXOffset == 0 && spec.CursorYOffset == 3) ||
+		(source == "0x33c09" && spec.CursorXOffset == 0 && spec.CursorYOffset == 0) ||
+		(source == "0x33c66" && spec.CursorXOffset == 2 && spec.CursorYOffset == 0) ||
+		(source == "0x252ee" && spec.CursorXOffset == 0 && spec.CursorYOffset == -1)
 	if !validOffset {
 		return campaign.HandlerIndexedTransition{}, fmt.Errorf("native 0x24618 cursor offset is not proven for source %s", source)
 	}

@@ -39,27 +39,27 @@
       "text_table": "dword ptr [0x3a79]"
     },
     {
-      "op": "native_call",
-      "native_target": "0x24b14",
-      "native_semantic": "native_inventory_item_gate",
-      "native_confidence": "已證實",
-      "native_evidence": ["docs/data/ida/fd2_ch22_post_ida.txt"],
-      "raw_args": [
-        100
-      ],
+      "op": "if",
       "source": {
         "addr": "0x33b3f",
         "target": "0x24b14"
-      }
-    },
-    {
-      "op": "dialog",
-      "text_index": 3,
-      "source": {
-        "addr": "0x33b6b",
-        "target": "0x15f84"
       },
-      "text_table": "dword ptr [0x3a79]"
+      "condition": {
+        "op": "native_inventory_item_present",
+        "native_inventory_item_id": 100
+      },
+      "then": [
+        {
+          "op": "dialog",
+          "text_index": 3,
+          "source": {
+            "addr": "0x33b6b",
+            "target": "0x15f84"
+          },
+          "text_table": "dword ptr [0x3a79]"
+        }
+      ],
+      "else": []
     },
     {
       "op": "dialog",
@@ -84,7 +84,9 @@
       "native_target": "0x24618",
       "native_semantic": "native_indexed_transition",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+      "native_evidence": [
+        "docs/data/ida/fd2_ch21_post_ida.txt"
+      ],
       "raw_args": [
         2,
         2,
@@ -101,7 +103,9 @@
       "native_target": "0x11df2",
       "native_semantic": "native_palette_update",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "native_evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "raw_args": [
         0,
         255,
@@ -126,7 +130,9 @@
       "native_target": "0x24618",
       "native_semantic": "native_indexed_transition",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+      "native_evidence": [
+        "docs/data/ida/fd2_ch21_post_ida.txt"
+      ],
       "raw_args": [
         2,
         2,
@@ -143,7 +149,9 @@
       "native_target": "0x11df2",
       "native_semantic": "native_palette_update",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "native_evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "raw_args": [
         0,
         255,
@@ -176,7 +184,9 @@
       "native_target": "0x24618",
       "native_semantic": "native_indexed_transition",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/ida/fd2_ch21_post_ida.txt"],
+      "native_evidence": [
+        "docs/data/ida/fd2_ch21_post_ida.txt"
+      ],
       "raw_args": [
         2,
         2,
@@ -193,7 +203,9 @@
       "native_target": "0x11df2",
       "native_semantic": "native_palette_update",
       "native_confidence": "已證實",
-      "native_evidence": ["docs/data/fd2_11df2_palette_disasm.txt"],
+      "native_evidence": [
+        "docs/data/fd2_11df2_palette_disasm.txt"
+      ],
       "raw_args": [
         0,
         255,

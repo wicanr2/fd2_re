@@ -236,8 +236,12 @@ func ApplyNativeFieldTurnActivationEvent(
 		}) {
 		return 0, fmt.Errorf("turn activation: editable event62 rule is incomplete")
 	}
-	if st.NativeEventState[*rule.OnceState] != 0 ||
-		st.NativeRoundCounter <= 0 || st.NativeRoundCounter > 0xfe {
+	// 0x35898的已啟用guard直接返回；第27章同狀態原版多次跨線後仍繼續。
+	// READY勘誤見fd2_ch27_flow_20261016.json event62_repeat_contract。
+	if st.NativeEventState[*rule.OnceState] != 0 {
+		return eventID, nil
+	}
+	if st.NativeRoundCounter <= 0 || st.NativeRoundCounter > 0xfe {
 		return 0, fmt.Errorf("turn activation: state or native round is not activatable")
 	}
 	activation := *rule.TurnActivation

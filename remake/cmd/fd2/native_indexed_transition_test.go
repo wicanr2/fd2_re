@@ -81,6 +81,28 @@ func TestResolveNativeIndexedTransitionUsesChapter27TwoAxisOffset(t *testing.T) 
 	}
 }
 
+func TestChapter27IndexedTransitionCallersKeepDistinctOffsets(t *testing.T) {
+	g := &Game{
+		storyNativeMapView: battle.NativeMapViewState{VisibleCursorX: 6, VisibleCursorY: 5},
+		hasStoryNativeMapView: true,
+	}
+	for _, tc := range []struct {
+		source string
+		x, y   int
+	}{{"0x33bb9", 0, 3}, {"0x33c09", 0, 0}, {"0x33c66", 2, 0}, {"0x252ee", 0, -1}} {
+		spec := nativeIndexedTransitionSpecForTest()
+		spec.CursorSource, spec.CursorXOffset, spec.CursorYOffset = "native_relative_cursor", tc.x, tc.y
+		got, err := g.resolveNativeIndexedTransitionSpec(spec, tc.source)
+		if err != nil || got.TileX != 6+tc.x || got.TileY != 5+tc.y {
+			t.Fatalf("caller %s：got=%+v err=%v", tc.source, got, err)
+		}
+		spec.CursorXOffset++
+		if _, err := g.resolveNativeIndexedTransitionSpec(spec, tc.source); err == nil {
+			t.Fatalf("caller %s接受未證實偏移", tc.source)
+		}
+	}
+}
+
 func TestResolveNativeIndexedTransitionRejectsMissingOrUnprovenCursor(t *testing.T) {
 	spec := nativeIndexedTransitionSpecForTest()
 	spec.CursorSource = "native_relative_cursor"

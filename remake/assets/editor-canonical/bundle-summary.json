@@ -1921,6 +1921,12 @@
           "message": "欄位已完整保留於 extensions.legacy",
           "path": "nodes.shop_ch27_secret",
           "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "nodes.story_ch27_post_intro",
+          "severity": "warning"
         }
       ],
       "kind": "campaign",
@@ -18519,11 +18525,11 @@
   ],
   "documents": [
     {
-      "diagnostics": 319,
+      "diagnostics": 320,
       "document_id": "legacy/campaign/b5c1e4503510/campaign_full",
       "kind": "campaign",
       "output": "campaign/campaign_full.json",
-      "sha256": "727ec7653563acd19e43dbc840f4a1b0b5c714384f5e0befdcb8aa46728485e7",
+      "sha256": "1425e2fe52bca0ac7ed1bf2447c88843b44a84b6de4e81a2dccf34ef637d4e55",
       "source": "remake/assets/scenarios/campaign_full.json"
     },
     {

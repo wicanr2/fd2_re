@@ -10157,3 +10157,8 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 既有人工智慧與ch28行為沿原本證據維持，不從raw分類unknown重開；正式Go／Ebiten、PLAYER-E2及硬體時序不提升。索引的舊「其餘五個候選」已限定原來源並指向新1598A匹配，歷史負例不重寫。新增可重用的聚合／獨立暫存值教訓，guard綁定C來源，未修改驗證器。
 
 本批收尾：100份來源SHA、174份雙輪C連結報告及1194個本地連結相符，四份實際CPU策略逐項核對，索引正對照與正式IDA資料庫SHA保持。190條教訓及75個guard通過；提交前真正主機官方worklist再次pull／render／verify，16條、人工判讀8條、可能已完成0條。新來源與產物UID／GID1000，既有root-owned2811項、.md目錄0，Docker容器已退出移除，沒有其他子代理在執行。兩個完整C重建與來源回歸隨提交推送GitHub，提交與真正遠端HEAD回填#198。
+
+
+## 2026-10-16 第27章AI物品目標勘誤
+
+本檔歷史map0 item79 score8／(19,15)及phase96／8已被同狀態與直接指令推翻。1567E高command首階段mode1／inner1，149F8 selector0收raw+6非零；修正後該fixture item score0／phase96／0。原始證據、READY修訂及第27章424筆AI零分歧見[主契約](../data/ida/fd2_ch27_flow_20261016.json)的ai_high_item_target_contract。歷史記錄保留；現況依58與正式收據。

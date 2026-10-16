@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "chapter": 26,
+  "phase": "post",
+  "handler": "0x250cc",
+  "beats": [
+    {
+      "op": "direct_record_patch",
+      "source": {
+        "addr": "0x25116"
+      },
+      "direct_record_patch": {
+        "units": [
+          {
+            "slot": 0,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 1,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 2,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 3,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 4,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 5,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 6,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 7,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 8,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 9,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 10,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 11,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 12,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 13,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 14,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "slot": 15,
+            "raw_bytes": [
+              {
+                "offset": 5,
+                "value": 0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "op": "layout_units",
+      "source": {
+        "addr": "0x25141",
+        "target": "0x233c6"
+      }
+    },
+    {
+      "op": "dialog",
+      "text_index": 8,
+      "source": {
+        "addr": "0x25168",
+        "target": "0x15f84"
+      },
+      "text_table": "dword ptr [0x3a79]"
+    },
+    {
+      "op": "act",
+      "acting_id": 82,
+      "source": {
+        "addr": "0x2517c",
+        "target": "0x1366a"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unknown_ops": 0
+  },
+  "source_subset": {
+    "parent": "ch26_post.json",
+    "evidence": "docs/data/ida/fd2_ch27_flow_20261016.json#post_success_contract"
+  }
+}

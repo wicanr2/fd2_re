@@ -6780,7 +6780,7 @@
       "map_id": "map/map26",
       "node_id": "legacy/node/b5c1e4503510/battle_ch27/203",
       "on_lose": "legacy/node/b5c1e4503510/retreat_ch27/204",
-      "on_win": "legacy/node/b5c1e4503510/inventory_gate_ch27_sky_key/205",
+      "on_win": "legacy/node/b5c1e4503510/story_ch27_post_intro/318",
       "scenario_id": "scenario/ch27",
       "type": "battle"
     },
@@ -6831,15 +6831,7 @@
     {
       "extensions": {
         "legacy": {
-          "beats": [
-            {
-              "op": "sync_party"
-            },
-            {
-              "chapter": 27,
-              "op": "set_chapter"
-            }
-          ]
+          "handler_binding": "assets/cutscenes/bindings/ch26_post_sky_key_success.json"
         },
         "legacy_key": "story_ch27_post_sky_key_success"
       },
@@ -8446,7 +8438,13 @@
       "extensions": {
         "legacy": {
           "cancel": "town_ch27",
-          "prompt": "要進入戰場嗎？"
+          "preparation_front_identities": [
+            9
+          ],
+          "prompt": "要進入戰場嗎？",
+          "required_party_identities": [
+            9
+          ]
         },
         "legacy_key": "preparation_ch27"
       },
@@ -9364,6 +9362,17 @@
       "next": "legacy/node/b5c1e4503510/town_ch27/243",
       "node_id": "legacy/node/b5c1e4503510/shop_ch27_secret/318",
       "type": "shop"
+    },
+    {
+      "extensions": {
+        "legacy": {
+          "handler_binding": "assets/cutscenes/bindings/ch26_post_intro.json"
+        },
+        "legacy_key": "story_ch27_post_intro"
+      },
+      "next": "legacy/node/b5c1e4503510/inventory_gate_ch27_sky_key/205",
+      "node_id": "legacy/node/b5c1e4503510/story_ch27_post_intro/318",
+      "type": "cutscene"
     }
   ],
   "schema_version": 1,

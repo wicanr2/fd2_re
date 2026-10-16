@@ -8,60 +8,994 @@
         "chapter": 26,
         "map": "assets/maps/map26",
         "roster": "assets/maps/map26/map26_units.json",
-        "slot_count": 70,
+        "slot_count": 80,
         "script": "assets/story/ch27.json",
         "party_scenario": "assets/scenarios/ch27.json"
       }
     },
-    "0x33b04": { "pan": { "x": 216, "y": 1176, "tile_step": true } },
-    "0x33b0e": { "act": { "resource": 76 } },
-    "0x33b35": {
-      "dialog": {
-        "line": 0,
-        "count": 4,
-        "script": "ch27.json",
-        "scene_index": 0
+    "0x33b04": {
+      "pan": {
+        "x": 216,
+        "y": 1176,
+        "tile_step": true
       }
+    },
+    "0x33b0e": {
+      "act": {
+        "resource": 76
+      }
+    },
+    "0x33b9e": {
+      "pan": {
+        "x": 216,
+        "y": 1176,
+        "tile_step": true
+      }
+    },
+    "0x33c24": {
+      "act": {
+        "resource": 81
+      }
+    },
+    "0x33bb9": {
+      "indexed_transition": {
+        "tile_x": 0,
+        "tile_y": 0,
+        "cursor_source": "native_relative_cursor",
+        "cursor_x_offset": 0,
+        "cursor_y_offset": 3,
+        "radial_radius": 2,
+        "radial_radius_step": 2,
+        "start_y": 0,
+        "end_y": 192,
+        "clip_width": 312,
+        "clip_height": 192,
+        "frames": 9,
+        "frame_delay_ms": 5,
+        "tail_delay_ms": 500,
+        "palette_range_start": 0,
+        "palette_range_end": 255,
+        "palette_delta_start": 0,
+        "palette_delta_end": 62,
+        "palette_delta_step": 2,
+        "palette_delay_ms": 4
+      }
+    },
+    "0x33c09": {
+      "indexed_transition": {
+        "tile_x": 0,
+        "tile_y": 0,
+        "cursor_source": "native_relative_cursor",
+        "cursor_x_offset": 0,
+        "cursor_y_offset": 0,
+        "radial_radius": 2,
+        "radial_radius_step": 2,
+        "start_y": 0,
+        "end_y": 192,
+        "clip_width": 312,
+        "clip_height": 192,
+        "frames": 9,
+        "frame_delay_ms": 5,
+        "tail_delay_ms": 500,
+        "palette_range_start": 0,
+        "palette_range_end": 255,
+        "palette_delta_start": 0,
+        "palette_delta_end": 62,
+        "palette_delta_step": 2,
+        "palette_delay_ms": 4
+      }
+    },
+    "0x33c66": {
+      "indexed_transition": {
+        "tile_x": 0,
+        "tile_y": 0,
+        "cursor_source": "native_relative_cursor",
+        "cursor_x_offset": 2,
+        "cursor_y_offset": 0,
+        "radial_radius": 2,
+        "radial_radius_step": 2,
+        "start_y": 0,
+        "end_y": 192,
+        "clip_width": 312,
+        "clip_height": 192,
+        "frames": 9,
+        "frame_delay_ms": 5,
+        "tail_delay_ms": 500,
+        "palette_range_start": 0,
+        "palette_range_end": 255,
+        "palette_delta_start": 0,
+        "palette_delta_end": 62,
+        "palette_delta_step": 2,
+        "palette_delay_ms": 4
+      }
+    }
+  },
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x33b35": {
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
     },
     "0x33b6b": {
-      "dialog": {
-        "line": 4,
-        "count": 1,
-        "script": "ch27.json",
-        "scene_index": 0
-      }
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
     },
     "0x33b92": {
-      "dialog": {
-        "line": 5,
-        "count": 2,
-        "script": "ch27.json",
-        "scene_index": 0
-      }
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
     },
     "0x33bf1": {
-      "dialog": {
-        "line": 7,
-        "count": 1,
-        "script": "ch27.json",
-        "scene_index": 0
-      }
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
     },
     "0x33c4b": {
-      "dialog": {
-        "line": 8,
-        "count": 5,
-        "script": "ch27.json",
-        "scene_index": 0
-      }
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
     },
     "0x33133": {
-      "dialog": {
-        "line": 13,
-        "count": 9,
-        "script": "ch27.json",
-        "scene_index": 0
-      }
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
+    }
+  },
+  "dialogue_overrides": {
+    "0x33b35#0": {
+      "script": "ch27.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 0,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『這裡就是遺跡了嗎？果然是",
+                "　個很詭異的地方！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 0,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『此地不僅詭異，還有大批敵",
+                "　人呢！準備迎敵吧！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x33b6b#3": {
+      "script": "ch27.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 4,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 24,
+            "pages": [
+              [
+                "『中央的平台似乎就是傳送的",
+                "　地點，就看「天空之鑰」能",
+                "　否發生作用了！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x33b92#4": {
+      "script": "ch27.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 5,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 36,
+            "pages": [
+              [
+                "『嗶！敵人及目標出現，準備",
+                "　進行第6號戰鬥指令。』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 6,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 37,
+            "pages": [
+              [
+                "『命令確認。目標位置標定，",
+                "　系統作用功率全開。2秒後",
+                "　動作開始。』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x33bf1#5": {
+      "script": "ch27.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 7,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『呀───』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x33c4b#6": {
+      "script": "ch27.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 8,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮！可惡．竟敢對她下手",
+                "　！我饒不了你們！』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  53,
+                  54,
+                  342,
+                  65,
+                  102,
+                  584,
+                  592,
+                  767,
+                  716,
+                  872,
+                  559,
+                  118
+                ],
+                [
+                  181,
+                  342,
+                  568,
+                  1186,
+                  346,
+                  341,
+                  605,
+                  569,
+                  342,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 9,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 6,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 36,
+            "pages": [
+              [
+                "『制御及管理中樞ASR-07，完",
+                "　成記憶庫連接。進行控制程",
+                "　式更新及損壞資料排除。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "制",
+                  "御",
+                  "及",
+                  "管",
+                  "理",
+                  "中",
+                  "樞",
+                  "AS",
+                  "R-",
+                  "07",
+                  "，",
+                  "完"
+                ],
+                [
+                  "　",
+                  "成",
+                  "記",
+                  "憶",
+                  "庫",
+                  "連",
+                  "接",
+                  "。",
+                  "進",
+                  "行",
+                  "控",
+                  "制",
+                  "程"
+                ],
+                [
+                  "　",
+                  "式",
+                  "更",
+                  "新",
+                  "及",
+                  "損",
+                  "壞",
+                  "資",
+                  "料",
+                  "排",
+                  "除",
+                  "。",
+                  "』"
+                ]
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  330,
+                  1636,
+                  975,
+                  852,
+                  271,
+                  331,
+                  332,
+                  1632,
+                  1633,
+                  1620,
+                  370,
+                  426
+                ],
+                [
+                  181,
+                  542,
+                  335,
+                  868,
+                  1614,
+                  293,
+                  580,
+                  581,
+                  364,
+                  279,
+                  329,
+                  330,
+                  1058
+                ],
+                [
+                  181,
+                  1467,
+                  1094,
+                  1314,
+                  975,
+                  1427,
+                  394,
+                  1610,
+                  1199,
+                  1215,
+                  551,
+                  581,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 10,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 6,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『啊！我的頭！．我的頭好像",
+                "　要炸開來了．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  464,
+                  342,
+                  568,
+                  367,
+                  129,
+                  342,
+                  584,
+                  568,
+                  367,
+                  129,
+                  369,
+                  616
+                ],
+                [
+                  181,
+                  334,
+                  1637,
+                  354,
+                  579,
+                  341,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 11,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 6,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮！』"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "0x33133#7": {
+      "script": "ch27.json",
+      "scene_index": 0,
+      "lines": [
+        {
+          "line": 12,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 36,
+            "pages": [
+              [
+                "『故障排除完成，初步檢查對",
+                "　應：各系統完好無損。ASR-",
+                "　07，繼續執行你的任務。完",
+                "　畢。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "故",
+                  "障",
+                  "排",
+                  "除",
+                  "完",
+                  "成",
+                  "，",
+                  "初",
+                  "步",
+                  "檢",
+                  "查",
+                  "對"
+                ],
+                [
+                  "　",
+                  "應",
+                  "：",
+                  "各",
+                  "系",
+                  "統",
+                  "完",
+                  "好",
+                  "無",
+                  "損",
+                  "。",
+                  "AS",
+                  "R-"
+                ],
+                [
+                  "　",
+                  "07",
+                  "，",
+                  "繼",
+                  "續",
+                  "執",
+                  "行",
+                  "你",
+                  "的",
+                  "任",
+                  "務",
+                  "。",
+                  "完"
+                ],
+                [
+                  "　",
+                  "畢",
+                  "。",
+                  "』"
+                ]
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  938,
+                  1638,
+                  1215,
+                  551,
+                  426,
+                  542,
+                  370,
+                  1212,
+                  996,
+                  1639,
+                  1040,
+                  716
+                ],
+                [
+                  181,
+                  866,
+                  912,
+                  750,
+                  552,
+                  553,
+                  426,
+                  369,
+                  306,
+                  1427,
+                  581,
+                  1632,
+                  1633
+                ],
+                [
+                  181,
+                  1620,
+                  370,
+                  1217,
+                  1218,
+                  1197,
+                  279,
+                  605,
+                  367,
+                  983,
+                  1282,
+                  581,
+                  426
+                ],
+                [
+                  181,
+                  427,
+                  581,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 13,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『我．我．為什麼．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  568,
+                  584,
+                  568,
+                  584,
+                  629,
+                  411,
+                  344,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 14,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 2,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮！悠妮！妳還好吧！．",
+                "　．咦，妳．妳為什麼哭了？",
+                "　』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  53,
+                  54,
+                  342,
+                  53,
+                  54,
+                  342,
+                  583,
+                  465,
+                  369,
+                  358,
+                  342,
+                  584
+                ],
+                [
+                  181,
+                  584,
+                  701,
+                  370,
+                  583,
+                  584,
+                  583,
+                  629,
+                  411,
+                  344,
+                  1612,
+                  341,
+                  180
+                ],
+                [
+                  181,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 15,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 3,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『索爾，別管我，．不管怎樣",
+                "　，先打倒這些傢伙，別的以",
+                "　後再說．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  36,
+                  37,
+                  370,
+                  683,
+                  852,
+                  568,
+                  370,
+                  584,
+                  346,
+                  852,
+                  672,
+                  696
+                ],
+                [
+                  181,
+                  370,
+                  199,
+                  373,
+                  784,
+                  462,
+                  608,
+                  612,
+                  609,
+                  370,
+                  683,
+                  367,
+                  401
+                ],
+                [
+                  181,
+                  733,
+                  313,
+                  534,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 16,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 4,
+            "control": "FFED",
+            "operand": 36,
+            "pages": [
+              [
+                "『ASR-07，你有敵對反應！你",
+                "　是我們的中樞之一，不該對",
+                "　我們有敵對意志！』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "AS",
+                  "R-",
+                  "07",
+                  "，",
+                  "你",
+                  "有",
+                  "敵",
+                  "對",
+                  "反",
+                  "應",
+                  "！",
+                  "你"
+                ],
+                [
+                  "　",
+                  "是",
+                  "我",
+                  "們",
+                  "的",
+                  "中",
+                  "樞",
+                  "之",
+                  "一",
+                  "，",
+                  "不",
+                  "該",
+                  "對"
+                ],
+                [
+                  "　",
+                  "我",
+                  "們",
+                  "有",
+                  "敵",
+                  "對",
+                  "意",
+                  "志",
+                  "！",
+                  "』"
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 17,
+          "upper": true,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 5,
+            "control": "FFED",
+            "operand": 37,
+            "pages": [
+              [
+                "『緊急狀況，ASR-07出現預期",
+                "　外現象，快通知最高控制中",
+                "　樞．．』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "緊",
+                  "急",
+                  "狀",
+                  "況",
+                  "，",
+                  "AS",
+                  "R-",
+                  "07",
+                  "出",
+                  "現",
+                  "預",
+                  "期"
+                ],
+                [
+                  "　",
+                  "外",
+                  "現",
+                  "象",
+                  "，",
+                  "快",
+                  "通",
+                  "知",
+                  "最",
+                  "高",
+                  "控",
+                  "制",
+                  "中"
+                ],
+                [
+                  "　",
+                  "樞",
+                  "．",
+                  "．",
+                  "』"
+                ]
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  687,
+                  997,
+                  289,
+                  337,
+                  370,
+                  1632,
+                  1633,
+                  1620,
+                  455,
+                  371,
+                  830,
+                  1375
+                ],
+                [
+                  181,
+                  548,
+                  371,
+                  1574,
+                  370,
+                  607,
+                  600,
+                  529,
+                  811,
+                  753,
+                  329,
+                  330,
+                  331
+                ],
+                [
+                  181,
+                  332,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 18,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『敵人就在眼前了，趕快發動",
+                "　攻擊啊！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 19,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『對啊！我在發什麼呆，大家",
+                "　上！』"
+              ]
+            ]
+          }
+        },
+        {
+          "line": 20,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 7,
+            "utterance": 8,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『一切的謎底就在眼前了！』"
+              ]
+            ]
+          }
+        }
+      ]
     }
   }
 }

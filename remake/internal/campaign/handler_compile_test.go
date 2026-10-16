@@ -1972,6 +1972,68 @@ func TestCompileChapter26PostLowersEveryNativePaletteRamp(t *testing.T) {
 	}
 }
 
+func TestChapter27OpeningUsesOnlyOriginalDialogueCalls(t *testing.T) {
+	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch26_pre.json")
+	if err != nil || len(issues) != 0 {
+		t.Fatalf("第27章揭幕無法完整編譯：err=%v issues=%+v", err, issues)
+	}
+	if len(beats) == 0 || beats[0].LoadCH == nil || beats[0].LoadCH.Chapter != 26 || beats[0].LoadCH.SlotCount != 80 {
+		t.Fatal("第27章LOADCH未保持原始80筆來源")
+	}
+
+	want := map[int]int{0: 2, 3: 1, 4: 2, 5: 1, 6: 4, 7: 9}
+	got := map[int]int{}
+	var visit func([]Beat)
+	visit = func(sequence []Beat) {
+		for _, beat := range sequence {
+			visit(beat.Then)
+			visit(beat.Else)
+			if beat.Op != "dialog" {
+				continue
+			}
+			if beat.NativeDialogue == nil || beat.NativeDialogue.SourceDAT != "FDTXT_027" {
+				t.Fatalf("揭幕對白缺原始控制碼：%+v", beat)
+			}
+			got[beat.NativeDialogue.StringIndex]++
+		}
+	}
+	visit(beats)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("揭幕對白混入死亡事件或漏句：got=%v want=%v", got, want)
+	}
+}
+
+func TestChapter27PostBindingsPreserveOriginalDialogueAndTail(t *testing.T) {
+	want := map[int]int{8: 2, 9: 17, 10: 2, 11: 1, 12: 1}
+	got := map[int]int{}
+	acts := map[string]bool{}
+	var tail []string
+	for _, name := range []string{"ch26_post_intro", "ch26_post_sky_key_success"} {
+		beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/" + name + ".json")
+		if err != nil || len(issues) != 0 {
+			t.Fatalf("%s不能編譯：err=%v issues=%+v", name, err, issues)
+		}
+		for _, beat := range beats {
+			if beat.Op == "dialog" {
+				if beat.NativeDialogue == nil || beat.NativeDialogue.SourceDAT != "FDTXT_027" {
+					t.Fatal("第27章戰後對白缺原始控制碼")
+				}
+				got[beat.NativeDialogue.StringIndex]++
+			}
+			if beat.Op == "act" {
+				acts[beat.Source] = true
+			}
+			if beat.Op == "sync_party" || beat.Op == "set_chapter" || beat.Op == "reset_persistent_roster_state" {
+				tail = append(tail, beat.Op)
+			}
+		}
+	}
+	if !reflect.DeepEqual(got, want) || !reflect.DeepEqual(acts, map[string]bool{"0x2517c": true, "0x251ca": true, "0x25211": true}) ||
+		!reflect.DeepEqual(tail, []string{"sync_party", "set_chapter", "reset_persistent_roster_state"}) {
+		t.Fatalf("第27章戰後漏句、漏演出或尾端順序錯誤：dialog=%v acts=%v tail=%v", got, acts, tail)
+	}
+}
+
 func TestCompileChapter23PreUsesRecoveredChapter24TextGroups(t *testing.T) {
 	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch23_pre.json")
 	if err != nil {
@@ -2053,31 +2115,6 @@ func TestCompileChapter25PreUsesDirectFDTXT026StringZeroAlignment(t *testing.T) 
 	}
 	if beats[0].LoadCH == nil || beats[0].LoadCH.Chapter != 25 || beats[0].LoadCH.SlotCount != 70 {
 		t.Fatalf("ch25_pre loadch=%#v", beats[0])
-	}
-}
-
-func TestCompileChapter26PreMapsFDTXT027SceneZeroCalls(t *testing.T) {
-	beats, issues, err := CompileHandlerBinding("../../assets/cutscenes/bindings/ch26_pre.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(issues) != 6 {
-		t.Fatalf("ch26_pre issues=%#v, want the six intentionally unresolved native effects", issues)
-	}
-	var dialogs []Beat
-	for _, beat := range beats {
-		if beat.Op == "dialog" {
-			dialogs = append(dialogs, beat)
-		}
-	}
-	if len(dialogs) != 6 {
-		t.Fatalf("ch26_pre dialog beats=%d want 6 mapped groups", len(dialogs))
-	}
-	want := []struct{ line, count int }{{0, 4}, {4, 1}, {5, 2}, {7, 1}, {8, 5}, {13, 9}}
-	for i, group := range want {
-		if dialogs[i].Line != group.line || dialogs[i].Count != group.count || dialogs[i].Script != "ch27.json" || dialogs[i].SceneIndex == nil || *dialogs[i].SceneIndex != 0 {
-			t.Fatalf("ch26_pre dialog[%d]=%#v want line=%d count=%d scene0", i, dialogs[i], group.line, group.count)
-		}
 	}
 }
 

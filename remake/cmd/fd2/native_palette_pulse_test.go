@@ -54,3 +54,41 @@ func TestNativePalettePulseRejectsScheduleDriftBeforePublication(t *testing.T) {
 		t.Fatal("failed pulse preflight changed indexed state")
 	}
 }
+
+func TestNativePaletteUpdateUsesBaselineAndDrawAcknowledgement(t *testing.T) {
+	g := completeNativeUnitPresentGame(t)
+	beforeVGA := append([]byte(nil), g.nativeMapVGA...)
+	baseline := append([]byte(nil), g.nativeMapAssets.PaletteDAC...)
+	continued := 0
+	for _, delta := range []int{5, 4, 0} {
+		g.nativeFullDACWhite = true
+		if err := g.startNativePaletteUpdate(delta, func() { continued++ }); err != nil {
+			t.Fatal(err)
+		}
+		if g.nativeFullDACWhite {
+			t.Fatal("legacy white overlay masks the indexed DAC write")
+		}
+		j := g.nativePalettePulse
+		for i, b := range baseline {
+			want := int(b) + delta
+			if want > 63 {
+				want = 63
+			}
+			if j.dac[i] != byte(want) {
+				t.Fatalf("delta=%d component=%d got=%d want=%d", delta, i, j.dac[i], want)
+			}
+		}
+		g.stepNativePalettePulse()
+		if g.nativePalettePulse == nil {
+			t.Fatal("palette write advanced without Draw")
+		}
+		j.drawn = true
+		g.stepNativePalettePulse()
+	}
+	if continued != 3 || !bytes.Equal(g.nativeMapDAC, baseline) || !bytes.Equal(g.nativeMapVGA, beforeVGA) {
+		t.Fatal("palette sequence failed to restore baseline or preserve VGA indices")
+	}
+	if err := g.startNativePaletteUpdate(64, nil); err == nil || g.nativePalettePulse != nil {
+		t.Fatal("unsupported delta was published")
+	}
+}

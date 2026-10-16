@@ -42,9 +42,9 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 23章passed，即第4～26章；其餘7章todo。第26章九波至T18、913筆AI零順序分歧、行為／節點／交易及完整SAV嚴格相同 | [#199](https://github.com/wicanr2/fd2_re/issues/199)接續第27章。[第26章收據](../data/ui-traces/parity-ch26.json)與[主契約](../data/ida/fd2_turn_event57_20261016.json)明示章前HP+30000、一次清敵及未抽樣範圍。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
+| 正式章台帳 | 24章passed，即第4～27章；其餘6章todo。第27章正常觸發62→63、424筆AI零順序分歧，行為／節點／交易與完整SAV嚴格相同 | [#199](https://github.com/wicanr2/fd2_re/issues/199)接續第28章。[第27章收據](../data/ui-traces/parity-ch27.json)與[主契約](../data/ida/fd2_ch27_flow_20261016.json)明示同源接續、一次清敵及未抽樣範圍。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有13筆維持spawn版本；第26章event57完整spawn／pan(9,0)／delay400同步九列並由正常流程消費 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
-| 戰役故事節點稽核 | 移除第26章未證撤退後，工具重算117故事／過場節點、9直接腳本、57handler、51fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-16；輸入SHA及輸出見[event57主契約的defeat_contract](../data/ida/fd2_turn_event57_20261016.json)。其他章fallback不因本次接線視為已證 |
+| 戰役故事節點稽核 | 第27章共同前綴與成功臂接線後，工具重算118故事／過場、9直接腳本、59handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-16；輸入SHA與輸出見[第27章主契約的validation.campaign_coverage](../data/ida/fd2_ch27_flow_20261016.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
@@ -3458,3 +3458,21 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 第25章2026-10-15首次交易失敗原樣保存在[歷史收據](../data/ui-traces/parity-ch25-flow-r2-save-failed.json)。identity26的`+0x28..+0x30`九位元組區間中七byte不同，另有兩byte檢查碼差異；其餘完整明文相同。既有IDA建構器未寫此區、11506整筆複製，原版本次runtime區間一路保持同值；用途與最初producer仍未知，不稱指標或無用欄位。
 
 2026-10-16使用者接受逐筆揭露，先更新111與READY政策，再接正式比較器。政策綁定章號、流程profile、輸入SAV、計畫、原版EXE／dosgolem、兩側實檔SHA及完整差異清單；預設strict不變，缺實檔／保存或任何新增差異仍拒收。乾淨Game重播及137項工具測試通過，同一pair以strict仍失敗，明示政策才通過；第24章流程及整檔SAV回歸保持。第25章依111例外登記PLAYER-E2，沒有把未知語意升格為已解。完整政策及命令見主契約`save_acceptance_policy`，入口為[章比較器](../../tools/verify_chapter_parity.py)；[#212](https://github.com/wicanr2/fd2_re/issues/212)以接受證據限制結案，下一個工作仍為#199第26章。
+
+## 2026-10-16 第27章event62重開原因
+
+同狀態原版r2重複進入35898後繼續至保存，Game卻因state17已啟用而中止，符合執行結果矛盾的重開條件。只訂正重複觸發應零寫入返回；首次啟用writer、原始表與其他helper保持閉合。READY原始指令、入口序列與反例見[第27章主契約](../data/ida/fd2_ch27_flow_20261016.json)的event62_repeat_contract。
+
+## 2026-10-16 第27章限定流程閉合
+
+第27章依111既有作弊例外列PLAYER-E2，主證據與驗證命令見[主契約](../data/ida/fd2_ch27_flow_20261016.json)。
+#218補raw26 required9／front9；#219接回六caller共19句原生對白、ACT81、鏡頭、三轉場及故事背包條件；
+#220補250CC共同前綴與持鑰匙成功臂23句、ACT82..84、六次indexed色盤漸變、視圖交接與持續隊伍清理；
+#221依35898 guard讓重複event62零寫入返回。
+
+#222依同狀態及直接指令窄重開1567E／149F8：高command首階段mode1／inner1，selector0收raw+6非零。
+舊固定camp0、map0 item79 score8敘述撤回，56及11已回填。415筆IDA9.4指令與固定EXE原bytes、Capstone5.0.3邊界一致。
+沒有新增matching編譯，不重解已閉合helper或硬體時序。
+
+正常LOAD、選人、62→63增援、T9單次清敵、成功戰後、記錄與返回選人通過；整檔SAV嚴格相同。
+本次未觸發64，不把隊長死亡增援、缺鑰匙結局或寶箱／買賣算已驗。frames advisory與白／黑VGA memset限制照實保留。

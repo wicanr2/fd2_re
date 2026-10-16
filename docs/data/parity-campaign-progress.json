@@ -778,19 +778,35 @@
     },
     {
       "chapter": 27,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": "2026-09-15",
-      "verify": null,
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch27.json",
+      "slot_manifest": "docs/data/parity-slots/ch27-manifest.json",
+      "slot_sha256": "89a8d7a93f8baae11e2315f9d06c9a979ef5d6d608ee1558ec42ffb198cdbbd8",
+      "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+      "date": "2026-10-16",
+      "verify": "Docker tools/verify_chapter_parity.py --chapter 27 --oracle work/ch27-flow-20261016/original-r2 --remake work/ch27-flow-20261016/remake-r8 --slot-manifest docs/data/parity-slots/ch27-manifest.json --plan docs/data/parity-plans/ch27-flow-cheat-r2.jsonl --frame-policy advisory --oracle-save work/ch27-flow-20261016/state-r2/FD2.SAV --out <新收據路徑>",
       "limitations": [
-        "既有收據只覆蓋戰間介面（late 樣本）"
+        "直接接續第26章原版實際SAV，本章零追加升級／強化／事件改寫；祖先HP+30000及AP／DP／DX政策見清冊。T9後一次HP-only清敵59筆；不證明自然難度、傷害、存活或敵方選目標。",
+        "行為／節點／交易通過，完整22987 bytes SAV嚴格相同；frames advisory未擷取重製PNG，不宣稱逐幀或逐像素一致。",
+        "event62→63、持天空之鑰成功臂及非城鎮保存已驗；清敵沒有觸發event64，隊長死亡增援、缺鑰匙終局、寶箱與買賣未抽樣。白／黑VGA memset尚未轉寫，列畫面限制。"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/town-shop-early-mid-late-e2.json"
-      ]
+      ],
+      "slot_policy": {
+        "kind": "continued_actual_save",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 0
+        },
+        "event_states": {},
+        "parent_manifest": "docs/data/parity-slots/ch26-hp-policy-manifest.json",
+        "note": "直接延續第26章原版實際保存；本章零追加升級／強化／狀態注入。繼承章前HP+30000與祖先AP／DP／DX政策，不能證明自然難度、傷害、存活或敵方選目標。"
+      }
     },
     {
       "chapter": 28,

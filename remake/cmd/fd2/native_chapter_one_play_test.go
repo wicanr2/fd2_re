@@ -328,6 +328,9 @@ func pump(t *testing.T, g *Game, budget int, done func() bool) bool {
 			t.Fatalf("Update：%v", err)
 		}
 		if g.loadErr != "" {
+			if g.st == nil || g.m == nil {
+				t.Fatalf("執行期錯誤：%s；節點=%q，戰場尚未建立", g.loadErr, g.camp.NodeID())
+			}
 			view := g.st.NativeMapViewState
 			t.Fatalf("執行期錯誤：%s\n視圖：鏡頭(%d,%d) 游標(%d,%d) 可見(%d,%d)／繪製鏡頭(%.0f,%.0f)\n阻塞：%s",
 				g.loadErr, view.CameraX, view.CameraY, view.CursorX, view.CursorY,

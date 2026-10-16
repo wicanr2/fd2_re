@@ -61,12 +61,15 @@ func ScoreNativeAI1567E(
 			continue
 		}
 		command := int(row[0x10])
+		distance := command
 		inner := 0
 		if command > 0x0f {
+			// 0x15738 writes DL=1 and DH=DL before the first 0x14818.
+			distance = 1
 			inner = 1
 		}
 		field, err := NativeCommandTargetFieldBytes(
-			w, h, actorCell, command, inner, baseFlags,
+			w, h, actorCell, distance, inner, baseFlags,
 		)
 		if err != nil {
 			return NativeAI1567EScoreResult{}, err
@@ -192,7 +195,8 @@ func nativeAI1567ECardinalTargets(
 				int(record[0]) != cell.X || int(record[1]) != cell.Y {
 				continue
 			}
-			if record[6] == 0 {
+			// 0x14AE4..0x14AF4: selector zero collects nonzero raw +6.
+			if record[6] != 0 {
 				targets = append(targets, byte(index))
 			}
 			break

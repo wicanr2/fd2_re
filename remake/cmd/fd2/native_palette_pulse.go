@@ -11,9 +11,9 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
-// nativePalettePulseJob owns 0x35E5A's inclusive 0..63 / hold / 62..0 DAC
-// sequence. Every DAC write must be drawn before advancing; the indexed VGA
-// bytes remain constant throughout the pulse.
+// nativePalettePulseJob presents baseline-relative full-range DAC writes,
+// including 0x35E5A's pulse and individual 0x11DF2 steps from 0x25052.
+// Every write must be drawn before advancing; indexed VGA bytes stay constant.
 type nativePalettePulseJob struct {
 	deltas   []int
 	waits    []int
@@ -30,6 +30,33 @@ type nativePalettePulseJob struct {
 func validateNativePalettePulse(spec campaign.NativePalettePulse) bool {
 	return spec.RiseStart == 0 && spec.RiseEnd == 63 && spec.RiseDelayMs == 8 &&
 		spec.HoldMs == 400 && spec.FallStart == 62 && spec.FallEnd == 0 && spec.FallDelayMs == 8
+}
+
+// startNativePaletteUpdate presents one 0x11DF2(0,255,delta) write. The
+// caller's following delay beat owns the wait; this job only acknowledges Draw.
+func (g *Game) startNativePaletteUpdate(delta int, then func()) error {
+	if g == nil || g.nativePalettePulse != nil || g.nativePaletteRamp != nil ||
+		g.nativeUnitPresent != nil || g.transitionReveal != nil || g.indexedTransition != nil {
+		return errors.New("native indexed palette presenter is already active")
+	}
+	if delta < 0 || delta > 63 || !nativeMapAssetsAvailable(g.nativeMapAssets) {
+		return errors.New("native palette delta or indexed DAC baseline unavailable")
+	}
+	if err := g.ensureNativePaletteFrame(); err != nil {
+		return err
+	}
+	baseline := append([]byte(nil), g.nativeMapAssets.PaletteDAC...)
+	job := &nativePalettePulseJob{
+		deltas: []int{delta}, waits: []int{1},
+		vga: append([]byte(nil), g.nativeMapVGA...),
+		dac: append([]byte(nil), baseline...), baseline: baseline, then: then,
+	}
+	if err := job.applyCurrent(); err != nil {
+		return err
+	}
+	g.nativeFullDACWhite = false
+	g.nativePalettePulse = job
+	return nil
 }
 
 func (g *Game) startNativePalettePulse(spec campaign.NativePalettePulse, then func()) error {

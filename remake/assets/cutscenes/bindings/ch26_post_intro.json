@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "handler_script": "../handlers/ch26_post_intro.json",
+  "acting_resources": "../acting/map32.json",
+  "story_index_map": "../dialogue-index/count-aligned.json",
+  "dialogue_contexts": {
+    "0x25168": {
+      "source_dat": "FDTXT_027",
+      "script": "ch27.json"
+    }
+  },
+  "runtime_context": {
+    "slot_counts": [
+      63,
+      75,
+      96
+    ],
+    "story_viewport": true
+  },
+  "overrides": {
+    "0x2517c": {
+      "act": {
+        "resource": 82
+      }
+    },
+    "0x25141": {
+      "layout": {
+        "units": [
+          {
+            "slot": 0,
+            "x": 15,
+            "y": 13,
+            "pose": 2
+          },
+          {
+            "slot": 1,
+            "x": 15,
+            "y": 11,
+            "pose": 2
+          },
+          {
+            "slot": 2,
+            "x": 12,
+            "y": 12,
+            "pose": 2
+          },
+          {
+            "slot": 3,
+            "x": 13,
+            "y": 12,
+            "pose": 2
+          },
+          {
+            "slot": 4,
+            "x": 17,
+            "y": 12,
+            "pose": 2
+          },
+          {
+            "slot": 5,
+            "x": 18,
+            "y": 12,
+            "pose": 2
+          },
+          {
+            "slot": 6,
+            "x": 13,
+            "y": 13,
+            "pose": 2
+          },
+          {
+            "slot": 7,
+            "x": 14,
+            "y": 13,
+            "pose": 2
+          },
+          {
+            "slot": 8,
+            "x": 16,
+            "y": 13,
+            "pose": 2
+          },
+          {
+            "slot": 9,
+            "x": 17,
+            "y": 13,
+            "pose": 2
+          },
+          {
+            "slot": 10,
+            "x": 14,
+            "y": 14,
+            "pose": 2
+          },
+          {
+            "slot": 11,
+            "x": 15,
+            "y": 14,
+            "pose": 2
+          },
+          {
+            "slot": 12,
+            "x": 16,
+            "y": 14,
+            "pose": 2
+          },
+          {
+            "slot": 13,
+            "x": 14,
+            "y": 15,
+            "pose": 2
+          },
+          {
+            "slot": 14,
+            "x": 15,
+            "y": 15,
+            "pose": 2
+          },
+          {
+            "slot": 15,
+            "x": 16,
+            "y": 15,
+            "pose": 2
+          }
+        ],
+        "cam_x": 216,
+        "cam_y": 192
+      }
+    }
+  },
+  "dialogue_overrides": {
+    "0x25168#8": {
+      "script": "ch27.json",
+      "scene_index": 1,
+      "lines": [
+        {
+          "line": 0,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 8,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『就是這個了，轉送站．好久",
+                "　沒看到這種東西了．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  345,
+                  343,
+                  462,
+                  463,
+                  341,
+                  370,
+                  540,
+                  269,
+                  1009,
+                  584,
+                  369,
+                  587
+                ],
+                [
+                  181,
+                  399,
+                  658,
+                  387,
+                  462,
+                  719,
+                  461,
+                  86,
+                  341,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "line": 1,
+          "upper": false,
+          "native_dialogue": {
+            "source_dat": "FDTXT_027",
+            "string_index": 8,
+            "utterance": 1,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『悠妮？妳還好吧？』"
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
