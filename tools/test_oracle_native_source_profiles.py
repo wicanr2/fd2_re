@@ -26,7 +26,8 @@ def main():
     paths = ["internal/machine/watcom_runtime.go", "apps/fd2/cmd/oracle/main.go",
              "internal/cpu386/cpu.go", "internal/machine/le_startup.go",
              "internal/machine/le_dma_clock.go", "internal/machine/le_real_irq7.go"]
-    current = {p: (a.dosgolem / p).read_bytes() for p in paths}
+    helper = "apps/fd2/cmd/oracle/hp_lock.go"
+    current = {p: (a.dosgolem / p).read_bytes() for p in paths + [helper]}
     old = {p: subprocess.run(["git", "-C", str(a.dosgolem), "show",
             "fa25f6e7d7f6be399b6563b7df6a55995daba77b:" + p], check=True, capture_output=True).stdout for p in paths[:4]}
     merged = {p: subprocess.run(["git", "-C", str(a.dosgolem), "show",
@@ -53,9 +54,14 @@ def main():
         check(current, True)
         for name in paths:
             check({**fixed, name: fixed[name] + b"\n"}, False)
+        for name in paths + [helper]:
+            check({**current, name: current[name] + b"\n"}, False)
+        check(current, True)
+        (target / helper).unlink()
+        check({name: raw for name, raw in current.items() if name != helper}, False)
         check({**fixed, paths[2]: old[paths[2]]}, False)
         check({**fixed, paths[3]: old[paths[3]]}, False)
-    print("native source profiles: old/merged/fixed/current accepted; six mutations and two mixed tuples rejected")
+    print("native source profiles: old/merged/fixed/current accepted; mutations, missing helper and mixed tuples rejected")
 
 
 if __name__ == "__main__":

@@ -4926,5 +4926,88 @@
     ],
     "stop_line": "重用IDA9.4完整匯出及Capstone核對，不新增matching編譯。",
     "issue": 222
+  },
+  "resample_hp_lock_policy": {
+    "status": "CONFORMED bounded modified-path E1",
+    "authorization": "使用者2026-10-16要求再次抽樣，鎖索爾與敵方隊長血量直到增援抵達，重製也必須實際增援。",
+    "scope": "有界修改路徑E1；保持既有第27章正式PLAYER-E2及24／30台帳，不以鎖血試驗替換原正式收據。",
+    "source": "既有IDA9.4 sub_358EA 358EA..3599A及native_death_events id64，沒有新matching編譯。",
+    "stages": [
+      "正常LOAD／選人，鎖索爾index0 camp2 identity0與隊長24／25／26 camp0 identity116，初值捕獲",
+      "移動至階梯，event62→63，先驗groups1／2共12筆",
+      "正常移鏡頭至0,0，一次HP-only清除56名非隊長，保護3名隊長",
+      "隊長24／25 HP設1後解除其鎖定，以正常攻擊依序死亡",
+      "第2名死亡的state16前值1，idx1及staging groups3／4／5共21筆；第3名保持存活到到齊",
+      "抽樣在增援到齊停止，不重新執行整章保存或新增章完成數"
+    ],
+    "oracle_contract": "dosgolem docs/spec/430-fd2-selective-hp-lock-control.md，分支從origin/main 81c85bebdefe2e29ea1d5dc2628b2081d464e927建立並補回已驗證IRQ7兩提交；只改唯一oracle測試控制。",
+    "remake_contract": "僅_test.go重播附加同綁定鎖；每次Update前後及共用pump確認正HP並復原。若鎖定目標已設inactive則拒收，不復活；未啟用與正式Game不變。相同注入值與階段逐筆記錄。",
+    "failure": "來源、綁定、raw活性或增援形狀不符即失敗；不略過死亡事件、不直接設定state16、不從資料存在推定腳本已觸發。",
+    "verification": [
+      "原版event63雙staging與event64三staging實際入口／順序",
+      "原版與Game實際新增group records及同來源raw座標",
+      "原版兩次358EA／35992及三路staging順序；Game直接state16=2，原版最終byte值為控制流推得，第3名未死",
+      "原版及重製鎖定、HP1與保護清敵記錄一致",
+      "來源停用回歸及相關完整Go／工具測試"
+    ],
+    "limits": [
+      "章內週期鎖血屬新增明示修改路徑，不宣稱傷害、自然存活、AI選目標或一般PLAYER-E2",
+      "畫面advisory，不要求逐frame；硬體時鐘停止線保持"
+    ],
+    "result": {
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/ch27-captain-reinforcement-resample.json",
+      "original_run": "work/ch27-flow-20261016/resample-lock-20261016/original-r3",
+      "remake_run": "work/ch27-flow-20261016/resample-lock-20261016/remake-r3",
+      "ai": {
+        "original_entries": 270,
+        "consumed": 270,
+        "order_divergences": 0
+      },
+      "reinforcements": [
+        12,
+        21
+      ],
+      "runtime_units": 96,
+      "final_enemy_alive": 22,
+      "saul_hp": 30420,
+      "last_captain_hp": 3200,
+      "original_counter": "two actual 358EA/35992 paths; final2 derived, no direct byte capture",
+      "remake_state16": 2,
+      "view_difference_issue": 224,
+      "formal_chapter_receipt": "unchanged",
+      "chapter_ledger": "unchanged 24/30",
+      "go_regression": "19 packages passed; cmd/fd2 282.332s",
+      "python_tests": 106,
+      "source_admission": "old/merged/IRQ7/current accepted; source mutations, missing helper and mixed tuple rejected",
+      "turn_event_transcription": "global sync --check passed; 13 remaining unchanged"
+    },
+    "issue": 223,
+    "oracle_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+    "verification_tool": "tools/verify_ch27_reinforcement_resample.py",
+    "counter_evidence_limit": "原版以既有IDA分支與35992執行路徑核對計數；本輪未直接讀取state16 byte。重製收據直接記錄NativeEventState。",
+    "r1_diagnostic": {
+      "result": "incomplete",
+      "last_control": 464,
+      "next_control_timeout": 465,
+      "route_block": "中央y31的x14..16不可通行；15,32到13,30等距，toward不納入",
+      "r2": "docs/data/parity-plans/ch27-captain-reinforcement-lock-r2.jsonl"
+    },
+    "remake_identity_source": "沿既有NativeItemPanelRecordForUnit/nativeRecordByte8ForUnit契約：優先HasNativeRecordByte8；較早持續角色只存NativeIdentity時接受其已證實+8 byte相容投影，不從Fig推導。r1重製前綴首次拒收是測試政策未承接這個既有相容分支，並非正式增援缺陷。",
+    "ap_slot_policy": {
+      "status": "CONFORMED diagnostic only",
+      "authorization": "沿使用者就作弊過關之明示授權；測試槽章前強化，正式規則不變",
+      "source_base_ap": 453,
+      "source_effective_ap": 463,
+      "captain_effective_dp": 596,
+      "reason": "29F72非暴擊差額為負時傷害0，HP1不能保證正常死亡；不刷暴擊seed",
+      "tool": "remake/cmd/fd2-chapter-slot -boost-only -boost-base-ap 1000 -target 26 -base-slot 0 -out-slot 0 -seed 4",
+      "scope": "同一來源實際SAV之全名冊章前AP+1000，兩側同槽；HP鎖、HP1與正常死亡鏈保持。實際非隊長清敵數如實記錄，不強求56。",
+      "plan": "docs/data/parity-plans/ch27-captain-reinforcement-lock-r3.jsonl",
+      "manifest": "docs/data/parity-slots/ch27-reinforcement-ap-manifest.json"
+    },
+    "verification_commands": [
+      "tools/verify_ch27_reinforcement_resample.py --original work/ch27-flow-20261016/resample-lock-20261016/original-r3 --remake work/ch27-flow-20261016/resample-lock-20261016/remake-r3 --baseline work/ch27-flow-20261016/original-r2 --unboosted work/ch27-flow-20261016/resample-lock-20261016/original-r1 --source-slot work/ch27-flow-20261016/resample-lock-20261016/input/FD2.SAV --slot work/ch27-flow-20261016/resample-lock-20261016/input-ap1000/FD2.SAV --manifest docs/data/parity-slots/ch27-reinforcement-ap-manifest.json --output docs/data/ui-traces/ch27-captain-reinforcement-resample.json"
+    ]
   }
 }

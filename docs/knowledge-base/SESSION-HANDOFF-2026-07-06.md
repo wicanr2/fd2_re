@@ -10162,3 +10162,7 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 ## 2026-10-16 第27章AI物品目標勘誤
 
 本檔歷史map0 item79 score8／(19,15)及phase96／8已被同狀態與直接指令推翻。1567E高command首階段mode1／inner1，149F8 selector0收raw+6非零；修正後該fixture item score0／phase96／0。原始證據、READY修訂及第27章424筆AI零分歧見[主契約](../data/ida/fd2_ch27_flow_20261016.json)的ai_high_item_target_contract。歷史記錄保留；現況依58與正式收據。
+
+### 2026-10-16 第27章增援追加勘誤
+
+較早第27章正式章收據未觸發event64仍屬實。最新獨立修改路徑補抽已由原版與正式Game正常攻擊驗到三路援軍，見[診斷收據](../data/ui-traces/ch27-captain-reinforcement-resample.json)及58。章前AP強化、週期鎖血與保護清敵均揭露，只列E1，不替換正式PLAYER-E2或增加章數。鏡頭終點仍不同，#224另追；下一個戰役工作仍為#199第28章。

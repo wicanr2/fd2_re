@@ -2008,6 +2008,10 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 第27章正常LOAD／選人、揭幕原生對白、62→63增援、持天空之鑰成功戰後與非城鎮記錄已由同源完整流程驗證。
 共同前綴及成功臂接回23句與ACT82..84，修正透明節點的鏡頭交接與indexed色盤consumer。
 章流程依111例外列PLAYER-E2，完整SAV嚴格相同；frames advisory未擷取重製PNG，不宣稱逐幀或逐像素一致。
-清敵沒有觸發64；隊長死亡增援、缺鑰匙結局、寶箱與買賣未抽樣。白／黑VGA memset保持畫面限制。
+正式章清敵沒有觸發64；隊長死亡增援另由下方修改路徑補抽，缺鑰匙結局、寶箱與買賣未抽樣。白／黑VGA memset保持畫面限制。
 原始定位、CONFORMED規格與範圍見[主契約](../data/ida/fd2_ch27_flow_20261016.json)，
 正式收據見[parity-ch27](../data/ui-traces/parity-ch27.json)，唯一數字與下一步見[58](58-fd2-exe-re-coverage.md)。
+
+### 2026-10-16 第27章隊長死亡增援補抽
+
+原版與重製既有正式consumer均已實際完成死亡對白與三路增援，見[獨立診斷收據](../data/ui-traces/ch27-captain-reinforcement-resample.json)。章內鎖血與章前強化限定E1，不取代既有PLAYER-E2。新增單位狀態一致，終點游標／鏡頭回交不同，畫面標為相近狀態並另列#224；不宣稱逐frame一致。唯一數字與限制見[58](58-fd2-exe-re-coverage.md)。

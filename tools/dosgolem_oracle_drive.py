@@ -158,11 +158,11 @@ def send(key, steps, **control):
     with open(tmp, "w", encoding="utf-8") as handle:
         handle.write(body)
     os.replace(tmp, os.path.join(RUN, "control.json"))
-    deadline = time.time() + STEP_TIMEOUT
+    deadline = time.monotonic() + STEP_TIMEOUT
     # 輪詢間隔由短往長退避。固定 0.1 秒會讓細粒度追蹤的每一步都至少多等
     # 一次輪詢，整段時間由等待而非執行決定。
     poll = 0.0002
-    while time.time() < deadline:
+    while time.monotonic() < deadline:
         try:
             current = state()
         except (json.JSONDecodeError, FileNotFoundError):
@@ -232,16 +232,21 @@ def do_force_enemy_clear(command):
     checkpoint 都能由 oracle 自己揭露注入紀錄。這個命令絕不代表正常戰鬥勝利。
     """
     before = state()
+    preserve = command.get("preserve_hp_locks", False)
+    active_locks = (before.get("hp_lock_control") or {}).get("active", [])
+    protected = {lock["index"] for lock in active_locks if lock["camp"] == ENEMY_CAMP} if preserve else set()
     count = alive(before, ENEMY_CAMP)
     if count < 1:
         print("force_enemy_clear：目前沒有存活 camp 0 單位", flush=True)
         return True
     seq, current = send("", int(command.get("steps", 5_000_000)),
-                        force_enemy_clear=True)
+                        force_enemy_clear=True, **({"preserve_hp_locks": True} if preserve else {}))
     remaining = alive(current, ENEMY_CAMP)
     report(seq, "", current,
            f" force-enemy-clear={count}->{remaining}（修改路徑）")
-    if remaining:
+    surviving = {u["index"] for u in current.get("units", [])
+                 if u.get("camp") == ENEMY_CAMP and u.get("hp", 0) > 0}
+    if surviving != protected:
         print(f"force_enemy_clear：仍有 {remaining} 個 camp 0 單位存活",
               file=sys.stderr)
         return False
@@ -250,7 +255,8 @@ def do_force_enemy_clear(command):
         print("force_enemy_clear：oracle checkpoint 未揭露注入紀錄",
               file=sys.stderr)
         return False
-    log_action("force_enemy_clear", current, cleared=count, modified_path=True)
+    extra = {"preserved_indices": sorted(protected)} if preserve else {}
+    log_action("force_enemy_clear", current, cleared=count-len(protected), modified_path=True, **extra)
     if command.get("end_turn", True) and in_battle(current):
         if not resume_battle(int(command.get("cutscene_steps", 5_000_000)),
                              int(command.get("cutscene_max", 40))):
@@ -279,6 +285,54 @@ def do_force_enemy_clear(command):
             print("force_enemy_clear：清場後無法結束回合",
                   file=sys.stderr)
             return False
+    return True
+
+
+def validate_hp_lock_targets(targets, current):
+    """430明示測試綁定；只核對來源，不自行改原版記憶體。"""
+    if not isinstance(targets, list) or len(targets) > 4:
+        raise ValueError("hp_lock requires at most four explicit bindings")
+    units = {u["index"]: u for u in current.get("units", [])}
+    prior = {u["index"]: u for u in (current.get("hp_lock_control") or {}).get("active", [])}
+    expected, seen = [], set()
+    for target in targets:
+        if (not isinstance(target, dict) or not {"index", "camp", "identity"} <= target.keys()
+                or set(target) - {"index", "camp", "identity", "hp"}
+                or any(type(v) is not int for v in target.values())
+                or target["index"] in seen or target["camp"] not in (0, 2)
+                or not 0 <= target["identity"] <= 255):
+            raise ValueError("hp_lock malformed or duplicate binding")
+        seen.add(target["index"])
+        unit = units.get(target["index"], {})
+        raw = bytes.fromhex(unit.get("raw_hex", ""))
+        if (len(raw) != 80 or raw[6] != target["camp"] or raw[8] != target["identity"]
+                or raw[5] & 1 or not 1 <= int.from_bytes(raw[0x40:0x42], "little") <= 32767):
+            raise ValueError("hp_lock raw runtime record unavailable")
+        previous = prior.get(target["index"], {})
+        keep = previous.get("camp") == target["camp"] and previous.get("identity") == target["identity"]
+        hp = target.get("hp", previous["hp"] if keep else int.from_bytes(raw[0x40:0x42], "little"))
+        if not 1 <= hp <= 32767:
+            raise ValueError("hp_lock HP outside positive signed word")
+        expected.append({"index": target["index"], "camp": target["camp"], "identity": target["identity"], "hp": hp})
+    return expected
+
+
+def do_hp_lock(command):
+    before = state()
+    if not (before.get("hp_lock_control") or {}).get("enabled"):
+        print("hp_lock：oracle未明示啟用430能力", file=sys.stderr)
+        return False
+    try:
+        expected = validate_hp_lock_targets(command["hp_lock"], before)
+    except (ValueError, KeyError, TypeError) as error:
+        print(f"hp_lock：{error}", file=sys.stderr)
+        return False
+    seq, current = send("", int(command.get("steps", 1)), hp_lock=command["hp_lock"])
+    if (current.get("hp_lock_control") or {}).get("active") != expected:
+        print("hp_lock：oracle沒有發布完整綁定收據", file=sys.stderr)
+        return False
+    log_action("hp_lock", current, hp_lock=command["hp_lock"], captured=expected, modified_path=True)
+    report(seq, "", current, f" hp-lock={expected}（修改路徑）")
     return True
 
 
@@ -769,7 +823,7 @@ def unit_key(unit):
     return ("identity", identity)
 
 
-def engage_targets(current, origin, typical_move=6, hint=None):
+def engage_targets(current, origin, typical_move=6, hint=None, target_index=None):
     """候選落腳格，由「最值得試」排到「最不值得試」。
 
     兩段：先試貼著敵人的格（走到就能打），再試沿路徑逼近的格。移動成本受地形
@@ -781,6 +835,8 @@ def engage_targets(current, origin, typical_move=6, hint=None):
     """
     occupied = occupied_cells(current)
     enemies = side(current, ENEMY_CAMP)
+    if target_index is not None:
+        enemies = [unit for unit in enemies if unit.get("index") == target_index]
     if not enemies:
         return []
     cells, seen = [], set()
@@ -1228,7 +1284,23 @@ def do_engage(command):
     - ring 上：攻擊是直接 enter（預設就是攻擊，確認後游標自動跳到可打的敵人），
       待機是 down 再 enter（↑0 攻擊／←1 法術／→2 物品／↓3 待機）。
     """
-    ux, uy = command["engage"]
+    spec = command["engage"]
+    target_index = None
+    if isinstance(spec, dict):
+        if (set(spec) != {"from_index", "target_index"}
+                or any(type(value) is not int for value in spec.values())):
+            print("engage：索引控制需要from_index／target_index", file=sys.stderr)
+            return False
+        units = state().get("units", [])
+        actors = [u for u in units if u.get("index") == spec["from_index"] and u.get("camp") == ALLY_CAMP and u.get("hp", 0) > 0]
+        targets = [u for u in units if u.get("index") == spec["target_index"] and u.get("camp") == ENEMY_CAMP and u.get("hp", 0) > 0]
+        if len(actors) != 1 or len(targets) != 1:
+            print("engage：索引沒有唯一活躍來源／目標", file=sys.stderr)
+            return False
+        ux, uy = actors[0]["x"], actors[0]["y"]
+        target_index = spec["target_index"]
+    else:
+        ux, uy = spec
     steps = int(command.get("steps", 2_000_000))
     # 分桶之後每個距離兩格，移動力 6 就是 12 格；預算少於這個數就試不到近的那幾桶，
     # 而走不動的單位偏偏只有近格走得到。
@@ -1280,10 +1352,11 @@ def do_engage(command):
 
     moved_to = (ux, uy)
     standing = [e for e in side(current, ENEMY_CAMP)
-                if distance((e["x"], e["y"]), (ux, uy)) <= reach]
+                if distance((e["x"], e["y"]), (ux, uy)) <= reach
+                and (target_index is None or e.get("index") == target_index)]
     candidates = [] if standing else engage_targets(
         current, (ux, uy), int(command.get("typical_move", 6)),
-        MOVE_SPAN.get(unit_key(unit)))[:tries]
+        MOVE_SPAN.get(unit_key(unit)), target_index)[:tries]
     if standing:
         # 已經站在射程內就原地確認，不必再走。
         seq, current = send("enter", max(steps, 5_000_000))
@@ -1318,7 +1391,8 @@ def do_engage(command):
         return False
 
     in_reach = [e for e in side(current, ENEMY_CAMP)
-                if distance((e["x"], e["y"]), moved_to) <= reach]
+                if distance((e["x"], e["y"]), moved_to) <= reach
+                and (target_index is None or e.get("index") == target_index)]
     if in_reach:
         before_hp = sum(e.get("hp", 0) for e in side(state(), ENEMY_CAMP))
         before_count = len(side(state(), ENEMY_CAMP))
@@ -1343,6 +1417,10 @@ def do_engage(command):
             in_reach = None
     if in_reach:
         # 攻擊確認前的那一格：游標停在原版自動挑的目標上，亂數字組也還沒被這一擊消耗。
+        if target_index is not None:
+            chosen = next((u for u in side(state(), ENEMY_CAMP) if u.get("index") == target_index), None)
+            if chosen is None or not do_goto({"goto": [chosen["x"], chosen["y"]], "steps": steps, "max": 80}):
+                return False
         armed = state()
         armed_view = armed.get("view", {}) or {}
         target_cell = [int(armed_view.get("cursor_x", -1)), int(armed_view.get("cursor_y", -1))]
@@ -2059,6 +2137,10 @@ def main():
                     return 10
             except DialogueProbeComplete:
                 return 0
+            continue
+        if "hp_lock" in command:
+            if not do_hp_lock(command):
+                return 18
             continue
         if "force_enemy_clear" in command:
             if not do_force_enemy_clear(command):

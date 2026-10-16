@@ -32,6 +32,9 @@ FD2_ORACLE_TRACE_TAIL=${FD2_ORACLE_TRACE_TAIL:-}
 case "$FD2_ORACLE_TRACE_TAIL" in ''|1) ;; *) echo "TRACE_TAIL只接受空值或1" >&2; exit 2 ;; esac
 export FD2_ORACLE_TRACE_TAIL
 FD2_ORACLE_LOCK_ALLY_HP=${FD2_ORACLE_LOCK_ALLY_HP:-}
+FD2_ORACLE_ALLOW_HP_LOCK=${FD2_ORACLE_ALLOW_HP_LOCK:-}
+case "$FD2_ORACLE_ALLOW_HP_LOCK" in ''|1) ;; *) echo "ALLOW_HP_LOCK只接受空值或1" >&2; exit 2 ;; esac
+export FD2_ORACLE_ALLOW_HP_LOCK
 FD2_ORACLE_STATE=${FD2_ORACLE_STATE:-}
 if [ -n "$FD2_ORACLE_FRAME_UNITS" ] && [ "$FD2_ORACLE_FRAME_UNITS" != "1" ]; then
   echo "FRAME_UNITS只接受空值或1" >&2; exit 2
@@ -77,6 +80,10 @@ def near_heap_policy(root):
         'apps/fd2/cmd/oracle/main.go': '2ec3ae81c539599ac61ef8ac989d262328626f900879f8156fe03a60c33ff0a3',
         'internal/machine/le_dma_clock.go': '2baa4edb15803724a23edb0b2bc081879b7d9431d5aa517caf7a392d0dabc4a1',
         'internal/machine/le_real_irq7.go': '2a71508109d7a0514acabe69c542769d0e2fef11b6a613f765884296c3bfecab'}
+    # 選擇性鎖血只用於明示的修改路徑；整組來源綁定，不放寬既有准入。
+    resample_reviewed = {**irq7_reviewed,
+        'apps/fd2/cmd/oracle/main.go': 'cf83cbae83ff1ec41c5fbfbc1d637d2823f0089b03ae8a3ce8e8a14b824d1a92',
+        'apps/fd2/cmd/oracle/hp_lock.go': 'e90e339574fedac96564941b6b2ac88cd0e0f06518f0c1cd2273cee30b5b4a8d'}
     profile = os.environ["FD2_ORACLE_HEAP_PROFILE"]
     sources = []
     for name in reviewed:
@@ -95,10 +102,15 @@ def near_heap_policy(root):
         irq7_sources = [{"path": name, "sha256": hashlib.sha256((root/name).read_bytes()).hexdigest()
                         if (root/name).is_file() else None} for name in irq7_reviewed]
         known_irq7 = all(source["sha256"] == irq7_reviewed[source["path"]] for source in irq7_sources)
-        if not (known_native or known_merged or known_irq7):
+        resample_sources = [{"path": name, "sha256": hashlib.sha256((root/name).read_bytes()).hexdigest()
+                            if (root/name).is_file() else None} for name in resample_reviewed]
+        known_resample = all(source["sha256"] == resample_reviewed[source["path"]] for source in resample_sources)
+        if not (known_native or known_merged or known_irq7 or known_resample):
             raise SystemExit("native原生近堆來源未通過已審查清冊")
         if known_irq7:
             native_sources = irq7_sources
+        if known_resample:
+            native_sources = resample_sources
         return {
             "kind": "original_instructions_with_existing_platform_adapters",
             "status": "reviewed", "profile": "native", "sources": native_sources,
@@ -172,6 +184,7 @@ runner = {
                          "max_instructions": 2000,
                          "scope": "existing oracle -trace-tail: final budget window; read-only EIP positions"},
     "lock_ally_hp": bool(env.get("FD2_ORACLE_LOCK_ALLY_HP")),
+    "allow_hp_lock_control": env.get("FD2_ORACLE_ALLOW_HP_LOCK") == "1",
     "force_enemy_clear_declared": bool(env.get("FD2_ORACLE_FORCE_ENEMY_CLEAR")),
     "original_fd2_exe_sha256": sha,
     "original_reference_manifest": "docs/data/fd2-reference-files.json",
@@ -179,6 +192,7 @@ runner = {
     "near_heap_policy": near_heap_policy(Path("/dos")),
     "state_directory": env.get("FD2_ORACLE_SOURCE_STATE", ""),
     "state_injections": [
+        "allow_hp_lock_control 為 true 時接受明示選擇性鎖血控制；實際綁定、目標 HP、解除與寫入次數見 checkpoint hp_lock_control",
         "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
         "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"],
     "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
@@ -228,8 +242,11 @@ if [ -n "$FD2_ORACLE_EIP_TRACE" ] || [ -n "$FD2_ORACLE_MEMORY_CHANGE" ]; then
              -eip-trace-max "$FD2_ORACLE_EIP_TRACE_MAX")
 fi
 cheatargs=()
+if [ "$FD2_ORACLE_ALLOW_HP_LOCK" = "1" ]; then
+  cheatargs+=(-allow-hp-lock-control)
+fi
 if [ -n "$FD2_ORACLE_LOCK_ALLY_HP" ]; then
-  cheatargs=(-lock-ally-hp)
+  cheatargs+=(-lock-ally-hp)
 fi
 if [ -n "$FD2_ORACLE_STATE" ]; then
   cheatargs+=(-state "$FD2_ORACLE_STATE")

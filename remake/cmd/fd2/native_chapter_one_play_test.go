@@ -324,7 +324,7 @@ func pump(t *testing.T, g *Game, budget int, done func() bool) bool {
 		if (g.battleEvent != nil || g.nativeTurnStaging != nil) && len(g.dialog) > 0 {
 			g.handleBattleEventDialogueInput(true)
 		}
-		if err := g.Update(); err != nil {
+		if err := parityUpdateGame(g); err != nil {
 			t.Fatalf("Update：%v", err)
 		}
 		if g.loadErr != "" {
@@ -351,7 +351,7 @@ func closeRing(t *testing.T, g *Game, then func()) bool {
 			t.Fatalf("組不出整幀：%v", err)
 		}
 		g.markActionOverlayDrawn()
-		if err := g.Update(); err != nil {
+		if err := parityUpdateGame(g); err != nil {
 			t.Fatalf("Update：%v", err)
 		}
 	}

@@ -1,0 +1,913 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch27_captain_reinforcement_resample",
+  "date": "2026-10-16",
+  "status": "passed",
+  "evidence_level": "RUNTIME-E1 modified-path diagnostic",
+  "formal_chapter_receipt_unchanged": "docs/data/ui-traces/parity-ch27.json",
+  "chapter_ledger_unchanged": "24/30",
+  "original_runner": {
+    "schema_version": 1,
+    "kind": "fd2_oracle_runner_provenance",
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "container_entry": "tools/dosgolem_oracle_container.sh",
+    "dosgolem_root": "/home/anr2/cht/fd2/work/dosgolem-fd2-resample-20261016",
+    "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+    "dosgolem_branch": "fd2-resample-20261016",
+    "dosgolem_tracked_dirty_files": 0,
+    "dosgolem_untracked_files": 0,
+    "original_root": "/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2",
+    "generated_at": "2026-10-16T10:27:12.207877+00:00",
+    "control_plan": "docs/data/parity-plans/ch27-captain-reinforcement-lock-r3.jsonl",
+    "map_runtime_records": {
+      "enabled": true,
+      "globals": 16,
+      "palette_bytes": 768,
+      "scope": "same-instruction read-only map globals/view/units/palette; invalid source false"
+    },
+    "frame_unit_records": {
+      "enabled": false,
+      "row_bytes": 80,
+      "max_units": 128,
+      "scope": "accepted PNG same-instruction read-only units; invalid source marked false"
+    },
+    "eip_trace_window": {
+      "from_step": 0,
+      "to_step": 0,
+      "max_entries": 200000
+    },
+    "instruction_tail": {
+      "enabled": false,
+      "max_instructions": 2000,
+      "scope": "existing oracle -trace-tail: final budget window; read-only EIP positions"
+    },
+    "lock_ally_hp": false,
+    "allow_hp_lock_control": true,
+    "force_enemy_clear_declared": true,
+    "original_fd2_exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "original_reference_manifest": "docs/data/fd2-reference-files.json",
+    "heap_profile": "native",
+    "near_heap_policy": {
+      "kind": "original_instructions_with_existing_platform_adapters",
+      "status": "reviewed",
+      "profile": "native",
+      "sources": [
+        {
+          "path": "internal/machine/watcom_runtime.go",
+          "sha256": "00c75b7a4172861c7c2d39187df3c962fb598db74a6e340cdfd61b9eb7f6907f"
+        },
+        {
+          "path": "apps/fd2/cmd/oracle/main.go",
+          "sha256": "cf83cbae83ff1ec41c5fbfbc1d637d2823f0089b03ae8a3ce8e8a14b824d1a92"
+        },
+        {
+          "path": "internal/cpu386/cpu.go",
+          "sha256": "ed6e32dfb4bbde6c6562e838c4d9129e98b48ca623a44625f5a3a5f7bc6695ef"
+        },
+        {
+          "path": "internal/machine/le_startup.go",
+          "sha256": "3d04282347ef5c5f5ba4f6e780a4f5b259195863d049489d84b2f71fbb25ff3b"
+        },
+        {
+          "path": "internal/machine/le_dma_clock.go",
+          "sha256": "2baa4edb15803724a23edb0b2bc081879b7d9431d5aa517caf7a392d0dabc4a1"
+        },
+        {
+          "path": "internal/machine/le_real_irq7.go",
+          "sha256": "2a71508109d7a0514acabe69c542769d0e2fef11b6a613f765884296c3bfecab"
+        },
+        {
+          "path": "apps/fd2/cmd/oracle/hp_lock.go",
+          "sha256": "e90e339574fedac96564941b6b2ac88cd0e0f06518f0c1cd2273cee30b5b4a8d"
+        }
+      ],
+      "original_entries": {
+        "_nmalloc": "0x36D26",
+        "_nfree": "0x37426",
+        "__Init_Argv": "0x46114"
+      },
+      "preserved_hooks": [
+        "memset 0x375C0",
+        "int386 0x36D98",
+        "LEVideo",
+        "BIOS clock",
+        "BIOS keyboard",
+        "FD2StartupDOS/DPMI"
+      ],
+      "capacity": "original instructions request growth from existing DPMI profile; adapter heap-mib is not a native capacity",
+      "allocation_hook": null,
+      "free_hook": null,
+      "reused_allocation_contents": "determined by original instructions; no adapter clearing",
+      "original_allocator_parity": "bounded original execution; all branches and real hardware unverified",
+      "evidence_contract": "docs/data/ida/fd2_ch18_oracle_stosb_20261003.json#allocator_formal_native_profile",
+      "evidence_restriction": "原始近堆指令仍搭配既有DOS/DPMI與周邊硬體近似；有界BOOT不代表完整章或全原版硬體一致。"
+    },
+    "state_directory": "work/ch27-flow-20261016/resample-lock-20261016/state-r3",
+    "state_injections": [
+      "allow_hp_lock_control 為 true 時接受明示選擇性鎖血控制；實際綁定、目標 HP、解除與寫入次數見 checkpoint hp_lock_control",
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "evidence_note": "任何上述注入啟用時皆為修改路徑，只可驗證節點、畫面、介面與存檔閉環；不得用於傷害、存活、戰鬥結果或一般玩家路徑（PLAYER-E2）宣稱"
+  },
+  "remake_settings": {
+    "capture_frames": false,
+    "go_seed": 4,
+    "legacy_end_sources": null,
+    "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+    "modified_path_hp_lock": true,
+    "native_rng_initial": 0
+  },
+  "prefix_boundaries_unchanged": 94,
+  "lock_actions": [
+    {
+      "kind": "hp_lock",
+      "seq": 94,
+      "round": 1,
+      "rng_word": 64182,
+      "gold": 2000,
+      "hp_lock": [
+        {
+          "index": 0,
+          "camp": 2,
+          "identity": 0
+        },
+        {
+          "index": 24,
+          "camp": 0,
+          "identity": 116
+        },
+        {
+          "index": 25,
+          "camp": 0,
+          "identity": 116
+        },
+        {
+          "index": 26,
+          "camp": 0,
+          "identity": 116
+        }
+      ],
+      "captured": [
+        {
+          "index": 0,
+          "camp": 2,
+          "identity": 0,
+          "hp": 30420
+        },
+        {
+          "index": 24,
+          "camp": 0,
+          "identity": 116,
+          "hp": 3200
+        },
+        {
+          "index": 25,
+          "camp": 0,
+          "identity": 116,
+          "hp": 3200
+        },
+        {
+          "index": 26,
+          "camp": 0,
+          "identity": 116,
+          "hp": 3200
+        }
+      ],
+      "modified_path": true
+    },
+    {
+      "kind": "hp_lock",
+      "seq": 526,
+      "round": 13,
+      "rng_word": 11065,
+      "gold": 2000,
+      "hp_lock": [
+        {
+          "index": 0,
+          "camp": 2,
+          "identity": 0
+        },
+        {
+          "index": 24,
+          "camp": 0,
+          "identity": 116,
+          "hp": 1
+        },
+        {
+          "index": 25,
+          "camp": 0,
+          "identity": 116,
+          "hp": 1
+        },
+        {
+          "index": 26,
+          "camp": 0,
+          "identity": 116
+        }
+      ],
+      "captured": [
+        {
+          "index": 0,
+          "camp": 2,
+          "identity": 0,
+          "hp": 30420
+        },
+        {
+          "index": 24,
+          "camp": 0,
+          "identity": 116,
+          "hp": 1
+        },
+        {
+          "index": 25,
+          "camp": 0,
+          "identity": 116,
+          "hp": 1
+        },
+        {
+          "index": 26,
+          "camp": 0,
+          "identity": 116,
+          "hp": 3200
+        }
+      ],
+      "modified_path": true
+    },
+    {
+      "kind": "hp_lock",
+      "seq": 527,
+      "round": 13,
+      "rng_word": 11065,
+      "gold": 2000,
+      "hp_lock": [
+        {
+          "index": 0,
+          "camp": 2,
+          "identity": 0
+        },
+        {
+          "index": 26,
+          "camp": 0,
+          "identity": 116
+        }
+      ],
+      "captured": [
+        {
+          "index": 0,
+          "camp": 2,
+          "identity": 0,
+          "hp": 30420
+        },
+        {
+          "index": 26,
+          "camp": 0,
+          "identity": 116,
+          "hp": 3200
+        }
+      ],
+      "modified_path": true
+    }
+  ],
+  "force_clear": {
+    "kind": "force_enemy_clear",
+    "seq": 353,
+    "round": 6,
+    "rng_word": 40432,
+    "gold": 2000,
+    "cleared": 56,
+    "modified_path": true,
+    "preserved_indices": [
+      24,
+      25,
+      26
+    ]
+  },
+  "staging": [
+    {
+      "group": 1,
+      "x": 3,
+      "y": 27,
+      "unit_count_before": 63
+    },
+    {
+      "group": 2,
+      "x": 15,
+      "y": 27,
+      "unit_count_before": 69
+    },
+    {
+      "group": 3,
+      "x": 9,
+      "y": 44,
+      "unit_count_before": 75
+    },
+    {
+      "group": 4,
+      "x": 0,
+      "y": 9,
+      "unit_count_before": 82
+    },
+    {
+      "group": 5,
+      "x": 17,
+      "y": 9,
+      "unit_count_before": 89
+    }
+  ],
+  "appended_records": [
+    {
+      "index": 75,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 14,
+      "y": 46,
+      "hp": 1035
+    },
+    {
+      "index": 76,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 16,
+      "y": 46,
+      "hp": 1035
+    },
+    {
+      "index": 77,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 14,
+      "y": 47,
+      "hp": 1035
+    },
+    {
+      "index": 78,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 15,
+      "y": 47,
+      "hp": 1035
+    },
+    {
+      "index": 79,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 16,
+      "y": 47,
+      "hp": 1035
+    },
+    {
+      "index": 80,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 14,
+      "y": 48,
+      "hp": 1035
+    },
+    {
+      "index": 81,
+      "group": 3,
+      "record_byte8": 112,
+      "x": 16,
+      "y": 48,
+      "hp": 1035
+    },
+    {
+      "index": 82,
+      "group": 4,
+      "record_byte8": 114,
+      "x": 4,
+      "y": 13,
+      "hp": 828
+    },
+    {
+      "index": 83,
+      "group": 4,
+      "record_byte8": 114,
+      "x": 6,
+      "y": 13,
+      "hp": 828
+    },
+    {
+      "index": 84,
+      "group": 4,
+      "record_byte8": 111,
+      "x": 4,
+      "y": 14,
+      "hp": 920
+    },
+    {
+      "index": 85,
+      "group": 4,
+      "record_byte8": 111,
+      "x": 6,
+      "y": 14,
+      "hp": 920
+    },
+    {
+      "index": 86,
+      "group": 4,
+      "record_byte8": 111,
+      "x": 4,
+      "y": 15,
+      "hp": 920
+    },
+    {
+      "index": 87,
+      "group": 4,
+      "record_byte8": 111,
+      "x": 5,
+      "y": 15,
+      "hp": 920
+    },
+    {
+      "index": 88,
+      "group": 4,
+      "record_byte8": 111,
+      "x": 6,
+      "y": 15,
+      "hp": 920
+    },
+    {
+      "index": 89,
+      "group": 5,
+      "record_byte8": 114,
+      "x": 26,
+      "y": 13,
+      "hp": 828
+    },
+    {
+      "index": 90,
+      "group": 5,
+      "record_byte8": 114,
+      "x": 24,
+      "y": 13,
+      "hp": 828
+    },
+    {
+      "index": 91,
+      "group": 5,
+      "record_byte8": 111,
+      "x": 24,
+      "y": 14,
+      "hp": 920
+    },
+    {
+      "index": 92,
+      "group": 5,
+      "record_byte8": 111,
+      "x": 26,
+      "y": 14,
+      "hp": 920
+    },
+    {
+      "index": 93,
+      "group": 5,
+      "record_byte8": 111,
+      "x": 26,
+      "y": 15,
+      "hp": 920
+    },
+    {
+      "index": 94,
+      "group": 5,
+      "record_byte8": 111,
+      "x": 25,
+      "y": 15,
+      "hp": 920
+    },
+    {
+      "index": 95,
+      "group": 5,
+      "record_byte8": 111,
+      "x": 24,
+      "y": 15,
+      "hp": 920
+    }
+  ],
+  "original_counter_evidence": "既有IDA358EA分支與兩次35992增量路徑；沒有直接擷取原版state16 byte，不冒稱直接記憶體讀值",
+  "remake_state16": 2,
+  "last_captain_hp": 3200,
+  "saul_hp": 30420,
+  "final_enemy_alive": 22,
+  "trace_sha256": "f95bc3a5ef259ad22f30de9424a004068ca7c28931e0484bd82dac85f71e9640",
+  "actions_sha256": "209057f26253b473409415d4a45a8425f73957e7e0192c2bf7362c1fdaacae54",
+  "remake_checkpoints_sha256": "88912112bcbe8ad5c5e8b982c548cf3f56e49a77814abaf843b8fe4321c97c0c",
+  "limits": [
+    "章內週期鎖血與HP1／清敵皆明示修改；不證明傷害、自然存活、AI選目標或PLAYER-E2",
+    "畫面僅參考，未要求逐frame相同",
+    "不驗第三名隊長死亡臂或重新保存整章"
+  ],
+  "slot_policy": {
+    "base_sha256": "89a8d7a93f8baae11e2315f9d06c9a979ef5d6d608ee1558ec42ffb198cdbbd8",
+    "output_sha256": "0eb3de0a84fd2907f28d5112380511a2e05d13423b0b04a66db5b96c9b9836ea",
+    "base_ap_boost": 1000,
+    "roster_count": 27,
+    "decoded_differing_offsets": [
+      12642,
+      12643,
+      12659,
+      12660,
+      12722,
+      12723,
+      12739,
+      12740,
+      12802,
+      12803,
+      12819,
+      12820,
+      12882,
+      12883,
+      12899,
+      12900,
+      12962,
+      12963,
+      12979,
+      12980,
+      13042,
+      13043,
+      13059,
+      13060,
+      13122,
+      13123,
+      13139,
+      13140,
+      13202,
+      13203,
+      13219,
+      13220,
+      13282,
+      13283,
+      13299,
+      13300,
+      13362,
+      13363,
+      13379,
+      13380,
+      13442,
+      13443,
+      13459,
+      13460,
+      13522,
+      13523,
+      13539,
+      13540,
+      13602,
+      13603,
+      13619,
+      13620,
+      13682,
+      13683,
+      13699,
+      13700,
+      13762,
+      13763,
+      13779,
+      13780,
+      13842,
+      13843,
+      13859,
+      13860,
+      13922,
+      13923,
+      13939,
+      13940,
+      14002,
+      14003,
+      14019,
+      14020,
+      14082,
+      14083,
+      14099,
+      14100,
+      14162,
+      14163,
+      14179,
+      14180,
+      14242,
+      14243,
+      14259,
+      14260,
+      14322,
+      14323,
+      14339,
+      14340,
+      14402,
+      14403,
+      14419,
+      14420,
+      14482,
+      14483,
+      14499,
+      14500,
+      14562,
+      14563,
+      14579,
+      14580,
+      14642,
+      14643,
+      14659,
+      14660,
+      14722,
+      14723,
+      14739,
+      14740,
+      22983,
+      22984
+    ],
+    "manifest_sha256": "8d6d822bc2aa858faa761488a1e102f28d39036f32e56b9442f4f163e17d2afc",
+    "original_input_sha256": "0eb3de0a84fd2907f28d5112380511a2e05d13423b0b04a66db5b96c9b9836ea",
+    "remake_input_sha256": "0eb3de0a84fd2907f28d5112380511a2e05d13423b0b04a66db5b96c9b9836ea"
+  },
+  "unboosted_source_regression": "work/ch27-flow-20261016/resample-lock-20261016/original-r1",
+  "boosted_boot_register_differences": [
+    {
+      "seq": 0,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 1,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 2,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 3,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 4,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 5,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 6,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 7,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    },
+    {
+      "seq": 8,
+      "before": [
+        4294967230,
+        0,
+        258,
+        2331332,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "after": [
+        4294967230,
+        0,
+        258,
+        2331017,
+        349692,
+        0,
+        1670000,
+        1682483
+      ],
+      "level": "unknown; different SAV input, not the disabled-tool regression"
+    }
+  ],
+  "advisory_view": {
+    "original": {
+      "aux_phase": 0,
+      "camera_x": 17,
+      "camera_y": 9,
+      "cursor_x": 28,
+      "cursor_y": 10,
+      "gold": 2000,
+      "overlay_selector": 1,
+      "rng_word": 11926,
+      "round": 14,
+      "visible_x": 11,
+      "visible_y": 1
+    },
+    "remake_cursor": [
+      14,
+      20
+    ],
+    "remake_camera": [
+      4,
+      19
+    ],
+    "scope": "三路援軍完成的游標／鏡頭交回點不同；流程與新增單位驗證分開，未宣稱畫面或全部view一致",
+    "followup_issue": 224
+  },
+  "verification_sources": [
+    {
+      "path": "tools/dosgolem_oracle_drive.py",
+      "sha256": "a1a8a7b7a7728949823a02cb72583e3933f3f5915334290993e242c13c30013a"
+    },
+    {
+      "path": "tools/dosgolem_oracle_container.sh",
+      "sha256": "851d881c024f8b30b551c9b00bbcf9287fe5f7e3f403d349e070134c23e4b39d"
+    },
+    {
+      "path": "tools/dosgolem_oracle.sh",
+      "sha256": "a428f62abe021ef7c4869aea394730900a44d4ff16c477bf1bb37816efc108bd"
+    },
+    {
+      "path": "tools/verify_ch27_reinforcement_resample.py",
+      "sha256": "45b38c55cc77e3c0f75b2c474157b4d6e861eb6f682fea5cd9aef7547588df96"
+    },
+    {
+      "path": "docs/data/parity-plans/ch27-captain-reinforcement-lock-r3.jsonl",
+      "sha256": "fecdd3313a887df77b1e2189398da2ce1035074d04f3acf979860e817e76e7bd"
+    },
+    {
+      "path": "remake/cmd/fd2/chapter_parity_replay_test.go",
+      "sha256": "805397608877a7b517ad2703a87d300398a18a61d7070e62e4c2dcb31c2e42dd"
+    },
+    {
+      "path": "remake/cmd/fd2/chapter_parity_hp_lock_test.go",
+      "sha256": "ae04cf5fbe292f13cd0929988d093af516e3f17af2358de2a3f0cc713a2e994f"
+    },
+    {
+      "path": "remake/cmd/fd2/native_chapter_one_play_test.go",
+      "sha256": "60e9e6d6fa8f1efe33b428c63ff684faa510971147f854aa15ad05665c8e42a2"
+    }
+  ],
+  "remake_production_base_commit": "eb3cde31147d7dc06713d05e9423f699713c1a4b",
+  "ai_replay": {
+    "original_entries": 270,
+    "consumed": 270,
+    "order_divergences": 0
+  },
+  "advisory_frames": {
+    "original": "work/ch27-flow-20261016/resample-lock-20261016/original-r3/checkpoint-0586.png",
+    "original_sha256": "7e0ad62abaab41671bd0fac6bad127711281826e055efb79ef7df0de5d804992",
+    "remake": "work/ch27-flow-20261016/resample-lock-20261016/remake-r3/remake-0077-p0.png",
+    "remake_sha256": "b283eaf2b1191daa246f117876ae42c0bba1061cc205c9a5dee15224355e1c1f",
+    "comparison": "相近狀態；新增單位相同，終點view不同。畫面參考，無逐幀／像素閘門"
+  }
+}

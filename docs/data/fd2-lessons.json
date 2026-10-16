@@ -2298,6 +2298,21 @@
         ],
         "pattern": "record.+6.+ != 0"
       }
+    },
+    {
+      "id": "oracle-toward-waypoints-follow-real-terrain",
+      "date": "2026-10-16",
+      "area": "原版正常輸入路徑",
+      "rule": "使用tools/dosgolem_oracle_drive.py的toward跨越長地形前，先以load_map_cost_grid及reachable_cells核對通路。需要先等距或遠離目標繞行時，以受版控parity-plan明示waypoints；候選只排序，仍由正常enter裁決，不以原地待機代表成功推進。入口docs/data/parity-plans/ch27-captain-reinforcement-lock-r2.jsonl。",
+      "why": "第27章15,32北側y31中央三格不可通行，最初目標15,22的曼哈頓距離候選不包含等距的13,30。成本格核對後經x13繞行，保留r1失敗而不改遊戲地形。",
+      "evidence": "docs/data/ida/fd2_ch27_flow_20261016.json resample_hp_lock_policy",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "docs/data/parity-plans/ch27-captain-reinforcement-lock-r2.jsonl"
+        ],
+        "pattern": "13,30"
+      }
     }
   ]
 }

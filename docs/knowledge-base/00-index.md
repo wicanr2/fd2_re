@@ -857,3 +857,17 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第27章正式重跑：[r2輸入](../data/parity-plans/ch27-flow-cheat-r2.jsonl)，保留r1為首次敵方行動前取消的trace設定診斷。
 
 - 第27章戰後共同前綴及持鑰匙成功臂 #220：[intro handler](../../remake/assets/cutscenes/handlers/ch26_post_intro.json)、[intro binding](../../remake/assets/cutscenes/bindings/ch26_post_intro.json)、[success handler](../../remake/assets/cutscenes/handlers/ch26_post_sky_key_success.json)、[success binding](../../remake/assets/cutscenes/bindings/ch26_post_sky_key_success.json)。固定原始表、CONFORMED規格、75筆實測與畫面限制見第27章主契約。
+
+- 第27章選擇性鎖血增援診斷：[r1控制計畫](../data/parity-plans/ch27-captain-reinforcement-lock-r1.jsonl)，來源與證據限制見[第27章主契約](../data/ida/fd2_ch27_flow_20261016.json)的resample_hp_lock_policy。
+
+- 第27章修改路徑重播鎖血：[測試政策](../../remake/cmd/fd2/chapter_parity_hp_lock_test.go)，限增援診斷，不改正式規則。
+
+- 第27章增援診斷驗證：[雙端收據驗證器](../../tools/verify_ch27_reinforcement_resample.py)，只驗明示修改路徑，不改正式章台帳。
+
+- 第27章增援繞行修正：[r2計畫](../data/parity-plans/ch27-captain-reinforcement-lock-r2.jsonl)，按實際成本格經x13繞過y31中央障礙；r1保留為未達增援的診斷。
+
+- 第27章增援攻防校準：[r3正常輸入](../data/parity-plans/ch27-captain-reinforcement-lock-r3.jsonl)，依已授權作弊以既有boost-only章前AP+1000，避免普通攻擊零傷害；不改正式規則或章台帳。
+
+- 第27章增援診斷[AP+1000槽清冊](../data/parity-slots/ch27-reinforcement-ap-manifest.json)，由同章boost-only建構器產生，原正式槽維持。
+
+- 第27章[雙隊長死亡增援補抽收據](../data/ui-traces/ch27-captain-reinforcement-resample.json)：原版與重製三路已實際登場；明示鎖血及章前AP作弊，限定E1，不改正式章台帳。鏡頭回交差異另列#224。

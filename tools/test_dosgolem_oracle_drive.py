@@ -32,6 +32,54 @@ def load():
 
 drive = load()
 
+class SelectiveHPLockControl(unittest.TestCase):
+    def test_control_deadline_ignores_host_wall_clock(self):
+        with tempfile.TemporaryDirectory() as directory, mock.patch.object(drive,"RUN",directory), mock.patch.object(drive,"state",side_effect=[{"control_seq":0},{"control_seq":1}]), mock.patch.object(drive.time,"monotonic",side_effect=[10,11]), mock.patch.object(drive.time,"time",side_effect=AssertionError("牆鐘不可作控制逾時")):
+            seq,current=drive.send("",1)
+            self.assertEqual(seq,1)
+            self.assertEqual(current["control_seq"],1)
+
+    def snapshot(self):
+        units = []
+        for index, camp, identity, hp in [(0, 2, 0, 30420), (24, 0, 116, 3200), (25, 0, 116, 3200), (26, 0, 116, 3200), (27, 0, 88, 400)]:
+            raw = bytearray(80)
+            raw[6], raw[8] = camp, identity
+            raw[0x40:0x42] = hp.to_bytes(2, "little")
+            units.append(dict(index=index, camp=camp, identity=identity, hp=hp, raw_hex=raw.hex()))
+        return dict(units=units, hp_lock_control=dict(enabled=True, active=[]))
+
+    def test_capture_retain_override_and_release(self):
+        current = self.snapshot()
+        targets = [dict(index=0, camp=2, identity=0), dict(index=24, camp=0, identity=116)]
+        captured = drive.validate_hp_lock_targets(targets, current)
+        self.assertEqual([x["hp"] for x in captured], [30420, 3200])
+        current["hp_lock_control"]["active"] = captured
+        self.assertEqual(drive.validate_hp_lock_targets(targets, current), captured)
+        self.assertEqual(drive.validate_hp_lock_targets([{**targets[1], "hp": 1}], current)[0]["hp"], 1)
+        self.assertEqual(drive.validate_hp_lock_targets([], current), [])
+
+    def test_bad_bindings_are_rejected(self):
+        target = dict(index=24, camp=0, identity=116)
+        for targets in [[target, target], [{**target, "identity": 115}], [{**target, "hp": 0}], [{**target, "hp": 32768}], [{**target, "hp": True}], [{**target, "extra": 1}], [dict(index=24, camp=0)], [target]*5]:
+            with self.subTest(targets=targets), self.assertRaises(ValueError):
+                drive.validate_hp_lock_targets(targets, self.snapshot())
+        current = self.snapshot()
+        raw = bytearray.fromhex(current["units"][1]["raw_hex"])
+        raw[5] = 1
+        current["units"][1]["raw_hex"] = raw.hex()
+        with self.assertRaises(ValueError):
+            drive.validate_hp_lock_targets([target], current)
+
+    def test_clear_preserves_exact_locked_set(self):
+        before = self.snapshot()
+        before["hp_lock_control"]["active"] = [dict(index=i, camp=0, identity=116, hp=3200) for i in (24,25,26)]
+        after = {**before, "units": [{**u, "hp": 0 if u["index"]==27 else u["hp"]} for u in before["units"]], "state_injections": ["force-enemy-clear"]}
+        with mock.patch.object(drive, "state", return_value=before), mock.patch.object(drive,"send",return_value=(1,after)) as send, mock.patch.object(drive,"report"), mock.patch.object(drive,"log_action") as log:
+            self.assertTrue(drive.do_force_enemy_clear(dict(force_enemy_clear=True,preserve_hp_locks=True,end_turn=False,steps=1)))
+        self.assertEqual(send.call_args.kwargs, dict(force_enemy_clear=True,preserve_hp_locks=True))
+        self.assertEqual(log.call_args.kwargs["cleared"],1)
+        self.assertEqual(log.call_args.kwargs["preserved_indices"],[24,25,26])
+
 
 class SelfRestoreItemPreflight(unittest.TestCase):
     def test_original_compacted_inventory_is_success(self):

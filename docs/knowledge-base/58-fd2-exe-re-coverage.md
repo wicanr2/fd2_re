@@ -3475,4 +3475,14 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 沒有新增matching編譯，不重解已閉合helper或硬體時序。
 
 正常LOAD、選人、62→63增援、T9單次清敵、成功戰後、記錄與返回選人通過；整檔SAV嚴格相同。
-本次未觸發64，不把隊長死亡增援、缺鑰匙結局或寶箱／買賣算已驗。frames advisory與白／黑VGA memset限制照實保留。
+正式章收據未觸發64；追加修改路徑補抽見下節。缺鑰匙結局及寶箱／買賣未驗。frames advisory與白／黑VGA memset限制照實保留。
+
+## 2026-10-16 第27章隊長死亡增援補抽 #223
+
+唯一現況為[診斷收據](../data/ui-traces/ch27-captain-reinforcement-resample.json)與[主契約](../data/ida/fd2_ch27_flow_20261016.json)的resample_hp_lock_policy。既有event64正式consumer已由實際Game正常攻擊觸發；原版與重製均追加前波12筆及隊長死亡三路21筆，最終runtime96筆、敵軍存活22筆。270筆AI完整消費，零順序分歧；新增21筆位置、HP與raw+8逐筆相同。第三隊長HP3200、索爾HP30420保持存活。
+
+本輪依明示作弊授權：同章槽全名冊AP+1000，章內選擇性鎖索爾與三隊長；前波後清非隊長56筆，前兩名HP1後解鎖，正常攻擊死亡。第二名在敵方階段正常回復到641 HP後仍由下一次正常攻擊擊倒，沒有重擲或直接設定事件計數。AP槽解碼僅108個AP欄位byte與兩byte校驗碼差異，完整偏移見收據。
+
+未強化同槽的95個啟動狀態、暫存器及PNG邊界嚴格保持；強化槽BOOT的EBX差異逐筆揭露，未追其語意，不混作同輸入回歸。原版計數以358EA分支及兩次35992執行推得；Game直接state16=2。畫面屬相近狀態，終點游標／鏡頭不同另列[#224](https://github.com/wicanr2/fd2_re/issues/224)，非本次增援阻擋。
+
+限定RUNTIME-E1修改路徑，不證明傷害、自然存活、AI選目標或一般玩家PLAYER-E2。正式parity-ch27、完整SAV收據及24／30台帳維持，未抽第三隊長死亡臂。Go19套件、106項Python測試及native來源准入通過；全域sync --check仍13筆待轉寫。沒有新matching編譯或硬體時序切片。

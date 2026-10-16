@@ -32,6 +32,9 @@
 #                         宣告控制序列會使用 force_enemy_clear。runner.json 會記錄
 #                         清場方法與證據限制；實際寫入筆數仍由各 checkpoint 的
 #                         state_injections 記錄。只設定本旗標不會自行修改原版狀態。
+#   FD2_ORACLE_ALLOW_HP_LOCK=1
+#                         接受 hp_lock 控制，最多四個明示單位。屬修改路徑診斷，
+#                         不證明傷害、存活或一般玩家路徑。預設停用。
 #
 # 逐幀擷取（判斷畫面時比狀態可靠，狀態層看不出「多畫了什麼」）：
 #   FD2_ORACLE_FRAMES=1   啟用，輸出到 <輸出目錄>/frames/
@@ -78,6 +81,7 @@ heap_profile=${FD2_ORACLE_HEAP_PROFILE:-adapter}
 case "$heap_profile" in adapter|native) ;; *) echo "未知近堆模式" >&2; exit 2 ;; esac
 state_dir=${FD2_ORACLE_STATE:-}
 lock_ally_hp=${FD2_ORACLE_LOCK_ALLY_HP:-}
+allow_hp_lock=${FD2_ORACLE_ALLOW_HP_LOCK:-}
 force_enemy_clear=${FD2_ORACLE_FORCE_ENEMY_CLEAR:-}
 frames=${FD2_ORACLE_FRAMES:-}
 frame_stride=${FD2_ORACLE_FRAME_STRIDE:-20000}
@@ -168,6 +172,7 @@ docker run --rm --network none --memory 4g --cpus "$cpus" --pids-limit 256 \
   -e FD2_ORACLE_EIP_TRACE_MAX="$eip_trace_max" \
   -e FD2_ORACLE_TRACE_TAIL="$trace_tail" \
   -e FD2_ORACLE_LOCK_ALLY_HP="$lock_ally_hp" \
+  -e FD2_ORACLE_ALLOW_HP_LOCK="$allow_hp_lock" \
   -e FD2_ORACLE_STATE="${state_dir:+/state}" \
   -w /dos "${FD2_ORACLE_IMAGE:-golang:1.24-bookworm}" \
   bash /oracle-entry.sh

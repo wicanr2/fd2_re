@@ -9755,3 +9755,7 @@ story viewport交接先同步當前raw view，避免過時battle carrier覆蓋�
 Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typed delay負責。
 這些契約已由完整同源Game及嚴格SAV比較達限定CONFORMED；沒有逐frame／硬體wall-clock聲明。
 白／黑VGA memset未轉寫與未抽樣分支列主契約限制，不把來源完整度等同畫面完成。
+
+### 2026-10-16 第27章選擇性鎖血診斷
+
+既有正式死亡事件與增援consumer已由正常攻擊實際觸發，來源、READY／CONFORMED契約與每筆注入見[第27章主契約](../data/ida/fd2_ch27_flow_20261016.json)的resample_hp_lock_policy。鎖血只在唯一原版oracle選用控制及重製_test.go政策；正式Game、規則及SAV格式不變。章前強化、週期鎖血、HP1與保護清敵如實揭露，限定修改路徑E1。鏡頭回交仍有差異，另列#224；現況與唯一數字見[58](58-fd2-exe-re-coverage.md)，不提升章台帳。

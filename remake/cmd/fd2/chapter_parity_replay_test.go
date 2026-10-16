@@ -40,30 +40,35 @@ import (
 //   FD2_PARITY_DEFEAT_TAIL  設為 1 時另驗原版 current.json 的標題終態；不改整章四項門檻
 
 type parityAction struct {
-	Kind    string   `json:"kind"`
-	Seq     int      `json:"seq"`
-	Round   int      `json:"round"`
-	RNGWord *int     `json:"rng_word"`
-	Gold    *int     `json:"gold"`
-	At      []int    `json:"at"`
-	From    []int    `json:"frm"`
-	To      []int    `json:"to"`
-	Target  []int    `json:"target"`
-	Index   *int     `json:"index"`
-	UI      string   `json:"ui"`
-	Move    string   `json:"move"`
-	Probe   *int     `json:"probe_index"`
-	Cleared *int     `json:"cleared"`
-	Slot    *int     `json:"slot"`
-	ItemID  *int     `json:"item_id"`
-	Moves   []string `json:"moves"`
-	Key     string   `json:"key"`
-	Label   string   `json:"label"`
+	HPLock           []parityHPLockTarget `json:"hp_lock"`
+	Captured         []parityHPLockCell   `json:"captured"`
+	PreservedIndices []int                `json:"preserved_indices"`
+	Kind             string               `json:"kind"`
+	Seq              int                  `json:"seq"`
+	Round            int                  `json:"round"`
+	RNGWord          *int                 `json:"rng_word"`
+	Gold             *int                 `json:"gold"`
+	At               []int                `json:"at"`
+	From             []int                `json:"frm"`
+	To               []int                `json:"to"`
+	Target           []int                `json:"target"`
+	Index            *int                 `json:"index"`
+	UI               string               `json:"ui"`
+	Move             string               `json:"move"`
+	Probe            *int                 `json:"probe_index"`
+	Cleared          *int                 `json:"cleared"`
+	Slot             *int                 `json:"slot"`
+	ItemID           *int                 `json:"item_id"`
+	Moves            []string             `json:"moves"`
+	Key              string               `json:"key"`
+	Label            string               `json:"label"`
 	// BeforeSeq 是 end_turn 開系統選單那個 enter 的 seq；在它之前的方向鍵是把游標推到空格。
 	BeforeSeq *int `json:"before_seq"`
 }
 
 type parityUnit struct {
+	Group       int  `json:"group,omitempty"`
+	RecordByte8 *int `json:"record_byte8,omitempty"`
 	// 診斷保留runtime陣列索引；不把敵軍的raw+8當持續角色身分。
 	NativeIndex int `json:"native_index"`
 	Camp        int `json:"camp"`
@@ -78,6 +83,10 @@ type parityUnit struct {
 }
 
 type parityCheckpoint struct {
+	HPLocks                 []parityHPLockCell             `json:"hp_locks,omitempty"`
+	EventState              []byte                         `json:"event_state,omitempty"`
+	RuntimeUnitCount        int                            `json:"runtime_unit_count,omitempty"`
+	RuntimeGroups           map[int]int                    `json:"runtime_groups,omitempty"`
 	Index                   int                            `json:"index"`
 	Kind                    string                         `json:"kind"`
 	OracleSeq               int                            `json:"oracle_seq"`
@@ -766,12 +775,21 @@ func TestChapterParityReplay(t *testing.T) {
 	if g.loadErr != "" {
 		t.Fatal(g.loadErr)
 	}
+	hpPolicy := &parityHPLockPolicy{}
+	for _, action := range actions {
+		if action.Kind == "hp_lock" {
+			parityHPPolicies[g] = hpPolicy
+			break
+		}
+	}
+	t.Cleanup(func() { delete(parityHPPolicies, g) })
 	settings, err := json.MarshalIndent(map[string]interface{}{
-		"go_seed":            4,
-		"native_rng_initial": g.nativeRNGState,
-		"method":             "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
-		"legacy_end_sources": legacyENDSources,
-		"capture_frames":     frameSetting != "0",
+		"go_seed":               4,
+		"native_rng_initial":    g.nativeRNGState,
+		"method":                "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+		"legacy_end_sources":    legacyENDSources,
+		"capture_frames":        frameSetting != "0",
+		"modified_path_hp_lock": parityHPPolicies[g] != nil,
 	}, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -859,6 +877,8 @@ func TestChapterParityReplay(t *testing.T) {
 			skipUnit = false
 		}
 		switch action.Kind {
+		case "hp_lock":
+			r.updateHPLocks(action)
 		case "mark":
 			r.mark(action)
 		case "select":
@@ -974,6 +994,30 @@ func TestParityClearRespectsOraclePhaseBoundary(t *testing.T) {
 func (r *parityReplay) mark(action parityAction) {
 	t, g := r.t, r.g
 	switch action.Label {
+	case "captain_reinforcements_arrived":
+		if parityHPPolicies[g] == nil || verifyParityPreparationOwner(r.run, action.Seq, "0x117F8") != nil ||
+			!pump(t, g, journeyStoryFrames, r.playerHasControl) {
+			t.Fatal("增援mark缺少修改路徑政策或正常游標")
+		}
+		if len(g.st.Units) != 96 || g.st.NativeEventState[16] != 2 ||
+			g.st.Units[24].HP > 0 || g.st.Units[25].HP > 0 || g.st.Units[26].HP != 3200 || g.st.Units[0].HP != 30420 {
+			t.Fatalf("雙隊長死亡後的增援或保護狀態不符：units=%d state16=%d", len(g.st.Units), g.st.NativeEventState[16])
+		}
+		for group := 3; group <= 5; group++ {
+			count := 0
+			for _, u := range g.st.Units {
+				if u != nil && u.OnField && u.HP > 0 && u.Group == group {
+					count++
+				}
+			}
+			if count != 7 {
+				t.Fatalf("增援group%d只有%d筆", group, count)
+			}
+		}
+		skipped := r.skipFrames
+		r.skipFrames = false
+		r.checkpoint("mark:"+action.Label, action.Seq, r.ui(), true, "修改路徑E1；三路增援實際完成")
+		r.skipFrames = skipped
 	case "before_clear_viewport":
 		// #207：mark沿用最後完成的seq，故末端方向鍵也要消費。
 		if !r.playerHasControl() || g.st.Turn != action.Round ||
@@ -1302,7 +1346,7 @@ func (r *parityReplay) settleTown() {
 			return
 		}
 		ackPresents(g)
-		if err := g.Update(); err != nil {
+		if err := parityUpdateGame(g); err != nil {
 			r.t.Fatalf("Update：%v", err)
 		}
 	}
@@ -1380,7 +1424,12 @@ func (r *parityReplay) units() []parityUnit {
 		if u.HasNativeIdentity {
 			identity = u.NativeIdentity
 		}
-		out = append(out, parityUnit{NativeIndex: nativeIndex, Camp: nativeCampCode(u.Camp), X: u.X, Y: u.Y, HP: u.HP, Identity: identity, Acted: acted,
+		var rawByte8 *int
+		if parityHPPolicies[g] != nil && u.HasNativeRecordByte8 {
+			value := int(u.NativeRecordByte8)
+			rawByte8 = &value
+		}
+		out = append(out, parityUnit{Group: u.Group, RecordByte8: rawByte8, NativeIndex: nativeIndex, Camp: nativeCampCode(u.Camp), X: u.X, Y: u.Y, HP: u.HP, Identity: identity, Acted: acted,
 			PX: int(u.NativeMapPresentation.X), PY: int(u.NativeMapPresentation.Y)})
 	}
 	return out
@@ -2003,6 +2052,17 @@ func (r *parityReplay) checkpoint(kind string, seq int, ui string, withFrame boo
 	}
 	if g.st != nil {
 		cp.Round = g.st.Turn
+		if policy := parityHPPolicies[g]; policy != nil {
+			cp.HPLocks = append([]parityHPLockCell(nil), policy.cells...)
+			cp.EventState = append([]byte(nil), g.st.NativeEventState[:]...)
+			cp.RuntimeUnitCount = len(g.st.Units)
+			cp.RuntimeGroups = map[int]int{}
+			for _, unit := range g.st.Units {
+				if unit != nil {
+					cp.RuntimeGroups[unit.Group]++
+				}
+			}
+		}
 		if os.Getenv("FD2_PARITY_TRACE_KEYS") != "" {
 			for index, unit := range g.st.Units {
 				if unit != nil && unit.OnField && unit.HP > 0 {
@@ -2256,7 +2316,7 @@ func (r *parityReplay) settleActionOverlay(action parityAction) {
 	t, g := r.t, r.g
 	for i := 0; i < 240 && g.ring && g.actionOverlayBlocksInput(); i++ {
 		g.markActionOverlayDrawn()
-		if err := g.Update(); err != nil {
+		if err := parityUpdateGame(g); err != nil {
 			t.Fatalf("Update：%v", err)
 		}
 	}
@@ -2420,7 +2480,7 @@ func (r *parityReplay) checkpointAttackResult(action parityAction, actor *battle
 		// 對白一出現就停下，不按鍵推到這一頁打完字（pump 每幀都會替戰場事件對白按 enter）。
 		for frame := 0; frame < ch01FrameBudget && !storyEnterReady(g); frame++ {
 			ackPresents(g)
-			if err := g.Update(); err != nil {
+			if err := parityUpdateGame(g); err != nil {
 				r.t.Fatalf("Update：%v", err)
 			}
 		}
@@ -2487,7 +2547,7 @@ func (r *parityReplay) waitUnit(action parityAction, actor *battle.Unit) {
 		if g.battleEvent != nil {
 			for frame := 0; frame < ch01FrameBudget && !storyEnterReady(g); frame++ {
 				ackPresents(g)
-				if err := g.Update(); err != nil {
+				if err := parityUpdateGame(g); err != nil {
 					t.Fatalf("wait事件對白Update：%v", err)
 				}
 			}
@@ -2725,11 +2785,17 @@ func (r *parityReplay) forceEnemyClear(action parityAction, next *parityAction) 
 	// 與 oracle 的 force_enemy_clear 相同的注入：把場上 camp 0 的 HP 寫成 0。
 	// 這是明示的修改路徑；收據會標記。
 	cleared := 0
-	for _, u := range g.st.Units {
+	for index, u := range g.st.Units {
 		if u != nil && u.OnField && u.Camp == battle.Enemy && u.HP > 0 {
+			if parityPreservesEnemy(r.t, g, action.PreservedIndices, index) {
+				continue
+			}
 			u.HP = 0
 			cleared++
 		}
+	}
+	if len(action.PreservedIndices) > 0 && (action.Cleared == nil || cleared != *action.Cleared) {
+		r.t.Fatalf("保護清敵筆數不符：重製%d，原版%v", cleared, action.Cleared)
 	}
 	r.checkpoint("force_enemy_clear", action.Seq, r.ui(), false, fmt.Sprintf("cleared=%d（修改路徑）", cleared))
 	if deferResult {
@@ -2781,7 +2847,7 @@ func (r *parityReplay) ensurePostbattleNode(target string) {
 		if (g.battleEvent != nil || g.nativeTurnStaging != nil) && len(g.dialog) > 0 {
 			g.handleBattleEventDialogueInput(true)
 		}
-		if err := g.Update(); err != nil {
+		if err := parityUpdateGame(g); err != nil {
 			t.Fatalf("Update：%v", err)
 		}
 	}

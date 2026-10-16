@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -239,6 +239,18 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 沿61核准範圍驗證現代圖層沒有被原版完整indexed幀蓋回，語意結果、座標、存檔與忠實主題相容。現代畫面驗收與忠實原版pixel parity分開。缺圖或未知consumer如實拒收，轉交素材子項；不以現有loader單測或總覽圖代替正常玩家收據。
 
 怎樣算做完：受版控計畫及目前正式runtime的正常鍵盤／GPU收據涵蓋早中晚期與上述主要交界；存檔可冷讀回，忠實主題抽樣回歸通過；已登錄素材顯示與catalog一致，未驗範圍明示。
+
+### P1 第27章增援後游標與鏡頭回交邊界待核對
+
+`ch27-reinforcement-view-handoff` · RE待解 · [#224](https://github.com/wicanr2/fd2_re/issues/224) · 仍未完成 · 要人判
+
+第27章修改路徑補抽已驗原版與重製都實際追加三路21筆，270筆AI零順序分歧，新增單位位置／HP逐筆相同。既有正式章收據與24／30台帳維持。來源為 docs/data/ui-traces/ch27-captain-reinforcement-resample.json，READY與限定CONFORMED契約在 docs/data/ida/fd2_ch27_flow_20261016.json#resample_hp_lock_policy。
+
+增援完成的游標／鏡頭交回點仍不同：重製回死亡隊長附近，原版停於最後援軍附近。完整兩側view保存在收據advisory_view。不宣稱這是單一frame相位差，也不先斷言正式Game缺陷；先分清35822／35992演出返回邊界與重播器後續焦點移動。
+
+排程P1可選呈現，非增援或章流程阻擋。使用者只要求流程一致、畫面參考，這項不重開已通過章，也不啟動全面matching或硬體時序研究。
+
+怎樣算做完：由既有IDA與目前同源執行收據定位原版回交邊界，辨明正式Game或測試重播差異；READY契約後修正對應consumer，以同源局部重播核對終點並保留舊差異歷史。
 
 ## release — 發行、平台與封包
 
