@@ -2,9 +2,10 @@
   "schema_version": 1,
   "kind": "fd2_chapter_parity_receipt",
   "chapter": 25,
-  "generated_at": "2026-10-15",
-  "status": "failed",
+  "generated_at": "2026-10-16",
+  "status": "passed",
   "verification_profile": "flow",
+  "save_comparison_policy": "ch25-opaque-20261016",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
   "original": {
     "runner": "dosgolem apps/fd2/cmd/oracle",
@@ -871,7 +872,7 @@
       ]
     },
     "transaction": {
-      "ok": false,
+      "ok": true,
       "gold": [
         {
           "seq": 37,
@@ -1152,7 +1153,7 @@
         "remake_save_sha256": "52984034e916259e2c4a45eafd0bb36f1835edabfd8867e007dee9ad38c1996b",
         "remake_note": "save_sha256=52984034e916259e2c4a45eafd0bb36f1835edabfd8867e007dee9ad38c1996b",
         "blocked_by": null,
-        "status": "fail",
+        "status": "accepted_disclosed_difference",
         "byte_report": {
           "status": "different",
           "size": 22987,
@@ -1234,8 +1235,17 @@
               "region": "checksum"
             }
           ],
-          "policy": "全部明文位元組比較；未排除差異，未改驗收門檻。"
-        }
+          "policy": "全部明文位元組比較；包含檢查碼，不遮罩任何差異。"
+        },
+        "acceptance_policy": {
+          "id": "ch25-opaque-20261016",
+          "decision_date": "2026-10-16",
+          "contract": "docs/data/ida/fd2_turn_event56_20261015.json",
+          "status": "accepted",
+          "mismatches": []
+        },
+        "bytes_equal": false,
+        "all_other_plaintext_equal": true
       }
     },
     "frames": {
@@ -1252,23 +1262,23 @@
     "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
     "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
     "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
-    "依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點、交易與完整保存仍為必要閘門。",
+    "依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點與交易仍為必要閘門，保存依明示政策驗收。",
+    "使用者2026-10-16接受第25章已揭露的七byte及衍生檢查碼兩byte差異；完整差異清單保留，其他明文相同。用途仍未知，不宣稱完整SAV bytes相同，其他來源與章不沿用此例外。",
     "起點是第24章實際SAV，沒有追加升級、治療、道具或強化；繼承AP200／DP1000／DX60及seed4測試槽政策，不證明自然難度、傷害、存活或敵方選目標。",
     "T5／6正常各消耗原有神聖之水，T7正常移鏡頭後一次HP-only清敵35筆；沒有鎖HP。",
-    "炎龍劍event55支線未抽樣；本章未擷取重製參考PNG，不宣稱逐幀或逐像素相同。",
-    "章未通過：identity26的+0x28..+0x30九位元組區間有七byte差異，另兩byte檢查碼差異。語意未知，#212保持；完整SAV相等門檻未放寬。"
+    "炎龍劍event55支線未抽樣；本章未擷取重製參考PNG，不宣稱逐幀或逐像素相同。"
   ],
   "verification": {
     "commands": {
       "original": "tools/dosgolem_oracle_container.sh；原版及dosgolem2c5c104唯讀，native近堆，獨立state-r4／original-r4；完整環境與來源見主契約validation.original_r4。",
-      "remake": "fd2-go-test-local:latest with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -v；FD2_ASSET_PACK=/recovery/pack、FD2_PARITY_CHAPTER=25、FD2_PARITY_SLOT=/out/input/FD2.SAV、FD2_PARITY_ORACLE_RUN=/out/original-r4、FD2_PARITY_OUT=/out/remake-full-r2、FD2_PARITY_CAPTURE_FRAMES=0。固定來源唯讀，輸出UID1000，timeout480／memory4g／cpus2／pids256。",
-      "compare": "Docker fd2-assets-local:20260829-sfx tools/verify_chapter_parity.py --chapter 25 --oracle work/ch25-flow-20261015/original-r4 --remake work/ch25-flow-20261015/remake-full-r2 --slot-manifest docs/data/parity-slots/ch25-manifest.json --plan docs/data/parity-plans/ch25-flow-cheat-r4.jsonl --out <新收據路徑> --frame-policy advisory --oracle-save work/ch25-flow-20261015/state-r4/FD2.SAV"
+      "remake": "fd2-go-test-local:latest with-xvfb go test ./cmd/fd2 -run ^TestChapterParityReplay$ -count=1 -v；FD2_ASSET_PACK=/recovery/pack、FD2_PARITY_CHAPTER=25、FD2_PARITY_SLOT=/out/input/FD2.SAV、FD2_PARITY_ORACLE_RUN=/out/original-r4、FD2_PARITY_OUT=/out/remake-approved-r3、FD2_PARITY_CAPTURE_FRAMES=0。固定來源唯讀，輸出UID1000，timeout480／memory4g／cpus2／pids256。",
+      "compare": "Docker fd2-assets-local:20260829-sfx tools/verify_chapter_parity.py --chapter 25 --oracle work/ch25-flow-20261015/original-r4 --remake work/ch25-flow-20261015/remake-approved-r3 --slot-manifest docs/data/parity-slots/ch25-manifest.json --plan docs/data/parity-plans/ch25-flow-cheat-r4.jsonl --out <新收據路徑> --frame-policy advisory --oracle-save work/ch25-flow-20261015/state-r4/FD2.SAV --save-policy ch25-opaque-20261016"
     },
     "source_files_sha256": {
       "tools/dosgolem_oracle.sh": "786c364b3c406bbd11474934e42a24b7232caadc8c3099ac394c02e971b636ce",
       "tools/dosgolem_oracle_container.sh": "2ec5858f2e5f4b7411e2d68d0fda766c578df97996969bc3d4be1000df824373",
       "tools/dosgolem_oracle_drive.py": "e181513717147408e4204438beaeaee75f3949d961ebdda99623b485b0780d18",
-      "tools/verify_chapter_parity.py": "c2231034025f0007a4b4b56f659d639e7d9a50ee93f8d022e89044f66ac4ddca",
+      "tools/verify_chapter_parity.py": "2fe1d8bdc697e01dba0dfe71b8f65bd167c65d31ca2c2cac420df623838e8718",
       "remake/cmd/fd2/chapter_parity_replay_test.go": "f6a45e81defd702dfd520c900a2c9f740b16715b4942802ada3a668748fc148c",
       "remake/assets/scenarios/ch25.json": "4c6648a419b3b9cc7ccf3083745e7590881e19521b97f516ea88567172146cb6",
       "remake/assets/scenarios/campaign_full.json": "a1c6d47e8171624940073537b92b7eca1b757444510a0f5c180d73bbfddf2fea",
@@ -1285,6 +1295,12 @@
     "ai_entries": 240,
     "ai_consumed": 240,
     "ai_order_divergences": 0,
-    "blocked_by": "https://github.com/wicanr2/fd2_re/issues/212"
+    "accepted_limitation": {
+      "issue": 212,
+      "policy": "ch25-opaque-20261016",
+      "date": "2026-10-16",
+      "history": "docs/data/ui-traces/parity-ch25-flow-r2-save-failed.json"
+    },
+    "remake_log_sha256": "4e460f8e7020773f09396904c7ade7251f786e143bfb20bf128e82122072e9ad"
   }
 }

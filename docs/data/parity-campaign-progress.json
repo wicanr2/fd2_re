@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -686,19 +686,50 @@
     },
     {
       "chapter": 25,
-      "status": "blocked",
+      "status": "passed",
       "receipt": "docs/data/ui-traces/parity-ch25.json",
       "slot_manifest": "docs/data/parity-slots/ch25-manifest.json",
       "slot_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
       "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
-      "date": "2026-10-15",
-      "verify": "Docker tools/verify_chapter_parity.py --chapter 25 --oracle work/ch25-flow-20261015/original-r4 --remake work/ch25-flow-20261015/remake-full-r2 --slot-manifest docs/data/parity-slots/ch25-manifest.json --plan docs/data/parity-plans/ch25-flow-cheat-r4.jsonl --out <新收據路徑> --frame-policy advisory --oracle-save work/ch25-flow-20261015/state-r4/FD2.SAV",
+      "date": "2026-10-16",
+      "verify": "Docker tools/verify_chapter_parity.py --chapter 25 --oracle work/ch25-flow-20261015/original-r4 --remake work/ch25-flow-20261015/remake-approved-r3 --slot-manifest docs/data/parity-slots/ch25-manifest.json --plan docs/data/parity-plans/ch25-flow-cheat-r4.jsonl --out <新收據路徑> --frame-policy advisory --oracle-save work/ch25-flow-20261015/state-r4/FD2.SAV --save-policy ch25-opaque-20261016",
       "limitations": [
-        "#212：完整流程／240筆AI順序已一致，完整SAV只有identity26 +0x28..+0x30區間七byte及衍生檢查碼兩byte不同，語意未知；交易閘門保持失敗，未提升PLAYER-E2。",
-        "沿第24章實際SAV，T5／6各正常消耗既有神聖之水，T7正常移鏡頭後一次HP-only清敵35筆；無鎖HP、追加物品或章前校準。",
-        "畫面advisory未擷取；event55炎龍劍支線未抽樣，不證明自然難度、傷害、存活或敵方選目標。"
+        "依使用者2026-10-16有界保存政策通過PLAYER-E2；identity26 +0x28..+0x30區間七byte及檢查碼兩byte逐筆揭露，bytes_equal=false，用途仍未知，不宣稱整檔SAV相同。",
+        "接續第24章實際SAV，無追加章前改寫。T5／6正常各用原有神聖之水，T7正常移鏡頭後一次HP-only清敵35筆；無鎖HP。",
+        "只驗主線事件56及戰後／酒店保存，event55炎龍劍支線未抽樣；frames advisory未擷取，不證明自然難度、傷害、存活或敵方選目標。"
       ],
-      "prior_receipts": []
+      "prior_receipts": [
+        "docs/data/ui-traces/parity-ch25-flow-r1-failed.json",
+        "docs/data/ui-traces/parity-ch25-flow-r2-save-failed.json"
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0
+        },
+        "kind": "exact_save_continuation",
+        "parent_save_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+        "inherited_policy": {
+          "levels_per_chapter": 6,
+          "seed": 4,
+          "event_states": {
+            "7:17": 1
+          },
+          "boost": {
+            "base_ap": 200,
+            "base_dp": 1000,
+            "base_dx": 60
+          },
+          "boost_only_recalibration": true,
+          "calibration_levels_per_chapter": 0,
+          "parent_save_sha256": "1c29f51b93917309cc0d7b3a8aa8242fbab6b2936cb4a25ba24beeb3dd945810"
+        },
+        "note": "直接接續第24章實際SAV，沒有本章建構／升級／強化／event-state寫入；seed4及強化只描述祖先政策。"
+      }
     },
     {
       "chapter": 26,

@@ -1,11 +1,15 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-## 2026-10-15 目前狀態：重製完成與 HD 優先
+## 2026-10-16 目前狀態：重製完成與 HD 優先
 
 使用者本輪定案允許作弊通關、參考攻略，並以流程一致驗收，不強求逐幀一致。
 契約見[111最新修訂](../goal/111-goal-original-parity-campaign-20260915.md)及[114第24章政策](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)。
 `tools/verify_chapter_parity.py --frame-policy advisory` 仍要求行為、節點與交易通過，畫面結果照實保留。
 未抽樣的戰鬥與自然難度不由流程收據推定。
+第25章另採使用者2026-10-16確認的[有界保存政策](../goal/111-goal-original-parity-campaign-20260915.md)：
+七byte及衍生檢查碼兩byte差異逐筆揭露，`bytes_equal=false`；其他來源與章仍用嚴格保存門檻。
+正式入口為比較器`--save-policy ch25-opaque-20261016 --oracle-save <實際SAV>`，
+來源限制、差異清單與拒收條件見[event56主契約](../data/ida/fd2_turn_event56_20261015.json)的`save_acceptance_policy`。
 
 第24章 event54 原有轉寫只登場增援，缺少四角鏡頭及等待。本輪沿固定 EXE、既有 IDA 9.4
 匯出與 Capstone 5.0.3 核對原始 `sub_3535D` 及 `sub_35822` 共用尾端的完整125 bytes，
@@ -34,11 +38,11 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 [唯一 oracle 驅動器](../../tools/dosgolem_oracle.sh)，遇到玩家缺陷才開最小充分 RE。
 使用者本輪另允許必要時局部匹配確認已重現差異，界線見[118目前範圍](../goal/118-goal-fd2-matching-decompilation-20261008.md)。
 第25章揭幕、入口HUD、event56與AI閘門均由既有證據定位，本輪沒有新matching編譯。
-章台帳維持原分級；本輪新增event54完整原始證據及正常玩家輸入前綴，不推定完整章已通過。
+第24章維持原分級；第25章依已確認保存政策通過，沒有宣稱逐像素或完整SAV bytes相同。
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 21章passed，即第4～24章；第25章blocked，其餘8章todo。第25章完整重播到酒店，行為／節點通過、240筆AI順序零分歧；完整SAV未相同，未提升PLAYER-E2 | [#212](https://github.com/wicanr2/fd2_re/issues/212)是[#199](https://github.com/wicanr2/fd2_re/issues/199)目前阻塞；[第25章失敗收據](../data/ui-traces/parity-ch25.json)列出所有明文差異。第24章及更早passed保持 |
+| 正式章台帳 | 22章passed，即第4～25章；其餘8章todo。第25章完整重播到酒店，三項流程閘門依明示保存政策通過、240筆AI順序零分歧；完整SAV差異仍逐筆保留 | [#212](https://github.com/wicanr2/fd2_re/issues/212)依使用者接受證據限制結案；[#199](https://github.com/wicanr2/fd2_re/issues/199)接續第26章。[第25章正式收據](../data/ui-traces/parity-ch25.json)明示accepted_disclosed_difference及bytes_equal=false。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有22筆維持spawn版本；第25章event56五項操作已完整同步並實際消費 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件，不重做已轉寫部分。命令、日期、固定輸入見[event56主契約](../data/ida/fd2_turn_event56_20261015.json) |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
@@ -3434,8 +3438,10 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 
 ### 第25章event56接續入口（2026-10-15）
 
-`sub_35487`已有完整C匹配，沿`fd2_matching_full_20261008.json`的game_tail_event_matches與tail_and_backups_original_evidence，不因raw分類unknown重開。新[主契約](../data/ida/fd2_turn_event56_20261015.json)重用IDA9.4完整86 bytes與Capstone核對，五項操作為pan(6,40)、group1、ACTING74、text5及尾跳134E4。RE-CLOSED／spec READY先於正式接線，原版r4及完整Game r2已消費，達限定RUNTIME-E1；章PLAYER-E2仍因保存差異未過。
+`sub_35487`已有完整C匹配，沿`fd2_matching_full_20261008.json`的game_tail_event_matches與tail_and_backups_original_evidence，不因raw分類unknown重開。新[主契約](../data/ida/fd2_turn_event56_20261015.json)重用IDA9.4完整86 bytes與Capstone核對，五項操作為pan(6,40)、group1、ACTING74、text5及尾跳134E4。RE-CLOSED／spec READY先於正式接線，原版r4及完整Game r2已消費，達限定RUNTIME-E1；章驗收依下方2026-10-16已確認的保存政策。
 
 原版r4以第24章實際SAV正常LOAD與選人，T5／6各用原有神聖之水，T6完整援軍後至T7，正常移鏡頭再一次HP-only清敵35筆，戰後及酒店保存完成。沒有追加道具、強化或鎖HP。揭幕故事載體、battle_ch25原生視圖／HUD與AI指令10～12的1F183目標閘門已接回；240筆AI全消費且零順序分歧，19套件Go、132項Python與第24章完整流程／SAV回歸通過。
 
-第25章交易仍失敗。identity26的`+0x28..+0x30`九位元組區間中七byte不同，另有兩byte檢查碼差異；其餘完整明文相同。既有IDA建構器未寫此區、11506整筆複製，原版本次runtime區間一路保持同值；用途與最初producer仍未知，不稱指標或無用欄位。具體差異、原始名稱／bytes及驗證命令見主契約`opaque_save_gap`，[#212](https://github.com/wicanr2/fd2_re/issues/212)保持開啟。比較器明示`--oracle-save`可驗實檔SHA與checksum後揭露全部明文差異，入口見[工具](../../tools/verify_chapter_parity.py)；它沒有排除差異或改變存檔閘門。
+第25章2026-10-15首次交易失敗原樣保存在[歷史收據](../data/ui-traces/parity-ch25-flow-r2-save-failed.json)。identity26的`+0x28..+0x30`九位元組區間中七byte不同，另有兩byte檢查碼差異；其餘完整明文相同。既有IDA建構器未寫此區、11506整筆複製，原版本次runtime區間一路保持同值；用途與最初producer仍未知，不稱指標或無用欄位。
+
+2026-10-16使用者接受逐筆揭露，先更新111與READY政策，再接正式比較器。政策綁定章號、流程profile、輸入SAV、計畫、原版EXE／dosgolem、兩側實檔SHA及完整差異清單；預設strict不變，缺實檔／保存或任何新增差異仍拒收。乾淨Game重播及137項工具測試通過，同一pair以strict仍失敗，明示政策才通過；第24章流程及整檔SAV回歸保持。第25章依111例外登記PLAYER-E2，沒有把未知語意升格為已解。完整政策及命令見主契約`save_acceptance_policy`，入口為[章比較器](../../tools/verify_chapter_parity.py)；[#212](https://github.com/wicanr2/fd2_re/issues/212)以接受證據限制結案，下一個工作仍為#199第26章。

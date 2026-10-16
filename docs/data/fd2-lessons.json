@@ -2245,6 +2245,21 @@
         ],
         "pattern": "nativeAI1F183TargetGate[(]records[)]"
       }
+    },
+    {
+      "id": "save-acceptance-exception-binds-provenance-and-full-diff",
+      "date": "2026-10-16",
+      "area": "流程驗收與保存差異",
+      "rule": "使用者接受保存差異時，以明示政策綁定章號、來源槽、計畫、原版版本、兩側實檔SHA及完整差異清單；保留bytes_equal=false及所有偏移／原值，其他差異仍拒收。預設strict不變。入口tools/verify_chapter_parity.py --save-policy ch25-opaque-20261016 --oracle-save及docs/data/ida/fd2_turn_event56_20261015.json save_acceptance_policy，僅適用該第25章保存pair。",
+      "why": "第25章流程與240筆AI順序已同，但新加入角色有七byte未知區間與兩byte檢查碼差異；使用者接受逐筆揭露，驗收政策不能變成所有未知欄位的遮罩。",
+      "evidence": "docs/data/ida/fd2_turn_event56_20261015.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py"
+        ],
+        "pattern": "accepted_disclosed_difference"
+      }
     }
   ]
 }

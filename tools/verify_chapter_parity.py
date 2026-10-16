@@ -14,7 +14,7 @@ gate：
   behavior   單位（camp、x、y、存活）逐點相同、回合相同；HP 逐點相同，
              差異另分成「亂數已同步」與「同步之間漂移」兩類列出，兩類都算失敗
    nodes      已抽樣原版動作／介面家族相同；跨時序點另列未比較
-  transaction 每點金幣相同；酒店存檔兩側 SHA-256（重製側尚未寫原版槽格式時標 blocked）
+  transaction 每點金幣相同；保存預設整檔相等，明示有界政策才接受已確認的完整差異清單
   frames     每張有畫面的點：320×200 逐像素 RGB 差異 ≤ pixel-budget；有畫面的點數 ≥ min-frames
 """
 
@@ -39,6 +39,7 @@ except ImportError:  # pragma: no cover - 容器外沒有 Pillow
     Image = None
 
 ROOT = Path(__file__).resolve().parents[1]
+SAVE_POLICIES = {"ch25-opaque-20261016": ROOT / "docs/data/ida/fd2_turn_event56_20261015.json"}
 
 
 def palette_cycle_metadata(cp: dict) -> dict:
@@ -268,7 +269,47 @@ def save_byte_report(original_path: Path, remake_path: Path, entry: dict) -> dic
         differences.append(point)
     return {"status": "equal" if not differences else "different", "size": len(original),
             "difference_count": len(differences), "differences": differences,
-            "policy": "全部明文位元組比較；未排除差異，未改驗收門檻。"}
+            "policy": "全部明文位元組比較；包含檢查碼，不遮罩任何差異。"}
+
+
+def apply_save_policy(entry: dict, policy_id: str, chapter: int, frame_policy: str,
+                      manifest: dict, plan_sha256: str, runner: dict) -> None:
+    """只接受使用者已確認的特定保存pair；不把未知欄位變成一般遮罩。"""
+    if policy_id == "strict":
+        return
+    if policy_id not in SAVE_POLICIES:
+        raise ValueError(f"unknown save policy: {policy_id}")
+    source = SAVE_POLICIES[policy_id]
+    policy = json.loads(source.read_text(encoding="utf-8"))["save_acceptance_policy"]
+    if policy["id"] != policy_id or policy["state"] not in ("READY", "CONFORMED"):
+        raise ValueError("save policy lacks a reviewed contract")
+    actual = {
+        "chapter": chapter, "frame_policy": frame_policy,
+        "input_save_sha256": manifest.get("output_sha256"), "plan_sha256": plan_sha256,
+        "exe_sha256": runner.get("original_fd2_exe_sha256") or runner.get("exe_sha256"),
+        "dosgolem_commit": runner.get("dosgolem_commit"),
+        "oracle_save_sha256": entry.get("oracle_save_sha256"),
+        "remake_save_sha256": entry.get("remake_save_sha256"),
+    }
+    mismatches = [key for key, value in actual.items() if value != policy[key]]
+    report = entry.get("byte_report") or {}
+    for key in ("status", "size", "difference_count", "differences"):
+        if report.get(key) != policy["byte_report"][key]:
+            mismatches.append(f"byte_report.{key}")
+    if entry.get("status") != "fail":
+        mismatches.append("original_save_gate_status")
+    entry["acceptance_policy"] = {
+        "id": policy_id, "decision_date": policy["decision_date"],
+        "contract": source.relative_to(ROOT).as_posix(),
+        "status": "not_applicable" if mismatches else "accepted",
+        "mismatches": mismatches,
+    }
+    if not mismatches:
+        entry["status"] = "accepted_disclosed_difference"
+        entry["bytes_equal"] = False
+        entry["all_other_plaintext_equal"] = True
+    elif entry.get("status") in ("ok", "not_sampled"):
+        entry["status"] = "save_policy_not_applicable"
 
 
 def save_gate_entry(save_actions: list[dict], remake_save: list[dict], blocked_issue: str) -> dict:
@@ -454,6 +495,8 @@ def main() -> int:
                         help="strict沿既有畫面閘門；advisory依2026-10-15定案只要求流程，原始畫面結果仍記錄")
     parser.add_argument("--save-blocked-issue", default="", help="重製側尚未寫原版槽 bytes 時引用的 issue")
     parser.add_argument("--oracle-save", type=Path, help="原版實際保存檔；與重製FD2.SAV核對來源後列出全部byte差異，不放寬閘門")
+    parser.add_argument("--save-policy", choices=("strict", *SAVE_POLICIES), default="strict",
+                        help="預設整檔相等；有界政策只接受已確認來源及逐筆差異，須明示--oracle-save")
     args = parser.parse_args()
 
     runner = json.loads((args.oracle / "runner.json").read_text(encoding="utf-8"))
@@ -554,8 +597,10 @@ def main() -> int:
     if any(completion["missing"].get(k) or completion["remake_missing"].get(k)
            for k in ("town_save", "preparation_save")):
         save_entry["status"] = "planned_save_missing"
+    apply_save_policy(save_entry, args.save_policy, args.chapter, args.frame_policy,
+                      manifest, sha256_file(args.plan), runner)
     gold_ok = all(t["ok"] for t in transactions)
-    transaction_ok = gold_ok and save_entry["status"] in ("ok", "not_sampled")
+    transaction_ok = gold_ok and save_entry["status"] in ("ok", "not_sampled", "accepted_disclosed_difference")
     compared_frames = [f for f in frames if "diff_pixels" in f]
     frames_ok = len(compared_frames) >= args.min_frames and all(f["ok"] for f in compared_frames)
     frames_required = args.frame_policy == "strict"
@@ -567,6 +612,7 @@ def main() -> int:
         "generated_at": dt.date.today().isoformat(),
         "status": "passed" if (behavior_ok and nodes_ok and transaction_ok and (frames_ok or not frames_required)) else "failed",
         "verification_profile": "strict" if frames_required else "flow",
+        "save_comparison_policy": args.save_policy,
         "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
         "original": {
             "runner": "dosgolem apps/fd2/cmd/oracle",
@@ -609,7 +655,9 @@ def main() -> int:
             "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
             "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
             "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
-            *([] if frames_required else ["依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點、交易與完整保存仍為必要閘門。"]),
+            *([] if frames_required else ["依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點與交易仍為必要閘門，保存依明示政策驗收。"]),
+            *([] if save_entry["status"] != "accepted_disclosed_difference" else [
+                "使用者2026-10-16接受第25章已揭露的七byte及衍生檢查碼兩byte差異；完整差異清單保留，其他明文相同。用途仍未知，不宣稱完整SAV bytes相同，其他來源與章不沿用此例外。"]),
         ],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

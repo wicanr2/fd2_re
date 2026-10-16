@@ -818,7 +818,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 第24章[正式流程收據](../data/ui-traces/parity-ch24.json)通過行為、節點、交易與完整SAV；畫面只作參考。[戰後76筆前沿修訂](../data/ida/fd2_ch24_post_frontier_20261003.json)以current_revision指定新契約，保留28／86的歷史範圍。
 
-- 第25章主線流程接續：[槽清冊](../data/parity-slots/ch25-manifest.json)、[鍵盤計畫r1](../data/parity-plans/ch25-flow-cheat-r1.jsonl)。r1是失敗歷史；最新r4已驗援軍與戰後保存邊界，完整SAV差異仍阻塞，現況依58與正式章台帳。
+- 第25章主線流程接續：[槽清冊](../data/parity-slots/ch25-manifest.json)、[鍵盤計畫r1](../data/parity-plans/ch25-flow-cheat-r1.jsonl)。r1是失敗歷史；最新r4已驗援軍與戰後保存邊界，2026-10-16按有界保存政策通過，現況依58與正式章台帳。
 
 - 第25章event56：[原始86-byte函式、五項操作與READY契約](../data/ida/fd2_turn_event56_20261015.json)。沿已有35487完整匹配，不重做編譯；正式接線與完整流程已驗，未知保存差異獨立列於同契約opaque_save_gap。
 
@@ -830,4 +830,6 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - 第25章[主線計畫r4](../data/parity-plans/ch25-flow-cheat-r4.jsonl)：修正原生物品左移驗證；兩次正常自用補位後的raw槽2。
 
-- 第25章[完整流程失敗收據](../data/ui-traces/parity-ch25.json)：行為／節點通過，240筆AI零順序分歧；存檔九位元組區間有七byte差異，另兩byte檢查碼差異，仍阻塞章驗收。
+- 第25章[正式流程收據](../data/ui-traces/parity-ch25.json)：2026-10-16依111有界保存政策通過，240筆AI零順序分歧；七byte及衍生檢查碼兩byte差異仍逐筆揭露，bytes_equal=false，不宣稱整檔相同。
+
+- 第25章[完整保存失敗歷史](../data/ui-traces/parity-ch25-flow-r2-save-failed.json)：保留2026-10-15嚴格保存門檻的完整原始結果；2026-10-16有界例外只依111與event56主契約驗收，不重寫此失敗收據。

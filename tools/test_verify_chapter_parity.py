@@ -1,5 +1,6 @@
 import json
 import hashlib
+from copy import deepcopy
 import sys
 import tempfile
 import unittest
@@ -8,6 +9,94 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import verify_chapter_parity as vp  # noqa: E402
+
+
+class BoundedSaveAcceptance(unittest.TestCase):
+    def setUp(self):
+        self.policy_id = "ch25-opaque-20261016"
+        self.policy = json.loads(vp.SAVE_POLICIES[self.policy_id].read_text())["save_acceptance_policy"]
+        self.entry = {"status": "fail", "byte_report": deepcopy(self.policy["byte_report"]),
+                      "oracle_save_sha256": self.policy["oracle_save_sha256"],
+                      "remake_save_sha256": self.policy["remake_save_sha256"]}
+        self.context = {
+            "chapter": 25, "frame_policy": "advisory",
+            "manifest": {"output_sha256": self.policy["input_save_sha256"]},
+            "plan_sha256": self.policy["plan_sha256"],
+            "runner": {"original_fd2_exe_sha256": self.policy["exe_sha256"],
+                       "dosgolem_commit": self.policy["dosgolem_commit"]},
+        }
+
+    def test_explicit_policy_preserves_every_difference_and_reports_inequality(self):
+        before = deepcopy(self.entry["byte_report"])
+        vp.apply_save_policy(self.entry, self.policy_id, **self.context)
+        self.assertEqual(self.entry["status"], "accepted_disclosed_difference")
+        self.assertFalse(self.entry["bytes_equal"])
+        self.assertTrue(self.entry["all_other_plaintext_equal"])
+        self.assertEqual(self.entry["byte_report"], before)
+        self.assertEqual(len(before["differences"]), 9)
+
+    def test_default_strict_does_not_apply_the_exception(self):
+        before = deepcopy(self.entry)
+        vp.apply_save_policy(self.entry, "strict", **self.context)
+        self.assertEqual(self.entry, before)
+        with self.assertRaisesRegex(ValueError, "unknown save policy"):
+            vp.apply_save_policy(self.entry, "ignore-opaque", **self.context)
+
+    def test_other_chapter_profile_input_plan_and_runner_cannot_use_policy(self):
+        for field in ("chapter", "frame_policy", "manifest", "plan_sha256", "runner_exe", "runner_commit"):
+            with self.subTest(field=field):
+                context = deepcopy(self.context)
+                if field == "chapter":
+                    context[field] = 26
+                elif field == "frame_policy":
+                    context[field] = "strict"
+                elif field == "manifest":
+                    context[field]["output_sha256"] = "0" * 64
+                elif field == "plan_sha256":
+                    context[field] = "0" * 64
+                elif field == "runner_exe":
+                    context["runner"]["original_fd2_exe_sha256"] = "0" * 64
+                else:
+                    context["runner"]["dosgolem_commit"] = "0" * 40
+                entry = deepcopy(self.entry)
+                vp.apply_save_policy(entry, self.policy_id, **context)
+                self.assertEqual(entry["status"], "fail")
+                self.assertTrue(entry["acceptance_policy"]["mismatches"])
+
+    def test_any_new_missing_or_changed_difference_and_wrong_hash_are_rejected(self):
+        for mutation in ("extra", "missing", "value", "offset", "count", "size", "no_report",
+                         "oracle_save_sha256", "remake_save_sha256"):
+            with self.subTest(mutation=mutation):
+                entry = deepcopy(self.entry)
+                report = entry["byte_report"]
+                if mutation == "extra":
+                    report["differences"].append({"plain_offset": "0x392c", "oracle": 3, "remake": 0})
+                    report["difference_count"] += 1
+                elif mutation == "missing":
+                    report["differences"].pop()
+                    report["difference_count"] -= 1
+                elif mutation == "value":
+                    report["differences"][0]["remake"] = 1
+                elif mutation == "offset":
+                    report["differences"][0]["record_offset"] = "0x31"
+                elif mutation == "count":
+                    report["difference_count"] = 7
+                elif mutation == "size":
+                    report["size"] += 1
+                elif mutation == "no_report":
+                    del entry["byte_report"]
+                else:
+                    entry[mutation] = "0" * 64
+                vp.apply_save_policy(entry, self.policy_id, **self.context)
+                self.assertEqual(entry["status"], "fail")
+
+    def test_policy_cannot_override_missing_original_writer_or_planned_save(self):
+        for status in ("original_save_write_missing", "planned_save_missing", "blocked", "not_sampled", "ok"):
+            with self.subTest(status=status):
+                entry = {**deepcopy(self.entry), "status": status}
+                vp.apply_save_policy(entry, self.policy_id, **self.context)
+                self.assertEqual(entry["status"], "save_policy_not_applicable" if status in ("ok", "not_sampled") else status)
+                self.assertEqual(entry["acceptance_policy"]["status"], "not_applicable")
 
 
 class SaveByteReport(unittest.TestCase):

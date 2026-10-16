@@ -10,7 +10,7 @@
     211,
     212
   ],
-  "status": "RE-CLOSED-RUNTIME-E1-chapter-save-blocked",
+  "status": "CONFORMED-PLAYER-E2-bounded-save-acceptance",
   "input": {
     "file": "FD2.EXE",
     "size": 357074,
@@ -556,7 +556,7 @@
   "validation": {
     "static": "passed",
     "original": "oracle-complete：r4至城鎮酒店保存／離開",
-    "remake": "完整重播通過；行為／節點通過，完整SAV因#212差異未過，不提升章PLAYER-E2。",
+    "remake": "2026-10-16乾淨重播通過；行為／節點／交易依明示有界保存政策通過，登記111例外PLAYER-E2，bytes仍不相同。",
     "original_r1": {
       "status": "defeated-before-event56",
       "round": 5,
@@ -693,13 +693,14 @@
     "remake_r2": {
       "path": "work/ch25-flow-20261015/remake-full-r2",
       "log_sha256": "fddffe6db7c24cd38cbf10b290eb91e4d1043f0f1015b334cff3cbc4dcf44af9",
-      "receipt": "docs/data/ui-traces/parity-ch25.json",
+      "receipt": "docs/data/ui-traces/parity-ch25-flow-r2-save-failed.json",
       "ai_entries": 240,
       "ai_consumed": 240,
       "ai_order_divergences": 0,
       "behavior": true,
       "nodes": true,
-      "transaction": false
+      "transaction": false,
+      "scope": "2026-10-15嚴格保存門檻歷史，保留failed，不以新政策重寫。"
     },
     "full_go": {
       "status": "passed",
@@ -726,6 +727,18 @@
       "command": "Docker python3 tools/sync_native_turn_events.py --check",
       "status": "passed",
       "untranscribed_rows": 22
+    },
+    "accepted_replay_r3": {
+      "date": "2026-10-16",
+      "python_tests": 137,
+      "real_game_replay": "work/ch25-flow-20261015/remake-approved-r3",
+      "strict_rejected_receipt": "work/ch25-flow-20261015/approval-strict-rejected-20261016.json",
+      "accepted_receipt": "docs/data/ui-traces/parity-ch25.json",
+      "chapter24_regression": "work/ch25-flow-20261015/ch24-policy-regression-20261016.json",
+      "ai_entries": 240,
+      "ai_consumed": 240,
+      "ai_order_divergences": 0,
+      "scope": "新驗收政策與真實Game重播；未更動正式遊戲，未重跑原版或新增匹配編譯。"
     }
   },
   "story_reveal_spec": {
@@ -1581,7 +1594,7 @@
     ]
   },
   "opaque_save_gap": {
-    "state": "unknown-blocks-chapter-acceptance",
+    "state": "accepted-disclosed-limitation-semantics-unknown",
     "issue": 212,
     "persistent_record_index": 25,
     "identity": 26,
@@ -5713,6 +5726,129 @@
       }
     ],
     "existing_index": "docs/knowledge-base/58-fd2-exe-re-coverage.md 2026-10-06 #102／#192原生與adapter比較亦只在敵軍／NPC此區殘值不同；不能據此證明無consumer。",
-    "current_policy": "111完整保存門檻保持，receipt failed、台帳blocked。未收到有界驗收例外答覆前不改正式比較器，也不把oracle常數寫進runtime。"
+    "current_policy": "使用者2026-10-16明確接受逐筆揭露；僅save_acceptance_policy列出的來源與完整差異通過，其他差異仍拒收。用途及最初producer仍未知，不回填oracle常數。"
+  },
+  "save_acceptance_policy": {
+    "id": "ch25-opaque-20261016",
+    "state": "CONFORMED",
+    "decision_date": "2026-10-16",
+    "decision": "使用者：接受逐筆揭露這項差異 然後繼續。",
+    "scope": "僅第25章既有來源的完整保存比較；不改正式遊戲、存檔格式、其他章或預設strict。",
+    "chapter": 25,
+    "frame_policy": "advisory",
+    "input_save_sha256": "e67cf23b0c5f72e40742b69544cee572cfb155e01a75d7eff65bf3fbdc20ee95",
+    "plan_sha256": "f8fec05e8d6f3f43771ddce69f080384b36eab1f13b6978b33f4d13abac5aa69",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "dosgolem_commit": "2c5c104c162150fc6440e02fcc95efebb3d914dc",
+    "oracle_save_sha256": "0d420b379a38906b208a5e2a88dd74617b1c9a763010205b5c864f0ff102a9cb",
+    "remake_save_sha256": "52984034e916259e2c4a45eafd0bb36f1835edabfd8867e007dee9ad38c1996b",
+    "byte_report": {
+      "status": "different",
+      "size": 22987,
+      "difference_count": 9,
+      "differences": [
+        {
+          "plain_offset": "0x3923",
+          "oracle": 98,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x28"
+        },
+        {
+          "plain_offset": "0x3924",
+          "oracle": 131,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x29"
+        },
+        {
+          "plain_offset": "0x3925",
+          "oracle": 9,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x2a"
+        },
+        {
+          "plain_offset": "0x3927",
+          "oracle": 122,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x2c"
+        },
+        {
+          "plain_offset": "0x3928",
+          "oracle": 131,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x2d"
+        },
+        {
+          "plain_offset": "0x3929",
+          "oracle": 9,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x2e"
+        },
+        {
+          "plain_offset": "0x392b",
+          "oracle": 146,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 25,
+          "record_offset": "0x30"
+        },
+        {
+          "plain_offset": "0x59c7",
+          "oracle": 91,
+          "remake": 213,
+          "region": "checksum"
+        },
+        {
+          "plain_offset": "0x59c8",
+          "oracle": 108,
+          "remake": 105,
+          "region": "checksum"
+        }
+      ],
+      "policy": "全部明文位元組比較；未排除差異，未改驗收門檻。"
+    },
+    "unknown_semantics": "用途與最初producer仍未知；驗收政策不證明無consumer或原版指標語意。",
+    "failure": "缺實檔報告、SHA／checksum錯誤、來源不符、差異清單新增／刪除／改值、章或profile不符都保持失敗。既有保存writer／計畫缺失仍不可被政策覆蓋。",
+    "output": "明示status=accepted_disclosed_difference、bytes_equal=false，完整byte_report不變。其餘必要gate全部通過才可登記PLAYER-E2，不能宣稱SAV bytes相同。",
+    "historical_receipt": "docs/data/ui-traces/parity-ch25-flow-r2-save-failed.json",
+    "historical_receipt_sha256": "241cedc8004317e597e3ed30875899c229e9a41a8c8713d3b1eb64feb10a761c",
+    "acceptance": [
+      "預設strict仍拒收第25章差異；明示policy才可接受已記錄的同一pair。",
+      "真實Game乾淨重播至酒店並產生相同SAV，三gate通過且完整差異仍逐筆可見。",
+      "不同來源、章、profile、實檔、差異及保存缺失反例拒收，其他章回歸不變。"
+    ],
+    "validation": {
+      "date": "2026-10-16",
+      "python_tests": 137,
+      "real_game_replay": "work/ch25-flow-20261015/remake-approved-r3",
+      "strict_rejected_receipt": "work/ch25-flow-20261015/approval-strict-rejected-20261016.json",
+      "accepted_receipt": "docs/data/ui-traces/parity-ch25.json",
+      "chapter24_regression": "work/ch25-flow-20261015/ch24-policy-regression-20261016.json",
+      "ai_entries": 240,
+      "ai_consumed": 240,
+      "ai_order_divergences": 0,
+      "scope": "新驗收政策與真實Game重播；未更動正式遊戲，未重跑原版或新增匹配編譯。",
+      "python_total_with_progress_tests": 141,
+      "real_wrong_chapter_rejected": "work/ch25-flow-20261015/ch24-wrong-policy-rejected-20261016.json",
+      "real_missing_save_report_rejected": "work/ch25-flow-20261015/approved-missing-save-rejected-20261016.json"
+    }
   }
 }

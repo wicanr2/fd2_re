@@ -9721,8 +9721,10 @@ IDA原始bytes確認1D3FF屬玩家command確認前重繪，15510屬簡略演出�
 text5與姿態重設，READY先於正式／canonical接線。AI指令10～12的三個正式評分caller
 傳入已有1F183目標閘門，以同狀態raw record索引判定；缺來源與越界仍拒收。
 
-正常原版及完整Game已走到戰後酒店，行為／節點通過；未知保存區間仍不相等，
-完整存檔閘門保持、章PLAYER-E2未提升。受版控控制器只補正常自用既有神聖之水，
+2026-10-15首次完整Game走到戰後酒店，行為／節點通過，保存差異使章驗收失敗，歷史收據保留。
+2026-10-16使用者接受逐筆揭露，先達READY再接有界保存政策；真實Game重新重播通過，
+交易明示accepted_disclosed_difference及bytes_equal=false，章依111例外登記PLAYER-E2。
+政策只接受已確認的來源、實檔SHA及完整差異清單，其他差異與預設strict仍拒收，未知語意保持。受版控控制器只補正常自用既有神聖之水，
 按八格左移及尾flag驗證，沒有鎖HP或新增物品。原始定位、READY規格、驗證與限制
 只存[event56主契約](../data/ida/fd2_turn_event56_20261015.json)；現況見[58](58-fd2-exe-re-coverage.md)。
 匹配式反編譯依[118目前範圍](../goal/118-goal-fd2-matching-decompilation-20261008.md)允許必要時局部啟動，全面保持暫停，本批無新匹配編譯。

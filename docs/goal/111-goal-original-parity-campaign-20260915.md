@@ -1,5 +1,23 @@
 # 111 — 目標提示詞：全戰役原版體驗一致（2026-09-15 定案）
 
+## 2026-10-16 使用者修訂：第25章逐筆揭露的保存例外
+
+使用者確認「接受逐筆揭露這項差異 然後繼續」。第25章既有原版r4與重製保存，
+允許identity26的`+0x28..+0x30`區間內七byte及衍生檢查碼兩byte不同，
+每筆偏移與兩側原值必須保留。用途仍未知，不提升為已證實，也不回填原版常數。
+
+這是特定收據的驗收政策，不改正式遊戲或存檔格式。完整契約及已知差異見
+[event56主契約](../data/ida/fd2_turn_event56_20261015.json)的`save_acceptance_policy`。
+[章比較器](../../tools/verify_chapter_parity.py)明示使用
+`--frame-policy advisory --save-policy ch25-opaque-20261016 --oracle-save <原版實際SAV>`。
+政策同時核對章號、來源槽、計畫、原版程式與dosgolem版本、兩側實檔SHA及完整明文差異清單；
+其他差異、缺少實檔、checksum無效或來源不符一律拒收。
+
+通過收據標示`accepted_disclosed_difference`及`bytes_equal=false`，
+交易依此例外通過，可依本目標的作弊流程例外登記該章PLAYER-E2。
+行為、節點與交易其他項目仍須通過；不得宣稱完整SAV bytes相同。
+預設`--save-policy strict`、其他章與歷史收據保持原門檻。
+
 ## 2026-10-15 使用者修訂：流程優先，允許測試作弊
 
 使用者明確要求「就作弊過關吧」「記得參考攻略」「只要流程一致即可，不用強求每個frame一樣」。
