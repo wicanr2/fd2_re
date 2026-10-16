@@ -5564,7 +5564,19 @@
    "units": "assets/maps/map27/map27_units.json",
    "scenario": "assets/scenarios/ch28.json",
    "on_win": "postbattle_ch28_persist",
-   "on_lose": "retreat_ch28"
+   "on_lose": "retreat_ch28",
+   "native_map_view": {
+    "camera_x": 21,
+    "camera_y": 16,
+    "cursor_x": 32,
+    "cursor_y": 21,
+    "visible_cursor_x": 11,
+    "visible_cursor_y": 5,
+    "range_mode": 1
+   },
+   "native_map_hud_inherited": {
+    "display_gate_b": 1
+   }
   },
   "postbattle_ch28_persist": {
    "type": "cutscene",
@@ -6770,7 +6782,9 @@
    "type": "preparation",
    "prompt": "要記錄戰況嗎？",
    "party_limit": 19,
-   "next": "story_ch28"
+   "next": "story_ch28",
+   "required_party_identities": [9],
+   "preparation_front_identities": [9]
   },
   "preparation_ch29": {
    "type": "preparation",

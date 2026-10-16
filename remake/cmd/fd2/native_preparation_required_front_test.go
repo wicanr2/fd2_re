@@ -92,38 +92,42 @@ func TestChapter26RequiresBothMembersAndFrontsCompleteRosterInCallerOrder(t *tes
 	}
 }
 
-func TestChapter27RequiresYuniAndFrontsCompleteRoster(t *testing.T) {
-	graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	graph.Start = "preparation_ch27"
-	g := &Game{
-		camp: campaign.NewRunner(graph), partyJoinOrder: []int{0, 29, 9, 4},
-		prepIDs: []int{29, 9, 4}, partyDeploy: map[int]bool{29: true, 4: true},
-		partyRoster: map[int]battle.Unit{},
-	}
-	for _, id := range g.partyJoinOrder {
-		g.partyRoster[id] = battle.Unit{
-			NativeIdentity: id, HasNativeIdentity: true,
-			NativeRecordByte8: byte(id), HasNativeRecordByte8: true, HP: 100 + id,
-		}
-	}
-	if missing, err := g.missingPreparationRequiredIdentity(); err != nil || missing == nil || *missing != 9 {
-		t.Fatalf("悠妮缺席未拒收：missing=%v err=%v", missing, err)
-	}
-	g.partyDeploy = map[int]bool{9: true, 4: true}
-	if missing, err := g.missingPreparationRequiredIdentity(); err != nil || missing != nil {
-		t.Fatalf("悠妮出戰仍要求其他人：missing=%v err=%v", missing, err)
-	}
-	before := make(map[int]battle.Unit, len(g.partyRoster))
-	for id, unit := range g.partyRoster {
-		before[id] = unit
-	}
-	if err := g.frontNativePreparationRequiredRoster(); err != nil {
-		t.Fatal(err)
-	}
-	if !reflect.DeepEqual(g.partyJoinOrder, []int{0, 9, 29, 4}) || !reflect.DeepEqual(g.partyRoster, before) || g.partyDeploy[29] {
-		t.Fatal("第27章完整名冊前置改了欄位、索爾位置或未出戰隊員")
+func TestLatePreparationRequiresYuniAndFrontsCompleteRoster(t *testing.T) {
+	for _, chapter := range []string{"27", "28"} {
+		t.Run(chapter, func(t *testing.T) {
+			graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			graph.Start = "preparation_ch" + chapter
+			g := &Game{
+				camp: campaign.NewRunner(graph), partyJoinOrder: []int{0, 29, 9, 4},
+				prepIDs: []int{29, 9, 4}, partyDeploy: map[int]bool{29: true, 4: true},
+				partyRoster: map[int]battle.Unit{},
+			}
+			for _, id := range g.partyJoinOrder {
+				g.partyRoster[id] = battle.Unit{
+					NativeIdentity: id, HasNativeIdentity: true,
+					NativeRecordByte8: byte(id), HasNativeRecordByte8: true, HP: 100 + id,
+				}
+			}
+			if missing, err := g.missingPreparationRequiredIdentity(); err != nil || missing == nil || *missing != 9 {
+				t.Fatalf("悠妮缺席未拒收：missing=%v err=%v", missing, err)
+			}
+			g.partyDeploy = map[int]bool{9: true, 4: true}
+			if missing, err := g.missingPreparationRequiredIdentity(); err != nil || missing != nil {
+				t.Fatalf("悠妮出戰仍要求其他人：missing=%v err=%v", missing, err)
+			}
+			before := make(map[int]battle.Unit, len(g.partyRoster))
+			for id, unit := range g.partyRoster {
+				before[id] = unit
+			}
+			if err := g.frontNativePreparationRequiredRoster(); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(g.partyJoinOrder, []int{0, 9, 29, 4}) || !reflect.DeepEqual(g.partyRoster, before) || g.partyDeploy[29] {
+				t.Fatal("第27章完整名冊前置改了欄位、索爾位置或未出戰隊員")
+			}
+		})
 	}
 }

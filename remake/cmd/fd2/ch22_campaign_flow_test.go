@@ -19,6 +19,7 @@ func newChapter22RuntimeBattle(t *testing.T) (*Game, []int) {
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, 15),
 	}
+	attachOfficialLocale(t, g)
 	for _, id := range order {
 		g.partyMembers[id] = true
 	}
@@ -38,6 +39,11 @@ func newChapter22RuntimeBattle(t *testing.T) (*Game, []int) {
 	deployed := append([]int{order[0]}, order[1:16]...)
 	if err := g.seedPersistentPartyFromLoadCH(deployed, g.st.Units[:len(deployed)]); err != nil {
 		t.Fatal(err)
+	}
+	// 持續名冊建構完成後，沿正式部署器投影基底裝備欄位。
+	g.resetBattle("assets/maps/map21/map21_units.json", "assets/scenarios/ch22.json")
+	if g.loadErr != "" || g.st == nil || len(g.st.Units) != 66 {
+		t.Fatalf("ch22 persistent deployment err=%q slots=%d", g.loadErr, g.handlerUnitCount())
 	}
 	return g, deployed
 }

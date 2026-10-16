@@ -116,6 +116,11 @@ def alive(current, camp):
 
 def measure(current, name):
     view = current.get("view", {}) or {}
+    if name == "runtime_units":
+        units = current.get("units")
+        if not isinstance(units, list):
+            raise SystemExit("runtime_units：缺少原版單位記錄表")
+        return len(units)
     if name == "round":
         return int(view.get("round", 0))
     if name == "cursor_x":

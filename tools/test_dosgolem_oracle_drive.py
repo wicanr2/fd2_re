@@ -32,6 +32,18 @@ def load():
 
 drive = load()
 
+class RuntimeUnitCount(unittest.TestCase):
+    def test_materialized_count_includes_dead_records(self):
+        current = {"units": [{"hp": 10}, {"hp": 0}]}
+        self.assertEqual(drive.measure(current, "runtime_units"), 2)
+        self.assertEqual(drive.holds(current, "runtime_units>=2"), (True, 2))
+        self.assertEqual(drive.holds(current, "runtime_units>=3"), (False, 2))
+
+    def test_absent_or_wrong_table_is_rejected(self):
+        for current in [{}, {"units": None}, {"units": {}}]:
+            with self.assertRaises(SystemExit):
+                drive.measure(current, "runtime_units")
+
 class SelectiveHPLockControl(unittest.TestCase):
     def test_control_deadline_ignores_host_wall_clock(self):
         with tempfile.TemporaryDirectory() as directory, mock.patch.object(drive,"RUN",directory), mock.patch.object(drive,"state",side_effect=[{"control_seq":0},{"control_seq":1}]), mock.patch.object(drive.time,"monotonic",side_effect=[10,11]), mock.patch.object(drive.time,"time",side_effect=AssertionError("牆鐘不可作控制逾時")):

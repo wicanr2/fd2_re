@@ -4,11 +4,6 @@
   "map": 27,
   "runtime_append_groups": true,
   "initial_groups": [
-    1,
-    2,
-    3,
-    4,
-    5,
     6,
     7
   ],
@@ -1302,5 +1297,354 @@
         "native_event_id": 71
       }
     ]
-  }
+  },
+  "native_turn_events": [
+    {
+      "event_id": 66,
+      "raw_camp": 0,
+      "handler": "0x359c8",
+      "staging": {},
+      "actions": [
+        {
+          "type": "dialogue",
+          "native_source": "0x359d2",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch28.json",
+            "scene_index": 1,
+            "line": 7,
+            "source_dat": "FDTXT_028",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 116,
+            "pages": [
+              [
+                "『C-02地區，第一防衛隊抵達",
+                "　。轉送辨識及接戰資料。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "C-",
+                  "02",
+                  "地",
+                  "區",
+                  "，",
+                  "第",
+                  "一",
+                  "防",
+                  "衛",
+                  "隊",
+                  "抵",
+                  "達"
+                ],
+                [
+                  "　",
+                  "。",
+                  "轉",
+                  "送",
+                  "辨",
+                  "識",
+                  "及",
+                  "接",
+                  "戰",
+                  "資",
+                  "料",
+                  "。",
+                  "』"
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 66,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x359f9",
+          "native_death_op": {
+            "op": "staging",
+            "x": 17,
+            "y": 18,
+            "group": 1
+          },
+          "native_event_id": 66,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35a07",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch28.json",
+            "scene_index": 1,
+            "line": 10,
+            "source_dat": "FDTXT_028",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 116,
+            "pages": [
+              [
+                "『轉送完成。目標及命令確認",
+                "　，防衛行動開始。』"
+              ]
+            ]
+          },
+          "native_event_id": 66,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "event_id": 68,
+      "raw_camp": 0,
+      "handler": "0x35a48",
+      "staging": {},
+      "actions": [
+        {
+          "type": "dialogue",
+          "native_source": "0x35a52",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch28.json",
+            "scene_index": 1,
+            "line": 8,
+            "source_dat": "FDTXT_028",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 116,
+            "pages": [
+              [
+                "『C-02地區，第二防衛隊抵達",
+                "　。轉送辨識及接戰資料。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "C-",
+                  "02",
+                  "地",
+                  "區",
+                  "，",
+                  "第",
+                  "二",
+                  "防",
+                  "衛",
+                  "隊",
+                  "抵",
+                  "達"
+                ],
+                [
+                  "　",
+                  "。",
+                  "轉",
+                  "送",
+                  "辨",
+                  "識",
+                  "及",
+                  "接",
+                  "戰",
+                  "資",
+                  "料",
+                  "。",
+                  "』"
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 68,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35a79",
+          "native_death_op": {
+            "op": "staging",
+            "x": 14,
+            "y": 7,
+            "group": 2
+          },
+          "native_event_id": 68,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35a87",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch28.json",
+            "scene_index": 1,
+            "line": 10,
+            "source_dat": "FDTXT_028",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 116,
+            "pages": [
+              [
+                "『轉送完成。目標及命令確認",
+                "　，防衛行動開始。』"
+              ]
+            ]
+          },
+          "native_event_id": 68,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35aae",
+          "native_death_op": {
+            "op": "state_set",
+            "index": 18,
+            "value": 1
+          },
+          "native_event_id": 68,
+          "camp": "enemy"
+        }
+      ]
+    },
+    {
+      "event_id": 70,
+      "raw_camp": 0,
+      "handler": "0x35b05",
+      "staging": {},
+      "actions": [
+        {
+          "type": "native_death_op",
+          "native_source": "0x35b0f",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 41,
+            "last": 45,
+            "mode": 0
+          },
+          "native_event_id": 70,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35b1d",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch28.json",
+            "scene_index": 1,
+            "line": 9,
+            "source_dat": "FDTXT_028",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 116,
+            "pages": [
+              [
+                "『C-02地區，第三防衛隊抵達",
+                "　。轉送辨識及接戰資料。』"
+              ]
+            ],
+            "glyph_pages": [
+              [
+                [
+                  "『",
+                  "C-",
+                  "02",
+                  "地",
+                  "區",
+                  "，",
+                  "第",
+                  "三",
+                  "防",
+                  "衛",
+                  "隊",
+                  "抵",
+                  "達"
+                ],
+                [
+                  "　",
+                  "。",
+                  "轉",
+                  "送",
+                  "辨",
+                  "識",
+                  "及",
+                  "接",
+                  "戰",
+                  "資",
+                  "料",
+                  "。",
+                  "』"
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 70,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35b44",
+          "native_death_op": {
+            "op": "staging",
+            "x": 8,
+            "y": 7,
+            "group": 3
+          },
+          "native_event_id": 70,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35b52",
+          "native_death_op": {
+            "op": "staging",
+            "x": 4,
+            "y": 7,
+            "group": 4
+          },
+          "native_event_id": 70,
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x35b60",
+          "native_death_op": {
+            "op": "staging",
+            "x": 0,
+            "y": 7,
+            "group": 5
+          },
+          "native_event_id": 70,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35a07",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch28.json",
+            "scene_index": 1,
+            "line": 10,
+            "source_dat": "FDTXT_028",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 116,
+            "pages": [
+              [
+                "『轉送完成。目標及命令確認",
+                "　，防衛行動開始。』"
+              ]
+            ]
+          },
+          "native_event_id": 70,
+          "camp": "enemy"
+        }
+      ]
+    }
+  ]
 }

@@ -45,6 +45,12 @@ func (g *Game) dispatchNativeFieldEventPending(actor *battle.Unit) bool {
 		}
 		return g.loadErr != ""
 	}
+	if pending.eventID == 65 || pending.eventID == 69 {
+		if _, err := battle.ApplyNativeChapter28FieldTurnActivation(g.st, actor, pending.x, pending.y, 0); err != nil {
+			g.loadErr = "battle field event: " + err.Error()
+		}
+		return g.loadErr != ""
+	}
 	if _, applied := battle.ApplyNativeFieldModeEvent(g.st, actor, pending.x, pending.y, 0); applied {
 		return false
 	}

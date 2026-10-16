@@ -89,6 +89,32 @@
         "raw_camp": 0,
         "turn_delta": 1
       }
+    },
+    {
+      "event_id": 65,
+      "handler": "0x3599b",
+      "selector": 0,
+      "once_state_index": 16,
+      "turn_activation": {
+        "slot": 0,
+        "event_id": 66,
+        "raw_camp": 0,
+        "turn_delta": 0
+      }
+    },
+    {
+      "event_id": 69,
+      "handler": "0x35ab8",
+      "selector": 0,
+      "trigger_gate": "record_byte6_nonzero",
+      "once_state_index": 17,
+      "required_nonzero_state_index": 18,
+      "turn_activation": {
+        "slot": 2,
+        "event_id": 70,
+        "raw_camp": 0,
+        "turn_delta": 0
+      }
     }
   ]
 }

@@ -457,6 +457,7 @@ func TestChapterTwentyOneSkyKeyInsufficientBranchUsesNativeDialogueAndTownSave(t
 		partyJoinOrder: append([]int(nil), order...),
 		partyDeploy:    make(map[int]bool, 15),
 	}
+	attachOfficialLocale(t, g)
 	for _, id := range order[1:16] {
 		g.partyDeploy[id] = true
 	}

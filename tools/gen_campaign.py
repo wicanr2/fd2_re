@@ -802,9 +802,9 @@ def build_campaign(
                 # #213 READY契約見fd2_turn_event57_20261016.json。
                 nodes[preparation_id]["required_party_identities"] = [9, 29]
                 nodes[preparation_id]["preparation_front_identities"] = [9, 29]
-            elif intermission_cid == "27":
-                # raw26>25：31C79／31CF8要求並前置9，沿既有helper。
-                # READY契約見fd2_ch27_flow_20261016.json。
+            elif intermission_cid in {"27", "28"}:
+                # raw26／27>25：31C79／31CF8要求並前置9，沿既有helper。
+                # READY契約見fd2_ch27_flow_20261016.json及fd2_ch28_flow_20261016.json。
                 nodes[preparation_id]["required_party_identities"] = [9]
                 nodes[preparation_id]["preparation_front_identities"] = [9]
         shop_node_ids: list[str] = []
@@ -1027,6 +1027,16 @@ def build_campaign(
                 "camera_x": 5, "camera_y": 37,
                 "cursor_x": 7, "cursor_y": 43,
                 "visible_cursor_x": 2, "visible_cursor_y": 6,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+
+        elif c == 28:
+            # #225：正常原版LOAD cp71與25E5E共用HUD caller，見第28章READY契約。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 21, "camera_y": 16,
+                "cursor_x": 32, "cursor_y": 21,
+                "visible_cursor_x": 11, "visible_cursor_y": 5,
                 "range_mode": 1,
             }
             nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}

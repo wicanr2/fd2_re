@@ -871,3 +871,11 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第27章增援診斷[AP+1000槽清冊](../data/parity-slots/ch27-reinforcement-ap-manifest.json)，由同章boost-only建構器產生，原正式槽維持。
 
 - 第27章[雙隊長死亡增援補抽收據](../data/ui-traces/ch27-captain-reinforcement-resample.json)：原版與重製三路已實際登場；明示鎖血及章前AP作弊，限定E1，不改正式章台帳。鏡頭回交差異另列#224。
+
+- 第28章接續：[主契約](../data/ida/fd2_ch28_flow_20261016.json)、[同源保存清冊](../data/parity-slots/ch28-manifest.json)、[正常LOAD短計畫](../data/parity-plans/ch28-load-prefix-r1.jsonl)。本輪先核對非城鎮入口及休眠增援；驗證結果由主契約登記。
+
+- 第28章完整流程候選：[正常區域／死亡增援與單次清敵計畫](../data/parity-plans/ch28-flow-cheat-r1.jsonl)，同源實際槽及驗證限制見第28章主契約。
+
+- 第28章有界作弊校準：[AP+1000清冊](../data/parity-slots/ch28-ap1000-manifest.json)與[r2完整流程](../data/parity-plans/ch28-flow-cheat-r2.jsonl)。保留r1堵路失敗，r2先要求64筆增援皆已物化才清敵；政策與逐欄位差異在主契約。
+
+- [第28章正式流程收據](../data/ui-traces/parity-ch28.json)：三波增援、戰後與完整非城鎮保存；流程模式，章前政策見主契約。

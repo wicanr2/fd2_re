@@ -788,21 +788,22 @@ type NativeFieldTurnChain struct {
 
 // NativeFieldEventRule 保存已閉合 handler 的資料，不自行決定 selector 的呼叫時機。
 type NativeFieldEventRule struct {
-	EventID        int                      `json:"event_id"`
-	Selector       byte                     `json:"selector"`
-	TriggerGate    string                   `json:"trigger_gate,omitempty"`
-	SetModeRanges  []NativeFieldModeRange   `json:"set_mode_ranges,omitempty"`
-	SetStateIndex  *int                     `json:"set_state_index,omitempty"`
-	SetStateValue  *int                     `json:"set_state_value,omitempty"`
-	OnceState      *int                     `json:"once_state_index,omitempty"`
-	RequiredItem   *int                     `json:"required_item,omitempty"`
-	ConsumeItem    bool                     `json:"consume_item,omitempty"`
-	SpawnGroup     *int                     `json:"spawn_group,omitempty"`
-	JoinCharacter  *int                     `json:"join_character,omitempty"`
-	TextIndices    *NativeFieldTextIndices  `json:"text_indices,omitempty"`
-	Presentation   *NativeFieldPresentation `json:"presentation,omitempty"`
-	TurnActivation *NativeTurnActivation    `json:"turn_activation,omitempty"`
-	TurnChain      *NativeFieldTurnChain    `json:"turn_chain,omitempty"`
+	EventID              int                      `json:"event_id"`
+	Selector             byte                     `json:"selector"`
+	TriggerGate          string                   `json:"trigger_gate,omitempty"`
+	SetModeRanges        []NativeFieldModeRange   `json:"set_mode_ranges,omitempty"`
+	SetStateIndex        *int                     `json:"set_state_index,omitempty"`
+	SetStateValue        *int                     `json:"set_state_value,omitempty"`
+	OnceState            *int                     `json:"once_state_index,omitempty"`
+	RequiredNonzeroState *int                     `json:"required_nonzero_state_index,omitempty"`
+	RequiredItem         *int                     `json:"required_item,omitempty"`
+	ConsumeItem          bool                     `json:"consume_item,omitempty"`
+	SpawnGroup           *int                     `json:"spawn_group,omitempty"`
+	JoinCharacter        *int                     `json:"join_character,omitempty"`
+	TextIndices          *NativeFieldTextIndices  `json:"text_indices,omitempty"`
+	Presentation         *NativeFieldPresentation `json:"presentation,omitempty"`
+	TurnActivation       *NativeTurnActivation    `json:"turn_activation,omitempty"`
+	TurnChain            *NativeFieldTurnChain    `json:"turn_chain,omitempty"`
 }
 
 // TreasureAt 查詢尚未取得的寶物格。

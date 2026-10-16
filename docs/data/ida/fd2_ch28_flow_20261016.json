@@ -1,0 +1,3492 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch28_flow_contract",
+  "date": "2026-10-16",
+  "status": "CONFORMED",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "tool": {
+    "name": "IDA Pro",
+    "version": "9.4",
+    "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+  },
+  "address_space": "IDA Pro 9.4 LE linear；file_offset另列，不混用",
+  "source_export": {
+    "path": "work/matching-full-20261008/ida-full-image.json",
+    "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5"
+  },
+  "walkthrough": {
+    "path": "references/text/fd2.md",
+    "chapter": 28,
+    "scope": "玩家流程旁證，不作ABI證據"
+  },
+  "original_functions": [
+    {
+      "inventory": {
+        "start": "0x3599b",
+        "end": "0x359c8",
+        "size": 45,
+        "ida_analysis_name": "sub_3599B",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_3599B",
+      "current_ida_linear_end": "0x359c8",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x3599b",
+          "ida_linear_end": "0x359c8",
+          "instructions": [
+            {
+              "ida_linear_address": "0x3599b",
+              "file_offset": "0x3679b",
+              "loaded_bytes": "6804000000",
+              "file_bytes": "6804000000",
+              "instruction": "push    4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359a0",
+              "file_offset": "0x367a0",
+              "loaded_bytes": "e832130000",
+              "file_bytes": "e832130000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359a5",
+              "file_offset": "0x367a5",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359aa",
+              "file_offset": "0x367aa",
+              "loaded_bytes": "80781000",
+              "file_bytes": "80781000",
+              "instruction": "cmp     byte ptr [eax+10h], 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359ae",
+              "file_offset": "0x367ae",
+              "loaded_bytes": "7517",
+              "file_bytes": "7517",
+              "instruction": "jnz     short locret_359C7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359b0",
+              "file_offset": "0x367b0",
+              "loaded_bytes": "a1553a0500",
+              "file_bytes": "a1553a0000",
+              "instruction": "mov     eax, dword_53A55",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359b5",
+              "file_offset": "0x367b5",
+              "loaded_bytes": "8a15ef3b0500",
+              "file_bytes": "8a15ef3b0000",
+              "instruction": "mov     dl, byte ptr dword_53BEF",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359bb",
+              "file_offset": "0x367bb",
+              "loaded_bytes": "885003",
+              "file_bytes": "885003",
+              "instruction": "mov     [eax+3], dl",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359be",
+              "file_offset": "0x367be",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359c3",
+              "file_offset": "0x367c3",
+              "loaded_bytes": "c6401001",
+              "file_bytes": "c6401001",
+              "instruction": "mov     byte ptr [eax+10h], 1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359c7",
+              "file_offset": "0x367c7",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x359c8",
+        "end": "0x35a20",
+        "size": 88,
+        "ida_analysis_name": "sub_359C8",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_359C8",
+      "current_ida_linear_end": "0x35a20",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x359c8",
+          "ida_linear_end": "0x35a20",
+          "instructions": [
+            {
+              "ida_linear_address": "0x359c8",
+              "file_offset": "0x367c8",
+              "loaded_bytes": "6828000000",
+              "file_bytes": "6828000000",
+              "instruction": "push    28h ; '('",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359cd",
+              "file_offset": "0x367cd",
+              "loaded_bytes": "e805130000",
+              "file_bytes": "e805130000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359d2",
+              "file_offset": "0x367d2",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359d4",
+              "file_offset": "0x367d4",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359d6",
+              "file_offset": "0x367d6",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359d8",
+              "file_offset": "0x367d8",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359da",
+              "file_offset": "0x367da",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359df",
+              "file_offset": "0x367df",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359e4",
+              "file_offset": "0x367e4",
+              "loaded_bytes": "6800000a00",
+              "file_bytes": "6800000a00",
+              "instruction": "push    0A0000h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359e9",
+              "file_offset": "0x367e9",
+              "loaded_bytes": "6a03",
+              "file_bytes": "6a03",
+              "instruction": "push    3",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359eb",
+              "file_offset": "0x367eb",
+              "loaded_bytes": "ff35793a0500",
+              "file_bytes": "ff35793a0000",
+              "instruction": "push    dword_53A79",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359f1",
+              "file_offset": "0x367f1",
+              "loaded_bytes": "e88e05feff",
+              "file_bytes": "e88e05feff",
+              "instruction": "call    sub_15F84",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359f6",
+              "file_offset": "0x367f6",
+              "loaded_bytes": "83c424",
+              "file_bytes": "83c424",
+              "instruction": "add     esp, 24h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359f9",
+              "file_offset": "0x367f9",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359fb",
+              "file_offset": "0x367fb",
+              "loaded_bytes": "6a12",
+              "file_bytes": "6a12",
+              "instruction": "push    12h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359fd",
+              "file_offset": "0x367fd",
+              "loaded_bytes": "6a11",
+              "file_bytes": "6a11",
+              "instruction": "push    11h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x359ff",
+              "file_offset": "0x367ff",
+              "loaded_bytes": "e81efeffff",
+              "file_bytes": "e81efeffff",
+              "instruction": "call    sub_35822",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a04",
+              "file_offset": "0x36804",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a07",
+              "file_offset": "0x36807",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a09",
+              "file_offset": "0x36809",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a0b",
+              "file_offset": "0x3680b",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a0d",
+              "file_offset": "0x3680d",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a0f",
+              "file_offset": "0x3680f",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a14",
+              "file_offset": "0x36814",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a19",
+              "file_offset": "0x36819",
+              "loaded_bytes": "6800000a00",
+              "file_bytes": "6800000a00",
+              "instruction": "push    0A0000h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a1e",
+              "file_offset": "0x3681e",
+              "loaded_bytes": "6a06",
+              "file_bytes": "6a06",
+              "instruction": "push    6",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x35a2f",
+        "end": "0x35a48",
+        "size": 25,
+        "ida_analysis_name": "sub_35A2F",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_35A2F",
+      "current_ida_linear_end": "0x35a48",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x35a2f",
+          "ida_linear_end": "0x35a48",
+          "instructions": [
+            {
+              "ida_linear_address": "0x35a2f",
+              "file_offset": "0x3682f",
+              "loaded_bytes": "6804000000",
+              "file_bytes": "6804000000",
+              "instruction": "push    4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a34",
+              "file_offset": "0x36834",
+              "loaded_bytes": "e89e120000",
+              "file_bytes": "e89e120000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a39",
+              "file_offset": "0x36839",
+              "loaded_bytes": "a1553a0500",
+              "file_bytes": "a1553a0000",
+              "instruction": "mov     eax, dword_53A55",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a3e",
+              "file_offset": "0x3683e",
+              "loaded_bytes": "8a15ef3b0500",
+              "file_bytes": "8a15ef3b0000",
+              "instruction": "mov     dl, byte ptr dword_53BEF",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a44",
+              "file_offset": "0x36844",
+              "loaded_bytes": "885006",
+              "file_bytes": "885006",
+              "instruction": "mov     [eax+6], dl",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a47",
+              "file_offset": "0x36847",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x35a48",
+        "end": "0x35ab8",
+        "size": 112,
+        "ida_analysis_name": "sub_35A48",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_35A48",
+      "current_ida_linear_end": "0x35ab8",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x35a48",
+          "ida_linear_end": "0x35ab8",
+          "instructions": [
+            {
+              "ida_linear_address": "0x35a48",
+              "file_offset": "0x36848",
+              "loaded_bytes": "6828000000",
+              "file_bytes": "6828000000",
+              "instruction": "push    28h ; '('",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a4d",
+              "file_offset": "0x3684d",
+              "loaded_bytes": "e885120000",
+              "file_bytes": "e885120000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a52",
+              "file_offset": "0x36852",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a54",
+              "file_offset": "0x36854",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a56",
+              "file_offset": "0x36856",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a58",
+              "file_offset": "0x36858",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a5a",
+              "file_offset": "0x3685a",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a5f",
+              "file_offset": "0x3685f",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a64",
+              "file_offset": "0x36864",
+              "loaded_bytes": "6800000a00",
+              "file_bytes": "6800000a00",
+              "instruction": "push    0A0000h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a69",
+              "file_offset": "0x36869",
+              "loaded_bytes": "6a04",
+              "file_bytes": "6a04",
+              "instruction": "push    4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a6b",
+              "file_offset": "0x3686b",
+              "loaded_bytes": "ff35793a0500",
+              "file_bytes": "ff35793a0000",
+              "instruction": "push    dword_53A79",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a71",
+              "file_offset": "0x36871",
+              "loaded_bytes": "e80e05feff",
+              "file_bytes": "e80e05feff",
+              "instruction": "call    sub_15F84",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a76",
+              "file_offset": "0x36876",
+              "loaded_bytes": "83c424",
+              "file_bytes": "83c424",
+              "instruction": "add     esp, 24h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a79",
+              "file_offset": "0x36879",
+              "loaded_bytes": "6a02",
+              "file_bytes": "6a02",
+              "instruction": "push    2",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a7b",
+              "file_offset": "0x3687b",
+              "loaded_bytes": "6a07",
+              "file_bytes": "6a07",
+              "instruction": "push    7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a7d",
+              "file_offset": "0x3687d",
+              "loaded_bytes": "6a0e",
+              "file_bytes": "6a0e",
+              "instruction": "push    0Eh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a7f",
+              "file_offset": "0x3687f",
+              "loaded_bytes": "e89efdffff",
+              "file_bytes": "e89efdffff",
+              "instruction": "call    sub_35822",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a84",
+              "file_offset": "0x36884",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a87",
+              "file_offset": "0x36887",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a89",
+              "file_offset": "0x36889",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a8b",
+              "file_offset": "0x3688b",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a8d",
+              "file_offset": "0x3688d",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a8f",
+              "file_offset": "0x3688f",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a94",
+              "file_offset": "0x36894",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a99",
+              "file_offset": "0x36899",
+              "loaded_bytes": "6800000a00",
+              "file_bytes": "6800000a00",
+              "instruction": "push    0A0000h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35a9e",
+              "file_offset": "0x3689e",
+              "loaded_bytes": "6a06",
+              "file_bytes": "6a06",
+              "instruction": "push    6",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35aa0",
+              "file_offset": "0x368a0",
+              "loaded_bytes": "ff35793a0500",
+              "file_bytes": "ff35793a0000",
+              "instruction": "push    dword_53A79",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35aa6",
+              "file_offset": "0x368a6",
+              "loaded_bytes": "e8d904feff",
+              "file_bytes": "e8d904feff",
+              "instruction": "call    sub_15F84",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35aab",
+              "file_offset": "0x368ab",
+              "loaded_bytes": "83c424",
+              "file_bytes": "83c424",
+              "instruction": "add     esp, 24h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35aae",
+              "file_offset": "0x368ae",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ab3",
+              "file_offset": "0x368b3",
+              "loaded_bytes": "c6401201",
+              "file_bytes": "c6401201",
+              "instruction": "mov     byte ptr [eax+12h], 1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ab7",
+              "file_offset": "0x368b7",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x35ab8",
+        "end": "0x35b05",
+        "size": 77,
+        "ida_analysis_name": "sub_35AB8",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_35AB8",
+      "current_ida_linear_end": "0x35b05",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x35ab8",
+          "ida_linear_end": "0x35b05",
+          "instructions": [
+            {
+              "ida_linear_address": "0x35ab8",
+              "file_offset": "0x368b8",
+              "loaded_bytes": "6804000000",
+              "file_bytes": "6804000000",
+              "instruction": "push    4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35abd",
+              "file_offset": "0x368bd",
+              "loaded_bytes": "e815120000",
+              "file_bytes": "e815120000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ac2",
+              "file_offset": "0x368c2",
+              "loaded_bytes": "8b542404",
+              "file_bytes": "8b542404",
+              "instruction": "mov     edx, [esp+arg_0]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ac6",
+              "file_offset": "0x368c6",
+              "loaded_bytes": "89d0",
+              "file_bytes": "89d0",
+              "instruction": "mov     eax, edx",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ac8",
+              "file_offset": "0x368c8",
+              "loaded_bytes": "c1e002",
+              "file_bytes": "c1e002",
+              "instruction": "shl     eax, 2",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35acb",
+              "file_offset": "0x368cb",
+              "loaded_bytes": "01c2",
+              "file_bytes": "01c2",
+              "instruction": "add     edx, eax",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35acd",
+              "file_offset": "0x368cd",
+              "loaded_bytes": "c1e204",
+              "file_bytes": "c1e204",
+              "instruction": "shl     edx, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ad0",
+              "file_offset": "0x368d0",
+              "loaded_bytes": "a1453a0500",
+              "file_bytes": "a1453a0000",
+              "instruction": "mov     eax, dword_53A45",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ad5",
+              "file_offset": "0x368d5",
+              "loaded_bytes": "807c020600",
+              "file_bytes": "807c020600",
+              "instruction": "cmp     byte ptr [edx+eax+6], 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ada",
+              "file_offset": "0x368da",
+              "loaded_bytes": "7428",
+              "file_bytes": "7428",
+              "instruction": "jz      short locret_35B04",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35adc",
+              "file_offset": "0x368dc",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ae1",
+              "file_offset": "0x368e1",
+              "loaded_bytes": "80781100",
+              "file_bytes": "80781100",
+              "instruction": "cmp     byte ptr [eax+11h], 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ae5",
+              "file_offset": "0x368e5",
+              "loaded_bytes": "751d",
+              "file_bytes": "751d",
+              "instruction": "jnz     short locret_35B04",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ae7",
+              "file_offset": "0x368e7",
+              "loaded_bytes": "80781200",
+              "file_bytes": "80781200",
+              "instruction": "cmp     byte ptr [eax+12h], 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35aeb",
+              "file_offset": "0x368eb",
+              "loaded_bytes": "7417",
+              "file_bytes": "7417",
+              "instruction": "jz      short locret_35B04",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35aed",
+              "file_offset": "0x368ed",
+              "loaded_bytes": "a1553a0500",
+              "file_bytes": "a1553a0000",
+              "instruction": "mov     eax, dword_53A55",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35af2",
+              "file_offset": "0x368f2",
+              "loaded_bytes": "8a15ef3b0500",
+              "file_bytes": "8a15ef3b0000",
+              "instruction": "mov     dl, byte ptr dword_53BEF",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35af8",
+              "file_offset": "0x368f8",
+              "loaded_bytes": "885009",
+              "file_bytes": "885009",
+              "instruction": "mov     [eax+9], dl",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35afb",
+              "file_offset": "0x368fb",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b00",
+              "file_offset": "0x36900",
+              "loaded_bytes": "c6401101",
+              "file_bytes": "c6401101",
+              "instruction": "mov     byte ptr [eax+11h], 1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b04",
+              "file_offset": "0x36904",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x35b05",
+        "end": "0x35b6b",
+        "size": 102,
+        "ida_analysis_name": "sub_35B05",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_35B05",
+      "current_ida_linear_end": "0x35b6b",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x35b05",
+          "ida_linear_end": "0x35b6b",
+          "instructions": [
+            {
+              "ida_linear_address": "0x35b05",
+              "file_offset": "0x36905",
+              "loaded_bytes": "6828000000",
+              "file_bytes": "6828000000",
+              "instruction": "push    28h ; '('",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b0a",
+              "file_offset": "0x3690a",
+              "loaded_bytes": "e8c8110000",
+              "file_bytes": "e8c8110000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b0f",
+              "file_offset": "0x3690f",
+              "loaded_bytes": "6a00",
+              "file_bytes": "6a00",
+              "instruction": "push    0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b11",
+              "file_offset": "0x36911",
+              "loaded_bytes": "6a2d",
+              "file_bytes": "6a2d",
+              "instruction": "push    2Dh ; '-'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b13",
+              "file_offset": "0x36913",
+              "loaded_bytes": "6a29",
+              "file_bytes": "6a29",
+              "instruction": "push    29h ; ')'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b15",
+              "file_offset": "0x36915",
+              "loaded_bytes": "e882e6ffff",
+              "file_bytes": "e882e6ffff",
+              "instruction": "call    sub_3419C",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b1a",
+              "file_offset": "0x3691a",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b1d",
+              "file_offset": "0x3691d",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b1f",
+              "file_offset": "0x3691f",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b21",
+              "file_offset": "0x36921",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b23",
+              "file_offset": "0x36923",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b25",
+              "file_offset": "0x36925",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b2a",
+              "file_offset": "0x3692a",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b2f",
+              "file_offset": "0x3692f",
+              "loaded_bytes": "6800000a00",
+              "file_bytes": "6800000a00",
+              "instruction": "push    0A0000h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b34",
+              "file_offset": "0x36934",
+              "loaded_bytes": "6a05",
+              "file_bytes": "6a05",
+              "instruction": "push    5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b36",
+              "file_offset": "0x36936",
+              "loaded_bytes": "ff35793a0500",
+              "file_bytes": "ff35793a0000",
+              "instruction": "push    dword_53A79",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b3c",
+              "file_offset": "0x3693c",
+              "loaded_bytes": "e84304feff",
+              "file_bytes": "e84304feff",
+              "instruction": "call    sub_15F84",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b41",
+              "file_offset": "0x36941",
+              "loaded_bytes": "83c424",
+              "file_bytes": "83c424",
+              "instruction": "add     esp, 24h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b44",
+              "file_offset": "0x36944",
+              "loaded_bytes": "6a03",
+              "file_bytes": "6a03",
+              "instruction": "push    3",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b46",
+              "file_offset": "0x36946",
+              "loaded_bytes": "6a07",
+              "file_bytes": "6a07",
+              "instruction": "push    7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b48",
+              "file_offset": "0x36948",
+              "loaded_bytes": "6a08",
+              "file_bytes": "6a08",
+              "instruction": "push    8",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b4a",
+              "file_offset": "0x3694a",
+              "loaded_bytes": "e8d3fcffff",
+              "file_bytes": "e8d3fcffff",
+              "instruction": "call    sub_35822",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b4f",
+              "file_offset": "0x3694f",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b52",
+              "file_offset": "0x36952",
+              "loaded_bytes": "6a04",
+              "file_bytes": "6a04",
+              "instruction": "push    4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b54",
+              "file_offset": "0x36954",
+              "loaded_bytes": "6a07",
+              "file_bytes": "6a07",
+              "instruction": "push    7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b56",
+              "file_offset": "0x36956",
+              "loaded_bytes": "6a04",
+              "file_bytes": "6a04",
+              "instruction": "push    4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b58",
+              "file_offset": "0x36958",
+              "loaded_bytes": "e8c5fcffff",
+              "file_bytes": "e8c5fcffff",
+              "instruction": "call    sub_35822",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b5d",
+              "file_offset": "0x3695d",
+              "loaded_bytes": "83c40c",
+              "file_bytes": "83c40c",
+              "instruction": "add     esp, 0Ch",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b60",
+              "file_offset": "0x36960",
+              "loaded_bytes": "6a05",
+              "file_bytes": "6a05",
+              "instruction": "push    5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b62",
+              "file_offset": "0x36962",
+              "loaded_bytes": "6a07",
+              "file_bytes": "6a07",
+              "instruction": "push    7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b64",
+              "file_offset": "0x36964",
+              "loaded_bytes": "6a00",
+              "file_bytes": "6a00",
+              "instruction": "push    0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b66",
+              "file_offset": "0x36966",
+              "loaded_bytes": "e994feffff",
+              "file_bytes": "e994feffff",
+              "instruction": "jmp     loc_359FF",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    },
+    {
+      "inventory": {
+        "start": "0x35b6b",
+        "end": "0x35bba",
+        "size": 79,
+        "ida_analysis_name": "sub_35B6B",
+        "ida_function_flags": [],
+        "direct_caller_functions": [
+          "0x117e7",
+          "0x16f55",
+          "0x190ac",
+          "0x1a813",
+          "0x1aa1d",
+          "0x1d80b",
+          "0x1d8ba"
+        ],
+        "direct_code_xref_count": 8,
+        "direct_data_xref_count": 1,
+        "classification": {
+          "value": "unknown",
+          "confidence": "未知",
+          "source": "not yet classified"
+        },
+        "semantic_annotations": []
+      },
+      "ida_analysis_name": "sub_35B6B",
+      "current_ida_linear_end": "0x35bba",
+      "boundary_matches_inventory": true,
+      "semantic_annotations": [],
+      "chunks": [
+        {
+          "ida_linear_start": "0x35b6b",
+          "ida_linear_end": "0x35bba",
+          "instructions": [
+            {
+              "ida_linear_address": "0x35b6b",
+              "file_offset": "0x3696b",
+              "loaded_bytes": "6828000000",
+              "file_bytes": "6828000000",
+              "instruction": "push    28h ; '('",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b70",
+              "file_offset": "0x36970",
+              "loaded_bytes": "e862110000",
+              "file_bytes": "e862110000",
+              "instruction": "call    sub_36CD7",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b75",
+              "file_offset": "0x36975",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b7a",
+              "file_offset": "0x3697a",
+              "loaded_bytes": "80781300",
+              "file_bytes": "80781300",
+              "instruction": "cmp     byte ptr [eax+13h], 0",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b7e",
+              "file_offset": "0x3697e",
+              "loaded_bytes": "7431",
+              "file_bytes": "7431",
+              "instruction": "jz      short loc_35BB1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b80",
+              "file_offset": "0x36980",
+              "loaded_bytes": "6a01",
+              "file_bytes": "6a01",
+              "instruction": "push    1",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b82",
+              "file_offset": "0x36982",
+              "loaded_bytes": "6a13",
+              "file_bytes": "6a13",
+              "instruction": "push    13h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b84",
+              "file_offset": "0x36984",
+              "loaded_bytes": "6a4a",
+              "file_bytes": "6a4a",
+              "instruction": "push    4Ah ; 'J'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b86",
+              "file_offset": "0x36986",
+              "loaded_bytes": "6a4c",
+              "file_bytes": "6a4c",
+              "instruction": "push    4Ch ; 'L'",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b88",
+              "file_offset": "0x36988",
+              "loaded_bytes": "68cd000000",
+              "file_bytes": "68cd000000",
+              "instruction": "push    0CDh",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b8d",
+              "file_offset": "0x3698d",
+              "loaded_bytes": "6840010000",
+              "file_bytes": "6840010000",
+              "instruction": "push    140h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b92",
+              "file_offset": "0x36992",
+              "loaded_bytes": "6800000a00",
+              "file_bytes": "6800000a00",
+              "instruction": "push    0A0000h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b97",
+              "file_offset": "0x36997",
+              "loaded_bytes": "6a02",
+              "file_bytes": "6a02",
+              "instruction": "push    2",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b99",
+              "file_offset": "0x36999",
+              "loaded_bytes": "ff35793a0500",
+              "file_bytes": "ff35793a0000",
+              "instruction": "push    dword_53A79",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35b9f",
+              "file_offset": "0x3699f",
+              "loaded_bytes": "e8e003feff",
+              "file_bytes": "e8e003feff",
+              "instruction": "call    sub_15F84",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ba4",
+              "file_offset": "0x369a4",
+              "loaded_bytes": "83c424",
+              "file_bytes": "83c424",
+              "instruction": "add     esp, 24h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ba7",
+              "file_offset": "0x369a7",
+              "loaded_bytes": "6a14",
+              "file_bytes": "6a14",
+              "instruction": "push    14h",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35ba9",
+              "file_offset": "0x369a9",
+              "loaded_bytes": "e80c000000",
+              "file_bytes": "e80c000000",
+              "instruction": "call    sub_35BBA",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35bae",
+              "file_offset": "0x369ae",
+              "loaded_bytes": "83c404",
+              "file_bytes": "83c404",
+              "instruction": "add     esp, 4",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35bb1",
+              "file_offset": "0x369b1",
+              "loaded_bytes": "a1d53a0500",
+              "file_bytes": "a1d53a0000",
+              "instruction": "mov     eax, dword_53AD5",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35bb6",
+              "file_offset": "0x369b6",
+              "loaded_bytes": "fe4013",
+              "file_bytes": "fe4013",
+              "instruction": "inc     byte ptr [eax+13h]",
+              "semantic_annotations": []
+            },
+            {
+              "ida_linear_address": "0x35bb9",
+              "file_offset": "0x369b9",
+              "loaded_bytes": "c3",
+              "file_bytes": "c3",
+              "instruction": "retn",
+              "semantic_annotations": []
+            }
+          ]
+        }
+      ],
+      "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+    }
+  ],
+  "shared_dialogue_tail": [
+    {
+      "ida_owner": "0x351e9",
+      "ida_linear_address": "0x35a20",
+      "file_offset": "0x36820",
+      "loaded_bytes": "ff35793a0500",
+      "file_bytes": "ff35793a0000",
+      "instruction": "push    dword_53A79",
+      "semantic_annotations": []
+    },
+    {
+      "ida_owner": "0x351e9",
+      "ida_linear_address": "0x35a26",
+      "file_offset": "0x36826",
+      "loaded_bytes": "e85905feff",
+      "file_bytes": "e85905feff",
+      "instruction": "call    sub_15F84",
+      "semantic_annotations": []
+    },
+    {
+      "ida_owner": "0x351e9",
+      "ida_linear_address": "0x35a2b",
+      "file_offset": "0x3682b",
+      "loaded_bytes": "83c424",
+      "file_bytes": "83c424",
+      "instruction": "add     esp, 24h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_owner": "0x351e9",
+      "ida_linear_address": "0x35a2e",
+      "file_offset": "0x3682e",
+      "loaded_bytes": "c3",
+      "file_bytes": "c3",
+      "instruction": "retn",
+      "semantic_annotations": []
+    }
+  ],
+  "preparation_instructions": [
+    {
+      "ida_linear_address": "0x318be",
+      "file_offset": "0x326be",
+      "loaded_bytes": "bd0f000000",
+      "file_bytes": "bd0f000000",
+      "instruction": "mov     ebp, 0Fh",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318c3",
+      "file_offset": "0x326c3",
+      "loaded_bytes": "31ff",
+      "file_bytes": "31ff",
+      "instruction": "xor     edi, edi",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318c5",
+      "file_offset": "0x326c5",
+      "loaded_bytes": "31f6",
+      "file_bytes": "31f6",
+      "instruction": "xor     esi, esi",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318c7",
+      "file_offset": "0x326c7",
+      "loaded_bytes": "6a1e",
+      "file_bytes": "6a1e",
+      "instruction": "push    1Eh",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318c9",
+      "file_offset": "0x326c9",
+      "loaded_bytes": "57",
+      "file_bytes": "57",
+      "instruction": "push    edi",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318ca",
+      "file_offset": "0x326ca",
+      "loaded_bytes": "8d442408",
+      "file_bytes": "8d442408",
+      "instruction": "lea     eax, [esp+44h+var_3C]",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318ce",
+      "file_offset": "0x326ce",
+      "loaded_bytes": "50",
+      "file_bytes": "50",
+      "instruction": "push    eax",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318cf",
+      "file_offset": "0x326cf",
+      "loaded_bytes": "e8ec5c0000",
+      "file_bytes": "e8ec5c0000",
+      "instruction": "call    memset",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318d4",
+      "file_offset": "0x326d4",
+      "loaded_bytes": "83c40c",
+      "file_bytes": "83c40c",
+      "instruction": "add     esp, 0Ch",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318d7",
+      "file_offset": "0x326d7",
+      "loaded_bytes": "833d033c05001a",
+      "file_bytes": "833d033c00001a",
+      "instruction": "cmp     dword_53C03, 1Ah",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318de",
+      "file_offset": "0x326de",
+      "loaded_bytes": "7e05",
+      "file_bytes": "7e05",
+      "instruction": "jle     short loc_318E5",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x318e0",
+      "file_offset": "0x326e0",
+      "loaded_bytes": "bd13000000",
+      "file_bytes": "bd13000000",
+      "instruction": "mov     ebp, 13h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c70",
+      "file_offset": "0x32a70",
+      "loaded_bytes": "833d033c050019",
+      "file_bytes": "833d033c000019",
+      "instruction": "cmp     dword_53C03, 19h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c77",
+      "file_offset": "0x32a77",
+      "loaded_bytes": "7e04",
+      "file_bytes": "7e04",
+      "instruction": "jle     short loc_31C7D",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c79",
+      "file_offset": "0x32a79",
+      "loaded_bytes": "6a09",
+      "file_bytes": "6a09",
+      "instruction": "push    9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c7b",
+      "file_offset": "0x32a7b",
+      "loaded_bytes": "eb4c",
+      "file_bytes": "eb4c",
+      "instruction": "jmp     short loc_31CC9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c7d",
+      "file_offset": "0x32a7d",
+      "loaded_bytes": "833d033c050012",
+      "file_bytes": "833d033c000012",
+      "instruction": "cmp     dword_53C03, 12h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c84",
+      "file_offset": "0x32a84",
+      "loaded_bytes": "7504",
+      "file_bytes": "7504",
+      "instruction": "jnz     short loc_31C8A",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c86",
+      "file_offset": "0x32a86",
+      "loaded_bytes": "6a10",
+      "file_bytes": "6a10",
+      "instruction": "push    10h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c88",
+      "file_offset": "0x32a88",
+      "loaded_bytes": "eb3f",
+      "file_bytes": "eb3f",
+      "instruction": "jmp     short loc_31CC9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c8a",
+      "file_offset": "0x32a8a",
+      "loaded_bytes": "833d033c050014",
+      "file_bytes": "833d033c000014",
+      "instruction": "cmp     dword_53C03, 14h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c91",
+      "file_offset": "0x32a91",
+      "loaded_bytes": "7504",
+      "file_bytes": "7504",
+      "instruction": "jnz     short loc_31C97",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c93",
+      "file_offset": "0x32a93",
+      "loaded_bytes": "6a15",
+      "file_bytes": "6a15",
+      "instruction": "push    15h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c95",
+      "file_offset": "0x32a95",
+      "loaded_bytes": "eb32",
+      "file_bytes": "eb32",
+      "instruction": "jmp     short loc_31CC9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c97",
+      "file_offset": "0x32a97",
+      "loaded_bytes": "833d033c050015",
+      "file_bytes": "833d033c000015",
+      "instruction": "cmp     dword_53C03, 15h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31c9e",
+      "file_offset": "0x32a9e",
+      "loaded_bytes": "7409",
+      "file_bytes": "7409",
+      "instruction": "jz      short loc_31CA9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31ca0",
+      "file_offset": "0x32aa0",
+      "loaded_bytes": "833d033c050016",
+      "file_bytes": "833d033c000016",
+      "instruction": "cmp     dword_53C03, 16h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31ca7",
+      "file_offset": "0x32aa7",
+      "loaded_bytes": "7504",
+      "file_bytes": "7504",
+      "instruction": "jnz     short loc_31CAD",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31ca9",
+      "file_offset": "0x32aa9",
+      "loaded_bytes": "6a18",
+      "file_bytes": "6a18",
+      "instruction": "push    18h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cab",
+      "file_offset": "0x32aab",
+      "loaded_bytes": "eb1c",
+      "file_bytes": "eb1c",
+      "instruction": "jmp     short loc_31CC9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cad",
+      "file_offset": "0x32aad",
+      "loaded_bytes": "833d033c050019",
+      "file_bytes": "833d033c000019",
+      "instruction": "cmp     dword_53C03, 19h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cb4",
+      "file_offset": "0x32ab4",
+      "loaded_bytes": "751e",
+      "file_bytes": "751e",
+      "instruction": "jnz     short loc_31CD4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cb6",
+      "file_offset": "0x32ab6",
+      "loaded_bytes": "6a09",
+      "file_bytes": "6a09",
+      "instruction": "push    9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cb8",
+      "file_offset": "0x32ab8",
+      "loaded_bytes": "55",
+      "file_bytes": "55",
+      "instruction": "push    ebp",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cb9",
+      "file_offset": "0x32ab9",
+      "loaded_bytes": "e800010000",
+      "file_bytes": "e800010000",
+      "instruction": "call    sub_31DBE",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cbe",
+      "file_offset": "0x32abe",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cc1",
+      "file_offset": "0x32ac1",
+      "loaded_bytes": "89c7",
+      "file_bytes": "89c7",
+      "instruction": "mov     edi, eax",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cc3",
+      "file_offset": "0x32ac3",
+      "loaded_bytes": "85c0",
+      "file_bytes": "85c0",
+      "instruction": "test    eax, eax",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cc5",
+      "file_offset": "0x32ac5",
+      "loaded_bytes": "740d",
+      "file_bytes": "740d",
+      "instruction": "jz      short loc_31CD4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cc7",
+      "file_offset": "0x32ac7",
+      "loaded_bytes": "6a1d",
+      "file_bytes": "6a1d",
+      "instruction": "push    1Dh",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cc9",
+      "file_offset": "0x32ac9",
+      "loaded_bytes": "55",
+      "file_bytes": "55",
+      "instruction": "push    ebp",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cca",
+      "file_offset": "0x32aca",
+      "loaded_bytes": "e8ef000000",
+      "file_bytes": "e8ef000000",
+      "instruction": "call    sub_31DBE",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31ccf",
+      "file_offset": "0x32acf",
+      "loaded_bytes": "83c408",
+      "file_bytes": "83c408",
+      "instruction": "add     esp, 8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cd2",
+      "file_offset": "0x32ad2",
+      "loaded_bytes": "89c7",
+      "file_bytes": "89c7",
+      "instruction": "mov     edi, eax",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cd4",
+      "file_offset": "0x32ad4",
+      "loaded_bytes": "83ff01",
+      "file_bytes": "83ff01",
+      "instruction": "cmp     edi, 1",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cd7",
+      "file_offset": "0x32ad7",
+      "loaded_bytes": "0f85d5000000",
+      "file_bytes": "0f85d5000000",
+      "instruction": "jnz     loc_31DB2",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cef",
+      "file_offset": "0x32aef",
+      "loaded_bytes": "833d033c050019",
+      "file_bytes": "833d033c000019",
+      "instruction": "cmp     dword_53C03, 19h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cf6",
+      "file_offset": "0x32af6",
+      "loaded_bytes": "7e04",
+      "file_bytes": "7e04",
+      "instruction": "jle     short loc_31CFC",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cf8",
+      "file_offset": "0x32af8",
+      "loaded_bytes": "6a09",
+      "file_bytes": "6a09",
+      "instruction": "push    9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cfa",
+      "file_offset": "0x32afa",
+      "loaded_bytes": "eb38",
+      "file_bytes": "eb38",
+      "instruction": "jmp     short loc_31D34",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31cfc",
+      "file_offset": "0x32afc",
+      "loaded_bytes": "833d033c050014",
+      "file_bytes": "833d033c000014",
+      "instruction": "cmp     dword_53C03, 14h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d03",
+      "file_offset": "0x32b03",
+      "loaded_bytes": "7504",
+      "file_bytes": "7504",
+      "instruction": "jnz     short loc_31D09",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d05",
+      "file_offset": "0x32b05",
+      "loaded_bytes": "6a15",
+      "file_bytes": "6a15",
+      "instruction": "push    15h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d07",
+      "file_offset": "0x32b07",
+      "loaded_bytes": "eb2b",
+      "file_bytes": "eb2b",
+      "instruction": "jmp     short loc_31D34",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d09",
+      "file_offset": "0x32b09",
+      "loaded_bytes": "833d033c050015",
+      "file_bytes": "833d033c000015",
+      "instruction": "cmp     dword_53C03, 15h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d10",
+      "file_offset": "0x32b10",
+      "loaded_bytes": "7409",
+      "file_bytes": "7409",
+      "instruction": "jz      short loc_31D1B",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d12",
+      "file_offset": "0x32b12",
+      "loaded_bytes": "833d033c050016",
+      "file_bytes": "833d033c000016",
+      "instruction": "cmp     dword_53C03, 16h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d19",
+      "file_offset": "0x32b19",
+      "loaded_bytes": "7504",
+      "file_bytes": "7504",
+      "instruction": "jnz     short loc_31D1F",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d1b",
+      "file_offset": "0x32b1b",
+      "loaded_bytes": "6a18",
+      "file_bytes": "6a18",
+      "instruction": "push    18h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d1d",
+      "file_offset": "0x32b1d",
+      "loaded_bytes": "eb15",
+      "file_bytes": "eb15",
+      "instruction": "jmp     short loc_31D34",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d1f",
+      "file_offset": "0x32b1f",
+      "loaded_bytes": "833d033c050019",
+      "file_bytes": "833d033c000019",
+      "instruction": "cmp     dword_53C03, 19h",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d26",
+      "file_offset": "0x32b26",
+      "loaded_bytes": "7514",
+      "file_bytes": "7514",
+      "instruction": "jnz     short loc_31D3C",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d28",
+      "file_offset": "0x32b28",
+      "loaded_bytes": "6a09",
+      "file_bytes": "6a09",
+      "instruction": "push    9",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d2a",
+      "file_offset": "0x32b2a",
+      "loaded_bytes": "e899040000",
+      "file_bytes": "e899040000",
+      "instruction": "call    sub_321C8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d2f",
+      "file_offset": "0x32b2f",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d32",
+      "file_offset": "0x32b32",
+      "loaded_bytes": "6a1d",
+      "file_bytes": "6a1d",
+      "instruction": "push    1Dh",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d34",
+      "file_offset": "0x32b34",
+      "loaded_bytes": "e88f040000",
+      "file_bytes": "e88f040000",
+      "instruction": "call    sub_321C8",
+      "semantic_annotations": []
+    },
+    {
+      "ida_linear_address": "0x31d39",
+      "file_offset": "0x32b39",
+      "loaded_bytes": "83c404",
+      "file_bytes": "83c404",
+      "instruction": "add     esp, 4",
+      "semantic_annotations": []
+    }
+  ],
+  "claims": [
+    {
+      "level": "已證實",
+      "claim": "raw27>26時選19人；raw27>25須含identity9並於索爾後前置9。",
+      "evidence": [
+        "318D7..318E0",
+        "31C70..31CD7",
+        "31CEF..31D39"
+      ]
+    },
+    {
+      "level": "已證實",
+      "claim": "65首次selector0呼叫把row0排於本回合並寫state16；69僅raw+6非零、state17零且state18非零時把row2排於本回合並寫state17。",
+      "evidence": [
+        "3599B..359C8",
+        "35AB8..35B05"
+      ]
+    },
+    {
+      "level": "已證實",
+      "claim": "67死亡效果將row1排於本回合；68完成時寫state18=1；71第二個隊長死亡時清除20之後HP。",
+      "evidence": [
+        "35A2F..35A48",
+        "35AAE..35AB7",
+        "35B6B..35BBA"
+      ]
+    },
+    {
+      "level": "已證實",
+      "claim": "戰場入口只物化group6／7共14敵軍加20我方；groups1..5由休眠66／68／70新增，舊64-slot入口待正常原版核對。",
+      "evidence": [
+        "fd2_ch27_ch28_pre_owner_ida.txt",
+        "map27 control rows0..2",
+        "359C8／35A48／35B05",
+        "目前原版正常LOAD短探針checkpoint0071"
+      ]
+    }
+  ],
+  "spec": {
+    "status": "CONFORMED",
+    "scope": "非城鎮正常LOAD、選人、前置、區域與死亡啟動休眠增援、戰後五句、記錄與完整SAV。",
+    "required_party_identities": [
+      9
+    ],
+    "preparation_front_identities": [
+      9
+    ],
+    "initial_groups": [
+      6,
+      7
+    ],
+    "field_events": {
+      "65": {
+        "selector": 0,
+        "once_state": 16,
+        "slot": 0,
+        "event_id": 66,
+        "raw_camp": 0,
+        "turn_delta": 0
+      },
+      "69": {
+        "selector": 0,
+        "raw6_nonzero": true,
+        "once_state": 17,
+        "required_state_nonzero": 18,
+        "slot": 2,
+        "event_id": 70,
+        "raw_camp": 0,
+        "turn_delta": 0
+      }
+    },
+    "turn_events": {
+      "66": [
+        "dialogue3",
+        "staging(group1,y18,x17)",
+        "dialogue6"
+      ],
+      "68": [
+        "dialogue4",
+        "staging(group2,y7,x14)",
+        "dialogue6",
+        "state18=1"
+      ],
+      "70": [
+        "ai mode slots41..45=0",
+        "dialogue5",
+        "staging(group3,y7,x8)",
+        "staging(group4,y7,x4)",
+        "staging(group5,y7,x0)",
+        "dialogue6"
+      ]
+    },
+    "failure": "缺raw record、錯控制列identity或來源版本拒收；guard已完成時不重啟，不猜未知語意。",
+    "save_impact": "沿既有持續名冊與非城鎮保存；strict完整SAV，不擴大第25章例外。",
+    "validation": [
+      "固定原bytes及Capstone核對",
+      "required/front缺件及原子回歸",
+      "field guards及raw rows一致性",
+      "正常原版與Game同輸入增援／保存"
+    ],
+    "limits": [
+      "章前祖先強化與一次清敵必須揭露",
+      "影格advisory，不驗逐frame或硬體wall-clock",
+      "不啟動全面matching"
+    ],
+    "review": "固定來源、直接跳躍與共享尾端核對先達READY；原版r2及完整Game同輸入三波、戰後及整檔SAV通過後限定CONFORMED。",
+    "postbattle_slot_counts": [
+      34,
+      40,
+      46,
+      64
+    ],
+    "postbattle_slot_count_evidence": "原handler讀動態count；20部署加已生成6／7共14，66再加6，68再加6，70再加18。依事件順序接受四種前沿，不接受未物化source group255。",
+    "runtime_count_gate": {
+      "status": "CONFORMED",
+      "input": "目前唯一oracle checkpoint的完整units陣列",
+      "behavior": "runtime_units取完整列數，包含已死亡但仍物化的紀錄；缺陣列拒收。",
+      "purpose": "清敵前明示要求64，避免未抽到第三波卻繼續戰後。"
+    }
+  },
+  "validation": {
+    "status": "passed",
+    "prefix_plan": "docs/data/parity-plans/ch28-load-prefix-r1.jsonl",
+    "byte_crosscheck": {
+      "tool": "Capstone 5.0.3",
+      "instruction_rows": 222,
+      "raw_file_bytes_equal": true,
+      "instruction_boundaries_equal": true
+    },
+    "prefix_r1": {
+      "path": "work/ch28-flow-20261016/original-prefix-r1",
+      "last_checkpoint": 71,
+      "runtime_units": 34,
+      "own_units": 20,
+      "enemy_units": 14,
+      "view": {
+        "camera_x": 21,
+        "camera_y": 16,
+        "cursor_x": 32,
+        "cursor_y": 21,
+        "visible_x": 11,
+        "visible_y": 5,
+        "overlay_selector": 1
+      },
+      "normal_load_and_selection": true
+    },
+    "plan": "docs/data/parity-plans/ch28-flow-cheat-r2.jsonl",
+    "estimated_controls": {
+      "plan_rows": 67,
+      "expanded_checkpoint_estimate": 600,
+      "seconds_per_checkpoint_estimate": 3,
+      "wall_clock_limit_seconds": 2400,
+      "cpus": 2,
+      "scope": "原r1估算，r2以r2_plan實際有界設定為準。"
+    },
+    "prefix_game": {
+      "path": "work/ch28-flow-20261016/remake-prefix-r1",
+      "receipt": "work/ch28-flow-20261016/prefix-parity-r1.json",
+      "scope": "僅正常LOAD、選人與揭幕至第一回合，沒有戰鬥／戰後／保存驗收，不登記整章。",
+      "behavior": true,
+      "nodes": true,
+      "transaction_at_sampled_boundaries": true,
+      "frames_policy": "advisory",
+      "runtime_units": 34,
+      "ai_entries": 0
+    },
+    "focused_tests": {
+      "log": "work/ch28-flow-20261016/focused-tests.log",
+      "scope": "區域guard、raw row原子拒收、27／28必出前置與正常Game短前綴",
+      "passed": true
+    },
+    "failed_r1": {
+      "status": "failed",
+      "path": "work/ch28-flow-20261016/original-r1",
+      "exit_code": 8,
+      "last_checkpoint": 312,
+      "round": 5,
+      "runtime_units": 40,
+      "first_wave": true,
+      "second_wave": false,
+      "reason": "索爾25,25被敵軍26,25與地圖邊界／不可通行格圍住；toward沒有合法候選。",
+      "observed_target34_hp": [
+        {
+          "after_own_T3_attack": 508,
+          "before_own_T4_attack": 715
+        },
+        {
+          "after_own_T4_attack": 174,
+          "after_enemy_T4": 381
+        }
+      ],
+      "classification": "控制計畫與測試強度，不是CPU或Game缺陷；未清敵，不計整章。"
+    },
+    "r2_plan": {
+      "rows": 83,
+      "policy": "同源章前AP+1000，正常接戰開通；64筆閘門前不清敵",
+      "estimated_checkpoints": 950,
+      "estimated_seconds_per_checkpoint": 3,
+      "wall_clock_limit_seconds": 3600,
+      "cpus": 2
+    },
+    "r1_game_fixed2": {
+      "path": "work/ch28-flow-20261016/remake-r1-fixed2",
+      "log": "work/ch28-flow-20261016/replay-r1-fixed2.log",
+      "scope": "正常同源第一波至原版r1堵路邊界；原版整章未完成，不能登記章通過。",
+      "game_replay_passed": true,
+      "ai_entries": 74,
+      "consumed": 74,
+      "order_divergences": 0,
+      "original_failed_run_retained": true
+    },
+    "complete_r2": {
+      "receipt": "docs/data/ui-traces/parity-ch28.json",
+      "original": "work/ch28-flow-20261016/original-r2",
+      "remake": "work/ch28-flow-20261016/remake-r2",
+      "last_checkpoint": 1073,
+      "actions": 118,
+      "remake_checkpoints": 120,
+      "runtime_unit_frontiers": [
+        34,
+        40,
+        46,
+        64
+      ],
+      "third_wave_round": 9,
+      "ai_entries": 305,
+      "consumed": 305,
+      "order_divergences": 0,
+      "force_enemy_clear": {
+        "count": 1,
+        "checkpoint": 1035,
+        "living_enemies_cleared": 34
+      },
+      "allow_hp_lock_control": false,
+      "lock_ally_hp": false,
+      "save": {
+        "path": "work/ch28-flow-20261016/state-r2/FD2.SAV",
+        "size": 22987,
+        "sha256": "df50919111cccb37a00215dea248a069617aa222545d0f4493ab4b00dc5b819f",
+        "byte_differences": 0,
+        "checkpoint": 1064,
+        "dos_write_count": 2,
+        "end": "非城鎮保存後正常返回第29章選人，seq1073"
+      },
+      "evidence_level": "PLAYER-E2限111／114章前作弊及一次清敵例外；非自然難度。",
+      "limits": [
+        "章前AP+1000及祖先HP／DP／DX政策見清冊，不證明傷害、存活或敵方選目標。",
+        "frames advisory，未擷取重製PNG，不宣稱逐幀或逐像素一致。",
+        "寶箱、買賣與其他未抽樣分支未知；#224不因本章修正結案。"
+      ]
+    },
+    "commands": {
+      "original": "timeout 3600s docker run --rm --name fd2-ch28-flow-r2-20261016 --network none --memory 4g --cpus 2 --pids-limit 256 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2/work/dosgolem-fd2-resample-20261016,target=/dos,readonly --mount type=bind,source=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2,target=/orig,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/ch28-flow-20261016/original-r2,target=/out --mount type=bind,source=/home/anr2/cht/fd2/work/ch28-flow-20261016/state-r2,target=/state --mount type=bind,source=/home/anr2/cht/fd2/tools/dosgolem_oracle_container.sh,target=/oracle-entry.sh,readonly --mount type=bind,source=/home/anr2/cht/fd2/tools/dosgolem_oracle_drive.py,target=/drive.py,readonly --mount type=bind,source=/home/anr2/cht/fd2/remake/assets/maps,target=/maps,readonly --mount type=bind,source=/home/anr2/cht/fd2/docs/data/parity-plans/ch28-flow-cheat-r2.jsonl,target=/plan.jsonl,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/dos-cache/gocache,target=/gocache --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/dos-cache/gomodcache,target=/gomodcache -e HOME=/tmp -e GOCACHE=/gocache -e GOMODCACHE=/gomodcache -e FD2_ORACLE_SOURCE_COMMIT=f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059 -e FD2_ORACLE_SOURCE_BRANCH=fd2-resample-20261016 -e FD2_ORACLE_SOURCE_DIRTY=0 -e FD2_ORACLE_SOURCE_UNTRACKED=0 -e FD2_ORACLE_SOURCE_ROOT=/home/anr2/cht/fd2/work/dosgolem-fd2-resample-20261016 -e FD2_ORACLE_ORIGINAL_ROOT=/home/anr2/cht/fd2/org_game/炎龍騎士團/FLAME2 -e FD2_ORACLE_CONTROL_PLAN=docs/data/parity-plans/ch28-flow-cheat-r2.jsonl -e FD2_ORACLE_SOURCE_STATE=work/ch28-flow-20261016/state-r2 -e FD2_ORACLE_STATE=/state -e FD2_ORACLE_HEAP_PROFILE=native -e FD2_ORACLE_BUDGET=30000000000 -e FD2_ORACLE_FORCE_ENEMY_CLEAR=1 -e FD2_ORACLE_EIP_TRACE=0x13A9F,0x1E54A,0x3599B,0x359C8,0x35A2F,0x35A48,0x35AB8,0x35B05 -e FD2_ORACLE_EIP_TRACE_MAX=20000 -w /dos --entrypoint bash dosgolem-go-ebiten:1.24-r1 /oracle-entry.sh",
+      "remake": "timeout 600s docker run --rm --name fd2-ch28-complete-replay-r2-20261016 --network none --memory 8g --cpus 4 --pids-limit 512 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2,target=/src --mount type=bind,source=/home/anr2/cht/fd2,target=/repo,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/pack,target=/pack,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/gocache,target=/gocache -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack -e FD2_PARITY_CHAPTER=28 -e FD2_PARITY_SLOT=/src/work/ch28-flow-20261016/input-ap1000/FD2.SAV -e FD2_PARITY_ORACLE_RUN=/src/work/ch28-flow-20261016/original-r2 -e FD2_PARITY_OUT=/src/work/ch28-flow-20261016/remake-r2 -e FD2_PARITY_CAPTURE_FRAMES=0 -w /src/remake --entrypoint sh fd2-go-test-local:latest -c 'gofmt -w internal/battle/model.go internal/battle/native_field_event.go internal/battle/native_field_event_test.go cmd/fd2/native_field_event_pending.go cmd/fd2/native_preparation_required_front_test.go && with-xvfb go test ./internal/battle ./cmd/fd2 -run \"^TestChapterParityReplay$\" -count=1 -v > /src/work/ch28-flow-20261016/replay-r2.log 2>&1'",
+      "full_go": "timeout 900s docker run --rm --name fd2-ch28-full-regression-r2-20261017 --network none --memory 8g --cpus 4 --pids-limit 512 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2,target=/src --mount type=bind,source=/home/anr2/cht/fd2,target=/repo,readonly --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/src/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/pack,target=/pack,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/gocache,target=/gocache -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack -e FD2_ORIGINAL_FDOTHER=/src/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT -e FD2_ORIGINAL_DATO=/src/org_game/炎龍騎士團/FLAME2/DATO.DAT -w /src/remake --entrypoint sh fd2-go-test-local:latest -c 'with-xvfb go test ./... -count=1 > /src/work/ch28-flow-20261016/full-go-regression-r2.log 2>&1'",
+      "source_fixtures": "timeout 900s docker run --rm --name fd2-ch28-source-fixtures-r7 --network none --memory 8g --cpus 4 --pids-limit 512 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2,target=/src --mount type=bind,source=/home/anr2/cht/fd2,target=/repo,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/pack,target=/pack,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/gocache,target=/gocache -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack -e FD2_ORIGINAL_FDOTHER=/src/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT -e FD2_ORIGINAL_DATO=/src/org_game/炎龍騎士團/FLAME2/DATO.DAT -w /src/remake --entrypoint sh fd2-go-test-local:latest -c 'gofmt -w cmd/fd2/ch22_campaign_flow_test.go cmd/fd2/ch25_post_native_dialogue_test.go cmd/fd2/ch28_runtime_seam_test.go cmd/fd2/native_ch20_sky_key_test.go && with-xvfb go test ./cmd/fd2 -run \"TestChapter22(Postbattle|BattleResult|PreHandler)|TestChapter26BattleResultNativePostbattle|TestChapter29BattleResultColdLoads|TestChapterTwentyOneSkyKeyInsufficient\" -count=1 -v > /src/work/ch28-flow-20261016/source-fixture-r7-tests.log 2>&1'",
+      "compare": "python3 tools/verify_chapter_parity.py --chapter 28 --oracle work/ch28-flow-20261016/original-r2 --remake work/ch28-flow-20261016/remake-r2 --slot-manifest docs/data/parity-slots/ch28-ap1000-manifest.json --plan docs/data/parity-plans/ch28-flow-cheat-r2.jsonl --frame-policy advisory --oracle-save work/ch28-flow-20261016/state-r2/FD2.SAV --out docs/data/ui-traces/parity-ch28.json"
+    },
+    "reproduction_preconditions": [
+      "工具來源固定f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059及受版控oracle入口；原始資料唯讀。",
+      "先建立上述命令各掛載來源目錄，確認UID/GID1000，避免dockerd代建；重跑使用新輸出目錄。",
+      "原版執行前將AP1000建構槽複製為新state/FD2.SAV；不可直接從已保存的state-r2重跑。",
+      "私人分離素材根/pack與既有Go cache需可用；命令的來源/輸出路徑可改，但來源雜湊與政策保持。",
+      "compare命令在fd2-assets-local:20260829-sfx隔離容器內執行；Game與完整Go回歸依序執行。"
+    ],
+    "view_boundaries_r2": {
+      "scope": "正常每回合mark及三波齊備mark的鏡頭／游標四座標，不含借用END checkpoint的after_enemy_phase。",
+      "points": [
+        {
+          "seq": 126,
+          "kind": "mark:round_2",
+          "original": [
+            21,
+            18,
+            32,
+            24
+          ],
+          "remake": [
+            21,
+            18,
+            32,
+            24
+          ],
+          "equal": true
+        },
+        {
+          "seq": 186,
+          "kind": "mark:round_3",
+          "original": [
+            19,
+            18,
+            30,
+            23
+          ],
+          "remake": [
+            19,
+            18,
+            30,
+            23
+          ],
+          "equal": true
+        },
+        {
+          "seq": 267,
+          "kind": "mark:round_4",
+          "original": [
+            17,
+            17,
+            28,
+            23
+          ],
+          "remake": [
+            17,
+            17,
+            28,
+            23
+          ],
+          "equal": true
+        },
+        {
+          "seq": 333,
+          "kind": "mark:round_5",
+          "original": [
+            17,
+            17,
+            28,
+            23
+          ],
+          "remake": [
+            17,
+            17,
+            28,
+            23
+          ],
+          "equal": true
+        },
+        {
+          "seq": 400,
+          "kind": "mark:round_6",
+          "original": [
+            16,
+            17,
+            27,
+            22
+          ],
+          "remake": [
+            16,
+            17,
+            27,
+            22
+          ],
+          "equal": true
+        },
+        {
+          "seq": 454,
+          "kind": "mark:round_7",
+          "original": [
+            14,
+            17,
+            25,
+            22
+          ],
+          "remake": [
+            14,
+            17,
+            25,
+            22
+          ],
+          "equal": true
+        },
+        {
+          "seq": 513,
+          "kind": "mark:round_8",
+          "original": [
+            12,
+            17,
+            23,
+            22
+          ],
+          "remake": [
+            12,
+            17,
+            23,
+            22
+          ],
+          "equal": true
+        },
+        {
+          "seq": 585,
+          "kind": "mark:round_9",
+          "original": [
+            11,
+            17,
+            22,
+            21
+          ],
+          "remake": [
+            11,
+            17,
+            22,
+            21
+          ],
+          "equal": true
+        },
+        {
+          "seq": 692,
+          "kind": "mark:round_10",
+          "original": [
+            10,
+            15,
+            21,
+            21
+          ],
+          "remake": [
+            10,
+            15,
+            21,
+            21
+          ],
+          "equal": true
+        },
+        {
+          "seq": 847,
+          "kind": "mark:round_11",
+          "original": [
+            8,
+            15,
+            19,
+            21
+          ],
+          "remake": [
+            8,
+            15,
+            19,
+            21
+          ],
+          "equal": true
+        },
+        {
+          "seq": 921,
+          "kind": "mark:round_12",
+          "original": [
+            8,
+            12,
+            19,
+            18
+          ],
+          "remake": [
+            8,
+            12,
+            19,
+            18
+          ],
+          "equal": true
+        },
+        {
+          "seq": 997,
+          "kind": "mark:round_13",
+          "original": [
+            8,
+            12,
+            19,
+            18
+          ],
+          "remake": [
+            8,
+            12,
+            19,
+            18
+          ],
+          "equal": true
+        },
+        {
+          "seq": 997,
+          "kind": "mark:all_reinforcements_present",
+          "original": [
+            8,
+            12,
+            19,
+            18
+          ],
+          "remake": [
+            8,
+            12,
+            19,
+            18
+          ],
+          "equal": true
+        }
+      ]
+    },
+    "regression_failures": {
+      "full_original_assets_r1": {
+        "log": "work/ch28-flow-20261016/full-go-regression.log",
+        "status": "failed",
+        "classification": "六項先前受來源閘門略過的舊fixture缺正式語系，不是第28章正常Game缺陷。",
+        "command": "timeout 900s docker run --rm --name fd2-ch28-full-regression-20261016 --network none --memory 8g --cpus 4 --pids-limit 512 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2,target=/src --mount type=bind,source=/home/anr2/cht/fd2,target=/repo,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/pack,target=/pack,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/gocache,target=/gocache -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack -e FD2_ORIGINAL_FDOTHER=/src/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT -e FD2_ORIGINAL_DATO=/src/org_game/炎龍騎士團/FLAME2/DATO.DAT -w /src/remake --entrypoint sh fd2-go-test-local:latest -c 'with-xvfb go test ./... -count=1 > /src/work/ch28-flow-20261016/full-go-regression.log 2>&1'"
+      },
+      "focused_source_repair": {
+        "logs": [
+          "work/ch28-flow-20261016/source-fixture-r2-tests.log",
+          "work/ch28-flow-20261016/source-fixture-r3-tests.log",
+          "work/ch28-flow-20261016/source-fixture-r4-tests.log",
+          "work/ch28-flow-20261016/source-fixture-r5-tests.log",
+          "work/ch28-flow-20261016/source-fixture-r6-tests.log"
+        ],
+        "classification": "fixture還原後揭露第22章持續名冊建立後未重新部署、第29章冷讀選人素材與END非同步畫面／兩階段AI未推進；只修測試初始化及使用既有正式生命週期。",
+        "does_not_upgrade_ch29_player_evidence": true,
+        "additional_fixture_error": "原生EXP為byte，舊fixture用77.5導致正式終局sync拒收；測試改為整數77，正式writer與拒收不變。"
+      }
+    },
+    "focused_source_fixtures": {
+      "log": "work/ch28-flow-20261016/source-fixture-r7-tests.log",
+      "passed": true,
+      "top_level_tests": 6,
+      "scope": "修復舊fixture的locale、持續名冊部署、冷讀UI素材、END回復／AI呈現及整數EXP77，所有正式拒收保持。"
+    },
+    "string_inventory": {
+      "review_dispositions": 98,
+      "dispositions_unchanged": true,
+      "final_inventory_equals_after_runtime_changes": true,
+      "inventory_file_sha256": "3c58908df73ae0a80f3443892e57d6b5e80f2a0f92177df356c83edc461ebc80"
+    },
+    "full_go_regression": {
+      "status": "passed",
+      "log": "work/ch28-flow-20261016/full-go-regression-r2.log",
+      "sha256": "ca84a2df94bda2c975bab2ff9caeefdeb2d585f627d48620bbe25b6c4762f232",
+      "packages": 19,
+      "cmd_fd2_seconds": 277.634,
+      "source_fixtures_enabled": true,
+      "command": "timeout 900s docker run --rm --name fd2-ch28-full-regression-r2-20261017 --network none --memory 8g --cpus 4 --pids-limit 512 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2,target=/src --mount type=bind,source=/home/anr2/cht/fd2,target=/repo,readonly --mount type=bind,source=/home/anr2/cht/fd2/org_game,target=/src/org_game,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/pack,target=/pack,readonly --mount type=bind,source=/home/anr2/cht/fd2/work/remake-recovery-20261015/gocache,target=/gocache -e HOME=/tmp/home -e GOCACHE=/gocache -e GOFLAGS=-mod=mod -e FD2_ASSET_PACK=/pack -e FD2_ORIGINAL_FDOTHER=/src/org_game/炎龍騎士團/FLAME2/FDOTHER.DAT -e FD2_ORIGINAL_DATO=/src/org_game/炎龍騎士團/FLAME2/DATO.DAT -w /src/remake --entrypoint sh fd2-go-test-local:latest -c 'with-xvfb go test ./... -count=1 > /src/work/ch28-flow-20261016/full-go-regression-r2.log 2>&1'"
+    },
+    "python_regression": {
+      "status": "passed",
+      "log": "work/ch28-flow-20261016/final-python-cap-r2-tests.log",
+      "tests": 137,
+      "skipped": 0,
+      "image": "fd2-cap-local:latest",
+      "FD2_EXE": "/src/org_game/炎龍騎士團/FLAME2/FD2.EXE"
+    },
+    "worklist": {
+      "open": 22,
+      "possibly_done": 0,
+      "manual": 14,
+      "issues_closed": [
+        225,
+        226
+      ],
+      "next_chapter": 29
+    },
+    "hygiene": {
+      "reviewed_files": 47,
+      "bad_owner": [],
+      "new_missing_links": {},
+      "existing_missing_links": {
+        "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md": [
+          "../../dist-all/v.1.0.13-20260908/full/FD2-v.1.0.13-20260908-linux-x86_64-full.AppImage",
+          "../../dist-all/v.1.0.13-20260908/full/dialogue-review/index.html"
+        ]
+      },
+      "root_owned": 2811,
+      "md_directories": [],
+      "scan_errors": [],
+      "README_unchanged": true,
+      "original_EXE_unchanged": true
+    },
+    "runtime_source_sha256": {
+      "remake/internal/battle/native_field_event.go": "59ffb571f0530c4a4e0964b78330c8e76bdf24231a526fd41d580168f759d913",
+      "remake/internal/battle/model.go": "3479a52d40640a84e0514e9fdcc4b789fe7ed8c9de61c74af98c263ba8059f6b",
+      "remake/cmd/fd2/native_turn_staging.go": "215cc24929ac2ad8719aa7bc52a7f57e38d3f3e5201eb08b9829b97186cefc26",
+      "remake/cmd/fd2/native_field_event_pending.go": "43620b310c910c11428363aabfba81ade3dc0c7b3eb4fe64089943a1deb82510",
+      "remake/assets/scenarios/ch28.json": "dd8a30ab845e274aa5738701e1eae49d263b392e9dfd7eb387b263d2271471b4",
+      "remake/assets/scenarios/campaign_full.json": "428e99e2ee118036bb3eac9d19c86ac49815b864fa5675c033dd29398124e797",
+      "remake/assets/cutscenes/bindings/ch27_post.json": "954e55b41f93a647c13dd406821be0e6deda2fb2eab472acdd33ab7dd640e411",
+      "remake/assets/maps/map27/map.json": "20ebe046361ccc1a8de2d4f29724db8e26dd7794043ade8493b5cacf996b5be3",
+      "remake/assets/data/native_death_events.json": "5ceaf702cfbb815086199da2372f35450a8c0d1d76d15f164b1ff2d2008b2afa"
+    }
+  },
+  "issue": 225,
+  "slot_ap_policy": {
+    "status": "CONFORMED",
+    "authorization": "沿使用者就作弊過關吧及111章前強化例外，正常章內不鎖HP。",
+    "input": "work/ch27-flow-20261016/state-r2/FD2.SAV",
+    "source_sha256": "003d0394e1c5d9bb609949830450b4658284501f2d1e94456cbf96ed69b11663",
+    "tool": "remake/cmd/fd2-chapter-slot",
+    "flags": "-target 27 -boost-only -levels-per-chapter 0 -gold -1 -boost-base-ap 1000 -seed 4",
+    "allowed_changes": "27筆base AP及衍生effective AP各加1000，另checksum；其他byte保持。",
+    "limits": "一次章前政策，不改正式規則，不證明自然難度、傷害、存活或敵方選目標。",
+    "manifest": "docs/data/parity-slots/ch28-ap1000-manifest.json",
+    "save_sha256": "ba7e60deff1439702683ba8578b624375c1e25ce8a4d94e695d1d506cb306737",
+    "field_differences": 54
+  },
+  "battle_entry_presentation_contract": {
+    "status": "CONFORMED",
+    "level": "已證實",
+    "sources": [
+      "work/ch28-flow-20261016/original-prefix-r1/checkpoint-0071.json",
+      "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt#25E5E共用HUD gate B caller"
+    ],
+    "typed_input": {
+      "native_map_view": {
+        "camera_x": 21,
+        "camera_y": 16,
+        "cursor_x": 32,
+        "cursor_y": 21,
+        "visible_cursor_x": 11,
+        "visible_cursor_y": 5,
+        "range_mode": 1
+      },
+      "native_map_hud_inherited": {
+        "display_gate_b": 1
+      }
+    },
+    "behavior": "正常battle_ch28入口接既有原生view／HUD consumer；gate A與anchor沿LOAD metadata，不另填常數。",
+    "failure": "缺繼承HUD來源或不合法原生view拒收，沒有現代HUD猜測後備。",
+    "validation": "正常Game第一移動／攻擊／END同源重播與完整SAV。",
+    "discovery": "r1 Game第一次移動在原生HUD預檢拒收；純LOAD短前綴尚未走到這個consumer。"
+  },
+  "staging_view_handoff_contract": {
+    "status": "CONFORMED",
+    "issue": 226,
+    "level": "已證實",
+    "scope": [
+      66,
+      68,
+      70
+    ],
+    "original_functions": [
+      {
+        "inventory": {
+          "start": "0x135dd",
+          "end": "0x1366a",
+          "size": 141,
+          "ida_analysis_name": "sub_135DD",
+          "ida_function_flags": [],
+          "direct_caller_functions": [
+            "0x22f37",
+            "0x23296",
+            "0x235bc",
+            "0x23b5f",
+            "0x24336",
+            "0x244b6",
+            "0x24754",
+            "0x24df2",
+            "0x250cc",
+            "0x2548c",
+            "0x25757",
+            "0x3231b",
+            "0x32d18",
+            "0x33219",
+            "0x3327d",
+            "0x3332b",
+            "0x33367",
+            "0x333f5",
+            "0x3347c",
+            "0x334d9",
+            "0x335da",
+            "0x3367e",
+            "0x336a0",
+            "0x338c4",
+            "0x3396a",
+            "0x33aae",
+            "0x33af1",
+            "0x33c9d",
+            "0x33dba",
+            "0x33e3c",
+            "0x341db",
+            "0x342b5",
+            "0x3431d",
+            "0x34377",
+            "0x34422",
+            "0x344c2",
+            "0x3462e",
+            "0x34819",
+            "0x34924",
+            "0x349d9",
+            "0x34b5d",
+            "0x34c76",
+            "0x34ccc",
+            "0x34d72",
+            "0x34fcb",
+            "0x35112",
+            "0x351e9",
+            "0x35261",
+            "0x3535d",
+            "0x35487",
+            "0x35822",
+            "0x35f92"
+          ],
+          "direct_code_xref_count": 98,
+          "direct_data_xref_count": 0,
+          "classification": {
+            "value": "product",
+            "confidence": "已證實",
+            "source": "versioned semantic index"
+          },
+          "semantic_annotations": [
+            {
+              "address": "0x135dd",
+              "classification": "product",
+              "semantic": "X-first／Y-second 的絕對地圖相機與游標同步平移",
+              "confidence": "已證實",
+              "evidence": [
+                "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+              ],
+              "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
+            }
+          ]
+        },
+        "ida_analysis_name": "sub_135DD",
+        "current_ida_linear_end": "0x1366a",
+        "boundary_matches_inventory": true,
+        "semantic_annotations": [
+          {
+            "address": "0x135dd",
+            "classification": "product",
+            "semantic": "X-first／Y-second 的絕對地圖相機與游標同步平移",
+            "confidence": "已證實",
+            "evidence": [
+              "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+            ],
+            "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
+          }
+        ],
+        "chunks": [
+          {
+            "ida_linear_start": "0x135dd",
+            "ida_linear_end": "0x1366a",
+            "instructions": [
+              {
+                "ida_linear_address": "0x135dd",
+                "file_offset": "0x143dd",
+                "loaded_bytes": "6814000000",
+                "file_bytes": "6814000000",
+                "instruction": "push    14h",
+                "semantic_annotations": [
+                  {
+                    "address": "0x135dd",
+                    "classification": "product",
+                    "semantic": "X-first／Y-second 的絕對地圖相機與游標同步平移",
+                    "confidence": "已證實",
+                    "evidence": [
+                      "docs/data/ida/fd2_ch20_sky_key_sequence_ida.txt"
+                    ],
+                    "scope": "callee 逐格更新與 present；各 caller 目標座標來源仍須另證"
+                  }
+                ]
+              },
+              {
+                "ida_linear_address": "0x135e2",
+                "file_offset": "0x143e2",
+                "loaded_bytes": "e8f0360200",
+                "file_bytes": "e8f0360200",
+                "instruction": "call    sub_36CD7",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135e7",
+                "file_offset": "0x143e7",
+                "loaded_bytes": "53",
+                "file_bytes": "53",
+                "instruction": "push    ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135e8",
+                "file_offset": "0x143e8",
+                "loaded_bytes": "56",
+                "file_bytes": "56",
+                "instruction": "push    esi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135e9",
+                "file_offset": "0x143e9",
+                "loaded_bytes": "57",
+                "file_bytes": "57",
+                "instruction": "push    edi",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135ea",
+                "file_offset": "0x143ea",
+                "loaded_bytes": "8b742410",
+                "file_bytes": "8b742410",
+                "instruction": "mov     esi, [esp+0Ch+arg_0]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135ee",
+                "file_offset": "0x143ee",
+                "loaded_bytes": "8b7c2414",
+                "file_bytes": "8b7c2414",
+                "instruction": "mov     edi, [esp+0Ch+arg_4]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135f2",
+                "file_offset": "0x143f2",
+                "loaded_bytes": "c705831a050000000000",
+                "file_bytes": "c705831a000000000000",
+                "instruction": "mov     dword_51A83, 0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x135fc",
+                "file_offset": "0x143fc",
+                "loaded_bytes": "3b35a93a0500",
+                "file_bytes": "3b35a93a0000",
+                "instruction": "cmp     esi, dword_53AA9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13602",
+                "file_offset": "0x14402",
+                "loaded_bytes": "742d",
+                "file_bytes": "742d",
+                "instruction": "jz      short loc_13631",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13604",
+                "file_offset": "0x14404",
+                "loaded_bytes": "7d0e",
+                "file_bytes": "7d0e",
+                "instruction": "jge     short loc_13614",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13606",
+                "file_offset": "0x14406",
+                "loaded_bytes": "ff0db13a0500",
+                "file_bytes": "ff0db13a0000",
+                "instruction": "dec     dword_53AB1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1360c",
+                "file_offset": "0x1440c",
+                "loaded_bytes": "ff0da93a0500",
+                "file_bytes": "ff0da93a0000",
+                "instruction": "dec     dword_53AA9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13612",
+                "file_offset": "0x14412",
+                "loaded_bytes": "eb0c",
+                "file_bytes": "eb0c",
+                "instruction": "jmp     short loc_13620",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13614",
+                "file_offset": "0x14414",
+                "loaded_bytes": "ff05b13a0500",
+                "file_bytes": "ff05b13a0000",
+                "instruction": "inc     dword_53AB1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1361a",
+                "file_offset": "0x1441a",
+                "loaded_bytes": "ff05a93a0500",
+                "file_bytes": "ff05a93a0000",
+                "instruction": "inc     dword_53AA9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13620",
+                "file_offset": "0x14420",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13622",
+                "file_offset": "0x14422",
+                "loaded_bytes": "e885e6ffff",
+                "file_bytes": "e885e6ffff",
+                "instruction": "call    sub_11CAC",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13627",
+                "file_offset": "0x14427",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1362a",
+                "file_offset": "0x1442a",
+                "loaded_bytes": "e802aa0300",
+                "file_bytes": "e802aa0300",
+                "instruction": "call    sub_4E031",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1362f",
+                "file_offset": "0x1442f",
+                "loaded_bytes": "ebcb",
+                "file_bytes": "ebcb",
+                "instruction": "jmp     short loc_135FC",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13631",
+                "file_offset": "0x14431",
+                "loaded_bytes": "3b3dad3a0500",
+                "file_bytes": "3b3dad3a0000",
+                "instruction": "cmp     edi, dword_53AAD",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13637",
+                "file_offset": "0x14437",
+                "loaded_bytes": "0f8444fbffff",
+                "file_bytes": "0f8444fbffff",
+                "instruction": "jz      loc_13181",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1363d",
+                "file_offset": "0x1443d",
+                "loaded_bytes": "7d0e",
+                "file_bytes": "7d0e",
+                "instruction": "jge     short loc_1364D",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1363f",
+                "file_offset": "0x1443f",
+                "loaded_bytes": "ff0db53a0500",
+                "file_bytes": "ff0db53a0000",
+                "instruction": "dec     dword_53AB5",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13645",
+                "file_offset": "0x14445",
+                "loaded_bytes": "ff0dad3a0500",
+                "file_bytes": "ff0dad3a0000",
+                "instruction": "dec     dword_53AAD",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1364b",
+                "file_offset": "0x1444b",
+                "loaded_bytes": "eb0c",
+                "file_bytes": "eb0c",
+                "instruction": "jmp     short loc_13659",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1364d",
+                "file_offset": "0x1444d",
+                "loaded_bytes": "ff05b53a0500",
+                "file_bytes": "ff05b53a0000",
+                "instruction": "inc     dword_53AB5",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13653",
+                "file_offset": "0x14453",
+                "loaded_bytes": "ff05ad3a0500",
+                "file_bytes": "ff05ad3a0000",
+                "instruction": "inc     dword_53AAD",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13659",
+                "file_offset": "0x14459",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x1365b",
+                "file_offset": "0x1445b",
+                "loaded_bytes": "e84ce6ffff",
+                "file_bytes": "e84ce6ffff",
+                "instruction": "call    sub_11CAC",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13660",
+                "file_offset": "0x14460",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13663",
+                "file_offset": "0x14463",
+                "loaded_bytes": "e8c9a90300",
+                "file_bytes": "e8c9a90300",
+                "instruction": "call    sub_4E031",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x13668",
+                "file_offset": "0x14468",
+                "loaded_bytes": "ebc7",
+                "file_bytes": "ebc7",
+                "instruction": "jmp     short loc_13631",
+                "semantic_annotations": []
+              }
+            ]
+          }
+        ],
+        "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+      },
+      {
+        "inventory": {
+          "start": "0x35822",
+          "end": "0x35898",
+          "size": 118,
+          "ida_analysis_name": "sub_35822",
+          "ida_function_flags": [],
+          "direct_caller_functions": [
+            "0x33c9d",
+            "0x33dba",
+            "0x352e2",
+            "0x358c7",
+            "0x358ea",
+            "0x359c8",
+            "0x35a48",
+            "0x35b05",
+            "0x35bf2",
+            "0x35c32"
+          ],
+          "direct_code_xref_count": 16,
+          "direct_data_xref_count": 0,
+          "classification": {
+            "value": "product",
+            "confidence": "已證實",
+            "source": "versioned semantic index"
+          },
+          "semantic_annotations": [
+            {
+              "address": "0x35822",
+              "classification": "product",
+              "semantic": "raw (group,y,x) 的 pan→spawn→等待→palette→redraw staging",
+              "confidence": "已證實",
+              "evidence": [
+                "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+                "docs/data/fd2_current_field_control_mutations_ida.txt"
+              ],
+              "scope": "callee choreography；不可誤改為 (group,x,y)"
+            }
+          ]
+        },
+        "ida_analysis_name": "sub_35822",
+        "current_ida_linear_end": "0x35898",
+        "boundary_matches_inventory": true,
+        "semantic_annotations": [
+          {
+            "address": "0x35822",
+            "classification": "product",
+            "semantic": "raw (group,y,x) 的 pan→spawn→等待→palette→redraw staging",
+            "confidence": "已證實",
+            "evidence": [
+              "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+              "docs/data/fd2_current_field_control_mutations_ida.txt"
+            ],
+            "scope": "callee choreography；不可誤改為 (group,x,y)"
+          }
+        ],
+        "chunks": [
+          {
+            "ida_linear_start": "0x35822",
+            "ida_linear_end": "0x35898",
+            "instructions": [
+              {
+                "ida_linear_address": "0x35822",
+                "file_offset": "0x36622",
+                "loaded_bytes": "6810000000",
+                "file_bytes": "6810000000",
+                "instruction": "push    10h",
+                "semantic_annotations": [
+                  {
+                    "address": "0x35822",
+                    "classification": "product",
+                    "semantic": "raw (group,y,x) 的 pan→spawn→等待→palette→redraw staging",
+                    "confidence": "已證實",
+                    "evidence": [
+                      "docs/data/ida/fd2_ch27_ch28_pre_owner_ida.txt",
+                      "docs/data/fd2_current_field_control_mutations_ida.txt"
+                    ],
+                    "scope": "callee choreography；不可誤改為 (group,x,y)"
+                  }
+                ]
+              },
+              {
+                "ida_linear_address": "0x35827",
+                "file_offset": "0x36627",
+                "loaded_bytes": "e8ab140000",
+                "file_bytes": "e8ab140000",
+                "instruction": "call    sub_36CD7",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3582c",
+                "file_offset": "0x3662c",
+                "loaded_bytes": "ff742408",
+                "file_bytes": "ff742408",
+                "instruction": "push    [esp+arg_4]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35830",
+                "file_offset": "0x36630",
+                "loaded_bytes": "ff742408",
+                "file_bytes": "ff742408",
+                "instruction": "push    [esp+4+arg_0]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35834",
+                "file_offset": "0x36634",
+                "loaded_bytes": "e8a4ddfdff",
+                "file_bytes": "e8a4ddfdff",
+                "instruction": "call    sub_135DD",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35839",
+                "file_offset": "0x36639",
+                "loaded_bytes": "83c408",
+                "file_bytes": "83c408",
+                "instruction": "add     esp, 8",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3583c",
+                "file_offset": "0x3663c",
+                "loaded_bytes": "0fb644240c",
+                "file_bytes": "0fb644240c",
+                "instruction": "movzx   eax, [esp+arg_8]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35841",
+                "file_offset": "0x36641",
+                "loaded_bytes": "50",
+                "file_bytes": "50",
+                "instruction": "push    eax",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35842",
+                "file_offset": "0x36642",
+                "loaded_bytes": "e807b3fdff",
+                "file_bytes": "e807b3fdff",
+                "instruction": "call    sub_10B4E",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35847",
+                "file_offset": "0x36647",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3584a",
+                "file_offset": "0x3664a",
+                "loaded_bytes": "682c010000",
+                "file_bytes": "682c010000",
+                "instruction": "push    12Ch",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3584f",
+                "file_offset": "0x3664f",
+                "loaded_bytes": "e85e1d0000",
+                "file_bytes": "e85e1d0000",
+                "instruction": "call    j___delay",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35854",
+                "file_offset": "0x36654",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35857",
+                "file_offset": "0x36657",
+                "loaded_bytes": "68ff000000",
+                "file_bytes": "68ff000000",
+                "instruction": "push    0FFh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3585c",
+                "file_offset": "0x3665c",
+                "loaded_bytes": "68ff000000",
+                "file_bytes": "68ff000000",
+                "instruction": "push    0FFh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35861",
+                "file_offset": "0x36661",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35863",
+                "file_offset": "0x36663",
+                "loaded_bytes": "e88ac5fdff",
+                "file_bytes": "e88ac5fdff",
+                "instruction": "call    sub_11DF2",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35868",
+                "file_offset": "0x36668",
+                "loaded_bytes": "83c40c",
+                "file_bytes": "83c40c",
+                "instruction": "add     esp, 0Ch",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3586b",
+                "file_offset": "0x3666b",
+                "loaded_bytes": "68c8000000",
+                "file_bytes": "68c8000000",
+                "instruction": "push    0C8h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35870",
+                "file_offset": "0x36670",
+                "loaded_bytes": "e83d1d0000",
+                "file_bytes": "e83d1d0000",
+                "instruction": "call    j___delay",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35875",
+                "file_offset": "0x36675",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35878",
+                "file_offset": "0x36678",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3587a",
+                "file_offset": "0x3667a",
+                "loaded_bytes": "68ff000000",
+                "file_bytes": "68ff000000",
+                "instruction": "push    0FFh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3587f",
+                "file_offset": "0x3667f",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35881",
+                "file_offset": "0x36681",
+                "loaded_bytes": "e86cc5fdff",
+                "file_bytes": "e86cc5fdff",
+                "instruction": "call    sub_11DF2",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35886",
+                "file_offset": "0x36686",
+                "loaded_bytes": "83c40c",
+                "file_bytes": "83c40c",
+                "instruction": "add     esp, 0Ch",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35889",
+                "file_offset": "0x36689",
+                "loaded_bytes": "6a00",
+                "file_bytes": "6a00",
+                "instruction": "push    0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3588b",
+                "file_offset": "0x3668b",
+                "loaded_bytes": "e81cc4fdff",
+                "file_bytes": "e81cc4fdff",
+                "instruction": "call    sub_11CAC",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35890",
+                "file_offset": "0x36690",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x35893",
+                "file_offset": "0x36693",
+                "loaded_bytes": "e934fbffff",
+                "file_bytes": "e934fbffff",
+                "instruction": "jmp     loc_353CC",
+                "semantic_annotations": []
+              }
+            ]
+          },
+          {
+            "ida_linear_start": "0x353cc",
+            "ida_linear_end": "0x353da",
+            "instructions": [
+              {
+                "ida_linear_address": "0x353cc",
+                "file_offset": "0x361cc",
+                "loaded_bytes": "6890010000",
+                "file_bytes": "6890010000",
+                "instruction": "push    190h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x353d1",
+                "file_offset": "0x361d1",
+                "loaded_bytes": "e8dc210000",
+                "file_bytes": "e8dc210000",
+                "instruction": "call    j___delay",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x353d6",
+                "file_offset": "0x361d6",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x353d9",
+                "file_offset": "0x361d9",
+                "loaded_bytes": "c3",
+                "file_bytes": "c3",
+                "instruction": "retn",
+                "semantic_annotations": []
+              }
+            ]
+          }
+        ],
+        "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+      }
+    ],
+    "byte_crosscheck": {
+      "instructions": 68,
+      "raw_bytes_equal": true,
+      "capstone_boundaries_equal": true,
+      "tool": "Capstone5.0.3"
+    },
+    "original_evidence": "35822先呼叫135DD才10B4E，後者只追加名冊，不恢復前一視圖；135DD在135F2清selector0。",
+    "source_comparison": {
+      "oracle": "work/ch28-flow-20261016/original-r1/checkpoint-0187.json",
+      "oracle_camera": [
+        19,
+        18
+      ],
+      "failed_game_camera": [
+        29,
+        18
+      ],
+      "game": "work/ch28-flow-20261016/remake-r1-fixed/checkpoints.jsonl"
+    },
+    "spec": {
+      "events": [
+        66,
+        68,
+        70
+      ],
+      "on_pan_start": "沿已證實135DD清原生range selector為0。",
+      "on_spawn_commit": "保留已完成PAN的NativeMapViewState及NativeMapRangeMode，與預檢的增援名冊一起發布；不讓candidate覆蓋目前六全域。",
+      "failure": "缺完整PAN view／range或發布不合法即拒收，不夾游標、不略過overlay。",
+      "regression": "保留每次PAN的六值、source列數與selector；原版r1正常重播及完整r2三波／SAV。",
+      "excluded": "第27章event64及#224不因此改動或宣稱驗收。"
+    }
+  }
+}

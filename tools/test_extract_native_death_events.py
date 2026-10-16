@@ -25,6 +25,26 @@ class NativeDeathExtractorTest(unittest.TestCase):
                     extractor.check_op(self.image, event_id, op)
                 extractor.check_coverage(self.image, event)
 
+    def test_ch28_dormant_handlers_match_original_and_shared_tails(self):
+        for event_id in (66, 68, 70):
+            with self.subTest(event=event_id):
+                event = self.events[event_id]
+                self.assertEqual(self.image.event_table()[event_id], event["handler"])
+                for action in event["ops"]:
+                    extractor.check_op(self.image, event_id, action)
+                extractor.check_coverage(self.image, event)
+
+    def test_ch28_third_wave_rejects_omitted_group5_or_dialogue_tail(self):
+        for index in (4, 5):
+            event = copy.deepcopy(self.events[70])
+            del event["ops"][index]
+            with self.subTest(omitted=index), self.assertRaises(SystemExit):
+                extractor.check_coverage(self.image, event)
+        action = copy.deepcopy(self.events[68]["ops"][1])
+        action["group"] = 3
+        with self.assertRaises(SystemExit):
+            extractor.check_op(self.image, 68, action)
+
     def test_ch22_event50_covers_spawn_pan_tick_join_and_shared_dialogue(self):
         event = self.events[50]
         for action in event["ops"]:

@@ -244,6 +244,62 @@ func ApplyNativeFieldTurnActivationEvent(
 	if st.NativeRoundCounter <= 0 || st.NativeRoundCounter > 0xfe {
 		return 0, fmt.Errorf("turn activation: state or native round is not activatable")
 	}
+	return commitNativeFieldTurnActivation(st, eventID, rule)
+}
+
+// ApplyNativeChapter28FieldTurnActivation 保存3599B／35AB8的區域啟動。
+// 65不讀觸發者陣營；69先讀觸發者raw +6，再查state17／18。
+// READY與原始定位見fd2_ch28_flow_20261016.json。
+func ApplyNativeChapter28FieldTurnActivation(st *State, trigger *Unit, x, y int, selector byte) (byte, error) {
+	if st == nil || !st.HasNativeTurnEventControlState {
+		return 0, fmt.Errorf("chapter28 activation: native turn controls are absent")
+	}
+	eventID, ok := NativeFieldEventIDAt(st, x, y, selector)
+	if !ok || (eventID != 65 && eventID != 69) || selector != 0 {
+		return 0, fmt.Errorf("chapter28 activation: selector0 binding is absent")
+	}
+	var rule *NativeFieldEventRule
+	for i := range st.NativeFieldEventRules {
+		candidate := &st.NativeFieldEventRules[i]
+		if candidate.EventID == int(eventID) && candidate.Selector == selector {
+			rule = candidate
+			break
+		}
+	}
+	wantState, wantSlot, wantEvent := 16, 0, 66
+	if eventID == 69 {
+		wantState, wantSlot, wantEvent = 17, 2, 70
+	}
+	if rule == nil || rule.OnceState == nil || *rule.OnceState != wantState ||
+		rule.TurnActivation == nil || *rule.TurnActivation != (NativeTurnActivation{
+		Slot: wantSlot, EventID: wantEvent, RawCamp: 0, TurnDelta: 0,
+	}) {
+		return 0, fmt.Errorf("chapter28 activation: editable rule is incomplete")
+	}
+	if eventID == 65 {
+		if rule.TriggerGate != "" || rule.RequiredNonzeroState != nil {
+			return 0, fmt.Errorf("event65: unexpected trigger guard")
+		}
+	} else {
+		if rule.TriggerGate != "record_byte6_nonzero" || rule.RequiredNonzeroState == nil ||
+			*rule.RequiredNonzeroState != 18 || trigger == nil || !trigger.HasNativeRecordByte6 {
+			return 0, fmt.Errorf("event69: raw trigger or state guard is absent")
+		}
+		if trigger.NativeRecordByte6 == 0 {
+			return eventID, nil
+		}
+	}
+	if st.NativeEventState[wantState] != 0 ||
+		(rule.RequiredNonzeroState != nil && st.NativeEventState[*rule.RequiredNonzeroState] == 0) {
+		return eventID, nil
+	}
+	return commitNativeFieldTurnActivation(st, eventID, rule)
+}
+
+func commitNativeFieldTurnActivation(st *State, eventID byte, rule *NativeFieldEventRule) (byte, error) {
+	if st.NativeRoundCounter <= 0 || st.NativeRoundCounter > 0xfe {
+		return 0, fmt.Errorf("turn activation: native round is unavailable")
+	}
 	activation := *rule.TurnActivation
 	if activation.Slot < 0 || activation.Slot >= len(st.NativeTurnEventControls) {
 		return 0, fmt.Errorf("turn activation: row slot is out of range")

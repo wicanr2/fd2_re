@@ -6882,6 +6882,18 @@
         "legacy": {
           "bgm": "FDMUS_019",
           "map": "assets/maps/map27",
+          "native_map_hud_inherited": {
+            "display_gate_b": 1
+          },
+          "native_map_view": {
+            "camera_x": 21,
+            "camera_y": 16,
+            "cursor_x": 32,
+            "cursor_y": 21,
+            "range_mode": 1,
+            "visible_cursor_x": 11,
+            "visible_cursor_y": 5
+          },
           "scenario": "assets/scenarios/ch28.json",
           "units": "assets/maps/map27/map27_units.json"
         },
@@ -8456,7 +8468,13 @@
       "extensions": {
         "legacy": {
           "party_limit": 19,
-          "prompt": "要記錄戰況嗎？"
+          "preparation_front_identities": [
+            9
+          ],
+          "prompt": "要記錄戰況嗎？",
+          "required_party_identities": [
+            9
+          ]
         },
         "legacy_key": "preparation_ch28"
       },

@@ -810,15 +810,34 @@
     },
     {
       "chapter": 28,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch28.json",
+      "slot_manifest": "docs/data/parity-slots/ch28-ap1000-manifest.json",
+      "slot_sha256": "ba7e60deff1439702683ba8578b624375c1e25ce8a4d94e695d1d506cb306737",
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "date": "2026-10-16",
+      "verify": "Docker python3 tools/verify_chapter_parity.py --chapter 28 --oracle work/ch28-flow-20261016/original-r2 --remake work/ch28-flow-20261016/remake-r2 --slot-manifest docs/data/parity-slots/ch28-ap1000-manifest.json --plan docs/data/parity-plans/ch28-flow-cheat-r2.jsonl --frame-policy advisory --oracle-save work/ch28-flow-20261016/state-r2/FD2.SAV --out docs/data/ui-traces/parity-ch28.json",
+      "limitations": [
+        "章前AP+1000及祖先HP／DP／DX政策見清冊，不證明傷害、存活或敵方選目標。",
+        "frames advisory，未擷取重製PNG，不宣稱逐幀或逐像素一致。",
+        "寶箱、買賣與其他未抽樣分支未知；#224不因本章修正結案。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "kind": "continued_actual_save_boost_only",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 1000,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 0
+        },
+        "parent_manifest": "docs/data/parity-slots/ch28-manifest.json",
+        "parent_save_sha256": "003d0394e1c5d9bb609949830450b4658284501f2d1e94456cbf96ed69b11663",
+        "note": "延續第27章正式實際SAV，一次章前27筆baseAP／effectiveAP各加1000；祖先HP+30000及DP／DX政策繼承，章內不鎖HP。"
+      }
     },
     {
       "chapter": 29,

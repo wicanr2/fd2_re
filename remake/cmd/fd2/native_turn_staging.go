@@ -323,6 +323,13 @@ func (g *Game) startNativeTurnStagingCall() {
 		return
 	}
 	call := job.event.Staging.Calls[job.call]
+	if job.event.EventID == 66 || job.event.EventID == 68 || job.event.EventID == 70 {
+		// 135F2在PAN第一步前清selector。第28章READY見主契約staging_view_handoff_contract。
+		if g.st == nil || !g.st.HasNativeMapRangeModeState || !g.st.MaterializeNativeMapRangeMode(0) {
+			g.failNativeTurnStaging("chapter28 pan range source unavailable")
+			return
+		}
+	}
 	job.phase, job.drawn = nativeTurnStagingPan, false
 	g.camPan = &camPanJob{
 		fromX: g.camX, fromY: g.camY,
@@ -348,15 +355,20 @@ func (g *Game) commitNativeTurnStagingSpawn() {
 		copy(job.vga, g.nativeMapVGA)
 	}
 	candidate := job.states[job.call]
-	// event52的PAN已透過battleEvent owner發布六全域；roster預檢不能回滾視圖。
-	// #141 READY見fd2_ch23_event52_20261003.json，其他caller不擴張本契約。
-	if job.event.EventID == 52 {
+	// PAN已透過battleEvent owner發布六全域；roster預檢不能回滾視圖。
+	// #141及#226 READY分別見第23／28章主契約；其他caller保持原邊界。
+	chapter28 := job.event.EventID == 66 || job.event.EventID == 68 || job.event.EventID == 70
+	if job.event.EventID == 52 || chapter28 {
 		if !g.st.HasNativeMapViewState {
-			g.failNativeTurnStaging("event52 completed pan has no native view")
+			g.failNativeTurnStaging("completed pan has no native view")
 			return
 		}
 		if err := candidate.MaterializeNativeMapViewState(g.st.NativeMapViewState); err != nil {
-			g.failNativeTurnStaging("event52 completed pan view: " + err.Error())
+			g.failNativeTurnStaging("completed pan view: " + err.Error())
+			return
+		}
+		if chapter28 && (!g.st.HasNativeMapRangeModeState || !candidate.MaterializeNativeMapRangeMode(g.st.NativeMapRangeMode)) {
+			g.failNativeTurnStaging("chapter28 completed pan range unavailable")
 			return
 		}
 	}

@@ -145,6 +145,10 @@ def sync(write: bool, chapters=None):
             seen.add(key)
             event = events[row["event_id"]]
             actions = lower(chapter, event, row["event_id"])
+            removed = [g for g in spawned_groups(event) if g in scenario["initial_groups"]]
+            if removed:
+                scenario["initial_groups"] = [g for g in scenario["initial_groups"] if g not in removed]
+                report.append(f"{path.name} 開局移除休眠事件生成的群組 {removed}")
             for action in actions:
                 action["camp"] = ["enemy", "ally", "special"][row["raw_camp"]]
                 action.pop("act_immediately", None)  # 0x10B4E 建構的 +5 是 0，原生路徑不用這個旗標

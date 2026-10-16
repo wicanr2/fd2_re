@@ -42,8 +42,8 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 24章passed，即第4～27章；其餘6章todo。第27章正常觸發62→63、424筆AI零順序分歧，行為／節點／交易與完整SAV嚴格相同 | [#199](https://github.com/wicanr2/fd2_re/issues/199)接續第28章。[第27章收據](../data/ui-traces/parity-ch27.json)與[主契約](../data/ida/fd2_ch27_flow_20261016.json)明示同源接續、一次清敵及未抽樣範圍。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
-| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有13筆維持spawn版本；第26章event57完整spawn／pan(9,0)／delay400同步九列並由正常流程消費 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
+| 正式章台帳 | 25章passed，即第4～28章；其餘5章todo。第28章正常觸發三波增援，305筆AI零順序分歧，行為／節點／交易與完整SAV嚴格相同 | [#199](https://github.com/wicanr2/fd2_re/issues/199)接續第29章。[第28章收據](../data/ui-traces/parity-ch28.json)與[主契約](../data/ida/fd2_ch28_flow_20261016.json)明示同源章前AP政策、一次清敵及未抽樣範圍。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-16 |
+| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有13筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
 | 戰役故事節點稽核 | 第27章共同前綴與成功臂接線後，工具重算118故事／過場、9直接腳本、59handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-16；輸入SHA與輸出見[第27章主契約的validation.campaign_coverage](../data/ida/fd2_ch27_flow_20261016.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
@@ -750,6 +750,13 @@ command30 producer，也不構成缺少AI executor的交付阻擋。
 
 ## 五、已知位址的「不要重做」索引
 
+2026-10-16 第28章入口前沿重新核對：既有64-slot E1斷言包含尚未啟動的groups1..5，
+與map27休眠控制列及`sub_359C8／sub_35A48／sub_35B05`直接spawn consumer矛盾。
+本次只修正入口投影並補65／69區域啟動與66／68／70轉寫，不重解LOADCH或共享staging。
+固定EXE、IDA 9.4原始定位、共享`0x35A20`尾端、222筆獨立byte核對及READY規格見
+[第28章主契約](../data/ida/fd2_ch28_flow_20261016.json)。正常原版前沿及完整流程已驗，
+後續限定CONFORMED與章PLAYER-E2見本輪正式收據；[#225](https://github.com/wicanr2/fd2_re/issues/225)追蹤接線，歷史E1收據保留。
+
 2026-10-01 玩家寶箱與 HUD（#44／#43，`RE-CLOSED`）：既有
 [`fd2_treasure_input_20260907.json`](../data/ida/fd2_treasure_input_20260907.json)
 已保存玩家 `0x190AC` 全部直接指令，不重做問答。IDA Pro 9.4 以既有資料庫的
@@ -841,7 +848,7 @@ raw chapter 11 的 `sub_2073D`，本輪先前未將它接進劇本。IDA 9.4 核
 | `0x24B14` | ch26 post 直接證據與 [`91`](91-worklist.md) | 天空之鑰 inventory gate | 兩臂視覺／效果；不重解搜尋條件 |
 | `0x2415B`、`0x24182`、`0x2424B`、`0x24286`、`0x242C1`、`0x24308`、`0x2425F`、`0x2429A`、`0x24336` | [`fd2_ch20_sky_key_sequence_ida.txt`](../data/ida/fd2_ch20_sky_key_sequence_ida.txt) | 玩家第21戰戰後26-slot layout、六組分支呼叫共30句原生對話、ACT63／64與天空之鑰固定演出；正式成功臂消費26句與完整演出，材料不足臂消費14句且不執行演出／授予鑰匙；兩臂均進城鎮／存讀檔 | 只補未修改原版同狀態 E2與第一個動態調色盤相位；不重解函式本體、對話呼叫組、layout或ACT resources |
 | `0x24E80..0x25052`、`0x24F43`、`0x24F7E`、`0x24FC4`、`0x24FFF`、`0x2503A` | [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt)、[`fd2_ch25_post_native_dialogue_ida.txt`](../data/ida/fd2_ch25_post_native_dialogue_ida.txt)、[`ch25-post-native-dialogue-e1.json`](../data/ui-traces/ch25-post-native-dialogue-e1.json) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：玩家第26戰戰後由`event_state[12]`選`5/6`與`8/9`，共同`7/10/11`；七個tuple共41句原始control／operand已綁定固定版`FDTXT.DAT`第26項。正常57-slot正式勝利路徑分別只消費18或33句，再走ACTING77–80、同步隊伍、chapter26、`town_ch27`與全新`Game`冷讀。舊唯一70-slot斷言已撤回：正常重製入口為16部署者＋group0 41筆＝57，原函式只讀動態count | 70只保留完整資料形狀相容；不重解`sub_24E80`，未修改同狀態逐幀／音訊另列E2 |
-| `0x25464..0x2548C`、`0x231DF..0x231F8`、`0x231E5` | [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt)、[`fd2_ch27_post_native_dialogue_ida.txt`](../data/ida/fd2_ch27_post_native_dialogue_ida.txt)、[`ch27-post-native-dialogue-e1.json`](../data/ui-traces/ch27-post-native-dialogue-e1.json) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：玩家第28戰戰後入口跳往真實共享尾端；`0x231E5#7`唯一消費`FDTXT_028`五句`FFEE`原生對話，再sync與chapter28。正常`story_ch28`讀入map27全60筆來源，但只有groups1..7共44筆與20部署者形成64-slot戰況；group255的16筆保留在source roster。正式勝利、五句具型別輸入、`preparation_ch29`與全新`Game`冷讀均通過；舊80-slot斷言已撤回 | 五句說話者螢幕座標未由handler保存，99%模式保留五階段收框／背景還原但省略無來源額外滑動；未修改同狀態逐幀／音訊另列E2，低位址及共享尾端不重解 |
+| `0x25464..0x2548C`、`0x231DF..0x231F8`、`0x231E5` | [`fd2_post26_28_dispatch_ida.txt`](../data/fd2_post26_28_dispatch_ida.txt)、[`fd2_ch27_post_native_dialogue_ida.txt`](../data/ida/fd2_ch27_post_native_dialogue_ida.txt)、[`ch27-post-native-dialogue-e1.json`](../data/ui-traces/ch27-post-native-dialogue-e1.json) | `RE-CLOSED`／`DATA-READY`／`RUNTIME-E1`：玩家第28戰戰後入口跳往真實共享尾端；`0x231E5#7`唯一消費`FDTXT_028`五句`FFEE`原生對話，再sync與chapter28。正常`story_ch28`讀入map27全60筆來源，groups6／7共14筆加20部署者形成34-slot開局；groups1..5依休眠事件追加至40／46／64。group255的16筆保留在source roster。舊64-slot入口推論已由2026-10-16原版LOAD反證，見第28章主契約。正式勝利、五句具型別輸入、`preparation_ch29`與全新`Game`冷讀均通過；舊80-slot斷言已撤回 | 五句說話者螢幕座標未由handler保存，99%模式保留五階段收框／背景還原但省略無來源額外滑動；未修改同狀態逐幀／音訊另列E2，低位址及共享尾端不重解 |
 | `0x24C1E`／`0x24D22`／`0x11EEE` case 23 | [`fd2_ch23_post_ida.txt`](../data/ida/fd2_ch23_post_ida.txt) | raw ch23／玩家第24戰的 stage 2..14 先寫後畫、`[0x46c] != [0x539f8]` tick gate、312×192 row rotation、#42 staging、零 transient offset、indexed copy ABI 與正式 E1 adapter | 補未修改一般玩家同狀態逐幀／時序 E2；不得重開入口 latch 或把移動中 offset 外推到 handler |
 | `0x24754`／`0x247B4`／`0x1088D`／`0x15F84`／`0x2189A`／`0x219AD`／`0x24B4D`／`0x10652`／`0x4DBFC`（raw ch22 post） | [`fd2_ch22_post_ida.txt`](../data/ida/fd2_ch22_post_ida.txt)、[`fd2_ch22_post_dialogue_binding.txt`](../data/ida/fd2_ch22_post_dialogue_binding.txt) | layout已閉合為table slots0..16＋special slot17、camera(14,14)；原始容量為16個persistent slots＋70個map22 rows；#137同狀態反證已訂正開場為42筆，剩餘44筆pending，不能把86筆局部post fixture當正常開場前沿。舊70-slot說法仍撤回。三實參 unit/radius/step、FDOTHER #3 LUT0..9 與 `0x2189A` typed E1；FDFIELD #69、FDSHAP #46/#47 由 `0x11EEE` 直接消費；`0x24B4D` 的13×9 staging→steady draw→兩列交替30×20ms typed E1 已通過30幀與缺第九列零修改回歸；chapter23 `0x10652` 另建 FDOTHER #42／59904-byte staging，三次ACT73經`0x1366A→0x11CAC→0x11EEE`消費；完整四位元組raw grid已在State保存。十個`0x15F84` caller現把FDTXT_023 index8..17正確展開為56句，不再誤用整檔89句；四種raw control各自保存13／15／14／14 glyph上限。正式可達分支以具型別輸入完成35句後才沿原位置同步隊伍，再由記錄提示存檔、全新`Game`冷讀、15人選取、取消重選及最終肯定進`story_ch24`，達連續`RUNTIME-E1` | event52增援時序、高階畫面名稱、互斥分支的未修改原版動態路徑與一般玩家 E2仍另列；不重解已閉合 helper |
 | `0x135DD`、`0x20421`、`0x4DFCC` | 同上及既有 palette／AFM 證據 | `0x24336` 使用的鏡頭移動、全螢幕 AFM 與高色階相位循環窄角色 | 新 caller 另證參數與時序；不可把 `0x20421` 誤稱音訊或把 `0x4DFCC` 推成一般調色盤 API |
@@ -3486,3 +3493,13 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 未強化同槽的95個啟動狀態、暫存器及PNG邊界嚴格保持；強化槽BOOT的EBX差異逐筆揭露，未追其語意，不混作同輸入回歸。原版計數以358EA分支及兩次35992執行推得；Game直接state16=2。畫面屬相近狀態，終點游標／鏡頭不同另列[#224](https://github.com/wicanr2/fd2_re/issues/224)，非本次增援阻擋。
 
 限定RUNTIME-E1修改路徑，不證明傷害、自然存活、AI選目標或一般玩家PLAYER-E2。正式parity-ch27、完整SAV收據及24／30台帳維持，未抽第三隊長死亡臂。Go19套件、106項Python測試及native來源准入通過；全域sync --check仍13筆待轉寫。沒有新matching編譯或硬體時序切片。
+
+## 2026-10-16 第28章三波休眠增援與完整流程
+
+沿既有IDA9.4匯出與固定EXE，核對65／69區域guard及66／68／70完整演出，先達READY再接正式typed規則。正常入口為20我方加14敵方，共34筆；三波依序到40、46、64筆，取代舊64筆全開局推論，舊E1收據保留。#225補必出前置、入口HUD與休眠接線；#226限定66／68／70保留PAN視圖及原生range，沒有改event64或關閉#224。
+
+原版r2正常LOAD、選人、移動／攻擊、三波增援與T13後一次清敵，戰後五句接非城鎮保存並返回選人。完整Game重播305筆AI全消費、零順序分歧；正式三閘門通過，22987 bytes SAV含檢查碼零差異，SHA-256 df50919111cccb37a00215dea248a069617aa222545d0f4493ab4b00dc5b819f。依111／114例外登記PLAYER-E2，frames advisory，沒有逐幀或逐像素聲明。
+
+未強化r1堵路失敗及74筆AI有限重播保留，不計整章；r2一次章前AP+1000逐筆政策值、祖先HP／DP／DX限制及完整重跑命令均見[主契約](../data/ida/fd2_ch28_flow_20261016.json)，正式收據見[parity-ch28](../data/ui-traces/parity-ch28.json)。下一章從本輪實際SAV接續；未抽樣寶箱、買賣與自然難度保持未知。本批沒有新matching編譯，固定回合待轉寫數仍13。
+
+本批最終完整Go19套件、137項Python及六項來源fixture回歸通過；#225／#226結案，#199接第29章，官方工作清單22項且可能已完成0。衛生、命令與日誌雜湊集中於第28章主契約validation；本輪未錄影。

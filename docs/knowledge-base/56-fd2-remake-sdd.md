@@ -4822,14 +4822,19 @@ story/cutscene 稽核為 121 節點、9 個獨立 script、49 個 handler bindin
   原版五階段收框與勝利背景還原，但不以當下玩家游標冒充說話者位置播放額外滑動。
   這項近似不提升為逐幀E2，也不再為它重開已閉合handler。
 - 正式驗收由`story_ch28`前置流程進入`battle_ch28`，再做正常勝利確認；要求
-  64-slot戰況（隊長＋19名晚期整備選擇者＋map27 groups1..7共44筆；group255
-  的16筆保留在source roster而不冒稱已上場）、
+  34-slot開局（隊長＋19名晚期整備選擇者＋map27 groups6／7共14筆），
+  groups1..5依66／68／70休眠事件追加，前沿依序34／40／46／64；group255
+  的16筆保留在source roster而不冒稱已上場。
   五句具型別輸入、
   persistent roster同步、整備節點與全新`Game`冷讀。缺原資產或版面時整批
   失敗即關閉，不退回現代RGBA對話框。
 - `ch28.json`必須宣告`runtime_append_groups`，使戰鬥接收前置handler已按原始順序
-  建構及分配selector的64筆runtime；若改走舊式scenario重建，會遺失map27單位的
+  建構及分配selector的34筆runtime；若改走舊式scenario重建，會遺失map27單位的
   原生presentation並使戰後背景失去來源，驗收必須拒絕這種不對稱。
+
+2026-10-16勘誤：先前64-slot入口混入尚未啟動的增援，已由原版正常LOAD的34筆直接反證。
+新證據、READY規格與同源驗證見[第28章主契約](../data/ida/fd2_ch28_flow_20261016.json)，
+舊E1收據保留，不提升為原版入口證據。戰後沿既有動態count接受四種已證實前沿。
 
 ## 2026-08-09 勘誤：raw ch16 post 接入玩家第17戰（E1，最新）
 
@@ -9759,3 +9764,7 @@ Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typ
 ### 2026-10-16 第27章選擇性鎖血診斷
 
 既有正式死亡事件與增援consumer已由正常攻擊實際觸發，來源、READY／CONFORMED契約與每筆注入見[第27章主契約](../data/ida/fd2_ch27_flow_20261016.json)的resample_hp_lock_policy。鎖血只在唯一原版oracle選用控制及重製_test.go政策；正式Game、規則及SAV格式不變。章前強化、週期鎖血、HP1與保護清敵如實揭露，限定修改路徑E1。鏡頭回交仍有差異，另列#224；現況與唯一數字見[58](58-fd2-exe-re-coverage.md)，不提升章台帳。
+
+### 2026-10-16 第28章休眠增援接線
+
+第28章休眠組不再預先生成。區域65／69以原生guard原子啟動控制列，死亡67啟動第二波；66／68／70執行完整對白、PAN與增援，物化時保留已發布視圖及range。必出前置、入口HUD及動態戰後名冊前沿沿固定來源接線，經READY與同輸入完整流程限定CONFORMED。來源、精確數字與命令集中於[主契約](../data/ida/fd2_ch28_flow_20261016.json)及[58](58-fd2-exe-re-coverage.md)。章前作弊及清敵如實揭露，正式遊戲規則不鎖HP；#224保持獨立，畫面只作參考。

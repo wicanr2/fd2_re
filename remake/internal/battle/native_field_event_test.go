@@ -208,6 +208,79 @@ func TestEvent62RawDisagreementFailsAtomically(t *testing.T) {
 	}
 }
 
+func TestChapter28FieldActivationsPreserveGuardsAndRawRows(t *testing.T) {
+	for _, tc := range []struct {
+		name                 string
+		x, y, slot           int
+		event, raw6, state18 byte
+		wantActivate         bool
+	}{
+		{"first line accepts enemy", 30, 23, 0, 65, 0, 0, true},
+		{"third wave waits for second", 20, 20, 2, 69, 1, 0, false},
+		{"third wave ignores enemy", 20, 20, 2, 69, 0, 1, false},
+		{"third wave accepts own", 20, 20, 2, 69, 1, 1, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			st, err := Load("../../assets/maps/map27/map27_units.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			st.NativeRoundCounter = 7
+			st.NativeEventState[18] = tc.state18
+			trigger := &Unit{X: tc.x, Y: tc.y, NativeRecordByte6: tc.raw6, HasNativeRecordByte6: true}
+			before := st.NativeTurnEventControls
+			id, err := ApplyNativeChapter28FieldTurnActivation(st, trigger, tc.x, tc.y, 0)
+			if err != nil || id != tc.event {
+				t.Fatalf("id=%d err=%v", id, err)
+			}
+			want := before
+			if tc.wantActivate {
+				want[tc.slot].Turn = 7
+			}
+			if st.NativeTurnEventControls != want {
+				t.Fatalf("rows=%v want=%v", st.NativeTurnEventControls, want)
+			}
+			stateIndex := 16
+			if tc.event == 69 {
+				stateIndex = 17
+			}
+			if (st.NativeEventState[stateIndex] != 0) != tc.wantActivate {
+				t.Fatal("state guard changed incorrectly")
+			}
+			st.NativeRoundCounter = 8
+			if _, err := ApplyNativeChapter28FieldTurnActivation(st, trigger, tc.x, tc.y, 0); err != nil || st.NativeTurnEventControls != want {
+				t.Fatal("repeat rescheduled a completed event", err)
+			}
+		})
+	}
+}
+
+func TestChapter28FieldActivationRejectsWrongRawRowAtomically(t *testing.T) {
+	for _, x := range []int{30, 20} {
+		st, err := Load("../../assets/maps/map27/map27_units.json")
+		if err != nil {
+			t.Fatal(err)
+		}
+		y, slot := 23, 0
+		if x == 20 {
+			y, slot = 20, 2
+			st.NativeEventState[18] = 1
+		}
+		st.NativeRoundCounter = 7
+		st.HasNativeFieldControlState = true
+		st.NativeFieldControlRaw = make([]byte, 51)
+		beforeRows, beforeState := st.NativeTurnEventControls, st.NativeEventState
+		beforeRaw := append([]byte(nil), st.NativeFieldControlRaw...)
+		trigger := &Unit{X: x, Y: y, NativeRecordByte6: 1, HasNativeRecordByte6: true}
+		if _, err := ApplyNativeChapter28FieldTurnActivation(st, trigger, x, y, 0); err == nil {
+			t.Fatalf("row%d mismatch accepted", slot)
+		}
+		if st.NativeTurnEventControls != beforeRows || st.NativeEventState != beforeState || !reflect.DeepEqual(st.NativeFieldControlRaw, beforeRaw) {
+			t.Fatal("failed activation partially published")
+		}
+	}
+}
+
 func TestChapter29Event75PlansAndCommitsExactTurnChain(t *testing.T) {
 	st, err := Load("../../assets/maps/map28/map28_units.json")
 	if err != nil {

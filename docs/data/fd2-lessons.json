@@ -2313,6 +2313,21 @@
         ],
         "pattern": "13,30"
       }
+    },
+    {
+      "id": "staging-candidate-retains-published-pan-state",
+      "date": "2026-10-16",
+      "area": "增援與原生視圖交接",
+      "rule": "增援預檢candidate在PAN前建立時，提交名冊須依已證實caller保留PAN後發布的原生視圖與range；用同源正常回合邊界核對，不能夾游標或略過overlay掩蓋回滾。入口remake/cmd/fd2/native_turn_staging.go commitNativeTurnStagingSpawn及docs/data/ida/fd2_ch28_flow_20261016.json staging_view_handoff_contract，適用66／68／70；其他caller須另有契約。",
+      "why": "第28章第一波名冊正確，但candidate回滾鏡頭，下一個正常指令環越界。保留已完成PAN視圖與135F2 selector0後，13個正常回合邊界四座標相同，完整流程與SAV通過。",
+      "evidence": "docs/data/ida/fd2_ch28_flow_20261016.json；GitHub #226",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_turn_staging.go"
+        ],
+        "pattern": "candidate.MaterializeNativeMapRangeMode"
+      }
     }
   ]
 }

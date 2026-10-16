@@ -27,15 +27,30 @@ func seedLateCampaignParty(t *testing.T, scenarioPath string, selected int) *Gam
 	for _, unit := range scenario.Party {
 		order = append(order, unit.Fig)
 	}
-	g := &Game{
-		partyMembers:   make(map[int]bool, len(order)),
-		partyJoinOrder: append([]int(nil), order...),
-		partyDeploy:    make(map[int]bool, selected-1),
-		partyRoster:    make(map[int]battle.Unit, len(order)),
+	joinTable, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
 	}
+	itemRows, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := &Game{
+		partyMembers:             make(map[int]bool, len(order)),
+		partyJoinOrder:           append([]int(nil), order...),
+		partyDeploy:              make(map[int]bool, selected-1),
+		partyRoster:              make(map[int]battle.Unit, len(order)),
+		nativeJoinConstructor:    joinTable,
+		hasNativeJoinConstructor: true,
+	}
+	attachOfficialLocale(t, g)
 	for _, unit := range scenario.PartyUnits(nil) {
 		g.partyMembers[unit.Fig] = true
-		g.partyRoster[unit.Fig] = *unit
+		persistent, err := joinTable.MaterializePersistentUnit(unit.Fig, *unit, itemRows)
+		if err != nil {
+			t.Fatal(err)
+		}
+		g.partyRoster[unit.Fig] = persistent
 	}
 	for _, id := range order[1:selected] {
 		g.partyDeploy[id] = true
@@ -342,12 +357,21 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		t.Fatal(err)
 	}
 	g = &Game{camp: campaign.NewRunner(coldCampaign)}
+	attachOfficialLocale(t, g)
 	g.loadGameFromSlot(0)
 	if g.loadErr != "" || g.camp.NodeID() != "preparation_ch30" || g.st != nil ||
 		g.handlerChapter != 29 || !reflect.DeepEqual(g.partyRoster, wantRoster) ||
 		!reflect.DeepEqual(g.partyJoinOrder, wantOrder) {
 		t.Fatalf("preparation_ch30 save/load mismatch: node=%q chapter=%d roster=%#v order=%v battle=%v err=%q msg=%q",
 			g.camp.NodeID(), g.handlerChapter, g.partyRoster, g.partyJoinOrder, g.st != nil, g.loadErr, g.msg)
+	}
+	g.nativePreparationUI, err = loadNativePreparationUIAssets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.nativeClassUI, err = loadNativeClassUIAssets()
+	if err != nil {
+		t.Fatal(err)
 	}
 	if g.acceptTownDeparturePrompt() || !g.prepSelecting {
 		t.Fatal("preparation_ch30 skipped its 19-member selection pass")
@@ -423,7 +447,7 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 			deployed, progressed != nil, progressedRosterID, campCounts, groupCounts, g.partyDeploy)
 	}
 	progressed.Lv++
-	progressed.Exp = 77.5
+	progressed.Exp = 77 // 原生+0x3c是byte，測試進度同樣保持可序列化。
 	wantFinalLevel := progressed.Lv
 	for _, unit := range g.st.Units {
 		if unit != nil && unit.Camp == battle.Enemy {
@@ -496,10 +520,13 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		g.nativeClassUIJob.drawn = true
 		g.stepNativeClassUILifecycle(time.Time{})
 	}
+	finishNativeEndTurnRecoveryTest(t, g)
 	if !g.aiBusy {
-		t.Fatal("battle_ch30 END→YES did not enter the enemy phase")
+		t.Fatalf("battle_ch30 END→YES did not enter the enemy phase: result=%q err=%q delay=%d confirm=%v", g.result, g.loadErr, g.nativeSystemEndTurnDelay, g.nativeSystemEndTurnConfirm)
 	}
-	g.aiStep()
+	if !pump(t, g, 1024, func() bool { return !g.aiBusy || g.loadErr != "" }) {
+		t.Fatal("battle_ch30 enemy phase did not finish within 1024 frames")
+	}
 	if g.aiBusy || g.result != "win" || g.camp.NodeID() != "battle_ch30" {
 		t.Fatalf("battle_ch30 result seam busy=%v result=%q node=%q err=%q", g.aiBusy, g.result, g.camp.NodeID(), g.loadErr)
 	}
@@ -507,7 +534,7 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		g.camp.NodeID() != "ending" || g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound {
 		t.Fatalf("battle_ch30→ending node=%q result=%q preview=%v err=%q notice=%q", g.camp.NodeID(), g.result, g.nativeEnding != nil, g.loadErr, g.endingNotice)
 	}
-	if got := g.partyRoster[progressedRosterID]; got.Lv != wantFinalLevel || got.Exp != 77.5 {
+	if got := g.partyRoster[progressedRosterID]; got.Lv != wantFinalLevel || got.Exp != 77 {
 		t.Fatalf("final battle progress did not reach persistent ending roster: id=%d unit=%#v", progressedRosterID, got)
 	}
 	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {

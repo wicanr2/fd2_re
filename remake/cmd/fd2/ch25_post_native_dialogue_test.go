@@ -45,6 +45,7 @@ func TestChapter26BattleResultNativePostbattleBranchesReachTownAndColdSave(t *te
 				partyJoinOrder: append([]int(nil), order...),
 				partyDeploy:    make(map[int]bool, 15),
 			}
+			attachOfficialLocale(t, g)
 			for _, id := range order[1:16] {
 				g.partyDeploy[id] = true
 			}
@@ -146,6 +147,7 @@ func TestChapter26BattleResultNativePostbattleBranchesReachTownAndColdSave(t *te
 				t.Fatal(err)
 			}
 			cold := &Game{camp: campaign.NewRunner(coldCampaign)}
+			attachOfficialLocale(t, cold)
 			cold.loadGameFromSlot(0)
 			if cold.loadErr != "" || cold.camp.NodeID() != "town_ch27" || cold.st != nil ||
 				cold.handlerChapter != 26 || !reflect.DeepEqual(cold.partyRoster, wantRoster) ||

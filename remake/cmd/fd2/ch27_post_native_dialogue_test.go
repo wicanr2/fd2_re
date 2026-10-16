@@ -45,8 +45,8 @@ func TestChapter28BattleResultNativePostbattleReachesPreparationAndColdSave(t *t
 		t.Fatal(err)
 	}
 	if g.loadErr != "" || g.camp.NodeID() != "battle_ch28" || g.st == nil || g.sc == nil ||
-		len(g.st.Units) != 64 {
-		t.Fatalf("第28戰入口 node=%q err=%q state=%v scenario=%v slots=%d，want 64",
+		len(g.st.Units) != 34 {
+		t.Fatalf("第28戰入口 node=%q err=%q state=%v scenario=%v slots=%d，want 34",
 			g.camp.NodeID(), g.loadErr, g.st != nil, g.sc != nil, g.handlerUnitCount())
 	}
 	// 真實長程程序會從存檔／controller保留HUD gate；這個聚焦fixture從
@@ -54,6 +54,14 @@ func TestChapter28BattleResultNativePostbattleReachesPreparationAndColdSave(t *t
 	// entry gate，不改鏡頭、游標、selector cache或任何單位資料。
 	if !g.st.MaterializeNativeMapHUDState(1, 1, 1) || !g.st.MaterializeNativeMapRangeMode(1) {
 		t.Fatal("第28戰聚焦fixture無法物化已證實的HUD controller gate")
+	}
+	// fastForwardShotCampaign停在battle入口，尚未走正常穩定地圖幀。
+	// 先由正式controller換算現行視圖並合成底圖，再確認戰果，不填章節座標。
+	if err := g.materializeInheritedNativeDialogueView(); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.composeNativeMapFrame(); err != nil {
+		t.Fatal(err)
 	}
 	for index, unit := range g.st.Units {
 		if _, ok := unit.NativeUnitLayerEntry(); !ok {
@@ -116,6 +124,7 @@ func TestChapter28BattleResultNativePostbattleReachesPreparationAndColdSave(t *t
 		t.Fatal(err)
 	}
 	cold := &Game{camp: campaign.NewRunner(coldCampaign)}
+	attachOfficialLocale(t, cold)
 	cold.loadGameFromSlot(0)
 	if cold.loadErr != "" || cold.camp.NodeID() != "preparation_ch29" || cold.st != nil ||
 		cold.handlerChapter != 28 || !reflect.DeepEqual(cold.partyRoster, wantRoster) ||

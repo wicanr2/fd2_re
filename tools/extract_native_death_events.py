@@ -392,8 +392,28 @@ EVENTS = [
         op("clear_hp_from", [(0x35988, 0x35992)], first=0x10, when={"state_eq": [0x10, 2]}),
         op("state_inc", [(0x35992, 0x3599A)], index=0x10),
     ]},
+    # 第28章休眠增援，READY與共享35A20尾端見fd2_ch28_flow_20261016.json。
+    {"id": 66, "handler": 0x359C8, "ops": [
+        op("dialogue", [(0x359D2, 0x359F9)], text=3),
+        op("staging", [(0x359F9, 0x35A07)], x=17, y=18, group=1),
+        op("dialogue", [(0x35A07, 0x35A2E)], text=6),
+    ]},
     {"id": 67, "handler": 0x35A2F, "ops": [
         op("control_turn", [(0x35A39, 0x35A47)], slot=1, delta=0),
+    ]},
+    {"id": 68, "handler": 0x35A48, "ops": [
+        op("dialogue", [(0x35A52, 0x35A79)], text=4),
+        op("staging", [(0x35A79, 0x35A87)], x=14, y=7, group=2),
+        op("dialogue", [(0x35A87, 0x35AAE)], text=6),
+        op("state_set", [(0x35AAE, 0x35AB7)], index=18, value=1),
+    ]},
+    {"id": 70, "handler": 0x35B05, "ops": [
+        op("ai_mode_range", [(0x35B0F, 0x35B1D)], first=41, last=45, mode=0),
+        op("dialogue", [(0x35B1D, 0x35B44)], text=5),
+        op("staging", [(0x35B44, 0x35B52)], x=8, y=7, group=3),
+        op("staging", [(0x35B52, 0x35B60)], x=4, y=7, group=4),
+        op("staging", [(0x35B60, 0x35B66), (0x359FF, 0x35A07)], x=0, y=7, group=5),
+        op("dialogue", [(0x35A07, 0x35A2E)], text=6),
     ]},
     {"id": 71, "handler": 0x35B6B, "guards": [
         op("guard_state", [(0x35B75, 0x35B80)], index=0x13, not_equals=0),
