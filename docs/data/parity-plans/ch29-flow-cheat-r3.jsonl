@@ -1,0 +1,34 @@
+# 第29章r3：相同AP5000實際來源與seed4；最多40輪控制，護送角色無路且貼身敵軍時以正常攻擊解阻。
+# 不鎖HP、不注入座標；93筆及79抽樣後才單次清敵、正常戰後與strict保存。r4的30輪上限失敗保留。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"record_question","steps":20000000,"max":80}
+{"mark":"record_question","steps":1000000}
+{"key":"right","steps":10000000}
+{"key":"enter","steps":10000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_party_selection","steps":1000000}
+{"key":"enter","steps":20000000,"repeat":19}
+{"key":"","steps":10000000,"repeat":12}
+{"mark":"departure_confirmation","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":300}
+{"await_ui":"cursor","steps":10000000,"max":180}
+{"mark":"battle_start","steps":1000000}
+{"escort_rounds":{"from_index":1,"toward":[15,21],"map":28,"mv":4,"helpers":[0,18],"until_runtime_units":93,"max_rounds":40,"attack_adjacent_if_blocked":true},"steps":2000000}
+{"mark":"all_reinforcements_present","steps":1000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":200}
+{"mark":"event79_sampled","steps":1000000}
+{"await":"runtime_units>=93","steps":1000000,"max":1}
+{"goto":[0,0],"steps":2000000,"max":160}
+{"await_ui":"cursor","steps":20000000,"max":30}
+{"mark":"before_clear_viewport","steps":1000000}
+{"force_enemy_clear":true,"steps":1,"end_turn":false}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"record_question","steps":20000000,"max":500}
+{"mark":"record_question","steps":1000000}
+{"preparation_save":true,"slot":0,"steps":10000000,"settle":4,"exit_settle":8,"max":30}

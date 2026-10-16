@@ -14,7 +14,7 @@ func (g *Game) beginNativeChapterResult() {
 	if g.nativeChapterResult != nil || g.battleEvent != nil || g.loadErr != "" {
 		return
 	}
-	code, err := battle.NativeDefaultResultCode(g.st)
+	code, err := battle.NativeInitialResultCode(g.st, g.sc)
 	if err != nil {
 		g.failNativeChapterResult(err.Error())
 		return
@@ -69,4 +69,14 @@ func (g *Game) advanceNativeChapterResult() {
 		g.result = "win"
 	}
 	g.beginNativeDefeatIfConfigured()
+	// main25E02→25E23在code2之後直接進post；第29章不增加玩家確認。
+	if g.result == "win" && g.sc != nil && g.sc.NativeResultAutoAdvance {
+		if g.camp == nil || g.camp.Node() == nil || g.camp.Node().Type != "battle" || g.camp.Node().OnWin == "" {
+			g.failNativeChapterResult("automatic victory requires a recovered battle edge")
+			return
+		}
+		if !g.confirmBattleResult() {
+			g.failNativeChapterResult("automatic victory handoff failed")
+		}
+	}
 }

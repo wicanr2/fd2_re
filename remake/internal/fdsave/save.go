@@ -3,6 +3,7 @@
 package fdsave
 
 import (
+	"crypto/sha256"
 	"encoding/binary"
 	"errors"
 	"fmt"
@@ -273,10 +274,11 @@ func persistentRecordI16(record []byte, offset int) int16 {
 // The RosterCount capacity check is a remake safety invariant. The native load
 // path copies the fixed 0xa00-byte roster and does not establish that check.
 type ChapterSlotSnapshot struct {
-	Slot     int
-	Verified VerifiedMetadata
-	Metadata [MetadataSize]byte
-	Records  [RosterUnits]PersistentRecord
+	Slot             int
+	Verified         VerifiedMetadata
+	Metadata         [MetadataSize]byte
+	Records          [RosterUnits]PersistentRecord
+	SourceSaveSHA256 string // 完整來源出處；不寫入原生SAV。
 }
 
 // InspectChapterSlot validates and copies a non-empty native chapter slot.
@@ -303,6 +305,7 @@ func InspectChapterSlot(plain []byte, slot int) (ChapterSlotSnapshot, error) {
 	var snapshot ChapterSlotSnapshot
 	snapshot.Slot = slot
 	snapshot.Verified = verified
+	snapshot.SourceSaveSHA256 = fmt.Sprintf("%x", sha256.Sum256(XOREnvelope(plain)))
 	copy(snapshot.Metadata[:], raw.Metadata)
 	for index := range snapshot.Records {
 		start := index * UnitSize

@@ -10172,3 +10172,9 @@ SDK11個無重定位與九個原生連結來源重新接回新C基準，兩輪�
 第28章原版正常入口34筆，三波到40／46／64；舊E1全開局64推論失效，歷史證據不刪。既有IDA與固定bytes先達READY，再補65／69 guard、66／68／70完整演出與限定PAN視圖交接。正常完整原版r2及Game三閘門、305筆AI零分岔與22987 bytes SAV相同，依111／114例外登記PLAYER-E2；正式台帳25／30，第4～28章passed。章前AP+1000、祖先HP／DP／DX及一次清敵政策揭露，無章內鎖血，frames advisory。
 
 下一章29來源為work/ch28-flow-20261016/state-r2/FD2.SAV，SHA-256 df50919111cccb37a00215dea248a069617aa222545d0f4493ab4b00dc5b819f。這是非城鎮保存，不沿用城鎮輸入；先查已閉合前置與正常LOAD。來源、失敗r1、精確命令與限制見[主契約](../data/ida/fd2_ch28_flow_20261016.json)及[正式收據](../data/ui-traces/parity-ch28.json)，目前分層見[58](58-fd2-exe-re-coverage.md)。#224及13筆固定回合待轉寫保持；本批不開全面matching。
+
+## 2026-10-17 第29章完整流程收尾
+
+本批原版r7及Game自動交接r3的行為／節點／strict交易已通過。第29章章前AP+5000及祖先政策揭露，章內零鎖血／清敵／座標注入；正常護送、全部增援、三龍死亡旗標與自動戰後、實際保存完成。1065筆AI全消費、零順序差異，22,987 bytes SAV含checksum相同。正式台帳26／30，第4～29章passed；1～3與30仍todo。主證據及最後回歸狀態見[第29章主契約](../data/ida/fd2_ch29_flow_20261017.json)，正式收據見[parity-ch29](../data/ui-traces/parity-ch29.json)，現況以58及遠端worklist為準。
+
+下一章來源為work/ch29-flow-20261017/state-r7/FD2.SAV，SHA-256 33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f。先查終局專屬結果與結局／終止consumer，不預設全滅、城鎮或一般保存。本批不啟動第30章；全面matching保持暫停，HD仍依#200～#204。#224第27章視圖獨立保持。未新增錄影，原始素材與第28章來源不變。

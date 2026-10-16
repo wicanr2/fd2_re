@@ -1,10 +1,50 @@
 package main
 
 import (
+	"os"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
+
+func TestEvent75PersistentLoadCHPreservesRawIdentitySource(t *testing.T) {
+	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+		t.Skip("正常LOADCH揭幕需要唯讀原版素材")
+	}
+	g := newChapter29RuntimeBattle(t)
+	source, ok := g.partyRoster[9]
+	if !ok || !source.HasNativeRecordByte8 || source.NativeRecordByte8 != 9 {
+		t.Fatal("真實persistent constructor沒有悠妮raw8來源")
+	}
+	// 此局部fixture從story進場，未走19人選擇前置，按persistent身份找悠妮。
+	var actor *battle.Unit
+	for _, unit := range g.st.Units {
+		if unit != nil && unit.HasNativeIdentity && unit.NativeIdentity == 9 {
+			actor = unit
+			break
+		}
+	}
+	if actor == nil {
+		t.Fatal("LOADCH沒有持續隊伍的悠妮")
+	}
+	if !actor.HasNativeRecordByte6 || actor.NativeRecordByte6 != 2 ||
+		!actor.HasNativeRecordByte8 || actor.NativeRecordByte8 != 9 {
+		t.Fatalf("LOADCH actor來源遺失：raw6=%d/%v raw8=%d/%v", actor.NativeRecordByte6,
+			actor.HasNativeRecordByte6, actor.NativeRecordByte8, actor.HasNativeRecordByte8)
+	}
+	// 局部consumer測試移至事件格；正常移動可達性由完整章重播驗證。
+	actor.X, actor.Y = 15, 21
+	plan, err := battle.PlanNativeFieldEvent75(g.st, actor, 15, 21)
+	if err != nil || !plan.Activate || plan.TextIndex != 1 {
+		t.Fatalf("persistent→LOADCH→75 plan=%+v err=%v", plan, err)
+	}
+	// 正規化identity不能替代已遺失的raw來源，也不能保留目的端舊旗標。
+	source.HasNativeRecordByte8 = false
+	applyPersistentStats(actor, &source)
+	if _, err := battle.PlanNativeFieldEvent75(g.st, actor, 15, 21); err == nil {
+		t.Fatal("缺raw8來源卻由NativeIdentity推造通過")
+	}
+}
 
 func TestEvent75SuccessfulActionCommitsOnlyAfterEditableDialogue(t *testing.T) {
 	st, err := battle.Load(assetPath("assets/maps/map28/map28_units.json"))

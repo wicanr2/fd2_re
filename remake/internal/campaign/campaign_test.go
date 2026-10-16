@@ -244,10 +244,11 @@ func TestFullCampaignCarriesVerifiedChapter29ViewAndInheritedHUD(t *testing.T) {
 		t.Fatalf("battle_ch29 native map state=%#v", n)
 	}
 	view := *n.NativeMapView
-	if view.CameraX != 9 || view.CameraY != 56 ||
-		view.CursorX != 15 || view.CursorY != 63 ||
-		view.VisibleCursorX != 6 || view.VisibleCursorY != 7 ||
-		view.RangeMode == nil || *view.RangeMode != 0 {
+	// 原版正常LOAD及ACT86完成後的checkpoint86，見第29章主契約。
+	if view.CameraX != 9 || view.CameraY != 55 ||
+		view.CursorX != 14 || view.CursorY != 60 ||
+		view.VisibleCursorX != 5 || view.VisibleCursorY != 5 ||
+		view.RangeMode == nil || *view.RangeMode != 1 {
 		t.Fatalf("battle_ch29 native map view=%+v", view)
 	}
 	if n.NativeMapHUDInherited.DisplayGateB != 1 {

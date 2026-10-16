@@ -7,22 +7,31 @@ import "fmt"
 // READY 契約與主證據見56及fd2_ch13_result_conditions_20261001.json、
 // fd2_ch15_result_conditions_20261002.json；原版無對白列的Actions為空。
 type NativeResultRule struct {
-	ID                 string   `json:"id"`
-	Source             string   `json:"source"`
-	RecordsAllInactive []int    `json:"records_all_inactive"`
-	RoundGreaterThan   *int     `json:"round_greater_than,omitempty"`
-	Code               int      `json:"code"`
-	Actions            []Action `json:"actions"`
+	ID                    string   `json:"id"`
+	Source                string   `json:"source"`
+	RecordsAllInactive    []int    `json:"records_all_inactive"`
+	EventStatesAllNonzero []int    `json:"event_states_all_nonzero,omitempty"`
+	RoundGreaterThan      *int     `json:"round_greater_than,omitempty"`
+	Code                  int      `json:"code"`
+	Actions               []Action `json:"actions"`
 }
 
 func (r NativeResultRule) Validate() error {
-	if r.ID == "" || r.Source == "" || r.Code != 1 || len(r.RecordsAllInactive) == 0 {
-		return fmt.Errorf("原生結果列缺少來源、記錄或已閉合的code1")
+	stateRule := r.Code == 2 && len(r.EventStatesAllNonzero) != 0 && len(r.RecordsAllInactive) == 0 && r.RoundGreaterThan == nil && len(r.Actions) == 0
+	recordRule := r.Code == 1 && len(r.RecordsAllInactive) != 0 && len(r.EventStatesAllNonzero) == 0
+	if r.ID == "" || r.Source == "" || (!stateRule && !recordRule) {
+		return fmt.Errorf("原生結果列缺少來源或已閉合的記錄／事件狀態條件")
 	}
 	if r.RoundGreaterThan != nil && *r.RoundGreaterThan < 0 {
 		return fmt.Errorf("原生結果列回合門檻為負值")
 	}
 	seen := map[int]bool{}
+	for _, index := range r.EventStatesAllNonzero {
+		if index < 0 || index >= len((State{}).NativeEventState) || seen[index] {
+			return fmt.Errorf("原生結果列事件狀態索引%d無效或重複", index)
+		}
+		seen[index] = true
+	}
 	for _, index := range r.RecordsAllInactive {
 		if index < 0 || seen[index] {
 			return fmt.Errorf("原生結果列記錄索引%d無效或重複", index)
@@ -50,6 +59,9 @@ func (r NativeResultRule) Match(st *State) (bool, error) {
 	if st == nil {
 		return false, fmt.Errorf("原生結果列缺少戰場")
 	}
+	if len(r.EventStatesAllNonzero) != 0 && !st.HasNativeTurnEventControlState {
+		return false, fmt.Errorf("原生結果列缺少事件狀態來源")
+	}
 	if r.RoundGreaterThan != nil {
 		if st.NativeRoundCounter <= 0 {
 			return false, fmt.Errorf("原生結果列缺少原始回合計數")
@@ -59,6 +71,11 @@ func (r NativeResultRule) Match(st *State) (bool, error) {
 		}
 	}
 	all := true
+	for _, index := range r.EventStatesAllNonzero {
+		if st.NativeEventState[index] == 0 {
+			all = false
+		}
+	}
 	for _, index := range r.RecordsAllInactive {
 		if index >= len(st.Units) || st.Units[index] == nil || !st.Units[index].HasNativeRecordByte5 {
 			return false, fmt.Errorf("原生結果列缺少記錄%d的raw +5", index)
@@ -68,6 +85,18 @@ func (r NativeResultRule) Match(st *State) (bool, error) {
 		}
 	}
 	return all, nil
+}
+
+// NativeInitialResultCode preserves 20B72's event-state-only result owner.
+// READY: fd2_ch29_flow_20261017.json chapter_result_contract.
+func NativeInitialResultCode(st *State, sc *Scenario) (int, error) {
+	if sc == nil || sc.NativeResultInitialCode == nil {
+		return NativeDefaultResultCode(st)
+	}
+	if *sc.NativeResultInitialCode != 0 || sc.NativeResultHandler != "0x20b72" || st == nil || len(st.Units) < 2 || !st.HasNativeTurnEventControlState {
+		return 0, fmt.Errorf("原生章節結果初始值缺少已證實來源")
+	}
+	return 0, nil
 }
 
 // NativeDefaultResultCode 是sub_205BE的已閉合三值基礎規則：僅掃已生成的

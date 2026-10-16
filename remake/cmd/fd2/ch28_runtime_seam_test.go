@@ -295,6 +295,67 @@ func TestChapter27PreReactivationPreflightIsAtomic(t *testing.T) {
 	}
 }
 
+func TestChapter29AllReinforcementsAdmitNativePostbattle(t *testing.T) {
+	fdotherPath := os.Getenv("FD2_ORIGINAL_FDOTHER")
+	if fdotherPath == "" {
+		t.Skip("戰後原生呈現需要唯讀原版素材")
+	}
+	t.Setenv("FD2_FDOTHER", fdotherPath)
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_ANI", filepath.Join(t.TempDir(), "missing-ANI.DAT"))
+	t.Setenv("FD2_MUTE", "1")
+	g := newChapter29RuntimeBattle(t)
+	// 局部戰後准入測試。群組由已閉合consumer追加；正常觸發與順序
+	// 另外由章對拍驗證，這份fixture不宣稱一般玩家路徑。
+	for _, group := range []int{2, 3, 4, 5, 6, 7, 1} {
+		if _, err := g.st.AppendGroupWithNativePlacement(group, 0); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if len(g.st.Units) != 93 {
+		t.Fatalf("完整增援runtime=%d", len(g.st.Units))
+	}
+	g.result = "win"
+	if !g.confirmBattleResult() || g.loadErr != "" || g.camp.NodeID() != "postbattle_ch29_persist" {
+		t.Fatalf("完整增援戰後准入node=%q err=%q", g.camp.NodeID(), g.loadErr)
+	}
+	err := g.fastForwardShotCampaign()
+	if err == nil || !strings.Contains(err.Error(), "reached non-battle node=\"preparation_ch30\"") ||
+		g.loadErr != "" || g.camp.NodeID() != "preparation_ch30" {
+		t.Fatalf("完整增援戰後boundary=%q err=%v loadErr=%q", g.camp.NodeID(), err, g.loadErr)
+	}
+}
+
+func TestChapter29HPOnlyClearDoesNotReplaceDragonDeathFlags(t *testing.T) {
+	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+		t.Skip("需要唯讀原版素材")
+	}
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_MUTE", "1")
+	g := newChapter29RuntimeBattle(t)
+	// 明示局部fixture，模擬HP-only清敵後的raw死亡回收。這不執行死亡dispatcher。
+	for _, u := range g.st.Units {
+		if u.Camp == battle.Enemy {
+			u.HP = 0
+			u.NativeRecordByte5 |= 1
+		}
+	}
+	g.checkResult()
+	if g.loadErr != "" || g.result != "" || g.camp.NodeID() != "battle_ch29" {
+		t.Fatalf("HP-only誤判勝利：%q %s", g.result, g.loadErr)
+	}
+	g.st.NativeEventState[18], g.st.NativeEventState[19] = 1, 1
+	g.checkResult()
+	if g.loadErr != "" || g.result != "" {
+		t.Fatalf("缺第三旗標卻勝利：%q %s", g.result, g.loadErr)
+	}
+	g.st.NativeEventState[20] = 1
+	g.checkResult()
+	if g.loadErr != "" || g.result != "" || g.camp.NodeID() != "postbattle_ch29_persist" || len(g.beats) == 0 {
+		t.Fatalf("三旗標齊備未自動進戰後：node=%q result=%q %s", g.camp.NodeID(), g.result, g.loadErr)
+	}
+}
+
 func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testing.T) {
 	fdotherPath := os.Getenv("FD2_ORIGINAL_FDOTHER")
 	if fdotherPath == "" {
@@ -316,11 +377,11 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 		t.Fatalf("ch29 start node=%q slots=%d", g.camp.NodeID(), len(g.st.Units))
 	}
 	wantView := battle.NativeMapViewState{
-		CameraX: 9, CameraY: 56, CursorX: 15, CursorY: 63,
-		VisibleCursorX: 6, VisibleCursorY: 7,
+		CameraX: 9, CameraY: 55, CursorX: 14, CursorY: 60,
+		VisibleCursorX: 5, VisibleCursorY: 5,
 	}
 	if !g.st.HasNativeMapViewState || g.st.NativeMapViewState != wantView ||
-		!g.st.HasNativeMapRangeModeState || g.st.NativeMapRangeMode != 0 ||
+		!g.st.HasNativeMapRangeModeState || g.st.NativeMapRangeMode != 1 ||
 		!g.st.HasNativeMapHUDState || g.st.NativeMapHUDState.DisplayGateB != 1 {
 		t.Fatalf("ch29 native presentation view=%+v range=%d hud=%+v flags=%v/%v/%v",
 			g.st.NativeMapViewState, g.st.NativeMapRangeMode, g.st.NativeMapHUDState,

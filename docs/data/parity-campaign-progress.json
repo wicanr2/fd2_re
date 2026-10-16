@@ -841,15 +841,35 @@
     },
     {
       "chapter": 29,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch29.json",
+      "slot_manifest": "docs/data/parity-slots/ch29-ap5000-manifest.json",
+      "slot_sha256": "aad6a138b35d9b45b4a3941e39880e34106f77767d0b5cc05fd90c372cc35dcf",
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "date": "2026-10-17",
+      "verify": "Docker python3 tools/verify_chapter_parity.py --chapter 29 --oracle work/ch29-flow-20261017/original-r7 --remake work/ch29-flow-20261017/remake-r7-auto-r3 --slot-manifest docs/data/parity-slots/ch29-ap5000-manifest.json --plan docs/data/parity-plans/ch29-flow-dragons-r4.jsonl --frame-policy advisory --oracle-save work/ch29-flow-20261017/state-r7/FD2.SAV --out docs/data/ui-traces/parity-ch29.json",
+      "limitations": [
+        "章前AP+5000及祖先HP／DP／DX政策見清冊，不證明傷害、存活、自然難度或敵方選目標。",
+        "章內無鎖血或清敵注入，正常擊倒三龍；其餘敵軍由原版戰後35BBA清場。",
+        "79逐次承接原版consumer入口受控seed；不要求整段RNG呼叫序列一致。",
+        "frames advisory、未擷取重製PNG；寶箱、其他隊伍／敗北分支及人耳音訊未驗，#224獨立保持。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "kind": "continued_actual_save_boost_only",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 5000,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 0
+        },
+        "parent_manifest": "docs/data/parity-slots/ch29-manifest.json",
+        "parent_save_sha256": "df50919111cccb37a00215dea248a069617aa222545d0f4493ab4b00dc5b819f",
+        "note": "第28章實際SAV章前27筆baseAP／effectiveAP各加5000；祖先HP／DP／DX政策繼承，章內無鎖HP、清敵或座標注入。"
+      }
     },
     {
       "chapter": 30,

@@ -82,7 +82,7 @@ func TestNativeIntermissionGateRoutesEverySaveableChapterToCampaignNode(
 	}
 }
 
-func TestNativeIntermissionGatePreservesLateEffectiveRouteOverride(t *testing.T) {
+func TestNativeIntermissionGateBoundsLateEffectiveRouteOverrideToItsSource(t *testing.T) {
 	catalog, table := loadNativeRestoreTestAssets(t)
 	graph, err := Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {
@@ -97,8 +97,18 @@ func TestNativeIntermissionGatePreservesLateEffectiveRouteOverride(t *testing.T)
 		t.Fatal(err)
 	}
 	if plan.NativeChapterIndex != 28 || plan.DisplayChapter != 29 ||
-		plan.EntryNode != "preparation_ch30" {
-		t.Fatalf("raw chapter 28 effective route=%#v", plan)
+		plan.EntryNode != "preparation_ch29" {
+		t.Fatalf("raw chapter 28 default route=%#v", plan)
+	}
+	snapshot.SourceSaveSHA256 = "f46d9c54d3037f84f05d72714569c282e63f39bf125251a9cf5cd9593ff3241f"
+	plan, err = BuildNativeChapterSlotRestorePlan(snapshot, catalog, table, graph)
+	if err != nil || plan.EntryNode != "preparation_ch30" {
+		t.Fatalf("fixed input effective route=%#v err=%v", plan, err)
+	}
+	snapshot.SourceSaveSHA256 = "df50919111cccb37a00215dea248a069617aa222545d0f4493ab4b00dc5b819f"
+	plan, err = BuildNativeChapterSlotRestorePlan(snapshot, catalog, table, graph)
+	if err != nil || plan.EntryNode != "preparation_ch29" {
+		t.Fatalf("chapter28 actual save skipped chapter29: route=%#v err=%v", plan, err)
 	}
 }
 

@@ -63,6 +63,7 @@
 """
 
 import hashlib
+import heapq
 import json
 import os
 import re
@@ -1050,6 +1051,32 @@ def reachable_cells(grid, current, origin, budget):
     return {cell: left for cell, left in best.items() if cell != origin and cell not in allies}
 
 
+def route_costs_to_goal(grid, current, goal):
+    """第29章READY候選排序：真實地形與障礙的剩餘成本，原版仍裁決每次移動。"""
+    w, h, cost = grid
+    if not (0 <= goal[0] < w and 0 <= goal[1] < h) or cost[goal[1] * w + goal[0]] >= 99:
+        raise SystemExit("route_cost：目標不在可通行地圖內")
+    # 未來可由正常戰鬥清出通道；全域潛勢只算地形，當回合的
+    # reachable_cells仍排除占用及ZOC，原版Enter裁決每一步。
+    best = {goal: 0}
+    queue = [(0, goal)]
+    while queue:
+        distance_left, cell = heapq.heappop(queue)
+        if distance_left != best[cell]:
+            continue
+        # 反向走到前一格時，正向要支付的是目前這格的進入成本。
+        candidate_cost = distance_left + int(cost[cell[1] * w + cell[0]])
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            prior = (cell[0] + dx, cell[1] + dy)
+            if not (0 <= prior[0] < w and 0 <= prior[1] < h):
+                continue
+            if cost[prior[1] * w + prior[0]] >= 99 or candidate_cost >= best.get(prior, float("inf")):
+                continue
+            best[prior] = candidate_cost
+            heapq.heappush(queue, (candidate_cost, prior))
+    return best
+
+
 def toward_candidates(spec, current, origin):
     """`toward` 模式的候選格：移動力內、依「到目標的距離」排序，最多 max_tries 個。
 
@@ -1061,6 +1088,16 @@ def toward_candidates(spec, current, origin):
     stop = int(spec.get("stop_distance", 0))
     tries = int(spec.get("max_tries", 6))
     grid = load_map_cost_grid(spec["map"]) if "map" in spec else None
+    if spec.get("route_cost"):
+        if grid is None:
+            raise SystemExit("route_cost：缺少地圖成本來源")
+        costs = route_costs_to_goal(grid, current, goal)
+        cells = reachable_cells(grid, current, origin, mv)
+        here = costs.get(origin, float("inf"))
+        ranked = sorted((c for c in cells if costs.get(c, float("inf")) < here
+                         and distance(c, goal) >= stop),
+                        key=lambda c: (costs[c], -cells[c], c))
+        return ranked[:tries]
     if grid is not None:
         cells = reachable_cells(grid, current, origin, mv)
         ranked = sorted(cells, key=lambda c: (distance(c, goal), -cells[c], c))
@@ -1481,6 +1518,8 @@ def do_engage(command):
             return True
         mode = ui_mode(current)
         if mode == "cursor":
+            return True
+        if mode == "record_question" and command.get("finish_ui") == "record_question":
             return True
         if mode == "town":
             # 打完最後一個敵人之後勝利演出會一路播到戰後城鎮。那是這一場結束，
@@ -2058,6 +2097,141 @@ def do_sweep_battle(command):
     print(f"sweep_battle：{rounds} 回合內未打完", file=sys.stderr)
     return False
 
+def escort_target(current, actor, goal):
+    """護送助手先清行進方向，不被後方近敵拉回去。"""
+    enemies = side(current, ENEMY_CAMP)
+    if not enemies:
+        return None
+    origin = (actor["x"], actor["y"])
+    direction = goal[1] - origin[1]
+    forward = [u for u in enemies
+               if direction * (u["y"] - origin[1]) > 0
+               or (u["y"] == origin[1]
+                   and distance((u["x"], u["y"]), goal) < distance(origin, goal))]
+    return min(forward or enemies,
+               key=lambda u: (distance(origin, (u["x"], u["y"])),
+                              distance((u["x"], u["y"]), goal), u["index"]))
+
+
+def do_escort_rounds(command):
+    """有界正常護送；READY見fd2_ch29_flow_20261017.json。"""
+    spec = command["escort_rounds"]
+    actor = spec["from_index"]
+    helpers = spec["helpers"]
+    limit = spec["max_rounds"]
+    target = spec["until_runtime_units"]
+    if (type(actor) is not int or actor < 0 or type(limit) is not int
+            or not 1 <= limit <= 40 or type(target) is not int or target <= 0
+            or not isinstance(helpers, list) or not helpers
+            or any(type(i) is not int or i < 0 or i == actor for i in helpers)
+            or len(set(helpers)) != len(helpers)):
+        raise SystemExit("escort_rounds：來源、助手、回合上限或物化門檻不合法")
+    steps = int(command.get("steps", 2_000_000))
+    for _ in range(limit):
+        current = state()
+        if measure(current, "runtime_units") >= target:
+            return True
+        actors = [u for u in side(current, ALLY_CAMP) if u.get("index") == actor]
+        if not in_battle(current) or len(actors) != 1:
+            return False
+        before = measure(current, "round")
+        move = {"from_index": actor, "toward": spec["toward"],
+                "map": spec["map"], "mv": spec["mv"], "route_cost": True,
+                "max_tries": 14, "stay_if_blocked": True}
+        blocked_enemy = None
+        actor_unit = actors[0]
+        if spec.get("attack_adjacent_if_blocked") and not acted(actor_unit) and not paralyzed(actor_unit):
+            origin = (actor_unit["x"], actor_unit["y"])
+            if not toward_candidates(move, current, origin):
+                adjacent = [u for u in side(current, ENEMY_CAMP)
+                            if distance(origin, (u["x"], u["y"])) == 1]
+                if adjacent:
+                    blocked_enemy = min(adjacent, key=lambda u: (
+                        distance((u["x"], u["y"]), tuple(spec["toward"])), u["index"]))
+        if blocked_enemy is not None:
+            if not do_engage({"engage": {"from_index": actor, "target_index": blocked_enemy["index"]},
+                              "typical_move": spec["mv"], "reach": 1, "tries": 14,
+                              "finish_wait": 160, "steps": steps}):
+                return False
+        elif not do_move_unit({"move_unit": move, "steps": steps, "finish_wait": 160}):
+            return False
+        for helper in helpers:
+            current = state()
+            found = [u for u in side(current, ALLY_CAMP) if u["index"] == helper]
+            if len(found) != 1:
+                return False
+            unit = found[0]
+            raw = bytes.fromhex(unit.get("raw_hex", ""))
+            if len(raw) != 80 or raw[0x3b] == 0:
+                print("escort_rounds：助手缺原生移動力來源", file=sys.stderr)
+                return False
+            enemy = escort_target(current, unit, tuple(spec["toward"]))
+            if enemy is not None and not do_engage({
+                    "engage": {"from_index": helper, "target_index": enemy["index"]},
+                    "typical_move": raw[0x3b], "reach": 1, "tries": 14,
+                    "finish_wait": 160, "steps": steps}):
+                return False
+        if not do_sweep_round({"max_units": 0, "finish_wait": 160, "steps": steps}):
+            return False
+        if not do_await({"await": f"round>={before + 1}", "abort_if": "ally_alive<=0",
+                         "steps": 10_000_000, "max": 200}):
+            return False
+        if not do_await_ui({"await_ui": "cursor", "steps": 20_000_000, "max": 200}):
+            return False
+        do_mark({"mark": f"escort_round_{before + 1}", "steps": 1_000_000})
+    complete = measure(state(), "runtime_units") >= target
+    if not complete:
+        print(f"escort_rounds：{limit}輪控制預算用完，尚未物化{target}筆", file=sys.stderr)
+    return complete
+
+
+def do_defeat_targets(command):
+    """第29章READY：正常攻擊三頭龍，保留死亡派送及戰後owner。"""
+    spec = command["defeat_targets"]
+    targets, helpers, limit = spec["targets"], spec["helpers"], spec["max_rounds"]
+    if (targets != [{"index": 90, "identity": 104}, {"index": 91, "identity": 127}, {"index": 92, "identity": 105}]
+            or helpers != [18, 0] or type(limit) is not int or not 1 <= limit <= 16):
+        raise SystemExit("defeat_targets：缺少第29章READY目標／助手／有界輪數")
+    steps = int(command.get("steps", 2_000_000))
+    for _ in range(limit):
+        for helper in helpers:
+            current = state()
+            if ui_mode(current) == "record_question":
+                return True
+            rows = {u["index"]: u for u in current.get("units", [])}
+            for target in targets:
+                row = rows.get(target["index"], {})
+                if row.get("identity") != target["identity"] or row.get("camp") != ENEMY_CAMP:
+                    return False
+            live = [rows[t["index"]] for t in targets if rows[t["index"]].get("hp", 0) > 0]
+            if not live:
+                return do_await_ui({"await_ui": "record_question", "steps": 20_000_000, "max": 500})
+            actor = rows.get(helper, {})
+            raw = bytes.fromhex(actor.get("raw_hex", ""))
+            if actor.get("camp") != ALLY_CAMP or actor.get("hp", 0) <= 0 or len(raw) != 80 or not raw[0x3b]:
+                return False
+            target = min(live, key=lambda t: (distance((actor["x"], actor["y"]), (t["x"], t["y"])), t["index"]))
+            if not do_engage({"engage": {"from_index": helper, "target_index": target["index"]},
+                              "typical_move": raw[0x3b], "reach": 1, "tries": 14,
+                              "finish_wait": 240, "finish_ui": "record_question", "steps": steps}):
+                return False
+        current = state()
+        if ui_mode(current) == "record_question":
+            return True
+        if all(next(u for u in current["units"] if u["index"] == t["index"])["hp"] <= 0 for t in targets):
+            return do_await_ui({"await_ui": "record_question", "steps": 20_000_000, "max": 500})
+        before = measure(current, "round")
+        if not do_sweep_round({"max_units": 0, "finish_wait": 160, "steps": steps}):
+            return False
+        if not do_await({"await": f"round>={before + 1}", "steps": 10_000_000, "max": 200}):
+            return False
+        if not do_await_ui({"await_ui": "cursor", "steps": 20_000_000, "max": 200}):
+            return False
+        do_mark({"mark": f"dragon_round_{before + 1}"})
+    print(f"defeat_targets：{limit}輪未正常擊倒三頭龍", file=sys.stderr)
+    return False
+
+
 def main():
     first = state()
     print(f"checkpoint-0000 eip={first['eip']} view={first['view']}", flush=True)
@@ -2131,6 +2305,14 @@ def main():
         if "preparation_save" in command:
             if not do_preparation_save(command):
                 return 13
+            continue
+        if "defeat_targets" in command:
+            if not do_defeat_targets(command):
+                return 20
+            continue
+        if "escort_rounds" in command:
+            if not do_escort_rounds(command):
+                return 19
             continue
         if "sweep_round" in command:
             if not do_sweep_round(command):

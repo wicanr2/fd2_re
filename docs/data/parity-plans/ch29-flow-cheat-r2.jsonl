@@ -1,0 +1,35 @@
+# r2：全域地形成本不把未來可清除敵軍當永久路障，當回合仍由可達集合及原版Enter裁決；雙人正常接戰，最多30回合。
+# 第29章：來源為第28章原版實際保存，章前27筆AP+5000；無章內鎖血。
+# 正常LOAD、19人整備、悠妮護送、隊長死亡與休眠增援，至少93筆物化及event79後才單次清敵；保存strict。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"record_question","steps":20000000,"max":80}
+{"mark":"record_question","steps":1000000}
+{"key":"right","steps":10000000}
+{"key":"enter","steps":10000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_party_selection","steps":1000000}
+{"key":"enter","steps":20000000,"repeat":19}
+{"key":"","steps":10000000,"repeat":12}
+{"mark":"departure_confirmation","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":300}
+{"await_ui":"cursor","steps":10000000,"max":180}
+{"mark":"battle_start","steps":1000000}
+{"escort_rounds":{"from_index":1,"toward":[15,21],"map":28,"mv":4,"helpers":[0,18],"until_runtime_units":93,"max_rounds":30},"steps":2000000}
+{"mark":"all_reinforcements_present","steps":1000000}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"cursor","steps":20000000,"max":200}
+{"mark":"event79_sampled","steps":1000000}
+{"await":"runtime_units>=93","steps":1000000,"max":1}
+{"goto":[0,0],"steps":2000000,"max":160}
+{"await_ui":"cursor","steps":20000000,"max":30}
+{"mark":"before_clear_viewport","steps":1000000}
+{"force_enemy_clear":true,"steps":1,"end_turn":false}
+{"sweep_round":true,"max_units":0,"steps":2000000}
+{"await_ui":"record_question","steps":20000000,"max":500}
+{"mark":"record_question","steps":1000000}
+{"preparation_save":true,"slot":0,"steps":10000000,"settle":4,"exit_settle":8,"max":30}

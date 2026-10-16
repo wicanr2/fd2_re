@@ -93,7 +93,7 @@ func TestChapter26RequiresBothMembersAndFrontsCompleteRosterInCallerOrder(t *tes
 }
 
 func TestLatePreparationRequiresYuniAndFrontsCompleteRoster(t *testing.T) {
-	for _, chapter := range []string{"27", "28"} {
+	for _, chapter := range []string{"27", "28", "29"} {
 		t.Run(chapter, func(t *testing.T) {
 			graph, err := campaign.Load(assetPath("assets/scenarios/campaign_full.json"))
 			if err != nil {

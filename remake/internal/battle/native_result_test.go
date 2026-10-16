@@ -25,6 +25,99 @@ func nativeResultRecords(count int) *State {
 	return st
 }
 
+func TestChapter29RequiresAllDragonDeathFlagsInsteadOfEnemyHP(t *testing.T) {
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for mask := 0; mask < 8; mask++ {
+		st := nativeResultRecords(93)
+		st.HasNativeTurnEventControlState = true
+		for i := 20; i < len(st.Units); i++ {
+			st.Units[i].HP = 0
+			st.Units[i].NativeRecordByte6 = 0
+			st.Units[i].NativeRecordByte5 = 1
+		}
+		for bit := 0; bit < 3; bit++ {
+			st.NativeEventState[18+bit] = byte((mask >> bit) & 1)
+		}
+		code, err := NativeInitialResultCode(st, sc)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, rule := range sc.NativeResultRules {
+			matched, err := rule.Match(st)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if matched {
+				code = rule.Code
+			}
+		}
+		want := 0
+		if mask == 7 {
+			want = 2
+		}
+		if code != want {
+			t.Fatalf("flags=%d result=%d want=%d", mask, code, want)
+		}
+	}
+}
+
+func TestChapter29DefeatOverridesDragonVictoryAndRequiresRawSource(t *testing.T) {
+	sc, err := LoadScenario("../../assets/scenarios/ch29.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	st := nativeResultRecords(93)
+	st.HasNativeTurnEventControlState = true
+	st.NativeEventState[18], st.NativeEventState[19], st.NativeEventState[20] = 1, 1, 1
+	for _, index := range []int{0, 1} {
+		st.Units[index].NativeRecordByte5 = 1
+		code, err := NativeInitialResultCode(st, sc)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, rule := range sc.NativeResultRules {
+			matched, err := rule.Match(st)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if matched {
+				code = rule.Code
+			}
+		}
+		if code != 1 {
+			t.Fatalf("record%d inactive result=%d", index, code)
+		}
+		st.Units[index].NativeRecordByte5 = 0
+	}
+	if len(sc.NativeResultRules[2].Actions) != 1 || *sc.NativeResultRules[2].Actions[0].NativeTextIndex != 9 {
+		t.Fatal("悠妮敗北未保留string9")
+	}
+	st.Units[1].HasNativeRecordByte5 = false
+	if _, err := sc.NativeResultRules[2].Match(st); err == nil {
+		t.Fatal("缺raw +5卻猜測結果")
+	}
+	st.HasNativeTurnEventControlState = false
+	if _, err := sc.NativeResultRules[0].Match(st); err == nil {
+		t.Fatal("缺事件狀態來源卻猜測勝利")
+	}
+}
+
+func TestChapter29RejectsInvalidEventStateResultRules(t *testing.T) {
+	for _, rule := range []NativeResultRule{
+		{ID: "bad", Source: "0x20b93", Code: 2, EventStatesAllNonzero: []int{18, 18}},
+		{ID: "bad", Source: "0x20b93", Code: 2, EventStatesAllNonzero: []int{-1}},
+		{ID: "bad", Source: "0x20b93", Code: 2, EventStatesAllNonzero: []int{len((State{}).NativeEventState)}},
+		{ID: "bad", Source: "0x20b93", Code: 2, EventStatesAllNonzero: []int{18}, RecordsAllInactive: []int{0}},
+	} {
+		if err := rule.Validate(); err == nil {
+			t.Fatal("不合法事件狀態規則被接受")
+		}
+	}
+}
+
 func TestChapter26OnlyRequiredInactiveRecordsOverrideResult(t *testing.T) {
 	sc, err := LoadScenario("../../assets/scenarios/ch26.json")
 	if err != nil {

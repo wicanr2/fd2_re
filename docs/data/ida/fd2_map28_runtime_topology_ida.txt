@@ -188,3 +188,13 @@ appended by event76, and event79 mutates two of those three records.  Group9
 remains a pending postbattle constructor source; groups2/3 remain source-only.
 Until the ch28 post binding is installed, the campaign node
 postbattle_ch29_persist remains fail-closed.
+
+## 2026-10-17：event72來源勘誤
+
+原先groups2／3 remain source-only的斷言撤回。固定EXE SHA-256 222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f，IDA9.4線性位址35BF2由原始map28控制record unit17的death=[2,72,0]經已閉合死亡dispatcher消費；35BFC及35C0A依序呼叫35822，正常追加group2及3各三筆。
+2026-10-17原版r4第5回合正常攻擊擊倒runtime34，EIP trace在control_seq616進35BF2，checkpoint0616已物化82筆；新增runtime76..81皆HP1080，位置10,38／11,38／9,38／20,38／19,38／21,38。PAN參數不是單位出生座標。
+主證據與READY／後續驗收狀態見docs/data/ida/fd2_ch29_flow_20261017.json。章前AP作弊政策明示，這裡只證明正常死亡派送及增援，不證明傷害、自然難度或完整章PLAYER-E2。event82仍沒有新producer證據，不因本次修正重開。舊post binding pending文句屬歷史，現況依58及第29章主契約。
+
+## 2026-10-17：event79正式phase勘誤
+
+原先helper層的兩龍bit7原子寫入仍成立；正式Game舊接線在END入口提早執行，隨後13536清位，無法代表原版1A813(0)的實際owner。既有1A30B直接指令要求13536之後、1D8BA之前執行79。修正後同一r5負例963筆AI零順序差異，受控35EE6種子逐筆揭露於replay-settings；正常完整章仍依第29章主契約與58，不由本段升級。

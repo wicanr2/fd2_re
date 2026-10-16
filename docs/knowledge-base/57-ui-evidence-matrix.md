@@ -435,8 +435,8 @@ icon 都寫入 `base + stride*5 + 6`；重製端已修正原先把 terrain icon 
 > targets現已達 `RUNTIME-E1`；post的合法pre-frontier集合、`0x35BBA` raw清除與
 > slot20 `+7/+8=0x7E` writer亦有窄`RUNTIME-E1`。group9 producer/order已閉合，
 > `0x1DB65`原資源presenter、group9 transaction、正式戰後binding、隊伍同步與`preparation_ch30`存讀檔現已達`RUNTIME-E1`；仍缺一般玩家`PLAYER-E2`。
-> groups2/3沒有已證實producer，故保持source-only。
-> 此切片現已解除第29戰正式執行期的 fail-closed 並達 `RUNTIME-E1`，但尚未提升為一般玩家 `PLAYER-E2`。
+> 2026-10-17勘誤：原始group8 unit17 death=[2,72,0]已證實groups2／3由event72正常死亡追加；舊無producer斷言撤回。第29章完整流程現已通過，見[第29章主契約](../data/ida/fd2_ch29_flow_20261017.json)。
+> 上述為當時RUNTIME-E1紀錄；2026-10-17完整第29章已依111／114例外通過PLAYER-E2，見本檔收尾與正式收據。
 
 > **2026-08-11 歷史勘誤；blocked 清單已由 2026-08-21 取代。** 玩家第22戰
 > 當時由 fail-closed 提升為 E1；玩家第24戰又於2026-08-21以 raw ch23 indexed
@@ -2019,3 +2019,19 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 ### 2026-10-16 第28章完整增援與保存流程
 
 正常非城鎮LOAD／選人、揭幕、三波增援對白／鏡頭、戰後五句與記錄返回選人已由原版及完整Game同輸入驗證，完整SAV嚴格相同。依111／114章前作弊及一次清敵例外列PLAYER-E2，frames advisory未擷取重製PNG，不宣稱逐幀或逐像素一致。原先64筆全開局推論已由實際34筆入口與休眠啟動反證，歷史收據保留。來源、限定CONFORMED及未抽樣限制見[主契約](../data/ida/fd2_ch28_flow_20261016.json)與[正式收據](../data/ui-traces/parity-ch28.json)，唯一現況見[58](58-fd2-exe-re-coverage.md)。
+
+> **2026-10-17第29章正常LOAD勘誤：** 同源第28章實際SAV經dosgolem普通LOAD與19人選擇到第29章76筆入口。Game已修正raw28全域誤跳第30章，保留fd2021完整SHA限定的E1候選相容；舊DOSBox收據不升級。ACT86後原生視圖(9,55)/(14,60)/(5,5)、selector1已由穩定checkpoint86及Game短鏈核對。短鏈不含護送、戰後或保存，不算整章通過。主證據見第29章主契約。
+
+> **2026-10-17第29章正常石碑入口：** #229修復persistent→LOADCH漏帶raw8來源，正常Game同源重播已走到75及首波74，缺來源反例保持拒收。原版r4因控制預算結束而沒有完整戰後／保存，限定RUNTIME-E1，不提升整章PLAYER-E2；完整來源與行為比較見[第29章主契約](../data/ida/fd2_ch29_flow_20261017.json)。
+
+### 2026-10-17 第29章三龍結果、演出輸入與回合時序
+
+固定EXE的結果表IDA線性0x51B89指向sub_20B72。它不走205BE全滅掃描，只有state18／19／20全非零才寫code2；record0／1死亡依序覆寫code1，後者先播FDTXT029 string9。三個狀態由三龍death73／77／78設定。可編輯資料明示initial code0，缺raw來源仍拒收。
+
+原版r5已正常護送及物化全部93筆，但HP-only清敵後未勝、未保存，失敗保留。正常Game同源負例修正後963筆AI全消費、零順序差異；完整r7正常三龍與strict保存已通過，見本檔完整流程收尾。六次35E5A同步pulse阻擋正式Update／END及重播控制權；79延至13536清bit7之後，再交敵方AI。重播逐筆以原版35EE6入口作受控亂數輸入，seed與結果寫入replay-settings，不宣稱整段骰序一致。主證據、READY順序及局部RUNTIME-E1見[第29章主契約](../data/ida/fd2_ch29_flow_20261017.json)。
+
+### 2026-10-17 第29章完整流程收尾
+
+第29章依111／114章前建構槽政策通過PLAYER-E2。原版r7正常LOAD、必出前置、護送石碑、72增援、四波74、三龍與79輪替、正常三龍死亡及自動戰後、非城鎮保存返回選人均與正式Game同輸入核對。章內沒有鎖血、清敵或座標注入；25個剩餘敵人由原版戰後35BBA清場。1,065筆AI全消費、零順序差異；349個行為點、351個節點點與strict交易通過，整份22,987 bytes SAV含checksum零差異，SHA-256 33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f。
+
+章前AP+5000及祖先HP／DP／DX政策保持揭露，不驗自然難度或傷害。79的五次consumer入口受控seed記於收據；frames advisory，沒有重製PNG或逐像素宣稱。先前r4／r5及首次完整Game失敗保留；舊pending限制已由這份完整流程取代。來源、CONFORMED範圍及重跑命令見[主契約](../data/ida/fd2_ch29_flow_20261017.json)及[正式收據](../data/ui-traces/parity-ch29.json)。唯一目前統計見58與章台帳，下一個工作單位為第30章，不在本批開新章。

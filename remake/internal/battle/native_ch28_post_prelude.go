@@ -6,13 +6,14 @@ import (
 )
 
 var nativeCh28PostFrontiers = map[int]struct{}{
-	76: {}, 78: {}, 80: {}, 82: {}, 84: {}, 87: {},
+	76: {}, 78: {}, 80: {}, 82: {}, 84: {}, 86: {}, 87: {}, 88: {}, 90: {}, 93: {},
 }
 
 // ValidateNativeCh28PostFrontier accepts only the materialization prefixes
 // produced by the recovered map28 chain: 20 persistent records, group8's 56
-// rows, groups4..7 in two-row order, then group1's three rows. Groups2/3 are
-// source-only and group9 must still be a single pending constructor row.
+// rows, groups4..7 in two-row order, then group1's three rows. Event72 may
+// append groups2/3 atomically between complete groups. Group9 stays pending.
+// READY: docs/data/ida/fd2_ch29_flow_20261017.json.
 func ValidateNativeCh28PostFrontier(st *State) error {
 	if st == nil {
 		return fmt.Errorf("ch28 post: battle state unavailable")
@@ -29,8 +30,36 @@ func ValidateNativeCh28PostFrontier(st *State) error {
 		}
 	}
 	wantTail := []int{4, 4, 5, 5, 6, 6, 7, 7, 1, 1, 1}
+	tail := make([]int, 0, len(st.Units)-76)
 	for offset, unit := range st.Units[76:] {
-		if unit == nil || unit.Group != wantTail[offset] {
+		if unit == nil {
+			return fmt.Errorf("ch28 post: slot%d is nil", 76+offset)
+		}
+		tail = append(tail, unit.Group)
+	}
+	for offset, group := range tail {
+		if group != 2 && group != 3 {
+			continue
+		}
+		if offset != 0 && offset != 2 && offset != 4 && offset != 6 && offset != 8 && offset != 11 {
+			return fmt.Errorf("ch28 post: event72 splits a dynamic group at slot%d", 76+offset)
+		}
+		if len(tail)-offset < 6 {
+			return fmt.Errorf("ch28 post: event72 append is incomplete")
+		}
+		for i, want := range []int{2, 2, 2, 3, 3, 3} {
+			if tail[offset+i] != want {
+				return fmt.Errorf("ch28 post: event72 append order disagrees at slot%d", 76+offset+i)
+			}
+		}
+		tail = append(tail[:offset], tail[offset+6:]...)
+		break
+	}
+	if len(tail) != 0 && len(tail) != 2 && len(tail) != 4 && len(tail) != 6 && len(tail) != 8 && len(tail) != 11 {
+		return fmt.Errorf("ch28 post: incomplete dynamic group prefix")
+	}
+	for offset, group := range tail {
+		if group != wantTail[offset] {
 			return fmt.Errorf("ch28 post: slot%d breaks the recovered dynamic group order", 76+offset)
 		}
 	}

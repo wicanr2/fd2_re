@@ -240,3 +240,8 @@ append topology 不等價；正式接線前必須先修正這個資料邊界並�
 上述為 `RUNTIME-E1` primitive／caller slice，不是 `postbattle_ch29_persist`
 正式 binding。dialog／pan binding、group topology、持續隊伍、`preparation_ch30`
 save/load與未修改原版 E2 未完成前，campaign 仍失敗即關閉。
+
+## 2026-10-17：map28戰後前沿勘誤
+
+本檔較早的群組時序未知、binding尚未接線與campaign fail-closed敘述是歷史階段，現況依58及docs/data/ida/fd2_ch29_flow_20261017.json。group8 unit17 death=[2,72,0]及IDA9.4線性35BF2／35BFC／35C0A證實group2／3各三筆正常producer，原版r4第5回合亦由正常攻擊在checkpoint0616物化82筆。
+post前沿依完整4×2、5×2、6×2、7×2、1×3主鏈前綴，加上可在完整group之間一次插入的2×3、3×3區塊，合法count集合為76／78／80／82／84／86／87／88／90／93；最後追加group9仍用當下count-1，不固定slot93。READY順序及原子拒收、93筆正式呈現與保存冷讀局部測試已通過，完整動態章仍待本輪正式收據。

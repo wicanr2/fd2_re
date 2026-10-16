@@ -741,6 +741,21 @@ def build_campaign(
                      "records_all_inactive": [index], "code": 1, "actions": []}
                     for index in (1, 2)
                 ]
+            if c == 29:
+                # #230 READY：20B72只讀三龍死亡旗標，不走205BE全滅基礎規則。
+                from pathlib import Path
+                from sync_native_death_programs import Chapter, MAPPING, GLYPHS
+                mapping = json.loads(MAPPING.read_text(encoding="utf-8"))
+                glyphs = {int(k): v for k, v in json.loads(GLYPHS.read_text(encoding="utf-8")).items() if k != "_comment"}
+                chapter = Chapter(Path(out_scn), mapping, glyphs)
+                scenario["native_result_handler"] = "0x20b72"
+                scenario["native_result_initial_code"] = 0
+                scenario["native_result_auto_advance"] = True
+                scenario["native_result_rules"] = [
+                    {"id": "dragons_defeated", "source": "0x20b93", "event_states_all_nonzero": [18, 19, 20], "code": 2, "actions": []},
+                    {"id": "record0_inactive", "source": "0x20bab", "records_all_inactive": [0], "code": 1, "actions": []},
+                    {"id": "record1_inactive", "source": "0x20bea", "records_all_inactive": [1], "code": 1, "actions": chapter.dialogue(9, "0x20be2")},
+                ]
             with open(out_scn, "w", encoding="utf-8") as f:
                 json.dump(scenario, f, ensure_ascii=False, indent=2)
                 f.write("\n")
@@ -802,9 +817,9 @@ def build_campaign(
                 # #213 READY契約見fd2_turn_event57_20261016.json。
                 nodes[preparation_id]["required_party_identities"] = [9, 29]
                 nodes[preparation_id]["preparation_front_identities"] = [9, 29]
-            elif intermission_cid in {"27", "28"}:
-                # raw26／27>25：31C79／31CF8要求並前置9，沿既有helper。
-                # READY契約見fd2_ch27_flow_20261016.json及fd2_ch28_flow_20261016.json。
+            elif intermission_cid in {"27", "28", "29"}:
+                # raw26／27／28>25：31C79／31CF8要求並前置9，沿既有helper。
+                # READY見第27／28章契約及fd2_ch29_flow_20261017.json。
                 nodes[preparation_id]["required_party_identities"] = [9]
                 nodes[preparation_id]["preparation_front_identities"] = [9]
         shop_node_ids: list[str] = []
@@ -1041,15 +1056,26 @@ def build_campaign(
             }
             nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
 
+        elif c == 29:
+            # 正常actor86後入口cp86；舊初始部署推論不適用，見第29章READY契約。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 9, "camera_y": 55,
+                "cursor_x": 14, "cursor_y": 60,
+                "visible_cursor_x": 5, "visible_cursor_y": 5,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+
         retry_flag = f"retried_ch{cid}"
         flags[retry_flag] = False
-        if c == 26:
-            # #214 READY契約見fd2_turn_event57_20261016.json defeat_contract。
+        if c in (26, 29):
+            # #214／#230沿已閉合code1返回標題；第29章保留舊節點ID作歷史相容。
             nodes[battle_id].pop("on_lose")
             nodes[battle_id]["native_defeat_return_title"] = {
                 "handler": "0x22e5c", "resource": 79, "return": "full_title_sequence",
             }
-            continue
+            if c == 26:
+                continue
         nodes[retreat_id] = {
             "type": "story",
             "bgm": BGM_STORY,

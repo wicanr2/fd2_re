@@ -5621,18 +5621,22 @@
    "scenario": "assets/scenarios/ch29.json",
    "native_map_view": {
     "camera_x": 9,
-    "camera_y": 56,
-    "cursor_x": 15,
-    "cursor_y": 63,
-    "visible_cursor_x": 6,
-    "visible_cursor_y": 7,
-    "range_mode": 0
+    "camera_y": 55,
+    "cursor_x": 14,
+    "cursor_y": 60,
+    "visible_cursor_x": 5,
+    "visible_cursor_y": 5,
+    "range_mode": 1
    },
    "native_map_hud_inherited": {
     "display_gate_b": 1
    },
    "on_win": "postbattle_ch29_persist",
-   "on_lose": "retreat_ch29"
+   "native_defeat_return_title": {
+    "handler": "0x22e5c",
+    "resource": 79,
+    "return": "full_title_sequence"
+   }
   },
   "postbattle_ch29_persist": {
    "type": "cutscene",
@@ -6783,14 +6787,24 @@
    "prompt": "要記錄戰況嗎？",
    "party_limit": 19,
    "next": "story_ch28",
-   "required_party_identities": [9],
-   "preparation_front_identities": [9]
+   "required_party_identities": [
+    9
+   ],
+   "preparation_front_identities": [
+    9
+   ]
   },
   "preparation_ch29": {
    "type": "preparation",
    "prompt": "要記錄戰況嗎？",
    "party_limit": 19,
-   "next": "story_ch29"
+   "next": "story_ch29",
+   "required_party_identities": [
+    9
+   ],
+   "preparation_front_identities": [
+    9
+   ]
   },
   "preparation_ch30": {
    "type": "preparation",

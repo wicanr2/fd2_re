@@ -256,6 +256,91 @@
           }
         }
       ],
+      "native_result_auto_advance": true,
+      "native_result_handler": "0x20b72",
+      "native_result_initial_code": 0,
+      "native_result_rules": [
+        {
+          "actions": [],
+          "code": 2,
+          "event_states_all_nonzero": [
+            18,
+            19,
+            20
+          ],
+          "id": "dragons_defeated",
+          "source": "0x20b93"
+        },
+        {
+          "actions": [],
+          "code": 1,
+          "id": "record0_inactive",
+          "records_all_inactive": [
+            0
+          ],
+          "source": "0x20bab"
+        },
+        {
+          "actions": [
+            {
+              "native_dialogue_ref": {
+                "control": "FFEC",
+                "glyph_ids": [
+                  [
+                    [
+                      557,
+                      584,
+                      346,
+                      584,
+                      568,
+                      346,
+                      428,
+                      1333,
+                      468,
+                      151
+                    ],
+                    [
+                      181,
+                      612,
+                      609,
+                      584,
+                      36,
+                      37,
+                      584,
+                      36,
+                      584,
+                      584,
+                      560
+                    ]
+                  ]
+                ],
+                "line": 6,
+                "operand": 1,
+                "pages": [
+                  [
+                    "『．不．我不能輸給那",
+                    "　傢伙．索爾．索．．』"
+                  ]
+                ],
+                "scene_index": 2,
+                "script": "assets/story/ch29.json",
+                "source_dat": "FDTXT_029",
+                "string_index": 9,
+                "utterance": 0
+              },
+              "native_source": "0x20be2",
+              "native_text_index": 9,
+              "type": "dialogue"
+            }
+          ],
+          "code": 1,
+          "id": "record1_inactive",
+          "records_all_inactive": [
+            1
+          ],
+          "source": "0x20bea"
+        }
+      ],
       "native_turn_events": [
         {
           "dynamic_group": {

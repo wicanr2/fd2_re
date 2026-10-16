@@ -32,6 +32,121 @@ def load():
 
 drive = load()
 
+class EscortRounds(unittest.TestCase):
+    def command(self, rounds=3):
+        return {"escort_rounds": {"from_index": 1, "helpers": [18],
+                "map": 28, "mv": 4, "toward": [15, 21],
+                "until_runtime_units": 93, "max_rounds": rounds}}
+
+    def snapshot(self, count, round_number):
+        raw4, raw7 = bytearray(80), bytearray(80)
+        raw4[0x3b], raw7[0x3b] = 4, 7
+        return {"units": [{"index": 1, "camp": 2, "hp": 10, "x": 15, "y": 60},
+                          {"index": 0, "camp": 2, "hp": 10, "x": 14, "y": 60, "raw_hex": raw4.hex()},
+                          {"index": 18, "camp": 2, "hp": 10, "x": 17, "y": 62, "raw_hex": raw7.hex()}]
+                         + [{"index": i + 20, "camp": 0, "hp": 10, "x": 15, "y": 50 - i}
+                            for i in range(count - 3)],
+                "view": {"round": round_number}}
+
+    def run_case(self, snapshots, move=True, command=None):
+        index = 0
+        def cursor(_):
+            nonlocal index
+            index = min(index + 1, len(snapshots) - 1)
+            return True
+        with mock.patch.object(drive, "state", side_effect=lambda: snapshots[index]), \
+                mock.patch.object(drive, "in_battle", return_value=True), \
+                mock.patch.object(drive, "do_move_unit", return_value=move) as moving, \
+                mock.patch.object(drive, "do_engage", return_value=True) as engage, \
+                mock.patch.object(drive, "do_sweep_round", return_value=True) as sweep, \
+                mock.patch.object(drive, "do_await", return_value=True), \
+                mock.patch.object(drive, "do_await_ui", side_effect=cursor), \
+                mock.patch.object(drive, "do_mark"), \
+                mock.patch.object(drive, "do_force_enemy_clear", side_effect=AssertionError("護送不得清敵")):
+            result = drive.do_escort_rounds(command or self.command(rounds=2))
+            self.engages = [call.args[0] for call in engage.call_args_list]
+            self.ends = [call.args[0] for call in sweep.call_args_list]
+            return result, moving.call_count, sweep.call_count
+
+    def test_stops_when_all_materialized_after_two_normal_rounds(self):
+        a, b, c = self.snapshot(76, 1), self.snapshot(82, 2), self.snapshot(93, 3)
+        self.assertEqual(self.run_case([a, b, c]), (True, 2, 2))
+
+    def test_move_failure_never_ends_round(self):
+        self.assertEqual(self.run_case([self.snapshot(76, 1)], move=False), (False, 1, 0))
+
+    def test_budget_exhaustion_never_claims_complete(self):
+        a = self.snapshot(76, 1)
+        self.assertEqual(self.run_case([a] * 3), (False, 2, 2))
+
+    def test_helpers_use_each_native_mv_and_end_once(self):
+        command = self.command(rounds=2)
+        command["escort_rounds"]["helpers"] = [0, 18]
+        a, b, c = self.snapshot(76, 1), self.snapshot(82, 2), self.snapshot(93, 3)
+        self.assertEqual(self.run_case([a, b, c], command=command), (True, 2, 2))
+        self.assertEqual([x["typical_move"] for x in self.engages], [4, 7, 4, 7])
+        self.assertTrue(all(x["max_units"] == 0 for x in self.ends))
+
+    def test_missing_native_mv_stops_before_end(self):
+        current = self.snapshot(76, 1)
+        current["units"][2]["raw_hex"] = ""
+        self.assertEqual(self.run_case([current]), (False, 1, 0))
+
+    def test_blocked_escort_uses_normal_attack_on_adjacent_enemy(self):
+        a, b, c = self.snapshot(76, 1), self.snapshot(82, 2), self.snapshot(93, 3)
+        for state in (a, b):
+            state["units"][3].update(x=15, y=59)
+        command = self.command(rounds=2)
+        command["escort_rounds"]["attack_adjacent_if_blocked"] = True
+        with mock.patch.object(drive, "toward_candidates", return_value=[]):
+            self.assertEqual(self.run_case([a, b, c], command=command), (True, 0, 2))
+        self.assertEqual(self.engages[0]["engage"], {"from_index": 1, "target_index": 20})
+
+    def test_no_adjacent_enemy_keeps_normal_move(self):
+        a, b, c = self.snapshot(76, 1), self.snapshot(82, 2), self.snapshot(93, 3)
+        command = self.command(rounds=2)
+        command["escort_rounds"]["attack_adjacent_if_blocked"] = True
+        with mock.patch.object(drive, "toward_candidates", return_value=[]):
+            self.assertEqual(self.run_case([a, b, c], command=command), (True, 2, 2))
+        self.assertTrue(all(x["engage"]["from_index"] == 18 for x in self.engages))
+
+    def test_forty_round_bound_is_allowed_and_forty_one_rejected(self):
+        with mock.patch.object(drive, "state", return_value=self.snapshot(93, 1)):
+            self.assertTrue(drive.do_escort_rounds(self.command(rounds=40)))
+        with self.assertRaises(SystemExit):
+            drive.do_escort_rounds(self.command(rounds=41))
+
+    def test_forward_enemy_wins_over_nearer_pursuer(self):
+        actor = {"x": 16, "y": 51}
+        current = {"units": [{"index": 10, "camp": 0, "hp": 10, "x": 16, "y": 52},
+                             {"index": 20, "camp": 0, "hp": 10, "x": 17, "y": 48}]}
+        self.assertEqual(drive.escort_target(current, actor, (15, 21))["index"], 20)
+        self.assertEqual(drive.escort_target(current, actor, (15, 60))["index"], 10)
+
+    def test_lateral_approach_and_no_forward_enemy(self):
+        actor = {"x": 10, "y": 10}
+        current = {"units": [{"index": 10, "camp": 0, "hp": 10, "x": 9, "y": 10},
+                             {"index": 20, "camp": 0, "hp": 10, "x": 11, "y": 10}]}
+        self.assertEqual(drive.escort_target(current, actor, (15, 0))["index"], 20)
+        self.assertEqual(drive.escort_target(current, actor, (10, 20))["index"], 10)
+        self.assertIsNone(drive.escort_target({"units": []}, actor, (15, 0)))
+
+    def test_occupied_goal_still_has_approach_cost(self):
+        grid = (5, 1, [1] * 5)
+        current = {"units": [{"index": 0, "camp": 0, "x": 4, "y": 0, "hp": 10}]}
+        self.assertEqual(drive.route_costs_to_goal(grid, current, (4, 0))[(0, 0)], 4)
+
+    def test_future_enemy_barrier_does_not_erase_current_legal_approach(self):
+        grid = (7, 1, [1] * 7)
+        current = {"units": [{"index": 0, "camp": 2, "x": 0, "y": 0, "hp": 10},
+                             {"index": 1, "camp": 0, "x": 4, "y": 0, "hp": 10}]}
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=grid):
+            cells = drive.toward_candidates({"toward": [6, 0], "map": 28,
+                                            "mv": 6, "route_cost": True}, current, (0, 0))
+        self.assertTrue(cells)
+        self.assertTrue(all(x < 4 for x, _ in cells))
+
+
 class RuntimeUnitCount(unittest.TestCase):
     def test_materialized_count_includes_dead_records(self):
         current = {"units": [{"hp": 10}, {"hp": 0}]}
@@ -922,6 +1037,26 @@ class MoveUnit(unittest.TestCase):
 
 
 class TowardCandidates(unittest.TestCase):
+    def test_route_cost_can_move_away_from_goal_to_pass_a_wall(self):
+        w, h = 5, 5
+        cost = [1] * (w * h)
+        for y in range(4):
+            cost[y * w + 2] = 99
+        current = {"units": [self.unit(0, 1, 1, drive.ALLY_CAMP)]}
+        spec = {"toward": [3, 1], "map": 28, "mv": 2, "max_tries": 3}
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=(w, h, cost)):
+            self.assertEqual(drive.toward_candidates(spec, current, (1, 1)), [])
+            routed = drive.toward_candidates(dict(spec, route_cost=True), current, (1, 1))
+        self.assertEqual(routed[0], (1, 3))
+        self.assertLessEqual(abs(routed[0][0]-1) + abs(routed[0][1]-1), 2)
+
+    def test_route_cost_requires_map_and_rejects_bad_goal(self):
+        current = {"units": []}
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=None), self.assertRaises(SystemExit):
+            drive.toward_candidates({"toward": [3, 1], "route_cost": True}, current, (1, 1))
+        with self.assertRaises(SystemExit):
+            drive.route_costs_to_goal((2, 2, [1, 1, 1, 99]), current, (1, 1))
+
     """toward：候選格由地圖成本格與敵我位置估可達集合，依「離目標最近」排序。"""
 
     def grid(self):
@@ -1205,6 +1340,56 @@ class SaveFingerprint(unittest.TestCase):
             self.assertTrue(drive.do_town_save({"town_save": True, "slot": 2}))
         self.assertEqual(keys[:6],
                          ["enter", "right", "enter", "down", "down", "enter"])
+
+
+class DefeatChapter29Dragons(unittest.TestCase):
+    def test_actual_engage_finishes_at_record_question_without_another_key(self):
+        current = {"view": {"round": 26, "cursor_x": 1, "cursor_y": 2}, "units": [unit(1, 1, 2, identity=16), unit(1, 2, 0, identity=104)]}
+        with mock.patch.object(drive, "state", return_value=current), mock.patch.object(drive, "resume_battle", return_value=True), mock.patch.object(drive, "ensure_cursor_mode", return_value=True), mock.patch.object(drive, "do_goto", return_value=True), mock.patch.object(drive, "wait_mode", side_effect=["target", "ring", "target"]), mock.patch.object(drive, "send", return_value=(1, current)) as send, mock.patch.object(drive, "settle", return_value=current), mock.patch.object(drive, "in_battle", return_value=True), mock.patch.object(drive, "ui_mode", return_value="record_question"), mock.patch.object(drive, "report"), mock.patch.object(drive, "log_action"):
+            self.assertTrue(drive.do_engage({"engage": [1, 1], "reach": 1, "finish_ui": "record_question", "finish_wait": 1}))
+            self.assertEqual([c.args[0] for c in send.call_args_list], ["enter", "enter", "up", "enter", "enter"])
+
+    def command(self, limit=16):
+        return {"defeat_targets": {"targets": [{"index": 90, "identity": 104}, {"index": 91, "identity": 127}, {"index": 92, "identity": 105}], "helpers": [18, 0], "max_rounds": limit}}
+
+    def snapshot(self):
+        raw = bytearray(80)
+        raw[0x3b] = 7
+        return {"view": {"round": 26}, "units": [
+            {"index": i, "identity": i, "camp": 2, "hp": 30000, "x": 15, "y": 16, "raw_hex": raw.hex()} for i in (0, 18)] + [
+            {"index": i, "identity": identity, "camp": 0, "hp": 2400, "x": x, "y": 12} for i, identity, x in ((90, 104, 13), (91, 127, 15), (92, 105, 17))]}
+
+    def test_normal_attacks_use_target_identity_and_native_mv_without_clear(self):
+        current = self.snapshot()
+        def attack(command):
+            target = command["engage"]["target_index"]
+            next(u for u in current["units"] if u["index"] == target)["hp"] = 0
+            self.assertEqual(command["typical_move"], 7)
+            self.assertEqual(command["finish_ui"], "record_question")
+            return True
+        with mock.patch.object(drive, "state", return_value=current), mock.patch.object(drive, "ui_mode", return_value="cursor"), mock.patch.object(drive, "do_engage", side_effect=attack) as attacks, mock.patch.object(drive, "do_sweep_round", return_value=True), mock.patch.object(drive, "do_await", return_value=True), mock.patch.object(drive, "do_await_ui", return_value=True), mock.patch.object(drive, "do_mark"), mock.patch.object(drive, "do_force_enemy_clear") as clear:
+            self.assertTrue(drive.do_defeat_targets(self.command()))
+            self.assertEqual(attacks.call_count, 3)
+            clear.assert_not_called()
+
+    def test_wrong_identity_stops_before_any_input(self):
+        current = self.snapshot()
+        current["units"][-1]["identity"] = 0
+        with mock.patch.object(drive, "state", return_value=current), mock.patch.object(drive, "ui_mode", return_value="cursor"), mock.patch.object(drive, "do_engage") as attacks:
+            self.assertFalse(drive.do_defeat_targets(self.command()))
+            attacks.assert_not_called()
+
+    def test_round_budget_is_finite_and_never_clears(self):
+        with mock.patch.object(drive, "state", return_value=self.snapshot()), mock.patch.object(drive, "ui_mode", return_value="cursor"), mock.patch.object(drive, "do_engage", return_value=True), mock.patch.object(drive, "do_sweep_round", return_value=True) as end, mock.patch.object(drive, "do_await", return_value=True), mock.patch.object(drive, "do_await_ui", return_value=True), mock.patch.object(drive, "do_mark"):
+            self.assertFalse(drive.do_defeat_targets(self.command(1)))
+            self.assertEqual(end.call_count, 1)
+        with self.assertRaises(SystemExit):
+            drive.do_defeat_targets(self.command(17))
+
+    def test_failed_normal_engage_stops(self):
+        with mock.patch.object(drive, "state", return_value=self.snapshot()), mock.patch.object(drive, "ui_mode", return_value="cursor"), mock.patch.object(drive, "do_engage", return_value=False), mock.patch.object(drive, "do_sweep_round") as end:
+            self.assertFalse(drive.do_defeat_targets(self.command()))
+            end.assert_not_called()
 
 
 class UnitIdentityKey(unittest.TestCase):

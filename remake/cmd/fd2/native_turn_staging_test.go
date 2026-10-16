@@ -310,7 +310,82 @@ func chapter29DirectNativeGameFixture(t *testing.T) *Game {
 	if !g.materializeNativeMapRuntime(c.Nodes["battle_ch29"]) {
 		t.Fatalf("chapter29 native runtime: %s", g.loadErr)
 	}
+	// Direct-entry沒有執行ACT86，仍使用部署格；局部事件測試的游標
+	// 跟隨這份fixture的隊長，不能當成正常章入口收據。
+	leader := g.st.Units[0]
+	view := battle.NativeMapViewState{CameraX: 9, CameraY: 56,
+		CursorX: leader.X, CursorY: leader.Y,
+		VisibleCursorX: leader.X - 9, VisibleCursorY: leader.Y - 56}
+	if err := g.st.MaterializeNativeMapViewState(view); err != nil {
+		t.Fatal(err)
+	}
+	g.camX, g.camY = float64(view.CameraX*g.m.TileW), float64(view.CameraY*g.m.TileH)
+	g.curX, g.curY = view.CursorX, view.CursorY
 	return g
+}
+
+func TestEvent74PublishesPanViewAndClearsRangeWithReinforcements(t *testing.T) {
+	g := chapter29DirectNativeGameFixture(t)
+	g.st.NativeRoundCounter = 8
+	g.st.NativeEventState[16] = 4
+	g.st.NativeTurnEventControls[0] = battle.NativeTurnEventControl{Turn: 8, EventID: 74, RawCamp: 0}
+	before := g.st.NativeMapViewState
+	beforeCount := len(g.st.Units)
+	g.battleEvent = &battleEventRun{}
+	completed := false
+	if err := g.beginNativeStagingJob(g.sc.NativeTurnEvents[0], func() { completed = true }); err != nil {
+		t.Fatal(err)
+	}
+	if g.st.NativeMapRangeMode != 0 || len(g.st.Units) != beforeCount {
+		t.Fatal("PAN開始前未清selector，或增援提前發布")
+	}
+	call := g.nativeTurnStaging.event.Staging.Calls[0]
+	screen := ebiten.NewImage(640, 400)
+	finishNativeTurnStagingPan(t, g, screen)
+	want := before
+	want.CursorX += call.X - before.CameraX
+	want.CursorY += call.Y - before.CameraY
+	want.CameraX, want.CameraY = call.X, call.Y
+	if g.st.NativeMapViewState != want || g.st.NativeMapRangeMode != 0 || len(g.st.Units) != beforeCount+2 {
+		t.Fatalf("event74 view=%+v want=%+v range=%d slots=%d", g.st.NativeMapViewState, want, g.st.NativeMapRangeMode, len(g.st.Units))
+	}
+	advanceNativeTurnStagingFlash(t, g, screen)
+	if !completed || g.loadErr != "" || g.nativeTurnStaging != nil {
+		t.Fatalf("event74 completed=%v job=%v err=%q", completed, g.nativeTurnStaging, g.loadErr)
+	}
+}
+
+func TestEvent72StagesBothGroupsWithoutRestoringPriorView(t *testing.T) {
+	g := chapter29DirectNativeGameFixture(t)
+	g.battleEvent = &battleEventRun{}
+	screen := ebiten.NewImage(640, 400)
+	for _, call := range []struct {
+		group, x int
+		source   string
+	}{{2, 4, "0x35bfc"}, {3, 14, "0x35c0a"}} {
+		before := g.st.NativeMapViewState
+		beforeCount := len(g.st.Units)
+		event := nativeDeathStagingEvent(72, battle.NativeDeathOp{Group: call.group, X: call.x, Y: 35}, call.source)
+		completed := false
+		if err := g.beginNativeStagingJob(event, func() { completed = true }); err != nil {
+			t.Fatal(err)
+		}
+		if g.st.NativeMapRangeMode != 0 || len(g.st.Units) != beforeCount {
+			t.Fatal("event72 PAN開始時selector或原子名冊邊界不正確")
+		}
+		finishNativeTurnStagingPan(t, g, screen)
+		want := before
+		want.CursorX += call.x - before.CameraX
+		want.CursorY += 35 - before.CameraY
+		want.CameraX, want.CameraY = call.x, 35
+		if g.st.NativeMapViewState != want || g.st.NativeMapRangeMode != 0 || len(g.st.Units) != beforeCount+3 {
+			t.Fatalf("event72 group%d view=%+v want=%+v range=%d slots=%d", call.group, g.st.NativeMapViewState, want, g.st.NativeMapRangeMode, len(g.st.Units))
+		}
+		advanceNativeTurnStagingFlash(t, g, screen)
+		if !completed || g.loadErr != "" || g.nativeTurnStaging != nil {
+			t.Fatalf("event72完成=%v err=%q", completed, g.loadErr)
+		}
+	}
 }
 
 func TestEvent74PreflightResolvesOneDynamicGroupAtomically(t *testing.T) {
@@ -377,7 +452,7 @@ func TestEvent76FinalPreflightAppendsGroup1AndSchedulesEvent79Privately(t *testi
 	}
 }
 
-func TestEvent79RunsInRawCamp0BeforeEnemyPhase(t *testing.T) {
+func TestEvent79DefersPairUntilAfterEnemyBit7Clear(t *testing.T) {
 	g := chapter29DirectNativeGameFixture(t)
 	base := len(g.st.Units)
 	if n, err := g.st.AppendGroupWithNativePlacement(1, 0); err != nil || n != 3 {
@@ -386,13 +461,23 @@ func TestEvent79RunsInRawCamp0BeforeEnemyPhase(t *testing.T) {
 	g.st.NativeEventState[21] = byte(base)
 	g.st.NativeRoundCounter = 12
 	g.st.NativeTurnEventControls[2] = battle.NativeTurnEventControl{Turn: 12, EventID: 79, RawCamp: 0}
-	beforeRNG := g.nativeRNGState
 	if err := g.composeNativeMapFrame(); err != nil {
 		t.Fatal(err)
 	}
+	g.nativeRNGState = 40262 // 原版r5的35EE6入口固定種子；局部fixture。
 	g.endTurn()
 	finishNativeEndTurnRecoveryTest(t, g)
-	if g.loadErr != "" || !g.aiBusy || g.nativeRNGState == beforeRNG ||
+	if g.loadErr != "" || !g.aiBusy || g.nativeRNGState != 40262 || g.st.NativeTurnEventControls[2].Turn != 12 {
+		t.Fatal("79在友軍／敵方橫幅與13536之前執行")
+	}
+	// 局部fixture明示13536的已閉合清位；實際aiStep順序由完整同輸入重播另驗。
+	for _, u := range g.st.Units {
+		u.NativeRecordByte5 &= 0x7f
+	}
+	if err := g.applyNativeRawCamp0PairEvent(); err != nil {
+		t.Fatal(err)
+	}
+	if g.loadErr != "" || !g.aiBusy || g.nativeRNGState != 27345 ||
 		g.st.NativeTurnEventControls[2] != (battle.NativeTurnEventControl{Turn: 13, EventID: 79, RawCamp: 0}) {
 		t.Fatalf("event79 phase err=%q ai=%v rng=%#x row=%#v", g.loadErr, g.aiBusy, g.nativeRNGState, g.st.NativeTurnEventControls[2])
 	}
@@ -404,5 +489,8 @@ func TestEvent79RunsInRawCamp0BeforeEnemyPhase(t *testing.T) {
 	}
 	if marked != 2 {
 		t.Fatalf("event79 marked group1 slots=%d", marked)
+	}
+	if g.st.Units[base].NativeRecordByte5&0x80 == 0 || g.st.Units[base+1].NativeRecordByte5&0x80 == 0 || g.st.Units[base+2].NativeRecordByte5&0x80 != 0 {
+		t.Fatal("原版40262種子沒有保留前兩龍bit7及第三龍入場")
 	}
 }

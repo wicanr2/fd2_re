@@ -34,6 +34,8 @@ type Scenario struct {
 	// [0x53ECC]=1——與 default「記錄 0 倒下」同一個碼。第十章 0x20707 查記錄 50、51
 	// （docs/knowledge-base/26-per-chapter-event-handlers.md）。
 	NativeResultHandler      string             `json:"native_result_handler,omitempty"`
+	NativeResultInitialCode  *int               `json:"native_result_initial_code,omitempty"`
+	NativeResultAutoAdvance  bool               `json:"native_result_auto_advance,omitempty"`
 	NativeResultCode1Records []int              `json:"native_result_code1_records,omitempty"`
 	NativeResultRules        []NativeResultRule `json:"native_result_rules,omitempty"`
 	pendingJoins             []int
@@ -315,6 +317,12 @@ func LoadScenario(path string) (*Scenario, error) {
 	var sc Scenario
 	if err := json.Unmarshal(raw, &sc); err != nil {
 		return nil, err
+	}
+	if sc.NativeResultInitialCode != nil && (*sc.NativeResultInitialCode != 0 || sc.NativeResultHandler != "0x20b72" || len(sc.NativeResultRules) != 3) {
+		return nil, fmt.Errorf("原生結果初始值缺少第29章已證實handler／三列規則")
+	}
+	if sc.NativeResultAutoAdvance && sc.NativeResultInitialCode == nil {
+		return nil, fmt.Errorf("原生自動戰後缺少已證實章結果來源")
 	}
 	if len(sc.NativeResultRules) != 0 {
 		if sc.NativeResultHandler == "" || len(sc.NativeResultCode1Records) != 0 {

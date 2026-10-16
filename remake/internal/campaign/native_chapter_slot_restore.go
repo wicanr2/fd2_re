@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -41,6 +42,7 @@ type NativeIntermissionRouteOverride struct {
 	EntryNode     string `json:"entry_node"`
 	Evidence      string `json:"evidence"`
 	EvidenceLevel string `json:"evidence_level"`
+	SaveSHA256    string `json:"save_sha256"`
 }
 
 // LoadNativeIntermissionGateTable loads and validates a complete version-bound
@@ -96,9 +98,11 @@ func (table *NativeIntermissionGateTable) validate() error {
 	}
 	seen := make(map[int]bool)
 	for _, override := range table.EffectiveRouteOverrides {
+		digest, hashErr := hex.DecodeString(override.SaveSHA256)
 		if override.RawChapter < 0 || override.RawChapter >= len(table.Entries) ||
 			override.EntryNode == "" || override.Evidence == "" ||
-			override.EvidenceLevel != "confirmed-fixed-input" || seen[override.RawChapter] {
+			override.EvidenceLevel != "confirmed-fixed-input" || seen[override.RawChapter] ||
+			hashErr != nil || len(digest) != 32 {
 			return fmt.Errorf(
 				"native intermission gate: invalid effective route override for raw chapter %d",
 				override.RawChapter,
@@ -175,7 +179,7 @@ func BuildNativeChapterSlotRestorePlan(
 		nodeID = fmt.Sprintf("preparation_ch%02d", displayChapter)
 	}
 	for _, override := range table.EffectiveRouteOverrides {
-		if override.RawChapter == rawChapter {
+		if override.RawChapter == rawChapter && override.SaveSHA256 == snapshot.SourceSaveSHA256 {
 			nodeID = override.EntryNode
 			if strings.HasPrefix(nodeID, "preparation_") {
 				nodeType = "preparation"

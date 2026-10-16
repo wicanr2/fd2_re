@@ -1,11 +1,47 @@
 package fdsave
 
 import (
+	"crypto/sha256"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"reflect"
 	"testing"
 )
+
+func TestChapterSlotSourceHashBindsTheWholeStoredSave(t *testing.T) {
+	plain := make([]byte, FileSize)
+	start, _, _ := SlotBounds(0)
+	plain[start+RosterSize] = 28
+	stored, err := Encode(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	decoded, err := Decode(stored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	snapshot, err := InspectChapterSlot(decoded, 0)
+	if err != nil || snapshot.SourceSaveSHA256 != fmt.Sprintf("%x", sha256.Sum256(stored)) {
+		t.Fatalf("source hash=%q err=%v", snapshot.SourceSaveSHA256, err)
+	}
+	// 修改另一槽的未知內容也必須解除固定整檔來源覆寫；選中的槽保持相同。
+	other, _, _ := SlotBounds(1)
+	decoded[other+17] ^= 1
+	changedStored, err := Encode(decoded)
+	if err != nil {
+		t.Fatal(err)
+	}
+	changedPlain, err := Decode(changedStored)
+	if err != nil {
+		t.Fatal(err)
+	}
+	changed, err := InspectChapterSlot(changedPlain, 0)
+	if err != nil || changed.SourceSaveSHA256 == snapshot.SourceSaveSHA256 ||
+		changed.Metadata != snapshot.Metadata || changed.Records != snapshot.Records {
+		t.Fatalf("other-slot mutation changed selected slot or retained source identity: %v", err)
+	}
+}
 
 func TestNativeEnvelopeRoundTripAndChecksum(t *testing.T) {
 	plain := make([]byte, FileSize)

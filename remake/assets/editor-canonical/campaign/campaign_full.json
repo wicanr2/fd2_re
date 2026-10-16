@@ -6964,17 +6964,22 @@
         "legacy": {
           "bgm": "FDMUS_019",
           "map": "assets/maps/map28",
+          "native_defeat_return_title": {
+            "handler": "0x22e5c",
+            "resource": 79,
+            "return": "full_title_sequence"
+          },
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
           "native_map_view": {
             "camera_x": 9,
-            "camera_y": 56,
-            "cursor_x": 15,
-            "cursor_y": 63,
-            "range_mode": 0,
-            "visible_cursor_x": 6,
-            "visible_cursor_y": 7
+            "camera_y": 55,
+            "cursor_x": 14,
+            "cursor_y": 60,
+            "range_mode": 1,
+            "visible_cursor_x": 5,
+            "visible_cursor_y": 5
           },
           "scenario": "assets/scenarios/ch29.json",
           "units": "assets/maps/map28/map28_units.json"
@@ -6983,7 +6988,6 @@
       },
       "map_id": "map/map28",
       "node_id": "legacy/node/b5c1e4503510/battle_ch29/214",
-      "on_lose": "legacy/node/b5c1e4503510/retreat_ch29/216",
       "on_win": "legacy/node/b5c1e4503510/postbattle_ch29_persist/215",
       "scenario_id": "scenario/ch29",
       "type": "battle"
@@ -8486,7 +8490,13 @@
       "extensions": {
         "legacy": {
           "party_limit": 19,
-          "prompt": "要記錄戰況嗎？"
+          "preparation_front_identities": [
+            9
+          ],
+          "prompt": "要記錄戰況嗎？",
+          "required_party_identities": [
+            9
+          ]
         },
         "legacy_key": "preparation_ch29"
       },

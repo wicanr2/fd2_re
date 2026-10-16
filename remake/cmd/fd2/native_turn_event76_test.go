@@ -1,10 +1,40 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 )
+
+func TestEvent76PulseBlocksNormalUpdateAndRepeatedEND(t *testing.T) {
+	if os.Getenv("FD2_ORIGINAL_FDOTHER") == "" {
+		t.Skip("需要唯讀原版素材")
+	}
+	t.Setenv("FD2_ASSET_PACK", filepath.Clean("../../generated-assets/fd2-original-b97caf22"))
+	t.Setenv("FD2_MUTE", "1")
+	g := newChapter29RuntimeBattle(t)
+	if err := g.startNativePalettePulse(nativeEvent76PulseSpec(), nil); err != nil {
+		t.Fatal(err)
+	}
+	job, before := g.nativePalettePulse, g.st.Turn
+	r := &parityReplay{g: g, battle: "battle_ch29"}
+	if r.playerHasControl() {
+		t.Fatal("pulse期間重播提前取得玩家控制")
+	}
+	g.endTurn()
+	if g.nativeEndTurnRecovery != nil || g.st.Turn != before || g.loadErr != "" {
+		t.Fatal("pulse期間END建立了另一個演出owner")
+	}
+	job.drawn = true
+	if err := g.Update(); err != nil {
+		t.Fatal(err)
+	}
+	if g.nativePalettePulse != job || job.step != 1 || g.nativeEndTurnRecovery != nil || g.st.Turn != before {
+		t.Fatal("正常Update未推進pulse或誤啟動END")
+	}
+}
 
 func TestEvent76PresentationRunsSixPulsesTwoDelaysAndEditableTail(t *testing.T) {
 	g := completeNativeUnitPresentGame(t)

@@ -119,6 +119,7 @@ type parityReplay struct {
 	town              string // LOAD 進的城鎮（本章戰前）
 	townAfter         string // 戰後城鎮（原版 chapter 已推進，城鎮記錄是下一章的）
 	preparationAfter  string // 已證實直接到下一章非城鎮整備的保存邊界
+	postbattle        string // battle_start時由正式on_win讀取，不推猜節點名稱。
 	battleDone        bool
 	partySelectionSeq int // #84：正常選人起點；缺少此mark不推測部署
 	// aiEntries 是原版側 eip-trace 的 0x13A9F 入口（每個 AI 單位行動一筆，含 rng_word）；
@@ -129,8 +130,11 @@ type parityReplay struct {
 	aiOrderDivergences int
 	// growthEntries 是 eip-trace 的 0x1E54A 入口（升級成長每一次會擲骰的欄位一筆）。
 	// 升級訊息的等待迴圈同樣依時序吃亂數，所以每一次成長擲骰前都對齊一次。
-	growthEntries []parityAIEntry
-	growthCursor  int
+	growthEntries   []parityAIEntry
+	growthCursor    int
+	turnPairEntries []parityAIEntry
+	turnPairCursor  int
+	turnPairInputs  []map[string]int
 	// keys 是原版側 control-history.jsonl 的逐序號按鍵；move 用它重走驅動端在 select
 	// 與 move 之間真正按過的方向鍵與被拒絕的 enter，鏡頭才會跟原版走到同一格。
 	keys                map[int]string
@@ -637,6 +641,75 @@ func readParityAIEntries(t *testing.T, path, eip string) []parityAIEntry {
 	return out
 }
 
+func (r *parityReplay) observeTurnPairRNG(event battle.NativeTurnEvent, state uint16) (uint16, error) {
+	if event.EventID != 79 || event.Handler != "0x35ee6" || r.turnPairCursor >= len(r.turnPairEntries) {
+		return state, fmt.Errorf("event79缺少唯一原版入口")
+	}
+	entry := r.turnPairEntries[r.turnPairCursor]
+	if entry.ControlSeq <= 0 || entry.Unit != 0 || entry.RNGWord < 0 || entry.RNGWord > 65535 {
+		return state, fmt.Errorf("event79原版入口欄位不合法")
+	}
+	raw, err := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", entry.ControlSeq-1)))
+	if err != nil {
+		return state, err
+	}
+	var before struct {
+		Runner string `json:"runner"`
+		EXESHA string `json:"exe_sha256"`
+		Seq    int    `json:"control_seq"`
+		View   struct {
+			Round *int `json:"round"`
+		} `json:"view"`
+	}
+	if err := json.Unmarshal(raw, &before); err != nil {
+		return state, err
+	}
+	if before.Runner != "dosgolem" || before.EXESHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" || before.Seq != entry.ControlSeq-1 || before.View.Round == nil || r.g.st == nil || *before.View.Round != r.g.st.NativeRoundCounter {
+		return state, fmt.Errorf("event79原版版本／入口前回合不相同")
+	}
+	r.turnPairCursor++
+	r.turnPairInputs = append(r.turnPairInputs, map[string]int{"oracle_seq": entry.ControlSeq, "round": *before.View.Round, "input_rng_word": entry.RNGWord, "result_rng_word": int(fdother.NativeRNGStep(uint16(entry.RNGWord)))})
+	return uint16(entry.RNGWord), nil
+}
+
+func TestEvent79ReplayRNGRejectsWrongSourceOrRound(t *testing.T) {
+	for _, name := range []string{"valid", "wrong_runner", "wrong_hash", "wrong_round", "bad_rng", "missing_entry"} {
+		t.Run(name, func(t *testing.T) {
+			run := t.TempDir()
+			doc := map[string]interface{}{"runner": "dosgolem", "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f", "control_seq": 6, "view": map[string]int{"round": 25}}
+			entries := []parityAIEntry{{ControlSeq: 7, Unit: 0, RNGWord: 40262}}
+			switch name {
+			case "wrong_runner":
+				doc["runner"] = "other"
+			case "wrong_hash":
+				doc["exe_sha256"] = "unknown"
+			case "wrong_round":
+				doc["view"] = map[string]int{"round": 26}
+			case "bad_rng":
+				entries[0].RNGWord = 65536
+			case "missing_entry":
+				entries = nil
+			}
+			raw, err := json.Marshal(doc)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(run, "checkpoint-0006.json"), raw, 0600); err != nil {
+				t.Fatal(err)
+			}
+			r := &parityReplay{run: run, g: &Game{st: &battle.State{NativeRoundCounter: 25}}, turnPairEntries: entries}
+			seed, err := r.observeTurnPairRNG(battle.NativeTurnEvent{EventID: 79, Handler: "0x35ee6"}, 4)
+			if name == "valid" {
+				if err != nil || seed != 40262 || r.turnPairCursor != 1 || r.turnPairInputs[0]["result_rng_word"] != 27345 {
+					t.Fatalf("合法入口未重播：%d %v", seed, err)
+				}
+			} else if err == nil || seed != 4 || r.turnPairCursor != 0 || len(r.turnPairInputs) != 0 {
+				t.Fatal("錯來源／回合仍注入或消費亂數")
+			}
+		})
+	}
+}
+
 // readParityControlKeys 讀 oracle 輸出目錄的 control-history.jsonl（seq → key）。
 func readParityControlKeys(t *testing.T, path string) map[int]string {
 	t.Helper()
@@ -808,6 +881,10 @@ func TestChapterParityReplay(t *testing.T) {
 		keys:             readParityControlKeys(t, filepath.Join(run, "control-history.jsonl"))}
 	g.aiPlanObserver = r.observeAIPlan
 	g.growthRollObserver = r.observeGrowthRoll
+	if chapter == 29 {
+		r.turnPairEntries = readParityAIEntries(t, filepath.Join(run, "eip-trace.jsonl"), "0x35EE6")
+		g.nativeTurnPairRNGInput = r.observeTurnPairRNG
+	}
 	logFile, err := os.Create(filepath.Join(out, "checkpoints.jsonl"))
 	if err != nil {
 		t.Fatal(err)
@@ -951,6 +1028,24 @@ func TestChapterParityReplay(t *testing.T) {
 		}
 	}
 	t.Logf("AI 入口比較：原版 %d 筆、已消費 %d 筆、順序分岔 %d 筆", len(r.aiEntries), r.aiCursor, r.aiOrderDivergences)
+	if r.turnPairCursor != len(r.turnPairEntries) {
+		t.Fatalf("event79原版入口%d筆，重製只消費%d筆", len(r.turnPairEntries), r.turnPairCursor)
+	}
+	if chapter == 29 {
+		var metadata map[string]interface{}
+		if err := json.Unmarshal(settings, &metadata); err != nil {
+			t.Fatal(err)
+		}
+		metadata["event79_rng_inputs"] = r.turnPairInputs
+		metadata["event79_rng_method"] = "正式consumer入口承接dosgolem35EE6原始rng_word；以入口前checkpoint核對原始回合，非整段骰序一致。"
+		raw, err := json.MarshalIndent(metadata, "", "  ")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(out, "replay-settings.json"), append(raw, '\n'), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
 	if len(r.aiEntries) > 0 && r.aiCursor != len(r.aiEntries) {
 		r.checkpoint("ai_order", 0, r.ui(), false,
 			fmt.Sprintf("divergence: 原版 AI 入口 %d 筆，重製只消費 %d 筆", len(r.aiEntries), r.aiCursor))
@@ -1069,7 +1164,7 @@ func (r *parityReplay) mark(action parityAction) {
 		if err := verifyParityPreparationOwner(r.run, action.Seq, "0x2CC76"); err != nil {
 			t.Fatal(err)
 		}
-		if g.camp.NodeID() == r.battle {
+		if g.camp.NodeID() == r.battle || (r.postbattle != "" && g.camp.NodeID() == r.postbattle) {
 			r.ensurePostbattleNode(r.preparationAfter)
 		}
 		if !pump(t, g, 600, func() bool {
@@ -1217,6 +1312,7 @@ func (r *parityReplay) mark(action parityAction) {
 		}) {
 			t.Fatalf("戰場沒有交出操作權\n阻塞：%s", ch01Blockers(g))
 		}
+		r.postbattle = g.camp.Node().OnWin
 		r.checkpoint("battle_start", action.Seq, "cursor", true)
 	case "town_after_battle":
 		r.ensureTown()
@@ -1335,7 +1431,7 @@ func (r *parityReplay) playerHasControl() bool {
 		g.bannerT == 0 && len(g.dialog) == 0 && g.walk == nil && g.atk == nil && !g.ring &&
 		g.nativeClassUIJob == nil && g.spawnIntroTransition == nil && g.indexedTransition == nil &&
 		g.nativeUnitPresent == nil && g.actJob == nil && g.camPan == nil && g.focusJob == nil &&
-		g.nativePlayerFocus == nil && g.nativeEndTurnRecovery == nil
+		g.nativePlayerFocus == nil && g.nativeEndTurnRecovery == nil && g.nativePalettePulse == nil
 }
 
 func (r *parityReplay) settleTown() {

@@ -51,6 +51,54 @@ func TestNativeCh28PostFrontiersFollowRecoveredAppendPrefixes(t *testing.T) {
 	}
 }
 
+func TestNativeCh28PostAdmitsAtomicCaptainAppendBetweenCompleteGroups(t *testing.T) {
+	main := []int{4, 4, 5, 5, 6, 6, 7, 7, 1, 1, 1}
+	captain := []int{2, 2, 2, 3, 3, 3}
+	fixture := func(groups []int) *State {
+		st := nativeCh28PostPreludeFixture(76)
+		for _, group := range groups {
+			unit := *st.Units[75]
+			unit.Group = group
+			st.Units = append(st.Units, &unit)
+			st.NativeRuntimeRecords = append(st.NativeRuntimeRecords, st.NativeRuntimeRecords[75])
+		}
+		return st
+	}
+	for _, length := range []int{0, 2, 4, 6, 8, 11} {
+		for _, insertion := range []int{0, 2, 4, 6, 8, 11} {
+			if insertion > length {
+				continue
+			}
+			groups := append([]int(nil), main[:insertion]...)
+			groups = append(groups, captain...)
+			groups = append(groups, main[insertion:length]...)
+			st := fixture(groups)
+			if err := ApplyNativeCh28PostRawPrelude(st); err != nil {
+				t.Fatalf("主鏈%d／插入%d：%v", length, insertion, err)
+			}
+			if st.Units[19].HP != 0x1234 || st.Units[len(st.Units)-1].HP != 0 {
+				t.Fatal("原生清除未保留持續隊伍或漏掉追加名冊")
+			}
+		}
+	}
+	for _, groups := range [][]int{
+		{4, 2, 2, 2, 3, 3, 3, 4}, // 隊長鏈不能拆開兩筆主群組。
+		{2, 2, 3, 2, 3, 3},       // 數量正確但六筆順序錯誤。
+		{2, 2, 2, 3},             // 只有部分隊長鏈。
+		{2, 2, 2, 3, 3, 3, 2, 2}, // 不能再接第二次隊長鏈。
+	} {
+		st := fixture(groups)
+		beforeUnits := append([]*Unit(nil), st.Units...)
+		beforeRaw := append([]NativeRuntimeRecordState(nil), st.NativeRuntimeRecords...)
+		if err := ApplyNativeCh28PostRawPrelude(st); err == nil {
+			t.Fatalf("錯誤增援順序通過：%v", groups)
+		}
+		if !reflect.DeepEqual(st.Units, beforeUnits) || !reflect.DeepEqual(st.NativeRuntimeRecords, beforeRaw) {
+			t.Fatal("拒收增援順序時改寫了狀態")
+		}
+	}
+}
+
 func TestNativeCh28PostRawPreludeClearsTailAndPatchesSlot20(t *testing.T) {
 	st := nativeCh28PostPreludeFixture(87)
 	st.NativeRuntimeRecords[19].Raw[0x40] = 0xaa

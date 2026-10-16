@@ -216,10 +216,11 @@ type Game struct {
 	nativeHealPresentation      *nativeCommandHealPresentationJob
 	nativeModifierPresentation  *nativeCommandModifierPresentationJob
 	nativeAICommandModifier     *nativeAICommandModifierPresentationJob
-	nativeAIActionPlan          *battle.AIPlan                    // 0x15311 route being dispatched; owns the winner cell [0x53C27]/[0x53C2B]
-	nativeTownHubReturn         bool                              // 下一次 enterNode 進城鎮是 hub 子場景返回：保留 [0x5412B] 選擇器
-	aiPlanObserver              func(*battle.AIPlan)              // 對拍測試用：每個 AI 單位計畫產生後、執行前呼叫（可對齊 RNG）
-	growthRollObserver          func(*battle.Unit, uint16) uint16 // 對拍測試用：每次升級成長擲骰（0x1E54A）前對齊 RNG
+	nativeAIActionPlan          *battle.AIPlan                                       // 0x15311 route being dispatched; owns the winner cell [0x53C27]/[0x53C2B]
+	nativeTownHubReturn         bool                                                 // 下一次 enterNode 進城鎮是 hub 子場景返回：保留 [0x5412B] 選擇器
+	aiPlanObserver              func(*battle.AIPlan)                                 // 對拍測試用：每個 AI 單位計畫產生後、執行前呼叫（可對齊 RNG）
+	nativeTurnPairRNGInput      func(battle.NativeTurnEvent, uint16) (uint16, error) // 對拍測試明示事件決策種子；正式執行為nil。
+	growthRollObserver          func(*battle.Unit, uint16) uint16                    // 對拍測試用：每次升級成長擲骰（0x1E54A）前對齊 RNG
 	nativeCmd0Presentation      *nativeCommand0PresentationJob
 	nativeCmd1Presentation      *nativeCommand1PresentationJob
 	nativeCmd2Presentation      *nativeCommand2PresentationJob
@@ -4109,6 +4110,7 @@ func applyPersistentStats(dst, src *battle.Unit) {
 	dst.NativeTransient = src.NativeTransient
 	dst.NativeRecordByte5, dst.HasNativeRecordByte5 = src.NativeRecordByte5, src.HasNativeRecordByte5
 	dst.NativeRecordByte6, dst.HasNativeRecordByte6 = src.NativeRecordByte6, src.HasNativeRecordByte6
+	dst.NativeRecordByte8, dst.HasNativeRecordByte8 = src.NativeRecordByte8, src.HasNativeRecordByte8
 	dst.NativeRecordByte34, dst.HasNativeRecordByte34 = src.NativeRecordByte34, src.HasNativeRecordByte34
 	dst.NativeRecordByte35, dst.HasNativeRecordByte35 = src.NativeRecordByte35, src.HasNativeRecordByte35
 	dst.NativeRecordByte36, dst.HasNativeRecordByte36 = src.NativeRecordByte36, src.HasNativeRecordByte36
@@ -8723,6 +8725,11 @@ func (g *Game) Update() error {
 		g.ringInput()
 		return nil
 	}
+	// 35D60的六次35E5A是同步演出；續行前不可開啟另一個END owner。
+	// READY: fd2_ch29_flow_20261017.json event76_input_gate_contract。
+	if g.nativePalettePulse != nil {
+		return nil
+	}
 	if !nativeModifierHeld() && inpututil.IsKeyJustPressed(ebiten.KeyF5) { // 快速存檔(節點邊界語意:存 campaign 進度)
 		g.saveGame()
 	}
@@ -12300,7 +12307,7 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 // 可編輯的回合事件依 NativeTurnPhaseSelector 插在對應位置；沒有 selector 的手寫
 // 事件仍留在敵方回合之後（finishTurn）。
 func (g *Game) endTurn() {
-	if g.st == nil || g.result != "" || g.aiBusy || g.nativeEndTurnRecovery != nil || g.nativeTurnStaging != nil || g.battleEvent != nil {
+	if g.st == nil || g.result != "" || g.aiBusy || g.nativeEndTurnRecovery != nil || g.nativeTurnStaging != nil || g.battleEvent != nil || g.nativePalettePulse != nil {
 		return
 	}
 	if g.st.HasNativeRuntimeUnitProjection || g.st.HasNativeMapViewState {
@@ -12697,6 +12704,12 @@ func (g *Game) aiStep() {
 	}
 	if g.aiPhaseSelector0Pending && g.aiBusy && g.st != nil {
 		g.aiPhaseSelector0Pending = false
+		// 79的兩個bit7必須在13536之後發布，否則會被同一階段清掉。
+		if err := g.applyNativeRawCamp0PairEvent(); err != nil {
+			g.loadErr = "native event79 phase: " + err.Error()
+			g.aiBusy = false
+			return
+		}
 		g.runEditableTurnEvents(0, func() {})
 		if g.battleEvent != nil {
 			return

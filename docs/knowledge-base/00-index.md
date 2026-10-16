@@ -879,3 +879,16 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - 第28章有界作弊校準：[AP+1000清冊](../data/parity-slots/ch28-ap1000-manifest.json)與[r2完整流程](../data/parity-plans/ch28-flow-cheat-r2.jsonl)。保留r1堵路失敗，r2先要求64筆增援皆已物化才清敵；政策與逐欄位差異在主契約。
 
 - [第28章正式流程收據](../data/ui-traces/parity-ch28.json)：三波增援、戰後與完整非城鎮保存；流程模式，章前政策見主契約。
+
+- 第29章正常接續：[實際SAV清冊](../data/parity-slots/ch29-manifest.json)、[正常LOAD短計畫](../data/parity-plans/ch29-load-prefix-r1.jsonl)。原版證據沿[map28拓撲](../data/ida/fd2_map28_runtime_topology_ida.txt)與[ch28 post](../data/ida/fd2_ch28_post_ida.txt)，完整章現已通過，見本節正式收據。
+
+- [第29章正常流程主契約](../data/ida/fd2_ch29_flow_20261017.json)：原版LOAD收據、固定輸入路由界線、必出前置及map28增援；READY先於正式修改。
+
+- 第29章有界護送：[AP+5000槽清冊](../data/parity-slots/ch29-ap5000-manifest.json)、[正常輸入完整計畫](../data/parity-plans/ch29-flow-cheat-r1.jsonl)。政策與停止門檻見第29章主契約；歷史失敗計畫不計整章。
+
+- 第29章[r2正常護送計畫](../data/parity-plans/ch29-flow-cheat-r2.jsonl)：修正未來敵軍封路排序，兩名正常接戰助手；r1診斷保留，不計整章。
+
+- 第29章[r3有界輸入計畫](../data/parity-plans/ch29-flow-cheat-r3.jsonl)：固定來源／seed，最多40輪；護送角色用正常攻擊解開貼身阻擋，不新增狀態注入。
+- [第29章正常三頭龍流程計畫](../data/parity-plans/ch29-flow-dragons-r4.jsonl)：同源護送、完整增援與正常死亡旗標；不用HP-only清敵。
+
+- [第29章完整流程正式收據](../data/ui-traces/parity-ch29.json)：護送、增援、三龍、自動戰後及strict SAV，依111／114例外PLAYER-E2。
