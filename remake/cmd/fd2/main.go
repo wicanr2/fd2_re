@@ -564,6 +564,7 @@ type Game struct {
 	sourceBattleEntities                *localization.EntityCatalog                 // protect 使用來源姓名，不受顯示語系影響
 	modernStoryPortraits                *modernStoryPortraitSet                     // 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
 	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
+	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
 	nativeDialogueArrowTicks            int
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
@@ -9134,6 +9135,7 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	g.modernHDOverlay = nil
 	// The exact full-DAC saturation covers the complete mode-13h surface,
 	// including HUD and dialogue. Defer preserves that hardware ordering across
 	// every early-return presentation branch.
@@ -13064,7 +13066,12 @@ func main() {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	g := loadGame()
 	defer g.closeAudioPlayers()
-	if err := ebiten.RunGame(g); err != nil {
+	var player ebiten.Game = g
+	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
+		ebiten.SetWindowSize(modernHDWidth, modernHDHeight)
+		player = &modernHDPresentation{Game: g}
+	}
+	if err := ebiten.RunGame(player); err != nil {
 		log.Fatal(err)
 	}
 }

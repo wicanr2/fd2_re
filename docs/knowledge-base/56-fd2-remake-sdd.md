@@ -1,5 +1,13 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+2026-10-18 F9暫態清除（CONFORMED／RUNTIME-E1，[#250](https://github.com/wicanr2/fd2_re/issues/250)）：
+正常首章開啟敵方角色資訊後F9，戰役已載入酒店，Draw仍由`nativePlayerStatus`呈現舊面板。
+成功`loadJSONGameFromSlot`在完成存檔驗證、發布新節點前，須清除未序列化的`nativePlayerStatus`。
+拒收存檔不得清除目前面板。沿既有JSON邊界、存檔格式與原版規則；用成功／拒收回歸及普通F9後GPU驗證。
+修正前回歸確實失敗，修正後有效／拒收及現代主題回歸通過；普通Home／F9的GPU由資訊面板切至酒店及城鎮。
+[主收據](../data/fd2-quickload-20261018.json)明示建構JSON槽與`FD2_TITLE=0`，只列RUNTIME-E1。
+原始正常輸入與三張相同SHA的殘留畫面保留；歷史正式影片與Release不覆寫。
+
 2026-10-15 #207：清敵測試依原版30格死亡收尾陣列選擇安全視野，以正常鍵盤移鏡頭後才注入HP0。正式死亡規則與CPU不改。來源、強推論限制與READY契約見[event54主契約](../data/ida/fd2_turn_event54_20261015.json)的postbattle_clear_viewport_spec。
 
 2026-10-15 使用者接續定案：允許測試作弊、參考攻略，以流程一致優先，不強求每frame相同。
@@ -9,7 +17,7 @@
 2026-10-15 排程定案：使用者要求重製完成與HD優先，匹配式反編譯[#198](https://github.com/wicanr2/fd2_re/issues/198)暫停。
 正式Go／Ebiten實作仍依原版證據、READY規格與正常玩家路徑驗收，不要求先完成全檔C位元組匹配。
 章節、事件與HUD缺口以[58目前狀態](58-fd2-exe-re-coverage.md)及[91排程](91-worklist.md)為準。
-現代主題沿用[61](61-modern-theme-runtime-spec.md)已核准範圍；高解析呈現分支尚待範圍確認及READY審查，不能將原生尺寸重繪稱為HD完成。
+現代主題沿用[61](61-modern-theme-runtime-spec.md)已核准範圍。使用者確認1920×1200及480×480頭像後，啟動時高解析序章切片已通過正常97拍與GPU核對；F2動態入口、其餘介面／戰場及跨平台效能仍待完成。範圍與來源見[高解析收據](../data/fd2-modern-hd-20261018.json)。
 
 原版執行器採用dosgolem規格429的實際IRQ7處理器、DSP確認、PIC EOI及IRET返回鏈。
 時鐘與私有堆疊仍沿既有平台近似；不恢復輪詢替代，不修改遊戲規則。

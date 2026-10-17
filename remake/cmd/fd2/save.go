@@ -264,6 +264,9 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 	// gate A 覆蓋剛還原的存檔值。教會選單、候選與 indexed 工作同屬未序列化
 	// 暫態，必須在進入存檔節點前一併丟棄。
 	g.dialog, g.st, g.sel = nil, nil, nil
+	// F9 can be pressed while the battle inspector owns the final frame.
+	// Its pixels and lifecycle belong to the discarded scene, not the save.
+	g.nativePlayerStatus = nil
 	g.nativeChapterRestore = nil
 	g.clearChurchTransientStateForLoad()
 	g.clearShopTransientStateForLoad()

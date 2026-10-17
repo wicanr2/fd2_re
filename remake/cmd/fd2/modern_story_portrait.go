@@ -11,15 +11,20 @@ import (
 	_ "image/png"
 	"os"
 	"path/filepath"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const modernHandpaintedThemeID = "modern-handpainted-a"
 
 type modernStoryPortraitFrame struct {
-	image image.Image
+	image   image.Image
+	hdImage image.Image
+	hdGPU   *ebiten.Image
 }
 
 type modernStoryPortraitSet struct {
+	hasHD             bool
 	portraits         map[int]*modernStoryPortraitFrame
 	mapSprites        map[int][]image.Image
 	mapTilesets       map[int]image.Image
@@ -75,6 +80,7 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		mapSprites:  make(map[int][]image.Image),
 		mapTilesets: make(map[int]image.Image),
 	}
+	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
 		if asset.Role == "battle_action_icon_set" {
 			wantSemantics := []string{"attack", "spell", "item", "wait"}
@@ -258,18 +264,27 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			set.mapSprites[asset.SourceGroup] = frames
 			continue
 		}
-		if asset.Role != "story_portrait_frame" {
+		if asset.Role != "story_portrait_frame" && asset.Role != "story_portrait_hd_frame" {
 			continue
+		}
+		hd := asset.Role == "story_portrait_hd_frame"
+		width, contract := 80, "native_story_dialogue_rgba_overlay_v1"
+		if hd {
+			width, contract = 480, "native_story_dialogue_rgba_overlay_hd6_v1"
 		}
 		if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
 			return nil, fmt.Errorf("modern theme portrait %d has unsupported status %q", asset.SpeakerID, asset.Status)
 		}
-		if asset.ConsumerContract != "native_story_dialogue_rgba_overlay_v1" ||
-			asset.Width != 80 || asset.Height != 80 || asset.SpeakerID < 0 ||
+		if asset.ConsumerContract != contract ||
+			asset.Width != width || asset.Height != width || asset.SpeakerID < 0 ||
 			asset.Frame != 0 || asset.MouthState != "closed" {
 			return nil, fmt.Errorf("modern theme portrait %d violates the static frame contract", asset.SpeakerID)
 		}
-		if _, duplicate := set.portraits[asset.SpeakerID]; duplicate {
+		_, duplicate := set.portraits[asset.SpeakerID]
+		if hd {
+			_, duplicate = hdPortraits[asset.SpeakerID]
+		}
+		if duplicate {
 			return nil, fmt.Errorf("modern theme portrait %d is duplicated", asset.SpeakerID)
 		}
 		name := filepath.Base(asset.File)
@@ -286,11 +301,11 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			return nil, fmt.Errorf("modern theme portrait %d has a sha256 mismatch", asset.SpeakerID)
 		}
 		decoded, _, err := image.DecodeConfig(bytes.NewReader(pngRaw))
-		if err != nil || decoded.Width != 80 || decoded.Height != 80 {
+		if err != nil || decoded.Width != width || decoded.Height != width {
 			return nil, fmt.Errorf("modern theme portrait %d has invalid PNG geometry", asset.SpeakerID)
 		}
 		portrait, _, err := image.Decode(bytes.NewReader(pngRaw))
-		if err != nil || portrait.Bounds().Dx() != 80 || portrait.Bounds().Dy() != 80 {
+		if err != nil || portrait.Bounds().Dx() != width || portrait.Bounds().Dy() != width {
 			return nil, fmt.Errorf("modern theme portrait %d cannot be decoded", asset.SpeakerID)
 		}
 		for y := portrait.Bounds().Min.Y; y < portrait.Bounds().Max.Y; y++ {
@@ -301,10 +316,27 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 				}
 			}
 		}
-		set.portraits[asset.SpeakerID] = &modernStoryPortraitFrame{image: portrait}
+		if hd {
+			hdPortraits[asset.SpeakerID] = portrait
+		} else {
+			set.portraits[asset.SpeakerID] = &modernStoryPortraitFrame{image: portrait}
+		}
 	}
 	if len(set.portraits) == 0 {
 		return nil, errors.New("modern theme catalog has no story portrait")
+	}
+	if len(hdPortraits) != 0 {
+		if len(hdPortraits) != len(set.portraits) {
+			return nil, errors.New("modern HD portrait group is incomplete")
+		}
+		for speaker, portrait := range set.portraits {
+			hd, ok := hdPortraits[speaker]
+			if !ok {
+				return nil, fmt.Errorf("modern HD portrait %d is missing", speaker)
+			}
+			portrait.hdImage = hd
+		}
+		set.hasHD = true
 	}
 	return set, nil
 }

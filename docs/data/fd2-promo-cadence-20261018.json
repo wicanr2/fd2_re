@@ -1,0 +1,930 @@
+{
+  "schema_version": 1,
+  "status": "CONFORMED-LOCAL-MEDIA",
+  "scope": "推廣片擷取節奏診斷、DOSBox輔助比較及四語新影片，非新原版對拍。",
+  "date": "2026-10-18",
+  "diagnosis": {
+    "observed": "單一FFmpeg同時擷取音畫時，代表片段實際16.531至18.225fps；分開擷取後為35.224至49.351fps。",
+    "causal_limit": "這是擷取流水線及不同片段的診斷，沒有隔離所有CPU／GPU與場景成本，不推論原生動畫必須每幀更新。",
+    "dosgolem": "影片直接擷取正式Go/Ebiten引擎，未經dosgolem；其frame-stride、frame-eip、frame-settle及max只影響oracle取樣。本輪沒有修改dosgolem參數或硬體driver。",
+    "comparison": "DOSBox-X source-5fcf624b-r1、normal core、fixed12000 cycles、無音訊；代表片段59.887fps。只比較相近騎士構圖，不宣稱同狀態或硬體時間一致。"
+  },
+  "reports": {
+    "baseline.json": {
+      "schema_version": 1,
+      "kind": "fd2-video-cadence-diagnostic",
+      "input": "dist-all/v.1.0.0-20261017/promo/FD2-v.1.0.0-20261017-promo.mp4",
+      "sha256": "aabbf42724f458bf720d14926eee4523dd0d6bcf90f65210434153f91cd5aa92",
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "segments": [
+        {
+          "start_seconds": 6.5,
+          "duration_seconds": 6.5,
+          "crop": "960:600:320:60",
+          "frames": 196,
+          "observed_fps": 30.0,
+          "change_frames_per_second": 2.462,
+          "low_change_fraction": 0.9179,
+          "longest_low_change_seconds": 2.5667,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 37.5,
+          "duration_seconds": 6.5,
+          "crop": "960:600:320:60",
+          "frames": 196,
+          "observed_fps": 29.847,
+          "change_frames_per_second": 6.122,
+          "low_change_fraction": 0.7949,
+          "longest_low_change_seconds": 0.5361,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 45.5,
+          "duration_seconds": 7.5,
+          "crop": "960:600:320:60",
+          "frames": 226,
+          "observed_fps": 29.867,
+          "change_frames_per_second": 5.575,
+          "low_change_fraction": 0.8133,
+          "longest_low_change_seconds": 0.5692,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 54.5,
+          "duration_seconds": 8.0,
+          "crop": "960:600:320:60",
+          "frames": 241,
+          "observed_fps": 30.0,
+          "change_frames_per_second": 8.25,
+          "low_change_fraction": 0.725,
+          "longest_low_change_seconds": 0.8333,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        }
+      ]
+    },
+    "remake-cadence.json": {
+      "schema_version": 1,
+      "kind": "fd2-video-cadence-diagnostic",
+      "input": "work/promo-cadence-20261018/remake-r3/live.mkv",
+      "sha256": "1c090c09089f697795f34ba0ab9b04ea906e234727cfcb95ffbd38d7088c0bf0",
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "segments": [
+        {
+          "start_seconds": 26.0,
+          "duration_seconds": 7.0,
+          "crop": null,
+          "frames": 117,
+          "observed_fps": 16.531,
+          "change_frames_per_second": 9.406,
+          "low_change_fraction": 0.431,
+          "longest_low_change_seconds": 0.242,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 391.0,
+          "duration_seconds": 7.0,
+          "crop": null,
+          "frames": 129,
+          "observed_fps": 18.112,
+          "change_frames_per_second": 5.094,
+          "low_change_fraction": 0.7188,
+          "longest_low_change_seconds": 0.4417,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 405.0,
+          "duration_seconds": 7.0,
+          "crop": null,
+          "frames": 131,
+          "observed_fps": 18.225,
+          "change_frames_per_second": 5.468,
+          "low_change_fraction": 0.7,
+          "longest_low_change_seconds": 0.3841,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 436.0,
+          "duration_seconds": 8.0,
+          "crop": null,
+          "frames": 144,
+          "observed_fps": 17.911,
+          "change_frames_per_second": 7.39,
+          "low_change_fraction": 0.5874,
+          "longest_low_change_seconds": 1.5633,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        }
+      ]
+    },
+    "split-final-cadence.json": {
+      "schema_version": 1,
+      "kind": "fd2-video-cadence-diagnostic",
+      "input": "work/promo-cadence-20261018/remake-split/live.mkv",
+      "sha256": "f3a9e7d649e321a4a7f58afb4786f56870f1e5638cf25a98305c3d2ea585b648",
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "segments": [
+        {
+          "start_seconds": 19.0,
+          "duration_seconds": 9.0,
+          "crop": null,
+          "frames": 446,
+          "observed_fps": 49.351,
+          "change_frames_per_second": 22.18,
+          "low_change_fraction": 0.5506,
+          "longest_low_change_seconds": 0.851,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 619.0,
+          "duration_seconds": 5.0,
+          "crop": null,
+          "frames": 203,
+          "observed_fps": 40.808,
+          "change_frames_per_second": 4.646,
+          "low_change_fraction": 0.8861,
+          "longest_low_change_seconds": 0.4656,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        },
+        {
+          "start_seconds": 644.0,
+          "duration_seconds": 10.0,
+          "crop": null,
+          "frames": 355,
+          "observed_fps": 35.224,
+          "change_frames_per_second": 3.881,
+          "low_change_fraction": 0.8898,
+          "longest_low_change_seconds": 1.3343,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        }
+      ]
+    },
+    "dosbox-final-cadence.json": {
+      "schema_version": 1,
+      "kind": "fd2-video-cadence-diagnostic",
+      "input": "work/promo-cadence-20261018/dosbox-12000-r3/dosbox.mkv",
+      "sha256": "9e1196a2e3cc7795122dfcef41b8b55756786de8fb8bf3b1f6d23bab488e7ca9",
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "segments": [
+        {
+          "start_seconds": 9.0,
+          "duration_seconds": 9.0,
+          "crop": null,
+          "frames": 541,
+          "observed_fps": 59.887,
+          "change_frames_per_second": 34.269,
+          "low_change_fraction": 0.4278,
+          "longest_low_change_seconds": 0.6512,
+          "threshold_mean_luma_difference": 0.12,
+          "meaning": "低變化可包含原生動畫停留或讀字等待；此量測不能單獨證明掉幀、遊戲速度或原版時序一致。"
+        }
+      ]
+    }
+  },
+  "movies": [
+    {
+      "path": "dist-all/v.1.0.0-20261017/promo/FD2-v.1.0.0-20261017-promo-multilang.mp4",
+      "sha256": "478d68ff9a4b56254776101d989a52bb86ece37ca48f9e9e286e384fa49c0c42",
+      "duration_seconds": 136.035,
+      "fps": 60,
+      "limits": "輸出CFR60含來源重複影格，沒有插補影格；不是每秒60個不同遊戲畫面。"
+    },
+    {
+      "path": "dist-all/v.1.0.0-20261017/promo/FD2-v.1.0.0-20261017-dosbox-comparison.mp4",
+      "sha256": "962ae1c06a8fbc4619007ccc8711367743a861c5aef5d307c34b3618b8835d8f",
+      "duration_seconds": 12,
+      "audio": false
+    }
+  ],
+  "promo_validation": {
+    "status": "CONFORMED-LOCAL-MEDIA",
+    "version": "v.1.0.0-20261017",
+    "duration": 136.035,
+    "sha256": "478d68ff9a4b56254776101d989a52bb86ece37ca48f9e9e286e384fa49c0c42",
+    "complete_decode": true,
+    "mean_volume_db": -20.6,
+    "max_volume_db": -3.0,
+    "black_intervals": [],
+    "silence_intervals": [],
+    "freeze_intervals": [
+      {
+        "start": 10.3544,
+        "end": 14.1877,
+        "duration": 3.8332999999999995
+      },
+      {
+        "start": 17.221,
+        "end": 20.721,
+        "duration": 3.5
+      },
+      {
+        "start": 25.2877,
+        "end": 29.221,
+        "duration": 3.933299999999999
+      },
+      {
+        "start": 83.0877,
+        "end": 86.3544,
+        "duration": 3.2667
+      },
+      {
+        "start": 91.1877,
+        "end": 95.3544,
+        "duration": 4.166699999999992
+      },
+      {
+        "start": 113.288,
+        "end": 117.188,
+        "duration": 3.9000000000000057
+      },
+      {
+        "start": 125.354,
+        "end": 129.188,
+        "duration": 3.833999999999989
+      },
+      {
+        "start": 131.988,
+        "end": 135.188,
+        "duration": 3.1999999999999886
+      }
+    ],
+    "samples": [
+      {
+        "path": "multilang-sample-00.png",
+        "seconds": 1.5,
+        "heading": "炎龍，再出發",
+        "sha256": "8a9722ed592cade8cca93d1118e0a8cb1832d9ed4793a85beb614227ab7257ca"
+      },
+      {
+        "path": "multilang-sample-01.png",
+        "seconds": 6.5,
+        "heading": "熟悉的開場",
+        "sha256": "98f6c1c2b0bff5b3426eecfdbf504a49eaa74d46f48e144a4feb1845a2df33ce"
+      },
+      {
+        "path": "multilang-sample-02.png",
+        "seconds": 13.5,
+        "heading": "經典登場",
+        "sha256": "3e01ea6de66c78b02cca492fc09a7eefef531f5e17a2a4dcdbfb09b43d3e3c12"
+      },
+      {
+        "path": "multilang-sample-03.png",
+        "seconds": 19.0,
+        "heading": "正式開始",
+        "sha256": "f08ccdb64cf1cd3acf61c9f2ee08c8cf2db86239e6111ce42e5ed96eef0c565e"
+      },
+      {
+        "path": "multilang-sample-04.png",
+        "seconds": 26.0,
+        "heading": "王宮的囑託",
+        "sha256": "2017005b4ccd7c116a9420b42c1be918a19db615bef2ba0ab938f44b6ec1c9c3"
+      },
+      {
+        "path": "multilang-sample-05.png",
+        "seconds": 34.0,
+        "heading": "踏上旅程",
+        "sha256": "3b96e47986bdef8dc19f5284ab8715d57d0a73d29e70728de09e85e232a663fd"
+      },
+      {
+        "path": "multilang-sample-06.png",
+        "seconds": 40.5,
+        "heading": "第一章",
+        "sha256": "133a6c7354ffd672dafe5d31849589b80d585dd51d035be82382c6d2ce9b4fc1"
+      },
+      {
+        "path": "multilang-sample-07.png",
+        "seconds": 47.0,
+        "heading": "選人與移動",
+        "sha256": "645aecbb55ea8dcdd1ca0aae523e01110fe703c060b261e8ee627904e0f5c4c5"
+      },
+      {
+        "path": "multilang-sample-08.png",
+        "seconds": 53.5,
+        "heading": "靠近敵人",
+        "sha256": "862ad8ce1c18551164c3e4d96f90bb0e30698952d90d9b6be0a5aaf230e13f3f"
+      },
+      {
+        "path": "multilang-sample-09.png",
+        "seconds": 64.5,
+        "heading": "交鋒",
+        "sha256": "291729167506ac3b29940b1e29a8553fbccb721c69dee7a26cda8c634a3ae1c8"
+      },
+      {
+        "path": "multilang-sample-10.png",
+        "seconds": 75.0,
+        "heading": "戰後補給",
+        "sha256": "b5e50de2ca4fb0e5ba96fbb94c9661e8c6f460fa374dd233968538292fe4f353"
+      },
+      {
+        "path": "multilang-sample-11.png",
+        "seconds": 82.5,
+        "heading": "購買藥草",
+        "sha256": "e2b5d38b4a74867046c16423875ad3a164063a11a3257864f0b0212b97271e5a"
+      },
+      {
+        "path": "multilang-sample-12.png",
+        "seconds": 94.0,
+        "heading": "交易完成",
+        "sha256": "844db665c212dc141636e3a4117f985eeb2abe9ec8390b3ae45b7880bfafa421"
+      },
+      {
+        "path": "multilang-sample-13.png",
+        "seconds": 102.5,
+        "heading": "四語切換",
+        "sha256": "bcb0c3855f1c5585925c5f6314c4ad5de6556813cc52b0b0bbde044a2d5a3b09"
+      },
+      {
+        "path": "multilang-sample-14.png",
+        "seconds": 105.5,
+        "heading": "四語切換",
+        "sha256": "21f2edb9491240dddc63c697101023e357a0102d4dcc3a8be4d1bea850e76795"
+      },
+      {
+        "path": "multilang-sample-15.png",
+        "seconds": 108.5,
+        "heading": "四語切換",
+        "sha256": "ad51420f9de73ca07b0119dc9d6534fca07c904f5c13ec895c7b33d460032bf3"
+      },
+      {
+        "path": "multilang-sample-16.png",
+        "seconds": 111.5,
+        "heading": "四語切換",
+        "sha256": "3826d2502f484925af9efd39d94c8643f1bb2dbd3cdbc10162cb584a6e3d16ea"
+      },
+      {
+        "path": "multilang-sample-17.png",
+        "seconds": 116.0,
+        "heading": "可編輯的流程",
+        "sha256": "5fd3d2d1ac4e3b7ef4145b3212c490a546a48d4b91e0d31f7556d9f2f4ef8011"
+      },
+      {
+        "path": "multilang-sample-18.png",
+        "seconds": 122.0,
+        "heading": "以原版作基準",
+        "sha256": "a578adb00d395646bdd92781023ff6cc3832c79d9bc98eec649c229387662702"
+      },
+      {
+        "path": "multilang-sample-19.png",
+        "seconds": 128.0,
+        "heading": "保存原版技術",
+        "sha256": "7133555939db6cd2619a82cac764ebb0a5f81056e4e7a1c0aad3fb5d1c90250f"
+      },
+      {
+        "path": "multilang-sample-20.png",
+        "seconds": 133.5,
+        "heading": "跨平台引擎",
+        "sha256": "b83708583ddadcf446ecd698f1b13f4b8d017c8cf019465bd6ccaace55359464"
+      }
+    ],
+    "chapters": [
+      {
+        "start": 0,
+        "end": 3,
+        "heading": "炎龍，再出發"
+      },
+      {
+        "start": 3,
+        "end": 10,
+        "heading": "熟悉的開場"
+      },
+      {
+        "start": 10,
+        "end": 17,
+        "heading": "經典登場"
+      },
+      {
+        "start": 17,
+        "end": 21,
+        "heading": "正式開始"
+      },
+      {
+        "start": 21,
+        "end": 31,
+        "heading": "王宮的囑託"
+      },
+      {
+        "start": 31,
+        "end": 37,
+        "heading": "踏上旅程"
+      },
+      {
+        "start": 37,
+        "end": 44,
+        "heading": "第一章"
+      },
+      {
+        "start": 44,
+        "end": 50,
+        "heading": "選人與移動"
+      },
+      {
+        "start": 50,
+        "end": 57,
+        "heading": "靠近敵人"
+      },
+      {
+        "start": 57,
+        "end": 72,
+        "heading": "交鋒"
+      },
+      {
+        "start": 72,
+        "end": 78,
+        "heading": "戰後補給"
+      },
+      {
+        "start": 78,
+        "end": 87,
+        "heading": "購買藥草"
+      },
+      {
+        "start": 87,
+        "end": 101,
+        "heading": "交易完成"
+      },
+      {
+        "start": 101,
+        "end": 104,
+        "heading": "四語切換"
+      },
+      {
+        "start": 104,
+        "end": 107,
+        "heading": "四語切換"
+      },
+      {
+        "start": 107,
+        "end": 110,
+        "heading": "四語切換"
+      },
+      {
+        "start": 110,
+        "end": 113,
+        "heading": "四語切換"
+      },
+      {
+        "start": 113,
+        "end": 119,
+        "heading": "可編輯的流程"
+      },
+      {
+        "start": 119,
+        "end": 125,
+        "heading": "以原版作基準"
+      },
+      {
+        "start": 125,
+        "end": 131,
+        "heading": "保存原版技術"
+      },
+      {
+        "start": 131,
+        "end": 136,
+        "heading": "跨平台引擎"
+      }
+    ],
+    "transaction": {
+      "gold_before": 1000,
+      "gold_after": 980,
+      "item_id": 192,
+      "quantity": 2,
+      "recipient_native_id": 0,
+      "before_sha256": "b77a9d76730d6f3c5440a251755c9a839ffb599e08d324dd30455d91eacfaff6",
+      "after_sha256": "e144fa57c6e4127f8f6ff305988690d88bdf60ce517cd9f5a320dfe2f23264ce"
+    },
+    "review_required": [],
+    "human_audio_listening": false,
+    "public_distribution": false,
+    "visual_review": {
+      "contact_sheet": "21個中點已目視；遊戲畫面、四語藥草與字幕均完整。",
+      "freeze_intervals": [
+        {
+          "start": 10.3544,
+          "end": 14.1877,
+          "duration": 3.8332999999999995,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 17.221,
+          "end": 20.721,
+          "duration": 3.5,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 25.2877,
+          "end": 29.221,
+          "duration": 3.933299999999999,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 83.0877,
+          "end": 86.3544,
+          "duration": 3.2667,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 91.1877,
+          "end": 95.3544,
+          "duration": 4.166699999999992,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 113.288,
+          "end": 117.188,
+          "duration": 3.9000000000000057,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 125.354,
+          "end": 129.188,
+          "duration": 3.833999999999989,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        },
+        {
+          "start": 131.988,
+          "end": 135.188,
+          "duration": 3.1999999999999886,
+          "classification": "原生AFM停留／標題與對話等鍵／商店確認及技術字幕停留，未發現程序當機"
+        }
+      ],
+      "audio": "完整解碼、非靜音與峰值檢查通過；未宣稱人耳聽感驗收。"
+    }
+  },
+  "comparison_receipt": {
+    "schema_version": 1,
+    "status": "CONFORMED-AUXILIARY-COMPARISON",
+    "public_distribution": false,
+    "original_runner": "DOSBox-X auxiliary",
+    "comparison": "相近的首個大型騎士登場片段；不同起始時點，未逐幀同步。",
+    "original_start": 9,
+    "remake_start": 19,
+    "duration": 12,
+    "original_sha256": "9e1196a2e3cc7795122dfcef41b8b55756786de8fb8bf3b1f6d23bab488e7ca9",
+    "remake_sha256": "f3a9e7d649e321a4a7f58afb4786f56870f1e5638cf25a98305c3d2ea585b648",
+    "sha256": "962ae1c06a8fbc4619007ccc8711367743a861c5aef5d307c34b3618b8835d8f",
+    "bytes": 581221,
+    "audio": "omitted for visual diagnosis",
+    "limits": "cycles、啟動與軟體繪圖負擔不同；只比較錄影與呈現，不宣稱硬體時間或dosgolem parity。",
+    "probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 1280,
+          "height": 480,
+          "coded_width": 1280,
+          "coded_height": 480,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "8:3",
+          "pix_fmt": "yuv420p",
+          "level": 32,
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "60/1",
+          "avg_frame_rate": "60/1",
+          "time_base": "1/15360",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 184320,
+          "duration": "12.000000",
+          "bit_rate": "381202",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "720",
+          "extradata_size": 45,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc59.37.100 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "dist-all/v.1.0.0-20261017/promo/FD2-v.1.0.0-20261017-dosbox-comparison.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "12.000000",
+        "size": "581221",
+        "bit_rate": "387480",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf59.27.100"
+        }
+      }
+    },
+    "visual_review": "已檢視同一騎士構圖的近似狀態並列，CJK標籤與邊界完整；沒有精確時間同步或音訊。"
+  },
+  "recording_cleanup": {
+    "removed_files": 40,
+    "removed_bytes": 426217972,
+    "files": [
+      {
+        "path": "work/promo-cadence-20261018/compose/00.mp4",
+        "bytes": 229056,
+        "sha256": "480a7bc43a042452053dd7484cbcb8e4e70089225c10f806b9c8208b02db52d6",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/01.mp4",
+        "bytes": 555251,
+        "sha256": "bf5681262526474775aa1fdcfe060bf1daedbca1e2daef995c7e76a26c7b8134",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/02.mp4",
+        "bytes": 965929,
+        "sha256": "a789184faa2aa8ca694c8ebd71eb1ae88f403cee7a05c41b6d2bc6dc138471d0",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/03.mp4",
+        "bytes": 222329,
+        "sha256": "65a3ba720ae7cafee33a98c810427a9facafded5f4b2a4cb613df4e547b66dd9",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/04.mp4",
+        "bytes": 676264,
+        "sha256": "f9029140981fc538eca38d7d63155960269931621c15c2a1b5c0bb957070c8fe",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/05.mp4",
+        "bytes": 627039,
+        "sha256": "f5958302cc467244af497c6fc637cc41a9a3ebe65857eb737761f8614516d789",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/06.mp4",
+        "bytes": 1108571,
+        "sha256": "14a227812b4a5803a607ef2d99efc316b4e910f7f3f2c6ae46fff8f96639f5b8",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/07.mp4",
+        "bytes": 1001964,
+        "sha256": "3dc4ff4dfc9289a0f7452d4eeef4501dfe23e647a054b93c0ca13e979dd23461",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/08.mp4",
+        "bytes": 750222,
+        "sha256": "7a2c655d75e146f583d5f11dcc0a2045e1360db6ac4eb4f22e4dc70cb124fe29",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/09.mp4",
+        "bytes": 1737373,
+        "sha256": "67e9384adedbd901766e826bc42febdbc3fd0c1c1b190c7decae89194e9ecee0",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/10.mp4",
+        "bytes": 591357,
+        "sha256": "f2fc972aef387b2fead887f7976d01f93c2380dab5630ba34e3d7a1bb9a34676",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/11.mp4",
+        "bytes": 775927,
+        "sha256": "d4bc9b89fe1d4cb1a657e7086929f3bc663f69460e878be0b0abbe2bdbb72a2a",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/12.mp4",
+        "bytes": 922086,
+        "sha256": "b54a5bd5d824fbe9194578b8d5f5317af431271c580a14f81749644eebc3d857",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/13.mp4",
+        "bytes": 212121,
+        "sha256": "a4b3856814d4b246271f62847286429f8f3aabcb8e69f5616e875fefdb84f0a5",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/14.mp4",
+        "bytes": 201793,
+        "sha256": "1a54b787b055cb953756908cdb54d5883679d20155021cb2a8079cddfd342a4e",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/15.mp4",
+        "bytes": 201640,
+        "sha256": "450d1898d10d539fe702eb56ff6d9518f1ad1b53cbc05ffa86168b010e28adef",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/16.mp4",
+        "bytes": 200712,
+        "sha256": "c8a3ca000b502c18271eb4a3094776d61dcc501187a00d790ce5f3625febb961",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/17.mp4",
+        "bytes": 357813,
+        "sha256": "66074ea87c7ed4be24c8b9e224895090ab315d528f1ab0c1cbb20d4edffc2003",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/18.mp4",
+        "bytes": 1003066,
+        "sha256": "523a82244704d315d27aa7f5e9c3de88761e40f7e346cffac9b3efc0e4964397",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/19.mp4",
+        "bytes": 745152,
+        "sha256": "d6e538e1b0b6cf72265c2f60594b471205ac0aea0d9d3db44acf572ffe53b404",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/20.mp4",
+        "bytes": 370888,
+        "sha256": "8d625f487b9079a9ff969bd34ff5ed5d7da92c5df4e97220b49dadba15d7baeb",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/compose/assembled.mp4",
+        "bytes": 13430473,
+        "sha256": "d0a86d14a1126145c48f8902d04df75a886329a9d32b6311e9ca228969b2734a",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/dosbox-12000/dosbox.mkv",
+        "bytes": 1310720,
+        "sha256": "a8b61b09eaed26c520bfbe9d829842d45c391a95488811558000838114aa6974",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/dosbox-12000-r3/dosbox.mkv",
+        "bytes": 3423451,
+        "sha256": "9e1196a2e3cc7795122dfcef41b8b55756786de8fb8bf3b1f6d23bab488e7ca9",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/modern-intro/live.mkv",
+        "bytes": 19404084,
+        "sha256": "bde36d11679933043459908ba9af52ca9971b3e7a4e2ae3377c230a2e01fb5fa",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/modern-intro-r2/audio.mka",
+        "bytes": 39884222,
+        "sha256": "b0e8593d912c1fc076907b06956e7e829f9c30de19ee36732694faa337efbd20",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/modern-intro-r2/live.mkv",
+        "bytes": 59915232,
+        "sha256": "0858166d95fdd9eb9570cbca19fa9afd638b92e5aa759b69c9dcd3137aeedca2",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/modern-intro-r2/video.mkv",
+        "bytes": 20042450,
+        "sha256": "8b3742eb0f1f8c4a1c33b88adcefdaa116d2bd6ac81e9e2f738b8cbad1280a35",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/multilang-first-black-intro.mp4",
+        "bytes": 13317384,
+        "sha256": "38afe43feb24b2d9697c73c03db65820da5b087356184f698f32326a38228ee9",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe/audio.mka",
+        "bytes": 1048576,
+        "sha256": "c74ffdd33a2cb3bedb3c57278bd92c7515dcfb20e1fdbebc5e6f8017a311b07d",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe/video.mkv",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe-r2/audio.mka",
+        "bytes": 4718592,
+        "sha256": "b988629700365e00c41830ed925bf8b5df853adcde9d2047e4223d5b51637e0b",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe-r2/video.mkv",
+        "bytes": 1048576,
+        "sha256": "b7a835464cf38c927f8ce6bace8c076d1e6611317dc5f289023babe5ef604513",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe-r3/audio.mka",
+        "bytes": 6778130,
+        "sha256": "b0647de899d2bd070540784fd0b52c2204fbacbd6c1060e6e9b42dcef5a4253f",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe-r3/live.mkv",
+        "bytes": 7931350,
+        "sha256": "98baba81a3c84233b3a3e9128e89654ee48fc4afd3359c9e6e9308853b093c12",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/quickload-probe-r3/video.mkv",
+        "bytes": 1157298,
+        "sha256": "55514c2e27599c3567d78901858a8e8ad3899fa2c89db8f673ef6aa0b593347e",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/remake-r3/live.mkv",
+        "bytes": 57520374,
+        "sha256": "1c090c09089f697795f34ba0ab9b04ea906e234727cfcb95ffbd38d7088c0bf0",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/remake-split/audio.mka",
+        "bytes": 59873343,
+        "sha256": "d0f062fbbe7738be75f35bef118c84ce0357f96cc6e9427f06fe75959d597ba7",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/remake-split/live.mkv",
+        "bytes": 80894537,
+        "sha256": "f3a9e7d649e321a4a7f58afb4786f56870f1e5638cf25a98305c3d2ea585b648",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      },
+      {
+        "path": "work/promo-cadence-20261018/remake-split/video.mkv",
+        "bytes": 21062627,
+        "sha256": "ce58d1dd802e6a14befc86e83607514708a1977640546232057447567a32aadf",
+        "classification": "已驗正式成片／必要取樣的來源、未採用診斷或可重建剪輯；保留GPU圖、輸入、交易與收據。"
+      }
+    ],
+    "kept": "正式原影片、新四語影片與DOSBox並列短片；必要PNG、操作、保存與JSON證據。",
+    "scope": "只清本輪work/promo-cadence-20261018暫存，不掃其他工作目錄。"
+  },
+  "public_distribution": false,
+  "rights": "含原版衍生圖像與遊戲音訊，留本機；未修改公開Release。",
+  "documentation_link_check": {
+    "scope": [
+      "README.md",
+      "WORKLOG.md",
+      "docs/knowledge-base/00-index.md",
+      "docs/knowledge-base/41-packaging.md",
+      "docs/knowledge-base/56-fd2-remake-sdd.md",
+      "docs/knowledge-base/57-ui-evidence-matrix.md",
+      "docs/knowledge-base/58-fd2-exe-re-coverage.md",
+      "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+      "docs/knowledge-base/91-worklist.md"
+    ],
+    "checked_local_targets": 2590,
+    "broken": 0,
+    "note": "無範圍全庫掃描含work舊樹與已歸檔dist歷史，另報64項既有失效，不屬本次交付。"
+  }
+}

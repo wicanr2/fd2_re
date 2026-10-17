@@ -70,5 +70,27 @@
   ],
   "delivered_date": "2026-10-18",
   "receipt": "docs/data/fd2-full-local-v.1.0.0-20261017.json",
-  "movie_sha256": "aabbf42724f458bf720d14926eee4523dd0d6bcf90f65210434153f91cd5aa92"
+  "movie_sha256": "aabbf42724f458bf720d14926eee4523dd0d6bcf90f65210434153f91cd5aa92",
+  "revision_20261018": {
+    "status": "CONFORMED-LOCAL-MEDIA",
+    "request": "改善卡頓、與DOSBox輔助比較、補入四語實際操作；接續HD計畫。",
+    "capture": "相同正式引擎；普通640x400視窗；60fps擷取及合成；不改遊戲速度或規則。",
+    "languages": [
+      "zh-Hant",
+      "zh-Hans",
+      "ja",
+      "en"
+    ],
+    "language_method": "正式F4與後續普通對話／商店操作，實際執行畫面。",
+    "diagnostic": "DOSBox-X固定12000 cycles，60fps輔助呈現診斷；不是原版同狀態或硬體wall-clock parity。",
+    "preservation": "既有正式影片及收據不覆寫；新影片另存promo並使用multilang-前綴收據。",
+    "hd": "使用者確認1920×1200與480×480頭像；61已READY，31張高解析頭像已登錄，正常START驗收進行中。本片仍展示已發布的非HD引擎。",
+    "receipt": "docs/data/fd2-promo-cadence-20261018.json",
+    "movie_sha256": "478d68ff9a4b56254776101d989a52bb86ece37ca48f9e9e286e384fa49c0c42",
+    "duration_seconds": 136.035,
+    "actual_source_fps_range": [
+      35.224,
+      49.351
+    ]
+  }
 }

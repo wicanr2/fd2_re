@@ -53,6 +53,8 @@ def main():
         record(key)
     for _ in range(args.advance_story):
         state = latest(args.out)
+        if state.get('error'):
+            raise RuntimeError(state['error'])
         if state.get('node') == 'battle_ch01' and not state.get('dialogues') and not state.get('ai_busy'):
             break
         record('Return', 'ordinary-dialogue-advance')

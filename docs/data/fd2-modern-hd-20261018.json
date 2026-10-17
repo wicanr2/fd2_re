@@ -1,0 +1,743 @@
+{
+  "schema_version": 1,
+  "status": "CONFORMED-PLAYER-E2-LIMITED",
+  "user_decision": "2026-10-18撤回160方案，確認1920×1200、480×480頭像，維持版面比例。",
+  "scope": "高解析故事頭像與最終呈現層；背景、字型及戰場尚未HD化。",
+  "pillow_version": "11.3.0",
+  "resize": "480x480 Lanczos from original masters",
+  "canvas": [
+    1920,
+    1200
+  ],
+  "game_coordinates": [
+    640,
+    400
+  ],
+  "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+  "assets": [
+    {
+      "speaker_id": 0,
+      "master_file": "sol-portrait-style-a-v2-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "ff09cd5a62971f7e1e910b0332458e4694b9415304ee6cc118900d81c4c27a2a",
+      "runtime_file": "sol-portrait-style-a-v2-480.png",
+      "runtime_sha256": "e5d16a454cefa932d2e26009743fedf6c153f39163539ab6d41e6b50f719ff54"
+    },
+    {
+      "speaker_id": 1,
+      "master_file": "hano-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "99fb56e8b912d0f22a54a45b6dcf776da133d8d026e6780374368eb6d4c01c89",
+      "runtime_file": "hano-portrait-style-a-v1-480.png",
+      "runtime_sha256": "78670ab2e4b44ab3b69077669b9477c04d1a26417f91b92803bde3e23ac37ee8"
+    },
+    {
+      "speaker_id": 4,
+      "master_file": "ares-portrait-style-a-v2-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "a68c33f83e688cc95471bc94db88997b9247cf1a8cbe418546963331c48b7272",
+      "runtime_file": "ares-portrait-style-a-v2-480.png",
+      "runtime_sha256": "bc84acd89ff15182b84d6a874594d9fa5e66cb84f9a3531863f8fafac306b6e1"
+    },
+    {
+      "speaker_id": 5,
+      "master_file": "lorna-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "6dd779e37e8a6ee75b645fe13f11d361df0b9d662e35805f12bf66efbde1f60d",
+      "runtime_file": "lorna-portrait-style-a-v1-480.png",
+      "runtime_sha256": "53860f581df64dc3308d0252bca620b4959f37d8098bb8c6f8afbfb7c4c49909"
+    },
+    {
+      "speaker_id": 6,
+      "master_file": "leidin-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "090a26d8f4db4d1ec3f1eb02f982e6f5ab7870264a2bc45ceaa5082af23472dc",
+      "runtime_file": "leidin-portrait-style-a-v1-480.png",
+      "runtime_sha256": "70f5eda7420666d6fc506dcd2dc58c2a944e9c7d6bd8cf408f45c564ee31ddfe"
+    },
+    {
+      "speaker_id": 8,
+      "master_file": "celia-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "1f09947f1d3afc1bd76a8988b2c650089ecef54c96f39889f06709165d442107",
+      "runtime_file": "celia-portrait-style-a-v1-480.png",
+      "runtime_sha256": "82f9c7d99e539d107852f25cdac15ccb62f6ecca49684d7f7d3a0f235e493c45"
+    },
+    {
+      "speaker_id": 9,
+      "master_file": "yuni-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "af0c0d1cf367b167dd8a3b27fc70a81a5eb2b33ba259645cef295183c59f3ce4",
+      "runtime_file": "yuni-portrait-style-a-v1-480.png",
+      "runtime_sha256": "33a0ecd3b4d39f36bd33f74c6c5bcf8639526706c2d4d944c62054d7b2465f93"
+    },
+    {
+      "speaker_id": 10,
+      "master_file": "marin-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "566708433cda3ab7bed342ab61238d4cbff5293cfbf2e7fcf2a72b47d9a059ee",
+      "runtime_file": "marin-portrait-style-a-v1-480.png",
+      "runtime_sha256": "bb6c3254369f0a6080c0c090104d88241be470fbb731b7fed1d8a4a245f2e7fc"
+    },
+    {
+      "speaker_id": 11,
+      "master_file": "sophia-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "b35e085c78c42f3db8bffb60887dd846e4e7f5b58043f6c41f8101dd1e8bc1c0",
+      "runtime_file": "sophia-portrait-style-a-v1-480.png",
+      "runtime_sha256": "94ca44e150b2c5ad7cb6e9a1db56d2d90196617cbcba84360828211d28e20f1c"
+    },
+    {
+      "speaker_id": 12,
+      "master_file": "kelly-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "8ff993abc225c48c20bcc2845f04009572fc3cf8cb4d9703a07998aad89960e0",
+      "runtime_file": "kelly-portrait-style-a-v1-480.png",
+      "runtime_sha256": "e1b7adb50804ad818351663e8f8c150d5ed76f2bc7aa0648859f9305b2094a55"
+    },
+    {
+      "speaker_id": 13,
+      "master_file": "beckway-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "ddb7c3dba5251b6cc6d0946dbdd6291311573af1173ccaeb3b55c3b19f58bdd6",
+      "runtime_file": "beckway-portrait-style-a-v1-480.png",
+      "runtime_sha256": "0c95e694e1c69e6db77148641ac4cdf26ca28a530e01e0f1136126045dd1d087"
+    },
+    {
+      "speaker_id": 14,
+      "master_file": "shan-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "83925d6a96a676e5bca77ffa685bee9d5fe1be38a48d307106c667337b10041d",
+      "runtime_file": "shan-portrait-style-a-v1-480.png",
+      "runtime_sha256": "de6739fd31b1cb39ebe67d1ddb13445cab949a1a25989cd6d2133fce6f7d8729"
+    },
+    {
+      "speaker_id": 16,
+      "master_file": "kylas-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "7bc1d13bccbbf36f3cfa98bb5e99f78a59ee462b1ca4f17813404e41d3487594",
+      "runtime_file": "kylas-portrait-style-a-v1-480.png",
+      "runtime_sha256": "04b3c948d1ab49e4501bd4223656ae40dde661f86502faf945442dc95fadb72a"
+    },
+    {
+      "speaker_id": 17,
+      "master_file": "miasdord-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "c78a5eb9fa55b97546b7b141c68f851a206b8d1f22abaef3e174368b968a17fd",
+      "runtime_file": "miasdord-portrait-style-a-v1-480.png",
+      "runtime_sha256": "cdfac7104533d29f5458501c10b68992625aa836d1108d91757c07a99b58f665"
+    },
+    {
+      "speaker_id": 18,
+      "master_file": "mitty-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "16cc25b988a0178d7bbf0896e3cc444c3865138ca1f7862c2508322a72da8f96",
+      "runtime_file": "mitty-portrait-style-a-v1-480.png",
+      "runtime_sha256": "2dbb2e7a3948a4daf5d09351b9a920816f8c9f1feb0c4fa64eef5904f3f96278"
+    },
+    {
+      "speaker_id": 19,
+      "master_file": "rodman-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "cdec38fa7d5b5d132ae86d45d81190480748f9b597651abc6662a893b9d746db",
+      "runtime_file": "rodman-portrait-style-a-v1-480.png",
+      "runtime_sha256": "bc9454fdcf4089f4b3c186fa249547ee9db33d3c1348842766aeb79bbb86e58e"
+    },
+    {
+      "speaker_id": 20,
+      "master_file": "sarah-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "c477807196c10add1600a798f1e63c278f31d81e8d21f96db178bb9eb1baaabe",
+      "runtime_file": "sarah-portrait-style-a-v1-480.png",
+      "runtime_sha256": "f7c19da29ce541fe7d0d9078c962a41c96f18b41faa3d364a9680e99491f11ed"
+    },
+    {
+      "speaker_id": 21,
+      "master_file": "jonah-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "f8cea2c6b47a32010d39b6a327c1ca1d7f331cc1a037eb226312acf0f7ec1a76",
+      "runtime_file": "jonah-portrait-style-a-v1-480.png",
+      "runtime_sha256": "1ed5e6c902921d8405d7f94daced553aabbdfb6441a24ed31d6fb4dd57ca2613"
+    },
+    {
+      "speaker_id": 22,
+      "master_file": "carlos-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "54dbfef5990c3b92008aab98379bb3aebf94833d61703e081eb09ed324432bf6",
+      "runtime_file": "carlos-portrait-style-a-v1-480.png",
+      "runtime_sha256": "b0a09a885176aa1381f2e4a1394e00511221b314f7180bb1817c4270342796a8"
+    },
+    {
+      "speaker_id": 23,
+      "master_file": "roland-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "936dc602b64e99c98ad935216a61feaf1d1f1f495dc97e90b9f7b6291bd881b7",
+      "runtime_file": "roland-portrait-style-a-v1-480.png",
+      "runtime_sha256": "261cd45ccb9f736105175572393c04b5aedabd7eea18ce1e90285e3a6b271215"
+    },
+    {
+      "speaker_id": 24,
+      "master_file": "sylpha-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "59403b8b42c26a3cf011555722de6d6894984a9a6a53b5968fc7fe62e63a6f1e",
+      "runtime_file": "sylpha-portrait-style-a-v1-480.png",
+      "runtime_sha256": "c7f7392cea5a3b6399b6708a60a01bf920e81e6380686cb654ffad3ed50c89b6"
+    },
+    {
+      "speaker_id": 25,
+      "master_file": "seymour-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "c2b18452ad329eda6927686a7a0c2de6affe9773d8f5ef2b7566f91713462b02",
+      "runtime_file": "seymour-portrait-style-a-v1-480.png",
+      "runtime_sha256": "97fb0a4cc3077780605c4f2c7e8fca750d0fc6e479f668a763715e6019903fb2"
+    },
+    {
+      "speaker_id": 26,
+      "master_file": "saint-colas-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "e695955e3ce205dd7681fb11516368c23a2e855cedf0d6cafecc70941066acb7",
+      "runtime_file": "saint-colas-portrait-style-a-v1-480.png",
+      "runtime_sha256": "627e581be533844b418366277e89651c3d80f3c4c647c1736dbe484563a302ca"
+    },
+    {
+      "speaker_id": 27,
+      "master_file": "banalosia-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "0265f358b159051f28d9066030a427ce8d2a26971dd76f768d6d9ebd8ce14076",
+      "runtime_file": "banalosia-portrait-style-a-v1-480.png",
+      "runtime_sha256": "f5c4bf64954358401af4cfde691ffeb5bda9cfe0b40f0100ff98e62509f06ac4"
+    },
+    {
+      "speaker_id": 30,
+      "master_file": "gaia-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "dd0462433ee89336d81ac989ca63604340a92c25f5f83767d18e45f4ff765d57",
+      "runtime_file": "gaia-portrait-style-a-v1-480.png",
+      "runtime_sha256": "e51c38730f40f718dc40f44c3afb3cab77f0fa82d18f74a34d591310a1d928db"
+    },
+    {
+      "speaker_id": 31,
+      "master_file": "wood-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "38b263729445f92fbfbf9b58783faa8824f1366a00f2a6739f8efcf03e11bd67",
+      "runtime_file": "wood-portrait-style-a-v1-480.png",
+      "runtime_sha256": "697b4b19a625825cb8cf03155be690565256233ea92577f68bb6bc125ce7e767"
+    },
+    {
+      "speaker_id": 2,
+      "master_file": "tino-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "2c2ac3447a5bcdeae5828681b74135f07012c0b37a294a250c8d2429fcc46a12",
+      "runtime_file": "tino-portrait-style-a-v1-480.png",
+      "runtime_sha256": "a254abe75c387a5aab6d57b0d3327d8fd28849713658879594da1e369dee9e4e"
+    },
+    {
+      "speaker_id": 3,
+      "master_file": "harvat-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "2c582ecb3babfa43ec8156c0529f3ef1ed1684de3c50eed4cdb136b0365b3314",
+      "runtime_file": "harvat-portrait-style-a-v1-480.png",
+      "runtime_sha256": "0c990976de2bff8016f589a055bc8223d38414d877edad502cfd526cadbe5fa3"
+    },
+    {
+      "speaker_id": 48,
+      "master_file": "king-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "8e24efc1aef6df1c408d523901e785906679f913cbcc5aee177e236a5c663eee",
+      "runtime_file": "king-portrait-style-a-v1-480.png",
+      "runtime_sha256": "412e1411e8be9ea64628f69c72e6b9e61348660ac0789928b0c3b90fcca7cc3e"
+    },
+    {
+      "speaker_id": 66,
+      "master_file": "queen-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "f98a676b89793432624a6d571403565f9436381b52f749fe2771b0ad93230183",
+      "runtime_file": "queen-portrait-style-a-v1-480.png",
+      "runtime_sha256": "1bdd3ad895112a6eb279274a53a652b61c7daf818533227d6f9c0e83b430e62b"
+    },
+    {
+      "speaker_id": 96,
+      "master_file": "bandit-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "0113aa709bd5ec3b2fa852b5cd6b6855c1578d1fe9b39501d9bf4b5c3a3c0751",
+      "runtime_file": "bandit-portrait-style-a-v1-480.png",
+      "runtime_sha256": "2fe9a4323b430398f6723ee41e18592835235242d9c6dbf8ac98f241499514ee"
+    }
+  ],
+  "normal_start_passed": true,
+  "private_remote_synced": true,
+  "public_art_distribution": false,
+  "generation_tool": "tools/register_modern_hd_portraits.py",
+  "generation_tool_sha256": "7e241303f14048e662adad1f156f9d1957deb885e9711e5070ed1f4524c2c654",
+  "runtime_sources": {
+    "remake/cmd/fd2/main.go": "b2bf4c251419fbad31dd756cc7c341809a83f7d43d24b74f1f41773d4acc8139",
+    "remake/cmd/fd2/modern_hd_presentation.go": "3edeb0f3d3d9c4fc0a3dbef11d29380e3189439a9ad8b0878ad8170175027aa5",
+    "remake/cmd/fd2/modern_story_portrait.go": "1ace7047650234e3dce005875e04cdfe38a1b741e2e7b48311b7a11765d2b86a",
+    "remake/cmd/fd2/native_story_dialogue.go": "09a8c2e361d602e3025ae47ca0517c526f0e0452d2892518b981a72da018ff5d"
+  },
+  "prototype": {
+    "tool": "tools/preview_fd2_hd_resolution.go",
+    "method": "相同GPU場景背景與父王母稿，Ebiten直接渲染1280×800與1920×1200；無遊戲狀態。",
+    "images": {
+      "hd-prototype-1280x800.png": "486c17b5f102219dd42d17e6352cf91b6273932c3b01b61d1020e747476bc29a",
+      "hd-prototype-1920x1200.png": "59d5ee7df20ef26cdb10c994046e3717416b6c2bc37197566f3a2e8d50883a28"
+    },
+    "user_choice": "1920×1200"
+  },
+  "tests": {
+    "go_targeted": "work/promo-cadence-20261018/hd-tests-final.log",
+    "go_targeted_sha256": "531456f32e2203937b086d127a49cd7b96bce50d019fd2c4235848040bf343e3",
+    "result": "PASS；含完整私人包與原子拒收、上下錨點、細節倍率、GPU快取、modal／DAC遮罩、Draw清理及存讀檔。",
+    "gpu_proof": "正常流程另以實際480×480視窗區域對清冊圖做MAE，單元測試不冒稱GPU像素對拍。"
+  },
+  "limits": [
+    "目前啟動時使用完整HD現代主題才啟用最終呈現器。由忠實啟動後按F2進入現代主題的高解析切換尚未整合，保留#204。",
+    "背景、字型、戰場及戰鬥演出未宣稱HD。",
+    "Linux Docker／軟體繪圖驗證，尚無Windows／macOS高解析實機驗收或穩定60fps承諾。"
+  ],
+  "normal_start_receipt": {
+    "schema_version": 1,
+    "status": "PLAYER-E2-LIMITED-GPU-REVIEW-REQUIRED",
+    "method": "正式預設START，普通Enter與既有開場略過鍵；無章節注入、改血或強化。",
+    "window": [
+      1920,
+      1200
+    ],
+    "binary_sha256": "5d0edd2d18b0b918cb6beb0749816968f35fcf794f6a86e04f1a1706983c2a84",
+    "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+    "dialogue_beats": 97,
+    "screenshots": {
+      "0": {
+        "file": "speaker-000.png",
+        "sha256": "3a811d4d02395d310a4f995a490bf4bc87b31afe33a8e034b0d6679b49108f4f",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+48+690"
+      },
+      "48": {
+        "file": "speaker-048.png",
+        "sha256": "80224b0c3868361478523b8e5119f83cfa47bfeb56a472a10cf5959c7ec03308",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+1392+30"
+      },
+      "66": {
+        "file": "speaker-066.png",
+        "sha256": "25c2e003dd1c03d3b63e0dc883696044d245d0d6608ebc80a892ab9a4925375b",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+1392+30"
+      },
+      "4": {
+        "file": "speaker-004.png",
+        "sha256": "d0ef8e5afe307b9f750ccd974c4a3423ded84fdf53be5da6b15badf1a177e342",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+1392+30"
+      },
+      "30": {
+        "file": "speaker-030.png",
+        "sha256": "a92f93cc6c0e54d3f7f84f6cdabd4a2596cc49a8a4b7a3a65fb684255b4a12a1",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+1392+30"
+      },
+      "9": {
+        "file": "speaker-009.png",
+        "sha256": "5a9879006526c6254e0c62d48cbfcdfd70121d8d6626e3a788a777e91ade1a5d",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+1392+30"
+      },
+      "96": {
+        "file": "speaker-096.png",
+        "sha256": "7b938978478d82de0d17bc4f9499d3e0612e2fa18283bc7f9693def39deac044",
+        "mae_normalized": 0.0,
+        "anchor": "480x480+1392+30"
+      }
+    },
+    "final_state": {
+      "ai_busy": false,
+      "banner": "",
+      "banner_t": 0,
+      "camera": [
+        0,
+        312
+      ],
+      "cursor": [
+        7,
+        14
+      ],
+      "dialogues": 0,
+      "error": "",
+      "frame": 10727,
+      "keys": [
+        "Enter"
+      ],
+      "move_preview": true,
+      "moved": false,
+      "native_round": 1,
+      "next_player_index": 0,
+      "node": "battle_ch01",
+      "player_focus": null,
+      "ring": false,
+      "ring_blink": 0,
+      "ring_phase": "",
+      "ring_sel": 0,
+      "selected": "",
+      "selection_origin": [
+        7,
+        14
+      ],
+      "turn": 1,
+      "units": [
+        {
+          "acted": false,
+          "camp": 0,
+          "hp": 42,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 7,
+            "Y": 14,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 7,
+          "y": 14
+        },
+        {
+          "acted": false,
+          "camp": 0,
+          "hp": 28,
+          "mp": 8,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 10,
+            "Y": 15,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 10,
+          "y": 15
+        },
+        {
+          "acted": false,
+          "camp": 0,
+          "hp": 48,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 8,
+            "Y": 16,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 8,
+          "y": 16
+        },
+        {
+          "acted": false,
+          "camp": 0,
+          "hp": 50,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 11,
+            "Y": 17,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 11,
+          "y": 17
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 1,
+            "Y": 4,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 1,
+          "y": 4
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 2,
+            "Y": 2,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 2,
+          "y": 2
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 4,
+            "Y": 2,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 4,
+          "y": 2
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 6,
+            "Y": 1,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 6,
+          "y": 1
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 3,
+            "Y": 18,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 3,
+          "y": 18
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": false,
+          "raw": {
+            "X": 4,
+            "Y": 23,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 4,
+          "y": 23
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 2,
+            "Y": 18,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 2,
+          "y": 18
+        },
+        {
+          "acted": false,
+          "camp": 2,
+          "hp": 28,
+          "mp": 0,
+          "name": "",
+          "on_field": true,
+          "raw": {
+            "X": 5,
+            "Y": 19,
+            "Pose": 0,
+            "Motion": 0
+          },
+          "x": 5,
+          "y": 19
+        }
+      ],
+      "view": {
+        "CameraX": 0,
+        "CameraY": 13,
+        "CursorX": 7,
+        "CursorY": 14,
+        "VisibleCursorX": 7,
+        "VisibleCursorY": 1
+      },
+      "walking": false
+    },
+    "final_png_sha256": "63867d4c0c3a14dbec680f4f63091ca57b469e35980af7888337a830e0fe7a51",
+    "wall_seconds": 224.06137948390096,
+    "recordings_created": false,
+    "limits": "限序章故事頭像與首章交接；非原版視覺對拍、整款HD、跨平台或60fps效能驗收。",
+    "visual_review": "父王、王后、強盜及首章GPU圖已目視；頭像邊界與文字安全區完整，無重疊。背景、字型及戰場依既有呈現，未宣稱HD。",
+    "evidence_files": {
+      "hd-gui.json": "56041cdd71aad610aeb46679c0596c53c15b443e05b79ca24fa29638ead346a0",
+      "game.log": "bbc6b21eee771be6477a7eeeb08e32acec54b4d8912b8d61ad15b80e1f955057",
+      "input-audit.jsonl": "7fa9e14807a87dda3cabefc5b7024cc296d52866041619408f044e2abf00b2cc",
+      "operations.jsonl": "3ed0f74028f39ebb975c9c2b27788bdcb9669b0d6b50ef8cf9b1d74db78285bd",
+      "title.png": "ce8ce519067a7cb11b9fdfc24a96d6ed4b6796233fdea5c3582288546416d1fb",
+      "first-chapter.png": "63867d4c0c3a14dbec680f4f63091ca57b469e35980af7888337a830e0fe7a51"
+    }
+  },
+  "timing_observation": {
+    "wall_seconds": 224.06137948390096,
+    "last_simulation_frame": 10727,
+    "ratio_frames_per_wall_second": 47.875,
+    "limits": "包含啟動、等鍵、GPU截圖與比較成本，只是本輪流程吞吐觀測；不是GPU影格時間、各平台benchmark或穩定60fps承諾。"
+  },
+  "private_repository": {
+    "url": "https://github.com/wicanr2/fd2-assets-private.git",
+    "commit": "3f289e7bad8dae340d803f0176843fb2c3b3ea70",
+    "remote_head_verified": true,
+    "file_count": 1313,
+    "review": "只新增31張480圖與清冊／manifest，舊164個asset entries逐筆不變；1313份SHA與擁有權核對通過。"
+  },
+  "static_coverage": {
+    "report_sha256": "ffc4bce4312c0b4685550f4fc4df0143b6db9f2e1ef290df3067bf5420bc6442",
+    "registered": {
+      "portraits": 31,
+      "sprites": 94,
+      "maps": 33
+    },
+    "missing_portrait_declarations": [
+      7,
+      15,
+      29,
+      77,
+      133,
+      134
+    ],
+    "missing_sprite_declarations": [],
+    "missing_map_declarations": [],
+    "limits": "只列靜態候選，不把六筆宣告直接當玩家缺陷；正式序章另有97拍收據。"
+  },
+  "runtime_binary_removed_after_validation": true,
+  "temporary_binaries": [
+    {
+      "file": "work/promo-cadence-20261018/fd2-dev",
+      "bytes": 18841320,
+      "sha256": "c19834dfa99501dbd0ed09d44aa6f62969c9b8d5a7f51803ac504568dcafe22a"
+    },
+    {
+      "file": "work/promo-cadence-20261018/fd2-hd-dev",
+      "bytes": 18877472,
+      "sha256": "5d0edd2d18b0b918cb6beb0749816968f35fcf794f6a86e04f1a1706983c2a84"
+    }
+  ]
+}

@@ -69,6 +69,10 @@ acknowledgement 回歸，列 `RUNTIME-E1`；尚無未修改原版同狀態畫面
 
 > 這是 SDD 的第一份可執行盤點，不是「已還原」宣告。行號以本輪 `remake/cmd/fd2/main.go` 為準；`partial`／`missing` 必須先補 E0/E1/E2 證據才可改成 verified。
 
+2026-10-18現代序章：父王／王后／強盜補圖後正常START的97個對話拍點與首章接縫通過，限本切片PLAYER-E2；[收據](../data/fd2-modern-portraits-20261018.json)。
+高解析另以1920×1200普通START走完97拍，七位480區域MAE=0，含三張新頭像；[獨立高解析收據](../data/fd2-modern-hd-20261018.json)限啟動時序章，不能外推全主題／全戰役。
+F9讀酒店時殘留戰場人物資訊層已修正，成功LOAD清除、拒收時原狀保持；[GPU與回歸收據](../data/fd2-quickload-20261018.json)為RUNTIME-E1，不宣稱新原版對拍。
+
 ## 2026-07-28 visual-parity audit
 
 這一節回答的是「玩家目前看到的操作畫面與原版相差多少」，不能與

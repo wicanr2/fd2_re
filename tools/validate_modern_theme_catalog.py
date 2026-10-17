@@ -16,7 +16,7 @@ SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
 ROLES = PROTOTYPE_ROLES | {
-    "story_portrait_frame", "map_sprite_set", "map_tileset_set",
+    "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
@@ -45,6 +45,7 @@ def validate(verify_private: bool) -> dict:
         raise ValueError("assets must be a non-empty list")
     ids: set[str] = set()
     roles: set[str] = set()
+    portrait_speakers, hd_speakers = set(), set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -63,7 +64,7 @@ def validate(verify_private: bool) -> dict:
         }
         if not isinstance(entry, dict):
             raise ValueError("asset entry must be an object")
-        if entry.get("role") == "story_portrait_frame":
+        if entry.get("role") in {"story_portrait_frame", "story_portrait_hd_frame"}:
             expected = required | candidate
         elif entry.get("role") == "map_sprite_set":
             expected = sprite_set | ({"master_file"} if "master_file" in entry else set())
@@ -101,6 +102,16 @@ def validate(verify_private: bool) -> dict:
                 raise ValueError(f"invalid speaker identity: {asset_id}")
             if entry["frame"] not in range(4) or entry["mouth_state"] not in {"closed", "open"}:
                 raise ValueError(f"invalid portrait frame identity: {asset_id}")
+            portrait_speakers.add(entry['speaker_id'])
+        if entry['role'] == 'story_portrait_hd_frame':
+            if (entry['consumer_contract'] != 'native_story_dialogue_rgba_overlay_hd6_v1'
+                    or (entry['width'], entry['height'], entry['frame'], entry['mouth_state'])
+                    != (480, 480, 0, 'closed')):
+                raise ValueError(f'invalid HD portrait contract: {asset_id}')
+            speaker = entry['speaker_id']
+            if not isinstance(speaker, int) or speaker < 0 or speaker in hd_speakers:
+                raise ValueError(f'invalid or duplicate HD speaker: {asset_id}')
+            hd_speakers.add(speaker)
         if entry["role"] == "battle_hud_panel":
             if entry["consumer_contract"] != "battle_status_panel_149x42_v1" or (
                     entry["width"], entry["height"]) != (149, 42):
@@ -197,11 +208,13 @@ def validate(verify_private: bool) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if not set(alpha.getdata()).issubset({0, 255}):
                         raise ValueError(f"non-binary alpha: {asset_id}/{file_path.name}")
-                elif entry["role"] == "battle_action_icon_set":
+                elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if set(alpha.getdata()) != {255}:
-                        raise ValueError(f"non-opaque action icon: {asset_id}/{file_path.name}")
+                        raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
+    if hd_speakers and hd_speakers != portrait_speakers:
+        raise ValueError('HD portrait speaker group is incomplete or orphaned')
     if not PROTOTYPE_ROLES.issubset(roles):
         raise ValueError(f"required prototype roles missing: {sorted(PROTOTYPE_ROLES - roles)}")
     return data

@@ -50,9 +50,9 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有12筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
 | 戰役故事節點稽核 | 第30章完整戰後接線後，工具重算119故事／過場、9直接腳本、60handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-17；輸入SHA與輸出見[第30章主契約的validation.campaign_coverage](../data/ida/fd2_ch30_flow_20261017.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
-| 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
-| 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
-| 高解析呈現 | 使用者已要求HD化；本階段範圍正在確認，沒有高解析production契約或完成聲明 | [#204](https://github.com/wicanr2/fd2_re/issues/204)先確認範圍、同狀態原型與READY規格；不以放大現有圖或母稿存在代替完成 |
+| 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。195筆登錄中，191筆runtime_candidate含33張圖集、94組可繪人物、31位80×80頭像及對應31位480×480頭像、1張HUD及1組四向圖示；另4筆concept。1187個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
+| 現代主題正式呈現 | 全主題仍為61的RUNTIME-E1-PARTIAL；序章新增父王／王后／強盜已以正常START走過97個對話拍點及首章接縫。480×480呈現另驗，人物仍24×24；selector39／57為純目的地重映射 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
+| 高解析呈現 | 2026-10-18使用者撤回160方案，採1920×1200與480×480頭像，維持版面比例。61的啟動時高解析序章契約CONFORMED；31張480圖通過預檢，正常97拍至首章與七位頭像480區域MAE=0，限本切片PLAYER-E2 | [#204](https://github.com/wicanr2/fd2_re/issues/204)[高解析收據](../data/fd2-modern-hd-20261018.json)；F2動態高解析入口、背景、字型、戰場及跨平台效能尚未完成 |
 | 回歸環境 | FD2原Go／素材映像已恢復；私人現代素材18項及完整Go回歸通過。IRQ7原始ISR鏈已接通，自然啟動504次皆返回；正常鍵盤短鏈兩輪233份完整狀態／PNG及trace一致 | [#203](https://github.com/wicanr2/fd2_re/issues/203)及[#205](https://github.com/wicanr2/fd2_re/issues/205)限定工具範圍驗收；新舊平台嚴格比較仍failed，原始失敗保留。工具驗收本身不提升章台帳；章接續看本表 |
 | 非阻擋診斷與考古 | #52單像素差異仍已證實，#197目標窗口未取得；第12章追蹤沿用暫停。#198也明確暫停 | 三項保留未完成及來源，不阻塞其他章、HD與後續平台／編輯器工作 |
 
@@ -61,13 +61,13 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 完整Go19套件通過，平台三套件2021項通過。BOOT完整PNG相同，周邊有新欄位及VirtualMicros差異。
 舊／新233點嚴格比較保留failed；單位raw、鍵盤及DOS檔案呼叫相同，view差異只在163點aux_phase，
 211張PNG不同，不將全部影像差異推定為動畫。沒有增加忽略欄位或宣稱跨平台同狀態。
-靜態現代素材候選報告列出九個非負speaker缺頭像宣告，仍須由正式consumer確認可達；負speaker另列，
+2026-10-15靜態報告的九個候選屬當時快照；2026-10-18正式序章consumer確認其中48／66／96為玩家阻擋，補圖後正常97拍通過。其餘六個候選仍須確認可達；負speaker另列，
 不把候選直接當玩家缺陷。重跑入口與限制見[61](61-modern-theme-runtime-spec.md)。
 
-本表於2026-10-15核對FD2 `b8e7ec37`及本輪已驗差異、遠端開啟Issue、正式章台帳、現代catalog及目前consumer。
+本表章台帳與第一版交付依2026-10-17收據；現代頭像、媒體及F9現況於2026-10-18核對FD2 `61d2651a`與本輪已驗差異、遠端開啟Issue、現代catalog及正式consumer。
 章狀態與素材數由JSON直接重算；事件由全域check產生。具體命令見
 [WORKLOG](../../WORKLOG.md)當日紀錄。初次素材驗證使用既有容器的Python／Pillow，
-後續已恢復FD2專用Go工具鏈；GPU正常路徑與人耳驗收仍未完成。
+後續已恢復FD2專用Go工具鏈。序章GPU正常路徑限本輪收據；全主題其他章、跨平台與人耳驗收仍未完成。
 dosgolem由合併後 `main` 的 `81c85be` 建立 `fd2-followup-20261015`，
 專用worktree為 `work/dosgolem-fd2-followup-20261015`。IRQ7實作 `e26fb41` 與驗證規格 `2c5c104`
 已推送該分支，遠端HEAD一致；共用main保持。工具恢復批次當時接續同源第23章實際SAV，尚未提高章分級；該輪第24章收據保留；目前章接續以上表正式台帳為準。

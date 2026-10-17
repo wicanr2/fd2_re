@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"image"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -531,6 +532,12 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 			screen, frame, g.nativeDialogueModernPortrait.image, rect,
 		); err != nil {
 			return true
+		}
+		if g.nativeDialogueModernPortrait.hdImage != nil {
+			g.modernHDOverlay = &modernHDOverlay{
+				portrait: g.nativeDialogueModernPortrait,
+				rect:     image.Rect(rect.Min.X*2, rect.Min.Y*2, rect.Max.X*2, rect.Max.Y*2),
+			}
 		}
 	} else {
 		g.presentNativeClassFrame(screen, frame)

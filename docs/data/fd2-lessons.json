@@ -2539,6 +2539,66 @@
         ],
         "pattern": "public_hashes"
       }
+    },
+    {
+      "id": "capture-shell-immutable-runner-copy",
+      "area": "錄影",
+      "date": "2026-10-18",
+      "rule": "長時間Bash擷取器啟動時先複製到容器內不可變執行副本，用tools/capture_fd2_release_promo.sh的FD2_CAPTURE_RUNNER_COPY保留腳本SHA；工作樹後續編輯不影響已啟動的擁有程序。",
+      "why": "Bash逐段讀取來源；錄影期間在檔首加入檢查使讀取位移改變，收尾報EOF。EXIT trap已完整合併音畫，正式成片仍需獨立解碼驗證。",
+      "evidence": "tools/capture_fd2_release_promo.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/capture_fd2_release_promo.sh"
+        ],
+        "pattern": "FD2_CAPTURE_RUNNER_COPY"
+      }
+    },
+    {
+      "id": "promo-source-frame-rate-before-cfr-claim",
+      "area": "錄影",
+      "date": "2026-10-18",
+      "rule": "用tools/audit_fd2_video_cadence.py量測來源片段的實際影格時間，再解讀成片CFR；名義60fps不能證明每秒60次不同畫面。原生動畫停留與讀字等待另外判讀。",
+      "why": "同時擷取音畫的來源只有約17至18fps，合成30fps會重複影格；獨立擷取後代表片段為35至49fps。沒有補造動作或宣稱已達硬體時間一致。",
+      "evidence": "tools/audit_fd2_video_cadence.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_fd2_video_cadence.py"
+        ],
+        "pattern": "observed_fps"
+      }
+    },
+    {
+      "id": "promo-resume-compare-pixels-not-png-timestamp",
+      "area": "錄影",
+      "date": "2026-10-18",
+      "rule": "推廣片續作依來源SHA、相同分鏡、字幕像素簽章及編碼／時長／幀數驗證快取；tools/build_fd2_release_promo.py用graphic_signature忽略PNG建立時間，未驗證片段重新產生。",
+      "why": "ImageMagick重繪相同字幕時PNG時間戳不同，直接比檔案SHA讓全部完成片段誤失效；長字幕晚於前段編碼才拒收，改為全段預檢。 identify的%[signature]在此版本會回空值，續作改用%#並要求64位簽章，空值不能視為相同。",
+      "evidence": "tools/build_fd2_release_promo.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_release_promo.py"
+        ],
+        "pattern": "graphic_signature"
+      }
+    },
+    {
+      "id": "dialogue-replay-key-retains-handler-address",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "對話取樣用原始handler位址、故事檔及line共同定位，並拒收重複定位鍵；tools/verify_fd2_hd_gui.py的handler_address不可省略。",
+      "why": "各場景的line從零重起，只用故事檔與line會讓後段覆蓋父王／王后；實際GPU未壞，但自動取樣會漏掉必要角色。",
+      "evidence": "tools/verify_fd2_hd_gui.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_gui.py"
+        ],
+        "pattern": "handler_address"
+      }
     }
   ]
 }

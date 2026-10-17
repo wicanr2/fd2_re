@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "status": "CONFORMED-RUNTIME-E1",
+  "method": "普通F9載入明示battle_ch01建構槽，Home開資訊，再F9載入既有酒店槽，Escape返回城鎮。",
+  "limits": "FD2_TITLE=0略過標題；初始槽由酒店JSON只改node；不宣稱一般開頭完整PLAYER-E2、原版對拍或傷害一致。",
+  "before": {
+    "ai_busy": false,
+    "banner": "",
+    "banner_t": 0,
+    "camera": [
+      0,
+      336
+    ],
+    "cursor": [
+      7,
+      20
+    ],
+    "dialogues": 0,
+    "error": "",
+    "frame": 2640,
+    "keys": null,
+    "move_preview": false,
+    "moved": false,
+    "native_round": 1,
+    "next_player_index": 0,
+    "node": "battle_ch01",
+    "player_focus": null,
+    "player_status_phase": "status",
+    "ring": false,
+    "ring_blink": 0,
+    "ring_phase": "",
+    "ring_sel": 0,
+    "turn": 1,
+    "units": [
+      {
+        "acted": false,
+        "camp": 0,
+        "hp": 42,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 7,
+          "Y": 20,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 7,
+        "y": 20
+      },
+      {
+        "acted": false,
+        "camp": 0,
+        "hp": 0,
+        "mp": 8,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 10,
+          "Y": 21,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 10,
+        "y": 21
+      },
+      {
+        "acted": false,
+        "camp": 0,
+        "hp": 0,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 8,
+          "Y": 22,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 8,
+        "y": 22
+      },
+      {
+        "acted": false,
+        "camp": 0,
+        "hp": 60,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 11,
+          "Y": 23,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 11,
+        "y": 23
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 1,
+          "Y": 3,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 1,
+        "y": 3
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 2,
+          "Y": 1,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 2,
+        "y": 1
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 4,
+          "Y": 1,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 4,
+        "y": 1
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 6,
+          "Y": 0,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 6,
+        "y": 0
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 1,
+          "Y": 21,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 1,
+        "y": 21
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 2,
+          "Y": 22,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 2,
+        "y": 22
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 3,
+          "Y": 22,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 3,
+        "y": 22
+      },
+      {
+        "acted": false,
+        "camp": 2,
+        "hp": 28,
+        "mp": 0,
+        "name": "",
+        "on_field": true,
+        "raw": {
+          "X": 4,
+          "Y": 23,
+          "Pose": 0,
+          "Motion": 0
+        },
+        "x": 4,
+        "y": 23
+      }
+    ],
+    "view": {
+      "CameraX": 0,
+      "CameraY": 14,
+      "CursorX": 7,
+      "CursorY": 20,
+      "VisibleCursorX": 7,
+      "VisibleCursorY": 6
+    },
+    "walking": false
+  },
+  "after": {
+    "ai_busy": false,
+    "banner": "",
+    "banner_t": 0,
+    "camera": [
+      0,
+      176
+    ],
+    "cursor": [
+      7,
+      20
+    ],
+    "dialogues": 0,
+    "error": "",
+    "frame": 2880,
+    "keys": null,
+    "move_preview": false,
+    "moved": false,
+    "next_player_index": 0,
+    "node": "hotel_ch02",
+    "player_focus": null,
+    "ring": false,
+    "ring_blink": 0,
+    "ring_phase": "",
+    "ring_sel": 0,
+    "walking": false
+  },
+  "town": {
+    "ai_busy": false,
+    "banner": "",
+    "banner_t": 0,
+    "camera": [
+      0,
+      176
+    ],
+    "cursor": [
+      7,
+      20
+    ],
+    "dialogues": 0,
+    "error": "",
+    "frame": 3000,
+    "keys": null,
+    "move_preview": false,
+    "moved": false,
+    "next_player_index": 0,
+    "node": "town_ch02",
+    "player_focus": null,
+    "ring": false,
+    "ring_blink": 0,
+    "ring_phase": "",
+    "ring_sel": 0,
+    "walking": false
+  },
+  "files": {
+    "battle-loaded.png": "22052ffe1ba7d5218d1db39ea563cdc5abe108d02df61e894ab4d210998ca9e7",
+    "status-before.png": "2072772f7ce55056c6ee1860a1ad089e9fea769750736dd3ffc265e0bf5fb516",
+    "hotel-after.png": "37427480c42684367c6c4d7c8493bc53f1154dc67c4ca73a4e5e8100379c5acc",
+    "town-after.png": "3836f15c50fd3ef179d42f24bd0d850a1b2e5b265acf247452e322a396a62612",
+    "input-audit.jsonl": "5871287127f9af55eb9c33cc5ab91f405302c6161d7bcd706ff9645f44f957f9",
+    "operations.jsonl": "edcf0fa638359064df6b3d385d703623904aa5846035089944e9aa9ac1050604",
+    "start.json": "f277af667b0978c087ed1579f6cb05ed1663bae9068636e63538cc57d3282861"
+  },
+  "hotel_reference_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+  "visual_review": {
+    "status_before": "索爾資訊面板",
+    "hotel_after": "酒店店員與四個服務圖示，未留角色資訊",
+    "town_after": "城鎮服務，未留角色資訊"
+  },
+  "development_binary_sha256": "c19834dfa99501dbd0ed09d44aa6f62969c9b8d5a7f51803ac504568dcafe22a",
+  "source_sha256": {
+    "remake/cmd/fd2/save.go": "4dffd1d2e527a52fba4a548da72743e9c6f79588ddbe56894885c62f6f3a9c40",
+    "remake/cmd/fd2/save_test.go": "236adaf63baf736e095f5f2ba76b603f6beb1db7fc3b1853f5cbf15b1824879e"
+  },
+  "regression": {
+    "quickload-before-r2.log": {
+      "sha256": "c770f6596521dad4b5ebfa42abfed209b7833137d3cf4b5720a3ec4aa78f765e",
+      "result": "原版程式新增案例FAIL，符合已重現缺陷"
+    },
+    "quickload-modern-after.log": {
+      "sha256": "b67091e4237e3eb51d44832b69930c47662b5302706db46c6a441d4a8f4788c3",
+      "result": "相關讀檔與現代主題PASS，8秒"
+    }
+  }
+}

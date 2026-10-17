@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "status": "PLAYER-E2-LIMITED",
+  "scope": "61已核准的序章靜態頭像缺件；未宣稱高解析正式呈現。",
+  "user_decision": "2026-10-18採用父王原型手繪風格，先完成序章頭像，再接高解析呈現；忠實模式保留。",
+  "pillow_version": "11.3.0",
+  "resize": "80x80 Lanczos; RGBA opaque",
+  "catalog_sha256": "e29f48686c735e9400deb11c9cc14add345aef84d8f8c78c7beb1d0a298b67bd",
+  "assets": [
+    {
+      "speaker_id": 48,
+      "asset_id": "modern.king.portrait.style_a.frame0",
+      "master_file": "king-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "8e24efc1aef6df1c408d523901e785906679f913cbcc5aee177e236a5c663eee",
+      "runtime_file": "king-portrait-style-a-v1-80.png",
+      "runtime_sha256": "b3a808578b888fdef5a0848ae4c5a82f52b364435981999dddedf5842c7fa60d"
+    },
+    {
+      "speaker_id": 66,
+      "asset_id": "modern.queen.portrait.style_a.frame0",
+      "master_file": "queen-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "f98a676b89793432624a6d571403565f9436381b52f749fe2771b0ad93230183",
+      "runtime_file": "queen-portrait-style-a-v1-80.png",
+      "runtime_sha256": "65518ddb62fd7728c832077126ba36b394f8dd189f6d390f306c788b2a707b2a"
+    },
+    {
+      "speaker_id": 96,
+      "asset_id": "modern.bandit.portrait.style_a.frame0",
+      "master_file": "bandit-portrait-style-a-v1-master.png",
+      "master_size": [
+        1254,
+        1254
+      ],
+      "master_sha256": "0113aa709bd5ec3b2fa852b5cd6b6855c1578d1fe9b39501d9bf4b5c3a3c0751",
+      "runtime_file": "bandit-portrait-style-a-v1-80.png",
+      "runtime_sha256": "e45e7fe5cf2ce7cdb09ef5cd2e7fee9727a2a097a9b278b8f98de5706766d1e2"
+    }
+  ],
+  "normal_start_passed": true,
+  "private_remote_synced": true,
+  "public_art_distribution": false,
+  "generation": {
+    "provider": "built-in image_gen",
+    "king": "DATO_048原版身分＋既有Sol手繪母稿為風格參考；保留左向、藍髮、金頭帶、鬍鬚、白綠高領與紅金肩飾，靜態閉嘴，1254×1254深藍底。使用者於2026-10-18明確確認原型。",
+    "queen_prompt": "Use case: stylized-concept. Asset type: one HD closed-mouth dialogue portrait for Flame Dragon 2, modern-handpainted-a theme. Image 1 is the ORIGINAL IDENTITY reference DATO_066: the queen/mother in the opening palace. Image 2 is the user-approved king HD portrait: use its polished painted anime linework, shading, detail density and palette treatment, not the king's identity or male features. Draw the queen alone, square head-and-shoulders crop. Preserve the original frontal face with the same slight angle, mature gentle expression, dark purple/brown swept-up hair in a high rounded bun, original red hair ornament, center-parted front hair and shaped hairline, narrow eyebrows, warm brown eyes and small red lips. Keep the same visible neckline, clothing design, colors and shoulder crop as Image 1. Plain deep muted blue background. Mouth fully closed. High resolution hand-painted anime art with refined hair, clean facial proportions and fabric detail readable at 480x480, restrained highlights, clean contour. No pixel-grid imitation, no photorealism. No crown added, no new jewelry, no text, no frame, no watermark, no extra characters.",
+    "bandit_prompt": "Use case: stylized-concept. Asset type: one HD closed-mouth dialogue portrait for Flame Dragon 2, modern-handpainted-a theme. Image 1 is the ORIGINAL IDENTITY reference DATO_096, the opening chapter bandit used by several bandits. Image 2 is the user-approved king HD portrait: use only its polished hand-painted anime line quality, shading and material detail, never the king's identity, circlet or clothing. Draw the bandit alone, square head-and-shoulders crop. Preserve the original three-quarter face direction and head tilt, broad pale face with eyes concealed by deep shadow beneath a dark green bandana/headgear. Preserve the gray/green metal horizontal brow strip with its visible round studs/rivets, its slanted placement and black outline, red-brown visible shoulder/neck garment, original closed-mouth expression. Do not reveal eyes or invent a crown. Plain deep muted blue background matching original panels. High-resolution hand-painted anime illustration, strong readable contour, refined fabric folds and brushed-metal rivet details at 480x480. Preserve the distinctive original silhouette and crop. No pixel-grid imitation, no photorealism, no text, no frame, no watermark, no other characters."
+  },
+  "normal_start_receipt": {
+    "binary_sha256": "e0d738ffdccdcf3fe22758f7e3e04feb809d266ea81502261ece281597964a54",
+    "catalog_sha256": "e29f48686c735e9400deb11c9cc14add345aef84d8f8c78c7beb1d0a298b67bd",
+    "dialogue_beats": 97,
+    "start": "normal title START; ordinary Enter; permitted intro skips; no chapter/debug entry, boosts or HP locks",
+    "end": {
+      "ai_busy": false,
+      "banner": "",
+      "banner_t": 0,
+      "camera": [
+        0,
+        312
+      ],
+      "cursor": [
+        7,
+        14
+      ],
+      "dialogues": 0,
+      "error": "",
+      "frame": 18840,
+      "keys": null,
+      "move_preview": true,
+      "moved": false,
+      "native_round": 1,
+      "next_player_index": 0,
+      "node": "battle_ch01",
+      "player_focus": null,
+      "ring": false,
+      "ring_blink": 0,
+      "ring_phase": "",
+      "ring_sel": 0,
+      "selected": "",
+      "selection_origin": [
+        7,
+        14
+      ],
+      "turn": 1,
+      "view": {
+        "CameraX": 0,
+        "CameraY": 13,
+        "CursorX": 7,
+        "CursorY": 14,
+        "VisibleCursorX": 7,
+        "VisibleCursorY": 1
+      },
+      "walking": false
+    },
+    "error_count": 0,
+    "files": {
+      "game.log": "dc6e35ba40d6ce0e1ccb9e1eece3c618521497d169f3154ddb0c59e70ecd70fd",
+      "input-audit.jsonl": "1a5e1ea91fbc488f0973f261183226fda9035d297beaafffa690a249e0c18f70",
+      "operations.jsonl": "c1836364e9030bd5aff8e436da31f96c1265556683c7552cf5e6fee4392e6814",
+      "hd-normal-progress.png": "a253c0052c45fe2a947304f5be62b3b8eeabf4a56b399606ba4fd68dcd38d895",
+      "hd-final-battle.png": "fce240df5fa49dedcce2dbd811fdcab7dd6248ffecbace0cd2cfdfa4c96593e2"
+    },
+    "limits": "本切片只驗正常序章頭像、現代地圖到首章交接；不是原版逐幀對拍、全現代主題完成或高解析renderer驗收。"
+  },
+  "private_repository": {
+    "url": "https://github.com/wicanr2/fd2-assets-private.git",
+    "commit": "fd93f14fed4a09832dd9cd87b2545c5b04a86776",
+    "remote_head_verified": true,
+    "rights": "沿使用者指定私人庫保存，未改可見性；美術不加入公開fd2_re。"
+  }
+}

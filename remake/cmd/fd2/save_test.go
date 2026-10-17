@@ -228,6 +228,7 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 	g.nativeItemEffectRows = []byte{1}
 	g.itemAnimStep = 11
 	g.itemClosing = true
+	g.nativePlayerStatus = &nativePlayerStatusState{phase: "status", steady: []byte{1}}
 	g.loadGameFromSlot(2)
 	if g.camp.NodeID() != "town_ch02" || g.gold != 279 || len(g.items) != 1 || g.items[0] != "sky-key" {
 		t.Fatalf("campaign boundary did not restore: node=%q gold=%d items=%#v", g.camp.NodeID(), g.gold, g.items)
@@ -245,7 +246,7 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 		gotOptions.Raw51E61 != 0 || gotOptions.Raw51E62 != 0 {
 		t.Fatalf("save system options=%+v", gotOptions)
 	}
-	if g.st != nil || g.sel != nil || g.shopMode != "" || g.churchMode != "" ||
+	if g.st != nil || g.sel != nil || g.nativePlayerStatus != nil || g.shopMode != "" || g.churchMode != "" ||
 		g.shopPicking || g.shopEquipPrompt || len(g.shopRecipients) != 0 ||
 		g.nativeShopUIJob != nil || g.nativeShopMode != "" || g.nativeShopVariant != 0 ||
 		g.nativeShopHasPendingUnit || len(g.nativeShopSellItemIDs) != 0 ||
@@ -303,9 +304,10 @@ func TestCampaignLoadRejectsOutOfRangeNativeSystemOptionWithoutMutation(t *testi
 	if err := os.WriteFile(saveSlotPath(0), raw, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	g := &Game{camp: campaign.NewRunner(c), gold: 7}
+	status := &nativePlayerStatusState{phase: "status", steady: []byte{1}}
+	g := &Game{camp: campaign.NewRunner(c), gold: 7, nativePlayerStatus: status}
 	g.loadGameFromSlot(0)
-	if g.gold != 7 || g.nativeSystemOptions != nil ||
+	if g.gold != 7 || g.nativeSystemOptions != nil || g.nativePlayerStatus != status ||
 		g.msg != "存檔 native 系統設定超出原始布林範圍" {
 		t.Fatalf("invalid system option mutated game: gold=%d options=%v msg=%q", g.gold, g.nativeSystemOptions, g.msg)
 	}

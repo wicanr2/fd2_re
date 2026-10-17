@@ -26,7 +26,11 @@
 
 第12章後段地形追蹤使用 [六回合有界輸入](../data/parity-plans/ch12-terrain-late-probe.jsonl)。它逐字保留 ch12-sample 前50行，停止於第六回合抽樣；原版使用[官方容器入口](../../tools/dosgolem_oracle_container.sh)。追蹤歸入 #52 與 [mode3 主證據](../data/ida/fd2_terrain_mode3_review_20261001.json)，尚未證實的寫入來源不接正式執行期。
 
-### 現況文件與歷史文件
+- 高解析正常流程：[verify_fd2_hd_gui.py](../../tools/verify_fd2_hd_gui.py)，以Docker內普通鍵盤START驗97個序章拍點及實際1920×1200視窗；不建立錄影。
+- 高解析可丟棄原型：[preview_fd2_hd_resolution.go](../../tools/preview_fd2_hd_resolution.go)，在remake目錄以Docker內go run執行，參數為1280或1920、場景PNG、母稿PNG、輸出PNG；不啟動遊戲狀態。
+- 高解析頭像產生器：[register_modern_hd_portraits.py](../../tools/register_modern_hd_portraits.py)，依61的READY契約產生480×480完整集合；[製作與呈現收據](../data/fd2-modern-hd-20261018.json)。
+
+## 現況文件與歷史文件
 
 第24章事件54與流程驗收政策見[2026-10-15主契約](../data/ida/fd2_turn_event54_20261015.json)。
 保存完整handler及共享尾段、四角鏡頭／延遲、攻略旁證，以及使用者允許作弊、畫面改為參考的定案。
@@ -954,6 +958,16 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [三平台本機非HD完整包組裝器](../../tools/build_fd2_full_local.py)：沿用正式第一版引擎，保留執行期與分離素材命名空間，只輸出本機full-local；工具用Docker執行。
 - [實際遊玩錄影工具鏈](../../tools/docker/fd2-promo.Dockerfile)：沿用既有Go／X11環境，加上FFmpeg、普通鍵盤輸入與遊戲音訊擷取工具。
 - [第一版實際遊玩擷取器](../../tools/capture_fd2_release_promo.sh)：有界Xvfb與音訊擷取，預設正常開場；操作與戰後存檔接續另存紀錄。
+- [影片節奏量測](../../tools/audit_fd2_video_cadence.py)：只量測指定遊戲區域與片段，區分低變化停留與錄影幀率，不單獨判定掉幀。
+- [現代序章正式消費端稽核](../../tools/audit_fd2_modern_intro_consumers.py)：沿正式起點、handler、原生對話與LOADCH roster解析DATO，限序章頭像需求。
+- [序章現代頭像登錄器](../../tools/register_modern_intro_portraits.py)：依61的READY契約保存母稿、轉換80×80候選並登錄三個DATO身分，拒絕覆寫不同內容。
+- [序章現代頭像製作收據](../data/fd2-modern-portraits-20261018.json)：使用者確認的風格、母稿與執行期雜湊、正常START及私人同步狀態。
+- [F9角色資訊面板GPU驗證](../../tools/verify_fd2_quickload_gui.py)：從明示建構槽用普通Home／F9驗證成功讀檔丟棄舊面板，限定RUNTIME-E1。
+- [F9面板暫態清除主收據](../data/fd2-quickload-20261018.json)：正常缺陷來源、修正前後回歸、GPU結果及建構槽限制。
+- [推廣片節奏與DOSBox-X診斷收據](../data/fd2-promo-cadence-20261018.json)：原版輔助片段、舊／新擷取率、四語新版成片及已保留差異。
+- [2026-10-18序章頭像需求收據](../data/fd2-modern-intro-coverage-20261018.json)：97句正式映射需要DATO 0／1／4／9／30／48／66／96；缺48／66／96，其他章未由本收據驗收。
+- [DOSBox-X節奏輔助擷取](../../tools/capture_fd2_dosbox_cadence.sh)：唯讀原版的容器內複本，固定cycles與60fps，限呈現診斷，不取代dosgolem收據。
+- [DOSBox-X／重製並列診斷合成器](../../tools/build_fd2_cadence_comparison.py)：相近開場片段與明示時序限制，輸出本機比較短片及來源雜湊。
 - [錄影普通輸入與截圖記錄器](../../tools/operate_fd2_promo.py)：在擷取容器送X11按鍵，記錄時點、唯讀狀態及畫面雜湊。
 - [第一版推廣影片製作規格](../data/fd2-promo-v.1.0.0-20261017.json)：開場、第一章、戰後存檔接續、購物交易與技術介紹的素材、聲明及驗收邊界。
 - [第一版實機混剪合成器](../../tools/build_fd2_release_promo.py)：實際遊玩影片加技術側欄，保留遊戲音訊並核對總長，正式輸出至promo。
