@@ -1,125 +1,81 @@
-# build-macos.yml — macOS 桌面版打包；2026-08-27 已在 macos-14 CI 成功產出 universal artifact。
-#
-# 為什麼 macOS 不能像 AppImage/Windows 那樣純 Linux docker 跨編:
-#   Go CGO 需要目標平台的 C 工具鏈與 SDK;macOS 的 Cocoa/OpenGL framework header 只在 macOS SDK 裡,
-#   Apple SDK EULA 也限制只能在 Apple 硬體上編譯 macOS binary。跨編需要 osxcross(重,還要處理 SDK 授權),
-#   不如借用 GitHub Actions 的 macos-14(Apple Silicon)runner 直接編——每月 6 小時免費額度綽綽有餘。
-#
-# 好消息:Ebiten 的 macOS 後端吃系統內建 Cocoa/OpenGL framework,不像 SDL2/C++ 老遊戲那樣要
-# 從源碼編一堆 .dylib 再用 dylibbundler 打包(見 mac-app-cross-pack skill)——go build 出來的
-# binary 幾乎不依賴第三方動態庫,.app 打包大幅簡化。
-#
-# 版權資產一樣不 ship；.app 只精確複製 Git 追蹤的 remake/assets。
-# (跟 AppImage/Windows 同一份"已入庫內容"清單)。玩家自備原版跑 tools/export_engine_assets.py,
-# 產出放 $XDG_DATA_HOME/fd2_re/assets/(macOS 沒有 XDG 慣例目錄,但 cmd/fd2/assets.go 的
-# userDataDir() 在 XDG_DATA_HOME 未設時 fallback 到 $HOME/.local/share/,Go 標準庫在 macOS 上
-# 運作正常,不需要另外改成 ~/Library/Application Support——沿用同一套邏輯即可)。
 name: Build macOS Universal
 on:
+  workflow_call:
   workflow_dispatch:
-  push:
-    tags: ['v.*']
-
+permissions:
+  contents: read
 jobs:
   build:
-    runs-on: macos-14   # Apple Silicon runner;免費額度 6 小時/月(2026 現行方案)
+    runs-on: macos-14
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: remake
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.22.12'
           cache-dependency-path: remake/go.sum
-
-      - name: Build arm64 slice(runner 原生架構)
+      - name: 建置雙架構並組裝正式 bundle
         run: |
-          CGO_ENABLED=1 GOARCH=arm64 go build -trimpath -ldflags="-s -w -X main.buildVersion=${{ github.ref_name }}" \
-            -o dist_arm64/fd2 ./cmd/fd2
-
-      - name: Build amd64 slice(系統 clang 內建 universal 工具鏈,-arch x86_64 跨架構編譯)
-        run: |
-          CGO_ENABLED=1 GOARCH=amd64 \
-          CGO_CFLAGS="-arch x86_64" CGO_LDFLAGS="-arch x86_64" \
-            go build -trimpath -ldflags="-s -w -X main.buildVersion=${{ github.ref_name }}" -o dist_amd64/fd2 ./cmd/fd2
-
-      - name: lipo 合併成 universal binary
-        run: |
-          mkdir -p "packaging/dist/FD2.app/Contents/MacOS"
-          lipo -create dist_arm64/fd2 dist_amd64/fd2 \
-            -output "packaging/dist/FD2.app/Contents/MacOS/fd2"
-          lipo -info "packaging/dist/FD2.app/Contents/MacOS/fd2"   # 驗證雙弧,非雙弧就該讓這步失敗
-
-      - name: 組 .app bundle(Info.plist + 已入庫資產 + 原生圖示)
-        run: |
-          APP=packaging/dist/FD2.app
-          mkdir -p "$APP/Contents/Resources/assets"
-          python3 ../tools/copy_tracked_remake_assets.py \
-            --repo .. --destination "$APP/Contents/Resources/assets"
-          if test -d generated-assets/modern-theme-prototypes; then
-            python3 ../tools/sync_modern_theme_private.py --runtime-only \
-              --catalog assets/themes/modern/catalog.json \
-              --source generated-assets/modern-theme-prototypes \
-              --destination "$APP/Contents/Resources/assets/themes/modern"
-          fi
-          cp ../LICENSE           "$APP/Contents/Resources/LICENSE"
-          test -f "$APP/Contents/Resources/LICENSE"
-          ICONSET=packaging/dist/fd2.iconset
-          mkdir -p "$ICONSET"
+          set -euo pipefail
+          version=$(cat ../VERSION)
+          echo "FD2_VERSION=$version" >> "$GITHUB_ENV"
+          work="../work/release-$version/macos"
+          mkdir -p "$work/FD2-$version-macos-universal/FD2.app/Contents/MacOS"
+          app="$work/FD2-$version-macos-universal/FD2.app"
+          go mod download all
+          python3 packaging/release.py stage "$app/Contents/Resources" --platform macos-universal
+          CGO_ENABLED=1 GOARCH=arm64 CGO_CFLAGS="-arch arm64" CGO_LDFLAGS="-arch arm64" go build -trimpath -buildvcs=false -ldflags="-s -w -X main.buildVersion=$version" -o "$work/fd2-arm64" ./cmd/fd2
+          CGO_ENABLED=1 GOARCH=amd64 CGO_CFLAGS="-arch x86_64" CGO_LDFLAGS="-arch x86_64" go build -trimpath -buildvcs=false -ldflags="-s -w -X main.buildVersion=$version" -o "$work/fd2-amd64" ./cmd/fd2
+          lipo -create "$work/fd2-arm64" "$work/fd2-amd64" -output "$app/Contents/MacOS/fd2"
+          lipo -verify_arch arm64 x86_64 "$app/Contents/MacOS/fd2"
+          python3 - "$app" "$version" <<'PY'
+          import pathlib, plistlib, sys
+          app = pathlib.Path(sys.argv[1])
+          version = sys.argv[2]
+          with (app / "Contents/Info.plist").open("wb") as out:
+              plistlib.dump(dict(CFBundleExecutable="fd2", CFBundleIdentifier="tw.wicanr2.fd2re",
+                  CFBundleName="炎龍騎士團2 重製", CFBundlePackageType="APPL",
+                  CFBundleShortVersionString=version[2:].split("-")[0],
+                  CFBundleVersion=version[2:].split("-")[0], FD2ReleaseVersion=version,
+                  NSHighResolutionCapable=True, CFBundleIconFile="fd2.icns"), out)
+          PY
+          iconset="$work/fd2.iconset"
+          mkdir -p "$iconset"
           for size in 16 32 128 256 512; do
-            sips -z "$size" "$size" packaging/fd2.png --out "$ICONSET/icon_${size}x${size}.png" >/dev/null
+            sips -z "$size" "$size" packaging/fd2.png --out "$iconset/icon_${size}x${size}.png" >/dev/null
             retina=$((size * 2))
-            sips -z "$retina" "$retina" packaging/fd2.png --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
+            sips -z "$retina" "$retina" packaging/fd2.png --out "$iconset/icon_${size}x${size}@2x.png" >/dev/null
           done
-          iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/fd2.icns"
-          cat > "$APP/Contents/Info.plist" <<'PLIST'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0"><dict>
-            <key>CFBundleExecutable</key><string>fd2</string>
-            <key>CFBundleIdentifier</key><string>tw.wicanr2.fd2re</string>
-            <key>CFBundleName</key><string>炎龍騎士團2 重製</string>
-            <key>CFBundlePackageType</key><string>APPL</string>
-            <key>CFBundleShortVersionString</key><string>1.0.0</string>
-            <key>CFBundleIconFile</key><string>fd2.icns</string>
-            <key>NSHighResolutionCapable</key><true/>
-          </dict></plist>
-          PLIST
-          chmod +x "$APP/Contents/MacOS/fd2"
-
-      - name: 從空白工作目錄驗證 bundle 資產解析
+          iconutil -c icns "$iconset" -o "$app/Contents/Resources/fd2.icns"
+          chmod +x "$app/Contents/MacOS/fd2"
+          cp "$app/Contents/Resources/README.txt" "$work/FD2-$version-macos-universal/README.txt"
+      - name: 空白目錄執行原生 bundle 自檢及 ZIP
         run: |
-          EMPTY_DIR="$(mktemp -d)"
-          trap 'rm -rf "$EMPTY_DIR"' EXIT
-          cd "$EMPTY_DIR"
-          FD2_PACKAGE_SELF_CHECK=1 \
-            "$GITHUB_WORKSPACE/remake/packaging/dist/FD2.app/Contents/MacOS/fd2"
-
-      - name: 產 .dmg、.tar.gz 與使用者要求的 .zip
-        run: |
-          cd packaging/dist
-          hdiutil create -volname "FD2" -srcfolder FD2.app -ov -format UDZO FD2-mac.dmg
-          tar czf FD2-mac.tar.gz FD2.app
-          ditto -c -k --sequesterRsrc --keepParent FD2.app FD2-mac.zip
-          shasum -a 256 FD2-mac.dmg FD2-mac.tar.gz FD2-mac.zip > FD2-macos-universal.sha256
-          shasum -a 256 -c FD2-macos-universal.sha256
-          tar tzf FD2-mac.tar.gz | grep -q 'FD2.app/Contents/Resources/LICENSE'
-          unzip -l FD2-mac.zip | grep -q 'FD2.app/Contents/Resources/LICENSE'
-
+          set -euo pipefail
+          version="$FD2_VERSION"
+          work="../work/release-$version/macos"
+          package="$work/FD2-$version-macos-universal"
+          app="$package/FD2.app"
+          smoke="../dist-all/$version/smoke"
+          out="../dist-all/$version/patch"
+          mkdir -p "$smoke" "$out"
+          python3 - "$app" "$smoke/macos-self-check.log" <<'PY'
+          import os, pathlib, subprocess, sys, tempfile
+          exe = (pathlib.Path(sys.argv[1]) / "Contents/MacOS/fd2").resolve()
+          with tempfile.TemporaryDirectory() as empty:
+              env = dict(os.environ, FD2_PACKAGE_SELF_CHECK="1", XDG_DATA_HOME=empty + "/xdg")
+              result = subprocess.run([str(exe)], cwd=empty, env=env, capture_output=True, text=True, timeout=90)
+              pathlib.Path(sys.argv[2]).write_text(result.stdout + result.stderr, encoding="utf-8")
+              print(result.stdout, result.stderr)
+              result.check_returncode()
+          PY
+          python3 packaging/release.py zip "$package" --output "$out/FD2-$version-macos-universal.zip"
+          python3 packaging/release.py attest "$app/Contents/Resources" --platform macos-universal --output "$out/FD2-$version-macos-universal.zip" --log "$smoke/macos-self-check.log"
       - uses: actions/upload-artifact@v4
         with:
-          name: FD2-${{ github.ref_name }}-macos-universal
-          path: |
-            remake/packaging/dist/FD2-mac.dmg
-            remake/packaging/dist/FD2-mac.tar.gz
-            remake/packaging/dist/FD2-mac.zip
-            remake/packaging/dist/FD2-macos-universal.sha256
+          name: macos-universal
+          path: dist-all/*/patch/*
           if-no-files-found: error
-
-# 仍未驗證項目(見 41-packaging.md §4「已知落差」):
-#   - workflow run 32997009964 已證實 arm64／amd64、lipo、.app、DMG／tar.gz 與 artifact
-#     上傳成功；但 artifact 尚未在實體 macOS 上啟動、輸入、存檔或播放音訊。
-#   - 未簽署 app 在使用者端會被 Gatekeeper 擋；README 已記錄測試者的
-#     `xattr -dr com.apple.quarantine FD2.app`步驟，正式發行仍需簽章／公證。

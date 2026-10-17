@@ -624,3 +624,12 @@ Game full-r3正常重播通過53筆AI，零順序分岔；行為／節點passed�
 最終衛生掃描：20個本批提交檔均UID/GID1000:1000，歷史root-owned仍2811，md目錄0，掃描錯誤0。全樹3844個本地目標中保留前述9筆歷史問題，本輪修改文件零失效目標；README文化保存內容與圖片保持，原EXE／第3章來源SAV／實際保存SHA相符。沒有錄影，沒有非預期FD2容器殘留；work不加入版控。
 
 第3章主批36ea3023已推送，遠端HEAD核對相同；#14戰役總項、#200第1～3章及#248／#249依提交與正式證據結案。官方pull20項，render／verify通過且可能已完成0；相同容器乾淨重跑215項Python工具回歸全部通過，原r3的遠端同步失敗保留。第3章及30章台帳完成，現代素材#201、呈現#202與HD#204維持未完成，完整matching #198保持暫停。
+
+
+## 2026-10-17 正式第一版三平台發行
+
+使用者明示先發布1.0.0，指定macOS、Windows ZIP及Linux AppImage。路由載入版號、dist-all與Windows ZIP契約，完整識別v.1.0.0-20261017；歷史tag不刪不移。公開包沿既有權利邊界只含引擎與可散布資料，HD及實體桌面缺口明示保留。先建立41的READY契約，再補共同stage／verify／attest／collect、三平台原生CI與最後Release發布job。沒有修改遊戲規則或save格式。
+
+actionlint1.7.7語法檢查及6項封包負例回歸通過。初次素材容器單元測試因沒有git而停止，將Git HEAD視為來源比較測試的外部輸入，真實HEAD仍由流水線核對。Linux候選第一輪授權清單取go list -m all，包含未被程式引用、未下載完整source的圖節點而缺Dir；改由go list -deps -json=Module取得實際linked module來源，不刪除必要授權文字。原候選只含stage，沒有正式封包，清除本輪明確部分輸出後同工具鏈重跑。
+
+Linux本機候選已通過：同一Docker image、447份公開資產、實際AppImage從空白cwd進行本版本自檢，沒有原版／私人素材。候選留work且來源工作樹尚未提交，不作正式Release收據。另補type2-runtime固定版本MIT全文及SHA，macOS兩架構的實際模組授權取聯集；正式CI將從乾淨提交重建。

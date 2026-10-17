@@ -1,104 +1,65 @@
-# build-windows.yml — 在真正的 Windows runner 建置並執行封包自我檢查。
 name: Build Windows x86_64
-
 on:
+  workflow_call:
   workflow_dispatch:
-  push:
-    tags: ['v.*']
-
+permissions:
+  contents: read
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
     defaults:
       run:
         working-directory: remake
         shell: pwsh
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.22.12'
           cache-dependency-path: remake/go.sum
-
-      - name: 啟用 runner 內建 MinGW 工具鏈
+      - name: 準備 MinGW 及正式清單
         run: |
           "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-      - name: 建置並組裝 Windows 封包
-        run: |
-          $dist = "packaging/dist/windows"
-          Remove-Item -Recurse -Force $dist -ErrorAction SilentlyContinue
-          New-Item -ItemType Directory -Force "$dist/assets/scenarios", "$dist/assets/story", "$dist/assets/locales", "$dist/assets/editor-canonical", "$dist/assets/themes/modern" | Out-Null
+          $env:PATH = "C:\msys64\mingw64\bin;" + $env:PATH
           $env:CGO_ENABLED = "1"
-          go build -trimpath -buildvcs=false -ldflags="-s -w -H=windowsgui -X main.buildVersion=${{ github.ref_name }}" -o "$dist/fd2.exe" ./cmd/fd2
-          Copy-Item -Recurse -Force "assets/scenarios/*" "$dist/assets/scenarios/"
-          Copy-Item -Recurse -Force "assets/story/*" "$dist/assets/story/"
-          Copy-Item -Recurse -Force "assets/locales/*" "$dist/assets/locales/"
-          Copy-Item -Recurse -Force "assets/editor-canonical/*" "$dist/assets/editor-canonical/"
-          Copy-Item -Force "assets/spells.json" "$dist/assets/spells.json"
-          Copy-Item -Force "assets/themes/modern/catalog.json" "$dist/assets/themes/modern/catalog.json"
-          if (Test-Path "generated-assets/modern-theme-prototypes") {
-            python ../tools/sync_modern_theme_private.py --runtime-only `
-              --catalog assets/themes/modern/catalog.json `
-              --source generated-assets/modern-theme-prototypes `
-              --destination "$dist/assets/themes/modern"
-          }
-          Copy-Item -Force "../LICENSE" "$dist/LICENSE"
-          if (-not (Test-Path "$dist/LICENSE")) { throw "Windows 封包缺少 LICENSE" }
-
-      - name: 從空白工作目錄執行具型別封包檢查
+          go mod download all
+          $version = (Get-Content ../VERSION -Raw).Trim()
+          "FD2_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $stage = "../work/release-$version/windows/FD2-$version-windows-x86_64"
+          python packaging/release.py stage $stage --platform windows-x86_64
+      - name: 建置正式 GUI 程式
         run: |
-          $exe = (Resolve-Path "packaging/dist/windows/fd2.exe").Path
-          $empty = Join-Path $env:RUNNER_TEMP "fd2-package-check"
-          Remove-Item -Recurse -Force $empty -ErrorAction SilentlyContinue
+          $version = $env:FD2_VERSION
+          $stage = "../work/release-$version/windows/FD2-$version-windows-x86_64"
+          $env:CGO_ENABLED = "1"
+          go build -trimpath -buildvcs=false -ldflags="-s -w -H=windowsgui -X main.buildVersion=$env:FD2_VERSION" -o "$stage/fd2.exe" ./cmd/fd2
+          if ($LASTEXITCODE -ne 0) { throw "Windows 建置失敗" }
+          python packaging/release.py verify $stage --platform windows-x86_64
+      - name: 空白工作目錄執行原生自檢及打包
+        run: |
+          $version = $env:FD2_VERSION
+          $stage = (Resolve-Path "../work/release-$version/windows/FD2-$version-windows-x86_64").Path
+          $out = "../dist-all/$version/patch"
+          $smoke = "../dist-all/$version/smoke"
+          New-Item -ItemType Directory -Force $out, $smoke | Out-Null
+          $smoke = (Resolve-Path $smoke).Path
+          $empty = Join-Path $env:RUNNER_TEMP "fd2-empty"
           New-Item -ItemType Directory -Force $empty | Out-Null
-          Push-Location $empty
-          try {
-            $env:FD2_PACKAGE_SELF_CHECK = "1"
-            $env:XDG_DATA_HOME = Join-Path $empty "xdg"
-            $stdout = Join-Path $empty "stdout.txt"
-            $stderr = Join-Path $empty "stderr.txt"
-            $process = Start-Process -FilePath $exe -WorkingDirectory $empty -Wait -PassThru `
-              -RedirectStandardOutput $stdout -RedirectStandardError $stderr
-            if (Test-Path $stdout) { Get-Content $stdout }
-            if (Test-Path $stderr) { Get-Content $stderr }
-            if ($process.ExitCode -ne 0) {
-              $detail = if (Test-Path $stderr) { Get-Content $stderr -Raw } else { "沒有標準錯誤輸出" }
-              throw "FD2 封裝自我檢查失敗，退出碼 $($process.ExitCode)：$detail"
-            }
-          } finally {
-            Pop-Location
-          }
-
-      - name: 產生 ZIP 與雜湊
-        run: |
-          $archive = "packaging/dist/fd2-windows-x86_64.zip"
-          $manifest = "packaging/dist/fd2-windows-x86_64.sha256"
-          Remove-Item -Force $archive -ErrorAction SilentlyContinue
-          Compress-Archive -Path "packaging/dist/windows/*" -DestinationPath $archive
-          $hash = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
-          "$hash  fd2-windows-x86_64.zip" | Set-Content -Path $manifest -Encoding ascii -NoNewline
-          $recorded = (Get-Content $manifest -Raw).Split()[0]
-          $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash.ToLowerInvariant()
-          if ($recorded -ne $actual) {
-            throw "Windows ZIP SHA-256 複驗失敗：recorded=$recorded actual=$actual"
-          }
-          Add-Type -AssemblyName System.IO.Compression.FileSystem
-          $zip = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path $archive))
-          try {
-            if (-not ($zip.Entries | Where-Object { $_.FullName -eq "LICENSE" })) {
-              throw "Windows ZIP 內缺少 LICENSE"
-            }
-          } finally {
-            $zip.Dispose()
-          }
-          Get-Content $manifest
-
+          $env:FD2_PACKAGE_SELF_CHECK = "1"
+          $env:XDG_DATA_HOME = Join-Path $empty "xdg"
+          $process = Start-Process -FilePath "$stage/fd2.exe" -WorkingDirectory $empty -PassThru -RedirectStandardOutput "$smoke/windows-self-check.log" -RedirectStandardError "$smoke/windows-stderr.log"
+          if (-not $process.WaitForExit(90000)) { $process.Kill(); throw "Windows 自檢逾時" }
+          $process.Refresh()
+          Get-Content "$smoke/windows-self-check.log", "$smoke/windows-stderr.log"
+          if ($process.ExitCode -ne 0) { throw "Windows 自檢失敗：$($process.ExitCode)" }
+          python packaging/release.py zip $stage --output "$out/FD2-$version-windows-x86_64.zip"
+          python packaging/release.py attest $stage --platform windows-x86_64 --output "$out/FD2-$version-windows-x86_64.zip" --log "$smoke/windows-self-check.log"
       - uses: actions/upload-artifact@v4
         with:
-          name: FD2-${{ github.ref_name }}-windows-x86_64
-          path: |
-            remake/packaging/dist/fd2-windows-x86_64.zip
-            remake/packaging/dist/fd2-windows-x86_64.sha256
+          name: windows-x86_64
+          path: dist-all/*/patch/*
           if-no-files-found: error

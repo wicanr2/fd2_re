@@ -1,0 +1,121 @@
+name: FD2 official release
+on:
+  push:
+    branches: ['release/v.1.0.0-20261017']
+    tags: ['v.*']
+permissions:
+  contents: read
+concurrency:
+  group: fd2-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux:
+    uses: ./.github/workflows/build-linux.yml
+  windows:
+    uses: ./.github/workflows/build-windows.yml
+  macos:
+    uses: ./.github/workflows/build-macos.yml
+  collect:
+    needs: [linux, windows, macos]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          path: work/release-downloads
+      - name: 三平台同版本、來源及雜湊驗證
+        id: version
+        run: |
+          set -euo pipefail
+          version=$(cat VERSION)
+          python3 remake/packaging/release.py collect work/release-downloads --output "dist-all/$version/patch"
+          mkdir -p "dist-all/$version/smoke"
+          mv "dist-all/$version/patch/SHA256SUMS.json" "dist-all/$version/SHA256SUMS.json"
+          mv "dist-all/$version/patch/VALIDATION.json" "dist-all/$version/smoke/VALIDATION.json"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: dist-all/${{ steps.version.outputs.version }}
+          if-no-files-found: error
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: collect
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: work/release-publish
+      - name: 上傳已驗證引擎包並公開正式 Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const crypto = require('crypto');
+            const version = fs.readFileSync('VERSION', 'utf8').trim();
+            if (context.ref !== 'refs/tags/' + version) throw new Error('tag/VERSION mismatch');
+            const root = 'work/release-publish';
+            const manifest = JSON.parse(fs.readFileSync(path.join(root, 'SHA256SUMS.json')));
+            if (manifest.version !== version || manifest.source_commit !== context.sha || manifest.files.length !== 3)
+              throw new Error('unverified release source');
+            const expected = ['linux-x86_64.AppImage', 'windows-x86_64.zip', 'macos-universal.zip']
+              .map(suffix => 'FD2-' + version + '-' + suffix).sort();
+            if (JSON.stringify(manifest.files.map(row => row.file).sort()) !== JSON.stringify(expected))
+              throw new Error('unexpected packages');
+            for (const row of manifest.files) {
+              const data = fs.readFileSync(path.join(root, 'patch', row.file));
+              if (data.length !== row.size || crypto.createHash('sha256').update(data).digest('hex') !== row.sha256)
+                throw new Error('package hash mismatch: ' + row.file);
+            }
+            const {owner, repo} = context.repo;
+            try {
+              await github.rest.repos.getReleaseByTag({owner, repo, tag: version});
+              throw new Error('Release already exists; do not overwrite');
+            } catch (error) { if (error.status !== 404) throw error; }
+            const body = [
+              '《炎龍騎士團 2》重製的第一版正式引擎發行。',
+              '',
+              '- macOS：Intel／Apple Silicon 通用 .app ZIP。',
+              '- Windows：x86_64 ZIP。',
+              '- Linux：x86_64 AppImage。',
+              '- 30 章依各章受控流程政策通過；第 1、2 章限定保存差異逐筆揭露。',
+              '- HD、所有分支、自然難度與實體桌面音訊／輸入驗收仍未完成。',
+              '',
+              '公開包只含引擎與可散布資料，需玩家自備完整合法分離素材。',
+              '現有 extract_all.py 與 fd2-asset-import 各自只有部分輸出，單獨執行不能建立完整可玩包。',
+              '使用說明、存檔位置、RRSAL-1.0 與第三方授權均隨包附上。',
+              'Windows／macOS 未簽署，macOS 尚未公證；原生 CI 自檢不等於實體桌面驗收。',
+              '',
+              '[逐章驗收與限制](https://github.com/' + owner + '/' + repo + '/blob/' + version + '/docs/REMAKE-STATUS.md)',
+              '[素材分離契約](https://github.com/' + owner + '/' + repo + '/blob/' + version + '/docs/knowledge-base/60-editor-separated-assets-spec.md)',
+              '',
+              'SHA256SUMS.json 記錄三包雜湊，VALIDATION.json 記錄三平台原生程序自檢範圍。',
+              'Source commit: ' + context.sha
+            ].join('\n');
+            const release = (await github.rest.repos.createRelease({
+              owner, repo, tag_name: version, name: version, body, draft: true, prerelease: false
+            })).data;
+            const uploads = manifest.files.map(row => [row.file, path.join(root, 'patch', row.file)]);
+            uploads.push(['SHA256SUMS.json', path.join(root, 'SHA256SUMS.json')]);
+            uploads.push(['VALIDATION.json', path.join(root, 'smoke', 'VALIDATION.json')]);
+            for (const [name, file] of uploads) {
+              const data = fs.readFileSync(file);
+              await github.rest.repos.uploadReleaseAsset({
+                owner, repo, release_id: release.id, name, data,
+                headers: {'content-type': 'application/octet-stream', 'content-length': data.length}
+              });
+            }
+            await github.rest.repos.updateRelease({
+              owner, repo, release_id: release.id, draft: false, prerelease: false, make_latest: 'true'
+            });
+            core.info(release.html_url);
