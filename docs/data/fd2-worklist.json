@@ -321,19 +321,6 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
-    },
-    {
-      "id": "quickload-player-status-overlay",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P1 F9讀檔後角色資訊面板殘留並覆蓋城鎮",
-      "body": "本輪以正式v.1.0.0-20261017完整Linux包正常START、首章移動／攻擊，在敵方狀態面板開啟時F9讀取既有hotel-save.json。節點已切hotel_ch02，Escape及鎮服務輸入可轉town_ch02與shop_ch02_item，但實際GPU仍顯示強盜狀態頁，三張PNG SHA相同853f60840170344aa079ae6c579fab3b2a4e68229e59383321df8feb0203c42c。\n\n原因：loadJSONGameFromSlot丟棄st／sel與教會／商店暫態，沒有清nativePlayerStatus；Draw持續呈現舊steady frame。這是重製F9的暫態接線缺陷，不重開原版RE、不改保存格式。工作來源與普通輸入保存在work/promo-cadence-20261018/remake-r3；修正後須正常GPU重現及有效／拒收讀檔回歸。",
-      "acceptance": "成功F9載入節點前清除未序列化的nativePlayerStatus；拒收存檔保持原畫面與狀態。正式普通鍵盤由角色資訊面板讀取酒店，實際GPU呈現酒店且可返回鎮購物；相關Go回歸通過。",
-      "verify": {
-        "kind": "manual",
-        "note": "核對成功／失敗讀檔測試與普通F9後GPU收據，來源影片不可冒稱已修正。"
-      },
-      "issue": 250
     }
   ]
 }

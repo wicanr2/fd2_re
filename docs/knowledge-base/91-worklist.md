@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -163,16 +163,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
 怎樣算做完：使用者已確認1920×1200／480×480且啟動序章已通過。完成一般F2動態高解析入口與縮放、遮罩及存讀檔回歸；介面／字型／戰場依61逐切片READY後實作與驗收，跨平台效能另實測。原型及單一序章不等於整體HD完成。
-
-### P1 F9讀檔後角色資訊面板殘留並覆蓋城鎮
-
-`quickload-player-status-overlay` · 缺陷 · [#250](https://github.com/wicanr2/fd2_re/issues/250) · 仍未完成 · 要人判
-
-本輪以正式v.1.0.0-20261017完整Linux包正常START、首章移動／攻擊，在敵方狀態面板開啟時F9讀取既有hotel-save.json。節點已切hotel_ch02，Escape及鎮服務輸入可轉town_ch02與shop_ch02_item，但實際GPU仍顯示強盜狀態頁，三張PNG SHA相同853f60840170344aa079ae6c579fab3b2a4e68229e59383321df8feb0203c42c。
-
-原因：loadJSONGameFromSlot丟棄st／sel與教會／商店暫態，沒有清nativePlayerStatus；Draw持續呈現舊steady frame。這是重製F9的暫態接線缺陷，不重開原版RE、不改保存格式。工作來源與普通輸入保存在work/promo-cadence-20261018/remake-r3；修正後須正常GPU重現及有效／拒收讀檔回歸。
-
-怎樣算做完：成功F9載入節點前清除未序列化的nativePlayerStatus；拒收存檔保持原畫面與狀態。正式普通鍵盤由角色資訊面板讀取酒店，實際GPU呈現酒店且可返回鎮購物；相關Go回歸通過。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
