@@ -892,3 +892,17 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第29章正常三頭龍流程計畫](../data/parity-plans/ch29-flow-dragons-r4.jsonl)：同源護送、完整增援與正常死亡旗標；不用HP-only清敵。
 
 - [第29章完整流程正式收據](../data/ui-traces/parity-ch29.json)：護送、增援、三龍、自動戰後及strict SAV，依111／114例外PLAYER-E2。
+
+- [第30章流程主契約](../data/ida/fd2_ch30_flow_20261017.json)與[正常LOAD短探針](../data/parity-plans/ch30-load-prefix-r1.jsonl)：原樣接續第29章正式實際SAV，正常全章與終局流程已通過，限制見正式收據。
+
+- [第30章原樣接續槽清冊](../data/parity-slots/ch30-manifest.json)：既有槽工具零強化重生，完整SAV SHA與第29章正式實際保存相同。
+
+- [第30章地魔神與第一波增援抽樣](../data/parity-plans/ch30-stage1-r1.jsonl)：固定來源與seed4，正常攻擊及END，不計整章。
+
+- [第30章完整魔神與終局正常輸入計畫](../data/parity-plans/ch30-full-flow-r1.jsonl)：固定來源／seed4，所有魔神正常擊倒，追25757、2BCE5與25975，整章結果見正式收據，畫面僅參考。
+
+- [正常終局文字重生工具](../../tools/sync_native_ending_dialogue.py)：依第30章READY來源以FDTXT031 controls／glyphs重生2BCE5正常分支，--check／--write僅限Docker；不是第31個可玩章節。
+
+- [第30章完整流程正式收據](../data/ui-traces/parity-ch30.json)：三波增援、正常五魔神、完整戰後與終局、27人名冊及整檔無保存證據，依111／114例外PLAYER-E2。
+
+- [終局六句三語候選與待審範圍](../data/localization/ending-story-supplements.json)：來源FDTXT031 strings40..45，保留machine_draft；不影響繁中原始字模流程驗收。

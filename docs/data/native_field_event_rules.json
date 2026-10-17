@@ -115,6 +115,19 @@
         "raw_camp": 0,
         "turn_delta": 0
       }
+    },
+    {
+      "event_id": 80,
+      "handler": "0x35f5a",
+      "selector": 1,
+      "trigger_gate": "always",
+      "set_mode_ranges": [
+        {
+          "start": 20,
+          "end": 20,
+          "mode": 11
+        }
+      ]
     }
   ]
 }

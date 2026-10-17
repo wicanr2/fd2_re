@@ -266,10 +266,10 @@ func TestFullCampaignCarriesVerifiedChapter30ViewAndInheritedHUD(t *testing.T) {
 		t.Fatalf("battle_ch30 native map state=%#v", n)
 	}
 	view := *n.NativeMapView
-	if view.CameraX != 16 || view.CameraY != 14 ||
-		view.CursorX != 23 || view.CursorY != 18 ||
-		view.VisibleCursorX != 7 || view.VisibleCursorY != 4 ||
-		view.RangeMode == nil || *view.RangeMode != 0 {
+	if view.CameraX != 16 || view.CameraY != 17 ||
+		view.CursorX != 22 || view.CursorY != 23 ||
+		view.VisibleCursorX != 6 || view.VisibleCursorY != 6 ||
+		view.RangeMode == nil || *view.RangeMode != 1 {
 		t.Fatalf("battle_ch30 native map view=%+v", view)
 	}
 	if n.NativeMapHUDInherited.DisplayGateB != 1 {
@@ -785,14 +785,14 @@ func TestCampaignFullPostBattleTownContractMatchesOriginalShopChapters(t *testin
 			}
 		})
 	}
-	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.EndingPartySnapshotOnWin {
+	if battle30 := campaign.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "postbattle_ch30_terminal" || battle30.EndingPartySnapshotOnWin {
 		t.Fatalf("battle_ch30 must end campaign: %#v", battle30)
 	}
 	ending := campaign.Nodes["ending"]
 	if ending == nil || ending.NativeEndingPrefix == nil ||
 		ending.NativeEndingPrefix.Timeline != "assets/endings/native_2bce5.json" ||
 		ending.NativeEndingPrefix.Handler != "0x2bce5" ||
-		ending.NativeEndingPrefix.Chapter != 29 ||
+		ending.NativeEndingPrefix.Chapter != 30 ||
 		ending.NativeEndingPrefix.Mode != NativeEndingPrefixSourceBoundE1 {
 		t.Fatalf("terminal ending prefix=%#v", ending)
 	}
@@ -937,8 +937,11 @@ func TestEveryContinuingBattleSyncsBeforeOriginalIntermission(t *testing.T) {
 		})
 	}
 
-	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "ending" || !battle30.EndingPartySnapshotOnWin {
-		t.Fatalf("terminal battle must retain original direct ending edge: %#v", battle30)
+	if battle30 := c.Nodes["battle_ch30"]; battle30 == nil || battle30.OnWin != "postbattle_ch30_terminal" || battle30.EndingPartySnapshotOnWin {
+		t.Fatalf("terminal battle must retain the full original postbattle edge: %#v", battle30)
+	}
+	if post := c.Nodes["postbattle_ch30_terminal"]; post == nil || post.HandlerBinding != "assets/cutscenes/bindings/ch29_post.json" || post.Next != "ending" {
+		t.Fatalf("缺完整25757戰後：%#v", post)
 	}
 }
 
@@ -1228,7 +1231,7 @@ func TestCampaignFullStoryScriptCoverageMatchesAudit(t *testing.T) {
 	}
 	// #47／#61／#79／#214以原版pending1返回標題取代retreat_ch12／ch13／ch15／ch26；現況統計入口為58，
 	// 可重跑工具 tools/audit_story_script_coverage.py，不把移除的自訂台詞算成證據。
-	if storyNodes != 118 || scripted != 9 || handlerBound != 59 || fallback != 50 || retreat != 26 || rumor != 23 || postbattle != 0 || generic != 1 {
+	if storyNodes != 119 || scripted != 9 || handlerBound != 60 || fallback != 50 || retreat != 26 || rumor != 23 || postbattle != 0 || generic != 1 {
 		t.Fatalf("campaign story coverage changed: nodes=%d scripted=%d handler_bound=%d fallback=%d retreat=%d rumor=%d postbattle=%d generic=%d; update the audit before changing claims", storyNodes, scripted, handlerBound, fallback, retreat, rumor, postbattle, generic)
 	}
 }

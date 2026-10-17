@@ -4,10 +4,7 @@
   "map": 29,
   "runtime_append_groups": true,
   "initial_groups": [
-    0,
-    1,
-    2,
-    3
+    0
   ],
   "party": [
     {
@@ -1320,5 +1317,853 @@
         "native_event_id": 83
       }
     ]
-  }
+  },
+  "native_turn_events": [
+    {
+      "event_id": 82,
+      "raw_camp": 0,
+      "handler": "0x35f92",
+      "staging": {},
+      "actions": [
+        {
+          "type": "native_range_zero",
+          "native_source": "0x135f2",
+          "native_event_id": 82,
+          "camp": "enemy"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x35f9c",
+          "grid": [
+            16,
+            1
+          ],
+          "native_event_id": 82,
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 6,
+            "source_dat": "FDTXT_030",
+            "string_index": 3,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 126,
+            "pages": [
+              [
+                "『水與冰的女王，將這些傢伙",
+                "　冰封在永恆的死之牢獄中！",
+                "　』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  158,
+                  510,
+                  273,
+                  367,
+                  161,
+                  307,
+                  370,
+                  1150,
+                  462,
+                  608,
+                  612,
+                  609
+                ],
+                [
+                  181,
+                  273,
+                  215,
+                  395,
+                  1292,
+                  1293,
+                  367,
+                  515,
+                  132,
+                  1519,
+                  115,
+                  331,
+                  342
+                ],
+                [
+                  181,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 3,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 7,
+            "source_dat": "FDTXT_030",
+            "string_index": 3,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 123,
+            "pages": [
+              [
+                "『水魔神領命！』"
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_range_zero",
+          "native_source": "0x35fda",
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x35fe4",
+          "grid": [
+            16,
+            14
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x35ff0",
+          "native_staging_present": {
+            "slot": 23,
+            "x": 22,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "spawn_group",
+          "groups": [
+            1
+          ],
+          "native_spawns": [
+            {
+              "group": 1,
+              "via": "spawn_group",
+              "source": "0x3601b",
+              "raw_placement_gate": 0
+            }
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x36024",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 23,
+            "last": 23,
+            "mode": 0
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x36040",
+          "native_staging_present": {
+            "slot": 27,
+            "x": 21,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x3605b",
+          "native_staging_present": {
+            "slot": 28,
+            "x": 23,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              1
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 8,
+            "source_dat": "FDTXT_030",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 126,
+            "pages": [
+              [
+                "『狂風的吟唱者，用你的利刃",
+                "　將他們撕裂成血肉的飛霧！",
+                "　』"
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 9,
+            "source_dat": "FDTXT_030",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 124,
+            "pages": [
+              [
+                "『風魔神領命！』"
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_range_zero",
+          "native_source": "0x35fda",
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x35fe4",
+          "grid": [
+            16,
+            14
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x35ff0",
+          "native_staging_present": {
+            "slot": 22,
+            "x": 22,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "spawn_group",
+          "groups": [
+            2
+          ],
+          "native_spawns": [
+            {
+              "group": 2,
+              "via": "spawn_group",
+              "source": "0x3601b",
+              "raw_placement_gate": 0
+            }
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x36024",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 22,
+            "last": 22,
+            "mode": 0
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x36040",
+          "native_staging_present": {
+            "slot": 29,
+            "x": 21,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x3605b",
+          "native_staging_present": {
+            "slot": 30,
+            "x": 23,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              2
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 10,
+            "source_dat": "FDTXT_030",
+            "string_index": 5,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 126,
+            "pages": [
+              [
+                "『烈焰的主宰，燃起你的地獄",
+                "　之火，把他們燒得連灰都不",
+                "　剩！』"
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 5,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 11,
+            "source_dat": "FDTXT_030",
+            "string_index": 5,
+            "utterance": 1,
+            "control": "FFEF",
+            "operand": 125,
+            "pages": [
+              [
+                "『火魔神領命！』"
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_range_zero",
+          "native_source": "0x35fda",
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x35fe4",
+          "grid": [
+            16,
+            14
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x35ff0",
+          "native_staging_present": {
+            "slot": 21,
+            "x": 22,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "spawn_group",
+          "groups": [
+            3
+          ],
+          "native_spawns": [
+            {
+              "group": 3,
+              "via": "spawn_group",
+              "source": "0x3601b",
+              "raw_placement_gate": 0
+            }
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x36024",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 21,
+            "last": 21,
+            "mode": 0
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x36040",
+          "native_staging_present": {
+            "slot": 31,
+            "x": 21,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x3605b",
+          "native_staging_present": {
+            "slot": 32,
+            "x": 23,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              3
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x35fa8",
+          "native_text_index": 6,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 12,
+            "source_dat": "FDTXT_030",
+            "string_index": 6,
+            "utterance": 0,
+            "control": "FFEF",
+            "operand": 126,
+            "pages": [
+              [
+                "『遺憾得很，不識抬舉的你們",
+                "　竟然選擇接受終末的天罰．",
+                "　膽敢違抗神的意志的螻蟻們",
+                "　迎接你們的最後一刻吧！』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  924,
+                  925,
+                  386,
+                  738,
+                  370,
+                  346,
+                  789,
+                  1716,
+                  1337,
+                  367,
+                  605,
+                  569
+                ],
+                [
+                  181,
+                  592,
+                  654,
+                  1717,
+                  499,
+                  580,
+                  642,
+                  535,
+                  1718,
+                  367,
+                  266,
+                  972,
+                  584
+                ],
+                [
+                  181,
+                  670,
+                  767,
+                  1110,
+                  661,
+                  157,
+                  367,
+                  692,
+                  1315,
+                  367,
+                  1683,
+                  1522,
+                  569
+                ],
+                [
+                  181,
+                  408,
+                  580,
+                  605,
+                  569,
+                  367,
+                  811,
+                  733,
+                  486,
+                  1051,
+                  358,
+                  342,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              4
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_range_zero",
+          "native_source": "0x35fda",
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              4
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "pan",
+          "native_source": "0x35fe4",
+          "grid": [
+            16,
+            14
+          ],
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              4
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_staging_present",
+          "native_source": "0x35ff0",
+          "native_staging_present": {
+            "slot": 20,
+            "x": 22,
+            "y": 18
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              4
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x36078",
+          "native_death_op": {
+            "op": "ai_mode_range",
+            "first": 20,
+            "last": 20,
+            "mode": 11
+          },
+          "native_event_id": 82,
+          "native_when": {
+            "state_eq": [
+              16,
+              4
+            ]
+          },
+          "camp": "enemy"
+        },
+        {
+          "type": "native_range_one",
+          "native_source": "0x35c18",
+          "native_event_id": 82,
+          "camp": "enemy"
+        }
+      ],
+      "state_range": [
+        16,
+        1,
+        4
+      ]
+    }
+  ],
+  "native_result_handler": "0x20bf5",
+  "native_result_initial_code": 0,
+  "native_result_auto_advance": true,
+  "native_result_rules": [
+    {
+      "id": "record20_inactive",
+      "source": "0x20c0d",
+      "records_all_inactive": [
+        20
+      ],
+      "code": 2,
+      "actions": []
+    },
+    {
+      "id": "record0_inactive",
+      "source": "0x20c25",
+      "records_all_inactive": [
+        0
+      ],
+      "code": 1,
+      "actions": []
+    },
+    {
+      "id": "record1_inactive",
+      "source": "0x20c64",
+      "records_all_inactive": [
+        1
+      ],
+      "code": 1,
+      "actions": [
+        {
+          "type": "dialogue",
+          "native_source": "0x20c3d",
+          "native_text_index": 7,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch30.json",
+            "scene_index": 1,
+            "line": 13,
+            "source_dat": "FDTXT_030",
+            "string_index": 7,
+            "utterance": 0,
+            "control": "FFEE",
+            "operand": 9,
+            "pages": [
+              [
+                "『．我不能就這樣倒下．控制",
+                "　系統．索爾．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  584,
+                  568,
+                  346,
+                  428,
+                  345,
+                  462,
+                  696,
+                  784,
+                  559,
+                  584,
+                  329,
+                  330
+                ],
+                [
+                  181,
+                  552,
+                  553,
+                  584,
+                  36,
+                  37,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
 }

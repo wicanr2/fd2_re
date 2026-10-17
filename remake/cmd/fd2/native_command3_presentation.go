@@ -76,7 +76,7 @@ func (g *Game) startNativeCommand3Presentation(actor, confirmed *battle.Unit, th
 		return err
 	}
 	if len(plan.Results) == 0 || plan.DamageStages != figani.NativeCommand3DamageStages ||
-		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[3].EffectMode != 2 {
+		len(g.st.NativeCommandBook) != battle.NativeCommandRecordCount || g.st.NativeCommandBook[3].EffectMode != 1 {
 		return errors.New("native command3 final targets unavailable")
 	}
 	for _, result := range plan.Results {

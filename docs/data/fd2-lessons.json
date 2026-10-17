@@ -2418,6 +2418,36 @@
         ],
         "pattern": "g\\.applyNativeRawCamp0PairEvent\\(\\)"
       }
+    },
+    {
+      "id": "loadch-source-count-and-runtime-capacity",
+      "date": "2026-10-17",
+      "area": "場景載入",
+      "rule": "LOADCH分別驗證單位模板列數、部署容量與實際runtime名冊，並為清零未用格保存raw來源。入口remake/internal/campaign/campaign.go的LoadCHState與docs/data/ida/fd2_ch30_flow_20261017.json post_ending_contract；適用模板列數和持續隊伍數不同的換場。",
+      "why": "第30章終局只有1筆模板、31格部署、27個active。混成同一slot_count會依序在loader、acting、speaker及selector拒收；只補單一旗標無法表達原始清零記錄。",
+      "evidence": "docs/data/ida/fd2_ch30_flow_20261017.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/main.go"
+        ],
+        "pattern": "state\\.SourceSlotCount"
+      }
+    },
+    {
+      "id": "ai-blocked-cell-found-is-not-movement-success",
+      "date": "2026-10-17",
+      "area": "AI後備回復",
+      "rule": "AI後備路由按移動helper的回傳成功旗標消費下一條邊，不把找到目的格當成走成。入口remake/internal/battle/native_ai_mode11_runtime.go nativeAIMode11BlockedOrRecovery及docs/data/ida/fd2_ai_mode11_full_ida_20260810.txt；零步14B78回零時繼續13FD4。",
+      "why": "空魔神mode11找到blocked-cell但未移動，原版依13E52每回合回復maxHP/5；重製漏掉回復，兩回合差2400／4800。",
+      "evidence": "docs/data/ida/fd2_ch30_flow_20261017.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/battle/native_ai_mode11_runtime.go"
+        ],
+        "pattern": "len\\(action\\.Path\\) > 1"
+      }
     }
   ]
 }

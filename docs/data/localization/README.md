@@ -34,3 +34,7 @@ Go 檔改了行號就會讓暫定 `string_id` 漂移；不要整份重建，用
 測試是 `python -m unittest tools.test_locale_review_blockers`。它預設
 驗證四個官方內容目錄，證明四包身分、變數與來源完整，並
 阻擋已知的英文／日文污染及退化模式；它不能取代譯者的語意、語氣與專名審查。
+
+第30章補回FDTXT031尾聲六句的三語候選見[ending-story-supplements.json](ending-story-supplements.json)。受版控範圍只列六個canonical line_id，狀態維持machine_draft並由GitHub worklist追蹤人工校譯；不把代理程式候選升格為人工審校。重綁入口仍是migrate_full_locale_content.py --new-translations docs/data/localization/ending-story-supplements.json，僅限Docker。
+
+2026-10-17本輪重綁後四包各5,106筆，新增六句的人工校譯由[#239](https://github.com/wicanr2/fd2_re/issues/239)追蹤。上方2026-09-16數量為當時快照；目前嚴格測試只明示容許這六個新增劇情line_id保持初稿，其他既有審校狀態不變。

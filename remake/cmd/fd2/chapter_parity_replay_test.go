@@ -18,8 +18,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/ending"
 	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 )
 
@@ -152,6 +154,7 @@ type parityReplay struct {
 	stageRowOffset                    *int
 	actionOverlayCandidatesProvenance []parityActionOverlayCandidate
 	skipFrames                        bool
+	endingStoryTrace                  *journeyTrace
 }
 
 // #144：只計已證實0x24D48的raw列旋轉，不讀影像或搜尋相位。
@@ -1006,6 +1009,8 @@ func TestChapterParityReplay(t *testing.T) {
 			r.townSave(action)
 		case "preparation_save":
 			r.preparationSave(action)
+		case "ending_terminal":
+			r.finishEnding(action)
 		case "shop_sell":
 			r.shopSell(action)
 		case "shop_buy":
@@ -1089,6 +1094,22 @@ func TestParityClearRespectsOraclePhaseBoundary(t *testing.T) {
 func (r *parityReplay) mark(action parityAction) {
 	t, g := r.t, r.g
 	switch action.Label {
+	case "ending_entry":
+		// 原版r2的893位於25816文字10內，尚未LOADCH30或呼叫2BCE5。
+		// 只沿正常故事輸入走到同一caller，不把這個mark誤稱為結局影片入口。
+		r.endingStoryTrace = newJourneyTrace()
+		driveStory(t, g, r.endingStoryTrace, func() bool {
+			return g.camp.NodeID() == "postbattle_ch30_terminal" &&
+				g.beatIdx >= 0 && g.beatIdx < len(g.beats) &&
+				g.beats[g.beatIdx].Source == "0x25816" && len(g.dialog) > 0
+		})
+		r.checkpoint("mark:"+action.Label, action.Seq, "ending", true,
+			"25757戰後文字10入口；不是2BCE5影片入口，畫面僅供參考")
+	case "ending_terminal":
+		if g.nativeEnding == nil || !g.nativeEnding.presentingCampaignTerminal() {
+			t.Fatal("終局mark缺少正常永久畫面owner")
+		}
+		r.checkpoint("mark:"+action.Label, action.Seq, "ending_terminal", false)
 	case "captain_reinforcements_arrived":
 		if parityHPPolicies[g] == nil || verifyParityPreparationOwner(r.run, action.Seq, "0x117F8") != nil ||
 			!pump(t, g, journeyStoryFrames, r.playerHasControl) {
@@ -1332,6 +1353,103 @@ func (r *parityReplay) mark(action parityAction) {
 		}
 		r.checkpoint("mark:"+action.Label, action.Seq, r.ui(), true)
 	}
+}
+
+func (r *parityReplay) finishEnding(action parityAction) {
+	g, t := r.g, r.t
+	if err := verifyParityPreparationOwner(r.run, action.Seq, "0x25975"); err != nil {
+		// 終局自迴圈沒有caller frame，直接核對原版PC及固定EXE。
+		raw, readErr := os.ReadFile(filepath.Join(r.run, fmt.Sprintf("checkpoint-%04d.json", action.Seq)))
+		var cp struct {
+			EIP string `json:"eip"`
+			SHA string `json:"exe_sha256"`
+		}
+		if readErr != nil || json.Unmarshal(raw, &cp) != nil || cp.EIP != "0x25975" || cp.SHA != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f" {
+			t.Fatal("終局缺少原版25975永久自迴圈")
+		}
+	}
+	if r.endingStoryTrace == nil {
+		t.Fatal("終局缺少完整戰後輸入紀錄")
+	}
+	driveStory(t, g, r.endingStoryTrace, func() bool { return g.camp.NodeID() == "ending" })
+	if g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound || g.handlerChapter != 30 {
+		t.Fatal("正常戰後沒有交給raw30結局owner")
+	}
+	// 只固定呈現時鐘，不改規則、名冊或玩家輸入。仍逐次走正式Update及Draw。
+	now := time.Unix(100, 0)
+	g.nativeEndingNow = func() time.Time { now = now.Add(time.Second / 60); return now }
+	defer func() { g.nativeEndingNow = nil }()
+	screen := ebiten.NewImage(320, 200)
+	defer screen.Dispose()
+	var blocks []ending.DialogueBlock
+	seen := map[string]bool{}
+	for frame := 0; frame < 50000; frame++ {
+		p := g.nativeEnding
+		if p.presentingCampaignTerminal() {
+			var records [][4]byte
+			for _, record := range p.montage.Units {
+				records = append(records, [4]byte{record[6], record[7], record[8], record[0x20]})
+			}
+			before, err := os.ReadFile(os.Getenv("FD2_PARITY_SLOT"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			after, err := os.ReadFile(filepath.Join(r.out, "FD2.SAV"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			proof, err := json.MarshalIndent(map[string]interface{}{
+				"handler_chapter": g.handlerChapter, "runtime_record_count": len(g.storyActors),
+				"persistent_count": len(g.partyJoinOrder), "records_2c548_consumed": records,
+				"post_story_trace": r.endingStoryTrace, "ending_dialogue_blocks": blocks,
+				"terminal": true, "terminal_owner": "presentingCampaignTerminal",
+				"save_sha256_before": fmt.Sprintf("%x", sha256.Sum256(before)),
+				"save_sha256_after":  fmt.Sprintf("%x", sha256.Sum256(after)),
+				"presentation_clock": "deterministic 60Hz; hardware-spec approximation; no frame parity",
+			}, "", "  ")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(r.out, "ending-flow.json"), append(proof, '\n'), 0644); err != nil {
+				t.Fatal(err)
+			}
+			r.checkpoint("ending_terminal", action.Seq, "ending_terminal", false,
+				"正常Update／Draw完成結局；60Hz呈現時鐘近似，未比較逐幀或硬體wall-clock")
+			return
+		}
+		if p.dialogue != nil {
+			activeBlocks, ok := p.player.BlockedDialogue(p.chapter)
+			if !ok {
+				t.Fatal("已發布文字缺少原始文字閘門")
+			}
+			for _, block := range activeBlocks {
+				key := fmt.Sprintf("%s/%d", block.SourceDAT, block.StringIndex)
+				if !seen[key] {
+					seen[key] = true
+					blocks = append(blocks, block)
+				}
+			}
+			if err := g.stepNativeEndingDialogue(true); err != nil {
+				t.Fatal(err)
+			}
+		}
+		if p.montage != nil && p.montage.Phase == ending.MontagePhasePortrait && !p.montage.Ready() {
+			if err := g.applyNativeEndingInput(true, false, true); err != nil {
+				t.Fatal(err)
+			}
+		}
+		if err := g.Update(); err != nil {
+			t.Fatal(err)
+		}
+		g.Draw(screen)
+		if g.loadErr != "" {
+			t.Fatal(g.loadErr)
+		}
+		if p.montageStartError != "" || p.tailStartError != "" {
+			t.Fatalf("結局缺少來源：montage=%s tail=%s", p.montageStartError, p.tailStartError)
+		}
+	}
+	t.Fatal("正常結局沒有在50000個呈現tick內完成")
 }
 
 // #84只支援受版控計畫中的順序Enter選人；未知來源、缺格或方向輸入都拒收。

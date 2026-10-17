@@ -42,9 +42,9 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 26章passed，即第4～29章；其餘4章todo。第29章護送、完整增援、正常三龍與自動戰後通過，1065筆AI零分歧，完整SAV嚴格相同 | [#199](https://github.com/wicanr2/fd2_re/issues/199)接續第30章。[第29章收據](../data/ui-traces/parity-ch29.json)與[主契約](../data/ida/fd2_ch29_flow_20261017.json)明示章前AP政策及章內零注入。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-17 |
+| 正式章台帳 | 27章passed，即第4～30章；其餘第1～3章todo。第30章三波增援、五魔神正常死亡、完整戰後與終局通過；章內零注入，完整SAV未變 | [第30章收據](../data/ui-traces/parity-ch30.json)及[主契約](../data/ida/fd2_ch30_flow_20261017.json)記錄所有限制。接續[#200](https://github.com/wicanr2/fd2_re/issues/200)第1～3章，HD平行待辦保持。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-17 |
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有13筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
-| 戰役故事節點稽核 | 第27章共同前綴與成功臂接線後，工具重算118故事／過場、9直接腳本、59handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-16；輸入SHA與輸出見[第27章主契約的validation.campaign_coverage](../data/ida/fd2_ch27_flow_20261016.json)。其他章fallback不因本次接線視為已證 |
+| 戰役故事節點稽核 | 第30章完整戰後接線後，工具重算119故事／過場、9直接腳本、60handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-17；輸入SHA與輸出見[第30章主契約的validation.campaign_coverage](../data/ida/fd2_ch30_flow_20261017.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 仍為61定義的RUNTIME-E1-PARTIAL；人物24×24、頭像80×80。selector39／57是純目的地重映射，不是缺人物圖 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
@@ -3525,3 +3525,16 @@ IDA9.4直接bytes更正caller定位：1D3FF在sub_1CFF0的玩家指令確認成�
 第29章依111／114章前建構槽政策通過PLAYER-E2。原版r7正常LOAD、必出前置、護送石碑、72增援、四波74、三龍與79輪替、正常三龍死亡及自動戰後、非城鎮保存返回選人均與正式Game同輸入核對。章內沒有鎖血、清敵或座標注入；25個剩餘敵人由原版戰後35BBA清場。1,065筆AI全消費、零順序差異；349個行為點、351個節點點與strict交易通過，整份22,987 bytes SAV含checksum零差異，SHA-256 33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f。
 
 章前AP+5000及祖先HP／DP／DX政策保持揭露，不驗自然難度或傷害。79的五次consumer入口受控seed記於收據；frames advisory，沒有重製PNG或逐像素宣稱。先前r4／r5及首次完整Game失敗保留；舊pending限制已由這份完整流程取代。來源、CONFORMED範圍及重跑命令見[主契約](../data/ida/fd2_ch29_flow_20261017.json)及[正式收據](../data/ui-traces/parity-ch29.json)。唯一目前統計見58與章台帳，下一個工作單位為第30章，不在本批開新章。
+
+## 2026-10-17 第30章正常入口與休眠82
+
+同源實際SAV正常LOAD與ACT87後為27筆，原先33筆及入口視圖被當前dosgolem收據反證；#234依READY修訂後短鏈通過。map29 FDFIELD_088 ff5200、死亡81 writer與1A813(0) consumer證實休眠82，舊全33圖無serialized82斷言撤回；只重開此來源與正式接線，map28限制及22253／2BCE5本體不重解。完整章尚待驗收，台帳仍26／30，主證據及READY規格見[第30章契約](../data/ida/fd2_ch30_flow_20261017.json)。
+
+
+### 2026-10-17 第30章完整戰後與終局流程
+
+[正式收據](../data/ui-traces/parity-ch30.json)與[主契約](../data/ida/fd2_ch30_flow_20261017.json)取代本輪短探針的pending限制。正常LOAD、19人選擇與ACT87、81喚醒82、三波增援與五魔神正常死亡、指定record20結果、完整25757戰後、1088D(30)、FDTXT031終局、27人蒙太奇、20段尾段及25975永久停駐通過流程比較，依111／114例外PLAYER-E2。章內沒有鎖血、清敵或座標注入。85筆AI全部消費、零順序分岔；HP逐點相同。
+
+終局沒有保存：原版DOS create／write零次，來源、原版覆蓋層與重製SAV完整22,987 bytes SHA-256均為33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f。31格中27active與4clear格有raw來源；2C548直接消費的+6／+7／+8／+20逐筆相同。只證明這些欄位、順序與流程，不主張結局所有80-byte記錄或逐幀相同。祖先AP+5000／HP／DP／DX政策照實保留，未驗自然難度。
+
+#237的command3 guard原要求EffectMode2，與固定EXE file offset0x55812原始f4015505012a00反證；修為1，13段演出與交易規則保持。#238的mode11把blocked-cell found誤作14B78成功，零步移動現依既有13E52→13FD4回復；兩次空魔神maxHP/5已同狀態驗證。主證據沿既有IDA9.4及目前原版收據，不重解已閉合本體、不啟動matching。

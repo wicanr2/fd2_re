@@ -100,16 +100,19 @@ type ActingFrame struct {
 // Paths are asset-root relative (for example assets/maps/map5/map5_units.json)
 // rather than relative to the handler binding file.
 type LoadCHState struct {
-	Chapter       int    `json:"chapter"`
-	Map           string `json:"map"`
-	Roster        string `json:"roster"`
-	SlotCount     int    `json:"slot_count"`
-	Script        string `json:"script"`
-	PartyScenario string `json:"party_scenario,omitempty"` // persistent party constructed before FDFIELD groups
-	PartyOrder    []int  `json:"party_order,omitempty"`    // original JOIN chronology; direct-replay fallback and runtime assertion
-	CamX          int    `json:"cam_x,omitempty"`
-	CamY          int    `json:"cam_y,omitempty"`
-	CamMaxY       int    `json:"cam_max_y,omitempty"`
+	Chapter            int                  `json:"chapter"`
+	Map                string               `json:"map"`
+	Roster             string               `json:"roster"`
+	SlotCount          int                  `json:"slot_count"`
+	SourceSlotCount    *int                 `json:"source_slot_count,omitempty"` // selector30的模板列數與部署容量各自驗證。
+	Script             string               `json:"script"`
+	PartyScenario      string               `json:"party_scenario,omitempty"`       // persistent party constructed before FDFIELD groups
+	PartyOrder         []int                `json:"party_order,omitempty"`          // original JOIN chronology; direct-replay fallback and runtime assertion
+	AllPersistentParty bool                 `json:"all_persistent_party,omitempty"` // selector30讀全部持續名冊，不沿用19人選擇。
+	PostLoadView       *NativeMapViewConfig `json:"post_load_view,omitempty"`       // caller在LOADCH後、首次redraw前的已證實六全域。
+	CamX               int                  `json:"cam_x,omitempty"`
+	CamY               int                  `json:"cam_y,omitempty"`
+	CamMaxY            int                  `json:"cam_max_y,omitempty"`
 }
 
 // BeatCondition is the runtime form of a proven handler predicate.
@@ -531,7 +534,7 @@ const NativeEndingPrefixSourceBoundE1 = "source_bound_e1_terminal_hold"
 // 載入驗證，仍將唯一支援的結局前綴限制在已證實合約內。
 func (c *NativeEndingPrefixConfig) IsRecoveredPrefixContract() bool {
 	return c != nil && c.Timeline == "assets/endings/native_2bce5.json" &&
-		c.Handler == "0x2bce5" && (c.Chapter == 26 || c.Chapter == 29) &&
+		c.Handler == "0x2bce5" && (c.Chapter == 26 || c.Chapter == 29 || c.Chapter == 30) &&
 		c.Mode == NativeEndingPrefixSourceBoundE1
 }
 

@@ -245,6 +245,7 @@ type Game struct {
 	nativeAIIdleRecovery        *nativeAIIdleRecoveryJob  // direct 0x13FD4 indexed/audio owner
 	nativeEndTurnRecovery       *nativeEndTurnRecoveryJob // 0x1A30B two-pass indexed owner
 	nativeEnding                *nativeEndingPreview      // FD2_ENDING_PREFIX 或來源約束 campaign ending；缺原始資料時走明示 fallback
+	nativeEndingNow             func() time.Time          // 可重播的呈現時鐘；nil時使用正常wall-clock。
 	endingNotice                string                    // 原始素材不足或來源約束終局無法發布時的玩家提示
 	walk                        *walkAnim                 // 移動動畫(沿路徑逐格走,FDICON 方向幀)
 	camp                        *campaign.Runner          // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
@@ -1940,7 +1941,7 @@ func (g *Game) beatStart(b campaign.Beat) {
 		// view globals, not only the pixel camera. Both postbattle carriers
 		// represent those same globals (Issue #140).
 		var layoutView *battle.NativeMapViewState
-		if b.Source == "0x247b4" {
+		if b.Source == "0x247b4" || b.Source == "0x257b4" {
 			if g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 ||
 				b.Layout.CamX%g.m.TileW != 0 || b.Layout.CamY%g.m.TileH != 0 {
 				g.loadErr = "beat layout_units: native reset camera is unavailable"
@@ -2024,6 +2025,17 @@ func (g *Game) beatStart(b campaign.Beat) {
 			return
 		}
 		g.beatAdvance()
+	case "ending_handoff":
+		if b.Source != "0x25970" || g.camp == nil || g.camp.Node() == nil || g.camp.Node().Next == "" || g.beatIdx != len(g.beats)-1 {
+			g.loadErr = "ending handoff: recovered final edge unavailable"
+			return
+		}
+		// 25970直接呼叫2BCE5，不額外排入一般故事節點的淡出。
+		g.camp.Advance("")
+		g.enterNode()
+		if g.camp.Node() == nil || g.camp.Node().Type != "ending" {
+			g.loadErr = "ending handoff: final edge is not an ending"
+		}
 	case "pan":
 		frames := b.Frames
 		if frames == 0 {
@@ -2940,6 +2952,9 @@ func (g *Game) loadCHPartyOrder(state *campaign.LoadCHState) []int {
 		}
 		return append([]int(nil), state.PartyOrder...)
 	}
+	if state != nil && state.AllPersistentParty {
+		return append([]int(nil), g.partyJoinOrder...)
+	}
 	members := g.battlePartyMembers()
 	order := make([]int, 0, len(g.partyJoinOrder))
 	for _, id := range g.partyJoinOrder {
@@ -3021,8 +3036,15 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	if err := g.bindNativeFutureItemRows(roster); err != nil {
 		return fmt.Errorf("roster %q native constructor item rows: %w", state.Roster, err)
 	}
-	if len(roster.Units) != state.SlotCount {
-		return fmt.Errorf("roster %q has %d slots, binding declares %d", state.Roster, len(roster.Units), state.SlotCount)
+	sourceSlots := state.SlotCount
+	if state.SourceSlotCount != nil {
+		if !state.AllPersistentParty || state.Chapter != 30 || state.SlotCount != 31 || *state.SourceSlotCount != 1 || len(roster.OwnDeploy) != 31 {
+			return fmt.Errorf("LOADCH source/deployment capacity lacks selector30 provenance")
+		}
+		sourceSlots = *state.SourceSlotCount
+	}
+	if len(roster.Units) != sourceSlots {
+		return fmt.Errorf("roster %q has %d slots, binding declares %d", state.Roster, len(roster.Units), sourceSlots)
 	}
 	lines, err := loadStoryScriptWithIdentityAt(state.Script, "", nil)
 	if err != nil {
@@ -3037,10 +3059,19 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	// append path and invent runtime records that LOADCH has not materialized.
 	loadCHView := battle.NativeMapViewState{}
 	viewCarrier := &battle.State{W: g.m.W, H: g.m.H}
+	if view := state.PostLoadView; view != nil {
+		if !state.AllPersistentParty || view.Validate(g.m.W, g.m.H) != nil {
+			return fmt.Errorf("LOADCH caller view lacks the selector30 contract")
+		}
+		loadCHView = battle.NativeMapViewState{CameraX: view.CameraX, CameraY: view.CameraY, CursorX: view.CursorX, CursorY: view.CursorY, VisibleCursorX: view.VisibleCursorX, VisibleCursorY: view.VisibleCursorY}
+	}
 	if err := viewCarrier.MaterializeNativeMapViewState(loadCHView); err != nil {
 		return fmt.Errorf("map %q native view reset: %w", state.Map, err)
 	}
 	var party []*battle.Unit
+	if state.AllPersistentParty && (state.Chapter != 30 || state.SlotCount != 31 || sourceSlots != 1 || len(roster.OwnDeploy) != 31 || len(g.partyJoinOrder) == 0) {
+		return fmt.Errorf("LOADCH all-party source is not selector30/31 records")
+	}
 	if state.PartyScenario != "" {
 		scenario, err := battle.LoadScenario(assetPath(state.PartyScenario))
 		if err != nil {
@@ -3063,7 +3094,14 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		} else if restored != nil {
 			party = restored
 		} else {
-			filterScenarioParty(scenario, g.battlePartyMembers())
+			members := g.battlePartyMembers()
+			if state.AllPersistentParty {
+				members = make(map[int]bool, len(partyOrder))
+				for _, id := range partyOrder {
+					members[id] = true
+				}
+			}
+			filterScenarioParty(scenario, members)
 			if err := reorderScenarioParty(scenario, partyOrder); err != nil {
 				return fmt.Errorf("party scenario %q: %w", state.PartyScenario, err)
 			}
@@ -3103,6 +3141,16 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 		}
 		actors = append(actors, actor)
 		prospective = append(prospective, &actor)
+	}
+	if state.AllPersistentParty {
+		for len(actors) < 31 {
+			// 1088D對未用deployment record清零，僅寫raw+5=1。
+			empty := battle.Unit{Group: 255, NativeRecordByte5: 1, HasNativeRecordByte5: true,
+				HasNativeRecordByte6: true, HasNativeRecordByte8: true, HasNativeMapPresentation: true,
+				HasMapSelectorKey: true, HasMapSelectorSlot: true, HasBattleFig: true,
+				HasNativeRecordRace: true, HasNativeRecordClass: true}
+			actors = append(actors, empty)
+		}
 	}
 	for _, u := range roster.Units {
 		if u == nil {
@@ -3169,6 +3217,10 @@ func (g *Game) applyLoadCH(state *campaign.LoadCHState) error {
 	// scene-only native view.  Keeping the generic renderer cursor from the
 	// preceding battle makes the first 0x12CEA focus start from stale bounds.
 	g.curX, g.curY = 0, 0
+	if state.PostLoadView != nil {
+		g.camX, g.camY = float64(loadCHView.CameraX*g.m.TileW), float64(loadCHView.CameraY*g.m.TileH)
+		g.curX, g.curY = loadCHView.CursorX, loadCHView.CursorY
+	}
 	g.storyNativeMapView = loadCHView
 	g.hasStoryNativeMapView = true
 	g.storyNativeMapSource = roster
@@ -6183,6 +6235,9 @@ func (g *Game) finishSuccessfulUnitAction(actor *battle.Unit, after func()) {
 	if g.dispatchNativeFieldEventPending(actor) {
 		return
 	}
+	if g.beginNativeFieldEvent80(actor) {
+		return
+	}
 	if g.beginNativeFieldEvent61(actor, nil) {
 		return
 	}
@@ -8209,7 +8264,11 @@ func (g *Game) Update() error {
 			g.loadErr = "native ending input: " + err.Error()
 			return err
 		}
-		if err := g.nativeEnding.advance(time.Now(), &g.nativeRNGState); err != nil {
+		now := time.Now()
+		if g.nativeEndingNow != nil {
+			now = g.nativeEndingNow()
+		}
+		if err := g.nativeEnding.advance(now, &g.nativeRNGState); err != nil {
 			g.loadErr = "native ending: " + err.Error()
 			return err
 		}
@@ -12497,12 +12556,25 @@ func (g *Game) advanceBattleEvent() {
 			}
 			g.battleEventDelay = 1
 			return
-		case "native_range_zero":
+		case "native_staging_present":
+			if action.NativeEventID == nil || *action.NativeEventID != 82 || action.NativeSource == "" {
+				g.finishBattleEventWithError("staging 缺少已證實caller")
+				return
+			}
+			if err := g.startNativeBattleStagingPresent(action.NativeStagingPresent, g.advanceBattleEvent); err != nil {
+				g.finishBattleEventWithError(err.Error())
+			}
+			return
+		case "native_range_zero", "native_range_one":
 			if g.st == nil || action.NativeSource == "" {
 				g.finishBattleEventWithError("range 寫入缺少來源")
 				return
 			}
-			g.st.NativeMapRangeMode, g.st.HasNativeMapRangeModeState = 0, true
+			value := 0
+			if action.Type == "native_range_one" {
+				value = 1
+			}
+			g.st.NativeMapRangeMode, g.st.HasNativeMapRangeModeState = value, true
 		case "pan":
 			if action.Grid == nil || g.m == nil || g.m.TileW <= 0 || g.m.TileH <= 0 {
 				g.finishBattleEventWithError("pan 缺少有效 grid/map")

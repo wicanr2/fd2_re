@@ -789,6 +789,7 @@ type NativeFieldTurnChain struct {
 // NativeFieldEventRule 保存已閉合 handler 的資料，不自行決定 selector 的呼叫時機。
 type NativeFieldEventRule struct {
 	EventID              int                      `json:"event_id"`
+	Handler              string                   `json:"handler,omitempty"`
 	Selector             byte                     `json:"selector"`
 	TriggerGate          string                   `json:"trigger_gate,omitempty"`
 	SetModeRanges        []NativeFieldModeRange   `json:"set_mode_ranges,omitempty"`

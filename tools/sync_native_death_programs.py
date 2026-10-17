@@ -96,6 +96,11 @@ def lower(chapter: Chapter, event, event_id):
             lowered = [{"type": "join_party", "native_source": source, "char_id": o["char_id"]}]
         elif kind == "pan":
             lowered = [{"type": "pan", "native_source": source, "grid": [o["x"], o["y"]]}]
+        elif kind == "staging_present":
+            lowered = [{"type": "native_staging_present", "native_source": source,
+                        "native_staging_present": {key: o[key] for key in ("slot", "x", "y")}}]
+        elif kind in ("native_range_zero", "native_range_one"):
+            lowered = [{"type": kind, "native_source": source}]
         elif kind == "acting":
             lowered = [{"type": "native_acting", "native_source": source,
                         "native_acting": {"resource": o["resource"], "source": source}}]

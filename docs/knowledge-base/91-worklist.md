@@ -118,6 +118,16 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
+### P2 校譯新恢復終局六段的簡中、英文與日文候選
+
+`ending-six-restored-lines-locale-review` · 工作 · [#239](https://github.com/wicanr2/fd2_re/issues/239) · 仍未完成 · 要人判
+
+FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句索引已補回。三語新候選依既有遷移工具加入，明示machine_draft，六個canonical line_id及來源SHA凍結於supplements；不冒稱人工審校。原版繁中終局以分離原始字模播放，不由此推定三語已驗收。
+
+怎樣算做完：由使用者或譯者核對六段來源、專名與語氣後逐筆reviewed，保存校譯紀錄並更新受控六句待審範圍；其他已審校譯文保持。
+
+證據：`docs/data/localization/ending-story-supplements.json`
+
 ## runtime — 還沒接進正式執行期
 
 ### P1 補齊剩餘 HUD 重繪：玩家確認、物理返回與劇情關框
@@ -199,26 +209,6 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 2026-10-06 原生來源勘誤：使用正式native近堆模式、同固定槽及受版控六回合前綴，原版seq3146 attack_result在(11,85)為索引118，正式Game為116，完整差異仍1px。舊adapter索引0只解釋舊收據，不能宣稱目前差異僅由工具清零造成。253畫面點中246點完整0px，整體行為／節點／畫面比較仍未通過，跨同步HP與unknown UI限制保留。下一步只追必要copy plane／map work的writer，不填固定色或改容差。來源、命令及限制：主契約native_profile_recheck。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### P0 完成第30章與結局的正常章驗收
-
-`campaign-ch25-ch30-finish` · 工作 · [#199](https://github.com/wicanr2/fd2_re/issues/199) · 仍未完成 · 要人判
-
-2026-10-17目前：第29章依111／114章前作弊及流程政策passed，正式台帳26／30，第4～29章通過；第1～3章及第30章仍todo。下一個P0為第30章，本項保持開啟。
-
-第29章由第28章正式實際SAV接續，章前基底AP+5000，祖先HP／DP／DX政策逐筆保留。正常標題LOAD、19人選擇、護送悠妮到碑，觸發72六筆增援及74四波增援，物化至93筆；79依清位後順序執行。三頭龍以正常攻擊依序擊倒，死亡旗標觸發原版戰後，追加group9至94筆，再正常記錄slot0並返回第30章選人。章內零HP鎖、零state_injections、零force-enemy-clear。
-
-原版r7有3343 checkpoints／349動作；Game消費1065筆AI、零順序分歧。349行為、351節點及交易閘門通過，22987 bytes完整SAV含檢查碼嚴格相同，SHA-256 33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f。完整Go最終r3通過19套件，191項Python零失敗／略過。
-
-正式收據：[parity-ch29.json](https://github.com/wicanr2/fd2_re/blob/main/docs/data/ui-traces/parity-ch29.json)。主契約：[fd2_ch29_flow_20261017.json](https://github.com/wicanr2/fd2_re/blob/main/docs/data/ida/fd2_ch29_flow_20261017.json)。#227～#233的LOAD路由、增援視圖／戰後prefix、raw8交接、三龍結果、76輸入閘、79 phase及自動戰後交接已修正並整章驗證。#224第27章獨立鏡頭診斷保持開啟。
-
-畫面只作參考，未擷取重製PNG，不宣稱逐幀或逐像素一致。章前作弊收據不證明自然難度、傷害、存活或敵方選目標。79逐筆受控亂數輸入完整揭露，不要求整段內部骰序一致。寶箱、買賣及未抽樣分支未知。失敗r1～r6與修正前Game收據保留，不計整章。
-
-第30章從work/ch29-flow-20261017/state-r7/FD2.SAV另建覆蓋層，來源SHA如上。原始來源不可改寫，先核對非城鎮LOAD與已閉合證據。最後一章驗實際結局、隊伍狀態及終止邊界，不虛造城鎮或保存交易。本批只收尾第29章。
-
-排程：P0，屬#14子項。重用已閉合RE與引擎，實際差異才開窄RE或必要局部matching；全面matching暫停。HD依#200～#204核准主題及既有驗收工作另行推進。章完成數唯一入口是58與parity-campaign-progress.json。
-
-怎樣算做完：parity-campaign-progress.json 的25～30章各有正式dosgolem來源、計畫、來源槽、依111最新修訂通過行為／節點／交易三閘門與實際保存邊界，畫面只作參考；第30章有結局及隊伍狀態結果。失敗保留，既有passed章不重算。
 
 ### P0 補齊第1～3章正式驗收與新遊戲入口
 

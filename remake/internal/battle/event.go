@@ -70,6 +70,7 @@ type NativeTurnEvent struct {
 	DynamicGroup *NativeTurnDynamicGroup `json:"dynamic_group,omitempty"`
 	Progression  *NativeTurnProgression  `json:"progression,omitempty"`
 	PairMutation *NativeTurnPairMutation `json:"pair_mutation,omitempty"`
+	StateRange   *[3]int                 `json:"state_range,omitempty"` // 原始state索引、已證實下限及上限。
 	// Actions 是控制列事件轉寫後降階的劇本動作（tools/sync_native_turn_events.py 由
 	// native_death_events.json 產生），依 0x1A813 的 selector 在該階段的可編輯事件之後執行。
 	// 用於由其他處理器 control_turn 動態啟用、不在靜態 turn_events 裡的列（第九章事件 31）。
@@ -231,7 +232,8 @@ type Action struct {
 	Ms             int               `json:"ms,omitempty"`              // delay:原版毫秒數
 	// NativeActing 保存戰鬥事件呼叫 0x1366A 的資源與原始呼叫點。
 	// 它只描述已解碼的行為，不以位址作為重製端執行鍵。
-	NativeActing *NativeFollowingActing `json:"native_acting,omitempty"`
+	NativeActing         *NativeFollowingActing  `json:"native_acting,omitempty"`
+	NativeStagingPresent *NativeStagingPlacement `json:"native_staging_present,omitempty"`
 	// NativeSource 保留無獨立結構可承載的原始寫入／對話呼叫點。
 	NativeSource string `json:"native_source,omitempty"`
 	// NativeTextIndex 是一次原版 0x15F84 呼叫的 FDTXT 索引；多句
@@ -246,6 +248,13 @@ type Action struct {
 	NativeWhen *NativeActionWhen `json:"native_when,omitempty"`
 	// NativeDeathOp 承載死亡事件處理器裡沒有既有動作種類可表達的原語。
 	NativeDeathOp *NativeDeathOp `json:"native_death_op,omitempty"`
+}
+
+// NativeStagingPlacement 保存33F78的slot/x/y，consumer仍走12CEA及22253。
+type NativeStagingPlacement struct {
+	Slot int `json:"slot"`
+	X    int `json:"x"`
+	Y    int `json:"y"`
 }
 
 // NativeEventDialogue 僅描述資料來源，原生顯示與輸入由 GUI 事件擁有者執行。
@@ -318,8 +327,8 @@ func LoadScenario(path string) (*Scenario, error) {
 	if err := json.Unmarshal(raw, &sc); err != nil {
 		return nil, err
 	}
-	if sc.NativeResultInitialCode != nil && (*sc.NativeResultInitialCode != 0 || sc.NativeResultHandler != "0x20b72" || len(sc.NativeResultRules) != 3) {
-		return nil, fmt.Errorf("原生結果初始值缺少第29章已證實handler／三列規則")
+	if sc.NativeResultInitialCode != nil && (*sc.NativeResultInitialCode != 0 || (sc.NativeResultHandler != "0x20b72" && sc.NativeResultHandler != "0x20bf5") || len(sc.NativeResultRules) != 3) {
+		return nil, fmt.Errorf("原生結果初始值缺少已證實handler／三列規則")
 	}
 	if sc.NativeResultAutoAdvance && sc.NativeResultInitialCode == nil {
 		return nil, fmt.Errorf("原生自動戰後缺少已證實章結果來源")
@@ -464,6 +473,9 @@ func LoadScenario(path string) (*Scenario, error) {
 				return nil, fmt.Errorf("scenario native turn event %d mixes actions with staging", eventIndex)
 			}
 			seenNativeTurn[key] = true
+			if r := event.StateRange; r != nil && (r[0] < 0 || r[0] >= 0x20 || r[1] < 0 || r[2] < r[1] || r[2] > 0xff) {
+				return nil, fmt.Errorf("scenario native turn event %d state range is invalid", eventIndex)
+			}
 			continue
 		}
 		if event.Progression == nil && event.PairMutation == nil && (staging.Helper == "" || staging.PanHelper == "" ||
@@ -673,6 +685,9 @@ func (sc *Scenario) NativeTurnEventsAt(st *State, rawCamp byte) ([]NativeTurnEve
 				"native turn event: slot %d event %d raw camp %d has %d editable consumers",
 				slot, row.EventID, rawCamp, matches,
 			)
+		}
+		if r := matched.StateRange; r != nil && (r[0] < 0 || r[0] >= len(st.NativeEventState) || int(st.NativeEventState[r[0]]) < r[1] || int(st.NativeEventState[r[0]]) > r[2]) {
+			return nil, fmt.Errorf("native turn event: state outside recovered range")
 		}
 		out = append(out, matched)
 	}

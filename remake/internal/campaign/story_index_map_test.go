@@ -7,8 +7,8 @@ func TestLoadCountAlignedStoryIndexMap(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 5 {
-		t.Fatalf("manifest identity = %#v", index)
+	if index.MappingKind != "count_aligned_only" || len(index.Diagnostics) != 4 {
+		t.Fatalf("manifest kind=%s diagnostics=%d", index.MappingKind, len(index.Diagnostics))
 	}
 
 	palaceFirst, ok := index.Lookup("FDTXT_033", "ch00_palace.json", 0)

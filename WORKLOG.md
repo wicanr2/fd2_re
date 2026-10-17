@@ -540,3 +540,20 @@ r6於工具審查初期停止，finish_ui誤加move_unit已改回engage，新增
 生成器收尾檢查勘誤：新增整個preparation相等的斷言過廣，正式節點另含既有party_limit19，骨架未產生該欄位。未改正式來源；核對限於本輪必出／前置欄位，scenario與battle仍逐值完整相同。
 
 GitHub #227～#233已依完整章與最後回歸結案，#199接第30章。官方pull／render／verify為22項、14項人工判斷、可能已完成0，標籤相符。53個異動檔擁有權1000:1000，66份canonical輸出雜湊相符，9個新證據／計畫入口與37條新增本地連結均有效。README、原EXE、父槽、章前來源、最終SAV與凍結driver雜湊保持；全樹歷史root-owned2811、md目錄0、掃描錯誤0。本輪無錄影、FD2容器無殘留。工作產物留在work且不加入版控。
+
+## 2026-10-17 第30章正常接續與終局驗收
+
+開工0d60760b，tracked乾淨，官方pull22項與主機gh認證通過，無FD2容器殘留。路由命中復古重製、原版決定性對拍與文件職責，沿既有work。來源第29章實際SAV SHA33c3d74d原樣接續，祖先作弊政策保持，沒有新增強化、matching或錄影。先驗正常LOAD、19人選擇與揭幕，不把短探針計整章。主契約DRAFT與既有終局canonical入口同批登錄00-index；專屬勝負與魔神連鎖先查既有證據，不假定清敵即過關。
+
+第30章原版短探針exit0、94 checkpoint，正常20我方＋group0七筆，共27；入口camera16,17／cursor22,23／visible6,6／selector1。Game初輪提前加groups1..3成33筆，短鏈比較失敗；#234依READY修正資料及生成器，canonical319個節點ID保持，r2短鏈行為／節點通過，不計整章。錯帶--oracle-save到沒有保存動作的短探針屬比較命令問題，移除不適用參數乾淨重跑，正式strict未改。既有IDA9.4匯出299指令、5個表項及FDFIELD_088 ff5200原始bytes／hash核對；81 writer使82從休眠啟動，推翻56全33圖無serialized82的舊斷言。82、80與專屬結果各先立READY，才接正式consumer。
+
+
+
+
+第30章完整原版r2到seq1050／T11／25975永久停駐，1051 checkpoint，四次81／82及三波兩人增援、五魔神正常擊倒、完整25757、selector30、2BCE5、27人蒙太奇與20段尾段均實際走過。章內零注入，DOS create／write零次；兩側SAV整檔與來源33c3d74d相同。Game full-r4消費85筆AI、零順序分岔，行為／獨立節點／交易及終局窄契約全部通過，frames advisory。原版18觀測點失敗及Game guard、名冊consumer、mode11漏回復各失敗樣本保留，READY先於修改；#237／#238由正常流程抓到，沒有新matching。
+
+終局補回FDTXT031遺漏的六段以建立60句完整索引，四個caller共42句逐原始controls／glyphs重生。selector30的1筆模板與31格部署容量明示分開，27active／4原始清零格各有來源；2C548實際讀當前scene records，消費四欄與原版相同。原98項字串審查處置不變，新增1項loadErr契約診斷。完整Go回歸另記實際結果，不把fixture、預覽或綠色單元測試提升為整章。
+
+最後Game full-r5再次通過，正式收據及台帳命令已指向此輪。相同FDOTHER／DATO與素材包環境的完整Go r2通過19套件，cmd/fd2 163.702秒、exit0、峰值4304441344 bytes、OOM kill0；相關Python183項及嚴格四語8項均通過，四包各5106筆結構驗證通過。生成器第30章scenario／battle／post逐值相同，整備必出／前置同為9；全域回合／死亡同步、終局字庫與216條教訓的99條guard均通過。68,022,299 bytes失敗log壓至1,778,761 bytes，解壓SHA相同，保留.gz。
+
+GitHub #234～#238及父#199已結案；#239保留新恢復六句三語人工校譯，#200接第1～3章，HD待辦保持。官方pull／render／verify為22項、14項人工判斷、可能已完成0，遠端狀態標籤相符。66個異動檔擁有權1000:1000，66份canonical輸出SHA相符，22條新增本地連結有效，新證據／計畫入口有00-index路由。README、原EXE、父槽、章前來源及完整輪次凍結driver雜湊保持；全樹歷史root-owned2811、md目錄0、掃描錯誤0。本輪無錄影或matching，無非預期FD2容器殘留；work不加入版控。

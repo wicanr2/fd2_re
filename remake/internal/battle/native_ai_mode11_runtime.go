@@ -147,7 +147,11 @@ func (s *State) nativeAIMode11BlockedOrRecovery(
 		action.NativeModeFallback = 11
 		action.NativeModeWriteRangeZero = true
 		action.Target = nil
-		return action, nil, nil
+		// 14121返回14B78的成功旗標；找到raw格但零步移動仍回零。
+		// 13E52因此繼續13FD4，不把blocked-cell found當成移動完成。
+		if len(action.Path) > 1 {
+			return action, nil, nil
+		}
 	}
 	decision, err := PlanNativeAIIdleRecovery(records, len(s.Units), actor)
 	if err != nil {

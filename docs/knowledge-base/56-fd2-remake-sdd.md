@@ -9794,3 +9794,14 @@ Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typ
 第29章依111／114章前建構槽政策通過PLAYER-E2。原版r7正常LOAD、必出前置、護送石碑、72增援、四波74、三龍與79輪替、正常三龍死亡及自動戰後、非城鎮保存返回選人均與正式Game同輸入核對。章內沒有鎖血、清敵或座標注入；25個剩餘敵人由原版戰後35BBA清場。1,065筆AI全消費、零順序差異；349個行為點、351個節點點與strict交易通過，整份22,987 bytes SAV含checksum零差異，SHA-256 33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f。
 
 章前AP+5000及祖先HP／DP／DX政策保持揭露，不驗自然難度或傷害。79的五次consumer入口受控seed記於收據；frames advisory，沒有重製PNG或逐像素宣稱。先前r4／r5及首次完整Game失敗保留；舊pending限制已由這份完整流程取代。來源、CONFORMED範圍及重跑命令見[主契約](../data/ida/fd2_ch29_flow_20261017.json)及[正式收據](../data/ui-traces/parity-ch29.json)。唯一目前統計見58與章台帳，下一個工作單位為第30章，不在本批開新章。
+
+### 2026-10-17 第30章休眠82來源勘誤
+
+原版FDFIELD_088.bin offset3的ff5200已證實map29休眠row0是event82／raw camp0。死亡81的35F79增加state16，35F81..35F8E把該列排至round+1，1A813(0)再派送35F92。本檔較早「全33圖沒有serialized82」漏看turnFF休眠列，已撤回；map28無producer限制不由此擴張。固定雜湊、原始函式／chunk、316指令交叉核對與READY consumer規格見[第30章主契約](../data/ida/fd2_ch30_flow_20261017.json)。原版第一波與完整終局抽樣仍在執行，未計整章。
+
+
+### 2026-10-17 第30章完整戰後與終局流程
+
+第30章結果以20BF5讀record20／0／1原始bit0，依序寫2／1／1，勝利自動進完整25757戰後。25855增加raw chapter至30，1088D載map30與FDTXT031。LOADCH的source_slot_count1與slot_count31分開驗證；全部持續JOIN27筆及四個清零未用格均帶raw來源，2C548消費當前scene records。25970由專用ending_handoff直接接既有結局owner，不增加一般故事淡出或終戰同步。
+
+以上具型別路由及失敗拒收達CONFORMED，範圍限[主契約](../data/ida/fd2_ch30_flow_20261017.json)與[正式流程收據](../data/ui-traces/parity-ch30.json)。以111／114例外分級，章內零注入，畫面僅參考，呈現時鐘為60Hz近似。新恢復六句三語候選維持machine_draft，人工校譯另由[#239](https://github.com/wicanr2/fd2_re/issues/239)追蹤，不影響原始繁中字模的終局流程判定。

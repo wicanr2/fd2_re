@@ -41,16 +41,16 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 		t.Fatalf("ANI prefix = %#v", ani)
 	}
 	blocks := timeline.Segments[9].ElseDialogue
-	if len(blocks) != 5 || blocks[0].PortraitID != 37 || blocks[0].SourceDAT != "FDTXT_030" || blocks[0].Script != "ch30.json" || blocks[0].StringIndex != 2 || blocks[0].SceneIndex != 1 || blocks[0].Line != 0 || blocks[0].Count != 6 || blocks[4].StringIndex != 6 || blocks[4].Line != 12 || blocks[4].Count != 1 {
+	if len(blocks) != 5 || blocks[0].PortraitID != 37 || blocks[0].SourceDAT != "FDTXT_031" || blocks[0].Script != "ch31.json" || blocks[0].StringIndex != 2 || blocks[0].SceneIndex != 1 || blocks[0].Line != 0 || blocks[0].Count != 1 || blocks[4].StringIndex != 6 || blocks[4].Line != 4 || blocks[4].Count != 1 {
 		t.Fatalf("first ending dialogue branch = %#v", blocks)
 	}
-	if got := []int{blocks[0].NativeUtterances[0].Operand, blocks[0].NativeUtterances[1].Operand, blocks[0].NativeUtterances[2].Operand, blocks[0].NativeUtterances[3].Operand, blocks[0].NativeUtterances[4].Operand, blocks[0].NativeUtterances[5].Operand}; !equalInts(got, []int{4, 24, 126, 0, 126, 122}) {
+	if got := []int{blocks[0].NativeUtterances[0].Operand, blocks[1].NativeUtterances[0].Operand, blocks[2].NativeUtterances[0].Operand, blocks[3].NativeUtterances[0].Operand, blocks[4].NativeUtterances[0].Operand}; !equalInts(got, []int{37, 21, 26, 105, 32}) {
 		t.Fatalf("first ending native speakers = %v", got)
 	}
-	if got := blocks[0].NativeUtterances[2]; got.ControlSource != "fdtxt" || got.Control != "FFEF" || len(got.Pages) != 2 {
+	if got := blocks[0].NativeUtterances[0]; got.ControlSource != "caller_2c39b" || got.Control != "" || len(got.Pages) != 1 {
 		t.Fatalf("paged ending utterance = %#v", got)
 	}
-	if got := blocks[4].NativeUtterances[0].Pages; len(got) != 1 || len(got[0]) != 4 {
+	if got := blocks[3].NativeUtterances[0].Pages; len(got) != 1 || len(got[0]) != 2 {
 		t.Fatalf("four-row ending page = %#v", got)
 	}
 	blocks = timeline.Segments[9].ThenDialogue
@@ -58,7 +58,7 @@ func TestNative2BCE5TimelineIsRecoveredButNotPlayable(t *testing.T) {
 		t.Fatalf("first bad-ending dialogue branch = %#v", blocks)
 	}
 	blocks = timeline.Segments[13].ElseDialogue
-	if len(blocks) != 1 || blocks[0].PortraitID != 45 || blocks[0].SourceDAT != "FDTXT_030" || blocks[0].Script != "ch30.json" || blocks[0].StringIndex != 7 || blocks[0].SceneIndex != 1 || blocks[0].Line != 13 || blocks[0].Count != 1 || blocks[0].NativeUtterances[0].Operand != 9 {
+	if len(blocks) != 1 || blocks[0].PortraitID != 45 || blocks[0].SourceDAT != "FDTXT_031" || blocks[0].Script != "ch31.json" || blocks[0].StringIndex != 7 || blocks[0].SceneIndex != 1 || blocks[0].Line != 5 || blocks[0].Count != 1 || blocks[0].NativeUtterances[0].Operand != 45 {
 		t.Fatalf("second ending dialogue branch = %#v", blocks)
 	}
 	blocks = timeline.Segments[13].ThenDialogue
@@ -86,7 +86,7 @@ func TestNative2BCE5DialogueUtterancesMatchOriginalFDTXTWords(t *testing.T) {
 	}
 	glyphs := loadEndingOracleGlyphs(t)
 	tables := map[string]*fdtxt.Strings{}
-	for _, source := range []string{"FDTXT_027", "FDTXT_030"} {
+	for _, source := range []string{"FDTXT_027", "FDTXT_031"} {
 		raw, err := os.ReadFile("../../../extracted/raw/FDTXT/" + source + ".bin")
 		if err != nil {
 			t.Skip("extracted ending FDTXT oracle is absent")

@@ -415,6 +415,9 @@ def pair_oracle_seq(actions: list[dict], remake_cp: dict) -> int | None:
 def comparable_action_kind(action: dict, remake_kind: str | None) -> str | None:
     """只沿用已審查的名稱對照；不以 UI 或原版動作順序推定來源。"""
     kind = action.get("label") if action.get("kind") == "mark" else action.get("kind")
+    if remake_kind == "ending_terminal":
+        # 同seq另有plan mark；永久終點收據只能配對driver實際三邊界writer。
+        return "ending_terminal" if action.get("kind") == "ending_terminal" else None
     if (isinstance(remake_kind, str) and remake_kind.startswith("mark:") and
             action.get("kind") != "mark"):
         return None
@@ -481,6 +484,61 @@ def node_gate_ok(points: list[dict], completion: dict, checkpoints: list[dict]) 
             not any(cp.get("kind") == "runtime_error" for cp in checkpoints))
 
 
+def ending_flow_report(oracle: Path, remake: Path, original_save: Path | None,
+                       manifest: dict, actions: list[dict]) -> dict:
+    """第30章終局的窄契約：實際caller順序、消費名冊及沒有保存。"""
+    report = {"ok": False, "scope": "第30章正常戰後與終局流程；不主張逐幀、完整raw record或硬體時鐘相同"}
+    proof_path = remake / "ending-flow.json"
+    if original_save is None or not original_save.is_file() or not proof_path.is_file():
+        return {**report, "reason": "缺終局名冊收據或原版實際SAV"}
+    proof = json.loads(proof_path.read_text())
+    trace = read_jsonl(oracle / "eip-trace.jsonl")
+    terminal = json.loads((oracle / "current.json").read_text())
+    expected_calls = ["0x25757", "0x257DB", "0x25816", "0x25921", "0x25968",
+                      "0x2BCE5", "0x2C548", "0x2C66C", "0x2C194", "0x2C2A6", "0x2C33B"]
+    observed, seen = [], set()
+    for row in trace:
+        if row.get("eip") in expected_calls and row["eip"] not in seen:
+            observed.append(row["eip"]); seen.add(row["eip"])
+    montage = [r for r in trace if r.get("eip") == "0x2C548"]
+    active, padding = [], []
+    if len(montage) == 1 and montage[0].get("frame_units_valid") and montage[0].get("unit_count") == 31:
+        for unit in montage[0].get("units", []):
+            raw = bytes.fromhex(unit["raw_hex"])
+            if len(raw) != 80:
+                continue
+            if raw[5] & 1:
+                padding.append(raw == bytes(5) + b"\x01" + bytes(74))
+            else:
+                active.append([raw[6], raw[7], raw[8], raw[32]])
+    writes = [c for c in terminal.get("dos_file_calls", []) if c.get("op") in ("write", "create")]
+    hashes = [manifest.get("output_sha256"), sha256_file(original_save), sha256_file(remake / "FD2.SAV"),
+              proof.get("save_sha256_before"), proof.get("save_sha256_after")]
+    ending_actions = [a for a in actions if a.get("kind") == "ending_terminal"]
+    lines = proof.get("post_story_trace", {}).get("lines", [])
+    expected_lines = [("FDTXT_030", 9)] * 8 + [("FDTXT_030", 10)] * 18 + [("FDTXT_031", 0)] * 13 + [("FDTXT_031", 1)] * 3
+    blocks = proof.get("ending_dialogue_blocks", [])
+    checks = {
+        "original_call_order": observed == expected_calls,
+        "original_terminal": terminal.get("eip") == "0x25975" and terminal.get("exe_sha256") == "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "stable_terminal": len(ending_actions) == 1 and ending_actions[0].get("stable_boundaries") == 3,
+        "no_state_injection": terminal.get("state_injections") == [],
+        "no_dos_write": not writes,
+        "unchanged_save": bool(hashes[0]) and len(set(hashes)) == 1,
+        "source_roster": len(active) == 27 and len(padding) == 4 and all(padding),
+        "consumed_roster_equal": active == proof.get("records_2c548_consumed"),
+        "runtime_capacity": proof.get("handler_chapter") == 30 and proof.get("runtime_record_count") == 31 and proof.get("persistent_count") == 27,
+        "post_dialogues": [(l.get("source"), l.get("string")) for l in lines] == expected_lines,
+        "ending_dialogues": len(blocks) == 6 and [(b.get("source_dat"), b.get("string_index"), b.get("count")) for b in blocks] == [("FDTXT_031", i, 1) for i in range(2, 8)],
+        "remake_terminal": proof.get("terminal") is True and proof.get("terminal_owner") == "presentingCampaignTerminal",
+    }
+    return {**report, "ok": all(checks.values()), "checks": checks, "original_calls": observed,
+            "original_roster_consumed_fields": active, "remake_roster_consumed_fields": proof.get("records_2c548_consumed"),
+            "consumed_offsets": [6, 7, 8, 32], "save_sha256": hashes,
+            "original_save": str(original_save), "remake_proof_sha256": sha256_file(proof_path),
+            "presentation_clock": proof.get("presentation_clock")}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--chapter", type=int, required=True)
@@ -495,6 +553,7 @@ def main() -> int:
                         help="strict沿既有畫面閘門；advisory依2026-10-15定案只要求流程，原始畫面結果仍記錄")
     parser.add_argument("--save-blocked-issue", default="", help="重製側尚未寫原版槽 bytes 時引用的 issue")
     parser.add_argument("--oracle-save", type=Path, help="原版實際保存檔；與重製FD2.SAV核對來源後列出全部byte差異，不放寬閘門")
+    parser.add_argument("--ending-oracle-save", type=Path, help="第30章終局實際SAV，驗證整章沒有保存且全檔未變")
     parser.add_argument("--save-policy", choices=("strict", *SAVE_POLICIES), default="strict",
                         help="預設整檔相等；有界政策只接受已確認來源及逐筆差異，須明示--oracle-save")
     args = parser.parse_args()
@@ -604,6 +663,15 @@ def main() -> int:
     compared_frames = [f for f in frames if "diff_pixels" in f]
     frames_ok = len(compared_frames) >= args.min_frames and all(f["ok"] for f in compared_frames)
     frames_required = args.frame_policy == "strict"
+    ending_report = None
+    if args.chapter == 30 and any("finish_ending" in step for step in read_jsonl(args.plan)):
+        ending_report = ending_flow_report(args.oracle, args.remake, args.ending_oracle_save, manifest, actions)
+        transaction_ok = transaction_ok and ending_report["ok"]
+        save_entry["terminal_no_save_proof"] = ending_report
+        if ending_report["ok"] and not save_actions:
+            save_entry.update(status="ok", boundary="no_save_expected", bytes_equal=True,
+                              oracle_save_sha256=sha256_file(args.ending_oracle_save),
+                              remake_save_sha256=sha256_file(args.remake / "FD2.SAV"))
 
     receipt = {
         "schema_version": 1,

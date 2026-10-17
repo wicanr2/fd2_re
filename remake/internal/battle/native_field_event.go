@@ -178,9 +178,17 @@ func ApplyNativeFieldModeEvent(
 				*rule.SetStateValue < 0 || *rule.SetStateValue > 0xff)) {
 		return 0, false
 	}
-	if rule.TriggerGate != "record_byte6_nonzero" ||
-		!trigger.HasNativeRecordByte6 ||
-		trigger.NativeRecordByte6 == 0 {
+	switch rule.TriggerGate {
+	case "record_byte6_nonzero":
+		if !trigger.HasNativeRecordByte6 || trigger.NativeRecordByte6 == 0 {
+			return 0, false
+		}
+	case "always":
+		// 35F5A沒有actor gate；此新增契約只授權map29的80／selector1。
+		if eventID != 80 || selector != 1 || rule.Handler != "0x35f5a" {
+			return 0, false
+		}
+	default:
 		return 0, false
 	}
 	for _, modeRange := range rule.SetModeRanges {
@@ -197,6 +205,9 @@ func ApplyNativeFieldModeEvent(
 		for index := modeRange.Start; index <= modeRange.End; index++ {
 			u := st.Units[index]
 			u.NativeRecordByte34 = (u.NativeRecordByte34 & 0xF0) | modeRange.Mode
+			if eventID == 80 {
+				st.syncNativeRuntimeRecord(index, 0x34, int(u.NativeRecordByte34), 1)
+			}
 		}
 	}
 	if rule.SetStateIndex != nil {

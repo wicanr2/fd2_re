@@ -1321,6 +1321,11 @@ func compileHandlerScript(script *HandlerScript, bindings HandlerBindings, activ
 				beats = append(beats, runtime(input, "reset_persistent_roster_state"))
 				continue
 			}
+			if input.NativeTarget == "0x2bce5" && input.Source.Addr == "0x25970" && script.Chapter == 29 && script.Phase == "post" {
+				// #236 READY：最後原生call之後只有25975自迴圈，轉給既有ending owner。
+				beats = append(beats, runtime(input, "ending_handoff"))
+				continue
+			}
 			if input.NativeTarget == "0x17aa9" {
 				// Native global wait samples the DOS BIOS tick counter (about
 				// 54.9ms/tick), not the remake's 60Hz presentation frame. Three

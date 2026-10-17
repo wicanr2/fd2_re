@@ -18,7 +18,7 @@ type NativeResultRule struct {
 
 func (r NativeResultRule) Validate() error {
 	stateRule := r.Code == 2 && len(r.EventStatesAllNonzero) != 0 && len(r.RecordsAllInactive) == 0 && r.RoundGreaterThan == nil && len(r.Actions) == 0
-	recordRule := r.Code == 1 && len(r.RecordsAllInactive) != 0 && len(r.EventStatesAllNonzero) == 0
+	recordRule := (r.Code == 1 || (r.Code == 2 && r.RoundGreaterThan == nil && len(r.Actions) == 0)) && len(r.RecordsAllInactive) != 0 && len(r.EventStatesAllNonzero) == 0
 	if r.ID == "" || r.Source == "" || (!stateRule && !recordRule) {
 		return fmt.Errorf("原生結果列缺少來源或已閉合的記錄／事件狀態條件")
 	}
@@ -93,8 +93,12 @@ func NativeInitialResultCode(st *State, sc *Scenario) (int, error) {
 	if sc == nil || sc.NativeResultInitialCode == nil {
 		return NativeDefaultResultCode(st)
 	}
-	if *sc.NativeResultInitialCode != 0 || sc.NativeResultHandler != "0x20b72" || st == nil || len(st.Units) < 2 || !st.HasNativeTurnEventControlState {
+	knownHandler := sc.NativeResultHandler == "0x20b72" || sc.NativeResultHandler == "0x20bf5"
+	if *sc.NativeResultInitialCode != 0 || !knownHandler || st == nil || len(st.Units) < 2 || !st.HasNativeTurnEventControlState {
 		return 0, fmt.Errorf("原生章節結果初始值缺少已證實來源")
+	}
+	if sc.NativeResultHandler == "0x20bf5" && len(st.Units) <= 20 {
+		return 0, fmt.Errorf("第30章結果缺少原始record20")
 	}
 	return 0, nil
 }

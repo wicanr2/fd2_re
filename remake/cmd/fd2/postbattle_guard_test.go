@@ -81,7 +81,7 @@ func clonePartyRoster(src map[int]battle.Unit) map[int]battle.Unit {
 	return dst
 }
 
-func TestCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing.T) {
+func TestEditableEndingSnapshotOptionSyncsCurrentParty(t *testing.T) {
 	t.Setenv("FD2_MUTE", "1")
 	campaignData, err := campaign.Load("../../assets/scenarios/campaign_full.json")
 	if err != nil {
@@ -90,8 +90,9 @@ func TestCampaignFullFinalWinSyncsCurrentPartyBeforeEnding(t *testing.T) {
 	// 本測試只驗證玩家結果確認的資料邊界；結局資產播放器有獨立 admission
 	// 回歸，因此移除測試副本的呈現入口，避免把玩家外部資產變成此測試前提。
 	campaignData.Nodes["ending"].NativeEndingPrefix = nil
+	campaignData.Nodes["snapshot_fixture"] = &campaign.Node{Type: "battle", OnWin: "ending", EndingPartySnapshotOnWin: true}
 	runner := campaign.NewRunner(campaignData)
-	runner.Cur = "battle_ch30"
+	runner.Cur = "snapshot_fixture"
 	stale := battle.Unit{
 		Fig: 0, Camp: battle.Own, OnField: true,
 		Lv: 39, HP: 30, MaxHP: 50,

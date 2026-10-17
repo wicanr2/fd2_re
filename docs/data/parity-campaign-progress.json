@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
-  "updated": "2026-10-16",
+  "updated": "2026-10-17",
   "all_chapters_passed": false,
   "chapters": [
     {
@@ -873,15 +873,31 @@
     },
     {
       "chapter": 30,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch30.json",
+      "slot_manifest": "docs/data/parity-slots/ch30-manifest.json",
+      "slot_sha256": "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "date": "2026-10-17",
+      "verify": "docker run --rm --network none --memory 1g --cpus 1 --pids-limit 64 --user 1000:1000 --mount type=bind,source=/home/anr2/cht/fd2,target=/src -e TZ=Asia/Taipei -w /src --entrypoint python3 fd2-assets-local:20260829-sfx tools/verify_chapter_parity.py --chapter 30 --oracle work/ch30-flow-20261017/original-full-r2 --remake work/ch30-flow-20261017/remake-full-r5 --slot-manifest docs/data/parity-slots/ch30-manifest.json --plan docs/data/parity-plans/ch30-full-flow-r1.jsonl --frame-policy advisory --out docs/data/ui-traces/parity-ch30.json --ending-oracle-save work/ch30-flow-20261017/state-full-r2/FD2.SAV",
+      "limitations": [
+        "依111／114祖先作弊建構槽例外；本章原樣接續第29章實際SAV，章內零注入。frames advisory；終局僅比較2C548消費四欄，硬體wall-clock未知。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "kind": "continued_actual_save_no_new_boost",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 0
+        },
+        "parent_manifest": "docs/data/parity-slots/ch29-ap5000-manifest.json",
+        "note": "第29章實際SAV原樣接續；祖先AP／DP／DX／HP政策保留，不驗自然難度。",
+        "event_states": {}
+      }
     }
   ]
 }

@@ -1,0 +1,28 @@
+# 第30章：第29章正式實際SAV原樣接續，正常標題LOAD、非城鎮記錄NO、19人選擇及揭幕；短探針不計整章，零新增強化或章內注入。
+{"key":"","steps":20000000,"repeat":8}
+{"key":"down","steps":3000000}
+{"key":"enter","steps":20000000}
+{"key":"","steps":20000000,"repeat":6}
+{"key":"enter","steps":20000000}
+{"await_ui":"record_question","steps":20000000,"max":80}
+{"mark":"record_question","steps":1000000}
+{"key":"right","steps":10000000}
+{"key":"enter","steps":10000000}
+{"key":"","steps":10000000,"repeat":8}
+{"mark":"record_party_selection","steps":1000000}
+{"key":"enter","steps":20000000,"repeat":19}
+{"key":"","steps":10000000,"repeat":12}
+{"mark":"departure_confirmation","steps":1000000}
+{"key":"enter","steps":20000000}
+{"await":"enemy_alive>=1","steps":10000000,"max":300}
+{"await_ui":"cursor","steps":10000000,"max":180}
+{"mark":"battle_start","steps":1000000}
+# 正常擊倒地魔神，兩次正常END讓round+1休眠82在敵方階段派送；只驗第一波，不計整章。
+{"defeat_record":{"index":24,"identity":122,"helpers":[0,18],"max_rounds":3}}
+{"mark":"earth_demon_defeated"}
+{"sweep_round":true,"max_units":0,"finish_wait":160}
+{"await_ui":"cursor","steps":20000000,"max":180}
+{"sweep_round":true,"max_units":0,"finish_wait":160}
+{"await":"runtime_units>=29","steps":10000000,"max":180}
+{"await_ui":"cursor","steps":20000000,"max":180}
+{"mark":"first_demon_reinforcements"}

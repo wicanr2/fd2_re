@@ -617,5 +617,63 @@ class PairingAndUnits(unittest.TestCase):
         self.assertEqual(vp.remake_units(cp), {(2, 3, 4)})
 
 
+class EndingFlowProof(unittest.TestCase):
+    def test_terminal_writer_is_distinct_from_same_sequence_plan_mark(self):
+        writer = {"kind": "ending_terminal"}
+        mark = {"kind": "mark", "label": "ending_terminal"}
+        self.assertEqual(vp.comparable_action_kind(writer, "ending_terminal"), "ending_terminal")
+        self.assertIsNone(vp.comparable_action_kind(mark, "ending_terminal"))
+        self.assertEqual(vp.comparable_action_kind(mark, "mark:ending_terminal"), "mark:ending_terminal")
+
+    def fixture(self, root):
+        oracle, remake = root / "oracle", root / "remake"
+        oracle.mkdir(); remake.mkdir()
+        (oracle / "FD2.SAV").write_bytes(b"unchanged-slot")
+        (remake / "FD2.SAV").write_bytes(b"unchanged-slot")
+        sha = vp.sha256_file(oracle / "FD2.SAV")
+        units, consumed = [], []
+        for i in range(31):
+            raw = bytearray(80)
+            if i < 27:
+                raw[6], raw[7], raw[8], raw[32] = 2, i, i, 1
+                consumed.append([2, i, i, 1])
+            else:
+                raw[5] = 1
+            units.append({"raw_hex": raw.hex()})
+        calls = ["0x25757", "0x257DB", "0x25816", "0x25921", "0x25968", "0x2BCE5", "0x2C548", "0x2C66C", "0x2C194", "0x2C2A6", "0x2C33B"]
+        trace = [{"eip": call, **({"frame_units_valid": True, "unit_count": 31, "units": units} if call == "0x2C548" else {})} for call in calls]
+        terminal = {"eip": "0x25975", "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f", "dos_file_calls": [], "state_injections": []}
+        lines = [{"source": source, "string": index} for source, index, count in [("FDTXT_030", 9, 8), ("FDTXT_030", 10, 18), ("FDTXT_031", 0, 13), ("FDTXT_031", 1, 3)] for _ in range(count)]
+        proof = {"handler_chapter": 30, "runtime_record_count": 31, "persistent_count": 27,
+                 "records_2c548_consumed": consumed, "post_story_trace": {"lines": lines},
+                 "ending_dialogue_blocks": [{"source_dat": "FDTXT_031", "string_index": i, "count": 1} for i in range(2, 8)],
+                 "terminal": True, "terminal_owner": "presentingCampaignTerminal", "save_sha256_before": sha, "save_sha256_after": sha}
+        def write():
+            (oracle / "eip-trace.jsonl").write_text("".join(json.dumps(row)+"\n" for row in trace))
+            (oracle / "current.json").write_text(json.dumps(terminal))
+            (remake / "ending-flow.json").write_text(json.dumps(proof))
+        write()
+        args = (oracle, remake, oracle / "FD2.SAV", {"output_sha256": sha}, [{"kind": "ending_terminal", "stable_boundaries": 3}])
+        return args, trace, terminal, proof, write
+
+    def test_complete_source_bound_flow_and_unchanged_save_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            args, *_ = self.fixture(Path(tmp))
+            self.assertTrue(vp.ending_flow_report(*args)["ok"])
+
+    def test_missing_or_changed_source_cannot_pass(self):
+        for fault in ("roster", "write", "call_order", "text", "terminal", "save"):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as tmp:
+                args, trace, terminal, proof, write = self.fixture(Path(tmp))
+                if fault == "roster": proof["records_2c548_consumed"][0][3] = 99
+                elif fault == "write": terminal["dos_file_calls"] = [{"op": "write", "path": "FD2.SAV"}]
+                elif fault == "call_order": trace[1], trace[2] = trace[2], trace[1]
+                elif fault == "text": proof["post_story_trace"]["lines"][0]["source"] = "FDTXT_029"
+                elif fault == "terminal": terminal["eip"] = "0x2C548"
+                elif fault == "save": (args[1] / "FD2.SAV").write_bytes(b"changed")
+                write()
+                self.assertFalse(vp.ending_flow_report(*args)["ok"])
+
+
 if __name__ == "__main__":
     unittest.main()

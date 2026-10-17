@@ -1927,6 +1927,12 @@
           "message": "欄位已完整保留於 extensions.legacy",
           "path": "nodes.story_ch27_post_intro",
           "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "nodes.postbattle_ch30_terminal",
+          "severity": "warning"
         }
       ],
       "kind": "campaign",
@@ -18065,6 +18071,42 @@
         {
           "code": "unmapped_field",
           "message": "欄位已完整保留於 extensions.legacy",
+          "path": "scenes[2].lines[30]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "scenes[2].lines[31]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "scenes[2].lines[32]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "scenes[2].lines[33]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "scenes[2].lines[34]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
+          "path": "scenes[2].lines[35]",
+          "severity": "warning"
+        },
+        {
+          "code": "unmapped_field",
+          "message": "欄位已完整保留於 extensions.legacy",
           "path": "scenes[2]",
           "severity": "warning"
         }
@@ -18525,11 +18567,11 @@
   ],
   "documents": [
     {
-      "diagnostics": 320,
+      "diagnostics": 321,
       "document_id": "legacy/campaign/b5c1e4503510/campaign_full",
       "kind": "campaign",
       "output": "campaign/campaign_full.json",
-      "sha256": "9192d01e7f8fadce52b0396f71d2685d601a2c8bb62c40d64ec6c770a853de81",
+      "sha256": "a9cb2987e2ba7cec8100e4aac6ecf0639a10f6e29e7490ba3467e5e5013ea6dc",
       "source": "remake/assets/scenarios/campaign_full.json"
     },
     {
@@ -18769,7 +18811,7 @@
       "document_id": "legacy/scenario/b5693d71fbbb/ch30",
       "kind": "scenario",
       "output": "scenarios/ch30.json",
-      "sha256": "89bdd1f8a329a471b516373871e2b7069718db801be76cfaac404ba0ab6100d8",
+      "sha256": "3f589d864bbd88f34cea878fcfe3fcab264d4e734066e89640ee90d193d5ab7b",
       "source": "remake/assets/scenarios/ch30.json"
     },
     {
@@ -19029,11 +19071,11 @@
       "source": "remake/assets/story/ch30.json"
     },
     {
-      "diagnostics": 58,
+      "diagnostics": 64,
       "document_id": "legacy/story/d0716167f600/ch31",
       "kind": "story",
       "output": "story/ch31.json",
-      "sha256": "2e5cc4f2750431f02d537128b492583b9bb061bc21210d47ef43d3bdb01e2aa3",
+      "sha256": "aeded3ef0b1691f3f3f952bd9d0dd4f8ff9669137b7c51853702200556fbb97e",
       "source": "remake/assets/story/ch31.json"
     },
     {

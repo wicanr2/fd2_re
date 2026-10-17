@@ -509,7 +509,9 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 	}
 	progressed.Lv++
 	progressed.Exp = 77 // 原生+0x3c是byte，測試進度同樣保持可序列化。
-	wantFinalLevel := progressed.Lv
+	// 25757沒有11506；終局25089回滿持續名冊，不同步最後戰場成長。
+	wantFinalLevel := g.partyRoster[progressedRosterID].Lv
+	wantFinalExp := g.partyRoster[progressedRosterID].Exp
 	for _, unit := range g.st.Units {
 		if unit != nil && unit.Camp == battle.Enemy {
 			unit.HP, unit.OnField = 0, false
@@ -588,15 +590,19 @@ func TestChapter29BattleResultColdLoadsPreparation30AndFeedsFinalEnding(t *testi
 	if !pump(t, g, 1024, func() bool { return !g.aiBusy || g.loadErr != "" }) {
 		t.Fatal("battle_ch30 enemy phase did not finish within 1024 frames")
 	}
-	if g.aiBusy || g.result != "win" || g.camp.NodeID() != "battle_ch30" {
+	if g.aiBusy || g.result != "" || g.camp.NodeID() != "postbattle_ch30_terminal" {
 		t.Fatalf("battle_ch30 result seam busy=%v result=%q node=%q err=%q", g.aiBusy, g.result, g.camp.NodeID(), g.loadErr)
 	}
-	if !g.confirmBattleResult() || g.loadErr != "" || g.result != "" ||
+	err = g.fastForwardShotCampaign()
+	if err == nil || !strings.Contains(err.Error(), "reached non-battle node=\"ending\"") {
+		t.Fatalf("第30章完整戰後未接結局：%v node=%s", err, g.camp.NodeID())
+	}
+	if g.loadErr != "" || g.result != "" ||
 		g.camp.NodeID() != "ending" || g.nativeEnding == nil || !g.nativeEnding.campaignSourceBound {
 		t.Fatalf("battle_ch30→ending node=%q result=%q preview=%v err=%q notice=%q", g.camp.NodeID(), g.result, g.nativeEnding != nil, g.loadErr, g.endingNotice)
 	}
-	if got := g.partyRoster[progressedRosterID]; got.Lv != wantFinalLevel || got.Exp != 77 {
-		t.Fatalf("final battle progress did not reach persistent ending roster: id=%d unit=%#v", progressedRosterID, got)
+	if got := g.partyRoster[progressedRosterID]; got.Lv != wantFinalLevel || got.Exp != wantFinalExp {
+		t.Fatalf("終局錯誤同步最後戰場成長：id=%d unit=%#v", progressedRosterID, got)
 	}
 	for _, elapsed := range []int{0, 1000, 2500, 0, 256, 2000} {
 		if _, err := g.nativeEnding.player.Advance(elapsed); err != nil {

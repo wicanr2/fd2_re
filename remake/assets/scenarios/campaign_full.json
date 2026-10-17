@@ -5682,19 +5682,22 @@
    "scenario": "assets/scenarios/ch30.json",
    "native_map_view": {
     "camera_x": 16,
-    "camera_y": 14,
-    "cursor_x": 23,
-    "cursor_y": 18,
-    "visible_cursor_x": 7,
-    "visible_cursor_y": 4,
-    "range_mode": 0
+    "camera_y": 17,
+    "cursor_x": 22,
+    "cursor_y": 23,
+    "visible_cursor_x": 6,
+    "visible_cursor_y": 6,
+    "range_mode": 1
    },
    "native_map_hud_inherited": {
     "display_gate_b": 1
    },
-   "on_win": "ending",
-   "on_lose": "retreat_ch30",
-   "ending_party_snapshot_on_win": true
+   "on_win": "postbattle_ch30_terminal",
+   "native_defeat_return_title": {
+    "handler": "0x22e5c",
+    "resource": 79,
+    "return": "full_title_sequence"
+   }
   },
   "retreat_ch30": {
    "type": "story",
@@ -5715,7 +5718,7 @@
    "native_ending_prefix": {
     "timeline": "assets/endings/native_2bce5.json",
     "handler": "0x2bce5",
-    "chapter": 29,
+    "chapter": 30,
     "mode": "source_bound_e1_terminal_hold"
    },
    "text": "傳說的終章——空魔神殞落。世界得救了，炎龍騎士團踏上返鄉之路；希莉亞也期待著回到王國後，請父王為大家舉辦慶功宴。"
@@ -6810,7 +6813,13 @@
    "type": "preparation",
    "prompt": "要記錄戰況嗎？",
    "party_limit": 19,
-   "next": "story_ch30"
+   "next": "story_ch30",
+   "required_party_identities": [
+    9
+   ],
+   "preparation_front_identities": [
+    9
+   ]
   },
   "church_ch02": {
    "type": "church",
@@ -7415,6 +7424,11 @@
    "type": "cutscene",
    "handler_binding": "assets/cutscenes/bindings/ch26_post_intro.json",
    "next": "inventory_gate_ch27_sky_key"
+  },
+  "postbattle_ch30_terminal": {
+   "type": "cutscene",
+   "handler_binding": "assets/cutscenes/bindings/ch29_post.json",
+   "next": "ending"
   }
  }
 }

@@ -75,8 +75,8 @@ func newNativeEndingPreviewForCampaign(prefix *campaign.NativeEndingPrefixConfig
 }
 
 func newNativeEndingPreviewForTimeline(timelinePath string, chapter int) (*nativeEndingPreview, error) {
-	if chapter != 26 && chapter != 29 {
-		return nil, fmt.Errorf("ending: native chapter must be 26 or 29")
+	if chapter != 26 && chapter != 29 && chapter != 30 {
+		return nil, fmt.Errorf("ending: native chapter must be 26, 29 or 30")
 	}
 	timeline, err := ending.LoadTimeline(assetPath(timelinePath))
 	if err != nil {
@@ -307,10 +307,37 @@ func (g *Game) startCampaignNativeMontage() error {
 		return nil
 	}
 	p.montageStartAttempted = true
-	// 最終戰部署只是暫時選擇；終局回顧依永久 JOIN 時序涵蓋所有入隊角色。
-	// 部署成員已由 EndingPartySnapshotOnWin 帶入戰果，後備成員則保留冷讀快照。
+	// 2C548讀1088D(30)已建構的當前record；舊預覽保留原有持續名冊來源。
 	order := append([]int(nil), g.partyJoinOrder...)
-	units, groups, err := nativeEndingMontageRecords(order, g.partyRoster)
+	roster := g.partyRoster
+	if p.chapter == 30 {
+		if len(g.storyActors) != 31 {
+			p.montageStartError = "ending: selector30 runtime capacity is not 31"
+			return fmt.Errorf("%s", p.montageStartError)
+		}
+		roster = make(map[int]battle.Unit)
+		order = nil
+		for slot, unit := range g.storyActors {
+			if !unit.HasNativeRecordByte5 || !unit.HasNativeRecordByte6 || !unit.HasNativeRecordByte8 {
+				p.montageStartError = "ending: selector30 runtime record lacks raw source"
+				return fmt.Errorf("%s", p.montageStartError)
+			}
+			if unit.NativeRecordByte5&1 != 0 {
+				continue
+			}
+			if len(order) >= len(g.partyJoinOrder) || int(unit.NativeRecordByte8) != g.partyJoinOrder[len(order)] {
+				p.montageStartError = "ending: selector30 runtime order differs from JOIN"
+				return fmt.Errorf("%s", p.montageStartError)
+			}
+			order = append(order, slot)
+			roster[slot] = unit
+		}
+		if len(order) != len(g.partyJoinOrder) {
+			p.montageStartError = "ending: selector30 active count differs from JOIN"
+			return fmt.Errorf("%s", p.montageStartError)
+		}
+	}
+	units, groups, err := nativeEndingMontageRecords(order, roster)
 	if err != nil {
 		p.montageStartError = err.Error()
 		return err

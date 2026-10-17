@@ -412,6 +412,7 @@ AWAIT_UI_MODES = frozenset({
     "title", "cursor", "dialogue", "grid", "ring", "shop", "status", "spell",
     "system", "target", "town", "unknown", "preparation", "record_question",
     "record_slots",
+    "ending", "ending_terminal",
 })
 
 
@@ -729,6 +730,9 @@ TREASURE_RANGE = (0x190AC, 0x1956A)
 
 def ui_mode(current):
     chain = current.get("input_chain") or []
+    if (current.get("exe_sha256") == DIALOGUE_PORTRAIT_EXE_SHA256 and
+            current.get("eip") == "0x25975"):
+        return "ending_terminal"
 
     # 0x1FE60 為已閉合 sub_1F894 主選單讀鍵 caller；不能把返回標題
     # 誤當成戰場 cursor，亦不可在這裡自動按 START。
@@ -770,6 +774,15 @@ def ui_mode(current):
             continue
         if DIALOGUE_RANGE[0] <= value <= DIALOGUE_RANGE[1]:
             return "dialogue"
+    if current.get("exe_sha256") == DIALOGUE_PORTRAIT_EXE_SHA256:
+        addresses = [current.get("eip"), *chain]
+        for address in addresses:
+            try:
+                value = int(address, 16)
+            except (TypeError, ValueError):
+                continue
+            if 0x25757 <= value < 0x25977 or 0x2BCE5 <= value < 0x2C9EC:
+                return "ending"
     return "unknown"
 
 
@@ -1521,6 +1534,8 @@ def do_engage(command):
             return True
         if mode == "record_question" and command.get("finish_ui") == "record_question":
             return True
+        if mode in {"ending", "ending_terminal"} and command.get("finish_ui") == "ending":
+            return True
         if mode == "town":
             # 打完最後一個敵人之後勝利演出會一路播到戰後城鎮。那是這一場結束，
             # 不是收尾失敗——原本回報「收尾之後介面停在 town」而中止，序列後面
@@ -2185,6 +2200,72 @@ def do_escort_rounds(command):
     return complete
 
 
+def do_defeat_record(command):
+    """第30章有界正常攻擊；每次重新讀取原生索引與移動力，不寫入狀態。"""
+    spec = command["defeat_record"]
+    index, identity = spec["index"], spec["identity"]
+    helpers, limit = spec["helpers"], spec["max_rounds"]
+    identities = {20: 126, 21: 125, 22: 124, 23: 123, 24: 122}
+    if (type(index) is not int or identities.get(index) != identity
+            or helpers != [0, 18] or type(limit) is not int or not 1 <= limit <= 8):
+        raise SystemExit("defeat_record：缺少第30章已驗證目標／助手／有界輪數")
+    steps = int(command.get("steps", 2_000_000))
+    for _ in range(limit):
+        for helper in helpers:
+            current = state()
+            if index == 20 and spec.get("finish_ui") == "ending" and ui_mode(current) in {"ending", "ending_terminal"}:
+                return True
+            rows = {u["index"]: u for u in current.get("units", [])}
+            target = rows.get(index, {})
+            if target.get("identity") != identity or target.get("camp") != ENEMY_CAMP:
+                return False
+            if target.get("hp", 0) <= 0:
+                return True
+            actor = rows.get(helper, {})
+            raw = bytes.fromhex(actor.get("raw_hex", ""))
+            if actor.get("camp") != ALLY_CAMP or actor.get("hp", 0) <= 0 or len(raw) != 80 or not raw[0x3b]:
+                return False
+            if not do_engage({"engage": {"from_index": helper, "target_index": index},
+                              "typical_move": raw[0x3b], "reach": 1, "tries": 14,
+                              "finish_wait": 240, "finish_ui": spec.get("finish_ui"), "steps": steps}):
+                return False
+        current = state()
+        target = next((u for u in current.get("units", []) if u.get("index") == index), {})
+        if target.get("identity") == identity and target.get("hp", 0) <= 0:
+            return True
+        before = measure(current, "round")
+        if not do_sweep_round({"max_units": 0, "finish_wait": 160, "steps": steps}):
+            return False
+        if not do_await({"await": f"round>={before + 1}", "steps": 10_000_000, "max": 200}):
+            return False
+        if not do_await_ui({"await_ui": "cursor", "steps": 20_000_000, "max": 200}):
+            return False
+    return False
+
+
+def do_finish_ending(command):
+    """正常鍵盤完成原版終局，25975自迴圈必須連續三個觀測邊界相同。"""
+    if ui_mode(state()) not in {"ending", "ending_terminal", "dialogue"}:
+        return False
+    stable = 0
+    for _ in range(int(command.get("max", 1500))):
+        current = state()
+        if current.get("exe_sha256") != DIALOGUE_PORTRAIT_EXE_SHA256:
+            return False
+        mode = ui_mode(current)
+        stable = stable + 1 if mode == "ending_terminal" else 0
+        if stable == 3:
+            log_action("ending_terminal", current, ui=mode, terminal_eip="0x25975", stable_boundaries=stable)
+            return True
+        pc = int(current.get("eip", "0"), 16)
+        key = "enter" if mode == "dialogue" or 0x2C7ED <= pc < 0x2C967 else ""
+        if current.get("kbd_pending", 0):
+            key = ""
+        seq, current = send(key, int(command.get("steps", 20_000_000)))
+        report(seq, key, current, " ending-flow")
+    return False
+
+
 def do_defeat_targets(command):
     """第29章READY：正常攻擊三頭龍，保留死亡派送及戰後owner。"""
     spec = command["defeat_targets"]
@@ -2305,6 +2386,14 @@ def main():
         if "preparation_save" in command:
             if not do_preparation_save(command):
                 return 13
+            continue
+        if command.get("finish_ending"):
+            if not do_finish_ending(command):
+                return 22
+            continue
+        if "defeat_record" in command:
+            if not do_defeat_record(command):
+                return 21
             continue
         if "defeat_targets" in command:
             if not do_defeat_targets(command):

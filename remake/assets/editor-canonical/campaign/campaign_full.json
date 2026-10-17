@@ -7050,19 +7050,23 @@
       "extensions": {
         "legacy": {
           "bgm": "FDMUS_008",
-          "ending_party_snapshot_on_win": true,
           "map": "assets/maps/map29",
+          "native_defeat_return_title": {
+            "handler": "0x22e5c",
+            "resource": 79,
+            "return": "full_title_sequence"
+          },
           "native_map_hud_inherited": {
             "display_gate_b": 1
           },
           "native_map_view": {
             "camera_x": 16,
-            "camera_y": 14,
-            "cursor_x": 23,
-            "cursor_y": 18,
-            "range_mode": 0,
-            "visible_cursor_x": 7,
-            "visible_cursor_y": 4
+            "camera_y": 17,
+            "cursor_x": 22,
+            "cursor_y": 23,
+            "range_mode": 1,
+            "visible_cursor_x": 6,
+            "visible_cursor_y": 6
           },
           "scenario": "assets/scenarios/ch30.json",
           "units": "assets/maps/map29/map29_units.json"
@@ -7071,8 +7075,7 @@
       },
       "map_id": "map/map29",
       "node_id": "legacy/node/b5c1e4503510/battle_ch30/218",
-      "on_lose": "legacy/node/b5c1e4503510/retreat_ch30/219",
-      "on_win": "legacy/node/b5c1e4503510/ending/220",
+      "on_win": "legacy/node/b5c1e4503510/postbattle_ch30_terminal/319",
       "scenario_id": "scenario/ch30",
       "type": "battle"
     },
@@ -7100,7 +7103,7 @@
       "extensions": {
         "legacy": {
           "native_ending_prefix": {
-            "chapter": 29,
+            "chapter": 30,
             "handler": "0x2bce5",
             "mode": "source_bound_e1_terminal_hold",
             "timeline": "assets/endings/native_2bce5.json"
@@ -8508,7 +8511,13 @@
       "extensions": {
         "legacy": {
           "party_limit": 19,
-          "prompt": "要記錄戰況嗎？"
+          "preparation_front_identities": [
+            9
+          ],
+          "prompt": "要記錄戰況嗎？",
+          "required_party_identities": [
+            9
+          ]
         },
         "legacy_key": "preparation_ch30"
       },
@@ -9400,6 +9409,17 @@
       },
       "next": "legacy/node/b5c1e4503510/inventory_gate_ch27_sky_key/205",
       "node_id": "legacy/node/b5c1e4503510/story_ch27_post_intro/318",
+      "type": "cutscene"
+    },
+    {
+      "extensions": {
+        "legacy": {
+          "handler_binding": "assets/cutscenes/bindings/ch29_post.json"
+        },
+        "legacy_key": "postbattle_ch30_terminal"
+      },
+      "next": "legacy/node/b5c1e4503510/ending/220",
+      "node_id": "legacy/node/b5c1e4503510/postbattle_ch30_terminal/319",
       "type": "cutscene"
     }
   ],

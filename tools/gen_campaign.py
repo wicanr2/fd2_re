@@ -733,6 +733,22 @@ def build_campaign(
                             member[field] = generated[field]
                 scenario = authored
             merge_native_spawn_metadata(scenario, turn_events_by_ch.get(c, []), out_scn)
+            if c == 30:
+                # #234 READY：205DA只物化group0；休眠82逐波追加groups1..3。
+                scenario["initial_groups"] = [0]
+                from pathlib import Path
+                from sync_native_death_programs import Chapter, MAPPING, GLYPHS
+                mapping = json.loads(MAPPING.read_text(encoding="utf-8"))
+                glyphs = {int(k): v for k, v in json.loads(GLYPHS.read_text(encoding="utf-8")).items() if k != "_comment"}
+                chapter = Chapter(Path(out_scn), mapping, glyphs)
+                scenario["native_result_handler"] = "0x20bf5"
+                scenario["native_result_initial_code"] = 0
+                scenario["native_result_auto_advance"] = True
+                scenario["native_result_rules"] = [
+                    {"id": "record20_inactive", "source": "0x20c0d", "records_all_inactive": [20], "code": 2, "actions": []},
+                    {"id": "record0_inactive", "source": "0x20c25", "records_all_inactive": [0], "code": 1, "actions": []},
+                    {"id": "record1_inactive", "source": "0x20c64", "records_all_inactive": [1], "code": 1, "actions": chapter.dialogue(7, "0x20c3d")},
+                ]
             if c == 26:
                 # #214：20B3C依record1／2的raw+5 bit0覆寫code1。
                 scenario["native_result_handler"] = "0x20b3c"
@@ -817,7 +833,7 @@ def build_campaign(
                 # #213 READY契約見fd2_turn_event57_20261016.json。
                 nodes[preparation_id]["required_party_identities"] = [9, 29]
                 nodes[preparation_id]["preparation_front_identities"] = [9, 29]
-            elif intermission_cid in {"27", "28", "29"}:
+            elif intermission_cid in {"27", "28", "29", "30"}:
                 # raw26／27／28>25：31C79／31CF8要求並前置9，沿既有helper。
                 # READY見第27／28章契約及fd2_ch29_flow_20261017.json。
                 nodes[preparation_id]["required_party_identities"] = [9]
@@ -999,7 +1015,14 @@ def build_campaign(
         # 不可用泛用 sync_party/set_chapter 猜測性略過原版 handler；runtime 會對
         # 沒有 authored binding／beats 的 postbattle 節點失敗即關閉。ch21/ch27
         # 只有因為各自的原版分支尾已獨立閉合，才保留精確的持續化操作。
-        if c not in (21, 27):
+        if c == 30:
+            after_battle_id = "postbattle_ch30_terminal"
+            nodes[after_battle_id] = {
+                "type": "cutscene",
+                "handler_binding": "assets/cutscenes/bindings/ch29_post.json",
+                "next": "ending",
+            }
+        elif c not in (21, 27):
             post_id = f"postbattle_ch{cid}_persist"
             nodes[post_id] = {
                 "type": "cutscene",
@@ -1066,9 +1089,19 @@ def build_campaign(
             }
             nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
 
+        elif c == 30:
+            # #234：正常LOAD／ACT87後checkpoint93，見第30章entry_contract。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 16, "camera_y": 17,
+                "cursor_x": 22, "cursor_y": 23,
+                "visible_cursor_x": 6, "visible_cursor_y": 6,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+
         retry_flag = f"retried_ch{cid}"
         flags[retry_flag] = False
-        if c in (26, 29):
+        if c in (26, 29, 30):
             # #214／#230沿已閉合code1返回標題；第29章保留舊節點ID作歷史相容。
             nodes[battle_id].pop("on_lose")
             nodes[battle_id]["native_defeat_return_title"] = {

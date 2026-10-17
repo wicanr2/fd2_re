@@ -1,0 +1,2002 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_receipt",
+  "chapter": 30,
+  "generated_at": "2026-10-17",
+  "status": "passed",
+  "verification_profile": "flow",
+  "save_comparison_policy": "strict",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+    "control_plan": "docs/data/parity-plans/ch30-full-flow-r1.jsonl",
+    "control_plan_sha256": "5cee33f05c3f9614f58902f8d519ab45a7db9a87a68a29cb4f1e1077ba8f98d8",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "allow_hp_lock_control 為 true 時接受明示選擇性鎖血控制；實際綁定、目標 HP、解除與寫入次數見 checkpoint hp_lock_control",
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 56,
+    "checkpoints": 1051,
+    "random_control": {
+      "initial_checkpoint_rng_word": 22661,
+      "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+    }
+  },
+  "slot": {
+    "manifest": "docs/data/parity-slots/ch30-manifest.json",
+    "output_sha256": "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+    "base_sha256": "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+    "base_chapter": 29,
+    "target_chapter": 29,
+    "level_policy": "levels-per-chapter=0 overrides=（政策，非原版證據；升級寫入依 0x1E292／0x1E529／0x1B750）",
+    "assumptions": [
+      {
+        "chapter": 29,
+        "kind": "boost_only",
+        "detail": "同章測試槽僅套明示強化；未執行戰後、升級、事件狀態或金幣政策。"
+      }
+    ]
+  },
+  "remake": {
+    "checkpoints": 57,
+    "rng_synced_points": 17,
+    "random_control": {
+      "capture_frames": false,
+      "go_seed": 4,
+      "legacy_end_sources": null,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "modified_path_hp_lock": false,
+      "native_rng_initial": 0
+    }
+  },
+  "gates": {
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 17,
+          "kind": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 27,
+          "kind": "record_party_selection",
+          "status": "ok"
+        },
+        {
+          "seq": 58,
+          "kind": "departure_confirmation",
+          "status": "ok"
+        },
+        {
+          "seq": 93,
+          "kind": "battle_start",
+          "status": "ok"
+        },
+        {
+          "seq": 96,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 101,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 103,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 118,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 118,
+          "kind": "mark:earth_demon_defeated",
+          "status": "ok"
+        },
+        {
+          "seq": 134,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 151,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 151,
+          "kind": "mark:first_demon_reinforcements",
+          "status": "ok"
+        },
+        {
+          "seq": 154,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 155,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 157,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 172,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 188,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 205,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 205,
+          "kind": "mark:second_demon_reinforcements",
+          "status": "ok"
+        },
+        {
+          "seq": 208,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 209,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 211,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 226,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 243,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 260,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 260,
+          "kind": "mark:third_demon_reinforcements",
+          "status": "ok"
+        },
+        {
+          "seq": 263,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 264,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 266,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 281,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 298,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 313,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 313,
+          "kind": "mark:sky_demon_unlocked",
+          "status": "ok"
+        },
+        {
+          "seq": 316,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 317,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 319,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 334,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 345,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 529,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 535,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 558,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 558,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 559,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 561,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 576,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 585,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 824,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 830,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 853,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 853,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 854,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 856,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 871,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 893,
+          "kind": "mark:ending_entry",
+          "status": "ok"
+        },
+        {
+          "seq": 1050,
+          "kind": "ending_terminal",
+          "status": "ok"
+        },
+        {
+          "seq": 1050,
+          "kind": "mark:ending_terminal",
+          "status": "ok"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": true,
+      "oracle": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:earth_demon_defeated:cursor",
+        "mark:first_demon_reinforcements:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:second_demon_reinforcements:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:third_demon_reinforcements:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:sky_demon_unlocked:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:dialogue",
+        "mark:ending_entry:ending",
+        "ending_terminal:ending_terminal",
+        "mark:ending_terminal:ending_terminal"
+      ],
+      "remake": [
+        "record_question:record_question",
+        "record_party_selection:preparation",
+        "departure_confirmation:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:earth_demon_defeated:cursor",
+        "mark:first_demon_reinforcements:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:second_demon_reinforcements:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:third_demon_reinforcements:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:sky_demon_unlocked:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "select:target",
+        "stay:ring",
+        "wait:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:dialogue",
+        "mark:ending_entry:ending",
+        "ending_terminal:ending_terminal",
+        "mark:ending_terminal:ending_terminal"
+      ],
+      "plan_completion": {
+        "ok": true,
+        "required": {
+          "mark:record_question": 1,
+          "mark:record_party_selection": 1,
+          "mark:departure_confirmation": 1,
+          "mark:battle_start": 1,
+          "mark:earth_demon_defeated": 1,
+          "mark:first_demon_reinforcements": 1,
+          "mark:second_demon_reinforcements": 1,
+          "mark:third_demon_reinforcements": 1,
+          "mark:sky_demon_unlocked": 1,
+          "mark:ending_entry": 1,
+          "mark:ending_terminal": 1
+        },
+        "missing": {},
+        "remake_missing": {}
+      },
+      "comparison_version": 3,
+      "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
+      "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+      "points": [
+        {
+          "seq": 17,
+          "kind": "record_question",
+          "remake_ui": "record_question",
+          "oracle_ui": "record_question",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "record_question",
+          "oracle_kind": "record_question",
+          "oracle_comparable_kind": "record_question",
+          "oracle_family": "record_question",
+          "remake_family": "record_question",
+          "status": "ok"
+        },
+        {
+          "seq": 27,
+          "kind": "record_party_selection",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "record_party_selection",
+          "oracle_kind": "record_party_selection",
+          "oracle_comparable_kind": "record_party_selection",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 58,
+          "kind": "departure_confirmation",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "departure_confirmation",
+          "oracle_kind": "departure_confirmation",
+          "oracle_comparable_kind": "departure_confirmation",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 93,
+          "kind": "battle_start",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "battle_start",
+          "oracle_kind": "battle_start",
+          "oracle_comparable_kind": "battle_start",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 96,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 101,
+          "kind": "move",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "move",
+          "oracle_kind": "move",
+          "oracle_comparable_kind": "move",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 103,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 118,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 2,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 118,
+          "kind": "mark:earth_demon_defeated",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 2,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "earth_demon_defeated",
+          "oracle_kind": "earth_demon_defeated",
+          "oracle_comparable_kind": "mark:earth_demon_defeated",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 134,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "system",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 151,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 151,
+          "kind": "mark:first_demon_reinforcements",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "first_demon_reinforcements",
+          "oracle_kind": "first_demon_reinforcements",
+          "oracle_comparable_kind": "mark:first_demon_reinforcements",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 154,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 155,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 157,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 172,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 188,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "system",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 205,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 205,
+          "kind": "mark:second_demon_reinforcements",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "second_demon_reinforcements",
+          "oracle_kind": "second_demon_reinforcements",
+          "oracle_comparable_kind": "mark:second_demon_reinforcements",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 208,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 209,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 211,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 226,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 243,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "system",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 260,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 260,
+          "kind": "mark:third_demon_reinforcements",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "third_demon_reinforcements",
+          "oracle_kind": "third_demon_reinforcements",
+          "oracle_comparable_kind": "mark:third_demon_reinforcements",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 263,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 264,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 266,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 281,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 298,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "system",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 313,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 313,
+          "kind": "mark:sky_demon_unlocked",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "sky_demon_unlocked",
+          "oracle_kind": "sky_demon_unlocked",
+          "oracle_comparable_kind": "mark:sky_demon_unlocked",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 316,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 317,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 319,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 334,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 345,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 529,
+          "kind": "move",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "move",
+          "oracle_kind": "move",
+          "oracle_comparable_kind": "move",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 535,
+          "kind": "wait",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "wait",
+          "oracle_kind": "wait",
+          "oracle_comparable_kind": "wait",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 558,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "target",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 558,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 559,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 561,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 576,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 585,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 824,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 830,
+          "kind": "wait",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "wait",
+          "oracle_kind": "wait",
+          "oracle_comparable_kind": "wait",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 853,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "target",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 853,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 854,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 856,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 871,
+          "kind": "attack_result",
+          "remake_ui": "dialogue",
+          "oracle_ui": "dialogue",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "dialogue",
+          "remake_family": "dialogue",
+          "status": "ok"
+        },
+        {
+          "seq": 893,
+          "kind": "mark:ending_entry",
+          "remake_ui": "ending",
+          "oracle_ui": "ending",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "ending_entry",
+          "oracle_kind": "ending_entry",
+          "oracle_comparable_kind": "mark:ending_entry",
+          "oracle_family": "ending",
+          "remake_family": "ending",
+          "status": "ok"
+        },
+        {
+          "seq": 1050,
+          "kind": "ending_terminal",
+          "remake_ui": "ending_terminal",
+          "oracle_ui": "ending_terminal",
+          "oracle_action_candidates": 2,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "ending_terminal",
+          "oracle_kind": "ending_terminal",
+          "oracle_comparable_kind": "ending_terminal",
+          "oracle_family": "ending_terminal",
+          "remake_family": "ending_terminal",
+          "status": "ok"
+        },
+        {
+          "seq": 1050,
+          "kind": "mark:ending_terminal",
+          "remake_ui": "ending_terminal",
+          "oracle_ui": "ending_terminal",
+          "oracle_action_candidates": 2,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "ending_terminal",
+          "oracle_kind": "ending_terminal",
+          "oracle_comparable_kind": "mark:ending_terminal",
+          "oracle_family": "ending_terminal",
+          "remake_family": "ending_terminal",
+          "status": "ok"
+        },
+        {
+          "seq": null,
+          "kind": "end",
+          "remake_ui": "ending",
+          "status": "not_comparable",
+          "reason": "衍生重製點沒有原版配對"
+        }
+      ]
+    },
+    "transaction": {
+      "ok": true,
+      "gold": [
+        {
+          "seq": 17,
+          "kind": "record_question",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 27,
+          "kind": "record_party_selection",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 58,
+          "kind": "departure_confirmation",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 93,
+          "kind": "battle_start",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 96,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 101,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 103,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 118,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 118,
+          "kind": "mark:earth_demon_defeated",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 134,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 151,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 151,
+          "kind": "mark:first_demon_reinforcements",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 154,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 155,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 157,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 172,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 188,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 205,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 205,
+          "kind": "mark:second_demon_reinforcements",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 208,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 209,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 211,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 226,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 243,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 260,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 260,
+          "kind": "mark:third_demon_reinforcements",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 263,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 264,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 266,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 281,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 298,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 313,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 313,
+          "kind": "mark:sky_demon_unlocked",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 316,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 317,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 319,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 334,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 345,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 529,
+          "kind": "move",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 535,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 558,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 558,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 559,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 561,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 576,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 585,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 824,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 830,
+          "kind": "wait",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 853,
+          "kind": "after_enemy_phase",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 853,
+          "kind": "select",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 854,
+          "kind": "stay",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 856,
+          "kind": "attack_armed",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 871,
+          "kind": "attack_result",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 893,
+          "kind": "mark:ending_entry",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1050,
+          "kind": "ending_terminal",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        },
+        {
+          "seq": 1050,
+          "kind": "mark:ending_terminal",
+          "oracle": 2000,
+          "remake": 2000,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+        "remake_save_sha256": "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+        "remake_note": null,
+        "blocked_by": null,
+        "status": "ok",
+        "terminal_no_save_proof": {
+          "ok": true,
+          "scope": "第30章正常戰後與終局流程；不主張逐幀、完整raw record或硬體時鐘相同",
+          "checks": {
+            "original_call_order": true,
+            "original_terminal": true,
+            "stable_terminal": true,
+            "no_state_injection": true,
+            "no_dos_write": true,
+            "unchanged_save": true,
+            "source_roster": true,
+            "consumed_roster_equal": true,
+            "runtime_capacity": true,
+            "post_dialogues": true,
+            "ending_dialogues": true,
+            "remake_terminal": true
+          },
+          "original_calls": [
+            "0x25757",
+            "0x257DB",
+            "0x25816",
+            "0x25921",
+            "0x25968",
+            "0x2BCE5",
+            "0x2C548",
+            "0x2C66C",
+            "0x2C194",
+            "0x2C2A6",
+            "0x2C33B"
+          ],
+          "original_roster_consumed_fields": [
+            [
+              2,
+              0,
+              0,
+              1
+            ],
+            [
+              2,
+              9,
+              9,
+              5
+            ],
+            [
+              2,
+              29,
+              29,
+              13
+            ],
+            [
+              2,
+              4,
+              4,
+              3
+            ],
+            [
+              2,
+              30,
+              30,
+              25
+            ],
+            [
+              2,
+              1,
+              1,
+              2
+            ],
+            [
+              2,
+              8,
+              8,
+              4
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              10,
+              10,
+              6
+            ],
+            [
+              2,
+              13,
+              13,
+              4
+            ],
+            [
+              2,
+              12,
+              12,
+              8
+            ],
+            [
+              2,
+              5,
+              5,
+              3
+            ],
+            [
+              2,
+              11,
+              11,
+              6
+            ],
+            [
+              2,
+              6,
+              6,
+              3
+            ],
+            [
+              2,
+              14,
+              14,
+              5
+            ],
+            [
+              2,
+              17,
+              17,
+              1
+            ],
+            [
+              2,
+              3,
+              3,
+              2
+            ],
+            [
+              2,
+              15,
+              15,
+              8
+            ],
+            [
+              2,
+              16,
+              16,
+              15
+            ],
+            [
+              2,
+              21,
+              21,
+              22
+            ],
+            [
+              2,
+              7,
+              7,
+              11
+            ],
+            [
+              2,
+              25,
+              25,
+              23
+            ],
+            [
+              2,
+              28,
+              28,
+              28
+            ],
+            [
+              2,
+              24,
+              24,
+              14
+            ],
+            [
+              2,
+              23,
+              23,
+              20
+            ],
+            [
+              2,
+              22,
+              22,
+              24
+            ],
+            [
+              2,
+              26,
+              26,
+              15
+            ]
+          ],
+          "remake_roster_consumed_fields": [
+            [
+              2,
+              0,
+              0,
+              1
+            ],
+            [
+              2,
+              9,
+              9,
+              5
+            ],
+            [
+              2,
+              29,
+              29,
+              13
+            ],
+            [
+              2,
+              4,
+              4,
+              3
+            ],
+            [
+              2,
+              30,
+              30,
+              25
+            ],
+            [
+              2,
+              1,
+              1,
+              2
+            ],
+            [
+              2,
+              8,
+              8,
+              4
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              10,
+              10,
+              6
+            ],
+            [
+              2,
+              13,
+              13,
+              4
+            ],
+            [
+              2,
+              12,
+              12,
+              8
+            ],
+            [
+              2,
+              5,
+              5,
+              3
+            ],
+            [
+              2,
+              11,
+              11,
+              6
+            ],
+            [
+              2,
+              6,
+              6,
+              3
+            ],
+            [
+              2,
+              14,
+              14,
+              5
+            ],
+            [
+              2,
+              17,
+              17,
+              1
+            ],
+            [
+              2,
+              3,
+              3,
+              2
+            ],
+            [
+              2,
+              15,
+              15,
+              8
+            ],
+            [
+              2,
+              16,
+              16,
+              15
+            ],
+            [
+              2,
+              21,
+              21,
+              22
+            ],
+            [
+              2,
+              7,
+              7,
+              11
+            ],
+            [
+              2,
+              25,
+              25,
+              23
+            ],
+            [
+              2,
+              28,
+              28,
+              28
+            ],
+            [
+              2,
+              24,
+              24,
+              14
+            ],
+            [
+              2,
+              23,
+              23,
+              20
+            ],
+            [
+              2,
+              22,
+              22,
+              24
+            ],
+            [
+              2,
+              26,
+              26,
+              15
+            ]
+          ],
+          "consumed_offsets": [
+            6,
+            7,
+            8,
+            32
+          ],
+          "save_sha256": [
+            "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+            "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+            "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+            "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f",
+            "33c3d74deec1be3ca87b3754a26f2d5ee03799918e237958017be7518b164a6f"
+          ],
+          "original_save": "work/ch30-flow-20261017/state-full-r2/FD2.SAV",
+          "remake_proof_sha256": "1fc87c5de1d48c90f0cf3407d21480dc4fe509f74b6910088be8b531d1c8bc02",
+          "presentation_clock": "deterministic 60Hz; hardware-spec approximation; no frame parity"
+        },
+        "boundary": "no_save_expected",
+        "bytes_equal": true
+      }
+    },
+    "frames": {
+      "ok": false,
+      "required": false,
+      "policy": "advisory",
+      "pixel_budget": 640,
+      "min_frames": 12,
+      "compared": 0,
+      "points": []
+    }
+  },
+  "limitations": [
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
+    "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
+    "依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點與交易仍為必要閘門，保存依明示政策驗收。"
+  ]
+}

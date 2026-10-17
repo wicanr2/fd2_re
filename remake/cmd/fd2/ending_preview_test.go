@@ -159,8 +159,8 @@ func TestFinalEndingFirstTextGatePrebuildsAllNativeSpeakerFrames(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := preview.dialogue
-	if p == nil || len(p.Blocks) != 5 || len(p.Blocks[0].Utterances) != 6 || len(p.Blocks[0].Utterances[2].Pages) != 2 || len(p.Blocks[4].Utterances[0].Pages) != 1 {
-		t.Fatalf("final ending native prebuild=%#v", p)
+	if p == nil || len(p.Blocks) != 5 || len(p.Blocks[0].Utterances) != 1 || len(p.Blocks[0].Utterances[0].Pages) != 1 || len(p.Blocks[4].Utterances[0].Pages) != 1 {
+		t.Fatal("FDTXT031的五則caller文字未建立完整原生畫面")
 	}
 	if got := len(p.Blocks[4].Utterances[0].Pages[0]); got <= 1 {
 		t.Fatalf("four-row final utterance did not publish progressive glyph frames: %d", got)
@@ -473,7 +473,7 @@ func TestSourceBoundCampaignMontageStartsFromPersistentLoadCHOrder(t *testing.T)
 	})
 }
 
-func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
+func TestEditableSnapshotFixtureFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 	const base = "../../../org_game/炎龍騎士團/FLAME2"
 	for _, name := range []string{"FDOTHER.DAT", "FDTXT.DAT", "ANI.DAT", "TAI.DAT", "FIGANI.DAT", "DATO.DAT"} {
 		if _, err := os.Stat(filepath.Join(base, name)); err != nil {
@@ -489,8 +489,11 @@ func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// 只驗可編輯snapshot選項的E1 fixture；原版第30章不走此選項。
+	campaignData.Nodes["snapshot_fixture"] = &campaign.Node{Type: "battle", OnWin: "ending", EndingPartySnapshotOnWin: true}
+	campaignData.Nodes["ending"].NativeEndingPrefix.Chapter = 29
 	runner := campaign.NewRunner(campaignData)
-	runner.Cur = "battle_ch30"
+	runner.Cur = "snapshot_fixture"
 	constructor, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
 	if err != nil {
 		t.Fatal(err)
@@ -551,20 +554,18 @@ func TestFinalBattleWinFeedsSynchronizedPartyToEndingMontage(t *testing.T) {
 	}
 }
 
-func TestCampaignMontageRejectsUncompiledCh29ShotPartyBinding(t *testing.T) {
-	// 截圖專用 ch29_post.json binding 的0x25970→0x2bce5 campaign owner仍未
-	// 證實；不可把它的部分LOADCH資料偷渡成角色蒙太奇 provenance。
-	_, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch29_post.json"))
+func TestChapter30EndingHandoffStillRejectsShotWithoutJoinSource(t *testing.T) {
+	// 25757→25970已READY，但截圖捷徑仍不能自行補出持續JOIN名冊。
+	beats, issues, err := campaign.CompileHandlerBinding(assetPath("assets/cutscenes/bindings/ch29_post.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) != 1 || issues[0].Source.Addr != "0x25970" ||
-		issues[0].Source.Target != "0x2bce5" || issues[0].Op != "unresolved_native_call" {
+	if len(issues) != 0 || len(beats) == 0 || beats[len(beats)-1].Op != "ending_handoff" || beats[len(beats)-1].Source != "0x25970" {
 		t.Fatalf("ch29 ending owner diagnostics=%#v", issues)
 	}
 	g := &Game{shotPath: filepath.Join(t.TempDir(), "ending.png")}
 	if err := g.materializeShotPartyFromBinding("assets/cutscenes/bindings/ch29_post.json"); err == nil {
-		t.Fatal("uncompiled ch29 post handler was accepted as montage roster provenance")
+		t.Fatal("缺少JOIN來源的截圖捷徑被當作終局名冊")
 	}
 }
 

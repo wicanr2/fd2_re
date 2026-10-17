@@ -89,6 +89,15 @@ def lowered_turn_event(chapter: Chapter, event, row, cid: str, group_sources):
 
 def sync(write: bool, chapters=None):
     events = {e["id"]: e for e in json.loads(EVENTS.read_text(encoding="utf-8"))["events"]}
+    # #235：休眠82的完整轉寫由已分級的第30章READY主契約提供。
+    contract = json.loads((ROOT / "docs/data/ida/fd2_ch30_flow_20261017.json").read_text(encoding="utf-8"))
+    spec = contract["event82_contract"]
+    if spec["status"] not in ("READY", "CONFORMED") or contract["input"]["sha256"] != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f":
+        raise SystemExit("event82缺少固定原版READY轉寫")
+    extra = spec["transcription"]
+    if extra["id"] in events:
+        raise SystemExit("event82出現重複轉寫")
+    events[extra["id"]] = extra
     rows_by_chapter = {r["chapter"]: r["turn_events"] for r in json.loads(TURN_EVENTS.read_text(encoding="utf-8"))}
     group_sources = {(int(event_id), spawn["group"]): spawn["source"]
                      for event_id, entry in json.loads(EVENT_ID_GROUPS.read_text(encoding="utf-8")).items()
@@ -154,8 +163,11 @@ def sync(write: bool, chapters=None):
                 action.pop("act_immediately", None)  # 0x10B4E 建構的 +5 是 0，原生路徑不用這個旗標
             if not scenario.get("runtime_append_groups"):
                 raise SystemExit(f"{path.name} 有控制列事件 {row['event_id']}，但劇本沒有 runtime_append_groups")
-            native.append({"event_id": row["event_id"], "raw_camp": row["raw_camp"],
-                           "handler": event["handler"], "staging": {}, "actions": actions})
+            native_event = {"event_id": row["event_id"], "raw_camp": row["raw_camp"],
+                            "handler": event["handler"], "staging": {}, "actions": actions}
+            if "valid_state_range" in event:
+                native_event["state_range"] = event["valid_state_range"]
+            native.append(native_event)
             replaced.append(f'native_e{row["event_id"]}')
         if native:
             scenario["native_turn_events"] = native

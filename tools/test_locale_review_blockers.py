@@ -39,14 +39,22 @@ class LocaleReviewBlockerTests(unittest.TestCase):
         self.assertEqual(len(self.manifest["blockers"]), 170)
 
     def test_no_dialogue_text_is_blocked_any_more(self):
-        """對話本文的 5 筆阻擋已於 2026-09-10 全部閉合，不該再有未審校的對話。"""
+        """既有對話維持審校；新恢復的六句尾聲只能以明示初稿保留。"""
+        supplements = json.loads((ROOT / "docs/data/localization/ending-story-supplements.json").read_text(encoding="utf-8"))
+        scope = supplements["_review_scope"]
+        pending = set(scope["line_ids"])
+        self.assertEqual(scope["status"], "machine_draft")
+        self.assertEqual(len(pending), 6)
+        self.assertEqual({self.source[key]["text"] for key in pending}, set(supplements) - {"_review_scope"})
         for locale, entries in self.translations.items():
             remaining = sorted(
                 string_id for string_id, entry in entries.items()
                 if entry.get("role") in {"dialogue", "dialogue_or_system"}
                 and entry.get("status") != "reviewed"
             )
-            self.assertEqual(remaining, [], f"{locale} 還有未審校的對話：{remaining}")
+            self.assertEqual(remaining, sorted(pending), f"{locale} 出現六句尾聲以外的未審校對話：{remaining}")
+            for key in pending:
+                self.assertEqual(entries[key]["status"], "machine_draft")
 
     def test_speaker_fragments_are_single_glyph_and_stay_blocked(self):
         """說話者碎片的判準要自己成立：來源真的只有一個字，而且沒被升格。"""
@@ -92,13 +100,15 @@ class LocaleReviewBlockerTests(unittest.TestCase):
         "完整對話驗收時以 FD2_STRICT_LOCALE_REVIEW=1 啟用",
     )
     def test_strict_mode_has_no_unlisted_dialogue_drafts(self):
+        supplements = json.loads((ROOT / "docs/data/localization/ending-story-supplements.json").read_text(encoding="utf-8"))
+        pending = set(supplements["_review_scope"]["line_ids"])
         for locale, entries in self.translations.items():
             remaining = [
                 string_id
                 for string_id, entry in entries.items()
                 if entry.get("status") in {"machine_draft", "blocked"}
                 and entry.get("role") in {"dialogue", "dialogue_or_system"}
-                and string_id not in self.allowed
+                and string_id not in self.allowed | pending
             ]
             self.assertEqual(remaining, [], f"{locale} has unlisted drafts: {remaining}")
 

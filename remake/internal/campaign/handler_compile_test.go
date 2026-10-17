@@ -2289,8 +2289,8 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(issues) < 1 {
-		t.Fatalf("ch29_post issues=%#v want unresolved native effects preserved", issues)
+	if len(issues) != 0 || len(beats) == 0 || beats[len(beats)-1].Op != "ending_handoff" {
+		t.Fatalf("ch29_post issues=%#v，完整戰後必須接已證實的ending owner", issues)
 	}
 	var layout Beat
 	for _, beat := range beats {
@@ -2309,7 +2309,7 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 			break
 		}
 	}
-	if loader.Op != "loadch" || loader.LoadCH == nil || loader.LoadCH.Chapter != 30 || loader.LoadCH.Map != "assets/maps/map29" || loader.LoadCH.PartyScenario != "assets/scenarios/ch30.json" {
+	if loader.Op != "loadch" || loader.LoadCH == nil || loader.LoadCH.Chapter != 30 || loader.LoadCH.Map != "assets/maps/map30" || loader.LoadCH.PartyScenario != "assets/scenarios/ch30.json" || !loader.LoadCH.AllPersistentParty || loader.LoadCH.SlotCount != 31 || loader.LoadCH.SourceSlotCount == nil || *loader.LoadCH.SourceSlotCount != 1 {
 		t.Fatalf("ch29_post full chapter loader=%#v", loader)
 	}
 	var transition Beat
@@ -2327,7 +2327,20 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 		scene  int
 		line   int
 		count  int
-	}{{"ch29.json", 2, 6, 1}, {"ch29.json", 2, 7, 1}, {"ch30.json", 0, 0, 10}, {"ch30.json", 0, 10, 5}}
+	}{{"ch30.json", 1, 15, 2}, {"ch30.json", 2, 0, 6}, {"ch30.json", 3, 0, 18}, {"ch31.json", 0, 0, 13}, {"ch31.json", 0, 13, 3}}
+	var expandedWant []struct {
+		script             string
+		scene, line, count int
+	}
+	for _, group := range want {
+		for line := group.line; line < group.line+group.count; line++ {
+			expandedWant = append(expandedWant, struct {
+				script             string
+				scene, line, count int
+			}{group.script, group.scene, line, 0})
+		}
+	}
+	want = expandedWant
 	var dialogs []Beat
 	for _, beat := range beats {
 		if beat.Op == "dialog" {
@@ -2335,11 +2348,14 @@ func TestCompileChapter29PostPreservesDialogueAcrossChapterTextSwitch(t *testing
 		}
 	}
 	if len(dialogs) != len(want) {
-		t.Fatalf("ch29_post dialogs=%#v", dialogs)
+		t.Fatalf("ch29_post逐句數=%d，預期%d", len(dialogs), len(want))
 	}
 	for i, w := range want {
 		if dialogs[i].Script != w.script || dialogs[i].SceneIndex == nil || *dialogs[i].SceneIndex != w.scene || dialogs[i].Line != w.line || dialogs[i].Count != w.count {
 			t.Fatalf("ch29_post dialog[%d]=%#v want %#v", i, dialogs[i], w)
+		}
+		if dialogs[i].NativeDialogue == nil {
+			t.Fatalf("第%d句缺原始controls／glyphs來源", i)
 		}
 	}
 	var focus Beat

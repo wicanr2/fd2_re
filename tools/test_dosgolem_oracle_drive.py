@@ -32,6 +32,35 @@ def load():
 
 drive = load()
 
+class DefeatRecord(unittest.TestCase):
+    def command(self):
+        return {"defeat_record": {"index": 24, "identity": 122, "helpers": [0, 18], "max_rounds": 3}}
+
+    def test_dead_target_does_not_send_input(self):
+        snapshot = {"units": [{"index": 24, "identity": 122, "camp": 0, "hp": 0}]}
+        with mock.patch.object(drive, "state", return_value=snapshot), mock.patch.object(drive, "do_engage") as engage:
+            self.assertTrue(drive.do_defeat_record(self.command()))
+            engage.assert_not_called()
+
+    def test_wrong_identity_rejects_without_input(self):
+        snapshot = {"units": [{"index": 24, "identity": 123, "camp": 0, "hp": 4500}]}
+        with mock.patch.object(drive, "state", return_value=snapshot), mock.patch.object(drive, "do_engage") as engage:
+            self.assertFalse(drive.do_defeat_record(self.command()))
+            engage.assert_not_called()
+
+    def test_missing_movement_source_rejects_without_input(self):
+        snapshot = {"units": [{"index": 24, "identity": 122, "camp": 0, "hp": 4500},
+                              {"index": 0, "camp": 2, "hp": 100, "raw_hex": "00" * 80}]}
+        with mock.patch.object(drive, "state", return_value=snapshot), mock.patch.object(drive, "do_engage") as engage:
+            self.assertFalse(drive.do_defeat_record(self.command()))
+            engage.assert_not_called()
+
+    def test_invalid_policy_rejects(self):
+        command = self.command()
+        command["defeat_record"]["max_rounds"] = 9
+        with self.assertRaises(SystemExit):
+            drive.do_defeat_record(command)
+
 class EscortRounds(unittest.TestCase):
     def command(self, rounds=3):
         return {"escort_rounds": {"from_index": 1, "helpers": [18],
