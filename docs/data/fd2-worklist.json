@@ -352,48 +352,6 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
-    },
-    {
-      "id": "ch02-event6-full-transcription",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P0 補第2章event6完整援軍演出與村民目的地",
-      "body": "目前event6只有spawn group3，固定EXE的IDA9.4 34422..344C2還包含PAN9,1、ACT13、FDTXT002#4及runtime5..10的raw+35=26／+36=15。原版起手六村民均mode4；既有consumer用這對座標繼續移動。READY先於實作，沿用既有native_death_op record_bytes，只補已存在typed欄位+36的接納與投影。",
-      "acceptance": "原版T3事件只觸發一次，group3六人正常登場，FDTXT002#4完整對白與六村民raw35/36寫入；正式Game同source全流程／存檔比較，純寫入測試另驗typed與raw同步、未知offset拒收且不部分改寫。",
-      "evidence": "docs/data/ida/fd2_ch02_flow_20261017.json event6_contract",
-      "verify": {
-        "kind": "manual",
-        "note": "同槽完整正常回合事件、村民後續AI及戰後保存通過才結案；資料與孤立寫入測試不能代替正式Game。"
-      },
-      "issue": 245
-    },
-    {
-      "id": "ch02-native-startup-hud",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P0 補第2章正式入口缺失的原生view與HUD來源",
-      "body": "原版full-r2正常LOAD到cp76為21筆，camera9,13／cursor20,14／visible11,1／selector1且HUD可見。Game名冊位置相同，但battle_ch02沒有native_map_view及native_map_hud_inherited，HasNativeMapHUDState=false導致第一次正常移動組圖拒收。沿既有正式materializeNativeMapRuntime補資料及生成器，不關閉renderer來源預檢。",
-      "acceptance": "同槽正常LOAD、出戰、起手與第一次移動通過，並完成53筆AI及event6、戰後與保存三gate比較；typed資料與canonical／生成器一致，保持原版raw B未直接擷取的限制。",
-      "evidence": "docs/data/ida/fd2_ch02_flow_20261017.json startup_contract.view_hud_spec",
-      "verify": {
-        "kind": "manual",
-        "note": "實際GUI正常章重播通過，不能以debug注入HUD或只看fixture綠燈結案。"
-      },
-      "issue": 246
-    },
-    {
-      "id": "ch02-celia-save-residual-source",
-      "layer": "re",
-      "category": "RE待解",
-      "title": "P0 釐清第2章希莉亞保存紀錄九個殘留值來源",
-      "body": "同一正常LOAD槽及章內鍵盤重播，行為／節點與正式保存冷讀通過；原版與重製FD2.SAV只差persistent index5 identity8的+0x28..+0x30九byte及兩checksum。使用者要求以matching decompilation輔助確認原因，本份尚未接受例外。限場上10C50建構、JOIN112A5、11506整筆複製與30012保存鏈；不重啟全檔matching、不填原版常數。",
-      "acceptance": "以固定EXE／IDA9.4原始指令及有界唯讀原版收據證明九byte的建構前後來源，列明匹配正／負結果與仍未知部分；據此由使用者確認嚴格相同或本份逐筆揭露政策，再完成章2保存gate。",
-      "evidence": "docs/data/ida/fd2_ch02_flow_20261017.json save_difference_review／matching_assistance",
-      "verify": {
-        "kind": "manual",
-        "note": "來源證據與保存政策分開；內部冷讀綠燈或相近C不能代替原版整檔比較。"
-      },
-      "issue": 247
     }
   ]
 }
