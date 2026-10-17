@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_flow_contract",
+  "date": "2026-10-17",
+  "status": "DRAFT",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "scope": "第3章正常LOAD、完整章前、T3援軍、鐵諾存活JOIN及下一城鎮／正式保存；目前只開READY起手探針。",
+  "issue": 200,
+  "prior_evidence": [
+    "docs/data/ui-traces/parity-ch02.json",
+    "remake/assets/cutscenes/bindings/ch02_pre.json",
+    "remake/assets/cutscenes/handlers/ch02_pre.json",
+    "remake/assets/cutscenes/bindings/ch02_post.json"
+  ],
+  "walkthrough": {
+    "url": "https://jaceju-favorite-games.gitbooks.io/fd2/content/walkthrough/3.html",
+    "confidence": "攻略旁證",
+    "claims": [
+      "第三回合首領及援軍出現於橋兩端",
+      "鐵諾未死時加入"
+    ],
+    "restriction": "不作ABI、處理器語意或原版位元組證據。"
+  },
+  "startup_contract": {
+    "status": "READY",
+    "entry": "正常標題LOAD槽0，town_ch03兩次Left至出口，正常Enter出戰與章前演出，不直入battle。",
+    "source": "同一原版SAV d8d534d5；第2章full-r2正常town_ch03 probe_index1／seq527已驗兩次Left為preparation，沿既有2D11D提示owner。",
+    "plan": "docs/data/parity-plans/ch03-startup-r1.jsonl",
+    "manifest": "docs/data/parity-slots/ch03-manifest.json",
+    "acceptance": "原版完整章前到117F8游標，再以Game同輸入核對起手名冊／視圖／HUD；只驗起手，不推定整章。"
+  },
+  "flow_contract": {
+    "status": "DRAFT",
+    "gates": [
+      "T3事件9完整演出及兩端援軍",
+      "鐵諾存活分支、JOIN與戰後",
+      "下一城鎮、正式保存及LOAD冷讀"
+    ],
+    "save_policy": "strict"
+  },
+  "validation": {
+    "status": "pending",
+    "new_matching": false,
+    "videos": false,
+    "startup_original": {
+      "status": "passed_to_control",
+      "run": "work/ch03-flow-20261017/original-startup-r1",
+      "seq": 68,
+      "steps": 341400367,
+      "runtime_records": 15,
+      "view": {
+        "aux_phase": 0,
+        "camera_x": 3,
+        "camera_y": 18,
+        "cursor_x": 7,
+        "cursor_y": 22,
+        "gold": 1000,
+        "overlay_selector": 1,
+        "rng_word": 56350,
+        "round": 1,
+        "visible_x": 4,
+        "visible_y": 4
+      },
+      "input_chain": [
+        "0x127A1",
+        "0x12381",
+        "0x11CF5",
+        "0x11AE4",
+        "0x117F8",
+        "0x25DD3",
+        "0x45D91",
+        "0x3CB91"
+      ],
+      "units": [
+        {
+          "index": 0,
+          "identity": 0,
+          "camp": 2,
+          "hp": 42,
+          "x": 7,
+          "y": 22
+        },
+        {
+          "index": 1,
+          "identity": 9,
+          "camp": 2,
+          "hp": 0,
+          "x": 9,
+          "y": 22
+        },
+        {
+          "index": 2,
+          "identity": 4,
+          "camp": 2,
+          "hp": 0,
+          "x": 8,
+          "y": 23
+        },
+        {
+          "index": 3,
+          "identity": 30,
+          "camp": 2,
+          "hp": 68,
+          "x": 10,
+          "y": 23
+        },
+        {
+          "index": 4,
+          "identity": 1,
+          "camp": 2,
+          "hp": 0,
+          "x": 9,
+          "y": 24
+        },
+        {
+          "index": 5,
+          "identity": 8,
+          "camp": 2,
+          "hp": 44,
+          "x": 7,
+          "y": 24
+        },
+        {
+          "index": 6,
+          "identity": 2,
+          "camp": 1,
+          "hp": 61,
+          "x": 8,
+          "y": 11
+        },
+        {
+          "index": 7,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 9,
+          "y": 9
+        },
+        {
+          "index": 8,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 8,
+          "y": 9
+        },
+        {
+          "index": 9,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 10,
+          "y": 8
+        },
+        {
+          "index": 10,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 7,
+          "y": 8
+        },
+        {
+          "index": 11,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 6,
+          "y": 7
+        },
+        {
+          "index": 12,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 11,
+          "y": 7
+        },
+        {
+          "index": 13,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 8,
+          "y": 7
+        },
+        {
+          "index": 14,
+          "identity": 76,
+          "camp": 0,
+          "hp": 42,
+          "x": 9,
+          "y": 7
+        }
+      ]
+    },
+    "startup_game": {
+      "status": "passed",
+      "run": "work/ch03-flow-20261017/remake-startup-r1",
+      "receipt": "work/ch03-flow-20261017/startup-parity-r1.json",
+      "ai_entries": 0,
+      "ai_consumed": 0,
+      "ai_order_divergences": 0,
+      "limitation": "只驗正常LOAD、完整章前及15筆起手；未抽樣移動或戰鬥，不證明HUDconsumer與整章。"
+    },
+    "startup_trace_note": "起手trace指定32E6B沒有命中；既有handler原始入口是32E8C。原始輸入owner與正常Game已驗完整章前，後續完整章改用32E8C；不把錯trace位址當產品缺陷。"
+  },
+  "unknown": [
+    "實際起手raw筆數及view／HUD來源待本輪oracle確認",
+    "事件9phase metadata及完整原語以原始指令／本輪實測裁決，不以攻略補規則"
+  ]
+}

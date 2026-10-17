@@ -39,10 +39,22 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 25 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
+
+## re — 原版證據還沒閉合
+
+### P0 釐清第2章希莉亞保存紀錄九個殘留值來源
+
+`ch02-celia-save-residual-source` · RE待解 · [#247](https://github.com/wicanr2/fd2_re/issues/247) · 仍未完成 · 要人判
+
+同一正常LOAD槽及章內鍵盤重播，行為／節點與正式保存冷讀通過；原版與重製FD2.SAV只差persistent index5 identity8的+0x28..+0x30九byte及兩checksum。使用者要求以matching decompilation輔助確認原因，本份尚未接受例外。限場上10C50建構、JOIN112A5、11506整筆複製與30012保存鏈；不重啟全檔matching、不填原版常數。
+
+怎樣算做完：以固定EXE／IDA9.4原始指令及有界唯讀原版收據證明九byte的建構前後來源，列明匹配正／負結果與仍未知部分；據此由使用者確認嚴格相同或本份逐筆揭露政策，再完成章2保存gate。
+
+證據：`docs/data/ida/fd2_ch02_flow_20261017.json save_difference_review／matching_assistance`
 
 ## data — 可編輯資料還沒就緒
 
@@ -153,6 +165,26 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 卡在：HD第一階段範圍待使用者確認；不阻塞現有核准主題的素材盤點與正常路徑驗收。
 
 怎樣算做完：使用者確認本階段HD範圍；受版控工具可重跑同狀態並列原型，記錄素材實際解析度、輸出尺寸、文字與游標幾何、效能與權利；證據審查後將61相關高解析契約提升READY，正式實作另依該契約驗收。原型本身不算HD完成。
+
+### P0 補第2章event6完整援軍演出與村民目的地
+
+`ch02-event6-full-transcription` · 缺陷 · [#245](https://github.com/wicanr2/fd2_re/issues/245) · 仍未完成 · 要人判
+
+目前event6只有spawn group3，固定EXE的IDA9.4 34422..344C2還包含PAN9,1、ACT13、FDTXT002#4及runtime5..10的raw+35=26／+36=15。原版起手六村民均mode4；既有consumer用這對座標繼續移動。READY先於實作，沿用既有native_death_op record_bytes，只補已存在typed欄位+36的接納與投影。
+
+怎樣算做完：原版T3事件只觸發一次，group3六人正常登場，FDTXT002#4完整對白與六村民raw35/36寫入；正式Game同source全流程／存檔比較，純寫入測試另驗typed與raw同步、未知offset拒收且不部分改寫。
+
+證據：`docs/data/ida/fd2_ch02_flow_20261017.json event6_contract`
+
+### P0 補第2章正式入口缺失的原生view與HUD來源
+
+`ch02-native-startup-hud` · 缺陷 · [#246](https://github.com/wicanr2/fd2_re/issues/246) · 仍未完成 · 要人判
+
+原版full-r2正常LOAD到cp76為21筆，camera9,13／cursor20,14／visible11,1／selector1且HUD可見。Game名冊位置相同，但battle_ch02沒有native_map_view及native_map_hud_inherited，HasNativeMapHUDState=false導致第一次正常移動組圖拒收。沿既有正式materializeNativeMapRuntime補資料及生成器，不關閉renderer來源預檢。
+
+怎樣算做完：同槽正常LOAD、出戰、起手與第一次移動通過，並完成53筆AI及event6、戰後與保存三gate比較；typed資料與canonical／生成器一致，保持原版raw B未直接擷取的限制。
+
+證據：`docs/data/ida/fd2_ch02_flow_20261017.json startup_contract.view_hud_spec`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

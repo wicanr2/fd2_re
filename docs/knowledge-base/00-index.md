@@ -919,3 +919,21 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [首章正常START整章計畫r4](../data/parity-plans/ch01-start-flow-r4.jsonl)：一次物理抽樣後正常退守，END到全部增援，不鎖血。
 
 - [首章正常START完整流程收據](../data/ui-traces/parity-ch01.json)：四回合事件、哈諾死亡分支、T7後111清敵、羅德鎮酒店保存及冷讀；保存採本份逐筆差異政策，畫面僅參考。
+
+### 2026-10-17 第2章正常接續驗收
+
+- [第2章主契約](../data/ida/fd2_ch02_flow_20261017.json)：原版證據、起手及整章分層狀態。
+- [第2章首章實際SAV接續清冊](../data/parity-slots/ch02-manifest.json)：零新強化，保留祖先與HP0來源。
+- [第2章正常LOAD起手計畫](../data/parity-plans/ch02-startup-r1.jsonl)：短探針，不以起手通過代替整章。
+
+- [第2章完整流程計畫r2](../data/parity-plans/ch02-full-flow-r2.jsonl)：修正短探針的提示標籤，正常接戰至T3事件後再依111清敵保存。
+
+- [第2章希莉亞保存來源驗證器](../../tools/fd2_ch02_save_source.py)：限Docker，核對固定EXE、IDA9.4、同輸入唯讀memory-change及Watcom連結結果；參數由`--help`列出，證據與完整命令記於第2章主契約，不放行保存差異。
+
+- [第2章正式流程收據](../data/ui-traces/parity-ch02.json)：T3六人增援、村民目的地、希莉亞JOIN、正常保存及冷讀；只接受本份11個已揭露差異，畫面僅參考。
+
+### 2026-10-17 第3章正常接續驗收
+
+- [第3章主契約](../data/ida/fd2_ch03_flow_20261017.json)：整章DRAFT，起手READY；攻略只作旁證。
+- [第3章接續清冊](../data/parity-slots/ch03-manifest.json)：第2章原版實際SAV原樣接續，零新強化。
+- [第3章正常LOAD短計畫](../data/parity-plans/ch03-startup-r1.jsonl)：完整章前至游標，不提升整章台帳。

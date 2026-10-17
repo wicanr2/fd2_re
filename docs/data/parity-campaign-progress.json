@@ -37,19 +37,33 @@
     },
     {
       "chapter": 2,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": "2026-09-15",
-      "verify": null,
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch02.json",
+      "slot_manifest": "docs/data/parity-slots/ch02-manifest.json",
+      "slot_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "date": "2026-10-17",
+      "verify": "Docker tools/verify_chapter_parity.py --chapter 2 --oracle work/ch02-flow-20261017/original-full-r2 --remake work/ch02-flow-20261017/remake-full-r4 --slot-manifest docs/data/parity-slots/ch02-manifest.json --plan docs/data/parity-plans/ch02-full-flow-r2.jsonl --frame-policy advisory --save-policy ch02-celia-residual-20261017 --oracle-save work/ch02-flow-20261017/state-full-r2/FD2.SAV --out docs/data/ui-traces/parity-ch02.json",
       "limitations": [
-        "既有收據只覆蓋回合起手對白三臂與 ch02 城鎮商店；未依 111 四 gate 重生"
+        "沿第1章原版實際SAV正常LOAD，三名HP0保留；零新強化／HP鎖，T3事件後依111清敵；未驗村民全存活獎勵分支。",
+        "只接受本份希莉亞九個建構前保留值及兩checksum，bytes_equal=false；更早producer與全部用途未知，完整JOIN C九候選未匹配。",
+        "流程一致驗收，frames advisory；不宣稱逐幀、自然難度或完整SAV bytes相同。"
       ],
       "prior_receipts": [
         "docs/data/ui-traces/battle-dialogue-esc-vs-enter.json"
-      ]
+      ],
+      "slot_policy": {
+        "kind": "previous_chapter_actual_save",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 0
+        }
+      }
     },
     {
       "chapter": 3,

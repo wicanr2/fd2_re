@@ -9815,3 +9815,16 @@ Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typ
 第1章完整流程追加現況（2026-10-17）：正常START、T3..T6四事件、哈諾死亡後哈瓦特電腦控制、T7後111清敵、戰後羅德鎮及五建築，原版full-r4與Game full-r8行為／節點通過；55筆AI零順序差。#242補原始phase metadata，#243移除GUI增援的額外Acted標記。保存仍由#244阻擋：START只寫JSON，嚴格SAV gate失敗。測試側提案可正常LOAD冷讀已知玩家狀態，但2228個完整byte差異尚待使用者確認，未接正式路徑。根契約及逐筆清單見[首章主證據](../data/ida/fd2_ch01_flow_20261017.json)；正式章台帳不提升。
 
 首章保存定案與正式驗收（2026-10-17）：使用者明確允許已展示差異，隨後要求matching技巧輔助。START既有C物件重連結與固定原版663 bytes相同；酒店完整C尚未匹配，沿既有IDA直接writer證據。有效紀錄65個差異在本章人物首次出現到保存均原值保留，未使用名冊2160個與衍生檢查碼3個全部逐筆列出。正式START初存已接酒店owner，Game full-r10實際寫SAV並以新Game正常LOAD冷讀5人已知能力／物品、章節1、gold1000及選項。嚴格比較仍failed；明示本份政策後行為／節點／交易passed，正式收據為[parity-ch01](../data/ui-traces/parity-ch01.json)。第1章依111列PLAYER-E2，正式台帳28章，第2、3章保留未完成；不宣稱全SAV bytes相同或未知producer已閉合。
+
+
+### 2026-10-17 第2章正常接續、增援及保存前沿
+
+原版與正式Game沿首章實際酒店SAV正常LOAD，完整經town_ch02、出戰提示、章前演出、T3事件6、戰後希莉亞JOIN及town_ch03酒店。event6的34422..344C2原始160 bytes證實PAN9,1、ACT13、九句FDTXT002#4及六村民raw+35／+36寫26／15；先READY再以既有原語降階。正式record_bytes補+36具型別寫入與raw投影，未知offset或錯誤寬度仍原子拒收。
+
+battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收；依原版起手及既有LOAD writer補正式資料、生成器及canonical，保持非零顯示gate與最終raw B未直接擷取的限制。完整Game r4的53筆AI全消費、零順序分岔；行為與節點通過，正常保存及新Game正式LOAD冷讀保留六人已知玩家狀態。本份一名村民死亡，未驗全員存活的力量藥水分支；無新增強化或HP鎖，抽樣後依111清敵。
+
+整檔SAV仍差希莉亞persistent index5的+0x28..+0x30九byte及兩個檢查碼。使用者要求matching輔助確認原因，未接受第2章保存例外，嚴格交易gate保持failed；不以冷讀或近似C提升章PLAYER-E2。主證據、逐筆差異及來源查核見[第2章契約](../data/ida/fd2_ch02_flow_20261017.json)，未完成項見[#245](https://github.com/wicanr2/fd2_re/issues/245)、[#246](https://github.com/wicanr2/fd2_re/issues/246)及[#247](https://github.com/wicanr2/fd2_re/issues/247)。目前章台帳統一依58。
+
+第2章保存定案與正式驗收追加（2026-10-17）：有界唯讀觀察在runtime27建構前已讀到3ffe6d136c866dfe3f，10C50保留九byte；camp、identity及HP的三個直接writer均有正對照。11506整筆複製及30012保存沿已閉合IDA證據，重製BuildNativeChapterSlot的新入隊紀錄則使用零基底。局部副本只補九byte並重算checksum即重現原版整檔，未改寫正式SAV。matching重連結的九個完整112A5 C候選全部未匹配；更早記憶體內容producer及全部用途仍未知。
+
+使用者確認「接受本份差異，繼續第3章」，正式--save-policy ch02-celia-residual-20261017綁定本章、來源SAV、計畫、執行器、兩側整檔SHA與全部11個差異，不提供一般遮罩。預設strict仍failed，限定政策下行為／節點／交易passed，bytes_equal=false。本章依111列PLAYER-E2流程收據，畫面僅參考；目前統計與接續入口依58。重跑來源工具、直接證據與正式收據均由[第2章主契約](../data/ida/fd2_ch02_flow_20261017.json)導覽。

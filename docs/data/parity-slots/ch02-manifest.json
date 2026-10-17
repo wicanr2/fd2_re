@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_continuation_manifest",
+  "base_save": "work/ch01-flow-20261017/state-full-r4/FD2.SAV",
+  "base_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+  "base_chapter": 1,
+  "target_chapter": 1,
+  "output_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+  "seed": 4,
+  "level_policy": "none",
+  "policy": {
+    "kind": "previous_chapter_actual_save",
+    "levels_per_chapter": 0,
+    "seed": 4,
+    "event_states": {},
+    "boost": {
+      "base_ap": 0,
+      "base_dp": 0,
+      "base_dx": 0,
+      "max_hp": 0
+    }
+  },
+  "save": {
+    "size": 22987,
+    "input": "work/ch02-flow-20261017/input/FD2.SAV"
+  },
+  "assumptions": [
+    "來源為第1章原版939點正式流程的實際酒店SAV；沒有選取舊鎖血或第三方槽。",
+    "保留首章狀態：持續5人，索爾／蓋亞存活，悠妮／亞雷斯／哈諾HP0。不新增復活、強化或HP鎖。",
+    "祖先依111在T7清敵六筆，本章仍先抽樣正常戰鬥及T3增援，才可單次清敵。",
+    "第1章保存差異政策僅限該pair，本章從同一原版SAV正常LOAD並維持strict保存。"
+  ]
+}

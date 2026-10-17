@@ -332,6 +332,10 @@ func applyNativeRecordWrites(u *Unit, writes [][3]int) error {
 		case offset == 0x35 && width == 1:
 			// 第十五章event13在0x34ED9整byte寫0；沿用raw欄位及mode3消費端。
 			apply = append(apply, func() { u.NativeRecordByte35, u.HasNativeRecordByte35 = byte(value), true })
+		case offset == 0x36 && width == 1:
+			// event6 344B5直接寫入；本章mode4以+35／+36消費目的格。
+			// READY來源見fd2_ch02_flow_20261017.json，不改其他caller的欄位語意。
+			apply = append(apply, func() { u.NativeRecordByte36, u.HasNativeRecordByte36 = byte(value), true })
 		case offset == 0x40 && width == 2:
 			apply = append(apply, func() { u.HP = value })
 		default:

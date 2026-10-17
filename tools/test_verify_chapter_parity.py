@@ -122,6 +122,30 @@ class StartSaveAcceptance(BoundedSaveAcceptance):
         self.assertEqual(len(before["differences"]), 2228)
 
 
+class CeliaSaveAcceptance(BoundedSaveAcceptance):
+    def setUp(self):
+        super().setUp()
+        self.policy_id = "ch02-celia-residual-20261017"
+        self.policy = json.loads(vp.SAVE_POLICIES[self.policy_id].read_text())["save_acceptance_policy"]
+        self.entry = {"status": "fail", "byte_report": deepcopy(self.policy["byte_report"]),
+                      "oracle_save_sha256": self.policy["oracle_save_sha256"],
+                      "remake_save_sha256": self.policy["remake_save_sha256"]}
+        self.context.update(chapter=2,
+            manifest={"output_sha256": self.policy["input_save_sha256"]},
+            plan_sha256=self.policy["plan_sha256"],
+            runner={"original_fd2_exe_sha256": self.policy["exe_sha256"],
+                    "dosgolem_commit": self.policy["dosgolem_commit"]})
+
+    def test_explicit_policy_preserves_every_difference_and_reports_inequality(self):
+        before = deepcopy(self.entry["byte_report"])
+        vp.apply_save_policy(self.entry, self.policy_id, **self.context)
+        self.assertEqual(self.entry["status"], "accepted_disclosed_difference")
+        self.assertFalse(self.entry["bytes_equal"])
+        self.assertTrue(self.entry["all_other_plaintext_equal"])
+        self.assertEqual(self.entry["byte_report"], before)
+        self.assertEqual(len(before["differences"]), 11)
+
+
 class SaveByteReport(unittest.TestCase):
     def test_all_plain_bytes_and_checksum_are_reported_without_waiver(self):
         with tempfile.TemporaryDirectory() as directory:

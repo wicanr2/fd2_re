@@ -16,7 +16,7 @@
 補成九項具型別操作，規格達 READY 後才接入四筆回合事件。
 主證據見[event54契約](../data/ida/fd2_turn_event54_20261015.json)，包含全域表 consumer、原始名稱、
 位址空間與原始位元組。本次不重開匹配式反編譯。
-官方轉寫與劇本同步檢查通過；第26章event57接線後，全域仍有13筆回合事件未轉寫，保持未知，不宣稱全章節齊備。
+官方轉寫與劇本同步檢查通過；第26章event57接線後當時尚有13筆；第2章event6接線後目前為12筆，保持未知，不宣稱全章節齊備。
 既有短鏈重跑通過行為、節點、完整 SAV 與13張完整 RGB 零差異，完整章仍依正式台帳判定。
 
 #207後續定位：原版`sub_1DB65`的局部畫面指標陣列只有30格，`0x1DC29`沒有數量上限。
@@ -42,8 +42,9 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 
 | 項目 | 目前可證明的狀態 | 下一個工作 |
 |---|---|---|
-| 正式章台帳 | 28章passed，即第1章及第4～30章；第2、3章todo。首章正常START、完整序章、四回合事件、哈諾死亡分支、戰後城鎮、酒店保存與正式LOAD冷讀通過；保存保留已確認的2228個逐筆差異 | [首章收據](../data/ui-traces/parity-ch01.json)及[主契約](../data/ida/fd2_ch01_flow_20261017.json)記錄限制；畫面只作參考，不宣稱全檔SAV相同。接續[#200](https://github.com/wicanr2/fd2_re/issues/200)第2、3章，HD待辦保持。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-17 |
-| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有13筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
+| 正式章台帳 | 29章passed，即第1、2章及第4～30章；第3章todo。首章正常START、完整序章、四回合事件、哈諾死亡分支、戰後城鎮、酒店保存與正式LOAD冷讀通過；保存保留已確認的2228個逐筆差異 | [首章收據](../data/ui-traces/parity-ch01.json)及[主契約](../data/ida/fd2_ch01_flow_20261017.json)記錄限制；畫面只作參考，不宣稱全檔SAV相同。接續[#200](https://github.com/wicanr2/fd2_re/issues/200)第3章，HD待辦保持。統計命令：Docker tools/fd2_parity_progress.py verify，2026-10-17 |
+| 第2章接續 | CONFORMED／PLAYER-E2限111流程例外：T3六人增援、村民目的地、希莉亞JOIN、下一城鎮、保存及正式LOAD冷讀通過；53筆AI零順序差，保存本份11個差異逐筆接受 | [正式收據](../data/ui-traces/parity-ch02.json)及[主契約](../data/ida/fd2_ch02_flow_20261017.json)；九個值在原版建構前存在並保留，重製新紀錄零基底，早期producer及全部用途仍未知。完整JOIN C九候選未匹配；不宣稱全SAV bytes相同 |
+| 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有12筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
 | 戰役故事節點稽核 | 第30章完整戰後接線後，工具重算119故事／過場、9直接腳本、60handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-17；輸入SHA與輸出見[第30章主契約的validation.campaign_coverage](../data/ida/fd2_ch30_flow_20261017.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。161筆登錄中，157筆runtime_candidate含33張圖集、94組可繪人物、28位頭像、1張HUD及1組四向圖示；另4筆concept。1153個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |

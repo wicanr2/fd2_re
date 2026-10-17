@@ -3265,7 +3265,7 @@ func (r *parityReplay) townSave(action parityAction) {
 	if _, err := os.Stat(saveSlotPath(slot)); err != nil {
 		note += "；重製端自有存檔未寫出：" + err.Error()
 	}
-	r.verifyStartChapterSlotSave(slot)
+	r.verifyChapterSlotSave(slot)
 	r.checkpoint("town_save", action.Seq, "hotel", true, note)
 	// 原版側接著 esc 三次回到城鎮：訊息 → 選單 → 離開。
 	g.handleNativeHotelInput(nativeHotelInput{esc: true})

@@ -616,11 +616,38 @@ func TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots(t *testing.T) {
 	}
 	st.Turn = 3
 	actions := sc.TriggerActions(st, "on_turn_end", "")
-	if len(actions) != 1 || actions[0].NativeEventID == nil || *actions[0].NativeEventID != 6 {
-		t.Fatalf("turn3 actions=%#v, want exact event6", actions)
+	if len(actions) != 20 || actions[0].Type != "pan" || actions[0].Grid == nil ||
+		*actions[0].Grid != [2]int{9, 1} || actions[3].Type != "native_acting" ||
+		actions[3].NativeActing == nil || actions[3].NativeActing.Resource != 13 {
+		t.Fatal("turn3缺少來源PAN、ACT及完整20個event6動作")
 	}
-	if _, _, err := sc.ExecuteActionChecked(st, actions[0]); err != nil {
-		t.Fatal(err)
+	for index, action := range actions {
+		if action.NativeEventID == nil || *action.NativeEventID != 6 || action.Camp != "ally" {
+			t.Fatalf("event6動作%d缺selector1來源", index)
+		}
+		if index >= 5 && index < 14 && (action.Type != "dialogue" || action.NativeTextIndex == nil || *action.NativeTextIndex != 4) {
+			t.Fatalf("event6對白%d缺FDTXT002#4來源", index)
+		}
+		// 純規則路徑只執行名冊與raw寫入；鏡頭／演出／對白另由正常Game章收據驗證。
+		if action.Type == "spawn_group" {
+			if _, _, err := sc.ExecuteActionChecked(st, action); err != nil {
+				t.Fatal(err)
+			}
+		} else if action.Type == "native_death_op" {
+			// GUI owner沿runNativeDeathOp呼叫同一規則；同步Scenario動作不消費此原語。
+			if action.NativeDeathOp == nil {
+				t.Fatal("event6缺少具型別原生寫入")
+			}
+			if err := st.ApplyNativeDeathOp(*action.NativeDeathOp); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	for slot := 5; slot <= 10; slot++ {
+		u := st.Units[slot]
+		if u.NativeRecordByte34&15 != 4 || u.NativeRecordByte35 != 26 || u.NativeRecordByte36 != 15 {
+			t.Fatalf("村民%d欄位 mode=%d x=%d y=%d has=%t/%t/%t", slot, u.NativeRecordByte34, u.NativeRecordByte35, u.NativeRecordByte36, u.HasNativeRecordByte34, u.HasNativeRecordByte35, u.HasNativeRecordByte36)
+		}
 	}
 	if len(st.Units) != 27 {
 		t.Fatalf("turn3 exact event6 runtime units=%d, want 27", len(st.Units))

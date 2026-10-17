@@ -98,6 +98,14 @@ def sync(write: bool, chapters=None):
     if extra["id"] in events:
         raise SystemExit("event82出現重複轉寫")
     events[extra["id"]] = extra
+    # event6沿既有record_bytes降階；直接writer及mode4 consumer先經READY審查。
+    ch02 = json.loads((ROOT / "docs/data/ida/fd2_ch02_flow_20261017.json").read_text(encoding="utf-8"))
+    event6 = ch02["event6_contract"]
+    if event6["status"] not in ("READY", "CONFORMED") or ch02["input"]["sha256"] != "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f":
+        raise SystemExit("event6缺少固定原版READY轉寫")
+    if event6["transcription"]["id"] in events:
+        raise SystemExit("event6出現重複轉寫")
+    events[event6["transcription"]["id"]] = event6["transcription"]
     rows_by_chapter = {r["chapter"]: r["turn_events"] for r in json.loads(TURN_EVENTS.read_text(encoding="utf-8"))}
     group_sources = {(int(event_id), spawn["group"]): spawn["source"]
                      for event_id, entry in json.loads(EVENT_ID_GROUPS.read_text(encoding="utf-8")).items()

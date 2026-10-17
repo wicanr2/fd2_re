@@ -1,0 +1,994 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_parity_receipt",
+  "chapter": 2,
+  "generated_at": "2026-10-17",
+  "status": "passed",
+  "verification_profile": "flow",
+  "save_comparison_policy": "ch02-celia-residual-20261017",
+  "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
+  "original": {
+    "runner": "dosgolem apps/fd2/cmd/oracle",
+    "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+    "control_plan": "docs/data/parity-plans/ch02-full-flow-r2.jsonl",
+    "control_plan_sha256": "592989a8aa96856b0996e266184ba3490e2b70271f6159e82a809e2044f8be35",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "state_injections_declared": [
+      "allow_hp_lock_control 為 true 時接受明示選擇性鎖血控制；實際綁定、目標 HP、解除與寫入次數見 checkpoint hp_lock_control",
+      "lock_ally_hp 為 true 時，camp 2 record +0x40 HP 會定期壓回該 identity 歷史最高值",
+      "force_enemy_clear_declared 為 true 時，控制序列可要求 oracle 依單位陣列將 camp 0 record +0x40 HP 寫為 0；實際次數與筆數見 checkpoint"
+    ],
+    "actions": 28,
+    "checkpoints": 626,
+    "random_control": {
+      "initial_checkpoint_rng_word": 22661,
+      "setup": "dosgolem 決定性全新程序與虛擬時鐘；決策點 RNG word 見動作及 EIP trace"
+    }
+  },
+  "slot": {
+    "manifest": "docs/data/parity-slots/ch02-manifest.json",
+    "output_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+    "base_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+    "base_chapter": 1,
+    "target_chapter": 1,
+    "level_policy": "none",
+    "assumptions": [
+      "來源為第1章原版939點正式流程的實際酒店SAV；沒有選取舊鎖血或第三方槽。",
+      "保留首章狀態：持續5人，索爾／蓋亞存活，悠妮／亞雷斯／哈諾HP0。不新增復活、強化或HP鎖。",
+      "祖先依111在T7清敵六筆，本章仍先抽樣正常戰鬥及T3增援，才可單次清敵。",
+      "第1章保存差異政策僅限該pair，本章從同一原版SAV正常LOAD並維持strict保存。"
+    ]
+  },
+  "remake": {
+    "checkpoints": 30,
+    "rng_synced_points": 5,
+    "random_control": {
+      "capture_frames": false,
+      "entry_mode": "load",
+      "go_seed": 4,
+      "legacy_end_sources": null,
+      "method": "AI／攻擊確認／END／升級比較點承接原版受控 RNG word",
+      "modified_path_hp_lock": false,
+      "native_rng_initial": 0
+    }
+  },
+  "gates": {
+    "behavior": {
+      "ok": true,
+      "points": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "status": "ok"
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "status": "ok"
+        },
+        {
+          "seq": 76,
+          "kind": "battle_start",
+          "status": "ok"
+        },
+        {
+          "seq": 82,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 87,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 93,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 181,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 181,
+          "kind": "mark:round2",
+          "status": "ok"
+        },
+        {
+          "seq": 185,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 190,
+          "kind": "move",
+          "status": "ok"
+        },
+        {
+          "seq": 196,
+          "kind": "wait",
+          "status": "ok"
+        },
+        {
+          "seq": 289,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 289,
+          "kind": "mark:round3",
+          "status": "ok"
+        },
+        {
+          "seq": 297,
+          "kind": "select",
+          "status": "ok"
+        },
+        {
+          "seq": 298,
+          "kind": "stay",
+          "status": "ok"
+        },
+        {
+          "seq": 300,
+          "kind": "attack_armed",
+          "status": "ok"
+        },
+        {
+          "seq": 302,
+          "kind": "attack_result",
+          "status": "ok"
+        },
+        {
+          "seq": 437,
+          "kind": "after_enemy_phase",
+          "status": "ok"
+        },
+        {
+          "seq": 437,
+          "kind": "mark:reinforcements_arrived",
+          "status": "ok"
+        },
+        {
+          "seq": 438,
+          "kind": "force_enemy_clear",
+          "status": "ok"
+        },
+        {
+          "seq": 457,
+          "kind": "end_turn",
+          "status": "oracle_mid_end_turn",
+          "note": "原版 checkpoint 在 0x1A30B 換手處理裡（全員行動完自動換手），單位、回合與畫面不比"
+        },
+        {
+          "seq": 504,
+          "kind": "town_after_battle",
+          "status": "ok"
+        },
+        {
+          "seq": 512,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 527,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 542,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 557,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 579,
+          "kind": "town_enter",
+          "status": "ok"
+        },
+        {
+          "seq": 613,
+          "kind": "town_save",
+          "status": "ok"
+        }
+      ]
+    },
+    "nodes": {
+      "ok": true,
+      "oracle": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "mark:round2:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "mark:round3:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:reinforcements_arrived:cursor",
+        "force_enemy_clear:cursor",
+        "town_after_battle:town",
+        "town_enter:service",
+        "town_enter:preparation",
+        "town_enter:service",
+        "town_enter:service",
+        "town_enter:service"
+      ],
+      "remake": [
+        "town_loaded:town",
+        "departure_prompt:preparation",
+        "battle_start:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "mark:round2:cursor",
+        "select:target",
+        "move:ring",
+        "wait:cursor",
+        "mark:round3:cursor",
+        "select:target",
+        "stay:ring",
+        "attack_armed:target",
+        "attack_result:cursor",
+        "mark:reinforcements_arrived:cursor",
+        "force_enemy_clear:cursor",
+        "town_after_battle:town",
+        "town_enter:service",
+        "town_enter:preparation",
+        "town_enter:service",
+        "town_enter:service",
+        "town_enter:service"
+      ],
+      "plan_completion": {
+        "ok": true,
+        "required": {
+          "mark:town_loaded": 1,
+          "mark:departure_prompt": 1,
+          "mark:battle_start": 1,
+          "mark:round2": 1,
+          "mark:round3": 1,
+          "mark:reinforcements_arrived": 1,
+          "force_enemy_clear": 1,
+          "mark:town_after_battle": 1,
+          "town_save": 1
+        },
+        "missing": {},
+        "remake_missing": {}
+      },
+      "comparison_version": 3,
+      "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
+      "contract": "docs/data/fd2-chapter-node-comparison-contract.json",
+      "points": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "remake_ui": "town",
+          "oracle_ui": "town",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "town_loaded",
+          "oracle_kind": "town_loaded",
+          "oracle_comparable_kind": "town_loaded",
+          "oracle_family": "town",
+          "remake_family": "town",
+          "status": "ok"
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "departure_prompt",
+          "oracle_kind": "departure_prompt",
+          "oracle_comparable_kind": "departure_prompt",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 76,
+          "kind": "battle_start",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "battle_start",
+          "oracle_kind": "battle_start",
+          "oracle_comparable_kind": "battle_start",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 82,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 87,
+          "kind": "move",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "move",
+          "oracle_kind": "move",
+          "oracle_comparable_kind": "move",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 93,
+          "kind": "wait",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "wait",
+          "oracle_kind": "wait",
+          "oracle_comparable_kind": "wait",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 181,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 181,
+          "kind": "mark:round2",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "round2",
+          "oracle_kind": "round2",
+          "oracle_comparable_kind": "mark:round2",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 185,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 190,
+          "kind": "move",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "move",
+          "oracle_kind": "move",
+          "oracle_comparable_kind": "move",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 196,
+          "kind": "wait",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "wait",
+          "oracle_kind": "wait",
+          "oracle_comparable_kind": "wait",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 289,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 289,
+          "kind": "mark:round3",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "round3",
+          "oracle_kind": "round3",
+          "oracle_comparable_kind": "mark:round3",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 297,
+          "kind": "select",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "select",
+          "oracle_kind": "select",
+          "oracle_comparable_kind": "select",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 298,
+          "kind": "stay",
+          "remake_ui": "ring",
+          "oracle_ui": "ring",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "stay",
+          "oracle_kind": "stay",
+          "oracle_comparable_kind": "stay",
+          "oracle_family": "ring",
+          "remake_family": "ring",
+          "status": "ok"
+        },
+        {
+          "seq": 300,
+          "kind": "attack_armed",
+          "remake_ui": "target",
+          "oracle_ui": "target",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack",
+          "oracle_kind": "attack",
+          "oracle_comparable_kind": "attack_armed",
+          "oracle_family": "target",
+          "remake_family": "target",
+          "status": "ok"
+        },
+        {
+          "seq": 302,
+          "kind": "attack_result",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "attack_result",
+          "oracle_kind": "attack_result",
+          "oracle_comparable_kind": "attack_result",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 437,
+          "kind": "after_enemy_phase",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "status": "not_comparable",
+          "reason": "借用下一動作；原版沒有同瞬間閒置畫面"
+        },
+        {
+          "seq": 437,
+          "kind": "mark:reinforcements_arrived",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "reinforcements_arrived",
+          "oracle_kind": "reinforcements_arrived",
+          "oracle_comparable_kind": "mark:reinforcements_arrived",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 438,
+          "kind": "force_enemy_clear",
+          "remake_ui": "cursor",
+          "oracle_ui": "cursor",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "force_enemy_clear",
+          "oracle_kind": "force_enemy_clear",
+          "oracle_comparable_kind": "force_enemy_clear",
+          "oracle_family": "cursor",
+          "remake_family": "cursor",
+          "status": "ok"
+        },
+        {
+          "seq": 457,
+          "kind": "end_turn",
+          "remake_ui": "cursor",
+          "oracle_ui": "unknown",
+          "status": "not_comparable",
+          "reason": "END按鍵後有界前進；可能已進換手或戰後對白"
+        },
+        {
+          "seq": null,
+          "kind": "battle_result",
+          "remake_ui": "dialogue",
+          "status": "not_comparable",
+          "reason": "衍生重製點沒有原版配對"
+        },
+        {
+          "seq": 504,
+          "kind": "town_after_battle",
+          "remake_ui": "town",
+          "oracle_ui": "town",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "mark",
+          "oracle_action_label": "town_after_battle",
+          "oracle_kind": "town_after_battle",
+          "oracle_comparable_kind": "town_after_battle",
+          "oracle_family": "town",
+          "remake_family": "town",
+          "status": "ok"
+        },
+        {
+          "seq": 512,
+          "kind": "town_enter",
+          "remake_ui": "shop",
+          "oracle_ui": "shop",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "town_enter",
+          "oracle_kind": "town_enter",
+          "oracle_comparable_kind": "town_enter",
+          "oracle_family": "service",
+          "remake_family": "service",
+          "status": "ok"
+        },
+        {
+          "seq": 527,
+          "kind": "town_enter",
+          "remake_ui": "preparation",
+          "oracle_ui": "preparation",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "town_enter",
+          "oracle_kind": "town_enter",
+          "oracle_comparable_kind": "town_enter",
+          "oracle_family": "preparation",
+          "remake_family": "preparation",
+          "status": "ok"
+        },
+        {
+          "seq": 542,
+          "kind": "town_enter",
+          "remake_ui": "shop",
+          "oracle_ui": "shop",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "town_enter",
+          "oracle_kind": "town_enter",
+          "oracle_comparable_kind": "town_enter",
+          "oracle_family": "service",
+          "remake_family": "service",
+          "status": "ok"
+        },
+        {
+          "seq": 557,
+          "kind": "town_enter",
+          "remake_ui": "church",
+          "oracle_ui": "shop",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "town_enter",
+          "oracle_kind": "town_enter",
+          "oracle_comparable_kind": "town_enter",
+          "oracle_family": "service",
+          "remake_family": "service",
+          "status": "ok"
+        },
+        {
+          "seq": 579,
+          "kind": "town_enter",
+          "remake_ui": "hotel",
+          "oracle_ui": "shop",
+          "oracle_action_candidates": 1,
+          "oracle_matching_actions": 1,
+          "oracle_action_kind": "town_enter",
+          "oracle_kind": "town_enter",
+          "oracle_comparable_kind": "town_enter",
+          "oracle_family": "service",
+          "remake_family": "service",
+          "status": "ok"
+        },
+        {
+          "seq": 613,
+          "kind": "town_save",
+          "remake_ui": "hotel",
+          "oracle_ui": "dialogue",
+          "status": "not_comparable",
+          "reason": "SAVE動作在DOS寫入完成點；服務框／確認訊息時序不同"
+        },
+        {
+          "seq": null,
+          "kind": "end",
+          "remake_ui": "town",
+          "status": "not_comparable",
+          "reason": "衍生重製點沒有原版配對"
+        }
+      ]
+    },
+    "transaction": {
+      "ok": true,
+      "gold": [
+        {
+          "seq": 18,
+          "kind": "town_loaded",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 39,
+          "kind": "departure_prompt",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 76,
+          "kind": "battle_start",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 82,
+          "kind": "select",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 87,
+          "kind": "move",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 93,
+          "kind": "wait",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 181,
+          "kind": "after_enemy_phase",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 181,
+          "kind": "mark:round2",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 185,
+          "kind": "select",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 190,
+          "kind": "move",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 196,
+          "kind": "wait",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 289,
+          "kind": "after_enemy_phase",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 289,
+          "kind": "mark:round3",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 297,
+          "kind": "select",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 298,
+          "kind": "stay",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 300,
+          "kind": "attack_armed",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 302,
+          "kind": "attack_result",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 437,
+          "kind": "after_enemy_phase",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 437,
+          "kind": "mark:reinforcements_arrived",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 438,
+          "kind": "force_enemy_clear",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 457,
+          "kind": "end_turn",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 504,
+          "kind": "town_after_battle",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 512,
+          "kind": "town_enter",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 527,
+          "kind": "town_enter",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 542,
+          "kind": "town_enter",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 557,
+          "kind": "town_enter",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 579,
+          "kind": "town_enter",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        },
+        {
+          "seq": 613,
+          "kind": "town_save",
+          "oracle": 1000,
+          "remake": 1000,
+          "ok": true
+        }
+      ],
+      "save": {
+        "oracle_save_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+        "remake_save_sha256": "95a922a833969e6d7d805b1769136c46af229d3d2e99122e65045ad43988eade",
+        "remake_note": "save_sha256=95a922a833969e6d7d805b1769136c46af229d3d2e99122e65045ad43988eade",
+        "blocked_by": null,
+        "status": "accepted_disclosed_difference",
+        "byte_report": {
+          "status": "different",
+          "size": 22987,
+          "difference_count": 11,
+          "differences": [
+            {
+              "plain_offset": "0x32e3",
+              "oracle": 63,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x28"
+            },
+            {
+              "plain_offset": "0x32e4",
+              "oracle": 254,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x29"
+            },
+            {
+              "plain_offset": "0x32e5",
+              "oracle": 109,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x2a"
+            },
+            {
+              "plain_offset": "0x32e6",
+              "oracle": 19,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x2b"
+            },
+            {
+              "plain_offset": "0x32e7",
+              "oracle": 108,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x2c"
+            },
+            {
+              "plain_offset": "0x32e8",
+              "oracle": 134,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x2d"
+            },
+            {
+              "plain_offset": "0x32e9",
+              "oracle": 109,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x2e"
+            },
+            {
+              "plain_offset": "0x32ea",
+              "oracle": 254,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x2f"
+            },
+            {
+              "plain_offset": "0x32eb",
+              "oracle": 63,
+              "remake": 0,
+              "slot": 0,
+              "region": "roster",
+              "record_index": 5,
+              "record_offset": "0x30"
+            },
+            {
+              "plain_offset": "0x59c7",
+              "oracle": 45,
+              "remake": 212,
+              "region": "checksum"
+            },
+            {
+              "plain_offset": "0x59c8",
+              "oracle": 109,
+              "remake": 104,
+              "region": "checksum"
+            }
+          ],
+          "policy": "全部明文位元組比較；包含檢查碼，不遮罩任何差異。"
+        },
+        "acceptance_policy": {
+          "id": "ch02-celia-residual-20261017",
+          "decision_date": "2026-10-17",
+          "contract": "docs/data/ida/fd2_ch02_flow_20261017.json",
+          "status": "accepted",
+          "mismatches": []
+        },
+        "bytes_equal": false,
+        "all_other_plaintext_equal": true
+      }
+    },
+    "frames": {
+      "ok": false,
+      "required": false,
+      "policy": "advisory",
+      "pixel_budget": 640,
+      "min_frames": 12,
+      "compared": 0,
+      "points": []
+    }
+  },
+  "limitations": [
+    "起點是受版控工具依攻略校準的建構槽；章內只有抽樣後的 force_enemy_clear 是注入（PLAYER-E2 依 111 例外）。",
+    "亂數字組 0x627B8 只在攻擊確認與 END 換手同步；同步之間的演出消耗兩側不逐 tick 對齊。",
+    "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
+    "依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點與交易仍為必要閘門，保存依明示政策驗收。",
+    "依使用者已確認的特定保存政策ch02-celia-residual-20261017接受逐筆揭露差異；完整byte_report保留，不宣稱SAV bytes相同，其他來源與章不沿用此例外。"
+  ]
+}

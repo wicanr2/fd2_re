@@ -585,3 +585,23 @@ GitHub #234～#238及父#199已結案；#239保留新恢復六句三語人工校
 字串清冊套件修正後0.390秒通過，18＋1共19套件的相關回歸閉合；保留完整r4 exit1及修正套件的獨立log。66份canonical SHA相符，2387條本地文件連結有效，40個原異動檔UID/GID1000:1000，歷史root-owned2811、md目錄0、掃描錯誤0。README、原EXE、原始與章前SAV及凍結driver雜湊保持。未產生錄影；全部一次性容器已退出，工作輸出不加入Git。
 
 首章程式與正式證據已提交並推送ace79b15，遠端HEAD核對相同。GitHub #240～#244以該提交與正式收據結案，#200留言保留第2、3章待驗。官方pull／render／verify更新為22項，狀態標籤相符；正式章台帳28 passed、2 todo。最終快照另提交，沒有新增遊戲變更或重跑已通過的章。完整清冊為ignored本機生成物，只提交可重生工具、摘要與原處置映射。
+
+## 2026-10-17 第2章正常接續驗收
+
+接手b38d96fe，tracked乾淨、無FD2容器殘留；主機gh認證與官方pull22項通過，現況28章passed，第2、3章待驗。路由命中復古重製、原版對拍及文件職責，沿既有work。攻略僅作T3六人增援、村民分支與希莉亞JOIN的旁證。沿第1章原版full-r4實際酒店SAV SHA540c3bc1正常LOAD，保留5人及三名HP0，沒有新增強化、復活、HP鎖或matching；先建DRAFT主契約、READY起手與短計畫，全部掛入00-index。
+
+第2章原版startup-r1正常到seq76、21筆、camera9,13／cursor20,14；Game拒收源於計畫把2D11D出戰提示誤標大量選人後的departure_confirmation，改正新r2計畫並保留舊輪次。原版full-r2到T4、seq622、623點，53筆AI與4筆growth；event6一次，六村民raw35/36全為26,15，slot7自然死亡。正常蓋亞物理抽樣後111清敵，戰後希莉亞JOIN及下一城鎮保存成功，沒有HP鎖或新強化。
+
+#245沿既有IDA9.4完整匯出160原始bytes補event6 PAN、ACT13、九句FDTXT002#4及六筆目的地寫入，先READY後降階；既有record_bytes補+36 typed setter及raw投影。起手實測村民mode4反證DRAFT導覽中的mode11，實際map1控制檔004反證002定位，勘誤均保留。純測試先遭舊spawn-only斷言拒收，再查明同步Scenario consumer不消費GUI原語，改測同一ApplyNativeDeathOp規則；三相關套件r3通過，未改正式adapter求通過。196項Python通過，全域尚未完整轉寫事件12筆。
+
+Game完整r2起手名冊相同，第一次移動組圖因HUD來源缺失拒收。#246由原版cp76、33142 focus0與既有LOAD的26112 writer建立READY，再補battle_ch02 view及HUD繼承、生成器和canonical；未關閉renderer預檢。B=1僅用作已證非零顯示，最終raw B未直接擷取仍保留限制。r3同源重播驗證中，章台帳保持28。
+
+Game full-r3正常重播通過53筆AI，零順序分岔；行為／節點passed，保存剩希莉亞+28..30九byte及兩checksum，共11差異。r4新增可明示啟用的正式保存冷讀驗證，實際SAV經新Game loadGame／confirmTitleLoadSlot通過六人能力、8格物品、金幣、章節及選項；strict仍failed，不提升章台帳。使用者要求以matching輔助釐清原因，新增#247，沒有接受第2章政策。既有scene-flow物件126變體重連結，112A5九個完整C候選皆負例；直接IDA指令顯示建構只清+22長6，將以相同SAV／計畫的唯讀memory-change窗口及正對照writer確認建構前殘留來源。205項Python工具回歸通過。canonical66份SHA相符，320節點ID全部保留；先前摘要319為抄錄錯誤，以實檔核對取代。
+
+第2章來源查核完成：原版同一輸入的有界memory-change先讀到runtime27九個保留值，建構時三個正對照writer均捕獲，九byte無值改變。固定EXE／IDA指令核對及工具驗證passed；同輪最終SAV與正式原版d8d534d5相同。正式保存BuildNativeChapterSlot對同步後新入隊紀錄用零基底，與原版未初始化區保留不同；不是新增save欄位。局部副本補九byte重算checksum可重現整份原版，沒有寫回正式SAV。使用者在證據展示後確認本份例外；新政策逐筆綁定全部11差異，負例strict保留failed，正式parity-ch02三必要gate通過，台帳29章，第3章待驗。210項Python工具回歸通過。
+
+數量勘誤：第2章完整原版最終current為seq625／1,698,395,489 steps，共626個checkpoint JSON；早期seq622是保存後較早一點，不是最終停止邊界。主契約已依直接收據修正。完整Go首次18套件通過，cmd/fd2在預設10m的T.Run邊界逾時，依環境分類只重跑該套件、18m上限及json逐項紀錄；未把逾時列為產品缺陷。死亡同步首次用了不存在的舊工具名，改用sync_native_death_programs.py後同容器乾淨通過。擁有權掃描歷史root-owned2811、md目錄0、錯誤0；2343個本地文件連結有效，README／EXE／來源SAV／凍結driver雜湊保持。沒有新增錄影。
+
+依使用者確認接續第3章：攻略只作T3兩端援軍及鐵諾存活JOIN的旁證；起手沿第2章實際原版SAV d8d534d5、六人及三名HP0，零新強化／復活／HP鎖。兩次Left出口由上一章正常town_ch03 probe seq527佐證，先READY起手及DRAFT整章規格，清冊／短計畫／主契約同批加入索引。
+
+第2章完整Go回歸閉合：前輪18套件已通過，唯一逾時的cmd/fd2同工具鏈乾淨重跑643.058秒、exit0，18＋1共19套件。第3章正常LOAD短前綴原版exit0、seq68、15筆；Game完整章前同輸入7.84秒通過，零AI入口抽樣，僅起手E1，不提升第3章台帳。

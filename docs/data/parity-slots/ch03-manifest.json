@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_chapter_continuation_manifest",
+  "base_save": "work/ch02-flow-20261017/state-full-r2/FD2.SAV",
+  "base_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+  "base_chapter": 2,
+  "target_chapter": 2,
+  "output_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+  "seed": 4,
+  "level_policy": "none",
+  "policy": {
+    "kind": "previous_chapter_actual_save",
+    "levels_per_chapter": 0,
+    "seed": 4,
+    "event_states": {},
+    "boost": {
+      "base_ap": 0,
+      "base_dp": 0,
+      "base_dx": 0,
+      "max_hp": 0
+    }
+  },
+  "save": {
+    "size": 22987,
+    "input": "work/ch03-flow-20261017/input/FD2.SAV"
+  },
+  "assumptions": [
+    "來源為第2章原版正式流程的實際酒店SAV；兩側正常LOAD同一份bytes。",
+    "保留六人名冊、三名HP0與金幣1000；本章不新增復活、強化或HP鎖。",
+    "祖先第1／2章依111抽樣後清敵，第2章限定保存差異不擴張至本章來源。",
+    "本章先驗正常LOAD與完整章前；第三回合援軍及鐵諾JOIN後續另抽樣，保存預設strict。"
+  ]
+}

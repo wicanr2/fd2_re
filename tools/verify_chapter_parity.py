@@ -42,6 +42,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SAVE_POLICIES = {
     "ch25-opaque-20261016": ROOT / "docs/data/ida/fd2_turn_event56_20261015.json",
     "ch01-start-residual-20261017": ROOT / "docs/data/ida/fd2_ch01_flow_20261017.json",
+    "ch02-celia-residual-20261017": ROOT / "docs/data/ida/fd2_ch02_flow_20261017.json",
 }
 
 

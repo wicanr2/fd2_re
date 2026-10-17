@@ -12,15 +12,15 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
 
-// 正常 START 酒店保存必須實際寫出原版格式，並經新 Game 的正式 LOAD 冷讀。
+// 正常 START 及明示啟用的章重播，酒店保存須寫出原版格式並經新 Game 正式 LOAD 冷讀。
 // 只驗已知玩家狀態；完整原版差異另由有界政策逐筆核對。
-func (r *parityReplay) verifyStartChapterSlotSave(slot int) {
-	if os.Getenv("FD2_PARITY_ENTRY") != "start" {
+func (r *parityReplay) verifyChapterSlotSave(slot int) {
+	if os.Getenv("FD2_PARITY_ENTRY") != "start" && os.Getenv("FD2_PARITY_VERIFY_COLD_LOAD") != "1" {
 		return
 	}
 	t, g := r.t, r.g
 	if g.nativeChapterSlotBaseline == nil || g.nativeChapterSlotSaveErr != nil {
-		t.Fatal("START 酒店未建立正式保存基底")
+		t.Fatal("酒店未建立正式保存基底")
 	}
 	stored, err := os.ReadFile(nativeCurrentSavePath())
 	if err != nil {
@@ -35,7 +35,7 @@ func (r *parityReplay) verifyStartChapterSlotSave(slot int) {
 		t.Fatal(err)
 	}
 	if int(snapshot.Verified.Chapter) != g.handlerChapter || int(snapshot.Verified.RosterCount) != len(g.partyRoster) || int(snapshot.Verified.Currency) != g.gold {
-		t.Fatal("START 正式保存 metadata 不同")
+		t.Fatal("章正式保存 metadata 不同")
 	}
 	options := g.currentNativeSystemOptions()
 	// 用新 Game 經正式標題 LOAD 冷讀正式保存。只驗目前已知玩家狀態，
@@ -44,23 +44,23 @@ func (r *parityReplay) verifyStartChapterSlotSave(slot int) {
 	cold.titlePhase = "loadslots"
 	loaded := cold.confirmTitleLoadSlot(slot)
 	if !loaded || cold.loadErr != "" || cold.camp.NodeID() != r.currentTown() || cold.gold != g.gold || cold.handlerChapter != g.handlerChapter || !reflect.DeepEqual(cold.partyJoinOrder, g.partyJoinOrder) {
-		t.Fatalf("START 保存正常 LOAD 冷讀失敗：node=%s msg=%s err=%s", cold.camp.NodeID(), cold.msg, cold.loadErr)
+		t.Fatalf("章保存正常 LOAD 冷讀失敗：node=%s msg=%s err=%s", cold.camp.NodeID(), cold.msg, cold.loadErr)
 	}
 	for id, expected := range g.partyRoster {
 		actual, exists := cold.partyRoster[id]
-		if !exists || actual.HP != expected.HP || actual.MaxHP != expected.MaxHP || actual.MP != expected.MP || actual.MaxMP != expected.MaxMP || actual.Lv != expected.Lv || actual.Exp != expected.Exp || actual.AP != expected.AP || actual.DP != expected.DP || actual.DX != expected.DX || !reflect.DeepEqual(actual.InventorySlots, expected.InventorySlots) || !reflect.DeepEqual(actual.NativeInventoryFlags, expected.NativeInventoryFlags) {
-			t.Fatalf("START 保存正常 LOAD 角色 %d 玩家狀態不同", id)
+		if !exists || actual.HP != expected.HP || actual.MaxHP != expected.MaxHP || actual.MP != expected.MP || actual.MaxMP != expected.MaxMP || actual.Lv != expected.Lv || actual.Exp != expected.Exp || actual.AP != expected.AP || actual.DP != expected.DP || actual.DX != expected.DX || actual.HIT != expected.HIT || actual.EV != expected.EV || actual.MV != expected.MV || !reflect.DeepEqual(actual.InventorySlots, expected.InventorySlots) || !reflect.DeepEqual(actual.NativeInventoryFlags, expected.NativeInventoryFlags) {
+			t.Fatalf("章保存正常 LOAD 角色 %d 玩家狀態不同", id)
 		}
 	}
 	if !reflect.DeepEqual(cold.currentNativeSystemOptions(), options) {
-		t.Fatal("START 保存正常 LOAD 系統選項不同")
+		t.Fatal("章保存正常 LOAD 系統選項不同")
 	}
 	if raw, err := os.ReadFile(saveSlotPath(slot)); err != nil {
 		t.Fatal(err)
 	} else if err := os.WriteFile(filepath.Join(r.out, "hotel-save.json"), raw, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	t.Logf("START 正式保存與 LOAD 冷讀通過：chapter=%d roster=%d gold=%d", snapshot.Verified.Chapter, snapshot.Verified.RosterCount, snapshot.Verified.Currency)
+	t.Logf("正式保存與 LOAD 冷讀通過：chapter=%d roster=%d gold=%d", snapshot.Verified.Chapter, snapshot.Verified.RosterCount, snapshot.Verified.Currency)
 }
 
 // 首章READY契約：fd2_ch01_flow_20261017.json entry_contract。

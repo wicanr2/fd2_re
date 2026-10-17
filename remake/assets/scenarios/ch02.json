@@ -232,11 +232,27 @@
       "once": true,
       "do": [
         {
+          "type": "pan",
+          "native_source": "0x34431",
+          "grid": [
+            9,
+            1
+          ],
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x3443b",
+          "ms": 100,
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
           "type": "spawn_group",
           "groups": [
             3
           ],
-          "camp": "ally",
           "native_spawns": [
             {
               "group": 3,
@@ -245,7 +261,409 @@
               "raw_placement_gate": 1
             }
           ],
-          "native_event_id": 6
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_acting",
+          "native_source": "0x3445d",
+          "native_acting": {
+            "resource": 13,
+            "source": "0x3445d"
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "delay",
+          "native_source": "0x3446a",
+          "ms": 200,
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 0,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 0,
+            "control": "FFED",
+            "operand": 21,
+            "pages": [
+              [
+                "『咦！弟兄們在幹什麼？",
+                "　他們早該把事情辦好了吧",
+                "　！』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 1,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 1,
+            "control": "FFED",
+            "operand": 22,
+            "pages": [
+              [
+                "『好像和別人打的正起勁呢！",
+                "　』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 2,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 2,
+            "control": "FFED",
+            "operand": 23,
+            "pages": [
+              [
+                "『我看到有漏網之魚向這裡逃",
+                "　來呢！我們先打發了他們再",
+                "　說！』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 3,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 3,
+            "control": "FFED",
+            "operand": 8,
+            "pages": [
+              [
+                "『救命啊！這裡又有強盜出現",
+                "　了！』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 4,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 4,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『可惡，沒想到敵人居然兵分",
+                "　兩路．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  65,
+                  102,
+                  370,
+                  399,
+                  659,
+                  387,
+                  389,
+                  98,
+                  669,
+                  654,
+                  94,
+                  851
+                ],
+                [
+                  181,
+                  732,
+                  794,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 5,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 5,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『不管怎樣，得想辦法援救那",
+                "　些無辜的居民！』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 6,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 6,
+            "control": "FFEE",
+            "operand": 4,
+            "pages": [
+              [
+                "『怎麼辦呢？索爾．．』"
+              ]
+            ],
+            "glyph_ids": [
+              [
+                [
+                  557,
+                  672,
+                  344,
+                  673,
+                  470,
+                  180,
+                  36,
+                  37,
+                  584,
+                  584,
+                  560
+                ]
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 7,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 7,
+            "control": "FFEE",
+            "operand": 0,
+            "pages": [
+              [
+                "『喂！你們，往東南邊逃吧！",
+                "　』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "dialogue",
+          "native_source": "0x34491",
+          "native_text_index": 4,
+          "native_dialogue_ref": {
+            "script": "assets/story/ch02.json",
+            "scene_index": 1,
+            "line": 8,
+            "source_dat": "FDTXT_002",
+            "string_index": 4,
+            "utterance": 8,
+            "control": "FFED",
+            "operand": 7,
+            "pages": [
+              [
+                "『好的！大伙兒往東南邊逃吧",
+                "　！』"
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x344b0",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 5,
+            "writes": [
+              [
+                53,
+                26,
+                1
+              ],
+              [
+                54,
+                15,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x344b0",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 6,
+            "writes": [
+              [
+                53,
+                26,
+                1
+              ],
+              [
+                54,
+                15,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x344b0",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 7,
+            "writes": [
+              [
+                53,
+                26,
+                1
+              ],
+              [
+                54,
+                15,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x344b0",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 8,
+            "writes": [
+              [
+                53,
+                26,
+                1
+              ],
+              [
+                54,
+                15,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x344b0",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 9,
+            "writes": [
+              [
+                53,
+                26,
+                1
+              ],
+              [
+                54,
+                15,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
+        },
+        {
+          "type": "native_death_op",
+          "native_source": "0x344b0",
+          "native_death_op": {
+            "op": "record_bytes",
+            "unit": 10,
+            "writes": [
+              [
+                53,
+                26,
+                1
+              ],
+              [
+                54,
+                15,
+                1
+              ]
+            ]
+          },
+          "native_event_id": 6,
+          "camp": "ally"
         }
       ]
     }
@@ -461,5 +879,6 @@
         }
       }
     ]
-  }
+  },
+  "native_acting_resources": "assets/cutscenes/acting/map32.json"
 }

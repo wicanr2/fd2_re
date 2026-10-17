@@ -1039,7 +1039,16 @@ def build_campaign(
             "on_win": after_battle_id,
             "on_lose": retreat_id,
         }
-        if c == 23:
+        if c == 2:
+            # 正常LOAD cp76及33142 focus0，來源見fd2_ch02_flow_20261017.json。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 9, "camera_y": 13,
+                "cursor_x": 20, "cursor_y": 14,
+                "visible_cursor_x": 11, "visible_cursor_y": 1,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+        elif c == 23:
             # #136：336AB／338BF→33596，正常原版seq153的玩家入口。
             nodes[battle_id]["native_map_view"] = {
                 "camera_x": 14, "camera_y": 29,

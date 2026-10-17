@@ -1,0 +1,1409 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_ch02_flow_contract",
+  "date": "2026-10-17",
+  "status": "CONFORMED",
+  "input": {
+    "file": "FD2.EXE",
+    "size": 357074,
+    "md5": "b97caf2239a27a896069d03549d96e1e",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+  },
+  "scope": "第2章正常LOAD、起手、戰鬥及T3增援、村民結果分支、希莉亞JOIN、戰後城鎮及保存。",
+  "issue": 200,
+  "prior_evidence": [
+    "docs/data/chapter_beats/ch01_pre.json",
+    "remake/assets/cutscenes/handlers/ch01_pre.json",
+    "remake/assets/cutscenes/handlers/ch01_post.json",
+    "docs/data/turn_events.json",
+    "docs/data/fd2_join_copyback_verification_20261001.json",
+    "docs/knowledge-base/58-fd2-exe-re-coverage.md #23第二章物品尾格"
+  ],
+  "walkthrough": {
+    "url": "https://jaceju-favorite-games.gitbooks.io/fd2/content/walkthrough/2.html",
+    "level": "E3作者攻略旁證；不作ABI證據。",
+    "visible_points": [
+      "第三回合己方結束六名強盜增援",
+      "索爾死亡或村民全滅敗北",
+      "全村民存活獎勵力量藥水",
+      "戰後弓兵希莉亞加入"
+    ]
+  },
+  "startup_contract": {
+    "status": "CONFORMED",
+    "confidence": "已閉合handler與現有typed data，實際入口待重生。",
+    "entry": "正常標題LOAD相同首章實際SAV，不用CONTINUE或direct-entry。",
+    "handler": "0x32D18",
+    "loadch": "0x32D22→0x205DA map1",
+    "initial_groups": [
+      1,
+      2
+    ],
+    "event6": "T3 selector1→0x34422，現有版本仍spawn-only；本章需原版來源補完整流程。",
+    "source_save": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+    "plan": "docs/data/parity-plans/ch02-startup-r1.jsonl",
+    "seed": 4,
+    "failure": "缺owner、玩家控制、隊伍或raw來源即保留失敗，不猜補或沿舊收據提升。",
+    "view_hud_spec": {
+      "status": "READY",
+      "source": "原版full-r2正常LOAD cp76、既有32D18→33142 runtime0 focus與25EBB的26112 HUD writer；沿用materializeNativeMapRuntime及既有inherit契約。",
+      "view": {
+        "camera_x": 9,
+        "camera_y": 13,
+        "cursor_x": 20,
+        "cursor_y": 14,
+        "visible_cursor_x": 11,
+        "visible_cursor_y": 1,
+        "range_mode": 1
+      },
+      "hud": {
+        "display_gate_b": 1
+      },
+      "confidence": "view六欄／range及B寫入端已證實；cp76畫面HUD可見。B=1在consumer表示nonzero，未直接擷取最終raw B值，不提升逐byte HUD全域相等。",
+      "scope": "只補battle_ch02及生成器的既有typed資料；gate A／anchor沿存檔繼承，不繞過預檢，不改共享renderer。",
+      "issue": 246
+    }
+  },
+  "unknown": [
+    "當前正式Game的第2章起手與原版同槽狀態是否一致。",
+    "event6完整內容與目前spawn-only資料差距。",
+    "目前來源的村民結果與首個戰鬥可行抽樣，尚未重生完整章。"
+  ],
+  "validation": {
+    "status": "passed",
+    "ledger": "29 passed; chapter3 todo",
+    "videos": false,
+    "new_matching": false,
+    "startup_original": {
+      "status": "passed_to_control",
+      "exit_code": 0,
+      "seq": 76,
+      "steps": 357395489,
+      "runtime_records": 21,
+      "active_own": 2,
+      "view": {
+        "aux_phase": 0,
+        "camera_x": 9,
+        "camera_y": 13,
+        "cursor_x": 20,
+        "cursor_y": 14,
+        "gold": 1000,
+        "overlay_selector": 1,
+        "rng_word": 50121,
+        "round": 1,
+        "visible_x": 11,
+        "visible_y": 1
+      },
+      "run": "work/ch02-flow-20261017/original-startup-r1"
+    },
+    "startup_game_r1": {
+      "status": "plan_label_rejected",
+      "run": "work/ch02-flow-20261017/remake-startup-r1",
+      "reason": "seq39實為2D11D出戰提示，計畫誤標departure_confirmation。該label要求31D8E選人後owner，拒收正確；不是產品缺陷。",
+      "replacement": "ch02-full-flow-r2使用departure_prompt及同一正常鍵序，保留原失敗。"
+    },
+    "rules_r1": {
+      "status": "old_test_contract_rejected",
+      "log": "work/ch02-flow-20261017/event6-rules-regression.log",
+      "reason": "TestChapter2RuntimeAppendOrderMatchesOriginalHandlerSlots仍限定len(actions)==1；正式事件已由160原始bytes證明不只spawn，更新來源斷言而非削弱檢查。"
+    },
+    "rules_r2": {
+      "status": "test_adapter_mismatch",
+      "reason": "Scenario.ExecuteActionChecked不消費GUI的native_death_op，舊測試沒有呼叫實際ApplyNativeDeathOp；+35/+36仍為原值，mode4來源正確。純規則測試改用與GUI runNativeDeathOp相同的具型別consumer，沒有改產品adapter。"
+    },
+    "rules_r3": {
+      "status": "passed",
+      "packages": 3,
+      "log": "work/ch02-flow-20261017/event6-rules-regression-r3.log",
+      "sha256": "1e123983f273a0ef6179dc5dbf53b41ab6c56d41cd0df25af91f30a6abfe5389"
+    },
+    "original_full": {
+      "run": "work/ch02-flow-20261017/original-full-r2",
+      "exit_code": 0,
+      "final_seq": 625,
+      "steps": 1698395489,
+      "checkpoints": 626,
+      "actions": 28,
+      "ai_entries": 53,
+      "growth_entries": 4,
+      "event6_entries": 1,
+      "reinforcement_seq": 437,
+      "runtime_count_after": 27,
+      "villager_after": [
+        {
+          "slot": 5,
+          "hp": 42,
+          "raw35": 26,
+          "raw36": 15
+        },
+        {
+          "slot": 6,
+          "hp": 36,
+          "raw35": 26,
+          "raw36": 15
+        },
+        {
+          "slot": 7,
+          "hp": 0,
+          "raw35": 26,
+          "raw36": 15
+        },
+        {
+          "slot": 8,
+          "hp": 18,
+          "raw35": 26,
+          "raw36": 15
+        },
+        {
+          "slot": 9,
+          "hp": 12,
+          "raw35": 26,
+          "raw36": 15
+        },
+        {
+          "slot": 10,
+          "hp": 36,
+          "raw35": 26,
+          "raw36": 15
+        }
+      ],
+      "save_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+      "save_action": {
+        "kind": "town_save",
+        "seq": 613,
+        "round": 4,
+        "rng_word": 154,
+        "gold": 1000,
+        "slot": 0,
+        "save_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+        "proof": "內容雜湊已更新"
+      },
+      "driver_sha256": "f50bd7d458ffa45f92038ff77949c48c8b2251af414977a6421ccbe1f2a70c06",
+      "checkpoint_json_count": 626
+    },
+    "python": {
+      "status": "passed",
+      "tests": 196,
+      "log": "work/ch02-flow-20261017/python-regression-r1.log",
+      "sha256": "18da1ee60e3b6bd1d6c2454aa061ad1366dffe60b42df8873acac3fbae40c78f"
+    },
+    "game_full_r2": {
+      "status": "failed_missing_hud_source",
+      "run": "work/ch02-flow-20261017/remake-full-r2",
+      "exit_code": 1,
+      "reason": "正常LOAD後起手21筆位置相同；第一次蓋亞移動觸發native map frame預檢，HasNativeMapHUDState=false，battle_ch02漏view／HUD資料。"
+    },
+    "game_full_r3": {
+      "status": "behavior_nodes_passed_save_difference",
+      "run": "work/ch02-flow-20261017/remake-full-r3",
+      "exit_code": 0,
+      "ai_entries": 53,
+      "ai_consumed": 53,
+      "ai_order_divergences": 0,
+      "receipt": "work/ch02-flow-20261017/full-parity-r3.json",
+      "behavior": true,
+      "nodes": true,
+      "transaction": false
+    },
+    "python_r2": {
+      "status": "passed",
+      "tests": 205,
+      "log": "work/ch02-flow-20261017/python-regression-r2.log",
+      "sha256": "404ef7b7f66171d394edab8717d880aa50df87fe22b2e3f34001205d3264dac9"
+    },
+    "canonical": {
+      "documents": 66,
+      "hashes_equal": true,
+      "campaign_node_ids_preserved": 320
+    },
+    "go_r1": {
+      "status": "18_packages_passed_cmd_timeout",
+      "log": "work/ch02-flow-20261017/full-go-regression-r1.log",
+      "exit_code": 1,
+      "cmd_elapsed_seconds": 601.086,
+      "reason": "default test timeout10m，堆疊在T.Run正常推進，無受阻玩家owner或失敗斷言。以同image只重跑cmd/fd2，明示18m timeout與json逐項紀錄。"
+    },
+    "receipt": "docs/data/ui-traces/parity-ch02.json",
+    "game_full_r4": {
+      "status": "passed",
+      "run": "work/ch02-flow-20261017/remake-full-r4",
+      "ai_entries": 53,
+      "ai_consumed": 53,
+      "ai_order_divergences": 0,
+      "cold_load": true,
+      "strict_receipt": "work/ch02-flow-20261017/full-parity-r4-strict.json",
+      "accepted_receipt": "docs/data/ui-traces/parity-ch02.json",
+      "limits": "只依111流程例外；本份保存11差異逐筆接受。"
+    },
+    "python_r3": {
+      "status": "passed",
+      "tests": 210,
+      "log": "work/ch02-flow-20261017/python-regression-r3.log",
+      "sha256": "13b560829c05256a1ad8a4f954480b4fa63729d6dc44e6dbe9817db7fa467ba7"
+    },
+    "hygiene": {
+      "root_owned": 2811,
+      "md_directories": [],
+      "errors": [],
+      "checked_links": 2343,
+      "broken_links": [],
+      "hashes": {
+        "README.md": "6fd6f74bc84a17d4f05bd31cd624b7d91306a3a756bd62b2405516dcbc38dd70",
+        "org_game/炎龍騎士團/FLAME2/FD2.EXE": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+        "tools/dosgolem_oracle_drive.py": "f50bd7d458ffa45f92038ff77949c48c8b2251af414977a6421ccbe1f2a70c06",
+        "work/ch02-flow-20261017/input/FD2.SAV": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b"
+      }
+    },
+    "go_r2": {
+      "status": "passed",
+      "packages": "18前輪已通過＋cmd/fd2乾淨重跑，共19",
+      "cmd_seconds": 643.058,
+      "cmd_test_pass_entries": 1115,
+      "log": "work/ch02-flow-20261017/cmd-go-regression-r2.jsonl",
+      "sha256": "e801d06f0f69819992727ba80278ecde4fa5dc95cf1a7f18689e97d3bb9fe558",
+      "exit_code": 0
+    }
+  },
+  "event6_contract": {
+    "status": "CONFORMED",
+    "confidence": "固定EXE直接writer、既有mode4 consumer與當前原版起手raw值已證實。",
+    "source": {
+      "file": "work/matching-full-20261008/ida-full-image.json",
+      "sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+      "tool": "IDA Pro 9.4",
+      "address_space": "IDA LE loader linear addresses; per-instruction file_offset separately retained",
+      "function": {
+        "inventory": {
+          "start": "0x34422",
+          "end": "0x344c2",
+          "size": 160,
+          "ida_analysis_name": "sub_34422",
+          "ida_function_flags": [],
+          "direct_caller_functions": [
+            "0x117e7",
+            "0x16f55",
+            "0x190ac",
+            "0x1a813",
+            "0x1aa1d",
+            "0x1d80b",
+            "0x1d8ba"
+          ],
+          "direct_code_xref_count": 8,
+          "direct_data_xref_count": 1,
+          "classification": {
+            "value": "unknown",
+            "confidence": "未知",
+            "source": "not yet classified"
+          },
+          "semantic_annotations": []
+        },
+        "ida_analysis_name": "sub_34422",
+        "current_ida_linear_end": "0x344c2",
+        "boundary_matches_inventory": true,
+        "semantic_annotations": [],
+        "chunks": [
+          {
+            "ida_linear_start": "0x34422",
+            "ida_linear_end": "0x344c2",
+            "instructions": [
+              {
+                "ida_linear_address": "0x34422",
+                "file_offset": "0x35222",
+                "loaded_bytes": "682c000000",
+                "file_bytes": "682c000000",
+                "instruction": "push    2Ch ; ','",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34427",
+                "file_offset": "0x35227",
+                "loaded_bytes": "e8ab280000",
+                "file_bytes": "e8ab280000",
+                "instruction": "call    sub_36CD7",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3442c",
+                "file_offset": "0x3522c",
+                "loaded_bytes": "53",
+                "file_bytes": "53",
+                "instruction": "push    ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3442d",
+                "file_offset": "0x3522d",
+                "loaded_bytes": "6a01",
+                "file_bytes": "6a01",
+                "instruction": "push    1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3442f",
+                "file_offset": "0x3522f",
+                "loaded_bytes": "6a09",
+                "file_bytes": "6a09",
+                "instruction": "push    9",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34431",
+                "file_offset": "0x35231",
+                "loaded_bytes": "e8a7f1fdff",
+                "file_bytes": "e8a7f1fdff",
+                "instruction": "call    sub_135DD",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34436",
+                "file_offset": "0x35236",
+                "loaded_bytes": "83c408",
+                "file_bytes": "83c408",
+                "instruction": "add     esp, 8",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34439",
+                "file_offset": "0x35239",
+                "loaded_bytes": "6a64",
+                "file_bytes": "6a64",
+                "instruction": "push    64h ; 'd'",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3443b",
+                "file_offset": "0x3523b",
+                "loaded_bytes": "e872310000",
+                "file_bytes": "e872310000",
+                "instruction": "call    j___delay",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34440",
+                "file_offset": "0x35240",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34443",
+                "file_offset": "0x35243",
+                "loaded_bytes": "c605fa3a050001",
+                "file_bytes": "c605fa3a000001",
+                "instruction": "mov     byte_53AFA, 1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3444a",
+                "file_offset": "0x3524a",
+                "loaded_bytes": "6a03",
+                "file_bytes": "6a03",
+                "instruction": "push    3",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3444c",
+                "file_offset": "0x3524c",
+                "loaded_bytes": "e8fdc6fdff",
+                "file_bytes": "e8fdc6fdff",
+                "instruction": "call    sub_10B4E",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34451",
+                "file_offset": "0x35251",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34454",
+                "file_offset": "0x35254",
+                "loaded_bytes": "c605fa3a050000",
+                "file_bytes": "c605fa3a000000",
+                "instruction": "mov     byte_53AFA, 0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3445b",
+                "file_offset": "0x3525b",
+                "loaded_bytes": "6a0d",
+                "file_bytes": "6a0d",
+                "instruction": "push    0Dh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3445d",
+                "file_offset": "0x3525d",
+                "loaded_bytes": "e808f2fdff",
+                "file_bytes": "e808f2fdff",
+                "instruction": "call    sub_1366A",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34462",
+                "file_offset": "0x35262",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34465",
+                "file_offset": "0x35265",
+                "loaded_bytes": "68c8000000",
+                "file_bytes": "68c8000000",
+                "instruction": "push    0C8h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3446a",
+                "file_offset": "0x3526a",
+                "loaded_bytes": "e843310000",
+                "file_bytes": "e843310000",
+                "instruction": "call    j___delay",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3446f",
+                "file_offset": "0x3526f",
+                "loaded_bytes": "83c404",
+                "file_bytes": "83c404",
+                "instruction": "add     esp, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34472",
+                "file_offset": "0x35272",
+                "loaded_bytes": "6a01",
+                "file_bytes": "6a01",
+                "instruction": "push    1",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34474",
+                "file_offset": "0x35274",
+                "loaded_bytes": "6a13",
+                "file_bytes": "6a13",
+                "instruction": "push    13h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34476",
+                "file_offset": "0x35276",
+                "loaded_bytes": "6a4a",
+                "file_bytes": "6a4a",
+                "instruction": "push    4Ah ; 'J'",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34478",
+                "file_offset": "0x35278",
+                "loaded_bytes": "6a4c",
+                "file_bytes": "6a4c",
+                "instruction": "push    4Ch ; 'L'",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3447a",
+                "file_offset": "0x3527a",
+                "loaded_bytes": "68cd000000",
+                "file_bytes": "68cd000000",
+                "instruction": "push    0CDh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3447f",
+                "file_offset": "0x3527f",
+                "loaded_bytes": "6840010000",
+                "file_bytes": "6840010000",
+                "instruction": "push    140h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34484",
+                "file_offset": "0x35284",
+                "loaded_bytes": "6800000a00",
+                "file_bytes": "6800000a00",
+                "instruction": "push    0A0000h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34489",
+                "file_offset": "0x35289",
+                "loaded_bytes": "6a04",
+                "file_bytes": "6a04",
+                "instruction": "push    4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3448b",
+                "file_offset": "0x3528b",
+                "loaded_bytes": "ff35793a0500",
+                "file_bytes": "ff35793a0000",
+                "instruction": "push    dword_53A79",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34491",
+                "file_offset": "0x35291",
+                "loaded_bytes": "e8ee1afeff",
+                "file_bytes": "e8ee1afeff",
+                "instruction": "call    sub_15F84",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34496",
+                "file_offset": "0x35296",
+                "loaded_bytes": "83c424",
+                "file_bytes": "83c424",
+                "instruction": "add     esp, 24h",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x34499",
+                "file_offset": "0x35299",
+                "loaded_bytes": "ba05000000",
+                "file_bytes": "ba05000000",
+                "instruction": "mov     edx, 5",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x3449e",
+                "file_offset": "0x3529e",
+                "loaded_bytes": "eb1b",
+                "file_bytes": "eb1b",
+                "instruction": "jmp     short loc_344BB",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344a0",
+                "file_offset": "0x352a0",
+                "loaded_bytes": "89d0",
+                "file_bytes": "89d0",
+                "instruction": "mov     eax, edx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344a2",
+                "file_offset": "0x352a2",
+                "loaded_bytes": "c1e002",
+                "file_bytes": "c1e002",
+                "instruction": "shl     eax, 2",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344a5",
+                "file_offset": "0x352a5",
+                "loaded_bytes": "8d1c02",
+                "file_bytes": "8d1c02",
+                "instruction": "lea     ebx, [edx+eax]",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344a8",
+                "file_offset": "0x352a8",
+                "loaded_bytes": "c1e304",
+                "file_bytes": "c1e304",
+                "instruction": "shl     ebx, 4",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344ab",
+                "file_offset": "0x352ab",
+                "loaded_bytes": "a1453a0500",
+                "file_bytes": "a1453a0000",
+                "instruction": "mov     eax, dword_53A45",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344b0",
+                "file_offset": "0x352b0",
+                "loaded_bytes": "c64403351a",
+                "file_bytes": "c64403351a",
+                "instruction": "mov     byte ptr [ebx+eax+35h], 1Ah",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344b5",
+                "file_offset": "0x352b5",
+                "loaded_bytes": "c64403360f",
+                "file_bytes": "c64403360f",
+                "instruction": "mov     byte ptr [ebx+eax+36h], 0Fh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344ba",
+                "file_offset": "0x352ba",
+                "loaded_bytes": "42",
+                "file_bytes": "42",
+                "instruction": "inc     edx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344bb",
+                "file_offset": "0x352bb",
+                "loaded_bytes": "83fa0b",
+                "file_bytes": "83fa0b",
+                "instruction": "cmp     edx, 0Bh",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344be",
+                "file_offset": "0x352be",
+                "loaded_bytes": "7ce0",
+                "file_bytes": "7ce0",
+                "instruction": "jl      short loc_344A0",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344c0",
+                "file_offset": "0x352c0",
+                "loaded_bytes": "5b",
+                "file_bytes": "5b",
+                "instruction": "pop     ebx",
+                "semantic_annotations": []
+              },
+              {
+                "ida_linear_address": "0x344c1",
+                "file_offset": "0x352c1",
+                "loaded_bytes": "c3",
+                "file_bytes": "c3",
+                "instruction": "retn",
+                "semantic_annotations": []
+              }
+            ]
+          }
+        ],
+        "semantic_warning": "沒有已證實註記的名稱與操作數只作導覽，不自動提升語意。"
+      }
+    },
+    "operations": [
+      "0x34431 PAN(9,1)",
+      "0x3443B delay100ms",
+      "0x34443 raw placement gate1，0x3444C spawn group3，0x34454 restore gate0",
+      "0x3445D ACT13",
+      "0x3446A delay200ms",
+      "0x34491 FDTXT_002#4",
+      "0x34499..0x344BE loop runtime slots5..10，每筆+35=0x1A、+36=0x0F"
+    ],
+    "typed_gap": "目前只spawn group3；既有native_death_op record_bytes可表達六筆寫入，+36已有typed欄位與mode4目的地consumer，但applyNativeRecordWrites尚未接受此offset。",
+    "limits": "不將+35／+36所有caller命名為目的地；本scope僅六位村民及mode4的直接consumer。",
+    "reopen": "既有event6 spawn-only不足以承載直接指令中PAN、ACT、文字及村民目的地writer，不重開已閉合135DD／1366A／10B4E。",
+    "control": {
+      "file": "extracted/raw/FDFIELD/FDFIELD_004.bin",
+      "size": 1171,
+      "sha256": "4af32142dd1435104447e6f0707354842e9a2cbd4eab8af020525af2591dca26",
+      "tuple_offset": 3,
+      "tuple": [
+        3,
+        6,
+        1
+      ]
+    },
+    "consumer": {
+      "path": "remake/internal/battle/native_ai_action_runtime.go",
+      "branch": "mode4／7／10；本章六村民raw+34低四bit=4，+35/+36由nativeAIPlanTowardRawDestination消費。",
+      "startup_raw": [
+        [
+          5,
+          4,
+          19,
+          6
+        ],
+        [
+          6,
+          4,
+          19,
+          6
+        ],
+        [
+          7,
+          4,
+          16,
+          0
+        ],
+        [
+          8,
+          4,
+          15,
+          0
+        ],
+        [
+          9,
+          4,
+          15,
+          0
+        ],
+        [
+          10,
+          4,
+          15,
+          0
+        ]
+      ],
+      "correction": "DRAFT導覽初稿提及mode11，已由實際起手raw4與直接consumer反證；正式READY僅採mode4。FDFIELD_002是其他資料段，實際map1控制檔為004。"
+    },
+    "transcription": {
+      "id": 6,
+      "handler": "0x34422",
+      "ops": [
+        {
+          "op": "pan",
+          "x": 9,
+          "y": 1,
+          "source": "0x34431"
+        },
+        {
+          "op": "delay",
+          "ms": 100,
+          "source": "0x3443b"
+        },
+        {
+          "op": "spawn_group",
+          "group": 3,
+          "gate": 1,
+          "source": "0x34443"
+        },
+        {
+          "op": "acting",
+          "resource": 13,
+          "source": "0x3445d"
+        },
+        {
+          "op": "delay",
+          "ms": 200,
+          "source": "0x3446a"
+        },
+        {
+          "op": "dialogue",
+          "text": 4,
+          "source": "0x34491"
+        },
+        {
+          "op": "record_bytes",
+          "unit": 5,
+          "writes": [
+            [
+              53,
+              26,
+              1
+            ],
+            [
+              54,
+              15,
+              1
+            ]
+          ],
+          "source": "0x344b0",
+          "tail_sources": [
+            "0x344b5"
+          ]
+        },
+        {
+          "op": "record_bytes",
+          "unit": 6,
+          "writes": [
+            [
+              53,
+              26,
+              1
+            ],
+            [
+              54,
+              15,
+              1
+            ]
+          ],
+          "source": "0x344b0",
+          "tail_sources": [
+            "0x344b5"
+          ]
+        },
+        {
+          "op": "record_bytes",
+          "unit": 7,
+          "writes": [
+            [
+              53,
+              26,
+              1
+            ],
+            [
+              54,
+              15,
+              1
+            ]
+          ],
+          "source": "0x344b0",
+          "tail_sources": [
+            "0x344b5"
+          ]
+        },
+        {
+          "op": "record_bytes",
+          "unit": 8,
+          "writes": [
+            [
+              53,
+              26,
+              1
+            ],
+            [
+              54,
+              15,
+              1
+            ]
+          ],
+          "source": "0x344b0",
+          "tail_sources": [
+            "0x344b5"
+          ]
+        },
+        {
+          "op": "record_bytes",
+          "unit": 9,
+          "writes": [
+            [
+              53,
+              26,
+              1
+            ],
+            [
+              54,
+              15,
+              1
+            ]
+          ],
+          "source": "0x344b0",
+          "tail_sources": [
+            "0x344b5"
+          ]
+        },
+        {
+          "op": "record_bytes",
+          "unit": 10,
+          "writes": [
+            [
+              53,
+              26,
+              1
+            ],
+            [
+              54,
+              15,
+              1
+            ]
+          ],
+          "source": "0x344b0",
+          "tail_sources": [
+            "0x344b5"
+          ]
+        }
+      ]
+    },
+    "acceptance": "原版T3事件只觸發一次，group3六人正常登場，FDTXT002#4完整對白與六村民raw35/36寫入；正式Game同source全流程／存檔比較，純寫入測試另驗typed與raw同步、未知offset拒收且不部分改寫。",
+    "issue": 245
+  },
+  "flow_contract": {
+    "status": "CONFORMED",
+    "plan": "docs/data/parity-plans/ch02-full-flow-r2.jsonl",
+    "sampling": "蓋亞from_index3對固定敵方14三個回合有界正常接戰；T3 selector1 event6與六人增援後到T4，再單次force-enemy-clear及正常戰後、五建築、酒店保存。",
+    "source": "既有pre／post／event6 IDA9.4直接bytes、FDFIELD row及首章實際SAV；111允許抽樣後清敵。",
+    "limits": "無HP鎖、復活、座標或新強化；村民可能自然死亡，依實際分支驗證，不宣稱全員存活獎勵已驗。畫面僅參考，保存strict。"
+  },
+  "save_difference_review": {
+    "status": "accepted_disclosed_difference",
+    "original_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+    "remake_sha256": "95a922a833969e6d7d805b1769136c46af229d3d2e99122e65045ad43988eade",
+    "byte_report": {
+      "status": "different",
+      "size": 22987,
+      "difference_count": 11,
+      "differences": [
+        {
+          "plain_offset": "0x32e3",
+          "oracle": 63,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x28"
+        },
+        {
+          "plain_offset": "0x32e4",
+          "oracle": 254,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x29"
+        },
+        {
+          "plain_offset": "0x32e5",
+          "oracle": 109,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2a"
+        },
+        {
+          "plain_offset": "0x32e6",
+          "oracle": 19,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2b"
+        },
+        {
+          "plain_offset": "0x32e7",
+          "oracle": 108,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2c"
+        },
+        {
+          "plain_offset": "0x32e8",
+          "oracle": 134,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2d"
+        },
+        {
+          "plain_offset": "0x32e9",
+          "oracle": 109,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2e"
+        },
+        {
+          "plain_offset": "0x32ea",
+          "oracle": 254,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2f"
+        },
+        {
+          "plain_offset": "0x32eb",
+          "oracle": 63,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x30"
+        },
+        {
+          "plain_offset": "0x59c7",
+          "oracle": 45,
+          "remake": 212,
+          "region": "checksum"
+        },
+        {
+          "plain_offset": "0x59c8",
+          "oracle": 109,
+          "remake": 104,
+          "region": "checksum"
+        }
+      ],
+      "policy": "全部明文位元組比較；包含檢查碼，不遮罩任何差異。"
+    },
+    "scope": "persistent record5 identity8希莉亞的+28..30九byte及衍生檢查碼兩byte；其餘22976 bytes相同。",
+    "prior_evidence": "docs/data/fd2_join_copyback_verification_20261001.json已證實230D9 JOIN8→230E1／11506按raw+8整筆copy0x50；本輪未重開helper。",
+    "confidence": "已證實：九byte在原版runtime27建構前存在，建構保留，JOIN／11506整筆copy後保存；重製BuildNativeChapterSlot新入隊零基底。九byte更早producer與全部用途仍未知。",
+    "cold_load": {
+      "status": "passed",
+      "run": "work/ch02-flow-20261017/remake-full-r4",
+      "log": "work/ch02-flow-20261017/replay-full-r4.log",
+      "entry": "loadGame + confirmTitleLoadSlot(0), new Game instance",
+      "chapter": 2,
+      "roster": 6,
+      "gold": 1000,
+      "compared": "章號、下一城鎮、加入順序、HP/MP/上限、等級/經驗、AP/DP/DX/HIT/EV/MV、8格物品與旗標、系統選項",
+      "limitation": "證明重製正式保存後冷讀保留已知玩家狀態；未知+0x28..0x30語意仍未證實。"
+    },
+    "production": "不填oracle常數，正式規則不變；預設strict保存仍失敗，其他章專用例外不自動沿用。",
+    "runtime_carry_evidence": {
+      "first": {
+        "checkpoint": "checkpoint-0460.json",
+        "seq": 460,
+        "index": 27,
+        "raw28_30": "3ffe6d136c866dfe3f",
+        "eip": "0x4DEF2"
+      },
+      "last": {
+        "checkpoint": "checkpoint-0623.json",
+        "seq": 623,
+        "index": 5,
+        "raw28_30": "3ffe6d136c866dfe3f",
+        "eip": "0x2FC52"
+      },
+      "limit": "可證實首次已捕獲的希莉亞raw紀錄到JOIN前仍帶同九byte，最初producer未解。"
+    },
+    "issue": 247,
+    "checksum_causality": "局部副本只補這九byte再重算checksum，即重現原版整份SAV；未寫回兩側正式檔案。"
+  },
+  "matching_assistance": {
+    "scope": "使用者本輪要求確認保存差異原因，限場上建構10C50、JOIN112A5、11506 copy及30012保存鏈；全檔matching仍暫停。",
+    "status": "source_retention_confirmed_bounded_policy_accepted",
+    "review_decision": "未接受章2保存例外，嚴格gate保持。",
+    "constructor": "已閉合10C50沿原IDA圖覆核；10F77只memset+22長6，無整筆清零。112A5持續名冊同樣只清六byte，後由11506整筆runtime覆寫。",
+    "diagnostic": "原版同一SAV／計畫，唯讀memory-change窗口1209395489..1212395489；runtime27+28..30及三個已知writer作正對照，不注入新狀態。",
+    "link": "重連結既有Watcom10.0a scene-flow-final-r2物件，112A5九變體，保留完整匹配的正／負結果；不把近似C當原始證據。",
+    "issue": 247,
+    "join_result": {
+      "report": "work/ch02-flow-20261017/matching-join-link-r1/report.json",
+      "trials": 9,
+      "exact_matches": 0,
+      "reason": "完整112A5未匹配，不能把C候選提升為已證實原版source。原始直接指令仍是初始化範圍依據。",
+      "driver": "tools/fd2_matching_game_restore.py link"
+    },
+    "remake_zero_source": {
+      "source": "remake/internal/campaign/native_chapter_slot_save.go BuildNativeChapterSlot",
+      "caller": "remake/cmd/fd2/native_chapter_slot_save.go saveNativeChapterSlot",
+      "confidence": "已證實",
+      "scope": "對非NativeJoinPersistentPending的新加入人物，residual := fdsave.PersistentRecord{}先建零基底，再MaterializePersistentRecordOn及EncodeNativePersistentRecord寫已知欄位。希莉亞整筆runtime同步後不屬pending；九個未投影byte保持0。這是既有同格式raw欄位，不是新增save欄位。",
+      "secondary": "NativeInventoryRecords的零副本只用於裝備重算，不把它當正式保存九byte的直接來源。"
+    },
+    "source_verification": {
+      "schema_version": 1,
+      "kind": "fd2_ch02_save_source",
+      "status": "passed",
+      "input": {
+        "file": "FD2.EXE",
+        "size": 357074,
+        "md5": "b97caf2239a27a896069d03549d96e1e",
+        "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+      },
+      "tool": {
+        "name": "IDA Pro",
+        "version": "9.4",
+        "address_space": "IDA LE loader linear address; file offsets explicitly separate"
+      },
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "verifier_sha256": "6b91549f8066d77d6e7ca1a9e490df8beba54a5a07990e574fe8823136c724b7",
+      "ida_image_sha256": "cdaa0581077eabe9ce94c9afbaef01598fea5178eb3008d1441d6f53082248d5",
+      "runner_sha256": "8bf99f91d2b12ae6762bb38c1ed850f891cbaf561941cc5be7c9dfc6b8f71f66",
+      "memory_trace_sha256": "a3ea7add8e49c93a13d8306bf7642ed487b59c1967293ed7addfe94c6c6a39a8",
+      "eip_trace_sha256": "136ebc3169f39475d2219be8c6a0673d5063957f652a81335a66f448c4db5c94",
+      "original_instruction_ranges": [
+        {
+          "original_name": "sub_1088D",
+          "ida_linear_start": "0x109ce",
+          "ida_linear_end": "0x10b4e",
+          "instructions_checked": 106
+        },
+        {
+          "original_name": "sub_10C50",
+          "ida_linear_start": "0x10c50",
+          "ida_linear_end": "0x11019",
+          "instructions_checked": 279
+        },
+        {
+          "original_name": "sub_112A5",
+          "ida_linear_start": "0x112a5",
+          "ida_linear_end": "0x1145a",
+          "instructions_checked": 132
+        },
+        {
+          "original_name": "sub_11506",
+          "ida_linear_start": "0x11506",
+          "ida_linear_end": "0x115b6",
+          "instructions_checked": 62
+        },
+        {
+          "original_name": "sub_30012",
+          "ida_linear_start": "0x30012",
+          "ida_linear_end": "0x301f4",
+          "instructions_checked": 139
+        }
+      ],
+      "record_base": "0x175888",
+      "baseline": {
+        "address_space": "dosgolem relocated LE linear",
+        "control_seq": 460,
+        "eip_after": "0x36CDB",
+        "eip_before": "0x36CDB",
+        "instruction_step": 1209395489,
+        "kind": "baseline",
+        "memory_valid": true,
+        "samples": [
+          {
+            "address": "0x1758B0",
+            "after": 63,
+            "before": 63
+          },
+          {
+            "address": "0x1758B1",
+            "after": 254,
+            "before": 254
+          },
+          {
+            "address": "0x1758B2",
+            "after": 109,
+            "before": 109
+          },
+          {
+            "address": "0x1758B3",
+            "after": 19,
+            "before": 19
+          },
+          {
+            "address": "0x1758B4",
+            "after": 108,
+            "before": 108
+          },
+          {
+            "address": "0x1758B5",
+            "after": 134,
+            "before": 134
+          },
+          {
+            "address": "0x1758B6",
+            "after": 109,
+            "before": 109
+          },
+          {
+            "address": "0x1758B7",
+            "after": 254,
+            "before": 254
+          },
+          {
+            "address": "0x1758B8",
+            "after": 63,
+            "before": 63
+          },
+          {
+            "address": "0x17588E",
+            "after": 254,
+            "before": 254
+          },
+          {
+            "address": "0x175890",
+            "after": 107,
+            "before": 107
+          },
+          {
+            "address": "0x1758C8",
+            "after": 61,
+            "before": 61
+          }
+        ],
+        "step": 1209395489
+      },
+      "positive_controls": [
+        {
+          "address_space": "dosgolem relocated LE linear",
+          "control_seq": 460,
+          "eip_after": "0x10EF8",
+          "eip_before": "0x10EF5",
+          "instruction_step": 1210686248,
+          "kind": "change",
+          "memory_valid": true,
+          "samples": [
+            {
+              "address": "0x17588E",
+              "after": 2,
+              "before": 254
+            }
+          ],
+          "step": 1210686249
+        },
+        {
+          "address_space": "dosgolem relocated LE linear",
+          "control_seq": 460,
+          "eip_after": "0x10F02",
+          "eip_before": "0x10EFF",
+          "instruction_step": 1210686251,
+          "kind": "change",
+          "memory_valid": true,
+          "samples": [
+            {
+              "address": "0x175890",
+              "after": 8,
+              "before": 107
+            }
+          ],
+          "step": 1210686252
+        },
+        {
+          "address_space": "dosgolem relocated LE linear",
+          "control_seq": 460,
+          "eip_after": "0x10FED",
+          "eip_before": "0x10FE9",
+          "instruction_step": 1210686413,
+          "kind": "change",
+          "memory_valid": true,
+          "samples": [
+            {
+              "address": "0x1758C8",
+              "after": 44,
+              "before": 61
+            }
+          ],
+          "step": 1210686414
+        }
+      ],
+      "raw28_30_hex": "3ffe6d136c866dfe3f",
+      "writes_to_nine_bytes": 0,
+      "oracle_save_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+      "matching_report_sha256": "de3b5e80f9aac11d9592a252eee3e0f4bd3f32bf5127028b57a0d90294b5a897",
+      "remake_save_sha256": "95a922a833969e6d7d805b1769136c46af229d3d2e99122e65045ad43988eade",
+      "all_other_plain_bytes_equal": true,
+      "nine_byte_local_projection_reproduces_original_save": true,
+      "conclusion": "九byte在場上紀錄建構前已存在，10C50保留它們；其後整筆copy到名冊並保存。",
+      "confidence": "本份收據的建構前後保留與保存傳遞已證實；更早的配置區內容producer仍未知。",
+      "limitations": [
+        "112A5完整C候選是否匹配依逐筆結果，不能以近似C證明原版語意。",
+        "本檢查不接受保存差異，也不證明九byte在所有玩法中都未使用。",
+        "觀察者只報值改變；同值寫入依IDA直接指令與建構範圍另行審查。"
+      ],
+      "constructor_entry": {
+        "step": 1210654984,
+        "control_seq": 460,
+        "eip": "0x10C50",
+        "stack": [
+          "0x10BF3",
+          "0x16",
+          "0x528C2",
+          "0x0",
+          "0x0",
+          "0x175018",
+          "0x22FE3",
+          "0x4"
+        ]
+      },
+      "report_sha256": "79f1b8ba9a0cbd4a16585583bef1c1e9b50f23c11af180318e841a5c8bd613ac",
+      "command": "tools/fd2_ch02_save_source.py --original <唯讀FD2.EXE> --ida-image work/matching-full-20261008/ida-full-image.json --oracle work/ch02-flow-20261017/original-celia-source-r1 --oracle-save work/ch02-flow-20261017/state-celia-source-r1/FD2.SAV --remake-save work/ch02-flow-20261017/remake-full-r4/FD2.SAV --match work/ch02-flow-20261017/matching-join-link-r1 --out work/ch02-flow-20261017/celia-source-verification-r1.json"
+    }
+  },
+  "save_acceptance_policy": {
+    "id": "ch02-celia-residual-20261017",
+    "state": "CONFORMED",
+    "decision_date": "2026-10-17",
+    "decision": "使用者：接受本份差異，繼續第3章。已先用matching輔助及原始指令／唯讀追蹤釐清初始化保留原因。",
+    "scope": "只接受本章已展示的11個完整明文差異及指定來源pair；其他來源預設strict。",
+    "chapter": 2,
+    "frame_policy": "advisory",
+    "input_save_sha256": "540c3bc156ba94b2f0dd06ca83f6a0d8c6c6dd48c49621c73add3f839bfc118b",
+    "plan_sha256": "592989a8aa96856b0996e266184ba3490e2b70271f6159e82a809e2044f8be35",
+    "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+    "oracle_save_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+    "remake_save_sha256": "95a922a833969e6d7d805b1769136c46af229d3d2e99122e65045ad43988eade",
+    "byte_report": {
+      "status": "different",
+      "size": 22987,
+      "difference_count": 11,
+      "differences": [
+        {
+          "plain_offset": "0x32e3",
+          "oracle": 63,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x28"
+        },
+        {
+          "plain_offset": "0x32e4",
+          "oracle": 254,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x29"
+        },
+        {
+          "plain_offset": "0x32e5",
+          "oracle": 109,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2a"
+        },
+        {
+          "plain_offset": "0x32e6",
+          "oracle": 19,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2b"
+        },
+        {
+          "plain_offset": "0x32e7",
+          "oracle": 108,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2c"
+        },
+        {
+          "plain_offset": "0x32e8",
+          "oracle": 134,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2d"
+        },
+        {
+          "plain_offset": "0x32e9",
+          "oracle": 109,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2e"
+        },
+        {
+          "plain_offset": "0x32ea",
+          "oracle": 254,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x2f"
+        },
+        {
+          "plain_offset": "0x32eb",
+          "oracle": 63,
+          "remake": 0,
+          "slot": 0,
+          "region": "roster",
+          "record_index": 5,
+          "record_offset": "0x30"
+        },
+        {
+          "plain_offset": "0x59c7",
+          "oracle": 45,
+          "remake": 212,
+          "region": "checksum"
+        },
+        {
+          "plain_offset": "0x59c8",
+          "oracle": 109,
+          "remake": 104,
+          "region": "checksum"
+        }
+      ],
+      "policy": "全部明文位元組比較；包含檢查碼，不遮罩任何差異。"
+    },
+    "failure": "章號、plan、runner、兩側完整hash、每筆差異及成功writer任一不符仍拒收；不提供一般欄位遮罩。",
+    "output": "accepted_disclosed_difference; bytes_equal=false"
+  }
+}
