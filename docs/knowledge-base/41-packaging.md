@@ -419,7 +419,7 @@ Vorbis 解碼及播放器建立。這些收據關閉重製端啟動缺陷，但 
 
 ## v.1.0.0-20261017 正式第一版契約
 
-狀態：READY。使用者明示發布第一版，指定macOS、Windows ZIP與Linux AppImage；完整識別依版號契約為v.1.0.0-20261017。既有歷史tag／Release不移動、不刪除。30章受控流程驗收及保存例外見[58](58-fd2-exe-re-coverage.md)與[正式台帳](../data/parity-campaign-progress.json)，HD與實體桌面驗收不包含於完成聲明。
+狀態：CONFORMED，限本節封包與原生程序驗收。使用者明示發布第一版，指定macOS、Windows ZIP與Linux AppImage；完整識別依版號契約為v.1.0.0-20261017。既有歷史tag／Release不移動、不刪除。30章受控流程驗收及保存例外見[58](58-fd2-exe-re-coverage.md)與[正式台帳](../data/parity-campaign-progress.json)，HD與實體桌面驗收不包含於完成聲明。
 
 正式封包只含引擎、Git追蹤資料與第三方授權文字。原版／私人現代素材留本機，公開包需玩家自備完整合法分離素材；單一extract_all.py或fd2-asset-import並非完整包產生器。使用者資料及存檔仍在XDG_DATA_HOME/fd2_re或使用者家目錄.local/share/fd2_re，不變更正式遊戲規則或save格式。
 
@@ -430,3 +430,9 @@ Vorbis 解碼及播放器建立。這些收據關閉重製端啟動缺陷，但 
 發行工具負例測試入口：[test_release_packaging.py](../../tools/test_release_packaging.py)，在Docker內執行python3 -m unittest discover -s tools -p test_release_packaging.py；覆蓋錯誤tag／日期、中文ZIP與執行權限、來源提交不同、封包被修改及缺原生收據。AppImage的[專用context清單](../../remake/packaging/Dockerfile.appimage.dockerignore)只送go.mod／go.sum，不把org_game、work或其他專案輸入送入建置daemon；其他Dockerfile沿原有context。
 
 Linux靜態執行期沿官方type2-runtime 20251108的[MIT授權全文](../../remake/packaging/appimage-runtime-LICENSE)，來源https://github.com/AppImage/type2-runtime/tree/20251108，SHA-256 aa154fc9070614bbe7921f89db11efd1dba7a1f3a41685958110e2230f9c0ca1；與Go／實際模組及X11傳遞依賴授權一併入包。macOS清冊取arm64與amd64依賴聯集，平台原生數字版號欄使用1.0.0，FD2ReleaseVersion及程式版號保存完整識別。
+
+正式版已於2026-10-17 22:48:16台北時間公開為Latest：[Release](https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.0-20261017)。三平台原生建置、自檢、聚合及發布job全數成功，來源d8c361a8324cb19b5a0738897e15c151500a8de8。回下載三包SHA、ZIP CRC、447份公開素材、架構及授權全部通過，實際Linux附件從空白cwd自檢再次成功；[主收據](../data/fd2-release-v.1.0.0-20261017.json)保留檔案大小／SHA及完整限制。
+
+重跑附件核對使用[verify_fd2_release.py](../../tools/verify_fd2_release.py)：在由本專案Dockerfile.appimage建立的fd2-build-appimage:latest內，執行python3 tools/verify_fd2_release.py --version v.1.0.0-20261017 --commit d8c361a8324cb19b5a0738897e15c151500a8de8。允許公開下載網路，repo唯讀，只有work及dist-all可寫，使用目前UID/GID；命令與掛載見主收據及WORKLOG。
+
+第7節的2026-09-07 checkpoint與更早CI數字保留為歷史；目前原版執行器能力、30章及發布狀態由58與本節取代。舊build-windows.sh的packaging/dist是交叉建置中間產物，正式發行由中央release.yml與三個原生工作流程輸出dist-all；不把中間包當現行交付。實機抽測、簽署／公證及HD仍未完成。

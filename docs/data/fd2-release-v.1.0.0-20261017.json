@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_release_verification",
+  "version": "v.1.0.0-20261017",
+  "date": "2026-10-17",
+  "status": "CONFORMED",
+  "scope": "正式第一版公開引擎包；三平台原生封包自檢、發布與回下載內容驗證。",
+  "source_commit": "d8c361a8324cb19b5a0738897e15c151500a8de8",
+  "release": {
+    "id": 415858640,
+    "url": "https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.0-20261017",
+    "tag": "v.1.0.0-20261017",
+    "published_at": "2026-10-17T14:48:16Z",
+    "published_taipei": "2026-10-17T22:48:16+08:00",
+    "draft": false,
+    "prerelease": false,
+    "latest": true
+  },
+  "ci": {
+    "preflight_run": "https://github.com/wicanr2/fd2_re/actions/runs/39041776347",
+    "release_run": "https://github.com/wicanr2/fd2_re/actions/runs/39042142693",
+    "run_id": 39042142693,
+    "source_commit": "d8c361a8324cb19b5a0738897e15c151500a8de8",
+    "status": "success",
+    "jobs": [
+      {
+        "id": 117423608364,
+        "name": "linux / build",
+        "conclusion": "success"
+      },
+      {
+        "id": 117423608587,
+        "name": "macos / build",
+        "conclusion": "success"
+      },
+      {
+        "id": 117423608657,
+        "name": "windows / build",
+        "conclusion": "success"
+      },
+      {
+        "id": 117423949615,
+        "name": "collect",
+        "conclusion": "success"
+      },
+      {
+        "id": 117424007665,
+        "name": "publish",
+        "conclusion": "success"
+      }
+    ],
+    "go": "1.22.12",
+    "linux_tools": "remake/packaging/Dockerfile.appimage",
+    "native_macos": "macos-14; arm64及x86_64編譯、fat Mach-O、原生bundle自檢",
+    "native_windows": "windows-2022; x86_64 GUI PE、原生子程序自檢",
+    "native_linux": "ubuntu-24.04 Docker; 實際AppImage空白cwd與Xvfb自檢"
+  },
+  "packages": [
+    {
+      "file": "FD2-v.1.0.0-20261017-linux-x86_64.AppImage",
+      "size": 6765048,
+      "sha256": "4f94eedec1e1f1689342bdb0426a07fa99583d8783585e6fff543060ee5480e2",
+      "native_check": "passed",
+      "distribution": "engine-only"
+    },
+    {
+      "file": "FD2-v.1.0.0-20261017-windows-x86_64.zip",
+      "size": 6660970,
+      "sha256": "dc5e1239ec12c164f783d200fc39ce20fb5d663d95f6a56e472f0a1a4a935cb3",
+      "native_check": "passed",
+      "distribution": "engine-only",
+      "public_assets": 447,
+      "archive_check": "CRC, UTF-8, architecture, mode, licenses, exact public assets passed"
+    },
+    {
+      "file": "FD2-v.1.0.0-20261017-macos-universal.zip",
+      "size": 11329216,
+      "sha256": "58a8524fe7db2fc14d593c379eddc0e8e7966069792266d4f649be35a2d96cba",
+      "native_check": "passed",
+      "distribution": "engine-only",
+      "public_assets": 447,
+      "archive_check": "CRC, UTF-8, architecture, mode, licenses, exact public assets passed"
+    }
+  ],
+  "local": {
+    "root": "dist-all/v.1.0.0-20261017",
+    "public_packages": "dist-all/v.1.0.0-20261017/patch",
+    "smoke": "dist-all/v.1.0.0-20261017/smoke",
+    "manifest_sha256": "58c2bfa9ca0e4c17f80434c668a38ecd749058072908ee0298faed5f49bc080b",
+    "validation_sha256": "410c931c2b4e42b05a85f5065ba0cd21b034fa6d40feff074cbff66951dc67cd",
+    "linux_content_log_sha256": "f80520d00582140393f1987532479069b57fed05db496738722dff176430bdcb",
+    "linux_self_check_log_sha256": "8bfc9fd5c72362adf36c16d45baeb067e1aac03bfbdb06e14d5b241913cae7e5",
+    "public_assets_per_package": 447,
+    "linux_downloaded_self_check": "passed"
+  },
+  "verification": {
+    "tool": "tools/verify_fd2_release.py",
+    "tool_sha256": "2fec7890a66b6d34b0f173555eca862aee3a8c7a7e80d3931e9b45b72ad10112",
+    "command": "Docker fd2-build-appimage:latest python3 tools/verify_fd2_release.py --version v.1.0.0-20261017 --commit d8c361a8324cb19b5a0738897e15c151500a8de8",
+    "source": "各包實際回下載bytes、公開Release API、原生CI同提交收據及tag資料樹",
+    "checks": [
+      "三附件SHA-256與大小對應公開API及正式manifest",
+      "447個公開素材完整清單與內容SHA",
+      "Windows ZIP UTF-8／README BOM／CRLF／GUI x86_64 PE",
+      "macOS ZIP執行權限／arm64與x86_64 Mach-O／bundle完整版號",
+      "LICENSE全文及Go／模組授權；Linux另有固定runtime及X11授權",
+      "實際回下載Linux AppImage空白cwd自檢"
+    ],
+    "tool_regression": "6項通過，含非ASCII版號數字拒收；已發布版本為ASCII且附件不變。"
+  },
+  "rights": {
+    "distribution": "engine-only",
+    "license": "RRSAL-1.0",
+    "original_game_assets_included": false,
+    "private_modern_assets_included": false,
+    "local_full_bundle_created": false
+  },
+  "limitations": [
+    "需玩家自備完整合法分離素材；現有單一匯入工具不是完整包產生器。",
+    "30章依111受控流程及各章保存例外驗收，不宣稱自然難度、所有分支或逐幀一致。",
+    "HD尚未完成，現代素材覆蓋及正常呈現仍由#201／#202／#204追蹤。",
+    "Windows／macOS未簽署，macOS未公證；實機啟動、存讀檔及音訊抽測仍由#9追蹤。",
+    "完整matching保持暫停，本輪無新matching或錄影。"
+  ],
+  "prior_failures": [
+    {
+      "commit": "cf9c5cd2",
+      "run_id": 39041315796,
+      "classification": "macOS lipo驗證命令參數錯誤；Linux／Windows成功，未發布。"
+    },
+    {
+      "commit": "c8746a35",
+      "run_id": 39041602077,
+      "classification": "受版控摘要取得Apple lipo直接usage，修正輸入置於-verify_arch之前；未改SDK或遊戲規則。"
+    }
+  ],
+  "cleanup": {
+    "root_owned": 2811,
+    "historic_root_owned_unchanged": true,
+    "md_directories": 0,
+    "scan_errors": 0,
+    "changed_markdown_links_passed": 1496,
+    "candidate_bytes_removed": 38335421,
+    "videos_created": false,
+    "formal_packages_retained": true
+  }
+}

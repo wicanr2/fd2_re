@@ -637,3 +637,13 @@ Linux本機候選已通過：同一Docker image、447份公開資產、實際App
 預檢cf9c5cd2的macOS建置步驟失敗，未建立正式tag或Release。公開API可讀狀態與註記，但job log端點回403，未搬運主機憑證；先在受版控macOS流程增加僅含本步驟stdout／stderr的失敗摘要註記，再由公開API讀直接原因，不猜修SDK或規則。Linux候選實際預設啟動已抽frame120，畫面為story_ch00_handler演出，無關卡注入，未用此單張推定完整START。
 
 macOS直接原因已由39041602077的原生註記取得：兩個slice及lipo create成功，Apple lipo將位於-verify_arch後的檔名當成架構旗標，usage明示lipo <input_file> <command>。修正為輸入在前，維持雙架構及後續Mach-O驗證，沒有改SDK、遊戲或放寬gate。cf9c5cd2的Linux／Windows原生建置、自檢及封包均success；正式三平台同來源收據仍待修正後新提交重跑。重複失敗後回查打包路由與封包四層驗證，分類為驗證命令問題。
+
+正式預檢39041776347全數通過後，main快轉至d8c361a8並推送，建立輕量tag v.1.0.0-20261017。Git metadata在sandbox唯讀，改以已授權的unsandboxed Git控制面寫index／refs，沒有覆寫或移動舊tag。正式run39042142693三平台、聚合及發布全success，22:48:16台北時間公開Release 415858640並設為Latest。
+
+受版控verify_fd2_release.py回下載三包至dist-all/v.1.0.0-20261017/patch，與API digest／manifest大小及SHA完全相同。Windows 6,660,970 bytes、macOS 11,329,216 bytes、Linux 6,765,048 bytes；ZIP CRC、UTF-8／BOM／CRLF、兩種Mach-O架構、GUI PE、授權及各447份公開素材全部通過。實際回下載Linux AppImage解包內容及空白cwd自檢亦通過，沒有原版或私人現代素材混入。正式receipt及重跑工具同批加入00-index與41，58新增發行列。未宣稱HD、自然難度、所有分支、簽署／公證或實體平台完成；#9維持實機抽測範圍。
+
+索引檢查勘誤：41原有入口使用打包標題與頁碼，不能只搜尋完整檔名判定缺入口。核對既有標題入口後，同批補上直接可點的41及正式收據連結，沒有新增第二份職責重複文件。
+
+發行收尾依版號契約將工具regex的數字限定為[0-9]，加入全形數字版號拒收案例，6項回歸通過。已發布的ASCII版號及所有附件不受影響，tag／Release不移動、不覆寫。
+
+最後衛生檢查：異動檔與正式交付均UID/GID1000:1000，1496條異動文件本地連結有效。歷史root-owned仍2811、md目錄0、掃描錯誤0；原FD2.EXE SHA保持。清理本輪候選AppImage及stage共38,335,421 bytes，保存SHA／清理紀錄與必要PNG／文字收據，正式三包保留在dist-all。沒有產生錄影；未留下FD2一次性容器。

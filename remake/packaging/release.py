@@ -27,7 +27,7 @@ def sha(path):
 
 def version():
     value = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    if not re.fullmatch(r"v\.\d+\.\d+\.\d+-\d{8}", value):
+    if not re.fullmatch(r"v\.[0-9]+\.[0-9]+\.[0-9]+-[0-9]{8}", value):
         raise ValueError("VERSION 必須是 v.主版.次版.修訂版-YYYYMMDD")
     datetime.datetime.strptime(value[-8:], "%Y%m%d")
     ref = os.environ.get("GITHUB_REF", "")

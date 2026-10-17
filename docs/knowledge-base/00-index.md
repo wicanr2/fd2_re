@@ -943,3 +943,10 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第3章T3援軍後收尾計畫r3](../data/parity-plans/ch03-full-flow-r3.jsonl)：同一來源及兩次END，省去已造成自然敗北的額外回合；原r2保留失敗。
 
 - [第3章正式流程收據](../data/ui-traces/parity-ch03.json)：T3兩端援軍、鐵諾存活JOIN、下一城鎮、酒店保存與正式LOAD冷讀；完整SAV含checksum零差異，依111流程例外，畫面僅參考。
+
+
+### 正式第一版發行
+
+- [三平台正式封包契約](41-packaging.md)：發行格式、公開與本機素材邊界、原生程序與實機驗收。
+- [v.1.0.0-20261017三平台發行收據](../data/fd2-release-v.1.0.0-20261017.json)：公開Release、原生CI、附件SHA、447份公開素材與平台限制。
+- [發布後附件核對工具](../../tools/verify_fd2_release.py)：獨立驗版號、來源提交、架構、授權、UTF-8及內容SHA，輸出至dist-all。

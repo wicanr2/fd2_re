@@ -44,7 +44,8 @@ class ReleasePackaging(unittest.TestCase):
                     release.os.environ, {"GITHUB_REF": ""}):
             path = Path(temporary) / "VERSION"
             for invalid in ("1.0.0", "v1.0.0-20261017",
-                            "v.1.0.0-20260230", "v.1.0.0-20261017-r2"):
+                            "v.1.0.0-20260230", "v.1.0.0-20261017-r2",
+                            "v.１.0.0-20261017"):
                 path.write_text(invalid)
                 with self.subTest(invalid=invalid), self.assertRaises(ValueError):
                     release.version()
