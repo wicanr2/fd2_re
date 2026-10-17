@@ -633,3 +633,5 @@ Game full-r3正常重播通過53筆AI，零順序分岔；行為／節點passed�
 actionlint1.7.7語法檢查及6項封包負例回歸通過。初次素材容器單元測試因沒有git而停止，將Git HEAD視為來源比較測試的外部輸入，真實HEAD仍由流水線核對。Linux候選第一輪授權清單取go list -m all，包含未被程式引用、未下載完整source的圖節點而缺Dir；改由go list -deps -json=Module取得實際linked module來源，不刪除必要授權文字。原候選只含stage，沒有正式封包，清除本輪明確部分輸出後同工具鏈重跑。
 
 Linux本機候選已通過：同一Docker image、447份公開資產、實際AppImage從空白cwd進行本版本自檢，沒有原版／私人素材。候選留work且來源工作樹尚未提交，不作正式Release收據。另補type2-runtime固定版本MIT全文及SHA，macOS兩架構的實際模組授權取聯集；正式CI將從乾淨提交重建。
+
+預檢cf9c5cd2的macOS建置步驟失敗，未建立正式tag或Release。公開API可讀狀態與註記，但job log端點回403，未搬運主機憑證；先在受版控macOS流程增加僅含本步驟stdout／stderr的失敗摘要註記，再由公開API讀直接原因，不猜修SDK或規則。Linux候選實際預設啟動已抽frame120，畫面為story_ch00_handler演出，無關卡注入，未用此單張推定完整START。

@@ -20,6 +20,7 @@ jobs:
       - name: 建置雙架構並組裝正式 bundle
         run: |
           set -euo pipefail
+          exec > >(tee "$RUNNER_TEMP/fd2-macos-build.log") 2>&1
           version=$(cat ../VERSION)
           echo "FD2_VERSION=$version" >> "$GITHUB_ENV"
           work="../work/release-$version/macos"
@@ -52,6 +53,16 @@ jobs:
           iconutil -c icns "$iconset" -o "$app/Contents/Resources/fd2.icns"
           chmod +x "$app/Contents/MacOS/fd2"
           cp "$app/Contents/Resources/README.txt" "$work/FD2-$version-macos-universal/README.txt"
+      - name: 公開本輪建置失敗摘要
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import os, pathlib
+          log = pathlib.Path(os.environ["RUNNER_TEMP"]) / "fd2-macos-build.log"
+          message = log.read_text(encoding="utf-8", errors="replace")[-28000:] if log.exists() else "建置log尚未建立"
+          message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+          print("::error title=FD2 macOS建置直接紀錄::" + message)
+          PY
       - name: 空白目錄執行原生 bundle 自檢及 ZIP
         run: |
           set -euo pipefail
