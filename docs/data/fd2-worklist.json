@@ -154,23 +154,6 @@
       "issue": 12
     },
     {
-      "id": "campaign-postbattle-e2-full",
-      "layer": "player",
-      "category": "工作",
-      "title": "全戰役驗收總項：完成剩餘章節與戰後／存檔邊界",
-      "body": "排程：P0。這是戰役驗收總項，不與各章工作重複計算完成度。唯一章狀態仍由 [parity-campaign-progress.json](https://github.com/wicanr2/fd2_re/blob/main/docs/data/parity-campaign-progress.json) 與 [58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md) 判定。\n\n第24章#142已完成流程驗收；接續#199第25～30章及結局，最後#200補齊1～3章。回合事件 #33 與 HUD #41 隨相關章一起收斂。不為非阻擋像素 #52 或已暫停 #198 等待，不重跑已通過章來追求函式數或無關畫面。\n\n已綁定的章節各自有窄 `RUNTIME-E1`，但沒有每一章都以同狀態走過戰前對白、戰鬥節拍、戰後節點、城鎮與存檔邊界並與原版比較。\n\n2026-09-15 決議（取代 2026-08-23 的「交人工遊玩回報」）：由代理程式依 [`111` 目標提示詞](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/111-goal-original-parity-campaign-20260915.md) 用 dosgolem 逐章推進 30 章。起點用受版控工具依攻略校準的建構槽跳關，章內全程正常鍵盤輸入，抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點；這條路徑視同該章 `PLAYER-E2`。依2026-10-15最新使用者定案，允許作弊通關並參考攻略，以行為、節點與交易三閘門驗流程一致；畫面只作參考，不強求每個frame相同，進度台帳是 `docs/data/parity-campaign-progress.json`。\n\n執行子項：#142 第24章、#199 第25～30章、#200 第1～3章；#203環境前置已限定驗收；#207與#208已完成限定修正及第24章流程驗收。總項保持30章流程驗收範圍，暫停研究不在依賴內。",
-      "acceptance": "30 章各自依 111 的章工作單元取得原版／重製收據，依111最新修訂通過流程三閘門，逐幀畫面只作參考；parity-campaign-progress.json 的 all_chapters_passed 為 true。",
-      "verify": {
-        "kind": "absent",
-        "paths": [
-          "docs/data/parity-campaign-progress.json"
-        ],
-        "pattern": "\"all_chapters_passed\"\\s*:\\s*true",
-        "note": "台帳還沒出現 30 章全過的訊號；台帳檔不存在也算未完成。"
-      },
-      "issue": 14
-    },
-    {
       "id": "bgm-sfx-listening",
       "layer": "player",
       "category": "工作",
@@ -258,19 +241,6 @@
         "note": "全檔 SHA、遊戲 C 覆蓋、保留組語／函式庫依據及正式啟動收據須一起審查；局部或原始 EXE 回填不算完成。"
       },
       "issue": 198
-    },
-    {
-      "id": "campaign-ch01-ch03-closeout",
-      "layer": "player",
-      "category": "工作",
-      "title": "P0 補齊第1～3章正式驗收與新遊戲入口",
-      "body": "2026-10-15：依使用者最新定案驗流程一致，允許明示測試作弊；行為／節點／交易與實際保存須通過，逐幀畫面只作參考。舊畫面門檻不阻塞本項，匹配研究維持暫停。\n\n排程：P0，與後段章驗收同屬 #14；後段完成後補齊，若新遊戲有玩家阻擋則立即處理。重用既有標題至第一章研究，不把舊RUNTIME-E1或不同來源收據直接提升為111。\n\n從標題START正常輸入覆蓋開場／第一章；各章依111取得戰鬥抽樣、事件、戰後、城鎮與存檔。第1～3章剩餘回合事件由 #33 同步收斂。",
-      "acceptance": "正式台帳第1～3章均passed，依111最新修訂的流程三閘門，畫面只作參考及存檔來源完整；另有目前正式引擎標題START到第一章可操作的正常鍵盤收據，明示建構槽與注入限制。",
-      "verify": {
-        "kind": "manual",
-        "note": "核對正式章台帳與START正常玩家入口，舊截圖／debug直接進場不算完成。"
-      },
-      "issue": 200
     },
     {
       "id": "modern-theme-player-asset-coverage",

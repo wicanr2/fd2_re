@@ -290,6 +290,12 @@
       "status": "214_passed_one_open_issue_snapshot_failure",
       "log": "work/ch03-flow-20261017/tools-regression-r3.log",
       "reason": "第3章真實正常等待fixture補齊EXE hash／eip後通過，214項相關測試通過；唯一失敗為30章台帳已完成但遠端#14仍開著，提交後結案並更新快照再乾淨重跑。"
+    },
+    "tools_r4": {
+      "status": "passed",
+      "tests": 215,
+      "log": "work/ch03-flow-20261017/tools-regression-r4.log",
+      "worklist": "遠端#14／#200／#248／#249結案後官方pull20項，render／verify通過；原r3失敗保留。"
     }
   },
   "unknown": [

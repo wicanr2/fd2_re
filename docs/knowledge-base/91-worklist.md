@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -166,22 +166,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 怎樣算做完：挑代表性的玩家與敵方回合，以未修改路徑取得同狀態逐幀與音訊對照。
 
-### 全戰役驗收總項：完成剩餘章節與戰後／存檔邊界
-
-`campaign-postbattle-e2-full` · 工作 · [#14](https://github.com/wicanr2/fd2_re/issues/14) · 仍未完成 · 還沒出現
-
-排程：P0。這是戰役驗收總項，不與各章工作重複計算完成度。唯一章狀態仍由 [parity-campaign-progress.json](https://github.com/wicanr2/fd2_re/blob/main/docs/data/parity-campaign-progress.json) 與 [58](https://github.com/wicanr2/fd2_re/blob/main/docs/knowledge-base/58-fd2-exe-re-coverage.md) 判定。
-
-第24章#142已完成流程驗收；接續#199第25～30章及結局，最後#200補齊1～3章。回合事件 #33 與 HUD #41 隨相關章一起收斂。不為非阻擋像素 #52 或已暫停 #198 等待，不重跑已通過章來追求函式數或無關畫面。
-
-已綁定的章節各自有窄 `RUNTIME-E1`，但沒有每一章都以同狀態走過戰前對白、戰鬥節拍、戰後節點、城鎮與存檔邊界並與原版比較。
-
-2026-09-15 決議（取代 2026-08-23 的「交人工遊玩回報」）：由代理程式依 [`111` 目標提示詞](https://github.com/wicanr2/fd2_re/blob/main/docs/goal/111-goal-original-parity-campaign-20260915.md) 用 dosgolem 逐章推進 30 章。起點用受版控工具依攻略校準的建構槽跳關，章內全程正常鍵盤輸入，抽樣完戰鬥節拍後以 `force-enemy-clear` 進戰後節點；這條路徑視同該章 `PLAYER-E2`。依2026-10-15最新使用者定案，允許作弊通關並參考攻略，以行為、節點與交易三閘門驗流程一致；畫面只作參考，不強求每個frame相同，進度台帳是 `docs/data/parity-campaign-progress.json`。
-
-執行子項：#142 第24章、#199 第25～30章、#200 第1～3章；#203環境前置已限定驗收；#207與#208已完成限定修正及第24章流程驗收。總項保持30章流程驗收範圍，暫停研究不在依賴內。
-
-怎樣算做完：30 章各自依 111 的章工作單元取得原版／重製收據，依111最新修訂通過流程三閘門，逐幀畫面只作參考；parity-campaign-progress.json 的 all_chapters_passed 為 true。
-
 ### 曲號與音效還需要人耳確認
 
 `bgm-sfx-listening` · 工作 · [#15](https://github.com/wicanr2/fd2_re/issues/15) · 仍未完成 · 要人判
@@ -209,18 +193,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 2026-10-06 原生來源勘誤：使用正式native近堆模式、同固定槽及受版控六回合前綴，原版seq3146 attack_result在(11,85)為索引118，正式Game為116，完整差異仍1px。舊adapter索引0只解釋舊收據，不能宣稱目前差異僅由工具清零造成。253畫面點中246點完整0px，整體行為／節點／畫面比較仍未通過，跨同步HP與unknown UI限制保留。下一步只追必要copy plane／map work的writer，不填固定色或改容差。來源、命令及限制：主契約native_profile_recheck。
 
 怎樣算做完：定位單像素來源的原生writer／繪圖契約，依READY規格修正並以相同狀態點驗證，不遮蔽或調預算。
-
-### P0 補齊第1～3章正式驗收與新遊戲入口
-
-`campaign-ch01-ch03-closeout` · 工作 · [#200](https://github.com/wicanr2/fd2_re/issues/200) · 仍未完成 · 要人判
-
-2026-10-15：依使用者最新定案驗流程一致，允許明示測試作弊；行為／節點／交易與實際保存須通過，逐幀畫面只作參考。舊畫面門檻不阻塞本項，匹配研究維持暫停。
-
-排程：P0，與後段章驗收同屬 #14；後段完成後補齊，若新遊戲有玩家阻擋則立即處理。重用既有標題至第一章研究，不把舊RUNTIME-E1或不同來源收據直接提升為111。
-
-從標題START正常輸入覆蓋開場／第一章；各章依111取得戰鬥抽樣、事件、戰後、城鎮與存檔。第1～3章剩餘回合事件由 #33 同步收斂。
-
-怎樣算做完：正式台帳第1～3章均passed，依111最新修訂的流程三閘門，畫面只作參考及存檔來源完整；另有目前正式引擎標題START到第一章可操作的正常鍵盤收據，明示建構槽與注入限制。
 
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
