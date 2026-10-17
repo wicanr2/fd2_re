@@ -2494,6 +2494,21 @@
         ],
         "pattern": "原版已停在標題且無待處理按鍵"
       }
+    },
+    {
+      "id": "macos-lipo-verify-input-before-architectures",
+      "area": "打包",
+      "date": "2026-10-17",
+      "rule": "macOS組包以lipo <輸入> -verify_arch arm64 x86_64驗雙架構；先保存實際工具usage及退出碼，再區分命令參數、編譯及binary缺架構。正式入口為.github/workflows/build-macos.yml，授權與平台驗收界線見docs/knowledge-base/41-packaging.md。",
+      "why": "原生預檢的兩個slice及lipo create已成功，將輸入檔放在-verify_arch後被Apple lipo當成架構旗標，導致驗證腳本exit1。直接摘要證明是命令順序，無須修改SDK或遊戲。",
+      "evidence": ".github/workflows/build-macos.yml",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          ".github/workflows/build-macos.yml"
+        ],
+        "pattern": "lipo\\ \"\\$app/Contents/MacOS/fd2\"\\ \\-verify_arch\\ arm64\\ x86_64"
+      }
     }
   ]
 }

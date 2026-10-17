@@ -147,6 +147,7 @@ Windows / macOS 未簽署；macOS 尚未公證，系統可能要求使用者另�
 
 程式及原創內容依隨包 LICENSE 的 RRSAL-1.0 提供。
 第三方元件的授權文字在 third-party/。
+macOS 的 LICENSE 與 third-party/ 位於 FD2.app/Contents/Resources/。
 """
     if platform == "windows-x86_64":
         (destination / "README.txt").write_bytes(b"\xef\xbb\xbf" + readme.replace(

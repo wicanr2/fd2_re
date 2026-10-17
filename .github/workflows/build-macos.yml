@@ -31,7 +31,7 @@ jobs:
           CGO_ENABLED=1 GOARCH=arm64 CGO_CFLAGS="-arch arm64" CGO_LDFLAGS="-arch arm64" go build -trimpath -buildvcs=false -ldflags="-s -w -X main.buildVersion=$version" -o "$work/fd2-arm64" ./cmd/fd2
           CGO_ENABLED=1 GOARCH=amd64 CGO_CFLAGS="-arch x86_64" CGO_LDFLAGS="-arch x86_64" go build -trimpath -buildvcs=false -ldflags="-s -w -X main.buildVersion=$version" -o "$work/fd2-amd64" ./cmd/fd2
           lipo -create "$work/fd2-arm64" "$work/fd2-amd64" -output "$app/Contents/MacOS/fd2"
-          lipo -verify_arch arm64 x86_64 "$app/Contents/MacOS/fd2"
+          lipo "$app/Contents/MacOS/fd2" -verify_arch arm64 x86_64
           python3 - "$app" "$version" <<'PY'
           import pathlib, plistlib, sys
           app = pathlib.Path(sys.argv[1])
