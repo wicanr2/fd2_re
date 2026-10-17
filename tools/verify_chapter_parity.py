@@ -39,7 +39,10 @@ except ImportError:  # pragma: no cover - 容器外沒有 Pillow
     Image = None
 
 ROOT = Path(__file__).resolve().parents[1]
-SAVE_POLICIES = {"ch25-opaque-20261016": ROOT / "docs/data/ida/fd2_turn_event56_20261015.json"}
+SAVE_POLICIES = {
+    "ch25-opaque-20261016": ROOT / "docs/data/ida/fd2_turn_event56_20261015.json",
+    "ch01-start-residual-20261017": ROOT / "docs/data/ida/fd2_ch01_flow_20261017.json",
+}
 
 
 def palette_cycle_metadata(cp: dict) -> dict:
@@ -197,11 +200,14 @@ def oracle_checkpoint(run: Path, seq: int) -> dict | None:
 
 
 def oracle_units(cp: dict) -> set[tuple]:
-    return {(u.get("camp"), u.get("x"), u.get("y")) for u in cp.get("units", []) if u.get("hp", 0) > 0}
+    # 只投影12C0D／11CAC接納的地圖記錄；bit0不是全域死亡／存活名稱。
+    return {(u.get("camp"), u.get("x"), u.get("y")) for u in cp.get("units", [])
+            if u.get("hp", 0) > 0 and not (u.get("byte5", 0) & 1)}
 
 
 def oracle_hp(cp: dict) -> dict[tuple, int]:
-    return {(u.get("camp"), u.get("x"), u.get("y")): u.get("hp", 0) for u in cp.get("units", []) if u.get("hp", 0) > 0}
+    return {(u.get("camp"), u.get("x"), u.get("y")): u.get("hp", 0) for u in cp.get("units", [])
+            if u.get("hp", 0) > 0 and not (u.get("byte5", 0) & 1)}
 
 
 def remake_units(cp: dict) -> set[tuple]:
@@ -484,6 +490,50 @@ def node_gate_ok(points: list[dict], completion: dict, checkpoints: list[dict]) 
             not any(cp.get("kind") == "runtime_error" for cp in checkpoints))
 
 
+def start_flow_report(oracle: Path, remake: Path, actions: list[dict]) -> dict:
+    """首章正常START來源與開場流程，不比較逐幀或全文像素。"""
+    report = {"ok": False, "scope": "正常標題START、序章來源呼叫與首章可操作入口"}
+    proof_path = remake / "start-entry.json"
+    settings_path = remake / "replay-settings.json"
+    starts = [a for a in actions if a.get("kind") == "mark" and a.get("label") == "battle_start"]
+    if len(starts) != 1 or not proof_path.is_file() or not settings_path.is_file():
+        return {**report, "reason": "缺正常START重播證明或唯一battle_start來源"}
+    original = oracle_checkpoint(oracle, starts[0]["seq"]) or {}
+    boot = oracle_checkpoint(oracle, 0) or {}
+    controls = read_jsonl(oracle / "control-history.jsonl")
+    trace = read_jsonl(oracle / "eip-trace.jsonl")
+    proof = json.loads(proof_path.read_text())
+    settings = json.loads(settings_path.read_text())
+    calls, previous = [], None
+    for line in proof.get("lines", []):
+        call = [line.get("source"), line.get("string")]
+        if call != previous:
+            calls.append(call)
+            previous = call
+    beats = json.loads((Path(__file__).resolve().parents[1] / "docs/data/chapter_beats/ch00_pre.json").read_text())["beats"]
+    expected, bank = [], None
+    for beat in beats:
+        if beat["op"] == "loadch_var":
+            bank = int(beat["chapter"], 16) + 1
+        elif beat["op"] == "dialog":
+            expected.append([f"FDTXT_{bank:03d}", beat["args"][1]])
+    checks = {
+        "original_title": boot.get("exe_sha256") == "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+            and "0x1FE60" in boot.get("input_chain", []) and boot.get("kbd_reads") == 0 and boot.get("kbd_pending") == 0,
+        "first_input_start": bool(controls) and controls[0].get("seq") == 1 and controls[0].get("key") == "enter",
+        "original_opening_caller": any(r.get("eip") == "0x3231B" and r.get("stack", [])[:1] == ["0x25F17"] for r in trace),
+        "no_entry_injection": boot.get("state_injections") == [] and original.get("state_injections") == [],
+        "remake_start": settings.get("entry_mode") == "start" and proof.get("seed") == "4",
+        "story_source_calls": len(expected) == 19 and calls == expected and len(proof.get("lines", [])) == 97,
+        "keyboard_progress": original.get("kbd_reads") == proof.get("presses") == 118,
+        "normal_player_control": proof.get("player_control", {}).get("node") == "battle_ch01"
+            and proof.get("player_control", {}).get("turn") == 1 and "0x117F8" in original.get("input_chain", []),
+    }
+    return {**report, "ok": all(checks.values()), "checks": checks,
+            "source_calls": calls, "utterances": len(proof.get("lines", [])),
+            "presses": proof.get("presses"), "remake_proof_sha256": sha256_file(proof_path)}
+
+
 def ending_flow_report(oracle: Path, remake: Path, original_save: Path | None,
                        manifest: dict, actions: list[dict]) -> dict:
     """第30章終局的窄契約：實際caller順序、消費名冊及沒有保存。"""
@@ -644,6 +694,9 @@ def main() -> int:
         behavior.append({"seq": None, "kind": "runtime_error", "status": "remake_runtime_error", "note": note})
     behavior.extend(replay_divergences(remake_cps))
     behavior_ok = all(e["status"] in ("ok", "oracle_mid_end_turn") for e in behavior)
+    start_report = start_flow_report(args.oracle, args.remake, actions) if args.chapter == 1 else None
+    if start_report is not None:
+        behavior_ok = behavior_ok and start_report["ok"]
     nodes_ok = node_gate_ok(node_points, completion, remake_cps)
     save_actions = [a for a in actions if a.get("kind") in ("town_save", "preparation_save")]
     remake_save = [cp for cp in remake_cps if cp.get("kind") in ("town_save", "preparation_save")]
@@ -708,7 +761,8 @@ def main() -> int:
         "remake": {"checkpoints": len(remake_cps), "rng_synced_points": rng_synced_points,
                    "random_control": replay_settings},
         "gates": {
-            "behavior": {"ok": behavior_ok, "points": behavior},
+            "behavior": {"ok": behavior_ok, "points": behavior,
+                         **({"start_entry_proof": start_report} if start_report is not None else {})},
             "nodes": {"ok": nodes_ok, "oracle": node_seq_oracle, "remake": node_seq_remake,
                        "plan_completion": completion, "comparison_version": 3,
                        "source": "dosgolem_oracle_drive.ui_mode(input_chain)及原版actions",
@@ -725,7 +779,7 @@ def main() -> int:
             "nodes只驗已抽樣原版動作與介面家族；not_comparable點未驗介面。舊comparison_version缺失的nodes=true沒有獨立原版UI判準。",
             *([] if frames_required else ["依使用者2026-10-15定案採流程驗收；frames只作參考，未通過或未擷取不提升為逐像素一致。行為、節點與交易仍為必要閘門，保存依明示政策驗收。"]),
             *([] if save_entry["status"] != "accepted_disclosed_difference" else [
-                "使用者2026-10-16接受第25章已揭露的七byte及衍生檢查碼兩byte差異；完整差異清單保留，其他明文相同。用途仍未知，不宣稱完整SAV bytes相同，其他來源與章不沿用此例外。"]),
+                f"依使用者已確認的特定保存政策{args.save_policy}接受逐筆揭露差異；完整byte_report保留，不宣稱SAV bytes相同，其他來源與章不沿用此例外。"]),
         ],
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

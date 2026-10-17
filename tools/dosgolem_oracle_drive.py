@@ -111,8 +111,7 @@ def state():
 
 
 def alive(current, camp):
-    return sum(1 for u in current.get("units", [])
-               if u.get("hp", 0) > 0 and u.get("camp") == camp)
+    return len(side(current, camp))
 
 
 def measure(current, name):
@@ -809,7 +808,9 @@ def paralyzed(unit):
 
 
 def side(current, camp):
-    return [u for u in current.get("units", []) if u.get("hp", 0) > 0 and u.get("camp") == camp]
+    # 地圖candidate沿12C0D接納條件；不把raw bit0擴張為全域存活語意。
+    return [u for u in current.get("units", []) if u.get("hp", 0) > 0
+            and not (u.get("byte5", 0) & 1) and u.get("camp") == camp]
 
 
 def distance(a, b):
@@ -1328,6 +1329,32 @@ def do_move_unit(command):
     return False
 
 
+def engage_candidate_cells(command, current, unit, origin, target_index=None):
+    """明示選項才讀原版raw移動預算／地形模型；每格仍由正常Enter裁決。"""
+    movement = int(command.get("typical_move", 6))
+    if "native_move_budget" in command and type(command["native_move_budget"]) is not bool:
+        raise SystemExit("native_move_budget只接受布林值")
+    if command.get("native_move_budget"):
+        try:
+            raw = bytes.fromhex(unit.get("raw_hex", ""))
+        except ValueError as error:
+            raise SystemExit("native_move_budget缺完整原版raw來源") from error
+        if len(raw) != 80 or raw[0x3b] == 0:
+            raise SystemExit("native_move_budget缺完整原版raw或正移動預算")
+        movement = raw[0x3b]
+    cells = engage_targets(current, origin, movement, MOVE_SPAN.get(unit_key(unit)), target_index)
+    if "candidate_map" in command:
+        map_index = command["candidate_map"]
+        if type(map_index) is not int or not 0 <= map_index <= 32:
+            raise SystemExit("candidate_map超出原始map0..32")
+        grid = load_map_cost_grid(map_index)
+        if grid is None:
+            raise SystemExit("candidate_map缺少既有地形成本來源")
+        estimated = reachable_cells(grid, current, origin, movement)
+        cells = [cell for _, cell in sorted(enumerate(cells), key=lambda row: (row[1] not in estimated, row[0]))]
+    return cells[:int(command.get("tries", 14))]
+
+
 def do_engage(command):
     """選取一個我方單位，推進到能打的位置，打得到就打，打不到就待機。
 
@@ -1409,9 +1436,8 @@ def do_engage(command):
     standing = [e for e in side(current, ENEMY_CAMP)
                 if distance((e["x"], e["y"]), (ux, uy)) <= reach
                 and (target_index is None or e.get("index") == target_index)]
-    candidates = [] if standing else engage_targets(
-        current, (ux, uy), int(command.get("typical_move", 6)),
-        MOVE_SPAN.get(unit_key(unit)), target_index)[:tries]
+    candidates = [] if standing else engage_candidate_cells(
+        command, current, unit, (ux, uy), target_index)
     if standing:
         # 已經站在射程內就原地確認，不必再走。
         seq, current = send("enter", max(steps, 5_000_000))

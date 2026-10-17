@@ -241,6 +241,7 @@ func (g *Game) restartCampaignFromTitle() error {
 	g.gold, g.handlerChapter = 0, 0
 	g.nativeCurrentSavePlain, g.nativeChapterSlotPlain = nil, nil
 	g.nativeChapterSlotBaseline, g.nativeChapterRestore = nil, nil
+	g.nativeChapterSlotStarted = false
 	g.hasHandlerInheritedMapView = false
 	g.nativeContinueOpeningConfirm = false
 	g.loadErr = ""

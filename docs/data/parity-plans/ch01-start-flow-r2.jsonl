@@ -1,0 +1,36 @@
+# #200：與r1相同正常START／戰鬥／T7增援／戰後保存；縮短工具冗餘等待。
+# 物理確認既有send至少10M；額外settle改2M×1，收尾仍由原生cursor／dialogue owner決定。
+{"await_ui":"title","steps":2000000,"max":2000}
+{"key":"enter","steps":2000000,"gate":"kbd_empty"}
+{"await_ui":"cursor","steps":2000000,"max":3000}
+{"mark":"battle_start","steps":1000000}
+{"engage":{"from_index":2,"target_index":8},"typical_move":7,"reach":1,"tries":16,"finish_wait":120,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"sweep_round":true,"max_units":2,"skip_indices":[1],"advance":false,"stop_on_auto_end":true,"reach":1,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"await":"round>=2","steps":2000000,"max":600,"abort_if":"ally_alive==0"}
+{"await_ui":"cursor","steps":2000000,"max":600}
+{"mark":"round2","steps":1000000}
+{"sweep_round":true,"max_units":2,"skip_indices":[1],"advance":false,"stop_on_auto_end":true,"reach":1,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"await":"round>=3","steps":2000000,"max":600,"abort_if":"ally_alive==0"}
+{"await_ui":"cursor","steps":2000000,"max":600}
+{"mark":"round3","steps":1000000}
+{"sweep_round":true,"max_units":2,"skip_indices":[1],"advance":false,"stop_on_auto_end":true,"reach":1,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"await":"round>=4","steps":2000000,"max":600,"abort_if":"ally_alive==0"}
+{"await_ui":"cursor","steps":2000000,"max":600}
+{"mark":"father_son_arrived","steps":1000000}
+{"sweep_round":true,"max_units":2,"skip_indices":[1],"advance":false,"stop_on_auto_end":true,"reach":1,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"await":"round>=5","steps":2000000,"max":600,"abort_if":"ally_alive==0"}
+{"await_ui":"cursor","steps":2000000,"max":600}
+{"mark":"enemy_reinforcements_arrived","steps":1000000}
+{"sweep_round":true,"max_units":2,"skip_indices":[1],"advance":false,"stop_on_auto_end":true,"reach":1,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"await":"round>=6","steps":2000000,"max":600,"abort_if":"ally_alive==0"}
+{"await_ui":"cursor","steps":2000000,"max":600}
+{"mark":"pirate_boss_arrived","steps":1000000}
+{"sweep_round":true,"max_units":2,"skip_indices":[1],"advance":false,"stop_on_auto_end":true,"reach":1,"steps":2000000,"strike_steps":2000000,"strike_settle":1,"cutscene_steps":2000000}
+{"await":"round>=7","steps":2000000,"max":600,"abort_if":"ally_alive==0"}
+{"await_ui":"cursor","steps":2000000,"max":600}
+{"mark":"coast_guard_arrived","steps":1000000}
+{"force_enemy_clear":true,"steps":2000000}
+{"await_ui":"town","steps":2000000,"max":1000}
+{"mark":"town_after_battle","steps":1000000}
+{"town_probe":{"moves":["left","left","left","left","left"]},"steps":2000000,"probe_settle":6,"escape_max":8}
+{"town_save":true,"steps":2000000}

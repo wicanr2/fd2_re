@@ -99,6 +99,29 @@ class BoundedSaveAcceptance(unittest.TestCase):
                 self.assertEqual(entry["acceptance_policy"]["status"], "not_applicable")
 
 
+class StartSaveAcceptance(BoundedSaveAcceptance):
+    def setUp(self):
+        super().setUp()
+        self.policy_id = "ch01-start-residual-20261017"
+        self.policy = json.loads(vp.SAVE_POLICIES[self.policy_id].read_text())["save_acceptance_policy"]
+        self.entry = {"status": "fail", "byte_report": deepcopy(self.policy["byte_report"]),
+                      "oracle_save_sha256": self.policy["oracle_save_sha256"],
+                      "remake_save_sha256": self.policy["remake_save_sha256"]}
+        self.context.update(chapter=1,
+            manifest={"output_sha256": self.policy["input_save_sha256"]},
+            plan_sha256=self.policy["plan_sha256"],
+            runner={"original_fd2_exe_sha256": self.policy["exe_sha256"],
+                    "dosgolem_commit": self.policy["dosgolem_commit"]})
+
+    def test_explicit_policy_preserves_every_difference_and_reports_inequality(self):
+        before = deepcopy(self.entry["byte_report"])
+        vp.apply_save_policy(self.entry, self.policy_id, **self.context)
+        self.assertEqual(self.entry["status"], "accepted_disclosed_difference")
+        self.assertFalse(self.entry["bytes_equal"])
+        self.assertEqual(self.entry["byte_report"], before)
+        self.assertEqual(len(before["differences"]), 2228)
+
+
 class SaveByteReport(unittest.TestCase):
     def test_all_plain_bytes_and_checksum_are_reported_without_waiver(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -196,6 +219,17 @@ class FramePolicyIntegration(unittest.TestCase):
 
 
 class PairingAndUnits(unittest.TestCase):
+    def test_map_admission_excludes_positive_hp_record_rejected_by_raw_bit0(self):
+        # 正常START seq191的record9：32917→32975寫bit0，HP仍28。
+        rows = [
+            {"camp": 0, "x": 4, "y": 23, "hp": 28, "byte5": 1},
+            {"camp": 2, "x": 7, "y": 14, "hp": 42, "byte5": 0x80},
+            {"camp": 0, "x": 3, "y": 18, "hp": 0, "byte5": 0},
+        ]
+        self.assertEqual(vp.oracle_units({"units": rows}), {(2, 7, 14)})
+        self.assertEqual(vp.oracle_hp({"units": rows}), {(2, 7, 14): 42})
+        self.assertEqual(vp.oracle_units({"units": [{"camp": 0, "x": 1, "y": 2, "hp": 3}]}), {(0, 1, 2)})
+
     def test_same_seq_wait_and_mark_use_unique_source_action(self):
         owner = {"input_chain": ["0x117F8"]}
         wait = {"kind": "wait", "seq": 1277}
@@ -615,6 +649,53 @@ class PairingAndUnits(unittest.TestCase):
     def test_remake_units_keep_camp_code(self):
         cp = {"units": [{"camp": 2, "x": 3, "y": 4, "hp": 9, "identity": 0, "acted": 0}]}
         self.assertEqual(vp.remake_units(cp), {(2, 3, 4)})
+
+
+class StartFlowProof(unittest.TestCase):
+    def fixture(self, root):
+        oracle, remake = root / "oracle", root / "remake"
+        oracle.mkdir(); remake.mkdir()
+        boot = {"exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+                "input_chain": ["0x1FE60"], "kbd_reads": 0, "kbd_pending": 0, "state_injections": []}
+        original = {"input_chain": ["0x117F8"], "kbd_reads": 118, "state_injections": []}
+        calls = []
+        bank = None
+        source = Path(vp.__file__).resolve().parents[1] / "docs/data/chapter_beats/ch00_pre.json"
+        for beat in json.loads(source.read_text())["beats"]:
+            if beat["op"] == "loadch_var": bank = int(beat["chapter"], 16) + 1
+            elif beat["op"] == "dialog": calls.append((f"FDTXT_{bank:03d}", beat["args"][1]))
+        lines = [{"source": bank, "string": string} for bank, string in calls for _ in range(5)]
+        lines = [dict(lines[0]), dict(lines[0]), *lines]
+        proof = {"seed": "4", "presses": 118, "lines": lines,
+                 "player_control": {"node": "battle_ch01", "turn": 1}}
+        key, caller = "enter", "0x25F17"
+        def write():
+            (oracle / "checkpoint-0000.json").write_text(json.dumps(boot))
+            (oracle / "checkpoint-0191.json").write_text(json.dumps(original))
+            (oracle / "control-history.jsonl").write_text(json.dumps({"seq": 1, "key": key}) + "\n")
+            (oracle / "eip-trace.jsonl").write_text(json.dumps({"eip": "0x3231B", "stack": [caller]}) + "\n")
+            (remake / "start-entry.json").write_text(json.dumps(proof))
+            (remake / "replay-settings.json").write_text(json.dumps({"entry_mode": "start"}))
+        write()
+        return (oracle, remake, [{"kind": "mark", "label": "battle_start", "seq": 191}]), boot, original, proof, write
+
+    def test_complete_normal_start_source_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            args, *_ = self.fixture(Path(tmp))
+            self.assertTrue(vp.start_flow_report(*args)["ok"])
+
+    def test_load_missing_proof_and_changed_story_cannot_pass(self):
+        for fault in ("load", "missing", "story", "presses", "entry_injection", "title"):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as tmp:
+                args, boot, original, proof, write = self.fixture(Path(tmp))
+                if fault == "story": proof["lines"][0]["source"] = "wrong"
+                elif fault == "presses": original["kbd_reads"] = 119
+                elif fault == "entry_injection": original["state_injections"] = [{"kind": "hp_lock"}]
+                elif fault == "title": boot["input_chain"] = ["0x117F8"]
+                write()
+                if fault == "load": (args[0] / "control-history.jsonl").write_text('{"seq":1,"key":"down"}\n')
+                elif fault == "missing": (args[1] / "start-entry.json").unlink()
+                self.assertFalse(vp.start_flow_report(*args)["ok"])
 
 
 class EndingFlowProof(unittest.TestCase):

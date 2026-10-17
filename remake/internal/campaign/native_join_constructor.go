@@ -213,8 +213,9 @@ func (table NativeJoinConstructorTable) MaterializePersistentRecord(
 }
 
 // MaterializePersistentRecordOn 把 sub_112A5 的寫入疊在 residual 上：持續名冊記憶體是
-// 0x10010 從槽整批還原的，count 之後那一格在 JOIN 之前就是 LOAD 時槽裡的 bytes（新開局
-// 全 0），建構器沒寫到的 byte 原封不動留在存檔裡（第七章 r6 凱麗：+0..+4、+0x17、
+// 0x10010 從槽整批還原的，count 之後那一格在 JOIN 之前就是 LOAD 時槽裡的 bytes。
+// 沒有 LOAD 時本引擎使用零基底，不宣稱原版新開局全零；首章 START 收據已有非零反證。
+// 建構器沒寫到的 byte 原封不動留在存檔裡（第七章 r6 凱麗：+0..+4、+0x17、
 // +0x19、+0x28..+0x30、+0x32..+0x36、+0x3d 都是 LOAD 進來的殘值）。
 func (table NativeJoinConstructorTable) MaterializePersistentRecordOn(
 	residual fdsave.PersistentRecord,

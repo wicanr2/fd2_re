@@ -226,14 +226,15 @@
           "type": "join_party",
           "native_source": "0x341e8",
           "char_id": 1,
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "spawn_group",
           "groups": [
             3
           ],
-          "camp": "own",
+          "camp": "ally",
           "act_immediately": false,
           "native_spawns": [
             {
@@ -252,18 +253,21 @@
             5,
             8
           ],
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "redraw",
           "native_source": "0x34208",
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "delay",
           "native_source": "0x34212",
           "ms": 100,
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "native_acting",
@@ -272,7 +276,8 @@
             "resource": 7,
             "source": "0x3421c"
           },
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -293,19 +298,21 @@
                 "『老爸！老爸！"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "native_range_zero",
           "native_source": "0x34250",
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "spawn_group",
           "groups": [
             7
           ],
-          "camp": "own",
+          "camp": "ally",
           "act_immediately": false,
           "native_spawns": [
             {
@@ -320,13 +327,15 @@
         {
           "type": "redraw",
           "native_source": "0x34266",
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "delay",
           "native_source": "0x34270",
           "ms": 100,
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "native_acting",
@@ -335,7 +344,8 @@
             "resource": 8,
             "source": "0x3427a"
           },
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -384,7 +394,8 @@
                 ]
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -406,7 +417,8 @@
                 "　有人在島上打架呢！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -494,7 +506,8 @@
                 ]
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -516,7 +529,8 @@
                 "　老爸，您說這該怎麼辦？』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -539,7 +553,8 @@
                 "　我們就幫他們一個忙吧！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -563,7 +578,8 @@
                 "　湊熱鬧！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -586,7 +602,8 @@
                 "　的。』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -609,7 +626,8 @@
                 "　回去回去！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -632,7 +650,8 @@
                 "　好聽一點的吧！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -701,7 +720,8 @@
                 ]
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -723,7 +743,8 @@
                 "　小子，我們上！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -744,12 +765,14 @@
                 "『好的，老爸！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "reset_pose",
           "native_source": "0x342ae",
-          "native_event_id": 0
+          "native_event_id": 0,
+          "camp": "ally"
         }
       ]
     },
@@ -768,7 +791,8 @@
             11,
             16
           ],
-          "native_event_id": 1
+          "native_event_id": 1,
+          "camp": "enemy"
         },
         {
           "type": "spawn_group",
@@ -793,7 +817,8 @@
         {
           "type": "reset_pose",
           "native_source": "0x342ef",
-          "native_event_id": 1
+          "native_event_id": 1,
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -815,7 +840,8 @@
                 "　弟兄們好像陷入苦戰呢！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -836,7 +862,8 @@
                 "『那還等什麼！我們上吧！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         }
       ]
     },
@@ -855,7 +882,8 @@
             0,
             16
           ],
-          "native_event_id": 2
+          "native_event_id": 2,
+          "camp": "enemy"
         },
         {
           "type": "spawn_group",
@@ -880,7 +908,8 @@
         {
           "type": "reset_pose",
           "native_source": "0x34357",
-          "native_event_id": 2
+          "native_event_id": 2,
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -904,7 +933,8 @@
                 "　不怕給別人笑話嗎？』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -926,7 +956,8 @@
                 "　又是來幹什麼的？』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -950,7 +981,8 @@
                 "　』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -974,7 +1006,8 @@
                 "　讓我來！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1041,7 +1074,8 @@
                 ]
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1094,7 +1128,8 @@
                 ]
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1117,7 +1152,8 @@
                 "　地獄後再吵也不遲！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1139,7 +1175,8 @@
                 "　滾一邊去！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1162,7 +1199,8 @@
                 "　先合力宰了他再說！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1183,7 +1221,8 @@
                 "『好，就這麼辦！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         },
         {
           "type": "dialogue",
@@ -1206,7 +1245,8 @@
                 "　一個都別放過！』"
               ]
             ]
-          }
+          },
+          "camp": "enemy"
         }
       ]
     },
@@ -1225,7 +1265,8 @@
             11,
             11
           ],
-          "native_event_id": 3
+          "native_event_id": 3,
+          "camp": "ally"
         },
         {
           "type": "spawn_group",
@@ -1247,7 +1288,8 @@
         {
           "type": "redraw",
           "native_source": "0x343a8",
-          "native_event_id": 3
+          "native_event_id": 3,
+          "camp": "ally"
         },
         {
           "type": "native_acting",
@@ -1256,12 +1298,14 @@
             "resource": 6,
             "source": "0x343b2"
           },
-          "native_event_id": 3
+          "native_event_id": 3,
+          "camp": "ally"
         },
         {
           "type": "reset_pose",
           "native_source": "0x343ba",
-          "native_event_id": 3
+          "native_event_id": 3,
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -1284,7 +1328,8 @@
                 "　的良機！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -1306,7 +1351,8 @@
                 "　你們又是來幹什麼的？』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -1333,7 +1379,8 @@
                 "　放心！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -1355,7 +1402,8 @@
                 "　才不需要你們來攪局！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -1378,7 +1426,8 @@
                 "　至少對人家客氣點吧！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         },
         {
           "type": "dialogue",
@@ -1400,7 +1449,8 @@
                 "　我們這就來幫忙了！』"
               ]
             ]
-          }
+          },
+          "camp": "ally"
         }
       ]
     }

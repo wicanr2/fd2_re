@@ -163,9 +163,9 @@ func (g *Game) saveGameToSlot(slot int) error {
 			g.msg = message
 		}
 	}
-	// 由原版四槽讀進來、且有可寫的 FD2.SAV 覆蓋層時，同步把持續紀錄寫回原版槽
+	// 正常 START 或原版四槽 LOAD，且有明示可寫的 FD2.SAV 覆蓋層時，同步寫回原版槽
 	// （0x30012）。失敗只留訊息，不回滾重製端自有存檔。
-	if g.nativeChapterSlotBaseline != nil && nativeCurrentSavePath() != "" {
+	if (g.nativeChapterSlotBaseline != nil || g.nativeChapterSlotStarted) && nativeCurrentSavePath() != "" {
 		if err := g.saveNativeChapterSlot(slot); err != nil {
 			g.msg = err.Error()
 			g.nativeChapterSlotSaveErr = err

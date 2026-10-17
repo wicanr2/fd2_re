@@ -270,6 +270,7 @@ func (g *Game) restoreNativeChapterSlot(path string, slot int, inHotel bool) err
 	// plaintext 與槽快照就是那次寫回的 byte 基底（沒有 raw 來源的 byte 照抄）。
 	g.nativeChapterSlotPlain = append([]byte(nil), plain...)
 	g.nativeChapterSlotBaseline = &snapshot
+	g.nativeChapterSlotStarted = false
 	g.clearChurchTransientStateForLoad()
 	g.clearShopTransientStateForLoad()
 	g.nativeHotelPromptReturn = false

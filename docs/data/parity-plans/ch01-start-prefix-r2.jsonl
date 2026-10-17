@@ -1,0 +1,6 @@
+# #200：正常標題START至第一章可操作；不使用LOAD、CONTINUE或狀態注入。
+# 每次只前進200萬指令，減少停在等鍵迴圈的冗餘執行；不跳過故事或改寫狀態。
+{"await_ui":"title","steps":2000000,"max":2000}
+{"key":"enter","steps":2000000,"gate":"kbd_empty"}
+{"await_ui":"cursor","steps":2000000,"max":3000}
+{"mark":"battle_start","steps":1000000}

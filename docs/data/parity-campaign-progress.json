@@ -7,20 +7,33 @@
   "chapters": [
     {
       "chapter": 1,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": "2026-09-15",
-      "verify": null,
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch01.json",
+      "slot_manifest": "docs/data/parity-slots/ch01-start-manifest.json",
+      "slot_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "date": "2026-10-17",
+      "verify": "tools/verify_chapter_parity.py --chapter 1 --oracle work/ch01-flow-20261017/original-full-r4 --remake work/ch01-flow-20261017/remake-full-r10 --slot-manifest docs/data/parity-slots/ch01-start-manifest.json --plan docs/data/parity-plans/ch01-start-flow-r4.jsonl --frame-policy advisory --save-policy ch01-start-residual-20261017 --oracle-save work/ch01-flow-20261017/state-full-r4/FD2.SAV --out docs/data/ui-traces/parity-ch01.json",
       "limitations": [
-        "既有收據是 RUNTIME-E1／舊格式，未依 111 四 gate 重生"
+        "正常START完整序章與四回合事件、哈諾死亡分支、T7後111清敵六筆；零強化、無HP鎖，不驗自然難度。",
+        "2228個保存差異逐筆揭露且限本份接受；正式LOAD冷讀已知玩家狀態通過，不宣稱全檔bytes相同。畫面僅參考。"
       ],
       "prior_receipts": [
         "docs/knowledge-base/109-title-to-town-journey-20260911.md",
         "docs/knowledge-base/94-ch01-town-parity-20260908.md"
-      ]
+      ],
+      "slot_policy": {
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": "unchanged",
+        "boost": {
+          "ap": 0,
+          "dp": 0,
+          "dx": 0,
+          "max_hp": 0
+        },
+        "entry": "normal START; input SAV is storage envelope only"
+      }
     },
     {
       "chapter": 2,

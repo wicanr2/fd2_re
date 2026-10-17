@@ -288,13 +288,8 @@ func (g *Game) startNativeBattleSpawnIntro(
 	if appended <= 0 || len(candidate.Units) != oldCount+appended {
 		return errors.New("native battle intro candidate append boundary unavailable")
 	}
-	camp := battle.Enemy
-	for _, unit := range candidate.Units[oldCount:] {
-		if action.Camp != "" {
-			unit.Camp = camp
-		}
-		unit.Acted = !action.ActImmediately
-	}
+	// #243 READY：32999沿10EED保留raw camp及+5=0，新敵軍在同phase行動。
+	// Camp／Acted已由原生constructor投影，不再套用正規化ActImmediately。
 	acting, err := g.loadNativeBattleFollowingActing(call.FollowingActing, len(candidate.Units))
 	if err != nil {
 		return err

@@ -9805,3 +9805,13 @@ Draw確認後續行，delta0回復baseline，VGA indices不變，等待仍由typ
 第30章結果以20BF5讀record20／0／1原始bit0，依序寫2／1／1，勝利自動進完整25757戰後。25855增加raw chapter至30，1088D載map30與FDTXT031。LOADCH的source_slot_count1與slot_count31分開驗證；全部持續JOIN27筆及四個清零未用格均帶raw來源，2C548消費當前scene records。25970由專用ending_handoff直接接既有結局owner，不增加一般故事淡出或終戰同步。
 
 以上具型別路由及失敗拒收達CONFORMED，範圍限[主契約](../data/ida/fd2_ch30_flow_20261017.json)與[正式流程收據](../data/ui-traces/parity-ch30.json)。以111／114例外分級，章內零注入，畫面僅參考，呈現時鐘為60Hz近似。新恢復六句三語候選維持machine_draft，人工校譯另由[#239](https://github.com/wicanr2/fd2_re/issues/239)追蹤，不影響原始繁中字模的終局流程判定。
+
+### 2026-10-17 首章正常START入口
+
+首章章重播新增明示FD2_PARITY_ENTRY=start，只適用chapter1。正式Update播放開場動畫至選單，再由既有TitleMenuConfirm走START與ch00_pre，沒有直接指定戰場節點。原版來源必須具1FE60標題、首鍵Enter及25F17→3231B序章caller；LOAD／CONTINUE拒收。比較器的首章必驗證明再核對19組文字來源、97句、118次按鍵推進與117F8首章游標。這只是驗證工具入口，不改遊戲規則。
+
+來源、READY規格、失敗與重跑入口見[首章主契約](../data/ida/fd2_ch01_flow_20261017.json)。[#200](https://github.com/wicanr2/fd2_re/issues/200)保持開啟；全面matching暫停。
+
+第1章完整流程追加現況（2026-10-17）：正常START、T3..T6四事件、哈諾死亡後哈瓦特電腦控制、T7後111清敵、戰後羅德鎮及五建築，原版full-r4與Game full-r8行為／節點通過；55筆AI零順序差。#242補原始phase metadata，#243移除GUI增援的額外Acted標記。保存仍由#244阻擋：START只寫JSON，嚴格SAV gate失敗。測試側提案可正常LOAD冷讀已知玩家狀態，但2228個完整byte差異尚待使用者確認，未接正式路徑。根契約及逐筆清單見[首章主證據](../data/ida/fd2_ch01_flow_20261017.json)；正式章台帳不提升。
+
+首章保存定案與正式驗收（2026-10-17）：使用者明確允許已展示差異，隨後要求matching技巧輔助。START既有C物件重連結與固定原版663 bytes相同；酒店完整C尚未匹配，沿既有IDA直接writer證據。有效紀錄65個差異在本章人物首次出現到保存均原值保留，未使用名冊2160個與衍生檢查碼3個全部逐筆列出。正式START初存已接酒店owner，Game full-r10實際寫SAV並以新Game正常LOAD冷讀5人已知能力／物品、章節1、gold1000及選項。嚴格比較仍failed；明示本份政策後行為／節點／交易passed，正式收據為[parity-ch01](../data/ui-traces/parity-ch01.json)。第1章依111列PLAYER-E2，正式台帳28章，第2、3章保留未完成；不宣稱全SAV bytes相同或未知producer已閉合。

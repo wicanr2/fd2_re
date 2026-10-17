@@ -32,6 +32,61 @@ def load():
 
 drive = load()
 
+class EngageCandidateBudget(unittest.TestCase):
+    def unit(self, movement=4):
+        raw = bytearray(80)
+        raw[0x3b] = movement
+        return {"camp": 2, "identity": 0, "hp": 42, "x": 0, "y": 0, "raw_hex": raw.hex()}
+
+    def test_raw_budget_overrides_default_six_only_when_requested(self):
+        unit = self.unit()
+        current = {"units": [unit, {"camp": 0, "hp": 28, "x": 5, "y": 5}]}
+        with mock.patch.object(drive, "engage_targets", return_value=[]) as targets:
+            drive.engage_candidate_cells({"native_move_budget": True}, current, unit, (0, 0))
+            self.assertEqual(targets.call_args.args[2], 4)
+            drive.engage_candidate_cells({}, current, unit, (0, 0))
+            self.assertEqual(targets.call_args.args[2], 6)
+
+    def test_actual_four_never_offers_five_or_six_distance_candidates(self):
+        unit = self.unit()
+        current = {"units": [unit, {"camp": 0, "hp": 28, "x": 5, "y": 5}]}
+        cells = drive.engage_candidate_cells({"native_move_budget": True}, current, unit, (0, 0))
+        self.assertTrue(cells)
+        self.assertTrue(all(drive.distance(cell, (0, 0)) <= 4 for cell in cells))
+
+    def test_map_model_reorders_expensive_cell_without_removing_original_choices(self):
+        unit = self.unit()
+        current = {"units": [unit, {"camp": 0, "hp": 28, "x": 4, "y": 0}]}
+        cost = [1] * 15
+        cost[3] = 4
+        original = [(3, 0), (2, 1)]
+        with mock.patch.object(drive, "engage_targets", return_value=original), \
+                mock.patch.object(drive, "load_map_cost_grid", return_value=(5, 3, cost)):
+            self.assertEqual(drive.engage_candidate_cells({}, current, unit, (0, 0)), original)
+            self.assertEqual(drive.engage_candidate_cells({"candidate_map": 0, "native_move_budget": True}, current, unit, (0, 0)), list(reversed(original)))
+
+    def test_missing_raw_zero_budget_and_unknown_map_reject(self):
+        for unit, command in [({"camp": 2}, {"native_move_budget": True}),
+                              (self.unit(0), {"native_move_budget": True}),
+                              (self.unit(), {"candidate_map": 33}),
+                              (self.unit(), {"native_move_budget": "true"})]:
+            with self.subTest(command=command), self.assertRaises(SystemExit):
+                drive.engage_candidate_cells(command, {"units": []}, unit, (0, 0))
+        with mock.patch.object(drive, "load_map_cost_grid", return_value=None), self.assertRaises(SystemExit):
+            drive.engage_candidate_cells({"candidate_map": 0}, {"units": []}, self.unit(), (0, 0))
+
+
+class MapAdmission(unittest.TestCase):
+    def test_candidates_and_count_follow_raw_map_admission(self):
+        snapshot = {"units": [
+            {"camp": 0, "x": 4, "y": 23, "hp": 28, "byte5": 1},
+            {"camp": 0, "x": 3, "y": 18, "hp": 28, "byte5": 0x80},
+            {"camp": 0, "x": 2, "y": 18, "hp": 0, "byte5": 0},
+        ]}
+        self.assertEqual(drive.side(snapshot, 0), [snapshot["units"][1]])
+        self.assertEqual(drive.alive(snapshot, 0), 1)
+        self.assertEqual(drive.side(snapshot, 2), [])
+
 class DefeatRecord(unittest.TestCase):
     def command(self):
         return {"defeat_record": {"index": 24, "identity": 122, "helpers": [0, 18], "max_rounds": 3}}

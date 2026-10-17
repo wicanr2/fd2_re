@@ -46,7 +46,7 @@ func (g *Game) handleNativePreparationInput(input nativePreparationInput) bool {
 			return true
 		}
 		if input.enter {
-			if nativeCurrentSavePath() != "" && g.nativeChapterSlotBaseline == nil {
+			if nativeCurrentSavePath() != "" && g.nativeChapterSlotBaseline == nil && !g.nativeChapterSlotStarted {
 				g.loadErr = "preparation record save baseline unavailable"
 				return true
 			}

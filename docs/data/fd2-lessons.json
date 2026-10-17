@@ -2448,6 +2448,37 @@
         ],
         "pattern": "len\\(action\\.Path\\) > 1"
       }
+    },
+    {
+      "id": "oracle-map-admission-is-not-hp-only",
+      "date": "2026-10-17",
+      "area": "原版地圖比較",
+      "rule": "原版地圖名冊、HP與戰鬥候選依該caller的raw接納條件投影，不只看HP，也不替bit0定義全域死亡或存活語意。入口tools/verify_chapter_parity.py的oracle_units／oracle_hp、tools/dosgolem_oracle_drive.py的side及docs/data/ida/fd2_ch01_flow_20261017.json map_admission_contract，適用原版raw記錄仍保留正HP的地圖邊界。",
+      "why": "正常START的32917→32975使record9 raw+5=1但HP仍28；兩側正式路徑一致，舊比較器只看HP而產生假差異，也把該記錄列入driver戰鬥候選。",
+      "evidence": "docs/data/ida/fd2_ch01_flow_20261017.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_chapter_parity.py",
+          "tools/dosgolem_oracle_drive.py"
+        ],
+        "pattern": "u.get\\(\"byte5\", 0\\) & 1"
+      }
+    },
+    {
+      "id": "oracle-engage-uses-current-raw-movement-budget",
+      "date": "2026-10-17",
+      "area": "正常輸入規劃",
+      "rule": "自動接戰以當前原版完整record的raw+3B作移動預算，不用scenario基底、固定6或上次走成的距離代替。入口tools/dosgolem_oracle_drive.py engage_candidate_cells，計畫明示native_move_budget與candidate_map；模型只排序，正常Enter仍是裁決，缺來源拒收。",
+      "why": "首章四人的runtime移動預算是4／4／7／4；工具的預設6讓索爾反覆選5～6格候選，原版拒絕後又耗用完整wait_mode。先前只歸因住宅成本的假說不足，由raw預算證據取代。",
+      "evidence": "docs/data/ida/fd2_ch01_flow_20261017.json driver_route_contract",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle_drive.py"
+        ],
+        "pattern": "movement = raw\\[0x3b\\]"
+      }
     }
   ]
 }

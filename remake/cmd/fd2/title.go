@@ -77,6 +77,7 @@ func (g *Game) applyTitleMenuEvent(event TitleMenuEvent) bool {
 				return true
 			}
 		}
+		g.nativeChapterSlotStarted = true
 		g.titlePhase = ""
 	}
 	return true

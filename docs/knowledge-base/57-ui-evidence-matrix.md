@@ -2050,3 +2050,13 @@ event40由增援後接鏡頭(17,37)及text1三句，原始ranges與既有lower�
 | 終局保存邊界 | 原版DOS create／write零次，兩側完整SAV與來源相同，明示no_save_expected |
 
 未抽樣的自然難度、音訊實聽、逐幀與三語新恢復六句人工校譯仍不由此收據推定。
+
+### 2026-10-17 首章正常START入口
+
+正常START到首章可操作的有界前綴已通過行為／節點／交易，19組來源call、97句及118次鍵盤推進相符；未取重製PNG，畫面僅參考，不宣稱逐幀。原版seq191名冊12筆，其中record9 raw bit0被地圖caller拒收而保留HP28，實際可操作投影為4我方／7敵軍。首章完整戰鬥、四個回合事件、城鎮及正常保存仍在抽樣，不以本段提升整章台帳。
+
+來源、READY規格、失敗與重跑入口見[首章主契約](../data/ida/fd2_ch01_flow_20261017.json)。[#200](https://github.com/wicanr2/fd2_re/issues/200)保持開啟；全面matching暫停。
+
+第1章完整流程追加現況（2026-10-17）：正常START、T3..T6四事件、哈諾死亡後哈瓦特電腦控制、T7後111清敵、戰後羅德鎮及五建築，原版full-r4與Game full-r8行為／節點通過；55筆AI零順序差。#242補原始phase metadata，#243移除GUI增援的額外Acted標記。保存仍由#244阻擋：START只寫JSON，嚴格SAV gate失敗。測試側提案可正常LOAD冷讀已知玩家狀態，但2228個完整byte差異尚待使用者確認，未接正式路徑。根契約及逐筆清單見[首章主證據](../data/ida/fd2_ch01_flow_20261017.json)；正式章台帳不提升。
+
+首章保存定案與正式驗收（2026-10-17）：使用者明確允許已展示差異，隨後要求matching技巧輔助。START既有C物件重連結與固定原版663 bytes相同；酒店完整C尚未匹配，沿既有IDA直接writer證據。有效紀錄65個差異在本章人物首次出現到保存均原值保留，未使用名冊2160個與衍生檢查碼3個全部逐筆列出。正式START初存已接酒店owner，Game full-r10實際寫SAV並以新Game正常LOAD冷讀5人已知能力／物品、章節1、gold1000及選項。嚴格比較仍failed；明示本份政策後行為／節點／交易passed，正式收據為[parity-ch01](../data/ui-traces/parity-ch01.json)。第1章依111列PLAYER-E2，正式台帳28章，第2、3章保留未完成；不宣稱全SAV bytes相同或未知producer已閉合。

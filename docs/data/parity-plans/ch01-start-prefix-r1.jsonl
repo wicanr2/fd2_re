@@ -1,0 +1,6 @@
+# #200：正常標題START至第一章可操作；不使用LOAD、CONTINUE或狀態注入。
+# 開場動畫只用空鍵等待；故事對白由await_ui依原生owner正常送Enter。
+{"await_ui":"title","steps":20000000,"max":1000}
+{"key":"enter","steps":20000000,"gate":"kbd_empty"}
+{"await_ui":"cursor","steps":20000000,"max":1500}
+{"mark":"battle_start","steps":1000000}

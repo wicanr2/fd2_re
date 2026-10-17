@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -10,7 +11,76 @@ import (
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
+	"github.com/wicanr2/fd2_re/remake/internal/fdsave"
 )
+
+func TestStartNativeSlotPreservesContainerAndRejectsMissingProvenance(t *testing.T) {
+	plain := bytes.Repeat([]byte{0x5a}, fdsave.FileSize)
+	stored, err := fdsave.Encode(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(t.TempDir(), "FD2.SAV")
+	if err := os.WriteFile(path, stored, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("FD2_NATIVE_SAVE", path)
+	g := &Game{handlerChapter: 1, gold: 1000}
+	if err := g.saveNativeChapterSlot(2); err == nil || g.nativeChapterSlotBaseline != nil {
+		t.Fatal("沒有 START／LOAD 來源卻發布保存基底")
+	}
+	g.nativeChapterSlotStarted = true
+	if err := os.WriteFile(path, stored[:5], 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := g.saveNativeChapterSlot(2); err == nil || g.nativeChapterSlotBaseline != nil || len(g.nativeChapterSlotPlain) != 0 {
+		t.Fatal("壞容器沒有零發布拒收")
+	}
+	if raw, _ := os.ReadFile(path); !bytes.Equal(raw, stored[:5]) {
+		t.Fatal("拒收改動了容器")
+	}
+	if err := os.WriteFile(path, stored, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	join, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	items, err := battle.LoadNativeItemEffectRowPrefix(assetPath("assets/data/native_item_effect_rows.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	u, err := join.MaterializePersistentUnit(0, battle.Unit{Fig: 0}, items)
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.partyRoster, g.partyJoinOrder = map[int]battle.Unit{0: u}, []int{0}
+	if err := g.saveNativeChapterSlot(2); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := fdsave.Decode(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	start, end, _ := fdsave.SlotBounds(2)
+	if !bytes.Equal(result[:start], plain[:start]) || !bytes.Equal(result[end:fdsave.ChecksumOff], plain[end:fdsave.ChecksumOff]) || !bytes.Equal(result[start+fdsave.RosterSize+10:end], plain[start+fdsave.RosterSize+10:end]) {
+		t.Fatal("START 保存改動了其他槽、目前戰況或 metadata 尾段")
+	}
+	snapshot, err := fdsave.InspectChapterSlot(result, 2)
+	if err != nil || snapshot.Verified.Chapter != 1 || snapshot.Verified.RosterCount != 1 || snapshot.Verified.Currency != 1000 || snapshot.Records[0].Raw[8] != 0 || g.nativeChapterSlotBaseline == nil || g.nativeChapterSlotStarted {
+		t.Fatalf("START 保存發布不完整：%+v err=%v", snapshot.Verified, err)
+	}
+	if err := g.saveNativeChapterSlot(2); err != nil {
+		t.Fatal(err)
+	}
+	if again, _ := os.ReadFile(path); !bytes.Equal(again, raw) {
+		t.Fatal("相同狀態重存不一致")
+	}
+}
 
 func TestSaveDataRoundTripsPersistentParty(t *testing.T) {
 	gateA := 0

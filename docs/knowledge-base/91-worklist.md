@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 27 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -154,6 +154,36 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 怎樣算做完：使用者確認本階段HD範圍；受版控工具可重跑同狀態並列原型，記錄素材實際解析度、輸出尺寸、文字與游標幾何、效能與權利；證據審查後將61相關高解析契約提升READY，正式實作另依該契約驗收。原型本身不算HD完成。
 
+### P0 補首章四個回合事件缺失的原版phase metadata
+
+`ch01-native-turn-phase-metadata` · 缺陷 · [#242](https://github.com/wicanr2/fd2_re/issues/242) · 仍未完成 · 要人判
+
+首章動作已有完整對白／演出，但缺少FDFIELD phase camp，落到finishTurn的敵軍AI後執行。原版raw tuple為[3,0,1]、[4,1,0]、[5,2,0]、[6,3,1]；event0與event1的trace均先於該回合AI。首差為T3 record10位置，後續增援AI晚一phase，55筆AI有5筆順序差。沿既有dispatcher補metadata，不改共享規則或重解已閉合handler。
+
+怎樣算做完：生成工具核對固定原始tuple及四事件所有動作camp；正式Game沿selector0／1正常分派，原版同source完整章重播行為／節點／交易與保存通過，保留首個失敗收據。
+
+證據：`docs/data/ida/fd2_ch01_flow_20261017.json turn_phase_contract`
+
+### P0 原生增援GUI保留constructor行動旗標
+
+`ch01-intro-spawn-typed-acted` · 缺陷 · [#243](https://github.com/wicanr2/fd2_re/issues/243) · 仍未完成 · 要人判
+
+補首章phase metadata後T3分岔已消除，T4仍跳過新敵軍。GUI startNativeBattleSpawnIntro把Acted設為!ActImmediately，固定caller要求false因此新敵軍typed Acted=true；raw+5仍0。AI consumer先看Acted而漏掉同phase的新敵軍，與純規則spawn分支分裂。沿既有constructor及原版55筆AI證據保留原始Camp／Acted，不套用正規化選項。
+
+怎樣算做完：固定event1／2原生GUI登場保持constructor Camp／Acted與raw旗標一致，預檢／原子提交不變；同source完整首章重播55筆AI零順序差，保留修正前失敗並執行相關真實回歸。
+
+證據：`docs/data/ida/fd2_ch01_flow_20261017.json battle_intro_admission_contract`
+
+### P0 正常START酒店保存缺原版SAV寫回基底
+
+`start-native-slot-writeback` · 缺陷 · [#244](https://github.com/wicanr2/fd2_re/issues/244) · 仍未完成 · 要人判
+
+正常START→首章四增援→戰後→羅德鎮酒店的行為與節點已通過，55筆AI零分岔。saveGameToSlot僅在nativeChapterSlotBaseline非nil時寫FD2.SAV；該基底只由LOAD建立，START僅寫自有JSON。新遊戲未使用名冊與不透明欄位須先逐筆揭露，不套用第25章例外。
+
+怎樣算做完：正常START與正式酒店owner保存並冷讀隊伍、章節、金幣及選項；未知bytes政策確認後才進production及章gate，保留完整原版差異清單，不從oracle注入常數。
+
+證據：`docs/data/ida/fd2_ch01_flow_20261017.json start_save_contract`
+
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
 ### 戰鬥交易缺代表性玩家路徑驗收
@@ -243,6 +273,28 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 排程P1可選呈現，非增援或章流程阻擋。使用者只要求流程一致、畫面參考，這項不重開已通過章，也不啟動全面matching或硬體時序研究。
 
 怎樣算做完：由既有IDA與目前同源執行收據定位原版回交邊界，辨明正式Game或測試重播差異；READY契約後修正對應consumer，以同源局部重播核對終點並保留舊差異歷史。
+
+### P0 修正對拍工具將首章已停用記錄誤算在場
+
+`oracle-map-admission-bit0` · 缺陷 · [#240](https://github.com/wicanr2/fd2_re/issues/240) · 仍未完成 · 要人判
+
+目前正常START首章原版與正式Game均停用record9，raw+5=1但HP保留28。比較器與driver只看HP，造成首個在場名冊假差異，也會將該記錄列為戰鬥候選。依既有32917→32975 writer、12C0D地圖接納consumer補raw bit0條件；不賦予全域死亡／存活語意。
+
+怎樣算做完：原版地圖名冊／HP及driver候選依同一raw接納條件，保留原始失敗收據；停用正HP、active已行動與HP0測試通過，首章相同START前綴重跑核對通過，不把短鏈計整章。
+
+證據：`docs/data/ida/fd2_ch01_flow_20261017.json map_admission_contract`
+
+### P0 首章自動接戰使用原版移動預算與地形候選排序
+
+`oracle-engage-map-cost-ranking` · 缺陷 · [#241](https://github.com/wicanr2/fd2_re/issues/241) · 仍未完成 · 要人判
+
+首章原版checkpoint0229的索爾raw+3B=4，工具typical_move預設6，反覆嘗試5～6格候選而被正常Enter拒絕。四名我方實際預算為4／4／7／4，不能把scenario基底移動力或固定6當成runtime預算。
+
+原先只懷疑住宅地形，但以錯誤預算6代入模型仍估可達，該解釋不足。新規格明示native_move_budget時每次讀完整raw+3B，再由既有地形成本模型排序；原版Enter仍是最後裁決。不注入座標、不修改正式遊戲規則，歷史未選用的計畫保持原排序。
+
+怎樣算做完：raw預算4排除超距候選、地形／ZOC排序、舊計畫順序不變與缺raw／map拒收測試通過；首章原版正常輸入與Game同狀態重跑可前進，保留原拒絕樣本。
+
+證據：`docs/data/ida/fd2_ch01_flow_20261017.json driver_route_contract`
 
 ## release — 發行、平台與封包
 

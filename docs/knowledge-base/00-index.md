@@ -906,3 +906,16 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第30章完整流程正式收據](../data/ui-traces/parity-ch30.json)：三波增援、正常五魔神、完整戰後與終局、27人名冊及整檔無保存證據，依111／114例外PLAYER-E2。
 
 - [終局六句三語候選與待審範圍](../data/localization/ending-story-supplements.json)：來源FDTXT031 strings40..45，保留machine_draft；不影響繁中原始字模流程驗收。
+
+### 2026-10-17 首章正常START流程驗收
+
+- [首章流程主契約](../data/ida/fd2_ch01_flow_20261017.json)：既有證據、DRAFT／READY狀態、目前dosgolem收據與完整章限制。
+- [首章START入口計畫](../data/parity-plans/ch01-start-prefix-r1.jsonl)：正常標題START至首章可操作，不使用CONTINUE或狀態注入。
+- [首章START入口計畫r2](../data/parity-plans/ch01-start-prefix-r2.jsonl)：縮短觀測間隔，保留正常輸入與全部故事。
+- [首章START輸入清冊](../data/parity-slots/ch01-start-manifest.json)：未修改SAV覆蓋層、固定seed與零強化政策。
+- [首章正常START整章計畫](../data/parity-plans/ch01-start-flow-r1.jsonl)：有界戰鬥至T7增援，依111清敵後驗正常城鎮保存。
+- [首章正常START整章計畫r2](../data/parity-plans/ch01-start-flow-r2.jsonl)：同一抽樣範圍，正常owner收尾，移除140M攻擊冗餘等待。
+- [首章正常START整章計畫r3](../data/parity-plans/ch01-start-flow-r3.jsonl)：逐次讀原版raw移動預算、模型只排序，正常Enter裁決。
+- [首章正常START整章計畫r4](../data/parity-plans/ch01-start-flow-r4.jsonl)：一次物理抽樣後正常退守，END到全部增援，不鎖血。
+
+- [首章正常START完整流程收據](../data/ui-traces/parity-ch01.json)：四回合事件、哈諾死亡分支、T7後111清敵、羅德鎮酒店保存及冷讀；保存採本份逐筆差異政策，畫面僅參考。

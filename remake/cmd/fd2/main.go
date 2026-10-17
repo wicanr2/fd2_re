@@ -351,11 +351,12 @@ type Game struct {
 	// writes preserve its chapter slots and opaque bytes; authored battles never
 	// receive this carrier.
 	nativeCurrentSavePlain []byte
-	// nativeChapterSlotPlain／nativeChapterSlotBaseline 是標題四槽 LOAD 讀進來的
-	// FD2.SAV plaintext 與該槽快照；酒店存檔以它們為 byte 基底寫回原版槽。
+	// nativeChapterSlotPlain／nativeChapterSlotBaseline 是標題四槽 LOAD 或正常 START
+	// 首次保存建立的 FD2.SAV plaintext 與槽快照；後續酒店保存保留其 raw 基底。
 	nativeChapterSlotPlain    []byte
 	nativeChapterSlotBaseline *fdsave.ChapterSlotSnapshot
 	nativeChapterSlotSaveErr  error                             // 最近一次酒店存檔寫回原版槽的結果（對拍收據用）
+	nativeChapterSlotStarted  bool                              // 正式 START 後首次保存；無 LOAD 名冊來源。
 	nativeMapUnitWindowAssets *battle.NativeItemPanelDataAssets // 0x18B84 單位資訊視窗（框／bar／digit／姓名）
 	nativeActionCellsRaw      []fdother.RawCell                 // FDOTHER#2 指令環 indexed 原格（整幀合成用）
 	// nativeSystemCursorOverlay 對應共用 0x117E7 在 0x12C0D 回傳 -1 時
@@ -4106,7 +4107,9 @@ func (g *Game) materializeNativeJoinPersistentUnit(id int, base battle.Unit) (ba
 
 // nativeJoinResidualRecord 回 sub_112A5 這次要寫的那一格在寫入前的內容：持續名冊是
 // 0x10010 從 LOAD 的槽整批還原的，count 之後的格子就是槽裡的 bytes；沒有 LOAD 基底
-// （新開局）就是全 0。索引 = 基底筆數 + 基底之後已加入的人數。
+// 時，重製端使用零基底；這不代表原版新開局記憶體全零。首章正常 START
+// 收據已觀察到非零殘值，保存限制見 fd2_ch01_flow_20261017.json。
+// 索引 = 基底筆數 + 基底之後已加入的人數。
 func (g *Game) nativeJoinResidualRecord() fdsave.PersistentRecord {
 	if g == nil || g.nativeChapterSlotBaseline == nil {
 		return fdsave.PersistentRecord{}

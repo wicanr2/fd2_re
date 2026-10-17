@@ -18,6 +18,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--ida', type=Path, required=True)
     ap.add_argument('--write', action='store_true')
+    ap.add_argument('--scenario-only', action='store_true',
+                    help='只更新劇本及canonical，沿用既有IDA證據且不覆寫歷史匯出')
     args = ap.parse_args()
     raw_evidence = args.ida.read_bytes()
     evidence = json.loads(raw_evidence)
@@ -37,6 +39,14 @@ def main():
     mapping = json.loads(mapping_path.read_text())
     scenario_path = ROOT / 'remake/assets/scenarios/ch01.json'
     scenario = json.loads(scenario_path.read_text())
+    # #242 READY：原始FDFIELD的第三個byte是分派phase，不是spawn陣營。
+    field_path = ROOT / 'extracted/raw/FDFIELD/FDFIELD_001.bin'
+    field = field_path.read_bytes()
+    assert hashlib.sha256(field).hexdigest() == '6450d1136f8047605db06dc292f833ced8b923639a2f1a92553ce17216e659f3'
+    assert [list(field[3 + i * 3:6 + i * 3]) for i in range(4)] == [[3, 0, 1], [4, 1, 0], [5, 2, 0], [6, 3, 1]]
+    rows = next(r['turn_events'] for r in json.loads((ROOT / 'docs/data/turn_events.json').read_text())
+                if r['chapter'] == 1 and r['map'] == 0)
+    phases = {r['event_id']: r for r in rows}
     events = {e['id']: e for e in scenario['events']}
     spawns = {a['groups'][0]: copy.deepcopy(a) for e in scenario['events'] for a in e['do']
               if a['type'] == 'spawn_group'}
@@ -78,8 +88,12 @@ def main():
                                  action('redraw', '0x343a8'), acting(6, '0x343b2'),
                                  action('reset_pose', '0x343ba'), *dialog(6, '0x343dd', 3)]
     for event_id, name in enumerate(['hano_hawat_join', 'enemy_reinforce', 'pirate_boss', 'coast_guard']):
+        row = phases[event_id]
+        assert row['turn'] == events[name]['when']['turn'] == field[3 + event_id * 3]
+        assert row['camp'] == ['enemy', 'ally', 'special'][field[5 + event_id * 3]]
         for step in events[name]['do']:
             step.setdefault('native_event_id', event_id)
+            step['camp'] = row['camp']
     evidence['raw_export_sha256'] = hashlib.sha256(raw_evidence).hexdigest()
     evidence['scope'] = '首關四個回合事件的直接呼叫順序；不宣稱執行期逐像素或時序一致'
     evidence['reviewed_calls'] = [{**ins[a], 'grade': '已證實',
@@ -105,9 +119,10 @@ def main():
         for d in summary['diagnostics']:
             if d.get('source') == 'remake/assets/scenarios/ch01.json': d['items'] = diagnostics
         summary_path.write_text(json.dumps(summary, ensure_ascii=False, sort_keys=True, indent=2) + '\n')
-        dest = ROOT / 'docs/data/ida/fd2_ch01_turn_events_20260908.json'
-        assert dest.parent.stat().st_uid == 1000
-        dest.write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + '\n')
+        if not args.scenario_only:
+            dest = ROOT / 'docs/data/ida/fd2_ch01_turn_events_20260908.json'
+            assert dest.parent.stat().st_uid == 1000
+            dest.write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + '\n')
     else:
         assert json.loads(scenario_path.read_text()) == scenario
     print(json.dumps(dict(dialogue_utterances=32, event_count=4, written=args.write)))

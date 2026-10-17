@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/wicanr2/fd2_re/remake/internal/battle"
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
@@ -10,14 +11,15 @@ import (
 )
 
 // saveNativeChapterSlot 是酒店存檔（0x30012）的原版槽寫回：以標題 LOAD 讀進來的
-// FD2.SAV plaintext 為底，把目前持續隊伍與金幣寫進 slot，重算校驗和後原子取代
+// FD2.SAV plaintext 為底；正常 START 首次保存按已確認政策建立新名冊。
+// 把目前持續隊伍與金幣寫進 slot，重算校驗和後原子取代
 // FD2_NATIVE_SAVE。寫成功後同一份 plaintext 成為下一次存檔的基底。
 func (g *Game) saveNativeChapterSlot(slot int) error {
 	if g != nil && g.nativeEndTurnRecovery != nil {
 		return errors.New("原版章節槽存檔：END 回復尚未發布完成")
 	}
-	if g == nil || g.nativeChapterSlotBaseline == nil || len(g.nativeChapterSlotPlain) != fdsave.FileSize {
-		return errors.New("原版章節槽存檔：缺少四槽 LOAD 的 raw 基底")
+	if g == nil {
+		return errors.New("原版章節槽存檔：缺少遊戲狀態")
 	}
 	path := nativeCurrentSavePath()
 	if path == "" {
@@ -25,6 +27,37 @@ func (g *Game) saveNativeChapterSlot(slot int) error {
 	}
 	if g.handlerChapter < 0 || g.handlerChapter > 0xfe || g.gold < 0 || uint64(g.gold) > uint64(^uint32(0)) {
 		return errors.New("原版章節槽存檔：章節或金幣超出 metadata 範圍")
+	}
+	// READY：fd2_ch01_flow_20261017.json start_save_contract。START 不還原舊槽隊伍。
+	// 新名冊沿本引擎既有零基底；原版保留值的差異已逐筆揭露並經使用者確認。
+	// 只建立本地候選，磁碟取代成功前不發布基底。
+	basePlain, baseline := g.nativeChapterSlotPlain, g.nativeChapterSlotBaseline
+	if baseline == nil && g.nativeChapterSlotStarted {
+		stored, err := os.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("原版章節槽存檔：讀取容器：%w", err)
+		}
+		basePlain, err = fdsave.Decode(stored)
+		if err != nil {
+			return fmt.Errorf("原版章節槽存檔：容器：%w", err)
+		}
+		old, err := fdsave.ReadSlot(basePlain, slot)
+		if err != nil {
+			return fmt.Errorf("原版章節槽存檔：目標槽：%w", err)
+		}
+		fresh := fdsave.ChapterSlotSnapshot{Slot: slot}
+		copy(fresh.Metadata[:], old.Metadata)
+		clear(fresh.Metadata[:10])
+		options := g.currentNativeSystemOptions()
+		if err := options.Validate(); err != nil {
+			return fmt.Errorf("原版章節槽存檔：系統選項：%w", err)
+		}
+		fresh.Metadata[6], fresh.Metadata[7] = options.Raw51AAB, options.Raw53AF9
+		fresh.Metadata[8], fresh.Metadata[9] = options.Raw51E61, options.Raw51E62
+		baseline = &fresh
+	}
+	if baseline == nil || len(basePlain) != fdsave.FileSize {
+		return errors.New("原版章節槽存檔：缺少 START 或四槽 LOAD 的基底")
 	}
 	joinTable, err := campaign.LoadNativeJoinConstructorTable(assetPath("assets/data/native_join_constructor.json"))
 	if err != nil {
@@ -35,13 +68,13 @@ func (g *Game) saveNativeChapterSlot(slot int) error {
 		return fmt.Errorf("原版章節槽存檔：item rows：%w", err)
 	}
 	built, err := campaign.BuildNativeChapterSlot(
-		*g.nativeChapterSlotBaseline, g.partyRoster, g.partyJoinOrder,
+		*baseline, g.partyRoster, g.partyJoinOrder,
 		byte(g.handlerChapter), uint32(g.gold), joinTable, itemRows,
 	)
 	if err != nil {
 		return fmt.Errorf("原版章節槽存檔：%w", err)
 	}
-	plain, err := fdsave.WriteSlot(g.nativeChapterSlotPlain, slot, built)
+	plain, err := fdsave.WriteSlot(basePlain, slot, built)
 	if err != nil {
 		return fmt.Errorf("原版章節槽存檔：%w", err)
 	}
@@ -58,6 +91,7 @@ func (g *Game) saveNativeChapterSlot(slot int) error {
 	}
 	g.nativeChapterSlotPlain = plain
 	g.nativeChapterSlotBaseline = &snapshot
+	g.nativeChapterSlotStarted = false
 	return nil
 }
 

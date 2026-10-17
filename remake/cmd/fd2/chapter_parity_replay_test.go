@@ -155,6 +155,7 @@ type parityReplay struct {
 	actionOverlayCandidatesProvenance []parityActionOverlayCandidate
 	skipFrames                        bool
 	endingStoryTrace                  *journeyTrace
+	startEntryTrace                   *journeyTrace
 }
 
 // #144：只計已證實0x24D48的raw列旋轉，不讀影像或搜尋相位。
@@ -810,6 +811,13 @@ func TestChapterParityReplay(t *testing.T) {
 	if err != nil || chapter < 1 || chapter > 30 {
 		t.Fatalf("FD2_PARITY_CHAPTER=%q", chapterText)
 	}
+	entryMode := os.Getenv("FD2_PARITY_ENTRY")
+	if entryMode == "" {
+		entryMode = "load"
+	}
+	if entryMode != "load" && (entryMode != "start" || chapter != 1) {
+		t.Fatalf("FD2_PARITY_ENTRY=%q；START只適用首章", entryMode)
+	}
 	actions := readParityActions(t, filepath.Join(run, "actions.jsonl"))
 	if len(actions) == 0 {
 		t.Fatal("actions.jsonl 是空的")
@@ -866,6 +874,7 @@ func TestChapterParityReplay(t *testing.T) {
 		"legacy_end_sources":    legacyENDSources,
 		"capture_frames":        frameSetting != "0",
 		"modified_path_hp_lock": parityHPPolicies[g] != nil,
+		"entry_mode":            entryMode,
 	}, "", "  ")
 	if err != nil {
 		t.Fatal(err)
@@ -905,21 +914,25 @@ func TestChapterParityReplay(t *testing.T) {
 
 	// 標題 LOAD：與原版側計畫一樣走 LOAD → 四槽 → 槽 0。開場動畫直接跳到選單，
 	// 那一段不在本章的比較範圍。
-	g.titlePhase, g.titleSel = "menu", 0
-	if !g.applyTitleMenuEvent(TitleMenuDown) || !g.applyTitleMenuEvent(TitleMenuConfirm) {
-		t.Fatal("標題 LOAD 未由正式 menu owner 消費")
-	}
-	for i := 0; i < 24; i++ {
-		g.applyTitleMenuEvent(TitleMenuTick)
-	}
-	if !g.applyTitleSlotEvent(TitleSlotConfirm) {
-		t.Fatalf("LOAD 槽 0 失敗：%s", g.msg)
-	}
-	loadNode := g.camp.Node()
-	standalone := loadNode != nil && loadNode.Type == "preparation" && loadNode.Cancel == "" &&
-		g.camp.NodeID() == fmt.Sprintf("preparation_ch%02d", chapter)
-	if (g.camp.NodeID() != r.town && !standalone) || g.loadErr != "" {
-		t.Fatalf("LOAD 後 node=%q err=%q", g.camp.NodeID(), g.loadErr)
+	if entryMode == "start" {
+		r.startFromNormalTitle()
+	} else {
+		g.titlePhase, g.titleSel = "menu", 0
+		if !g.applyTitleMenuEvent(TitleMenuDown) || !g.applyTitleMenuEvent(TitleMenuConfirm) {
+			t.Fatal("標題 LOAD 未由正式 menu owner 消費")
+		}
+		for i := 0; i < 24; i++ {
+			g.applyTitleMenuEvent(TitleMenuTick)
+		}
+		if !g.applyTitleSlotEvent(TitleSlotConfirm) {
+			t.Fatalf("LOAD 槽 0 失敗：%s", g.msg)
+		}
+		loadNode := g.camp.Node()
+		standalone := loadNode != nil && loadNode.Type == "preparation" && loadNode.Cancel == "" &&
+			g.camp.NodeID() == fmt.Sprintf("preparation_ch%02d", chapter)
+		if (g.camp.NodeID() != r.town && !standalone) || g.loadErr != "" {
+			t.Fatalf("LOAD 後 node=%q err=%q", g.camp.NodeID(), g.loadErr)
+		}
 	}
 	r.settleTown()
 
@@ -1321,8 +1334,12 @@ func (r *parityReplay) mark(action parityAction) {
 			}
 		}
 		j := newJourneyTrace()
+		if r.startEntryTrace != nil {
+			j = r.startEntryTrace
+		}
 		driveStory(t, g, j, func() bool { return g.camp.NodeID() == r.battle })
 		if !pump(t, g, journeyStoryFrames, func() bool {
+			j.observe(g)
 			if r.playerHasControl() {
 				return true
 			}
@@ -1334,6 +1351,10 @@ func (r *parityReplay) mark(action parityAction) {
 			t.Fatalf("戰場沒有交出操作權\n阻塞：%s", ch01Blockers(g))
 		}
 		r.postbattle = g.camp.Node().OnWin
+		if r.startEntryTrace != nil {
+			j.PlayerControl = j.milestone(g, true)
+			writeJourney(t, filepath.Join(r.out, "start-entry.json"), j)
+		}
 		r.checkpoint("battle_start", action.Seq, "cursor", true)
 	case "town_after_battle":
 		r.ensureTown()
@@ -3244,6 +3265,7 @@ func (r *parityReplay) townSave(action parityAction) {
 	if _, err := os.Stat(saveSlotPath(slot)); err != nil {
 		note += "；重製端自有存檔未寫出：" + err.Error()
 	}
+	r.verifyStartChapterSlotSave(slot)
 	r.checkpoint("town_save", action.Seq, "hotel", true, note)
 	// 原版側接著 esc 三次回到城鎮：訊息 → 選單 → 離開。
 	g.handleNativeHotelInput(nativeHotelInput{esc: true})

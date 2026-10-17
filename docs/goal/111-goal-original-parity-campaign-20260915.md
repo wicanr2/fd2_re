@@ -209,3 +209,9 @@ issue #14 的 `verify` 就盯這個欄位。
   收據 `limitations` 提一句。
 - 提交身分 `wicanr2@gmail.com`（repo-local）；commit 不放 session 連結。
 - 每批 Docker 工作後 `docker ps -a` 檢查 FD2 容器，禁止任何 prune／rmi。
+
+## 2026-10-17 首章正常START保存差異政策
+
+使用者在完整差異提案與正式LOAD冷讀結果展示後確認「允許差異存在」，並要求matching技巧輔助驗證。只接受[首章主契約](../data/ida/fd2_ch01_flow_20261017.json)的save_acceptance_policy所綁定來源及2228個完整明文差異；有效紀錄65個、未使用名冊2160個及檢查碼3個。這是同尺寸同ABI的既有欄位差異，與JSON新增欄位無關。有效紀錄含本次未使用的AI／死亡欄位，不能全稱不透明，也不提升未知初始producer或後續consumer語意。
+
+比較入口為tools/verify_chapter_parity.py --chapter 1 --frame-policy advisory --save-policy ch01-start-residual-20261017 --oracle-save <原版實際SAV>，其餘參數見章台帳的verify。原版／重製hash、固定EXE、dosgolem commit、計畫、來源容器及全部差異清單均須相同；新增差異、缺保存writer或來源不符仍失敗。預設strict保持，其他章與來源不沿用。START主流程663 bytes重連結匹配只輔助來源核對，不代表完整酒店writer或原版heap已匹配。

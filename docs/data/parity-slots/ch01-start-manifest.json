@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_normal_start_input_manifest",
+  "base_save": "org_game/炎龍騎士團/FLAME2/FD2.SAV",
+  "base_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+  "base_chapter": null,
+  "target_chapter": 0,
+  "output_sha256": "6d14f2c22562cabca83725084f1a9d6539a1d4066da5c1debcdadb446812691f",
+  "level_policy": "none",
+  "seed": 4,
+  "assumptions": [
+    "START不讀章槽；相同未修改SAV只作兩側可寫保存覆蓋層的初始bytes。",
+    "沒有章前強化或章內HP鎖。"
+  ],
+  "policy": {
+    "kind": "normal_start_no_boost",
+    "levels_per_chapter": 0,
+    "seed": 4,
+    "boost": {
+      "base_ap": 0,
+      "base_dp": 0,
+      "base_dx": 0,
+      "max_hp": 0
+    },
+    "event_states": {}
+  },
+  "save": {
+    "size": 22987,
+    "input": "work/ch01-flow-20261017/input/FD2.SAV"
+  },
+  "reproduce": "Docker從唯讀原始FD2.SAV複製，核對SHA；正常標題START，不改槽。"
+}
