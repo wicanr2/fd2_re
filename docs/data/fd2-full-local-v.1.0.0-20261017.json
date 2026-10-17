@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "kind": "fd2-non-hd-full-local-and-promo-delivery",
+  "version": "v.1.0.0-20261017",
+  "date": "2026-10-18",
+  "status": "CONFORMED",
+  "scope": "三平台本機完整版的組包／內容／Linux及Wine啟動抽測，與實際遊玩推廣影片。不是全專案或HD完成聲明。",
+  "engine_source_commit": "d8c361a8324cb19b5a0738897e15c151500a8de8",
+  "engine_binary_sha256": {
+    "linux": "e0d738ffdccdcf3fe22758f7e3e04feb809d266ea81502261ece281597964a54",
+    "windows": "bafe5e6a3bf9050df869e2213b5a9a3f8d07cbd5c48053631cc6f60fcc7968f1",
+    "macos": "d74b576eb864ab574dd471be900b39312c26a27763b656b316a3d480beb29595"
+  },
+  "packages": [
+    {
+      "path": "full-local/FD2-v.1.0.0-20261017-windows-x86_64-full-local.zip",
+      "bytes": 130497727,
+      "sha256": "35c535b530e4e98dca2e71a25afbf47a03e230f052a814b0151de96794ae10e4"
+    },
+    {
+      "path": "full-local/FD2-v.1.0.0-20261017-macos-universal-full-local.zip",
+      "bytes": 137579176,
+      "sha256": "fbd036e71c2d3de2d5dd1a9d0c218dff355652b3d237daf8328e9d6823cb4408"
+    },
+    {
+      "path": "full-local/FD2-v.1.0.0-20261017-linux-x86_64-full-local.AppImage",
+      "bytes": 99240440,
+      "sha256": "dae0528e7bd1f0f0d7e2a6536fdb438c68aaa214ae20465fc1400cbd34c27180"
+    }
+  ],
+  "assets": {
+    "files_per_package": 43177,
+    "bytes_linux": 180723839,
+    "pack_manifest_sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5",
+    "asset_files_manifest_sha256": "6d60de6a4dff152b2909b518fc46b3f99513b516b2d78fc84789e9fa9a753849",
+    "platform_overrides": {
+      "windows": "三份公開README保留原生CRLF；其餘43174份與Linux相同。",
+      "macos": "43177份全部與Linux逐位元組相同。"
+    },
+    "namespaces": [
+      "assets：正式公開劇本及補齊的執行期素材",
+      "pack：原版分離素材；不與assets混覆"
+    ]
+  },
+  "smoke": {
+    "linux": {
+      "kind": "native_linux",
+      "package_self_check": "passed",
+      "default_scene": "passed",
+      "scene": "story_ch00_handler",
+      "frame": 121,
+      "self_check_log_sha256": "a0bdf3913ec6ab2e34c921d53e59711d4fdacdef3ba0aa8cbbf13a57256414fa",
+      "screenshot_sha256": "affb593afa94d6587dbe0f67098bc8b5eeb5e8643d339cb1a84a02573e98b14f",
+      "state_sha256": "4841e21d09fd8d8e1324fa320f77b207507211ffc29d0c0dd5c0b9599abf7363",
+      "scope": "FD2_SHOT預設場景抽測，非完整正常START；正常START至首章操作另由推廣片擷取。"
+    },
+    "windows": {
+      "kind": "wine_auxiliary",
+      "package_self_check": "passed",
+      "default_scene": "passed",
+      "scene": "story_ch00_handler",
+      "frame": 120,
+      "self_check_log_sha256": "81870b76d94a4bd416ebc31f9325cd629f7601138e76408b5912c89f126856ef",
+      "screenshot_sha256": "affb593afa94d6587dbe0f67098bc8b5eeb5e8643d339cb1a84a02573e98b14f",
+      "state_sha256": "3c14e14351dda7c89c71ba1adc9ef06098fb7c935ed5abb979e74eb293849e8e",
+      "scope": "FD2_SHOT預設場景抽測，非完整正常START；正常START至首章操作另由推廣片擷取。"
+    }
+  },
+  "promo": {
+    "path": "promo/FD2-v.1.0.0-20261017-promo.mp4",
+    "bytes": 12388539,
+    "sha256": "aabbf42724f458bf720d14926eee4523dd0d6bcf90f65210434153f91cd5aa92",
+    "duration_seconds": 138.035,
+    "format": "1280x720／30fps／H.264＋AAC stereo48kHz",
+    "mean_volume_db": -20.7,
+    "max_volume_db": -2.7,
+    "complete_decode": true,
+    "visual_samples": 16,
+    "normal_start_to_first_chapter": true,
+    "actual_physical_attack": true,
+    "town_cut": "以已驗證首章通關hotel-save.json經F9接續，影片明示；非全章連續自然通關。",
+    "town_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+    "transaction": {
+      "gold_before": 1000,
+      "gold_after": 980,
+      "item_id": 192,
+      "quantity": 2,
+      "recipient_native_id": 0,
+      "before_sha256": "b77a9d76730d6f3c5440a251755c9a839ffb599e08d324dd30455d91eacfaff6",
+      "after_sha256": "e144fa57c6e4127f8f6ff305988690d88bdf60ce517cd9f5a320dfe2f23264ce"
+    },
+    "temporary_recording_bytes_removed": 103752637,
+    "original_parity_receipt": false,
+    "randomness": "正常未固定亂數，沒有挑選重擲；不是相同seed的原版對拍。",
+    "signal_intervals": {
+      "black": "63.9544至66.4544秒只在遊戲區；為本次實際反擊後淡出／返回地圖轉場，側欄仍可見。保留原作演出。",
+      "freeze": "王宮對話7.53秒、購買清單5.90秒與平台介紹背景4.77秒，均為正常等待輸入或閱讀停留，不是擷取中斷。",
+      "silence": "序章步行、章節開頭與技術資料背景對應來源遊戲靜音窗；未補造配樂。全片音軌正常，平均-20.7dB、峰值-2.7dB。"
+    }
+  },
+  "rights": {
+    "public_distribution": false,
+    "original_derived_assets_included": true,
+    "private_modern_assets_included": false,
+    "hd": false,
+    "public_release_modified": false,
+    "original_game_executable_distributed": false,
+    "roland_rom_distributed": false
+  },
+  "limits": [
+    "Windows為Wine輔助啟動與預設場景，不取代實機輸入、存讀檔與音訊。",
+    "macOS完整包本輪未執行；相同引擎先前已有原生CI自檢，本輪只核對完整素材、雙架構、bundle與啟動器。",
+    "Windows／macOS未簽署，macOS未公證；#9保留。",
+    "原版音樂catalog仍為incomplete_legacy_render；沒有逐樣本或人耳音色驗收聲明。",
+    "HD與完整matching排程保持。"
+  ],
+  "tools": {
+    "tools/build_fd2_full_local.py": "20b84648ef600469a4f3f3f71ad071955a6db8948feb3caa8837a0f1e8e0b0f2",
+    "tools/verify_fd2_full_local.py": "4568fe54465573f90830b204fe3820b6c0ea17950363f2c8935cfb105b0eff43",
+    "tools/smoke_fd2_full_local.sh": "86378b15da0c528af0799cf633eac5f968ab4840def59ca55e44600728061556",
+    "tools/capture_fd2_release_promo.sh": "08432bd0fcfb1495b0be5f770b52cc6c561de0a0591146c31aa9801597af97d6",
+    "tools/operate_fd2_promo.py": "d7d45a11dbf95ad8434de9c68b84d8a0bdb68ff8bfbdd74dbf1bb452e00e29a3",
+    "tools/build_fd2_release_promo.py": "969ef1e1d862ed2932d3962116cc1c6acb7987e0088f315adf6611c5d5308a1b",
+    "tools/verify_fd2_promo.py": "6a8aa049bfc1c871f5ef18bbbdf75f254398a5328997d9a89116b273db2b7eb4",
+    "tools/docker/fd2-promo.Dockerfile": "ba3786131fbdaaa37d8cac3cdf74c0ec8a46894598a4779413401a4f008fe6b4"
+  },
+  "local_manifest": "dist-all/v.1.0.0-20261017/DELIVERY-SHA256SUMS.json",
+  "validation": "dist-all/v.1.0.0-20261017/full-local/VALIDATION.json",
+  "promo_validation": "dist-all/v.1.0.0-20261017/promo/VALIDATION.json",
+  "images": {
+    "fd2-promo:20261017-r1": "f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d",
+    "fd2-build-appimage:latest": "e35cbda95306c1d4923be70605bc1f21352f3b46af1466dd769161a27b27f36f",
+    "fd2-go-test-local:latest": "e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+    "kol-wine-verify:ubuntu-noble-20261007-r1": "3a1b1ca3a2d96e2d3d8ebd400348d003f4af9a0d7c30fac8d54f49ac0b18bdeb"
+  },
+  "cleanup": {
+    "temporary_recordings_deleted": 19,
+    "recording_bytes_removed": 103752637,
+    "stage_logical_bytes_removed": 604960924,
+    "formal_packages_and_movie_retained": true
+  },
+  "hygiene": {
+    "root_owned": 2811,
+    "historic_root_owned_unchanged": true,
+    "md_directories": 0,
+    "local_links_passed": 1518,
+    "formal_uid_gid": "1000:1000",
+    "original_exe_immutable": true,
+    "unexpected_fd2_containers": 0
+  },
+  "worklist": {
+    "open": 20,
+    "manual": 13,
+    "possibly_completed": 0
+  }
+}

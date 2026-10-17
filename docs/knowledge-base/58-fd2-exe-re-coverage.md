@@ -1,6 +1,6 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
-## 2026-10-17 目前狀態：重製完成與 HD 優先
+## 2026-10-18 目前狀態：第一版交付與 HD 優先
 
 使用者本輪定案允許作弊通關、參考攻略，並以流程一致驗收，不強求逐幀一致。
 契約見[111最新修訂](../goal/111-goal-original-parity-campaign-20260915.md)及[114第24章政策](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)。
@@ -46,6 +46,7 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 | 第2章接續 | CONFORMED／PLAYER-E2限111流程例外：T3六人增援、村民目的地、希莉亞JOIN、下一城鎮、保存及正式LOAD冷讀通過；53筆AI零順序差，保存本份11個差異逐筆接受 | [正式收據](../data/ui-traces/parity-ch02.json)及[主契約](../data/ida/fd2_ch02_flow_20261017.json)；九個值在原版建構前存在並保留，重製新紀錄零基底，早期producer及全部用途仍未知。完整JOIN C九候選未匹配；不宣稱全SAV bytes相同 |
 | 第3章接續 | CONFORMED／PLAYER-E2限111流程例外：正常兩次END、T3兩端援軍、鐵諾存活JOIN、下一城鎮與保存／LOAD冷讀通過；18筆AI零順序差，整份22987 bytes含checksum相同 | [正式收據](../data/ui-traces/parity-ch03.json)及[主契約](../data/ida/fd2_ch03_flow_20261017.json)。JOIN在SYNC之後，沿LOAD未使用第6筆基底，未新增保存例外；援軍後單次清敵20筆，無HP鎖或新強化。未抽樣死亡勝利分支與全寶物 |
 | 正式第一版 | v.1.0.0-20261017已公開為Latest；macOS通用ZIP、Windows x86_64 ZIP與Linux x86_64 AppImage均通過原生程序自檢，回下載SHA、架構、授權及447份公開素材核對通過 | [發行主收據](../data/fd2-release-v.1.0.0-20261017.json)與[41封包契約](41-packaging.md)。公開引擎包需完整合法分離素材；實機抽測[#9](https://github.com/wicanr2/fd2_re/issues/9)與HD仍待完成，舊tag／Release保持 |
+| 本機非HD完整版與影片 | v.1.0.0-20261017三平台完整包已交付，每包43177份資產；Linux與Wine啟動通過。2分18秒實際開場、首章操作、戰後存檔接續與購物影片通過，金幣1000→980 | [交付收據](../data/fd2-full-local-v.1.0.0-20261017.json)與[41](41-packaging.md)。原版素材及影片只留本機，未改公開Release；Windows／macOS實機、HD與完整matching狀態保持 |
 | 回合事件 | 全域 `sync_native_turn_events.py --check` 通過，仍有12筆維持spawn版本；第28章66／68／70休眠增援已補完整對白、PAN與物化，正常三波及保存通過 | [#33](https://github.com/wicanr2/fd2_re/issues/33)隨相關章補完整事件。固定EXE、來源、命令與日期見[event57主契約](../data/ida/fd2_turn_event57_20261016.json)，不重做已轉寫部分 |
 | 戰役故事節點稽核 | 第30章完整戰後接線後，工具重算119故事／過場、9直接腳本、60handler、50fallback，其中26為舊撤退骨架 | Docker `tools/audit_story_script_coverage.py --json`，2026-10-17；輸入SHA與輸出見[第30章主契約的validation.campaign_coverage](../data/ida/fd2_ch30_flow_20261017.json)。其他章fallback不因本次接線視為已證 |
 | HUD重繪 | 死亡steady及已證實戰場END／獎勵closing已接線；玩家確認、普通物理返回與部分劇情closing仍待補 | [#41](https://github.com/wicanr2/fd2_re/issues/41)，利用後續正常章收據驗證 |

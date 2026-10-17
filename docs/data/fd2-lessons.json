@@ -2509,6 +2509,36 @@
         ],
         "pattern": "lipo\\ \"\\$app/Contents/MacOS/fd2\"\\ \\-verify_arch\\ arm64\\ x86_64"
       }
+    },
+    {
+      "id": "promo-x11-raw-queue-memory-budget",
+      "area": "錄影",
+      "date": "2026-10-17",
+      "rule": "X11錄影依未壓縮影格大小限制thread_queue_size；1280×800的RGBA每幀約4MB，預設只緩衝8幀。用tools/capture_fd2_release_promo.sh記錄cgroup記憶體及OOM計數，限制繪圖執行緒，不把環境SIGKILL判成遊戲缺陷。",
+      "why": "初輪1024幀緩衝下Xvfb與FFmpeg被SIGKILL，沒有保留該輪cgroup計數，不能單獨確定OOM來源。縮小緩衝及執行緒後，同一引擎的15分鐘錄影約1GB、OOM計數為零，完成START至購物。",
+      "evidence": "tools/capture_fd2_release_promo.sh",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/capture_fd2_release_promo.sh"
+        ],
+        "pattern": "-thread_queue_size 8"
+      }
+    },
+    {
+      "id": "full-local-immutable-release-public-assets",
+      "area": "打包",
+      "date": "2026-10-17",
+      "rule": "從已發布版本組完整版時，以該包內公開劇本為準，只補缺少的執行期素材；分離素材pack保持獨立命名空間。用tools/build_fd2_full_local.py核對公開輸入SHA及全部公開劇本雜湊，不能用較新的工作樹覆蓋已發布程式的資料。",
+      "why": "首輪暫存檢查抓到工作樹README與正式包不同。保留各平台正式公開基底、只補缺檔後，各447份公開素材保持其來源bytes。Windows三份README為原生CRLF，另登錄SHA；其他43174個資產三平台bytes相同。",
+      "evidence": "tools/build_fd2_full_local.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_full_local.py"
+        ],
+        "pattern": "public_hashes"
+      }
     }
   ]
 }

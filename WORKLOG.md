@@ -649,3 +649,21 @@ macOS直接原因已由39041602077的原生註記取得：兩個slice及lipo cre
 最後衛生檢查：異動檔與正式交付均UID/GID1000:1000，1496條異動文件本地連結有效。歷史root-owned仍2811、md目錄0、掃描錯誤0；原FD2.EXE SHA保持。清理本輪候選AppImage及stage共38,335,421 bytes，保存SHA／清理紀錄與必要PNG／文字收據，正式三包保留在dist-all。沒有產生錄影；未留下FD2一次性容器。
 
 發行主證據與可重跑工具已提交6ac5616b並推送main；原始正式tag仍固定d8c361a8。GitHub #9回填第一版及三平台原生／回下載證據，保留實機啟動、存讀檔與音訊驗收條件及開啟狀態。官方pull／render／verify仍20項、13項人工判斷、可能已完成0；HD與完整matching的既有狀態保持。
+
+## 2026-10-18 第一版非HD完整包與實際遊玩推廣片
+
+使用者要求從正常開頭、第一章到城鎮購物並介紹技術，完成後另打包三平台非HD完整版。命中推廣影片、原版素材權利、dist-all及Windows ZIP路由，使用reverse-engineer-retro-game-remake技能；公開版號沿已發布v.1.0.0-20261017，發行日與tag來源d8c361a8保持，不更動公開Release。從main建立promo/full-local-v.1.0.0-20261017工作分支。
+
+沿既有Go／X11鏡像補可重現fd2-promo:20261017-r1，替代缺少的歷史game-video工具。正常開場、普通Space略過可略過動畫及START後，沿序章前進到第一章。X11普通鍵盤選亞雷斯、移動、攻擊及反擊；未強化、鎖血或修改敵人。戰後明示以已驗證首章hotel-save.json透過F9接續，普通商店操作買藥草兩件交給索爾，金幣1000→980、道具192新增兩件，F5保存前後核對。這是媒體／重製玩家操作證據，不是新原版同狀態或整章連續自然通關收據。
+
+成片138.035秒、1280×720／30fps／H.264與AAC，SHA aabbf42724f458bf720d14926eee4523dd0d6bcf90f65210434153f91cd5aa92。技術字幕介紹可編輯流程、dosgolem受控驗證、AFM／1824字模及Go／Ebiten三平台；明示尚未HD及城鎮存檔接續。完整解碼及16份抽樣圖通過，字幕無裁切。未調整AAC版本的戰鬥音效峰值達0dB，降低成片3dB並保留視訊stream copy後，平均−20.7dB、峰值−2.7dB。2.5秒遊戲區黑幕為實際反擊後的返回轉場，對話／清單停留與原作靜音窗逐項記錄，不宣稱零黑幕或人耳音色已驗。
+
+三平台完整包沿已發布的相同執行檔，補齊合法原版素材，assets與pack分開。每包43177份素材，原生Windows三份README保留CRLF差異，其餘43174份三平台相同。Windows ZIP 130497727 bytes、macOS通用ZIP 137579176 bytes、Linux AppImage 99240440 bytes；全部逐檔SHA、ZIP CRC、所有非ASCII UTF-8旗標、README BOM／CRLF、GUI PE、雙架構Mach-O、bundle、啟動器與授權通過。實際完整AppImage及Windows ZIP從空cwd自檢並以預設場景擷取通過；Windows為Wine輔助，兩張PNG SHA相同，不推論原版對拍或平台逐幀一致。macOS完整包未執行，#9實機輸入、存讀檔、音訊維持未完成。
+
+環境與腳本勘誤：首輪Docker build旗標不適用buildx，改用專用Dockerfile.dockerignore及既有base；首次有界image匯出到時停止，快取重跑完成。1024個未壓縮影格緩衝下初輪Xvfb／FFmpeg被SIGKILL，沒有該輪cgroup計數，不確定OOM來源；縮至8幀、限制繪圖執行緒後約1GB且OOM計數零。工作樹README不能覆蓋已發布公開基底；Windows三份原生CRLF以平台SHA覆蓋清單精確登錄，不改Game資料。Wine先預建使用者擁有的prefix，再固定C.UTF-8處理中文BAT參數，實際原ZIP啟動器通過；不把Wine環境錯誤列為產品缺陷。跨bind mount的rename回EXDEV，改為複製、核SHA、刪自有暫存；未改正式視訊內容。
+
+全部交付在dist-all/v.1.0.0-20261017/，原公開SHA256SUMS保持，新增DELIVERY-SHA256SUMS列三份公開包、三份本機完整包及影片。完整版與媒體含原版衍生素材，只留本機，不入Git或公開Release。主收據、工具與入口同批登錄00-index及41，58只更新交付列；HD、完整matching與既有20條worklist狀態保持。
+
+驗證後核實檔SHA，刪19份暫存錄影／剪輯共103752637 bytes；正式影片與必要圖、普通輸入、保存前後及音畫收據保留。完整包暫存另移除604960924 bytes，正式三包及原始來源保留。最終Git差異、所有權、連結與Docker清理在本輪收尾核對。
+
+最終核對：七份正式交付物SHA及UID/GID1000:1000通過，1518條本地連結有效，所有新Python語法與兩支shell語法通過。原FD2.EXE SHA保持222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f。222條教訓、105個guard通過；正式worklist仍20項、13項人工、可能完成0。歷史root-owned仍2811、md目錄0，所有本輪FD2容器已退出；舊IDA映像4ac62de83339不屬本輪，不作全域清理。完整包暫存實際移除604960924 bytes，加錄影共708713561 bytes；正式四個新增成品與三份公開包保留。dist-all被.gitignore排除。

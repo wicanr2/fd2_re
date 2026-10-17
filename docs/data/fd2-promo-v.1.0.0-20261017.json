@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "fd2-promo-production-spec",
+  "status": "CONFORMED",
+  "version": "v.1.0.0-20261017",
+  "engine_source_commit": "d8c361a8324cb19b5a0738897e15c151500a8de8",
+  "request": "正常開頭至第一章實際遊玩，接續城鎮購物，介紹技術；另交付三平台非HD完整版。",
+  "capture": {
+    "game": "正式Linux引擎及已驗證本機分離素材",
+    "method": "Xvfb／FFmpeg實際視窗與PulseAudio遊戲音訊；普通X11鍵盤",
+    "forbidden_capture_flags": [
+      "FD2_NOCUT",
+      "FD2_CAMP_NODE",
+      "FD2_SHOT",
+      "FD2_SHOT_FAST_FORWARD",
+      "FD2_APPROXIMATE"
+    ],
+    "continuity": "開場正常START至第一章。城鎮片段以已驗證第一章通關存檔經F9接續，剪接處與收據明示，不宣稱全章連續通關。",
+    "town_save": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+    "town_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+    "town_save_origin": "111已允許的章流程驗證，T7抽樣後force-enemy-clear；本次錄影不修改正式規則。",
+    "purchase_evidence": "普通按鍵完成商店購買；保存前後金幣及角色道具必須有實際交易變化。"
+  },
+  "technical_claims": [
+    {
+      "text": "Go／Ebiten跨平台引擎，macOS、Windows、Linux已發布。",
+      "evidence": "docs/data/fd2-release-v.1.0.0-20261017.json"
+    },
+    {
+      "text": "對話、戰役事件與戰間節點改為可編輯資料；持續隊伍與存讀檔接線。",
+      "evidence": "docs/knowledge-base/56-fd2-remake-sdd.md"
+    },
+    {
+      "text": "以dosgolem重播原版行為；30章受控流程抽樣，保存例外照實記錄。",
+      "evidence": "docs/data/parity-campaign-progress.json"
+    },
+    {
+      "text": "保存AFM增量動畫、1824個DOS中文字模與1995年原版工具署名。",
+      "evidence": "docs/knowledge-base/15-how-fd2-was-made-1995.md"
+    }
+  ],
+  "limits": [
+    "原版像素風格，尚未HD。",
+    "不宣稱逐幀相同、全部分支或自然難度通關。",
+    "Windows與macOS完整版實機操作仍待抽測。"
+  ],
+  "rights": {
+    "public_distribution": false,
+    "reason": "實際原版衍生美術、文字與遊戲音訊；只在本機保存，未授權公開上傳。",
+    "generated_replacement_music": false
+  },
+  "style": {
+    "theme": "從實際標題與王宮畫面取色，保留遊戲原色。",
+    "differences_from_previous": [
+      "使用開場至購物的順序敘事，取代舊版比較圖輪播。",
+      "遊戲影片搭配側欄與時間章節，取代單一底部字幕模板。",
+      "使用遊戲實際音訊，移除歷史腳本的sine合成音。"
+    ],
+    "target": "1280x720／30fps／H.264＋AAC，約2分鐘，中文字幕與章節標籤。"
+  },
+  "validation": [
+    "完整解碼",
+    "FFprobe視訊／音訊時長",
+    "非靜音與clipping",
+    "黑幀／凍結區間判讀",
+    "抽樣畫面與字幕裁切",
+    "購物前後交易",
+    "SHA-256",
+    "暫存錄影驗證後刪除，正式成品保留"
+  ],
+  "delivered_date": "2026-10-18",
+  "receipt": "docs/data/fd2-full-local-v.1.0.0-20261017.json",
+  "movie_sha256": "aabbf42724f458bf720d14926eee4523dd0d6bcf90f65210434153f91cd5aa92"
+}

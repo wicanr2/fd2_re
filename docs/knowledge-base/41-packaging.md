@@ -436,3 +436,30 @@ Linux靜態執行期沿官方type2-runtime 20251108的[MIT授權全文](../../re
 重跑附件核對使用[verify_fd2_release.py](../../tools/verify_fd2_release.py)：在由本專案Dockerfile.appimage建立的fd2-build-appimage:latest內，執行python3 tools/verify_fd2_release.py --version v.1.0.0-20261017 --commit d8c361a8324cb19b5a0738897e15c151500a8de8。允許公開下載網路，repo唯讀，只有work及dist-all可寫，使用目前UID/GID；命令與掛載見主收據及WORKLOG。
 
 第7節的2026-09-07 checkpoint與更早CI數字保留為歷史；目前原版執行器能力、30章及發布狀態由58與本節取代。舊build-windows.sh的packaging/dist是交叉建置中間產物，正式發行由中央release.yml與三個原生工作流程輸出dist-all；不把中間包當現行交付。實機抽測、簽署／公證及HD仍未完成。
+
+## 第一版本機非HD完整包與推廣影片
+
+狀態：CONFORMED，限組包、內容與本輪抽測。交付日期2026-10-18，沿用已發布的
+`v.1.0.0-20261017`及相同三平台引擎，沒有移動tag或修改公開Release。
+[交付收據](../data/fd2-full-local-v.1.0.0-20261017.json)保存來源、大小、SHA與驗證界線。
+
+- `dist-all/v.1.0.0-20261017/full-local/`提供macOS通用ZIP、Windows x86_64 ZIP及Linux x86_64 AppImage。每包含43,177份資產；Windows三份公開README保留原生CRLF，其餘資產與Linux相同。完整素材含原版衍生美術、文字及音訊，只供合法持有者本機使用，不入Git或公開Release。
+- `assets/`保存正式公開劇本及補齊的執行期素材，`pack/`保持獨立。Linux AppRun與macOS啟動器設定包內素材路徑；Windows解壓後執行`開始遊戲.bat`。三平台README均說明原版像素風格、存檔位置與平台限制。
+- 三包實際解包逐檔SHA、ZIP CRC、全部非ASCII名稱的UTF-8旗標、README BOM／CRLF、GUI PE、雙架構Mach-O、bundle、啟動器及授權均通過。實際完整AppImage與Windows ZIP均完成自檢及預設場景擷取；Windows為Wine輔助，macOS完整包未執行，實機輸入／存讀檔／音訊仍由#9追蹤。
+- `promo/`保存138.035秒H.264／AAC影片、16份抽樣圖、音畫檢查、權利與操作紀錄。正常開場及START至第一章，實際選人、移動與互相攻擊後，以已驗證首章通關存檔經F9接續城鎮，買入兩件藥草，金幣1000→980。影片明示接續與非HD；技術段介紹可編輯流程、dosgolem、AFM／中文字模及Go／Ebiten。
+- 影片完整解碼、字幕邊界及交易通過。平均音量−20.7dB、峰值−2.7dB；2.5秒遊戲區黑幕為實際戰鬥返回轉場，靜止及靜音窗逐項判讀，不隱藏或誤稱擷取中斷。驗證後刪除19份暫存錄影及剪輯檔，正式影片、操作、必要PNG與收據保留。
+
+重建使用[組裝器](../../tools/build_fd2_full_local.py)的`stage`及`package`，在本專案
+`fd2-build-appimage:latest`內執行；輸入為不可變的三份公開包、本機合法
+`remake/generated-assets/fd2-original-b97caf22/`及`remake/assets/`。
+先驗來源與公開基底，再補缺檔；工具拒絕覆寫既有正式輸出。
+[獨立核對器](../../tools/verify_fd2_full_local.py)直接讀三個成品，
+[啟動抽測](../../tools/smoke_fd2_full_local.sh)只在Docker內執行。
+`DELIVERY-SHA256SUMS.json`列出七份正式交付物；原公開`SHA256SUMS.json`保持。
+
+影片採[製作規格](../data/fd2-promo-v.1.0.0-20261017.json)、
+[擷取器](../../tools/capture_fd2_release_promo.sh)、
+[普通輸入記錄器](../../tools/operate_fd2_promo.py)、
+[合成器](../../tools/build_fd2_release_promo.py)及
+[驗證器](../../tools/verify_fd2_promo.py)，使用
+[錄影工具鏈](../../tools/docker/fd2-promo.Dockerfile)。來源素材維持唯讀，所有正式媒體留本機。

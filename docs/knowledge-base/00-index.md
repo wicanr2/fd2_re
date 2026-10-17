@@ -950,3 +950,14 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [三平台正式封包契約](41-packaging.md)：發行格式、公開與本機素材邊界、原生程序與實機驗收。
 - [v.1.0.0-20261017三平台發行收據](../data/fd2-release-v.1.0.0-20261017.json)：公開Release、原生CI、附件SHA、447份公開素材與平台限制。
 - [發布後附件核對工具](../../tools/verify_fd2_release.py)：獨立驗版號、來源提交、架構、授權、UTF-8及內容SHA，輸出至dist-all。
+
+- [三平台本機非HD完整包組裝器](../../tools/build_fd2_full_local.py)：沿用正式第一版引擎，保留執行期與分離素材命名空間，只輸出本機full-local；工具用Docker執行。
+- [實際遊玩錄影工具鏈](../../tools/docker/fd2-promo.Dockerfile)：沿用既有Go／X11環境，加上FFmpeg、普通鍵盤輸入與遊戲音訊擷取工具。
+- [第一版實際遊玩擷取器](../../tools/capture_fd2_release_promo.sh)：有界Xvfb與音訊擷取，預設正常開場；操作與戰後存檔接續另存紀錄。
+- [錄影普通輸入與截圖記錄器](../../tools/operate_fd2_promo.py)：在擷取容器送X11按鍵，記錄時點、唯讀狀態及畫面雜湊。
+- [第一版推廣影片製作規格](../data/fd2-promo-v.1.0.0-20261017.json)：開場、第一章、戰後存檔接續、購物交易與技術介紹的素材、聲明及驗收邊界。
+- [第一版實機混剪合成器](../../tools/build_fd2_release_promo.py)：實際遊玩影片加技術側欄，保留遊戲音訊並核對總長，正式輸出至promo。
+- [推廣影片驗證器](../../tools/verify_fd2_promo.py)：完整解碼、音量、黑幀、凍結、字幕抽圖與購物前後保存核對；訊號通過後仍須檢視畫面。
+- [完整包獨立核對器](../../tools/verify_fd2_full_local.py)：從三個正式封包核對全部素材、執行檔、啟動器、架構、ZIP及授權；實機結果另外記錄。
+- [完整包啟動抽測](../../tools/smoke_fd2_full_local.sh)：容器內從實際完整AppImage及Windows ZIP執行自檢與預設場景擷取；Windows為Wine輔助，不替代實機。
+- [第一版非HD完整版與推廣片交付收據](../data/fd2-full-local-v.1.0.0-20261017.json)：三平台完整包、43,177份素材、Linux／Wine啟動、2分18秒實機混剪、購物交易及本機權利邊界。
