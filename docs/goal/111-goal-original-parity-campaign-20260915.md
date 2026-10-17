@@ -219,3 +219,10 @@ issue #14 的 `verify` 就盯這個欄位。
 ### 2026-10-17 第2章限定保存政策
 
 使用者在原始指令、matching負例與有界唯讀來源追蹤完成後，明示接受本份11個差異並繼續第3章。入口為Docker內 tools/verify_chapter_parity.py --save-policy ch02-celia-residual-20261017 --oracle-save <實際SAV>，完整來源、九個建構前保留值與兩個checksum的逐筆限制見[第2章主契約](../data/ida/fd2_ch02_flow_20261017.json)的save_acceptance_policy。此政策只接受指定pair，預設strict與其他章來源不變；不得宣稱完整SAV bytes相同或九byte在所有玩法都未使用。
+
+
+### 2026-10-17 三十章流程里程碑
+
+第3章正常LOAD、T3兩端援軍、鐵諾存活JOIN及酒店保存／正式LOAD冷讀通過；18筆AI零順序差，整份SAV含checksum相同。受控兩次END抽樣後單次清敵20筆，無HP鎖或新強化。正式入口為[第3章收據](../data/ui-traces/parity-ch03.json)及[主契約](../data/ida/fd2_ch03_flow_20261017.json)。
+
+Docker執行tools/fd2_parity_progress.py verify已確認[正式台帳](../data/parity-campaign-progress.json)30章passed、all_chapters_passed=true；範圍依每章limitations及本目標最新流程政策。第1、2章限定保存例外保持，不擴張到其他來源。這個里程碑不涵蓋自然難度、所有分支、HD、全部現代素材覆蓋或完整matching；接續事項統一看[58](../knowledge-base/58-fd2-exe-re-coverage.md)及遠端worklist Issues。

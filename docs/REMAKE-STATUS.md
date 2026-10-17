@@ -18,12 +18,13 @@
 
 <!-- BEGIN tools/render_parity_progress.py render；不要手改這一段 -->
 
-依 [111](goal/111-goal-original-parity-campaign-20260915.md) 的逐章驗收門檻對拍，第 1 章、第 2 章、第 4 章、第 5 章、第 6 章、第 7 章、第 8 章、第 9 章、第 10 章、第 11 章、第 12 章、第 13 章、第 14 章、第 15 章、第 16 章、第 17 章、第 18 章、第 19 章、第 20 章、第 21 章、第 22 章、第 23 章、第 24 章、第 25 章、第 26 章、第 27 章、第 28 章、第 29 章、第 30 章已通過（台帳更新日 2026-10-17）；各章必驗項目與畫面政策見收據。
+依 [111](goal/111-goal-original-parity-campaign-20260915.md) 的逐章驗收門檻對拍，第 1～30 章已通過（台帳更新日 2026-10-17）；各章必驗項目與畫面政策見收據。
 
 | 章 | 通過的 gate | 原版動作 | 行為比較點 | 畫面比較點 | 最大畫面差異 | 完整存檔 | 證據 |
 |---|---|---|---|---|---|---|---|
 | 第 1 章 | 行為、節點、交易（其餘非必驗） | 38 | 38 | 未比 | — | 差異已揭露並接受 | [收據](data/ui-traces/parity-ch01.json) ／ — |
 | 第 2 章 | 行為、節點、交易（其餘非必驗） | 28 | 28 | 未比 | — | 差異已揭露並接受 | [收據](data/ui-traces/parity-ch02.json) ／ — |
+| 第 3 章 | 行為、節點、交易（其餘非必驗） | 29 | 29 | 未比 | — | 整檔相同 | [收據](data/ui-traces/parity-ch03.json) ／ — |
 | 第 4 章 | 行為、節點、交易、畫面 | 62 | 63 | 55（54 張逐像素相同） | 162 px | 整檔相同 | [收據](data/ui-traces/parity-ch04.json) ／ [2 張](figures/parity-ch04-samples-p1.png) |
 | 第 5 章 | 行為、節點、交易、畫面 | 65 | 66 | 58（58 張逐像素相同） | 0 px | 整檔相同 | [收據](data/ui-traces/parity-ch05.json) ／ [1 張](figures/parity-ch05-samples.png) |
 | 第 6 章 | 行為、節點、交易、畫面 | 72 | 73 | 58（42 張逐像素相同） | 618 px | 整檔相同 | [收據](data/ui-traces/parity-ch06.json) ／ [1 張](figures/parity-ch06-samples.png) |
@@ -51,8 +52,6 @@
 | 第 28 章 | 行為、節點、交易（其餘非必驗） | 118 | 118 | 未比 | — | 整檔相同 | [收據](data/ui-traces/parity-ch28.json) ／ — |
 | 第 29 章 | 行為、節點、交易（其餘非必驗） | 349 | 349 | 未比 | — | 整檔相同 | [收據](data/ui-traces/parity-ch29.json) ／ — |
 | 第 30 章 | 行為、節點、交易（其餘非必驗） | 56 | 56 | 未比 | — | 整檔相同 | [收據](data/ui-traces/parity-ch30.json) ／ — |
-
-其餘各章（第 3 章…共 1 章）還沒跑這套逐章對拍；第 1～3 章另有更早的單點證據，不列在這張表裡。
 
 每章的建構槽政策、抽樣範圍與限制寫在台帳 [`parity-campaign-progress.json`](data/parity-campaign-progress.json) 的 `limitations`；這張表由 `tools/render_parity_progress.py` 依台帳與收據產生。
 

@@ -1048,6 +1048,15 @@ def build_campaign(
                 "range_mode": 1,
             }
             nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
+        elif c == 3:
+            # 正常LOAD cp68及33142 focus0，READY來源見fd2_ch03_flow_20261017.json。
+            nodes[battle_id]["native_map_view"] = {
+                "camera_x": 3, "camera_y": 18,
+                "cursor_x": 7, "cursor_y": 22,
+                "visible_cursor_x": 4, "visible_cursor_y": 4,
+                "range_mode": 1,
+            }
+            nodes[battle_id]["native_map_hud_inherited"] = {"display_gate_b": 1}
         elif c == 23:
             # #136：336AB／338BF→33596，正常原版seq153的玩家入口。
             nodes[battle_id]["native_map_view"] = {

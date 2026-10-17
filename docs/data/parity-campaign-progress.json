@@ -3,7 +3,7 @@
   "kind": "fd2_parity_campaign_progress",
   "policy": "docs/goal/111-goal-original-parity-campaign-20260915.md",
   "updated": "2026-10-17",
-  "all_chapters_passed": false,
+  "all_chapters_passed": true,
   "chapters": [
     {
       "chapter": 1,
@@ -67,15 +67,31 @@
     },
     {
       "chapter": 3,
-      "status": "todo",
-      "receipt": null,
-      "slot_manifest": null,
-      "slot_sha256": null,
-      "dosgolem_commit": null,
-      "date": null,
-      "verify": null,
-      "limitations": [],
-      "prior_receipts": []
+      "status": "passed",
+      "receipt": "docs/data/ui-traces/parity-ch03.json",
+      "slot_manifest": "docs/data/parity-slots/ch03-manifest.json",
+      "slot_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+      "dosgolem_commit": "f5be010ac1aa5b8f7ab6db53d1507c9f8dcfd059",
+      "date": "2026-10-17",
+      "verify": "Docker tools/verify_chapter_parity.py --chapter 3 --oracle work/ch03-flow-20261017/original-full-r3 --remake work/ch03-flow-20261017/remake-full-r2 --slot-manifest docs/data/parity-slots/ch03-manifest.json --plan docs/data/parity-plans/ch03-full-flow-r3.jsonl --frame-policy advisory --oracle-save work/ch03-flow-20261017/state-full-r3/FD2.SAV --out docs/data/ui-traces/parity-ch03.json",
+      "limitations": [
+        "沿第2章原版實際SAV正常LOAD，零新強化／HP鎖；正常兩次END及T3兩端援軍後依111單次清敵20筆。",
+        "鐵諾存活JOIN、酒店保存及新Game正式LOAD冷讀7人通過；整份SAV含checksum零差異，strict。",
+        "鐵諾死亡勝利分支、全寶物與自然難度未抽樣；frames advisory，完整全域事件轉寫仍由#33追蹤。"
+      ],
+      "prior_receipts": [],
+      "slot_policy": {
+        "kind": "previous_chapter_actual_save",
+        "levels_per_chapter": 0,
+        "seed": 4,
+        "event_states": {},
+        "boost": {
+          "base_ap": 0,
+          "base_dp": 0,
+          "base_dx": 0,
+          "max_hp": 0
+        }
+      }
     },
     {
       "chapter": 4,

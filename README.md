@@ -281,6 +281,8 @@ LV、HP、MP、AP、DP、MV；下方依序為攻擊、法術、物品、待機�
 原版由dosgolem執行，驗收記錄行為、節點、交易與畫面。必驗項目、作弊政策與保存例外
 依[111](docs/goal/111-goal-original-parity-campaign-20260915.md)及各章收據；畫面作參考時，不宣稱逐幀或逐像素一致。
 
+30章均已通過各章規定的受控流程驗收，包含增援、戰後及保存邊界。作弊、未抽樣分支與第1、2章的限定保存差異均逐章揭露；HD與現代主題覆蓋仍在進行。
+
 目前分層現況與接續工作見[重製閉合矩陣](docs/knowledge-base/58-fd2-exe-re-coverage.md)。逐章驗收、章前作弊政策及保存限制見[章台帳](docs/data/parity-campaign-progress.json)與[進度頁](docs/REMAKE-STATUS.md)；各章以自己的收據為準，流程通過不代表逐像素一致。
 
 第十六章已通過同槽戰鬥抽樣、戰後交易與酒店存檔驗收，範圍與限制見[完整章收據](docs/data/ui-traces/parity-ch16.json)。

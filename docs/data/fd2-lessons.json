@@ -2479,6 +2479,21 @@
         ],
         "pattern": "movement = raw\\[0x3b\\]"
       }
+    },
+    {
+      "id": "oracle-title-owner-invalidates-battle-rows",
+      "area": "原版驗證",
+      "date": "2026-10-17",
+      "rule": "原版返回標題後，以輸入owner判斷流程，停止用殘留unit_count與已重用raw陣列判斷存活或回合。先用tools/dosgolem_oracle_drive.py的ui_mode核對checkpoint.input_chain；來源及負例入口見docs/data/ida/fd2_ch03_flow_20261017.json validation.full_r2。",
+      "why": "第3章r2敗北後仍保留27筆count，陣列內容已重用。round等待在seq341已返回離開戰場，後續await_ui cursor從標題空轉到941才失敗；必須區分殘留狀態與真正耗時的等待。",
+      "evidence": "docs/data/ida/fd2_ch03_flow_20261017.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/dosgolem_oracle_drive.py"
+        ],
+        "pattern": "原版已停在標題且無待處理按鍵"
+      }
     }
   ]
 }

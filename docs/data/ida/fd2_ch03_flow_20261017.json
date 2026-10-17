@@ -2,14 +2,14 @@
   "schema_version": 1,
   "kind": "fd2_chapter_flow_contract",
   "date": "2026-10-17",
-  "status": "DRAFT",
+  "status": "CONFORMED",
   "input": {
     "file": "FD2.EXE",
     "size": 357074,
     "md5": "b97caf2239a27a896069d03549d96e1e",
     "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
   },
-  "scope": "第3章正常LOAD、完整章前、T3援軍、鐵諾存活JOIN及下一城鎮／正式保存；目前只開READY起手探針。",
+  "scope": "第3章正常LOAD、完整章前、T3兩端援軍、鐵諾存活JOIN、下一城鎮、酒店保存及正式LOAD冷讀；依111完成流程驗收。",
   "issue": 200,
   "prior_evidence": [
     "docs/data/ui-traces/parity-ch02.json",
@@ -27,24 +27,52 @@
     "restriction": "不作ABI、處理器語意或原版位元組證據。"
   },
   "startup_contract": {
-    "status": "READY",
+    "status": "CONFORMED",
     "entry": "正常標題LOAD槽0，town_ch03兩次Left至出口，正常Enter出戰與章前演出，不直入battle。",
     "source": "同一原版SAV d8d534d5；第2章full-r2正常town_ch03 probe_index1／seq527已驗兩次Left為preparation，沿既有2D11D提示owner。",
     "plan": "docs/data/parity-plans/ch03-startup-r1.jsonl",
     "manifest": "docs/data/parity-slots/ch03-manifest.json",
-    "acceptance": "原版完整章前到117F8游標，再以Game同輸入核對起手名冊／視圖／HUD；只驗起手，不推定整章。"
+    "acceptance": "原版完整章前到117F8游標，再以Game同輸入核對起手名冊／視圖／HUD；只驗起手，不推定整章。",
+    "view_hud_spec": {
+      "status": "CONFORMED",
+      "confidence": "已證實的起手view、非零HUD顯示；最終raw gateB未直接擷取",
+      "source": "正常LOAD原版cp68及PNG，33142 focus0，沿既有26112 LOAD寫B=1及已閉合HUD gate consumer。",
+      "consumer": "remake/cmd/fd2/main.go materializeNativeMapRuntime；battle_ch03三optional欄皆nil時略過，正常移動組圖要求HasNativeMapHUDState。",
+      "native_map_view": {
+        "camera_x": 3,
+        "camera_y": 18,
+        "cursor_x": 7,
+        "cursor_y": 22,
+        "visible_cursor_x": 4,
+        "visible_cursor_y": 4,
+        "range_mode": 1
+      },
+      "native_map_hud_inherited": {
+        "display_gate_b": 1
+      },
+      "limitation": "A與anchor由正常程序／LOAD來源繼承；B=1只承載已證非零條件，不宣稱觀測到最終raw B。",
+      "issue": 249
+    }
   },
   "flow_contract": {
-    "status": "DRAFT",
+    "status": "CONFORMED",
     "gates": [
       "T3事件9完整演出及兩端援軍",
       "鐵諾存活分支、JOIN與戰後",
       "下一城鎮、正式保存及LOAD冷讀"
     ],
-    "save_policy": "strict"
+    "save_policy": "strict",
+    "join_save_order": {
+      "status": "CONFORMED",
+      "confidence": "已證實",
+      "original": "sub_230F2：23126 SYNC→23137讀slot6 inactive→存活分支231AF JOIN2→2328A增章，JOIN之後沒有第二次SYNC。",
+      "source": "remake/assets/cutscenes/handlers/ch02_post.json；既有IDA9.4原始圖及tools/fd2_matching_game_compound.c沿用，不重開helper。",
+      "remake": "新JOIN2維持NativeJoinPersistentPending，BuildNativeChapterSlot用同一LOAD基底未使用第6筆的殘留值，不能套用第2章JOIN8後SYNC的零基底結論。",
+      "verification": "完整章strict通過，22987 bytes含checksum相同；slot6九個runtime觀察僅證明場上建構，持續名冊保存沿LOAD第6筆基底。"
+    }
   },
   "validation": {
-    "status": "pending",
+    "status": "passed",
     "new_matching": false,
     "videos": false,
     "startup_original": {
@@ -208,10 +236,546 @@
       "ai_order_divergences": 0,
       "limitation": "只驗正常LOAD、完整章前及15筆起手；未抽樣移動或戰鬥，不證明HUDconsumer與整章。"
     },
-    "startup_trace_note": "起手trace指定32E6B沒有命中；既有handler原始入口是32E8C。原始輸入owner與正常Game已驗完整章前，後續完整章改用32E8C；不把錯trace位址當產品缺陷。"
+    "startup_trace_note": "起手trace指定32E6B沒有命中；既有handler原始入口是32E8C。原始輸入owner與正常Game已驗完整章前，後續完整章改用32E8C；不把錯trace位址當產品缺陷。",
+    "full_r2": {
+      "status": "original_defeat_return_title",
+      "run": "work/ch03-flow-20261017/original-full-r2",
+      "reinforcements": 27,
+      "third_round_before_extra_end": {
+        "thor_hp": 29,
+        "tino_hp": 43
+      },
+      "first_title_checkpoint": 365,
+      "reason": "第三次END後索爾敗北。標題保留舊unit_count指標，raw陣列已釋放／重用，不能據此判斷場上HP。工具已停止，未改原始資料。",
+      "replacement": "ch03-full-flow-r3：保留同一seed／SAV及兩次END，T3援軍到達並交回操作後依111清敵。",
+      "exit_code": 15,
+      "tooling_issue": 248,
+      "termination_note": "停止命令送出前driver已自行exit15並--rm退出，docker stop查無容器；未留下非預期容器。",
+      "tooling_correction": "driver.log新證據：seq341以已離開戰場返回round等待；真正延後退出的是隨後await_ui cursor，cp365已title仍輪詢至941才exit15。舊raw重用不能判流程，但不是這600次等待的唯一原因。#248內文依此更正，舊解釋保留於WORKLOG勘誤。"
+    },
+    "receipt": "docs/data/ui-traces/parity-ch03.json",
+    "original_full": {
+      "run": "work/ch03-flow-20261017/original-full-r3",
+      "exit_code": 0,
+      "final_seq": 435,
+      "steps": 1315400367,
+      "checkpoints": 436,
+      "event9_entries": 1,
+      "ai_entries": 18,
+      "post_entries": 1,
+      "save_entries": 1,
+      "save_sha256": "b942e356f2babb2d936fe7d2daa461f1270175835619f0e59ea4bf43b4ddcd40",
+      "frozen_driver_sha256": "f50bd7d458ffa45f92038ff77949c48c8b2251af414977a6421ccbe1f2a70c06"
+    },
+    "game_full": {
+      "run": "work/ch03-flow-20261017/remake-full-r2",
+      "exit_code": 0,
+      "seconds": 14.79,
+      "ai_entries": 18,
+      "ai_consumed": 18,
+      "ai_order_divergences": 0,
+      "cold_load": {
+        "chapter": 3,
+        "roster": 7,
+        "gold": 1000
+      },
+      "save_sha256": "b942e356f2babb2d936fe7d2daa461f1270175835619f0e59ea4bf43b4ddcd40"
+    },
+    "tools_r2": {
+      "status": "fixture_missing_exe_context",
+      "log": "work/ch03-flow-20261017/tools-regression-r2.log",
+      "reason": "fixture省略EXE hash，59／60／62的已閉合portrait等待無法分級為dialogue；原始鍵序斷言正確，補回分類所需來源而不改UI分類或放寬斷言。"
+    },
+    "tools_r3": {
+      "status": "214_passed_one_open_issue_snapshot_failure",
+      "log": "work/ch03-flow-20261017/tools-regression-r3.log",
+      "reason": "第3章真實正常等待fixture補齊EXE hash／eip後通過，214項相關測試通過；唯一失敗為30章台帳已完成但遠端#14仍開著，提交後結案並更新快照再乾淨重跑。"
+    }
   },
   "unknown": [
-    "實際起手raw筆數及view／HUD來源待本輪oracle確認",
-    "事件9phase metadata及完整原語以原始指令／本輪實測裁決，不以攻略補規則"
+    "鐵諾死亡後勝利分支、全寶物與自然難度未抽樣。",
+    "原版runtime slot6九個保留值的更早producer及全部用途未知；本章JOIN後無第二次SYNC，不把它們當保存來源。",
+    "最終raw HUD gateB未直接擷取；非零顯示與正式consumer通過，沒有逐像素或逐幀聲明。"
+  ],
+  "sampling_plan": {
+    "status": "SUPERSEDED",
+    "plan": "docs/data/parity-plans/ch03-full-flow-r2.jsonl",
+    "plan_sha256": "6c24ee642be10e66d51487da13924d518adec838a0d5b22d4ea915183d8952de",
+    "policy": "正常鍵盤退守／接戰、三次END、T3事件後依111單次清敵；不鎖HP、不重擲seed。",
+    "bound": "援軍後27筆必須到達；鐵諾分支按原版實際存活狀態，未到達或索爾敗北保留失敗收據。",
+    "source_trace": "32E8C既有章前、344C2事件9、230F2戰後及30012保存；同時從cp42步數289400367唯讀觀察鐵諾slot6+28..30與三個正對照，原版AI追蹤保持至終點。",
+    "replacement": "sampling_plan_r3；保留第三次END自然敗北的原始收據。"
+  },
+  "sampling_plan_r3": {
+    "status": "CONFORMED",
+    "plan": "docs/data/parity-plans/ch03-full-flow-r3.jsonl",
+    "plan_sha256": "c76eae1a7811ee1356ed00e8d8b4c4590fcae32b8022c83e29b2e2c5901dd3e5",
+    "reason": "控制列[turn3,event9,special2]及r2實測均證明T3可操作前已有27筆；抽樣無需第三次END。",
+    "policy": "正常兩次END與接戰後單次清敵，不鎖HP，不重擲seed，不重寫frozen driver或r2原始收據。"
+  },
+  "tooling_guard_spec": {
+    "status": "CONFORMED",
+    "issue": 248,
+    "source": "r2 driver.log seq365..941：1FE60 title，kbd_pending=0且do_await_ui只會送空鍵，無後續輸入能推進到cursor。",
+    "contract": "do_await_ui先接納wanted UI；若目前是title、wanted不同且有型別正確的kbd_pending=0，立即返回失敗。已排隊的按鍵、缺metadata及一般對白等待沿原有有界流程。",
+    "tests": [
+      "已阻塞標題不送空鍵且失敗",
+      "有排隊Enter的標題仍可推進至游標",
+      "本來就等待title成功",
+      "缺kbd_pending不臆測為已阻塞",
+      "對白正常Enter至游標"
+    ],
+    "scope": "只修原版工具的失敗等待；正式遊戲規則與成功原版r3凍結driver不變。本輪源自f50bd7d4的成功收據仍保留版本。",
+    "validation": {
+      "status": "passed_actual_failure_receipt",
+      "fixture": "work/ch03-flow-20261017/original-full-r2/checkpoint-0365.json",
+      "fixture_sha256": "4f093c842018d1a74ca741d7fbf62f10a35474adf32de9674268a76fcd09652e",
+      "ui_mode": "title",
+      "kbd_pending": 0,
+      "new_keys_sent": 0,
+      "driver_sha256": "8ff39f3afff020862d3540cc3290ebccf522225a54dcc95741157e6549003329",
+      "limitation": "工具負例回歸，不提升原版玩家路徑；成功r3用原凍結f50bd7d4，未改寫收據。",
+      "positive_wait": "原版r3 checkpoint43..68及f50凍結driver的25筆鍵序；新版guard全部保持，正式driver unit回歸通過。"
+    },
+    "positive_wait_fixture": {
+      "source_run": "work/ch03-flow-20261017/original-full-r3",
+      "reference_driver_sha256": "f50bd7d458ffa45f92038ff77949c48c8b2251af414977a6421ccbe1f2a70c06",
+      "input_save_sha256": "d8d534d5692d3e81ffafacb9a2c31e74ed7f3297583fcb0bec95715df488fe6b",
+      "steps": 2000000,
+      "keys": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "enter",
+        "",
+        "",
+        "",
+        "enter",
+        "enter",
+        "enter",
+        "enter",
+        "",
+        "enter",
+        "enter",
+        "",
+        "enter",
+        "",
+        "enter",
+        "enter",
+        "enter",
+        "enter"
+      ],
+      "states": [
+        {
+          "control_seq": 43,
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x13660",
+            "0x32F02",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DF2C"
+        },
+        {
+          "control_seq": 44,
+          "input_chain": [
+            "0x13902",
+            "0x11ED9",
+            "0x11D3B",
+            "0x32F19",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x17AD2"
+        },
+        {
+          "control_seq": 45,
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x138F8",
+            "0x11ED9",
+            "0x11D3B",
+            "0x32F19",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DF45"
+        },
+        {
+          "control_seq": 46,
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x1380A",
+            "0x11ED9",
+            "0x11D3B",
+            "0x32F19",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DF02"
+        },
+        {
+          "control_seq": 47,
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x1380A",
+            "0x11ED9",
+            "0x11D3B",
+            "0x32F19",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DEF2"
+        },
+        {
+          "control_seq": 48,
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x1380A",
+            "0x11ED9",
+            "0x11D3B",
+            "0x32F19",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DEF3"
+        },
+        {
+          "control_seq": 49,
+          "input_chain": [
+            "0x12211",
+            "0x11CED",
+            "0x1380A",
+            "0x11ED9",
+            "0x11D3B",
+            "0x32F19",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DEF0"
+        },
+        {
+          "control_seq": 50,
+          "input_chain": [
+            "0x36CE0",
+            "0x1062A",
+            "0x16CF8",
+            "0x164C4",
+            "0x32F40",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x36CEC"
+        },
+        {
+          "control_seq": 51,
+          "input_chain": [
+            "0x11CED",
+            "0x138F8",
+            "0x164D4",
+            "0x32F54",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x121C1"
+        },
+        {
+          "control_seq": 52,
+          "input_chain": [
+            "0x11CED",
+            "0x138F8",
+            "0x164D4",
+            "0x32F54",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x1222B"
+        },
+        {
+          "control_seq": 53,
+          "input_chain": [
+            "0x1295F",
+            "0x127D4",
+            "0x11CFA",
+            "0x1380A",
+            "0x164D4",
+            "0x32F54",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DF21"
+        },
+        {
+          "control_seq": 54,
+          "input_chain": [
+            "0x16CF8",
+            "0x1624B",
+            "0x32F7B",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x1062A"
+        },
+        {
+          "control_seq": 55,
+          "input_chain": [
+            "0x16CF8",
+            "0x16384",
+            "0x32F7B",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x10625"
+        },
+        {
+          "control_seq": 56,
+          "input_chain": [
+            "0x16CF8",
+            "0x1624B",
+            "0x32F7B",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x10651"
+        },
+        {
+          "control_seq": 57,
+          "input_chain": [
+            "0x16CF8",
+            "0x164C4",
+            "0x32F7B",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x10625"
+        },
+        {
+          "control_seq": 58,
+          "input_chain": [
+            "0x1647C",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4EAE1"
+        },
+        {
+          "control_seq": 59,
+          "input_chain": [
+            "0x4E8D4",
+            "0x16596",
+            "0x16D92",
+            "0x1624B",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4E91A"
+        },
+        {
+          "control_seq": 60,
+          "input_chain": [
+            "0x4E906",
+            "0x165A7",
+            "0x16D66",
+            "0x16161",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4E924"
+        },
+        {
+          "control_seq": 61,
+          "input_chain": [
+            "0x1624B",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x16CFA"
+        },
+        {
+          "control_seq": 62,
+          "input_chain": [
+            "0x4E8D4",
+            "0x16596",
+            "0x16D92",
+            "0x1624B",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4E91D"
+        },
+        {
+          "control_seq": 63,
+          "input_chain": [
+            "0x16161",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x16D13"
+        },
+        {
+          "control_seq": 64,
+          "input_chain": [
+            "0x16D05",
+            "0x16161",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4E021"
+        },
+        {
+          "control_seq": 65,
+          "input_chain": [
+            "0x16CF8",
+            "0x16161",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x1062D"
+        },
+        {
+          "control_seq": 66,
+          "input_chain": [
+            "0x1062A",
+            "0x16CF8",
+            "0x16161",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x36CE4"
+        },
+        {
+          "control_seq": 67,
+          "input_chain": [
+            "0x4E8D4",
+            "0x16596",
+            "0x16D66",
+            "0x164C4",
+            "0x33138",
+            "0x25DC2",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4E91C"
+        },
+        {
+          "control_seq": 68,
+          "input_chain": [
+            "0x127A1",
+            "0x12381",
+            "0x11CF5",
+            "0x11AE4",
+            "0x117F8",
+            "0x25DD3",
+            "0x45D91",
+            "0x3CB91"
+          ],
+          "kbd_pending": 0,
+          "exe_sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+          "eip": "0x4DF43"
+        }
+      ],
+      "confidence": "原版實際正常章前／游標等待片段，保留UI分類所需EXE hash、EIP、input_chain及kbd_pending；不構成新的原版執行器。"
+    }
+  },
+  "limitations": [
+    "PLAYER-E2限111流程例外；沿第2章原版實際SAV，三名HP0與祖先清敵保留，章內正常兩次END及T3援軍後單次清敵20筆，無HP鎖或新強化。",
+    "本份存檔strict，22987 bytes含checksum完全相同；未擴張第1／2章保存差異政策。",
+    "鐵諾存活JOIN分支已驗；死亡後的勝利分支、自然難度、全寶物與未抽樣戰鬥不由此推定。",
+    "畫面advisory，未擷取重製PNG，不宣稱逐像素或逐幀一致；最終raw HUD gateB未直接擷取，只用已證非零顯示。",
+    "事件9的既有可編輯正分支通過，完整全域轉寫表仍由#33分層追蹤。",
+    "成功原版用f50bd7d4凍結driver；#248新guard另由真實敗北fixture及正常鍵序回歸，不改寫成功原版收據。"
   ]
 }

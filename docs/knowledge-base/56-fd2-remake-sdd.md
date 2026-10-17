@@ -9828,3 +9828,8 @@ battle_ch02原缺view及繼承HUD來源，第一次正常移動遭預檢拒收�
 第2章保存定案與正式驗收追加（2026-10-17）：有界唯讀觀察在runtime27建構前已讀到3ffe6d136c866dfe3f，10C50保留九byte；camp、identity及HP的三個直接writer均有正對照。11506整筆複製及30012保存沿已閉合IDA證據，重製BuildNativeChapterSlot的新入隊紀錄則使用零基底。局部副本只補九byte並重算checksum即重現原版整檔，未改寫正式SAV。matching重連結的九個完整112A5 C候選全部未匹配；更早記憶體內容producer及全部用途仍未知。
 
 使用者確認「接受本份差異，繼續第3章」，正式--save-policy ch02-celia-residual-20261017綁定本章、來源SAV、計畫、執行器、兩側整檔SHA與全部11個差異，不提供一般遮罩。預設strict仍failed，限定政策下行為／節點／交易passed，bytes_equal=false。本章依111列PLAYER-E2流程收據，畫面僅參考；目前統計與接續入口依58。重跑來源工具、直接證據與正式收據均由[第2章主契約](../data/ida/fd2_ch02_flow_20261017.json)導覽。
+
+
+第3章正式流程驗收追加（2026-10-17）：[正式收據](../data/ui-traces/parity-ch03.json)與[主契約](../data/ida/fd2_ch03_flow_20261017.json)記錄正常LOAD、章前、兩次END、T3事件9兩端援軍、鐵諾存活JOIN、下一城鎮、酒店保存及新Game正式LOAD冷讀。18筆AI全部消費，零順序分岔；依111在援軍交回操作後單次清敵20筆，無HP鎖或新強化。第3章view／HUD來源已接正式移動consumer及生成器。
+
+原版230F2先SYNC再JOIN2，之後沒有第二次SYNC；重製維持NativeJoinPersistentPending，保存使用同一LOAD基底第6筆，與第2章JOIN8後SYNC的零基底條件不同。整份22987 bytes含checksum相同，SHA b942e356f2babb2d936fe7d2daa461f1270175835619f0e59ea4bf43b4ddcd40；沒有新增保存例外。畫面僅參考，鐵諾死亡後勝利分支、全寶物與自然難度未抽樣。30章統計只引用[58目前狀態表](58-fd2-exe-re-coverage.md)，HD與未抽樣規則另列。

@@ -431,6 +431,13 @@ def do_await_ui(command):
         if mode == want:
             print(f"await_ui={want} 成立", flush=True)
             return True
+        # #248：空鍵不會離開標題；只以輸入owner及已證實的空鍵盤判斷，
+        # 不讀敗北後可能已釋放／重用的戰鬥陣列。有排隊按鍵時仍讓原版處理。
+        if (mode == "title" and type(current.get("kbd_pending")) is int
+                and current["kbd_pending"] == 0):
+            print(f"await_ui={want}：原版已停在標題且無待處理按鍵，中止等待",
+                  file=sys.stderr)
+            return False
         key = "enter" if mode == "dialogue" else ""
         seq, current = send(key, steps)
         report(seq, key, current, f" await-ui={want}")

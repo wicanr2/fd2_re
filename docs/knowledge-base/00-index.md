@@ -934,6 +934,12 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 ### 2026-10-17 第3章正常接續驗收
 
-- [第3章主契約](../data/ida/fd2_ch03_flow_20261017.json)：整章DRAFT，起手READY；攻略只作旁證。
+- [第3章主契約](../data/ida/fd2_ch03_flow_20261017.json)：CONFORMED，正常LOAD、T3援軍、鐵諾JOIN與strict保存；攻略只作旁證。
 - [第3章接續清冊](../data/parity-slots/ch03-manifest.json)：第2章原版實際SAV原樣接續，零新強化。
 - [第3章正常LOAD短計畫](../data/parity-plans/ch03-startup-r1.jsonl)：完整章前至游標，不提升整章台帳。
+
+- [第3章正常完整抽樣計畫r2](../data/parity-plans/ch03-full-flow-r2.jsonl)：退守、接戰與三次END；T3援軍到達後額外END造成自然敗北，保留失敗收據。
+
+- [第3章T3援軍後收尾計畫r3](../data/parity-plans/ch03-full-flow-r3.jsonl)：同一來源及兩次END，省去已造成自然敗北的額外回合；原r2保留失敗。
+
+- [第3章正式流程收據](../data/ui-traces/parity-ch03.json)：T3兩端援軍、鐵諾存活JOIN、下一城鎮、酒店保存與正式LOAD冷讀；完整SAV含checksum零差異，依111流程例外，畫面僅參考。

@@ -446,6 +446,56 @@ def unit(x, y, camp, hp=10, acted=False, identity=None):
 
 
 class AwaitUIPlanValidation(unittest.TestCase):
+    def test_real_chapter3_cursor_wait_preserves_frozen_driver_keys(self):
+        evidence = json.loads((ROOT.parent / "docs/data/ida/fd2_ch03_flow_20261017.json").read_text())
+        fixture = evidence["tooling_guard_spec"]["positive_wait_fixture"]
+        states = fixture["states"]
+        replies = [(s["control_seq"], s) for s in states[1:]]
+        with mock.patch.object(drive, "state", side_effect=states), \
+                mock.patch.object(drive, "send", side_effect=replies) as send, \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_await_ui({
+                "await_ui": "cursor", "steps": fixture["steps"], "max": len(states) + 1}))
+        self.assertEqual([call.args for call in send.call_args_list],
+                         [(key, fixture["steps"]) for key in fixture["keys"]])
+
+    def test_blocked_title_ignores_stale_battle_rows_and_sends_nothing(self):
+        current = {"input_chain": ["0x1FE60"], "kbd_pending": 0,
+                   "view": {"round": 3}, "units": [{"camp": 2, "hp": 34632}]}
+        with mock.patch.object(drive, "state", return_value=current), \
+                mock.patch.object(drive, "send") as send, \
+                mock.patch.object(drive, "report") as report:
+            self.assertFalse(drive.do_await_ui({"await_ui": "cursor", "max": 600}))
+        send.assert_not_called()
+        report.assert_not_called()
+
+    def test_title_with_queued_key_can_reach_cursor(self):
+        states = [{"input_chain": ["0x1FE60"], "kbd_pending": 1},
+                  {"input_chain": ["0x117F8"], "kbd_pending": 0}]
+        with mock.patch.object(drive, "state", side_effect=states), \
+                mock.patch.object(drive, "send", return_value=(1, states[1])) as send, \
+                mock.patch.object(drive, "report"):
+            self.assertTrue(drive.do_await_ui({"await_ui": "cursor", "steps": 123, "max": 3}))
+        send.assert_called_once_with("", 123)
+
+    def test_waiting_for_title_accepts_the_same_blocked_boundary(self):
+        with mock.patch.object(drive, "state", return_value={
+                "input_chain": ["0x1FE60"], "kbd_pending": 0}), \
+                mock.patch.object(drive, "send") as send:
+            self.assertTrue(drive.do_await_ui({"await_ui": "title"}))
+        send.assert_not_called()
+
+    def test_missing_or_malformed_pending_does_not_invent_a_blocked_boundary(self):
+        for pending in ({}, {"kbd_pending": False}, {"kbd_pending": "0"}):
+            with self.subTest(pending=pending):
+                states = [{"input_chain": ["0x1FE60"], **pending},
+                          {"input_chain": ["0x117F8"], "kbd_pending": 0}]
+                with mock.patch.object(drive, "state", side_effect=states), \
+                        mock.patch.object(drive, "send", return_value=(1, states[1])) as send, \
+                        mock.patch.object(drive, "report"):
+                    self.assertTrue(drive.do_await_ui({"await_ui": "cursor", "steps": 123, "max": 3}))
+                send.assert_called_once_with("", 123)
+
     def test_wait_for_spell_sends_no_choice_key(self):
         states = [{"input_chain": ["0x18EEF"]},
                   {"input_chain": ["0x1D0D4"]}]
