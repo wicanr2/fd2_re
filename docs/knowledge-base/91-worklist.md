@@ -246,9 +246,11 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `release-platform-acceptance` · 工作 · [#9](https://github.com/wicanr2/fd2_re/issues/9) · 仍未完成 · 要人判
 
-排程：P2，平台交付階段；保留原平台與實機驗收範圍，不因Linux結果宣稱其他平台完成。
+排程：P2，平台交付階段；保留 Windows 與 macOS 實機驗收範圍。
 
-三平台公開封包已由 CI 產出，Linux 經啟動與解包驗證。Windows 與 macOS 只做過 ZIP 內容驗證，沒有實機啟動、存檔與音訊抽測。
+2026-10-17 正式第一版 [v.1.0.0-20261017](https://github.com/wicanr2/fd2_re/releases/tag/v.1.0.0-20261017) 已公開為 Latest。macOS 通用 ZIP、Windows x86_64 ZIP、Linux x86_64 AppImage 均從同提交完成原生程序自檢；回下載 SHA、架構、授權與每包 447 份公開素材核對通過。來源、原生 CI 及限制見[正式發行收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-release-v.1.0.0-20261017.json)。
+
+仍待 Windows 與 macOS 實機的啟動、存檔／讀檔與音訊抽測。本版 Windows／macOS 未簽署，macOS 尚未公證，已在公開發行說明中揭露。這項 Issue 保持開啟。
 
 怎樣算做完：兩個平台各自在實機完成啟動、存檔／讀檔與音訊抽測並記錄結果。
 
