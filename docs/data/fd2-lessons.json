@@ -2634,15 +2634,15 @@
       "id": "gui-key-hold-ack-release-update",
       "area": "驗證",
       "date": "2026-10-18",
-      "rule": "GUI送鍵保持keydown直到真實Update收據承認，finally釋放後等後續Update再送下一鍵；tools/verify_fd2_hd_dialogue_gui.py從有界audit尾端找事件，不只看最後一列。",
-      "why": "短按鍵可能完整落在同步素材／GPU上傳期間；固定放鍵等待也會漏掉鍵，週期觀測還會覆蓋先前按鍵列。開場略過使用已確認在標題不會確認START的Esc，避免狀態延遲導致過衝。",
-      "evidence": "tools/verify_fd2_hd_dialogue_gui.py",
+      "rule": "GUI送鍵保持keydown直到真實Update收據承認，finally釋放後等待同鍵released_keys事件，再送下一鍵。入口tools/verify_fd2_hd_fonts_gui.py的key；有界audit尾端保留按下／放鍵，FD2_INPUT_AUDIT_INTERVAL只調整觀測密度，幀號增加不能代替放鍵事件。",
+      "why": "短按鍵可能落在同步素材／GPU上傳期間。加密audit後，放鍵時目前frame可能早已超過keydown ACK+2；即使重取frame再等兩次Update，也未必已處理鍵盤釋放。hotel-gui-r2／r3均保留後續同鍵沒有JustPressed的負例，故改驗證實際JustReleased事件。開場只送標題不會確認START的Esc。",
+      "evidence": "tools/verify_fd2_hd_fonts_gui.py",
       "guard": {
         "kind": "present",
         "paths": [
-          "tools/verify_fd2_hd_dialogue_gui.py"
+          "tools/verify_fd2_hd_fonts_gui.py"
         ],
-        "pattern": "Observe subsequent Updates"
+        "pattern": "release_ack"
       }
     },
     {

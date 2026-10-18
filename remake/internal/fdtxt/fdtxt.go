@@ -108,7 +108,24 @@ func (s *Strings) LocateLogicalUtterance(index int) (LogicalLocator, error) {
 
 // Font is FDOTHER resource #4: packed 16x16, 1bpp glyphs with MSB at the
 // left edge of each row.
-type Font struct{ data []byte }
+type Font struct {
+	data            []byte
+	nativePresenter func(stride, base, index int, style NativeGlyphStyle) bool
+}
+
+// WithNativePresenter returns an independent presentation adapter sharing only
+// immutable font bytes. A true result replaces ink, after normal validation and
+// background fill. False retains the exact native glyph and shadow.
+// The caller owns composition order and must discard descriptors when a later
+// opaque panel covers them; this adapter does not track destination identities.
+func (f *Font) WithNativePresenter(present func(stride, base, index int, style NativeGlyphStyle) bool) *Font {
+	if f == nil {
+		return nil
+	}
+	copy := *f
+	copy.nativePresenter = present
+	return &copy
+}
 
 func ParseFont(data []byte) (*Font, error) {
 	if len(data) == 0 || len(data)%GlyphBytes != 0 {
@@ -182,6 +199,9 @@ func (f *Font) BlitNativeGlyph(dst []byte, stride, base, index int, style Native
 				dst[base+y*stride+x] = style.Background
 			}
 		}
+	}
+	if f.nativePresenter != nil && f.nativePresenter(stride, base, index, style) {
+		return nil
 	}
 	for y := 0; y < GlyphHeight; y++ {
 		row := binary.BigEndian.Uint16(f.data[index*GlyphBytes+y*2:])

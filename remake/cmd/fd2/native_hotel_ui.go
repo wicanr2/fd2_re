@@ -119,6 +119,10 @@ func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool) {
 		)
 		return frame, err == nil
 	case "slots", "loadslots":
+		// The opaque slots box covers the greeting produced above.
+		if g.font != nil && g.font.indexedHD != nil {
+			g.font.indexedHD.runs = nil
+		}
 		slots, ok := nativeLoadSlotMetadata()
 		if !ok {
 			return nil, false
@@ -128,6 +132,9 @@ func (g *Game) composeNativeHotelFrame(portraitFrame int) ([]byte, bool) {
 		)
 		return frame, err == nil
 	case "saved", "loaded", "load_blocked":
+		if g.font != nil && g.font.indexedHD != nil {
+			g.font.indexedHD.runs = nil
+		}
 		frame, err := campaign.ComposeNativeChurchDialogueOverlayAt(
 			ui.assets.Background, shared.dialogue, ui.portraits[portraitFrame],
 			campaign.NativeFacilityPortraitOffset(nativeHotelPortraitID),
@@ -153,11 +160,21 @@ func (g *Game) drawNativeHotel(screen *ebiten.Image) bool {
 	if g.nativeHotelMode == "" {
 		return false
 	}
+	capture, restore := g.beginModernHDHotelText()
+	defer restore()
+	if capture != nil {
+		previous := g.font.indexedHD
+		g.font.indexedHD = capture
+		defer func() { g.font.indexedHD = previous }()
+	}
 	frame, ok := g.composeNativeHotelFrame(0)
 	if !ok {
 		return false
 	}
 	g.presentNativeClassFrame(screen, frame)
+	if capture != nil {
+		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
+	}
 	return true
 }
 

@@ -14,6 +14,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'town-save', 'out']:
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
@@ -31,7 +32,7 @@ def main():
                PULSE_SERVER='unix:/tmp/fd2-hd-font-pulse/pulse/native',
                FD2_THEME='modern-handpainted-a', FD2_LOCALE='zh-Hant',
                FD2_MODERN_THEME_PACK=str(args.modern_pack), FD2_ASSET_PACK=str(args.original_pack),
-               FD2_INPUT_AUDIT_LOG=str(audit))
+               FD2_INPUT_AUDIT_LOG=str(audit), FD2_INPUT_AUDIT_INTERVAL='2')
     for key in ['FD2_TITLE','FD2_CAMPAIGN','FD2_CAMP_NODE','FD2_SHOT','FD2_SHOT_FRAME',
                 'FD2_NATIVE_SAVE','FD2_SAVE_CURRENT','FD2_ENDING_PREFIX']:
         env.pop(key,None)
@@ -65,7 +66,8 @@ def main():
 
     def key(name):
         before=latest(audit)
-        mapped={'Return':'Enter','Left':'ArrowLeft','Down':'ArrowDown'}.get(name,name)
+        mapped={'Return':'Enter','Left':'ArrowLeft','Right':'ArrowRight',
+                'Up':'ArrowUp','Down':'ArrowDown'}.get(name,name)
         command('xdotool','windowfocus',window)
         command('xdotool','keydown',name)
         ack=None
@@ -84,8 +86,22 @@ def main():
                 time.sleep(.1)
         finally:command('xdotool','keyup',name)
         if not ack:raise TimeoutError('按鍵無收據 '+name)
-        wait(lambda s:s.get('frame',0)>=ack['frame']+2)
-        operations.append({'key':name,'ack':ack})
+        deadline=time.monotonic()+60
+        release_ack=None
+        while time.monotonic()<deadline:
+            with audit.open('rb') as f:
+                f.seek(max(0,audit.stat().st_size-131072));rows=f.read().splitlines()
+            for row in reversed(rows):
+                try:state=json.loads(row)
+                except ValueError:continue
+                if state.get('frame',0)>ack['frame'] and mapped in (state.get('released_keys') or []):
+                    release_ack=state;break
+            if release_ack:break
+            time.sleep(.1)
+        if not release_ack:raise TimeoutError('放鍵無收據 '+name)
+        released_frame=max(ack['frame'],latest(audit).get('frame',0))
+        wait(lambda s:s.get('frame',0)>=released_frame+2)
+        operations.append({'key':name,'ack':ack,'release_ack':release_ack})
         return ack
 
     def shot(name):
@@ -130,7 +146,42 @@ def main():
             key('Escape')
         else:raise TimeoutError('標題未就緒')
         key('Return')
-        wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True)
+        wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
+        if args.hotel:
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            for locale in ['zh-Hant','zh-Hans','ja','en']:
+                wait(lambda s:s.get('locale')==locale and s.get('hd_text_runs',0)>0)
+                shot('hotel-menu-'+locale);key('F4')
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-hotel-menu')
+            key('F2');wait(lambda s:s.get('hd_theme') is True)
+            key('Right');key('Return')
+            wait(lambda s:s.get('hotel_mode')=='slots')
+            for slot in range(4):
+                wait(lambda s:s.get('hotel_slot')==slot and s.get('hd_text_runs',0)>0)
+                shot('hotel-slots-'+str(slot))
+                if slot<3:key('Down')
+            key('Up');key('Up');key('Return')
+            wait(lambda s:s.get('hotel_mode')=='saved');shot('hotel-saved')
+            secondary=saved.with_name('fd2_save_1.json')
+            hd_saved=secondary.read_bytes()
+            key('Return');key('Right');key('Return');key('Down');key('Return')
+            wait(lambda s:s.get('hotel_mode')=='loaded' and s.get('gold')==1000)
+            shot('hotel-loaded')
+            assert secondary.read_bytes()==hd_saved,'LOAD修改了保存bytes'
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-hotel-loaded')
+            key('Return');key('Left');key('Return');key('Down');key('Return')
+            wait(lambda s:s.get('hotel_mode')=='saved')
+            assert secondary.read_bytes()==hd_saved,'兩主題保存結果不同'
+            key('F2');wait(lambda s:s.get('hd_theme') is True);shot('hd-hotel-saved-restored')
+            assert digest(saved)==digest(args.town_save),'來源槽被改寫'
+            report={'schema':'fd2-hd-hotel-font-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
+                    'saved_sha256':digest(secondary),'theme_save_bytes_equal':True,
+                    'screenshots':shots,'operations':operations,'recording_created':False,
+                    'scope':'正常START後F9接續既有hotel_ch02槽，正常旅館選槽、保存與服務LOAD；四語保留原有原生文字，不新增翻譯。不宣稱連續戰役或原版視覺對拍。',
+                    'elapsed_seconds':time.monotonic()-started}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         for locale in ['zh-Hant','zh-Hans','ja','en']:
             settled_dialogue();shot('native-dialogue-'+locale)
             assert latest(audit).get('locale')==locale

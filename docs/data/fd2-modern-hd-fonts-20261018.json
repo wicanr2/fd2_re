@@ -148,10 +148,11 @@
     "一般Font.Draw與fontNm在最終層直接繪字，保留640×400排版與量測",
     "原生故事逐字、跨頁與捲動投影；明示特殊字形fallback",
     "商店訊息、商品與角色名稱，以及31／42／119十進位字庫",
-    "說明頁字級、寬度適配與標題間距"
+    "說明頁字級、寬度適配與標題間距",
+    "旅館當次合成的原生提示、四槽章名／編號／標題及保存／讀取回覆；原有文字與語系路由保持"
   ],
   "remaining": [
-    "原生物品／玩家狀態／教會／旅店／整備等固定索引面板的字模",
+    "原生物品／玩家狀態／教會／整備／標題LOAD等其餘固定索引面板的字模；旅館圖示與預建轉場仍未接入",
     "預建原生轉場job中的文字與金幣滾動",
     "圖示內HP／貨幣等點陣字樣",
     "全戰役特殊字模fallback盤點與跨平台效能"
@@ -4061,5 +4062,673 @@
     "bytes_freed": 140370800,
     "png_and_receipts_retained": true
   },
-  "rebuild": "在fd2-go-test-local:latest容器內，於remake執行go build -o <binary> ./cmd/fd2。以tools/verify_fd2_hd_fonts_gui.py指定--binary、--assets、--original-pack、--modern-pack、--town-save及新的--out重跑；使用fd2-promo:20261017-r1，輸入唯讀、輸出獨立可寫。"
+  "rebuild": "在fd2-go-test-local:latest容器內，於remake執行go build -o <binary> ./cmd/fd2。以tools/verify_fd2_hd_fonts_gui.py指定--binary、--assets、--original-pack、--modern-pack、--town-save及新的--out重跑；使用fd2-promo:20261017-r1，輸入唯讀、輸出獨立可寫。",
+  "hotel_followup": {
+    "status": "CONFORMED-SCOPED",
+    "date": "2026-10-18",
+    "evidence_level": {
+      "normal_json_hotel": "PLAYER-E2-LIMITED",
+      "load_blocked_message_and_fallback": "RUNTIME-E1"
+    },
+    "source": {
+      "base_commit": "ceb1dc5cdff56de804e193d913c444cee375b36a",
+      "tree_method": "SHA256 of sorted relative path, NUL, content SHA256 hex, LF; production and test Go files separately",
+      "production_go_tree_sha256": "ace45eb1f72c69b37677370482d3a6391b5ed152bedf539a4e354d53e009fa0a",
+      "test_go_tree_sha256": "7811e4a692aaca443f0ee8d081d49a14963d71d6c754720b105af2844bf8e2f3",
+      "files": [
+        {
+          "file": "remake/internal/fdtxt/fdtxt.go",
+          "sha256": "bfc2c8cd0b5bf06e35d94a2fdd56cca85b9d8f0211464c76eb92355cb87e080a"
+        },
+        {
+          "file": "remake/internal/fdtxt/native_presenter_test.go",
+          "sha256": "27753b7c9ffaa7cbcab3b3259e9fd76058f3d644f1e467ec814b5ad837b7cf6d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text.go",
+          "sha256": "eece617401dee613e800d280a34dca267e5cc2ef2c95afb8bceb8f3e7138485d"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_facility_text_test.go",
+          "sha256": "8028d9cca3d26594ed477836d1f5ed8516a8287cbc739f7a9d80729a5cb34d0d"
+        },
+        {
+          "file": "remake/cmd/fd2/native_hotel_ui.go",
+          "sha256": "c5180c698ca7b161564b67874e23d060efa3a7ab4e4f7c7660f0fd3a0c648ca4"
+        },
+        {
+          "file": "remake/cmd/fd2/input_audit_trace.go",
+          "sha256": "c019cad298d4a97ccea587e4b8a598191a98d9ee77a891268f223f9efda24a08"
+        },
+        {
+          "file": "tools/verify_fd2_hd_fonts_gui.py",
+          "sha256": "c39739c937cf9aad85d6e635bbebf1232c270b5d43c521d39dee521b34f446ad"
+        },
+        {
+          "file": "remake/assets/fonts/unicode_to_glyph.json",
+          "sha256": "6563115626de78cad69a54f1bb7fe6c5b659ff999324fd31b4d7d5fa80087e61"
+        }
+      ],
+      "binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-hotel",
+        "sha256": "87a057468d88f4eee4b808a2f93d86c3b612a2ff2d9da51c6c269772a2fee22d"
+      }
+    },
+    "scope": "正常START後F9接續既有hotel_ch02槽；普通選槽、保存與服務LOAD。四語上下文維持原生旅館既有中文文字，非新翻譯。忠實模式不變，不宣稱連續全戰役、原版像素對拍、全HD字型或跨平台。",
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hotel-gui-r5/receipt.json",
+      "sha256": "a5f07351a4fa331e9bb047ca8a3dba9b735c178b6a81a52ffc2f31475c8b7ecf",
+      "mechanical_status": "PASS",
+      "gpu_review": "PASS-SCOPED",
+      "screenshots": {
+        "hotel-menu-zh-Hant.png": {
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "state": {
+            "error": "",
+            "frame": 520,
+            "gold": 1000,
+            "hd_text_runs": 12,
+            "hd_theme": true,
+            "hotel_mode": "menu",
+            "hotel_selection": 0,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-menu-zh-Hans.png": {
+          "sha256": "6276da2719089df54397c60f772f8999246cf89faa3b1cb794d6248ff342ae67",
+          "state": {
+            "error": "",
+            "frame": 536,
+            "gold": 1000,
+            "hd_text_runs": 12,
+            "hd_theme": true,
+            "hotel_mode": "menu",
+            "hotel_selection": 0,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "zh-Hans",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-menu-ja.png": {
+          "sha256": "bb6f7a06bdd4c34351bfb16d51f8d9647f278caf2084d1a652f992d473c3ee9b",
+          "state": {
+            "error": "",
+            "frame": 550,
+            "gold": 1000,
+            "hd_text_runs": 12,
+            "hd_theme": true,
+            "hotel_mode": "menu",
+            "hotel_selection": 0,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "ja",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-menu-en.png": {
+          "sha256": "bb6f7a06bdd4c34351bfb16d51f8d9647f278caf2084d1a652f992d473c3ee9b",
+          "state": {
+            "error": "",
+            "frame": 570,
+            "gold": 1000,
+            "hd_text_runs": 12,
+            "hd_theme": true,
+            "hotel_mode": "menu",
+            "hotel_selection": 0,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "en",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "faithful-hotel-menu.png": {
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "state": {
+            "error": "",
+            "frame": 668,
+            "gold": 1000,
+            "hd_theme": false,
+            "hotel_mode": "menu",
+            "hotel_selection": 0,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-slots-0.png": {
+          "sha256": "42462e443d31524d7171c47062c3cc85ff5b9f8ae71b62f001e85f841a17cfb9",
+          "state": {
+            "error": "",
+            "frame": 710,
+            "gold": 1000,
+            "hd_text_runs": 86,
+            "hd_theme": true,
+            "hotel_mode": "slots",
+            "hotel_selection": 1,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-slots-1.png": {
+          "sha256": "8ba6f382ca618ec97658da73d23d19434ef760fd143c01f2847b9d133ed73e0a",
+          "state": {
+            "error": "",
+            "frame": 738,
+            "gold": 1000,
+            "hd_text_runs": 86,
+            "hd_theme": true,
+            "hotel_mode": "slots",
+            "hotel_selection": 1,
+            "hotel_slot": 1,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-slots-2.png": {
+          "sha256": "d26ded206c4203f3cd04d280fb7a2b6b88886d5bc07746e0d490b131b0224292",
+          "state": {
+            "error": "",
+            "frame": 752,
+            "gold": 1000,
+            "hd_text_runs": 86,
+            "hd_theme": true,
+            "hotel_mode": "slots",
+            "hotel_selection": 1,
+            "hotel_slot": 2,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-slots-3.png": {
+          "sha256": "65492708be495faee592570c26220155c9d341d7a1862f502b1d9eead342f9a9",
+          "state": {
+            "error": "",
+            "frame": 766,
+            "gold": 1000,
+            "hd_text_runs": 86,
+            "hd_theme": true,
+            "hotel_mode": "slots",
+            "hotel_selection": 1,
+            "hotel_slot": 3,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-saved.png": {
+          "sha256": "8f1c0da419289a70041b280ff8c0022c9ef034d2e81faeeb95b27ee1c36bf4fb",
+          "state": {
+            "error": "",
+            "frame": 792,
+            "gold": 1000,
+            "hd_text_runs": 14,
+            "hd_theme": true,
+            "hotel_mode": "saved",
+            "hotel_selection": 1,
+            "hotel_slot": 1,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hotel-loaded.png": {
+          "sha256": "0c0bfa437d52c346e8741ae8802cb2e0f90cb22bc4fc583af6e86edb7ee8d581",
+          "state": {
+            "error": "",
+            "frame": 830,
+            "gold": 1000,
+            "hd_text_runs": 14,
+            "hd_theme": true,
+            "hotel_mode": "loaded",
+            "hotel_selection": 2,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "faithful-hotel-loaded.png": {
+          "sha256": "8692dc6c1c9b04a89d608042aeffa32b0ea467153fcf29dbb2c23d5aa7a214e1",
+          "state": {
+            "error": "",
+            "frame": 866,
+            "gold": 1000,
+            "hd_theme": false,
+            "hotel_mode": "loaded",
+            "hotel_selection": 2,
+            "hotel_slot": 0,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        },
+        "hd-hotel-saved-restored.png": {
+          "sha256": "8f1c0da419289a70041b280ff8c0022c9ef034d2e81faeeb95b27ee1c36bf4fb",
+          "state": {
+            "error": "",
+            "frame": 928,
+            "gold": 1000,
+            "hd_text_runs": 14,
+            "hd_theme": true,
+            "hotel_mode": "saved",
+            "hotel_selection": 1,
+            "hotel_slot": 1,
+            "keys": null,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "released_keys": null
+          }
+        }
+      },
+      "operations": [
+        {
+          "key": "Escape",
+          "press_frame": 5,
+          "release_frame": 7
+        },
+        {
+          "key": "Escape",
+          "press_frame": 14,
+          "release_frame": 16
+        },
+        {
+          "key": "Escape",
+          "press_frame": 19,
+          "release_frame": 21
+        },
+        {
+          "key": "Escape",
+          "press_frame": 26,
+          "release_frame": 31
+        },
+        {
+          "key": "Escape",
+          "press_frame": 35,
+          "release_frame": 38
+        },
+        {
+          "key": "Escape",
+          "press_frame": 41,
+          "release_frame": 43
+        },
+        {
+          "key": "Escape",
+          "press_frame": 47,
+          "release_frame": 49
+        },
+        {
+          "key": "Escape",
+          "press_frame": 53,
+          "release_frame": 56
+        },
+        {
+          "key": "Escape",
+          "press_frame": 59,
+          "release_frame": 61
+        },
+        {
+          "key": "Escape",
+          "press_frame": 66,
+          "release_frame": 69
+        },
+        {
+          "key": "Escape",
+          "press_frame": 73,
+          "release_frame": 75
+        },
+        {
+          "key": "Escape",
+          "press_frame": 79,
+          "release_frame": 81
+        },
+        {
+          "key": "Escape",
+          "press_frame": 86,
+          "release_frame": 88
+        },
+        {
+          "key": "Escape",
+          "press_frame": 92,
+          "release_frame": 94
+        },
+        {
+          "key": "Escape",
+          "press_frame": 97,
+          "release_frame": 99
+        },
+        {
+          "key": "Escape",
+          "press_frame": 104,
+          "release_frame": 106
+        },
+        {
+          "key": "Escape",
+          "press_frame": 109,
+          "release_frame": 112
+        },
+        {
+          "key": "Escape",
+          "press_frame": 115,
+          "release_frame": 117
+        },
+        {
+          "key": "Escape",
+          "press_frame": 123,
+          "release_frame": 125
+        },
+        {
+          "key": "Escape",
+          "press_frame": 129,
+          "release_frame": 131
+        },
+        {
+          "key": "Escape",
+          "press_frame": 135,
+          "release_frame": 137
+        },
+        {
+          "key": "Escape",
+          "press_frame": 142,
+          "release_frame": 144
+        },
+        {
+          "key": "Escape",
+          "press_frame": 147,
+          "release_frame": 149
+        },
+        {
+          "key": "Escape",
+          "press_frame": 153,
+          "release_frame": 158
+        },
+        {
+          "key": "Escape",
+          "press_frame": 161,
+          "release_frame": 163
+        },
+        {
+          "key": "Escape",
+          "press_frame": 167,
+          "release_frame": 169
+        },
+        {
+          "key": "Escape",
+          "press_frame": 173,
+          "release_frame": 175
+        },
+        {
+          "key": "Escape",
+          "press_frame": 179,
+          "release_frame": 181
+        },
+        {
+          "key": "Return",
+          "press_frame": 185,
+          "release_frame": 188
+        },
+        {
+          "key": "F9",
+          "press_frame": 508,
+          "release_frame": 510
+        },
+        {
+          "key": "F4",
+          "press_frame": 521,
+          "release_frame": 524
+        },
+        {
+          "key": "F4",
+          "press_frame": 537,
+          "release_frame": 540
+        },
+        {
+          "key": "F4",
+          "press_frame": 552,
+          "release_frame": 555
+        },
+        {
+          "key": "F4",
+          "press_frame": 571,
+          "release_frame": 574
+        },
+        {
+          "key": "F2",
+          "press_frame": 577,
+          "release_frame": 580
+        },
+        {
+          "key": "F2",
+          "press_frame": 673,
+          "release_frame": 676
+        },
+        {
+          "key": "Right",
+          "press_frame": 679,
+          "release_frame": 681
+        },
+        {
+          "key": "Return",
+          "press_frame": 686,
+          "release_frame": 688
+        },
+        {
+          "key": "Down",
+          "press_frame": 713,
+          "release_frame": 715
+        },
+        {
+          "key": "Down",
+          "press_frame": 740,
+          "release_frame": 742
+        },
+        {
+          "key": "Down",
+          "press_frame": 753,
+          "release_frame": 755
+        },
+        {
+          "key": "Up",
+          "press_frame": 768,
+          "release_frame": 770
+        },
+        {
+          "key": "Up",
+          "press_frame": 773,
+          "release_frame": 775
+        },
+        {
+          "key": "Return",
+          "press_frame": 779,
+          "release_frame": 781
+        },
+        {
+          "key": "Return",
+          "press_frame": 793,
+          "release_frame": 795
+        },
+        {
+          "key": "Right",
+          "press_frame": 799,
+          "release_frame": 801
+        },
+        {
+          "key": "Return",
+          "press_frame": 805,
+          "release_frame": 807
+        },
+        {
+          "key": "Down",
+          "press_frame": 811,
+          "release_frame": 813
+        },
+        {
+          "key": "Return",
+          "press_frame": 817,
+          "release_frame": 819
+        },
+        {
+          "key": "F2",
+          "press_frame": 832,
+          "release_frame": 835
+        },
+        {
+          "key": "Return",
+          "press_frame": 868,
+          "release_frame": 870
+        },
+        {
+          "key": "Left",
+          "press_frame": 874,
+          "release_frame": 877
+        },
+        {
+          "key": "Return",
+          "press_frame": 881,
+          "release_frame": 890
+        },
+        {
+          "key": "Down",
+          "press_frame": 896,
+          "release_frame": 898
+        },
+        {
+          "key": "Return",
+          "press_frame": 901,
+          "release_frame": 903
+        },
+        {
+          "key": "F2",
+          "press_frame": 914,
+          "release_frame": 919
+        }
+      ],
+      "elapsed_seconds": 171.36650476185605,
+      "all_releases_observed": true
+    },
+    "save": {
+      "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "theme_save_bytes_equal": true,
+      "source_slot_unchanged": true,
+      "load_did_not_rewrite_save": true
+    },
+    "regression": {
+      "final_focused": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hotel-covered-text-green.log",
+        "sha256": "020506a890623b6a37726bb1cf5d7cfd8ddd9eea4bb10a2cd23cc9f5f3309e22",
+        "status": "PASS",
+        "packages": [
+          "cmd/fd2",
+          "internal/fdtxt"
+        ],
+        "seconds": [
+          1.95,
+          0.026
+        ]
+      },
+      "overlap_negative": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hotel-covered-text-red.log",
+        "sha256": "ef61e4801612d82361b9d58a7834c673f56ef598cea69f9baa8e9e8d2e80b95e",
+        "status": "EXPECTED-FAIL",
+        "message": "saved retained covered text at [24 238]"
+      },
+      "full_pre_overlay_fix": {
+        "log": "work/promo-cadence-20261018/hd-fonts/hotel-regression-r3.log",
+        "source_fingerprint": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hotel-regression-r3-source.json",
+          "sha256": "90cd1db699270a8600fa192e011e7cde0f1a219889dd6237e96b7163a535a893"
+        },
+        "status": "PASS",
+        "scope": "完整cmd/fd2、campaign、fdtxt、localization；來源為服務回覆清除三行與新增去重斷言之前，最終修正另以focused及GUI驗證。",
+        "seconds": {
+          "cmd/fd2": 643.131,
+          "internal/campaign": 4.899,
+          "internal/fdtxt": 0.46,
+          "internal/localization": 1.48
+        },
+        "sha256": "8c33eb6e5db8f8af77d519509bfa6cc95842fcc5c3035ce0d2345c482b8628ec",
+        "source_snapshot_limitation": "快照在完整測試程式已編譯後蒐集。蒐集期間新增去重斷言，因此快照包含新測試檔，不能證明該斷言已進完整測試程式；生產來源僅比最終版少服務回覆清除三行。新斷言與最終來源另經focused及GUI驗證。"
+      },
+      "production_changes_from_full_baseline": [
+        "remake/cmd/fd2/native_hotel_ui.go"
+      ]
+    },
+    "diagnostics": [
+      {
+        "run": "hotel-gui-r1",
+        "status": "AGENT-CANCELED",
+        "reason": "調整唯讀觀測密度前中止，非通過。"
+      },
+      {
+        "run": "hotel-gui-r2",
+        "status": "SCRIPT-FAIL",
+        "reason": "同鍵沒有新JustPressed；ACK+2不能證明已處理放鍵。"
+      },
+      {
+        "run": "hotel-gui-r3",
+        "status": "SCRIPT-FAIL",
+        "reason": "放鍵後重新讀frame再等兩次Update仍不能證明實際釋放；改驗JustReleased事件。"
+      },
+      {
+        "run": "hotel-gui-r4",
+        "status": "GPU-REJECTED",
+        "mechanical_status": "PASS",
+        "reason": "保存與LOAD成功，但服務回覆殘留歡迎詞；#254及red回歸保存負例。"
+      },
+      {
+        "runs": [
+          "hotel-regression-r1",
+          "hotel-regression-r2"
+        ],
+        "status": "AGENT-CANCELED",
+        "reason": "觀測契約修訂時中止，未計為回歸通過。"
+      }
+    ],
+    "readme_figure": {
+      "file": "docs/figures/hd-hotel-saved.png",
+      "sha256": "8f1c0da419289a70041b280ff8c0022c9ef034d2e81faeeb95b27ee1c36bf4fb",
+      "source": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hotel-gui-r5/hotel-saved.png",
+        "sha256": "8f1c0da419289a70041b280ff8c0022c9ef034d2e81faeeb95b27ee1c36bf4fb"
+      },
+      "kind": "1920×1200實際重製視窗；僅文字HD，背景與圖示保留像素素材"
+    },
+    "recordings_created": false,
+    "new_artwork": false,
+    "matching_decompilation": "paused",
+    "release_modified": false,
+    "cleanup": {
+      "status": "DERIVED-BINARY-REMOVED",
+      "recordings_created": false,
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-hotel",
+        "sha256": "87a057468d88f4eee4b808a2f93d86c3b612a2ff2d9da51c6c269772a2fee22d",
+        "bytes": 18946288
+      },
+      "png_and_receipts_retained": true,
+      "bytes_freed": 18946288,
+      "fd2_containers_remaining_after_validation": 0
+    }
+  }
 }

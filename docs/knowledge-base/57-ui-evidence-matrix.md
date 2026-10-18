@@ -12,7 +12,7 @@
 現代主題的正常玩家與圖層交界驗收列於[#202](https://github.com/wicanr2/fd2_re/issues/202)，
 高解析範圍／原型列於[#204](https://github.com/wicanr2/fd2_re/issues/204)。兩者與忠實原版逐像素對拍分別記錄。
 
-HD黑體主路徑另見[字型主收據](../data/fd2-modern-hd-fonts-20261018.json)與[61](61-modern-theme-runtime-spec.md)：直接高解析繪字、四語故事與商店、金額與商品數字、F2與說明頁分層驗證。這是核准的現代呈現，不新增原版視覺對拍。原生固定面板、預建轉場文字及圖示內字樣仍是點陣，不把一般Font.Draw覆蓋誤算成全部原生UI覆蓋。
+HD黑體主路徑另見[字型主收據](../data/fd2-modern-hd-fonts-20261018.json)與[61](61-modern-theme-runtime-spec.md)：直接高解析繪字、四語故事與商店、金額與商品數字、F2與說明頁分層驗證。這是核准的現代呈現，不新增原版視覺對拍。旅館JSON玩家路徑的即時提示、四槽及服務回覆另通過普通保存／服務LOAD、F2及13張實際視窗審查，兩主題保存bytes相同；原生旅館文字保持，未新增翻譯。其餘原生固定面板、預建轉場文字及圖示內字樣仍是點陣，不把一般Font.Draw覆蓋誤算成全部原生UI覆蓋。
 
 dosgolem合併後IRQ7正常啟動及鍵盤短鏈已通過兩輪重播。這只驗原版執行器，
 不提升重製介面或章分級。新舊平台PNG與完整狀態仍有差異，見[工具主收據](../data/fd2-remake-toolchain-recovery-20261015.json)。

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
@@ -15,15 +16,24 @@ func (g *Game) recordInputAuditState() {
 		return
 	}
 	keys := inpututil.AppendJustPressedKeys(nil)
-	if len(keys) == 0 && g.frame%120 != 0 {
+	released := inpututil.AppendJustReleasedKeys(nil)
+	interval := 120
+	if value, err := strconv.Atoi(os.Getenv("FD2_INPUT_AUDIT_INTERVAL")); err == nil && value >= 1 && value <= 120 {
+		interval = value
+	}
+	if len(keys) == 0 && len(released) == 0 && g.frame%interval != 0 {
 		return
 	}
 	r := map[string]any{"frame": g.frame, "keys": keys, "cursor": []int{g.curX, g.curY}, "camera": []float64{g.camX, g.camY}, "ring": g.ring, "ring_sel": g.ringSel, "ring_phase": g.actionOverlayPhase, "ring_blink": g.actionOverlayBlink.Phase, "banner": g.banner, "banner_t": g.bannerT, "moved": g.moved, "walking": g.walk != nil, "error": g.loadErr, "ai_busy": g.aiBusy, "dialogues": len(g.dialog), "move_preview": g.nativeMovePlan != nil}
+	r["released_keys"] = released
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["locale"] = g.localeID
 	r["gold"] = g.gold
 	r["shop_mode"] = g.nativeShopMode
+	r["hotel_mode"] = g.nativeHotelMode
+	r["hotel_selection"] = g.hotelSel
+	r["hotel_slot"] = g.nativeHotelSlotSel
 	if g.modernHDText != nil {
 		r["hd_text_runs"] = len(g.modernHDText.runs)
 	}

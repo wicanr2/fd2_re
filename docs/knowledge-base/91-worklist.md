@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -177,6 +177,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
 怎樣算做完：1920×1200／480×480故事頭像、F2、首章JSON冷讀與HD黑體主路徑已驗。接續原生固定面板、預建轉場與圖示內字樣的字型，再完成介面／戰場及跨平台效能；依61逐切片READY後實作與驗收。已驗切片不等於完整字型或整體HD完成。
+
+### HD旅館服務回覆殘留歡迎詞
+
+`hd-hotel-covered-message` · 缺陷 · [#254](https://github.com/wicanr2/fd2_re/issues/254) · 仍未完成 · 要人判
+
+本輪未提交的HD旅館候選在實際正常START後F9接續hotel_ch02、普通保存與服務LOAD時，回覆文字與歡迎詞重疊。hotel-gui-r4的機械保存檢查通過，但GPU審查拒收。原因為composeNativeHotelFrame先合成stable並記錄提示，saved／loaded／load_blocked隨後重建不透明對話框卻未清除提示描述；同幀文字描述仍疊在最終層。只影響本輪HD候選，忠實模式及原版規則不變。來源：61原生旅館READY、modern_hd_facility_text_test.go及work/promo-cadence-20261018/hd-fonts/hotel-gui-r4/hotel-saved.png。
+
+怎樣算做完：重建服務回覆面板前清除被覆蓋文字；保存／讀取／拒收回覆均無重複座標。正常旅館保存／服務LOAD、F2往返與兩主題保存bytes一致通過，實際GPU回覆沒有殘留提示。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

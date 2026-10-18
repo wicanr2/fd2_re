@@ -321,6 +321,19 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
+    },
+    {
+      "id": "hd-hotel-covered-message",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "HD旅館服務回覆殘留歡迎詞",
+      "body": "本輪未提交的HD旅館候選在實際正常START後F9接續hotel_ch02、普通保存與服務LOAD時，回覆文字與歡迎詞重疊。hotel-gui-r4的機械保存檢查通過，但GPU審查拒收。原因為composeNativeHotelFrame先合成stable並記錄提示，saved／loaded／load_blocked隨後重建不透明對話框卻未清除提示描述；同幀文字描述仍疊在最終層。只影響本輪HD候選，忠實模式及原版規則不變。來源：61原生旅館READY、modern_hd_facility_text_test.go及work/promo-cadence-20261018/hd-fonts/hotel-gui-r4/hotel-saved.png。",
+      "acceptance": "重建服務回覆面板前清除被覆蓋文字；保存／讀取／拒收回覆均無重複座標。正常旅館保存／服務LOAD、F2往返與兩主題保存bytes一致通過，實際GPU回覆沒有殘留提示。",
+      "verify": {
+        "kind": "manual",
+        "note": "核對61、HD字型主收據hotel_followup、去重回歸及乾淨重跑旅館GPU截圖。"
+      },
+      "issue": 254
     }
   ]
 }
