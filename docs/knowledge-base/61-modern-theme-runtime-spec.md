@@ -17,6 +17,24 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
 
 ## 範圍
 
+### 2026-10-19 原始圖庫範圍勘誤（已證實，#259）
+
+第一章既有JSON存檔的具型別名冊需要selector96，HD世界候選拒收`missing group 96 frame 0`。
+回查固定`FDICON.B24`及既有`fdicon.SeparatedSpriteCount`：實際header為1680幀／140組，
+不是96組。先前94組／1083張只涵蓋selector0..95的可繪子集；其資料驗證仍有效，
+不能當成全部原版圖庫覆蓋。這項勘誤沒有重開原版函式或matching。
+
+[圖庫盤點工具](../../tools/audit_modern_fdicon_bank.py)在Docker執行，接受`--original <FDICON.B24>`、
+`--bank <分離bank.json>`、`--catalog <catalog.json>`、`--reference <固定版本清單>`及`--report <新檔>`。
+它核對原始size／MD5／SHA、header與全部分離mask，輸出未登錄可見selector及逐層雜湊；
+`--palette <FDOTHER#0 JSON> --render-selector 96`另產生明示的原版彩色參照，不能標成執行期擷圖。
+完整數量、輸入指紋及來源見[58目前狀態](58-fd2-exe-re-coverage.md)與
+[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`proportional_world_followup_20261019`。
+
+[#259](https://github.com/wicanr2/fd2_re/issues/259)追蹤漏列圖組、既有24與新增HD載入範圍。
+先補第一章實際需求，再核對其他名冊；不猜代96、不略過敵人、不以像素替代讓候選通過。
+現有94組loader只是舊清冊範圍的預檢，世界仍未接Game.Draw。
+
 ### 2026-10-19 F2戰場重複消費修正（CONFORMED，限首章抽驗）
 
 F2已是核准的全域主題切換，Home為正常角色檢視。正式首章LOAD、Z聚焦後F2的
@@ -31,6 +49,37 @@ F2已是核准的全域主題切換，Home為正常角色檢視。正式首章LO
 完整保存與來源SHA相同；相關cmd16.550秒及清冊bytes保持。來源見
 [HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)。#257已依來源提交結案。
 真正雙主題戰場比較也確認取景倍率不同，#258另列，不能用F2修正宣稱已完成HD世界。
+
+### 2026-10-19 母稿透明度核心分離（CONFORMED，僅候選編製）
+
+三份新RGBA母稿以alpha>0連通時拒收；實檔分級64／128／192在三組均得到12人物，
+證實低覆蓋像素橋接了各人物，不能以此宣稱實際身體重疊。來源、完整histogram與輸入SHA
+見HD戰場主收據的redraw_batch_3_10_12，原始PNG保持不可變。
+
+- alpha≥128只作四鄰接實例拓樸判定，排序及拒收條件保持，不把此二值mask當輸出alpha。
+- 對每個核心保留原RGB／alpha；只在核心外3來源像素內取回原覆蓋邊緣，排除非該實例的淡橋接。
+  無partial alpha的舊來源沿原編製法，應逐檔保持既有PNG bytes。原24墨跡矩形及腳底不變。
+- 驗新3／10／12各12幀與原0／4／9／52等48張binary來源，前者alpha保留並各自完整，後者bytes相同。
+  靜態與重複政策另維持。方向仍須人工審，group10 frame5不得因分離成功而放行。
+- 本契約僅適用候選編製，不授權正式HD世界或不完整catalog，其他主線規則與存檔不變。
+
+r6全94組1083幀已通過獨立資料驗證，48張舊binary-alpha樣本的PNG bytes保持；
+單幀替換、canonical重複相位的來源傳遞及六項拒收守衛通過。CONFORMED只限本段候選工具，
+不包含美術或正常玩家路徑；版本、命令輸入與雜湊沿主收據的alpha_core_followup_20261019。
+
+#### 單幀來源替換（READY，僅候選編製）
+
+group10 frame5的實際候選面向右，與該列左向契約矛盾。單獨補繪左向步態後，
+候選工具可接收明示的group／frame／安全來源檔名映射，不覆寫整張母稿。
+只接受清冊內圖組及有效幀，單幀來源須能辨認唯一完整人物；來源SHA、裁切範圍與
+替換索引寫入manifest。其他幀須逐檔保持，重複相位不得另設衝突替換。
+驗收先核對方向、角色與步態，再驗144尺寸、覆蓋alpha、原墨跡矩形及未替換幀的bytes。
+未通過人工審查仍不能登錄正式清冊，也不改變遊戲規則或保存。
+
+[候選驗證器](../../tools/verify_modern_hd_map_sprites.py)在Docker執行，接受
+`--manifest <hd-map-sprites.json> --catalog <catalog.json> --source <母稿目錄>`，
+檢查目前編製器／清冊與逐幀來源SHA、尺寸、原墨跡定位及重複政策；預設要求全94組，
+有界樣本須明示`--allow-subset`。只產生資料驗證收據，不替代人工姿態審查或正常GUI。
 
 ### 2026-10-19 144×144 戰場角色與世界層（DRAFT，候選編製中）
 
@@ -52,11 +101,104 @@ F2已是核准的全域主題切換，Home為正常角色檢視。正式首章LO
 編製器改以整張母稿的連通輪廓排序，保留來源alpha並拒收不明額外輪廓；五組51張完整樣本已審。
 靜態48另由內建image_gen沿核准風格重繪，三相與原銀白機械身份保持，原檔不覆寫。
 新圖與其餘像素化母稿仍為候選，不能用144尺寸宣稱細節齊備。來源及下一閘門見同一HD戰場主收據。
-全94組audit已完成：84組963張通過檔案驗證，10組因相連輪廓拒收，保持非零退出。
-全組姿態尚未人工審完，不進catalog；下一步按拒收清單重繪並核對原角色與方向。
+r3歷史audit為84組963張通過、10組拒收。新透明度核心及明示來源替換後，r6全94組1083幀
+通過來源、幾何、覆蓋alpha與相位驗證。22份新母稿供28組明示重用，另有3份單幀；
+全組候選已掃描，29組339張替換幀已重審，但完整美術驗收尚未通過，仍不進catalog。
+第19組單幀只解決朝向，仍像素化；部分舊母稿頭身比例待校正。第37組花形盾徽已拒收並
+另製十字修正版；第19組持盾側錯誤的整張新稿也拒收，沒有因解析度高就採用。
+r6不等比填滿舊墨跡框曾拉伸人物，第76組中立左向頭盔尤其明顯。
+後續等比例r9已通過既有94組資料驗證及姿態掃描；新母稿與來源沿主收據。
+真正第一章候選另因selector96拒收，見本檔範圍勘誤；資料PASS仍不推定完整美術或HD世界READY。
+
+#### 保留來源比例的HD編製（READY，僅候選工具）
+
+六個可丟棄樣本比較舊填框、框內等比例及22像素方格內等比例；第76組左向中立頭盔
+在舊填框被拉寬。追查既有`process_modern_map_sprite_sheet.py`確認原24成品本來就以
+`min(22/width,22/height)`保持比例，並置中、將腳底對齊23；它不是原版FDICON墨跡。
+r6的`native_ink`因此只是已登錄現代24成品的輪廓，不能解讀為原版位元組的權威邊界。
+樣本與來源見主收據的後續比例紀錄；r6收據保留，不重寫歷史。
+
+- 新候選沿同一22像素方格契約，最大132×132，整張144×144；只等比例縮放完整母稿人物。
+- 水平置中於144方格，腳底沿已登錄24成品的alpha下界乘6；可用高度不得超過該腳底座標，
+  不越出畫布。整數尺寸採最近整數，半數進位，最小1像素；不量化原覆蓋alpha。
+- manifest明示`contain_22px_cell_feet_v1`、`registered_ink`及實際`fit_rect`。
+  原24 PNG、selector／frame／cycle、圖格、世界位置與保存不變。重複幀連同fit來源傳遞。
+- 獨立驗證來源比例的整數誤差、最大尺寸、置中、腳底、實際alpha範圍及重複相位。
+  全94組重編後重審完整方向，尤其第76組中立幀、靜態48與特殊馬形73。
+- 本項修正候選編製拉伸，不將既有二值來源bytes保持要求套到新的縮放政策。
+  透明度核心提取仍沿上一節；造型與正式HD世界的驗收保持分開。
+
+#### HD人物清冊載入（READY，世界繪製與美術驗收另列）
+
+本節只覆蓋既有selector0..95清冊子集；#259已證實實際圖庫更大，尚未擴充正式範圍。
+新增`map_sprite_hd_set`附加圖源，既有24人物與正式保存格式不改。
+12幀契約為`fdicon_hd_map_sprite_12x144_v1`，3相契約為
+`fdicon_hd_static_sprite_3x144_v1`；尺寸144×144、`alpha_contract: coverage`，
+`layout_policy: contain_22px_cell_feet_v1`，逐幀PNG檔名及SHA安全檢查。
+每幀須具有透明背景及不透明核心，柔邊保留；空白、全幅不透明背景或僅半透明圖拒收。
+只要清冊有HD人物，就必須完整94組，排除已證實無來源寫入的39／57；同份清冊也須有
+完整對應24組。逐組frame_count、cycle_policy及全部重複幀等價關係須與24父項相同。
+重複圖組、缺件、錯誤幾何、來源雜湊或週期均原子拒收整個主題，不部分發布。
+沒有HD人物的既有清冊仍沿原路徑；本項只載入圖源，不能自行啟用DRAFT世界層。
+驗證完整清冊、缺組／重複、父項不符、錯誤來源、透明度與相位，並跑既有現代主題回歸。
+
+#### HD單位的原生座標計畫（READY，尚未啟用世界層）
+
+輸入只沿`indexedmap.FrameInput`的UnitBank、SelectorCache、raw Units、相機、週期與pixelShift，
+及該caller的viewport來源位移。定位與可見閘門沿`fdicon.BlitNativeUnitLayerWithBaseShift`、
+`NativeFrameIndex`和`NativePlacementOffset`既有已證實契約；原版雜湊與位址基準沿固定清單，
+不重新推定u.Dir、人物ID或已行動狀態。正式世界啟用仍依上節DRAFT與美術／GUI閘門。
+
+- 使用原版cache slot取得group，按pose×3加原週期選幀，forceBase、cycle3→1及bit7原樣保留。
+- 原始work位移先通過同一非負及工作緩衝邊界；以絕對位移和viewport base各自除／餘456，
+  兩者差值才是座標。不能對兩者差值直接取餘數，否則負向邊界會錯行。
+- HD目的矩形為原生viewport的(4,4)加相對座標，乘6；尺寸144，裁於312×192 viewport乘6。
+  caller可提供已證實的上移viewport base，不改世界或單位座標。
+- 先檢原版選中Sprite.Mask；沒有來源寫入的39／57與靜態未用方向不生成HD人物。
+  不把RemapMask當人物輪廓。有效來源卻缺HD group／frame時原子拒收計畫。
+- 對比既有原生單位pass的實際work寫入，涵蓋四方向、步長0..6、相機四邊、forceBase、
+  週期、cache順序、純重映射／靜態保留幀與拒收；這是重製端座標轉接驗證，不新增oracle或E2。
+#### HD前景遮擋計畫（READY，尚未啟用世界層）
+
+沿`fdicon.BlitNativeForegroundLayer`的資格、排程、相機／地圖邊界、control及frame selector，
+把同份原版Sprite的來源寫入轉成透明RGBA前景。只以Mask決定覆蓋，包含palette index 0；
+不用前後畫面差分判定遮擋，因為相同顏色的寫入仍會遮住HD人物。
+`BlitMode==0xff`沿原色，其餘沿同份LUT轉換來源；`BlitLUTTransparentAtOffset`已證實
+保留mode-3目的地，故RemapMask不產生前景覆蓋。座標沿上一節絕對work位移與viewport差值，
+只在最終畫布裁切。任何缺bank、control、LUT、幾何或palette均原子拒收。
+以既有native foreground blitter的實際寫入驗證順序、移動鄰格、負邊界、資格、flip、
+LUT、零色來源及透明洞。這項只增加繪製計畫，不新增地形美術或啟用正式HD世界。
+
+#### HD世界候選合成器（READY，未接Game.Draw）
+
+此有界切片只驗正常穩定世界的地形／範圍、HD單位與前景排序。使用同份FrameInput與
+明示原生work初始快照；複製cells後讓既有ComposeFrame合成地形／範圍，單位、前景、
+SelectionOverlay與HUD由本切片分開。沿原生312×192取景乘6，外圍四像素邊界保持黑色。
+HD單位依上一節計畫與名冊順序合成，再貼來源Mask形成的前景。兩個計畫及全部144圖源
+先預檢，錯誤不發布部分畫面。原始cells、work、銀行與HD圖源保持不變。
+raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣稱原版palette-band逐色一致。
+39／57在本raw單位pass只有mode-3透明跨度，沿已證實的`BlitForNativeFlagsAtOffset`
+保持無來源寫入；不把它誤套成地形BlitLUT的目的地重映射。
+地形與前景仍是原生素材放大，本項不聲稱完成HD地形。UI、HUD、走行caller、橫幅、
+戰鬥返回及Game.Draw啟用仍由上層DRAFT追蹤；候選合成圖只列重製端驗證。
+
 正式READY前須完成全部來源／透明度與姿態審查、純目的地重映射的保留方法，並界定正常世界、
 範圍、前景、HUD與戰鬥返回。尚未接正式runtime，不宣稱整體HD完成。
 
+[HD圖源載入](../../remake/cmd/fd2/modern_hd_map_sprite_assets.go)、
+[單位計畫](../../remake/cmd/fd2/modern_hd_map_unit_plan.go)、
+[前景計畫](../../remake/cmd/fd2/modern_hd_map_foreground_plan.go)與
+[候選世界合成器](../../remake/cmd/fd2/modern_hd_map_world.go)已依上述READY契約實作。
+重製端回歸涵蓋1568組單位定位與96組前景寫入比較、透明洞／零色來源及原子拒收，
+既有現代主題回歸通過；不宣稱完整cmd或正常GPU驗收。
+
+[候選工具守衛](../../tools/test_modern_hd_map_sprites.py)使用`--catalog`、`--source`、`--report`在Docker執行，
+驗序列／平行bytes、canonical重複來源與比例等九項守衛。
+[實檔候選測試](../../remake/cmd/fd2/modern_hd_map_candidate_test.go)由
+`FD2_HD_CANDIDATE_DIR`、`FD2_HD_CANDIDATE_SOURCE`、`FD2_HD_WORLD_SAVE`與`FD2_HD_WORLD_REPORT`
+明示本機輸入／輸出，再於既有Go測試容器執行`go test ./cmd/fd2 -count=1 -run TestModernHDMapActualCandidateWorld`。
+此次94組實檔預檢後，第一章世界因96拒收，失敗與來源快照保留；標準回歸略過此外部候選測試。
+下一閘門是#259素材／清冊範圍，再接正式世界、透明介面與正常玩家GPU。
 
 ### 角色／物品面板轉場字型（CONFORMED，限已列GUI與fixture範圍）
 
@@ -1324,10 +1466,10 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 - 2026-09-05 以私人原版固定包 `FDICON.B24`（大小 `624010`、MD5
   `46f793540209a063ea73a5373ca14bf4`、SHA-256
   `7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44`）逐幀檢查
-  96 組、每組 12 幀的 `mask.png` 與 `remap_mask.png`。只有 selector 39
+  selector0..95子集、每組 12 幀的 `mask.png` 與 `remap_mask.png`。此子集只有 selector 39
   （原始幀 468..479）及 selector 57（原始幀 684..695）在全部 12 幀皆為
   `source-write=0`、`destination-remap=576`。
-- 因此 FDICON 的 96 組應分成 94 組可繪地圖人物，以及 2 組純目的地色彩重映射
+- 因此當時盤點的96組子集分成94組可繪地圖人物，以及2組純目的地色彩重映射
   操作。後兩組沒有可供現代重繪的角色輪廓，不得輸出全透明 RGBA 圖後冒稱完成，
   也不得因轉職資料中的 `target portrait=39/57` 猜造人物。原版轉職只改寫人物記錄
   `+0x20` 類別欄位；正式戰場圖組仍由建構時的 `unit+2` selector cache 決定，
@@ -1338,6 +1480,8 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   的 `fdicon_map_sprite_12x24_v1`。
 - 2026-09-05 catalog 已涵蓋上述全部 94 組可繪圖組；selector 39／57 的缺席是
   已證實的純重映射契約，不是待補人物圖或素材缺漏。
+- 2026-10-19 勘誤：上述96組只是0..95子集，舊文字把它當成FDICON全圖庫不成立。
+  固定原始header與現行1680幀loader直接反證；額外可見需求及#259沿本檔範圍勘誤與58。
 
 - `loadModernStoryPortraitSet` 現會同時預檢 catalog 中的地圖人物組：group
   0..95、12 個安全檔名、逐格 SHA-256、`24×24`、二值 alpha、互異雜湊及三週期

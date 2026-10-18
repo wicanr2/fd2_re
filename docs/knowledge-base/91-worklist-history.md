@@ -5752,3 +5752,8 @@ trace MAP_STATE與地址上限的前置設定失敗保留，不當產品缺陷�
 HD工作仍依#200～#204既有優先序與核准主題，全面matching保持暫停。
 
 2026-10-16勘誤：本檔歷史map0 item79 score8／(19,15)與phase96／8已撤回；149F8目標極性修正後為item0／phase96／0，來源與同狀態驗證見第27章主契約。
+
+
+## 2026-10-19 FDICON全圖庫分母勘誤
+
+本檔2026-09-05等歷史段落的96組／94組分母只涵蓋selector0..95子集，不能當作全FDICON。固定B24 header及既有1680幀loader已直接反證；第一章實際名冊的96在HD候選拒收。舊素材及子集資料證據保留，不重寫歷史。現行全圖庫盤點、#259與接續閘門見[58目前狀態](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)。工作進度繼續只寫WORKLOG，未完成項以遠端Issue為準。

@@ -7,9 +7,9 @@
   "current_state": {
     "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
     "native_viewport": "REMAKE-DEFECT-CONFIRMED：同units／view的正式戰場F2比較確認現代24直繪與原生320×200兩倍不同，#258待實作。",
-    "hd_sprite_data": "CANDIDATE-INCOMPLETE：全94組來源檢查完成，84組963張檔案通過，10組拒收；僅51張樣本已逐幀審，尚未登錄。",
-    "hd_world_renderer": "DRAFT：獨立1920世界與透明介面分層尚未實作。",
-    "private_assets": "未新增正式catalog或私人包；新機械靜態母稿保留於專案候選。"
+    "hd_sprite_data": "DATA-CANDIDATE-SUBSET-VERIFIED：r9既有94組1083幀等比資料及姿態掃描通過；僅selector0..95子集。完整原始圖庫另有31組可見漏項，#259。",
+    "hd_world_renderer": "候選實作與回歸通過：正式loader可預檢舊清冊HD子集，單位／前景計畫及候選合成器尚未接Game.Draw。實際第一章存檔候選因缺selector96拒收，沒有新GPU／PLAYER-E2。",
+    "private_assets": "正式catalog及私人包保持。新96母稿已有12完整方向候選，尚未編製24父項／144圖或登錄；其他缺圖沿#259。"
   },
   "runtime_source": {
     "snapshot": {
@@ -355,5 +355,583 @@
     },
     "diagnosis": "opacity核心門檻64／128／192在三組均可分出12個人物，不能把低alpha橋接當實際身體重疊；後續須保留原alpha邊緣。",
     "direction_gap": "group10 frame5仍面右，LEFT列不得放行。"
+  },
+  "alpha_core_followup_20261019": {
+    "base_commit": "c78072f40017c4da281fe247f6a24a7d494ff0c6",
+    "source_status": "working-tree candidate tooling; not a released runtime",
+    "compiler": {
+      "file": "tools/build_modern_hd_map_sprites.py",
+      "sha256": "c195b2d8944b0f72884d5be5044e10de04babfe997b29ead644e25d1eb996cb6"
+    },
+    "verifier": {
+      "file": "tools/verify_modern_hd_map_sprites.py",
+      "sha256": "0abdbf82a29e466eaddd0e7c6db4e76db298d0063819961a7c566e2e0733182f"
+    },
+    "candidate": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprites-candidates-r6/hd-map-sprites.json",
+      "sha256": "25acff467728db6d31e5849a485e6bf638bbe185872224395753dd5bb9120b28"
+    },
+    "verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprites-candidates-r6-verification.json",
+      "sha256": "810e03c320351f81132b47fb58865565a5928a32ec87b0b016f0e83ee3fddf00"
+    },
+    "negative_checks": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-core-negative-verification.json",
+      "sha256": "be82389b056b93db426ac727d9a7d78d25c8639c82de9ef8daf1f68eb7a0fffd"
+    },
+    "negative_check_script": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-candidate-negative-check.py",
+      "sha256": "2fa48b683ac05908f86b60c1a5ad7883be5b330c2275438fab5aaf4808954c15"
+    },
+    "binary_alpha_unchanged_frames": 48,
+    "source_core_alpha": 128,
+    "original_alpha_edge_radius": 3,
+    "frame_overrides": {
+      "10": {
+        "5": "fdicon-010-style-a-v3-hd-f05-master.png"
+      },
+      "19": {
+        "11": "fdicon-019-style-a-v3-hd-f11-master.png"
+      },
+      "76": {
+        "4": "fdicon-076-style-a-v3-hd-f04-master.png"
+      }
+    },
+    "selected_new_masters": [
+      "fdicon-003-style-a-v2-hd-master.png",
+      "fdicon-010-style-a-v2-hd-master.png",
+      "fdicon-012-style-a-v2-hd-master.png",
+      "fdicon-017-style-a-v2-hd-master.png",
+      "fdicon-018-style-a-v2-hd-master.png",
+      "fdicon-020-style-a-v2-hd-master.png",
+      "fdicon-022-style-a-v2-hd-master.png",
+      "fdicon-027-style-a-v2-hd-master.png",
+      "fdicon-036-style-a-v2-hd-master.png",
+      "fdicon-037-style-a-v3-hd-master.png",
+      "fdicon-038-style-a-v2-hd-master.png",
+      "fdicon-040-style-a-v2-hd-master.png",
+      "fdicon-041-style-a-v2-hd-master.png",
+      "fdicon-042-style-a-v2-hd-master.png",
+      "fdicon-045-style-a-v2-hd-master.png",
+      "fdicon-048-style-a-v2-hd-master.png",
+      "fdicon-069-style-a-v2-hd-master.png",
+      "fdicon-070-style-a-v2-hd-master.png",
+      "fdicon-071-style-a-v2-hd-master.png",
+      "fdicon-073-style-a-v2-hd-master.png",
+      "fdicon-076-style-a-v2-hd-master.png",
+      "fdicon-088-style-a-v2-hd-master.png"
+    ],
+    "selected_new_master_groups": [
+      3,
+      10,
+      12,
+      17,
+      18,
+      20,
+      22,
+      27,
+      36,
+      37,
+      38,
+      40,
+      41,
+      42,
+      44,
+      45,
+      48,
+      49,
+      58,
+      59,
+      60,
+      62,
+      69,
+      70,
+      71,
+      73,
+      76,
+      88
+    ],
+    "generation_records": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-redraw-3-10-12-generation.json",
+        "sha256": "0d07e18bfee4cfd0a4df8126671d45f181b178c242c3cad0b4ab24d3af14bf89"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-static48-v2-generation.json",
+        "sha256": "0c2e698cfdc18e3acc403ace4f1e51bdb08c66f0d4643d3f2ccfcd9c2c782432"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-group10-pose5-generation.json",
+        "sha256": "94e5643c3f826b0964a4e0426a25c814aeb5672096002a4d3ba84572f80b7b44"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-redraw-17-18-20-27-generation.json",
+        "sha256": "6419b439039ffa419e613f084530fd17be57bbaa9b86557770e298dcfb85ac41"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-direction-batch-generation.json",
+        "sha256": "a1f887648cf7a3175620b5ead77a761ea077e6624c5a17c4a6bf99878ce37d20"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-final-poses-generation.json",
+        "sha256": "92707818a4ff2a10b8b9c926520b3025e39897fc916408804fbc5bd78abadde1"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-pixel-redraw-generation.json",
+        "sha256": "aec9c56b268afec5bbe170ae3d4978eea5c99904dce28e578fd9b08c7ae2cf03"
+      }
+    ],
+    "review": {
+      "r4_all_pose_scan": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-00.png",
+          "sha256": "05dbf35064adb76c19c95507086528610355413568fc749d4008b33d32e3db89"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-01.png",
+          "sha256": "0d2ceee1ecef2bb50cd39c6f8d5f8e7440da7f012a7a4238f83977cd2d6caa7f"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-02.png",
+          "sha256": "17f2fe99c9274ed6fc7621e6cd6a15698a3c18445348c9a2a3db189e66742522"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-03.png",
+          "sha256": "eeae703e424afcd68ed2e287a19296983026de54bfa146d2a2d7c30ddac57e71"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-04.png",
+          "sha256": "33477ce64954a9239f3af6977c8b12a8bd2f9aa5cef1769caa0de3a73066d75d"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-05.png",
+          "sha256": "8a5e380cbd085091a95411d1506909557f6a6f7600b23e38b8621048edc40e09"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-06.png",
+          "sha256": "2531709919b2b63581ebd33534187bbd48937a99ee14c15fb05dced013f72046"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-07.png",
+          "sha256": "1f47f3af08ab66907a11d83a1bb54c39427ec125311f9d4f928b7a14f4d7349a"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-08.png",
+          "sha256": "8a8a10341d6677bbacef2c9a74ef95c81619638c84a7f67e8a0b810b049d8b85"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-09.png",
+          "sha256": "7f801f1019926c30faa7c05d2f99255801afe4c2a28eef38404f200d68f57ac4"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-10.png",
+          "sha256": "e4ee54f40d35b024205ef3559ac1da6be708fd936d4adefb6af410dc1de625c6"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-alpha-r4-review-11.png",
+          "sha256": "24cbe963265e3a1cf1290af419bb19e1ffc41a661592b5cb7b083c84e196c1c8"
+        }
+      ],
+      "r6_replacement_pose_review": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-r6-changed-review-00.png",
+          "sha256": "898e6d81a28670a84f8a1308d19650c82282c2f7d8cdd6b530facdfb5652fd85"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-r6-changed-review-01.png",
+          "sha256": "8960930f609bfc289c0a015ab68b5c98cf6fdcfb2563af601c379c6fb8849c63"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-r6-changed-review-02.png",
+          "sha256": "d2d9be5dbe288b0a9d154136c3034a2aa142e91b67cbd095f5d2b119e71f1fb3"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-r6-changed-review-03.png",
+          "sha256": "da99b4258d09530a57250f38d347db59d47cc966a8c455b52161f1df8f4d1ed5"
+        }
+      ],
+      "replacement_review_groups": 29,
+      "replacement_review_frames": 339,
+      "scope": "完整幀掃描方向、輪廓及明顯畫質問題；不是全部原版身份／持物側別或正常GPU驗收。",
+      "rejected_sources": {
+        "19-v2": "正面持盾側翻轉，背向第6幀露臉；未選用。",
+        "37-v2": "盾徽變成花形；v3已還原十字。"
+      },
+      "direction_repairs": [
+        10,
+        19,
+        20,
+        42,
+        45,
+        60,
+        69,
+        76
+      ],
+      "pixel_redraw_groups": [
+        22,
+        36,
+        37,
+        38,
+        40,
+        41,
+        58,
+        59,
+        69,
+        70,
+        71,
+        73,
+        88
+      ],
+      "remaining": [
+        "19單幀只修正朝向，仍像素化。",
+        "部分舊母稿頭身比例仍須校正，例如5／6／11／14／16／26／43／46／47及其明示別名。",
+        "編製器不等比填滿舊墨跡框，76中立左向幀可見頭盔拉寬；先做保留原比例、框內縮放與腳底對齊的候選。",
+        "91本身是局部輪廓，須核對既有來源，不猜補下身。"
+      ]
+    },
+    "runtime_unchanged_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-runtime-source-final.json",
+      "sha256": "981df396225fa0425c9bf8c9693126b89d3fc6482bab608da965fe5b6ed1106e"
+    },
+    "runtime_unchanged_files": 972,
+    "not_registered_or_runtime": true,
+    "new_oracle_or_player_e2": false,
+    "cleanup": "本輪無錄影／新遊戲binary；一次性Docker編製已退出。work與本輪目標UID/GID1000:1000；既有root-owned研究檔唯讀保留。"
+  },
+  "proportional_world_followup_20261019": {
+    "source_base": "c78072f40017c4da281fe247f6a24a7d494ff0c6",
+    "branch": "feat/hd-sprite-alpha-core-20261019",
+    "source_worktree_modified": true,
+    "status": "既有清冊子集資料與重製端層計畫通過；正式世界／全圖庫HD未完成",
+    "aspect_correction": {
+      "producer": "tools/process_modern_map_sprite_sheet.py",
+      "registered_24_is_modern_preview_not_original_silhouette": true,
+      "layout_policy": "contain_22px_cell_feet_v1",
+      "compiler": {
+        "file": "tools/build_modern_hd_map_sprites.py",
+        "sha256": "7ce69820d403c92cacaed480b5214bb52bf792c789a58ef9cc41e4c483a51a1d"
+      },
+      "verifier": {
+        "file": "tools/verify_modern_hd_map_sprites.py",
+        "sha256": "6a2304c91163dae44e9324df0fa927d1066cfdcef160f600472e5b9109a337fc"
+      },
+      "guards": {
+        "file": "tools/test_modern_hd_map_sprites.py",
+        "sha256": "20f15f92f7ef727e5084e2491e429d1bba39812027f886962dd6e87eb84ea230"
+      },
+      "manifest": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-sprites-candidates-r9/hd-map-sprites.json",
+        "sha256": "7304032c18451f4517dd5b5bd065553adab15909bac25b7a9fee4c4734ff88a8"
+      },
+      "verification": {
+        "status": "PASS",
+        "registered_catalog_complete": true,
+        "native_bank_coverage_verified": false,
+        "groups": 94,
+        "frames": 1083,
+        "manifest_sha256": "7304032c18451f4517dd5b5bd065553adab15909bac25b7a9fee4c4734ff88a8",
+        "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+        "compiler_sha256": "7ce69820d403c92cacaed480b5214bb52bf792c789a58ef9cc41e4c483a51a1d",
+        "verifier_sha256": "6a2304c91163dae44e9324df0fa927d1066cfdcef160f600472e5b9109a337fc",
+        "scope": "registered 0..95 catalog subset: source hashes, geometry, coverage alpha and cycles only; not full native bank, art or runtime acceptance"
+      },
+      "negative_checks": {
+        "status": "PASS",
+        "checks": [
+          "serial and two-worker PNG/manifest bytes identical",
+          "canonical override repeats preserve bytes, provenance and fit",
+          "subset refused without explicit scope",
+          "wrong repeated-frame provenance refused",
+          "source crop dimension mismatch refused",
+          "stretched proportional fit refused",
+          "unlisted output refused",
+          "changed PNG bytes refused",
+          "conflicting repeat override refused before output"
+        ],
+        "compiler_sha256": "7ce69820d403c92cacaed480b5214bb52bf792c789a58ef9cc41e4c483a51a1d",
+        "verifier_sha256": "6a2304c91163dae44e9324df0fa927d1066cfdcef160f600472e5b9109a337fc",
+        "test_script_sha256": "20f15f92f7ef727e5084e2491e429d1bba39812027f886962dd6e87eb84ea230",
+        "scope": "candidate asset tooling only; no gameplay or original parity"
+      },
+      "new_proportion_mothers": 11,
+      "new_proportion_groups": 14,
+      "new_proportion_frames": 168,
+      "generation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-proportion-mothers-r8-provenance.json",
+        "sha256": "4361da86062912a1fd97feae58bab72ff1a5cae5bde77027aa84994f5e9664a3"
+      },
+      "selection": "19整組新母稿取代舊像素化單幀；保留10 f05及76 f04明示單幀。43=61、46=64、47=65沿相同已登錄來源重用。",
+      "review": {
+        "groups": 94,
+        "frames": 1083,
+        "scope": "六頁全方向掃描及兩頁168張新比例全尺寸審查；不是全部原版身分或正常GPU驗收",
+        "sheets": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-all-poses-review-00.png",
+            "sha256": "fbf860e44d9faddd1922cf7ec437bca744b7624d8e772fb06f19f910392b1a14"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-all-poses-review-01.png",
+            "sha256": "e0787f0d05289fb21d517dec2e2a4e81ebd0c7ff23042ff7c612367de54d360c"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-all-poses-review-02.png",
+            "sha256": "5d9b8ef7294f5361c36576ac020e94f55adc34774b513bf58bf152ac1b519efc"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-all-poses-review-03.png",
+            "sha256": "b8ee486acbc50810afc9b27fbaaea4cf6c1af1ba736b78bff94c853baf8a7852"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-all-poses-review-04.png",
+            "sha256": "9957231357a57a9d62ce6be21c659f498a5255a418b770d967993efd4b93410d"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-all-poses-review-05.png",
+            "sha256": "05d7655f7be00e17542636b30ea52187a5264bae7dd269e306ceb01eb0a6be16"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-new-proportions-review-00.png",
+            "sha256": "01d51fb2d6605acd6cfa266dcba9f67988fdca9b83eb3df7e5c43cfa31f0b91a"
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-r9-new-proportions-review-01.png",
+            "sha256": "cbad427819c9caa3f39bee4ddecfc60eed0fddd04c0711b7972e71b8efd53e55"
+          }
+        ]
+      },
+      "r7_sample_png_bytes_equal": 63,
+      "r8_partial_png_bytes_equal": 336,
+      "r8_bounded_exit": 124,
+      "r8_note": "序列全組300秒界限留下336張；沒有完整manifest。r9按相同母稿重用輪廓、三工作程序及900秒界限完整通過，未放寬拒收。",
+      "alpha_preview_correction": "14-v2顯示藍色RGB背景，但抽查背景alpha為0；不能據預覽宣稱PNG完全不透明。v2未選用，v3採用；兩版原檔與初次判斷保留。"
+    },
+    "runtime": {
+      "source_snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-runtime-source-r1.json",
+        "sha256": "7218694f2134a6a46eb2cef0f79cfc6d506e962291e6631d28556718029b7bd9"
+      },
+      "go_files": 980,
+      "implementations": [
+        {
+          "file": "remake/cmd/fd2/modern_story_portrait.go",
+          "sha256": "6240ecc9eea13a26a8a9bf415544c2af0df6029b12b9bbd2af3c62ce4f580f2a"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_map_sprite_assets.go",
+          "sha256": "9f43328715e2e73e05470b44c40bea2d92ebb38dad0c3d4336b078b3a55ed115"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_map_unit_plan.go",
+          "sha256": "5eec8079c31120b98dd036c84df24e99a18c0d04bc622474dcb88c09fbc67451"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_map_foreground_plan.go",
+          "sha256": "c08f130d7b77edd732a32f04b1df89c0cbfc57134b791db64f915157acd00208"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_map_world.go",
+          "sha256": "7a82d6e02f60dcf1813432524e1206da00d08614d0ee02ab542fb82242435be5"
+        },
+        {
+          "file": "remake/cmd/fd2/modern_hd_map_candidate_test.go",
+          "sha256": "927fddcbcf0fab9fc11b062a6e1a571d767ffbb07044b7cc8e48fa35b42d93e8"
+        }
+      ],
+      "unit_placement_cases": 1568,
+      "foreground_native_write_cases": 96,
+      "tests": [
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-loader-regression-r1.log",
+            "sha256": "17a2b7db6fd15f2d76e7e18f8bb61d8b28d26cca2002c1efb1065ff86aabe66d"
+          },
+          "result": "FAIL：/pack絕對symlink指向/repo，當時只有/src掛載；環境問題",
+          "seconds": 17.78
+        },
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-loader-regression-r2.log",
+            "sha256": "4a6043ad75e5adf10d1175928fd3c178d14624bddc37494673daa81a167b5c97"
+          },
+          "result": "PASS：加同一repo唯讀/repo掛載及pack預檢",
+          "seconds": 18.497
+        },
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-loader-plan-regression-r3.log",
+            "sha256": "0a22532758c8be98d8556326aadaf573432df36da45d12cd49d877b2c00b46c9"
+          },
+          "result": "PASS",
+          "seconds": 84.983
+        },
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-foreground-regression-r1.log",
+            "sha256": "0bdb0f5c56ec5e5ca1b6444adccbd8fb0bb396d4fdb4ad0ed0afe59d07010acd"
+          },
+          "result": "PASS",
+          "seconds": 0.896
+        },
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-world-regression-r1.log",
+            "sha256": "59c1eaa0068c1010fa4884d272293646fa923822791e83a3cb9b1f99f23b731e"
+          },
+          "result": "PASS",
+          "seconds": 2.721
+        },
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-full-candidate-regression-r1.log",
+            "sha256": "82e18e353648a53c9e594f57c62caa6b251c1bef94e6cef4a1c358a38a69b832"
+          },
+          "result": "FAIL：實際第一章缺selector96，正式預檢未放寬",
+          "seconds": 39.757
+        },
+        {
+          "file": {
+            "file": "work/promo-cadence-20261018/hd-fonts/hd-map-final-standard-regression-r1.log",
+            "sha256": "b31c98e5387f5418db9d40a65424f875a6c5c825b784a478e06770dee6216688"
+          },
+          "result": "PASS：標準現代主題回歸；外部候選測試因未提供env略過",
+          "seconds": 60.698
+        }
+      ],
+      "actual_world_failure": {
+        "save": {
+          "file": "work/promo-cadence-20261018/f2-runtime/normal-r4/user-data/fd2_re/fd2_save.json",
+          "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2"
+        },
+        "original_save_unchanged": true,
+        "error": "modern HD units: missing group 96 frame 0",
+        "artifacts_produced": false,
+        "not_player_or_oracle_receipt": true
+      },
+      "production_world_activation": false,
+      "save_format_unchanged": true
+    },
+    "native_bank_correction": {
+      "audit": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-fdicon-full-bank-audit-r2.json",
+        "sha256": "39d1f7ad76b6d34dd61da1e7ed82cc47a13da6f50c758c0853ea10801ef29f0e"
+      },
+      "tool": {
+        "file": "tools/audit_modern_fdicon_bank.py",
+        "sha256": "048b033bfc78f8c48941328d3c2e4fd7388657657ff8263ccb127af508bcc710"
+      },
+      "original": {
+        "file": "FDICON.B24",
+        "size": 624010,
+        "md5": "46f793540209a063ea73a5373ca14bf4",
+        "sha256": "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
+      },
+      "file_offset": 0,
+      "header_bytes_hex": "180018009006",
+      "header": {
+        "width": 24,
+        "height": 24,
+        "frames": 1680,
+        "groups": 140
+      },
+      "visible_groups": 125,
+      "visible_frames": 1455,
+      "unregistered_visible_selectors": [
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        122,
+        123,
+        124,
+        125,
+        126,
+        133,
+        134,
+        135
+      ],
+      "unregistered_visible_frames": 372,
+      "no_source_write_selectors": [
+        39,
+        57,
+        104,
+        105,
+        121,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        136,
+        137,
+        138,
+        139
+      ],
+      "new_visible_groups_have_no_exact_prior_decoded_12_frame_alias": true,
+      "issue": 259,
+      "supersedes": "61及91-worklist-history把0..95子集稱為全FDICON的範圍敘述；舊94組資料與分離證據仍有效。"
+    },
+    "first_missing_source": {
+      "generation": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd96-generation-result-r1.json",
+        "sha256": "d4f18d064b67eea965be12028eb454db4df4fea6263cd1c93e0a54bf02d63732"
+      },
+      "source": {
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-096-style-a-v1-hd-master.png",
+        "sha256": "e4839b40733dd56e905acda6f9096b868147ec3bc334ba1799bddb4014a1e9d5"
+      },
+      "not_registered_or_runtime": true,
+      "components": 12,
+      "scope": "原版彩色參照限制可見輪廓；不推定姓名、職業與未知持物"
+    },
+    "remaining": [
+      "#259實際可見selector、24父項／HD清冊及loader範圍",
+      "正式世界／透明介面、HUD、行走與戰鬥返回",
+      "真正HD地形與其他美術",
+      "正常早中晚期GPU、保存及跨平台效能"
+    ],
+    "new_oracle_or_player_e2": false,
+    "release_changed": false,
+    "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+    "hygiene": "本輪無錄影或遊戲binary；私人候選與原始檔未公開。一次性Docker批次收尾另核對。",
+    "final_validation": {
+      "worklist_open": 22,
+      "worklist_manual": 15,
+      "possibly_complete": 0,
+      "lessons": 242,
+      "lesson_guards": 124,
+      "current_entrypoint_local_links": 2912,
+      "current_entrypoint_broken": 0,
+      "full_recursive_link_scan": "64既有歷史／oldtree／封包缺失連結；不以此宣稱整庫連結通過",
+      "link_receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-battlefield-doc-links-r1.json",
+        "sha256": "47ff542ec0ca678902b88d23d012f24a331ba1e8276c461ab6001c1877bf19c1"
+      },
+      "go_snapshot_unchanged_files": 980,
+      "target_uid_gid": "1000:1000",
+      "unexpected_fd2_containers": 0,
+      "new_recordings": 0,
+      "new_game_binaries": 0
+    }
   }
 }

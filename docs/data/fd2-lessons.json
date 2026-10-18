@@ -2802,6 +2802,36 @@
         ],
         "pattern": "def master_components"
       }
+    },
+    {
+      "id": "hd-opacity-core-is-not-output-coverage",
+      "area": "素材",
+      "date": "2026-10-19",
+      "rule": "RGBA人物分離異常先按透明度分級查淡像素橋接；識別核心與輸出覆蓋alpha分開，保留原邊緣並拒收不明輪廓。入口tools/build_modern_hd_map_sprites.py的master_components及61透明度核心契約。",
+      "why": "三份新母稿以非零alpha連通都拒收，但64／128／192核心均有12人物；直接把分離失敗當身體相連會重畫錯題，二值化輸出又會破壞柔邊。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_modern_hd_map_sprites.py"
+        ],
+        "pattern": "instance_core_alpha"
+      }
+    },
+    {
+      "id": "modern-sprite-coverage-uses-native-bank-count",
+      "area": "素材",
+      "date": "2026-10-19",
+      "rule": "現代圖組覆蓋先核對固定原始archive的實際count、全部分離mask與正式raw selector名冊；清冊子集完整不代表全圖庫。入口tools/audit_modern_fdicon_bank.py及61範圍勘誤。",
+      "why": "既有清冊只含0..95的94組可繪圖，第一章實際需要96；固定B24 header與既有loader早已是1680幀，尚有31組可見圖未登錄。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/audit_modern_fdicon_bank.py"
+        ],
+        "pattern": "unregistered_visible_selectors"
+      }
     }
   ]
 }

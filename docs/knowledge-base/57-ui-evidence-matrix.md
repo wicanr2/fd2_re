@@ -1,7 +1,8 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
 2026-10-19 HD戰場接續：F2不再重複觸發角色檢視，Home保持，正常首章16張GPU與完整保存／冷讀通過。
-同狀態取景差異#258尚未修正；144角色候選的格線裁切已拒收，完整輪廓51張樣本已審，尚未接runtime。
+同狀態取景差異#258尚未修正；既有清冊子集的144角色等比例編製與候選層計畫已驗。
+實際首章名冊揭露清冊漏列selector96，#259追蹤原始圖庫範圍勘誤與素材補齊；正式世界尚未啟用。
 唯一來源與下一閘門見[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)及[61](61-modern-theme-runtime-spec.md)。
 
 2026-10-15 使用者改以流程一致驗收，依[111修訂](../goal/111-goal-original-parity-campaign-20260915.md)

@@ -1,5 +1,31 @@
 # 58 — `FD2.EXE` 反組譯覆蓋與重製閉合矩陣
 
+## 2026-10-19 HD戰場目前狀態與圖庫範圍勘誤
+
+既有清冊r9的94組1083張144圖已等比例重編並通過來源／幾何／覆蓋alpha／相位驗證，
+六頁全姿態掃描與168張新比例圖審查完成。HD圖源預檢、原生單位定位、前景Mask覆蓋與
+候選世界合成器已有重製端回歸；世界未接Game.Draw，沒有新正常GPU或原版對拍。
+實際首章既有存檔候選在圖源預檢後，因`missing group 96 frame 0`拒收。
+
+固定`FDICON.B24`大小624010、MD5`46f793540209a063ea73a5373ca14bf4`、
+SHA-256`7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44`，
+檔案偏移0的6 bytes為`180018009006`，實際header是24×24、1680幀／140組。
+既有`fdicon.SeparatedSpriteCount`同為1680，直接否定先前把0..95子集稱為全圖庫的範圍敘述。
+全部分離Mask盤點為125組1455個可見槽；現代清冊另缺31組372槽：
+`96..103`、`106..120`、`122..126`及`133..135`。
+它們沒有與較早完整12幀組相同的decoded像素／Mask／RemapMask組合，不猜代舊人物。
+其餘無來源寫入組依caller保留，不把沒有Mask解讀為遺失人物。
+
+統計入口為[原始圖庫盤點工具](../../tools/audit_modern_fdicon_bank.py)，
+2026-10-19於Docker執行`--original <固定FDICON.B24> --bank <分離bank.json>`
+`--catalog remake/assets/themes/modern/catalog.json --reference docs/data/fd2-reference-files.json --report <新檔>`。
+輸入指紋、分離層SHA、原header及候選失敗沿
+[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`proportional_world_followup_20261019`。
+[#259](https://github.com/wicanr2/fd2_re/issues/259)先補首章96及其餘實際需求，再擴充清冊／loader；
+[#258](https://github.com/wicanr2/fd2_re/issues/258)仍待正式HD世界及透明介面。
+96新母稿已有12方向候選，未編製父項或登錄。新範圍與來源入口見[61](61-modern-theme-runtime-spec.md)。
+舊94組的資料與局部來源證據仍有效；本次不重開原版函式、matching或章收據。
+
 ## 2026-10-18 目前狀態：第一版交付與 HD 優先
 
 使用者本輪定案允許作弊通關、參考攻略，並以流程一致驗收，不強求逐幀一致。
@@ -53,7 +79,7 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 | 現代素材 | catalog結構及私人檔尺寸／SHA／透明度驗證通過。195筆登錄中，191筆runtime_candidate含33張圖集、94組可繪人物、31位80×80頭像及對應31位480×480頭像、1張HUD及1組四向圖示；另4筆concept。1187個file／files指向均存在 | [#201](https://github.com/wicanr2/fd2_re/issues/201)由正式consumer盤點需求；現有檔案完整不證明全玩家路徑覆蓋 |
 | 現代主題正式呈現 | 全主題仍為61的RUNTIME-E1-PARTIAL；序章新增父王／王后／強盜已以正常START走過97個對話拍點及首章接縫。480×480呈現另驗，人物仍24×24；selector39／57為純目的地重映射 | [#202](https://github.com/wicanr2/fd2_re/issues/202)早中晚正常操作、圖層交界與存讀檔驗收 |
 | 高解析呈現 | 2026-10-18使用者撤回160方案，採1920×1200與480×480頭像，維持版面比例。61的啟動時高解析序章契約CONFORMED；31張480圖通過預檢，正常97拍至首章與七位頭像480區域MAE=0，限本切片PLAYER-E2 | [#204](https://github.com/wicanr2/fd2_re/issues/204)[高解析收據](../data/fd2-modern-hd-20261018.json)；[F2切片](../data/fd2-modern-hd-f2-20261018.json)已通過正常雙向切換、遮罩、縮放及兩種主題LOAD同份節點存檔。[非原生切片](../data/fd2-modern-hd-dialogue-20261018.json)通過首章下框兩個新程序START後F9冷讀及F2往返，直接480圖源並保留既有504顯示區域；上下框幾何為E1。其餘玩家路徑、背景、原生固定面板文字、戰場及跨平台效能待完成 |
-| HD戰場 | F2全域切換不再開角色狀態，Home保持；首章16張GPU、兩主題／來源完整保存及新程序LOAD通過。144角色尚為候選，未接正式世界層 | [HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)與[61](61-modern-theme-runtime-spec.md)。#258取景倍率不同已由同units／view的真戰場圖片確認；首輪1083張固定格線候選拒收，完整輪廓51張樣本已審，接續全組來源／姿態與像素化母稿修正，不宣稱整款HD完成 |
+| HD戰場 | F2／Home首章既有GUI與保存保持；r9既有清冊子集等比例候選及層計畫已驗。實際首章世界因漏selector96拒收，正式世界未啟用 | [HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)與[61](61-modern-theme-runtime-spec.md)。#259補原始圖庫漏列需求；#258接原生取景的正式世界、HUD／透明介面與正常GPU。完整美術與整款HD未完成 |
 | HD 字型 | 使用者選定A清晰黑體；一般Font.Draw、原生故事逐字／捲動、商店文字與十進位數字、旅館即時提示與四槽、教會即時面板與角色狀態／命令、物品操作、整備與標題讀檔穩定頁、整備問句轉場已接1920×1200最終層。跨頁字形位置與快照獨立性測試通過；正常首章JSON標題LOAD、F5／F9及完整bytes保持已驗 | [字型主收據](../data/fd2-modern-hd-fonts-20261018.json)及[61](61-modern-theme-runtime-spec.md)；旅館保存／服務LOAD、教會四語名冊／復活確認／交付取消、F2及兩主題保存bytes一致已驗；轉職等fixture分支限E1。教會狀態／命令普通選人、F2及24張GPU已驗；戰場消費端限E1。商店裝備選取／拒絕／重新裝備、F2及13張GPU已驗，保存完整保持；戰場與死亡交換caller限相關回歸。整備／標題LOAD另有28張GUI：JSON城鎮出發NO、保存／讀取bytes保持，限PLAYER-E2-LIMITED；晚期原生槽普通保存、選人及確認取消有建構祖先，來源分列，不提升自然難度或整章E2。縮放裁切與Xvfb競態已修驗證工具並同份binary重跑；整備問句轉場另有5張實際GPU樣本，以問句RGB及移動中選項排除空框／穩定頁；七種開收配方與中途切換限E1。兩路徑同份binary完整重跑、保存保持，CPU判定勘誤見preparation_transition_followup。金幣滾動另通過22張實際圖含4張HD區域、普通購買／出售1000→950→987、兩主題完整保存與新程序標題LOAD；出售確認重疊#255已修驗，原生問句保持，來源見gold_roll_followup。角色／物品轉場已沿原區域移動與裁切HD文字，50張實際圖含11張移動區域、兩主題／來源完整保存相同與新程序標題LOAD通過，見panel_transition_followup。首章戰場角色狀態另已修正全幀覆蓋：普通LOAD、索爾／悠妮、F2、縮放／說明與返回通過14張GPU審查，六組面板外區域零差異；完整保存與來源相同，新程序標題LOAD通過，見battle_status_followup。其他戰場仍待驗。未列固定畫面、其他設施對話／清單轉場、成功演出中的數字及圖示字樣仍待接入，不宣稱整款字型或HD完成 |
 | 回歸環境 | FD2原Go／素材映像已恢復；私人現代素材18項及完整Go回歸通過。IRQ7原始ISR鏈已接通，自然啟動504次皆返回；正常鍵盤短鏈兩輪233份完整狀態／PNG及trace一致 | [#203](https://github.com/wicanr2/fd2_re/issues/203)及[#205](https://github.com/wicanr2/fd2_re/issues/205)限定工具範圍驗收；新舊平台嚴格比較仍failed，原始失敗保留。工具驗收本身不提升章台帳；章接續看本表 |
 | 非阻擋診斷與考古 | #52單像素差異仍已證實，#197目標窗口未取得；第12章追蹤沿用暫停。#198也明確暫停 | 三項保留未完成及來源，不阻塞其他章、HD與後續平台／編輯器工作 |

@@ -27,38 +27,42 @@ type modernStoryPortraitSet struct {
 	hasHD             bool
 	portraits         map[int]*modernStoryPortraitFrame
 	mapSprites        map[int][]image.Image
+	mapSpritesHD      map[int][]image.Image
 	mapTilesets       map[int]image.Image
 	battleHUDPanel    image.Image
 	battleActionIcons []image.Image
 }
 
+type modernThemeAsset struct {
+	Role             string   `json:"role"`
+	Status           string   `json:"status"`
+	File             string   `json:"file"`
+	Width            int      `json:"width"`
+	Height           int      `json:"height"`
+	SHA256           string   `json:"sha256"`
+	ConsumerContract string   `json:"consumer_contract"`
+	SpeakerID        int      `json:"speaker_id"`
+	Frame            int      `json:"frame"`
+	MouthState       string   `json:"mouth_state"`
+	Files            []string `json:"files"`
+	FrameSHA256      []string `json:"frame_sha256"`
+	FrameCount       int      `json:"frame_count"`
+	SourceGroup      int      `json:"source_group"`
+	AlphaContract    string   `json:"alpha_contract"`
+	CyclePolicy      string   `json:"cycle_policy"`
+	MapID            int      `json:"map_id"`
+	TileWidth        int      `json:"tile_width"`
+	TileHeight       int      `json:"tile_height"`
+	Columns          int      `json:"columns"`
+	TileCount        int      `json:"tile_count"`
+	Semantics        []string `json:"semantics"`
+	LayoutPolicy     string   `json:"layout_policy"`
+}
+
 type modernThemeCatalog struct {
-	SchemaVersion int    `json:"schema_version"`
-	ThemeID       string `json:"theme_id"`
-	Assets        []struct {
-		Role             string   `json:"role"`
-		Status           string   `json:"status"`
-		File             string   `json:"file"`
-		Width            int      `json:"width"`
-		Height           int      `json:"height"`
-		SHA256           string   `json:"sha256"`
-		ConsumerContract string   `json:"consumer_contract"`
-		SpeakerID        int      `json:"speaker_id"`
-		Frame            int      `json:"frame"`
-		MouthState       string   `json:"mouth_state"`
-		Files            []string `json:"files"`
-		FrameSHA256      []string `json:"frame_sha256"`
-		FrameCount       int      `json:"frame_count"`
-		SourceGroup      int      `json:"source_group"`
-		AlphaContract    string   `json:"alpha_contract"`
-		CyclePolicy      string   `json:"cycle_policy"`
-		MapID            int      `json:"map_id"`
-		TileWidth        int      `json:"tile_width"`
-		TileHeight       int      `json:"tile_height"`
-		Columns          int      `json:"columns"`
-		TileCount        int      `json:"tile_count"`
-		Semantics        []string `json:"semantics"`
-	} `json:"assets"`
+	SchemaVersion int                `json:"schema_version"`
+	ThemeID       string             `json:"theme_id"`
+	Assets        []modernThemeAsset `json:"assets"`
 }
 
 // loadModernStoryPortraitSet 只承認已通過受版控 catalog 的獨立故事頭像。
@@ -76,12 +80,19 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 		return nil, errors.New("modern theme catalog: unsupported identity")
 	}
 	set := &modernStoryPortraitSet{
-		portraits:   make(map[int]*modernStoryPortraitFrame),
-		mapSprites:  make(map[int][]image.Image),
-		mapTilesets: make(map[int]image.Image),
+		portraits:    make(map[int]*modernStoryPortraitFrame),
+		mapSprites:   make(map[int][]image.Image),
+		mapSpritesHD: make(map[int][]image.Image),
+		mapTilesets:  make(map[int]image.Image),
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "map_sprite_hd_set" {
+			if err := loadModernHDMapSpriteAsset(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "battle_action_icon_set" {
 			wantSemantics := []string{"attack", "spell", "item", "wait"}
 			if asset.Status != "runtime_candidate" && asset.Status != "runtime_ready" {
@@ -337,6 +348,9 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 			portrait.hdImage = hd
 		}
 		set.hasHD = true
+	}
+	if err := validateModernHDMapSpriteParents(set, catalog.Assets); err != nil {
+		return nil, err
 	}
 	return set, nil
 }
