@@ -289,7 +289,7 @@
       }
     ]
   },
-  "source_commit": "0eb9cf6ee9d466e359736fd89419900273001640",
+  "source_commit": "bccba29b9192ce377f7f8d1f4fcc5368d646ec6b",
   "component_audit": {
     "manifest": {
       "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-components-audit-r3/hd-map-sprites.json",
@@ -3147,7 +3147,7 @@
     },
     "ai_input_lock": {
       "issue": 262,
-      "status": "fixed; close after verified source commit",
+      "status": "CLOSED-COMPLETED after verified main push",
       "existing_contract": "docs/knowledge-base/56-fd2-remake-sdd.md existing synchronous turn order; no new binary claim",
       "reference_inputs": {
         "file": "docs/data/fd2-reference-files.json",
@@ -3322,6 +3322,17 @@
       "total": 249,
       "guards": 130
     },
-    "unexpected_fd2_containers": 0
+    "unexpected_fd2_containers": 0,
+    "source_commit": "bccba29b9192ce377f7f8d1f4fcc5368d646ec6b",
+    "source_remote_verified": true,
+    "worklist": {
+      "open": 20,
+      "manual": 13,
+      "possibly_complete": 0
+    },
+    "final_metadata_links": {
+      "checked": 2758,
+      "broken": 0
+    }
   }
 }

@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -163,16 +163,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 本項保持開啟：1920×1200字型／頭像／人物與map0兩物件已有正式切片；其餘地形、完整HUD／固定字樣、索引演出及跨平台效能／實機仍待完成。
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
-
-### P1 換手期間阻止玩家選人／移動輸入重入
-
-`ai-phase-player-input-lock` · 缺陷 · [#262](https://github.com/wicanr2/fd2_re/issues/262) · 仍未完成 · 要人判
-
-首章普通標題LOAD、移動／待機／END及增援對話後，實際audit同時有ai_busy=true、selected及move_preview，選中的我方角色為(11,13)。Update推進AI後仍走玩家地圖鍵盤，confirm入口也未拒收。
-
-依56既有已證實0x1A30B同步順序修復，不開新matching。來源與失敗保留在work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r3/terrain-route.json及operations.json。該輪另因180秒工具期限在AI持續行動時結束，不能把逾時歸因於本缺陷，也不宣稱遊戲卡死。
-
-怎樣算做完：AI期間地圖輸入拒收，對話與F2／F9保持；正常首章END及增援對話後不產生玩家move_preview，離開AI後可正常選人；回歸與正常GPU抽樣通過。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

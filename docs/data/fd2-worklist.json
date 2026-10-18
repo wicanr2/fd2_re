@@ -321,19 +321,6 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
-    },
-    {
-      "id": "ai-phase-player-input-lock",
-      "layer": "runtime",
-      "category": "缺陷",
-      "title": "P1 換手期間阻止玩家選人／移動輸入重入",
-      "body": "首章普通標題LOAD、移動／待機／END及增援對話後，實際audit同時有ai_busy=true、selected及move_preview，選中的我方角色為(11,13)。Update推進AI後仍走玩家地圖鍵盤，confirm入口也未拒收。\n\n依56既有已證實0x1A30B同步順序修復，不開新matching。來源與失敗保留在work/promo-cadence-20261018/hd-fonts/house-occlusion-gui-r3/terrain-route.json及operations.json。該輪另因180秒工具期限在AI持續行動時結束，不能把逾時歸因於本缺陷，也不宣稱遊戲卡死。",
-      "acceptance": "AI期間地圖輸入拒收，對話與F2／F9保持；正常首章END及增援對話後不產生玩家move_preview，離開AI後可正常選人；回歸與正常GPU抽樣通過。",
-      "verify": {
-        "kind": "manual",
-        "note": "首章屋後GUI r3實際觀測ai_busy=true且selected／move_preview已成立；既有0x1A30B同步順序見56，READY修復未完成。"
-      },
-      "issue": 262
     }
   ]
 }
