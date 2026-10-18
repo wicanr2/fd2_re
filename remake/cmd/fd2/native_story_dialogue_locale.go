@@ -178,6 +178,20 @@ func drawIndexedLocalizedText(
 			return fmt.Errorf("localized native dialogue font lacks %q", r)
 		}
 	}
+	if capture := displayFont.indexedHD; capture != nil {
+		clip := image.Rect(x*2, y*2, (x+maxWidth)*2, (y+height)*2)
+		for _, layer := range []struct {
+			offset int
+			index  byte
+		}{{1, shadow}, {0, foreground}} {
+			capture.runs = append(capture.runs, modernHDTextRun{
+				font: displayFont, text: text, x: float64(x*2) + float64(layer.offset)/3, y: float64(y*2) + float64(layer.offset)/3,
+				pixels: float64(int(displayFont.base*scale+0.5) * 2),
+				color:  modernHDNativeTextColor(capture.palette, layer.index), clip: clip,
+			})
+		}
+		return nil
+	}
 	px := int(displayFont.base*scale + 0.5)
 	face, ascent := displayFont.faceFor(px)
 	if face == nil {

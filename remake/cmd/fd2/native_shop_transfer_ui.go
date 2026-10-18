@@ -62,7 +62,7 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 	}
 	switch g.nativeShopMode {
 	case "transfer_intro":
-		if g.localeID != "" && g.localeID != "zh-Hant" {
+		if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 			frame, err := g.composeLocalizedNativeShopPlainMessage(
 				stable, portrait, portraitID, "shop.transfer.source_prompt",
 			)
@@ -75,7 +75,7 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 		)
 		return frame, err == nil
 	case "transfer_dest_prompt":
-		if g.localeID != "" && g.localeID != "zh-Hant" {
+		if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 			frame, err := g.composeLocalizedNativeShopPlainMessage(
 				stable, portrait, portraitID, "shop.transfer.destination_prompt",
 			)
@@ -92,7 +92,7 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 		if !ok || !unit.HasNativeIdentity {
 			return nil, false
 		}
-		if g.localeID != "" && g.localeID != "zh-Hant" {
+		if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 			name, err := g.localeEntities.CharacterName(unit.NativeIdentity)
 			if err != nil {
 				return nil, false
@@ -114,7 +114,7 @@ func (g *Game) composeNativeShopTransferMessage() ([]byte, bool) {
 		if !ok || !unit.HasNativeIdentity {
 			return nil, false
 		}
-		if g.localeID != "" && g.localeID != "zh-Hant" {
+		if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 			name, err := g.localeEntities.CharacterName(unit.NativeIdentity)
 			if err != nil {
 				return nil, false
@@ -230,7 +230,7 @@ func (g *Game) composeNativeShopTransferRoster() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = g.composeLocalizedNativeRoster(
 			stable, assets.Panel, rows, identities, g.nativeShopTransferSel-start,
 		)
@@ -344,7 +344,7 @@ func (g *Game) composeNativeShopTransferItems() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = g.composeLocalizedNativeShopItemIDs(
 			stable, assets, itemIDs, start, g.nativeShopTransferSel,
 			battle.NativeFacilityThreeQuarterPrice,

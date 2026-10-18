@@ -347,7 +347,7 @@ func ComposeNativeStoryDialogueProgressiveFrames(
 					}
 					pass++
 				}
-				frames = append(frames, next)
+				frames = append(frames, append([]byte(nil), next...))
 				frame = next
 			}
 			visibleRow = nativeStoryVisibleRows - 1

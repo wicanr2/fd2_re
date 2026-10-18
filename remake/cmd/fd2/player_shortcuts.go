@@ -138,9 +138,14 @@ func (g *Game) drawPlayerHelp(screen *ebiten.Image) {
 	}
 	for i, line := range lines {
 		scale := 0.9
+		y := float64(104 + (i-1)*28)
 		if i == 0 {
 			scale = 1.7
+			y = 54
 		}
-		g.font.Draw(screen, line, 58, float64(54+i*30), scale, color.RGBA{238, 244, 255, 255})
+		for g.font.Width(line, scale) > 524 {
+			scale -= 0.025
+		}
+		g.font.Draw(screen, line, 58, y, scale, color.RGBA{238, 244, 255, 255})
 	}
 }

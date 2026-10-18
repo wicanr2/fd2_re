@@ -521,6 +521,7 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 			return true
 		}
 	}
+	frame, hdText := g.modernHDStoryTextFrame(frame, progress)
 	if g.nativeDialogueModernPortrait != nil {
 		rect, err := campaign.NativeStoryDialoguePortraitRect(
 			g.dialog[len(g.dialog)-1].NativeDialogue.Control,
@@ -541,6 +542,9 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 		}
 	} else {
 		g.presentNativeClassFrame(screen, frame)
+	}
+	if g.modernHDText != nil {
+		g.modernHDText.runs = append(g.modernHDText.runs, hdText...)
 	}
 	return true
 }

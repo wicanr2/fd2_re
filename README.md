@@ -20,8 +20,18 @@
 公開包只含引擎與可散布資料，遊玩需自備完整合法分離素材。現有單一匯入工具尚不能產生完整可玩包；素材契約與工具範圍見[分離素材規格](docs/knowledge-base/60-editor-separated-assets-spec.md)。30章受控流程與保存例外見[驗收進度](docs/REMAKE-STATUS.md)。HD仍未完成，Windows／macOS未簽署，macOS尚未公證。
 
 開發版可用 F2 切換忠實原版與現代手繪主題。具備合法的完整 HD 素材包時，故事頭像以
-480×480 圖源直接繪製，維持各對話的原位置與大小，預設視窗為1920×1200；介面、字型與戰場仍待 HD 化。兩種主題均已驗證首章 JSON 的標題 LOAD 與 F9。
+480×480 圖源直接繪製，預設視窗為1920×1200。故事對話、商店文字與數字、一般介面採用直接高解析繪製的 Noto Sans CJK 黑體；忠實像素模式保留。原生固定面板、過場中的點陣文字及戰場仍待 HD 化。兩種主題均已驗證首章 JSON 的標題 LOAD 與 F9。
 素材要求及驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。此功能尚未加入上述正式第一版。
+
+## 忠實像素模式與多語系
+
+| 繁體中文 | 简体中文 |
+|---|---|
+| ![忠實模式繁體中文商店](docs/figures/faithful-shop-zh-Hant.png) | ![忠實模式簡體中文商店](docs/figures/faithful-shop-zh-Hans.png) |
+| English | 日本語 |
+| ![忠實模式英文商店](docs/figures/faithful-shop-en.png) | ![忠實模式日文商店](docs/figures/faithful-shop-ja.png) |
+
+以上為重製引擎的實際商店畫面，保留原版像素美術。多語系由重製引擎提供，並非 DOS 原版執行檔新增語言；可按 F4 切換。四張圖使用相同商品與金幣狀態，擷取來源見[截圖紀錄](docs/data/fd2-readme-locales-20261018.json)。
 
 ## 遊戲介紹
 

@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -183,6 +183,16 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：調整說明標題與首列間距，在1280×800、1920×1200及非整數縮放目視無重疊，完整快捷鍵與HD遮罩維持。依61的介面切片契約處理。
 
 證據：`remake/cmd/fd2/player_shortcuts.go`
+
+### P1 原生對話捲動快照被後續寫字污染
+
+`native-dialogue-scroll-snapshot-alias` · 缺陷 · [#253](https://github.com/wicanr2/fd2_re/issues/253) · 仍未完成 · 要人判
+
+HD 字型逐字差異測試重現：ComposeNativeStoryDialogueProgressiveFrames 把 next 直接發布為捲動畫格，後續字形繼續改寫同一切片，最後一張捲動畫格會提前顯示整行後文。已定位為重製端快照別名問題，非新原版語意。
+
+怎樣算做完：獨立保存捲動快照，保持十幀捲動與逐字時鐘；跨 FFFD 前文保留、各捲動步驟字形位置與既有索引 renderer 差異測試通過，靜態終點不變。
+
+證據：`remake/internal/campaign/native_story_dialogue_test.go`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

@@ -29,7 +29,7 @@ func (g *Game) composeNativeShopEquipQuestion() ([]byte, bool) {
 	if !goodOK || !stateOK || !stableOK {
 		return nil, false
 	}
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err := g.composeLocalizedNativeShopPlainMessage(
 			stable, portrait, portraitID, "shop.purchase.equip_question",
 		)

@@ -157,7 +157,7 @@ func (g *Game) composeNativeShopEquipRoster() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = g.composeLocalizedNativeRoster(
 			stable, assets.Panel, rows, identities, g.nativeShopEquipUnitSel-start,
 		)

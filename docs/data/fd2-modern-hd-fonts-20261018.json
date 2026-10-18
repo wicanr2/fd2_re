@@ -1,0 +1,4064 @@
+{
+  "schema": "fd2-modern-hd-fonts-v1",
+  "date": "2026-10-18",
+  "status": "CONFORMED-SCOPED",
+  "full_hd_fonts_complete": false,
+  "decision": {
+    "user_choice": "A 清晰黑體",
+    "family": "Noto Sans CJK",
+    "target": [
+      1920,
+      1200
+    ],
+    "faithful_mode": "保留",
+    "prototype": {
+      "file": "docs/figures/hd-font-style-comparison.png",
+      "sha256": "ba4549b2c3dd6169fae76b3b87c8a4970da2cffddf9ee8dbc9f812a9b46dedf9"
+    },
+    "prototype_metadata": {
+      "status": "DISPOSABLE-PROTOTYPE",
+      "method": "Pillow 11.3.0／FreeType直接繪字；原型只比較字體樣式與取樣尺寸，非正式Game或原版parity。",
+      "families": [
+        {
+          "file": "NotoSansCJK-Regular.ttc",
+          "index": 0,
+          "name": [
+            "Noto Sans CJK JP",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSansCJK-Regular.ttc",
+          "index": 1,
+          "name": [
+            "Noto Sans CJK KR",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSansCJK-Regular.ttc",
+          "index": 2,
+          "name": [
+            "Noto Sans CJK SC",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSansCJK-Regular.ttc",
+          "index": 3,
+          "name": [
+            "Noto Sans CJK TC",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSansCJK-Regular.ttc",
+          "index": 4,
+          "name": [
+            "Noto Sans CJK HK",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSerifCJK-Regular.ttc",
+          "index": 0,
+          "name": [
+            "Noto Serif CJK JP",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSerifCJK-Regular.ttc",
+          "index": 1,
+          "name": [
+            "Noto Serif CJK KR",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSerifCJK-Regular.ttc",
+          "index": 2,
+          "name": [
+            "Noto Serif CJK SC",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSerifCJK-Regular.ttc",
+          "index": 3,
+          "name": [
+            "Noto Serif CJK TC",
+            "Regular"
+          ]
+        },
+        {
+          "file": "NotoSerifCJK-Regular.ttc",
+          "index": 4,
+          "name": [
+            "Noto Serif CJK HK",
+            "Regular"
+          ]
+        }
+      ],
+      "font_sha256": {
+        "NotoSansCJK-Regular.ttc": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+        "NotoSerifCJK-Regular.ttc": "a04178ec485dffdff7cc0c0c20e1fce9202d7e2160d805e8e44a4c8841c58481"
+      },
+      "preview_sha256": "ba4549b2c3dd6169fae76b3b87c8a4970da2cffddf9ee8dbc9f812a9b46dedf9",
+      "physical_dialogue_px": 93,
+      "source_dialogue_px": 31,
+      "default_recommendation": "Noto Sans CJK，與既有Noto黑體家族一致；HD按語系選區域字形。"
+    }
+  },
+  "source": {
+    "base_commit": "a4897885440ca9eb27724008ec5796915291011f",
+    "production_go_tree_sha256": "5614f9646a386c69a864793eff184cf35b2ab0cc8a82c339f5fd337407979c66",
+    "test_go_tree_sha256": "3211208214e0fd31f5c411fb049f2b9298bf6f1b68db6ffbeb513f76c25a0b69",
+    "go_mod": {
+      "file": "remake/go.mod",
+      "sha256": "97c4d9a19ccb559f64ea3d0282633790ff192ca8632375f28429d8fca207008b"
+    },
+    "go_sum": {
+      "file": "remake/go.sum",
+      "sha256": "c11f49fbe83587398c52eee4fdb1702dd4daa228471362028bbdb1e9f13f8478"
+    },
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-r4",
+      "sha256": "d827a4613a09ee0e72701adf76416376f42b1567e94398d1cf52cc04c39804e1"
+    },
+    "driver": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "55c95815e24d034597d7895233f7561525e379d0cc7d4d5b20289d7ef25aad54"
+    },
+    "reference_files": {
+      "file": "docs/data/fd2-reference-files.json",
+      "sha256": "9946b7506620069ce9b7bb8e4b1f7fed36e7a9389b634ef62064727d89579c5e"
+    },
+    "original_executable": {
+      "file": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+      "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f"
+    },
+    "original_pack_manifest": {
+      "file": "work/remake-recovery-20261015/pack/manifest.json",
+      "sha256": "5eec2ecacc4fe97c4d0f27838e7dbecf18d1cf4b309b35800d50afd173cacca5"
+    }
+  },
+  "runtime_scope": [
+    "一般Font.Draw與fontNm在最終層直接繪字，保留640×400排版與量測",
+    "原生故事逐字、跨頁與捲動投影；明示特殊字形fallback",
+    "商店訊息、商品與角色名稱，以及31／42／119十進位字庫",
+    "說明頁字級、寬度適配與標題間距"
+  ],
+  "remaining": [
+    "原生物品／玩家狀態／教會／旅店／整備等固定索引面板的字模",
+    "預建原生轉場job中的文字與金幣滾動",
+    "圖示內HP／貨幣等點陣字樣",
+    "全戰役特殊字模fallback盤點與跨平台效能"
+  ],
+  "gui": {
+    "file": "work/promo-cadence-20261018/hd-fonts/gui-r6/receipt.json",
+    "sha256": "53a3966f1a5605c1a32ca60dd5acfa6f6285df49e0e8ec675fe0c30cfa22a6c7",
+    "report": {
+      "schema": "fd2-hd-font-gui-v1",
+      "status": "PASS",
+      "binary_sha256": "d827a4613a09ee0e72701adf76416376f42b1567e94398d1cf52cc04c39804e1",
+      "town_save_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "screenshots": {
+        "native-dialogue-zh-Hant.png": {
+          "sha256": "6d46d5e7fd0db4ce6c6bb2dbe4187b498bdaed8ef40b8d626e16d32d477841a8",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 840,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "faithful-native-dialogue.png": {
+          "sha256": "4fa048161d3ee2a2a3c8cefe73900268a2b8f3959c978004041e18c768e71a69",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 960,
+            "gold": 0,
+            "hd_theme": false,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "hd-native-restored.png": {
+          "sha256": "6d46d5e7fd0db4ce6c6bb2dbe4187b498bdaed8ef40b8d626e16d32d477841a8",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1080,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "native-dialogue-zh-Hans.png": {
+          "sha256": "4550f4d62e0d63efdca6298e6c5bd601482b16aab3005ea34e1567537ae356d2",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1200,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 4,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hans",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "native-dialogue-ja.png": {
+          "sha256": "36fa1746877c3ced1e9e0590995c0232eb3c1d09604a5cddb0b5eee3c3429725",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1320,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 4,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "ja",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "native-dialogue-en.png": {
+          "sha256": "36fa1746877c3ced1e9e0590995c0232eb3c1d09604a5cddb0b5eee3c3429725",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1440,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 4,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "en",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "hd-help.png": {
+          "sha256": "6af85342892144d4d8f09f10ded4c0e0671fa81d14a53da0e1e6206619c3374a",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1680,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": true,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "hd-help-largest-font.png": {
+          "sha256": "1e4d2bac94b112c2bfd833a26b5e48ec2bc53c094e1a503909e88f8a7a64fd67",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2160,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": true,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "hd-help-resized.png": {
+          "sha256": "f158ffc389c73228905a22050858721df0020fd4583ec2821a29fbfd3d0c87b0",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2760,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": true,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "shop-menu-zh-Hant.png": {
+          "sha256": "a1fe7c40ef093535acea58fa4dd972f21843cca7b1a7ed594fef0dd7fbfe99ff",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3600,
+            "gold": 1000,
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "menu",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "shop-list-zh-Hant.png": {
+          "sha256": "36554f0840854db3b253b984f37567cad3ec3525cc98c6bcdccce6ffb2fe108e",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3720,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "shop-list-zh-Hans.png": {
+          "sha256": "ca03ad14ad1bae56ad15f8c15b5c2c3471956d50a077b125ef9e7affb2eb1252",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3840,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hans",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "shop-list-ja.png": {
+          "sha256": "8d408e46564929bcf4f0d42f0339f0de4f53f76d9e2565cba99ce98bad814c16",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3960,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "ja",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "shop-list-en.png": {
+          "sha256": "4f90e2acc8b28e74ac7b948b2b30a0ef7de29ac394c882c294ad5a0945341f86",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4080,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "en",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "shop-after-purchase.png": {
+          "sha256": "e5c0edc857c35330ba1501adf45b052a59d4ef0644449d314ebe33f0bece7458",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4560,
+            "gold": 990,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "faithful-shop.png": {
+          "sha256": "9d796e5415e52473c7aaf0bf10957dd9a6073ca45cf702ad41bd784a8917d83d",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4680,
+            "gold": 990,
+            "hd_theme": false,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "faithful-help.png": {
+          "sha256": "fea0f0d9761669fd7f3e41f9219198e45b68aca95b094e0fa5931efb6d7dc720",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4800,
+            "gold": 990,
+            "hd_theme": false,
+            "help_visible": true,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        "hd-shop-restored.png": {
+          "sha256": "e5c0edc857c35330ba1501adf45b052a59d4ef0644449d314ebe33f0bece7458",
+          "state": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 5040,
+            "gold": 990,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": null,
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        }
+      },
+      "operations": [
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              0
+            ],
+            "cursor": [
+              0,
+              0
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 0,
+            "dialogues": 0,
+            "error": "",
+            "frame": 124,
+            "gold": 0,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "cutscene",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              0
+            ],
+            "cursor": [
+              0,
+              0
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 0,
+            "dialogues": 0,
+            "error": "",
+            "frame": 247,
+            "gold": 0,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "cutscene",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Return",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              0
+            ],
+            "cursor": [
+              0,
+              0
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 0,
+            "dialogues": 0,
+            "error": "",
+            "frame": 367,
+            "gold": 0,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Enter"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "menu",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F2",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 846,
+            "gold": 0,
+            "hd_text_runs": 30,
+            "hd_theme": false,
+            "help_visible": false,
+            "keys": [
+              "F2"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F2",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1015,
+            "gold": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F2"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1096,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "zh-Hans",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1229,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 4,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "ja",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1349,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 4,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "en",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1467,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 4,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F1",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1563,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": true,
+            "keys": [
+              "F1"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1684,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F7",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1803,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F7"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F7",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 1924,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F7"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F1",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2044,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": true,
+            "keys": [
+              "F1"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2219,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F7",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2285,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F7"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F7",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2403,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F7"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F7",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2521,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F7"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F1",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2646,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": true,
+            "keys": [
+              "F1"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_native": true,
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogue_speaker": 0,
+            "dialogues": 1,
+            "error": "",
+            "frame": 2795,
+            "gold": 0,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "story_ch00_handler",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F9",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              72,
+              480
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 2882,
+            "gold": 1000,
+            "hd_overlay_mirrored": false,
+            "hd_overlay_rect": [
+              16,
+              230,
+              160,
+              160
+            ],
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F9"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "hotel_ch02",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3002,
+            "gold": 1000,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "town_ch02",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Left",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3125,
+            "gold": 1000,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "ArrowLeft"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "town_ch02",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Left",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3241,
+            "gold": 1000,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "ArrowLeft"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "town_ch02",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Left",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3361,
+            "gold": 1000,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "ArrowLeft"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "town_ch02",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Return",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3484,
+            "gold": 1000,
+            "hd_text_runs": 0,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Enter"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "menu",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Return",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3625,
+            "gold": 1000,
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Enter"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "menu",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3749,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "zh-Hans",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3853,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "ja",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 3972,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "en",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F4",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4097,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F4"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Return",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4201,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Enter"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Return",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4351,
+            "gold": 1000,
+            "hd_text_runs": 12,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Enter"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "confirm",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Return",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4471,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "Enter"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "recipient_consumable",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F2",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4665,
+            "gold": 990,
+            "hd_text_runs": 18,
+            "hd_theme": false,
+            "help_visible": false,
+            "keys": [
+              "F2"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F1",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4755,
+            "gold": 990,
+            "hd_theme": false,
+            "help_visible": true,
+            "keys": [
+              "F1"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "Escape",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4862,
+            "gold": 990,
+            "hd_theme": false,
+            "help_visible": false,
+            "keys": [
+              "Escape"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": false,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        },
+        {
+          "key": "F2",
+          "ack": {
+            "ai_busy": false,
+            "banner": "",
+            "banner_t": 0,
+            "camera": [
+              0,
+              316
+            ],
+            "cursor": [
+              8,
+              21
+            ],
+            "dialogue_phase": 0,
+            "dialogue_progress": 15,
+            "dialogues": 0,
+            "error": "",
+            "frame": 4925,
+            "gold": 990,
+            "hd_theme": true,
+            "help_visible": false,
+            "keys": [
+              "F2"
+            ],
+            "locale": "zh-Hant",
+            "modern_theme": true,
+            "move_preview": false,
+            "moved": false,
+            "next_player_index": 0,
+            "node": "shop_ch02_item",
+            "player_focus": null,
+            "ring": false,
+            "ring_blink": 0,
+            "ring_phase": "",
+            "ring_sel": 0,
+            "shop_mode": "purchase",
+            "title_phase": "",
+            "title_selection": 0,
+            "walking": false
+          }
+        }
+      ],
+      "scope": "正常START序章首句四語、說明頁；明示F9接續hotel_ch02後正常城鎮與商店。非連續全戰役，不宣稱原版視覺對拍。",
+      "recording_created": false,
+      "elapsed_seconds": 272.8939886749722
+    },
+    "verified_sizes": {
+      "native-dialogue-zh-Hant.png": [
+        1920,
+        1200
+      ],
+      "faithful-native-dialogue.png": [
+        1280,
+        800
+      ],
+      "hd-native-restored.png": [
+        1920,
+        1200
+      ],
+      "native-dialogue-zh-Hans.png": [
+        1920,
+        1200
+      ],
+      "native-dialogue-ja.png": [
+        1920,
+        1200
+      ],
+      "native-dialogue-en.png": [
+        1920,
+        1200
+      ],
+      "hd-help.png": [
+        1920,
+        1200
+      ],
+      "hd-help-largest-font.png": [
+        1920,
+        1200
+      ],
+      "hd-help-resized.png": [
+        1600,
+        1000
+      ],
+      "shop-menu-zh-Hant.png": [
+        1920,
+        1200
+      ],
+      "shop-list-zh-Hant.png": [
+        1920,
+        1200
+      ],
+      "shop-list-zh-Hans.png": [
+        1920,
+        1200
+      ],
+      "shop-list-ja.png": [
+        1920,
+        1200
+      ],
+      "shop-list-en.png": [
+        1920,
+        1200
+      ],
+      "shop-after-purchase.png": [
+        1920,
+        1200
+      ],
+      "faithful-shop.png": [
+        1280,
+        800
+      ],
+      "faithful-help.png": [
+        1280,
+        800
+      ],
+      "hd-shop-restored.png": [
+        1920,
+        1200
+      ]
+    }
+  },
+  "save_load": {
+    "file": "work/promo-cadence-20261018/hd-fonts/title-load-r4/hd-dialogue-gui.json",
+    "sha256": "c0b77d4ac5622c64d57e23346f568c2e2f56a73f39c3652f3748b05a8e7779a1",
+    "report": {
+      "schema_version": 1,
+      "status": "PLAYER-E2-LIMITED-GPU-REVIEW-REQUIRED",
+      "method": "兩個新程序由普通標題LOAD冷讀原樣正常F5存檔；F2/F1/Esc/F9後F5重新保存，第三個新程序標題LOAD冷讀。",
+      "load_entry": "title",
+      "fresh_save": {
+        "file": "/out/title-load-r4/fresh-f5.json",
+        "sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+        "cold_loaded": {
+          "ai_busy": false,
+          "banner": "",
+          "banner_t": 0,
+          "camera": [
+            0,
+            312
+          ],
+          "cursor": [
+            7,
+            14
+          ],
+          "dialogue_native": false,
+          "dialogue_phase": 0,
+          "dialogue_progress": 0,
+          "dialogue_speaker": 0,
+          "dialogues": 1,
+          "error": "",
+          "frame": 720,
+          "gold": 0,
+          "hd_theme": false,
+          "help_visible": false,
+          "keys": null,
+          "locale": "zh-Hant",
+          "modern_theme": false,
+          "move_preview": false,
+          "moved": false,
+          "native_round": 1,
+          "next_player_index": 0,
+          "node": "battle_ch01",
+          "player_focus": null,
+          "ring": false,
+          "ring_blink": 0,
+          "ring_phase": "",
+          "ring_sel": 0,
+          "shop_mode": "",
+          "title_phase": "",
+          "title_selection": 1,
+          "turn": 1,
+          "units": [
+            {
+              "acted": false,
+              "camp": 0,
+              "hp": 42,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 7,
+                "Y": 20,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 7,
+              "y": 20
+            },
+            {
+              "acted": false,
+              "camp": 0,
+              "hp": 28,
+              "mp": 8,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 10,
+                "Y": 21,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 10,
+              "y": 21
+            },
+            {
+              "acted": false,
+              "camp": 0,
+              "hp": 48,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 8,
+                "Y": 22,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 8,
+              "y": 22
+            },
+            {
+              "acted": false,
+              "camp": 0,
+              "hp": 50,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 11,
+                "Y": 23,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 11,
+              "y": 23
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 1,
+                "Y": 3,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 1,
+              "y": 3
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 2,
+                "Y": 1,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 2,
+              "y": 1
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 4,
+                "Y": 1,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 4,
+              "y": 1
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 6,
+                "Y": 0,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 6,
+              "y": 0
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 1,
+                "Y": 21,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 1,
+              "y": 21
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 2,
+                "Y": 22,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 2,
+              "y": 22
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 3,
+                "Y": 22,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 3,
+              "y": 22
+            },
+            {
+              "acted": false,
+              "camp": 2,
+              "hp": 28,
+              "mp": 0,
+              "name": "",
+              "on_field": true,
+              "raw": {
+                "X": 4,
+                "Y": 23,
+                "Pose": 0,
+                "Motion": 0
+              },
+              "x": 4,
+              "y": 23
+            }
+          ],
+          "view": {
+            "CameraX": 0,
+            "CameraY": 13,
+            "CursorX": 7,
+            "CursorY": 14,
+            "VisibleCursorX": 7,
+            "VisibleCursorY": 1
+          },
+          "walking": false
+        },
+        "unchanged_after_cold_load": true
+      },
+      "source_receipt": "/repo/docs/data/fd2-modern-hd-f2-20261018.json",
+      "source_receipt_sha256": "24f3833f034057096dd0fb8db6645ed82c115635a6354933cf9320ddaa36193b",
+      "source_save": "/repo/work/promo-cadence-20261018/f2-runtime/normal-r4/user-data/fd2_re/fd2_save.json",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "save_unchanged": true,
+      "binary_sha256": "d827a4613a09ee0e72701adf76416376f42b1567e94398d1cf52cc04c39804e1",
+      "driver_sha256": "c1e8c04e7c69dc57487b681596044acb3eaf2abee3ed52be7378175c16e4d010",
+      "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+      "source_portrait_sha256": "e5d16a454cefa932d2e26009743fedf6c153f39163539ab6d41e6b50f719ff54",
+      "reference_method": "ImageMagick Triangle放大480至504後鏡像；GPU採線性取樣，允許明示的插值／量化差異，不宣稱零像素差異。",
+      "reference_sha256": "200195935a3c57897693db675c436964019d3e988eff590736da6c987e996158",
+      "old_80_frame_mae": 0.0251632,
+      "gpu_metrics": [
+        {
+          "file": "hd-enter.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-help-closed.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-size-restored.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-return.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-quickload.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-cold-load.png",
+          "mae_normalized": 0.00162264,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        }
+      ],
+      "faithful_loaded": {
+        "ai_busy": false,
+        "banner": "",
+        "banner_t": 0,
+        "camera": [
+          0,
+          312
+        ],
+        "cursor": [
+          7,
+          14
+        ],
+        "dialogue_native": false,
+        "dialogue_phase": 0,
+        "dialogue_progress": 0,
+        "dialogue_speaker": 0,
+        "dialogues": 1,
+        "error": "",
+        "frame": 720,
+        "gold": 0,
+        "hd_theme": false,
+        "help_visible": false,
+        "keys": null,
+        "locale": "zh-Hant",
+        "modern_theme": false,
+        "move_preview": false,
+        "moved": false,
+        "native_round": 1,
+        "next_player_index": 0,
+        "node": "battle_ch01",
+        "player_focus": null,
+        "ring": false,
+        "ring_blink": 0,
+        "ring_phase": "",
+        "ring_sel": 0,
+        "shop_mode": "",
+        "title_phase": "",
+        "title_selection": 1,
+        "turn": 1,
+        "units": [
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 42,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 7,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 7,
+            "y": 20
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 28,
+            "mp": 8,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 10,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 10,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 48,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 50,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 3,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 3
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 6,
+              "Y": 0,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 6,
+            "y": 0
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 3,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 3,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 23
+          }
+        ],
+        "view": {
+          "CameraX": 0,
+          "CameraY": 13,
+          "CursorX": 7,
+          "CursorY": 14,
+          "VisibleCursorX": 7,
+          "VisibleCursorY": 1
+        },
+        "walking": false
+      },
+      "hd_quick_loaded": {
+        "ai_busy": false,
+        "banner": "",
+        "banner_t": 0,
+        "camera": [
+          0,
+          312
+        ],
+        "cursor": [
+          7,
+          14
+        ],
+        "dialogue_native": false,
+        "dialogue_phase": 0,
+        "dialogue_progress": 0,
+        "dialogue_speaker": 0,
+        "dialogues": 1,
+        "error": "",
+        "frame": 1440,
+        "gold": 0,
+        "hd_overlay_mirrored": true,
+        "hd_overlay_rect": [
+          16,
+          213,
+          168,
+          168
+        ],
+        "hd_text_runs": 2,
+        "hd_theme": true,
+        "help_visible": false,
+        "keys": null,
+        "locale": "zh-Hant",
+        "modern_theme": true,
+        "move_preview": false,
+        "moved": false,
+        "native_round": 1,
+        "next_player_index": 0,
+        "node": "battle_ch01",
+        "player_focus": null,
+        "ring": false,
+        "ring_blink": 0,
+        "ring_phase": "",
+        "ring_sel": 0,
+        "shop_mode": "",
+        "title_phase": "",
+        "title_selection": 1,
+        "turn": 1,
+        "units": [
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 42,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 7,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 7,
+            "y": 20
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 28,
+            "mp": 8,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 10,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 10,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 48,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 50,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 3,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 3
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 6,
+              "Y": 0,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 6,
+            "y": 0
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 3,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 3,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 23
+          }
+        ],
+        "view": {
+          "CameraX": 0,
+          "CameraY": 13,
+          "CursorX": 7,
+          "CursorY": 14,
+          "VisibleCursorX": 7,
+          "VisibleCursorY": 1
+        },
+        "walking": false
+      },
+      "hd_cold_loaded": {
+        "ai_busy": false,
+        "banner": "",
+        "banner_t": 0,
+        "camera": [
+          0,
+          312
+        ],
+        "cursor": [
+          7,
+          14
+        ],
+        "dialogue_native": false,
+        "dialogue_phase": 0,
+        "dialogue_progress": 0,
+        "dialogue_speaker": 0,
+        "dialogues": 1,
+        "error": "",
+        "frame": 720,
+        "gold": 0,
+        "hd_overlay_mirrored": true,
+        "hd_overlay_rect": [
+          16,
+          213,
+          168,
+          168
+        ],
+        "hd_text_runs": 2,
+        "hd_theme": true,
+        "help_visible": false,
+        "keys": null,
+        "locale": "zh-Hant",
+        "modern_theme": true,
+        "move_preview": false,
+        "moved": false,
+        "native_round": 1,
+        "next_player_index": 0,
+        "node": "battle_ch01",
+        "player_focus": null,
+        "ring": false,
+        "ring_blink": 0,
+        "ring_phase": "",
+        "ring_sel": 0,
+        "shop_mode": "",
+        "title_phase": "",
+        "title_selection": 1,
+        "turn": 1,
+        "units": [
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 42,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 7,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 7,
+            "y": 20
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 28,
+            "mp": 8,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 10,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 10,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 48,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 50,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 3,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 3
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 6,
+              "Y": 0,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 6,
+            "y": 0
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 3,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 3,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 23
+          }
+        ],
+        "view": {
+          "CameraX": 0,
+          "CameraY": 13,
+          "CursorX": 7,
+          "CursorY": 14,
+          "VisibleCursorX": 7,
+          "VisibleCursorY": 1
+        },
+        "walking": false
+      },
+      "screenshots": {
+        "faithful-slots.png": {
+          "sha256": "775a9c7c05450bd37cd1f6762eb65f38ef59de440b270c13349de79bfc1dec1e"
+        },
+        "faithful-load.png": {
+          "sha256": "efc2b80816855ad56fe487440d2aa8e553e18e70d4c219e2a126b81ffed2b7d6"
+        },
+        "hd-enter.png": {
+          "sha256": "a6ae6899347e7dea3e0d82842f09b86dc102395fe45b2b177041a62c274cba75"
+        },
+        "hd-help.png": {
+          "sha256": "49c2a173da4d2ef542fae8f45948185bec18b86e9cede68a0b1f920e302ee31c"
+        },
+        "hd-help-closed.png": {
+          "sha256": "a6ae6899347e7dea3e0d82842f09b86dc102395fe45b2b177041a62c274cba75"
+        },
+        "hd-resize-1600x1000.png": {
+          "sha256": "47c678db2c9b843522042d16334f364e65ead3419527f2793358ca4c24cb52dc"
+        },
+        "hd-resize-1920x1080.png": {
+          "sha256": "df27ee2f83df7c503330308b6ebc2f1124bc0fb1edbc2d448db7a472c66c70b7"
+        },
+        "hd-size-restored.png": {
+          "sha256": "033caba24a3a1d0dc0c60f39bc91e8581218f6653208118c882b969f7f6db01f"
+        },
+        "faithful-return.png": {
+          "sha256": "ce5eeab7d7ce3220ca4278c3434ce76f630e5e2c1348785d64041b11cca2f1f2"
+        },
+        "hd-return.png": {
+          "sha256": "a6ae6899347e7dea3e0d82842f09b86dc102395fe45b2b177041a62c274cba75"
+        },
+        "hd-quickload.png": {
+          "sha256": "a6ae6899347e7dea3e0d82842f09b86dc102395fe45b2b177041a62c274cba75"
+        },
+        "hd-cold-slots.png": {
+          "sha256": "24b61e7be474651e23bdaa4346980b2665e219e912647176e19c7b2af9450902"
+        },
+        "hd-cold-load.png": {
+          "sha256": "6db617808d9162ece577073a447cc33bbf41b0ebd5ffe9ab45624c41aa28edbf"
+        },
+        "fresh-f5-cold-slots.png": {
+          "sha256": "775a9c7c05450bd37cd1f6762eb65f38ef59de440b270c13349de79bfc1dec1e"
+        },
+        "fresh-f5-cold.png": {
+          "sha256": "f20f086c9427a4d4bf3934e8b35f193ad527f48f0f69eb92083799bc626ac41b"
+        }
+      },
+      "wall_seconds": 305.28082069195807,
+      "recordings_created": false,
+      "limits": "正常玩家只驗首章非原生下框與JSON節點讀取；上框幾何為獨立E1，非全戰役／跨平台／原版對拍。"
+    },
+    "gpu_review": {
+      "status": "PASS-SCOPED",
+      "reviewed": "hd-enter.png字型／頭像、其他GPU區域依自動MAE收據；非全戰役",
+      "save_bytes_unchanged": true
+    }
+  },
+  "readme_locales": {
+    "file": "docs/data/fd2-readme-locales-20261018.json",
+    "sha256": "c1fe929243ecee80b46b4a1919afc286f3abd7f94439aa9ff9ec708767a78e29"
+  },
+  "glyph_detail_diagnostic": {
+    "hd_unique_rgb": 281,
+    "faithful_unique_rgb": 3,
+    "hd_crop": [
+      666,
+      714,
+      762,
+      816
+    ],
+    "faithful_crop": [
+      444,
+      476,
+      508,
+      544
+    ],
+    "method": "同句單字裁切色彩數，確認實際抗鋸齒細節；非原版像素對拍或字體品質評分"
+  },
+  "regression": {
+    "campaign_fdother_localization": "PASS",
+    "source_log": {
+      "file": "work/promo-cadence-20261018/hd-fonts/regression-with-pack.log",
+      "sha256": "9f7a8165cdb11461be842905f0a7bc681c9ae9fa623fe726bd3d361a44772728"
+    },
+    "cmd_fd2": "PASS",
+    "regional_font_test": "PASS",
+    "localization_preservation": {
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "ja",
+        "en"
+      ],
+      "entries_each": 5107,
+      "method": "與base提交逐項比較除string_id/source外所有欄位的多重集合，全部相同"
+    },
+    "cmd_log": {
+      "file": "work/promo-cadence-20261018/hd-fonts/regression-cmd-r6.log",
+      "sha256": "0482a5a01f47506d8a6b2a2ceb8378eb2f6eb53c08cf72adaa7553fc85907f8e"
+    },
+    "document_check": {
+      "checked_links": 2605,
+      "broken": [],
+      "readme_culture": "PASS",
+      "locale_screenshot_hashes": "PASS"
+    },
+    "lessons": {
+      "rules": 231,
+      "guards": 114,
+      "result": "PASS"
+    }
+  },
+  "diagnostics": {
+    "gui_r4": "週期收據等待條件未達，未證實為產品缺陷；後續送鍵重新確保焦點，並分開F7與說明頁操作。",
+    "gui_r5": "單筆購買已完成1000→990，腳本錯用兩筆的980期待值；更正後同建置完整重跑r6通過。",
+    "regression_initial": "未指定分離素材包，依既有工具契約修正環境。",
+    "regression_4g": "cmd程序收到signal:killed，未直接證實OOM；改用tools/remake_go_test.sh既定8GiB/4CPU契約重跑，產品程式未因這項失敗修改。"
+  },
+  "toolchain": {
+    "go": "1.22.12",
+    "ebiten": "2.6.6",
+    "go_image": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+    "gui_image": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d",
+    "asset_image": "sha256:e59237a31d4b5f7a62c59ac37b780bd93f17c99fda97be8f5ca0c53978b878bc"
+  },
+  "rights": "本輪沒有新增或公開完整原版／現代美術素材包；README四張忠實模式截圖依使用者明示要求公開。純字型原型使用既有Noto字型，未新增字型二進位依賴。",
+  "limits": "現代呈現的限定玩家路徑；非整款字型／全HD完成，非原版像素對拍、60fps保證或跨平台驗收。普通START序章首句；明示F9接續已驗證hotel_ch02存檔進城鎮與商店。首章JSON正常標題LOAD與F5／F9另驗。",
+  "recordings_created": false,
+  "matching_decompilation": "保持暫停",
+  "private_artwork_changed": false,
+  "cleanup": {
+    "recordings_created": false,
+    "removed_derived_files": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-faithful",
+        "sha256": "b9093c780cdb307b47457addf7141349390ab27403006c3319b03151e7aba541",
+        "bytes": 18887224
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd",
+        "sha256": "70cb8c98ac89c3892297c00e359d032dc0b217d91bc92d08999c2d75b0b8fdd6",
+        "bytes": 18922144
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-final",
+        "sha256": "36f372f7421854545eaf064f79fd323f0c8139320c1ec1e4b8fcccf4ebf283d9",
+        "bytes": 18922152
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-r3",
+        "sha256": "3fff3a1879cb37636367064ea980fabc6085d7d3cce77bdfbc3027bdcc0c5855",
+        "bytes": 18922552
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-r4",
+        "sha256": "d827a4613a09ee0e72701adf76416376f42b1567e94398d1cf52cc04c39804e1",
+        "bytes": 18934544
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fonts/NotoSansCJK-Regular.ttc",
+        "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+        "bytes": 19484784
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fonts/NotoSerifCJK-Regular.ttc",
+        "sha256": "a04178ec485dffdff7cc0c0c20e1fce9202d7e2160d805e8e44a4c8841c58481",
+        "bytes": 26297400
+      }
+    ],
+    "bytes_freed": 140370800,
+    "png_and_receipts_retained": true
+  },
+  "rebuild": "在fd2-go-test-local:latest容器內，於remake執行go build -o <binary> ./cmd/fd2。以tools/verify_fd2_hd_fonts_gui.py指定--binary、--assets、--original-pack、--modern-pack、--town-save及新的--out重跑；使用fd2-promo:20261017-r1，輸入唯讀、輸出獨立可寫。"
+}

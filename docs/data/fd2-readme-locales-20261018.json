@@ -1,0 +1,54 @@
+{
+  "schema": "fd2-readme-locales-v1",
+  "status": "verified-existing-runtime-captures",
+  "scope": "重製執行期忠實像素外觀四語商店，非DOS原版多語系；同商店、980金幣與藥草商品。",
+  "entry": "F9接續已驗證戰後存檔，F4切換語系；不宣稱本輪連續START到城鎮或原版對拍。",
+  "producer": [
+    "tools/capture_fd2_release_promo.sh",
+    "tools/operate_fd2_promo.py"
+  ],
+  "source_receipt": "docs/data/fd2-promo-cadence-20261018.json",
+  "captures": [
+    {
+      "locale": "zh-Hant",
+      "source": "work/promo-cadence-20261018/remake-split/shop-back-zh-Hant.png",
+      "published": "docs/figures/faithful-shop-zh-Hant.png",
+      "sha256": "78ae08563fdaba17b01640d0d994c99c0b9fe8c5e26f565003ac16f5f6ed4de7",
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "source": "work/promo-cadence-20261018/remake-split/shop-zh-Hans.png",
+      "published": "docs/figures/faithful-shop-zh-Hans.png",
+      "sha256": "2f91fd3f9159a64767b21826e032d87dca8839130a560ad883cc32e3b2a63375",
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "locale": "en",
+      "source": "work/promo-cadence-20261018/remake-split/shop-en.png",
+      "published": "docs/figures/faithful-shop-en.png",
+      "sha256": "b5f84b6103f3c476032cfe3e5c95796eb1e23c94ceba5d6a970cf9264b4a15b7",
+      "size": [
+        640,
+        400
+      ]
+    },
+    {
+      "locale": "ja",
+      "source": "work/promo-cadence-20261018/remake-split/shop-ja.png",
+      "published": "docs/figures/faithful-shop-ja.png",
+      "sha256": "36e0521f7d5d3cf11b6ef3a7f0d0456df84d672cf096f1eef3191b10087320ef",
+      "size": [
+        640,
+        400
+      ]
+    }
+  ],
+  "rights": "使用者明確要求在README公開這四張執行期截圖；完整原版素材不公開。"
+}

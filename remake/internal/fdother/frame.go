@@ -24,6 +24,21 @@ type Frame struct {
 	// 0（保留 destination）或 255（寫入 Indexed）；原始 archive parser
 	// 仍只填 Pixels，兩種表示不可同時存在。
 	Indexed, Mask []byte
+	onBlit        func(x, y int)
+}
+
+// TextPlaceholder validates the original sprite before replacing its ink with
+// a scoped presentation callback. It does not change serialized asset data.
+func (f Frame) TextPlaceholder(paint func(x, y int)) (Frame, error) {
+	if paint == nil || f.X < 0 || f.Y < 0 || f.Width <= 0 || f.Height <= 0 || f.X+f.Width > 320 || f.Y+f.Height > 200 {
+		return Frame{}, errors.New("fdother: invalid text placeholder")
+	}
+	stride := f.X + f.Width
+	if err := f.BlitAt(make([]byte, stride*(f.Y+f.Height)), stride, 0, -1); err != nil {
+		return Frame{}, err
+	}
+	return Frame{X: f.X, Y: f.Y, Width: f.Width, Height: f.Height,
+		Indexed: make([]byte, f.Width*f.Height), Mask: make([]byte, f.Width*f.Height), onBlit: paint}, nil
 }
 
 // ArchiveResourceCount 回傳 LLLLLL archive directory 的 resource 數量。
@@ -219,6 +234,9 @@ func (f Frame) BlitAt(dst []byte, stride, base, transparent int) error {
 					return errors.New("fdother: separated mask is not binary")
 				}
 			}
+		}
+		if f.onBlit != nil {
+			f.onBlit(base%stride+f.X, base/stride+f.Y)
 		}
 		return nil
 	}

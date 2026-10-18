@@ -1486,6 +1486,48 @@ func TestComposeNativeStoryDialoguePageUsesOriginalIndexedAssets(t *testing.T) {
 	if string(progressive[0]) != string(page0) {
 		t.Fatal("FFFD 後清空了前頁內容")
 	}
+	// The HD text planner must preserve every original glyph and scroll tick,
+	// including the retained previous page. Compare visible ink to the existing
+	// indexed compositor rather than asserting the planner against itself.
+	blankFont, _ := fdtxt.ParseFont(make([]byte, len(fontRaw)))
+	blankFrames, err := ComposeNativeStoryDialogueProgressiveFrames(background, cells, portraits[0], blankFont, index, layout, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for progress, original := range progressive {
+		visible, err := NativeStoryDialogueVisibleGlyphs(layout, 1, progress)
+		if err != nil {
+			t.Fatal(err)
+		}
+		ink := append([]byte(nil), blankFrames[progress]...)
+		x, y, width, _, _, _ := NativeStoryDialogueTextGeometry(layout.Control)
+		for _, glyph := range visible {
+			sample := make([]byte, 18*17)
+			if err := font.BlitNativeGlyph(sample, 18, 1, index[glyph.Token], fdtxt.NativeGlyphStyle{Foreground: 0xcd, Shadow: 0x4c}); err != nil {
+				t.Fatal(err)
+			}
+			for py := 0; py < 17; py++ {
+				for px := 0; px < 18; px++ {
+					dx, dy := glyph.X-1+px, glyph.Y+py
+					if dx < x-1 || dx >= x+width || dy < y || dy >= y+72 {
+						continue
+					}
+					if value := sample[py*18+px]; value != 0 {
+						ink[dy*320+dx] = value
+					}
+				}
+			}
+		}
+		for py := y; py < y+72; py++ {
+			for px := x - 1; px < x+width; px++ {
+				at := py*320 + px
+				value := original[at]
+				if value != ink[at] {
+					t.Fatalf("HD glyph clock differs at progress %d pixel (%d,%d): %x != %x; visible=%+v", progress, px, py, value, ink[at], visible)
+				}
+			}
+		}
+	}
 	for y := 0; y < 2*nativeStoryLineStep; y++ {
 		for x := -1; x < 13*nativeStoryGlyphStep; x++ {
 			if page1[nativeStoryUpperText+y*320+x] != page0[nativeStoryUpperText+(y+nativeStoryLineStep)*320+x] {

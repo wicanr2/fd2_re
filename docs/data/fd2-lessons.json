@@ -2659,6 +2659,21 @@
         ],
         "pattern": "nativeLoadSlotMetadata"
       }
+    },
+    {
+      "id": "native-animation-snapshot-copy",
+      "area": "繪製",
+      "date": "2026-10-18",
+      "rule": "發布逐字或動畫快照時複製仍會改寫的緩衝區；remake/internal/campaign/native_story_dialogue.go 的捲動快照須獨立保存，以 native_story_dialogue_test.go 的跨頁字形差異回歸驗證。",
+      "why": "捲動最後一個 next 同時被快照與下一行寫字持有，造成後文提前出現在捲動畫格。逐步比較字形位置才揭露此缺陷，靜態終點測試無法發現。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/253",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/internal/campaign/native_story_dialogue.go"
+        ],
+        "pattern": "frames\\ =\\ append\\(frames,\\ append\\(\\[\\]byte\\(nil\\),\\ next\\.\\.\\.\\)\\)"
+      }
     }
   ]
 }

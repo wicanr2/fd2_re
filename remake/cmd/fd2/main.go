@@ -566,6 +566,7 @@ type Game struct {
 	modernThemeCache                    *modernStoryPortraitSet                     // 同一程序內已通過預檢的完整素材
 	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
+	modernHDText                        *modernHDTextFrame
 	nativeDialogueArrowTicks            int
 
 	nativeChapterRestore *campaign.NativeChapterSlotRestorePlan // 四槽 LOAD 的已驗證戰間狀態；未知 raw bytes 僅保存、不猜接
@@ -9137,6 +9138,7 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.modernHDOverlay = nil
+	defer g.beginModernHDText(screen)()
 	// The exact full-DAC saturation covers the complete mode-13h surface,
 	// including HUD and dialogue. Defer preserves that hardware ordering across
 	// every early-return presentation branch.
@@ -9155,6 +9157,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			g.nativeTurnStaging.drawn = true
 		}
 		if g.helpVisible {
+			g.clearModernHDText()
 			g.drawPlayerHelp(screen)
 		}
 	}()

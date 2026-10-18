@@ -68,6 +68,7 @@ func (g *Game) composeLocalizedNativeRoster(
 	nativeIdentities []int,
 	selected int,
 ) ([]byte, error) {
+	g.clearModernHDShopText()
 	if len(rows) != len(nativeIdentities) || g.localeEntities == nil || g.font == nil {
 		return nil, errors.New("localized roster state is invalid")
 	}
@@ -106,6 +107,7 @@ func (g *Game) composeLocalizedNativeShopItemIDs(
 	start, selected int,
 	priceMode battle.NativeFacilityPriceMode,
 ) ([]byte, error) {
+	g.clearModernHDShopText()
 	if g.localeEntities == nil || g.font == nil {
 		return nil, errors.New("localized shop item catalog or font is unavailable")
 	}
@@ -220,6 +222,7 @@ func (g *Game) composeLocalizedNativeShopPlainMessage(
 }
 
 func (g *Game) drawLocalizedShopMessage(frame []byte, message string, y, maxRows int) ([]byte, error) {
+	g.clearModernHDShopText()
 	if g == nil || g.font == nil || len(frame) != 320*200 || message == "" || maxRows <= 0 {
 		return nil, errors.New("localized shop message state is invalid")
 	}
@@ -258,6 +261,7 @@ func (g *Game) composeLocalizedNativeShopPurchaseList(
 	itemIDs []int,
 	start int,
 ) ([]byte, error) {
+	g.clearModernHDShopText()
 	if g == nil || g.localeEntities == nil || g.font == nil {
 		return nil, errors.New("localized shop item catalog or font is unavailable")
 	}

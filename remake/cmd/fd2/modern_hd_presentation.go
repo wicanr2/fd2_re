@@ -14,6 +14,7 @@ const modernHDWidth, modernHDHeight = 1920, 1200
 type modernHDPresentation struct {
 	*Game
 	screenShader                  *ebiten.Shader
+	textSurface                   *ebiten.Image
 	faithfulWidth, faithfulHeight int
 }
 
@@ -92,4 +93,8 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 		}
 	}
 	drawModernHDOverlay(screen, geometry, overlay, brightness)
+	if !g.nativeFullDACWhite && !g.nativeFullDACBlack &&
+		!(g.nativeDefeat == nil && g.titlePhase == "" && g.nativePaletteRamp == nil && nativeDACIsBlack(g.nativeMapDAC)) {
+		p.drawModernHDText(screen, geometry, brightness)
+	}
 }

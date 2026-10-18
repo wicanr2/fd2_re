@@ -101,7 +101,7 @@ func (g *Game) composeNativeShopConsumableRecipient() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = g.composeLocalizedNativeRoster(
 			stable, assets.Panel, rows, identities, g.shopRecipientSel-start,
 		)
@@ -169,7 +169,7 @@ func (g *Game) composeNativeShopEquipmentRecipient() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = campaign.ComposeNativeShopEquipmentRecipientFrameWithoutNames(
 			stable, assets, g.nativeShopUI.itemAssets, rows, g.shopRecipientSel-start,
 		)
@@ -262,7 +262,7 @@ func (g *Game) composeNativeShopRecipientFull() ([]byte, bool) {
 	if !stableOK || !stateOK {
 		return nil, false
 	}
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		if !unit.HasNativeIdentity {
 			return nil, false
 		}
@@ -329,7 +329,7 @@ func (g *Game) composeNativeShopNoEligibleRecipient() ([]byte, bool) {
 	if !goodOK || !stableOK || !stateOK {
 		return nil, false
 	}
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		key := g.localizedShopKey(
 			"shop.purchase.no_recipient.weapon", "shop.purchase.no_recipient.item",
 		)

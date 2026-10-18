@@ -34,6 +34,9 @@ type Font struct {
 	// 多塞一行。0 視同 1.0。索引畫面用的是原版字模，不經過這裡，所以調整字級不會
 	// 動到與原版對拍的那些畫面。
 	userScale float64
+	hd        *modernHDTextFrame
+	indexedHD *modernHDIndexedText
+	hdFonts   map[string]*Font
 }
 
 // SetUserScale 設定字級倍率。超出合理範圍的值會被夾住——字太小讀不到、太大反而
@@ -85,9 +88,20 @@ func loadFontSized(size float64) *Font {
 		return nil
 	}
 	var sf *sfnt.Font
+	regional := map[string]*Font{}
 	if coll, err := sfnt.ParseCollection(data); err == nil {
 		if f0, e := coll.Font(0); e == nil {
 			sf = f0
+		}
+		for locale, index := range map[string]int{"zh-Hant": 3, "zh-Hans": 2, "ja": 0, "en": 0} {
+			if face, e := coll.Font(index); e == nil {
+				expected := map[string]string{"zh-Hant": "Noto Sans CJK TC", "zh-Hans": "Noto Sans CJK SC", "ja": "Noto Sans CJK JP", "en": "Noto Sans CJK JP"}[locale]
+				name, nameErr := face.Name(nil, sfnt.NameIDFamily)
+				if nameErr != nil || name != expected {
+					continue
+				}
+				regional[locale] = &Font{sf: face, base: size, faces: map[int]font.Face{}, ascs: map[int]float64{}}
+			}
 		}
 	}
 	if sf == nil {
@@ -98,7 +112,7 @@ func loadFontSized(size float64) *Font {
 	if sf == nil {
 		return nil
 	}
-	return &Font{sf: sf, base: size, faces: map[int]font.Face{}, ascs: map[int]float64{}}
+	return &Font{sf: sf, base: size, faces: map[int]font.Face{}, ascs: map[int]float64{}, hdFonts: regional}
 }
 
 // faceFor 取(或建)目標像素尺寸的 face。
@@ -121,6 +135,11 @@ func (f *Font) faceFor(px int) (font.Face, float64) {
 
 // Draw 畫文字(支援 \n)。scale 相對 base 尺寸;內部用整數尺寸 face 直接 rasterize(銳利)。
 func (f *Font) Draw(dst *ebiten.Image, s string, x, y, scale float64, clr color.RGBA) float64 {
+	if f.hd != nil && f.hd.scene == dst {
+		f.hd.runs = append(f.hd.runs, modernHDTextRun{font: f, text: s, x: x, y: y,
+			pixels: math.Round(f.base * f.effectiveScale(scale)), color: clr})
+		return y
+	}
 	px := int(math.Round(f.base * f.effectiveScale(scale)))
 	face, asc := f.faceFor(px)
 	if face == nil {

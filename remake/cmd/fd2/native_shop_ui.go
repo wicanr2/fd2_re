@@ -1127,7 +1127,7 @@ func (g *Game) composeNativeShopStable() ([]byte, bool) {
 		textIndex = 501
 	}
 	shared := g.nativeClassUI
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err := g.composeLocalizedNativeShopStable(assets, portrait, portraitID)
 		return frame, err == nil
 	}
@@ -1186,7 +1186,7 @@ func (g *Game) composeNativeShopPurchaseList() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID == "" || g.localeID == "zh-Hant" {
+	if (g.localeID == "" || g.localeID == "zh-Hant") && !g.modernHDShopText() {
 		frame, err = campaign.ComposeNativeShopItemListFrame(
 			stable, assets, g.nativeShopUI.itemAssets,
 			itemIDs, start, g.shopSel, g.nativeShopUI.effectRows,
@@ -1219,7 +1219,7 @@ func (g *Game) composeNativeShopPurchaseQuestion() ([]byte, bool) {
 		return nil, false
 	}
 	shared := g.nativeClassUI
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err := g.composeLocalizedNativeShopPurchaseQuestion(
 			stable, portrait, portraitID, good,
 		)
@@ -1273,7 +1273,7 @@ func (g *Game) composeNativeShopInsufficientGold() ([]byte, bool) {
 	if !ok {
 		return nil, false
 	}
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		key := g.localizedShopKey(
 			"shop.purchase.insufficient.weapon", "shop.purchase.insufficient.item",
 		)
@@ -1534,6 +1534,11 @@ func (g *Game) drawNativeShop(screen *ebiten.Image) bool {
 	if g.drawNativeShopUIJob(screen) {
 		return true
 	}
+	if g.modernHDText != nil && g.font != nil {
+		g.font.indexedHD = &modernHDIndexedText{palette: g.nativeClassUI.palette}
+		defer func() { g.font.indexedHD = nil }()
+		defer g.beginModernHDShopDigits()()
+	}
 	var frame []byte
 	var ok bool
 	switch g.nativeShopMode {
@@ -1576,6 +1581,9 @@ func (g *Game) drawNativeShop(screen *ebiten.Image) bool {
 		return false
 	}
 	g.presentNativeClassFrame(screen, frame)
+	if g.modernHDShopText() {
+		g.modernHDText.runs = append(g.modernHDText.runs, g.font.indexedHD.runs...)
+	}
 	if g.nativeShopMode == "equip_panel" {
 		return g.drawNativeItemPanel(screen)
 	}

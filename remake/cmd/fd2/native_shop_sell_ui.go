@@ -84,7 +84,7 @@ func (g *Game) composeNativeShopSellRoster() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = g.composeLocalizedNativeRoster(
 			stable, assets.Panel, rows, identities, g.shopSellUnitSel-start,
 		)
@@ -195,7 +195,7 @@ func (g *Game) composeNativeShopSellItems() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
-	if g.localeID != "" && g.localeID != "zh-Hant" {
+	if (g.localeID != "" && g.localeID != "zh-Hant") || g.modernHDShopText() {
 		frame, err = g.composeLocalizedNativeShopItemIDs(
 			stable, assets, g.nativeShopSellItemIDs, start, g.shopSellSlotSel,
 			battle.NativeFacilityThreeQuarterPrice,

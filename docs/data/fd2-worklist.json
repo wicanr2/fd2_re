@@ -335,6 +335,20 @@
         "note": "以正常F1實際GPU畫面確認標題及全部快捷鍵不重疊；不得只靠單測或放大截圖。"
       },
       "issue": 251
+    },
+    {
+      "id": "native-dialogue-scroll-snapshot-alias",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "P1 原生對話捲動快照被後續寫字污染",
+      "body": "HD 字型逐字差異測試重現：ComposeNativeStoryDialogueProgressiveFrames 把 next 直接發布為捲動畫格，後續字形繼續改寫同一切片，最後一張捲動畫格會提前顯示整行後文。已定位為重製端快照別名問題，非新原版語意。",
+      "acceptance": "獨立保存捲動快照，保持十幀捲動與逐字時鐘；跨 FFFD 前文保留、各捲動步驟字形位置與既有索引 renderer 差異測試通過，靜態終點不變。",
+      "evidence": "remake/internal/campaign/native_story_dialogue_test.go",
+      "verify": {
+        "kind": "manual",
+        "note": "核對跨頁逐字差異測試與原生對話正常 GUI 收據。"
+      },
+      "issue": 253
     }
   ]
 }
