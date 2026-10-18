@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -150,6 +150,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+2026-10-18實際首章戰場接續：#256角色狀態全幀覆蓋已修驗。正常標題LOAD普通START／F5首章JSON，Z聚焦索爾與悠妮、Home狀態／命令、F2、縮放／說明、返回、F5／F9及新程序標題LOAD通過。14張實際PNG已審查；六組面板外54000像素區域零差異，修正前50832像素被原版底圖覆蓋。完整保存與來源SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。來源提交：7dcce7296aeea708b02cd5f27cc9692ade141b5d。
+
+現代戰場只繪原面板目的區域，HD合成失敗使用像素面板；忠實／教會路徑與12／14張快取保持。相關cmd35.408秒、文字清冊與localization通過，四語各5107筆文件未改。GUI首輪誤等索爾命令頁與冷讀過早抓空框已分類工具問題，同份binary完整重跑。主收據battle_status_followup與61為入口，不新增原版對拍、戰鬥或整章驗收。
+
+接續144角色與地形真正高解析素材、早中晚戰場及其他交界。母稿已盤點94組，48 RGB、45 RGBA、1缺master_file登錄，89組12幀、5組3相；母稿存在不等於HDruntime完成。其他設施轉場／成功演出／圖示文字與跨平台HD效能仍待完成，本項保持開啟。未錄影，暫時binary已刪除，README文化入口與四語忠實圖保留。
+
+以下較早記錄保留為歷史；目前以本段、58與61為準。
+
 2026-10-18角色與物品面板轉場接續：教會狀態開收／命令換頁與商店裝備開收，從獨立快照沿原拷貝區域移動HD字形及裁切。原12／14張快取、Draw承認、交易與保存保持。來源提交：ecb006ad2fda7eac97c10d8e3d7c6f364812c4e1。
 
 兩條正常GUI首次通過，50張實際圖片已審查，含11張有效移動文字區域。GPU區域等同穩定HD參照的移動後裁切，且不同於原位置；CPU只定位候選，不宣稱精確同幀。普通START後F9接續hotel_ch02，選人／命令、裝備／拒絕藥草／重新裝備、F2、縮放／說明、F5／F9及新程序標題LOAD通過。兩主題與來源完整保存SHA均190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456，不新增原版保存例外。
@@ -242,15 +250,7 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
-怎樣算做完：1920×1200故事頭像、F2、JSON冷讀、HD黑體主路徑、穩定面板、整備問句、商店金幣及角色／物品轉場已抽驗。接續其他設施轉場、成功演出數字、圖示文字及未列畫面，再完成介面／戰場、現代素材覆蓋及跨平台效能；完整字型與整體HD仍未完成。
-
-### HD戰場：角色狀態面板覆蓋範圍外還原成原版底圖
-
-`modern-battle-status-overwrites-field` · 缺陷 · [#256](https://github.com/wicanr2/fd2_re/issues/256) · 仍未完成 · 要人判
-
-正常標題LOAD普通首章存檔後，Z聚焦、Home檢視索爾，面板外的現代戰場被完整原版indexed來源蓋回。來源提交ecb006ad，GUI前測battle-status-gui-before-r1，實際focused／status／F2圖片保留。現有drawModernHDStatusRegions呼叫presentNativeClassFrameWithPalette全幀覆蓋；違反61現代戰場契約。前測另誤假設索爾有命令頁，該逾時屬工具分支錯誤，與畫面缺陷分開。
-
-怎樣算做完：現代戰場狀態開收與命令切換只覆蓋原面板目的區域，面板外地圖保持現代呈現；忠實快取、排程、角色與存檔保持。正常標題LOAD兩類角色、F2與返回及GPU區域比較通過。
+怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -295,6 +295,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+2026-10-18實際首章戰場接續：#256角色狀態全幀覆蓋已修驗。正常標題LOAD普通START／F5首章JSON，Z聚焦索爾與悠妮、Home狀態／命令、F2、縮放／說明、返回、F5／F9及新程序標題LOAD通過。14張實際PNG已審查；六組面板外54000像素區域零差異，修正前50832像素被原版底圖覆蓋。完整保存與來源SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。來源提交：7dcce7296aeea708b02cd5f27cc9692ade141b5d。
+
+現代戰場只繪原面板目的區域，HD合成失敗使用像素面板；忠實／教會路徑與12／14張快取保持。相關cmd35.408秒、文字清冊與localization通過，四語各5107筆文件未改。GUI首輪誤等索爾命令頁與冷讀過早抓空框已分類工具問題，同份binary完整重跑。主收據battle_status_followup與61為入口，不新增原版對拍、戰鬥或整章驗收。
+
+接續144角色與地形真正高解析素材、早中晚戰場及其他交界。母稿已盤點94組，48 RGB、45 RGBA、1缺master_file登錄，89組12幀、5組3相；母稿存在不等於HDruntime完成。其他設施轉場／成功演出／圖示文字與跨平台HD效能仍待完成，本項保持開啟。未錄影，暫時binary已刪除，README文化入口與四語忠實圖保留。
+
+以下較早記錄保留為歷史；目前以本段、58與61為準。
 
 2026-10-18角色與物品面板轉場接續：教會狀態開收／命令換頁與商店裝備開收，從獨立快照沿原拷貝區域移動HD字形及裁切。原12／14張快取、Draw承認、交易與保存保持。來源提交：ecb006ad2fda7eac97c10d8e3d7c6f364812c4e1。
 
