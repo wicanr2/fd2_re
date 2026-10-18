@@ -1,5 +1,28 @@
 # 工作歷程
 
+## 2026-10-19 HD地形圖源審查與草地原型
+
+沿已核准手繪風格以內建image_gen產生草地母稿及一次修訂，原圖、提示與SHA保留本機。
+受版控工具逐層核對正式FDSHAP分離圖庫與舊正規化圖集，發現alpha及同索引RGB差異；
+唯一現況統計見[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)，逐圖與輸入綁定見
+[主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。
+根因尚未判定，未改原版資料、正式renderer、保存、素材清冊或Release。
+
+草地直接替換的比較有接縫，來源顏色遮罩加細節仍有明顯區塊感，均未採用；
+它們只比較固定章資料的排版，不當作正常玩家、GPU或原版對拍。
+舊READY圖集契約已限縮為正規化24消費端，不再推定與原生圖層等價；
+後續原生HD圖源沿正式bank、既有動畫／前景selector及三個原生圖層閉合。
+新增[#261](https://github.com/wicanr2/fd2_re/issues/261)追蹤來源差異，不重開全檔matching。
+
+工單Python主機呼叫被自動審查以Docker-only拒絕後，改在容器使用官方格式器驗證內文，
+再由允許的主機gh登錄。後續快照也分成主機gh讀取與容器內官方build_snapshot／render／verify。
+沒有錄影或新正式素材包。
+
+錯誤來源指紋、過小材質與既有輸出保護三項拒收檢查通過。官方worklist為21項、14項人工判定、
+可能完成零項；245條教訓、127個守衛保持。修改文件2617個本地連結通過；
+全儲存庫掃描另有9個既存訊號，涉及未改動歷史交付連結及行內運算元，原文與HEAD一致。
+主收據保留各項訊號，未宣稱全庫零斷鏈。正式Go與素材不變，因此未重跑遊戲測試或GPU驗收。
+
 目前分層狀態以 [58](docs/knowledge-base/58-fd2-exe-re-coverage.md)為準，完整匹配範圍依 [118](docs/goal/118-goal-fd2-matching-decompilation-20261008.md)。既有時間序列保留於[工作清單歷史](docs/knowledge-base/91-worklist-history.md)與該頁引用的研究紀錄。
 
 ## 2026-10-09 原始 ESI 輸入的完整 C 匹配

@@ -12,10 +12,17 @@
 | 原版oracle | 本輪未啟動原版oracle或matching | 不新增整章PLAYER-E2或原版傷害聲明 |
 | 計時對話 | FFEC開收框保留HD世界；37張主要GPU、6張對話及EXP99普通輸入／F2／保存冷讀通過 | 限RUNTIME-E1與明示槽；其他caller仍待驗 |
 | 完整HD | 尚未完成 | HD地形、其他美術、完整索引演出與平台效能沿#201／#202／#204 |
+| HD地形圖源 | 已盤點33個原生圖庫／8256幀；24張舊正規化圖集的alpha合計198032像素不同，同索引RGB也有衝突 | #261先建立原生逐幀圖源；差異根因未知，不直接升採樣舊圖集 |
+| 草地原型 | 已產生1254母稿與144材質排版比較；直接替換有接縫，遮罩加細節仍有區塊感，均未採用 | 僅可丟棄原型，未登錄／未接GPU，不增加E1／E2 |
 
 唯一來源、SHA、失敗分類與重跑入口見
 [HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`world_runtime_followup_20261019`；
 計時對話另見同收據的`timed_dialogue_followup_20261019`；正式契約見[61](61-modern-theme-runtime-spec.md)。以下較早未接世界、94組子集與缺31組紀錄均為歷史快照。
+
+地形資料核對與拒收原型見同收據的`terrain_source_followup_20261019`。
+已觀測差異只證明舊正規化圖集不能直接視同目前原生圖層，尚未判定解碼或來源歷史根因。
+正式HD世界使用原生bank；既有首章GPU結果不由此撤銷。後續HD圖源須保留frame、mask及remap_mask，
+再沿既有`NativeTerrainFrameIndex`／`NativeForegroundFrameIndex`處理動畫與前景。
 
 ## 2026-10-19 初次圖庫範圍勘誤（歷史快照）
 

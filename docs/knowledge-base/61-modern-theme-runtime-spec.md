@@ -740,6 +740,27 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 
 ## 全戰役現代戰場圖集契約（READY）
 
+### 原生HD圖源限制（來源審查勘誤）
+
+本節READY只描述既有正規化24圖集的清冊與消費端，不證明它與目前原生FDSHAP分離圖層完全一致，
+也不授權直接升採樣成原生HD圖集。[地形核對工具](../../tools/prototype_fd2_hd_terrain.py)逐幀比對實際alpha，
+並檢查同一原生調色盤索引是否對應多個正規化RGB；已觀測差異與範圍依[58](58-fd2-exe-re-coverage.md)。
+這推翻「圖集尺寸及格數相同即可沿用原生幾何」的推定，尚未判定解碼或來源歷史根因。
+原有資料與工具保留，以便回查。[#261](https://github.com/wicanr2/fd2_re/issues/261)追蹤逐幀來源閉合。
+
+後續原生HD契約仍為DRAFT：從正式`tilesets/fdshap/map_XX/bank.json`及其frame、mask、remap_mask建立圖源，
+沿既有`fdicon.NativeTerrainFrameIndex`與`NativeForegroundFrameIndex`選取；不能忽略動畫、前景或目的地remap。
+須先定義現代色彩對LUT的處理與逐幀驗收，再進READY及正式renderer。
+這不是新增原版RE或matching前置；已有typed selector與既有來源證據先沿用。
+
+草地母稿以內建image_gen產生，完整提示與SHA保存在
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。
+工具產生的比較圖僅以固定首章資料排版，不含人物、遊戲狀態、動畫或GPU擷取。
+直接替換造成材質接縫；按來源顏色遮罩加入細節仍保留明顯區塊感，兩者均未採用。
+母稿與比較圖留本機，沒有登錄catalog、同步私人正式包或公開素材。
+
+下列為原有正規化圖集契約，保留其消費端範圍。
+
 - `map0/map.json` 已固定邏輯圖塊為 `24×24`、每列 16 格；原版分離圖集為
   `384×432`，共 288 格。地圖資料中的 tile ID、通行規則、事件座標與人物座標
   均不因主題改變。

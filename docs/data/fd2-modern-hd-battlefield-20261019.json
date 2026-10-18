@@ -11,7 +11,8 @@
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
     "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
-    "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。"
+    "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
+    "hd_terrain": "SOURCE-AUDITED：舊正規化圖集不能直接視同原生圖源；草地材質原型拒收，未接runtime，來源差異沿#261。"
   },
   "runtime_source": {
     "binary_sha256": "373c525ffd5889784f20a5aede981db8c2a2dcbd38aaa322f8da9880bd93e98c",
@@ -1928,6 +1929,571 @@
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
       "sha256": "bdad99da23d9c4b1ace785659e8c6f94dc4d4040661c8631e5dac96b5bfe6a88"
+    }
+  },
+  "terrain_source_followup_20261019": {
+    "status": "SOURCE-AUDITED / ART-PROTOTYPE-REJECTED",
+    "issue": 261,
+    "base_commit": "dcd5111fecffa6dc4957bf916fe34dc21b533f68",
+    "production_modified": false,
+    "new_gpu_validation": false,
+    "new_original_oracle": false,
+    "full_hd_complete": false,
+    "evidence_grade": {
+      "layer_differences": "confirmed data observation",
+      "difference_cause": "unknown",
+      "art": "disposable prototype; not accepted"
+    },
+    "tool": {
+      "file": "tools/prototype_fd2_hd_terrain.py",
+      "sha256": "ad7a082d9b57eb4a7cd7101cc8bf58cfa7027128527ab6419898a0046e6a8720"
+    },
+    "report": {
+      "file": "work/promo-cadence-20261018/hd-fonts/terrain-grass-prototype-r3.json",
+      "sha256": "6f4c999aa5ed1867d6ea4cd1a85566c999608c5729f2005383540c195ef3c698",
+      "input_file_bindings": 24868,
+      "pillow_version": "11.3.0"
+    },
+    "source_metadata_binding": {
+      "file": "FDSHAP.DAT",
+      "size": 3557794,
+      "md5": "9b0d356074f57cc27aebf3bb89aae247",
+      "sha256": "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c"
+    },
+    "original_dat_rehashed": false,
+    "counts": {
+      "banks": 33,
+      "frames": 8256,
+      "non_equivalent_normalized_atlases": 24,
+      "alpha_difference_pixels": 198032
+    },
+    "maps": [
+      {
+        "map_id": 0,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 163737,
+        "remap_pixels": 2151,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 1,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 107760,
+        "remap_pixels": 2832,
+        "normalized_alpha_difference_pixels": 2832,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 42
+      },
+      {
+        "map_id": 2,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 165888,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 3,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 4,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 143241,
+        "remap_pixels": 22647,
+        "normalized_alpha_difference_pixels": 22647,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 55
+      },
+      {
+        "map_id": 5,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 160452,
+        "remap_pixels": 5436,
+        "normalized_alpha_difference_pixels": 5436,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 56
+      },
+      {
+        "map_id": 6,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 7,
+        "frame_count": 384,
+        "control_records": 400,
+        "opaque_pixels": 217113,
+        "remap_pixels": 4070,
+        "normalized_alpha_difference_pixels": 4071,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 46
+      },
+      {
+        "map_id": 8,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 109523,
+        "remap_pixels": 1068,
+        "normalized_alpha_difference_pixels": 1069,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 16
+      },
+      {
+        "map_id": 9,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 103881,
+        "remap_pixels": 6679,
+        "normalized_alpha_difference_pixels": 6711,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 45
+      },
+      {
+        "map_id": 10,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 11,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 164044,
+        "remap_pixels": 1840,
+        "normalized_alpha_difference_pixels": 1844,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 40
+      },
+      {
+        "map_id": 12,
+        "frame_count": 288,
+        "control_records": 326,
+        "opaque_pixels": 158828,
+        "remap_pixels": 7060,
+        "normalized_alpha_difference_pixels": 7060,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 29
+      },
+      {
+        "map_id": 13,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 161709,
+        "remap_pixels": 4179,
+        "normalized_alpha_difference_pixels": 4179,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 13
+      },
+      {
+        "map_id": 14,
+        "frame_count": 288,
+        "control_records": 350,
+        "opaque_pixels": 161709,
+        "remap_pixels": 4179,
+        "normalized_alpha_difference_pixels": 4179,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 13
+      },
+      {
+        "map_id": 15,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 16,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 163986,
+        "remap_pixels": 1902,
+        "normalized_alpha_difference_pixels": 1902,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 9
+      },
+      {
+        "map_id": 17,
+        "frame_count": 384,
+        "control_records": 330,
+        "opaque_pixels": 205179,
+        "remap_pixels": 15969,
+        "normalized_alpha_difference_pixels": 16005,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 47
+      },
+      {
+        "map_id": 18,
+        "frame_count": 192,
+        "control_records": 200,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 19,
+        "frame_count": 192,
+        "control_records": 200,
+        "opaque_pixels": 108824,
+        "remap_pixels": 1768,
+        "normalized_alpha_difference_pixels": 1768,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 17
+      },
+      {
+        "map_id": 20,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 156238,
+        "remap_pixels": 9650,
+        "normalized_alpha_difference_pixels": 9650,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 28
+      },
+      {
+        "map_id": 21,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 155108,
+        "remap_pixels": 10778,
+        "normalized_alpha_difference_pixels": 10780,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 69
+      },
+      {
+        "map_id": 22,
+        "frame_count": 384,
+        "control_records": 390,
+        "opaque_pixels": 207884,
+        "remap_pixels": 13298,
+        "normalized_alpha_difference_pixels": 13300,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 29
+      },
+      {
+        "map_id": 23,
+        "frame_count": 96,
+        "control_records": 100,
+        "opaque_pixels": 46484,
+        "remap_pixels": 8812,
+        "normalized_alpha_difference_pixels": 8812,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 38
+      },
+      {
+        "map_id": 24,
+        "frame_count": 192,
+        "control_records": 180,
+        "opaque_pixels": 103932,
+        "remap_pixels": 6643,
+        "normalized_alpha_difference_pixels": 6660,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 45
+      },
+      {
+        "map_id": 25,
+        "frame_count": 96,
+        "control_records": 100,
+        "opaque_pixels": 42575,
+        "remap_pixels": 12696,
+        "normalized_alpha_difference_pixels": 12721,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 67
+      },
+      {
+        "map_id": 26,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 157939,
+        "remap_pixels": 7914,
+        "normalized_alpha_difference_pixels": 7949,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 56
+      },
+      {
+        "map_id": 27,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 155790,
+        "remap_pixels": 10055,
+        "normalized_alpha_difference_pixels": 10098,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 86
+      },
+      {
+        "map_id": 28,
+        "frame_count": 384,
+        "control_records": 390,
+        "opaque_pixels": 205191,
+        "remap_pixels": 15942,
+        "normalized_alpha_difference_pixels": 15993,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 76
+      },
+      {
+        "map_id": 29,
+        "frame_count": 288,
+        "control_records": 300,
+        "opaque_pixels": 145271,
+        "remap_pixels": 20533,
+        "normalized_alpha_difference_pixels": 20617,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 49
+      },
+      {
+        "map_id": 30,
+        "frame_count": 192,
+        "control_records": 200,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 31,
+        "frame_count": 192,
+        "control_records": 200,
+        "opaque_pixels": 110592,
+        "remap_pixels": 0,
+        "normalized_alpha_difference_pixels": 0,
+        "normalized_native_correspondence": "CONSISTENT_SAMPLED_LAYERS",
+        "normalized_palette_conflict_index_count": 0
+      },
+      {
+        "map_id": 32,
+        "frame_count": 192,
+        "control_records": 300,
+        "opaque_pixels": 108843,
+        "remap_pixels": 1747,
+        "normalized_alpha_difference_pixels": 1749,
+        "normalized_native_correspondence": "NOT_EQUIVALENT",
+        "normalized_palette_conflict_index_count": 26
+      }
+    ],
+    "generation": {
+      "mode": "built-in image_gen",
+      "v1": "Use case: stylized-concept\nAsset type: one seamless painted grass ground material for a high-resolution 2D tactical RPG terrain prototype.\nInput image 1 is ONLY a style, palette, brushwork and lighting reference. Do not copy its composition, characters, trees, roads or rocks.\nGenerate one square, edge-to-edge, tileable top-down ground texture of short natural grass. Match the reference's muted olive and moss green grass, delicate hand-painted gouache brushwork, slight warm daylight, readable small blades and fine earth mottling. Texture scale should suit one small tactical grid cell, with many fine blades, softly varied low-contrast clusters, no large focal clump. Every side must wrap seamlessly to the opposite side. Flat orthographic surface, even illumination, no horizon, no perspective, no vignette, no gradient across the image.\nKeep the material understated so character sprites and tactical markers remain clear. Opaque background. No characters, trees, bushes, flowers, large stones, roads, structures, cast shadows, symbols, borders, grid lines, text or watermark. Output a square image.",
+      "v2": "Use case: precise-object-edit\nAsset type: hand-painted ground material for a 2D tactical RPG.\nImage 1 is the edit target. Image 2 is only the approved palette and brushwork reference.\nMake one targeted correction to Image 1: replace the large leafy clumps with much finer, shorter grass blades, and reduce saturation and local contrast to the muted moss/olive ground tones in Image 2. Keep an even flat top-down ground texture across the whole square, no central focus. The blades must feel small enough to remain subtle beneath small character sprites. No broad leaves, bushes, tall plants, dirt road, rocks, objects, figures, borders, labels or text. Retain an opaque square image. Opposite edges should wrap seamlessly; keep all edges visually uniform without a vignette. Paint actual fine new detail, do not merely blur the source."
+    },
+    "artifacts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/terrain-grass-style-a-v1-master.png",
+        "sha256": "de4054ab8e6548d4d91eb79e70ad09b30fa4ccd8c842480bc2cff427b144602a",
+        "private_local_only": true
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/terrain-grass-style-a-v2-master.png",
+        "sha256": "7e70b42fcd8998a05172ce517ebf7e521134e8a5372e9ee30e25ced65b6a3234",
+        "private_local_only": true
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/terrain-grass-prototype-r2.png",
+        "sha256": "f4aba85f705d988c01cf8fe01b71d7739a1505c310781c4a6ddbdce095f8a35f",
+        "private_local_only": true
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/terrain-grass-prototype-r3.png",
+        "sha256": "6e795065baa2f6e3a7b9eb1a8289795976c26e16f1f88cd27f5c1b407bd07bb2",
+        "private_local_only": true
+      }
+    ],
+    "prototype": {
+      "scope": "首章固定資料、同一排版局部，只比較草地材質",
+      "normal_player_path": false,
+      "gpu_capture": false,
+      "runtime_integrated": false,
+      "map_origin_cells": [
+        14,
+        1
+      ],
+      "mask_color_source_frame": 52,
+      "detailed_cells_in_view": 19,
+      "mask_rgba_colors": [
+        [
+          69,
+          89,
+          8,
+          255
+        ],
+        [
+          89,
+          109,
+          16,
+          255
+        ],
+        [
+          101,
+          130,
+          24,
+          255
+        ],
+        [
+          117,
+          150,
+          36,
+          255
+        ]
+      ],
+      "method": "source-color-mask with bounded multiplicative painted detail; prototype only",
+      "native_size": 24,
+      "prototype_size": 144,
+      "material_sha256": "7e70b42fcd8998a05172ce517ebf7e521134e8a5372e9ee30e25ced65b6a3234",
+      "modern_atlas_sha256": "644cd9cc2aa1a3a4395005dba058b6fb4a732cf8c69f2441a350436cf625f6aa",
+      "opposite_edge_rgb_mean_absolute_difference": {
+        "horizontal": 6.694444444444445,
+        "vertical": 8.282407407407407
+      },
+      "seamless_verified": false,
+      "limitations": [
+        "只有無物件草地原型，其他地形仍為24像素來源",
+        "材質接縫、動畫、LUT、前景與正式GPU尚未驗收",
+        "不從合成圖擷取人物或地形幾何"
+      ]
+    },
+    "art_review": {
+      "accepted": false,
+      "r1": "初始裁切未顯示待比較草地，屬原型工具問題；r2改選草地最多的同一資料窗格。",
+      "r2": "只替換frame52產生明顯區塊與鄰格接縫，拒收。",
+      "r3": "來源顏色遮罩加新母稿細節保留幾何，但仍呈現原始低解析區塊感，拒收。",
+      "catalog_registered": false,
+      "private_pack_synced": false,
+      "published_images": false
+    },
+    "next_gate": "沿正式分離bank建立逐幀HD圖源與三層遮罩契約；保留既有動畫及前景selector，先形成READY再接正式GPU。",
+    "reproduction": {
+      "image": "fd2-assets-local:20260829-sfx",
+      "user": "1000:1000",
+      "network": "none",
+      "timeout_seconds": 120,
+      "mounts": {
+        "repo": "/src:ro and /repo:ro",
+        "original_pack": "/pack:ro",
+        "output": "/out:rw"
+      },
+      "command": "python3 /src/tools/prototype_fd2_hd_terrain.py --maps-root /src/remake/assets/maps --bank-root /pack/tilesets/fdshap --reference /src/docs/data/fd2-reference-files.json --modern-root /src/remake/generated-assets/modern-theme-prototypes --material /out/terrain-grass-style-a-v2-master.png --output-prefix /out/terrain-grass-prototype-rN"
+    },
+    "validation": {
+      "negative_cases": [
+        {
+          "case": "bad-fingerprint",
+          "status": "PASS",
+          "published_outputs": false
+        },
+        {
+          "case": "small-material",
+          "status": "PASS",
+          "published_outputs": false
+        },
+        {
+          "case": "existing-output-preserved",
+          "status": "PASS"
+        }
+      ],
+      "file": "work/promo-cadence-20261018/hd-fonts/terrain-source-negative-checks.json",
+      "sha256": "8f26c26b934bcdb4fcb0d016fe88f772adca8321e6c905e23d78629d3c78ab6b",
+      "runtime_tests_rerun": false,
+      "reason": "未改正式Go、素材、規則或存檔；本輪驗來源工具與文件。",
+      "tracked_markdown_links_scanned": 4064,
+      "changed_markdown_links": 2617,
+      "changed_broken_links": 0,
+      "pre_existing_link_checker_findings": [
+        [
+          "docs/knowledge-base/110-death-effects-and-level-cap-20260911.md",
+          69,
+          "擊殺者索引"
+        ],
+        [
+          "docs/knowledge-base/92-opening-ch01-input-audit.md",
+          33,
+          "../../dist-all/v.1.0.9-20260907/full/FD2-v.1.0.9-20260907-linux-x86_64-full.AppImage"
+        ],
+        [
+          "docs/knowledge-base/92-opening-ch01-input-audit.md",
+          35,
+          "../../dist-all/v.1.0.9-20260907/full/input-audit/index.html"
+        ],
+        [
+          "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          13,
+          "../../dist-all/v.1.0.13-20260908/full/FD2-v.1.0.13-20260908-linux-x86_64-full.AppImage"
+        ],
+        [
+          "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          15,
+          "../../dist-all/v.1.0.13-20260908/full/dialogue-review/index.html"
+        ],
+        [
+          "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          101,
+          "../../dist-all/v.1.0.10-20260908/full/FD2-v.1.0.10-20260908-linux-x86_64-full.AppImage"
+        ],
+        [
+          "docs/knowledge-base/93-dialogue-cause-20260908.md",
+          103,
+          "../../dist-all/v.1.0.10-20260908/full/dialogue-review/index.html"
+        ],
+        [
+          "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md",
+          8558,
+          "../../dist-all/v.1.0.13-20260908/full/FD2-v.1.0.13-20260908-linux-x86_64-full.AppImage"
+        ],
+        [
+          "docs/knowledge-base/SESSION-HANDOFF-2026-07-06.md",
+          8560,
+          "../../dist-all/v.1.0.13-20260908/full/dialogue-review/index.html"
+        ]
+      ],
+      "pre_existing_files_unchanged_from_head": true,
+      "worklist": {
+        "open": 21,
+        "manual": 14,
+        "possibly_complete": 0
+      },
+      "lessons": {
+        "total": 245,
+        "guards": 127
+      },
+      "hygiene": {
+        "root_owned_existing_count": 2808,
+        "md_directories": [],
+        "task_outputs_owner": "1000:1000",
+        "unexpected_fd2_containers": 0
+      },
+      "cleanup": {
+        "duplicate_intermediate_ledgers_removed": 2,
+        "bytes_freed": 9497936,
+        "final_input_ledger_retained": true,
+        "videos_created": false
+      }
     }
   }
 }

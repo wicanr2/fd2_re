@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -108,6 +108,12 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+2026-10-19 HD地形來源審查：已逐層盤點33組8256幀，24張舊正規化圖集與原生mask不一致，合計198032個alpha像素不同，同索引RGB也有衝突。觀測差異已證實，根因未知；#261追蹤正式bank逐幀來源、mask與remap_mask，不直接把舊圖集升採樣成原生HD素材。正式HD世界沿原生bank，既有GPU／保存收據保持。
+
+內建image_gen草地母稿與一次修訂已保存本機；144排版原型直接替換有接縫，遮罩加細節仍有明顯區塊感，均未採用、未登錄清冊。沒有新GPU、原版oracle、matching、正式素材包、Release或錄影。來源、提示、SHA及工具入口見主收據terrain_source_followup_20261019與61勘誤。
+
+下方計時對話與正式世界切片仍有效；本輪新增地形來源前置閘門。
+
 2026-10-19 計時FFEC對話HD切片已整合b086b2c3db01bfb52673e3d9180b6f1d2233aff0，真正origin/main已核同值。經驗／升級下框開收動畫不再用完整indexed畫面覆蓋HD人物，保留同次HD世界快照；原生時鐘、頁面、計時、F2與正式規則保持。
 
 只把既有章前槽/party_roster/4/Exp由0改99，來源與衍生SHA／唯一差異可回查，章內不改狀態。seed=1於啟動前固定，正常攻擊確實升Lv2／EXP30。37張主要GPU、6張對話、4張走行、F2、兩主題與衍生來源完整保存相同、新程序LOAD通過。實際來源角落確認2張開框與2張收框，另1張跨呈現階段不可比；144圖源8296個不透明核心像素零差異。
@@ -137,6 +143,16 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：由使用者或譯者核對六段來源、專名與語氣後逐筆reviewed，保存校譯紀錄並更新受控六句待審範圍；其他已審校譯文保持。
 
 證據：`docs/data/localization/ending-story-supplements.json`
+
+### P1 地形資料：舊正規化圖集與原生遮罩不一致
+
+`terrain-normalized-native-layer-correspondence` · 缺陷 · [#261](https://github.com/wicanr2/fd2_re/issues/261) · 仍未完成 · 要人判
+
+HD地形前置盤點已逐層讀取33個正式FDSHAP分離圖庫、8256幀及舊正規化圖集。24張圖集存在透明遮罩差異，合計198032像素；另記相同原生調色盤索引對應多個正規化RGB的幀組。這是已觀測資料差異，解碼或來源歷史根因仍未知，不宣稱原版執行期錯誤。正式HD世界目前使用原生bank，因此本題不撤銷既有首章GPU收據。不得直接把舊圖集升採樣成原生HD圖源。可重跑工具tools/prototype_fd2_hd_terrain.py，來源與摘要在docs/data/fd2-modern-hd-battlefield-20261019.json的terrain_source_followup_20261019。
+
+怎樣算做完：由目前正式分離bank建立可回查的逐幀HD圖源索引，保留frame、mask與remap_mask；對舊圖集差異逐項分類或由正式來源重生。驗證實際幀數、動畫／前景selector與透明／目的地remap契約；不得以整張PNG尺寸或可解碼代替遮罩一致。既有規則、地圖座標、保存與像素模式保持。
+
+證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
 ## runtime — 還沒接進正式執行期
 

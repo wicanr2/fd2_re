@@ -1,5 +1,10 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+HD地形本輪只做來源圖層核對與草地排版原型，未接正式GPU，不增加E0／E1／E2。
+舊正規化圖集不可直接視為原生圖源；差異範圍依[58](58-fd2-exe-re-coverage.md)及
+[#261](https://github.com/wicanr2/fd2_re/issues/261)。來源、拒收理由與可重跑工具見
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。
+
 2026-10-19 計時FFEC對話的開收框已保留HD世界；明示章前EXP99槽、普通攻擊／升級、F2及完整保存／冷讀通過。
 原生幀／計時／規則保持，實際框角及144來源像素另驗；範圍限RUNTIME-E1及已列普通輸入，沒有新原版parity。
 來源沿[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`timed_dialogue_followup_20261019`與[61](61-modern-theme-runtime-spec.md)。

@@ -2862,6 +2862,21 @@
         ],
         "pattern": "actual_grid_sizes"
       }
+    },
+    {
+      "id": "terrain-hd-source-checks-native-layers",
+      "area": "HD素材來源",
+      "date": "2026-10-19",
+      "rule": "把正規化地形圖集用作原生HD來源前，逐幀核對正式分離bank的frame、mask及remap_mask；PNG尺寸與格數相同不代表圖層一致。入口tools/prototype_fd2_hd_terrain.py及docs/knowledge-base/61-modern-theme-runtime-spec.md。",
+      "why": "舊圖集與正式bank在多張地圖存在透明遮罩及同索引RGB差異；只檢查atlas大小會把未閉合來源直接放大進HD。根因尚未判定，正式原生renderer保持。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/prototype_fd2_hd_terrain.py"
+        ],
+        "pattern": "normalized_alpha_difference_pixels"
+      }
     }
   ]
 }
