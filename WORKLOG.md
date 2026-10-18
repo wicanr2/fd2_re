@@ -904,3 +904,7 @@ GUI r1的CPU階段判定不足：preparation-transition-gui-json-r1雖回報PASS
 README加入實際命令轉場局部連結，文化內容及四語圖保持；56／57／58／61／索引與panel_transition_followup同步。未錄影，核對SHA後刪除暫時binary，釋出19034376 bytes，保留PNG與收據。原版檔、正式第一版tag／Release及私人素材包不變；完整HD尚未完成。
 
 提交前20項工作清單、13項人工判定、可能完成0；236條教訓與119個守衛通過。2657條本地連結、最終Go／GUI來源、README文化入口、圖片及UID/GID核對通過，工作根無root-owned檔案或.md目錄。無新缺陷Issue；本輪只更新#204／#202的具體驗收與未完成範圍。
+
+角色與物品面板轉場已提交ecb006ad2fda7eac97c10d8e3d7c6f364812c4e1，快轉整合並推送main；主收據補綁source_commit，已驗Go、GUI工具與產物保持。#204／#202維持開啟，接續實際戰場與其餘HD範圍。
+
+遠端#204／#202已更新並保持開啟。官方pull／render／verify為20項、13項人工判定、可能完成0；236條教訓與119個守衛通過。來源綁定與工作清單快照同步，未修改已驗程式。
