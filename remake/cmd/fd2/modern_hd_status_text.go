@@ -41,22 +41,6 @@ func (d *nativeUnitStatusData) compose(assets battle.NativeItemPanelDataAssets, 
 }
 
 func (g *Game) drawModernHDUnitStatus(screen *ebiten.Image, source []byte, data *nativeUnitStatusData, commands bool, palette color.Palette) bool {
-	if g.modernHDText == nil || g.font == nil || data == nil {
-		return false
-	}
-	capture := &modernHDIndexedText{palette: palette}
-	previous := g.font.indexedHD
-	g.font.indexedHD = capture
-	defer func() { g.font.indexedHD = previous }()
-	panel, ok := data.compose(g.modernHDChurchItemAssets(data.assets), commands)
-	if !ok {
-		return false
-	}
-	frame, err := nativeChurchPanelFrame(source, panel, 0)
-	if err != nil {
-		return false
-	}
-	g.presentNativeClassFrameWithPalette(screen, frame, palette)
-	g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
-	return true
+	regions, ok := nativeChurchPanelRegions(0)
+	return ok && g.drawModernHDStatusRegions(screen, source, data, commands, palette, regions)
 }

@@ -9,6 +9,7 @@ import threading
 import time
 
 from verify_fd2_hd_gui import digest, latest
+from verify_fd2_hd_panel_transitions import PanelTransitionProbe
 
 
 def main():
@@ -24,9 +25,11 @@ def main():
     facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
+    parser.add_argument('--panel-transitions', action='store_true', help='以實際移動文字區抽驗狀態／物品轉場')
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     args = parser.parse_args()
     assert not args.transition_frames or args.preparation
+    assert not args.panel_transitions or args.status or args.items
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
     assert json.loads(args.town_save.read_text())['node'] == 'hotel_ch02'
@@ -76,6 +79,7 @@ def main():
     gold_thread=None
     gold_shots={}
     gold_errors=[]
+    panel_probe=None
 
     def capture_gold_roll():
         seen=set()
@@ -169,6 +173,30 @@ def main():
         shots[path.name]={'sha256':digest(path),'state':latest(audit),
                           'window_geometry':command('xdotool','getwindowgeometry','--shell',window)}
         print('CAPTURE '+path.name,flush=True)
+
+    def restart_title_load(node, gold, name):
+        nonlocal game, window, audit_epoch
+        game.terminate();game.wait(timeout=15)
+        previous=args.out/'input-audit-first-process.jsonl'
+        assert not previous.exists()
+        audit.rename(previous)
+        audit_epoch=1
+        game=start([str(args.binary)],'game-cold-load.log',args.assets)
+        window=None
+        for _ in range(600):
+            if game.poll() is not None:raise RuntimeError('冷讀程序提前退出')
+            try:window=command('xdotool','search','--name','炎龍騎士團').splitlines()[0];break
+            except (subprocess.CalledProcessError,IndexError):time.sleep(.1)
+        assert window
+        command('xdotool','windowmove',window,'0','0')
+        wait(lambda s:bool(s.get('title_phase')))
+        for _ in range(160):
+            if latest(audit).get('title_phase')=='menu':break
+            key('Escape')
+        else:raise TimeoutError('冷讀標題未就緒')
+        key('Down');key('Return');wait(lambda s:s.get('title_phase')=='loadslots')
+        key('Return');wait(lambda s:not s.get('title_phase') and s.get('node')==node and s.get('gold')==gold)
+        shot(name)
 
     def transition_eligible(state):
         frame=state.get('preparation_transition_frame',-1)
@@ -375,6 +403,9 @@ def main():
             return
         key('Return')
         wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
+        if args.panel_transitions:
+            panel_probe=PanelTransitionProbe(args.out,lambda:latest(audit),command,lambda:window,env)
+            panel_probe.start()
         if args.gold_roll:
             transaction_hd=args.gold_roll_theme=='hd'
             if not transaction_hd:
@@ -513,7 +544,14 @@ def main():
             key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存結果不同'
             key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
             shot('faithful-hotel-after-items-load')
+            panels=panel_probe.validate(items=True) if panel_probe else None
+            if args.panel_transitions:
+                assert hd_saved==args.town_save.read_bytes(),'物品轉場改變來源保存'
+                restart_title_load('hotel_ch02',1000,'hotel-after-items-new-process-load')
+                assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存'
             report={'schema':'fd2-hd-item-font-gui-v1','status':'PASS',
+                    'panel_transitions':panels,
+                    'new_process_title_load':args.panel_transitions,
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'theme_save_bytes_equal':True,
                     'source_save_bytes_equal':digest(saved)==digest(args.town_save),
@@ -586,7 +624,14 @@ def main():
             key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存結果不同'
             key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
             shot('faithful-hotel-after-church-load')
+            panels=panel_probe.validate() if panel_probe else None
+            if args.panel_transitions:
+                assert hd_saved==args.town_save.read_bytes(),'狀態轉場改變來源保存'
+                restart_title_load('hotel_ch02',1000,'hotel-after-status-new-process-load')
+                assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存'
             report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
+                    'panel_transitions':panels,
+                    'new_process_title_load':args.panel_transitions,
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'theme_save_bytes_equal':True,
                     'source_save_bytes_equal':digest(saved)==digest(args.town_save),
@@ -671,6 +716,9 @@ def main():
                 'recording_created':False,'elapsed_seconds':time.monotonic()-started}
         (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     finally:
+        if panel_probe:
+            panel_probe.finish()
+            if not (args.out/'panel-transition-observation.json').exists():panel_probe.save()
         finish_gold_roll()
         if args.gold_roll:
             (args.out/'gold-roll-observation.json').write_text(json.dumps(

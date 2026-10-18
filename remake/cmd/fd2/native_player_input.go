@@ -113,6 +113,7 @@ func (g *Game) inspectNativePlayerUnit(u *battle.Unit, force bool) (bool, error)
 
 type nativePlayerStatusState struct {
 	data                             *nativeUnitStatusData
+	text                             *nativeStatusTransitionText
 	source, status, commands, steady []byte
 	frames                           [][]byte
 	frame                            int
@@ -140,6 +141,7 @@ func (g *Game) beginNativePlayerStatus(u *battle.Unit) error {
 	g.nativePlayerStatus = &nativePlayerStatusState{
 		source: source, status: status, commands: commands, steady: steady, data: data,
 		frames: frames, phase: "opening",
+		text: snapshotNativeStatusTransition(source, data, nativeStatusOpening, false),
 	}
 	return nil
 }
@@ -190,6 +192,7 @@ func (g *Game) advanceNativePlayerStatus() {
 		}
 		s.steady, _ = nativeChurchPanelFrame(s.source, s.commands, 0)
 		s.phase, s.frame, s.drawn = "transition", 0, false
+		s.text = snapshotNativeStatusTransition(s.source, s.data, nativeStatusToCommands, false)
 		return
 	}
 	panel := s.status
@@ -201,6 +204,7 @@ func (g *Game) advanceNativePlayerStatus() {
 		g.loadErr = err.Error()
 		return
 	}
+	s.text = snapshotNativeStatusTransition(s.source, s.data, nativeStatusClosing, s.phase == nativePlayerStatusCommands)
 	s.frames, s.phase, s.frame, s.drawn = frames, "closing", 0, false
 }
 
@@ -215,6 +219,10 @@ func (g *Game) drawNativePlayerStatus(screen *ebiten.Image) {
 	}
 	frame := s.steady
 	if len(s.frames) > 0 {
+		if g.drawModernHDStatusTransition(screen, s.text, s.frame, g.nativeUIPalette) {
+			s.drawn = true
+			return
+		}
 		frame = s.frames[s.frame]
 	}
 	g.presentNativeClassFrameWithPalette(screen, frame, g.nativeUIPalette)

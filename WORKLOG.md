@@ -888,3 +888,19 @@ GUI r1的CPU階段判定不足：preparation-transition-gui-json-r1雖回報PASS
 金幣滾動與出售確認切片已提交d19340be3be13ae1e93e7dd5f4bd95b5515e8804，快轉推送main且遠端HEAD核對相同。主收據補綁source_commit；已驗Go、GUI工具、圖片與保存不再修改。
 
 #255已在遠端確認CLOSED，#204維持開啟並更新金幣驗收與剩餘範圍。官方pull／render／verify回到20項、13項人工判定、可能完成0；236條教訓與119個守衛通過。最後只同步來源綁定與工作清單，不修改已驗程式或產物。
+
+## 2026-10-18 角色與物品面板 HD 轉場
+
+上一輪為有效進度：金幣與#255已推送並結案。本輪由12b269f4建立feat/hd-panel-transitions-20261018；先核對Git／容器／遠端#201／#202及官方pull，沿規格先行、正常玩家路徑與文件職責契約，61先READY再實作。教會與戰場狀態開收／命令轉場保存獨立資料與底圖；物品沿既有raw slot快照。像素與文字共用NativeItemPanelRegion，先裁來源，再移動字形及clip，最後裁目的。原12／14張快取、Draw承認、交易與保存保持，不在Update包裝字型。
+
+首輪focused3.821秒通過；其後追加唯讀audit，最終相關cmd回歸48.994秒與五資料／清冊套件通過，非完整cmd或battle回歸。最終來源panel-transition-source-final.json含971份Go與兩份GUI工具，建置與回歸後未再改動。四語各5107筆僅來源／座標遷移，by_id5105、signature2、new0，內容／狀態／變數／身份保持。
+
+同份binary的教會status r1與商店items r1首次完整GUI均通過，共39張正常圖與11張有效GPU區域，50張已逐張審查。區域RGB等同穩定HD參照的移動後裁切，且不同於未移動位置；CPU只定位候選，不宣稱精確同幀。普通START後F9接續既有hotel_ch02，選人／命令、裝備選取／拒絕藥草／重新裝備、F2、縮放／說明遮罩、F5／F9與新程序標題LOAD通過。完整保存與來源均190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456，不增加原版保存例外。戰場caller限E1，尚未新增正常戰場GPU。
+
+另以內建image_gen生成可丟棄的戰場筆觸參照，保存於work/promo-cadence-20261018/hd-fonts/battlefield-hd-style-prototype-v1.png，提示在battlefield-hd-style-prototype-prompt.json，來源與SHA在同名v1.json。實檔1586×992，非1920正式runtime收據，不登錄catalog或私人正式包，不當作完成證據。61既有手繪配色與大頭短身已核准；提問只收集紋理密度偏好，不阻擋既定HD。原型中的裝備與地形仍須依正式來源校對。
+
+下一主切片先以正常首章LOAD驗現代戰場與狀態返回，避免只做孤立字型。合法來源work/promo-cadence-20261018/f2-runtime/normal-r4/user-data/fd2_re/fd2_save.json，node=battle_ch01、SHA089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。現有Home為正常強制檢視鍵；drawNativePlayerStatus在Game.Draw的戰場／介面之後。須實測完整indexed面板是否蓋回現代底圖，尚不能僅憑程式下結論，再接144角色母稿與地形HD。
+
+README加入實際命令轉場局部連結，文化內容及四語圖保持；56／57／58／61／索引與panel_transition_followup同步。未錄影，核對SHA後刪除暫時binary，釋出19034376 bytes，保留PNG與收據。原版檔、正式第一版tag／Release及私人素材包不變；完整HD尚未完成。
+
+提交前20項工作清單、13項人工判定、可能完成0；236條教訓與119個守衛通過。2657條本地連結、最終Go／GUI來源、README文化入口、圖片及UID/GID核對通過，工作根無root-owned檔案或.md目錄。無新缺陷Issue；本輪只更新#204／#202的具體驗收與未完成範圍。

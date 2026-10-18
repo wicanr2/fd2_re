@@ -19,6 +19,7 @@ type nativeClassUIJob struct {
 	elapsed         time.Duration
 	preparationText *nativePreparationTransitionText
 	goldText        *nativeGoldRollText
+	statusText      *nativeStatusTransitionText
 	// 0x196CB 的戰場關框 owner 才宣告 0x19742；城鎮共用 job 不推定重繪。
 	redrawNativeMapAfterRestore bool
 }
@@ -194,7 +195,7 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 		return true
 	}
 	if job.frame < len(job.frames) {
-		if !g.drawModernHDPreparationTransition(screen, job) {
+		if (g.nativeClassUI == nil || !g.drawModernHDStatusTransition(screen, job.statusText, job.frame, g.nativeClassUI.palette)) && !g.drawModernHDPreparationTransition(screen, job) {
 			g.presentNativeClassFrame(screen, job.frames[job.frame])
 		}
 		job.drawn = true

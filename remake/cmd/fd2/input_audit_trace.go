@@ -44,6 +44,22 @@ func (g *Game) recordInputAuditState() {
 	r["item_selection"] = g.itemSel
 	r["item_anim_step"] = g.itemAnimStep
 	r["item_closing"] = g.itemClosing
+	if g.nativeItemPanelText != nil && (g.itemClosing || g.itemAnimStep < 11) {
+		index := 11 - g.itemAnimStep
+		if g.itemClosing {
+			index = g.itemAnimStep
+		}
+		r["panel_transition"] = map[string]any{"domain": "item", "job": fmt.Sprintf("%p", g.nativeItemPanelText),
+			"kind": "item", "index": index, "closing": g.itemClosing}
+	}
+	if job := g.nativeClassUIJob; job != nil && job.statusText != nil && job.frame < len(job.frames) {
+		r["panel_transition"] = map[string]any{"domain": "church", "job": fmt.Sprintf("%p", job),
+			"kind": int(job.statusText.kind), "index": job.frame, "identity": g.churchStatusID}
+	}
+	if s := g.nativePlayerStatus; s != nil && s.text != nil && len(s.frames) > 0 {
+		r["panel_transition"] = map[string]any{"domain": "battle", "job": fmt.Sprintf("%p", s.text),
+			"kind": int(s.text.kind), "index": s.frame}
+	}
 	if g.nativeShopMode == nativeShopEquipPanelMode {
 		if id, unit, ok := g.nativeShopEquipUnit(); ok {
 			r["equip_unit"] = map[string]any{"id": id, "ap": unit.AP, "dp": unit.DP,

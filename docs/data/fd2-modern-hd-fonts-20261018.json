@@ -10849,5 +10849,611 @@
       "fd2_containers_remaining_after_validation": 0
     },
     "source_commit": "d19340be3be13ae1e93e7dd5f4bd95b5515e8804"
+  },
+  "panel_transition_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_fonts_complete": false,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "issues": [
+      "https://github.com/wicanr2/fd2_re/issues/204",
+      "https://github.com/wicanr2/fd2_re/issues/202"
+    ],
+    "base_commit": "12b269f426ef7fbcb543d6698e27f4575df99514",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-source-final.json",
+        "sha256": "e479dba4e07ac453568dd84ef6c174ca7101517b68a2104e99ed9e5c84c2c70e"
+      },
+      "go_file_count": 971,
+      "production_go_tree_sha256": "66abefe6a185cd1dd395aecb322bcee936340a29aa496456a71d1864bb90d05d",
+      "test_go_tree_sha256": "5844f57c6f9c15519f2ee6f12b2874d191f56501c8eaa0a04671e5fdb8d5e41e",
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "0b6e3a499afa38b4ce94fd2243c51034880b73c97eb0d09b24d6f2125819682a"
+      },
+      "gpu_probe": {
+        "file": "tools/verify_fd2_hd_panel_transitions.py",
+        "sha256": "ee9ed97ac21dc8cd1dd2ed34f667796dda1436639d43968b0235cc484114b00e"
+      },
+      "snapshot_before_final_build_and_regression": true
+    },
+    "runtime_scope": {
+      "status": [
+        "church opening/closing",
+        "church status to commands",
+        "battle opening/closing/status to commands"
+      ],
+      "items": [
+        "shop equipment opening/closing",
+        "battle item opening/closing"
+      ],
+      "method": "同份NativeItemPanelRegion供像素與HD文字使用。文字先裁來源矩形，移動字形與clip，再裁目的矩形；不在Update包裝HD字型。",
+      "snapshot": "角色轉場建立時複製底圖、record、base、itemRows、commandIDs與commandBook。物品沿既有已發布raw slot快照。",
+      "unchanged": "12／14張索引快取、Draw承認、選取、交易與保存格式保持；無效來源退回原畫格。"
+    },
+    "gui": {
+      "status": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/receipt.json",
+        "sha256": "a8027df36f2b056ca28d4ddf796ece6519c97159af8e84f5fc6898b6de452196",
+        "status": "PASS",
+        "seconds": 113.37119944440201,
+        "normal_images": 25,
+        "valid_moving_regions": 10,
+        "ordinary_key_operations": 77
+      },
+      "items": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/receipt.json",
+        "sha256": "8b1c9a505d4e71841f7906aeea61df3840ae397f92778acdb04115bfcaff6260",
+        "status": "PASS",
+        "seconds": 75.4325667321682,
+        "normal_images": 14,
+        "valid_moving_regions": 1,
+        "ordinary_key_operations": 53
+      },
+      "images": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-menu.png",
+          "sha256": "f029931d7d151fcfd8d65d074c34d686a85ee63b30f3909d0ecb2bead2d7a693",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-status-sol.png",
+          "sha256": "5c0f8f124fbe7c2b4de8b39399f7a8ad93d8a120d8be1041729747456a948fd6",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/faithful-church-status-sol.png",
+          "sha256": "b9e593c4b996ff92fb9607cd6c7bf12ab3b4356db5ac19ab2a2b13b11c633cf7",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/hd-church-status-sol-restored.png",
+          "sha256": "5c0f8f124fbe7c2b4de8b39399f7a8ad93d8a120d8be1041729747456a948fd6",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-status-resized.png",
+          "sha256": "65f66aa7ced25e8bef07744bf4c6b56b0580071b4012c24139a1915fc901a5ed",
+          "dimensions": [
+            1600,
+            1000
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-status-help.png",
+          "sha256": "28b62bdfae80021d04da7f3b20ffbdae13ed3e4f47d60068217e3e05612712b0",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-status-yuni.png",
+          "sha256": "515c89fd20b1ee8b7136022fa23bf100b97ec37654640cbaeafe8ccbd61f8620",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-commands-yuni.png",
+          "sha256": "57080daf1290ae2c8ac9bc9a81759fe247237b5f94bef41afec65da95143e6ff",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/faithful-church-commands-yuni.png",
+          "sha256": "b73cf6b2aed45d9f89fd52d6df9a768ef776043ee44de79864329da46e36f403",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/hd-church-commands-yuni-restored.png",
+          "sha256": "57080daf1290ae2c8ac9bc9a81759fe247237b5f94bef41afec65da95143e6ff",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-roster-zh-Hant.png",
+          "sha256": "7b0ca750bfb56d26e2f3693cd95b237b5889238a7af7fe6f15a909b1351818e0",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-roster-zh-Hans.png",
+          "sha256": "5258b918a9b8b8f9bb4320a204206614f195bdaed5f36a3c915b758ea2491ff3",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-roster-ja.png",
+          "sha256": "f6ceb71f788ad6c1c136fb6d1ca83dbae904c005ff784735f6c5965cc060df67",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-roster-en.png",
+          "sha256": "c0db0e4606f36accd42956d6727b62937d19a2452d7f3f4994e55e855ea6d2d7",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/faithful-church-roster.png",
+          "sha256": "38aee2c1ee40cd3e51a6e19e7742f9311a45ac0ad6507e9c090300aa6745f932",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/hd-church-roster-restored.png",
+          "sha256": "7b0ca750bfb56d26e2f3693cd95b237b5889238a7af7fe6f15a909b1351818e0",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-roster-resized.png",
+          "sha256": "14bb49a55483e0101f107795a63c0dbe6dff891036e58c71a43895adb1b0dc3e",
+          "dimensions": [
+            1600,
+            1000
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-help.png",
+          "sha256": "98b68a4777d9e2b5aa6c468778a959af908522fe5608de44856fa17ce5d4b33a",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-revive-list.png",
+          "sha256": "45f7380e88b78318d5df5642ef5be57e9e805a3b86fa2e9ab33b5861070aea2d",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-revive-question.png",
+          "sha256": "a715659069ee15f81a44b51b2cbc6585f690033bbb8e5f5fa6a3fa9483938513",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/faithful-church-revive-question.png",
+          "sha256": "9554011667fab444610c43897cf4f323f7827ce6525f9cda88efc27089bd9315",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-transfer-source.png",
+          "sha256": "7b0ca750bfb56d26e2f3693cd95b237b5889238a7af7fe6f15a909b1351818e0",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/church-transfer-item.png",
+          "sha256": "b6c741e18630fd28530b7d17a6c11835528620a6089fef8e58c1e34177c0dc6b",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/faithful-hotel-after-church-load.png",
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/hotel-after-status-new-process-load.png",
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-3.png",
+          "sha256": "96449ab4eff00086859dd8dd50574d497f7f8474777e7d33a703ac12d47da3ff",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-4.png",
+          "sha256": "e3be24cc773fefc9bf04ca52717e2cf29cc1103a5bfb86354d7c232314a75f3f",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-6.png",
+          "sha256": "359e5258a7a0d12d8651bacd44194d78a59296a50b47f592d0300e75dd12e7a3",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-7.png",
+          "sha256": "e3be24cc773fefc9bf04ca52717e2cf29cc1103a5bfb86354d7c232314a75f3f",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-10.png",
+          "sha256": "44f4bcfe5bf6841fac971c6c48fc740555117e077c2d8b21c7992946abc52053",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-13.png",
+          "sha256": "05f1f27d09fb365c0a48831b88ac836840b2690a3b4deb0c512b4018d0a6f75e",
+          "dimensions": [
+            600,
+            636
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-14.png",
+          "sha256": "053312e9cfcf0c266115ea3ef85560e922cbc2cf1141cc2a0ddfc3ac4c01cf7a",
+          "dimensions": [
+            600,
+            636
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-16.png",
+          "sha256": "b7c9806f3dbf6800220782a845fb5d9071e460986343a5c6753b7697ee8ae02e",
+          "dimensions": [
+            600,
+            636
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-18.png",
+          "sha256": "28848faf9c5e7e0266b05e38d885359cbb9fe77120749b7b1f86f4d0ff278d7e",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-19.png",
+          "sha256": "66d679fd43679aa4b094104c6dfc2d56c33faa3be559e52a7bb39ed0ae80520e",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/shop-menu.png",
+          "sha256": "4186e9b9407b737090fa6cbc7425ee707fdac0eb117f98595b080ce35c8033a4",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/equip-roster.png",
+          "sha256": "65e286f37be60fc63d63f432d6a2514b52f7d9dffc907149828696356e22ac5e",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-short-sword.png",
+          "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/faithful-item-short-sword.png",
+          "sha256": "e54073698900d3bab6268825a2d0ccea861f70d5b432e484f77a968d7fbd52a3",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/hd-item-short-sword-restored.png",
+          "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-panel-resized.png",
+          "sha256": "a2b45fc3d82af18d737a1095e1407a8973de75c97f28504e0fcf6bde36c49fa3",
+          "dimensions": [
+            1600,
+            1000
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-panel-help.png",
+          "sha256": "3ba44263152addc662d4f24f95a8c45546ea3337067e32cf2e18771a09770b8a",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-armor.png",
+          "sha256": "cd63bdcb58c3ed3763899f4c2a47ce5e48933af24df1326fa3e71108d18ebb5f",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-herb.png",
+          "sha256": "1a247a18d26b45544a66147c0c75dc1515deca0efc4a51706d5350fdb40f4c68",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-herb-rejected.png",
+          "sha256": "1a247a18d26b45544a66147c0c75dc1515deca0efc4a51706d5350fdb40f4c68",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/item-short-sword-reequipped.png",
+          "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/equip-roster-returned.png",
+          "sha256": "65e286f37be60fc63d63f432d6a2514b52f7d9dffc907149828696356e22ac5e",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/faithful-hotel-after-items-load.png",
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/hotel-after-items-new-process-load.png",
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-items-gui-r1/panel-transition-4.png",
+          "sha256": "4d7fb3a9e4067d369b568b354c051a412c0dc27b7069fe9a5ec3ca0e95e7e49b",
+          "dimensions": [
+            108,
+            558
+          ],
+          "kind": "actual_gpu_window_region"
+        }
+      ],
+      "visually_reviewed": true,
+      "gpu_gate": "實際GPU區域等於穩定HD參照按已證實來源到目的座標移動後的RGB，且不同於未移動位置；拒收空白／穩定頁，CPU只定位候選。",
+      "scope": "PLAYER-E2-LIMITED；普通START後F9接續hotel_ch02，經教會普通選人／命令及商店裝備、F2、縮放／說明遮罩、返回旅館F5／F9及新程序標題LOAD。",
+      "limitations": "戰場消費端只有相關回歸與fixture，尚未新增正常戰場GPU；不宣稱連續戰役、自然難度、原版逐幀或精確同幀。未列其他設施轉場與圖示仍待完成。"
+    },
+    "save": {
+      "source": {
+        "file": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+        "sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      },
+      "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "themes_and_source_bytes_equal": true,
+      "new_process_title_load": true,
+      "new_save_fields": false
+    },
+    "regression": {
+      "candidate_focused": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-focused-r1.log",
+        "sha256": "7007d7e14b553ef5313c1330ed256f63f0a4e552691ae0c0f013649f7bec6480",
+        "status": "PASS",
+        "seconds": 3.821,
+        "note": "其後只追加唯讀audit；最終相關回歸包含同組測試。"
+      },
+      "cmd_ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-ui-regression-r1.log",
+        "sha256": "ba682fadae9aa55747cf7efac05c993594969ab21cdaf757e89f3ae8938dde86",
+        "status": "PASS",
+        "seconds": 48.994,
+        "pattern": "Test(ModernHD|NativePreparation|ComposeNativePreparation|NativeLoad|Title|.*JSON|.*SaveSlot|.*Locale|NativeTown|NativeHotel|NativeClass|NativeChurch|NativeShop|NativePlayer|.*ItemPanel|.*DeathReward|.*SystemEndTurn)"
+      },
+      "data_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-data-regression-r1.log",
+        "sha256": "53b403703d4de46df56e20d87cd546ce87391beafa124b3e7340efc4c7387480",
+        "status": "PASS",
+        "seconds": {
+          "campaign": 2.056,
+          "fdtxt": 0.036,
+          "fdother": 3.96,
+          "localization": 0.464,
+          "fd2-string-inventory": 0.443
+        }
+      },
+      "scope": "RUNTIME-E1；全12／14階段、明示左右／上下位移、來源與clip同步、快照獨立性、原索引相關結果、主題切換與一次性延續點；不是完整cmd或battle回歸。"
+    },
+    "locales": {
+      "count_each": 5107,
+      "text_status_variables_identity_unchanged": true,
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/panel-transition-inventory-final.json",
+        "sha256": "935606cd186275d1834266433eb41f62b626a981b08642190905f71031dc72b7"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "71ac3d0b38c2e36970e1815af366bdecb9f7f06ae32398e5317e44210f575666"
+      }
+    },
+    "readme_figure": {
+      "file": "docs/figures/hd-status-command-transition-region.png",
+      "sha256": "b7c9806f3dbf6800220782a845fb5d9071e460986343a5c6753b7697ee8ae02e",
+      "source": "work/promo-cadence-20261018/hd-fonts/panel-transition-status-gui-r1/panel-transition-16.png",
+      "kind": "actual_gpu_window_region"
+    },
+    "reproduce": {
+      "build_image": "fd2-go-test-local:latest",
+      "gui_image": "fd2-promo:20261017-r1",
+      "commands": [
+        "tools/verify_fd2_hd_fonts_gui.py --status --panel-transitions",
+        "tools/verify_fd2_hd_fonts_gui.py --items --panel-transitions"
+      ],
+      "binary": "/out/fd2-hd-panel-transitions",
+      "assets": "/repo/remake",
+      "original_pack": "/repo/work/remake-recovery-20261015/pack",
+      "modern_pack": "/repo/remake/generated-assets/modern-theme-prototypes",
+      "town_save": "/repo/work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+      "mounts": "repo及素材唯讀，work/promo-cadence-20261018/hd-fonts單獨可寫。--rm --network none --user 1000:1000，4GiB／3CPU／256pids，外層660秒。"
+    },
+    "remaining": [
+      "其他設施對話／清單轉場",
+      "成功演出與圖示內文字",
+      "未列固定面板",
+      "正常早中晚期戰場與現代圖層返回",
+      "真正HD戰場美術及跨平台效能"
+    ],
+    "cleanup": {
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-panel-transitions",
+        "sha256": "39afdd27246bd63f4f91015b94fb8576214c4dfee42e141d1aa855dce998e60c",
+        "bytes": 19034376
+      },
+      "recordings_created": false,
+      "png_and_receipts_retained": true,
+      "fd2_containers_remaining_after_validation": 0
+    }
   }
 }

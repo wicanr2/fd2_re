@@ -89,15 +89,17 @@ func TestModernHDStatusChurchAndPlayerKeepIndexedTransitions(t *testing.T) {
 	if !g.beginNativeChurchStatus(9) {
 		t.Fatal("church status failed to open")
 	}
+	openingHasText := false
 	for n := 0; g.nativeClassUIJob != nil; n++ {
 		if n > 32 {
 			t.Fatal("opening did not settle")
 		}
 		g.drawNativeClassUIJob(screen)
-		if len(g.modernHDText.runs) != 0 {
-			t.Fatal("HD text leaked into indexed opening")
-		}
+		openingHasText = openingHasText || len(g.modernHDText.runs) != 0
 		g.stepNativeClassUILifecycle(time.Time{})
+	}
+	if !openingHasText {
+		t.Fatal("opening has no HD text")
 	}
 	if !g.drawNativeChurchStatus(screen) || len(g.modernHDText.runs) == 0 {
 		t.Fatal("steady church panel has no HD text")
@@ -118,12 +120,14 @@ func TestModernHDStatusChurchAndPlayerKeepIndexedTransitions(t *testing.T) {
 		t.Fatal("steady player panel has no HD text")
 	}
 	g.advanceNativePlayerStatus()
+	transitionHasText := false
 	for n := 0; n < 14; n++ {
 		g.drawNativePlayerStatus(screen)
-		if len(g.modernHDText.runs) != 0 {
-			t.Fatal("HD text leaked into indexed command transition")
-		}
+		transitionHasText = transitionHasText || len(g.modernHDText.runs) != 0
 		g.stepNativePlayerStatus()
+	}
+	if !transitionHasText {
+		t.Fatal("command transition has no HD text")
 	}
 	g.drawNativePlayerStatus(screen)
 	if g.nativePlayerStatus.phase != "commands" || len(g.modernHDText.runs) == 0 {

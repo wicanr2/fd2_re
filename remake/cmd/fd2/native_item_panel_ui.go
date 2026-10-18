@@ -898,12 +898,10 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 	}
 	panel := g.nativeItemPanel
 	var text []modernHDTextRun
-	if frame == 0 && !g.itemClosing {
-		if hd, runs, ok := g.composeModernHDItemPanel(); ok {
-			panel, text = hd, runs
-		}
+	if hd, runs, ok := g.composeModernHDItemPanel(); ok {
+		panel, text = hd, runs
 	}
-	var regions []image.Rectangle
+	regions := []battle.NativeItemPanelRegion{pass.Left, pass.Upper, pass.Bottom}
 	for _, region := range []battle.NativeItemPanelRegion{pass.Left, pass.Upper, pass.Bottom} {
 		if !region.Enabled || region.Width <= 0 || region.Height <= 0 {
 			continue
@@ -911,7 +909,6 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 		covered := image.Rect(region.DestX*2, region.DestY*2,
 			(region.DestX+region.Width)*2, (region.DestY+region.Height)*2)
 		g.clearModernHDTextRegion(covered)
-		regions = append(regions, covered)
 		source := panel.SubImage(image.Rect(
 			region.SourceX, region.SourceY,
 			region.SourceX+region.Width, region.SourceY+region.Height,
@@ -922,15 +919,7 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 		screen.DrawImage(source, op)
 	}
 	if g.modernHDText != nil {
-		for _, run := range text {
-			for _, region := range regions {
-				copy := run
-				copy.clip = run.clip.Intersect(region)
-				if !copy.clip.Empty() {
-					g.modernHDText.runs = append(g.modernHDText.runs, copy)
-				}
-			}
-		}
+		g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(text, regions)...)
 	}
 	return true
 }
