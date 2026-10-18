@@ -1460,7 +1460,9 @@
       },
       "new_or_root_owned_work_outputs": 0,
       "new_recordings": 0,
-      "unexpected_fd2_containers": 0
+      "unexpected_fd2_containers": 0,
+      "worklist_open": 21,
+      "worklist_manual": 14
     },
     "runtime_only_manifest": {
       "file": "work/promo-cadence-20261018/hd-fonts/hd-native-runtime-only-manifest-r1.json",
@@ -1471,6 +1473,15 @@
       "verified_runtime_only_duplicate_pack_removed": true,
       "runtime_only_manifest_retained": true,
       "recordings_created": false
-    }
+    },
+    "source_commit": "d8d8df214916d9a1523afdffc271ba88e5bd2d26",
+    "source_commit_remote_verified": true,
+    "issue259": "CLOSED after data/loader/existing GUI/private acceptance; #258 world remains OPEN",
+    "issues_updated": [
+      201,
+      202,
+      204,
+      258
+    ]
   }
 }

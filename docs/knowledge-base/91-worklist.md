@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -108,6 +108,16 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+2026-10-19 完整圖庫切片已整合d8d8df214916d9a1523afdffc271ba88e5bd2d26，origin/main已核同值。固定原生圖庫125組1455張HD及31組372張缺漏24父項已登錄；舊94組1083張父項與HD輸出bytes保持。完整來源／幾何／alpha／相位、九項工具守衛、實際第一章JSON候選及正式清冊／私人包Go回歸通過。
+
+正式私人包3207檔逐項SHA及allow-list驗證，無額外稿；private庫提交1edc3a3b8e1c6582cceaa31a0e97ab99223851c2已推送且遠端HEAD相同。正常首章16張GPU、F2／Home、縮放／說明、保存及新程序標題LOAD通過；完整保存與來源089b077b相同。runtime-only 3010檔載入通過，已移除驗證用重複包及暫存binary；本輪沒有錄影。
+
+這個切片完成圖庫、loader與既有24呈現驗證。144人物世界尚未接Game.Draw，HD地形及完整戰場／早中晚期／平台仍待完成；沒有新原版oracle、matching或整章PLAYER-E2。Release保持。唯一現況見58／61及docs/data/fd2-modern-hd-battlefield-20261019.json的native_coverage_followup_20261019。
+
+本項接續：完整原生人物來源已補齊；仍須核對其他正式consumer與素材分類，完整玩家覆蓋沿58。
+
+以下為較早歷史快照，較早缺31組及首章拒收已由上述完整圖庫切片取代。
+
 2026-10-19 接續：既有清冊子集r9的94組1083幀已等比例重編，來源／幾何／alpha／相位驗證與完整方向掃描通過；11份比例新稿供14組168幀，九項工具守衛通過。HD loader、原生單位／前景計畫及候選世界已有受測實作，正式Game.Draw尚未啟用。
 
 實際第一章既有JSON還原後，94組圖源預檢完成，世界因missing group96 frame0拒收。固定B24 header與既有1680幀loader反證舊分母：原始140組中125組1455槽可見，現有清冊另漏31組372槽。#259追蹤素材與loader範圍，不能把94組子集完整當全圖庫。標準現代主題回歸60.698秒通過；外部候選整體39.757秒失敗如實保留，沒有新GPU／原版對拍／PLAYER-E2。
@@ -148,20 +158,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 證據：`docs/data/localization/ending-story-supplements.json`
 
-### P1 HD人物清冊漏掉原版圖庫31組可見selector，首章96已重現
-
-`modern-fdicon-bank-visible-selector-coverage` · 缺陷 · [#259](https://github.com/wicanr2/fd2_re/issues/259) · 仍未完成 · 要人判
-
-2026-10-19 本機HD世界候選從已驗第一章JSON存檔還原後，正式typed名冊需要selector96，合成器如實拒收missing group 96 frame 0。這不是未知原版語意或新架構取捨。
-
-固定FDICON.B24大小624010、SHA-256 7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44的前6 bytes為180018009006，header實際1680幀／140組，與既有fdicon.SeparatedSpriteCount一致。全部分離mask盤點共有125組1455個可見槽；現代清冊94組1083張只涵蓋0..95的一部分，另漏31組372張：96–103、106–120、122–126、133–135。這31組沒有與較早完整12幀組逐位元相同的decoded像素／mask／remap組合，不可猜代或整組套用舊人物。其他零來源寫入組須保持其caller語意，不造圖。
-
-可重跑入口tools/audit_modern_fdicon_bank.py；既有存檔候選驗證TestModernHDMapActualCandidateWorld保留失敗。來源與雜湊追加docs/data/fd2-modern-hd-battlefield-20261019.json，61、56／57／58同步更正先前把96組子集當全圖庫的敘述。現有94組r9資料與姿態檢查通過仍有效；不代表全戰場HD或正常GPU完成。
-
-先從首章96及目前raw名冊需求補已核准風格，再擴及其餘實際可達selector；來源、24父項、144圖、清冊、loader範圍與私人同步一併修正。世界尚未啟用正式Game.Draw，不以像素替代或跳過敵人讓候選通過。
-
-怎樣算做完：依固定原始圖庫實際count與typed玩家名冊盤點需求，31組可見漏項各有素材或可達性分類；首章selector96等正式需求完成24父項與144素材、完整清冊／loader／私人allow-list同步，候選及正常GPU驗證通過；零來源寫入組不造圖。
-
 ## runtime — 還沒接進正式執行期
 
 ### P1 補齊剩餘 HUD 重繪：玩家確認、物理返回與劇情關框
@@ -179,6 +175,16 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 ### P1 HD高解析呈現：原生面板字型、介面、戰場與平台驗收
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
+
+2026-10-19 完整圖庫切片已整合d8d8df214916d9a1523afdffc271ba88e5bd2d26，origin/main已核同值。固定原生圖庫125組1455張HD及31組372張缺漏24父項已登錄；舊94組1083張父項與HD輸出bytes保持。完整來源／幾何／alpha／相位、九項工具守衛、實際第一章JSON候選及正式清冊／私人包Go回歸通過。
+
+正式私人包3207檔逐項SHA及allow-list驗證，無額外稿；private庫提交1edc3a3b8e1c6582cceaa31a0e97ab99223851c2已推送且遠端HEAD相同。正常首章16張GPU、F2／Home、縮放／說明、保存及新程序標題LOAD通過；完整保存與來源089b077b相同。runtime-only 3010檔載入通過，已移除驗證用重複包及暫存binary；本輪沒有錄影。
+
+這個切片完成圖庫、loader與既有24呈現驗證。144人物世界尚未接Game.Draw，HD地形及完整戰場／早中晚期／平台仍待完成；沒有新原版oracle、matching或整章PLAYER-E2。Release保持。唯一現況見58／61及docs/data/fd2-modern-hd-battlefield-20261019.json的native_coverage_followup_20261019。
+
+本項接續：125組1455張HD人物已登錄，正式世界未啟用；HD地形、其餘介面及跨平台效能仍未完成。
+
+以下為較早歷史快照，較早缺31組及首章拒收已由上述完整圖庫切片取代。
 
 2026-10-19 接續：既有清冊子集r9的94組1083幀已等比例重編，來源／幾何／alpha／相位驗證與完整方向掃描通過；11份比例新稿供14組168幀，九項工具守衛通過。HD loader、原生單位／前景計畫及候選世界已有受測實作，正式Game.Draw尚未啟用。
 
@@ -302,6 +308,16 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-battle-viewport-half-scale` · 缺陷 · [#258](https://github.com/wicanr2/fd2_re/issues/258) · 仍未完成 · 要人判
 
+2026-10-19 完整圖庫切片已整合d8d8df214916d9a1523afdffc271ba88e5bd2d26，origin/main已核同值。固定原生圖庫125組1455張HD及31組372張缺漏24父項已登錄；舊94組1083張父項與HD輸出bytes保持。完整來源／幾何／alpha／相位、九項工具守衛、實際第一章JSON候選及正式清冊／私人包Go回歸通過。
+
+正式私人包3207檔逐項SHA及allow-list驗證，無額外稿；private庫提交1edc3a3b8e1c6582cceaa31a0e97ab99223851c2已推送且遠端HEAD相同。正常首章16張GPU、F2／Home、縮放／說明、保存及新程序標題LOAD通過；完整保存與來源089b077b相同。runtime-only 3010檔載入通過，已移除驗證用重複包及暫存binary；本輪沒有錄影。
+
+這個切片完成圖庫、loader與既有24呈現驗證。144人物世界尚未接Game.Draw，HD地形及完整戰場／早中晚期／平台仍待完成；沒有新原版oracle、matching或整章PLAYER-E2。Release保持。唯一現況見58／61及docs/data/fd2-modern-hd-battlefield-20261019.json的native_coverage_followup_20261019。
+
+本項接續：完整首章CPU世界候選通過，但正式GUI仍24直繪，取景倍率未修；接1920世界／透明介面、HUD、走行及戰鬥返回。
+
+以下為較早歷史快照，較早缺31組及首章拒收已由上述完整圖庫切片取代。
+
 2026-10-19 接續：既有清冊子集r9的94組1083幀已等比例重編，來源／幾何／alpha／相位驗證與完整方向掃描通過；11份比例新稿供14組168幀，九項工具守衛通過。HD loader、原生單位／前景計畫及候選世界已有受測實作，正式Game.Draw尚未啟用。
 
 實際第一章既有JSON還原後，94組圖源預檢完成，世界因missing group96 frame0拒收。固定B24 header與既有1680幀loader反證舊分母：原始140組中125組1455槽可見，現有清冊另漏31組372槽。#259追蹤素材與loader範圍，不能把94組子集完整當全圖庫。標準現代主題回歸60.698秒通過；外部候選整體39.757秒失敗如實保留，沒有新GPU／原版對拍／PLAYER-E2。
@@ -357,6 +373,16 @@ F2重複消費修正後，world-geometry-f2-fixed-gui-r1以同份正常首章JSO
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+2026-10-19 完整圖庫切片已整合d8d8df214916d9a1523afdffc271ba88e5bd2d26，origin/main已核同值。固定原生圖庫125組1455張HD及31組372張缺漏24父項已登錄；舊94組1083張父項與HD輸出bytes保持。完整來源／幾何／alpha／相位、九項工具守衛、實際第一章JSON候選及正式清冊／私人包Go回歸通過。
+
+正式私人包3207檔逐項SHA及allow-list驗證，無額外稿；private庫提交1edc3a3b8e1c6582cceaa31a0e97ab99223851c2已推送且遠端HEAD相同。正常首章16張GPU、F2／Home、縮放／說明、保存及新程序標題LOAD通過；完整保存與來源089b077b相同。runtime-only 3010檔載入通過，已移除驗證用重複包及暫存binary；本輪沒有錄影。
+
+這個切片完成圖庫、loader與既有24呈現驗證。144人物世界尚未接Game.Draw，HD地形及完整戰場／早中晚期／平台仍待完成；沒有新原版oracle、matching或整章PLAYER-E2。Release保持。唯一現況見58／61及docs/data/fd2-modern-hd-battlefield-20261019.json的native_coverage_followup_20261019。
+
+本項接續：首章16張普通GUI與保存冷讀通過；正式144世界與早中晚期主要交界尚未驗。
+
+以下為較早歷史快照，較早缺31組及首章拒收已由上述完整圖庫切片取代。
 
 2026-10-19 接續：既有清冊子集r9的94組1083幀已等比例重編，來源／幾何／alpha／相位驗證與完整方向掃描通過；11份比例新稿供14組168幀，九項工具守衛通過。HD loader、原生單位／前景計畫及候選世界已有受測實作，正式Game.Draw尚未啟用。
 
