@@ -14,16 +14,16 @@
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。"
   },
   "runtime_source": {
-    "binary_sha256": "1b576f8860be4ac2c1235958a496c11bde389e517716187bb72c6b93ebfb0b46",
+    "binary_sha256": "373c525ffd5889784f20a5aede981db8c2a2dcbd38aaa322f8da9880bd93e98c",
     "binary_removed_after_validation": true,
     "go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-runtime-source-final.json",
-      "sha256": "8f33f05e3c780baa2b6191b87036d2d01a07c57a90da998a0d88aa3c8e346bb4"
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-runtime-source-final.json",
+      "sha256": "d3f27564503fb40d349585a5fef5ec761c784963168cddde46448ef970eb49a1"
     },
-    "go_file_count": 984,
+    "go_file_count": 987,
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "bdad99da23d9c4b1ace785659e8c6f94dc4d4040661c8631e5dac96b5bfe6a88"
+      "sha256": "d2b746daee93aeab82e96b2404588f884698aa996ab69b36814d8edbacd1b0f1"
     }
   },
   "f2_conflict": {
@@ -287,7 +287,7 @@
       }
     ]
   },
-  "source_commit": "3e1abc519fd6a125ea8854db24eaaa0c0b10b967",
+  "source_commit": "b086b2c3db01bfb52673e3d9180b6f1d2233aff0",
   "component_audit": {
     "manifest": {
       "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-components-audit-r3/hd-map-sprites.json",
@@ -1715,7 +1715,7 @@
       204
     ]
   },
-  "prior_source_commit": "f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71",
+  "prior_source_commit": "3e1abc519fd6a125ea8854db24eaaa0c0b10b967",
   "historical_runtime_source_before_world": {
     "snapshot": {
       "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-runtime-source-final.json",
@@ -1908,6 +1908,26 @@
       "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-cleanup-final.json",
       "sha256": "d0b1c854fc064e774285f3e90ed38847951256bfb257ba5062d60ef65f0b016b",
       "bytes_freed": 293281361
+    },
+    "source_commit": "b086b2c3db01bfb52673e3d9180b6f1d2233aff0",
+    "source_commit_remote_verified": true,
+    "issues_updated_still_open": [
+      201,
+      202,
+      204
+    ]
+  },
+  "historical_runtime_source_before_timed_dialogue": {
+    "binary_sha256": "1b576f8860be4ac2c1235958a496c11bde389e517716187bb72c6b93ebfb0b46",
+    "binary_removed_after_validation": true,
+    "go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-runtime-source-final.json",
+      "sha256": "8f33f05e3c780baa2b6191b87036d2d01a07c57a90da998a0d88aa3c8e346bb4"
+    },
+    "go_file_count": 984,
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "bdad99da23d9c4b1ace785659e8c6f94dc4d4040661c8631e5dac96b5bfe6a88"
     }
   }
 }

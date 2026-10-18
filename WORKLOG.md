@@ -1058,3 +1058,5 @@ r1工具誤等第二次攻擊的經驗，改驗固定第一次，不改seed。r2
 [主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的timed_dialogue_followup_20261019保存來源／衍生槽SHA、唯一差異、來源綁定、測試、GPU與重跑命令。完整HD、地形、其他演出與平台仍待完成；沒有原版oracle、matching或整章E2。私人素材及Release保持，沒有錄影。提交與清理結果於本批最後追加。
 
 提交前官方pull／render／verify為20項開啟、13項人工、可能已完成0。244條教訓、126守衛與2934本地連結通過，991份來源綁定保持；新輸出UID/GID1000，無root-owned與.md目錄。兩份暫存執行檔、PPM及本任務快取已清除，釋出293281361 bytes，沒有錄影與本批容器殘留。
+
+來源提交`b086b2c3db01bfb52673e3d9180b6f1d2233aff0`已從獨立分支快轉main，推送後真正遠端HEAD核同值。#201／#202／#204已同步計時對話成果與尚未驗證caller，三項保持開啟。官方快照再次pull／render／verify為20項、13人工、可能已完成0；後續提交僅同步來源及工單。完整HD仍未完成。
