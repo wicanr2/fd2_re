@@ -17,7 +17,7 @@
 2026-10-15 排程定案：使用者要求重製完成與HD優先，匹配式反編譯[#198](https://github.com/wicanr2/fd2_re/issues/198)暫停。
 正式Go／Ebiten實作仍依原版證據、READY規格與正常玩家路徑驗收，不要求先完成全檔C位元組匹配。
 章節、事件與HUD缺口以[58目前狀態](58-fd2-exe-re-coverage.md)及[91排程](91-worklist.md)為準。
-現代主題沿用[61](61-modern-theme-runtime-spec.md)已核准範圍。使用者確認1920×1200及480×480頭像後，啟動時高解析序章切片已通過正常97拍與GPU核對；[F2切片](../data/fd2-modern-hd-f2-20261018.json)亦通過動態入口、縮放／遮罩及兩種主題LOAD同份節點存檔。非原生對話仍用80圖，其餘介面／戰場及跨平台效能仍待完成。最初啟動來源見[高解析收據](../data/fd2-modern-hd-20261018.json)。
+現代主題沿用[61](61-modern-theme-runtime-spec.md)已核准範圍。使用者確認1920×1200及480×480頭像後，啟動時高解析序章切片已通過正常97拍與GPU核對；[F2切片](../data/fd2-modern-hd-f2-20261018.json)亦通過動態入口、縮放／遮罩及兩種主題LOAD同份節點存檔。[非原生對話切片](../data/fd2-modern-hd-dialogue-20261018.json)已將480圖源接入既有168邏輯區域，首章下框兩個新程序START後F9冷讀與F2往返通過，上下框幾何為E1。標題LOAD對本份JSON的chapter拒收另列[#252](https://github.com/wicanr2/fd2_re/issues/252)；其餘玩家路徑、介面／戰場及跨平台效能仍待完成。最初啟動來源見[高解析收據](../data/fd2-modern-hd-20261018.json)。
 
 原版執行器採用dosgolem規格429的實際IRQ7處理器、DSP確認、PIC EOI及IRET返回鏈。
 時鐘與私有堆疊仍沿既有平台近似；不恢復輪詢替代，不修改遊戲規則。

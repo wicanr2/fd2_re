@@ -1,0 +1,994 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-18",
+  "status": "CONFORMED-PLAYER-E2-LIMITED",
+  "scope": "首章正常F5節點存檔在兩個新程序START後以F9冷讀的非原生下框HD；上下框繪圖變換另為RUNTIME-E1。",
+  "runtime_base_commit": "d230cfbf0ff0164c824d766cba21fb904b99fc60",
+  "user_decision": "沿用已核准手繪風格、1920×1200與480×480圖源，保留既有版面及操作。",
+  "runtime_sources": {
+    "remake/cmd/fd2/main.go": "440ed62d71922e8a8ae82e56f4696d9bea623296a379367a18b14b36f546db30",
+    "remake/cmd/fd2/modern_hd_presentation.go": "968cc87ea8d192f1c3ebffd686a178bc5a8f0b2180c11d611a8df7aa96ac470b",
+    "remake/cmd/fd2/input_audit_trace.go": "a311012a28127db3ba45d63006e6025304078171ac09c82aa364ab22bd74e7a6",
+    "remake/cmd/fd2/modern_hd_presentation_test.go": "a6ff69ddf241108bb5997b374a0a9fcef56d9f53a6f1cb1d2569e40485d744b4",
+    "remake/cmd/fd2/ebiten_screen_filter.go": "40e582398075c242ad09ab6d35765f42ea961bb71854afe71cb38042be065142",
+    "tools/verify_fd2_hd_dialogue_gui.py": "ed9eaabc6f7d4cb3ceb3a2297f56e6c64f99ec97ad784db3a60742155b37b2d9",
+    "remake/go.mod": "97c4d9a19ccb559f64ea3d0282633790ff192ca8632375f28429d8fca207008b",
+    "remake/go.sum": "c11f49fbe83587398c52eee4fdb1702dd4daa228471362028bbdb1e9f13f8478",
+    "docs/data/fd2-string-review.json": "6e29721273f37a830ee35ee201903524ddeaec77c1695bf881ce40e7276cb16f",
+    "remake/assets/locales/zh-Hant/content.json": "d5940ac3c6f9f7cfb6bd436377872a96e80c3006b1e624eb4556b0bedb3b1c4b",
+    "remake/assets/locales/zh-Hans/content.json": "de1b6f67f0969ec12f349619f5c268f89fac40bc6670bd4b7304d8ae71188df8",
+    "remake/assets/locales/en/content.json": "704d480c2f771a3042fd178fcfd888192478cb7b8e973a4a112af1984cf0b72e",
+    "remake/assets/locales/ja/content.json": "fdc82319654c9032e4557cd805e20f67b375f60d32c3b4e74ad337687b571474"
+  },
+  "original_exe": {
+    "file": "org_game/炎龍騎士團/FLAME2/FD2.EXE",
+    "sha256": "222b7d067ad4450eb9c5f6e6bce1797d54bb050417ba39ced6067f8039f28c4f",
+    "changed": false
+  },
+  "artwork": {
+    "changed": false,
+    "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+    "private_repository": "wicanr2/fd2-assets-private",
+    "private_head": "3f289e7bad8dae340d803f0176843fb2c3b3ea70"
+  },
+  "geometry": {
+    "source": [
+      480,
+      480
+    ],
+    "logical_canvas": [
+      640,
+      400
+    ],
+    "window": [
+      1920,
+      1200
+    ],
+    "lower_rect": [
+      16,
+      213,
+      168,
+      168
+    ],
+    "lower_mirror_x": true,
+    "upper_rect": [
+      456,
+      19,
+      168,
+      168
+    ],
+    "upper_mirror_x": false,
+    "physical_portrait": [
+      504,
+      504
+    ],
+    "note": "保留既有非原生168邏輯尺寸；原生故事分支仍為480顯示區域。"
+  },
+  "normal_player_receipt": {
+    "file": "work/promo-cadence-20261018/hd-dialogue/normal-r5/hd-dialogue-gui.json",
+    "sha256": "cf28b2c28d6fc21909cf5a276f95c4f94fbb70e9c763cf0c0e8cd6372b9c7b82",
+    "report": {
+      "schema_version": 1,
+      "status": "PLAYER-E2-LIMITED-GPU-REVIEW-REQUIRED",
+      "method": "兩個新程序從正式開場START，在原生對話用普通F9冷讀原樣正常F5存檔；普通F2/F1/Esc/F9，無章節注入、改血或強化。",
+      "source_receipt": "/repo/docs/data/fd2-modern-hd-f2-20261018.json",
+      "source_receipt_sha256": "24f3833f034057096dd0fb8db6645ed82c115635a6354933cf9320ddaa36193b",
+      "source_save": "/repo/work/promo-cadence-20261018/f2-runtime/normal-r4/user-data/fd2_re/fd2_save.json",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "save_unchanged": true,
+      "binary_sha256": "eded298708b3e86a110fb35ed6f526d7256c1ee12999b2a63369149b2cfe62b3",
+      "driver_sha256": "ed9eaabc6f7d4cb3ceb3a2297f56e6c64f99ec97ad784db3a60742155b37b2d9",
+      "catalog_sha256": "16359db81a157424c42eec847f625e1765a3d46e2ee17579a02d32a8bacd1769",
+      "source_portrait_sha256": "e5d16a454cefa932d2e26009743fedf6c153f39163539ab6d41e6b50f719ff54",
+      "reference_method": "ImageMagick Triangle放大480至504後鏡像；GPU採線性取樣，允許明示的插值／量化差異，不宣稱零像素差異。",
+      "reference_sha256": "f8a5b5725781616618a0dccae4cb48179579a6f226e0f7881708de651435bc92",
+      "old_80_frame_mae": 0.0251632,
+      "gpu_metrics": [
+        {
+          "file": "hd-enter.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-help-closed.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-size-restored.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-return.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-quickload.png",
+          "mae_normalized": 0.0016226,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        },
+        {
+          "file": "hd-cold-load.png",
+          "mae_normalized": 0.00162285,
+          "crop": "504x504+48+639",
+          "reference": "sol-hd-504-mirrored.png",
+          "threshold": 0.004
+        }
+      ],
+      "faithful_loaded": {
+        "ai_busy": false,
+        "banner": "",
+        "banner_t": 0,
+        "camera": [
+          0,
+          312
+        ],
+        "cursor": [
+          7,
+          14
+        ],
+        "dialogue_native": false,
+        "dialogue_phase": 0,
+        "dialogue_progress": 15,
+        "dialogue_speaker": 0,
+        "dialogues": 1,
+        "error": "",
+        "frame": 840,
+        "hd_theme": false,
+        "help_visible": false,
+        "keys": null,
+        "modern_theme": false,
+        "move_preview": false,
+        "moved": false,
+        "native_round": 1,
+        "next_player_index": 0,
+        "node": "battle_ch01",
+        "player_focus": null,
+        "ring": false,
+        "ring_blink": 0,
+        "ring_phase": "",
+        "ring_sel": 0,
+        "title_phase": "",
+        "title_selection": 0,
+        "turn": 1,
+        "units": [
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 42,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 7,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 7,
+            "y": 20
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 28,
+            "mp": 8,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 10,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 10,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 48,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 50,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 3,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 3
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 6,
+              "Y": 0,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 6,
+            "y": 0
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 3,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 3,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 23
+          }
+        ],
+        "view": {
+          "CameraX": 0,
+          "CameraY": 13,
+          "CursorX": 7,
+          "CursorY": 14,
+          "VisibleCursorX": 7,
+          "VisibleCursorY": 1
+        },
+        "walking": false
+      },
+      "hd_quick_loaded": {
+        "ai_busy": false,
+        "banner": "",
+        "banner_t": 0,
+        "camera": [
+          0,
+          312
+        ],
+        "cursor": [
+          7,
+          14
+        ],
+        "dialogue_native": false,
+        "dialogue_phase": 0,
+        "dialogue_progress": 15,
+        "dialogue_speaker": 0,
+        "dialogues": 1,
+        "error": "",
+        "frame": 1800,
+        "hd_overlay_mirrored": true,
+        "hd_overlay_rect": [
+          16,
+          213,
+          168,
+          168
+        ],
+        "hd_theme": true,
+        "help_visible": false,
+        "keys": null,
+        "modern_theme": true,
+        "move_preview": false,
+        "moved": false,
+        "native_round": 1,
+        "next_player_index": 0,
+        "node": "battle_ch01",
+        "player_focus": null,
+        "ring": false,
+        "ring_blink": 0,
+        "ring_phase": "",
+        "ring_sel": 0,
+        "title_phase": "",
+        "title_selection": 0,
+        "turn": 1,
+        "units": [
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 42,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 7,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 7,
+            "y": 20
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 28,
+            "mp": 8,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 10,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 10,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 48,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 50,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 3,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 3
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 6,
+              "Y": 0,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 6,
+            "y": 0
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 3,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 3,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 23
+          }
+        ],
+        "view": {
+          "CameraX": 0,
+          "CameraY": 13,
+          "CursorX": 7,
+          "CursorY": 14,
+          "VisibleCursorX": 7,
+          "VisibleCursorY": 1
+        },
+        "walking": false
+      },
+      "hd_cold_loaded": {
+        "ai_busy": false,
+        "banner": "",
+        "banner_t": 0,
+        "camera": [
+          0,
+          312
+        ],
+        "cursor": [
+          7,
+          14
+        ],
+        "dialogue_native": false,
+        "dialogue_phase": 0,
+        "dialogue_progress": 15,
+        "dialogue_speaker": 0,
+        "dialogues": 1,
+        "error": "",
+        "frame": 840,
+        "hd_overlay_mirrored": true,
+        "hd_overlay_rect": [
+          16,
+          213,
+          168,
+          168
+        ],
+        "hd_theme": true,
+        "help_visible": false,
+        "keys": null,
+        "modern_theme": true,
+        "move_preview": false,
+        "moved": false,
+        "native_round": 1,
+        "next_player_index": 0,
+        "node": "battle_ch01",
+        "player_focus": null,
+        "ring": false,
+        "ring_blink": 0,
+        "ring_phase": "",
+        "ring_sel": 0,
+        "title_phase": "",
+        "title_selection": 0,
+        "turn": 1,
+        "units": [
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 42,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 7,
+              "Y": 20,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 7,
+            "y": 20
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 28,
+            "mp": 8,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 10,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 10,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 48,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 8,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 8,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 0,
+            "hp": 50,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 11,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 11,
+            "y": 23
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 3,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 3
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 1,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 1
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 6,
+              "Y": 0,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 6,
+            "y": 0
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 1,
+              "Y": 21,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 1,
+            "y": 21
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 2,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 2,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 3,
+              "Y": 22,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 3,
+            "y": 22
+          },
+          {
+            "acted": false,
+            "camp": 2,
+            "hp": 28,
+            "mp": 0,
+            "name": "",
+            "on_field": true,
+            "raw": {
+              "X": 4,
+              "Y": 23,
+              "Pose": 0,
+              "Motion": 0
+            },
+            "x": 4,
+            "y": 23
+          }
+        ],
+        "view": {
+          "CameraX": 0,
+          "CameraY": 13,
+          "CursorX": 7,
+          "CursorY": 14,
+          "VisibleCursorX": 7,
+          "VisibleCursorY": 1
+        },
+        "walking": false
+      },
+      "screenshots": {
+        "faithful-load.png": {
+          "sha256": "d0ea276a38969d9ce564cdecee6f6160af6d6034bc1594916709c37ec26f67ba"
+        },
+        "hd-enter.png": {
+          "sha256": "fb23a9b14e05899220bbbe88c8fe385d5f8d01420dc007a5968fd314183db530"
+        },
+        "hd-help.png": {
+          "sha256": "96f1c3fd9baebb8a8a538f4dc98cb9d5d507e123a530927897f0c16cbbfd31b1"
+        },
+        "hd-help-closed.png": {
+          "sha256": "234090905ceb785b27d594037540a2d5314781c93ac8a591c8d531aed4e6cab7"
+        },
+        "hd-resize-1600x1000.png": {
+          "sha256": "6cf0ca9bf1e0fd9e03420955c287ea9b2dcad191836de18c357e893b81907b48"
+        },
+        "hd-resize-1920x1080.png": {
+          "sha256": "154dcccabb122eaff4138f92b7484cdc333e6370493e7c0c22afc6962e705db7"
+        },
+        "hd-size-restored.png": {
+          "sha256": "fb23a9b14e05899220bbbe88c8fe385d5f8d01420dc007a5968fd314183db530"
+        },
+        "faithful-return.png": {
+          "sha256": "d97d0b536f7a9d7540b4d3f9ae454fd80ffefe6383a699b93e622d50e6a7c24b"
+        },
+        "hd-return.png": {
+          "sha256": "234090905ceb785b27d594037540a2d5314781c93ac8a591c8d531aed4e6cab7"
+        },
+        "hd-quickload.png": {
+          "sha256": "234090905ceb785b27d594037540a2d5314781c93ac8a591c8d531aed4e6cab7"
+        },
+        "hd-cold-load.png": {
+          "sha256": "a345a2b4689a5b55b6c9310485b96782e041cc69024dc74b0e943c6b468da92f"
+        }
+      },
+      "wall_seconds": 63.01374668162316,
+      "recordings_created": false,
+      "limits": "正常玩家只驗首章非原生下框與JSON節點讀取；上框幾何為獨立E1，非全戰役／跨平台／原版對拍。"
+    }
+  },
+  "manual_review": {
+    "status": "PASS-LIMITED",
+    "reviewed": [
+      "normal-r5/hd-cold-load.png",
+      "normal-r5/faithful-return.png",
+      "normal-r4/hd-enter.png",
+      "normal-r4/hd-help.png",
+      "normal-r4/hd-resize-1920x1080.png"
+    ],
+    "scope": "實際GPU頭像清晰度、鏡像與位置、忠實還原、幫助遮罩與黑邊。r4僅補目視，不作整輪通過收據。"
+  },
+  "pixel_comparison": {
+    "method": "ImageMagick Triangle放大480至504後鏡像；GPU採線性取樣，允許明示的插值／量化差異，不宣稱零像素差異。",
+    "threshold": 0.004,
+    "old_80_normalized_mae": 0.0251632,
+    "max_new_normalized_mae": 0.00162285,
+    "classification": "插值／量化近似，非零像素或原版parity"
+  },
+  "tests": [
+    {
+      "image": "fd2-go-test-local:latest",
+      "go": "1.22.12",
+      "ebiten": "v2.6.6",
+      "command": "with-xvfb go test ./cmd/fd2 -run \"Test(ModernHD|ApplyTheme|CycleTheme|RefreshTheme|.*QuickLoad|.*QuickSave)\" -count=1",
+      "result": "PASS",
+      "seconds": 2.381,
+      "scope": "完整私人HD包、舊包、預檢、原生與非原生上下框／鏡像、切換及存讀檔"
+    },
+    {
+      "image": "fd2-go-test-local:latest",
+      "command": "with-xvfb go test -p 1 ./cmd/fd2 ./cmd/fd2-string-inventory ./internal/localization -run \"Test(.*Locale.*|.*Localization.*|.*Content.*|.*Reviewed.*|.*Inventory.*|Packaged.*)\" -count=1",
+      "result": "PASS",
+      "package_seconds": [
+        8.831,
+        0.195,
+        0.252
+      ],
+      "scope": "最終四語文字盤點、審校與在地化回歸"
+    }
+  ],
+  "localization": {
+    "old_entries": 5106,
+    "new_entries": 5107,
+    "new_translations": 0,
+    "added_alias": "現代主題不可用：",
+    "translations_and_status_retained": true,
+    "migration_stats": {
+      "by_id": 4832,
+      "by_signature": 274,
+      "by_text": 1,
+      "new": 0
+    },
+    "review_dispositions_preserved": 99,
+    "inventory_sha256": "5858fb9516e03421f822f6a725d4b92ced05ac1c90d75dc21e1cd3ad8193bcde",
+    "note": "保留四語既有譯文、狀態與變數；新增一個已譯相同文字來源別名，沒有新譯文。本輪未重跑四語GUI。"
+  },
+  "diagnostics": {
+    "normal-r1": "按鍵未等實際釋放Update，工具未收到ACK；不算通過。",
+    "normal-r2": "標題舊audit造成多送Enter；不算通過。",
+    "normal-r3": "實際首章JSON無正chapter，標題LOAD不可確認，另列#252；不算通過。",
+    "normal-r4": "HD及遮罩／縮放成功，但短F2落於GPU上傳，未收到ACK；不算整輪通過。",
+    "preserved_driver_snapshots": {
+      "work/promo-cadence-20261018/hd-dialogue/verify-gui-r1.py": "59a4bbb62935a4591f97cf3d71e799ad76dd61c9b4c6e67035daee4b61d3f478",
+      "work/promo-cadence-20261018/hd-dialogue/verify-gui-r2.py": "7277a9c27c266d203e8a6023f4ac3a12308efc4be1407176f6a64a797ef18ead",
+      "work/promo-cadence-20261018/hd-dialogue/verify-gui-r4.py": "510c12dbde52527c314ae6fa4423cae8174141544cf095b4c6fea7ab227cda20"
+    }
+  },
+  "pending_issues": {
+    "252": "首章F5 JSON可F9讀取，標題LOAD因chapter顯示契約拒收；本輪不猜填章號。",
+    "251": "F1標題與首列間距。",
+    "202": "其他章節、戰場與主要玩家交界驗證。",
+    "204": "介面、字型、戰場及跨平台效能。"
+  },
+  "limits": [
+    "首章下框普通START後F9冷讀，並非標題LOAD通過。",
+    "非原生上框僅幾何RUNTIME-E1，非全戰役PLAYER-E2。",
+    "Linux隔離GUI，未驗本輪macOS／Windows實機或穩定60fps。",
+    "未新增原版對拍或匹配式反編譯。",
+    "原版像素與80舊包回退保持；全介面／字型／戰場HD未完成。"
+  ],
+  "cleanup": {
+    "recordings_created": false,
+    "binary": {
+      "file": "work/promo-cadence-20261018/hd-dialogue/fd2",
+      "sha256": "eded298708b3e86a110fb35ed6f526d7256c1ee12999b2a63369149b2cfe62b3",
+      "bytes": 18887184,
+      "removed_after_verification": true
+    },
+    "preserved": "PNG、輸入audit、保存原樣複本與文字收據；舊work未刪。"
+  }
+}

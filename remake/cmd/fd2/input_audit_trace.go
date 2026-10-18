@@ -22,8 +22,17 @@ func (g *Game) recordInputAuditState() {
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
 	r["dialogue_progress"] = g.nativeDialogueProgress
+	r["dialogue_phase"] = g.dlgPhase
+	r["title_phase"] = g.titlePhase
+	r["title_selection"] = g.titleSel
+	r["help_visible"] = g.helpVisible
 	if len(g.dialog) != 0 {
 		r["dialogue_speaker"] = g.dialog[len(g.dialog)-1].Speaker
+		r["dialogue_native"] = g.dialog[len(g.dialog)-1].NativeDialogue != nil
+	}
+	if overlay := g.modernHDOverlay; overlay != nil {
+		r["hd_overlay_rect"] = []int{overlay.rect.Min.X, overlay.rect.Min.Y, overlay.rect.Dx(), overlay.rect.Dy()}
+		r["hd_overlay_mirrored"] = overlay.mirrorX
 	}
 	if g.camp != nil {
 		r["node"] = g.camp.NodeID()

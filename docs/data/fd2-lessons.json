@@ -2629,6 +2629,36 @@
         ],
         "pattern": "Compare equivalent LOADs"
       }
+    },
+    {
+      "id": "gui-key-hold-ack-release-update",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "GUI送鍵保持keydown直到真實Update收據承認，finally釋放後等後續Update再送下一鍵；tools/verify_fd2_hd_dialogue_gui.py從有界audit尾端找事件，不只看最後一列。",
+      "why": "短按鍵可能完整落在同步素材／GPU上傳期間；固定放鍵等待也會漏掉鍵，週期觀測還會覆蓋先前按鍵列。開場略過使用已確認在標題不會確認START的Esc，避免狀態延遲導致過衝。",
+      "evidence": "tools/verify_fd2_hd_dialogue_gui.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_dialogue_gui.py"
+        ],
+        "pattern": "Observe subsequent Updates"
+      }
+    },
+    {
+      "id": "title-load-checks-json-slot-metadata",
+      "area": "存檔",
+      "date": "2026-10-18",
+      "rule": "標題LOAD與F9的驗收分別追查槽metadata和實際還原者；先讀remake/cmd/fd2/native_load_slots_ui.go的nativeLoadSlotMetadata，不把F9可讀當成標題可確認。既有檔案拒收時另開缺陷，不猜改chapter值。",
+      "why": "正常首章F5的JSON沒有正chapter；F9讀取通過，標題槽卻要求chapter>0。#252保存此差異，本輪HD用新程序START後F9驗證，沒有放寬槽或原版SAV守衛。",
+      "evidence": "https://github.com/wicanr2/fd2_re/issues/252",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_load_slots_ui.go"
+        ],
+        "pattern": "nativeLoadSlotMetadata"
+      }
     }
   ]
 }

@@ -9806,12 +9806,14 @@ func (g *Game) Draw(screen *ebiten.Image) {
 					ty = by + 46
 				}
 				var portrait *ebiten.Image
+				var modernPortrait *modernStoryPortraitFrame
 				if g.modernStoryPortraits != nil {
 					modern, ok := g.modernStoryPortraits.portraits[dl.Speaker]
 					if !ok || modern == nil || modern.image == nil {
 						return // 整句失敗即關閉；不混用原版頭像
 					}
 					portrait = ebiten.NewImageFromImage(modern.image)
+					modernPortrait = modern
 				} else if fr := g.portraits[dl.Speaker]; len(fr) > 0 {
 					mi := 0
 					if g.mouthOpen && len(fr) > 3 {
@@ -9830,6 +9832,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 						po.GeoM.Translate(hx+80*ps, hy)
 					}
 					screen.DrawImage(portrait, po)
+					if modernPortrait != nil && modernPortrait.hdImage != nil {
+						g.modernHDOverlay = &modernHDOverlay{
+							portrait: modernPortrait,
+							rect:     image.Rect(int(hx), int(hy), int(hx+80*ps), int(hy+80*ps)),
+							mirrorX:  !upper,
+						}
+					}
 				} else {
 					tx = 32
 				}

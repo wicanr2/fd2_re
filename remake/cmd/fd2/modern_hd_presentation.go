@@ -42,6 +42,7 @@ func (p *modernHDPresentation) Update() error {
 type modernHDOverlay struct {
 	portrait *modernStoryPortraitFrame
 	rect     image.Rectangle // Existing 640x400 layout coordinates.
+	mirrorX  bool
 }
 
 type modernHDImageTarget interface {
@@ -58,9 +59,15 @@ func drawModernHDOverlay(target modernHDImageTarget,
 		portrait.hdGPU = ebiten.NewImageFromImage(portrait.hdImage)
 	}
 	op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
-	op.GeoM.Scale(float64(overlay.rect.Dx())/float64(portrait.hdGPU.Bounds().Dx()),
+	sx := float64(overlay.rect.Dx()) / float64(portrait.hdGPU.Bounds().Dx())
+	x := float64(overlay.rect.Min.X)
+	if overlay.mirrorX {
+		sx = -sx
+		x = float64(overlay.rect.Max.X)
+	}
+	op.GeoM.Scale(sx,
 		float64(overlay.rect.Dy())/float64(portrait.hdGPU.Bounds().Dy()))
-	op.GeoM.Translate(float64(overlay.rect.Min.X), float64(overlay.rect.Min.Y))
+	op.GeoM.Translate(x, float64(overlay.rect.Min.Y))
 	op.GeoM.Concat(geometry)
 	value := float32(math.Max(0, math.Min(1, brightness)))
 	op.ColorScale.Scale(value, value, value, 1)

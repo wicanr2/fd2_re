@@ -191,6 +191,37 @@ func TestModernHDDrawClearsPreviousDialogueOverlay(t *testing.T) {
 	}
 }
 
+func TestModernHDNormalizedDialoguePreservesMirroringAndBounds(t *testing.T) {
+	portrait := &modernStoryPortraitFrame{hdImage: image.NewNRGBA(image.Rect(0, 0, 480, 480))}
+	for _, upper := range []bool{false, true} {
+		rect := image.Rect(16, 213, 184, 381)
+		if upper {
+			rect = image.Rect(456, 19, 624, 187)
+		}
+		target := &modernHDDrawCapture{}
+		var geometry ebiten.GeoM
+		geometry.Scale(3, 3)
+		geometry.Translate(11, 7)
+		drawModernHDOverlay(target, geometry, &modernHDOverlay{
+			portrait: portrait, rect: rect, mirrorX: !upper,
+		}, 1)
+		if len(target.images) != 1 || target.images[0].Bounds() != image.Rect(0, 0, 480, 480) {
+			t.Fatal("normalized dialogue downsampled the source")
+		}
+		transform := target.options[0].GeoM
+		x0, y0 := transform.Apply(0, 0)
+		x1, y1 := transform.Apply(480, 480)
+		left, right := float64(rect.Min.X*3+11), float64(rect.Max.X*3+11)
+		if !upper {
+			left, right = right, left
+		}
+		if math.Abs(x0-left) > 1e-6 || math.Abs(x1-right) > 1e-6 ||
+			math.Abs(y0-float64(rect.Min.Y*3+7)) > 1e-6 || math.Abs(y1-float64(rect.Max.Y*3+7)) > 1e-6 {
+			t.Fatalf("normalized dialogue changed mirror/bounds: upper=%v (%v,%v)-(%v,%v)", upper, x0, y0, x1, y1)
+		}
+	}
+}
+
 func TestModernHDFinalSuppressesPortraitUnderModalAndDAC(t *testing.T) {
 	for _, name := range []string{"normal", "help", "status", "transient", "white", "black", "dac"} {
 		t.Run(name, func(t *testing.T) {

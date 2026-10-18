@@ -975,5 +975,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [完整包獨立核對器](../../tools/verify_fd2_full_local.py)：從三個正式封包核對全部素材、執行檔、啟動器、架構、ZIP及授權；實機結果另外記錄。
 - [忠實縮放GPU對照工具](../../tools/verify_fd2_screen_filter_gpu.py)：以測試專用程式分別跑鎖定Ebiten預設及正式最終呈現器，核對整數、非整數、縮小、黑邊與關閉濾鏡，不建立錄影。
 - [F2動態高解析主收據](../data/fd2-modern-hd-f2-20261018.json)：忠實啟動、對話途中切換、遮罩、縮放、節點存讀檔與GPU濾鏡的限定驗證。
+- [非原生對話HD主收據](../data/fd2-modern-hd-dialogue-20261018.json)：首章下框兩個新程序START後F9冷讀、GPU與存檔不變；上框僅E1，標題LOAD缺陷另列#252。
+- [非原生對話HD冷讀驗證](../../tools/verify_fd2_hd_dialogue_gui.py)：原樣正常F5存檔、兩個新程序普通START後F9、F2與實際GPU頭像，不建立錄影。
 - [完整包啟動抽測](../../tools/smoke_fd2_full_local.sh)：容器內從實際完整AppImage及Windows ZIP執行自檢與預設場景擷取；Windows為Wine輔助，不替代實機。
 - [第一版非HD完整版與推廣片交付收據](../data/fd2-full-local-v.1.0.0-20261017.json)：三平台完整包、43,177份素材、Linux／Wine啟動、2分18秒實機混剪、購物交易及本機權利邊界。
