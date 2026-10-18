@@ -152,6 +152,8 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 2026-10-18教會字型接續：即時選單、四語名冊、轉職／復活列表與問句、交付物品及提示已接HD黑體與十進位數字。正常START後F9接續既有hotel_ch02，經城鎮進教會，復活及交付均走取消；四語名冊、F2、縮放／說明遮罩與15張實際GPU截圖審查通過。回旅館F5／F9，兩主題保存與來源槽完整SHA均190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456。
 
+來源提交：48ab3e57dc7ea72f3f01fd4726ff26be59748c23。
+
 相關cmd介面回歸83.485秒及campaign／fdtxt／fdother／localization回歸通過；不是完整cmd測試。轉職、空名冊、餘額不足與滿袋等fixture分支限RUNTIME-E1。四語各5107筆譯文及狀態保持，沒有新翻譯。[主收據](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-fonts-20261018.json)的church_followup與61為入口，README新增HD教會復活確認實際畫面。教會快取狀態、預建轉場、圖示文字及其他固定面板仍待完成，本項保持開啟。
 
 以下較早記錄保留為歷史，目前以本段、58與61為準。
