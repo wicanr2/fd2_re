@@ -9,6 +9,21 @@ import (
 	"github.com/wicanr2/fd2_re/remake/internal/campaign"
 )
 
+// Internal selectors, shared by the fresh HD draw admission checks. They are
+// not player text or localization keys.
+const (
+	nativeChurchModeClass              = "class"
+	nativeChurchModeClassConfirm       = "class_confirm"
+	nativeChurchModeRoster             = "status_roster"
+	nativeChurchModeTransferSource     = "transfer_source"
+	nativeChurchModeTransferDest       = "transfer_dest"
+	nativeChurchModeTransferItem       = "transfer_item"
+	nativeChurchModeTransferFull       = "transfer_full"
+	nativeChurchModeRevive             = "revive"
+	nativeChurchModeReviveEmpty        = "revive_empty"
+	nativeChurchModeReviveInsufficient = "revive_insufficient"
+)
+
 type nativeChurchUIJob struct {
 	frames  [][]byte
 	restore []byte
@@ -116,6 +131,7 @@ func (g *Game) composeNativeChurchDialogueBase() ([]byte, bool) {
 	if !ok {
 		return nil, false
 	}
+	g.clearModernHDShopText()
 	frame, err := campaign.ComposeNativeChurchDialogueOverlay(source, a.dialogue, a.portrait)
 	return frame, err == nil
 }
@@ -213,12 +229,7 @@ func (g *Game) drawNativeChurchMenu(screen *ebiten.Image) bool {
 	if g.churchMode != "menu" {
 		return false
 	}
-	frame, ok := g.composeNativeChurchMenuFrame()
-	if !ok {
-		return false
-	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchMenuFrame, true)
 }
 
 func (g *Game) nativeChurchUIBlocksInput() bool {

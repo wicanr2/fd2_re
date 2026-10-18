@@ -18,12 +18,17 @@ func (g *Game) beginModernHDShopDigits() func() {
 	oldDigits := shared.digits
 	oldFrames := g.nativeShopUI.itemAssets.Frames
 	shared.digits = append([]fdother.Frame(nil), oldDigits...)
-	frames := make(map[int]fdother.Frame, len(oldFrames))
-	for id, frame := range oldFrames {
-		frames[id] = frame
-	}
 	for digit, frame := range oldDigits {
 		shared.digits[digit] = g.modernHDDecimalSprite(frame, digit)
+	}
+	g.nativeShopUI.itemAssets.Frames = g.modernHDDecimalFrames(oldFrames)
+	return func() { shared.digits = oldDigits; g.nativeShopUI.itemAssets.Frames = oldFrames }
+}
+
+func (g *Game) modernHDDecimalFrames(source map[int]fdother.Frame) map[int]fdother.Frame {
+	frames := make(map[int]fdother.Frame, len(source))
+	for id, frame := range source {
+		frames[id] = frame
 	}
 	for _, base := range []int{31, 42, 119} {
 		for digit := 0; digit < 10; digit++ {
@@ -32,8 +37,7 @@ func (g *Game) beginModernHDShopDigits() func() {
 			}
 		}
 	}
-	g.nativeShopUI.itemAssets.Frames = frames
-	return func() { shared.digits = oldDigits; g.nativeShopUI.itemAssets.Frames = oldFrames }
+	return frames
 }
 
 func (g *Game) modernHDDecimalSprite(source fdother.Frame, digit int) fdother.Frame {

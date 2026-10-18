@@ -4,6 +4,9 @@ import (
 	"image"
 	"unicode/utf8"
 
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/battle"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/fdtxt"
 	"golang.org/x/image/font/sfnt"
 )
@@ -52,8 +55,8 @@ func (g *Game) modernHDFacilityFont(source *fdtxt.Font, capture *modernHDIndexed
 	})
 }
 
-func (g *Game) beginModernHDHotelText() (*modernHDIndexedText, func()) {
-	if g.modernHDText == nil || g.nativeClassUI == nil {
+func (g *Game) beginModernHDFacilityText() (*modernHDIndexedText, func()) {
+	if g.modernHDText == nil || g.font == nil || g.nativeClassUI == nil {
 		return nil, func() {}
 	}
 	capture := &modernHDIndexedText{palette: g.nativeClassUI.palette}
@@ -62,4 +65,37 @@ func (g *Game) beginModernHDHotelText() (*modernHDIndexedText, func()) {
 	copy.font = g.modernHDFacilityFont(original.font, capture)
 	g.nativeClassUI = &copy
 	return capture, func() { g.nativeClassUI = original }
+}
+
+func (g *Game) drawModernHDFacilityFrame(screen *ebiten.Image, compose func() ([]byte, bool), digits bool) bool {
+	capture, restore := g.beginModernHDFacilityText()
+	defer restore()
+	if capture != nil {
+		previous := g.font.indexedHD
+		g.font.indexedHD = capture
+		defer func() { g.font.indexedHD = previous }()
+		if digits {
+			g.nativeClassUI.digits = append([]fdother.Frame(nil), g.nativeClassUI.digits...)
+			for digit, frame := range g.nativeClassUI.digits {
+				g.nativeClassUI.digits[digit] = g.modernHDDecimalSprite(frame, digit)
+			}
+		}
+	}
+	frame, ok := compose()
+	if !ok {
+		return false
+	}
+	g.presentNativeClassFrame(screen, frame)
+	if capture != nil {
+		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
+	}
+	return true
+}
+
+func (g *Game) modernHDChurchItemAssets(assets battle.NativeItemPanelDataAssets) battle.NativeItemPanelDataAssets {
+	if g.modernHDText != nil && g.modernHDShopText() {
+		assets.Font = g.modernHDFacilityFont(assets.Font, g.font.indexedHD)
+		assets.Frames = g.modernHDDecimalFrames(assets.Frames)
+	}
+	return assets
 }

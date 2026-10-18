@@ -160,22 +160,7 @@ func (g *Game) drawNativeHotel(screen *ebiten.Image) bool {
 	if g.nativeHotelMode == "" {
 		return false
 	}
-	capture, restore := g.beginModernHDHotelText()
-	defer restore()
-	if capture != nil {
-		previous := g.font.indexedHD
-		g.font.indexedHD = capture
-		defer func() { g.font.indexedHD = previous }()
-	}
-	frame, ok := g.composeNativeHotelFrame(0)
-	if !ok {
-		return false
-	}
-	g.presentNativeClassFrame(screen, frame)
-	if capture != nil {
-		g.modernHDText.runs = append(g.modernHDText.runs, capture.runs...)
-	}
-	return true
+	return g.drawModernHDFacilityFrame(screen, func() ([]byte, bool) { return g.composeNativeHotelFrame(0) }, false)
 }
 
 // nativeHotelInput 是酒店原生介面的輸入；與 0x2D7BD 相同：左右換圖示、enter 選、

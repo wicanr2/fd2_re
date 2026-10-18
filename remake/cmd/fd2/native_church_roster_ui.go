@@ -43,6 +43,7 @@ func (g *Game) composeNativeChurchRosterFrame() ([]byte, bool) {
 	}
 	var frame []byte
 	var err error
+	g.clearModernHDShopText()
 	if g.localeID != "" && g.localeID != "zh-Hant" {
 		frame, err = g.composeLocalizedNativeRoster(
 			source, a.panel, rows, identities, g.churchSel-start,
@@ -56,12 +57,10 @@ func (g *Game) composeNativeChurchRosterFrame() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeChurchRoster(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeChurchRosterFrame()
-	if !ok {
+	if g.churchMode != nativeChurchModeRoster && g.churchMode != nativeChurchModeTransferSource && g.churchMode != nativeChurchModeTransferDest {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchRosterFrame, true)
 }
 
 func (g *Game) beginNativeChurchRosterOpening() bool {

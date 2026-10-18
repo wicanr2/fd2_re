@@ -14,7 +14,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'town-save', 'out']:
         parser.add_argument('--'+name, type=Path, required=True)
-    parser.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
+    facility = parser.add_mutually_exclusive_group()
+    facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
+    facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
@@ -147,6 +149,61 @@ def main():
         else:raise TimeoutError('標題未就緒')
         key('Return')
         wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
+        if args.church:
+            def church(mode):
+                return wait(lambda s:s.get('node')=='church_ch02' and s.get('church_mode')==mode
+                            and s.get('church_ui_busy') is False and s.get('hd_text_runs',0)>0)
+
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            for _ in range(4):key('Left')
+            key('Return');church('menu');shot('church-menu')
+            key('Return');church('status_roster')
+            for locale in ['zh-Hant','zh-Hans','ja','en']:
+                wait(lambda s:s.get('locale')==locale);church('status_roster')
+                shot('church-roster-'+locale);key('F4')
+            before=church('status_roster')
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-church-roster')
+            key('F2');wait(lambda s:s.get('hd_theme') is True);church('status_roster')
+            after=latest(audit)
+            for field in ['node','church_mode','church_selection','gold']:
+                assert before[field]==after[field],field
+            shot('hd-church-roster-restored')
+            command('xdotool','windowsize',window,'1600','1000');shot('church-roster-resized')
+            command('xdotool','windowsize',window,'1920','1200')
+            key('F1');wait(lambda s:s.get('help_visible') is True);shot('church-help')
+            key('Escape');wait(lambda s:s.get('help_visible') is False)
+            key('Escape');church('menu')
+            key('Right');key('Right');key('Return');church('revive');shot('church-revive-list')
+            key('Return');church('revive_confirm');shot('church-revive-question')
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-church-revive-question')
+            key('F2');wait(lambda s:s.get('hd_theme') is True);church('revive_confirm')
+            key('Escape');church('revive')
+            key('Escape');church('menu')
+            key('Right');key('Return');church('transfer_source');shot('church-transfer-source')
+            key('Return');church('transfer_item');shot('church-transfer-item')
+            key('Escape');church('transfer_source')
+            key('Escape');church('menu')
+            assert latest(audit).get('gold')==1000,'取消服務改變金幣'
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            # Re-enter the hotel through its authored town option.
+            key('Left')
+            key('Return');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            assert digest(saved)==digest(args.town_save),'未保存前來源槽被改寫'
+            key('F5');hd_saved=saved.read_bytes()
+            key('F2');wait(lambda s:s.get('hd_theme') is False)
+            key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存結果不同'
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            shot('faithful-hotel-after-church-load')
+            report={'schema':'fd2-hd-church-font-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
+                    'saved_sha256':digest(saved),'theme_save_bytes_equal':True,
+                    'source_save_bytes_equal':digest(saved)==digest(args.town_save),
+                    'screenshots':shots,'operations':operations,'recording_created':False,
+                    'scope':'正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。',
+                    'elapsed_seconds':time.monotonic()-started}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         if args.hotel:
             key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
             for locale in ['zh-Hant','zh-Hans','ja','en']:

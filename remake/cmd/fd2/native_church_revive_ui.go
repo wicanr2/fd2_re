@@ -60,6 +60,7 @@ func (g *Game) composeNativeChurchReviveListFrame() ([]byte, bool) {
 		return nil, false
 	}
 	frame := append([]byte(nil), background...)
+	g.clearModernHDShopText()
 	if err := a.panel.BlitOpaqueAt(frame, 320, 5, 112, false); err != nil {
 		return nil, false
 	}
@@ -67,6 +68,7 @@ func (g *Game) composeNativeChurchReviveListFrame() ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
+	assets = g.modernHDChurchItemAssets(assets)
 	if err := battle.RenderNativeReviveRows(
 		assets, a.priceCell, rows, g.churchSel-start, frame,
 	); err != nil {
@@ -76,12 +78,10 @@ func (g *Game) composeNativeChurchReviveListFrame() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeChurchReviveList(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeChurchReviveListFrame()
-	if !ok {
+	if g.churchMode != nativeChurchModeRevive {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchReviveListFrame, true)
 }
 
 func (g *Game) beginNativeChurchReviveListOpening() bool {
@@ -152,12 +152,7 @@ func (g *Game) drawNativeChurchReviveConfirmation(screen *ebiten.Image) bool {
 	if g.churchMode != "revive_confirm" {
 		return false
 	}
-	frame, ok := g.composeNativeChurchReviveConfirmation()
-	if !ok {
-		return false
-	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchReviveConfirmation, true)
 }
 
 func (g *Game) beginNativeChurchReviveConfirmationOpening() bool {
@@ -236,6 +231,7 @@ func (g *Game) composeNativeChurchReviveMessage() ([]byte, bool) {
 		if !ok {
 			return nil, false
 		}
+		g.clearModernHDShopText()
 		dialogue, err := campaign.ComposeNativeChurchDialogueOverlay(
 			base, a.dialogue, a.portrait,
 		)
@@ -262,12 +258,10 @@ func (g *Game) composeNativeChurchReviveMessage() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeChurchReviveMessage(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeChurchReviveMessage()
-	if !ok {
+	if g.churchMode != nativeChurchModeReviveEmpty && g.churchMode != nativeChurchModeReviveInsufficient {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchReviveMessage, true)
 }
 
 func (g *Game) openNativeChurchReviveEmpty() {

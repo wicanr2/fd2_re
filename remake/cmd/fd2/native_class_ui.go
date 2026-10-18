@@ -132,6 +132,7 @@ func (g *Game) composeNativeClassListFrame() ([]byte, bool) {
 			CurrentClassTextID: unit.ClassID, TargetClassTextID: target.ClassID,
 		})
 	}
+	g.clearModernHDShopText()
 	frame, err := campaign.ComposeNativeClassListFrame(
 		background, a.panel, rows, g.churchSel-start, a.strings, a.font,
 	)
@@ -142,12 +143,10 @@ func (g *Game) composeNativeClassListFrame() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeClassList(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeClassListFrame()
-	if !ok {
+	if g.churchMode != nativeChurchModeClass {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeClassListFrame, true)
 }
 
 func (g *Game) nativeClassConfirmationState() (*nativeClassUIAssets, int, bool) {
@@ -197,12 +196,10 @@ func (g *Game) composeNativeClassConfirmationFrame() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeClassConfirmation(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeClassConfirmationFrame()
-	if !ok {
+	if g.churchMode != nativeChurchModeClassConfirm {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeClassConfirmationFrame, true)
 }
 
 func (g *Game) presentNativeClassFrame(screen *ebiten.Image, frame []byte) {

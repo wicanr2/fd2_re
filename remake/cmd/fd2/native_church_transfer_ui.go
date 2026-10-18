@@ -35,6 +35,7 @@ func (g *Game) composeNativeChurchTransferItemFrame() ([]byte, bool) {
 		return nil, false
 	}
 	frame := append([]byte(nil), background...)
+	g.clearModernHDShopText()
 	if err := a.panel.BlitOpaqueAt(frame, 320, 5, 112, false); err != nil {
 		return nil, false
 	}
@@ -48,6 +49,7 @@ func (g *Game) composeNativeChurchTransferItemFrame() ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
+	assets = g.modernHDChurchItemAssets(assets)
 	if err := battle.RenderNativeTransferItemRows(
 		assets, a.priceCell, itemIDs, start, g.churchSel, rows, frame,
 	); err != nil {
@@ -57,12 +59,10 @@ func (g *Game) composeNativeChurchTransferItemFrame() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeChurchTransferItem(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeChurchTransferItemFrame()
-	if !ok {
+	if g.churchMode != nativeChurchModeTransferItem {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchTransferItemFrame, true)
 }
 
 func (g *Game) beginNativeChurchTransferItemOpening() bool {
@@ -126,6 +126,7 @@ func (g *Game) composeNativeChurchTransferFullMessage() ([]byte, bool) {
 	if !ok {
 		return nil, false
 	}
+	g.clearModernHDShopText()
 	frame, err := campaign.ComposeNativeChurchDialogueOverlay(
 		source, a.dialogue, a.portrait,
 	)
@@ -139,12 +140,10 @@ func (g *Game) composeNativeChurchTransferFullMessage() ([]byte, bool) {
 }
 
 func (g *Game) drawNativeChurchTransferFull(screen *ebiten.Image) bool {
-	frame, ok := g.composeNativeChurchTransferFullMessage()
-	if !ok {
+	if g.churchMode != nativeChurchModeTransferFull {
 		return false
 	}
-	g.presentNativeClassFrame(screen, frame)
-	return true
+	return g.drawModernHDFacilityFrame(screen, g.composeNativeChurchTransferFullMessage, true)
 }
 
 func (g *Game) beginNativeChurchTransferFullOpening() bool {

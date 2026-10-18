@@ -149,10 +149,11 @@
     "原生故事逐字、跨頁與捲動投影；明示特殊字形fallback",
     "商店訊息、商品與角色名稱，以及31／42／119十進位字庫",
     "說明頁字級、寬度適配與標題間距",
-    "旅館當次合成的原生提示、四槽章名／編號／標題及保存／讀取回覆；原有文字與語系路由保持"
+    "旅館當次合成的原生提示、四槽章名／編號／標題及保存／讀取回覆；原有文字與語系路由保持",
+    "教會當次合成的選單、名冊、轉職／復活問句、交付物品與提示，金幣與十進位字庫；範圍及驗證分級見church_followup"
   ],
   "remaining": [
-    "原生物品／玩家狀態／教會／整備／標題LOAD等其餘固定索引面板的字模；旅館圖示與預建轉場仍未接入",
+    "原生物品／玩家狀態／教會快取狀態與命令／整備／標題LOAD等其餘固定索引面板；旅館及教會預建轉場與圖示仍未接入",
     "預建原生轉場job中的文字與金幣滾動",
     "圖示內HP／貨幣等點陣字樣",
     "全戰役特殊字模fallback盤點與跨平台效能"
@@ -4729,6 +4730,711 @@
       },
       "png_and_receipts_retained": true,
       "bytes_freed": 18946288,
+      "fd2_containers_remaining_after_validation": 0
+    }
+  },
+  "church_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_fonts_complete": false,
+    "base_commit": "ad5797b081053d649758ea2a0bb0d4607d725b5d",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/church-source-final.json",
+        "sha256": "deaade9a92acf42db1bf648078602896ed723188c6cd0b750fef81e0fe151114"
+      },
+      "snapshot_taken_before_final_build_and_regression": true,
+      "method": "SHA256 of sorted relative path, NUL, content SHA256 hex, LF",
+      "production_go_tree_sha256": "a38703c90e4198f060cd172e70846bc87afe35d5010148c623154fc6b5962af7",
+      "test_go_tree_sha256": "f3013f40169a150e08da77abc809d29a02b3311dca6caa8f82db076eda5a8a9a",
+      "changed_files": {
+        "remake/cmd/fd2/input_audit_trace.go": "a1ef642307f7973dddd379a50a15c0e97ec9b5a46e918e7181063fc588ffbd4d",
+        "remake/cmd/fd2/modern_hd_facility_text.go": "8eccee04c037f0e5d1bdffc9150176e3b9efd6b84417a06ef99d8acc67759b1f",
+        "remake/cmd/fd2/modern_hd_shop_digits.go": "487cc537063d993fbcad675a99c92662a8ecb0221265e090cf1870b9a95e490b",
+        "remake/cmd/fd2/native_church_revive_ui.go": "9640f13103283258e7d96a65926dde6c7cb72de90493cc7529d2376310d246ba",
+        "remake/cmd/fd2/native_church_roster_ui.go": "400270f7cc7824e779c7a2bd0b892cb2ddaf21fca57b5271e072e76d184bde74",
+        "remake/cmd/fd2/native_church_transfer_ui.go": "a0101cb67d8ead7fd453ffb5468f0c4edeabcaa30177bb9b7fba75dbcfbc0521",
+        "remake/cmd/fd2/native_church_ui.go": "12d6365e1f3994907c57dd7fc4930ba3f89e759033c47894af5001fbd367ec68",
+        "remake/cmd/fd2/native_class_ui.go": "417a6932121f8fb4a6365c744122b87f9e868f219b1587096f084256cafc475e",
+        "remake/cmd/fd2/native_hotel_ui.go": "b5875e75b7f9b414e86226b0783fc605d6f6e78d494386a3b14b54d913b380ca",
+        "remake/cmd/fd2/modern_hd_church_text_test.go": "33c3441060de829149ae725011dbc02b492094d4ef0cfc69d37510da5b3462a1",
+        "tools/verify_fd2_hd_fonts_gui.py": "c17b0f48e9cef72672fb063e9568c4bec2ad9ea637a6085ff3c2dd098ea1291c"
+      },
+      "go_files_count": 960
+    },
+    "runtime_scope": [
+      "教會即時選單、名冊、轉職列表與問句、復活列表與問句／空名冊／餘額不足、交付物品與滿袋回覆",
+      "當次Draw範圍的FDTXT字模、金幣與31／42／119數字；共享素材還原且忠實索引bytes保持",
+      "既有四語名冊沿原譯名；其餘原生文字保持既有語言，未新增翻譯"
+    ],
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/church-gui-r1/receipt.json",
+      "sha256": "aaa999dfee613e137bbd8451808df63b31fdf1981b6c857b067e11b37798bd64",
+      "status": "PASS-GPU-REVIEWED",
+      "scope": "正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。",
+      "elapsed_seconds": 251.15713978977874,
+      "screenshots": {
+        "church-menu.png": {
+          "sha256": "cae955e4d9d512027b20bcaebdb77f4fbedf3b8bd6b5230837e219dc91f57b9d",
+          "state": {
+            "error": "",
+            "frame": 558,
+            "gold": 1000,
+            "hd_text_runs": 20,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "menu",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-roster-zh-Hant.png": {
+          "sha256": "7b0ca750bfb56d26e2f3693cd95b237b5889238a7af7fe6f15a909b1351818e0",
+          "state": {
+            "error": "",
+            "frame": 582,
+            "gold": 1000,
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-roster-zh-Hans.png": {
+          "sha256": "5258b918a9b8b8f9bb4320a204206614f195bdaed5f36a3c915b758ea2491ff3",
+          "state": {
+            "error": "",
+            "frame": 592,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "locale": "zh-Hans",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-roster-ja.png": {
+          "sha256": "f6ceb71f788ad6c1c136fb6d1ca83dbae904c005ff784735f6c5965cc060df67",
+          "state": {
+            "error": "",
+            "frame": 608,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "locale": "ja",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-roster-en.png": {
+          "sha256": "c0db0e4606f36accd42956d6727b62937d19a2452d7f3f4994e55e855ea6d2d7",
+          "state": {
+            "error": "",
+            "frame": 618,
+            "gold": 1000,
+            "hd_text_runs": 18,
+            "hd_theme": true,
+            "locale": "en",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "faithful-church-roster.png": {
+          "sha256": "38aee2c1ee40cd3e51a6e19e7742f9311a45ac0ad6507e9c090300aa6745f932",
+          "state": {
+            "error": "",
+            "frame": 666,
+            "gold": 1000,
+            "hd_theme": false,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "hd-church-roster-restored.png": {
+          "sha256": "7b0ca750bfb56d26e2f3693cd95b237b5889238a7af7fe6f15a909b1351818e0",
+          "state": {
+            "error": "",
+            "frame": 680,
+            "gold": 1000,
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-roster-resized.png": {
+          "sha256": "14bb49a55483e0101f107795a63c0dbe6dff891036e58c71a43895adb1b0dc3e",
+          "state": {
+            "error": "",
+            "frame": 684,
+            "gold": 1000,
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-help.png": {
+          "sha256": "98b68a4777d9e2b5aa6c468778a959af908522fe5608de44856fa17ce5d4b33a",
+          "state": {
+            "error": "",
+            "frame": 696,
+            "gold": 1000,
+            "hd_text_runs": 10,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "status_roster",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": true
+          }
+        },
+        "church-revive-list.png": {
+          "sha256": "45f7380e88b78318d5df5642ef5be57e9e805a3b86fa2e9ab33b5861070aea2d",
+          "state": {
+            "error": "",
+            "frame": 750,
+            "gold": 1000,
+            "hd_text_runs": 61,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "revive",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-revive-question.png": {
+          "sha256": "a715659069ee15f81a44b51b2cbc6585f690033bbb8e5f5fa6a3fa9483938513",
+          "state": {
+            "error": "",
+            "frame": 774,
+            "gold": 1000,
+            "hd_text_runs": 34,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "revive_confirm",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "faithful-church-revive-question.png": {
+          "sha256": "a55a5d5f0e517bf2d47ef408228408aa252fc920c4a0f097cbee204d5c705aca",
+          "state": {
+            "error": "",
+            "frame": 874,
+            "gold": 1000,
+            "hd_theme": false,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "revive_confirm",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-transfer-source.png": {
+          "sha256": "7b0ca750bfb56d26e2f3693cd95b237b5889238a7af7fe6f15a909b1351818e0",
+          "state": {
+            "error": "",
+            "frame": 1004,
+            "gold": 1000,
+            "hd_text_runs": 30,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "transfer_source",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "church-transfer-item.png": {
+          "sha256": "b6c741e18630fd28530b7d17a6c11835528620a6089fef8e58c1e34177c0dc6b",
+          "state": {
+            "error": "",
+            "frame": 1056,
+            "gold": 1000,
+            "hd_text_runs": 44,
+            "hd_theme": true,
+            "locale": "zh-Hant",
+            "node": "church_ch02",
+            "church_mode": "transfer_item",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "",
+            "help_visible": false
+          }
+        },
+        "faithful-hotel-after-church-load.png": {
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "state": {
+            "error": "",
+            "frame": 1304,
+            "gold": 1000,
+            "hd_theme": false,
+            "locale": "zh-Hant",
+            "node": "hotel_ch02",
+            "church_mode": "",
+            "church_selection": 0,
+            "church_ui_busy": false,
+            "hotel_mode": "menu",
+            "help_visible": false
+          }
+        }
+      },
+      "operations": [
+        {
+          "key": "Escape",
+          "press_frame": 4,
+          "release_frame": 6
+        },
+        {
+          "key": "Escape",
+          "press_frame": 9,
+          "release_frame": 12
+        },
+        {
+          "key": "Escape",
+          "press_frame": 16,
+          "release_frame": 18
+        },
+        {
+          "key": "Escape",
+          "press_frame": 24,
+          "release_frame": 26
+        },
+        {
+          "key": "Escape",
+          "press_frame": 29,
+          "release_frame": 31
+        },
+        {
+          "key": "Escape",
+          "press_frame": 35,
+          "release_frame": 37
+        },
+        {
+          "key": "Escape",
+          "press_frame": 42,
+          "release_frame": 45
+        },
+        {
+          "key": "Escape",
+          "press_frame": 49,
+          "release_frame": 51
+        },
+        {
+          "key": "Escape",
+          "press_frame": 55,
+          "release_frame": 57
+        },
+        {
+          "key": "Escape",
+          "press_frame": 62,
+          "release_frame": 64
+        },
+        {
+          "key": "Escape",
+          "press_frame": 68,
+          "release_frame": 70
+        },
+        {
+          "key": "Escape",
+          "press_frame": 73,
+          "release_frame": 75
+        },
+        {
+          "key": "Escape",
+          "press_frame": 79,
+          "release_frame": 81
+        },
+        {
+          "key": "Escape",
+          "press_frame": 85,
+          "release_frame": 87
+        },
+        {
+          "key": "Escape",
+          "press_frame": 91,
+          "release_frame": 93
+        },
+        {
+          "key": "Escape",
+          "press_frame": 97,
+          "release_frame": 99
+        },
+        {
+          "key": "Escape",
+          "press_frame": 103,
+          "release_frame": 105
+        },
+        {
+          "key": "Escape",
+          "press_frame": 109,
+          "release_frame": 111
+        },
+        {
+          "key": "Escape",
+          "press_frame": 115,
+          "release_frame": 117
+        },
+        {
+          "key": "Escape",
+          "press_frame": 121,
+          "release_frame": 123
+        },
+        {
+          "key": "Escape",
+          "press_frame": 127,
+          "release_frame": 129
+        },
+        {
+          "key": "Escape",
+          "press_frame": 137,
+          "release_frame": 139
+        },
+        {
+          "key": "Escape",
+          "press_frame": 144,
+          "release_frame": 146
+        },
+        {
+          "key": "Escape",
+          "press_frame": 149,
+          "release_frame": 151
+        },
+        {
+          "key": "Escape",
+          "press_frame": 155,
+          "release_frame": 157
+        },
+        {
+          "key": "Escape",
+          "press_frame": 162,
+          "release_frame": 164
+        },
+        {
+          "key": "Escape",
+          "press_frame": 167,
+          "release_frame": 170
+        },
+        {
+          "key": "Escape",
+          "press_frame": 173,
+          "release_frame": 179
+        },
+        {
+          "key": "Return",
+          "press_frame": 187,
+          "release_frame": 189
+        },
+        {
+          "key": "F9",
+          "press_frame": 508,
+          "release_frame": 510
+        },
+        {
+          "key": "Escape",
+          "press_frame": 513,
+          "release_frame": 515
+        },
+        {
+          "key": "Left",
+          "press_frame": 522,
+          "release_frame": 524
+        },
+        {
+          "key": "Left",
+          "press_frame": 527,
+          "release_frame": 529
+        },
+        {
+          "key": "Left",
+          "press_frame": 533,
+          "release_frame": 535
+        },
+        {
+          "key": "Left",
+          "press_frame": 539,
+          "release_frame": 541
+        },
+        {
+          "key": "Return",
+          "press_frame": 545,
+          "release_frame": 547
+        },
+        {
+          "key": "Return",
+          "press_frame": 559,
+          "release_frame": 561
+        },
+        {
+          "key": "F4",
+          "press_frame": 583,
+          "release_frame": 585
+        },
+        {
+          "key": "F4",
+          "press_frame": 595,
+          "release_frame": 597
+        },
+        {
+          "key": "F4",
+          "press_frame": 609,
+          "release_frame": 611
+        },
+        {
+          "key": "F4",
+          "press_frame": 619,
+          "release_frame": 621
+        },
+        {
+          "key": "F2",
+          "press_frame": 625,
+          "release_frame": 628
+        },
+        {
+          "key": "F2",
+          "press_frame": 671,
+          "release_frame": 674
+        },
+        {
+          "key": "F1",
+          "press_frame": 686,
+          "release_frame": 688
+        },
+        {
+          "key": "Escape",
+          "press_frame": 698,
+          "release_frame": 700
+        },
+        {
+          "key": "Escape",
+          "press_frame": 703,
+          "release_frame": 705
+        },
+        {
+          "key": "Right",
+          "press_frame": 715,
+          "release_frame": 717
+        },
+        {
+          "key": "Right",
+          "press_frame": 721,
+          "release_frame": 723
+        },
+        {
+          "key": "Return",
+          "press_frame": 727,
+          "release_frame": 729
+        },
+        {
+          "key": "Return",
+          "press_frame": 752,
+          "release_frame": 754
+        },
+        {
+          "key": "F2",
+          "press_frame": 775,
+          "release_frame": 778
+        },
+        {
+          "key": "F2",
+          "press_frame": 883,
+          "release_frame": 886
+        },
+        {
+          "key": "Escape",
+          "press_frame": 891,
+          "release_frame": 893
+        },
+        {
+          "key": "Escape",
+          "press_frame": 935,
+          "release_frame": 940
+        },
+        {
+          "key": "Right",
+          "press_frame": 949,
+          "release_frame": 951
+        },
+        {
+          "key": "Return",
+          "press_frame": 959,
+          "release_frame": 961
+        },
+        {
+          "key": "Return",
+          "press_frame": 1011,
+          "release_frame": 1014
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1057,
+          "release_frame": 1062
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1092,
+          "release_frame": 1097
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1128,
+          "release_frame": 1130
+        },
+        {
+          "key": "Left",
+          "press_frame": 1148,
+          "release_frame": 1154
+        },
+        {
+          "key": "Return",
+          "press_frame": 1162,
+          "release_frame": 1167
+        },
+        {
+          "key": "F5",
+          "press_frame": 1171,
+          "release_frame": 1173
+        },
+        {
+          "key": "F2",
+          "press_frame": 1177,
+          "release_frame": 1180
+        },
+        {
+          "key": "F5",
+          "press_frame": 1188,
+          "release_frame": 1198
+        },
+        {
+          "key": "F9",
+          "press_frame": 1209,
+          "release_frame": 1217
+        }
+      ],
+      "all_releases_observed": true,
+      "gpu_review": "15張實際視窗已目視；問句無歡迎詞殘留、四語名冊無裁切、縮放與說明遮罩通過。名冊F2往返PNG SHA相同。圖示與背景仍像素素材。"
+    },
+    "save": {
+      "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "theme_save_bytes_equal": true,
+      "source_save_bytes_equal": true,
+      "source": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+      "notes": "正常START後F9接續既有槽，正常鍵盤進教會；使用既有倒下隊員與物品，未注入新狀態。復活與交付均取消，金幣保持1000；回旅館普通F5／F9。不是完整連續戰役證據。"
+    },
+    "regression": {
+      "cmd_ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/church-ui-regression-r1.log",
+        "sha256": "1ac619e680732a8fe0ed14665b674ad66d53523a4ec56474e3ae20a4d8850fa3",
+        "status": "PASS",
+        "seconds": 83.485,
+        "run_pattern": "Test(ModernHD|NativeChurch|NativeClass|NativeShop|NativeHotel|.*JSON|.*TitleLoad|.*SaveSlot|.*Locale)",
+        "scope": "相關HD／教會／轉職／商店／旅館／保存與語系測試；不是完整cmd/fd2測試。"
+      },
+      "data": {
+        "file": "work/promo-cadence-20261018/hd-fonts/church-data-regression-r1.log",
+        "sha256": "e40369b8ff01676f3b9e4612e7f38fb73f51834d3931ec4d8ec1feec7d3caada",
+        "status": "PASS",
+        "seconds": {
+          "internal/campaign": 11.168,
+          "internal/fdtxt": 0.331,
+          "internal/fdother": 16.778,
+          "internal/localization": 1.802
+        }
+      },
+      "e1_scope": "轉職確認、無復活者、餘額不足、交付目的名冊及滿袋回覆以既有fixture與正式輸入測試驗證，未外推為GUI玩家路徑。"
+    },
+    "localization": {
+      "entries_per_locale": 5107,
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "ja",
+        "en"
+      ],
+      "values_status_variables_and_identity_equal_base": true,
+      "migration": {
+        "by_id": 5106,
+        "by_signature": 1,
+        "by_text": 0,
+        "new": 0
+      },
+      "diagnostic": "初次盤點誤將新Draw guard中的內部模式字串當玩家文字，遷移拒收。改具名內部常數後重生盤點與重綁，沒有新增譯文或修改盤點器。"
+    },
+    "readme_figure": {
+      "file": "docs/figures/hd-church-revive.png",
+      "sha256": "a715659069ee15f81a44b51b2cbc6585f690033bbb8e5f5fa6a3fa9483938513",
+      "source": "work/promo-cadence-20261018/hd-fonts/church-gui-r1/church-revive-question.png",
+      "kind": "1920×1200實際重製視窗；僅即時文字HD，背景與圖示保留像素素材"
+    },
+    "limits": [
+      "教會快取狀態／命令面板與預建開收框／復活動畫仍為像素文字",
+      "圖示內HP／貨幣／YES／NO等烘焙字樣未重繪",
+      "本輪不宣稱原版逐像素對拍、整款字型完成、穩定60fps或跨平台效能",
+      "未改規則、名冊、存檔格式或原始素材；沒有新原版二進位語意"
+    ],
+    "recordings_created": false,
+    "new_artwork": false,
+    "matching_decompilation": "paused",
+    "release_modified": false,
+    "rebuild": "先依主收據rebuild建置，再以既有GUI工具加--church；原始素材唯讀，輸出獨立可寫。",
+    "cleanup": {
+      "status": "DERIVED-BINARY-REMOVED",
+      "recordings_created": false,
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-church",
+        "sha256": "fd0238dde4ece187a3425b026cac547c8eb3fea9ec78267a6b2acd4063c1ffc9",
+        "bytes": 18960600
+      },
+      "bytes_freed": 18960600,
+      "png_and_receipts_retained": true,
       "fd2_containers_remaining_after_validation": 0
     }
   }
