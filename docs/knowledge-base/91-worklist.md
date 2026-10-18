@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -146,9 +146,15 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 怎樣算做完：以原版 eip-trace（或同狀態擷取）證明這三類重繪發生的時機與當時的閘門／可見游標，接到同一個入口。不為了驗收重跑已 passed 的章（使用者 2026-09-18 定案）：以之後正常排程的新章收據順帶確認即可，沒有出現對應時點就在 56 §#40 記錄仍未被覆蓋。
 
-### P1 HD高解析呈現：介面、字型、戰場與平台驗收
+### P1 HD高解析呈現：原生面板字型、介面、戰場與平台驗收
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
+
+2026-10-18接續：HD清晰黑體主路徑已接入最終1920×1200繪製，涵蓋一般Font.Draw、原生故事逐字／捲動、商店文字與31／42／119十進位數字。正常START首句四語、F2同狀態往返、F9接續旅店後城鎮／商店及單筆購買1000→990、三種尺寸與最大字級說明頁通過；首章JSON標題LOAD、F5／F9及完整保存bytes保持。cmd/fd2、campaign、fdother與localization回歸通過，四語各5107筆譯文／狀態／變數保持。README已加入四語忠實模式實際商店截圖，原始素材包未公開，正式第一版tag保持。
+
+來源提交：ca1d0a13f8d5dc39ee40f027c29de38b6759ee90。主收據：[HD字型](https://github.com/wicanr2/fd2_re/blob/main/docs/data/fd2-modern-hd-fonts-20261018.json)。本項保持開啟，下一步補原生物品／狀態／教會／旅店／整備等固定索引面板、預建轉場與圖示內字樣；再接完整介面、戰場與平台效能。特殊字形fallback、未驗章節與正常流程限制如實保留。#251說明間距及#253捲動快照缺陷已修正驗證，並依來源提交結案。
+
+以下較早記錄保留為歷史；目前以本段、58、61及新主收據為準。
 
 2026-10-18接續：#252首章JSON標題LOAD已依READY契約修正。忠實／HD兩個新程序普通標題LOAD、F2/F1/縮放/F9及重新F5後第三個新程序標題冷讀通過；原樣與重新保存完整bytes相同，SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。原生SAV交易與格式保持，首章JSON仍用既有在地化槽畫面。來源：docs/data/fd2-json-title-load-20261018.json。只驗首章JSON，其他章節與玩家交界、介面／字型／戰場及跨平台效能仍待驗；#251說明間距保持開啟。
 
@@ -170,29 +176,7 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
-怎樣算做完：1920×1200／480×480原生故事頭像啟動、F2與首章非原生下框START後F9冷讀已通過；上下框幾何為E1。介面／字型／戰場依61逐切片READY後實作與驗收，其他玩家交界、其他章節的標題LOAD及跨平台效能仍需實測。已驗切片不等於整體HD完成。
-
-### P2 操作說明：標題與第一列文字重疊
-
-`player-help-heading-overlap` · 缺陷 · [#251](https://github.com/wicanr2/fd2_re/issues/251) · 仍未完成 · 要人判
-
-2026-10-18在正式正常START父王對話按F1，1920×1200實際GPU畫面顯示「操作說明」與第一列「方向鍵／WASD」重疊。來源為player_shortcuts.go的drawPlayerHelp，標題使用1.7倍，下一列仍以固定30單位前進。此為固定640×400版面的缺陷，未證實由HD引入；1280×800另待抽驗。
-
-畫面留在本機work/promo-cadence-20261018/f2-runtime/normal-r4/f2-help.png；不公開完整私人美術。HD最終頭像在說明開啟時正確被抑制，這項文字間距問題獨立追蹤。
-
-怎樣算做完：調整說明標題與首列間距，在1280×800、1920×1200及非整數縮放目視無重疊，完整快捷鍵與HD遮罩維持。依61的介面切片契約處理。
-
-證據：`remake/cmd/fd2/player_shortcuts.go`
-
-### P1 原生對話捲動快照被後續寫字污染
-
-`native-dialogue-scroll-snapshot-alias` · 缺陷 · [#253](https://github.com/wicanr2/fd2_re/issues/253) · 仍未完成 · 要人判
-
-HD 字型逐字差異測試重現：ComposeNativeStoryDialogueProgressiveFrames 把 next 直接發布為捲動畫格，後續字形繼續改寫同一切片，最後一張捲動畫格會提前顯示整行後文。已定位為重製端快照別名問題，非新原版語意。
-
-怎樣算做完：獨立保存捲動快照，保持十幀捲動與逐字時鐘；跨 FFFD 前文保留、各捲動步驟字形位置與既有索引 renderer 差異測試通過，靜態終點不變。
-
-證據：`remake/internal/campaign/native_story_dialogue_test.go`
+怎樣算做完：1920×1200／480×480故事頭像、F2、首章JSON冷讀與HD黑體主路徑已驗。接續原生固定面板、預建轉場與圖示內字樣的字型，再完成介面／戰場及跨平台效能；依61逐切片READY後實作與驗收。已驗切片不等於完整字型或整體HD完成。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
