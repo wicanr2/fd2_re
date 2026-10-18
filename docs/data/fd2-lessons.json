@@ -2749,6 +2749,29 @@
         ],
         "pattern": "input-audit-first-process.jsonl"
       }
+    },
+    {
+      "id": "battle-gui-command-page-requires-command-ids",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "戰場狀態GUI依NativeCommandIDs區分有命令與無命令角色；無命令確認後應關框。入口tools/verify_fd2_hd_fonts_gui.py的--battle-status。",
+      "why": "首章索爾沒有命令，前測正常關框後工具仍等commands而逾時；另聚焦悠妮才驗命令換頁。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "battle-hd-command-unit-focused"
+      }
+    },
+    {
+      "id": "hd-art-input-inventory-checks-optional-fields",
+      "area": "素材",
+      "date": "2026-10-18",
+      "rule": "高解析美術先按catalog消費契約逐檔檢查尺寸、模式、透明度及來源欄位；不由相同role假設母稿皆有alpha或master_file。入口remake/assets/themes/modern/catalog.json與61。",
+      "why": "94組母稿登錄中48份RGB、45份RGBA、group68未登錄master_file；五組另採三相靜態契約。單一母稿樣本不能代表整組。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json"
     }
   ]
 }

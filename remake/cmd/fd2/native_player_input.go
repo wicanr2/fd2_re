@@ -213,6 +213,10 @@ func (g *Game) drawNativePlayerStatus(screen *ebiten.Image) {
 	if s == nil {
 		return
 	}
+	if g.drawModernBattlePlayerStatus(screen, s) {
+		s.drawn = true
+		return
+	}
 	if len(s.frames) == 0 && g.drawModernHDUnitStatus(screen, s.source, s.data, s.phase == nativePlayerStatusCommands, g.nativeUIPalette) {
 		s.drawn = true
 		return

@@ -321,6 +321,19 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
+    },
+    {
+      "id": "modern-battle-status-overwrites-field",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "HD戰場：角色狀態面板覆蓋範圍外還原成原版底圖",
+      "body": "正常標題LOAD普通首章存檔後，Z聚焦、Home檢視索爾，面板外的現代戰場被完整原版indexed來源蓋回。來源提交ecb006ad，GUI前測battle-status-gui-before-r1，實際focused／status／F2圖片保留。現有drawModernHDStatusRegions呼叫presentNativeClassFrameWithPalette全幀覆蓋；違反61現代戰場契約。前測另誤假設索爾有命令頁，該逾時屬工具分支錯誤，與畫面缺陷分開。",
+      "acceptance": "現代戰場狀態開收與命令切換只覆蓋原面板目的區域，面板外地圖保持現代呈現；忠實快取、排程、角色與存檔保持。正常標題LOAD兩類角色、F2與返回及GPU區域比較通過。",
+      "verify": {
+        "kind": "manual",
+        "note": "核對正常首章GPU中面板外地圖與開啟前參照相同；不能只靠文字筆數或單元測試。"
+      },
+      "issue": 256
     }
   ]
 }

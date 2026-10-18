@@ -140,3 +140,54 @@ func (g *Game) drawModernHDStatusTransition(screen *ebiten.Image, d *nativeStatu
 	regions, commands, ok := nativeStatusTransitionPass(d.kind, index, d.commands)
 	return ok && g.drawModernHDStatusRegions(screen, d.source, &d.data, commands, palette, regions)
 }
+
+// The modern battlefield has already been drawn. Only the opaque panel regions
+// may cover it; the indexed source contains the faithful map, not that field.
+func (g *Game) drawModernBattlePlayerStatus(screen *ebiten.Image, s *nativePlayerStatusState) bool {
+	if g.modernStoryPortraits == nil || s == nil || len(g.nativeUIPalette) != 256 {
+		return false
+	}
+	regions, ok := nativeChurchPanelRegions(0)
+	commands := s.phase == nativePlayerStatusCommands
+	data := s.data
+	if len(s.frames) > 0 {
+		if s.text == nil {
+			return false
+		}
+		regions, commands, ok = nativeStatusTransitionPass(s.text.kind, s.frame, s.text.commands)
+		data = &s.text.data
+	}
+	if !ok {
+		return false
+	}
+	panel := s.status
+	if commands {
+		panel = s.commands
+	}
+	var runs []modernHDTextRun
+	if hd, text, valid := g.composeModernHDUnitStatus(data, commands, g.nativeUIPalette); valid {
+		panel, runs = hd, text
+	}
+	if len(panel) != 64000 {
+		return false
+	}
+	paletted := image.NewPaletted(image.Rect(0, 0, 320, 200), g.nativeUIPalette)
+	copy(paletted.Pix, panel)
+	texture := ebiten.NewImageFromImage(paletted)
+	for _, region := range regions {
+		if !region.Enabled || region.Width <= 0 || region.Height <= 0 {
+			continue
+		}
+		dest := image.Rect(region.DestX*2, region.DestY*2, (region.DestX+region.Width)*2, (region.DestY+region.Height)*2)
+		g.clearModernHDTextRegion(dest)
+		part := texture.SubImage(image.Rect(region.SourceX, region.SourceY, region.SourceX+region.Width, region.SourceY+region.Height)).(*ebiten.Image)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(2, 2)
+		op.GeoM.Translate(float64(dest.Min.X), float64(dest.Min.Y))
+		screen.DrawImage(part, op)
+	}
+	if g.modernHDText != nil {
+		g.modernHDText.runs = append(g.modernHDText.runs, modernHDPanelRegionText(runs, regions)...)
+	}
+	return true
+}

@@ -155,3 +155,66 @@ func TestModernHDItemEveryTransitionPassHasTranslatedText(t *testing.T) {
 		t.Fatal("item transition text was limited to stable frame")
 	}
 }
+
+func TestModernBattleStatusPreservesUncoveredTextAndFaithfulCache(t *testing.T) {
+	g, screen, unit := newModernHDStatusGame(t)
+	defer prepareHDChurchText(t, g, screen)()
+	data, status, commands, ok := g.prepareNativeUnitStatusData(unit)
+	if !ok {
+		t.Fatal("status source unavailable")
+	}
+	g.modernStoryPortraits = &modernStoryPortraitSet{}
+	for _, command := range []bool{false, true} {
+		panel := status
+		phase := "status"
+		if command {
+			panel, phase = commands, "commands"
+		}
+		s := &nativePlayerStatusState{data: data, status: status, commands: commands, steady: panel, phase: phase}
+		g.modernHDText.runs = []modernHDTextRun{
+			{text: "outside", clip: image.Rect(0, 0, 80, 10)},
+			{text: "covered", clip: image.Rect(30, 30, 60, 60)},
+		}
+		original := append([]byte(nil), panel...)
+		if !g.drawModernBattlePlayerStatus(screen, s) {
+			t.Fatal("modern field status not drawn")
+		}
+		outside, covered := false, false
+		for _, run := range g.modernHDText.runs {
+			outside = outside || run.text == "outside"
+			covered = covered || run.text == "covered"
+		}
+		if !outside || covered || !bytes.Equal(panel, original) || s.phase != phase || s.drawn {
+			t.Fatal("field status cleared outside text, changed cache, or advanced lifecycle")
+		}
+		// No HD adapter or snapshot must still use only the known panel, never
+		// reintroduce the faithful map as a whole-frame fallback.
+		g.modernHDText, s.data = nil, nil
+		if !g.drawModernBattlePlayerStatus(screen, s) || !bytes.Equal(panel, original) {
+			t.Fatal("pixel-panel fallback failed")
+		}
+		g.modernHDText = &modernHDTextFrame{}
+	}
+	for _, kind := range []nativeStatusTransitionKind{nativeStatusOpening, nativeStatusClosing, nativeStatusToCommands} {
+		count := 12
+		if kind == nativeStatusToCommands {
+			count = 14
+		}
+		d := snapshotNativeStatusTransition(make([]byte, 64000), data, kind, false)
+		s := &nativePlayerStatusState{data: data, status: status, commands: commands, text: d, frames: make([][]byte, count), phase: "opening"}
+		for i := 0; i < count; i++ {
+			s.frame = i
+			g.modernHDText.runs = []modernHDTextRun{{text: "outside", clip: image.Rect(0, 0, 80, 10)}}
+			if !g.drawModernBattlePlayerStatus(screen, s) || s.frame != i || s.drawn {
+				t.Fatal("modern transition changed lifecycle")
+			}
+			if g.modernHDText.runs[0].text != "outside" {
+				t.Fatal("transition replaced full frame text")
+			}
+		}
+	}
+	g.modernStoryPortraits = nil
+	if g.drawModernBattlePlayerStatus(screen, &nativePlayerStatusState{}) {
+		t.Fatal("faithful path was intercepted")
+	}
+}

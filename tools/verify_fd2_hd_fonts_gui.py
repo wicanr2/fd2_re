@@ -19,6 +19,7 @@ def main():
     facility = parser.add_mutually_exclusive_group()
     facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
+    facility.add_argument('--battle-status', action='store_true', help='以正常標題LOAD抽驗首章戰場狀態面板與底圖')
     facility.add_argument('--status', action='store_true', help='加驗教會角色狀態與命令穩定面板')
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
@@ -32,7 +33,7 @@ def main():
     assert not args.panel_transitions or args.status or args.items
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
-    assert json.loads(args.town_save.read_text())['node'] == 'hotel_ch02'
+    assert json.loads(args.town_save.read_text())['node'] == ('battle_ch01' if args.battle_status else 'hotel_ch02')
     assert not args.out.exists()
     args.out.mkdir()
     audit = args.out/'input-audit.jsonl'
@@ -124,7 +125,7 @@ def main():
     def key(name):
         before=latest(audit)
         mapped={'Return':'Enter','Left':'ArrowLeft','Right':'ArrowRight',
-                'Up':'ArrowUp','Down':'ArrowDown'}.get(name,name)
+                'Up':'ArrowUp','Down':'ArrowDown','z':'Z'}.get(name,name)
         command('xdotool','windowfocus',window)
         command('xdotool','keydown',name)
         ack=None
@@ -163,7 +164,7 @@ def main():
 
     def shot(name):
         # Wait for subsequent GPU presentation, independently of the input ACK.
-        if args.preparation and 'resized' in name:
+        if (args.preparation or args.battle_status) and 'resized' in name:
             before = latest(audit).get('frame', 0)
             command('xdotool','windowfocus',window)
             wait(lambda s:s.get('frame',0)>=before+20, timeout=120)
@@ -196,6 +197,14 @@ def main():
         else:raise TimeoutError('冷讀標題未就緒')
         key('Down');key('Return');wait(lambda s:s.get('title_phase')=='loadslots')
         key('Return');wait(lambda s:not s.get('title_phase') and s.get('node')==node and s.get('gold')==gold)
+        if args.battle_status:
+            loaded_frame=latest(audit)['frame']
+            wait(lambda s:s.get('frame',0)>=loaded_frame+20)
+            for _ in range(120):
+                state=latest(audit)
+                if not state.get('dialogues') and not state.get('banner'):break
+                key('Return')
+            else:raise TimeoutError('冷讀首章對話未結束')
         shot(name)
 
     def transition_eligible(state):
@@ -316,6 +325,88 @@ def main():
             if latest(audit).get('title_phase')=='menu':break
             key('Escape')
         else:raise TimeoutError('標題未就緒')
+        if args.battle_status:
+            key('Down');key('Return')
+            wait(lambda s:s.get('title_phase')=='loadslots');shot('battle-title-load')
+            key('Return')
+            wait(lambda s:not s.get('title_phase') and s.get('node')=='battle_ch01')
+            for _ in range(120):
+                state=latest(audit)
+                if not state.get('dialogues') and not state.get('banner'):break
+                key('Return')
+            else:raise TimeoutError('首章LOAD對話未結束')
+            wait(lambda s:not s.get('dialogues') and not s.get('banner'))
+            shot('battle-hd-field')
+            initial=latest(audit)
+            key('z');wait(lambda s:not s.get('player_focus'))
+            shot('battle-hd-focused')
+            focused=latest(audit)
+            key('Home');wait(lambda s:s.get('player_status_phase')=='status')
+            shot('battle-hd-status')
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-status')
+            key('F2');wait(lambda s:s.get('hd_theme') is True);shot('battle-hd-status-restored')
+            # Sol has no command IDs. The first confirmation closes his panel.
+            key('Return');wait(lambda s:not s.get('player_status_phase'))
+            shot('battle-hd-returned')
+            returned=latest(audit)
+            assert focused['units']==returned['units']
+            assert focused['cursor']==returned['cursor']
+            key('z');wait(lambda s:not s.get('player_focus'))
+            shot('battle-hd-command-unit-focused')
+            command_focused=latest(audit)
+            key('Home');wait(lambda s:s.get('player_status_phase')=='status')
+            shot('battle-hd-command-unit-status')
+            command('xdotool','windowsize',window,'1600','1000');shot('battle-status-resized')
+            command('xdotool','windowsize',window,'1920','1200')
+            key('F1');wait(lambda s:s.get('help_visible') is True);shot('battle-status-help')
+            key('Escape');wait(lambda s:s.get('help_visible') is False)
+            key('Return');wait(lambda s:s.get('player_status_phase')=='commands')
+            shot('battle-hd-commands')
+            key('Return');wait(lambda s:not s.get('player_status_phase'))
+            shot('battle-hd-command-unit-returned')
+            returned=latest(audit)
+            assert command_focused['units']==returned['units']
+            assert command_focused['cursor']==returned['cursor']
+            assert digest(saved)==digest(args.town_save),'面板操作改寫保存'
+            outside=[]
+            for reference, targets in [
+                    ('battle-hd-focused',['battle-hd-status','battle-hd-status-restored','battle-hd-returned']),
+                    ('battle-hd-command-unit-focused',['battle-hd-command-unit-status','battle-hd-commands','battle-hd-command-unit-returned'])]:
+                for target in targets:
+                    # The top five native rows are outside every stable panel.
+                    # This is actual map RGB, not an audit-based Draw assertion.
+                    roi='1800x30+60+0'
+                    result=subprocess.run(['compare','-metric','AE',str(args.out/(reference+'.png'))+'['+roi+']',
+                                           str(args.out/(target+'.png'))+'['+roi+']','null:'],
+                                          env=env,capture_output=True,text=True,check=False)
+                    assert result.returncode in (0,1),result.stderr
+                    difference=float(result.stderr.strip())
+                    outside.append({'reference':reference,'target':target,'crop':roi,'different_pixels':difference})
+                    assert difference==0,('面板外現代地圖被覆蓋',outside[-1])
+            key('F5');wait(lambda s:s.get('frame',0)>returned['frame'])
+            hd_saved=saved.read_bytes()
+            key('F2');wait(lambda s:s.get('hd_theme') is False)
+            key('F9');wait(lambda s:s.get('node')=='battle_ch01')
+            faithful_loaded=latest(audit)
+            key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存不同'
+            key('F2');wait(lambda s:s.get('hd_theme') is True)
+            key('F9');wait(lambda s:s.get('node')=='battle_ch01')
+            hd_loaded=latest(audit)
+            assert faithful_loaded['units']==hd_loaded['units'],'兩主題LOAD結果不同'
+            assert saved.read_bytes()==hd_saved
+            restart_title_load('battle_ch01',hd_loaded['gold'],'battle-cold-title-load')
+            assert saved.read_bytes()==hd_saved
+            report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
+                    'saved_sha256':digest(saved),'screenshots':shots,'operations':operations,
+                    'initial':initial,'focused':focused,'returned':returned,
+                    'outside_map_gpu':outside,'new_process_title_load':True,
+                    'source_save_bytes_equal':saved.read_bytes()==args.town_save.read_bytes(),
+                    'theme_save_bytes_equal':True,'loaded_units_equal':True,
+                    'recording_created':False,'elapsed_seconds':time.monotonic()-started,
+                    'scope':'正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；不注入座標或狀態，不宣稱戰鬥或原版對拍。'}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         if args.preparation:
             if args.transition_frames:
                 transition_thread=threading.Thread(target=capture_transitions,daemon=True)

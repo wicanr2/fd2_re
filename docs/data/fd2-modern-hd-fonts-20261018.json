@@ -11456,5 +11456,234 @@
       "fd2_containers_remaining_after_validation": 0
     },
     "source_commit": "ecb006ad2fda7eac97c10d8e3d7c6f364812c4e1"
+  },
+  "battle_status_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_complete": false,
+    "issues": [
+      256,
+      202,
+      204
+    ],
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "base_commit": "e82cb099690dd53c06ab19d104811cef0e512a04",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-status-source-final.json",
+        "sha256": "6ca7fdf430adc6795b1fd59cdf13f4e58b76c45f10cc226e54666849be68057b"
+      },
+      "go_file_count": 971,
+      "production_go_tree_sha256": "1f9e02b6e21e73b82b05376b956416c999145c1638aa009c6fb481befeb02efa",
+      "test_go_tree_sha256": "f3741132657b6401a3358ca014ca78b5c36d279fe1682a94438c033b55e86b88",
+      "gui_tool": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "0fc47ba21529a796362cfadc2bfbef8f7c351a196fcf778ec2ae11e293854f56"
+      },
+      "go_unchanged_between_regression_and_final_gui_tool": true
+    },
+    "defect": {
+      "evidence": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-status-before-region-difference.json",
+        "sha256": "f1e1428351c0664dfe4ebef05d23049b2852566413089662000fe0294ebf3781"
+      },
+      "before_different_pixels": 50832,
+      "sample_pixels": 54000,
+      "cause": "戰場角色狀態將原版indexed來源全幀覆蓋現代底圖。",
+      "fix": "現代戰場只繪原面板目的區域；HD失敗使用像素面板，忠實及教會路徑保持。"
+    },
+    "runtime_scope": "正常首章LOAD、Z聚焦索爾／悠妮、Home狀態與命令、F2、縮放／說明、返回及保存／冷讀。沒有戰鬥、座標或狀態注入，不新增原版視覺對拍。",
+    "gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/receipt.json",
+        "sha256": "498b8a95e2e04ae0e101483dec078e12927c358ae21598021a4df581cf281e64"
+      },
+      "status": "PASS",
+      "screenshots": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-title-load.png",
+          "sha256": "24b61e7be474651e23bdaa4346980b2665e219e912647176e19c7b2af9450902",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-field.png",
+          "sha256": "fbaa444e68a272862162527b15b28bd23e84a2ef31bf85202444f44554456b78",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-focused.png",
+          "sha256": "5ad511137e92123746293f12090eb4118dcb24b7ca8ba15adf34340416061a41",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-status.png",
+          "sha256": "eb0d75f00825a4eff746d3aa48c534604355a7ef3146d1d446c608f4cb0ea7fb",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-faithful-status.png",
+          "sha256": "35f1c60354a0adda03581f1a4f10da947851b24a127798b572ea0c21ce21d870",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-status-restored.png",
+          "sha256": "69a4f41dc4956ca03543734a058a76d00c0421b8a8ba5438ca4e65c3cc852c79",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-returned.png",
+          "sha256": "e9c77e17cb4418b13a2961810591aa3cc987fb0a6a6542a4308b90b070fc6723",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-command-unit-focused.png",
+          "sha256": "0c346efd840132f03d5bc00dfd831fb1f1eb4d320bc9ff15dd31850068b9e4dc",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-command-unit-status.png",
+          "sha256": "0503cc806980681900f09f4bbe2b0fd05e4f82fb3d90d7d254947f83429a7cc9",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-status-resized.png",
+          "sha256": "e4cf362dbe2b5d08057278ff4b2534a4be6c2027e66d03e200a26066c7565c0d",
+          "width": 1600,
+          "height": 1000
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-status-help.png",
+          "sha256": "139edf29fdb250efa4999211fcb9a702a2c31300add26d3afb5e70fca537bf23",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-commands.png",
+          "sha256": "9ead3a52d3d34e1e5b3f43998c4d8d4acb7db435efdab17e047ec8541178a205",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-hd-command-unit-returned.png",
+          "sha256": "1e292cef4355f845acd101208d14ac93ca6bdcb74b8988d41033a36535545182",
+          "width": 1920,
+          "height": 1200
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/battle-status-gui-final-r2/battle-cold-title-load.png",
+          "sha256": "319aba3c21be1b1fcc33d837e0f9b5e340841f9fbb719a2bef7a7d8e822eea86",
+          "width": 1920,
+          "height": 1200
+        }
+      ],
+      "reviewed_count": 14,
+      "outside_map_comparisons": [
+        {
+          "reference": "battle-hd-focused",
+          "target": "battle-hd-status",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-focused",
+          "target": "battle-hd-status-restored",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-focused",
+          "target": "battle-hd-returned",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-command-unit-focused",
+          "target": "battle-hd-command-unit-status",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-command-unit-focused",
+          "target": "battle-hd-commands",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-command-unit-focused",
+          "target": "battle-hd-command-unit-returned",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        }
+      ],
+      "elapsed_seconds": 61.49057004088536,
+      "operations": 48,
+      "all_keydown_and_keyup_acknowledged": true,
+      "new_process_title_load": true
+    },
+    "save": {
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "loaded_units_equal": true
+    },
+    "regression": {
+      "focused_seconds": 5.052,
+      "ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-status-ui-regression-r1.log",
+        "sha256": "f627ec53e9dc576faba49def5dc2b35f8edc9aba825d6846510b8db861716f34"
+      },
+      "data": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-status-data-regression-r1.log",
+        "sha256": "9aadeab37a3d041d17f1a65f3b0507dffa7b626ce6895fe6d4ccd4f14fa7395d"
+      },
+      "ui_seconds": 35.408,
+      "inventory_seconds": 0.226,
+      "localization_seconds": 0.188,
+      "scope": "相關cmd模式及文字清冊／localization，非完整cmd或battle套件。"
+    },
+    "locales": {
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/battle-status-inventory-final.json",
+        "sha256": "935606cd186275d1834266433eb41f62b626a981b08642190905f71031dc72b7"
+      },
+      "previous_inventory_bytes_equal": true,
+      "all_four_locale_documents_unchanged": true,
+      "entries_per_locale": 5107
+    },
+    "readme_figure": {
+      "file": "docs/figures/hd-battlefield-status.png",
+      "sha256": "eb0d75f00825a4eff746d3aa48c534604355a7ef3146d1d446c608f4cb0ea7fb"
+    },
+    "tool_corrections": [
+      "前測誤假設索爾有命令頁；依NativeCommandIDs分開測索爾與悠妮。",
+      "final r1機械通過，但冷讀圖片仍是對話空框；等待後續Update並正常結束對話，同份binary完整r2重跑。"
+    ],
+    "next_hd_art_input": {
+      "file": "work/promo-cadence-20261018/hd-fonts/battlefield-hd-master-inventory.json",
+      "sha256": "caf27572282dbb067c45c3fa05a48247e5d713043150944daa51467c79169cad"
+    },
+    "remaining": [
+      "實際開收階段的戰場外區GPU抽樣",
+      "早中晚其他戰場／攻擊／施法／物品返回",
+      "角色與地形真正高解析素材及最終圖層",
+      "其他設施轉場／圖示字樣／成功演出",
+      "跨平台HD驗收"
+    ],
+    "reproduce": "tools/verify_fd2_hd_fonts_gui.py --battle-status --town-save <普通首章JSON> --binary <建置> --assets <remake> --original-pack <合法分離素材> --modern-pack <已驗現代主題> --out <新目錄>",
+    "cleanup": {
+      "recording_created": false,
+      "temporary_binary_removed": true,
+      "binary_sha256": "835eeb3ab04175a4a84df8ba461e973d17973cf83f81a49efade359427c14855",
+      "bytes_freed": 19039784
+    }
   }
 }

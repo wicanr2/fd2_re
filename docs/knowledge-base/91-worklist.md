@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -243,6 +243,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
 怎樣算做完：1920×1200故事頭像、F2、JSON冷讀、HD黑體主路徑、穩定面板、整備問句、商店金幣及角色／物品轉場已抽驗。接續其他設施轉場、成功演出數字、圖示文字及未列畫面，再完成介面／戰場、現代素材覆蓋及跨平台效能；完整字型與整體HD仍未完成。
+
+### HD戰場：角色狀態面板覆蓋範圍外還原成原版底圖
+
+`modern-battle-status-overwrites-field` · 缺陷 · [#256](https://github.com/wicanr2/fd2_re/issues/256) · 仍未完成 · 要人判
+
+正常標題LOAD普通首章存檔後，Z聚焦、Home檢視索爾，面板外的現代戰場被完整原版indexed來源蓋回。來源提交ecb006ad，GUI前測battle-status-gui-before-r1，實際focused／status／F2圖片保留。現有drawModernHDStatusRegions呼叫presentNativeClassFrameWithPalette全幀覆蓋；違反61現代戰場契約。前測另誤假設索爾有命令頁，該逾時屬工具分支錯誤，與畫面缺陷分開。
+
+怎樣算做完：現代戰場狀態開收與命令切換只覆蓋原面板目的區域，面板外地圖保持現代呈現；忠實快取、排程、角色與存檔保持。正常標題LOAD兩類角色、F2與返回及GPU區域比較通過。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
