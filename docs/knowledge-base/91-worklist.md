@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -150,6 +150,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+2026-10-18金幣滾動與出售確認接續：八位扣款／入款使用同份具型別窗口計畫，HD Draw沿原窗口及裁切直接繪數字。原索引快取、10毫秒步長、交易提交、輸入鎖定與一次性延續點保持。來源提交：d19340be3be13ae1e93e7dd5f4bd95b5515e8804。
+
+最終HD r5與忠實r4使用同份binary／GUI工具，普通START後F9接續hotel_ch02，買布衣、不立即裝備並出售同件，餘額1000→950→987；F2、F5／F9及新程序標題LOAD通過。22張實際畫面含4張有效HD金幣區域，皆已審查。完整保存SHA同為32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66。相對來源只有金額與既有raw格左移造成的未使用格殘值，並非HD新增欄位，不新增原版保存例外。
+
+#255出售確認殘留HD歡迎詞已修驗，清除被覆蓋描述後擷取同份原生問句，不新增翻譯。相關介面回歸73.288秒及五資料／清冊套件通過；借位／進位、裁切、主題切換、錯誤回退與一次性延續點限E1。GUI首次預期過嚴、整張擷取延遲及新舊程序audit混用均保留診斷，修正工具後同份binary完整重跑；CPU不證明精確同幀。
+
+主收據gold_roll_followup與61為入口。README加入實際扣款區域及出售確認；暫時binary已刪除、未錄影，無新美術或Release變更。其他轉場、成功演出中的數字、圖示內文字、未列面板、戰場及平台效能仍待完成，本項保持開啟。以下較早記錄保留為歷史，目前以本段、58與61為準。
+
 2026-10-18整備問句轉場字型接續：出發／記錄／確認問句及必選訊息的登記階段，從獨立來源快照在Draw合成HD文字，再沿原選項動畫。原索引快取、Draw承認、輸入鎖定、還原與一次性延續點保持，不在Update包裝字模。七種開收配方及中途主題切換通過E1。相關介面77.535秒及五資料／清冊套件通過，四語各5107筆內容／狀態／變數／身份保持。
 
 來源提交：5f6934373c0c25a7c97c0302fc0e5e57f8a40a6c。
@@ -224,17 +232,7 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
-怎樣算做完：1920×1200故事頭像、F2、JSON冷讀、HD黑體主路徑與多種穩定面板、整備問句轉場已抽驗。接續其他設施／角色／物品轉場、金幣滾動、圖示內文字及未列固定畫面，再完成介面／戰場與跨平台效能；完整字型及整體HD仍未完成。
-
-### HD 商店出售確認殘留歡迎詞，與原生問句重疊
-
-`hd-shop-sale-greeting-overlap` · 缺陷 · [#255](https://github.com/wicanr2/fd2_re/issues/255) · 仍未完成 · 要人判
-
-正常START後F9接續hotel_ch02，進武器店購買布衣、拒絕立即裝備，再出售該物品。gold-roll-gui-r1的gold-cloth-sale-confirmation.png顯示HD歡迎詞疊在點陣出售問句上。composeNativeShopSellQuestionBase重建索引對話框，卻未清除HD歡迎詞或擷取原生問句。來源為現有穩定頁，與新增金幣窗口計畫無關；原版模式不受此上層殘留影響。依61補READY契約後修正，保留原文及交易規則。
-
-怎樣算做完：出售確認不殘留HD歡迎詞；原生問句從既有字模來源提交HD文字；未知字形回退、忠實畫格、交易與保存保持；負例回歸及同份最終建置的普通GUI買賣通過。
-
-證據：`['docs/knowledge-base/61-modern-theme-runtime-spec.md', 'work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r1/gold-cloth-sale-confirmation.png']`
+怎樣算做完：1920×1200故事頭像、F2、JSON冷讀、HD黑體主路徑、多種穩定面板、整備問句轉場及商店金幣滾動已抽驗。接續其他設施／角色／物品轉場、成功演出中的數字、圖示內文字與未列固定畫面，再完成介面／戰場、現代素材覆蓋及跨平台效能；完整字型與整體HD仍未完成。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
