@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -108,6 +108,14 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
+2026-10-19 HD戰場接續：來源提交f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71。#257已修驗F2不再重複開角色狀態，Home保持；正常首章16張GPU、兩主題／來源完整保存及新程序標題LOAD通過。真正同units／view的戰場F2圖片確認#258取景倍率差異，目前尚未修正。
+
+94組1083張144候選已編製，但固定格線裁切疑點使整批拒絕登錄；不能以尺寸／檔案數稱為HD完成。全母稿輪廓方法五組51張已逐幀審查，第3組無法安全分成12幀則拒收；--audit-all已檢完94組：84組963張通過檔案驗證，10組拒收，保持非零退出，全部姿態尚未審完。像素化母稿待重繪；FDICON48銀白機械角色已用內建image_gen補高清三相候選，與DATO48父王分開，尚未接runtime或正式私人包。
+
+唯一新主收據為docs/data/fd2-modern-hd-battlefield-20261019.json，61保存DRAFT／CONFORMED邊界。接續母稿排列／身份／比例審查、144圖完整原子預檢、原生世界倍率與透明介面分層，再驗走行／取消／戰鬥返回及早中晚、地形與跨平台HD。原版規則、保存、Release與matching狀態保持。
+
+以下較早紀錄保留為歷史；目前以本段、58與61為準。
+
 2026-10-18現況：正式序章consumer的97拍已補齊父王48、王后66、強盜96，正常START至首章通過。31位已登錄頭像保留80圖並新增完整480圖集合，catalog共195筆／1187個file與files指向均預檢通過；私人素材已推3f289e7b並核遠端。其餘六個靜態缺頭像宣告仍只是候選，其他章、動態入隊及城鎮consumer尚待確認。本項保持開啟；來源見61、58與fd2-modern-hd-20261018.json。
 
 以下較早記錄保留為歷史；目前以本段與58為準。
@@ -149,6 +157,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 ### P1 HD高解析呈現：原生面板字型、介面、戰場與平台驗收
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
+
+2026-10-19 HD戰場接續：來源提交f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71。#257已修驗F2不再重複開角色狀態，Home保持；正常首章16張GPU、兩主題／來源完整保存及新程序標題LOAD通過。真正同units／view的戰場F2圖片確認#258取景倍率差異，目前尚未修正。
+
+94組1083張144候選已編製，但固定格線裁切疑點使整批拒絕登錄；不能以尺寸／檔案數稱為HD完成。全母稿輪廓方法五組51張已逐幀審查，第3組無法安全分成12幀則拒收；--audit-all已檢完94組：84組963張通過檔案驗證，10組拒收，保持非零退出，全部姿態尚未審完。像素化母稿待重繪；FDICON48銀白機械角色已用內建image_gen補高清三相候選，與DATO48父王分開，尚未接runtime或正式私人包。
+
+唯一新主收據為docs/data/fd2-modern-hd-battlefield-20261019.json，61保存DRAFT／CONFORMED邊界。接續母稿排列／身份／比例審查、144圖完整原子預檢、原生世界倍率與透明介面分層，再驗走行／取消／戰鬥返回及早中晚、地形與跨平台HD。原版規則、保存、Release與matching狀態保持。
+
+以下較早紀錄保留為歷史；目前以本段、58與61為準。
 
 2026-10-18實際首章戰場接續：#256角色狀態全幀覆蓋已修驗。正常標題LOAD普通START／F5首章JSON，Z聚焦索爾與悠妮、Home狀態／命令、F2、縮放／說明、返回、F5／F9及新程序標題LOAD通過。14張實際PNG已審查；六組面板外54000像素區域零差異，修正前50832像素被原版底圖覆蓋。完整保存與來源SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。來源提交：7dcce7296aeea708b02cd5f27cc9692ade141b5d。
 
@@ -252,14 +268,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
 
-### F2切換主題在戰場重複觸發角色狀態
-
-`theme-f2-also-inspects-battle-unit` · 缺陷 · [#257](https://github.com/wicanr2/fd2_re/issues/257) · 仍未完成 · 要人判
-
-正式首章標題LOAD、Z聚焦索爾後按F2，主題確實切換，但同一Update也觸發main.go戰場KeyF2／Home舊alias。world-geometry-before-gui-r1的battle-faithful-focused.png實際是狀態頁，不能冒稱同狀態戰場取景比較。來源122ebdfb，兩個F2讀取端及實際圖片已確認。保留F2全域切主題、Home正常檢視角色，不改規則或保存。
-
-怎樣算做完：正常首章兩次F2往返不開啟角色狀態、不改角色／view；Home仍可開狀態。相關回歸、實際GPU與保存冷讀通過。
-
 ### 現代戰場取景倍率與原生320×200窗格不同
 
 `modern-battle-viewport-half-scale` · 缺陷 · [#258](https://github.com/wicanr2/fd2_re/issues/258) · 仍未完成 · 要人判
@@ -311,6 +319,14 @@ F2重複消費修正後，world-geometry-f2-fixed-gui-r1以同份正常首章JSO
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+2026-10-19 HD戰場接續：來源提交f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71。#257已修驗F2不再重複開角色狀態，Home保持；正常首章16張GPU、兩主題／來源完整保存及新程序標題LOAD通過。真正同units／view的戰場F2圖片確認#258取景倍率差異，目前尚未修正。
+
+94組1083張144候選已編製，但固定格線裁切疑點使整批拒絕登錄；不能以尺寸／檔案數稱為HD完成。全母稿輪廓方法五組51張已逐幀審查，第3組無法安全分成12幀則拒收；--audit-all已檢完94組：84組963張通過檔案驗證，10組拒收，保持非零退出，全部姿態尚未審完。像素化母稿待重繪；FDICON48銀白機械角色已用內建image_gen補高清三相候選，與DATO48父王分開，尚未接runtime或正式私人包。
+
+唯一新主收據為docs/data/fd2-modern-hd-battlefield-20261019.json，61保存DRAFT／CONFORMED邊界。接續母稿排列／身份／比例審查、144圖完整原子預檢、原生世界倍率與透明介面分層，再驗走行／取消／戰鬥返回及早中晚、地形與跨平台HD。原版規則、保存、Release與matching狀態保持。
+
+以下較早紀錄保留為歷史；目前以本段、58與61為準。
 
 2026-10-18實際首章戰場接續：#256角色狀態全幀覆蓋已修驗。正常標題LOAD普通START／F5首章JSON，Z聚焦索爾與悠妮、Home狀態／命令、F2、縮放／說明、返回、F5／F9及新程序標題LOAD通過。14張實際PNG已審查；六組面板外54000像素區域零差異，修正前50832像素被原版底圖覆蓋。完整保存與來源SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。來源提交：7dcce7296aeea708b02cd5f27cc9692ade141b5d。
 

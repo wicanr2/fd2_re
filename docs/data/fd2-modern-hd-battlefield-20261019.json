@@ -7,7 +7,7 @@
   "current_state": {
     "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
     "native_viewport": "REMAKE-DEFECT-CONFIRMED：同units／view的正式戰場F2比較確認現代24直繪與原生320×200兩倍不同，#258待實作。",
-    "hd_sprite_data": "CANDIDATE：94組1083張首輪來源完整但固定格線有裁切，未登錄；完整輪廓方法51張樣本已審查。",
+    "hd_sprite_data": "CANDIDATE-INCOMPLETE：全94組來源檢查完成，84組963張檔案通過，10組拒收；僅51張樣本已逐幀審，尚未登錄。",
     "hd_world_renderer": "DRAFT：獨立1920世界與透明介面分層尚未實作。",
     "private_assets": "未新增正式catalog或私人包；新機械靜態母稿保留於專案候選。"
   },
@@ -285,5 +285,75 @@
         "removed_after_verification": true
       }
     ]
+  },
+  "source_commit": "f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71",
+  "component_audit": {
+    "manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-components-audit-r3/hd-map-sprites.json",
+      "sha256": "abfd208e1ff36ab72b1ce44d0509ca3ca5d4261d2b0169f98bea17ac7dd1d042"
+    },
+    "groups_evaluated": 94,
+    "groups_compiled": 84,
+    "compiled_frames": 963,
+    "all_compiled_png_hash_geometry_alpha_verified": true,
+    "refused_groups": [
+      {
+        "source_group": 3,
+        "error": "cannot identify 12 complete figures; components=[166753, 159512, 159361, 154134, 150613, 80118, 75332, 62, 30, 24, 21, 21, 19]"
+      },
+      {
+        "source_group": 10,
+        "error": "cannot identify 12 complete figures; components=[90496, 50625, 50292, 46399, 46384, 46178, 46149, 45958, 45143, 41720, 40246, 48, 35]"
+      },
+      {
+        "source_group": 12,
+        "error": "cannot identify 12 complete figures; components=[222568, 205002, 112134, 109936, 117, 82, 60, 28, 28, 22, 21, 21, 20]"
+      },
+      {
+        "source_group": 17,
+        "error": "cannot identify 12 complete figures; components=[100317, 97082, 51695, 50712, 47374, 46350, 46253, 45924, 45738, 41141, 128, 80, 60]"
+      },
+      {
+        "source_group": 18,
+        "error": "cannot identify 12 complete figures; components=[202200, 153963, 152580, 51440, 50583, 690, 246, 168, 166, 147, 146, 117, 84]"
+      },
+      {
+        "source_group": 20,
+        "error": "cannot identify 12 complete figures; components=[111482, 110839, 109414, 108872, 108182, 107534, 104, 54, 44, 33, 29, 26, 22]"
+      },
+      {
+        "source_group": 27,
+        "error": "cannot identify 12 complete figures; components=[137479, 72364, 72278, 71976, 69303, 68446, 67882, 66217, 65442, 63010, 61523, 31, 20]"
+      },
+      {
+        "source_group": 44,
+        "error": "cannot identify 12 complete figures; components=[222568, 205002, 112134, 109936, 117, 82, 60, 28, 28, 22, 21, 21, 20]"
+      },
+      {
+        "source_group": 49,
+        "error": "cannot identify 12 complete figures; components=[100317, 97082, 51695, 50712, 47374, 46350, 46253, 45924, 45738, 41141, 128, 80, 60]"
+      },
+      {
+        "source_group": 62,
+        "error": "cannot identify 12 complete figures; components=[222568, 205002, 112134, 109936, 117, 82, 60, 28, 28, 22, 21, 21, 20]"
+      }
+    ],
+    "exit_code": 1,
+    "exit_code_reason": "來源不齊，預期非零退出；未放寬門檻，未登錄runtime。",
+    "all_poses_manually_reviewed": false
+  },
+  "redraw_batch_3_10_12": {
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-redraw-3-10-12-generation.json",
+      "sha256": "0d07e18bfee4cfd0a4df8126671d45f181b178c242c3cad0b4ab24d3af14bf89"
+    },
+    "status": "CANDIDATE-NOT-REGISTERED",
+    "compile_result": "非零alpha仍有橋接；新三組在既有完整輪廓方法拒收，未登錄。",
+    "alpha_diagnostic": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-redraw-alpha-component-diagnostic.json",
+      "sha256": "d6018f76607d0f3aa7d32256c091f19bfd5f2a1fe73cc37a56cccedf16e75fc6"
+    },
+    "diagnosis": "opacity核心門檻64／128／192在三組均可分出12個人物，不能把低alpha橋接當實際身體重疊；後續須保留原alpha邊緣。",
+    "direction_gap": "group10 frame5仍面右，LEFT列不得放行。"
   }
 }
