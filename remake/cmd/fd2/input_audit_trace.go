@@ -31,6 +31,17 @@ func (g *Game) recordInputAuditState() {
 	r["locale"] = g.localeID
 	r["gold"] = g.gold
 	r["shop_mode"] = g.nativeShopMode
+	r["shop_service"] = g.nativeShopServiceSel
+	r["shop_ui_busy"] = g.nativeShopUIJob != nil
+	r["item_selection"] = g.itemSel
+	r["item_anim_step"] = g.itemAnimStep
+	r["item_closing"] = g.itemClosing
+	if g.nativeShopMode == nativeShopEquipPanelMode {
+		if id, unit, ok := g.nativeShopEquipUnit(); ok {
+			r["equip_unit"] = map[string]any{"id": id, "ap": unit.AP, "dp": unit.DP,
+				"equipped": unit.Equipped, "raw_flags": unit.NativeInventoryFlags, "inventory": unit.Inventory}
+		}
+	}
 	r["hotel_mode"] = g.nativeHotelMode
 	r["hotel_selection"] = g.hotelSel
 	r["hotel_slot"] = g.nativeHotelSlotSel

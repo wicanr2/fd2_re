@@ -391,6 +391,7 @@ type Game struct {
 	nativeMovementCostRows    [][]byte
 	nativeRNGState            uint16                   // original 0x627b8: initialized to zero, process-lifetime only
 	nativeFieldEventPending   *nativeFieldEventPending // original [0x51A8F]: selector 0 field event noted during the walk, dispatched at action end
+	nativeItemPanelText       *nativeItemPanelTextData
 	nativeItemPanel           *ebiten.Image
 	nativeItemPanelBase       []byte
 	nativeItemPanelRecord     []byte

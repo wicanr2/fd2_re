@@ -18,6 +18,7 @@ def main():
     facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
     facility.add_argument('--status', action='store_true', help='加驗教會角色狀態與命令穩定面板')
+    facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
@@ -150,6 +151,51 @@ def main():
         else:raise TimeoutError('標題未就緒')
         key('Return')
         wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
+        if args.items:
+            def shop(mode, selection=None):
+                return wait(lambda s:s.get('node')=='shop_ch02_weapon' and s.get('shop_mode')==mode
+                            and s.get('shop_ui_busy') is False
+                            and (mode!='equip_panel' or (s.get('item_anim_step')==11 and not s.get('item_closing')))
+                            and (selection is None or s.get('item_selection')==selection))
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            key('Left');key('Return');shop('menu');shot('shop-menu')
+            key('Right');key('Right');wait(lambda s:s.get('shop_service')==2)
+            key('Return');shop('equip_roster');shot('equip-roster')
+            key('Return');shop('equip_panel',0);shot('item-short-sword')
+            equip_before=latest(audit).get('equip_unit');assert equip_before and equip_before['id']==0
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-item-short-sword')
+            key('F2');wait(lambda s:s.get('hd_theme') is True);shop('equip_panel',0);shot('hd-item-short-sword-restored')
+            command('xdotool','windowsize',window,'1600','1000');shot('item-panel-resized')
+            command('xdotool','windowsize',window,'1920','1200')
+            key('F1');wait(lambda s:s.get('help_visible') is True);shot('item-panel-help')
+            key('Escape');wait(lambda s:s.get('help_visible') is False)
+            key('Down');shop('equip_panel',1);shot('item-armor')
+            key('Down');shop('equip_panel',2);shot('item-herb')
+            key('Return');shop('equip_panel',2);shot('item-herb-rejected')
+            assert latest(audit).get('equip_unit')==equip_before,'裝備藥草改變角色'
+            key('Up');key('Up');shop('equip_panel',0)
+            key('Return');shop('equip_panel',0);shot('item-short-sword-reequipped')
+            assert latest(audit).get('equip_unit')==equip_before,'重新裝備既有短劍改變資料'
+            key('Escape');shop('equip_roster');shot('equip-roster-returned')
+            key('Escape');shop('menu')
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            key('Right');key('Return');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            assert digest(saved)==digest(args.town_save),'來源複本在保存前被改寫'
+            key('F5');hd_saved=saved.read_bytes()
+            key('F2');wait(lambda s:s.get('hd_theme') is False)
+            key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存結果不同'
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            shot('faithful-hotel-after-items-load')
+            report={'schema':'fd2-hd-item-font-gui-v1','status':'PASS',
+                    'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
+                    'saved_sha256':digest(saved),'theme_save_bytes_equal':True,
+                    'source_save_bytes_equal':digest(saved)==digest(args.town_save),
+                    'screenshots':shots,'operations':operations,'recording_created':False,
+                    'scope':'正常START後F9接續既有hotel_ch02，經城鎮進武器店裝備服務；普通選索爾、移動至皮甲／藥草、拒絕裝備藥草、重新裝備既有短劍；F2、縮放／說明遮罩、返回旅館F5／F9。原生物品文字沿既有語言，未新增翻譯，不宣稱連續戰役或原版對拍。',
+                    'elapsed_seconds':time.monotonic()-started}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         if args.church or args.status:
             def church(mode):
                 return wait(lambda s:s.get('node')=='church_ch02' and s.get('church_mode')==mode

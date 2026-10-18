@@ -52,6 +52,11 @@ func (g *Game) prepareNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 	if err != nil {
 		return false
 	}
+	text, ok := prepareNativeItemPanelText(record, assets, rows)
+	if !ok {
+		return false
+	}
+	g.nativeItemPanelText = text
 	g.nativeItemPanelBase = pixels
 	g.nativeItemPanelRecord = record
 	g.nativeItemPanelAssets = &assets
@@ -80,7 +85,7 @@ func (g *Game) refreshNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 		); err != nil {
 			return false
 		}
-		return g.setNativeItemPanelPixels(pixels)
+		return g.publishNativeItemPanelPixels(pixels, -1)
 	}
 	if g.itemSel < 0 {
 		g.itemSel = 0
@@ -95,7 +100,7 @@ func (g *Game) refreshNativeItemPanelMode(unit *battle.Unit, allowEmpty bool) bo
 	); err != nil {
 		return false
 	}
-	return g.setNativeItemPanelPixels(pixels)
+	return g.publishNativeItemPanelPixels(pixels, rawSlots[g.itemSel])
 }
 
 func (g *Game) setNativeItemPanelPixels(pixels []byte) bool {
@@ -129,12 +134,21 @@ func (g *Game) rebuildNativeItemPanelContents(unit *battle.Unit, allowEmpty bool
 	); err != nil {
 		return false
 	}
+	if g.nativeItemPanelAssets == nil {
+		return false
+	}
+	text, ok := prepareNativeItemPanelText(record, *g.nativeItemPanelAssets, g.nativeItemEffectRows)
+	if !ok {
+		return false
+	}
+	g.nativeItemPanelText = text
 	g.nativeItemPanelRecord = record
 	g.nativeItemPanelBase = pixels
 	return g.refreshNativeItemPanelMode(unit, allowEmpty)
 }
 
 func (g *Game) clearNativeItemPanel() {
+	g.nativeItemPanelText = nil
 	g.nativeItemPanel = nil
 	g.nativeItemPanelBase = nil
 	g.nativeItemPanelRecord = nil
@@ -882,11 +896,23 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 	if err != nil {
 		return false
 	}
+	panel := g.nativeItemPanel
+	var text []modernHDTextRun
+	if frame == 0 && !g.itemClosing {
+		if hd, runs, ok := g.composeModernHDItemPanel(); ok {
+			panel, text = hd, runs
+		}
+	}
+	var regions []image.Rectangle
 	for _, region := range []battle.NativeItemPanelRegion{pass.Left, pass.Upper, pass.Bottom} {
 		if !region.Enabled || region.Width <= 0 || region.Height <= 0 {
 			continue
 		}
-		source := g.nativeItemPanel.SubImage(image.Rect(
+		covered := image.Rect(region.DestX*2, region.DestY*2,
+			(region.DestX+region.Width)*2, (region.DestY+region.Height)*2)
+		g.clearModernHDTextRegion(covered)
+		regions = append(regions, covered)
+		source := panel.SubImage(image.Rect(
 			region.SourceX, region.SourceY,
 			region.SourceX+region.Width, region.SourceY+region.Height,
 		)).(*ebiten.Image)
@@ -894,6 +920,17 @@ func (g *Game) drawNativeItemPanel(screen *ebiten.Image) bool {
 		op.GeoM.Scale(2, 2)
 		op.GeoM.Translate(float64(region.DestX*2), float64(region.DestY*2))
 		screen.DrawImage(source, op)
+	}
+	if g.modernHDText != nil {
+		for _, run := range text {
+			for _, region := range regions {
+				copy := run
+				copy.clip = run.clip.Intersect(region)
+				if !copy.clip.Empty() {
+					g.modernHDText.runs = append(g.modernHDText.runs, copy)
+				}
+			}
+		}
 	}
 	return true
 }

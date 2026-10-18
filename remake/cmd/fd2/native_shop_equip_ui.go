@@ -279,6 +279,7 @@ func (g *Game) applyNativeShopEquipSelection() bool {
 	// 0x1c084..0x1c0cc 會在裝備成功後原地重畫面板。先在候選 unit 上完成
 	// 所有 renderer 前置；若重建失敗，既有 panel 與 persistent roster 都不得改變。
 	oldPanel := g.nativeItemPanel
+	oldText := g.nativeItemPanelText
 	oldBase := g.nativeItemPanelBase
 	oldRecord := g.nativeItemPanelRecord
 	oldAssets := g.nativeItemPanelAssets
@@ -286,6 +287,7 @@ func (g *Game) applyNativeShopEquipSelection() bool {
 	oldSelection := g.itemSel
 	if !g.rebuildNativeItemPanelContents(&unit, true) {
 		g.nativeItemPanel = oldPanel
+		g.nativeItemPanelText = oldText
 		g.nativeItemPanelBase = oldBase
 		g.nativeItemPanelRecord = oldRecord
 		g.nativeItemPanelAssets = oldAssets

@@ -151,10 +151,11 @@
     "說明頁字級、寬度適配與標題間距",
     "旅館當次合成的原生提示、四槽章名／編號／標題及保存／讀取回覆；原有文字與語系路由保持",
     "教會當次合成的選單、名冊、轉職／復活問句、交付物品與提示，金幣與十進位字庫；範圍及驗證分級見church_followup",
-    "角色狀態與命令穩定頁沿開啟時快照直接HD繪字；教會正常GUI與戰場E1範圍見status_followup"
+    "角色狀態與命令穩定頁沿開啟時快照直接HD繪字；教會正常GUI與戰場E1範圍見status_followup",
+    "原生物品操作穩定頁與商店裝備選取／刷新，區域遮蔽與快照還原；範圍見item_followup"
   ],
   "remaining": [
-    "原生物品操作／整備／原生標題LOAD等其餘固定索引面板；角色狀態轉場與圖示仍未接入",
+    "原生整備／原生標題LOAD等其餘固定索引面板；預建轉場與圖示仍未接入",
     "預建原生轉場job中的文字與金幣滾動",
     "圖示內HP／貨幣等點陣字樣",
     "全戰役特殊字模fallback盤點與跨平台效能"
@@ -6371,5 +6372,900 @@
       "fd2_containers_remaining_after_validation": 0
     },
     "source_commit": "70d50d7cf78d9de4770d3e685ee79b347d8f166e"
+  },
+  "item_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_fonts_complete": false,
+    "base_commit": "7062d21c4b97c39356464651aca365cb061f9664",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/item-source-final.json",
+        "sha256": "5a7f1339e3692695c8c5b3679952c75a504c865f56c71d06407d01124c341a7c"
+      },
+      "snapshot_taken_before_final_build_and_regression": true,
+      "method": "SHA256 of sorted relative path, NUL, content SHA256 hex, LF",
+      "inventory": "git ls-files remake/**/*.go plus the two new item sources",
+      "production_go_tree_sha256": "8f3704294be6e32800995425e0ead3c93d133866488adbfa52a75d1f5bca0ad5",
+      "test_go_tree_sha256": "2021a9f8e0c042b82ec68935ce49cacf949eda4682e435aa8b68bd6bbe53d771",
+      "go_files_count": 964,
+      "changed_files": {
+        "remake/cmd/fd2/input_audit_trace.go": "a723fc16fa43a6a7e7c574a070d188d695d0f010f008a43d8bb4a3ab09314f11",
+        "remake/cmd/fd2/main.go": "9f7f5563014eea53b479ab8dd758a3c0888155fbc15dda766807fc973fdb8bad",
+        "remake/cmd/fd2/native_item_panel_ui.go": "7b1270068520562fa6210d8c2460129ce379495dfe1f4db18c5d75684ad339c2",
+        "remake/cmd/fd2/native_shop_equip_ui.go": "0300c3b6b059abdfa612ab14c5d98bf9c21c7801fd1dca81638845c75fd264fe",
+        "remake/cmd/fd2/modern_hd_item_text.go": "c2d91f7ac50ce11424e926f230ce965fb644afac72015ac27d0ac3da0c1ae2bf",
+        "remake/cmd/fd2/modern_hd_item_text_test.go": "f7606160ba4c7fb9f275685594aca5033cc1a180c6c1cf05ef342e6ab3eb4601",
+        "tools/verify_fd2_hd_fonts_gui.py": "4ba62e5f371e2de39855b442548d74b112d5a34700cc20d9363b667de4679aaa"
+      },
+      "gui_note": "最終Go來源與同一binary保持；GUI r1城鎮方向錯誤，修正受版控工具後以同一建置跑r2。"
+    },
+    "runtime_scope": [
+      "物品操作穩定頁從同份底圖／紀錄／素材／效果列快照繪HD文字與數字；成功刷新才發布原始八格選取",
+      "裝備重建成功更新快照，失敗完整還原像素cache與文字快照，關閉清除；原名冊交易與存檔不變",
+      "每個實際拷貝矩形遮蔽舊HD文字，保留框外部分；新文字裁在拷貝區域，不讓歡迎詞或金幣穿透",
+      "原12幀開收框仍為像素，頭像／圖示／烘焙標籤保持；不新增翻譯"
+    ],
+    "supersedes_limits": "先前status_followup中原生物品操作面板尚未接HD的限制，現在穩定頁已接入；原生整備、標題LOAD、轉場與圖示限制保持。",
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/item-gui-r2/receipt.json",
+      "sha256": "29501eb2917285a14a620fded4d256322d25e9bf223e13bc5f8f73ea1c62fc31",
+      "status": "PASS-GPU-REVIEWED",
+      "scope": "正常START後F9接續既有hotel_ch02，經城鎮進武器店裝備服務；普通選索爾、移動至皮甲／藥草、拒絕裝備藥草、重新裝備既有短劍；F2、縮放／說明遮罩、返回旅館F5／F9。原生物品文字沿既有語言，未新增翻譯，不宣稱連續戰役或原版對拍。",
+      "elapsed_seconds": 100.14652370102704,
+      "screenshots": {
+        "shop-menu.png": {
+          "sha256": "b4f1d8eb9855d229171a0d9ffccf40a92caf5dc8fab113d467ef750c51d1c634",
+          "state": {
+            "frame": 584,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 10,
+            "shop_mode": "menu",
+            "shop_service": 0,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 0,
+            "item_closing": false,
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "equip-roster.png": {
+          "sha256": "65e286f37be60fc63d63f432d6a2514b52f7d9dffc907149828696356e22ac5e",
+          "state": {
+            "frame": 676,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 18,
+            "shop_mode": "equip_roster",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 0,
+            "item_closing": false,
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "item-short-sword.png": {
+          "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+          "state": {
+            "frame": 756,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "faithful-item-short-sword.png": {
+          "sha256": "e54073698900d3bab6268825a2d0ccea861f70d5b432e484f77a968d7fbd52a3",
+          "state": {
+            "frame": 842,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": false,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "hd-item-short-sword-restored.png": {
+          "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+          "state": {
+            "frame": 920,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "item-panel-resized.png": {
+          "sha256": "23e7c99265547fd8aef7c549519d5ec7f6e996aba5ce4d1b3841b7d994115eb9",
+          "state": {
+            "frame": 972,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "item-panel-help.png": {
+          "sha256": "3ba44263152addc662d4f24f95a8c45546ea3337067e32cf2e18771a09770b8a",
+          "state": {
+            "frame": 1030,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 10,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": true,
+            "error": ""
+          }
+        },
+        "item-armor.png": {
+          "sha256": "cd63bdcb58c3ed3763899f4c2a47ce5e48933af24df1326fa3e71108d18ebb5f",
+          "state": {
+            "frame": 1104,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 1,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "item-herb.png": {
+          "sha256": "1a247a18d26b45544a66147c0c75dc1515deca0efc4a51706d5350fdb40f4c68",
+          "state": {
+            "frame": 1178,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 2,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "item-herb-rejected.png": {
+          "sha256": "1a247a18d26b45544a66147c0c75dc1515deca0efc4a51706d5350fdb40f4c68",
+          "state": {
+            "frame": 1252,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 2,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "item-short-sword-reequipped.png": {
+          "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+          "state": {
+            "frame": 1338,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 66,
+            "shop_mode": "equip_panel",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 11,
+            "item_closing": false,
+            "equip_unit": {
+              "ap": 16,
+              "dp": 12,
+              "equipped": [
+                true,
+                true,
+                false
+              ],
+              "id": 0,
+              "inventory": [
+                0,
+                132,
+                192
+              ],
+              "raw_flags": [
+                64,
+                64,
+                0,
+                128,
+                128,
+                128,
+                128,
+                128
+              ]
+            },
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "equip-roster-returned.png": {
+          "sha256": "65e286f37be60fc63d63f432d6a2514b52f7d9dffc907149828696356e22ac5e",
+          "state": {
+            "frame": 1436,
+            "node": "shop_ch02_weapon",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": true,
+            "hd_text_runs": 18,
+            "shop_mode": "equip_roster",
+            "shop_service": 2,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 0,
+            "item_closing": false,
+            "help_visible": false,
+            "error": ""
+          }
+        },
+        "faithful-hotel-after-items-load.png": {
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "state": {
+            "frame": 1666,
+            "node": "hotel_ch02",
+            "gold": 1000,
+            "locale": "zh-Hant",
+            "hd_theme": false,
+            "shop_mode": "",
+            "shop_service": 0,
+            "shop_ui_busy": false,
+            "item_selection": 0,
+            "item_anim_step": 0,
+            "item_closing": false,
+            "help_visible": false,
+            "error": ""
+          }
+        }
+      },
+      "operations": [
+        {
+          "key": "Escape",
+          "press_frame": 4,
+          "release_frame": 8
+        },
+        {
+          "key": "Escape",
+          "press_frame": 12,
+          "release_frame": 14
+        },
+        {
+          "key": "Escape",
+          "press_frame": 17,
+          "release_frame": 19
+        },
+        {
+          "key": "Escape",
+          "press_frame": 23,
+          "release_frame": 26
+        },
+        {
+          "key": "Escape",
+          "press_frame": 29,
+          "release_frame": 32
+        },
+        {
+          "key": "Escape",
+          "press_frame": 38,
+          "release_frame": 40
+        },
+        {
+          "key": "Escape",
+          "press_frame": 43,
+          "release_frame": 45
+        },
+        {
+          "key": "Escape",
+          "press_frame": 51,
+          "release_frame": 53
+        },
+        {
+          "key": "Escape",
+          "press_frame": 59,
+          "release_frame": 65
+        },
+        {
+          "key": "Escape",
+          "press_frame": 70,
+          "release_frame": 72
+        },
+        {
+          "key": "Escape",
+          "press_frame": 75,
+          "release_frame": 80
+        },
+        {
+          "key": "Escape",
+          "press_frame": 83,
+          "release_frame": 85
+        },
+        {
+          "key": "Escape",
+          "press_frame": 89,
+          "release_frame": 91
+        },
+        {
+          "key": "Escape",
+          "press_frame": 95,
+          "release_frame": 97
+        },
+        {
+          "key": "Escape",
+          "press_frame": 103,
+          "release_frame": 105
+        },
+        {
+          "key": "Escape",
+          "press_frame": 112,
+          "release_frame": 114
+        },
+        {
+          "key": "Escape",
+          "press_frame": 117,
+          "release_frame": 120
+        },
+        {
+          "key": "Escape",
+          "press_frame": 124,
+          "release_frame": 128
+        },
+        {
+          "key": "Escape",
+          "press_frame": 131,
+          "release_frame": 137
+        },
+        {
+          "key": "Escape",
+          "press_frame": 143,
+          "release_frame": 145
+        },
+        {
+          "key": "Escape",
+          "press_frame": 152,
+          "release_frame": 155
+        },
+        {
+          "key": "Escape",
+          "press_frame": 161,
+          "release_frame": 163
+        },
+        {
+          "key": "Escape",
+          "press_frame": 168,
+          "release_frame": 170
+        },
+        {
+          "key": "Escape",
+          "press_frame": 173,
+          "release_frame": 175
+        },
+        {
+          "key": "Escape",
+          "press_frame": 179,
+          "release_frame": 181
+        },
+        {
+          "key": "Return",
+          "press_frame": 185,
+          "release_frame": 187
+        },
+        {
+          "key": "F9",
+          "press_frame": 513,
+          "release_frame": 515
+        },
+        {
+          "key": "Escape",
+          "press_frame": 524,
+          "release_frame": 527
+        },
+        {
+          "key": "Left",
+          "press_frame": 533,
+          "release_frame": 541
+        },
+        {
+          "key": "Return",
+          "press_frame": 549,
+          "release_frame": 555
+        },
+        {
+          "key": "Right",
+          "press_frame": 586,
+          "release_frame": 591
+        },
+        {
+          "key": "Right",
+          "press_frame": 597,
+          "release_frame": 602
+        },
+        {
+          "key": "Return",
+          "press_frame": 613,
+          "release_frame": 619
+        },
+        {
+          "key": "Return",
+          "press_frame": 679,
+          "release_frame": 688
+        },
+        {
+          "key": "F2",
+          "press_frame": 758,
+          "release_frame": 763
+        },
+        {
+          "key": "F2",
+          "press_frame": 844,
+          "release_frame": 848
+        },
+        {
+          "key": "F1",
+          "press_frame": 973,
+          "release_frame": 975
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1031,
+          "release_frame": 1035
+        },
+        {
+          "key": "Down",
+          "press_frame": 1040,
+          "release_frame": 1045
+        },
+        {
+          "key": "Down",
+          "press_frame": 1106,
+          "release_frame": 1113
+        },
+        {
+          "key": "Return",
+          "press_frame": 1180,
+          "release_frame": 1188
+        },
+        {
+          "key": "Up",
+          "press_frame": 1254,
+          "release_frame": 1263
+        },
+        {
+          "key": "Up",
+          "press_frame": 1276,
+          "release_frame": 1281
+        },
+        {
+          "key": "Return",
+          "press_frame": 1288,
+          "release_frame": 1293
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1340,
+          "release_frame": 1342
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1437,
+          "release_frame": 1444
+        },
+        {
+          "key": "Escape",
+          "press_frame": 1460,
+          "release_frame": 1472
+        },
+        {
+          "key": "Right",
+          "press_frame": 1484,
+          "release_frame": 1492
+        },
+        {
+          "key": "Return",
+          "press_frame": 1504,
+          "release_frame": 1508
+        },
+        {
+          "key": "F5",
+          "press_frame": 1521,
+          "release_frame": 1528
+        },
+        {
+          "key": "F2",
+          "press_frame": 1535,
+          "release_frame": 1538
+        },
+        {
+          "key": "F5",
+          "press_frame": 1548,
+          "release_frame": 1558
+        },
+        {
+          "key": "F9",
+          "press_frame": 1571,
+          "release_frame": 1579
+        }
+      ],
+      "all_releases_observed": true,
+      "gpu_review": "13張實際視窗已審查；選取色、物品名及數值無重疊／裁切，商店提示與金幣無穿透。F2往返PNG SHA相同，重新裝備與拒絕藥草後角色資料保持。"
+    },
+    "save": {
+      "source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "source": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+      "notes": "正常START後F9接續既有槽；城鎮武器店裝備選人、移動、拒絕藥草、重新裝備已穿戴短劍、返回旅館F5／F9。未注入狀態，金幣保持1000；不宣稱連續戰役。"
+    },
+    "regression": {
+      "cmd_ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/item-ui-regression-r1.log",
+        "sha256": "c673aab70132cae893781cbae847306a5fe5e50838e2ad27319eaa649546531a",
+        "status": "PASS",
+        "seconds": 73.341,
+        "run_pattern": "Test(ModernHD|NativeShop|NativeChurch|NativeClass|NativePlayerStatus|.*NativeItem|.*DeathReward|.*JSON|.*TitleLoad|.*SaveSlot|.*Locale)",
+        "scope": "相關介面／物品／裝備／交換及保存回歸，不是完整cmd/fd2測試"
+      },
+      "battle": {
+        "file": "work/promo-cadence-20261018/hd-fonts/item-battle-regression-r1.log",
+        "sha256": "8fb9e968e6524ad691643aeba7fe2223368652054efcc9d6ce5d82f563771f02",
+        "status": "PASS",
+        "seconds": 0.313,
+        "run_pattern": "Test(NativeItemPanel|NativeItemSelector|NativeCommandOverlay)",
+        "scope": "相關資料合成器，不是完整battle測試"
+      },
+      "data_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/item-data-regression-r1.log",
+        "sha256": "2be9d35a6921c85aaee754846b103b9d024f5ca4f5ee4fad97931054dec82274",
+        "status": "PASS",
+        "seconds": {
+          "campaign": 4.14,
+          "fdtxt": 0.241,
+          "fdother": 9.975,
+          "localization": 0.995,
+          "fd2-string-inventory": 1.467
+        }
+      },
+      "e1_scope": "有洞raw slot、空袋、快照不可變、裝備成功／失敗還原、遮蔽外部面積與原排程以fixture驗證。戰場物品及死亡交換caller跑相關回歸，未新增其正常GUI或原版對拍。"
+    },
+    "localization": {
+      "entries_per_locale": 5107,
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "ja",
+        "en"
+      ],
+      "text_status_variables_identity_equal_base": true,
+      "migration": {
+        "by_id": 4865,
+        "by_signature": 242,
+        "by_text": 0,
+        "new": 0
+      }
+    },
+    "diagnostics": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/item-focused-r1.log",
+        "sha256": "51b9536b17c7c9a26476a5a21e0bc99ee01da88dbf8a99291d60becc886fbaf2",
+        "status": "TEST-ENVIRONMENT-FAIL",
+        "reason": "在Ebiten繪製迴圈前ReadPixels引發command queue panic；改驗CPU快取與image身分，實際畫面另走正常GUI，非產品缺陷。"
+      },
+      {
+        "run": "item-focused-r2",
+        "status": "PASS-PRE-PATH-CONSTANT",
+        "file": "work/promo-cadence-20261018/hd-fonts/item-focused-r2.log",
+        "sha256": "1203015f2ba45eaa22ecf3134b4f942e7c617681f64e5837f7d9bd5d7f29f5e6",
+        "seconds": 3.855,
+        "note": "最終來源另由完整相關模式及GUI驗證。"
+      },
+      {
+        "run": "item-gui-r1",
+        "status": "SCRIPT-FAIL",
+        "audit": {
+          "file": "work/promo-cadence-20261018/hd-fonts/item-gui-r1/input-audit.jsonl",
+          "sha256": "956d7b029d2a70adbf69e2c106ce098d2c5ae6b32eaf27e8bc912100a78a5451"
+        },
+        "reason": "城鎮Right為-1，從0走到教會4；回查main輸入與native_town_ui後修正，原遊戲與binary未改。"
+      },
+      {
+        "run": "item-inventory-r1",
+        "status": "MIGRATION-REJECTED",
+        "reason": "新Text helper的內部portraits路徑被列玩家文字；改具名資源目錄常數，再重綁，無新增翻譯。"
+      }
+    ],
+    "readme_figure": {
+      "file": "docs/figures/hd-item-equipment.png",
+      "sha256": "69d060c4ea0420104ad91e48c95043b984d4bdfddbda77f09429b18dba79d3e9",
+      "source": "work/promo-cadence-20261018/hd-fonts/item-gui-r2/item-short-sword.png",
+      "kind": "1920×1200實際重製視窗；動態文字與數字HD，頭像／背景／圖示及烘焙標籤保留像素"
+    },
+    "limits": [
+      "原生整備／原生標題LOAD等固定面板、預建轉場及圖示字樣仍待接入",
+      "正常GUI只驗本次商店裝備路徑；戰場與死亡交換caller限相關回歸及E1",
+      "非完整HD／字型完成、原版像素對拍、穩定60fps或跨平台驗收"
+    ],
+    "recordings_created": false,
+    "new_artwork": false,
+    "matching_decompilation": "paused",
+    "release_modified": false,
+    "rebuild": "沿主收據rebuild建置，再使用同份GUI工具加--items，原始資料唯讀、輸出獨立可寫。",
+    "cleanup": {
+      "status": "DERIVED-BINARY-REMOVED",
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-items",
+        "sha256": "ced19fef63faabe0c1781f2e83d03998b15414f377bf1c360ad388c3f684d08c",
+        "bytes": 18981432
+      },
+      "bytes_freed": 18981432,
+      "recordings_created": false,
+      "png_and_receipts_retained": true,
+      "fd2_containers_remaining_after_validation": 0
+    }
   }
 }
