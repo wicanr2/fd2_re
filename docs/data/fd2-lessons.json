@@ -2704,6 +2704,21 @@
         ],
         "pattern": "getwindowgeometry"
       }
+    },
+    {
+      "id": "gui-transition-needs-pixels-and-moving-geometry",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "GUI轉場以tools/verify_fd2_hd_fonts_gui.py的validate_transition_samples核對實際PNG字形與移動中選項位置。CPU階段與文字筆數只定位候選，前後狀態跨階段照實記錄，不拿來單獨判斷GPU畫面或精確同幀。",
+      "why": "整備轉場r1的CPU frame7及14筆文字仍擷取空框，另一CPU-contained樣本仍為穩定頁；晚期有效GPU轉場反因CPU跨階段遭拒。加入HD問句RGB與內移選項邊界後，空框／穩定頁拒收，同份binary兩條r2取得5張真實轉場。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "validate_transition_samples"
+      }
     }
   ]
 }

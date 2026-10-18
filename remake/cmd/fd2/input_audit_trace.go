@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strconv"
 
@@ -67,6 +68,13 @@ func (g *Game) recordInputAuditState() {
 	r["preparation_selected"] = g.preparationSelected()
 	r["preparation_limit"] = g.prepLimit
 	r["preparation_ui_busy"] = g.nativeClassUIJob != nil
+	if job := g.nativeClassUIJob; job != nil && job.preparationText != nil {
+		r["preparation_transition_job"] = fmt.Sprintf("%p", job)
+		r["preparation_transition_frame"] = job.frame
+		r["preparation_transition_text_start"] = job.preparationText.start
+		r["preparation_transition_required"] = job.preparationText.kind == nativePreparationRequiredQuestion
+		r["preparation_transition_closing"] = job.preparationText.closing
+	}
 	r["help_visible"] = g.helpVisible
 	if len(g.dialog) != 0 {
 		r["dialogue_speaker"] = g.dialog[len(g.dialog)-1].Speaker

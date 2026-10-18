@@ -984,4 +984,4 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [README 四語忠實模式商店截圖與來源](../data/fd2-readme-locales-20261018.json)。
 
-- [HD 清晰黑體、旅館／教會／角色狀態／物品／整備／標題讀檔與四語 GUI 主收據](../data/fd2-modern-hd-fonts-20261018.json)、[正常驗證工具](../../tools/verify_fd2_hd_fonts_gui.py)、[已確認字型原型](../figures/hd-font-style-comparison.png)，契約見[61](61-modern-theme-runtime-spec.md)。
+- [HD 清晰黑體、旅館／教會／角色狀態／物品／整備／標題讀檔、整備問句轉場與四語 GUI 主收據](../data/fd2-modern-hd-fonts-20261018.json)、[正常驗證工具](../../tools/verify_fd2_hd_fonts_gui.py)、[已確認字型原型](../figures/hd-font-style-comparison.png)，契約見[61](61-modern-theme-runtime-spec.md)。

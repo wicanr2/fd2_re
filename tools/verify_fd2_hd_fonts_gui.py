@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import threading
 import time
 
 from verify_fd2_hd_gui import digest, latest
@@ -21,7 +22,9 @@ def main():
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
+    parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
     args = parser.parse_args()
+    assert not args.transition_frames or args.preparation
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
     assert json.loads(args.town_save.read_text())['node'] == 'hotel_ch02'
@@ -59,6 +62,13 @@ def main():
     processes,streams,shots,operations=[],[],{},[]
     started=time.monotonic()
     window=None
+
+    transition_stop=threading.Event()
+    transition_thread=None
+    transition_shots={}
+    transition_rejected=[]
+    transition_errors=[]
+    transition_gpu_validated=False
 
     def command(*items):
         return subprocess.check_output(items,env=env,text=True,stderr=subprocess.DEVNULL)
@@ -131,6 +141,86 @@ def main():
                           'window_geometry':command('xdotool','getwindowgeometry','--shell',window)}
         print('CAPTURE '+path.name,flush=True)
 
+    def transition_eligible(state):
+        frame=state.get('preparation_transition_frame',-1)
+        start=state.get('preparation_transition_text_start',-1)
+        return (state.get('hd_theme') is True and state.get('preparation_ui_busy') is True
+                and state.get('hd_text_runs',0)>0 and start>=0 and start<frame<start+4
+                and not state.get('preparation_transition_required'))
+
+    def capture_transitions():
+        seen=set()
+        try:
+            while not transition_stop.is_set() and len(seen)<32:
+                before=latest(audit)
+                token=(before.get('preparation_transition_job'),before.get('preparation_transition_frame'))
+                if not transition_eligible(before) or token in seen:
+                    transition_stop.wait(.01);continue
+                seen.add(token)
+                path=args.out/('preparation-transition-'+str(len(seen))+'.png')
+                subprocess.run(['import','-window',window,str(path)],env=env,
+                               stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True,timeout=15)
+                after=latest(audit)
+                valid=(transition_eligible(after)
+                       and before.get('preparation_transition_job')==after.get('preparation_transition_job')
+                       and before.get('preparation_transition_closing')==after.get('preparation_transition_closing')
+                       and before['preparation_transition_frame']<=after['preparation_transition_frame'])
+                meta={'sha256':digest(path),'before':before,'after':after,'accepted':valid}
+                if valid:
+                    meta['anchor']=('preparation-final-question.png' if before.get('preparation_confirm')
+                                    else ('preparation-record-question.png' if args.native_save
+                                          else 'preparation-departure-question.png'))
+                    transition_shots[path.name]=meta
+                    print('TRANSITION '+path.name,flush=True)
+                else:
+                    transition_rejected.append({'file':path.name,**meta})
+        except Exception as error:
+            transition_errors.append(str(error))
+
+    def finish_transitions(raise_errors=True):
+        transition_stop.set()
+        if transition_thread and transition_thread.ident is not None:
+            transition_thread.join(timeout=20)
+            if transition_thread.is_alive():transition_errors.append('轉場擷取尚未結束')
+        if transition_errors and raise_errors:raise RuntimeError(str(transition_errors))
+
+    def validate_transition_samples():
+        nonlocal transition_gpu_validated
+        # CPU state brackets locate candidates; the window can still present
+        # an earlier frame. Require actual HD ink and moving choice geometry.
+        def region(path,geometry):
+            return subprocess.check_output(['convert',str(path),'-crop',geometry,'+repage',
+                                            '-depth','8','rgb:-'],env=env,timeout=15)
+        def gold_bounds(path):
+            raw=region(path,'450x144+1320+996')
+            columns=[(i//3)%450 for i in range(0,len(raw),3)
+                     if raw[i]>=200 and 100<=raw[i+1]<220 and raw[i+2]<80]
+            return (1320+min(columns),1320+max(columns)) if columns else None
+        candidates={**transition_shots,**{m['file']:m for m in transition_rejected}}
+        transition_shots.clear();transition_rejected.clear()
+        for name,meta in candidates.items():
+            path=args.out/name
+            assert digest(path)==meta['sha256'],'轉場候選PNG被改寫'
+            before=meta['before']
+            anchor_name=('preparation-final-question.png' if before.get('preparation_confirm')
+                         else ('preparation-record-question.png' if args.native_save
+                               else 'preparation-departure-question.png'))
+            anchor=args.out/anchor_name
+            reference=region(anchor,'1302x102+570+714')
+            actual=region(path,'1302x102+570+714')
+            ink_equal=len(reference)==1302*102*3 and actual==reference
+            bounds,stable_bounds=gold_bounds(path),gold_bounds(anchor)
+            moving=bool(bounds and stable_bounds and bounds[0]>stable_bounds[0] and bounds[1]<stable_bounds[1])
+            meta.update(cpu_phase_contained=meta['accepted'],accepted=ink_equal and moving,
+                        anchor=anchor_name,hd_text_region_equal=ink_equal,
+                        choice_gold_bounds=bounds,stable_choice_gold_bounds=stable_bounds,
+                        moving_choices_verified=moving,exact_frame_claimed=False)
+            if meta['accepted']:
+                transition_shots[name]=meta
+            else:
+                transition_rejected.append({'file':name,**meta})
+        transition_gpu_validated=True
+
     def settled_dialogue():
         command('xdotool','windowfocus',window)
         wait(lambda s:s.get('dialogue_phase')==0 and s.get('dialogue_progress',-1)>=0)
@@ -170,6 +260,9 @@ def main():
             key('Escape')
         else:raise TimeoutError('標題未就緒')
         if args.preparation:
+            if args.transition_frames:
+                transition_thread=threading.Thread(target=capture_transitions,daemon=True)
+                transition_thread.start()
             key('Down');key('Return')
             wait(lambda s:s.get('title_phase')=='loadslots' and s.get('title_slot')==0)
             shot('title-load-slots')
@@ -235,12 +328,19 @@ def main():
                 assert digest(saved)==digest(args.town_save),'出發取消改變來源狀態'
                 saved_hash=digest(saved)
                 scope='正常標題LOAD既有hotel_ch02 JSON槽，城鎮整備出發問句選NO返回，旅館F5／F9；非連續全戰役，不宣稱原版對拍。'
+            finish_transitions()
+            if args.transition_frames:
+                validate_transition_samples()
+                directions={m['before']['preparation_transition_closing'] for m in transition_shots.values()}
+                assert directions=={False,True},'未取得開框及收框中的有效問句轉場樣本'
             assert shots['title-load-slots.png']['sha256']==shots['hd-title-load-slots-restored.png']['sha256'],'標題F2往返圖不同'
             report={'schema':'fd2-hd-preparation-font-gui-v1','status':'PASS',
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
                     'native_source_sha256':digest(args.native_save) if args.native_save else None,
                     'saved_sha256':saved_hash,'theme_save_bytes_equal':True,
                     'screenshots':shots,'operations':operations,'recording_created':False,
+                    'transition_screenshots':transition_shots,'transition_rejected':transition_rejected,
+                    'transition_gpu_validated':transition_gpu_validated,
                     'scope':scope,'elapsed_seconds':time.monotonic()-started}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return
@@ -440,6 +540,12 @@ def main():
                 'recording_created':False,'elapsed_seconds':time.monotonic()-started}
         (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     finally:
+        finish_transitions(False)
+        if args.transition_frames:
+            (args.out/'transition-observation.json').write_text(json.dumps(
+                {'accepted':transition_shots,'rejected':transition_rejected,'errors':transition_errors,
+                 'gpu_validation_performed':transition_gpu_validated},
+                ensure_ascii=False,indent=2)+'\n')
         (args.out/'operations.json').write_text(json.dumps(operations,ensure_ascii=False,indent=2)+'\n')
         for proc in reversed(processes):
             if proc.poll() is None:proc.terminate()

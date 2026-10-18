@@ -261,7 +261,8 @@ func (g *Game) beginNativePreparationRequiredOpening() bool {
 	if err != nil {
 		return false
 	}
-	g.nativeClassUIJob = &nativeClassUIJob{frames: append(frames, message)}
+	g.nativeClassUIJob = &nativeClassUIJob{frames: append(frames, message),
+		preparationText: g.snapshotNativePreparationTransition(g.prepPromptSource, false, 6, false)}
 	return true
 }
 
@@ -299,7 +300,8 @@ func (g *Game) beginNativePreparationPromptOpening() bool {
 		return false
 	}
 	g.resetNativeClassUIPulse()
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeClassUIJob = &nativeClassUIJob{frames: frames,
+		preparationText: g.snapshotNativePreparationTransition(g.prepPromptSource, false, 6, false)}
 	return true
 }
 
@@ -322,9 +324,10 @@ func (g *Game) beginNativePreparationPromptClosing(after func()) bool {
 		return false
 	}
 	g.nativeClassUIJob = &nativeClassUIJob{
-		frames:  frames,
-		restore: append([]byte(nil), g.prepPromptSource...),
-		after:   after,
+		frames:          frames,
+		restore:         append([]byte(nil), g.prepPromptSource...),
+		after:           after,
+		preparationText: g.snapshotNativePreparationTransition(g.prepPromptSource, false, 0, true),
 	}
 	return true
 }
@@ -377,7 +380,8 @@ func (g *Game) beginNativePreparationConfirmationOpening() bool {
 		return false
 	}
 	g.resetNativeClassUIPulse()
-	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
+	g.nativeClassUIJob = &nativeClassUIJob{frames: frames,
+		preparationText: g.snapshotNativePreparationTransition(source, true, 6, false)}
 	return true
 }
 
@@ -402,6 +406,7 @@ func (g *Game) beginNativePreparationConfirmationClosing(after func()) bool {
 	}
 	g.nativeClassUIJob = &nativeClassUIJob{
 		frames: frames, restore: source, after: after,
+		preparationText: g.snapshotNativePreparationTransition(source, true, 0, true),
 	}
 	return true
 }

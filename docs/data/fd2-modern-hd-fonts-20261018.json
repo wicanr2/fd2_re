@@ -156,7 +156,7 @@
   ],
   "remaining": [
     "未列入收據的原生固定畫面及全戰役特殊字模fallback盤點",
-    "預建原生轉場job中的文字與金幣滾動",
+    "其他設施與角色／物品預建轉場、金幣滾動",
     "圖示內HP／貨幣／出戰人數等點陣字樣",
     "完整介面／戰場與跨平台效能"
   ],
@@ -8630,5 +8630,1816 @@
       "fd2_containers_remaining_after_validation": 0
     },
     "source_commit": "cde408b492c4a911965d5df3b0be5f4f3ac59300"
+  },
+  "preparation_transition_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_fonts_complete": false,
+    "base_commit": "ca02867930ff46223665de01806b8081f1a7f884",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-source-final.json",
+        "sha256": "26752e33b417d73d095e8868b6e9e4769c58d9f461b6a4169485a82ace32dae5"
+      },
+      "snapshot_taken_before_final_go_build_and_regression": true,
+      "method": "SHA256 of sorted relative path, NUL, content SHA256 hex, LF",
+      "go_files_count": 967,
+      "production_go_tree_sha256": "0138225e2200333c0726dca812c2123394023d58fbc2763d77f437e16e7e833b",
+      "test_go_tree_sha256": "b220aed5fc6d62f28209458fec4384fb821e162db69851fe11bd057a27890dc2",
+      "gui_tool_initial_sha256": "1aeda269082b33f34a3dff754ca8abb9d98dfc2b435a1d669b99d3e0d1881545",
+      "gui_tool_final": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "8bffc128461ab5cc195ce2ad900c4b5fa7ebe6ee5a6ddbb070096c69f76f9a18"
+      },
+      "note": "Go來源與binary自最終回歸後保持。GUI r1只用CPU階段誤判空框／穩定頁，並誤拒跨階段GPU樣本；r2沿最終像素驗證工具，同份binary乾淨重跑。"
+    },
+    "runtime_scope": [
+      "整備出發／記錄／確認問句及必選身份訊息，在建立job時保存獨立底圖、字模／文字素材與種類；不在Update包裝HD字模。",
+      "僅在已登記文字階段Draw從同份快照合成HD畫面，再沿原選項動畫；未知／失敗回退原索引快取。",
+      "原開框／收框張數、Draw承認、輸入鎖定、還原、一次性延續點及保存格式保持。中途切換主題限fixture驗證，普通GUI另驗既有F2路徑。"
+    ],
+    "supersedes_limits": [
+      "preparation_followup對整備問句轉場仍為像素的限制；其他設施與角色／物品轉場、金幣滾動及圖示文字仍保留。"
+    ],
+    "gui": {
+      "json": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-gui-json-r2/receipt.json",
+        "sha256": "c60a5cb0936a4a2e895b36046ea4911b966fd2239ffe2e8127f8f9e2d5a7fee4",
+        "status": "PASS",
+        "evidence_level": "PLAYER-E2-LIMITED",
+        "scope": "正常標題LOAD既有hotel_ch02 JSON槽，城鎮整備出發問句選NO返回，旅館F5／F9；非連續全戰役，不宣稱原版對拍。",
+        "elapsed_seconds": 91.23856311710551,
+        "screenshots": {
+          "title-load-slots.png": {
+            "sha256": "615c2d298925b376d616370648431f925dfec2c297f142689c919f2cb98b49bd",
+            "state": {
+              "error": "",
+              "frame": 230,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "faithful-title-load-slots.png": {
+            "sha256": "238c7d69641699f603b332c031c271fdb6c8eea9f6f17f4cd0f7c20960239dce",
+            "state": {
+              "error": "",
+              "frame": 266,
+              "gold": 0,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "hd-title-load-slots-restored.png": {
+            "sha256": "615c2d298925b376d616370648431f925dfec2c297f142689c919f2cb98b49bd",
+            "state": {
+              "error": "",
+              "frame": 284,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "title-slot-1.png": {
+            "sha256": "235da6dd4cb432e25c46125c6c4ef2f2d0c89ed75e1d562a87fa21c9e39c605d",
+            "state": {
+              "error": "",
+              "frame": 294,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 1
+            }
+          },
+          "title-slot-2.png": {
+            "sha256": "c2cade0be9297d9de407918126588a59a8e70fcbed5d5e6fb34161c3670728c1",
+            "state": {
+              "error": "",
+              "frame": 304,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 2
+            }
+          },
+          "title-slot-3.png": {
+            "sha256": "308f68340dccafcce5ef0425e8ac4ebe96c208246ad77b0589b157b3039b6bc7",
+            "state": {
+              "error": "",
+              "frame": 316,
+              "gold": 0,
+              "hd_text_runs": 86,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 3
+            }
+          },
+          "preparation-departure-question.png": {
+            "sha256": "738050045d07bdf7b7e4111bb9e5ac3599459a643c97267afc4b308fa2754a08",
+            "state": {
+              "error": "",
+              "frame": 398,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "faithful-preparation-question.png": {
+            "sha256": "1b4b481e4a4dfc58314300ead228a85fc0cf43066e6ed1e64de96489940d1be9",
+            "state": {
+              "error": "",
+              "frame": 432,
+              "gold": 1000,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "hd-preparation-question-restored.png": {
+            "sha256": "738050045d07bdf7b7e4111bb9e5ac3599459a643c97267afc4b308fa2754a08",
+            "state": {
+              "error": "",
+              "frame": 448,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-departure-no.png": {
+            "sha256": "b99807a9a1c647b9a8b482b2e534882be448c2b4f4936a298b14faf86b2d1b9b",
+            "state": {
+              "error": "",
+              "frame": 460,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 1,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "faithful-hotel-after-preparation-load.png": {
+            "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+            "state": {
+              "error": "",
+              "frame": 600,
+              "gold": 1000,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "hotel_ch02",
+              "preparation_choice": 1,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          }
+        },
+        "transition_screenshots": {
+          "preparation-transition-2.png": {
+            "sha256": "81acb877a69b64c56f74361c09131f01712232a4e25c70c2b7409f25389f387d",
+            "anchor": "preparation-departure-question.png",
+            "cpu_phase_contained": false,
+            "hd_text_region_equal": true,
+            "choice_gold_bounds": [
+              1416,
+              1703
+            ],
+            "stable_choice_gold_bounds": [
+              1392,
+              1727
+            ],
+            "moving_choices_verified": true,
+            "exact_frame_claimed": false,
+            "before": {
+              "error": "",
+              "frame": 390,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_transition_closing": false,
+              "preparation_transition_frame": 9,
+              "preparation_transition_job": "0xc0001c1680",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 6,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "after": {
+              "error": "",
+              "frame": 396,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-transition-3.png": {
+            "sha256": "81acb877a69b64c56f74361c09131f01712232a4e25c70c2b7409f25389f387d",
+            "anchor": "preparation-departure-question.png",
+            "cpu_phase_contained": false,
+            "hd_text_region_equal": true,
+            "choice_gold_bounds": [
+              1416,
+              1703
+            ],
+            "stable_choice_gold_bounds": [
+              1392,
+              1727
+            ],
+            "moving_choices_verified": true,
+            "exact_frame_claimed": false,
+            "before": {
+              "error": "",
+              "frame": 464,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 1,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_transition_closing": true,
+              "preparation_transition_frame": 2,
+              "preparation_transition_job": "0xc0002142d0",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 0,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "after": {
+              "error": "",
+              "frame": 466,
+              "gold": 1000,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch02",
+              "preparation_choice": 1,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_transition_closing": true,
+              "preparation_transition_frame": 4,
+              "preparation_transition_job": "0xc0002142d0",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 0,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          }
+        },
+        "gpu_validated_transition_count": 2,
+        "operations": [
+          {
+            "key": "Escape",
+            "press_frame": 4,
+            "release_frame": 6
+          },
+          {
+            "key": "Escape",
+            "press_frame": 9,
+            "release_frame": 11
+          },
+          {
+            "key": "Escape",
+            "press_frame": 15,
+            "release_frame": 17
+          },
+          {
+            "key": "Escape",
+            "press_frame": 23,
+            "release_frame": 28
+          },
+          {
+            "key": "Escape",
+            "press_frame": 31,
+            "release_frame": 33
+          },
+          {
+            "key": "Escape",
+            "press_frame": 39,
+            "release_frame": 41
+          },
+          {
+            "key": "Escape",
+            "press_frame": 46,
+            "release_frame": 48
+          },
+          {
+            "key": "Escape",
+            "press_frame": 57,
+            "release_frame": 62
+          },
+          {
+            "key": "Escape",
+            "press_frame": 70,
+            "release_frame": 78
+          },
+          {
+            "key": "Escape",
+            "press_frame": 81,
+            "release_frame": 83
+          },
+          {
+            "key": "Escape",
+            "press_frame": 91,
+            "release_frame": 95
+          },
+          {
+            "key": "Escape",
+            "press_frame": 105,
+            "release_frame": 108
+          },
+          {
+            "key": "Escape",
+            "press_frame": 113,
+            "release_frame": 115
+          },
+          {
+            "key": "Escape",
+            "press_frame": 121,
+            "release_frame": 127
+          },
+          {
+            "key": "Escape",
+            "press_frame": 134,
+            "release_frame": 143
+          },
+          {
+            "key": "Escape",
+            "press_frame": 147,
+            "release_frame": 153
+          },
+          {
+            "key": "Escape",
+            "press_frame": 157,
+            "release_frame": 159
+          },
+          {
+            "key": "Escape",
+            "press_frame": 163,
+            "release_frame": 165
+          },
+          {
+            "key": "Escape",
+            "press_frame": 169,
+            "release_frame": 175
+          },
+          {
+            "key": "Escape",
+            "press_frame": 179,
+            "release_frame": 181
+          },
+          {
+            "key": "Down",
+            "press_frame": 191,
+            "release_frame": 193
+          },
+          {
+            "key": "Return",
+            "press_frame": 201,
+            "release_frame": 208
+          },
+          {
+            "key": "F2",
+            "press_frame": 232,
+            "release_frame": 235
+          },
+          {
+            "key": "F2",
+            "press_frame": 271,
+            "release_frame": 276
+          },
+          {
+            "key": "Down",
+            "press_frame": 285,
+            "release_frame": 287
+          },
+          {
+            "key": "Down",
+            "press_frame": 296,
+            "release_frame": 298
+          },
+          {
+            "key": "Down",
+            "press_frame": 306,
+            "release_frame": 308
+          },
+          {
+            "key": "Down",
+            "press_frame": 319,
+            "release_frame": 321
+          },
+          {
+            "key": "Escape",
+            "press_frame": 325,
+            "release_frame": 327
+          },
+          {
+            "key": "Return",
+            "press_frame": 331,
+            "release_frame": 337
+          },
+          {
+            "key": "Return",
+            "press_frame": 355,
+            "release_frame": 357
+          },
+          {
+            "key": "Escape",
+            "press_frame": 361,
+            "release_frame": 363
+          },
+          {
+            "key": "Left",
+            "press_frame": 367,
+            "release_frame": 369
+          },
+          {
+            "key": "Left",
+            "press_frame": 374,
+            "release_frame": 377
+          },
+          {
+            "key": "Return",
+            "press_frame": 381,
+            "release_frame": 383
+          },
+          {
+            "key": "F2",
+            "press_frame": 400,
+            "release_frame": 403
+          },
+          {
+            "key": "F2",
+            "press_frame": 434,
+            "release_frame": 437
+          },
+          {
+            "key": "Right",
+            "press_frame": 450,
+            "release_frame": 452
+          },
+          {
+            "key": "Return",
+            "press_frame": 462,
+            "release_frame": 464
+          },
+          {
+            "key": "Right",
+            "press_frame": 473,
+            "release_frame": 475
+          },
+          {
+            "key": "Right",
+            "press_frame": 479,
+            "release_frame": 485
+          },
+          {
+            "key": "Return",
+            "press_frame": 494,
+            "release_frame": 499
+          },
+          {
+            "key": "F5",
+            "press_frame": 503,
+            "release_frame": 505
+          },
+          {
+            "key": "F2",
+            "press_frame": 509,
+            "release_frame": 512
+          },
+          {
+            "key": "F5",
+            "press_frame": 520,
+            "release_frame": 529
+          },
+          {
+            "key": "F9",
+            "press_frame": 535,
+            "release_frame": 540
+          }
+        ],
+        "all_releases_observed": true,
+        "theme_save_bytes_equal": true,
+        "saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+        "rejected_candidates_count": 1
+      },
+      "native": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-gui-native-r2/receipt.json",
+        "sha256": "5f50564d6364fcd57fc2ea8036b8ef87a971c786cffae727b53c9a1c9d7974ec",
+        "status": "PASS",
+        "evidence_level": "RUNTIME-E1",
+        "scope": "正常標題LOAD既有第24章原生槽；祖先為攻略建構政策與清敵續玩，並非自然難度。保存槽1、選人、確認或必選訊息與取消均走普通鍵盤；不宣稱連續戰役或原版對拍。",
+        "elapsed_seconds": 128.7390373838134,
+        "screenshots": {
+          "title-load-slots.png": {
+            "sha256": "bf1956f7481c0c9a57be16a4b27a3e7b7369bff250497f4ced058f5c083405eb",
+            "state": {
+              "error": "",
+              "frame": 228,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "faithful-title-load-slots.png": {
+            "sha256": "7d90f8fa606778224db8b44c1d1d9849f976d6a52dbd0e39a5e7ab71bc3e178d",
+            "state": {
+              "error": "",
+              "frame": 280,
+              "gold": 0,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "hd-title-load-slots-restored.png": {
+            "sha256": "bf1956f7481c0c9a57be16a4b27a3e7b7369bff250497f4ced058f5c083405eb",
+            "state": {
+              "error": "",
+              "frame": 298,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 0
+            }
+          },
+          "title-slot-1.png": {
+            "sha256": "8674d5818c72b4b594c0bae93b7fd23a602d2061b927bcc56b75c390d3cd3ddd",
+            "state": {
+              "error": "",
+              "frame": 310,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 1
+            }
+          },
+          "title-slot-2.png": {
+            "sha256": "d2bd93c96efbc75b53f66be7084eb7fa045542656bea3f39cf898ef42deae312",
+            "state": {
+              "error": "",
+              "frame": 322,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 2
+            }
+          },
+          "title-slot-3.png": {
+            "sha256": "a2c4936a227394e83e9fe00aba9f01e34035bba623926bf966b82c7cffef0f34",
+            "state": {
+              "error": "",
+              "frame": 332,
+              "gold": 0,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "story_ch00_handler",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 0,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "loadslots",
+              "title_slot": 3
+            }
+          },
+          "preparation-record-question.png": {
+            "sha256": "e3ab74b51413e95d5c3cfde123a582f987e2c3f0148d8a5c6460dcbb2a02519d",
+            "state": {
+              "error": "",
+              "frame": 388,
+              "gold": 2009,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-record-slots.png": {
+            "sha256": "bf1956f7481c0c9a57be16a4b27a3e7b7369bff250497f4ced058f5c083405eb",
+            "state": {
+              "error": "",
+              "frame": 412,
+              "gold": 2009,
+              "hd_text_runs": 92,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": true,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-record-saved.png": {
+            "sha256": "b25c0e493e9118d7e5174128fe04f128b02d4442e5a937a4e1e8136735ab9d1e",
+            "state": {
+              "error": "",
+              "frame": 430,
+              "gold": 2009,
+              "hd_text_runs": 96,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": true,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-roster.png": {
+            "sha256": "f2593b01634627357facc86c4663eeb42e3fa3a562cbb7af2103f79a3f415c5e",
+            "state": {
+              "error": "",
+              "frame": 470,
+              "gold": 2009,
+              "hd_text_runs": 47,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "faithful-preparation-roster.png": {
+            "sha256": "664b2c45ffe0734ed14f83541f1aba3a51dc774edc77b9686c6c69296599ce34",
+            "state": {
+              "error": "",
+              "frame": 518,
+              "gold": 2009,
+              "hd_theme": false,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "hd-preparation-roster-restored.png": {
+            "sha256": "f2593b01634627357facc86c4663eeb42e3fa3a562cbb7af2103f79a3f415c5e",
+            "state": {
+              "error": "",
+              "frame": 532,
+              "gold": 2009,
+              "hd_text_runs": 47,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-resized.png": {
+            "sha256": "513a474c712ce72223d9816adbefe5d17a72154c88880e7f5957bc4900fa1746",
+            "state": {
+              "error": "",
+              "frame": 556,
+              "gold": 2009,
+              "hd_text_runs": 47,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-help.png": {
+            "sha256": "e45bb08122cff0b0660e348e41d045d93b63bcae15f79cff3a4d7dcdc50be16f",
+            "state": {
+              "error": "",
+              "frame": 566,
+              "gold": 2009,
+              "hd_text_runs": 10,
+              "hd_theme": true,
+              "help_visible": true,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 0,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-next-unit.png": {
+            "sha256": "9fc710ac6a41c9b995f4e42812b2a75d38652f836e6cfe77432c6c06180a455f",
+            "state": {
+              "error": "",
+              "frame": 582,
+              "gold": 2009,
+              "hd_text_runs": 45,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 1,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-final-question.png": {
+            "sha256": "e116f26beccaade1c6f4f32fdf35e5198d31b6fd6d4c45eb24c7ffdf50611190",
+            "state": {
+              "error": "",
+              "frame": 732,
+              "gold": 2009,
+              "hd_text_runs": 18,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": true,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 15,
+              "preparation_selecting": false,
+              "preparation_selection": 14,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-returned-roster.png": {
+            "sha256": "3e95db4c4c9bd0870eab9dcb04225133972a99cde896a7c8796fe5b0336e42e9",
+            "state": {
+              "error": "",
+              "frame": 778,
+              "gold": 2009,
+              "hd_text_runs": 43,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": true,
+              "preparation_selection": 14,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          }
+        },
+        "transition_screenshots": {
+          "preparation-transition-3.png": {
+            "sha256": "cb37c859bf19c0d933f2a35aa9e1367d6f07a6dd10e8dc31afa638ca3cd68093",
+            "anchor": "preparation-record-question.png",
+            "cpu_phase_contained": true,
+            "hd_text_region_equal": true,
+            "choice_gold_bounds": [
+              1416,
+              1703
+            ],
+            "stable_choice_gold_bounds": [
+              1392,
+              1727
+            ],
+            "moving_choices_verified": true,
+            "exact_frame_claimed": false,
+            "before": {
+              "error": "",
+              "frame": 392,
+              "gold": 2009,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_transition_closing": true,
+              "preparation_transition_frame": 2,
+              "preparation_transition_job": "0xc00009e750",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 0,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "after": {
+              "error": "",
+              "frame": 392,
+              "gold": 2009,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_transition_closing": true,
+              "preparation_transition_frame": 2,
+              "preparation_transition_job": "0xc00009e750",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 0,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-transition-2.png": {
+            "sha256": "db02636de91fa179b53a1dec16e86da1bb146c638eca0843fe6fd7bd15a0adf6",
+            "anchor": "preparation-record-question.png",
+            "cpu_phase_contained": false,
+            "hd_text_region_equal": true,
+            "choice_gold_bounds": [
+              1440,
+              1679
+            ],
+            "stable_choice_gold_bounds": [
+              1392,
+              1727
+            ],
+            "moving_choices_verified": true,
+            "exact_frame_claimed": false,
+            "before": {
+              "error": "",
+              "frame": 382,
+              "gold": 2009,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_transition_closing": false,
+              "preparation_transition_frame": 9,
+              "preparation_transition_job": "0xc0001a9d40",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 6,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "after": {
+              "error": "",
+              "frame": 384,
+              "gold": 2009,
+              "hd_text_runs": 14,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": false,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 0,
+              "preparation_selecting": false,
+              "preparation_selection": 0,
+              "preparation_slot": 0,
+              "preparation_slots": false,
+              "preparation_ui_busy": false,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          },
+          "preparation-transition-5.png": {
+            "sha256": "cca39d50be63b3dd4bdb8ccb9e13b89db14c61a4a6ab6bbb48011462033d1367",
+            "anchor": "preparation-final-question.png",
+            "cpu_phase_contained": false,
+            "hd_text_region_equal": true,
+            "choice_gold_bounds": [
+              1440,
+              1679
+            ],
+            "stable_choice_gold_bounds": [
+              1392,
+              1727
+            ],
+            "moving_choices_verified": true,
+            "exact_frame_claimed": false,
+            "before": {
+              "error": "",
+              "frame": 740,
+              "gold": 2009,
+              "hd_text_runs": 18,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": true,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 15,
+              "preparation_selecting": false,
+              "preparation_selection": 14,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_transition_closing": true,
+              "preparation_transition_frame": 2,
+              "preparation_transition_job": "0xc008d9c2d0",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 0,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            },
+            "after": {
+              "error": "",
+              "frame": 748,
+              "gold": 2009,
+              "hd_text_runs": 0,
+              "hd_theme": true,
+              "help_visible": false,
+              "locale": "zh-Hant",
+              "node": "preparation_ch24",
+              "preparation_choice": 0,
+              "preparation_confirm": true,
+              "preparation_limit": 15,
+              "preparation_required": null,
+              "preparation_selected": 15,
+              "preparation_selecting": false,
+              "preparation_selection": 14,
+              "preparation_slot": 1,
+              "preparation_slots": false,
+              "preparation_transition_closing": true,
+              "preparation_transition_frame": 6,
+              "preparation_transition_job": "0xc008d9c2d0",
+              "preparation_transition_required": false,
+              "preparation_transition_text_start": 0,
+              "preparation_ui_busy": true,
+              "title_phase": "",
+              "title_slot": 0
+            }
+          }
+        },
+        "gpu_validated_transition_count": 3,
+        "operations": [
+          {
+            "key": "Escape",
+            "press_frame": 4,
+            "release_frame": 6
+          },
+          {
+            "key": "Escape",
+            "press_frame": 11,
+            "release_frame": 14
+          },
+          {
+            "key": "Escape",
+            "press_frame": 17,
+            "release_frame": 19
+          },
+          {
+            "key": "Escape",
+            "press_frame": 23,
+            "release_frame": 25
+          },
+          {
+            "key": "Escape",
+            "press_frame": 29,
+            "release_frame": 31
+          },
+          {
+            "key": "Escape",
+            "press_frame": 35,
+            "release_frame": 37
+          },
+          {
+            "key": "Escape",
+            "press_frame": 45,
+            "release_frame": 50
+          },
+          {
+            "key": "Escape",
+            "press_frame": 55,
+            "release_frame": 57
+          },
+          {
+            "key": "Escape",
+            "press_frame": 61,
+            "release_frame": 63
+          },
+          {
+            "key": "Escape",
+            "press_frame": 67,
+            "release_frame": 70
+          },
+          {
+            "key": "Escape",
+            "press_frame": 77,
+            "release_frame": 81
+          },
+          {
+            "key": "Escape",
+            "press_frame": 85,
+            "release_frame": 89
+          },
+          {
+            "key": "Escape",
+            "press_frame": 93,
+            "release_frame": 96
+          },
+          {
+            "key": "Escape",
+            "press_frame": 100,
+            "release_frame": 102
+          },
+          {
+            "key": "Escape",
+            "press_frame": 112,
+            "release_frame": 114
+          },
+          {
+            "key": "Escape",
+            "press_frame": 119,
+            "release_frame": 121
+          },
+          {
+            "key": "Escape",
+            "press_frame": 127,
+            "release_frame": 132
+          },
+          {
+            "key": "Escape",
+            "press_frame": 138,
+            "release_frame": 144
+          },
+          {
+            "key": "Escape",
+            "press_frame": 148,
+            "release_frame": 152
+          },
+          {
+            "key": "Escape",
+            "press_frame": 162,
+            "release_frame": 167
+          },
+          {
+            "key": "Escape",
+            "press_frame": 172,
+            "release_frame": 174
+          },
+          {
+            "key": "Escape",
+            "press_frame": 177,
+            "release_frame": 179
+          },
+          {
+            "key": "Escape",
+            "press_frame": 184,
+            "release_frame": 189
+          },
+          {
+            "key": "Down",
+            "press_frame": 195,
+            "release_frame": 197
+          },
+          {
+            "key": "Return",
+            "press_frame": 201,
+            "release_frame": 203
+          },
+          {
+            "key": "F2",
+            "press_frame": 229,
+            "release_frame": 232
+          },
+          {
+            "key": "F2",
+            "press_frame": 283,
+            "release_frame": 289
+          },
+          {
+            "key": "Down",
+            "press_frame": 299,
+            "release_frame": 301
+          },
+          {
+            "key": "Down",
+            "press_frame": 311,
+            "release_frame": 313
+          },
+          {
+            "key": "Down",
+            "press_frame": 324,
+            "release_frame": 326
+          },
+          {
+            "key": "Down",
+            "press_frame": 334,
+            "release_frame": 336
+          },
+          {
+            "key": "Escape",
+            "press_frame": 339,
+            "release_frame": 341
+          },
+          {
+            "key": "Return",
+            "press_frame": 349,
+            "release_frame": 351
+          },
+          {
+            "key": "Return",
+            "press_frame": 373,
+            "release_frame": 375
+          },
+          {
+            "key": "Return",
+            "press_frame": 390,
+            "release_frame": 392
+          },
+          {
+            "key": "Down",
+            "press_frame": 414,
+            "release_frame": 416
+          },
+          {
+            "key": "Return",
+            "press_frame": 419,
+            "release_frame": 421
+          },
+          {
+            "key": "F2",
+            "press_frame": 432,
+            "release_frame": 435
+          },
+          {
+            "key": "Return",
+            "press_frame": 443,
+            "release_frame": 445
+          },
+          {
+            "key": "F2",
+            "press_frame": 454,
+            "release_frame": 457
+          },
+          {
+            "key": "Escape",
+            "press_frame": 461,
+            "release_frame": 463
+          },
+          {
+            "key": "F2",
+            "press_frame": 472,
+            "release_frame": 475
+          },
+          {
+            "key": "F2",
+            "press_frame": 520,
+            "release_frame": 523
+          },
+          {
+            "key": "F1",
+            "press_frame": 558,
+            "release_frame": 560
+          },
+          {
+            "key": "Escape",
+            "press_frame": 568,
+            "release_frame": 570
+          },
+          {
+            "key": "Right",
+            "press_frame": 573,
+            "release_frame": 575
+          },
+          {
+            "key": "Left",
+            "press_frame": 584,
+            "release_frame": 586
+          },
+          {
+            "key": "Return",
+            "press_frame": 589,
+            "release_frame": 591
+          },
+          {
+            "key": "Return",
+            "press_frame": 596,
+            "release_frame": 598
+          },
+          {
+            "key": "Return",
+            "press_frame": 601,
+            "release_frame": 603
+          },
+          {
+            "key": "Return",
+            "press_frame": 607,
+            "release_frame": 609
+          },
+          {
+            "key": "Return",
+            "press_frame": 613,
+            "release_frame": 619
+          },
+          {
+            "key": "Return",
+            "press_frame": 625,
+            "release_frame": 627
+          },
+          {
+            "key": "Return",
+            "press_frame": 633,
+            "release_frame": 635
+          },
+          {
+            "key": "Return",
+            "press_frame": 644,
+            "release_frame": 646
+          },
+          {
+            "key": "Return",
+            "press_frame": 650,
+            "release_frame": 652
+          },
+          {
+            "key": "Return",
+            "press_frame": 659,
+            "release_frame": 661
+          },
+          {
+            "key": "Return",
+            "press_frame": 665,
+            "release_frame": 667
+          },
+          {
+            "key": "Return",
+            "press_frame": 672,
+            "release_frame": 674
+          },
+          {
+            "key": "Return",
+            "press_frame": 677,
+            "release_frame": 680
+          },
+          {
+            "key": "Return",
+            "press_frame": 685,
+            "release_frame": 687
+          },
+          {
+            "key": "Return",
+            "press_frame": 693,
+            "release_frame": 698
+          },
+          {
+            "key": "Escape",
+            "press_frame": 733,
+            "release_frame": 742
+          }
+        ],
+        "all_releases_observed": true,
+        "theme_save_bytes_equal": true,
+        "saved_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09",
+        "rejected_candidates_count": 2
+      }
+    },
+    "gpu_validation": {
+      "method": "CPU前後狀態僅定位候選；PNG問句區RGB須與同路徑穩定HD參照完全相同，且選項金色邊界須比穩定頁向內移動。空框／像素字模／穩定頁不得通過。",
+      "text_roi": [
+        570,
+        714,
+        1302,
+        102
+      ],
+      "choice_roi": [
+        1320,
+        996,
+        450,
+        144
+      ],
+      "accepted_count": 5,
+      "text_region_pixels_equal": true,
+      "stable_choice_gold_bounds": [
+        1392,
+        1727
+      ],
+      "accepted_choice_gold_bounds": [
+        [
+          1416,
+          1703
+        ],
+        [
+          1440,
+          1679
+        ]
+      ],
+      "before_after_may_cross_cpu_stage_boundary": true,
+      "exact_frame_claimed": false,
+      "review": "最終33張實際視窗以總覽及原尺寸重點審查；5張問句轉場的文字與選項幾何另以實際像素核對。普通保存、返回、F2與縮放／說明保持。"
+    },
+    "save": {
+      "json_source": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+      "json_source_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "json_saved_sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456",
+      "json_source_bytes_equal": true,
+      "native_source": "work/remake-recovery-20261015/ch24-slot/FD2.SAV",
+      "native_source_sha256": "22bd63070189e0e6703e14d4bd4db8dc1f66452a21128dd5154579171ecbea63",
+      "native_saved_sha256": "d5f39666ae53f7b55438a1d4658d38b47a301e434c8aaed65c5ed6fac73fae09",
+      "native_change": "普通保存第二槽的預期寫入；兩主題重存相同，之後選人及取消不再改存檔。",
+      "native_provenance": "沿已保存的第23章原版SAV接第24章，祖先有攻略建構強化與清敵。本輪沒有新增狀態注入，不提升自然難度或整章PLAYER-E2。",
+      "theme_save_bytes_equal": true,
+      "original_sources_unchanged": true
+    },
+    "regression": {
+      "cmd_ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-ui-regression-r1.log",
+        "sha256": "df3e8cfd3772a3564a6f1abacb659d08247ad74cc549abb682ea2ee5929e53e7",
+        "status": "PASS",
+        "seconds": 77.535,
+        "run_pattern": "Test(ModernHD|NativePreparation|ComposeNativePreparation|NativeLoad|Title|.*JSON|.*SaveSlot|.*Locale|NativeTown|NativeHotel|NativeClass|NativeChurch|NativeShop|.*DeathReward|.*SystemEndTurn)",
+        "scope": "相關共用排程／設施／HD／保存回歸，非完整cmd/fd2測試。"
+      },
+      "data_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-data-regression-r1.log",
+        "sha256": "3807baafc4c397137a998585619d3f85008869e080aad4eac9b9a05b73483d5b",
+        "status": "PASS",
+        "seconds": {
+          "campaign": 4.106,
+          "fdtxt": 0.122,
+          "fdother": 10.141,
+          "localization": 0.787,
+          "fd2-string-inventory": 0.826
+        }
+      },
+      "focused": {
+        "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-focused-r2.log",
+        "sha256": "240d7e21ba20d3fd09678aca5b38904b610edfd4217f553dea34cd2b7414878a",
+        "status": "PASS",
+        "seconds": 12.504
+      },
+      "e1_scope": "七種開收配方逐張等同原索引畫格、來源快照不可變、中途主題切換、錯誤回退與一次性延續點；必選訊息只有fixture。"
+    },
+    "localization": {
+      "entries_per_locale": 5107,
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "ja",
+        "en"
+      ],
+      "text_status_variables_identity_equal_base": true,
+      "migration": {
+        "by_id": 5106,
+        "by_signature": 1,
+        "by_text": 0,
+        "new": 0
+      }
+    },
+    "diagnostics": [
+      {
+        "run": "preparation-transition-focused-r1",
+        "status": "TEST-FIXTURE-FAIL",
+        "evidence": {
+          "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-focused-r1.log",
+          "sha256": "8e882f36ac08d6bce0020498c9e8267c5e6b5cff4d207a6989d4dacab1ead0a1"
+        },
+        "reason": "測試誤把收框第5張當成含問句，錯誤回退fixture缺真實palette；按原四張文字階段及資產契約修正後r2／最終相關回歸通過。"
+      },
+      {
+        "run": "preparation-transition-gui-json-r1",
+        "status": "CPU-CAPTURE-CLASSIFICATION-INVALID",
+        "evidence": {
+          "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-gui-json-r1/transition-observation.json",
+          "sha256": "a5b0f2c8e3b04770dd2fa2fe4d37079f5d22ca7c6a586c0a0a4edb765880facb"
+        },
+        "reason": "CPU frame7且有14筆文字，實際PNG仍空框；另一CPU-contained樣本仍為穩定頁，不能當轉場通過。原status PASS被此GPU審查限定推翻。"
+      },
+      {
+        "run": "preparation-transition-gui-native-r1",
+        "status": "SCRIPT-FAIL",
+        "evidence": {
+          "file": "work/promo-cadence-20261018/hd-fonts/preparation-transition-gui-native-r1.log",
+          "sha256": "58f4f10568ed1ca6706e01e9439c4a4afdd3f610cb6f348de50c9f3fca330e55"
+        },
+        "reason": "CPU前後跨過四張問句階段而拒收，實際PNG已有HD字與移動中選項。改由GPU像素分類，前後狀態照實保留，兩條路徑以同份binary完整r2通過。"
+      }
+    ],
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-preparation-opening.png",
+        "sha256": "81acb877a69b64c56f74361c09131f01712232a4e25c70c2b7409f25389f387d",
+        "source": "work/promo-cadence-20261018/hd-fonts/preparation-transition-gui-json-r2/preparation-transition-2.png",
+        "kind": "1920×1200實際重製視窗；HD問句與移動途中選項，非穩定頁或精確同幀聲明。"
+      },
+      {
+        "file": "docs/figures/hd-preparation-confirmation-closing.png",
+        "sha256": "cca39d50be63b3dd4bdb8ccb9e13b89db14c61a4a6ab6bbb48011462033d1367",
+        "source": "work/promo-cadence-20261018/hd-fonts/preparation-transition-gui-native-r2/preparation-transition-5.png",
+        "kind": "1920×1200實際重製視窗；HD問句與移動途中選項，非穩定頁或精確同幀聲明。"
+      }
+    ],
+    "limits": [
+      "其他設施、角色／物品開收框、金幣滾動與圖示內文字仍待接入。",
+      "晚期原生槽有建構祖先，必選訊息限fixture；不宣稱自然難度、整章E2、精確同幀或原版視覺對拍。",
+      "非完整HD字型、穩定60fps或跨平台驗收。"
+    ],
+    "recordings_created": false,
+    "new_artwork": false,
+    "matching_decompilation": "paused",
+    "release_modified": false,
+    "rebuild": "沿主收據rebuild建置；GUI工具加--preparation --transition-frames跑JSON城鎮，另加--native-save <既有SAV>跑晚期槽複本。原始資料唯讀，輸出獨立可寫。",
+    "toolchain": {
+      "go_image": "sha256:e4a805c52a3ad5d8c22cf23f2bcf51c6924e5ad6b99554f1b02761903c725433",
+      "gui_image": "sha256:f299cf5e25b4ba172941399b3ed177c78b3a951de35d666d78af3f00e30d7f0d"
+    },
+    "cleanup": {
+      "status": "DERIVED-BINARY-REMOVED",
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-preparation-transitions",
+        "sha256": "b46fb79fdd6da7c369f59efadb97edc0a2a7ebeed48b964d252c2a844e1968bb",
+        "bytes": 18996616
+      },
+      "bytes_freed": 18996616,
+      "recordings_created": false,
+      "png_and_receipts_retained": true,
+      "fd2_containers_remaining_after_validation": 0
+    }
   }
 }

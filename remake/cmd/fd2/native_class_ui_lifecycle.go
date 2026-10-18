@@ -9,14 +9,15 @@ import (
 )
 
 type nativeClassUIJob struct {
-	frames   [][]byte
-	restore  []byte
-	frame    int
-	drawn    bool
-	after    func()
-	timeline []nativeClassUITimelineStep
-	started  time.Time
-	elapsed  time.Duration
+	frames          [][]byte
+	restore         []byte
+	frame           int
+	drawn           bool
+	after           func()
+	timeline        []nativeClassUITimelineStep
+	started         time.Time
+	elapsed         time.Duration
+	preparationText *nativePreparationTransitionText
 	// 0x196CB 的戰場關框 owner 才宣告 0x19742；城鎮共用 job 不推定重繪。
 	redrawNativeMapAfterRestore bool
 }
@@ -192,7 +193,9 @@ func (g *Game) drawNativeClassUIJob(screen *ebiten.Image) bool {
 		return true
 	}
 	if job.frame < len(job.frames) {
-		g.presentNativeClassFrame(screen, job.frames[job.frame])
+		if !g.drawModernHDPreparationTransition(screen, job) {
+			g.presentNativeClassFrame(screen, job.frames[job.frame])
+		}
 		job.drawn = true
 		return true
 	}
