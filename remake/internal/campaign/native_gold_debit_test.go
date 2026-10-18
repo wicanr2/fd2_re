@@ -173,3 +173,38 @@ func TestComposeNativeGoldCreditFramesRejectsInvalidState(t *testing.T) {
 		t.Fatalf("zero credit = frames%d next%d err%v", len(frames), next, err)
 	}
 }
+
+func TestNativeGoldRollWindowPlanCarriesDirectionAndStationaryDigits(t *testing.T) {
+	for _, tc := range []struct {
+		old, next, first, last, count int
+		credit                        bool
+	}{
+		{1000, 950, 89, 45, 45, false},
+		{990, 997, 1, 63, 63, true},
+		{10_000_000, 9_999_999, 89, 81, 9, false},
+		{9_999_999, 10_000_000, 82, 90, 9, true},
+	} {
+		windows, err := PlanNativeGoldRoll(tc.old, tc.next, tc.credit)
+		if err != nil || len(windows) != tc.count {
+			t.Fatalf("plan %+v: count%d err%v", tc, len(windows), err)
+		}
+		index := 7
+		if tc.old == 1000 {
+			index = 6
+		}
+		if windows[0].Rows[index] != tc.first || windows[len(windows)-1].Rows[index] != tc.last {
+			t.Fatalf("wrong literal window endpoints for %+v", tc)
+		}
+	}
+	for _, tc := range []struct {
+		old, next int
+		credit    bool
+	}{{-1, 0, true}, {0, 100_000_000, true}, {10, 9, true}, {9, 10, false}} {
+		if _, err := PlanNativeGoldRoll(tc.old, tc.next, tc.credit); err == nil {
+			t.Fatal("invalid direction/range accepted")
+		}
+	}
+	if windows, err := PlanNativeGoldRoll(12, 12, true); err != nil || len(windows) != 0 {
+		t.Fatal("zero transaction generated animation")
+	}
+}

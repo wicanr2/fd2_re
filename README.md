@@ -20,7 +20,7 @@
 公開包只含引擎與可散布資料，遊玩需自備完整合法分離素材。現有單一匯入工具尚不能產生完整可玩包；素材契約與工具範圍見[分離素材規格](docs/knowledge-base/60-editor-separated-assets-spec.md)。30章受控流程與保存例外見[驗收進度](docs/REMAKE-STATUS.md)。HD仍未完成，Windows／macOS未簽署，macOS尚未公證。
 
 開發版可用 F2 切換忠實原版與現代手繪主題。具備合法的完整 HD 素材包時，故事頭像以
-480×480 圖源直接繪製，預設視窗為1920×1200。故事對話、商店文字與數字、旅館／教會、角色／物品狀態、整備與標題讀檔的穩定畫面採用直接高解析繪製的 Noto Sans CJK 黑體；忠實像素模式保留。整備問句的開收動畫也已接入高解析文字。其餘原生固定面板、其他過場中的點陣文字及戰場仍待 HD 化。兩種主題均已驗證首章 JSON 的標題 LOAD 與 F9。
+480×480 圖源直接繪製，預設視窗為1920×1200。故事對話、商店文字與數字、旅館／教會、角色／物品狀態、整備與標題讀檔的穩定畫面採用直接高解析繪製的 Noto Sans CJK 黑體；忠實像素模式保留。整備問句的開收動畫也已接入高解析文字。商店金幣的扣款／入款滾動也直接繪字，出售確認會同步清除被覆蓋的歡迎詞。其餘原生固定面板、其他過場中的點陣文字及戰場仍待 HD 化。兩種主題均已驗證首章 JSON 的標題 LOAD 與 F9。
 素材要求及驗證範圍見[現代主題規格](docs/knowledge-base/61-modern-theme-runtime-spec.md)。此功能尚未加入上述正式第一版。
 
 ## 忠實像素模式與多語系
@@ -42,8 +42,10 @@
 | ![HD整備選人](docs/figures/hd-preparation-roster.png) | ![HD標題讀檔](docs/figures/hd-title-load-slots.png) |
 | HD 城鎮出發開框 | HD 整備確認收框 |
 | ![HD城鎮出發開框中的問句](docs/figures/hd-preparation-opening.png) | ![HD整備確認收框中的問句](docs/figures/hd-preparation-confirmation-closing.png) |
+| HD 扣款中的數字局部 | HD 商店出售確認 |
+| ![實際視窗的HD扣款數字局部](docs/figures/hd-gold-debit-region.png) | ![HD商店出售確認](docs/figures/hd-shop-sale-confirmation.png) |
 
-以上為開發版的實際遊戲視窗。動態文字與數字直接以高解析繪製，頭像、背景與圖示保留像素素材；操作與保存驗證見[字型收據](docs/data/fd2-modern-hd-fonts-20261018.json)。整備截圖接續具有攻略建構祖先的存檔，不代表自然難度通關。轉場截圖的選項框仍在移動；未列固定畫面、其他轉場與圖示內字樣仍待接入。
+以上為開發版的實際遊戲視窗。動態文字與數字直接以高解析繪製，頭像、背景與圖示保留像素素材；操作與保存驗證見[字型收據](docs/data/fd2-modern-hd-fonts-20261018.json)。整備截圖接續具有攻略建構祖先的存檔，不代表自然難度通關。扣款圖是實際視窗的288×54金幣區域，數字仍在滾動。轉場截圖的選項框仍在移動；未列固定畫面、其他轉場與圖示內字樣仍待接入。
 
 ## 遊戲介紹
 

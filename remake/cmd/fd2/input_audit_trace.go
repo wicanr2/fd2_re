@@ -34,6 +34,13 @@ func (g *Game) recordInputAuditState() {
 	r["shop_mode"] = g.nativeShopMode
 	r["shop_service"] = g.nativeShopServiceSel
 	r["shop_ui_busy"] = g.nativeShopUIJob != nil
+	if job := g.nativeShopUIJob; job != nil && job.goldText != nil && len(job.timeline) > 0 {
+		index, _ := job.timelinePosition()
+		r["gold_roll_job"] = fmt.Sprintf("%p", job)
+		r["gold_roll_index"] = index
+		r["gold_roll_rows"] = job.goldText.windows[index].Rows
+		r["gold_roll_credit"] = job.goldText.credit
+	}
 	r["item_selection"] = g.itemSel
 	r["item_anim_step"] = g.itemAnimStep
 	r["item_closing"] = g.itemClosing

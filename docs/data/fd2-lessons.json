@@ -2719,6 +2719,36 @@
         ],
         "pattern": "validate_transition_samples"
       }
+    },
+    {
+      "id": "native-text-overlay-clears-hd-covered-region",
+      "area": "繪製",
+      "date": "2026-10-18",
+      "rule": "原生合成器替換文字區時，同步清除該區HD文字，再擷取新字形。以remake/cmd/fd2/native_shop_sell_ui.go的composeNativeShopSellQuestionBase及TestModernHDShopSaleQuestionReplacesCoveredGreeting檢查混用原生／多語繪字的服務分支。",
+      "why": "正常出售確認已由原生合成器重建底圖，HD歡迎詞仍留在獨立上層，與出售問句重疊；gold-roll-gui-r1實際PNG揭露#255。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/native_shop_sell_ui.go"
+        ],
+        "pattern": "font = g\\.modernHDFacilityFont\\(font, g\\.font\\.indexedHD\\)"
+      }
+    },
+    {
+      "id": "gui-audit-frame-counter-process-boundary",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "GUI重開程序時，依tools/verify_fd2_hd_fonts_gui.py的input-audit-first-process.jsonl分開保存按鍵紀錄；只在同一程序比較frame與按下／放鍵收據，不用舊程序的高幀號承認新輸入。",
+      "why": "金幣忠實GUI r3冷讀沿用audit，新的frame歸零後，舊Escape收據仍符合frame較大的條件，導致工具等待錯誤幀號而逾時。遊戲買賣及保存已通過。",
+      "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "input-audit-first-process.jsonl"
+      }
     }
   ]
 }

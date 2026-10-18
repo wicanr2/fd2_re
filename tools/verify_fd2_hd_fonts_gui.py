@@ -21,8 +21,10 @@ def main():
     facility.add_argument('--status', action='store_true', help='加驗教會角色狀態與命令穩定面板')
     facility.add_argument('--items', action='store_true', help='抽驗商店裝備物品面板、選取、F2與保存')
     facility.add_argument('--preparation', action='store_true', help='抽驗標題 LOAD、整備穩定文字及 F2')
+    facility.add_argument('--gold-roll', action='store_true', help='抽驗正常買賣的 HD 金幣滾動及保存')
     parser.add_argument('--native-save', type=Path, help='整備抽樣的既有原生槽，複製後才可寫入')
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
+    parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     args = parser.parse_args()
     assert not args.transition_frames or args.preparation
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
@@ -62,6 +64,7 @@ def main():
     processes,streams,shots,operations=[],[],{},[]
     started=time.monotonic()
     window=None
+    audit_epoch=0
 
     transition_stop=threading.Event()
     transition_thread=None
@@ -69,6 +72,32 @@ def main():
     transition_rejected=[]
     transition_errors=[]
     transition_gpu_validated=False
+    gold_stop=threading.Event()
+    gold_thread=None
+    gold_shots={}
+    gold_errors=[]
+
+    def capture_gold_roll():
+        seen=set()
+        try:
+            while not gold_stop.is_set() and len(seen)<16:
+                before=latest(audit)
+                token=(before.get('gold_roll_job'),before.get('gold_roll_index'))
+                if not token[0] or token in seen:
+                    gold_stop.wait(.005);continue
+                seen.add(token)
+                path=args.out/('gold-roll-'+str(len(seen))+'.png')
+                roi='288x54+96+588' if before.get('hd_theme') else '192x36+64+392'
+                command('import','-window',window,'-crop',roi,'+repage',str(path))
+                gold_shots[path.name]={'before':before,'after':latest(audit),'sha256':digest(path),
+                                       'window_crop':roi,'kind':'actual_gpu_window_region'}
+        except Exception as error:gold_errors.append(str(error))
+
+    def finish_gold_roll():
+        gold_stop.set()
+        if gold_thread and gold_thread.ident is not None:
+            gold_thread.join(timeout=20)
+            if gold_thread.is_alive():gold_errors.append('金幣擷取尚未結束')
 
     def command(*items):
         return subprocess.check_output(items,env=env,text=True,stderr=subprocess.DEVNULL)
@@ -125,7 +154,7 @@ def main():
         if not release_ack:raise TimeoutError('放鍵無收據 '+name)
         released_frame=max(ack['frame'],latest(audit).get('frame',0))
         wait(lambda s:s.get('frame',0)>=released_frame+2)
-        operations.append({'key':name,'ack':ack,'release_ack':release_ack})
+        operations.append({'key':name,'ack':ack,'release_ack':release_ack,'process_epoch':audit_epoch})
         return ack
 
     def shot(name):
@@ -346,6 +375,108 @@ def main():
             return
         key('Return')
         wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
+        if args.gold_roll:
+            transaction_hd=args.gold_roll_theme=='hd'
+            if not transaction_hd:
+                key('F2');wait(lambda s:s.get('hd_theme') is False)
+            def shop(mode):
+                return wait(lambda s:s.get('node')=='shop_ch02_weapon' and s.get('shop_mode')==mode
+                            and s.get('shop_ui_busy') is False)
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            key('Left');key('Return');shop('menu');shot('gold-before-purchase')
+            gold_thread=threading.Thread(target=capture_gold_roll,daemon=True);gold_thread.start()
+            key('Return');shop('purchase')
+            key('Return');shop('confirm')
+            key('Return');shop('recipient_equipment')
+            key('Return');shop('equip_confirm')
+            key('Right');key('Return');shop('purchase')
+            assert latest(audit).get('gold')==950,'購買布衣的餘額錯誤'
+            shot('gold-after-purchase')
+            key('F2');wait(lambda s:s.get('hd_theme') is not transaction_hd);shot('gold-alternate-after-purchase')
+            key('F2');wait(lambda s:s.get('hd_theme') is transaction_hd);shot('gold-purchase-theme-restored')
+            key('Escape');shop('menu')
+            key('Right');wait(lambda s:s.get('shop_service')==1)
+            key('Return');shop('sell_roster')
+            key('Return');shop('sell_items')
+            # Sol starts with short sword, leather armor and herb. The ordinary
+            # purchase appends cloth in the fourth active raw inventory slot.
+            key('Down');key('Right');key('Return');shop('sell_confirm');shot('gold-cloth-sale-confirmation')
+            key('Return');shop('sell_roster')
+            assert latest(audit).get('gold')==987,'出售布衣的餘額錯誤'
+            shot('gold-after-sale')
+            finish_gold_roll()
+            assert not gold_errors,gold_errors
+            accepted,rejected={},[]
+            def rgb(path,roi):
+                return subprocess.check_output(['convert',str(path),'-crop',roi,'+repage','-depth','8','RGB:-'],env=env)
+            for name,meta in gold_shots.items() if transaction_hd else []:
+                credit=meta['before']['gold_roll_credit']
+                before=args.out/('gold-after-purchase.png' if credit else 'gold-before-purchase.png')
+                after=args.out/('gold-after-sale.png' if credit else 'gold-after-purchase.png')
+                path=args.out/name
+                prefix=rgb(path,'144x54+0+0')
+                changed=rgb(path,'144x54+144+0')
+                same_prefix=prefix==rgb(after,'144x54+96+588')
+                moving=changed not in [rgb(before,'144x54+240+588'),rgb(after,'144x54+240+588')]
+                meta.update(static_hd_prefix_rgb_equal=same_prefix,moving_digits_distinct_from_both_stable=moving,
+                            exact_frame_claimed=False)
+                if same_prefix and moving:accepted[name]=meta
+                else:rejected.append({'file':name,**meta})
+            if transaction_hd:
+                assert {m['before']['gold_roll_credit'] for m in accepted.values()}=={False,True},'未取得兩個方向的實際 GPU 滾動樣本'
+            key('Escape');shop('menu');key('Escape');wait(lambda s:s.get('node')=='town_ch02')
+            key('Right');key('Return');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
+            assert digest(saved)==digest(args.town_save),'來源複本在保存前被改寫'
+            key('F5');hd_saved=saved.read_bytes()
+            source=json.loads(args.town_save.read_text());result=json.loads(hd_saved)
+            expected=json.loads(args.town_save.read_text());expected['gold']=987
+            # Existing 0x1b8e7 removal shifts all remaining raw cells, including
+            # unused item bytes; the final item byte stays, only its flag is set.
+            unit=expected['party_roster']['0']
+            flags=unit['NativeInventoryFlags'];slots=unit['InventorySlots']
+            raw_slot=next(i for i,flag in enumerate(flags) if flag&0x80)
+            slots[raw_slot:-1]=slots[raw_slot+1:]
+            flags[raw_slot:-1]=flags[raw_slot+1:];flags[-1]=0x80
+            assert result==expected,'保存結果與既有買賣原始槽位移規則不同'
+            key('F2');wait(lambda s:s.get('hd_theme') is not transaction_hd)
+            key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存結果不同'
+            key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('gold')==987)
+            shot('gold-alternate-f9-load')
+            key('F2');wait(lambda s:s.get('hd_theme') is transaction_hd);shot('gold-transaction-theme-f9-load')
+            game.terminate();game.wait(timeout=15)
+            # Frame counters restart in a new process. Retain its predecessor's
+            # log separately so old high-frame key ACKs cannot satisfy new keys.
+            audit.rename(args.out/'input-audit-first-process.jsonl')
+            audit_epoch=1
+            game=start([str(args.binary)],'game-cold-load.log',args.assets)
+            window=None
+            for _ in range(600):
+                if game.poll() is not None:raise RuntimeError('冷讀程序提前退出')
+                try:window=command('xdotool','search','--name','炎龍騎士團').splitlines()[0];break
+                except (subprocess.CalledProcessError,IndexError):time.sleep(.1)
+            assert window
+            command('xdotool','windowmove',window,'0','0')
+            wait(lambda s:bool(s.get('title_phase')))
+            for _ in range(160):
+                if latest(audit).get('title_phase')=='menu':break
+                key('Escape')
+            else:raise TimeoutError('冷讀標題未就緒')
+            key('Down');key('Return');wait(lambda s:s.get('title_phase')=='loadslots')
+            key('Return');wait(lambda s:not s.get('title_phase') and s.get('node')=='hotel_ch02' and s.get('gold')==987)
+            assert saved.read_bytes()==hd_saved,'新程序LOAD改寫保存檔'
+            shot('gold-new-process-title-load')
+            report={'schema':'fd2-hd-gold-roll-gui-v1','status':'PASS','binary_sha256':digest(args.binary),
+                    'gui_tool_sha256':digest(Path(__file__)),
+                    'town_save_sha256':digest(args.town_save),'saved_sha256':digest(saved),
+                    'transaction_theme':args.gold_roll_theme,'theme_save_bytes_equal':True,
+                    'expected_save_changes':{'gold':[1000,987],'party_roster/0/InventorySlots/5':[255,0]},
+                    'new_process_title_load':True,
+                    'screenshots':shots,'gold_roll_screenshots':accepted,'gold_roll_rejected':rejected,
+                    'operations':operations,'recording_created':False,'elapsed_seconds':time.monotonic()-started,
+                    'scope':'正常START後F9接續既有hotel_ch02，普通購買布衣、拒絕立即裝備並出售同件。1000→950→987；F2、F5及F9。CPU只定位候選，PNG以固定HD前四位與相異動態後四位驗證，不宣稱精確同幀、連續戰役或原版逐幀對拍。'}
+            (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            return
         if args.items:
             def shop(mode, selection=None):
                 return wait(lambda s:s.get('node')=='shop_ch02_weapon' and s.get('shop_mode')==mode
@@ -540,6 +671,10 @@ def main():
                 'recording_created':False,'elapsed_seconds':time.monotonic()-started}
         (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     finally:
+        finish_gold_roll()
+        if args.gold_roll:
+            (args.out/'gold-roll-observation.json').write_text(json.dumps(
+                {'samples':gold_shots,'errors':gold_errors},ensure_ascii=False,indent=2)+'\n')
         finish_transitions(False)
         if args.transition_frames:
             (args.out/'transition-observation.json').write_text(json.dumps(

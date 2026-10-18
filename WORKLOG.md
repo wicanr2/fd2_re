@@ -868,3 +868,19 @@ GUI r1的CPU階段判定不足：preparation-transition-gui-json-r1雖回報PASS
 提交前官方pull／render／verify為20項、13項人工判定、可能完成0；234條教訓與117個守衛通過。2640條異動文件本地連結零缺件，967份Go來源、GUI工具及圖片SHA通過。README文化入口與原四語圖、原版EXE及正式第一版tag保持。新增來源與圖片UID/GID1000:1000，工作根無root-owned檔案或.md目錄，本輪一次性容器已清除。
 
 整備問句轉場切片已提交5f6934373c0c25a7c97c0302fc0e5e57f8a40a6c並快轉推送main，遠端HEAD核對相同。#204保持開啟並綁定來源提交；主收據補入source_commit，不修改已驗Go、GUI工具或產物。
+
+## 2026-10-18 HD 金幣滾動與出售確認
+
+從main的a586bcc9建立feat/hd-gold-roll-20261018。依復古遊戲路由載入規格先行、正常玩家路徑及README／文件職責契約，沿用重製技能。61先登記READY，再將既有扣款／入款的八位獨立滾動抽成共用窗口計畫；原索引合成及HD使用同份計畫。交易建構時保存背景與窗口，HD Draw只替換金額區，原10毫秒步長、金額／物品提交、輸入鎖定及延續點保持，不重開matching或硬體時序RE。
+
+新測試首輪括號錯誤，修正後r2／r3指出素材假設不符。清冊實際記錄數字1為5×8，其餘為6×8，字距仍6；修正精確來源檢查後focused r4通過。清冊遷移第一次誤用editor-canonical根，查明正式來源在story子目錄後重跑，無產品修改。四語各5107筆，只遷移座標與來源雜湊，譯文、狀態、變數與身份保持。
+
+普通START後F9接續既有hotel_ch02，進武器店購買布衣、拒絕立即裝備，再出售同件，餘額1000→950→987。GUI r1保存預期過嚴：既有RemoveNativeCompactInventory會左移全部raw格，包括未使用格的殘值，造成索爾InventorySlots[5]由255變0。原始規則在native_inventory_transfer.go，未因HD修改。修正預期後，HD r2及忠實r1的完整保存SHA同為32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66，新程序標題LOAD通過。這是重製兩主題對照，不新增原版SAV差異放行。
+
+逐張審查另發現既有出售確認殘留HD歡迎詞，登錄#255。原生合成器已重建對話區，但HD上層未清除。依61補READY契約，在Draw清除被覆蓋描述，再由同份原生字模擷取問句，不新增翻譯；歡迎詞負例與忠實畫格保持通過。最終Go相關介面回歸73.288秒，campaign／fdtxt／fdother／localization／清冊套件均通過，非完整cmd或battle回歸。最終來源為gold-roll-source-release.json，binary SHA為23091a2a680499906a43820ac9c7fd2c20f599dbad7cd5d48ec2822b542be7b1。
+
+最終GUI r3整張視窗擷取錯過0.45秒扣款階段，只取得入款有效樣本。CPU候選不足以證明GPU，該輪不通過。改抓實際金幣區域後，同份binary的HD r4通過9張正常畫面、兩張有效GPU區域與新程序標題LOAD。忠實r3的買賣與保存通過，但重開程序時舊audit高幀號按鍵被誤認為新程序收據，冷讀工具逾時。工具改為逐程序保存audit，保留失敗紀錄；不調遊戲速度、不重建binary，接續完整重跑。上述環境及驗證腳本失敗不登錄為遊戲缺陷。
+
+最終HD r5與忠實r4使用同份binary／GUI工具完整通過，包含新程序標題LOAD，audit按程序分檔。共22張實際畫面含4張有效HD金幣區域，GPU閘門拒收空框／前一階段／穩定金額，不宣稱精確同幀。兩側完整保存SHA均32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66，僅金額與既有未使用格殘值相對來源改變。README加入最終扣款區域及出售確認，原四語圖與文化入口保持；56／57／58／61／索引及字型主收據gold_roll_followup同步。未錄影，核對SHA後刪除暫時binary，釋出19013056 bytes，PNG與收據保留。正式Release／tag、原版檔及私人素材包未修改；其他轉場、成功演出、圖示文字、戰場與平台效能仍待完成。
+
+提交前236條教訓與119個守衛通過；守衛工具略過測試檔，故出售修正守衛綁正式繪字掛勾。2639條本地連結、969份Go來源、GUI工具、README文化入口、圖片與UID/GID核對通過；工作根無root-owned檔案或.md目錄。GitHub #255待來源提交後結案；完整HD仍沿#204接續。

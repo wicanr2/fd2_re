@@ -1494,23 +1494,14 @@ func (g *Game) drawNativeShopUIJob(screen *ebiten.Image) bool {
 		return false
 	}
 	if len(job.timeline) != 0 {
-		elapsed := job.elapsed
-		total := time.Duration(0)
-		for _, candidate := range job.timeline {
-			total += candidate.duration
-		}
-		step := job.timeline[len(job.timeline)-1]
-		for _, candidate := range job.timeline {
-			if elapsed < candidate.duration {
-				step = candidate
-				break
-			}
-			elapsed -= candidate.duration
-		}
+		index, total := job.timelinePosition()
+		step := job.timeline[index]
 		if job.elapsed >= total {
 			job.frame = 1
 		}
-		g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
+		if !g.drawModernHDGoldRoll(screen, job, index) {
+			g.presentNativeClassFrameWithPalette(screen, step.frame, step.palette)
+		}
 		job.drawn = true
 		return true
 	}

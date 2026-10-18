@@ -321,6 +321,23 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
+    },
+    {
+      "id": "hd-shop-sale-greeting-overlap",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "HD 商店出售確認殘留歡迎詞，與原生問句重疊",
+      "body": "正常START後F9接續hotel_ch02，進武器店購買布衣、拒絕立即裝備，再出售該物品。gold-roll-gui-r1的gold-cloth-sale-confirmation.png顯示HD歡迎詞疊在點陣出售問句上。composeNativeShopSellQuestionBase重建索引對話框，卻未清除HD歡迎詞或擷取原生問句。來源為現有穩定頁，與新增金幣窗口計畫無關；原版模式不受此上層殘留影響。依61補READY契約後修正，保留原文及交易規則。",
+      "acceptance": "出售確認不殘留HD歡迎詞；原生問句從既有字模來源提交HD文字；未知字形回退、忠實畫格、交易與保存保持；負例回歸及同份最終建置的普通GUI買賣通過。",
+      "evidence": [
+        "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+        "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r1/gold-cloth-sale-confirmation.png"
+      ],
+      "verify": {
+        "kind": "manual",
+        "note": "核對61、字型主收據與正常出售確認實際PNG；CPU或單元測試不能代替畫面審查。"
+      },
+      "issue": 255
     }
   ]
 }

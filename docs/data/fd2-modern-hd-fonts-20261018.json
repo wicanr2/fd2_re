@@ -156,7 +156,7 @@
   ],
   "remaining": [
     "未列入收據的原生固定畫面及全戰役特殊字模fallback盤點",
-    "其他設施與角色／物品預建轉場、金幣滾動",
+    "其他設施與角色／物品預建轉場、成功演出中的點陣數字",
     "圖示內HP／貨幣／出戰人數等點陣字樣",
     "完整介面／戰場與跨平台效能"
   ],
@@ -10442,5 +10442,411 @@
       "fd2_containers_remaining_after_validation": 0
     },
     "source_commit": "5f6934373c0c25a7c97c0302fc0e5e57f8a40a6c"
+  },
+  "gold_roll_followup": {
+    "status": "CONFORMED-SCOPED",
+    "full_hd_fonts_complete": false,
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "issue": "https://github.com/wicanr2/fd2_re/issues/204",
+    "fixed_defect": "https://github.com/wicanr2/fd2_re/issues/255",
+    "base_commit": "a586bcc91f19c9d89cc2e2e6c50f666f04c7a904",
+    "source": {
+      "snapshot": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-source-release.json",
+        "sha256": "d5ca1c8b02c4feb0085dac0f5d934a67e66bf1ec910d40f6cf2f49df48b0ee5f"
+      },
+      "go_file_count": 969,
+      "production_go_tree_sha256": "9402c5f77ad72f98e6fd81ed324a3b08cebbe8a64bb96c7aa8da2fbf852f8cd7",
+      "test_go_tree_sha256": "9b7572a00f6bf9a6b2e112e2cb21c890f823513906372f13dd69d222b599e05a",
+      "gui_tool_at_build_sha256": "a4877d5f879a49218f19edcb938347845d718cc79d237ef00073bed4746724cb",
+      "gui_tool_final": {
+        "file": "tools/verify_fd2_hd_fonts_gui.py",
+        "sha256": "4c2fa582470da45e31d824bbaa44c880584cd24c1f432a9d5c31ee87601b59f2"
+      },
+      "note": "Go與binary在最終回歸後保持。GUI後續只改實際區域擷取及跨程序audit分檔；最終HD r5與忠實r4使用同份工具與binary。"
+    },
+    "runtime_scope": {
+      "gold_window_native": [
+        16,
+        98,
+        48,
+        9
+      ],
+      "gold_window_hd": [
+        96,
+        588,
+        288,
+        54
+      ],
+      "shared_plan": "campaign.PlanNativeGoldRoll",
+      "glyph_pixels_logical": 20,
+      "step_milliseconds": 10,
+      "snapshot": "交易建構時保存獨立背景、窗口及前景索引；兩主題共用既有時間軸。",
+      "transaction_policy": "保持原金額／物品提交與一次性延續點；無新增存檔欄位。",
+      "sale_question": "Draw同步清除被覆蓋歡迎詞，再以既有原生字模擷取問句；未知字形保留點陣，不新增翻譯。"
+    },
+    "gui": {
+      "hd": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/receipt.json",
+        "sha256": "f27c111051f46df219a509a298da6e1d950690267db4e7fde56b5a262a5dff3a",
+        "status": "PASS",
+        "seconds": 80.21321341814473,
+        "normal_windows": 9,
+        "valid_gold_regions": 4,
+        "ordinary_key_operations": 55
+      },
+      "faithful": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/receipt.json",
+        "sha256": "b11e8cb96e060a5fa5f4e2e08b15bdd76d778c1cceb5635a8c12c9dd8329cf5f",
+        "status": "PASS",
+        "seconds": 85.14526954293251,
+        "normal_windows": 9,
+        "ordinary_key_operations": 58
+      },
+      "actual_images": [
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-before-purchase.png",
+          "sha256": "b4f1d8eb9855d229171a0d9ffccf40a92caf5dc8fab113d467ef750c51d1c634",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-after-purchase.png",
+          "sha256": "da513aa734597e08c80f7912543177e375e65ba58dc319943a1cea48046264d8",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-alternate-after-purchase.png",
+          "sha256": "d3b84d65eceab3212c32f1d07e5ac2b89e6824f95ee8b385740426078a639668",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-purchase-theme-restored.png",
+          "sha256": "da513aa734597e08c80f7912543177e375e65ba58dc319943a1cea48046264d8",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-cloth-sale-confirmation.png",
+          "sha256": "415720586cf204907ae65a055afd091263ee80935909ba12179648c09fa70eea",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-after-sale.png",
+          "sha256": "7d00a9576a6c10c18ab66cad4f5d3ea8b3ae8c062d243283e595990cc85ec6b0",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-alternate-f9-load.png",
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-transaction-theme-f9-load.png",
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-new-process-title-load.png",
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-roll-2.png",
+          "sha256": "cb1a71a158154e4f7a47f0413759ee6c2a330a9c00c995d35ea89c7e9d8581e0",
+          "dimensions": [
+            288,
+            54
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-roll-5.png",
+          "sha256": "efb53da5f9ce6c65f6978ce04a619ff1035fb599ae25674b8d4ba41524ca94e3",
+          "dimensions": [
+            288,
+            54
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-roll-6.png",
+          "sha256": "1031ad6141f9e483a598429101441aaafbe7beac51ee6bb67171b929abf504b1",
+          "dimensions": [
+            288,
+            54
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-roll-7.png",
+          "sha256": "ba783de32e3b3bf210e2843bd2002e7de9586ffbfeba6a919c64949818b487da",
+          "dimensions": [
+            288,
+            54
+          ],
+          "kind": "actual_gpu_window_region"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-before-purchase.png",
+          "sha256": "dfead4d82a1e706f77cab6488190309b88480ca3369f997baf74dd5f0eb6bade",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-after-purchase.png",
+          "sha256": "d3b84d65eceab3212c32f1d07e5ac2b89e6824f95ee8b385740426078a639668",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-alternate-after-purchase.png",
+          "sha256": "da513aa734597e08c80f7912543177e375e65ba58dc319943a1cea48046264d8",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-purchase-theme-restored.png",
+          "sha256": "d3b84d65eceab3212c32f1d07e5ac2b89e6824f95ee8b385740426078a639668",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-cloth-sale-confirmation.png",
+          "sha256": "82eae4a10acb29a6ec93999c5a87bec1fab592b0417bf844127d01cfe7c24dbb",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-after-sale.png",
+          "sha256": "88aa6722342375eda3f4096ca4db5e8db9dac95fc70859fc6a6793ff0ef45608",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-alternate-f9-load.png",
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-transaction-theme-f9-load.png",
+          "sha256": "376fd3663ec95f259fb502b7f1ef1a351711a26f4e5571348df0b6c707f6a60c",
+          "dimensions": [
+            1280,
+            800
+          ],
+          "kind": "actual_game_window"
+        },
+        {
+          "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r4/gold-new-process-title-load.png",
+          "sha256": "853ed14f27384b8f36e6c17ab18e19caea3f56aa464bc000527b16fe259e3a53",
+          "dimensions": [
+            1920,
+            1200
+          ],
+          "kind": "actual_game_window"
+        }
+      ],
+      "visually_reviewed": true,
+      "gpu_gate": "靜止前四位RGB等同HD穩定參照；後四位不同於交易前後兩張穩定參照。CPU只定位候選，拒收空框／前一階段／穩定金額，不宣稱精確同幀。",
+      "audit": "新程序另存input-audit-first-process.jsonl；operations標記process_epoch。",
+      "scope": "PLAYER-E2-LIMITED；普通START後F9接續既有hotel_ch02，正常買布衣、不立即裝備、出售同件、F2、F5、F9與新程序標題LOAD。非連續戰役或原版逐幀對拍。"
+    },
+    "save": {
+      "source": {
+        "file": "work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+        "sha256": "190b9f8f614c69a40eea7cf3883facf92efd83c32b20dca2a1677289437aa456"
+      },
+      "gold_sequence": [
+        1000,
+        950,
+        987
+      ],
+      "theme_transaction_save_sha256": "32c9cd021b3c7112f1b6f16dae8ffa1c753fd45cd0d1fc9d92331e99c83eed66",
+      "theme_transaction_bytes_equal": true,
+      "theme_resave_bytes_equal": true,
+      "new_process_title_load": true,
+      "source_bytes_equal": false,
+      "expected_changes": {
+        "gold": [
+          1000,
+          987
+        ],
+        "party_roster/0/InventorySlots/5": [
+          255,
+          0
+        ]
+      },
+      "reason": "既有0x1b8e7原始格左移包含未使用格的殘值。remake/internal/battle/native_inventory_transfer.go的removeNativeCompactInventory保留最後item byte，只寫最後flag；不是HD新增欄位，也不是新增原版保存差異例外。"
+    },
+    "regression": {
+      "focused": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-focused-r5.log",
+        "sha256": "1d63781b07fdc35bd50b717ad94dda6b672cb9e05576894b65ae6189b8ea5e2f",
+        "status": "PASS",
+        "seconds": 2.731
+      },
+      "cmd_ui": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-ui-regression-r2.log",
+        "sha256": "c4db7546243b6c668c309e9e97c4d12857b3a55fde39c91281041b24dc1ff0d8",
+        "status": "PASS",
+        "seconds": 73.288,
+        "pattern": "Test(ModernHD|NativePreparation|ComposeNativePreparation|NativeLoad|Title|.*JSON|.*SaveSlot|.*Locale|NativeTown|NativeHotel|NativeClass|NativeChurch|NativeShop|.*DeathReward|.*SystemEndTurn)"
+      },
+      "data_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-data-regression-r2.log",
+        "sha256": "8a873e1da6a91a645f0bfab5dc1948d2c29679b7e35a4e8f73e3ba2fac7425bc",
+        "status": "PASS",
+        "seconds": {
+          "campaign": 6.371,
+          "fdtxt": 0.263,
+          "fdother": 13.106,
+          "localization": 1.256,
+          "fd2-string-inventory": 1.116
+        }
+      },
+      "scope": "RUNTIME-E1；借位／進位、零交易與範圍拒收、原索引相關回歸、HD區域界限、主題切換、來源不變、錯誤回退與一次性延續點；非完整cmd/fd2或battle回歸。"
+    },
+    "locales": {
+      "count_each": 5107,
+      "locales": [
+        "zh-Hant",
+        "zh-Hans",
+        "ja",
+        "en"
+      ],
+      "text_status_variables_identity_unchanged": true,
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-inventory-release.json",
+        "sha256": "f340ea63b64b3d9dcfadf2e9d3ed6c38f340fb99b3931d037fe95c2941883447"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "1a18764f6a6423a5c79fa088d35bced33bced719bf8589f55682b6fb4f882b32"
+      }
+    },
+    "diagnostics": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-focused-r2.log",
+        "kind": "fixture-contract",
+        "reason": "數字1實為5×8，其餘6×8；來源清冊證明字距仍6。"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r1/gold-roll-observation.json",
+        "kind": "verification-expectation",
+        "reason": "買後再賣會左移未使用raw格殘值；來源byte全保持的預期過嚴。"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r1/gold-cloth-sale-confirmation.png",
+        "kind": "product-defect",
+        "issue": 255,
+        "reason": "HD歡迎詞覆蓋原生出售問句，已依READY契約修正。"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r3/gold-roll-observation.json",
+        "kind": "capture-latency",
+        "reason": "整張視窗擷取錯過扣款的有效GPU階段，該輪拒收；改抓實際金幣區域。"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-faithful-r3/operations.json",
+        "kind": "audit-process-boundary",
+        "reason": "冷讀新程序沿用舊高frame按鍵收據而逾時；改按程序分檔，同份binary完整重跑。"
+      }
+    ],
+    "readme_figures": [
+      {
+        "file": "docs/figures/hd-gold-debit-region.png",
+        "sha256": "cb1a71a158154e4f7a47f0413759ee6c2a330a9c00c995d35ea89c7e9d8581e0",
+        "source": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-roll-2.png"
+      },
+      {
+        "file": "docs/figures/hd-shop-sale-confirmation.png",
+        "sha256": "415720586cf204907ae65a055afd091263ee80935909ba12179648c09fa70eea",
+        "source": "work/promo-cadence-20261018/hd-fonts/gold-roll-gui-r5/gold-cloth-sale-confirmation.png"
+      }
+    ],
+    "reproduce": {
+      "build_image": "fd2-go-test-local:latest",
+      "gui_image": "fd2-promo:20261017-r1",
+      "gui_tool": "tools/verify_fd2_hd_fonts_gui.py --gold-roll [--gold-roll-theme faithful]",
+      "binary": "/out/fd2-hd-gold-roll",
+      "assets": "/repo/remake",
+      "original_pack": "/repo/work/remake-recovery-20261015/pack",
+      "modern_pack": "/repo/remake/generated-assets/modern-theme-prototypes",
+      "town_save": "/repo/work/ch01-flow-20261017/remake-full-r10/hotel-save.json",
+      "mounts": "repo唯讀；work/promo-cadence-20261018/hd-fonts單獨可寫；--rm --network none --user 1000:1000，4GiB／3CPU／256pids，外層660秒。"
+    },
+    "remaining": [
+      "其他設施／角色／物品轉場",
+      "成功演出中的點陣數字",
+      "圖示內文字及未列固定面板",
+      "完整戰場、現代素材覆蓋與跨平台效能"
+    ],
+    "cleanup": {
+      "removed_binary": {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-gold-roll",
+        "sha256": "23091a2a680499906a43820ac9c7fd2c20f599dbad7cd5d48ec2822b542be7b1",
+        "bytes": 19013056
+      },
+      "recordings_created": false,
+      "png_and_receipts_retained": true,
+      "fd2_containers_remaining_after_validation": 0
+    }
   }
 }

@@ -332,9 +332,14 @@ func (g *Game) composeNativeShopSellQuestionBase() ([]byte, bool) {
 	if !selectionOK || !stableOK || !stateOK {
 		return nil, false
 	}
+	font := g.nativeClassUI.font
+	if g.modernHDShopText() {
+		g.clearModernHDShopText()
+		font = g.modernHDFacilityFont(font, g.font.indexedHD)
+	}
 	frame, err := campaign.ComposeNativeShopSellQuestionBase(
 		stable, g.nativeClassUI.dialogue, portrait, portraitID,
-		g.nativeClassUI.strings, g.nativeClassUI.font,
+		g.nativeClassUI.strings, font,
 		g.nativeShopVariant, itemID, salePrice,
 	)
 	return frame, err == nil
@@ -426,6 +431,7 @@ func (g *Game) beginNativeShopSellSuccess() bool {
 		return false
 	}
 	creditTimeline := make([]nativeClassUITimelineStep, len(creditFrames))
+	goldText := g.snapshotNativeGoldRoll(assets, g.gold, nextGold, true)
 	for i, frame := range creditFrames {
 		creditTimeline[i] = nativeClassUITimelineStep{
 			frame: frame, palette: g.nativeClassUI.palette,
@@ -458,6 +464,7 @@ func (g *Game) beginNativeShopSellSuccess() bool {
 			g.nativeShopUIJob = &nativeClassUIJob{
 				timeline: creditTimeline,
 				after:    finish,
+				goldText: goldText,
 			}
 		},
 	}

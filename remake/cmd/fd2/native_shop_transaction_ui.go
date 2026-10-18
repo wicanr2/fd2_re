@@ -164,6 +164,7 @@ func (g *Game) beginNativeShopPurchaseSuccess() bool {
 		return false
 	}
 	debitTimeline := make([]nativeClassUITimelineStep, len(debitFrames))
+	goldText := g.snapshotNativeGoldRoll(assets, g.gold, nextGold, false)
 	for i, frame := range debitFrames {
 		debitTimeline[i] = nativeClassUITimelineStep{
 			frame: frame, palette: g.nativeClassUI.palette,
@@ -192,6 +193,7 @@ func (g *Game) beginNativeShopPurchaseSuccess() bool {
 			g.nativeShopUIJob = &nativeClassUIJob{
 				timeline: debitTimeline,
 				after:    finish,
+				goldText: goldText,
 			}
 		},
 	}
