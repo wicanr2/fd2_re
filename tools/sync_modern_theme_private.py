@@ -42,6 +42,15 @@ def main() -> None:
             runtime_hashes[asset["file"]] = asset["sha256"]
         if "master_file" in asset and not args.runtime_only:
             names.add(asset["master_file"])
+        if not args.runtime_only:
+            sources, hashes = asset.get('source_files', []), asset.get('source_sha256', [])
+            if len(sources) != len(hashes):
+                raise SystemExit('source provenance length mismatch')
+            for name, sha256 in zip(sources, hashes):
+                if name in runtime_hashes and runtime_hashes[name] != sha256:
+                    raise SystemExit(f'conflicting source digest: {name}')
+                names.add(name)
+                runtime_hashes[name] = sha256
         for name, sha256 in zip(asset.get("files", []), asset.get("frame_sha256", [])):
             names.add(name)
             runtime_hashes[name] = sha256

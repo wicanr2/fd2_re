@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 )
 
 const modernHandpaintedThemeID = "modern-handpainted-a"
@@ -223,7 +224,7 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 				asset.FrameCount == 3 && len(asset.Files) == 3 && len(asset.FrameSHA256) == 3 &&
 				asset.CyclePolicy == "static_three_phase"
 			if (!walkContract && !staticContract) || asset.Width != 24 || asset.Height != 24 ||
-				asset.SourceGroup < 0 || asset.SourceGroup >= 96 || asset.AlphaContract != "binary" {
+				!fdicon.NativeSourceGroupHasPixels(asset.SourceGroup) || asset.AlphaContract != "binary" {
 				return nil, fmt.Errorf("modern theme map sprite %d violates the frame contract", asset.SourceGroup)
 			}
 			if _, duplicate := set.mapSprites[asset.SourceGroup]; duplicate {

@@ -35,6 +35,44 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
 先補第一章實際需求，再核對其他名冊；不猜代96、不略過敵人、不以像素替代讓候選通過。
 現有94組loader只是舊清冊範圍的預檢，世界仍未接Game.Draw。
 
+#### 完整原生圖庫的清冊、父項與HD載入（CONFORMED，限資料與既有呈現）
+
+沿上節已證實的固定B24指紋、1680幀header、全部分離Mask與正式selector consumer，
+修正資料容量假設，不改玩法、名冊、selector cache、方向、座標或保存格式。
+可見圖組名單只取原始Mask盤點；無來源寫入的15組不造人物，raw單位pass保持既有無寫入行為。
+
+- Go以既有`fdicon.SeparatedSpriteCount/12`定義原生圖組上界；可見資格另由固定圖庫盤點定義，
+  並逐組對照真實分離Mask回歸。Python清冊工具使用同一已證實名單，另以完整盤點驗證。
+- 沒有HD人物的舊清冊仍可載入既有子集；新24人物可登錄實際可見的96..139圖組。
+  只要有`map_sprite_hd_set`，必須完整覆蓋125組及同份125組24父項，排除全部零來源寫入組。
+  任一缺組、重複、孤兒、越界、錯誤週期／hash／腳底，均原子拒收。不能以95組局部清冊放行首章。
+- 新父項只從已審手繪母稿完整輪廓產生。沿已核准alpha核心提取、22像素等比例方格、水平置中與
+  腳底23；24輸出使用最近鄰與alpha128二值門檻，HD輸出保留原覆蓋alpha。不得固定格線裁切。
+  既有94組24成品bytes保持；新31組的12幀皆有原始來源，不重用未證實的別組或新增身分語意。
+- 清冊schema維持1；HD角色使用既有已核准role／consumer_contract／layout_policy，另以
+  `master_file`／`frame_overrides`保留已驗的來源選擇，`source_files`與`source_sha256`逐項保留
+  實際採用的母稿及單幀來源。來源檔名安全、互異且hash相符；
+  來源只供完整私人包重生，runtime-only包只需正式逐幀PNG。拒收草稿與原版參照不列allow-list。
+- 先產生可丟棄完整父項清冊與候選包，再編製／驗證125組HD資料與全姿態；完整資料預檢及
+  第一章同份存檔候選成功後才登錄正式清冊。已登錄來源與逐幀檔沿現有allow-list工具同步私人庫。
+  高解析世界的Game.Draw接線仍由上層DRAFT追蹤，這項資料接入不冒稱全世界或HD地形完成。
+- 回歸覆蓋真實140組Mask分類、125組完整預檢、96與最後可見135的有效載入、15組空來源及140越界、
+  缺組／孤兒／重複／父項錯誤／來源hash拒收、舊清冊相容、原始保存不變與第一章候選。
+  正式現代主題另抽正常F2／Home／保存冷讀；其餘章節與完整HD世界仍保持未驗分級。
+
+[完整清冊候選工具](../../tools/prepare_modern_hd_map_catalog.py)只在Docker執行。
+`prepare`接受`--catalog`、`--prior-manifest`、`--native-audit`、`--new-masters`、`--source`及新`--output`，
+建立完整24父項候選包、選定母稿／單幀映射及輸入指紋；`--workers 1..4`限制編製程序。
+再用既有HD編製器及獨立驗證器產生完整HD候選。`register`另要求`--parent-catalog`、`--manifest`、
+`--world-receipt`、`--art-review`、`--source`與`--destination`，預檢正式清冊未被其他工作修改、既有成品bytes保持，
+且同份完整第一章候選與原始保存檢查通過，最後才原子登錄。工具不啟用Game.Draw或發布Release。
+
+125組／1455張HD及31組／372張父項已登錄，新增372幀逐姿態檢閱通過。
+舊94組的1083張父項與HD輸出bytes相同；完整原生Mask分類、清冊與九項編製守衛通過。
+首章實檔CPU候選通過；正式清冊與私人包另取得16張普通GUI、F2／Home、保存及新程序LOAD，
+兩主題與來源保存bytes相同。CONFORMED只限本段資料、載入與既有24呈現，144世界尚未接Game.Draw。
+來源、重跑命令與限制見[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`native_coverage_followup_20261019`。
+
 ### 2026-10-19 F2戰場重複消費修正（CONFORMED，限首章抽驗）
 
 F2已是核准的全域主題切換，Home為正常角色檢視。正式首章LOAD、Z聚焦後F2的
@@ -197,6 +235,7 @@ raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣�
 [實檔候選測試](../../remake/cmd/fd2/modern_hd_map_candidate_test.go)由
 `FD2_HD_CANDIDATE_DIR`、`FD2_HD_CANDIDATE_SOURCE`、`FD2_HD_WORLD_SAVE`與`FD2_HD_WORLD_REPORT`
 明示本機輸入／輸出，再於既有Go測試容器執行`go test ./cmd/fd2 -count=1 -run TestModernHDMapActualCandidateWorld`。
+尚未登錄的完整父項清冊另以`FD2_HD_PARENT_CATALOG`明示，不覆寫正式清冊來測候選。
 此次94組實檔預檢後，第一章世界因96拒收，失敗與來源快照保留；標準回歸略過此外部候選測試。
 下一閘門是#259素材／清冊範圍，再接正式世界、透明介面與正常玩家GPU。
 

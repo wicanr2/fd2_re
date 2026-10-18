@@ -12,6 +12,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 )
 
 func writeModernHDMapFixture(t *testing.T) (string, string, map[string]any) {
@@ -66,8 +68,8 @@ func writeModernHDMapFixture(t *testing.T) (string, string, map[string]any) {
 		}
 	}
 	assets := document["assets"].([]any)
-	for group := 0; group < 96; group++ {
-		if group == 39 || group == 57 {
+	for group := 0; group < fdicon.NativeSourceGroupCount; group++ {
+		if !fdicon.NativeSourceGroupHasPixels(group) {
 			continue
 		}
 		count, cycle, contract, hdContract := 12, "three_distinct_cycles", "fdicon_map_sprite_12x24_v1", "fdicon_hd_map_sprite_12x144_v1"
@@ -106,7 +108,8 @@ func TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(set.mapSpritesHD) != 94 || len(set.mapSpritesHD[48]) != 3 || len(set.mapSpritesHD[0]) != 12 {
+	if len(set.mapSpritesHD) != 125 || len(set.mapSpritesHD[48]) != 3 || len(set.mapSpritesHD[0]) != 12 ||
+		len(set.mapSpritesHD[96]) != 12 || len(set.mapSpritesHD[135]) != 12 {
 		t.Fatal("incomplete HD collection")
 	}
 	_, _, _, alpha := set.mapSpritesHD[0][0].At(41, 137).RGBA()
@@ -119,7 +122,7 @@ func TestLoadModernHDMapSpritesCompleteCoverageAndSoftEdges(t *testing.T) {
 }
 
 func TestLoadModernHDMapSpritesRejectsIncompleteOrMismatchedCollection(t *testing.T) {
-	for _, name := range []string{"missing", "duplicate", "parent", "cycle", "hash", "path", "feet"} {
+	for _, name := range []string{"missing", "duplicate", "parent", "cycle", "hash", "path", "feet", "zero-source", "outside", "legacy94"} {
 		t.Run(name, func(t *testing.T) {
 			path, root, document := writeModernHDMapFixture(t)
 			assets := document["assets"].([]any)
@@ -129,6 +132,20 @@ func TestLoadModernHDMapSpritesRejectsIncompleteOrMismatchedCollection(t *testin
 				document["assets"] = assets[:len(assets)-1]
 			case "duplicate":
 				assets[len(assets)-1].(map[string]any)["source_group"] = 0
+			case "zero-source":
+				assets[len(assets)-1].(map[string]any)["source_group"] = 104
+			case "outside":
+				assets[len(assets)-1].(map[string]any)["source_group"] = fdicon.NativeSourceGroupCount
+			case "legacy94":
+				filtered := make([]any, 0, len(assets))
+				for _, entry := range assets {
+					a := entry.(map[string]any)
+					if group, ok := a["source_group"].(int); ok && group >= 96 {
+						continue
+					}
+					filtered = append(filtered, entry)
+				}
+				document["assets"] = filtered
 			case "parent":
 				assets[1].(map[string]any)["source_group"] = 39
 			case "cycle":
@@ -168,6 +185,32 @@ func TestLoadModernHDMapSpritesRejectsIncompleteOrMismatchedCollection(t *testin
 				t.Fatalf("%s accepted or published partial collection", name)
 			}
 		})
+	}
+}
+
+func TestLoadModernHDMapSpritesKeepsLegacyCatalogCompatibility(t *testing.T) {
+	for _, limit := range []int{96, fdicon.NativeSourceGroupCount} {
+		path, root, document := writeModernHDMapFixture(t)
+		filtered := make([]any, 0)
+		for _, entry := range document["assets"].([]any) {
+			asset := entry.(map[string]any)
+			if asset["role"] == "map_sprite_hd_set" {
+				continue
+			}
+			if group, ok := asset["source_group"].(int); ok && group >= limit {
+				continue
+			}
+			filtered = append(filtered, entry)
+		}
+		document["assets"] = filtered
+		writeModernHDCatalog(t, path, document)
+		set, err := loadModernStoryPortraitSet(path, root)
+		if err != nil || len(set.mapSpritesHD) != 0 {
+			t.Fatalf("legacy catalog limit=%d: %v", limit, err)
+		}
+		if limit == fdicon.NativeSourceGroupCount && len(set.mapSprites[135]) != 12 {
+			t.Fatal("last visible native group did not load")
+		}
 	}
 }
 

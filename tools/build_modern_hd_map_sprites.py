@@ -204,8 +204,14 @@ def main():
     assert not a.output.exists(), '不得覆寫既有候選'
     assert a.output.parent.is_dir() and a.output.parent.stat().st_uid == 1000
     catalog = json.loads(a.catalog.read_text())
-    overrides = json.loads(a.master_overrides.read_text()) if a.master_overrides else {}
-    frame_overrides = json.loads(a.frame_overrides.read_text()) if a.frame_overrides else {}
+    hd_sources = [x for x in catalog['assets'] if x.get('role') == 'map_sprite_hd_set']
+    overrides = {str(x['source_group']):x['master_file'] for x in hd_sources}
+    frame_overrides = {str(x['source_group']):dict(x['frame_overrides']) for x in hd_sources}
+    if a.master_overrides:
+        overrides.update(json.loads(a.master_overrides.read_text()))
+    if a.frame_overrides:
+        for group, sources in json.loads(a.frame_overrides.read_text()).items():
+            frame_overrides.setdefault(group, {}).update(sources)
     assets = [x for x in catalog['assets'] if x.get('role') == 'map_sprite_set']
     assets_by_group = {str(x['source_group']):x for x in assets}
     for group, frames in frame_overrides.items():

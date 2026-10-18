@@ -17,9 +17,15 @@ SOURCE_ASSET_RE = re.compile(r"^asset:[A-Za-z0-9][A-Za-z0-9._-]+$")
 PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concept"}
 ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
-    "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
+    "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
+# Fixed FDICON.B24 source-write inventory, independently checked by
+# audit_modern_fdicon_bank.py and fdicon.NativeSourceGroupHasPixels.
+NATIVE_FDICON_GROUP_COUNT = 140
+NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139}
+VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
+SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -29,8 +35,8 @@ def png_size(path: Path) -> tuple[int, int]:
     return struct.unpack(">II", raw[16:24])
 
 
-def validate(verify_private: bool) -> dict:
-    data = json.loads(CATALOG.read_text(encoding="utf-8"))
+def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
+    data = json.loads((catalog_path or CATALOG).read_text(encoding="utf-8"))
     if set(data) != {"schema_version", "theme_id", "status", "private_root", "assets"}:
         raise ValueError("catalog fields mismatch")
     if data["schema_version"] != 1 or data["status"] != "prototype":
@@ -46,6 +52,7 @@ def validate(verify_private: bool) -> dict:
     ids: set[str] = set()
     roles: set[str] = set()
     portrait_speakers, hd_speakers = set(), set()
+    parent_sprites, hd_sprites = {}, {}
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -68,6 +75,8 @@ def validate(verify_private: bool) -> dict:
             expected = required | candidate
         elif entry.get("role") == "map_sprite_set":
             expected = sprite_set | ({"master_file"} if "master_file" in entry else set())
+        elif entry.get("role") == "map_sprite_hd_set":
+            expected = sprite_set | {"layout_policy", "master_file", "frame_overrides", "source_files", "source_sha256"}
         elif entry.get("role") == "map_tileset_set":
             expected = map_tileset
         elif entry.get("role") == "battle_hud_panel":
@@ -125,36 +134,70 @@ def validate(verify_private: bool) -> dict:
             if len(entry["files"]) != 4 or len(set(entry["files"])) != 4 or (
                     len(entry["frame_sha256"]) != 4):
                 raise ValueError(f"invalid battle action icon files: {asset_id}")
-        if entry["role"] in {"map_sprite_set", "battle_action_icon_set"}:
-            if entry["role"] == "map_sprite_set" and entry["source_group"] not in range(96):
+        if entry["role"] in SPRITE_ROLES | {"battle_action_icon_set"}:
+            is_sprite = entry["role"] in SPRITE_ROLES
+            is_hd = entry["role"] == "map_sprite_hd_set"
+            if is_sprite and (type(entry["source_group"]) is not int or entry["source_group"] not in VISIBLE_FDICON_GROUPS):
                 raise ValueError(f"invalid map sprite identity: {asset_id}")
-            walk_contract = entry["role"] == "map_sprite_set" and (
-                entry["consumer_contract"] == "fdicon_map_sprite_12x24_v1" and
+            if is_sprite:
+                collection = hd_sprites if is_hd else parent_sprites
+                if entry['source_group'] in collection:
+                    raise ValueError(f'duplicate map sprite group: {asset_id}')
+                collection[entry['source_group']] = entry
+                size = 144 if is_hd else 24
+                if (entry['width'], entry['height']) != (size, size):
+                    raise ValueError(f'invalid map sprite geometry: {asset_id}')
+            walk_contract = is_sprite and (
+                entry["consumer_contract"] == ("fdicon_hd_map_sprite_12x144_v1" if is_hd else "fdicon_map_sprite_12x24_v1") and
                 entry["frame_count"] == 12 and
                 entry["cycle_policy"] in {"three_distinct_cycles", "source_exact_repeats"}
             )
-            static_contract = entry["role"] == "map_sprite_set" and (
-                entry["consumer_contract"] == "fdicon_static_sprite_3x24_v1" and
+            static_contract = is_sprite and (
+                entry["consumer_contract"] == ("fdicon_hd_static_sprite_3x144_v1" if is_hd else "fdicon_static_sprite_3x24_v1") and
                 entry["frame_count"] == 3 and entry["cycle_policy"] == "static_three_phase"
             )
-            if entry["role"] == "map_sprite_set" and not (walk_contract or static_contract):
+            if is_sprite and not (walk_contract or static_contract):
                 raise ValueError(f"invalid map sprite contract: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["alpha_contract"] != "binary":
+            if is_sprite and entry["alpha_contract"] != ("coverage" if is_hd else "binary"):
                 raise ValueError(f"invalid alpha contract: {asset_id}")
+            if is_hd:
+                if entry['layout_policy'] != 'contain_22px_cell_feet_v1':
+                    raise ValueError(f'invalid map sprite layout: {asset_id}')
+                sources, source_hashes = entry['source_files'], entry['source_sha256']
+                if (not isinstance(sources, list) or not sources or
+                        not all(isinstance(name, str) for name in sources) or len(set(sources)) != len(sources) or
+                        not isinstance(source_hashes, list) or len(sources) != len(source_hashes)):
+                    raise ValueError(f'invalid HD source collection: {asset_id}')
+                for name, expected_hash in zip(sources, source_hashes):
+                    if (not isinstance(name, str) or Path(name).name != name or Path(name).suffix.lower() != '.png' or
+                            not isinstance(expected_hash, str) or not SHA_RE.fullmatch(expected_hash)):
+                        raise ValueError(f'invalid HD source provenance: {asset_id}')
+                    if verify_private:
+                        path = ROOT/private_root/name
+                        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected_hash:
+                            raise ValueError(f'HD source mismatch: {asset_id}/{name}')
+                overrides = entry['frame_overrides']
+                if not isinstance(overrides, dict):
+                    raise ValueError(f'invalid HD frame sources: {asset_id}')
+                for index, name in overrides.items():
+                    if index not in {str(i) for i in range(entry['frame_count'])} or name not in sources:
+                        raise ValueError(f'invalid HD frame source: {asset_id}')
+                if set(sources) != {entry['master_file'], *overrides.values()}:
+                    raise ValueError(f'unused or missing HD source: {asset_id}')
             files = entry["files"]
             hashes = entry["frame_sha256"]
-            want_count = entry["frame_count"] if entry["role"] == "map_sprite_set" else 4
+            want_count = entry["frame_count"] if is_sprite else 4
             if not isinstance(files, list) or len(files) != want_count or len(set(files)) != want_count:
                 raise ValueError(f"invalid map sprite file set: {asset_id}")
             if not isinstance(hashes, list) or len(hashes) != want_count or not all(
                 isinstance(value, str) and SHA_RE.fullmatch(value) for value in hashes
             ):
                 raise ValueError(f"invalid map sprite hashes: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
+            if is_sprite and entry["cycle_policy"] == "three_distinct_cycles" and len(set(hashes)) != 12:
                 raise ValueError(f"map sprite cycles are not distinct: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "source_exact_repeats" and len(set(hashes)) == 12:
+            if is_sprite and entry["cycle_policy"] == "source_exact_repeats" and len(set(hashes)) == 12:
                 raise ValueError(f"map sprite declares source repeats but has none: {asset_id}")
-            if entry["role"] == "map_sprite_set" and entry["cycle_policy"] == "static_three_phase" and len(set(hashes)) != 3:
+            if is_sprite and entry["cycle_policy"] == "static_three_phase" and len(set(hashes)) != 3:
                 raise ValueError(f"static map sprite phases are not distinct: {asset_id}")
             file_paths = [Path(value) for value in files]
         elif entry["role"] == "map_tileset_set":
@@ -177,7 +220,7 @@ def validate(verify_private: bool) -> dict:
             raise ValueError(f"invalid width: {asset_id}")
         if not isinstance(entry["height"], int) or entry["height"] <= 0:
             raise ValueError(f"invalid height: {asset_id}")
-        if entry["role"] not in {"map_sprite_set", "battle_action_icon_set"} and (
+        if entry["role"] not in SPRITE_ROLES | {"battle_action_icon_set"} and (
             not isinstance(entry["sha256"], str) or not SHA_RE.fullmatch(entry["sha256"])
         ):
             raise ValueError(f"invalid sha256: {asset_id}")
@@ -193,7 +236,7 @@ def validate(verify_private: bool) -> dict:
             if ref_path.is_absolute() or ".." in ref_path.parts or not (ROOT / ref_path).is_file():
                 raise ValueError(f"invalid source_ref for {asset_id}: {ref!r}")
         if verify_private:
-            expected_hashes = entry["frame_sha256"] if entry["role"] in {"map_sprite_set", "battle_action_icon_set"} else [entry["sha256"]]
+            expected_hashes = entry["frame_sha256"] if entry["role"] in SPRITE_ROLES | {"battle_action_icon_set"} else [entry["sha256"]]
             for file_path, expected_hash in zip(file_paths, expected_hashes):
                 private_path = ROOT / private_root / file_path
                 if not private_path.is_file():
@@ -208,6 +251,12 @@ def validate(verify_private: bool) -> dict:
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if not set(alpha.getdata()).issubset({0, 255}):
                         raise ValueError(f"non-binary alpha: {asset_id}/{file_path.name}")
+                elif entry['role'] == 'map_sprite_hd_set':
+                    from PIL import Image
+                    with Image.open(private_path) as image:
+                        alpha = image.convert('RGBA').getchannel('A')
+                        if alpha.getextrema() != (0, 255):
+                            raise ValueError(f'invalid HD coverage alpha: {asset_id}/{file_path.name}')
                 elif entry["role"] in {"battle_action_icon_set", "story_portrait_hd_frame"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
@@ -215,6 +264,20 @@ def validate(verify_private: bool) -> dict:
                         raise ValueError(f"non-opaque asset: {asset_id}/{file_path.name}")
     if hd_speakers and hd_speakers != portrait_speakers:
         raise ValueError('HD portrait speaker group is incomplete or orphaned')
+    if hd_sprites:
+        if set(hd_sprites) != VISIBLE_FDICON_GROUPS or set(parent_sprites) != VISIBLE_FDICON_GROUPS:
+            raise ValueError('HD map sprite collection or 24px parents do not cover the complete native bank')
+        for group, child in hd_sprites.items():
+            parent = parent_sprites[group]
+            if child['frame_count'] != parent['frame_count'] or child['cycle_policy'] != parent['cycle_policy']:
+                raise ValueError(f'HD map sprite parent contract differs: {group}')
+            for i in range(child['frame_count']):
+                if str(i) in child['frame_overrides'] and parent['frame_sha256'][i] in parent['frame_sha256'][:i]:
+                    raise ValueError(f'HD override conflicts with repeated phase: {group}')
+                for j in range(i):
+                    if ((child['frame_sha256'][i] == child['frame_sha256'][j]) !=
+                            (parent['frame_sha256'][i] == parent['frame_sha256'][j])):
+                        raise ValueError(f'HD map sprite parent phase equivalence differs: {group}')
     if not PROTOTYPE_ROLES.issubset(roles):
         raise ValueError(f"required prototype roles missing: {sorted(PROTOTYPE_ROLES - roles)}")
     return data
@@ -223,6 +286,7 @@ def validate(verify_private: bool) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--verify-private", action="store_true")
+    parser.add_argument('--catalog', type=Path, help='明示候選清冊；未指定時驗正式清冊')
     args = parser.parse_args()
-    catalog = validate(args.verify_private)
+    catalog = validate(args.verify_private, args.catalog)
     print(f"validated {len(catalog['assets'])} modern-theme asset(s)")

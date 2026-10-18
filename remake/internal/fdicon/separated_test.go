@@ -45,3 +45,39 @@ func TestSeparatedBankRejectsIncompletePack(t *testing.T) {
 		t.Fatal("incomplete separated FDICON bank was accepted")
 	}
 }
+
+func TestNativeSourceGroupsMatchPlayerArchiveMasks(t *testing.T) {
+	const archive = "../../../org_game/炎龍騎士團/FLAME2/FDICON.B24"
+	if _, err := os.Stat(archive); err != nil {
+		t.Skip("player-provided FDICON.B24 is absent")
+	}
+	bank, err := DecodeFile(archive)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(bank.Sprites) != NativeSourceGroupCount*12 {
+		t.Fatal("native group bound differs from actual archive")
+	}
+	visibleGroups, visibleFrames := 0, 0
+	for group := 0; group < NativeSourceGroupCount; group++ {
+		visible := false
+		for _, sprite := range bank.Sprites[group*12 : (group+1)*12] {
+			for _, mask := range sprite.Mask {
+				if mask != 0 {
+					visible = true
+					visibleFrames++
+					break
+				}
+			}
+		}
+		if visible != NativeSourceGroupHasPixels(group) {
+			t.Fatalf("source-write classification differs at group %d", group)
+		}
+		if visible {
+			visibleGroups++
+		}
+	}
+	if visibleGroups != 125 || visibleFrames != 1455 || NativeSourceGroupHasPixels(-1) || NativeSourceGroupHasPixels(NativeSourceGroupCount) {
+		t.Fatalf("source inventory groups=%d frames=%d", visibleGroups, visibleFrames)
+	}
+}

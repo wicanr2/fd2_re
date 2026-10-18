@@ -44,18 +44,29 @@ func TestModernHDMapActualCandidateWorld(t *testing.T) {
 		t.Fatal(err)
 	}
 	manifestHash := sha256.Sum256(raw)
-	catalogRaw, err := os.ReadFile("../../assets/themes/modern/catalog.json")
+	catalogPath := os.Getenv("FD2_HD_PARENT_CATALOG")
+	if catalogPath == "" {
+		catalogPath = "../../assets/themes/modern/catalog.json"
+	}
+	catalogRaw, err := os.ReadFile(catalogPath)
 	if err != nil {
 		t.Fatal(err)
 	}
 	catalogHash := sha256.Sum256(catalogRaw)
-	if hex.EncodeToString(catalogHash[:]) != manifest.CatalogSHA256 || len(manifest.Groups) != 94 || manifest.LayoutPolicy != "contain_22px_cell_feet_v1" {
-		t.Fatal("候選來源或94組完整性不符")
+	if hex.EncodeToString(catalogHash[:]) != manifest.CatalogSHA256 || len(manifest.Groups) != 125 || manifest.LayoutPolicy != "contain_22px_cell_feet_v1" {
+		t.Fatal("候選來源或完整原生可見圖組不符")
 	}
 	var catalog modernThemeCatalog
 	if err := json.Unmarshal(catalogRaw, &catalog); err != nil {
 		t.Fatal(err)
 	}
+	parents := make([]modernThemeAsset, 0, len(catalog.Assets))
+	for _, asset := range catalog.Assets {
+		if asset.Role != "map_sprite_hd_set" {
+			parents = append(parents, asset)
+		}
+	}
+	catalog.Assets = parents
 	pack := t.TempDir()
 	linked := make(map[string]bool)
 	link := func(root, name string) {
@@ -106,7 +117,7 @@ func TestModernHDMapActualCandidateWorld(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(set.mapSpritesHD) != 94 || frameCount != 1083 {
+	if len(set.mapSpritesHD) != 125 || frameCount != 1455 {
 		t.Fatal("實際清冊未完整載入")
 	}
 	saveRaw, err := os.ReadFile(save)
@@ -183,7 +194,7 @@ func TestModernHDMapActualCandidateWorld(t *testing.T) {
 		t.Fatal("原始存檔被改寫")
 	}
 	report, err := json.MarshalIndent(map[string]any{
-		"status": "PASS", "scope": "實際94組圖源載入與既有存檔還原的候選世界；不含HUD／正常鍵盤路徑／原版oracle／GPU呈現",
+		"status": "PASS", "scope": "實際完整原生可見圖源載入與既有存檔還原的候選世界；不含HUD／正常鍵盤路徑／原版oracle／GPU呈現",
 		"groups": len(set.mapSpritesHD), "frames": frameCount, "node": g.camp.NodeID(), "view": g.st.NativeMapViewState,
 		"manifest_sha256": hex.EncodeToString(manifestHash[:]), "catalog_sha256": manifest.CatalogSHA256,
 		"save_sha256": hex.EncodeToString(saveHash[:]), "original_save_unchanged": true, "images": outputs,

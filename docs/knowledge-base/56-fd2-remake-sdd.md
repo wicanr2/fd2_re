@@ -1,8 +1,9 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
 2026-10-19 HD戰場接續：F2不再重複觸發角色檢視，Home保持，正常首章16張GPU與完整保存／冷讀通過。
-同狀態取景差異#258尚未修正；既有清冊子集的144角色等比例編製與候選層計畫已驗。
-實際首章名冊揭露清冊漏列selector96，#259追蹤原始圖庫範圍勘誤與素材補齊；正式世界尚未啟用。
+同狀態取景差異#258尚未修正。完整125組1455張144角色與31組缺漏24父項已登錄，
+首章實檔候選、正式清冊／私人包與16張正常GPU／保存冷讀通過；原始selector96拒收已排除。
+目前GUI仍沿既有24直繪，144世界尚未接Game.Draw；本輪沒有新原版parity。
 唯一來源與下一閘門見[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)及[61](61-modern-theme-runtime-spec.md)。
 
 2026-10-18 首章JSON標題LOAD（CONFORMED／PLAYER-E2-LIMITED，[#252](https://github.com/wicanr2/fd2_re/issues/252)）：

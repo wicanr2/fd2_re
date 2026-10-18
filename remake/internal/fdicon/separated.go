@@ -11,11 +11,26 @@ import (
 )
 
 const (
-	SeparatedSpriteCount = 1680
-	fdiconSourceSize     = 624010
-	fdiconSourceMD5      = "46f793540209a063ea73a5373ca14bf4"
-	fdiconSourceSHA256   = "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
+	SeparatedSpriteCount   = 1680
+	NativeSourceGroupCount = SeparatedSpriteCount / 12
+	fdiconSourceSize       = 624010
+	fdiconSourceMD5        = "46f793540209a063ea73a5373ca14bf4"
+	fdiconSourceSHA256     = "7efb4448d05f19c1e17ebd53f3e3afead235f5c008d5167548d834c3686b1e44"
 )
+
+// Fixed FDICON.B24 source-write inventory; see spec 61 and the full-bank
+// audit bound to fdiconSourceSHA256. A blank source mask is not missing art.
+func NativeSourceGroupHasPixels(group int) bool {
+	if group < 0 || group >= NativeSourceGroupCount {
+		return false
+	}
+	switch group {
+	case 39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139:
+		return false
+	default:
+		return true
+	}
+}
 
 type separatedSource struct {
 	File   string `json:"file"`

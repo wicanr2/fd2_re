@@ -2,6 +2,11 @@
 """Deterministic tests for the modern-theme prototype catalog."""
 from __future__ import annotations
 
+import copy
+import hashlib
+import json
+from pathlib import Path
+import tempfile
 import unittest
 
 import validate_modern_theme_catalog as validator
@@ -36,7 +41,11 @@ class ModernThemeCatalogTests(unittest.TestCase):
             for asset in catalog["assets"]
             if asset.get("role") == "map_sprite_set"
         }
-        self.assertEqual(sprite_groups, set(range(96)) - {39, 57})
+        hd_groups = {asset['source_group'] for asset in catalog['assets']
+                     if asset['role'] == 'map_sprite_hd_set'}
+        self.assertEqual(sprite_groups, validator.VISIBLE_FDICON_GROUPS if hd_groups else set(range(96)) - {39, 57})
+        if hd_groups:
+            self.assertEqual(hd_groups, validator.VISIBLE_FDICON_GROUPS)
         for group in (48, 66, 67, 74, 75):
             static = next(asset for asset in catalog["assets"] if asset.get("source_group") == group)
             self.assertEqual(
@@ -148,6 +157,76 @@ class ModernThemeCatalogTests(unittest.TestCase):
         self.assertEqual(fortress_guard["source_group"], 86)
         self.assertIn("remake/assets/maps/map25/map25_units.json", fortress_guard["source_refs"])
         self.assertIn("remake/assets/maps/map31/map31_units.json", fortress_guard["source_refs"])
+
+
+class HDMapCatalogContractTests(unittest.TestCase):
+    def setUp(self):
+        self.catalog = validator.validate(False)
+        self.catalog['assets'] = [a for a in self.catalog['assets'] if a['role'] != 'map_sprite_hd_set']
+        parents = {a['source_group']: a for a in self.catalog['assets'] if a['role'] == 'map_sprite_set'}
+        for group in sorted(validator.VISIBLE_FDICON_GROUPS-set(parents)):
+            parent = copy.deepcopy(parents[0])
+            parent.update(asset_id=f'modern.test.group_{group:03d}', source_group=group)
+            self.catalog['assets'].append(parent)
+            parents[group] = parent
+        for group, parent in parents.items():
+            child = copy.deepcopy(parent)
+            child.update(asset_id=parent['asset_id']+'.hd6', role='map_sprite_hd_set',
+                         width=144, height=144, alpha_contract='coverage',
+                         layout_policy='contain_22px_cell_feet_v1',
+                         consumer_contract='fdicon_hd_static_sprite_3x144_v1' if parent['frame_count']==3
+                         else 'fdicon_hd_map_sprite_12x144_v1',
+                         master_file='selected-master.png', frame_overrides={},
+                         source_files=['selected-master.png'], source_sha256=['a'*64])
+            child['frame_sha256'] = [hashlib.sha256(('hd-'+h).encode()).hexdigest() for h in parent['frame_sha256']]
+            self.catalog['assets'].append(child)
+
+    def validate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'catalog.json'
+            path.write_text(json.dumps(self.catalog))
+            return validator.validate(False, path)
+
+    def child(self, group=0):
+        return next(a for a in self.catalog['assets'] if a['role']=='map_sprite_hd_set' and a['source_group']==group)
+
+    def test_full_native_collection_and_source_repeat_equivalence(self):
+        self.validate()
+        self.assertEqual(self.child(52)['frame_sha256'][6], self.child(52)['frame_sha256'][8])
+
+    def test_reject_incomplete_collection_or_parent(self):
+        original = copy.deepcopy(self.catalog)
+        for role in ('map_sprite_set', 'map_sprite_hd_set'):
+            with self.subTest(role=role):
+                self.catalog = copy.deepcopy(original)
+                self.catalog['assets'] = [a for a in self.catalog['assets']
+                                          if not (a['role']==role and a['source_group']==135)]
+                with self.assertRaisesRegex(ValueError, 'complete native bank'):
+                    self.validate()
+
+    def test_reject_zero_write_and_out_of_bank_groups(self):
+        for group in (104, 139, 140, -1):
+            with self.subTest(group=group):
+                self.child()['source_group'] = group
+                with self.assertRaisesRegex(ValueError, 'map sprite identity'):
+                    self.validate()
+                next(a for a in self.catalog['assets'] if a['role']=='map_sprite_hd_set' and a['source_group']==group)['source_group'] = 0
+
+    def test_reject_source_provenance_gaps_and_unsafe_names(self):
+        child = self.child()
+        for sources, hashes in ((['selected-master.png','unused.png'], ['a'*64,'b'*64]),
+                                (['../selected-master.png'], ['a'*64]),
+                                (['selected-master.png'], ['invalid']),
+                                ([{}], ['a'*64])):
+            with self.subTest(sources=sources):
+                child['source_files'], child['source_sha256'] = sources, hashes
+                with self.assertRaises(ValueError):
+                    self.validate()
+
+    def test_reject_override_of_repeated_phase(self):
+        self.child(52)['frame_overrides'] = {'8':'selected-master.png'}
+        with self.assertRaisesRegex(ValueError, 'repeated phase'):
+            self.validate()
 
 
 if __name__ == "__main__":

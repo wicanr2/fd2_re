@@ -7,9 +7,9 @@
   "current_state": {
     "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
     "native_viewport": "REMAKE-DEFECT-CONFIRMED：同units／view的正式戰場F2比較確認現代24直繪與原生320×200兩倍不同，#258待實作。",
-    "hd_sprite_data": "DATA-CANDIDATE-SUBSET-VERIFIED：r9既有94組1083幀等比資料及姿態掃描通過；僅selector0..95子集。完整原始圖庫另有31組可見漏項，#259。",
-    "hd_world_renderer": "候選實作與回歸通過：正式loader可預檢舊清冊HD子集，單位／前景計畫及候選合成器尚未接Game.Draw。實際第一章存檔候選因缺selector96拒收，沒有新GPU／PLAYER-E2。",
-    "private_assets": "正式catalog及私人包保持。新96母稿已有12完整方向候選，尚未編製24父項／144圖或登錄；其他缺圖沿#259。"
+    "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
+    "hd_world_renderer": "RUNTIME-E1-CANDIDATE：實際第一章存檔的完整圖庫CPU候選通過；144世界未接Game.Draw，正式GUI仍沿既有24直繪。",
+    "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。"
   },
   "runtime_source": {
     "snapshot": {
@@ -935,5 +935,542 @@
     },
     "source_commit": "2537cb0811812e13d20a5da77832857f94ba6b42",
     "source_commit_remote_verified": true
+  },
+  "native_coverage_followup_20261019": {
+    "status": "CONFORMED-SCOPED-DATA-LOADER-EXISTING-GUI",
+    "base_commit": "2d6f62c8272c9a0018cf7f0e59b48b03fa8c9f14",
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "a96b2a9ce0e1045ac2ab644619f2ba0813799c24453ff387962ce34fba450bd2"
+    },
+    "catalog_assets": 351,
+    "visible_groups": 125,
+    "visible_frames": 1455,
+    "new_groups": [
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      122,
+      123,
+      124,
+      125,
+      126,
+      133,
+      134,
+      135
+    ],
+    "new_frames": 372,
+    "original_frame_masks_checked": 1680,
+    "old_parent_metadata_unchanged": 94,
+    "old_parent_png_bytes_unchanged": 1083,
+    "old_hd_png_bytes_unchanged": 1083,
+    "original_inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-fdicon-missing-references-r3.json",
+      "sha256": "2af48271aefc56bda993ab235323454585b414b0851e882b7cf20444b3d954df"
+    },
+    "original_reference_kind": "fixed source decoded with FDOTHER#0 palette; not original runtime captures",
+    "parent_catalog": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-native-parent-candidate-r1/catalog-parent.json",
+      "sha256": "519aa70bd2210ca6db5e1b76197036e6104ba71cbae75032da969b923130714b"
+    },
+    "preparation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-native-parent-candidate-r1/preparation.json",
+      "sha256": "a9ea1185cd17357f76b819987f58d9a86783a75a26c042f8761984287a6bf6d7"
+    },
+    "preparation_source_archive": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-native-prepare-source-r1.py",
+      "sha256": "c5726438a76e56f3a76be81367822642c2b4afe7aa0c696aa60a85ca035c9db0"
+    },
+    "preparation_tool_revision": "registration later gained mandatory art-review manifest binding; prepare output unchanged",
+    "hd_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprites-candidates-r10/hd-map-sprites.json",
+      "sha256": "2205b474b12952d33ac720ba220fb073f95069866e8d414a765a0fbf7bdee7bf"
+    },
+    "verification": {
+      "status": "PASS",
+      "registered_catalog_complete": true,
+      "native_bank_coverage_verified": true,
+      "groups": 125,
+      "frames": 1455,
+      "manifest_sha256": "2205b474b12952d33ac720ba220fb073f95069866e8d414a765a0fbf7bdee7bf",
+      "catalog_sha256": "519aa70bd2210ca6db5e1b76197036e6104ba71cbae75032da969b923130714b",
+      "compiler_sha256": "4ebcdeff585ea77e20e23903b250f46fa70040cdecc015379f74749e1081294d",
+      "verifier_sha256": "ba24a3c0a44dcdb9b6dd59ae6db6b97363b9d0d6703c7ad85131c9ff45ea12ce",
+      "scope": "source hashes, geometry, coverage alpha and cycles; native-bank coverage uses the fixed source-write inventory; no art or runtime acceptance"
+    },
+    "art_review": {
+      "status": "PASS-LIMITED-ART-REVIEW",
+      "manifest_sha256": "2205b474b12952d33ac720ba220fb073f95069866e8d414a765a0fbf7bdee7bf",
+      "groups": 31,
+      "frames": 372,
+      "pages": [
+        {
+          "file": "hd-native-r10-new-poses-00.png",
+          "sha256": "bb9c712ba8cf695c5eef39c9852d054bc3274c357947a636ce4ac9d929f05da3"
+        },
+        {
+          "file": "hd-native-r10-new-poses-01.png",
+          "sha256": "365108f9a430d9c7a9aadf6f7e5aa29dfe6ccc126cb538d6547698331fdcdcba"
+        },
+        {
+          "file": "hd-native-r10-new-poses-02.png",
+          "sha256": "b52bee420b3783cb200d0308c5fe8265c5e4b0350d75b1725e1c22e77ed87e27"
+        },
+        {
+          "file": "hd-native-r10-new-poses-03.png",
+          "sha256": "119177d95cd6f35adb810e964135d958e74adaf8d1118a12ca38001c63a4f1ca"
+        },
+        {
+          "file": "hd-native-r10-new-poses-04.png",
+          "sha256": "1eea3b25770487fb5f2711e37c216fd5e0b6b5ff339a0127b53a9e63119de32d"
+        },
+        {
+          "file": "hd-native-r10-new-poses-05.png",
+          "sha256": "b44b79f2c4b86eca266134d1312e95427ccc4efc7380cc9bcbb501ee3345390e"
+        },
+        {
+          "file": "hd-native-r10-new-poses-06.png",
+          "sha256": "6a06d323a24ed320940bd12cc138c8475ee1ffdabcc1cc9c05825e599ca63bc4"
+        },
+        {
+          "file": "hd-native-r10-new-poses-07.png",
+          "sha256": "d8fa050094ffa6e0f0e28aa911df5a3e8c54d663bac63709efa5aeeaa0b8909d"
+        }
+      ],
+      "selected_group97_master": "fdicon-097-style-a-v2-hd-master.png",
+      "rejected_group97_v1": "right profile lost visible source blade",
+      "checks": [
+        "eight pages visually reviewed, all 372 extracted phases",
+        "front-left-back-right row order and three phases",
+        "visible source palette and equipment kept, no inferred names/classes",
+        "group107 retains partial cloth silhouette without invented legs",
+        "group97 repaired right profile blade survives extraction",
+        "group118 front and right silver blade survives extraction"
+      ],
+      "limits": [
+        "stylized redraw does not claim pixel or silhouette equality",
+        "terrain remains original upscaled",
+        "no normal player GPU or original oracle validation"
+      ]
+    },
+    "actual_world": {
+      "catalog_sha256": "519aa70bd2210ca6db5e1b76197036e6104ba71cbae75032da969b923130714b",
+      "frames": 1455,
+      "groups": 125,
+      "images": {
+        "hd-world-candidate.png": "ded9594b79f34affbb4649df978b3e54aaabf8caaa07b1f801912c104780feb8",
+        "native-remake-world.png": "88439da40d6156e4b2896d8a59237828d551195297b281fe3be6b096ba46d456"
+      },
+      "manifest_sha256": "2205b474b12952d33ac720ba220fb073f95069866e8d414a765a0fbf7bdee7bf",
+      "node": "battle_ch01",
+      "original_save_unchanged": true,
+      "save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "scope": "實際完整原生可見圖源載入與既有存檔還原的候選世界；不含HUD／正常鍵盤路徑／原版oracle／GPU呈現",
+      "status": "PASS",
+      "view": {
+        "CameraX": 0,
+        "CameraY": 13,
+        "CursorX": 7,
+        "CursorY": 14,
+        "VisibleCursorX": 7,
+        "VisibleCursorY": 1
+      }
+    },
+    "actual_world_receipt": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-native-actual-world-r2.json",
+      "sha256": "27fce197292b56a29ff8e9a7cdb81537c93ebdc19caf395f66d34ac2ddd6e2d8"
+    },
+    "source_masters": [
+      {
+        "group": 96,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-096-style-a-v1-hd-master.png",
+        "sha256": "e4839b40733dd56e905acda6f9096b868147ec3bc334ba1799bddb4014a1e9d5"
+      },
+      {
+        "group": 97,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-097-style-a-v2-hd-master.png",
+        "sha256": "649c5f24860c6dd83190f303d203e5f44aba99f0b9eba918aac34c6865bedc53"
+      },
+      {
+        "group": 98,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-098-style-a-v1-hd-master.png",
+        "sha256": "dae75c89ff0dea6e48ebe484a5800c5ffe88fc52ddadb405fe056431ac763092"
+      },
+      {
+        "group": 99,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-099-style-a-v1-hd-master.png",
+        "sha256": "78329dba534f93bf887f590edda8b134e57ca0ab1224dc652978467265b233d1"
+      },
+      {
+        "group": 100,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-100-style-a-v1-hd-master.png",
+        "sha256": "460db57f662a077d5a7d7dc36dc85910cf4cc3f47a7b26ba2ed9ad15d07a3683"
+      },
+      {
+        "group": 101,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-101-style-a-v1-hd-master.png",
+        "sha256": "8d4bf99f221a5dfbde9926350f4d6386af8bdcf2c7d213d019fc1eea7aa098c8"
+      },
+      {
+        "group": 102,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-102-style-a-v1-hd-master.png",
+        "sha256": "c0820719f516c864cf69bd2b68f7ff857e9d1ec4542f19ceed60e0f47a4aea0a"
+      },
+      {
+        "group": 103,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-103-style-a-v1-hd-master.png",
+        "sha256": "21960250a4de65b107f3498630e20b32ca55b8aad18c7f351cf2304bcfd9cd62"
+      },
+      {
+        "group": 106,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-106-style-a-v1-hd-master.png",
+        "sha256": "6dea18d81efb213a85825bbcc235bc592fcdc54af06056a0ee73c75a8c7b2a63"
+      },
+      {
+        "group": 107,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-107-style-a-v1-hd-master.png",
+        "sha256": "cf915eada7403cfbc7ad2677f1751581f4e7b06cd8fa0b99ff29f92e4ba3b8cc"
+      },
+      {
+        "group": 108,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-108-style-a-v1-hd-master.png",
+        "sha256": "a466594aa48cf390007243605276383650702eb2082bc18b85ca0b8127a03c75"
+      },
+      {
+        "group": 109,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-109-style-a-v1-hd-master.png",
+        "sha256": "36e864e1d67b6755e022334a448880d0b2e28deee6b76fb3eae23b297b991157"
+      },
+      {
+        "group": 110,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-110-style-a-v1-hd-master.png",
+        "sha256": "01f1f902aa2f20b30a5bafae17c8608d0745d1fc3cc6b356331ed6fc51531868"
+      },
+      {
+        "group": 111,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-111-style-a-v1-hd-master.png",
+        "sha256": "1286cdc1a909c8718c02729f23e30cc918fc0f9f6f2a0de7d7dc785c247999a0"
+      },
+      {
+        "group": 112,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-112-style-a-v1-hd-master.png",
+        "sha256": "eb94a682bd3601da31e672476d8b947a47e135d676b655d5728943fe4f68efdd"
+      },
+      {
+        "group": 113,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-113-style-a-v1-hd-master.png",
+        "sha256": "4e88b2f31802fcb7974bffadffb949720400bd7a8e7c46bccecedab8dd7eabd9"
+      },
+      {
+        "group": 114,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-114-style-a-v1-hd-master.png",
+        "sha256": "a8c718f293a9e2ee6c9486ad202ea27b2fdcfc0fb4669f288f4c67f90b66f4e9"
+      },
+      {
+        "group": 115,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-115-style-a-v1-hd-master.png",
+        "sha256": "273074237d4395d24dac928f416a36eb898596e3e4d950a5619a2cb2fae517f6"
+      },
+      {
+        "group": 116,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-116-style-a-v1-hd-master.png",
+        "sha256": "4719ae3057080d4269fb088671d1095fefffab6e3a8d51b7a969981b56aa9a2d"
+      },
+      {
+        "group": 117,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-117-style-a-v1-hd-master.png",
+        "sha256": "59bca2f18cd18e7ef6de316d1883b8ea7328323c2d3c06c74a52dc61b9fd3222"
+      },
+      {
+        "group": 118,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-118-style-a-v1-hd-master.png",
+        "sha256": "bc430021d3e88bdeace524a8631b2eee85e6028869f6a29c2173e39e6604b03c"
+      },
+      {
+        "group": 119,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-119-style-a-v1-hd-master.png",
+        "sha256": "6c80b8255ff7d065348368457be29345d59c03626793602c399c77a900b43fe7"
+      },
+      {
+        "group": 120,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-120-style-a-v1-hd-master.png",
+        "sha256": "d55f63b10e23204ccc4f1817b5b7443b75753a42973a888e9a016a9f0abb146d"
+      },
+      {
+        "group": 122,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-122-style-a-v1-hd-master.png",
+        "sha256": "bcbf98760bdeeb4607b13a223a953326e07e14629f21fedb8b2b4464081d98aa"
+      },
+      {
+        "group": 123,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-123-style-a-v1-hd-master.png",
+        "sha256": "954463ba3fe3ad6a3dedf5b45a6bde9333a8a364b15b47954f4dafdfd1ccd036"
+      },
+      {
+        "group": 124,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-124-style-a-v1-hd-master.png",
+        "sha256": "b57cacb3a37b4a0b46afe01bae295e1464699627e74441d4f666db5ae1ff9cc7"
+      },
+      {
+        "group": 125,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-125-style-a-v1-hd-master.png",
+        "sha256": "aa78f10e2f774fcd6d0fa90685a0f275c7c0295ea062c661b4aba532e9876737"
+      },
+      {
+        "group": 126,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-126-style-a-v1-hd-master.png",
+        "sha256": "ee5bbb757701f58555f1488a31491f2a8a024c09b50de8a0dd76e5697d44c5c5"
+      },
+      {
+        "group": 133,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-133-style-a-v1-hd-master.png",
+        "sha256": "034d9f74e96afa3ab3796aea9557e80b47f2de13733096a5411576492c629896"
+      },
+      {
+        "group": 134,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-134-style-a-v1-hd-master.png",
+        "sha256": "0279acbc6e00ff85fc2ae5c79091220d01b81ca9b3de9a7bd6d01e0683a51fd6"
+      },
+      {
+        "group": 135,
+        "file": "remake/generated-assets/modern-theme-prototypes/fdicon-135-style-a-v1-hd-master.png",
+        "sha256": "6aff83ae37a9d86225db78c87f2712a34e5dc1367ab187844fea8c47eedaa0a9"
+      }
+    ],
+    "tools": [
+      {
+        "file": "tools/prepare_modern_hd_map_catalog.py",
+        "sha256": "b8946792e0eba497c592b094d89e22176e299190362b0dbbafbe6aee83bc75bc"
+      },
+      {
+        "file": "tools/build_modern_hd_map_sprites.py",
+        "sha256": "4ebcdeff585ea77e20e23903b250f46fa70040cdecc015379f74749e1081294d"
+      },
+      {
+        "file": "tools/verify_modern_hd_map_sprites.py",
+        "sha256": "ba24a3c0a44dcdb9b6dd59ae6db6b97363b9d0d6703c7ad85131c9ff45ea12ce"
+      },
+      {
+        "file": "tools/validate_modern_theme_catalog.py",
+        "sha256": "953bf37b5890f0cc00b059e90c4cc07ecd0609a82f23326cfc6c3d91438c89b9"
+      },
+      {
+        "file": "tools/sync_modern_theme_private.py",
+        "sha256": "b4ee0f261eae3d24d571437cd161a11060fb027c4a0925975051fc3e8272cc82"
+      },
+      {
+        "file": "tools/test_modern_hd_map_sprites.py",
+        "sha256": "358985fd147da18bd3e52f132fcea49f3d5223e098de727a46a98f08b8d5c38f"
+      },
+      {
+        "file": "tools/test_modern_theme_catalog.py",
+        "sha256": "e326ac5c244056fdf137ecefb9207d819a030c6c1a0690c0d296dbb0156dab22"
+      }
+    ],
+    "tests": [
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-scope-regression-r2.log",
+          "sha256": "85cb8e0ff8cd7b4aaa87b0850b2a6561444763dcb7da2caa6e93fa559af1d92e"
+        },
+        "result": "FAIL-ENVIRONMENT：mistyped FD2_ASSET_DIR, missing separated data; correct same image rerun r3"
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-scope-regression-r3.log",
+          "sha256": "36f325c792579ddfa48184cbcfc5b3a90ff24ee11e433b0b7ce3f7e3b3b8cb02"
+        },
+        "result": "PASS",
+        "fdicon_seconds": 2.119,
+        "cmd_seconds": 55.011
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-final-go-r4.log",
+          "sha256": "963fc9bd3560b5420a34e0c40d4bf5fa7d06f1fd63ca74d03ede9581cbd1c2b5"
+        },
+        "result": "PASS-ACTUAL-REGISTERED-PACK",
+        "fdicon_seconds": 0.341,
+        "cmd_seconds": 33.06
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-catalog-regression-r2.log",
+          "sha256": "73d5ff7b7578d25284c8a422bce80bef8933c7eaa0872340b73143afbbc2015a"
+        },
+        "result": "PASS",
+        "tests": 6
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-negative-verification-r3.json",
+          "sha256": "43fd86ac4cb6ebd0440165de2c79a5ada35da01675d0f50309127fac0a697448"
+        },
+        "result": "PASS",
+        "checks": 9
+      },
+      {
+        "report": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-negative-verification-r5.json",
+          "sha256": "f3a7dbfcc65b9db9094fd3061f412bf33e3d72d414a7b3b46ac7723a10aa9bfa"
+        },
+        "result": "PASS-REGISTERED-CATALOG-REBUILD",
+        "checks": 9
+      },
+      {
+        "log": {
+          "file": "work/promo-cadence-20261018/hd-fonts/hd-native-runtime-only-go-r1.log",
+          "sha256": "830210853c0a94e66a46796f137aa7842e942607737b2047df40f1f9e5468ce3"
+        },
+        "result": "PASS-RUNTIME-ONLY-LOADER",
+        "seconds": 11.228
+      }
+    ],
+    "normal_gui": {
+      "receipt": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-native-registered-gui-r2/receipt.json",
+        "sha256": "b18ebaae2e2ebb8a7d043053eafa4cefd6ab9210cf1e35ee5d7a3d2d83f966af"
+      },
+      "status": "PASS",
+      "screenshots": 16,
+      "review": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-native-registered-gui-r2-review.png",
+        "sha256": "fb3c4120a791ec76bea955939ee102174bd10caefe8f9d747c8f39547065d4bd"
+      },
+      "binary_sha256": "88838fcbe32b73152f9e8ed24ddb47c5af8dd376fbd692abbfc7da62e0bede9b",
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "theme_save_bytes_equal": true,
+      "new_process_title_load": true,
+      "outside_map_gpu": [
+        {
+          "reference": "battle-hd-focused",
+          "target": "battle-hd-status",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-focused",
+          "target": "battle-hd-status-restored",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-focused",
+          "target": "battle-hd-returned",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-command-unit-focused",
+          "target": "battle-hd-command-unit-status",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-command-unit-focused",
+          "target": "battle-hd-commands",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        },
+        {
+          "reference": "battle-hd-command-unit-focused",
+          "target": "battle-hd-command-unit-returned",
+          "crop": "1800x30+60+0",
+          "different_pixels": 0.0
+        }
+      ],
+      "scope": "正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；不注入座標或狀態，不宣稱戰鬥或原版對拍。",
+      "uses_144_world": false
+    },
+    "private_sync": {
+      "status": "PASS",
+      "private": true,
+      "repository": "wicanr2/fd2-assets-private",
+      "files": 3207,
+      "catalog_sha256": "a96b2a9ce0e1045ac2ab644619f2ba0813799c24453ff387962ce34fba450bd2",
+      "manifest_sha256": "8cb3d36a855175186d708167746fcc9efa7305b0ae4400f1daeeaa814cd7e6a4",
+      "extra_files": [],
+      "uid": 1000
+    },
+    "private_commit": "1edc3a3b8e1c6582cceaa31a0e97ab99223851c2",
+    "private_remote_head_verified": true,
+    "runtime_only_files": 3010,
+    "no_rejected_sources_in_private_pack": true,
+    "reproduce": {
+      "prepare": "Docker tools/prepare_modern_hd_map_catalog.py prepare --catalog <pre-registration catalog> --prior-manifest <r9 manifest> --native-audit <fixed audit> --new-masters <31 selected mothers> --source <private sources> --output <new repository-relative pack> --workers 3",
+      "current_registered_hd_rebuild": "Docker tools/build_modern_hd_map_sprites.py --catalog remake/assets/themes/modern/catalog.json --source <private pack> --output <new directory> --workers 3; source selections default to registered HD provenance",
+      "verify": "Docker tools/verify_modern_hd_map_sprites.py --manifest <new directory>/hd-map-sprites.json --catalog <same catalog> --source <private pack> --report <new report>",
+      "world": "Docker with-xvfb go test ./cmd/fd2 -run ^TestModernHDMapActualCandidateWorld$ -count=1; FD2_ASSET_PACK, FD2_HD_PARENT_CATALOG, FD2_HD_CANDIDATE_DIR, FD2_HD_CANDIDATE_SOURCE, FD2_HD_WORLD_SAVE, FD2_HD_WORLD_REPORT explicitly set",
+      "gui": "Docker tools/verify_fd2_hd_fonts_gui.py --binary <current build> --assets remake/assets --original-pack <separated pack> --modern-pack <private pack> --town-save <same first-chapter JSON> --out <new directory> --battle-status"
+    },
+    "production_world_activation": false,
+    "full_hd_complete": false,
+    "new_original_oracle_or_campaign_e2": false,
+    "release_changed": false,
+    "recordings_created": false,
+    "remaining": [
+      "#258 formal 1920 world, transparent UI, selection/HUD and walking/battle return",
+      "HD terrain and other art",
+      "#201/#202/#204 early-middle-late player GPU and platform performance"
+    ],
+    "final_validation": {
+      "worklist_open_before_close": 22,
+      "worklist_manual_before_close": 15,
+      "possibly_complete": 0,
+      "lessons": 242,
+      "lesson_guards": 124,
+      "links": {
+        "status": "PASS",
+        "scope": [
+          "README.md",
+          "docs/knowledge-base/00-index.md",
+          "docs/knowledge-base/56-fd2-remake-sdd.md",
+          "docs/knowledge-base/57-ui-evidence-matrix.md",
+          "docs/knowledge-base/58-fd2-exe-re-coverage.md",
+          "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+          "docs/knowledge-base/91-worklist.md",
+          "docs/knowledge-base/91-worklist-history.md"
+        ],
+        "checked_local_targets": 2916,
+        "broken_targets": [],
+        "positive_index_control": true,
+        "new_tool_indexed": true,
+        "parser_sha256": "638129d8c6fc58b2b6fa6554afec25c0b9fb81771e9f3aada9827c98dc6c4d48"
+      },
+      "new_or_root_owned_work_outputs": 0,
+      "new_recordings": 0,
+      "unexpected_fd2_containers": 0
+    },
+    "runtime_only_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-native-runtime-only-manifest-r1.json",
+      "sha256": "833e8101fc701c0a61b399428352f3428b31bd305b6ea5664aa7ba8757132464"
+    },
+    "cleanup": {
+      "verified_gui_binary_removed": true,
+      "verified_runtime_only_duplicate_pack_removed": true,
+      "runtime_only_manifest_retained": true,
+      "recordings_created": false
+    }
   }
 }

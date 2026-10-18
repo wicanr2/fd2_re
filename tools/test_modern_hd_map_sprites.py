@@ -22,18 +22,28 @@ def main():
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file()
     assert not args.report.exists() and args.report.parent.stat().st_uid == 1000
-    assets = [a for a in json.loads(args.catalog.read_text())['assets']
+    catalog = json.loads(args.catalog.read_text())
+    hd_sources = {a['source_group']: a for a in catalog['assets'] if a.get('role') == 'map_sprite_hd_set'}
+    assets = [a for a in catalog['assets']
               if a.get('role') == 'map_sprite_set' and a['source_group'] in (0, 52)]
     assert {a['source_group'] for a in assets} == {0, 52}
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         source = root/'source'
         source.mkdir()
+        # The compiler preflights every declared override before selecting a
+        # sample group. Retain those global references in the isolated pack.
+        for hd in hd_sources.values():
+            for name in hd['frame_overrides'].values():
+                shutil.copyfile(args.source/name, source/name)
         for asset in assets:
-            for name in asset['files']+[asset['master_file']]:
+            hd = hd_sources.get(asset['source_group'], {})
+            names = set(asset['files']+[asset['master_file']]+hd.get('source_files', []))
+            for name in names:
                 shutil.copyfile(args.source/name, source/name)
         repeat = next(a for a in assets if a['source_group'] == 52)
-        components = builder.master_components(Image.open(source/repeat['master_file']), 12)
+        selected_repeat_master = hd_sources.get(52, {}).get('master_file', repeat['master_file'])
+        components = builder.master_components(Image.open(source/selected_repeat_master), 12)
         components[6][0].save(source/'canonical-phase.png')
         overrides = root/'frames.json'
         overrides.write_text(json.dumps({'52': {'6': 'canonical-phase.png'}}))

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from PIL import Image
+from validate_modern_theme_catalog import VISIBLE_FDICON_GROUPS
 
 
 def digest(path):
@@ -103,11 +104,12 @@ def verify(manifest, catalog_path, source, allow_subset=False):
             assert len(set(hashes)) == len(hashes), 'unexpected repeated phase'
     actual_files = {p.name for p in manifest.parent.iterdir() if p.is_file()}
     assert actual_files == expected_files, 'unexpected or unlisted output files'
-    return {'status':'PASS', 'registered_catalog_complete':complete, 'native_bank_coverage_verified':False,
+    native_complete = set(g['source_group'] for g in groups) == VISIBLE_FDICON_GROUPS
+    return {'status':'PASS', 'registered_catalog_complete':complete, 'native_bank_coverage_verified':native_complete,
             'groups':len(groups), 'frames':frame_count,
             'manifest_sha256':digest(manifest), 'catalog_sha256':digest(catalog_path),
             'compiler_sha256':data['compiler_sha256'], 'verifier_sha256':digest(Path(__file__)),
-            'scope':'registered 0..95 catalog subset: source hashes, geometry, coverage alpha and cycles only; not full native bank, art or runtime acceptance'}
+            'scope':'source hashes, geometry, coverage alpha and cycles; native-bank coverage uses the fixed source-write inventory; no art or runtime acceptance'}
 
 
 def main():

@@ -9,6 +9,8 @@ import (
 	"image"
 	"os"
 	"path/filepath"
+
+	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
 )
 
 // HD frame sources remain separate from the registered 24px projection.
@@ -22,7 +24,7 @@ func loadModernHDMapSpriteAsset(set *modernStoryPortraitSet, asset modernThemeAs
 		(!walk && !static) || asset.Width != 144 || asset.Height != 144 ||
 		len(asset.Files) != asset.FrameCount || len(asset.FrameSHA256) != asset.FrameCount ||
 		asset.AlphaContract != "coverage" || asset.LayoutPolicy != "contain_22px_cell_feet_v1" ||
-		asset.SourceGroup < 0 || asset.SourceGroup >= 96 || asset.SourceGroup == 39 || asset.SourceGroup == 57 {
+		!fdicon.NativeSourceGroupHasPixels(asset.SourceGroup) {
 		return fmt.Errorf("modern HD map sprite %d violates the frame contract", asset.SourceGroup)
 	}
 	if _, exists := set.mapSpritesHD[asset.SourceGroup]; exists {
@@ -71,7 +73,13 @@ func validateModernHDMapSpriteParents(set *modernStoryPortraitSet, assets []mode
 	if len(set.mapSpritesHD) == 0 {
 		return nil
 	}
-	if len(set.mapSpritesHD) != 94 || len(set.mapSprites) != 94 {
+	visibleGroups := 0
+	for group := 0; group < fdicon.NativeSourceGroupCount; group++ {
+		if fdicon.NativeSourceGroupHasPixels(group) {
+			visibleGroups++
+		}
+	}
+	if len(set.mapSpritesHD) != visibleGroups || len(set.mapSprites) != visibleGroups {
 		return errors.New("modern HD map sprite collection or 24px parent collection is incomplete")
 	}
 	parents := make(map[int]modernThemeAsset)
@@ -83,8 +91,8 @@ func validateModernHDMapSpriteParents(set *modernStoryPortraitSet, assets []mode
 			children[asset.SourceGroup] = asset
 		}
 	}
-	for group := 0; group < 96; group++ {
-		if group == 39 || group == 57 {
+	for group := 0; group < fdicon.NativeSourceGroupCount; group++ {
+		if !fdicon.NativeSourceGroupHasPixels(group) {
 			continue
 		}
 		parent, parentOK := parents[group]
