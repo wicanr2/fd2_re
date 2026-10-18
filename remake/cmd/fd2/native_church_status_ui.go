@@ -17,53 +17,61 @@ func (g *Game) prepareNativeChurchStatus(id int) ([]byte, []byte, bool) {
 
 // prepareNativeUnitStatus 共用原版 0x17AED 的面板，不改呼叫者的角色或返回路徑。
 func (g *Game) prepareNativeUnitStatus(unit *battle.Unit) ([]byte, []byte, bool) {
+	_, status, commands, ok := g.prepareNativeUnitStatusData(unit)
+	return status, commands, ok
+}
+
+func (g *Game) prepareNativeUnitStatusData(unit *battle.Unit) (*nativeUnitStatusData, []byte, []byte, bool) {
 	if unit == nil {
-		return nil, nil, false
+		return nil, nil, nil, false
 	}
 	assetPackRoot := separatedAssetPath("")
 	portraitRoot := separatedAssetPath("portraits")
 	if assetPackRoot == "" {
-		return nil, nil, false
+		return nil, nil, nil, false
 	}
 	record, err := battle.NativeItemPanelRecordForUnit(unit)
 	if err != nil {
-		return nil, nil, false
+		return nil, nil, nil, false
 	}
 	base := make([]byte, 320*200)
-	if err := battle.RenderNativeItemPanelResources(
-		assetPackRoot, portraitRoot, record, base,
+	if err := battle.RenderNativeItemPanelBaseResources(
+		assetPackRoot, portraitRoot, int(record[7]), base,
 	); err != nil {
-		return nil, nil, false
+		return nil, nil, nil, false
 	}
 	assets, err := battle.LoadNativeItemPanelDataAssets(assetPackRoot)
 	if err != nil {
-		return nil, nil, false
+		return nil, nil, nil, false
 	}
 	itemRows, err := battle.LoadNativeItemEffectRowPrefix(
 		assetPath("assets/data/native_item_effect_rows.json"),
 	)
 	if err != nil {
-		return nil, nil, false
+		return nil, nil, nil, false
 	}
-	status := append([]byte(nil), base...)
-	if err := battle.RenderNativeItemPanelRows(assets, record, -1, itemRows, status); err != nil {
-		return nil, nil, false
+	data := &nativeUnitStatusData{record: record, base: base, itemRows: itemRows, assets: assets,
+		commandIDs: unit.NativeCommandIDs(), commandBook: append([]battle.NativeCommandRecord(nil), g.nativeCommandBook...)}
+	status, ok := data.compose(assets, false)
+	if !ok {
+		return nil, nil, nil, false
 	}
-	ids := unit.NativeCommandIDs()
-	if len(ids) == 0 {
-		return status, nil, true
+	if len(data.commandIDs) == 0 {
+		return data, status, nil, true
 	}
-	commands := append([]byte(nil), base...)
-	if err := battle.RenderNativeCommandOverlay(
-		assets, ids, g.nativeCommandBook, -1, commands,
-	); err != nil {
-		return nil, nil, false
+	commands, ok := data.compose(assets, true)
+	if !ok {
+		return nil, nil, nil, false
 	}
-	return status, commands, true
+	return data, status, commands, true
 }
 
 func (g *Game) beginNativeChurchStatus(id int) bool {
-	status, commands, ok := g.prepareNativeChurchStatus(id)
+	unit, ok := g.partyRoster[id]
+	if !ok {
+		return false
+	}
+	data, status, commands, ok := g.prepareNativeUnitStatusData(&unit)
 	if !ok {
 		return false
 	}
@@ -79,6 +87,7 @@ func (g *Game) beginNativeChurchStatus(id int) bool {
 	g.churchStatusID = id
 	g.churchStatusPanel = status
 	g.churchCommandPanel = commands
+	g.churchStatusData = data
 	g.nativeClassUIJob = &nativeClassUIJob{frames: frames}
 	return true
 }
@@ -134,6 +143,7 @@ func (g *Game) returnToNativeStatusRoster() {
 	g.churchStatusID = -1
 	g.churchStatusPanel = nil
 	g.churchCommandPanel = nil
+	g.churchStatusData = nil
 	g.beginNativeChurchRosterOpening()
 }
 
@@ -150,6 +160,9 @@ func (g *Game) drawNativeChurchStatus(screen *ebiten.Image) bool {
 	source, ok := g.composeNativeChurchSourceFrame()
 	if !ok {
 		return false
+	}
+	if g.drawModernHDUnitStatus(screen, source, g.churchStatusData, g.churchMode == nativeChurchModeStatusCommands, g.nativeClassUI.palette) {
+		return true
 	}
 	frame, err := nativeChurchPanelFrame(source, panel, 0)
 	if err != nil {

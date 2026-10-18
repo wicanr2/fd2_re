@@ -148,16 +148,17 @@ type Game struct {
 	churchRosterStart           int                 // 0x2e6b8 [0x5412f], even six-entry viewport origin
 	churchVerticalStart         int                 // 0x30c22/0x311dc three-row viewport origin
 	churchStatusID              int                 // selected actor passed to 0x17aed
-	churchStatusPanel           []byte              // 0x17eef/0x17fc0 + 0x184c0(actor,-1)
-	churchCommandPanel          []byte              // 0x17eef/0x17fc0 + 0x1ceed(actor,-1)
-	churchItemStart             int                 // 0x2df6b even six-entry item viewport origin
-	churchTransferSource        int                 // raw transfer source roster id
-	churchTransferItem          int                 // compact source inventory index
-	churchTransferItems         []int               // compact source inventory indices
-	churchTransferDest          int                 // raw destination id used by FDTXT506 FFFC
-	churchReviveID              int                 // selected 0x30dc3 candidate
-	churchReviveFee             int                 // level * raw class fee
-	churchClassID               int                 // selected class-change candidate
+	churchStatusData            *nativeUnitStatusData
+	churchStatusPanel           []byte // 0x17eef/0x17fc0 + 0x184c0(actor,-1)
+	churchCommandPanel          []byte // 0x17eef/0x17fc0 + 0x1ceed(actor,-1)
+	churchItemStart             int    // 0x2df6b even six-entry item viewport origin
+	churchTransferSource        int    // raw transfer source roster id
+	churchTransferItem          int    // compact source inventory index
+	churchTransferItems         []int  // compact source inventory indices
+	churchTransferDest          int    // raw destination id used by FDTXT506 FFFC
+	churchReviveID              int    // selected 0x30dc3 candidate
+	churchReviveFee             int    // level * raw class fee
+	churchClassID               int    // selected class-change candidate
 	churchBranches              []campaign.ClassChangeBranch
 	hotelSel                    int // raw 0x2fc85 selector (0..3)
 	hotelRoute                  fdother.NativeHotelServiceRoute
@@ -4749,6 +4750,7 @@ func (g *Game) setupChurch() {
 	g.churchStatusID = -1
 	g.churchStatusPanel = nil
 	g.churchCommandPanel = nil
+	g.churchStatusData = nil
 	g.churchBranches = nil
 	g.nativeChurchTextIndex = 585
 	g.beginNativeChurchMenuOpening()

@@ -112,6 +112,7 @@ func (g *Game) inspectNativePlayerUnit(u *battle.Unit, force bool) (bool, error)
 }
 
 type nativePlayerStatusState struct {
+	data                             *nativeUnitStatusData
 	source, status, commands, steady []byte
 	frames                           [][]byte
 	frame                            int
@@ -120,7 +121,7 @@ type nativePlayerStatusState struct {
 }
 
 func (g *Game) beginNativePlayerStatus(u *battle.Unit) error {
-	status, commands, ok := g.prepareNativeUnitStatus(u)
+	data, status, commands, ok := g.prepareNativeUnitStatusData(u)
 	if !ok || len(g.nativeUIPalette) != 256 {
 		return fmt.Errorf("native player status: panel resources unavailable")
 	}
@@ -137,7 +138,7 @@ func (g *Game) beginNativePlayerStatus(u *battle.Unit) error {
 		return err
 	}
 	g.nativePlayerStatus = &nativePlayerStatusState{
-		source: source, status: status, commands: commands, steady: steady,
+		source: source, status: status, commands: commands, steady: steady, data: data,
 		frames: frames, phase: "opening",
 	}
 	return nil
@@ -206,6 +207,10 @@ func (g *Game) advanceNativePlayerStatus() {
 func (g *Game) drawNativePlayerStatus(screen *ebiten.Image) {
 	s := g.nativePlayerStatus
 	if s == nil {
+		return
+	}
+	if len(s.frames) == 0 && g.drawModernHDUnitStatus(screen, s.source, s.data, s.phase == nativePlayerStatusCommands, g.nativeUIPalette) {
+		s.drawn = true
 		return
 	}
 	frame := s.steady

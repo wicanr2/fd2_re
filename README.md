@@ -33,11 +33,11 @@
 
 以上為重製引擎的實際商店畫面，保留原版像素美術。多語系由重製引擎提供，並非 DOS 原版執行檔新增語言；可按 F4 切換。四張圖使用相同商品與金幣狀態，擷取來源見[截圖紀錄](docs/data/fd2-readme-locales-20261018.json)。
 
-| HD 旅館保存回覆 | HD 教會復活確認 |
-| --- | --- |
-| ![HD旅館保存回覆](docs/figures/hd-hotel-saved.png) | ![HD教會復活確認](docs/figures/hd-church-revive.png) |
+| HD 旅館保存回覆 | HD 教會復活確認 | HD 角色狀態 |
+| --- | --- | --- |
+| ![HD旅館保存回覆](docs/figures/hd-hotel-saved.png) | ![HD教會復活確認](docs/figures/hd-church-revive.png) | ![HD角色狀態](docs/figures/hd-character-status.png) |
 
-以上為開發版的實際遊戲視窗。即時文字直接以高解析繪製，背景與圖示保留像素素材；操作與保存驗證見[字型收據](docs/data/fd2-modern-hd-fonts-20261018.json)。快取狀態面板與轉場文字仍待接入。
+以上為開發版的實際遊戲視窗。動態文字與數字直接以高解析繪製，頭像、背景與圖示保留像素素材；操作與保存驗證見[字型收據](docs/data/fd2-modern-hd-fonts-20261018.json)。其他固定面板與預建轉場文字仍待接入。
 
 ## 遊戲介紹
 

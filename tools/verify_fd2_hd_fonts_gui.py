@@ -17,6 +17,7 @@ def main():
     facility = parser.add_mutually_exclusive_group()
     facility.add_argument('--hotel', action='store_true', help='只抽驗旅館固定文字、四槽及保存讀取')
     facility.add_argument('--church', action='store_true', help='抽驗教會即時文字、四語名冊、取消與保存')
+    facility.add_argument('--status', action='store_true', help='加驗教會角色狀態與命令穩定面板')
     args = parser.parse_args()
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
     assert (args.original_pack/'manifest.json').is_file()
@@ -149,7 +150,7 @@ def main():
         else:raise TimeoutError('標題未就緒')
         key('Return')
         wait(lambda s:not s.get('title_phase') and s.get('dialogue_native') is True, timeout=180)
-        if args.church:
+        if args.church or args.status:
             def church(mode):
                 return wait(lambda s:s.get('node')=='church_ch02' and s.get('church_mode')==mode
                             and s.get('church_ui_busy') is False and s.get('hd_text_runs',0)>0)
@@ -159,6 +160,24 @@ def main():
             for _ in range(4):key('Left')
             key('Return');church('menu');shot('church-menu')
             key('Return');church('status_roster')
+            if args.status:
+                key('Return');church('status_view');shot('church-status-sol')
+                key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-church-status-sol')
+                key('F2');wait(lambda s:s.get('hd_theme') is True);church('status_view');shot('hd-church-status-sol-restored')
+                command('xdotool','windowsize',window,'1600','1000');shot('church-status-resized')
+                command('xdotool','windowsize',window,'1920','1200')
+                key('F1');wait(lambda s:s.get('help_visible') is True);shot('church-status-help')
+                key('Escape');wait(lambda s:s.get('help_visible') is False)
+                key('Return');church('status_roster')
+                key('Right');church('status_roster')
+                key('Return');church('status_view')
+                assert latest(audit).get('church_status_id')==9,'命令角色不是原槽ID9'
+                shot('church-status-yuni')
+                key('Return');church('status_commands');shot('church-commands-yuni')
+                key('F2');wait(lambda s:s.get('hd_theme') is False);shot('faithful-church-commands-yuni')
+                key('F2');wait(lambda s:s.get('hd_theme') is True);church('status_commands');shot('hd-church-commands-yuni-restored')
+                key('Return');church('status_roster')
+                key('Left');church('status_roster')
             for locale in ['zh-Hant','zh-Hans','ja','en']:
                 wait(lambda s:s.get('locale')==locale);church('status_roster')
                 shot('church-roster-'+locale);key('F4')
@@ -195,12 +214,12 @@ def main():
             key('F5');assert saved.read_bytes()==hd_saved,'兩主題保存結果不同'
             key('F9');wait(lambda s:s.get('node')=='hotel_ch02' and s.get('hotel_mode')=='menu')
             shot('faithful-hotel-after-church-load')
-            report={'schema':'fd2-hd-church-font-gui-v1','status':'PASS',
+            report={'schema':'fd2-hd-status-font-gui-v1' if args.status else 'fd2-hd-church-font-gui-v1','status':'PASS',
                     'binary_sha256':digest(args.binary),'town_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'theme_save_bytes_equal':True,
                     'source_save_bytes_equal':digest(saved)==digest(args.town_save),
                     'screenshots':shots,'operations':operations,'recording_created':False,
-                    'scope':'正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。',
+                    'scope':('另驗Sol狀態與ID9命令、F2、縮放與說明遮罩；' if args.status else '')+'正常START後F9接續既有hotel_ch02，經城鎮進教會；四語名冊、復活列表／問句與取消、交付物品列表與取消、F2、縮放／說明遮罩，回旅館F5／F9。四語名冊沿既有譯名，其他原生文字未新增翻譯。不宣稱連續戰役或原版視覺對拍。',
                     'elapsed_seconds':time.monotonic()-started}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return

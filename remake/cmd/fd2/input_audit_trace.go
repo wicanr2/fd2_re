@@ -36,6 +36,7 @@ func (g *Game) recordInputAuditState() {
 	r["hotel_slot"] = g.nativeHotelSlotSel
 	r["church_mode"] = g.churchMode
 	r["church_selection"] = g.churchSel
+	r["church_status_id"] = g.churchStatusID
 	r["church_ui_busy"] = g.nativeChurchUIJob != nil || g.nativeClassUIJob != nil
 	if g.modernHDText != nil {
 		r["hd_text_runs"] = len(g.modernHDText.runs)
