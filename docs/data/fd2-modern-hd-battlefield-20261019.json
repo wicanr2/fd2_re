@@ -13,14 +13,16 @@
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。"
   },
   "runtime_source": {
-    "snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-runtime-source-final.json",
-      "sha256": "981df396225fa0425c9bf8c9693126b89d3fc6482bab608da965fe5b6ed1106e"
+    "binary_sha256": "1b576f8860be4ac2c1235958a496c11bde389e517716187bb72c6b93ebfb0b46",
+    "binary_removed_after_validation": true,
+    "go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-runtime-source-final.json",
+      "sha256": "8f33f05e3c780baa2b6191b87036d2d01a07c57a90da998a0d88aa3c8e346bb4"
     },
-    "go_file_count": 971,
+    "go_file_count": 984,
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "ff3a9ff0aa91e037a3629c0b045818f8efdc6d82d08d3725799c5e34e14a3907"
+      "sha256": "bdad99da23d9c4b1ace785659e8c6f94dc4d4040661c8631e5dac96b5bfe6a88"
     }
   },
   "f2_conflict": {
@@ -284,7 +286,7 @@
       }
     ]
   },
-  "source_commit": "f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71",
+  "source_commit": "3e1abc519fd6a125ea8854db24eaaa0c0b10b967",
   "component_audit": {
     "manifest": {
       "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-components-audit-r3/hd-map-sprites.json",
@@ -1694,7 +1696,34 @@
         "sha256": "75ecae6c261b279a19dfd4dece29880f4b8d80a3fb92de23ed867dc1b8502b73"
       },
       "source_binding_unchanged": true,
-      "new_or_root_owned_work_outputs": 0
+      "new_or_root_owned_work_outputs": 0,
+      "worklist_open": 20,
+      "worklist_manual": 13,
+      "possibly_complete": 0,
+      "unexpected_fd2_containers": 0
+    },
+    "source_commit": "3e1abc519fd6a125ea8854db24eaaa0c0b10b967",
+    "source_commit_remote_verified": true,
+    "issues_closed": [
+      258,
+      260
+    ],
+    "issues_updated_still_open": [
+      201,
+      202,
+      204
+    ]
+  },
+  "prior_source_commit": "f5fdb81c1ac86fa969842c0ce6bb578fe63e0d71",
+  "historical_runtime_source_before_world": {
+    "snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-runtime-source-final.json",
+      "sha256": "981df396225fa0425c9bf8c9693126b89d3fc6482bab608da965fe5b6ed1106e"
+    },
+    "go_file_count": 971,
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "ff3a9ff0aa91e037a3629c0b045818f8efdc6d82d08d3725799c5e34e14a3907"
     }
   }
 }
