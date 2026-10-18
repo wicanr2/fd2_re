@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -150,6 +150,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 `modern-theme-highres-prototype` · 工作 · [#204](https://github.com/wicanr2/fd2_re/issues/204) · 仍未完成 · 要人判
 
+2026-10-18接續：#252首章JSON標題LOAD已依READY契約修正。忠實／HD兩個新程序普通標題LOAD、F2/F1/縮放/F9及重新F5後第三個新程序標題冷讀通過；原樣與重新保存完整bytes相同，SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。原生SAV交易與格式保持，首章JSON仍用既有在地化槽畫面。來源：docs/data/fd2-json-title-load-20261018.json。只驗首章JSON，其他章節與玩家交界、介面／字型／戰場及跨平台效能仍待驗；#251說明間距保持開啟。
+
+以下較早記錄保留為歷史，目前以本段、58與61為準。
+
 2026-10-18接續現況：非原生對話已直接使用480×480圖源，保留既有168邏輯區域及鏡像，1920視窗實際顯示504×504。首章正常F5原樣JSON在兩個新程序正常START後以F9冷讀，F2雙向、F1遮罩、縮放與F9重讀通過；六個GPU區域最大正規化MAE為0.00162285，Triangle參照與GPU線性插值差異已揭露。存檔SHA不變。來源：docs/data/fd2-modern-hd-dialogue-20261018.json及61。首章下框限PLAYER-E2，上下框幾何為RUNTIME-E1；未宣稱完整戰役或跨平台HD。標題LOAD對此JSON因chapter拒收另列#252，同份F9可讀；F1間距仍#251。 原生序章、F2及本切片保留已驗狀態，接續介面、字型、戰場與跨平台效能，本項保持開啟。
 
 以下較早記錄保留為歷史，目前以本段、58及61為準。
@@ -166,7 +170,7 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
-怎樣算做完：1920×1200／480×480原生故事頭像啟動、F2與首章非原生下框START後F9冷讀已通過；上下框幾何為E1。介面／字型／戰場依61逐切片READY後實作與驗收，其他玩家交界、正式標題LOAD及跨平台效能仍需實測。已驗切片不等於整體HD完成。
+怎樣算做完：1920×1200／480×480原生故事頭像啟動、F2與首章非原生下框START後F9冷讀已通過；上下框幾何為E1。介面／字型／戰場依61逐切片READY後實作與驗收，其他玩家交界、其他章節的標題LOAD及跨平台效能仍需實測。已驗切片不等於整體HD完成。
 
 ### P2 操作說明：標題與第一列文字重疊
 
@@ -179,18 +183,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：調整說明標題與首列間距，在1280×800、1920×1200及非整數縮放目視無重疊，完整快捷鍵與HD遮罩維持。依61的介面切片契約處理。
 
 證據：`remake/cmd/fd2/player_shortcuts.go`
-
-### P1 首章F5存檔：F9可讀但標題LOAD拒收
-
-`chapter-one-json-title-load-rejected` · 缺陷 · [#252](https://github.com/wicanr2/fd2_re/issues/252) · 仍未完成 · 要人判
-
-正常START產生的首章F5 JSON，SHA-256為089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2，沒有正chapter值。save.go把handlerChapter以omitempty寫入；native_load_slots_ui.go的nativeLoadSlotMetadata要求JSON chapter>0，故標題LOAD確認後仍留在選槽。相同檔案的F9讀取已由上一輪正常玩家收據通過。
-
-本輪負例在work/promo-cadence-20261018/hd-dialogue/normal-r3/的普通按鍵與input audit：選LOAD、確認槽1，持續停在loadslots，沒有遊戲錯誤。來源與未修改存檔見docs/data/fd2-modern-hd-f2-20261018.json。此為既有JSON節點保存／槽顯示契約缺口，非本輪HD引入；不把JSON混稱原版FD2.SAV。
-
-怎樣算做完：先確認handlerChapter、JSON章號與槽顯示的既有編號契約，再依READY規格修正。正常START首章F5產生的存檔與既有缺章號檔案，依明示相容策略可由正式標題LOAD及F9正常讀取，隊伍與節點一致；原版SAV checksum及拒收守衛保持，不猜填章號。
-
-證據：`remake/cmd/fd2/native_load_slots_ui.go`
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
@@ -235,6 +227,10 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 ### P1 HD正常路徑：早中晚期操作、戰場返回與存讀檔
 
 `modern-theme-normal-player-validation` · 工作 · [#202](https://github.com/wicanr2/fd2_re/issues/202) · 仍未完成 · 要人判
+
+2026-10-18接續：#252首章JSON標題LOAD已依READY契約修正。忠實／HD兩個新程序普通標題LOAD、F2/F1/縮放/F9及重新F5後第三個新程序標題冷讀通過；原樣與重新保存完整bytes相同，SHA均089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2。原生SAV交易與格式保持，首章JSON仍用既有在地化槽畫面。來源：docs/data/fd2-json-title-load-20261018.json。只驗首章JSON，其他章節與玩家交界、介面／字型／戰場及跨平台效能仍待驗；#251說明間距保持開啟。
+
+以下較早記錄保留為歷史，目前以本段、58與61為準。
 
 2026-10-18接續現況：非原生對話已直接使用480×480圖源，保留既有168邏輯區域及鏡像，1920視窗實際顯示504×504。首章正常F5原樣JSON在兩個新程序正常START後以F9冷讀，F2雙向、F1遮罩、縮放與F9重讀通過；六個GPU區域最大正規化MAE為0.00162285，Triangle參照與GPU線性插值差異已揭露。存檔SHA不變。來源：docs/data/fd2-modern-hd-dialogue-20261018.json及61。首章下框限PLAYER-E2，上下框幾何為RUNTIME-E1；未宣稱完整戰役或跨平台HD。標題LOAD對此JSON因chapter拒收另列#252，同份F9可讀；F1間距仍#251。 早中晚地圖、戰鬥返回、法術／物品、其他章節與正式標題冷讀仍待驗，本項保持開啟。
 
