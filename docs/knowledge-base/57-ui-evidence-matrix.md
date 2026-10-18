@@ -1,5 +1,9 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+地形來源重生與第一章房屋144候選完成資料核對。比較圖是離線製圖參照，並非遊戲GPU擷取；
+正式UI、正常玩家路徑及原版對拍分級保持。來源與限制見[58](58-fd2-exe-re-coverage.md)及
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`native_terrain_source_followup_20261019`。
+
 HD地形本輪只做來源圖層核對與草地排版原型，未接正式GPU，不增加E0／E1／E2。
 舊正規化圖集不可直接視為原生圖源；差異範圍依[58](58-fd2-exe-re-coverage.md)及
 [#261](https://github.com/wicanr2/fd2_re/issues/261)。來源、拒收理由與可重跑工具見

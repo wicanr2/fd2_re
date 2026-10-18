@@ -1,5 +1,11 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+地形製圖來源已改由正式Go載入器匯出，原生逐幀索引與三圖層完成獨立回讀，列DATA-READY。
+第一章房屋已有真正手繪144候選；新RGB沿明示UV校準取樣，alpha保持原生遮罩，
+不同RGB的前景槽使用獨立母稿。正式Game.Draw、清冊及存檔沒有改動，不能提升玩家或GPU分級。
+唯一現況依[58](58-fd2-exe-re-coverage.md)，來源及重跑入口見
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`native_terrain_source_followup_20261019`與[61](61-modern-theme-runtime-spec.md)。
+
 HD地形來源審查新增[#261](https://github.com/wicanr2/fd2_re/issues/261)：舊正規化圖集與目前原生圖層存在差異，
 不得直接當作原生HD圖源。逐圖統計以[58](58-fd2-exe-re-coverage.md)為準，來源與原型見
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。

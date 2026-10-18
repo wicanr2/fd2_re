@@ -1,5 +1,23 @@
 # 工作歷程
 
+## 2026-10-19 原生地形製圖來源與HD房屋候選
+
+新增Go離線來源匯出器，直接重用正式FDSHAP載入器、FDOTHER#0調色盤及既有terrain／foreground selector。
+全圖庫逐幀保存索引、opaque、destination-remap及基準RGBA，PIL獨立回讀全部產物；不沿用舊正規化RGBA。
+來源分層、統計與SHA以[58](docs/knowledge-base/58-fd2-exe-re-coverage.md)及
+[主收據](docs/data/fd2-modern-hd-battlefield-20261019.json)的`native_terrain_source_followup_20261019`為準。
+舊圖集的歷史解碼根因保留未知，既有檔案與證據不刪除；新製圖來源已由正式bank重生，不重開matching。
+
+內建image_gen依原生房屋參照完整重繪，再用可編輯UV配方對齊屋簷、牆腳與開口，切成144候選。
+母稿校正仍有邊界偏移，因此以明示取樣校準處理；不把手工錨點標成原版二進位事實。
+初次編製攔下前景279與base278的opaque RGB差異，補獨立母稿後通過，不放寬同源檢查。
+實際PNG透明覆蓋保持，切片重組零差異；比較圖已審查，沒有把圖塊間接縫當成新增筆觸。
+
+Go來源工具與fdicon／fdother回歸通過；末張圖庫無效mask、不同前景缺來源及既有目錄保護三項實際拒收通過。
+正式遊戲Go、存檔與素材清冊不變，沒有新GPU、正常玩家或原版對拍收據。
+房屋仍為DATA-CANDIDATE；下一步接清冊與Game.Draw，再驗第一章正常LOAD、前景遮蔽及外緣接縫。
+新圖與原生製圖來源均留本機，未加入公開庫或Release，未同步私人正式主題包，沒有錄影。
+
 ## 2026-10-19 HD地形圖源審查與草地原型
 
 沿已核准手繪風格以內建image_gen產生草地母稿及一次修訂，原圖、提示與SHA保留本機。

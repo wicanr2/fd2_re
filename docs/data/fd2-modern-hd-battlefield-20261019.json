@@ -12,7 +12,7 @@
     "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "SOURCE-AUDITED：舊正規化圖集不能直接視同原生圖源；草地材質原型拒收，未接runtime，來源差異沿#261。"
+    "hd_terrain": "DATA-READY原生製圖來源已重生並逐像素回讀；房屋30張144為DATA-CANDIDATE，尚未登錄清冊或接正式Game.Draw。"
   },
   "runtime_source": {
     "binary_sha256": "373c525ffd5889784f20a5aede981db8c2a2dcbd38aaa322f8da9880bd93e98c",
@@ -2494,6 +2494,238 @@
         "final_input_ledger_retained": true,
         "videos_created": false
       }
+    }
+  },
+  "native_terrain_source_followup_20261019": {
+    "status": "DATA-READY native source; DATA-CANDIDATE house",
+    "base_commit": "34000f8dece2086087c67cf1322a7f6bd5653758",
+    "source_issue": 261,
+    "source_issue_closed": false,
+    "runtime_integrated": false,
+    "full_hd_complete": false,
+    "source_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-source-bindings-r1.json",
+      "sha256": "fbd313b853161bcbda44121d74653598576c8c9203b0bc3cce3a0bd80342166c",
+      "files": 160
+    },
+    "source_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-sources-r2/manifest.json",
+      "sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5"
+    },
+    "source_verification": {
+      "status": "PASS",
+      "banks": 33,
+      "frames": 8256,
+      "pixels_per_layer": 4755456,
+      "unique_native_frames": 2985,
+      "native_selector_checks": 349872,
+      "destination_remap_pixels_preserved": 199848,
+      "manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+      "scope": "逐像素圖源回讀，非HD美術／GPU／正常玩家／原版對拍"
+    },
+    "archive_metadata_binding": [
+      {
+        "file": "FDOTHER.DAT",
+        "size": 3382481,
+        "md5": "22f56e5027edc7c766ad34ca4e5aca93",
+        "sha256": "a81b13493725fb70e750c4d9e0dce4e1b57d0df312c4ad4157e6d45171b13bce"
+      },
+      {
+        "file": "FDSHAP.DAT",
+        "size": 3557794,
+        "md5": "9b0d356074f57cc27aebf3bb89aae247",
+        "sha256": "901b70ea82d5d977192759fad510921ffe16a0ab6af6ab7c32757de03e30aa3c"
+      }
+    ],
+    "original_archives_rehashed": false,
+    "source_scope": "正式Go分離載入器與PIL逐像素回讀；所有幀保留，初始map格子抽八個flip/idle組合。不宣稱動態格子事件、正常玩家、LUT/DAC畫面或新原版oracle。",
+    "candidate_manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-house-object-r1/manifest.json",
+      "sha256": "e260d3cc7d23846c96d8ae7861176d60458f746cad21dbbd5c5a3186b70ffffa"
+    },
+    "serialized_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-house-serialized-verification-r1.json",
+      "sha256": "74d0f97bbd4036a0d3ad99270c6e8457122433f627301f8d5c36c1adce9ebc51"
+    },
+    "candidate_counts": {
+      "terrain_frames": 24,
+      "foreground_frames": 6,
+      "size": [
+        144,
+        144
+      ],
+      "alpha_pixels_checked": 622080,
+      "alpha_difference_pixels": 0,
+      "cut_reconstruction_difference_bytes": 0
+    },
+    "foreground_sources": [
+      {
+        "frame": 277,
+        "native_index_differences_from_base": 0,
+        "method": "shared painted source; original opaque indices identical"
+      },
+      {
+        "frame": 279,
+        "native_index_differences_from_base": 186,
+        "file": "map00-foreground0279-hd-master.png",
+        "sha256": "e00922d1a9a3b71a2dbb9da98344843c3387b0048abf60f459232d81a1379c14",
+        "method": "separate painted source"
+      },
+      {
+        "frame": 281,
+        "native_index_differences_from_base": 0,
+        "method": "shared painted source; original opaque indices identical"
+      },
+      {
+        "frame": 283,
+        "native_index_differences_from_base": 0,
+        "method": "shared painted source; original opaque indices identical"
+      },
+      {
+        "frame": 285,
+        "native_index_differences_from_base": 0,
+        "method": "shared painted source; original opaque indices identical"
+      },
+      {
+        "frame": 287,
+        "native_index_differences_from_base": 0,
+        "method": "shared painted source; original opaque indices identical"
+      }
+    ],
+    "generation": {
+      "mode": "built-in image_gen",
+      "whole_house_v1": "Use case: style-transfer\nAsset type: high-resolution whole-building master for a 2D tactical RPG tile set, landscape 3:2 aspect ratio.\nImage 1 is the immutable geometry/layout reference to repaint. Image 2 is ONLY the approved hand-painted art style, texture and soft daylight reference; do NOT copy its characters, vegetation, stones or composition.\nRepaint the COMPLETE building shown in image 1 with genuinely new crisp painted details, at 1536x1024 if possible. Keep the exact same framing, shallow orthographic view, silhouette, roof ridge height, roof slope, eave positions, timber wall, stone foundation, and the exact positions/sizes of the two dark red openings. Preserve its original dark blue ceramic-tile roof and warm aged timber colors, with muted olive grass only where the reference already shows ground. The roof occupies the same large upper portion; the wood wall occupies the same shallow bottom strip. All major boundaries must stay at the reference's proportional coordinates. Do not center or reposition the structure or openings.\nPaint individual ceramic roof tiles with subtle edge wear and soft cool highlights, delicate fine wood grain and joints, small stone foundation texture, restrained natural grass blades. Use coherent clean hand-painted RPG brushwork like image 2, readable shapes and soft ambient shade. No remaining pixel stair steps, mosaic blocks or low-resolution pixel noise inside the painted surfaces. This is one continuous coherent building, not an atlas of disconnected cards.\nThe frame will later be split into an unmarked 6-column by 4-row tile grid, so preserve the full 3:2 canvas and geometry. No labels, grid lines, gutters, margins, decorative border, UI, figures, animals, added trees, flowers, paths, extra doors/windows, chimney, signs, banners or watermark. Opaque image, no perspective changes, no invented structural additions.",
+      "whole_house_v2": "Use case: precise-object-edit\nAsset type: high-resolution RPG whole-building master, opaque landscape 3:2, 1536x1024.\nImage 1 is the painted edit target. Image 2 is the immutable original geometric reference. Keep image 1's hand-painted detail, colors, tile design, timber grain, daylight and red openings. Make one targeted geometry correction: align all major architectural boundaries to image 2's proportional coordinates rather than changing the style.\nThe main front roof's lower eave must reach 68.75% of image height, currently about 65%. The timber wall must end at 93.75% of height, currently about 88%. The bottom of the stone foundation must reach 98% of height, leaving only a very thin grass strip below it. The building's left edge must start at 11.8% of image width and its right edge must reach the right canvas edge, matching the reference; do not center the building. The large opening stays from x32% to50%; the small opening stays near x77% to88%. Move their top edges with the corrected eave and extend their wall surroundings to the corrected foundation. Preserve the original canvas, roof ridge at top, roof slope, shallow orthographic perspective and all existing structural parts.\nThe shadow band between the upper and front roof should stay a dark roof/eave shadow as in image 2, without adding a new brown brick wall or an extra storey. Do not add any new structural elements, doors, windows, ornaments, objects, figures or vegetation. No grid, label, watermark or border. Do not reintroduce pixel blocks. This is the same building, only correcting the geometric placement to match the source.",
+      "foreground_279": "Use case: stylized-concept\nAsset type: one opaque RGB albedo source for native terrain foreground slot 279 in a hand-painted tactical RPG.\nImage 1 is the exact colour-region and shape-layout reference for this particular roof segment. Its transparent regions are not part of the artwork; a separate immutable game mask will supply final transparency. Image 2 is ONLY the style and ceramic surface-detail reference.\nGenerate a new square painted colour texture for the roof segment in image 1, preserving its existing arrangement, dark blue roof ribs, row of curved ceramic tiles, deep dark brown eave/shadow strips and their proportional positions. Give it the coherent fine ceramic edge wear, muted cool highlights and clean hand-painted brushwork of image 2. Use one uninterrupted segment, with the roof extending flush to the left, right and bottom edges as in image 1. Do not zoom out or add a whole building. Keep the top shadow and all existing dark regions dark; do not replace them with grass or brighten them to match a different roof frame.\nOutput an opaque square RGB texture, 1024x1024. Fill areas shown transparent in image 1 with a quiet near-black continuation of the eave shadow, because final coverage comes exclusively from the separately stored original mask. No white background, transparency, checkerboard, borders, gutters, grid, labels, text, figures, objects, wood wall, new openings or structural additions. Paint actual fine new detail, not pixel noise or a blurred enlargement."
+    },
+    "artifacts": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-house-layout-reference-x6.png",
+        "sha256": "d30690583dd24c64bd42dc3e8faa04e78926af500164f5102c57d64ed4cea4cf"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-house-hd-v1-master.png",
+        "sha256": "a2c07225e742a0869b83072ad891ab86dd04d79b9f009026e9422675114af150"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-house-hd-v2-master.png",
+        "sha256": "7ef9446834215d206905365f76e4220668bf06f0f4d25dddef6c7051395b6e4d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-frame0279-reference-x6.png",
+        "sha256": "749a91fa34fca713cded914deddf20c35f7b619d0526d64e8923102b0904d100"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/map00-foreground0279-hd-master.png",
+        "sha256": "e00922d1a9a3b71a2dbb9da98344843c3387b0048abf60f459232d81a1379c14"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-house-object-r1/object-assembled.png",
+        "sha256": "533c0ec9048485edefefada828f3f92177dd83d3c4f5c125230eeecabb8e697d"
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-house-object-r1/object-comparison.png",
+        "sha256": "5bff7b20b546610e307ef254555a1aca678b76b4e8387c95b66c7a0369201fb3"
+      }
+    ],
+    "recipe": {
+      "file": "remake/assets/themes/modern/terrain-house-map0.recipe.json",
+      "sha256": "5c87bc1d68be37cc8ce20ea695836f51539860094f8fd238bd345b10b5cba879",
+      "status": "prototype",
+      "anchor_grade": "human art calibration; not binary semantics"
+    },
+    "validation": {
+      "go_log": {
+        "file": "work/promo-cadence-20261018/hd-fonts/native-terrain-go-tests-r1.log",
+        "sha256": "4081dabe1c87dffe5c7eec5bb681d68ad3addba48ef6f28963ef95041a9e7907"
+      },
+      "go_packages": [
+        "cmd/fd2-terrain-sources",
+        "internal/fdicon",
+        "internal/fdother"
+      ],
+      "go_seconds": [
+        0.003,
+        0.55,
+        1.454
+      ],
+      "negative_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-native-terrain-negative-tests-r1.json",
+        "sha256": "9444f183a18605bec63898f6dff8f39acf3db41619ea5443e799926d28808df7",
+        "results": {
+          "status": "PASS",
+          "cases": [
+            {
+              "case": "late-map32-invalid-mask",
+              "status": "PASS",
+              "published": false
+            },
+            {
+              "case": "different-foreground-requires-own-source",
+              "status": "PASS",
+              "published": false
+            },
+            {
+              "case": "existing-art-output-preserved",
+              "status": "PASS"
+            }
+          ],
+          "original_input_unchanged": true,
+          "binary_sha256": "0b529f9f8e9a2ed58e23d169e64d894d87544e1fdbdf13932307b61881993954",
+          "source_manifest_sha256": "a19a3da393294ad6e1c4ad1dccdb9a911d26ed1f3d7008046eddda2398f938f5",
+          "test_tool_sha256": "6f22e282b366c8a8a0cba143d2c409fca88b11ded8cb26f63b33941556888c02",
+          "fixture_cleaned": true
+        }
+      },
+      "full_game_go_suite_rerun": false,
+      "new_gpu_verification": false,
+      "changed_markdown_links": 2625,
+      "changed_broken_links": 0,
+      "pre_existing_link_checker_findings": 9,
+      "lessons": {
+        "total": 246,
+        "guards": 128
+      },
+      "cleanup": {
+        "bytes_freed": 68752773,
+        "removed": [
+          "initial duplicate native source output",
+          "verified CLI test binary",
+          "task Go cache"
+        ],
+        "verified_source_and_art_retained": true,
+        "videos_created": false
+      }
+    },
+    "review": {
+      "house_comparison": "inspected: new painted detail, source-proportional eave/wall/openings after explicit UV fit; no added tile-cut seams",
+      "initial_house_correction": "generated correction alone did not fully align boundaries; UV recipe is disclosed calibration",
+      "initial_cut_failure": "foreground279 differs from base278 at186 opaque indices; rejected until own source provided",
+      "foreground279": "separate master upper ceramic/eave region sampled; original mask preserved; no inferred gameplay name",
+      "external_terrain_seams_verified": false,
+      "catalog_registered": false,
+      "private_formal_theme_pack_synced": false,
+      "public_images_added": false
+    },
+    "reproduction": {
+      "go_image": "fd2-go-test-local:latest",
+      "pillow_image": "fd2-assets-local:20260829-sfx",
+      "user": "1000:1000",
+      "network": "none",
+      "mounts": {
+        "repo": "/src and /repo read-only, except explicit source editing",
+        "original_pack": "/pack:ro",
+        "outputs": "/out:rw"
+      },
+      "export": "go run ./cmd/fd2-terrain-sources -pack /pack -maps /src/remake/assets/maps -out /out/native-terrain-sources-rN",
+      "build": "python3 /src/tools/build_fd2_hd_terrain_object.py --pack /pack --maps /src/remake/assets/maps --sources /out/native-terrain-sources-r2 --recipe /src/remake/assets/themes/modern/terrain-house-map0.recipe.json --master /out/map00-house-hd-v2-master.png --out /out/hd-house-object-rN",
+      "test": "go test ./cmd/fd2-terrain-sources ./internal/fdicon ./internal/fdother; Python拒收工具參數沿該工具--help，binary由同一來源Go build。"
+    },
+    "next_gate": "以同一原生定位接房屋HD圖源到清冊與Game.Draw，驗正常首章LOAD、F2、原生前景遮蔽、外緣接縫與保存；再擴展其他地形。",
+    "toolchain": {
+      "go": "go1.22.12 linux/amd64",
+      "python": "3.12.15",
+      "pillow": "11.3.0"
     }
   }
 }

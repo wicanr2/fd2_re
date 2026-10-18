@@ -2877,6 +2877,21 @@
         ],
         "pattern": "normalized_alpha_difference_pixels"
       }
+    },
+    {
+      "id": "foreground-art-checks-own-opaque-rgb",
+      "area": "HD素材來源",
+      "date": "2026-10-19",
+      "rule": "製作HD前景前，先比對其opaque區與base的原生索引；不同者保留獨立RGB圖源，不只剪base的alpha。入口tools/build_fd2_hd_terrain_object.py及61的房屋製圖候選契約。",
+      "why": "原生前景279與base278的186個opaque索引不同；共用新屋頂母稿會掩蓋這項來源差異。其餘五個前景可共用，279改用自己參照的手繪來源。用途不另加推測命名。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_fd2_hd_terrain_object.py"
+        ],
+        "pattern": "native_index_differences_from_base"
+      }
     }
   ]
 }

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "hd_terrain_object_art_recipe",
+  "object": "map00-house",
+  "status": "prototype",
+  "scale": 6,
+  "painted_master_size": [1536, 1024],
+  "native_reference_size": [144, 96],
+  "painted_x_anchors": [0, 154, 504, 778, 1202, 1353, 1536],
+  "native_x_anchors": [0, 17, 46, 72, 111, 126, 144],
+  "painted_y_anchors": [0, 32, 249, 346, 668, 918, 989, 1024],
+  "native_y_anchors": [0, 3, 24, 36, 66, 90, 94, 96],
+  "anchor_evidence": "人工製圖校準，定位屋簷、牆腳、開口與基座；不是二進位語意或原版逐像素parity。",
+  "alpha_policy": "每幀沿正式原生opaque mask最近鄰六倍；foreground的mode3只保留透明。",
+  "rgb_policy": "全部RGB取自新手繪母稿；以分段UV取樣對齊來源，不混入舊像素RGB。",
+  "foreground_overrides": {
+    "279": {
+      "file": "map00-foreground0279-hd-master.png",
+      "crop": [0, 0, 1254, 650],
+      "painted_master_size": [1254, 650],
+      "native_reference_size": [24, 24],
+      "scale": 6,
+      "painted_x_anchors": [0, 1254],
+      "native_x_anchors": [0, 24],
+      "painted_y_anchors": [0, 150, 430, 550, 650],
+      "native_y_anchors": [0, 4, 18, 22, 24],
+      "reason": "原生前景279有186個opaque索引與base278不同，使用獨立母稿上部的單一屋瓦／屋簷區域；不從base複製RGB。"
+    }
+  },
+  "runtime_integrated": false
+}

@@ -753,6 +753,46 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 須先定義現代色彩對LUT的處理與逐幀驗收，再進READY及正式renderer。
 這不是新增原版RE或matching前置；已有typed selector與既有來源證據先沿用。
 
+製圖用原生來源匯出（CONFORMED，限離線工具及DATA-READY）：
+
+- 輸入為正式分離pack、目前map0..32的map.json；重用
+  `fdicon.LoadSeparatedFDSHAPBank`及`fdother.LoadSeparatedFDOTHERPalette(...,0)`的固定版本檢查。
+  不再解碼原始DAT，也不把舊RGBA圖集當作輸入。
+- 每幀保持24×24原生索引，分別輸出索引、opaque mask、destination remap mask及FDOTHER#0基準RGBA。
+  mask以二元值保存，兩種mask不得重疊；RGBA不代表完成LUT／DAC／動態畫面的驗收。
+- 逐幀清冊保留map、frame、三個輸入檔SHA與原生解碼內容SHA。每張圖集的幀數由實際bank決定，
+  不刪未使用槽，不以去重改變frame ID。去重只供安排製圖工作。
+- 正規化map只提供raw tile word與控制表；控制表須與正式bank相同。
+  對實際格子逐一呼叫現有terrain／foreground selector，抽遍flip0..1與idle cycle0..3，
+  檢查全部選取結果在實際bank內。這只證明資料／selector可用，不證明正常玩家路徑。
+- 所有來源先通過預檢，產物在輸出父目錄的暫存子目錄建立後發布；來源失敗或輸出已存在即拒收，
+  不留下半套正式輸出。輸出屬受限本機製圖中間資料，不加入公開庫或Release。
+- 房屋可用相連的原生格子建立製圖參照，再完整重繪及切回格子；製圖參照不得冒稱原版執行期畫面。
+  高清候選仍須另驗接縫、輪廓、前景與正式consumer，才可進入原生HD的READY契約。
+
+可重跑入口為[Go來源匯出器](../../remake/cmd/fd2-terrain-sources/main.go)與
+[獨立PIL回讀](../../tools/verify_fd2_terrain_sources.py)。在維護中的Go Docker執行
+`go run ./cmd/fd2-terrain-sources -pack /pack -maps /src/remake/assets/maps -out /out/native-terrain-sources-rN`，
+完整pack與來源只讀掛載，`/out`為既有使用者所有的本機中間目錄。
+匯出器重用目前遊戲的原生載入器，沒有新DAT解碼器或原版執行器。
+實際PNG、來源三圖層、每幀hash及初始map selector回讀均通過；
+末張圖庫錯誤也不發布半套資料。完整範圍、工具版本及SHA沿主收據，不宣稱原版archive重新解碼或GPU結果。
+
+第一章房屋製圖候選（DRAFT，尚未接正式renderer）：
+
+- [可編輯製圖配方](../../remake/assets/themes/modern/terrain-house-map0.recipe.json)保留整棟手繪母稿的分段UV錨點。
+  錨點是人工製圖校準，不是二進位語意；RGB全取自新母稿，不把舊像素RGB放大後加噪聲。
+  物件格子及terrain／foreground frame由Go來源清冊提供，不由製圖工具再猜selector。
+- [製圖工具](../../tools/build_fd2_hd_terrain_object.py)先驗完整原生來源，再切回格子。
+  本切片只接受無動畫旗標、完全opaque且無destination-remap的base；前景保持原生opaque mask六倍。
+  source mode3對前景維持透明，不能用它填滿alpha。
+- 只有來源opaque索引與base相同的前景可共用新RGB；原生279不同，使用配方明示的獨立母稿及取樣區域。
+  不因遮罩相近就假定RGB相同，也不替這個差異推測玩法意義。
+- 已序列化PNG的alpha逐像素核對，切片重組與新整棟畫布相同。
+  這只證明內部切片與覆蓋，未證明外緣地形接縫、清冊、動態DAC、正常Game.Draw或玩家路徑。
+- [拒收工具](../../tools/test_fd2_hd_terrain_sources.py)使用實際分離素材，驗末張圖庫錯誤、缺獨立前景及既有輸出保護。
+  候選與原始母稿留本機；通過清冊及執行期驗證前，不同步私人正式主題包。
+
 草地母稿以內建image_gen產生，完整提示與SHA保存在
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。
 工具產生的比較圖僅以固定首章資料排版，不含人物、遊戲狀態、動畫或GPU擷取。
