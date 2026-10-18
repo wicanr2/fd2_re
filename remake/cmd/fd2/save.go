@@ -195,7 +195,7 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 		return false
 	}
 	var d saveData
-	if json.Unmarshal(raw, &d) != nil {
+	if json.Unmarshal(raw, &d) != nil || d.Chapter < 0 || d.Chapter > 0xff {
 		return false
 	}
 	if _, ok := g.camp.C.Nodes[d.Node]; !ok {

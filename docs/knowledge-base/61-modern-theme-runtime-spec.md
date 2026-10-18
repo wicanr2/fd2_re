@@ -39,9 +39,11 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
   普通LOAD只驗實際可達的首章下框；其餘上下框幾何測試另標RUNTIME-E1。
   不建立錄影，不提升全戰役、全介面、跨平台或原版視覺對拍狀態。
 
-驗證入口勘誤：首章實際JSON沒有正`chapter`值，`nativeLoadSlotMetadata`拒收，
+本節當輪驗證入口勘誤：首章實際JSON沒有正`chapter`值，`nativeLoadSlotMetadata`拒收，
 故標題LOAD仍停在選槽；同份F9可讀。這是既有JSON槽顯示與保存編號契約的缺口，
-獨立列為[#252](https://github.com/wicanr2/fd2_re/issues/252)，不為本切片猜填章號或放寬原版SAV驗證。
+當輪獨立列為[#252](https://github.com/wicanr2/fd2_re/issues/252)，未猜填章號或放寬原版SAV驗證。
+其後標題JSON確認已改用實際還原結果，忠實／HD及重新F5後的標題冷讀通過，見[獨立主收據](../data/fd2-json-title-load-20261018.json)。
+本節較早收據仍只驗START後F9，不回溯提升其範圍。
 
 兩個新程序正常START後F9、F2往返、說明遮罩及縮放通過；六個504區域GPU比較最大正規化MAE為0.00162285，
 參照為480原圖經Triangle插值至504並鏡像，與GPU線性取樣存在明示插值差異，不宣稱零像素。

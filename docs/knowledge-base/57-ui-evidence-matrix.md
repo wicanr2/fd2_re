@@ -71,7 +71,7 @@ acknowledgement 回歸，列 `RUNTIME-E1`；尚無未修改原版同狀態畫面
 
 2026-10-18現代序章：父王／王后／強盜補圖後正常START的97個對話拍點與首章接縫通過，限本切片PLAYER-E2；[收據](../data/fd2-modern-portraits-20261018.json)。
 高解析另以1920×1200普通START走完97拍，七位480區域MAE=0，含三張新頭像；[獨立高解析收據](../data/fd2-modern-hd-20261018.json)限啟動時序章，不能外推全主題／全戰役。
-F2動態入口已由忠實START走完整97拍，雙向切換、視窗還原、縮放／黑邊／遮罩及兩種主題LOAD同份節點存檔通過；[限定F2收據](../data/fd2-modern-hd-f2-20261018.json)。[非原生對話收據](../data/fd2-modern-hd-dialogue-20261018.json)通過首章下框兩個新程序START後F9冷讀、F2往返與GPU核對，存檔SHA不變；上框幾何僅E1，其餘玩家路徑沿#202接續。本份JSON的標題LOAD另列[#252](https://github.com/wicanr2/fd2_re/issues/252)；F1文字間距列[#251](https://github.com/wicanr2/fd2_re/issues/251)。
+F2動態入口已由忠實START走完整97拍，雙向切換、視窗還原、縮放／黑邊／遮罩及兩種主題LOAD同份節點存檔通過；[限定F2收據](../data/fd2-modern-hd-f2-20261018.json)。[非原生對話收據](../data/fd2-modern-hd-dialogue-20261018.json)通過首章下框兩個新程序START後F9冷讀、F2往返與GPU核對，存檔SHA不變；上框幾何僅E1，其餘玩家路徑沿#202接續。其後已修正[#252](https://github.com/wicanr2/fd2_re/issues/252)，[獨立標題冷讀收據](../data/fd2-json-title-load-20261018.json)通過忠實／HD與重新F5後第三次讀取，完整保存bytes相同；F1文字間距列[#251](https://github.com/wicanr2/fd2_re/issues/251)。
 F9讀酒店時殘留戰場人物資訊層已修正，成功LOAD清除、拒收時原狀保持；[GPU與回歸收據](../data/fd2-quickload-20261018.json)為RUNTIME-E1，不宣稱新原版對拍。
 
 ## 2026-07-28 visual-parity audit

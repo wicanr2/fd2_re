@@ -353,3 +353,61 @@ func TestCampaignLoadRejectsBrokenPersistentPartyTopologyWithoutMutation(t *test
 }
 
 func cRunner(c *campaign.Campaign) *campaign.Runner { return campaign.NewRunner(c) }
+
+func TestTitleJSONLoadAcceptsSavedZeroChapterAndKeepsBytes(t *testing.T) {
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Setenv("FD2_NATIVE_SAVE", "")
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = "" })
+	graph := &campaign.Campaign{Start: "saved_boundary", Nodes: map[string]*campaign.Node{
+		"saved_boundary": {Type: "story"}, "other": {Type: "story"},
+	}}
+	writer := &Game{camp: campaign.NewRunner(graph), gold: 279}
+	if err := writer.saveGameToSlot(0); err != nil {
+		t.Fatal(err)
+	}
+	before, err := os.ReadFile(saveSlotPath(0))
+	if err != nil || bytes.Contains(before, []byte(`"chapter"`)) {
+		t.Fatalf("zero chapter save changed format: %s, %v", before, err)
+	}
+	cold := &Game{camp: campaign.NewRunner(graph), titlePhase: "loadslots", gold: 7, handlerChapter: 9}
+	attachOfficialLocale(t, cold)
+	cold.camp.Cur = "other"
+	if !cold.confirmTitleLoadSlot(0) || cold.titlePhase != "" || cold.camp.NodeID() != "saved_boundary" || cold.gold != 279 || cold.handlerChapter != 0 {
+		t.Fatalf("saved zero chapter refused: title=%q node=%q gold=%d chapter=%d error=%q", cold.titlePhase, cold.camp.NodeID(), cold.gold, cold.handlerChapter, cold.loadErr)
+	}
+	after, err := os.ReadFile(saveSlotPath(0))
+	if err != nil || !bytes.Equal(before, after) {
+		t.Fatal("LOAD rewrote the input save", err)
+	}
+}
+
+func TestTitleJSONLoadRejectsBeforeLeavingSelector(t *testing.T) {
+	t.Setenv("XDG_DATA_HOME", t.TempDir())
+	t.Setenv("FD2_NATIVE_SAVE", "")
+	userDataDirCached = ""
+	t.Cleanup(func() { userDataDirCached = "" })
+	graph := &campaign.Campaign{Start: "safe", Nodes: map[string]*campaign.Node{"safe": {Type: "town"}}}
+	for name, data := range map[string]saveData{
+		"unknown node":      {Node: "missing", Chapter: 1, Gold: 999},
+		"negative chapter":  {Node: "safe", Chapter: -1, Gold: 999},
+		"oversized chapter": {Node: "safe", Chapter: 256, Gold: 999},
+	} {
+		t.Run(name, func(t *testing.T) {
+			raw, err := json.Marshal(data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.MkdirAll(filepath.Dir(saveSlotPath(0)), 0o755); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(saveSlotPath(0), raw, 0o644); err != nil {
+				t.Fatal(err)
+			}
+			g := &Game{camp: campaign.NewRunner(graph), titlePhase: "loadslots", gold: 7, handlerChapter: 9}
+			if g.confirmTitleLoadSlot(0) || g.titlePhase != "loadslots" || g.camp.NodeID() != "safe" || g.gold != 7 || g.handlerChapter != 9 {
+				t.Fatalf("invalid JSON escaped selector or mutated state: title=%q node=%q gold=%d chapter=%d", g.titlePhase, g.camp.NodeID(), g.gold, g.handlerChapter)
+			}
+		})
+	}
+}

@@ -64,9 +64,9 @@ writer／consumer列已證實，與本次崩潰的關係列強推論，沒有實
 2026-10-15靜態報告的九個候選屬當時快照；2026-10-18正式序章consumer確認其中48／66／96為玩家阻擋，補圖後正常97拍通過。其餘六個候選仍須確認可達；負speaker另列，
 不把候選直接當玩家缺陷。重跑入口與限制見[61](61-modern-theme-runtime-spec.md)。
 
-首章正常F5 JSON的標題LOAD顯示契約另有缺陷[#252](https://github.com/wicanr2/fd2_re/issues/252)：缺正chapter值時選槽不可確認，同份F9可讀。本輪未改存檔bytes；此限制不推翻原版SAV章收據。
+首章JSON的標題LOAD拒收[#252](https://github.com/wicanr2/fd2_re/issues/252)已修正：確認改以JSON實際還原結果判定，首章零章號與保存格式保持。忠實／HD各一個新程序標題LOAD、重新F5後第三次標題冷讀及F9通過，完整保存bytes相同；[主契約與收據](../data/fd2-json-title-load-20261018.json)限本切片PLAYER-E2，不新增原版SAV對拍。
 
-本表章台帳與第一版交付依2026-10-17收據；現代頭像、媒體及F9現況於2026-10-18核對FD2 `d230cfbf`與本輪已驗差異、遠端開啟Issue、現代catalog及正式consumer。
+本表章台帳與第一版交付依2026-10-17收據；現代頭像、媒體及F9現況於2026-10-18核對FD2 `a24ed3c7`與本輪已驗差異、遠端開啟Issue、現代catalog及正式consumer。
 章狀態與素材數由JSON直接重算；事件由全域check產生。具體命令見
 [WORKLOG](../../WORKLOG.md)當日紀錄。初次素材驗證使用既有容器的Python／Pillow，
 後續已恢復FD2專用Go工具鏈。序章GPU正常路徑限本輪收據；全主題其他章、跨平台與人耳驗收仍未完成。

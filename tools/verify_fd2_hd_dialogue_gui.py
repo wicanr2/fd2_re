@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""以既有正常F5存檔、兩個新程序START後的F9驗證非原生對話HD。Docker內執行，不錄影。"""
+"""以正常F5存檔驗證非原生對話HD；可選標題LOAD及重新F5冷讀。Docker內執行，不錄影。"""
 import argparse
 import json
 import os
@@ -18,6 +18,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ['binary', 'assets', 'original-pack', 'modern-pack', 'source-receipt', 'out']:
         parser.add_argument('--'+name, type=Path, required=True)
+    parser.add_argument('--load-entry', choices=['quick', 'title'], default='quick')
     args = parser.parse_args()
     assert Path('/.dockerenv').exists() and args.binary.is_file()
     assert (args.assets/'assets/locales/zh-Hant/pack.json').is_file()
@@ -174,10 +175,18 @@ def main():
             # eligible intro scenes and cannot accidentally confirm START.
             key('Escape')
         else:raise TimeoutError('開場未抵達標題選單')
-        key('Return')
-        wait_state(lambda s:s.get('title_phase')=='' and s.get('dialogue_native') is True
-                   and s.get('dialogue_speaker')==0 and s.get('dialogue_phase')==0)
-        key('F9')
+        if args.load_entry == 'title':
+            key('Down')
+            wait_state(lambda s:s.get('title_phase')=='menu' and s.get('title_selection')==1)
+            key('Return')
+            wait_state(lambda s:s.get('title_phase')=='loadslots')
+            shot(name+'-slots.png')
+            key('Return')
+        else:
+            key('Return')
+            wait_state(lambda s:s.get('title_phase')=='' and s.get('dialogue_native') is True
+                       and s.get('dialogue_speaker')==0 and s.get('dialogue_phase')==0)
+            key('F9')
         loaded = wait_state(lambda s:s.get('node')=='battle_ch01' and s.get('title_phase')==''
                             and s.get('dialogue_native') is False and s.get('dialogue_phase')==0)
         assert loaded.get('hd_theme') is modern
@@ -229,8 +238,25 @@ def main():
         game,cold=launch_load(True,'hd-cold')
         hd_shot('hd-cold-load.png');assert stable(cold)==stable(faithful)
         assert digest(saved)==saved_sha
+        fresh_save = None
+        if args.load_entry == 'title':
+            saved_mtime = saved.stat().st_mtime_ns
+            key('F5')
+            assert saved.stat().st_mtime_ns > saved_mtime, 'F5沒有完成新存檔寫入'
+            fresh = args.out/'fresh-f5.json'
+            fresh.write_bytes(saved.read_bytes())
+            fresh_sha = digest(fresh)
+            stop(game)
+            game,fresh_cold = launch_load(False,'fresh-f5-cold')
+            assert stable(fresh_cold)==stable(faithful)
+            assert digest(saved)==fresh_sha
+            shot('fresh-f5-cold.png')
+            fresh_save = {'file':str(fresh),'sha256':fresh_sha,'cold_loaded':fresh_cold,
+                          'unchanged_after_cold_load':True}
         report={'schema_version':1,'status':'PLAYER-E2-LIMITED-GPU-REVIEW-REQUIRED',
-                'method':'兩個新程序從正式開場START，在原生對話用普通F9冷讀原樣正常F5存檔；普通F2/F1/Esc/F9，無章節注入、改血或強化。',
+                'method':('兩個新程序由普通標題LOAD冷讀原樣正常F5存檔；F2/F1/Esc/F9後F5重新保存，第三個新程序標題LOAD冷讀。'
+                          if args.load_entry == 'title' else '兩個新程序從正式開場START，在原生對話用普通F9冷讀原樣正常F5存檔；普通F2/F1/Esc/F9，無章節注入、改血或強化。'),
+                'load_entry':args.load_entry,'fresh_save':fresh_save,
                 'source_receipt':str(args.source_receipt),'source_receipt_sha256':digest(args.source_receipt),
                 'source_save':str(saved_input),'source_save_sha256':saved_sha,'save_unchanged':True,
                 'binary_sha256':digest(args.binary),'driver_sha256':digest(Path(__file__)),
@@ -241,7 +267,7 @@ def main():
                 'screenshots':screenshots,'wall_seconds':time.monotonic()-started,'recordings_created':False,
                 'limits':'正常玩家只驗首章非原生下框與JSON節點讀取；上框幾何為獨立E1，非全戰役／跨平台／原版對拍。'}
         (args.out/'hd-dialogue-gui.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
-        print('兩個新程序START後冷讀、非原生對話HD、切換及F9通過',flush=True)
+        print('正常JSON冷讀、非原生對話HD、切換及F9通過；入口='+args.load_entry,flush=True)
     finally:
         for process in reversed(processes):stop(process)
         for stream in streams:stream.close()

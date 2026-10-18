@@ -123,6 +123,16 @@ func nativeLoadSlotConfirmable(slot int) (confirmable, native bool) {
 // checksum、typed restore 與戰間節點進入全部成功後才離開 loadslots；失敗會
 // 保留選槽畫面，避免看似進入遊戲卻留下部分還原狀態。
 func (g *Game) confirmTitleLoadSlot(selected int) bool {
+	if os.Getenv("FD2_NATIVE_SAVE") == "" {
+		// JSON stores node boundaries and a zero-based runtime chapter. Its
+		// first chapter cannot use the native text-frame metadata projection.
+		// Share F9's actual restore result, including its rejection path.
+		if selected < 0 || selected >= fdsave.SlotCount || !g.loadJSONGameFromSlot(selected, false) {
+			return false
+		}
+		g.titlePhase = ""
+		return true
+	}
 	confirmable, native := nativeLoadSlotConfirmable(selected)
 	if !confirmable {
 		if native {
