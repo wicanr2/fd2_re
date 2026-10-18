@@ -1,10 +1,12 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-2026-10-19 HD戰場接續：F2不再重複觸發角色檢視，Home保持，正常首章16張GPU與完整保存／冷讀通過。
-同狀態取景差異#258尚未修正。完整125組1455張144角色與31組缺漏24父項已登錄，
-首章實檔候選、正式清冊／私人包與16張正常GPU／保存冷讀通過；原始selector96拒收已排除。
-目前GUI仍沿既有24直繪，144世界尚未接Game.Draw；本輪沒有新原版parity。
-唯一來源與下一閘門見[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)及[61](61-modern-theme-runtime-spec.md)。
+2026-10-19 正式HD世界已接入144人物、原生312×192窗格與透明介面。
+正常首章34張GPU、4張走行、F2／指令環／取消、兩次物理攻擊與戰場返回通過。
+兩份穩定圖源核心及同view的960地形樣本零差異；跨相位樣本照實列不可比。
+#260成功JSON LOAD清除舊經驗對話與移動計畫，拒收保持；保存／新程序LOAD完整bytes相同。
+HD地形、完整索引演出、早中晚期與平台仍未完成，沒有新原版parity。
+唯一現況見[58](58-fd2-exe-re-coverage.md)、[61](61-modern-theme-runtime-spec.md)及
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`world_runtime_followup_20261019`。
 
 2026-10-15 使用者改以流程一致驗收，依[111修訂](../goal/111-goal-original-parity-campaign-20260915.md)
 及[114本章政策](../goal/114-goal-boosted-slot-and-ch09-parity-20260917.md)執行。

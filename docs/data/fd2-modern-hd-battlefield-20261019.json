@@ -6,10 +6,11 @@
   "full_hd_complete": false,
   "current_state": {
     "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
-    "native_viewport": "REMAKE-DEFECT-CONFIRMED：同units／view的正式戰場F2比較確認現代24直繪與原生320×200兩倍不同，#258待實作。",
+    "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
-    "hd_world_renderer": "RUNTIME-E1-CANDIDATE：實際第一章存檔的完整圖庫CPU候選通過；144世界未接Game.Draw，正式GUI仍沿既有24直繪。",
-    "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。"
+    "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
+    "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。",
+    "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。"
   },
   "runtime_source": {
     "snapshot": {
@@ -152,7 +153,7 @@
   },
   "viewport_defect": {
     "issue": 258,
-    "status": "CONFIRMED-NOT-FIXED",
+    "status": "FIXED-SCOPED: world_runtime_followup_20261019",
     "modern_field": {
       "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-focused.png",
       "sha256": "1acd95429fb05f0df51e67e4099e504b0da29f3e26925fb1a47118b72ea6aabc"
@@ -177,7 +178,8 @@
       "indexedmap.ComposeNativeFrameObserved"
     ],
     "normal_unit_pure_remap": "fdicon.blitAtOffset只寫Mask，39／57無來源寫入時保持no-op；不得造透明角色。",
-    "known_layers": "terrain→range→units→foreground→selection/HUD→viewport；保持原生(4,4)、312×192。"
+    "known_layers": "terrain→range→units→foreground→selection/HUD→viewport；保持原生(4,4)、312×192。",
+    "historical_status": "CONFIRMED-NOT-FIXED，較早24直繪證據"
   },
   "asset_compiler": {
     "file": "tools/build_modern_hd_map_sprites.py",
@@ -261,13 +263,9 @@
     "all_four_documents_unchanged": true
   },
   "remaining": [
-    "完成全94組完整輪廓重編及全部姿態審查",
-    "重繪像素化母稿，核對裝備與原角色身份",
-    "144角色完整原子catalog預檢與私人同步",
-    "原生世界倍率／範圍／前景／HUD與選單層實作",
-    "正常走行、取消、戰鬥返回及早中晚GPU驗證",
-    "真正高解析地形與其他HD介面",
-    "跨平台HD驗收"
+    "HD地形與完整HUD／其他美術",
+    "經驗、死亡、法術及故事等完整索引演出的HD呈現",
+    "早中晚期正常GPU與跨平台效能／實機驗收"
   ],
   "cleanup": {
     "recording_created": false,
@@ -1483,5 +1481,220 @@
       204,
       258
     ]
+  },
+  "world_runtime_followup_20261019": {
+    "status": "CONFORMED-SCOPED",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "base_commit": "c13f6176e54485bc69ba28a385fc0c21270a6977",
+    "production_world_activation": true,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "a96b2a9ce0e1045ac2ab644619f2ba0813799c24453ff387962ce34fba450bd2"
+    },
+    "source_binding": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-runtime-source-final.json",
+      "sha256": "8f33f05e3c780baa2b6191b87036d2d01a07c57a90da998a0d88aa3c8e346bb4"
+    },
+    "go_file_count": 984,
+    "binary_sha256": "1b576f8860be4ac2c1235958a496c11bde389e517716187bb72c6b93ebfb0b46",
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gui-r7/receipt.json",
+      "sha256": "f6bcc57f2144492eec878c565334b5b05ebd665f0279c531625be4950154f007"
+    },
+    "gpu_source_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-gpu-source-final.json",
+      "sha256": "ea35a440f1ac3803c2c634d089920d27131f2a26f1a9c1811c7c89a6490d8e59"
+    },
+    "gui_screenshots": 34,
+    "actual_walk_samples": 4,
+    "rejected_walk_samples": 0,
+    "source_samples": [
+      {
+        "file": "battle-hd-focused.png",
+        "status": "PASS",
+        "source": "fdicon-000-style-a-hd6-f01.png",
+        "source_sha256": "8e0be5ee5cb6cfa789dff772ce8743f16bf65d353a3ee78856e8ad89529a7f5e",
+        "rect": [
+          1032,
+          852,
+          1176,
+          996
+        ],
+        "source_frame": 1,
+        "opaque_core_pixels": 10678,
+        "different_pixels": 0
+      },
+      {
+        "file": "battle-hd-focused-restored.png",
+        "status": "PASS",
+        "source": "fdicon-000-style-a-hd6-f01.png",
+        "source_sha256": "8e0be5ee5cb6cfa789dff772ce8743f16bf65d353a3ee78856e8ad89529a7f5e",
+        "rect": [
+          1032,
+          564,
+          1176,
+          708
+        ],
+        "source_frame": 1,
+        "opaque_core_pixels": 10678,
+        "different_pixels": 0
+      },
+      {
+        "file": "world-hd-source-reloaded.png",
+        "status": "NOT-COMPARABLE",
+        "reason": "source phase/position changed during GPU capture"
+      }
+    ],
+    "fixed_static_terrain_samples": 960,
+    "terrain_different_pixels": 0,
+    "normal_inputs": "正常標題LOAD既有START/F5首章JSON，Z／方向鍵／指令環／取消／F2；兩次普通物理攻擊，經驗對話中F9及正常結束後返回；Home狀態／命令、縮放／說明、F5保存與新程序標題LOAD。",
+    "test_seed": {
+      "remake": "FD2_SEED=1，啟動前固定，不重擲",
+      "original": null,
+      "limits": "只核對重製呈現與保存，不宣稱原版相同亂數或傷害。"
+    },
+    "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "theme_and_source_save_bytes_equal": true,
+    "new_process_title_load": true,
+    "outside_map_gpu": [
+      {
+        "reference": "world-hd-source-reloaded",
+        "target": "battle-hd-status",
+        "crop": "1800x30+60+0",
+        "different_pixels": 0.0
+      },
+      {
+        "reference": "world-hd-source-reloaded",
+        "target": "battle-hd-status-restored",
+        "crop": "1800x30+60+0",
+        "different_pixels": 0.0
+      },
+      {
+        "reference": "world-hd-source-reloaded",
+        "target": "battle-hd-returned",
+        "crop": "1800x30+60+0",
+        "different_pixels": 0.0
+      },
+      {
+        "reference": "battle-hd-command-unit-focused",
+        "target": "battle-hd-command-unit-status",
+        "crop": "1800x30+60+0",
+        "different_pixels": 0.0
+      },
+      {
+        "reference": "battle-hd-command-unit-focused",
+        "target": "battle-hd-commands",
+        "crop": "1800x30+60+0",
+        "different_pixels": 0.0
+      },
+      {
+        "reference": "battle-hd-command-unit-focused",
+        "target": "battle-hd-command-unit-returned",
+        "crop": "1800x30+60+0",
+        "different_pixels": 0.0
+      }
+    ],
+    "regression": {
+      "pure": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-runtime-tests-r1.log",
+        "sha256": "6fa157cb5dba1574298ccda3cfac8759fdf9eb8b2fdc42570027b0a6c80a1dc7"
+      },
+      "scoped": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-regression-r2.log",
+        "sha256": "3d53af3e429b72db1fc7172f407b94df32a3779e077c7c339eff4f7b68d3b8ea"
+      },
+      "load_before": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-load-before-r1.log",
+        "sha256": "eaa77fd55febdf23cc28ad28a77de53c4bb83fb7c44a27134c39ec304017722f"
+      },
+      "load_after": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-load-after-r1.log",
+        "sha256": "efff5f704e7e55cc201a0aac290dec7dc1de6f60d804d235383ae21f4cb2763d"
+      },
+      "full_suite": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-full-regression-tmpfs-r2.log",
+        "sha256": "f8b1c4efef67b2e7b83e5e679e374543cc38a746acfc32387bb652cec69bbff5",
+        "status": "PASS",
+        "main_package_seconds": 282.386
+      }
+    },
+    "quickload_issue": 260,
+    "quickload_cause": "新章首為非原生對話；舊nativeLevelUpDialogue先取得輸入，原生等鍵條件拒絕新對話。另有移動計畫與待播佇列殘留。",
+    "quickload_fix": "有效JSON驗證後、替換st前清除移動計畫／面板、經驗對話與待播佇列，不執行舊續行；拒收保持。",
+    "failed_runs": {
+      "r2": "工具未等LOAD章首對話",
+      "r3": "工具固定Z次數忽略下一單位索引",
+      "r4": "LOAD舊owner缺陷；當時缺唯讀owner欄位，不能只由move_preview推定因果。",
+      "r5": "唯讀level_up_dialogue=true與dialogue_native=false確認缺陷",
+      "r6": "工具把讀檔前CameraY14基準與重新聚焦後CameraY16混比；修正同view檢查，遊戲來源保持。",
+      "full_suite_r1": "遊戲與其餘套件通過，人工字串清冊SHA未重綁。",
+      "full_suite_r2": "遊戲與其餘套件通過；清冊套件在重綁完成前已並行讀取舊SHA。精確重綁後獨立清冊PASS，再以同來源啟動完整final重跑。",
+      "full_suite_final_disk": "所有具體失敗均為TempDir mkdir: no space left on device；共用磁碟僅餘1.4GB，inode充足。清冊套件與其餘包通過。屬環境失敗，不修改遊戲程式。",
+      "tmpfs_noexec": "首次tmpfs沿Docker預設noexec，測試程式permission denied而零執行；明示exec後先用清冊套件實測PASS，再重跑全套。"
+    },
+    "string_review": {
+      "old_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-inventory-final.json",
+        "sha256": "935606cd186275d1834266433eb41f62b626a981b08642190905f71031dc72b7"
+      },
+      "new_inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-string-inventory-r2.json",
+        "sha256": "163d54295947565a2d7f12d4342f449731b8ac447d59f661bf3d3d1832764262"
+      },
+      "review": {
+        "file": "docs/data/fd2-string-review.json",
+        "sha256": "540b1e67cb229363bddac3bd43f05a31ec7fa8dc3bf7026b79a79d05eebe7353"
+      },
+      "reviewed_candidates": 99,
+      "dispositions_unchanged": true,
+      "limits": "較早檔案位置與歷史樹清冊不等於精確綁定；找到SHA935606cd的實際舊清冊後才遷移。"
+    },
+    "visual_review": "實際戰場、指令環、像素主題、物理演出／返回、狀態／命令、縮放／說明及冷讀已審查；HD人物清楚，地形、HUD圖示與完整演出仍有像素素材。",
+    "reproduce": {
+      "build": "Docker fd2-go-test-local:latest: go build -o <output> ./cmd/fd2",
+      "gui": "Docker fd2-promo:20261017-r1: python3 tools/verify_fd2_hd_fonts_gui.py --binary <build> --assets remake --original-pack <完整合法分離包> --modern-pack <私人正式包> --town-save <同份首章F5 JSON> --battle-status --world --out <新目錄>",
+      "gpu": "Docker fd2-assets-local:20260829-sfx: python3 tools/verify_fd2_hd_world_images.py --receipt <GUI receipt.json> --catalog remake/assets/themes/modern/catalog.json --source <同份私人包> --report <新報告>",
+      "tests": "Docker fd2-go-test-local:latest with-xvfb go test ./... -count=1 -p 2；FD2_ASSET_PACK與FD2_TEST_MODERN_PACK明示設定。repo同時掛/src與/repo以保持素材symlink。",
+      "test_isolation": "docker run --rm --network none --memory 8g --cpus 4 --pids-limit 512 --user 1000:1000 --tmpfs /tmp:rw,nosuid,nodev,exec,size=3g,mode=1777；其餘mount與測試命令保持。"
+    },
+    "full_hd_complete": false,
+    "new_original_oracle_or_campaign_e2": false,
+    "private_assets_changed": false,
+    "release_changed": false,
+    "recordings_created": false,
+    "remaining": [
+      "HD地形與完整HUD／其他美術",
+      "經驗、死亡、法術及故事等完整索引演出的HD呈現",
+      "早中晚期正常GPU與跨平台效能／實機驗收"
+    ],
+    "gpu_scope_limits": "首章普通走行／物理攻擊GPU；第12章上移只限CPU，回合橫幅只驗shader編譯，正常END／AI／故事及其他章節另驗。",
+    "test_environment_followup": {
+      "host_free_bytes_after_failure": 1405997056,
+      "host_free_inodes": 104588262,
+      "tmpfs": "/tmp:rw,nosuid,nodev,exec,size=3g,mode=1777",
+      "container_memory": "8g",
+      "network": "none",
+      "cpus": 4,
+      "pids_limit": 512,
+      "user": "1000:1000",
+      "source_and_command_unchanged": true
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-world-cleanup-final.json",
+      "sha256": "bb9e2d4eeb8ec785ade59f0c2a4e698df24d2a0ab040633a1803fe99d238c223",
+      "bytes_freed": 957156211,
+      "recordings_created": false
+    },
+    "validation": {
+      "lessons": 243,
+      "lesson_guards": 125,
+      "links": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-world-links-final.json",
+        "sha256": "75ecae6c261b279a19dfd4dece29880f4b8d80a3fb92de23ed867dc1b8502b73"
+      },
+      "source_binding_unchanged": true,
+      "new_or_root_owned_work_outputs": 0
+    }
   }
 }

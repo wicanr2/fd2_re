@@ -81,12 +81,20 @@ type MapData struct {
 
 type Game struct {
 	m                           *MapData
-	nativeMapAssets             *nativeMapAssets       // all original map HUD resources, nil on any missing/malformed asset
-	modernMapTilesetLoaded      bool                   // 本次 loadMap 已原子採用現代圖集
-	baseMapTileset              image.Image            // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
-	currentMapID                int                    // 目前地圖 selector；-1 表示尚未載入
-	nativeMapWork               []byte                 // persistent 456-stride original tactical framebuffer
-	nativeMapVGA                []byte                 // persistent 320x200 indexed VGA surface
+	nativeMapAssets             *nativeMapAssets // all original map HUD resources, nil on any missing/malformed asset
+	modernMapTilesetLoaded      bool             // 本次 loadMap 已原子採用現代圖集
+	baseMapTileset              image.Image      // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
+	currentMapID                int              // 目前地圖 selector；-1 表示尚未載入
+	nativeMapWork               []byte           // persistent 456-stride original tactical framebuffer
+	nativeMapVGA                []byte           // persistent 320x200 indexed VGA surface
+	modernHDMapFrame            *modernHDMapFrame
+	modernHDMapGPU              *modernHDMapGPU
+	modernHDWorldVisible        bool
+	modernHDMapComposing        bool
+	modernHDMapPresentedFrame   int
+	modernHDMapTerrain          []byte
+	modernHDMapTerrainAssets    *nativeMapAssets
+	modernHDMapTerrainState     *battle.State
 	nativeMapDAC                []byte                 // current 256xRGB six-bit DAC state for handler palette ramps
 	nativePhysicalSoundBanks    map[int]map[int][]byte // 2BC9A 的 FIGANI sound banks，獨立於完整 command bank cache。
 	nativePaletteRamp           *nativePaletteRampJob  // exact 0x1f882/0x1f525 indexed DAC presentation
@@ -9141,6 +9149,10 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.modernHDOverlay = nil
+	g.modernHDWorldVisible = false
+	if g.modernHDMapGPU != nil && g.bannerT <= 0 {
+		g.modernHDMapGPU.BannerName = ""
+	}
 	defer g.beginModernHDText(screen)()
 	// The exact full-DAC saturation covers the complete mode-13h surface,
 	// including HUD and dialogue. Defer preserves that hardware ordering across
@@ -9575,150 +9587,158 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// 邊,選黑純為視覺乾淨、非還原原版行為。
 	screen.Fill(color.RGBA{0, 0, 0, 0xff})
 	nativeMapPresented := false
+	campaignBattleView := g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")
+	modernHDRequested := g.modernHDMapFrameAdmission(g.storyBG, campaignBattleView)
 	// story 場景與原版阻塞 battle event 走 320×200 離屏再放大 storyZoom 倍
 	// (還原 13×8 格取景)；一般可操作戰場維持 640×400 直繪。
 	// 對話框/HUD/淡幕仍畫在 screen 原生解析度。
 	target, viewW, viewH := screen, logicalW, logicalH
 	legacyViewport := g.storyBG || g.battleEvent != nil
-	if legacyViewport {
-		if g.storyView == nil {
-			g.storyView = ebiten.NewImage(logicalW/storyZoom, logicalH/storyZoom)
-		}
-		g.storyView.Fill(color.RGBA{0, 0, 0, 0xff})
-		target, viewW, viewH = g.storyView, logicalW/storyZoom, logicalH/storyZoom
-	}
 	tw, th := g.m.TileW, g.m.TileH
-	// 只畫可見範圍
-	x0 := int(g.camX) / tw
-	y0 := int(g.camY) / th
-	x1 := (int(g.camX)+viewW)/tw + 1
-	y1 := (int(g.camY)+viewH)/th + 1
-	for cy := y0; cy <= y1 && cy < g.m.H; cy++ {
-		for cx := x0; cx <= x1 && cx < g.m.W; cx++ {
-			if cy < 0 || cx < 0 {
-				continue
+	if !modernHDRequested {
+		if legacyViewport {
+			if g.storyView == nil {
+				g.storyView = ebiten.NewImage(logicalW/storyZoom, logicalH/storyZoom)
 			}
-			t := g.tileAt(g.m.Tiles[cy*g.m.W+cx])
-			if t == nil {
-				continue
+			g.storyView.Fill(color.RGBA{0, 0, 0, 0xff})
+			target, viewW, viewH = g.storyView, logicalW/storyZoom, logicalH/storyZoom
+		}
+		// 只畫可見範圍
+		x0 := int(g.camX) / tw
+		y0 := int(g.camY) / th
+		x1 := (int(g.camX)+viewW)/tw + 1
+		y1 := (int(g.camY)+viewH)/th + 1
+		for cy := y0; cy <= y1 && cy < g.m.H; cy++ {
+			for cx := x0; cx <= x1 && cx < g.m.W; cx++ {
+				if cy < 0 || cx < 0 {
+					continue
+				}
+				t := g.tileAt(g.m.Tiles[cy*g.m.W+cx])
+				if t == nil {
+					continue
+				}
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Translate(float64(cx*tw)-g.camX, float64(cy*th)-g.camY)
+				target.DrawImage(t, op)
 			}
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(cx*tw)-g.camX, float64(cy*th)-g.camY)
-			target.DrawImage(t, op)
 		}
-	}
-	// 移動範圍高亮(已選單位:藍色半透明格)
-	if g.sel != nil {
-		hl := ebiten.NewImage(tw, th)
-		hl.Fill(color.RGBA{0x40, 0x80, 0xff, 0x66})
-		for c := range g.reach {
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(c.X*tw)-g.camX, float64(c.Y*th)-g.camY)
-			target.DrawImage(hl, op)
-		}
-		if g.castSp != nil { // 施法射程高亮(紫)
-			ch := ebiten.NewImage(tw, th)
-			ch.Fill(color.RGBA{0xa0, 0x50, 0xe0, 0x5c})
-			for y := 0; y < g.m.H; y++ {
-				for x := 0; x < g.m.W; x++ {
-					if g.st.InCastRange(g.sel, *g.castSp, x, y) {
-						op := &ebiten.DrawImageOptions{}
-						op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
-						target.DrawImage(ch, op)
+		// 移動範圍高亮(已選單位:藍色半透明格)
+		if g.sel != nil {
+			hl := ebiten.NewImage(tw, th)
+			hl.Fill(color.RGBA{0x40, 0x80, 0xff, 0x66})
+			for c := range g.reach {
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Translate(float64(c.X*tw)-g.camX, float64(c.Y*th)-g.camY)
+				target.DrawImage(hl, op)
+			}
+			if g.castSp != nil { // 施法射程高亮(紫)
+				ch := ebiten.NewImage(tw, th)
+				ch.Fill(color.RGBA{0xa0, 0x50, 0xe0, 0x5c})
+				for y := 0; y < g.m.H; y++ {
+					for x := 0; x < g.m.W; x++ {
+						if g.st.InCastRange(g.sel, *g.castSp, x, y) {
+							op := &ebiten.DrawImageOptions{}
+							op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
+							target.DrawImage(ch, op)
+						}
+					}
+				}
+			}
+			// 原生物品／command 0 目標 modal 只由完整的 0x11CAC 索引畫面
+			// 呈現。缺少 raw target field、LUT 或 range sprite 時，不畫沒有
+			// 原版證據的 RGBA 色塊作後備，避免把 renderer 失敗偽裝成成功。
+			// 攻擊射程高亮(紅;已移動、選攻擊、尚未選中目標的階段,doc32 武器攻擊距離接線 —
+			// 沒有這格高亮,槍兵2格射程會「打得到但畫面看不出範圍」)
+			if g.castSp == nil && g.moved && !g.ring && !g.spellOpen {
+				ah := ebiten.NewImage(tw, th)
+				ah.Fill(color.RGBA{0xe0, 0x30, 0x30, 0x5c})
+				for y := 0; y < g.m.H; y++ {
+					for x := 0; x < g.m.W; x++ {
+						if g.st.InAttackRange(g.sel, x, y) {
+							op := &ebiten.DrawImageOptions{}
+							op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
+							target.DrawImage(ah, op)
+						}
 					}
 				}
 			}
 		}
-		// 原生物品／command 0 目標 modal 只由完整的 0x11CAC 索引畫面
-		// 呈現。缺少 raw target field、LUT 或 range sprite 時，不畫沒有
-		// 原版證據的 RGBA 色塊作後備，避免把 renderer 失敗偽裝成成功。
-		// 攻擊射程高亮(紅;已移動、選攻擊、尚未選中目標的階段,doc32 武器攻擊距離接線 —
-		// 沒有這格高亮,槍兵2格射程會「打得到但畫面看不出範圍」)
-		if g.castSp == nil && g.moved && !g.ring && !g.spellOpen {
-			ah := ebiten.NewImage(tw, th)
-			ah.Fill(color.RGBA{0xe0, 0x30, 0x30, 0x5c})
-			for y := 0; y < g.m.H; y++ {
-				for x := 0; x < g.m.W; x++ {
-					if g.st.InAttackRange(g.sel, x, y) {
-						op := &ebiten.DrawImageOptions{}
-						op.GeoM.Translate(float64(x*tw)-g.camX, float64(y*th)-g.camY)
-						target.DrawImage(ah, op)
-					}
+		// 單位層(M1:FIGANI 待機動畫 sprite + 陣營腳標 + HP bar;無 sprite 退回色塊)
+		if g.st != nil {
+			for _, u := range g.st.Units {
+				if !u.OnField || !u.Alive() { // 待命(未進場)單位不畫
+					continue
 				}
+				ux := float64(u.X*tw) - g.camX
+				uy := float64(u.Y*th) - g.camY
+				if ux < -float64(tw) || ux > float64(viewW) || uy < -float64(th) || uy > float64(viewH) {
+					continue
+				}
+				g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u, g.mapSpriteGroup(u))
 			}
 		}
-	}
-	// 單位層(M1:FIGANI 待機動畫 sprite + 陣營腳標 + HP bar;無 sprite 退回色塊)
-	if g.st != nil {
-		for _, u := range g.st.Units {
-			if !u.OnField || !u.Alive() { // 待命(未進場)單位不畫
+		// storyBG 場景靜態角色(doc23 §4:王座廳國王/王后/主角等 cutscene 擺位,同一 sprite 繪法無戰鬥邏輯)
+		for i := range g.storyActors {
+			u := &g.storyActors[i]
+			if !u.OnField || !u.Alive() {
 				continue
 			}
 			ux := float64(u.X*tw) - g.camX
 			uy := float64(u.Y*th) - g.camY
-			if ux < -float64(tw) || ux > float64(viewW) || uy < -float64(th) || uy > float64(viewH) {
-				continue
-			}
-			g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u, g.mapSpriteGroup(u))
+			g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u, u.Fig)
 		}
-	}
-	// storyBG 場景靜態角色(doc23 §4:王座廳國王/王后/主角等 cutscene 擺位,同一 sprite 繪法無戰鬥邏輯)
-	for i := range g.storyActors {
-		u := &g.storyActors[i]
-		if !u.OnField || !u.Alive() {
-			continue
-		}
-		ux := float64(u.X*tw) - g.camX
-		uy := float64(u.Y*th) - g.camY
-		g.drawUnitSprite(target, ux, uy, float64(tw), float64(th), u, u.Fig)
-	}
-	if legacyViewport { // 離屏世界層放大貼回畫布(48px/格,原版取景)
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(storyZoom, storyZoom)
-		screen.DrawImage(g.storyView, op)
-		if g.unitLabels { // FD2_UNIT_LABELS:cutscene sprite 左上標 [idx]名(x,y)dDir,協助回報/對映原版 slot
-			for i := range g.storyActors {
-				u := &g.storyActors[i]
-				sx := (float64(u.X*tw) - g.camX + u.OffX) * storyZoom
-				sy := (float64(u.Y*th) - g.camY + u.OffY) * storyZoom
-				ebitenutil.DebugPrintAt(screen, fmt.Sprintf("[%d]f%d(%d,%d)d%d", i, u.Fig, u.X, u.Y, u.Dir), int(sx), int(sy)-14)
+		if legacyViewport { // 離屏世界層放大貼回畫布(48px/格,原版取景)
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Scale(storyZoom, storyZoom)
+			screen.DrawImage(g.storyView, op)
+			if g.unitLabels { // FD2_UNIT_LABELS:cutscene sprite 左上標 [idx]名(x,y)dDir,協助回報/對映原版 slot
+				for i := range g.storyActors {
+					u := &g.storyActors[i]
+					sx := (float64(u.X*tw) - g.camX + u.OffX) * storyZoom
+					sy := (float64(u.Y*th) - g.camY + u.OffY) * storyZoom
+					ebitenutil.DebugPrintAt(screen, fmt.Sprintf("[%d]f%d(%d,%d)d%d", i, u.Fig, u.X, u.Y, u.Dir), int(sx), int(sy)-14)
+				}
 			}
 		}
-	}
-	// 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
-	// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
-	curPx := float64(g.curX*tw) - g.camX
-	curPy := float64(g.curY*th) - g.camY
-	campaignBattleView := g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")
-	if !g.ring && !g.spellOpen && !legacyViewport && campaignBattleView {
-		drawCursor(screen, curPx, curPy, float64(tw), float64(th))
-	}
-	// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
-	if g.st != nil && g.font != nil && !legacyViewport {
-		if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 左下單位面板(orig 樣式)
-			if !g.drawNativeMapHUD(screen) {
-				g.drawUnitHUD(screen, u)
+		// 游標(白框):指令環/法術選單開啟時不顯示(原版該狀態下選取指示只在環上的選中圖示,
+		// 常駐白框會疊在中央、與環的選中框混淆,見 playfix #5)
+		curPx := float64(g.curX*tw) - g.camX
+		curPy := float64(g.curY*th) - g.camY
+		if !g.ring && !g.spellOpen && !legacyViewport && campaignBattleView {
+			drawCursor(screen, curPx, curPy, float64(tw), float64(th))
+		}
+		// HUD(對照原版 orig_04/08):游標單位資訊=左下面板(非常駐頂列);回合切換=中央大字橫幅。
+		if g.st != nil && g.font != nil && !legacyViewport {
+			if u := g.st.UnitAt(g.curX, g.curY); u != nil { // 左下單位面板(orig 樣式)
+				if !g.drawNativeMapHUD(screen) {
+					g.drawUnitHUD(screen, u)
+				}
+			}
+			if g.debug { // F3:詳細除錯(回合/戰況/座標)
+				ebitenutil.DebugPrintAt(screen, fmt.Sprintf("T%d own%d ally%d enemy%d cur(%d,%d)",
+					g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
 			}
 		}
-		if g.debug { // F3:詳細除錯(回合/戰況/座標)
-			ebitenutil.DebugPrintAt(screen, fmt.Sprintf("T%d own%d ally%d enemy%d cur(%d,%d)",
-				g.st.Turn, g.st.AliveCount(battle.Own), g.st.AliveCount(battle.Ally), g.st.AliveCount(battle.Enemy), g.curX, g.curY), 6, 4)
-		}
+		// A complete original indexed frame supersedes the normalized map/unit/HUD
+		// layers for the verified drawable selectors 1..5. Target selection keeps
+		// g.sel as its actor, so explicitly admit those modal states. The recovered
+		// action overlay and raw command grid are composited after this frame; if
+		// their parent remains on the normalized map, short maps leave an unproven
+		// black band below the 320x200 native viewport. Record-byte+2 writers can
+		// exceed six and target validation still consumes those values even when
+		// 0x122dc draws no overlay; those states retain the playable renderer until
+		// their complete presentation lifecycle is materialized.
+		// 戰場對白不換世界層。原版逐幀收據（docs/knowledge-base/99 §對話）：對白
+		// 出現期間地圖仍由 0x11CAC 這條路重繪，層集合與平時相同，畫面四邊維持
+		// 4 px 黑邊、地圖不位移；只有對白框那一側因為框畫到邊界上而縮成 2 px。
+		// 因此只有 storyBG 場景背景才交給正規化管線，battle event 保留原生整幀。
 	}
-	// A complete original indexed frame supersedes the normalized map/unit/HUD
-	// layers for the verified drawable selectors 1..5. Target selection keeps
-	// g.sel as its actor, so explicitly admit those modal states. The recovered
-	// action overlay and raw command grid are composited after this frame; if
-	// their parent remains on the normalized map, short maps leave an unproven
-	// black band below the 320x200 native viewport. Record-byte+2 writers can
-	// exceed six and target validation still consumes those values even when
-	// 0x122dc draws no overlay; those states retain the playable renderer until
-	// their complete presentation lifecycle is materialized.
-	// 戰場對白不換世界層。原版逐幀收據（docs/knowledge-base/99 §對話）：對白
-	// 出現期間地圖仍由 0x11CAC 這條路重繪，層集合與平時相同，畫面四邊維持
-	// 4 px 黑邊、地圖不位移；只有對白框那一側因為框畫到邊界上而縮成 2 px。
-	// 因此只有 storyBG 場景背景才交給正規化管線，battle event 保留原生整幀。
-	if g.nativeMapFrameAdmission(g.storyBG, campaignBattleView) {
+	if modernHDRequested {
+		nativeMapPresented = g.drawModernHDMapFrame(screen)
+		if !nativeMapPresented {
+			return
+		}
+	} else if g.nativeMapFrameAdmission(g.storyBG, campaignBattleView) {
 		nativeMapPresented = g.drawNativeMapFrame(screen)
 	}
 	if nativeMapPresented {
@@ -9965,7 +9985,7 @@ func (g *Game) captureShot(screen *ebiten.Image) {
 			return
 		}
 	}
-	saveShot(screen, g.shotPath)
+	saveShot(g.modernHDMapLogicalImage(screen), g.shotPath)
 }
 
 // drawRing shows the native FDOTHER #2 action overlay in the faithful theme.
@@ -9973,6 +9993,12 @@ func (g *Game) captureShot(screen *ebiten.Image) {
 // its catalog-verified action icons remain visible in local complete packages.
 func (g *Game) drawRing(screen *ebiten.Image) {
 	if !g.ring || g.m == nil || (g.sel == nil && !g.nativeSystemCursorOverlay) {
+		return
+	}
+	if g.modernHDWorldVisible && g.usesModernBattleActionIcons() {
+		if err := g.drawModernHDMapRing(); err != nil {
+			g.loadErr = err.Error()
+		}
 		return
 	}
 	tw, th := g.m.TileW, g.m.TileH
@@ -10044,7 +10070,8 @@ func (g *Game) actionOverlayAnchor(u *battle.Unit) (x, y, scale float64) {
 	}
 	scale = 1
 	if g.nativeMapAssets != nil && g.st != nil && g.st.HasNativeMapViewState &&
-		g.nativeMapFrameAdmission(false, g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")) {
+		(g.nativeMapFrameAdmission(false, g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle")) ||
+			g.modernHDMapFrameAdmission(false, g.camp == nil || (g.camp.Node() != nil && g.camp.Node().Type == "battle"))) {
 		scale = 2
 		cursor := g.st.NativeMapViewState
 		return (float64(cursor.CursorX*g.m.TileW) - g.camX) * scale,
@@ -12332,20 +12359,26 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 			in.Frame.RangeMode = 0
 		}
 	}
-	if len(g.nativeMapWork) != indexedmap.NativeUnitPresentWorkSize {
-		g.nativeMapWork = make([]byte, indexedmap.NativeUnitPresentWorkSize)
-	}
-	if len(g.nativeMapVGA) != indexedmap.NativeMapVGASize {
-		g.nativeMapVGA = make([]byte, indexedmap.NativeMapVGASize)
+	if g.modernHDMapComposing && g.ring && g.usesModernBattleActionIcons() {
+		in.Frame.SelectionOverlay = nil
+		in.Frame.RangeMode = 0
 	}
 	stage, err := g.prepareNativeCh23SteadyStage(rawTick)
 	if err != nil {
 		return fmt.Errorf("native map frame: ch23 staging: %w", err)
 	}
 	work, vga := g.nativeMapWork, g.nativeMapVGA
-	if stage != nil {
+	if len(work) != indexedmap.NativeUnitPresentWorkSize {
+		work = make([]byte, indexedmap.NativeUnitPresentWorkSize)
+	}
+	if len(vga) != indexedmap.NativeMapVGASize {
+		vga = make([]byte, indexedmap.NativeMapVGASize)
+	}
+	if stage != nil || g.modernHDMapComposing {
 		work = append([]byte(nil), work...)
 		vga = append([]byte(nil), vga...)
+	}
+	if stage != nil {
 		if err := indexedmap.SeedNativeCh23Staging(work, stage.staging); err != nil {
 			return err
 		}
@@ -12369,15 +12402,42 @@ func (g *Game) composeNativeMapFrameAtWithPaletteCycle(now time.Time, closedActi
 	} else if err := indexedmap.ComposeNativeFrame(work, vga, in); err != nil {
 		return err
 	}
+	var modernFrame *modernHDMapFrame
+	if g.modernHDMapComposing {
+		seed := g.modernHDMapTerrain
+		if g.modernHDMapTerrainAssets != a || g.modernHDMapTerrainState != g.st || len(seed) != indexedmap.NativeUnitPresentWorkSize {
+			seed = make([]byte, indexedmap.NativeUnitPresentWorkSize)
+		}
+		if stage != nil {
+			seed = append([]byte(nil), seed...)
+			if err := indexedmap.SeedNativeCh23Staging(seed, stage.staging); err != nil {
+				return err
+			}
+		}
+		palette, err := fdother.VGAPaletteFromDAC(candidateDAC)
+		if err != nil {
+			return err
+		}
+		modernFrame, err = g.prepareModernHDMapFrame(in, seed, palette)
+		if err != nil {
+			return err
+		}
+	}
 	if stage != nil {
 		g.nativeCh23State = stage
-		g.nativeMapWork, g.nativeMapVGA = work, vga
 	}
+	g.nativeMapWork, g.nativeMapVGA = work, vga
 	*g.st = candidateState
 	g.nativeMapClock = candidateGame.nativeMapClock
 	g.nativeMapDAC = candidateDAC
 	g.nativeFDOTHERPalettePhase = candidatePalettePhase
 	g.nativeFDOTHERPaletteTick = candidatePaletteTick
+	if modernFrame != nil {
+		g.modernHDMapFrame = modernFrame
+		g.modernHDMapTerrain = modernFrame.TerrainSeed
+		g.modernHDMapTerrainAssets = a
+		g.modernHDMapTerrainState = g.st
+	}
 	return nil
 }
 

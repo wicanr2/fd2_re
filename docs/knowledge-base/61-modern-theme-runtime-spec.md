@@ -1,6 +1,6 @@
 # 61 — 現代美術主題正式執行期規格
 
-狀態：`RUNTIME-E1-PARTIAL`（2026-09-05）
+狀態：現代主題仍為部分覆蓋；目前分層與缺口依[58](58-fd2-exe-re-coverage.md)。
 
 2026-10-15 接續現況：使用者已要求加速HD化；本檔既有手繪風格、靜態嘴型、幾何與原子預檢契約保持。
 清冊與私人檔檢查通過，不代表完整玩家路徑或高解析呈現完成；唯一數量與缺口見[58目前狀態](58-fd2-exe-re-coverage.md)。
@@ -8,7 +8,8 @@
 [#201](https://github.com/wicanr2/fd2_re/issues/201)盤點正式consumer素材覆蓋，
 [#202](https://github.com/wicanr2/fd2_re/issues/202)驗證正常路徑，
 [#204](https://github.com/wicanr2/fd2_re/issues/204)追蹤高解析範圍與原型。
-production已接啟動時480×480故事頭像，範圍與限制見下節；其他候選仍為原生尺寸。新增範圍先經確認與READY審查。
+正式路徑已接480×480故事頭像、高解析黑體及144×144戰場人物；下方各切片分別記錄驗證範圍。
+真正HD地形、其他完整演出與平台仍待完成。新增範圍先經確認與READY審查。
 
 素材缺口先用[靜態宣告盤點工具](../../tools/audit_modern_theme_coverage.py)產生候選來源與JSON pointer，
 再查正式consumer或正常玩家路徑。工具用法見檔首；它包含可能不可達的故事資料，零缺件也不代表完整玩家覆蓋。
@@ -33,7 +34,7 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
 
 [#259](https://github.com/wicanr2/fd2_re/issues/259)追蹤漏列圖組、既有24與新增HD載入範圍。
 先補第一章實際需求，再核對其他名冊；不猜代96、不略過敵人、不以像素替代讓候選通過。
-現有94組loader只是舊清冊範圍的預檢，世界仍未接Game.Draw。
+上述拒收時只有94組loader；其後由下節補齊125組，正式世界另見本檔「正式HD戰場接線」。
 
 #### 完整原生圖庫的清冊、父項與HD載入（CONFORMED，限資料與既有呈現）
 
@@ -55,7 +56,7 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
   來源只供完整私人包重生，runtime-only包只需正式逐幀PNG。拒收草稿與原版參照不列allow-list。
 - 先產生可丟棄完整父項清冊與候選包，再編製／驗證125組HD資料與全姿態；完整資料預檢及
   第一章同份存檔候選成功後才登錄正式清冊。已登錄來源與逐幀檔沿現有allow-list工具同步私人庫。
-  高解析世界的Game.Draw接線仍由上層DRAFT追蹤，這項資料接入不冒稱全世界或HD地形完成。
+  這項資料接入只驗載入；後續Game.Draw驗收見「正式HD戰場接線」，完整HD地形仍另列。
 - 回歸覆蓋真實140組Mask分類、125組完整預檢、96與最後可見135的有效載入、15組空來源及140越界、
   缺組／孤兒／重複／父項錯誤／來源hash拒收、舊清冊相容、原始保存不變與第一章候選。
   正式現代主題另抽正常F2／Home／保存冷讀；其餘章節與完整HD世界仍保持未驗分級。
@@ -70,7 +71,8 @@ production已接啟動時480×480故事頭像，範圍與限制見下節；其�
 125組／1455張HD及31組／372張父項已登錄，新增372幀逐姿態檢閱通過。
 舊94組的1083張父項與HD輸出bytes相同；完整原生Mask分類、清冊與九項編製守衛通過。
 首章實檔CPU候選通過；正式清冊與私人包另取得16張普通GUI、F2／Home、保存及新程序LOAD，
-兩主題與來源保存bytes相同。CONFORMED只限本段資料、載入與既有24呈現，144世界尚未接Game.Draw。
+兩主題與來源保存bytes相同。CONFORMED只限本段資料、載入與既有24呈現；當時144世界尚未接線，
+後續正式接線由本檔獨立切片及主收據的`world_runtime_followup_20261019`驗收。
 來源、重跑命令與限制見[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`native_coverage_followup_20261019`。
 
 ### 2026-10-19 F2戰場重複消費修正（CONFORMED，限首章抽驗）
@@ -119,7 +121,9 @@ group10 frame5的實際候選面向右，與該列左向契約矛盾。單獨補
 檢查目前編製器／清冊與逐幀來源SHA、尺寸、原墨跡定位及重複政策；預設要求全94組，
 有界樣本須明示`--allow-subset`。只產生資料驗證收據，不替代人工姿態審查或正常GUI。
 
-### 2026-10-19 144×144 戰場角色與世界層（DRAFT，候選編製中）
+### 2026-10-19 144×144 戰場角色與世界層（較早DRAFT與候選證據）
+
+本節保留候選形成與94組子集的歷史限制；現行125組及Game.Draw分別依本檔完整圖庫與正式HD戰場接線。
 
 沿使用者已核准的1920×1200、手繪風格、原方格與人物位置，從既有母稿編製144×144圖。
 [候選編製器](../../tools/build_modern_hd_map_sprites.py)保留24×24已審墨跡矩形及腳底，
@@ -207,7 +211,7 @@ r6的`native_ink`因此只是已登錄現代24成品的輪廓，不能解讀為�
 以既有native foreground blitter的實際寫入驗證順序、移動鄰格、負邊界、資格、flip、
 LUT、零色來源及透明洞。這項只增加繪製計畫，不新增地形美術或啟用正式HD世界。
 
-#### HD世界候選合成器（READY，未接Game.Draw）
+#### HD世界候選合成器（READY，限較早CPU候選）
 
 此有界切片只驗正常穩定世界的地形／範圍、HD單位與前景排序。使用同份FrameInput與
 明示原生work初始快照；複製cells後讓既有ComposeFrame合成地形／範圍，單位、前景、
@@ -238,6 +242,56 @@ raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣�
 尚未登錄的完整父項清冊另以`FD2_HD_PARENT_CATALOG`明示，不覆寫正式清冊來測候選。
 此次94組實檔預檢後，第一章世界因96拒收，失敗與來源快照保留；標準回歸略過此外部候選測試。
 下一閘門是#259素材／清冊範圍，再接正式世界、透明介面與正常玩家GPU。
+
+### 2026-10-19 戰鬥後JSON LOAD暫態（CONFORMED-SCOPED，#260）
+
+正常標題LOAD及普通攻擊後，`hd-world-gui-r5`觀測到F9已載入新的非原生章首對話，
+但`nativeLevelUpDialogue`與`nativeMovePlan`仍在。`Update`先呼叫經驗對話owner，
+`nativeStoryDialogueAtInputWait`拒絕非原生章首對話，輸入無法到達普通對話。
+這是已證實的重製端生命週期缺陷，不推論原版ABI。
+
+成功JSON LOAD在存檔欄位驗證後、發布新節點前丟棄舊經驗對話、待播佇列與移動計畫／面板，
+不得執行舊owner的續行。拒收存檔保留目前owner。驗收包含修正前失敗的成功LOAD案例、
+拒收案例，以及普通物理戰鬥後F9、章首對話、保存與新程序LOAD。
+存檔格式、原生槽與正式經驗／死亡規則保持；這個窄修正不宣稱完整暫態覆蓋。
+
+### 2026-10-19 正式HD戰場接線（CONFORMED-SCOPED）
+
+沿已確認1920×1200、144人物、原方格與位置、F2及透明介面方案。完整125組來源已通過上一節，
+不新增畫風、玩法、保存或發行決策。原版指紋沿固定清單；本節是現有重製消費端的已證實接線。
+來源為`composeNativeMapFrameAtWithPaletteCycle`、`buildNativeMapFrameInput`、
+`indexedmap.ComposeNativeFrame`／`ComposeNativeStepFrame`／`ComposeNativeUpStepFrame`、
+`nativeMapSelectionOverlay`、`BlitNativeMapHUD`與`MosaicNativeMapViewport`。
+原版位址、遮罩與caller證據沿上述現有契約及本檔HD單位／前景計畫，不重開matching。
+
+- 正式HD戰場共用一次原生幀交易的candidate state、時鐘、DAC與FrameInput。
+  HD預檢失敗不得發布新原生work／VGA、時鐘、狀態或部分HD幀。忠實及無HD舊包沿原路徑。
+- HD獨立保存只含地形的work種子；不得把上一幀原版人物、range、HUD或選取像素當地形來源。
+  地形、parallax、chapter auxiliary與第23章staging沿原生blitter及相同caller；原生work另保持原本語意。
+  普通幀保留range，走行／橫幅不進range或HUD；第12章上移沿既有9列地形及viewport位移。
+- 地形原生320×200來源乘6；144人物依原生計畫直繪，前景依Mask含零色來源，順序保持。
+  原地形放大只是過渡呈現，真正HD地形仍未完成。raw bit7沿已核准現代變暗係數。
+- Selection／HUD均已證實為來源覆寫或透明跳過。用兩個不同的完整初始填值執行同一純寫入callback：
+  兩結果相同者為覆寫，兩者各保留原填值者透明，其餘拒收destination-dependent操作。
+  這是覆寫契約的覆蓋證明，不能用原畫面前後色差、零色或黑色推定遮罩。
+  UI以320原生位置乘2貼透明640介面；全畫面面板、說明、對話、淡幕及HD字型沿既有繪製順序。
+- 現代指令圖示沿原`ActionOverlayOrigin`與各階段offset乘6貼世界，之後重繪游標上的HD人物，
+  HUD及後續不透明UI保持在上層。輸入、blink、Draw承認與availability保持。
+- 回合橫幅凍結進場HD世界。馬賽克原生block乘6、從viewport左上取樣；字樣沿原glyph／位置在UI。
+  真彩人物無原版palette index，橫幅真彩減亮僅列現代呈現近似，不稱原版逐色parity。
+- 每次Draw清除可見世界引用；早返、標題、設施、戰鬥演出、完整DAC黑白及LOAD不能露出舊世界。
+  最終螢幕先世界、再透明介面、HD頭像與文字；邏輯截圖亦須包含同一世界。
+- 驗收比較原生幀／時鐘／保存不變、普通及兩種走行、遮罩同色／零色、缺件原子拒收、
+  F2、選取、指令環、走行／取消、HUD、角色／戰鬥返回及普通GPU。完整HD地形、其他演出及平台另列。
+
+正式實作入口：[HD世界幀與UI](../../remake/cmd/fd2/modern_hd_map_runtime.go)、
+[HD世界GPU](../../remake/cmd/fd2/modern_hd_map_gpu.go)；正常首章34張GPU與4張走行通過；兩次普通攻擊分驗經驗對話中F9及正常返回，保存與新程序LOAD bytes保持。
+兩份穩定144來源各10678個核心像素零差異，一份跨相位明示不可比；同view的960地形樣本零差異。
+範圍限本節與[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`world_runtime_followup_20261019`，不宣稱完整HD或原版對拍。
+本輪GPU限首章普通走行與物理攻擊。第12章上移caller限CPU回歸，回合橫幅限shader編譯；
+正常END橫幅、AI、其他章節及故事世界仍沿#202／#204後續抽驗，不能由這34張圖提升分級。
+[GPU圖源驗證](../../tools/verify_fd2_hd_world_images.py)在Docker以`--receipt`、`--catalog`、`--source`及
+新`--report`核對預先指定樣本的144不透明核心、前後相位、原生位移與雙主題同view；不挑選碰巧相同的動畫幀。
 
 ### 角色／物品面板轉場字型（CONFORMED，限已列GUI與fixture範圍）
 

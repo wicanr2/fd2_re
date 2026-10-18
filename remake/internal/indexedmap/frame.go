@@ -463,29 +463,54 @@ func ComposeNativeFrameObserved(work, vga []byte, in NativeFrameInput, observer 
 // 視窗複製沒有單獨量到位址，但走行期間畫面確實在更新，所以保留與整幀排程
 // 相同的 312×192 複製。章節輔助表面同樣沒有單獨量到，保留原本行為。
 func ComposeNativeStepFrame(work, vga []byte, in FrameInput) error {
-	return composeNativeStepFrame(work, vga, in, workBase, in.CameraY, 8, workBase)
+	return ComposeNativeStepFrameObserved(work, vga, in, nil)
+}
+
+func ComposeNativeStepFrameObserved(work, vga []byte, in FrameInput, observer FrameObserver) error {
+	return composeNativeStepFrameObserved(work, vga, in, workBase, in.CameraY, 8, workBase, observer)
 }
 
 // ComposeNativeUpStepFrame preserves 0x13185's six terrain/copy passes.
 // The terrain camera and destination differ from the unit/foreground camera.
 // Source: fd2_terrain_mode3_review_20261001.json, walk_terrain_writer.
 func ComposeNativeUpStepFrame(work, vga []byte, in FrameInput, unitY, motion int) error {
-	if len(work) != NativeUnitPresentWorkSize || motion < 1 || motion > 6 ||
+	return ComposeNativeUpStepFrameObserved(work, vga, in, unitY, motion, nil)
+}
+
+// NativeUpStepLayout is shared by the native copy and HD object projection.
+// Values retain the existing 0x13185 caller's work-address space.
+func NativeUpStepLayout(in FrameInput, unitY, motion int) (terrainBase, terrainCameraY, terrainRows, viewportBase int, err error) {
+	if motion < 1 || motion > 6 ||
 		in.CameraY < 0 || in.MapWidth <= 0 || unitY < 0 || unitY >= len(in.Cells)/in.MapWidth ||
 		in.Parallax != nil || in.ChapterAux != nil {
-		return errors.New("indexedmap: invalid native up-step input")
+		return 0, 0, 0, 0, errors.New("indexedmap: invalid native up-step input")
 	}
-	terrainBase, terrainCameraY, viewportBase := workBase, in.CameraY, workBase
+	terrainBase, terrainCameraY, viewportBase = workBase, in.CameraY, workBase
 	if in.CameraY > 0 {
 		terrainBase, terrainCameraY = 0x55C8, in.CameraY-1
 		if unitY-in.CameraY < 2 {
 			viewportBase -= motion * fdicon.NativeMotionPixels * workStride
 		}
 	}
-	return composeNativeStepFrame(work, vga, in, terrainBase, terrainCameraY, 9, viewportBase)
+	return terrainBase, terrainCameraY, 9, viewportBase, nil
+}
+
+func ComposeNativeUpStepFrameObserved(work, vga []byte, in FrameInput, unitY, motion int, observer FrameObserver) error {
+	if len(work) != NativeUnitPresentWorkSize {
+		return errors.New("indexedmap: invalid native up-step input")
+	}
+	terrainBase, terrainCameraY, rows, viewportBase, err := NativeUpStepLayout(in, unitY, motion)
+	if err != nil {
+		return err
+	}
+	return composeNativeStepFrameObserved(work, vga, in, terrainBase, terrainCameraY, rows, viewportBase, observer)
 }
 
 func composeNativeStepFrame(work, vga []byte, in FrameInput, terrainBase, terrainCameraY, terrainRows, viewportBase int) error {
+	return composeNativeStepFrameObserved(work, vga, in, terrainBase, terrainCameraY, terrainRows, viewportBase, nil)
+}
+
+func composeNativeStepFrameObserved(work, vga []byte, in FrameInput, terrainBase, terrainCameraY, terrainRows, viewportBase int, observer FrameObserver) error {
 	if len(work)%workStride != 0 || len(vga) < NativeMapVGASize ||
 		in.MapWidth <= 0 || len(in.Cells)%in.MapWidth != 0 {
 		return errors.New("indexedmap: incomplete native step frame input")
@@ -505,6 +530,9 @@ func composeNativeStepFrame(work, vga []byte, in FrameInput, terrainBase, terrai
 	}
 	if err := in.TerrainBank.BlitNativeTerrainRegion(frame, workStride, baseX, baseY, in.MapWidth, in.Cells, in.Controls, in.CameraX, terrainCameraY, 13, terrainRows, in.Flip, in.TerrainCycle, in.LUT); err != nil {
 		return fmt.Errorf("indexedmap: step terrain: %w", err)
+	}
+	if err := observeFrameStage(observer, FrameStageTerrain, frame, vga); err != nil {
+		return err
 	}
 	if err := in.UnitBank.BlitNativeUnitLayer(frame, workStride, in.SelectorCache, in.Units, in.CameraX, in.CameraY, 12, 7, in.IdleCycle, in.MovingCycle, in.PixelShift); err != nil {
 		return fmt.Errorf("indexedmap: step units: %w", err)

@@ -2832,6 +2832,21 @@
         ],
         "pattern": "unregistered_visible_selectors"
       }
+    },
+    {
+      "id": "quickload-discards-previous-battle-dialogue-owner",
+      "area": "讀檔",
+      "date": "2026-10-19",
+      "rule": "節點邊界LOAD成功後、建立新節點前丟棄舊戰場的對話owner與續行佇列；拒收存檔保持目前owner。入口remake/cmd/fd2/save.go及save_test.go；普通戰鬥返回另等經驗對話結束，不能只看atk為空。",
+      "why": "F9於物理戰鬥後載入新非原生章首對話，舊nativeLevelUpDialogue先攔輸入，原生等鍵條件永遠不成立；另有舊移動計畫殘留。r5唯讀觀測與修正前成功LOAD回歸均重現。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "remake/cmd/fd2/save.go"
+        ],
+        "pattern": "g.pendingNativeLevelUps = nil"
+      }
     }
   ]
 }

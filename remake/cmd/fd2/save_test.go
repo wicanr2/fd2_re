@@ -229,7 +229,14 @@ func TestCampaignSaveLoadRestoresTownBoundaryAndParty(t *testing.T) {
 	g.itemAnimStep = 11
 	g.itemClosing = true
 	g.nativePlayerStatus = &nativePlayerStatusState{phase: "status", steady: []byte{1}}
+	callbackRan := false
+	g.nativeLevelUpDialogue = &nativeLevelUpDialogueState{then: func() { callbackRan = true }}
+	g.pendingNativeLevelUps = []pendingNativeLevelUp{{unit: &u, exp: 1}}
+	g.nativeMovePlan = &battle.NativePlayerMovement{}
 	g.loadGameFromSlot(2)
+	if g.nativeLevelUpDialogue != nil || len(g.pendingNativeLevelUps) != 0 || g.nativeMovePlan != nil || callbackRan {
+		t.Fatal("LOAD retained discarded battle owners or ran their continuation")
+	}
 	if g.camp.NodeID() != "town_ch02" || g.gold != 279 || len(g.items) != 1 || g.items[0] != "sky-key" {
 		t.Fatalf("campaign boundary did not restore: node=%q gold=%d items=%#v", g.camp.NodeID(), g.gold, g.items)
 	}
@@ -305,8 +312,14 @@ func TestCampaignLoadRejectsOutOfRangeNativeSystemOptionWithoutMutation(t *testi
 		t.Fatal(err)
 	}
 	status := &nativePlayerStatusState{phase: "status", steady: []byte{1}}
-	g := &Game{camp: campaign.NewRunner(c), gold: 7, nativePlayerStatus: status}
+	levelUp := &nativeLevelUpDialogueState{}
+	movement := &battle.NativePlayerMovement{}
+	g := &Game{camp: campaign.NewRunner(c), gold: 7, nativePlayerStatus: status,
+		nativeLevelUpDialogue: levelUp, nativeMovePlan: movement}
 	g.loadGameFromSlot(0)
+	if g.nativeLevelUpDialogue != levelUp || g.nativeMovePlan != movement {
+		t.Fatal("rejected LOAD discarded current battle owners")
+	}
 	if g.gold != 7 || g.nativeSystemOptions != nil || g.nativePlayerStatus != status ||
 		g.msg != "存檔 native 系統設定超出原始布林範圍" {
 		t.Fatalf("invalid system option mutated game: gold=%d options=%v msg=%q", g.gold, g.nativeSystemOptions, g.msg)

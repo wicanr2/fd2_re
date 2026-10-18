@@ -29,6 +29,28 @@ func (g *Game) recordInputAuditState() {
 	r["released_keys"] = released
 	r["modern_theme"] = g.modernStoryPortraits != nil
 	r["hd_theme"] = g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD
+	r["battle_scene"] = g.atk != nil
+	r["battle_event"] = g.battleEvent != nil
+	r["level_up_dialogue"] = g.nativeLevelUpDialogue != nil
+	r["death_reward_ui"] = g.nativeDeathRewardUI != nil
+	r["transient_ui"] = g.transientUI
+	r["class_ui_job"] = g.nativeClassUIJob != nil
+	if g.nativeMovePlan != nil {
+		cells := make([][]int, 0, len(g.reach))
+		for cell := range g.reach {
+			cells = append(cells, []int{cell.X, cell.Y})
+		}
+		r["move_reachable"] = cells
+	}
+	r["hd_world"] = g.modernHDWorldVisible && g.modernHDMapGPU != nil && g.modernHDMapGPU.Theme == g.modernStoryPortraits
+	if r["hd_world"] == true && g.modernHDMapFrame != nil {
+		r["hd_world_frame"] = g.modernHDMapPresentedFrame
+		units := make([]map[string]any, 0, len(g.modernHDMapFrame.Units))
+		for _, unit := range g.modernHDMapFrame.Units {
+			units = append(units, map[string]any{"group": unit.Group, "frame": unit.Frame, "rect": []int{unit.Rect.Min.X, unit.Rect.Min.Y, unit.Rect.Max.X, unit.Rect.Max.Y}, "work_offset": unit.WorkOffset})
+		}
+		r["hd_world_units"] = units
+	}
 	r["locale"] = g.localeID
 	r["gold"] = g.gold
 	r["shop_mode"] = g.nativeShopMode

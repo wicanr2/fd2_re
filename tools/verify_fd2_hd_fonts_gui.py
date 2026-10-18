@@ -28,7 +28,10 @@ def main():
     parser.add_argument('--transition-frames', action='store_true', help='另以唯讀觀測擷取整備問句轉場PNG')
     parser.add_argument('--panel-transitions', action='store_true', help='以實際移動文字區抽驗狀態／物品轉場')
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
+    parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
     args = parser.parse_args()
+    tool_source_sha256=digest(Path(__file__))
+    assert not args.world or args.battle_status
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
@@ -81,6 +84,29 @@ def main():
     gold_shots={}
     gold_errors=[]
     panel_probe=None
+    world_stop=threading.Event()
+    world_thread=None
+    world_shots={}
+    world_rejected=[]
+    if args.world:env['FD2_SEED']='1'
+
+    def capture_world_walk():
+        seen=set()
+        deadline=time.monotonic()+12
+        while not world_stop.is_set() and time.monotonic()<deadline and len(world_shots)<4:
+            before=latest(audit)
+            if not before.get('walking') or not before.get('hd_world'):
+                world_stop.wait(.005);continue
+            token=tuple((u.get('work_offset'),u.get('frame')) for u in before.get('hd_world_units',[]))
+            if token in seen:world_stop.wait(.005);continue
+            seen.add(token)
+            path=args.out/('world-walking-'+str(len(seen))+'.png')
+            command('import','-window',window,str(path))
+            after=latest(audit)
+            record={'file':path.name,'sha256':digest(path),'before':before,'after':after,
+                    'kind':'actual_gpu_window'}
+            if after.get('walking') and after.get('hd_world'):world_shots[path.name]=record
+            else:world_rejected.append(record)
 
     def capture_gold_roll():
         seen=set()
@@ -170,8 +196,10 @@ def main():
             wait(lambda s:s.get('frame',0)>=before+20, timeout=120)
         time.sleep(1)
         path=args.out/(name+'.png')
+        gpu_before=latest(audit)
         command('import','-window',window,str(path))
         shots[path.name]={'sha256':digest(path),'state':latest(audit),
+                          'gpu_before':gpu_before,
                           'window_geometry':command('xdotool','getwindowgeometry','--shell',window)}
         print('CAPTURE '+path.name,flush=True)
 
@@ -341,6 +369,100 @@ def main():
             key('z');wait(lambda s:not s.get('player_focus'))
             shot('battle-hd-focused')
             focused=latest(audit)
+            if args.world:
+                def settle_world_battle():
+                    for _ in range(120):
+                        state=latest(audit)
+                        if state.get('level_up_dialogue') and state.get('dialogue_native') is False:
+                            raise AssertionError('LOAD後經驗對話owner仍佔有新的非原生章首對話')
+                        if not state.get('battle_event') and not state.get('dialogues') and not state.get('banner'):
+                            return
+                        key('Return')
+                    raise TimeoutError('普通LOAD戰場對話尚未結束')
+                def focus_own(index):
+                    state=latest(audit)
+                    own=[u for u in state['units'] if u['camp']==0 and u['on_field'] and u['hp']>0]
+                    target=[own[index]['x'],own[index]['y']]
+                    for _ in range(len(own)+1):
+                        key('z');wait(lambda s:not s.get('player_focus'))
+                        if latest(audit)['cursor']==target:return
+                    raise AssertionError('正常循環選人未抵達指定在場單位')
+                wait(lambda s:s.get('hd_world') is True)
+                baseline=latest(audit)
+                key('Return');wait(lambda s:s.get('move_preview') is True)
+                shot('world-hd-move-preview')
+                origin=latest(audit)['cursor']
+                for _ in range(3):key('Right')
+                destination=latest(audit)['cursor']
+                assert destination in latest(audit).get('move_reachable',[]),'普通走行目的地不在正式可達集合'
+                shot('world-hd-move-destination')
+                world_thread=threading.Thread(target=capture_world_walk,daemon=True)
+                world_thread.start()
+                key('Return');wait(lambda s:s.get('ring') is True and not s.get('walking'))
+                wait(lambda s:s.get('ring_phase')=='open')
+                shot('world-hd-ring')
+                ring=latest(audit)
+                key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'));shot('world-faithful-ring')
+                key('F2');wait(lambda s:s.get('hd_world') is True);shot('world-hd-ring-restored')
+                assert latest(audit)['units']==ring['units'] and latest(audit)['view']==ring['view']
+                key('Escape');wait(lambda s:not s.get('ring') and not s.get('walking'))
+                if latest(audit).get('move_preview'):key('Escape');wait(lambda s:not s.get('move_preview'))
+                shot('world-hd-move-cancelled')
+                world_stop.set();world_thread.join(timeout=15)
+                assert not world_thread.is_alive() and world_shots,'未取得有效實際走行GPU'
+                key('F9');wait(lambda s:s.get('node')=='battle_ch01' and not s.get('ring') and not s.get('move_preview'))
+                settle_world_battle()
+                def ordinary_physical_attack(prefix):
+                    focus_own(2)
+                    attacker=latest(audit)
+                    shot(prefix+'-attacker-focused')
+                    key('Return');wait(lambda s:s.get('move_preview') is True)
+                    state=latest(audit)
+                    occupied={(u['x'],u['y']) for u in state['units'] if u['on_field'] and u['hp']>0}
+                    enemies=[u for u in state['units'] if u['camp']==2 and u['on_field'] and u['hp']>0]
+                    choices=[]
+                    for target in enemies:
+                        for cell in state.get('move_reachable',[]):
+                            if tuple(cell) not in occupied and abs(cell[0]-target['x'])+abs(cell[1]-target['y'])==1:
+                                choices.append((abs(cell[0]-state['cursor'][0])+abs(cell[1]-state['cursor'][1]),cell,target))
+                    assert choices,'正式可達集合沒有相鄰敵人的安全測試位置'
+                    _,cell,target=min(choices,key=lambda value:(value[0],value[1][1],value[1][0]))
+                    def move_cursor(destination):
+                        current=latest(audit)['cursor']
+                        for _ in range(abs(destination[0]-current[0])):key('Right' if destination[0]>current[0] else 'Left')
+                        current=latest(audit)['cursor']
+                        for _ in range(abs(destination[1]-current[1])):key('Down' if destination[1]>current[1] else 'Up')
+                        assert latest(audit)['cursor']==destination
+                    move_cursor(cell);key('Return')
+                    wait(lambda s:s.get('ring') and not s.get('walking') and s.get('ring_phase')=='open')
+                    shot(prefix+'-attack-ring')
+                    key('Return');wait(lambda s:not s.get('ring'))
+                    move_cursor([target['x'],target['y']]);shot(prefix+'-attack-target')
+                    key('Return');wait(lambda s:s.get('battle_scene') is True)
+                    shot(prefix+'-physical-scene')
+                    wait(lambda s:not s.get('battle_scene') and not s.get('walking') and s.get('hd_world'))
+                ordinary_physical_attack('world-hd')
+                # The physical scene can finish before its experience dialogue.
+                # Keep this distinct from a fully returned battle map.
+                shot('world-hd-physical-before-load')
+                key('F9');wait(lambda s:s.get('node')=='battle_ch01' and not s.get('battle_scene'))
+                settle_world_battle()
+                assert not latest(audit).get('level_up_dialogue') and not latest(audit).get('move_preview')
+                shot('world-hd-load-owner-cleared')
+                ordinary_physical_attack('world-hd-replay')
+                for _ in range(120):
+                    state=latest(audit)
+                    if not state.get('level_up_dialogue') and not state.get('dialogues') and not state.get('battle_event'):break
+                    key('Return')
+                else:raise TimeoutError('普通戰鬥經驗對話尚未結束')
+                wait(lambda s:s.get('hd_world') and not s.get('battle_scene'))
+                shot('world-hd-physical-return')
+                key('F9')
+                settle_world_battle()
+                focus_own(0)
+                wait(lambda s:s.get('hd_world') is True)
+                shot('world-hd-source-reloaded')
+                focused=latest(audit)
             key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-focused')
             faithful_focused=latest(audit)
             assert faithful_focused['units']==focused['units'] and faithful_focused['view']==focused['view']
@@ -376,10 +498,12 @@ def main():
             assert command_focused['cursor']==returned['cursor']
             assert digest(saved)==digest(args.town_save),'面板操作改寫保存'
             outside=[]
+            status_reference='world-hd-source-reloaded' if args.world else 'battle-hd-focused'
             for reference, targets in [
-                    ('battle-hd-focused',['battle-hd-status','battle-hd-status-restored','battle-hd-returned']),
+                    (status_reference,['battle-hd-status','battle-hd-status-restored','battle-hd-returned']),
                     ('battle-hd-command-unit-focused',['battle-hd-command-unit-status','battle-hd-commands','battle-hd-command-unit-returned'])]:
                 for target in targets:
+                    assert shots[reference+'.png']['state']['view']==shots[target+'.png']['state']['view'], '面板外比較鏡頭不同'
                     # The top five native rows are outside every stable panel.
                     # This is actual map RGB, not an audit-based Draw assertion.
                     roi='1800x30+60+0'
@@ -403,7 +527,10 @@ def main():
             assert saved.read_bytes()==hd_saved
             restart_title_load('battle_ch01',hd_loaded['gold'],'battle-cold-title-load')
             assert saved.read_bytes()==hd_saved
+            assert digest(Path(__file__))==tool_source_sha256,'GUI工具執行中來源被修改'
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
+                    'gui_tool_sha256':tool_source_sha256,
+                    'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
                     'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'screenshots':shots,'operations':operations,
                     'initial':initial,'focused':focused,'returned':returned,
@@ -411,7 +538,9 @@ def main():
                     'source_save_bytes_equal':saved.read_bytes()==args.town_save.read_bytes(),
                     'theme_save_bytes_equal':True,'loaded_units_equal':True,
                     'recording_created':False,'elapsed_seconds':time.monotonic()-started,
-                    'scope':'正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；不注入座標或狀態，不宣稱戰鬥或原版對拍。'}
+                    'scope':('正常標題LOAD既有普通START／F5首章JSON，Z聚焦、Home檢視、F2、狀態與命令、返回；'
+                             + ('含普通走行、指令環、取消、兩次物理攻擊、經驗對話中F9及正常戰場返回。' if args.world else '')
+                             + '不注入座標或狀態，不宣稱原版對拍或完整戰役。')}
             (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
             return
         if args.preparation:
@@ -814,6 +943,13 @@ def main():
                 'recording_created':False,'elapsed_seconds':time.monotonic()-started}
         (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     finally:
+        world_stop.set()
+        if world_thread and world_thread.ident is not None:world_thread.join(timeout=15)
+        if args.world:
+            (args.out/'world-observation.json').write_text(json.dumps(
+                {'accepted_walk_gpu':world_shots,'rejected_walk_gpu':world_rejected,
+                 'gui_tool_sha256':tool_source_sha256,'tool_source_unchanged':digest(Path(__file__))==tool_source_sha256,
+                 'recording_created':False},ensure_ascii=False,indent=2)+'\n')
         if panel_probe:
             panel_probe.finish()
             if not (args.out/'panel-transition-observation.json').exists():panel_probe.save()

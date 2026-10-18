@@ -249,6 +249,11 @@ func (g *Game) loadJSONGameFromSlot(slot int, inHotel bool) bool {
 		g.msg = "存檔 native 系統設定無效"
 		return false
 	}
+	// 節點邊界LOAD丟棄舊戰場owner，不能執行其續行或把舊經驗對話套到新章首。
+	// 必須在驗證後、替換st之前清除移動目標，避免改寫新載入的戰場。
+	g.clearNativePlayerMovement()
+	g.nativeLevelUpDialogue = nil
+	g.pendingNativeLevelUps = nil
 	g.captureNativeMapHUDPersistence()
 	g.camp.Cur = d.Node
 	g.camp.Flags = d.Flags

@@ -77,6 +77,12 @@ func drawModernHDOverlay(target modernHDImageTarget,
 
 func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	offscreen *ebiten.Image, geometry ebiten.GeoM) {
+	if p.Game.modernHDWorldVisible && p.Game.modernHDMapGPU != nil {
+		op := &ebiten.DrawImageOptions{Filter: ebiten.FilterLinear}
+		op.GeoM.Scale(1.0/3, 1.0/3)
+		op.GeoM.Concat(geometry)
+		screen.DrawImage(p.Game.modernHDMapGPU.World, op)
+	}
 	p.drawDefaultFinalScreen(screen, offscreen, geometry)
 	g := p.Game
 	overlay := g.modernHDOverlay

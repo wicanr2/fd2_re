@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -329,6 +329,14 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 F2重複消費修正後，world-geometry-f2-fixed-gui-r1以同份正常首章JSON、Z聚焦及F2往返取得真正戰場圖片。兩側units與NativeMapViewState相同，但現代24邏輯像素直繪，忠實320×200後放大兩倍，取景與人物大小不同。前測world-geometry-before-gui-r1的忠實圖片其實是被F2誤開的角色狀態，保留為#257診斷，不能當本題取景證據。HD世界層DRAFT及原生具型別來源已列61。
 
 怎樣算做完：現代HD世界沿原生(4,4)、312×192窗格、相同NativeMapViewState及單位投影繪製；高解析母稿直繪，範圍／前景／HUD／選單與保存保持。正常F2、走行、取消、角色與戰鬥返回的實際GPU及保存驗證通過。
+
+### F9於物理戰鬥後保留經驗對話owner，新的章首對話無法確認
+
+`quickload-retains-level-up-owner` · 缺陷 · [#260](https://github.com/wicanr2/fd2_re/issues/260) · 仍未完成 · 要人判
+
+正常標題LOAD既有第一章F5槽，正常Z／移動／指令環／攻擊後，F9載入同份JSON。hd-world-gui-r5唯讀觀測確認level_up_dialogue=true、dialogue_native=false、dialogues=1、move_preview=true。Update在普通對話之前呼叫stepNativeLevelUpDialogue；其原生等鍵條件拒絕新的非原生章首對話。save.go未清除該owner與pending queue，也未清除移動計畫。修正前成功LOAD回歸確實失敗，拒收案例保持。沒有原版規則或存檔格式變更。
+
+怎樣算做完：成功JSON LOAD在驗證後、進入新節點前丟棄舊經驗對話、待播佇列與移動計畫，不執行舊續行。拒收LOAD保持目前owner。正常物理戰鬥後F9可完成新章首對話，另驗保存／新程序LOAD與HD返回。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 
