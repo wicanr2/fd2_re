@@ -30,6 +30,8 @@ type modernStoryPortraitSet struct {
 	mapSprites        map[int][]image.Image
 	mapSpritesHD      map[int][]image.Image
 	mapTilesets       map[int]image.Image
+	terrainHD         map[int]map[int]*modernTerrainHDAsset
+	terrainHDBanks    map[int]*fdicon.Bank
 	battleHUDPanel    image.Image
 	battleActionIcons []image.Image
 }
@@ -58,6 +60,7 @@ type modernThemeAsset struct {
 	TileCount        int      `json:"tile_count"`
 	Semantics        []string `json:"semantics"`
 	LayoutPolicy     string   `json:"layout_policy"`
+	FrameIDs         []int    `json:"frame_ids"`
 }
 
 type modernThemeCatalog struct {
@@ -88,6 +91,12 @@ func loadModernStoryPortraitSet(catalogPath, packRoot string) (*modernStoryPortr
 	}
 	hdPortraits := make(map[int]image.Image)
 	for _, asset := range catalog.Assets {
+		if asset.Role == "native_terrain_hd_set" {
+			if err := loadModernTerrainHDAsset(set, asset, packRoot); err != nil {
+				return nil, err
+			}
+			continue
+		}
 		if asset.Role == "map_sprite_hd_set" {
 			if err := loadModernHDMapSpriteAsset(set, asset, packRoot); err != nil {
 				return nil, err

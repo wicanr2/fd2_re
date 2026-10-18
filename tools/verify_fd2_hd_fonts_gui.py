@@ -30,10 +30,12 @@ def main():
     parser.add_argument('--panel-transitions', action='store_true', help='以實際移動文字區抽驗狀態／物品轉場')
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
+    parser.add_argument('--terrain', action='store_true', help='普通方向鍵移鏡頭至首章房屋，抽驗HD地形與F2；需--battle-status')
     parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     args = parser.parse_args()
     tool_source_sha256=digest(Path(__file__))
     assert not args.world or args.battle_status
+    assert not args.terrain or args.battle_status
     assert not args.timed_dialogue or args.world
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
@@ -172,7 +174,7 @@ def main():
                         if state.get('frame',0)>before.get('frame',0) and mapped in (state.get('keys') or []):
                             ack=state;break
                 if ack:break
-                time.sleep(.1)
+                time.sleep(.005)
         finally:command('xdotool','keyup',name)
         if not ack:raise TimeoutError('按鍵無收據 '+name)
         deadline=time.monotonic()+60
@@ -186,7 +188,7 @@ def main():
                 if state.get('frame',0)>ack['frame'] and mapped in (state.get('released_keys') or []):
                     release_ack=state;break
             if release_ack:break
-            time.sleep(.1)
+            time.sleep(.005)
         if not release_ack:raise TimeoutError('放鍵無收據 '+name)
         released_frame=max(ack['frame'],latest(audit).get('frame',0))
         wait(lambda s:s.get('frame',0)>=released_frame+2)
@@ -370,6 +372,35 @@ def main():
             else:raise TimeoutError('首章LOAD對話未結束')
             wait(lambda s:not s.get('dialogues') and not s.get('banner'))
             shot('battle-hd-field')
+            if args.terrain:
+                wait(lambda s:not s.get('player_focus') and s.get('hd_world') is True)
+                before_pan=latest(audit)
+                def pan_to(destination):
+                    for _ in range(90):
+                        current=latest(audit)['cursor']
+                        if current==destination:return
+                        if current[0]!=destination[0]:direction='Right' if current[0]<destination[0] else 'Left'
+                        else:direction='Down' if current[1]<destination[1] else 'Up'
+                        key(direction)
+                    raise AssertionError(('普通游標未抵達房屋觀測位置',latest(audit)['cursor'],destination))
+                pan_to([15,5]);pan_to([10,5])
+                wait(lambda s:len(s.get('hd_world_terrain',[]))>=18)
+                assert latest(audit)['units']==before_pan['units'],'單純移鏡頭改變單位'
+                shot('terrain-hd-house')
+                house=latest(audit)
+                key('F2');wait(lambda s:s.get('hd_theme') is False and not s.get('hd_world'))
+                shot('terrain-faithful-house')
+                assert latest(audit)['units']==house['units'] and latest(audit)['view']==house['view']
+                key('F2');wait(lambda s:s.get('hd_world') is True and len(s.get('hd_world_terrain',[]))>=18)
+                shot('terrain-hd-house-restored')
+                assert latest(audit)['units']==house['units'] and latest(audit)['view']==house['view']
+                key('F9');wait(lambda s:s.get('node')=='battle_ch01')
+                for _ in range(120):
+                    state=latest(audit)
+                    if not state.get('dialogues') and not state.get('banner'):break
+                    key('Return')
+                else:raise TimeoutError('房屋抽驗後普通F9未返回戰場')
+                wait(lambda s:not s.get('player_focus') and s.get('hd_world') is True)
             initial=latest(audit)
             key('z');wait(lambda s:not s.get('player_focus'))
             shot('battle-hd-focused')

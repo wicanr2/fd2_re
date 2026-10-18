@@ -1,15 +1,15 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
-地形製圖來源已改由正式Go載入器匯出，原生逐幀索引與三圖層完成獨立回讀，列DATA-READY。
-第一章房屋已有真正手繪144候選；新RGB沿明示UV校準取樣，alpha保持原生遮罩，
-不同RGB的前景槽使用獨立母稿。正式Game.Draw、清冊及存檔沒有改動，不能提升玩家或GPU分級。
+第一章房屋30張144圖已登錄稀疏原生HD集合並接正式Game.Draw；alpha保持原生遮罩，
+不同RGB的前景槽使用獨立母稿。底圖有正常首章移鏡頭與F2的實際GPU證據，
+前景及上移限部件E1，完整地形仍未完成。原生時鐘、規則與保存bytes保持。
 唯一現況依[58](58-fd2-exe-re-coverage.md)，來源及重跑入口見
-[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`native_terrain_source_followup_20261019`與[61](61-modern-theme-runtime-spec.md)。
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_runtime_followup_20261019`與[61](61-modern-theme-runtime-spec.md)。
 
 HD地形來源審查新增[#261](https://github.com/wicanr2/fd2_re/issues/261)：舊正規化圖集與目前原生圖層存在差異，
 不得直接當作原生HD圖源。逐圖統計以[58](58-fd2-exe-re-coverage.md)為準，來源與原型見
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。
-草地直接替換與遮罩加細節原型均未採用；沒有新正式renderer、GUI或保存變更。
+草地直接替換與遮罩加細節原型均未採用；該次來源審查沒有正式renderer、GUI或保存變更。
 
 2026-10-19 計時FFEC對話的開收框已保留HD世界；明示章前EXP99槽、普通攻擊／升級、F2及完整保存／冷讀通過。
 原生幀／計時／規則保持，實際框角及144來源像素另驗；範圍限RUNTIME-E1及已列普通輸入，沒有新原版parity。

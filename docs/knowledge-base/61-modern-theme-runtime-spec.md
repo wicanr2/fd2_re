@@ -778,7 +778,7 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
 實際PNG、來源三圖層、每幀hash及初始map selector回讀均通過；
 末張圖庫錯誤也不發布半套資料。完整範圍、工具版本及SHA沿主收據，不宣稱原版archive重新解碼或GPU結果。
 
-第一章房屋製圖候選（DRAFT，尚未接正式renderer）：
+第一章房屋製圖候選（歷史DRAFT，後續接線見下節）：
 
 - [可編輯製圖配方](../../remake/assets/themes/modern/terrain-house-map0.recipe.json)保留整棟手繪母稿的分段UV錨點。
   錨點是人工製圖校準，不是二進位語意；RGB全取自新母稿，不把舊像素RGB放大後加噪聲。
@@ -792,6 +792,39 @@ selector 是圖像索引，不等於故事說話者或頭像身分；兩者不�
   這只證明內部切片與覆蓋，未證明外緣地形接縫、清冊、動態DAC、正常Game.Draw或玩家路徑。
 - [拒收工具](../../tools/test_fd2_hd_terrain_sources.py)使用實際分離素材，驗末張圖庫錯誤、缺獨立前景及既有輸出保護。
   候選與原始母稿留本機；通過清冊及執行期驗證前，不同步私人正式主題包。
+
+第一章房屋正式接線（底圖切片CONFORMED；前景正常GPU仍待驗，限已製成的30槽）：
+
+- 清冊使用可選`native_terrain_hd_set`，既有`files`、`frame_sha256`、`frame_count`及`semantics`配合
+  `frame_ids`整數陣列，明示map及terrain／foreground角色。每圖144×144，`native_mask_nearest_6`。
+  舊清冊無此集合時維持既有呈現；集合存在則全部檔案原子預檢，不因缺圖而悄悄略過。
+- 載入對應原生bank後，整組核對每個alpha與原生opaque mask六倍一致。
+  本階段terrain槽必須全opaque且無destination-remap；foreground的mode3維持透明。
+  未登錄的地形仍沿現有原生底圖，本節不宣稱完整HD美術。
+- 地形沿原生13×8排程；上移沿`indexedmap.NativeUpStepLayout`的13×9來源、terrainBase及viewportBase。
+  每格用原有terrain selector；前景沿原有角色資格、座標排程與foreground selector，不從房屋合成圖反切遮罩。
+- 圖層固定為原生底圖、HD地形、原生range、HD人物、原生／HD前景、選取與HUD。
+  range以兩個初值證明overwrite／skip，再保留為獨立透明層；發現目的地相依操作即拒收，不覆蓋選目標提示。
+- 原生`BlitLUT`與`BlitLUTTransparent`會映射opaque來源索引。
+  新RGB以該槽實際opaque索引為控制點，取RGB距離最近四點的反距離加權色差，
+  將`currentPalette[LUT[index]] - baselinePalette[index]`加到手繪RGB並裁至0..255。
+  raw分支使用identity LUT；alpha不變。此為明示的現代RGB插值，並非原版RGB逐像素parity；
+  控制點完全相同時直接使用原手繪圖，全部塌縮為黑／白時保持該端點。相同距離依原索引順序取前四點。
+  identity且palette不變時必須保持手繪RGB完全不變，不把舊24像素明暗格放大進新材質。
+- 同一原生時鐘交易發布地形、人物、前景與透明介面；HD不再推進計時或修改戰鬥／存檔。
+  素材及轉色可快取，計時對話的既有世界快照須同時保留地形。
+- 回歸核對缺檔／錯hash／重複frame、原生mask、RGB identity／映射與steady／上移定位、range層序。
+  正常首章標題LOAD抽F2、走行／移鏡頭、選取、保存及冷讀，實際GPU核對房屋圖源與框外接縫。
+  前景的正常可達樣本與局部部件證據分開，不以建構狀態冒稱一般玩家。
+
+正式入口為[稀疏集合載入與RGB映射](../../remake/cmd/fd2/modern_hd_terrain.go)、
+[原生定位計畫](../../remake/cmd/fd2/modern_hd_terrain_plan.go)、
+[清冊登錄](../../tools/register_fd2_hd_terrain.py)及[實際GPU核對](../../tools/verify_fd2_hd_terrain_gpu.py)。
+清冊另登錄兩份`terrain_hd_master`概念來源，具有file、width／height及SHA，正式runtime不載入母稿。
+正常首章房屋移鏡頭／F2及完整保存／新程序LOAD通過，兩張GPU完整可比格直接核對發布RGB。
+普通走行／攻擊在首章其他區域抽驗；不外推房屋在視野內的走行、六張前景遮擋與第12章上移GPU。
+外緣與切片接縫已目視審查，原版草地與HD房屋混合美術仍可辨識。
+收據、來源與重跑命令見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_runtime_followup_20261019`。
 
 草地母稿以內建image_gen產生，完整提示與SHA保存在
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。

@@ -9,22 +9,22 @@
     "native_viewport": "CONFORMED-SCOPED：正式1920世界沿原生(4,4)、312×192窗格；正常F2同view與960地形樣本一致。",
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
-    "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。",
+    "private_assets": "完整catalog allow-list 3239檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3040檔。",
     "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
     "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。",
-    "hd_terrain": "DATA-READY原生製圖來源已重生並逐像素回讀；房屋30張144為DATA-CANDIDATE，尚未登錄清冊或接正式Game.Draw。"
+    "hd_terrain": "CONFORMED-SCOPED：首章房屋30槽已接清冊與Game.Draw；24底圖正常GPU已驗，6前景與上移限部件E1，其他地形未完成。"
   },
   "runtime_source": {
-    "binary_sha256": "373c525ffd5889784f20a5aede981db8c2a2dcbd38aaa322f8da9880bd93e98c",
+    "binary_sha256": "920edd0cba020909bf9990ddfdc8a62fa50d29d8716cf38e30fd8b3ac8dbb84c",
     "binary_removed_after_validation": true,
     "go_snapshot": {
-      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-runtime-source-final.json",
-      "sha256": "d3f27564503fb40d349585a5fef5ec761c784963168cddde46448ef970eb49a1"
+      "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-go-source-final.json",
+      "sha256": "5ba4ace676b4c27ddbd3073d9b39b8ead6c93db9deb6dd695e83604265950d3e"
     },
-    "go_file_count": 987,
+    "go_file_count": 992,
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
-      "sha256": "d2b746daee93aeab82e96b2404588f884698aa996ab69b36814d8edbacd1b0f1"
+      "sha256": "46a2a464fc514d71bc879f1a598aacf33897db223cfd5e6e7172c778298db5b2"
     }
   },
   "f2_conflict": {
@@ -2738,5 +2738,223 @@
       "pillow": "11.3.0"
     },
     "source_commit": "b086604f077810ce6dc3dda1f86da241f3a86f64"
+  },
+  "historical_runtime_source_before_house": {
+    "binary_sha256": "373c525ffd5889784f20a5aede981db8c2a2dcbd38aaa322f8da9880bd93e98c",
+    "binary_removed_after_validation": true,
+    "go_snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-runtime-source-final.json",
+      "sha256": "d3f27564503fb40d349585a5fef5ec761c784963168cddde46448ef970eb49a1"
+    },
+    "go_file_count": 987,
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "d2b746daee93aeab82e96b2404588f884698aa996ab69b36814d8edbacd1b0f1"
+    }
+  },
+  "house_runtime_followup_20261019": {
+    "status": "CONFORMED-SCOPED base terrain; foreground PLAYER-GPU pending",
+    "base_commit": "56536c1ad239c0232608eac0309bf77c91d5cc6d",
+    "spec": "docs/knowledge-base/61-modern-theme-runtime-spec.md",
+    "runtime_integrated": true,
+    "full_hd_complete": false,
+    "catalog": {
+      "file": "remake/assets/themes/modern/catalog.json",
+      "sha256": "99f1a1bdae31d22ed6fe1eec9bf19c1a5a41472b1514b46971de353b44a118ec"
+    },
+    "source_binding": {
+      "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-go-source-final.json",
+      "sha256": "5ba4ace676b4c27ddbd3073d9b39b8ead6c93db9deb6dd695e83604265950d3e"
+    },
+    "go_file_count": 992,
+    "binary_sha256": "920edd0cba020909bf9990ddfdc8a62fa50d29d8716cf38e30fd8b3ac8dbb84c",
+    "registration": {
+      "file": "tools/register_fd2_hd_terrain.py",
+      "frames": 30,
+      "terrain_frames": 24,
+      "foreground_frames": 6,
+      "masters": 2,
+      "catalog_assets": 354,
+      "size": [
+        144,
+        144
+      ],
+      "candidate_source": "native_terrain_source_followup_20261019"
+    },
+    "runtime_contract": {
+      "geometry": "canonical terrain/foreground selectors and NativeUpStepLayout; raw work offsets ×6",
+      "clock": "same original transaction; native work/VGA/state/clock unchanged in regression",
+      "layers": [
+        "native background",
+        "HD terrain",
+        "native range",
+        "HD units",
+        "native/HD foreground",
+        "selection/HUD"
+      ],
+      "colour": "modern RGB approximation: four nearest actual opaque native palette indices, inverse squared RGB-distance weighted palette/LUT delta; original alpha preserved",
+      "identity": "original painted RGB retained; raw branch identity LUT; all-black/all-white endpoints collapse explicitly",
+      "unknown_index_semantics_inferred": false
+    },
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-gui-r2/receipt.json",
+      "sha256": "655b5f8b76ca762e75dc173d707697f857e9c776c09266ae8a3df092732adb08"
+    },
+    "gpu_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-gpu-r2.json",
+      "sha256": "e631ffa88abc00c452e449fe4cfd822ec1265fe6c1e73e02d554bc1e6c08bdf8"
+    },
+    "gui_screenshots": 37,
+    "gpu_matching_tiles": [
+      22,
+      24
+    ],
+    "gpu_matched_pixels": [
+      456192,
+      497664
+    ],
+    "gpu_not_compared": [
+      2,
+      0
+    ],
+    "samples": [
+      {
+        "file": "terrain-hd-house.png",
+        "sha256": "87b5ba0c92ea81661344dec6bd97445e8c153908355ab0e289549294b35f07ed"
+      },
+      {
+        "file": "terrain-faithful-house.png",
+        "sha256": "c0f3e6b8c9f7a14b410cde7021140b0691636e69237e7d985536690eef7c9178"
+      },
+      {
+        "file": "terrain-hd-house-restored.png",
+        "sha256": "9566f875803a630ef6bbe5ec34115ec8dbbc487f4d7e48a194b71c3301927c5d"
+      }
+    ],
+    "normal_inputs": "普通START/F5祖先首章JSON標題LOAD，普通方向鍵移鏡頭，F2往返，F9回來源；普通走行、指令環、取消、兩次攻擊、Home狀態／命令、F5及新程序標題LOAD。",
+    "state_injection": false,
+    "seed": {
+      "remake": "FD2_SEED=1 before startup; no reroll",
+      "original": null
+    },
+    "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "theme_and_source_save_bytes_equal": true,
+    "new_process_title_load": true,
+    "review": {
+      "external_edge": "actual GPU inspected: no introduced tile-cut gaps; HD house/native grass style mixture remains visible",
+      "foreground_normal_gpu": false,
+      "house_visible_during_normal_walk_gpu": false,
+      "upstep_gpu": false,
+      "normal_house_camera_pan": true,
+      "public_images_added": false
+    },
+    "regression": {
+      "scope_tests": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-runtime-tests-r1.log",
+        "sha256": "c798b26ac7f8ec5bc66987013d12ede54716d50623e2b01b50d2532c62abde27"
+      },
+      "full_command": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-full-tests-r1.log",
+        "sha256": "6d283d1e727c859a95b5ac0d07599eec57c9c7c728ca4bdeb3c65fdaa504cb8d"
+      },
+      "full_command_status": "FAIL: only reviewed inventory source digest stale",
+      "product_packages_status": "PASS",
+      "main_package_seconds": 258.0,
+      "inventory_followup": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-string-tests-r2.log",
+        "sha256": "fcc63e69bcdaa696fa8a18f88d477a554628d3de79f2c12b3536993857278d62"
+      },
+      "inventory_followup_status": "PASS",
+      "inventory_migration": "official tool; 99 disposition IDs and all decisions unchanged; only inventory digest rebound",
+      "inventory": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-string-inventory-r1.json",
+        "sha256": "c266fe80ecb6b1fb85ba6a14f71fa7c59d9b680d52b3d25cae09cf0890e6fd89"
+      },
+      "catalog": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-catalog-tests-r1.log",
+        "sha256": "17e25efc0093e657ed331e2de7b9083882d692be6d4379fae05f9c25f97b5aaa"
+      },
+      "catalog_tests": 9,
+      "broad_game_suite_repeated_after_data_only_rebind": false
+    },
+    "private_assets": {
+      "status": "PASS",
+      "file_count": 3239,
+      "runtime_file_count": 3040,
+      "catalog_sha256": "99f1a1bdae31d22ed6fe1eec9bf19c1a5a41472b1514b46971de353b44a118ec",
+      "manifest_sha256": "ff66fc51b50b029cf3c37bc9c1f6118ba9f7034f8530870b1dddda94dcebf2c3",
+      "files_checked": 3239,
+      "owner": "1000:1000",
+      "private": true,
+      "repo": "wicanr2/fd2-assets-private",
+      "remote_head": "2d1460d1eaedbd7e62678e4e4ff8ba3c556ca4b6",
+      "remote_verified": true,
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/house-private-verification-r1.json",
+        "sha256": "cbc5de430ea28ab8c328194c4f38dc64131dcb5987c408f0df4da69f33f1a969"
+      }
+    },
+    "failed_runs": {
+      "gui_r1": "100ms key-ACK poll held Left across repeat: cursor moved on release; camera did not include house. Tool failure, not product evidence.",
+      "gui_r2": "5ms key-ACK poll, same binary; ordinary camera pan added, PASS.",
+      "inventory_r1": "stale source digest, expected after Go source edits; no review decisions changed"
+    },
+    "reproduction": {
+      "go_image": "fd2-go-test-local:latest",
+      "pillow_image": "fd2-assets-local:20260829-sfx",
+      "gui_image": "fd2-promo:20261017-r1",
+      "user": "1000:1000",
+      "network": "none",
+      "full_tests": "FD2_ASSET_PACK=/pack FD2_TEST_MODERN_PACK=/src/remake/generated-assets/modern-theme-prototypes with-xvfb go test -p 2 ./... -count=1; tmpfs /tmp exec 3g; 8g RAM/4 CPUs",
+      "gui": "python3 /repo/tools/verify_fd2_hd_fonts_gui.py --binary /out/fd2-house-runtime-r1 --assets /repo/remake --original-pack /pack --modern-pack /repo/remake/generated-assets/modern-theme-prototypes --town-save /out/hd-world-gui-r7/user-data/fd2_re/fd2_save.json --battle-status --terrain --world --out /out/house-runtime-gui-rN",
+      "gpu": "python3 /repo/tools/verify_fd2_hd_terrain_gpu.py --receipt /out/house-runtime-gui-rN/receipt.json --report /out/house-runtime-gpu-rN.json",
+      "registration": "python3 /repo/tools/register_fd2_hd_terrain.py --candidate /out/hd-house-object-r1 --catalog /repo/remake/assets/themes/modern/catalog.json --asset-root /repo/remake/generated-assets/modern-theme-prototypes --master-root /out",
+      "private_sync": "tools/sync_modern_theme_private.py with catalog allow-list; source generated-assets/modern-theme-prototypes, destination private packs/fd2-modern-handpainted-a"
+    },
+    "limits": [
+      "No new original oracle/matching/parity or chapter E2",
+      "Foreground normal occlusion and house-visible walking pending",
+      "Up-step GPU and platform validation pending",
+      "Other terrain and full HD remain incomplete"
+    ],
+    "recording_created": false,
+    "release_unchanged": "v.1.0.0-20261017 -> d8c361a8324cb19b5a0738897e15c151500a8de8",
+    "next_gate": "正常房屋前景遮擋，再擴展其他真正HD地形與完整HUD。",
+    "final_checks": {
+      "links_checked": 2745,
+      "broken_links": [],
+      "index_positive_control": true,
+      "readme_culture_and_locales_preserved": true,
+      "ownership": {
+        "work/promo-cadence-20261018/hd-fonts": [],
+        "remake/generated-assets/modern-theme-prototypes": []
+      },
+      "go_sources_unchanged": 992,
+      "cleanup": {
+        "removed": [
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/fd2-house-runtime-r1",
+            "bytes": 19174408
+          },
+          {
+            "file": "work/promo-cadence-20261018/hd-fonts/house-go-cache",
+            "bytes": 220400574
+          }
+        ],
+        "bytes_freed": 239574982,
+        "recording_created": false,
+        "final_receipts_and_images_retained": true
+      }
+    },
+    "worklist": {
+      "open": 20,
+      "manual": 13,
+      "possibly_complete": 0
+    },
+    "lessons": {
+      "total": 247,
+      "guards": 128
+    }
   }
 }

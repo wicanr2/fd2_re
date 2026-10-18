@@ -229,5 +229,45 @@ class HDMapCatalogContractTests(unittest.TestCase):
             self.validate()
 
 
+class NativeTerrainCatalogTests(unittest.TestCase):
+    def setUp(self):
+        self.catalog = validator.validate(False)
+        self.asset = next(a for a in self.catalog['assets'] if a['role'] == 'native_terrain_hd_set')
+
+    def validate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'catalog.json'
+            path.write_text(json.dumps(self.catalog))
+            return validator.validate(False, path)
+
+    def test_sparse_terrain_and_foreground_identity(self):
+        self.validate()
+        self.assertEqual(self.asset['semantics'].count('terrain'), 24)
+        self.assertEqual(self.asset['semantics'].count('foreground'), 6)
+        self.assertEqual(self.asset['frame_count'], 30)
+
+    def test_reject_duplicate_identity_in_or_across_sets(self):
+        self.asset['frame_ids'][1] = self.asset['frame_ids'][0]
+        with self.assertRaisesRegex(ValueError, 'terrain identity'):
+            self.validate()
+        self.setUp()
+        duplicate = copy.deepcopy(self.asset)
+        duplicate['asset_id'] += '.duplicate'
+        self.catalog['assets'].append(duplicate)
+        with self.assertRaisesRegex(ValueError, 'duplicate native HD terrain identity'):
+            self.validate()
+
+    def test_reject_invalid_shape_role_hash_or_file(self):
+        for field, value in [('frame_count', 0), ('map_id', 33), ('width', 24),
+                             ('semantics', ['unknown']*30), ('frame_sha256', ['invalid']*30),
+                             ('files', ['../outside.png']+self.asset['files'][1:])]:
+            with self.subTest(field=field):
+                original = self.asset[field]
+                self.asset[field] = value
+                with self.assertRaises(ValueError):
+                    self.validate()
+                self.asset[field] = original
+
+
 if __name__ == "__main__":
     unittest.main()

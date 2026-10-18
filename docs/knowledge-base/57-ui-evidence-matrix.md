@@ -1,10 +1,11 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
-地形來源重生與第一章房屋144候選完成資料核對。比較圖是離線製圖參照，並非遊戲GPU擷取；
-正式UI、正常玩家路徑及原版對拍分級保持。來源與限制見[58](58-fd2-exe-re-coverage.md)及
-[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`native_terrain_source_followup_20261019`。
+第一章房屋144圖已接正式世界。正常首章移鏡頭與F2抽驗的兩張GPU，完整可見底圖RGB與發布圖源相符；
+保存／來源bytes、新程序標題LOAD保持。前景與上移限部件E1，未增加原版oracle或整章E2。
+來源、失敗分類與可重跑入口見[58](58-fd2-exe-re-coverage.md)及
+[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`house_runtime_followup_20261019`。
 
-HD地形本輪只做來源圖層核對與草地排版原型，未接正式GPU，不增加E0／E1／E2。
+較早HD地形來源審查只做圖層核對與草地排版原型，當時未接正式GPU，不增加E0／E1／E2。
 舊正規化圖集不可直接視為原生圖源；差異範圍依[58](58-fd2-exe-re-coverage.md)及
 [#261](https://github.com/wicanr2/fd2_re/issues/261)。來源、拒收理由與可重跑工具見
 [主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`terrain_source_followup_20261019`。

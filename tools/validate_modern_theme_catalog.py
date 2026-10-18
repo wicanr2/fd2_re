@@ -18,6 +18,7 @@ PROTOTYPE_ROLES = {"portrait_concept", "battlefield_concept", "battle_hud_concep
 ROLES = PROTOTYPE_ROLES | {
     "story_portrait_frame", "story_portrait_hd_frame", "map_sprite_set", "map_tileset_set",
     "map_sprite_hd_set", "battlefield_tileset_concept", "battle_hud_panel", "battle_action_icon_set",
+    "native_terrain_hd_set", "terrain_hd_master",
 }
 STATUSES = {"prototype", "concept", "approved", "runtime_candidate", "runtime_ready"}
 # Fixed FDICON.B24 source-write inventory, independently checked by
@@ -26,6 +27,7 @@ NATIVE_FDICON_GROUP_COUNT = 140
 NO_SOURCE_WRITE_SELECTORS = {39, 57, 104, 105, 121, 127, 128, 129, 130, 131, 132, 136, 137, 138, 139}
 VISIBLE_FDICON_GROUPS = set(range(NATIVE_FDICON_GROUP_COUNT)) - NO_SOURCE_WRITE_SELECTORS
 SPRITE_ROLES = {"map_sprite_set", "map_sprite_hd_set"}
+MULTI_FILE_ROLES = SPRITE_ROLES | {"battle_action_icon_set", "native_terrain_hd_set"}
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -53,6 +55,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
     roles: set[str] = set()
     portrait_speakers, hd_speakers = set(), set()
     parent_sprites, hd_sprites = {}, {}
+    terrain_frames = set()
     for entry in assets:
         required = {"asset_id", "role", "status", "file", "width", "height", "sha256", "source_refs"}
         candidate = {"master_file", "consumer_contract", "speaker_id", "frame", "mouth_state"}
@@ -83,6 +86,8 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             expected = hud_panel
         elif entry.get("role") == "battle_action_icon_set":
             expected = action_icons
+        elif entry.get("role") == "native_terrain_hd_set":
+            expected = sprite_set - {"source_group"} | {"map_id", "frame_ids", "semantics"}
         else:
             expected = required
         if set(entry) != expected:
@@ -134,7 +139,35 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if len(entry["files"]) != 4 or len(set(entry["files"])) != 4 or (
                     len(entry["frame_sha256"]) != 4):
                 raise ValueError(f"invalid battle action icon files: {asset_id}")
-        if entry["role"] in SPRITE_ROLES | {"battle_action_icon_set"}:
+        if entry["role"] == "native_terrain_hd_set":
+            count = entry["frame_count"]
+            frames, semantics = entry["frame_ids"], entry["semantics"]
+            if (entry["status"] not in {"runtime_candidate", "runtime_ready"}
+                    or entry["consumer_contract"] != "fdshap_native_hd_sparse_v1"
+                    or type(entry["map_id"]) is not int or entry["map_id"] not in range(33)
+                    or (entry["width"], entry["height"]) != (144, 144)
+                    or entry["alpha_contract"] != "native_mask_nearest_6"
+                    or entry["cycle_policy"] != "native_selector"
+                    or type(count) is not int or count not in range(1, 1025)):
+                raise ValueError(f"invalid native HD terrain contract: {asset_id}")
+            if (not isinstance(frames, list) or len(frames) != count
+                    or any(type(frame) is not int or frame not in range(1024) for frame in frames)
+                    or len(set(frames)) != count
+                    or not isinstance(semantics, list) or len(semantics) != count
+                    or any(role not in {"terrain", "foreground", "both"} for role in semantics)):
+                raise ValueError(f"invalid native HD terrain identity: {asset_id}")
+            for frame in frames:
+                identity = (entry["map_id"], frame)
+                if identity in terrain_frames:
+                    raise ValueError(f"duplicate native HD terrain identity: {asset_id}")
+                terrain_frames.add(identity)
+            files, hashes = entry["files"], entry["frame_sha256"]
+            if (not isinstance(files, list) or len(files) != count or len(set(files)) != count
+                    or not isinstance(hashes, list) or len(hashes) != count
+                    or any(not isinstance(value, str) or not SHA_RE.fullmatch(value) for value in hashes)):
+                raise ValueError(f"invalid native HD terrain files: {asset_id}")
+            file_paths = [Path(value) for value in files]
+        elif entry["role"] in SPRITE_ROLES | {"battle_action_icon_set"}:
             is_sprite = entry["role"] in SPRITE_ROLES
             is_hd = entry["role"] == "map_sprite_hd_set"
             if is_sprite and (type(entry["source_group"]) is not int or entry["source_group"] not in VISIBLE_FDICON_GROUPS):
@@ -220,7 +253,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             raise ValueError(f"invalid width: {asset_id}")
         if not isinstance(entry["height"], int) or entry["height"] <= 0:
             raise ValueError(f"invalid height: {asset_id}")
-        if entry["role"] not in SPRITE_ROLES | {"battle_action_icon_set"} and (
+        if entry["role"] not in MULTI_FILE_ROLES and (
             not isinstance(entry["sha256"], str) or not SHA_RE.fullmatch(entry["sha256"])
         ):
             raise ValueError(f"invalid sha256: {asset_id}")
@@ -236,7 +269,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
             if ref_path.is_absolute() or ".." in ref_path.parts or not (ROOT / ref_path).is_file():
                 raise ValueError(f"invalid source_ref for {asset_id}: {ref!r}")
         if verify_private:
-            expected_hashes = entry["frame_sha256"] if entry["role"] in SPRITE_ROLES | {"battle_action_icon_set"} else [entry["sha256"]]
+            expected_hashes = entry["frame_sha256"] if entry["role"] in MULTI_FILE_ROLES else [entry["sha256"]]
             for file_path, expected_hash in zip(file_paths, expected_hashes):
                 private_path = ROOT / private_root / file_path
                 if not private_path.is_file():
@@ -246,7 +279,7 @@ def validate(verify_private: bool, catalog_path: Path | None = None) -> dict:
                 digest = hashlib.sha256(private_path.read_bytes()).hexdigest()
                 if digest != expected_hash:
                     raise ValueError(f"sha256 mismatch: {asset_id}/{file_path.name}")
-                if entry["role"] == "map_sprite_set":
+                if entry["role"] in {"map_sprite_set", "native_terrain_hd_set"}:
                     from PIL import Image
                     alpha = Image.open(private_path).convert("RGBA").getchannel("A")
                     if not set(alpha.getdata()).issubset({0, 255}):

@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"image"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -20,6 +21,25 @@ type modernHDMapGPU struct {
 	Mosaic                *ebiten.Shader
 	Pixel                 *ebiten.Image
 	Dialogue              *ebiten.Image
+	TerrainImages         map[*image.RGBA]*ebiten.Image
+	TerrainKey            [32]byte
+	Range                 *ebiten.Image
+}
+
+func (r *modernHDMapGPU) terrainImage(picture *image.RGBA) *ebiten.Image {
+	if r.TerrainImages == nil {
+		r.TerrainImages = make(map[*image.RGBA]*ebiten.Image)
+	}
+	if r.TerrainImages[picture] == nil {
+		r.TerrainImages[picture] = ebiten.NewImageFromImage(picture)
+	}
+	return r.TerrainImages[picture]
+}
+
+func (r *modernHDMapGPU) drawTerrain(picture *image.RGBA, rect image.Rectangle) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(rect.Min.X), float64(rect.Min.Y))
+	r.World.SubImage(modernHDMapViewport()).(*ebiten.Image).DrawImage(r.terrainImage(picture), op)
 }
 
 const modernHDMapMosaicSource = `//kage:unit pixels
@@ -87,15 +107,36 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 		g.modernHDMapGPU = r
 	}
 	r.World.Clear()
+	if r.TerrainKey != frame.TerrainColourKey {
+		for _, texture := range r.TerrainImages {
+			texture.Dispose()
+		}
+		r.TerrainImages = nil
+		r.TerrainKey = frame.TerrainColourKey
+	}
 	r.Background.WritePixels(frame.Background.Pix)
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(6, 6)
 	r.World.DrawImage(r.Background, op)
+	for _, terrain := range frame.Terrain {
+		r.drawTerrain(terrain.Image, terrain.Rect)
+	}
+	if frame.Range != nil {
+		if r.Range == nil {
+			r.Range = ebiten.NewImage(320, 200)
+		}
+		r.Range.WritePixels(frame.Range.Pix)
+		r.World.DrawImage(r.Range, op)
+	}
 	for _, unit := range frame.Units {
 		r.drawUnit(unit)
 	}
 	for i, foreground := range frame.Foreground {
-		if i == len(r.Foreground) {
+		if foreground.HDImage != nil {
+			r.drawTerrain(foreground.HDImage, foreground.Rect)
+			continue
+		}
+		for i >= len(r.Foreground) {
 			r.Foreground = append(r.Foreground, ebiten.NewImage(24, 24))
 		}
 		r.Foreground[i].WritePixels(foreground.Image.Pix)

@@ -9,17 +9,21 @@ import (
 	"image/draw"
 
 	"github.com/wicanr2/fd2_re/remake/internal/fdicon"
+	"github.com/wicanr2/fd2_re/remake/internal/fdother"
 	"github.com/wicanr2/fd2_re/remake/internal/indexedmap"
 )
 
 // A frame is prepared inside the original timing transaction and published
 // only with its native work/VGA/state. TerrainSeed never contains objects/UI.
 type modernHDMapFrame struct {
-	Background  *image.RGBA
-	UI          *image.RGBA
-	Units       []modernHDMapUnitDraw
-	Foreground  []modernHDMapForegroundDraw
-	TerrainSeed []byte
+	Background       *image.RGBA
+	UI               *image.RGBA
+	Units            []modernHDMapUnitDraw
+	Foreground       []modernHDMapForegroundDraw
+	TerrainSeed      []byte
+	Terrain          []modernHDTerrainDraw
+	Range            *image.RGBA
+	TerrainColourKey [32]byte
 }
 
 func (g *Game) modernHDMapFrameAdmission(story, battleView bool) bool {
@@ -102,6 +106,36 @@ func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []by
 	unitY, motion, up := g.nativeCh12UpWalkFrame()
 	step := up || g.walk != nil || g.bannerT > 0
 	var err error
+	terrainBase, terrainCameraY, terrainRows := base, frame.CameraY, 8
+	if up {
+		terrainBase, terrainCameraY, terrainRows, viewportBase, err = indexedmap.NativeUpStepLayout(background, unitY, motion)
+		if err != nil {
+			return nil, err
+		}
+	}
+	var colours modernTerrainColourContext
+	var terrain []modernHDTerrainDraw
+	var terrainAssets map[int]*modernTerrainHDAsset
+	if len(g.modernStoryPortraits.terrainHD) != 0 {
+		if g.nativeMapAssets == nil {
+			return nil, errors.New("modern HD terrain: native assets missing")
+		}
+		mapID := g.nativeMapAssets.MapIndex
+		terrainAssets = g.modernStoryPortraits.terrainHD[mapID]
+		if len(terrainAssets) != 0 {
+			if err = g.modernStoryPortraits.validateTerrainHD(mapID, frame.TerrainBank); err != nil {
+				return nil, err
+			}
+			colours, err = terrainColourContext(mapID, g.nativeMapAssets.Palette, palette, frame.LUT)
+			if err != nil {
+				return nil, err
+			}
+			terrain, err = buildModernHDTerrainPlan(frame, terrainBase, terrainCameraY, terrainRows, viewportBase, terrainAssets, colours)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
 	switch {
 	case up:
 		_, _, _, viewportBase, err = indexedmap.NativeUpStepLayout(background, unitY, motion)
@@ -138,6 +172,26 @@ func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []by
 	foreground, err := buildModernHDMapForegroundPlan(frame, viewportBase, palette)
 	if err != nil {
 		return nil, err
+	}
+	for i := range foreground {
+		f := &foreground[i]
+		if asset := terrainAssets[f.SourceFrame]; asset.supports("foreground") {
+			f.HDImage = asset.shade(colours, f.BlitMode == 0xff)
+		}
+	}
+	var rangeLayer *image.RGBA
+	if len(terrain) > 0 && !step && frame.RangeMode != 0 && frame.RangeMode != 6 {
+		pixels, err := modernHDOverwriteLayer(len(work), palette, func(dst []byte) error {
+			return fdother.BlitNativeRangeOverlay(frame.RangeBank, dst, frame.CameraX, frame.CameraY, 13, 8,
+				frame.RangeMode, frame.CursorX, frame.CursorY)
+		})
+		if err != nil {
+			return nil, err
+		}
+		rangeLayer, err = modernHDNativeViewportPixels(pixels, viewportBase)
+		if err != nil {
+			return nil, err
+		}
 	}
 	bg := image.NewRGBA(image.Rect(0, 0, 320, 200))
 	draw.Draw(bg, bg.Bounds(), image.NewUniform(color.Black), image.Point{}, draw.Src)
@@ -180,5 +234,6 @@ func (g *Game) prepareModernHDMapFrame(in indexedmap.NativeFrameInput, seed []by
 			}
 		}
 	}
-	return &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed}, nil
+	return &modernHDMapFrame{Background: bg, UI: ui, Units: units, Foreground: foreground, TerrainSeed: terrainSeed,
+		Terrain: terrain, Range: rangeLayer, TerrainColourKey: colours.Key}, nil
 }

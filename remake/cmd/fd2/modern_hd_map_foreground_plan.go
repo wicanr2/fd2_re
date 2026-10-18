@@ -10,9 +10,12 @@ import (
 )
 
 type modernHDMapForegroundDraw struct {
-	Image      *image.RGBA
-	Rect       image.Rectangle
-	WorkOffset int
+	Image       *image.RGBA
+	Rect        image.Rectangle
+	WorkOffset  int
+	SourceFrame int
+	BlitMode    byte
+	HDImage     *image.RGBA
 }
 
 // Source masks, rather than pixel differences, preserve even same-color
@@ -77,7 +80,8 @@ func buildModernHDMapForegroundPlan(in indexedmap.FrameInput, viewportBase int, 
 			}
 			x, y := offset%stride-viewportBase%stride, offset/stride-viewportBase/stride
 			rect := image.Rect(view.Min.X+x*6, view.Min.Y+y*6, view.Min.X+(x+24)*6, view.Min.Y+(y+24)*6)
-			commands = append(commands, modernHDMapForegroundDraw{Image: img, Rect: rect, WorkOffset: offset})
+			commands = append(commands, modernHDMapForegroundDraw{Image: img, Rect: rect, WorkOffset: offset,
+				SourceFrame: frame, BlitMode: cell.BlitMode})
 		}
 	}
 	return commands, nil

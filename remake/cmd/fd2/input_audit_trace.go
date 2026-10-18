@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -59,6 +60,21 @@ func (g *Game) recordInputAuditState() {
 			units = append(units, map[string]any{"group": unit.Group, "frame": unit.Frame, "rect": []int{unit.Rect.Min.X, unit.Rect.Min.Y, unit.Rect.Max.X, unit.Rect.Max.Y}, "work_offset": unit.WorkOffset})
 		}
 		r["hd_world_units"] = units
+		terrain := make([]map[string]any, 0, len(g.modernHDMapPresented.Terrain))
+		for _, tile := range g.modernHDMapPresented.Terrain {
+			hash := sha256.Sum256(tile.Image.Pix)
+			terrain = append(terrain, map[string]any{"frame": tile.Frame,
+				"rect":        []int{tile.Rect.Min.X, tile.Rect.Min.Y, tile.Rect.Max.X, tile.Rect.Max.Y},
+				"rgba_sha256": fmt.Sprintf("%x", hash)})
+		}
+		r["hd_world_terrain"] = terrain
+		foreground := 0
+		for _, layer := range g.modernHDMapPresented.Foreground {
+			if layer.HDImage != nil {
+				foreground++
+			}
+		}
+		r["hd_world_terrain_foreground"] = foreground
 	}
 	r["locale"] = g.localeID
 	r["gold"] = g.gold

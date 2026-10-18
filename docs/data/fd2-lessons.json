@@ -2892,6 +2892,14 @@
         ],
         "pattern": "native_index_differences_from_base"
       }
+    },
+    {
+      "id": "gui-key-receipt-releases-before-repeat",
+      "area": "GUI驗證",
+      "date": "2026-10-19",
+      "rule": "普通鍵盤GUI驗證以短間隔查看按下收據並立即放開，再核對放開後的游標；單次按下ACK不代表只移動一格。入口tools/verify_fd2_hd_fonts_gui.py。",
+      "why": "房屋接線首輪工具100ms輪詢時，左鍵按下ACK後在放開前又移一格，造成第二次攻擊重播失敗。改5ms輪詢，同一binary乾淨重跑通過，沒有修改遊戲輸入規則。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json"
     }
   ]
 }
