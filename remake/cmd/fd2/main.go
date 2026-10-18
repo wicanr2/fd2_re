@@ -563,6 +563,7 @@ type Game struct {
 	localeEntities                      *localization.EntityCatalog                 // 已按遊戲 ID 正規化的實體名稱
 	sourceBattleEntities                *localization.EntityCatalog                 // protect 使用來源姓名，不受顯示語系影響
 	modernStoryPortraits                *modernStoryPortraitSet                     // 顯式 FD2_THEME 候選；缺 speaker 時整頁拒絕
+	modernThemeCache                    *modernStoryPortraitSet                     // 同一程序內已通過預檢的完整素材
 	nativeDialogueModernPortrait        *modernStoryPortraitFrame                   // 目前對話拍的靜態閉嘴真彩色層
 	modernHDOverlay                     *modernHDOverlay                            // 本次Draw實際呈現的高解析頭像
 	nativeDialogueArrowTicks            int
@@ -13066,10 +13067,9 @@ func main() {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	g := loadGame()
 	defer g.closeAudioPlayers()
-	var player ebiten.Game = g
+	player := &modernHDPresentation{Game: g, faithfulWidth: logicalW * 2, faithfulHeight: logicalH * 2}
 	if g.modernStoryPortraits != nil && g.modernStoryPortraits.hasHD {
 		ebiten.SetWindowSize(modernHDWidth, modernHDHeight)
-		player = &modernHDPresentation{Game: g}
 	}
 	if err := ebiten.RunGame(player); err != nil {
 		log.Fatal(err)

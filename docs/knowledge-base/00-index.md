@@ -973,5 +973,7 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 - [第一版實機混剪合成器](../../tools/build_fd2_release_promo.py)：實際遊玩影片加技術側欄，保留遊戲音訊並核對總長，正式輸出至promo。
 - [推廣影片驗證器](../../tools/verify_fd2_promo.py)：完整解碼、音量、黑幀、凍結、字幕抽圖與購物前後保存核對；訊號通過後仍須檢視畫面。
 - [完整包獨立核對器](../../tools/verify_fd2_full_local.py)：從三個正式封包核對全部素材、執行檔、啟動器、架構、ZIP及授權；實機結果另外記錄。
+- [忠實縮放GPU對照工具](../../tools/verify_fd2_screen_filter_gpu.py)：以測試專用程式分別跑鎖定Ebiten預設及正式最終呈現器，核對整數、非整數、縮小、黑邊與關閉濾鏡，不建立錄影。
+- [F2動態高解析主收據](../data/fd2-modern-hd-f2-20261018.json)：忠實啟動、對話途中切換、遮罩、縮放、節點存讀檔與GPU濾鏡的限定驗證。
 - [完整包啟動抽測](../../tools/smoke_fd2_full_local.sh)：容器內從實際完整AppImage及Windows ZIP執行自檢與預設場景擷取；Windows為Wine輔助，不替代實機。
 - [第一版非HD完整版與推廣片交付收據](../data/fd2-full-local-v.1.0.0-20261017.json)：三平台完整包、43,177份素材、Linux／Wine啟動、2分18秒實機混剪、購物交易及本機權利邊界。

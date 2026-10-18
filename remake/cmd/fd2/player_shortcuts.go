@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"image"
 	"image/color"
 	"os"
@@ -15,25 +16,57 @@ func (g *Game) cycleTheme() {
 	}
 	previous := g.modernStoryPortraits
 	if previous == nil {
-		packRoot := os.Getenv("FD2_MODERN_THEME_PACK")
-		if packRoot == "" {
-			packRoot = assetPath("assets/themes/modern")
+		set := g.modernThemeCache
+		if set == nil {
+			packRoot := os.Getenv("FD2_MODERN_THEME_PACK")
+			if packRoot == "" {
+				packRoot = assetPath("assets/themes/modern")
+			}
+			var err error
+			set, err = loadModernStoryPortraitSet(assetPath("assets/themes/modern/catalog.json"), packRoot)
+			if err != nil {
+				g.msg = "現代主題不可用：" + err.Error()
+				return
+			}
 		}
-		set, err := loadModernStoryPortraitSet(assetPath("assets/themes/modern/catalog.json"), packRoot)
-		if err != nil {
+		if err := g.applyTheme(set); err != nil {
 			g.msg = "現代主題不可用：" + err.Error()
 			return
 		}
-		g.modernStoryPortraits = set
+		g.modernThemeCache = set
 	} else {
-		g.modernStoryPortraits = nil
+		g.modernThemeCache = previous
+		_ = g.applyTheme(nil)
 	}
-	g.refreshThemeVisuals()
 	name := "忠實原版"
 	if g.modernStoryPortraits != nil {
 		name = "現代手繪"
 	}
 	g.msg = "主題：" + name
+}
+
+// applyTheme validates the current typed speaker before publishing any resource.
+// Rebinding only the portrait preserves the active dialogue's pages and progress.
+func (g *Game) applyTheme(set *modernStoryPortraitSet) error {
+	var portrait *modernStoryPortraitFrame
+	if set != nil && len(g.dialog) != 0 {
+		dl := g.dialog[len(g.dialog)-1]
+		if dl.Speaker >= 0 || dl.NativeDialogue != nil {
+			var ok bool
+			portrait, ok = set.portraits[dl.Speaker]
+			if !ok || portrait == nil {
+				return fmt.Errorf("modern portrait for speaker %d is unavailable", dl.Speaker)
+			}
+		}
+		if dl.NativeDialogue == nil {
+			portrait = nil
+		}
+	}
+	g.modernStoryPortraits = set
+	g.nativeDialogueModernPortrait = portrait
+	g.modernHDOverlay = nil
+	g.refreshThemeVisuals()
+	return nil
 }
 
 // refreshThemeVisuals 只替換繪圖資源；戰場單位、回合、事件、鏡頭與存檔狀態均不重設。

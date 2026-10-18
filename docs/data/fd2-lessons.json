@@ -2599,6 +2599,36 @@
         ],
         "pattern": "handler_address"
       }
+    },
+    {
+      "id": "gui-theme-switch-waits-completed-input-audit",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "GUI測試先等正式對話進入輸入等待，再送主題或LOAD鍵；tools/verify_fd2_hd_gui.py以新frame且含對應keys的完成收據判定，不以固定延遲當完成。",
+      "why": "cutscene日誌早於同步素材建構完成；F2首次整包解碼也跨過固定等待。兩輪工具分別漏送鍵或讀到舊收據，不能據此判定遊戲切換失敗。",
+      "evidence": "tools/verify_fd2_hd_gui.py",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_gui.py"
+        ],
+        "pattern": "completed update"
+      }
+    },
+    {
+      "id": "gui-save-test-respects-node-boundary-contract",
+      "area": "驗證",
+      "date": "2026-10-18",
+      "rule": "存讀檔GUI回歸先讀remake/cmd/fd2/save.go的實際序列化契約。節點存檔的主題相容性用兩側LOAD同份檔案比較；tools/verify_fd2_hd_gui.py不拿未保存的戰況暫態當還原基準。",
+      "why": "F2完整正常97拍已通過，舊驗證卻把首章戰前演出後的位置／登場狀態與F9重建節點起始陣列比較；既有F5 JSON不存live battlefield，這是測試條件錯誤，不是HD改變規則。",
+      "evidence": "remake/cmd/fd2/save.go",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_gui.py"
+        ],
+        "pattern": "Compare equivalent LOADs"
+      }
     }
   ]
 }

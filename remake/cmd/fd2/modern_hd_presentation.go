@@ -9,10 +9,35 @@ import (
 
 const modernHDWidth, modernHDHeight = 1920, 1200
 
-// The game retains its input/layout coordinates. Only the complete HD theme
-// opts into the final display layer; faithful and legacy packs keep Ebiten's
-// existing presentation path.
-type modernHDPresentation struct{ *Game }
+// Every theme shares a final display layer so F2 can activate HD after startup.
+// Faithful rendering retains the pinned Ebiten default screen filter.
+type modernHDPresentation struct {
+	*Game
+	screenShader                  *ebiten.Shader
+	faithfulWidth, faithfulHeight int
+}
+
+func (p *modernHDPresentation) Update() error {
+	before := p.modernStoryPortraits != nil && p.modernStoryPortraits.hasHD
+	w, h := ebiten.WindowSize()
+	if err := p.Game.Update(); err != nil {
+		return err
+	}
+	after := p.modernStoryPortraits != nil && p.modernStoryPortraits.hasHD
+	if before == after || ebiten.IsFullscreen() {
+		return nil
+	}
+	if after {
+		p.faithfulWidth, p.faithfulHeight = w, h
+		ebiten.SetWindowSize(modernHDWidth, modernHDHeight)
+	} else {
+		if p.faithfulWidth <= 0 || p.faithfulHeight <= 0 {
+			p.faithfulWidth, p.faithfulHeight = logicalW*2, logicalH*2
+		}
+		ebiten.SetWindowSize(p.faithfulWidth, p.faithfulHeight)
+	}
+	return nil
+}
 
 type modernHDOverlay struct {
 	portrait *modernStoryPortraitFrame
@@ -23,9 +48,8 @@ type modernHDImageTarget interface {
 	DrawImage(*ebiten.Image, *ebiten.DrawImageOptions)
 }
 
-func drawModernHDFinal(target modernHDImageTarget, base *ebiten.Image,
+func drawModernHDOverlay(target modernHDImageTarget,
 	geometry ebiten.GeoM, overlay *modernHDOverlay, brightness float64) {
-	target.DrawImage(base, &ebiten.DrawImageOptions{GeoM: geometry})
 	if overlay == nil || overlay.portrait == nil || overlay.portrait.hdImage == nil {
 		return
 	}
@@ -45,6 +69,7 @@ func drawModernHDFinal(target modernHDImageTarget, base *ebiten.Image,
 
 func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 	offscreen *ebiten.Image, geometry ebiten.GeoM) {
+	p.drawDefaultFinalScreen(screen, offscreen, geometry)
 	g := p.Game
 	overlay := g.modernHDOverlay
 	if g.helpVisible || g.nativePlayerStatus != nil || g.transientUI ||
@@ -59,5 +84,5 @@ func (p *modernHDPresentation) DrawFinalScreen(screen ebiten.FinalScreen,
 			brightness = 1 - brightness
 		}
 	}
-	drawModernHDFinal(screen, offscreen, geometry, overlay, brightness)
+	drawModernHDOverlay(screen, geometry, overlay, brightness)
 }

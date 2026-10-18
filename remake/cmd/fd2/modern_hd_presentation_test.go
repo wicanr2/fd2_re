@@ -152,18 +152,17 @@ func (c *modernHDDrawCapture) DrawImage(image *ebiten.Image, options *ebiten.Dra
 	c.options = append(c.options, *options)
 }
 func TestModernHDFinalPreservesDetailScaleAndAnchors(t *testing.T) {
-	base := ebiten.NewImage(640, 400)
 	portrait := &modernStoryPortraitFrame{hdImage: image.NewNRGBA(image.Rect(0, 0, 480, 480))}
 	for _, rect := range []image.Rectangle{image.Rect(464, 10, 624, 170), image.Rect(16, 230, 176, 390)} {
 		target := &modernHDDrawCapture{}
 		var geometry ebiten.GeoM
 		geometry.Scale(3, 3)
 		geometry.Translate(11, 7)
-		drawModernHDFinal(target, base, geometry, &modernHDOverlay{portrait: portrait, rect: rect}, 1)
-		if len(target.images) != 2 || target.images[0] != base || target.images[1].Bounds() != image.Rect(0, 0, 480, 480) {
+		drawModernHDOverlay(target, geometry, &modernHDOverlay{portrait: portrait, rect: rect}, 1)
+		if len(target.images) != 1 || target.images[0].Bounds() != image.Rect(0, 0, 480, 480) {
 			t.Fatal("final layer did not submit the original 480-pixel image")
 		}
-		transform := target.options[1].GeoM
+		transform := target.options[0].GeoM
 		x, y := transform.Apply(0, 0)
 		if x != float64(rect.Min.X*3+11) || y != float64(rect.Min.Y*3+7) {
 			t.Fatalf("incorrect final anchor %v %v", x, y)
@@ -177,7 +176,7 @@ func TestModernHDFinalPreservesDetailScaleAndAnchors(t *testing.T) {
 			t.Fatal("source detail was downsampled before final display")
 		}
 		cached := portrait.hdGPU
-		drawModernHDFinal(target, base, geometry, &modernHDOverlay{portrait: portrait, rect: rect}, 0)
+		drawModernHDOverlay(target, geometry, &modernHDOverlay{portrait: portrait, rect: rect}, 0)
 		if cached != portrait.hdGPU {
 			t.Fatal("GPU portrait recreated each draw")
 		}
