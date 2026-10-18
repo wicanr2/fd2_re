@@ -80,185 +80,189 @@ type MapData struct {
 }
 
 type Game struct {
-	m                           *MapData
-	nativeMapAssets             *nativeMapAssets // all original map HUD resources, nil on any missing/malformed asset
-	modernMapTilesetLoaded      bool             // 本次 loadMap 已原子採用現代圖集
-	baseMapTileset              image.Image      // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
-	currentMapID                int              // 目前地圖 selector；-1 表示尚未載入
-	nativeMapWork               []byte           // persistent 456-stride original tactical framebuffer
-	nativeMapVGA                []byte           // persistent 320x200 indexed VGA surface
-	modernHDMapFrame            *modernHDMapFrame
-	modernHDMapGPU              *modernHDMapGPU
-	modernHDWorldVisible        bool
-	modernHDMapComposing        bool
-	modernHDMapPresentedFrame   int
-	modernHDMapTerrain          []byte
-	modernHDMapTerrainAssets    *nativeMapAssets
-	modernHDMapTerrainState     *battle.State
-	nativeMapDAC                []byte                 // current 256xRGB six-bit DAC state for handler palette ramps
-	nativePhysicalSoundBanks    map[int]map[int][]byte // 2BC9A 的 FIGANI sound banks，獨立於完整 command bank cache。
-	nativePaletteRamp           *nativePaletteRampJob  // exact 0x1f882/0x1f525 indexed DAC presentation
-	nativeTownDeparture         *nativeTownDepartureJob
-	nativeTownLoadPending       bool
-	nativeDefeat                *nativeDefeatJob
-	nativeChapterResult         *nativeChapterResultJob
-	nativeResultMatchedRules    []string
-	titleNeedsNewCampaign       bool
-	nativePalettePulse          *nativePalettePulseJob             // exact 0x35E5A 0..63/hold/62..0 indexed DAC presentation
-	nativeCh20SkyKey            *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
-	nativeCh23State             *nativeCh23AdapterState            // raw ch23 staging/latch/timer state shared across both handler loops
-	nativeCh23Loop              *nativeCh23LoopJob                 // blocking raw ch23 indexed presentation loop
-	native2189A                 *native2189AJob                    // blocking raw ch22 post 0x2189A ten-pass presentation
-	nativeUnitPresent           *nativeUnitPresentJob              // blocking shared 0x22253 11+6+bridge+10 indexed presentation
-	nativeCh28PostPresent       *nativeCh28PostPresentJob          // blocking 0x1DB65 13+6+6 indexed presentation
-	nativeCh22Reload            *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
-	nativeFDOTHERPalettePhase   int                                // process-lifetime 0x4DFCC phase projection (0..15)
-	nativeMapHUDInputReason     string                             // 最近一次 nativeMapHUDInput 失敗即關閉的原因，只供診斷訊息
-	nativeFDOTHERPaletteTick    int                                // process-lifetime 0x4DFCC unsigned BIOS low-word snapshot
-	nativeFullDACWhite          bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
-	nativeFullDACBlack          bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
-	nativeMapHUDPersistent      battle.NativeMapHUDPersistentState // gate A save-persistent；anchor process-persistent
-	tileset                     *ebiten.Image
-	tiles                       []*ebiten.Image     // 切好的圖塊
-	st                          *battle.State       // 戰鬥狀態(單位)
-	nativeMapClock              nativeBIOSClock     // battle-local 18.2065Hz BIOS low-word adapter
-	nativeTitleClock            nativeBIOSClock     // title-lifetime 18.2065Hz timer seed for normal CONTINUE
-	sc                          *battle.Scenario    // 劇本(事件系統,doc 29)
-	dialog                      []battle.DialogLine // 待顯示對話(事件產生,含說話者)
-	storyBG                     bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
-	storyActors                 []battle.Unit       // 原版目前已 materialize 的 scene unit array；index 只在該 load/spawn 時序內有意義
-	storyRoster                 []battle.Unit       // LOADCH 保留的 FDFIELD records；SPAWN 按 group 順序 append 到 storyActors
-	storyCompositionEventBytes  []byte              // LOADCH 的 immutable FDFIELD composition +2；future-group placement 的原始輸入
-	storySpawned                map[int]bool        // 原版 group 已 materialize；防止 handler 重複 SPAWN 時重複 append
-	storyRosterPath             string              // 最近一次 handler LOADCH 的 exact roster source；battle handoff gate
-	storyPartyScenario          string              // 最近一次 handler LOADCH 的 exact party scenario；battle handoff gate
-	partyMembers                map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
-	partyJoinOrder              []int               // JOIN 首次出現順序；章0 cutscene 的 party runtime slot 以此為準
-	partyRoster                 map[int]battle.Unit // 0x11506 戰後同步的跨關角色能力／HP／MP／經驗快照
-	partyDeploy                 map[int]bool        // preparation 0x318ad 的本戰出擊勾選；不改永久 JOIN 名冊
-	prepIDs                     []int               // preparation UI 角色順序（JOIN chronology）
-	prepSel                     int                 // preparation UI 游標
-	prepLimit                   int                 // preparation UI 原版出擊上限（15，末段 19）
-	prepSelecting               bool                // 已通過前置確認，且流程要求進入原版選人階段
-	prepRecordSlots             bool                // 0x2CCB6→0x30012 的非城鎮四槽保存
-	prepRecordSlotSel           int                 // 0x30550 的0..3槽游標
-	prepConfirm                 bool                // 選滿或小隊確認後的最終出戰確認階段
-	prepRequiredMissing         *int                // 原生必出角色拒收訊息，確認後返回城鎮
-	prepConfirmSel              int                 // 0=肯定，1=取消
-	prepClock                   nativeBIOSClock     // preparation 0x31e80→0x1297d 的 BIOS 低字來源
-	prepIdleCycle               int                 // 原版 [0x53c0b] 0..3；繪圖時 3 正規化為1
-	prepLastTick                int                 // 原版 [0x53c0f] 有號 BIOS 低字 latch
-	prepShotCycleFrozen         bool                // 固定雜湊截圖專用；一般玩家路徑永不設定
-	prepPromptSource            []byte              // 0x1956b 前的 town 畫面或 0x2cc04 黑色來源
-	churchSel                   int                 // church service menu cursor (0..3)
-	churchMode                  string              // menu / status_* / transfer_* / revive* / class / class_confirm
-	churchIDs                   []int               // current church candidate ids
-	churchRosterStart           int                 // 0x2e6b8 [0x5412f], even six-entry viewport origin
-	churchVerticalStart         int                 // 0x30c22/0x311dc three-row viewport origin
-	churchStatusID              int                 // selected actor passed to 0x17aed
-	churchStatusData            *nativeUnitStatusData
-	churchStatusPanel           []byte // 0x17eef/0x17fc0 + 0x184c0(actor,-1)
-	churchCommandPanel          []byte // 0x17eef/0x17fc0 + 0x1ceed(actor,-1)
-	churchItemStart             int    // 0x2df6b even six-entry item viewport origin
-	churchTransferSource        int    // raw transfer source roster id
-	churchTransferItem          int    // compact source inventory index
-	churchTransferItems         []int  // compact source inventory indices
-	churchTransferDest          int    // raw destination id used by FDTXT506 FFFC
-	churchReviveID              int    // selected 0x30dc3 candidate
-	churchReviveFee             int    // level * raw class fee
-	churchClassID               int    // selected class-change candidate
-	churchBranches              []campaign.ClassChangeBranch
-	hotelSel                    int // raw 0x2fc85 selector (0..3)
-	hotelRoute                  fdother.NativeHotelServiceRoute
-	hotelHasRoute               bool
-	titleSlotSel                int // title LOAD selector: native 0x30550 slots 0..3
-	classChangeTable            campaign.ClassChangeTable
-	classChangeGrowth           map[int]campaign.ClassChangeGrowth
-	nativeJoinConstructor       campaign.NativeJoinConstructorTable
-	hasNativeJoinConstructor    bool
-	nativeJoinBases             campaign.NativeJoinBaseTable
-	hasNativeJoinBases          bool
-	nativeJoinItemEffectRows    []byte
-	handlerChapter              int // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
-	handlerInheritedMapView     battle.NativeMapViewState
-	hasHandlerInheritedMapView  bool
-	storyWalks                  []*storyWalkJob // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
-	storyAutoAdvance            int             // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
-	storyView                   *ebiten.Image   // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
-	walkFirst                   bool            // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
-	followWalk                  bool            // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk;beat walk 依 Follow 逐拍設值)
-	camMaxY                     float64         // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
-	camPan                      *camPanJob      // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
-	focusJob                    *focusUnitJob   // beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
-	actJob                      *actPoseJob     // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
-	actTickAccumulator          float64         // 60Hz Update 到原版約18.2065Hz來源拍的投影餘數
-	beats                       []campaign.Beat // 目前 cutscene 節點的過場原語序列(doc50 §2)
-	beatIdx                     int             // 目前執行到第幾拍(-1=尚未開始)
-	beatDelay                   int             // beat「delay」剩餘幀數(0=非等待中)
-	battleEvent                 *battleEventRun // 戰場事件的阻塞 action 序列；與 campaign BeatRunner 分離
-	battleEventDelay            int             // battle event delay 剩餘幀數
-	campLines                   []campaign.Line // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
-	dlgShown                    int             // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
-	dlgUpper                    *bool           // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
-	dlgPhase                    int             // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
-	dlgT                        int             // 對話框動畫相位內計時(幀)
-	dlgPage                     int             // 目前FFFD頁碼；頁內第4個FFFE邏輯列由原版三列窗口捲動，不另造頁
-	dlgScrollT                  int             // 分頁捲動剩餘幀數(0=靜止)
-	dlgScrollFrom               int             // 分頁捲動開始頁碼
-	nativeDialogueFrames        [][]byte        // caller-specific 0x15F84 stable indexed pages
-	nativeDialogueProgressive   [][][]byte      // 每頁 frame0框／頭像，之後逐字形發布
-	nativeDialogueMouthOpen     [][]byte        // 每頁完整文字＋DATO frame3 indexed overlay
-	nativeDialogueProgress      int             // 目前頁已發布的逐字 frame；-1尚未開始
-	nativeDialogueSpeakingCycle int             // 原版 0x53A10，跨句保留
-	nativeDialogueSpeakingHalf  int             // 原版 0x53A14，跨句保留
-	nativeDialogueSpeakingFrame int
-	nativeDialoguePortraits     []dato.Frame
-	nativeDialogueLayout        *campaign.NativeDialogueLayout
-	nativeDialogueGlyphSteps    [][]bool
-	nativeDialogueOpening       [][]byte // caller-specific sub_165AC五階段格網
-	nativeDialogueClosing       [][]byte // caller-specific sub_16B43 snapshot restore＋可選游標尾段
-	nativeDialogueClosingT      int
-	nativeDialogueClosingLive   bool
-	fade                        *storyFade // 場景淡出/淡入轉場(doc46 §5.2)
-	transitionReveal            *transitionRevealJob
-	indexedTransition           *nativeIndexedTransitionJob
-	nativeHealPresentation      *nativeCommandHealPresentationJob
-	nativeModifierPresentation  *nativeCommandModifierPresentationJob
-	nativeAICommandModifier     *nativeAICommandModifierPresentationJob
-	nativeAIActionPlan          *battle.AIPlan                                       // 0x15311 route being dispatched; owns the winner cell [0x53C27]/[0x53C2B]
-	nativeTownHubReturn         bool                                                 // 下一次 enterNode 進城鎮是 hub 子場景返回：保留 [0x5412B] 選擇器
-	aiPlanObserver              func(*battle.AIPlan)                                 // 對拍測試用：每個 AI 單位計畫產生後、執行前呼叫（可對齊 RNG）
-	nativeTurnPairRNGInput      func(battle.NativeTurnEvent, uint16) (uint16, error) // 對拍測試明示事件決策種子；正式執行為nil。
-	growthRollObserver          func(*battle.Unit, uint16) uint16                    // 對拍測試用：每次升級成長擲骰（0x1E54A）前對齊 RNG
-	nativeCmd0Presentation      *nativeCommand0PresentationJob
-	nativeCmd1Presentation      *nativeCommand1PresentationJob
-	nativeCmd2Presentation      *nativeCommand2PresentationJob
-	nativeCmd3Presentation      *nativeCommand3PresentationJob
-	nativeCmd5Presentation      *nativeCommand5PresentationJob
-	nativeCmd6Presentation      *nativeCommand6PresentationJob
-	nativeCmd7Presentation      *nativeCommand7PresentationJob
-	nativeCmd8Presentation      *nativeCommand8PresentationJob
-	nativeCmd9Player            *nativeCommand9PlayerJob
-	nativeCmd9AIPresentation    *nativeCommand9AIPresentationJob
-	nativeCmd1012               *nativeCommand1012Job
-	nativeCmd24Presentation     *nativeCommand24PresentationJob
-	nativeCmd29Presentation     *nativeCommand29PresentationJob
-	nativeCmd32Presentation     *nativeCommand32PresentationJob
-	nativeCmd33Presentation     *nativeCommand33PresentationJob
-	nativeCmd34Presentation     *nativeCommand34PresentationJob
-	nativeCmd35Presentation     *nativeCommand35PresentationJob
-	nativeAIItemPresentation    *nativeAIItemPresentationJob
-	spawnIntroTransition        *nativeSpawnIntroJob
-	nativeTurnStaging           *nativeTurnStagingJob
-	nativeFieldEvent61          *nativeFieldEvent61Job
-	nativeAIIdleRecovery        *nativeAIIdleRecoveryJob  // direct 0x13FD4 indexed/audio owner
-	nativeEndTurnRecovery       *nativeEndTurnRecoveryJob // 0x1A30B two-pass indexed owner
-	nativeEnding                *nativeEndingPreview      // FD2_ENDING_PREFIX 或來源約束 campaign ending；缺原始資料時走明示 fallback
-	nativeEndingNow             func() time.Time          // 可重播的呈現時鐘；nil時使用正常wall-clock。
-	endingNotice                string                    // 原始素材不足或來源約束終局無法發布時的玩家提示
-	walk                        *walkAnim                 // 移動動畫(沿路徑逐格走,FDICON 方向幀)
-	camp                        *campaign.Runner          // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
-	campSel                     int                       // choice 節點游標
+	m                            *MapData
+	nativeMapAssets              *nativeMapAssets // all original map HUD resources, nil on any missing/malformed asset
+	modernMapTilesetLoaded       bool             // 本次 loadMap 已原子採用現代圖集
+	baseMapTileset               image.Image      // 目前地圖的忠實原版 PNG；F2 只重建圖層，不改戰況
+	currentMapID                 int              // 目前地圖 selector；-1 表示尚未載入
+	nativeMapWork                []byte           // persistent 456-stride original tactical framebuffer
+	nativeMapVGA                 []byte           // persistent 320x200 indexed VGA surface
+	modernHDMapFrame             *modernHDMapFrame
+	modernHDMapGPU               *modernHDMapGPU
+	modernHDWorldVisible         bool
+	modernHDMapComposing         bool
+	modernHDMapPresentedFrame    int
+	modernHDMapPresented         *modernHDMapFrame
+	modernHDTimedDialogueVisible bool
+	modernHDTimedDialoguePhase   campaign.NativeDialogueFramePhase
+	modernHDTimedDialogueIndex   int
+	modernHDMapTerrain           []byte
+	modernHDMapTerrainAssets     *nativeMapAssets
+	modernHDMapTerrainState      *battle.State
+	nativeMapDAC                 []byte                 // current 256xRGB six-bit DAC state for handler palette ramps
+	nativePhysicalSoundBanks     map[int]map[int][]byte // 2BC9A 的 FIGANI sound banks，獨立於完整 command bank cache。
+	nativePaletteRamp            *nativePaletteRampJob  // exact 0x1f882/0x1f525 indexed DAC presentation
+	nativeTownDeparture          *nativeTownDepartureJob
+	nativeTownLoadPending        bool
+	nativeDefeat                 *nativeDefeatJob
+	nativeChapterResult          *nativeChapterResultJob
+	nativeResultMatchedRules     []string
+	titleNeedsNewCampaign        bool
+	nativePalettePulse           *nativePalettePulseJob             // exact 0x35E5A 0..63/hold/62..0 indexed DAC presentation
+	nativeCh20SkyKey             *nativeCh20SkyKeyJob               // raw ch20 post 0x24336 fixed FDOTHER/ANI/palette sequence
+	nativeCh23State              *nativeCh23AdapterState            // raw ch23 staging/latch/timer state shared across both handler loops
+	nativeCh23Loop               *nativeCh23LoopJob                 // blocking raw ch23 indexed presentation loop
+	native2189A                  *native2189AJob                    // blocking raw ch22 post 0x2189A ten-pass presentation
+	nativeUnitPresent            *nativeUnitPresentJob              // blocking shared 0x22253 11+6+bridge+10 indexed presentation
+	nativeCh28PostPresent        *nativeCh28PostPresentJob          // blocking 0x1DB65 13+6+6 indexed presentation
+	nativeCh22Reload             *nativeCh22ReloadState             // atomic FDFIELD69/FDSHAP46/47/FDOTHER42 tail transaction
+	nativeFDOTHERPalettePhase    int                                // process-lifetime 0x4DFCC phase projection (0..15)
+	nativeMapHUDInputReason      string                             // 最近一次 nativeMapHUDInput 失敗即關閉的原因，只供診斷訊息
+	nativeFDOTHERPaletteTick     int                                // process-lifetime 0x4DFCC unsigned BIOS low-word snapshot
+	nativeFullDACWhite           bool                               // exact 0x11DF2(0,255,255) overlay for legacy RGB scenes
+	nativeFullDACBlack           bool                               // exact ch07 post 0x11D40(0,255,64)+mode-13h clear
+	nativeMapHUDPersistent       battle.NativeMapHUDPersistentState // gate A save-persistent；anchor process-persistent
+	tileset                      *ebiten.Image
+	tiles                        []*ebiten.Image     // 切好的圖塊
+	st                           *battle.State       // 戰鬥狀態(單位)
+	nativeMapClock               nativeBIOSClock     // battle-local 18.2065Hz BIOS low-word adapter
+	nativeTitleClock             nativeBIOSClock     // title-lifetime 18.2065Hz timer seed for normal CONTINUE
+	sc                           *battle.Scenario    // 劇本(事件系統,doc 29)
+	dialog                       []battle.DialogLine // 待顯示對話(事件產生,含說話者)
+	storyBG                      bool                // 場景背景模式(story 節點指定 Map):鏡頭固定不跟游標,不畫單位/游標/HUD(doc23 §4)
+	storyActors                  []battle.Unit       // 原版目前已 materialize 的 scene unit array；index 只在該 load/spawn 時序內有意義
+	storyRoster                  []battle.Unit       // LOADCH 保留的 FDFIELD records；SPAWN 按 group 順序 append 到 storyActors
+	storyCompositionEventBytes   []byte              // LOADCH 的 immutable FDFIELD composition +2；future-group placement 的原始輸入
+	storySpawned                 map[int]bool        // 原版 group 已 materialize；防止 handler 重複 SPAWN 時重複 append
+	storyRosterPath              string              // 最近一次 handler LOADCH 的 exact roster source；battle handoff gate
+	storyPartyScenario           string              // 最近一次 handler LOADCH 的 exact party scenario；battle handoff gate
+	partyMembers                 map[int]bool        // JOIN 建立的永久玩家名冊；key=原版 0..31 charID，不使用 NPC portrait
+	partyJoinOrder               []int               // JOIN 首次出現順序；章0 cutscene 的 party runtime slot 以此為準
+	partyRoster                  map[int]battle.Unit // 0x11506 戰後同步的跨關角色能力／HP／MP／經驗快照
+	partyDeploy                  map[int]bool        // preparation 0x318ad 的本戰出擊勾選；不改永久 JOIN 名冊
+	prepIDs                      []int               // preparation UI 角色順序（JOIN chronology）
+	prepSel                      int                 // preparation UI 游標
+	prepLimit                    int                 // preparation UI 原版出擊上限（15，末段 19）
+	prepSelecting                bool                // 已通過前置確認，且流程要求進入原版選人階段
+	prepRecordSlots              bool                // 0x2CCB6→0x30012 的非城鎮四槽保存
+	prepRecordSlotSel            int                 // 0x30550 的0..3槽游標
+	prepConfirm                  bool                // 選滿或小隊確認後的最終出戰確認階段
+	prepRequiredMissing          *int                // 原生必出角色拒收訊息，確認後返回城鎮
+	prepConfirmSel               int                 // 0=肯定，1=取消
+	prepClock                    nativeBIOSClock     // preparation 0x31e80→0x1297d 的 BIOS 低字來源
+	prepIdleCycle                int                 // 原版 [0x53c0b] 0..3；繪圖時 3 正規化為1
+	prepLastTick                 int                 // 原版 [0x53c0f] 有號 BIOS 低字 latch
+	prepShotCycleFrozen          bool                // 固定雜湊截圖專用；一般玩家路徑永不設定
+	prepPromptSource             []byte              // 0x1956b 前的 town 畫面或 0x2cc04 黑色來源
+	churchSel                    int                 // church service menu cursor (0..3)
+	churchMode                   string              // menu / status_* / transfer_* / revive* / class / class_confirm
+	churchIDs                    []int               // current church candidate ids
+	churchRosterStart            int                 // 0x2e6b8 [0x5412f], even six-entry viewport origin
+	churchVerticalStart          int                 // 0x30c22/0x311dc three-row viewport origin
+	churchStatusID               int                 // selected actor passed to 0x17aed
+	churchStatusData             *nativeUnitStatusData
+	churchStatusPanel            []byte // 0x17eef/0x17fc0 + 0x184c0(actor,-1)
+	churchCommandPanel           []byte // 0x17eef/0x17fc0 + 0x1ceed(actor,-1)
+	churchItemStart              int    // 0x2df6b even six-entry item viewport origin
+	churchTransferSource         int    // raw transfer source roster id
+	churchTransferItem           int    // compact source inventory index
+	churchTransferItems          []int  // compact source inventory indices
+	churchTransferDest           int    // raw destination id used by FDTXT506 FFFC
+	churchReviveID               int    // selected 0x30dc3 candidate
+	churchReviveFee              int    // level * raw class fee
+	churchClassID                int    // selected class-change candidate
+	churchBranches               []campaign.ClassChangeBranch
+	hotelSel                     int // raw 0x2fc85 selector (0..3)
+	hotelRoute                   fdother.NativeHotelServiceRoute
+	hotelHasRoute                bool
+	titleSlotSel                 int // title LOAD selector: native 0x30550 slots 0..3
+	classChangeTable             campaign.ClassChangeTable
+	classChangeGrowth            map[int]campaign.ClassChangeGrowth
+	nativeJoinConstructor        campaign.NativeJoinConstructorTable
+	hasNativeJoinConstructor     bool
+	nativeJoinBases              campaign.NativeJoinBaseTable
+	hasNativeJoinBases           bool
+	nativeJoinItemEffectRows     []byte
+	handlerChapter               int // 原版 [0x53c03]；set_chapter 與無立即數 LOADCH 的 resource chapter
+	handlerInheritedMapView      battle.NativeMapViewState
+	hasHandlerInheritedMapView   bool
+	storyWalks                   []*storyWalkJob // 場景走位動畫佇列(doc46 §5.3);逐幀推進、完成後移除
+	storyAutoAdvance             int             // story 節點無對白時的自動轉場倒數幀(doc46 行軍蒙太奇,0=不自動)
+	storyView                    *ebiten.Image   // story 場景離屏世界層(320×200,放大 storyZoom 倍貼上畫布;2-1 原版取景)
+	walkFirst                    bool            // 本節點:進場走位走完才顯示對白(campaign.Node.WalkFirst)
+	followWalk                   bool            // 本節點:走位期間鏡頭跟隨走位者(campaign.Node.FollowWalk;beat walk 依 Follow 逐拍設值)
+	camMaxY                      float64         // 本節點:鏡頭 Y 上限(campaign.Node.CamMaxY;0=不限)
+	camPan                       *camPanJob      // beat「pan」進行中(doc50 §1);storyBG 專用,與 followWalk 互斥
+	focusJob                     *focusUnitJob   // beat「focus_unit」：依原版 0x12cea 先 X 後 Y 逐格移動游標／鏡頭
+	actJob                       *actPoseJob     // beat「act」進行中(近似姿態循環,見 actPoseJob 註解)
+	actTickAccumulator           float64         // 60Hz Update 到原版約18.2065Hz來源拍的投影餘數
+	beats                        []campaign.Beat // 目前 cutscene 節點的過場原語序列(doc50 §2)
+	beatIdx                      int             // 目前執行到第幾拍(-1=尚未開始)
+	beatDelay                    int             // beat「delay」剩餘幀數(0=非等待中)
+	battleEvent                  *battleEventRun // 戰場事件的阻塞 action 序列；與 campaign BeatRunner 分離
+	battleEventDelay             int             // battle event delay 剩餘幀數
+	campLines                    []campaign.Line // cutscene 節點載入的章文本(dialog beat 依 Line/Count 取子段)
+	dlgShown                     int             // 對話框目前顯示的說話者(dlgNone=無;換人時播縮/展動畫)
+	dlgUpper                     *bool           // 與 dlgShown 同步的上/下框覆蓋(來自 DialogLine.Upper;nil=沿用預設規則)
+	dlgPhase                     int             // 對話框動畫相位:0=常態 1=縮小(換人前收合) 2=展開
+	dlgT                         int             // 對話框動畫相位內計時(幀)
+	dlgPage                      int             // 目前FFFD頁碼；頁內第4個FFFE邏輯列由原版三列窗口捲動，不另造頁
+	dlgScrollT                   int             // 分頁捲動剩餘幀數(0=靜止)
+	dlgScrollFrom                int             // 分頁捲動開始頁碼
+	nativeDialogueFrames         [][]byte        // caller-specific 0x15F84 stable indexed pages
+	nativeDialogueProgressive    [][][]byte      // 每頁 frame0框／頭像，之後逐字形發布
+	nativeDialogueMouthOpen      [][]byte        // 每頁完整文字＋DATO frame3 indexed overlay
+	nativeDialogueProgress       int             // 目前頁已發布的逐字 frame；-1尚未開始
+	nativeDialogueSpeakingCycle  int             // 原版 0x53A10，跨句保留
+	nativeDialogueSpeakingHalf   int             // 原版 0x53A14，跨句保留
+	nativeDialogueSpeakingFrame  int
+	nativeDialoguePortraits      []dato.Frame
+	nativeDialogueLayout         *campaign.NativeDialogueLayout
+	nativeDialogueGlyphSteps     [][]bool
+	nativeDialogueOpening        [][]byte // caller-specific sub_165AC五階段格網
+	nativeDialogueClosing        [][]byte // caller-specific sub_16B43 snapshot restore＋可選游標尾段
+	nativeDialogueClosingT       int
+	nativeDialogueClosingLive    bool
+	fade                         *storyFade // 場景淡出/淡入轉場(doc46 §5.2)
+	transitionReveal             *transitionRevealJob
+	indexedTransition            *nativeIndexedTransitionJob
+	nativeHealPresentation       *nativeCommandHealPresentationJob
+	nativeModifierPresentation   *nativeCommandModifierPresentationJob
+	nativeAICommandModifier      *nativeAICommandModifierPresentationJob
+	nativeAIActionPlan           *battle.AIPlan                                       // 0x15311 route being dispatched; owns the winner cell [0x53C27]/[0x53C2B]
+	nativeTownHubReturn          bool                                                 // 下一次 enterNode 進城鎮是 hub 子場景返回：保留 [0x5412B] 選擇器
+	aiPlanObserver               func(*battle.AIPlan)                                 // 對拍測試用：每個 AI 單位計畫產生後、執行前呼叫（可對齊 RNG）
+	nativeTurnPairRNGInput       func(battle.NativeTurnEvent, uint16) (uint16, error) // 對拍測試明示事件決策種子；正式執行為nil。
+	growthRollObserver           func(*battle.Unit, uint16) uint16                    // 對拍測試用：每次升級成長擲骰（0x1E54A）前對齊 RNG
+	nativeCmd0Presentation       *nativeCommand0PresentationJob
+	nativeCmd1Presentation       *nativeCommand1PresentationJob
+	nativeCmd2Presentation       *nativeCommand2PresentationJob
+	nativeCmd3Presentation       *nativeCommand3PresentationJob
+	nativeCmd5Presentation       *nativeCommand5PresentationJob
+	nativeCmd6Presentation       *nativeCommand6PresentationJob
+	nativeCmd7Presentation       *nativeCommand7PresentationJob
+	nativeCmd8Presentation       *nativeCommand8PresentationJob
+	nativeCmd9Player             *nativeCommand9PlayerJob
+	nativeCmd9AIPresentation     *nativeCommand9AIPresentationJob
+	nativeCmd1012                *nativeCommand1012Job
+	nativeCmd24Presentation      *nativeCommand24PresentationJob
+	nativeCmd29Presentation      *nativeCommand29PresentationJob
+	nativeCmd32Presentation      *nativeCommand32PresentationJob
+	nativeCmd33Presentation      *nativeCommand33PresentationJob
+	nativeCmd34Presentation      *nativeCommand34PresentationJob
+	nativeCmd35Presentation      *nativeCommand35PresentationJob
+	nativeAIItemPresentation     *nativeAIItemPresentationJob
+	spawnIntroTransition         *nativeSpawnIntroJob
+	nativeTurnStaging            *nativeTurnStagingJob
+	nativeFieldEvent61           *nativeFieldEvent61Job
+	nativeAIIdleRecovery         *nativeAIIdleRecoveryJob  // direct 0x13FD4 indexed/audio owner
+	nativeEndTurnRecovery        *nativeEndTurnRecoveryJob // 0x1A30B two-pass indexed owner
+	nativeEnding                 *nativeEndingPreview      // FD2_ENDING_PREFIX 或來源約束 campaign ending；缺原始資料時走明示 fallback
+	nativeEndingNow              func() time.Time          // 可重播的呈現時鐘；nil時使用正常wall-clock。
+	endingNotice                 string                    // 原始素材不足或來源約束終局無法發布時的玩家提示
+	walk                         *walkAnim                 // 移動動畫(沿路徑逐格走,FDICON 方向幀)
+	camp                         *campaign.Runner          // 劇本節點圖(doc 19;FD2_CAMPAIGN 啟用)
+	campSel                      int                       // choice 節點游標
 	// 開頭動畫/主選單(title.go,doc23)
 	titleAssets    *titleAssets
 	titlePhase     string  // "scroll"→"menu"→""(進遊戲)
@@ -9150,6 +9154,7 @@ func (g *Game) nativeMapFrameAdmission(legacyViewport, campaignBattleView bool) 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.modernHDOverlay = nil
 	g.modernHDWorldVisible = false
+	g.modernHDTimedDialogueVisible = false
 	if g.modernHDMapGPU != nil && g.bannerT <= 0 {
 		g.modernHDMapGPU.BannerName = ""
 	}

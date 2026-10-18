@@ -19,6 +19,7 @@ type modernHDMapGPU struct {
 	BannerName            string
 	Mosaic                *ebiten.Shader
 	Pixel                 *ebiten.Image
+	Dialogue              *ebiten.Image
 }
 
 const modernHDMapMosaicSource = `//kage:unit pixels
@@ -67,6 +68,12 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 	frame := g.modernHDMapFrame
 	if frame == nil {
 		g.loadErr = "modern HD world: transaction did not publish a frame"
+		screen.Clear()
+		return false
+	}
+	frame, err = g.freezeModernHDTimedDialogue(frame)
+	if err != nil {
+		g.loadErr = err.Error()
 		screen.Clear()
 		return false
 	}
@@ -134,6 +141,7 @@ func (g *Game) drawModernHDMapFrame(screen *ebiten.Image) bool {
 	screen.DrawImage(r.UI, uiop)
 	g.modernHDWorldVisible = true
 	g.modernHDMapPresentedFrame = g.frame
+	g.modernHDMapPresented = frame
 	return true
 }
 

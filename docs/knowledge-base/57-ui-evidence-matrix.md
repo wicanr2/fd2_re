@@ -1,5 +1,9 @@
 # 57 — UI evidence matrix（SDD-1 baseline，2026-07-25）
 
+2026-10-19 計時FFEC對話的開收框已保留HD世界；明示章前EXP99槽、普通攻擊／升級、F2及完整保存／冷讀通過。
+原生幀／計時／規則保持，實際框角及144來源像素另驗；範圍限RUNTIME-E1及已列普通輸入，沒有新原版parity。
+來源沿[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`timed_dialogue_followup_20261019`與[61](61-modern-theme-runtime-spec.md)。
+
 2026-10-19 正式HD世界已接入144人物、原生312×192窗格與透明介面。
 正常首章34張GPU、4張走行、F2／指令環／取消、兩次物理攻擊與戰場返回通過。
 兩份穩定圖源核心及同view的960地形樣本零差異；跨相位樣本照實列不可比。

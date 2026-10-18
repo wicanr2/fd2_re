@@ -32,6 +32,15 @@ func (g *Game) recordInputAuditState() {
 	r["battle_scene"] = g.atk != nil
 	r["battle_event"] = g.battleEvent != nil
 	r["level_up_dialogue"] = g.nativeLevelUpDialogue != nil
+	r["hd_timed_dialogue"] = g.modernHDTimedDialogueVisible
+	if g.modernHDTimedDialogueVisible {
+		r["hd_timed_phase"] = g.modernHDTimedDialoguePhase
+		r["hd_timed_index"] = g.modernHDTimedDialogueIndex
+	}
+	if s := g.nativeLevelUpDialogue; s != nil {
+		r["timed_dialogue_owner"] = fmt.Sprintf("%p", s)
+		r["timed_dialogue_wait"] = g.nativeLevelUpDialogueAtWait()
+	}
 	r["death_reward_ui"] = g.nativeDeathRewardUI != nil
 	r["transient_ui"] = g.transientUI
 	r["class_ui_job"] = g.nativeClassUIJob != nil
@@ -43,10 +52,10 @@ func (g *Game) recordInputAuditState() {
 		r["move_reachable"] = cells
 	}
 	r["hd_world"] = g.modernHDWorldVisible && g.modernHDMapGPU != nil && g.modernHDMapGPU.Theme == g.modernStoryPortraits
-	if r["hd_world"] == true && g.modernHDMapFrame != nil {
+	if r["hd_world"] == true && g.modernHDMapPresented != nil {
 		r["hd_world_frame"] = g.modernHDMapPresentedFrame
-		units := make([]map[string]any, 0, len(g.modernHDMapFrame.Units))
-		for _, unit := range g.modernHDMapFrame.Units {
+		units := make([]map[string]any, 0, len(g.modernHDMapPresented.Units))
+		for _, unit := range g.modernHDMapPresented.Units {
 			units = append(units, map[string]any{"group": unit.Group, "frame": unit.Frame, "rect": []int{unit.Rect.Min.X, unit.Rect.Min.Y, unit.Rect.Max.X, unit.Rect.Max.Y}, "work_offset": unit.WorkOffset})
 		}
 		r["hd_world_units"] = units
@@ -141,7 +150,7 @@ func (g *Game) recordInputAuditState() {
 			if u == nil {
 				continue
 			}
-			units = append(units, map[string]any{"name": u.Name, "x": u.X, "y": u.Y, "hp": u.HP, "mp": u.MP, "camp": u.Camp, "acted": u.Acted, "on_field": u.OnField, "raw": u.NativeMapPresentation})
+			units = append(units, map[string]any{"name": u.Name, "x": u.X, "y": u.Y, "hp": u.HP, "mp": u.MP, "lv": u.Lv, "exp": u.Exp, "camp": u.Camp, "acted": u.Acted, "on_field": u.OnField, "raw": u.NativeMapPresentation})
 		}
 		r["units"] = units
 	}

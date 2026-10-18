@@ -2847,6 +2847,21 @@
         ],
         "pattern": "g.pendingNativeLevelUps = nil"
       }
+    },
+    {
+      "id": "short-gui-transition-observes-before-png-encoding",
+      "area": "GUI驗證",
+      "date": "2026-10-19",
+      "rule": "短GUI轉場先完成原始畫面擷取及後狀態觀測，再編碼PNG；Draw收據只定位候選，實際格網以來源邊角像素分類，跨階段樣本保留不可比。入口tools/verify_fd2_hd_timed_dialogue.py及tools/verify_fd2_hd_timed_pixels.py。",
+      "why": "首張開框仍顯示前段indexed表面，PNG編碼又拖過短收框；改用PPM觀測後無損PNG，並用FDOTHER#5兩邊角辨認實際格網，才證明HD世界保留。audit索引與實際圖片可以相差相鄰幀。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_timed_pixels.py"
+        ],
+        "pattern": "actual_grid_sizes"
+      }
     }
   ]
 }

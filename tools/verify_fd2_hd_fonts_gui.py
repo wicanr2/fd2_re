@@ -10,6 +10,7 @@ import time
 
 from verify_fd2_hd_gui import digest, latest
 from verify_fd2_hd_panel_transitions import PanelTransitionProbe
+from verify_fd2_hd_timed_dialogue import TimedDialogueProbe
 
 
 def main():
@@ -29,9 +30,11 @@ def main():
     parser.add_argument('--panel-transitions', action='store_true', help='以實際移動文字區抽驗狀態／物品轉場')
     parser.add_argument('--gold-roll-theme', choices=['hd','faithful'], default='hd', help='金幣買賣的主題對照')
     parser.add_argument('--world', action='store_true', help='加驗正式HD世界、普通走行、指令環、取消與物理戰鬥返回')
+    parser.add_argument('--timed-dialogue', action='store_true', help='加驗計時對話開收框、穩定HD文字與F2；需--world與明示章前EXP校準槽')
     args = parser.parse_args()
     tool_source_sha256=digest(Path(__file__))
     assert not args.world or args.battle_status
+    assert not args.timed_dialogue or args.world
     assert not args.transition_frames or args.preparation
     assert not args.panel_transitions or args.status or args.items
     assert Path('/.dockerenv').is_file() and args.binary.is_file()
@@ -88,6 +91,8 @@ def main():
     world_thread=None
     world_shots={}
     world_rejected=[]
+    timed_probe=None
+    timed_result=None
     if args.world:env['FD2_SEED']='1'
 
     def capture_world_walk():
@@ -441,10 +446,26 @@ def main():
                     key('Return');wait(lambda s:s.get('battle_scene') is True)
                     shot(prefix+'-physical-scene')
                     wait(lambda s:not s.get('battle_scene') and not s.get('walking') and s.get('hd_world'))
+                if args.timed_dialogue:
+                    timed_probe=TimedDialogueProbe(args.out,audit,lambda p:command('import','-window',window,str(p)),env)
+                    timed_probe.thread.start()
                 ordinary_physical_attack('world-hd')
                 # The physical scene can finish before its experience dialogue.
                 # Keep this distinct from a fully returned battle map.
                 shot('world-hd-physical-before-load')
+                if args.timed_dialogue:
+                    wait(lambda s:s.get('timed_dialogue_wait') and s.get('hd_timed_dialogue') and s.get('hd_timed_phase')==1)
+                    shot('timed-hd-stable')
+                    frozen=latest(audit)
+                    key('F2');wait(lambda s:not s.get('hd_theme'));shot('timed-faithful-stable')
+                    key('F2');wait(lambda s:s.get('hd_timed_dialogue') and s.get('hd_timed_phase')==1);shot('timed-hd-restored')
+                    for field in ('units','view','timed_dialogue_owner','dialogue_progress'):
+                        assert latest(audit)[field]==frozen[field],('計時對話F2改變狀態',field)
+                    for _ in range(120):
+                        state=latest(audit)
+                        if not state.get('level_up_dialogue') and not state.get('dialogues'):break
+                        key('Return')
+                    else:raise TimeoutError('第一筆升級對話尚未結束')
                 key('F9');wait(lambda s:s.get('node')=='battle_ch01' and not s.get('battle_scene'))
                 settle_world_battle()
                 assert not latest(audit).get('level_up_dialogue') and not latest(audit).get('move_preview')
@@ -457,6 +478,7 @@ def main():
                 else:raise TimeoutError('普通戰鬥經驗對話尚未結束')
                 wait(lambda s:s.get('hd_world') and not s.get('battle_scene'))
                 shot('world-hd-physical-return')
+                if timed_probe:timed_result=timed_probe.finish(validate=True)
                 key('F9')
                 settle_world_battle()
                 focus_own(0)
@@ -531,6 +553,7 @@ def main():
             report={'schema':'fd2-hd-battle-status-gui-v1','status':'PASS',
                     'gui_tool_sha256':tool_source_sha256,
                     'world_runtime_checked':args.world,'world_walk_gpu':world_shots,'world_walk_rejected':world_rejected,
+                    'timed_dialogue_gpu':timed_result,
                     'binary_sha256':digest(args.binary),'source_save_sha256':digest(args.town_save),
                     'saved_sha256':digest(saved),'screenshots':shots,'operations':operations,
                     'initial':initial,'focused':focused,'returned':returned,
@@ -943,6 +966,7 @@ def main():
                 'recording_created':False,'elapsed_seconds':time.monotonic()-started}
         (args.out/'receipt.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     finally:
+        if timed_probe and timed_result is None:timed_probe.finish()
         world_stop.set()
         if world_thread and world_thread.ident is not None:world_thread.join(timeout=15)
         if args.world:

@@ -464,7 +464,9 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 			index = len(g.nativeDialogueClosing) - 1
 		}
 		if index >= 0 {
-			g.presentNativeClassFrame(screen, g.nativeDialogueClosing[index])
+			if err := g.presentNativeStoryDialogueFrame(screen, g.nativeDialogueClosing[index], campaign.NativeDialogueClosing, index, nil, image.Rectangle{}); err != nil {
+				g.loadErr = err.Error()
+			}
 		}
 		return true
 	}
@@ -473,7 +475,9 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 	if g.dlgPhase == 2 {
 		index := nativeStoryOpeningFrameIndex(g.dlgT, len(g.nativeDialogueOpening))
 		if index >= 0 {
-			g.presentNativeClassFrame(screen, g.nativeDialogueOpening[index])
+			if err := g.presentNativeStoryDialogueFrame(screen, g.nativeDialogueOpening[index], campaign.NativeDialogueOpening, index, nil, image.Rectangle{}); err != nil {
+				g.loadErr = err.Error()
+			}
 		}
 		return true
 	}
@@ -529,9 +533,10 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 		if err != nil {
 			return true
 		}
-		if err := g.presentNativeClassFrameWithOverlay(
-			screen, frame, g.nativeDialogueModernPortrait.image, rect,
+		if err := g.presentNativeStoryDialogueFrame(
+			screen, frame, campaign.NativeDialogueSteady, 0, g.nativeDialogueModernPortrait.image, rect,
 		); err != nil {
+			g.loadErr = err.Error()
 			return true
 		}
 		if g.nativeDialogueModernPortrait.hdImage != nil {
@@ -541,7 +546,10 @@ func (g *Game) drawNativeStoryDialogue(screen *ebiten.Image) bool {
 			}
 		}
 	} else {
-		g.presentNativeClassFrame(screen, frame)
+		if err := g.presentNativeStoryDialogueFrame(screen, frame, campaign.NativeDialogueSteady, 0, nil, image.Rectangle{}); err != nil {
+			g.loadErr = err.Error()
+			return true
+		}
 	}
 	if g.modernHDText != nil {
 		g.modernHDText.runs = append(g.modernHDText.runs, hdText...)

@@ -36,7 +36,9 @@ type pendingNativeLevelUp struct {
 }
 
 type nativeLevelUpDialogueState struct {
-	unit *battle.Unit
+	unit       *battle.Unit
+	hdWorld    *modernHDMapFrame
+	hdCoverage map[campaign.NativeDialogueFramePhase][][]bool
 	// awaitLastKey：最後一頁也要等鍵（原版最後一欄的 FFFD）；沒有升級時只有一頁一行、
 	// 沒有 FFFD，直接進計時。
 	awaitLastKey bool

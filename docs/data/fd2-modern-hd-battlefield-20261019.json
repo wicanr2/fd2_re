@@ -10,7 +10,8 @@
     "hd_sprite_data": "DATA-READY：完整125組1455張HD及31組372張新增24父項已登錄；舊1083張父項及HD bytes保持。",
     "hd_world_renderer": "CONFORMED-SCOPED：144人物已接Game.Draw；首章34張正常GPU、4張實際走行、兩次物理攻擊及保存／新程序LOAD通過。",
     "private_assets": "完整catalog allow-list 3207檔已同步、逐檔驗證及推送指定私人庫；runtime-only 3010檔。",
-    "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。"
+    "quickload_battle_owner": "CONFORMED-SCOPED：成功JSON LOAD丟棄舊經驗owner與移動計畫；拒收保留。",
+    "timed_dialogue": "CONFORMED-SCOPED-RUNTIME-E1：計時FFEC開收框保留HD世界，EXP99普通鍵盤／F2與保存冷讀通過；其他caller未驗。"
   },
   "runtime_source": {
     "binary_sha256": "1b576f8860be4ac2c1235958a496c11bde389e517716187bb72c6b93ebfb0b46",
@@ -1724,6 +1725,189 @@
     "gui_tool": {
       "file": "tools/verify_fd2_hd_fonts_gui.py",
       "sha256": "ff3a9ff0aa91e037a3629c0b045818f8efdc6d82d08d3725799c5e34e14a3907"
+    }
+  },
+  "timed_dialogue_followup_20261019": {
+    "status": "CONFORMED-SCOPED-RUNTIME-E1",
+    "base_commit": "94765e75e2def5e83433ec2d909484ce030d1438",
+    "scope": "FFEC、MotionTargetY=0的計時戰場對話；首章EXP99普通攻擊／升級抽樣，其他故事／中毒／法術與完整HD另驗。",
+    "source_binding": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-runtime-source-final.json",
+      "sha256": "d3f27564503fb40d349585a5fef5ec761c784963168cddde46448ef970eb49a1"
+    },
+    "binary_sha256": "373c525ffd5889784f20a5aede981db8c2a2dcbd38aaa322f8da9880bd93e98c",
+    "catalog_sha256": "a96b2a9ce0e1045ac2ab644619f2ba0813799c24453ff387962ce34fba450bd2",
+    "slot_provenance": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-exp99-provenance.json",
+      "sha256": "343669b3fbf70289fdb129bdbc4da2aef700a5a8a3e5351ea793a762a8800ee1"
+    },
+    "parent_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+    "constructed_save_sha256": "b2998df1b85a1d304ef946d149e79ffe415a15a8f3e705efdd07bf96d2dd608f",
+    "saved_sha256": "b2998df1b85a1d304ef946d149e79ffe415a15a8f3e705efdd07bf96d2dd608f",
+    "only_slot_change": "/party_roster/4/Exp: 0→99；章內無狀態寫入，seed=1在啟動前固定。",
+    "gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-gui-r4/receipt.json",
+      "sha256": "5046da2a5cceae5465b8f01b41d3535dc4f7a9ec9cbcf1846f4c6d3af164263e"
+    },
+    "dialogue_observation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-gui-r4/timed-dialogue-observation.json",
+      "sha256": "d4d1579886d3fabb931bccf8fbff5471c5e335178ce134a9ce9f51d475af21dd"
+    },
+    "pixel_verification": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-pixels-final.json",
+      "sha256": "f7a5d8a9338226db2f951fb35c2584c7e3e64d0432362f42cff3298cc40171b1"
+    },
+    "main_gpu_images": 37,
+    "timed_gpu_images": 6,
+    "actual_walk_images": 2,
+    "pixel_samples": [
+      {
+        "file": "timed-gpu-1.png",
+        "sha256": "779b33565a13fe267cb3e478c2f1de5493a81dec36eab83312079102dcd6badc",
+        "phase": 0,
+        "actual_grid_sizes": [
+          [
+            4,
+            2
+          ]
+        ],
+        "audit_indices": [
+          3,
+          3
+        ],
+        "status": "PASS",
+        "outside_different_pixels": 0,
+        "reference": "timed-gpu-3.png"
+      },
+      {
+        "file": "timed-gpu-2.png",
+        "sha256": "57d953f5919ff0646358e1a4d3a51ea35f202d45554d02a3783e8f389d7d4f4c",
+        "phase": 0,
+        "actual_grid_sizes": [
+          [
+            19,
+            5
+          ]
+        ],
+        "audit_indices": [
+          4,
+          4
+        ],
+        "status": "PASS",
+        "outside_different_pixels": 0,
+        "reference": "timed-gpu-3.png"
+      },
+      {
+        "file": "timed-gpu-4.png",
+        "sha256": "5e40f6bb0de148ce936b6b5d19969ea86b8a2addc6c2cc60854981bd6532e79f",
+        "phase": 2,
+        "actual_grid_sizes": [],
+        "audit_indices": [
+          0,
+          0
+        ],
+        "status": "NOT-COMPARABLE",
+        "reason": "actual pixels do not show a grid from the declared phase"
+      },
+      {
+        "file": "timed-gpu-5.png",
+        "sha256": "3cf75ee843a101f34381c528706691f8159f41c0c16095ec58344e683f4a40c1",
+        "phase": 2,
+        "actual_grid_sizes": [
+          [
+            16,
+            5
+          ]
+        ],
+        "audit_indices": [
+          1,
+          1
+        ],
+        "status": "PASS",
+        "outside_different_pixels": 0,
+        "reference": "timed-gpu-3.png"
+      },
+      {
+        "file": "timed-gpu-6.png",
+        "sha256": "a2b2b09e016a4088c9a35c8d84172b959c0437d6090d0151d1212485e505ddb4",
+        "phase": 2,
+        "actual_grid_sizes": [
+          [
+            12,
+            4
+          ]
+        ],
+        "audit_indices": [
+          2,
+          2
+        ],
+        "status": "PASS",
+        "outside_different_pixels": 0,
+        "reference": "timed-gpu-3.png"
+      }
+    ],
+    "hd_source_checks": {
+      "0xc015837d00": {
+        "source": "fdicon-000-style-a-hd6-f02.png",
+        "source_sha256": "b0ebfdcd2da86367d4b36ef3c93c54e716fcadeaa8c1c01d8b5d111dd9913fd5",
+        "opaque_core_pixels": 8296,
+        "different_pixels": 0
+      }
+    },
+    "theme_and_constructed_save_bytes_equal": true,
+    "new_process_title_load": true,
+    "regression": {
+      "pure": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-pure-r2.log",
+        "sha256": "c0ebfb2fbecfc2f5b5a1ab5059773eb006305b073a929e9d938aa726d99d2f39"
+      },
+      "modern_native_dialogue_load_save": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-regression-r1.log",
+        "sha256": "d5d90ab3ecfe12fd10a581e706370ff60df3a31b241a8330cc0d7fb21307c6b0"
+      },
+      "data_packages": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-data-regression-r1.log",
+        "sha256": "a2abce45f34b821fd0f524f416a2ae16e36bb1736a8321f2a3cbb8342b8eb75d"
+      }
+    },
+    "regression_limits": "相關回歸68.504秒與三資料套件通過；本輪未重跑完整所有Go套件，前一批完整收據保持。",
+    "failed_verification_runs": {
+      "r1": "工具假定第二次攻擊仍有經驗訊息，實際未產生。改在固定第一次攻擊驗證，不改seed、不重擲。",
+      "r2": "第一張開框擷取仍是前段indexed表面；第二張已正確HD。觀測Draw不等於實際呈現，首交界樣本不可冒稱相同幀。",
+      "r3": "對全部階段加等待漏掉短收框。改只等戰鬥切入開框，收框快速PPM擷取後才轉PNG，未改遊戲時序。"
+    },
+    "capture_method": "開框以實際Draw所記錄的幀號差至少2過濾交界；不稱兩次Draw或GPU完成fence。PPM擷取後立刻讀後狀態，再無損PNG、刪PPM。獨立檢查正式FDOTHER#5兩邊角像素辨認實際格網，而非信任audit索引。",
+    "frame_limits": "2張開框與2張收框實際來源角落通過；一張收框觀測尚顯示其他呈現階段，列NOT-COMPARABLE。圖源8296個不透明核心像素零差異。索引跨相鄰幀照實記錄，不要求或宣稱逐幀原版parity。",
+    "input_behavior": "正常標題LOAD明示EXP校準槽；正常走行／取消／攻擊、升級對話翻頁、F2、F9、角色狀態、保存與新程序LOAD。",
+    "clock_policy": "首次HD對話Draw保存world／UI快照，原生時鐘交易照常執行；只替換顯示來源，F9或對話結束隨處理器丟棄。",
+    "reproduce": {
+      "slot": "Docker python3 tools/prepare_fd2_hd_timed_slot.py --source <首章F5 JSON> --output <新槽> --report <新收據> --unit 4 --exp 99",
+      "gui": "Docker fd2-promo:20261017-r1 python3 tools/verify_fd2_hd_fonts_gui.py --binary <build> --assets remake --original-pack <合法分離包> --modern-pack <私人正式包> --town-save <EXP99槽> --battle-status --world --timed-dialogue --out <新目錄>",
+      "pixels": "Docker fd2-assets-local:20260829-sfx python3 tools/verify_fd2_hd_timed_pixels.py --observation <timed-dialogue-observation.json> --original-pack <同包> --catalog remake/assets/themes/modern/catalog.json --modern-pack <同私人包> --report <新報告>",
+      "tests": "Docker fd2-go-test-local:latest with-xvfb go test ./cmd/fd2 -run Test(Modern|LoadModern|RefreshTheme|Native.*(Dialogue|LevelUp)|Campaign.*(Load|Save)) -count=1；另測fd2-string-inventory、campaign、indexedmap。repo掛/src與/repo，測試/tmp使用有界exec tmpfs。"
+    },
+    "new_original_oracle_or_campaign_e2": false,
+    "full_hd_complete": false,
+    "release_changed": false,
+    "private_assets_changed": false,
+    "recordings_created": false,
+    "validation": {
+      "report": {
+        "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-validation-final.json",
+        "sha256": "ee37fae97aea56b244ed0d1b7280f9e4ccfcd0c7437319f2a8b000675d207783"
+      },
+      "worklist_open": 20,
+      "worklist_manual": 13,
+      "possibly_complete": 0,
+      "lessons": 244,
+      "lesson_guards": 126,
+      "new_or_root_owned_work_outputs": 0,
+      "unexpected_fd2_containers": 0
+    },
+    "cleanup": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-timed-cleanup-final.json",
+      "sha256": "d0b1c854fc064e774285f3e90ed38847951256bfb257ba5062d60ef65f0b016b",
+      "bytes_freed": 293281361
     }
   }
 }

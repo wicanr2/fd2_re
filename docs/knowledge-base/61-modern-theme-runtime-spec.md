@@ -255,6 +255,44 @@ raw bit7沿既有現代主題的變暗係數`0.55／0.55／0.6`呈現，不宣�
 拒收案例，以及普通物理戰鬥後F9、章首對話、保存與新程序LOAD。
 存檔格式、原生槽與正式經驗／死亡規則保持；這個窄修正不宣稱完整暫態覆蓋。
 
+### 2026-10-19 計時戰場對話透明圖層（CONFORMED-SCOPED，限RUNTIME-E1及明示槽普通輸入）
+
+沿已核准HD世界、原方格／對話位置、黑體與F2。既有`beginNativeTimedMessageDialogue`
+以FDTXT_000具型別頁面提供經驗、升級及中毒訊息；穩定文字已沿`modernHDStoryTextFrame`繪製。
+已證實的缺口是`drawNativeStoryDialogue`各階段透過完整indexed frame覆蓋已畫好的HD世界。
+本切片不改訊息、翻頁、成長亂數、計時、保存或玩家路徑，不新增翻譯或美術。
+
+- 範圍只含`nativeLevelUpDialogue`持有的FFEC下框、MotionTargetY=0，沒有走行或回合橫幅。
+  其他故事對話與滑向游標的收框仍沿原路徑，另列後續驗收。
+- 格網覆蓋直接來自`nativeStoryOpeningGridSizes`／`nativeStoryClosingGridSizes`、
+  `PlanNativeDialogueFrameGrid`及實際RawCell寬高；opaque複製包含零色，不從畫面色差猜遮罩。
+  開框5階段、穩定19×5格網、收框4階段及純背景一階段均做來源／邊界驗證。
+- 第一次HD對話Draw保存同次原生幀交易的獨立HD世界與透明HUD；後續原生時鐘仍照常消費，
+  對話只呈現這份背景快照，避免快取indexed人物重新出現。首次背景相位取實際HD呈現，
+  不宣稱與Update建立原版indexed快取逐幀相同。坐標、HP與對話規則不變。
+- F2保留同一對話處理器、頁面與快照。忠實路徑仍呈現原完整索引幀；回到HD後重用快照。
+  F9或對話結束丟棄處理器時，快照同步失效，不能滲入新節點。
+- 對話圖層只複製來源明示的覆蓋區域，穩定頭像與高解析文字沿既有consumer。
+  像素資料或幾何無效時拒收，不發布部分介面。唯讀觀測記錄實際Draw階段與呈現的單位來源。
+- CPU回歸比較全部階段與原合成器，包含同色／零色；GUI以普通攻擊取得開框、穩定頁、
+  收框、F2、返回及保存／冷讀。若用章前EXP校準槽，只改明示欄位並保存原始／衍生SHA與差異，
+  不把它當自然難度或原版oracle證據。
+
+覆蓋入口為[對話來源覆蓋計畫](../../remake/internal/campaign/native_story_dialogue_coverage.go)，
+正式呈現入口為[計時對話HD圖層](../../remake/cmd/fd2/modern_hd_timed_dialogue.go)。
+普通GUI沿既有字型工具加`--battle-status --world --timed-dialogue`，
+[實際GPU探針](../../tools/verify_fd2_hd_timed_dialogue.py)只觀測圖層與按鍵收據。
+[章前EXP槽工具](../../tools/prepare_fd2_hd_timed_slot.py)在Docker以`--source`、新`--output`、
+新`--report`及明示`--unit 4 --exp 99`保存原始／衍生SHA與唯一JSON pointer差異。
+[實際像素驗證](../../tools/verify_fd2_hd_timed_pixels.py)另以正式FDOTHER#5兩個邊角的18個原始像素，
+辨認實際開收框格網；再核對框外背景與144人物圖源。允許擷取索引跨相鄰幀，不把Draw觀測當GPU完成證明。
+CPU全控制碼格網開收框與FFEC穩定覆蓋通過；FFEE文字窗口超出格網，本切片不猜補。
+37張主要GPU、6張計時對話、4張走行與兩主題／來源保存相同及新程序LOAD通過。
+正式兩邊角實際像素確認2張開框與2張收框，另1張跨呈現階段不可比；144圖源8296核心像素零差異。
+章前只改亞雷斯EXP0→99，正常攻擊確實升至Lv2／EXP30，不宣稱自然難度或原版oracle。
+來源與重跑入口見[主收據](../data/fd2-modern-hd-battlefield-20261019.json)的`timed_dialogue_followup_20261019`。
+其他caller、HD地形及平台仍未完成。
+
 ### 2026-10-19 正式HD戰場接線（CONFORMED-SCOPED）
 
 沿已確認1920×1200、144人物、原方格與位置、F2及透明介面方案。完整125組來源已通過上一節，
