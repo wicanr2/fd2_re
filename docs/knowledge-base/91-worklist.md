@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 22 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -251,6 +251,22 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 使用者已要求HD化；第一階段是先補齊現代主題並做原型，或同步完成高解析繪製，正在確認。依grilling先展示相同遊戲狀態的可丟棄原型與現有呈現，保留核准的風格與操作語意；倍率、圖層、文字安全區、素材格式及效能成本由原型查證後確認。不要自行將插值放大當成細節提升，也不要在未READY前改正式資料格式、存檔或production繪製。
 
 怎樣算做完：既有HD頭像／黑體／穩定頁／整備問句／金幣／角色物品轉場及首章角色狀態覆蓋已抽驗。接續其他設施轉場、成功演出、圖示與未列畫面，再完成角色／地形真正高解析素材、戰場交界及跨平台HD效能；完整HD仍未完成。
+
+### F2切換主題在戰場重複觸發角色狀態
+
+`theme-f2-also-inspects-battle-unit` · 缺陷 · [#257](https://github.com/wicanr2/fd2_re/issues/257) · 仍未完成 · 要人判
+
+正式首章標題LOAD、Z聚焦索爾後按F2，主題確實切換，但同一Update也觸發main.go戰場KeyF2／Home舊alias。world-geometry-before-gui-r1的battle-faithful-focused.png實際是狀態頁，不能冒稱同狀態戰場取景比較。來源122ebdfb，兩個F2讀取端及實際圖片已確認。保留F2全域切主題、Home正常檢視角色，不改規則或保存。
+
+怎樣算做完：正常首章兩次F2往返不開啟角色狀態、不改角色／view；Home仍可開狀態。相關回歸、實際GPU與保存冷讀通過。
+
+### 現代戰場取景倍率與原生320×200窗格不同
+
+`modern-battle-viewport-half-scale` · 缺陷 · [#258](https://github.com/wicanr2/fd2_re/issues/258) · 仍未完成 · 要人判
+
+F2重複消費修正後，world-geometry-f2-fixed-gui-r1以同份正常首章JSON、Z聚焦及F2往返取得真正戰場圖片。兩側units與NativeMapViewState相同，但現代24邏輯像素直繪，忠實320×200後放大兩倍，取景與人物大小不同。前測world-geometry-before-gui-r1的忠實圖片其實是被F2誤開的角色狀態，保留為#257診斷，不能當本題取景證據。HD世界層DRAFT及原生具型別來源已列61。
+
+怎樣算做完：現代HD世界沿原生(4,4)、312×192窗格、相同NativeMapViewState及單位投影繪製；高解析母稿直繪，範圍／前景／HUD／選單與保存保持。正常F2、走行、取消、角色與戰鬥返回的實際GPU及保存驗證通過。
 
 ## player — 缺未修改一般玩家路徑的驗收（PLAYER-E2）
 

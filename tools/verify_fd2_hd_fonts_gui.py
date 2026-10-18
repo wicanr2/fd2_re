@@ -341,6 +341,13 @@ def main():
             key('z');wait(lambda s:not s.get('player_focus'))
             shot('battle-hd-focused')
             focused=latest(audit)
+            key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-focused')
+            faithful_focused=latest(audit)
+            assert faithful_focused['units']==focused['units'] and faithful_focused['view']==focused['view']
+            assert not faithful_focused.get('player_status_phase'),'F2誤開角色狀態'
+            key('F2');wait(lambda s:s.get('hd_theme') is True);shot('battle-hd-focused-restored')
+            assert latest(audit)['units']==focused['units'] and latest(audit)['view']==focused['view']
+            assert not latest(audit).get('player_status_phase'),'F2返回誤開角色狀態'
             key('Home');wait(lambda s:s.get('player_status_phase')=='status')
             shot('battle-hd-status')
             key('F2');wait(lambda s:s.get('hd_theme') is False);shot('battle-faithful-status')

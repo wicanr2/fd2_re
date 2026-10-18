@@ -984,4 +984,5 @@ manifest、控制計畫與slot-ready現況統一由[戰役台帳](../data/parity
 
 - [README 四語忠實模式商店截圖與來源](../data/fd2-readme-locales-20261018.json)。
 
+- [HD戰場主收據：F2衝突修正、同狀態取景缺陷與144角色候選](../data/fd2-modern-hd-battlefield-20261019.json)，編製器與正式接線閘門見[61](61-modern-theme-runtime-spec.md)。
 - [HD 清晰黑體、旅館／教會／角色狀態／物品／整備／標題讀檔、整備問句／角色物品轉場／金幣滾動、首章戰場覆蓋修正與四語 GUI 主收據](../data/fd2-modern-hd-fonts-20261018.json)、[正常驗證工具](../../tools/verify_fd2_hd_fonts_gui.py)、[已確認字型原型](../figures/hd-font-style-comparison.png)，契約見[61](61-modern-theme-runtime-spec.md)。

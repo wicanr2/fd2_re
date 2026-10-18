@@ -321,6 +321,32 @@
         "note": "代理程式候選與綠色結構測試不能代替人工校譯；目前精確六句維持machine_draft。"
       },
       "issue": 239
+    },
+    {
+      "id": "theme-f2-also-inspects-battle-unit",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "F2切換主題在戰場重複觸發角色狀態",
+      "body": "正式首章標題LOAD、Z聚焦索爾後按F2，主題確實切換，但同一Update也觸發main.go戰場KeyF2／Home舊alias。world-geometry-before-gui-r1的battle-faithful-focused.png實際是狀態頁，不能冒稱同狀態戰場取景比較。來源122ebdfb，兩個F2讀取端及實際圖片已確認。保留F2全域切主題、Home正常檢視角色，不改規則或保存。",
+      "acceptance": "正常首章兩次F2往返不開啟角色狀態、不改角色／view；Home仍可開狀態。相關回歸、實際GPU與保存冷讀通過。",
+      "verify": {
+        "kind": "manual",
+        "note": "核對正常戰場F2後player_status_phase仍空、實際畫面仍是戰場，Home後才為status；不只看theme旗標。"
+      },
+      "issue": 257
+    },
+    {
+      "id": "modern-battle-viewport-half-scale",
+      "layer": "runtime",
+      "category": "缺陷",
+      "title": "現代戰場取景倍率與原生320×200窗格不同",
+      "body": "F2重複消費修正後，world-geometry-f2-fixed-gui-r1以同份正常首章JSON、Z聚焦及F2往返取得真正戰場圖片。兩側units與NativeMapViewState相同，但現代24邏輯像素直繪，忠實320×200後放大兩倍，取景與人物大小不同。前測world-geometry-before-gui-r1的忠實圖片其實是被F2誤開的角色狀態，保留為#257診斷，不能當本題取景證據。HD世界層DRAFT及原生具型別來源已列61。",
+      "acceptance": "現代HD世界沿原生(4,4)、312×192窗格、相同NativeMapViewState及單位投影繪製；高解析母稿直繪，範圍／前景／HUD／選單與保存保持。正常F2、走行、取消、角色與戰鬥返回的實際GPU及保存驗證通過。",
+      "verify": {
+        "kind": "manual",
+        "note": "核對同一units／view的正式戰場GPU及原生frame投影，不以只看1280／1920視窗尺寸或母稿存在當通過。"
+      },
+      "issue": 258
     }
   ]
 }

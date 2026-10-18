@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "kind": "fd2_modern_hd_battlefield_evidence",
+  "date": "2026-10-19",
+  "base_commit": "122ebdfb5dbb00e88b72e39b08009cc30931c60f",
+  "full_hd_complete": false,
+  "current_state": {
+    "f2_battle_input": "CONFORMED-SCOPED：全域F2不再觸發戰場檢視，Home保持；正常GUI與保存驗證通過。",
+    "native_viewport": "REMAKE-DEFECT-CONFIRMED：同units／view的正式戰場F2比較確認現代24直繪與原生320×200兩倍不同，#258待實作。",
+    "hd_sprite_data": "CANDIDATE：94組1083張首輪來源完整但固定格線有裁切，未登錄；完整輪廓方法51張樣本已審查。",
+    "hd_world_renderer": "DRAFT：獨立1920世界與透明介面分層尚未實作。",
+    "private_assets": "未新增正式catalog或私人包；新機械靜態母稿保留於專案候選。"
+  },
+  "runtime_source": {
+    "snapshot": {
+      "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-runtime-source-final.json",
+      "sha256": "981df396225fa0425c9bf8c9693126b89d3fc6482bab608da965fe5b6ed1106e"
+    },
+    "go_file_count": 971,
+    "gui_tool": {
+      "file": "tools/verify_fd2_hd_fonts_gui.py",
+      "sha256": "ff3a9ff0aa91e037a3629c0b045818f8efdc6d82d08d3725799c5e34e14a3907"
+    }
+  },
+  "f2_conflict": {
+    "issue": 257,
+    "cause": "全域F2切主題後，中立戰場再次把KeyF2當角色檢視。",
+    "fix": "戰場角色檢視只由Home消費；全域F2保持。",
+    "before_gui": "work/promo-cadence-20261018/hd-fonts/world-geometry-before-gui-r1",
+    "before_limit": "該輪忠實focused圖實際是狀態頁，不作取景對照。",
+    "final_gui": {
+      "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/receipt.json",
+      "sha256": "9009c5daed20b7acf0ee6d7c73bc8ea3fc972ad8ff86289edb1791678114509c"
+    },
+    "status": "PASS",
+    "images": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-title-load.png",
+        "sha256": "24b61e7be474651e23bdaa4346980b2665e219e912647176e19c7b2af9450902",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-field.png",
+        "sha256": "319aba3c21be1b1fcc33d837e0f9b5e340841f9fbb719a2bef7a7d8e822eea86",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-focused.png",
+        "sha256": "1acd95429fb05f0df51e67e4099e504b0da29f3e26925fb1a47118b72ea6aabc",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-faithful-focused.png",
+        "sha256": "66122405a892e7feeaaa7fc8b1ed0a0d439b5c890fd428f65a1e24bc72531356",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-focused-restored.png",
+        "sha256": "76dce5709554bebd01ec240cab84a3d6ad6d9acbc69822aac8d3b459bbfded0b",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-status.png",
+        "sha256": "69a4f41dc4956ca03543734a058a76d00c0421b8a8ba5438ca4e65c3cc852c79",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-faithful-status.png",
+        "sha256": "35f1c60354a0adda03581f1a4f10da947851b24a127798b572ea0c21ce21d870",
+        "width": 1280,
+        "height": 800
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-status-restored.png",
+        "sha256": "a92e8db22c44e6da98e57f0ec86bed7fc71c4c107c6ea9c931b0da814ff2c34b",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-returned.png",
+        "sha256": "582ebbc459e50cd21df2cb6eb439cedd2abea39fe433fd9ad3ab5980352d04c6",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-command-unit-focused.png",
+        "sha256": "19c40e08c95ed4554905a85328f7bec7fbb06f02fe2342a31ca72a677d8536ae",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-command-unit-status.png",
+        "sha256": "bee8d9ffa04708d28330ff61a64f2e4a74bbc603eaa3a9ff09ebfc7c23ff5fba",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-status-resized.png",
+        "sha256": "8c250b050eeb90d3b3b695e927309cda36983f546baa0b33d11bcb8852c58e89",
+        "width": 1600,
+        "height": 1000
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-status-help.png",
+        "sha256": "f898e36704381cf75c946c3756cefeb074d6aa846d77da8350f0fce682d03937",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-commands.png",
+        "sha256": "6373c5ee30c23abf9fa8361d7e26d8c6997063653388ba5c1e729b4c89809c12",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-command-unit-returned.png",
+        "sha256": "fa129f43fb8654fb52cf3717319300bc09e2d7974550294472aef820131b89b9",
+        "width": 1920,
+        "height": 1200
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-cold-title-load.png",
+        "sha256": "fbaa444e68a272862162527b15b28bd23e84a2ef31bf85202444f44554456b78",
+        "width": 1920,
+        "height": 1200
+      }
+    ],
+    "reviewed_count": 16,
+    "f2_does_not_open_status": true,
+    "home_opens_status": true,
+    "units_and_view_unchanged": true,
+    "normal_title_cold_load": true,
+    "save": {
+      "source_save_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "saved_sha256": "089b077b8d334babd5d9f7005ff6ed6499ccb7987520a8f56d59e79bf3edb1d2",
+      "source_save_bytes_equal": true,
+      "theme_save_bytes_equal": true,
+      "loaded_units_equal": true
+    },
+    "regression": {
+      "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-regression-r1.log",
+      "sha256": "6ef7309f1e26aa7b5e3c954a0061a1a682fe9d2e3a17abc9268137673dc5dac5"
+    },
+    "regression_seconds": 16.55,
+    "scope": "相關cmd模式，非完整cmd或battle回歸；Linux llvmpipe正常首章操作，無新原版對拍。"
+  },
+  "viewport_defect": {
+    "issue": 258,
+    "status": "CONFIRMED-NOT-FIXED",
+    "modern_field": {
+      "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-hd-focused.png",
+      "sha256": "1acd95429fb05f0df51e67e4099e504b0da29f3e26925fb1a47118b72ea6aabc"
+    },
+    "faithful_field": {
+      "file": "work/promo-cadence-20261018/hd-fonts/world-geometry-f2-fixed-gui-r1/battle-faithful-focused.png",
+      "sha256": "66122405a892e7feeaaa7fc8b1ed0a0d439b5c890fd428f65a1e24bc72531356"
+    },
+    "view": {
+      "CameraX": 0,
+      "CameraY": 14,
+      "CursorX": 7,
+      "CursorY": 20,
+      "VisibleCursorX": 7,
+      "VisibleCursorY": 6
+    },
+    "same_units_and_view": true,
+    "typed_sources": [
+      "buildNativeMapFrameInput",
+      "fdicon.NativePlacementOffset",
+      "fdicon.NativeFrameIndex",
+      "indexedmap.ComposeNativeFrameObserved"
+    ],
+    "normal_unit_pure_remap": "fdicon.blitAtOffset只寫Mask，39／57無來源寫入時保持no-op；不得造透明角色。",
+    "known_layers": "terrain→range→units→foreground→selection/HUD→viewport；保持原生(4,4)、312×192。"
+  },
+  "asset_compiler": {
+    "file": "tools/build_modern_hd_map_sprites.py",
+    "sha256": "4fd287738049a467ac6e7b98f7d287f958f3b4419896c3f116653d4b50e2e251"
+  },
+  "uniform_candidate": {
+    "manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-candidates-r1/hd-map-sprites.json",
+      "sha256": "09fc241a1cd824d9113ce5bd6872680724f42f534b480a172140648a9fbaca31"
+    },
+    "groups": 94,
+    "frames": 1083,
+    "png_geometry_and_alpha_verified": true,
+    "status": "REJECTED-FOR-FIXED-GRID-EXTRACTION",
+    "first_phase_overview_reviewed": 94,
+    "all_poses_reviewed": false,
+    "review": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-candidate-review-r1.json",
+      "sha256": "c8ae0be6eb000d94d26a88eeaada998d4b7d8df0c60372abd646bab6eb3e2b32"
+    },
+    "reason": "非等距母稿被固定3×4格線裁切；第4組及其他相位需完整輪廓重編，不進正式catalog。"
+  },
+  "component_samples": {
+    "manifest": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-sprite-components-samples-r2/hd-map-sprites.json",
+      "sha256": "017e89ebb56857afb8c8caca6ef1968ec189978457d811064e32f0cfb094b6c2"
+    },
+    "groups": [
+      0,
+      4,
+      9,
+      48,
+      52
+    ],
+    "frames": 51,
+    "all_sample_poses_reviewed": true,
+    "status": "CANDIDATE-SAMPLES-PASS",
+    "full_recompile": "r2在第3組拒收，未產生完整manifest；r3以--audit-all一次列完所有拒收。有缺件仍非零退出，不進catalog。",
+    "source_layout_refusal": {
+      "group": 3,
+      "status": "REFUSED-NOT-GUESSED",
+      "reason": "母稿連通輪廓只有7個大塊，無法安全宣稱12個完整人物。"
+    },
+    "compiler_update": "僅追加全組診斷模式；母稿輪廓與編製函式不變，樣本manifest保留實際執行時來源hash。"
+  },
+  "static48_new_art": {
+    "generation": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-static48-v2-generation.json",
+      "sha256": "0c2e698cfdc18e3acc403ace4f1e51bdb08c66f0d4643d3f2ccfcd9c2c782432"
+    },
+    "prompt": {
+      "mode": "builtin-imagegen",
+      "use_case": "identity-preserve",
+      "source_group": 48,
+      "prompt": "Use case: identity-preserve. Asset type: HD static battle-map sprite strip for Flame Dragon 2 FDICON source group 48, NOT DATO portrait 48. Image 1 is the exact identity/edit target: a squat front-facing mechanical armored unit in three static phases, pale silver-white rectangular box helmet, angled white top plate, large featureless black visor opening under a horizontal metal brow, chunky silver shoulder side plates, black joint recesses, short mechanical arms/hands, compact waist and two broad metal feet. Preserve this silhouette, all armor shapes, original white/silver/dark gray palette and FRONT view in every cell. Image 2 is STYLE ONLY: approved finely hand-painted chibi robot group 52, use its smooth ink contours, shaded metal planes and small material detail; do NOT copy its rust-brown armor, circular side ear, visible yellow eyes, four directions or gait. Redraw Image 1 at genuinely high illustration resolution with clean hand-painted linework and subtle silver metal shading, no pixel blocks or nearest-neighbor enlargement. Exactly ONE ROW, THREE equal-width cells, one complete figure centered in each cell, same scale, feet on identical baseline, generous equal transparent padding. These are static idle phases, never walking: middle and right differ only slightly in arm settling and reflected light consistent with the source strip. All three remain frontal, visually same identity. Truly TRANSPARENT RGBA background, no black matte, white matte, checkerboard, ground shadow or floor. No text, labels, frames, grid lines, weapons, facial eyes, antennae, ornaments, new colors, extra figures or directions. Intended extraction into three 144x144 cells; keep silhouettes complete and separated, strong readable metal edges, big helmet and short body.",
+      "transparent_background": true,
+      "references": [
+        "fdicon-048-style-a-v1-master.png",
+        "fdicon-052-style-a-v1-master.png"
+      ]
+    },
+    "prompt_file": {
+      "file": "work/promo-cadence-20261018/hd-fonts/hd-static48-v2-prompt.json",
+      "sha256": "9b30eec8f3675aff62449906da6ae9002b527faf1701ffbe888962d6b187694c"
+    },
+    "source": {
+      "file": "remake/generated-assets/modern-theme-prototypes/fdicon-048-style-a-v2-hd-master.png",
+      "sha256": "26f5b0aea38b2665abc8a57099b2dfb88149a50363efa32ed96ac2a09dd82d35"
+    },
+    "status": "CANDIDATE-NOT-REGISTERED",
+    "static_phases": 3,
+    "identity": "FDICON48機械角色，與DATO48父王分開。",
+    "review": "三相靜態及金屬輪廓已審，未以候選圖代替runtime驗收。"
+  },
+  "locales": {
+    "inventory": {
+      "file": "work/promo-cadence-20261018/hd-fonts/f2-battle-route-inventory-final.json",
+      "sha256": "935606cd186275d1834266433eb41f62b626a981b08642190905f71031dc72b7"
+    },
+    "inventory_bytes_unchanged": true,
+    "all_four_documents_unchanged": true
+  },
+  "remaining": [
+    "完成全94組完整輪廓重編及全部姿態審查",
+    "重繪像素化母稿，核對裝備與原角色身份",
+    "144角色完整原子catalog預檢與私人同步",
+    "原生世界倍率／範圍／前景／HUD與選單層實作",
+    "正常走行、取消、戰鬥返回及早中晚GPU驗證",
+    "真正高解析地形與其他HD介面",
+    "跨平台HD驗收"
+  ],
+  "cleanup": {
+    "recording_created": false,
+    "temporary_binaries": [
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-world-before",
+        "sha256": "a3cadcd43b50c917496af08621f9f33d4a901d26bbf7ed58500ad94dd0c16c2f",
+        "bytes": 19039784,
+        "removed_after_verification": true
+      },
+      {
+        "file": "work/promo-cadence-20261018/hd-fonts/fd2-hd-world-f2-fixed",
+        "sha256": "ea09d5e15db2550577b5882ddfe368023028688c40e64bd72c7bc716b8d05db5",
+        "bytes": 19039696,
+        "removed_after_verification": true
+      }
+    ]
+  }
+}

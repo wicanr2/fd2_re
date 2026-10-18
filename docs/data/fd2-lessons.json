@@ -2772,6 +2772,36 @@
       "rule": "高解析美術先按catalog消費契約逐檔檢查尺寸、模式、透明度及來源欄位；不由相同role假設母稿皆有alpha或master_file。入口remake/assets/themes/modern/catalog.json與61。",
       "why": "94組母稿登錄中48份RGB、45份RGBA、group68未登錄master_file；五組另採三相靜態契約。單一母稿樣本不能代表整組。",
       "evidence": "docs/data/fd2-modern-hd-fonts-20261018.json"
+    },
+    {
+      "id": "theme-switch-gui-preserves-modal-owner",
+      "area": "驗證",
+      "date": "2026-10-19",
+      "rule": "主題切換GUI同時驗證玩家輸入owner保持；F2後除units／view外，須確認player_status_phase未被意外開啟。入口tools/verify_fd2_hd_fonts_gui.py的--battle-status。",
+      "why": "前測F2既切主題又觸發舊角色檢視alias，忠實focused圖片實為狀態頁；只查主題及units／view仍會誤判。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/verify_fd2_hd_fonts_gui.py"
+        ],
+        "pattern": "F2誤開角色狀態"
+      }
+    },
+    {
+      "id": "hd-master-layout-does-not-follow-canvas-grid",
+      "area": "素材",
+      "date": "2026-10-19",
+      "rule": "高解析母稿裁切先核對完整輪廓與相位排序；3×4人物宣告不證明畫布上各格等距，邊界裁切疑點不能接runtime。入口tools/build_modern_hd_map_sprites.py的master_components與61。",
+      "why": "首輪94組雖有1083張正確尺寸PNG，固定格線仍裁斷第4組及其他相位；以完整輪廓重編後五組51張樣本完整。",
+      "evidence": "docs/data/fd2-modern-hd-battlefield-20261019.json",
+      "guard": {
+        "kind": "present",
+        "paths": [
+          "tools/build_modern_hd_map_sprites.py"
+        ],
+        "pattern": "def master_components"
+      }
     }
   ]
 }

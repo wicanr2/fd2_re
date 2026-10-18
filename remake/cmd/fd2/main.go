@@ -8941,7 +8941,7 @@ func (g *Game) Update() error {
 		if inpututil.IsKeyJustPressed(ebiten.KeyZ) || inpututil.IsKeyJustPressed(ebiten.KeyNumpad5) {
 			g.cycleNativePlayerUnit()
 		}
-		if inpututil.IsKeyJustPressed(ebiten.KeyF2) || inpututil.IsKeyJustPressed(ebiten.KeyHome) {
+		if inpututil.IsKeyJustPressed(ebiten.KeyHome) {
 			if u := g.st.UnitAt(g.curX, g.curY); u != nil {
 				if _, err := g.inspectNativePlayerUnit(u, true); err != nil {
 					g.loadErr = err.Error()

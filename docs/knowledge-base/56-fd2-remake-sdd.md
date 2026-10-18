@@ -1,5 +1,9 @@
 # 56 — FD2 remake 系統設計規格（SDD，2026-08-09）
 
+2026-10-19 HD戰場接續：F2不再重複觸發角色檢視，Home保持，正常首章16張GPU與完整保存／冷讀通過。
+同狀態取景差異#258尚未修正；144角色候選的格線裁切已拒收，完整輪廓51張樣本已審，尚未接runtime。
+唯一來源與下一閘門見[HD戰場主收據](../data/fd2-modern-hd-battlefield-20261019.json)及[61](61-modern-theme-runtime-spec.md)。
+
 2026-10-18 首章JSON標題LOAD（CONFORMED／PLAYER-E2-LIMITED，[#252](https://github.com/wicanr2/fd2_re/issues/252)）：
 標題JSON確認與F9共用實際還原結果，成功才離開選槽。首章handlerChapter零值及省略欄位保持，
 既有JSON不改寫；共用讀取者在發布前拒收超出0..255的章號。原生槽投影與SAV交易不變，
