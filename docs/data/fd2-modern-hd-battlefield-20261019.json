@@ -2500,7 +2500,7 @@
     "status": "DATA-READY native source; DATA-CANDIDATE house",
     "base_commit": "34000f8dece2086087c67cf1322a7f6bd5653758",
     "source_issue": 261,
-    "source_issue_closed": false,
+    "source_issue_closed": true,
     "runtime_integrated": false,
     "full_hd_complete": false,
     "source_snapshot": {
@@ -2695,6 +2695,16 @@
         ],
         "verified_source_and_art_retained": true,
         "videos_created": false
+      },
+      "worklist": {
+        "open": 20,
+        "manual": 13,
+        "possibly_complete": 0
+      },
+      "hygiene": {
+        "new_files_owner": "1000:1000",
+        "unexpected_fd2_containers": 0,
+        "source_pack_read_only": true
       }
     },
     "review": {
@@ -2726,6 +2736,7 @@
       "go": "go1.22.12 linux/amd64",
       "python": "3.12.15",
       "pillow": "11.3.0"
-    }
+    },
+    "source_commit": "b086604f077810ce6dc3dda1f86da241f3a86f64"
   }
 }

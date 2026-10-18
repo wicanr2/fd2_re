@@ -39,7 +39,7 @@ python3 -m unittest discover -s tools -p 'test_fd2_worklist.py'
 
 <!-- BEGIN fd2_worklist.py render；不要手改這一段 -->
 
-共 21 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
+共 20 條未完成項。權威是 GitHub Issues（標籤 `worklist`），[`docs/data/fd2-worklist.json`](../data/fd2-worklist.json) 是拉下來的快照，本節由 [`tools/fd2_worklist.py`](../../tools/fd2_worklist.py) 產生。
 
 `要人判` 的條目沒有機器訊號，每一輪都會被列出來——沉默不等於通過。
 新增、修改、關閉條目都在 GitHub 上做（[`tools/fd2_worklist_issues.py`](../../tools/fd2_worklist_issues.py) 的 `new`／`close`），之後 `pull` 更新快照。
@@ -108,29 +108,17 @@ FDFIELD回合事件由完整具型別處理器降成正式劇本，保留增援�
 
 `modern-theme-player-asset-coverage` · 工作 · [#201](https://github.com/wicanr2/fd2_re/issues/201) · 仍未完成 · 要人判
 
-2026-10-19 HD地形來源審查：已逐層盤點33組8256幀，24張舊正規化圖集與原生mask不一致，合計198032個alpha像素不同，同索引RGB也有衝突。觀測差異已證實，根因未知；#261追蹤正式bank逐幀來源、mask與remap_mask，不直接把舊圖集升採樣成原生HD素材。正式HD世界沿原生bank，既有GPU／保存收據保持。
+既有144人物、正常首章HD世界與FFEC計時對話收據保持；限定的GPU、F2及完整保存／冷讀範圍依58／61，不外推全戰役或平台。
 
-內建image_gen草地母稿與一次修訂已保存本機；144排版原型直接替換有接縫，遮罩加細節仍有明顯區塊感，均未採用、未登錄清冊。沒有新GPU、原版oracle、matching、正式素材包、Release或錄影。來源、提示、SHA及工具入口見主收據terrain_source_followup_20261019與61勘誤。
+原生地形製圖來源已完成DATA-READY，#261已結案。Go工具重用正式載入器，重生逐幀索引、opaque、destination-remap與基準RGBA，PIL獨立回讀通過；舊正規化圖集不再作HD來源，歷史解碼根因仍未知。
 
-下方計時對話與正式世界切片仍有效；本輪新增地形來源前置閘門。
+第一章房屋已完成24底圖及6前景的144候選，全部RGB來自新手繪母稿，透明覆蓋保持，切片重組零差異。前景279與base不同，保留獨立圖源。房屋尚未登錄正式清冊或接Game.Draw，外緣接縫與正常GPU待驗，不宣稱新E1／E2。
 
-2026-10-19 計時FFEC對話HD切片已整合b086b2c3db01bfb52673e3d9180b6f1d2233aff0，真正origin/main已核同值。經驗／升級下框開收動畫不再用完整indexed畫面覆蓋HD人物，保留同次HD世界快照；原生時鐘、頁面、計時、F2與正式規則保持。
+下一步先接房屋到正常首章戰場，驗LOAD、F2、原生前景遮蔽、保存及外緣接縫，再擴展地形、完整HUD與其他consumer。未知頭像身分維持拒收。
 
-只把既有章前槽/party_roster/4/Exp由0改99，來源與衍生SHA／唯一差異可回查，章內不改狀態。seed=1於啟動前固定，正常攻擊確實升Lv2／EXP30。37張主要GPU、6張對話、4張走行、F2、兩主題與衍生來源完整保存相同、新程序LOAD通過。實際來源角落確認2張開框與2張收框，另1張跨呈現階段不可比；144圖源8296個不透明核心像素零差異。
+提交b086604f077810ce6dc3dda1f86da241f3a86f64已推送main並核對遠端。來源、原圖、完整提示、SHA及重跑入口在58／61與docs/data/fd2-modern-hd-battlefield-20261019.json的native_terrain_source_followup_20261019。工作歷程在WORKLOG，既有世界與計時對話主收據保留。
 
-相關現代／原生對話／升級／存讀檔回歸68.504秒與三資料套件通過；本輪未重跑完整所有Go套件，前一批完整收據保持。GPU首交界、第二擊未產生經驗、短收框擷取等腳本失敗均保留並分類；以實際格網像素判定，不要求audit與圖片精確同幀。
-
-現況與重跑入口在58／61及docs/data/fd2-modern-hd-battlefield-20261019.json的timed_dialogue_followup_20261019。本切片只列RUNTIME-E1及明示槽普通輸入，不宣稱自然難度、原版oracle或整章E2。私人素材與Release保持，沒有錄影，已清理293281361 bytes。
-
-素材清冊保持；真正HD地形、其他美術與正式consumer覆蓋仍待完成。
-
-以下為前次正式世界切片與其仍有效範圍，最新對話切片以上段為準。
-
-正式1920×1200世界已接完整125組1455張144人物，沿原生312×192窗格、raw定位與一次時鐘／DAC交易，前景及透明介面分層。正常首章34張GPU、4張實際走行、F2／指令環／取消、兩次物理攻擊與返回、Home狀態／命令、縮放／說明、保存及新程序標題LOAD通過。兩張穩定人物來源各10678核心像素零差異；一張跨相位照實不可比。同view的960地形樣本零差異，兩主題與來源完整保存SHA保持089b077b。
-
-來源提交3e1abc519fd6a125ea8854db24eaaa0c0b10b967，已推送並核對origin/main。全套Go測試通過，主程式282.386秒。唯一現況：58／61及docs/data/fd2-modern-hd-battlefield-20261019.json的world_runtime_followup_20261019。完整125組來源與私人包仍沿native_coverage_followup_20261019，私人素材沒有改動。沒有新原版oracle、matching或整章PLAYER-E2，Release保持，沒有錄影；五份暫存執行檔已移除。
-
-本項仍開啟：真正HD地形、完整HUD／其他美術、未知身分頭像與其他正式consumer覆蓋仍待盤點及實作。144人物資料與正式首章世界已驗，不再以較早94組子集或未接Game.Draw當現況。
+本輪沒有新原版oracle、matching、正式遊戲程式／存檔變更、公開圖片、Release或錄影；候選未同步私人正式主題包。
 
 怎樣算做完：受版控需求盤點可重跑，列出來源與consumer；既有已核准現代替換範圍零非預期缺件，其他畫面各有明示分類與決策；缺件拒收與原子切換回歸通過，私人包雜湊及遠端HEAD可核對。
 
@@ -143,16 +131,6 @@ FDTXT031 strings40..45原版尾聲先前未納入可編輯劇本，完整60句�
 怎樣算做完：由使用者或譯者核對六段來源、專名與語氣後逐筆reviewed，保存校譯紀錄並更新受控六句待審範圍；其他已審校譯文保持。
 
 證據：`docs/data/localization/ending-story-supplements.json`
-
-### P1 地形資料：舊正規化圖集與原生遮罩不一致
-
-`terrain-normalized-native-layer-correspondence` · 缺陷 · [#261](https://github.com/wicanr2/fd2_re/issues/261) · 仍未完成 · 要人判
-
-HD地形前置盤點已逐層讀取33個正式FDSHAP分離圖庫、8256幀及舊正規化圖集。24張圖集存在透明遮罩差異，合計198032像素；另記相同原生調色盤索引對應多個正規化RGB的幀組。這是已觀測資料差異，解碼或來源歷史根因仍未知，不宣稱原版執行期錯誤。正式HD世界目前使用原生bank，因此本題不撤銷既有首章GPU收據。不得直接把舊圖集升採樣成原生HD圖源。可重跑工具tools/prototype_fd2_hd_terrain.py，來源與摘要在docs/data/fd2-modern-hd-battlefield-20261019.json的terrain_source_followup_20261019。
-
-怎樣算做完：由目前正式分離bank建立可回查的逐幀HD圖源索引，保留frame、mask與remap_mask；對舊圖集差異逐項分類或由正式來源重生。驗證實際幀數、動畫／前景selector與透明／目的地remap契約；不得以整張PNG尺寸或可解碼代替遮罩一致。既有規則、地圖座標、保存與像素模式保持。
-
-證據：`docs/data/fd2-modern-hd-battlefield-20261019.json`
 
 ## runtime — 還沒接進正式執行期
 
